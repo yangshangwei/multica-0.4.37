@@ -95,6 +95,8 @@ export function useDeleteWorkspace() {
 export function useCreateWorkspaceMcpServer(wsId: string) {
   const queryClient = useQueryClient();
   return useMutation({
+    // Custom configurations can carry credentials too.
+    gcTime: 0,
     mutationFn: ({ name, config }: { name: string; config: Record<string, unknown> }) =>
       api.createWorkspaceMcpServer(wsId, name, config),
     onSettled: () =>

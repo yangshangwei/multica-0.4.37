@@ -234,7 +234,9 @@ test("specialist skills localize, search and open their official copies without 
     await expect.poll(() => page.evaluate(() =>
       Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) <= window.innerWidth,
     )).toBe(true);
-    const entry = page.getByRole("tablist", { name: copy.market.views_label, exact: true, includeHidden: true });
+    const entry = state === "workspace"
+      ? page.getByRole("link", { name: copy.market.from_template, exact: true, includeHidden: true })
+      : page.getByRole("tablist", { name: locale === "en" ? "Capability type" : "能力类型", exact: true, includeHidden: true });
     const entryBounds = await entry.boundingBox();
     expect(entryBounds).not.toBeNull();
     expect(entryBounds!.height).toBeLessThanOrEqual(viewport.width >= 768 ? 64 : 112);
@@ -267,12 +269,10 @@ test("specialist skills localize, search and open their official copies without 
       const displayed = copy.builtin_role_skills[skill.name];
       await page.setViewportSize({ width: 1280, height: 720 });
       await page.goto(`/${slug}/skills`);
-      await page.getByRole("tab", { name: copy.market.workspace, exact: true }).click();
-      const entry = page.getByRole("tablist", { name: copy.market.views_label, exact: true, includeHidden: true });
-      await expect(entry.getByRole("tab", { name: copy.market.title, exact: true, includeHidden: true })).toContainText(String(catalog.templates.length));
+      await expect(page.getByRole("tab", { name: copy.market.title, exact: true })).toHaveCount(0);
       await expect(page.locator("header").getByText(String(skills.length), { exact: true })).toHaveCount(0);
-      await expect(entry.getByRole("tab", { name: copy.market.workspace, exact: true })).toContainText(String(skills.length));
-      const fromTemplate = page.getByRole("button", { name: copy.market.from_template, exact: true });
+      await expect(page.getByRole("status").filter({ hasText: copy.toolbar.result_count.replace("{{visible}}", String(skills.length)).replace("{{total}}", String(skills.length)) })).toBeAttached();
+      const fromTemplate = page.getByRole("link", { name: copy.market.from_template, exact: true });
       if (index === 0) {
         await capture("workspace", locale, copy, theme);
         await page.setViewportSize({ width: 375, height: 667 });
@@ -299,9 +299,11 @@ test("specialist skills localize, search and open their official copies without 
         await expect(page.getByText(displayed.name, { exact: true }).first()).toBeVisible();
         await expect(page.getByText(displayed.description, { exact: true }).first()).toBeVisible();
       }
-      await expect(entry.getByRole("tab", { name: copy.market.title, exact: true, includeHidden: true })).toContainText(String(catalog.templates.length));
-      await fromTemplate.click();
-      await expect(entry.getByRole("tab", { name: copy.market.title, exact: true })).toBeFocused();
+      await fromTemplate.focus();
+      await page.keyboard.press("Enter");
+      await expect(page).toHaveURL(`/${slug}/marketplace?type=skills`);
+      await expect(page.getByRole("tab", { name: "Skills", exact: true })).toHaveAttribute("aria-selected", "true");
+      await expect(page.getByRole("tab", { name: copy.market.source_all, exact: true })).toContainText(String(catalog.templates.length));
       await page.getByRole("button", { name: copy.market.preview_label.replace("{{name}}", displayed.name), exact: true }).click();
       const preview = page.getByRole("dialog");
       await expect(preview).toHaveAccessibleName(copy.create.template.preview_label);
@@ -344,12 +346,11 @@ test("specialist skills localize, search and open their official copies without 
   for (const [locale, copy, theme] of [["en", enSkills, "light"], ["zh-Hans", zhSkills, "dark"]] as const) {
     await setLocale(page, localized, locale);
     await page.setViewportSize({ width: 360, height: 800 });
-    await page.goto(`/${slug}/skills`);
+    await page.goto(`/${slug}/marketplace?type=skills`);
     await page.evaluate((value) => localStorage.setItem("theme", value), theme);
     await page.reload();
-    const entry = page.getByRole("tablist", { name: copy.market.views_label, exact: true });
-    await expect(entry.getByRole("tab", { name: copy.market.title, exact: true, includeHidden: true })).toContainText(String(catalog.templates.length));
-    await entry.getByRole("tab", { name: copy.market.title, exact: true }).click();
+    await expect(page.getByRole("tab", { name: "Skills", exact: true })).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByRole("tab", { name: copy.market.source_all, exact: true })).toContainText(String(catalog.templates.length));
     const displayed = copy.builtin_role_skills["multica-experience-validation"];
     const browse = page.getByRole("button", { name: copy.market.preview_label.replace("{{name}}", displayed.name), exact: true });
     await browse.scrollIntoViewIfNeeded();

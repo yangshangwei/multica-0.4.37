@@ -1,6 +1,9 @@
 # Publishing the MCP catalog
 
 The MCP market combines platform built-in recipes and deployment-provided files.
+Open **Capability market → MCP** to browse and add them. The **MCP** management
+page keeps saved configurations and assignments, with a link to the market.
+Agent-specific discovery continues to offer the same catalog in its context.
 Maintain built-ins in `server/internal/service/builtin_mcp_templates.go`; publish
 deployment recipes as `<key>/mcp.json` in the API's configured directory.
 Members discover recipes through

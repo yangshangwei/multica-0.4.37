@@ -54,10 +54,11 @@ presentation resolver for display. User-initiated copy creation may seed a NEW
 draft's description from the current localized purpose; later locale or query
 updates must not reseed it. Existing workspace edits still preserve stored text.
 
-The skills page uses `SkillLibraryCatalog` for a compact deployment shelf and a
-separate market view. Its source totals come from valid named entries in the
-unfiltered template catalog; workspace header counts and facets still describe
-workspace skills. Catalog cards open the shared creation dialog with a named
+The skills page manages workspace skills and links to the capability market.
+`SkillMarketPanel` owns copy sessions, while `SkillTemplateCatalog` renders
+discovery under `/{slug}/marketplace?type=skills`. Its source totals come from
+valid named entries in the unfiltered template catalog; workspace header counts
+and facets still describe workspace skills. Catalog cards open the shared creation dialog with a named
 `initialEntry: { kind: "templates", templateName }`; New skill uses the method
 chooser. A named seed selects a preview only. See
 [Skill Market Discovery](./skill-market-discovery.md) for view preferences,
@@ -107,8 +108,9 @@ The template catalog changes outside workspace mutations: the server rescans
 the mounted directory on each request, without a WebSocket invalidation event.
 Its Query options must override the global infinite freshness so reopening,
 foregrounding or reconnecting can discover changes. Poll every 30 seconds only
-while the template picker is open and visible; the page's compact entry and
-the copy editor must not poll. Selecting the deployment source refreshes
+while the market catalog is active or the template picker is open and visible.
+The picker owns polling while its creation dialog is open; inactive market panels
+and the adopted copy editor must not poll. Selecting the deployment source refreshes
 immediately, reusing an in-flight fetch. Refresh keeps source/search/selection
 where applicable and must never reseed an adopted draft. Exercise this policy
 with the production QueryClient defaults, not a bare library-default client.
@@ -162,7 +164,7 @@ never navigate on a late response after timeout, unmount or workspace change.
 Run the pure presentation/source-sync and discovery suites, skill list/detail
 and picker suites, slash suggestion/extension suites, tab presentation suite,
 and locale parity. The root template-flow suite owns draft/recovery/navigation
-guards and snapshots; `skills-page-template-session.test.tsx` owns the real-page
+guards and snapshots; `skill-market-panel.test.tsx` owns the real-panel
 query-transition and opener-focus regressions. Render entry and phase labels
 with only each active locale (`en`, `zh-Hans`) loaded, so complete test
 resource bundles do not hide production failures.

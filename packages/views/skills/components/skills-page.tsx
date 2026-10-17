@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import { toast } from "sonner";
 import {
   AlertCircle,
   AlertTriangle,
@@ -75,8 +74,7 @@ import { canEditSkill } from "../hooks/use-can-edit-skill";
 import { useSkillPresentation } from "../hooks/use-skill-presentation";
 import type { SkillPresentation } from "../lib/skill-presentation";
 import { originSourceUrl, readOrigin, type OriginInfo } from "../lib/origin";
-import { CreateSkillDialog, type SkillCreateEntry } from "./create-skill-dialog";
-import { SkillLibraryCatalog } from "./skill-library-catalog";
+import { CreateSkillDialog } from "./create-skill-dialog";
 import {
   useSkillsViewStore,
   DEFAULT_HIDDEN_COLUMNS,
@@ -218,14 +216,17 @@ function PageHeaderBar({
         href: paths.docsPage(DOCS_SLUGS.skills),
         label: t(($) => $.page.learn_more),
       }}
-      actions={
+      actions={<>
+        <Button variant="outline" size="sm" render={<AppLink href={paths.marketplaceTab("skills")} />}>
+          {t(($) => $.market.from_template)}
+        </Button>
         <CollectionPageHeaderAction
           ref={buttonRef}
           icon={Plus}
           label={t(($) => $.page.new_skill)}
           onClick={onCreate}
         />
-      }
+      </>}
     />
   );
 }
@@ -482,17 +483,21 @@ function CreatorCell({ creator }: { creator: MemberWithUser | null }) {
 
 function EmptyState({ onCreate, buttonRef }: { onCreate: () => void; buttonRef: React.Ref<HTMLButtonElement> }) {
   const { t } = useT("skills");
+  const paths = useWorkspacePaths();
   return (
     <CollectionPageState
       icon={SkillIcon}
       title={t(($) => $.page.empty.title)}
       description={t(($) => $.page.empty.description)}
-      actions={
+      actions={<>
+        <Button variant="outline" size="sm" render={<AppLink href={paths.marketplaceTab("skills")} />}>
+          {t(($) => $.market.browse_market)}
+        </Button>
         <Button ref={buttonRef} type="button" onClick={onCreate} size="sm">
           <Plus aria-hidden="true" className="size-3" />
           {t(($) => $.page.new_skill)}
         </Button>
-      }
+      </>}
     />
   );
 }
@@ -724,10 +729,8 @@ export default function SkillsPage() {
   );
 
   const createButtonRef = useRef<HTMLButtonElement>(null);
-  const templateButtonRef = useRef<HTMLButtonElement>(null);
   const emptyCreateButtonRef = useRef<HTMLButtonElement>(null);
   const [creation, setCreation] = useState<{
-    entry?: SkillCreateEntry;
     category?: SkillCategory;
     triggerRef: React.RefObject<HTMLButtonElement | null>;
   } | null>(null);
@@ -919,15 +922,6 @@ export default function SkillsPage() {
     navigation.push(paths.skillDetail(skill.id));
   };
 
-  const handleTemplateCreated = (skill: Skill) => {
-    toast.success(t(($) => $.create.template.created), {
-      action: {
-        label: t(($) => $.market.open_created),
-        onClick: () => navigation.push(paths.skillDetail(skill.id)),
-      },
-    });
-  };
-
   const selectedRows = rows.filter((row) => selectedIds.has(row.skill.id));
   const allSelected = rows.length > 0 && selectedRows.length === rows.length;
   const someSelected = selectedRows.length > 0 && !allSelected;
@@ -972,20 +966,6 @@ export default function SkillsPage() {
         buttonRef={createButtonRef}
         onCreate={() => setCreation({ triggerRef: createButtonRef })}
       />
-      <SkillLibraryCatalog
-        key={wsId}
-        workspaceId={wsId}
-        skills={skillData}
-        skillsError={!!listError}
-        onPreview={(templateName, trigger) => {
-          templateButtonRef.current = trigger;
-          setCreation({ entry: { kind: "templates", templateName }, triggerRef: templateButtonRef });
-        }}
-        onCreate={(trigger) => {
-          templateButtonRef.current = trigger;
-          setCreation({ triggerRef: templateButtonRef });
-        }}
-      >
       {listError ? (
         <CollectionPageState
           role="alert"
@@ -1202,19 +1182,16 @@ export default function SkillsPage() {
 
         </>
       )}
-      </SkillLibraryCatalog>
     </div>
       {creation && (
         <CreateSkillDialog
           key={wsId}
-          initialEntry={creation.entry}
           initialPresentation={creation.category ? { category: creation.category } : undefined}
           finalFocus={() => creation.triggerRef.current?.isConnected
             ? creation.triggerRef.current
             : createButtonRef.current}
           onClose={() => setCreation(null)}
           onCreated={handleCreated}
-          onTemplateCreated={creation.entry?.kind === "templates" ? handleTemplateCreated : undefined}
         />
       )}
     </>

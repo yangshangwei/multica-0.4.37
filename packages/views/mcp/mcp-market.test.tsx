@@ -12,7 +12,7 @@ import type {
 import enSettings from "../locales/en/settings.json";
 import enAgents from "../locales/en/agents.json";
 import { ApiError } from "@multica/core/api";
-import { McpLibraryCatalog } from "./mcp-market";
+import { McpTemplateCatalog } from "./mcp-market";
 import { McpSetupDialog } from "./mcp-setup-dialog";
 
 const mocks = vi.hoisted(() => ({
@@ -127,19 +127,16 @@ function Wrapper({ children }: { children: ReactNode }) {
   );
 }
 function renderCatalog(
-  props: Partial<Parameters<typeof McpLibraryCatalog>[0]> = {},
+  props: Partial<Parameters<typeof McpTemplateCatalog>[0]> = {},
 ) {
   return render(
-    <McpLibraryCatalog
+    <McpTemplateCatalog
       workspaceId="ws"
       servers={[]}
-      loaded
       canManage
       onCustom={mocks.custom}
       {...props}
-    >
-      <p>Workspace inventory</p>
-    </McpLibraryCatalog>,
+    />,
     { wrapper: Wrapper },
   );
 }
@@ -205,8 +202,7 @@ describe("MCP market", () => {
     const user = userEvent.setup();
     mocks.templates!.push({ ...template, source: "deployment", title: "Team browser", config: {}, transport: "http", version: "sha256:abc", category: "coding" });
     renderCatalog({ servers: [{ id: "deployed", workspace_id: "ws", name: "internal-browser", transport: "http", template_key: "playwright", template_source: "deployment", created_at: "", updated_at: "" }] });
-    await user.click(screen.getByRole("tab", { name: "MCP market" }));
-    expect(screen.getByRole("tab", { name: "MCP market" })).toHaveTextContent("MCP market3");
+    expect(screen.getByRole("button", { name: "All sources" })).toHaveTextContent("All sources3");
     const builtin = screen.getByRole("button", { name: "View configuration: Playwright" });
     expect(within(builtin).queryByText(/internal-browser/)).toBeNull();
     await user.click(screen.getByRole("button", { name: "Reasoning" }));
@@ -220,16 +216,13 @@ describe("MCP market", () => {
     expect(screen.getByRole("button", { name: "Deployment provided" })).toHaveTextContent("1");
     expect(screen.getByRole("button", { name: "Platform built-in" })).toHaveTextContent("2");
   });
-  it("polls only while the market is selected and refreshes on re-entry", async () => {
-    const user = userEvent.setup();
-    renderCatalog();
-    expect(mocks.queryOptions).toHaveBeenLastCalledWith({ poll: true });
-    await user.click(screen.getByRole("tab", { name: "Shared configurations" }));
-    expect(mocks.queryOptions).toHaveBeenLastCalledWith({ poll: false });
-    const before = mocks.refetch.mock.calls.length;
-    await user.click(screen.getByRole("tab", { name: "MCP market" }));
-    expect(mocks.queryOptions).toHaveBeenLastCalledWith({ poll: true });
-    expect(mocks.refetch).toHaveBeenCalledTimes(before + 1);
+  it("enables catalog reads and polling only while active", () => {
+    const view = renderCatalog();
+    expect(mocks.queryOptions).toHaveBeenLastCalledWith({ enabled: true, poll: true });
+    view.rerender(<McpTemplateCatalog workspaceId="ws" servers={[]} canManage onCustom={mocks.custom} active={false} />);
+    expect(mocks.queryOptions).toHaveBeenLastCalledWith({ enabled: false, poll: false });
+    view.rerender(<McpTemplateCatalog workspaceId="ws" servers={[]} canManage onCustom={mocks.custom} active />);
+    expect(mocks.queryOptions).toHaveBeenLastCalledWith({ enabled: true, poll: true });
   });
   it("explains an empty deployment source without exposing server setup details", async () => {
     const user = userEvent.setup();
@@ -237,6 +230,15 @@ describe("MCP market", () => {
     await user.click(screen.getByRole("button", { name: "Deployment provided" }));
     expect(screen.getByText("No deployment-provided MCP templates yet. Contact your deployment administrator to add one.")).toBeVisible();
     expect(screen.queryByText(/MULTICA_MCP/)).toBeNull();
+  });
+  it("restores focus to catalog search when the preview opener was withdrawn", async () => {
+    const user = userEvent.setup();
+    const view = renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
+    mocks.templates = [];
+    view.rerender(<McpTemplateCatalog workspaceId="ws" servers={[]} canManage onCustom={mocks.custom} />);
+    await user.click(screen.getByRole("button", { name: "Close" }));
+    await waitFor(() => expect(screen.getByRole("searchbox", { name: "Search MCP templates" })).toHaveFocus());
   });
   it("saves a config-free deployment snapshot then retains assignment when the catalog removes it", async () => {
     const user = userEvent.setup();
@@ -249,7 +251,7 @@ describe("MCP market", () => {
     expect(mocks.create).toHaveBeenCalledWith({ name: "playwright", templateSource: "deployment", templateKey: "playwright", templateVersion: "sha256:abc" });
     await screen.findByRole("heading", { name: "Choose agents" });
     mocks.templates = [];
-    view.rerender(<McpLibraryCatalog workspaceId="ws" servers={[]} loaded canManage onCustom={mocks.custom}><p>Workspace inventory</p></McpLibraryCatalog>);
+    view.rerender(<McpTemplateCatalog workspaceId="ws" servers={[]} canManage onCustom={mocks.custom} />);
     expect(screen.getByRole("heading", { name: "Choose agents" })).toBeVisible();
     expect(mocks.custom).not.toHaveBeenCalled();
     expect(mocks.assign).not.toHaveBeenCalled();
@@ -261,7 +263,7 @@ describe("MCP market", () => {
     const view = renderCatalog();
     await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
     await user.type(screen.getByLabelText("Access token", { exact: false }), "old-secret");
-    const rerender = () => view.rerender(<McpLibraryCatalog workspaceId="ws" servers={[]} loaded canManage onCustom={mocks.custom}><p>Workspace inventory</p></McpLibraryCatalog>);
+    const rerender = () => view.rerender(<McpTemplateCatalog workspaceId="ws" servers={[]} canManage onCustom={mocks.custom} />);
     mocks.templatesError = true;
     rerender();
     expect(screen.getByLabelText("Access token", { exact: false })).toHaveValue("old-secret");
@@ -293,15 +295,14 @@ describe("MCP market", () => {
       expect(mocks.refetch).toHaveBeenCalled();
     }
   });
-  it("keeps inventory counts separate from filtered template results", async () => {
+  it("keeps source totals separate from filtered template results", async () => {
     const user = userEvent.setup();
     mocks.templates!.push({ ...template, key: "unusable", config: {} });
     renderCatalog();
-    expect(screen.getByRole("tab", { name: "Shared configurations" })).toHaveTextContent("Shared configurations0");
-    expect(screen.getByRole("tab", { name: "MCP market" })).toHaveTextContent("MCP market2");
+    expect(screen.getByRole("button", { name: "All sources" })).toHaveTextContent("All sources2");
     await user.click(screen.getByRole("button", { name: "Reasoning" }));
     expect(screen.getByRole("status")).toHaveTextContent("Templates found: 1");
-    expect(screen.getByRole("tab", { name: "MCP market" })).toHaveTextContent("MCP market2");
+    expect(screen.getByRole("button", { name: "All sources" })).toHaveTextContent("All sources2");
   });
   it("discovers intranet collaboration and operations recipes with multiple secret inputs", async () => {
     const user = userEvent.setup();
@@ -417,12 +418,12 @@ describe("MCP market", () => {
     expect(mocks.create).not.toHaveBeenCalled();
     expect(screen.queryByLabelText("Database connection URL", { exact: false })).toBeNull();
   });
-  it("does not present unknown inventories as zero counts", () => {
+  it("does not present unknown template sources as zero counts", () => {
     mocks.templates = undefined;
     mocks.templatesPending = true;
-    renderCatalog({ servers: undefined, loaded: false });
-    expect(screen.getByRole("tab", { name: "Shared configurations" })).toHaveTextContent(/^Shared configurations$/);
-    expect(screen.getByRole("tab", { name: "MCP market" })).toHaveTextContent(/^MCP market$/);
+    renderCatalog({ servers: undefined });
+    expect(screen.getByRole("button", { name: "All sources" })).toHaveTextContent(/^All sources$/);
+    expect(screen.getByRole("button", { name: "Deployment provided" })).toHaveTextContent(/^Deployment provided$/);
   });
   it.each(documentationTemplates)("discovers $title by documentation category and search, then explicitly assigns its saved HTTP recipe", async (recipe) => {
     const user = userEvent.setup();
@@ -440,7 +441,7 @@ describe("MCP market", () => {
     expect(screen.queryByRole("button", { name: "View configuration: Playwright" })).toBeNull();
     await user.type(screen.getByRole("searchbox", { name: "Search MCP templates" }), recipe.key);
     expect(screen.getByRole("status")).toHaveTextContent("Templates found: 1");
-    expect(screen.getByRole("tab", { name: "MCP market" })).toHaveTextContent("MCP market4");
+    expect(screen.getByRole("button", { name: "All sources" })).toHaveTextContent("All sources4");
     await user.click(screen.getByRole("button", { name: `View configuration: ${recipe.title}` }));
     for (const requirement of recipe.requirements ?? []) {
       expect(screen.getByText(requirement, { exact: true })).toBeVisible();
@@ -467,13 +468,9 @@ describe("MCP market", () => {
     expect(screen.getByRole("button", { name: "Reasoning" })).toBeVisible();
     expect(screen.queryByRole("button", { name: "Documentation & knowledge" })).toBeNull();
   });
-  it("defaults a loaded empty workspace to market and lets members browse without creation", async () => {
+  it("lets members browse without creation", async () => {
     const user = userEvent.setup();
     renderCatalog({ canManage: false });
-    expect(screen.getByRole("tab", { name: "MCP market" })).toHaveAttribute(
-      "aria-selected",
-      "true",
-    );
     await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
     expect(
       screen.getByRole("heading", { name: "Set up Playwright" }),
@@ -481,26 +478,6 @@ describe("MCP market", () => {
     expect(
       screen.queryByRole("button", { name: "Save and continue" }),
     ).toBeNull();
-  });
-  it("keeps an explicit workspace choice while the library finishes loading", async () => {
-    const user = userEvent.setup();
-    const view = renderCatalog({ loaded: false });
-    await user.click(screen.getByRole("tab", { name: "Shared configurations" }));
-    view.rerender(
-      <McpLibraryCatalog
-        workspaceId="ws"
-        servers={[]}
-        loaded
-        canManage
-        onCustom={mocks.custom}
-      >
-        <p>Workspace inventory</p>
-      </McpLibraryCatalog>,
-    );
-    expect(screen.getByRole("tab", { name: "Shared configurations" })).toHaveAttribute(
-      "aria-selected",
-      "true",
-    );
   });
   it("filters by category and search without disabling renamed template instances", async () => {
     const user = userEvent.setup();
@@ -517,7 +494,6 @@ describe("MCP market", () => {
         } satisfies WorkspaceMcpServer,
       ],
     });
-    await user.click(screen.getByRole("tab", { name: "MCP market" }));
     expect(screen.getByText(/qa-browser/)).toBeVisible();
     await user.click(screen.getByRole("button", { name: "Reasoning" }));
     expect(
@@ -780,7 +756,7 @@ describe("MCP market", () => {
     await user.click(screen.getByRole("button", { name: "Save and continue" }));
     await screen.findByRole("heading", { name: "Choose agents" });
     view.rerender(
-      <McpLibraryCatalog
+      <McpTemplateCatalog
         workspaceId="ws"
         servers={[
           {
@@ -793,12 +769,9 @@ describe("MCP market", () => {
             template_key: "playwright",
           },
         ]}
-        loaded
-        canManage
+          canManage
         onCustom={mocks.custom}
-      >
-        <p>Workspace inventory</p>
-      </McpLibraryCatalog>,
+      />,
     );
     expect(
       screen.getByRole("heading", { name: "Choose agents" }),
@@ -887,7 +860,6 @@ describe("MCP market", () => {
         },
       ],
     });
-    await user.click(screen.getByRole("tab", { name: "MCP market" }));
     await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
     await user.click(screen.getByRole("button", { name: "Save and continue" }));
     expect(
@@ -1049,7 +1021,7 @@ describe("MCP market", () => {
     expect(mocks.custom).toHaveBeenCalledWith({
       name: "playwright",
       config: { command: "npx" },
-    });
+    }, expect.any(Function));
     expect(mocks.create).not.toHaveBeenCalled();
   });
 });

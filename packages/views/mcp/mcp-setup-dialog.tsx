@@ -74,6 +74,8 @@ export function McpConflictNotice({
 }
 
 export function McpSetupDialog({
+  active = true,
+  finalFocus,
   workspaceId,
   template,
   initialServer,
@@ -88,6 +90,8 @@ export function McpSetupDialog({
   onClose,
   onCustom,
 }: {
+  active?: boolean;
+  finalFocus?: () => HTMLElement | false | null;
   workspaceId: string;
   servers: readonly WorkspaceMcpServer[] | undefined;
   canManage: boolean;
@@ -145,13 +149,13 @@ export function McpSetupDialog({
   const inputRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
-    if (saved) titleRef.current?.focus();
-  }, [saved]);
+    if (active && saved) titleRef.current?.focus();
+  }, [active, saved]);
   const id = useId();
   const inputs = template?.inputs ?? [];
   const agents = useQuery({
     ...agentListOptions(workspaceId),
-    enabled: !!saved && !agentContext,
+    enabled: active && !!saved && !agentContext,
   });
   const malformedAgents =
     agents.data !== undefined && !Array.isArray(agents.data);
@@ -165,7 +169,7 @@ export function McpSetupDialog({
           !agent.archived_at &&
           !agent.system_key,
       );
-  const metadataEnabled = !!saved && !agentContext && choices.some(
+  const metadataEnabled = active && !!saved && !agentContext && choices.some(
     (agent) => !getAgentCategory(agent) && !!agent.template_key,
   );
   const roleTemplatesQuery = useRoleTemplates({ enabled: metadataEnabled });
@@ -339,12 +343,13 @@ export function McpSetupDialog({
 
   return (
     <Dialog
-      open
+      open={active}
       onOpenChange={(open) => {
         if (!open && !operation.current) onClose();
       }}
     >
       <DialogContent
+        finalFocus={active ? finalFocus : false}
         className="flex max-h-[88vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-xl pointer-coarse:[&_[data-slot=button]]:min-h-11 pointer-coarse:[&_[data-slot=button]]:min-w-11 pointer-coarse:[&_[data-slot=input]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11"
         showCloseButton={!busy}
       >

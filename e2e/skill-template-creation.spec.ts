@@ -159,14 +159,13 @@ test("creates an edited independent skill after previewing and cancelling withou
     });
 
     await page.setViewportSize({ width: 1280, height: 720 });
-    await page.goto(`/${slug}/skills`);
+    await page.goto(`/${slug}/marketplace?type=skills`);
     await expect(page.locator("html")).toHaveClass(/\blight\b/);
-    const marketTab = page.getByRole("tab", { name: enSkills.market.title, exact: true });
-    const workspaceTab = page.getByRole("tab", { name: enSkills.market.workspace, exact: true });
+    const marketTab = page.getByRole("tab", { name: "Skills", exact: true });
     const marketSearch = page.getByRole("textbox", { name: enSkills.market.search, exact: true });
     const previewTemplate = page.getByRole("button", { name: `Preview ${TEMPLATE_NAME}`, exact: true });
     await expect(marketTab).toHaveAttribute("aria-selected", "true");
-    await expect(marketTab).toContainText("15");
+    await expect(page.getByRole("tab", { name: enSkills.market.source_all, exact: true })).toContainText("15");
     await expect(page.getByRole("tab", { name: enSkills.market.source_builtin, exact: true })).toContainText("15");
     await expect(page.getByRole("tab", { name: enSkills.market.source_deployment, exact: true })).toContainText("0");
     await expect(page.getByText(enSkills.market.deployment_empty, { exact: true })).toBeVisible();
@@ -174,6 +173,7 @@ test("creates an edited independent skill after previewing and cancelling withou
     await expect(page.locator("header").getByText("15", { exact: true })).toHaveCount(0);
     await expectNoHorizontalOverflow(page);
     await capture(page, testInfo, "desktop-skill-market");
+    await page.goto(`/${slug}/skills`);
     const newSkill = page.getByRole("button", { name: "New skill", exact: true }).first();
     await newSkill.click();
     const dialog = page.getByRole("dialog");
@@ -270,6 +270,7 @@ test("creates an edited independent skill after previewing and cancelling withou
     expect(await api.requestJSON("/api/skills")).toEqual([]);
     expect(browserSkillWrites).toEqual([]);
     await expect(page.getByPlaceholder(enSkills.page.search_placeholder)).toBeHidden();
+    await page.getByRole("link", { name: enSkills.market.from_template, exact: true }).click();
     await expect(marketTab).toHaveAttribute("aria-selected", "true");
     await expectInViewport(page, marketSearch);
     await expectNoHorizontalOverflow(page);
@@ -295,7 +296,7 @@ test("creates an edited independent skill after previewing and cancelling withou
     await page.setViewportSize({ width: 1280, height: 720 });
     await page.reload();
     await expect(page.locator("header").getByText("1", { exact: true })).toHaveCount(0);
-    await expect(workspaceTab).toContainText("1");
+    expect(await api.requestJSON("/api/skills")).toHaveLength(1);
     await expect(marketTab).toHaveAttribute("aria-selected", "true");
     await previewTemplate.focus();
     await page.keyboard.press("Enter");
@@ -379,7 +380,7 @@ test("creates an edited independent skill after previewing and cancelling withou
     expect(createResponse.status()).toBe(201);
     const created: SkillSnapshot = await createResponse.json();
     await expect(dialog).toHaveCount(0);
-    await expect(page).toHaveURL(new RegExp(`/${slug}/skills$`));
+    await expect(page).toHaveURL(`/${slug}/marketplace?type=skills`);
     await expect(marketTab).toHaveAttribute("aria-selected", "true");
     const createdLink = page.getByRole("article").filter({ has: previewTemplate })
       .getByRole("link", { name: enSkills.market.open_created, exact: true });
@@ -432,18 +433,20 @@ test("creates an edited independent skill after previewing and cancelling withou
     await page.goto(`/${slug}/skills`);
     await expect(page.locator("html")).toHaveClass(/\bdark\b/);
     await expect(page.locator("header").getByText("3", { exact: true })).toHaveCount(0);
-    await expect(workspaceTab).toContainText("3");
-    await expect(marketTab).toContainText("15");
-    await workspaceTab.click();
+    await expect(page.getByRole("link", { name: copyName, exact: true })).toBeVisible();
+    await expect(page.getByRole("link", { name: related.name, exact: true })).toBeVisible();
+    await expect(page.getByRole("link", { name: TEMPLATE_NAME, exact: true })).toBeVisible();
     await expect(page.getByRole("region", { name: enSkills.market.source_deployment, exact: true })).toHaveCount(0);
     await expect(page.getByText(enSkills.market.deployment_empty, { exact: true })).toHaveCount(0);
     await expect(previewTemplate).toHaveCount(0);
-    const fromTemplate = page.getByRole("button", { name: enSkills.market.from_template, exact: true });
+    const fromTemplate = page.getByRole("link", { name: enSkills.market.from_template, exact: true });
     await expectInViewport(page, fromTemplate);
     await expectNoHorizontalOverflow(page);
     await capture(page, testInfo, "dark-workspace-skills");
     await fromTemplate.click();
-    await expect(marketTab).toBeFocused();
+    await expect(page).toHaveURL(`/${slug}/marketplace?type=skills`);
+    await expect(marketTab).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByRole("tab", { name: enSkills.market.source_all, exact: true })).toContainText("15");
     await previewTemplate.click();
     await expect(dialog.getByRole("link", { name: copyName, exact: true })).toBeVisible();
     await expect(dialog.getByRole("link", { name: related.name, exact: true })).toBeVisible();
@@ -464,7 +467,7 @@ test("creates an edited independent skill after previewing and cancelling withou
     await relatedLink.focus();
     await page.keyboard.press("Enter");
     await expect(discard).toBeVisible();
-    await expect(page).toHaveURL(`/${slug}/skills`);
+    await expect(page).toHaveURL(`/${slug}/marketplace?type=skills`);
     await expectNoHorizontalOverflow(page);
     await capture(page, testInfo, "dark-related-navigation-discard");
     await discard.getByRole("button", { name: enSkills.create.template.keep_editing, exact: true }).click();

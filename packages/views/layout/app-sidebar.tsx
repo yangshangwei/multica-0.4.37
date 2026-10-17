@@ -126,6 +126,7 @@ type NavKey =
   | "usage"
   | "runtimes"
   | "skills"
+  | "marketplace"
   | "mcp"
   | "settings";
 
@@ -145,6 +146,7 @@ type NavLabelKey =
   | "usage"
   | "runtimes"
   | "skills"
+  | "marketplace"
   | "mcp"
   | "settings";
 
@@ -173,6 +175,7 @@ const aiTeamNav: NavItem[] = [
 ];
 
 const resourceNav: NavItem[] = [
+  { key: "marketplace", labelKey: "marketplace" },
   { key: "skills", labelKey: "skills" },
   { key: "mcp", labelKey: "mcp" },
   { key: "runtimes", labelKey: "runtimes" },

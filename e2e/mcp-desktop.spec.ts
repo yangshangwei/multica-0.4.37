@@ -6,6 +6,27 @@ import { _electron as electron, expect, test, type ElectronApplication, type Pag
 import { TestApiClient } from "./fixtures";
 import { verifyDeploymentMcpCatalog } from "./fixtures/mcp-deployment";
 
+// The desktop memory route is persisted in the active workspace session;
+// window.location remains the renderer origin while the user navigates.
+async function activeDesktopRoute(page: Page) {
+  return page.evaluate(() => {
+    const raw = localStorage.getItem("multica_tabs");
+    if (!raw) return null;
+    const { state }: {
+      state: {
+        activeWorkspaceSlug: string | null;
+        byWorkspace: Record<string, {
+          activeTabId: string;
+          tabs: { id: string; url: string }[];
+        }>;
+      };
+    } = JSON.parse(raw);
+    if (!state.activeWorkspaceSlug) return null;
+    const group = state.byWorkspace[state.activeWorkspaceSlug];
+    return group?.tabs.find((tab) => tab.id === group.activeTabId)?.url ?? null;
+  });
+}
+
 const recipes = [
   ["chrome-devtools", "Chrome DevTools"],
   ["playwright", "Playwright"],
@@ -147,6 +168,9 @@ test("native desktop MCP preserves collection, settings and agent discovery flow
     await page.reload();
     await page.getByRole("link", { name: "MCP", exact: true }).click();
     await expect(page.getByRole("heading", { name: "MCP", exact: true })).toHaveCount(1);
+    await expect(page.getByTestId("mcp-market")).toHaveCount(0);
+    await page.getByRole("button", { name: "Browse capability market", exact: true }).click();
+    await expect(page.getByRole("heading", { name: "Capability market", exact: true })).toHaveCount(1);
     const market = page.getByTestId("mcp-market");
     await expect(market.locator(".grid > div")).toHaveCount(recipes.length);
     const capture = async (name: string) => {
@@ -161,6 +185,83 @@ test("native desktop MCP preserves collection, settings and agent discovery flow
         BrowserWindow.getAllWindows()[0]!.setContentSize(value, 900);
       }, width);
     };
+
+    const types = page.getByRole("tablist", { name: "Capability type", exact: true });
+    const mcpType = types.getByRole("tab", { name: "MCP", exact: true });
+    const skillsType = types.getByRole("tab", { name: "Skills", exact: true });
+    await expect.poll(() => activeDesktopRoute(page!)).toBe(`/${workspace.slug}/marketplace?type=mcp`);
+    await mcpType.focus();
+    await page.keyboard.press("ArrowRight");
+    await expect(skillsType).toBeFocused();
+    await expect(mcpType).toHaveAttribute("aria-selected", "true");
+    await page.keyboard.press("Enter");
+    await expect(skillsType).toHaveAttribute("aria-selected", "true");
+    await expect.poll(() => activeDesktopRoute(page!)).toBe(`/${workspace.slug}/marketplace?type=skills`);
+    await page.getByRole("button", { name: "Go back", exact: true }).click();
+    await expect(mcpType).toHaveAttribute("aria-selected", "true");
+    await page.getByRole("button", { name: "Go forward", exact: true }).click();
+    await expect(skillsType).toHaveAttribute("aria-selected", "true");
+
+    const skillSearch = page.getByRole("textbox", { name: "Search templates", exact: true });
+    await skillSearch.fill("multica-code-review");
+    const skillPreview = page.getByRole("button", { name: "Preview multica-code-review", exact: true });
+    await resize(375);
+    await expect(skillSearch).toBeInViewport();
+    await expect(skillPreview).toBeInViewport();
+    await capture("native-skills-market-375");
+    await resize(1380);
+    await skillPreview.focus();
+    await page.keyboard.press("Enter");
+    const skillDialog = page.getByRole("dialog");
+    await skillDialog.getByRole("button", { name: "Use this template", exact: true }).click();
+    const skillName = skillDialog.getByRole("textbox", { name: "Name", exact: true });
+    const copyName = `native-review-${Date.now()}`;
+    await skillName.fill(copyName);
+    // The modal owns its keyboard events. Send a real Chromium mouse side
+    // button through the shell's existing history entry while retaining it.
+    const historyInput = await page.context().newCDPSession(page);
+    await historyInput.send("Input.dispatchMouseEvent", { type: "mousePressed", button: "back", buttons: 8, x: 600, y: 100 });
+    await historyInput.send("Input.dispatchMouseEvent", { type: "mouseReleased", button: "back", buttons: 0, x: 600, y: 100 });
+    await historyInput.detach();
+    await expect(mcpType).toHaveAttribute("aria-selected", "true");
+    await expect(skillDialog).toHaveCount(0);
+    await expect(market).toBeVisible();
+    await page.getByRole("button", { name: "Go forward", exact: true }).click();
+    await expect(skillName).toHaveValue(copyName);
+    await capture("native-skills-restored-draft");
+    await skillDialog.getByRole("button", { name: "Create skill", exact: true }).click();
+    await expect(skillDialog).toHaveCount(0);
+    await expect(skillPreview).toBeFocused();
+    await expect(skillSearch).toHaveValue("multica-code-review");
+    await expect.poll(() => activeDesktopRoute(page!)).toBe(`/${workspace.slug}/marketplace?type=skills`);
+    const copies = await api.requestJSON<{ id: string; name: string; config: unknown }[]>("/api/skills");
+    expect(copies).toHaveLength(1);
+    expect(copies[0]).toMatchObject({ name: copyName, config: { template_source: { name: "multica-code-review" } } });
+    await page.getByRole("button", { name: "View skill", exact: true }).click();
+    await expect.poll(() => activeDesktopRoute(page!)).toBe(`/${workspace.slug}/skills/${copies[0]!.id}`);
+    await expect(page.getByRole("heading", { name: copyName, exact: true })).toBeVisible();
+
+    await page.getByRole("link", { name: "Skills", exact: true }).and(page.getByTitle("Skills", { exact: true })).click();
+    await expect.poll(() => activeDesktopRoute(page!)).toBe(`/${workspace.slug}/skills`);
+    await expect(page.getByRole("link", { name: copyName, exact: true })).toBeVisible();
+    await expect(skillSearch).toHaveCount(0);
+    const tabCount = await page.locator("[data-tab-id]").count();
+    await page.getByRole("link", { name: "From template", exact: true }).click({ button: "middle" });
+    await expect(page.locator("[data-tab-id]")).toHaveCount(tabCount + 1);
+    await expect.poll(() => activeDesktopRoute(page!)).toBe(`/${workspace.slug}/skills`);
+    const marketSession = page.locator("[data-tab-id]").getByRole("button", { name: "Capability market", exact: true });
+    await marketSession.click();
+    await expect(skillsType).toHaveAttribute("aria-selected", "true");
+    await expect(marketSession).toHaveAttribute("aria-current", "page");
+    await page.reload();
+    await expect.poll(() => activeDesktopRoute(page!)).toBe(`/${workspace.slug}/marketplace?type=skills`);
+    await expect(skillsType).toHaveAttribute("aria-selected", "true");
+    await expect(skillDialog).toHaveCount(0);
+    await expect(skillSearch).toHaveValue("");
+    await capture("native-skills-session-restored");
+    await mcpType.click();
+    await expect(market.locator(".grid > div")).toHaveCount(recipes.length);
+
     for (const [width, columns] of [[1380, 3], [800, 2], [420, 1]]) {
       await resize(width!);
       await expect.poll(() => market.locator(".grid > div").evaluateAll((cards) => {
@@ -169,11 +270,15 @@ test("native desktop MCP preserves collection, settings and agent discovery flow
       })).toBe(columns);
       await capture(`native-market-${width}`);
     }
+    await resize(1380);
+    await page.getByRole("link", { name: "MCP", exact: true }).click();
+    await resize(420);
     await page.getByRole("button", { name: "Add custom server", exact: true }).click();
     await expect(page.getByRole("dialog")).toBeVisible();
     await capture("native-custom-narrow");
     await page.keyboard.press("Escape");
     await resize(1380);
+    await page.getByRole("button", { name: "Browse capability market", exact: true }).click();
     await market.getByRole("button", { name: "Browser", exact: true }).click();
     await expect(market.getByRole("status")).toHaveText("Templates found: 2");
     await expect(market.getByRole("button", { name: "Documentation & knowledge", exact: true })).toBeVisible();
@@ -221,23 +326,19 @@ test("native desktop MCP preserves collection, settings and agent discovery flow
       for (const input of inputs) expect(JSON.stringify(assignments)).not.toContain(input.value);
     }
     expect(await api.requestJSON(`/api/workspaces/${workspace.id}/mcp-servers`)).toHaveLength(recipes.length);
-    await page.getByRole("tab", { name: "Shared configurations", exact: true }).click();
+    await page.getByRole("link", { name: "MCP", exact: true }).click();
     await expect(page.getByText("native-browser", { exact: true })).toBeVisible();
     await capture("native-shared-configurations");
 
     await page.getByRole("link", { name: "Settings", exact: true }).click();
     await page.getByRole("tab", { name: "MCP", exact: true }).click();
     await expect(page.getByRole("heading", { name: "MCP", exact: true })).toHaveCount(1);
-    await page.getByRole("tab", { name: "MCP market", exact: true }).click();
+    await expect(page.getByText("native-browser", { exact: true })).toBeVisible();
+    await expect(page.getByTestId("mcp-market")).toHaveCount(0);
+    await page.getByRole("button", { name: "Browse capability market", exact: true }).click();
+    await expect(page.getByRole("heading", { name: "Capability market", exact: true })).toBeVisible();
     await expect(market.locator(".grid > div")).toHaveCount(recipes.length);
-    const workspaceTab = page.getByRole("tab", { name: "Shared configurations", exact: true });
-    const marketTab = page.getByRole("tab", { name: "MCP market", exact: true });
-    await expect.poll(async () => {
-      const left = await workspaceTab.boundingBox();
-      const right = await marketTab.boundingBox();
-      return Math.abs(left!.y - right!.y);
-    }).toBeLessThan(2);
-    await capture("native-settings-market");
+    await capture("native-settings-market-entry");
 
     // Restore the agent destination through the desktop's persisted session;
     // native window.location stays on the renderer URL, not the memory route.
@@ -263,12 +364,13 @@ test("native desktop MCP preserves collection, settings and agent discovery flow
     await resize(1380);
     if (process.env.E2E_MCP_TEMPLATE_DIR) {
       await page.getByRole("link", { name: "MCP", exact: true }).click();
+      await page.getByRole("button", { name: "Browse capability market", exact: true }).click();
       await verifyDeploymentMcpCatalog({ page, api, workspaceId: workspace.id, agent, capture });
     }
     await api.requestJSON("/api/me", { method: "PATCH", body: { language: "zh-Hans" } });
     await page.reload();
     await page.getByRole("link", { name: "MCP", exact: true }).click();
-    await page.getByRole("tab", { name: "MCP 市场", exact: true }).click();
+    await page.getByRole("button", { name: "浏览能力市场", exact: true }).click();
     await page.evaluate(() => { document.documentElement.classList.remove("dark"); document.documentElement.classList.add("light"); });
     await capture("native-chinese-light");
     await market.getByRole("button", { name: "浏览器", exact: true }).click();

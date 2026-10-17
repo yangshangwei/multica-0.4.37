@@ -37,7 +37,7 @@ test("an obsolete session returns to sign-in and can open the MCP market after a
     if (new URL(response.url()).pathname === "/api/me" && response.request().method() === "GET") identityStatuses.push(response.status());
   });
   try {
-    await page.goto(`/${slug}/mcp`);
+    await page.goto(`/${slug}/marketplace?type=mcp`);
     await expect(page).toHaveURL(/\/login(?:\?|$)/);
     await expect(page.getByPlaceholder("you@example.com")).toBeVisible();
     expect(identityStatuses.some((status) => status === 401 || status === 404)).toBe(true);
@@ -45,8 +45,8 @@ test("an obsolete session returns to sign-in and can open the MCP market after a
     await page.getByRole("button", { name: "Continue", exact: true }).click();
     await page.locator('input[autocomplete="one-time-code"]').fill(process.env.MULTICA_DEV_VERIFICATION_CODE || "888888");
     await expect(page).toHaveURL(new RegExp(`/${slug}/`), { timeout: 30_000 });
-    await page.goto(`/${slug}/mcp`);
-    await expect(page.getByRole("tab", { name: "MCP market", exact: true })).toBeVisible();
+    await page.goto(`/${slug}/marketplace?type=mcp`);
+    await expect(page.getByRole("tab", { name: "MCP", exact: true })).toBeVisible();
     await expect(page.getByRole("button", { name: "View configuration: Playwright", exact: true })).toBeVisible();
     expect(authErrors).toEqual([]);
     expect(pageErrors).toEqual([]);

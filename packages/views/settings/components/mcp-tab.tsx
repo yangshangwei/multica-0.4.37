@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, type ReactNode } from "react";
-import { Loader2, Plus, Server } from "lucide-react";
+import { Compass, Loader2, Plus, Server } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
@@ -16,7 +16,8 @@ import {
 } from "@multica/ui/components/ui/alert-dialog";
 import { Badge } from "@multica/ui/components/ui/badge";
 import { Button } from "@multica/ui/components/ui/button";
-import { useCurrentWorkspace } from "@multica/core/paths";
+import { useCurrentWorkspace, useWorkspacePaths } from "@multica/core/paths";
+import { cn } from "@multica/ui/lib/utils";
 import { useAuthStore } from "@multica/core/auth";
 import { memberListOptions, workspaceMcpServersOptions } from "@multica/core/workspace/queries";
 import {
@@ -34,7 +35,7 @@ import {
   CollectionPageHeader,
   CollectionPageHeaderAction,
 } from "../../layout/collection-page";
-import { McpLibraryCatalog } from "../../mcp/mcp-market";
+import { useNavigation } from "../../navigation";
 import { McpSetupDialog } from "../../mcp/mcp-setup-dialog";
 import { SettingsCard, SettingsSection, SettingsTab } from "./settings-layout";
 import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
@@ -76,7 +77,7 @@ function McpWorkspaceLayout({ presentation, action, children }: {
     );
   }
   return (
-    <div className="flex min-h-0 min-w-0 flex-1 flex-col pointer-coarse:[&_[data-slot=button]]:min-h-11 pointer-coarse:[&_[data-slot=button]]:min-w-11">
+    <div className="@container/mcp-library flex min-h-0 min-w-0 flex-1 flex-col pointer-coarse:[&_[data-slot=button]]:min-h-11 pointer-coarse:[&_[data-slot=button]]:min-w-11">
       <CollectionPageHeader
         icon={Server}
         title={t(($) => $.mcp.title)}
@@ -93,6 +94,8 @@ function McpWorkspaceTab({ wsId, presentation }: {
   presentation: "page" | "settings";
 }) {
   const { t } = useT("settings");
+  const paths = useWorkspacePaths();
+  const { push } = useNavigation();
   const user = useAuthStore((s) => s.user);
   const membersQuery = useQuery(memberListOptions(wsId));
   const memberState = getSettingsQueryState(membersQuery);
@@ -122,10 +125,6 @@ function McpWorkspaceTab({ wsId, presentation }: {
   const [editingServer, setEditingServer] = useState<WorkspaceMcpServer | null>(
     null,
   );
-  const [presetDraft, setPresetDraft] = useState<{
-    name: string;
-    config: Record<string, unknown>;
-  } | null>(null);
   const [renamingServer, setRenamingServer] =
     useState<WorkspaceMcpServer | null>(null);
   const [renameDraft, setRenameDraft] = useState("");
@@ -177,6 +176,8 @@ function McpWorkspaceTab({ wsId, presentation }: {
           : t(($) => $.mcp.save_failed_toast),
       );
       throw error;
+    } finally {
+      if (!editingServer) createServer.reset();
     }
   };
 
@@ -251,7 +252,6 @@ function McpWorkspaceTab({ wsId, presentation }: {
   const openCustomEditor = () => {
     cancelRename();
     setEditingServer(null);
-    setPresetDraft(null);
     setEditorOpen(true);
   };
   const customAction = !canManage ? null : presentation === "page" ? (
@@ -267,6 +267,21 @@ function McpWorkspaceTab({ wsId, presentation }: {
       {t(($) => $.mcp.add_server)}
     </Button>
   );
+
+  const marketAction = presentation === "page" ? (
+    <CollectionPageHeaderAction
+      icon={Compass}
+      label={t(($) => $.mcp.browse_market)}
+      disabled={renamePending}
+      onClick={() => push(paths.marketplaceTab("mcp"))}
+    />
+  ) : (
+    <Button size="sm" variant="outline" disabled={renamePending} onClick={() => push(paths.marketplaceTab("mcp"))}>
+      <Compass aria-hidden className="size-4" />
+      {t(($) => $.mcp.browse_market)}
+    </Button>
+  );
+  const actions = <>{marketAction}{customAction}</>;
 
   const feedback = <>
     <SettingsQueryFeedback
@@ -288,26 +303,24 @@ function McpWorkspaceTab({ wsId, presentation }: {
   </>;
 
   if (!currentMember || !serversState.hasData) {
-    return <McpWorkspaceLayout presentation={presentation} action={null}>{feedback}</McpWorkspaceLayout>;
+    return (
+      <McpWorkspaceLayout presentation={presentation} action={marketAction}>
+        <div className={presentation === "page" ? "px-4 py-4" : "space-y-5"}>
+          {presentation === "settings" ? marketAction : null}
+          {feedback}
+        </div>
+      </McpWorkspaceLayout>
+    );
   }
 
   return (
-    <McpWorkspaceLayout presentation={presentation} action={customAction}>
-      {feedback}
-      <McpLibraryCatalog
-        presentation={presentation}
-        workspaceId={wsId}
-        servers={serversQuery.data}
-        loaded={serversState.hasData}
-        canManage={canManage}
-        onCustom={(preset) => {
-          cancelRename();
-          setEditingServer(null);
-          setPresetDraft(preset);
-          setEditorOpen(true);
-        }}
-        customAction={presentation === "settings" ? customAction : null}
-      >
+    <McpWorkspaceLayout presentation={presentation} action={actions}>
+      <div className={cn(
+        "min-w-0 space-y-5 pointer-coarse:[&_[data-slot=button]]:min-h-11 pointer-coarse:[&_[data-slot=button]]:min-w-11 pointer-coarse:[&_[data-slot=input]]:min-h-11",
+        presentation === "page" && "min-h-0 flex-1 overflow-y-auto px-4 pb-12 pt-4 @2xl/mcp-library:px-6",
+      )}>
+        {presentation === "settings" ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}
+        {feedback}
         <SettingsSection
           title={t(($) => $.mcp.servers_title)}
           description={t(($) => $.mcp.write_only_note)}
@@ -404,7 +417,6 @@ function McpWorkspaceTab({ wsId, presentation }: {
                     onRenameStart={() => startRename(server)}
                     onConfigure={() => {
                       cancelRename();
-                      setPresetDraft(null);
                       setEditingServer(server);
                       setEditorOpen(true);
                     }}
@@ -423,7 +435,7 @@ function McpWorkspaceTab({ wsId, presentation }: {
             </p>
           ) : null}
         </SettingsSection>
-      </McpLibraryCatalog>
+      </div>
 
       {assigningServer && canManage ? (
         <McpSetupDialog
@@ -438,13 +450,9 @@ function McpWorkspaceTab({ wsId, presentation }: {
       <McpServerDialog
         open={editorOpen && canManage}
         server={dialogServer}
-        preset={presetDraft}
         existingNames={existingNames}
         replacementMode={editingServer !== null}
-        onOpenChange={(open) => {
-          setEditorOpen(open);
-          if (!open) setPresetDraft(null);
-        }}
+        onOpenChange={setEditorOpen}
         onSave={handleSaveServer}
       />
 

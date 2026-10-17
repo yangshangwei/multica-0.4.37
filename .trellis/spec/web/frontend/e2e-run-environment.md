@@ -128,6 +128,15 @@ configuration; do not weaken product assertions to accommodate it.
 
 ## Shared test services
 
+The deployment MCP and Skill catalogs belong to the API, even when tests use
+different workspaces. Serialize `mcp-desktop.spec.ts` with
+`admin-resource-publishing.spec.ts` and live-directory cases in
+`mcp-market.spec.ts` when they share an API/template directory, waiting for
+fixture cleanup before the next suite starts. Concurrent publication can add a
+seventeenth card while native acceptance expects the sixteen built-ins. Preserve
+the catalog assertions and rerun sequentially; parallel execution requires
+separate API environments, not just separate workspace IDs.
+
 Redis enables the real per-IP auth budget (five send-code requests per minute by
 default). A full E2E run creates many synthetic accounts from loopback. Configure
 `RATE_LIMIT_AUTH` and `RATE_LIMIT_AUTH_VERIFY` for the task-only API's test
@@ -165,6 +174,13 @@ coverage. Inventory entries, conditional skips, route mocks, and HTTP-only
 integration tests must not be presented as full browser or native coverage.
 
 ## Responsive captures and stable task navigation
+
+For a native portaled dialog, wait for its intended initial focus before filling
+another field. In MCP setup, assert that Configuration name is focused, then fill
+the secret input and assert its value before saving. Visibility alone can precede
+deferred dialog autofocus: an early native fill was redirected into the name
+field while the password remained empty. Keep synthetic credentials in these
+fixtures and verify the focused control instead of adding a sleep.
 
 Wait for a Base UI popup to become visible before asserting an option is absent
 or sending Escape. An absent-option assertion can pass before the popup opens;

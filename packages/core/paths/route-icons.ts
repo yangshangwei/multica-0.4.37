@@ -31,6 +31,7 @@ export type RouteIconName =
   | "Users"
   | "BarChart3"
   | "Monitor"
+  | "Store"
   | "Server"
   | "BookOpenText"
   | "BookOpen"
@@ -60,6 +61,7 @@ export type NavLabelKey =
   | "usage"
   | "runtimes"
   | "skills"
+  | "marketplace"
   | "mcp"
   | "docs"
   | "settings";
@@ -80,6 +82,7 @@ export type WorkspacePageKey =
   | "usage"
   | "runtimes"
   | "skills"
+  | "marketplace"
   | "mcp"
   | "docs"
   | "settings";
@@ -111,6 +114,7 @@ export const WORKSPACE_PAGES: Record<WorkspacePageKey, WorkspacePage> = {
   usage: { segment: "usage", icon: "BarChart3", navKey: "usage" },
   runtimes: { segment: "runtimes", icon: "Monitor", navKey: "runtimes" },
   skills: { segment: "skills", icon: "BookOpenText", navKey: "skills" },
+  marketplace: { segment: "marketplace", icon: "Store", navKey: "marketplace" },
   mcp: { segment: "mcp", icon: "Server", navKey: "mcp" },
   // In-app documentation. Registered here so the desktop tab bar resolves a
   // real icon and a translated title for it instead of the `unknown` fallback;

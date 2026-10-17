@@ -55,6 +55,7 @@ export function McpAgentDiscovery({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [succeeded, setSucceeded] = useState<Set<string>>(new Set());
   const [preset, setPreset] = useState<McpCustomPreset | null>(null);
+  const customFinalFocus = useRef<() => HTMLElement | null>(() => null);
   const servers = library.data ?? [];
   const assignExisting = async (serverId: string, name: string) => {
     if (pending.current || context.unsupported || !assignments.data) return;
@@ -239,7 +240,10 @@ export function McpAgentDiscovery({
               workspaceId={workspaceId}
               servers={library.data}
               canManage={canManage}
-              onCustom={setPreset}
+              onCustom={(nextPreset, finalFocus) => {
+                customFinalFocus.current = finalFocus;
+                setPreset(nextPreset);
+              }}
               agentContext={context}
             />
           </TabsContent>
@@ -255,6 +259,7 @@ export function McpAgentDiscovery({
         {preset ? (
           <McpServerDialog
             open
+            finalFocus={() => customFinalFocus.current()}
             server={null}
             preset={preset}
             existingNames={new Set(servers.map((server) => server.name))}

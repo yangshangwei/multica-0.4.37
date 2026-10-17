@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { I18nProvider } from "@multica/core/i18n/react";
@@ -14,6 +14,8 @@ const mocks = vi.hoisted(() => ({
   create: vi.fn(),
   recipe: vi.fn(),
   role: "member",
+  templateVersion: "1" as string | undefined,
+  templatesAvailable: true,
   assigned: [] as unknown[],
 }));
 vi.mock("@multica/core/permissions", () => ({
@@ -47,16 +49,17 @@ vi.mock("@multica/core/workspace/mutations", () => ({
 }));
 vi.mock("../settings/hooks/use-mcp-server-templates", () => ({
   useMcpServerTemplates: () => ({
-    data: [
+    data: mocks.templatesAvailable ? [
       {
         key: "playwright",
         title: "Playwright",
         description: "Browser tools",
-        version: "1",
+        version: mocks.templateVersion,
         config: { command: "npx" },
       },
-    ],
+    ] : [],
     isPending: false,
+    refetch: vi.fn(),
   }),
 }));
 function Wrapper({ children }: { children: ReactNode }) {
@@ -94,6 +97,8 @@ describe("agent MCP discovery", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.role = "member";
+    mocks.templateVersion = "1";
+    mocks.templatesAvailable = true;
     mocks.assigned = [];
     mocks.assign.mockResolvedValue({ succeeded: ["agent"], failed: [] });
   });
@@ -132,6 +137,30 @@ describe("agent MCP discovery", () => {
       }),
     ).toBeDisabled();
     expect(mocks.assign).not.toHaveBeenCalled();
+  });
+  it("restores contextual catalog search after a legacy template is withdrawn during custom editing", async () => {
+    const user = userEvent.setup();
+    mocks.role = "owner";
+    mocks.templateVersion = undefined;
+    const { rerender } = renderDiscovery();
+    await user.click(screen.getByRole("tab", { name: "MCP market" }));
+    const card = await screen.findByRole("button", { name: "View configuration: Playwright" });
+    await user.click(card);
+    await user.click(await screen.findByRole("button", { name: "Open custom configuration" }));
+    const editor = await screen.findByRole("dialog", { name: "Add MCP Server" });
+    expect(within(editor).getByLabelText("Server name")).toHaveValue("playwright");
+    mocks.templatesAvailable = false;
+    rerender(<McpAgentDiscovery workspaceId="ws" context={{
+      agent: { id: "agent", name: "Ada" },
+      managedNames: new Set(["browser"]),
+      runtimeNames: new Set(),
+      unsupported: false,
+    }} onClose={vi.fn()} />);
+    await waitFor(() => expect(card).not.toBeInTheDocument());
+    await user.click(within(editor).getByRole("button", { name: "Close" }));
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Add MCP Server" })).toBeNull());
+    await waitFor(() => expect(screen.getByRole("searchbox", { name: "Search MCP templates" })).toHaveFocus());
+    expect(mocks.create).not.toHaveBeenCalled();
   });
   it("shows and announces a slow assignment until its result is confirmed", async () => {
     const user = userEvent.setup();

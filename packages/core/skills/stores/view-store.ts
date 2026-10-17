@@ -25,8 +25,6 @@ export type SkillSortField =
 /** Card grid or the classic table. Persisted per workspace. */
 export type SkillViewMode = "card" | "list";
 
-export type SkillLibraryView = "workspace" | "market";
-
 export type SkillMarketSource = "all" | "deployment" | "builtin";
 
 export type SkillSortDirection = "asc" | "desc";
@@ -85,8 +83,6 @@ export type SkillColumnKey =
 export const DEFAULT_HIDDEN_COLUMNS: SkillColumnKey[] = ["labels", "source", "created"];
 
 export interface SkillsViewState {
-  /** Unresolved until workspace skills load or the user chooses a view. */
-  libraryView: SkillLibraryView | null;
   marketSource: SkillMarketSource;
   marketCategory: SkillCategory | null;
   viewMode: SkillViewMode;
@@ -107,13 +103,11 @@ export interface SkillsViewState {
   selectCategory: (category: SkillCategory | null) => void;
   clearFilters: () => void;
   setViewMode: (mode: SkillViewMode) => void;
-  setLibraryView: (view: SkillLibraryView | null) => void;
   setMarketSource: (source: SkillMarketSource) => void;
   setMarketCategory: (category: SkillCategory | null) => void;
 }
 
 const DEFAULTS = {
-  libraryView: null as SkillLibraryView | null,
   marketSource: "all" as SkillMarketSource,
   marketCategory: null as SkillCategory | null,
   viewMode: "card" as SkillViewMode,
@@ -173,7 +167,6 @@ export const useSkillsViewStore = create<SkillsViewState>()(
         }),
       clearFilters: () => set({ filters: EMPTY_SKILL_FILTERS }),
       setViewMode: (mode) => set({ viewMode: mode }),
-      setLibraryView: (view) => set({ libraryView: view }),
       setMarketSource: (source) => set({ marketSource: source }),
       setMarketCategory: (category) => set({ marketCategory: category }),
     }),
@@ -194,7 +187,6 @@ export const useSkillsViewStore = create<SkillsViewState>()(
         return persisted as SkillsViewState;
       },
       partialize: (state) => ({
-        libraryView: state.libraryView,
         marketSource: state.marketSource,
         marketCategory: state.marketCategory,
         viewMode: state.viewMode,
@@ -208,7 +200,14 @@ export const useSkillsViewStore = create<SkillsViewState>()(
       // view state in place (same rationale as the agents view store).
       merge: (persisted, current) => {
         if (!persisted) return { ...current, ...DEFAULTS };
-        const p = persisted as Partial<SkillsViewState>;
+        const p = { ...persisted as Partial<SkillsViewState> & {
+          libraryView?: unknown;
+          templatesCollapsed?: unknown;
+        } };
+        // The library no longer hosts a market tab. Do not revive retired
+        // preferences by spreading an older workspace's persisted payload.
+        delete p.libraryView;
+        delete p.templatesCollapsed;
         // DEFAULTS sit between `current` and the payload: a key the payload
         // never stored (a v0 payload has no `viewMode`) must fall back to its
         // default, not to the previous workspace's in-memory value — after a

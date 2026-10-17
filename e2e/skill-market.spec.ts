@@ -120,8 +120,14 @@ test("discovers deployment templates and creates a workspace copy while keeping 
 
     await page.setViewportSize(WIDE);
     await page.goto(`/${slug}/skills`);
-    const market = page.getByRole("tab", { name: "Skill templates", exact: true });
-    const workspaceTab = page.getByRole("tab", { name: "Workspace skills", exact: true });
+    await expect(page.getByText("No skills yet", { exact: true })).toBeVisible();
+    await expect(page.getByRole("tab", { name: "Skill templates", exact: true })).toHaveCount(0);
+    await page.reload();
+    await expect(page.getByText("No skills yet", { exact: true })).toBeVisible();
+    await page.getByRole("link", { name: "From template", exact: true }).focus();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(`/${slug}/marketplace?type=skills`);
+    const market = page.getByRole("tab", { name: "Skills", exact: true });
     const search = page.getByRole("textbox", { name: "Search templates", exact: true });
     const deployment = page.getByRole("tab", { name: "Deployment-provided", exact: true });
     const template = DEPLOYMENT_TEMPLATES[0]!;
@@ -132,16 +138,8 @@ test("discovers deployment templates and creates a workspace copy while keeping 
     await expectNoHorizontalOverflow(page);
     await capture(page, testInfo, "wide-empty-market");
 
-    // An explicit choice overrides the empty-workspace default after reload.
-    await market.focus();
-    await page.keyboard.press("ArrowLeft");
-    await page.keyboard.press("Enter");
-    await expect(workspaceTab).toHaveAttribute("aria-selected", "true");
+    // The URL owns the selected capability type after reload.
     await page.reload();
-    await expect(workspaceTab).toHaveAttribute("aria-selected", "true");
-    await workspaceTab.focus();
-    await page.keyboard.press("ArrowRight");
-    await page.keyboard.press("Enter");
     await expect(market).toHaveAttribute("aria-selected", "true");
 
     await search.focus();
@@ -181,7 +179,7 @@ test("discovers deployment templates and creates a workspace copy while keeping 
     await dialog.getByRole("button", { name: "Create skill", exact: true }).click();
     await expect(dialog).toHaveCount(0);
     await expect(preview).toBeFocused();
-    await expect(page).toHaveURL(new RegExp(`/${slug}/skills$`));
+    await expect(page).toHaveURL(`/${slug}/marketplace?type=skills`);
     await expect(market).toHaveAttribute("aria-selected", "true");
     await expect(deployment).toHaveAttribute("aria-selected", "true");
     await expect(quality).toHaveAttribute("aria-pressed", "true");
@@ -204,12 +202,12 @@ test("discovers deployment templates and creates a workspace copy while keeping 
     await expect(card).toContainText("1 related skill in this workspace");
     await capture(page, testInfo, "wide-market-created-copy");
 
-    await workspaceTab.click();
-    const fromTemplate = page.getByRole("button", { name: "From template", exact: true });
+    await page.getByRole("link", { name: "Skills", exact: true }).click();
+    const fromTemplate = page.getByRole("link", { name: "From template", exact: true });
     await expect(fromTemplate).toBeVisible();
     await expect(preview).toHaveCount(0);
     await expect(page.getByRole("region", { name: "Deployment-provided", exact: true })).toHaveCount(0);
-    await expect(workspaceTab).toContainText("1");
+    await expect(page.getByTestId("skill-card")).toHaveCount(1);
     await expect(page.locator("header").getByText("1", { exact: true })).toHaveCount(0);
     await expect(page.getByText(copyName, { exact: true })).toBeVisible();
     await capture(page, testInfo, "wide-populated-workspace");
@@ -227,12 +225,12 @@ test("discovers deployment templates and creates a workspace copy while keeping 
     await workspaceSearch.clear();
     await fromTemplate.focus();
     await page.keyboard.press("Enter");
-    await expect(market).toBeFocused();
+    await expect(market).toHaveAttribute("aria-selected", "true");
     await expect(deployment).toHaveAttribute("aria-selected", "true");
-    await expect(search).toHaveValue("release");
-    await workspaceTab.click();
+    await expect(search).toHaveValue("");
+    await page.goto(`/${slug}/skills`);
     await page.reload();
-    await expect(workspaceTab).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByText(copyName, { exact: true })).toBeVisible();
     await expect(preview).toHaveCount(0);
     await fromTemplate.click();
     await expect(deployment).toHaveAttribute("aria-selected", "true");
