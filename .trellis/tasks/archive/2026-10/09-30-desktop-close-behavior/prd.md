@@ -1,5 +1,10 @@
 # Desktop Close Behavior: Minimize to Tray / Quit / Ask
 
+Archived on 2026-10-17 at the user's request, together with the remaining native
+verification child. Local verification passed on 2026-09-30; Windows/Linux
+native tray, installation and upgrade acceptance remains deferred and unverified.
+See the [preserved verification report](../09-30-real-machine-verification/verification.md).
+
 ## Background
 
 Today on Windows and Linux, closing the Multica Desktop main window terminates the

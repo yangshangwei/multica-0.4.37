@@ -3,7 +3,7 @@
   "name": "desktop-close-behavior",
   "title": "Desktop close behavior: minimize to tray / quit / ask",
   "description": "",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -11,7 +11,7 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-09-30",
-  "completedAt": null,
+  "completedAt": "2026-10-17",
   "branch": null,
   "base_branch": "main",
   "worktree_path": null,
@@ -26,12 +26,17 @@
   ],
   "parent": null,
   "relatedFiles": [],
-  "notes": "2026-09-30 continuation: user confirmed no Windows/Linux test machines; finish local regression and candidate artifact verification first. Native tray/installer/upgrade acceptance remains pending. See 09-30-real-machine-verification/verification.md.",
+  "notes": "2026-09-30 continuation: user confirmed no Windows/Linux test machines; finish local regression and candidate artifact verification first. Native tray/installer/upgrade acceptance remains pending. See 09-30-real-machine-verification/verification.md. 2026-10-17: archived with the remaining native-verification child at the user's explicit request. Native acceptance remains deferred and unverified; archival does not change the recorded verification outcome.",
   "meta": {
+    "archive": {
+      "date": "2026-10-17",
+      "reason": "user_requested",
+      "native_acceptance_complete": false
+    },
     "local_verification": {
       "status": "passed",
       "date": "2026-09-30",
-      "report": ".trellis/tasks/09-30-real-machine-verification/verification.md",
+      "report": ".trellis/tasks/archive/2026-10/09-30-real-machine-verification/verification.md",
       "native_acceptance": "pending_no_test_machines",
       "candidate_directory": "dist/release/v0.5.3"
     }
