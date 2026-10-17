@@ -113,15 +113,6 @@ vi.mock("@multica/core/skills/stores", () => ({
   DEFAULT_HIDDEN_COLUMNS: [],
 }));
 
-// Catalog behavior is covered in skill-library-catalog.test.tsx. This rig
-// isolates workspace row wiring; the real-page session suite covers integration.
-vi.mock("./skill-library-catalog", () => ({
-  SkillLibraryCatalog: ({ children, onPreview }: {
-    children: React.ReactNode;
-    onPreview: (name: string, trigger: HTMLButtonElement) => void;
-  }) => <>{children}<button onClick={(event) => onPreview("multica-code-review", event.currentTarget)}>Preview template</button></>,
-}));
-
 // View-layer children with heavy / portal deps — stubbed to keep the test on
 // the row/anchor event wiring.
 vi.mock("@multica/ui/components/common/actor-avatar", () => ({
@@ -246,14 +237,28 @@ beforeEach(() => {
   mocks.viewState.filters.labels = [];
 });
 
-describe("SkillsPage catalog integration", () => {
-  it("passes a selected template into preview while New skill keeps the chooser", () => {
-    renderPage(makeAdapter());
-    fireEvent.click(screen.getByRole("button", { name: "Preview template" }));
-    expect(screen.getByRole("dialog", { name: "Create skill" })).toHaveAttribute("data-entry", "templates");
-    expect(screen.getByRole("dialog", { name: "Create skill" })).toHaveAttribute("data-template-name", "multica-code-review");
-    fireEvent.click(screen.getAllByRole("button", { name: "New skill" })[0]!);
+describe("SkillsPage market entry", () => {
+  it("links to the Skill market while keeping New skill in the library", async () => {
+    const adapter = makeAdapter();
+    renderPage(adapter);
+    expect(screen.queryByRole("tab", { name: "Skill templates" })).not.toBeInTheDocument();
+    const entry = screen.getByRole("link", { name: "From template" });
+    expect(entry).toHaveAttribute("href", "/acme/marketplace?type=skills");
+    entry.focus();
+    await userEvent.keyboard("{Enter}");
+    expect(adapter.push).toHaveBeenCalledExactlyOnceWith("/acme/marketplace?type=skills");
+    fireEvent.click(screen.getByRole("button", { name: "New skill" }));
     expect(screen.getByRole("dialog", { name: "Create skill" })).toHaveAttribute("data-entry", "methods");
+  });
+
+  it("keeps an empty library in place until the member opens the market", () => {
+    mocks.skills = [];
+    const adapter = makeAdapter();
+    renderPage(adapter);
+    expect(screen.getByText("No skills yet")).toBeVisible();
+    expect(screen.getByRole("link", { name: "Browse capability marketplace" })).toHaveAttribute("href", "/acme/marketplace?type=skills");
+    expect(screen.queryByRole("tab", { name: "Skill templates" })).not.toBeInTheDocument();
+    expect(adapter.push).not.toHaveBeenCalled();
   });
 });
 

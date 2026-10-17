@@ -4,7 +4,6 @@ export {
   EMPTY_SKILL_FILTERS,
   SKILL_SORT_DEFAULT_DIRECTION,
   type SkillColumnKey,
-  type SkillLibraryView,
   type SkillListFilters,
   type SkillMarketSource,
   type SkillOriginType,

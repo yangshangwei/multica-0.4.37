@@ -88,7 +88,7 @@ async function upload(page: Page, key: string, file: string) {
 }
 
 async function addSkill(page: Page, key: string, copyName: string) {
-  await page.getByRole("tab", { name: "Skill templates", exact: true }).click();
+  await expect(page.getByRole("tab", { name: "Skills", exact: true })).toHaveAttribute("aria-selected", "true");
   await page.getByRole("tab", { name: "Deployment-provided", exact: true }).click();
   await page.getByRole("button", { name: `Preview ${key}`, exact: true }).click();
   const dialog = page.getByRole("dialog").last();
@@ -99,7 +99,7 @@ async function addSkill(page: Page, key: string, copyName: string) {
 }
 
 async function addMcp(page: Page, title: string, copyName: string, agentName: string) {
-  await page.getByRole("tab", { name: "MCP market", exact: true }).click();
+  await expect(page.getByRole("tab", { name: "MCP", exact: true })).toHaveAttribute("aria-selected", "true");
   const market = page.getByTestId("mcp-market");
   await market.getByRole("button", { name: "Deployment provided", exact: true }).click();
   await market.getByRole("button", { name: `View configuration: ${title}`, exact: true }).click();
@@ -146,9 +146,11 @@ async function nativeConsumer(api: TestApiClient, workspace: { id: string; slug:
     await page.context().addInitScript(token => { localStorage.setItem("multica_token", token!); localStorage.setItem("multica:chat:isOpen", "false"); localStorage.setItem("theme", "dark"); }, api.getToken());
     await page.reload();
     await page.getByRole("link", { name: "Skills", exact: true }).click();
+    await page.getByRole("link", { name: "From template", exact: true }).click();
     await addSkill(page, key, `native-${key}`);
     await capture(page, "native-skill-created");
     await page.getByRole("link", { name: "MCP", exact: true }).click();
+    await page.getByRole("button", { name: "Browse capability market", exact: true }).click();
     await addMcp(page, title, `native-${key}`, agentName);
     await capture(page, "native-mcp-created-unassigned");
     expect(errors).toEqual([]);
@@ -286,9 +288,9 @@ test.describe("administrator resource publishing", () => {
       const mcpCatalog = await consumer.requestJSON<{ templates: Array<{ key: string; source: string; version: string }> }>(`/api/workspaces/${workspace.id}/mcp-servers/templates?language=en`);
       expect(mcpCatalog.templates).toEqual(expect.arrayContaining([expect.objectContaining({ key: mcpKey, source: "deployment" })]));
       expect((await context.request.post(`${webURL}/auth/login`, { data: { username, password } })).status()).toBe(200);
-      const marketPage = await context.newPage(); await marketPage.goto(`${webURL}/${workspace.slug}/skills`);
+      const marketPage = await context.newPage(); await marketPage.goto(`${webURL}/${workspace.slug}/marketplace?type=skills`);
       await addSkill(marketPage, skillKey, `web-${skillKey}`); await capture(marketPage, "web-skill-created");
-      await marketPage.goto(`${webURL}/${workspace.slug}/mcp`); await addMcp(marketPage, title, `web-${mcpKey}`, agent.name); await capture(marketPage, "web-mcp-created-unassigned");
+      await marketPage.goto(`${webURL}/${workspace.slug}/marketplace?type=mcp`); await addMcp(marketPage, title, `web-${mcpKey}`, agent.name); await capture(marketPage, "web-mcp-created-unassigned");
       const skills = await consumer.requestJSON<Array<{ id: string; name: string }>>("/api/skills"); const skillCopy = skills.find(item => item.name === `web-${skillKey}`)!;
       expect(skillCopy).toBeTruthy();
       const savedSkill = await consumer.requestJSON(`/api/skills/${skillCopy.id}`);

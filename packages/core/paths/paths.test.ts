@@ -44,6 +44,13 @@ describe("paths.workspace(slug)", () => {
     expect(ws.issueDetail("id with space")).toBe("/acme/issues/id%20with%20space");
   });
 
+  it("builds workspace-scoped marketplace destinations", () => {
+    expect(ws.marketplace()).toBe("/acme/marketplace");
+    expect(ws.marketplaceTab("mcp")).toBe("/acme/marketplace?type=mcp");
+    expect(ws.marketplaceTab("skills")).toBe("/acme/marketplace?type=skills");
+    expect(paths.workspace("team space").marketplace()).toBe("/team%20space/marketplace");
+  });
+
   it("builds docs paths", () => {
     expect(ws.docs()).toBe("/acme/docs");
     expect(ws.docsPage("agents")).toBe("/acme/docs/agents");

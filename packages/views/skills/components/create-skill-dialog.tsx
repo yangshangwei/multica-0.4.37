@@ -658,6 +658,7 @@ export function CreateSkillDialog({
   initialEntry,
   initialPresentation,
   finalFocus,
+  active = true,
 }: {
   onClose: () => void;
   onCreated?: (skill: Skill) => void;
@@ -666,6 +667,8 @@ export function CreateSkillDialog({
   initialEntry?: SkillCreateEntry;
   /** Resolve the live opening control after an intentional dismissal. */
   finalFocus?: () => HTMLElement | null;
+  /** Retain the session while a kept-alive market panel is hidden. */
+  active?: boolean;
   /** Pre-fills the manual form's category / icon (e.g. from a category empty state). */
   initialPresentation?: Partial<SkillPresentationMeta>;
 }) {
@@ -865,11 +868,12 @@ export function CreateSkillDialog({
 
   return (
     <>
-    <Dialog open onOpenChange={(v) => !v && requestClose()}>
+    <Dialog open={active} onOpenChange={(v) => active && !v && requestClose()}>
       <DialogContent
         ref={dialogContentRef}
+        keepMounted
         showCloseButton={false}
-        finalFocus={finalFocus ? () => closed.current ? finalFocus() : false : undefined}
+        finalFocus={finalFocus ? () => active && closed.current ? finalFocus() : false : undefined}
         className={cn(
           "flex flex-col gap-0 overflow-hidden p-0",
           "!transition-all !duration-300 !ease-out",
@@ -967,6 +971,7 @@ export function CreateSkillDialog({
             key={`${wsId}:${workspaceSlug}`}
             workspaceId={wsId}
             workspaceSlug={workspaceSlug}
+            active={active}
             onRequestOpenSkill={requestOpenSkill}
             session={templateSession}
             onBack={handleBack}
@@ -1010,11 +1015,12 @@ export function CreateSkillDialog({
         )}
       </DialogContent>
     </Dialog>
-    <AlertDialog open={discardOpen} onOpenChange={(open) => {
+    <AlertDialog open={active && discardOpen} onOpenChange={(open) => {
+      if (!active) return;
       setDiscardOpen(open);
       if (!open) pendingAction.current = null;
     }}>
-      <AlertDialogContent finalFocus={() => discardReturnFocus.current?.isConnected ? discardReturnFocus.current : false}>
+      <AlertDialogContent finalFocus={() => active && discardReturnFocus.current?.isConnected ? discardReturnFocus.current : false}>
         <AlertDialogHeader>
           <AlertDialogTitle>{t(($) => $.create.template.discard_title)}</AlertDialogTitle>
           <AlertDialogDescription>

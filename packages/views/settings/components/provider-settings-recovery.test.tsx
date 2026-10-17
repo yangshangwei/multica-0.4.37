@@ -42,9 +42,13 @@ vi.mock("@multica/core/api", async (importOriginal) => ({
   api: apiMocks,
 }));
 vi.mock("@multica/core/hooks", () => ({ useWorkspaceId: () => "workspace-1" }));
-vi.mock("@multica/core/paths", () => ({
-  useCurrentWorkspace: () => ({ id: "workspace-1", name: "Acme", slug: "acme", settings: {} }),
-}));
+vi.mock("@multica/core/paths", async (importOriginal) => {
+  const { paths } = await importOriginal<typeof import("@multica/core/paths")>();
+  return {
+    useCurrentWorkspace: () => ({ id: "workspace-1", name: "Acme", slug: "acme", settings: {} }),
+    useWorkspacePaths: () => paths.workspace("acme"),
+  };
+});
 vi.mock("@multica/core/auth", () => {
   const state = { user: { id: "user-1" } };
   return {

@@ -9,7 +9,7 @@ import type { SkillSummary, SkillTemplate } from "@multica/core/types";
 import { workspaceKeys } from "@multica/core/workspace/queries";
 import { NavigationProvider, type NavigationAdapter } from "../../navigation";
 import { renderWithI18n } from "../../test/i18n";
-import { SkillLibraryCatalog } from "./skill-library-catalog";
+import { SkillTemplateCatalog } from "./skill-template-catalog";
 import enSkills from "../../locales/en/skills.json";
 import zhSkills from "../../locales/zh-Hans/skills.json";
 
@@ -35,12 +35,13 @@ const COPY: SkillSummary = {
 const clients: QueryClient[] = [];
 
 function renderCatalog({
-  skills = [COPY], skillsError = false, templates, workspaceId = "ws-1",
+  skills = [COPY], skillsError = false, templates, workspaceId = "ws-1", active = true,
 }: {
   skills?: readonly SkillSummary[];
   skillsError?: boolean;
   templates?: SkillTemplate[];
   workspaceId?: string;
+  active?: boolean;
 } = {}) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false, staleTime: Infinity, gcTime: Infinity, refetchOnMount: false } },
@@ -53,13 +54,11 @@ function renderCatalog({
   };
   const onPreview = vi.fn();
   const onCreate = vi.fn();
-  function content(nextSkills: readonly SkillSummary[] | undefined, error: boolean, wsId: string) {
+  function content(nextSkills: readonly SkillSummary[] | undefined, error: boolean, wsId: string, enabled = active) {
     return <QueryClientProvider client={queryClient}>
       <WorkspaceSlugProvider slug="acme">
         <NavigationProvider value={navigation}>
-          <SkillLibraryCatalog workspaceId={wsId} skills={nextSkills} skillsError={error} onPreview={onPreview} onCreate={onCreate}>
-            <div>Workspace collection</div>
-          </SkillLibraryCatalog>
+          <SkillTemplateCatalog workspaceId={wsId} active={enabled} skills={nextSkills} skillsError={error} onPreview={onPreview} onCreate={onCreate} />
         </NavigationProvider>
       </WorkspaceSlugProvider>
     </QueryClientProvider>;
@@ -67,43 +66,47 @@ function renderCatalog({
   const result = renderWithI18n(content(skills, skillsError, workspaceId));
   return {
     queryClient, navigation, onPreview, onCreate,
-    rerender: (nextSkills: readonly SkillSummary[] | undefined, error = false, wsId = workspaceId) => result.rerender(content(nextSkills, error, wsId)),
+    rerender: (nextSkills: readonly SkillSummary[] | undefined, error = false, wsId = workspaceId, enabled = active) => result.rerender(content(nextSkills, error, wsId, enabled)),
   };
 }
 
 beforeEach(() => {
   vi.clearAllMocks();
-  useSkillsViewStore.setState({ libraryView: null, marketSource: "all", marketCategory: null });
+  useSkillsViewStore.setState({ marketSource: "all", marketCategory: null });
   mocks.listSkillTemplates.mockResolvedValue([DEPLOYMENT, BUILTIN]);
 });
 
 afterEach(() => {
   cleanup();
   clients.splice(0).forEach((client) => client.clear());
+  vi.useRealTimers();
 });
 
-describe("SkillLibraryCatalog", () => {
-  // Source/category/search matrices live in ../lib/skill-market.test.ts.
-  it("keeps deployment templates out of the workspace collection", async () => {
-    renderCatalog({ templates: [DEPLOYMENT, BUILTIN] });
-    await waitFor(() => expect(mocks.listSkillTemplates).toHaveBeenCalled());
-    expect(screen.getByText("Workspace collection")).toBeVisible();
-    expect(screen.queryByRole("button", { name: "Preview team-review" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("region", { name: "Deployment-provided" })).not.toBeInTheDocument();
+describe("SkillTemplateCatalog", () => {
+  it("pauses polling while inactive and refreshes on re-entry without clearing search", async () => {
+    const { rerender } = renderCatalog();
+    await screen.findByRole("button", { name: "Preview team-review" });
+    fireEvent.change(screen.getByRole("textbox", { name: "Search templates" }), { target: { value: "team" } });
+    const count = mocks.listSkillTemplates.mock.calls.length;
+    vi.useFakeTimers();
+    rerender([COPY], false, "ws-1", false);
+    await act(async () => { await vi.advanceTimersByTimeAsync(60_000); });
+    expect(mocks.listSkillTemplates).toHaveBeenCalledTimes(count);
+    rerender([COPY], false, "ws-1", true);
+    await act(async () => { await vi.advanceTimersByTimeAsync(1); });
+    expect(mocks.listSkillTemplates).toHaveBeenCalledTimes(count + 1);
+    expect(screen.getByRole("textbox", { name: "Search templates" })).toHaveValue("team");
+    await act(async () => { await vi.advanceTimersByTimeAsync(30_000); });
+    expect(mocks.listSkillTemplates).toHaveBeenCalledTimes(count + 2);
   });
 
-  it("opens the template catalog from the workspace action without losing source preferences", async () => {
-    const user = userEvent.setup();
+  // Source/category/search matrices live in ../lib/skill-market.test.ts.
+  it("shows the catalog with the saved source and category preferences", async () => {
     useSkillsViewStore.setState({ marketSource: "deployment", marketCategory: "quality" });
     renderCatalog({ templates: [DEPLOYMENT, BUILTIN] });
-    const entry = screen.getByRole("button", { name: "From template" });
-    entry.focus();
-    await user.keyboard("{Enter}");
-    expect(screen.getByRole("tab", { name: "Skill templates" })).toHaveAttribute("aria-selected", "true");
-    expect(screen.getByRole("tab", { name: "Skill templates" })).toHaveFocus();
     expect(screen.getByRole("tab", { name: "Deployment-provided" })).toHaveAttribute("aria-selected", "true");
     expect(screen.getByRole("button", { name: "Preview team-review" })).toBeVisible();
-    expect(screen.getByText("Workspace collection")).not.toBeVisible();
+    expect(screen.queryByRole("tab", { name: "Workspace skills" })).not.toBeInTheDocument();
     expect(useSkillsViewStore.getState().marketCategory).toBe("quality");
   });
 
@@ -118,43 +121,9 @@ describe("SkillLibraryCatalog", () => {
     expect(onPreview).toHaveBeenCalledWith(DEPLOYMENT.name, preview);
   });
 
-  it("defaults only a successfully loaded empty workspace to market and keeps an explicit choice", async () => {
-    const { rerender } = renderCatalog({ skills: [], skillsError: true });
-    expect(useSkillsViewStore.getState().libraryView).toBeNull();
-    expect(screen.getByRole("tab", { name: "Workspace skills" })).toHaveAttribute("aria-selected", "true");
-    rerender(undefined);
-    expect(useSkillsViewStore.getState().libraryView).toBeNull();
-    rerender([]);
-    expect(screen.getByRole("tab", { name: "Skill templates" })).toHaveAttribute("aria-selected", "true");
-    fireEvent.click(screen.getByRole("tab", { name: "Workspace skills" }));
-    rerender([]);
-    expect(screen.getByText("Workspace collection")).toBeVisible();
-    expect(useSkillsViewStore.getState().libraryView).toBe("workspace");
-  });
-
-  it("honors a click on the active workspace tab before its data succeeds", () => {
-    const { rerender } = renderCatalog({ skills: [], skillsError: true });
-    fireEvent.click(screen.getByRole("tab", { name: "Workspace skills" }));
-    rerender([]);
-    expect(screen.getByRole("tab", { name: "Workspace skills" })).toHaveAttribute("aria-selected", "true");
-    expect(useSkillsViewStore.getState().libraryView).toBe("workspace");
-  });
-
-  it("keeps the workspace collection mounted while the market is active", async () => {
-    renderCatalog();
-    const collection = screen.getByText("Workspace collection");
-    fireEvent.click(screen.getByRole("tab", { name: "Skill templates" }));
-    expect(collection).toBeInTheDocument();
-    expect(collection).not.toBeVisible();
-    fireEvent.click(screen.getByRole("tab", { name: "Workspace skills" }));
-    expect(screen.getByText("Workspace collection")).toBe(collection);
-    expect(collection).toBeVisible();
-  });
-
   it("leaves counts unknown during cold loading", () => {
     mocks.listSkillTemplates.mockReturnValue(new Promise(() => {}));
     renderCatalog({ skills: [] });
-    expect(screen.getByRole("tab", { name: "Skill templates" })).not.toHaveTextContent("0");
     expect(screen.getByRole("tab", { name: "Deployment-provided" })).not.toHaveTextContent("0");
     expect(screen.getByRole("status", { name: "Loading templates..." })).toBeVisible();
     expect(screen.queryByText("No templates available yet")).not.toBeInTheDocument();
@@ -176,7 +145,6 @@ describe("SkillLibraryCatalog", () => {
   it("offers every renamed related skill as a real link without opening the preview", async () => {
     const user = userEvent.setup();
     const { onPreview, navigation, rerender } = renderCatalog({ skills: [COPY, { ...COPY, id: "copy-two", name: "security-review" }] });
-    fireEvent.click(screen.getByRole("button", { name: "From template" }));
     await screen.findByRole("button", { name: "Preview team-review" });
     expect(screen.getByText("2 related skills in this workspace")).toBeVisible();
     await user.click(screen.getByRole("button", { name: "View skills" }));
@@ -210,7 +178,6 @@ describe("SkillLibraryCatalog", () => {
     const { queryClient, onCreate } = renderCatalog({ skills: [] });
     await screen.findByRole("alert");
     expect(screen.queryByText("No templates available yet")).not.toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: "Skill templates" })).not.toHaveTextContent("0");
     await act(async () => { queryClient.setQueryData(workspaceKeys.skillTemplates("ws-1"), []); });
     expect(await screen.findByText("No templates available yet")).toBeVisible();
     const create = screen.getByRole("button", { name: "New skill" });
@@ -221,9 +188,7 @@ describe("SkillLibraryCatalog", () => {
   it("keeps empty deployment guidance in the catalog and distinguishes search misses", async () => {
     mocks.listSkillTemplates.mockResolvedValue([BUILTIN]);
     const { rerender } = renderCatalog();
-    await waitFor(() => expect(screen.getByRole("tab", { name: "Skill templates" })).toHaveTextContent("1"));
-    expect(screen.queryByText("This deployment has no shared templates yet.")).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "From template" }));
+    await screen.findByRole("button", { name: "Preview multica-code-review" });
     fireEvent.click(screen.getByRole("tab", { name: "Deployment-provided" }));
     expect(screen.getByText("This deployment has no shared templates yet.")).toBeVisible();
     fireEvent.click(screen.getByRole("button", { name: "Browse platform templates" }));
@@ -249,15 +214,12 @@ describe("catalog active-locale rendering", () => {
       <I18nProvider locale={locale} resources={{ [locale]: { skills } }}>
         <QueryClientProvider client={queryClient}>
           <WorkspaceSlugProvider slug="acme">
-            <SkillLibraryCatalog workspaceId="ws-1" skills={[]} skillsError={false} onPreview={vi.fn()} onCreate={vi.fn()}>
-              <div>Workspace collection</div>
-            </SkillLibraryCatalog>
+            <SkillTemplateCatalog workspaceId="ws-1" skills={[]} skillsError={false} onPreview={vi.fn()} onCreate={vi.fn()} />
           </WorkspaceSlugProvider>
         </QueryClientProvider>
       </I18nProvider>,
     );
     expect(await screen.findByRole("button", { name: preview })).toBeVisible();
-    expect(screen.getByRole("tab", { name: skills.market.title })).toHaveAttribute("aria-selected", "true");
     expect(screen.getByRole("textbox", { name: skills.market.search })).toBeVisible();
   });
 });

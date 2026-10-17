@@ -468,6 +468,15 @@ describe("SearchCommand", () => {
     expect(useSearchStore.getState().open).toBe(false);
   });
 
+  it("finds the capability market by template keywords and opens its workspace route", async () => {
+    const user = userEvent.setup();
+    renderSearch();
+    await user.type(screen.getByPlaceholderText("Type a command or search..."), "templates");
+    await user.click(await screen.findByRole("option", { name: "Capability market" }));
+    expect(mockPush).toHaveBeenCalledWith("/ws-test/marketplace");
+    expect(useSearchStore.getState().open).toBe(false);
+  });
+
   it("cmd-click on a result opens it in a new tab instead of navigating in place", async () => {
     const user = userEvent.setup();
     const open = vi.spyOn(window, "open").mockReturnValue(null);

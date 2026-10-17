@@ -141,6 +141,7 @@ vi.mock("@multica/core/paths", async (importOriginal) => ({
     usage: () => "/acme/usage",
     runtimes: () => "/acme/runtimes",
     skills: () => "/acme/skills",
+    marketplace: () => "/acme/marketplace",
     mcp: () => "/acme/mcp",
     settings: () => "/acme/settings",
     iterations: () => "/acme/iterations",
@@ -493,6 +494,8 @@ describe("nav structure", () => {
       "/acme/agents",
       "/acme/squads",
       "/acme/autopilots",
+      // Resources & connections
+      "/acme/marketplace",
       "/acme/skills",
       "/acme/mcp",
       "/acme/runtimes",
@@ -525,6 +528,7 @@ describe("nav structure", () => {
   it.each([
     ["/acme/settings/general", "/acme/settings"],
     ["/acme/mcp", "/acme/mcp"],
+    ["/acme/marketplace", "/acme/marketplace"],
   ])("highlights only the current navigation entry for %s", (pathname, href) => {
     navigation.current = { pathname };
     const { container } = render(<AppSidebar />);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useRef, useState } from "react";
 import { ArrowRight, Loader2, Search } from "lucide-react";
 import type {
   McpServerTemplate,
@@ -8,13 +8,6 @@ import type {
 } from "@multica/core/types";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
-import { cn } from "@multica/ui/lib/utils";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@multica/ui/components/ui/tabs";
 import { useT } from "../i18n";
 import { mcpTransportLabel } from "../common/mcp-transport";
 import { filterMcpTemplates, isUsableMcpTemplate, matchesMcpTemplate, mcpTemplateIdentity, mcpTemplateTransport, type McpCatalogSource } from "./mcp-catalog";
@@ -28,114 +21,18 @@ function usableTemplates(templates: McpServerTemplate[] | undefined) {
   return (templates ?? []).filter(isUsableMcpTemplate);
 }
 
-export function McpLibraryCatalog({
-  workspaceId,
-  servers,
-  loaded,
-  canManage,
-  onCustom,
-  children,
-  customAction,
-  presentation = "settings",
-}: {
-  workspaceId: string;
-  servers: readonly WorkspaceMcpServer[] | undefined;
-  loaded: boolean;
-  canManage: boolean;
-  onCustom: (preset: McpCustomPreset) => void;
-  children: ReactNode;
-  customAction?: ReactNode;
-  presentation?: "page" | "settings";
-}) {
-  const { t } = useT("settings");
-  const [choice, setChoice] = useState<"workspace" | "market" | null>(null);
-  useEffect(() => {
-    if (choice === null && loaded && servers)
-      setChoice(servers.length === 0 ? "market" : "workspace");
-  }, [choice, loaded, servers]);
-  const view =
-    choice ?? (loaded && servers?.length === 0 ? "market" : "workspace");
-  const templates = useMcpServerTemplates(workspaceId, { poll: view === "market" });
-  const { refetch } = templates;
-  useEffect(() => {
-    if (view === "market") void refetch();
-  }, [view, refetch]);
-  const panelClass =
-    presentation === "page"
-      ? "min-h-0 min-w-0 overflow-y-auto px-4 pb-12 pt-4 @2xl/mcp-library:px-6"
-      : undefined;
-  return (
-    <Tabs
-      value={view}
-      onValueChange={(value) => setChoice(value as "workspace" | "market")}
-      className={cn(
-        "@container/mcp-library min-w-0 pointer-coarse:[&_[data-slot=button]]:min-h-11 pointer-coarse:[&_[data-slot=button]]:min-w-11 pointer-coarse:[&_[data-slot=input]]:min-h-11 pointer-coarse:[&_[role=tab]]:min-h-11 pointer-coarse:[&_[data-slot=tabs-list]]:h-auto",
-        presentation === "page" ? "min-h-0 flex-1 gap-0" : "gap-5",
-      )}
-    >
-      <div className={cn(
-        "flex shrink-0 flex-wrap items-center justify-between gap-3",
-        presentation === "page" && "mx-4 mb-1 @2xl/mcp-library:mx-6",
-      )}>
-        <TabsList
-          aria-label={t(($) => $.mcp.title)}
-          variant="line"
-          className="max-w-full items-stretch data-[orientation=horizontal]:h-auto"
-        >
-          <TabsTrigger
-            value="workspace"
-            aria-label={t(($) => $.mcp.market.workspace)}
-            className="min-h-10 flex-none px-2"
-            onClick={() => setChoice("workspace")}
-          >
-            {t(($) => $.mcp.market.workspace)}
-            {loaded && servers !== undefined ? (
-              <span className="text-caption tabular-nums text-muted-foreground">{servers.length}</span>
-            ) : null}
-          </TabsTrigger>
-          <TabsTrigger
-            value="market"
-            aria-label={t(($) => $.mcp.market.title)}
-            className="min-h-10 flex-none px-2"
-            onClick={() => setChoice("market")}
-          >
-            {t(($) => $.mcp.market.title)}
-            {templates.data !== undefined ? (
-              <span className="text-caption tabular-nums text-muted-foreground">
-                {usableTemplates(templates.data).length}
-              </span>
-            ) : null}
-          </TabsTrigger>
-        </TabsList>
-        {customAction}
-      </div>
-      <TabsContent value="workspace" className={panelClass}>
-        {children}
-      </TabsContent>
-      <TabsContent value="market" className={panelClass}>
-        <McpTemplateCatalogContent
-          templates={templates}
-          workspaceId={workspaceId}
-          servers={servers}
-          canManage={canManage}
-          onCustom={onCustom}
-        />
-      </TabsContent>
-    </Tabs>
-  );
-}
-
 type McpTemplateCatalogProps = {
   workspaceId: string;
   servers: readonly WorkspaceMcpServer[] | undefined;
   canManage: boolean;
-  onCustom: (preset: McpCustomPreset) => void;
+  onCustom: (preset: McpCustomPreset, finalFocus: () => HTMLElement | null) => void;
   agentContext?: McpAgentContext;
+  active?: boolean;
 };
 
-export function McpTemplateCatalog(props: McpTemplateCatalogProps) {
-  const templates = useMcpServerTemplates(props.workspaceId, { poll: true });
-  return <McpTemplateCatalogContent {...props} templates={templates} />;
+export function McpTemplateCatalog({ active = true, ...props }: McpTemplateCatalogProps) {
+  const templates = useMcpServerTemplates(props.workspaceId, { enabled: active, poll: active });
+  return <McpTemplateCatalogContent {...props} active={active} templates={templates} />;
 }
 
 function McpTemplateCatalogContent({
@@ -144,6 +41,7 @@ function McpTemplateCatalogContent({
   canManage,
   onCustom,
   agentContext,
+  active = true,
   templates,
 }: McpTemplateCatalogProps & {
   templates: ReturnType<typeof useMcpServerTemplates>;
@@ -153,6 +51,10 @@ function McpTemplateCatalogContent({
   const [category, setCategory] = useState("all");
   const [source, setSource] = useState<McpCatalogSource>("all");
   const [selected, setSelected] = useState<McpServerTemplate | null>(null);
+  const opener = useRef<HTMLButtonElement | null>(null);
+  const searchInput = useRef<HTMLInputElement | null>(null);
+  const restoringFocus = useRef(true);
+  const finalFocus = () => opener.current?.isConnected ? opener.current : searchInput.current;
   const usable = usableTemplates(templates.data);
   const sourced = filterMcpTemplates(usable, source, "all", "");
   const activeCategory = category === "all" || sourced.some((template) => template.category === category)
@@ -181,13 +83,14 @@ function McpTemplateCatalogContent({
       sourced.some((template) => template.category === item.value),
   );
   return (
-    <div className="@container/mcp-market space-y-4" data-testid="mcp-market">
+    <div className="@container/mcp-market min-w-0 space-y-4 pointer-coarse:[&_[data-slot=button]]:min-h-11 pointer-coarse:[&_[data-slot=button]]:min-w-11 pointer-coarse:[&_[data-slot=input]]:min-h-11" data-testid="mcp-market">
       <div className="relative max-w-xl">
         <Search
           className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
           aria-hidden="true"
         />
         <Input
+          ref={searchInput}
           type="search"
           className="pl-9"
           value={search}
@@ -314,7 +217,11 @@ function McpTemplateCatalogContent({
                   name: template.title || template.key,
                 })}
                 className="flex h-full w-full flex-col items-start gap-3 rounded-lg p-4 text-left transition-colors hover:bg-accent/40 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-foreground"
-                onClick={() => setSelected(template)}
+                onClick={(event) => {
+                  opener.current = event.currentTarget;
+                  restoringFocus.current = true;
+                  setSelected(template);
+                }}
               >
                 <div className="flex w-full min-w-0 items-center gap-3">
                   <McpTemplateIcon templateKey={template.key} source={template.source} category={template.category} />
@@ -349,6 +256,8 @@ function McpTemplateCatalogContent({
       </div>
       {selected ? (
         <McpSetupDialog
+          active={active}
+          finalFocus={() => restoringFocus.current ? finalFocus() : false}
           workspaceId={workspaceId}
           template={selected}
           available={latest !== undefined && latest.version === selected.version}
@@ -368,8 +277,9 @@ function McpTemplateCatalogContent({
           agentContext={agentContext}
           onClose={() => setSelected(null)}
           onCustom={(preset) => {
+            restoringFocus.current = false;
             setSelected(null);
-            onCustom(preset);
+            onCustom(preset, finalFocus);
           }}
         />
       ) : null}

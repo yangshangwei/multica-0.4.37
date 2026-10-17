@@ -14,6 +14,15 @@ function present(url: string, data: TabEntityData = {}) {
 }
 
 describe("resolveTabPresentation — pages", () => {
+  it("keeps both capability catalogs under the localized market tab title", () => {
+    for (const type of ["mcp", "skills"]) {
+      expect(present(`/acme/marketplace?type=${type}`)).toEqual({
+        visual: { kind: "icon", icon: "Store" },
+        title: { kind: "nav", navKey: "marketplace" },
+      });
+    }
+  });
+
   it("recognizes changelog version and release deep links as the same localized page", () => {
     expect(present("/acme/changelog?version=0.4.37#fork%3Atest%2Frepo%3Av1")).toEqual({
       visual: { kind: "icon", icon: "FileText" },

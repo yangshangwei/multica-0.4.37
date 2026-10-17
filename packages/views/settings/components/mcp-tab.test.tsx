@@ -29,6 +29,8 @@ const data = vi.hoisted(() => ({
   servers: [] as Array<Record<string, unknown>>,
   isLoading: false,
   refetch: vi.fn(),
+  push: vi.fn(),
+  templateOptions: vi.fn(() => ({ queryKey: ["mcp-server-templates"] })),
   role: "owner" as "owner" | "admin" | "member",
 }));
 
@@ -40,19 +42,22 @@ vi.mock("@tanstack/react-query", () => ({
 
 vi.mock("@multica/core/workspace/queries", () => ({
   memberListOptions: () => ({ queryKey: ["workspaces", "workspace-1", "members"] }),
-  mcpServerTemplateListOptions: () => ({ queryKey: ["mcp-server-templates"] }),
+  mcpServerTemplateListOptions: data.templateOptions,
   workspaceMcpServersOptions: () => ({ queryKey: ["workspaces", "workspace-1", "mcp-servers"] }),
 }));
 
 vi.mock("@multica/core/workspace/mutations", () => ({
-  useCreateWorkspaceMcpServer: () => ({ mutateAsync: mockCreate, isPending: false }),
+  useCreateWorkspaceMcpServer: () => ({ mutateAsync: mockCreate, isPending: false, reset: vi.fn() }),
   useUpdateWorkspaceMcpServer: () => ({ mutateAsync: mockUpdate, isPending: false }),
   useDeleteWorkspaceMcpServer: () => ({ mutateAsync: mockDelete, isPending: false }),
 }));
 
 vi.mock("@multica/core/paths", () => ({
   useCurrentWorkspace: () => ({ id: data.wsId, name: "Acme", slug: "acme" }),
+  useWorkspacePaths: () => ({ marketplaceTab: (type: string) => `/acme/marketplace?type=${type}` }),
 }));
+
+vi.mock("../../navigation", () => ({ useNavigation: () => ({ push: data.push }) }));
 
 vi.mock("@multica/core/auth", () => {
   const state = { user: { id: "user-1" } };
@@ -611,13 +616,26 @@ describe("McpTab", () => {
     ).toBeInTheDocument();
   });
 
-  it("opens the market for an empty library and keeps the workspace empty state accessible", async () => {
+  it.each(["page", "settings"] as const)("keeps an empty %s library in management with an explicit market entry", async (presentation) => {
     const user = userEvent.setup();
     data.servers = [];
+    render(<McpTab presentation={presentation} />, { wrapper: Wrapper });
+    expect(screen.getByText("No shared MCP servers")).toBeVisible();
+    expect(screen.queryByRole("tab")).toBeNull();
+    expect(data.templateOptions).not.toHaveBeenCalled();
+    expect(data.push).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button", { name: "Browse capability market" }));
+    expect(data.push).toHaveBeenCalledWith("/acme/marketplace?type=mcp");
+  });
+
+  it("lets members browse the market while retaining the shared inventory", async () => {
+    const user = userEvent.setup();
+    data.role = "member";
     render(<McpTab />, { wrapper: Wrapper });
-    expect(screen.getByRole("tab", { name: "MCP market" })).toHaveAttribute("aria-selected", "true");
-    await user.click(screen.getByRole("tab", { name: "Shared configurations" }));
-    expect(screen.getByText("No shared MCP servers")).toBeInTheDocument();
+    expect(screen.getByText("linear")).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Browse capability market" }));
+    expect(data.push).toHaveBeenCalledWith("/acme/marketplace?type=mcp");
+    expect(screen.queryByRole("button", { name: /Add custom server/ })).toBeNull();
   });
 
   // The document is write-only, so the screen must never imply it is showing

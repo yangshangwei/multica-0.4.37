@@ -2,7 +2,10 @@
 
 ## Scope
 
-The shared workspace MCP page and Settings MCP tab use `McpLibraryCatalog`.
+The shared workspace MCP page and Settings MCP tab manage saved configurations
+and link to `/{slug}/marketplace?type=mcp`. `McpMarketPanel` composes member access,
+safe saved-instance summaries and `McpTemplateCatalog` in the capability market.
+See [Capability market](./capability-market.md) for navigation and lifecycle.
 The agent MCP tab opens `McpAgentDiscovery`, which shows existing workspace
 instances before the same template catalog. The built-in catalog contains sixteen
 reviewed local recipes, including project/database inputs. Deployment recipes
@@ -63,7 +66,11 @@ recipes publishable even when they contain no credential keywords.
   the base URL through the platform API, never `process.env` in core.
 - Poll every 30 seconds only while the market/discovery catalog is visible.
   Refetch on entry, window focus, reconnect and explicit Deployment selection;
-  desktop kept-alive hidden tabs must not poll.
+  inactive market types must not poll. Desktop mounts only its active tab, so
+  switching desktop tabs disposes the query observers.
+- Retained inactive panels disable their catalog, member and instance observers,
+  so query invalidation and window focus cannot refresh a hidden market. Re-entry
+  enables the existing stale query; do not add a second manual refetch effect.
 - Deployment versions are opaque content hashes, not display version labels.
   Built-in numeric recipe revisions retain their existing meaning.
 - `409 mcp_template_changed` requires refresh and explicit review of the new
@@ -80,9 +87,13 @@ recipes publishable even when they contain no credential keywords.
 
 ## Flow and permissions
 
-- A successfully loaded empty library can initialize the Market view. Explicit
-  choice wins. Opening setup pins that view so the first successful create and
-  cache invalidation cannot unmount the assignment step. Scope it by workspace.
+- Empty libraries stay in management and offer explicit market navigation.
+  Opening setup retains its saved instance and assignment step through the first
+  successful create and cache invalidation. Scope controllers by workspace.
+- `McpMarketPanel({ workspaceId, active = true })` passes visibility to the
+  catalog and portaled setup/custom dialogs. Type changes hide dialogs and stop
+  polling while retaining edited fields and saved instance identity; an actual
+  close or workspace unmount disposes the transient state.
 - `McpSetupDialog` accepts either a recipe or an existing saved instance. It
   retains the saved ID and separates creation from explicit assignment. Skipping
   or closing after save leaves a reusable workspace instance.
@@ -175,6 +186,15 @@ recipes publishable even when they contain no credential keywords.
 - Move focus to the assignment heading when a configuration is saved or an existing
   instance is selected. The setup submit button disappears at that transition;
   without an explicit handoff, browser focus falls to `body` outside the dialog.
+- The legacy built-in custom-editor handoff carries the catalog's live final-focus
+  resolver. Closing returns to the original card, or catalog search if a refresh
+  removed it. Inactive sessions suppress this handoff until they are visible again.
+  Both the standalone market and `McpAgentDiscovery` must handle
+  `onCustom(preset, finalFocus)` explicitly and forward the resolver to
+  `McpServerDialog`. Passing `setPreset` directly drops the second argument;
+  default dialog focus restoration only works while the opening card survives.
+  The contextual regression must withdraw the template while editing and assert
+  that closing focuses catalog search without creating a server.
 - Existing-instance assignment identifies the pending server, shows progress on
   its button, and announces completion. Disabled controls alone are not progress
   feedback. Normal failure recovery still uses the shared mutation result.
@@ -200,11 +220,12 @@ recipes publishable even when they contain no credential keywords.
   without a template key keep their transport icon; deployment entries use a
   generic MCP/category icon, never builtin-specific icons by key. Transport text remains
   visible for every row. Do not fetch secret configuration to resolve an icon.
-- Keep the query owner above the library tabs so market counts and cards share
-  one query result. Independent discovery mounts its own catalog query wrapper.
-  Tab names stay stable for accessibility; inventory counts exclude unusable
-  templates, remain independent of filters, and are omitted while unknown.
-  Show the filtered result count visibly in the existing live status region.
+- `McpTemplateCatalog` owns the query shared by source counts, cards and setup
+  freshness. The resource-management page does not mount a catalog observer.
+  Independent agent discovery reuses the catalog wrapper. Source names stay stable
+  for accessibility; counts exclude unusable templates, remain independent of
+  filters, and are omitted while unknown. Show the filtered result count visibly
+  in the existing live status region.
 
 ## Evidence
 

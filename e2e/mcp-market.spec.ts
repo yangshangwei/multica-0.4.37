@@ -73,7 +73,7 @@ test("deployment MCP files appear live and saved snapshots survive updates and w
   test.setTimeout(120_000);
   const { api, workspace, agents, slug } = await setup(page);
   try {
-    await page.goto(`/${slug}/mcp`);
+    await page.goto(`/${slug}/marketplace?type=mcp`);
     await verifyDeploymentMcpCatalog({ page, api, workspaceId: workspace.id, agent: agents[0]!, capture: (name) => capture(page, info, name) });
   } finally {
     await api.deleteFeatureWorkspace(workspace.id);
@@ -155,6 +155,8 @@ test("uses the collection canvas and adapts template columns to the available wi
     await expect(page.getByRole("heading", { name: "MCP", exact: true })).toHaveCount(1);
     const header = page.locator("header").filter({ has: page.getByRole("heading", { level: 1, name: "MCP", exact: true }) });
     await expect(header.getByRole("button", { name: "Add custom server", exact: true })).toBeVisible();
+    await header.getByRole("button", { name: "Browse capability market", exact: true }).click();
+    await expect(page.getByRole("heading", { name: "Capability market", exact: true })).toHaveCount(1);
     const market = page.getByTestId("mcp-market");
     const cards = market.locator(".grid > div");
     await expect(cards).toHaveCount(recipes.length);
@@ -191,8 +193,8 @@ test("creates and explicitly assigns all sixteen recipes, preserves source after
   const base = `/api/workspaces/${workspace.id}/mcp-servers`;
   try {
     await page.setViewportSize({ width: 1440, height: 1000 });
-    await page.goto(`/${slug}/mcp`);
-    const marketTab = page.getByRole("tab", { name: "MCP market", exact: true });
+    await page.goto(`/${slug}/marketplace?type=mcp`);
+    const marketTab = page.getByRole("tab", { name: "MCP", exact: true });
     await expect(marketTab).toHaveAttribute("aria-selected", "true");
     await capture(page, info, "market-wide");
     const market = page.getByTestId("mcp-market");
@@ -311,7 +313,7 @@ test("creates and explicitly assigns all sixteen recipes, preserves source after
     await page.reload();
     const renamed = (await api.requestJSON<ServerSummary[]>(base)).find((server) => server.id === playwright.id);
     expect(renamed).toMatchObject({ name: "browser-production", template_key: "playwright" });
-    await page.getByRole("tab", { name: "Shared configurations", exact: true }).click();
+    await page.getByRole("link", { name: "MCP", exact: true }).click();
     for (const saved of servers) {
       const name = saved.id === playwright.id ? "browser-production" : saved.name;
       const row = page.getByRole("listitem").filter({ has: page.getByText(name, { exact: true }) });
@@ -352,7 +354,7 @@ test("creates and explicitly assigns all sixteen recipes, preserves source after
     await capture(page, info, "agent-context-long-narrow");
     await page.getByRole("dialog").getByRole("button", { name: "Done", exact: true }).click();
 
-    await page.goto(`/${slug}/mcp`);
+    await page.goto(`/${slug}/marketplace?type=mcp`);
     await marketTab.click();
     await page.setViewportSize({ width: 390, height: 844 });
     await capture(page, info, "market-narrow");
@@ -370,7 +372,7 @@ test("creates and explicitly assigns all sixteen recipes, preserves source after
     await api.requestJSON("/api/me", { method: "PATCH", body: { language: "zh-Hans" } });
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.reload();
-    await page.getByRole("tab", { name: "MCP 市场", exact: true }).click();
+    await expect(page.getByRole("tab", { name: "MCP", exact: true })).toHaveAttribute("aria-selected", "true");
     await capture(page, info, "market-chinese-wide");
     await market.getByRole("button", { name: "数据库", exact: true }).click();
     await expect(market.getByRole("status")).toHaveText("找到 5 个模板");
@@ -387,7 +389,7 @@ test("creates and explicitly assigns all sixteen recipes, preserves source after
     await market.getByRole("button", { name: "浏览器", exact: true }).click();
     await expect(market.getByRole("status")).toHaveText("找到 2 个模板");
     await capture(page, info, "browser-filter-chinese-wide");
-    await page.getByRole("tab", { name: "共享配置", exact: true }).click();
+    await page.getByRole("link", { name: "MCP", exact: true }).click();
     await capture(page, info, "workspace-chinese-wide");
     expect(errors).toEqual([]);
   } finally {
@@ -408,7 +410,7 @@ test("retries a failed assignment without recreating the saved MCP or repeating 
     await page.route(failure, (route) => route.request().method() === "POST"
       ? route.fulfill({ status: 503, json: { error: "Temporary assignment failure" } })
       : route.continue());
-    await page.goto(`/${slug}/mcp`);
+    await page.goto(`/${slug}/marketplace?type=mcp`);
     await page.getByRole("button", { name: "View configuration: Playwright", exact: true }).click();
     const dialog = page.getByRole("dialog");
     await dialog.getByRole("button", { name: "Save and continue", exact: true }).click();
@@ -471,8 +473,8 @@ test("a member can discover templates and reuse a workspace instance for their a
         document.cookie = "multica_logged_in=1; path=/; SameSite=Lax";
       }, member.getToken());
       const memberPage = await context.newPage();
-      await memberPage.goto(`/${slug}/mcp`);
-      await memberPage.getByRole("tab", { name: "MCP market", exact: true }).click();
+      await memberPage.goto(`/${slug}/marketplace?type=mcp`);
+      await expect(memberPage.getByRole("tab", { name: "MCP", exact: true })).toHaveAttribute("aria-selected", "true");
       await memberPage.getByRole("button", { name: "View configuration: Playwright", exact: true }).click();
       await expect(memberPage.getByRole("button", { name: "Save and continue", exact: true })).toHaveCount(0);
       await memberPage.keyboard.press("Escape");

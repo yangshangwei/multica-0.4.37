@@ -45,9 +45,8 @@ describe("useSkillsViewStore", () => {
     expect(DEFAULT_HIDDEN_COLUMNS).toEqual(["labels", "source", "created"]);
   });
 
-  it("starts with an unresolved library view and unfiltered templates", () => {
+  it("starts with unfiltered market preferences", () => {
     expect(useSkillsViewStore.getState()).toMatchObject({
-      libraryView: null,
       marketSource: "all",
       marketCategory: null,
     });
@@ -57,12 +56,10 @@ describe("useSkillsViewStore", () => {
     const state = useSkillsViewStore.getState();
     state.selectCategory("engineering");
     state.toggleFilter("origins", "github");
-    state.setLibraryView("market");
     state.setMarketSource("deployment");
     state.setMarketCategory("data");
 
     expect(useSkillsViewStore.getState()).toMatchObject({
-      libraryView: "market",
       marketSource: "deployment",
       marketCategory: "data",
       filters: { categories: ["engineering"], origins: ["github"] },
@@ -70,20 +67,16 @@ describe("useSkillsViewStore", () => {
 
     state.clearFilters();
     expect(useSkillsViewStore.getState().marketCategory).toBe("data");
-    state.setLibraryView("workspace");
     state.setMarketSource("builtin");
     state.setMarketCategory(null);
 
     expect(useSkillsViewStore.getState()).toMatchObject({
-      libraryView: "workspace",
       marketSource: "builtin",
       marketCategory: null,
     });
 
-    state.setLibraryView(null);
     state.setMarketSource("all");
     expect(useSkillsViewStore.getState()).toMatchObject({
-      libraryView: null,
       marketSource: "all",
     });
   });
@@ -154,35 +147,36 @@ describe("useSkillsViewStore", () => {
 });
 
 describe("useSkillsViewStore persistence", () => {
-  it("stops persisting the retired shelf preference while retaining saved views and filters", async () => {
+  it.each([0, 1])("drops retired library and shelf preferences from a v%i payload while retaining filters", async (version) => {
     localStorage.setItem(
       "multica_skills_view:acme",
       JSON.stringify({
         state: {
-          libraryView: "workspace",
+          libraryView: "market",
           marketSource: "deployment",
           marketCategory: "quality",
           templatesCollapsed: true,
           viewMode: "list",
           filters: { categories: ["engineering"] },
         },
-        version: 1,
+        version,
       }),
     );
     setCurrentWorkspace("acme", "ws_a");
     await flush();
     expect(useSkillsViewStore.getState()).toMatchObject({
-      libraryView: "workspace",
       marketSource: "deployment",
       marketCategory: "quality",
       viewMode: "list",
       filters: { categories: ["engineering"] },
     });
-    useSkillsViewStore.getState().setLibraryView("market");
+    expect(useSkillsViewStore.getState()).not.toHaveProperty("libraryView");
+    expect(useSkillsViewStore.getState()).not.toHaveProperty("templatesCollapsed");
+    useSkillsViewStore.getState().setViewMode("list");
     const saved = JSON.parse(localStorage.getItem("multica_skills_view:acme") as string);
     expect(saved.state).not.toHaveProperty("templatesCollapsed");
+    expect(saved.state).not.toHaveProperty("libraryView");
     expect(saved.state).toMatchObject({
-      libraryView: "market",
       marketSource: "deployment",
       marketCategory: "quality",
       viewMode: "list",
@@ -200,7 +194,6 @@ describe("useSkillsViewStore persistence", () => {
     expect(Object.keys(parsed.state).sort()).toEqual([
       "filters",
       "hiddenColumns",
-      "libraryView",
       "marketCategory",
       "marketSource",
       "sortDirection",
@@ -215,14 +208,12 @@ describe("useSkillsViewStore persistence", () => {
     setCurrentWorkspace("acme", "ws_a");
     await flush();
     const state = useSkillsViewStore.getState();
-    state.setLibraryView("market");
     state.setMarketSource("deployment");
     state.setMarketCategory("engineering");
 
     const raw = localStorage.getItem("multica_skills_view:acme");
     expect(raw).not.toBeNull();
     expect(JSON.parse(raw as string).state).toMatchObject({
-      libraryView: "market",
       marketSource: "deployment",
       marketCategory: "engineering",
     });
@@ -230,7 +221,6 @@ describe("useSkillsViewStore persistence", () => {
     setCurrentWorkspace(null, null);
     await flush();
     expect(useSkillsViewStore.getState()).toMatchObject({
-      libraryView: null,
       marketSource: "all",
       marketCategory: null,
     });
@@ -238,7 +228,6 @@ describe("useSkillsViewStore persistence", () => {
     setCurrentWorkspace("acme", "ws_a");
     await flush();
     expect(useSkillsViewStore.getState()).toMatchObject({
-      libraryView: "market",
       marketSource: "deployment",
       marketCategory: "engineering",
     });
@@ -248,25 +237,21 @@ describe("useSkillsViewStore persistence", () => {
     setCurrentWorkspace("acme", "ws_a");
     await flush();
     const state = useSkillsViewStore.getState();
-    state.setLibraryView("market");
     state.setMarketSource("deployment");
     state.setMarketCategory("engineering");
 
     setCurrentWorkspace("beta", "ws_b");
     await flush();
     expect(useSkillsViewStore.getState()).toMatchObject({
-      libraryView: null,
       marketSource: "all",
       marketCategory: null,
     });
-    state.setLibraryView("workspace");
     state.setMarketSource("builtin");
     state.setMarketCategory("writing");
 
     setCurrentWorkspace("acme", "ws_a");
     await flush();
     expect(useSkillsViewStore.getState()).toMatchObject({
-      libraryView: "market",
       marketSource: "deployment",
       marketCategory: "engineering",
     });
@@ -274,7 +259,6 @@ describe("useSkillsViewStore persistence", () => {
     setCurrentWorkspace("beta", "ws_b");
     await flush();
     expect(useSkillsViewStore.getState()).toMatchObject({
-      libraryView: "workspace",
       marketSource: "builtin",
       marketCategory: "writing",
     });
@@ -291,7 +275,6 @@ describe("useSkillsViewStore persistence", () => {
     setCurrentWorkspace("acme", "ws_a");
     await flush();
     const state = useSkillsViewStore.getState();
-    state.setLibraryView("market");
     state.setMarketSource("deployment");
     state.setMarketCategory("engineering");
 
@@ -299,7 +282,6 @@ describe("useSkillsViewStore persistence", () => {
     await flush();
     await flush();
     expect(useSkillsViewStore.getState()).toMatchObject({
-      libraryView: null,
       marketSource: "all",
       marketCategory: null,
       viewMode: "list",
@@ -308,7 +290,6 @@ describe("useSkillsViewStore persistence", () => {
     state.setSortField("name");
     const beta = JSON.parse(localStorage.getItem("multica_skills_view:beta") as string);
     expect(beta.state).toMatchObject({
-      libraryView: null,
       marketSource: "all",
       marketCategory: null,
     });

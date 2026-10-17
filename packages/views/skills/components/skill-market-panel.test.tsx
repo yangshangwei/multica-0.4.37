@@ -44,6 +44,7 @@ vi.mock("../../rich-content", () => ({
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
 import SkillsPage from "./skills-page";
+import { SkillMarketPanel } from "./skill-market-panel";
 
 const WORKSPACE: Workspace = {
   id: "12345678-1234-4234-8234-123456789abc",
@@ -86,7 +87,7 @@ function deferred<T>() {
   return { promise, resolve, reject };
 }
 
-function renderPage() {
+function renderPage(market = true) {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: { retry: false, staleTime: Infinity, gcTime: Infinity, refetchOnMount: false },
@@ -99,26 +100,26 @@ function renderPage() {
     push: vi.fn(),
     replace: vi.fn(),
     back: vi.fn(),
-    pathname: "/acme/skills",
-    searchParams: new URLSearchParams(),
+    pathname: market ? "/acme/marketplace" : "/acme/skills",
+    searchParams: new URLSearchParams(market ? "type=skills" : ""),
     hash: "",
     getShareableUrl: (path) => path,
     openInNewTab: vi.fn(),
   };
-  renderWithI18n(
+  const content = (active = true) => (
     <QueryClientProvider client={queryClient}>
       <WorkspaceSlugProvider slug={WORKSPACE.slug}>
         <NavigationProvider value={navigation}>
-          <SkillsPage />
+          {market ? <SkillMarketPanel workspaceId={WORKSPACE.id} active={active} /> : <SkillsPage />}
         </NavigationProvider>
       </WorkspaceSlugProvider>
-    </QueryClientProvider>,
+    </QueryClientProvider>
   );
-  return { queryClient, navigation };
+  const rendered = renderWithI18n(content());
+  return { queryClient, navigation, setActive: (active: boolean) => rendered.rerender(content(active)) };
 }
 
 async function openMarketPreview() {
-  fireEvent.click(screen.getByRole("tab", { name: "Skill templates" }));
   const preview = await screen.findByRole("button", { name: "Preview multica-code-review" });
   fireEvent.click(preview);
   return preview;
@@ -182,7 +183,7 @@ async function retryWorkspaceRefresh(queryClient: QueryClient, skills = [RELATED
 
 beforeEach(() => {
   vi.resetAllMocks();
-  useSkillsViewStore.setState({ viewMode: "card", filters: EMPTY_SKILL_FILTERS, libraryView: null, marketSource: "all", marketCategory: null });
+  useSkillsViewStore.setState({ viewMode: "card", filters: EMPTY_SKILL_FILTERS, marketSource: "all", marketCategory: null });
   mocks.listWorkspaces.mockResolvedValue([WORKSPACE]);
   mocks.listSkillTemplates.mockResolvedValue([TEMPLATE]);
   mocks.listSkills.mockResolvedValue([RELATED_SKILL]);
@@ -196,10 +197,45 @@ afterEach(() => {
   clients.splice(0).forEach((client) => client.clear());
 });
 
-describe("SkillsPage template-session lifetime", () => {
+describe("SkillMarketPanel template-session lifetime", () => {
+  it("hides its portaled editor while inactive and restores the same protected draft", async () => {
+    const { setActive } = renderPage();
+    await openEditor();
+    editDraft();
+    const name = screen.getByRole("textbox", { name: "Name" });
+    setActive(false);
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    expect(name).not.toBeVisible();
+    setActive(true);
+    await screen.findByRole("dialog");
+    expect(screen.getByRole("textbox", { name: "Name" })).toBe(name);
+    expectEditedDraft();
+    fireEvent.click(screen.getByRole("button", { name: "Close" }));
+    expect(await screen.findByRole("alertdialog")).toHaveTextContent(enSkills.create.template.discard_description);
+    setActive(false);
+    await waitFor(() => expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument());
+    setActive(true);
+    expect(await screen.findByRole("alertdialog")).toHaveTextContent(enSkills.create.template.discard_description);
+    fireEvent.click(screen.getByRole("button", { name: "Keep editing" }));
+    expectEditedDraft();
+    expect(mocks.createSkill).not.toHaveBeenCalled();
+  });
+
+  it("restores focus to catalog search when a refreshed template removes its opener", async () => {
+    const { queryClient } = renderPage();
+    const opener = await openMarketPreview();
+    mocks.listSkillTemplates.mockResolvedValue([]);
+    await act(async () => {
+      await queryClient.invalidateQueries({ queryKey: workspaceKeys.skillTemplates(WORKSPACE.id), exact: true });
+    });
+    await waitFor(() => expect(opener.isConnected).toBe(false));
+    fireEvent.click(screen.getByRole("button", { name: "Close" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.getByRole("textbox", { name: "Search templates" })).toHaveFocus());
+  });
+
   it("opens a selected market template and keeps browsing after creating its copy", async () => {
     const { navigation } = renderPage();
-    await userEvent.click(await screen.findByRole("tab", { name: "Skill templates" }));
     await userEvent.click(await screen.findByRole("button", { name: "Preview multica-code-review" }));
     const adopt = await screen.findByRole("button", { name: "Use this template" });
     await waitFor(() => expect(adopt).toBeEnabled());
@@ -215,17 +251,35 @@ describe("SkillsPage template-session lifetime", () => {
     }));
     fireEvent.click(screen.getByRole("button", { name: "Create skill" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
-    expect(screen.getByRole("tab", { name: "Skill templates" })).toHaveAttribute("aria-selected", "true");
     expect(navigation.push).not.toHaveBeenCalled();
+    expect(mocks.listAgents).not.toHaveBeenCalled();
+    expect(mocks.listMembers).not.toHaveBeenCalled();
+    expect(mocks.listRuntimes).not.toHaveBeenCalled();
     expect(toast.success).toHaveBeenCalledWith(enSkills.create.template.created, expect.objectContaining({
       action: expect.objectContaining({ label: "View skill" }),
     }));
     await waitFor(() => expect(screen.getByRole("button", { name: "Preview multica-code-review" })).toHaveFocus());
   });
 
+  it("keeps ordinary library creation navigating to the new skill detail", async () => {
+    const { navigation } = renderPage(false);
+    fireEvent.click(screen.getByRole("button", { name: "New skill" }));
+    fireEvent.click(screen.getByRole("button", { name: /Modify from template/ }));
+    const adopt = await screen.findByRole("button", { name: "Use this template" });
+    await waitFor(() => expect(adopt).toBeEnabled());
+    fireEvent.click(adopt);
+    editDraft();
+    mocks.createSkill.mockImplementationOnce(async (request) => ({
+      ...RELATED_SKILL, ...request, files: request.files ?? [],
+    }));
+    fireEvent.click(screen.getByRole("button", { name: "Create skill" }));
+    await waitFor(() => expect(navigation.push).toHaveBeenCalledExactlyOnceWith(`/acme/skills/${RELATED_SKILL.id}`));
+    expect(toast.success).toHaveBeenCalledExactlyOnceWith(enSkills.create.template.created);
+  });
+
   it.each(["market", "New skill"])("returns focus to %s after closing the template browser", async (entryName) => {
     const user = userEvent.setup();
-    renderPage();
+    renderPage(entryName === "market");
     let entry: HTMLElement;
     if (entryName === "market") {
       entry = await openMarketPreview();

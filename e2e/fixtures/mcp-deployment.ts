@@ -38,7 +38,7 @@ export async function verifyDeploymentMcpCatalog({
     await rename(join(dir, "mcp.json.next"), join(dir, "mcp.json"));
   };
   try {
-    await page.getByRole("tab", { name: "MCP market", exact: true }).click();
+    await expect(page.getByRole("tab", { name: "MCP", exact: true })).toHaveAttribute("aria-selected", "true");
     const market = page.getByTestId("mcp-market");
     await publish();
     await market.getByRole("button", { name: "Deployment provided", exact: true }).click();
@@ -52,9 +52,11 @@ export async function verifyDeploymentMcpCatalog({
 
     await preview.click();
     const dialog = page.getByRole("dialog").last();
+    await expect(dialog.getByRole("textbox", { name: "Configuration name", exact: true })).toBeFocused();
     const token = dialog.getByLabel("Access token", { exact: false });
     await expect(token).toHaveAttribute("type", "password");
     await token.fill(secret);
+    await expect(token).toHaveValue(secret);
     await dialog.getByRole("button", { name: "Save and continue", exact: true }).click();
     await expect(dialog.getByRole("heading", { name: "Choose agents", exact: true })).toBeVisible();
     type Summary = { id: string; name: string; template_source: string | null; template_key: string | null; template_version: string | null };
@@ -89,7 +91,7 @@ export async function verifyDeploymentMcpCatalog({
     expect(await api.requestJSON(`/api/agents/${agent.id}/mcp-servers?mcp_source_version=1`)).toEqual(expect.arrayContaining([
       expect.objectContaining({ id: saved.id, template_source: "deployment", enabled: true }),
     ]));
-    await page.getByRole("tab", { name: "Shared configurations", exact: true }).click();
+    await page.getByRole("link", { name: "MCP", exact: true }).click();
     await expect(page.getByText(key, { exact: true })).toBeVisible();
     await capture("deployment-saved-after-withdrawal");
 
@@ -100,7 +102,7 @@ export async function verifyDeploymentMcpCatalog({
       schema_version: 1, titles: { en: stdioTitle }, category: "coding",
       config: { command: "mcp-e2e-never-executed", args: [] },
     }));
-    await page.getByRole("tab", { name: "MCP market", exact: true }).click();
+    await page.getByRole("button", { name: "Browse capability market", exact: true }).click();
     await market.getByRole("button", { name: "Deployment provided", exact: true }).click();
     await market.getByRole("button", { name: `View configuration: ${stdioTitle}`, exact: true }).click();
     await dialog.getByRole("button", { name: "Save and continue", exact: true }).click();

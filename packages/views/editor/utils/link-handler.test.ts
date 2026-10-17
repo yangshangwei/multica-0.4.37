@@ -116,6 +116,16 @@ describe("openLink", () => {
     expect(navigatedPaths()).toEqual(["/other/issues/MUL-1"]);
   });
 
+  it("keeps market type and fragment when prefixing a slugless marketplace link", () => {
+    openLink("/marketplace?type=skills#catalog", "acme", APP_ORIGIN);
+    expect(navigatedPaths()).toEqual(["/acme/marketplace?type=skills#catalog"]);
+  });
+
+  it("preserves a marketplace link to another workspace", () => {
+    openLink("/other/marketplace?type=mcp", "acme", APP_ORIGIN);
+    expect(navigatedPaths()).toEqual(["/other/marketplace?type=mcp"]);
+  });
+
   it("defaults the disposition to push and carries an explicit click intent through the event", () => {
     openLink("/acme/issues/MUL-1", "acme", APP_ORIGIN);
     openLink("/acme/issues/MUL-2", "acme", APP_ORIGIN, "background-tab");

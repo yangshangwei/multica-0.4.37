@@ -34,6 +34,7 @@ const WORKSPACE_ROUTE_SEGMENTS = new Set([
   "my-issues",
   "runtimes",
   "skills",
+  "marketplace",
   "settings",
 ]);
 
@@ -267,7 +268,7 @@ export function openLink(
   if (internalPath) {
     let path = internalPath;
     if (currentSlug && !isGlobalPath(path)) {
-      const firstSegment = path.split("/")[1];
+      const firstSegment = path.split(/[?#]/)[0]?.split("/")[1];
       if (firstSegment && WORKSPACE_ROUTE_SEGMENTS.has(firstSegment)) {
         // Path looks like /issues/abc (no slug) — prepend current slug.
         path = `/${currentSlug}${path}`;

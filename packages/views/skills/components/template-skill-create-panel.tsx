@@ -35,6 +35,7 @@ export interface RelatedSkillNavigationRequest {
 interface Props {
   workspaceId: string;
   workspaceSlug: string;
+  active?: boolean;
   session: TemplateSkillSession;
   onUseTemplate: (template: SkillTemplate, names: readonly string[], description: string) => void;
   onBack: () => void;
@@ -42,15 +43,15 @@ interface Props {
   onRequestOpenSkill: (request: RelatedSkillNavigationRequest) => void;
 }
 
-export function TemplateSkillCreatePanel({ workspaceId, workspaceSlug, session, onUseTemplate, onBack, onOpenCandidate, onRequestOpenSkill }: Props) {
+export function TemplateSkillCreatePanel({ workspaceId, workspaceSlug, active = true, session, onUseTemplate, onBack, onOpenCandidate, onRequestOpenSkill }: Props) {
   const { t } = useT("skills");
   const draft = session.draft;
   const isPicker = session.step === "picker" || !draft;
   const catalog = useQuery({
-    ...skillTemplateListOptions(workspaceId, { poll: isPicker }),
-    enabled: !!workspaceId && isPicker,
+    ...skillTemplateListOptions(workspaceId, { poll: active && isPicker }),
+    enabled: !!workspaceId && active && isPicker,
   });
-  const skills = useQuery(skillListOptions(workspaceId));
+  const skills = useQuery({ ...skillListOptions(workspaceId), enabled: !!workspaceId && active });
   const [search, setSearch] = useState("");
   const [chosenSource, setChosenSource] = useState<"builtin" | "deployment" | null>(null);
   const [confirmedPreview, setConfirmedPreview] = useState<{
