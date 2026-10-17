@@ -249,3 +249,35 @@ At the explicit user request, removed a stale active planning copy of administra
 ### Next Steps
 
 - Real old-deployment upgrade and production Web browser rehearsals remain outstanding in the original archived implementation plan.
+
+
+## Session 82: Archive the complete I1 manual-period task tree
+<!-- trellis-session: v=2 fp=2b4fcde08ecce52b -->
+
+**Date**: 2026-10-17
+**Task**: Archive the complete I1 manual-period task tree
+**Branch**: `main`
+
+### Summary
+
+Archived the I1 parent and all six children at the explicit user request, retaining original child completion dates, accepted local evidence and the outstanding formal remote CI gate.
+
+### Main Changes
+
+- Moved seven task directories into .trellis/tasks/archive/2026-10, added an archive note and repaired the parent PRD source links.
+
+### Git Commits
+
+(Task archival only; no product code commits.)
+
+### Testing
+
+- [OK] Verified seven archived tasks, all parent/child relationships, original completion dates, 120 unchanged evidence files, 28 unchanged unrelated task records and current links; git diff --cached --check passed.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Formal remote CI remains pending in the historical acceptance records. This archival does not authorize rollout or perform push, merge or deployment.
