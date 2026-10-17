@@ -76,7 +76,9 @@ function DiagnosticCard({ kind, diagnostic }: { kind: "cli" | "connection"; diag
 export function DaemonSettingsTab() {
   const { t } = useT("settings");
   const [prefs, setPrefs] = useState<DaemonPrefs>({ autoStart: true, autoStop: false });
-  const [cliInstalled, setCliInstalled] = useState<boolean | null>(null);
+  const [cli, setCli] = useState<
+    { state: "checking" } | { state: "failed" } | { state: "ready"; path: string | null }
+  >({ state: "checking" });
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<DaemonStatus>({ state: "stopped" });
   const [statusLoading, setStatusLoading] = useState(true);
@@ -85,7 +87,10 @@ export function DaemonSettingsTab() {
 
   useEffect(() => {
     window.daemonAPI.getPrefs().then(setPrefs);
-    window.daemonAPI.isCliInstalled().then(setCliInstalled);
+    window.daemonAPI.getCliPath().then(
+      (path) => setCli({ state: "ready", path }),
+      () => setCli({ state: "failed" }),
+    );
     window.daemonAPI.getStatus().then((nextStatus) => {
       setStatus(nextStatus);
       setStatusLoading(false);
@@ -126,6 +131,8 @@ export function DaemonSettingsTab() {
     },
     [t],
   );
+
+  const cliMissing = cli.state === "ready" && cli.path === null;
 
   // The daemon runs somewhere the app can't drive (e.g. inside WSL2 behind a
   // Windows desktop): /health is reachable but the lifecycle CLI can't reach
@@ -221,14 +228,28 @@ export function DaemonSettingsTab() {
         <SettingsRow
           label={t(($) => $.desktop.daemon.cli_status)}
           description={
-            cliInstalled === null
-              ? t(($) => $.desktop.daemon.cli_checking)
-              : cliInstalled
-                ? t(($) => $.desktop.daemon.cli_installed)
-                : t(($) => $.desktop.daemon.cli_missing)
+            <>
+              <p>
+                {cli.state === "checking"
+                  ? t(($) => $.desktop.daemon.cli_checking)
+                  : cli.state === "failed"
+                    ? t(($) => $.desktop.daemon.cli_lookup_failed)
+                    : cli.path
+                      ? t(($) => $.desktop.daemon.cli_installed)
+                      : t(($) => $.desktop.daemon.cli_missing)}
+              </p>
+              {cli.state === "ready" && cli.path && (
+                <dl className="mt-2">
+                  <dt>{t(($) => $.desktop.daemon.cli_installation_path)}</dt>
+                  <dd className="mt-0.5">
+                    <code className="block select-text whitespace-pre-wrap break-all font-mono text-caption text-foreground">{cli.path}</code>
+                  </dd>
+                </dl>
+              )}
+            </>
           }
         >
-          {cliInstalled === false && (
+          {cliMissing && (
             <Button
               variant="outline"
               size="sm"
@@ -241,7 +262,7 @@ export function DaemonSettingsTab() {
               {t(($) => $.desktop.daemon.installation_guide)}
             </Button>
           )}
-          {cliInstalled !== false && <span />}
+          {!cliMissing && <span />}
         </SettingsRow>
       </SettingsCard>
 

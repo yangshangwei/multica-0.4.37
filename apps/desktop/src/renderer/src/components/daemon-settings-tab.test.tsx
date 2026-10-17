@@ -20,10 +20,10 @@ vi.mock("../platform/daemon-reauth", () => ({ reauthenticateDaemon }));
 
 import { DaemonSettingsTab } from "./daemon-settings-tab";
 
-function stubDaemonAPI(status: DaemonStatus) {
+function stubDaemonAPI(status: DaemonStatus, cliPath: string | null = "/fixture/bin/multica") {
   vi.stubGlobal("daemonAPI", {
     getPrefs: vi.fn(async () => ({ autoStart: true, autoStop: false })),
-    isCliInstalled: vi.fn(async () => true),
+    getCliPath: vi.fn(async () => cliPath),
     getStatus: vi.fn(async () => status),
     onStatusChange: vi.fn(() => () => {}),
   });
@@ -169,4 +169,34 @@ it.each([
   render(settings(locale));
   expect(await screen.findByRole("region", { name: connectionTitle })).toBeInTheDocument();
   expect(screen.getByRole("region", { name: cliTitle })).toBeInTheDocument();
+});
+
+
+it.each([["en", "Installation path"], ["zh-Hans", "安装路径"]] as const)("shows the exact selected Windows CLI path in %s", async (locale, label) => {
+  const cliPath = String.raw`C:\Users\张 三\AppData\Local\Programs\Multica Desktop\resources\bin\multica.exe`;
+  stubDaemonAPI({ state: "stopped" }, cliPath);
+  render(settings(locale));
+  const path = await screen.findByText(cliPath, { exact: true });
+  expect(path.textContent).toBe(cliPath);
+  expect(screen.getByText(label)).toBeInTheDocument();
+  expect(window.daemonAPI.getCliPath).toHaveBeenCalledOnce();
+});
+
+it("keeps the installation guide when no usable CLI path is found", async () => {
+  stubDaemonAPI({ state: "cli_not_found" }, null);
+  render(settings());
+  expect(await screen.findByText("No usable multica CLI was found. Check the runtime setup diagnostics below.")).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Installation Guide" })).toBeInTheDocument();
+  expect(screen.queryByText("Installation path")).not.toBeInTheDocument();
+});
+
+it("reports a failed CLI path lookup without claiming the CLI is missing or exposing its exception", async () => {
+  stubDaemonAPI({ state: "stopped" });
+  vi.mocked(window.daemonAPI.getCliPath).mockRejectedValue(new Error("private lookup detail"));
+  render(settings());
+  expect(await screen.findByText("Unable to read CLI installation details. Reopen Settings to try again.")).toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Installation Guide" })).not.toBeInTheDocument();
+  expect(screen.queryByText("Installation path")).not.toBeInTheDocument();
+  expect(screen.queryByText("Checking...")).not.toBeInTheDocument();
+  expect(document.body.textContent).not.toContain("private lookup detail");
 });

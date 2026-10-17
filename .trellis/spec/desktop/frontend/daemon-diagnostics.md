@@ -41,6 +41,11 @@ The internal `transitionManagedDaemon` options include optional
 `onHandoffError(error: unknown): void`. It reports handoff preparation failure
 without adding raw errors to `ManagedTransitionResult` or IPC.
 
+`daemonAPI.getCliPath(): Promise<string | null>` returns the CLI binary selected
+by Main's existing resolver, or null when none is usable. The
+`daemon:get-cli-path` IPC replaces the former boolean installation check;
+availability and the displayed path must come from this same result.
+
 ## 3. Contracts
 
 - Main owns independent ephemeral CLI and connection diagnostics. Status events
@@ -82,6 +87,10 @@ without adding raw errors to `ManagedTransitionResult` or IPC.
 - CLI failure stage comes from bootstrap/resolution evidence; successful
   fallback resolves setup failure. Do not change candidate ordering or bypass
   checksum verification as part of improving diagnostics.
+- Settings shows the actual selected executable path beneath CLI status. Keep
+  spaces, non-ASCII characters and the filename intact, with selectable text
+  that wraps at narrow widths. Do not infer a default installation directory;
+  missing and failed lookups must not display an invented path.
 - Render persistent English/Chinese summaries and ordered steps in Settings.
   Long explanations wrap. A short toast reuses the same diagnosis mapping.
   Windows guidance must not recommend deleting identity files or disabling

@@ -159,7 +159,7 @@ interface DaemonAPI {
     token: string,
     userId: string,
   ) => Promise<DaemonReauthResult>;
-  isCliInstalled: () => Promise<boolean>;
+  getCliPath: () => Promise<string | null>;
   getPrefs: () => Promise<DaemonPrefs>;
   setPrefs: (prefs: Partial<DaemonPrefs>) => Promise<DaemonPrefs>;
   autoStart: () => Promise<void>;
