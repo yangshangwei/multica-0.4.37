@@ -1,0 +1,45 @@
+{
+  "recordedAt": "2026-10-14T02:25:08.973Z",
+  "environment": "Isolated Electron renderer; Chinese settings; native window sizing and zoom",
+  "limitations": [
+    "Synthetic in-memory Quick Action data proves rendering, not API parsing.",
+    "Focus and center hit tests do not establish physical-device touch behavior.",
+    "Shortcut bindings are inspected without recording or changing them."
+  ],
+  "cases": [
+    {
+      "id": "property-dialog-geometry",
+      "status": "error",
+      "startedAt": "2026-10-14T02:25:08.974Z",
+      "observations": [],
+      "artifacts": [],
+      "limitations": [],
+      "cleanup": [],
+      "error": "Error: An existing dialog is open; refusing to disturb another inspection.\n    at configurationCase (eval at <anonymous> (file:///Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/scripts/resume-run.mjs:65:9), <anonymous>:101:13)\n    at async eval (eval at <anonymous> (file:///Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/scripts/resume-run.mjs:65:9), <anonymous>:152:1)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/scripts/resume-run.mjs:65:3",
+      "finishedAt": "2026-10-14T02:25:08.986Z"
+    },
+    {
+      "id": "configuration-accessible-names",
+      "status": "error",
+      "startedAt": "2026-10-14T02:25:08.987Z",
+      "observations": [],
+      "artifacts": [],
+      "limitations": [],
+      "cleanup": [],
+      "error": "Error: An existing dialog is open; refusing to disturb another inspection.\n    at configurationCase (eval at <anonymous> (file:///Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/scripts/resume-run.mjs:65:9), <anonymous>:101:13)\n    at async eval (eval at <anonymous> (file:///Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/scripts/resume-run.mjs:65:9), <anonymous>:196:1)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/scripts/resume-run.mjs:65:3",
+      "finishedAt": "2026-10-14T02:25:08.996Z"
+    },
+    {
+      "id": "quick-action-warning-contrast",
+      "status": "error",
+      "startedAt": "2026-10-14T02:25:08.998Z",
+      "observations": [],
+      "artifacts": [],
+      "limitations": [],
+      "cleanup": [],
+      "error": "Error: An existing dialog is open; refusing to disturb another inspection.\n    at configurationCase (eval at <anonymous> (file:///Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/scripts/resume-run.mjs:65:9), <anonymous>:101:13)\n    at async eval (eval at <anonymous> (file:///Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/scripts/resume-run.mjs:65:9), <anonymous>:244:1)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/scripts/resume-run.mjs:65:3",
+      "finishedAt": "2026-10-14T02:25:09.001Z"
+    }
+  ],
+  "finishedAt": "2026-10-14T02:25:09.003Z"
+}

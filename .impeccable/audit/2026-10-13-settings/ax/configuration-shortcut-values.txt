@@ -1,0 +1,221 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- list:
+  - listitem:
+    - button "桌 桌面手测 10-08（保留数据）"
+- list:
+  - listitem:
+    - button "搜索..."
+  - listitem:
+    - button "新建任务"
+- list:
+  - listitem:
+    - link "收件箱":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/inbox
+  - listitem:
+    - link "我的任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/my-issues
+  - listitem:
+    - link "聊天":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/chat
+- text: 工作
+- list:
+  - listitem:
+    - link "任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/issues
+  - listitem:
+    - link "项目":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/projects
+  - listitem:
+    - link "迭代":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/iterations
+  - listitem:
+    - link "分拣台 3":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/triage
+- text: AI 团队
+- list:
+  - listitem:
+    - link "智能体":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/agents
+  - listitem:
+    - link "AI小队":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/squads
+  - listitem:
+    - link "自动化":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots
+- text: 资源与连接
+- list:
+  - listitem:
+    - link "技能库":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/skills
+  - listitem:
+    - link "MCP":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp
+  - listitem:
+    - link "运行时":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes
+- list:
+  - listitem:
+    - link "统计":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/usage
+  - listitem:
+    - link "设置":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/settings
+- button "帮助"
+- button "切换左侧边栏"
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- tablist "设置":
+  - group "个人设置":
+    - heading "个人设置" [level=2]
+    - tab "个人资料"
+    - tab "偏好设置"
+    - tab "通知"
+    - tab "快捷键" [selected]
+    - tab "API Token"
+  - group "工作空间管理":
+    - heading "工作空间管理" [level=2]
+    - tab "常规"
+    - tab "成员"
+    - tab "标签"
+    - tab "分拣台"
+    - tab "迭代"
+  - group "任务配置":
+    - heading "任务配置" [level=2]
+    - tab "任务状态"
+    - tab "属性"
+    - tab "快捷操作"
+  - group "连接与扩展":
+    - heading "连接与扩展" [level=2]
+    - tab "代码仓库"
+    - tab "集成"
+    - tab "MCP"
+  - group "桌面应用":
+    - heading "桌面应用" [level=2]
+    - tab "守护进程"
+    - tab "服务器连接"
+    - tab "更新"
+    - tab "行为"
+- tabpanel "快捷键":
+  - banner:
+    - heading "快捷键" [level=2]
+    - paragraph: 自定义当前设备上的产品操作。点击一个快捷键，然后按下新的组合键。
+  - textbox "搜索操作..."
+  - button "恢复默认设置" [disabled]
+  - heading "常规" [level=3]
+  - text: 打开搜索 随时搜索内容或运行命令。
+  - button "修改\"打开搜索\"的快捷键"
+  - button "重置\"打开搜索\"" [disabled]
+  - button "停用\"打开搜索\"快捷键"
+  - text: 新建任务 打开你常用的任务创建流程。
+  - button "修改\"新建任务\"的快捷键"
+  - button "重置\"新建任务\"" [disabled]
+  - button "停用\"新建任务\"快捷键"
+  - text: 显示或隐藏左侧边栏 切换左侧边栏的显示状态。
+  - button "修改\"显示或隐藏左侧边栏\"的快捷键"
+  - button "重置\"显示或隐藏左侧边栏\"" [disabled]
+  - button "停用\"显示或隐藏左侧边栏\"快捷键"
+  - text: 显示或隐藏右侧边栏 当前页面有右侧边栏时，切换其显示状态。
+  - button "修改\"显示或隐藏右侧边栏\"的快捷键"
+  - button "重置\"显示或隐藏右侧边栏\"" [disabled]
+  - button "停用\"显示或隐藏右侧边栏\"快捷键"
+  - text: 显示或隐藏聊天窗 打开或关闭悬浮聊天窗，打开时自动聚焦输入框。
+  - button "修改\"显示或隐藏聊天窗\"的快捷键"
+  - button "重置\"显示或隐藏聊天窗\"" [disabled]
+  - button "停用\"显示或隐藏聊天窗\"快捷键"
+  - text: 在任务中查找 搜索当前打开的任务详情。
+  - button "修改\"在任务中查找\"的快捷键"
+  - button "重置\"在任务中查找\"" [disabled]
+  - button "停用\"在任务中查找\"快捷键"
+  - text: 打开讨论导航 列出、搜索并跳转当前任务的评论讨论。
+  - button "修改\"打开讨论导航\"的快捷键"
+  - button "重置\"打开讨论导航\"" [disabled]
+  - button "停用\"打开讨论导航\"快捷键"
+  - text: 归档通知 归档当前打开的收件箱通知；在归档列表中则取消归档。
+  - button "修改\"归档通知\"的快捷键"
+  - button "重置\"归档通知\"" [disabled]
+  - button "停用\"归档通知\"快捷键"
+  - text: 发送 发送聊天消息、评论、回复、反馈和提示词，并在创建弹窗中创建任务。
+  - button "修改\"发送\"的快捷键"
+  - button "重置\"发送\"" [disabled]
+  - button "停用\"发送\"快捷键"
+  - heading "导航" [level=3]
+  - text: 后退 像浏览器一样在历史记录中后退。
+  - button "修改\"后退\"的快捷键"
+  - button "重置\"后退\"" [disabled]
+  - button "停用\"后退\"快捷键"
+  - text: 前进 像浏览器一样在历史记录中前进。
+  - button "修改\"前进\"的快捷键"
+  - button "重置\"前进\"" [disabled]
+  - button "停用\"前进\"快捷键"
+  - text: 前往收件箱 打开工作空间收件箱。
+  - button "修改\"前往收件箱\"的快捷键": 未设置
+  - button "重置\"前往收件箱\"" [disabled]
+  - button "停用\"前往收件箱\"快捷键" [disabled]
+  - text: 前往聊天 打开工作空间聊天。
+  - button "修改\"前往聊天\"的快捷键": 未设置
+  - button "重置\"前往聊天\"" [disabled]
+  - button "停用\"前往聊天\"快捷键" [disabled]
+  - text: 前往我的任务 打开分配给你的任务。
+  - button "修改\"前往我的任务\"的快捷键": 未设置
+  - button "重置\"前往我的任务\"" [disabled]
+  - button "停用\"前往我的任务\"快捷键" [disabled]
+  - text: 前往任务 打开任务列表。
+  - button "修改\"前往任务\"的快捷键": 未设置
+  - button "重置\"前往任务\"" [disabled]
+  - button "停用\"前往任务\"快捷键" [disabled]
+  - text: 前往项目 打开项目列表。
+  - button "修改\"前往项目\"的快捷键": 未设置
+  - button "重置\"前往项目\"" [disabled]
+  - button "停用\"前往项目\"快捷键" [disabled]
+  - text: 前往自动化 打开工作空间自动化。
+  - button "修改\"前往自动化\"的快捷键": 未设置
+  - button "重置\"前往自动化\"" [disabled]
+  - button "停用\"前往自动化\"快捷键" [disabled]
+  - text: 前往智能体 打开智能体列表。
+  - button "修改\"前往智能体\"的快捷键": 未设置
+  - button "重置\"前往智能体\"" [disabled]
+  - button "停用\"前往智能体\"快捷键" [disabled]
+  - text: 前往AI小队 打开AI小队列表。
+  - button "修改\"前往AI小队\"的快捷键": 未设置
+  - button "重置\"前往AI小队\"" [disabled]
+  - button "停用\"前往AI小队\"快捷键" [disabled]
+  - text: 前往用量 打开用量分析。
+  - button "修改\"前往用量\"的快捷键": 未设置
+  - button "重置\"前往用量\"" [disabled]
+  - button "停用\"前往用量\"快捷键" [disabled]
+  - text: 前往运行时 打开运行时配置。
+  - button "修改\"前往运行时\"的快捷键": 未设置
+  - button "重置\"前往运行时\"" [disabled]
+  - button "停用\"前往运行时\"快捷键" [disabled]
+  - text: 前往 Skills 打开 skill 库。
+  - button "修改\"前往 Skills\"的快捷键": 未设置
+  - button "重置\"前往 Skills\"" [disabled]
+  - button "停用\"前往 Skills\"快捷键" [disabled]
+  - text: 前往设置 打开工作空间设置。
+  - button "修改\"前往设置\"的快捷键": 未设置
+  - button "重置\"前往设置\"" [disabled]
+  - button "停用\"前往设置\"快捷键" [disabled]
+  - heading "固定的系统快捷键" [level=3]
+  - paragraph: 窗口和无障碍快捷键保持固定，确保始终可靠。缩放和标签页操作仅适用于桌面端。
+  - text: 打开设置
+  - img "Ctrl+,"
+  - text: 关闭当前标签页
+  - img "Ctrl+W"
+  - text: 放大
+  - img "Ctrl++"
+  - text: 缩小
+  - img "Ctrl+-"
+  - text: 重置缩放
+  - img "Ctrl+0"
+  - text: 关闭对话框或菜单
+  - img "Esc"
+- button "问 Multica"
+- region "Notifications alt+T"

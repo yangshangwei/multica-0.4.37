@@ -1,0 +1,58 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "AI小队"
+  - status
+  - button "New tab"
+- banner:
+  - heading "AI小队" [level=1]
+  - text: "3"
+  - button "新建AI小队"
+- tablist "AI小队":
+  - tab "工作空间" [selected]
+  - tab "模板"
+- tabpanel "工作空间":
+  - button "我创建的"
+  - button "筛选"
+  - button "显示"
+  - table:
+    - row "AI小队 队长":
+      - columnheader "AI小队":
+        - button "AI小队"
+      - columnheader "队长"
+    - row "合并门禁小队 合并门禁小队 从正确性、安全性和测试覆盖三个角度读完一份改动，给出统一结论。 合并门禁负责人 AI小队操作":
+      - cell "合并门禁小队 合并门禁小队 从正确性、安全性和测试覆盖三个角度读完一份改动，给出统一结论。":
+        - img "合并门禁小队"
+        - link "合并门禁小队":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/squads/0990be1e-0dd3-43fe-9fe1-aece130c65d2
+        - text: 从正确性、安全性和测试覆盖三个角度读完一份改动，给出统一结论。
+      - cell "合并门禁负责人":
+        - link "合并门禁负责人":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/0ddd731a-096e-485a-a17d-33cfe916cf1f
+      - cell "AI小队操作":
+        - button "AI小队操作"
+    - row "缺陷修复小队 缺陷修复小队 定性、复现；原因不明时先做带证据的诊断，再带回归测试修复、验证；严重级别决定何时上报。 缺陷修复负责人 AI小队操作":
+      - cell "缺陷修复小队 缺陷修复小队 定性、复现；原因不明时先做带证据的诊断，再带回归测试修复、验证；严重级别决定何时上报。":
+        - img "缺陷修复小队"
+        - link "缺陷修复小队":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/squads/9a9dedb6-377b-4678-a8f6-5c9feea5b276
+        - text: 定性、复现；原因不明时先做带证据的诊断，再带回归测试修复、验证；严重级别决定何时上报。
+      - cell "缺陷修复负责人":
+        - link "缺陷修复负责人":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/6fc7a2bb-3935-4a4d-9d9d-6ca5176887c7
+      - cell "AI小队操作":
+        - button "AI小队操作"
+    - row "特性交付小队 特性交付小队 澄清、设计、实现、测试、审查，由 leader 按阶段逐个派活。 特性交付负责人 AI小队操作":
+      - cell "特性交付小队 特性交付小队 澄清、设计、实现、测试、审查，由 leader 按阶段逐个派活。":
+        - img "特性交付小队"
+        - link "特性交付小队":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/squads/df088e6a-8fd0-4cbc-b0ad-5a05983f3485
+        - text: 澄清、设计、实现、测试、审查，由 leader 按阶段逐个派活。
+      - cell "特性交付负责人":
+        - link "特性交付负责人":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/71d50e57-c332-4d58-a953-1036c2d8fcb9
+      - cell "AI小队操作":
+        - button "AI小队操作"
+- button "问 Multica"
+- region "Notifications alt+T"

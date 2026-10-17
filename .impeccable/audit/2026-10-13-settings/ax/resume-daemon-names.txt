@@ -1,0 +1,121 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- list:
+  - listitem:
+    - button "桌 桌面手测 10-08（保留数据）"
+- list:
+  - listitem:
+    - button "搜索..."
+  - listitem:
+    - button "新建任务"
+- list:
+  - listitem:
+    - link "收件箱":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/inbox
+  - listitem:
+    - link "我的任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/my-issues
+  - listitem:
+    - link "聊天":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/chat
+- text: 工作
+- list:
+  - listitem:
+    - link "任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/issues
+  - listitem:
+    - link "项目":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/projects
+  - listitem:
+    - link "迭代":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/iterations
+  - listitem:
+    - link "分拣台 3":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/triage
+- text: AI 团队
+- list:
+  - listitem:
+    - link "智能体":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/agents
+  - listitem:
+    - link "AI小队":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/squads
+  - listitem:
+    - link "自动化":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots
+- text: 资源与连接
+- list:
+  - listitem:
+    - link "技能库":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/skills
+  - listitem:
+    - link "MCP":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp
+  - listitem:
+    - link "运行时":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes
+- list:
+  - listitem:
+    - link "统计":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/usage
+  - listitem:
+    - link "设置":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/settings
+- button "帮助"
+- button "切换左侧边栏"
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- tablist "设置":
+  - group "个人设置":
+    - heading "个人设置" [level=2]
+    - tab "个人资料"
+    - tab "偏好设置"
+    - tab "通知"
+    - tab "快捷键"
+    - tab "API Token"
+  - group "工作空间管理":
+    - heading "工作空间管理" [level=2]
+    - tab "常规"
+    - tab "成员"
+    - tab "标签"
+    - tab "分拣台"
+    - tab "迭代"
+  - group "任务配置":
+    - heading "任务配置" [level=2]
+    - tab "任务状态"
+    - tab "属性"
+    - tab "快捷操作"
+  - group "连接与扩展":
+    - heading "连接与扩展" [level=2]
+    - tab "代码仓库"
+    - tab "集成"
+    - tab "MCP"
+  - group "桌面应用":
+    - heading "桌面应用" [level=2]
+    - tab "守护进程" [selected]
+    - tab "服务器连接"
+    - tab "更新"
+    - tab "行为"
+- tabpanel "守护进程":
+  - banner:
+    - heading "守护进程" [level=2]
+    - paragraph: 设置本地智能体守护进程如何随桌面应用启动和停止。
+  - text: 登录后自动启动 登录后自动启动守护进程。桌面应用运行期间，会持续监控并维护自动或手动启动的守护进程。
+  - switch
+  - text: 退出应用时自动停止 退出桌面应用时停止守护进程。关闭此选项后，守护进程会继续在后台运行。
+  - switch
+  - text: 重新连接此设备 使用当前账号刷新本地守护进程的登录凭证并重新连接。只有桌面应用的登录也已失效时，才需要再次登录账号。
+  - button "重新连接此设备"
+  - text: CLI 状态 已安装 multica CLI，可通过 PATH 环境变量找到并调用。
+  - heading "诊断信息" [level=3]
+  - paragraph: 查看守护进程的标识和连接信息，便于反馈问题或排查运行时未显示的原因。
+  - text: 运行状态 已停止 已运行时长 — 进程 ID（PID） — 守护进程 ID — 配置档案 默认（default） 服务器地址 — 设备名称 — 工作空间数量 —
+- button "问 Multica"
+- region "Notifications alt+T"

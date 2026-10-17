@@ -1,0 +1,89 @@
+{
+  "recordedAt": "2026-10-14T02:35:45.880Z",
+  "cases": [
+    {
+      "case": "members-accessible-names",
+      "unnamed": [
+        {
+          "role": "combobox",
+          "name": "",
+          "value": "成员"
+        },
+        {
+          "role": "combobox",
+          "name": "",
+          "value": "成员"
+        },
+        {
+          "role": "combobox",
+          "name": "",
+          "value": "7 天"
+        }
+      ],
+      "confirmed": true
+    },
+    {
+      "case": "daemon-accessible-names",
+      "unnamed": [
+        {
+          "role": "switch",
+          "name": ""
+        },
+        {
+          "role": "switch",
+          "name": ""
+        }
+      ],
+      "confirmed": true
+    },
+    {
+      "case": "behavior-accessible-names",
+      "unnamed": [
+        {
+          "role": "combobox",
+          "name": "",
+          "value": "每次询问"
+        }
+      ],
+      "confirmed": true
+    },
+    {
+      "case": "update-result-announcement",
+      "text": "已是最新版本。",
+      "announcementAncestor": null,
+      "confirmed": true
+    },
+    {
+      "case": "label-menu-clipping",
+      "before": {
+        "x": 921,
+        "right": 949,
+        "width": 28,
+        "viewport": 900,
+        "cardWidth": 594,
+        "cardScrollWidth": 688,
+        "overflowX": "hidden"
+      },
+      "after": {
+        "x": 827,
+        "right": 855,
+        "focused": true,
+        "cardScrollLeft": 94
+      },
+      "confirmed": true,
+      "qualification": "Keyboard focus scrolls the overflow-hidden card to reveal the menu; pointer users have no visible menu or scrollbar."
+    },
+    {
+      "case": "mcp-200pct-completed",
+      "width": 450,
+      "height": 500,
+      "documentWidth": 450,
+      "panelWidth": 397,
+      "nestedPanels": 1,
+      "contrastChecked": 18,
+      "contrastFailures": [],
+      "confirmed": true,
+      "qualification": "The earlier strict-mode locator error was due to nested MCP tabs, not a product failure."
+    }
+  ]
+}

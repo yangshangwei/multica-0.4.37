@@ -1,0 +1,59 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "MCP"
+  - status
+  - button "New tab"
+- banner:
+  - heading "MCP" [level=1]
+  - button "自定义添加"
+- tablist "MCP":
+  - tab "共享配置" [selected]: 共享配置 5
+  - tab "MCP 市场"
+- tabpanel "共享配置":
+  - heading "共享 MCP Server" [level=3]
+  - paragraph: 为保护敏感信息，配置保存后不会再次显示。需要调整时，请填写一份完整的新配置；只修改名称不会影响当前配置和智能体分配。
+  - list:
+    - listitem:
+      - text: chrome-devtools
+      - paragraph: STDIO
+      - text: 平台内置 · 模板：chrome-devtools
+      - button "分配 chrome-devtools": 分配
+      - button "重命名 MCP Server chrome-devtools"
+      - button "替换配置 chrome-devtools"
+      - button "移除 MCP Server chrome-devtools"
+    - listitem:
+      - text: chrome-devtools-2
+      - paragraph: STDIO
+      - text: 平台内置 · 模板：chrome-devtools
+      - button "分配 chrome-devtools-2": 分配
+      - button "重命名 MCP Server chrome-devtools-2"
+      - button "替换配置 chrome-devtools-2"
+      - button "移除 MCP Server chrome-devtools-2"
+    - listitem:
+      - text: chrome-devtools-3
+      - paragraph: STDIO
+      - text: 平台内置 · 模板：chrome-devtools
+      - button "分配 chrome-devtools-3": 分配
+      - button "重命名 MCP Server chrome-devtools-3"
+      - button "替换配置 chrome-devtools-3"
+      - button "移除 MCP Server chrome-devtools-3"
+    - listitem:
+      - text: chrome-devtools-4
+      - paragraph: STDIO
+      - text: 平台内置 · 模板：chrome-devtools
+      - button "分配 chrome-devtools-4": 分配
+      - button "重命名 MCP Server chrome-devtools-4"
+      - button "替换配置 chrome-devtools-4"
+      - button "移除 MCP Server chrome-devtools-4"
+    - listitem:
+      - text: chrome-devtools-5
+      - paragraph: STDIO
+      - text: 平台内置 · 模板：chrome-devtools
+      - button "分配 chrome-devtools-5": 分配
+      - button "重命名 MCP Server chrome-devtools-5"
+      - button "替换配置 chrome-devtools-5"
+      - button "移除 MCP Server chrome-devtools-5"
+- button "问 Multica"
+- region "Notifications alt+T"

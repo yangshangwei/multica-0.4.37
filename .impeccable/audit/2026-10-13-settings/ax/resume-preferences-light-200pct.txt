@@ -1,0 +1,53 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: 偏好设置"': 设置目录 偏好设置
+- tabpanel "偏好设置":
+  - banner:
+    - heading "偏好设置" [level=2]
+  - heading "常规" [level=3]
+  - text: 主题
+  - combobox "主题": 跟随系统
+  - text: 语言
+  - combobox "语言": 中文
+  - text: 查看时区 用于仪表盘、图表和"今天"标签。这是个人偏好，在你的所有工作空间中通用。
+  - combobox "查看时区": Asia/Shanghai（浏览器）
+  - text: 固定评论栏 滚动任务页面时，评论栏始终固定在底部。
+  - switch "固定评论栏" [checked]
+  - heading "通过智能体创建" [level=3]
+  - paragraph: 快速创建工具栏中显示的字段。
+  - text: 项目
+  - switch "项目" [checked]
+  - text: 优先级
+  - switch "优先级"
+  - text: 截止日期
+  - switch "截止日期"
+  - heading "手动创建" [level=3]
+  - paragraph: 手动创建工具栏中显示的字段。
+  - text: 状态
+  - switch "状态" [checked]
+  - text: 优先级
+  - switch "优先级" [checked]
+  - text: 负责人
+  - switch "负责人" [checked]
+  - text: 标签
+  - switch "标签" [checked]
+  - text: 项目
+  - switch "项目" [checked]
+  - text: 截止日期
+  - switch "截止日期"
+  - text: 开始日期
+  - switch "开始日期"
+  - heading "悬浮窗" [level=3]
+  - text: 悬浮聊天窗 在每个页面右下角显示悬浮聊天按钮，默认开启。关闭后，仍可在聊天页面使用聊天。
+  - switch "悬浮聊天窗" [checked]
+- button "问 Multica"
+- region "Notifications alt+T"

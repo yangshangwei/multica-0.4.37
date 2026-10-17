@@ -1,0 +1,108 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- list:
+  - listitem:
+    - button "桌 桌面手测 10-08（保留数据）"
+- list:
+  - listitem:
+    - button "搜索..."
+  - listitem:
+    - button "新建任务"
+- list:
+  - listitem:
+    - link "收件箱":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/inbox
+  - listitem:
+    - link "我的任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/my-issues
+  - listitem:
+    - link "聊天":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/chat
+- text: 工作
+- list:
+  - listitem:
+    - link "任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/issues
+  - listitem:
+    - link "项目":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/projects
+  - listitem:
+    - link "迭代":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/iterations
+  - listitem:
+    - link "分拣台 3":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/triage
+- text: AI 团队
+- list:
+  - listitem:
+    - link "智能体":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/agents
+  - listitem:
+    - link "AI小队":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/squads
+  - listitem:
+    - link "自动化":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots
+- text: 资源与连接
+- list:
+  - listitem:
+    - link "技能库":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/skills
+  - listitem:
+    - link "MCP":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp
+  - listitem:
+    - link "运行时":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes
+- list:
+  - listitem:
+    - link "统计":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/usage
+  - listitem:
+    - link "设置":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/settings
+- button "帮助"
+- button "切换左侧边栏"
+- banner:
+  - button "自动化"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- banner:
+  - heading "自动化" [level=1]
+  - button "从空白开始"
+- region "从模板开始":
+  - heading "从模板开始" [level=2]
+  - paragraph: 选择一个场景，再确认执行者与运行计划。
+  - group "按场景筛选模板":
+    - button "全部 10" [pressed]
+    - button "仓库维护 4"
+    - button "评审协作 4"
+    - button "进展汇报 2"
+  - list:
+    - listitem:
+      - button "工作日仓库巡检 每个工作日检查依赖风险、测试失败和滞留变更，仅在发现实质问题时创建或补充任务。 推荐起点 09:00 · 周一至周五 按需跟进 查看模板"
+    - listitem:
+      - button "发布准备检查 每周核对已完成事项、发布阻塞和验证结果，汇总发布风险与建议。 17:00 · 周一 每次创建任务 查看模板"
+    - listitem:
+      - button "每日变更回顾 回顾最近 24 小时的变更，指出功能正确性、使用体验和测试覆盖方面的风险。 18:00 · 每天 每次创建任务 查看模板"
+    - listitem:
+      - button "每小时队列巡检 每小时检查停滞任务、未同步的生成文件和持续失败的快速检查，合并报告重复问题。 每小时的第 00 分 · 每天 按需跟进 查看模板"
+    - listitem:
+      - button "PR 评审提醒 汇总超过 24 小时未获评审的非草稿 PR，按风险和等待时间提醒团队处理。 10:00 · 周一至周五 按需跟进 查看模板"
+    - listitem:
+      - button "缺陷分级 评估尚未分级的缺陷，在权限允许时设置优先级，并说明依据和下一步建议。 09:00 · 周一至周五 每次创建任务 查看模板"
+    - listitem:
+      - button "每日进展报告 汇总近 24 小时完成的任务、当前进展和阻塞，并列出可核对的任务数量。 18:00 · 每天 每次创建任务 查看模板"
+    - listitem:
+      - button "每周进展报告 汇总近 7 天完成的任务、当前进展和阻塞，并列出可核对的任务数量。 17:00 · 周一 每次创建任务 查看模板"
+    - listitem:
+      - button "依赖审计 每周检查依赖漏洞和严重落后的版本，结合实际影响提出处理建议。 08:00 · 周一 按需跟进 查看模板"
+    - listitem:
+      - button "文档同步检查 核对近 7 天的代码变更与文档，汇总接口、配置和使用说明中的真实缺口。 14:00 · 周一 按需跟进 查看模板"
+  - paragraph: 所有模板均可在创建后修改。运行前需指定智能体或AI小队。
+- button "问 Multica"
+- region "Notifications alt+T"

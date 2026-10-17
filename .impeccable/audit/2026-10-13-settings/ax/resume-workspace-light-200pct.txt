@@ -1,0 +1,43 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: 常规"': 设置目录 常规
+- tabpanel "常规":
+  - banner:
+    - heading "常规" [level=2]
+  - heading "工作空间信息" [level=3]
+  - text: 工作空间标志 点击图标上传新图片
+  - button "更换工作空间图标": 桌
+  - text: 名称
+  - textbox "名称": 桌面手测 10-08（保留数据）
+  - text: 描述
+  - textbox "描述":
+    - /placeholder: 这个工作空间主要做什么？
+  - text: 上下文
+  - textbox "上下文":
+    - /placeholder: 供工作空间中的智能体参考的背景信息和上下文
+  - text: Slug
+  - textbox "Slug": desktop-qa-1008-1743
+  - text: 任务前缀 用于任务编号，例如 DQA-123。
+  - textbox "任务前缀":
+    - /placeholder: DQA
+    - text: DQA
+  - heading "规划设置" [level=3]
+  - text: 规划时区 用于项目日期计算和新建迭代。已有迭代保留原时区。
+  - combobox "规划时区": Asia/Shanghai
+  - button "恢复默认"
+  - heading "危险操作" [level=3]
+  - text: 离开工作空间 你是唯一的所有者。请先把另一位成员升级为所有者，或者删除工作空间。
+  - button "离开工作空间" [disabled]
+  - text: 删除工作空间 永久删除该工作空间及其所有数据。
+  - button "删除工作空间"
+- button "问 Multica"
+- region "Notifications alt+T"

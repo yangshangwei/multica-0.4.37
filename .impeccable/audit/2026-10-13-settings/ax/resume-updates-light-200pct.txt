@@ -1,0 +1,23 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: 更新"': 设置目录 更新
+- tabpanel "更新":
+  - banner:
+    - heading "更新" [level=2]
+    - paragraph: 控制后台自动更新，或手动检查新版本。
+  - text: 当前版本 v0.6.6-audit 后台自动更新 开启后，桌面端会在启动后和每小时检查更新，并在后台下载可用版本。
+  - switch "后台自动更新"
+  - text: 检查更新
+  - paragraph: 无论是否开启自动更新，都立即检查新版本。可用的更新会在后台下载，就绪时弹出重启提示。
+  - button "立即检查"
+- button "问 Multica"
+- region "Notifications alt+T"

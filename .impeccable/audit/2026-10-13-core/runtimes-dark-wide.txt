@@ -1,0 +1,103 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- list:
+  - listitem:
+    - button "桌 桌面手测 10-08（保留数据）"
+- list:
+  - listitem:
+    - button "搜索..."
+  - listitem:
+    - button "新建任务"
+- list:
+  - listitem:
+    - link "收件箱 1":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/inbox
+  - listitem:
+    - link "我的任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/my-issues
+  - listitem:
+    - link "聊天":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/chat
+- text: 工作
+- list:
+  - listitem:
+    - link "任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/issues
+  - listitem:
+    - link "项目":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/projects
+  - listitem:
+    - link "迭代":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/iterations
+  - listitem:
+    - link "分拣台 2":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/triage
+- text: AI 团队
+- list:
+  - listitem:
+    - link "智能体":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/agents
+  - listitem:
+    - link "AI小队":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/squads
+  - listitem:
+    - link "自动化":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots
+- text: 资源与连接
+- list:
+  - listitem:
+    - link "技能库":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/skills
+  - listitem:
+    - link "MCP":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp
+  - listitem:
+    - link "运行时":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes
+- list:
+  - listitem:
+    - link "统计":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/usage
+  - listitem:
+    - link "设置":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/settings
+- button "帮助"
+- button "切换左侧边栏"
+- banner:
+  - button "运行时"
+  - status
+  - button "New tab"
+- banner:
+  - heading "运行时" [level=1]
+  - text: "4"
+  - paragraph:
+    - text: 为智能体跑 CLI 会话的机器和云端 worker。
+    - link "了解更多 →":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/docs/daemon-runtimes
+  - button "添加电脑"
+- link "Changelog acceptance 本地守护进程 本机 离线 0 个运行时 全部空闲 —":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes/local%3Aplaceholder
+- link "yangshangweideMac-mini.local daemon 80193da5... 在线 6 个运行时 Hermes +2 全部空闲 1 分钟前":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes/local%3A80193da5-b315-8122-93e8-0482d01eb4d5
+  - text: yangshangweideMac-mini.local daemon 80193da5... 在线 6 个运行时
+  - img
+  - img
+  - img
+  - img "Hermes"
+  - text: +2 全部空闲 1 分钟前
+- link "测试数据；未注册 daemon；不会执行任务 本地守护进程 长期离线 1 个运行时 全部空闲 —":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes/local%3Adevice%3A%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%EF%BC%9B%E6%9C%AA%E6%B3%A8%E5%86%8C%20daemon%EF%BC%9B%E4%B8%8D%E4%BC%9A%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1
+  - text: 测试数据；未注册 daemon；不会执行任务 本地守护进程 长期离线 1 个运行时
+  - img
+  - text: 全部空闲 —
+- link "yangshangweideMac-mini.local daemon 019fef71... 离线 6 个运行时 Hermes +2 全部空闲 9 小时前":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes/local%3A019fef71-c14f-757e-9ad2-a9750d306456
+  - text: yangshangweideMac-mini.local daemon 019fef71... 离线 6 个运行时
+  - img
+  - img
+  - img
+  - img "Hermes"
+  - text: +2 全部空闲 9 小时前
+- button "问 Multica"
+- region "Notifications alt+T"

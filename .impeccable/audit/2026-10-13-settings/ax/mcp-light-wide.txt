@@ -1,0 +1,159 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- list:
+  - listitem:
+    - button "桌 桌面手测 10-08（保留数据）"
+- list:
+  - listitem:
+    - button "搜索..."
+  - listitem:
+    - button "新建任务"
+- list:
+  - listitem:
+    - link "收件箱":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/inbox
+  - listitem:
+    - link "我的任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/my-issues
+  - listitem:
+    - link "聊天":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/chat
+- text: 工作
+- list:
+  - listitem:
+    - link "任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/issues
+  - listitem:
+    - link "项目":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/projects
+  - listitem:
+    - link "迭代":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/iterations
+  - listitem:
+    - link "分拣台 3":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/triage
+- text: AI 团队
+- list:
+  - listitem:
+    - link "智能体":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/agents
+  - listitem:
+    - link "AI小队":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/squads
+  - listitem:
+    - link "自动化":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots
+- text: 资源与连接
+- list:
+  - listitem:
+    - link "技能库":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/skills
+  - listitem:
+    - link "MCP":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp
+  - listitem:
+    - link "运行时":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes
+- list:
+  - listitem:
+    - link "统计":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/usage
+  - listitem:
+    - link "设置":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/settings
+- button "帮助"
+- button "切换左侧边栏"
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- tablist "设置":
+  - group "个人设置":
+    - heading "个人设置" [level=2]
+    - tab "个人资料"
+    - tab "偏好设置"
+    - tab "通知"
+    - tab "快捷键"
+    - tab "API Token"
+  - group "工作空间管理":
+    - heading "工作空间管理" [level=2]
+    - tab "常规"
+    - tab "成员"
+    - tab "标签"
+    - tab "分拣台"
+    - tab "迭代"
+  - group "任务配置":
+    - heading "任务配置" [level=2]
+    - tab "任务状态"
+    - tab "属性"
+    - tab "快捷操作"
+  - group "连接与扩展":
+    - heading "连接与扩展" [level=2]
+    - tab "代码仓库"
+    - tab "集成"
+    - tab "MCP" [selected]
+  - group "桌面应用":
+    - heading "桌面应用" [level=2]
+    - tab "守护进程"
+    - tab "服务器连接"
+    - tab "更新"
+    - tab "行为"
+- tabpanel "MCP":
+  - banner:
+    - heading "MCP" [level=2]
+    - paragraph: 选择模板，保存共享配置，再选择可以使用它的智能体。
+  - tablist "MCP":
+    - tab "共享配置" [selected]: 共享配置 5
+    - tab "MCP 市场": MCP 市场 16
+  - button "自定义添加"
+  - tabpanel "共享配置":
+    - heading "共享 MCP Server" [level=3]
+    - paragraph: 为保护敏感信息，配置保存后不会再次显示。需要调整时，请填写一份完整的新配置；只修改名称不会影响当前配置和智能体分配。
+    - list:
+      - listitem:
+        - text: chrome-devtools
+        - paragraph: STDIO
+        - text: 平台内置 · 模板：chrome-devtools
+        - button "分配 chrome-devtools": 分配
+        - button "重命名 MCP Server chrome-devtools"
+        - button "替换配置 chrome-devtools"
+        - button "移除 MCP Server chrome-devtools"
+      - listitem:
+        - text: chrome-devtools-2
+        - paragraph: STDIO
+        - text: 平台内置 · 模板：chrome-devtools
+        - button "分配 chrome-devtools-2": 分配
+        - button "重命名 MCP Server chrome-devtools-2"
+        - button "替换配置 chrome-devtools-2"
+        - button "移除 MCP Server chrome-devtools-2"
+      - listitem:
+        - text: chrome-devtools-3
+        - paragraph: STDIO
+        - text: 平台内置 · 模板：chrome-devtools
+        - button "分配 chrome-devtools-3": 分配
+        - button "重命名 MCP Server chrome-devtools-3"
+        - button "替换配置 chrome-devtools-3"
+        - button "移除 MCP Server chrome-devtools-3"
+      - listitem:
+        - text: chrome-devtools-4
+        - paragraph: STDIO
+        - text: 平台内置 · 模板：chrome-devtools
+        - button "分配 chrome-devtools-4": 分配
+        - button "重命名 MCP Server chrome-devtools-4"
+        - button "替换配置 chrome-devtools-4"
+        - button "移除 MCP Server chrome-devtools-4"
+      - listitem:
+        - text: chrome-devtools-5
+        - paragraph: STDIO
+        - text: 平台内置 · 模板：chrome-devtools
+        - button "分配 chrome-devtools-5": 分配
+        - button "重命名 MCP Server chrome-devtools-5"
+        - button "替换配置 chrome-devtools-5"
+        - button "移除 MCP Server chrome-devtools-5"
+- button "问 Multica"
+- region "Notifications alt+T"

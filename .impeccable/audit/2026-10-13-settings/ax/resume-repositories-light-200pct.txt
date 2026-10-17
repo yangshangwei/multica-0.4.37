@@ -1,0 +1,21 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: 代码仓库"': 设置目录 代码仓库
+- tabpanel "代码仓库":
+  - banner:
+    - heading "代码仓库" [level=2]
+  - paragraph: 与该工作空间关联的 Git 仓库。智能体会从这里 clone 代码并完成工作。
+  - text: 暂无仓库。
+  - button "添加仓库"
+  - button "连接 GitLab"
+- button "问 Multica"
+- region "Notifications alt+T"

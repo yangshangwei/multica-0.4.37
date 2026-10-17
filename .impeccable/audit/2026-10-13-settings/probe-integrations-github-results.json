@@ -1,0 +1,32 @@
+{
+  "recordedAt": "2026-10-14T02:34:58.606Z",
+  "caseFilter": "github-second-toggle-during-save",
+  "cases": [
+    {
+      "name": "github-second-toggle-during-save",
+      "status": "finding",
+      "evidence": [
+        {
+          "screenshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/screenshots/probe-integrations-github-pending.png",
+          "ax": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/probe-integrations-github-pending.txt"
+        }
+      ],
+      "secondWasEnabled": true,
+      "callsWhilePending": [
+        {
+          "prSidebar": false,
+          "coAuthor": true
+        }
+      ],
+      "secondCheckedWhilePending": "true",
+      "callsAfterSettlement": [
+        {
+          "prSidebar": false,
+          "coAuthor": true
+        }
+      ],
+      "secondCheckedAfterSettlement": "true",
+      "cleanupErrors": []
+    }
+  ]
+}

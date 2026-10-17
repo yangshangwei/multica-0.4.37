@@ -1,0 +1,16 @@
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- alert:
+  - heading "Something went wrong in this tab" [level=2]
+  - paragraph: A route-level renderer error was contained before it could take down the desktop shell. Reload this tab, or send the report if it keeps happening.
+  - paragraph: Cannot read properties of null (reading 'length')
+  - button "Reload tab"
+  - button "Go to issues"
+  - button "Close tab"
+  - button "Report error"
+- region "Notifications alt+T"

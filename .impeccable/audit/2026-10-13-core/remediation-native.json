@@ -1,0 +1,452 @@
+[
+  {
+    "name": "F01 keyboard search and F03 named board controls",
+    "passed": true,
+    "evidence": {
+      "typed": "abc xyz",
+      "boardActions": [
+        "待规划列操作",
+        "在待规划中新建任务",
+        "待办列操作",
+        "在待办中新建任务",
+        "进行中列操作",
+        "在进行中中新建任务",
+        "审核中列操作",
+        "在审核中中新建任务",
+        "已完成列操作",
+        "在已完成中新建任务",
+        "已阻塞列操作",
+        "在已阻塞中新建任务",
+        "已取消列操作",
+        "在已取消中新建任务"
+      ]
+    }
+  },
+  {
+    "name": "F04 label contrast in both themes",
+    "passed": true,
+    "evidence": [
+      {
+        "theme": "light",
+        "minimum": 4.71,
+        "labels": [
+          {
+            "text": "桌面场景 · 缺陷",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(17, 24, 39)",
+            "background": [
+              239,
+              68,
+              68,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 4.71,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 边界场景",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(0, 0, 0)",
+            "background": [
+              139,
+              92,
+              246,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 4.96,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 边界场景",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(0, 0, 0)",
+            "background": [
+              139,
+              92,
+              246,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 4.96,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 待验证",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(17, 24, 39)",
+            "background": [
+              245,
+              158,
+              11,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 8.26,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 缺陷",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(17, 24, 39)",
+            "background": [
+              239,
+              68,
+              68,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 4.71,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 功能",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(17, 24, 39)",
+            "background": [
+              59,
+              130,
+              246,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 4.82,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 待验证",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(17, 24, 39)",
+            "background": [
+              245,
+              158,
+              11,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 8.26,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 功能",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(17, 24, 39)",
+            "background": [
+              59,
+              130,
+              246,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 4.82,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 边界场景",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(0, 0, 0)",
+            "background": [
+              139,
+              92,
+              246,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 4.96,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 边界场景",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(0, 0, 0)",
+            "background": [
+              139,
+              92,
+              246,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 4.96,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 待验证",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(17, 24, 39)",
+            "background": [
+              245,
+              158,
+              11,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 8.26,
+            "floor": 4.5
+          }
+        ]
+      },
+      {
+        "theme": "dark",
+        "minimum": 4.71,
+        "labels": [
+          {
+            "text": "桌面场景 · 缺陷",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(17, 24, 39)",
+            "background": [
+              239,
+              68,
+              68,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 4.71,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 边界场景",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(0, 0, 0)",
+            "background": [
+              139,
+              92,
+              246,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 4.96,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 边界场景",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(0, 0, 0)",
+            "background": [
+              139,
+              92,
+              246,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 4.96,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 待验证",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(17, 24, 39)",
+            "background": [
+              245,
+              158,
+              11,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 8.26,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 缺陷",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(17, 24, 39)",
+            "background": [
+              239,
+              68,
+              68,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 4.71,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 功能",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(17, 24, 39)",
+            "background": [
+              59,
+              130,
+              246,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 4.82,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 待验证",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(17, 24, 39)",
+            "background": [
+              245,
+              158,
+              11,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 8.26,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 功能",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(17, 24, 39)",
+            "background": [
+              59,
+              130,
+              246,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 4.82,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 边界场景",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(0, 0, 0)",
+            "background": [
+              139,
+              92,
+              246,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 4.96,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 边界场景",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(0, 0, 0)",
+            "background": [
+              139,
+              92,
+              246,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 4.96,
+            "floor": 4.5
+          },
+          {
+            "text": "桌面场景 · 待验证",
+            "class": "truncate max-w-[12rem]",
+            "color": "rgb(17, 24, 39)",
+            "background": [
+              245,
+              158,
+              11,
+              1
+            ],
+            "fontSize": 12,
+            "ratio": 8.26,
+            "floor": 4.5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "F02 real Tab focus reveals agent action",
+    "passed": true,
+    "evidence": {
+      "focused": true,
+      "focusVisible": true,
+      "opacity": "1",
+      "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.705 0.015 286.067) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+    }
+  },
+  {
+    "name": "F03 named member management action",
+    "passed": true,
+    "evidence": [
+      "桌面验收普通成员 的成员操作"
+    ]
+  },
+  {
+    "name": "F08 notification cold failure, pending retry and recovery",
+    "passed": true,
+    "evidence": {
+      "requests": 3,
+      "switches": 7
+    }
+  },
+  {
+    "name": "F09 disclosure state and retained description editor",
+    "passed": true,
+    "evidence": {
+      "id": "_r_bn_",
+      "retained": true
+    }
+  },
+  {
+    "name": "F03 named project Sheet at native 200% zoom",
+    "passed": true,
+    "evidence": {
+      "name": "- dialog \"桌面场景 · 平台体验的属性\":"
+    }
+  },
+  {
+    "name": "F05 real virtual inbox arrow focus and current item",
+    "passed": true,
+    "evidence": {
+      "initialMounted": 23,
+      "focused": "audit-notice-40",
+      "current": "true",
+      "position": "41",
+      "setSize": "80",
+      "mounted": 30
+    }
+  },
+  {
+    "name": "F06 native keyboard reorder, pending guard and archived protection",
+    "passed": true,
+    "evidence": {
+      "calls": [
+        {
+          "category": "todo",
+          "ids": [
+            "audit-status-a",
+            "audit-status-qa",
+            "audit-status-b"
+          ]
+        }
+      ],
+      "order": [
+        "audit-status-a",
+        "audit-status-qa",
+        "audit-status-b"
+      ],
+      "focused": "上移 审计状态丙"
+    }
+  },
+  {
+    "name": "F07 Gantt cold and cached error recovery",
+    "passed": true,
+    "evidence": {
+      "requests": [
+        {
+          "failed": false,
+          "project": "932472b5-11b2-5884-9f59-a8adbcd39a07"
+        },
+        {
+          "failed": true,
+          "project": "932472b5-11b2-5884-9f59-a8adbcd39a07"
+        },
+        {
+          "failed": true,
+          "project": "932472b5-11b2-5884-9f59-a8adbcd39a07"
+        },
+        {
+          "failed": false,
+          "project": "932472b5-11b2-5884-9f59-a8adbcd39a07"
+        }
+      ],
+      "rows": 1,
+      "retained": true,
+      "transport": "Cold HTTP fault injection; final retry uses isolated API fixture because local upstream returned 503."
+    }
+  }
+]

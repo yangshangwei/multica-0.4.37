@@ -1,0 +1,32 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: 集成"': 设置目录 集成
+- tabpanel "集成":
+  - banner:
+    - heading "集成" [level=2]
+    - paragraph: 连接团队使用的工具，让任务、代码与沟通协同工作。
+  - heading "代码托管" [level=3]
+  - paragraph: 连接代码平台，将 Pull Request 与任务关联。
+  - link "GitHub":
+    - /url: http://localhost:18572/desktop-qa-1008-1743/settings?tab=integrations&integration=github
+    - text: GitHub 未配置 关联 Pull Request，自动更新任务状态。
+  - link "自托管 Git":
+    - /url: http://localhost:18572/desktop-qa-1008-1743/settings?tab=integrations&integration=vcs
+    - text: 自托管 Git 未配置 连接 GitLab、Gitea 或 Forgejo 实例。
+  - heading "任务管理" [level=3]
+  - paragraph: 后续优先接入方向，具体支持范围与时间待确定。
+  - text: ONES 待规划 需求、缺陷与任务的同步。 Plane 待规划 任务与项目进度的同步。 Kaneo 待规划 任务与看板的同步。
+  - heading "沟通与协作" [level=3]
+  - paragraph: 连接团队使用的沟通工具。
+  - text: 孚信 待规划 团队沟通与协作。
+- button "问 Multica"
+- region "Notifications alt+T"

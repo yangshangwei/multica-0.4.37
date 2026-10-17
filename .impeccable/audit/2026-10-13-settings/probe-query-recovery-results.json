@@ -1,0 +1,118 @@
+{
+  "recordedAt": "2026-10-14T02:21:04.225Z",
+  "cases": [
+    {
+      "case": "cold-labels",
+      "fixture": "HTTP 500 on a read-only GET",
+      "requests": 2,
+      "panel": "标签\n\n分别管理工作空间中用于整理任务和 skill 的标签。两类标签相互独立。\n\n任务\n0\nSkill\n新建标签\n名称\n描述\n使用数量\n更新时间\n\n暂无 任务 标签",
+      "alerts": 0,
+      "retryButtons": 0,
+      "queries": [
+        {
+          "key": [
+            "labels",
+            "453472dd-e6b9-43ca-a4d5-f0ab58d9c44a",
+            "list",
+            "issue"
+          ],
+          "status": "error",
+          "hasData": false
+        }
+      ],
+      "findingConfirmed": true
+    },
+    {
+      "case": "cold-properties",
+      "fixture": "HTTP 500 on a read-only GET",
+      "requests": 2,
+      "panel": "属性\n\n为该工作空间的任务定义类型化的自定义属性。属性值设置在每个任务上，智能体可读写。\n\n显示已归档\n0/20 个启用中属性\n新建属性\n名称\n类型\n选项\n使用数量\n更新时间\n\n还没有属性\n\n创建 Severity、Environment 这类类型化字段——智能体可带校验地读写它们。",
+      "alerts": 0,
+      "retryButtons": 0,
+      "queries": [
+        {
+          "key": [
+            "properties",
+            "453472dd-e6b9-43ca-a4d5-f0ab58d9c44a",
+            "list",
+            true
+          ],
+          "status": "error",
+          "hasData": false
+        }
+      ],
+      "findingConfirmed": true
+    },
+    {
+      "case": "cold-quick-actions",
+      "fixture": "HTTP 500 on a read-only GET",
+      "requests": 2,
+      "panel": "快捷操作\n\n预先配置好执行的智能体和提示词，之后在任意任务侧边栏一键触发。\n\n新建快捷操作\n名称\n执行者\n可见范围\n使用\n更新时间\n\n还没有快捷操作\n\n把反复交给智能体做的事配置成快捷操作——代码审查、补测试、安全检查。",
+      "alerts": 0,
+      "retryButtons": 0,
+      "queries": [
+        {
+          "key": [
+            "quick-actions",
+            "453472dd-e6b9-43ca-a4d5-f0ab58d9c44a",
+            "list",
+            true
+          ],
+          "status": "error",
+          "hasData": false
+        }
+      ],
+      "findingConfirmed": true
+    },
+    {
+      "case": "cold-issue-statuses",
+      "fixture": "HTTP 500 on a read-only GET",
+      "requests": 39,
+      "probeError": "page.waitForFunction: Timeout 20000ms exceeded."
+    },
+    {
+      "case": "cold-members",
+      "fixture": "HTTP 500 on a read-only GET",
+      "requests": 3,
+      "panel": "成员\n成员（0）\n\n未找到成员。",
+      "alerts": 0,
+      "retryButtons": 0,
+      "queries": [
+        {
+          "key": [
+            "workspaces",
+            "453472dd-e6b9-43ca-a4d5-f0ab58d9c44a",
+            "members"
+          ],
+          "status": "error",
+          "hasData": false
+        }
+      ],
+      "findingConfirmed": true,
+      "workspaceFallback": "常规\n工作空间信息\n工作空间标志\n点击图标上传新图片\n桌\n名称\n描述\n上下文\nSlug\n任务前缀\n用于任务编号，例如 DQA-123。\n只有管理员和所有者可以修改工作空间设置。\n规划设置\n规划时区\n用于项目日期计算和新建迭代。已有迭代保留原时区。\nAsia/Shanghai\n\n只有管理员和所有者可以修改工作空间设置。\n\n危险操作\n离开工作空间\n从该工作空间中移除你自己。\n离开工作空间",
+      "workspaceEnabledButtons": [
+        {
+          "name": "桌",
+          "disabled": true
+        },
+        {
+          "name": "离开工作空间",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "case": "mcp-cached-refresh",
+      "fixture": "HTTP 500 on MCP GET with existing cache",
+      "requests": 2,
+      "after": {
+        "retainedCache": 5,
+        "inputConnected": false,
+        "inputFocused": false,
+        "draftBeforeRemoval": "Audit unsaved MCP name"
+      },
+      "panel": "MCP\n\n选择模板，保存共享配置，再选择可以使用它的智能体。\n\n共享配置\nMCP 市场\n16\n自定义添加\n共享 MCP Server\n\n为保护敏感信息，配置保存后不会再次显示。需要调整时，请填写一份完整的新配置；只修改名称不会影响当前配置和智能体分配。\n\n无法加载共享服务器。\n\n重试",
+      "findingConfirmed": true
+    }
+  ]
+}

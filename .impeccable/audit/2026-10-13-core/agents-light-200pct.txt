@@ -1,0 +1,183 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "智能体"
+  - status
+  - button "New tab"
+- banner:
+  - heading "智能体" [level=1]
+  - text: "15"
+  - button "审批"
+  - button "新建智能体"
+- textbox "搜索智能体..."
+- button "我的"
+- button "更多筛选"
+- button "显示"
+- button "全部分类" [pressed]
+- button "通用智能体 2"
+- button "专业角色 10"
+- button "统筹角色 3"
+- button "分类": 全部分类
+- button "AI小队": 全部小队
+- paragraph:
+  - text: 不确定该找谁？先找
+  - link "小阿孚":
+    - /url: http://localhost:18572/desktop-qa-1008-1743/agents/a38938a3-c58a-4b02-b01c-fffab35c9da2
+  - text: 。这位通用助手会帮你明确目标、创建任务，并按需协调专业智能体。
+- table:
+  - row "选择当前列表中的所有智能体 智能体 状态":
+    - checkbox "选择当前列表中的所有智能体"
+    - columnheader "智能体":
+      - button "智能体"
+    - columnheader "状态"
+  - rowgroup:
+    - text: 通用智能体 2
+    - row "选择 桌面场景 · 回归助手 桌面场景 · 回归助手 桌面场景 · 回归助手 个人 · 仅 owner 和其授权的人可以运行该智能体 展示任务、执行记录与离线状态；成员可查看，只有拥有者可调用。 <!-- fixture:multica.rich-desktop.v1 --> 离线 行操作":
+      - cell "选择 桌面场景 · 回归助手":
+        - checkbox "选择 桌面场景 · 回归助手"
+      - cell "桌面场景 · 回归助手 桌面场景 · 回归助手 个人 · 仅 owner 和其授权的人可以运行该智能体 展示任务、执行记录与离线状态；成员可查看，只有拥有者可调用。 <!-- fixture:multica.rich-desktop.v1 -->":
+        - link "桌面场景 · 回归助手":
+          - img "桌面场景 · 回归助手"
+        - link "桌面场景 · 回归助手":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/ef36ed1b-1bab-53ed-a9e2-b97a7ace130c
+        - text: 展示任务、执行记录与离线状态；成员可查看，只有拥有者可调用。 <!-- fixture:multica.rich-desktop.v1 -->
+      - cell "离线"
+      - cell "行操作":
+        - button "行操作"
+    - row "选择 小阿孚 小阿孚 小阿孚 你的工作空间 Chief of Staff。把目标转化为任务、协调智能体，并帮你建立可复用的工作流。 离线 行操作":
+      - cell "选择 小阿孚":
+        - checkbox "选择 小阿孚"
+      - cell "小阿孚 小阿孚 你的工作空间 Chief of Staff。把目标转化为任务、协调智能体，并帮你建立可复用的工作流。":
+        - link "小阿孚":
+          - img "小阿孚": 孚
+        - link "小阿孚":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/a38938a3-c58a-4b02-b01c-fffab35c9da2
+        - text: 你的工作空间 Chief of Staff。把目标转化为任务、协调智能体，并帮你建立可复用的工作流。
+      - cell "离线"
+      - cell "行操作":
+        - button "行操作"
+    - text: 专业角色 10
+    - row "选择 架构师 架构师 架构师 个人 · 仅 owner 和其授权的人可以运行该智能体 给出技术方案：边界、接口、数据流，以及做出选择的取舍理由。 离线 行操作":
+      - cell "选择 架构师":
+        - checkbox "选择 架构师"
+      - cell "架构师 架构师 个人 · 仅 owner 和其授权的人可以运行该智能体 给出技术方案：边界、接口、数据流，以及做出选择的取舍理由。":
+        - link "架构师":
+          - img "架构师"
+        - link "架构师":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/460daa12-27b0-439e-8a9e-6f64a1cbcff3
+        - text: 给出技术方案：边界、接口、数据流，以及做出选择的取舍理由。
+      - cell "离线"
+      - cell "行操作":
+        - button "行操作"
+    - row "选择 安全审查员 安全审查员 安全审查员 个人 · 仅 owner 和其授权的人可以运行该智能体 审查权限、密钥、注入、依赖和数据暴露；不编写可用的攻击代码。 离线 行操作":
+      - cell "选择 安全审查员":
+        - checkbox "选择 安全审查员"
+      - cell "安全审查员 安全审查员 个人 · 仅 owner 和其授权的人可以运行该智能体 审查权限、密钥、注入、依赖和数据暴露；不编写可用的攻击代码。":
+        - link "安全审查员":
+          - img "安全审查员"
+        - link "安全审查员":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/552ca748-bca4-406d-8d71-1cd706caefd4
+        - text: 审查权限、密钥、注入、依赖和数据暴露；不编写可用的攻击代码。
+      - cell "离线"
+      - cell "行操作":
+        - button "行操作"
+    - row "选择 测试工程师 测试工程师 测试工程师 个人 · 仅 owner 和其授权的人可以运行该智能体 决定用什么证明改动可用，把它自动化，并用最小用例复现缺陷。 离线 行操作":
+      - cell "选择 测试工程师":
+        - checkbox "选择 测试工程师"
+      - cell "测试工程师 测试工程师 个人 · 仅 owner 和其授权的人可以运行该智能体 决定用什么证明改动可用，把它自动化，并用最小用例复现缺陷。":
+        - link "测试工程师":
+          - img "测试工程师"
+        - link "测试工程师":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/c899355f-62ca-4cce-a14f-312bc700bf65
+        - text: 决定用什么证明改动可用，把它自动化，并用最小用例复现缺陷。
+      - cell "离线"
+      - cell "行操作":
+        - button "行操作"
+    - row "选择 产品分析师 产品分析师 产品分析师 个人 · 仅 owner 和其授权的人可以运行该智能体 把模糊的需求变成可判断的需求：澄清问题、验收标准、风险和拆分建议。 离线 行操作":
+      - cell "选择 产品分析师":
+        - checkbox "选择 产品分析师"
+      - cell "产品分析师 产品分析师 个人 · 仅 owner 和其授权的人可以运行该智能体 把模糊的需求变成可判断的需求：澄清问题、验收标准、风险和拆分建议。":
+        - link "产品分析师":
+          - img "产品分析师"
+        - link "产品分析师":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/89f1e93a-7576-49cc-9bcc-6ffa0a3072b8
+        - text: 把模糊的需求变成可判断的需求：澄清问题、验收标准、风险和拆分建议。
+      - cell "离线"
+      - cell "行操作":
+        - button "行操作"
+    - row "选择 代码审查员 代码审查员 代码审查员 个人 · 仅 owner 和其授权的人可以运行该智能体 只读 diff，按文件、行号、严重级别报告问题，并说明每个问题会导致什么后果。 离线 行操作":
+      - cell "选择 代码审查员":
+        - checkbox "选择 代码审查员"
+      - cell "代码审查员 代码审查员 个人 · 仅 owner 和其授权的人可以运行该智能体 只读 diff，按文件、行号、严重级别报告问题，并说明每个问题会导致什么后果。":
+        - link "代码审查员":
+          - img "代码审查员"
+        - link "代码审查员":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/03427b65-2505-4f2b-af1d-b0e8bc261731
+        - text: 只读 diff，按文件、行号、严重级别报告问题，并说明每个问题会导致什么后果。
+      - cell "离线"
+      - cell "行操作":
+        - button "行操作"
+    - row "选择 迁移审查员 迁移审查员 迁移审查员 个人 · 仅 owner 和其授权的人可以运行该智能体 审查 schema、API 和客户端迁移的兼容窗口、校验、重试和回滚证据。 离线 行操作":
+      - cell "选择 迁移审查员":
+        - checkbox "选择 迁移审查员"
+      - cell "迁移审查员 迁移审查员 个人 · 仅 owner 和其授权的人可以运行该智能体 审查 schema、API 和客户端迁移的兼容窗口、校验、重试和回滚证据。":
+        - link "迁移审查员":
+          - img "迁移审查员"
+        - link "迁移审查员":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/b50fa503-9dd9-44fd-99f7-df50f9d01a61
+        - text: 审查 schema、API 和客户端迁移的兼容窗口、校验、重试和回滚证据。
+      - cell "离线"
+      - cell "行操作":
+        - button "行操作"
+    - row "选择 实现工程师 实现工程师 实现工程师 个人 · 仅 owner 和其授权的人可以运行该智能体 在隔离分支上实现代码和测试，并说明改了什么、如何验证。 离线 行操作":
+      - cell "选择 实现工程师":
+        - checkbox "选择 实现工程师"
+      - cell "实现工程师 实现工程师 个人 · 仅 owner 和其授权的人可以运行该智能体 在隔离分支上实现代码和测试，并说明改了什么、如何验证。":
+        - link "实现工程师":
+          - img "实现工程师"
+        - link "实现工程师":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/a078d926-86d9-4a95-88a7-f31893a7abe3
+        - text: 在隔离分支上实现代码和测试，并说明改了什么、如何验证。
+      - cell "离线"
+      - cell "行操作":
+        - button "行操作"
+    - row "选择 体验验证工程师 体验验证工程师 体验验证工程师 个人 · 仅 owner 和其授权的人可以运行该智能体 用浏览器、跨端和可访问性证据验证关键用户路径，并说明结果风险。 离线 行操作":
+      - cell "选择 体验验证工程师":
+        - checkbox "选择 体验验证工程师"
+      - cell "体验验证工程师 体验验证工程师 个人 · 仅 owner 和其授权的人可以运行该智能体 用浏览器、跨端和可访问性证据验证关键用户路径，并说明结果风险。":
+        - link "体验验证工程师":
+          - img "体验验证工程师"
+        - link "体验验证工程师":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/a7b7239a-904e-416f-883f-581888d8b74a
+        - text: 用浏览器、跨端和可访问性证据验证关键用户路径，并说明结果风险。
+      - cell "离线"
+      - cell "行操作":
+        - button "行操作"
+    - row "选择 诊断工程师 诊断工程师 诊断工程师 个人 · 仅 owner 和其授权的人可以运行该智能体 把一个可观察的失败查成带证据的根因结论：复现并最小化，提出并验证假设，给出修复方向；不提交正式修复。 离线 行操作":
+      - cell "选择 诊断工程师":
+        - checkbox "选择 诊断工程师"
+      - cell "诊断工程师 诊断工程师 个人 · 仅 owner 和其授权的人可以运行该智能体 把一个可观察的失败查成带证据的根因结论：复现并最小化，提出并验证假设，给出修复方向；不提交正式修复。":
+        - link "诊断工程师":
+          - img "诊断工程师"
+        - link "诊断工程师":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/8091c1bd-2f7c-4d9a-acb3-804016f2f852
+        - text: 把一个可观察的失败查成带证据的根因结论：复现并最小化，提出并验证假设，给出修复方向；不提交正式修复。
+      - cell "离线"
+      - cell "行操作":
+        - button "行操作"
+    - row "选择 智能体评测工程师 智能体评测工程师 智能体评测工程师 个人 · 仅 owner 和其授权的人可以运行该智能体 用版本化用例评测 Agent、Skill 和 MCP 变更的正确性、安全性、成本、延迟与漂移。 离线 行操作":
+      - cell "选择 智能体评测工程师":
+        - checkbox "选择 智能体评测工程师"
+      - cell "智能体评测工程师 智能体评测工程师 个人 · 仅 owner 和其授权的人可以运行该智能体 用版本化用例评测 Agent、Skill 和 MCP 变更的正确性、安全性、成本、延迟与漂移。":
+        - link "智能体评测工程师":
+          - img "智能体评测工程师"
+        - link "智能体评测工程师":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/ad9df522-3bde-442b-bd3a-ab0ada442ab0
+        - text: 用版本化用例评测 Agent、Skill 和 MCP 变更的正确性、安全性、成本、延迟与漂移。
+      - cell "离线"
+      - cell "行操作":
+        - button "行操作"
+    - text: 统筹角色 3
+- button "问 Multica"
+- region "Notifications alt+T"

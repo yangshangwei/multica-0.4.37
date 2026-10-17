@@ -1,0 +1,27 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: 服务器连接"': 设置目录 服务器连接
+- tabpanel "服务器连接":
+  - banner:
+    - heading "服务器连接" [level=2]
+    - paragraph: 配置此桌面端使用的私有化 Multica 后端。保存后会重启连接。
+  - main:
+    - heading "连接到 Multica 服务器" [level=1]
+    - paragraph: 请输入私有化 Multica 部署的后端地址。
+    - text: 后端地址
+    - textbox "后端地址":
+      - /placeholder: https://multica.example.com
+      - text: http://localhost:18572
+    - button "测试连接"
+    - button "保存并继续"
+- button "问 Multica"
+- region "Notifications alt+T"

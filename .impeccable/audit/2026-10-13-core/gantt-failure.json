@@ -1,0 +1,21 @@
+{
+  "failures": [
+    "/api/issues?limit=500&project_id=932472b5-11b2-5884-9f59-a8adbcd39a07&scheduled=true",
+    "/api/issues?limit=500&project_id=932472b5-11b2-5884-9f59-a8adbcd39a07&scheduled=true"
+  ],
+  "queries": [
+    {
+      "key": [
+        "issues",
+        "453472dd-e6b9-43ca-a4d5-f0ab58d9c44a",
+        "project-gantt",
+        "932472b5-11b2-5884-9f59-a8adbcd39a07",
+        null
+      ],
+      "status": "error",
+      "hasData": false,
+      "error": "Audit simulated Gantt failure"
+    }
+  ],
+  "snapshot": "- button \"切换左侧边栏\"\n- button \"Go back\"\n- button \"Go forward\" [disabled]\n- list:\n  - listitem:\n    - button \"桌 桌面手测 10-08（保留数据）\"\n- list:\n  - listitem:\n    - button \"搜索...\"\n  - listitem:\n    - button \"新建任务\"\n- list:\n  - listitem:\n    - link \"收件箱 1\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/inbox\n  - listitem:\n    - link \"我的任务\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/my-issues\n  - listitem:\n    - link \"聊天\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/chat\n- text: 工作\n- list:\n  - listitem:\n    - link \"任务\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/issues\n  - listitem:\n    - link \"项目\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/projects\n  - listitem:\n    - link \"迭代\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/iterations\n  - listitem:\n    - link \"分拣台 2\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/triage\n- text: AI 团队\n- list:\n  - listitem:\n    - link \"智能体\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/agents\n  - listitem:\n    - link \"AI小队\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/squads\n  - listitem:\n    - link \"自动化\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots\n- text: 资源与连接\n- list:\n  - listitem:\n    - link \"技能库\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/skills\n  - listitem:\n    - link \"MCP\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp\n  - listitem:\n    - link \"运行时\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes\n- list:\n  - listitem:\n    - link \"统计\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/usage\n  - listitem:\n    - link \"设置\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/settings\n- button \"帮助\"\n- button \"切换左侧边栏\"\n- banner:\n  - button \"桌面场景 · 平台体验\"\n  - status\n  - button \"New tab\"\n- banner:\n  - link \"项目\":\n    - /url: http://localhost:18572/desktop-qa-1008-1743/projects\n  - text: 桌面场景 · 平台体验\n  - button \"固定到侧边栏\"\n  - button \"项目操作\"\n  - button \"切换右侧边栏\"\n- group: 迭代\n- region \"执行AI小队\":\n  - heading \"AI小队\" [level=2]\n  - text: 已选 0 个\n  - status\n  - paragraph: 尚未关联AI小队\n  - button \"管理AI小队\"\n- button \"概览\"\n- button \"任务\"\n- button \"全部\"\n- button \"成员\"\n- button \"智能体\"\n- status\n- button \"视图\"\n- button \"0 个智能体工作中\"\n- button \"筛选\"\n- button \"显示\"\n- button \"甘特图\"\n- button \"关联已有任务\"\n- button \"新建任务\"\n- text: 暂无已排期的任务 — 给任意任务设置开始或截止日期，即可显示在时间轴上。\n- heading \"关联任务到此项目\" [level=2]\n- paragraph: 选择尚未归属项目的任务。\n- separator\n- button \"更换图标\"\n- textbox \"项目标题\":\n  - paragraph: 桌面场景 · 平台体验\n- button \"属性\"\n- text: 状态\n- button \"计划中\"\n- text: 优先级\n- button \"高\":\n  - img\n  - text: 高\n- text: 负责人\n- button \"杨 杨尚伟\":\n  - link \"杨\"\n  - text: 杨尚伟\n- text: 开始日期\n- button \"Oct 19\"\n- text: 截止日期\n- button \"Nov 2\"\n- button \"范围闭合\"\n- text: 0/10\n- button \"描述\"\n- textbox:\n  - heading \"目标\" [level=2]\n  - paragraph: 规划搜索、通知和快捷操作，确认下一阶段可交付范围。\n  - heading \"验收范围\" [level=2]\n  - list:\n    - listitem:\n      - paragraph: 列表、详情和状态筛选显示一致\n    - listitem:\n      - paragraph: 负责人、日期和任务关联可追溯\n    - listitem:\n      - paragraph: 更改后刷新保持一致\n  - paragraph\n- button \"目标模板\"\n- paragraph: 会作为项目上下文提供给智能体，应用于该项目下的每个 task。\n- button \"资源\"\n- paragraph: 还没有关联资源。\n- button \"添加资源\"\n- button \"添加本地目录\" [disabled]\n- paragraph: 启动本地守护进程后才能添加本机目录。\n- button \"自动化\" [expanded]\n- paragraph: 此项目还没有自动化。\n- link \"添加自动化\":\n  - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots/new/template?project_id=932472b5-11b2-5884-9f59-a8adbcd39a07\n- button \"问 Multica\"\n- region \"Notifications alt+T\""
+}

@@ -1,0 +1,21 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "迭代"
+  - status
+  - button "New tab"
+- main:
+  - heading "迭代" [level=1]
+  - link "迭代设置":
+    - /url: http://localhost:18572/desktop-qa-1008-1743/settings?tab=iterations
+  - button "筛选"
+  - button "创建迭代"
+  - tablist "迭代":
+    - tab "当前与计划" [selected]
+    - tab "历史迭代"
+  - tabpanel "当前与计划":
+    - region "迭代时间线":
+      - status: 加载中…
+- button "问 Multica"
+- region "Notifications alt+T"

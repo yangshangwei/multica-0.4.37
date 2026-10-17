@@ -1,0 +1,161 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- list:
+  - listitem:
+    - button "桌 桌面手测 10-08（保留数据）"
+- list:
+  - listitem:
+    - button "搜索..."
+  - listitem:
+    - button "新建任务"
+- list:
+  - listitem:
+    - link "收件箱 1":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/inbox
+  - listitem:
+    - link "我的任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/my-issues
+  - listitem:
+    - link "聊天":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/chat
+- text: 工作
+- list:
+  - listitem:
+    - link "任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/issues
+  - listitem:
+    - link "项目":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/projects
+  - listitem:
+    - link "迭代":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/iterations
+  - listitem:
+    - link "分拣台 2":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/triage
+- text: AI 团队
+- list:
+  - listitem:
+    - link "智能体":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/agents
+  - listitem:
+    - link "AI小队":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/squads
+  - listitem:
+    - link "自动化":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots
+- text: 资源与连接
+- list:
+  - listitem:
+    - link "技能库":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/skills
+  - listitem:
+    - link "MCP":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp
+  - listitem:
+    - link "运行时":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes
+- list:
+  - listitem:
+    - link "统计":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/usage
+  - listitem:
+    - link "设置":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/settings
+- button "帮助"
+- button "切换左侧边栏"
+- banner:
+  - button "桌面场景 · 平台体验"
+  - status
+  - button "New tab"
+- banner:
+  - link "项目":
+    - /url: http://localhost:18572/desktop-qa-1008-1743/projects
+  - text: 桌面场景 · 平台体验
+  - button "固定到侧边栏"
+  - button "项目操作"
+  - button "切换右侧边栏"
+- group: 迭代
+- region "执行AI小队":
+  - heading "AI小队" [level=2]
+  - text: 已选 0 个
+  - status
+  - paragraph: 尚未关联AI小队
+  - button "管理AI小队"
+- button "概览"
+- button "任务"
+- heading "概览" [level=2]
+- button "刷新"
+- term: 正式任务
+- definition: "10"
+- term: 实际完成
+- definition: "0"
+- term: 取消
+- definition: "0"
+- term: 未结束
+- definition: "10"
+- term: 范围闭合
+- definition: 0%
+- paragraph: 统计时间 2026/10/13 19:30:00 · 基准日 2026-10-13
+- heading "系统健康" [level=2]
+- text: 有风险
+- button "阻塞 0"
+- button "逾期 2"
+- button "未分配 3"
+- button "待验收 0"
+- list:
+  - listitem: 部分指派的执行环境不可用，请检查项目资源和 AI小队。
+- group: 查看判定依据
+- heading "目标验收" [level=2]
+- text: "当前描述验收: 尚无验收记录 最近验收: 尚无验收记录"
+- heading "项目进展" [level=2]
+- button "记录进展"
+- button "记录验收"
+- paragraph: 尚无项目进展
+- separator
+- button "更换图标"
+- textbox "项目标题":
+  - paragraph: 桌面场景 · 平台体验
+- button "属性"
+- text: 状态
+- button "计划中"
+- text: 优先级
+- button "高":
+  - img
+  - text: 高
+- text: 负责人
+- button "杨 杨尚伟":
+  - link "杨"
+  - text: 杨尚伟
+- text: 开始日期
+- button "Oct 19"
+- text: 截止日期
+- button "Nov 2"
+- button "范围闭合"
+- text: 0/10
+- button "描述"
+- textbox:
+  - heading "目标" [level=2]
+  - paragraph: 规划搜索、通知和快捷操作，确认下一阶段可交付范围。
+  - heading "验收范围" [level=2]
+  - list:
+    - listitem:
+      - paragraph: 列表、详情和状态筛选显示一致
+    - listitem:
+      - paragraph: 负责人、日期和任务关联可追溯
+    - listitem:
+      - paragraph: 更改后刷新保持一致
+  - paragraph
+- button "目标模板"
+- paragraph: 会作为项目上下文提供给智能体，应用于该项目下的每个 task。
+- button "资源"
+- paragraph: 还没有关联资源。
+- button "添加资源"
+- button "添加本地目录" [disabled]
+- paragraph: 启动本地守护进程后才能添加本机目录。
+- button "自动化" [expanded]
+- paragraph: 此项目还没有自动化。
+- link "添加自动化":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots/new/template?project_id=932472b5-11b2-5884-9f59-a8adbcd39a07
+- button "问 Multica"
+- region "Notifications alt+T"

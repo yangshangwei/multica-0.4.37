@@ -1,0 +1,22 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: 快捷操作"': 设置目录 快捷操作
+- tabpanel "快捷操作":
+  - banner:
+    - heading "快捷操作" [level=2]
+    - paragraph: 预先配置好执行的智能体和提示词，之后在任意任务侧边栏一键触发。
+  - textbox "搜索快捷操作"
+  - button "新建快捷操作"
+  - text: 桌面场景 · 检查验收条件 桌面场景 · 回归助手 · 私有 仅自己 从未使用 2026/10/12
+  - button "打开\"桌面场景 · 检查验收条件\"的操作菜单"
+- button "问 Multica"
+- region "Notifications alt+T"

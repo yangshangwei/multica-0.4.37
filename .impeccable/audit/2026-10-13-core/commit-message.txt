@@ -1,0 +1,14 @@
+fix(desktop): prevent keyboard and recovery failures in core workflows
+
+Repair nine audited accessibility and read-state gaps while preserving the
+existing UI, Query ownership and editor identity. Reuse adjacent-order controls,
+menu key isolation and collection recovery patterns. Keep revoked Gantt snapshots
+out of retries and protect newer data from cancelled requests.
+
+Constraint: Preserve unrelated collaboration and release changes in the checkout
+Rejected: Merge the working feature branch wholesale | carries unrelated work
+Confidence: high
+Scope-risk: moderate
+Directive: Preserve virtual focus ownership and cancellation guards when changing recovery
+Tested: 307 targeted tests; views/core/desktop type checks; scoped ESLint; 10 Electron checks; Impeccable detector
+Not-tested: Windows/Linux, real screen readers, production performance and service writes

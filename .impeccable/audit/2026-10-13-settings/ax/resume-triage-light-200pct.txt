@@ -1,0 +1,34 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: 分拣台"': 设置目录 分拣台
+- tabpanel "分拣台":
+  - banner:
+    - heading "分拣台设置" [level=2]
+    - paragraph: 审核主动投递的任务，通过后再纳入正式工作。普通创建任务保持原有流程。
+  - paragraph: 支持手动投递和 CSV 文件。
+  - text: 启用分拣台
+  - switch "启用分拣台" [checked] [disabled]
+  - paragraph:
+    - text: 仍有 3 条未决任务（包含稍后处理），处理完成后才能关闭分拣台。
+    - link "前往分拣台审核":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/triage?view=all
+  - text: 接受后的状态
+  - combobox "接受后的状态": 待办
+  - text: 接受时必须指定优先级
+  - switch "接受时必须指定优先级" [checked]
+  - heading "分拣责任" [level=3]
+  - paragraph: 仅对新投递任务生效。分拣责任人与任务执行负责人相互独立。
+  - text: 分拣责任
+  - combobox "分拣责任": 不指定
+  - button "保存设置" [disabled]
+- button "问 Multica"
+- region "Notifications alt+T"
