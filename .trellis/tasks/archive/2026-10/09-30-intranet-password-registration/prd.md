@@ -1,5 +1,9 @@
 # 需求文档：内网自助注册与登录
 
+Archived on 2026-10-17 at the user's explicit request. See the
+[archive note](archive-note-2026-10-17.md) for the preserved integration and
+deployment acceptance limits. Existing verification records remain historical.
+
 > 实施更新（2026-10-01）：用户已批准并启动开发。下文保留评审时的设计说明；当前完成项与未测边界以 [verification.md](verification.md) 为准。
 
 ## 目标

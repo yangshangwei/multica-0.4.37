@@ -27,7 +27,7 @@
     ".trellis/tasks/10-01-platform-admin-access/implement.jsonl",
     ".trellis/tasks/10-01-platform-admin-access/check.jsonl"
   ],
-  "notes": "S01 verified. Archive deferred until parent integration completes so cross-task context references remain stable.",
+  "notes": "S01 verified. Archive deferred until parent integration completes so cross-task context references remain stable. 2026-10-17: archived at the user's explicit request. Existing verification outcomes and outstanding integration, deployment and external acceptance remain unchanged; see meta.archive.note.",
   "meta": {
     "slice": "S01",
     "depends_on": "",
@@ -36,6 +36,12 @@
     "parent_acceptance": "AC01、AC02、AC11",
     "planning_only": false,
     "authorization_source": "User explicitly approved implementation from S01 on 2026-10-01",
-    "verification_complete": true
+    "verification_complete": true,
+    "archive": {
+      "date": "2026-10-17",
+      "reason": "user_requested",
+      "verification_scope": "task_records_only",
+      "note": ".trellis/tasks/archive/2026-10/10-01-platform-admin-console/archive-note-2026-10-17.md"
+    }
   }
 }

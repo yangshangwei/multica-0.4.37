@@ -3,7 +3,7 @@
   "name": "platform-admin-console",
   "title": "平台管理后台：实现与集成验收",
   "description": "统一账号认证与独立平台权限；内部企业首期平台后台，按S01–S07推进实现、安全、原生及容量验收。",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": "fullstack",
   "scope": "platform-admin",
   "package": null,
@@ -11,7 +11,7 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-10-01",
-  "completedAt": null,
+  "completedAt": "2026-10-17",
   "branch": "feat/platform-admin-console",
   "base_branch": "main",
   "worktree_path": "/Volumes/artisan/code/2026/multica-platform-admin",
@@ -51,7 +51,7 @@
     ".trellis/tasks/10-01-platform-admin-console/test-spec.md",
     ".trellis/tasks/10-01-platform-admin-console/verification.md"
   ],
-  "notes": "Local connection and capacity fixes verified: fresh per-frame authority with 46-to-19 queries, correct scoped RPC cleanup, no extra native disconnections or ACK timeouts, paging P95 at most 289.3 ms and reconnect task starts 39.4–39.6 s. External distribution/reference/production acceptance remains open.",
+  "notes": "Local connection and capacity fixes verified: fresh per-frame authority with 46-to-19 queries, correct scoped RPC cleanup, no extra native disconnections or ACK timeouts, paging P95 at most 289.3 ms and reconnect task starts 39.4–39.6 s. External distribution/reference/production acceptance remains open. 2026-10-17: archived at the user's explicit request. Existing verification outcomes and outstanding integration, deployment and external acceptance remain unchanged; see meta.archive.note.",
   "meta": {
     "planning_only": false,
     "implementation_authorized": true,
@@ -91,6 +91,12 @@
     "local_verification_report": ".trellis/tasks/10-01-platform-admin-acceptance/verification.md",
     "capacity_followup_report": ".trellis/tasks/10-01-platform-admin-acceptance/capacity-followup.md",
     "native_recovery_report": ".trellis/tasks/10-01-platform-admin-acceptance/native-load-recovery.md",
-    "connection_followup_report": ".trellis/tasks/10-01-platform-admin-acceptance/connection-followup.md"
+    "connection_followup_report": ".trellis/tasks/10-01-platform-admin-acceptance/connection-followup.md",
+    "archive": {
+      "date": "2026-10-17",
+      "reason": "user_requested",
+      "verification_scope": "task_records_only",
+      "note": ".trellis/tasks/archive/2026-10/10-01-platform-admin-console/archive-note-2026-10-17.md"
+    }
   }
 }

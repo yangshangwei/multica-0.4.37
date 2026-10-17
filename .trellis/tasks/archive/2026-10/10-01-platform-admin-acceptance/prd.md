@@ -1,5 +1,10 @@
 # S07：集成验收、容量与发布演练
 
+Archived on 2026-10-17 at the user's explicit request. The
+[parent archive note](../10-01-platform-admin-console/archive-note-2026-10-17.md)
+preserves the outstanding external acceptance gates; archival adds no runtime
+or release verification.
+
 状态：planning；未启动实现。父任务：[平台管理后台](../10-01-platform-admin-console/README.md)。
 
 ## 目标
