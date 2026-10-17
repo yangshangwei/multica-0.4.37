@@ -217,3 +217,35 @@ Archived desktop-close-behavior and its remaining real-machine-verification chil
 ### Next Steps
 
 - Windows/Linux native tray, installation and upgrade acceptance remains deferred and unverified in the archived report.
+
+
+## Session 81: Reconcile administrator initialization archive
+<!-- trellis-session: v=2 fp=4ec5f74177f300c3 -->
+
+**Date**: 2026-10-17
+**Task**: Reconcile administrator initialization archive
+**Branch**: `main`
+
+### Summary
+
+At the explicit user request, removed a stale active planning copy of administrator initialization after discovering the canonical completed archive from 2026-10-11. Preserved all existing archived records and operational acceptance limits.
+
+### Main Changes
+
+- Removed the duplicate active task directory and added a reconciliation note to the canonical archive.
+
+### Git Commits
+
+(Task archive reconciliation only; no product code commits.)
+
+### Testing
+
+- [OK] Compared all active artifacts; verified all 10 existing archived files, the original completion date and 35 unrelated task records remain unchanged; git diff --cached --check passed.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Real old-deployment upgrade and production Web browser rehearsals remain outstanding in the original archived implementation plan.
