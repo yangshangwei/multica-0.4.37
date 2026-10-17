@@ -1,6 +1,7 @@
 package service
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -3707,6 +3708,9 @@ func (s *TaskService) FinalizeTaskClaim(
 	if len(daemonTokens) > 1 {
 		return nil, fmt.Errorf("finalize task claim: expected at most one daemon token, got %d", len(daemonTokens))
 	}
+	if !task.RuntimeID.Valid {
+		return nil, ErrManagedRuntimeSource
+	}
 	daemonTokens = append([]db.CreateDaemonTokenParams(nil), daemonTokens...)
 	for i := range daemonTokens {
 		daemonTokens[i].InstallationBindingID = pgtype.UUID{}
@@ -3745,6 +3749,7 @@ func (s *TaskService) FinalizeTaskClaim(
 				}
 			}
 		}
+		executionCommentIDs := append([]pgtype.UUID(nil), task.CoalescedCommentIds...)
 		if task.RuntimeID.Valid {
 			runtime, err := s.runtimeLookup(qtx).Get(ctx, task.RuntimeID)
 			if err != nil {
@@ -3758,13 +3763,16 @@ func (s *TaskService) FinalizeTaskClaim(
 			if err != nil {
 				return err
 			}
-			if current.Status != "dispatched" || current.RuntimeID != task.RuntimeID || !current.DispatchedAt.Time.Equal(task.DispatchedAt.Time) || current.ClaimGeneration != task.ClaimGeneration || token.TaskID != current.ID || token.AgentID != current.AgentID || token.WorkspaceID != runtime.WorkspaceID {
+			if current.Status != "dispatched" || current.RuntimeID != task.RuntimeID || current.IssueID != task.IssueID || !bytes.Equal(current.Context, task.Context) || !current.DispatchedAt.Time.Equal(task.DispatchedAt.Time) || current.ClaimGeneration != task.ClaimGeneration || token.TaskID != current.ID || token.AgentID != current.AgentID || token.WorkspaceID != runtime.WorkspaceID {
 				return ErrManagedRuntimeSource
 			}
 			// Preserve the original claim's trigger/comment provenance. The locked
 			// row validates delivery identity; it must not replace payload snapshots.
+			// Admission covers both the payload and comments added during preparation.
+			executionCommentIDs = append(executionCommentIDs, current.CoalescedCommentIds...)
+			executionCommentIDs = append(executionCommentIDs, current.TriggerCommentID)
 		}
-		allowed, err := qtx.LockIssueExecution(ctx, db.LockIssueExecutionParams{IssueID: task.IssueID, TriggerCommentID: task.TriggerCommentID, CommentIds: task.CoalescedCommentIds, Context: task.Context})
+		allowed, err := qtx.LockIssueExecution(ctx, db.LockIssueExecutionParams{IssueID: task.IssueID, TriggerCommentID: task.TriggerCommentID, CommentIds: executionCommentIDs, Context: task.Context})
 		if err != nil {
 			return err
 		}
