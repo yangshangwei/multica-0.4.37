@@ -1820,10 +1820,7 @@ export function setupDaemonManager(
       });
     },
   );
-  ipcMain.handle("daemon:is-cli-installed", async () => {
-    const bin = await resolveCliBinary();
-    return bin !== null;
-  });
+  ipcMain.handle("daemon:get-cli-path", () => resolveCliBinary());
   ipcMain.handle("daemon:retry-install", async () => {
     cachedCliBinary = undefined;
     cliResolvePromise = null;

@@ -317,8 +317,8 @@ const daemonAPI = {
     userId: string,
   ): Promise<DaemonReauthResult> =>
     ipcRenderer.invoke("daemon:reauthenticate", token, userId),
-  isCliInstalled: (): Promise<boolean> =>
-    ipcRenderer.invoke("daemon:is-cli-installed"),
+  getCliPath: (): Promise<string | null> =>
+    ipcRenderer.invoke("daemon:get-cli-path"),
   getPrefs: (): Promise<{ autoStart: boolean; autoStop: boolean }> =>
     ipcRenderer.invoke("daemon:get-prefs"),
   setPrefs: (prefs: Partial<{ autoStart: boolean; autoStop: boolean }>): Promise<{ autoStart: boolean; autoStop: boolean }> =>

@@ -31,7 +31,7 @@ ipcMain.on("freeze:get-last", (event) => { event.returnValue = null; });
 ipcMain.handle("daemon:get-status", () => ({ state: "stopped", cliVersion: "test" }));
 ipcMain.handle("daemon:get-host-name", () => "Changelog acceptance");
 ipcMain.handle("daemon:probe-runtimes", () => []);
-ipcMain.handle("daemon:is-cli-installed", () => true);
+ipcMain.handle("daemon:get-cli-path", () => path.join(app.getPath("userData"), "fixture-bin", "multica"));
 ipcMain.handle("daemon:get-prefs", () => ({ autoStart: false, autoStop: false }));
 for (const channel of ["daemon:set-target-api-url", "daemon:sync-token", "daemon:clear-token", "daemon:auto-start", "window:setImmersive"]) {
   ipcMain.handle(channel, () => ({ success: true }));

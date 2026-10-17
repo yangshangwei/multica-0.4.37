@@ -151,6 +151,7 @@ async function managerFixture() {
     reauthenticate: () => handlers.get("daemon:reauthenticate")!(null, sessionToken, userId) as Promise<ReauthResult>,
     start: () => handlers.get("daemon:start")!(null) as Promise<LifecycleResult>,
     status: () => handlers.get("daemon:get-status")!(null) as Promise<DaemonStatus>,
+    getCliPath: () => handlers.get("daemon:get-cli-path")!(null) as Promise<string | null>,
     config: async () => JSON.parse(await readFile(configPath, "utf8")),
     owner: () => readFile(ownerPath, "utf8"),
   };
@@ -472,12 +473,14 @@ describe("CLI resolution diagnostics", () => {
   it("records validation failure only after no candidate is usable, and clears it on a usable PATH fallback", async () => {
     const manager = await managerFixture();
     expect(await manager.resolveCli()).toBeNull();
+    expect(await manager.getCliPath()).toBeNull();
     expect((await manager.status()).diagnostics?.cli).toMatchObject({ code: "cli_validation_failed" });
     manager.spawn.mockImplementation((_bin, args, _options, callback) => {
       queueMicrotask(() => callback(null, args[0] === "version" && _bin === "path-fixture-cli" ? JSON.stringify({ version: "test-version" }) : "invalid version"));
       return { stdin: { end: vi.fn(), on: vi.fn() } };
     });
     expect(await manager.resolveWithPath()).toBe("path-fixture-cli");
+    expect(await manager.getCliPath()).toBe("path-fixture-cli");
     expect((await manager.status()).diagnostics?.cli).toBeUndefined();
   });
 
