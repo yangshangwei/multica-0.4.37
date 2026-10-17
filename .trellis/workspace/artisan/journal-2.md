@@ -393,3 +393,42 @@ Closed A01–A07 after a 96/100 native visual verdict, including an additional s
 ### Next Steps
 
 - No remaining work in the agreed task scope. Physical touch, native Windows/Linux, spoken screen readers, production performance and live automation execution were outside this acceptance.
+
+
+## Session 84: 跨账号协作新版需求核对与多目标基础验证
+<!-- trellis-session: v=2 fp=d0eea54d53319833 -->
+
+**Date**: 2026-10-17
+**Task**: 跨账号协作新版需求核对与多目标基础验证
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成新版需求对照、多目标队列与组停止基础、普通执行入口隔离和 v2 读取；保留任务进行中及完整运行/双端验收门禁。
+
+### Main Changes
+
+- Typed target、逐目标输入、执行组、两级停止及资源/账号/生命周期联动；旧记录保留隔离。
+- 独立复核修复缺失目标与悬空 legacy 指针造成的漏停；同步规范、内置 skill/source map 和任务证据。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `e6bc3759e` | fix(collaboration): prevent ordinary execution from crossing shared-task boundaries |
+| `f5259e245` | feat(collaboration): preserve each target input and stop boundary |
+| `96331dd66` | docs(task): preserve the revised collaboration contract and verified continuation |
+
+### Testing
+
+- [OK] Go 1.26.6 与 1.27 race：323 顶层测试、638 子测试通过；两个非本任务 opt-in triage 检查跳过。
+- [OK] Core 255 文件/3452 测试、全仓类型检查与 lint、Go vet、迁移演练、97 个 sqlc 文件一致性通过。
+
+### Status
+
+[OK] **Foundation iteration verified; parent task remains in progress**
+
+### Next Steps
+
+- 任务保持 in_progress，接续 P1 剩余创建/来源字段，P3 私有内容/@提交/通知，P4 资源授权/运行身份/真实 proof。
+- 新增独立 runtime writer 前统一后置锁顺序；再完成调度/正向恢复、Web/Desktop 及完整 97 项 AC。
