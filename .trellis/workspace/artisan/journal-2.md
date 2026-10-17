@@ -149,3 +149,39 @@
 ### Next Steps
 
 - 本地fix/qa-three-regressions已提交归档；未推送，未重跑全量328项或Go测试。
+
+
+## Session 79: Actionable desktop daemon diagnostics
+<!-- trellis-session: v=2 fp=1e525d3b55158074 -->
+
+**Date**: 2026-10-17
+**Task**: Actionable desktop daemon diagnostics
+**Branch**: `codex/daemon-reconnect-diagnostics`
+
+### Summary
+
+Implemented safe, persistent CLI and device reconnect diagnostics with English/Chinese Windows troubleshooting steps; preserved identity validation and isolated stale health/error responses.
+
+### Main Changes
+
+- Separated setup and connection diagnostics; unified IPC result and presentation mapping.
+- Retained background handoff failures and complete current runtime metadata.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `a5c3c1da6` | fix(desktop): make daemon failures diagnosable without weakening identity checks |
+
+### Testing
+
+- [OK] Desktop: 96 test files and 1184 tests passed; Node/renderer typecheck passed; lint 0 errors with one existing warning.
+- [OK] Seven isolated renderer scenarios passed; visual verdict 96/100.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Native Windows/live-server verification and Windows installer delivery remain outside this task.

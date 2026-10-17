@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-2.md`
-- **Total Sessions**: 78
+- **Total Sessions**: 79
 - **Last Active**: 2026-10-17
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-2.md` | ~151 | Active |
+| `journal-2.md` | ~187 | Active |
 | `journal-1.md` | ~1977 | Archived |
 <!-- @@@/auto:active-documents -->
 
@@ -30,6 +30,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 79 | 2026-10-17 | Actionable desktop daemon diagnostics | `a5c3c1da6` | `codex/daemon-reconnect-diagnostics` |
 | 78 | 2026-10-17 | 修复注册、窄屏推荐和收件箱三类回归 | `44e67538447d3fe45f1838d1e39bf62a9977c99b`, `1a47a28d56bdb9e49445c44bf9373e881df402b9`, `52a451bad73d4f52fcd989db86452aab52fb1c78` | `fix/qa-three-regressions` |
 | 77 | 2026-10-17 | 能力市场整合：完成 Web/Desktop 验收与归档 | `581ba2ba5`, `96943ea64` | `feat/capability-market` |
 | 76 | 2026-10-16 | main 全量端到端测试：328项执行与失败分类 | - | `main` |
