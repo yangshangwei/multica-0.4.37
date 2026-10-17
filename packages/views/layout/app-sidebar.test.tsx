@@ -495,9 +495,9 @@ describe("nav structure", () => {
       "/acme/squads",
       "/acme/autopilots",
       // Resources & connections
-      "/acme/marketplace",
       "/acme/skills",
       "/acme/mcp",
+      "/acme/marketplace",
       "/acme/runtimes",
       "/account?view=current",
       // footer

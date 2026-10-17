@@ -175,9 +175,9 @@ const aiTeamNav: NavItem[] = [
 ];
 
 const resourceNav: NavItem[] = [
-  { key: "marketplace", labelKey: "marketplace" },
   { key: "skills", labelKey: "skills" },
   { key: "mcp", labelKey: "mcp" },
+  { key: "marketplace", labelKey: "marketplace" },
   { key: "runtimes", labelKey: "runtimes" },
 ];
 
