@@ -163,6 +163,22 @@ container, and allow the emphasized phrase to wrap when enlarged beyond it.
 
 ## Accessibility
 
+### Blur validation must preserve pointer targets
+
+`auth/password-form.tsx` reserves the complete localized confirmation-error
+message in layout, using `invisible` and `aria-hidden` until the error is active.
+Only active errors have `role="alert"`, and only invalid confirmation inputs have
+`aria-invalid` and `aria-describedby`. Preserve the actual text footprint so
+wrapped translations or enlarged text do not shift the submit button.
+
+Conditionally inserting this message on blur moves a vertically centered form
+between pointer down and pointer up; the first click then misses Submit. Do not
+repair this by requiring a second click, forcing test clicks or replacing native
+submission with pointer handlers. The real-browser exact-match case in
+`e2e/password-registration.spec.ts` must keep focus in confirmation before one
+submit click, then assert error focus and zero registration requests. DOM tests
+own error semantics and keyboard behavior; they cannot prove pointer geometry.
+
 ### Platform administration navigation
 
 `admin/admin-shell.tsx` owns the six platform navigation destinations and their

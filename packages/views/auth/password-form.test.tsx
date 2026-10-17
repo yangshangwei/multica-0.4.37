@@ -130,6 +130,8 @@ describe('password form', () => {
     const confirmation = screen.getByLabelText('确认密码');
     await user.type(confirmation, 'abc123');
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(confirmation).not.toHaveAccessibleDescription();
+    expect(confirmation).not.toHaveAttribute('aria-invalid', 'true');
     await user.keyboard('{Enter}');
     expect(screen.getByRole('alert')).toHaveTextContent('两次输入的密码不一致，请重新输入。');
     expect(confirmation).toHaveAccessibleDescription('两次输入的密码不一致，请重新输入。');
@@ -141,6 +143,7 @@ describe('password form', () => {
     await user.clear(confirmation);
     await user.type(confirmation, ' abc123 ');
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(confirmation).not.toHaveAccessibleDescription();
     expect(confirmation).not.toHaveAttribute('aria-invalid', 'true');
     await user.type(screen.getByLabelText('密码'), '4');
     expect(screen.getByRole('alert')).toHaveTextContent('两次输入的密码不一致，请重新输入。');
