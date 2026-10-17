@@ -1,0 +1,224 @@
+{
+  "baseline_original": {
+    "failed": 6,
+    "passed": 0
+  },
+  "final_original": {
+    "passed": 6,
+    "failed": 0
+  },
+  "final_unique": {
+    "passed": 28,
+    "failed": 0,
+    "skipped": 0,
+    "retries": 0
+  },
+  "cases": [
+    {
+      "file": "password-branches.spec.ts",
+      "title": "invalid username preserves registration fields and can be corrected without restarting",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "five-character password error can be corrected to the supported six-character minimum",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "overlong pasted password is rejected and accepts the corrected 128-character boundary",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "whitespace-only display name reaches server validation and keeps credentials for correction",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "duplicate username after normalization leaves the original identity and password intact",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "incorrect password preserves the login form and a corrected retry restores the same identity",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "unknown account gives a generic error and can sign in after the account is created",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "lost registration response offers sign-in recovery for the account the server already created",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "network failure during login keeps credentials and succeeds after connection recovery",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "temporary authentication service failure preserves the form and permits a real retry",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "Retry-After disables login submissions until cooldown ends without discarding credentials",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "pending registration locks the form and ignores repeated native submissions",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "password-registration.spec.ts",
+      "title": "confirmed password registers without email and a second device keeps the same identity",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "password-registration.spec.ts",
+      "title": "confirmation requires an exact match and password visibility stays independent",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "core-business-journeys.spec.ts",
+      "title": "G2 a teammate's status change and mention reach the owner's open page and inbox without reload",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "core-business-journeys.spec.ts",
+      "title": "G3 members invite, role change and removal work through the settings UI with matching server permissions",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "core-business-journeys.spec.ts",
+      "title": "G4 My Issues lists only my assignments and search opens a teammate's issue by identifier",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "core-business-journeys.spec.ts",
+      "title": "G1-01 assigning an agent queues one task that the daemon runs to a live completed reply",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "core-business-journeys.spec.ts",
+      "title": "G1-02 a failed run notifies the creator, retries exactly once and can be stopped before it runs",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "title": "explicit default outranks accepted history and project candidates do not replace it",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "title": "recommendations require a click, adoption stays explicit, and changed text discards late results",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "title": "actual Electron renderer adopts suggestions without running a daemon",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "title": "Chinese narrow-screen controls expose defaults and grounded suggestions",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "upstream-selected-fixes.spec.ts",
+      "title": "keeps the full Chinese and emoji comment behind active and archived Inbox previews",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "upstream-selected-fixes.spec.ts",
+      "title": "keeps one usable Inbox sidebar toggle in split view and a way back at compact widths",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "upstream-selected-fixes.spec.ts",
+      "title": "edits a bullet inside a checkbox and persists the selected list level after reopening",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "upstream-selected-fixes.spec.ts",
+      "title": "defers hidden private runtime version 0.4.40 to the server's quick-create gate",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    },
+    {
+      "file": "upstream-selected-fixes.spec.ts",
+      "title": "defers hidden private runtime version 0.0.1 to the server's quick-create gate",
+      "project": "chromium",
+      "status": "passed",
+      "attempts": 1
+    }
+  ],
+  "notes": [
+    "repaired-legacy native case initially failed from missing test CORS origin; final-recommendations reran it unchanged after exact-origin correction.",
+    "All four recommendation identities were rerun: three previously passed and one had the test CORS failure. Final status counts unique identities, not raw executions."
+  ],
+  "raw_repaired_and_final_runs": {
+    "executions": 32,
+    "passed": 31,
+    "failed": 1,
+    "failure": "Earlier native CORS environment omission, corrected and passed in final run"
+  }
+}
