@@ -1,10 +1,14 @@
 # 迭代 I1：手动周期闭环
 
+Archived on 2026-10-17 at the user's explicit request, together with all six
+child tasks. See the [archive note](archive-note-2026-10-17.md). Status and
+verification statements below describe the historical execution state.
+
 状态：in_progress。2026-10-06 用户明确授权实施，按已评审工程方案推进。
 
 ## 需求来源与范围
 
-权威需求：[迭代 PRD](../../../docs/plans/2026-10-04-work-management-prds/iterations-prd.md) 和 [共同契约](../../../docs/plans/2026-10-04-work-management-prds/README.md)。交付 ITR-001—020、032—035，对应 ITR-AC-01—29；I2/I3 不纳入。保留源文档尚待产品确认的默认建议，工程选择不冒充新产品批准。
+权威需求：[迭代 PRD](../../../../../docs/plans/2026-10-04-work-management-prds/iterations-prd.md) 和 [共同契约](../../../../../docs/plans/2026-10-04-work-management-prds/README.md)。交付 ITR-001—020、032—035，对应 ITR-AC-01—29；I2/I3 不纳入。保留源文档尚待产品确认的默认建议，工程选择不冒充新产品批准。
 
 I1 包含：默认关闭和管理员配置、纯日期和保存的时区、手动计划和单一进行中、唯一当前归属、原始承诺、范围事件与燃起图、结束预览与原子结转、取消/空计划删除/整体禁用、授权通知与历史保护、Web/Desktop 完整入口及旧客户端兼容。绝不启动或停止执行，不改项目、负责人、任务日期或执行状态。Mobile 完整编辑后置，服务端门槛和未知字段保留首期验收。
 

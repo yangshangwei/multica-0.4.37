@@ -23,7 +23,7 @@
   "relatedFiles": [
     "docs/plans/2026-10-04-work-management-prds/iterations-prd.md"
   ],
-  "notes": "2026-10-06 independent pure stats/calendar/canonical preparation implemented; HG is not satisfied; DB history/event integration not started 2026-10-06: existing I1 work transferred to codex/projects-p1; see parent branch-integration.md. FG remains incomplete. 2026-10-06 user explicitly authorized parallel LG/HG implementation; release flag remains off. 2026-10-06: HG passed with integrated real PostgreSQL/race/API evidence; release remains off. Current evidence paths retained for CG/FCG/VG.",
+  "notes": "2026-10-06 independent pure stats/calendar/canonical preparation implemented; HG is not satisfied; DB history/event integration not started 2026-10-06: existing I1 work transferred to codex/projects-p1; see parent branch-integration.md. FG remains incomplete. 2026-10-06 user explicitly authorized parallel LG/HG implementation; release flag remains off. 2026-10-06: HG passed with integrated real PostgreSQL/race/API evidence; release remains off. Current evidence paths retained for CG/FCG/VG. 2026-10-17: archived with the complete I1 task tree at the user's explicit request. Existing local verification and outstanding formal remote CI remain unchanged; see meta.archive.note.",
   "meta": {
     "planning_status": "reviewed",
     "implementation_status": "completed",
@@ -52,6 +52,12 @@
         "1247d2728e690c89707b248096f952d372e7c38e",
         "4c9be765213f20953b46cb84db5caa19fc2f945d"
       ]
+    },
+    "archive": {
+      "date": "2026-10-17",
+      "reason": "user_requested",
+      "verification_scope": "task_records_only",
+      "note": ".trellis/tasks/archive/2026-10/10-05-iterations-i1/archive-note-2026-10-17.md"
     }
   }
 }
