@@ -1388,8 +1388,8 @@
       "auto_stop_description": "退出桌面应用时停止守护进程。关闭此选项后，守护进程会继续在后台运行。",
       "cli_status": "CLI 状态",
       "cli_checking": "检查中...",
-      "cli_installed": "已安装 multica CLI，可通过 PATH 环境变量找到并调用。",
-      "cli_missing": "未找到 multica CLI。安装后即可管理守护进程。",
+      "cli_installed": "此应用已找到可用的 multica CLI。",
+      "cli_missing": "未找到可用的 multica CLI，请查看下方运行时安装诊断。",
       "installation_guide": "查看安装指南",
       "auth_expired_title": "守护进程登录已失效",
       "auth_expired_description": "服务器拒绝了守护进程的登录凭证。请点击下方「重新连接此设备」恢复设备连接。",
@@ -1428,7 +1428,63 @@
       },
       "management_pending_busy": "等待当前执行完成",
       "management_pending_switch": "正在切换受管理守护进程会话",
-      "management_unassociated": "尚未验证现有守护进程的归属"
+      "management_unassociated": "尚未验证现有守护进程的归属",
+      "diagnostic": {
+        "cli_title": "运行时安装",
+        "connection_title": "设备连接",
+        "reconnect_failed": "无法重新连接此设备",
+        "stage": "失败环节：{{stage}}",
+        "fields": "不匹配字段：{{fields}}",
+        "record": "错误类别：{{code}} · {{time}}",
+        "http_status": "HTTP 状态码：{{status}}",
+        "stages": {
+          "cli_setup": "运行时安装",
+          "registration": "设备注册",
+          "binding": "工作空间绑定",
+          "credentials": "凭据刷新",
+          "restart": "守护进程重启"
+        },
+        "fields_labels": {
+          "request": "请求",
+          "deployment": "服务器部署",
+          "organization": "组织",
+          "account": "账号",
+          "auth_version": "账号版本",
+          "installation": "安装身份",
+          "workspace": "工作空间",
+          "daemon": "设备绑定",
+          "binding_epoch": "绑定版本",
+          "key": "安装密钥"
+        },
+        "summary": {
+          "challenge_expired": "设备注册验证已过期，可能是请求延迟或设备与服务器时间不一致。",
+          "challenge_time_window": "设备验证信息的过期时间超出了允许范围，设备或服务器时间可能不准确。",
+          "challenge_scope_mismatch": "设备验证信息与当前账号、服务器或设备绑定信息不一致。",
+          "challenge_invalid": "设备验证响应的格式或内容不一致，无法完成安全校验。",
+          "cli_unavailable": "未找到可用的 multica CLI，暂时无法确定具体失败环节。",
+          "cli_download_failed": "运行时下载未完成，或下载文件无法保存。",
+          "cli_checksum_failed": "运行时安装包未通过官方校验和验证，或无法完成验证。",
+          "cli_extract_failed": "运行时安装包无法解压，或解压后未找到可执行文件。",
+          "cli_install_failed": "运行时安装所需的文件无法写入。",
+          "cli_validation_failed": "运行时可执行文件未能返回有效的版本信息。",
+          "request_failed": "服务器处理请求时返回了错误。",
+          "operation_failed": "操作未完成，暂时无法确定具体原因。"
+        },
+        "steps": {
+          "clock": "同步设备时间。Windows：打开设置 → 时间和语言 → 日期和时间 → 立即同步。受组织管理的设备请使用组织提供的时间服务。",
+          "fresh_challenge": "再次点击\"重新连接此设备\"，获取新的设备验证信息。",
+          "server_clock": "若仍失败，请联系服务器管理员检查服务器时间及时间同步状态。",
+          "scope": "检查设置 → 服务器连接，以及当前登录账号。等待账号或服务器切换完成后，再重新连接。",
+          "network": "检查能否访问 GitHub 发布下载地址，以及网络和代理设置。",
+          "checksum": "使用官方发布包重试。若持续校验失败，请管理员检查下载内容或代理缓存。",
+          "extract": "在 Windows 上检查 tar.exe 是否可用，并查看 Windows 安全中心 → 保护历史记录中是否有文件被拦截，同时检查磁盘剩余空间。",
+          "permissions": "检查当前 Windows 账号是否有权限写入 Multica 的应用数据目录和临时目录，并查看 Windows 安全中心 → 保护历史记录中是否有写入被拦截。",
+          "executable": "检查安装版本是否与 Windows 系统架构匹配。若文件无法运行，请查看 Windows 安全中心 → 保护历史记录。",
+          "retry_setup": "排除问题后，重启 Multica 以重新尝试安装运行时。",
+          "retry": "检查当前服务器地址和网络，然后再次点击\"重新连接此设备\"。",
+          "support": "若仍失败，请向支持人员提供错误类别、失败环节、时间、应用版本和当前服务器地址。请勿发送令牌或管理身份文件。"
+        }
+      }
     },
     "runtime_config": {
       "title": "服务器连接",

@@ -20,9 +20,12 @@ import { join } from "path";
 import { homedir, hostname } from "os";
 import type {
   DaemonStatus,
+  DaemonDiagnostic,
+  DaemonReauthResult,
   DaemonPrefs,
   LocalRuntimeProbe,
 } from "../shared/daemon-types";
+import { daemonDiagnostic, DaemonDiagnosticError } from "./daemon-diagnostics";
 import { daemonStatusAlive } from "../shared/daemon-types";
 import { ensureManagedCli, managedCliPath } from "./cli-bootstrap";
 import { decideVersionAction } from "./version-decision";
@@ -93,6 +96,7 @@ interface ActiveProfile {
 let statusPollTimer: ReturnType<typeof setInterval> | null = null;
 let logTailWatcher: { path: string; listener: StatsListener } | null = null;
 let currentState: DaemonStatus["state"] = "installing_cli";
+let latestStatus: DaemonStatus = { state: "installing_cli" };
 let getMainWindow: () => BrowserWindow | null = () => null;
 let statusPollInProgress = false;
 let cachedCliBinary: string | null | undefined = undefined;
@@ -131,7 +135,19 @@ let configWriteChain: Promise<void> = Promise.resolve();
 let managedSession: ManagedInstallationSession | null = null;
 let managedPreparation: Promise<ManagedInstallationSession | null> | null = null;
 let managedGeneration = 0;
-let managedSetupError: string | null = null;
+let managedSetupError: DaemonDiagnostic | null = null;
+let cliDiagnostic: DaemonDiagnostic | undefined;
+let connectionDiagnostic: DaemonDiagnostic | undefined;
+let connectionAttempt = 0;
+let diagnosticUserId: string | null = null;
+
+type DaemonLifecycleResult = { success: boolean; error?: string; diagnostic?: DaemonDiagnostic };
+
+function publishConnectionDiagnostic(diagnostic: DaemonDiagnostic | undefined): void {
+  connectionDiagnostic = diagnostic;
+  // A diagnostic update must preserve runtime identity and management guards.
+  sendStatus(latestStatus);
+}
 let pendingManagedScopeRefresh = false;
 let managedScopeRefreshInProgress = false;
 let managedPendingReason: ManagedPendingReason | null = null;
@@ -144,7 +160,12 @@ function publishInstallationMetadata(value: InstallationMetadataProof | null): v
   }
 }
 
-function resetManagedSession(): void {
+function resetManagedSession(clearDiagnostics = true): void {
+  if (clearDiagnostics) {
+    connectionAttempt += 1;
+    diagnosticUserId = null;
+    publishConnectionDiagnostic(undefined);
+  }
   managedGeneration += 1;
   managedSession?.dispose();
   managedSession = null;
@@ -159,6 +180,7 @@ function resetManagedSession(): void {
 async function reconcileManagedSession(active: ActiveProfile, session: ManagedInstallationSession): Promise<{ accepted: boolean; reason?: ManagedPendingReason }> {
   if (managedScopeRefreshInProgress) return { accepted: false, reason: "switching" };
   managedScopeRefreshInProgress = true;
+  const diagnosticAttempt = connectionAttempt;
   try {
     const key = `${active.name}:${active.port}`;
     const recovery = managedTransitionRecoveries.get(key) ?? { stopRequested: false };
@@ -167,6 +189,9 @@ async function reconcileManagedSession(active: ActiveProfile, session: ManagedIn
     const isCurrent = () => session === managedSession && managedTransitionRecoveries.get(key) === recovery && activeProfile?.name === active.name && desiredDaemonRunning && !daemonQuitting && !serverSwitchBlocked();
     const result = await transitionManagedDaemon({ session, port: active.port, recovery, isStopped,
       isCurrent,
+      onHandoffError: (error) => {
+        if (diagnosticAttempt === connectionAttempt && isCurrent()) publishConnectionDiagnostic(daemonDiagnostic(error, "binding"));
+      },
       waitForStop: async () => {
         for (let attempt = 0; attempt < 30; attempt += 1) {
           if (await isStopped()) return true;
@@ -177,12 +202,16 @@ async function reconcileManagedSession(active: ActiveProfile, session: ManagedIn
       start: (handoff) => startDaemon(undefined, handoff, isCurrent),
     });
     if (session === managedSession) {
+      if (diagnosticAttempt === connectionAttempt && result.accepted && (connectionDiagnostic?.stage === "binding" || connectionDiagnostic?.stage === "restart")) publishConnectionDiagnostic(undefined);
       pendingManagedScopeRefresh = !result.accepted;
       managedPendingReason = result.accepted ? null : result.reason;
       managedRetryAfter = Date.now() + 15_000;
       scheduleStatusRefresh();
     }
     return result;
+  } catch (error) {
+    if (diagnosticAttempt === connectionAttempt && session === managedSession && activeProfile?.name === active.name && !serverSwitchBlocked() && !daemonQuitting) publishConnectionDiagnostic(daemonDiagnostic(error, "binding"));
+    throw error;
   } finally { managedScopeRefreshInProgress = false; }
 }
 
@@ -196,8 +225,9 @@ async function refreshManagedScopes(): Promise<{ managed: boolean; accepted: boo
 }
 
 async function configureManagedSession(token: string, userId: string, daemonToken: string, active: ActiveProfile, previousDeploymentId?: string): Promise<void> {
-  resetManagedSession();
+  resetManagedSession(false);
   if (!targetApiBaseUrl) return;
+  const attempt = connectionAttempt;
   const generation = managedGeneration;
   pendingManagedScopeRefresh = true;
   managedPendingReason = "switching";
@@ -215,13 +245,16 @@ async function configureManagedSession(token: string, userId: string, daemonToke
   managedPreparation = pending;
   try {
     const session = await pending;
-    if (generation !== managedGeneration || activeProfile?.name !== active.name || targetApiBaseUrl !== target) { session?.dispose(); return; }
+    if (generation !== managedGeneration || attempt !== connectionAttempt || activeProfile?.name !== active.name || targetApiBaseUrl !== target) { session?.dispose(); return; }
     managedSession = session;
     if (!session) { pendingManagedScopeRefresh = false; managedPendingReason = null; }
     publishInstallationMetadata(session?.metadataProof ?? null);
     session?.startHeartbeat();
   } catch (error) {
-    if (generation === managedGeneration) managedSetupError = "Managed installation setup is unavailable; no legacy downgrade was attempted";
+    if (generation === managedGeneration && attempt === connectionAttempt && targetApiBaseUrl === target) {
+      managedSetupError = daemonDiagnostic(error, "registration");
+      publishConnectionDiagnostic(managedSetupError);
+    }
     throw error;
   } finally { if (managedPreparation === pending) managedPreparation = null; }
 }
@@ -269,9 +302,17 @@ function urlsMatch(a: string, b: string): boolean {
   return na.length > 0 && na === nb;
 }
 
+function withDiagnostics(status: DaemonStatus): DaemonStatus {
+  const diagnostics = cliDiagnostic || connectionDiagnostic
+    ? { ...(cliDiagnostic ? { cli: cliDiagnostic } : {}), ...(connectionDiagnostic ? { connection: connectionDiagnostic } : {}) }
+    : undefined;
+  return { ...status, diagnostics };
+}
+
 function sendStatus(status: DaemonStatus): void {
+  latestStatus = status;
   const win = getMainWindow();
-  win?.webContents.send("daemon:status", status);
+  win?.webContents.send("daemon:status", withDiagnostics(status));
 }
 
 interface HealthPayload {
@@ -419,6 +460,7 @@ async function ensureActiveProfile(): Promise<ActiveProfile | null> {
 
 function invalidateActiveProfile(): void {
   activeProfile = null;
+  latestStatus = { state: currentState === "installing_cli" || currentState === "cli_not_found" ? currentState : "stopped" };
   externalDaemonObserved = false;
   recoveryPolicy.reset();
 }
@@ -439,6 +481,14 @@ function observeDaemonBoundary(status: DaemonStatus): void {
 }
 
 async function fetchHealth(): Promise<DaemonStatus> {
+  const generation = managedGeneration;
+  const target = targetApiBaseUrl;
+  const status = await readHealthStatus();
+  if (generation === managedGeneration && target === targetApiBaseUrl) latestStatus = status;
+  return withDiagnostics(latestStatus);
+}
+
+async function readHealthStatus(): Promise<DaemonStatus> {
   // While the CLI is being downloaded or has permanently failed, short-circuit
   // polling — there's nothing to probe yet and /health calls would just return
   // "stopped", which would overwrite the correct setup state in the UI.
@@ -446,12 +496,18 @@ async function fetchHealth(): Promise<DaemonStatus> {
     return { state: currentState };
   }
 
+  const generation = managedGeneration;
+  const target = targetApiBaseUrl;
   const active = await ensureActiveProfile();
+  if (generation !== managedGeneration || target !== targetApiBaseUrl) return latestStatus;
   // No profile yet means no daemon of ours to probe. Reporting "stopped" is the
   // honest answer; probing the default port would surface the user's own CLI
   // daemon as if it were Desktop's.
   if (!active) return { state: "stopped" };
   const data = await fetchHealthAtPort(active.port);
+  // A previous profile's health cannot update either the cached snapshot or
+  // auth/profile state after a session or server transition.
+  if (generation !== managedGeneration || target !== targetApiBaseUrl || activeProfile?.name !== active.name) return latestStatus;
 
   if (!data || data.status !== "running") {
     // A start that never reaches "running" is the symptom; an expired/invalid
@@ -634,11 +690,13 @@ async function resolveCliBinary(): Promise<string | null> {
   if (cliResolvePromise) return cliResolvePromise;
 
   cliResolvePromise = (async () => {
+    let failure = daemonDiagnostic(new DaemonDiagnosticError("cli_validation_failed", "cli_setup"), "cli_setup");
     const bundled = bundledCliPath();
     if (existsSync(bundled)) {
       const version = await probeCliBinary(bundled, "bundled");
       if (version) {
         console.log(`[daemon] using bundled CLI at ${bundled}`);
+        cliDiagnostic = undefined;
         cachedCliBinary = bundled;
         cachedCliBinaryVersion = version;
         return bundled;
@@ -649,6 +707,7 @@ async function resolveCliBinary(): Promise<string | null> {
     if (existsSync(managed)) {
       const version = await probeCliBinary(managed, "managed");
       if (version) {
+        cliDiagnostic = undefined;
         cachedCliBinary = managed;
         cachedCliBinaryVersion = version;
         return managed;
@@ -661,6 +720,7 @@ async function resolveCliBinary(): Promise<string | null> {
       });
       const version = await probeCliBinary(installed, "managed");
       if (version) {
+        cliDiagnostic = undefined;
         cachedCliBinary = installed;
         cachedCliBinaryVersion = version;
         return installed;
@@ -669,6 +729,7 @@ async function resolveCliBinary(): Promise<string | null> {
         `[daemon] managed CLI at ${installed} failed validation after install`,
       );
     } catch (err) {
+      failure = err instanceof DaemonDiagnosticError ? daemonDiagnostic(err, "cli_setup") : daemonDiagnostic(new DaemonDiagnosticError("cli_unavailable", "cli_setup"), "cli_setup");
       console.warn("[daemon] CLI auto-install failed, falling back to PATH:", err);
     }
 
@@ -676,12 +737,14 @@ async function resolveCliBinary(): Promise<string | null> {
     if (onPath) {
       const version = await probeCliBinary(onPath, "path");
       if (version) {
+        cliDiagnostic = undefined;
         cachedCliBinary = onPath;
         cachedCliBinaryVersion = version;
         return onPath;
       }
     }
 
+    cliDiagnostic = failure;
     cachedCliBinary = null;
     cachedCliBinaryVersion = null;
     return null;
@@ -830,82 +893,97 @@ async function syncToken(
   userId: string,
   forceRefresh = false,
 ): Promise<{ active: ActiveProfile; userChanged: boolean; tokenChanged: boolean; assertCurrent: () => void }> {
-  const active = await ensureActiveProfile();
-  if (!active) {
-    // Writing here would land the token and server_url in the user's default
-    // CLI config. The renderer awaits setTargetApiUrl before calling this, so
-    // reaching this branch is a real error rather than a normal startup race.
-    throw new Error("daemon profile is not resolved yet; token sync skipped");
-  }
-  const target = targetApiBaseUrl;
-  let generation = managedGeneration;
-  const assertCurrent = () => {
-    if (generation !== managedGeneration || target !== targetApiBaseUrl || activeProfile?.name !== active.name || serverSwitchBlocked() || daemonQuitting) {
-      throw new Error("Daemon credential sync was superseded");
-    }
-  };
-  const config = await readProfileConfig(active.name);
-  const previousToken = config.token;
-  const previousUserId = await readProfileUserId(active.name);
-  assertCurrent();
-  const userChanged = Boolean(previousUserId) && previousUserId !== userId;
-  const sameUserWithCachedPat =
-    !userChanged &&
-    previousUserId === userId &&
-    typeof config.token === "string" &&
-    config.token.startsWith("mul_");
-
-  let reuseCachedPat = sameUserWithCachedPat && !forceRefresh && !tokenFromRenderer.startsWith("mul_");
-  if (reuseCachedPat) {
-    reuseCachedPat = (await probeTokenValidity(active.name, config.token as string)) !== "auth_expired";
-    assertCurrent();
-  }
-
-  let finalToken: string;
-  if (tokenFromRenderer.startsWith("mul_")) {
-    finalToken = tokenFromRenderer;
-  } else if (reuseCachedPat) {
-    finalToken = config.token as string;
-  } else {
-    try {
-      finalToken = await mintPat(tokenFromRenderer);
-      console.log(
-        `[daemon] minted PAT for profile "${active.name}" (user_changed=${userChanged})`,
-      );
-    } catch (err) {
-      console.error("[daemon] failed to mint PAT:", err);
-      throw err;
-    }
-  }
-
-  assertCurrent();
-  config.token = finalToken;
-  if (target) config.server_url = target;
-  await writeProfileConfig(active.name, config);
-  assertCurrent();
-  await writeProfileUserId(active.name, userId);
-  assertCurrent();
-  const previousDeploymentId = typeof config.management_deployment_id === "string" ? config.management_deployment_id : undefined;
+  if (diagnosticUserId !== null && diagnosticUserId !== userId) resetManagedSession();
+  diagnosticUserId = userId;
+  const attempt = ++connectionAttempt;
+  let stage: DaemonDiagnostic["stage"] = "credentials";
   try {
-    const preparation = configureManagedSession(tokenFromRenderer, userId, finalToken, active, previousDeploymentId);
-    generation = managedGeneration;
-    await preparation;
-  } catch (error) {
+    const active = await ensureActiveProfile();
+    if (!active) {
+      // Writing here would land the token and server_url in the user's default
+      // CLI config. The renderer awaits setTargetApiUrl before calling this, so
+      // reaching this branch is a real error rather than a normal startup race.
+      throw new Error("daemon profile is not resolved yet; token sync skipped");
+    }
+    const target = targetApiBaseUrl;
+    let generation = managedGeneration;
+    const assertCurrent = () => {
+      if (attempt !== connectionAttempt || generation !== managedGeneration || target !== targetApiBaseUrl || activeProfile?.name !== active.name || serverSwitchBlocked() || daemonQuitting) {
+        throw new Error("Daemon credential sync was superseded");
+      }
+    };
+    const config = await readProfileConfig(active.name);
+    const previousToken = config.token;
+    const previousUserId = await readProfileUserId(active.name);
     assertCurrent();
-    if (reuseCachedPat && isAuthStatusError(error)) {
-      finalToken = await mintPat(tokenFromRenderer);
+    const userChanged = Boolean(previousUserId) && previousUserId !== userId;
+    const sameUserWithCachedPat =
+      !userChanged &&
+      previousUserId === userId &&
+      typeof config.token === "string" &&
+      config.token.startsWith("mul_");
+
+    let reuseCachedPat = sameUserWithCachedPat && !forceRefresh && !tokenFromRenderer.startsWith("mul_");
+    if (reuseCachedPat) {
+      reuseCachedPat = (await probeTokenValidity(active.name, config.token as string)) !== "auth_expired";
       assertCurrent();
-      config.token = finalToken;
-      await writeProfileConfig(active.name, config);
-      assertCurrent();
+    }
+
+    let finalToken: string;
+    if (tokenFromRenderer.startsWith("mul_")) {
+      finalToken = tokenFromRenderer;
+    } else if (reuseCachedPat) {
+      finalToken = config.token as string;
+    } else {
+      try {
+        finalToken = await mintPat(tokenFromRenderer);
+        console.log(
+          `[daemon] minted PAT for profile "${active.name}" (user_changed=${userChanged})`,
+        );
+      } catch (err) {
+        console.error("[daemon] failed to mint PAT:", err);
+        throw err;
+      }
+    }
+
+    assertCurrent();
+    config.token = finalToken;
+    if (target) config.server_url = target;
+    await writeProfileConfig(active.name, config);
+    assertCurrent();
+    await writeProfileUserId(active.name, userId);
+    assertCurrent();
+    const previousDeploymentId = typeof config.management_deployment_id === "string" ? config.management_deployment_id : undefined;
+    stage = "registration";
+    try {
       const preparation = configureManagedSession(tokenFromRenderer, userId, finalToken, active, previousDeploymentId);
       generation = managedGeneration;
       await preparation;
-    } else { throw error; }
-  }
-  assertCurrent();
+    } catch (error) {
+      assertCurrent();
+      if (reuseCachedPat && isAuthStatusError(error)) {
+        stage = "credentials";
+        finalToken = await mintPat(tokenFromRenderer);
+        assertCurrent();
+        config.token = finalToken;
+        await writeProfileConfig(active.name, config);
+        assertCurrent();
+        stage = "registration";
+        const preparation = configureManagedSession(tokenFromRenderer, userId, finalToken, active, previousDeploymentId);
+        generation = managedGeneration;
+        await preparation;
+      } else { throw error; }
+    }
+    assertCurrent();
 
-  return { active, userChanged, tokenChanged: previousToken !== finalToken, assertCurrent };
+    if (connectionDiagnostic?.stage === "credentials" || connectionDiagnostic?.stage === "registration") publishConnectionDiagnostic(undefined);
+    return { active, userChanged, tokenChanged: previousToken !== finalToken, assertCurrent };
+  } catch (error) {
+    if (attempt === connectionAttempt && !serverSwitchBlocked() && !daemonQuitting) {
+      publishConnectionDiagnostic(stage === "registration" && managedSetupError ? managedSetupError : daemonDiagnostic(error, stage));
+    }
+    throw error;
+  }
 }
 
 async function restartDaemonAfterCredentialChange(
@@ -979,18 +1057,6 @@ async function clearToken(strict = false): Promise<void> {
   await removeProfileUserId(active.name, strict);
 }
 
-// Result of a user-initiated daemon re-authentication. The distinction matters:
-// only `session_invalid` justifies signing the user out of the whole app; a
-// `transient` failure must keep them logged in so they can retry.
-export type ReauthResult =
-  | { ok: true }
-  | { ok: false; reason: "session_invalid" }
-  | { ok: false; reason: "transient"; message: string };
-
-function errorMessage(err: unknown): string {
-  return err instanceof Error ? err.message : String(err);
-}
-
 /**
  * Mint a fresh PAT from the current session before replacing cached credentials,
  * then restart the daemon so it loads the new credential. A failed mint leaves
@@ -1005,23 +1071,30 @@ function errorMessage(err: unknown): string {
 async function reauthenticate(
   token: string,
   userId: string,
-): Promise<ReauthResult> {
+): Promise<DaemonReauthResult> {
+  const syncing = syncToken(token, userId, true);
+  const attempt = connectionAttempt;
+  const isCurrent = () => attempt === connectionAttempt && !serverSwitchBlocked() && !daemonQuitting;
+  let stage: "credentials" | "restart" = "credentials";
   try {
-    const { assertCurrent } = await syncToken(token, userId, true);
+    const { assertCurrent } = await syncing;
     assertCurrent();
+    stage = "restart";
     const restart = await restartDaemon(assertCurrent);
     assertCurrent();
     if (!restart.success) {
-      return {
-        ok: false,
-        reason: "transient",
-        message: restart.error ?? "failed to restart daemon",
-      };
+      const diagnostic = restart.diagnostic ?? daemonDiagnostic(undefined, "restart");
+      if (isCurrent()) publishConnectionDiagnostic(diagnostic);
+      return { ok: false, reason: "transient", diagnostic };
     }
+    if (isCurrent()) publishConnectionDiagnostic(undefined);
     return { ok: true };
   } catch (err) {
+    if (!isCurrent()) return { ok: false, reason: "transient" };
     if (isAuthStatusError(err)) return { ok: false, reason: "session_invalid" };
-    return { ok: false, reason: "transient", message: errorMessage(err) };
+    const diagnostic = stage === "credentials" && connectionDiagnostic ? connectionDiagnostic : daemonDiagnostic(err, stage);
+    publishConnectionDiagnostic(diagnostic);
+    return { ok: false, reason: "transient", diagnostic };
   }
 }
 
@@ -1134,7 +1207,7 @@ async function startDaemon(
   recoveryProfile?: ActiveProfile,
   preparedHandoff?: string,
   managedStartupGuard?: () => boolean,
-): Promise<{ success: boolean; error?: string }> {
+): Promise<DaemonLifecycleResult> {
   if (daemonQuitting || serverSwitchBlocked()) return { success: false, error: "Desktop is quitting or switching servers" };
   const bin = await resolveCliBinary();
   if (!bin) return { success: false, error: "multica CLI is not installed" };
@@ -1154,10 +1227,11 @@ async function startDaemon(
   ) {
     return { success: false, error: "Daemon recovery was superseded" };
   }
-  try { if (managedPreparation) await managedPreparation; } catch { return { success: false, error: managedSetupError ?? "Managed installation setup failed" }; }
-  if (managedSetupError) return { success: false, error: managedSetupError };
+  try { if (managedPreparation) await managedPreparation; } catch { return { success: false, error: managedSetupError?.code ?? "Managed installation setup failed", diagnostic: managedSetupError ?? undefined }; }
+  if (managedSetupError) return { success: false, error: managedSetupError.code, diagnostic: managedSetupError };
   const startupSession = managedSession;
   const startupGeneration = managedGeneration;
+  const startupDiagnosticAttempt = connectionAttempt;
   const existing = await fetchHealthAtPort(active.port);
   if (daemonQuitting || serverSwitchBlocked()) return { success: false, error: "Desktop is quitting or switching servers" };
   if (daemonStatusAlive(existing?.status)) {
@@ -1199,7 +1273,11 @@ async function startDaemon(
   let handoff: string | null = preparedHandoff ?? null;
   if (managedSession && handoff === null) {
     try { handoff = await managedSession.createHandoff(); }
-    catch { return { success: false, error: "Managed installation proof could not be prepared" }; }
+    catch (error) {
+      const diagnostic = daemonDiagnostic(error, "binding");
+      if (startupDiagnosticAttempt === connectionAttempt && startupGeneration === managedGeneration && startupSession === managedSession) publishConnectionDiagnostic(diagnostic);
+      return { success: false, error: "Managed installation proof could not be prepared", diagnostic };
+    }
   }
 
   if (recoveryProfile) recoveryPolicy.recordRecoveryAttempt(Date.now());
@@ -1254,7 +1332,10 @@ async function startDaemon(
         // Stay in "starting" until pollOnce confirms /health — the CLI
         // returning 0 only means the supervisor was spawned, not that the
         // daemon process is already listening.
-        if (isCurrentStart()) scheduleStatusRefresh();
+        if (isCurrentStart()) {
+          if (startupDiagnosticAttempt === connectionAttempt && (connectionDiagnostic?.stage === "binding" || connectionDiagnostic?.stage === "restart")) publishConnectionDiagnostic(undefined);
+          scheduleStatusRefresh();
+        }
         resolve({ success: true });
       },
     );
@@ -1282,7 +1363,7 @@ async function lifecycleBlockedByForeignDaemon(): Promise<boolean> {
   );
 }
 
-async function stopDaemon(assertCurrent?: () => void): Promise<{ success: boolean; error?: string }> {
+async function stopDaemon(assertCurrent?: () => void): Promise<DaemonLifecycleResult> {
   // Central lifecycle guard: a daemon running in an environment we can't drive
   // (e.g. Linux in WSL2 behind a Windows desktop) can't be stopped by the
   // native CLI — it would act on the host process namespace and no-op, while
@@ -1320,9 +1401,10 @@ async function stopDaemon(assertCurrent?: () => void): Promise<{ success: boolea
   });
 }
 
-async function restartDaemon(assertCurrent?: () => void): Promise<{ success: boolean; error?: string }> {
+async function restartDaemon(assertCurrent?: () => void): Promise<DaemonLifecycleResult> {
   assertCurrent?.();
   const generation = managedGeneration;
+  const diagnosticAttempt = connectionAttempt;
   const target = targetApiBaseUrl;
   const profile = activeProfile;
   const startupGuard = assertCurrent
@@ -1335,8 +1417,8 @@ async function restartDaemon(assertCurrent?: () => void): Promise<{ success: boo
   // #3916.
   if (await lifecycleBlockedByForeignDaemon()) return { success: true };
   assertCurrent?.();
-  try { if (managedPreparation) await managedPreparation; } catch { return { success: false, error: managedSetupError ?? "Managed setup is unavailable" }; }
-  if (managedSetupError) return { success: false, error: managedSetupError };
+  try { if (managedPreparation) await managedPreparation; } catch { return { success: false, error: managedSetupError?.code ?? "Managed setup is unavailable", diagnostic: managedSetupError ?? undefined }; }
+  if (managedSetupError) return { success: false, error: managedSetupError.code, diagnostic: managedSetupError };
   if (managedSession) {
     const active = await ensureActiveProfile();
     if (!active) return { success: false, error: "Managed profile is unavailable" };
@@ -1345,7 +1427,11 @@ async function restartDaemon(assertCurrent?: () => void): Promise<{ success: boo
     if (daemonStatusAlive(existing?.status) && typeof config.management_deployment_id !== "string") {
       return { success: false, error: "Existing legacy daemon has no authenticated management control; it remains unassociated" };
     }
-    try { await managedSession.createHandoff(); } catch { return { success: false, error: "Managed restart proof could not be prepared" }; }
+    try { await managedSession.createHandoff(); } catch (error) {
+      const diagnostic = daemonDiagnostic(error, "binding");
+      if (diagnosticAttempt === connectionAttempt && generation === managedGeneration && target === targetApiBaseUrl) publishConnectionDiagnostic(diagnostic);
+      return { success: false, error: "Managed restart proof could not be prepared", diagnostic };
+    }
   }
   assertCurrent?.();
   const stopResult = await stopDaemon(assertCurrent);
@@ -1519,10 +1605,12 @@ function startPolling(): void {
 async function bootstrapCli(): Promise<void> {
   const bin = await resolveCliBinary();
   if (!bin) {
+    cliDiagnostic ??= daemonDiagnostic(new DaemonDiagnosticError("cli_unavailable", "cli_setup"), "cli_setup");
     currentState = "cli_not_found";
     sendStatus({ state: "cli_not_found" });
     return;
   }
+  cliDiagnostic = undefined;
   currentState = "stopped";
   sendStatus({ state: "stopped" });
   startPolling();
@@ -1664,9 +1752,9 @@ export function setupDaemonManager(
     if (targetApiBaseUrl !== normalized) {
       console.log(`[daemon] target API URL set to ${normalized ?? "(none)"}`);
       setDesiredDaemonRunning(false);
-      resetManagedSession();
       targetApiBaseUrl = normalized;
       invalidateActiveProfile();
+      resetManagedSession();
       await pollOnce();
     }
   });
@@ -1718,7 +1806,7 @@ export function setupDaemonManager(
   });
   ipcMain.handle(
     "daemon:reauthenticate",
-    async (_event, token: string, userId: string): Promise<ReauthResult> => {
+    async (_event, token: string, userId: string): Promise<DaemonReauthResult> => {
       if (serverSwitchBlocked()) throw new Error("Server switch in progress");
       const generation = managedGeneration;
       const target = targetApiBaseUrl;
@@ -1726,7 +1814,7 @@ export function setupDaemonManager(
       setDesiredDaemonRunning(true, true);
       return lifecycleOperations.runForeground(() => {
         if (generation !== managedGeneration || target !== targetApiBaseUrl || profile !== activeProfile || serverSwitchBlocked() || daemonQuitting) {
-          return Promise.resolve<ReauthResult>({ ok: false, reason: "transient", message: "Daemon reauthentication was superseded" });
+          return Promise.resolve<DaemonReauthResult>({ ok: false, reason: "transient" });
         }
         return reauthenticate(token, userId);
       });

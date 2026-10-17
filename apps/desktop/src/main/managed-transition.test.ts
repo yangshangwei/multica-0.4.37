@@ -1,7 +1,8 @@
 // @vitest-environment node
 import { afterEach, expect, it, vi } from "vitest";
 import { spawn, type ChildProcess } from "node:child_process";
-import { ManagedControlConnection } from "./managed-control";
+import { DaemonDiagnosticError } from "./daemon-diagnostics";
+import { ManagedControlConnection, ManagementControlError } from "./managed-control";
 import { transitionManagedDaemon, type ManagedTransitionRecovery } from "./managed-transition";
 import type { ManagedDaemonScope } from "./managed-session";
 
@@ -84,4 +85,45 @@ it("does not drain after a newer login supersedes proof preparation", async () =
  expect(await transitionManagedDaemon(f.options)).toEqual({ accepted: false, reason: "switching" });
  const scope = await f.old.connection.request("GET", "/management/session") as ManagedDaemonScope;
  expect(scope.drain_intent_id).toBeNull(); expect(f.recovery.stopRequested).toBe(false);
+});
+
+
+it.each(["stopped", "same-scope", "different-scope"] as const)("reports the original handoff failure without starting or draining a %s daemon", async state => {
+ const target = { user_id: state === "same-scope" ? "account-a" : "account-b", auth_version: "1" };
+ const f = await fixture(target);
+ if (state === "stopped") { f.old.child.kill("SIGTERM"); await f.old.exited; }
+ const failure = new DaemonDiagnosticError("challenge_scope_mismatch", "binding", ["workspace"]);
+ f.session.createHandoff.mockRejectedValue(failure);
+ const onHandoffError = vi.fn();
+ const request = vi.spyOn(f.old.connection, "request");
+ expect(await transitionManagedDaemon({ ...f.options, onHandoffError })).toEqual({ accepted: false, reason: "switching" });
+ expect(onHandoffError).toHaveBeenCalledExactlyOnceWith(failure);
+ expect(f.start).not.toHaveBeenCalled();
+ expect(f.session.acknowledgeHandoff).not.toHaveBeenCalled();
+ expect(request.mock.calls.some(([, path]) => path === "/shutdown" || path === "/management/handoff")).toBe(false);
+ expect(f.recovery).toEqual({ stopRequested: false });
+});
+
+it.each(["stopped", "same-scope", "different-scope"] as const)("does not report a superseded handoff failure for a %s daemon", async state => {
+ const target = { user_id: state === "same-scope" ? "account-a" : "account-b", auth_version: "1" };
+ const f = await fixture(target);
+ if (state === "stopped") { f.old.child.kill("SIGTERM"); await f.old.exited; }
+ f.session.createHandoff.mockImplementation(async () => { f.supersede(); throw new DaemonDiagnosticError("challenge_expired", "binding"); });
+ const onHandoffError = vi.fn();
+ const request = vi.spyOn(f.old.connection, "request");
+ expect(await transitionManagedDaemon({ ...f.options, onHandoffError })).toEqual({ accepted: false, reason: "switching" });
+ expect(onHandoffError).not.toHaveBeenCalled();
+ expect(f.start).not.toHaveBeenCalled();
+ expect(request.mock.calls.some(([, path]) => path === "/shutdown" || path === "/management/handoff")).toBe(false);
+ expect(f.recovery).toEqual({ stopRequested: false });
+});
+
+
+it.each(["missing", "throws"] as const)("preserves a busy preparation result when the diagnostic callback %s", async reporting => {
+ const f = await fixture({ user_id: "account-a", auth_version: "1" });
+ f.session.createHandoff.mockRejectedValue(new ManagementControlError(409));
+ const onHandoffError = reporting === "throws" ? () => { throw new Error("diagnostic observer failed"); } : undefined;
+ expect(await transitionManagedDaemon({ ...f.options, onHandoffError })).toEqual({ accepted: false, reason: "busy" });
+ expect(f.start).not.toHaveBeenCalled();
+ expect(f.recovery).toEqual({ stopRequested: false });
 });

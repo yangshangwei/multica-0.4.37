@@ -1,0 +1,11 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+> @multica/desktop@0.1.0 lint /Volumes/artisan/code/2026/multica-0.4.37/apps/desktop
+> eslint .
+
+
+/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/src/renderer/src/components/tab-content.tsx
+  54:6  warning  React Hook useEffect has a missing dependency: 'group'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+✖ 1 problem (0 errors, 1 warning)
+

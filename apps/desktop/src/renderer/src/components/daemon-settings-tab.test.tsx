@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { I18nProvider } from "@multica/core/i18n/react";
 import type { SupportedLocale } from "@multica/core/i18n";
 import { RESOURCES } from "@multica/views/locales";
@@ -54,7 +54,7 @@ describe("DaemonSettingsTab sign-in recovery", () => {
   it("names both daemon preference switches from their visible row labels", async () => {
     stubDaemonAPI({ state: "stopped" });
     render(settings());
-    await screen.findByText("multica CLI is installed and available in PATH.");
+    await screen.findByText("A usable multica CLI is available to this app.");
     expect(screen.getByRole("switch", { name: "Auto-start on launch" })).toBeChecked();
     expect(screen.getByRole("switch", { name: "Auto-stop on quit" })).not.toBeChecked();
   });
@@ -107,7 +107,7 @@ describe("DaemonSettingsTab sign-in recovery", () => {
     vi.mocked(window.daemonAPI.getStatus).mockReturnValue(new Promise(() => {}));
     render(settings());
 
-    await screen.findByText("multica CLI is installed and available in PATH.");
+    await screen.findByText("A usable multica CLI is available to this app.");
     expect(screen.getByRole("button", { name: "Reconnect this device" })).toBeDisabled();
   });
 
@@ -139,10 +139,34 @@ describe("DaemonSettingsTab sign-in recovery", () => {
     else localStorage.removeItem("multica_token");
     render(settings());
 
-    await screen.findByText("multica CLI is installed and available in PATH.");
+    await screen.findByText("A usable multica CLI is available to this app.");
     const button = screen.getByRole("button", { name: "Reconnect this device" });
     expect(button).toBeDisabled();
     fireEvent.click(button);
     expect(reauthenticateDaemon).not.toHaveBeenCalled();
   });
+});
+
+// The complete category matrix belongs to platform/daemon-diagnostics.test.ts.
+it.each([
+  ["en", "Runtime setup", "Device connection", "Synchronize", "Setup Failed"],
+  ["zh-Hans", "运行时安装", "设备连接", "同步", "安装失败"],
+] as const)("retains separate diagnostics across status updates and remount in %s", async (locale, cliTitle, connectionTitle, timeStep, stateLabel) => {
+  const status: DaemonStatus = { state: "cli_not_found", diagnostics: {
+    cli: { code: "cli_extract_failed", stage: "cli_setup", occurredAt: 1_800_000_000_000 },
+    connection: { code: "challenge_expired", stage: "registration", occurredAt: 1_800_000_000_001 },
+  } };
+  stubDaemonAPI(status);
+  const first = render(settings(locale));
+  const connection = await screen.findByRole("region", { name: connectionTitle });
+  expect(screen.getByRole("region", { name: cliTitle })).toBeInTheDocument();
+  expect(within(connection).getAllByRole("listitem").some(item => item.textContent?.includes(timeStep))).toBe(true);
+  expect(await screen.findByText(stateLabel)).toBeInTheDocument();
+  const listener = vi.mocked(window.daemonAPI.onStatusChange).mock.calls[0]![0];
+  act(() => listener(status));
+  expect(screen.getByRole("region", { name: connectionTitle })).toBeInTheDocument();
+  first.unmount();
+  render(settings(locale));
+  expect(await screen.findByRole("region", { name: connectionTitle })).toBeInTheDocument();
+  expect(screen.getByRole("region", { name: cliTitle })).toBeInTheDocument();
 });

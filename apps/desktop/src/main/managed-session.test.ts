@@ -24,7 +24,7 @@ let bindingHintsTruncated: boolean;
 let lookupBinding: unknown;
 let serverAuthVersion: string;
 let localHandoffs: string[];
-let fetchMock: ReturnType<typeof vi.fn>;
+let fetchMock: ReturnType<typeof vi.fn<(raw: string, init: RequestInit) => Promise<Response>>>;
 
 function issueChallenge(input: Record<string, unknown>) {
   const enroll = input.purpose === "enroll";
@@ -209,4 +209,13 @@ it.each(["workspace", "daemon", "epoch"])("rejects a targeted lookup with mismat
   lookupBinding = { binding_id: "99999999-9999-4999-8999-999999999999", workspace_id: field === "workspace" ? organizationId : workspaceId, daemon_id: field === "daemon" ? organizationId : session!.managedDaemonId, binding_epoch: field === "epoch" ? "-1" : "107", auth_version: "1" };
   await expect(session!.createHandoff()).rejects.toThrow(/another (workspace|scope)/);
   expect(fetchMock.mock.calls.some(([url, init]) => String(url).endsWith("/challenges") && String(init.body).includes('"purpose":"bind"'))).toBe(false);
+});
+
+
+it.each(["registration", "binding"] as const)("classifies malformed challenge JSON at the %s boundary", async stage => {
+  if (stage === "binding") session = await prepareManagedInstallationSession(options());
+  const originalFetch = fetchMock.getMockImplementation()!;
+  fetchMock.mockImplementation((raw: string, init: RequestInit) => new URL(raw).pathname === "/api/installations/challenges"
+    ? Promise.resolve(new Response("{private-fixture-body")) : originalFetch(raw, init));
+  await expect(stage === "binding" ? session!.createHandoff() : prepareManagedInstallationSession(options())).rejects.toMatchObject({ code: "challenge_invalid", stage });
 });

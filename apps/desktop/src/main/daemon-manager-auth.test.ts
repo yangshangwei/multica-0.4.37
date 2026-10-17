@@ -10,9 +10,11 @@ import * as authProbe from "./daemon-auth-probe";
 import * as recovery from "./daemon-recovery";
 import * as daemonOS from "./daemon-os";
 import * as daemonQuit from "./daemon-quit";
+import * as daemonProfile from "./daemon-profile";
+import * as diagnostics from "./daemon-diagnostics";
 import * as daemonTypes from "../shared/daemon-types";
 import type { DaemonStatus } from "../shared/daemon-types";
-import type { ReauthResult } from "./daemon-manager";
+import type { DaemonReauthResult as ReauthResult } from "../shared/daemon-types";
 
 const nativeRequire = createRequire(import.meta.url);
 const roots: string[] = [];
@@ -46,17 +48,18 @@ async function managerFixture() {
   const probe = vi.fn(async () => new Response(null, { status: 200 }));
   const mint = vi.fn(async () => Response.json({ token: renewedToken }));
   const prepareSession = vi.fn(async () => null);
+  const installCli = vi.fn(async () => "unusable-fixture-cli");
   let running = false;
   const health = vi.fn(async () => running ? Response.json({ status: "running" }) : new Response(null, { status: 503 }));
   const fetch = vi.fn(async (url: string, options?: RequestInit) => {
     if (url === `${apiUrl}/api/me`) return probe();
     if (url === `${apiUrl}/api/tokens`) return mint();
-    if (url === `http://127.0.0.1:${profile.port}/health`) {
+    if (url.startsWith("http://127.0.0.1:") && url.endsWith("/health")) {
       return health();
     }
     throw new Error(`Unexpected fixture request: ${url} (${options?.method ?? "GET"})`);
   });
-  const spawn = vi.fn((_file: string, args: string[], _options: unknown, callback: (error: Error | null) => void) => {
+  const spawn = vi.fn((_file: string, args: string[], _options: unknown, callback: (error: Error | null, stdout?: string) => void) => {
     if (args[1] === "stop") running = false;
     queueMicrotask(() => callback(null));
     return { stdin: { end: vi.fn(), on: vi.fn() } };
@@ -74,7 +77,9 @@ async function managerFixture() {
     "./daemon-auth-probe": authProbe,
     "./daemon-quit": daemonQuit,
     "../shared/daemon-types": daemonTypes,
+    "./daemon-diagnostics": diagnostics,
     "./daemon-profile": {
+      ...daemonProfile,
       profileDir: (name: string) => join(root, name),
       profileConfigPath: (name: string) => join(root, name, "config.json"),
       profileUserIdPath: (name: string) => join(root, name, ".desktop-user-id"),
@@ -83,7 +88,7 @@ async function managerFixture() {
     },
     "./managed-installation": { readManagementPrivateFile: async () => null },
     "./managed-session": { prepareManagedInstallationSession: prepareSession },
-    "./cli-bootstrap": {}, "./version-decision": {}, "./managed-transition": {},
+    "./cli-bootstrap": { managedCliPath: () => join(root, "missing-cli"), ensureManagedCli: installCli }, "./version-decision": {}, "./managed-transition": {},
   };
   // Run the real manager and IPC handlers against isolated disk/network/process
   // boundaries. Private setup hooks stay in this VM, never in production exports.
@@ -96,6 +101,11 @@ async function managerFixture() {
       },
       ready: () => lifecycleOperations.runForeground(async () => {}),
       holdLifecycle: (pending) => lifecycleOperations.runForeground(() => pending),
+      resolveCli: () => { cachedCliBinary = undefined; bundledCliPath = () => "missing-bundled-fixture"; findCliOnPath = () => null; return resolveCliBinary(); },
+      resolveWithPath: () => { cachedCliBinary = undefined; bundledCliPath = () => "missing-bundled-fixture"; findCliOnPath = () => "path-fixture-cli"; return resolveCliBinary(); },
+      failCli: () => { cachedCliBinary = null; return bootstrapCli(); },
+      repairCli: () => { cachedCliBinary = "fixture-cli"; return bootstrapCli(); },
+      poll: () => pollOnce(),
       setDesiredRunning: (desired) => { desiredDaemonRunning = desired; },
       supersede: () => { resetManagedSession(); currentState = "running"; },
       blockServerSwitch: () => { serverSwitchBlocked = () => true; },
@@ -108,6 +118,11 @@ async function managerFixture() {
       configure(active: typeof profile, url: string): void;
       ready(): Promise<void>;
       holdLifecycle(pending: Promise<void>): Promise<void>;
+      resolveCli(): Promise<string | null>;
+      resolveWithPath(): Promise<string | null>;
+      failCli(): Promise<void>;
+      repairCli(): Promise<void>;
+      poll(): Promise<void>;
       setDesiredRunning(desired: boolean): void;
       supersede(): void;
       blockServerSwitch(): void;
@@ -127,11 +142,12 @@ async function managerFixture() {
   send.mockClear();
 
   return {
-    probe, mint, fetch, spawn, send, prepareSession, health, originalConfig,
+    probe, mint, fetch, spawn, send, prepareSession, health, originalConfig, installCli,
     ...module.exports.fixture,
     setRunning: () => { running = true; },
-    sync: () => handlers.get("daemon:sync-token")!(null, sessionToken, userId) as Promise<void>,
+    sync: (user = userId) => handlers.get("daemon:sync-token")!(null, sessionToken, user) as Promise<void>,
     clear: () => handlers.get("daemon:clear-token")!(null) as Promise<void>,
+    setTarget: (url: string) => handlers.get("daemon:set-target-api-url")!(null, url) as Promise<void>,
     reauthenticate: () => handlers.get("daemon:reauthenticate")!(null, sessionToken, userId) as Promise<ReauthResult>,
     start: () => handlers.get("daemon:start")!(null) as Promise<LifecycleResult>,
     status: () => handlers.get("daemon:get-status")!(null) as Promise<DaemonStatus>,
@@ -393,4 +409,132 @@ describe("fast daemon startup failures", () => {
     expect(await starting).toMatchObject({ success: false });
     expect(manager.send).not.toHaveBeenCalled();
   });
+});
+
+describe("persistent daemon diagnostics", () => {
+  it("keeps CLI setup and challenge failures independently through polling and status reads", async () => {
+    const manager = await managerFixture();
+    await manager.failCli();
+    manager.prepareSession.mockRejectedValue(new diagnostics.DaemonDiagnosticError("challenge_expired", "registration"));
+    const result = await manager.reauthenticate();
+    expect(result).toMatchObject({ ok: false, reason: "transient", diagnostic: { code: "challenge_expired", stage: "registration" } });
+    const status = await manager.status();
+    expect(status).toMatchObject({ state: "cli_not_found", diagnostics: {
+      cli: { code: "cli_unavailable", stage: "cli_setup" },
+      connection: { code: "challenge_expired", stage: "registration" },
+    } });
+    await manager.poll();
+    expect(await manager.status()).toEqual(status);
+    expect(manager.send).toHaveBeenLastCalledWith("daemon:status", status);
+    await manager.repairCli();
+    expect((await manager.status()).diagnostics).toEqual({ connection: status.diagnostics!.connection });
+    manager.prepareSession.mockResolvedValue(null);
+    expect(await manager.reauthenticate()).toEqual({ ok: true });
+    expect((await manager.status()).diagnostics).toBeUndefined();
+  });
+
+  it("keeps a failed connection during a same-account retry, but clears it on logout", async () => {
+    const manager = await managerFixture();
+    manager.prepareSession.mockRejectedValue(new diagnostics.DaemonDiagnosticError("challenge_scope_mismatch", "registration", ["account"]));
+    await manager.reauthenticate();
+    const previous = (await manager.status()).diagnostics;
+    let reject!: (error: unknown) => void;
+    manager.prepareSession.mockImplementationOnce(() => new Promise((_resolve, fail) => { reject = fail; }));
+    const retry = manager.reauthenticate();
+    await vi.waitFor(() => expect(manager.prepareSession).toHaveBeenCalledTimes(2));
+    expect((await manager.status()).diagnostics).toEqual(previous);
+    await manager.clear();
+    reject(new diagnostics.DaemonDiagnosticError("challenge_expired", "registration"));
+    expect(await retry).toMatchObject({ ok: false, reason: "transient" });
+    expect((await manager.status()).diagnostics).toBeUndefined();
+  });
+
+  it("clears another account's failure before its new credential request settles", async () => {
+    const manager = await managerFixture();
+    manager.mint.mockRejectedValueOnce(Object.assign(new Error("fixture secret response"), { status: 503 }));
+    expect(await manager.reauthenticate()).toMatchObject({ diagnostic: { stage: "credentials", code: "request_failed", httpStatus: 503 } });
+    manager.mint.mockReturnValueOnce(new Promise(() => {}));
+    void manager.sync("another-fixture-user");
+    await vi.waitFor(async () => expect((await manager.status()).diagnostics).toBeUndefined());
+  });
+
+  it("projects safe unknown errors without response text or extra fields", async () => {
+    const manager = await managerFixture();
+    manager.mint.mockRejectedValue(Object.assign(new Error("fixture-token-private-body"), { token: "private", code: "challenge_expired", status: 503 }));
+    const result = await manager.reauthenticate();
+    expect(result).toEqual({ ok: false, reason: "transient", diagnostic: { code: "request_failed", stage: "credentials", occurredAt: expect.any(Number), httpStatus: 503 } });
+    expect(JSON.stringify(await manager.status())).not.toContain("private");
+  });
+});
+
+
+describe("CLI resolution diagnostics", () => {
+  it("records validation failure only after no candidate is usable, and clears it on a usable PATH fallback", async () => {
+    const manager = await managerFixture();
+    expect(await manager.resolveCli()).toBeNull();
+    expect((await manager.status()).diagnostics?.cli).toMatchObject({ code: "cli_validation_failed" });
+    manager.spawn.mockImplementation((_bin, args, _options, callback) => {
+      queueMicrotask(() => callback(null, args[0] === "version" && _bin === "path-fixture-cli" ? JSON.stringify({ version: "test-version" }) : "invalid version"));
+      return { stdin: { end: vi.fn(), on: vi.fn() } };
+    });
+    expect(await manager.resolveWithPath()).toBe("path-fixture-cli");
+    expect((await manager.status()).diagnostics?.cli).toBeUndefined();
+  });
+
+  it("preserves the typed installer failure after all fallbacks fail", async () => {
+    const manager = await managerFixture();
+    manager.installCli.mockRejectedValue(new diagnostics.DaemonDiagnosticError("cli_checksum_failed", "cli_setup"));
+    expect(await manager.resolveCli()).toBeNull();
+    expect((await manager.status()).diagnostics?.cli).toMatchObject({ code: "cli_checksum_failed", stage: "cli_setup" });
+  });
+});
+
+
+it("preserves external-management guards and runtime metadata when a diagnostic is published", async () => {
+  const manager = await managerFixture();
+  manager.health.mockResolvedValue(Response.json({ status: "running", os: process.platform === "linux" ? "windows" : "linux", server_url: apiUrl, pid: 123, daemon_id: "fixture-daemon", device_name: "fixture-device", uptime: "2h3m" }));
+  const prior = await manager.status();
+  expect(prior).toMatchObject({ state: "running", externallyManaged: true, pid: 123 });
+  manager.mint.mockResolvedValue(new Response(null, { status: 503 }));
+  await manager.reauthenticate();
+  expect(manager.send).toHaveBeenLastCalledWith("daemon:status", { ...prior, diagnostics: { connection: expect.objectContaining({ code: "request_failed", stage: "credentials" }) } });
+});
+
+it("does not replay an old profile through diagnostics or a pending health read after the target is cleared", async () => {
+  const manager = await managerFixture();
+  const oldHealth = { status: "running", pid: 123, daemon_id: "previous-daemon", device_name: "previous-device" };
+  manager.health.mockResolvedValue(Response.json(oldHealth));
+  expect(await manager.status()).toMatchObject({ state: "running", profile: profile.name, pid: 123 });
+  let respond!: (value: Response) => void;
+  manager.health.mockReturnValueOnce(new Promise((resolve) => { respond = resolve; }));
+  const polling = manager.poll();
+  await vi.waitFor(() => expect(manager.health).toHaveBeenCalledTimes(2));
+  await manager.setTarget("");
+  expect(manager.send).toHaveBeenLastCalledWith("daemon:status", { state: "stopped", diagnostics: undefined });
+  expect(await manager.reauthenticate()).toMatchObject({ ok: false, reason: "transient" });
+  expect(manager.send).toHaveBeenLastCalledWith("daemon:status", {
+    state: "stopped", diagnostics: { connection: expect.objectContaining({ stage: "credentials" }) },
+  });
+  respond(Response.json(oldHealth));
+  await polling;
+  expect(manager.send).toHaveBeenLastCalledWith("daemon:status", {
+    state: "stopped", diagnostics: { connection: expect.objectContaining({ stage: "credentials" }) },
+  });
+});
+
+it("keeps the new profile snapshot when a previous server's health response arrives late", async () => {
+  const manager = await managerFixture();
+  let respond!: (value: Response) => void;
+  manager.health.mockReturnValueOnce(new Promise((resolve) => { respond = resolve; }));
+  const polling = manager.poll();
+  await vi.waitFor(() => expect(manager.health).toHaveBeenCalledOnce());
+  const nextUrl = "https://second.example";
+  await manager.setTarget(nextUrl);
+  manager.health.mockImplementation(async () => Response.json({ status: "running", server_url: nextUrl, pid: 456, daemon_id: "current-daemon" }));
+  const current = await manager.status();
+  expect(current).toMatchObject({ profile: daemonProfile.deriveProfileName(nextUrl), pid: 456 });
+  respond(Response.json({ status: "running", server_url: apiUrl, pid: 123, daemon_id: "previous-daemon" }));
+  await polling;
+  expect(manager.send).toHaveBeenLastCalledWith("daemon:status", current);
+  expect(await manager.status()).toEqual(current);
 });

@@ -13,8 +13,35 @@ export type DaemonState =
   // this, an auth failure silently sticks at "starting" forever — see #3512.
   | "auth_expired";
 
+export type ChallengeMismatchField = "request" | "deployment" | "organization" | "account" | "auth_version" | "installation" | "workspace" | "daemon" | "binding_epoch" | "key";
+
+export type DaemonDiagnosticCode =
+  | "challenge_expired" | "challenge_time_window" | "challenge_scope_mismatch" | "challenge_invalid"
+  | "cli_unavailable" | "cli_download_failed" | "cli_checksum_failed" | "cli_extract_failed" | "cli_install_failed" | "cli_validation_failed"
+  | "request_failed" | "operation_failed";
+
+export interface DaemonDiagnostic {
+  code: DaemonDiagnosticCode;
+  stage: "cli_setup" | "registration" | "binding" | "credentials" | "restart";
+  occurredAt: number;
+  httpStatus?: number;
+  fields?: ChallengeMismatchField[];
+}
+
+export interface DaemonDiagnostics {
+  cli?: DaemonDiagnostic;
+  connection?: DaemonDiagnostic;
+}
+
+// Only definitive session rejection authorizes the renderer to sign out.
+export type DaemonReauthResult =
+  | { ok: true }
+  | { ok: false; reason: "session_invalid" }
+  | { ok: false; reason: "transient"; diagnostic?: DaemonDiagnostic };
+
 export interface DaemonStatus {
   state: DaemonState;
+  diagnostics?: DaemonDiagnostics;
   managementPendingReason?: "busy" | "switching" | "unassociated";
   pid?: number;
   uptime?: string;
@@ -125,7 +152,7 @@ export function daemonStateDescription(state: DaemonState, runtimeCount: number)
     case "installing_cli":
       return "Setting up the runtime for the first time. Only happens once.";
     case "cli_not_found":
-      return "Setup failed · couldn't download the runtime. Check your network.";
+      return "Setup failed · the runtime is missing or could not be used.";
     case "recovery_paused":
       return "Automatic recovery paused after repeated failures · start manually to retry.";
     case "auth_expired":

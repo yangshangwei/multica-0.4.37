@@ -8,6 +8,8 @@ import { pipeline } from "stream/promises";
 import { tmpdir } from "os";
 import { Readable } from "stream";
 
+import { DaemonDiagnosticError } from "./daemon-diagnostics";
+import type { DaemonDiagnosticCode } from "../shared/daemon-types";
 import { selectPlatformReleaseAssetName } from "./cli-release-asset";
 
 // Desktop prefers the bundled `multica` CLI shipped inside the app for
@@ -91,56 +93,66 @@ async function extractArchive(archive: string, dest: string): Promise<void> {
 }
 
 async function installFresh(): Promise<string> {
-  const target = managedCliPath();
-  const checksums = await fetchChecksums();
-  const assetName = selectPlatformReleaseAssetName(checksums.keys());
-  const expectedChecksum = checksums.get(assetName);
-  if (!expectedChecksum) {
-    throw new Error(
-      `no checksum for ${assetName} in checksums.txt — refusing to install unverified binary`,
-    );
-  }
-  const url = `${GITHUB_LATEST_BASE}/${assetName}`;
-
-  const workDir = join(tmpdir(), `multica-cli-${Date.now()}`);
-  await mkdir(workDir, { recursive: true });
-
+  let failureCode: DaemonDiagnosticCode = "cli_download_failed";
   try {
-    const archivePath = join(workDir, assetName);
-    console.log(`[cli-bootstrap] downloading ${url}`);
-    await downloadToFile(url, archivePath);
-
-    console.log(`[cli-bootstrap] verifying ${assetName} against checksums.txt`);
-    await verifyChecksum(archivePath, assetName, expectedChecksum);
-
-    console.log(`[cli-bootstrap] extracting ${assetName}`);
-    await extractArchive(archivePath, workDir);
-
-    const extractedBin = join(workDir, binaryName());
-    if (!existsSync(extractedBin)) {
+    const target = managedCliPath();
+    const checksums = await fetchChecksums();
+    failureCode = "cli_unavailable";
+    const assetName = selectPlatformReleaseAssetName(checksums.keys());
+    failureCode = "cli_checksum_failed";
+    const expectedChecksum = checksums.get(assetName);
+    if (!expectedChecksum) {
       throw new Error(
-        `archive ${assetName} did not contain ${binaryName()} at its root`,
+        `no checksum for ${assetName} in checksums.txt — refusing to install unverified binary`,
       );
     }
+    const url = `${GITHUB_LATEST_BASE}/${assetName}`;
 
-    await mkdir(dirname(target), { recursive: true });
-    await rm(target, { force: true }).catch(() => {});
-    await rename(extractedBin, target);
-    await chmod(target, 0o755);
+    const workDir = join(tmpdir(), `multica-cli-${Date.now()}`);
+    failureCode = "cli_install_failed";
+    await mkdir(workDir, { recursive: true });
 
-    // macOS: ad-hoc sign so spawning the child never hits a gatekeeper quirk.
-    // Non-fatal: unsigned binaries still execute when the parent app is trusted.
-    if (process.platform === "darwin") {
-      await run("codesign", ["-s", "-", "--force", target]).catch((err) => {
-        console.warn("[cli-bootstrap] ad-hoc codesign failed:", err);
-      });
+    try {
+      const archivePath = join(workDir, assetName);
+      console.log(`[cli-bootstrap] downloading ${url}`);
+      failureCode = "cli_download_failed";
+      await downloadToFile(url, archivePath);
+
+      console.log(`[cli-bootstrap] verifying ${assetName} against checksums.txt`);
+      failureCode = "cli_checksum_failed";
+      await verifyChecksum(archivePath, assetName, expectedChecksum);
+
+      console.log(`[cli-bootstrap] extracting ${assetName}`);
+      failureCode = "cli_extract_failed";
+      await extractArchive(archivePath, workDir);
+
+      const extractedBin = join(workDir, binaryName());
+      if (!existsSync(extractedBin)) {
+        throw new Error(
+          `archive ${assetName} did not contain ${binaryName()} at its root`,
+        );
+      }
+
+      failureCode = "cli_install_failed";
+      await mkdir(dirname(target), { recursive: true });
+      await rm(target, { force: true }).catch(() => {});
+      await rename(extractedBin, target);
+      await chmod(target, 0o755);
+
+      // macOS: ad-hoc sign so spawning the child never hits a gatekeeper quirk.
+      // Non-fatal: unsigned binaries still execute when the parent app is trusted.
+      if (process.platform === "darwin") {
+        await run("codesign", ["-s", "-", "--force", target]).catch((err) => {
+          console.warn("[cli-bootstrap] ad-hoc codesign failed:", err);
+        });
+      }
+
+      console.log(`[cli-bootstrap] installed CLI at ${target}`);
+      return target;
+    } finally {
+      await rm(workDir, { recursive: true, force: true }).catch(() => {});
     }
-
-    console.log(`[cli-bootstrap] installed CLI at ${target}`);
-    return target;
-  } finally {
-    await rm(workDir, { recursive: true, force: true }).catch(() => {});
-  }
+  } catch { throw new DaemonDiagnosticError(failureCode, "cli_setup"); }
 }
 
 /**

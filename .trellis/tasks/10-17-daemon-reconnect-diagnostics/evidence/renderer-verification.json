@@ -1,0 +1,54 @@
+{
+  "fixture": "Real DaemonSettingsTab and desktop styles with synthetic auth/IPC; no live backend or daemon",
+  "cases": [
+    {
+      "name": "zh-light-wide",
+      "viewport": {
+        "width": 960,
+        "height": 900
+      },
+      "bodyWidth": 960,
+      "overflow": [],
+      "reconnect": "localized toast; single call",
+      "remount": "both retained",
+      "clearing": "connection independent; then cli"
+    },
+    {
+      "name": "en-dark-wide",
+      "viewport": {
+        "width": 960,
+        "height": 900
+      },
+      "bodyWidth": 960,
+      "overflow": [],
+      "reconnect": "localized toast; single call",
+      "remount": "both retained",
+      "clearing": "connection independent; then cli"
+    },
+    {
+      "name": "zh-light-narrow",
+      "viewport": {
+        "width": 450,
+        "height": 900
+      },
+      "bodyWidth": 450,
+      "overflow": [],
+      "reconnect": "localized toast; single call",
+      "remount": "both retained",
+      "clearing": "connection independent; then cli"
+    },
+    {
+      "name": "en-dark-narrow",
+      "viewport": {
+        "width": 450,
+        "height": 900
+      },
+      "bodyWidth": 450,
+      "overflow": [],
+      "reconnect": "localized toast; single call",
+      "remount": "both retained",
+      "clearing": "connection independent; then cli"
+    }
+  ],
+  "errors": []
+}
