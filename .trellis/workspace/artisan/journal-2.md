@@ -46,6 +46,39 @@
 - 本地 main 已完成合并；远端推送或发布需后续任务。
 
 
+## Session 76: main 全量端到端测试：328项执行与失败分类
+<!-- trellis-session: v=2 fp=c9e02f540ba90071 -->
+
+**Date**: 2026-10-16
+**Task**: main 全量端到端测试：328项执行与失败分类
+**Branch**: `main`
+
+### Summary
+
+测试main@5049e0f6a的全部328项既有用例，322通过6失败；区分2类产品体验问题及收件箱定位维护，完成额外原生/Nginx/seed验收和隔离环境清理。
+
+### Main Changes
+
+- 生成完整测试报告、逐项JSON/CSV、截图、trace与运行来源；产品与正式测试未改动。
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] 943个TS文件11377项通过；lint/typecheck通过（31warning）；70个Go包race及vet通过。
+- [OK] 328唯一E2E全部执行，322通过6失败；27专属Electron全部通过；额外4原生恢复/14Nginx断言组通过。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 修复注册首次点击焦点和375px推荐布局，维护3项Inbox过期定位，复跑相应用例。共享目录后被其他工作切为feat/capability-market，其代码已保留。
+
+
 ## Session 77: 能力市场整合：完成 Web/Desktop 验收与归档
 <!-- trellis-session: v=2 fp=baf9e5d1484c181d -->
 
