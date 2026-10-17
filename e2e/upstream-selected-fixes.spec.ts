@@ -76,12 +76,9 @@ function isApiResponse(response: Response, path: string, method = "GET"): boolea
 }
 
 function notificationRow(page: Page, title: string): Locator {
-  // The editable issue title is also a div[role=button]. A notification row
-  // carries its own archive/menu buttons; the title does not.
-  return page.locator('div[role="button"]').filter({
-    has: page.getByText(title, { exact: true }),
-  }).filter({
-    has: page.locator("button"),
+  // Keep preview assertions on the row and select through its title button.
+  return page.getByRole("listitem").filter({
+    has: page.getByRole("button", { name: title, exact: true }),
   });
 }
 
@@ -153,7 +150,7 @@ test.describe("selectively merged upstream regressions", () => {
 
       const readResponse = page.waitForResponse((response) =>
         isApiResponse(response, "/api/inbox/" + notification.id + "/read", "POST"));
-      await row.click();
+      await row.getByRole("button", { name: issue.title, exact: true }).click();
       const read: InboxNotification = await (await readResponse).json();
       expect(read).toMatchObject({
         body: fullComment,
@@ -190,7 +187,7 @@ test.describe("selectively merged upstream regressions", () => {
         details: { comment_id: comment.id },
       });
       await expect(row).toContainText(preview, { timeout: 30_000 });
-      await row.click();
+      await row.getByRole("button", { name: issue.title, exact: true }).click();
       await expect(commentBody).toContainText(tail, { timeout: 30_000 });
     } finally {
       await scenario.api.deleteFeatureWorkspace(scenario.workspace.id);
@@ -208,7 +205,7 @@ test.describe("selectively merged upstream regressions", () => {
       await page.goto("/" + scenario.workspace.slug + "/inbox", { waitUntil: "domcontentloaded" });
       const row = notificationRow(page, issue.title);
       await expect(row).toBeVisible({ timeout: 30_000 });
-      await row.click();
+      await row.getByRole("button", { name: issue.title, exact: true }).click();
       await expect(page.locator("#comment-body-" + comment.id)).toContainText("Navigation remains available.");
       await expect(row).toBeVisible();
       const triggers = page.locator('[data-sidebar="trigger"]:visible');
@@ -225,7 +222,7 @@ test.describe("selectively merged upstream regressions", () => {
 
       for (const width of [851, 390]) {
         await page.setViewportSize({ width, height: 900 });
-        if (width === 390) await row.click();
+        if (width === 390) await row.getByRole("button", { name: issue.title, exact: true }).click();
         await expect(row).toBeHidden();
         const back = page.getByRole("button", { name: "Inbox", exact: true });
         await expect(back).toBeVisible();

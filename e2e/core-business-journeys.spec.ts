@@ -286,11 +286,13 @@ test("G2 a teammate's status change and mention reach the owner's open page and 
       .find((item) => item.issue_id === issue.id && item.type === "mentioned")!;
     expect(mention.read).toBe(false);
     // The list keeps one row per issue: its newest notification, the mention.
-    const rows = ownerSide.page.locator('[role="button"]').filter({ hasText: issue.title });
+    const rows = ownerSide.page.getByRole("listitem").filter({
+      has: ownerSide.page.getByRole("button", { name: issue.title, exact: true }),
+    });
     await expect(rows).toHaveCount(1, { timeout: 30_000 });
     await expect(rows).toContainText("Mentioned");
     const marked = ownerSide.page.waitForResponse((r) => new URL(r.url()).pathname === `/api/inbox/${mention.id}/read`);
-    await rows.click();
+    await rows.getByRole("button", { name: issue.title, exact: true }).click();
     expect((await marked).ok()).toBe(true);
     await ownerSide.page.reload();
     await expect.poll(async () => (await callJSON<InboxItem[]>(owner, "/api/inbox"))
