@@ -79,3 +79,40 @@
 ### Next Steps
 
 - 远端推送、main 合并和发布未执行。已保留其他任务原有未提交材料。
+
+
+## Session 78: 修复注册、窄屏推荐和收件箱三类回归
+<!-- trellis-session: v=2 fp=989041d9b570b251 -->
+
+**Date**: 2026-10-17
+**Task**: 修复注册、窄屏推荐和收件箱三类回归
+**Branch**: `fix/qa-three-regressions`
+
+### Summary
+
+原六项失败已复现并全部修复；相关28个唯一E2E、6907项Views单测和15项静态检查通过，独立视觉97/pass，隔离环境已清理。
+
+### Main Changes
+
+- 注册预留校验提示空间，保留首次点击和键盘提交；375px推荐区限高并保留键盘滚动；正式收件箱测试改用语义按钮定位。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `44e67538447d3fe45f1838d1e39bf62a9977c99b` | fix(auth): keep the first registration submit click reliable |
+| `1a47a28d56bdb9e49445c44bf9373e881df402b9` | fix(issues): leave room to edit tasks beside compact recommendations |
+| `52a451bad73d4f52fcd989db86452aab52fb1c78` | test(inbox): keep notification acceptance aligned with native controls |
+
+### Testing
+
+- [OK] 原失败6/6通过；相关28项唯一E2E通过（含Electron），零自动重试/跳过。
+- [OK] Views 563文件6907项通过；lint/typecheck15项通过，31条既有warning；独立审阅通过。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 本地fix/qa-three-regressions已提交归档；未推送，未重跑全量328项或Go测试。

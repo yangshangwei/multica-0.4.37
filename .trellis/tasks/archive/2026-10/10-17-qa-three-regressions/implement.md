@@ -6,7 +6,7 @@
 - [x] Rebuild production Web; run all six identities and related auth/quick-create/inbox cases with zero retries.
 - [x] Inspect English/Chinese compact and desktop screenshots; persist visual verdict JSON.
 - [x] Run relevant unit tests, lint/typecheck and static diff checks; obtain independent Trellis review.
-- [ ] Update applicable specs, preserve evidence, commit only task files with Lore trailers, archive and journal.
+- [x] Update applicable specs, preserve evidence, commit only task files with Lore trailers, archive and journal.
 
 ## Ownership and evidence
 
