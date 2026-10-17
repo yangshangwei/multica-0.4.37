@@ -38,6 +38,16 @@ Questions to answer:
 
 ## Testing Requirements
 
+### Inbox browser selectors follow native semantics
+
+`InboxListItem` exposes a `listitem` containing a native, accessibly named title
+button. Keep preview/status assertions on that row, and click its title button:
+`page.getByRole("listitem").filter({ has: page.getByRole("button", { name: title, exact: true }) })`.
+CSS `[role="button"]` and `div[role="button"]` do not match implicit button
+semantics. Do not add redundant product roles or drop content/read/archive
+assertions to satisfy obsolete selectors. The G2 core journey and the two inbox
+cases in `upstream-selected-fixes.spec.ts` cover the current contract.
+
 ### Common Mistake: importing the real `useChatStore` in a views test
 
 **Symptom**: A component test that renders anything reading `useChatStore` (e.g. the floating-chat toggle in `preferences-tab.tsx`) fails with `Chat store not initialised — call registerChatStore() first`.
