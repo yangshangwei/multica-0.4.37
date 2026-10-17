@@ -2,7 +2,7 @@
   "id": "cross-workspace-collaboration",
   "name": "cross-workspace-collaboration",
   "title": "跨账号任务流转与共享 AI 协作工作台",
-  "description": "支持独立工作空间之间按账号派单、共享任务讨论与 AI 执行过程、协作者共同控制以及可挂起恢复的指令队列；保存本轮需求讨论并继续规划。",
+  "description": "支持独立工作空间按账号派单与协作；本轮梳理 @智能体/小队触发、@人通知及同单多目标的需求设计调整。",
   "status": "in_progress",
   "dev_type": null,
   "scope": null,
@@ -15,12 +15,14 @@
   "branch": "codex/cross-workspace-collaboration",
   "base_branch": "main",
   "worktree_path": null,
-  "commit": null,
+  "commit": "f5259e24533a68ca9ed3d283810de7988bc3d753",
   "pr_url": null,
   "subtasks": [],
   "children": [],
   "parent": null,
   "relatedFiles": [
+    ".trellis/tasks/10-10-cross-workspace-collaboration/mention-redesign-2026-10-17.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/review-2026-10-17.md",
     ".trellis/tasks/10-10-cross-workspace-collaboration/prd.md",
     ".trellis/tasks/10-10-cross-workspace-collaboration/acceptance.md",
     ".trellis/tasks/10-10-cross-workspace-collaboration/design.md",
@@ -54,33 +56,49 @@
     ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-issue-editing-2026-10-14.md",
     ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-account-fanout-2026-10-14.md",
     ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-handoff-contract-2026-10-14.md",
-    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-integration-review-2026-10-14.md"
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-integration-review-2026-10-14.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/continuation-revision-2026-10-17.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/revision-execution-audit-2026-10-17.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/revision-mention-client-audit-2026-10-17.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-revision-2026-10-17.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-summary-revision-2026-10-17.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-revision-review-2026-10-17.md"
   ],
-  "notes": "2026-10-14：复用58项需求继续实施。人类流转/生命周期、R41/R48编辑、D04状态确认及真实账号失效消费已验证；独立复核发现的跨批次饥饿已修复。259个Go顶层测试+323子项、1061个core测试通过。完整双端、原生终结证明、正向Resume及P1–P8剩余项未完成；创建/执行门禁保持关闭。详见progress.md及verification-2026-10-14.md。",
+  "notes": "2026-10-17：已按最新需求核对并完成多目标基础调整、普通执行入口隔离及 v2 读取；独立复核的两个停止完整性问题已修复。Go 1.26.6 race 323 顶层/638 子测试、core 3452 测试及静态/迁移检查通过。任务保持 in_progress，继续 P1/P3/P4 剩余内容/授权/运行协议及双端交付；97 项完整 AC 尚未完成。",
   "meta": {
-    "planning_status": "review_complete",
+    "planning_status": "approved_revision_in_implementation",
     "implementation_authorized": true,
     "open_product_questions": [],
     "pending_confirmation": null,
-    "review_status": "implementation_tranche_reviewed_full_acceptance_pending",
-    "final_planning_summary_presented": false,
+    "review_status": "foundation_revision_verified",
+    "final_planning_summary_presented": true,
     "previous_final_summary": "discussion.md#32-最终规划摘要等待实现批准",
     "planning_validation": {
-      "date": "2026-10-13",
-      "status": "passed_docs_only",
+      "date": "2026-10-17",
+      "status": "passed_docs_only_all_product_choices_confirmed",
       "requirements": 58,
-      "acceptance_criteria": 89,
-      "rendered_context_bytes": 148876,
+      "acceptance_criteria": 97,
+      "single_owner_acceptance_criteria": 97,
+      "relative_links_checked": 186,
+      "protocol_sections": 8,
+      "context_entries_per_lane": 5,
+      "fully_loaded_files_per_lane": 8,
+      "rendered_context_bytes": {
+        "implement": 193251,
+        "check": 193251
+      },
       "context_limit_bytes": 196608,
+      "independent_document_review": "product_and_execution_reviews_passed_all_findings_closed",
       "product_tests_run": false,
-      "requirements_review_complete": true
+      "requirements_review_complete": true,
+      "report": "review-2026-10-17.md"
     },
     "implementation_authorization": {
       "date": "2026-10-13",
       "source": "User requested latest-58 technical consistency review and validation during implementation; discussion §55",
       "scope": "Existing P1–P8 plan after technical review; no production deployment authorization"
     },
-    "current_phase": "P1",
+    "current_phase": "P1_P3_P4_remaining_work",
     "technical_review": {
       "date": "2026-10-13",
       "report": "review-2026-10-13.md",
@@ -110,6 +128,182 @@
       "account_invalidation_fanout_implemented": true,
       "migration_version": 619,
       "independent_review": "research/verification-integration-review-2026-10-14.md"
-    }
+    },
+    "planning_validation_history": [
+      {
+        "date": "2026-10-13",
+        "status": "passed_docs_only",
+        "requirements": 58,
+        "acceptance_criteria": 89,
+        "rendered_context_bytes": 148876,
+        "context_limit_bytes": 196608,
+        "product_tests_run": false,
+        "requirements_review_complete": true
+      },
+      {
+        "date": "2026-10-17",
+        "status": "passed_docs_only_product_decisions_open",
+        "requirements": 58,
+        "acceptance_criteria": 97,
+        "single_owner_acceptance_criteria": 97,
+        "relative_links_checked": 177,
+        "context_entries_per_lane": 5,
+        "fully_loaded_files_per_lane": 8,
+        "rendered_context_bytes": {
+          "implement": 184945,
+          "check": 184945
+        },
+        "context_limit_bytes": 196608,
+        "product_tests_run": false,
+        "requirements_review_complete": false,
+        "independent_document_review": "requirements_and_execution_review_completed; notification_destination_corrected",
+        "report": "mention-redesign-2026-10-17.md"
+      },
+      {
+        "date": "2026-10-17",
+        "status": "passed_docs_only_m01_confirmed_m02_m03_open",
+        "requirements": 58,
+        "acceptance_criteria": 97,
+        "single_owner_acceptance_criteria": 97,
+        "relative_links_checked": 177,
+        "context_entries_per_lane": 5,
+        "fully_loaded_files_per_lane": 8,
+        "rendered_context_bytes": {
+          "implement": 186096,
+          "check": 186096
+        },
+        "context_limit_bytes": 196608,
+        "product_tests_run": false,
+        "requirements_review_complete": false,
+        "report": "mention-redesign-2026-10-17.md"
+      },
+      {
+        "date": "2026-10-17",
+        "status": "passed_docs_only_m01_m02_confirmed_m03_open",
+        "requirements": 58,
+        "acceptance_criteria": 97,
+        "single_owner_acceptance_criteria": 97,
+        "relative_links_checked": 177,
+        "context_entries_per_lane": 5,
+        "fully_loaded_files_per_lane": 8,
+        "rendered_context_bytes": {
+          "implement": 188215,
+          "check": 188215
+        },
+        "context_limit_bytes": 196608,
+        "product_tests_run": false,
+        "requirements_review_complete": false,
+        "report": "mention-redesign-2026-10-17.md"
+      }
+    ],
+    "requirements_revision": {
+      "date": "2026-10-17",
+      "report": "mention-redesign-2026-10-17.md",
+      "source": "User accepted the recommendations and requested an inventory of requirement/design adjustments; discussion §57",
+      "scope": "Existing-task planning documentation only; no product implementation or deployment",
+      "accepted": [
+        "Explicit agent/squad mentions submit targeted execution",
+        "Human mentions create deduplicated account notifications without assignment or enrollment",
+        "Multiple distinct execution targets per issue",
+        "Trigger preview and applicable authority/pause gates remain",
+        "M01 confirmed: resource-bounded concurrent execution across distinct targets; ordered inputs per target",
+        "M02 confirmed: target/squad and whole-issue stop/resume; squad scope includes descendant executions",
+        "M03 confirmed: mention menu only fully authorized issue targets; creator/handler organize additions; actual resource owners consent"
+      ],
+      "pending": [],
+      "baseline_implementation_authorization_preserved": true,
+      "baseline_verification_applies_to_revision": false,
+      "confirmed_product_decisions": {
+        "M01": {
+          "date": "2026-10-17",
+          "source": "discussion.md §58; user explicitly selected concurrency when resources allow",
+          "behavior": "Different targets may run concurrently subject to authority and capacity; inputs for the same target remain ordered",
+          "implementation_authorized": false
+        },
+        "M02": {
+          "date": "2026-10-17",
+          "source": "discussion.md §59; user chose A for target/squad plus whole-issue controls",
+          "behavior": "Controls act on the selected target/squad or whole issue; squad includes descendants; target resume cannot bypass issue-wide pause; stop proofs and authorization remain required",
+          "implementation_authorized": false
+        },
+        "M03": {
+          "date": "2026-10-17",
+          "source": "discussion.md §60; user chose A for issue-authorized target catalogue",
+          "behavior": "Only fully authorized issue agent/squad targets are mentionable; creator or handler organizes additions and actual resource owners consent; no automatic membership/resource grants",
+          "implementation_authorized": false
+        }
+      },
+      "technical_draft": "design.md and research/data-contract.md, research/execution-contract.md",
+      "summary": "discussion.md §61"
+    },
+    "current_final_summary": "discussion.md#61-三项选择收敛后的完整规划摘要2026-10-17",
+    "revision_technical_review": {
+      "date": "2026-10-17",
+      "report": "review-2026-10-17.md",
+      "status": "passed_documents_only",
+      "independent_product_review": true,
+      "independent_execution_review": true,
+      "open_findings": 0,
+      "product_tests_run": false
+    },
+    "revision_implementation_authorization": {
+      "date": "2026-10-17",
+      "source": "Current user message: 刚才更新了一版需求，请根据需求核对一下已经实现的代码是否需要调整，并请继续推进这个任务",
+      "scope": "Review and implement the current revised plan; no deployment or release",
+      "baseline_path": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-collab-revision-20261017-hgtrswox"
+    },
+    "revision_code_review": {
+      "date": "2026-10-17",
+      "execution_report": "research/revision-execution-audit-2026-10-17.md",
+      "client_report": "research/revision-mention-client-audit-2026-10-17.md",
+      "status": "existing_foundation_adjusted_independent_review_passed",
+      "context_bytes": 194001,
+      "product_acceptance_complete": false,
+      "review_report": "research/verification-revision-review-2026-10-17.md",
+      "fixed_findings": [
+        "Whole-scope stop/close refuses missing target rows for retained execution",
+        "Whole stop refuses a dangling legacy active-run pointer"
+      ]
+    },
+    "revision_implementation_validation": {
+      "date": "2026-10-17",
+      "status": "passed_foundation_revision_full_product_pending",
+      "report": "verification-revision-2026-10-17.md",
+      "summary": "verification-summary-revision-2026-10-17.json",
+      "go_toolchain": "1.26.6",
+      "go_top_level": 323,
+      "go_subtests": 638,
+      "core_tests": 3452,
+      "creation_enabled": false,
+      "positive_resume_implemented": false,
+      "full_product_acceptance_passed": 0,
+      "independent_blocking_findings": 0,
+      "document_validation": {
+        "requirements": 58,
+        "acceptance_criteria": 97,
+        "relative_links": 274,
+        "context_bytes": {
+          "implement": 194001,
+          "check": 194001
+        },
+        "source_drift": []
+      },
+      "commits": [
+        "e6bc3759e8a07b480e6aedf246eda8304a253752",
+        "f5259e24533a68ca9ed3d283810de7988bc3d753"
+      ]
+    },
+    "next_steps": [
+      "P1 remaining atomic creation/private draft and source field contracts",
+      "P3 protected content, typed mention submission and account notification delivery",
+      "P4 actual owner consent/admission, scoped runtime identity, launch/termination protocol",
+      "P5 real scheduler/delegation/positive Resume, then P6 Web/Desktop and P7/P8 integration"
+    ],
+    "implementation_commits": [
+      "e6bc3759e8a07b480e6aedf246eda8304a253752",
+      "f5259e24533a68ca9ed3d283810de7988bc3d753"
+    ],
+    "implementation_complete": false,
+    "quality_gate_scope": "verified_foundation_revision_only"
   }
 }

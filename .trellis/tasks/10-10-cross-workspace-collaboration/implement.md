@@ -1,11 +1,28 @@
 # 跨账号协作实施计划
 
-- 日期：2026-10-14；状态：P1 数据/权限及标题正文日期编辑、P2 人类流转/生命周期、P4 账号失效消费和 P6 core 契约已有验证切片；其余工作仍按下列完整阶段推进。证据见 [progress.md](progress.md)。
+- 日期：2026-10-17；状态：用户已要求按最新需求核对代码并继续推进，任务恢复实施。已有 P1/P2/P4/P6 验证仍仅属于原基础，见 [progress.md](progress.md)；当前代码调整边界见[实施续作](continuation-revision-2026-10-17.md)。
 - 依据：[PRD](prd.md)、[技术设计](design.md)、[执行协议](research/execution-contract.md)；源码索引见[研究摘要](research/design-contracts.md)。
-- 分支：`codex/cross-workspace-collaboration`。O11、G01–G18 及发起人退出来源空间后的生命周期权限均已确认（discussion §54），最终摘要见 §53；用户复审及实施授权见 §55。
+- 分支：`codex/cross-workspace-collaboration`。原授权见 discussion §55；本轮产品决定见 §57–§60 与[调整清单](mention-redesign-2026-10-17.md)。最新用户续作指令是修订方案的实施授权，已记录到 task.json。
 - 任务保留为规划与集成责任入口；下面按可验证阶段拆分工作，批准后可据此建立子任务，依赖以本文为准，不能从任务树推断。
 
-## P0. 开工条件和契约固定
+当前基础调整及验证见[本轮结果](verification-revision-2026-10-17.md)；下方未勾选项继续按完整功能范围验收，不以存储/内部控制切片替代运行端与双端交付。
+
+## P0R. 本轮变更规划与影响收敛
+
+- [x] 记录 @智能体/小队触发、@人通知、同单多目标、触发预览及不自动改派/授权的已接受方向。
+- [x] 更新原 R/AC，追加 AC90–AC97；列出旧单 session/单 grant/单未结 run、R53 和旧触发监听的冲突。
+- [x] 用户确认 M01：不同目标在资源允许时可并行，同一目标输入保持有序；小队依赖和实际资源竞争列入技术定稿。
+- [x] 用户选择 M02 的 A 方案：按智能体/小队或整单停止/恢复，小队包含成员执行；无关目标保持状态，整单暂停不得被目标级恢复绕过。
+- [x] 用户选择 M03 的 A 方案：@仅展示本单已授权目标，creator/handler 组织新增，各实际 owner 确认，不开放额外资源发现。
+- [x] 修订 D01–D11 及 data/execution-contract：issue 控制器、逐目标 FIFO、根执行组/成员 run、逐资源授权和两级原子控制；保留 nonce/proof 与旧入口隔离。
+- [x] typed target 去重，直接智能体/小队保持独立角色；按实际资源共享容量。队长非阻塞派发/终结后释放 slot，再调度成员和幂等续作；不以队长 proof 结算全组。
+- [x] 重审 P1–P8 受影响清单、97 项 AC 主验证和旧客户端/迁移边界；保留既有数据与验证证据。
+- [x] 独立产品与执行契约复审；所有发现已修正，结论见 review-2026-10-17.md，完整规划摘要见 discussion §61。
+- [x] 用户要求“根据需求核对一下已经实现的代码是否需要调整，并请继续推进这个任务”，随后再次要求“继续推进”；已据此执行 task.py start，恢复实施。
+
+下方 P1–P8 已按本轮模型修订。标记已完成的早期基础项只证明旧结构存在，新 target/group/运行协议仍待实现；未受影响的人类流转与字段规则继续回归。旧单会话“唯一未结 run”不能作为多目标验收。
+
+## P0. 旧基线开工条件与历史记录
 
 - [x] O11 已确认：双禁用时重开并指定已有有效协作者，无候选拒绝；仅增加 R40 的窄例外。
 - [x] 发起人退出来源空间后，账号及协作身份有效时保留完成/取消/重开权限（discussion §54，2026-10-13）；只确认产品规则，尚未批准实现。
@@ -53,10 +70,11 @@ P1 后 P2/P3/P4 可独立研究和实现，但共享服务、router 和 migratio
 
 ## P1. 数据、对象授权及原子新建
 
-- [x] 创建协作聚合、参与关系、交接、session、command/run、grant、操作/event/outbox、终结记录及账号 fence/运行 enrollment/部署 gate；只建 schema，不启用用户创建。
+- [x] 旧基础已建立协作/参与/交接/session/command/run/grant/outbox/终结与身份门禁；只证明原单目标 schema，不代表以下新增结构已交付。
+- [ ] 按新 D02 增加 target、授权资源清单、execution_group、派发/续作关系；根 command 固定目标/输入，run 归组且有独立 proof。替换旧 session 单 active_grant/run 权威及 command/run 一对一约束，逐目标至多一个当前根组。保留旧历史/未结证明，无法确定旧等待输入目标时保持暂停，不猜当前 grant 自动执行。
 - [x] 所有新索引（含主键/唯一键）各用单语句 CONCURRENTLY 迁移；无 FK/级联，检查 invalid index 与安全 down 前置条件。
 - [ ] 复用 `issue.assignee_id=user.id`，creator 保留真实用户；输出独立 source/execution scope，禁止虚构成员或代理 issue。
-- [ ] 新增事务内单据授权器与最小 AccountSummary，读与普通评论采用来源成员 OR 本单参与关系；角色/操作能力分开。R53：授权器按人类白名单判身份，登录会话与个人 PAT 之外（含 task_token、cloud_pat、plugin、IM 及未分类来源）只得最小引用、写入拒绝；需要时由认证中间件显式标记人类来源，不能靠缺失 header 推断。
+- [ ] 新增事务内单据授权器与最小 AccountSummary，读与普通评论采用来源成员 OR 本单参与关系；角色/操作能力分开。R53：人类身份用白名单；只有绑定当前 target/group/run/资源的协作能力可进入执行白名单，其他 task_token/cloud_pat/plugin/IM/未知机器仍只得最小引用、写入拒绝；需要时由认证中间件显式标记人类来源，不能靠缺失 header 推断。
 - [ ] 原子新建 issue、协作记录、参与关系和 paused session；标记从服务端关系派生，不允许旧 PATCH 启用。
 - [ ] 创建使用 source/creator/request_id 的独立操作范围及无 issue ID 的回执查询，私有 draft 一次绑定；同 key 并发/丢响应只得到原单，同 draft 换 key 拒绝。
 - [ ] 增加精确接收账号查询，区分用户名/邮箱/UUID、归一化/歧义/限流；提交动作仍重验。
@@ -101,7 +119,8 @@ P1 后 P2/P3/P4 可独立研究和实现，但共享服务、router 和 migratio
 - [ ] 引入账号连接和明确 issue scope，复用认证但不自动加入来源 workspace room；发送前重验访问依据，撤权丢弃队列中失效 payload。
 - [ ] 实现持久 outbox、snapshot/event seq 补偿、按 viewer 的失效通知；不靠当前 workspace 推测事件归属。
 - [ ] R52 账号级通知：collaboration_event 同事务为当前有效参与者（除操作者）写通知意图，recipient/issue/event_seq 幂等；被移除者仅收无内容的移除通知；旧 subscriber/inbox 监听对参与者跳过，同为来源成员者不重复收。P2/P5 的流转与 AI 事件接入同一事件清单，投递失败不回滚业务。
-- [ ] R55 提及：服务端只把当前参与者解析为有效提及，标记 R52 通知为“提及了你”且同事件去重；`@all` 展开为当前参与者；旧 mention/@all/@squad 监听对协作单跳过，非参与者、agent、squad 提及不通知、不订阅、不触发执行；评论编辑只通知新增提及者。
+- [ ] R24/R55：协作解析器分别解析当前参与者、@all 和已授权 typed AI targets；预览无副作用，发送原子保存 comment/input、逐目标执行/拒绝回执和通知意图，同 key 不重复。无效 AI 目标不吞掉合法目标/人员通知，人员提及不邀请/改派/授权；旧监听整体跳过。普通无 @回复/编辑不产生根执行，编辑只通知新增人员。
+- [ ] 目标候选仅本单有效授权清单；creator/handler 组织登记，全部实际 owner consent 齐备后可选。忙碌/暂停/离线保留合法候选，撤权移除候选但保留历史和停止；小队资源授权不自动创建成员 direct-agent 目标。
 - [ ] R53 出站隔离：plugin 事件桥与 IM（含企业微信 inbox 推送）对协作单不发或只发最小引用；普通 agent/子任务执行的 prompt 与上下文组装不带入父协作单内容。覆盖 CLI `issue get`/`comment add`、plugin 订阅、IM 推送和未分类身份来源。
 - [ ] 两侧检查通用 task list/snapshot/message/usage/WS，执行空间普通成员不能从 engine task 得到来源私有内容。
 
@@ -110,43 +129,45 @@ P1 后 P2/P3/P4 可独立研究和实现，但共享服务、router 和 migratio
 ## P4. 固定启动身份、监督器与窄凭据
 
 - [ ] 新增 collaboration purpose 与 claim/finalize/launch/progress/proof 协议；普通同空间 claim 不放宽。
-- [ ] 业务 token 绑定 issue/session/command/run/grant/账户与参与 epoch；全局路由默认拒绝，子进程无宽域 mat_/PAT fallback。
+- [ ] 业务 token 绑定 issue/session/target/group/command/run/grant/账户与参与 epoch；全局路由默认拒绝，子进程无宽域 mat_/PAT fallback。
 - [ ] 每次业务 token 请求调用动态能力谓词，写事务再验，旧 token 不因重新参与/重开/新 grant 复活；不能借 owner 的来源成员权降级。
 - [ ] 按 E07 登记中立账号 epoch 更新者；password 使用真实会话版本，legacy 共享 runtime 有 owner 授权及持久 key challenge enrollment。保持原登录模式和 password-only 管理入口，不用空版本/空 binding 兜底。
 - [ ] 在可能启动前预发并持久化仅 supervisor 持有的终结 token，绑定原 deployment/install/run/fence/nonce；撤权后仍只收尾。
 - [ ] 本地账本使用跨进程锁、fsync、启动前 nonce burn、单调 attempt、最终 run seal；burn/fork/PID 回写窗口保守 unknown。内部尝试先证明前次退出再取新许可。
 - [ ] supervisor 覆盖每次 provider launch、内部 fallback 及全部派生进程；共享能力须证明封闭 containment，Windows Job 绑定失败不启动，Unix 单独进程组不足以准入。覆盖 setsid/改变组/双 fork/提前关闭 stdio/PID复用，无法保证则不宣告能力；观测丢失保留 unknown，不能签发完整 proof。
-- [ ] daemon owner、供应商账号和 command author 独立；grant consent/revoke 使用实际资源 owner。待执行指令不预绑旧资源，切换在成为队首时使用当前授权。
+- [ ] daemon owner、供应商账号、实际执行者和根 command 的人类作者分开。固定 typed target/配置与输入快照，各 run 重验实际资源授权；不能在成为队首时把 @A 改用全局当前 B。切资源须显式暂停/owner 授权，旧 epoch 不复活。
+- [ ] 小队组内派发使用父 run 窄能力与授权成员清单；持久派发和 continuation 幂等，原人类来源不可改写。队长结束并取得 proof 才释放真实 slot，成员 bypass 外部 FIFO；容量 1 和同目录竞争必须验证。
 - [ ] 文件通过已提交 Git/明确附件准备；新环境重置供应商恢复指针，不搬运未提交目录、私人 session 或其他平台凭据。
 
 验证：fake executable 起子孙进程、延迟/崩溃，逐点注入 burn/fork/PID/reap/seal 故障；另一 daemon 实例、重复 nonce/派发、迟到 fallback 不重复 fork。测 Windows Job 失败、token 路由矩阵、当前 grant/私有 owner 关系和认证×runtime enrollment/challenge 重放。撤用户/runtime 后只可提交旧 proof，不读正文/启动/续租/恢复；provider 无 supervisor 凭据。不用单个 ProcessExited mock 代替原生矩阵。
 
-## P5. FIFO、停/恢复与全部旧 writer
+## P5. 逐目标 FIFO、执行组与两级控制
 
-- [ ] 实现 command 不可变输入/作者、数据库 seq、唯一 session/未结 run 约束与 promote 原子占位。
-- [ ] R45 取消单条 waiting：当前有效参与者且为作者/creator/handler；与 promote 同锁，取消状态、操作者/时间及事件同事务。不变更原文/seq、active_run、queue_state/control_version，不依赖 grant/gate；in_flight 或终态拒绝，不自动 Stop。测试三类允许主体、他人/撤权/转交、paused/维护及 cancel↔promote 的确定性竞争和幂等重放。
-- [ ] 按 E01 显式连接来源正式 admission、installation accepting、当前资源/绑定/账号和全局 gate；旧恢复例外不发新许可，capacity 不改 FIFO。
+- [ ] 根 command 固定 typed target/输入/作者，逐目标 seq 和原子 active_group 占位；根组可包含多个成员/continuation run。不同目标可并行，同目标下一根 command 等整个组结算。
+- [ ] R45 取消单条 waiting：当前有效参与者且为作者/creator/handler；与 promote 同锁，取消状态、操作者/时间及事件同事务。不变更原文/seq、active_group、两个控制层状态/版本，不依赖 grant/gate；in_flight 或终态拒绝，不自动 Stop。测试三类允许主体、他人/撤权/转交、paused/维护及 cancel↔promote 的确定性竞争和幂等重放。
+- [ ] 按 E01 显式连接来源正式 admission、installation accepting、当前资源/绑定/账号和全局 gate；旧恢复例外不发新许可；真实资源容量不被目标名绕过，容量受限目标不堵住其他独立可运行目标。
 - [ ] E03 无许可占位由服务端原子撤派发并结算；永久 prepare 错误、临时投递故障和可能已有许可区别处理，不等不存在的 daemon 回执。
-- [ ] Stop 先持久 paused+stop intent，旧执行 proof 只清对应屏障；control version 不受普通评论/进度干扰。
+- [ ] target/issue Stop 明确范围、观察到的组/目标集合版本；先挂起并封闭派生，再停止所有范围内 run。单目标不影响其他目标，整单暂停约束新增目标；proof 只清对应 run 屏障，不能恢复 gate。
 - [ ] 移除/退出、撤 grant、owner 离开、生命周期 close/reopen 与相应取消/暂停/停止副作用同事务。
 - [ ] 禁用作者/owner 的 auth epoch 即刻拒新许可，持久失效 fanout 不因快速恢复丢失；按顺序收敛受影响单据。
-- [ ] 拒绝的 Resume key 永远重放原拒绝；不存未来恢复意图。旧 stop fence 不套到后来新 run。
-- [ ] 关闭隐式失败重试/旧 merge/reconcile/continuation/rerun 旁路；明确失败且可信结束才能在 active 下继续，手动重做新建 command。
+- [ ] Resume target 不跨整单暂停；Resume issue 原子验证全范围 proof/当前目标/grants，任一失败不改任何 gate/target，不静默部分恢复。拒绝 key 永远重放原拒绝，旧 stop 不套到新组；重复恢复不重复启动既有工作。
+- [ ] 关闭旧隐式失败重试/merge/reconcile/rerun 及无归属 continuation 旁路；只允许同组持久、已授权的成员/续作。全部 run/派发结算且组封闭才释放该目标 FIFO；手动重做新建根 command。
 - [ ] E05 分开 business_outcome/forced_disposition/proof；proof 先到缺结果记 outcome_unconfirmed，结果先到无 proof 不解锁，停止优先于 late success。
 - [ ] 按 D08 清单覆盖 HTTP/WS、Plugin、CLI、队列 SQL、后台状态/孤儿/GC、整机停止及所有 teardown；同 purpose 进入同一 primitive。
 - [ ] 固定逐 writer 锁序和 NOWAIT 交汇点，所有 helper 借同一事务；冲突有限重试、commit 不明查原操作。
 - [ ] E06 gate 先关再扫描暂停；Resume/所有 active 写入持 FOR SHARE 到提交并比较 expected_execution_epoch。barrier 测覆盖读 gate→提交窗口及旧请求延迟到重新 enable；扫描完成才解除，不自动 active。关闭创建仍接收尾，未结 run 不因重启/超时/engine 清理消失。
 
-验证：使用数据库事务屏障/同步通道制造 stop↔claim/finalize/start/complete、close↔enqueue、remove↔launch、revoke↔resume、workspace delete↔create、runtime teardown↔proof 竞争，不靠任意 sleep 猜时间。指令 1 运行、2/3 排队时停，4 在 paused 加入，证明前拒恢复，同 key 之后仍拒；新请求恢复仅执行有效 2/3/4，1 不重试。至少两个调度 worker 验证一个 session 只有一个未结 run，其他 issue 不受影响。
+验证：使用数据库事务屏障/同步通道制造 stop↔claim/finalize/start/complete、close↔enqueue、remove↔launch、revoke↔resume、workspace delete↔create、runtime teardown↔proof 竞争，不靠任意 sleep 猜时间。指令 1 运行、2/3 排队时停，4 在 paused 加入，证明前拒恢复，同 key 之后仍拒；新请求恢复仅执行有效 2/3/4，1 不重试。至少两个调度 worker 验证同一 target 至多一个 active_group、不同 target 可并行；小队组内非阻塞派发在容量 1 时仍能前进。整单恢复拒绝必须零状态写入，新增目标不能越过整单暂停，其他 issue 不受影响。
 
 ## P6. 共享界面与 Web / Desktop 路由
 
 - [ ] 复审补项：private schema 一律 redact:true，畸形正文/短能力不进入日志；来源成员退出重验 account 视图，保留有效发起人生命周期权并移除来源字段能力，不能误删账号组。覆盖 CL03/CL04 的暖缓存与日志 sentinel 负例。
 
 - [ ] core 增加协作 schema/API/queries/mutations/realtime，显式 deployment/viewer/issue scope；列表 key 含 view/归一化筛选排序，账号请求去 ambient workspace header。新版本字符串无损比较，不改旧 Issue wire。
-- [ ] views 组合工作台、受限单据详情、精确查找/交接、参与人、普通评论/显式 AI composer、队列、授权/换环境和生命周期界面；复用可注入数据的现有组件，避免复制完整 IssueDetail。
+- [ ] views 组合工作台、受限单据详情、精确查找/交接、参与人、统一评论与 @触发预览、逐目标队列/执行组、两级控制、授权/换环境及生命周期界面；复用可注入数据的现有组件，避免复制完整 IssueDetail。
 - [ ] 接入 R41/R42/R48–R50 字段编辑及修改记录（R49/R50 选择器仅对来源成员显示，含新建表单；迭代切换/移出要求填写原因；R51 子任务列表对来源成员可打开，对外部协作者只显示最小引用）；来源普通成员不因此获得编辑权，角色/版本/来源选项冲突保留输入并重取，双端验证保存与历史接线。
-- [ ] R55 共享编辑器的 @ 选择器注入本单参与摘要，只列当前参与者、`@all`、`@AI`；关闭 current workspace 的成员/项目/任务查找。R56 同时关闭“从评论/选区创建子任务”入口。
+- [ ] R55 选择器注入当前参与者、@all 和完整有效授权的 typed AI targets，不显示个人/任意空间资源目录；预览各目标实际状态并可取消本次执行。来源成员无 AI 控制权时不能借 @执行。R56 继续关闭评论/选区建子任务。
+- [ ] 多目标 DTO 带显式协议版本及 targets/groups/control 范围；旧客户端不把未知结构解释为空闲或 fallback 普通执行，根作者、组/成员状态和停止待确认分别显示。
 - [ ] R57 双端按能力显示解决/取消解决与表情回应，失败回滚本地状态并保留线程位置。
 - [ ] R43 双端提供本人普通评论编辑/删除、历史及删除占位；依当前评论权限显示，冲突保留输入，不复活删除记录；其他人的回复继续可定位。
 - [ ] R44 评论移除附件后，本单附件/历史仍提供受控访问；清楚区分移除展示与删除文件，不让客户端隐藏整个附件记录。
@@ -196,10 +217,10 @@ P1 后 P2/P3/P4 可独立研究和实现，但共享服务、router 和 migratio
 | --- | --- | --- |
 | P1 数据/权限 | 01、05、13、17、45、46、60、68、71、72、73、79、80、81、82、89 | DB-backed handler/service、创建及字段编辑/角色/版本/来源选项；P6 验证双端接线 |
 | P2 流转/责任 | 02、03、04、11、14、25、26、27、28、29、30、47、51、52、53、54、55、56、62、63、64、77、78 | 交接/版本竞争、直接加入/离线派单、手动改状态、持久查询与删除门禁 |
-| P3 内容/实时 | 18、61、74、75、84、86、87、88 | 访问/撤权、评论版本/删除竞争、AI 无副作用及附件留存/GC；P6 双端接线 |
-| P4 资源/执行协议 | 15、16、37、38、39、40、41、42、43、44、49、50 | grant/token/进程树/重放、切资源文件与身份边界 |
-| P5 队列/终结 | 06、07、08、09、10、12、19、20、21、22、23、24、32、33、34、35、36、48、57、58、76 | 多 worker DB 竞争、取消等待项/幂等/当前角色、fake daemon、旧 writer 负例 |
-| P6 双端体验 | 31、59、83、85 | Web/原生 Desktop 接续、转出/通知归档/重启后的持续入口；AC83 在 P2/P3/P5 事件全部接入后按完整事件清单验收 |
+| P3 内容/实时 | 18、61、74、75、84、86、87、88、90、97 | 访问/撤权、评论及附件留存、混合提及通知去重；P6 双端接线，@执行由协作入口接入 |
+| P4 资源/执行协议 | 15、16、37、38、39、40、41、42、43、44、49、50、96 | grant/token/各执行终结/重放、目标与成员资源权限；覆盖已确认 M03 的每个实际资源与目标清单 |
+| P5 队列/终结 | 06、07、08、09、10、12、19、20、21、22、23、24、32、33、34、35、36、48、57、58、76、92、93、94、95 | 目标幂等、@门禁、小队调度与控制、fake daemon、旧 writer 负例；按已确认 M01 验证并行/排队，落实已确认 M02 的两级控制矩阵 |
+| P6 双端体验 | 31、59、83、85、91 | Web/原生 Desktop 接续、账号通知、预览与逐目标结果；AC83 待 P2/P3/P5 全部事件接入 |
 | P7 代管 | 65、66、69、70 | password/admin 范围、审计与双禁用原子接手；候选/账号恢复竞争及双端表单 |
 | P8 原子新建集成 | 67 | P1 原子/幂等创建、P3 首次上传受控、P6 双端实际创建三项证据全部具备后验收 |
 

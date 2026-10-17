@@ -1,10 +1,12 @@
 # 实施必须保留的研究结论
 
+> 2026-10-17：M01–M03 及实施已确认，完整目标见[调整清单](../mention-redesign-2026-10-17.md)和主文档。当前多目标基础必须同时读取[代码规范](../../../spec/server/collaboration-targets.md)。下列源码观察保留研究日期，单 session/单执行等旧结论已被替代；真实运行协议与完整 @/双端验收仍未交付。
+
 - 日期：2026-10-13；源码研究与技术复审摘要，产品实现/验收尚未完成。
-- 当前权威：[PRD](../prd.md)、[设计](../design.md)、[执行协议](execution-contract.md)、[实施计划](../implement.md)。R39 已确定仅新建；详细研究中的存量转换和早期状态建议不覆盖当前设计。
+- 当前权威为 2026-10-17 修订的 [PRD](../prd.md)、[设计](../design.md)、[执行协议](execution-contract.md)、[实施计划](../implement.md)。R39 已确定仅新建；详细研究中的存量转换和早期状态建议不覆盖当前设计。
 - O11、G01–G18 的确认以 [PRD](../prd.md) R40–R58、[验收附表](../acceptance.md) AC69–AC89 和设计 D03–D05/D09/D10 为准，决策过程见[讨论记录](../discussion.md) §31、§34–§52，最终摘要见 §53（§41 存有本处原逐条摘要）。早期研究/审阅中的未决或相反表述（如字段/评论禁编）是历史快照，以当前主文档为准；完整 AC 由 implement/check 显式加载。
 
-最新58项技术一致性复审及修订见[复审结论](../review-2026-10-13.md)；当前主契约已纳入退出来源空间身份、双非终态、评论/附件持久映射、线程锁、机器搜索隔离、提及投递与封闭执行范围。历史报告不覆盖本次修订。用户已授权复审后实施（讨论 §55）。
+原 58 项技术复审见[2026-10-13 结论](../review-2026-10-13.md)，其中身份、事务、私有内容和终结证明约束继续保留。讨论 §55 的授权和该报告只覆盖旧模型；本次 M01–M03 及后续多目标技术稿须用新摘要和验证。
 
 ## 数据与权限
 
@@ -17,8 +19,8 @@
 
 ## 队列、可信结束与撤权
 
-1. 旧 comment 输入会合并并改 originator/accountable；完成回放也会合并（`server/internal/handler/comment.go:2060`、`:2132`；`server/internal/handler/daemon.go:4060`）。它们不能当作多人 FIFO，协作评论必须从所有 trigger/reconcile 入口隔离。
-2. `CancelTaskInTx` 将 DB task 立即 cancelled 并唤醒 waiters（`server/internal/service/task_cancellation.go:65`、`:137`），没有进程结束证明。session paused/closed 与未结 active_run 必须独立；task 终态、TTL、无心跳都不能解锁。
+1. 旧 comment 输入会合并并改 originator/accountable；完成回放也会合并（`server/internal/handler/comment.go:2060`、`:2132`；`server/internal/handler/daemon.go:4060`）。它们不能改写协作输入身份；旧 trigger/reconcile 对协作单隔离，新入口按 typed target 保存独立 FIFO/根组，组内派发不借旧监听另起根。
+2. `CancelTaskInTx` 将 DB task 立即 cancelled 并唤醒 waiters（`server/internal/service/task_cancellation.go:65`、`:137`），没有进程结束证明。整单/target 控制状态与各 group/run 的未结证明必须独立；task 终态、TTL、无心跳都不能解锁。
 3. 旧 start 只认 task ID/state，不能防已派发任务重复 fork（`server/internal/handler/daemon.go:3766`、`server/pkg/db/queries/agent.sql:1118`）。新协议有固定 run/fence/nonce、每次许可重验和 daemon 私有持久 launch 账本。
 4. 撤权后普通 HTTP/middleware、managed runtime 和本地 transport 都可能拒旧 cancel-ack。预发 supervisor 独占的 termination-purpose 能力，只读本 run 停止意图/交最小 proof，不读内容/claim/start/续租/resume，不给 provider 宽 token。
 5. ProcessExited 支持不统一：Codex 检查进程组，Claude 目前只检查直接子进程，其他 wrappers 多未设置；Windows Job 绑定失败目前继续启动。证据：`server/pkg/agent/codex.go:1369`、`claude.go:277`、`proc_windows.go:110`。共享执行需统一监督与实际 OS/provider 能力测试，不能降级后声称支持。
@@ -47,20 +49,20 @@
 
 自动加载本索引、[数据契约](data-contract.md)、执行协议和验收附表；安全规范按上文全文必读，完整报告按需读取。跨层实施还需 `.trellis/spec/guides/cross-layer-thinking-guide.md`。源码行号是研究时锚点，拟新增名称不表示已有能力。
 
-## 协作结构图
-
-原 design D01 结构图，节点与连线完整保留。
+## 当前协作结构图（拟实施）
 
 ```mermaid
 flowchart LR
-  W[Web / Desktop 账号工作台] --> A[账号认证 + 单据授权]
-  A --> I[来源空间唯一 issue]
-  I --> P[参与关系 / 交接 / 状态 / 受控附件]
-  I --> S[唯一共享 session + FIFO]
-  S --> R[协作 run / 执行关联]
-  R --> T[执行空间 engine task]
-  T --> D[绑定的 daemon / supervisor]
-  D --> AI[该环境的供应商账号]
-  D -->|过程及结果| I
-  D -->|专用终结证明| R
+  W[账号工作台] --> A[单据与目标授权]
+  A --> I[唯一业务 issue / 共享历史]
+  I --> S[session 整单控制]
+  S --> T[各 target / FIFO / 控制]
+  T --> G[根 command / 执行组]
+  G --> R[队长 / 成员 / 续作 run]
+  P[各 owner 的资源授权] --> R
+  R --> D[实际 daemon / supervisor]
+  D -->|过程与结果| I
+  D -->|各 run 终结证明| G
 ```
+
+一个 session 仍可作为整单控制器，但不再是单个 AI 执行位置；根组完整结算才释放对应 target 的 FIFO。产品选择确认和数据关系设计均不代表当前代码已经交付。
