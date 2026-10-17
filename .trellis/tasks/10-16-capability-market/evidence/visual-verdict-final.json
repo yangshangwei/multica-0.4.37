@@ -1,0 +1,45 @@
+{
+  "scope": "capability-market-acceptance",
+  "checked_at": "2026-10-17T01:05:06.558019+00:00",
+  "threshold": 90,
+  "score": 94,
+  "passed": true,
+  "visual_checks": [
+    {
+      "reference_images": [
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/artifacts/capability-market-final/acceptance/web-legacy-initial-results/localized-template-default-a9f16-ut-rewriting-stored-content-chromium/skill-templates-en-light-preview-375x667.png"
+      ],
+      "generated_screenshot": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/artifacts/capability-market-final/acceptance/web-legacy-initial-results/localized-template-default-a9f16-ut-rewriting-stored-content-chromium/skill-templates-en-light-preview-360x800.png",
+      "score": 94,
+      "verdict": "pass",
+      "category_match": true,
+      "differences": [],
+      "suggestions": [],
+      "reasoning": "At 360px the preview retains the same dialog hierarchy, readable title, back control and fully visible footer actions as the 375px reference. The taller viewport reveals more scroll content without horizontal clipping.",
+      "next_actions": []
+    },
+    {
+      "reference_images": [
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/artifacts/capability-market-final/acceptance/web-legacy-initial-results/localized-template-default-a9f16-ut-rewriting-stored-content-chromium/skill-templates-zh-Hans-dark-preview-375x667.png"
+      ],
+      "generated_screenshot": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/artifacts/capability-market-final/acceptance/web-legacy-initial-results/localized-template-default-a9f16-ut-rewriting-stored-content-chromium/skill-templates-zh-Hans-dark-preview-360x800.png",
+      "score": 94,
+      "verdict": "pass",
+      "category_match": true,
+      "differences": [],
+      "suggestions": [],
+      "reasoning": "At 360px the preview retains the same dialog hierarchy, readable title, back control and fully visible footer actions as the 375px reference. The taller viewport reveals more scroll content without horizontal clipping.",
+      "next_actions": []
+    }
+  ],
+  "reasoning": "Inspected real production Web EN/light and ZH/dark workspace, catalog and preview captures at360/375px using view_image; shared component tokens and responsive hierarchy are consistent.",
+  "suggestions": [],
+  "next_actions": [],
+  "native_inspected": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/artifacts/capability-market-final/acceptance/native-final-results/mcp-desktop-native-desktop-446bb-s-and-agent-discovery-flows-chromium/native-skills-market-375.png",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/artifacts/capability-market-final/acceptance/native-final-results/mcp-desktop-native-desktop-446bb-s-and-agent-discovery-flows-chromium/native-market-420.png",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/artifacts/capability-market-final/acceptance/native-final-results/mcp-desktop-native-desktop-446bb-s-and-agent-discovery-flows-chromium/native-skills-session-restored.png",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/artifacts/capability-market-final/acceptance/native-final-results/mcp-desktop-native-desktop-446bb-s-and-agent-discovery-flows-chromium/native-chinese-light.png"
+  ],
+  "native_reasoning": "Real Electron screenshots retain readable source/category controls, shared cards, management destinations and the active restored market session; narrow native captures use device scale2."
+}
