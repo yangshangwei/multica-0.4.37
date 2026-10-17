@@ -2,6 +2,8 @@ import { createHash, createPrivateKey, createPublicKey, randomBytes, randomUUID,
 import { constants, type Stats } from "node:fs";
 import { lstat, mkdir, open, rename, unlink } from "node:fs/promises";
 import { dirname, join } from "node:path";
+import { DaemonDiagnosticError } from "./daemon-diagnostics";
+import type { ChallengeMismatchField } from "../shared/daemon-types";
 import { withManagementFileLock } from "./managed-lock";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
@@ -209,40 +211,60 @@ export class ManagedInstallation {
   }
 
   signChallenge(response: InstallationChallenge, expected: ChallengeScope, nowSeconds = Math.floor(Date.now() / 1000)): InstallationProof {
-    const original = decode(response.signature_payload, 32_768);
-    const body = decode(response.body_payload, 65_536);
-    const payload = canonicalObject(original, PAYLOAD_KEYS);
-    const bodyObject = canonicalObject(body, expected.purpose === "enroll"
-      ? ["public_key", "desktop_version", "os"]
-      : ["installation_id", "workspace_id", "daemon_id", "public_key", "expected_binding_epoch"]);
-    if (bodyObject.public_key !== this.#record.public_key) throw new Error("Challenge body uses another installation key");
-    if (expected.purpose === "enroll") {
-      if (typeof bodyObject.desktop_version !== "string" || bodyObject.desktop_version.length > 128 ||
-        !["macos", "windows", "linux", "unknown"].includes(String(bodyObject.os))) throw new Error("Invalid enrollment body");
-    } else if (bodyObject.installation_id !== expected.installationId || bodyObject.workspace_id !== expected.workspaceId ||
-      bodyObject.daemon_id !== expected.daemonId || bodyObject.expected_binding_epoch !== expected.expectedBindingEpoch) {
-      throw new Error("Challenge body disagrees with binding scope");
-    }
-    const same = (actual: unknown, expectedValue: unknown) => actual === expectedValue;
+    const stage = expected.purpose === "enroll" ? "registration" : "binding";
+    const invalid = () => new DaemonDiagnosticError("challenge_invalid", stage);
+    let original: Buffer;
+    let body: Buffer;
+    let payload: Record<string, unknown>;
+    let bodyObject: Record<string, unknown>;
+    try {
+      original = decode(response.signature_payload, 32_768);
+      body = decode(response.body_payload, 65_536);
+      payload = canonicalObject(original, PAYLOAD_KEYS);
+      bodyObject = canonicalObject(body, expected.purpose === "enroll"
+        ? ["public_key", "desktop_version", "os"]
+        : ["installation_id", "workspace_id", "daemon_id", "public_key", "expected_binding_epoch"]);
+      if (payload.protocol_version !== "1" || !uuid(payload.challenge_id) || !uuid(payload.organization_id) || !uuid(payload.user_id) ||
+        !decimal(payload.auth_version) || !decimal(payload.expires_at) || decode(payload.nonce, 32).length !== 32) throw invalid();
+    } catch { throw invalid(); }
+    // Validate integrity before interpreting scope or time. Keep the original
+    // bytes for signing; a mismatched envelope is not evidence of clock skew.
+    if (payload.body_sha256 !== createHash("sha256").update(body).digest("hex") || response.body_payload !== expected.bodyPayload ||
+      payload.challenge_id !== response.challenge_id || payload.nonce !== response.nonce ||
+      payload.deployment_id !== response.deployment_id || payload.expires_at !== response.expires_at) throw invalid();
+    if (expected.purpose === "enroll" && (typeof bodyObject.desktop_version !== "string" || bodyObject.desktop_version.length > 128 ||
+      !["macos", "windows", "linux", "unknown"].includes(String(bodyObject.os)))) throw invalid();
+
+    const fields = new Set<ChallengeMismatchField>();
+    const check = (matches: boolean, field: ChallengeMismatchField) => { if (!matches) fields.add(field); };
     const purposePath = expected.purpose === "enroll" ? "/api/installations/enroll" : expected.purpose === "renew" ? "/api/daemon/installation-bindings/renew" : "/api/daemon/installation-bindings";
-    if (payload.protocol_version !== "1" || !uuid(payload.challenge_id) || !uuid(payload.organization_id) || !uuid(payload.user_id) ||
-      !decimal(payload.auth_version) || !decimal(payload.expires_at) ||
-      decode(payload.nonce, 32).length !== 32 ||
-      !same(payload.purpose, expected.purpose) || !same(payload.deployment_id, this.#record.deployment_id) || !same(payload.deployment_id, expected.deploymentId) ||
-      (expected.organizationId !== undefined && !same(payload.organization_id, expected.organizationId)) ||
-      !same(payload.user_id, expected.userId) || !same(payload.auth_version, expected.authVersion) ||
-      !same(payload.installation_id, expected.installationId) || !same(payload.workspace_id, expected.workspaceId) || !same(payload.daemon_id, expected.daemonId) ||
-      !same(payload.expected_binding_epoch, expected.expectedBindingEpoch) || !same(payload.public_key_fingerprint, this.publicInfo.fingerprint) ||
-      payload.method !== "POST" || expected.method !== "POST" || payload.path !== purposePath || expected.path !== purposePath ||
-      payload.body_sha256 !== createHash("sha256").update(body).digest("hex") || response.body_payload !== expected.bodyPayload ||
-      payload.challenge_id !== response.challenge_id || payload.nonce !== response.nonce || payload.deployment_id !== response.deployment_id || payload.expires_at !== response.expires_at ||
-      BigInt(payload.expires_at) <= BigInt(nowSeconds) || BigInt(payload.expires_at) > BigInt(nowSeconds + 300)) {
-      throw new Error("Installation challenge does not match the current scope");
-    }
+    check(payload.purpose === expected.purpose && payload.method === "POST" && expected.method === "POST" && payload.path === purposePath && expected.path === purposePath, "request");
+    check(payload.deployment_id === this.#record.deployment_id && payload.deployment_id === expected.deploymentId, "deployment");
+    check(expected.organizationId === undefined || payload.organization_id === expected.organizationId, "organization");
+    check(payload.user_id === expected.userId, "account");
+    check(payload.auth_version === expected.authVersion, "auth_version");
+    check(payload.installation_id === expected.installationId, "installation");
+    check(payload.workspace_id === expected.workspaceId, "workspace");
+    check(payload.daemon_id === expected.daemonId, "daemon");
+    check(payload.expected_binding_epoch === expected.expectedBindingEpoch, "binding_epoch");
+    check(payload.public_key_fingerprint === this.publicInfo.fingerprint && bodyObject.public_key === this.#record.public_key, "key");
     if (expected.purpose === "enroll") {
-      if (expected.installationId !== null || expected.workspaceId !== null || expected.daemonId !== null || expected.expectedBindingEpoch !== null) throw new Error("Invalid enrollment scope");
-    } else if (!uuid(expected.installationId) || expected.installationId !== this.#record.installation_id || !uuid(expected.workspaceId) || !uuid(expected.daemonId) || expected.daemonId !== this.managedDaemonId(expected.userId) ||
-      !(expected.expectedBindingEpoch === null || decimal(expected.expectedBindingEpoch)) || (expected.purpose === "renew" && expected.expectedBindingEpoch === null)) throw new Error("Invalid daemon binding scope");
+      check(expected.installationId === null, "installation");
+      check(expected.workspaceId === null, "workspace");
+      check(expected.daemonId === null, "daemon");
+      check(expected.expectedBindingEpoch === null, "binding_epoch");
+    } else {
+      check(bodyObject.installation_id === expected.installationId && uuid(expected.installationId) && expected.installationId === this.#record.installation_id, "installation");
+      check(bodyObject.workspace_id === expected.workspaceId && uuid(expected.workspaceId), "workspace");
+      check(bodyObject.daemon_id === expected.daemonId && uuid(expected.daemonId) && expected.daemonId === this.managedDaemonId(expected.userId), "daemon");
+      check(bodyObject.expected_binding_epoch === expected.expectedBindingEpoch && (expected.expectedBindingEpoch === null || decimal(expected.expectedBindingEpoch)) &&
+        (expected.purpose !== "renew" || expected.expectedBindingEpoch !== null), "binding_epoch");
+    }
+    if (fields.size) throw new DaemonDiagnosticError("challenge_scope_mismatch", stage, [...fields]);
+    // Decimal syntax was checked above, before converting untrusted values.
+    const expiry = BigInt(payload.expires_at as string);
+    if (expiry <= BigInt(nowSeconds)) throw new DaemonDiagnosticError("challenge_expired", stage);
+    if (expiry > BigInt(nowSeconds + 300)) throw new DaemonDiagnosticError("challenge_time_window", stage);
     return {
       challenge_id: response.challenge_id, signature_payload: response.signature_payload,
       body_payload: response.body_payload, signature: sign(null, original, privateKey(this.#record.private_key_seed)).toString("base64url"),

@@ -83,6 +83,49 @@ describe("managed installation storage", () => {
 });
 
 describe("challenge proof", () => {
+  it.each([
+    ["purpose", "bind", "request"], ["deployment_id", installationId, "deployment"],
+    ["organization_id", installationId, "organization"], ["user_id", installationId, "account"],
+    ["auth_version", "2", "auth_version"], ["installation_id", installationId, "installation"],
+    ["workspace_id", installationId, "workspace"], ["daemon_id", installationId, "daemon"],
+    ["expected_binding_epoch", "2", "binding_epoch"], ["public_key_fingerprint", "a".repeat(64), "key"],
+    ["method", "GET", "request"], ["path", "/wrong", "request"],
+  ])("reports only a safe field label for %s mismatch", async (key, value, field) => {
+    const identity = await loadManagedInstallation(home, deploymentId);
+    const { response, scope, payload } = challenge(identity.publicInfo.fingerprint, identity.publicInfo.publicKey);
+    const changed = { ...payload, [key]: value };
+    const tampered = { ...response, signature_payload: Buffer.from(JSON.stringify(changed)).toString("base64url") };
+    if (key === "deployment_id") tampered.deployment_id = value;
+    expect(() => identity.signChallenge(tampered, scope, 2_000_000_000)).toThrowError(expect.objectContaining({
+      code: "challenge_scope_mismatch", stage: "registration", fields: [field],
+    }));
+  });
+
+  it.each([["2000000000", "challenge_expired"], ["2000000301", "challenge_time_window"]])("classifies consistent expiry %s", async (expiry, code) => {
+    const identity = await loadManagedInstallation(home, deploymentId);
+    const { response, scope, payload } = challenge(identity.publicInfo.fingerprint, identity.publicInfo.publicKey);
+    const tampered = { ...response, expires_at: expiry, signature_payload: Buffer.from(JSON.stringify({ ...payload, expires_at: expiry })).toString("base64url") };
+    expect(() => identity.signChallenge(tampered, scope, 2_000_000_000)).toThrowError(expect.objectContaining({ code }));
+    // An inconsistent envelope is not evidence of clock skew.
+    expect(() => identity.signChallenge({ ...tampered, expires_at: response.expires_at }, scope, 2_000_000_000)).toThrowError(expect.objectContaining({ code: "challenge_invalid" }));
+  });
+
+  it.each(["2000000001", "2000000300"])("accepts expiry %s at the permitted time-window boundaries", async expiry => {
+    const identity = await loadManagedInstallation(home, deploymentId);
+    const { response, scope, payload } = challenge(identity.publicInfo.fingerprint, identity.publicInfo.publicKey);
+    const consistent = { ...response, expires_at: expiry, signature_payload: Buffer.from(JSON.stringify({ ...payload, expires_at: expiry })).toString("base64url") };
+    expect(identity.signChallenge(consistent, scope, 2_000_000_000)).toMatchObject({ signature_payload: consistent.signature_payload });
+  });
+
+  it.each([
+    { protocol_version: "2" }, { challenge_id: "invalid" }, { organization_id: "invalid" },
+    { user_id: "invalid" }, { auth_version: "0" }, { expires_at: "1.2" },
+    { nonce: "bad=" }, { body_sha256: "a".repeat(64) },
+  ])("rejects malformed/inconsistent data before classifying time: %j", async change => {
+    const identity = await loadManagedInstallation(home, deploymentId);
+    const { response, scope, payload } = challenge(identity.publicInfo.fingerprint, identity.publicInfo.publicKey);
+    expect(() => identity.signChallenge({ ...response, signature_payload: Buffer.from(JSON.stringify({ ...payload, ...change })).toString("base64url") }, scope, 2_000_000_120)).toThrowError(expect.objectContaining({ code: "challenge_invalid" }));
+  });
   it("signs the original validated bytes without exposing its private seed", async () => {
     const identity = await loadManagedInstallation(home, deploymentId);
     const { response, scope } = challenge(identity.publicInfo.fingerprint, identity.publicInfo.publicKey);

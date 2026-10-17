@@ -8,6 +8,7 @@ import { runInNewContext } from "node:vm";
 import ts from "typescript";
 import * as recovery from "./daemon-recovery";
 import * as daemonOS from "./daemon-os";
+import * as diagnostics from "./daemon-diagnostics";
 import * as daemonTypes from "../shared/daemon-types";
 import { readManagementPrivateFile } from "./managed-installation";
 import * as transitions from "./managed-transition";
@@ -23,7 +24,7 @@ async function managerFixture(pid: string, withSession: boolean, pendingDrain: b
   await writeFile(join(directory, "config.json"), JSON.stringify({ management_deployment_id: "11111111-1111-4111-8111-111111111111" }));
   await writeFile(join(directory, "daemon.pid"), pid);
   const spawn = vi.fn((_file, _args, _options, callback) => { queueMicrotask(() => callback(null, JSON.stringify({ probe_result: "success", runtime_count: 1, provider_summary: { claude: 1 } }))); return { stdin: { end: vi.fn(), on: vi.fn() } }; });
-  const session = { createHandoff: async () => JSON.stringify({ bindings: [] }), connectRunningDaemon: async () => null, matchesDaemonScope: () => true };
+  const session = { createHandoff: vi.fn(async () => JSON.stringify({ bindings: [] })), connectRunningDaemon: async () => null, matchesDaemonScope: () => true };
   const prepareSession = vi.fn(async () => null);
   const modules: Record<string, unknown> = {
     electron: { app: { getVersion: () => "0.5.0" }, ipcMain: { handle: vi.fn() }, BrowserWindow: { getAllWindows: () => [] }, shell: {} },
@@ -32,6 +33,7 @@ async function managerFixture(pid: string, withSession: boolean, pendingDrain: b
     "./daemon-recovery": recovery,
     "./daemon-os": daemonOS,
     "../shared/daemon-types": daemonTypes,
+    "./daemon-diagnostics": diagnostics,
     "./managed-transition": transitions,
     "./daemon-profile": {
       profileDir: (name: string) => join(root, name),
@@ -47,6 +49,8 @@ async function managerFixture(pid: string, withSession: boolean, pendingDrain: b
   const source = await readFile(join(__dirname, "daemon-manager.ts"), "utf8");
   const setup = `\nmodule.exports.fixture = {
     recover: () => attemptDaemonRecovery(activeProfile),
+    refreshManaged: () => refreshManagedScopes(),
+    status: () => fetchHealth(),
     prepareSession: () => { targetApiBaseUrl="http://localhost:18001"; return configureManagedSession("fixture-user-token", "fixture-user", "fixture-pat", activeProfile); },
     writeConfig: (config) => writeProfileConfig(activeProfile.name, config),
     start: () => startDaemon(),
@@ -56,7 +60,7 @@ async function managerFixture(pid: string, withSession: boolean, pendingDrain: b
     configure: (profile, session, pending) => { activeProfile=profile; managedSession=session; cachedCliBinary='fake-cli'; desiredDaemonRunning=true; currentState='stopped'; pendingManagedScopeRefresh=pending; managedPendingReason=pending?'switching':null; if(pending)managedTransitionRecoveries.set(profile.name+':'+profile.port,{stopRequested:true,intentId:'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'}); }
   };`;
   const compiled = ts.transpileModule(source + setup, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
-  const module = { exports: {} as { fixture: { recover(): Promise<void>; prepareSession(): Promise<void>; writeConfig(config: Record<string, unknown>): Promise<void>; start(): Promise<{ success: boolean }>; stop(): Promise<{ success: boolean }>; probe(): Promise<{ probeResult: string }>; exhaustDeferrals(): void; configure(profile: unknown, session: unknown, pending: boolean): void } } };
+  const module = { exports: {} as { fixture: { refreshManaged(): Promise<{ managed: boolean; accepted: boolean }>; status(): Promise<daemonTypes.DaemonStatus>; recover(): Promise<void>; prepareSession(): Promise<void>; writeConfig(config: Record<string, unknown>): Promise<void>; start(): Promise<{ success: boolean }>; stop(): Promise<{ success: boolean }>; probe(): Promise<{ probeResult: string }>; exhaustDeferrals(): void; configure(profile: unknown, session: unknown, pending: boolean): void } } };
   runInNewContext(compiled, {
     module, exports: module.exports, require: (name: string) => name in modules ? modules[name] : nativeRequire(name),
     process: { env, platform, pid: process.pid, kill: process.kill }, console: { warn: vi.fn(), log: vi.fn(), error: vi.fn() }, URL, AbortController,
@@ -64,7 +68,7 @@ async function managerFixture(pid: string, withSession: boolean, pendingDrain: b
     fetch: async () => new Response(null, { status: 503 }),
   });
   module.exports.fixture.configure(profile, withSession ? session : null, pendingDrain);
-  return { ...module.exports.fixture, configPath: join(directory, "config.json"), prepareSessionCall: prepareSession, spawn, clearPID: () => rm(join(directory, "daemon.pid")), writeControl: (pid: unknown) => writeFile(join(directory, "management-control.json"), JSON.stringify({ version: "1", pid }), { mode: 0o600 }) };
+  return { ...module.exports.fixture, configPath: join(directory, "config.json"), prepareSessionCall: prepareSession, createHandoff: session.createHandoff, spawn, clearPID: () => rm(join(directory, "daemon.pid")), writeControl: (pid: unknown) => writeFile(join(directory, "management-control.json"), JSON.stringify({ version: "1", pid }), { mode: 0o600 }) };
 }
 
 it.each([
@@ -153,4 +157,21 @@ it("does not truncate the profile while the daemon has a reader open", async () 
     expect(await reader.readFile("utf8")).toBe(previous);
     expect(JSON.parse(await readFile(manager.configPath, "utf8")).auth_token).toBe("updated-synthetic-credential");
   } finally { await reader.close(); }
+});
+
+
+it("retains safe binding diagnostics from background handoff preparation until a successful refresh", async () => {
+  const manager = await managerFixture("temporary", true, false);
+  await manager.clearPID();
+  const failure = Object.assign(new diagnostics.DaemonDiagnosticError("challenge_scope_mismatch", "binding", ["workspace"]), { message: "private-fixture-request", body: "private-fixture-body" });
+  manager.createHandoff.mockRejectedValueOnce(failure);
+  expect(await manager.refreshManaged()).toEqual({ managed: true, accepted: false });
+  const status = await manager.status();
+  expect(status.diagnostics?.connection).toEqual({ code: "challenge_scope_mismatch", stage: "binding", fields: ["workspace"], occurredAt: expect.any(Number) });
+  expect(JSON.stringify(status)).not.toContain("private-fixture");
+  expect(await manager.status()).toEqual(status);
+  expect(manager.spawn).not.toHaveBeenCalled();
+  expect(await manager.refreshManaged()).toEqual({ managed: true, accepted: true });
+  expect((await manager.status()).diagnostics?.connection).toBeUndefined();
+  expect(manager.spawn).toHaveBeenCalledOnce();
 });

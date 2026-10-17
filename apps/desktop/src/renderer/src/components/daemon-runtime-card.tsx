@@ -123,11 +123,11 @@ export function DaemonRuntimeActions() {
 
   const handleReauth = useCallback(async () => {
     setActionLoading(true);
-    await reauthenticateDaemon();
+    await reauthenticateDaemon(tSettings);
     // onStatusChange resets actionLoading on the next status push; reset here
     // too in case reauth logged out (unmount) or produced no status change.
     setActionLoading(false);
-  }, []);
+  }, [tSettings]);
 
   const isRunning = status.state === "running";
   // The daemon runs somewhere the app can't drive (e.g. inside WSL2): the

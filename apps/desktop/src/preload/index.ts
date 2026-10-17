@@ -1,3 +1,4 @@
+import type { DaemonReauthResult } from "../shared/daemon-types";
 import type { InstallationMetadataProof } from "../shared/managed-installation";
 import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
@@ -277,11 +278,6 @@ const desktopAPI = {
   openIssueWindow: (request: IssueWindowRequest) =>
     ipcRenderer.invoke("window:open-issue", request),
 };
-
-type DaemonReauthResult =
-  | { ok: true }
-  | { ok: false; reason: "session_invalid" }
-  | { ok: false; reason: "transient"; message: string };
 
 const daemonAPI = {
   endInstallationSession: (): Promise<void> => ipcRenderer.invoke("daemon:end-installation-session"),

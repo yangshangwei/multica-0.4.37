@@ -1390,8 +1390,8 @@
       "auto_stop_description": "Stop the daemon when the desktop app is closed. Disable this to keep the daemon running in the background.",
       "cli_status": "CLI Status",
       "cli_checking": "Checking...",
-      "cli_installed": "multica CLI is installed and available in PATH.",
-      "cli_missing": "multica CLI not found. Install it to enable daemon management.",
+      "cli_installed": "A usable multica CLI is available to this app.",
+      "cli_missing": "No usable multica CLI was found. Check the runtime setup diagnostics below.",
       "installation_guide": "Installation Guide",
       "auth_expired_title": "Daemon sign-in expired",
       "auth_expired_description": "The server rejected the daemon's credentials. Select \"Reconnect this device\" below to restore the connection.",
@@ -1430,7 +1430,63 @@
       },
       "management_pending_busy": "Waiting for current work to finish",
       "management_pending_switch": "Switching the managed daemon session",
-      "management_unassociated": "Existing daemon ownership is unverified"
+      "management_unassociated": "Existing daemon ownership is unverified",
+      "diagnostic": {
+        "cli_title": "Runtime setup",
+        "connection_title": "Device connection",
+        "reconnect_failed": "Couldn't reconnect this device",
+        "stage": "Failed step: {{stage}}",
+        "fields": "Mismatched fields: {{fields}}",
+        "record": "Category: {{code}} · {{time}}",
+        "http_status": "HTTP status: {{status}}",
+        "stages": {
+          "cli_setup": "Runtime setup",
+          "registration": "Device registration",
+          "binding": "Workspace binding",
+          "credentials": "Credential refresh",
+          "restart": "Daemon restart"
+        },
+        "fields_labels": {
+          "request": "request",
+          "deployment": "server deployment",
+          "organization": "organization",
+          "account": "account",
+          "auth_version": "account version",
+          "installation": "installation",
+          "workspace": "workspace",
+          "daemon": "device binding",
+          "binding_epoch": "binding version",
+          "key": "installation key"
+        },
+        "summary": {
+          "challenge_expired": "The device verification has expired. The request may have been delayed or the clocks may differ.",
+          "challenge_time_window": "The device verification expires outside the allowed time window. The device or server clock may be incorrect.",
+          "challenge_scope_mismatch": "The device verification does not match the current account, server or device binding.",
+          "challenge_invalid": "The device verification response is malformed or inconsistent. It could not be safely verified.",
+          "cli_unavailable": "No usable multica CLI was found. The failed setup step is unknown.",
+          "cli_download_failed": "The runtime download could not be completed or saved.",
+          "cli_checksum_failed": "The runtime archive could not be verified against the published checksum.",
+          "cli_extract_failed": "The runtime archive could not be extracted or did not contain the executable.",
+          "cli_install_failed": "Files required for runtime setup could not be written.",
+          "cli_validation_failed": "The runtime executable did not return a valid version when checked.",
+          "request_failed": "The server returned an error for this request.",
+          "operation_failed": "The operation failed, but its specific cause could not be determined."
+        },
+        "steps": {
+          "clock": "Synchronize the device clock. On Windows, open Settings → Time & language → Date & time → Sync now. Use your organization's time service on managed devices.",
+          "fresh_challenge": "Select Reconnect this device again to request fresh device verification.",
+          "server_clock": "If it still fails, ask the server administrator to verify the server time and time synchronization.",
+          "scope": "Check Settings → Server connection and the signed-in account. Wait for any account or server switch to finish before reconnecting.",
+          "network": "Check access to GitHub release downloads and your network or proxy settings.",
+          "checksum": "Retry with the official release. If verification keeps failing, ask the administrator to check the download or proxy cache.",
+          "extract": "On Windows, check that tar.exe is available. Review Windows Security → Protection history for blocked files and check free disk space.",
+          "permissions": "Check that your Windows account can write to Multica's app data and temporary directories. Review Windows Security → Protection history for blocked writes.",
+          "executable": "Check that the installed build matches your Windows architecture. Review Windows Security → Protection history if the executable was blocked.",
+          "retry_setup": "Restart Multica to retry runtime setup after correcting the problem.",
+          "retry": "Check the selected server and network, then try Reconnect this device again.",
+          "support": "If the problem persists, share the category, failed step, time, app version and selected server with support. Do not share tokens or management identity files."
+        }
+      }
     },
     "runtime_config": {
       "title": "Server connection",

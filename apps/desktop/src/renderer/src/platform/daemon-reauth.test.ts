@@ -1,3 +1,5 @@
+import { createI18n } from "@multica/core/i18n/react";
+import { RESOURCES } from "@multica/views/locales";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const { mockGetState, logout } = vi.hoisted(() => ({
@@ -17,6 +19,8 @@ vi.mock("sonner", () => ({
 
 import { reauthenticateDaemon } from "./daemon-reauth";
 
+const t = createI18n("en", RESOURCES).getFixedT("en", "settings");
+
 const daemonAPI = {
   reauthenticate: vi.fn(),
 };
@@ -33,7 +37,7 @@ describe("reauthenticateDaemon", () => {
     localStorage.setItem("multica_token", "jwt-abc");
     daemonAPI.reauthenticate.mockResolvedValue({ ok: true });
 
-    await reauthenticateDaemon();
+    await reauthenticateDaemon(t);
 
     expect(daemonAPI.reauthenticate).toHaveBeenCalledWith("jwt-abc", "user-1");
     expect(logout).not.toHaveBeenCalled();
@@ -47,7 +51,7 @@ describe("reauthenticateDaemon", () => {
       reason: "session_invalid",
     });
 
-    await reauthenticateDaemon();
+    await reauthenticateDaemon(t);
 
     expect(logout).toHaveBeenCalledOnce();
     expect(toastError).not.toHaveBeenCalled();
@@ -63,7 +67,7 @@ describe("reauthenticateDaemon", () => {
       message: "mint PAT failed: 503 Service Unavailable",
     });
 
-    await reauthenticateDaemon();
+    await reauthenticateDaemon(t);
 
     expect(logout).not.toHaveBeenCalled();
     expect(toastError).toHaveBeenCalledOnce();
@@ -73,14 +77,14 @@ describe("reauthenticateDaemon", () => {
     localStorage.setItem("multica_token", "jwt-abc");
     daemonAPI.reauthenticate.mockRejectedValue(new Error("ipc boom"));
 
-    await reauthenticateDaemon();
+    await reauthenticateDaemon(t);
 
     expect(logout).not.toHaveBeenCalled();
     expect(toastError).toHaveBeenCalledOnce();
   });
 
   it("routes to login when there is no session token", async () => {
-    await reauthenticateDaemon();
+    await reauthenticateDaemon(t);
 
     expect(logout).toHaveBeenCalledOnce();
     expect(daemonAPI.reauthenticate).not.toHaveBeenCalled();
@@ -90,9 +94,21 @@ describe("reauthenticateDaemon", () => {
     localStorage.setItem("multica_token", "jwt-abc");
     mockGetState.mockReturnValue({ user: null, logout });
 
-    await reauthenticateDaemon();
+    await reauthenticateDaemon(t);
 
     expect(logout).toHaveBeenCalledOnce();
     expect(daemonAPI.reauthenticate).not.toHaveBeenCalled();
   });
 });
+
+  it.each(["en", "zh-Hans"] as const)("localizes diagnostics in %s without exposing raw IPC messages", async locale => {
+    localStorage.setItem("multica_token", "jwt-abc");
+    const translate = createI18n(locale, RESOURCES).getFixedT(locale, "settings");
+    daemonAPI.reauthenticate.mockResolvedValue({ ok: false, reason: "transient", message: "private-token", diagnostic: { code: "challenge_expired", stage: "registration", occurredAt: 1 } });
+    await reauthenticateDaemon(translate);
+    expect(toastError).toHaveBeenLastCalledWith(locale === "en" ? "Couldn't reconnect this device" : "无法重新连接此设备", expect.objectContaining({ description: locale === "en" ? "The device verification has expired. The request may have been delayed or the clocks may differ." : "设备注册验证已过期，可能是请求延迟或设备与服务器时间不一致。" }));
+    daemonAPI.reauthenticate.mockRejectedValue(new Error("private-token"));
+    await reauthenticateDaemon(translate);
+    expect(JSON.stringify(toastError.mock.calls)).not.toContain("private-token");
+    expect(logout).not.toHaveBeenCalled();
+  });

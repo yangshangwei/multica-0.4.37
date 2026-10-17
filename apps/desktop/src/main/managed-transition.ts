@@ -17,12 +17,23 @@ export async function transitionManagedDaemon(options: {
  session: TransitionSession; port: number; isCurrent(): boolean;
  recovery: ManagedTransitionRecovery; isStopped(): Promise<boolean>;
  waitForStop(): Promise<boolean>; start(handoff: string): Promise<{ success: boolean }>;
+ onHandoffError?(error: unknown): void;
 }): Promise<ManagedTransitionResult> {
  const { session, recovery } = options;
  const pending = (reason: ManagedPendingReason = "switching"): ManagedTransitionResult => ({ accepted: false, reason });
+ const prepareHandoff = async (knownWorkspaceIds?: ReadonlySet<string>): Promise<string> => {
+  try { return await session.createHandoff(knownWorkspaceIds); }
+  catch (error) {
+   if (options.isCurrent()) {
+    try { options.onHandoffError?.(error); }
+    catch { /* Diagnostic reporting must not change the transition outcome. */ }
+   }
+   throw error;
+  }
+ };
  const startCurrent = async (): Promise<ManagedTransitionResult> => {
   if (!options.isCurrent()) return pending();
-  const handoff = await session.createHandoff();
+  const handoff = await prepareHandoff();
   if (!options.isCurrent()) return pending();
   const result = await options.start(handoff);
   if (!options.isCurrent()) return pending();
@@ -41,7 +52,7 @@ export async function transitionManagedDaemon(options: {
   if (!owned) return pending("unassociated");
   const sameScope = session.matchesDaemonScope(owned.scope);
   if (sameScope && !owned.scope.drain_intent_id && !recovery.stopRequested) {
-   const handoff = await session.createHandoff(new Set(owned.scope.workspace_ids));
+   const handoff = await prepareHandoff(new Set(owned.scope.workspace_ids));
    if (!options.isCurrent()) return pending();
    const parsed: unknown = JSON.parse(handoff);
    if (!parsed || typeof parsed !== "object" || !("bindings" in parsed) || !Array.isArray(parsed.bindings)) throw new Error("Invalid prepared management handoff");
@@ -53,7 +64,7 @@ export async function transitionManagedDaemon(options: {
    await session.acknowledgeHandoff?.(handoff); return { accepted: true };
   }
   // Ensure the desired credentials are available before draining the old scope.
-  await session.createHandoff();
+  await prepareHandoff();
   if (!options.isCurrent()) return pending();
   recovery.intentId ??= randomUUID();
   const body = JSON.stringify({ intent_id: recovery.intentId, expected_intent_id: owned.scope.drain_intent_id ?? null });

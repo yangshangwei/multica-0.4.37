@@ -1,0 +1,13 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+> @multica/desktop@0.1.0 typecheck /Volumes/artisan/code/2026/multica-0.4.37/apps/desktop
+> pnpm run typecheck:node && pnpm run typecheck:web
+
+
+> @multica/desktop@0.1.0 typecheck:node /Volumes/artisan/code/2026/multica-0.4.37/apps/desktop
+> tsc --noEmit -p tsconfig.node.json --composite false
+
+
+> @multica/desktop@0.1.0 typecheck:web /Volumes/artisan/code/2026/multica-0.4.37/apps/desktop
+> tsc --noEmit -p tsconfig.web.json --composite false
+

@@ -1,3 +1,4 @@
+import type { DaemonReauthResult } from "../shared/daemon-types";
 import type { InstallationMetadataProof } from "../shared/managed-installation";
 import { ElectronAPI } from "@electron-toolkit/preload";
 import type { RuntimeConfig, RuntimeConfigResult } from "../shared/runtime-config";
@@ -140,11 +141,6 @@ interface DesktopAPI {
     request: IssueWindowRequest,
   ) => Promise<{ ok: true } | { ok: false; reason: "invalid_request" }>;
 }
-
-type DaemonReauthResult =
-  | { ok: true }
-  | { ok: false; reason: "session_invalid" }
-  | { ok: false; reason: "transient"; message: string };
 
 interface DaemonAPI {
   endInstallationSession: () => Promise<void>;

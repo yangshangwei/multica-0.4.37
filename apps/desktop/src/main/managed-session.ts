@@ -2,6 +2,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { join } from "node:path";
 import { ManagedControlConnection, ManagementControlError, UntrustedManagementPeerError } from "./managed-control";
 import { managementAuthVersion, type InstallationMetadataProof } from "../shared/managed-installation";
+import { DaemonDiagnosticError } from "./daemon-diagnostics";
 import {
   loadManagedInstallation, readManagementPrivateFile, type InstallationChallenge,
   type ManagedInstallation, type InstallationProof,
@@ -15,10 +16,11 @@ function object(value: unknown): Record<string, unknown> {
   return value as Record<string, unknown>;
 }
 
-function challenge(value: unknown): InstallationChallenge {
-  const record = object(value);
+function challenge(value: unknown, stage: "registration" | "binding"): InstallationChallenge {
+  if (!value || typeof value !== "object" || Array.isArray(value)) throw new DaemonDiagnosticError("challenge_invalid", stage);
+  const record = value as Record<string, unknown>;
   const keys = ["challenge_id", "nonce", "deployment_id", "expires_at", "signature_payload", "body_payload"] as const;
-  for (const key of keys) if (typeof record[key] !== "string") throw new Error("Invalid installation challenge");
+  for (const key of keys) if (typeof record[key] !== "string") throw new DaemonDiagnosticError("challenge_invalid", stage);
   return record as unknown as InstallationChallenge;
 }
 
@@ -44,7 +46,14 @@ async function requestJSON(baseUrl: string, path: string, token: string, signal:
     body: body === undefined ? undefined : JSON.stringify(body),
   });
   if (!response.ok) throw Object.assign(new Error(`Management request failed (${response.status})`), { status: response.status });
-  return boundedJSON(response);
+  try { return await boundedJSON(response); }
+  catch (error) {
+    if (path === "/api/installations/challenges") {
+      const purpose = body && typeof body === "object" && "purpose" in body ? body.purpose : undefined;
+      throw new DaemonDiagnosticError("challenge_invalid", purpose === "bind" || purpose === "renew" ? "binding" : "registration");
+    }
+    throw error;
+  }
 }
 
 export interface ManagedSessionOptions {
@@ -193,7 +202,7 @@ export class ManagedInstallationSession {
       if (local?.reusable && matchesHint && (!knownWorkspaceIds || knownWorkspaceIds.has(workspace.id))) continue;
       const epoch = this.#bindingEpochHints === null ? local?.epoch ?? null : hint?.epoch ?? null;
       const body = { installation_id: this.installationId, workspace_id: workspace.id, daemon_id: this.managedDaemonId, public_key: this.#identity.publicInfo.publicKey, expected_binding_epoch: epoch };
-      const response = challenge(await requestJSON(options.apiBaseUrl, "/api/installations/challenges", options.userToken, this.#controller.signal, { purpose: "bind", ...body }));
+      const response = challenge(await requestJSON(options.apiBaseUrl, "/api/installations/challenges", options.userToken, this.#controller.signal, { purpose: "bind", ...body }), "binding");
       this.#controller.signal.throwIfAborted();
       const proof = this.#identity.signChallenge(response, { purpose: "bind", deploymentId: this.deploymentId, organizationId: this.#organizationId, userId: this.userId, authVersion: this.authVersion,
         installationId: this.installationId, workspaceId: workspace.id, daemonId: this.managedDaemonId, expectedBindingEpoch: epoch, method: "POST", path: "/api/daemon/installation-bindings", bodyPayload: Buffer.from(JSON.stringify(body)).toString("base64url") });
@@ -290,7 +299,7 @@ export async function prepareManagedInstallationSession(options: ManagedSessionO
     if (object(human).id !== options.userId || object(daemon).id !== options.userId || object(human).requires_account_setup === true || object(human).requires_password_change === true) throw new Error("Desktop and daemon require the same complete password identity");
     const identity = await loadManagedInstallation(options.homeDirectory, config.deployment_id);
     const body = { public_key: identity.publicInfo.publicKey, desktop_version: options.desktopVersion, os: options.os };
-    const response = challenge(await requestJSON(normalized.apiBaseUrl, "/api/installations/challenges", options.userToken, controller.signal, { purpose: "enroll", ...body, expected_binding_epoch: null }));
+    const response = challenge(await requestJSON(normalized.apiBaseUrl, "/api/installations/challenges", options.userToken, controller.signal, { purpose: "enroll", ...body, expected_binding_epoch: null }), "registration");
     const proof = identity.signChallenge(response, { purpose: "enroll", deploymentId: config.deployment_id, userId: options.userId, authVersion, installationId: null, workspaceId: null, daemonId: null, expectedBindingEpoch: null, method: "POST", path: "/api/installations/enroll", bodyPayload: Buffer.from(JSON.stringify(body)).toString("base64url") });
     const payload = object(JSON.parse(Buffer.from(response.signature_payload, "base64url").toString("utf8")));
     const enrolled = object(await requestJSON(normalized.apiBaseUrl, "/api/installations/enroll", options.userToken, controller.signal, proof));

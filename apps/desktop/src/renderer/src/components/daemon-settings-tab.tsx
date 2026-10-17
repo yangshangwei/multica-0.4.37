@@ -13,8 +13,9 @@ import {
   SettingsSection,
   SettingsTab,
 } from "@multica/views/settings";
+import { daemonDiagnosticText } from "../platform/daemon-diagnostics";
 import { reauthenticateDaemon } from "../platform/daemon-reauth";
-import type { DaemonPrefs, DaemonStatus } from "../../../shared/daemon-types";
+import type { DaemonDiagnostic, DaemonPrefs, DaemonStatus } from "../../../shared/daemon-types";
 import {
   DAEMON_STATE_COLORS,
   formatUptime,
@@ -47,6 +48,31 @@ function DiagnosticsRow({
   );
 }
 
+function DiagnosticCard({ kind, diagnostic }: { kind: "cli" | "connection"; diagnostic?: DaemonDiagnostic }) {
+  const { t, i18n } = useT("settings");
+  const text = daemonDiagnosticText(diagnostic, t, kind === "cli" ? "cli_unavailable" : "operation_failed");
+  const title = t($ => $.desktop.daemon.diagnostic[kind === "cli" ? "cli_title" : "connection_title"]);
+  const time = diagnostic?.occurredAt && Number.isFinite(diagnostic.occurredAt) && !Number.isNaN(new Date(diagnostic.occurredAt).getTime())
+    ? new Date(diagnostic.occurredAt).toLocaleString(i18n.language) : null;
+  return (
+    <SettingsCard>
+      <section aria-label={title} className="min-w-0 space-y-2 break-words px-4 py-4 text-body">
+        <h3 className="font-medium">{title}</h3>
+        <p className="text-caption text-muted-foreground">{t($ => $.desktop.daemon.diagnostic.stage, { stage: text.stage })}</p>
+        <p>{text.summary}</p>
+        {text.fields && <p>{t($ => $.desktop.daemon.diagnostic.fields, { fields: text.fields })}</p>}
+        {diagnostic?.httpStatus && Number.isInteger(diagnostic.httpStatus) && diagnostic.httpStatus >= 400 && diagnostic.httpStatus <= 599 && (
+          <p>{t($ => $.desktop.daemon.diagnostic.http_status, { status: diagnostic.httpStatus })}</p>
+        )}
+        <ol className="list-decimal space-y-2 pl-5 text-muted-foreground">
+          {text.steps.map(step => <li key={step}>{step}</li>)}
+        </ol>
+        {time && <p className="text-caption text-muted-foreground">{t($ => $.desktop.daemon.diagnostic.record, { code: text.code, time })}</p>}
+      </section>
+    </SettingsCard>
+  );
+}
+
 export function DaemonSettingsTab() {
   const { t } = useT("settings");
   const [prefs, setPrefs] = useState<DaemonPrefs>({ autoStart: true, autoStop: false });
@@ -73,11 +99,11 @@ export function DaemonSettingsTab() {
   const handleReauth = useCallback(async () => {
     setReauthLoading(true);
     try {
-      await reauthenticateDaemon();
+      await reauthenticateDaemon(t);
     } finally {
       setReauthLoading(false);
     }
-  }, []);
+  }, [t]);
 
   const updatePref = useCallback(
     async (key: keyof DaemonPrefs, value: boolean) => {
@@ -226,6 +252,10 @@ export function DaemonSettingsTab() {
         title={t(($) => $.desktop.daemon.diagnostics_title)}
         description={t(($) => $.desktop.daemon.diagnostics_description)}
       >
+        <div aria-live="polite" className="space-y-4">
+          {(status.diagnostics?.cli || status.state === "cli_not_found") && <DiagnosticCard kind="cli" diagnostic={status.diagnostics?.cli} />}
+          {status.diagnostics?.connection && <DiagnosticCard kind="connection" diagnostic={status.diagnostics.connection} />}
+        </div>
         <SettingsCard>
           <div className="px-4 py-2">
           <DiagnosticsRow
