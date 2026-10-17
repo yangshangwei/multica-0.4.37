@@ -161,7 +161,13 @@ export function PasswordForm({ mode = "login", onSuccess, footer, logo, title: l
               aria-invalid={showConfirmationError || undefined}
               aria-describedby={showConfirmationError ? "password-confirm-error" : undefined}
             />
-            {showConfirmationError && <p id="password-confirm-error" role="alert" className="text-body text-destructive">{t(($) => $.password.passwords_mismatch)}</p>}
+            {/* Reserve the wrapped message's space so blur validation cannot move Submit between pointer down and up. */}
+            <p
+              id="password-confirm-error"
+              role={showConfirmationError ? "alert" : undefined}
+              aria-hidden={!showConfirmationError}
+              className={cn("text-body text-destructive", !showConfirmationError && "invisible")}
+            >{t(($) => $.password.passwords_mismatch)}</p>
           </div>}
           {error && <p id="password-error" role="alert" className="text-body text-destructive">{error}</p>}
           <Button type="submit" className="min-h-11 w-full whitespace-normal" disabled={loading || retryAfter > 0}>{retryAfter > 0 ? t(($) => $.password.retry_after, { seconds: retryAfter }) : loading ? t(($) => $.password.submitting) : register ? t(($) => $.password.register) : title}</Button>
