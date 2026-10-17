@@ -38,7 +38,7 @@ func TestCollaborationHandoffRoutesReturnInformationAndSubmitAcceptance(t *testi
 		fx.InsertNoID(t, "issue_participant", testutil.Cols{"issue_id": issue, "user_id": actor}, "issue_id=$1 AND user_id=$2", issue, actor)
 		fx.InsertNoID(t, "collaboration_account_fence", testutil.Cols{"user_id": actor}, "user_id=$1", actor)
 	}
-	fx.Insert(t, "collaboration_command", testutil.Cols{"session_id": session, "seq": 1, "author_user_id": developer, "participant_epoch": 1, "author_auth_epoch": 1, "lifecycle_epoch": 1, "content": "waiting work"})
+	seedCollaborationRouteCommand(t, fx, session, developer, "waiting work")
 	fx.Cleanup(t, `DELETE FROM collaboration_operation WHERE scope_kind='issue' AND scope_id=$1`, issue)
 	for _, table := range []string{"issue_handoff", "collaboration_event", "collaboration_notification"} {
 		fx.Cleanup(t, "DELETE FROM "+table+" WHERE issue_id=$1", issue)
@@ -134,7 +134,9 @@ func TestCollaborationHandoffRoutesReturnInformationAndSubmitAcceptance(t *testi
 		accepted["session"].(map[string]any)["queue_state"] != "paused" || caps(accepted)["complete"] != true {
 		t.Fatalf("acceptance did not hand the open issue to the creator: %v", accepted)
 	}
-	if developerView := detail(developerToken); caps(developerView)["control_ai"] != true || caps(developerView)["transfer"] != false {
+	// Human participation survives the handoff. The v2 HTTP projection keeps
+	// execution controls unavailable until their runtime protocol is delivered.
+	if developerView := detail(developerToken); caps(developerView)["comment"] != true || caps(developerView)["control_ai"] != false || caps(developerView)["transfer"] != false {
 		t.Fatalf("former handler collaboration rights: %v", developerView["capabilities"])
 	}
 	if fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE session_id=$1 AND state='waiting'`, session) != 1 ||

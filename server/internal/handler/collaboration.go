@@ -52,6 +52,7 @@ type CollaborationIssueResponse struct {
 		QueueState     string `json:"queue_state"`
 		ControlVersion string `json:"control_version"`
 	} `json:"session"`
+	Execution                 service.CollaborationExecutionView       `json:"execution"`
 	CurrentInformationRequest *CollaborationInformationRequestResponse `json:"current_information_request"`
 	Capabilities              collaboration.Capabilities               `json:"capabilities"`
 }
@@ -148,8 +149,16 @@ func (h *Handler) collaborationIssueResponseInSnapshot(ctx context.Context, acce
 	out.Session.ID, out.Session.QueueState = uuidToString(access.SessionID), access.QueueState
 	out.Session.ControlVersion = strconv.FormatInt(access.ControlVersion, 10)
 	out.Capabilities = access.Capabilities
+	// Internal role authority is unchanged. This read-only protocol does not
+	// expose execution/control endpoints yet; Stop must not depend on a grant
+	// when its dedicated endpoint becomes available.
+	out.Capabilities.ControlAI, out.Capabilities.SubmitCommand = false, false
 	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
 	out.CollaborationIssueFields, err = svc.IssueFields(ctx, access)
+	if err != nil {
+		return out, err
+	}
+	out.Execution, err = svc.ExecutionView(ctx, access)
 	if err != nil {
 		return out, err
 	}

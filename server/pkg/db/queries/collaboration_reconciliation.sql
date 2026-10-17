@@ -55,6 +55,13 @@ SELECT affected.issue_id, i.workspace_id FROM (
     WHERE r.settled_at IS NULL
       AND c.author_user_id = sqlc.arg(user_id)::uuid
       AND c.author_auth_epoch < sqlc.arg(account_epoch)::bigint
+    UNION
+    SELECT s.issue_id FROM collaboration_execution_group AS g
+    JOIN collaboration_session AS s ON s.id = g.session_id
+    JOIN collaboration_command AS c ON c.id = g.command_id AND c.session_id = g.session_id
+    WHERE g.settled_at IS NULL
+      AND c.author_user_id = sqlc.arg(user_id)::uuid
+      AND c.author_auth_epoch < sqlc.arg(account_epoch)::bigint
 ) AS affected
 LEFT JOIN issue AS i ON i.id = affected.issue_id
 WHERE sqlc.narg(last_issue_id)::uuid IS NULL OR affected.issue_id > sqlc.narg(last_issue_id)::uuid

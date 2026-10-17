@@ -37,11 +37,11 @@ func TestCollaborationEditRecordsCurrentActorAndImmutableExecution(t *testing.T)
 				f.fx.Exec(t, `DELETE FROM member WHERE workspace_id=$1 AND user_id=$2`, f.workspace, actor)
 			}
 			f.fx.Exec(t, `UPDATE issue SET start_date='2026-10-01' WHERE id=$1`, f.issue.Issue.ID)
+			grant := workflowGrant(t, f, f.handler)
+			f.targetID = grantTarget(t, f, grant)
 			first := f.submit(t, f.creator, "original command snapshot")
 			waiting := f.submit(t, f.handler, "immutable waiting snapshot")
 			run := f.run(t, first, 1)
-			grant := workflowGrant(t, f, f.handler)
-			f.fx.Exec(t, `UPDATE collaboration_session SET active_grant_id=$2 WHERE id=$1`, f.issue.SessionID, grant)
 			requestID := f.fx.Insert(t, "issue_handoff", testutil.Cols{"issue_id": f.issue.Issue.ID, "actor_user_id": f.creator,
 				"from_user_id": f.creator, "to_user_id": f.handler, "purpose": "information", "requester_user_id": f.creator, "previous_status": "todo"})
 			f.fx.Exec(t, `UPDATE issue_collaboration SET active_information_request_id=$2 WHERE issue_id=$1`, f.issue.Issue.ID, requestID)
@@ -93,7 +93,7 @@ func TestCollaborationEditRecordsCurrentActorAndImmutableExecution(t *testing.T)
 			if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='in_flight' AND content='original command snapshot' AND author_user_id=$2 AND seq=1`, first.CommandID, f.creator) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='waiting' AND content='immutable waiting snapshot' AND author_user_id=$2 AND seq=2`, waiting.CommandID, f.handler) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND forced_disposition IS NULL AND settled_at IS NULL AND authorized_attempt_seq=1 AND fence=$2 AND launch_nonce=$3`, run.ID, run.Fence, run.LaunchNonce) != 1 ||
-				f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND queue_state='active' AND control_version=1 AND active_grant_id=$2 AND resource_epoch=1 AND active_run_id=$3`, f.issue.SessionID, grant, run.ID) != 1 ||
+				f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state='active' AND control_version=1 AND config_version=1 AND active_group_id=$2`, f.targetID, run.GroupID) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_grant WHERE id=$1 AND revoked_at IS NULL AND epoch=1`, grant) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM issue_collaboration WHERE issue_id=$1 AND authority_epoch=1 AND lifecycle_epoch=1 AND active_information_request_id=$2`, f.issue.Issue.ID, requestID) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM issue_handoff WHERE id=$1 AND resolution='open'`, requestID) != 1 ||

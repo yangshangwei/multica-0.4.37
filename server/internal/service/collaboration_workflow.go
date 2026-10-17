@@ -46,6 +46,7 @@ type CollaborationWorkflowReceipt struct {
 	ControlVersion        int64                       `json:"control_version,string"`
 	RunID                 pgtype.UUID                 `json:"run_id"`
 	RunSettled            bool                        `json:"run_settled"`
+	Execution             *CollaborationQueueReceipt  `json:"execution,omitempty"`
 	StatusOptions         *CollaborationStatusOptions `json:"status_options,omitempty"`
 }
 
@@ -241,24 +242,6 @@ func (t *collaborationWorkflowTx) depart(ctx context.Context, target pgtype.UUID
 	if err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}
-	// The source/session locks serialize command/run writers. Do not use an
-	// engine task status or the active pointer alone as termination evidence.
-	run, err := t.unsettledRun(ctx)
-	if err != nil {
-		return CollaborationWorkflowReceipt{}, err
-	}
-	activeOwner, runOwner, author := false, false, false
-	for _, grant := range grants {
-		activeOwner = activeOwner || grant.ID == t.session.ActiveGrantID
-		runOwner = runOwner || (run.ID.Valid && grant.ID == run.GrantID)
-	}
-	if run.ID.Valid {
-		command, err := t.q.LockCollaborationCommand(ctx, db.LockCollaborationCommandParams{SessionID: t.session.ID, CommandID: run.CommandID})
-		if err != nil {
-			return CollaborationWorkflowReceipt{}, err
-		}
-		author = command.AuthorUserID == target
-	}
 	if target == t.access.Issue.AssigneeID {
 		if err = t.changeHandler(ctx, t.access.Issue.CreatorID, "removal_return", ""); err != nil {
 			return CollaborationWorkflowReceipt{}, err
@@ -273,29 +256,9 @@ func (t *collaborationWorkflowTx) depart(ctx context.Context, target pgtype.UUID
 	if err = t.q.CancelCollaborationAuthorWaitingCommands(ctx, db.CancelCollaborationAuthorWaitingCommandsParams{SessionID: t.session.ID, AuthorUserID: target, Reason: reason}); err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}
-	if activeOwner {
-		t.session, err = t.q.InvalidateCollaborationActiveGrant(ctx, t.session.ID)
-		if err != nil {
-			return CollaborationWorkflowReceipt{}, err
-		}
-	}
-	var stopped *CollaborationQueueReceipt
-	if activeOwner || runOwner || author {
-		t.session, err = t.q.PauseCollaborationSession(ctx, db.PauseCollaborationSessionParams{SessionID: t.session.ID, PauseReason: reason})
-		if err != nil {
-			return CollaborationWorkflowReceipt{}, err
-		}
-		if run.ID.Valid && (runOwner || author) {
-			disposition := "stopped"
-			if author {
-				disposition = "cancelled"
-			}
-			r, err := t.stopRun(ctx, run, disposition, reason)
-			if err != nil {
-				return CollaborationWorkflowReceipt{}, err
-			}
-			stopped = &r
-		}
+	stopped, err := t.stopInvalidatedWork(ctx, target, 0, grants, reason)
+	if err != nil {
+		return CollaborationWorkflowReceipt{}, err
 	}
 	return t.finish(ctx, reason, target, stopped)
 }
@@ -313,7 +276,7 @@ func (t *collaborationWorkflowTx) finishWith(ctx context.Context, code string, t
 	}
 	receipt := t.result(code, http.StatusOK)
 	if stopped != nil {
-		receipt.RunID, receipt.RunSettled = stopped.RunID, stopped.RunSettled
+		receipt.RunID, receipt.RunSettled, receipt.Execution = stopped.RunID, stopped.RunSettled, stopped
 	}
 	seq, err := t.q.AdvanceCollaborationEventSequence(ctx, t.access.Issue.ID)
 	if err != nil {
@@ -501,6 +464,10 @@ func (s *CollaborationService) workflowInTx(ctx context.Context, tx pgx.Tx, acto
 		return CollaborationWorkflowReceipt{}, err
 	}
 	t.session, err = t.q.LockCollaborationSession(ctx, p.IssueID)
+	if err != nil {
+		return CollaborationWorkflowReceipt{}, err
+	}
+	t.targets, err = t.q.LockCollaborationTargets(ctx, t.session.ID)
 	if err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}

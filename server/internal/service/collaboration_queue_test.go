@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"reflect"
 	"sort"
 	"strings"
 	"sync"
@@ -15,7 +16,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/auth"
+	"github.com/multica-ai/multica/server/internal/collaboration"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -23,7 +26,8 @@ import (
 
 type collaborationQueueFixture struct {
 	*collaborationFixture
-	issue CollaborationIssueAccess
+	issue    CollaborationIssueAccess
+	targetID pgtype.UUID
 }
 
 func newCollaborationQueueFixture(t *testing.T) *collaborationQueueFixture {
@@ -35,7 +39,8 @@ func newCollaborationQueueFixture(t *testing.T) *collaborationQueueFixture {
 	}
 	f.fx.Cleanup(t, `DELETE FROM collaboration_command WHERE session_id=$1`, issue.SessionID)
 	f.fx.Cleanup(t, `DELETE FROM collaboration_operation WHERE scope_kind='issue' AND scope_id=$1`, issue.Issue.ID)
-	return &collaborationQueueFixture{collaborationFixture: f, issue: issue}
+	target, _ := seedCollaborationTarget(t, f.fx, issue.Issue.ID, issue.SessionID, util.MustParseUUID(f.creator), 1)
+	return &collaborationQueueFixture{collaborationFixture: f, issue: issue, targetID: target.ID}
 }
 
 func (f *collaborationQueueFixture) request() CollaborationQueueRequest {
@@ -44,7 +49,7 @@ func (f *collaborationQueueFixture) request() CollaborationQueueRequest {
 
 func (f *collaborationQueueFixture) submit(t *testing.T, actor, content string) CollaborationQueueReceipt {
 	t.Helper()
-	receipt, err := f.svc.SubmitCommand(collaborationContext(actor), CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), Content: content})
+	receipt, err := f.svc.SubmitCommand(collaborationContext(actor), CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), TargetID: f.targetID, InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: 1, ExpectedConfigVersion: 1, Content: content})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -54,24 +59,45 @@ func (f *collaborationQueueFixture) submit(t *testing.T, actor, content string) 
 // Runs are fixtures only: this slice has no admission, promotion or launch API.
 func (f *collaborationQueueFixture) run(t *testing.T, command CollaborationQueueReceipt, attempts int64) db.CollaborationRun {
 	t.Helper()
-	f.fx.Exec(t, `UPDATE collaboration_command SET state='in_flight' WHERE id=$1`, command.CommandID)
-	id := f.fx.Insert(t, "collaboration_run", testutil.Cols{
-		"session_id": f.issue.SessionID, "command_id": command.CommandID, "grant_id": uuid.NewString(),
-		"grant_epoch": 1, "resource_epoch": 1, "execution_workspace_id": uuid.NewString(),
-		"runtime_id": uuid.NewString(), "installation_id": uuid.NewString(), "binding_id": uuid.NewString(),
-		"binding_epoch": 1, "authorized_attempt_seq": attempts,
-	})
-	f.fx.Exec(t, `UPDATE collaboration_session SET active_run_id=$2,queue_state='active' WHERE id=$1`, f.issue.SessionID, id)
-	run, err := f.svc.Queries.GetCollaborationRun(f.ctx, db.GetCollaborationRunParams{SessionID: f.issue.SessionID, RunID: util.MustParseUUID(id)})
-	if err != nil {
-		t.Fatal(err)
-	}
-	return run
+	return seedCollaborationGroupRun(t, f.fx, f.issue.SessionID, command, attempts)
 }
 
 func (f *collaborationQueueFixture) stopParams(run db.CollaborationRun, version int64) CollaborationStopQueueParams {
-	return CollaborationStopQueueParams{CollaborationQueueRequest: f.request(), ExpectedControlVersion: version,
-		ObservedRunID: run.ID, ObservedFence: run.Fence, ObservedClaimGeneration: run.ClaimGeneration}
+	return CollaborationStopQueueParams{CollaborationQueueRequest: f.request(), Scope: collaboration.ControlTarget,
+		Targets: []CollaborationTargetControl{{TargetID: run.TargetID, ExpectedTargetEpoch: run.TargetEpoch.Int64,
+			ExpectedConfigVersion: run.ConfigVersion.Int64, ExpectedControlVersion: version,
+			ObservedGroupID: run.GroupID, ObservedGroupGeneration: f.groupGeneration(run.TargetID)}}}
+}
+
+func (f *collaborationQueueFixture) groupGeneration(target pgtype.UUID) int64 {
+	var generation int64
+	if err := f.pool.QueryRow(f.ctx, `SELECT group_generation FROM collaboration_target WHERE id=$1`, target).Scan(&generation); err != nil {
+		panic(err)
+	}
+	return generation
+}
+
+func (f *collaborationQueueFixture) issueControl(t *testing.T) CollaborationStopQueueParams {
+	t.Helper()
+	session, err := f.svc.Queries.GetCollaborationSession(f.ctx, f.issue.Issue.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	targets, err := f.svc.Queries.ListCollaborationTargets(f.ctx, f.issue.SessionID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	p := CollaborationStopQueueParams{CollaborationQueueRequest: f.request(), Scope: collaboration.ControlIssue,
+		ExpectedControlVersion: session.ControlVersion, ExpectedTargetSetVersion: session.TargetSetVersion}
+	for _, target := range targets {
+		p.Targets = append(p.Targets, targetControl(target))
+	}
+	return p
+}
+
+func targetControl(target db.CollaborationTarget) CollaborationTargetControl {
+	return CollaborationTargetControl{TargetID: target.ID, ExpectedTargetEpoch: target.TargetEpoch, ExpectedConfigVersion: target.ConfigVersion,
+		ExpectedControlVersion: target.ControlVersion, ObservedGroupID: target.ActiveGroupID, ObservedGroupGeneration: target.GroupGeneration}
 }
 
 func TestCollaborationQueueConcurrentSubmissionKeepsImmutableFIFO(t *testing.T) {
@@ -94,7 +120,7 @@ func TestCollaborationQueueConcurrentSubmissionKeepsImmutableFIFO(t *testing.T) 
 			if i%2 == 1 {
 				actor = f.handler
 			}
-			r, err := f.svc.SubmitCommand(collaborationContext(actor), CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), Content: fmt.Sprintf("command %d", i)})
+			r, err := f.svc.SubmitCommand(collaborationContext(actor), CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), TargetID: f.targetID, InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: 1, ExpectedConfigVersion: 1, Content: fmt.Sprintf("command %d", i)})
 			results <- result{r, err}
 		}()
 	}
@@ -117,13 +143,13 @@ func TestCollaborationQueueConcurrentSubmissionKeepsImmutableFIFO(t *testing.T) 
 			t.Fatalf("FIFO sequence gap/duplicate: %v", seqs)
 		}
 	}
-	p := CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), Content: "immutable original"}
+	p := CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), TargetID: f.targetID, InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: 1, ExpectedConfigVersion: 1, Content: "immutable original"}
 	first, err := f.svc.SubmitCommand(f.ctx, p)
 	if err != nil {
 		t.Fatal(err)
 	}
 	replay, err := f.svc.SubmitCommand(f.ctx, p)
-	if err != nil || replay != first {
+	if err != nil || !reflect.DeepEqual(replay, first) {
 		t.Fatalf("request replay changed its receipt: %+v %+v %v", first, replay, err)
 	}
 	p.Content = "changed payload"
@@ -162,14 +188,14 @@ func TestCollaborationQueueCancelUsesCurrentRolesAndPreservesOrder(t *testing.T)
 				actor = author
 				f.fx.Exec(t, `UPDATE issue_participant SET revoked_at=now() WHERE issue_id=$1 AND user_id=$2`, f.issue.Issue.ID, author)
 			}
-			p := CollaborationCancelCommandParams{CollaborationQueueRequest: f.request(), CommandID: first.CommandID, ExpectedCollaborationRevision: 1}
+			p := CollaborationCancelCommandParams{CollaborationQueueRequest: f.request(), TargetID: f.targetID, CommandID: first.CommandID, ExpectedCollaborationRevision: 1}
 			r, err := f.svc.CancelWaitingCommand(collaborationContext(actor), p)
 			if allowed && err != nil || !allowed && err == nil {
 				t.Fatalf("role %s cancellation: %+v %v", role, r, err)
 			}
 			if allowed {
 				replayed, err := f.svc.CancelWaitingCommand(collaborationContext(actor), p)
-				if err != nil || replayed != r {
+				if err != nil || !reflect.DeepEqual(replayed, r) {
 					t.Fatalf("cancel replay: %+v %v", replayed, err)
 				}
 				p.RequestID = uuid.NewString()
@@ -229,7 +255,7 @@ func TestCollaborationQueueStopPreservesBarrierAfterAnyPermit(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			if receipt.RunSettled != scenario.settled || receipt.QueueState != "paused" {
+			if receipt.GroupSettled != scenario.settled || receipt.QueueState != "paused" {
 				t.Fatalf("stop claimed wrong end state: %+v", receipt)
 			}
 			current, err := f.svc.Queries.GetCollaborationRun(f.ctx, db.GetCollaborationRunParams{SessionID: f.issue.SessionID, RunID: run.ID})
@@ -242,14 +268,14 @@ func TestCollaborationQueueStopPreservesBarrierAfterAnyPermit(t *testing.T) {
 			if !scenario.settled && current.ProofState != "unknown" {
 				t.Fatal("stop fabricated daemon proof")
 			}
-			if (f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND active_run_id=$2`, f.issue.SessionID, run.ID) == 1) != !scenario.settled {
+			if (f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND active_group_id=$2`, f.targetID, run.GroupID) == 1) != !scenario.settled {
 				t.Fatal("stop cleared a run that still needs termination proof")
 			}
 			if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE session_id=$1 AND seq=2 AND state='waiting'`, f.issue.SessionID) != 1 {
 				t.Fatal("stop discarded waiting input")
 			}
 			replay, err := f.svc.StopQueue(f.ctx, p)
-			if err != nil || replay != receipt {
+			if err != nil || !reflect.DeepEqual(replay, receipt) {
 				t.Fatalf("stop replay: %+v %v", replay, err)
 			}
 		})
@@ -260,7 +286,7 @@ func TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent(t *testin
 	f := newCollaborationQueueFixture(t)
 	command := f.submit(t, f.creator, "first")
 	run := f.run(t, command, 0)
-	p := CollaborationResumeQueueParams{CollaborationQueueRequest: f.request(), ExpectedControlVersion: 1, ExpectedExecutionEpoch: 1}
+	p := CollaborationResumeQueueParams{CollaborationStopQueueParams: f.issueControl(t), ExpectedExecutionEpoch: 2}
 	denied, err := f.svc.ResumeQueue(f.ctx, p)
 	if !collaborationErrorCode(err, "stop_unconfirmed") {
 		t.Fatalf("unsettled resume: %v", err)
@@ -269,22 +295,21 @@ func TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent(t *testin
 		t.Fatal(err)
 	}
 	replay, err := f.svc.ResumeQueue(f.ctx, p)
-	if !collaborationErrorCode(err, "stop_unconfirmed") || replay != denied {
+	if !collaborationErrorCode(err, "stop_unconfirmed") || !reflect.DeepEqual(replay, denied) {
 		t.Fatalf("failed resume key revived after legal settlement: %+v %v", replay, err)
 	}
-	p.RequestID = uuid.NewString()
-	p.ExpectedControlVersion = 2
+	p.CollaborationStopQueueParams = f.issueControl(t)
 	f.fx.Exec(t, `UPDATE collaboration_execution_gate SET enabled=true,epoch=epoch+1 WHERE id=1`)
 	f.fx.Cleanup(t, `UPDATE collaboration_execution_gate SET enabled=false,epoch=epoch-1 WHERE id=1`)
 	if _, err = f.svc.ResumeQueue(f.ctx, p); !collaborationErrorCode(err, "stale_admission") {
 		t.Fatalf("old admission epoch revived after enable: %v", err)
 	}
 	p.RequestID = uuid.NewString()
-	p.ExpectedExecutionEpoch = 2
+	p.ExpectedExecutionEpoch = 3
 	if _, err = f.svc.ResumeQueue(f.ctx, p); !collaborationErrorCode(err, "collaboration_execution_unavailable") {
 		t.Fatalf("incomplete admission allowed resume: %v", err)
 	}
-	if f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND queue_state='paused' AND active_run_id IS NULL`, f.issue.SessionID) != 1 {
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state='paused' AND active_group_id IS NULL`, f.targetID) != 1 {
 		t.Fatal("resume refusal wrote active state")
 	}
 }
@@ -298,14 +323,14 @@ func TestCollaborationQueueStaleStopCannotReachNextRun(t *testing.T) {
 	}
 	next := f.run(t, f.submit(t, f.handler, "second"), 1)
 	old.RequestID = uuid.NewString()
-	old.ExpectedControlVersion = 2
+	old.Targets[0].ExpectedControlVersion = 2
 	if _, err := f.svc.StopQueue(f.ctx, old); !collaborationErrorCode(err, "stale_execution") {
 		t.Fatalf("old stop reached next run: %v", err)
 	}
 	if f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND forced_disposition IS NULL AND settled_at IS NULL`, next.ID) != 1 {
 		t.Fatal("next run was changed by old fence")
 	}
-	if f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND queue_state='active' AND control_version=2`, f.issue.SessionID) != 1 {
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state='active' AND control_version=2`, f.targetID) != 1 {
 		t.Fatal("stale stop changed current controls")
 	}
 }
@@ -331,7 +356,7 @@ func TestCollaborationQueueRejectsStaleIdentityAndMachine(t *testing.T) {
 			case "source_member_only":
 				f.fx.Exec(t, `UPDATE issue_participant SET revoked_at=now() WHERE issue_id=$1 AND user_id=$2`, f.issue.Issue.ID, f.creator)
 			}
-			if _, err := f.svc.SubmitCommand(ctx, CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), Content: "must not enqueue"}); err == nil {
+			if _, err := f.svc.SubmitCommand(ctx, CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), TargetID: f.targetID, InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: 1, ExpectedConfigVersion: 1, Content: "must not enqueue"}); err == nil {
 				t.Fatal("invalid authority accepted")
 			}
 			if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE session_id=$1`, f.issue.SessionID) != 0 {
@@ -359,7 +384,7 @@ func TestCollaborationQueueCancelRechecksStateAfterSessionLock(t *testing.T) {
 	}
 	done := make(chan error, 1)
 	go func() {
-		_, err := f.svc.CancelWaitingCommand(f.ctx, CollaborationCancelCommandParams{CollaborationQueueRequest: f.request(), CommandID: command.CommandID, ExpectedCollaborationRevision: 1})
+		_, err := f.svc.CancelWaitingCommand(f.ctx, CollaborationCancelCommandParams{CollaborationQueueRequest: f.request(), TargetID: f.targetID, CommandID: command.CommandID, ExpectedCollaborationRevision: 1})
 		done <- err
 	}()
 	deadline := time.Now().Add(5 * time.Second)
@@ -431,7 +456,7 @@ func TestCollaborationQueueEventRollbackAndUnknownCommitRecovery(t *testing.T) {
 	f := newCollaborationQueueFixture(t)
 	fault := &queueFaultStarter{TxStarter: f.pool, eventFailure: true}
 	f.svc.TxStarter = fault
-	p := CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), Content: "one immutable command"}
+	p := CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), TargetID: f.targetID, InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: 1, ExpectedConfigVersion: 1, Content: "one immutable command"}
 	if _, err := f.svc.SubmitCommand(f.ctx, p); err == nil {
 		t.Fatal("event failure reported success")
 	}
@@ -463,11 +488,11 @@ func TestCollaborationQueueResumeTreatsEitherBarrierAsUnconfirmed(t *testing.T) 
 			f := newCollaborationQueueFixture(t)
 			run := f.run(t, f.submit(t, f.creator, "first"), 1)
 			if missing == "pointer" {
-				f.fx.Exec(t, `UPDATE collaboration_session SET active_run_id=NULL WHERE id=$1`, f.issue.SessionID)
+				f.fx.Exec(t, `UPDATE collaboration_target SET active_group_id=NULL WHERE id=$1`, f.targetID)
 			} else {
 				f.fx.Exec(t, `DELETE FROM collaboration_run WHERE id=$1`, run.ID)
 			}
-			p := CollaborationResumeQueueParams{CollaborationQueueRequest: f.request(), ExpectedControlVersion: 1, ExpectedExecutionEpoch: 1}
+			p := CollaborationResumeQueueParams{CollaborationStopQueueParams: f.issueControl(t), ExpectedExecutionEpoch: 2}
 			denied, err := f.svc.ResumeQueue(f.ctx, p)
 			if !collaborationErrorCode(err, "stop_unconfirmed") {
 				t.Fatalf("inconsistent %s barrier must remain a stop refusal: %v", missing, err)
@@ -475,9 +500,10 @@ func TestCollaborationQueueResumeTreatsEitherBarrierAsUnconfirmed(t *testing.T) 
 			// Repair the fixture, not a production cleanup path: the original
 			// refused intent must still replay its durable refusal afterwards.
 			f.fx.Exec(t, `DELETE FROM collaboration_run WHERE id=$1`, run.ID)
-			f.fx.Exec(t, `UPDATE collaboration_session SET active_run_id=NULL WHERE id=$1`, f.issue.SessionID)
+			f.fx.Exec(t, `DELETE FROM collaboration_execution_group WHERE id=$1`, run.GroupID)
+			f.fx.Exec(t, `UPDATE collaboration_target SET active_group_id=NULL WHERE id=$1`, f.targetID)
 			replayed, err := f.svc.ResumeQueue(f.ctx, p)
-			if !collaborationErrorCode(err, "stop_unconfirmed") || replayed != denied {
+			if !collaborationErrorCode(err, "stop_unconfirmed") || !reflect.DeepEqual(replayed, denied) {
 				t.Fatalf("barrier repair revived the old resume: %+v %v", replayed, err)
 			}
 		})
@@ -488,8 +514,8 @@ func TestCollaborationQueueConcurrentSameKeyAndLargeSequence(t *testing.T) {
 	f := newCollaborationQueueFixture(t)
 	const sequence int64 = 9007199254740993
 	const controlVersion int64 = 9007199254740995
-	f.fx.Exec(t, `UPDATE collaboration_session SET next_command_seq=$2,control_version=$3 WHERE id=$1`, f.issue.SessionID, sequence, controlVersion)
-	p := CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), Content: "same input"}
+	f.fx.Exec(t, `UPDATE collaboration_target SET next_command_seq=$2,control_version=$3 WHERE id=$1`, f.targetID, sequence, controlVersion)
+	p := CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), TargetID: f.targetID, InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: 1, ExpectedConfigVersion: 1, Content: "same input"}
 	start := make(chan struct{})
 	type result struct {
 		receipt CollaborationQueueReceipt
@@ -501,7 +527,7 @@ func TestCollaborationQueueConcurrentSameKeyAndLargeSequence(t *testing.T) {
 	}
 	close(start)
 	first, second := <-results, <-results
-	if first.err != nil || second.err != nil || first.receipt != second.receipt || first.receipt.CommandSequence != sequence || first.receipt.ControlVersion != controlVersion {
+	if first.err != nil || second.err != nil || !reflect.DeepEqual(first.receipt, second.receipt) || first.receipt.CommandSequence != sequence || first.receipt.ControlVersion != controlVersion {
 		t.Fatalf("concurrent key or bigint identity changed: %+v %+v", first, second)
 	}
 	encoded, err := json.Marshal(first.receipt)
@@ -520,7 +546,7 @@ func TestCollaborationQueueReceiptOmitsAbsentCommandSequence(t *testing.T) {
 		t.Fatalf("missing command must not advertise a zero sequence: %s %v", encoded, err)
 	}
 	var decoded CollaborationQueueReceipt
-	if err := json.Unmarshal(encoded, &decoded); err != nil || decoded != receipt {
+	if err := json.Unmarshal(encoded, &decoded); err != nil || !reflect.DeepEqual(decoded, receipt) {
 		t.Fatalf("receipt round trip changed the refusal: %+v %v", decoded, err)
 	}
 }

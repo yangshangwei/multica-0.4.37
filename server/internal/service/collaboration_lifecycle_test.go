@@ -13,6 +13,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/auth"
+	"github.com/multica-ai/multica/server/internal/collaboration"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -71,14 +72,15 @@ func TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue(t *testing.T
 			f.fx.Insert(t, "collaboration_termination", testutil.Cols{"issue_id": f.issue.Issue.ID, "run_id": run.ID, "fence": run.Fence, "launch_nonce": run.LaunchNonce,
 				"deployment_id": uuid.NewString(), "installation_id": run.InstallationID, "identity_kind": "enrolled", "public_key": []byte("fixture supervisor"), "token_hash": uuid.NewString()})
 			if tc.priorStop {
-				f.fx.Exec(t, `UPDATE collaboration_run SET forced_disposition='stopped', disposition_reason='participant_stop', progress_state='ending' WHERE id=$1`, run.ID)
+				f.fx.Exec(t, `UPDATE collaboration_run SET forced_disposition='stopped', disposition_reason='participant_stop', progress_state='ending',claim_generation=2 WHERE id=$1`, run.ID)
 			}
 			// Source membership is independent of the creator's participation.
 			f.fx.Exec(t, `DELETE FROM member WHERE workspace_id=$1 AND user_id=$2`, f.workspace, f.creator)
 			f.fx.Exec(t, `UPDATE collaboration_execution_gate SET enabled=false, creation_enabled=false WHERE id=1`)
 			p := lifecycleParams(t, f, tc.action, tc.target, 1, 1)
 			r, err := f.svc.ChangeLifecycle(f.ctx, p)
-			if err != nil || r.QueueState != "closed" || r.ControlVersion != 2 || r.CollaborationRevision != 2 || r.RunID != run.ID || r.RunSettled != (tc.attempts == 0) {
+			stopped, found := groupControlResult(r.Execution, run.GroupID)
+			if err != nil || !found || r.QueueState != "closed" || r.ControlVersion != 2 || r.CollaborationRevision != 2 || stopped.GroupSettled != (tc.attempts == 0) {
 				t.Fatalf("close: %+v %v", r, err)
 			}
 			if f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND status=$2 AND assignee_id=$3 AND creator_id=$4`, f.issue.Issue.ID, tc.target, f.handler, f.creator) != 1 ||
@@ -109,7 +111,7 @@ func TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue(t *testing.T
 			}
 			request := f.request()
 			request.ExpectedLifecycleEpoch = 2
-			if _, err = f.svc.SubmitCommand(f.ctx, CollaborationSubmitCommandParams{CollaborationQueueRequest: request, Content: "must not execute"}); err == nil {
+			if _, err = f.svc.SubmitCommand(f.ctx, CollaborationSubmitCommandParams{CollaborationQueueRequest: request, TargetID: f.targetID, InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: 1, ExpectedConfigVersion: 1, Content: "must not execute"}); err == nil {
 				t.Fatal("closed issue accepted command")
 			}
 			p = lifecycleParams(t, f, "reopen", "todo", 2, 2)
@@ -128,12 +130,12 @@ func TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue(t *testing.T
 			}
 			request = f.request()
 			request.ExpectedLifecycleEpoch = 3
-			if _, err = f.svc.SubmitCommand(f.ctx, CollaborationSubmitCommandParams{CollaborationQueueRequest: request, Content: "new intent after reopen"}); err != nil {
+			if _, err = f.svc.SubmitCommand(f.ctx, CollaborationSubmitCommandParams{CollaborationQueueRequest: request, TargetID: f.targetID, InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: 1, ExpectedConfigVersion: 1, Content: "new intent after reopen"}); err != nil {
 				t.Fatal(err)
 			}
 			if tc.attempts > 0 {
 				request.RequestID = uuid.NewString()
-				_, err = f.svc.ResumeQueue(f.ctx, CollaborationResumeQueueParams{CollaborationQueueRequest: request, ExpectedControlVersion: 3, ExpectedExecutionEpoch: 1})
+				_, err = f.svc.ResumeQueue(f.ctx, CollaborationResumeQueueParams{CollaborationStopQueueParams: CollaborationStopQueueParams{CollaborationQueueRequest: request, Scope: collaboration.ControlIssue, ExpectedControlVersion: 3, ExpectedTargetSetVersion: 2, Targets: f.issueControl(t).Targets}, ExpectedExecutionEpoch: 2})
 				if !collaborationErrorCode(err, "stop_unconfirmed") {
 					t.Fatalf("reopen cleared execution barrier: %v", err)
 				}
@@ -210,7 +212,7 @@ func TestCollaborationStatusChangesOnlyStatusAndRecordsIteration(t *testing.T) {
 	}
 	if f.fx.Count(t, `SELECT count(*) FROM issue_collaboration WHERE issue_id=$1 AND revision=3 AND authority_epoch=1 AND lifecycle_epoch=1 AND active_information_request_id=$2`, f.issue.Issue.ID, req) != 1 ||
 		f.fx.Count(t, `SELECT count(*) FROM issue_handoff WHERE id=$1 AND resolution='open'`, req) != 1 ||
-		f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND active_run_id=$2 AND next_command_seq=3 AND control_version=1`, f.issue.SessionID, run.ID) != 1 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND active_group_id=$2 AND next_command_seq=3 AND control_version=1`, f.targetID, run.GroupID) != 1 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='waiting' AND content='waiting input'`, waiting.CommandID) != 1 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_notification WHERE issue_id=$1`, f.issue.Issue.ID) != beforeNotifications {
 		t.Fatal("manual status changed authority, information request, queue or notifications")
@@ -325,7 +327,7 @@ func TestCollaborationLifecycleRequiredWritesRollbackAndLostCommitRecovers(t *te
 			}
 			if f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND status='todo'`, f.issue.Issue.ID) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM issue_collaboration WHERE issue_id=$1 AND revision=1 AND lifecycle_epoch=1`, f.issue.Issue.ID) != 1 ||
-				f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND queue_state='active' AND control_version=1 AND active_run_id=$2`, f.issue.SessionID, run.ID) != 1 ||
+				f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state='active' AND control_version=1 AND active_group_id=$2`, f.targetID, run.GroupID) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE session_id=$1 AND state='waiting'`, f.issue.SessionID) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_operation WHERE scope_id=$1 AND request_id=$2`, f.issue.Issue.ID, p.RequestID) != 0 {
 				t.Fatal("required failure partially committed lifecycle")
@@ -359,7 +361,7 @@ func TestCollaborationLifecycleConcurrentCloseAndSubmission(t *testing.T) {
 	wg.Go(func() { <-start; _, err := f.svc.ChangeLifecycle(f.ctx, p); done <- err })
 	wg.Go(func() {
 		<-start
-		_, err := f.svc.SubmitCommand(collaborationContext(f.handler), CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), Content: "concurrent input"})
+		_, err := f.svc.SubmitCommand(collaborationContext(f.handler), CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), TargetID: f.targetID, InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: 1, ExpectedConfigVersion: 1, Content: "concurrent input"})
 		done <- err
 	})
 	close(start)

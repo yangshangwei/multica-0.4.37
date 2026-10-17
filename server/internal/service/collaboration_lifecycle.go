@@ -353,16 +353,18 @@ func (t *collaborationWorkflowTx) changeLifecycle(ctx context.Context, action, t
 			return CollaborationWorkflowReceipt{}, err
 		}
 		t.session = session
+		for _, item := range t.targets {
+			if _, err = t.pauseTarget(ctx, item, "issue_reopened"); err != nil {
+				return CollaborationWorkflowReceipt{}, err
+			}
+		}
 	} else {
 		code = "completed"
 		if action == "cancel" {
 			code = "cancelled"
 		}
 		reason := "issue_" + code
-		run, err := t.unsettledRun(ctx)
-		if err != nil {
-			return CollaborationWorkflowReceipt{}, err
-		}
+		var err error
 		t.session, err = t.q.CloseCollaborationSession(ctx, db.CloseCollaborationSessionParams{SessionID: t.session.ID, Reason: reason})
 		if err != nil {
 			return CollaborationWorkflowReceipt{}, err
@@ -370,13 +372,15 @@ func (t *collaborationWorkflowTx) changeLifecycle(ctx context.Context, action, t
 		if err = t.q.CancelCollaborationWaitingCommands(ctx, db.CancelCollaborationWaitingCommandsParams{SessionID: t.session.ID, Reason: reason}); err != nil {
 			return CollaborationWorkflowReceipt{}, err
 		}
-		if run.ID.Valid {
-			receipt, err := t.stopRun(ctx, run, "cancelled", reason)
-			if err != nil {
-				return CollaborationWorkflowReceipt{}, err
-			}
-			stopped = &receipt
+		selected := make(map[pgtype.UUID]string, len(t.targets))
+		for _, item := range t.targets {
+			selected[item.ID] = "cancelled"
 		}
+		receipt, err := t.stopTargets(ctx, selected, true, "cancelled", reason, true)
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		stopped = &receipt
 	}
 	if err := t.recordStatusChange(ctx, target); err != nil {
 		return CollaborationWorkflowReceipt{}, err
@@ -418,7 +422,7 @@ func (t *collaborationWorkflowTx) recordStatusChange(ctx context.Context, target
 func (t *collaborationWorkflowTx) finishStatusChange(ctx context.Context, code, previous string, stopped *CollaborationQueueReceipt) (CollaborationWorkflowReceipt, error) {
 	receipt := t.result(code, http.StatusOK)
 	if stopped != nil {
-		receipt.RunID, receipt.RunSettled = stopped.RunID, stopped.RunSettled
+		receipt.RunID, receipt.RunSettled, receipt.Execution = stopped.RunID, stopped.RunSettled, stopped
 	}
 	seq, err := t.q.AdvanceCollaborationEventSequence(ctx, t.access.Issue.ID)
 	if err != nil {

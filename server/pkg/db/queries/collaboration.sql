@@ -145,7 +145,7 @@ SELECT (EXISTS (SELECT 1 FROM viewer))::boolean AS viewer_active,
 FROM total LEFT JOIN page ON true ORDER BY page.updated_at DESC,page.id DESC;
 
 -- Queue mutations borrow the same transaction as current object authorization.
--- Locking the source issue and permanent session serializes command order,
+-- Locking the source issue, permanent session and target serializes input order,
 -- cancellation and stopping; none of these queries grants execution admission.
 
 -- name: LockCollaborationIssue :one
@@ -160,13 +160,13 @@ FOR UPDATE;
 SELECT * FROM collaboration_account_fence WHERE user_id = sqlc.arg(user_id)::uuid;
 
 -- name: AllocateCollaborationCommandSequence :one
-UPDATE collaboration_session SET next_command_seq = next_command_seq + 1
-WHERE id = sqlc.arg(session_id)::uuid
+UPDATE collaboration_target SET next_command_seq = next_command_seq + 1
+WHERE id = sqlc.arg(target_id)::uuid AND session_id = sqlc.arg(session_id)::uuid
 RETURNING (next_command_seq - 1)::bigint AS command_seq;
 
 -- name: CreateCollaborationCommand :one
-INSERT INTO collaboration_command (session_id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content)
-VALUES (sqlc.arg(session_id)::uuid, sqlc.arg(seq)::bigint, sqlc.arg(author_user_id)::uuid,
+INSERT INTO collaboration_command (session_id, target_id, input_event_id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content)
+VALUES (sqlc.arg(session_id)::uuid, sqlc.arg(target_id)::uuid, sqlc.arg(input_event_id)::uuid, sqlc.arg(seq)::bigint, sqlc.arg(author_user_id)::uuid,
         sqlc.arg(participant_epoch)::bigint, sqlc.arg(author_auth_epoch)::bigint,
         sqlc.arg(lifecycle_epoch)::bigint, sqlc.arg(content)::text)
 RETURNING *;
@@ -188,11 +188,6 @@ SET result_code = sqlc.arg(result_code)::text, result = sqlc.arg(result)::jsonb,
 WHERE id = sqlc.arg(id)::uuid AND completed_at IS NULL
 RETURNING *;
 
--- name: LockUnsettledCollaborationRun :one
-SELECT * FROM collaboration_run
-WHERE session_id = sqlc.arg(session_id)::uuid AND settled_at IS NULL
-FOR UPDATE;
-
 -- name: GetCollaborationRun :one
 SELECT * FROM collaboration_run
 WHERE session_id = sqlc.arg(session_id)::uuid AND id = sqlc.arg(run_id)::uuid;
@@ -208,7 +203,7 @@ RETURNING *;
 UPDATE collaboration_run
 SET disposition_reason = CASE WHEN forced_disposition IS NULL THEN sqlc.arg(disposition_reason)::text ELSE disposition_reason END,
     forced_disposition = COALESCE(forced_disposition, 'stopped'),
-    claim_generation = claim_generation + 1, progress_state = 'ending'
+    claim_generation = claim_generation + CASE WHEN progress_state = 'ending' AND forced_disposition IS NOT NULL THEN 0 ELSE 1 END, progress_state = 'ending'
 WHERE id = sqlc.arg(run_id)::uuid AND settled_at IS NULL
 RETURNING *;
 
@@ -222,6 +217,7 @@ UPDATE collaboration_run
 SET sealed_attempt_seq = 0, proof_state = 'never_launched_proven', progress_state = 'settled', settled_at = now()
 WHERE id = sqlc.arg(run_id)::uuid AND authorized_attempt_seq = 0
   AND started_at IS NULL AND settled_at IS NULL AND proof_state = 'unknown'
+  AND (business_outcome IS NULL OR business_outcome = 'failure')
 RETURNING *;
 
 -- name: FinishCollaborationCommand :one

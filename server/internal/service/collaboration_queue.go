@@ -34,40 +34,38 @@ type CollaborationQueueRequest struct {
 
 type CollaborationSubmitCommandParams struct {
 	CollaborationQueueRequest
-	Content string
+	TargetID              pgtype.UUID
+	InputEventID          pgtype.UUID
+	ExpectedTargetEpoch   int64
+	ExpectedConfigVersion int64
+	Content               string
 }
 
 type CollaborationCancelCommandParams struct {
 	CollaborationQueueRequest
+	TargetID                      pgtype.UUID
 	CommandID                     pgtype.UUID
 	ExpectedCollaborationRevision int64
 }
 
-type CollaborationStopQueueParams struct {
-	CollaborationQueueRequest
-	ExpectedControlVersion  int64
-	ObservedRunID           pgtype.UUID
-	ObservedFence           int64
-	ObservedClaimGeneration int64
-}
-
-type CollaborationResumeQueueParams struct {
-	CollaborationQueueRequest
-	ExpectedControlVersion int64
-	ExpectedExecutionEpoch int64
-}
-
-// CollaborationQueueReceipt is a content-free durable result, not a refreshed
-// queue snapshot. In particular a rejected Resume always replays its rejection.
+// Queue receipts describe the original operation, never refreshed authority.
+// RunID/RunSettled are used only for unresolved pre-v2 execution history.
 type CollaborationQueueReceipt struct {
-	Status          int         `json:"status"`
-	Code            string      `json:"code"`
-	CommandID       pgtype.UUID `json:"command_id"`
-	CommandSequence int64       `json:"command_sequence,string,omitempty"`
-	QueueState      string      `json:"queue_state"`
-	ControlVersion  int64       `json:"control_version,string"`
-	RunID           pgtype.UUID `json:"run_id"`
-	RunSettled      bool        `json:"run_settled"`
+	Status           int                                `json:"status"`
+	Code             string                             `json:"code"`
+	ProtocolVersion  int                                `json:"protocol_version"`
+	Scope            collaboration.ControlScope         `json:"scope"`
+	TargetID         pgtype.UUID                        `json:"target_id"`
+	CommandID        pgtype.UUID                        `json:"command_id"`
+	CommandSequence  int64                              `json:"command_sequence,string,omitempty"`
+	QueueState       string                             `json:"queue_state"`
+	ControlVersion   int64                              `json:"control_version,string"`
+	TargetSetVersion int64                              `json:"target_set_version,string,omitempty"`
+	GroupID          pgtype.UUID                        `json:"group_id"`
+	GroupSettled     bool                               `json:"group_settled"`
+	Targets          []CollaborationTargetControlResult `json:"targets,omitempty"`
+	RunID            pgtype.UUID                        `json:"run_id"`
+	RunSettled       bool                               `json:"run_settled"`
 }
 
 type collaborationQueueTx struct {
@@ -78,15 +76,19 @@ type collaborationQueueTx struct {
 	participant db.IssueParticipant
 	account     db.CollaborationAccountFence
 	gate        db.CollaborationExecutionGate
+	targets     []db.CollaborationTarget
 }
 
 func (t *collaborationQueueTx) receipt(code string, status int) CollaborationQueueReceipt {
-	return CollaborationQueueReceipt{Code: code, Status: status, QueueState: t.session.QueueState, ControlVersion: t.session.ControlVersion}
+	return CollaborationQueueReceipt{Code: code, Status: status, ProtocolVersion: collaboration.ExecutionProtocolVersion, Scope: collaboration.ControlIssue, QueueState: t.session.QueueState, ControlVersion: t.session.ControlVersion, TargetSetVersion: t.session.TargetSetVersion}
 }
 
-// SubmitCommand saves an immutable human input even during maintenance or with
-// no runtime bound. Only a future admitted promoter may turn it into execution.
+// SubmitCommand saves an immutable input for one explicitly selected target.
+// It does not promote, wake a daemon, or clear either level of pause.
 func (s *CollaborationService) SubmitCommand(ctx context.Context, p CollaborationSubmitCommandParams) (CollaborationQueueReceipt, error) {
+	if !p.TargetID.Valid || !p.InputEventID.Valid || p.ExpectedTargetEpoch < 1 || p.ExpectedConfigVersion < 1 {
+		return CollaborationQueueReceipt{}, collaborationError(http.StatusBadRequest, "invalid_command_target")
+	}
 	if strings.TrimSpace(p.Content) == "" {
 		return CollaborationQueueReceipt{}, collaborationError(http.StatusBadRequest, "empty_command")
 	}
@@ -94,26 +96,57 @@ func (s *CollaborationService) SubmitCommand(ctx context.Context, p Collaboratio
 		if !t.access.Capabilities.SubmitCommand || (t.access.Issue.AdmissionStatus != "not_required" && t.access.Issue.AdmissionStatus != "accepted") {
 			return t.receipt("command_unavailable", http.StatusConflict), nil
 		}
-		seq, err := t.q.AllocateCollaborationCommandSequence(ctx, t.session.ID)
+		target, ok := t.target(p.TargetID)
+		if !ok {
+			return t.receipt("target_not_found", http.StatusNotFound), nil
+		}
+		// The input event identity deduplicates a target even when delivery uses
+		// another transport request key. Never assign a different snapshot.
+		prior, err := t.q.GetCollaborationCommandInput(ctx, db.GetCollaborationCommandInputParams{TargetID: target.ID, InputEventID: p.InputEventID})
+		if err == nil {
+			if prior.Content != p.Content || prior.AuthorUserID != t.actor || prior.ParticipantEpoch != t.participant.Epoch ||
+				prior.AuthorAuthEpoch != t.account.Epoch || prior.LifecycleEpoch != t.access.LifecycleEpoch {
+				return t.targetReceipt("input_event_conflict", http.StatusConflict, target), nil
+			}
+			r := t.targetReceipt("command_queued", http.StatusCreated, target)
+			r.CommandID, r.CommandSequence = prior.ID, prior.Seq
+			return r, nil
+		}
+		if !errors.Is(err, pgx.ErrNoRows) {
+			return CollaborationQueueReceipt{}, err
+		}
+		if target.TargetEpoch != p.ExpectedTargetEpoch || target.ConfigVersion != p.ExpectedConfigVersion {
+			return t.targetReceipt("stale_target", http.StatusConflict, target), nil
+		}
+		if target.RevokedAt.Valid {
+			return t.targetReceipt("grant_required", http.StatusConflict, target), nil
+		}
+		if code, err := t.authorizeTargetInput(ctx, target); err != nil || code != "" {
+			if err != nil {
+				return CollaborationQueueReceipt{}, err
+			}
+			return t.targetReceipt(code, http.StatusConflict, target), nil
+		}
+		seq, err := t.q.AllocateCollaborationCommandSequence(ctx, db.AllocateCollaborationCommandSequenceParams{SessionID: t.session.ID, TargetID: target.ID})
 		if err != nil {
 			return CollaborationQueueReceipt{}, err
 		}
 		command, err := t.q.CreateCollaborationCommand(ctx, db.CreateCollaborationCommandParams{
-			SessionID: t.session.ID, Seq: seq, AuthorUserID: t.actor,
+			SessionID: t.session.ID, TargetID: target.ID, InputEventID: p.InputEventID, Seq: seq, AuthorUserID: t.actor,
 			ParticipantEpoch: t.participant.Epoch, AuthorAuthEpoch: t.account.Epoch,
 			LifecycleEpoch: t.access.LifecycleEpoch, Content: p.Content,
 		})
 		if err != nil {
 			return CollaborationQueueReceipt{}, err
 		}
-		receipt := t.receipt("command_queued", http.StatusCreated)
-		receipt.CommandID, receipt.CommandSequence = command.ID, command.Seq
-		return receipt, t.event(ctx, "command_queued", receipt)
+		r := t.targetReceipt("command_queued", http.StatusCreated, target)
+		r.CommandID, r.CommandSequence = command.ID, command.Seq
+		return r, t.event(ctx, "command_queued", r)
 	})
 }
 
 func (s *CollaborationService) CancelWaitingCommand(ctx context.Context, p CollaborationCancelCommandParams) (CollaborationQueueReceipt, error) {
-	if !p.CommandID.Valid || p.ExpectedCollaborationRevision < 1 {
+	if !p.TargetID.Valid || !p.CommandID.Valid || p.ExpectedCollaborationRevision < 1 {
 		return CollaborationQueueReceipt{}, collaborationError(http.StatusBadRequest, "invalid_command_cancellation")
 	}
 	return s.mutateCollaborationQueue(ctx, p.CollaborationQueueRequest, "cancel_command", p, func(t *collaborationQueueTx) (CollaborationQueueReceipt, error) {
@@ -123,6 +156,10 @@ func (s *CollaborationService) CancelWaitingCommand(ctx context.Context, p Colla
 		}
 		if err != nil {
 			return CollaborationQueueReceipt{}, err
+		}
+		target, ok := t.target(p.TargetID)
+		if !ok || command.TargetID != p.TargetID || command.LegacyUnresolved {
+			return t.receipt("target_not_found", http.StatusNotFound), nil
 		}
 		creator := t.access.Issue.CreatorType == "member" && t.access.Issue.CreatorID == t.actor
 		handler := t.access.Issue.AssigneeType.String == "member" && t.access.Issue.AssigneeID == t.actor
@@ -139,151 +176,10 @@ func (s *CollaborationService) CancelWaitingCommand(ctx context.Context, p Colla
 		if err != nil {
 			return CollaborationQueueReceipt{}, err
 		}
-		receipt := t.receipt("command_cancelled", http.StatusOK)
+		receipt := t.targetReceipt("command_cancelled", http.StatusOK, target)
 		receipt.CommandID, receipt.CommandSequence = command.ID, command.Seq
 		return receipt, t.event(ctx, "command_cancelled", receipt)
 	})
-}
-
-// StopQueue records control intent. Only the server's never-issued-permit
-// fact can settle a run here. Neither a business outcome nor a task terminal
-// state, timeout, missing PID or daemon claim of exit is accepted as proof.
-func (s *CollaborationService) StopQueue(ctx context.Context, p CollaborationStopQueueParams) (CollaborationQueueReceipt, error) {
-	if p.ExpectedControlVersion < 1 || (p.ObservedRunID.Valid && (p.ObservedFence < 1 || p.ObservedClaimGeneration < 1)) ||
-		(!p.ObservedRunID.Valid && (p.ObservedFence != 0 || p.ObservedClaimGeneration != 0)) {
-		return CollaborationQueueReceipt{}, collaborationError(http.StatusBadRequest, "invalid_stop")
-	}
-	return s.mutateCollaborationQueue(ctx, p.CollaborationQueueRequest, "stop_queue", p, func(t *collaborationQueueTx) (CollaborationQueueReceipt, error) {
-		run, err := t.unsettledRun(ctx)
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		if run.ID.Valid && (p.ObservedRunID != run.ID || p.ObservedFence != run.Fence || p.ObservedClaimGeneration != run.ClaimGeneration) {
-			return t.receipt("stale_execution", http.StatusConflict), nil
-		}
-		if !run.ID.Valid && p.ObservedRunID.Valid {
-			previous, err := t.q.GetCollaborationRun(ctx, db.GetCollaborationRunParams{SessionID: t.session.ID, RunID: p.ObservedRunID})
-			if errors.Is(err, pgx.ErrNoRows) || (err == nil && (!previous.SettledAt.Valid || previous.Fence != p.ObservedFence)) {
-				return t.receipt("stale_execution", http.StatusConflict), nil
-			}
-			if err != nil {
-				return CollaborationQueueReceipt{}, err
-			}
-		}
-		if t.session.ControlVersion != p.ExpectedControlVersion {
-			return t.receipt("stale_control_version", http.StatusConflict), nil
-		}
-		t.session, err = t.q.PauseCollaborationSession(ctx, db.PauseCollaborationSessionParams{SessionID: t.session.ID, PauseReason: "participant_stop"})
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		receipt := t.receipt("already_ended", http.StatusOK)
-		if run.ID.Valid {
-			receipt, err = t.stopRun(ctx, run, "stopped", "participant_stop")
-			if err != nil {
-				return CollaborationQueueReceipt{}, err
-			}
-		}
-		return receipt, t.event(ctx, "queue_stop_requested", receipt)
-	})
-}
-
-// stopRun borrows the source/session/run locks. The original pre-stop facts
-// are the only server evidence accepted for settlement; a forced disposition
-// never supplies proof. Later controls retain the first forced-disposition root.
-func (t *collaborationQueueTx) stopRun(ctx context.Context, run db.CollaborationRun, disposition, reason string) (CollaborationQueueReceipt, error) {
-	neverLaunched := false
-	switch run.ProgressState {
-	case "prepared", "dispatched", "preparing":
-		neverLaunched = run.AuthorizedAttemptSeq == 0 && !run.StartedAt.Valid && run.ProofState == "unknown" &&
-			(!run.BusinessOutcome.Valid || run.BusinessOutcome.String == "failure")
-	}
-	// Cancellation applies only to work proven never to have launched. A
-	// departing author with any potentially live execution requests a stop.
-	// The SQL writers still preserve the first recorded termination root.
-	if disposition == "cancelled" && !neverLaunched {
-		disposition = "stopped"
-	}
-	var err error
-	switch disposition {
-	case "stopped":
-		run, err = t.q.RequestCollaborationRunStop(ctx, db.RequestCollaborationRunStopParams{RunID: run.ID, DispositionReason: reason})
-	case "cancelled":
-		run, err = t.q.RequestCollaborationRunCancellation(ctx, db.RequestCollaborationRunCancellationParams{RunID: run.ID, Reason: reason})
-	default:
-		return CollaborationQueueReceipt{}, errors.New("invalid collaboration run disposition")
-	}
-	if err != nil {
-		return CollaborationQueueReceipt{}, err
-	}
-	if err = t.q.RequestCollaborationTerminationStop(ctx, run.ID); err != nil {
-		return CollaborationQueueReceipt{}, err
-	}
-	receipt := t.receipt("stop_requested", http.StatusOK)
-	receipt.RunID = run.ID
-	if neverLaunched {
-		run, err = t.q.SettleNeverLaunchedCollaborationRun(ctx, run.ID)
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		command, err := t.q.FinishCollaborationCommand(ctx, db.FinishCollaborationCommandParams{SessionID: t.session.ID, CommandID: run.CommandID,
-			State: run.ForcedDisposition.String, Reason: run.DispositionReason.String})
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		if _, err = t.q.ClearCollaborationActiveRun(ctx, db.ClearCollaborationActiveRunParams{SessionID: t.session.ID, RunID: run.ID}); err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		receipt.Code, receipt.RunSettled = "stopped_before_launch", true
-		receipt.CommandID, receipt.CommandSequence = command.ID, command.Seq
-	}
-	return receipt, nil
-}
-
-// ResumeQueue currently implements durable refusal only. It deliberately has
-// no active-state writer until full resource/installation/provider admission
-// exists. A valid future request must still be a fresh human intent.
-func (s *CollaborationService) ResumeQueue(ctx context.Context, p CollaborationResumeQueueParams) (CollaborationQueueReceipt, error) {
-	if p.ExpectedControlVersion < 1 || p.ExpectedExecutionEpoch < 1 {
-		return CollaborationQueueReceipt{}, collaborationError(http.StatusBadRequest, "invalid_resume")
-	}
-	return s.mutateCollaborationQueue(ctx, p.CollaborationQueueRequest, "resume_queue", p, func(t *collaborationQueueTx) (CollaborationQueueReceipt, error) {
-		run, err := t.q.LockUnsettledCollaborationRun(ctx, t.session.ID)
-		if err != nil && !errors.Is(err, pgx.ErrNoRows) {
-			return CollaborationQueueReceipt{}, err
-		}
-		// Either barrier is enough to refuse. Persist the refusal even when
-		// they disagree, so a later repair cannot revive this request key.
-		if run.ID.Valid || t.session.ActiveRunID.Valid {
-			return t.receipt("stop_unconfirmed", http.StatusConflict), nil
-		}
-		if !t.access.Capabilities.SubmitCommand {
-			return t.receipt("command_unavailable", http.StatusConflict), nil
-		}
-		if p.ExpectedControlVersion != t.session.ControlVersion {
-			return t.receipt("stale_control_version", http.StatusConflict), nil
-		}
-		if p.ExpectedExecutionEpoch != t.gate.Epoch {
-			return t.receipt("stale_admission", http.StatusConflict), nil
-		}
-		return t.receipt("collaboration_execution_unavailable", http.StatusServiceUnavailable), nil
-	})
-}
-
-func (t *collaborationQueueTx) unsettledRun(ctx context.Context) (db.CollaborationRun, error) {
-	run, err := t.q.LockUnsettledCollaborationRun(ctx, t.session.ID)
-	if errors.Is(err, pgx.ErrNoRows) && !t.session.ActiveRunID.Valid {
-		return db.CollaborationRun{}, nil
-	}
-	if err != nil {
-		return db.CollaborationRun{}, err
-	}
-	// Never rely on the convenience pointer alone to decide that a session is
-	// idle. A disagreement with the durable unsettled-run row is an error.
-	if run.ID != t.session.ActiveRunID {
-		return db.CollaborationRun{}, errors.New("collaboration active run does not match unsettled run")
-	}
-	return run, nil
 }
 
 func (t *collaborationQueueTx) event(ctx context.Context, kind string, receipt CollaborationQueueReceipt) error {
@@ -367,7 +263,12 @@ func (s *CollaborationService) collaborationQueueMutationInTx(ctx context.Contex
 	if err != nil {
 		return CollaborationQueueReceipt{}, err
 	}
-	if _, err = t.q.LockCollaborationUsers(ctx, []pgtype.UUID{actor}); err != nil {
+	idsParam := db.GetCollaborationWorkflowUserIDsParams{IssueID: p.IssueID, ActorID: actor}
+	ids, err := t.q.GetCollaborationWorkflowUserIDs(ctx, idsParam)
+	if err != nil {
+		return CollaborationQueueReceipt{}, err
+	}
+	if _, err = t.q.LockCollaborationUsers(ctx, ids); err != nil {
 		return CollaborationQueueReceipt{}, err
 	}
 	if kind == "resume_queue" {
@@ -392,6 +293,17 @@ func (s *CollaborationService) collaborationQueueMutationInTx(ctx context.Contex
 		return CollaborationQueueReceipt{}, err
 	}
 	t.session, err = t.q.LockCollaborationSession(ctx, p.IssueID)
+	if err != nil {
+		return CollaborationQueueReceipt{}, err
+	}
+	currentIDs, err := t.q.GetCollaborationWorkflowUserIDs(ctx, idsParam)
+	if err != nil {
+		return CollaborationQueueReceipt{}, err
+	}
+	if !sameCollaborationUserIDs(ids, currentIDs) {
+		return CollaborationQueueReceipt{}, &pgconn.PgError{Code: "40001", Message: "collaboration account lock set changed"}
+	}
+	t.targets, err = t.q.LockCollaborationTargets(ctx, t.session.ID)
 	if err != nil {
 		return CollaborationQueueReceipt{}, err
 	}
@@ -453,4 +365,16 @@ func (s *CollaborationService) collaborationQueueMutationInTx(ctx context.Contex
 	}
 	_, err = t.q.CompleteCollaborationOperation(ctx, db.CompleteCollaborationOperationParams{ID: op.ID, ResultCode: receipt.Code, Result: encoded, ResolvedIssueID: p.IssueID})
 	return receipt, err
+}
+
+func sameCollaborationUserIDs(a, b []pgtype.UUID) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
 }

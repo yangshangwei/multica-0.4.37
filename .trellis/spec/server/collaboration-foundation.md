@@ -8,6 +8,12 @@ must remain unavailable until the task's P1–P8 boundaries and acceptance pass.
 The runtime supervisor, full FIFO, private-content paths, and Web/Desktop UI
 are not proven by the foundation tests.
 
+### Execution foundation revision: 2026-10-17
+
+M01–M03 are confirmed in the [requirement/design inventory](../../tasks/10-10-cross-workspace-collaboration/mention-redesign-2026-10-17.md): different targets may run concurrently within resource limits; target/squad and whole-issue controls coexist; mention candidates are only fully issue-authorized targets, organized by creator/handler and consented by actual resource owners. Squad scope includes descendants; target resume cannot bypass issue pause.
+
+Migrations 620–642 now add typed targets, per-target input identity, execution groups, scoped controls and legacy quarantine; migration 650 closes ordinary execution bypasses. The current signatures and invariants are in [collaboration-targets.md](./collaboration-targets.md). The single-session/grant/run execution sections below document the pre-v2 baseline and its dated evidence; they no longer define current queue or run cardinality. Human authority, creation, editing and account-fence contracts continue to apply. Public creation/execution, runtime permits/proof, positive Resume and complete Web/Desktop delivery remain unavailable.
+
 ## 2. Signatures
 
 - `auth.WithAuthenticatedPrincipal(ctx, AuthenticatedPrincipal)` is called by

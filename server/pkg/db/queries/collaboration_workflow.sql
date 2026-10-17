@@ -85,7 +85,7 @@ WHERE session_id = sqlc.arg(session_id)::uuid AND author_user_id = sqlc.arg(auth
 UPDATE collaboration_run SET
     disposition_reason = CASE WHEN forced_disposition IS NULL THEN sqlc.arg(reason)::text ELSE disposition_reason END,
     forced_disposition = COALESCE(forced_disposition, 'cancelled'),
-    claim_generation = claim_generation + 1, progress_state = 'ending'
+    claim_generation = claim_generation + CASE WHEN progress_state = 'ending' AND forced_disposition IS NOT NULL THEN 0 ELSE 1 END, progress_state = 'ending'
 WHERE id = sqlc.arg(run_id)::uuid AND settled_at IS NULL RETURNING *;
 
 -- name: ListCollaborationNotificationRecipients :many

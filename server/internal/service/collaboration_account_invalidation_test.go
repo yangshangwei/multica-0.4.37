@@ -30,7 +30,7 @@ func collaborationAccountFence(t *testing.T, f *platformAdminFixture, user pgtyp
 // reads can escape this fixture's private schema through its public fallback.
 func collaborationAccountIssue(t *testing.T, f *platformAdminFixture, user pgtype.UUID) (pgtype.UUID, *CollaborationService) {
 	t.Helper()
-	for _, table := range []string{"workspace", "member", "issue", "issue_status", "issue_collaboration", "collaboration_session", "issue_participant", "collaboration_operation", "collaboration_event", "collaboration_command"} {
+	for _, table := range []string{"workspace", "member", "issue", "issue_status", "issue_collaboration", "collaboration_session", "issue_participant", "collaboration_operation", "collaboration_event", "collaboration_command", "collaboration_target", "collaboration_execution_group", "collaboration_delegation", "collaboration_grant", "collaboration_run", "collaboration_termination", "collaboration_runtime_enrollment", "agent", "agent_invocation_target", "squad", "squad_member", "installation_daemon_binding", "managed_installation"} {
 		f.fx.Exec(t, "CREATE TABLE "+pgx.Identifier{table}.Sanitize()+" (LIKE "+pgx.Identifier{"public", table}.Sanitize()+" INCLUDING ALL)")
 	}
 	f.fx.WorkspaceID = f.fx.Workspace(t, "Private collaboration", "account-"+uuid.NewString())
@@ -54,9 +54,14 @@ func TestCollaborationAccountInvalidationDisableRestoreRejectsOldIntent(t *testi
 	collaborationAccountFence(t, f, actor)
 	collaborationAccountFence(t, f, target)
 	issue, queue := collaborationAccountIssue(t, f, target)
+	session, err := queue.Queries.GetCollaborationSession(t.Context(), issue)
+	if err != nil {
+		t.Fatal(err)
+	}
+	executionTarget, _ := seedCollaborationTarget(t, f.fx, issue, session.ID, target, 1)
 	p := CollaborationSubmitCommandParams{CollaborationQueueRequest: CollaborationQueueRequest{
 		IssueID: issue, RequestID: uuid.NewString(), ExpectedAccountEpoch: 1, ExpectedParticipantEpoch: 1, ExpectedLifecycleEpoch: 1,
-	}, Content: "Original immutable command"}
+	}, TargetID: executionTarget.ID, InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: 1, ExpectedConfigVersion: 1, Content: "Original immutable command"}
 	command, err := queue.SubmitCommand(collaborationPasswordContext(target, 1), p)
 	if err != nil {
 		t.Fatal(err)
@@ -103,7 +108,10 @@ func TestCollaborationAccountInvalidationDisableRestoreRejectsOldIntent(t *testi
 	if f.fx.Count(t, `SELECT count(*) FROM collaboration_command c JOIN collaboration_account_fence f ON f.user_id=c.author_user_id WHERE c.id=$1 AND c.author_auth_epoch<f.epoch`, command.CommandID) != 1 {
 		t.Fatal("pre-disable command authority became current again")
 	}
-	p.ExpectedAccountEpoch, p.RequestID = 3, uuid.NewString()
+	// Restoring an owner does not revive old consent; seed the independently
+	// authorized replacement configuration before a fresh input.
+	rebindCollaborationTestTarget(t, f.fx, issue, session.ID, executionTarget.ID, target, 3)
+	p.ExpectedAccountEpoch, p.RequestID, p.ExpectedConfigVersion, p.InputEventID = 3, uuid.NewString(), 2, util.MustParseUUID(uuid.NewString())
 	if receipt, err = queue.SubmitCommand(collaborationPasswordContext(target, 3), p); err != nil || receipt.Code != "command_queued" {
 		t.Fatalf("fresh intent refused after restore: %+v, %v", receipt, err)
 	}

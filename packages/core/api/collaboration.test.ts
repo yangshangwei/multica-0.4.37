@@ -2,12 +2,12 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { ApiClient } from "./client";
 import { setCurrentWorkspace } from "../platform/workspace-storage";
-import { collaborationIssueFixture } from "../collaboration/test-fixtures";
+import { collaborationExecutionIssueFixture, collaborationIssueFixture } from "../collaboration/test-fixtures";
 import { noopLogger } from "../logger";
 
 const reads = [
-  { name: "issue", read: (client: ApiClient) => client.getCollaborationIssue(collaborationIssueFixture.id), data: collaborationIssueFixture },
-  { name: "creation", read: (client: ApiClient) => client.getCollaborationCreation(collaborationIssueFixture.source_workspace.id, "original-request"), data: collaborationIssueFixture },
+  { name: "issue", read: (client: ApiClient) => client.getCollaborationIssue(collaborationIssueFixture.id), data: collaborationExecutionIssueFixture },
+  { name: "creation", read: (client: ApiClient) => client.getCollaborationCreation(collaborationIssueFixture.source_workspace.id, "original-request"), data: collaborationExecutionIssueFixture },
   { name: "workbench", read: (client: ApiClient) => client.getCollaborationWorkbench(), data: { items: [], total: 0, next_cursor: null } },
 ];
 
@@ -20,6 +20,21 @@ function deferred<T>() {
 afterEach(() => {
   vi.unstubAllGlobals();
   setCurrentWorkspace(null, null);
+});
+
+// The complete malformed/lineage matrix belongs to execution-schema.test.ts.
+// Both private detail transports must actually use that canonical boundary.
+it.each(reads.slice(0, 2))("validates the v2 execution projection for $name", async ({ read }) => {
+  const valid = collaborationExecutionIssueFixture;
+  vi.stubGlobal("fetch", vi.fn()
+    .mockResolvedValueOnce(new Response(JSON.stringify(valid)))
+    .mockResolvedValueOnce(new Response(JSON.stringify({ ...valid, execution: { ...valid.execution, protocol_version: 3 } }))));
+  const client = new ApiClient("https://api.example.test");
+  await expect(read(client)).resolves.toMatchObject({
+    execution: valid.execution,
+    capabilities: { read: true, edit: true, control_ai: false, submit_command: false },
+  });
+  await expect(read(client)).resolves.toBeNull();
 });
 
 it("keeps collaboration reads account-scoped while retaining authentication", async () => {

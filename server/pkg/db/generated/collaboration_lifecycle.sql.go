@@ -63,7 +63,7 @@ func (q *Queries) CancelCollaborationWaitingCommands(ctx context.Context, arg Ca
 const closeCollaborationSession = `-- name: CloseCollaborationSession :one
 UPDATE collaboration_session SET queue_state = 'closed',
     pause_reason = $1::text, control_version = control_version + 1
-WHERE id = $2::uuid RETURNING id, issue_id, queue_state, control_version, event_seq, next_command_seq, resource_epoch, active_grant_id, active_run_id, pause_reason, created_at
+WHERE id = $2::uuid RETURNING id, issue_id, queue_state, control_version, event_seq, next_command_seq, resource_epoch, active_grant_id, active_run_id, pause_reason, created_at, target_set_version
 `
 
 type CloseCollaborationSessionParams struct {
@@ -87,6 +87,7 @@ func (q *Queries) CloseCollaborationSession(ctx context.Context, arg CloseCollab
 		&i.ActiveRunID,
 		&i.PauseReason,
 		&i.CreatedAt,
+		&i.TargetSetVersion,
 	)
 	return i, err
 }
@@ -134,7 +135,7 @@ func (q *Queries) LockCollaborationStatusEntries(ctx context.Context, workspaceI
 const reopenCollaborationSession = `-- name: ReopenCollaborationSession :one
 UPDATE collaboration_session SET queue_state = 'paused',
     pause_reason = 'issue_reopened', control_version = control_version + 1
-WHERE id = $1 AND queue_state = 'closed' RETURNING id, issue_id, queue_state, control_version, event_seq, next_command_seq, resource_epoch, active_grant_id, active_run_id, pause_reason, created_at
+WHERE id = $1 AND queue_state = 'closed' RETURNING id, issue_id, queue_state, control_version, event_seq, next_command_seq, resource_epoch, active_grant_id, active_run_id, pause_reason, created_at, target_set_version
 `
 
 func (q *Queries) ReopenCollaborationSession(ctx context.Context, id pgtype.UUID) (CollaborationSession, error) {
@@ -152,6 +153,7 @@ func (q *Queries) ReopenCollaborationSession(ctx context.Context, id pgtype.UUID
 		&i.ActiveRunID,
 		&i.PauseReason,
 		&i.CreatedAt,
+		&i.TargetSetVersion,
 	)
 	return i, err
 }

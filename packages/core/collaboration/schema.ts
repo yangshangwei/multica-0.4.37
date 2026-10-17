@@ -2,12 +2,9 @@ import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
 import type { IssuePriority } from "../types/issue";
 import { ISSUE_PROPERTY_TYPES, parseActorRef, type IssuePropertyValue } from "../types/property";
+import { CollaborationExecutionSchema } from "./execution-schema";
+import { positiveVersion } from "./version";
 
-const decimal = /^[1-9][0-9]{0,18}$/;
-const positiveVersion = z.string().regex(decimal).refine(
-  (value) => decimal.test(value) && BigInt(value) <= 9223372036854775807n,
-  "Version exceeds a signed 64-bit integer",
-);
 const statusCategory = z.enum(["backlog", "todo", "in_progress", "in_review", "blocked", "done", "cancelled"]);
 const statusAction = z.enum(["change_status", "complete", "cancel", "reopen", "request_information", "return_information", "submit_acceptance"]);
 
@@ -161,6 +158,9 @@ export const CollaborationIssueSchema = z.object({
     queue_state: z.enum(["paused", "active", "closed"]),
     control_version: positiveVersion,
   }),
+  // Missing on older servers: human reads/workflow remain usable, execution
+  // is explicitly unavailable. A malformed present protocol is never dropped.
+  execution: CollaborationExecutionSchema.optional().transform((value) => value ?? null),
   capabilities: z.object({
     reference: z.boolean(), read: z.boolean(), comment: z.boolean(),
     control_ai: z.boolean(), submit_command: z.boolean(),
@@ -184,7 +184,17 @@ export const CollaborationIssueSchema = z.object({
     const definition = byId.get(id.toLowerCase());
     return definition !== undefined && propertyValueMatchesDefinition(value, definition);
   });
-}, "Current property values require matching definitions and value types");
+}, "Current property values require matching definitions and value types").refine((issue) => {
+  const execution = issue.execution;
+  return execution === null || (execution.issue_id === issue.id.toLowerCase() && execution.session_id === issue.session.id.toLowerCase() &&
+    execution.control.queue_state === issue.session.queue_state && execution.control.control_version === issue.session.control_version);
+}, "Execution must belong to the current issue and control snapshot").transform((issue) => ({
+  ...issue,
+  // These are protocol affordances, not the internal participant permission.
+  // No public execution/control path exists yet. Future Stop must depend on
+  // supported control protocol and human authority, never a current grant.
+  capabilities: { ...issue.capabilities, control_ai: false, submit_command: false },
+}));
 
 export type CollaborationIssue = z.infer<typeof CollaborationIssueSchema>;
 

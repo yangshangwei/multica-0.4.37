@@ -127,7 +127,7 @@ func (q *Queries) LockCollaborationReconciliationIssue(ctx context.Context, id p
 }
 
 const lockCollaborationReconciliationSession = `-- name: LockCollaborationReconciliationSession :one
-SELECT id, issue_id, queue_state, control_version, event_seq, next_command_seq, resource_epoch, active_grant_id, active_run_id, pause_reason, created_at FROM collaboration_session WHERE issue_id = $1 FOR UPDATE NOWAIT
+SELECT id, issue_id, queue_state, control_version, event_seq, next_command_seq, resource_epoch, active_grant_id, active_run_id, pause_reason, created_at, target_set_version FROM collaboration_session WHERE issue_id = $1 FOR UPDATE NOWAIT
 `
 
 func (q *Queries) LockCollaborationReconciliationSession(ctx context.Context, issueID pgtype.UUID) (CollaborationSession, error) {
@@ -145,6 +145,7 @@ func (q *Queries) LockCollaborationReconciliationSession(ctx context.Context, is
 		&i.ActiveRunID,
 		&i.PauseReason,
 		&i.CreatedAt,
+		&i.TargetSetVersion,
 	)
 	return i, err
 }
@@ -232,6 +233,13 @@ SELECT affected.issue_id, i.workspace_id FROM (
     JOIN collaboration_session AS s ON s.id = r.session_id
     JOIN collaboration_command AS c ON c.id = r.command_id AND c.session_id = r.session_id
     WHERE r.settled_at IS NULL
+      AND c.author_user_id = $1::uuid
+      AND c.author_auth_epoch < $2::bigint
+    UNION
+    SELECT s.issue_id FROM collaboration_execution_group AS g
+    JOIN collaboration_session AS s ON s.id = g.session_id
+    JOIN collaboration_command AS c ON c.id = g.command_id AND c.session_id = g.session_id
+    WHERE g.settled_at IS NULL
       AND c.author_user_id = $1::uuid
       AND c.author_auth_epoch < $2::bigint
 ) AS affected

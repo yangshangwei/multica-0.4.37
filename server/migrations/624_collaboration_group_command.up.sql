@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY idx_collaboration_group_command ON collaboration_execution_group (command_id);

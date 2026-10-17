@@ -155,7 +155,7 @@ func TestCollaborationInformationChainReturnsLayerByLayer(t *testing.T) {
 	}
 	// R11/AC26: none of these handoffs touched the queue or the running work.
 	if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='waiting'`, waiting.CommandID) != 1 ||
-		f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND queue_state='active' AND active_run_id=$2 AND control_version=1`, f.issue.SessionID, run.ID) != 1 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state='active' AND active_group_id=$2 AND control_version=1`, f.targetID, run.GroupID) != 1 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND forced_disposition IS NULL AND claim_generation=1`, run.ID) != 1 {
 		t.Fatal("information handoffs changed queue or execution")
 	}

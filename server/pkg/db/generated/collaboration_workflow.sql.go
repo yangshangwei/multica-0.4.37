@@ -201,7 +201,7 @@ func (q *Queries) GetCollaborationWorkflowUserIDs(ctx context.Context, arg GetCo
 
 const invalidateCollaborationActiveGrant = `-- name: InvalidateCollaborationActiveGrant :one
 UPDATE collaboration_session SET active_grant_id = NULL, resource_epoch = resource_epoch + 1
-WHERE id = $1 RETURNING id, issue_id, queue_state, control_version, event_seq, next_command_seq, resource_epoch, active_grant_id, active_run_id, pause_reason, created_at
+WHERE id = $1 RETURNING id, issue_id, queue_state, control_version, event_seq, next_command_seq, resource_epoch, active_grant_id, active_run_id, pause_reason, created_at, target_set_version
 `
 
 func (q *Queries) InvalidateCollaborationActiveGrant(ctx context.Context, id pgtype.UUID) (CollaborationSession, error) {
@@ -219,6 +219,7 @@ func (q *Queries) InvalidateCollaborationActiveGrant(ctx context.Context, id pgt
 		&i.ActiveRunID,
 		&i.PauseReason,
 		&i.CreatedAt,
+		&i.TargetSetVersion,
 	)
 	return i, err
 }
@@ -268,7 +269,7 @@ func (q *Queries) ListCollaborationNotificationRecipients(ctx context.Context, i
 }
 
 const lockCollaborationOwnerGrants = `-- name: LockCollaborationOwnerGrants :many
-SELECT id, issue_id, owner_user_id, owner_auth_epoch, execution_workspace_id, agent_id, runtime_id, identity_kind, installation_id, binding_id, binding_epoch, epoch, consented_at, revoked_at, revocation_reason FROM collaboration_grant WHERE issue_id = $1 AND owner_user_id = $2 ORDER BY id FOR UPDATE
+SELECT id, issue_id, owner_user_id, owner_auth_epoch, execution_workspace_id, agent_id, runtime_id, identity_kind, installation_id, binding_id, binding_epoch, epoch, consented_at, revoked_at, revocation_reason, target_id, config_version, role, legacy_unresolved FROM collaboration_grant WHERE issue_id = $1 AND owner_user_id = $2 ORDER BY id FOR UPDATE
 `
 
 type LockCollaborationOwnerGrantsParams struct {
@@ -301,6 +302,10 @@ func (q *Queries) LockCollaborationOwnerGrants(ctx context.Context, arg LockColl
 			&i.ConsentedAt,
 			&i.RevokedAt,
 			&i.RevocationReason,
+			&i.TargetID,
+			&i.ConfigVersion,
+			&i.Role,
+			&i.LegacyUnresolved,
 		); err != nil {
 			return nil, err
 		}
@@ -316,8 +321,8 @@ const requestCollaborationRunCancellation = `-- name: RequestCollaborationRunCan
 UPDATE collaboration_run SET
     disposition_reason = CASE WHEN forced_disposition IS NULL THEN $1::text ELSE disposition_reason END,
     forced_disposition = COALESCE(forced_disposition, 'cancelled'),
-    claim_generation = claim_generation + 1, progress_state = 'ending'
-WHERE id = $2::uuid AND settled_at IS NULL RETURNING id, session_id, command_id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at
+    claim_generation = claim_generation + CASE WHEN progress_state = 'ending' AND forced_disposition IS NOT NULL THEN 0 ELSE 1 END, progress_state = 'ending'
+WHERE id = $2::uuid AND settled_at IS NULL RETURNING id, legacy_session_id, legacy_command_id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, legacy_unresolved
 `
 
 type RequestCollaborationRunCancellationParams struct {
@@ -332,8 +337,8 @@ func (q *Queries) RequestCollaborationRunCancellation(ctx context.Context, arg R
 	var i CollaborationRun
 	err := row.Scan(
 		&i.ID,
-		&i.SessionID,
-		&i.CommandID,
+		&i.LegacySessionID,
+		&i.LegacyCommandID,
 		&i.TaskID,
 		&i.GrantID,
 		&i.GrantEpoch,
@@ -357,6 +362,17 @@ func (q *Queries) RequestCollaborationRunCancellation(ctx context.Context, arg R
 		&i.CreatedAt,
 		&i.StartedAt,
 		&i.SettledAt,
+		&i.SessionID,
+		&i.CommandID,
+		&i.TargetID,
+		&i.GroupID,
+		&i.ParentRunID,
+		&i.StepKey,
+		&i.StepKind,
+		&i.AgentID,
+		&i.TargetEpoch,
+		&i.ConfigVersion,
+		&i.LegacyUnresolved,
 	)
 	return i, err
 }

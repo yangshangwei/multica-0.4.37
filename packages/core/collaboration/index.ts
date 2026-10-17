@@ -4,3 +4,5 @@ export { CollaborationRecipientSchema, parseCollaborationRecipient } from "./sch
 export type { CollaborationRecipient, CollaborationRecipientInput } from "./schema";
 export { CollaborationFieldOptionsSchema, parseCollaborationFieldOptions } from "./schema";
 export type { CollaborationFieldOptions, CollaborationLabel, CollaborationPropertyDefinition } from "./schema";
+export { CollaborationExecutionSchema } from "./execution-schema";
+export type { CollaborationExecution, CollaborationExecutionTarget, CollaborationExecutionCommand, CollaborationExecutionGroup, CollaborationExecutionRun } from "./execution-schema";

@@ -195,6 +195,10 @@ func (s *CollaborationAccountReconciler) reconcileInTx(ctx context.Context, q *d
 	// This is a system invalidation, not an action attributed to the disabled
 	// user. No current human read authority is needed to stop obsolete work.
 	t := &collaborationQueueTx{q: q, session: session, access: CollaborationIssueAccess{Issue: issue}}
+	t.targets, err = q.LockCollaborationTargets(ctx, session.ID)
+	if err != nil {
+		return err
+	}
 	if err = t.invalidateAccount(ctx, intent); err != nil {
 		return err
 	}
@@ -214,26 +218,6 @@ func (t *collaborationQueueTx) invalidateAccount(ctx context.Context, intent db.
 	if err != nil {
 		return err
 	}
-	run, err := t.unsettledRun(ctx)
-	if err != nil {
-		return err
-	}
-	activeOwner, runOwner, author := false, false, false
-	for _, grant := range grants {
-		if grant.OwnerAuthEpoch < intent.AccountEpoch {
-			activeOwner = activeOwner || grant.ID == t.session.ActiveGrantID
-			runOwner = runOwner || (run.ID.Valid && grant.ID == run.GrantID)
-		}
-	}
-	if run.ID.Valid {
-		command, err := t.q.LockCollaborationCommand(ctx, db.LockCollaborationCommandParams{
-			SessionID: t.session.ID, CommandID: run.CommandID,
-		})
-		if err != nil {
-			return err
-		}
-		author = command.AuthorUserID == intent.UserID && command.AuthorAuthEpoch < intent.AccountEpoch
-	}
 	cancelled, err := t.q.CancelObsoleteCollaborationAuthorCommands(ctx, db.CancelObsoleteCollaborationAuthorCommandsParams{
 		SessionID: t.session.ID, UserID: intent.UserID, AccountEpoch: intent.AccountEpoch, Reason: intent.Reason,
 	})
@@ -246,42 +230,11 @@ func (t *collaborationQueueTx) invalidateAccount(ctx context.Context, intent db.
 	if err != nil {
 		return err
 	}
-	if activeOwner {
-		t.session, err = t.q.InvalidateCollaborationActiveGrant(ctx, t.session.ID)
-		if err != nil {
-			return err
-		}
+	stopped, err := t.stopInvalidatedWork(ctx, intent.UserID, intent.AccountEpoch, grants, intent.Reason)
+	if err != nil {
+		return err
 	}
-	var stopped *CollaborationQueueReceipt
-	if activeOwner || runOwner || author {
-		// Repeated invalidations retain an existing pause and forced root. A
-		// fresh active grant/run is never paused by an older unused grant.
-		needsStop := (runOwner || author) && (!run.ForcedDisposition.Valid || run.ProgressState != "ending")
-		if activeOwner || needsStop || t.session.QueueState == "active" {
-			t.session, err = t.q.PauseCollaborationSession(ctx, db.PauseCollaborationSessionParams{
-				SessionID: t.session.ID, PauseReason: intent.Reason,
-			})
-			if err != nil {
-				return err
-			}
-		}
-		if needsStop {
-			disposition := "stopped"
-			if author {
-				disposition = "cancelled"
-			}
-			receipt, err := t.stopRun(ctx, run, disposition, intent.Reason)
-			if err != nil {
-				return err
-			}
-			stopped = &receipt
-		} else if runOwner || author {
-			if err = t.q.RequestCollaborationTerminationStop(ctx, run.ID); err != nil {
-				return err
-			}
-		}
-	}
-	if cancelled == 0 && revoked == 0 && !activeOwner && !runOwner && !author {
+	if cancelled == 0 && revoked == 0 && stopped == nil {
 		return nil
 	}
 	seq, err := t.q.AdvanceCollaborationEventSequence(ctx, t.access.Issue.ID)

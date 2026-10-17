@@ -25,6 +25,17 @@ into execution. Mixed batches refuse before changing their ordinary companions.
 Machine credentials cannot read collaboration through ordinary issue details;
 source membership alone does not grant shared AI control.
 
+Ordinary enqueue, claim, retry and start also reject collaboration-owned work,
+including captured sources and trigger/coalesced comments. Changing a claimed
+task's source or runtime snapshot cannot authorize credential minting. An
+ordinary child that only references a collaboration parent remains ordinary;
+the parent link grants no access to the parent's private content.
+
+The version 2 `execution` projection identifies typed targets and execution
+groups. Its `availability: "unavailable"` is explicit: it does not enable
+shared execution or control endpoints. A missing or unknown protocol must not
+fall back to ordinary execution. Historical unresolved work remains paused.
+
 Human source members may change position alone without advancing collaboration
 revision. This does not authorize other changes. The ordinary-task contracts
 below do not describe shared FIFO or collaboration lifecycle APIs. Dedicated

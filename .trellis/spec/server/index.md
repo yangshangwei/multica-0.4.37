@@ -7,7 +7,8 @@
 | Guide | Description | Status |
 |-------|-------------|--------|
 | [Security Boundaries](./security-boundaries.md) | Credential minting gates and automation authorization principals | Active |
-| [Collaboration foundation](./collaboration-foundation.md) | In-progress object authority, atomic creation, legacy guards and migration gates | Active |
+| [Collaboration foundation](./collaboration-foundation.md) | Authority, creation, human workflow and pre-v2 execution history | Foundation |
+| [Collaboration targets](./collaboration-targets.md) | Typed targets/groups, scoped controls, legacy quarantine and v2 read projection | Foundation; runtime unavailable |
 | [Offline delivery](./offline-delivery.md) | Configuration forwarding, preserved overlays and upgrade verification | Active |
 | [Triage Admission](./triage.md) | Human review, inert intake, execution fences, CSV replay and retained audit data | Active |
 | [Iteration facts](./iterations.md) | Borrowed recorder, W01 lock batching, retry identity and current I1 limits | Active |

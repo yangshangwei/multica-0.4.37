@@ -711,7 +711,7 @@ type CollaborationAttachmentReference struct {
 
 type CollaborationCommand struct {
 	ID               pgtype.UUID        `json:"id"`
-	SessionID        pgtype.UUID        `json:"session_id"`
+	LegacySessionID  pgtype.UUID        `json:"legacy_session_id"`
 	Seq              int64              `json:"seq"`
 	AuthorUserID     pgtype.UUID        `json:"author_user_id"`
 	ParticipantEpoch int64              `json:"participant_epoch"`
@@ -722,6 +722,24 @@ type CollaborationCommand struct {
 	State            string             `json:"state"`
 	Reason           pgtype.Text        `json:"reason"`
 	CreatedAt        pgtype.Timestamptz `json:"created_at"`
+	SessionID        pgtype.UUID        `json:"session_id"`
+	TargetID         pgtype.UUID        `json:"target_id"`
+	InputEventID     pgtype.UUID        `json:"input_event_id"`
+	LegacyUnresolved bool               `json:"legacy_unresolved"`
+}
+
+type CollaborationDelegation struct {
+	ID                pgtype.UUID        `json:"id"`
+	GroupID           pgtype.UUID        `json:"group_id"`
+	ParentRunID       pgtype.UUID        `json:"parent_run_id"`
+	RequestKey        string             `json:"request_key"`
+	PayloadHash       string             `json:"payload_hash"`
+	PhaseKey          string             `json:"phase_key"`
+	Members           []byte             `json:"members"`
+	ContinuationKey   string             `json:"continuation_key"`
+	State             string             `json:"state"`
+	DispositionReason pgtype.Text        `json:"disposition_reason"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
 }
 
 type CollaborationEvent struct {
@@ -744,6 +762,23 @@ type CollaborationExecutionGate struct {
 	FreezeProgress    pgtype.UUID `json:"freeze_progress"`
 }
 
+type CollaborationExecutionGroup struct {
+	ID                pgtype.UUID        `json:"id"`
+	SessionID         pgtype.UUID        `json:"session_id"`
+	TargetID          pgtype.UUID        `json:"target_id"`
+	CommandID         pgtype.UUID        `json:"command_id"`
+	Generation        int64              `json:"generation"`
+	TargetEpoch       int64              `json:"target_epoch"`
+	ConfigVersion     int64              `json:"config_version"`
+	Roster            []byte             `json:"roster"`
+	State             string             `json:"state"`
+	ExpansionSealedAt pgtype.Timestamptz `json:"expansion_sealed_at"`
+	ForcedDisposition pgtype.Text        `json:"forced_disposition"`
+	DispositionReason pgtype.Text        `json:"disposition_reason"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+	SettledAt         pgtype.Timestamptz `json:"settled_at"`
+}
+
 type CollaborationGrant struct {
 	ID                   pgtype.UUID        `json:"id"`
 	IssueID              pgtype.UUID        `json:"issue_id"`
@@ -760,6 +795,10 @@ type CollaborationGrant struct {
 	ConsentedAt          pgtype.Timestamptz `json:"consented_at"`
 	RevokedAt            pgtype.Timestamptz `json:"revoked_at"`
 	RevocationReason     pgtype.Text        `json:"revocation_reason"`
+	TargetID             pgtype.UUID        `json:"target_id"`
+	ConfigVersion        pgtype.Int8        `json:"config_version"`
+	Role                 pgtype.Text        `json:"role"`
+	LegacyUnresolved     bool               `json:"legacy_unresolved"`
 }
 
 type CollaborationNotification struct {
@@ -791,8 +830,8 @@ type CollaborationOperation struct {
 
 type CollaborationRun struct {
 	ID                   pgtype.UUID        `json:"id"`
-	SessionID            pgtype.UUID        `json:"session_id"`
-	CommandID            pgtype.UUID        `json:"command_id"`
+	LegacySessionID      pgtype.UUID        `json:"legacy_session_id"`
+	LegacyCommandID      pgtype.UUID        `json:"legacy_command_id"`
 	TaskID               pgtype.UUID        `json:"task_id"`
 	GrantID              pgtype.UUID        `json:"grant_id"`
 	GrantEpoch           int64              `json:"grant_epoch"`
@@ -816,6 +855,17 @@ type CollaborationRun struct {
 	CreatedAt            pgtype.Timestamptz `json:"created_at"`
 	StartedAt            pgtype.Timestamptz `json:"started_at"`
 	SettledAt            pgtype.Timestamptz `json:"settled_at"`
+	SessionID            pgtype.UUID        `json:"session_id"`
+	CommandID            pgtype.UUID        `json:"command_id"`
+	TargetID             pgtype.UUID        `json:"target_id"`
+	GroupID              pgtype.UUID        `json:"group_id"`
+	ParentRunID          pgtype.UUID        `json:"parent_run_id"`
+	StepKey              pgtype.Text        `json:"step_key"`
+	StepKind             pgtype.Text        `json:"step_kind"`
+	AgentID              pgtype.UUID        `json:"agent_id"`
+	TargetEpoch          pgtype.Int8        `json:"target_epoch"`
+	ConfigVersion        pgtype.Int8        `json:"config_version"`
+	LegacyUnresolved     bool               `json:"legacy_unresolved"`
 }
 
 type CollaborationRunEvent struct {
@@ -858,17 +908,36 @@ type CollaborationRuntimeEnrollment struct {
 }
 
 type CollaborationSession struct {
-	ID             pgtype.UUID        `json:"id"`
-	IssueID        pgtype.UUID        `json:"issue_id"`
-	QueueState     string             `json:"queue_state"`
-	ControlVersion int64              `json:"control_version"`
-	EventSeq       int64              `json:"event_seq"`
-	NextCommandSeq int64              `json:"next_command_seq"`
-	ResourceEpoch  int64              `json:"resource_epoch"`
-	ActiveGrantID  pgtype.UUID        `json:"active_grant_id"`
-	ActiveRunID    pgtype.UUID        `json:"active_run_id"`
-	PauseReason    string             `json:"pause_reason"`
-	CreatedAt      pgtype.Timestamptz `json:"created_at"`
+	ID               pgtype.UUID        `json:"id"`
+	IssueID          pgtype.UUID        `json:"issue_id"`
+	QueueState       string             `json:"queue_state"`
+	ControlVersion   int64              `json:"control_version"`
+	EventSeq         int64              `json:"event_seq"`
+	NextCommandSeq   int64              `json:"next_command_seq"`
+	ResourceEpoch    int64              `json:"resource_epoch"`
+	ActiveGrantID    pgtype.UUID        `json:"active_grant_id"`
+	ActiveRunID      pgtype.UUID        `json:"active_run_id"`
+	PauseReason      string             `json:"pause_reason"`
+	CreatedAt        pgtype.Timestamptz `json:"created_at"`
+	TargetSetVersion int64              `json:"target_set_version"`
+}
+
+type CollaborationTarget struct {
+	ID              pgtype.UUID        `json:"id"`
+	SessionID       pgtype.UUID        `json:"session_id"`
+	Kind            string             `json:"kind"`
+	ResourceID      pgtype.UUID        `json:"resource_id"`
+	TargetEpoch     int64              `json:"target_epoch"`
+	ConfigVersion   int64              `json:"config_version"`
+	Roster          []byte             `json:"roster"`
+	QueueState      string             `json:"queue_state"`
+	ControlVersion  int64              `json:"control_version"`
+	GroupGeneration int64              `json:"group_generation"`
+	NextCommandSeq  int64              `json:"next_command_seq"`
+	ActiveGroupID   pgtype.UUID        `json:"active_group_id"`
+	PauseReason     string             `json:"pause_reason"`
+	RevokedAt       pgtype.Timestamptz `json:"revoked_at"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
 }
 
 type CollaborationTermination struct {

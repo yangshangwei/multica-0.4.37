@@ -26,19 +26,21 @@ type accountReconciliationFixture struct {
 	queue                *CollaborationService
 	admin, target, other pgtype.UUID
 	first                pgtype.UUID
+	targets              map[pgtype.UUID]pgtype.UUID
 }
 
 func newAccountReconciliationFixture(t *testing.T) *accountReconciliationFixture {
 	t.Helper()
 	f := &accountReconciliationFixture{platformAdminFixture: newPlatformAdminFixture(t)}
 	f.admin, f.target, f.other = f.user(t, PlatformRoleSuperAdmin), f.user(t, ""), f.user(t, "")
+	collaborationAccountFence(t, f.platformAdminFixture, f.admin)
 	collaborationAccountFence(t, f.platformAdminFixture, f.target)
 	collaborationAccountFence(t, f.platformAdminFixture, f.other)
 	f.first, f.queue = collaborationAccountIssue(t, f.platformAdminFixture, f.target)
-	for _, table := range []string{"collaboration_grant", "collaboration_run", "collaboration_termination"} {
-		f.fx.Exec(t, "CREATE TABLE "+pgx.Identifier{table}.Sanitize()+" (LIKE "+pgx.Identifier{"public", table}.Sanitize()+" INCLUDING ALL)")
+	f.targets = make(map[pgtype.UUID]pgtype.UUID)
+	for _, participant := range []pgtype.UUID{f.other, f.admin} {
+		f.fx.InsertNoID(t, "issue_participant", testutil.Cols{"issue_id": f.first, "user_id": participant}, "issue_id=$1 AND user_id=$2", f.first, participant)
 	}
-	f.fx.InsertNoID(t, "issue_participant", testutil.Cols{"issue_id": f.first, "user_id": f.other}, "issue_id=$1 AND user_id=$2", f.first, f.other)
 	f.worker = NewCollaborationAccountReconciler(f.svc.Queries, f.pool)
 	return f
 }
@@ -48,17 +50,42 @@ func (f *accountReconciliationFixture) issue(t *testing.T) pgtype.UUID {
 	id := f.fx.Issue(t, "Retained collaboration", testutil.Cols{"assignee_type": "member", "assignee_id": f.target, "admission_status": "not_required"})
 	f.fx.InsertNoID(t, "issue_collaboration", testutil.Cols{"issue_id": id}, "issue_id=$1", id)
 	f.fx.Insert(t, "collaboration_session", testutil.Cols{"issue_id": id})
-	for _, user := range []pgtype.UUID{f.target, f.other} {
+	for _, user := range []pgtype.UUID{f.target, f.other, f.admin} {
 		f.fx.InsertNoID(t, "issue_participant", testutil.Cols{"issue_id": id, "user_id": user}, "issue_id=$1 AND user_id=$2", id, user)
 	}
 	return util.MustParseUUID(id)
 }
 
+func (f *accountReconciliationFixture) targetFor(t *testing.T, issue pgtype.UUID) (db.CollaborationSession, db.CollaborationTarget) {
+	t.Helper()
+	session, err := f.queue.Queries.GetCollaborationSession(t.Context(), issue)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !f.targets[issue].Valid {
+		target, _ := seedCollaborationTarget(t, f.fx, issue, session.ID, f.admin, 1)
+		f.targets[issue] = target.ID
+	}
+	targets, err := f.queue.Queries.ListCollaborationTargets(t.Context(), session.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, target := range targets {
+		if target.ID == f.targets[issue] {
+			return session, target
+		}
+	}
+	t.Fatal("default synthetic target missing")
+	return session, db.CollaborationTarget{}
+}
+
 func (f *accountReconciliationFixture) submit(t *testing.T, issue, author pgtype.UUID, epoch int64) CollaborationQueueReceipt {
 	t.Helper()
+	_, target := f.targetFor(t, issue)
 	r, err := f.queue.SubmitCommand(collaborationPasswordContext(author, epoch), CollaborationSubmitCommandParams{
 		CollaborationQueueRequest: CollaborationQueueRequest{IssueID: issue, RequestID: uuid.NewString(),
 			ExpectedLifecycleEpoch: 1, ExpectedParticipantEpoch: 1, ExpectedAccountEpoch: epoch},
+		TargetID: target.ID, InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: target.TargetEpoch, ExpectedConfigVersion: target.ConfigVersion,
 		Content: "Immutable delivered command",
 	})
 	if err != nil {
@@ -69,38 +96,24 @@ func (f *accountReconciliationFixture) submit(t *testing.T, issue, author pgtype
 
 func (f *accountReconciliationFixture) grant(t *testing.T, issue, owner pgtype.UUID, epoch int64, active bool) pgtype.UUID {
 	t.Helper()
-	id := util.MustParseUUID(f.fx.Insert(t, "collaboration_grant", testutil.Cols{
-		"issue_id": issue, "owner_user_id": owner, "owner_auth_epoch": epoch,
-		"execution_workspace_id": uuid.NewString(), "agent_id": uuid.NewString(), "runtime_id": uuid.NewString(),
-		"identity_kind": "enrolled", "installation_id": uuid.NewString(), "binding_id": uuid.NewString(), "binding_epoch": 1,
-	}))
-	if active {
-		f.fx.Exec(t, `UPDATE collaboration_session SET active_grant_id=$2 WHERE issue_id=$1`, issue, id)
+	session, target := f.targetFor(t, issue)
+	if !active {
+		_, grant := seedCollaborationTarget(t, f.fx, issue, session.ID, owner, epoch)
+		return grant.ID
 	}
-	return id
+	return rebindCollaborationTestTarget(t, f.fx, issue, session.ID, target.ID, owner, epoch).ID
 }
 
-// There is still no public promotion/launch implementation. Runs and their
-// historical supervisor identities are explicit DB fixtures, not real AI work.
+// Runs remain explicit DB fixtures, not evidence of native launch or exit.
 func (f *accountReconciliationFixture) run(t *testing.T, issue pgtype.UUID, command CollaborationQueueReceipt, grant pgtype.UUID, attempts int64) db.CollaborationRun {
 	t.Helper()
-	var session pgtype.UUID
-	if err := f.pool.QueryRow(t.Context(), `SELECT id FROM collaboration_session WHERE issue_id=$1`, issue).Scan(&session); err != nil {
-		t.Fatal(err)
-	}
-	f.fx.Exec(t, `UPDATE collaboration_command SET state='in_flight' WHERE id=$1`, command.CommandID)
-	id := util.MustParseUUID(f.fx.Insert(t, "collaboration_run", testutil.Cols{
-		"session_id": session, "command_id": command.CommandID, "grant_id": grant, "grant_epoch": 1, "resource_epoch": 1,
-		"execution_workspace_id": uuid.NewString(), "runtime_id": uuid.NewString(), "installation_id": uuid.NewString(),
-		"binding_id": uuid.NewString(), "binding_epoch": 1, "authorized_attempt_seq": attempts,
-	}))
-	f.fx.Exec(t, `UPDATE collaboration_session SET active_run_id=$2, queue_state='active' WHERE id=$1`, session, id)
-	run, err := f.svc.Queries.GetCollaborationRun(t.Context(), db.GetCollaborationRunParams{SessionID: session, RunID: id})
-	if err != nil {
-		t.Fatal(err)
+	session, _ := f.targetFor(t, issue)
+	run := seedCollaborationGroupRun(t, f.fx, session.ID, command, attempts)
+	if run.GrantID != grant {
+		t.Fatal("run fixture did not bind the requested current grant")
 	}
 	f.fx.Insert(t, "collaboration_termination", testutil.Cols{
-		"issue_id": issue, "run_id": id, "fence": run.Fence, "launch_nonce": run.LaunchNonce, "deployment_id": uuid.NewString(),
+		"issue_id": issue, "run_id": run.ID, "fence": run.Fence, "launch_nonce": run.LaunchNonce, "deployment_id": uuid.NewString(),
 		"installation_id": run.InstallationID, "identity_kind": "enrolled", "public_key": []byte("fixture-supervisor-key"), "token_hash": uuid.NewString(),
 	})
 	return run
@@ -175,7 +188,7 @@ func TestCollaborationAccountReconciliationDisableRestore(t *testing.T) {
 	}
 	for _, run := range []db.CollaborationRun{oldAuthor, oldOwner} {
 		if f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND fence=$2 AND launch_nonce=$3 AND claim_generation=2 AND authorized_attempt_seq=1 AND progress_state='ending' AND forced_disposition='stopped' AND disposition_reason='credentials_revoked' AND proof_state='unknown' AND settled_at IS NULL`, run.ID, run.Fence, run.LaunchNonce) != 1 ||
-			f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND active_run_id=$2 AND queue_state='paused' AND control_version=2`, run.SessionID, run.ID) != 1 ||
+			f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND active_group_id=$2 AND queue_state='paused' AND control_version=2`, run.TargetID, run.GroupID) != 1 ||
 			f.fx.Count(t, `SELECT count(*) FROM collaboration_termination WHERE run_id=$1 AND fence=$2 AND launch_nonce=$3 AND stop_requested_at IS NOT NULL AND confirmed_at IS NULL AND proof IS NULL`, run.ID, run.Fence, run.LaunchNonce) != 1 {
 			t.Fatal("obsolete running work lost its barrier, stop intent or historical identity")
 		}
@@ -187,18 +200,42 @@ func TestCollaborationAccountReconciliationDisableRestore(t *testing.T) {
 	}
 	for _, run := range []db.CollaborationRun{newRun, untouched} {
 		if f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND claim_generation=1 AND forced_disposition IS NULL AND settled_at IS NULL`, run.ID) != 1 ||
-			f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND queue_state='active' AND control_version=1 AND resource_epoch=1 AND active_grant_id=$2`, run.SessionID, run.GrantID) != 1 {
+			f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state='active' AND control_version=1 AND active_group_id=$2`, run.TargetID, run.GroupID) != 1 {
 			t.Fatal("old invalidation changed unrelated/current execution")
 		}
 	}
 	if f.fx.Count(t, `SELECT count(*) FROM collaboration_grant WHERE id=$1 AND owner_auth_epoch=3 AND revoked_at IS NULL`, newGrant) != 1 ||
 		f.fx.Count(t, `SELECT count(*) FROM issue WHERE creator_id=$1 AND assignee_id=$1`, f.target) != 4 ||
-		f.fx.Count(t, `SELECT count(*) FROM issue_participant WHERE epoch=1 AND revoked_at IS NULL`) != 8 ||
+		f.fx.Count(t, `SELECT count(*) FROM issue_participant WHERE epoch=1 AND revoked_at IS NULL`) != 12 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_event WHERE kind='account_credentials_revoked' AND actor_user_id IS NOT NULL`) != 0 {
 		t.Fatal("fanout changed responsibility/participation, revived a grant, or impersonated the account")
 	}
 	if n, err := f.worker.Reconcile(t.Context(), 32); n != 0 || err != nil {
 		t.Fatalf("completed scan is not inert: %d, %v", n, err)
+	}
+}
+
+func TestCollaborationOldInvalidationPreservesFreshGrantOnSameTypedTarget(t *testing.T) {
+	f := newAccountReconciliationFixture(t)
+	oldGrant := f.grant(t, f.first, f.target, 1, true)
+	_, before := f.targetFor(t, f.first)
+	oldInput := f.submit(t, f.first, f.target, 1)
+	f.change(t, f.target, "disable", 1)
+	f.change(t, f.target, "restore", 2)
+	newGrant := f.grant(t, f.first, f.target, 3, true)
+	freshInput := f.submit(t, f.first, f.target, 3)
+	freshRun := f.run(t, f.first, freshInput, newGrant, 1)
+	_, after := f.targetFor(t, f.first)
+	if before.ID != after.ID || before.ResourceID != after.ResourceID || after.ConfigVersion <= before.ConfigVersion {
+		t.Fatal("fixture must replace consent on the same typed target, not evade invalidation with another target")
+	}
+	f.drain(t)
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='cancelled' AND author_auth_epoch=1`, oldInput.CommandID) != 1 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_grant WHERE id=$1 AND revoked_at IS NOT NULL`, oldGrant) != 1 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_grant WHERE id=$1 AND target_id=$2 AND owner_auth_epoch=3 AND revoked_at IS NULL`, newGrant, before.ID) != 1 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state='active' AND control_version=1 AND active_group_id=$2`, before.ID, freshRun.GroupID) != 1 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND forced_disposition IS NULL AND claim_generation=1 AND settled_at IS NULL`, freshRun.ID) != 1 {
+		t.Fatal("an old epoch paused fresh consent/work on the same typed target or retained obsolete input")
 	}
 }
 
@@ -218,7 +255,7 @@ func TestCollaborationAccountReconciliationStopEvidence(t *testing.T) {
 				f.fx.Exec(t, `UPDATE collaboration_run SET started_at=now() WHERE id=$1`, run.ID)
 			case "first_forced_root", "closed":
 				f.fx.Exec(t, `UPDATE collaboration_run SET authorized_attempt_seq=1, claim_generation=7, progress_state='ending', forced_disposition='stopped', disposition_reason='participant_stop' WHERE id=$1`, run.ID)
-				f.fx.Exec(t, `UPDATE collaboration_session SET queue_state='paused', pause_reason='participant_stop' WHERE id=$1`, run.SessionID)
+				f.fx.Exec(t, `UPDATE collaboration_target SET queue_state='paused', pause_reason='participant_stop' WHERE id=$1`, run.TargetID)
 				if scenario == "closed" {
 					f.fx.Exec(t, `UPDATE collaboration_session SET queue_state='closed', pause_reason='issue_completed' WHERE id=$1`, run.SessionID)
 				}
@@ -232,12 +269,12 @@ func TestCollaborationAccountReconciliationStopEvidence(t *testing.T) {
 				}
 				if f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND proof_state='never_launched_proven' AND settled_at IS NOT NULL AND forced_disposition=$2`, run.ID, disposition) != 1 ||
 					f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state=$2`, run.CommandID, disposition) != 1 ||
-					f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND queue_state='paused' AND active_run_id IS NULL`, run.SessionID) != 1 {
+					f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state='paused' AND active_group_id IS NULL`, run.TargetID) != 1 {
 					t.Fatal("server-proven never-launched work did not settle with the correct disposition")
 				}
 			} else {
 				if f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND proof_state='unknown' AND settled_at IS NULL AND forced_disposition='stopped' AND fence=$2 AND launch_nonce=$3`, run.ID, run.Fence, run.LaunchNonce) != 1 ||
-					f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND active_run_id=$2 AND queue_state<>'active'`, run.SessionID, run.ID) != 1 {
+					f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND active_group_id=$2 AND queue_state<>'active'`, run.TargetID, run.GroupID) != 1 {
 					t.Fatal("inconsistent/possibly live work lost its barrier or historical proof identity")
 				}
 				if scenario == "first_forced_root" || scenario == "closed" {
@@ -497,7 +534,7 @@ func TestCollaborationAccountReconciliationAtomicFailures(t *testing.T) {
 				if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='waiting'`, command.CommandID) != 1 ||
 					f.fx.Count(t, `SELECT count(*) FROM collaboration_grant WHERE id=$1 AND epoch=1 AND revoked_at IS NULL`, grant) != 1 ||
 					f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND claim_generation=1 AND forced_disposition IS NULL`, run.ID) != 1 ||
-					f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND queue_state='active' AND control_version=1 AND active_grant_id=$2`, run.SessionID, grant) != 1 ||
+					f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state='active' AND control_version=1 AND active_group_id=$2`, run.TargetID, run.GroupID) != 1 ||
 					f.fx.Count(t, `SELECT count(*) FROM collaboration_termination WHERE run_id=$1 AND stop_requested_at IS NULL`, run.ID) != 1 ||
 					f.fx.Count(t, `SELECT count(*) FROM collaboration_event WHERE kind='account_credentials_revoked'`) != 0 ||
 					f.fx.Count(t, `SELECT count(*) FROM collaboration_account_invalidation WHERE last_issue_id IS NULL AND reconciled_at IS NULL`) != 1 {

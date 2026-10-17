@@ -1,14 +1,32 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/multica-ai/multica/server/internal/collaboration"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
+
+// These route tests retain an already accepted input. They exercise human
+// workflow, not resource consent or execution admission, which remain disabled.
+func seedCollaborationRouteCommand(t *testing.T, fx *testutil.Fixture, session, author, content string) {
+	t.Helper()
+	runtime := fx.Runtime(t, "Synthetic collaboration route runtime", testutil.Cols{"status": "offline"})
+	agent := fx.Agent(t, "Synthetic collaboration route target "+uuid.NewString(), runtime)
+	roster, err := json.Marshal([]collaboration.TargetResource{{Role: "agent", AgentID: agent, RuntimeID: runtime, ExecutionWorkspaceID: fx.WorkspaceID, OwnerUserID: fx.UserID}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	target := fx.Insert(t, "collaboration_target", testutil.Cols{"session_id": session, "kind": "agent", "resource_id": agent, "roster": roster, "next_command_seq": 2})
+	fx.Exec(t, `UPDATE collaboration_session SET target_set_version=target_set_version+1 WHERE id=$1`, session)
+	fx.Insert(t, "collaboration_command", testutil.Cols{"session_id": session, "target_id": target, "input_event_id": uuid.NewString(),
+		"seq": 1, "author_user_id": author, "participant_epoch": 1, "author_auth_epoch": 1, "lifecycle_epoch": 1, "content": content})
+}
 
 func TestCollaborationLifecycleRoutesKeepCreatorAuthorityAfterSourceDeparture(t *testing.T) {
 	if testPool == nil || testServer == nil {
@@ -35,7 +53,7 @@ func TestCollaborationLifecycleRoutesKeepCreatorAuthorityAfterSourceDeparture(t 
 		fx.InsertNoID(t, "issue_participant", testutil.Cols{"issue_id": issue, "user_id": actor}, "issue_id=$1 AND user_id=$2", issue, actor)
 		fx.InsertNoID(t, "collaboration_account_fence", testutil.Cols{"user_id": actor}, "user_id=$1", actor)
 	}
-	fx.Insert(t, "collaboration_command", testutil.Cols{"session_id": session, "seq": 1, "author_user_id": handler, "participant_epoch": 1, "author_auth_epoch": 1, "lifecycle_epoch": 1, "content": "waiting work"})
+	seedCollaborationRouteCommand(t, fx, session, handler, "waiting work")
 	fx.Cleanup(t, `DELETE FROM collaboration_operation WHERE scope_kind='issue' AND scope_id=$1`, issue)
 	fx.Cleanup(t, `DELETE FROM collaboration_event WHERE issue_id=$1`, issue)
 	path := "/api/collaboration/issues/" + issue
