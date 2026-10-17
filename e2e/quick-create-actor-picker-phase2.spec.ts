@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { test, expect, _electron as electron, type Page } from '@playwright/test';
+import { test, expect, _electron as electron, type Locator, type Page } from '@playwright/test';
 import { TestApiClient } from './fixtures';
 const provider=process.env.ACTOR_RECOMMENDATION_PROVIDER_URL;
 const actorPath='/api/issues/recommend-creators';
@@ -41,6 +41,17 @@ async function choose(page:Page,creator:ReturnType<Page['getByRole']>,type:strin
 async function preference(page:Page,slug:string) {
  return page.evaluate((slug)=>JSON.parse(localStorage.getItem(`multica_quick_create:${slug}`)||'{"state":{}}').state,slug);
 }
+async function tabThroughRecommendations(page:Page,dialog:Locator) {
+ const buttons=dialog.getByTestId('creator-recommendations').getByRole('list').getByRole('button');
+ await expect(buttons).toHaveCount(3);
+ await buttons.first().focus();
+ for(let index=0;index<3;index++) {
+  await expect(buttons.nth(index)).toBeFocused();
+  await expect(buttons.nth(index)).toBeInViewport({ratio:1});
+  if(index<2) await page.keyboard.press('Tab');
+ }
+ return buttons.last();
+}
 
 test('explicit default outranks accepted history and project candidates do not replace it',async({page},info)=>{
  const f=await fixture();try {
@@ -76,7 +87,7 @@ test('recommendations require a click, adoption stays explicit, and changed text
   const response=page.waitForResponse(r=>new URL(r.url()).pathname===actorPath&&r.request().method()==='POST');
   await ui.dialog.getByRole('button',{name:'Suggest an agent',exact:true}).click();expect((await response).status()).toBe(200);
   await expect(ui.creator).toContainText(f.writer.name);await expect(ui.dialog.getByRole('button',{name:`Use ${f.diagnostic.name}`,exact:true})).toBeVisible();
-  await page.screenshot({path:info.outputPath('recommendations-1280.png')});
+  await page.screenshot({path:info.outputPath('recommendations-1280.png'),animations:'disabled'});
   await ui.dialog.getByRole('button',{name:`Use ${f.diagnostic.name}`,exact:true}).click();await expect(ui.creator).toContainText(f.diagnostic.name);
   await expect(ui.editor).toHaveText('Diagnose refund failures and verify fixes.');
   const after=await preference(page,f.workspace.slug);expect(after.defaultActor).toEqual(before.defaultActor);expect(after.recentActors).toEqual(before.recentActors);
@@ -91,8 +102,16 @@ test('recommendations require a click, adoption stays explicit, and changed text
   await page.setViewportSize({width:375,height:812});await expect(ui.dialog.getByRole('button',{name:`Use ${f.diagnostic.name}`,exact:true})).toBeInViewport();
   await expect(ui.dialog.getByRole('button',{name:'Create',exact:true})).toBeInViewport({ratio:1});
   await expect(ui.editor).toBeInViewport({ratio:0.5});
-  await page.screenshot({path:info.outputPath('recommendations-375.png')});
+  await page.screenshot({path:info.outputPath('recommendations-375.png'),animations:'disabled'});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  const lastSuggestion=await tabThroughRecommendations(page,ui.dialog);
+  const adoptedName=(await lastSuggestion.getAttribute('aria-label'))!.slice('Use '.length);
+  await expect(ui.editor).toBeInViewport({ratio:0.5});
+  await expect(ui.dialog.getByRole('button',{name:'Create',exact:true})).toBeInViewport({ratio:1});
+  await page.screenshot({path:info.outputPath('recommendations-375-scrolled.png'),animations:'disabled'});
+  await lastSuggestion.click();await expect(ui.creator).toContainText(adoptedName);
+  await expect(ui.editor).toHaveText('Diagnose refund failures');
+  const afterNarrow=await preference(page,f.workspace.slug);expect(afterNarrow.defaultActor).toEqual(before.defaultActor);expect(afterNarrow.recentActors).toEqual(before.recentActors);
  } finally {await f.api.deleteFeatureWorkspace(f.workspace.id);}
 });
 
@@ -104,7 +123,7 @@ test('actual Electron renderer adopts suggestions without running a daemon',asyn
   const page=await app.firstWindow();await authenticate(page,f.api.getToken()!);await page.reload({waitUntil:'domcontentloaded'});
   const ui=await open(page);await ui.editor.fill('Diagnose refund failures and verify fixes.');await page.waitForTimeout(200);
   await ui.dialog.getByRole('button',{name:'Suggest an agent',exact:true}).click();await expect(ui.dialog.getByRole('button',{name:`Use ${f.diagnostic.name}`,exact:true})).toBeVisible();
-  await page.screenshot({path:info.outputPath('recommendations-electron.png')});
+  await page.screenshot({path:info.outputPath('recommendations-electron.png'),animations:'disabled'});
   await ui.dialog.getByRole('button',{name:`Use ${f.diagnostic.name}`,exact:true}).click();await expect(ui.creator).toContainText(f.diagnostic.name);
   const services=await app.evaluate(()=> (globalThis as unknown as {changelogAcceptance:{daemonStarts:number}}).changelogAcceptance);
   expect(services.daemonStarts).toBe(0);
@@ -126,7 +145,16 @@ test('Chinese narrow-screen controls expose defaults and grounded suggestions',a
   await expect(dialog.getByRole('button',{name:`使用 ${f.diagnostic.name}`,exact:true})).toBeInViewport();
   await expect(dialog.getByRole('button',{name:'创建',exact:true})).toBeInViewport({ratio:1});
   await expect(editor).toBeInViewport({ratio:0.5});
-  await page.screenshot({path:info.outputPath('recommendations-zh-375.png')});
+  await page.screenshot({path:info.outputPath('recommendations-zh-375.png'),animations:'disabled'});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  const beforeAdoption=await preference(page,f.workspace.slug);
+  const lastSuggestion=await tabThroughRecommendations(page,dialog);
+  const adoptedName=(await lastSuggestion.getAttribute('aria-label'))!.slice('使用 '.length);
+  await expect(editor).toBeInViewport({ratio:0.5});
+  await expect(dialog.getByRole('button',{name:'创建',exact:true})).toBeInViewport({ratio:1});
+  await page.screenshot({path:info.outputPath('recommendations-zh-375-scrolled.png'),animations:'disabled'});
+  await lastSuggestion.click();await expect(creator).toContainText(adoptedName);
+  await expect(editor).toHaveText('请排查退款失败，并验证修复。');
+  const afterAdoption=await preference(page,f.workspace.slug);expect(afterAdoption.defaultActor).toEqual(beforeAdoption.defaultActor);expect(afterAdoption.recentActors).toEqual(beforeAdoption.recentActors);
  } finally {await f.api.deleteFeatureWorkspace(f.workspace.id);}
 });

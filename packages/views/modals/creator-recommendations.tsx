@@ -99,7 +99,7 @@ export function CreatorRecommendations(props: Props) {
     {error && <p role="alert" className="text-caption text-muted-foreground">{error === "unavailable" ? t(($) => $.create_issue.creator_recommendations.unavailable)
       : error === "busy" ? t(($) => $.create_issue.creator_recommendations.busy) : error === "timeout" ? t(($) => $.create_issue.creator_recommendations.timeout) : t(($) => $.create_issue.creator_recommendations.failed)}</p>}
     {result && items.length === 0 && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.create_issue.creator_recommendations.empty)}</p>}
-    {result && items.length > 0 && <ul className="max-h-[min(13rem,25dvh)] overflow-y-auto py-1">
+    {result && items.length > 0 && <ul className="max-h-[min(9rem,18dvh)] overflow-y-auto py-1 sm:max-h-[min(13rem,25dvh)]">
       {items.map((item) => <li key={`${item.actor_type}:${item.actor_id}`} className="flex items-start justify-between gap-3 py-2">
         <div className="min-w-0"><p className="truncate text-body font-medium">{item.name} <span className="text-caption font-normal text-muted-foreground">{item.actor_type === "agent" ? t(($) => $.create_issue.actor_picker.agent) : t(($) => $.create_issue.actor_picker.squad)}</span></p>
           <p className="break-words text-caption text-muted-foreground">{t(($) => $.create_issue.creator_recommendations.evidence)} <span>{item.reason}</span></p></div>
