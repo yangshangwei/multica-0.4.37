@@ -44,3 +44,38 @@
 ### Next Steps
 
 - 本地 main 已完成合并；远端推送或发布需后续任务。
+
+
+## Session 77: 能力市场整合：完成 Web/Desktop 验收与归档
+<!-- trellis-session: v=2 fp=baf9e5d1484c181d -->
+
+**Date**: 2026-10-17
+**Task**: 能力市场整合：完成 Web/Desktop 验收与归档
+**Branch**: `feat/capability-market`
+
+### Summary
+
+完成独立能力市场及资源管理分离；修复上下文焦点与测试夹具，11406项单测和25个唯一Web/Electron用例通过，已本地提交归档并清理测试服务。
+
+### Main Changes
+
+- 复用 Skill/MCP 原创建与显式分配流程，移除旧市场组合和 libraryView；保留原管理入口。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `581ba2ba5` | feat(marketplace): make capability discovery reachable from one workspace entry |
+| `96943ea64` | test(marketplace): keep completed acceptance reproducible across both clients |
+
+### Testing
+
+- [OK] 945文件/11406单测；25唯一E2E/10spec；lint、typecheck、三端构建通过；Knip与13项基线一致。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 远端推送、main 合并和发布未执行。已保留其他任务原有未提交材料。

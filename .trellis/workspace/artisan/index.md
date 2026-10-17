@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-2.md`
-- **Total Sessions**: 75
-- **Last Active**: 2026-10-16
+- **Total Sessions**: 77
+- **Last Active**: 2026-10-17
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-2.md` | ~46 | Active |
+| `journal-2.md` | ~81 | Active |
 | `journal-1.md` | ~1977 | Archived |
 <!-- @@@/auto:active-documents -->
 
@@ -30,6 +30,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 77 | 2026-10-17 | 能力市场整合：完成 Web/Desktop 验收与归档 | `581ba2ba5`, `96943ea64` | `feat/capability-market` |
 | 75 | 2026-10-16 | 独立功能分批合入本地 main | `52cdbb8bf`, `4edaae527`, `bddc9ef24`, `f7352d91e`, `79d2bc483`, `11865f7a0` | `main` |
 | 64 | 2026-10-12 | Recovery-only main integration verification | `f14da8a30` | `codex/desktop-connection-recovery-main` |
 | 60 | 2026-10-11 | Complete pending-task creation accessibility | `574dff832` | `codex/projects-p1` |
