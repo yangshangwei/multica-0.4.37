@@ -185,3 +185,35 @@ Implemented safe, persistent CLI and device reconnect diagnostics with English/C
 ### Next Steps
 
 - Native Windows/live-server verification and Windows installer delivery remain outside this task.
+
+
+## Session 80: Archive desktop close behavior at user request
+<!-- trellis-session: v=2 fp=bf990c785f63f794 -->
+
+**Date**: 2026-10-17
+**Task**: Archive desktop close behavior at user request
+**Branch**: `main`
+
+### Summary
+
+Archived desktop-close-behavior and its remaining real-machine-verification child at the explicit user request; preserved the historical local verification and deferred Windows/Linux native acceptance.
+
+### Main Changes
+
+- Moved both task directories into .trellis/tasks/archive/2026-10 and recorded the user-requested archive disposition.
+
+### Git Commits
+
+(Task archival only; no product code commits.)
+
+### Testing
+
+- [OK] Validated archived JSON status, dates, report paths, all four child relationships and 36 unchanged unrelated task records; git diff --cached --check passed.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Windows/Linux native tray, installation and upgrade acceptance remains deferred and unverified in the archived report.
