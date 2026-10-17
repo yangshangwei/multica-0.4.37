@@ -281,3 +281,35 @@ Archived the I1 parent and all six children at the explicit user request, retain
 ### Next Steps
 
 - Formal remote CI remains pending in the historical acceptance records. This archival does not authorize rollout or perform push, merge or deployment.
+
+
+## Session 83: Archive password registration and platform administration
+<!-- trellis-session: v=2 fp=76b707665bb88c62 -->
+
+**Date**: 2026-10-17
+**Task**: Archive password registration and platform administration
+**Branch**: `main`
+
+### Summary
+
+Archived password registration and the complete platform administration task tree at the explicit user request. Preserved local/native verification, original child completion dates and outstanding integration, deployment, signing and recovery acceptance.
+
+### Main Changes
+
+- Moved nine task directories into .trellis/tasks/archive/2026-10 and added archive notes and entry banners for the two main tasks and S07.
+
+### Git Commits
+
+(Task archival only; no product code commits.)
+
+### Testing
+
+- [OK] Verified nine archived tasks, original child dates, parent/child relationships, entry links, 137 unchanged evidence files and 19 unchanged unrelated task records; git diff --cached --check passed.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Target deployment and released-client acceptance, trusted signing, reference-hardware and production recovery gates remain documented in the archives; archival performs no deployment.
