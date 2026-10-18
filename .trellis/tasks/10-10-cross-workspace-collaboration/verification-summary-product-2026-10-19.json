@@ -1,0 +1,850 @@
+{
+  "status": "verified_product_increment_full_parent_pending",
+  "baseline_commit": "4dd643126f4ade9fa70e1dfa90cad0ba21350425",
+  "verified_at": "2026-10-19T00:33:33.246559+08:00",
+  "evidence_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-cwc-product-20261018-nebz79rl",
+  "typescript": {
+    "passed_total": 12073,
+    "packages": {
+      "@multica/core": 3672,
+      "@multica/views": 6907,
+      "@multica/docs": 62,
+      "@multica/web": 289,
+      "@multica/desktop": 1143
+    },
+    "whole_suite": "typescript-tests-final.log",
+    "current_core_views": "typescript-core-views-current.log"
+  },
+  "static": {
+    "tasks_passed": 15,
+    "tasks_total": 15,
+    "warnings": 31,
+    "new_scope_warnings": 0,
+    "warning_details": "static-warning-summary.json",
+    "knip": {
+      "files": 8,
+      "binaries": 4,
+      "dependencies": 0,
+      "devDependencies": 0,
+      "unlisted": 0,
+      "unresolved": 0
+    },
+    "new_knip_findings": 0
+  },
+  "go": {
+    "top_level_passed": 6813,
+    "subtests_passed": 6373,
+    "failed": [],
+    "remaining_default_skips": [
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestEmptyClaimCache_EmptyRuntimeIDIsNoOp",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestEmptyClaimCache_EmptyRuntimeIDIsNoOp\n    empty_claim_cache_test.go:64: REDIS_TEST_URL not set\n--- SKIP: TestEmptyClaimCache_EmptyRuntimeIDIsNoOp (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestEmptyClaimCache_MarkAndIsEmptyVersionMatched",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestEmptyClaimCache_MarkAndIsEmptyVersionMatched\n    empty_claim_cache_test.go:76: REDIS_TEST_URL not set\n--- SKIP: TestEmptyClaimCache_MarkAndIsEmptyVersionMatched (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestEmptyClaimCache_BumpInvalidatesPriorMark",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestEmptyClaimCache_BumpInvalidatesPriorMark\n    empty_claim_cache_test.go:95: REDIS_TEST_URL not set\n--- SKIP: TestEmptyClaimCache_BumpInvalidatesPriorMark (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestEmptyClaimCache_StaleMarkRejected",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestEmptyClaimCache_StaleMarkRejected\n    empty_claim_cache_test.go:116: REDIS_TEST_URL not set\n--- SKIP: TestEmptyClaimCache_StaleMarkRejected (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestEmptyClaimCache_TTL",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestEmptyClaimCache_TTL\n    empty_claim_cache_test.go:135: REDIS_TEST_URL not set\n--- SKIP: TestEmptyClaimCache_TTL (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestEmptyClaimCache_RuntimeIsolation",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestEmptyClaimCache_RuntimeIsolation\n    empty_claim_cache_test.go:150: REDIS_TEST_URL not set\n--- SKIP: TestEmptyClaimCache_RuntimeIsolation (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline\n    reclaim_check_cache_test.go:46: REDIS_TEST_URL not set\n--- SKIP: TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers\n    reclaim_check_cache_test.go:80: REDIS_TEST_URL not set\n--- SKIP: TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestReclaimCheckCache_TrackLaterAndForget",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestReclaimCheckCache_TrackLaterAndForget\n    reclaim_check_cache_test.go:133: REDIS_TEST_URL not set\n--- SKIP: TestReclaimCheckCache_TrackLaterAndForget (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestReclaimCheckCache_CollectionCheckAlignsBackstops",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestReclaimCheckCache_CollectionCheckAlignsBackstops\n    reclaim_check_cache_test.go:169: REDIS_TEST_URL not set\n--- SKIP: TestReclaimCheckCache_CollectionCheckAlignsBackstops (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder\n    reclaim_check_cache_test.go:203: REDIS_TEST_URL not set\n--- SKIP: TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen\n    reclaim_check_cache_test.go:224: REDIS_TEST_URL not set\n--- SKIP: TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet\n    task_batch_claim_test.go:175: REDIS_TEST_URL not set\n--- SKIP: TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry\n    task_batch_claim_test.go:234: REDIS_TEST_URL not set\n--- SKIP: TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestNotifyTaskAvailable_BumpsBeforeWakeup",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestNotifyTaskAvailable_BumpsBeforeWakeup\n    task_notify_test.go:32: REDIS_TEST_URL not set\n--- SKIP: TestNotifyTaskAvailable_BumpsBeforeWakeup (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp\n    task_notify_test.go:79: REDIS_TEST_URL not set\n--- SKIP: TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup\n    task_notify_test.go:110: REDIS_TEST_URL not set\n--- SKIP: TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict\n    task_notify_test.go:183: REDIS_TEST_URL not set\n--- SKIP: TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestWebhookHandler_DBErrorOnTokenLookupReturns500\n    autopilot_webhook_handler_test.go:971: 500-branch requires injecting a stub Queries; left as a code-review-protected invariant\n--- SKIP: TestWebhookHandler_DBErrorOnTokenLookupReturns500 (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRequireDaemonWorkspaceAccess_CacheHit",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRequireDaemonWorkspaceAccess_CacheHit\n    daemon_test.go:3817: REDIS_TEST_URL not set\n--- SKIP: TestRequireDaemonWorkspaceAccess_CacheHit (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRequireDaemonWorkspaceAccess_CacheMissBackfills",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRequireDaemonWorkspaceAccess_CacheMissBackfills\n    daemon_test.go:3844: REDIS_TEST_URL not set\n--- SKIP: TestRequireDaemonWorkspaceAccess_CacheMissBackfills (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestMembershipCache_InvalidatedOnDeleteMember",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestMembershipCache_InvalidatedOnDeleteMember\n    daemon_test.go:3874: REDIS_TEST_URL not set\n--- SKIP: TestMembershipCache_InvalidatedOnDeleteMember (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestMembershipCache_InvalidatedOnUpdateMember",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestMembershipCache_InvalidatedOnUpdateMember\n    daemon_test.go:3901: REDIS_TEST_URL not set\n--- SKIP: TestMembershipCache_InvalidatedOnUpdateMember (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestMembershipCache_InvalidatedOnLeaveWorkspace",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestMembershipCache_InvalidatedOnLeaveWorkspace\n    daemon_test.go:3926: REDIS_TEST_URL not set\n--- SKIP: TestMembershipCache_InvalidatedOnLeaveWorkspace (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestMembershipCache_InvalidatedOnDeleteWorkspace",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestMembershipCache_InvalidatedOnDeleteWorkspace\n    daemon_test.go:3949: REDIS_TEST_URL not set\n--- SKIP: TestMembershipCache_InvalidatedOnDeleteWorkspace (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestIterationI1P95",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestIterationI1P95\n    iteration_i1_p95_test.go:25: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL\n--- SKIP: TestIterationI1P95 (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestIterationI1DisableP95",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestIterationI1DisableP95\n    iteration_i1_p95_test.go:160: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL\n--- SKIP: TestIterationI1DisableP95 (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisLivenessStore_TouchAndIsAlive",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisLivenessStore_TouchAndIsAlive\n    runtime_liveness_store_test.go:26: REDIS_TEST_URL not set\n--- SKIP: TestRedisLivenessStore_TouchAndIsAlive (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisLivenessStore_TTLExpiry",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisLivenessStore_TTLExpiry\n    runtime_liveness_store_test.go:51: REDIS_TEST_URL not set\n--- SKIP: TestRedisLivenessStore_TTLExpiry (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisLivenessStore_Forget",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisLivenessStore_Forget\n    runtime_liveness_store_test.go:78: REDIS_TEST_URL not set\n--- SKIP: TestRedisLivenessStore_Forget (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisLivenessStore_BatchEmptyInput",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisLivenessStore_BatchEmptyInput\n    runtime_liveness_store_test.go:97: REDIS_TEST_URL not set\n--- SKIP: TestRedisLivenessStore_BatchEmptyInput (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisLocalSkillListStore_CreateGetComplete",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisLocalSkillListStore_CreateGetComplete\n    runtime_local_skills_redis_store_test.go:82: REDIS_TEST_URL not set\n--- SKIP: TestRedisLocalSkillListStore_CreateGetComplete (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisLocalSkillListStore_CreateWithoutMultiPermission",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisLocalSkillListStore_CreateWithoutMultiPermission\n    runtime_local_skills_redis_store_test.go:135: REDIS_TEST_URL not set\n--- SKIP: TestRedisLocalSkillListStore_CreateWithoutMultiPermission (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisLocalSkillListStore_PopPendingAcrossInstances",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisLocalSkillListStore_PopPendingAcrossInstances\n    runtime_local_skills_redis_store_test.go:165: REDIS_TEST_URL not set\n--- SKIP: TestRedisLocalSkillListStore_PopPendingAcrossInstances (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisLocalSkillListStore_PopPendingConcurrent",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisLocalSkillListStore_PopPendingConcurrent\n    runtime_local_skills_redis_store_test.go:207: REDIS_TEST_URL not set\n--- SKIP: TestRedisLocalSkillListStore_PopPendingConcurrent (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisLocalSkillListStore_PendingTimeout",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisLocalSkillListStore_PendingTimeout\n    runtime_local_skills_redis_store_test.go:255: REDIS_TEST_URL not set\n--- SKIP: TestRedisLocalSkillListStore_PendingTimeout (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisLocalSkillImportStore_PreservesCreatorID",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisLocalSkillImportStore_PreservesCreatorID\n    runtime_local_skills_redis_store_test.go:290: REDIS_TEST_URL not set\n--- SKIP: TestRedisLocalSkillImportStore_PreservesCreatorID (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisLocalSkillImportStore_CreateWithoutMultiPermission",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisLocalSkillImportStore_CreateWithoutMultiPermission\n    runtime_local_skills_redis_store_test.go:339: REDIS_TEST_URL not set\n--- SKIP: TestRedisLocalSkillImportStore_CreateWithoutMultiPermission (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisLocalSkillImportStore_CompletePreservesFiles",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisLocalSkillImportStore_CompletePreservesFiles\n    runtime_local_skills_redis_store_test.go:368: REDIS_TEST_URL not set\n--- SKIP: TestRedisLocalSkillImportStore_CompletePreservesFiles (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisLocalSkillImportStore_PreservesConflict",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisLocalSkillImportStore_PreservesConflict\n    runtime_local_skills_redis_store_test.go:426: REDIS_TEST_URL not set\n--- SKIP: TestRedisLocalSkillImportStore_PreservesConflict (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisLocalSkillImportStore_PopPendingAcrossInstances",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisLocalSkillImportStore_PopPendingAcrossInstances\n    runtime_local_skills_redis_store_test.go:459: REDIS_TEST_URL not set\n--- SKIP: TestRedisLocalSkillImportStore_PopPendingAcrossInstances (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisLocalSkillListStore_PerRuntimeIsolation",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisLocalSkillListStore_PerRuntimeIsolation\n    runtime_local_skills_redis_store_test.go:492: REDIS_TEST_URL not set\n--- SKIP: TestRedisLocalSkillListStore_PerRuntimeIsolation (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisLocalSkillListStore_PopPendingAtomicClaim",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisLocalSkillListStore_PopPendingAtomicClaim\n    runtime_local_skills_redis_store_test.go:532: REDIS_TEST_URL not set\n--- SKIP: TestRedisLocalSkillListStore_PopPendingAtomicClaim (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisLocalSkillImportStore_PopPendingBatch",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisLocalSkillImportStore_PopPendingBatch\n    runtime_local_skills_redis_store_test.go:569: REDIS_TEST_URL not set\n--- SKIP: TestRedisLocalSkillImportStore_PopPendingBatch (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisModelCatalogCache_RoundTrip",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisModelCatalogCache_RoundTrip\n    runtime_model_catalog_redis_cache_test.go:16: REDIS_TEST_URL not set\n--- SKIP: TestRedisModelCatalogCache_RoundTrip (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisModelCatalogCache_SkipsUncacheableResults",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisModelCatalogCache_SkipsUncacheableResults\n    runtime_model_catalog_redis_cache_test.go:57: REDIS_TEST_URL not set\n--- SKIP: TestRedisModelCatalogCache_SkipsUncacheableResults (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisModelCatalogCache_InvalidateAndExpiry",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisModelCatalogCache_InvalidateAndExpiry\n    runtime_model_catalog_redis_cache_test.go:77: REDIS_TEST_URL not set\n--- SKIP: TestRedisModelCatalogCache_InvalidateAndExpiry (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisModelCatalogCache_DropsUndecodableSnapshot",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisModelCatalogCache_DropsUndecodableSnapshot\n    runtime_model_catalog_redis_cache_test.go:114: REDIS_TEST_URL not set\n--- SKIP: TestRedisModelCatalogCache_DropsUndecodableSnapshot (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisModelListStore_CreateGetComplete",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisModelListStore_CreateGetComplete\n    runtime_models_redis_store_test.go:55: REDIS_TEST_URL not set\n--- SKIP: TestRedisModelListStore_CreateGetComplete (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisModelListStore_CreateWithoutMultiPermission",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisModelListStore_CreateWithoutMultiPermission\n    runtime_models_redis_store_test.go:102: REDIS_TEST_URL not set\n--- SKIP: TestRedisModelListStore_CreateWithoutMultiPermission (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisModelListStore_PopPendingAcrossInstances",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisModelListStore_PopPendingAcrossInstances\n    runtime_models_redis_store_test.go:133: REDIS_TEST_URL not set\n--- SKIP: TestRedisModelListStore_PopPendingAcrossInstances (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisModelListStore_PopPendingConcurrent",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisModelListStore_PopPendingConcurrent\n    runtime_models_redis_store_test.go:175: REDIS_TEST_URL not set\n--- SKIP: TestRedisModelListStore_PopPendingConcurrent (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisModelListStore_PendingTimeout",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisModelListStore_PendingTimeout\n    runtime_models_redis_store_test.go:227: REDIS_TEST_URL not set\n--- SKIP: TestRedisModelListStore_PendingTimeout (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisModelListStore_RunningTimeout",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisModelListStore_RunningTimeout\n    runtime_models_redis_store_test.go:266: REDIS_TEST_URL not set\n--- SKIP: TestRedisModelListStore_RunningTimeout (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisModelListStore_HasPending",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisModelListStore_HasPending\n    runtime_models_redis_store_test.go:301: REDIS_TEST_URL not set\n--- SKIP: TestRedisModelListStore_HasPending (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisUpdateStore_CreateGetComplete",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisUpdateStore_CreateGetComplete\n    runtime_update_redis_store_test.go:47: REDIS_TEST_URL not set\n--- SKIP: TestRedisUpdateStore_CreateGetComplete (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisUpdateStore_CreateWithoutMultiPermission",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisUpdateStore_CreateWithoutMultiPermission\n    runtime_update_redis_store_test.go:84: REDIS_TEST_URL not set\n--- SKIP: TestRedisUpdateStore_CreateWithoutMultiPermission (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisUpdateStore_PopPendingAcrossInstances",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisUpdateStore_PopPendingAcrossInstances\n    runtime_update_redis_store_test.go:112: REDIS_TEST_URL not set\n--- SKIP: TestRedisUpdateStore_PopPendingAcrossInstances (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisUpdateStore_ReportAndPollAcrossInstances",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisUpdateStore_ReportAndPollAcrossInstances\n    runtime_update_redis_store_test.go:147: REDIS_TEST_URL not set\n--- SKIP: TestRedisUpdateStore_ReportAndPollAcrossInstances (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisUpdateStore_FailAcrossInstances",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisUpdateStore_FailAcrossInstances\n    runtime_update_redis_store_test.go:176: REDIS_TEST_URL not set\n--- SKIP: TestRedisUpdateStore_FailAcrossInstances (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisUpdateStore_RejectsConcurrentActive",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisUpdateStore_RejectsConcurrentActive\n    runtime_update_redis_store_test.go:204: REDIS_TEST_URL not set\n--- SKIP: TestRedisUpdateStore_RejectsConcurrentActive (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisUpdateStore_RunningTimeoutClearsActive",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisUpdateStore_RunningTimeoutClearsActive\n    runtime_update_redis_store_test.go:224: REDIS_TEST_URL not set\n--- SKIP: TestRedisUpdateStore_RunningTimeoutClearsActive (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisUpdateStore_PopPendingConcurrent",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisUpdateStore_PopPendingConcurrent\n    runtime_update_redis_store_test.go:259: REDIS_TEST_URL not set\n--- SKIP: TestRedisUpdateStore_PopPendingConcurrent (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestFetchFromSkillsSh_AnthropicPptxIntegration\n    skill_test.go:989: set MULTICA_RUN_SKILLS_SH_INTEGRATION=1 to run live GitHub integration test\n--- SKIP: TestFetchFromSkillsSh_AnthropicPptxIntegration (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestTriageQueueScaleBaseline",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestTriageQueueScaleBaseline\n    triage_performance_test.go:20: set MULTICA_TRIAGE_PERF=1 to measure 10k formal/2k pending\n--- SKIP: TestTriageQueueScaleBaseline (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestTriageWireFixtures",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestTriageWireFixtures\n    triage_test.go:566: wire fixture export requested only by cross-package verification\n--- SKIP: TestTriageWireFixtures (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisWebhookRateLimiter_RejectsAboveLimit",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisWebhookRateLimiter_RejectsAboveLimit\n    webhook_rate_limiter_test.go:132: REDIS_TEST_URL not set\n--- SKIP: TestRedisWebhookRateLimiter_RejectsAboveLimit (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisWebhookIPRateLimiter_HasSeparateBudgetFromTokenLimiter",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisWebhookIPRateLimiter_HasSeparateBudgetFromTokenLimiter\n    webhook_rate_limiter_test.go:156: REDIS_TEST_URL not set\n--- SKIP: TestRedisWebhookIPRateLimiter_HasSeparateBudgetFromTokenLimiter (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisSlidingWindowRateLimiter_SeparatesInvitationNamespaces",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisSlidingWindowRateLimiter_SeparatesInvitationNamespaces\n    webhook_rate_limiter_test.go:181: REDIS_TEST_URL not set\n--- SKIP: TestRedisSlidingWindowRateLimiter_SeparatesInvitationNamespaces (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestRedisSlidingWindowRateLimiter_PreservesWebhookFailOpenAndExposesErrors",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRedisSlidingWindowRateLimiter_PreservesWebhookFailOpenAndExposesErrors\n    webhook_rate_limiter_test.go:202: REDIS_TEST_URL not set\n--- SKIP: TestRedisSlidingWindowRateLimiter_PreservesWebhookFailOpenAndExposesErrors (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestMcpMarketPublicHTTPRecipeLifecycle",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestMcpMarketPublicHTTPRecipeLifecycle\n    workspace_mcp_template_test.go:228: the catalog ships no HTTP recipes\n--- SKIP: TestMcpMarketPublicHTTPRecipeLifecycle (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/middleware",
+        "test": "TestAuth_PATCacheHit",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestAuth_PATCacheHit\n    auth_test.go:315: REDIS_TEST_URL not set\n--- SKIP: TestAuth_PATCacheHit (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/middleware",
+        "test": "TestDaemonAuth_DaemonTokenCacheHit",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestDaemonAuth_DaemonTokenCacheHit\n    daemon_auth_test.go:17: REDIS_TEST_URL not set\n--- SKIP: TestDaemonAuth_DaemonTokenCacheHit (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/middleware",
+        "test": "TestDaemonAuth_PATCacheHit",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestDaemonAuth_PATCacheHit\n    daemon_auth_test.go:59: REDIS_TEST_URL not set\n--- SKIP: TestDaemonAuth_PATCacheHit (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/middleware",
+        "test": "TestDaemonAuth_StripsClientSuppliedActorSource",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestDaemonAuth_StripsClientSuppliedActorSource\n    daemon_auth_test.go:121: REDIS_TEST_URL not set\n--- SKIP: TestDaemonAuth_StripsClientSuppliedActorSource (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/middleware",
+        "test": "TestPluginRateLimitIsPerCredentialAndUsesStableProblem",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestPluginRateLimitIsPerCredentialAndUsesStableProblem\n    plugin_ratelimit_test.go:16: REDIS_TEST_URL not set\n--- SKIP: TestPluginRateLimitIsPerCredentialAndUsesStableProblem (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/middleware",
+        "test": "TestRateLimit_AllowsUnderLimit",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRateLimit_AllowsUnderLimit\n    ratelimit_test.go:31: REDIS_TEST_URL not set\n--- SKIP: TestRateLimit_AllowsUnderLimit (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/middleware",
+        "test": "TestRateLimit_BlocksOverLimit",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRateLimit_BlocksOverLimit\n    ratelimit_test.go:47: REDIS_TEST_URL not set\n--- SKIP: TestRateLimit_BlocksOverLimit (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/middleware",
+        "test": "TestRateLimit_RetryAfterHeader",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRateLimit_RetryAfterHeader\n    ratelimit_test.go:80: REDIS_TEST_URL not set\n--- SKIP: TestRateLimit_RetryAfterHeader (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/middleware",
+        "test": "TestRateLimit_DifferentIPs",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRateLimit_DifferentIPs\n    ratelimit_test.go:104: REDIS_TEST_URL not set\n--- SKIP: TestRateLimit_DifferentIPs (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/middleware",
+        "test": "TestRateLimit_LuaScript_SetsTTL",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestRateLimit_LuaScript_SetsTTL\n    ratelimit_test.go:201: REDIS_TEST_URL not set\n--- SKIP: TestRateLimit_LuaScript_SetsTTL (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "test": "TestCloudPATVerifier_CacheHitSkipsHTTP",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestCloudPATVerifier_CacheHitSkipsHTTP\n    cloud_pat_test.go:290: REDIS_TEST_URL not set\n--- SKIP: TestCloudPATVerifier_CacheHitSkipsHTTP (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "test": "TestCloudPATVerifier_NegativesNotCached",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestCloudPATVerifier_NegativesNotCached\n    cloud_pat_test.go:324: REDIS_TEST_URL not set\n--- SKIP: TestCloudPATVerifier_NegativesNotCached (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "test": "TestCloudPATVerifier_LookupRejectsUnknownOwner",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestCloudPATVerifier_LookupRejectsUnknownOwner\n    cloud_pat_test.go:356: REDIS_TEST_URL not set\n--- SKIP: TestCloudPATVerifier_LookupRejectsUnknownOwner (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "test": "TestCloudPATVerifier_LookupSuccessIsCached",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestCloudPATVerifier_LookupSuccessIsCached\n    cloud_pat_test.go:435: REDIS_TEST_URL not set\n--- SKIP: TestCloudPATVerifier_LookupSuccessIsCached (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "test": "TestDaemonTokenCache_SetGetInvalidate",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestDaemonTokenCache_SetGetInvalidate\n    daemon_token_cache_test.go:27: REDIS_TEST_URL not set\n--- SKIP: TestDaemonTokenCache_SetGetInvalidate (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "test": "TestDaemonTokenCache_TTL",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestDaemonTokenCache_TTL\n    daemon_token_cache_test.go:51: REDIS_TEST_URL not set\n--- SKIP: TestDaemonTokenCache_TTL (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "test": "TestDaemonTokenCache_Set_RespectsClampedTTL",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestDaemonTokenCache_Set_RespectsClampedTTL\n    daemon_token_cache_test.go:69: REDIS_TEST_URL not set\n--- SKIP: TestDaemonTokenCache_Set_RespectsClampedTTL (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "test": "TestMembershipCache_SetGetInvalidate",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestMembershipCache_SetGetInvalidate\n    membership_cache_test.go:27: REDIS_TEST_URL not set\n--- SKIP: TestMembershipCache_SetGetInvalidate (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "test": "TestMembershipCache_TTL",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestMembershipCache_TTL\n    membership_cache_test.go:50: REDIS_TEST_URL not set\n--- SKIP: TestMembershipCache_TTL (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "test": "TestMembershipCache_IsolatesKeysByUser",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestMembershipCache_IsolatesKeysByUser\n    membership_cache_test.go:68: REDIS_TEST_URL not set\n--- SKIP: TestMembershipCache_IsolatesKeysByUser (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "test": "TestPasswordLimiterSharedAtomicAdmission",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestPasswordLimiterSharedAtomicAdmission\n    password_limiter_integration_test.go:20: MULTICA_TEST_REDIS_URL not configured\n--- SKIP: TestPasswordLimiterSharedAtomicAdmission (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "test": "TestPATCache_SetGetInvalidate",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestPATCache_SetGetInvalidate\n    pat_cache_test.go:61: REDIS_TEST_URL not set\n--- SKIP: TestPATCache_SetGetInvalidate (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "test": "TestPATCache_TTL",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestPATCache_TTL\n    pat_cache_test.go:90: REDIS_TEST_URL not set\n--- SKIP: TestPATCache_TTL (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "test": "TestPATCache_Set_RespectsClampedTTL",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestPATCache_Set_RespectsClampedTTL\n    pat_cache_test.go:142: REDIS_TEST_URL not set\n--- SKIP: TestPATCache_Set_RespectsClampedTTL (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon",
+        "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestCollaborationBatchPollerSlotsAndRunnerLinux\n    collaboration_test.go:189: requires real Linux kernel containment\n--- SKIP: TestCollaborationBatchPollerSlotsAndRunnerLinux (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon",
+        "test": "TestIsDriveRoot",
+        "status": "skip",
+        "log": "go-affected-race.jsonl",
+        "reason": "=== RUN   TestIsDriveRoot\n    local_directory_test.go:383: windows-only behaviour\n--- SKIP: TestIsDriveRoot (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "test": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+        "status": "skip",
+        "log": "go-agent-canonical-race.jsonl",
+        "reason": "=== RUN   TestACPManagedTerminalPreservesWindowsUnicodeShellOutput\n    acp_terminal_test.go:89: Windows cmd.exe code-page behavior only applies on Windows\n--- SKIP: TestACPManagedTerminalPreservesWindowsUnicodeShellOutput (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "test": "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+        "status": "skip",
+        "log": "go-agent-canonical-race.jsonl",
+        "reason": "=== RUN   TestCodexExecuteRetriesAfterSignaledProcessIsReaped\n    codex_test.go:3198: Linux signal/reap semantics regression\n--- SKIP: TestCodexExecuteRetriesAfterSignaledProcessIsReaped (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "test": "TestPiExecuteAttachesStdinPipe",
+        "status": "skip",
+        "log": "go-agent-canonical-race.jsonl",
+        "reason": "=== RUN   TestPiExecuteAttachesStdinPipe\n=== PAUSE TestPiExecuteAttachesStdinPipe\n=== CONT  TestPiExecuteAttachesStdinPipe\n    pi_test.go:226: stdin fd inspection relies on /proc/self/fd/0\n--- SKIP: TestPiExecuteAttachesStdinPipe (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "test": "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+        "status": "skip",
+        "log": "go-agent-canonical-race.jsonl",
+        "reason": "=== RUN   TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors\n=== PAUSE TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors\n=== CONT  TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors\n    claude_test.go:755: root-only preflight assertion\n--- SKIP: TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/migrate",
+        "test": "TestCommentContentBigramRequirementMatchesRealPGBigm",
+        "status": "skip",
+        "log": "migration-tests-race.jsonl",
+        "reason": "=== RUN   TestCommentContentBigramRequirementMatchesRealPGBigm\n    migrate_comment_search_index_strategy_test.go:156: Postgres does not provide pg_bigm; install it to run the real-opclass integration test\n--- SKIP: TestCommentContentBigramRequirementMatchesRealPGBigm (0.05s)\n"
+      }
+    ],
+    "sources": [
+      "go-affected-race.jsonl",
+      "go-agent-canonical-race.jsonl",
+      "go-collaboration-final-race.jsonl",
+      "builtin-template-final.jsonl",
+      "go-router-final-race.jsonl",
+      "migration-tests-race.jsonl",
+      "linux-routes-final.log"
+    ],
+    "note": "Unique outcomes from retained JSON logs; additional independent targeted check logs are listed separately, not double-counted."
+  },
+  "linux": {
+    "exit_code": 0,
+    "passed": [
+      "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+      "TestCollaborationPartialResumeRoutesLinux",
+      "TestCollaborationSingleAgentRuntimeRoutesLinux",
+      "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+      "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+      "TestCollaborationSquadCapacityOneRoutesLinux"
+    ],
+    "skipped": [],
+    "failed": [],
+    "container": "multica-cwc-completion-a5d1394e39-linux",
+    "executable_dir": "/tmp/cwc-product-nebz79rl"
+  },
+  "web": {
+    "startTime": "2026-10-18T16:18:52.429Z",
+    "duration": 24984.535,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "desktop": {
+    "startTime": "2026-10-18T16:18:52.429Z",
+    "duration": 28164.338,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "sqlc": {
+    "exit_code": 0,
+    "files": 112,
+    "changed": []
+  },
+  "visual": {
+    "score": 93,
+    "verdict": "pass",
+    "category_match": true,
+    "differences": [
+      "The creation action and expanded participant controls wrap at 390px while preserving readable controls.",
+      "Native 200-percent rendering retains the established typography and uses vertical scrolling for the expanded resource controls."
+    ],
+    "suggestions": [],
+    "reasoning": "Final-source Web and native captures match the established workbench style. Real user flows, 390px layout and native 200-percent checks passed without horizontal overflow or clipped required controls."
+  },
+  "source_manifest": "verification-source-manifest-product-2026-10-19.json",
+  "independent_reviews": [
+    "research/verification-product-2026-10-18.md",
+    "research/verification-product-client-2026-10-18.md",
+    "research/verification-creation-rejection-2026-10-18.md"
+  ],
+  "remaining_scope": "research/remaining-product-work-2026-10-18.md",
+  "publication": "No production rollout or default-gate enablement; task remains in_progress.",
+  "implementation_commits": [
+    {
+      "key": "server",
+      "sha": "2f39f00be81be0f2294ee967282071a4e12bdf52",
+      "subject": "feat(collaboration): keep newly shared work private and recoverable",
+      "file_count": 90
+    },
+    {
+      "key": "core",
+      "sha": "e5876258b49f7ddc72106813cf6f42249d15af4b",
+      "subject": "feat(collaboration): retain account intent through delivery and denial",
+      "file_count": 45
+    },
+    {
+      "key": "clients",
+      "sha": "9a8b7f4833cf0ceac6df38106cbdb3232116149a",
+      "subject": "feat(collaboration): make account delivery and consent usable across clients",
+      "file_count": 26
+    }
+  ],
+  "cleanup": {
+    "stopped": [
+      "web",
+      "desktop-renderer",
+      "api"
+    ],
+    "retained": "Task-owned databases/containers, encrypted fixture files, built test binaries and verification logs",
+    "application_environment": "Original application services and database untouched",
+    "time": "2026-10-18T16:44:08.615075+00:00"
+  }
+}

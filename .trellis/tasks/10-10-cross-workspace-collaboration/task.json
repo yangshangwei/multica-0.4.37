@@ -2,7 +2,7 @@
   "id": "cross-workspace-collaboration",
   "name": "cross-workspace-collaboration",
   "title": "跨账号任务流转与共享 AI 协作工作台",
-  "description": "支持独立工作空间按账号派单与协作；继续原子 Switch、M08/M11、共享技能正文失效与双端集成。",
+  "description": "支持独立工作空间按账号派单与协作；账号创建/私有附件、资源授权表单和实时已验证，继续来源页面、完整内容、运行文件/provider与代管验收。",
   "status": "in_progress",
   "dev_type": null,
   "scope": null,
@@ -95,7 +95,7 @@
     ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-workbench-2026-10-18.md",
     ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-fixture-knip-2026-10-18.md"
   ],
-  "notes": "2026-10-18：原子Switch、冻结授权/M08/M11、静态Linux CLI/daemon容量1闭环及已有协作单Web/macOS Desktop通过；TS11993、Go6168+6402、lint/typecheck15、sqlc108一致性及独立检查通过。默认跳过/静态分析既有项已记录。完整97项AC及创建/附件/资源写表单/通用provider等仍待完成。",
+  "notes": "2026-10-19：账号新建/私有附件、资源授权与Switch、禁用参与人管理、账号实时和持久拒绝后的恢复通过。TS12073、静态15、Web4、macOS Electron8、Linux6、sqlc112一致性及独立检查通过；默认跳过/既有静态项记录。来源页面/完整字段评论/运行记录与文件provider/P7-P8和全97项AC仍待完成。",
   "meta": {
     "planning_status": "approved_revision_in_implementation",
     "implementation_authorized": true,
@@ -962,5 +962,44 @@
       ],
       "test_services": "stopped; test databases and evidence retained"
     }
+  },
+  "continuation_product_2026_10_18": {
+    "status": "verified_product_increment",
+    "authorization": "用户在上一轮实现提交和验证完成后明确要求继续推进；恢复既有任务，沿用原规划与实施授权。",
+    "baseline_commit": "4dd643126f4ade9fa70e1dfa90cad0ba21350425",
+    "plan": "continuation-product-2026-10-18.md",
+    "evidence_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-cwc-product-20261018-nebz79rl",
+    "scope": [
+      "public creation and controlled attachments",
+      "resource consent and Switch forms",
+      "account and issue realtime",
+      "follow-up product integration from existing P1-P8 plan"
+    ],
+    "completed_at": "2026-10-19T00:36:45.131423+08:00",
+    "verification": "verification-product-2026-10-19.md",
+    "summary": "verification-summary-product-2026-10-19.json",
+    "source_manifest": "verification-source-manifest-product-2026-10-19.json",
+    "remaining": "research/remaining-product-work-2026-10-18.md",
+    "default_gates_enabled": false,
+    "commits": [
+      {
+        "key": "server",
+        "sha": "2f39f00be81be0f2294ee967282071a4e12bdf52",
+        "subject": "feat(collaboration): keep newly shared work private and recoverable",
+        "file_count": 90
+      },
+      {
+        "key": "core",
+        "sha": "e5876258b49f7ddc72106813cf6f42249d15af4b",
+        "subject": "feat(collaboration): retain account intent through delivery and denial",
+        "file_count": 45
+      },
+      {
+        "key": "clients",
+        "sha": "9a8b7f4833cf0ceac6df38106cbdb3232116149a",
+        "subject": "feat(collaboration): make account delivery and consent usable across clients",
+        "file_count": 26
+      }
+    ]
   }
 }

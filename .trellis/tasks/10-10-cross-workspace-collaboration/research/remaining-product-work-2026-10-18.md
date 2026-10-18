@@ -1,60 +1,66 @@
-# Workbench continuation: concrete product boundary
+# Remaining collaboration product work
 
-This pass completes the current/participating account shell, real activity read,
-comment history/link restoration, exact-recipient and edit-baseline fixes,
-original-key cancellation recovery, and truthful target/lane feedback. It is not
-full P6/P8 acceptance.
+Updated 2026-10-19 after the account creation/file/resource/realtime increment.
+The filename is retained for existing handoff links. The parent remains
+`in_progress`; current evidence is in `../verification-product-2026-10-19.md`.
 
-## Implemented UI
+## Implemented and verified in the account workbench
 
-- Account list/detail independent of workspace membership, selected detail retained
-  after handoff, account notification read/archive and unread count.
-- Invite, transfer, request/return information, submit acceptance, nonterminal status,
-  creator lifecycle actions, leave, and title/body/date/priority editing.
-- Human comment composer with issue-scoped mention candidates, named notification
-  recipients, explicit suppression and per-target rejection/waiting reasons.
-- Supported server human Stop/Resume controls and waiting-input cancellation;
-  original requests persist before transport and recover without new identities.
-- Activity with exact new handoff provenance and safe before/after edits; older
-  unlinked handoff records remain generic. Per-comment history is lazy-loaded.
-- Current channel/hold state, original consumed group membership, member/continuation
-  proof summaries, Switch proposal inspection and saved Switch request recovery.
+- Existing account lists/details, human handoff/lifecycle/editing foundations,
+  comments/history, control and original-key recovery from the previous pass.
+- Public human creation API and shared Web/Desktop creation form, explicit
+  source/recipient choices, private draft uploads, original upload/create result
+  recovery and same-UUID navigation. Default rollout gates remain disabled.
+- Controlled file metadata/list/preview/download, revocable native capabilities,
+  comment attachment delivery and immutable input references. Removing display
+  references through the service preserves issue delivery and other references.
+- Whole-draft one-time consumption, current intended-issue metadata, bounded
+  byte handling, private-prefix protection and unknown-commit object retention.
+- Durable authorized creation refusals. Only correlated HTTP 200 proof clears a
+  pending request; retained input/files may then be explicitly resubmitted with
+  a new key. Old rejected keys cannot later create another issue.
+- Target registration, owner-only consent/revoke, Switch authoring/consent/commit
+  forms, and participant management including disabled accounts. Web and actual
+  native Electron resource journeys use synthetic non-executable runtimes.
+- Account/issue WebSockets, final-send authority checks, retained invalidation
+  outbox, runtime transition facts, snapshot cursor handling and fenced Query
+  recovery. Web evidence observes the actual account WS and clears an open
+  preview/detail on revocation without reload. Polling remains recovery.
 
-## Required product affordances still absent
+## Required product work still absent or incomplete
 
-- Target registration, initial owner consent/revoke, Switch proposal authoring,
-  Switch owner consent/revoke and atomic commit forms. Core Switch operations are
-  implemented, but the current view only inspects proposals and recovers saved ones.
-- Labels/custom-property editors and source project/parent/iteration/stage editors.
-  The current edit form only changes title, description, dates and priority.
-- Participant management/removal UI. Add participant and Leave are present; there
-  is no participant list with creator-only Remove controls.
-- Comment edit/delete/resolve/unresolve/reaction controls, replies, and issue
-  reactions. Comment display, create, anchors and read history are present.
-- Controlled attachment upload/view/download and retained issue attachment list.
-  Restricted RichContent intentionally renders linked resources without normal
-  workspace unfurls/download paths; this is not attachment acceptance.
-- New collaboration creation form and source-page creation entry. Public server
-  creation remains unregistered, and no existing-issue conversion is exposed.
-- Limited delegated administrator lifecycle/successor UI (P7).
-- Source issue detail/list/board/timeline collaboration routing, external-account
-  filters and safe drag-to-transfer integration. The shared sidebar account entry
-  does not supply those source-page affordances.
-- Account/issue WebSocket subscriptions and immediate account event invalidation.
-  Current reads refresh on mount, focus, reconnect and the existing 15-second poll.
-- Full run transcript/usage/resource provenance and input snapshot display. The
-  existing execution DTO exposes IDs/state/proof/membership, not those bodies.
-- Server trigger preview still does not provide explicit merged-batch/continuation
-  grouping facts. The UI reports supplied target outcomes and does not invent
-  merge decisions from names or transient current state.
-- Public AI submission/execution capability remains gated; keeping typed controls
-  available does not establish squad runtime acceptance or open creation.
+- Source-page creation entry and shared collaboration routing from ordinary
+  source detail/list/board/timeline. External-account summaries/filters and safe
+  drag-to-transfer/status behavior are not supplied by the account-only entry.
+- Labels/custom-property editors and source project/parent/iteration/stage
+  selectors. Current creation defaults status/priority and does not expose initial
+  iteration authoring. Existing server field support is not full UI acceptance.
+- Comment edit/delete/resolve/unresolve/reactions, replies and issue reactions.
+  Comment create, attachment delivery, anchors and history are present; endpoint
+  reference-removal tests do not establish the missing editing controls.
+- Complete run transcript/usage/resource provenance and input snapshot display.
+  Current execution facts expose identities/state/proof/membership, with richer
+  recorded content still requiring authorized projections and shared views.
+- Every remaining R52 AI-result notification kind and complete trigger preview
+  facts for merged batches/continuations. Invalidation facts are not a substitute
+  for those persistent notification and presentation semantics.
+- Runtime attachment-byte and committed-Git preparation, general provider
+  adapters and non-Linux containment. Static Linux CLI/daemon tests do not prove
+  user-installed providers or file preparation; normal tests never invoke them.
+- P7 limited administrator lifecycle/successor forms and their password/admin
+  authorization, transaction and native integration acceptance.
+- Full P8/97-criterion acceptance and rollout preparation across all old entry
+  points/platforms. Do not enable creation or execution merely because this
+  account-workbench increment passes.
 
-## Evidence limits
+## Remaining operational evidence and limits
 
-The Web test uses normal test accounts and a normal source issue, then seeds only
-its collaboration rows in the root-owned disposable database because creation is
-not public. The cancellation target has no agent/runtime/grant/executable and cannot
-launch AI. That test proves existing-record account flows, not AC67 or actual AI
-execution. Native Electron evidence belongs to the Desktop lane. Full 97-criterion
-task completion remains with the root session.
+- Real S3-backed delivery and a distributed Redis outage exercise were not run.
+  Adapter/relay contracts and local real-HTTP/WS flows have their stated tests.
+- Automated reclamation of unknown-commit encrypted orphans and unconsumed draft
+  objects remains follow-up lifecycle work. Do not delete uncertain winners.
+- Native evidence uses macOS Electron and production renderer/real HTTP with the
+  existing bounded native-service harness. It is not Windows/Linux Desktop or a
+  packaged full-Main-startup acceptance claim.
+- Already downloaded bytes cannot be remotely recalled. New accesses and cached
+  UI projections are reauthorized/cleared under the documented boundaries.
