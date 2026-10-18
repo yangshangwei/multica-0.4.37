@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-2.md`
-- **Total Sessions**: 85
+- **Total Sessions**: 86
 - **Last Active**: 2026-10-18
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-2.md` | ~471 | Active |
+| `journal-2.md` | ~509 | Active |
 | `journal-1.md` | ~1987 | Archived |
 <!-- @@@/auto:active-documents -->
 
@@ -30,6 +30,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 86 | 2026-10-18 | Target holds and M04 control recovery verified | `a389ef8596791cb8639ce21b27f64868cf93d715`, `dcbb584a019b38f0646887b26fe47a565737619c` | `codex/cross-workspace-collaboration` |
 | 85 | 2026-10-18 | M09 单智能体闭环与最终评审续作 | `188a7f4a5b0dc0e08873389c6261be0a55f012f9`, `6794f4e3680526d0105df9d58fa93edc4f937603`, `3737af87db8c4d7e364e870c32354a772a1a4939` | `codex/cross-workspace-collaboration` |
 | 84 | 2026-10-17 | 跨账号协作新版需求核对与多目标基础验证 | `e6bc3759e`, `f5259e245`, `96331dd66` | `codex/cross-workspace-collaboration` |
 | 74 | 2026-10-15 | Complete automation template native acceptance | `c98c14ad4beb43a613237288e617af7405e81306` | `codex/cross-workspace-collaboration` |

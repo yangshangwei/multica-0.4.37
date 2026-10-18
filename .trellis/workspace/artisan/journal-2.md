@@ -469,3 +469,41 @@ Closed A01–A07 after a 96/100 native visual verdict, including an additional s
 ### Next Steps
 
 - 在 target hold、多通道或 M11 开始前完整重读最新执行契约，再按更新后的控制/批次规则实现。
+
+
+## Session 86: Target holds and M04 control recovery verified
+<!-- trellis-session: v=2 fp=41c483934f1804fa -->
+
+**Date**: 2026-10-18
+**Task**: Target holds and M04 control recovery verified
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Implemented and verified target hold/control and resource invalidation boundaries after rereading the latest execution contract; full collaboration task remains in progress.
+
+### Main Changes
+
+- Separate target hold/version from channel pause; atomic target Resume, partial issue Resume and original control receipt recovery.
+- Use borrowed resource transactions for runtime teardown/rebind; preserve proof and reservations; repair only provable legacy reconfigure mirrors.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `a389ef8596791cb8639ce21b27f64868cf93d715` | feat(collaboration): keep resource holds independent of channel pause |
+| `dcbb584a019b38f0646887b26fe47a565737619c` | docs(collaboration): preserve the verified hold and recovery boundary |
+
+### Testing
+
+- [OK] Go race: 603 top-level and 687 subtests, including isolated Redis follow-up; Linux ARM64 routes: 5, no skips.
+- [OK] Core: 3509 tests; workspace typecheck 9/9 and lint 6/6; Go vet/gofmt; migration698 and 103-file sqlc consistency; independent H01/H02/H03 closed.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Reread current contracts and implement real channel FIFO/eligibility rebatching so held S cannot block valid A; preserve source/proof identity and verify never-launched return-to-waiting.
+- Then complete frozen grants, Switch/configuration convergence, M08/M11, file/provider paths and Web/Desktop/P1-P8; keep task in_progress and client execution unavailable.
