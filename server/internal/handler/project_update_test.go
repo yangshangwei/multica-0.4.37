@@ -210,7 +210,8 @@ func TestProjectUpdateStatisticsSnapshotIsServerGeneratedAndImmutable(t *testing
 }
 
 func TestProjectUpdateCanonicalFixtureAndNormalization(t *testing.T) {
-	raw, e := os.ReadFile("../../../.trellis/tasks/10-05-projects-p1-progress/canonical-fixture.json")
+	// Keep the independent canonical vector outside the lifecycle of task notes.
+	raw, e := os.ReadFile("testdata/project-update-canonical.json")
 	if e != nil {
 		t.Fatal(e)
 	}
