@@ -31,10 +31,12 @@ task's source or runtime snapshot cannot authorize credential minting. An
 ordinary child that only references a collaboration parent remains ordinary;
 the parent link grants no access to the parent's private content.
 
-The version 2 `execution` projection identifies typed targets and execution
-groups. Its `availability: "unavailable"` is explicit: it does not enable
-shared execution or control endpoints. A missing or unknown protocol must not
-fall back to ordinary execution. Historical unresolved work remains paused.
+The version 3 `execution` projection identifies typed targets, channels,
+batches and execution groups. Its `availability: "unavailable"` keeps client
+execution capabilities disabled until full acceptance. Dedicated managed
+runtime APIs do not grant ordinary agent credentials shared execution access.
+A missing or unknown protocol must not fall back to ordinary execution;
+unproven current work retains its termination barrier.
 
 Human source members may change position alone without advancing collaboration
 revision. This does not authorize other changes. The ordinary-task contracts

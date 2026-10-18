@@ -15,17 +15,12 @@ import (
 func (t *collaborationQueueTx) stopInvalidatedWork(ctx context.Context, user pgtype.UUID, epoch int64, grants []db.CollaborationGrant, reason string) (*CollaborationQueueReceipt, error) {
 	selected := make(map[pgtype.UUID]string)
 	invalidGrants := make(map[pgtype.UUID]bool)
-	legacy := false
-	legacyDisposition := "stopped"
 	for _, grant := range grants {
 		if epoch > 0 && grant.OwnerAuthEpoch >= epoch {
 			continue
 		}
 		invalidGrants[grant.ID] = true
-		if grant.LegacyUnresolved {
-			legacy = legacy || t.session.ActiveGrantID == grant.ID
-			continue
-		}
+
 		if grant.RevokedAt.Valid {
 			continue
 		}
@@ -46,6 +41,12 @@ func (t *collaborationQueueTx) stopInvalidatedWork(ctx context.Context, user pgt
 			}
 		}
 	}
+	if _, err := t.q.LockCollaborationSessionCommands(ctx, t.session.ID); err != nil {
+		return nil, err
+	}
+	if err := t.q.CloseEmptyCollaborationBatches(ctx, t.session.ID); err != nil {
+		return nil, err
+	}
 	groups, err := t.q.LockCollaborationUnsettledGroups(ctx, t.session.ID)
 	if err != nil {
 		return nil, err
@@ -55,10 +56,15 @@ func (t *collaborationQueueTx) stopInvalidatedWork(ctx context.Context, user pgt
 		if err != nil {
 			return nil, err
 		}
-		if command.TargetID != group.TargetID || command.LegacyUnresolved {
+		if command.TargetID != group.TargetID {
 			return nil, invalidCollaborationLedger("invalidated group command mismatch")
 		}
 		author := user.Valid && command.AuthorUserID == user && (epoch == 0 || command.AuthorAuthEpoch < epoch)
+		batchAuthor, err := collaborationBatchContainsAuthor(ctx, t.q, group.BatchID, user, epoch)
+		if err != nil {
+			return nil, err
+		}
+		author = author || batchAuthor
 		if author {
 			selected[group.TargetID] = "cancelled"
 		}
@@ -88,44 +94,47 @@ func (t *collaborationQueueTx) stopInvalidatedWork(ctx context.Context, user pgt
 			return nil, err
 		}
 		author := user.Valid && command.AuthorUserID == user && (epoch == 0 || command.AuthorAuthEpoch < epoch)
+		batchAuthor, err := collaborationBatchContainsAuthor(ctx, t.q, run.BatchID, user, epoch)
+		if err != nil {
+			return nil, err
+		}
+		author = author || batchAuthor
 		if !author && !invalidGrants[run.GrantID] {
 			continue
 		}
-		if run.LegacyUnresolved {
-			legacy = true
-			if author {
-				legacyDisposition = "cancelled"
-			}
-		} else if author {
+		if author {
 			selected[run.TargetID] = "cancelled"
 		} else if selected[run.TargetID] == "" {
 			selected[run.TargetID] = "stopped"
 		}
 	}
-	if len(selected) == 0 && !legacy {
+	if len(selected) == 0 {
 		return nil, nil
 	}
-	if legacy {
-		// There is no provable typed scope for old work. Preserve the global
-		// pause and legacy barrier; never attribute it to the current grant.
-		if invalidGrants[t.session.ActiveGrantID] {
-			t.session, err = t.q.InvalidateCollaborationActiveGrant(ctx, t.session.ID)
-			if err != nil {
-				return nil, err
-			}
-		}
-		if t.session.QueueState == "active" {
-			t.session, err = t.q.PauseCollaborationSession(ctx, db.PauseCollaborationSessionParams{SessionID: t.session.ID, PauseReason: reason})
-			if err != nil {
-				return nil, err
-			}
-		}
-	}
+
 	// stopGroup decides cancelled versus stopped from every run's original
 	// evidence, including descendants that the removed author never directly ran.
-	r, err := t.stopTargets(ctx, selected, legacy, legacyDisposition, reason, false)
+	r, err := t.stopTargets(ctx, selected, false, reason, false)
 	if err != nil {
 		return nil, err
 	}
 	return &r, nil
+}
+
+// A started batch retains every human authorization, even though one immutable
+// input anchors its root group. Losing any contributing author stops the batch.
+func collaborationBatchContainsAuthor(ctx context.Context, q *db.Queries, batchID, user pgtype.UUID, epoch int64) (bool, error) {
+	if !batchID.Valid || !user.Valid {
+		return false, nil
+	}
+	inputs, err := q.ListCollaborationBatchInputs(ctx, batchID)
+	if err != nil {
+		return false, err
+	}
+	for _, input := range inputs {
+		if input.State == "in_flight" && input.AuthorUserID == user && (epoch == 0 || input.AuthorAuthEpoch < epoch) {
+			return true, nil
+		}
+	}
+	return false, nil
 }

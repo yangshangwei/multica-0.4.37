@@ -22,9 +22,11 @@ func seedCollaborationRouteCommand(t *testing.T, fx *testutil.Fixture, session, 
 	if err != nil {
 		t.Fatal(err)
 	}
-	target := fx.Insert(t, "collaboration_target", testutil.Cols{"session_id": session, "kind": "agent", "resource_id": agent, "roster": roster, "next_command_seq": 2})
+	channel := fx.Insert(t, "collaboration_channel", testutil.Cols{"session_id": session, "root_agent_id": agent, "next_batch_seq": 2})
+	target := fx.Insert(t, "collaboration_target", testutil.Cols{"session_id": session, "channel_id": channel, "kind": "agent", "resource_id": agent, "roster": roster, "next_command_seq": 2})
+	batch := fx.Insert(t, "collaboration_batch", testutil.Cols{"session_id": session, "channel_id": channel, "effective_target_id": target, "seq": 1})
 	fx.Exec(t, `UPDATE collaboration_session SET target_set_version=target_set_version+1 WHERE id=$1`, session)
-	fx.Insert(t, "collaboration_command", testutil.Cols{"session_id": session, "target_id": target, "input_event_id": uuid.NewString(),
+	fx.Insert(t, "collaboration_command", testutil.Cols{"session_id": session, "target_id": target, "channel_id": channel, "batch_id": batch, "input_event_id": uuid.NewString(),
 		"seq": 1, "author_user_id": author, "participant_epoch": 1, "author_auth_epoch": 1, "lifecycle_epoch": 1, "content": content})
 }
 

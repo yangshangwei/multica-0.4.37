@@ -17,8 +17,9 @@ ORDER BY agent_id, target_type ASC, created_at ASC;
 -- refreshes created_by/created_at rather than erroring. Callers replace the
 -- whole set via DeleteAgentInvocationTargets + a series of these, so the
 -- ON CONFLICT is belt-and-suspenders against races.
+WITH locked_agent AS MATERIALIZED (SELECT agent.id FROM agent WHERE agent.id = sqlc.arg(agent_id)::uuid FOR UPDATE)
 INSERT INTO agent_invocation_target (agent_id, target_type, target_id, created_by)
-VALUES ($1, $2, $3, sqlc.narg('created_by'))
+SELECT id, sqlc.arg(target_type)::text, sqlc.arg(target_id)::uuid, sqlc.narg('created_by')::uuid FROM locked_agent WHERE true
 ON CONFLICT (agent_id, target_type, target_id) DO UPDATE SET
     created_by = EXCLUDED.created_by,
     created_at = now();
@@ -27,8 +28,9 @@ ON CONFLICT (agent_id, target_type, target_id) DO UPDATE SET
 -- Clears every target for an agent. Used before re-writing the allow-list so
 -- the update is a wholesale replace, matching the composio_toolkit_allowlist
 -- write model.
-DELETE FROM agent_invocation_target
-WHERE agent_id = $1;
+WITH locked_agent AS MATERIALIZED (SELECT agent.id FROM agent WHERE agent.id = $1 FOR UPDATE)
+DELETE FROM agent_invocation_target USING locked_agent
+WHERE agent_id = locked_agent.id;
 
 -- name: DeleteAgentInvocationTargetsByMember :exec
 -- Removes member-target grants pointing at a leaving user, SCOPED to a single
@@ -36,10 +38,12 @@ WHERE agent_id = $1;
 -- must NOT touch their invocation grants on agents in another workspace. Joins
 -- through agent (agent_invocation_target has no workspace_id column and no FK)
 -- to bound the delete to @workspace_id.
+WITH locked_agents AS MATERIALIZED (
+    SELECT agent.id FROM agent WHERE agent.workspace_id = @workspace_id ORDER BY agent.id FOR UPDATE
+)
 DELETE FROM agent_invocation_target ait
-USING agent a
+USING locked_agents a
 WHERE ait.agent_id = a.id
-  AND a.workspace_id = @workspace_id
   AND ait.target_type = 'member'
   AND ait.target_id = @target_id;
 
@@ -54,7 +58,8 @@ WHERE ait.agent_id = a.id
 -- with their runtime (they are unbound and keep their configuration), so
 -- clearing THEIR invocation targets here would silently strip a surviving
 -- agent's allow-list.
-DELETE FROM agent_invocation_target
-WHERE agent_id IN (
-    SELECT id FROM agent WHERE runtime_id = $1 AND kind = 'system'
-);
+WITH locked_agents AS MATERIALIZED (
+    SELECT agent.id FROM agent WHERE agent.runtime_id = $1 AND agent.kind = 'system' ORDER BY agent.id FOR UPDATE
+)
+DELETE FROM agent_invocation_target USING locked_agents
+WHERE agent_id = locked_agents.id;

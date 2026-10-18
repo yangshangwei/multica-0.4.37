@@ -68,6 +68,9 @@ func seedQueueSquad(t *testing.T, f *collaborationQueueFixture, withMember bool)
 	roster[0].Role = "leader"
 	squad := f.fx.Squad(t, "Synthetic squad "+uuid.NewString(), roster[0].AgentID)
 	if withMember {
+		if f.fx.Count(t, `SELECT count(*) FROM member WHERE workspace_id=$1 AND user_id=$2`, f.workspace, f.handler) == 0 {
+			f.fx.Member(t, f.workspace, f.handler, "member")
+		}
 		runtime := f.fx.Runtime(t, "Synthetic member runtime", testutil.Cols{"owner_id": f.handler, "status": "offline"})
 		agent := f.fx.Agent(t, "Synthetic member "+uuid.NewString(), runtime, testutil.Cols{"owner_id": f.handler})
 		f.fx.SquadMember(t, squad, "agent", agent)
@@ -101,6 +104,7 @@ func seedQueueMember(t *testing.T, f *collaborationQueueFixture, root db.Collabo
 		"target_epoch": root.TargetEpoch.Int64, "config_version": root.ConfigVersion.Int64, "grant_id": grant.ID, "grant_epoch": grant.Epoch,
 		"resource_epoch": root.ResourceEpoch, "execution_workspace_id": grant.ExecutionWorkspaceID, "runtime_id": grant.RuntimeID,
 		"installation_id": grant.InstallationID, "binding_id": grant.BindingID, "binding_epoch": grant.BindingEpoch, "authorized_attempt_seq": attempts,
+		"channel_id": root.ChannelID, "batch_id": root.BatchID,
 	}))
 	run, err := f.svc.Queries.GetCollaborationRun(f.ctx, db.GetCollaborationRunParams{SessionID: f.issue.SessionID, RunID: id})
 	if err != nil {
@@ -109,7 +113,7 @@ func seedQueueMember(t *testing.T, f *collaborationQueueFixture, root db.Collabo
 	return run
 }
 
-func TestCollaborationTypedTargetsKeepIndependentFIFOAndInputIdentity(t *testing.T) {
+func TestCollaborationTypedTargetsCoalesceRootAndKeepInputIdentity(t *testing.T) {
 	f := newCollaborationQueueFixture(t)
 	squad, _ := seedQueueSquad(t, f, false)
 	event := util.MustParseUUID(uuid.NewString())
@@ -124,15 +128,16 @@ func TestCollaborationTypedTargetsKeepIndependentFIFOAndInputIdentity(t *testing
 	if a2.CommandSequence != 2 || s2.CommandSequence != 2 {
 		t.Fatal("each target must preserve its own FIFO")
 	}
-	// These are persisted group fixtures, not evidence of real parallel launch
-	// or shared-machine capacity enforcement, which remain runtime work.
-	ra, rs := f.run(t, a, 1), f.run(t, s, 1)
-	if ra.GroupID == rs.GroupID || ra.TargetID == rs.TargetID || ra.AgentID != rs.AgentID {
-		t.Fatal("direct agent and same-leader squad lost independent execution identity")
+	if a.BatchID != s.BatchID || a.BatchID != a2.BatchID || a.BatchID != s2.BatchID || a.ChannelID != s.ChannelID {
+		t.Fatal("same-root inputs did not coalesce into one pending batch")
 	}
-	if f.fx.Count(t, `SELECT count(*) FROM collaboration_execution_group WHERE session_id=$1 AND settled_at IS NULL`, f.issue.SessionID) != 2 ||
-		f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=ANY($1::uuid[]) AND state='waiting'`, []pgtype.UUID{a2.CommandID, s2.CommandID}) != 2 {
-		t.Fatal("one target's occupancy consumed another target or later input")
+	// Synthetic group setup does not prove native squad launch. It proves the
+	// single root holds every immutable input and uses the effective squad role.
+	run := f.run(t, a, 1)
+	if run.TargetID != squad.ID || run.StepKind.String != "leader" || run.BatchID != a.BatchID ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_execution_group WHERE session_id=$1 AND settled_at IS NULL`, f.issue.SessionID) != 1 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE batch_id=$1 AND state='in_flight'`, a.BatchID) != 4 {
+		t.Fatal("batch setup lost inputs, duplicated the root, or lost the squad role")
 	}
 }
 
@@ -158,8 +163,8 @@ func TestCollaborationTargetStopLeavesOtherTargetAndIssueActive(t *testing.T) {
 		t.Fatal(err)
 	}
 	control := CollaborationStopQueueParams{CollaborationQueueRequest: f.request(), Scope: collaboration.ControlTarget, Targets: []CollaborationTargetControl{targetControl(queueTarget(t, f, b.ID))}}
-	denied, err := f.svc.ResumeQueue(f.ctx, CollaborationResumeQueueParams{CollaborationStopQueueParams: control, ExpectedExecutionEpoch: 2})
-	if !collaborationErrorCode(err, "collaboration_execution_unavailable") {
+	denied, err := f.svc.ResumeQueue(f.ctx, CollaborationResumeQueueParams{CollaborationStopQueueParams: control, ExpectedExecutionEpoch: enableControlGate(t, f.collaborationFixture)})
+	if !collaborationErrorCode(err, "runtime_upgrade_required") {
 		t.Fatalf("unrelated A proof incorrectly blocked B or incomplete runtime resumed: %+v %v", denied, err)
 	}
 	if f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state='paused'`, b.ID) != 1 {
@@ -185,7 +190,9 @@ func TestCollaborationIssueStopFencesChangedAndLaterTargetSets(t *testing.T) {
 	}
 	// Register a fresh pending target through the actual service after the issue
 	// pause. Registration cannot create consent or an active control state.
-	resource := collaboration.TargetResource{Role: "agent", AgentID: uuid.NewString(), RuntimeID: uuid.NewString(), ExecutionWorkspaceID: f.workspace, OwnerUserID: f.creator}
+	runtime := f.fx.Runtime(t, "Later target runtime", testutil.Cols{"owner_id": f.creator, "status": "offline"})
+	agent := f.fx.Agent(t, "Later target "+uuid.NewString(), runtime, testutil.Cols{"owner_id": f.creator})
+	resource := collaboration.TargetResource{Role: "agent", AgentID: agent, RuntimeID: runtime, ExecutionWorkspaceID: f.workspace, OwnerUserID: f.creator}
 	registered, err := f.svc.RegisterTarget(f.ctx, CollaborationRegisterTargetParams{CollaborationQueueRequest: f.request(), Kind: collaboration.TargetAgent, ResourceID: util.MustParseUUID(resource.AgentID), ExpectedTargetSetVersion: r.TargetSetVersion, Roster: []collaboration.TargetResource{resource}})
 	if err != nil {
 		t.Fatal(err)
@@ -243,10 +250,11 @@ func TestCollaborationDepartureStopsAuthorAndOwnerGroupsOnly(t *testing.T) {
 	b, _ := seedCollaborationTarget(t, f.fx, f.issue.Issue.ID, f.issue.SessionID, util.MustParseUUID(f.handler), 1)
 	d, _ := seedCollaborationTarget(t, f.fx, f.issue.Issue.ID, f.issue.SessionID, util.MustParseUUID(f.creator), 1)
 	squad, memberGrant := seedQueueSquad(t, f, true)
-	aRun := f.run(t, submitTarget(t, f, f.targetID, f.handler, "removed author's work", pgtype.UUID{}), 1)
+	aInput := submitTarget(t, f, f.targetID, f.handler, "removed author's work", pgtype.UUID{})
+	submitTarget(t, f, squad.ID, f.creator, "same batch with removed resource owner", pgtype.UUID{})
+	aRun := f.run(t, aInput, 1)
 	bRun := f.run(t, submitTarget(t, f, b.ID, f.creator, "removed owner's resource", pgtype.UUID{}), 1)
-	sRun := f.run(t, submitTarget(t, f, squad.ID, f.creator, "squad with removed owner", pgtype.UUID{}), 1)
-	member := seedQueueMember(t, f, sRun, memberGrant, 1)
+	member := seedQueueMember(t, f, aRun, memberGrant, 1)
 	dRun := f.run(t, submitTarget(t, f, d.ID, f.creator, "independent target", pgtype.UUID{}), 1)
 	var removed, retained []pgtype.UUID
 	for _, target := range []pgtype.UUID{f.targetID, b.ID, squad.ID, d.ID} {
@@ -258,7 +266,7 @@ func TestCollaborationDepartureStopsAuthorAndOwnerGroupsOnly(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=ANY($1::uuid[]) AND forced_disposition='stopped' AND proof_state='unknown' AND settled_at IS NULL`, []pgtype.UUID{aRun.ID, bRun.ID, sRun.ID, member.ID}) != 4 ||
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=ANY($1::uuid[]) AND forced_disposition='stopped' AND proof_state='unknown' AND settled_at IS NULL`, []pgtype.UUID{aRun.ID, bRun.ID, member.ID}) != 3 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=ANY($1::uuid[]) AND state='cancelled'`, removed) != 4 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=ANY($1::uuid[]) AND state='waiting'`, retained) != 4 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_grant WHERE issue_id=$1 AND owner_user_id=$2 AND revoked_at IS NULL`, f.issue.Issue.ID, f.handler) != 0 {
@@ -294,9 +302,9 @@ func TestCollaborationResourceRevocationPreservesAllWaitingAuthors(t *testing.T)
 func TestCollaborationWholeLifecycleKeepsAllTargetBarriersOnReopen(t *testing.T) {
 	f := newCollaborationLifecycleFixture(t)
 	squad, memberGrant := seedQueueSquad(t, f, true)
+	f.submit(t, f.handler, "direct input in the squad batch")
 	root := f.run(t, submitTarget(t, f, squad.ID, f.creator, "squad root", pgtype.UUID{}), 0)
 	member := seedQueueMember(t, f, root, memberGrant, 1)
-	f.run(t, f.submit(t, f.handler, "direct root"), 0)
 	w1 := f.submit(t, f.creator, "direct waiting")
 	w2 := submitTarget(t, f, squad.ID, f.handler, "squad waiting", pgtype.UUID{})
 	if _, err := f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "complete", "done", 1, 1)); err != nil {
@@ -312,12 +320,14 @@ func TestCollaborationWholeLifecycleKeepsAllTargetBarriersOnReopen(t *testing.T)
 	}
 	control := f.issueControl(t)
 	control.ExpectedLifecycleEpoch = 3
-	p := CollaborationResumeQueueParams{CollaborationStopQueueParams: control, ExpectedExecutionEpoch: 2}
-	denied, err := f.svc.ResumeQueue(f.ctx, p)
-	if !collaborationErrorCode(err, "stop_unconfirmed") {
-		t.Fatalf("reopen bypassed descendant proof: %+v %v", denied, err)
+	p := CollaborationResumeQueueParams{CollaborationStopQueueParams: control, ExpectedExecutionEpoch: enableControlGate(t, f.collaborationFixture)}
+	resumed, err := f.svc.ResumeQueue(f.ctx, p)
+	if err != nil || resumed.Code != "partially_resumed" || len(resumed.Targets) != 2 ||
+		resumed.Targets[0].Code != "stop_unconfirmed" || resumed.Targets[1].Code != "stop_unconfirmed" {
+		t.Fatalf("reopen lost the per-channel descendant barrier: %+v %v", resumed, err)
 	}
-	if f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND queue_state='paused'`, f.issue.SessionID) != 1 ||
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND queue_state='active'`, f.issue.SessionID) != 1 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE session_id=$1 AND queue_state='paused'`, f.issue.SessionID) != 2 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=ANY($1::uuid[]) AND state='cancelled'`, []pgtype.UUID{w1.CommandID, w2.CommandID}) != 2 {
 		t.Fatal("reopen revived old queues")
 	}

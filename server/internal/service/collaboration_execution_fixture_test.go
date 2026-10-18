@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/collaboration"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
@@ -18,6 +19,9 @@ import (
 // These fixtures do not enroll a supervisor, fork a process or prove termination.
 func seedCollaborationTarget(t *testing.T, fx *testutil.Fixture, issue, session, owner pgtype.UUID, epoch int64) (db.CollaborationTarget, db.CollaborationGrant) {
 	t.Helper()
+	if fx.Count(t, `SELECT count(*) FROM member WHERE workspace_id=$1 AND user_id=$2`, fx.WorkspaceID, owner) == 0 {
+		fx.Member(t, fx.WorkspaceID, util.UUIDToString(owner), "member")
+	}
 	runtime := fx.Runtime(t, "Synthetic offline collaboration runtime", testutil.Cols{"owner_id": owner, "status": "offline"})
 	agent := fx.Agent(t, "Synthetic collaboration target "+uuid.NewString(), runtime, testutil.Cols{"owner_id": owner})
 	resource := collaboration.TargetResource{Role: "agent", AgentID: agent, RuntimeID: runtime, ExecutionWorkspaceID: fx.WorkspaceID, OwnerUserID: util.UUIDToString(owner)}
@@ -43,13 +47,47 @@ func seedCollaborationTarget(t *testing.T, fx *testutil.Fixture, issue, session,
 
 func seedCollaborationGrant(t *testing.T, fx *testutil.Fixture, issue, target pgtype.UUID, config int64, resource collaboration.TargetResource, epoch int64) db.CollaborationGrant {
 	t.Helper()
+	if auth.ManagedDeploymentID() == "" {
+		t.Setenv("MULTICA_DEPLOYMENT_ID", "68150177-594d-45d8-8a84-bc979b498b04")
+	}
+	if fx.Count(t, `SELECT count(*) FROM member WHERE workspace_id=$1 AND user_id=$2`, resource.ExecutionWorkspaceID, resource.OwnerUserID) == 0 {
+		fx.Member(t, resource.ExecutionWorkspaceID, resource.OwnerUserID, "member")
+	}
+	q := db.New(fx.Pool)
+	var targetRow db.CollaborationTarget
+	session, err := q.GetCollaborationSession(t.Context(), issue)
+	if err != nil {
+		t.Fatal(err)
+	}
+	targets, err := q.ListCollaborationTargets(t.Context(), session.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, row := range targets {
+		if row.ID == target {
+			targetRow = row
+		}
+	}
+	roster, err := decodeCollaborationRoster[collaboration.TargetResource](targetRow.Roster)
+	if err != nil {
+		t.Fatal(err)
+	}
+	configuration, code, err := collaborationConfigurationSnapshot(t.Context(), q, collaboration.TargetKind(targetRow.Kind), targetRow.ResourceID, roster)
+	if err != nil || code != "" {
+		t.Fatalf("synthetic resource setup: %s %v", code, err)
+	}
+	fx.Exec(t, `UPDATE collaboration_target SET configuration_fingerprint=$2 WHERE id=$1`, target, configuration.Fingerprint)
+	participant, err := q.GetCollaborationParticipant(t.Context(), db.GetCollaborationParticipantParams{IssueID: issue, UserID: util.MustParseUUID(resource.OwnerUserID)})
+	if err != nil {
+		t.Fatal(err)
+	}
 	var binding, installation string
-	err := fx.Pool.QueryRow(t.Context(), `SELECT id::text,installation_id::text FROM collaboration_runtime_enrollment WHERE runtime_id=$1 AND revoked_at IS NULL`, resource.RuntimeID).Scan(&binding, &installation)
+	err = fx.Pool.QueryRow(t.Context(), `SELECT id::text,installation_id::text FROM collaboration_runtime_enrollment WHERE runtime_id=$1 AND revoked_at IS NULL`, resource.RuntimeID).Scan(&binding, &installation)
 	if errors.Is(err, pgx.ErrNoRows) {
 		installation = uuid.NewString()
 		binding = fx.Insert(t, "collaboration_runtime_enrollment", testutil.Cols{
-			"deployment_id": uuid.NewString(), "owner_user_id": resource.OwnerUserID, "execution_workspace_id": resource.ExecutionWorkspaceID,
-			"runtime_id": resource.RuntimeID, "installation_id": installation, "public_key": []byte("synthetic enrollment key"),
+			"deployment_id": auth.ManagedDeploymentID(), "owner_user_id": resource.OwnerUserID, "execution_workspace_id": resource.ExecutionWorkspaceID,
+			"runtime_id": resource.RuntimeID, "installation_id": installation, "public_key": make([]byte, 32),
 		})
 	} else if err != nil {
 		t.Fatal(err)
@@ -59,6 +97,7 @@ func seedCollaborationGrant(t *testing.T, fx *testutil.Fixture, issue, target pg
 		"owner_user_id": resource.OwnerUserID, "owner_auth_epoch": epoch, "execution_workspace_id": resource.ExecutionWorkspaceID,
 		"agent_id": resource.AgentID, "runtime_id": resource.RuntimeID, "identity_kind": "enrolled",
 		"installation_id": installation, "binding_id": binding, "binding_epoch": 1,
+		"target_epoch": targetRow.TargetEpoch, "owner_participant_epoch": participant.Epoch, "configuration_fingerprint": configuration.Fingerprint,
 	})
 	grants, err := db.New(fx.Pool).LockCollaborationTargetGrants(t.Context(), target)
 	if err != nil {
@@ -76,13 +115,36 @@ func seedCollaborationGrant(t *testing.T, fx *testutil.Fixture, issue, target pg
 func seedCollaborationGroupRun(t *testing.T, fx *testutil.Fixture, session pgtype.UUID, command CollaborationQueueReceipt, attempts int64) db.CollaborationRun {
 	t.Helper()
 	q := db.New(fx.Pool)
+	batches, err := q.ListCollaborationBatches(t.Context(), session)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var batch db.CollaborationBatch
+	for _, item := range batches {
+		if item.ID == command.BatchID {
+			batch = item
+		}
+	}
+	if !batch.ID.Valid || batch.State != "waiting" {
+		t.Fatal("synthetic run requires a waiting batch")
+	}
+	inputs, err := q.ListCollaborationBatchInputs(t.Context(), batch.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, input := range inputs {
+		if input.TargetID == batch.EffectiveTargetID && input.State == "waiting" {
+			command.CommandID = input.ID
+			break
+		}
+	}
 	targets, err := q.ListCollaborationTargets(t.Context(), session)
 	if err != nil {
 		t.Fatal(err)
 	}
 	var target db.CollaborationTarget
 	for _, item := range targets {
-		if item.ID == command.TargetID {
+		if item.ID == batch.EffectiveTargetID {
 			target = item
 		}
 	}
@@ -113,10 +175,11 @@ func seedCollaborationGroupRun(t *testing.T, fx *testutil.Fixture, session pgtyp
 	if err != nil {
 		t.Fatal(err)
 	}
-	fx.Exec(t, `UPDATE collaboration_command SET state='in_flight' WHERE id=$1`, command.CommandID)
+	fx.Exec(t, `UPDATE collaboration_command SET state='in_flight' WHERE batch_id=$1 AND state='waiting'`, batch.ID)
 	group := util.MustParseUUID(fx.Insert(t, "collaboration_execution_group", testutil.Cols{
 		"session_id": session, "target_id": target.ID, "command_id": command.CommandID, "generation": target.GroupGeneration + 1,
 		"target_epoch": target.TargetEpoch, "config_version": target.ConfigVersion, "roster": encoded,
+		"channel_id": batch.ChannelID, "batch_id": batch.ID,
 	}))
 	id := util.MustParseUUID(fx.Insert(t, "collaboration_run", testutil.Cols{
 		"session_id": session, "command_id": command.CommandID, "target_id": target.ID, "group_id": group,
@@ -124,8 +187,13 @@ func seedCollaborationGroupRun(t *testing.T, fx *testutil.Fixture, session pgtyp
 		"target_epoch": target.TargetEpoch, "config_version": target.ConfigVersion, "grant_id": root.ID, "grant_epoch": root.Epoch,
 		"resource_epoch": 1, "execution_workspace_id": root.ExecutionWorkspaceID, "runtime_id": root.RuntimeID,
 		"installation_id": root.InstallationID, "binding_id": root.BindingID, "binding_epoch": root.BindingEpoch, "authorized_attempt_seq": attempts,
+		"channel_id": batch.ChannelID, "batch_id": batch.ID,
 	}))
-	fx.Exec(t, `UPDATE collaboration_target SET active_group_id=$2, group_generation=group_generation+1, queue_state='active' WHERE id=$1`, target.ID, group)
+	fx.Exec(t, `UPDATE collaboration_batch SET state='in_flight',root_command_id=$2,group_id=$3,started_at=now() WHERE id=$1`, batch.ID, command.CommandID, group)
+	fx.Exec(t, `UPDATE collaboration_channel SET active_group_id=$2,group_generation=$3,queue_state='active' WHERE id=$1`, batch.ChannelID, group, target.GroupGeneration+1)
+	if _, err = q.MirrorCollaborationChannelControl(t.Context(), batch.ChannelID); err != nil {
+		t.Fatal(err)
+	}
 	fx.Exec(t, `UPDATE collaboration_session SET queue_state='active' WHERE id=$1`, session)
 	run, err := q.GetCollaborationRun(t.Context(), db.GetCollaborationRunParams{SessionID: session, RunID: id})
 	if err != nil {

@@ -119,12 +119,15 @@ func (s *CollaborationService) EditIssue(ctx context.Context, p CollaborationEdi
 		if err != nil {
 			return CollaborationWorkflowReceipt{}, err
 		}
-		// R52 does not notify participants about ordinary metadata edits. The
-		// protected event is history/outbox only; mention delivery belongs to P3.
-		_, err = t.q.CreateCollaborationEvent(ctx, db.CreateCollaborationEventParams{
+		// Ordinary metadata edits remain silent. Only newly added human body
+		// mentions produce a located notification in this same transaction.
+		event, err := t.q.CreateCollaborationEvent(ctx, db.CreateCollaborationEventParams{
 			IssueID: before.ID, EventSeq: seq, ActorUserID: t.actor, Kind: "issue_edited", Payload: payload,
 		})
-		return receipt, err
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		return receipt, notifyAddedCollaborationMentions(ctx, t.q, t.access, t.actor, event.ID, seq, "body", before.Description.String, after.Description.String)
 	})
 }
 

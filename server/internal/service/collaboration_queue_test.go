@@ -286,7 +286,8 @@ func TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent(t *testin
 	f := newCollaborationQueueFixture(t)
 	command := f.submit(t, f.creator, "first")
 	run := f.run(t, command, 0)
-	p := CollaborationResumeQueueParams{CollaborationStopQueueParams: f.issueControl(t), ExpectedExecutionEpoch: 2}
+	epoch := enableControlGate(t, f.collaborationFixture)
+	p := CollaborationResumeQueueParams{CollaborationStopQueueParams: f.stopParams(run, 1), ExpectedExecutionEpoch: epoch}
 	denied, err := f.svc.ResumeQueue(f.ctx, p)
 	if !collaborationErrorCode(err, "stop_unconfirmed") {
 		t.Fatalf("unsettled resume: %v", err)
@@ -298,15 +299,14 @@ func TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent(t *testin
 	if !collaborationErrorCode(err, "stop_unconfirmed") || !reflect.DeepEqual(replay, denied) {
 		t.Fatalf("failed resume key revived after legal settlement: %+v %v", replay, err)
 	}
-	p.CollaborationStopQueueParams = f.issueControl(t)
+	p.CollaborationStopQueueParams = f.stopParams(run, 2)
 	f.fx.Exec(t, `UPDATE collaboration_execution_gate SET enabled=true,epoch=epoch+1 WHERE id=1`)
-	f.fx.Cleanup(t, `UPDATE collaboration_execution_gate SET enabled=false,epoch=epoch-1 WHERE id=1`)
 	if _, err = f.svc.ResumeQueue(f.ctx, p); !collaborationErrorCode(err, "stale_admission") {
 		t.Fatalf("old admission epoch revived after enable: %v", err)
 	}
 	p.RequestID = uuid.NewString()
-	p.ExpectedExecutionEpoch = 3
-	if _, err = f.svc.ResumeQueue(f.ctx, p); !collaborationErrorCode(err, "collaboration_execution_unavailable") {
+	p.ExpectedExecutionEpoch = epoch + 1
+	if _, err = f.svc.ResumeQueue(f.ctx, p); !collaborationErrorCode(err, "runtime_upgrade_required") {
 		t.Fatalf("incomplete admission allowed resume: %v", err)
 	}
 	if f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state='paused' AND active_group_id IS NULL`, f.targetID) != 1 {
@@ -487,12 +487,12 @@ func TestCollaborationQueueResumeTreatsEitherBarrierAsUnconfirmed(t *testing.T) 
 		t.Run(missing, func(t *testing.T) {
 			f := newCollaborationQueueFixture(t)
 			run := f.run(t, f.submit(t, f.creator, "first"), 1)
+			p := CollaborationResumeQueueParams{CollaborationStopQueueParams: f.stopParams(run, 1), ExpectedExecutionEpoch: enableControlGate(t, f.collaborationFixture)}
 			if missing == "pointer" {
 				f.fx.Exec(t, `UPDATE collaboration_target SET active_group_id=NULL WHERE id=$1`, f.targetID)
 			} else {
 				f.fx.Exec(t, `DELETE FROM collaboration_run WHERE id=$1`, run.ID)
 			}
-			p := CollaborationResumeQueueParams{CollaborationStopQueueParams: f.issueControl(t), ExpectedExecutionEpoch: 2}
 			denied, err := f.svc.ResumeQueue(f.ctx, p)
 			if !collaborationErrorCode(err, "stop_unconfirmed") {
 				t.Fatalf("inconsistent %s barrier must remain a stop refusal: %v", missing, err)

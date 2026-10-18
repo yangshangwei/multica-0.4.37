@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY idx_collaboration_channel_root ON collaboration_channel(session_id,root_agent_id);

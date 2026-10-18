@@ -165,10 +165,10 @@ WHERE id = sqlc.arg(target_id)::uuid AND session_id = sqlc.arg(session_id)::uuid
 RETURNING (next_command_seq - 1)::bigint AS command_seq;
 
 -- name: CreateCollaborationCommand :one
-INSERT INTO collaboration_command (session_id, target_id, input_event_id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content)
+INSERT INTO collaboration_command (session_id, target_id, input_event_id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content,channel_id,batch_id)
 VALUES (sqlc.arg(session_id)::uuid, sqlc.arg(target_id)::uuid, sqlc.arg(input_event_id)::uuid, sqlc.arg(seq)::bigint, sqlc.arg(author_user_id)::uuid,
         sqlc.arg(participant_epoch)::bigint, sqlc.arg(author_auth_epoch)::bigint,
-        sqlc.arg(lifecycle_epoch)::bigint, sqlc.arg(content)::text)
+        sqlc.arg(lifecycle_epoch)::bigint, sqlc.arg(content)::text,sqlc.arg(channel_id)::uuid,sqlc.arg(batch_id)::uuid)
 RETURNING *;
 
 -- name: LockCollaborationCommand :one
@@ -224,11 +224,6 @@ RETURNING *;
 UPDATE collaboration_command SET state = sqlc.arg(state)::text, reason = sqlc.arg(reason)::text
 WHERE session_id = sqlc.arg(session_id)::uuid AND id = sqlc.arg(command_id)::uuid
   AND state = 'in_flight' AND sqlc.arg(state)::text IN ('stopped', 'cancelled')
-RETURNING *;
-
--- name: ClearCollaborationActiveRun :one
-UPDATE collaboration_session SET active_run_id = NULL
-WHERE id = sqlc.arg(session_id)::uuid AND active_run_id = sqlc.arg(run_id)::uuid
 RETURNING *;
 
 -- name: RequestCollaborationTerminationStop :exec

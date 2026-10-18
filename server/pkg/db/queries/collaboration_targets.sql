@@ -48,35 +48,7 @@ SELECT EXISTS (
     JOIN issue_participant p ON p.issue_id = g.issue_id AND p.user_id = g.owner_user_id AND p.revoked_at IS NULL
     JOIN collaboration_account_fence f ON f.user_id = g.owner_user_id AND f.epoch = g.owner_auth_epoch
     JOIN "user" u ON u.id = g.owner_user_id AND u.disabled_at IS NULL
-    WHERE g.id = $1 AND g.revoked_at IS NULL AND NOT g.legacy_unresolved
-)::boolean;
-
--- Current resource and invoke predicates for accepting a waiting input. Runtime
--- capacity/provider support is deliberately absent: this query cannot admit a run.
--- name: CollaborationGrantResourceCurrent :one
-SELECT EXISTS (
-    SELECT 1 FROM collaboration_grant g
-    JOIN agent a ON a.id = g.agent_id AND a.workspace_id = g.execution_workspace_id
-        AND a.runtime_id = g.runtime_id AND a.archived_at IS NULL AND a.kind = 'user'
-    JOIN agent_runtime r ON r.id = g.runtime_id AND r.workspace_id = g.execution_workspace_id AND r.owner_id = g.owner_user_id
-    WHERE g.id = $1 AND NOT g.legacy_unresolved AND g.revoked_at IS NULL
-      AND (a.owner_id = g.owner_user_id OR (a.permission_mode = 'public_to' AND EXISTS (
-          SELECT 1 FROM agent_invocation_target it WHERE it.agent_id = a.id
-            AND ((it.target_type = 'member' AND it.target_id = g.owner_user_id) OR
-                 (it.target_type = 'workspace' AND EXISTS (SELECT 1 FROM member m WHERE m.workspace_id = a.workspace_id AND m.user_id = g.owner_user_id)))
-      )))
-      AND ((g.identity_kind = 'enrolled' AND EXISTS (
-          SELECT 1 FROM collaboration_runtime_enrollment e WHERE e.id = g.binding_id
-            AND e.installation_id = g.installation_id AND e.owner_user_id = g.owner_user_id
-            AND e.execution_workspace_id = g.execution_workspace_id AND e.runtime_id = g.runtime_id
-            AND e.binding_epoch = g.binding_epoch AND e.revoked_at IS NULL
-      )) OR (g.identity_kind = 'managed' AND EXISTS (
-          SELECT 1 FROM installation_daemon_binding b JOIN managed_installation i ON i.id = b.installation_id
-          JOIN user_password_credential credential ON credential.user_id = b.principal_user_id AND credential.session_version = b.auth_version
-          WHERE b.id = g.binding_id AND b.installation_id = g.installation_id AND b.workspace_id = g.execution_workspace_id
-            AND b.principal_user_id = g.owner_user_id AND b.daemon_id = r.daemon_id AND b.binding_epoch = g.binding_epoch
-            AND b.revoked_at IS NULL AND b.state = 'active' AND i.lifecycle = 'active' AND NOT credential.must_change_password
-      )))
+    WHERE g.id = $1 AND g.revoked_at IS NULL
 )::boolean;
 
 -- name: LockCollaborationUnsettledGroups :many
@@ -92,7 +64,7 @@ SELECT * FROM collaboration_run WHERE group_id = $1 ORDER BY id FOR UPDATE;
 -- name: LockCollaborationGroupDelegations :many
 SELECT * FROM collaboration_delegation WHERE group_id = $1 ORDER BY id FOR UPDATE;
 
--- Includes retained legacy work and detached rows as barriers. Never derive
+-- Includes detached rows as barriers. Never derive
 -- idleness exclusively from target.active_group_id or a group row.
 -- name: LockCollaborationUnsettledRuns :many
 SELECT * FROM collaboration_run WHERE session_id = $1 AND settled_at IS NULL

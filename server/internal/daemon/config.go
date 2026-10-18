@@ -95,6 +95,7 @@ var DefaultGCArtifactPatterns = []string{"node_modules", ".next", ".turbo"}
 
 // Config holds all daemon configuration.
 type Config struct {
+	CollaborationRunner            *CollaborationRunnerConfig
 	ManagementDeploymentID         string
 	ManagedHandoff                 *ManagedStartupHandoff
 	ServerBaseURL                  string
@@ -192,6 +193,10 @@ type Overrides struct {
 // LoadConfig builds the daemon configuration from environment variables
 // and optional CLI flag overrides.
 func LoadConfig(overrides Overrides) (Config, error) {
+	collaborationRunner, err := parseCollaborationRunnerConfig(os.Getenv("MULTICA_COLLABORATION_RUNNER_CONFIG"))
+	if err != nil {
+		return Config{}, err
+	}
 	// Server URL: override > env > default
 	rawServerURL := envOrDefault("MULTICA_SERVER_URL", DefaultServerURL)
 	if overrides.ServerURL != "" {
@@ -587,6 +592,7 @@ func LoadConfig(overrides Overrides) (Config, error) {
 	}
 
 	return Config{
+		CollaborationRunner:             collaborationRunner,
 		ManagementDeploymentID:          overrides.ManagementDeploymentID,
 		ServerBaseURL:                   serverBaseURL,
 		DaemonID:                        daemonID,

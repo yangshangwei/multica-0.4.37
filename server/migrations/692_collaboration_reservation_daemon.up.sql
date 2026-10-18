@@ -1,0 +1,1 @@
+CREATE INDEX CONCURRENTLY idx_collaboration_reservation_daemon ON collaboration_runtime_reservation(execution_workspace_id,daemon_id) WHERE released_at IS NULL;

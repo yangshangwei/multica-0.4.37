@@ -30,7 +30,7 @@ func collaborationAccountFence(t *testing.T, f *platformAdminFixture, user pgtyp
 // reads can escape this fixture's private schema through its public fallback.
 func collaborationAccountIssue(t *testing.T, f *platformAdminFixture, user pgtype.UUID) (pgtype.UUID, *CollaborationService) {
 	t.Helper()
-	for _, table := range []string{"workspace", "member", "issue", "issue_status", "issue_collaboration", "collaboration_session", "issue_participant", "collaboration_operation", "collaboration_event", "collaboration_command", "collaboration_target", "collaboration_execution_group", "collaboration_delegation", "collaboration_grant", "collaboration_run", "collaboration_termination", "collaboration_runtime_enrollment", "agent", "agent_invocation_target", "squad", "squad_member", "installation_daemon_binding", "managed_installation"} {
+	for _, table := range []string{"workspace", "member", "issue", "issue_status", "issue_collaboration", "collaboration_session", "issue_participant", "collaboration_operation", "collaboration_event", "collaboration_command", "collaboration_target", "collaboration_channel", "collaboration_batch", "collaboration_execution_group", "collaboration_delegation", "collaboration_grant", "collaboration_run", "collaboration_termination", "collaboration_runtime_enrollment", "collaboration_runtime_reservation", "collaboration_attempt", "collaboration_business_capability", "agent", "agent_invocation_target", "squad", "squad_member", "installation_daemon_binding", "managed_installation"} {
 		f.fx.Exec(t, "CREATE TABLE "+pgx.Identifier{table}.Sanitize()+" (LIKE "+pgx.Identifier{"public", table}.Sanitize()+" INCLUDING ALL)")
 	}
 	f.fx.WorkspaceID = f.fx.Workspace(t, "Private collaboration", "account-"+uuid.NewString())

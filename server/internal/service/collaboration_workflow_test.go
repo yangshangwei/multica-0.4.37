@@ -75,9 +75,9 @@ func TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingPro
 				f.targetID = grantTarget(t, f, grant)
 			}
 			first := f.submit(t, author, "running content stays immutable")
+			run := f.run(t, first, scenario.attempts)
 			ownWaiting := f.submit(t, f.handler, "removed author waiting")
 			otherWaiting := f.submit(t, f.creator, "remaining author waiting")
-			run := f.run(t, first, scenario.attempts)
 			if scenario.priorStop {
 				f.fx.Exec(t, `UPDATE collaboration_run SET forced_disposition='stopped', disposition_reason='participant_stop', progress_state='ending',claim_generation=2 WHERE id=$1`, run.ID)
 			}
@@ -571,10 +571,17 @@ func (t *workflowFaultTx) Exec(ctx context.Context, sql string, args ...any) (pg
 	return t.Tx.Exec(ctx, sql, args...)
 }
 
+func (t *workflowFaultTx) Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error) {
+	if strings.Contains(strings.Join(strings.Fields(sql), " "), t.needle) {
+		return nil, errors.New("injected required workflow write failure")
+	}
+	return t.Tx.Query(ctx, sql, args...)
+}
+
 func TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything(t *testing.T) {
 	for _, needle := range []string{
 		"UPDATE issue SET assignee_type", "INSERT INTO issue_handoff", "UPDATE issue_participant SET", "UPDATE collaboration_grant SET",
-		"UPDATE collaboration_command SET", "UPDATE collaboration_target SET queue_state", "UPDATE collaboration_execution_group", "UPDATE collaboration_delegation", "UPDATE collaboration_run SET",
+		"UPDATE collaboration_command SET", "UPDATE collaboration_channel SET queue_state", "UPDATE collaboration_target t SET", "UPDATE collaboration_execution_group", "UPDATE collaboration_delegation", "UPDATE collaboration_run SET",
 		"UPDATE collaboration_termination SET", "UPDATE issue_collaboration SET revision", "INSERT INTO collaboration_event",
 		"INSERT INTO collaboration_notification", "UPDATE collaboration_operation",
 	} {

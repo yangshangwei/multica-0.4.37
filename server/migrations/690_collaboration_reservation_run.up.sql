@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY idx_collaboration_reservation_run ON collaboration_runtime_reservation(run_id);

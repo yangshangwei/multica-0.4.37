@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"sort"
 
-	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/collaboration"
 	"github.com/multica-ai/multica/server/internal/util"
@@ -76,7 +75,7 @@ func (s *CollaborationService) RevokeGrant(ctx context.Context, p CollaborationR
 
 // RegisterTarget records a pending configuration. It never grants consent,
 // enrolls an owner, or resumes either control scope. The public target/consent
-// API remains unavailable until the resource admission protocol is implemented.
+// API is independent of the still-unavailable shared launch protocol.
 func (s *CollaborationService) RegisterTarget(ctx context.Context, p CollaborationRegisterTargetParams) (CollaborationQueueReceipt, error) {
 	if p.ExpectedTargetSetVersion < 1 || !p.ResourceID.Valid || !validCollaborationRoster(p.Kind, p.ResourceID, p.Roster) {
 		return CollaborationQueueReceipt{}, collaborationError(http.StatusBadRequest, "invalid_target_configuration")
@@ -98,35 +97,37 @@ func (s *CollaborationService) RegisterTarget(ctx context.Context, p Collaborati
 				return t.targetReceipt("target_exists", http.StatusConflict, existing), nil
 			}
 		}
-		for _, resource := range p.Roster {
-			owner, err := util.ParseUUID(resource.OwnerUserID)
+		if code, err := t.validateResourceOwners(ctx, p.Roster); code != "" || err != nil {
 			if err != nil {
 				return CollaborationQueueReceipt{}, err
 			}
-			participant, err := t.q.GetCollaborationParticipant(ctx, db.GetCollaborationParticipantParams{IssueID: p.IssueID, UserID: owner})
-			if errors.Is(err, pgx.ErrNoRows) || (err == nil && participant.RevokedAt.Valid) {
-				return t.receipt("resource_owner_not_participant", http.StatusConflict), nil
-			}
-			if err != nil {
-				return CollaborationQueueReceipt{}, err
-			}
-			eligible, err := collaborationRecipientEligible(ctx, t.q, owner, t.access.Issue.WorkspaceID)
-			if err != nil {
-				return CollaborationQueueReceipt{}, err
-			}
-			if !eligible {
-				return t.receipt("resource_owner_unavailable", http.StatusConflict), nil
-			}
+			return t.receipt(code, http.StatusConflict), nil
+		}
+		if err := lockCollaborationResources(ctx, t.q, p.Kind, p.ResourceID, p.Roster); err != nil {
+			return CollaborationQueueReceipt{}, err
+		}
+		configuration, code, err := collaborationConfigurationSnapshot(ctx, t.q, p.Kind, p.ResourceID, p.Roster)
+		if err != nil {
+			return CollaborationQueueReceipt{}, err
+		}
+		if code != "" {
+			return t.receipt(code, http.StatusConflict), nil
 		}
 		roster, err := json.Marshal(p.Roster)
 		if err != nil {
 			return CollaborationQueueReceipt{}, err
 		}
-		target, err := t.q.CreateCollaborationTarget(ctx, db.CreateCollaborationTargetParams{SessionID: t.session.ID,
-			Kind: string(p.Kind), ResourceID: p.ResourceID, Roster: roster})
+		target, err := t.q.CreateConsentedCollaborationTarget(ctx, db.CreateConsentedCollaborationTargetParams{SessionID: t.session.ID,
+			Kind: string(p.Kind), ResourceID: p.ResourceID, Roster: roster, ConfigurationFingerprint: pgtype.Text{String: configuration.Fingerprint, Valid: true}})
 		if err != nil {
 			return CollaborationQueueReceipt{}, err
 		}
+		t.targets = append(t.targets, target)
+		channel, err := t.ensureTargetChannel(ctx, target)
+		if err != nil {
+			return CollaborationQueueReceipt{}, err
+		}
+		target.ChannelID = channel.ID
 		t.session, err = t.q.AdvanceCollaborationTargetSet(ctx, t.session.ID)
 		if err != nil {
 			return CollaborationQueueReceipt{}, err
@@ -205,6 +206,7 @@ func (t *collaborationQueueTx) replaceTarget(target db.CollaborationTarget) {
 func (t *collaborationQueueTx) targetReceipt(code string, status int, target db.CollaborationTarget) CollaborationQueueReceipt {
 	r := t.receipt(code, status)
 	r.Scope, r.TargetID, r.GroupID = collaboration.ControlTarget, target.ID, target.ActiveGroupID
+	r.ChannelID = target.ChannelID
 	r.QueueState, r.ControlVersion = target.QueueState, target.ControlVersion
 	return r
 }
@@ -219,76 +221,7 @@ func collaborationResourceMatchesGrant(resource collaboration.TargetResource, gr
 // roster needs owner consent, but offline/paused resources may retain waiting
 // inputs. No check here is sufficient to claim, launch or resume execution.
 func (t *collaborationQueueTx) authorizeTargetInput(ctx context.Context, target db.CollaborationTarget) (string, error) {
-	roster, err := decodeCollaborationRoster[collaboration.TargetResource](target.Roster)
-	if err != nil {
-		return "", err
-	}
-	if !validCollaborationRoster(collaboration.TargetKind(target.Kind), target.ResourceID, roster) {
-		return "", errors.New("invalid persisted collaboration target roster")
-	}
-	grants, err := t.q.LockCollaborationTargetGrants(ctx, target.ID)
-	if err != nil {
-		return "", err
-	}
-	for _, resource := range roster {
-		var matched *db.CollaborationGrant
-		for i := range grants {
-			grant := &grants[i]
-			if grant.IssueID != t.access.Issue.ID || grant.LegacyUnresolved || grant.RevokedAt.Valid ||
-				!grant.ConfigVersion.Valid || grant.ConfigVersion.Int64 != target.ConfigVersion || !collaborationResourceMatchesGrant(resource, *grant) {
-				continue
-			}
-			if matched != nil {
-				return "", errors.New("ambiguous collaboration resource consent")
-			}
-			matched = grant
-		}
-		if matched == nil {
-			return "grant_required", nil
-		}
-		valid, err := t.q.CollaborationGrantOwnerCurrent(ctx, matched.ID)
-		if err != nil {
-			return "", err
-		}
-		if !valid {
-			return "grant_required", nil
-		}
-		valid, err = t.q.CollaborationGrantResourceCurrent(ctx, matched.ID)
-		if err != nil {
-			return "", err
-		}
-		if !valid {
-			return "target_configuration_changed", nil
-		}
-	}
-	if target.Kind == string(collaboration.TargetSquad) {
-		squad, err := t.q.GetSquad(ctx, target.ResourceID)
-		if errors.Is(err, pgx.ErrNoRows) || (err == nil && squad.ArchivedAt.Valid) {
-			return "target_configuration_changed", nil
-		}
-		if err != nil {
-			return "", err
-		}
-		members, err := t.q.ListSquadMembers(ctx, target.ResourceID)
-		if err != nil {
-			return "", err
-		}
-		expected := map[string]bool{util.UUIDToString(squad.LeaderID): true}
-		for _, member := range members {
-			if member.MemberType == "agent" {
-				expected[util.UUIDToString(member.MemberID)] = true
-			}
-		}
-		if len(expected) != len(roster) {
-			return "target_configuration_changed", nil
-		}
-		for _, resource := range roster {
-			if !expected[resource.AgentID] || (resource.Role == "leader") != (resource.AgentID == util.UUIDToString(squad.LeaderID)) {
-				return "target_configuration_changed", nil
-			}
-		}
-	}
-	return "", nil
+	return lockAndAuthorizeCollaborationTargetInput(ctx, t.q, t.access.Issue.ID, target)
 }
 
 func invalidCollaborationLedger(detail string) error {

@@ -127,7 +127,7 @@ func (q *Queries) LockCollaborationReconciliationIssue(ctx context.Context, id p
 }
 
 const lockCollaborationReconciliationSession = `-- name: LockCollaborationReconciliationSession :one
-SELECT id, issue_id, queue_state, control_version, event_seq, next_command_seq, resource_epoch, active_grant_id, active_run_id, pause_reason, created_at, target_set_version FROM collaboration_session WHERE issue_id = $1 FOR UPDATE NOWAIT
+SELECT id, issue_id, queue_state, control_version, event_seq, pause_reason, created_at, target_set_version FROM collaboration_session WHERE issue_id = $1 FOR UPDATE NOWAIT
 `
 
 func (q *Queries) LockCollaborationReconciliationSession(ctx context.Context, issueID pgtype.UUID) (CollaborationSession, error) {
@@ -139,10 +139,6 @@ func (q *Queries) LockCollaborationReconciliationSession(ctx context.Context, is
 		&i.QueueState,
 		&i.ControlVersion,
 		&i.EventSeq,
-		&i.NextCommandSeq,
-		&i.ResourceEpoch,
-		&i.ActiveGrantID,
-		&i.ActiveRunID,
 		&i.PauseReason,
 		&i.CreatedAt,
 		&i.TargetSetVersion,

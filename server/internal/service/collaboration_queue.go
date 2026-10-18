@@ -49,13 +49,16 @@ type CollaborationCancelCommandParams struct {
 }
 
 // Queue receipts describe the original operation, never refreshed authority.
-// RunID/RunSettled are used only for unresolved pre-v2 execution history.
+// RunID/RunSettled describe one run inside a target execution group.
 type CollaborationQueueReceipt struct {
 	Status           int                                `json:"status"`
 	Code             string                             `json:"code"`
 	ProtocolVersion  int                                `json:"protocol_version"`
 	Scope            collaboration.ControlScope         `json:"scope"`
 	TargetID         pgtype.UUID                        `json:"target_id"`
+	GrantID          pgtype.UUID                        `json:"grant_id"`
+	ChannelID        pgtype.UUID                        `json:"channel_id"`
+	BatchID          pgtype.UUID                        `json:"batch_id"`
 	CommandID        pgtype.UUID                        `json:"command_id"`
 	CommandSequence  int64                              `json:"command_sequence,string,omitempty"`
 	QueueState       string                             `json:"queue_state"`
@@ -77,6 +80,7 @@ type collaborationQueueTx struct {
 	account     db.CollaborationAccountFence
 	gate        db.CollaborationExecutionGate
 	targets     []db.CollaborationTarget
+	channels    []db.CollaborationChannel
 }
 
 func (t *collaborationQueueTx) receipt(code string, status int) CollaborationQueueReceipt {
@@ -93,55 +97,14 @@ func (s *CollaborationService) SubmitCommand(ctx context.Context, p Collaboratio
 		return CollaborationQueueReceipt{}, collaborationError(http.StatusBadRequest, "empty_command")
 	}
 	return s.mutateCollaborationQueue(ctx, p.CollaborationQueueRequest, "submit_command", p, func(t *collaborationQueueTx) (CollaborationQueueReceipt, error) {
-		if !t.access.Capabilities.SubmitCommand || (t.access.Issue.AdmissionStatus != "not_required" && t.access.Issue.AdmissionStatus != "accepted") {
-			return t.receipt("command_unavailable", http.StatusConflict), nil
-		}
-		target, ok := t.target(p.TargetID)
-		if !ok {
-			return t.receipt("target_not_found", http.StatusNotFound), nil
-		}
-		// The input event identity deduplicates a target even when delivery uses
-		// another transport request key. Never assign a different snapshot.
-		prior, err := t.q.GetCollaborationCommandInput(ctx, db.GetCollaborationCommandInputParams{TargetID: target.ID, InputEventID: p.InputEventID})
-		if err == nil {
-			if prior.Content != p.Content || prior.AuthorUserID != t.actor || prior.ParticipantEpoch != t.participant.Epoch ||
-				prior.AuthorAuthEpoch != t.account.Epoch || prior.LifecycleEpoch != t.access.LifecycleEpoch {
-				return t.targetReceipt("input_event_conflict", http.StatusConflict, target), nil
-			}
-			r := t.targetReceipt("command_queued", http.StatusCreated, target)
-			r.CommandID, r.CommandSequence = prior.ID, prior.Seq
-			return r, nil
-		}
-		if !errors.Is(err, pgx.ErrNoRows) {
-			return CollaborationQueueReceipt{}, err
-		}
-		if target.TargetEpoch != p.ExpectedTargetEpoch || target.ConfigVersion != p.ExpectedConfigVersion {
-			return t.targetReceipt("stale_target", http.StatusConflict, target), nil
-		}
-		if target.RevokedAt.Valid {
-			return t.targetReceipt("grant_required", http.StatusConflict, target), nil
-		}
-		if code, err := t.authorizeTargetInput(ctx, target); err != nil || code != "" {
-			if err != nil {
-				return CollaborationQueueReceipt{}, err
-			}
-			return t.targetReceipt(code, http.StatusConflict, target), nil
-		}
-		seq, err := t.q.AllocateCollaborationCommandSequence(ctx, db.AllocateCollaborationCommandSequenceParams{SessionID: t.session.ID, TargetID: target.ID})
+		receipt, inserted, err := t.appendInput(ctx, p)
 		if err != nil {
 			return CollaborationQueueReceipt{}, err
 		}
-		command, err := t.q.CreateCollaborationCommand(ctx, db.CreateCollaborationCommandParams{
-			SessionID: t.session.ID, TargetID: target.ID, InputEventID: p.InputEventID, Seq: seq, AuthorUserID: t.actor,
-			ParticipantEpoch: t.participant.Epoch, AuthorAuthEpoch: t.account.Epoch,
-			LifecycleEpoch: t.access.LifecycleEpoch, Content: p.Content,
-		})
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
+		if inserted {
+			err = t.event(ctx, "command_queued", receipt)
 		}
-		r := t.targetReceipt("command_queued", http.StatusCreated, target)
-		r.CommandID, r.CommandSequence = command.ID, command.Seq
-		return r, t.event(ctx, "command_queued", r)
+		return receipt, err
 	})
 }
 
@@ -158,7 +121,7 @@ func (s *CollaborationService) CancelWaitingCommand(ctx context.Context, p Colla
 			return CollaborationQueueReceipt{}, err
 		}
 		target, ok := t.target(p.TargetID)
-		if !ok || command.TargetID != p.TargetID || command.LegacyUnresolved {
+		if !ok || command.TargetID != p.TargetID {
 			return t.receipt("target_not_found", http.StatusNotFound), nil
 		}
 		creator := t.access.Issue.CreatorType == "member" && t.access.Issue.CreatorID == t.actor
@@ -176,8 +139,11 @@ func (s *CollaborationService) CancelWaitingCommand(ctx context.Context, p Colla
 		if err != nil {
 			return CollaborationQueueReceipt{}, err
 		}
+		if err = t.q.CloseEmptyCollaborationBatches(ctx, t.session.ID); err != nil {
+			return CollaborationQueueReceipt{}, err
+		}
 		receipt := t.targetReceipt("command_cancelled", http.StatusOK, target)
-		receipt.CommandID, receipt.CommandSequence = command.ID, command.Seq
+		receipt.CommandID, receipt.CommandSequence, receipt.ChannelID, receipt.BatchID = command.ID, command.Seq, command.ChannelID, command.BatchID
 		return receipt, t.event(ctx, "command_cancelled", receipt)
 	})
 }
@@ -272,8 +238,7 @@ func (s *CollaborationService) collaborationQueueMutationInTx(ctx context.Contex
 		return CollaborationQueueReceipt{}, err
 	}
 	if kind == "resume_queue" {
-		// The gate lock precedes source locks, even while Resume only refuses.
-		// Do not move it into the callback when positive admission is added.
+		// Every active-state write retains the shared gate fence until commit.
 		t.gate, err = t.q.LockCollaborationGateShared(ctx)
 		if err != nil {
 			return CollaborationQueueReceipt{}, err
@@ -304,6 +269,10 @@ func (s *CollaborationService) collaborationQueueMutationInTx(ctx context.Contex
 		return CollaborationQueueReceipt{}, &pgconn.PgError{Code: "40001", Message: "collaboration account lock set changed"}
 	}
 	t.targets, err = t.q.LockCollaborationTargets(ctx, t.session.ID)
+	if err != nil {
+		return CollaborationQueueReceipt{}, err
+	}
+	t.channels, err = t.q.LockCollaborationChannels(ctx, t.session.ID)
 	if err != nil {
 		return CollaborationQueueReceipt{}, err
 	}

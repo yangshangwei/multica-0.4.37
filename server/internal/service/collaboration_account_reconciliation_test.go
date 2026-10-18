@@ -157,7 +157,13 @@ func TestCollaborationAccountReconciliationDisableRestore(t *testing.T) {
 	f.change(t, f.target, "restore", 2)
 	// Current authority is valid again before the old intent is consumed.
 	retained = append(retained, f.submit(t, f.first, f.target, 3).CommandID)
-	newGrant := f.grant(t, fresh, f.target, 3, true)
+	// Keep the obsolete waiting batch pending for the reconciler. Fresh work
+	// uses another resource on this issue, so its batch cannot consume those
+	// obsolete inputs. Same-target replacement is covered separately below.
+	freshSession, _ := f.targetFor(t, fresh)
+	freshTarget, freshGrant := seedCollaborationTarget(t, f.fx, fresh, freshSession.ID, f.target, 3)
+	f.targets[fresh] = freshTarget.ID
+	newGrant := freshGrant.ID
 	newRun := f.run(t, fresh, f.submit(t, fresh, f.target, 3), newGrant, 1)
 	retained = append(retained, f.submit(t, fresh, f.target, 3).CommandID)
 
@@ -222,6 +228,17 @@ func TestCollaborationOldInvalidationPreservesFreshGrantOnSameTypedTarget(t *tes
 	oldInput := f.submit(t, f.first, f.target, 1)
 	f.change(t, f.target, "disable", 1)
 	f.change(t, f.target, "restore", 2)
+	// A fresh run cannot include an obsolete author from the same waiting
+	// batch. Close that batch through the real cancellation boundary before
+	// replacing consent; delayed invalidation must still spare the new run.
+	_, err := f.queue.CancelWaitingCommand(collaborationPasswordContext(f.target, 3), CollaborationCancelCommandParams{
+		CollaborationQueueRequest: CollaborationQueueRequest{IssueID: f.first, RequestID: uuid.NewString(),
+			ExpectedLifecycleEpoch: 1, ExpectedParticipantEpoch: 1, ExpectedAccountEpoch: 3},
+		TargetID: before.ID, CommandID: oldInput.CommandID, ExpectedCollaborationRevision: 1,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
 	newGrant := f.grant(t, f.first, f.target, 3, true)
 	freshInput := f.submit(t, f.first, f.target, 3)
 	freshRun := f.run(t, f.first, freshInput, newGrant, 1)

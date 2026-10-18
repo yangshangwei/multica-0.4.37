@@ -199,6 +199,10 @@ func (s *CollaborationAccountReconciler) reconcileInTx(ctx context.Context, q *d
 	if err != nil {
 		return err
 	}
+	t.channels, err = q.LockCollaborationChannels(ctx, session.ID)
+	if err != nil {
+		return err
+	}
 	if err = t.invalidateAccount(ctx, intent); err != nil {
 		return err
 	}

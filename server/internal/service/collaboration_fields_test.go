@@ -111,7 +111,7 @@ func TestCollaborationFieldsTypedValuesAndHistory(t *testing.T) {
 	if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND content='immutable field-edit input' AND state='waiting' AND author_user_id=$2`, command.CommandID, f.handler) != 1 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_notification WHERE issue_id=$1`, f.issue.Issue.ID) != beforeNotifications ||
 		f.fx.Count(t, `SELECT count(*) FROM agent_task_queue WHERE issue_id=$1`, f.issue.Issue.ID) != 0 ||
-		f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND queue_state='paused' AND control_version=1 AND active_run_id IS NULL AND active_grant_id IS NULL`, f.issue.SessionID) != 1 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND queue_state='paused' AND control_version=1`, f.issue.SessionID) != 1 ||
 		f.fx.Count(t, `SELECT count(*) FROM member WHERE workspace_id=$1 AND user_id=$2`, f.workspace, f.handler) != 0 {
 		t.Fatal("field edit changed execution, notifications, resources or membership")
 	}

@@ -843,6 +843,19 @@ WHERE id = (
       AND atq.agent_id = @agent_id
       AND atq.runtime_id = @runtime_id
       AND atq.status = 'queued'
+      -- The single-agent collaboration slice owns its physical namespace
+      -- until a sealed proof releases the durable reservation. Its rows
+      -- remain authoritative after runtime/run cleanup or daemon restart.
+      -- Claim callers hold the namespace fence before the agent lock.
+      AND NOT EXISTS (
+          SELECT 1
+          FROM collaboration_runtime_reservation reservation
+          JOIN agent_runtime execution_runtime
+            ON execution_runtime.workspace_id = reservation.execution_workspace_id
+           AND execution_runtime.daemon_id = reservation.daemon_id
+          WHERE execution_runtime.id = atq.runtime_id
+            AND reservation.released_at IS NULL
+      )
       AND (
           EXISTS (SELECT 1 FROM managed_admission ma WHERE ma.runtime_id=atq.runtime_id
             AND (atq.execution_binding_id IS NULL OR
@@ -1881,8 +1894,16 @@ LIMIT @max_per_tick::int;
 -- an atomic reservation/CAS gate. Consequently a waiter-only agent is reported
 -- idle by RefreshAgentStatusFromTasks but still cannot claim additional work;
 -- removing it here alone could exceed max_concurrent_tasks when it resumes.
-SELECT count(*) FROM agent_task_queue
-WHERE agent_id = $1 AND status IN ('dispatched', 'running', 'waiting_local_directory');
+-- Retained collaboration reservations also consume an agent slot; never join
+-- them through live runtime/grant/run rows that cleanup may already remove.
+SELECT ((
+    SELECT count(*) FROM agent_task_queue ordinary
+    WHERE ordinary.agent_id = sqlc.arg(agent_id)::uuid
+      AND ordinary.status IN ('dispatched', 'running', 'waiting_local_directory')
+) + (
+    SELECT count(*) FROM collaboration_runtime_reservation reservation
+    WHERE reservation.agent_id = sqlc.arg(agent_id)::uuid AND reservation.released_at IS NULL
+))::bigint;
 
 -- name: GetAgentForClaimUpdate :one
 SELECT * FROM agent

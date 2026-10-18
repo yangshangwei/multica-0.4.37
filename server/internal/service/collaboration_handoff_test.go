@@ -95,8 +95,8 @@ func TestCollaborationInformationChainReturnsLayerByLayer(t *testing.T) {
 	f.fx.InsertNoID(t, "iteration_participation", testutil.Cols{"workspace_id": f.workspace, "iteration_id": iid, "issue_id": f.issue.Issue.ID, "first_joined_at": time.Now(), "current_joined_at": time.Now()}, "iteration_id=$1 AND issue_id=$2", iid, f.issue.Issue.ID)
 	f.fx.Cleanup(t, `DELETE FROM iteration_event WHERE iteration_id=$1`, iid)
 	f.fx.Exec(t, `UPDATE issue SET current_iteration_id=$2 WHERE id=$1`, f.issue.Issue.ID, iid)
-	waiting := f.submit(t, f.creator, "queued while people talk")
 	run := f.run(t, f.submit(t, f.handler, "running while people talk"), 1)
+	waiting := f.submit(t, f.creator, "queued while people talk")
 	developer, product, specialist := collaborationContext(f.handler), f.ctx, collaborationContext(f.outsider)
 
 	first, err := f.svc.RequestInformation(developer, handoffAsk(t, f, 1, f.creator, "Which locale wins?"))

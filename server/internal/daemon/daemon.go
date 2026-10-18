@@ -367,12 +367,13 @@ type repoCacheBackend interface {
 
 // Daemon is the local agent runtime that polls for and executes tasks.
 type Daemon struct {
-	cfg        Config
-	managed    *managedDaemonLifecycle
-	client     *Client
-	repoCache  repoCacheBackend
-	skillCache *SkillBundleCache
-	logger     *slog.Logger
+	cfg           Config
+	collaboration *collaborationPoller
+	managed       *managedDaemonLifecycle
+	client        *Client
+	repoCache     repoCacheBackend
+	skillCache    *SkillBundleCache
+	logger        *slog.Logger
 
 	mu           sync.Mutex
 	workspaces   map[string]*workspaceState
@@ -4762,6 +4763,13 @@ func (d *Daemon) restartTargetBinary() (string, error) {
 // server-side batch claim is index-backed + short.
 func (d *Daemon) pollLoop(ctx context.Context, taskWakeups <-chan taskWakeup) error {
 	sem := newTaskSlotSemaphore(d.cfg.MaxConcurrentTasks)
+	collaboration, reserved, err := d.initializeCollaborationPoller(ctx)
+	if err != nil {
+		return err
+	}
+	d.collaboration = collaboration
+	reserveCollaborationSlots(sem, reserved)
+	d.activeTasks.Add(int64(reserved))
 	var taskWG sync.WaitGroup // tracks in-flight handleTask goroutines
 
 	runtimeSetCh, unsub := d.runtimeSet.Subscribe()
@@ -4829,6 +4837,12 @@ func (d *Daemon) runBatchPoller(pollerCtx, parentCtx context.Context, sem chan i
 		if pollerCtx.Err() != nil {
 			return
 		}
+		if d.collaboration != nil {
+			if err := d.collaboration.recoverProofs(pollerCtx); err != nil {
+				d.logger.Error("collaboration ledger unavailable; refusing further machine claims")
+				return
+			}
+		}
 
 		runtimeIDs := d.allRuntimeIDs()
 		if len(runtimeIDs) == 0 {
@@ -4865,6 +4879,13 @@ func (d *Daemon) runBatchPoller(pollerCtx, parentCtx context.Context, sem chan i
 			continue
 		}
 
+		if d.collaboration != nil && d.collaboration.dispatch(pollerCtx, parentCtx, slots[0], sem, wakeup, taskWG) {
+			slots = slots[1:]
+		}
+		if len(slots) == 0 {
+			d.exitClaim()
+			continue
+		}
 		tasks, err := d.ClaimTasksWSFirst(pollerCtx, d.cfg.DaemonID, runtimeIDs, len(slots))
 		if err != nil {
 			d.exitClaim()

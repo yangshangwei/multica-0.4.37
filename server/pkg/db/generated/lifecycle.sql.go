@@ -23,7 +23,7 @@ func (q *Queries) LifecycleMetadataSize(ctx context.Context, metadata []byte) (i
 }
 
 const lockLifecycleAgent = `-- name: LockLifecycleAgent :one
-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category FROM agent WHERE id = $1 AND workspace_id = $2 FOR SHARE NOWAIT
+SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent WHERE id = $1 AND workspace_id = $2 FOR SHARE NOWAIT
 `
 
 type LockLifecycleAgentParams struct {
@@ -68,6 +68,7 @@ func (q *Queries) LockLifecycleAgent(ctx context.Context, arg LockLifecycleAgent
 		&i.TemplateVersion,
 		&i.AutonomyLevel,
 		&i.Category,
+		&i.CollaborationConfigEpoch,
 	)
 	return i, err
 }
@@ -205,7 +206,7 @@ func (q *Queries) LockLifecycleOriginTask(ctx context.Context, arg LockLifecycle
 }
 
 const lockLifecycleRuntime = `-- name: LockLifecycleRuntime :one
-SELECT id, workspace_id, daemon_id, name, runtime_mode, provider, status, device_info, metadata, last_seen_at, created_at, updated_at, owner_id, legacy_daemon_id, visibility, profile_id, custom_name FROM agent_runtime WHERE id = $1 AND workspace_id = $2 FOR KEY SHARE NOWAIT
+SELECT id, workspace_id, daemon_id, name, runtime_mode, provider, status, device_info, metadata, last_seen_at, created_at, updated_at, owner_id, legacy_daemon_id, visibility, profile_id, custom_name, collaboration_config_epoch FROM agent_runtime WHERE id = $1 AND workspace_id = $2 FOR KEY SHARE NOWAIT
 `
 
 type LockLifecycleRuntimeParams struct {
@@ -234,12 +235,13 @@ func (q *Queries) LockLifecycleRuntime(ctx context.Context, arg LockLifecycleRun
 		&i.Visibility,
 		&i.ProfileID,
 		&i.CustomName,
+		&i.CollaborationConfigEpoch,
 	)
 	return i, err
 }
 
 const lockLifecycleSquad = `-- name: LockLifecycleSquad :one
-SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version FROM squad WHERE id = $1 AND workspace_id = $2 FOR SHARE NOWAIT
+SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version, collaboration_config_epoch FROM squad WHERE id = $1 AND workspace_id = $2 FOR SHARE NOWAIT
 `
 
 type LockLifecycleSquadParams struct {
@@ -265,6 +267,7 @@ func (q *Queries) LockLifecycleSquad(ctx context.Context, arg LockLifecycleSquad
 		&i.Instructions,
 		&i.TemplateKey,
 		&i.TemplateVersion,
+		&i.CollaborationConfigEpoch,
 	)
 	return i, err
 }

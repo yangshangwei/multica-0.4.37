@@ -12,18 +12,19 @@ import (
 )
 
 const createAgentInvocationTarget = `-- name: CreateAgentInvocationTarget :exec
+WITH locked_agent AS MATERIALIZED (SELECT agent.id FROM agent WHERE agent.id = $4::uuid FOR UPDATE)
 INSERT INTO agent_invocation_target (agent_id, target_type, target_id, created_by)
-VALUES ($1, $2, $3, $4)
+SELECT id, $1::text, $2::uuid, $3::uuid FROM locked_agent WHERE true
 ON CONFLICT (agent_id, target_type, target_id) DO UPDATE SET
     created_by = EXCLUDED.created_by,
     created_at = now()
 `
 
 type CreateAgentInvocationTargetParams struct {
-	AgentID    pgtype.UUID `json:"agent_id"`
 	TargetType string      `json:"target_type"`
 	TargetID   pgtype.UUID `json:"target_id"`
 	CreatedBy  pgtype.UUID `json:"created_by"`
+	AgentID    pgtype.UUID `json:"agent_id"`
 }
 
 // Idempotent upsert: re-adding an existing (agent, target_type, target)
@@ -32,39 +33,42 @@ type CreateAgentInvocationTargetParams struct {
 // ON CONFLICT is belt-and-suspenders against races.
 func (q *Queries) CreateAgentInvocationTarget(ctx context.Context, arg CreateAgentInvocationTargetParams) error {
 	_, err := q.db.Exec(ctx, createAgentInvocationTarget,
-		arg.AgentID,
 		arg.TargetType,
 		arg.TargetID,
 		arg.CreatedBy,
+		arg.AgentID,
 	)
 	return err
 }
 
 const deleteAgentInvocationTargets = `-- name: DeleteAgentInvocationTargets :exec
-DELETE FROM agent_invocation_target
-WHERE agent_id = $1
+WITH locked_agent AS MATERIALIZED (SELECT agent.id FROM agent WHERE agent.id = $1 FOR UPDATE)
+DELETE FROM agent_invocation_target USING locked_agent
+WHERE agent_id = locked_agent.id
 `
 
 // Clears every target for an agent. Used before re-writing the allow-list so
 // the update is a wholesale replace, matching the composio_toolkit_allowlist
 // write model.
-func (q *Queries) DeleteAgentInvocationTargets(ctx context.Context, agentID pgtype.UUID) error {
-	_, err := q.db.Exec(ctx, deleteAgentInvocationTargets, agentID)
+func (q *Queries) DeleteAgentInvocationTargets(ctx context.Context, id pgtype.UUID) error {
+	_, err := q.db.Exec(ctx, deleteAgentInvocationTargets, id)
 	return err
 }
 
 const deleteAgentInvocationTargetsByMember = `-- name: DeleteAgentInvocationTargetsByMember :exec
+WITH locked_agents AS MATERIALIZED (
+    SELECT agent.id FROM agent WHERE agent.workspace_id = $2 ORDER BY agent.id FOR UPDATE
+)
 DELETE FROM agent_invocation_target ait
-USING agent a
+USING locked_agents a
 WHERE ait.agent_id = a.id
-  AND a.workspace_id = $1
   AND ait.target_type = 'member'
-  AND ait.target_id = $2
+  AND ait.target_id = $1
 `
 
 type DeleteAgentInvocationTargetsByMemberParams struct {
-	WorkspaceID pgtype.UUID `json:"workspace_id"`
 	TargetID    pgtype.UUID `json:"target_id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
 }
 
 // Removes member-target grants pointing at a leaving user, SCOPED to a single
@@ -73,15 +77,16 @@ type DeleteAgentInvocationTargetsByMemberParams struct {
 // through agent (agent_invocation_target has no workspace_id column and no FK)
 // to bound the delete to @workspace_id.
 func (q *Queries) DeleteAgentInvocationTargetsByMember(ctx context.Context, arg DeleteAgentInvocationTargetsByMemberParams) error {
-	_, err := q.db.Exec(ctx, deleteAgentInvocationTargetsByMember, arg.WorkspaceID, arg.TargetID)
+	_, err := q.db.Exec(ctx, deleteAgentInvocationTargetsByMember, arg.TargetID, arg.WorkspaceID)
 	return err
 }
 
 const deleteAgentInvocationTargetsBySystemRuntimeAgents = `-- name: DeleteAgentInvocationTargetsBySystemRuntimeAgents :exec
-DELETE FROM agent_invocation_target
-WHERE agent_id IN (
-    SELECT id FROM agent WHERE runtime_id = $1 AND kind = 'system'
+WITH locked_agents AS MATERIALIZED (
+    SELECT agent.id FROM agent WHERE agent.runtime_id = $1 AND agent.kind = 'system' ORDER BY agent.id FOR UPDATE
 )
+DELETE FROM agent_invocation_target USING locked_agents
+WHERE agent_id = locked_agents.id
 `
 
 // Application-layer replacement for the (deliberately absent) agent_id ON

@@ -13,7 +13,7 @@ import (
 
 const advanceCollaborationTargetSet = `-- name: AdvanceCollaborationTargetSet :one
 UPDATE collaboration_session SET target_set_version = target_set_version + 1
-WHERE id = $1 RETURNING id, issue_id, queue_state, control_version, event_seq, next_command_seq, resource_epoch, active_grant_id, active_run_id, pause_reason, created_at, target_set_version
+WHERE id = $1 RETURNING id, issue_id, queue_state, control_version, event_seq, pause_reason, created_at, target_set_version
 `
 
 func (q *Queries) AdvanceCollaborationTargetSet(ctx context.Context, id pgtype.UUID) (CollaborationSession, error) {
@@ -25,10 +25,6 @@ func (q *Queries) AdvanceCollaborationTargetSet(ctx context.Context, id pgtype.U
 		&i.QueueState,
 		&i.ControlVersion,
 		&i.EventSeq,
-		&i.NextCommandSeq,
-		&i.ResourceEpoch,
-		&i.ActiveGrantID,
-		&i.ActiveRunID,
 		&i.PauseReason,
 		&i.CreatedAt,
 		&i.TargetSetVersion,
@@ -56,7 +52,7 @@ func (q *Queries) CancelCollaborationGroupDelegations(ctx context.Context, arg C
 const clearCollaborationActiveGroup = `-- name: ClearCollaborationActiveGroup :one
 UPDATE collaboration_target SET active_group_id = NULL
 WHERE id = $1::uuid AND active_group_id = $2::uuid
-RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at
+RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id
 `
 
 type ClearCollaborationActiveGroupParams struct {
@@ -83,6 +79,8 @@ func (q *Queries) ClearCollaborationActiveGroup(ctx context.Context, arg ClearCo
 		&i.PauseReason,
 		&i.RevokedAt,
 		&i.CreatedAt,
+		&i.ConfigurationFingerprint,
+		&i.ChannelID,
 	)
 	return i, err
 }
@@ -93,7 +91,7 @@ SELECT EXISTS (
     JOIN issue_participant p ON p.issue_id = g.issue_id AND p.user_id = g.owner_user_id AND p.revoked_at IS NULL
     JOIN collaboration_account_fence f ON f.user_id = g.owner_user_id AND f.epoch = g.owner_auth_epoch
     JOIN "user" u ON u.id = g.owner_user_id AND u.disabled_at IS NULL
-    WHERE g.id = $1 AND g.revoked_at IS NULL AND NOT g.legacy_unresolved
+    WHERE g.id = $1 AND g.revoked_at IS NULL
 )::boolean
 `
 
@@ -107,45 +105,9 @@ func (q *Queries) CollaborationGrantOwnerCurrent(ctx context.Context, id pgtype.
 	return column_1, err
 }
 
-const collaborationGrantResourceCurrent = `-- name: CollaborationGrantResourceCurrent :one
-SELECT EXISTS (
-    SELECT 1 FROM collaboration_grant g
-    JOIN agent a ON a.id = g.agent_id AND a.workspace_id = g.execution_workspace_id
-        AND a.runtime_id = g.runtime_id AND a.archived_at IS NULL AND a.kind = 'user'
-    JOIN agent_runtime r ON r.id = g.runtime_id AND r.workspace_id = g.execution_workspace_id AND r.owner_id = g.owner_user_id
-    WHERE g.id = $1 AND NOT g.legacy_unresolved AND g.revoked_at IS NULL
-      AND (a.owner_id = g.owner_user_id OR (a.permission_mode = 'public_to' AND EXISTS (
-          SELECT 1 FROM agent_invocation_target it WHERE it.agent_id = a.id
-            AND ((it.target_type = 'member' AND it.target_id = g.owner_user_id) OR
-                 (it.target_type = 'workspace' AND EXISTS (SELECT 1 FROM member m WHERE m.workspace_id = a.workspace_id AND m.user_id = g.owner_user_id)))
-      )))
-      AND ((g.identity_kind = 'enrolled' AND EXISTS (
-          SELECT 1 FROM collaboration_runtime_enrollment e WHERE e.id = g.binding_id
-            AND e.installation_id = g.installation_id AND e.owner_user_id = g.owner_user_id
-            AND e.execution_workspace_id = g.execution_workspace_id AND e.runtime_id = g.runtime_id
-            AND e.binding_epoch = g.binding_epoch AND e.revoked_at IS NULL
-      )) OR (g.identity_kind = 'managed' AND EXISTS (
-          SELECT 1 FROM installation_daemon_binding b JOIN managed_installation i ON i.id = b.installation_id
-          JOIN user_password_credential credential ON credential.user_id = b.principal_user_id AND credential.session_version = b.auth_version
-          WHERE b.id = g.binding_id AND b.installation_id = g.installation_id AND b.workspace_id = g.execution_workspace_id
-            AND b.principal_user_id = g.owner_user_id AND b.daemon_id = r.daemon_id AND b.binding_epoch = g.binding_epoch
-            AND b.revoked_at IS NULL AND b.state = 'active' AND i.lifecycle = 'active' AND NOT credential.must_change_password
-      )))
-)::boolean
-`
-
-// Current resource and invoke predicates for accepting a waiting input. Runtime
-// capacity/provider support is deliberately absent: this query cannot admit a run.
-func (q *Queries) CollaborationGrantResourceCurrent(ctx context.Context, id pgtype.UUID) (bool, error) {
-	row := q.db.QueryRow(ctx, collaborationGrantResourceCurrent, id)
-	var column_1 bool
-	err := row.Scan(&column_1)
-	return column_1, err
-}
-
 const createCollaborationTarget = `-- name: CreateCollaborationTarget :one
 INSERT INTO collaboration_target (session_id, kind, resource_id, roster)
-VALUES ($1, $2, $3, $4) RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at
+VALUES ($1, $2, $3, $4) RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id
 `
 
 type CreateCollaborationTargetParams struct {
@@ -179,12 +141,14 @@ func (q *Queries) CreateCollaborationTarget(ctx context.Context, arg CreateColla
 		&i.PauseReason,
 		&i.RevokedAt,
 		&i.CreatedAt,
+		&i.ConfigurationFingerprint,
+		&i.ChannelID,
 	)
 	return i, err
 }
 
 const getCollaborationCommandInput = `-- name: GetCollaborationCommandInput :one
-SELECT id, legacy_session_id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, legacy_unresolved FROM collaboration_command WHERE target_id = $1 AND input_event_id = $2
+SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id FROM collaboration_command WHERE target_id = $1 AND input_event_id = $2
 `
 
 type GetCollaborationCommandInputParams struct {
@@ -197,7 +161,6 @@ func (q *Queries) GetCollaborationCommandInput(ctx context.Context, arg GetColla
 	var i CollaborationCommand
 	err := row.Scan(
 		&i.ID,
-		&i.LegacySessionID,
 		&i.Seq,
 		&i.AuthorUserID,
 		&i.ParticipantEpoch,
@@ -211,13 +174,14 @@ func (q *Queries) GetCollaborationCommandInput(ctx context.Context, arg GetColla
 		&i.SessionID,
 		&i.TargetID,
 		&i.InputEventID,
-		&i.LegacyUnresolved,
+		&i.ChannelID,
+		&i.BatchID,
 	)
 	return i, err
 }
 
 const getCollaborationExecutionGroup = `-- name: GetCollaborationExecutionGroup :one
-SELECT id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at FROM collaboration_execution_group WHERE session_id = $1 AND id = $2
+SELECT id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at, channel_id, batch_id FROM collaboration_execution_group WHERE session_id = $1 AND id = $2
 `
 
 type GetCollaborationExecutionGroupParams struct {
@@ -243,12 +207,14 @@ func (q *Queries) GetCollaborationExecutionGroup(ctx context.Context, arg GetCol
 		&i.DispositionReason,
 		&i.CreatedAt,
 		&i.SettledAt,
+		&i.ChannelID,
+		&i.BatchID,
 	)
 	return i, err
 }
 
 const getCollaborationSession = `-- name: GetCollaborationSession :one
-SELECT id, issue_id, queue_state, control_version, event_seq, next_command_seq, resource_epoch, active_grant_id, active_run_id, pause_reason, created_at, target_set_version FROM collaboration_session WHERE issue_id = $1
+SELECT id, issue_id, queue_state, control_version, event_seq, pause_reason, created_at, target_set_version FROM collaboration_session WHERE issue_id = $1
 `
 
 // Read projections use the caller's authorized repeatable-read transaction.
@@ -261,10 +227,6 @@ func (q *Queries) GetCollaborationSession(ctx context.Context, issueID pgtype.UU
 		&i.QueueState,
 		&i.ControlVersion,
 		&i.EventSeq,
-		&i.NextCommandSeq,
-		&i.ResourceEpoch,
-		&i.ActiveGrantID,
-		&i.ActiveRunID,
 		&i.PauseReason,
 		&i.CreatedAt,
 		&i.TargetSetVersion,
@@ -273,7 +235,7 @@ func (q *Queries) GetCollaborationSession(ctx context.Context, issueID pgtype.UU
 }
 
 const listCollaborationCommands = `-- name: ListCollaborationCommands :many
-SELECT id, legacy_session_id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, legacy_unresolved FROM collaboration_command WHERE session_id = $1 ORDER BY target_id, seq
+SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id FROM collaboration_command WHERE session_id = $1 ORDER BY target_id, seq
 `
 
 func (q *Queries) ListCollaborationCommands(ctx context.Context, sessionID pgtype.UUID) ([]CollaborationCommand, error) {
@@ -287,7 +249,6 @@ func (q *Queries) ListCollaborationCommands(ctx context.Context, sessionID pgtyp
 		var i CollaborationCommand
 		if err := rows.Scan(
 			&i.ID,
-			&i.LegacySessionID,
 			&i.Seq,
 			&i.AuthorUserID,
 			&i.ParticipantEpoch,
@@ -301,7 +262,8 @@ func (q *Queries) ListCollaborationCommands(ctx context.Context, sessionID pgtyp
 			&i.SessionID,
 			&i.TargetID,
 			&i.InputEventID,
-			&i.LegacyUnresolved,
+			&i.ChannelID,
+			&i.BatchID,
 		); err != nil {
 			return nil, err
 		}
@@ -314,7 +276,7 @@ func (q *Queries) ListCollaborationCommands(ctx context.Context, sessionID pgtyp
 }
 
 const listCollaborationExecutionGroups = `-- name: ListCollaborationExecutionGroups :many
-SELECT id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at FROM collaboration_execution_group WHERE session_id = $1 ORDER BY target_id, generation
+SELECT id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at, channel_id, batch_id FROM collaboration_execution_group WHERE session_id = $1 ORDER BY target_id, generation
 `
 
 func (q *Queries) ListCollaborationExecutionGroups(ctx context.Context, sessionID pgtype.UUID) ([]CollaborationExecutionGroup, error) {
@@ -341,6 +303,8 @@ func (q *Queries) ListCollaborationExecutionGroups(ctx context.Context, sessionI
 			&i.DispositionReason,
 			&i.CreatedAt,
 			&i.SettledAt,
+			&i.ChannelID,
+			&i.BatchID,
 		); err != nil {
 			return nil, err
 		}
@@ -353,7 +317,7 @@ func (q *Queries) ListCollaborationExecutionGroups(ctx context.Context, sessionI
 }
 
 const listCollaborationRuns = `-- name: ListCollaborationRuns :many
-SELECT id, legacy_session_id, legacy_command_id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, legacy_unresolved FROM collaboration_run WHERE session_id = $1 ORDER BY created_at, id
+SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment FROM collaboration_run WHERE session_id = $1 ORDER BY created_at, id
 `
 
 func (q *Queries) ListCollaborationRuns(ctx context.Context, sessionID pgtype.UUID) ([]CollaborationRun, error) {
@@ -367,8 +331,6 @@ func (q *Queries) ListCollaborationRuns(ctx context.Context, sessionID pgtype.UU
 		var i CollaborationRun
 		if err := rows.Scan(
 			&i.ID,
-			&i.LegacySessionID,
-			&i.LegacyCommandID,
 			&i.TaskID,
 			&i.GrantID,
 			&i.GrantEpoch,
@@ -402,7 +364,11 @@ func (q *Queries) ListCollaborationRuns(ctx context.Context, sessionID pgtype.UU
 			&i.AgentID,
 			&i.TargetEpoch,
 			&i.ConfigVersion,
-			&i.LegacyUnresolved,
+			&i.ChannelID,
+			&i.BatchID,
+			&i.DeploymentID,
+			&i.ResourceOwnerUserID,
+			&i.Containment,
 		); err != nil {
 			return nil, err
 		}
@@ -415,7 +381,7 @@ func (q *Queries) ListCollaborationRuns(ctx context.Context, sessionID pgtype.UU
 }
 
 const listCollaborationTargets = `-- name: ListCollaborationTargets :many
-SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at FROM collaboration_target WHERE session_id = $1 ORDER BY id
+SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id FROM collaboration_target WHERE session_id = $1 ORDER BY id
 `
 
 func (q *Queries) ListCollaborationTargets(ctx context.Context, sessionID pgtype.UUID) ([]CollaborationTarget, error) {
@@ -443,6 +409,8 @@ func (q *Queries) ListCollaborationTargets(ctx context.Context, sessionID pgtype
 			&i.PauseReason,
 			&i.RevokedAt,
 			&i.CreatedAt,
+			&i.ConfigurationFingerprint,
+			&i.ChannelID,
 		); err != nil {
 			return nil, err
 		}
@@ -491,7 +459,7 @@ func (q *Queries) LockCollaborationGroupDelegations(ctx context.Context, groupID
 }
 
 const lockCollaborationGroupRuns = `-- name: LockCollaborationGroupRuns :many
-SELECT id, legacy_session_id, legacy_command_id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, legacy_unresolved FROM collaboration_run WHERE group_id = $1 ORDER BY id FOR UPDATE
+SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment FROM collaboration_run WHERE group_id = $1 ORDER BY id FOR UPDATE
 `
 
 func (q *Queries) LockCollaborationGroupRuns(ctx context.Context, groupID pgtype.UUID) ([]CollaborationRun, error) {
@@ -505,8 +473,6 @@ func (q *Queries) LockCollaborationGroupRuns(ctx context.Context, groupID pgtype
 		var i CollaborationRun
 		if err := rows.Scan(
 			&i.ID,
-			&i.LegacySessionID,
-			&i.LegacyCommandID,
 			&i.TaskID,
 			&i.GrantID,
 			&i.GrantEpoch,
@@ -540,7 +506,11 @@ func (q *Queries) LockCollaborationGroupRuns(ctx context.Context, groupID pgtype
 			&i.AgentID,
 			&i.TargetEpoch,
 			&i.ConfigVersion,
-			&i.LegacyUnresolved,
+			&i.ChannelID,
+			&i.BatchID,
+			&i.DeploymentID,
+			&i.ResourceOwnerUserID,
+			&i.Containment,
 		); err != nil {
 			return nil, err
 		}
@@ -553,7 +523,7 @@ func (q *Queries) LockCollaborationGroupRuns(ctx context.Context, groupID pgtype
 }
 
 const lockCollaborationTargetGrants = `-- name: LockCollaborationTargetGrants :many
-SELECT id, issue_id, owner_user_id, owner_auth_epoch, execution_workspace_id, agent_id, runtime_id, identity_kind, installation_id, binding_id, binding_epoch, epoch, consented_at, revoked_at, revocation_reason, target_id, config_version, role, legacy_unresolved FROM collaboration_grant WHERE target_id = $1 ORDER BY id FOR UPDATE
+SELECT id, issue_id, owner_user_id, owner_auth_epoch, execution_workspace_id, agent_id, runtime_id, identity_kind, installation_id, binding_id, binding_epoch, epoch, consented_at, revoked_at, revocation_reason, target_id, config_version, role, owner_participant_epoch, target_epoch, configuration_fingerprint FROM collaboration_grant WHERE target_id = $1 ORDER BY id FOR UPDATE
 `
 
 func (q *Queries) LockCollaborationTargetGrants(ctx context.Context, targetID pgtype.UUID) ([]CollaborationGrant, error) {
@@ -584,7 +554,9 @@ func (q *Queries) LockCollaborationTargetGrants(ctx context.Context, targetID pg
 			&i.TargetID,
 			&i.ConfigVersion,
 			&i.Role,
-			&i.LegacyUnresolved,
+			&i.OwnerParticipantEpoch,
+			&i.TargetEpoch,
+			&i.ConfigurationFingerprint,
 		); err != nil {
 			return nil, err
 		}
@@ -597,7 +569,7 @@ func (q *Queries) LockCollaborationTargetGrants(ctx context.Context, targetID pg
 }
 
 const lockCollaborationTargets = `-- name: LockCollaborationTargets :many
-SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at FROM collaboration_target WHERE session_id = $1 ORDER BY id FOR UPDATE
+SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id FROM collaboration_target WHERE session_id = $1 ORDER BY id FOR UPDATE
 `
 
 // The permanent source/session locks serialize target membership and controls.
@@ -627,6 +599,8 @@ func (q *Queries) LockCollaborationTargets(ctx context.Context, sessionID pgtype
 			&i.PauseReason,
 			&i.RevokedAt,
 			&i.CreatedAt,
+			&i.ConfigurationFingerprint,
+			&i.ChannelID,
 		); err != nil {
 			return nil, err
 		}
@@ -639,7 +613,7 @@ func (q *Queries) LockCollaborationTargets(ctx context.Context, sessionID pgtype
 }
 
 const lockCollaborationUnsettledGroups = `-- name: LockCollaborationUnsettledGroups :many
-SELECT id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at FROM collaboration_execution_group WHERE session_id = $1 AND settled_at IS NULL
+SELECT id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at, channel_id, batch_id FROM collaboration_execution_group WHERE session_id = $1 AND settled_at IS NULL
 ORDER BY target_id, id FOR UPDATE
 `
 
@@ -667,6 +641,8 @@ func (q *Queries) LockCollaborationUnsettledGroups(ctx context.Context, sessionI
 			&i.DispositionReason,
 			&i.CreatedAt,
 			&i.SettledAt,
+			&i.ChannelID,
+			&i.BatchID,
 		); err != nil {
 			return nil, err
 		}
@@ -679,11 +655,11 @@ func (q *Queries) LockCollaborationUnsettledGroups(ctx context.Context, sessionI
 }
 
 const lockCollaborationUnsettledRuns = `-- name: LockCollaborationUnsettledRuns :many
-SELECT id, legacy_session_id, legacy_command_id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, legacy_unresolved FROM collaboration_run WHERE session_id = $1 AND settled_at IS NULL
+SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment FROM collaboration_run WHERE session_id = $1 AND settled_at IS NULL
 ORDER BY group_id, id FOR UPDATE
 `
 
-// Includes retained legacy work and detached rows as barriers. Never derive
+// Includes detached rows as barriers. Never derive
 // idleness exclusively from target.active_group_id or a group row.
 func (q *Queries) LockCollaborationUnsettledRuns(ctx context.Context, sessionID pgtype.UUID) ([]CollaborationRun, error) {
 	rows, err := q.db.Query(ctx, lockCollaborationUnsettledRuns, sessionID)
@@ -696,8 +672,6 @@ func (q *Queries) LockCollaborationUnsettledRuns(ctx context.Context, sessionID 
 		var i CollaborationRun
 		if err := rows.Scan(
 			&i.ID,
-			&i.LegacySessionID,
-			&i.LegacyCommandID,
 			&i.TaskID,
 			&i.GrantID,
 			&i.GrantEpoch,
@@ -731,7 +705,11 @@ func (q *Queries) LockCollaborationUnsettledRuns(ctx context.Context, sessionID 
 			&i.AgentID,
 			&i.TargetEpoch,
 			&i.ConfigVersion,
-			&i.LegacyUnresolved,
+			&i.ChannelID,
+			&i.BatchID,
+			&i.DeploymentID,
+			&i.ResourceOwnerUserID,
+			&i.Containment,
 		); err != nil {
 			return nil, err
 		}
@@ -747,7 +725,7 @@ const pauseCollaborationTarget = `-- name: PauseCollaborationTarget :one
 UPDATE collaboration_target SET queue_state = 'paused', pause_reason = $1::text,
     control_version = control_version + 1
 WHERE session_id = $2::uuid AND id = $3::uuid
-RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at
+RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id
 `
 
 type PauseCollaborationTargetParams struct {
@@ -775,6 +753,8 @@ func (q *Queries) PauseCollaborationTarget(ctx context.Context, arg PauseCollabo
 		&i.PauseReason,
 		&i.RevokedAt,
 		&i.CreatedAt,
+		&i.ConfigurationFingerprint,
+		&i.ChannelID,
 	)
 	return i, err
 }
@@ -782,7 +762,7 @@ func (q *Queries) PauseCollaborationTarget(ctx context.Context, arg PauseCollabo
 const revokeCollaborationGrant = `-- name: RevokeCollaborationGrant :one
 UPDATE collaboration_grant SET epoch = epoch + 1, revoked_at = now(), revocation_reason = $1::text
 WHERE id = $2::uuid AND issue_id = $3::uuid AND revoked_at IS NULL
-RETURNING id, issue_id, owner_user_id, owner_auth_epoch, execution_workspace_id, agent_id, runtime_id, identity_kind, installation_id, binding_id, binding_epoch, epoch, consented_at, revoked_at, revocation_reason, target_id, config_version, role, legacy_unresolved
+RETURNING id, issue_id, owner_user_id, owner_auth_epoch, execution_workspace_id, agent_id, runtime_id, identity_kind, installation_id, binding_id, binding_epoch, epoch, consented_at, revoked_at, revocation_reason, target_id, config_version, role, owner_participant_epoch, target_epoch, configuration_fingerprint
 `
 
 type RevokeCollaborationGrantParams struct {
@@ -813,7 +793,9 @@ func (q *Queries) RevokeCollaborationGrant(ctx context.Context, arg RevokeCollab
 		&i.TargetID,
 		&i.ConfigVersion,
 		&i.Role,
-		&i.LegacyUnresolved,
+		&i.OwnerParticipantEpoch,
+		&i.TargetEpoch,
+		&i.ConfigurationFingerprint,
 	)
 	return i, err
 }
@@ -824,7 +806,7 @@ SET expansion_sealed_at = COALESCE(expansion_sealed_at, now()), state = 'ending'
     disposition_reason = CASE WHEN forced_disposition IS NULL THEN $1::text ELSE disposition_reason END,
     forced_disposition = COALESCE(forced_disposition, $2::text)
 WHERE id = $3::uuid AND settled_at IS NULL
-RETURNING id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at
+RETURNING id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at, channel_id, batch_id
 `
 
 type SealCollaborationGroupParams struct {
@@ -851,6 +833,8 @@ func (q *Queries) SealCollaborationGroup(ctx context.Context, arg SealCollaborat
 		&i.DispositionReason,
 		&i.CreatedAt,
 		&i.SettledAt,
+		&i.ChannelID,
+		&i.BatchID,
 	)
 	return i, err
 }
@@ -866,7 +850,7 @@ WHERE g.id = $1::uuid AND g.settled_at IS NULL
            OR r.sealed_attempt_seq < r.authorized_attempt_seq OR r.target_id <> g.target_id OR r.command_id <> g.command_id
            OR (r.parent_run_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM collaboration_run parent WHERE parent.id = r.parent_run_id AND parent.group_id = g.id))))
   AND NOT EXISTS (SELECT 1 FROM collaboration_delegation d WHERE d.group_id = g.id AND d.state NOT IN ('settled', 'cancelled'))
-RETURNING id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at
+RETURNING id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at, channel_id, batch_id
 `
 
 // All run and delegation writers hold the group lock. The final root input is
@@ -889,6 +873,8 @@ func (q *Queries) SettleStoppedCollaborationGroup(ctx context.Context, groupID p
 		&i.DispositionReason,
 		&i.CreatedAt,
 		&i.SettledAt,
+		&i.ChannelID,
+		&i.BatchID,
 	)
 	return i, err
 }

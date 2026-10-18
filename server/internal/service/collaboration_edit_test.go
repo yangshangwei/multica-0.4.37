@@ -37,11 +37,14 @@ func TestCollaborationEditRecordsCurrentActorAndImmutableExecution(t *testing.T)
 				f.fx.Exec(t, `DELETE FROM member WHERE workspace_id=$1 AND user_id=$2`, f.workspace, actor)
 			}
 			f.fx.Exec(t, `UPDATE issue SET start_date='2026-10-01' WHERE id=$1`, f.issue.Issue.ID)
-			grant := workflowGrant(t, f, f.handler)
+			// Resource setup must not restore either editor's source membership.
+			f.fx.InsertNoID(t, "issue_participant", testutil.Cols{"issue_id": f.issue.Issue.ID, "user_id": f.outsider}, "issue_id=$1 AND user_id=$2", f.issue.Issue.ID, f.outsider)
+			f.fx.InsertNoID(t, "collaboration_account_fence", testutil.Cols{"user_id": f.outsider}, "user_id=$1", f.outsider)
+			grant := workflowGrant(t, f, f.outsider)
 			f.targetID = grantTarget(t, f, grant)
 			first := f.submit(t, f.creator, "original command snapshot")
-			waiting := f.submit(t, f.handler, "immutable waiting snapshot")
 			run := f.run(t, first, 1)
+			waiting := f.submit(t, f.handler, "immutable waiting snapshot")
 			requestID := f.fx.Insert(t, "issue_handoff", testutil.Cols{"issue_id": f.issue.Issue.ID, "actor_user_id": f.creator,
 				"from_user_id": f.creator, "to_user_id": f.handler, "purpose": "information", "requester_user_id": f.creator, "previous_status": "todo"})
 			f.fx.Exec(t, `UPDATE issue_collaboration SET active_information_request_id=$2 WHERE issue_id=$1`, f.issue.Issue.ID, requestID)
@@ -53,6 +56,9 @@ func TestCollaborationEditRecordsCurrentActorAndImmutableExecution(t *testing.T)
 			p.Title, p.Description = editString("Edited\x00 title"), editString("New body\x00 with @AI")
 			p.SetStartDate, p.SetDueDate = true, true
 			p.StartDate, p.DueDate = editString(""), editString("2026-10-31T00:00:00Z")
+			if role != "creator" && f.fx.Count(t, `SELECT count(*) FROM member WHERE workspace_id=$1 AND user_id=$2`, f.workspace, actor) != 0 {
+				t.Fatalf("%s fixture restored source membership before edit", role)
+			}
 			started := time.Now().UTC()
 			r, err := f.svc.EditIssue(collaborationContext(actor), p)
 			if err != nil || r.Code != "issue_edited" || r.CollaborationRevision != 2 || r.ControlVersion != 1 || r.QueueState != "active" {

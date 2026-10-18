@@ -376,7 +376,7 @@ func (t *collaborationWorkflowTx) changeLifecycle(ctx context.Context, action, t
 		for _, item := range t.targets {
 			selected[item.ID] = "cancelled"
 		}
-		receipt, err := t.stopTargets(ctx, selected, true, "cancelled", reason, true)
+		receipt, err := t.stopTargets(ctx, selected, true, reason, true)
 		if err != nil {
 			return CollaborationWorkflowReceipt{}, err
 		}

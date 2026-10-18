@@ -107,18 +107,18 @@ func TestCollaborationSquadInputRechecksEveryResourceConsent(t *testing.T) {
 	}
 }
 
-func TestCollaborationWholeStopRejectsMissingLegacyActiveRun(t *testing.T) {
+func TestCollaborationWholeStopRejectsMissingCurrentGroup(t *testing.T) {
 	f := newCollaborationQueueFixture(t)
 	missing := util.MustParseUUID(uuid.NewString())
-	f.fx.Exec(t, `UPDATE collaboration_session SET active_run_id=$2 WHERE id=$1`, f.issue.SessionID, missing)
+	f.fx.Exec(t, `UPDATE collaboration_target SET active_group_id=$2,group_generation=1 WHERE id=$1`, f.targetID, missing)
 	beforeEvents := f.fx.Count(t, `SELECT count(*) FROM collaboration_event WHERE issue_id=$1`, f.issue.Issue.ID)
 	r, err := f.svc.StopQueue(f.ctx, f.issueControl(t))
 	if err == nil {
-		t.Fatalf("missing legacy active execution was reported as settled/ended: %+v", r)
+		t.Fatalf("missing current execution group was reported as settled/ended: %+v", r)
 	}
-	if f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND queue_state='paused' AND control_version=1 AND active_run_id=$2`, f.issue.SessionID, missing) != 1 ||
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state='paused' AND control_version=1 AND active_group_id=$2`, f.targetID, missing) != 1 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_event WHERE issue_id=$1`, f.issue.Issue.ID) != beforeEvents {
-		t.Fatal("missing legacy execution failure changed the pause or historical barrier")
+		t.Fatal("missing current group failure changed the pause or historical barrier")
 	}
 }
 

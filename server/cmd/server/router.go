@@ -1392,6 +1392,19 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	// unchanged — this one is purely additive.
 	r.Get("/api/attachments/{id}/signed-download", h.DownloadAttachmentWithCapability)
 
+	// These purpose-bound capabilities outlive ordinary account/daemon
+	// revocation only for their own run. Never wrap them in ordinary Auth.
+	r.Post("/api/collaboration/runtime/runs/{runId}/outcome", h.RecordCollaborationRuntimeOutcome)
+	r.Get("/api/collaboration/runtime/runs/{runId}/stop-intent", h.GetCollaborationRuntimeStopIntent)
+	r.Post("/api/collaboration/runtime/runs/{runId}/proof", h.AcceptCollaborationRuntimeProof)
+	r.Group(func(r chi.Router) {
+		r.Use(handler.RequireCollaborationManagedBearer)
+		r.Use(middleware.DaemonAuth(queries, patCache, daemonTokenCache, cloudPATVerifier))
+		r.Get("/api/collaboration/runtime/runs", h.ListCollaborationRuntimeRuns)
+		r.Post("/api/collaboration/runtime/runs/{runId}/claim", h.ClaimCollaborationRuntimeRun)
+		r.Post("/api/collaboration/runtime/runs/{runId}/permit", h.PermitCollaborationRuntimeRun)
+	})
+
 	// Avatar serving. Public for the same reason as the capability download
 	// above: the auth cookie is SameSite=Strict, so an auth-gated URL cannot
 	// be a native <img src> from Desktop / mobile webview or a split-origin
@@ -1604,6 +1617,9 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 
 		r.Get("/api/me", h.GetMe)
 		r.Get("/api/me/workbench", h.GetCollaborationWorkbench)
+		r.Get("/api/me/collaboration-notifications", h.ListCollaborationNotifications)
+		r.Post("/api/me/collaboration-notifications/{notificationId}/read", h.ReadCollaborationNotification)
+		r.Post("/api/me/collaboration-notifications/{notificationId}/archive", h.ArchiveCollaborationNotification)
 		// Public collaboration creation remains unregistered until all workflow
 		// and runtime guards are ready. These routes use object/account authority.
 		r.Get("/api/collaboration/issues/{id}", h.GetCollaborationIssue)
@@ -1618,6 +1634,20 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Get("/api/collaboration/issues/{id}/operations/{requestId}", h.GetCollaborationOperation)
 		r.Get("/api/collaboration/issues/{id}/status-options", h.GetCollaborationStatusOptions)
 		r.Get("/api/collaboration/issues/{id}/field-options", h.GetCollaborationFieldOptions)
+		r.Post("/api/collaboration/issues/{id}/targets", h.RegisterCollaborationTarget)
+		r.Post("/api/collaboration/issues/{id}/targets/{targetId}/consents", h.ConsentCollaborationTarget)
+		r.Post("/api/collaboration/issues/{id}/targets/{targetId}/runtime-binding", h.ReconfigureCollaborationTarget)
+		r.Post("/api/collaboration/issues/{id}/grants/{grantId}/revoke", h.RevokeCollaborationGrant)
+		r.Post("/api/collaboration/issues/{id}/control", h.ControlCollaborationIssue)
+		r.Get("/api/collaboration/issues/{id}/comments", h.ListCollaborationComments)
+		r.Post("/api/collaboration/issues/{id}/comments", h.CreateCollaborationComment)
+		r.Get("/api/collaboration/issues/{id}/comments/operations/{requestId}", h.GetCollaborationCommentOperation)
+		r.Get("/api/collaboration/issues/{id}/mention-targets", h.GetCollaborationMentionTargets)
+		r.Post("/api/collaboration/issues/{id}/comments/trigger-preview", h.PreviewCollaborationComment)
+		r.Get("/api/collaboration/issues/{id}/comments/{commentId}", h.GetCollaborationComment)
+		r.Get("/api/collaboration/issues/{id}/comments/{commentId}/history", h.GetCollaborationCommentHistory)
+		r.Patch("/api/collaboration/issues/{id}/comments/{commentId}", h.EditCollaborationComment)
+		r.Delete("/api/collaboration/issues/{id}/comments/{commentId}", h.DeleteCollaborationComment)
 		r.Patch("/api/collaboration/issues/{id}", h.UpdateCollaborationIssue)
 		r.Post("/api/collaboration/issues/{id}/lifecycle", h.ChangeCollaborationLifecycle)
 		r.Post("/api/installations/challenges", h.InstallationChallenge)

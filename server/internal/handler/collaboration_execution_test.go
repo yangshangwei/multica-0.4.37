@@ -30,35 +30,49 @@ func collaborationExecutionReadFixture(t *testing.T) collaborationExecutionFixtu
 	}
 	sessionID := uuidToString(session.ID)
 	dbfx.Exec(t, `UPDATE collaboration_session SET target_set_version=9007199254740999,control_version=9007199254740995 WHERE id=$1`, sessionID)
-	inputEvent, agent := uuid.NewString(), uuid.NewString()
+	inputEvent := uuid.NewString()
 	roster := json.RawMessage(`[{"private_directory":"PRIVATE_DIRECTORY","credential":"PRIVATE_CREDENTIAL"}]`)
 	ids := collaborationExecutionFixtureIDs{issue: issue, session: sessionID}
 	for _, kind := range []string{"agent", "squad"} {
+		agent := uuid.NewString()
 		resourceID := agent
 		if kind == "squad" {
 			resourceID = uuid.NewString()
 		}
+		channel := dbfx.Insert(t, "collaboration_channel", testutil.Cols{
+			"session_id": sessionID, "root_agent_id": agent, "group_generation": 1,
+			"control_version": int64(9007199254740995), "next_batch_seq": 2,
+		})
 		target := dbfx.Insert(t, "collaboration_target", testutil.Cols{
-			"session_id": sessionID, "kind": kind, "resource_id": resourceID, "roster": roster,
+			"session_id": sessionID, "channel_id": channel, "kind": kind, "resource_id": resourceID, "roster": roster,
 			"target_epoch": int64(9007199254740993), "config_version": int64(9007199254740993),
 			"control_version": int64(9007199254740995), "next_command_seq": int64(9007199254740994),
 		})
+		batch := dbfx.Insert(t, "collaboration_batch", testutil.Cols{
+			"session_id": sessionID, "channel_id": channel, "effective_target_id": target,
+			"seq": 1, "state": "in_flight", "started_at": time.Now(),
+		})
 		command := dbfx.Insert(t, "collaboration_command", testutil.Cols{
 			"session_id": sessionID, "target_id": target, "input_event_id": inputEvent, "seq": int64(9007199254740993),
+			"channel_id": channel, "batch_id": batch,
 			"author_user_id": testUserID, "participant_epoch": 1, "author_auth_epoch": 1, "lifecycle_epoch": 1,
 			"content": "PRIVATE_COMMAND_INPUT", "state": "in_flight",
 		})
 		group := dbfx.Insert(t, "collaboration_execution_group", testutil.Cols{
 			"session_id": sessionID, "target_id": target, "command_id": command, "generation": 1,
+			"channel_id": channel, "batch_id": batch,
 			"target_epoch": int64(9007199254740993), "config_version": int64(9007199254740993), "roster": roster,
 		})
 		dbfx.Exec(t, `UPDATE collaboration_target SET group_generation=1,active_group_id=$2 WHERE id=$1`, target, group)
+		dbfx.Exec(t, `UPDATE collaboration_channel SET active_group_id=$2 WHERE id=$1`, channel, group)
+		dbfx.Exec(t, `UPDATE collaboration_batch SET root_command_id=$2,group_id=$3 WHERE id=$1`, batch, command, group)
 		rootKind := "agent"
 		if kind == "squad" {
 			rootKind = "leader"
 		}
 		run := testutil.Cols{
 			"session_id": sessionID, "target_id": target, "group_id": group, "command_id": command, "agent_id": agent,
+			"channel_id": channel, "batch_id": batch,
 			"step_key": "root", "step_kind": rootKind, "grant_id": uuid.NewString(), "grant_epoch": 1, "resource_epoch": 1,
 			"execution_workspace_id": uuid.NewString(), "runtime_id": uuid.NewString(), "installation_id": uuid.NewString(),
 			"binding_id": uuid.NewString(), "binding_epoch": 1, "target_epoch": int64(9007199254740993), "config_version": int64(9007199254740993),
@@ -91,7 +105,7 @@ func TestCollaborationExecutionHTTPProjection(t *testing.T) {
 	var out CollaborationIssueResponse
 	response := testutil.Call(t, testHandler.GetCollaborationIssue, r).Want(http.StatusOK).JSON(&out)
 	execution := out.Execution
-	if execution.ProtocolVersion != 2 || execution.IssueID != ids.issue || execution.SessionID != ids.session || execution.TargetSetVersion != "9007199254740999" ||
+	if execution.ProtocolVersion != 3 || execution.IssueID != ids.issue || execution.SessionID != ids.session || execution.TargetSetVersion != "9007199254740999" ||
 		execution.Control.Scope != "issue" || execution.Control.ControlVersion != out.Session.ControlVersion || execution.Control.QueueState != out.Session.QueueState {
 		t.Fatalf("execution did not carry the exact issue/control snapshot: %+v", execution)
 	}
@@ -107,18 +121,28 @@ func TestCollaborationExecutionHTTPProjection(t *testing.T) {
 	if len(execution.Targets) != 2 || len(execution.Commands) != 2 || len(execution.Groups) != 2 || len(execution.Runs) != 3 {
 		t.Fatalf("typed targets or squad members were lost: %+v", execution)
 	}
+	channels := make(map[string]string)
 	for _, target := range execution.Targets {
-		if target.Control.Scope != "target" || target.ConfigVersion != "9007199254740993" || target.Control.ControlVersion != "9007199254740995" || target.GroupGeneration != "1" || target.ActiveGroupID == nil {
+		if target.Control.Scope != "target" || target.ConfigVersion != "9007199254740993" || target.Control.ControlVersion != "9007199254740995" || target.GroupGeneration != "1" || target.ActiveGroupID == nil || target.ChannelID == nil {
 			t.Fatalf("invalid target scope/version: %+v", target)
 		}
+		channels[target.ID] = *target.ChannelID
 	}
 	for _, command := range execution.Commands {
-		if command.Sequence != "9007199254740993" || command.AuthorUserID != testUserID {
-			t.Fatalf("command lost exact sequence or original author: %+v", command)
+		if command.Sequence != "9007199254740993" || command.AuthorUserID != testUserID || command.ChannelID != channels[command.TargetID] || command.BatchID == "" {
+			t.Fatalf("command lost sequence, author or batch identity: %+v", command)
 		}
+	}
+	groups := make(map[string]service.CollaborationExecutionGroupView)
+	for _, group := range execution.Groups {
+		groups[group.ID] = group
 	}
 	memberFound := false
 	for _, run := range execution.Runs {
+		group := groups[run.GroupID]
+		if run.ChannelID != channels[run.TargetID] || run.ChannelID != group.ChannelID || run.BatchID == "" || run.BatchID != group.BatchID {
+			t.Fatalf("run lost its retained group/channel/batch identity: %+v", run)
+		}
 		if run.ID == ids.member {
 			memberFound = run.TargetID == ids.squad && run.ParentRunID != nil && run.StepKind == "member" && run.ProofState == "unknown" && run.SettledAt == nil && run.RecordingIncomplete
 		}
@@ -158,8 +182,7 @@ func TestCollaborationExecutionHTTPEmptyCollections(t *testing.T) {
 	issue := collaborationBoundaryIssue(t, testWorkspaceID)
 	var out CollaborationIssueResponse
 	testutil.Call(t, testHandler.GetCollaborationIssue, collaborationFieldsReadRequest(issue, testUserID, "")).Want(http.StatusOK).JSON(&out)
-	if out.Execution.Targets == nil || out.Execution.Commands == nil || out.Execution.Groups == nil || out.Execution.Runs == nil ||
-		out.Execution.LegacyUnresolved.CommandIDs == nil || out.Execution.LegacyUnresolved.RunIDs == nil || out.Execution.LegacyUnresolved.ActiveRunID != nil {
+	if out.Execution.Targets == nil || out.Execution.Commands == nil || out.Execution.Groups == nil || out.Execution.Runs == nil {
 		t.Fatalf("empty execution collections must be explicit: %+v", out.Execution)
 	}
 }

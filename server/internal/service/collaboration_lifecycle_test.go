@@ -13,7 +13,6 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/auth"
-	"github.com/multica-ai/multica/server/internal/collaboration"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -63,10 +62,13 @@ func TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue(t *testing.T
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			f := newCollaborationLifecycleFixture(t)
+			// Source departure must not invalidate the independent resource owner.
+			grant := workflowGrant(t, f, f.handler)
+			f.targetID = grantTarget(t, f, grant)
 			first := f.submit(t, f.handler, "current command")
+			run := f.run(t, first, tc.attempts)
 			second := f.submit(t, f.creator, "creator waiting")
 			third := f.submit(t, f.handler, "handler waiting")
-			run := f.run(t, first, tc.attempts)
 			information := f.fx.Insert(t, "issue_handoff", testutil.Cols{"issue_id": f.issue.Issue.ID, "actor_user_id": f.creator, "from_user_id": f.creator, "to_user_id": f.handler, "purpose": "information", "requester_user_id": f.creator, "previous_status": "todo"})
 			f.fx.Exec(t, `UPDATE issue_collaboration SET active_information_request_id=$2 WHERE issue_id=$1`, f.issue.Issue.ID, information)
 			f.fx.Insert(t, "collaboration_termination", testutil.Cols{"issue_id": f.issue.Issue.ID, "run_id": run.ID, "fence": run.Fence, "launch_nonce": run.LaunchNonce,
@@ -135,9 +137,24 @@ func TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue(t *testing.T
 			}
 			if tc.attempts > 0 {
 				request.RequestID = uuid.NewString()
-				_, err = f.svc.ResumeQueue(f.ctx, CollaborationResumeQueueParams{CollaborationStopQueueParams: CollaborationStopQueueParams{CollaborationQueueRequest: request, Scope: collaboration.ControlIssue, ExpectedControlVersion: 3, ExpectedTargetSetVersion: 2, Targets: f.issueControl(t).Targets}, ExpectedExecutionEpoch: 2})
-				if !collaborationErrorCode(err, "stop_unconfirmed") {
-					t.Fatalf("reopen cleared execution barrier: %v", err)
+				control := f.issueControl(t)
+				control.CollaborationQueueRequest = request
+				_, err = f.svc.ResumeQueue(f.ctx, CollaborationResumeQueueParams{CollaborationStopQueueParams: control, ExpectedExecutionEpoch: 2})
+				if !collaborationErrorCode(err, "collaboration_execution_unavailable") {
+					t.Fatalf("reopen bypassed the disabled execution gate: %v", err)
+				}
+				// With the global gate available, explicit Resume All may release
+				// the issue pause, but the unproven channel must remain paused.
+				executionEpoch := enableControlGate(t, f.collaborationFixture)
+				control.RequestID = uuid.NewString()
+				resumed, resumeErr := f.svc.ResumeQueue(f.ctx, CollaborationResumeQueueParams{CollaborationStopQueueParams: control, ExpectedExecutionEpoch: executionEpoch})
+				blocked, found := groupControlResult(&resumed, run.GroupID)
+				if resumeErr != nil || resumed.Code != "partially_resumed" || !found || blocked.Code != "stop_unconfirmed" || blocked.QueueState != "paused" {
+					t.Fatalf("reopen cleared execution barrier: %+v %v", resumed, resumeErr)
+				}
+				retainedRun, readErr := f.svc.Queries.GetCollaborationRun(f.ctx, db.GetCollaborationRunParams{SessionID: f.issue.SessionID, RunID: run.ID})
+				if readErr != nil || !reflect.DeepEqual(retainedRun, closedRun) {
+					t.Fatalf("Resume changed the retained proof identity: %+v %v", retainedRun, readErr)
 				}
 			}
 		})

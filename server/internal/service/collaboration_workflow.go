@@ -471,6 +471,10 @@ func (s *CollaborationService) workflowInTx(ctx context.Context, tx pgx.Tx, acto
 	if err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}
+	t.channels, err = t.q.LockCollaborationChannels(ctx, t.session.ID)
+	if err != nil {
+		return CollaborationWorkflowReceipt{}, err
+	}
 	t.access, err = s.ResolveIssueAccess(ctx, t.q, p.IssueID)
 	if err != nil {
 		return CollaborationWorkflowReceipt{}, err
