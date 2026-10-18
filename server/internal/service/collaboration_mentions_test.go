@@ -1,6 +1,8 @@
 package service
 
 import (
+	"encoding/json"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -46,6 +48,21 @@ func TestCollaborationCommentPreviewIsReadOnlyAndKeepsIndependentPeopleAndTarget
 		preview.Targets[0].CommandID.Valid || preview.Targets[1].State != "blocked" || preview.Targets[1].TargetID.Valid ||
 		len(preview.Recipients) != 1 || preview.Recipients[0].Recipient.UserID != util.MustParseUUID(f.handler) || !preview.Recipients[0].IsMention {
 		t.Fatalf("preview mixed effects incorrectly: %+v %v", preview, err)
+	}
+	encoded, err := json.Marshal(preview)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var wire struct {
+		Targets []struct {
+			HoldReason  *string `json:"hold_reason"`
+			HoldVersion *string `json:"hold_version"`
+		} `json:"targets"`
+	}
+	if err = json.Unmarshal(encoded, &wire); err != nil || len(wire.Targets) != 2 || wire.Targets[0].HoldVersion == nil ||
+		*wire.Targets[0].HoldVersion != strconv.FormatInt(target.HoldVersion, 10) || wire.Targets[0].HoldReason == nil || *wire.Targets[0].HoldReason != target.HoldReason.String ||
+		wire.Targets[1].HoldVersion != nil || wire.Targets[1].HoldReason != nil {
+		t.Fatalf("hold feedback lost exact versions or invented unavailable-target state: %s, %v", encoded, err)
 	}
 	input.SuppressedTargetIDs = append(input.SuppressedTargetIDs, target.ID)
 	suppressed, err := f.svc.PreviewComment(f.ctx, f.issue.Issue.ID, input)

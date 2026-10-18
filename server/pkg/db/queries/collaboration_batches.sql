@@ -1,4 +1,4 @@
--- Channels are locked after the stable target set, before participants/grants.
+-- Channels are locked before the stable target set and participants/grants.
 -- A channel belongs to the actual root agent, not a target's display role.
 -- name: LockCollaborationChannels :many
 SELECT * FROM collaboration_channel WHERE session_id=$1 ORDER BY id FOR UPDATE;

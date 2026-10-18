@@ -51,40 +51,60 @@ type CollaborationCancelCommandParams struct {
 // Queue receipts describe the original operation, never refreshed authority.
 // RunID/RunSettled describe one run inside a target execution group.
 type CollaborationQueueReceipt struct {
-	Status           int                                `json:"status"`
-	Code             string                             `json:"code"`
-	ProtocolVersion  int                                `json:"protocol_version"`
-	Scope            collaboration.ControlScope         `json:"scope"`
-	TargetID         pgtype.UUID                        `json:"target_id"`
-	GrantID          pgtype.UUID                        `json:"grant_id"`
-	ChannelID        pgtype.UUID                        `json:"channel_id"`
-	BatchID          pgtype.UUID                        `json:"batch_id"`
-	CommandID        pgtype.UUID                        `json:"command_id"`
-	CommandSequence  int64                              `json:"command_sequence,string,omitempty"`
-	QueueState       string                             `json:"queue_state"`
-	ControlVersion   int64                              `json:"control_version,string"`
-	TargetSetVersion int64                              `json:"target_set_version,string,omitempty"`
-	GroupID          pgtype.UUID                        `json:"group_id"`
-	GroupSettled     bool                               `json:"group_settled"`
-	Targets          []CollaborationTargetControlResult `json:"targets,omitempty"`
-	RunID            pgtype.UUID                        `json:"run_id"`
-	RunSettled       bool                               `json:"run_settled"`
+	Status           int                                 `json:"status"`
+	Code             string                              `json:"code"`
+	IssueID          pgtype.UUID                         `json:"issue_id"`
+	RequestID        string                              `json:"request_id,omitempty"`
+	Action           string                              `json:"action,omitempty"`
+	ProtocolVersion  int                                 `json:"protocol_version"`
+	Scope            collaboration.ControlScope          `json:"scope"`
+	TargetID         pgtype.UUID                         `json:"target_id"`
+	GrantID          pgtype.UUID                         `json:"grant_id"`
+	ChannelID        pgtype.UUID                         `json:"channel_id"`
+	BatchID          pgtype.UUID                         `json:"batch_id"`
+	CommandID        pgtype.UUID                         `json:"command_id"`
+	CommandSequence  int64                               `json:"command_sequence,string,omitempty"`
+	QueueState       string                              `json:"queue_state"`
+	ControlVersion   int64                               `json:"control_version,string"`
+	TargetSetVersion int64                               `json:"target_set_version,string,omitempty"`
+	GroupID          pgtype.UUID                         `json:"group_id"`
+	GroupSettled     bool                                `json:"group_settled"`
+	Targets          []CollaborationTargetControlResult  `json:"targets,omitempty"`
+	Channels         []CollaborationChannelControlResult `json:"channels"`
+	TargetHolds      []CollaborationTargetHoldResult     `json:"target_holds"`
+	RunID            pgtype.UUID                         `json:"run_id"`
+	RunSettled       bool                                `json:"run_settled"`
 }
 
 type collaborationQueueTx struct {
-	q           *db.Queries
-	actor       pgtype.UUID
-	access      CollaborationIssueAccess
-	session     db.CollaborationSession
-	participant db.IssueParticipant
-	account     db.CollaborationAccountFence
-	gate        db.CollaborationExecutionGate
-	targets     []db.CollaborationTarget
-	channels    []db.CollaborationChannel
+	q             *db.Queries
+	actor         pgtype.UUID
+	access        CollaborationIssueAccess
+	session       db.CollaborationSession
+	participant   db.IssueParticipant
+	account       db.CollaborationAccountFence
+	gate          db.CollaborationExecutionGate
+	targets       []db.CollaborationTarget
+	channels      []db.CollaborationChannel
+	requestID     string
+	controlAction string
+	controlScope  collaboration.ControlScope
+	controlTarget pgtype.UUID
 }
 
 func (t *collaborationQueueTx) receipt(code string, status int) CollaborationQueueReceipt {
-	return CollaborationQueueReceipt{Code: code, Status: status, ProtocolVersion: collaboration.ExecutionProtocolVersion, Scope: collaboration.ControlIssue, QueueState: t.session.QueueState, ControlVersion: t.session.ControlVersion, TargetSetVersion: t.session.TargetSetVersion}
+	r := CollaborationQueueReceipt{Code: code, Status: status, IssueID: t.access.Issue.ID, RequestID: t.requestID, Action: t.controlAction,
+		ProtocolVersion: collaboration.ExecutionProtocolVersion, Scope: collaboration.ControlIssue, QueueState: t.session.QueueState,
+		ControlVersion: t.session.ControlVersion, TargetSetVersion: t.session.TargetSetVersion,
+		Channels: []CollaborationChannelControlResult{}, TargetHolds: []CollaborationTargetHoldResult{}}
+	if t.controlScope == collaboration.ControlTarget {
+		r.Scope, r.TargetID = t.controlScope, t.controlTarget
+		if target, exists := t.target(t.controlTarget); exists {
+			r.ChannelID, r.GroupID = target.ChannelID, target.ActiveGroupID
+			r.QueueState, r.ControlVersion = target.QueueState, target.ControlVersion
+		}
+	}
+	return r
 }
 
 // SubmitCommand saves an immutable input for one explicitly selected target.
@@ -183,7 +203,7 @@ func (s *CollaborationService) mutateCollaborationQueue(ctx context.Context, p C
 		if err != nil {
 			return CollaborationQueueReceipt{}, err
 		}
-		receipt, err := s.collaborationQueueMutationInTx(ctx, tx, actor, p, kind, payloadHash, mutate)
+		receipt, err := s.collaborationQueueMutationInTx(ctx, tx, actor, p, kind, payloadHash, payload, mutate)
 		if err == nil {
 			if err = tx.Commit(ctx); err != nil {
 				rollbackCollaborationQueue(ctx, tx)
@@ -221,8 +241,22 @@ func rollbackCollaborationQueue(ctx context.Context, tx pgx.Tx) {
 }
 
 func (s *CollaborationService) collaborationQueueMutationInTx(ctx context.Context, tx pgx.Tx, actor pgtype.UUID,
-	p CollaborationQueueRequest, kind, payloadHash string, mutate func(*collaborationQueueTx) (CollaborationQueueReceipt, error)) (CollaborationQueueReceipt, error) {
+	p CollaborationQueueRequest, kind, payloadHash string, payload any, mutate func(*collaborationQueueTx) (CollaborationQueueReceipt, error)) (CollaborationQueueReceipt, error) {
 	t := &collaborationQueueTx{q: s.Queries.WithTx(tx), actor: actor}
+	if kind == "stop_queue" || kind == "resume_queue" {
+		t.requestID, t.controlAction = p.RequestID, strings.TrimSuffix(kind, "_queue")
+		var control CollaborationStopQueueParams
+		switch request := payload.(type) {
+		case CollaborationStopQueueParams:
+			control = request
+		case CollaborationResumeQueueParams:
+			control = request.CollaborationStopQueueParams
+		}
+		t.controlScope = control.Scope
+		if control.Scope == collaboration.ControlTarget && len(control.Targets) == 1 {
+			t.controlTarget = control.Targets[0].TargetID
+		}
+	}
 	// Pre-read only discovers the source workspace; all authority is re-read
 	// after the actor, source issue/session and participant locks are held.
 	hint, err := s.ResolveIssueAccess(ctx, t.q, p.IssueID)
@@ -268,11 +302,11 @@ func (s *CollaborationService) collaborationQueueMutationInTx(ctx context.Contex
 	if !sameCollaborationUserIDs(ids, currentIDs) {
 		return CollaborationQueueReceipt{}, &pgconn.PgError{Code: "40001", Message: "collaboration account lock set changed"}
 	}
-	t.targets, err = t.q.LockCollaborationTargets(ctx, t.session.ID)
+	t.channels, err = t.q.LockCollaborationChannels(ctx, t.session.ID)
 	if err != nil {
 		return CollaborationQueueReceipt{}, err
 	}
-	t.channels, err = t.q.LockCollaborationChannels(ctx, t.session.ID)
+	t.targets, err = t.q.LockCollaborationTargets(ctx, t.session.ID)
 	if err != nil {
 		return CollaborationQueueReceipt{}, err
 	}
@@ -346,4 +380,58 @@ func sameCollaborationUserIDs(a, b []pgtype.UUID) bool {
 		}
 	}
 	return true
+}
+
+// GetControlOperation returns the original full receipt after current object
+// and human-account authorization. A missing key is distinct from lost access;
+// reading an operation never retries it or substitutes a newer observation.
+func (s *CollaborationService) GetControlOperation(ctx context.Context, issueID pgtype.UUID, requestID string) (CollaborationQueueReceipt, error) {
+	principal, ok := collaboration.PrincipalFromContext(ctx)
+	if !ok || !principal.Human() {
+		return CollaborationQueueReceipt{}, collaborationError(http.StatusNotFound, "not_found")
+	}
+	actor, err := util.ParseUUID(principal.UserID)
+	if err != nil || !issueID.Valid || requestID == "" || len(requestID) > 128 {
+		return CollaborationQueueReceipt{}, collaborationError(http.StatusBadRequest, "invalid_queue_request")
+	}
+	tx, err := s.TxStarter.Begin(ctx)
+	if err != nil {
+		return CollaborationQueueReceipt{}, err
+	}
+	defer rollbackCollaborationQueue(ctx, tx)
+	if _, err = tx.Exec(ctx, "SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY"); err != nil {
+		return CollaborationQueueReceipt{}, err
+	}
+	q := s.Queries.WithTx(tx)
+	access, err := s.ResolveIssueAccess(ctx, q, issueID)
+	if err != nil {
+		return CollaborationQueueReceipt{}, err
+	}
+	if !access.Capabilities.ControlAI {
+		return CollaborationQueueReceipt{}, collaborationError(http.StatusNotFound, "not_found")
+	}
+	op, err := q.GetCollaborationOperation(ctx, db.GetCollaborationOperationParams{ScopeKind: "issue", ScopeID: issueID, ActorUserID: actor, RequestID: requestID})
+	if errors.Is(err, pgx.ErrNoRows) {
+		return CollaborationQueueReceipt{}, collaborationError(http.StatusNotFound, "operation_not_found")
+	}
+	if err != nil {
+		return CollaborationQueueReceipt{}, err
+	}
+	if op.Kind != "stop_queue" && op.Kind != "resume_queue" {
+		return CollaborationQueueReceipt{}, collaborationError(http.StatusNotFound, "operation_not_found")
+	}
+	if !op.CompletedAt.Valid {
+		return CollaborationQueueReceipt{}, collaborationError(http.StatusConflict, "operation_incomplete")
+	}
+	var r CollaborationQueueReceipt
+	if err = json.Unmarshal(op.Result, &r); err != nil || r.Code == "" || r.Code != op.ResultCode.String || r.Status < 200 || r.Status > 599 ||
+		r.IssueID != issueID || r.RequestID != requestID || r.Action != strings.TrimSuffix(op.Kind, "_queue") ||
+		r.ProtocolVersion != collaboration.ExecutionProtocolVersion || r.Channels == nil || r.TargetHolds == nil ||
+		(r.Scope != collaboration.ControlIssue && r.Scope != collaboration.ControlTarget) {
+		return CollaborationQueueReceipt{}, errors.New("invalid collaboration control operation receipt")
+	}
+	if err = tx.Commit(ctx); err != nil {
+		return CollaborationQueueReceipt{}, err
+	}
+	return r, nil
 }

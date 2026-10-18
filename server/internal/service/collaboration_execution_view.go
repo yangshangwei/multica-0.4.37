@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/collaboration"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
@@ -17,6 +18,20 @@ type CollaborationExecutionControlView struct {
 	ControlVersion string `json:"control_version"`
 }
 
+type CollaborationExecutionGateView struct {
+	Enabled bool   `json:"enabled"`
+	Epoch   string `json:"epoch"`
+}
+
+type CollaborationExecutionChannelView struct {
+	ID              string  `json:"id"`
+	QueueState      string  `json:"queue_state"`
+	ControlVersion  string  `json:"control_version"`
+	GroupGeneration string  `json:"group_generation"`
+	ActiveGroupID   *string `json:"active_group_id"`
+	PauseReason     string  `json:"pause_reason"`
+}
+
 type CollaborationExecutionTargetView struct {
 	ID              string                            `json:"id"`
 	ChannelID       *string                           `json:"channel_id"`
@@ -24,6 +39,8 @@ type CollaborationExecutionTargetView struct {
 	ResourceID      string                            `json:"resource_id"`
 	TargetEpoch     string                            `json:"target_epoch"`
 	ConfigVersion   string                            `json:"config_version"`
+	HoldReason      *string                           `json:"hold_reason"`
+	HoldVersion     string                            `json:"hold_version"`
 	Control         CollaborationExecutionControlView `json:"control"`
 	GroupGeneration string                            `json:"group_generation"`
 	NextCommandSeq  string                            `json:"next_command_seq"`
@@ -89,6 +106,8 @@ type CollaborationExecutionView struct {
 	UnavailableReason string                              `json:"unavailable_reason"`
 	TargetSetVersion  string                              `json:"target_set_version"`
 	Control           CollaborationExecutionControlView   `json:"control"`
+	ExecutionGate     CollaborationExecutionGateView      `json:"execution_gate"`
+	Channels          []CollaborationExecutionChannelView `json:"channels"`
 	Targets           []CollaborationExecutionTargetView  `json:"targets"`
 	Commands          []CollaborationExecutionCommandView `json:"commands"`
 	Groups            []CollaborationExecutionGroupView   `json:"groups"`
@@ -109,6 +128,14 @@ func (s *CollaborationService) ExecutionView(ctx context.Context, access Collabo
 	if session.ID != access.SessionID || session.IssueID != access.Issue.ID || session.QueueState != access.QueueState || session.ControlVersion != access.ControlVersion {
 		return out, errors.New("collaboration execution snapshot mismatch")
 	}
+	gate, err := s.Queries.GetCollaborationGate(ctx)
+	if err != nil {
+		return out, err
+	}
+	channels, err := s.Queries.ListCollaborationChannels(ctx, session.ID)
+	if err != nil {
+		return out, err
+	}
 	targets, err := s.Queries.ListCollaborationTargets(ctx, session.ID)
 	if err != nil {
 		return out, err
@@ -125,27 +152,54 @@ func (s *CollaborationService) ExecutionView(ctx context.Context, access Collabo
 	if err != nil {
 		return out, err
 	}
-	return projectCollaborationExecution(session, targets, commands, groups, runs)
+	return projectCollaborationExecution(session, gate, channels, targets, commands, groups, runs)
 }
 
-func projectCollaborationExecution(session db.CollaborationSession, targets []db.CollaborationTarget, commands []db.CollaborationCommand, groups []db.CollaborationExecutionGroup, runs []db.CollaborationRun) (CollaborationExecutionView, error) {
+func projectCollaborationExecution(session db.CollaborationSession, gate db.CollaborationExecutionGate, channels []db.CollaborationChannel, targets []db.CollaborationTarget, commands []db.CollaborationCommand, groups []db.CollaborationExecutionGroup, runs []db.CollaborationRun) (CollaborationExecutionView, error) {
 	invalid := errors.New("collaboration execution identities are unavailable")
 	out := CollaborationExecutionView{
 		ProtocolVersion: 3, IssueID: util.UUIDToString(session.IssueID), SessionID: util.UUIDToString(session.ID),
 		Availability: "unavailable", UnavailableReason: "shared_runtime_unavailable", TargetSetVersion: strconv.FormatInt(session.TargetSetVersion, 10),
-		Control: CollaborationExecutionControlView{Scope: "issue", QueueState: session.QueueState, ControlVersion: strconv.FormatInt(session.ControlVersion, 10)},
-		Targets: make([]CollaborationExecutionTargetView, 0, len(targets)), Commands: make([]CollaborationExecutionCommandView, 0, len(commands)),
+		Control:       CollaborationExecutionControlView{Scope: "issue", QueueState: session.QueueState, ControlVersion: strconv.FormatInt(session.ControlVersion, 10)},
+		ExecutionGate: CollaborationExecutionGateView{Enabled: gate.Enabled, Epoch: strconv.FormatInt(gate.Epoch, 10)},
+		Channels:      make([]CollaborationExecutionChannelView, 0, len(channels)),
+		Targets:       make([]CollaborationExecutionTargetView, 0, len(targets)), Commands: make([]CollaborationExecutionCommandView, 0, len(commands)),
 		Groups: make([]CollaborationExecutionGroupView, 0, len(groups)), Runs: make([]CollaborationExecutionRunView, 0, len(runs)),
 	}
-	if !session.ID.Valid || !session.IssueID.Valid || session.TargetSetVersion <= 0 || session.ControlVersion <= 0 {
+	if !session.ID.Valid || !session.IssueID.Valid || session.TargetSetVersion <= 0 || session.ControlVersion <= 0 || gate.ID != 1 || gate.Epoch <= 0 {
 		return CollaborationExecutionView{}, invalid
+	}
+	channelByID := make(map[pgtype.UUID]db.CollaborationChannel, len(channels))
+	for _, channel := range channels {
+		if !channel.ID.Valid || channel.SessionID != session.ID || channel.ControlVersion <= 0 || channel.GroupGeneration < 0 ||
+			(channel.QueueState != "active" && channel.QueueState != "paused") {
+			return CollaborationExecutionView{}, invalid
+		}
+		if _, exists := channelByID[channel.ID]; exists {
+			return CollaborationExecutionView{}, invalid
+		}
+		channelByID[channel.ID] = channel
+		out.Channels = append(out.Channels, CollaborationExecutionChannelView{
+			ID: util.UUIDToString(channel.ID), QueueState: channel.QueueState, ControlVersion: strconv.FormatInt(channel.ControlVersion, 10),
+			GroupGeneration: strconv.FormatInt(channel.GroupGeneration, 10), ActiveGroupID: util.UUIDToPtr(channel.ActiveGroupID), PauseReason: channel.PauseReason,
+		})
 	}
 	targetByID := make(map[pgtype.UUID]db.CollaborationTarget, len(targets))
 	for _, target := range targets {
 		if !target.ID.Valid || target.SessionID != session.ID || !target.ResourceID.Valid || target.TargetEpoch <= 0 || target.ConfigVersion <= 0 ||
-			target.ControlVersion <= 0 || target.GroupGeneration < 0 || target.NextCommandSeq <= 0 ||
+			target.ControlVersion <= 0 || target.GroupGeneration < 0 || target.NextCommandSeq <= 0 || target.HoldVersion <= 0 ||
 			(!target.ChannelID.Valid && (target.GroupGeneration != 0 || target.NextCommandSeq != 1 || target.ActiveGroupID.Valid)) {
 			return CollaborationExecutionView{}, invalid
+		}
+		if target.HoldReason.Valid && !collaboration.TargetHoldReason(target.HoldReason.String).Valid() {
+			return CollaborationExecutionView{}, invalid
+		}
+		if target.ChannelID.Valid {
+			channel, exists := channelByID[target.ChannelID]
+			if !exists || channel.QueueState != target.QueueState || channel.ControlVersion != target.ControlVersion ||
+				channel.GroupGeneration != target.GroupGeneration || channel.ActiveGroupID != target.ActiveGroupID || channel.PauseReason != target.PauseReason {
+				return CollaborationExecutionView{}, invalid
+			}
 		}
 		if _, exists := targetByID[target.ID]; exists {
 			return CollaborationExecutionView{}, invalid
@@ -154,6 +208,7 @@ func projectCollaborationExecution(session db.CollaborationSession, targets []db
 		out.Targets = append(out.Targets, CollaborationExecutionTargetView{
 			ID: util.UUIDToString(target.ID), ChannelID: util.UUIDToPtr(target.ChannelID), Kind: target.Kind, ResourceID: util.UUIDToString(target.ResourceID),
 			TargetEpoch: strconv.FormatInt(target.TargetEpoch, 10), ConfigVersion: strconv.FormatInt(target.ConfigVersion, 10),
+			HoldReason: util.TextToPtr(target.HoldReason), HoldVersion: strconv.FormatInt(target.HoldVersion, 10),
 			Control:         CollaborationExecutionControlView{Scope: "target", QueueState: target.QueueState, ControlVersion: strconv.FormatInt(target.ControlVersion, 10)},
 			GroupGeneration: strconv.FormatInt(target.GroupGeneration, 10), NextCommandSeq: strconv.FormatInt(target.NextCommandSeq, 10),
 			ActiveGroupID: util.UUIDToPtr(target.ActiveGroupID), PauseReason: target.PauseReason, RevokedAt: util.TimestampToPtr(target.RevokedAt),
@@ -254,10 +309,10 @@ func projectCollaborationExecution(session db.CollaborationSession, targets []db
 			return CollaborationExecutionView{}, invalid
 		}
 	}
-	for _, target := range targets {
-		if target.ActiveGroupID.Valid {
-			group, ok := groupByID[target.ActiveGroupID]
-			if !ok || group.ChannelID != target.ChannelID || group.SettledAt.Valid || group.Generation != target.GroupGeneration {
+	for _, channel := range channels {
+		if channel.ActiveGroupID.Valid {
+			group, ok := groupByID[channel.ActiveGroupID]
+			if !ok || group.ChannelID != channel.ID || group.SettledAt.Valid || group.Generation != channel.GroupGeneration {
 				return CollaborationExecutionView{}, invalid
 			}
 		}

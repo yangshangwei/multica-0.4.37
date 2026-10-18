@@ -217,9 +217,13 @@ func (f *collaborationRouteFixture) controlBody(t *testing.T, action, scope stri
 	}
 	observed := make([]service.CollaborationTargetControl, 0, len(targets))
 	for _, target := range targets {
-		observed = append(observed, service.CollaborationTargetControl{TargetID: target.ID, ExpectedTargetEpoch: target.TargetEpoch,
+		value := service.CollaborationTargetControl{TargetID: target.ID, ExpectedTargetEpoch: target.TargetEpoch,
 			ExpectedConfigVersion: target.ConfigVersion, ExpectedControlVersion: target.ControlVersion,
-			ObservedGroupID: target.ActiveGroupID, ObservedGroupGeneration: target.GroupGeneration})
+			ObservedGroupID: target.ActiveGroupID, ObservedGroupGeneration: target.GroupGeneration}
+		if action == "resume" {
+			value.ExpectedHoldVersion = target.HoldVersion
+		}
+		observed = append(observed, value)
 	}
 	body := map[string]any{"action": action, "scope": scope, "expected_lifecycle_epoch": "1",
 		"expected_participant_epoch": "1", "expected_account_epoch": "1", "targets": observed}

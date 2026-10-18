@@ -123,11 +123,10 @@ func (s *CollaborationService) RegisterTarget(ctx context.Context, p Collaborati
 			return CollaborationQueueReceipt{}, err
 		}
 		t.targets = append(t.targets, target)
-		channel, err := t.ensureTargetChannel(ctx, target)
-		if err != nil {
+		if _, err = t.ensureTargetChannel(ctx, target); err != nil {
 			return CollaborationQueueReceipt{}, err
 		}
-		target.ChannelID = channel.ID
+		target, _ = t.target(target.ID)
 		t.session, err = t.q.AdvanceCollaborationTargetSet(ctx, t.session.ID)
 		if err != nil {
 			return CollaborationQueueReceipt{}, err
@@ -203,6 +202,39 @@ func (t *collaborationQueueTx) replaceTarget(target db.CollaborationTarget) {
 	}
 }
 
+func collaborationTargetHoldReason(target db.CollaborationTarget) *collaboration.TargetHoldReason {
+	if !target.HoldReason.Valid {
+		return nil
+	}
+	reason := collaboration.TargetHoldReason(target.HoldReason.String)
+	return &reason
+}
+
+// setTargetHold borrows the source/channel/target locks. A repeated reason is
+// inert unless a new consent requires a fresh observation fence. It never
+// changes channel controls, target epochs, grants or retained execution proof.
+func (t *collaborationQueueTx) setTargetHold(ctx context.Context, target db.CollaborationTarget, reason collaboration.TargetHoldReason, advanceVersion bool) (db.CollaborationTarget, error) {
+	if target.HoldVersion < 1 || reason != "" && !reason.Valid() {
+		return db.CollaborationTarget{}, invalidCollaborationLedger("invalid target hold")
+	}
+	hold := pgtype.Text{String: string(reason), Valid: reason != ""}
+	if target.HoldReason == hold && !advanceVersion {
+		return target, nil
+	}
+	updated, err := t.q.SetCollaborationTargetHold(ctx, db.SetCollaborationTargetHoldParams{
+		SessionID: t.session.ID, TargetID: target.ID, HoldReason: hold, AdvanceVersion: advanceVersion,
+	})
+	if err == nil {
+		t.replaceTarget(updated)
+	}
+	return updated, err
+}
+
+func collaborationTargetHoldResult(target db.CollaborationTarget, code string) CollaborationTargetHoldResult {
+	return CollaborationTargetHoldResult{TargetID: target.ID, ChannelID: target.ChannelID, Code: code,
+		HoldReason: collaborationTargetHoldReason(target), HoldVersion: target.HoldVersion}
+}
+
 func (t *collaborationQueueTx) targetReceipt(code string, status int, target db.CollaborationTarget) CollaborationQueueReceipt {
 	r := t.receipt(code, status)
 	r.Scope, r.TargetID, r.GroupID = collaboration.ControlTarget, target.ID, target.ActiveGroupID
@@ -224,6 +256,8 @@ func (t *collaborationQueueTx) authorizeTargetInput(ctx context.Context, target 
 	return lockAndAuthorizeCollaborationTargetInput(ctx, t.q, t.access.Issue.ID, target)
 }
 
+var errInvalidCollaborationLedger = errors.New("invalid collaboration execution ledger")
+
 func invalidCollaborationLedger(detail string) error {
-	return fmt.Errorf("invalid collaboration execution ledger: %s", detail)
+	return fmt.Errorf("%w: %s", errInvalidCollaborationLedger, detail)
 }

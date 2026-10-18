@@ -193,8 +193,15 @@ func TestCollaborationAccountReconciliationDisableRestore(t *testing.T) {
 		}
 	}
 	for _, run := range []db.CollaborationRun{oldAuthor, oldOwner} {
+		wantQueue, wantControl := "paused", int64(2)
+		if run.ID == oldOwner.ID {
+			wantQueue, wantControl = "active", 1
+			if f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND hold_reason='grant_required'`, run.TargetID) != 1 {
+				t.Fatal("obsolete owner grant did not leave a target hold")
+			}
+		}
 		if f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND fence=$2 AND launch_nonce=$3 AND claim_generation=2 AND authorized_attempt_seq=1 AND progress_state='ending' AND forced_disposition='stopped' AND disposition_reason='credentials_revoked' AND proof_state='unknown' AND settled_at IS NULL`, run.ID, run.Fence, run.LaunchNonce) != 1 ||
-			f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND active_group_id=$2 AND queue_state='paused' AND control_version=2`, run.TargetID, run.GroupID) != 1 ||
+			f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND active_group_id=$2 AND queue_state=$3 AND control_version=$4`, run.TargetID, run.GroupID, wantQueue, wantControl) != 1 ||
 			f.fx.Count(t, `SELECT count(*) FROM collaboration_termination WHERE run_id=$1 AND fence=$2 AND launch_nonce=$3 AND stop_requested_at IS NOT NULL AND confirmed_at IS NULL AND proof IS NULL`, run.ID, run.Fence, run.LaunchNonce) != 1 {
 			t.Fatal("obsolete running work lost its barrier, stop intent or historical identity")
 		}
@@ -280,13 +287,16 @@ func TestCollaborationAccountReconciliationStopEvidence(t *testing.T) {
 			f.change(t, f.target, "disable", 1)
 			f.drain(t)
 			if strings.HasPrefix(scenario, "never_launched_") {
-				disposition := "cancelled"
+				disposition, wantQueue := "cancelled", "paused"
 				if scenario == "never_launched_owner" {
-					disposition = "stopped"
+					disposition, wantQueue = "stopped", "active"
+					if f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND hold_reason='grant_required'`, run.TargetID) != 1 {
+						t.Fatal("never-launched owner loss did not retain its target hold")
+					}
 				}
 				if f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND proof_state='never_launched_proven' AND settled_at IS NOT NULL AND forced_disposition=$2`, run.ID, disposition) != 1 ||
 					f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state=$2`, run.CommandID, disposition) != 1 ||
-					f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state='paused' AND active_group_id IS NULL`, run.TargetID) != 1 {
+					f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state=$2 AND active_group_id IS NULL`, run.TargetID, wantQueue) != 1 {
 					t.Fatal("server-proven never-launched work did not settle with the correct disposition")
 				}
 			} else {

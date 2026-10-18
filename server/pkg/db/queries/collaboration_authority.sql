@@ -1,5 +1,5 @@
 -- Reads borrow the caller's authorized snapshot. Writes hold issue/session/
--- sorted targets first and take all later resource locks NOWAIT.
+-- sorted channels/targets first and take all later resource locks NOWAIT.
 -- name: ListCollaborationTargetGrants :many
 SELECT * FROM collaboration_grant WHERE target_id = $1 ORDER BY id;
 
@@ -14,7 +14,7 @@ VALUES ($1, $2, $3, $4, $5) RETURNING *;
 UPDATE collaboration_target SET roster = sqlc.arg(roster)::jsonb,
     configuration_fingerprint = sqlc.arg(configuration_fingerprint)::text,
     config_version = config_version + 1, target_epoch = target_epoch + 1,
-    control_version = control_version + 1, queue_state = 'paused', pause_reason = 'configuration_changed', revoked_at = NULL
+    hold_reason = 'switch_hold', hold_version = hold_version + 1, revoked_at = NULL
 WHERE id = sqlc.arg(target_id)::uuid AND session_id = sqlc.arg(session_id)::uuid
 RETURNING *;
 

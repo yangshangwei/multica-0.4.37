@@ -4,8 +4,11 @@ export { CollaborationRecipientSchema, parseCollaborationRecipient } from "./sch
 export type { CollaborationRecipient, CollaborationRecipientInput } from "./schema";
 export { CollaborationFieldOptionsSchema, parseCollaborationFieldOptions } from "./schema";
 export type { CollaborationFieldOptions, CollaborationLabel, CollaborationPropertyDefinition } from "./schema";
-export { CollaborationExecutionSchema } from "./execution-schema";
-export type { CollaborationExecution, CollaborationExecutionTarget, CollaborationExecutionCommand, CollaborationExecutionGroup, CollaborationExecutionRun } from "./execution-schema";
+export { CollaborationExecutionSchema, CollaborationTargetHoldReasonSchema } from "./execution-schema";
+export type { CollaborationExecution, CollaborationExecutionChannel, CollaborationTargetHoldReason, CollaborationExecutionTarget, CollaborationExecutionCommand, CollaborationExecutionGroup, CollaborationExecutionRun } from "./execution-schema";
+export { CollaborationControlInputSchema, CollaborationControlReceiptSchema, parseCollaborationControlReceipt, matchesCollaborationControlReceipt } from "./control-schema";
+export type { CollaborationControlInput, CollaborationControlReceipt, CollaborationChannelControlResult, CollaborationTargetHoldResult } from "./control-schema";
+export { prepareCollaborationControl, parseCollaborationControlDraft, sendCollaborationControl, recoverCollaborationControl } from "./control";
 export { collaborationKeys, collaborationScope, collaborationAccessEpoch, isCollaborationScopeCurrent, isCollaborationDenied, clearCollaborationAccess, protectCollaborationRead, retainCollaborationScope, CollaborationUnavailableError } from "./access";
 export type { CollaborationScope } from "./access";
 export { useCollaborationScope, useCollaborationIssue, useCollaborationStatusOptions, collaborationIssueOptions, collaborationWorkbenchOptions } from "./queries";

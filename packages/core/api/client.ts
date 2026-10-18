@@ -12,6 +12,7 @@ import {
   parseCollaborationTriggerPreview, parseCollaborationCommentReceipt, parseCollaborationNotifications,
   parseCollaborationNotificationReceipt, type CollaborationCommentInput, type CollaborationPreviewInput,
 } from "../collaboration/content-schema";
+import { CollaborationControlInputSchema, parseCollaborationControlReceipt, matchesCollaborationControlReceipt, type CollaborationControlInput } from "../collaboration/control-schema";
 import { withRequestDeadline, type ApiRequestOptions } from "./request-lifecycle";
 export type { ApiRequestOptions } from "./request-lifecycle";
 import type { ProjectUpdateDraft, ProjectUpdateWriteInput, ProjectRiskSignal } from "../types/project-p1";
@@ -1074,6 +1075,45 @@ export class ApiClient {
   async getCollaborationOperation(id: string, requestId: string, options?: { signal?: AbortSignal }) {
     const raw = await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/operations/${encodeURIComponent(requestId)}`, { signal: options?.signal });
     return parseCollaborationOperation(raw);
+  }
+
+  private async fetchCollaborationControl(
+    id: string, requestId: string, input: CollaborationControlInput, recovery: boolean, options?: { signal?: AbortSignal },
+  ) {
+    const parsed = CollaborationControlInputSchema.safeParse(input);
+    if (!parsed.success || !z.uuid().safeParse(id).success || !z.string().min(1).max(128).regex(/^[^\r\n]+$/).safeParse(requestId).success) {
+      throw new TypeError("Invalid collaboration control intent");
+    }
+    const path = `/api/collaboration/issues/${encodeURIComponent(id)}/control`;
+    let raw: unknown;
+    let status = 200;
+    try {
+      raw = await this.fetchCollaboration(recovery ? `${path}/operations/${encodeURIComponent(requestId)}` : path, recovery
+        ? { signal: options?.signal }
+        : { method: "POST", signal: options?.signal, headers: { "Idempotency-Key": requestId }, body: JSON.stringify(parsed.data) });
+    } catch (error) {
+      if (!(error instanceof ApiError)) throw error;
+      if (recovery && error.status === 404 && z.object({ code: z.literal("operation_not_found") }).safeParse(error.body).success) return null;
+      if (!recovery && ![401, 403, 404, 410].includes(error.status)) {
+        raw = error.body;
+        status = error.status;
+      } else {
+        // Raw HTTP errors may contain private content; retain only transport
+        // status and the live auth fence for downstream access revocation.
+        throw new ApiError("Collaboration control request failed", error.status, error.statusText, undefined, () => !error.isStaleAuthResponse, error.retryAfterSeconds);
+      }
+    }
+    const result = parseCollaborationControlReceipt(raw);
+    return result && (recovery || result.status === status) && matchesCollaborationControlReceipt(result, id, requestId, parsed.data) ? result : null;
+  }
+
+  async controlCollaborationIssue(id: string, requestId: string, input: CollaborationControlInput, options?: { signal?: AbortSignal }) {
+    return this.fetchCollaborationControl(id, requestId, input, false, options);
+  }
+
+  /** Read the stored control outcome; never reinterpret it using current facts. */
+  async getCollaborationControlOperation(id: string, requestId: string, input: CollaborationControlInput, options?: { signal?: AbortSignal }) {
+    return this.fetchCollaborationControl(id, requestId, input, true, options);
   }
 
   async getCollaborationStatusOptions(id: string, action: CollaborationStatusAction, options?: { signal?: AbortSignal }) {

@@ -1003,6 +1003,8 @@ type CollaborationTarget struct {
 	CreatedAt                pgtype.Timestamptz `json:"created_at"`
 	ConfigurationFingerprint pgtype.Text        `json:"configuration_fingerprint"`
 	ChannelID                pgtype.UUID        `json:"channel_id"`
+	HoldReason               pgtype.Text        `json:"hold_reason"`
+	HoldVersion              int64              `json:"hold_version"`
 }
 
 type CollaborationTermination struct {

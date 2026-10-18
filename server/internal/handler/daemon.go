@@ -934,86 +934,89 @@ var errRuntimeMergeFenced = errors.New("runtime merge refused by the task-write 
 // teardown cannot start deleting the target until this merge finishes, and any
 // failure rolls the whole merge back to its starting state.
 func (h *Handler) mergeLegacyRuntime(ctx context.Context, newRuntimeID, oldRuntimeID pgtype.UUID, legacyID, provider string) error {
-	tx, err := h.TxStarter.Begin(ctx)
-	if err != nil {
-		return fmt.Errorf("begin merge tx: %w", err)
-	}
-	defer tx.Rollback(ctx)
-	qtx := h.Queries.WithTx(tx)
+	var agents, tasks int64
+	err := service.WithRuntimeResourceTransaction(ctx, h.TxStarter, h.Queries, func(qtx *db.Queries) error {
+		agents, tasks = 0, 0
 
-	// Fence, in the same order every task write uses: workspace row first, then the
-	// owner rows. Without the FOR UPDATE on the runtimes, a concurrent enqueue
-	// against the OLD runtime slipped through after the task scan — writers hold
-	// only FOR KEY SHARE on the workspace, and so did this merge, and two KEY SHARE
-	// locks do not conflict — and DeleteAgentRuntime below then removed that
-	// brand-new task through ON DELETE CASCADE.
-	runtimeIDs := []pgtype.UUID{oldRuntimeID, newRuntimeID}
-	lookup := service.RuntimeLookup{Queries: qtx, Metrics: h.Metrics, Source: obsmetrics.RuntimeLookupSourceDaemonAPI}
-	if err := service.LockManagedRuntimes(ctx, lookup, runtimeIDs); err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
+		// Fence, in the same order every task write uses: workspace row first, then the
+		// owner rows. Without the FOR UPDATE on the runtimes, a concurrent enqueue
+		// against the OLD runtime slipped through after the task scan — writers hold
+		// only FOR KEY SHARE on the workspace, and so did this merge, and two KEY SHARE
+		// locks do not conflict — and DeleteAgentRuntime below then removed that
+		// brand-new task through ON DELETE CASCADE.
+		runtimeIDs := []pgtype.UUID{oldRuntimeID, newRuntimeID}
+		lookup := service.RuntimeLookup{Queries: qtx, Metrics: h.Metrics, Source: obsmetrics.RuntimeLookupSourceDaemonAPI}
+		if err := service.LockManagedRuntimes(ctx, lookup, runtimeIDs); err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return errRuntimeMergeFenced
+			}
+			return err
+		}
+		if err := qtx.LockWorkspaceForRuntimeMerge(ctx, runtimeIDs); err != nil {
+			return fmt.Errorf("lock workspace: %w", err)
+		}
+		locked, err := qtx.LockRuntimesForMerge(ctx, runtimeIDs)
+		if err != nil {
+			return fmt.Errorf("lock runtimes: %w", err)
+		}
+		if len(locked) != len(runtimeIDs) {
+			// One of them went away while we were queueing for the lock; the fence
+			// inside the reassignment would refuse anyway.
 			return errRuntimeMergeFenced
 		}
-		return err
-	}
-	if err := qtx.LockWorkspaceForRuntimeMerge(ctx, runtimeIDs); err != nil {
-		return fmt.Errorf("lock workspace: %w", err)
-	}
-	locked, err := qtx.LockRuntimesForMerge(ctx, runtimeIDs)
-	if err != nil {
-		return fmt.Errorf("lock runtimes: %w", err)
-	}
-	if len(locked) != len(runtimeIDs) {
-		// One of them went away while we were queueing for the lock; the fence
-		// inside the reassignment would refuse anyway.
-		return errRuntimeMergeFenced
-	}
 
-	oldRuntime, err := lookup.Get(ctx, oldRuntimeID)
-	if err != nil {
-		return err
-	}
-	newRuntime, err := lookup.Get(ctx, newRuntimeID)
-	if err != nil {
-		return err
-	}
-	if oldRuntime.OwnerID != newRuntime.OwnerID {
-		return service.ErrRuntimeOwnerConflict
-	}
+		oldRuntime, err := lookup.Get(ctx, oldRuntimeID)
+		if err != nil {
+			return err
+		}
+		newRuntime, err := lookup.Get(ctx, newRuntimeID)
+		if err != nil {
+			return err
+		}
+		if oldRuntime.OwnerID != newRuntime.OwnerID {
+			return service.ErrRuntimeOwnerConflict
+		}
+		if err := service.InvalidateCollaborationRuntimeInTx(ctx, qtx, oldRuntimeID, "runtime_rebound"); err != nil {
+			return fmt.Errorf("invalidate old collaboration runtime: %w", err)
+		}
 
-	reassignment, err := qtx.ReassignTasksToRuntime(ctx, db.ReassignTasksToRuntimeParams{
-		NewRuntimeID: newRuntimeID,
-		OldRuntimeID: oldRuntimeID,
+		reassignment, err := qtx.ReassignTasksToRuntime(ctx, db.ReassignTasksToRuntimeParams{
+			NewRuntimeID: newRuntimeID,
+			OldRuntimeID: oldRuntimeID,
+		})
+		if err != nil {
+			return fmt.Errorf("reassign tasks: %w", err)
+		}
+		if !reassignment.FenceOk {
+			return errRuntimeMergeFenced
+		}
+
+		agents, err = qtx.ReassignAgentsToRuntime(ctx, db.ReassignAgentsToRuntimeParams{
+			NewRuntimeID: newRuntimeID,
+			OldRuntimeID: oldRuntimeID,
+		})
+		if err != nil {
+			return fmt.Errorf("reassign agents: %w", err)
+		}
+
+		// Inside the transaction this can no longer be best-effort: a failed statement
+		// poisons the transaction, so it either lands with the rest of the merge or the
+		// merge is rolled back.
+		if err := qtx.RecordRuntimeLegacyDaemonID(ctx, db.RecordRuntimeLegacyDaemonIDParams{
+			ID:             newRuntimeID,
+			LegacyDaemonID: strToText(legacyID),
+		}); err != nil {
+			return fmt.Errorf("record legacy daemon_id: %w", err)
+		}
+		if err := qtx.DeleteAgentRuntime(ctx, oldRuntimeID); err != nil {
+			return fmt.Errorf("delete old runtime: %w", err)
+		}
+
+		tasks = reassignment.ReassignedTasks
+		return nil
 	})
 	if err != nil {
-		return fmt.Errorf("reassign tasks: %w", err)
-	}
-	if !reassignment.FenceOk {
-		return errRuntimeMergeFenced
-	}
-
-	agents, err := qtx.ReassignAgentsToRuntime(ctx, db.ReassignAgentsToRuntimeParams{
-		NewRuntimeID: newRuntimeID,
-		OldRuntimeID: oldRuntimeID,
-	})
-	if err != nil {
-		return fmt.Errorf("reassign agents: %w", err)
-	}
-
-	// Inside the transaction this can no longer be best-effort: a failed statement
-	// poisons the transaction, so it either lands with the rest of the merge or the
-	// merge is rolled back.
-	if err := qtx.RecordRuntimeLegacyDaemonID(ctx, db.RecordRuntimeLegacyDaemonIDParams{
-		ID:             newRuntimeID,
-		LegacyDaemonID: strToText(legacyID),
-	}); err != nil {
-		return fmt.Errorf("record legacy daemon_id: %w", err)
-	}
-	if err := qtx.DeleteAgentRuntime(ctx, oldRuntimeID); err != nil {
-		return fmt.Errorf("delete old runtime: %w", err)
-	}
-
-	if err := tx.Commit(ctx); err != nil {
-		return fmt.Errorf("commit merge: %w", err)
+		return err
 	}
 
 	slog.Info("legacy runtime merged",
@@ -1022,7 +1025,7 @@ func (h *Handler) mergeLegacyRuntime(ctx context.Context, newRuntimeID, oldRunti
 		"new_runtime_id", uuidToString(newRuntimeID),
 		"provider", provider,
 		"agents_reassigned", agents,
-		"tasks_reassigned", reassignment.ReassignedTasks,
+		"tasks_reassigned", tasks,
 	)
 	return nil
 }

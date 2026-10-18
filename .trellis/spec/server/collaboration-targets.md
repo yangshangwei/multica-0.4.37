@@ -1,4 +1,4 @@
-# Collaboration channels and supervised single-agent execution
+# Collaboration holds, channel controls and supervised execution
 
 ## 1. Scope / Trigger
 
@@ -8,12 +8,16 @@ direct agent with a configured static Linux executable. Dedicated comment,
 consent, control and runtime APIs exist; public creation and client execution
 affordances remain disabled pending complete product acceptance.
 
-This is the implemented slice, not the complete multi-target design. Target
-holds, cross-target FIFO, same-leader squad execution, M11 continuation and full
-Web/Desktop delivery remain pending. Before starting those areas, reread the
+Independent target holds, M04 channel/hold receipts and resource teardown
+invalidation extend the M09 foundation. This is not the complete multi-target
+design: mixed A/S waiting-batch eligibility and channel-wide FIFO, full frozen
+multi-target grants, leader switching, external agent/squad configuration-writer
+convergence, M11 and full Web/Desktop delivery remain pending. A held S can still
+block a pre-coalesced A/S waiting batch; channel activation alone does not prove
+that mixed waiting work can advance. Before starting those areas, reread the
 latest [execution contract](../../tasks/10-10-cross-workspace-collaboration/research/execution-contract.md)
-and current task artifacts. In particular, do not extend current channel-wide
-resource refusal into the final target-hold policy.
+and current task artifacts. Keep the current direct-agent runtime capability
+gate until the corresponding execution and capacity paths have evidence.
 
 ## 2. Signatures
 
@@ -27,7 +31,12 @@ resource refusal into the final target-hold policy.
 - `SubmitCommand` / `CancelWaitingCommand`: explicit target/input identities,
   captured actor/participant/lifecycle versions and idempotency key.
 - `StopQueue` / `ResumeQueue`: observed issue/target controls, group generation,
-  target-set version and execution gate epoch for Resume.
+  target-set version and execution gate epoch for Resume. Each Resume target
+  observation also carries `expected_hold_version`.
+- `GetControlOperation`: current human/account/object authorization before
+  returning the original full stop/resume receipt from
+  `GET .../control/operations/{requestId}`. Human workflow operation lookup
+  retains its separate response contract.
 - `ExecutionView`: the authorized repeatable-read issue snapshot includes the
   v3 channel/batch projection consumed by `packages/core/collaboration`.
 - Managed runtime list/claim/permit, `RecordRuntimeOutcome`, stop-intent and proof:
@@ -35,6 +44,11 @@ resource refusal into the final target-hold policy.
 
 `validateGroup`, `stopGroup` and `settleProvenGroup` share retained-ledger checks.
 Departure, invalidation and lifecycle writers borrow the same transaction.
+`InvalidateCollaborationRuntimeInTx(ctx, qtx, runtimeID, reason)` and the exact
+binding invalidator save holds and stop intents before resource cleanup.
+`WithRuntimeResourceTransaction(ctx, starter, queries, mutate)` retries only
+confirmed rolled-back lock/serialization conflicts, at most three attempts;
+commit errors never enter the retry branch.
 Ordinary execution still uses `checkOrdinaryExecutionSource`,
 `checkIssueExecution`, SQL `lock_issue_execution`, and finalization revalidation.
 A parent reference never grants ordinary execution access to shared content.
@@ -67,6 +81,14 @@ Every index build has a separate concurrent migration and an explicit entry in
 `cmd/migrate/main.go`'s existing cleanup registry. A successful empty migration
 does not prove recovery from an interrupted invalid index. No foreign keys or
 cascades; transactional service code owns relationship checks and cleanup.
+
+Migration 698 adds nullable `hold_reason` and positive BIGINT `hold_version`.
+NULL means released; the only held values are `initial`, `grant_required`,
+`config_invalid` and `switch_hold`. Registration starts held even when an alias
+joins an active channel. New consent, reconsent, configuration changes and hold
+transitions advance the target's hold version independently of channel control.
+An exact idempotent replay never advances it. Reconsent does not release hold.
+Retained active intent and all group/run/proof identities survive upgrade.
 
 ### Authorization and execution identity
 
@@ -114,20 +136,49 @@ input/batch/run/roster identities and **every** retained delegation's parent,
 including cancelled tombstones. Normal proof settlement uses the same check as
 Stop. An orphan/corrupt ledger fails closed and rolls back the complete write.
 
-Target Resume cannot bypass a paused issue. Issue Resume rejects global
-lifecycle/gate/epoch/authority/scope failures atomically; otherwise it returns
-per-channel results and preserves unresolved barriers. Old rejected keys replay
-the original refusal, never a future resume intention. A healthy explicit
-Resume continues the next waiting batch; it does not rerun stopped inputs.
+Target Resume cannot bypass a paused issue. It validates the selected target's
+current authority, captured hold version and applicable channel proof before
+changing either hold or channel state. Refusal may save its operation receipt,
+but changes no business state. A healthy active/busy channel needs no new proof
+just to retain its intent; a forced-stopped current group with missing proof
+still blocks hold release. Contradictory channel/target mirrors refuse rather
+than being silently repaired. No hold plus active channel returns `already_active`.
 
-Current resource/consent failures still operate within the M09 channel model.
-The later hold model separates target eligibility from lane pause, including
-partial hold-release receipts; it is not implemented by this document's current
-runtime or v3 reader. Before that extension reread the latest task contract.
+Issue Resume rejects global lifecycle/gate/epoch/authority/scope or stale-hold
+failures atomically. Otherwise it activates the session, resumes proof-ready
+channels, and separately releases valid target holds. Invalid grants keep only
+their target held; unresolved channel proof remains a barrier. Receipts have
+unique `channels` and `target_holds` decisions plus `issue_id`, `request_id` and
+`action`; unresolved run counts describe the retained ledger. Original-key
+replay/GET recovery returns the original success or refusal, never a future
+intention. Stop HTTP requests omit Resume-only gate/hold fields.
+
+Resource-only invalidation holds affected current targets and calls `stopGroup`
+for exact frozen dependencies, leaving channel pause/control untouched. Author
+departure still pauses channels whose consumed batch contains that author.
+Account invalidation discovery includes non-root in-flight batch authors; root
+run attribution alone is insufficient. Current list/promote/claim/permit gates
+reject held inputs even after grants become valid. A deliberate authoritative
+promote refusal must commit its discovered hold and audit before returning the
+refusal; arbitrary errors, capacity/offline conditions and failed writes do not
+commit a hold. Keep the common read/authorization helper free of hidden writes.
+
+Actual runtime deletion, profile deletion, legacy runtime merging, GC and
+managed binding replacement use the borrowed resource invalidator. Resource-first
+writers acquire every source child fence with NOWAIT and retry the whole
+transaction only after rollback. Callbacks contain database work only; publish
+after commit. Normal same-authority bind/renewal is unchanged. Retained grants,
+group/run dependencies and reservations, not just engine task rows, determine
+whether GC has unproven work. Historical termination proof remains usable after
+runtime/grant deletion. None of this substitutes for the deferred mixed FIFO.
 
 ### Read projection and account cache
 
-The issue's `execution.protocol_version` is **3**. Targets carry nullable
+The issue's `execution.protocol_version` is **3**. It includes explicit
+`channels`, same-snapshot `execution_gate {enabled, epoch}`, and each target's
+required `hold_reason`/`hold_version`. Target queue/control/pause/group mirrors
+must equal their channel. Missing/unknown hold facts never default to released.
+Targets carry nullable
 `channel_id` only while unused; commands/groups/runs carry matching channel and
 batch IDs. Multiple inputs may share an active batch, and same-channel target
 aliases may share the active group. A cancelled waiting input retains its batch
@@ -146,6 +197,13 @@ account session and object access epoch. A delayed old denial after recovery
 returns `AbortError`; it must not clear the recovered cache or revoke its new
 epoch. Parsing and transport errors redact private values.
 
+Core owns distinct control input/receipt schemas and explicit send/recover
+helpers. Control drafts retain the original key and captured observations under
+`payload.domain=execution_control`; they cannot parse as human workflow drafts.
+Recovery uses GET only, keeps a missing outcome pending and never sends a fresh
+POST automatically. A receipt is historical: refetch the authorized live state
+instead of optimistically projecting its old controls or holds into Query.
+
 ## 4. Validation & Error Matrix
 
 | Condition | Result |
@@ -157,6 +215,11 @@ epoch. Parsing and transport errors redact private values.
 | Outcome exists without proof | Reservation and execution barrier remain |
 | Owner disabled after launch | Business/list access denied; original minimal termination proof still accepted |
 | Resume with missing proof | Target remains paused with `stop_unconfirmed`; issue-scope receipt is explicit |
+| Old hold snapshot after revoke/reconsent | `stale_hold`; no control/hold changes or future intention |
+| Resume All with one invalid target grant | Valid lane can resume; that target retains hold with its own refusal |
+| Resource-only revocation of an unused same-channel alias | Target held; unrelated healthy group and channel control unchanged |
+| Source lock conflict during resource teardown | Entire resource and collaboration write rolls back before bounded retry |
+| Unknown resource commit result | No replay of the mutation; preserve original proof/operation recovery |
 | Orphan delegation, including cancelled state | Group validation fails before reservation release |
 | Old access denial after object epoch recovery | `AbortError`; current data/epoch retained |
 | Unsupported controller, uncertain permit/burn/fork | No new fork; retain unknown state and capacity |
@@ -183,6 +246,17 @@ epoch. Parsing and transport errors redact private values.
 - `collaboration_control_test.go`: cancelled orphan delegation refuses settlement
   with an identical before/after snapshot; Stop/proof and scope races retain
   their barriers.
+- `collaboration_hold_test.go`: initial/reconsent holds, stale hold versions,
+  selected-target atomicity, independent issue decisions, accurate proof counts,
+  non-root author discovery, committed promote refusal and write-fault rollback.
+- `collaboration_resource_invalidation_test.go`: actual deletion/rebind callers,
+  exact retained dependencies, all NOWAIT source fences, ordinary renewals,
+  rollback/unknown commit and historical proof after resource loss.
+- Migration 698 tests: old active/paused intent, narrowly recognized old
+  target-only reconfiguration mirrors, idempotent rerun and guarded down.
+- Route fixtures bind targets through `BindCollaborationTargetChannel` instead
+  of independently seeding target/channel pause defaults. Real registration,
+  consent and detail GET must agree with the same strict projection.
 - Workflow/lifecycle/account tests: realistic running versus waiting batches,
   actual external actor/resource owner separation, original request replay and
   unchanged proof identities. Fault injection must cover `Query` as well as
@@ -197,6 +271,10 @@ epoch. Parsing and transport errors redact private values.
 - Linux collaborationrun suite: detached/double-fork descendants, early stdio,
   supervisor crash, nonce replay, ledger corruption and proof ACK loss. Record
   actual kernel/controller; Docker Linux evidence is not native macOS evidence.
+- `TestCollaborationPartialResumeRoutesLinux`: two actual managed namespaces and
+  native test providers; withheld A proof keeps its pause/hold/reservation while
+  B resumes and executes the next input. Old refusal/partial GET receipts remain
+  unchanged after proof; only a fresh explicit Resume releases A.
 - M10 retention and migration cleanup registry/retry tests. Rollback rehearsals
   only run in disposable databases/schemas, never the application database.
 
@@ -214,3 +292,10 @@ that only checks nonterminal delegation rows.
 Correct: business outcome `success`, execution projection v3, and shared retained
 ledger validation before any resource release. These version and state domains
 are independent.
+
+Wrong: reuse channel pause for grant loss, release hold during a rejected target
+Resume, or save a hold then return an error that rolls its transaction back.
+
+Correct: persist target eligibility independently, validate target Resume before
+any business-state write, and commit only the intentional authoritative hold
+refusal while preserving rollback for real failures.

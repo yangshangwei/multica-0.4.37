@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"log/slog"
@@ -369,119 +370,28 @@ func (h *Handler) DeleteRuntimeProfile(w http.ResponseWriter, r *http.Request) {
 	// the profile's runtimes. Keep this a 409 — the profile is the thing that
 	// defines those runtimes, so the user should retire the agents or move them
 	// deliberately instead of having them silently unbound in bulk.
-	tx, err := h.TxStarter.Begin(r.Context())
-	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to begin transaction")
-		return
-	}
-	defer tx.Rollback(r.Context())
-	qtx := h.Queries.WithTx(tx)
-
-	// Lock the profile before planning the cascade. Daemon registration takes
-	// a conflicting KEY SHARE lock in its own transaction, so it cannot insert
-	// a runtime after the plan and have that row escape deletion. If the profile
-	// row is already gone, still clean up any orphaned profile_id rows.
-	_, profileErr := qtx.LockRuntimeProfileForDelete(r.Context(), db.LockRuntimeProfileForDeleteParams{
-		ID:          profileUUID,
-		WorkspaceID: wsUUID,
-	})
-	profileMissing := errors.Is(profileErr, pgx.ErrNoRows)
-	if profileErr != nil && !profileMissing {
-		writeError(w, http.StatusInternalServerError, "failed to load runtime profile")
-		return
-	}
-
-	// Lock runtime rows in deterministic ID order. Their agent/task foreign-key
-	// inserts take KEY SHARE locks, preventing dependencies from appearing after
-	// the active-agent check.
-	runtimeIDs, err := qtx.ListAgentRuntimeIDsByProfile(r.Context(), db.ListAgentRuntimeIDsByProfileParams{
-		ProfileID:   profileUUID,
-		WorkspaceID: wsUUID,
-	})
-	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to enumerate profile runtimes")
-		return
-	}
-	if profileMissing && len(runtimeIDs) == 0 {
-		writeError(w, http.StatusNotFound, "runtime profile not found")
-		return
-	}
-	for _, runtimeID := range runtimeIDs {
-		if _, err := qtx.ListUserAgentsByRuntimeForUpdate(r.Context(), runtimeID); err != nil {
-			writeError(w, http.StatusInternalServerError, "failed to lock profile dependencies")
-			return
-		}
-	}
-
-	agentCount, err := qtx.CountAgentsByProfile(r.Context(), db.CountAgentsByProfileParams{
-		ProfileID:   profileUUID,
-		WorkspaceID: wsUUID,
-	})
-	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to check profile usage")
-		return
-	}
-	if agentCount > 0 {
-		writeError(w, http.StatusConflict, "cannot delete runtime profile: active agents are still bound to its runtimes")
-		return
-	}
-
-	// App-layer cascade, per runtime, mirroring DeleteAgentRuntime: unbind the
-	// remaining (archived) agents and their task history, cancel anything still
-	// in flight, and hard-delete only the system agents, so removing the runtime
-	// rows below cannot destroy an agent, a conversation or a task record.
 	var teardowns []service.RuntimeTeardownResult
-	for _, rid := range runtimeIDs {
-		teardown, err := service.TeardownRuntime(r.Context(), qtx, rid, service.RuntimeTeardownOptions{CancelNonTerminalTasks: true})
-		if err != nil {
-			if errors.Is(err, service.ErrRuntimeNotDrained) {
-				slog.Error("runtime profile delete aborted: tasks not drained",
-					"runtime_id", uuidToString(rid), "profile_id", uuidToString(profileUUID), "error", err)
-				writeJSON(w, http.StatusConflict, map[string]any{
-					"error": "a runtime of this profile still has tasks in flight; retry in a moment.",
-					"code":  "runtime_delete_not_drained",
-				})
-				return
-			}
-			if errors.Is(err, service.ErrRuntimeWorkspaceMismatch) {
-				slog.Error("runtime profile delete aborted: agent workspace mismatch",
-					"runtime_id", uuidToString(rid), "profile_id", uuidToString(profileUUID), "error", err)
-				writeJSON(w, http.StatusConflict, map[string]any{
-					"error": "a runtime of this profile has an invalid cross-workspace agent binding.",
-					"code":  "runtime_delete_workspace_mismatch",
-				})
-				return
-			}
-			slog.Error("runtime profile delete teardown failed",
-				"runtime_id", uuidToString(rid), "profile_id", uuidToString(profileUUID), "error", err)
-			writeError(w, http.StatusInternalServerError, "failed to unbind agents")
-			return
-		}
-		teardowns = append(teardowns, teardown)
-	}
-
-	// Now the runtime rows have no agent references; remove them, then the
-	// profile itself.
-	if _, err := qtx.DeleteAgentRuntimesByProfile(r.Context(), db.DeleteAgentRuntimesByProfileParams{
-		ProfileID:   profileUUID,
-		WorkspaceID: wsUUID,
-	}); err != nil {
-		slog.Error("DeleteAgentRuntimesByProfile failed", "error", err, "profile_id", uuidToString(profileUUID))
-		writeError(w, http.StatusInternalServerError, "failed to clean up runtime instances")
-		return
-	}
-	if !profileMissing {
-		if err := qtx.DeleteRuntimeProfile(r.Context(), db.DeleteRuntimeProfileParams{
-			ID:          profileUUID,
-			WorkspaceID: wsUUID,
-		}); err != nil {
-			slog.Error("DeleteRuntimeProfile failed", "error", err, "profile_id", uuidToString(profileUUID))
+	err := service.WithRuntimeResourceTransaction(r.Context(), h.TxStarter, h.Queries, func(q *db.Queries) error {
+		var err error
+		teardowns, err = teardownRuntimeProfileInTx(r.Context(), q, profileUUID, wsUUID)
+		return err
+	})
+	if err != nil {
+		switch {
+		case errors.Is(err, pgx.ErrNoRows):
+			writeError(w, http.StatusNotFound, "runtime profile not found")
+		case errors.Is(err, errRuntimeProfileInUse):
+			writeError(w, http.StatusConflict, "cannot delete runtime profile: active agents are still bound to its runtimes")
+		case errors.Is(err, service.ErrRuntimeNotDrained):
+			writeJSON(w, http.StatusConflict, map[string]string{"error": "a runtime of this profile still has tasks in flight; retry in a moment.", "code": "runtime_delete_not_drained"})
+		case errors.Is(err, service.ErrRuntimeWorkspaceMismatch):
+			writeJSON(w, http.StatusConflict, map[string]string{"error": "a runtime of this profile has an invalid cross-workspace agent binding.", "code": "runtime_delete_workspace_mismatch"})
+		case service.IsRuntimeResourceBusy(err):
+			writeJSON(w, http.StatusServiceUnavailable, map[string]string{"error": "runtime deletion is busy; retry in a moment.", "code": "runtime_delete_busy"})
+		default:
+			slog.Error("runtime profile teardown failed", "profile_id", uuidToString(profileUUID), "error", err)
 			writeError(w, http.StatusInternalServerError, "failed to delete runtime profile")
-			return
 		}
-	}
-	if err := tx.Commit(r.Context()); err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to commit transaction")
 		return
 	}
 
@@ -499,6 +409,54 @@ func (h *Handler) DeleteRuntimeProfile(w http.ResponseWriter, r *http.Request) {
 	})
 
 	w.WriteHeader(http.StatusNoContent)
+}
+
+var errRuntimeProfileInUse = errors.New("runtime profile has active agents")
+
+func teardownRuntimeProfileInTx(ctx context.Context, q *db.Queries, profileID, workspaceID pgtype.UUID) ([]service.RuntimeTeardownResult, error) {
+	// Registration takes KEY SHARE on the profile; this fence and the ordered
+	// runtime locks keep the confirmed deletion set stable through commit.
+	_, err := q.LockRuntimeProfileForDelete(ctx, db.LockRuntimeProfileForDeleteParams{ID: profileID, WorkspaceID: workspaceID})
+	missing := errors.Is(err, pgx.ErrNoRows)
+	if err != nil && !missing {
+		return nil, err
+	}
+	runtimes, err := q.ListAgentRuntimeIDsByProfile(ctx, db.ListAgentRuntimeIDsByProfileParams{ProfileID: profileID, WorkspaceID: workspaceID})
+	if err != nil {
+		return nil, err
+	}
+	if missing && len(runtimes) == 0 {
+		return nil, pgx.ErrNoRows
+	}
+	for _, runtimeID := range runtimes {
+		if _, err := q.ListUserAgentsByRuntimeForUpdate(ctx, runtimeID); err != nil {
+			return nil, err
+		}
+	}
+	count, err := q.CountAgentsByProfile(ctx, db.CountAgentsByProfileParams{ProfileID: profileID, WorkspaceID: workspaceID})
+	if err != nil {
+		return nil, err
+	}
+	if count != 0 {
+		return nil, errRuntimeProfileInUse
+	}
+	results := make([]service.RuntimeTeardownResult, 0, len(runtimes))
+	for _, runtimeID := range runtimes {
+		result, err := service.TeardownRuntime(ctx, q, runtimeID, service.RuntimeTeardownOptions{CancelNonTerminalTasks: true})
+		if err != nil {
+			return nil, err
+		}
+		results = append(results, result)
+	}
+	if _, err = q.DeleteAgentRuntimesByProfile(ctx, db.DeleteAgentRuntimesByProfileParams{ProfileID: profileID, WorkspaceID: workspaceID}); err != nil {
+		return nil, err
+	}
+	if !missing {
+		if err = q.DeleteRuntimeProfile(ctx, db.DeleteRuntimeProfileParams{ID: profileID, WorkspaceID: workspaceID}); err != nil {
+			return nil, err
+		}
+	}
+	return results, nil
 }
 
 // DaemonListRuntimeProfiles serves the enabled runtime profiles for a workspace

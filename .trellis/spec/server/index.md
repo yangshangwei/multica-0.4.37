@@ -8,7 +8,7 @@
 |-------|-------------|--------|
 | [Security Boundaries](./security-boundaries.md) | Credential minting gates and automation authorization principals | Active |
 | [Collaboration foundation](./collaboration-foundation.md) | Authority, creation, human workflow and pre-v2 execution history | Foundation |
-| [Collaboration targets](./collaboration-targets.md) | Channels/batches, managed single-agent proof flow, v3 reads and current scope limits | M09; full product pending |
+| [Collaboration targets](./collaboration-targets.md) | Target holds, M04 controls, resource invalidation, managed proof flow and v3 reads | M09 + control foundation; full product pending |
 | [Offline delivery](./offline-delivery.md) | Configuration forwarding, preserved overlays and upgrade verification | Active |
 | [Triage Admission](./triage.md) | Human review, inert intake, execution fences, CSV replay and retained audit data | Active |
 | [Iteration facts](./iterations.md) | Borrowed recorder, W01 lock batching, retry identity and current I1 limits | Active |

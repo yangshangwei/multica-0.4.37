@@ -38,6 +38,14 @@ runtime APIs do not grant ordinary agent credentials shared execution access.
 A missing or unknown protocol must not fall back to ordinary execution;
 unproven current work retains its termination barrier.
 
+Target holds are separate from channel pause. Resource withdrawal retains a
+target hold and stops dependent work; new consent does not release it. A refused
+target Resume changes neither hold nor channel state. Resume All reports each
+channel and held target separately. Dedicated control recovery uses the original
+request key at `control/operations/{requestId}` and returns the original full
+success/refusal, without automatically retrying execution. Runtime teardown and
+binding replacement retain the old run's narrow termination proof authority.
+
 Human source members may change position alone without advancing collaboration
 revision. This does not authorize other changes. The ordinary-task contracts
 below do not describe shared FIFO or collaboration lifecycle APIs. Dedicated

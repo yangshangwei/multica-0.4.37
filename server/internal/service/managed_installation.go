@@ -439,12 +439,19 @@ func (s *ManagedInstallationService) bind(ctx context.Context, proof installatio
 	if !renew && !s.EnrollmentEnabled {
 		return result, installationError(403, "installation_enrollment_disabled")
 	}
-	tx, err := s.TxStarter.Begin(ctx)
+	err := WithRuntimeResourceTransaction(ctx, s.TxStarter, s.Queries, func(q *db.Queries) error {
+		var err error
+		result, err = s.bindInTx(ctx, q, proof, renew)
+		return err
+	})
 	if err != nil {
-		return result, err
+		return InstallationBindingResult{}, err
 	}
-	defer tx.Rollback(ctx)
-	q := db.New(tx)
+	return result, nil
+}
+
+func (s *ManagedInstallationService) bindInTx(ctx context.Context, q *db.Queries, proof installation.Proof, renew bool) (InstallationBindingResult, error) {
+	var result InstallationBindingResult
 	purpose := "bind"
 	if renew {
 		purpose = "renew"
@@ -547,6 +554,9 @@ func (s *ManagedInstallationService) bind(ctx context.Context, proof installatio
 				return result, installationError(409, "binding_epoch_exhausted")
 			}
 			epoch = current.BindingEpoch + 1
+			if err = invalidateCollaborationBindingInTx(ctx, q, current); err != nil {
+				return result, err
+			}
 			if err = q.RevokeInstallationBinding(ctx, current.ID); err != nil {
 				return result, err
 			}
@@ -567,6 +577,9 @@ func (s *ManagedInstallationService) bind(ctx context.Context, proof installatio
 				return result, installationError(409, "binding_epoch_exhausted")
 			}
 			epoch = previous.BindingEpoch + 1
+			if err = invalidateCollaborationBindingInTx(ctx, q, previous); err != nil {
+				return result, err
+			}
 		} else if row.ExpectedBindingEpoch.Valid {
 			return result, installationError(409, "binding_conflict")
 		}
@@ -601,9 +614,6 @@ func (s *ManagedInstallationService) bind(ctx context.Context, proof installatio
 		return InstallationBindingResult{}, err
 	}
 	if err = installationAudit(ctx, q, actor, row.OrganizationID, inst.ID, "installation."+purpose, nil, map[string]string{"binding_id": result.BindingID, "binding_epoch": result.BindingEpoch, "workspace_id": util.UUIDToString(row.WorkspaceID)}); err != nil {
-		return InstallationBindingResult{}, err
-	}
-	if err = tx.Commit(ctx); err != nil {
 		return InstallationBindingResult{}, err
 	}
 	return result, nil

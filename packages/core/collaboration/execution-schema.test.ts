@@ -7,6 +7,7 @@ import { collaborationExecutionFixture as execution, collaborationExecutionIssue
 
 const unknownId = "00000000-0000-4000-8000-000000000099";
 const [agentTarget, squadTarget] = [execution.targets[0]!, execution.targets[1]!];
+const [agentChannel, squadChannel] = [execution.channels[0]!, execution.channels[1]!];
 const [agentCommand, waitingCommand, squadCommand] = [execution.commands[0]!, execution.commands[1]!, execution.commands[2]!];
 const [agentGroup, squadGroup] = [execution.groups[0]!, execution.groups[1]!];
 const [agentRun, leaderRun, memberRun] = [execution.runs[0]!, execution.runs[1]!, execution.runs[2]!];
@@ -40,14 +41,14 @@ describe("collaboration execution protocol", () => {
     expect(parse(value)).toBeNull();
   });
 
-  it.each(["targets", "commands", "groups", "runs"])("never treats missing or malformed %s as empty", (field) => {
+  it.each(["channels", "targets", "commands", "groups", "runs"])("never treats missing or malformed %s as empty", (field) => {
     for (const value of [undefined, null, "PRIVATE_COLLECTION", 1]) {
       expect(parse({ ...execution, [field]: value })).toBeNull();
     }
   });
 
   it("accepts complete empty collections without granting execution", () => {
-    const empty = { ...execution, targets: [], commands: [], groups: [], runs: [] };
+    const empty = { ...execution, channels: [], targets: [], commands: [], groups: [], runs: [] };
     expect(parse(empty)?.execution).toEqual(empty);
     expect(parse(empty)?.capabilities.control_ai).toBe(false);
   });
@@ -64,6 +65,7 @@ describe("collaboration execution protocol", () => {
     expect(parse(execution)?.execution?.targets[0]?.config_version).toBe("9007199254740993");
     expect(parse({ ...execution, target_set_version: "9223372036854775807" })?.execution?.target_set_version).toBe("9223372036854775807");
     expect(parse({ ...execution, targets: [{ ...agentTarget, group_generation: "9007199254740993" }, squadTarget],
+      channels: [{ ...agentChannel, group_generation: "9007199254740993" }, squadChannel],
       groups: [{ ...agentGroup, generation: "9007199254740993" }, squadGroup] })?.execution?.groups[0]?.generation).toBe("9007199254740993");
     expect(parse({ ...execution, targets: [{ ...agentTarget, group_generation: "10" }, squadTarget],
       groups: [{ ...agentGroup, generation: "9", state: "stopped", settled_at: "2026-10-17T00:00:00Z" }, squadGroup] })).toBeNull();
@@ -72,7 +74,9 @@ describe("collaboration execution protocol", () => {
   it.each(["0", "01", "1e3", "1.5", "-1", "+1", " 1", "1\n", "9223372036854775808", "9".repeat(1000), 1, null, undefined])("rejects malformed version %s at every execution boundary", (value) => {
     expect(parse({ ...execution, target_set_version: value })).toBeNull();
     expect(parse({ ...execution, control: { ...execution.control, control_version: value } })).toBeNull();
-    for (const field of ["target_epoch", "config_version", "next_command_seq"]) {
+    expect(parse({ ...execution, execution_gate: { enabled: true, epoch: value } })).toBeNull();
+    expect(parse({ ...execution, channels: [{ ...agentChannel, control_version: value }, squadChannel] })).toBeNull();
+    for (const field of ["target_epoch", "config_version", "next_command_seq", "hold_version"]) {
       expect(parse({ ...execution, targets: [{ ...agentTarget, [field]: value }, squadTarget] })).toBeNull();
     }
     expect(parse({ ...execution, targets: [{ ...agentTarget, control: { ...agentTarget.control, control_version: value } }, squadTarget] })).toBeNull();
@@ -86,14 +90,14 @@ describe("collaboration execution protocol", () => {
   });
 
   it("accepts generation zero only before the first group", () => {
-    const empty = { ...execution, targets: [{ ...agentTarget, group_generation: "0", active_group_id: null, next_command_seq: "1" }], commands: [], groups: [], runs: [] };
+    const empty = { ...execution, channels: [{ ...agentChannel, group_generation: "0", active_group_id: null }], targets: [{ ...agentTarget, group_generation: "0", active_group_id: null, next_command_seq: "1" }], commands: [], groups: [], runs: [] };
     expect(parse(empty)?.execution?.targets[0]?.group_generation).toBe("0");
     expect(parse({ ...empty, targets: [{ ...empty.targets[0], group_generation: "-1" }] })).toBeNull();
     expect(parse({ ...execution, targets: [{ ...agentTarget, group_generation: "0" }, squadTarget] })).toBeNull();
   });
 
   it("rejects duplicate identities, target FIFO positions and per-comment targets", () => {
-    for (const field of ["targets", "commands", "groups", "runs"] as const) {
+    for (const field of ["channels", "targets", "commands", "groups", "runs"] as const) {
       expect(parse({ ...execution, [field]: [...execution[field], execution[field][0]] })).toBeNull();
     }
     expect(parse({ ...execution, targets: [...execution.targets, { ...agentTarget, id: unknownId, active_group_id: null }] })).toBeNull();
@@ -138,6 +142,7 @@ describe("collaboration execution protocol", () => {
 
   it("rejects a terminal group with omitted run evidence while preserving active preparation", () => {
     const terminal = { ...execution,
+      channels: [{ ...agentChannel, active_group_id: null }, squadChannel],
       targets: [{ ...agentTarget, active_group_id: null }, squadTarget],
       commands: [{ ...agentCommand, state: "stopped" }, waitingCommand, squadCommand],
       groups: [{ ...agentGroup, state: "stopped", settled_at: "2026-10-17T00:00:00Z" }, squadGroup],
@@ -152,6 +157,7 @@ describe("collaboration execution protocol", () => {
 
   it("compares historical generations numerically without narrowing large values", () => {
     const history = { ...execution,
+      channels: [{ ...agentChannel, group_generation: "10", active_group_id: null }, squadChannel],
       targets: [{ ...agentTarget, group_generation: "10", active_group_id: null }, squadTarget],
       commands: [{ ...agentCommand, state: "stopped" }, waitingCommand, squadCommand],
       groups: [{ ...agentGroup, generation: "9", state: "stopped", settled_at: "2026-10-17T00:00:00Z" }, squadGroup],
@@ -160,6 +166,7 @@ describe("collaboration execution protocol", () => {
     expect(parse(history)?.execution?.groups[0]?.generation).toBe("9");
     expect(parse({ ...history, groups: [{ ...history.groups[0], generation: "11" }, squadGroup] })).toBeNull();
     const large = { ...history, targets: [{ ...history.targets[0], group_generation: "9007199254740993" }, squadTarget],
+      channels: [{ ...agentChannel, group_generation: "9007199254740993", active_group_id: null }, squadChannel],
       groups: [{ ...history.groups[0], generation: "9007199254740992" }, squadGroup] };
     expect(parse(large)?.execution?.groups[0]?.generation).toBe("9007199254740992");
     expect(parse({ ...large, groups: [{ ...history.groups[0], generation: "9007199254740994" }, squadGroup] })).toBeNull();
@@ -205,6 +212,7 @@ describe("collaboration execution protocol", () => {
     const cancelled = { ...waitingCommand, batch_id: agentCommand.batch_id, state: "cancelled" };
     expect(parse({ ...execution, commands: [agentCommand, cancelled, squadCommand] })?.execution?.commands[1]).toEqual(cancelled);
     const terminal = { ...execution,
+      channels: [{ ...agentChannel, active_group_id: null }, squadChannel],
       targets: [{ ...agentTarget, active_group_id: null }, squadTarget],
       commands: [{ ...agentCommand, state: "stopped" }, cancelled, squadCommand],
       groups: [{ ...agentGroup, state: "stopped", settled_at: "2026-10-17T00:00:00Z" }, squadGroup],
@@ -216,6 +224,7 @@ describe("collaboration execution protocol", () => {
 
   it("rejects a waiting batch shared across channels before any group starts", () => {
     const waiting = { ...execution,
+      channels: execution.channels.map((item) => ({ ...item, group_generation: "0", active_group_id: null })),
       targets: execution.targets.map((item) => ({ ...item, group_generation: "0", active_group_id: null })),
       commands: execution.commands.map((item) => ({ ...item, state: "waiting" })), groups: [], runs: [],
     };
@@ -231,7 +240,7 @@ describe("collaboration execution protocol", () => {
 
   it("requires a channel for every target with input or execution", () => {
     expect(parse({ ...execution, targets: [{ ...agentTarget, channel_id: null }, squadTarget] })).toBeNull();
-    const unused = { ...execution, targets: [{ ...agentTarget, channel_id: null, group_generation: "0", active_group_id: null, next_command_seq: "1" }], commands: [], groups: [], runs: [] };
+    const unused = { ...execution, channels: [], targets: [{ ...agentTarget, channel_id: null, group_generation: "0", active_group_id: null, next_command_seq: "1" }], commands: [], groups: [], runs: [] };
     expect(parse(unused)?.execution?.targets[0]?.channel_id).toBeNull();
     expect(parse({ ...unused, targets: [{ ...unused.targets[0], channel_id: undefined }] })).toBeNull();
     expect(parse({ ...unused, targets: [{ ...unused.targets[0], group_generation: "1" }] })).toBeNull();
@@ -248,5 +257,39 @@ describe("collaboration execution protocol", () => {
     expect(warn).toHaveBeenCalledOnce();
     expect(JSON.stringify(warn.mock.calls)).not.toContain("PRIVATE_");
     expect(JSON.stringify(warn.mock.calls)).not.toContain("received");
+  });
+
+  it("keeps each target hold independent of its shared channel pause", () => {
+    const alias = { ...agentTarget, id: unknownId, kind: "squad", resource_id: unknownId, hold_reason: "initial", hold_version: "9223372036854775807" };
+    const result = parse({ ...execution, targets: [...execution.targets, alias] });
+    expect(result?.execution?.targets[0]?.hold_reason).toBeNull();
+    expect(result?.execution?.targets[2]?.hold_reason).toBe("initial");
+    expect(result?.execution?.targets[2]?.hold_version).toBe("9223372036854775807");
+    expect(result?.execution?.channels).toHaveLength(2);
+    expect(result?.capabilities.control_ai).toBe(false);
+  });
+
+  it("requires complete hold, channel and gate facts before trusting a v3 snapshot", () => {
+    for (const hold_reason of [undefined, "", "paused", "PRIVATE_HOLD", 0, false]) {
+      expect(parse({ ...execution, targets: [{ ...agentTarget, hold_reason }, squadTarget] })).toBeNull();
+    }
+    for (const hold_reason of [null, "initial", "grant_required", "config_invalid", "switch_hold"]) {
+      expect(parse({ ...execution, targets: [{ ...agentTarget, hold_reason }, squadTarget] })).not.toBeNull();
+    }
+    for (const execution_gate of [undefined, null, {}, { enabled: true }, { enabled: "true", epoch: "1" }]) {
+      expect(parse({ ...execution, execution_gate })).toBeNull();
+    }
+    expect(parse({ ...execution, execution_gate: { enabled: false, epoch: "9223372036854775807" } })?.execution?.execution_gate.enabled).toBe(false);
+    expect(parse({ ...execution, channels: [squadChannel] })).toBeNull();
+    for (const patch of [{ queue_state: "active" }, { control_version: "3" }, { group_generation: "2" }, { active_group_id: null }, { pause_reason: "different" }]) {
+      expect(parse({ ...execution, channels: [{ ...agentChannel, ...patch }, squadChannel] })).toBeNull();
+    }
+  });
+
+  it("retains channels without current targets but never invents missing group proof", () => {
+    const retained = { id: unknownId, queue_state: "paused", control_version: "7", group_generation: "4", active_group_id: null, pause_reason: "stop_requested" };
+    expect(parse({ ...execution, channels: [...execution.channels, retained] })?.execution?.channels[2]).toEqual(retained);
+    expect(parse({ ...execution, channels: [...execution.channels, { ...retained, active_group_id: unknownId }] })).toBeNull();
+    expect(parse({ ...execution, channels: [...execution.channels, { ...retained, active_group_id: agentGroup.id }] })).toBeNull();
   });
 });

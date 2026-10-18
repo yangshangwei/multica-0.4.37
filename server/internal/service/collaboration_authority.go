@@ -23,15 +23,17 @@ import (
 // Resource ownership consent and runtime launch support are separate facts.
 // These fields cannot grant a provider permission to launch or read content.
 type CollaborationMentionTarget struct {
-	TargetID           pgtype.UUID              `json:"target_id"`
-	Kind               collaboration.TargetKind `json:"kind"`
-	ResourceID         pgtype.UUID              `json:"resource_id"`
-	Name               string                   `json:"name"`
-	TargetEpoch        int64                    `json:"target_epoch,string"`
-	ConfigVersion      int64                    `json:"config_version,string"`
-	QueueState         string                   `json:"queue_state"`
-	WaitingReason      string                   `json:"waiting_reason"`
-	ExecutionAvailable bool                     `json:"execution_available"`
+	TargetID           pgtype.UUID                     `json:"target_id"`
+	Kind               collaboration.TargetKind        `json:"kind"`
+	ResourceID         pgtype.UUID                     `json:"resource_id"`
+	Name               string                          `json:"name"`
+	TargetEpoch        int64                           `json:"target_epoch,string"`
+	ConfigVersion      int64                           `json:"config_version,string"`
+	HoldReason         *collaboration.TargetHoldReason `json:"hold_reason"`
+	HoldVersion        int64                           `json:"hold_version,string"`
+	QueueState         string                          `json:"queue_state"`
+	WaitingReason      string                          `json:"waiting_reason"`
+	ExecutionAvailable bool                            `json:"execution_available"`
 }
 
 type CollaborationResourceIdentity struct {
@@ -478,13 +480,16 @@ func (s *CollaborationService) AuthorizedMentionTargets(ctx context.Context, q *
 			reason = "issue_paused"
 		case target.QueueState != "active":
 			reason = "target_paused"
+		case target.HoldReason.Valid:
+			reason = target.HoldReason.String
 		case target.ActiveGroupID.Valid:
 			reason = "target_busy"
 		case configuration.Offline:
 			reason = "runtime_offline"
 		}
 		result = append(result, CollaborationMentionTarget{TargetID: target.ID, Kind: collaboration.TargetKind(target.Kind), ResourceID: target.ResourceID,
-			Name: configuration.Name, TargetEpoch: target.TargetEpoch, ConfigVersion: target.ConfigVersion, QueueState: target.QueueState, WaitingReason: reason})
+			Name: configuration.Name, TargetEpoch: target.TargetEpoch, ConfigVersion: target.ConfigVersion,
+			HoldReason: collaborationTargetHoldReason(target), HoldVersion: target.HoldVersion, QueueState: target.QueueState, WaitingReason: reason})
 	}
 	return result, nil
 }
@@ -580,6 +585,14 @@ func (s *CollaborationService) ConsentTargetResource(ctx context.Context, p Coll
 		if err != nil {
 			return CollaborationQueueReceipt{}, err
 		}
+		hold := collaboration.TargetHoldReason(target.HoldReason.String)
+		if !target.HoldReason.Valid {
+			hold = collaboration.HoldGrantRequired
+		}
+		target, err = t.setTargetHold(ctx, target, hold, true)
+		if err != nil {
+			return CollaborationQueueReceipt{}, err
+		}
 		r := t.targetReceipt("resource_consented", http.StatusCreated, target)
 		r.GrantID = grant.ID
 		return r, t.event(ctx, "resource_consented", r)
@@ -587,7 +600,8 @@ func (s *CollaborationService) ConsentTargetResource(ctx context.Context, p Coll
 }
 
 // ReconfigureTarget keeps the typed target and immutable input history. It
-// requires the old resource's proof barrier to be clear and leaves it paused.
+// requires the old resource's proof barrier to be clear and leaves a switch
+// hold for fresh consent. This pending configuration is not a completed Switch.
 func (s *CollaborationService) ReconfigureTarget(ctx context.Context, p CollaborationReconfigureTargetParams) (CollaborationQueueReceipt, error) {
 	control := CollaborationStopQueueParams{Scope: collaboration.ControlTarget, Targets: []CollaborationTargetControl{p.Control}}
 	if !normalizeCollaborationControl(&control) {
@@ -615,7 +629,7 @@ func (s *CollaborationService) ReconfigureTarget(ctx context.Context, p Collabor
 		if !validCollaborationRoster(collaboration.TargetKind(target.Kind), target.ResourceID, p.Roster) {
 			return t.receipt("invalid_target_configuration", http.StatusBadRequest), nil
 		}
-		if target.QueueState != "paused" {
+		if target.QueueState != "paused" && !target.HoldReason.Valid {
 			return deny("target_pause_required")
 		}
 		if target.ActiveGroupID.Valid {

@@ -49,18 +49,20 @@ type CollaborationEditCommentParams struct {
 }
 
 type CollaborationCommentTargetResult struct {
-	TargetID        pgtype.UUID `json:"target_id"`
-	Kind            string      `json:"kind"`
-	ResourceID      pgtype.UUID `json:"resource_id"`
-	TargetEpoch     int64       `json:"target_epoch,string,omitempty"`
-	ConfigVersion   int64       `json:"config_version,string,omitempty"`
-	State           string      `json:"state"`
-	Code            string      `json:"code"`
-	WaitingReason   string      `json:"waiting_reason,omitempty"`
-	CommandID       pgtype.UUID `json:"command_id"`
-	CommandSequence int64       `json:"command_sequence,string,omitempty"`
-	ChannelID       pgtype.UUID `json:"channel_id"`
-	BatchID         pgtype.UUID `json:"batch_id"`
+	TargetID        pgtype.UUID                     `json:"target_id"`
+	Kind            string                          `json:"kind"`
+	ResourceID      pgtype.UUID                     `json:"resource_id"`
+	TargetEpoch     int64                           `json:"target_epoch,string,omitempty"`
+	ConfigVersion   int64                           `json:"config_version,string,omitempty"`
+	HoldReason      *collaboration.TargetHoldReason `json:"hold_reason"`
+	HoldVersion     *int64                          `json:"hold_version,string"`
+	State           string                          `json:"state"`
+	Code            string                          `json:"code"`
+	WaitingReason   string                          `json:"waiting_reason,omitempty"`
+	CommandID       pgtype.UUID                     `json:"command_id"`
+	CommandSequence int64                           `json:"command_sequence,string,omitempty"`
+	ChannelID       pgtype.UUID                     `json:"channel_id"`
+	BatchID         pgtype.UUID                     `json:"batch_id"`
 }
 
 // A saved receipt contains identity and outcomes, never a replay of old content.
@@ -214,11 +216,11 @@ func (s *CollaborationService) collaborationContentInTx(ctx context.Context, tx 
 	if !sameCollaborationUserIDs(ids, currentIDs) {
 		return CollaborationCommentReceipt{}, &pgconn.PgError{Code: "40001", Message: "collaboration content account lock set changed"}
 	}
-	t.targets, err = t.q.LockCollaborationTargets(ctx, t.session.ID)
+	t.channels, err = t.q.LockCollaborationChannels(ctx, t.session.ID)
 	if err != nil {
 		return CollaborationCommentReceipt{}, err
 	}
-	t.channels, err = t.q.LockCollaborationChannels(ctx, t.session.ID)
+	t.targets, err = t.q.LockCollaborationTargets(ctx, t.session.ID)
 	if err != nil {
 		return CollaborationCommentReceipt{}, err
 	}

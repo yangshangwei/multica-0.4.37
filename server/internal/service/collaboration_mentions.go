@@ -167,6 +167,9 @@ func collaborationCommentTargetPreview(access CollaborationIssueAccess, input Co
 			continue
 		}
 		item.TargetID, item.TargetEpoch, item.ConfigVersion = target.TargetID, target.TargetEpoch, target.ConfigVersion
+		item.HoldReason = target.HoldReason
+		holdVersion := target.HoldVersion
+		item.HoldVersion = &holdVersion
 		switch {
 		case suppressed[target.TargetID]:
 			item.State, item.Code = "suppressed", "target_suppressed"

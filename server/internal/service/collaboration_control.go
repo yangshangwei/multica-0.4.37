@@ -18,6 +18,7 @@ type CollaborationTargetControl struct {
 	TargetID                pgtype.UUID `json:"target_id"`
 	ExpectedTargetEpoch     int64       `json:"expected_target_epoch,string"`
 	ExpectedConfigVersion   int64       `json:"expected_config_version,string"`
+	ExpectedHoldVersion     int64       `json:"expected_hold_version,string,omitempty"`
 	ExpectedControlVersion  int64       `json:"expected_control_version,string"`
 	ObservedGroupID         pgtype.UUID `json:"observed_group_id"`
 	ObservedGroupGeneration int64       `json:"observed_group_generation,string"`
@@ -47,6 +48,32 @@ type CollaborationTargetControlResult struct {
 	GroupSettled    bool        `json:"group_settled"`
 	StoppedRuns     int         `json:"stopped_runs"`
 	UnsettledRuns   int         `json:"unsettled_runs"`
+}
+
+type CollaborationChannelControlResult struct {
+	ChannelID       pgtype.UUID `json:"channel_id"`
+	Code            string      `json:"code"`
+	QueueState      string      `json:"queue_state"`
+	ControlVersion  int64       `json:"control_version,string"`
+	GroupGeneration int64       `json:"group_generation,string"`
+	GroupID         pgtype.UUID `json:"group_id"`
+	GroupSettled    bool        `json:"group_settled"`
+	StoppedRuns     int         `json:"stopped_runs"`
+	UnsettledRuns   int         `json:"unsettled_runs"`
+}
+
+type CollaborationTargetHoldResult struct {
+	TargetID    pgtype.UUID                     `json:"target_id"`
+	ChannelID   pgtype.UUID                     `json:"channel_id"`
+	Code        string                          `json:"code"`
+	HoldReason  *collaboration.TargetHoldReason `json:"hold_reason"`
+	HoldVersion int64                           `json:"hold_version,string"`
+}
+
+func (r CollaborationTargetControlResult) channelResult() CollaborationChannelControlResult {
+	return CollaborationChannelControlResult{ChannelID: r.ChannelID, Code: r.Code, QueueState: r.QueueState,
+		ControlVersion: r.ControlVersion, GroupGeneration: r.GroupGeneration, GroupID: r.GroupID,
+		GroupSettled: r.GroupSettled, StoppedRuns: r.StoppedRuns, UnsettledRuns: r.UnsettledRuns}
 }
 
 func normalizeCollaborationControl(p *CollaborationStopQueueParams) bool {
@@ -169,12 +196,17 @@ func (s *CollaborationService) StopQueue(ctx context.Context, p CollaborationSto
 	})
 }
 
-// ResumeQueue releases the issue pause only after its global guards pass. Each
-// physical channel then receives its own result; a refusal never becomes a
-// stored request to resume automatically after proof or authority is repaired.
+// ResumeQueue validates an individual target atomically. Issue Resume first
+// checks global authority, then resolves channel proof and target holds as
+// independent results. Neither path records an intention to resume later.
 func (s *CollaborationService) ResumeQueue(ctx context.Context, p CollaborationResumeQueueParams) (CollaborationQueueReceipt, error) {
 	if p.ExpectedExecutionEpoch < 1 || !normalizeCollaborationControl(&p.CollaborationStopQueueParams) {
 		return CollaborationQueueReceipt{}, collaborationError(http.StatusBadRequest, "invalid_resume")
+	}
+	for _, observed := range p.Targets {
+		if observed.ExpectedHoldVersion < 1 {
+			return CollaborationQueueReceipt{}, collaborationError(http.StatusBadRequest, "invalid_resume")
+		}
 	}
 	return s.mutateCollaborationQueue(ctx, p.CollaborationQueueRequest, "resume_queue", p, func(t *collaborationQueueTx) (CollaborationQueueReceipt, error) {
 		result := func(code string, status int) (CollaborationQueueReceipt, error) {
@@ -194,6 +226,12 @@ func (s *CollaborationService) ResumeQueue(ctx context.Context, p CollaborationR
 				return CollaborationQueueReceipt{}, err
 			}
 			return result(code, http.StatusConflict)
+		}
+		for _, observed := range p.Targets {
+			target, _ := t.target(observed.TargetID)
+			if target.HoldVersion != observed.ExpectedHoldVersion {
+				return result("stale_hold", http.StatusConflict)
+			}
 		}
 		if t.gate.Epoch != p.ExpectedExecutionEpoch {
 			return result("stale_admission", http.StatusConflict)
@@ -215,105 +253,80 @@ func (s *CollaborationService) ResumeQueue(ctx context.Context, p CollaborationR
 				selectedChannels[channel.ID] = true
 			}
 		}
+		// Only the selected target's authority can refuse a target Resume. An
+		// unrelated alias, even the head of a waiting batch, has its own hold.
+		reasons := make(map[pgtype.UUID]string, len(selected))
+		supportReasons := make(map[pgtype.UUID]string, len(selected))
 		for _, target := range t.targets {
-			if !selectedChannels[target.ChannelID] {
+			if !selected[target.ID] {
 				continue
 			}
-			if _, err := t.q.LockCollaborationTargetGrants(ctx, target.ID); err != nil {
-				return CollaborationQueueReceipt{}, err
-			}
-		}
-		// Resolve authority before the command/group/run locks. Source and
-		// channel locks already fence the waiting batch and its target set.
-		reasons := make(map[pgtype.UUID]string, len(selectedChannels))
-		preserved := make(map[pgtype.UUID]bool)
-		for _, channel := range t.channels {
-			if !selectedChannels[channel.ID] {
-				continue
-			}
-			if p.Scope == collaboration.ControlIssue && t.session.QueueState == "active" && channel.QueueState == "active" {
-				preserved[channel.ID] = true
-				continue
-			}
-			code, err := t.channelResumeReason(ctx, channel, p)
+			code, err := t.targetResumeReason(ctx, target)
 			if err != nil {
 				return CollaborationQueueReceipt{}, err
 			}
-			reasons[channel.ID] = code
-		}
-		if _, err := t.q.LockCollaborationSessionCommands(ctx, t.session.ID); err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		groups, err := t.q.LockCollaborationUnsettledGroups(ctx, t.session.ID)
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		runs, err := t.q.LockCollaborationUnsettledRuns(ctx, t.session.ID)
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		barriers := make(map[pgtype.UUID]bool)
-		for _, run := range runs {
-			barriers[run.ChannelID] = true
-			if target, exists := t.target(run.TargetID); exists {
-				barriers[target.ChannelID] = true
+			reasons[target.ID] = code
+			if p.Scope == collaboration.ControlTarget && code != "" {
+				return result(code, http.StatusConflict)
+			}
+			if code == "" {
+				supportReasons[target.ID], err = collaborationRuntimeTargetSupported(ctx, t.q, target)
+				if err != nil {
+					return CollaborationQueueReceipt{}, err
+				}
 			}
 		}
-		for _, group := range groups {
-			barriers[group.ChannelID] = true
-			if target, exists := t.target(group.TargetID); exists {
-				barriers[target.ChannelID] = true
+		barriers, unsettled, err := t.resumeChannelBarriers(ctx, selectedChannels)
+		if err != nil {
+			return CollaborationQueueReceipt{}, err
+		}
+		if p.Scope == collaboration.ControlTarget {
+			target, _ := t.target(p.Targets[0].TargetID)
+			if barriers[target.ChannelID] {
+				return result("stop_unconfirmed", http.StatusConflict)
+			}
+			if code := supportReasons[target.ID]; code != "" {
+				return result(code, http.StatusConflict)
 			}
 		}
 		for _, target := range t.targets {
-			if target.ActiveGroupID.Valid {
-				barriers[target.ChannelID] = true
+			if selected[target.ID] && reasons[target.ID] == "" && !barriers[target.ChannelID] {
+				reasons[target.ID] = supportReasons[target.ID]
 			}
 		}
+		changed := false
 		if p.Scope == collaboration.ControlIssue && t.session.QueueState != "active" {
 			t.session, err = t.q.ResumeCollaborationSession(ctx, t.session.ID)
 			if err != nil {
 				return CollaborationQueueReceipt{}, err
 			}
+			changed = true
 		}
 		r := t.receipt("resumed", http.StatusOK)
 		for _, channel := range t.channels {
 			if !selectedChannels[channel.ID] {
 				continue
 			}
-			code := reasons[channel.ID]
-			if preserved[channel.ID] {
-				code = "already_active"
-			} else if barriers[channel.ID] || channel.ActiveGroupID.Valid {
+			code := "already_active"
+			if barriers[channel.ID] {
 				code = "stop_unconfirmed"
-			}
-			if code == "" {
-				if channel.QueueState != "active" {
-					channel, err = t.q.ResumeCollaborationChannel(ctx, channel.ID)
-					if err != nil {
-						return CollaborationQueueReceipt{}, err
-					}
-					if err = t.mirrorChannel(ctx, channel); err != nil {
-						return CollaborationQueueReceipt{}, err
-					}
-				}
-				code = "resumed"
-			} else if code != "already_active" {
 				r.Code = "partially_resumed"
-				if p.Scope == collaboration.ControlIssue && channel.QueueState != "paused" {
-					channel, err = t.q.PauseCollaborationChannel(ctx, db.PauseCollaborationChannelParams{ChannelID: channel.ID, Reason: code})
-					if err != nil {
-						return CollaborationQueueReceipt{}, err
-					}
-					if err = t.mirrorChannel(ctx, channel); err != nil {
-						return CollaborationQueueReceipt{}, err
-					}
+			} else if channel.QueueState != "active" {
+				channel, err = t.q.ResumeCollaborationChannel(ctx, channel.ID)
+				if err != nil {
+					return CollaborationQueueReceipt{}, err
 				}
+				if err = t.mirrorChannel(ctx, channel); err != nil {
+					return CollaborationQueueReceipt{}, err
+				}
+				code, changed = "resumed", true
 			}
+			r.Channels = append(r.Channels, CollaborationChannelControlResult{ChannelID: channel.ID, Code: code,
+				QueueState: channel.QueueState, ControlVersion: channel.ControlVersion, GroupGeneration: channel.GroupGeneration, GroupID: channel.ActiveGroupID, UnsettledRuns: unsettled[channel.ID]})
 			for _, target := range t.targets {
 				if target.ChannelID == channel.ID {
 					r.Targets = append(r.Targets, CollaborationTargetControlResult{TargetID: target.ID, ChannelID: channel.ID, Code: code,
-						QueueState: channel.QueueState, ControlVersion: channel.ControlVersion, GroupGeneration: channel.GroupGeneration, GroupID: channel.ActiveGroupID})
+						QueueState: channel.QueueState, ControlVersion: channel.ControlVersion, GroupGeneration: channel.GroupGeneration, GroupID: channel.ActiveGroupID, UnsettledRuns: unsettled[channel.ID]})
 				}
 			}
 		}
@@ -321,117 +334,152 @@ func (s *CollaborationService) ResumeQueue(ctx context.Context, p CollaborationR
 			if !selected[target.ID] {
 				continue
 			}
-			if _, exists := t.channel(target.ChannelID); exists {
+			code := reasons[target.ID]
+			if p.Scope == collaboration.ControlIssue && !target.HoldReason.Valid && code == "" {
 				continue
 			}
-			code := "config_invalid"
-			if target.ActiveGroupID.Valid {
-				code = "stop_unconfirmed"
+			if code != "" {
+				// Global Resume may discover invalid current authority. Persist
+				// that target's hold without pausing any otherwise healthy lane.
+				hold := collaboration.TargetHoldReason(target.HoldReason.String)
+				switch code {
+				case "grant_required":
+					hold = collaboration.HoldGrantRequired
+				case "config_invalid":
+					hold = collaboration.HoldConfigInvalid
+				default:
+					if !target.HoldReason.Valid {
+						hold = collaboration.HoldConfigInvalid
+					}
+				}
+				beforeVersion := target.HoldVersion
+				target, err = t.setTargetHold(ctx, target, hold, false)
+				if err != nil {
+					return CollaborationQueueReceipt{}, err
+				}
+				changed = changed || target.HoldVersion != beforeVersion
+				r.Code = "partially_resumed"
+			} else if barriers[target.ChannelID] {
+				code, r.Code = "stop_unconfirmed", "partially_resumed"
+			} else if target.HoldReason.Valid {
+				target, err = t.setTargetHold(ctx, target, "", false)
+				if err != nil {
+					return CollaborationQueueReceipt{}, err
+				}
+				code, changed = "hold_released", true
+			} else {
+				code = "already_active"
 			}
-			r.Code = "partially_resumed"
-			r.Targets = append(r.Targets, CollaborationTargetControlResult{TargetID: target.ID, ChannelID: target.ChannelID, Code: code,
-				QueueState: target.QueueState, ControlVersion: target.ControlVersion, GroupGeneration: target.GroupGeneration, GroupID: target.ActiveGroupID})
+			r.TargetHolds = append(r.TargetHolds, collaborationTargetHoldResult(target, code))
 		}
 		if p.Scope == collaboration.ControlTarget {
 			target, _ := t.target(p.Targets[0].TargetID)
 			r.Scope, r.TargetID, r.ChannelID = p.Scope, target.ID, target.ChannelID
 			r.QueueState, r.ControlVersion, r.GroupID = target.QueueState, target.ControlVersion, target.ActiveGroupID
-			for _, targetResult := range r.Targets {
-				if targetResult.TargetID == target.ID {
-					r.Code = targetResult.Code
-					if r.Code != "resumed" && r.Code != "already_active" {
-						r.Status = http.StatusConflict
-						return r, nil
-					}
-				}
+			if !changed {
+				r.Code = "already_active"
 			}
 		}
-		return r, t.event(ctx, "queue_resumed", r)
+		if changed {
+			return r, t.event(ctx, "queue_resumed", r)
+		}
+		return r, nil
 	})
 }
 
-// The head batch defines the work that explicit Resume could next release.
-// An unused or revoked squad alias must not indefinitely block valid direct
-// work. A squad-effective head is never skipped to run later direct inputs.
-func (t *collaborationQueueTx) channelResumeReason(ctx context.Context, channel db.CollaborationChannel, p CollaborationResumeQueueParams) (string, error) {
-	batches, err := t.q.ListCollaborationBatches(ctx, t.session.ID)
+func (t *collaborationQueueTx) targetResumeReason(ctx context.Context, target db.CollaborationTarget) (string, error) {
+	channel, exists := t.channel(target.ChannelID)
+	if !exists {
+		return "config_invalid", nil
+	}
+	roster, err := decodeCollaborationRoster[collaboration.TargetResource](target.Roster)
+	if err != nil || !validCollaborationRoster(collaboration.TargetKind(target.Kind), target.ResourceID, roster) {
+		return "config_invalid", nil
+	}
+	root, err := collaborationRootAgent(target)
+	if err != nil || root != channel.RootAgentID {
+		return "config_invalid", nil
+	}
+	code, err := t.authorizeTargetInput(ctx, target)
+	if code == "target_configuration_changed" {
+		code = "config_invalid"
+	}
+	if code != "" || err != nil {
+		return code, err
+	}
+	return "", nil
+}
+
+// A healthy busy active channel does not need termination proof to retain its
+// active intent. Paused work, forced stops and contradictory retained pointers
+// do. Read and validate the full group ledger without settling any of it here.
+func (t *collaborationQueueTx) resumeChannelBarriers(ctx context.Context, selected map[pgtype.UUID]bool) (map[pgtype.UUID]bool, map[pgtype.UUID]int, error) {
+	if _, err := t.q.LockCollaborationSessionCommands(ctx, t.session.ID); err != nil {
+		return nil, nil, err
+	}
+	groups, err := t.q.LockCollaborationUnsettledGroups(ctx, t.session.ID)
 	if err != nil {
-		return "", err
+		return nil, nil, err
 	}
-	var effective db.CollaborationTarget
-	required := make(map[pgtype.UUID]bool)
-	for _, batch := range batches {
-		if batch.ChannelID != channel.ID || batch.State != "waiting" {
+	runs, err := t.q.LockCollaborationUnsettledRuns(ctx, t.session.ID)
+	if err != nil {
+		return nil, nil, err
+	}
+	barriers := make(map[pgtype.UUID]bool)
+	unsettled := make(map[pgtype.UUID]int)
+	byID := make(map[pgtype.UUID]db.CollaborationExecutionGroup, len(groups))
+	for _, group := range groups {
+		byID[group.ID] = group
+		if !selected[group.ChannelID] {
 			continue
 		}
-		var exists bool
-		effective, exists = t.target(batch.EffectiveTargetID)
-		if !exists || effective.ChannelID != channel.ID {
-			return "config_invalid", nil
-		}
-		inputs, err := t.q.ListCollaborationBatchInputs(ctx, batch.ID)
-		if err != nil {
-			return "", err
-		}
-		for _, input := range inputs {
-			if input.State == "cancelled" {
-				continue
-			}
-			target, exists := t.target(input.TargetID)
-			if input.State != "waiting" || input.SessionID != t.session.ID || input.ChannelID != channel.ID || !exists || target.ChannelID != channel.ID ||
-				(target.Kind == string(collaboration.TargetSquad) && target.ID != effective.ID) {
-				return "config_invalid", nil
-			}
-			required[target.ID] = true
-		}
-		if len(required) == 0 {
-			return "config_invalid", nil
-		}
-		break
-	}
-	if !effective.ID.Valid {
-		if p.Scope == collaboration.ControlTarget {
-			effective, _ = t.target(p.Targets[0].TargetID)
-		} else {
-			for _, target := range t.targets {
-				if target.ChannelID != channel.ID || target.RevokedAt.Valid {
-					continue
-				}
-				effective = target
-				if target.Kind == string(collaboration.TargetAgent) {
-					break
-				}
-			}
-		}
-		if !effective.ID.Valid {
-			return "grant_required", nil
-		}
-	}
-	required[effective.ID] = true
-	for _, target := range t.targets {
-		if !required[target.ID] {
+		channel, exists := t.channel(group.ChannelID)
+		target, targetExists := t.target(group.TargetID)
+		if !exists || !targetExists || target.ChannelID != group.ChannelID || channel.ActiveGroupID != group.ID || channel.GroupGeneration != group.Generation {
+			barriers[group.ChannelID] = true
 			continue
 		}
-		roster, err := decodeCollaborationRoster[collaboration.TargetResource](target.Roster)
-		if err != nil || !validCollaborationRoster(collaboration.TargetKind(target.Kind), target.ResourceID, roster) {
-			return "config_invalid", nil
-		}
-		root, err := collaborationRootAgent(target)
-		if err != nil || root != channel.RootAgentID {
-			return "config_invalid", nil
-		}
-		code, err := t.authorizeTargetInput(ctx, target)
+		allRuns, err := t.q.LockCollaborationGroupRuns(ctx, group.ID)
 		if err != nil {
-			return "", err
+			return nil, nil, err
 		}
-		if code == "target_configuration_changed" {
-			code = "config_invalid"
+		if err = t.validateGroup(ctx, target, group, allRuns); err != nil {
+			if !errors.Is(err, errInvalidCollaborationLedger) {
+				return nil, nil, err
+			}
+			barriers[group.ChannelID] = true
 		}
-		if code != "" {
-			return code, nil
+		if len(allRuns) == 0 || channel.QueueState != "active" || group.ForcedDisposition.Valid {
+			barriers[group.ChannelID] = true
 		}
 	}
-	return collaborationRuntimeTargetSupported(ctx, t.q, effective)
+	for _, run := range runs {
+		unsettled[run.ChannelID]++
+		group, exists := byID[run.GroupID]
+		if !exists || group.ChannelID != run.ChannelID || group.BatchID != run.BatchID || group.CommandID != run.CommandID || group.TargetID != run.TargetID || run.ForcedDisposition.Valid {
+			barriers[run.ChannelID] = true
+			if target, exists := t.target(run.TargetID); exists {
+				barriers[target.ChannelID] = true
+			}
+		}
+	}
+	for _, channel := range t.channels {
+		if !selected[channel.ID] {
+			continue
+		}
+		if channel.ActiveGroupID.Valid {
+			group, exists := byID[channel.ActiveGroupID]
+			if !exists || group.ChannelID != channel.ID {
+				barriers[channel.ID] = true
+			}
+		}
+		for _, target := range t.targets {
+			if target.ChannelID == channel.ID && (target.ActiveGroupID != channel.ActiveGroupID || target.GroupGeneration != channel.GroupGeneration || target.QueueState != channel.QueueState || target.ControlVersion != channel.ControlVersion || target.PauseReason != channel.PauseReason) {
+				barriers[channel.ID] = true
+			}
+		}
+	}
+	return barriers, unsettled, nil
 }
 
 func (t *collaborationQueueTx) pauseTarget(ctx context.Context, target db.CollaborationTarget, reason string) (db.CollaborationTarget, error) {
@@ -580,6 +628,7 @@ func (t *collaborationQueueTx) stopTargets(ctx context.Context, selected map[pgt
 			return CollaborationQueueReceipt{}, invalidCollaborationLedger("active group missing")
 		}
 		results[channel.ID] = result
+		r.Channels = append(r.Channels, result.channelResult())
 	}
 	for _, target := range t.targets {
 		if result, exists := results[target.ChannelID]; exists {

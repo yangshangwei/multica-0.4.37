@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
 import { CollaborationAccountSummarySchema } from "./schema";
+import { CollaborationTargetHoldReasonSchema } from "./execution-schema";
 import { positiveVersion } from "./version";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
@@ -8,12 +9,15 @@ const timestamp = z.iso.datetime({ offset: true });
 const targetResult = z.object({
   target_id: uuid.nullable(), kind: z.enum(["agent", "squad"]), resource_id: uuid,
   target_epoch: positiveVersion.optional(), config_version: positiveVersion.optional(),
+  hold_reason: CollaborationTargetHoldReasonSchema.nullable(), hold_version: positiveVersion.nullable(),
   state: z.enum(["waiting", "blocked", "suppressed"]), code: z.string().min(1),
   waiting_reason: z.string().optional(), command_id: uuid.nullable(), command_sequence: positiveVersion.optional(),
   // Multiple immutable comment inputs may belong to one pending batch.
   channel_id: uuid.nullish().transform((value) => value ?? null),
   batch_id: uuid.nullish().transform((value) => value ?? null),
-});
+}).refine((value) => value.target_id === null
+  ? value.hold_version === null && value.hold_reason === null
+  : value.hold_version !== null && value.target_epoch !== undefined && value.config_version !== undefined);
 const uniqueTargets = <T extends { kind: string; resource_id: string }>(items: T[]) => new Set(items.map((item) => `${item.kind}:${item.resource_id}`)).size === items.length;
 
 export const CollaborationCommentSchema = z.object({
@@ -32,6 +36,7 @@ export const CollaborationMentionTargetsSchema = z.object({
   targets: z.array(z.object({
     target_id: uuid, kind: z.enum(["agent", "squad"]), resource_id: uuid, name: z.string(),
     target_epoch: positiveVersion, config_version: positiveVersion, queue_state: z.enum(["active", "paused"]),
+    hold_reason: CollaborationTargetHoldReasonSchema.nullable(), hold_version: positiveVersion,
     waiting_reason: z.string(), execution_available: z.literal(false),
   })).refine(uniqueTargets),
 }).refine((value) => new Set(value.participants.map((item) => item.user_id.toLowerCase())).size === value.participants.length && new Set(value.targets.map((item) => item.target_id)).size === value.targets.length);

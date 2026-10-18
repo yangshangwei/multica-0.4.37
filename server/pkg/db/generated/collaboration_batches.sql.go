@@ -26,7 +26,7 @@ const bindCollaborationTargetChannel = `-- name: BindCollaborationTargetChannel 
 UPDATE collaboration_target t SET channel_id=ch.id,queue_state=ch.queue_state,pause_reason=ch.pause_reason,
     control_version=ch.control_version,group_generation=ch.group_generation,active_group_id=ch.active_group_id
 FROM collaboration_channel ch WHERE ch.id=$1::uuid AND ch.session_id=$2::uuid
-    AND t.id=$3::uuid AND t.session_id=ch.session_id RETURNING t.id, t.session_id, t.kind, t.resource_id, t.target_epoch, t.config_version, t.roster, t.queue_state, t.control_version, t.group_generation, t.next_command_seq, t.active_group_id, t.pause_reason, t.revoked_at, t.created_at, t.configuration_fingerprint, t.channel_id
+    AND t.id=$3::uuid AND t.session_id=ch.session_id RETURNING t.id, t.session_id, t.kind, t.resource_id, t.target_epoch, t.config_version, t.roster, t.queue_state, t.control_version, t.group_generation, t.next_command_seq, t.active_group_id, t.pause_reason, t.revoked_at, t.created_at, t.configuration_fingerprint, t.channel_id, t.hold_reason, t.hold_version
 `
 
 type BindCollaborationTargetChannelParams struct {
@@ -56,6 +56,8 @@ func (q *Queries) BindCollaborationTargetChannel(ctx context.Context, arg BindCo
 		&i.CreatedAt,
 		&i.ConfigurationFingerprint,
 		&i.ChannelID,
+		&i.HoldReason,
+		&i.HoldVersion,
 	)
 	return i, err
 }
@@ -385,7 +387,7 @@ const lockCollaborationChannels = `-- name: LockCollaborationChannels :many
 SELECT id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at FROM collaboration_channel WHERE session_id=$1 ORDER BY id FOR UPDATE
 `
 
-// Channels are locked after the stable target set, before participants/grants.
+// Channels are locked before the stable target set and participants/grants.
 // A channel belongs to the actual root agent, not a target's display role.
 func (q *Queries) LockCollaborationChannels(ctx context.Context, sessionID pgtype.UUID) ([]CollaborationChannel, error) {
 	rows, err := q.db.Query(ctx, lockCollaborationChannels, sessionID)
@@ -457,7 +459,7 @@ func (q *Queries) LockCollaborationWaitingBatches(ctx context.Context, channelID
 const mirrorCollaborationChannelControl = `-- name: MirrorCollaborationChannelControl :many
 UPDATE collaboration_target t SET queue_state=ch.queue_state,pause_reason=ch.pause_reason,
     control_version=ch.control_version,group_generation=ch.group_generation,active_group_id=ch.active_group_id
-FROM collaboration_channel ch WHERE ch.id=$1 AND t.channel_id=ch.id RETURNING t.id, t.session_id, t.kind, t.resource_id, t.target_epoch, t.config_version, t.roster, t.queue_state, t.control_version, t.group_generation, t.next_command_seq, t.active_group_id, t.pause_reason, t.revoked_at, t.created_at, t.configuration_fingerprint, t.channel_id
+FROM collaboration_channel ch WHERE ch.id=$1 AND t.channel_id=ch.id RETURNING t.id, t.session_id, t.kind, t.resource_id, t.target_epoch, t.config_version, t.roster, t.queue_state, t.control_version, t.group_generation, t.next_command_seq, t.active_group_id, t.pause_reason, t.revoked_at, t.created_at, t.configuration_fingerprint, t.channel_id, t.hold_reason, t.hold_version
 `
 
 func (q *Queries) MirrorCollaborationChannelControl(ctx context.Context, id pgtype.UUID) ([]CollaborationTarget, error) {
@@ -487,6 +489,8 @@ func (q *Queries) MirrorCollaborationChannelControl(ctx context.Context, id pgty
 			&i.CreatedAt,
 			&i.ConfigurationFingerprint,
 			&i.ChannelID,
+			&i.HoldReason,
+			&i.HoldVersion,
 		); err != nil {
 			return nil, err
 		}

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"strconv"
 	"strings"
 	"sync"
 	"testing"
@@ -41,12 +42,17 @@ func collaborationExecutionReadFixture(t *testing.T) collaborationExecutionFixtu
 		}
 		channel := dbfx.Insert(t, "collaboration_channel", testutil.Cols{
 			"session_id": sessionID, "root_agent_id": agent, "group_generation": 1,
-			"control_version": int64(9007199254740995), "next_batch_seq": 2,
+			"control_version": int64(9007199254740995), "next_batch_seq": 2, "pause_reason": "participant_stop",
 		})
+		var holdReason any
+		if kind == "squad" {
+			holdReason = "grant_required"
+		}
 		target := dbfx.Insert(t, "collaboration_target", testutil.Cols{
 			"session_id": sessionID, "channel_id": channel, "kind": kind, "resource_id": resourceID, "roster": roster,
 			"target_epoch": int64(9007199254740993), "config_version": int64(9007199254740993),
-			"control_version": int64(9007199254740995), "next_command_seq": int64(9007199254740994),
+			"control_version": int64(9007199254740995), "next_command_seq": int64(9007199254740994), "pause_reason": "participant_stop",
+			"hold_reason": holdReason, "hold_version": int64(9007199254740993),
 		})
 		batch := dbfx.Insert(t, "collaboration_batch", testutil.Cols{
 			"session_id": sessionID, "channel_id": channel, "effective_target_id": target,
@@ -118,13 +124,16 @@ func TestCollaborationExecutionHTTPProjection(t *testing.T) {
 	if err != nil || !access.Capabilities.ControlAI || !access.Capabilities.SubmitCommand {
 		t.Fatalf("read availability masking changed internal participant authority: %+v, %v", access.Capabilities, err)
 	}
-	if len(execution.Targets) != 2 || len(execution.Commands) != 2 || len(execution.Groups) != 2 || len(execution.Runs) != 3 {
+	if len(execution.Channels) != 2 || len(execution.Targets) != 2 || len(execution.Commands) != 2 || len(execution.Groups) != 2 || len(execution.Runs) != 3 {
 		t.Fatalf("typed targets or squad members were lost: %+v", execution)
 	}
 	channels := make(map[string]string)
 	for _, target := range execution.Targets {
-		if target.Control.Scope != "target" || target.ConfigVersion != "9007199254740993" || target.Control.ControlVersion != "9007199254740995" || target.GroupGeneration != "1" || target.ActiveGroupID == nil || target.ChannelID == nil {
+		if target.Control.Scope != "target" || target.ConfigVersion != "9007199254740993" || target.HoldVersion != "9007199254740993" || target.Control.ControlVersion != "9007199254740995" || target.GroupGeneration != "1" || target.ActiveGroupID == nil || target.ChannelID == nil {
 			t.Fatalf("invalid target scope/version: %+v", target)
+		}
+		if target.ID == ids.target && target.HoldReason != nil || target.ID == ids.squad && (target.HoldReason == nil || *target.HoldReason != "grant_required") {
+			t.Fatalf("channel pause was substituted for target hold: %+v", target)
 		}
 		channels[target.ID] = *target.ChannelID
 	}
@@ -214,6 +223,13 @@ func (tx *collaborationExecutionReadTx) Query(ctx context.Context, sql string, a
 
 func TestCollaborationExecutionHTTPUsesAuthorizedSnapshot(t *testing.T) {
 	ids := collaborationExecutionReadFixture(t)
+	gate, err := testHandler.Queries.GetCollaborationGate(t.Context())
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() {
+		dbfx.Exec(t, `UPDATE collaboration_execution_gate SET enabled=$1,epoch=$2 WHERE id=1`, gate.Enabled, gate.Epoch)
+	})
 	viewer := dbfx.User(t, "Snapshot viewer", "execution-snapshot-"+uuid.NewString()+"@example.invalid")
 	dbfx.InsertNoID(t, "issue_participant", testutil.Cols{"issue_id": ids.issue, "user_id": viewer}, "issue_id=$1 AND user_id=$2", ids.issue, viewer)
 	ready, release := make(chan struct{}), make(chan struct{})
@@ -244,19 +260,23 @@ func TestCollaborationExecutionHTTPUsesAuthorizedSnapshot(t *testing.T) {
 	case <-ctx.Done():
 		t.Fatal("detail did not reach execution read barrier")
 	}
-	dbfx.Exec(t, `WITH changed AS (UPDATE collaboration_session SET target_set_version=target_set_version+1 WHERE id=$1 RETURNING id)
-		UPDATE collaboration_target SET control_version=control_version+1 WHERE session_id IN (SELECT id FROM changed)`, ids.session)
+	dbfx.Exec(t, `WITH changed AS (UPDATE collaboration_session SET target_set_version=target_set_version+1 WHERE id=$1 RETURNING id),
+		channels AS (UPDATE collaboration_channel SET control_version=control_version+1 WHERE session_id IN (SELECT id FROM changed))
+		UPDATE collaboration_target SET control_version=control_version+1,hold_version=hold_version+1 WHERE session_id IN (SELECT id FROM changed)`, ids.session)
+	dbfx.Exec(t, `UPDATE collaboration_execution_gate SET enabled=NOT enabled,epoch=epoch+1 WHERE id=1`)
 	dbfx.Exec(t, `UPDATE issue_participant SET revoked_at=now(),epoch=epoch+1 WHERE issue_id=$1 AND user_id=$2`, ids.issue, viewer)
 	unblock()
 	var before CollaborationIssueResponse
 	(<-result).Want(http.StatusOK).JSON(&before)
-	if before.Execution.TargetSetVersion != "9007199254740999" || before.Execution.Targets[0].Control.ControlVersion != "9007199254740995" {
+	if before.Execution.TargetSetVersion != "9007199254740999" || before.Execution.Targets[0].Control.ControlVersion != "9007199254740995" || before.Execution.Targets[0].HoldVersion != "9007199254740993" ||
+		before.Execution.ExecutionGate.Enabled != gate.Enabled || before.Execution.ExecutionGate.Epoch != strconv.FormatInt(gate.Epoch, 10) {
 		t.Fatalf("execution spliced newer target data into older authorization: %+v", before.Execution)
 	}
 	testutil.Call(t, testHandler.GetCollaborationIssue, collaborationFieldsReadRequest(ids.issue, viewer, "")).Want(http.StatusNotFound)
 	var after CollaborationIssueResponse
 	testutil.Call(t, testHandler.GetCollaborationIssue, collaborationFieldsReadRequest(ids.issue, testUserID, "")).Want(http.StatusOK).JSON(&after)
-	if after.Execution.TargetSetVersion != "9007199254741000" || after.Execution.Targets[0].Control.ControlVersion != "9007199254740996" {
+	if after.Execution.TargetSetVersion != "9007199254741000" || after.Execution.Targets[0].Control.ControlVersion != "9007199254740996" || after.Execution.Targets[0].HoldVersion != "9007199254740994" ||
+		after.Execution.ExecutionGate.Enabled == gate.Enabled || after.Execution.ExecutionGate.Epoch != strconv.FormatInt(gate.Epoch+1, 10) {
 		t.Fatalf("new authorized snapshot did not observe committed controls: %+v", after.Execution)
 	}
 }

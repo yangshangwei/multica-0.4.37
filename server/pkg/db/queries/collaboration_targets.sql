@@ -14,14 +14,25 @@ SELECT * FROM collaboration_run WHERE session_id = $1 ORDER BY created_at, id;
 -- name: ListCollaborationCommands :many
 SELECT * FROM collaboration_command WHERE session_id = $1 ORDER BY target_id, seq;
 
--- The permanent source/session locks serialize target membership and controls.
--- Target locks precede participant/grant/command/group/run locks.
+-- The permanent source/session/channel locks serialize target membership and
+-- controls. Target locks precede participant/grant/command/group/run locks.
 -- name: LockCollaborationTargets :many
 SELECT * FROM collaboration_target WHERE session_id = $1 ORDER BY id FOR UPDATE;
 
 -- name: CreateCollaborationTarget :one
 INSERT INTO collaboration_target (session_id, kind, resource_id, roster)
 VALUES ($1, $2, $3, $4) RETURNING *;
+
+-- A hold only gates this target. Consent advances its observation fence even
+-- when an existing reason is retained; idempotent callers avoid this write.
+-- name: SetCollaborationTargetHold :one
+UPDATE collaboration_target
+SET hold_reason = sqlc.narg(hold_reason)::text,
+    hold_version = hold_version + CASE
+        WHEN hold_reason IS DISTINCT FROM sqlc.narg(hold_reason)::text OR sqlc.arg(advance_version)::boolean THEN 1
+        ELSE 0 END
+WHERE session_id = sqlc.arg(session_id)::uuid AND id = sqlc.arg(target_id)::uuid
+RETURNING *;
 
 -- name: AdvanceCollaborationTargetSet :one
 UPDATE collaboration_session SET target_set_version = target_set_version + 1

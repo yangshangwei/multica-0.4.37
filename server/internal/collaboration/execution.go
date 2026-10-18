@@ -9,6 +9,24 @@ const (
 	TargetSquad TargetKind = "squad"
 )
 
+type TargetHoldReason string
+
+const (
+	HoldInitial       TargetHoldReason = "initial"
+	HoldGrantRequired TargetHoldReason = "grant_required"
+	HoldConfigInvalid TargetHoldReason = "config_invalid"
+	HoldSwitch        TargetHoldReason = "switch_hold"
+)
+
+func (r TargetHoldReason) Valid() bool {
+	switch r {
+	case HoldInitial, HoldGrantRequired, HoldConfigInvalid, HoldSwitch:
+		return true
+	default:
+		return false
+	}
+}
+
 type ControlScope string
 
 const (

@@ -41,12 +41,19 @@ export const collaborationExecutionFixture = {
   availability: "unavailable",
   unavailable_reason: "shared_runtime_unavailable",
   target_set_version: "9007199254740999",
+  execution_gate: { enabled: true, epoch: "9007199254740997" },
   control: { scope: "issue", queue_state: "paused", control_version: collaborationIssueFixture.session.control_version },
+  channels: [
+    { id: agentChannelId, queue_state: "paused", control_version: "9007199254740995", group_generation: "1", active_group_id: agentGroupId, pause_reason: "stop_requested" },
+    { id: squadChannelId, queue_state: "paused", control_version: "2", group_generation: "1", active_group_id: squadGroupId, pause_reason: "stop_requested" },
+  ],
   targets: [
     { id: agentTargetId, channel_id: agentChannelId, kind: "agent", resource_id: executionId(30), target_epoch: targetVersion, config_version: targetVersion,
+      hold_reason: null, hold_version: "9007199254740993",
       control: { scope: "target", queue_state: "paused", control_version: "9007199254740995" },
       group_generation: "1", next_command_seq: "3", active_group_id: agentGroupId, pause_reason: "stop_requested", revoked_at: null },
     { id: squadTargetId, channel_id: squadChannelId, kind: "squad", resource_id: executionId(40), target_epoch: targetVersion, config_version: targetVersion,
+      hold_reason: "grant_required", hold_version: "2",
       control: { scope: "target", queue_state: "paused", control_version: "2" },
       group_generation: "1", next_command_seq: "2", active_group_id: squadGroupId, pause_reason: "stop_requested", revoked_at: null },
   ],
@@ -75,6 +82,40 @@ export const collaborationExecutionFixture = {
 };
 
 export const collaborationExecutionIssueFixture = { ...collaborationIssueFixture, execution: collaborationExecutionFixture };
+
+export const collaborationControlRequestId = executionId(70);
+export const collaborationControlResumeInput = {
+  action: "resume" as const, scope: "issue" as const,
+  expected_lifecycle_epoch: "9007199254740993", expected_participant_epoch: "9007199254740994", expected_account_epoch: "9223372036854775807",
+  expected_control_version: collaborationExecutionFixture.control.control_version,
+  expected_target_set_version: collaborationExecutionFixture.target_set_version,
+  expected_execution_epoch: collaborationExecutionFixture.execution_gate.epoch,
+  targets: collaborationExecutionFixture.targets.map((target) => ({
+    target_id: target.id, expected_target_epoch: target.target_epoch, expected_config_version: target.config_version,
+    expected_control_version: target.control.control_version, expected_hold_version: target.hold_version,
+    observed_group_id: target.active_group_id, observed_group_generation: target.group_generation,
+  })),
+};
+const resumedChannel = {
+  channel_id: agentChannelId, code: "resumed", queue_state: "active", control_version: "9007199254740996",
+  group_generation: "1", group_id: null, group_settled: true, stopped_runs: 0, unsettled_runs: 0,
+};
+const blockedChannel = {
+  channel_id: squadChannelId, code: "stop_unconfirmed", queue_state: "paused", control_version: "2",
+  group_generation: "1", group_id: squadGroupId, group_settled: false, stopped_runs: 0, unsettled_runs: 1,
+};
+export const collaborationControlReceiptFixture = {
+  issue_id: id, request_id: collaborationControlRequestId, action: "resume", protocol_version: 2,
+  status: 200, code: "partially_resumed", scope: "issue", target_id: null, channel_id: null,
+  queue_state: "active", control_version: "9007199254740996", target_set_version: collaborationExecutionFixture.target_set_version,
+  grant_id: null, batch_id: null, command_id: null, group_id: null, group_settled: false, run_id: null, run_settled: false,
+  targets: [{ target_id: agentTargetId, ...resumedChannel }, { target_id: squadTargetId, ...blockedChannel }],
+  channels: [resumedChannel, blockedChannel],
+  target_holds: [
+    { target_id: agentTargetId, channel_id: agentChannelId, code: "hold_released", hold_reason: null, hold_version: "9007199254740994" },
+    { target_id: squadTargetId, channel_id: squadChannelId, code: "grant_required", hold_reason: "grant_required", hold_version: "2" },
+  ],
+};
 
 export const collaborationFieldOptionsFixture = {
   issue_id: id,

@@ -195,11 +195,11 @@ func (s *CollaborationAccountReconciler) reconcileInTx(ctx context.Context, q *d
 	// This is a system invalidation, not an action attributed to the disabled
 	// user. No current human read authority is needed to stop obsolete work.
 	t := &collaborationQueueTx{q: q, session: session, access: CollaborationIssueAccess{Issue: issue}}
-	t.targets, err = q.LockCollaborationTargets(ctx, session.ID)
+	t.channels, err = q.LockCollaborationChannels(ctx, session.ID)
 	if err != nil {
 		return err
 	}
-	t.channels, err = q.LockCollaborationChannels(ctx, session.ID)
+	t.targets, err = q.LockCollaborationTargets(ctx, session.ID)
 	if err != nil {
 		return err
 	}

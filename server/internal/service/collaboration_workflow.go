@@ -467,11 +467,11 @@ func (s *CollaborationService) workflowInTx(ctx context.Context, tx pgx.Tx, acto
 	if err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}
-	t.targets, err = t.q.LockCollaborationTargets(ctx, t.session.ID)
+	t.channels, err = t.q.LockCollaborationChannels(ctx, t.session.ID)
 	if err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}
-	t.channels, err = t.q.LockCollaborationChannels(ctx, t.session.ID)
+	t.targets, err = t.q.LockCollaborationTargets(ctx, t.session.ID)
 	if err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}

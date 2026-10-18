@@ -1639,6 +1639,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Post("/api/collaboration/issues/{id}/targets/{targetId}/runtime-binding", h.ReconfigureCollaborationTarget)
 		r.Post("/api/collaboration/issues/{id}/grants/{grantId}/revoke", h.RevokeCollaborationGrant)
 		r.Post("/api/collaboration/issues/{id}/control", h.ControlCollaborationIssue)
+		r.Get("/api/collaboration/issues/{id}/control/operations/{requestId}", h.GetCollaborationControlOperation)
 		r.Get("/api/collaboration/issues/{id}/comments", h.ListCollaborationComments)
 		r.Post("/api/collaboration/issues/{id}/comments", h.CreateCollaborationComment)
 		r.Get("/api/collaboration/issues/{id}/comments/operations/{requestId}", h.GetCollaborationCommentOperation)

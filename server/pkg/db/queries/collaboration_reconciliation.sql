@@ -45,6 +45,16 @@ SELECT affected.issue_id, i.workspace_id FROM (
       AND c.author_auth_epoch < sqlc.arg(account_epoch)::bigint
       AND c.state = 'waiting'
     UNION
+    SELECT s.issue_id FROM collaboration_command AS c
+    JOIN collaboration_session AS s ON s.id = c.session_id
+    WHERE c.author_user_id = sqlc.arg(user_id)::uuid
+      AND c.author_auth_epoch < sqlc.arg(account_epoch)::bigint
+      AND c.state = 'in_flight'
+      AND (EXISTS (SELECT 1 FROM collaboration_execution_group g
+          WHERE g.session_id=c.session_id AND g.batch_id=c.batch_id AND g.settled_at IS NULL)
+          OR EXISTS (SELECT 1 FROM collaboration_run r
+          WHERE r.session_id=c.session_id AND r.batch_id=c.batch_id AND r.settled_at IS NULL))
+    UNION
     SELECT g.issue_id FROM collaboration_grant AS g
     WHERE g.owner_user_id = sqlc.arg(user_id)::uuid
       AND g.owner_auth_epoch < sqlc.arg(account_epoch)::bigint

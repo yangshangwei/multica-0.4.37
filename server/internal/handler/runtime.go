@@ -888,41 +888,17 @@ func (h *Handler) DeleteAgentRuntime(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tx, err := h.TxStarter.Begin(r.Context())
+	teardown, err := h.deleteRuntimeResources(r.Context(), rt.ID, nil)
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to delete runtime")
-		return
-	}
-	defer tx.Rollback(r.Context())
-	qtx := h.Queries.WithTx(tx)
-
-	// Revalidate under the runtime row lock. Agent/task inserts take a
-	// KEY SHARE lock through their runtime FK, so no active agent can appear
-	// after this check and then be silently unbound by the teardown.
-	if _, err := qtx.LockAgentRuntime(r.Context(), rt.ID); err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to lock runtime")
-		return
-	}
-	if _, err := qtx.ListUserAgentsByRuntimeForUpdate(r.Context(), rt.ID); err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to lock runtime dependencies")
-		return
-	}
-	activeAgents, err = qtx.ListActiveAgentsByRuntimeForUpdate(r.Context(), rt.ID)
-	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to check runtime dependencies")
-		return
-	}
-	if len(activeAgents) > 0 {
-		writeJSON(w, http.StatusConflict, h.runtimeHasActiveAgentsResponse(activeAgents))
-		return
-	}
-
-	// Same teardown the confirmed path runs: unbind the runtime's agents and
-	// their task history, cancel what was still active, remove only the system
-	// agents. There is no active agent here by definition, but archived ones and
-	// their history can still be bound to this runtime.
-	teardown, err := service.TeardownRuntime(r.Context(), qtx, rt.ID, service.RuntimeTeardownOptions{CancelNonTerminalTasks: true})
-	if err != nil {
+		var active *runtimeDeleteActiveConflict
+		if errors.As(err, &active) {
+			writeJSON(w, http.StatusConflict, h.runtimeHasActiveAgentsResponse(active.agents))
+			return
+		}
+		if service.IsRuntimeResourceBusy(err) {
+			writeJSON(w, http.StatusServiceUnavailable, map[string]string{"error": "runtime deletion is busy; retry in a moment.", "code": "runtime_delete_busy"})
+			return
+		}
 		if errors.Is(err, service.ErrRuntimeNotDrained) {
 			slog.Error("runtime delete aborted: tasks not drained",
 				"runtime_id", uuidToString(rt.ID), "error", err)
@@ -942,15 +918,6 @@ func (h *Handler) DeleteAgentRuntime(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		slog.Error("runtime delete teardown failed", "runtime_id", uuidToString(rt.ID), "error", err)
-		writeError(w, http.StatusInternalServerError, "failed to delete runtime")
-		return
-	}
-
-	if err := qtx.DeleteAgentRuntime(r.Context(), rt.ID); err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to delete runtime")
-		return
-	}
-	if err := tx.Commit(r.Context()); err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to delete runtime")
 		return
 	}
@@ -1006,6 +973,45 @@ func (h *Handler) runtimeHasActiveAgentsResponse(agents []db.Agent) map[string]a
 // information for the dialog belongs in read-only fields, not in this set.
 type unbindAgentsAndDeleteRuntimeRequest struct {
 	ExpectedActiveAgentIDs []string `json:"expected_active_agent_ids"`
+}
+
+type runtimeDeleteActiveConflict struct {
+	agents []db.Agent
+}
+
+func (*runtimeDeleteActiveConflict) Error() string { return "runtime active agent set changed" }
+
+// Both human deletion modes revalidate the same agent set on every complete
+// transaction attempt. Resource invalidation takes source locks NOWAIT, so a
+// conflict rolls back this entire confirmation check and all teardown effects.
+func (h *Handler) deleteRuntimeResources(ctx context.Context, runtimeID pgtype.UUID, expected map[string]struct{}) (service.RuntimeTeardownResult, error) {
+	var result service.RuntimeTeardownResult
+	err := service.WithRuntimeResourceTransaction(ctx, h.TxStarter, h.Queries, func(q *db.Queries) error {
+		result = service.RuntimeTeardownResult{}
+		// The runtime lock also fences agent/task FK inserts until commit.
+		if _, err := q.LockAgentRuntime(ctx, runtimeID); err != nil {
+			return err
+		}
+		if _, err := q.ListUserAgentsByRuntimeForUpdate(ctx, runtimeID); err != nil {
+			return err
+		}
+		active, err := q.ListActiveAgentsByRuntimeForUpdate(ctx, runtimeID)
+		if err != nil {
+			return err
+		}
+		if expected == nil && len(active) != 0 || expected != nil && !activeAgentSetMatches(active, expected) {
+			return &runtimeDeleteActiveConflict{agents: active}
+		}
+		result, err = service.TeardownRuntime(ctx, q, runtimeID, service.RuntimeTeardownOptions{CancelNonTerminalTasks: true})
+		if err != nil {
+			return err
+		}
+		return q.DeleteAgentRuntime(ctx, runtimeID)
+	})
+	if err != nil {
+		return service.RuntimeTeardownResult{}, err
+	}
+	return result, nil
 }
 
 // UnbindAgentsAndDeleteRuntime is the confirmed delete entry point: unbind every
@@ -1089,60 +1095,20 @@ func (h *Handler) UnbindAgentsAndDeleteRuntime(w http.ResponseWriter, r *http.Re
 			"deleted_by", userID)
 	}
 
-	tx, err := h.TxStarter.Begin(r.Context())
+	teardown, err := h.deleteRuntimeResources(r.Context(), rt.ID, expected)
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to start transaction")
-		return
-	}
-	defer tx.Rollback(r.Context())
-	qtx := h.Queries.WithTx(tx)
-
-	// Lock the runtime row first. PostgreSQL's FK validation on
-	// agent.runtime_id requires FOR KEY SHARE on the parent runtime row,
-	// which conflicts with FOR UPDATE — so any concurrent INSERT or
-	// UPDATE that would point a new/moved agent at this runtime now
-	// blocks until our tx finishes. This is the "兜底" lock that keeps
-	// new actives from appearing between our snapshot and our unbind.
-	if _, err := qtx.LockAgentRuntime(r.Context(), rt.ID); err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to lock runtime")
-		return
-	}
-	if _, err := qtx.ListUserAgentsByRuntimeForUpdate(r.Context(), rt.ID); err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to lock runtime dependencies")
-		return
-	}
-
-	// Re-list active agents inside the transaction, with FOR UPDATE on
-	// each row so a concurrent archive/move of one of those existing
-	// agents also blocks until we commit. Comparing against the expected
-	// set here closes the dialog-open / user-confirm race: even if a
-	// teammate creates or archives an agent on this runtime while the
-	// dialog was open, the user is approving exactly the set the server
-	// is about to unbind.
-	currentActive, err := qtx.ListActiveAgentsByRuntimeForUpdate(r.Context(), rt.ID)
-	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to enumerate active agents")
-		return
-	}
-	if !activeAgentSetMatches(currentActive, expected) {
-		// Refuse with the latest snapshot so the front-end can re-render
-		// the dialog and force a fresh user confirmation. Reuses the
-		// shared response helper but overrides the code to a planning
-		// signal so the dialog can distinguish "you opened from a stale
-		// page" from "the plan you confirmed just changed under you".
-		body := h.runtimeHasActiveAgentsResponse(currentActive)
-		body["code"] = "runtime_delete_plan_changed"
-		body["error"] = "the active agent set changed; please review and confirm again."
-		writeJSON(w, http.StatusConflict, body)
-		return
-	}
-
-	// Single teardown, shared with the light DELETE path: unbind every user
-	// agent (active and archived) plus their task history, cancel what was
-	// running or queued, and hard-delete only the system agents. Nothing the
-	// user configured is destroyed — the agents just need a new runtime.
-	teardown, err := service.TeardownRuntime(r.Context(), qtx, rt.ID, service.RuntimeTeardownOptions{CancelNonTerminalTasks: true})
-	if err != nil {
+		var active *runtimeDeleteActiveConflict
+		if errors.As(err, &active) {
+			body := h.runtimeHasActiveAgentsResponse(active.agents)
+			body["code"] = "runtime_delete_plan_changed"
+			body["error"] = "the active agent set changed; please review and confirm again."
+			writeJSON(w, http.StatusConflict, body)
+			return
+		}
+		if service.IsRuntimeResourceBusy(err) {
+			writeJSON(w, http.StatusServiceUnavailable, map[string]string{"error": "runtime deletion is busy; retry in a moment.", "code": "runtime_delete_busy"})
+			return
+		}
 		if errors.Is(err, service.ErrRuntimeNotDrained) {
 			slog.Error("runtime delete aborted: tasks not drained",
 				"runtime_id", uuidToString(rt.ID), "error", err)
@@ -1154,17 +1120,6 @@ func (h *Handler) UnbindAgentsAndDeleteRuntime(w http.ResponseWriter, r *http.Re
 		}
 		slog.Error("runtime delete teardown failed", "runtime_id", uuidToString(rt.ID), "error", err)
 		writeError(w, http.StatusInternalServerError, "failed to unbind agents")
-		return
-	}
-
-	// Finally delete the runtime row itself.
-	if err := qtx.DeleteAgentRuntime(r.Context(), rt.ID); err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to delete runtime")
-		return
-	}
-
-	if err := tx.Commit(r.Context()); err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to commit transaction")
 		return
 	}
 

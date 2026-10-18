@@ -22,6 +22,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 type collaborationQueueFixture struct {
@@ -63,9 +64,13 @@ func (f *collaborationQueueFixture) run(t *testing.T, command CollaborationQueue
 }
 
 func (f *collaborationQueueFixture) stopParams(run db.CollaborationRun, version int64) CollaborationStopQueueParams {
+	var holdVersion int64
+	if err := f.pool.QueryRow(f.ctx, `SELECT hold_version FROM collaboration_target WHERE id=$1`, run.TargetID).Scan(&holdVersion); err != nil {
+		panic(err)
+	}
 	return CollaborationStopQueueParams{CollaborationQueueRequest: f.request(), Scope: collaboration.ControlTarget,
 		Targets: []CollaborationTargetControl{{TargetID: run.TargetID, ExpectedTargetEpoch: run.TargetEpoch.Int64,
-			ExpectedConfigVersion: run.ConfigVersion.Int64, ExpectedControlVersion: version,
+			ExpectedConfigVersion: run.ConfigVersion.Int64, ExpectedHoldVersion: holdVersion, ExpectedControlVersion: version,
 			ObservedGroupID: run.GroupID, ObservedGroupGeneration: f.groupGeneration(run.TargetID)}}}
 }
 
@@ -97,7 +102,7 @@ func (f *collaborationQueueFixture) issueControl(t *testing.T) CollaborationStop
 
 func targetControl(target db.CollaborationTarget) CollaborationTargetControl {
 	return CollaborationTargetControl{TargetID: target.ID, ExpectedTargetEpoch: target.TargetEpoch, ExpectedConfigVersion: target.ConfigVersion,
-		ExpectedControlVersion: target.ControlVersion, ObservedGroupID: target.ActiveGroupID, ObservedGroupGeneration: target.GroupGeneration}
+		ExpectedHoldVersion: target.HoldVersion, ExpectedControlVersion: target.ControlVersion, ObservedGroupID: target.ActiveGroupID, ObservedGroupGeneration: target.GroupGeneration}
 }
 
 func TestCollaborationQueueConcurrentSubmissionKeepsImmutableFIFO(t *testing.T) {
@@ -283,34 +288,44 @@ func TestCollaborationQueueStopPreservesBarrierAfterAnyPermit(t *testing.T) {
 }
 
 func TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent(t *testing.T) {
-	f := newCollaborationQueueFixture(t)
-	command := f.submit(t, f.creator, "first")
-	run := f.run(t, command, 0)
-	epoch := enableControlGate(t, f.collaborationFixture)
-	p := CollaborationResumeQueueParams{CollaborationStopQueueParams: f.stopParams(run, 1), ExpectedExecutionEpoch: epoch}
-	denied, err := f.svc.ResumeQueue(f.ctx, p)
-	if !collaborationErrorCode(err, "stop_unconfirmed") {
-		t.Fatalf("unsettled resume: %v", err)
-	}
-	if _, err = f.svc.StopQueue(f.ctx, f.stopParams(run, 1)); err != nil {
+	f := newManagedCollaborationFixture(t)
+	f.submitManaged(t, f.creator, "first")
+	f.resumeManaged(t)
+	runID, _, claim := f.claimManaged(t)
+	permit := protocol.CollaborationRunPermitRequest{Identity: claim.Identity, AttemptSeq: "1", AttemptNonce: uuid.NewString(), Containment: protocol.CollaborationContainmentLinuxPIDNamespace}
+	if _, err := f.svc.PermitRuntimeRun(f.daemonCtx, runID, permit); err != nil {
 		t.Fatal(err)
 	}
+	if _, err := f.svc.StopQueue(f.ctx, managedTargetResume(t, f, f.targetID).CollaborationStopQueueParams); err != nil {
+		t.Fatal(err)
+	}
+	p := managedTargetResume(t, f, f.targetID)
+	before := controlStateSnapshot(t, f.collaborationQueueFixture)
+	denied, err := f.svc.ResumeQueue(f.ctx, p)
+	if !collaborationErrorCode(err, "stop_unconfirmed") || before != controlStateSnapshot(t, f.collaborationQueueFixture) {
+		t.Fatalf("unproven stopped execution changed state during Resume: %v", err)
+	}
+	if _, err = f.svc.AcceptRuntimeProof(context.Background(), runID, claim.TerminationToken, managedProof(claim.Identity, permit.AttemptNonce)); err != nil {
+		t.Fatal(err)
+	}
+	before = controlStateSnapshot(t, f.collaborationQueueFixture)
 	replay, err := f.svc.ResumeQueue(f.ctx, p)
-	if !collaborationErrorCode(err, "stop_unconfirmed") || !reflect.DeepEqual(replay, denied) {
+	if !collaborationErrorCode(err, "stop_unconfirmed") || !reflect.DeepEqual(replay, denied) || before != controlStateSnapshot(t, f.collaborationQueueFixture) {
 		t.Fatalf("failed resume key revived after legal settlement: %+v %v", replay, err)
 	}
-	p.CollaborationStopQueueParams = f.stopParams(run, 2)
+	p = managedTargetResume(t, f, f.targetID)
 	f.fx.Exec(t, `UPDATE collaboration_execution_gate SET enabled=true,epoch=epoch+1 WHERE id=1`)
 	if _, err = f.svc.ResumeQueue(f.ctx, p); !collaborationErrorCode(err, "stale_admission") {
 		t.Fatalf("old admission epoch revived after enable: %v", err)
 	}
 	p.RequestID = uuid.NewString()
-	p.ExpectedExecutionEpoch = epoch + 1
-	if _, err = f.svc.ResumeQueue(f.ctx, p); !collaborationErrorCode(err, "runtime_upgrade_required") {
-		t.Fatalf("incomplete admission allowed resume: %v", err)
+	p.ExpectedExecutionEpoch++
+	if _, err = f.svc.ResumeQueue(f.ctx, p); err != nil {
+		t.Fatalf("new explicit request with confirmed proof and current admission did not resume: %v", err)
 	}
-	if f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state='paused' AND active_group_id IS NULL`, f.targetID) != 1 {
-		t.Fatal("resume refusal wrote active state")
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state='active' AND active_group_id IS NULL`, f.targetID) != 1 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND forced_disposition='stopped' AND settled_at IS NOT NULL`, runID) != 1 {
+		t.Fatal("fresh Resume revived the stopped execution instead of releasing future input")
 	}
 }
 
@@ -420,8 +435,8 @@ func TestCollaborationQueueCancelRechecksStateAfterSessionLock(t *testing.T) {
 
 type queueFaultStarter struct {
 	TxStarter
-	begins                   atomic.Int32
-	eventFailure, lostCommit bool
+	begins                                  atomic.Int32
+	eventFailure, lostCommit, commitFailure bool
 }
 type queueFaultTx struct {
 	pgx.Tx
@@ -445,6 +460,9 @@ func (tx *queueFaultTx) QueryRow(ctx context.Context, sql string, args ...any) p
 	return tx.Tx.QueryRow(ctx, sql, args...)
 }
 func (tx *queueFaultTx) Commit(ctx context.Context) error {
+	if tx.starter.commitFailure {
+		return errors.New("injected commit failure")
+	}
 	err := tx.Tx.Commit(ctx)
 	if err == nil && tx.starter.lostCommit {
 		return &pgconn.PgError{Code: "40001", Message: "injected unknown commit reply"}

@@ -93,8 +93,15 @@ func TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingPro
 			r, err := f.svc.RemoveParticipant(f.ctx, p)
 			settled := scenario.attempts == 0 && !scenario.badRunning
 			stopped, found := groupControlResult(r.Execution, run.GroupID)
-			if err != nil || !found || r.Code != "participant_removed" || stopped.GroupSettled != settled || stopped.QueueState != "paused" || stopped.ControlVersion != 2 || r.QueueState != "active" || r.ControlVersion != 1 {
+			wantQueue, wantControl := "paused", int64(2)
+			if scenario.owner {
+				wantQueue, wantControl = "active", 1
+			}
+			if err != nil || !found || r.Code != "participant_removed" || stopped.GroupSettled != settled || stopped.QueueState != wantQueue || stopped.ControlVersion != wantControl || r.QueueState != "active" || r.ControlVersion != 1 {
 				t.Fatalf("removal: %+v %v", r, err)
+			}
+			if f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND hold_reason='grant_required'`, grantTarget(t, f, grant)) != 1 {
+				t.Fatal("departed owner lost its independent target hold")
 			}
 			if f.fx.Count(t, `SELECT count(*) FROM issue_participant WHERE issue_id=$1 AND user_id=$2 AND revoked_at IS NOT NULL AND epoch=2`, f.issue.Issue.ID, f.handler) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND assignee_id=$2`, f.issue.Issue.ID, f.creator) != 1 ||
@@ -223,6 +230,7 @@ func TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution(t *testing.T) 
 			} else {
 				f.fx.Exec(t, `UPDATE collaboration_session SET queue_state='active' WHERE id=$1`, f.issue.SessionID)
 				f.fx.Exec(t, `UPDATE collaboration_target SET queue_state='active' WHERE id=$1`, f.targetID)
+				f.fx.Exec(t, `UPDATE collaboration_channel SET queue_state='active' WHERE id=(SELECT channel_id FROM collaboration_target WHERE id=$1)`, f.targetID)
 			}
 			f.fx.Exec(t, `UPDATE collaboration_execution_gate SET creation_enabled=false, enabled=false WHERE id=1`)
 			var r CollaborationWorkflowReceipt
@@ -240,12 +248,19 @@ func TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution(t *testing.T) 
 				if r.QueueState != "active" || r.ControlVersion != 1 || f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND forced_disposition IS NULL AND claim_generation=1`, run.ID) != 1 {
 					t.Fatal("unrelated departure stopped the current execution")
 				}
-			} else if r.QueueState != "active" || r.ControlVersion != 1 ||
-				f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state='paused' AND control_version=2`, f.targetID) != 1 {
-				t.Fatalf("affected departure failed to pause without fake proof: %+v", r)
+			} else {
+				wantQueue, wantControl := "paused", int64(2)
+				if scenario == "idle_active_owner" || scenario == "leaving_owner" {
+					wantQueue, wantControl = "active", 1
+				}
+				if r.QueueState != "active" || r.ControlVersion != 1 ||
+					f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state=$2 AND control_version=$3`, f.targetID, wantQueue, wantControl) != 1 {
+					t.Fatalf("departure coupled owner hold with author channel pause: %+v", r)
+				}
 			}
 			if scenario == "idle_active_owner" || scenario == "leaving_owner" {
-				if f.fx.Count(t, `SELECT count(*) FROM collaboration_grant WHERE target_id=$1 AND revoked_at IS NOT NULL`, f.targetID) != 1 {
+				if f.fx.Count(t, `SELECT count(*) FROM collaboration_grant WHERE target_id=$1 AND revoked_at IS NOT NULL`, f.targetID) != 1 ||
+					f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND hold_reason='grant_required'`, f.targetID) != 1 {
 					t.Fatal("owner departure retained active resource identity")
 				}
 			}

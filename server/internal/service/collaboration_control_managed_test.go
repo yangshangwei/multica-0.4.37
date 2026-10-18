@@ -104,8 +104,17 @@ func TestCollaborationResumeAllSettlesChannelsIndependently(t *testing.T) {
 	if len(results) != 3 || results[f.targetID].Code != "resumed" || results[f.targetID].QueueState != "active" ||
 		results[f.targetID].ControlVersion != beforeA.ControlVersion+1 || results[b.ID].Code != "stop_unconfirmed" ||
 		results[b.ID].QueueState != "paused" || results[b.ID].ControlVersion != beforeB.ControlVersion ||
-		results[c.ID].Code != "grant_required" || results[c.ID].QueueState != "paused" || results[c.ID].ControlVersion != beforeC.ControlVersion {
+		results[c.ID].Code != "resumed" || results[c.ID].QueueState != "active" || results[c.ID].ControlVersion != beforeC.ControlVersion+1 {
 		t.Fatalf("partial resume did not retain the per-channel result and exact controls: %+v", results)
+	}
+	holds := make(map[pgtype.UUID]CollaborationTargetHoldResult)
+	for _, hold := range r.TargetHolds {
+		holds[hold.TargetID] = hold
+	}
+	if len(r.Channels) != 3 || len(holds) != 3 || holds[f.targetID].Code != "hold_released" || holds[f.targetID].HoldReason != nil ||
+		holds[b.ID].Code != "stop_unconfirmed" || holds[b.ID].HoldVersion != beforeB.HoldVersion ||
+		holds[c.ID].Code != "grant_required" || holds[c.ID].HoldReason == nil || *holds[c.ID].HoldReason != collaboration.HoldGrantRequired {
+		t.Fatalf("channel proof and target authority were not resolved independently: %+v", r)
 	}
 	if one.BatchID != two.BatchID || f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=ANY($1::uuid[]) AND state='waiting'`, []pgtype.UUID{one.CommandID, two.CommandID, waitingC.CommandID}) != 3 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_runtime_reservation WHERE run_id=$1 AND released_at IS NULL`, runB.ID) != 1 ||
@@ -150,7 +159,7 @@ func TestCollaborationResumeAllowsOfflineAuthorizedWaiting(t *testing.T) {
 	}
 }
 
-func TestCollaborationResumeAliasesUseTheHeadBatchAuthority(t *testing.T) {
+func TestCollaborationResumeAliasesKeepIndependentHolds(t *testing.T) {
 	for _, scenario := range []string{"unused_revoked_squad", "squad_head", "revoked_input_target"} {
 		t.Run(scenario, func(t *testing.T) {
 			f := newManagedCollaborationFixture(t)
@@ -170,19 +179,26 @@ func TestCollaborationResumeAliasesUseTheHeadBatchAuthority(t *testing.T) {
 			}
 			p := CollaborationResumeQueueParams{CollaborationStopQueueParams: f.issueControl(t), ExpectedExecutionEpoch: f.gateEpoch}
 			r, err := f.svc.ResumeQueue(f.ctx, p)
-			if err != nil || r.QueueState != "active" || len(r.Targets) != 2 {
+			if err != nil || r.Code != "partially_resumed" || r.QueueState != "active" || len(r.Targets) != 2 || len(r.Channels) != 1 {
 				t.Fatalf("alias resume did not return both views of one channel: %+v %v", r, err)
 			}
-			wantCode, wantState := "resumed", "active"
-			if scenario == "squad_head" {
-				wantCode, wantState = "squad_runtime_unavailable", "paused"
-			} else if scenario == "revoked_input_target" {
-				wantCode, wantState = "grant_required", "paused"
-			}
 			for _, result := range r.Targets {
-				if result.ChannelID != squad.ChannelID || result.Code != wantCode || result.QueueState != wantState {
-					t.Fatalf("channel gate or included input authority differed between aliases: %+v", r)
+				if result.ChannelID != squad.ChannelID || result.Code != "resumed" || result.QueueState != "active" {
+					t.Fatalf("target authority incorrectly kept the proof-ready channel paused: %+v", r)
 				}
+			}
+			holds := make(map[pgtype.UUID]CollaborationTargetHoldResult)
+			for _, hold := range r.TargetHolds {
+				holds[hold.TargetID] = hold
+			}
+			directCode, squadCode := "hold_released", "squad_runtime_unavailable"
+			if scenario == "unused_revoked_squad" {
+				squadCode = "grant_required"
+			} else if scenario == "revoked_input_target" {
+				directCode = "grant_required"
+			}
+			if len(holds) != 2 || holds[f.targetID].Code != directCode || holds[squad.ID].Code != squadCode || holds[squad.ID].HoldReason == nil {
+				t.Fatalf("an alias erased another target's hold or bypassed unsupported squad execution: %+v", holds)
 			}
 			if r.Targets[0].ControlVersion != r.Targets[1].ControlVersion ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE session_id=$1`, f.issue.SessionID) != 0 {
@@ -194,7 +210,9 @@ func TestCollaborationResumeAliasesUseTheHeadBatchAuthority(t *testing.T) {
 
 func TestCollaborationResumePreservesHealthyActiveExecution(t *testing.T) {
 	f := newManagedCollaborationFixture(t)
-	run := f.run(t, f.submitManaged(t, f.creator, "already running"), 1)
+	input := f.submitManaged(t, f.creator, "already running")
+	f.resumeManaged(t)
+	run := f.run(t, input, 1)
 	beforeTarget := queueTarget(t, f.collaborationQueueFixture, f.targetID)
 	p := CollaborationResumeQueueParams{CollaborationStopQueueParams: f.issueControl(t), ExpectedExecutionEpoch: f.gateEpoch}
 	r, err := f.svc.ResumeQueue(f.ctx, p)
@@ -205,13 +223,19 @@ func TestCollaborationResumePreservesHealthyActiveExecution(t *testing.T) {
 	}
 }
 
-func TestCollaborationTargetResumeRefusalDoesNotStopActiveWork(t *testing.T) {
+func TestCollaborationTargetResumeForcedActiveGroupRefusesWithoutWrites(t *testing.T) {
 	f := newManagedCollaborationFixture(t)
-	f.run(t, f.submitManaged(t, f.creator, "currently running"), 1)
+	input := f.submitManaged(t, f.creator, "currently running")
+	f.resumeManaged(t)
+	f.run(t, input, 1)
+	if _, err := f.svc.RevokeGrant(f.ctx, CollaborationRevokeGrantParams{CollaborationQueueRequest: f.request(), GrantID: f.grant.ID, ExpectedGrantEpoch: f.grant.Epoch}); err != nil {
+		t.Fatal(err)
+	}
+	consentManagedControlTarget(t, f, queueTarget(t, f.collaborationQueueFixture, f.targetID), f.grant.AgentID)
 	p := managedTargetResume(t, f, f.targetID)
 	before := controlStateSnapshot(t, f.collaborationQueueFixture)
 	r, err := f.svc.ResumeQueue(f.ctx, p)
-	if !collaborationErrorCode(err, "stop_unconfirmed") || before != controlStateSnapshot(t, f.collaborationQueueFixture) {
+	if !collaborationErrorCode(err, "stop_unconfirmed") || r.QueueState != "active" || before != controlStateSnapshot(t, f.collaborationQueueFixture) {
 		t.Fatalf("refused Resume must not become a Stop or advance controls: %+v %v", r, err)
 	}
 }
@@ -233,8 +257,12 @@ func TestCollaborationResumeRollbackAndOriginalCommitRecovery(t *testing.T) {
 	}
 	f.svc.TxStarter = f.pool
 	committed := controlStateSnapshot(t, f.collaborationQueueFixture)
+	lookedUp, err := f.svc.GetControlOperation(f.ctx, f.issue.Issue.ID, p.RequestID)
+	if err != nil || lookedUp.Code != "resumed" || committed != controlStateSnapshot(t, f.collaborationQueueFixture) {
+		t.Fatalf("unknown commit could not recover its original full receipt by GET: %+v %v", lookedUp, err)
+	}
 	r, err := f.svc.ResumeQueue(f.ctx, p)
-	if err != nil || r.Code != "resumed" || r.ControlVersion != p.ExpectedControlVersion+1 || committed != controlStateSnapshot(t, f.collaborationQueueFixture) {
+	if err != nil || !reflect.DeepEqual(r, lookedUp) || r.Code != "resumed" || r.ControlVersion != p.ExpectedControlVersion+1 || committed != controlStateSnapshot(t, f.collaborationQueueFixture) {
 		t.Fatalf("original-key resume recovery changed the committed controls: %+v %v", r, err)
 	}
 }
@@ -243,19 +271,21 @@ func TestCollaborationResumeChannelVersionsRemainExact(t *testing.T) {
 	f := newManagedCollaborationFixture(t)
 	const sessionVersion int64 = 9007199254740993
 	const channelVersion int64 = 9007199254740995
+	const holdVersion int64 = 9007199254740997
 	target := queueTarget(t, f.collaborationQueueFixture, f.targetID)
 	f.fx.Exec(t, `UPDATE collaboration_session SET control_version=$2 WHERE id=$1`, f.issue.SessionID, sessionVersion)
 	f.fx.Exec(t, `UPDATE collaboration_channel SET control_version=$2 WHERE id=$1`, target.ChannelID, channelVersion)
+	f.fx.Exec(t, `UPDATE collaboration_target SET hold_version=$2 WHERE id=$1`, target.ID, holdVersion)
 	if _, err := f.svc.Queries.MirrorCollaborationChannelControl(f.ctx, target.ChannelID); err != nil {
 		t.Fatal(err)
 	}
 	p := CollaborationResumeQueueParams{CollaborationStopQueueParams: f.issueControl(t), ExpectedExecutionEpoch: f.gateEpoch}
 	r, err := f.svc.ResumeQueue(f.ctx, p)
-	if err != nil || r.ControlVersion != sessionVersion+1 || len(r.Targets) != 1 || r.Targets[0].ControlVersion != channelVersion+1 {
+	if err != nil || r.ControlVersion != sessionVersion+1 || len(r.Targets) != 1 || r.Targets[0].ControlVersion != channelVersion+1 || len(r.TargetHolds) != 1 || r.TargetHolds[0].HoldVersion != holdVersion+1 {
 		t.Fatalf("resume narrowed an exact control version: %+v %v", r, err)
 	}
 	encoded, err := json.Marshal(r)
-	if err != nil || !strings.Contains(string(encoded), `"control_version":"9007199254740994"`) || !strings.Contains(string(encoded), `"control_version":"9007199254740996"`) {
+	if err != nil || !strings.Contains(string(encoded), `"control_version":"9007199254740994"`) || !strings.Contains(string(encoded), `"control_version":"9007199254740996"`) || !strings.Contains(string(encoded), `"hold_version":"9007199254740998"`) {
 		t.Fatalf("control receipt lost decimal-string precision: %s %v", encoded, err)
 	}
 	replayed, err := f.svc.ResumeQueue(f.ctx, p)

@@ -4,6 +4,16 @@ import { nonnegativeVersion, positiveVersion } from "./version";
 const uuid = z.string().uuid().transform((value) => value.toLowerCase());
 const timestamp = z.string().datetime({ offset: true }).nullable();
 const disposition = z.enum(["stopped", "cancelled"]).nullable();
+export const CollaborationTargetHoldReasonSchema = z.enum(["initial", "grant_required", "config_invalid", "switch_hold"]);
+
+const channel = z.object({
+  id: uuid,
+  queue_state: z.enum(["paused", "active"]),
+  control_version: positiveVersion,
+  group_generation: nonnegativeVersion,
+  active_group_id: uuid.nullable(),
+  pause_reason: z.string(),
+});
 
 const target = z.object({
   id: uuid,
@@ -12,6 +22,8 @@ const target = z.object({
   resource_id: uuid,
   target_epoch: positiveVersion,
   config_version: positiveVersion,
+  hold_reason: CollaborationTargetHoldReasonSchema.nullable(),
+  hold_version: positiveVersion,
   control: z.object({ scope: z.literal("target"), queue_state: z.enum(["paused", "active"]), control_version: positiveVersion }),
   group_generation: nonnegativeVersion,
   next_command_seq: positiveVersion,
@@ -75,7 +87,9 @@ const execution = z.object({
   availability: z.literal("unavailable"),
   unavailable_reason: z.literal("shared_runtime_unavailable"),
   target_set_version: positiveVersion,
+  execution_gate: z.object({ enabled: z.boolean(), epoch: positiveVersion }),
   control: z.object({ scope: z.literal("issue"), queue_state: z.enum(["paused", "active", "closed"]), control_version: positiveVersion }),
+  channels: z.array(channel),
   targets: z.array(target),
   commands: z.array(command),
   groups: z.array(group),
@@ -93,13 +107,14 @@ function atMostVersion(left: string, right: string): boolean {
 }
 
 function consistentExecution(value: z.infer<typeof execution>): boolean {
-  const { targets, commands, groups, runs } = value;
+  const { channels, targets, commands, groups, runs } = value;
+  const channelsById = new Map(channels.map((item) => [item.id, item]));
   const targetsById = new Map(targets.map((item) => [item.id, item]));
   const commandsById = new Map(commands.map((item) => [item.id, item]));
   const groupsById = new Map(groups.map((item) => [item.id, item]));
   const groupsByBatch = new Map(groups.map((item) => [item.batch_id, item]));
   const runsById = new Map(runs.map((item) => [item.id, item]));
-  if (targetsById.size !== targets.length || commandsById.size !== commands.length || groupsById.size !== groups.length || runsById.size !== runs.length ||
+  if (channelsById.size !== channels.length || targetsById.size !== targets.length || commandsById.size !== commands.length || groupsById.size !== groups.length || runsById.size !== runs.length ||
     groupsByBatch.size !== groups.length || !unique(targets.map((item) => `${item.kind}:${item.resource_id}`)) ||
     !unique(commands.map((item) => `${item.target_id}:${item.sequence}`)) || !unique(commands.map((item) => `${item.input_event_id}:${item.target_id}`)) ||
     !unique(groups.map((item) => `${item.channel_id}:${item.generation}`)) || !unique(runs.map((item) => `${item.group_id}:${item.step_key}`)) ||
@@ -133,9 +148,16 @@ function consistentExecution(value: z.infer<typeof execution>): boolean {
   }
   for (const item of targets) {
     if (item.channel_id === null && (item.group_generation !== "0" || item.next_command_seq !== "1" || item.active_group_id !== null)) return false;
+    if (item.channel_id !== null) {
+      const owner = channelsById.get(item.channel_id);
+      if (!owner || owner.queue_state !== item.control.queue_state || owner.control_version !== item.control.control_version ||
+        owner.group_generation !== item.group_generation || owner.active_group_id !== item.active_group_id || owner.pause_reason !== item.pause_reason) return false;
+    }
+  }
+  for (const item of channels) {
     if (item.active_group_id === null) continue;
     const active = groupsById.get(item.active_group_id);
-    if (!active || active.channel_id !== item.channel_id || active.settled_at !== null || active.generation !== item.group_generation) return false;
+    if (!active || active.channel_id !== item.id || active.settled_at !== null || active.generation !== item.group_generation) return false;
   }
 
   const roots = new Set<string>();
@@ -176,6 +198,8 @@ function consistentExecution(value: z.infer<typeof execution>): boolean {
 /** Complete projections only: missing rows cannot be interpreted as idle work. */
 export const CollaborationExecutionSchema = execution.refine(consistentExecution, "Execution identities, control snapshots and lineage must be consistent");
 export type CollaborationExecution = z.infer<typeof CollaborationExecutionSchema>;
+export type CollaborationExecutionChannel = z.infer<typeof channel>;
+export type CollaborationTargetHoldReason = z.infer<typeof CollaborationTargetHoldReasonSchema>;
 export type CollaborationExecutionTarget = z.infer<typeof target>;
 export type CollaborationExecutionCommand = z.infer<typeof command>;
 export type CollaborationExecutionGroup = z.infer<typeof group>;

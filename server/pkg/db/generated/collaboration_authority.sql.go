@@ -90,7 +90,7 @@ func (q *Queries) CreateCollaborationResourceConsent(ctx context.Context, arg Cr
 
 const createConsentedCollaborationTarget = `-- name: CreateConsentedCollaborationTarget :one
 INSERT INTO collaboration_target (session_id, kind, resource_id, roster, configuration_fingerprint)
-VALUES ($1, $2, $3, $4, $5) RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id
+VALUES ($1, $2, $3, $4, $5) RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
 `
 
 type CreateConsentedCollaborationTargetParams struct {
@@ -128,6 +128,8 @@ func (q *Queries) CreateConsentedCollaborationTarget(ctx context.Context, arg Cr
 		&i.CreatedAt,
 		&i.ConfigurationFingerprint,
 		&i.ChannelID,
+		&i.HoldReason,
+		&i.HoldVersion,
 	)
 	return i, err
 }
@@ -160,7 +162,7 @@ SELECT id, issue_id, owner_user_id, owner_auth_epoch, execution_workspace_id, ag
 `
 
 // Reads borrow the caller's authorized snapshot. Writes hold issue/session/
-// sorted targets first and take all later resource locks NOWAIT.
+// sorted channels/targets first and take all later resource locks NOWAIT.
 func (q *Queries) ListCollaborationTargetGrants(ctx context.Context, targetID pgtype.UUID) ([]CollaborationGrant, error) {
 	rows, err := q.db.Query(ctx, listCollaborationTargetGrants, targetID)
 	if err != nil {
@@ -250,9 +252,9 @@ const reconfigureCollaborationTarget = `-- name: ReconfigureCollaborationTarget 
 UPDATE collaboration_target SET roster = $1::jsonb,
     configuration_fingerprint = $2::text,
     config_version = config_version + 1, target_epoch = target_epoch + 1,
-    control_version = control_version + 1, queue_state = 'paused', pause_reason = 'configuration_changed', revoked_at = NULL
+    hold_reason = 'switch_hold', hold_version = hold_version + 1, revoked_at = NULL
 WHERE id = $3::uuid AND session_id = $4::uuid
-RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id
+RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
 `
 
 type ReconfigureCollaborationTargetParams struct {
@@ -288,6 +290,8 @@ func (q *Queries) ReconfigureCollaborationTarget(ctx context.Context, arg Reconf
 		&i.CreatedAt,
 		&i.ConfigurationFingerprint,
 		&i.ChannelID,
+		&i.HoldReason,
+		&i.HoldVersion,
 	)
 	return i, err
 }

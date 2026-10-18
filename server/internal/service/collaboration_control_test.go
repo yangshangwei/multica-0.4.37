@@ -114,6 +114,14 @@ func controlStateSnapshot(t *testing.T, f *collaborationQueueFixture) string {
 		'commands', (SELECT jsonb_agg(to_jsonb(c) ORDER BY c.id) FROM collaboration_command c WHERE c.session_id=$1),
 		'groups', (SELECT jsonb_agg(to_jsonb(g) ORDER BY g.id) FROM collaboration_execution_group g WHERE g.session_id=$1),
 		'runs', (SELECT jsonb_agg(to_jsonb(r) ORDER BY r.id) FROM collaboration_run r WHERE r.session_id=$1),
+		'grants', (SELECT jsonb_agg(to_jsonb(g) ORDER BY g.id) FROM collaboration_grant g WHERE g.issue_id=$2),
+		'delegations', (SELECT jsonb_agg(to_jsonb(d) ORDER BY d.id) FROM collaboration_delegation d
+			JOIN collaboration_execution_group g ON g.id=d.group_id WHERE g.session_id=$1),
+		'terminations', (SELECT jsonb_agg(to_jsonb(p) ORDER BY p.run_id) FROM collaboration_termination p WHERE p.issue_id=$2),
+		'capabilities', (SELECT jsonb_agg(to_jsonb(c) ORDER BY c.run_id,c.attempt_seq) FROM collaboration_business_capability c
+			JOIN collaboration_run r ON r.id=c.run_id WHERE r.session_id=$1),
+		'attempts', (SELECT jsonb_agg(to_jsonb(a) ORDER BY a.run_id,a.attempt_seq) FROM collaboration_attempt a
+			JOIN collaboration_run r ON r.id=a.run_id WHERE r.session_id=$1),
 		'reservations', (SELECT jsonb_agg(to_jsonb(v) ORDER BY v.run_id) FROM collaboration_runtime_reservation v
 			JOIN collaboration_run r ON r.id=v.run_id WHERE r.session_id=$1),
 		'events', (SELECT jsonb_agg(to_jsonb(e) ORDER BY e.id) FROM collaboration_event e WHERE e.issue_id=$2)
@@ -195,6 +203,9 @@ func TestCollaborationResumeAllRetainsRemovedChannelReservation(t *testing.T) {
 	r, err := f.svc.ResumeQueue(f.ctx, p)
 	if err != nil || r.Code != "partially_resumed" || r.QueueState != "active" || r.ControlVersion != p.ExpectedControlVersion+1 {
 		t.Fatalf("removed target prevented release of the global pause: %+v %v", r, err)
+	}
+	if len(r.Channels) != 1 || r.Channels[0].ChannelID != run.ChannelID || r.Channels[0].Code != "stop_unconfirmed" || len(r.TargetHolds) != 0 {
+		t.Fatalf("removed target hid the retained channel's control result: %+v", r)
 	}
 	if f.fx.Count(t, `SELECT count(*) FROM collaboration_runtime_reservation WHERE run_id=$1 AND released_at IS NULL`, run.ID) != 1 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND settled_at IS NULL AND proof_state='unknown'`, run.ID) != 1 ||

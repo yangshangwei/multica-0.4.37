@@ -171,7 +171,7 @@ func (q *Queries) ClaimCollaborationRuntimeRun(ctx context.Context, arg ClaimCol
 }
 
 const clearCollaborationChannelTargetGroups = `-- name: ClearCollaborationChannelTargetGroups :many
-UPDATE collaboration_target SET active_group_id=NULL WHERE channel_id=$1 AND active_group_id=$2 RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id
+UPDATE collaboration_target SET active_group_id=NULL WHERE channel_id=$1 AND active_group_id=$2 RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
 `
 
 type ClearCollaborationChannelTargetGroupsParams struct {
@@ -206,6 +206,8 @@ func (q *Queries) ClearCollaborationChannelTargetGroups(ctx context.Context, arg
 			&i.CreatedAt,
 			&i.ConfigurationFingerprint,
 			&i.ChannelID,
+			&i.HoldReason,
+			&i.HoldVersion,
 		); err != nil {
 			return nil, err
 		}
@@ -831,9 +833,13 @@ func (q *Queries) GetCollaborationTermination(ctx context.Context, runID pgtype.
 
 const listCollaborationRuntimeCandidates = `-- name: ListCollaborationRuntimeCandidates :many
 SELECT r.id FROM collaboration_run r JOIN collaboration_grant g ON g.id=r.grant_id AND g.revoked_at IS NULL
+JOIN collaboration_target t ON t.id=r.target_id AND t.session_id=r.session_id AND t.hold_reason IS NULL
 JOIN issue_participant p ON p.issue_id=g.issue_id AND p.user_id=g.owner_user_id AND p.revoked_at IS NULL AND p.epoch=g.owner_participant_epoch
 JOIN collaboration_account_fence f ON f.user_id=g.owner_user_id AND f.epoch=g.owner_auth_epoch
 WHERE r.runtime_id=$1 AND r.binding_id=$2 AND r.settled_at IS NULL AND r.forced_disposition IS NULL
+  AND NOT EXISTS (SELECT 1 FROM collaboration_command c
+      LEFT JOIN collaboration_target dependency ON dependency.id=c.target_id AND dependency.session_id=c.session_id
+      WHERE c.batch_id=r.batch_id AND c.state='in_flight' AND (dependency.id IS NULL OR dependency.hold_reason IS NOT NULL))
 ORDER BY r.created_at,r.id LIMIT 16
 `
 
@@ -868,7 +874,7 @@ JOIN collaboration_session s ON s.id=t.session_id
 JOIN collaboration_channel ch ON ch.id=t.channel_id
 JOIN collaboration_batch b ON b.channel_id=ch.id AND b.effective_target_id=t.id AND b.state='waiting'
 JOIN collaboration_grant g ON g.target_id=t.id AND g.config_version=t.config_version AND g.target_epoch=t.target_epoch AND g.revoked_at IS NULL
-WHERE t.kind='agent' AND g.runtime_id=$1 AND g.binding_id=$2 AND s.queue_state='active' AND ch.queue_state='active'
+WHERE t.kind='agent' AND t.hold_reason IS NULL AND g.runtime_id=$1 AND g.binding_id=$2 AND s.queue_state='active' AND ch.queue_state='active'
 ORDER BY s.issue_id,t.id LIMIT 16
 `
 
