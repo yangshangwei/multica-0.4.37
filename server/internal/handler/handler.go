@@ -248,9 +248,10 @@ type Handler struct {
 	IssueService           *service.IssueService
 	AutopilotService       *service.AutopilotService
 
-	// CollaborationAccountReconciler drains retained invalidations even when
+	// Collaboration reconcilers drain retained account and resource invalidations even when
 	// collaboration creation and execution are disabled.
 	CollaborationAccountReconciler *service.CollaborationAccountReconciler
+	CollaborationConfigReconciler  *service.CollaborationConfigReconciler
 
 	// Entitlements supplies workspace-scoped commercial gates. A nil provider
 	// preserves self-hosted behavior without extra reads.
@@ -614,6 +615,7 @@ func New(queries *db.Queries, txStarter txStarter, hub *realtime.Hub, bus *event
 		changelogReader: changelog.New(cfg.ChangelogFile, cfg.ServerVersion),
 	}
 	h.CollaborationAccountReconciler = service.NewCollaborationAccountReconciler(queries, txStarter)
+	h.CollaborationConfigReconciler = service.NewCollaborationConfigReconciler(queries, txStarter)
 	h.WebhookDeliveryWorker = NewWebhookDeliveryWorker(h)
 
 	// GitHub API snapshot pipeline for PR cards (MUL-5265). Built

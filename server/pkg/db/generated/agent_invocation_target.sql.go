@@ -15,9 +15,7 @@ const createAgentInvocationTarget = `-- name: CreateAgentInvocationTarget :exec
 WITH locked_agent AS MATERIALIZED (SELECT agent.id FROM agent WHERE agent.id = $4::uuid FOR UPDATE)
 INSERT INTO agent_invocation_target (agent_id, target_type, target_id, created_by)
 SELECT id, $1::text, $2::uuid, $3::uuid FROM locked_agent WHERE true
-ON CONFLICT (agent_id, target_type, target_id) DO UPDATE SET
-    created_by = EXCLUDED.created_by,
-    created_at = now()
+ON CONFLICT (agent_id, target_type, target_id) DO NOTHING
 `
 
 type CreateAgentInvocationTargetParams struct {
@@ -27,10 +25,8 @@ type CreateAgentInvocationTargetParams struct {
 	AgentID    pgtype.UUID `json:"agent_id"`
 }
 
-// Idempotent upsert: re-adding an existing (agent, target_type, target)
-// refreshes created_by/created_at rather than erroring. Callers replace the
-// whole set via DeleteAgentInvocationTargets + a series of these, so the
-// ON CONFLICT is belt-and-suspenders against races.
+// Re-adding the same permission is a no-op. Preserve the original row and its
+// consent fingerprint rather than rotating provenance on an unchanged grant.
 func (q *Queries) CreateAgentInvocationTarget(ctx context.Context, arg CreateAgentInvocationTargetParams) error {
 	_, err := q.db.Exec(ctx, createAgentInvocationTarget,
 		arg.TargetType,

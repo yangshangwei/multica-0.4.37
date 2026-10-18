@@ -35,7 +35,7 @@ const settledAt = "2026-10-17T00:00:00Z";
 
 /** A complete read projection; runtime availability is separate from role rights. */
 export const collaborationExecutionFixture = {
-  protocol_version: 3,
+  protocol_version: 4,
   issue_id: id,
   session_id: id,
   availability: "unavailable",
@@ -44,29 +44,31 @@ export const collaborationExecutionFixture = {
   execution_gate: { enabled: true, epoch: "9007199254740997" },
   control: { scope: "issue", queue_state: "paused", control_version: collaborationIssueFixture.session.control_version },
   channels: [
-    { id: agentChannelId, queue_state: "paused", control_version: "9007199254740995", group_generation: "1", active_group_id: agentGroupId, pause_reason: "stop_requested" },
-    { id: squadChannelId, queue_state: "paused", control_version: "2", group_generation: "1", active_group_id: squadGroupId, pause_reason: "stop_requested" },
+    { id: agentChannelId, queue_state: "paused", control_version: "9007199254740995", group_generation: "1", next_command_seq: "3", active_group_id: agentGroupId, pause_reason: "stop_requested" },
+    { id: squadChannelId, queue_state: "paused", control_version: "2", group_generation: "1", next_command_seq: "2", active_group_id: squadGroupId, pause_reason: "stop_requested" },
   ],
   targets: [
     { id: agentTargetId, channel_id: agentChannelId, kind: "agent", resource_id: executionId(30), target_epoch: targetVersion, config_version: targetVersion,
       hold_reason: null, hold_version: "9007199254740993",
       control: { scope: "target", queue_state: "paused", control_version: "9007199254740995" },
-      group_generation: "1", next_command_seq: "3", active_group_id: agentGroupId, pause_reason: "stop_requested", revoked_at: null },
+      group_generation: "1", active_group_id: agentGroupId, pause_reason: "stop_requested", revoked_at: null },
     { id: squadTargetId, channel_id: squadChannelId, kind: "squad", resource_id: executionId(40), target_epoch: targetVersion, config_version: targetVersion,
       hold_reason: "grant_required", hold_version: "2",
       control: { scope: "target", queue_state: "paused", control_version: "2" },
-      group_generation: "1", next_command_seq: "2", active_group_id: squadGroupId, pause_reason: "stop_requested", revoked_at: null },
+      group_generation: "1", active_group_id: squadGroupId, pause_reason: "stop_requested", revoked_at: null },
   ],
   commands: [
-    { id: agentCommandId, target_id: agentTargetId, channel_id: agentChannelId, batch_id: agentBatchId, input_event_id: executionId(50), sequence: "1", author_user_id: id, state: "in_flight" },
-    { id: executionId(14), target_id: agentTargetId, channel_id: agentChannelId, batch_id: waitingBatchId, input_event_id: executionId(51), sequence: "2", author_user_id: id, state: "waiting" },
-    { id: squadCommandId, target_id: squadTargetId, channel_id: squadChannelId, batch_id: squadBatchId, input_event_id: executionId(50), sequence: "1", author_user_id: id, state: "in_flight" },
+    { id: agentCommandId, target_id: agentTargetId, channel_id: agentChannelId, batch_id: agentBatchId, group_id: agentGroupId, input_event_id: executionId(50), sequence: "1", author_user_id: id, state: "in_flight" },
+    { id: executionId(14), target_id: agentTargetId, channel_id: agentChannelId, batch_id: waitingBatchId, group_id: null, input_event_id: executionId(51), sequence: "2", author_user_id: id, state: "waiting" },
+    { id: squadCommandId, target_id: squadTargetId, channel_id: squadChannelId, batch_id: squadBatchId, group_id: squadGroupId, input_event_id: executionId(50), sequence: "1", author_user_id: id, state: "in_flight" },
   ],
   groups: [
     { id: agentGroupId, target_id: agentTargetId, command_id: agentCommandId, channel_id: agentChannelId, batch_id: agentBatchId, generation: "1", target_epoch: targetVersion, config_version: targetVersion,
-      state: "ending", expansion_sealed_at: settledAt, forced_disposition: "stopped", settled_at: null },
+      state: "ending", expansion_sealed_at: settledAt, forced_disposition: "stopped", settled_at: null,
+      inputs: [{ command_id: agentCommandId, channel_id: agentChannelId, batch_id: agentBatchId, sequence: "1", consuming_run_id: executionId(13) }] },
     { id: squadGroupId, target_id: squadTargetId, command_id: squadCommandId, channel_id: squadChannelId, batch_id: squadBatchId, generation: "1", target_epoch: targetVersion, config_version: targetVersion,
-      state: "ending", expansion_sealed_at: settledAt, forced_disposition: "stopped", settled_at: null },
+      state: "ending", expansion_sealed_at: settledAt, forced_disposition: "stopped", settled_at: null,
+      inputs: [{ command_id: squadCommandId, channel_id: squadChannelId, batch_id: squadBatchId, sequence: "1", consuming_run_id: leaderRunId }] },
   ],
   runs: [
     { id: executionId(13), command_id: agentCommandId, target_id: agentTargetId, channel_id: agentChannelId, batch_id: agentBatchId, group_id: agentGroupId, parent_run_id: null,

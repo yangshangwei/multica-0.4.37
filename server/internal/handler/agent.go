@@ -2232,7 +2232,39 @@ func (h *Handler) UpdateAgent(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	updated, err := h.Queries.UpdateAgent(r.Context(), params)
+	// Row fields, nullable clears, invocation membership and their durable
+	// configuration invalidations must become visible together. A source may
+	// never authorize an intermediate allow-list during a multi-field update.
+	var updated db.Agent
+	err = service.WithRuntimeResourceTransaction(r.Context(), h.TxStarter, h.Queries, func(q *db.Queries) error {
+		var err error
+		updated, err = q.UpdateAgent(r.Context(), params)
+		if err != nil {
+			return err
+		}
+		// COALESCE cannot clear nullable overrides; keep these writes inside
+		// the same parent lock and transaction as the main row update.
+		for _, clear := range []struct {
+			requested bool
+			apply     func(context.Context, pgtype.UUID) (db.Agent, error)
+		}{
+			{shouldClearMcpConfig, q.ClearAgentMcpConfig},
+			{shouldClearThinkingLevel, q.ClearAgentThinkingLevel},
+			{shouldClearServiceTier, q.ClearAgentServiceTier},
+			{shouldClearComposioAllowlist, q.ClearAgentComposioToolkitAllowlist},
+		} {
+			if clear.requested {
+				updated, err = clear.apply(r.Context(), updated.ID)
+				if err != nil {
+					return err
+				}
+			}
+		}
+		if replacePermissionTargets {
+			return replaceInvocationTargetsWithQueries(r.Context(), q, updated.ID, parseUUID(requestUserID(r)), resolvedPerm.targets)
+		}
+		return nil
+	})
 	if err != nil {
 		if expectedUpdatedAt.Valid && errors.Is(err, pgx.ErrNoRows) {
 			writeError(w, http.StatusConflict, "agent changed since it was read; reload before updating instructions")
@@ -2253,56 +2285,13 @@ func (h *Handler) UpdateAgent(w http.ResponseWriter, r *http.Request) {
 			writeError(w, http.StatusConflict, fmt.Sprintf("an agent named %q already exists in this workspace", name))
 			return
 		}
+		if service.IsRuntimeResourceBusy(err) {
+			writeError(w, http.StatusServiceUnavailable, "agent configuration is busy; retry the update")
+			return
+		}
 		slog.Warn("update agent failed", append(logger.RequestAttrs(r), "error", err, "agent_id", id)...)
 		writeError(w, http.StatusInternalServerError, "failed to update agent: "+err.Error())
 		return
-	}
-
-	// Nullable runtime overrides: null/empty in the request means explicitly
-	// clear the field. COALESCE in UpdateAgent cannot set a column to NULL, so
-	// mcp_config, thinking_level, and service_tier use dedicated clear queries.
-	if shouldClearMcpConfig {
-		updated, err = h.Queries.ClearAgentMcpConfig(r.Context(), updated.ID)
-		if err != nil {
-			slog.Warn("clear agent mcp_config failed", append(logger.RequestAttrs(r), "error", err, "agent_id", id)...)
-			writeError(w, http.StatusInternalServerError, "failed to clear mcp_config: "+err.Error())
-			return
-		}
-	}
-	if shouldClearThinkingLevel {
-		updated, err = h.Queries.ClearAgentThinkingLevel(r.Context(), updated.ID)
-		if err != nil {
-			slog.Warn("clear agent thinking_level failed", append(logger.RequestAttrs(r), "error", err, "agent_id", id)...)
-			writeError(w, http.StatusInternalServerError, "failed to clear thinking_level: "+err.Error())
-			return
-		}
-	}
-	if shouldClearServiceTier {
-		updated, err = h.Queries.ClearAgentServiceTier(r.Context(), updated.ID)
-		if err != nil {
-			slog.Warn("clear agent service_tier failed", append(logger.RequestAttrs(r), "error", err, "agent_id", id)...)
-			writeError(w, http.StatusInternalServerError, "failed to clear service_tier: "+err.Error())
-			return
-		}
-	}
-	if shouldClearComposioAllowlist {
-		updated, err = h.Queries.ClearAgentComposioToolkitAllowlist(r.Context(), updated.ID)
-		if err != nil {
-			slog.Warn("clear agent composio_toolkit_allowlist failed", append(logger.RequestAttrs(r), "error", err, "agent_id", id)...)
-			writeError(w, http.StatusInternalServerError, "failed to clear composio_toolkit_allowlist: "+err.Error())
-			return
-		}
-	}
-
-	// Invocation targets (MUL-3963): replace wholesale when the owner touched
-	// permission. Done after the row update so a permission_mode flip and its
-	// targets land together.
-	if replacePermissionTargets {
-		if err := h.replaceInvocationTargets(r.Context(), updated.ID, parseUUID(requestUserID(r)), resolvedPerm.targets); err != nil {
-			slog.Warn("update agent: persist invocation targets failed", append(logger.RequestAttrs(r), "error", err, "agent_id", id)...)
-			writeError(w, http.StatusInternalServerError, "failed to update invocation targets: "+err.Error())
-			return
-		}
 	}
 
 	resp := h.agentToResponse(updated)

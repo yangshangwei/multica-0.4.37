@@ -22,8 +22,8 @@ func seedCollaborationRouteCommand(t *testing.T, fx *testutil.Fixture, session, 
 	if err != nil {
 		t.Fatal(err)
 	}
-	channel := fx.Insert(t, "collaboration_channel", testutil.Cols{"session_id": session, "root_agent_id": agent, "next_batch_seq": 2})
-	target := fx.Insert(t, "collaboration_target", testutil.Cols{"session_id": session, "kind": "agent", "resource_id": agent, "roster": roster, "next_command_seq": 2})
+	channel := fx.Insert(t, "collaboration_channel", testutil.Cols{"session_id": session, "root_agent_id": agent, "next_batch_seq": 2, "next_command_seq": 2})
+	target := fx.Insert(t, "collaboration_target", testutil.Cols{"session_id": session, "kind": "agent", "resource_id": agent, "roster": roster})
 	// Registration binds the target to the channel's complete control snapshot.
 	if _, err = db.New(fx.Pool).BindCollaborationTargetChannel(t.Context(), db.BindCollaborationTargetChannelParams{
 		SessionID: util.MustParseUUID(session), TargetID: util.MustParseUUID(target), ChannelID: util.MustParseUUID(channel),

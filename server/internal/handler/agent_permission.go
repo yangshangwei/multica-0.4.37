@@ -186,18 +186,16 @@ func parsePermissionInput(workspaceID pgtype.UUID, permissionMode *string, targe
 	return res, true, nil
 }
 
-// replaceInvocationTargets rewrites an agent's invocation allow-list wholesale:
-// clear then re-insert. Called inside create/update after the agent row exists.
-func (h *Handler) replaceInvocationTargets(ctx context.Context, agentID pgtype.UUID, createdBy pgtype.UUID, targets []targetSpec) error {
-	return replaceInvocationTargetsWithQueries(ctx, h.Queries, agentID, createdBy, targets)
-}
-
-// replaceInvocationTargetsWithQueries is the tx-friendly variant: callers that
-// hold a `qtx := h.Queries.WithTx(tx)` can pass it here so the invocation
-// target rows are written inside the same transaction as the agent row. A
-// fresh agent row must not observe a state where the row exists but its targets
-// are missing.
+// The caller holds the agent row in the same transaction. An unchanged set
+// preserves its original row identities and configuration consent fingerprint.
 func replaceInvocationTargetsWithQueries(ctx context.Context, q *db.Queries, agentID pgtype.UUID, createdBy pgtype.UUID, targets []targetSpec) error {
+	current, err := q.ListAgentInvocationTargets(ctx, agentID)
+	if err != nil {
+		return err
+	}
+	if sameInvocationTargets(current, targets) {
+		return nil
+	}
 	if err := q.DeleteAgentInvocationTargets(ctx, agentID); err != nil {
 		return err
 	}
@@ -262,8 +260,12 @@ func (h *Handler) permissionInputChangesAgent(ctx context.Context, existing db.A
 	if err != nil {
 		return true, err
 	}
-	want := make(map[string]struct{}, len(perm.targets))
-	for _, tgt := range perm.targets {
+	return !sameInvocationTargets(current, perm.targets), nil
+}
+
+func sameInvocationTargets(current []db.AgentInvocationTarget, targets []targetSpec) bool {
+	want := make(map[string]struct{}, len(targets))
+	for _, tgt := range targets {
 		want[tgt.targetType+":"+uuidToString(tgt.targetID)] = struct{}{}
 	}
 	have := make(map[string]struct{}, len(current))
@@ -271,14 +273,14 @@ func (h *Handler) permissionInputChangesAgent(ctx context.Context, existing db.A
 		have[row.TargetType+":"+uuidToString(row.TargetID)] = struct{}{}
 	}
 	if len(want) != len(have) {
-		return true, nil
+		return false
 	}
 	for k := range want {
 		if _, ok := have[k]; !ok {
-			return true, nil
+			return false
 		}
 	}
-	return false, nil
+	return true
 }
 
 // enrichAgentResponseWithTargets loads an agent's invocation targets and

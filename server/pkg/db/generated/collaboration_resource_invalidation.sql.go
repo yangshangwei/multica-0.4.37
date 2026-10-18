@@ -140,7 +140,7 @@ func (q *Queries) TryLockCollaborationResourceCapabilities(ctx context.Context, 
 }
 
 const tryLockCollaborationResourceChannels = `-- name: TryLockCollaborationResourceChannels :many
-SELECT id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at FROM collaboration_channel WHERE session_id = $1 ORDER BY id FOR UPDATE NOWAIT
+SELECT id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at, next_command_seq FROM collaboration_channel WHERE session_id = $1 ORDER BY id FOR UPDATE NOWAIT
 `
 
 // Every source-side row lock is NOWAIT while the caller owns resources. The
@@ -165,6 +165,7 @@ func (q *Queries) TryLockCollaborationResourceChannels(ctx context.Context, sess
 			&i.ActiveGroupID,
 			&i.PauseReason,
 			&i.CreatedAt,
+			&i.NextCommandSeq,
 		); err != nil {
 			return nil, err
 		}
@@ -432,7 +433,7 @@ func (q *Queries) TryLockCollaborationResourceRuns(ctx context.Context, sessionI
 }
 
 const tryLockCollaborationResourceTargets = `-- name: TryLockCollaborationResourceTargets :many
-SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version FROM collaboration_target WHERE session_id = $1 ORDER BY id FOR UPDATE NOWAIT
+SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version FROM collaboration_target WHERE session_id = $1 ORDER BY id FOR UPDATE NOWAIT
 `
 
 func (q *Queries) TryLockCollaborationResourceTargets(ctx context.Context, sessionID pgtype.UUID) ([]CollaborationTarget, error) {
@@ -455,7 +456,6 @@ func (q *Queries) TryLockCollaborationResourceTargets(ctx context.Context, sessi
 			&i.QueueState,
 			&i.ControlVersion,
 			&i.GroupGeneration,
-			&i.NextCommandSeq,
 			&i.ActiveGroupID,
 			&i.PauseReason,
 			&i.RevokedAt,

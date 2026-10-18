@@ -132,7 +132,10 @@ func TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingPro
 			}
 			commandState := "in_flight"
 			if settled {
-				commandState = wantDisposition
+				commandState = "cancelled"
+				if scenario.owner {
+					commandState = "waiting"
+				}
 			}
 			if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state=$2`, first.CommandID, commandState) != 1 {
 				t.Fatal("removal changed a potentially running command to a terminal state or misclassified unlaunched work")

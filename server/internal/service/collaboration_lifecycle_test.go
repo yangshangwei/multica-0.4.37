@@ -229,7 +229,7 @@ func TestCollaborationStatusChangesOnlyStatusAndRecordsIteration(t *testing.T) {
 	}
 	if f.fx.Count(t, `SELECT count(*) FROM issue_collaboration WHERE issue_id=$1 AND revision=3 AND authority_epoch=1 AND lifecycle_epoch=1 AND active_information_request_id=$2`, f.issue.Issue.ID, req) != 1 ||
 		f.fx.Count(t, `SELECT count(*) FROM issue_handoff WHERE id=$1 AND resolution='open'`, req) != 1 ||
-		f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND active_group_id=$2 AND next_command_seq=3 AND control_version=1`, f.targetID, run.GroupID) != 1 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_target t JOIN collaboration_channel ch ON ch.id=t.channel_id WHERE t.id=$1 AND t.active_group_id=$2 AND ch.next_command_seq=3 AND t.control_version=1`, f.targetID, run.GroupID) != 1 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='waiting' AND content='waiting input'`, waiting.CommandID) != 1 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_notification WHERE issue_id=$1`, f.issue.Issue.ID) != beforeNotifications {
 		t.Fatal("manual status changed authority, information request, queue or notifications")

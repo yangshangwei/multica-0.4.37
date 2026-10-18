@@ -26,7 +26,7 @@ const bindCollaborationTargetChannel = `-- name: BindCollaborationTargetChannel 
 UPDATE collaboration_target t SET channel_id=ch.id,queue_state=ch.queue_state,pause_reason=ch.pause_reason,
     control_version=ch.control_version,group_generation=ch.group_generation,active_group_id=ch.active_group_id
 FROM collaboration_channel ch WHERE ch.id=$1::uuid AND ch.session_id=$2::uuid
-    AND t.id=$3::uuid AND t.session_id=ch.session_id RETURNING t.id, t.session_id, t.kind, t.resource_id, t.target_epoch, t.config_version, t.roster, t.queue_state, t.control_version, t.group_generation, t.next_command_seq, t.active_group_id, t.pause_reason, t.revoked_at, t.created_at, t.configuration_fingerprint, t.channel_id, t.hold_reason, t.hold_version
+    AND t.id=$3::uuid AND t.session_id=ch.session_id RETURNING t.id, t.session_id, t.kind, t.resource_id, t.target_epoch, t.config_version, t.roster, t.queue_state, t.control_version, t.group_generation, t.active_group_id, t.pause_reason, t.revoked_at, t.created_at, t.configuration_fingerprint, t.channel_id, t.hold_reason, t.hold_version
 `
 
 type BindCollaborationTargetChannelParams struct {
@@ -49,7 +49,6 @@ func (q *Queries) BindCollaborationTargetChannel(ctx context.Context, arg BindCo
 		&i.QueueState,
 		&i.ControlVersion,
 		&i.GroupGeneration,
-		&i.NextCommandSeq,
 		&i.ActiveGroupID,
 		&i.PauseReason,
 		&i.RevokedAt,
@@ -154,9 +153,39 @@ func (q *Queries) CreateCollaborationBatch(ctx context.Context, arg CreateCollab
 	return i, err
 }
 
+const createCollaborationChannel = `-- name: CreateCollaborationChannel :one
+INSERT INTO collaboration_channel (session_id,root_agent_id) VALUES ($1,$2) RETURNING id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at, next_command_seq
+`
+
+type CreateCollaborationChannelParams struct {
+	SessionID   pgtype.UUID `json:"session_id"`
+	RootAgentID pgtype.UUID `json:"root_agent_id"`
+}
+
+// Existing channels are already locked; insert only a missing destination.
+// The source issue/session fence serializes legitimate channel creators.
+func (q *Queries) CreateCollaborationChannel(ctx context.Context, arg CreateCollaborationChannelParams) (CollaborationChannel, error) {
+	row := q.db.QueryRow(ctx, createCollaborationChannel, arg.SessionID, arg.RootAgentID)
+	var i CollaborationChannel
+	err := row.Scan(
+		&i.ID,
+		&i.SessionID,
+		&i.RootAgentID,
+		&i.QueueState,
+		&i.ControlVersion,
+		&i.GroupGeneration,
+		&i.NextBatchSeq,
+		&i.ActiveGroupID,
+		&i.PauseReason,
+		&i.CreatedAt,
+		&i.NextCommandSeq,
+	)
+	return i, err
+}
+
 const ensureCollaborationChannel = `-- name: EnsureCollaborationChannel :one
 INSERT INTO collaboration_channel (session_id,root_agent_id)
-VALUES ($1,$2) ON CONFLICT(session_id,root_agent_id) DO UPDATE SET root_agent_id=EXCLUDED.root_agent_id RETURNING id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at
+VALUES ($1,$2) ON CONFLICT(session_id,root_agent_id) DO UPDATE SET root_agent_id=EXCLUDED.root_agent_id RETURNING id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at, next_command_seq
 `
 
 type EnsureCollaborationChannelParams struct {
@@ -178,6 +207,7 @@ func (q *Queries) EnsureCollaborationChannel(ctx context.Context, arg EnsureColl
 		&i.ActiveGroupID,
 		&i.PauseReason,
 		&i.CreatedAt,
+		&i.NextCommandSeq,
 	)
 	return i, err
 }
@@ -228,17 +258,11 @@ func (q *Queries) FinishCollaborationBatchInputs(ctx context.Context, arg Finish
 }
 
 const listCollaborationBatchInputs = `-- name: ListCollaborationBatchInputs :many
-SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id FROM collaboration_command WHERE batch_id=$1
-ORDER BY CASE WHEN EXISTS (
-    SELECT 1 FROM collaboration_batch b
-    JOIN collaboration_target t ON t.id=b.effective_target_id
-    WHERE b.id=$1 AND t.kind='agent'
-) THEN seq END,created_at,seq,id
+SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id FROM collaboration_command WHERE batch_id=$1
+ORDER BY seq,id
 `
 
-// Direct-agent batches use their target's enqueue sequence, not transaction time.
-// Mixed/squad batches retain their existing order until channel-wide input
-// sequencing is implemented; their per-target seq values are not comparable.
+// A batch is a staging container until promotion. Only channel seq orders input.
 func (q *Queries) ListCollaborationBatchInputs(ctx context.Context, batchID pgtype.UUID) ([]CollaborationCommand, error) {
 	rows, err := q.db.Query(ctx, listCollaborationBatchInputs, batchID)
 	if err != nil {
@@ -265,6 +289,7 @@ func (q *Queries) ListCollaborationBatchInputs(ctx context.Context, batchID pgty
 			&i.InputEventID,
 			&i.ChannelID,
 			&i.BatchID,
+			&i.GroupID,
 		); err != nil {
 			return nil, err
 		}
@@ -312,8 +337,50 @@ func (q *Queries) ListCollaborationBatches(ctx context.Context, sessionID pgtype
 	return items, nil
 }
 
+const listCollaborationChannelWaitingInputs = `-- name: ListCollaborationChannelWaitingInputs :many
+SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id FROM collaboration_command WHERE channel_id=$1 AND state='waiting' ORDER BY seq,id
+`
+
+func (q *Queries) ListCollaborationChannelWaitingInputs(ctx context.Context, channelID pgtype.UUID) ([]CollaborationCommand, error) {
+	rows, err := q.db.Query(ctx, listCollaborationChannelWaitingInputs, channelID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []CollaborationCommand{}
+	for rows.Next() {
+		var i CollaborationCommand
+		if err := rows.Scan(
+			&i.ID,
+			&i.Seq,
+			&i.AuthorUserID,
+			&i.ParticipantEpoch,
+			&i.AuthorAuthEpoch,
+			&i.LifecycleEpoch,
+			&i.Content,
+			&i.Attachments,
+			&i.State,
+			&i.Reason,
+			&i.CreatedAt,
+			&i.SessionID,
+			&i.TargetID,
+			&i.InputEventID,
+			&i.ChannelID,
+			&i.BatchID,
+			&i.GroupID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listCollaborationChannels = `-- name: ListCollaborationChannels :many
-SELECT id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at FROM collaboration_channel WHERE session_id=$1 ORDER BY id
+SELECT id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at, next_command_seq FROM collaboration_channel WHERE session_id=$1 ORDER BY id
 `
 
 func (q *Queries) ListCollaborationChannels(ctx context.Context, sessionID pgtype.UUID) ([]CollaborationChannel, error) {
@@ -336,6 +403,71 @@ func (q *Queries) ListCollaborationChannels(ctx context.Context, sessionID pgtyp
 			&i.ActiveGroupID,
 			&i.PauseReason,
 			&i.CreatedAt,
+			&i.NextCommandSeq,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listCollaborationGroupInputs = `-- name: ListCollaborationGroupInputs :many
+SELECT group_id, command_id, channel_id, batch_id, seq, consuming_run_id FROM collaboration_group_input WHERE group_id=$1 ORDER BY seq,command_id
+`
+
+// Every consumed association is retained independently of a command's next queue placement.
+func (q *Queries) ListCollaborationGroupInputs(ctx context.Context, groupID pgtype.UUID) ([]CollaborationGroupInput, error) {
+	rows, err := q.db.Query(ctx, listCollaborationGroupInputs, groupID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []CollaborationGroupInput{}
+	for rows.Next() {
+		var i CollaborationGroupInput
+		if err := rows.Scan(
+			&i.GroupID,
+			&i.CommandID,
+			&i.ChannelID,
+			&i.BatchID,
+			&i.Seq,
+			&i.ConsumingRunID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listCollaborationSessionGroupInputs = `-- name: ListCollaborationSessionGroupInputs :many
+SELECT i.group_id, i.command_id, i.channel_id, i.batch_id, i.seq, i.consuming_run_id FROM collaboration_group_input i JOIN collaboration_execution_group g ON g.id=i.group_id
+WHERE g.session_id=$1 ORDER BY i.group_id,i.seq,i.command_id
+`
+
+func (q *Queries) ListCollaborationSessionGroupInputs(ctx context.Context, sessionID pgtype.UUID) ([]CollaborationGroupInput, error) {
+	rows, err := q.db.Query(ctx, listCollaborationSessionGroupInputs, sessionID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []CollaborationGroupInput{}
+	for rows.Next() {
+		var i CollaborationGroupInput
+		if err := rows.Scan(
+			&i.GroupID,
+			&i.CommandID,
+			&i.ChannelID,
+			&i.BatchID,
+			&i.Seq,
+			&i.ConsumingRunID,
 		); err != nil {
 			return nil, err
 		}
@@ -384,7 +516,7 @@ func (q *Queries) LockCollaborationBatches(ctx context.Context, sessionID pgtype
 }
 
 const lockCollaborationChannels = `-- name: LockCollaborationChannels :many
-SELECT id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at FROM collaboration_channel WHERE session_id=$1 ORDER BY id FOR UPDATE
+SELECT id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at, next_command_seq FROM collaboration_channel WHERE session_id=$1 ORDER BY id FOR UPDATE
 `
 
 // Channels are locked before the stable target set and participants/grants.
@@ -409,6 +541,7 @@ func (q *Queries) LockCollaborationChannels(ctx context.Context, sessionID pgtyp
 			&i.ActiveGroupID,
 			&i.PauseReason,
 			&i.CreatedAt,
+			&i.NextCommandSeq,
 		); err != nil {
 			return nil, err
 		}
@@ -459,7 +592,7 @@ func (q *Queries) LockCollaborationWaitingBatches(ctx context.Context, channelID
 const mirrorCollaborationChannelControl = `-- name: MirrorCollaborationChannelControl :many
 UPDATE collaboration_target t SET queue_state=ch.queue_state,pause_reason=ch.pause_reason,
     control_version=ch.control_version,group_generation=ch.group_generation,active_group_id=ch.active_group_id
-FROM collaboration_channel ch WHERE ch.id=$1 AND t.channel_id=ch.id RETURNING t.id, t.session_id, t.kind, t.resource_id, t.target_epoch, t.config_version, t.roster, t.queue_state, t.control_version, t.group_generation, t.next_command_seq, t.active_group_id, t.pause_reason, t.revoked_at, t.created_at, t.configuration_fingerprint, t.channel_id, t.hold_reason, t.hold_version
+FROM collaboration_channel ch WHERE ch.id=$1 AND t.channel_id=ch.id RETURNING t.id, t.session_id, t.kind, t.resource_id, t.target_epoch, t.config_version, t.roster, t.queue_state, t.control_version, t.group_generation, t.active_group_id, t.pause_reason, t.revoked_at, t.created_at, t.configuration_fingerprint, t.channel_id, t.hold_reason, t.hold_version
 `
 
 func (q *Queries) MirrorCollaborationChannelControl(ctx context.Context, id pgtype.UUID) ([]CollaborationTarget, error) {
@@ -482,7 +615,6 @@ func (q *Queries) MirrorCollaborationChannelControl(ctx context.Context, id pgty
 			&i.QueueState,
 			&i.ControlVersion,
 			&i.GroupGeneration,
-			&i.NextCommandSeq,
 			&i.ActiveGroupID,
 			&i.PauseReason,
 			&i.RevokedAt,
@@ -518,9 +650,52 @@ func (q *Queries) MirrorCollaborationChannelPause(ctx context.Context, arg Mirro
 	return err
 }
 
+const moveCollaborationWaitingInput = `-- name: MoveCollaborationWaitingInput :one
+UPDATE collaboration_command c SET channel_id=$1::uuid,batch_id=$2::uuid,seq=$3::bigint
+WHERE c.id=$4::uuid AND c.state='waiting' AND c.group_id IS NULL
+RETURNING c.id, c.seq, c.author_user_id, c.participant_epoch, c.author_auth_epoch, c.lifecycle_epoch, c.content, c.attachments, c.state, c.reason, c.created_at, c.session_id, c.target_id, c.input_event_id, c.channel_id, c.batch_id, c.group_id
+`
+
+type MoveCollaborationWaitingInputParams struct {
+	ChannelID pgtype.UUID `json:"channel_id"`
+	BatchID   pgtype.UUID `json:"batch_id"`
+	Seq       int64       `json:"seq"`
+	CommandID pgtype.UUID `json:"command_id"`
+}
+
+func (q *Queries) MoveCollaborationWaitingInput(ctx context.Context, arg MoveCollaborationWaitingInputParams) (CollaborationCommand, error) {
+	row := q.db.QueryRow(ctx, moveCollaborationWaitingInput,
+		arg.ChannelID,
+		arg.BatchID,
+		arg.Seq,
+		arg.CommandID,
+	)
+	var i CollaborationCommand
+	err := row.Scan(
+		&i.ID,
+		&i.Seq,
+		&i.AuthorUserID,
+		&i.ParticipantEpoch,
+		&i.AuthorAuthEpoch,
+		&i.LifecycleEpoch,
+		&i.Content,
+		&i.Attachments,
+		&i.State,
+		&i.Reason,
+		&i.CreatedAt,
+		&i.SessionID,
+		&i.TargetID,
+		&i.InputEventID,
+		&i.ChannelID,
+		&i.BatchID,
+		&i.GroupID,
+	)
+	return i, err
+}
+
 const pauseCollaborationChannel = `-- name: PauseCollaborationChannel :one
 UPDATE collaboration_channel SET queue_state='paused',control_version=control_version+1,pause_reason=$1::text
-WHERE id=$2::uuid RETURNING id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at
+WHERE id=$2::uuid RETURNING id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at, next_command_seq
 `
 
 type PauseCollaborationChannelParams struct {
@@ -542,13 +717,37 @@ func (q *Queries) PauseCollaborationChannel(ctx context.Context, arg PauseCollab
 		&i.ActiveGroupID,
 		&i.PauseReason,
 		&i.CreatedAt,
+		&i.NextCommandSeq,
 	)
 	return i, err
 }
 
+const rebatchCollaborationWaitingInputs = `-- name: RebatchCollaborationWaitingInputs :execrows
+UPDATE collaboration_command c SET batch_id=$1::uuid
+FROM collaboration_batch old_batch, collaboration_batch new_batch
+WHERE c.id=ANY($2::uuid[]) AND c.state='waiting' AND c.group_id IS NULL
+  AND old_batch.id=c.batch_id AND old_batch.state='waiting' AND old_batch.started_at IS NULL
+  AND new_batch.id=$1::uuid AND new_batch.state='waiting' AND new_batch.started_at IS NULL
+  AND new_batch.session_id=c.session_id AND new_batch.channel_id=c.channel_id
+`
+
+type RebatchCollaborationWaitingInputsParams struct {
+	BatchID    pgtype.UUID   `json:"batch_id"`
+	CommandIds []pgtype.UUID `json:"command_ids"`
+}
+
+// Only unread, unjoined inputs may be moved between staging batches.
+func (q *Queries) RebatchCollaborationWaitingInputs(ctx context.Context, arg RebatchCollaborationWaitingInputsParams) (int64, error) {
+	result, err := q.db.Exec(ctx, rebatchCollaborationWaitingInputs, arg.BatchID, arg.CommandIds)
+	if err != nil {
+		return 0, err
+	}
+	return result.RowsAffected(), nil
+}
+
 const resumeCollaborationChannel = `-- name: ResumeCollaborationChannel :one
 UPDATE collaboration_channel SET queue_state='active',control_version=control_version+1,pause_reason=''
-WHERE id=$1 RETURNING id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at
+WHERE id=$1 RETURNING id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at, next_command_seq
 `
 
 func (q *Queries) ResumeCollaborationChannel(ctx context.Context, id pgtype.UUID) (CollaborationChannel, error) {
@@ -565,6 +764,44 @@ func (q *Queries) ResumeCollaborationChannel(ctx context.Context, id pgtype.UUID
 		&i.ActiveGroupID,
 		&i.PauseReason,
 		&i.CreatedAt,
+		&i.NextCommandSeq,
+	)
+	return i, err
+}
+
+const returnNeverLaunchedCollaborationInput = `-- name: ReturnNeverLaunchedCollaborationInput :one
+UPDATE collaboration_command c SET state='waiting',reason='never_launched',group_id=NULL,batch_id=$1::uuid
+WHERE c.id=$2::uuid AND c.state='in_flight' AND c.group_id=$3::uuid
+RETURNING c.id, c.seq, c.author_user_id, c.participant_epoch, c.author_auth_epoch, c.lifecycle_epoch, c.content, c.attachments, c.state, c.reason, c.created_at, c.session_id, c.target_id, c.input_event_id, c.channel_id, c.batch_id, c.group_id
+`
+
+type ReturnNeverLaunchedCollaborationInputParams struct {
+	BatchID   pgtype.UUID `json:"batch_id"`
+	CommandID pgtype.UUID `json:"command_id"`
+	GroupID   pgtype.UUID `json:"group_id"`
+}
+
+func (q *Queries) ReturnNeverLaunchedCollaborationInput(ctx context.Context, arg ReturnNeverLaunchedCollaborationInputParams) (CollaborationCommand, error) {
+	row := q.db.QueryRow(ctx, returnNeverLaunchedCollaborationInput, arg.BatchID, arg.CommandID, arg.GroupID)
+	var i CollaborationCommand
+	err := row.Scan(
+		&i.ID,
+		&i.Seq,
+		&i.AuthorUserID,
+		&i.ParticipantEpoch,
+		&i.AuthorAuthEpoch,
+		&i.LifecycleEpoch,
+		&i.Content,
+		&i.Attachments,
+		&i.State,
+		&i.Reason,
+		&i.CreatedAt,
+		&i.SessionID,
+		&i.TargetID,
+		&i.InputEventID,
+		&i.ChannelID,
+		&i.BatchID,
+		&i.GroupID,
 	)
 	return i, err
 }

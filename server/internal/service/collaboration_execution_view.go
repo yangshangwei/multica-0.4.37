@@ -28,6 +28,7 @@ type CollaborationExecutionChannelView struct {
 	QueueState      string  `json:"queue_state"`
 	ControlVersion  string  `json:"control_version"`
 	GroupGeneration string  `json:"group_generation"`
+	NextCommandSeq  string  `json:"next_command_seq"`
 	ActiveGroupID   *string `json:"active_group_id"`
 	PauseReason     string  `json:"pause_reason"`
 }
@@ -43,36 +44,45 @@ type CollaborationExecutionTargetView struct {
 	HoldVersion     string                            `json:"hold_version"`
 	Control         CollaborationExecutionControlView `json:"control"`
 	GroupGeneration string                            `json:"group_generation"`
-	NextCommandSeq  string                            `json:"next_command_seq"`
 	ActiveGroupID   *string                           `json:"active_group_id"`
 	PauseReason     string                            `json:"pause_reason"`
 	RevokedAt       *string                           `json:"revoked_at"`
 }
 
 type CollaborationExecutionCommandView struct {
-	ID           string `json:"id"`
-	TargetID     string `json:"target_id"`
-	ChannelID    string `json:"channel_id"`
-	BatchID      string `json:"batch_id"`
-	InputEventID string `json:"input_event_id"`
-	Sequence     string `json:"sequence"`
-	AuthorUserID string `json:"author_user_id"`
-	State        string `json:"state"`
+	ID           string  `json:"id"`
+	TargetID     string  `json:"target_id"`
+	ChannelID    string  `json:"channel_id"`
+	BatchID      string  `json:"batch_id"`
+	GroupID      *string `json:"group_id"`
+	InputEventID string  `json:"input_event_id"`
+	Sequence     string  `json:"sequence"`
+	AuthorUserID string  `json:"author_user_id"`
+	State        string  `json:"state"`
+}
+
+type CollaborationExecutionGroupInputView struct {
+	CommandID      string `json:"command_id"`
+	ChannelID      string `json:"channel_id"`
+	BatchID        string `json:"batch_id"`
+	Sequence       string `json:"sequence"`
+	ConsumingRunID string `json:"consuming_run_id"`
 }
 
 type CollaborationExecutionGroupView struct {
-	ID                string  `json:"id"`
-	TargetID          string  `json:"target_id"`
-	CommandID         string  `json:"command_id"`
-	ChannelID         string  `json:"channel_id"`
-	BatchID           string  `json:"batch_id"`
-	Generation        string  `json:"generation"`
-	TargetEpoch       string  `json:"target_epoch"`
-	ConfigVersion     string  `json:"config_version"`
-	State             string  `json:"state"`
-	ExpansionSealedAt *string `json:"expansion_sealed_at"`
-	ForcedDisposition *string `json:"forced_disposition"`
-	SettledAt         *string `json:"settled_at"`
+	ID                string                                 `json:"id"`
+	TargetID          string                                 `json:"target_id"`
+	CommandID         string                                 `json:"command_id"`
+	ChannelID         string                                 `json:"channel_id"`
+	BatchID           string                                 `json:"batch_id"`
+	Generation        string                                 `json:"generation"`
+	TargetEpoch       string                                 `json:"target_epoch"`
+	ConfigVersion     string                                 `json:"config_version"`
+	State             string                                 `json:"state"`
+	ExpansionSealedAt *string                                `json:"expansion_sealed_at"`
+	ForcedDisposition *string                                `json:"forced_disposition"`
+	SettledAt         *string                                `json:"settled_at"`
+	Inputs            []CollaborationExecutionGroupInputView `json:"inputs"`
 }
 
 type CollaborationExecutionRunView struct {
@@ -97,7 +107,7 @@ type CollaborationExecutionRunView struct {
 }
 
 // CollaborationExecutionView is a read projection, never a grant catalogue or
-// an admission decision. Runtime identities, roster, inputs and tokens stay out.
+// an admission decision. Runtime identities, roster, input bodies and tokens stay out.
 type CollaborationExecutionView struct {
 	ProtocolVersion   int                                 `json:"protocol_version"`
 	IssueID           string                              `json:"issue_id"`
@@ -152,13 +162,17 @@ func (s *CollaborationService) ExecutionView(ctx context.Context, access Collabo
 	if err != nil {
 		return out, err
 	}
-	return projectCollaborationExecution(session, gate, channels, targets, commands, groups, runs)
+	inputs, err := s.Queries.ListCollaborationSessionGroupInputs(ctx, session.ID)
+	if err != nil {
+		return out, err
+	}
+	return projectCollaborationExecution(session, gate, channels, targets, commands, groups, runs, inputs)
 }
 
-func projectCollaborationExecution(session db.CollaborationSession, gate db.CollaborationExecutionGate, channels []db.CollaborationChannel, targets []db.CollaborationTarget, commands []db.CollaborationCommand, groups []db.CollaborationExecutionGroup, runs []db.CollaborationRun) (CollaborationExecutionView, error) {
+func projectCollaborationExecution(session db.CollaborationSession, gate db.CollaborationExecutionGate, channels []db.CollaborationChannel, targets []db.CollaborationTarget, commands []db.CollaborationCommand, groups []db.CollaborationExecutionGroup, runs []db.CollaborationRun, inputs []db.CollaborationGroupInput) (CollaborationExecutionView, error) {
 	invalid := errors.New("collaboration execution identities are unavailable")
 	out := CollaborationExecutionView{
-		ProtocolVersion: 3, IssueID: util.UUIDToString(session.IssueID), SessionID: util.UUIDToString(session.ID),
+		ProtocolVersion: 4, IssueID: util.UUIDToString(session.IssueID), SessionID: util.UUIDToString(session.ID),
 		Availability: "unavailable", UnavailableReason: "shared_runtime_unavailable", TargetSetVersion: strconv.FormatInt(session.TargetSetVersion, 10),
 		Control:       CollaborationExecutionControlView{Scope: "issue", QueueState: session.QueueState, ControlVersion: strconv.FormatInt(session.ControlVersion, 10)},
 		ExecutionGate: CollaborationExecutionGateView{Enabled: gate.Enabled, Epoch: strconv.FormatInt(gate.Epoch, 10)},
@@ -166,12 +180,13 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 		Targets:       make([]CollaborationExecutionTargetView, 0, len(targets)), Commands: make([]CollaborationExecutionCommandView, 0, len(commands)),
 		Groups: make([]CollaborationExecutionGroupView, 0, len(groups)), Runs: make([]CollaborationExecutionRunView, 0, len(runs)),
 	}
-	if !session.ID.Valid || !session.IssueID.Valid || session.TargetSetVersion <= 0 || session.ControlVersion <= 0 || gate.ID != 1 || gate.Epoch <= 0 {
+	if !session.ID.Valid || !session.IssueID.Valid || session.TargetSetVersion <= 0 || session.ControlVersion <= 0 || gate.ID != 1 || gate.Epoch <= 0 ||
+		(session.QueueState != "active" && session.QueueState != "paused" && session.QueueState != "closed") {
 		return CollaborationExecutionView{}, invalid
 	}
 	channelByID := make(map[pgtype.UUID]db.CollaborationChannel, len(channels))
 	for _, channel := range channels {
-		if !channel.ID.Valid || channel.SessionID != session.ID || channel.ControlVersion <= 0 || channel.GroupGeneration < 0 ||
+		if !channel.ID.Valid || channel.SessionID != session.ID || channel.ControlVersion <= 0 || channel.GroupGeneration < 0 || channel.NextCommandSeq <= 0 ||
 			(channel.QueueState != "active" && channel.QueueState != "paused") {
 			return CollaborationExecutionView{}, invalid
 		}
@@ -181,14 +196,16 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 		channelByID[channel.ID] = channel
 		out.Channels = append(out.Channels, CollaborationExecutionChannelView{
 			ID: util.UUIDToString(channel.ID), QueueState: channel.QueueState, ControlVersion: strconv.FormatInt(channel.ControlVersion, 10),
-			GroupGeneration: strconv.FormatInt(channel.GroupGeneration, 10), ActiveGroupID: util.UUIDToPtr(channel.ActiveGroupID), PauseReason: channel.PauseReason,
+			GroupGeneration: strconv.FormatInt(channel.GroupGeneration, 10), NextCommandSeq: strconv.FormatInt(channel.NextCommandSeq, 10), ActiveGroupID: util.UUIDToPtr(channel.ActiveGroupID), PauseReason: channel.PauseReason,
 		})
 	}
 	targetByID := make(map[pgtype.UUID]db.CollaborationTarget, len(targets))
+	targetIdentities := make(map[string]bool, len(targets))
 	for _, target := range targets {
 		if !target.ID.Valid || target.SessionID != session.ID || !target.ResourceID.Valid || target.TargetEpoch <= 0 || target.ConfigVersion <= 0 ||
-			target.ControlVersion <= 0 || target.GroupGeneration < 0 || target.NextCommandSeq <= 0 || target.HoldVersion <= 0 ||
-			(!target.ChannelID.Valid && (target.GroupGeneration != 0 || target.NextCommandSeq != 1 || target.ActiveGroupID.Valid)) {
+			target.ControlVersion <= 0 || target.GroupGeneration < 0 || target.HoldVersion <= 0 ||
+			(!target.ChannelID.Valid && (target.GroupGeneration != 0 || target.ActiveGroupID.Valid)) ||
+			(target.Kind != "agent" && target.Kind != "squad") || (target.QueueState != "active" && target.QueueState != "paused") {
 			return CollaborationExecutionView{}, invalid
 		}
 		if target.HoldReason.Valid && !collaboration.TargetHoldReason(target.HoldReason.String).Valid() {
@@ -204,18 +221,29 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 		if _, exists := targetByID[target.ID]; exists {
 			return CollaborationExecutionView{}, invalid
 		}
+		identity := target.Kind + ":" + util.UUIDToString(target.ResourceID)
+		if targetIdentities[identity] {
+			return CollaborationExecutionView{}, invalid
+		}
+		targetIdentities[identity] = true
 		targetByID[target.ID] = target
 		out.Targets = append(out.Targets, CollaborationExecutionTargetView{
 			ID: util.UUIDToString(target.ID), ChannelID: util.UUIDToPtr(target.ChannelID), Kind: target.Kind, ResourceID: util.UUIDToString(target.ResourceID),
 			TargetEpoch: strconv.FormatInt(target.TargetEpoch, 10), ConfigVersion: strconv.FormatInt(target.ConfigVersion, 10),
 			HoldReason: util.TextToPtr(target.HoldReason), HoldVersion: strconv.FormatInt(target.HoldVersion, 10),
 			Control:         CollaborationExecutionControlView{Scope: "target", QueueState: target.QueueState, ControlVersion: strconv.FormatInt(target.ControlVersion, 10)},
-			GroupGeneration: strconv.FormatInt(target.GroupGeneration, 10), NextCommandSeq: strconv.FormatInt(target.NextCommandSeq, 10),
-			ActiveGroupID: util.UUIDToPtr(target.ActiveGroupID), PauseReason: target.PauseReason, RevokedAt: util.TimestampToPtr(target.RevokedAt),
+			GroupGeneration: strconv.FormatInt(target.GroupGeneration, 10),
+			ActiveGroupID:   util.UUIDToPtr(target.ActiveGroupID), PauseReason: target.PauseReason, RevokedAt: util.TimestampToPtr(target.RevokedAt),
 		})
 	}
 	commandByID := make(map[pgtype.UUID]db.CollaborationCommand, len(commands))
 	batchChannels := make(map[pgtype.UUID]pgtype.UUID)
+	type channelSequence struct {
+		channel pgtype.UUID
+		seq     int64
+	}
+	sequenceOwners := make(map[channelSequence]pgtype.UUID, len(commands))
+	inputTargets := make(map[[2]pgtype.UUID]bool, len(commands))
 	for _, command := range commands {
 		if !command.ID.Valid || command.SessionID != session.ID || command.Seq <= 0 || !command.ChannelID.Valid || !command.BatchID.Valid {
 			return CollaborationExecutionView{}, invalid
@@ -226,21 +254,35 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 		commandByID[command.ID] = command
 
 		target, ok := targetByID[command.TargetID]
-		if !ok || command.ChannelID != target.ChannelID || !command.InputEventID.Valid || !command.AuthorUserID.Valid || command.Seq >= target.NextCommandSeq {
+		channel, channelOK := channelByID[command.ChannelID]
+		if !ok || !target.ChannelID.Valid || !channelOK || !command.InputEventID.Valid || !command.AuthorUserID.Valid || command.Seq >= channel.NextCommandSeq ||
+			((command.State == "waiting" || command.State == "in_flight") && command.ChannelID != target.ChannelID) {
 			return CollaborationExecutionView{}, invalid
 		}
+		switch command.State {
+		case "waiting", "in_flight", "succeeded", "failed", "stopped", "cancelled":
+		default:
+			return CollaborationExecutionView{}, invalid
+		}
+		position := channelSequence{command.ChannelID, command.Seq}
+		inputTarget := [2]pgtype.UUID{command.InputEventID, command.TargetID}
+		if _, exists := sequenceOwners[position]; exists || inputTargets[inputTarget] {
+			return CollaborationExecutionView{}, invalid
+		}
+		sequenceOwners[position], inputTargets[inputTarget] = command.ID, true
 		if channel, exists := batchChannels[command.BatchID]; exists && channel != command.ChannelID {
 			return CollaborationExecutionView{}, invalid
 		}
 		batchChannels[command.BatchID] = command.ChannelID
 		out.Commands = append(out.Commands, CollaborationExecutionCommandView{
 			ID: util.UUIDToString(command.ID), TargetID: util.UUIDToString(command.TargetID), InputEventID: util.UUIDToString(command.InputEventID),
-			ChannelID: util.UUIDToString(command.ChannelID), BatchID: util.UUIDToString(command.BatchID),
+			ChannelID: util.UUIDToString(command.ChannelID), BatchID: util.UUIDToString(command.BatchID), GroupID: util.UUIDToPtr(command.GroupID),
 			Sequence: strconv.FormatInt(command.Seq, 10), AuthorUserID: util.UUIDToString(command.AuthorUserID), State: command.State,
 		})
 	}
 	groupByID := make(map[pgtype.UUID]db.CollaborationExecutionGroup, len(groups))
 	groupByBatch := make(map[pgtype.UUID]db.CollaborationExecutionGroup, len(groups))
+	groupIndexes := make(map[pgtype.UUID]int, len(groups))
 	type channelGeneration struct {
 		channel    pgtype.UUID
 		generation int64
@@ -250,10 +292,12 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 	for _, group := range groups {
 		target, targetOK := targetByID[group.TargetID]
 		command, commandOK := commandByID[group.CommandID]
+		channel, channelOK := channelByID[group.ChannelID]
 		if !group.ID.Valid || group.SessionID != session.ID || !targetOK || !commandOK || command.TargetID != group.TargetID ||
-			!group.ChannelID.Valid || !group.BatchID.Valid || group.ChannelID != target.ChannelID || command.ChannelID != group.ChannelID || command.BatchID != group.BatchID ||
-			group.Generation <= 0 || group.Generation > target.GroupGeneration || group.TargetEpoch <= 0 || group.TargetEpoch > target.TargetEpoch ||
-			group.ConfigVersion <= 0 || group.ConfigVersion > target.ConfigVersion || (!group.SettledAt.Valid && (target.ActiveGroupID != group.ID || group.Generation != target.GroupGeneration)) {
+			!channelOK || !group.BatchID.Valid || group.Generation <= 0 || group.Generation > channel.GroupGeneration || group.TargetEpoch <= 0 || group.TargetEpoch > target.TargetEpoch ||
+			group.ConfigVersion <= 0 || group.ConfigVersion > target.ConfigVersion ||
+			(!group.SettledAt.Valid && (target.ChannelID != group.ChannelID || channel.ActiveGroupID != group.ID || group.Generation != channel.GroupGeneration)) ||
+			(group.ForcedDisposition.Valid && group.ForcedDisposition.String != "stopped" && group.ForcedDisposition.String != "cancelled") {
 			return CollaborationExecutionView{}, invalid
 		}
 		if _, exists := groupByID[group.ID]; exists {
@@ -262,6 +306,10 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 		if _, exists := groupByBatch[group.BatchID]; exists {
 			return CollaborationExecutionView{}, invalid
 		}
+		if channel, exists := batchChannels[group.BatchID]; exists && channel != group.ChannelID {
+			return CollaborationExecutionView{}, invalid
+		}
+		batchChannels[group.BatchID] = group.ChannelID
 		generation := channelGeneration{group.ChannelID, group.Generation}
 		if groupGenerations[generation] || (!group.SettledAt.Valid && activeChannels[group.ChannelID]) {
 			return CollaborationExecutionView{}, invalid
@@ -279,35 +327,19 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 			return CollaborationExecutionView{}, invalid
 		}
 		if terminal != group.SettledAt.Valid ||
-			(terminal && (!group.ExpansionSealedAt.Valid || command.State != group.State || group.ForcedDisposition.Valid && group.ForcedDisposition.String != group.State)) ||
-			(!terminal && command.State != "in_flight") {
+			(terminal && (!group.ExpansionSealedAt.Valid || group.ForcedDisposition.Valid && group.ForcedDisposition.String != group.State)) {
 			return CollaborationExecutionView{}, invalid
 		}
 		groupByID[group.ID] = group
 		groupByBatch[group.BatchID] = group
+		groupIndexes[group.ID] = len(out.Groups)
 		out.Groups = append(out.Groups, CollaborationExecutionGroupView{
 			ID: util.UUIDToString(group.ID), TargetID: util.UUIDToString(group.TargetID), CommandID: util.UUIDToString(group.CommandID),
 			ChannelID: util.UUIDToString(group.ChannelID), BatchID: util.UUIDToString(group.BatchID),
 			Generation: strconv.FormatInt(group.Generation, 10), TargetEpoch: strconv.FormatInt(group.TargetEpoch, 10), ConfigVersion: strconv.FormatInt(group.ConfigVersion, 10),
 			State: group.State, ExpansionSealedAt: util.TimestampToPtr(group.ExpansionSealedAt), ForcedDisposition: util.TextToPtr(group.ForcedDisposition), SettledAt: util.TimestampToPtr(group.SettledAt),
+			Inputs: make([]CollaborationExecutionGroupInputView, 0),
 		})
-	}
-	for _, command := range commands {
-		group, exists := groupByBatch[command.BatchID]
-		if !exists {
-			if command.State != "waiting" && command.State != "cancelled" {
-				return CollaborationExecutionView{}, invalid
-			}
-			continue
-		}
-		expectedState := "in_flight"
-		if group.SettledAt.Valid {
-			expectedState = group.State
-		}
-		// Cancelled waiting inputs retain their batch identity without running.
-		if command.ChannelID != group.ChannelID || command.State != "cancelled" && command.State != expectedState {
-			return CollaborationExecutionView{}, invalid
-		}
 	}
 	for _, channel := range channels {
 		if channel.ActiveGroupID.Valid {
@@ -319,6 +351,8 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 	}
 	runByID := make(map[pgtype.UUID]db.CollaborationRun, len(runs))
 	rootGroups := make(map[pgtype.UUID]bool)
+	runSteps := make(map[string]bool, len(runs))
+	allRunsNeverLaunched := make(map[pgtype.UUID]bool, len(groups))
 	for _, run := range runs {
 		if !run.ID.Valid || run.SessionID != session.ID {
 			return CollaborationExecutionView{}, invalid
@@ -329,13 +363,30 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 		runByID[run.ID] = run
 
 		group, ok := groupByID[run.GroupID]
-		if !ok || group.CommandID != run.CommandID || group.TargetID != run.TargetID || !run.AgentID.Valid || !run.StepKind.Valid || !run.StepKey.Valid ||
+		if !ok || group.CommandID != run.CommandID || group.TargetID != run.TargetID || !run.AgentID.Valid || !run.StepKind.Valid || !run.StepKey.Valid || run.StepKey.String == "" || len(run.StepKey.String) > 128 ||
 			run.ChannelID != group.ChannelID || run.BatchID != group.BatchID ||
 			!run.TargetEpoch.Valid || run.TargetEpoch.Int64 != group.TargetEpoch || !run.ConfigVersion.Valid || run.ConfigVersion.Int64 != group.ConfigVersion {
 			return CollaborationExecutionView{}, invalid
 		}
+		step := util.UUIDToString(run.GroupID) + ":" + run.StepKey.String
+		if runSteps[step] || (run.BusinessOutcome.Valid && run.BusinessOutcome.String != "success" && run.BusinessOutcome.String != "failure") ||
+			(run.ForcedDisposition.Valid && run.ForcedDisposition.String != "stopped" && run.ForcedDisposition.String != "cancelled") {
+			return CollaborationExecutionView{}, invalid
+		}
+		runSteps[step] = true
+		switch run.ProgressState {
+		case "prepared", "dispatched", "preparing", "launch_authorized", "running", "ending", "settled":
+		default:
+			return CollaborationExecutionView{}, invalid
+		}
+		switch run.ProofState {
+		case "unknown", "never_launched_proven", "never_started_proven", "exited_proven":
+		default:
+			return CollaborationExecutionView{}, invalid
+		}
+		provenEnded := collaborationRunProvenEnded(run)
 		if run.SettledAt.Valid != (run.ProgressState == "settled") || (group.SettledAt.Valid && !run.SettledAt.Valid) ||
-			(run.SettledAt.Valid && run.ProofState != "never_launched_proven" && run.ProofState != "never_started_proven" && run.ProofState != "exited_proven") {
+			(run.SettledAt.Valid && !provenEnded) {
 			return CollaborationExecutionView{}, invalid
 		}
 		target := targetByID[run.TargetID]
@@ -355,6 +406,11 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 		default:
 			return CollaborationExecutionView{}, invalid
 		}
+		previous, seen := allRunsNeverLaunched[run.GroupID]
+		if !seen {
+			previous = true
+		}
+		allRunsNeverLaunched[run.GroupID] = previous && provenEnded && run.ProofState == "never_launched_proven"
 		out.Runs = append(out.Runs, CollaborationExecutionRunView{
 			ID: util.UUIDToString(run.ID), CommandID: util.UUIDToString(run.CommandID), TargetID: util.UUIDToString(run.TargetID), GroupID: util.UUIDToString(run.GroupID),
 			ChannelID: util.UUIDToString(run.ChannelID), BatchID: util.UUIDToString(run.BatchID),
@@ -364,8 +420,76 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 			RecordingIncomplete: run.RecordingIncomplete, SettledAt: util.TimestampToPtr(run.SettledAt),
 		})
 	}
+	inputsByGroupCommand := make(map[[2]pgtype.UUID]db.CollaborationGroupInput, len(inputs))
+	type groupSequence struct {
+		group pgtype.UUID
+		seq   int64
+	}
+	groupSequences := make(map[groupSequence]bool, len(inputs))
+	for _, input := range inputs {
+		group, groupOK := groupByID[input.GroupID]
+		command, commandOK := commandByID[input.CommandID]
+		consumer, consumerOK := runByID[input.ConsumingRunID]
+		if !groupOK || !commandOK || input.ChannelID != group.ChannelID || input.BatchID != group.BatchID || input.Seq <= 0 ||
+			input.Seq >= channelByID[group.ChannelID].NextCommandSeq || !consumerOK || consumer.GroupID != group.ID ||
+			(consumer.StepKind.String != "agent" && consumer.StepKind.String != "leader") {
+			return CollaborationExecutionView{}, invalid
+		}
+		target, commandTarget := targetByID[group.TargetID], targetByID[command.TargetID]
+		if command.TargetID != target.ID && (target.Kind != "squad" || commandTarget.Kind != "agent" || commandTarget.ResourceID != consumer.AgentID) {
+			return CollaborationExecutionView{}, invalid
+		}
+		key, sequence := [2]pgtype.UUID{input.GroupID, input.CommandID}, groupSequence{input.GroupID, input.Seq}
+		if _, exists := inputsByGroupCommand[key]; exists || groupSequences[sequence] {
+			return CollaborationExecutionView{}, invalid
+		}
+		position := channelSequence{input.ChannelID, input.Seq}
+		if previous, exists := sequenceOwners[position]; exists && previous != input.CommandID {
+			return CollaborationExecutionView{}, invalid
+		}
+		sequenceOwners[position], groupSequences[sequence], inputsByGroupCommand[key] = input.CommandID, true, input
+		if command.GroupID != group.ID {
+			// This slice only consumes initial root inputs. A returned command
+			// preserves its original membership and needs complete nonlaunch proof.
+			if !group.SettledAt.Valid || group.State == "succeeded" || !allRunsNeverLaunched[group.ID] {
+				return CollaborationExecutionView{}, invalid
+			}
+			if current, exists := groupByID[command.GroupID]; exists && current.ChannelID == group.ChannelID && current.Generation <= group.Generation {
+				return CollaborationExecutionView{}, invalid
+			}
+		}
+		index := groupIndexes[group.ID]
+		out.Groups[index].Inputs = append(out.Groups[index].Inputs, CollaborationExecutionGroupInputView{
+			CommandID: util.UUIDToString(input.CommandID), ChannelID: util.UUIDToString(input.ChannelID), BatchID: util.UUIDToString(input.BatchID),
+			Sequence: strconv.FormatInt(input.Seq, 10), ConsumingRunID: util.UUIDToString(input.ConsumingRunID),
+		})
+	}
 	for _, group := range groups {
-		if group.SettledAt.Valid && !rootGroups[group.ID] {
+		if _, exists := inputsByGroupCommand[[2]pgtype.UUID{group.ID, group.CommandID}]; !exists || !rootGroups[group.ID] {
+			return CollaborationExecutionView{}, invalid
+		}
+	}
+	for _, command := range commands {
+		if !command.GroupID.Valid {
+			if command.State != "waiting" && command.State != "cancelled" {
+				return CollaborationExecutionView{}, invalid
+			}
+			if _, exists := groupByBatch[command.BatchID]; exists && command.State == "waiting" {
+				return CollaborationExecutionView{}, invalid
+			}
+			continue
+		}
+		group, groupOK := groupByID[command.GroupID]
+		input, inputOK := inputsByGroupCommand[[2]pgtype.UUID{command.GroupID, command.ID}]
+		if !groupOK || !inputOK || command.ChannelID != group.ChannelID || command.BatchID != group.BatchID || command.Seq != input.Seq {
+			return CollaborationExecutionView{}, invalid
+		}
+		expected := "in_flight"
+		if group.SettledAt.Valid {
+			expected = group.State
+		}
+		cancelledBeforeLaunch := command.State == "cancelled" && group.SettledAt.Valid && group.State != "succeeded" && allRunsNeverLaunched[group.ID]
+		if command.State != expected && !cancelledBeforeLaunch {
 			return CollaborationExecutionView{}, invalid
 		}
 	}

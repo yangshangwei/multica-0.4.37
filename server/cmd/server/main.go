@@ -662,9 +662,10 @@ func main() {
 	// that cache's version, so an idle runtime could keep returning an empty
 	// claim until the cache TTL expires.
 	taskSvc, autopilotSvc := backgroundServices(h)
-	// Account invalidations must converge even while collaboration creation or
+	// Account and resource invalidations converge even while collaboration creation or
 	// execution is disabled. Reuse the router-owned database/transaction owner.
 	go h.CollaborationAccountReconciler.Run(sweepCtx)
+	go h.CollaborationConfigReconciler.Run(sweepCtx)
 	var taskObservation, cancellationObservation adminWorkerObservation
 	go service.NewAdminOperationService(queries, pool, taskSvc).Run(sweepCtx, cancellationObservation.record)
 	registerAutopilotListeners(bus, autopilotSvc)

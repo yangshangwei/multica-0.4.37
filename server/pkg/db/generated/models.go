@@ -754,6 +754,7 @@ type CollaborationChannel struct {
 	ActiveGroupID   pgtype.UUID        `json:"active_group_id"`
 	PauseReason     string             `json:"pause_reason"`
 	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+	NextCommandSeq  int64              `json:"next_command_seq"`
 }
 
 type CollaborationCommand struct {
@@ -773,6 +774,19 @@ type CollaborationCommand struct {
 	InputEventID     pgtype.UUID        `json:"input_event_id"`
 	ChannelID        pgtype.UUID        `json:"channel_id"`
 	BatchID          pgtype.UUID        `json:"batch_id"`
+	GroupID          pgtype.UUID        `json:"group_id"`
+}
+
+type CollaborationConfigInvalidation struct {
+	ID              pgtype.UUID        `json:"id"`
+	ResourceKind    string             `json:"resource_kind"`
+	ResourceID      pgtype.UUID        `json:"resource_id"`
+	ConfigEpoch     int64              `json:"config_epoch"`
+	Reason          string             `json:"reason"`
+	LastIssueID     pgtype.UUID        `json:"last_issue_id"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+	LastAttemptedAt pgtype.Timestamptz `json:"last_attempted_at"`
+	ReconciledAt    pgtype.Timestamptz `json:"reconciled_at"`
 }
 
 type CollaborationDelegation struct {
@@ -850,6 +864,15 @@ type CollaborationGrant struct {
 	OwnerParticipantEpoch    pgtype.Int8        `json:"owner_participant_epoch"`
 	TargetEpoch              pgtype.Int8        `json:"target_epoch"`
 	ConfigurationFingerprint pgtype.Text        `json:"configuration_fingerprint"`
+}
+
+type CollaborationGroupInput struct {
+	GroupID        pgtype.UUID `json:"group_id"`
+	CommandID      pgtype.UUID `json:"command_id"`
+	ChannelID      pgtype.UUID `json:"channel_id"`
+	BatchID        pgtype.UUID `json:"batch_id"`
+	Seq            int64       `json:"seq"`
+	ConsumingRunID pgtype.UUID `json:"consuming_run_id"`
 }
 
 type CollaborationNotification struct {
@@ -996,7 +1019,6 @@ type CollaborationTarget struct {
 	QueueState               string             `json:"queue_state"`
 	ControlVersion           int64              `json:"control_version"`
 	GroupGeneration          int64              `json:"group_generation"`
-	NextCommandSeq           int64              `json:"next_command_seq"`
 	ActiveGroupID            pgtype.UUID        `json:"active_group_id"`
 	PauseReason              string             `json:"pause_reason"`
 	RevokedAt                pgtype.Timestamptz `json:"revoked_at"`

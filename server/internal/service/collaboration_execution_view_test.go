@@ -15,7 +15,7 @@ import (
 func TestCollaborationExecutionViewRejectsUnboundCurrentIdentity(t *testing.T) {
 	session := db.CollaborationSession{ID: util.MustParseUUID(uuid.NewString()), IssueID: util.MustParseUUID(uuid.NewString()), QueueState: "paused", ControlVersion: 1, TargetSetVersion: 1}
 	gate := db.CollaborationExecutionGate{ID: 1, Epoch: 1}
-	view, err := projectCollaborationExecution(session, gate, nil, nil, nil, nil, nil)
+	view, err := projectCollaborationExecution(session, gate, nil, nil, nil, nil, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -27,11 +27,11 @@ func TestCollaborationExecutionViewRejectsUnboundCurrentIdentity(t *testing.T) {
 		t.Fatalf("current projection must contain explicit collections without obsolete mappings: %s", encoded)
 	}
 	command := db.CollaborationCommand{ID: util.MustParseUUID(uuid.NewString()), SessionID: session.ID, Seq: 1}
-	if _, err := projectCollaborationExecution(session, gate, nil, nil, []db.CollaborationCommand{command}, nil, nil); err == nil {
+	if _, err := projectCollaborationExecution(session, gate, nil, nil, []db.CollaborationCommand{command}, nil, nil, nil); err == nil {
 		t.Fatal("unbound current command must not become an idle projection")
 	}
 	run := db.CollaborationRun{ID: util.MustParseUUID(uuid.NewString()), SessionID: session.ID, CommandID: command.ID, ProgressState: "ending", ProofState: "unknown"}
-	if _, err := projectCollaborationExecution(session, gate, nil, nil, nil, nil, []db.CollaborationRun{run}); err == nil {
+	if _, err := projectCollaborationExecution(session, gate, nil, nil, nil, nil, []db.CollaborationRun{run}, nil); err == nil {
 		t.Fatal("unbound current run must not disappear from proof accounting")
 	}
 }
@@ -40,12 +40,12 @@ func TestCollaborationExecutionViewPreservesBatchAndChannelIdentity(t *testing.T
 	session := db.CollaborationSession{ID: util.MustParseUUID(uuid.NewString()), IssueID: util.MustParseUUID(uuid.NewString()), QueueState: "paused", ControlVersion: 1, TargetSetVersion: 1}
 	gate := db.CollaborationExecutionGate{ID: 1, Epoch: 1}
 	channelID, batchID, groupID := util.MustParseUUID(uuid.NewString()), util.MustParseUUID(uuid.NewString()), util.MustParseUUID(uuid.NewString())
-	channel := db.CollaborationChannel{ID: channelID, SessionID: session.ID, QueueState: "paused", ControlVersion: 1, GroupGeneration: 1, ActiveGroupID: groupID}
+	channel := db.CollaborationChannel{ID: channelID, SessionID: session.ID, QueueState: "paused", ControlVersion: 1, GroupGeneration: 1, NextCommandSeq: 3, ActiveGroupID: groupID}
 	target := db.CollaborationTarget{ID: util.MustParseUUID(uuid.NewString()), SessionID: session.ID, ChannelID: channelID,
 		Kind: "agent", ResourceID: util.MustParseUUID(uuid.NewString()), TargetEpoch: 1, ConfigVersion: 1, ControlVersion: 1,
-		QueueState: "paused", GroupGeneration: 1, NextCommandSeq: 3, ActiveGroupID: groupID, HoldVersion: 1}
+		QueueState: "paused", GroupGeneration: 1, ActiveGroupID: groupID, HoldVersion: 1}
 	first := db.CollaborationCommand{ID: util.MustParseUUID(uuid.NewString()), SessionID: session.ID, TargetID: target.ID,
-		ChannelID: channelID, BatchID: batchID, InputEventID: util.MustParseUUID(uuid.NewString()), AuthorUserID: util.MustParseUUID(uuid.NewString()), Seq: 1, State: "in_flight"}
+		ChannelID: channelID, BatchID: batchID, GroupID: groupID, InputEventID: util.MustParseUUID(uuid.NewString()), AuthorUserID: util.MustParseUUID(uuid.NewString()), Seq: 1, State: "in_flight"}
 	second := first
 	second.ID, second.InputEventID, second.Seq = util.MustParseUUID(uuid.NewString()), util.MustParseUUID(uuid.NewString()), 2
 	group := db.CollaborationExecutionGroup{ID: groupID, SessionID: session.ID, TargetID: target.ID, CommandID: first.ID,
@@ -55,8 +55,12 @@ func TestCollaborationExecutionViewPreservesBatchAndChannelIdentity(t *testing.T
 		StepKind: pgtype.Text{String: "agent", Valid: true}, StepKey: pgtype.Text{String: "root", Valid: true},
 		TargetEpoch: pgtype.Int8{Int64: 1, Valid: true}, ConfigVersion: pgtype.Int8{Int64: 1, Valid: true},
 		ProgressState: "running", ProofState: "unknown"}
+	inputs := []db.CollaborationGroupInput{
+		{GroupID: groupID, CommandID: first.ID, ChannelID: channelID, BatchID: batchID, Seq: first.Seq, ConsumingRunID: run.ID},
+		{GroupID: groupID, CommandID: second.ID, ChannelID: channelID, BatchID: batchID, Seq: second.Seq, ConsumingRunID: run.ID},
+	}
 	project := func(commands []db.CollaborationCommand, targets []db.CollaborationTarget) (CollaborationExecutionView, error) {
-		return projectCollaborationExecution(session, gate, []db.CollaborationChannel{channel}, targets, commands, []db.CollaborationExecutionGroup{group}, []db.CollaborationRun{run})
+		return projectCollaborationExecution(session, gate, []db.CollaborationChannel{channel}, targets, commands, []db.CollaborationExecutionGroup{group}, []db.CollaborationRun{run}, inputs)
 	}
 	view, err := project([]db.CollaborationCommand{first, second}, []db.CollaborationTarget{target})
 	if err != nil {
@@ -87,7 +91,7 @@ func TestCollaborationExecutionViewPreservesBatchAndChannelIdentity(t *testing.T
 	if err = json.Unmarshal(encoded, &wire); err != nil {
 		t.Fatal(err)
 	}
-	if wire.ProtocolVersion != 3 || len(wire.Commands) != 2 || len(wire.Groups) != 1 ||
+	if wire.ProtocolVersion != 4 || len(wire.Commands) != 2 || len(wire.Groups) != 1 ||
 		wire.Targets[0].ChannelID != util.UUIDToString(channelID) || wire.Commands[1].ChannelID != util.UUIDToString(channelID) ||
 		wire.Commands[1].BatchID != wire.Groups[0].BatchID || wire.Groups[0].BatchID != util.UUIDToString(batchID) ||
 		len(wire.Runs) != 1 || wire.Runs[0].ChannelID != util.UUIDToString(channelID) || wire.Runs[0].BatchID != util.UUIDToString(batchID) {
@@ -109,7 +113,8 @@ func TestCollaborationExecutionViewPreservesBatchAndChannelIdentity(t *testing.T
 	}
 	cancelled := second
 	cancelled.State = "cancelled"
-	if _, err := project([]db.CollaborationCommand{first, cancelled}, []db.CollaborationTarget{target}); err != nil {
+	cancelled.GroupID = pgtype.UUID{}
+	if _, err := projectCollaborationExecution(session, gate, []db.CollaborationChannel{channel}, []db.CollaborationTarget{target}, []db.CollaborationCommand{first, cancelled}, []db.CollaborationExecutionGroup{group}, []db.CollaborationRun{run}, inputs[:1]); err != nil {
 		t.Fatalf("cancelled waiting input must retain its batch without blocking the other input: %v", err)
 	}
 	for _, field := range []string{"channel", "batch", "proof", "parent"} {
@@ -126,7 +131,7 @@ func TestCollaborationExecutionViewPreservesBatchAndChannelIdentity(t *testing.T
 			case "parent":
 				wrong.ParentRunID = util.MustParseUUID(uuid.NewString())
 			}
-			if _, err := projectCollaborationExecution(session, gate, []db.CollaborationChannel{channel}, []db.CollaborationTarget{target}, []db.CollaborationCommand{first, second}, []db.CollaborationExecutionGroup{group}, []db.CollaborationRun{wrong}); err == nil {
+			if _, err := projectCollaborationExecution(session, gate, []db.CollaborationChannel{channel}, []db.CollaborationTarget{target}, []db.CollaborationCommand{first, second}, []db.CollaborationExecutionGroup{group}, []db.CollaborationRun{wrong}, inputs); err == nil {
 				t.Fatalf("run with invalid %s became readable", field)
 			}
 		})
@@ -141,10 +146,12 @@ func TestCollaborationExecutionViewPreservesBatchAndChannelIdentity(t *testing.T
 		finishedGroup.ExpansionSealedAt = finishedGroup.SettledAt
 		finishedRun.ProgressState, finishedRun.ProofState = "settled", "exited_proven"
 		finishedRun.SettledAt = finishedGroup.SettledAt
-		if _, err := projectCollaborationExecution(session, gate, []db.CollaborationChannel{finishedChannel}, []db.CollaborationTarget{finishedTarget}, []db.CollaborationCommand{finishedInput, cancelled}, []db.CollaborationExecutionGroup{finishedGroup}, []db.CollaborationRun{finishedRun}); err != nil {
+		finishedRun.AuthorizedAttemptSeq, finishedRun.StartedAt = 1, finishedGroup.SettledAt
+		finishedRun.SealedAttemptSeq = pgtype.Int8{Int64: 1, Valid: true}
+		if _, err := projectCollaborationExecution(session, gate, []db.CollaborationChannel{finishedChannel}, []db.CollaborationTarget{finishedTarget}, []db.CollaborationCommand{finishedInput, cancelled}, []db.CollaborationExecutionGroup{finishedGroup}, []db.CollaborationRun{finishedRun}, inputs[:1]); err != nil {
 			t.Fatalf("settled batch with a cancelled waiting input was rejected: %v", err)
 		}
-		if _, err := projectCollaborationExecution(session, gate, []db.CollaborationChannel{finishedChannel}, []db.CollaborationTarget{finishedTarget}, []db.CollaborationCommand{finishedInput, cancelled}, []db.CollaborationExecutionGroup{finishedGroup}, nil); err == nil {
+		if _, err := projectCollaborationExecution(session, gate, []db.CollaborationChannel{finishedChannel}, []db.CollaborationTarget{finishedTarget}, []db.CollaborationCommand{finishedInput, cancelled}, []db.CollaborationExecutionGroup{finishedGroup}, nil, inputs[:1]); err == nil {
 			t.Fatal("settled group lost its root run and terminal proof")
 		}
 	})
@@ -155,17 +162,17 @@ func TestCollaborationExecutionViewAllowsNullChannelOnlyBeforeInput(t *testing.T
 	gate := db.CollaborationExecutionGate{ID: 1, Epoch: 1}
 	target := db.CollaborationTarget{ID: util.MustParseUUID(uuid.NewString()), SessionID: session.ID,
 		Kind: "agent", ResourceID: util.MustParseUUID(uuid.NewString()), TargetEpoch: 1, ConfigVersion: 1,
-		ControlVersion: 1, QueueState: "paused", NextCommandSeq: 1, HoldVersion: 1}
-	view, err := projectCollaborationExecution(session, gate, nil, []db.CollaborationTarget{target}, nil, nil, nil)
+		ControlVersion: 1, QueueState: "paused", HoldVersion: 1}
+	view, err := projectCollaborationExecution(session, gate, nil, []db.CollaborationTarget{target}, nil, nil, nil, nil)
 	if err != nil || len(view.Targets) != 1 || view.Targets[0].ChannelID != nil {
 		t.Fatalf("unbound target must expose an explicit null channel: %v", err)
 	}
 	encoded, err := json.Marshal(view)
 	if err != nil || !strings.Contains(string(encoded), `"channel_id":null`) {
-		t.Fatal("unbound channel was omitted from the v3 wire")
+		t.Fatal("unbound channel was omitted from the v4 wire")
 	}
-	target.NextCommandSeq = 2
-	if _, err := projectCollaborationExecution(session, gate, nil, []db.CollaborationTarget{target}, nil, nil, nil); err == nil {
+	target.GroupGeneration = 1
+	if _, err := projectCollaborationExecution(session, gate, nil, []db.CollaborationTarget{target}, nil, nil, nil, nil); err == nil {
 		t.Fatal("target with input history silently lost its channel")
 	}
 }
@@ -173,16 +180,16 @@ func TestCollaborationExecutionViewAllowsNullChannelOnlyBeforeInput(t *testing.T
 func TestCollaborationExecutionViewKeepsHoldsIndependentAndRequiresChannelFacts(t *testing.T) {
 	session := db.CollaborationSession{ID: util.MustParseUUID(uuid.NewString()), IssueID: util.MustParseUUID(uuid.NewString()), QueueState: "active", ControlVersion: 1, TargetSetVersion: 2}
 	gate := db.CollaborationExecutionGate{ID: 1, Epoch: 9223372036854775807, Enabled: false}
-	channel := db.CollaborationChannel{ID: util.MustParseUUID(uuid.NewString()), SessionID: session.ID, QueueState: "active", ControlVersion: 9007199254740993}
+	channel := db.CollaborationChannel{ID: util.MustParseUUID(uuid.NewString()), SessionID: session.ID, QueueState: "active", ControlVersion: 9007199254740993, NextCommandSeq: 1}
 	target := db.CollaborationTarget{ID: util.MustParseUUID(uuid.NewString()), SessionID: session.ID, ChannelID: channel.ID,
 		Kind: "agent", ResourceID: util.MustParseUUID(uuid.NewString()), TargetEpoch: 1, ConfigVersion: 1, QueueState: "active",
-		ControlVersion: channel.ControlVersion, NextCommandSeq: 1, HoldVersion: 9007199254740993}
+		ControlVersion: channel.ControlVersion, HoldVersion: 9007199254740993}
 	held := target
 	held.ID, held.Kind, held.ResourceID = util.MustParseUUID(uuid.NewString()), "squad", util.MustParseUUID(uuid.NewString())
 	held.HoldReason, held.HoldVersion = pgtype.Text{String: "grant_required", Valid: true}, 9223372036854775807
 	retained := channel
 	retained.ID, retained.QueueState, retained.PauseReason = util.MustParseUUID(uuid.NewString()), "paused", "participant_stop"
-	view, err := projectCollaborationExecution(session, gate, []db.CollaborationChannel{channel, retained}, []db.CollaborationTarget{target, held}, nil, nil, nil)
+	view, err := projectCollaborationExecution(session, gate, []db.CollaborationChannel{channel, retained}, []db.CollaborationTarget{target, held}, nil, nil, nil, nil)
 	if err != nil || len(view.Channels) != 2 || len(view.Targets) != 2 || view.Targets[0].HoldReason != nil || view.Targets[1].HoldReason == nil ||
 		*view.Targets[1].HoldReason != "grant_required" || view.Targets[1].HoldVersion != "9223372036854775807" || view.ExecutionGate.Epoch != "9223372036854775807" || view.ExecutionGate.Enabled {
 		t.Fatalf("hold, retained channel or exact gate facts were lost: %+v, %v", view, err)
@@ -214,7 +221,7 @@ func TestCollaborationExecutionViewKeepsHoldsIndependentAndRequiresChannelFacts(
 			case "retained_group":
 				channels[1].ActiveGroupID = util.MustParseUUID(uuid.NewString())
 			}
-			if _, err := projectCollaborationExecution(session, changedGate, channels, targets, nil, nil, nil); err == nil {
+			if _, err := projectCollaborationExecution(session, changedGate, channels, targets, nil, nil, nil, nil); err == nil {
 				t.Fatalf("invalid %s was accepted", field)
 			}
 		})

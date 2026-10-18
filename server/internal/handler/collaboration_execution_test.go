@@ -16,10 +16,12 @@ import (
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/testutil"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
 type collaborationExecutionFixtureIDs struct {
 	issue, session, target, squad, member string
+	squadChannel, squadGroup              string
 }
 
 func collaborationExecutionReadFixture(t *testing.T) collaborationExecutionFixtureIDs {
@@ -42,7 +44,7 @@ func collaborationExecutionReadFixture(t *testing.T) collaborationExecutionFixtu
 		}
 		channel := dbfx.Insert(t, "collaboration_channel", testutil.Cols{
 			"session_id": sessionID, "root_agent_id": agent, "group_generation": 1,
-			"control_version": int64(9007199254740995), "next_batch_seq": 2, "pause_reason": "participant_stop",
+			"control_version": int64(9007199254740995), "next_batch_seq": 2, "next_command_seq": int64(9007199254740994), "pause_reason": "participant_stop",
 		})
 		var holdReason any
 		if kind == "squad" {
@@ -51,7 +53,7 @@ func collaborationExecutionReadFixture(t *testing.T) collaborationExecutionFixtu
 		target := dbfx.Insert(t, "collaboration_target", testutil.Cols{
 			"session_id": sessionID, "channel_id": channel, "kind": kind, "resource_id": resourceID, "roster": roster,
 			"target_epoch": int64(9007199254740993), "config_version": int64(9007199254740993),
-			"control_version": int64(9007199254740995), "next_command_seq": int64(9007199254740994), "pause_reason": "participant_stop",
+			"control_version": int64(9007199254740995), "pause_reason": "participant_stop",
 			"hold_reason": holdReason, "hold_version": int64(9007199254740993),
 		})
 		batch := dbfx.Insert(t, "collaboration_batch", testutil.Cols{
@@ -62,7 +64,7 @@ func collaborationExecutionReadFixture(t *testing.T) collaborationExecutionFixtu
 			"session_id": sessionID, "target_id": target, "input_event_id": inputEvent, "seq": int64(9007199254740993),
 			"channel_id": channel, "batch_id": batch,
 			"author_user_id": testUserID, "participant_epoch": 1, "author_auth_epoch": 1, "lifecycle_epoch": 1,
-			"content": "PRIVATE_COMMAND_INPUT", "state": "in_flight",
+			"content": "PRIVATE_COMMAND_INPUT", "state": "waiting",
 		})
 		group := dbfx.Insert(t, "collaboration_execution_group", testutil.Cols{
 			"session_id": sessionID, "target_id": target, "command_id": command, "generation": 1,
@@ -72,6 +74,7 @@ func collaborationExecutionReadFixture(t *testing.T) collaborationExecutionFixtu
 		dbfx.Exec(t, `UPDATE collaboration_target SET group_generation=1,active_group_id=$2 WHERE id=$1`, target, group)
 		dbfx.Exec(t, `UPDATE collaboration_channel SET active_group_id=$2 WHERE id=$1`, channel, group)
 		dbfx.Exec(t, `UPDATE collaboration_batch SET root_command_id=$2,group_id=$3 WHERE id=$1`, batch, command, group)
+		dbfx.Exec(t, `UPDATE collaboration_command SET group_id=$2,state='in_flight' WHERE id=$1`, command, group)
 		rootKind := "agent"
 		if kind == "squad" {
 			rootKind = "leader"
@@ -89,12 +92,19 @@ func collaborationExecutionReadFixture(t *testing.T) collaborationExecutionFixtu
 			run["settled_at"], run["sealed_attempt_seq"], run["forced_disposition"] = time.Now(), 1, nil
 		}
 		root := dbfx.Insert(t, "collaboration_run", run)
+		dbfx.InsertNoID(t, "collaboration_group_input", testutil.Cols{
+			"group_id": group, "command_id": command, "channel_id": channel, "batch_id": batch,
+			"seq": int64(9007199254740993), "consuming_run_id": root,
+		}, "group_id=$1 AND command_id=$2", group, command)
+		// Retained membership may be removed only after its synthetic group.
+		dbfx.Cleanup(t, `DELETE FROM collaboration_execution_group WHERE id=$1`, group)
 		if kind == "squad" {
 			run["step_key"], run["step_kind"], run["parent_run_id"], run["agent_id"] = "member-1", "member", root, uuid.NewString()
 			run["progress_state"], run["proof_state"], run["business_outcome"] = "ending", "unknown", nil
 			run["settled_at"], run["sealed_attempt_seq"], run["forced_disposition"], run["recording_incomplete"] = nil, nil, "stopped", true
 			ids.member = dbfx.Insert(t, "collaboration_run", run)
 			ids.squad = target
+			ids.squadChannel, ids.squadGroup = channel, group
 		} else {
 			ids.target = target
 		}
@@ -111,7 +121,7 @@ func TestCollaborationExecutionHTTPProjection(t *testing.T) {
 	var out CollaborationIssueResponse
 	response := testutil.Call(t, testHandler.GetCollaborationIssue, r).Want(http.StatusOK).JSON(&out)
 	execution := out.Execution
-	if execution.ProtocolVersion != 3 || execution.IssueID != ids.issue || execution.SessionID != ids.session || execution.TargetSetVersion != "9007199254740999" ||
+	if execution.ProtocolVersion != 4 || execution.IssueID != ids.issue || execution.SessionID != ids.session || execution.TargetSetVersion != "9007199254740999" ||
 		execution.Control.Scope != "issue" || execution.Control.ControlVersion != out.Session.ControlVersion || execution.Control.QueueState != out.Session.QueueState {
 		t.Fatalf("execution did not carry the exact issue/control snapshot: %+v", execution)
 	}
@@ -128,6 +138,11 @@ func TestCollaborationExecutionHTTPProjection(t *testing.T) {
 		t.Fatalf("typed targets or squad members were lost: %+v", execution)
 	}
 	channels := make(map[string]string)
+	for _, channel := range execution.Channels {
+		if channel.NextCommandSeq != "9007199254740994" {
+			t.Fatalf("channel FIFO counter lost precision: %+v", channel)
+		}
+	}
 	for _, target := range execution.Targets {
 		if target.Control.Scope != "target" || target.ConfigVersion != "9007199254740993" || target.HoldVersion != "9007199254740993" || target.Control.ControlVersion != "9007199254740995" || target.GroupGeneration != "1" || target.ActiveGroupID == nil || target.ChannelID == nil {
 			t.Fatalf("invalid target scope/version: %+v", target)
@@ -138,12 +153,16 @@ func TestCollaborationExecutionHTTPProjection(t *testing.T) {
 		channels[target.ID] = *target.ChannelID
 	}
 	for _, command := range execution.Commands {
-		if command.Sequence != "9007199254740993" || command.AuthorUserID != testUserID || command.ChannelID != channels[command.TargetID] || command.BatchID == "" {
+		if command.Sequence != "9007199254740993" || command.AuthorUserID != testUserID || command.ChannelID != channels[command.TargetID] || command.BatchID == "" || command.GroupID == nil {
 			t.Fatalf("command lost sequence, author or batch identity: %+v", command)
 		}
 	}
 	groups := make(map[string]service.CollaborationExecutionGroupView)
 	for _, group := range execution.Groups {
+		if len(group.Inputs) != 1 || group.Inputs[0].CommandID != group.CommandID || group.Inputs[0].ChannelID != group.ChannelID ||
+			group.Inputs[0].BatchID != group.BatchID || group.Inputs[0].Sequence != "9007199254740993" || group.Inputs[0].ConsumingRunID == "" {
+			t.Fatalf("group lost its original consumed input: %+v", group)
+		}
 		groups[group.ID] = group
 	}
 	memberFound := false
@@ -196,14 +215,64 @@ func TestCollaborationExecutionHTTPEmptyCollections(t *testing.T) {
 	}
 }
 
+func TestCollaborationExecutionHTTPRetainsHistoryAfterTargetMoves(t *testing.T) {
+	ids := collaborationExecutionReadFixture(t)
+	destination := dbfx.Insert(t, "collaboration_channel", testutil.Cols{
+		"session_id": ids.session, "root_agent_id": uuid.NewString(), "queue_state": "paused", "control_version": 1,
+	})
+	dbfx.Exec(t, `UPDATE collaboration_run SET progress_state='settled',proof_state='exited_proven',
+		sealed_attempt_seq=authorized_attempt_seq,settled_at=now() WHERE group_id=$1`, ids.squadGroup)
+	dbfx.Exec(t, `UPDATE collaboration_execution_group SET state='stopped',settled_at=now() WHERE id=$1`, ids.squadGroup)
+	dbfx.Exec(t, `UPDATE collaboration_command SET state='stopped' WHERE group_id=$1`, ids.squadGroup)
+	dbfx.Exec(t, `UPDATE collaboration_channel SET active_group_id=NULL WHERE id=$1`, ids.squadChannel)
+	dbfx.Exec(t, `UPDATE collaboration_target SET config_version=config_version+1,target_epoch=target_epoch+1,
+		hold_reason='switch_hold',hold_version=hold_version+1 WHERE id=$1`, ids.squad)
+	if _, err := testHandler.Queries.BindCollaborationTargetChannel(t.Context(), db.BindCollaborationTargetChannelParams{
+		SessionID: parseUUID(ids.session), TargetID: parseUUID(ids.squad), ChannelID: parseUUID(destination),
+	}); err != nil {
+		t.Fatal(err)
+	}
+	var out CollaborationIssueResponse
+	testutil.Call(t, testHandler.GetCollaborationIssue, collaborationFieldsReadRequest(ids.issue, testUserID, "")).Want(http.StatusOK).JSON(&out)
+	var targetFound, groupFound bool
+	for _, target := range out.Execution.Targets {
+		if target.ID == ids.squad {
+			targetFound = target.ChannelID != nil && *target.ChannelID == destination && target.GroupGeneration == "0" && target.HoldReason != nil && *target.HoldReason == "switch_hold"
+		}
+	}
+	for _, group := range out.Execution.Groups {
+		if group.ID == ids.squadGroup {
+			groupFound = group.ChannelID == ids.squadChannel && group.State == "stopped" && group.SettledAt != nil && len(group.Inputs) == 1 && group.Inputs[0].ChannelID == group.ChannelID
+		}
+	}
+	if !targetFound || !groupFound || len(out.Execution.Channels) != 3 {
+		t.Fatalf("new target channel replaced historical execution identity: %+v", out.Execution)
+	}
+	// Inject corrupt storage output: the database also prevents rewriting this
+	// retained membership. A same-group member cannot attest root consumption.
+	scoped := *testHandler
+	scoped.TxStarter = &collaborationExecutionReadStarter{TxStarter: testHandler.TxStarter, rewriteQuery: func(sql string) string {
+		if !strings.Contains(sql, "-- name: ListCollaborationSessionGroupInputs") {
+			return sql
+		}
+		return strings.Replace(sql, "i.consuming_run_id", "CASE WHEN i.group_id='"+ids.squadGroup+"'::uuid THEN '"+ids.member+"'::uuid ELSE i.consuming_run_id END", 1)
+	}}
+	refused := testutil.Call(t, scoped.GetCollaborationIssue, collaborationFieldsReadRequest(ids.issue, testUserID, "")).Want(http.StatusServiceUnavailable)
+	if refused.Map()["code"] != "collaboration_unavailable" || strings.Contains(refused.Body.String(), "PRIVATE_") || strings.Contains(refused.Body.String(), `"execution"`) {
+		t.Fatal("corrupt consumed membership exposed partial history or private diagnostics")
+	}
+}
+
 type collaborationExecutionReadStarter struct {
 	service.TxStarter
-	beforeQuery func(context.Context, string) error
+	beforeQuery  func(context.Context, string) error
+	rewriteQuery func(string) string
 }
 
 type collaborationExecutionReadTx struct {
 	pgx.Tx
-	beforeQuery func(context.Context, string) error
+	beforeQuery  func(context.Context, string) error
+	rewriteQuery func(string) string
 }
 
 func (s *collaborationExecutionReadStarter) Begin(ctx context.Context) (pgx.Tx, error) {
@@ -211,12 +280,17 @@ func (s *collaborationExecutionReadStarter) Begin(ctx context.Context) (pgx.Tx, 
 	if err != nil {
 		return nil, err
 	}
-	return &collaborationExecutionReadTx{Tx: tx, beforeQuery: s.beforeQuery}, nil
+	return &collaborationExecutionReadTx{Tx: tx, beforeQuery: s.beforeQuery, rewriteQuery: s.rewriteQuery}, nil
 }
 
 func (tx *collaborationExecutionReadTx) Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error) {
-	if err := tx.beforeQuery(ctx, sql); err != nil {
-		return nil, err
+	if tx.beforeQuery != nil {
+		if err := tx.beforeQuery(ctx, sql); err != nil {
+			return nil, err
+		}
+	}
+	if tx.rewriteQuery != nil {
+		sql = tx.rewriteQuery(sql)
 	}
 	return tx.Tx.Query(ctx, sql, args...)
 }
@@ -283,15 +357,19 @@ func TestCollaborationExecutionHTTPUsesAuthorizedSnapshot(t *testing.T) {
 
 func TestCollaborationExecutionHTTPReadFailureIsUnavailable(t *testing.T) {
 	issue := collaborationBoundaryIssue(t, testWorkspaceID)
-	scoped := *testHandler
-	scoped.TxStarter = &collaborationExecutionReadStarter{TxStarter: testHandler.TxStarter, beforeQuery: func(_ context.Context, sql string) error {
-		if strings.Contains(sql, "-- name: ListCollaborationRuns") {
-			return errors.New("PRIVATE_EXECUTION_STORAGE_FAILURE")
-		}
-		return nil
-	}}
-	response := testutil.Call(t, scoped.GetCollaborationIssue, collaborationFieldsReadRequest(issue, testUserID, "")).Want(http.StatusServiceUnavailable)
-	if response.Map()["code"] != "collaboration_unavailable" || strings.Contains(response.Body.String(), "PRIVATE_") || strings.Contains(response.Body.String(), `"targets"`) {
-		t.Fatal("failed execution read returned partial idle data or private diagnostics")
+	for _, query := range []string{"ListCollaborationRuns", "ListCollaborationSessionGroupInputs"} {
+		t.Run(query, func(t *testing.T) {
+			scoped := *testHandler
+			scoped.TxStarter = &collaborationExecutionReadStarter{TxStarter: testHandler.TxStarter, beforeQuery: func(_ context.Context, sql string) error {
+				if strings.Contains(sql, "-- name: "+query) {
+					return errors.New("PRIVATE_EXECUTION_STORAGE_FAILURE")
+				}
+				return nil
+			}}
+			response := testutil.Call(t, scoped.GetCollaborationIssue, collaborationFieldsReadRequest(issue, testUserID, "")).Want(http.StatusServiceUnavailable)
+			if response.Map()["code"] != "collaboration_unavailable" || strings.Contains(response.Body.String(), "PRIVATE_") || strings.Contains(response.Body.String(), `"targets"`) {
+				t.Fatal("failed execution read returned partial idle data or private diagnostics")
+			}
+		})
 	}
 }

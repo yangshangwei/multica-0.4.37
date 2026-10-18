@@ -75,17 +75,15 @@ func TestCollaborationDirectBatchClaimKeepsEnqueueOrderAcrossTransactions(t *tes
 	}
 }
 
-func TestCollaborationMixedBatchKeepsExistingInputOrder(t *testing.T) {
+func TestCollaborationMixedBatchUsesChannelInputOrder(t *testing.T) {
 	f := newCollaborationQueueFixture(t)
 	squad, _ := seedQueueSquad(t, f, false)
 	first := f.submit(t, f.creator, "first direct input")
 	second := f.submit(t, f.handler, "second direct input")
 	third := submitTarget(t, f, squad.ID, f.creator, "first squad input", pgtype.UUID{})
-	if first.BatchID != second.BatchID || second.BatchID != third.BatchID || second.CommandSequence != 2 || third.CommandSequence != 1 {
-		t.Fatal("expected a mixed batch with independent target sequence counters")
+	if first.BatchID != second.BatchID || second.BatchID != third.BatchID || second.CommandSequence != 2 || third.CommandSequence != 3 {
+		t.Fatal("expected a mixed batch with one channel sequence")
 	}
-	// M09 changes direct-agent batches only. A target's sequence must not sort
-	// a mixed batch globally; lane-wide FIFO remains a separate implementation.
 	inputs, err := f.svc.Queries.ListCollaborationBatchInputs(f.ctx, first.BatchID)
 	if err != nil {
 		t.Fatal(err)
@@ -95,7 +93,7 @@ func TestCollaborationMixedBatchKeepsExistingInputOrder(t *testing.T) {
 	}
 	for i, command := range []pgtype.UUID{first.CommandID, second.CommandID, third.CommandID} {
 		if inputs[i].ID != command {
-			t.Errorf("mixed input %d reordered across independent target sequences", i)
+			t.Errorf("mixed input %d did not retain channel enqueue order", i)
 		}
 	}
 }

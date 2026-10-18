@@ -11,6 +11,7 @@ const channel = z.object({
   queue_state: z.enum(["paused", "active"]),
   control_version: positiveVersion,
   group_generation: nonnegativeVersion,
+  next_command_seq: positiveVersion,
   active_group_id: uuid.nullable(),
   pause_reason: z.string(),
 });
@@ -26,7 +27,6 @@ const target = z.object({
   hold_version: positiveVersion,
   control: z.object({ scope: z.literal("target"), queue_state: z.enum(["paused", "active"]), control_version: positiveVersion }),
   group_generation: nonnegativeVersion,
-  next_command_seq: positiveVersion,
   active_group_id: uuid.nullable(),
   pause_reason: z.string(),
   revoked_at: timestamp,
@@ -37,10 +37,21 @@ const command = z.object({
   target_id: uuid,
   channel_id: uuid,
   batch_id: uuid,
+  group_id: uuid.nullable(),
   input_event_id: uuid,
   sequence: positiveVersion,
   author_user_id: uuid,
   state: z.enum(["waiting", "in_flight", "succeeded", "failed", "stopped", "cancelled"]),
+});
+
+const groupInput = z.object({
+  command_id: uuid,
+  channel_id: uuid,
+  batch_id: uuid,
+  sequence: positiveVersion,
+  // Initial batch inputs are consumed by the group's root. Unread M11
+  // membership needs a separate contract before null can become valid.
+  consuming_run_id: uuid,
 });
 
 const group = z.object({
@@ -56,6 +67,7 @@ const group = z.object({
   expansion_sealed_at: timestamp,
   forced_disposition: disposition,
   settled_at: timestamp,
+  inputs: z.array(groupInput).min(1),
 });
 
 const run = z.object({
@@ -80,7 +92,7 @@ const run = z.object({
 });
 
 const execution = z.object({
-  protocol_version: z.literal(3),
+  protocol_version: z.literal(4),
   issue_id: uuid,
   session_id: uuid,
   // Client execution capabilities remain unavailable until full acceptance.
@@ -113,41 +125,78 @@ function consistentExecution(value: z.infer<typeof execution>): boolean {
   const commandsById = new Map(commands.map((item) => [item.id, item]));
   const groupsById = new Map(groups.map((item) => [item.id, item]));
   const groupsByBatch = new Map(groups.map((item) => [item.batch_id, item]));
+  const inputsByGroup = new Map(groups.map((item) => [item.id, new Map(item.inputs.map((input) => [input.command_id, input]))]));
   const runsById = new Map(runs.map((item) => [item.id, item]));
+  const allRunsNeverLaunched = new Map<string, boolean>();
+  for (const item of runs) {
+    const neverLaunched = item.settled_at !== null && item.proof_state === "never_launched_proven" && item.business_outcome !== "success";
+    allRunsNeverLaunched.set(item.group_id, allRunsNeverLaunched.get(item.group_id) !== false && neverLaunched);
+  }
   if (channelsById.size !== channels.length || targetsById.size !== targets.length || commandsById.size !== commands.length || groupsById.size !== groups.length || runsById.size !== runs.length ||
     groupsByBatch.size !== groups.length || !unique(targets.map((item) => `${item.kind}:${item.resource_id}`)) ||
-    !unique(commands.map((item) => `${item.target_id}:${item.sequence}`)) || !unique(commands.map((item) => `${item.input_event_id}:${item.target_id}`)) ||
+    !unique(commands.map((item) => `${item.channel_id}:${item.sequence}`)) || !unique(commands.map((item) => `${item.input_event_id}:${item.target_id}`)) ||
     !unique(groups.map((item) => `${item.channel_id}:${item.generation}`)) || !unique(runs.map((item) => `${item.group_id}:${item.step_key}`)) ||
     !unique(groups.filter((item) => item.settled_at === null).map((item) => item.channel_id))) return false;
 
-  const batchChannels = new Map<string, string>();
+  const batchChannels = new Map(groups.map((item) => [item.batch_id, item.channel_id]));
+  const sequenceOwners = new Map(commands.map((item) => [`${item.channel_id}:${item.sequence}`, item.id]));
   for (const item of commands) {
     const owner = targetsById.get(item.target_id);
-    if (!owner || owner.channel_id !== item.channel_id || !atMostVersion(item.sequence, owner.next_command_seq) || item.sequence === owner.next_command_seq) return false;
-    const channel = batchChannels.get(item.batch_id);
-    if (channel !== undefined && channel !== item.channel_id) return false;
+    const channel = channelsById.get(item.channel_id);
+    if (!owner || owner.channel_id === null || !channel || !atMostVersion(item.sequence, channel.next_command_seq) || item.sequence === channel.next_command_seq) return false;
+    if ((item.state === "waiting" || item.state === "in_flight") && owner.channel_id !== item.channel_id) return false;
+    const batchChannel = batchChannels.get(item.batch_id);
+    if (batchChannel !== undefined && batchChannel !== item.channel_id) return false;
     batchChannels.set(item.batch_id, item.channel_id);
-    const batchGroup = groupsByBatch.get(item.batch_id);
-    if (batchGroup) {
-      if (batchGroup.channel_id !== item.channel_id) return false;
-      // Cancelled waiting inputs retain their batch identity but do not run.
-      if (item.state !== "cancelled" && item.state !== (batchGroup.settled_at === null ? "in_flight" : batchGroup.state)) return false;
-    } else if (item.state !== "waiting" && item.state !== "cancelled") return false;
+    if (item.group_id === null) {
+      if (item.state !== "waiting" && item.state !== "cancelled") return false;
+      // Only cancelled, never-consumed tombstones may share an executed batch.
+      if (item.state === "waiting" && groupsByBatch.has(item.batch_id)) return false;
+      continue;
+    }
+    const currentGroup = groupsById.get(item.group_id);
+    const input = inputsByGroup.get(item.group_id)?.get(item.id);
+    if (!currentGroup || !input || currentGroup.channel_id !== item.channel_id || currentGroup.batch_id !== item.batch_id ||
+      input.sequence !== item.sequence) return false;
+    const cancelledBeforeLaunch = item.state === "cancelled" && currentGroup.settled_at !== null && currentGroup.state !== "succeeded" && allRunsNeverLaunched.get(currentGroup.id) === true;
+    if (item.state !== (currentGroup.settled_at === null ? "in_flight" : currentGroup.state) && !cancelledBeforeLaunch) return false;
   }
   for (const item of groups) {
     const owner = targetsById.get(item.target_id);
     const input = commandsById.get(item.command_id);
-    if (!owner || !input || input.target_id !== owner.id || item.channel_id !== owner.channel_id || input.channel_id !== item.channel_id || input.batch_id !== item.batch_id ||
-      !atMostVersion(item.generation, owner.group_generation) ||
+    const channel = channelsById.get(item.channel_id);
+    if (!owner || !input || !channel || input.target_id !== owner.id || !inputsByGroup.get(item.id)?.has(item.command_id) ||
+      !atMostVersion(item.generation, channel.group_generation) ||
       !atMostVersion(item.target_epoch, owner.target_epoch) || !atMostVersion(item.config_version, owner.config_version)) return false;
     const terminal = item.state !== "active" && item.state !== "waiting_children" && item.state !== "ending";
     if (terminal !== (item.settled_at !== null)) return false;
     if (terminal) {
-      if (item.expansion_sealed_at === null || input.state !== item.state || (item.forced_disposition !== null && item.forced_disposition !== item.state)) return false;
-    } else if (owner.active_group_id !== item.id || owner.group_generation !== item.generation || input.state !== "in_flight") return false;
+      if (item.expansion_sealed_at === null || (item.forced_disposition !== null && item.forced_disposition !== item.state)) return false;
+    } else if (owner.channel_id !== item.channel_id || channel.active_group_id !== item.id || channel.group_generation !== item.generation) return false;
+
+    if (!unique(item.inputs.map((member) => member.command_id)) || !unique(item.inputs.map((member) => member.sequence))) return false;
+    for (const member of item.inputs) {
+      const command = commandsById.get(member.command_id);
+      const commandTarget = command && targetsById.get(command.target_id);
+      const consumingRun = runsById.get(member.consuming_run_id);
+      if (!command || !commandTarget || member.channel_id !== item.channel_id || member.batch_id !== item.batch_id ||
+        !atMostVersion(member.sequence, channel.next_command_seq) || member.sequence === channel.next_command_seq ||
+        !consumingRun || consumingRun.group_id !== item.id || (consumingRun.step_kind !== "agent" && consumingRun.step_kind !== "leader")) return false;
+      if (command.target_id !== owner.id && (owner.kind !== "squad" || commandTarget.kind !== "agent" || commandTarget.resource_id !== consumingRun.agent_id)) return false;
+      const position = `${member.channel_id}:${member.sequence}`;
+      const previousOwner = sequenceOwners.get(position);
+      if (previousOwner !== undefined && previousOwner !== member.command_id) return false;
+      sequenceOwners.set(position, member.command_id);
+      if (command.group_id === item.id) continue;
+      // Requeue changes only the command's current association. Its original
+      // consumed membership remains valid solely after a proven non-launch.
+      if (!terminal || item.state === "succeeded" || allRunsNeverLaunched.get(item.id) !== true) return false;
+      const currentGroup = command.group_id === null ? undefined : groupsById.get(command.group_id);
+      if (currentGroup?.channel_id === item.channel_id && atMostVersion(currentGroup.generation, item.generation)) return false;
+    }
   }
   for (const item of targets) {
-    if (item.channel_id === null && (item.group_generation !== "0" || item.next_command_seq !== "1" || item.active_group_id !== null)) return false;
+    if (item.channel_id === null && (item.group_generation !== "0" || item.active_group_id !== null)) return false;
     if (item.channel_id !== null) {
       const owner = channelsById.get(item.channel_id);
       if (!owner || owner.queue_state !== item.control.queue_state || owner.control_version !== item.control.control_version ||

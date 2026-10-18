@@ -12,7 +12,7 @@ SELECT * FROM collaboration_execution_group WHERE session_id = $1 ORDER BY targe
 SELECT * FROM collaboration_run WHERE session_id = $1 ORDER BY created_at, id;
 
 -- name: ListCollaborationCommands :many
-SELECT * FROM collaboration_command WHERE session_id = $1 ORDER BY target_id, seq;
+SELECT * FROM collaboration_command WHERE session_id = $1 ORDER BY channel_id, seq;
 
 -- The permanent source/session/channel locks serialize target membership and
 -- controls. Target locks precede participant/grant/command/group/run locks.

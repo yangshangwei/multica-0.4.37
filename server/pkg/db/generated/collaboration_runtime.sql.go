@@ -13,7 +13,7 @@ import (
 
 const assignCollaborationChannelGroup = `-- name: AssignCollaborationChannelGroup :one
 UPDATE collaboration_channel SET active_group_id=$1::uuid,group_generation=group_generation+1
-WHERE id=$2::uuid AND active_group_id IS NULL RETURNING id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at
+WHERE id=$2::uuid AND active_group_id IS NULL RETURNING id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at, next_command_seq
 `
 
 type AssignCollaborationChannelGroupParams struct {
@@ -35,6 +35,7 @@ func (q *Queries) AssignCollaborationChannelGroup(ctx context.Context, arg Assig
 		&i.ActiveGroupID,
 		&i.PauseReason,
 		&i.CreatedAt,
+		&i.NextCommandSeq,
 	)
 	return i, err
 }
@@ -171,7 +172,7 @@ func (q *Queries) ClaimCollaborationRuntimeRun(ctx context.Context, arg ClaimCol
 }
 
 const clearCollaborationChannelTargetGroups = `-- name: ClearCollaborationChannelTargetGroups :many
-UPDATE collaboration_target SET active_group_id=NULL WHERE channel_id=$1 AND active_group_id=$2 RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
+UPDATE collaboration_target SET active_group_id=NULL WHERE channel_id=$1 AND active_group_id=$2 RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
 `
 
 type ClearCollaborationChannelTargetGroupsParams struct {
@@ -199,7 +200,6 @@ func (q *Queries) ClearCollaborationChannelTargetGroups(ctx context.Context, arg
 			&i.QueueState,
 			&i.ControlVersion,
 			&i.GroupGeneration,
-			&i.NextCommandSeq,
 			&i.ActiveGroupID,
 			&i.PauseReason,
 			&i.RevokedAt,
@@ -650,7 +650,7 @@ func (q *Queries) GetCollaborationBusinessCapabilityByHash(ctx context.Context, 
 }
 
 const getCollaborationChannel = `-- name: GetCollaborationChannel :one
-SELECT id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at FROM collaboration_channel WHERE id=$1
+SELECT id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at, next_command_seq FROM collaboration_channel WHERE id=$1
 `
 
 func (q *Queries) GetCollaborationChannel(ctx context.Context, id pgtype.UUID) (CollaborationChannel, error) {
@@ -667,6 +667,7 @@ func (q *Queries) GetCollaborationChannel(ctx context.Context, id pgtype.UUID) (
 		&i.ActiveGroupID,
 		&i.PauseReason,
 		&i.CreatedAt,
+		&i.NextCommandSeq,
 	)
 	return i, err
 }
@@ -872,7 +873,7 @@ const listCollaborationRuntimeWaitingTargets = `-- name: ListCollaborationRuntim
 SELECT DISTINCT t.id,t.session_id,s.issue_id FROM collaboration_target t
 JOIN collaboration_session s ON s.id=t.session_id
 JOIN collaboration_channel ch ON ch.id=t.channel_id
-JOIN collaboration_batch b ON b.channel_id=ch.id AND b.effective_target_id=t.id AND b.state='waiting'
+JOIN collaboration_command c ON c.channel_id=ch.id AND c.target_id=t.id AND c.state='waiting' AND c.group_id IS NULL
 JOIN collaboration_grant g ON g.target_id=t.id AND g.config_version=t.config_version AND g.target_epoch=t.target_epoch AND g.revoked_at IS NULL
 WHERE t.kind='agent' AND t.hold_reason IS NULL AND g.runtime_id=$1 AND g.binding_id=$2 AND s.queue_state='active' AND ch.queue_state='active'
 ORDER BY s.issue_id,t.id LIMIT 16
@@ -1319,7 +1320,15 @@ func (q *Queries) StartCollaborationBatch(ctx context.Context, arg StartCollabor
 }
 
 const startCollaborationBatchInputs = `-- name: StartCollaborationBatchInputs :exec
-UPDATE collaboration_command SET state='in_flight' WHERE batch_id=$1 AND state='waiting'
+WITH consumed AS (
+    UPDATE collaboration_command c SET state='in_flight',group_id=b.group_id
+    FROM collaboration_batch b WHERE c.batch_id=$1 AND b.id=c.batch_id AND b.state='in_flight'
+      AND c.state='waiting' AND c.group_id IS NULL
+    RETURNING c.id, c.seq, c.author_user_id, c.participant_epoch, c.author_auth_epoch, c.lifecycle_epoch, c.content, c.attachments, c.state, c.reason, c.created_at, c.session_id, c.target_id, c.input_event_id, c.channel_id, c.batch_id, c.group_id
+)
+INSERT INTO collaboration_group_input(group_id,command_id,channel_id,batch_id,seq,consuming_run_id)
+SELECT c.group_id,c.id,c.channel_id,c.batch_id,c.seq,r.id FROM consumed c
+JOIN collaboration_run r ON r.group_id=c.group_id AND r.parent_run_id IS NULL AND r.step_key='root'
 `
 
 func (q *Queries) StartCollaborationBatchInputs(ctx context.Context, batchID pgtype.UUID) error {

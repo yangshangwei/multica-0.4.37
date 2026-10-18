@@ -248,7 +248,8 @@ func (s *CollaborationService) lockCollaborationRuntimeRun(ctx context.Context, 
 	}
 	if r.run.SessionID != t.session.ID || r.group.SessionID != t.session.ID || r.group.ID != r.run.GroupID || r.group.CommandID != r.run.CommandID ||
 		r.group.TargetID != r.target.ID || r.group.ChannelID != r.channel.ID || r.group.BatchID != r.batch.ID || r.batch.ChannelID != r.channel.ID ||
-		r.batch.SessionID != t.session.ID || r.channel.SessionID != t.session.ID || r.target.ChannelID != r.channel.ID {
+		r.batch.SessionID != t.session.ID || r.channel.SessionID != t.session.ID ||
+		(r.target.ChannelID != r.channel.ID && (current || !r.group.SettledAt.Valid)) {
 		return nil, invalidCollaborationLedger("runtime batch identity mismatch")
 	}
 	r.inputs, err = q.ListCollaborationBatchInputs(ctx, r.batch.ID)
@@ -318,6 +319,13 @@ func (r *collaborationRuntimeState) currentAdmission(ctx context.Context) error 
 	if r.session.QueueState != "active" || r.channel.QueueState != "active" || r.target.QueueState != "active" || r.group.ExpansionSealedAt.Valid || r.group.ForcedDisposition.Valid ||
 		r.group.SettledAt.Valid || r.run.SettledAt.Valid || r.run.ForcedDisposition.Valid || r.batch.State != "in_flight" || r.batch.GroupID != r.group.ID || r.channel.ActiveGroupID != r.group.ID {
 		return collaborationError(http.StatusConflict, "execution_stopped")
+	}
+	runs, err := r.q.LockCollaborationGroupRuns(ctx, r.group.ID)
+	if err != nil {
+		return err
+	}
+	if err = r.validateGroup(ctx, r.target, r.group, runs); err != nil {
+		return err
 	}
 	if r.target.TargetEpoch != r.run.TargetEpoch.Int64 || r.target.ConfigVersion != r.run.ConfigVersion.Int64 || r.grant.Epoch != r.run.GrantEpoch ||
 		r.grant.TargetID != r.target.ID || r.grant.RuntimeID != r.run.RuntimeID || r.grant.AgentID != r.run.AgentID || r.grant.BindingID != r.run.BindingID ||
@@ -468,7 +476,7 @@ func (s *CollaborationService) promoteCollaborationRuntimeBatch(ctx context.Cont
 		return collaborationRuntimePromotion{}, err
 	}
 	deny := func(code string) (collaborationRuntimePromotion, error) {
-		return collaborationRuntimePromotion{}, collaborationError(http.StatusConflict, code)
+		return collaborationRuntimePromotion{RefusalCode: code}, nil
 	}
 	if !t.gate.Enabled {
 		return deny("collaboration_execution_unavailable")
@@ -480,24 +488,11 @@ func (s *CollaborationService) promoteCollaborationRuntimeBatch(ctx context.Cont
 	if !ok || target.QueueState != "active" {
 		return deny("target_paused")
 	}
-	if target.HoldReason.Valid {
-		return deny("target_held")
-	}
-	if code, err := t.authorizeTargetInput(ctx, target); err != nil {
-		return collaborationRuntimePromotion{}, err
-	} else if code != "" {
-		return t.holdInvalidPromotion(ctx, target, code)
-	}
-	if code, err := collaborationRuntimeTargetSupported(ctx, q, target); err != nil {
-		return collaborationRuntimePromotion{}, err
-	} else if code != "" {
-		return deny(code)
-	}
 	channel, err := q.GetCollaborationChannel(ctx, target.ChannelID)
 	if err != nil {
 		return collaborationRuntimePromotion{}, err
 	}
-	if channel.QueueState != "active" || channel.ActiveGroupID.Valid || channel.RootAgentID != target.ResourceID {
+	if channel.QueueState != "active" || channel.ActiveGroupID.Valid {
 		return deny("channel_busy")
 	}
 	groups, err := q.LockCollaborationUnsettledGroups(ctx, t.session.ID)
@@ -518,51 +513,24 @@ func (s *CollaborationService) promoteCollaborationRuntimeBatch(ctx context.Cont
 			return deny("stop_unconfirmed")
 		}
 	}
-	batches, err := q.LockCollaborationWaitingBatches(ctx, channel.ID)
+	selection, err := t.selectWaitingInputs(ctx, channel)
 	if err != nil {
 		return collaborationRuntimePromotion{}, err
 	}
-	if len(batches) == 0 || batches[0].EffectiveTargetID != target.ID {
-		return deny("batch_not_ready")
+	if !selection.target.ID.Valid {
+		return deny(selection.refusal)
 	}
-	batch := batches[0]
-	inputs, err := q.ListCollaborationBatchInputs(ctx, batch.ID)
-	if err != nil {
-		return collaborationRuntimePromotion{}, err
-	}
-	if code, err := collaborationCurrentBatchAuthors(ctx, q, t.access.Issue.ID, t.access.LifecycleEpoch, inputs, "waiting"); err != nil {
+	target = selection.target
+	if code, err := collaborationRuntimeTargetSupported(ctx, q, target); err != nil {
 		return collaborationRuntimePromotion{}, err
 	} else if code != "" {
 		return deny(code)
 	}
-	wire, err := collaborationRunInputs(inputs)
-	if err != nil {
-		return collaborationRuntimePromotion{}, err
-	}
-	encoded, err := json.Marshal(wire)
-	if err != nil {
-		return collaborationRuntimePromotion{}, err
-	}
-	if len(wire) > maxCollaborationBatchInputs || len(encoded) > maxCollaborationBatchBytes {
-		return deny("batch_capacity_exceeded")
+	if channel.RootAgentID != target.ResourceID {
+		return collaborationRuntimePromotion{}, invalidCollaborationLedger("selected root channel mismatch")
 	}
 	var root db.CollaborationCommand
-	for _, input := range inputs {
-		if input.State != "waiting" {
-			continue
-		}
-		inputTarget, exists := t.target(input.TargetID)
-		if !exists || inputTarget.ChannelID != channel.ID {
-			return collaborationRuntimePromotion{}, invalidCollaborationLedger("waiting input channel mismatch")
-		}
-		if inputTarget.HoldReason.Valid {
-			return deny("target_held")
-		}
-		if code, err := t.authorizeTargetInput(ctx, inputTarget); err != nil {
-			return collaborationRuntimePromotion{}, err
-		} else if code != "" {
-			return t.holdInvalidPromotion(ctx, inputTarget, code)
-		}
+	for _, input := range selection.inputs {
 		if input.TargetID == target.ID && !root.ID.Valid {
 			root = input
 		}
@@ -601,6 +569,10 @@ func (s *CollaborationService) promoteCollaborationRuntimeBatch(ctx context.Cont
 	if occupied {
 		return deny("runtime_busy")
 	}
+	batch, err := t.prepareSelectedBatch(ctx, selection)
+	if err != nil {
+		return collaborationRuntimePromotion{}, err
+	}
 	resource := collaboration.GroupResource{TargetResource: collaboration.TargetResource{Role: "agent", AgentID: util.UUIDToString(grant.AgentID), RuntimeID: util.UUIDToString(grant.RuntimeID), ExecutionWorkspaceID: util.UUIDToString(grant.ExecutionWorkspaceID), OwnerUserID: util.UUIDToString(grant.OwnerUserID)}, GrantID: util.UUIDToString(grant.ID), GrantEpoch: grant.Epoch}
 	roster, err := json.Marshal([]collaboration.GroupResource{resource})
 	if err != nil {
@@ -626,10 +598,10 @@ func (s *CollaborationService) promoteCollaborationRuntimeBatch(ctx context.Cont
 	if _, err = q.StartCollaborationBatch(ctx, db.StartCollaborationBatchParams{BatchID: batch.ID, CommandID: root.ID, GroupID: group.ID}); err != nil {
 		return collaborationRuntimePromotion{}, err
 	}
-	if err = q.StartCollaborationBatchInputs(ctx, batch.ID); err != nil {
+	if _, err = q.AssignCollaborationChannelGroup(ctx, db.AssignCollaborationChannelGroupParams{ChannelID: channel.ID, GroupID: group.ID}); err != nil {
 		return collaborationRuntimePromotion{}, err
 	}
-	if _, err = q.AssignCollaborationChannelGroup(ctx, db.AssignCollaborationChannelGroupParams{ChannelID: channel.ID, GroupID: group.ID}); err != nil {
+	if err = q.StartCollaborationBatchInputs(ctx, batch.ID); err != nil {
 		return collaborationRuntimePromotion{}, err
 	}
 	if _, err = q.MirrorCollaborationChannelControl(ctx, channel.ID); err != nil {

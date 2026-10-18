@@ -100,14 +100,15 @@ func lockCollaborationResourceSource(ctx context.Context, q *db.Queries, hint db
 	if issue.WorkspaceID != hint.WorkspaceID {
 		return source, invalidCollaborationLedger("resource invalidation source changed")
 	}
-	if _, err = q.LockCollaborationReconciliationState(ctx, issue.ID); err != nil {
+	state, err := q.LockCollaborationReconciliationState(ctx, issue.ID)
+	if err != nil {
 		return source, err
 	}
 	session, err := q.LockCollaborationReconciliationSession(ctx, issue.ID)
 	if err != nil {
 		return source, err
 	}
-	t := &collaborationQueueTx{q: q, session: session, access: CollaborationIssueAccess{Issue: issue}}
+	t := &collaborationQueueTx{q: q, session: session, access: CollaborationIssueAccess{Issue: issue, LifecycleEpoch: state.LifecycleEpoch}}
 	source.queue = t
 	if t.channels, err = q.TryLockCollaborationResourceChannels(ctx, session.ID); err != nil {
 		return source, err

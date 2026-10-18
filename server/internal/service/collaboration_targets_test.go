@@ -120,13 +120,13 @@ func TestCollaborationTypedTargetsCoalesceRootAndKeepInputIdentity(t *testing.T)
 	a := submitTarget(t, f, f.targetID, f.creator, "same comment", event)
 	s := submitTarget(t, f, squad.ID, f.creator, "same comment", event)
 	replay := submitTarget(t, f, f.targetID, f.creator, "same comment", event)
-	if a.CommandID == s.CommandID || a.CommandID != replay.CommandID || a.CommandSequence != 1 || s.CommandSequence != 1 {
-		t.Fatal("typed roles merged, repeated an input, or shared a sequence")
+	if a.CommandID == s.CommandID || a.CommandID != replay.CommandID || a.CommandSequence != 1 || s.CommandSequence != 2 {
+		t.Fatal("typed roles merged, repeated an input, or lost the channel sequence")
 	}
 	a2 := submitTarget(t, f, f.targetID, f.handler, "agent second", pgtype.UUID{})
 	s2 := submitTarget(t, f, squad.ID, f.handler, "squad second", pgtype.UUID{})
-	if a2.CommandSequence != 2 || s2.CommandSequence != 2 {
-		t.Fatal("each target must preserve its own FIFO")
+	if a2.CommandSequence != 3 || s2.CommandSequence != 4 {
+		t.Fatal("same-root targets must share the channel FIFO")
 	}
 	if a.BatchID != s.BatchID || a.BatchID != a2.BatchID || a.BatchID != s2.BatchID || a.ChannelID != s.ChannelID {
 		t.Fatal("same-root inputs did not coalesce into one pending batch")
@@ -232,8 +232,8 @@ func TestCollaborationGroupStopWaitsForEveryDescendant(t *testing.T) {
 					f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='in_flight'`, root.CommandID) != 1 {
 					t.Fatal("parent proof incorrectly settled a live descendant and its root input")
 				}
-			} else if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='stopped'`, root.CommandID) != 1 {
-				t.Fatal("all proven-unlaunched runs did not release their root group")
+			} else if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='waiting' AND group_id IS NULL`, root.CommandID) != 1 {
+				t.Fatal("all proven-unlaunched runs did not release their unread root input")
 			}
 			if f.fx.Count(t, `SELECT count(*) FROM collaboration_delegation WHERE group_id=$1 AND state='cancelled'`, root.GroupID) != 1 {
 				t.Fatal("stopped group left an internal continuation intent")

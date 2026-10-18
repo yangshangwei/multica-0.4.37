@@ -91,7 +91,7 @@ func newCollaborationRouteFixture(t *testing.T) *collaborationRouteFixture {
 	// Current-authority joins and historical proof joins must see the same
 	// fixture users/issues, never fall through to another package's rows.
 	rows, err := testPool.Query(t.Context(), `SELECT tablename FROM pg_tables WHERE schemaname='public'
-		AND (tablename LIKE 'collaboration\_%' ESCAPE '\' OR tablename IN ('issue','issue_collaboration','issue_participant','issue_handoff','comment','issue_status','agent_invocation_target')) ORDER BY tablename`)
+		AND (tablename LIKE 'collaboration\_%' ESCAPE '\' OR tablename IN ('issue','issue_collaboration','issue_participant','issue_handoff','comment','issue_status','agent_invocation_target','squad','squad_member')) ORDER BY tablename`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -396,11 +396,11 @@ func TestCollaborationRuntimeOutcomeClientMatchesService(t *testing.T) {
 			}
 			f.managed.request(t, f.ownerToken, false, http.MethodGet, "/api/collaboration/issues/"+f.issue, nil, nil).Want(http.StatusOK).JSON(&detail)
 			execution := detail.Execution
-			if execution.ProtocolVersion != 3 || len(execution.Commands) != 1 || len(execution.Groups) != 1 || len(execution.Runs) != 1 ||
+			if execution.ProtocolVersion != 4 || len(execution.Commands) != 1 || len(execution.Groups) != 1 || len(execution.Runs) != 1 ||
 				execution.Commands[0].ChannelID != claim.Identity.ChannelID || execution.Commands[0].BatchID != claim.Identity.BatchID ||
 				execution.Groups[0].BatchID != claim.Identity.BatchID || execution.Runs[0].BatchID != claim.Identity.BatchID ||
 				execution.Runs[0].BusinessOutcome == nil || *execution.Runs[0].BusinessOutcome != outcome || execution.Runs[0].SettledAt != nil {
-				t.Fatal("actual runtime result lost v3 batch identity or fabricated terminal proof in the read projection")
+				t.Fatal("actual runtime result lost v4 batch identity or fabricated terminal proof in the read projection")
 			}
 		})
 	}
@@ -501,17 +501,194 @@ func TestCollaborationSingleAgentRuntimeRoutesLinux(t *testing.T) {
 	if f.managed.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE batch_id=$1 AND state='succeeded'`, second.Targets[0].BatchID) != 2 {
 		t.Fatal("one successful batch did not settle both immutable inputs")
 	}
-	// A never-permitted promotion is settled by the server without inventing
-	// a daemon proof or executing another fixture process.
-	last := f.comment(t, false, "cancel before permit")
+	// Stop can prove an unpermitted run never launched. Its command returns to
+	// waiting and may execute only after a fresh Resume, with new run identity.
+	last := f.comment(t, false, "resume after server-proven nonlaunch")
 	list, err = client.List(ctx, f.runtime)
 	if err != nil || len(list.RunIDs) != 1 {
 		t.Fatalf("never-launched fixture was not promoted: %v", err)
 	}
+	q := db.New(f.managed.pool)
+	neverRun, err := q.GetCollaborationRuntimeRun(ctx, util.MustParseUUID(list.RunIDs[0]))
+	if err != nil {
+		t.Fatal(err)
+	}
 	f.control(t, uuid.NewString(), f.controlBody(t, "stop", "issue"), http.StatusOK)
-	if f.managed.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND authorized_attempt_seq=0 AND proof_state='never_launched_proven' AND settled_at IS NOT NULL`, list.RunIDs[0]) != 1 ||
-		f.managed.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE batch_id=$1 AND state='waiting'`, last.Targets[0].BatchID) != 0 {
-		t.Fatal("Stop did not settle the never-permitted batch")
+	returned, err := q.GetCollaborationCommandInput(ctx, db.GetCollaborationCommandInputParams{
+		TargetID: last.Targets[0].TargetID, InputEventID: last.EventID,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if returned.ID != last.Targets[0].CommandID || returned.State != "waiting" || returned.GroupID.Valid ||
+		returned.BatchID == neverRun.BatchID || returned.ChannelID != neverRun.ChannelID || returned.Seq != last.Targets[0].CommandSequence ||
+		returned.AuthorUserID != util.MustParseUUID(f.owner) ||
+		f.managed.fx.Count(t, `SELECT count(*) FROM collaboration_batch WHERE id=$1 AND state='waiting' AND group_id IS NULL AND started_at IS NULL`, returned.BatchID) != 1 {
+		t.Fatal("server-proven nonlaunch did not return the same input to an unstarted batch at its original sequence")
+	}
+	if f.managed.fx.Count(t, `SELECT count(*) FROM collaboration_group_input i
+		JOIN collaboration_execution_group g ON g.id=i.group_id
+		JOIN collaboration_run r ON r.id=i.consuming_run_id AND r.group_id=g.id
+		WHERE i.command_id=$1 AND i.group_id=$2 AND i.channel_id=$3 AND i.batch_id=$4 AND i.seq=$5
+		AND r.id=$6 AND r.authorized_attempt_seq=0 AND r.sealed_attempt_seq=0 AND r.started_at IS NULL
+		AND r.progress_state='settled' AND r.proof_state='never_launched_proven' AND r.settled_at IS NOT NULL
+		AND g.state='stopped' AND g.expansion_sealed_at IS NOT NULL AND g.settled_at IS NOT NULL`,
+		returned.ID, neverRun.GroupID, neverRun.ChannelID, neverRun.BatchID, returned.Seq, neverRun.ID) != 1 {
+		t.Fatal("returning input lost its original group, consumed membership or sealed nonlaunch proof")
+	}
+	retainedHistory := func() string {
+		var snapshot string
+		f.managed.fx.QueryRow(t, `SELECT jsonb_build_object('run',to_jsonb(r),'group',to_jsonb(g),
+			'inputs',(SELECT jsonb_agg(to_jsonb(i) ORDER BY i.seq,i.command_id) FROM collaboration_group_input i WHERE i.group_id=g.id))::text
+			FROM collaboration_run r JOIN collaboration_execution_group g ON g.id=r.group_id WHERE r.id=$1`, neverRun.ID).Scan(&snapshot)
+		return snapshot
+	}
+	historyBeforeResume := retainedHistory()
+	var detail struct {
+		Execution service.CollaborationExecutionView `json:"execution"`
+	}
+	f.managed.request(t, f.ownerToken, false, http.MethodGet, "/api/collaboration/issues/"+f.issue, nil, nil).Want(http.StatusOK).JSON(&detail)
+	if detail.Execution.ProtocolVersion != 4 || len(detail.Execution.Groups) != 3 || len(detail.Execution.Runs) != 3 {
+		t.Fatal("returned input made retained execution history unreadable")
+	}
+	list, err = client.List(ctx, f.runtime)
+	if err != nil || len(list.RunIDs) != 0 {
+		t.Fatalf("nonlaunch proof bypassed the explicit Resume requirement: count=%d err=%v", len(list.RunIDs), err)
+	}
+	f.control(t, uuid.NewString(), f.controlBody(t, "resume", "issue"), http.StatusOK)
+	list, err = client.List(ctx, f.runtime)
+	if err != nil || len(list.RunIDs) != 1 || list.RunIDs[0] == util.UUIDToString(neverRun.ID) {
+		t.Fatalf("fresh Resume did not create a new run for the returned input: count=%d err=%v", len(list.RunIDs), err)
+	}
+	resumedRun := list.RunIDs[0]
+	if err = runner.Run(ctx, resumedRun, request); err != nil {
+		t.Fatalf("returned input supervisor failed: %v", err)
+	}
+	_, observed = collaborationRouteObservation(t, listener)
+	if observed.Identity.RunID != resumedRun || observed.Identity.GroupID == util.UUIDToString(neverRun.GroupID) ||
+		observed.Identity.BatchID != util.UUIDToString(returned.BatchID) || len(observed.Inputs) != 1 ||
+		observed.Inputs[0].CommandID != util.UUIDToString(returned.ID) || observed.Inputs[0].AuthorUserID != f.owner {
+		t.Fatal("fresh real provider run did not consume the same returned input with a new group identity")
+	}
+	if f.managed.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='succeeded' AND seq=$2 AND batch_id=$3 AND group_id=$4`,
+		returned.ID, returned.Seq, returned.BatchID, observed.Identity.GroupID) != 1 || retainedHistory() != historyBeforeResume {
+		t.Fatal("resumed input failed to settle or rewrote the original nonlaunch history")
+	}
+}
+
+func TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux(t *testing.T) {
+	if runtime.GOOS != "linux" || os.Getenv("MULTICA_RUN_COLLAB_RUNTIME_E2E") != "1" {
+		t.Skip("requires explicit Linux namespace integration environment")
+	}
+	f := newCollaborationRouteFixture(t)
+	// An already active channel may gain a fully consented squad target that
+	// retains its initial hold. Later direct input must skip that squad input.
+	f.control(t, uuid.NewString(), f.controlBody(t, "resume", "issue"), http.StatusOK)
+	q := db.New(f.managed.pool)
+	session, err := q.GetCollaborationSession(t.Context(), util.MustParseUUID(f.issue))
+	if err != nil {
+		t.Fatal(err)
+	}
+	squadID := f.managed.fx.Squad(t, "Held squad sharing the direct leader", f.agent)
+	var registered service.CollaborationQueueReceipt
+	f.managed.request(t, f.ownerToken, false, http.MethodPost, "/api/collaboration/issues/"+f.issue+"/targets", map[string]any{
+		"expected_lifecycle_epoch": "1", "expected_participant_epoch": "1", "expected_account_epoch": "1",
+		"expected_target_set_version": strconv.FormatInt(session.TargetSetVersion, 10), "kind": "squad", "resource_id": squadID,
+		"roster": []collaboration.TargetResource{{Role: "leader", AgentID: f.agent, RuntimeID: f.runtime, OwnerUserID: f.owner, ExecutionWorkspaceID: f.managed.fx.WorkspaceID}},
+	}, nil).Want(http.StatusCreated).JSON(&registered)
+	if !registered.TargetID.Valid {
+		t.Fatal("squad registration omitted the target identity")
+	}
+	squad := *f
+	squad.target = util.UUIDToString(registered.TargetID)
+	consentCollaborationRouteTarget(t, &squad)
+	var rejected service.CollaborationCommentReceipt
+	f.managed.request(t, f.contributorToken, false, http.MethodPost, "/api/collaboration/issues/"+f.issue+"/comments", map[string]any{
+		"content":                  "[@Squad](mention://squad/" + squadID + ") keep this squad input held",
+		"expected_lifecycle_epoch": "1", "expected_participant_epoch": "1", "expected_account_epoch": "1",
+		"target_versions": []map[string]string{{"target_id": squad.target, "expected_target_epoch": "1", "expected_config_version": "1"}},
+	}, nil).Want(http.StatusCreated).JSON(&rejected)
+	if len(rejected.Targets) != 1 {
+		t.Fatalf("squad mention lost its per-target refusal: code=%s targets=%d", rejected.Code, len(rejected.Targets))
+	}
+	squadResult := rejected.Targets[0]
+	holdReason := "missing"
+	if squadResult.HoldReason != nil {
+		holdReason = string(*squadResult.HoldReason)
+	}
+	if squadResult.State != "blocked" || squadResult.Code != "squad_execution_unavailable" || squadResult.CommandID.Valid ||
+		holdReason != string(collaboration.HoldInitial) {
+		t.Fatalf("squad mention bypassed M09 admission or lost its hold: state=%s code=%s command_valid=%t hold=%s", squadResult.State, squadResult.Code, squadResult.CommandID.Valid, holdReason)
+	}
+	// Squad storage precedes public squad execution. Seed retained waiting work
+	// through the authorized internal queue service; keep the HTTP gate intact.
+	contributor := auth.WithAuthenticatedPrincipal(t.Context(), auth.AuthenticatedPrincipal{UserID: f.contributor, Kind: auth.CredentialJWT})
+	contributor = auth.WithPasswordSession(contributor, auth.PasswordSession{UserID: f.contributor, Version: 1, Kind: "jwt"})
+	held, err := service.NewCollaborationService(q, f.managed.pool, nil).SubmitCommand(contributor, service.CollaborationSubmitCommandParams{
+		CollaborationQueueRequest: service.CollaborationQueueRequest{IssueID: util.MustParseUUID(f.issue), RequestID: uuid.NewString(),
+			ExpectedLifecycleEpoch: 1, ExpectedParticipantEpoch: 1, ExpectedAccountEpoch: 1},
+		TargetID: registered.TargetID, InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: 1, ExpectedConfigVersion: 1,
+		Content: "retained squad input stays held",
+	})
+	if err != nil || held.Status != http.StatusCreated || !held.CommandID.Valid {
+		t.Fatalf("could not seed authorized held squad input: status=%d code=%s command_valid=%t err=%v", held.Status, held.Code, held.CommandID.Valid, err)
+	}
+	direct := f.comment(t, false, "only this direct input may reach the provider")
+	if held.ChannelID != direct.Targets[0].ChannelID || held.CommandSequence >= direct.Targets[0].CommandSequence {
+		t.Fatal("same-leader targets did not share the ordered channel")
+	}
+	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = listener.Close() })
+	controller := collaborationRouteController(t, "succeed", listener.Addr().String())
+	ledger, err := collaborationrun.OpenLedger(filepath.Join(t.TempDir(), "ledger"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	client, err := collaborationrun.NewClient(f.server.URL, f.binding.DaemonToken, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(t.Context(), 30*time.Second)
+	defer cancel()
+	list, err := client.List(ctx, f.runtime)
+	if err != nil || len(list.RunIDs) != 1 {
+		t.Fatalf("held squad blocked the direct agent: count=%d err=%v", len(list.RunIDs), err)
+	}
+	request := protocol.CollaborationRunClaimRequest{ProtocolVersion: protocol.CollaborationRuntimeProtocolVersion,
+		DeploymentID: f.deployment, InstallationID: f.installationID, RuntimeID: f.runtime,
+		BindingID: f.binding.BindingID, BindingEpoch: f.binding.BindingEpoch, Containment: protocol.CollaborationContainmentLinuxPIDNamespace}
+	runner := &collaborationrun.Runner{Ledger: ledger, Client: client, Controller: controller, StopPollInterval: 10 * time.Millisecond}
+	if err := runner.Run(ctx, list.RunIDs[0], request); err != nil {
+		t.Fatalf("direct input supervisor failed behind the held squad: %v", err)
+	}
+	_, observed := collaborationRouteObservation(t, listener)
+	if observed.Identity.TargetID != f.target || observed.Identity.RunID != list.RunIDs[0] || len(observed.Inputs) != 1 ||
+		observed.Inputs[0].CommandID != util.UUIDToString(direct.Targets[0].CommandID) || observed.Inputs[0].AuthorUserID != f.owner {
+		t.Fatal("held squad input reached the real direct provider")
+	}
+	if f.managed.fx.Count(t, `SELECT count(*) FROM collaboration_command c JOIN collaboration_target t ON t.id=c.target_id
+		WHERE c.id=$1 AND c.target_id=$2 AND c.state='waiting' AND c.group_id IS NULL AND c.seq=$3
+		AND t.hold_reason='initial' AND t.queue_state='active'`, held.CommandID, registered.TargetID, held.CommandSequence) != 1 ||
+		f.managed.fx.Count(t, `SELECT count(*) FROM collaboration_group_input WHERE command_id=$1`, held.CommandID) != 0 ||
+		f.managed.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='succeeded'`, direct.Targets[0].CommandID) != 1 ||
+		f.managed.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE session_id=$1`, f.session) != 1 {
+		t.Fatal("direct execution consumed held input, released its hold or created another run")
+	}
+	list, err = client.List(ctx, f.runtime)
+	if err != nil || len(list.RunIDs) != 0 {
+		t.Fatalf("direct completion released the squad hold: count=%d err=%v", len(list.RunIDs), err)
+	}
+	var detail struct {
+		Execution service.CollaborationExecutionView `json:"execution"`
+	}
+	f.managed.request(t, f.ownerToken, false, http.MethodGet, "/api/collaboration/issues/"+f.issue, nil, nil).Want(http.StatusOK).JSON(&detail)
+	if detail.Execution.ProtocolVersion != 4 || len(detail.Execution.Channels) != 1 || len(detail.Execution.Targets) != 2 ||
+		len(detail.Execution.Commands) != 2 || len(detail.Execution.Groups) != 1 || len(detail.Execution.Groups[0].Inputs) != 1 ||
+		detail.Execution.Groups[0].Inputs[0].CommandID != util.UUIDToString(direct.Targets[0].CommandID) {
+		t.Fatal("held and consumed input history lost its shared channel projection")
 	}
 }
 

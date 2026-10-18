@@ -18,7 +18,7 @@ import (
 
 // These service regressions use persisted synthetic execution evidence. Actual
 // provider containment and proof ingestion are verified by the runtime suites.
-func TestCollaborationStopSettlesAllBatchInputs(t *testing.T) {
+func TestCollaborationStopReturnsNeverLaunchedBatchInputs(t *testing.T) {
 	f := newCollaborationQueueFixture(t)
 	first := f.submit(t, f.creator, "first author input")
 	second := f.submit(t, f.handler, "second author input")
@@ -34,18 +34,22 @@ func TestCollaborationStopSettlesAllBatchInputs(t *testing.T) {
 	if err != nil || !r.GroupSettled {
 		t.Fatalf("never-permitted batch did not settle: %+v %v", r, err)
 	}
-	if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=ANY($1::uuid[]) AND state='stopped'`, []pgtype.UUID{first.CommandID, second.CommandID}) != 2 ||
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=ANY($1::uuid[]) AND state='waiting' AND group_id IS NULL`, []pgtype.UUID{first.CommandID, second.CommandID}) != 2 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_batch WHERE id=$1 AND state='stopped' AND settled_at IS NOT NULL`, first.BatchID) != 1 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_channel WHERE id=$1 AND queue_state='paused' AND active_group_id IS NULL`, first.ChannelID) != 1 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_runtime_reservation WHERE run_id=$1 AND released_at IS NOT NULL`, run.ID) != 1 {
-		t.Fatal("stopping the proven group did not settle every input, finish the batch and release only its channel position")
+		t.Fatal("stopping the unlaunched group did not return unread input, finish the batch and release only its channel position")
 	}
-	after, err := f.svc.Queries.ListCollaborationBatchInputs(f.ctx, first.BatchID)
+	commands, err := f.svc.Queries.ListCollaborationCommands(f.ctx, f.issue.SessionID)
 	if err != nil {
 		t.Fatal(err)
 	}
-	for i := range after {
-		after[i].State, after[i].Reason = before[i].State, before[i].Reason
+	var after []db.CollaborationCommand
+	for _, command := range commands {
+		if command.ID == first.CommandID || command.ID == second.CommandID {
+			command.Reason, command.BatchID = before[0].Reason, first.BatchID
+			after = append(after, command)
+		}
 	}
 	if !reflect.DeepEqual(before, after) || f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='waiting'`, waiting.CommandID) != 1 {
 		t.Fatal("batch settlement rewrote immutable author/input identity or consumed the waiting batch")

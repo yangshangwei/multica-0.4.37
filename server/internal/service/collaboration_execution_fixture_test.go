@@ -175,7 +175,6 @@ func seedCollaborationGroupRun(t *testing.T, fx *testutil.Fixture, session pgtyp
 	if err != nil {
 		t.Fatal(err)
 	}
-	fx.Exec(t, `UPDATE collaboration_command SET state='in_flight' WHERE batch_id=$1 AND state='waiting'`, batch.ID)
 	group := util.MustParseUUID(fx.Insert(t, "collaboration_execution_group", testutil.Cols{
 		"session_id": session, "target_id": target.ID, "command_id": command.CommandID, "generation": target.GroupGeneration + 1,
 		"target_epoch": target.TargetEpoch, "config_version": target.ConfigVersion, "roster": encoded,
@@ -191,6 +190,11 @@ func seedCollaborationGroupRun(t *testing.T, fx *testutil.Fixture, session pgtyp
 	}))
 	fx.Exec(t, `UPDATE collaboration_batch SET state='in_flight',root_command_id=$2,group_id=$3,started_at=now() WHERE id=$1`, batch.ID, command.CommandID, group)
 	fx.Exec(t, `UPDATE collaboration_channel SET active_group_id=$2,group_generation=$3,queue_state='active' WHERE id=$1`, batch.ChannelID, group, target.GroupGeneration+1)
+	if err = q.StartCollaborationBatchInputs(t.Context(), batch.ID); err != nil {
+		t.Fatal(err)
+	}
+	fx.Cleanup(t, `DELETE FROM collaboration_group_input WHERE group_id=$1`, group)
+	fx.Cleanup(t, `DELETE FROM collaboration_execution_group WHERE id=$1`, group)
 	if _, err = q.MirrorCollaborationChannelControl(t.Context(), batch.ChannelID); err != nil {
 		t.Fatal(err)
 	}

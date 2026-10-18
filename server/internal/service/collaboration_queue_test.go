@@ -39,6 +39,7 @@ func newCollaborationQueueFixture(t *testing.T) *collaborationQueueFixture {
 		t.Fatal(err)
 	}
 	f.fx.Cleanup(t, `DELETE FROM collaboration_command WHERE session_id=$1`, issue.SessionID)
+	f.fx.Cleanup(t, `DELETE FROM collaboration_grant WHERE issue_id=$1`, issue.Issue.ID)
 	f.fx.Cleanup(t, `DELETE FROM collaboration_operation WHERE scope_kind='issue' AND scope_id=$1`, issue.Issue.ID)
 	target, _ := seedCollaborationTarget(t, f.fx, issue.Issue.ID, issue.SessionID, util.MustParseUUID(f.creator), 1)
 	return &collaborationQueueFixture{collaborationFixture: f, issue: issue, targetID: target.ID}
@@ -418,8 +419,9 @@ func TestCollaborationQueueCancelRechecksStateAfterSessionLock(t *testing.T) {
 		default:
 		}
 	}
-	// This is a competing writer fixture, not a claim that promote exists.
-	if _, err = tx.Exec(f.ctx, `UPDATE collaboration_command SET state='in_flight' WHERE id=$1`, command.CommandID); err != nil {
+	// A competing cancellation changes the locked state. Actual cancel/promote
+	// races use the real managed service in collaboration_fifo_test.go.
+	if _, err = tx.Exec(f.ctx, `UPDATE collaboration_command SET state='cancelled',reason='cancelled_by_participant' WHERE id=$1`, command.CommandID); err != nil {
 		t.Fatal(err)
 	}
 	if err = tx.Commit(f.ctx); err != nil {
@@ -532,7 +534,18 @@ func TestCollaborationQueueConcurrentSameKeyAndLargeSequence(t *testing.T) {
 	f := newCollaborationQueueFixture(t)
 	const sequence int64 = 9007199254740993
 	const controlVersion int64 = 9007199254740995
-	f.fx.Exec(t, `UPDATE collaboration_target SET next_command_seq=$2,control_version=$3 WHERE id=$1`, f.targetID, sequence, controlVersion)
+	target := queueTarget(t, f, f.targetID)
+	channel, err := f.svc.Queries.EnsureCollaborationChannel(f.ctx, db.EnsureCollaborationChannelParams{SessionID: f.issue.SessionID, RootAgentID: target.ResourceID})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = f.svc.Queries.BindCollaborationTargetChannel(f.ctx, db.BindCollaborationTargetChannelParams{TargetID: target.ID, SessionID: f.issue.SessionID, ChannelID: channel.ID}); err != nil {
+		t.Fatal(err)
+	}
+	f.fx.Exec(t, `UPDATE collaboration_channel SET next_command_seq=$2,control_version=$3 WHERE id=$1`, channel.ID, sequence, controlVersion)
+	if _, err = f.svc.Queries.MirrorCollaborationChannelControl(f.ctx, channel.ID); err != nil {
+		t.Fatal(err)
+	}
 	p := CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), TargetID: f.targetID, InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: 1, ExpectedConfigVersion: 1, Content: "same input"}
 	start := make(chan struct{})
 	type result struct {

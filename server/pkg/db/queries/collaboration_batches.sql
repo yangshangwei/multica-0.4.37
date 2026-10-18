@@ -10,6 +10,11 @@ SELECT * FROM collaboration_channel WHERE session_id=$1 ORDER BY id;
 INSERT INTO collaboration_channel (session_id,root_agent_id)
 VALUES ($1,$2) ON CONFLICT(session_id,root_agent_id) DO UPDATE SET root_agent_id=EXCLUDED.root_agent_id RETURNING *;
 
+-- Existing channels are already locked; insert only a missing destination.
+-- The source issue/session fence serializes legitimate channel creators.
+-- name: CreateCollaborationChannel :one
+INSERT INTO collaboration_channel (session_id,root_agent_id) VALUES ($1,$2) RETURNING *;
+
 -- name: BindCollaborationTargetChannel :one
 UPDATE collaboration_target t SET channel_id=ch.id,queue_state=ch.queue_state,pause_reason=ch.pause_reason,
     control_version=ch.control_version,group_generation=ch.group_generation,active_group_id=ch.active_group_id
@@ -43,16 +48,40 @@ SELECT * FROM collaboration_batch WHERE session_id=$1 ORDER BY channel_id,seq;
 -- name: LockCollaborationBatches :many
 SELECT * FROM collaboration_batch WHERE session_id=$1 ORDER BY id FOR UPDATE;
 
--- Direct-agent batches use their target's enqueue sequence, not transaction time.
--- Mixed/squad batches retain their existing order until channel-wide input
--- sequencing is implemented; their per-target seq values are not comparable.
+-- A batch is a staging container until promotion. Only channel seq orders input.
 -- name: ListCollaborationBatchInputs :many
 SELECT * FROM collaboration_command WHERE batch_id=$1
-ORDER BY CASE WHEN EXISTS (
-    SELECT 1 FROM collaboration_batch b
-    JOIN collaboration_target t ON t.id=b.effective_target_id
-    WHERE b.id=$1 AND t.kind='agent'
-) THEN seq END,created_at,seq,id;
+ORDER BY seq,id;
+
+-- name: ListCollaborationChannelWaitingInputs :many
+SELECT * FROM collaboration_command WHERE channel_id=$1 AND state='waiting' ORDER BY seq,id;
+
+-- Only unread, unjoined inputs may be moved between staging batches.
+-- name: RebatchCollaborationWaitingInputs :execrows
+UPDATE collaboration_command c SET batch_id=sqlc.arg(batch_id)::uuid
+FROM collaboration_batch old_batch, collaboration_batch new_batch
+WHERE c.id=ANY(sqlc.arg(command_ids)::uuid[]) AND c.state='waiting' AND c.group_id IS NULL
+  AND old_batch.id=c.batch_id AND old_batch.state='waiting' AND old_batch.started_at IS NULL
+  AND new_batch.id=sqlc.arg(batch_id)::uuid AND new_batch.state='waiting' AND new_batch.started_at IS NULL
+  AND new_batch.session_id=c.session_id AND new_batch.channel_id=c.channel_id;
+
+-- name: MoveCollaborationWaitingInput :one
+UPDATE collaboration_command c SET channel_id=sqlc.arg(channel_id)::uuid,batch_id=sqlc.arg(batch_id)::uuid,seq=sqlc.arg(seq)::bigint
+WHERE c.id=sqlc.arg(command_id)::uuid AND c.state='waiting' AND c.group_id IS NULL
+RETURNING c.*;
+
+-- Every consumed association is retained independently of a command's next queue placement.
+-- name: ListCollaborationGroupInputs :many
+SELECT * FROM collaboration_group_input WHERE group_id=$1 ORDER BY seq,command_id;
+
+-- name: ListCollaborationSessionGroupInputs :many
+SELECT i.* FROM collaboration_group_input i JOIN collaboration_execution_group g ON g.id=i.group_id
+WHERE g.session_id=$1 ORDER BY i.group_id,i.seq,i.command_id;
+
+-- name: ReturnNeverLaunchedCollaborationInput :one
+UPDATE collaboration_command c SET state='waiting',reason='never_launched',group_id=NULL,batch_id=sqlc.arg(batch_id)::uuid
+WHERE c.id=sqlc.arg(command_id)::uuid AND c.state='in_flight' AND c.group_id=sqlc.arg(group_id)::uuid
+RETURNING c.*;
 
 -- name: PauseCollaborationChannel :one
 UPDATE collaboration_channel SET queue_state='paused',control_version=control_version+1,pause_reason=sqlc.arg(reason)::text

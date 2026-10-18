@@ -12,18 +12,21 @@ import (
 )
 
 const addAgentSkill = `-- name: AddAgentSkill :exec
+WITH locked_agent AS MATERIALIZED (SELECT agent.id FROM agent WHERE agent.id = $2::uuid FOR UPDATE)
 INSERT INTO agent_skill (agent_id, skill_id)
-VALUES ($1, $2)
+SELECT id, $1::uuid FROM locked_agent
 ON CONFLICT DO NOTHING
 `
 
 type AddAgentSkillParams struct {
-	AgentID pgtype.UUID `json:"agent_id"`
 	SkillID pgtype.UUID `json:"skill_id"`
+	AgentID pgtype.UUID `json:"agent_id"`
 }
 
+// Selected skills are part of the agent's execution configuration. Use the
+// parent fence before changing children, as invocation and squad writers do.
 func (q *Queries) AddAgentSkill(ctx context.Context, arg AddAgentSkillParams) error {
-	_, err := q.db.Exec(ctx, addAgentSkill, arg.AgentID, arg.SkillID)
+	_, err := q.db.Exec(ctx, addAgentSkill, arg.SkillID, arg.AgentID)
 	return err
 }
 
@@ -645,43 +648,46 @@ func (q *Queries) ListSkillsByWorkspace(ctx context.Context, workspaceID pgtype.
 }
 
 const removeAgentSkill = `-- name: RemoveAgentSkill :exec
-DELETE FROM agent_skill
-WHERE agent_id = $1 AND skill_id = $2
+WITH locked_agent AS MATERIALIZED (SELECT agent.id FROM agent WHERE agent.id = $2::uuid FOR UPDATE)
+DELETE FROM agent_skill USING locked_agent
+WHERE agent_id = locked_agent.id AND skill_id = $1::uuid
 `
 
 type RemoveAgentSkillParams struct {
-	AgentID pgtype.UUID `json:"agent_id"`
 	SkillID pgtype.UUID `json:"skill_id"`
+	AgentID pgtype.UUID `json:"agent_id"`
 }
 
 func (q *Queries) RemoveAgentSkill(ctx context.Context, arg RemoveAgentSkillParams) error {
-	_, err := q.db.Exec(ctx, removeAgentSkill, arg.AgentID, arg.SkillID)
+	_, err := q.db.Exec(ctx, removeAgentSkill, arg.SkillID, arg.AgentID)
 	return err
 }
 
 const removeAllAgentSkills = `-- name: RemoveAllAgentSkills :exec
-DELETE FROM agent_skill WHERE agent_id = $1
+WITH locked_agent AS MATERIALIZED (SELECT agent.id FROM agent WHERE agent.id = $1 FOR UPDATE)
+DELETE FROM agent_skill USING locked_agent WHERE agent_id = locked_agent.id
 `
 
-func (q *Queries) RemoveAllAgentSkills(ctx context.Context, agentID pgtype.UUID) error {
-	_, err := q.db.Exec(ctx, removeAllAgentSkills, agentID)
+func (q *Queries) RemoveAllAgentSkills(ctx context.Context, id pgtype.UUID) error {
+	_, err := q.db.Exec(ctx, removeAllAgentSkills, id)
 	return err
 }
 
 const setAgentSkillEnabled = `-- name: SetAgentSkillEnabled :execrows
+WITH locked_agent AS MATERIALIZED (SELECT agent.id FROM agent WHERE agent.id = $3::uuid FOR UPDATE)
 UPDATE agent_skill
-SET enabled = $3
-WHERE agent_id = $1 AND skill_id = $2
+SET enabled = $1::boolean FROM locked_agent
+WHERE agent_id = locked_agent.id AND skill_id = $2::uuid
 `
 
 type SetAgentSkillEnabledParams struct {
-	AgentID pgtype.UUID `json:"agent_id"`
-	SkillID pgtype.UUID `json:"skill_id"`
 	Enabled bool        `json:"enabled"`
+	SkillID pgtype.UUID `json:"skill_id"`
+	AgentID pgtype.UUID `json:"agent_id"`
 }
 
 func (q *Queries) SetAgentSkillEnabled(ctx context.Context, arg SetAgentSkillEnabledParams) (int64, error) {
-	result, err := q.db.Exec(ctx, setAgentSkillEnabled, arg.AgentID, arg.SkillID, arg.Enabled)
+	result, err := q.db.Exec(ctx, setAgentSkillEnabled, arg.Enabled, arg.SkillID, arg.AgentID)
 	if err != nil {
 		return 0, err
 	}

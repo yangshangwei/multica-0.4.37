@@ -44,7 +44,7 @@ ORDER BY r.created_at,r.id LIMIT 16;
 SELECT DISTINCT t.id,t.session_id,s.issue_id FROM collaboration_target t
 JOIN collaboration_session s ON s.id=t.session_id
 JOIN collaboration_channel ch ON ch.id=t.channel_id
-JOIN collaboration_batch b ON b.channel_id=ch.id AND b.effective_target_id=t.id AND b.state='waiting'
+JOIN collaboration_command c ON c.channel_id=ch.id AND c.target_id=t.id AND c.state='waiting' AND c.group_id IS NULL
 JOIN collaboration_grant g ON g.target_id=t.id AND g.config_version=t.config_version AND g.target_epoch=t.target_epoch AND g.revoked_at IS NULL
 WHERE t.kind='agent' AND t.hold_reason IS NULL AND g.runtime_id=$1 AND g.binding_id=$2 AND s.queue_state='active' AND ch.queue_state='active'
 ORDER BY s.issue_id,t.id LIMIT 16;
@@ -84,7 +84,15 @@ UPDATE collaboration_batch SET state='in_flight',root_command_id=sqlc.arg(comman
 WHERE id=sqlc.arg(batch_id)::uuid AND state='waiting' RETURNING *;
 
 -- name: StartCollaborationBatchInputs :exec
-UPDATE collaboration_command SET state='in_flight' WHERE batch_id=$1 AND state='waiting';
+WITH consumed AS (
+    UPDATE collaboration_command c SET state='in_flight',group_id=b.group_id
+    FROM collaboration_batch b WHERE c.batch_id=$1 AND b.id=c.batch_id AND b.state='in_flight'
+      AND c.state='waiting' AND c.group_id IS NULL
+    RETURNING c.*
+)
+INSERT INTO collaboration_group_input(group_id,command_id,channel_id,batch_id,seq,consuming_run_id)
+SELECT c.group_id,c.id,c.channel_id,c.batch_id,c.seq,r.id FROM consumed c
+JOIN collaboration_run r ON r.group_id=c.group_id AND r.parent_run_id IS NULL AND r.step_key='root';
 
 -- name: AssignCollaborationChannelGroup :one
 UPDATE collaboration_channel SET active_group_id=sqlc.arg(group_id)::uuid,group_generation=group_generation+1

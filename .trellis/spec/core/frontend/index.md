@@ -21,7 +21,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [ApiClient authEpoch](./api-client-auth-epoch.md) | Isolating a stale 401 from the current session | Active |
-| [Collaboration execution protocol](../../server/collaboration-targets.md) | v3 channel/hold projection, exact control receipts, original-key/access-epoch recovery and gated execution | M09 + control foundation |
+| [Collaboration execution protocol](../../server/collaboration-targets.md) | v4 channel/input history, exact hold/control receipts, original-key/access-epoch recovery and gated execution | FIFO and history foundation; full product pending |
 | [Settings Recovery](../../views/frontend/settings-recovery.md) | Exact-Query denial and cancellation rollback, PAT parsing and one-time secret ownership | Active |
 | [Connection Recovery](../../desktop/frontend/connection-recovery.md) | Recovery request deadlines/cancellation, transient auth metadata and workspace query errors | Active |
 | [Iteration Operations](./iteration-operations.md) | Complete previews/activity, frozen progress and scope semantics, recovery, permission epochs and routing | Active |

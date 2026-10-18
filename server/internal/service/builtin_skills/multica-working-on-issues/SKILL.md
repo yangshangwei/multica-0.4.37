@@ -18,40 +18,12 @@ Every contract below is traced to source in
 
 ## Collaboration tasks require their own workflow
 
-Collaboration creation remains disabled during implementation. On
-`unsupported_collaboration_action`, do not retry ordinary issue/comment writes,
-deletion, batches or rerun through another legacy endpoint, or turn a comment
-into execution. Mixed batches refuse before changing their ordinary companions.
-Machine credentials cannot read collaboration through ordinary issue details;
-source membership alone does not grant shared AI control.
-
-Ordinary enqueue, claim, retry and start also reject collaboration-owned work,
-including captured sources and trigger/coalesced comments. Changing a claimed
-task's source or runtime snapshot cannot authorize credential minting. An
-ordinary child that only references a collaboration parent remains ordinary;
-the parent link grants no access to the parent's private content.
-
-The version 3 `execution` projection identifies typed targets, channels,
-batches and execution groups. Its `availability: "unavailable"` keeps client
-execution capabilities disabled until full acceptance. Dedicated managed
-runtime APIs do not grant ordinary agent credentials shared execution access.
-A missing or unknown protocol must not fall back to ordinary execution;
-unproven current work retains its termination barrier.
-
-Target holds are separate from channel pause. Resource withdrawal retains a
-target hold and stops dependent work; new consent does not release it. A refused
-target Resume changes neither hold nor channel state. Resume All reports each
-channel and held target separately. Dedicated control recovery uses the original
-request key at `control/operations/{requestId}` and returns the original full
-success/refusal, without automatically retrying execution. Runtime teardown and
-binding replacement retain the old run's narrow termination proof authority.
-
-Human source members may change position alone without advancing collaboration
-revision. This does not authorize other changes. The ordinary-task contracts
-below do not describe shared FIFO or collaboration lifecycle APIs. Dedicated
-human edits and handoffs preserve their original versions and idempotency key;
-an outdated status confirmation requires a new explicit human decision, not an
-agent retry with newly fetched versions.
+Creation and client execution remain disabled. Unknown protocols and
+`unsupported_collaboration_action` must never fall back to ordinary execution.
+Machine credentials and source membership alone grant no collaboration control.
+For shared input ordering, holds, proof and original-key recovery, read
+`references/collaboration-workflow.md` before acting. Ordinary rules below
+are not the shared APIs.
 
 ## Triage admission precedes formal issue work
 

@@ -447,6 +447,9 @@ func (s *CollaborationService) AcceptRuntimeProof(ctx context.Context, runID pgt
 				return out, err
 			}
 		}
+		if !collaborationRunProvenEnded(r.run) {
+			return out, invalidCollaborationLedger("settled run has contradictory termination evidence")
+		}
 		if _, err = q.RecordCollaborationTerminationProof(ctx, db.RecordCollaborationTerminationProofParams{RunID: runID, ReceiptID: p.ReceiptID, ReceiptDigest: digest, Proof: encoded}); err != nil {
 			return out, err
 		}

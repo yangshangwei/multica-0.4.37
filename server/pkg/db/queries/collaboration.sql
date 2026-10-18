@@ -160,8 +160,8 @@ FOR UPDATE;
 SELECT * FROM collaboration_account_fence WHERE user_id = sqlc.arg(user_id)::uuid;
 
 -- name: AllocateCollaborationCommandSequence :one
-UPDATE collaboration_target SET next_command_seq = next_command_seq + 1
-WHERE id = sqlc.arg(target_id)::uuid AND session_id = sqlc.arg(session_id)::uuid
+UPDATE collaboration_channel SET next_command_seq = next_command_seq + 1
+WHERE id = sqlc.arg(channel_id)::uuid AND session_id = sqlc.arg(session_id)::uuid
 RETURNING (next_command_seq - 1)::bigint AS command_seq;
 
 -- name: CreateCollaborationCommand :one

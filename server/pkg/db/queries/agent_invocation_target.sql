@@ -13,16 +13,12 @@ WHERE agent_id = ANY(@agent_ids::uuid[])
 ORDER BY agent_id, target_type ASC, created_at ASC;
 
 -- name: CreateAgentInvocationTarget :exec
--- Idempotent upsert: re-adding an existing (agent, target_type, target)
--- refreshes created_by/created_at rather than erroring. Callers replace the
--- whole set via DeleteAgentInvocationTargets + a series of these, so the
--- ON CONFLICT is belt-and-suspenders against races.
+-- Re-adding the same permission is a no-op. Preserve the original row and its
+-- consent fingerprint rather than rotating provenance on an unchanged grant.
 WITH locked_agent AS MATERIALIZED (SELECT agent.id FROM agent WHERE agent.id = sqlc.arg(agent_id)::uuid FOR UPDATE)
 INSERT INTO agent_invocation_target (agent_id, target_type, target_id, created_by)
 SELECT id, sqlc.arg(target_type)::text, sqlc.arg(target_id)::uuid, sqlc.narg('created_by')::uuid FROM locked_agent WHERE true
-ON CONFLICT (agent_id, target_type, target_id) DO UPDATE SET
-    created_by = EXCLUDED.created_by,
-    created_at = now();
+ON CONFLICT (agent_id, target_type, target_id) DO NOTHING;
 
 -- name: DeleteAgentInvocationTargets :exec
 -- Clears every target for an agent. Used before re-writing the allow-list so

@@ -1,0 +1,1 @@
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_collaboration_group_input_command ON collaboration_group_input(command_id,group_id);

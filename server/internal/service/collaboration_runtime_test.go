@@ -108,6 +108,8 @@ func newManagedCollaborationFixture(t *testing.T) *managedCollaborationFixture {
 	f.gateEpoch = gate.Epoch + 1
 	f.fx.Exec(t, `UPDATE collaboration_execution_gate SET enabled=true,epoch=$1 WHERE id=1`, f.gateEpoch)
 	f.fx.Cleanup(t, `UPDATE collaboration_execution_gate SET enabled=$1,epoch=$2 WHERE id=1`, gate.Enabled, gate.Epoch)
+	f.fx.Cleanup(t, `DELETE FROM collaboration_group_input i USING collaboration_channel ch WHERE i.channel_id=ch.id AND ch.session_id=$1`, issue.SessionID)
+	f.fx.Cleanup(t, `DELETE FROM collaboration_execution_group WHERE session_id=$1`, issue.SessionID)
 	return f
 }
 

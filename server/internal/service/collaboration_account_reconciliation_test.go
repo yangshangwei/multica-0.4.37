@@ -288,14 +288,16 @@ func TestCollaborationAccountReconciliationStopEvidence(t *testing.T) {
 			f.drain(t)
 			if strings.HasPrefix(scenario, "never_launched_") {
 				disposition, wantQueue := "cancelled", "paused"
+				commandState := "cancelled"
 				if scenario == "never_launched_owner" {
 					disposition, wantQueue = "stopped", "active"
+					commandState = "waiting"
 					if f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND hold_reason='grant_required'`, run.TargetID) != 1 {
 						t.Fatal("never-launched owner loss did not retain its target hold")
 					}
 				}
 				if f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND proof_state='never_launched_proven' AND settled_at IS NOT NULL AND forced_disposition=$2`, run.ID, disposition) != 1 ||
-					f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state=$2`, run.CommandID, disposition) != 1 ||
+					f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state=$2`, run.CommandID, commandState) != 1 ||
 					f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state=$2 AND active_group_id IS NULL`, run.TargetID, wantQueue) != 1 {
 					t.Fatal("server-proven never-launched work did not settle with the correct disposition")
 				}

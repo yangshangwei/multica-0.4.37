@@ -185,7 +185,8 @@ func (s *CollaborationAccountReconciler) reconcileInTx(ctx context.Context, q *d
 	if issue.WorkspaceID != next.WorkspaceID {
 		return errors.New("collaboration account invalidation source changed")
 	}
-	if _, err = q.LockCollaborationReconciliationState(ctx, issue.ID); err != nil {
+	state, err := q.LockCollaborationReconciliationState(ctx, issue.ID)
+	if err != nil {
 		return err
 	}
 	session, err := q.LockCollaborationReconciliationSession(ctx, issue.ID)
@@ -194,7 +195,7 @@ func (s *CollaborationAccountReconciler) reconcileInTx(ctx context.Context, q *d
 	}
 	// This is a system invalidation, not an action attributed to the disabled
 	// user. No current human read authority is needed to stop obsolete work.
-	t := &collaborationQueueTx{q: q, session: session, access: CollaborationIssueAccess{Issue: issue}}
+	t := &collaborationQueueTx{q: q, session: session, access: CollaborationIssueAccess{Issue: issue, LifecycleEpoch: state.LifecycleEpoch}}
 	t.channels, err = q.LockCollaborationChannels(ctx, session.ID)
 	if err != nil {
 		return err

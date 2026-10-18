@@ -90,7 +90,7 @@ func (q *Queries) CreateCollaborationResourceConsent(ctx context.Context, arg Cr
 
 const createConsentedCollaborationTarget = `-- name: CreateConsentedCollaborationTarget :one
 INSERT INTO collaboration_target (session_id, kind, resource_id, roster, configuration_fingerprint)
-VALUES ($1, $2, $3, $4, $5) RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
+VALUES ($1, $2, $3, $4, $5) RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
 `
 
 type CreateConsentedCollaborationTargetParams struct {
@@ -121,7 +121,6 @@ func (q *Queries) CreateConsentedCollaborationTarget(ctx context.Context, arg Cr
 		&i.QueueState,
 		&i.ControlVersion,
 		&i.GroupGeneration,
-		&i.NextCommandSeq,
 		&i.ActiveGroupID,
 		&i.PauseReason,
 		&i.RevokedAt,
@@ -206,7 +205,7 @@ func (q *Queries) ListCollaborationTargetGrants(ctx context.Context, targetID pg
 }
 
 const lockCollaborationSessionCommands = `-- name: LockCollaborationSessionCommands :many
-SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id FROM collaboration_command WHERE session_id = $1 ORDER BY id FOR UPDATE
+SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id FROM collaboration_command WHERE session_id = $1 ORDER BY id FOR UPDATE
 `
 
 // Lock retained inputs before any group/run writer, including detached and
@@ -237,6 +236,7 @@ func (q *Queries) LockCollaborationSessionCommands(ctx context.Context, sessionI
 			&i.InputEventID,
 			&i.ChannelID,
 			&i.BatchID,
+			&i.GroupID,
 		); err != nil {
 			return nil, err
 		}
@@ -254,7 +254,7 @@ UPDATE collaboration_target SET roster = $1::jsonb,
     config_version = config_version + 1, target_epoch = target_epoch + 1,
     hold_reason = 'switch_hold', hold_version = hold_version + 1, revoked_at = NULL
 WHERE id = $3::uuid AND session_id = $4::uuid
-RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, next_command_seq, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
+RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
 `
 
 type ReconfigureCollaborationTargetParams struct {
@@ -283,7 +283,6 @@ func (q *Queries) ReconfigureCollaborationTarget(ctx context.Context, arg Reconf
 		&i.QueueState,
 		&i.ControlVersion,
 		&i.GroupGeneration,
-		&i.NextCommandSeq,
 		&i.ActiveGroupID,
 		&i.PauseReason,
 		&i.RevokedAt,
