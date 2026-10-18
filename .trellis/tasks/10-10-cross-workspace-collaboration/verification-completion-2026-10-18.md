@@ -38,7 +38,7 @@ Knip 全仓扫描包含旧 `.artifacts/release-*` 源码快照噪声；受影响
 
 - `typescript-static.log`、`typescript-tests-final.log`
 - `go-full-affected-race.jsonl`、`go-primary-final-race.jsonl`
-- `linux-routes-726-final.log`、`linux-cli-daemon-combined.log`
+- `linux-routes-726-final.log`、`linux-cli-daemon-combined.log`；当前源码追加完整复跑见 `linux-routes-all-final.log`（6/6）、`linux-daemon-final.log`（5/5）和 `linux-runner-final.log`（18 通过；相反平台负例在宿主验证）
 - `desktop-native-reviewed.log`、`workbench-check-web-run2.log`
 - `api.running.json`、`web.running.json`、`web-source-drift-final.json`
 - `sqlc-consistency-final.json`、`visual-verdict-final.json`
@@ -59,3 +59,5 @@ Knip 全仓扫描包含旧 `.artifacts/release-*` 源码快照噪声；受影响
 | `0155ee735` | 服务端、迁移与 CLI/daemon 运行协议 |
 | `6063a2682` | core schema、账号数据及原请求恢复 |
 | `374049cec` | 共享工作台与 Web/Desktop 入口 |
+
+本轮测试 API、Web 和静态 Desktop 服务已停止；测试数据库/容器及证据保留用于后续任务，状态见证据目录的 `cleanup.json`。原应用环境未被停止或迁移。

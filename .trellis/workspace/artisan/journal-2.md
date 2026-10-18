@@ -543,3 +543,43 @@ Implemented and verified target hold/control and resource invalidation boundarie
 ### Next Steps
 
 - 继续完整冻结资源/授权就绪Switch、M08/M11与容量1小队，再推进完整Web/Desktop及其余AC。
+
+
+## Session 88: 跨账号协作运行闭环与双端基础工作台
+<!-- trellis-session: v=2 fp=70925dd38e7b255f -->
+
+**Date**: 2026-10-18
+**Task**: 跨账号协作运行闭环与双端基础工作台
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成原子 Switch、小队读取/轮次约束、静态 Linux CLI/daemon 闭环和已有协作单双端接线；原任务保持 in_progress，完整产品验收继续。
+
+### Main Changes
+
+- 按输入冻结授权并保留全部读取者/终结证明，复用现有 CLI、窗口协议和 Query/草稿机制。
+- 修复 API 循环依赖、权限恢复与七字段回执、Desktop 启动/历史/独立窗口，以及广泛验证中的测试隔离与归档夹具。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `b434d191dcc3df0e44d521e50839f9d315ec44f1` | test(projects): keep canonical verification valid after task archival |
+| `0155ee7353a02c082e6c49d61e7c652e7ad97ff4` | feat(collaboration): keep shared runs authorized and recoverable |
+| `6063a2682a10d7b5123f480f6aa56ab0f2e8ec9a` | feat(collaboration): preserve account intent through uncertain responses |
+| `374049cecd4a2f30595e9131722722d5c7782937` | feat(collaboration): keep account work reachable across clients |
+
+### Testing
+
+- [OK] TypeScript 11993；Go 最新受影响包 6168 顶层 + 6402 子测试通过；81 个默认跳过项如实记录。
+- [OK] 真实 Linux 当前源码路由6、daemon5、runner18；生产 Web1和 macOS Electron6通过；lint/typecheck15、sqlc108一致、独立检查和视觉94/pass。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 补齐公开创建/受控附件、资源授权与 Switch 写表单、参与人及其余编辑/评论操作、来源页面/账号实时和完整运行记录。
+- 完成通用 provider/Git/其他 OS 及 P7/P8/97项产品验收，再评估启用；当前不归档父任务。

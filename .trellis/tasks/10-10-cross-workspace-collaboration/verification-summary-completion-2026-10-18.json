@@ -429,7 +429,18 @@
     "desktop_macos_scenarios": 6,
     "web_production_scenarios": 1,
     "visual_verdict": 94,
-    "web_build": "5vA9q4KPddaHoty4Os0St"
+    "web_build": "5vA9q4KPddaHoty4Os0St",
+    "final_current_source_recheck": {
+      "linux_all_current_route_tests": 6,
+      "linux_current_daemon_tests": 5,
+      "linux_current_runner_tests": 18,
+      "linux_runner_skip": "opposite-platform unsupported-controller test; exercised on host",
+      "logs": [
+        "linux-routes-all-final.log",
+        "linux-daemon-final.log",
+        "linux-runner-final.log"
+      ]
+    }
   },
   "independent_review": "no_unresolved_defects_in_implemented_slice",
   "creation_enabled": false,
@@ -464,5 +475,6 @@
       "files": 74,
       "subject": "feat(collaboration): keep account work reachable across clients"
     }
-  ]
+  ],
+  "test_services": "stopped; test databases and evidence retained"
 }
