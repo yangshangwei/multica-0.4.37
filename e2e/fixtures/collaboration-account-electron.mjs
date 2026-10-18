@@ -40,6 +40,7 @@ const functions = functionNames.map((name) => {
 });
 const channels = new Set([
   '"window:open-account"', '"window:open-issue"', '"window:close"',
+  '"file:download-url"',
   "MAIN_RENDERER_CHANNEL_STATE_CHANNEL", "AUTH_SESSION_STATE_CHANNEL",
 ]);
 const registrations = [];
@@ -56,6 +57,7 @@ assert.equal(registrations.length, channels.size, "Every native account/issue ch
 
 const imports = [
   "./keyboard-shortcuts", "./navigation-guard", "./renderer-file-access",
+  "./external-url",
   "./renderer-web-preferences", "./auth-session-coordinator",
   "../shared/auth-session", "../shared/main-renderer-messages", "../shared/account-navigation", "../shared/issue-window",
 ];

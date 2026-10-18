@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationWorkbenchOptions, useCollaborationScope } from "@multica/core/collaboration";
+import { useCollaborationRealtime } from "@multica/core/realtime";
 import { accountPath, accountRouteKey, type AccountDestination } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
@@ -11,12 +12,14 @@ import { useCollaborationLabels } from "./labels";
 import { CollaborationQueryState } from "./query-state";
 import { CollaborationDetail } from "./collaboration-detail";
 import { CollaborationNotifications } from "./notifications";
+import { CollaborationCreationEntry } from "./creation-form";
 import { useRestoredScrollRef, useRestoredViewState, useViewStateWriter } from "../platform";
 
 /** Account identity owns every query; selected detail is independent of list membership. */
 export function AccountWorkbenchPage({ destination }: { destination: AccountDestination }) {
   const { t } = useT("collaboration");
   const scope = useCollaborationScope();
+  useCollaborationRealtime(scope, destination.issueId);
   return <main className="flex h-full min-h-0 min-w-0 flex-col bg-background text-foreground">
     <header className="flex shrink-0 flex-wrap items-center gap-x-8 gap-y-3 px-4 py-4 md:px-6">
       <h1 className="text-title font-semibold">{t(($) => $.page.title)}</h1>
@@ -27,6 +30,7 @@ export function AccountWorkbenchPage({ destination }: { destination: AccountDest
           {view === "current" ? t(($) => $.page.current) : t(($) => $.page.participating)}
         </AppLink>)}
       </nav>
+      <CollaborationCreationEntry key={`create:${scope.apiScope}:${scope.userId}`} scope={scope} />
       <CollaborationNotifications key={`${scope.apiScope}:${scope.userId}`} scope={scope} view={destination.view} />
     </header>
     <WorkbenchBody key={`${scope.apiScope}:${scope.userId}:${accountRouteKey(accountPath(destination))}`} scope={scope} destination={destination} />

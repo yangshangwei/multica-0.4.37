@@ -2,6 +2,7 @@ import { useId, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationKeys, collaborationMentionMarkdown, collaborationMentionTargetsOptions, executeCollaborationComment,
   prepareCollaborationComment, useCollaborationCommentPreview, useCollaborationPendingDrafts,
+  useCollaborationDeliveryForm,
   type CollaborationDraft, type CollaborationIssue, type CollaborationScope } from "@multica/core/collaboration";
 import { Button } from "@multica/ui/components/ui/button";
 import { Textarea } from "@multica/ui/components/ui/textarea";
@@ -9,13 +10,16 @@ import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import { useT } from "../i18n";
 import { useCollaborationLabels } from "./labels";
 import { CollaborationQueryState } from "./query-state";
+import { CollaborationAttachmentPicker } from "./attachment-picker";
 
 export function CollaborationCommentComposer({ scope, issue }: { scope: CollaborationScope; issue: CollaborationIssue }) {
   const { t } = useT("collaboration");
   const labels = useCollaborationLabels();
   const client = useQueryClient();
   const fieldId = useId();
-  const [content, setContent] = useState("");
+  const delivery = useCollaborationDeliveryForm({ server: scope.server, userId: scope.userId, context: { kind: "issue", issueId: issue.id, sourceWorkspaceId: issue.source_workspace.id } }, "comment");
+  const content = delivery.form.content;
+  const [uploading, setUploading] = useState(false);
   const [suppressed, setSuppressed] = useState<string[]>([]);
   const submitting = useRef(false);
   const mentions = useQuery({ ...collaborationMentionTargetsOptions(client, scope, issue.id), enabled: issue.capabilities.comment === true });
@@ -23,16 +27,16 @@ export function CollaborationCommentComposer({ scope, issue }: { scope: Collabor
   const inspect = useCollaborationCommentPreview(scope, issue.id);
   const preview = inspect.data;
   const send = useMutation({ mutationKey: [...collaborationKeys.issue(scope, issue.id), "comment-send"], retry: false, networkMode: "always", mutationFn: ({ draft, recovery }: { draft: CollaborationDraft; recovery: boolean }) => executeCollaborationComment(client, scope, draft, recovery),
-    onSuccess: (receipt) => { if (receipt.status >= 200 && receipt.status < 300) { setContent(""); inspect.reset(); setSuppressed([]); } } });
-  const locked = inspect.isPending || send.isPending || drafts.comments.length > 0 || drafts.error;
-  function change(next: string) { setContent(next); inspect.reset(); send.reset(); }
+    onSuccess: (receipt) => { if (receipt.status >= 200 && receipt.status < 300) { delivery.reset(); inspect.reset(); setSuppressed([]); } } });
+  const locked = inspect.isPending || send.isPending || drafts.comments.length > 0 || drafts.error || uploading || delivery.uploads.length > 0 || Boolean(delivery.error);
+  function change(next: string) { delivery.update({ content: next }); inspect.reset(); send.reset(); }
   const targetName = (target: { kind: "agent" | "squad"; resource_id: string }) => mentions.data?.targets.find((item) => item.kind === target.kind && item.resource_id === target.resource_id)?.name
     ?? `${target.kind === "squad" ? t(($) => $.execution.squad) : t(($) => $.execution.agent)} ${target.resource_id}`;
   if (issue.capabilities.comment !== true) return null;
-  return <form className="min-w-0 space-y-4" onSubmit={(event) => {
+  return <form aria-label={t(($) => $.detail.comments)} className="min-w-0 space-y-4" onSubmit={(event) => {
     event.preventDefault();
     if (!preview || locked || submitting.current) return;
-    const draft = prepareCollaborationComment(scope, issue.id, crypto.randomUUID(), content, suppressed, preview);
+    const draft = prepareCollaborationComment(scope, issue.id, crypto.randomUUID(), content, suppressed, preview, { draftId: delivery.form.draftId, attachmentIds: delivery.form.selectedAttachmentIds });
     submitting.current = true;
     void send.mutateAsync({ draft, recovery: false }).catch(() => {}).finally(() => { submitting.current = false; });
   }}>
@@ -45,7 +49,11 @@ export function CollaborationCommentComposer({ scope, issue }: { scope: Collabor
         onClick={() => change(`${content}${content ? " " : ""}${collaborationMentionMarkdown(target.kind, target.resource_id, target.name, mentions.data!)}`)}>{target.name}</Button>)}
     </div>}
     {mentions.error && <CollaborationQueryState error={mentions.error} retry={() => void mentions.refetch()} />}
-    <div className="flex flex-wrap gap-2"><Button variant="outline" type="button" disabled={locked || !content.trim()} onClick={() => inspect.mutate({ content, parent_id: null, suppressed_target_ids: suppressed })} className="pointer-coarse:min-h-11">{t(($) => $.composer.preview)}</Button>
+    <CollaborationAttachmentPicker scope={scope} form={delivery.form} update={delivery.update} uploads={delivery.uploads} onBusyChange={setUploading}
+      disabled={inspect.isPending || send.isPending || drafts.comments.length > 0 || drafts.error || Boolean(delivery.error)} onChange={() => inspect.reset()} />
+    {Boolean(delivery.error) && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
+    <div className="flex flex-wrap gap-2"><Button variant="outline" type="button" disabled={locked || !content.trim()} onClick={() => inspect.mutate({ content, parent_id: null, suppressed_target_ids: suppressed,
+      ...(delivery.form.selectedAttachmentIds.length ? { draft_id: delivery.form.draftId, attachment_ids: delivery.form.selectedAttachmentIds } : {}) })} className="pointer-coarse:min-h-11">{t(($) => $.composer.preview)}</Button>
       <Button type="submit" disabled={!preview || locked || !content.trim()} className="pointer-coarse:min-h-11">{t(($) => $.composer.send)}</Button>
     </div>
     {preview && <div className="space-y-3 text-body"><p className="text-caption text-muted-foreground">{t(($) => $.composer.recipients, { count: preview.recipients.length })}</p>

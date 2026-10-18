@@ -1,12 +1,14 @@
-import { useRef, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { collaborationKeys, collaborationSwitchProposalsOptions, executeCollaborationCommandCancel, parseCollaborationCommandCancelDraft, parseCollaborationControlDraft, prepareCollaborationControl, prepareCollaborationCommandCancel,
+import { useRef } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { collaborationKeys, executeCollaborationCommandCancel, executeCollaborationResource, parseCollaborationResourceDraft, parseCollaborationCommandCancelDraft, parseCollaborationControlDraft, prepareCollaborationControl, prepareCollaborationCommandCancel,
   recoverCollaborationControl, recoverCollaborationSwitch, sendCollaborationControl, sendCollaborationSwitch, useCollaborationPendingDrafts,
   type CollaborationDraft, type CollaborationIssue, type CollaborationScope } from "@multica/core/collaboration";
 import { Button } from "@multica/ui/components/ui/button";
 import { useT } from "../i18n";
 import { useCollaborationLabels } from "./labels";
 import { CollaborationQueryState } from "./query-state";
+import { CollaborationResourcePanel } from "./resource-panel";
+import { CollaborationSwitchPanel } from "./switch-panel";
 
 export function CollaborationExecutionPanel({ scope, issue }: { scope: CollaborationScope; issue: CollaborationIssue }) {
   const { t } = useT("collaboration");
@@ -17,7 +19,10 @@ export function CollaborationExecutionPanel({ scope, issue }: { scope: Collabora
   const control = useMutation({ mutationKey: [...collaborationKeys.issue(scope, issue.id), "execution-control"], retry: false, networkMode: "always", mutationFn: async ({ draft, recover }: { draft: CollaborationDraft; recover: boolean }) => {
     try { parseCollaborationControlDraft(draft); } catch {
       try { parseCollaborationCommandCancelDraft(draft); } catch {
-        return recover ? recoverCollaborationSwitch(client, scope, draft) : sendCollaborationSwitch(client, scope, draft);
+        try { parseCollaborationResourceDraft(draft); } catch {
+          return recover ? recoverCollaborationSwitch(client, scope, draft) : sendCollaborationSwitch(client, scope, draft);
+        }
+        return executeCollaborationResource(client, scope, draft, recover);
       }
       return executeCollaborationCommandCancel(client, scope, draft, recover);
     }
@@ -32,10 +37,12 @@ export function CollaborationExecutionPanel({ scope, issue }: { scope: Collabora
     const target = execution?.targets.find((item) => item.id === id);
     return target ? `${target.kind === "squad" ? t(($) => $.execution.squad) : t(($) => $.execution.agent)} ${target.resource_id}` : id;
   };
-  function submit(draft: CollaborationDraft, recover = false) {
+  async function submit(draft: CollaborationDraft, recover = false) {
     if (submitting.current) return;
     submitting.current = true;
-    void control.mutateAsync({ draft, recover }).catch(() => {}).finally(() => { submitting.current = false; });
+    try { return await control.mutateAsync({ draft, recover }); }
+    catch { return undefined; }
+    finally { submitting.current = false; }
   }
   function act(action: "stop" | "resume", targetId?: string) {
     const draft = prepareCollaborationControl(scope, issue, crypto.randomUUID(), action, targetId ? { scope: "target", targetId } : { scope: "issue" });
@@ -57,8 +64,10 @@ export function CollaborationExecutionPanel({ scope, issue }: { scope: Collabora
         {receipt.target_holds.map((target) => <li key={target.target_id} className="[overflow-wrap:anywhere]">{targetName(target.target_id)} · {labels.reason(target.code)}</li>)}</ul>
     </div>}
     {control.data?.action === "cancel_command" && <p role="status" className="text-body">{control.data.code === "command_cancelled" ? t(($) => $.execution.cancelledInput) : labels.reason(control.data.code)}</p>}
+    {control.data && ["register_target", "consent_resource", "revoke_grant", "propose_target_switch", "consent_target_switch", "revoke_target_switch_consent", "commit_target_switch"].includes(control.data.action) && <p role="status" className="text-body">{labels.reason(control.data.code)}</p>}
     {control.data && "redacted" in control.data && control.data.redacted === true && <p role="status">{t(($) => $.execution.redacted)}</p>}
     {!control.isPending && pending.execution.map((draft) => <div key={draft.requestId} className="space-y-2"><p role="status" className="text-body">{t(($) => $.workflow.unknown)}</p><div className="flex flex-wrap gap-2"><Button variant="outline" disabled={pending.error} onClick={() => submit(draft, true)}>{t(($) => $.workflow.recover)}</Button><Button variant="outline" disabled={pending.error || !canControl} onClick={() => submit(draft)}>{t(($) => $.workflow.retryOriginal)}</Button></div></div>)}
+    {canControl && execution && <CollaborationResourcePanel key={issue.id} scope={scope} issue={issue} locked={locked} submit={submit} />}
     {execution?.channels.map((lane, index) => {
       const targets = execution.targets.filter((target) => target.channel_id === lane.id);
       const groups = execution.groups.filter((group) => group.channel_id === lane.id);
@@ -69,7 +78,7 @@ export function CollaborationExecutionPanel({ scope, issue }: { scope: Collabora
           <div className="flex flex-wrap items-baseline gap-2"><span className="text-body font-medium">{target.kind === "squad" ? t(($) => $.execution.squad) : t(($) => $.execution.agent)}</span><span className="break-all text-caption text-muted-foreground">{target.resource_id}</span></div>
           <p className="text-caption">{target.revoked_at !== null ? t(($) => $.execution.revoked) : target.hold_reason ? labels.execution(target.hold_reason) : t(($) => $.execution.released)}</p>
           {canControl && <div className="flex gap-2"><Button size="sm" variant="outline" disabled={locked} onClick={() => act("stop", target.id)}>{t(($) => $.execution.stop)}</Button><Button size="sm" variant="outline" disabled={locked || target.revoked_at !== null || issue.session.queue_state === "closed"} onClick={() => act("resume", target.id)}>{t(($) => $.execution.resume)}</Button></div>}
-          <SwitchProposals scope={scope} issueId={issue.id} targetId={target.id} />
+          {canControl && <CollaborationSwitchPanel scope={scope} issue={issue} targetId={target.id} locked={locked} submit={submit} />}
         </li>)}</ul>
         <ol className="space-y-4">{groups.map((group) => <li key={group.id} className="min-w-0 space-y-2">
           <p className="text-caption font-medium">{t(($) => $.execution.group)} · {labels.execution(group.state)}</p>
@@ -88,18 +97,4 @@ export function CollaborationExecutionPanel({ scope, issue }: { scope: Collabora
     })}
     {execution?.targets.filter((target) => target.channel_id === null).map((target) => <p key={target.id} className="text-caption">{target.hold_reason ? labels.execution(target.hold_reason) : t(($) => $.execution.released)}</p>)}
   </section>;
-}
-
-function SwitchProposals({ scope, issueId, targetId }: { scope: CollaborationScope; issueId: string; targetId: string }) {
-  const { t } = useT("collaboration");
-  const labels = useCollaborationLabels();
-  const client = useQueryClient();
-  const [open, setOpen] = useState(false);
-  const query = useQuery({ ...collaborationSwitchProposalsOptions(client, scope, issueId, targetId), enabled: open });
-  return <div className="space-y-3"><Button variant="ghost" size="sm" aria-expanded={open} onClick={() => setOpen(!open)}>{t(($) => $.execution.switch)}</Button>
-    {open && <div className="space-y-3">{query.isPending && <p role="status">{t(($) => $.page.loading)}</p>}{query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}
-      {query.isSuccess && query.data.length === 0 && <p className="text-caption text-muted-foreground">{t(($) => $.execution.noProposals)}</p>}
-      {query.data?.map((proposal) => <div key={proposal.proposal_id} className="space-y-2 text-caption"><p className="font-medium">{labels.execution(proposal.status)}</p><ul className="space-y-1">{proposal.resources.map((resource) => <li key={resource.agent_id} className="min-w-0 [overflow-wrap:anywhere]">{resource.agent_id} · {resource.revoked === true ? t(($) => $.execution.consentRevoked) : resource.consented === true ? t(($) => $.execution.consented) : t(($) => $.execution.consentMissing)}</li>)}</ul></div>)}
-    </div>}
-  </div>;
 }

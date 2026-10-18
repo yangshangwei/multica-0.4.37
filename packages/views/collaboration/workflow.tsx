@@ -8,6 +8,7 @@ import { Textarea } from "@multica/ui/components/ui/textarea";
 import { useT } from "../i18n";
 import { useCollaborationLabels } from "./labels";
 import { CollaborationQueryState } from "./query-state";
+import { CollaborationParticipants } from "./participants";
 
 type ActionName = CollaborationAction["action"];
 const successful = new Set(["participant_added", "already_participant", "transferred", "already_handler", "participant_left", "participant_removed", "information_requested", "information_returned", "acceptance_submitted", "status_changed", "status_unchanged", "completed", "cancelled", "reopened", "issue_edited", "unchanged"]);
@@ -30,6 +31,12 @@ export function CollaborationWorkflow({ scope, issue }: { scope: CollaborationSc
   return <section aria-label={t(($) => $.workflow.title)} className="space-y-4">
     <div className="flex flex-wrap gap-2">{actions.filter(([, available]) => available === true && issue.write_context).map(([action]) =>
       <Button key={action} variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => { apply.reset(); setSelected(action); }}>{labels.action(action)}</Button>)}</div>
+    <CollaborationParticipants key={issue.id} scope={scope} issue={issue} locked={locked} submit={async (draft) => {
+      if (submitting.current) return;
+      submitting.current = true;
+      try { await apply.mutateAsync({ draft, recovery: false }); } catch { /* Original-key recovery remains available above the form. */ }
+      finally { submitting.current = false; }
+    }} />
     {drafts.error && <p role="alert" className="text-body">{t(($) => $.workflow.storageError)}</p>}
     {apply.isPending && <p role="status" className="text-body">{t(($) => $.workflow.pending)}</p>}
     {apply.error && <CollaborationQueryState error={apply.error} />}

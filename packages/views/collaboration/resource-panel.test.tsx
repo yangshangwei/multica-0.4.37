@@ -1,0 +1,106 @@
+import { afterEach, expect, it, vi } from "vitest";
+import { screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ApiClient, setApiInstance } from "@multica/core/api";
+import { collaborationScope, parseCollaborationIssue, readCollaborationDrafts } from "@multica/core/collaboration";
+import { collaborationExecutionIssueFixture } from "@multica/core/collaboration/test-fixtures";
+import { renderWithI18n } from "../test/i18n";
+import { CollaborationExecutionPanel } from "./execution-panel";
+
+// Core resource/Switch suites own authority, malformed DTO and recovery matrices.
+const source = collaborationExecutionIssueFixture;
+const id = source.id;
+const target = source.execution.targets[0]!;
+const runtimeId = "00000000-0000-4000-8000-000000000099";
+const resource = { role: "agent", agent_id: target.resource_id, runtime_id: runtimeId, owner_user_id: id, execution_workspace_id: id,
+  agent_name: "Implementation agent", runtime: { id: runtimeId, name: "Runtime", custom_name: "Development", provider: "codex" }, owner: source.creator,
+  consented: false, grant_id: null, grant_epoch: null, can_consent: true, can_revoke: false };
+const resources = { protocol_version: 1, issue_id: id, lifecycle_epoch: source.lifecycle_epoch, target_set_version: source.execution.target_set_version, can_organize: true,
+  targets: [{ target_id: target.id, kind: target.kind, resource_id: target.resource_id, name: "Implementation agent", target_epoch: target.target_epoch, config_version: target.config_version,
+    authorized: false, reason: "grant_required", resources: [resource] }] };
+const identity = { issue_id: id, target_id: target.id, agent_id: resource.agent_id, proposal_id: null,
+  identity: { kind: "enrolled", installation_id: id, binding_id: runtimeId, binding_epoch: "9007199254740993" }, reason: "" };
+vi.mock("@multica/core/auth", () => ({ useAuthStore: { getState: () => ({ user: { id: "00000000-0000-4000-8000-000000000001" } }) } }));
+const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+afterEach(() => { client.clear(); localStorage.clear(); vi.unstubAllGlobals(); });
+const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), { status });
+function mount() {
+  setApiInstance(new ApiClient("https://server.example"));
+  const scope = collaborationScope(id);
+  const issue = parseCollaborationIssue({ ...source, write_context: { participant_epoch: "1", account_epoch: "1" } })!;
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationExecutionPanel scope={scope} issue={issue} /></QueryClientProvider>);
+  return { scope };
+}
+
+it("confirms the real owner's resource and recovers a lost response without resuming", async () => {
+  let requestId = "";
+  const fetch = vi.fn().mockImplementation(async (url: string, init: RequestInit) => {
+    if (url.endsWith("/resources")) return json(resources);
+    if (url.includes("/resources/identity?")) return json(identity);
+    if (url.includes("/resources/operations/")) return json({ protocol_version: 2, issue_id: id, request_id: requestId, action: "consent_resource", status: 201, code: "resource_consented", scope: "target", target_id: target.id, grant_id: id });
+    if (url.endsWith("/consents")) { requestId = new Headers(init.headers).get("Idempotency-Key")!; throw new TypeError("Lost response"); }
+    throw new Error(`Unexpected URL ${url}`);
+  });
+  vi.stubGlobal("fetch", fetch);
+  const { scope } = mount();
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Manage AI resources" }));
+  await user.click(await screen.findByRole("button", { name: "Authorize Implementation agent" }));
+  await user.click(await screen.findByRole("button", { name: "Confirm authorization" }));
+  expect(await screen.findByText(/The result is not confirmed/)).toBeInTheDocument();
+  await user.click(screen.getByRole("button", { name: "Check original result" }));
+  expect(await screen.findByText("Resource authorized. Explicit resume is still required.")).toBeInTheDocument();
+  await waitFor(() => expect(readCollaborationDrafts({ ...scope, issueId: id })).toEqual([]));
+  expect(fetch.mock.calls.filter(([, init]) => init.method === "POST")).toHaveLength(1);
+  expect(fetch.mock.calls.some(([url]) => url.endsWith("/control"))).toBe(false);
+});
+
+it("registers only a selected candidate from the explicit workspace", async () => {
+  const newAgent = "00000000-0000-4000-8000-000000000098";
+  const fetch = vi.fn().mockImplementation(async (url: string, init: RequestInit) => {
+    if (url.endsWith("/resources")) return json(resources);
+    if (url.endsWith("/api/workspaces")) return json([{ id, name: "Resource workspace", slug: "resources", role: "owner" }]);
+    if (url.includes("/resources/options?")) return json({ protocol_version: 1, issue_id: id, execution_workspace_id: id,
+      items: [{ kind: "agent", resource_id: newAgent, name: "New agent", available: true, reason: "", resources: [{ ...resource, agent_id: newAgent }] }] });
+    if (url.endsWith("/targets")) return json({ protocol_version: 2, issue_id: id, request_id: new Headers(init.headers).get("Idempotency-Key"), action: "register_target", status: 201, code: "target_registered", scope: "target", target_id: newAgent, grant_id: null }, 201);
+    throw new Error(`Unexpected URL ${url}`);
+  });
+  vi.stubGlobal("fetch", fetch);
+  mount();
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Manage AI resources" }));
+  await user.click(await screen.findByRole("button", { name: "Add AI target" }));
+  await user.selectOptions(await screen.findByLabelText("Resource workspace"), id);
+  await user.selectOptions(await screen.findByLabelText("AI target"), `agent:${newAgent}`);
+  await user.click(screen.getByRole("button", { name: "Register target" }));
+  expect(await screen.findByText("Target registered. Each owner must authorize their resources.")).toBeInTheDocument();
+  const post = fetch.mock.calls.find(([, init]) => init.method === "POST");
+  expect(JSON.parse(post?.[1]?.body as string)).toMatchObject({ resource_id: newAgent, expected_target_set_version: source.execution.target_set_version });
+});
+
+it("commits an authorized Switch proposal only after reviewing the explicit resume requirement", async () => {
+  const proposalId = "00000000-0000-4000-8000-000000000097";
+  const proposal = { proposal_id: proposalId, target_id: target.id, proposed_by: id, lifecycle_epoch: "1",
+    base_target_epoch: target.target_epoch, base_config_version: target.config_version,
+    proposed_target_epoch: (BigInt(target.target_epoch) + 1n).toString(), proposed_config_version: (BigInt(target.config_version) + 1n).toString(),
+    status: "consent_ready", reason: "", resources: [{ role: "agent", agent_id: resource.agent_id, runtime_id: runtimeId,
+      execution_workspace_id: id, owner_user_id: id, consented: true, revoked: false, grant_id: null, grant_epoch: null }] };
+  const fetch = vi.fn().mockImplementation(async (url: string, init: RequestInit) => {
+    if (url.endsWith("/switch-proposals")) return json([proposal]);
+    if (url.endsWith("/commit")) return json({ protocol_version: 2, issue_id: id, request_id: new Headers(init.headers).get("Idempotency-Key"), action: "commit_target_switch", status: 200, code: "target_switched",
+      scope: "target", target_id: target.id, proposal_id: proposalId, channel_id: target.channel_id, queue_state: "paused", control_version: target.control.control_version,
+      target_set_version: source.execution.target_set_version, group_id: null, group_settled: false, grant_id: null, batch_id: null, command_id: null, run_id: null, run_settled: false, channels: [], target_holds: [] });
+    throw new Error(`Unexpected URL ${url}`);
+  });
+  vi.stubGlobal("fetch", fetch);
+  mount();
+  const user = userEvent.setup();
+  await user.click(screen.getAllByRole("button", { name: "Switch proposals" })[0]!);
+  await user.click(await screen.findByRole("button", { name: "Commit Switch" }));
+  expect(screen.getByText(/The server will verify every owner consent/)).toBeInTheDocument();
+  expect(fetch.mock.calls.filter(([, init]) => init.method === "POST")).toHaveLength(0);
+  await user.click(screen.getByRole("button", { name: "Apply configuration" }));
+  expect(await screen.findByText("Configuration switched. Explicit resume is still required.")).toBeInTheDocument();
+  expect(fetch.mock.calls.some(([url]) => url.endsWith("/control"))).toBe(false);
+});

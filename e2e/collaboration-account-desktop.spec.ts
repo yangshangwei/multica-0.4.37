@@ -1,14 +1,15 @@
 import { randomUUID } from "node:crypto";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { createServer } from "node:http";
 import pg from "pg";
 import { _electron as electron, test, expect, type ElectronApplication, type Page, type TestInfo } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
+import { seedCollaborationResourceJourney, type CollaborationResourceSnapshot } from "./fixtures/collaboration-resources";
 
-// This suite proves native platform wiring against real account reads. Public
-// collaboration creation is gated; the test-only DB seed is not creation AC67.
+// Existing-record tests use a DB seed; the named creation/attachment test below
+// uses the actual gated creation API and an explicitly enabled isolated server.
 const apiUrl = process.env.COLLABORATION_E2E_API_URL;
 const rendererUrl = process.env.COLLABORATION_ELECTRON_RENDERER_URL;
 const databaseUrl = process.env.DATABASE_URL;
@@ -259,6 +260,154 @@ async function attachFailure(app: ElectronApplication | undefined, testInfo: Tes
   writeFileSync(responsesPath, JSON.stringify(responseEvidence.get(app!) ?? [], null, 2));
   await testInfo.attach("desktop-account-failure-text", { body: await page.locator("body").innerText(), contentType: "text/plain" });
 }
+
+test("Desktop creates a private collaboration issue, downloads through native IPC and restores the same issue", async ({ browserName: _browserName }, testInfo) => {
+  test.setTimeout(120_000);
+  const key = randomUUID().slice(0, 10);
+  const owner = new TestApiClient();
+  await owner.login(`desktop-create-${key}@example.invalid`, "Native creation owner");
+  const workspace = await owner.ensureWorkspace("Native creation source", `desktop-create-${key}`);
+  await owner.markUserOnboarded();
+  const user = await owner.requestJSON<{ id: string }>("/api/me");
+  expect(await owner.requestJSON("/api/collaboration/creation-options")).toMatchObject({ creation_enabled: true });
+  const profile = mkdtempSync(join(tmpdir(), "multica-collaboration-creation-"));
+  let app: ElectronApplication | undefined;
+  try {
+    let native = await openDesktop(profile, { token: owner.getToken()! });
+    app = native.app;
+    let page = native.page;
+    await native.start();
+    await page.getByRole("button", { name: "New collaboration issue", exact: true }).click();
+    const dialog = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
+    const title = `Native created collaboration ${key}`;
+    await dialog.getByLabel("Title", { exact: true }).fill(title);
+    await dialog.getByLabel("Description", { exact: true }).fill("Native creation and attachment continuity.");
+    await expect(dialog.getByText("Assigned to you", { exact: true })).toBeVisible();
+    await nativeScreenshot(app, page, testInfo.outputPath("desktop-collaboration-create.png"));
+    const bytes = Buffer.from("Private native attachment from the creation form.");
+    await dialog.getByLabel("Attach files", { exact: true }).setInputFiles({ name: "desktop-note.txt", mimeType: "text/plain", buffer: bytes });
+    await expect(dialog.getByRole("checkbox", { name: "Include desktop-note.txt", exact: true })).toBeChecked();
+    const created = page.waitForResponse((response) => response.url().endsWith("/api/collaboration/issues") && response.request().method() === "POST");
+    await dialog.getByRole("button", { name: "Create collaboration issue", exact: true }).click();
+    const response = await created;
+    expect(response.status()).toBe(201);
+    const issue = await response.json();
+    expect(issue.source_workspace.id).toBe(workspace.id);
+    expect(issue.handler.user_id).toBe(user.id);
+    const requestId = response.request().headers()["idempotency-key"];
+    expect(requestId).toBeTruthy();
+    expect(await owner.requestJSON(`/api/collaboration/creations/${requestId}?source_workspace_id=${workspace.id}`)).toMatchObject({ id: issue.id });
+    await expect(page.getByRole("heading", { name: title, exact: true })).toBeVisible();
+    expect((await snapshot(page)).accountGroup!.tabs).toHaveLength(1);
+    expect((await snapshot(page)).accountGroup!.tabs[0].url).toContain(`issue=${issue.id}`);
+    const attachments = page.getByRole("region", { name: "Attachments", exact: true });
+    await attachments.getByRole("button", { name: "Preview desktop-note.txt", exact: true }).click();
+    await expect(page.getByText(bytes.toString(), { exact: true })).toBeVisible();
+    await page.getByRole("button", { name: "Close preview", exact: true }).click();
+    const downloadPath = testInfo.outputPath("desktop-note.txt");
+    await app.evaluate(({ session }, path) => {
+      const result = new Promise<{ state: string; filename: string }>((resolve) => {
+        session.defaultSession.once("will-download", (_event, item) => {
+          item.setSavePath(path);
+          item.once("done", (_event, state) => resolve({ state, filename: item.getFilename() }));
+        });
+      });
+      (globalThis as unknown as { collaborationNativeDownload: typeof result }).collaborationNativeDownload = result;
+    }, downloadPath);
+    await attachments.getByRole("button", { name: "Download desktop-note.txt", exact: true }).click();
+    const downloaded = await app.evaluate(() => (globalThis as unknown as { collaborationNativeDownload: Promise<{ state: string; filename: string }> }).collaborationNativeDownload);
+    expect(downloaded).toEqual({ state: "completed", filename: "desktop-note.txt" });
+    expect(readFileSync(downloadPath)).toEqual(bytes);
+    await nativeScreenshot(app, page, testInfo.outputPath("desktop-collaboration-created.png"));
+    expect(native.errors).toEqual([]);
+    expect(native.accountHeaders.every((headers) => !("x-workspace-id" in headers) && !("x-workspace-slug" in headers))).toBe(true);
+    await app.close(); app = undefined;
+
+    native = await openDesktop(profile, { token: owner.getToken()! });
+    app = native.app; page = native.page;
+    await native.start();
+    await expect(page.getByRole("heading", { name: title, exact: true })).toBeVisible();
+    await expect(page.getByRole("region", { name: "Attachments", exact: true }).getByRole("button", { name: "Preview desktop-note.txt", exact: true })).toBeVisible();
+    expect((await snapshot(page)).accountGroup!.tabs).toHaveLength(1);
+    expect((await snapshot(page)).accountGroup!.tabs[0].url).toContain(`issue=${issue.id}`);
+    expect(native.errors).toEqual([]);
+    await testInfo.attach("native-creation-delivery", { body: JSON.stringify({ issueId: issue.id, requestId, workspaceId: workspace.id, nativeDownload: downloaded, restored: true }), contentType: "application/json" });
+  } catch (error) {
+    await attachFailure(app, testInfo);
+    throw error;
+  } finally {
+    await app?.close().catch(() => undefined);
+    rmSync(profile, { recursive: true, force: true });
+  }
+});
+
+// The Web suite owns the authority/recovery matrix; this exercises the shared
+// resource forms in a real native account window with no executable runtime.
+test("Desktop resource owners authorize, withdraw and commit a held configuration switch", async ({ browserName: _browserName }, testInfo) => {
+  test.setTimeout(120_000);
+  test.skip(!process.env.MULTICA_DEPLOYMENT_ID, "Requires a matching task-only runtime enrollment deployment");
+  const resource = await seedCollaborationResourceJourney();
+  const profile = mkdtempSync(join(tmpdir(), "multica-collaboration-resources-"));
+  let app: ElectronApplication | undefined;
+  try {
+    const native = await openDesktop(profile, { token: resource.creator.getToken()!,
+      deepLink: `multica://account?view=participating&issue=${resource.issueId}` });
+    app = native.app;
+    const page = native.page;
+    await native.start();
+    await expect(page.getByRole("heading", { name: resource.title, exact: true })).toBeVisible();
+    await page.getByRole("button", { name: "Manage AI resources", exact: true }).click();
+    await page.getByRole("button", { name: "Add AI target", exact: true }).click();
+    await page.getByLabel("Resource workspace", { exact: true }).selectOption(resource.workspace.id);
+    await page.getByLabel("AI target", { exact: true }).selectOption(`agent:${resource.agentId}`);
+    await page.getByRole("button", { name: "Register target", exact: true }).click();
+    await expect(page.getByText("Target registered. Each owner must authorize their resources.")).toBeVisible();
+    await page.getByRole("button", { name: `Authorize ${resource.agentName}`, exact: true }).click();
+    await page.getByRole("button", { name: "Confirm authorization", exact: true }).click();
+    await expect(page.getByText("Resource authorized. Explicit resume is still required.")).toBeVisible();
+    await page.getByRole("button", { name: `Withdraw authorization for ${resource.agentName}`, exact: true }).click();
+    await page.getByRole("button", { name: "Withdraw authorization", exact: true }).click();
+    await expect(page.getByText("Authorization withdrawn. This does not confirm that running work has ended.")).toBeVisible();
+
+    const toggle = page.getByRole("button", { name: "Switch proposals", exact: true });
+    await toggle.click();
+    const panelId = await toggle.getAttribute("aria-controls");
+    expect(panelId).not.toBeNull();
+    const panel = page.locator(`[id="${panelId}"]`);
+    await panel.getByRole("button", { name: "Propose configuration switch", exact: true }).click();
+    await panel.getByLabel("Resource workspace", { exact: true }).selectOption(resource.workspace.id);
+    await panel.getByLabel("AI target", { exact: true }).selectOption(`agent:${resource.agentId}`);
+    await panel.getByRole("button", { name: "Create Switch proposal", exact: true }).click();
+    await expect(page.getByText("Switch proposal created. Collect each owner's consent before applying it.")).toBeVisible();
+    await panel.getByRole("button", { name: `Authorize ${resource.agentName}`, exact: true }).click();
+    await panel.getByRole("button", { name: "Confirm authorization", exact: true }).click();
+    await expect(page.getByText("Proposal consent recorded. The live configuration has not changed.")).toBeVisible();
+    await panel.getByRole("button", { name: "Commit Switch", exact: true }).click();
+    await panel.getByRole("button", { name: "Apply configuration", exact: true }).click();
+    await expect(page.getByText("Configuration switched. Explicit resume is still required.")).toBeVisible();
+
+    const current = await resource.creator.requestJSON<CollaborationResourceSnapshot>(`/api/collaboration/issues/${resource.issueId}`);
+    expect(current.id).toBe(resource.issueId);
+    expect(current.execution.targets.find((target) => target.resource_id === resource.agentId)?.hold_reason).toBe("switch_hold");
+    expect(current.execution.runs).toEqual([]);
+    expect((await snapshot(page)).accountGroup!.tabs[0].url).toContain(`issue=${resource.issueId}`);
+    expect(native.accountHeaders.length).toBeGreaterThan(8);
+    expect(native.accountHeaders.every((headers) => !headers["x-workspace-id"] && !headers["x-workspace-slug"])).toBe(true);
+    await nativeScreenshot(app, page, testInfo.outputPath("desktop-collaboration-resources.png"));
+    const nativeWindow = await app.browserWindow(page);
+    await nativeWindow.evaluate((target) => target.webContents.setZoomFactor(2));
+    await nativeWindow.dispose();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await nativeScreenshot(app, page, testInfo.outputPath("desktop-collaboration-resources-200-percent.png"));
+    expect(native.errors).toEqual([]);
+  } catch (error) {
+    await attachFailure(app, testInfo);
+    throw error;
+  } finally {
+    await app?.close().catch(() => undefined);
+    rmSync(profile, { recursive: true, force: true });
+  }
+});
 
 test("Desktop account links retain one tab across workspaces, popouts and restart", async ({ browserName: _browserName }, testInfo) => {
   test.setTimeout(120_000);

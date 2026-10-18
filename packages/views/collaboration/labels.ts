@@ -5,6 +5,21 @@ export function useCollaborationLabels() {
   return {
     reason: (code: string) => {
       switch (code) {
+        case "target_registered": return t(($) => $.resources.registered);
+        case "resource_consented": return t(($) => $.resources.authorized);
+        case "grant_revoked": case "grant_already_revoked": return t(($) => $.resources.withdrawn);
+        case "switch_proposed": return t(($) => $.resources.proposed);
+        case "switch_resource_consented": return t(($) => $.resources.switchConsent);
+        case "switch_consent_revoked": return t(($) => $.resources.switchWithdrawn);
+        case "target_switched": return t(($) => $.resources.switched);
+        case "owner_not_participant": case "resource_owner_not_participant": return t(($) => $.resources.ownerRequired);
+        case "resource_owner_unavailable": return t(($) => $.resources.ownerUnavailable);
+        case "target_exists": return t(($) => $.resources.alreadyRegistered);
+        case "runtime_registration_required": return t(($) => $.resources.registrationRequired);
+        case "target_pause_required": return t(($) => $.resources.pauseRequired);
+        case "target_configuration_changed": return t(($) => $.execution.config_invalid);
+        case "switch_consent_required": return t(($) => $.execution.consentMissing);
+        case "stale_switch_proposal": case "stale_switch_consent": case "stale_grant": return t(($) => $.execution.staleRequest);
         case "waiting": return t(($) => $.execution.waiting);
         case "issue_paused": case "queue_paused": return t(($) => $.execution.issuePaused);
         case "target_paused": return t(($) => $.execution.lanePaused);

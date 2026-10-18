@@ -80,3 +80,29 @@ it("submits edits against their captured revision after a background refresh", a
   expect(screen.getByLabelText("Title")).toHaveValue("My retained title");
   expect(await screen.findByText(/The server did not apply this action/)).toBeInTheDocument();
 });
+
+it("removes the selected participant only after confirmation with the captured revision", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const scope = collaborationScope(id);
+  const participant = { ...account, user_id: recipientId, name: "Current developer", account_active: false };
+  const fetch = vi.fn().mockImplementation(async (url: string) => url.endsWith("/participants")
+    ? new Response(JSON.stringify({ protocol_version: 1, issue_id: id, collaboration_revision: issue.collaboration_revision, participants: [{ ...account, account_active: true }, participant] }))
+    : new Response(JSON.stringify({ status: 409, code: "stale_revision", collaboration_revision: "9007199254740994" }), { status: 409 }));
+  vi.stubGlobal("fetch", fetch);
+  const original = { ...issue, handler: participant };
+  const ui = (value: typeof original) => <QueryClientProvider client={client}><CollaborationWorkflow scope={scope} issue={value} /></QueryClientProvider>;
+  const { rerender } = renderWithI18n(ui(original));
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Participants" }));
+  await user.click(await screen.findByRole("button", { name: "Remove Current developer" }));
+  expect(screen.getByText("Account unavailable")).toBeInTheDocument();
+  expect(screen.getByRole("alertdialog", { name: "Remove Current developer?" })).toBeInTheDocument();
+  expect(screen.getByText(/Handling will return to the creator/)).toBeInTheDocument();
+  expect(fetch.mock.calls.filter(([, init]) => init?.method === "POST")).toHaveLength(0);
+  rerender(ui({ ...original, collaboration_revision: "9007199254740994" }));
+  await user.click(screen.getByRole("button", { name: "Remove participant" }));
+  await waitFor(() => expect(fetch.mock.calls.some(([url]) => url.endsWith(`/participants/${recipientId}/remove`))).toBe(true));
+  const call = fetch.mock.calls.find(([url]) => url.endsWith(`/participants/${recipientId}/remove`));
+  expect(JSON.parse(call?.[1]?.body)).toMatchObject({ expected_collaboration_revision: "9007199254740993" });
+  expect(await screen.findByText(/The server did not apply this action/)).toBeInTheDocument();
+});
