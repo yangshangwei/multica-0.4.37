@@ -1,6 +1,6 @@
 # 跨账号协作技术设计
 
-- 日期：2026-10-17；状态：M01–M11 产品选择及修订方案实施均已确认。当前实施范围见[目标 hold 与分范围恢复](continuation-hold-2026-10-18.md)。
+- 日期：2026-10-17；状态：M01–M11 产品选择及修订方案实施均已确认。当前实施范围见[通道 FIFO 与配置失效续作](continuation-fifo-2026-10-18.md)。
 - 需求依据：[PRD](prd.md) 与[验收附表](acceptance.md)；执行顺序见[实施计划](implement.md)。
 - 当前调整依据：[需求设计调整](mention-redesign-2026-10-17.md)及讨论 §57–§66。本文描述完整目标模型；已落实的多目标存储、控制与读取契约见[当前代码规范](../../spec/server/collaboration-targets.md)，其按目标控制将由 lane 与目标 hold 取代；真实运行协议与完整界面仍待完成。
 - 具体关系与签名见[数据契约](research/data-contract.md)、[执行协议](research/execution-contract.md)；源码锚点见[研究摘要](research/design-contracts.md)。新能力保持未启用，普通任务行为不随本修订改变。

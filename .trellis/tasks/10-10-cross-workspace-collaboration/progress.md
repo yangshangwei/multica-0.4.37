@@ -84,3 +84,8 @@
 - 旧 `/tmp/multica-collaboration.Qp1TA6/workflow-env` 已失效。迁移回退只在本轮私有 fixture schema 使用明确文件列表，不能把 `migrate down` 当作单步命令。
 - 当前分支 `codex/cross-workspace-collaboration`；此次从 `bb2d9f481` 恢复。其他任务归档、文档包等并行改动保持原样，不纳入本任务提交。
 - 测试没有调用已安装 AI/provider CLI、供应商账号或真实付费 AI。未部署、未开放创建、未运行原生 Windows/Linux/macOS 终结证明矩阵。
+
+
+## 2026-10-18：通道 FIFO 与配置失效切片
+
+已完成本轮 FIFO、消费历史、回队/待配置迁移和配置失效收敛；85 个代码/测试/规范文件见 [源清单](verification-source-manifest-fifo-2026-10-18.json)。Go race 1191+1211、Linux10、core3532及静态/迁移/sqlc检查通过，完整范围与剩余工作见 [续接记录](continuation-fifo-2026-10-18.md)。任务仍为 in_progress，全部97项AC尚未完成。

@@ -1,6 +1,6 @@
 # 跨账号协作实施计划
 
-- 日期：2026-10-17；状态：用户已要求按最新需求核对代码并继续推进，任务恢复实施。已有 P1/P2/P4/P6 验证仍仅属于原基础，见 [progress.md](progress.md)；当前实施范围见[目标 hold 与分范围恢复](continuation-hold-2026-10-18.md)，上一轮边界见[实施续作](continuation-revision-2026-10-17.md)。
+- 日期：2026-10-17；状态：用户已要求按最新需求核对代码并继续推进，任务恢复实施。已有 P1/P2/P4/P6 验证仍仅属于原基础，见 [progress.md](progress.md)；当前实施范围见[通道 FIFO 与配置失效续作](continuation-fifo-2026-10-18.md)，上一轮边界见[实施续作](continuation-revision-2026-10-17.md)。
 - 依据：[PRD](prd.md)、[技术设计](design.md)、[执行协议](research/execution-contract.md)；源码索引见[研究摘要](research/design-contracts.md)。
 - 分支：`codex/cross-workspace-collaboration`。原授权见 discussion §55；本轮产品决定见 §57–§60、§64–§66 与[调整清单](mention-redesign-2026-10-17.md)。最新用户续作指令是修订方案的实施授权，已记录到 task.json。
 - 任务保留为规划与集成责任入口；下面按可验证阶段拆分工作，批准后可据此建立子任务，依赖以本文为准，不能从任务树推断。
@@ -28,7 +28,8 @@
 - [x] M09 门禁：单直接智能体、单 lane 在 Docker 提供的真实 Linux 内核跑通评论→command→promote→claim→permit→supervisor→Stop→sealed proof→Resume→下一批及 never_launched；另验证真实 daemon 注册/槽位/Runner 接线。仅使用测试自建静态程序，macOS/Windows 运行能力不宣称支持。
 - [x] M09 之后完整重读当前执行/数据契约与讨论 §66 最后两轮修正，确认单目标恢复原子、整单恢复按 lane/hold 分项结算。
 - [x] M04 控制基础与目标 hold/version、资源失效、完整原回执及真实双直接智能体通道部分恢复已验证；见本轮推进与证据。
-- [ ] 完整目标 hold 调度语义、混合 FIFO、安全 waiting/never-launched 转移、Switch、小队派发/续作及完整双端控制按最新 §66 增量实施；本轮控制基础不替代这些阶段。
+- [x] 通道 FIFO、held/失效输入筛选、不可变消费历史、安全 never-launched 回队、待配置迁移、持久配置失效和 v4 读取通过本轮验证。
+- [ ] 完整冻结资源集合、授权就绪后的 Switch、M08/M11 小队派发/续作及完整双端控制继续按最新 §66 实施；本轮不替代这些验收。
 
 下方 P1–P8 已按本轮模型修订。标记已完成的早期基础项只证明旧结构存在，新 target/group/运行协议仍待实现；未受影响的人类流转与字段规则继续回归。旧单会话“唯一未结 run”不能作为多目标验收。
 

@@ -507,3 +507,39 @@ Implemented and verified target hold/control and resource invalidation boundarie
 
 - Reread current contracts and implement real channel FIFO/eligibility rebatching so held S cannot block valid A; preserve source/proof identity and verify never-launched return-to-waiting.
 - Then complete frozen grants, Switch/configuration convergence, M08/M11, file/provider paths and Web/Desktop/P1-P8; keep task in_progress and client execution unavailable.
+
+
+## Session 87: 通道 FIFO、消费历史与配置失效收敛
+<!-- trellis-session: v=2 fp=df10b7876ed1959f -->
+
+**Date**: 2026-10-18
+**Task**: 通道 FIFO、消费历史与配置失效收敛
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成通道 FIFO、完整 nonlaunch 回队、待配置迁移、持久配置失效和 v4 读取；保留整体任务进行中。
+
+### Main Changes
+
+- 按通道筛选合格输入，保留固定组输入历史及原证明，复用已有停组与事务逻辑。
+- 接线真实配置写入失效及公平后台收敛，统一写入与读取的完整证明校验。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `33f584ae14f8eae77a96381e5c273ed3fecac497` | feat(collaboration): keep eligible input moving with durable history |
+
+### Testing
+
+- [OK] Go race 1191 顶层/1211 子测试；Linux10；core3532；lint/typecheck/vet、708迁移与104个sqlc通过。
+- [OK] 4个Linux跳过项已补跑；仅既有live GitHub opt-in未运行；专用环境已清理。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 继续完整冻结资源/授权就绪Switch、M08/M11与容量1小队，再推进完整Web/Desktop及其余AC。

@@ -2,7 +2,7 @@
   "id": "cross-workspace-collaboration",
   "name": "cross-workspace-collaboration",
   "title": "跨账号任务流转与共享 AI 协作工作台",
-  "description": "支持独立工作空间按账号派单与协作；M09 单智能体闭环已验证，继续落实目标 hold、分通道恢复及其运行与资源失效边界。",
+  "description": "支持独立工作空间按账号派单与协作；hold/M04 已验证，继续通道 FIFO、输入历史、切换迁移和持久配置失效收敛。",
   "status": "in_progress",
   "dev_type": null,
   "scope": null,
@@ -15,7 +15,7 @@
   "branch": "codex/cross-workspace-collaboration",
   "base_branch": "main",
   "worktree_path": null,
-  "commit": "a389ef8596791cb8639ce21b27f64868cf93d715",
+  "commit": "33f584ae14f8eae77a96381e5c273ed3fecac497",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -73,9 +73,16 @@
     ".trellis/tasks/10-10-cross-workspace-collaboration/research/client-gap-map-2026-10-18.md",
     ".trellis/tasks/10-10-cross-workspace-collaboration/verification-summary-hold-2026-10-18.json",
     ".trellis/tasks/10-10-cross-workspace-collaboration/verification-source-manifest-hold-2026-10-18.json",
-    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-hold-review-2026-10-18.md"
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-hold-review-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/continuation-fifo-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/fifo-switch-sql-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/config-convergence-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-source-manifest-fifo-2026-10-18.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-summary-fifo-2026-10-18.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-fifo-review-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/core-fifo-switch-2026-10-18.md"
   ],
-  "notes": "2026-10-18：hold/M04 控制、真实资源删除/重绑及双直接智能体通道闭环已验证并独立复核；Go race、Redis、Linux、core3509、lint/typecheck、698升级与sqlc通过。完整目标调度、混合FIFO、Switch/M11与双端仍待推进，任务保持in_progress。 本轮代码已提交 a389ef859。",
+  "notes": "2026-10-18：通道 FIFO、不可变消费历史、安全回队/待配置迁移、持久配置失效和 v4 读取已验证；Go1191+1211、Linux10、core3532、静态检查与104个sqlc通过。完整Switch/M08/M11及双端仍待完成。",
   "meta": {
     "planning_status": "approved_revision_in_implementation",
     "implementation_authorized": true,
@@ -109,7 +116,7 @@
       "source": "User requested latest-58 technical consistency review and validation during implementation; discussion §55",
       "scope": "Existing P1–P8 plan after technical review; no production deployment authorization"
     },
-    "current_phase": "hold_M04_control_foundation_verified",
+    "current_phase": "fifo_configuration_history_slice_verified",
     "technical_review": {
       "date": "2026-10-13",
       "report": "review-2026-10-13.md",
@@ -305,22 +312,22 @@
       ]
     },
     "next_steps": [
-      "Reread latest execution/data contracts before the next FIFO/Switch/M08/M11 implementation phase",
-      "Implement true channel FIFO and eligibility-based rebatching so a held squad cannot block valid direct-agent input; preserve identities and verify never-launched return-to-waiting rules",
-      "Complete frozen multi-target grants, Switch waiting migration and durable hold/stop convergence for external agent/squad configuration writes",
-      "Implement M08 comment delegation and M11 unread/consumed continuation with real capacity-one execution evidence",
-      "Finish attachment/Git/provider/enrollment and complete Web/Desktop P1-P8 plus all 97 AC"
+      "Full frozen multi-target grants and consent-ready atomic Switch",
+      "M08 comment delegation and M11 unread/consumed continuations with real capacity-one execution",
+      "Shared skill-content invalidation and remaining provider/Git/attachment/enrollment/OS capability coverage",
+      "Full Web/Desktop P1-P8 journeys and all 97 acceptance criteria"
     ],
     "implementation_commits": [
       "e6bc3759e8a07b480e6aedf246eda8304a253752",
       "f5259e24533a68ca9ed3d283810de7988bc3d753",
       "188a7f4a5b0dc0e08873389c6261be0a55f012f9",
       "6794f4e3680526d0105df9d58fa93edc4f937603",
-      "a389ef8596791cb8639ce21b27f64868cf93d715"
+      "a389ef8596791cb8639ce21b27f64868cf93d715",
+      "33f584ae14f8eae77a96381e5c273ed3fecac497"
     ],
     "implementation_complete": false,
-    "quality_gate_scope": "hold_M04_control_and_resource_slice",
-    "current_scope_doc": "continuation-hold-2026-10-18.md",
+    "quality_gate_scope": "fifo_configuration_history_slice",
+    "current_scope_doc": "continuation-fifo-2026-10-18.md",
     "followup_review": {
       "date": "2026-10-18",
       "report": "review-followup-2026-10-18.md",
@@ -422,6 +429,34 @@
       "commits": [
         "a389ef8596791cb8639ce21b27f64868cf93d715"
       ]
+    },
+    "fifo_continuation": {
+      "date": "2026-10-18",
+      "source": "User requested continuation after a389ef859, with mixed FIFO, complete Switch/M11, configuration convergence and both clients pending",
+      "baseline_head": "6356cd9cf",
+      "status": "verified",
+      "full_product_acceptance_complete": false,
+      "projection_protocol_version": 4,
+      "runtime_protocol_version": 2
+    },
+    "fifo_implementation_validation": {
+      "date": "2026-10-18",
+      "status": "passed_current_slice_full_product_pending",
+      "report": "continuation-fifo-2026-10-18.md",
+      "summary": "verification-summary-fifo-2026-10-18.json",
+      "source_manifest": "verification-source-manifest-fifo-2026-10-18.json",
+      "go_race_top_level": 1191,
+      "go_race_subtests": 1211,
+      "linux_top_level": 10,
+      "core_tests": 3532,
+      "migration_version": 708,
+      "independent_blockers": 0,
+      "creation_enabled": false,
+      "client_execution_enabled": false,
+      "commits": [
+        "33f584ae14f8eae77a96381e5c273ed3fecac497"
+      ],
+      "environment_cleanup": "complete"
     }
   }
 }
