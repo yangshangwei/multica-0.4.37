@@ -583,3 +583,42 @@ Implemented and verified target hold/control and resource invalidation boundarie
 
 - 补齐公开创建/受控附件、资源授权与 Switch 写表单、参与人及其余编辑/评论操作、来源页面/账号实时和完整运行记录。
 - 完成通用 provider/Git/其他 OS 及 P7/P8/97项产品验收，再评估启用；当前不归档父任务。
+
+
+## Session 89: 协作单新建、私有附件与资源表单
+<!-- trellis-session: v=2 fp=4b76fcbf86b065c8 -->
+
+**Date**: 2026-10-19
+**Task**: 协作单新建、私有附件与资源表单
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成账号新建/私有附件、资源授权与Switch、参与人管理和实时增量；原请求/持久拒绝恢复及双端验证收口，父任务保持 in_progress。
+
+### Main Changes
+
+- 复用现有 Storage/操作表/用户锁/Query/native IPC；整组草稿一次消费，业务拒绝保存点回滚并固定原key。
+- 共享创建、私有附件、资源和禁用参与人表单接线；账号WS在最终发送时重验，客户端取消/迟到响应不丢原意图。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `2f39f00be81be0f2294ee967282071a4e12bdf52` | feat(collaboration): keep newly shared work private and recoverable |
+| `e5876258b49f7ddc72106813cf6f42249d15af4b` | feat(collaboration): retain account intent through delivery and denial |
+| `9a8b7f4833cf0ceac6df38106cbdb3232116149a` | feat(collaboration): make account delivery and consent usable across clients |
+| `1f6e61e39ea29e8edc11a56bd4bcb70cd91e9ddf` | docs(collaboration): preserve verified product boundaries for continuation |
+
+### Testing
+
+- [OK] TypeScript 12073；lint/typecheck15；112文件sqlc一致；受影响Go/race与创建/迁移/恢复独立检查通过。
+- [OK] 生产Web4、macOS Electron8、真实Linux6，均无该专项跳过；native文件边界16项和视觉93/pass。默认条件跳过及31个旧lint/12个旧Knip项已记录。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 继续来源页面/完整字段评论、运行记录与R52通知、运行端文件/Git/通用provider、有限代管及P7/P8和全部97项验收；保留默认门禁，当前不归档父任务。

@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-2.md`
-- **Total Sessions**: 88
-- **Last Active**: 2026-10-18
+- **Total Sessions**: 89
+- **Last Active**: 2026-10-19
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-2.md` | ~585 | Active |
+| `journal-2.md` | ~624 | Active |
 | `journal-1.md` | ~1987 | Archived |
 <!-- @@@/auto:active-documents -->
 
@@ -30,6 +30,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 89 | 2026-10-19 | 协作单新建、私有附件与资源表单 | `2f39f00be81be0f2294ee967282071a4e12bdf52`, `e5876258b49f7ddc72106813cf6f42249d15af4b`, `9a8b7f4833cf0ceac6df38106cbdb3232116149a`, `1f6e61e39ea29e8edc11a56bd4bcb70cd91e9ddf` | `codex/cross-workspace-collaboration` |
 | 88 | 2026-10-18 | 跨账号协作运行闭环与双端基础工作台 | `b434d191dcc3df0e44d521e50839f9d315ec44f1`, `0155ee7353a02c082e6c49d61e7c652e7ad97ff4`, `6063a2682a10d7b5123f480f6aa56ab0f2e8ec9a`, `374049cecd4a2f30595e9131722722d5c7782937` | `codex/cross-workspace-collaboration` |
 | 87 | 2026-10-18 | 通道 FIFO、消费历史与配置失效收敛 | `33f584ae14f8eae77a96381e5c273ed3fecac497` | `codex/cross-workspace-collaboration` |
 | 86 | 2026-10-18 | Target holds and M04 control recovery verified | `a389ef8596791cb8639ce21b27f64868cf93d715`, `dcbb584a019b38f0646887b26fe47a565737619c` | `codex/cross-workspace-collaboration` |
