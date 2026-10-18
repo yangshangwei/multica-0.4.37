@@ -33,7 +33,7 @@ function setup() {
   clients.push(client);
   const scope = collaborationScope(auth.user.id);
   const issue = parseCollaborationIssue({ ...collaborationExecutionIssueFixture, write_context: { participant_epoch: "2", account_epoch: "9007199254740993" } })!;
-  const draft = prepareCollaborationSwitch(scope, issue, requestId, { action: "commit_target_switch", targetId, proposalId });
+  const draft = prepareCollaborationSwitch(scope, issue, requestId, { action: "commit_target_switch", targetId, proposalId }, proposal);
   return { api, client, scope, issue, draft };
 }
 
@@ -51,6 +51,18 @@ it("captures authority and target observations from one snapshot in a distinct S
   expect(() => prepareCollaborationSwitch(scope, issue, requestId, { action: "commit_target_switch", targetId: otherId, proposalId })).toThrow();
 });
 
+it("does not turn organization rights into another owner's consent", () => {
+  const { scope, issue } = setup();
+  const pending = { ...proposal, status: "pending" as const, resources: [{ ...proposal.resources[0]!, consented: false, owner_user_id: otherId }] };
+  const selection = { action: "consent_target_switch" as const, targetId, proposalId, agentId: resource.agent_id,
+    identity: { kind: "managed" as const, installation_id: issueId, binding_id: otherId, binding_epoch: "1" } };
+  expect(() => prepareCollaborationSwitch(scope, issue, requestId, selection, pending)).toThrow();
+  expect(() => prepareCollaborationSwitch(scope, { ...issue, capabilities: { ...issue.capabilities, invite: false } }, requestId,
+    { action: "propose_target_switch", targetId, roster: [resource] })).toThrow();
+  expect(() => prepareCollaborationSwitch(scope, issue, requestId, { action: "commit_target_switch", targetId, proposalId }, { ...proposal, status: "stale" })).toThrow();
+  expect(() => prepareCollaborationSwitch(scope, issue, requestId, { action: "propose_target_switch", targetId, roster: [{ ...resource, agent_id: otherId }] })).toThrow();
+});
+
 it("freezes proposal rosters and consent bindings without borrowing later live facts", () => {
   const { scope, issue } = setup();
   const roster = [{ ...resource }];
@@ -59,10 +71,10 @@ it("freezes proposal rosters and consent bindings without borrowing later live f
   roster.push({ ...resource, agent_id: otherId });
   expect(parseCollaborationSwitchDraft(proposed)).toMatchObject({ action: "propose_target_switch", roster: [resource] });
   const identity = { kind: "managed" as const, installation_id: issueId, binding_id: otherId, binding_epoch: "9007199254740999" };
-  const consent = prepareCollaborationSwitch(scope, issue, requestId, { action: "consent_target_switch", targetId, proposalId, agentId: resource.agent_id, identity });
+  const consent = prepareCollaborationSwitch(scope, issue, requestId, { action: "consent_target_switch", targetId, proposalId, agentId: resource.agent_id, identity }, proposal);
   identity.binding_epoch = "1";
   expect(parseCollaborationSwitchDraft(consent)).toMatchObject({ identity: { binding_epoch: "9007199254740999" } });
-  const revoked = prepareCollaborationSwitch(scope, issue, requestId, { action: "revoke_target_switch_consent", targetId, proposalId, agentId: resource.agent_id });
+  const revoked = prepareCollaborationSwitch(scope, issue, requestId, { action: "revoke_target_switch_consent", targetId, proposalId, agentId: resource.agent_id }, proposal);
   expect(parseCollaborationSwitchDraft(revoked)).toMatchObject({ action: "revoke_target_switch_consent", proposal_id: proposalId, agent_id: resource.agent_id });
 });
 

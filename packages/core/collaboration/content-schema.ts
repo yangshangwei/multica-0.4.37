@@ -3,6 +3,7 @@ import { parseWithFallback } from "../api/schema";
 import { CollaborationAccountSummarySchema } from "./schema";
 import { CollaborationTargetHoldReasonSchema } from "./execution-schema";
 import { positiveVersion } from "./version";
+import { collaborationAttachmentIds } from "./attachment-schema";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 const timestamp = z.iso.datetime({ offset: true });
@@ -29,6 +30,7 @@ const uniqueTargets = <T extends { kind: string; resource_id: string }>(items: T
 export const CollaborationCommentSchema = z.object({
   id: uuid, issue_id: uuid, author_type: z.string(), author: CollaborationAccountSummarySchema.nullable(),
   content: z.string(), type: z.string(), parent_id: uuid.nullable(), comment_revision: positiveVersion,
+  attachment_ids: collaborationAttachmentIds.nullish().transform((value) => value ?? []),
   created_at: timestamp, updated_at: timestamp, deleted_at: timestamp.nullable(), resolved_at: timestamp.nullable(),
   resolved_by: CollaborationAccountSummarySchema.nullable(), can_edit: z.boolean(), can_resolve: z.boolean(),
   reactions: z.array(z.object({ emoji: z.string(), count: z.number().int().nonnegative().safe(), viewer_reacted: z.boolean() })),
@@ -43,6 +45,7 @@ export const CollaborationCommentHistorySchema = z.object({
     event_id: uuid, event_seq: positiveVersion, kind: z.enum(["comment_created", "comment_edited", "comment_deleted"]),
     actor: CollaborationAccountSummarySchema.nullable(), created_at: timestamp, comment_revision: positiveVersion,
     before: z.string().nullable(), after: z.string(),
+    before_attachment_ids: collaborationAttachmentIds.nullish(), after_attachment_ids: collaborationAttachmentIds.nullish(),
   })),
 }).refine((value) => new Set(value.items.map((item) => item.event_id)).size === value.items.length &&
   new Set(value.items.map((item) => item.event_seq)).size === value.items.length);
@@ -68,6 +71,7 @@ export const CollaborationCommentReceiptSchema = z.object({
   status: z.number().int(), code: z.string().min(1), protocol_version: z.literal(2),
   issue_id: uuid, comment_id: uuid, comment_revision: positiveVersion, event_id: uuid.nullish(), event_seq: positiveVersion.nullish(),
   targets: z.array(targetResult).refine(uniqueTargets),
+  attachment_ids: collaborationAttachmentIds.optional(),
 }).refine((value) => {
   if (value.code === "unchanged") {
     return value.status === 200 && value.event_id == null && value.event_seq == null && value.targets.length === 0;
@@ -77,12 +81,13 @@ export const CollaborationCommentReceiptSchema = z.object({
 
 export const CollaborationCommentInputSchema = z.object({
   content: z.string().trim().min(1), parent_id: uuid.nullable(), suppressed_target_ids: z.array(uuid),
+  draft_id: uuid.optional(), attachment_ids: collaborationAttachmentIds.optional(),
   expected_lifecycle_epoch: positiveVersion,
   expected_participant_epoch: positiveVersion.nullable(), expected_account_epoch: positiveVersion.nullable(),
   target_versions: z.array(z.object({ target_id: uuid, expected_target_epoch: positiveVersion, expected_config_version: positiveVersion })),
 });
 export type CollaborationCommentInput = z.infer<typeof CollaborationCommentInputSchema>;
-export interface CollaborationPreviewInput { content: string; parent_id: string | null; suppressed_target_ids: string[] }
+export interface CollaborationPreviewInput { content: string; parent_id: string | null; suppressed_target_ids: string[]; draft_id?: string; attachment_ids?: string[] }
 
 export const CollaborationNotificationSchema = z.object({
   id: uuid, issue_id: uuid, event_seq: positiveVersion, kind: z.string(), is_mention: z.boolean(),
@@ -110,4 +115,9 @@ export type CollaborationComments = z.infer<typeof CollaborationCommentsSchema>;
 export type CollaborationMentionTargets = z.infer<typeof CollaborationMentionTargetsSchema>;
 export type CollaborationTriggerPreview = z.infer<typeof CollaborationTriggerPreviewSchema>;
 export type CollaborationCommentReceipt = z.infer<typeof CollaborationCommentReceiptSchema>;
+export function matchesCollaborationCommentAttachments(receipt: CollaborationCommentReceipt, expected: string[] | undefined): boolean {
+  if (expected === undefined) return true;
+  const actual = receipt.attachment_ids ?? [];
+  return actual.length === expected.length && actual.every((id) => expected.includes(id));
+}
 export type CollaborationNotification = z.infer<typeof CollaborationNotificationSchema>;

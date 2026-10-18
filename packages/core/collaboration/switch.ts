@@ -3,7 +3,9 @@ import { queryOptions, type QueryClient } from "@tanstack/react-query";
 import { getApi } from "../api";
 import type { StorageAdapter } from "../types/storage";
 import type { CollaborationIssue } from "./schema";
-import { CollaborationSwitchInputSchema, type CollaborationSwitchInput } from "./switch-schema";
+import { CollaborationSwitchInputSchema, type CollaborationSwitchInput, type CollaborationSwitchProposal } from "./switch-schema";
+import { canOrganizeCollaborationResources } from "./resource";
+import { collaborationResourceRosterIsValid } from "./resource-schema";
 import { collaborationAccessEpoch, collaborationIssueAccessDenied, collaborationKeys, CollaborationUnavailableError, isCollaborationDenied,
   isCollaborationScopeCurrent, protectCollaborationRead, type CollaborationScope } from "./access";
 import { clearCollaborationDrafts, removeCollaborationDraft, saveCollaborationDraft, type CollaborationDraft } from "./draft";
@@ -19,11 +21,24 @@ export type CollaborationSwitchSelection = { targetId: string } & (
 /** Capture authority and control observations together; consent never changes
  * live configuration and commit never implies Resume. */
 export function prepareCollaborationSwitch(
-  scope: CollaborationScope, issue: CollaborationIssue, requestId: string, selection: CollaborationSwitchSelection,
+  scope: CollaborationScope, issue: CollaborationIssue, requestId: string, selection: CollaborationSwitchSelection, proposal?: CollaborationSwitchProposal,
 ): CollaborationDraft {
-  if (!issue.execution || !issue.write_context || !isCollaborationScopeCurrent(scope)) throw new CollaborationUnavailableError();
+  if (!issue.execution || !issue.write_context || issue.capabilities.control_ai !== true || !isCollaborationScopeCurrent(scope)) throw new CollaborationUnavailableError();
   const target = issue.execution.targets.find((candidate) => candidate.id === selection.targetId.toLowerCase());
   if (!target) throw new CollaborationUnavailableError();
+  if ((selection.action === "propose_target_switch" || selection.action === "commit_target_switch") && !canOrganizeCollaborationResources(scope, issue)) throw new CollaborationUnavailableError();
+  if (selection.action === "propose_target_switch" && !collaborationResourceRosterIsValid({ kind: target.kind, resource_id: target.resource_id, resources: selection.roster })) throw new CollaborationUnavailableError();
+  if (selection.action !== "propose_target_switch") {
+    if (!proposal || proposal.proposal_id !== selection.proposalId || proposal.target_id !== target.id || proposal.status === "committed") throw new CollaborationUnavailableError();
+    if (selection.action !== "revoke_target_switch_consent" && (proposal.status === "stale" || proposal.lifecycle_epoch !== issue.lifecycle_epoch ||
+      proposal.base_target_epoch !== target.target_epoch || proposal.base_config_version !== target.config_version)) throw new CollaborationUnavailableError();
+    if (selection.action === "commit_target_switch") {
+      if (proposal.status !== "consent_ready") throw new CollaborationUnavailableError();
+    } else {
+      const resource = proposal.resources.find((item) => item.agent_id === selection.agentId && item.owner_user_id === scope.userId);
+      if (!resource || resource.revoked === true || (selection.action === "revoke_target_switch_consent" && resource.consented !== true)) throw new CollaborationUnavailableError();
+    }
+  }
   const base = { action: selection.action, target_id: target.id, expected_lifecycle_epoch: issue.lifecycle_epoch,
     expected_participant_epoch: issue.write_context.participant_epoch, expected_account_epoch: issue.write_context.account_epoch };
   let input: unknown;

@@ -82,6 +82,7 @@ describe("WSClient", () => {
       error: vi.fn(),
     };
     const ws = new WSClient("ws://example.test/ws", { logger });
+    ws.setAuth("token", "acme");
     ws.connect();
 
     const huge = "x".repeat(5000);
@@ -103,6 +104,7 @@ describe("WSClient", () => {
       error: vi.fn(),
     };
     const ws = new WSClient("ws://example.test/ws", { logger });
+    ws.setAuth("token", "acme");
     const handler = vi.fn();
     ws.on("issue:updated", handler);
     ws.connect();

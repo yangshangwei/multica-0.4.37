@@ -78,6 +78,25 @@ export function clearCollaborationAccess(client: QueryClient, scope: Collaborati
   }
 }
 
+/** Source membership changed, but independent collaboration access may survive.
+ * Hide the old projection and fence its responses without deleting original
+ * command drafts. An authoritative failed re-read performs the final cleanup.
+ */
+export function clearCollaborationProjection(client: QueryClient, scope: CollaborationScope, issueId: string): void {
+  state(client, scope, issueId).epoch += 1;
+  const queryKey = collaborationKeys.issue(scope, issueId);
+  void client.cancelQueries({ queryKey }, { revert: false });
+  for (const query of client.getQueryCache().findAll({ queryKey })) {
+    query.setState({ data: undefined, dataUpdatedAt: 0, error: null, status: "pending" });
+  }
+  for (const mutation of client.getMutationCache().getAll()) {
+    const key = mutation.options.mutationKey;
+    if (!ownedKey(key, scope) || key?.[4] !== issueId.toLowerCase()) continue;
+    mutation.state = { ...mutation.state, data: undefined, variables: undefined, context: undefined };
+    client.getMutationCache().remove(mutation);
+  }
+}
+
 export async function protectCollaborationRead<T>(
   client: QueryClient, scope: CollaborationScope, issueId: string | null,
   request: () => Promise<T | null>, allowRecovery = false,

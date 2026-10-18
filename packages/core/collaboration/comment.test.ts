@@ -6,6 +6,7 @@ import { collaborationIssueAccessDenied, collaborationKeys, collaborationScope }
 import { parseCollaborationMentionTargets, parseCollaborationTriggerPreview } from "./content-schema";
 import { readCollaborationDrafts } from "./draft";
 import { collaborationMentionMarkdown, executeCollaborationComment, prepareCollaborationComment } from "./comment";
+import { newCollaborationDeliveryForm, readCollaborationDeliveryRecords, saveCollaborationDeliveryRecord } from "./delivery-draft";
 
 const actor = "00000000-0000-4000-8000-000000000001";
 const other = "00000000-0000-4000-8000-000000000002";
@@ -49,6 +50,20 @@ it("makes malformed or wrong-issue comment recovery unavailable", async () => {
   await expect(api.getCollaborationCommentOperation(actor, key)).resolves.toBeNull();
 });
 
+it("keeps an attachment comment pending until its receipt confirms the original file selection", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const scope = collaborationScope(actor);
+  const preview = parseCollaborationTriggerPreview({ protocol_version: 2, issue_id: actor, lifecycle_epoch: "1", targets: [], recipients: [] })!;
+  const draft = prepareCollaborationComment(scope, actor, key, "Deliver this file", [], preview, { draftId: other, attachmentIds: [other] });
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce(json(receipt)).mockResolvedValueOnce(json({ ...receipt, attachment_ids: [key] }))
+    .mockResolvedValueOnce(json({ ...receipt, attachment_ids: [other] })));
+  await expect(executeCollaborationComment(client, scope, draft, false, storage)).rejects.toThrow();
+  await expect(executeCollaborationComment(client, scope, draft, true, storage)).rejects.toThrow();
+  expect(readCollaborationDrafts(draft.scope, storage)).toEqual([draft]);
+  await expect(executeCollaborationComment(client, scope, draft, true, storage)).resolves.toMatchObject({ attachment_ids: [other] });
+  expect(readCollaborationDrafts(draft.scope, storage)).toEqual([]);
+});
+
 it("keeps the original comment after a missing operation without revoking issue access", async () => {
   setApiInstance(new ApiClient("https://server.example"));
   const scope = collaborationScope(actor);
@@ -62,6 +77,24 @@ it("keeps the original comment after a missing operation without revoking issue 
   expect(readCollaborationDrafts(draft.scope, storage)).toEqual([draft]);
   expect(collaborationIssueAccessDenied(client, scope, actor)).toBe(false);
   expect(fetch.mock.calls).toHaveLength(2);
+});
+
+it.each([{ attachmentIds: [] }, { attachmentIds: [other] }])("retires only the submitted comment bundle after confirmed delivery ($attachmentIds)", async ({ attachmentIds }) => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const scope = collaborationScope(actor);
+  const deliveryScope = { ...scope, context: { kind: "issue" as const, issueId: actor, sourceWorkspaceId: other } };
+  const form = { ...newCollaborationDeliveryForm(deliveryScope, "comment"), content: "Saved comment", selectedAttachmentIds: attachmentIds };
+  const otherForm = newCollaborationDeliveryForm(deliveryScope, "attachment");
+  saveCollaborationDeliveryRecord(form, storage);
+  saveCollaborationDeliveryRecord(otherForm, storage);
+  const preview = parseCollaborationTriggerPreview({ protocol_version: 2, issue_id: actor, lifecycle_epoch: "1", targets: [], recipients: [] })!;
+  const draft = prepareCollaborationComment(scope, actor, key, form.content, [], preview, { draftId: form.draftId, attachmentIds });
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(json({ ...receipt, attachment_ids: attachmentIds })));
+
+  await executeCollaborationComment(client, scope, draft, false, storage);
+
+  expect(readCollaborationDeliveryRecords(scope, storage)).toEqual([otherForm]);
+  expect(readCollaborationDrafts(draft.scope, storage)).toEqual([]);
 });
 
 it("clears the protected issue when comment recovery receives a fresh denial", async () => {

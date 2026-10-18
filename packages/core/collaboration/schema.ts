@@ -3,7 +3,7 @@ import { parseWithFallback } from "../api/schema";
 import type { IssuePriority } from "../types/issue";
 import { ISSUE_PROPERTY_TYPES, parseActorRef, type IssuePropertyValue } from "../types/property";
 import { CollaborationExecutionSchema } from "./execution-schema";
-import { positiveVersion } from "./version";
+import { nonnegativeVersion, positiveVersion } from "./version";
 
 const statusCategory = z.enum(["backlog", "todo", "in_progress", "in_review", "blocked", "done", "cancelled"]);
 const statusAction = z.enum(["change_status", "complete", "cancel", "reopen", "request_information", "return_information", "submit_acceptance"]);
@@ -150,6 +150,7 @@ export const CollaborationIssueSchema = z.object({
   handler: accountSummary,
   collaboration_revision: positiveVersion,
   lifecycle_epoch: positiveVersion,
+  realtime: z.strictObject({ event_seq: nonnegativeVersion, authority_epoch: positiveVersion }).optional(),
   write_context: z.object({
     participant_epoch: positiveVersion,
     account_epoch: positiveVersion,

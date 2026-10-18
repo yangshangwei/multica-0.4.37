@@ -15,6 +15,13 @@ export type { CollaborationSwitchInput, CollaborationSwitchProposal, Collaborati
 export { prepareCollaborationSwitch, parseCollaborationSwitchDraft, sendCollaborationSwitch, recoverCollaborationSwitch,
   collaborationSwitchProposalsOptions, collaborationSwitchProposalOptions } from "./switch";
 export type { CollaborationSwitchSelection } from "./switch";
+export * from "./resource-schema";
+export { canOrganizeCollaborationResources, collaborationResourceRoster, prepareCollaborationResource, parseCollaborationResourceDraft, executeCollaborationResource,
+  collaborationResourcesOptions, collaborationResourceOptionsOptions, collaborationResourceIdentityOptions, collaborationResourceWorkspacesOptions } from "./resource";
+export type { CollaborationResourceSelection } from "./resource";
+export { prepareCollaborationParticipantRemoval, collaborationParticipantsOptions } from "./participant";
+export { CollaborationParticipantsSchema, parseCollaborationParticipants } from "./participant-schema";
+export type { CollaborationParticipants } from "./participant-schema";
 export { collaborationKeys, collaborationScope, collaborationAccessEpoch, isCollaborationScopeCurrent, isCollaborationDenied, clearCollaborationAccess, protectCollaborationRead, retainCollaborationScope, CollaborationUnavailableError } from "./access";
 export type { CollaborationScope } from "./access";
 export { collaborationIssueAccessDenied } from "./access";
@@ -26,6 +33,16 @@ export type { CollaborationAction } from "./action";
 export { prepareCollaborationAction, executeCollaborationAction } from "./operation";
 export type { CollaborationActionIntent } from "./operation";
 export * from "./content-schema";
+export * from "./creation-schema";
+export * from "./attachment-schema";
+export { collaborationCreationOptions, collaborationCreationRecipientOptions, prepareCollaborationCreation, executeCollaborationCreation, CollaborationCreationRejectedError } from "./creation";
+export { collaborationAttachmentsOptions, collaborationDraftAttachmentsOptions, prepareCollaborationUpload, stageCollaborationUpload, executeCollaborationUpload,
+  prepareCollaborationAttachmentDelivery, executeCollaborationAttachmentDelivery, loadCollaborationAttachmentPreview, loadCollaborationAttachmentDownload, CollaborationAttachmentError } from "./attachment";
+export { collaborationDeliveryKey } from "./delivery-access";
+export { readCollaborationDeliveryRecords, saveCollaborationDeliveryRecord, finishCollaborationDeliveryDraft, newCollaborationDeliveryForm,
+  subscribeCollaborationDelivery, collaborationDeliveryRevision, CollaborationDeliveryDraftError } from "./delivery-draft";
+export type { CollaborationDeliveryContext, CollaborationDeliveryScope, CollaborationDeliveryForm, CollaborationUploadDraft, CollaborationCreationDraft, CollaborationDeliveryRequest } from "./delivery-draft";
+export { useCollaborationDeliveryForm } from "./delivery-form";
 export * from "./activity-schema";
 export { readCollaborationPendingDrafts, useCollaborationPendingDrafts } from "./pending";
 export { CollaborationCommandCancelInputSchema, CollaborationCommandCancelReceiptSchema, parseCollaborationCommandCancelReceipt, matchesCollaborationCommandCancelReceipt } from "./command-schema";

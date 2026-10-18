@@ -5,6 +5,7 @@ import { parseCollaborationCommentDraft } from "./comment";
 import { parseCollaborationCommandCancelDraft } from "./command";
 import { parseCollaborationControlDraft } from "./control";
 import { parseCollaborationSwitchDraft } from "./switch";
+import { parseCollaborationResourceDraft } from "./resource";
 import { collaborationDraftRevision, CollaborationDraftError, readCollaborationDrafts, subscribeCollaborationDrafts, type CollaborationDraft, type CollaborationDraftScope } from "./draft";
 import type { StorageAdapter } from "../types/storage";
 
@@ -22,6 +23,7 @@ export function readCollaborationPendingDrafts(scope: CollaborationDraftScope, s
       switch (domain.data.domain) {
         case "execution_control": parseCollaborationControlDraft(draft); result.execution.push(draft); break;
         case "target_switch": parseCollaborationSwitchDraft(draft); result.execution.push(draft); break;
+        case "target_resource": parseCollaborationResourceDraft(draft); result.execution.push(draft); break;
         case "cancel_command": parseCollaborationCommandCancelDraft(draft); result.execution.push(draft); break;
         case undefined: parseCollaborationActionDraft(draft); result.actions.push(draft); break;
         default: throw new CollaborationDraftError();

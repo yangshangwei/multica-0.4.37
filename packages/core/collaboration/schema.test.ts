@@ -13,6 +13,18 @@ const invalidVersions = ["0", "01", "1.1", "1e3", "-1", "+1", "1\n", "1\r", " 1"
 afterEach(() => setSchemaLogger(noopLogger));
 
 describe("collaboration response boundary", () => {
+  it("keeps optional realtime snapshots exact and rejects malformed present snapshots", () => {
+    expect(parseCollaborationIssue(valid)).not.toBeNull();
+    for (const eventSeq of ["0", "9007199254740993", "9223372036854775807"]) {
+      const realtime = { event_seq: eventSeq, authority_epoch: "9007199254740995" };
+      expect(parseCollaborationIssue({ ...valid, realtime })?.realtime).toEqual(realtime);
+    }
+    for (const realtime of [null, {}, { event_seq: "1" }, { event_seq: "-1", authority_epoch: "1" },
+      { event_seq: 1, authority_epoch: "1" }, { event_seq: "1e3", authority_epoch: "1" },
+      { event_seq: "1", authority_epoch: "0" }, { event_seq: "1", authority_epoch: "9223372036854775808" }]) {
+      expect(parseCollaborationIssue({ ...valid, realtime })).toBeNull();
+    }
+  });
   it("keeps versions beyond the JS safe integer range exact", () => {
     const result = parseCollaborationIssue(valid);
     expect(result?.collaboration_revision).toBe("9007199254740993");

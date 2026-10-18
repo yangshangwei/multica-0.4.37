@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
 import { nonnegativeVersion, positiveVersion } from "./version";
+import { CollaborationAccountSummarySchema } from "./schema";
+import { CollaborationResourceRuntimeSchema } from "./resource-schema";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 const authority = { expected_lifecycle_epoch: positiveVersion, expected_participant_epoch: positiveVersion, expected_account_epoch: positiveVersion };
@@ -21,8 +23,10 @@ export const CollaborationSwitchInputSchema = z.discriminatedUnion("action", [
 ]).refine((value) => value.action !== "commit_target_switch" || value.target_id === value.control.target_id);
 export type CollaborationSwitchInput = z.infer<typeof CollaborationSwitchInputSchema>;
 
-const resourceView = resource.extend({ consented: z.boolean(), revoked: z.boolean(), grant_id: uuid.nullable(), grant_epoch: positiveVersion.nullable() })
-  .refine((value) => !(value.consented && value.revoked) && (value.grant_id === null) === (value.grant_epoch === null));
+const resourceView = resource.extend({ consented: z.boolean(), revoked: z.boolean(), grant_id: uuid.nullable(), grant_epoch: positiveVersion.nullable(),
+  agent_name: z.string().optional(), runtime: CollaborationResourceRuntimeSchema.nullable().optional(), owner: CollaborationAccountSummarySchema.nullable().optional(),
+}).strip().refine((value) => !(value.consented && value.revoked) && (value.grant_id === null) === (value.grant_epoch === null) &&
+  (value.runtime == null || value.runtime.id === value.runtime_id) && (value.owner == null || value.owner.user_id.toLowerCase() === value.owner_user_id));
 
 function nextVersion(proposed: string, base: string): boolean {
   // Aggregate refinements can run even after a child string failed validation.
@@ -45,7 +49,7 @@ const outcomes = {
 } as const;
 const refusal = z.enum(["stale_authority", "stale_scope", "stale_control_version", "stale_execution", "stale_target", "stale_hold", "stale_admission",
   "issue_closed", "forbidden", "target_not_found", "target_pause_required", "invalid_target_configuration", "config_invalid", "grant_required",
-  "stop_unconfirmed", "runtime_registration_required", "runtime_upgrade_required", "resource_unavailable", "owner_not_participant",
+  "stop_unconfirmed", "runtime_registration_required", "runtime_upgrade_required", "resource_unavailable", "owner_not_participant", "resource_owner_not_participant", "resource_owner_unavailable", "target_configuration_changed",
   "switch_proposal_not_found", "switch_consent_not_found", "switch_already_committed", "stale_switch_proposal", "stale_switch_consent", "switch_consent_required"]);
 
 const fullSwitchReceipt = z.object({

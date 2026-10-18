@@ -13,6 +13,13 @@ const input = { ...authority, action: "commit_target_switch" as const, target_id
 const proposal = { proposal_id: other, target_id: id, proposed_by: id, lifecycle_epoch: "1", base_target_epoch: "1", base_config_version: "2",
   proposed_target_epoch: "2", proposed_config_version: "3", status: "consent_ready", reason: "",
   resources: [{ ...resource, consented: true, revoked: false, grant_id: null, grant_epoch: null }] };
+
+it("retains optional proposal display names without requiring them on older servers", () => {
+  expect(parseCollaborationSwitchProposal(proposal)).not.toBeNull();
+  const displayed = { ...proposal, resources: [{ ...proposal.resources[0], agent_name: "Implementation", runtime: { id, name: "Runtime", custom_name: "Development", provider: "codex" },
+    owner: { user_id: id, name: "Owner", avatar_url: "", external: true } }] };
+  expect(parseCollaborationSwitchProposal(displayed)?.resources[0]?.agent_name).toBe("Implementation");
+});
 const receipt = { protocol_version: 2, issue_id: id, request_id: "original", action: input.action, status: 200, code: "target_switched", scope: "target",
   target_id: id, proposal_id: other, channel_id: null, queue_state: "active", control_version: "4", target_set_version: "5",
   grant_id: null, batch_id: null, command_id: null, group_id: null, group_settled: false, run_id: null, run_settled: false, channels: [], target_holds: [] };

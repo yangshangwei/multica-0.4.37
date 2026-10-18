@@ -26,6 +26,9 @@ type EventHandler = (payload: unknown, actorId?: string, actorType?: string) => 
 interface WSContextValue {
   subscribe: (event: WSEventType, handler: EventHandler) => () => void;
   onReconnect: (callback: () => void) => () => void;
+  onAuthenticated: (callback: () => void) => () => void;
+  subscribeScope: (scope: "account" | "issue", id: string) => () => void;
+  revalidateScope: (scope: "account" | "issue", id: string) => void;
 }
 
 const WSContext = createContext<WSContextValue | null>(null);
@@ -56,6 +59,7 @@ export function WSProvider({
   onToast,
 }: WSProviderProps) {
   const user = authStore((s) => s.user);
+  const authenticated = authStore((s) => s.status === "authenticated");
   // Reactive read of the current workspace slug (URL-driven singleton in
   // packages/core/platform/workspace-storage.ts). When the workspace switches,
   // the useEffect below tears down the old WS connection and opens a new one
@@ -77,7 +81,7 @@ export function WSProvider({
   const identityOS = identity?.os;
 
   useEffect(() => {
-    if (!user || user.requires_account_setup === true || user.requires_password_change === true || !wsSlug) return;
+    if (!authenticated || !user || user.requires_account_setup === true || user.requires_password_change === true) return;
 
     // In token mode we need a token from storage; in cookie mode the HttpOnly
     // cookie is sent automatically with the WS upgrade request.
@@ -110,6 +114,7 @@ export function WSProvider({
     };
   }, [
     user,
+    authenticated,
     authStore,
     wsSlug,
     wsUrl,
@@ -141,8 +146,12 @@ export function WSProvider({
     [wsClient],
   );
 
+  const onAuthenticatedCb = useCallback((callback: () => void) => wsClient?.onAuthenticated(callback) ?? (() => {}), [wsClient]);
+  const subscribeScope = useCallback((scope: "account" | "issue", id: string) => wsClient?.subscribeScope(scope, id) ?? (() => {}), [wsClient]);
+  const revalidateScope = useCallback((scope: "account" | "issue", id: string) => { wsClient?.revalidateScope(scope, id); }, [wsClient]);
+
   return (
-    <WSContext.Provider value={{ subscribe, onReconnect: onReconnectCb }}>
+    <WSContext.Provider value={{ subscribe, onReconnect: onReconnectCb, onAuthenticated: onAuthenticatedCb, subscribeScope, revalidateScope }}>
       {children}
     </WSContext.Provider>
   );
@@ -153,3 +162,6 @@ export function useWS() {
   if (!ctx) throw new Error("useWS must be used within WSProvider");
   return ctx;
 }
+
+/** Optional at shared view boundaries that retain HTTP polling without WS. */
+export function useOptionalWS() { return use(WSContext); }

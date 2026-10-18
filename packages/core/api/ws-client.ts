@@ -48,6 +48,9 @@ export class WSClient {
   // on each connect() so a fresh connection logs once again.
   private badFrameLogged = false;
   private onReconnectCallbacks = new Set<() => void>();
+  private authenticated = false;
+  private onAuthenticatedCallbacks = new Set<() => void>();
+  private scopes = new Map<string, { scope: "account" | "issue"; id: string; count: number }>();
   private anyHandlers = new Set<(msg: WSMessage) => void>();
   private logger: Logger;
 
@@ -65,20 +68,28 @@ export class WSClient {
     this.identity = options?.identity;
   }
 
-  setAuth(token: string | null, workspaceSlug: string) {
+  setAuth(token: string | null, workspaceSlug: string | null) {
     this.token = token;
     this.workspaceSlug = workspaceSlug;
   }
 
   connect() {
     this.badFrameLogged = false;
+    this.authenticated = false;
     const url = new URL(this.baseUrl);
     // Token is never sent as a URL query parameter — it would be logged by
     // proxies, CDNs, and browser history.  In cookie mode the HttpOnly cookie
     // is sent automatically with the upgrade request.  In token mode the token
     // is delivered as the first WebSocket message after the connection opens.
-    if (this.workspaceSlug)
+    url.searchParams.delete("workspace_slug");
+    url.searchParams.delete("workspace_id");
+    url.searchParams.delete("scope");
+    url.searchParams.delete("token");
+    if (this.workspaceSlug) {
       url.searchParams.set("workspace_slug", this.workspaceSlug);
+    } else {
+      url.searchParams.set("scope", "account");
+    }
     if (this.identity?.platform)
       url.searchParams.set("client_platform", this.identity.platform);
     if (this.identity?.version)
@@ -86,27 +97,30 @@ export class WSClient {
     if (this.identity?.os)
       url.searchParams.set("client_os", this.identity.os);
 
-    this.ws = new WebSocket(url.toString());
+    const socket = new WebSocket(url.toString());
+    this.ws = socket;
 
-    this.ws.onopen = () => {
+    socket.onopen = () => {
+      if (this.ws !== socket) return;
       if (!this.cookieAuth && this.token) {
-        this.ws!.send(
+        socket.send(
           JSON.stringify({ type: "auth", payload: { token: this.token } }),
         );
         return;
       }
 
-      this.onAuthenticated();
+      this.markAuthenticated();
     };
 
-    this.ws.onmessage = (event) => {
+    socket.onmessage = (event) => {
+      if (this.ws !== socket) return;
       let msg: WSMessage;
       try {
         msg = JSON.parse(event.data as string) as WSMessage;
       } catch {
         this.logger.warn(
           "ws: received unparseable message",
-          summarizeUnparseable(event.data),
+          this.protectedConnection() ? "[redacted]" : summarizeUnparseable(event.data),
         );
         return;
       }
@@ -124,16 +138,16 @@ export class WSClient {
           this.badFrameLogged = true;
           this.logger.warn(
             "ws: dropping frame without a string type",
-            summarizeUnparseable(event.data),
+            this.protectedConnection() ? "[redacted]" : summarizeUnparseable(event.data),
           );
         }
         return;
       }
       if ((msg as any).type === "auth_ack") {
-        this.onAuthenticated();
+        this.markAuthenticated();
         return;
       }
-      this.logger.debug("received", msg.type);
+      this.logger.debug("received", this.protectedConnection() ? "protected event" : msg.type);
       const eventHandlers = this.handlers.get(msg.type);
       if (eventHandlers) {
         for (const handler of eventHandlers) {
@@ -145,7 +159,9 @@ export class WSClient {
       }
     };
 
-    this.ws.onclose = () => {
+    socket.onclose = () => {
+      if (this.ws !== socket) return;
+      this.authenticated = false;
       this.scheduleReconnect();
     };
 
@@ -179,10 +195,14 @@ export class WSClient {
     this.reconnectTimer = setTimeout(() => this.connect(), delay);
   }
 
-  private onAuthenticated() {
+  private markAuthenticated() {
+    if (this.authenticated) return;
+    this.authenticated = true;
     this.logger.info("connected");
     const recoveredConnection = this.hasConnectedBefore || this.reconnectAttempt > 0;
     this.reconnectAttempt = 0;
+    for (const { scope, id } of this.scopes.values()) this.sendScope("subscribe", scope, id);
+    for (const callback of this.onAuthenticatedCallbacks) callback();
     if (recoveredConnection) {
       for (const cb of this.onReconnectCallbacks) {
         try {
@@ -204,14 +224,60 @@ export class WSClient {
       // Remove handlers before close to prevent onclose from scheduling a reconnect
       this.ws.onclose = null;
       this.ws.onerror = null;
+      this.ws.onopen = null;
+      this.ws.onmessage = null;
       this.ws.close();
       this.ws = null;
     }
     this.hasConnectedBefore = false;
+    this.authenticated = false;
     this.reconnectAttempt = 0;
     this.handlers.clear();
     this.anyHandlers.clear();
     this.onReconnectCallbacks.clear();
+    this.onAuthenticatedCallbacks.clear();
+    this.scopes.clear();
+  }
+
+  private protectedConnection() {
+    return !this.workspaceSlug || this.scopes.size > 0;
+  }
+
+  private sendScope(type: "subscribe" | "unsubscribe", scope: "account" | "issue", id: string) {
+    if (this.authenticated && this.ws?.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({ type, payload: { scope, id } }));
+    }
+  }
+
+  /** Reference counts keep one wire subscription across multiple consumers. */
+  subscribeScope(scope: "account" | "issue", id: string) {
+    const key = JSON.stringify([scope, id]);
+    const prior = this.scopes.get(key);
+    if (prior) prior.count += 1;
+    else {
+      this.scopes.set(key, { scope, id, count: 1 });
+      this.sendScope("subscribe", scope, id);
+    }
+    let disposed = false;
+    return () => {
+      if (disposed) return;
+      disposed = true;
+      const current = this.scopes.get(key);
+      if (!current || --current.count > 0) return;
+      this.scopes.delete(key);
+      this.sendScope("unsubscribe", scope, id);
+    };
+  }
+
+  /** Recheck a desired scope after a server-side revocation removed its room. */
+  revalidateScope(scope: "account" | "issue", id: string) {
+    if (this.scopes.has(JSON.stringify([scope, id]))) this.sendScope("subscribe", scope, id);
+  }
+
+  onAuthenticated(callback: () => void) {
+    this.onAuthenticatedCallbacks.add(callback);
+    if (this.authenticated) callback();
+    return () => { this.onAuthenticatedCallbacks.delete(callback); };
   }
 
   on(event: WSEventType, handler: EventHandler) {
