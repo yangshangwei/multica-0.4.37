@@ -1,6 +1,6 @@
 # 跨账号协作实施计划
 
-- 日期：2026-10-17；状态：用户已要求按最新需求核对代码并继续推进，任务恢复实施。已有 P1/P2/P4/P6 验证仍仅属于原基础，见 [progress.md](progress.md)；当前实施范围见[单智能体闭环](continuation-single-agent-2026-10-17.md)，上一轮边界见[实施续作](continuation-revision-2026-10-17.md)。
+- 日期：2026-10-17；状态：用户已要求按最新需求核对代码并继续推进，任务恢复实施。已有 P1/P2/P4/P6 验证仍仅属于原基础，见 [progress.md](progress.md)；当前实施范围见[目标 hold 与分范围恢复](continuation-hold-2026-10-18.md)，上一轮边界见[实施续作](continuation-revision-2026-10-17.md)。
 - 依据：[PRD](prd.md)、[技术设计](design.md)、[执行协议](research/execution-contract.md)；源码索引见[研究摘要](research/design-contracts.md)。
 - 分支：`codex/cross-workspace-collaboration`。原授权见 discussion §55；本轮产品决定见 §57–§60、§64–§66 与[调整清单](mention-redesign-2026-10-17.md)。最新用户续作指令是修订方案的实施授权，已记录到 task.json。
 - 任务保留为规划与集成责任入口；下面按可验证阶段拆分工作，批准后可据此建立子任务，依赖以本文为准，不能从任务树推断。
@@ -9,7 +9,7 @@
 
 ## 当前续作：2026-10-18
 
-已完成[调整与推进计划](review-followup-2026-10-18.md)中的 M09 收尾与独立检查，证据见[本轮验证](verification-summary-followup-2026-10-18.json)。单直接 agent 的文本合批、启动/终结及恢复闭环已在真实 Linux/DB/API/daemon 环境跑通；v3 读取、权限代次、FIFO 和迁移恢复缺口已修复。后续开工前须完整重读最新执行契约，再做 target hold、M04 多 lane 新语义、同队长多目标合批与 M11；附件交付和完整双端界面另按原阶段验收。
+已完成[调整与推进计划](review-followup-2026-10-18.md)中的 M09 收尾与独立检查，证据见[本轮验证](verification-summary-followup-2026-10-18.json)。单直接 agent 的文本合批、启动/终结及恢复闭环已在真实 Linux/DB/API/daemon 环境跑通；v3 读取、权限代次、FIFO 和迁移恢复缺口已修复。已按用户本次续作指令完整重读最新执行契约，完成[目标 hold 与分范围恢复](continuation-hold-2026-10-18.md)的控制/资源边界切片及真实双通道验证；随后推进同队长多目标合批与 M11，附件交付和完整双端界面另按原阶段验收。
 
 ## P0R. 本轮变更规划与影响收敛
 
@@ -26,7 +26,9 @@
 - [x] 审计后续决定 M04–M10 已记录（discussion §64）；M08 改为保持现有小队派发（§65），M11 人类再 @队长并入本组续作（§66）。
 - [x] M10、M06/M07 单目标基础与 M04 单 lane：前向删除旧单会话执行路径，保留当前输入/证明；通道/合批、停止及明确恢复已实现并通过本轮验证。
 - [x] M09 门禁：单直接智能体、单 lane 在 Docker 提供的真实 Linux 内核跑通评论→command→promote→claim→permit→supervisor→Stop→sealed proof→Resume→下一批及 never_launched；另验证真实 daemon 注册/槽位/Runner 接线。仅使用测试自建静态程序，macOS/Windows 运行能力不宣称支持。
-- [ ] 后续开工前重读最新执行契约；M04 多 lane/目标 hold、跨目标 FIFO、小队派发/续作及完整两级控制按最新 §66 增量实施，不能复用旧拒绝/暂停假设。
+- [x] M09 之后完整重读当前执行/数据契约与讨论 §66 最后两轮修正，确认单目标恢复原子、整单恢复按 lane/hold 分项结算。
+- [x] M04 控制基础与目标 hold/version、资源失效、完整原回执及真实双直接智能体通道部分恢复已验证；见本轮推进与证据。
+- [ ] 完整目标 hold 调度语义、混合 FIFO、安全 waiting/never-launched 转移、Switch、小队派发/续作及完整双端控制按最新 §66 增量实施；本轮控制基础不替代这些阶段。
 
 下方 P1–P8 已按本轮模型修订。标记已完成的早期基础项只证明旧结构存在，新 target/group/运行协议仍待实现；未受影响的人类流转与字段规则继续回归。旧单会话“唯一未结 run”不能作为多目标验收。
 

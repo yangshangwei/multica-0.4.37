@@ -1,6 +1,6 @@
 # 跨账号协作技术设计
 
-- 日期：2026-10-17；状态：M01–M11 产品选择及修订方案实施均已确认。当前实施范围见[单智能体闭环](continuation-single-agent-2026-10-17.md)。
+- 日期：2026-10-17；状态：M01–M11 产品选择及修订方案实施均已确认。当前实施范围见[目标 hold 与分范围恢复](continuation-hold-2026-10-18.md)。
 - 需求依据：[PRD](prd.md) 与[验收附表](acceptance.md)；执行顺序见[实施计划](implement.md)。
 - 当前调整依据：[需求设计调整](mention-redesign-2026-10-17.md)及讨论 §57–§66。本文描述完整目标模型；已落实的多目标存储、控制与读取契约见[当前代码规范](../../spec/server/collaboration-targets.md)，其按目标控制将由 lane 与目标 hold 取代；真实运行协议与完整界面仍待完成。
 - 具体关系与签名见[数据契约](research/data-contract.md)、[执行协议](research/execution-contract.md)；源码锚点见[研究摘要](research/design-contracts.md)。新能力保持未启用，普通任务行为不随本修订改变。
@@ -134,7 +134,7 @@ session 的 `queue_state=active|paused|closed` 是整单控制。执行通道（
 
 首次 session 默认为 paused，新目标初始 hold；授权、重新授权及切资源不解除暂停或 hold。忙碌/暂停/离线不是撤权，有效目标仍可选并显示等待原因；失效目标退出可选 @清单，历史和合法停止入口保留。
 
-控制请求显式 `scope=target|issue`、相应控制版本及观察到的 active group/代次；全单操作还绑定目标集合版本。旧 stop 指向已经被新根组替换的目标时返回 stale_execution，不能误停后来工作；同组新成员仍在其控制闭包内。普通评论和进度不推进控制版本。
+控制请求显式 `scope=target|issue`、相应控制版本及观察到的 active group/代次；Resume 还捕获每个目标的 `expected_hold_version`，与 lane 控制版本分开，撤权或新 consent 后旧请求不能释放新 hold；全单操作还绑定目标集合版本。旧 stop 指向已经被新根组替换的目标时返回 stale_execution，不能误停后来工作；同组新成员仍在其控制闭包内。普通评论和进度不推进控制版本。
 
 每个 run 分开持久化 outcome、forced_disposition、proof 和 settled_at。从未发过许可的 run 可由服务器可信结算；发过许可或不确定时只接受原 supervisor 的 sealed proof。组结算要求所有实际 run 和可启动派发记录收口；队长证明不能覆盖其他机器的成员。拒绝/未知 Resume 沿原 key 重放原结果，不保存延后恢复意图；proof 只收尾，不恢复 gate。nonce burn、原生 containment、late outcome 和无许可结算详见 E03–E05。
 
@@ -199,7 +199,8 @@ Server 按协议/provider/OS 与实际 containment 准入；未满足显示升�
 | `POST/DELETE .../comments/{id}/reactions/{emoji}`、`.../reactions/{emoji}` | R57 评论/单据回应，当前评论权；只添加或移除本人回应，复用既有记录，不通知、不执行 |
 | `POST .../grants/{id}/revoke`、`targets/{target}/runtime-binding` | 实际 owner 撤权与 creator/handler 组织绑定分开；明确目标，切换后仍 paused；授权通过上述 consents 入口 |
 | `POST .../lifecycle` | 发起人 complete/cancel/reopen，来源状态校验及收尾 |
-| `GET .../operations/{requestId}` | 当前授权范围的回执；只有最小自操作收据可在失去单据权限后取回 |
+| `GET .../operations/{requestId}` | 当前授权范围的人类流转回执；只有最小自操作收据可在失去单据权限后取回 |
+| `GET .../control/operations/{requestId}` | 重新验证当前账号/对象授权后，返回本人原控制请求的完整成功/拒绝回执，保留 issue/request/action、逐 channel 与 target_holds 结果；不更新版本或重新执行 |
 | `GET /api/admin/collaboration/issues/{uuid}/reopen-candidates` | R38 管理域且单据已结束、双禁用；仅返回有效参与者的最小 AccountSummary |
 | `POST /api/admin/collaboration/issues/{uuid}/lifecycle` | R38；仅 R40 分支必填 successor_user_id，其他场景拒绝该字段 |
 | 专用 daemon collaboration claim/launch/event/proof 路由与等价 WS RPC | 完整 purpose、run/fence/nonce 检查；终结路径独立窄认证 |
@@ -258,4 +259,4 @@ API JSON 经 schema/parseWithFallback；关键 ID/版本/能力无效则 unavail
 
 ## D12. 修订状态与评审边界
 
-M01–M03 及修订方案实施已确认，当前稿采用整单控制器、按根智能体分 lane 的批次 FIFO、组内派生及逐资源授权（M04–M11 见讨论 §64–§66）。当前存储/控制基础与 v2 读取见[代码规范](../../spec/server/collaboration-targets.md)；运行端许可/proof、正向恢复、完整 @提交和双端界面仍待实施。文档复审见 [review-2026-10-17.md](review-2026-10-17.md)，实施续作见讨论 §62；旧日期测试不替代本轮验证。
+M01–M03 及修订方案实施已确认，当前稿采用整单控制器、按根智能体分 lane 的批次 FIFO、组内派生及逐资源授权（M04–M11 见讨论 §64–§66）。M09 已验证单直接智能体运行端许可/proof、单 lane 正向恢复、评论文本合批及 v3 读取，见[代码规范](../../spec/server/collaboration-targets.md)和[2026-10-18 验证](verification-summary-followup-2026-10-18.json)。目标 hold/M04 控制与资源边界基础及双直接智能体通道已经[本轮验证](verification-summary-hold-2026-10-18.json)；混合 FIFO、完整 Switch/配置收敛、M08/M11 及完整双端仍按[当前续作](continuation-hold-2026-10-18.md)和实施计划逐项验证。文档复审见 [review-2026-10-17.md](review-2026-10-17.md)，实施续作见讨论 §62；旧日期测试不替代本轮验证。

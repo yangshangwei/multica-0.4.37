@@ -56,7 +56,7 @@ installation 停止/gate 冻结后仅观测/终结旧许可，旧恢复例外不
 
 与旧 workspace→agent→issue→runtime 或 task→issue 锁序相交时后置 NOWAIT；同类对象 UUID 有序。NOWAIT/40P01/40001 整笔回滚，最多三次有界抖动重试，不重复外部副作用或部分提交停止。
 
-Idempotency-Key 按操作 scope/actor/request 唯一，payload_hash 含 control scope=target/issue、业务/控制/配置版本、target_set_version 及观察到的 active_group/generation。授权先于回执；同 key 重放原成功/拒绝，改 payload 拒绝。未知 commit 只查原 key，不自动配新版本重试；退出者仅可查本人无内容收据。
+Idempotency-Key 按操作 scope/actor/request 唯一，payload_hash 含 control scope=target/issue、业务/控制/配置版本、target_set_version 及观察到的 active_group/generation。Resume 的 payload_hash 另包含每个目标 expected_hold_version；hold/version 与新 consent 同事务推进，撤权再授权后的旧恢复请求返回 stale_hold，不能释放较新的 hold。授权先于回执；同 key 重放原成功/拒绝，改 payload 拒绝。未知 commit 只查原 key，不自动配新版本重试；退出者仅可查本人无内容收据。
 
 Stop 比较 typed scope/control_version/target_set_version 与观察到的 active_group/generation：新根 group 或目标替换使请求失效，返回 stale_execution/stale_scope；原 group 已结束且无替代者可暂停并返回 already_ended。成员扩展与停止共锁，按当前账本纳入原 group 的全部后代；不能只停预览中已出现的 run。评论/进度/入队不改控制版本。多个 actor 分别留操作记录，保留首个强制处置根。
 
@@ -134,11 +134,11 @@ group 终态要求扩展已封闭（正常收口由结算事务封闭，见 E02�
 | Complete/Cancel | 来源终态/lifecycle、session closed、全部 target paused、waiting cancelled、封闭/停止全部组及审计同事务 |
 | Reopen | 新非终态/lifecycle、session paused；不清屏障或复活旧 command/group/grant |
 
-Resume target 带所属 lane 的 control_version/group_generation、资源配置版本与 expected_execution_epoch，全部条件先验、拒绝零写入：session paused/closed 优先拒绝；本目标配置/grant 无效为 grant_required/config_invalid；lane 暂停且 scope 内未结 group 或 run/指针矛盾为 stop_unconfirmed。lane 当前未结组若因 revoke/漂移被强制停止且缺 proof，同样 stop_unconfirmed。通过后释放本目标 hold，暂停的 lane active（同 lane 目标一起）；lane 忙碌/active 时只释放 hold，不改其他目标；无 hold 且 lane 已 active 回执 already_active。全局 active 时无关目标的未知 proof 不阻止本目标恢复；拒绝不保存未来意愿。
+Resume target 带所属 lane 的 control_version/group_generation、本目标 expected_hold_version、资源配置版本与 expected_execution_epoch，全部条件先验、拒绝零写入：session paused/closed 优先拒绝；本目标配置/grant 无效为 grant_required/config_invalid；lane 暂停且 scope 内未结 group 或 run/指针矛盾为 stop_unconfirmed。lane 当前未结组若因 revoke/漂移被强制停止且缺 proof，同样 stop_unconfirmed。通过后释放本目标 hold，暂停的 lane active（同 lane 目标一起）；lane 忙碌/active 时只释放 hold，不改其他目标；无 hold 且 lane 已 active 回执 already_active。全局 active 时无关目标的未知 proof 不阻止本目标恢复；拒绝不保存未来意愿。
 
 Resume All 按 lane 与目标 hold 结算（M04）：
 
-1. scope=issue 请求绑定 target_set_version、全局控制、gate/epoch 版本；锁内重枚举，集合漂移返回 stale_scope。终态、gate/协议无效或请求者无权时整笔拒绝，不改状态。
+1. scope=issue 请求绑定 target_set_version、全局控制、gate/epoch 版本及各目标 expected_hold_version；锁内重枚举，集合漂移返回 stale_scope。终态、gate/协议无效或请求者无权时整笔拒绝，不改状态。
 2. 否则同一事务 session=active，再逐个检查：暂停中的 lane 范围内全部应收尾 run 有证明者 active，否则保持暂停（stop_unconfirmed）；带 hold 的目标当前配置/grant/完整名册有效且所在 lane 无被强制停止而缺 proof 的组者释放，否则保持 hold（grant_required/config_invalid/stop_unconfirmed）。回执逐 lane 与逐 hold 目标给出结果，不保存延后恢复意愿；无效授权只挡其目标自身输入，不挡同 lane 其他目标。
 3. 已移除目标的遗留屏障不阻止 session=active，但其可能存活的 run 继续占用实际 agent/机器/排他目录，直到取得证明。全局已 active 时未被停止的健康运行保持原样，不重建已有 group；临时离线/缺容量只导致合法等待。无目标时仅解除全局暂停，新目标仍初始 hold。
 

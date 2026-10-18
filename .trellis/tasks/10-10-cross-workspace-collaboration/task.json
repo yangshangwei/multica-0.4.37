@@ -2,7 +2,7 @@
   "id": "cross-workspace-collaboration",
   "name": "cross-workspace-collaboration",
   "title": "跨账号任务流转与共享 AI 协作工作台",
-  "description": "支持独立工作空间按账号派单与协作；本轮梳理 @智能体/小队触发、@人通知及同单多目标的需求设计调整。",
+  "description": "支持独立工作空间按账号派单与协作；M09 单智能体闭环已验证，继续落实目标 hold、分通道恢复及其运行与资源失效边界。",
   "status": "in_progress",
   "dev_type": null,
   "scope": null,
@@ -15,7 +15,7 @@
   "branch": "codex/cross-workspace-collaboration",
   "base_branch": "main",
   "worktree_path": null,
-  "commit": "6794f4e3680526d0105df9d58fa93edc4f937603",
+  "commit": "a389ef8596791cb8639ce21b27f64868cf93d715",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -66,9 +66,16 @@
     ".trellis/tasks/10-10-cross-workspace-collaboration/review-followup-2026-10-18.md",
     ".trellis/tasks/10-10-cross-workspace-collaboration/verification-summary-followup-2026-10-18.json",
     ".trellis/tasks/10-10-cross-workspace-collaboration/verification-source-manifest-2026-10-18.json",
-    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-followup-final-2026-10-18.md"
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-followup-final-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/continuation-hold-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/hold-control-map-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/lane-squad-map-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/client-gap-map-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-summary-hold-2026-10-18.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-source-manifest-hold-2026-10-18.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-hold-review-2026-10-18.md"
   ],
-  "notes": "2026-10-18：已核对 Claude 最后更新并完成 M09 单直接智能体文本闭环。真实 Linux/DB/API/daemon、Go race/vet、core 3484 测试、全仓 typecheck/lint、M10 保留与并发索引恢复、sqlc 一致性均通过；独立复核无剩余本轮阻塞。完整 97 AC 未完成，创建与客户端执行仍关闭；进入 target hold、多通道或 M11 前重读最新执行契约。",
+  "notes": "2026-10-18：hold/M04 控制、真实资源删除/重绑及双直接智能体通道闭环已验证并独立复核；Go race、Redis、Linux、core3509、lint/typecheck、698升级与sqlc通过。完整目标调度、混合FIFO、Switch/M11与双端仍待推进，任务保持in_progress。 本轮代码已提交 a389ef859。",
   "meta": {
     "planning_status": "approved_revision_in_implementation",
     "implementation_authorized": true,
@@ -102,7 +109,7 @@
       "source": "User requested latest-58 technical consistency review and validation during implementation; discussion §55",
       "scope": "Existing P1–P8 plan after technical review; no production deployment authorization"
     },
-    "current_phase": "M09_verified",
+    "current_phase": "hold_M04_control_foundation_verified",
     "technical_review": {
       "date": "2026-10-13",
       "report": "review-2026-10-13.md",
@@ -298,21 +305,22 @@
       ]
     },
     "next_steps": [
-      "Before the next implementation phase, reread the latest execution-contract and reconcile the final Claude document revision",
-      "Implement target-level initial/grant/config/switch holds and per-channel/per-target Resume receipts",
-      "Implement cross-target lane FIFO, same-leader squad coalescing and switch resequencing",
-      "Preserve M08 comment delegation and implement M11 unread-input/continuation semantics",
-      "Complete attachment/Git delivery, provider adapters, remaining Web/Desktop P1–P8 and all 97 AC"
+      "Reread latest execution/data contracts before the next FIFO/Switch/M08/M11 implementation phase",
+      "Implement true channel FIFO and eligibility-based rebatching so a held squad cannot block valid direct-agent input; preserve identities and verify never-launched return-to-waiting rules",
+      "Complete frozen multi-target grants, Switch waiting migration and durable hold/stop convergence for external agent/squad configuration writes",
+      "Implement M08 comment delegation and M11 unread/consumed continuation with real capacity-one execution evidence",
+      "Finish attachment/Git/provider/enrollment and complete Web/Desktop P1-P8 plus all 97 AC"
     ],
     "implementation_commits": [
       "e6bc3759e8a07b480e6aedf246eda8304a253752",
       "f5259e24533a68ca9ed3d283810de7988bc3d753",
       "188a7f4a5b0dc0e08873389c6261be0a55f012f9",
-      "6794f4e3680526d0105df9d58fa93edc4f937603"
+      "6794f4e3680526d0105df9d58fa93edc4f937603",
+      "a389ef8596791cb8639ce21b27f64868cf93d715"
     ],
     "implementation_complete": false,
-    "quality_gate_scope": "M09_single_direct_agent_text_slice",
-    "current_scope_doc": "review-followup-2026-10-18.md",
+    "quality_gate_scope": "hold_M04_control_and_resource_slice",
+    "current_scope_doc": "continuation-hold-2026-10-18.md",
     "followup_review": {
       "date": "2026-10-18",
       "report": "review-followup-2026-10-18.md",
@@ -368,6 +376,51 @@
       "commits": [
         "188a7f4a5b0dc0e08873389c6261be0a55f012f9",
         "6794f4e3680526d0105df9d58fa93edc4f937603"
+      ]
+    },
+    "hold_continuation": {
+      "date": "2026-10-18",
+      "source": "User: M09 已验证并提交，任务仍进行中，请继续推进",
+      "baseline_head": "5a0817b8a0ef22f5ae0d901bab6c125db5f6c757",
+      "latest_execution_contract_fully_reread": true,
+      "status": "verified_independent_review_passed",
+      "full_product_acceptance_complete": false,
+      "baseline_validation": {
+        "controls_tests_passed": 78,
+        "skipped": 0,
+        "migration_baseline": 697
+      },
+      "context_validation": {
+        "implement": {
+          "bytes": 211022,
+          "files": 8,
+          "not_fully_loaded": []
+        },
+        "check": {
+          "bytes": 211022,
+          "files": 8,
+          "not_fully_loaded": []
+        }
+      }
+    },
+    "hold_implementation_validation": {
+      "date": "2026-10-18",
+      "status": "passed_current_slice_full_product_pending",
+      "report": "continuation-hold-2026-10-18.md",
+      "summary": "verification-summary-hold-2026-10-18.json",
+      "source_manifest": "verification-source-manifest-hold-2026-10-18.json",
+      "independent_review": "research/verification-hold-review-2026-10-18.md",
+      "go_race_top_level": 603,
+      "go_race_subtests": 687,
+      "linux_top_level": 5,
+      "core_tests": 3509,
+      "migration_version": 698,
+      "outstanding_skipped_tests": 0,
+      "independent_blockers": 0,
+      "creation_enabled": false,
+      "client_execution_enabled": false,
+      "commits": [
+        "a389ef8596791cb8639ce21b27f64868cf93d715"
       ]
     }
   }

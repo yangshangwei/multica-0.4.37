@@ -1,0 +1,231 @@
+{
+  "date": "2026-10-18",
+  "status": "passed_hold_M04_control_and_resource_slice",
+  "baseline_head": "5a0817b8a0ef22f5ae0d901bab6c125db5f6c757",
+  "evidence_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-cwc-hold-20261018-nvb9nij7",
+  "scope": "Target hold/control foundation, direct-agent runtime hold admission, resource teardown/rebind and original receipt recovery; real two-channel Linux execution",
+  "requirements": 58,
+  "acceptance_criteria": 97,
+  "full_product_acceptance_passed": 0,
+  "creation_enabled": false,
+  "client_execution_enabled": false,
+  "go_toolchain": "1.26.6",
+  "go_broad_race": {
+    "log": "go-hold-final-race.jsonl",
+    "top_level_passed": 594,
+    "subtests_passed": 687,
+    "failed": [],
+    "skipped": [
+      "TestEmptyClaimCache_EmptyRuntimeIDIsNoOp",
+      "TestEmptyClaimCache_RuntimeIsolation",
+      "TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder",
+      "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+      "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry",
+      "TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp",
+      "TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup",
+      "TestRedisLocalSkillListStore_PerRuntimeIsolation",
+      "TestRedisSlidingWindowRateLimiter_SeparatesInvitationNamespaces",
+      "TestCollaborationPartialResumeRoutesLinux",
+      "TestCollaborationSingleAgentRuntimeRoutesLinux",
+      "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux"
+    ],
+    "packages": [
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "result": "pass",
+        "elapsed": 252.707
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "result": "pass",
+        "elapsed": 25.559
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "result": "pass",
+        "elapsed": 12.877
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/migrations",
+        "result": "pass",
+        "elapsed": 9.064
+      }
+    ],
+    "log_sha256": "b87b1f8400785d3bd47e6b508b166449118184d9a6e3269fb50f589545ca587c"
+  },
+  "go_redis_race": {
+    "log": "go-redis-race.jsonl",
+    "top_level_passed": 9,
+    "subtests_passed": 0,
+    "failed": [],
+    "skipped": [],
+    "packages": [
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "result": "pass",
+        "elapsed": 2.499
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "result": "pass",
+        "elapsed": 2.043
+      }
+    ],
+    "log_sha256": "2e3ea8f87937158cbe1dbf3553cf5054795c727e418be5db4652e0babf1c0a66"
+  },
+  "broad_skips_executed_in_supplemental_runs": [
+    "TestEmptyClaimCache_EmptyRuntimeIDIsNoOp",
+    "TestEmptyClaimCache_RuntimeIsolation",
+    "TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder",
+    "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+    "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry",
+    "TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp",
+    "TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup",
+    "TestRedisLocalSkillListStore_PerRuntimeIsolation",
+    "TestRedisSlidingWindowRateLimiter_SeparatesInvitationNamespaces",
+    "TestCollaborationPartialResumeRoutesLinux",
+    "TestCollaborationSingleAgentRuntimeRoutesLinux",
+    "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux"
+  ],
+  "outstanding_skipped_tests": [],
+  "core": {
+    "files": 264,
+    "tests": 3509,
+    "failed": 0,
+    "log": "core-full.log"
+  },
+  "workspace": {
+    "typecheck": {
+      "tasks": 9,
+      "result": "passed",
+      "log": "workspace-typecheck.log"
+    },
+    "lint": {
+      "tasks": 6,
+      "result": "passed",
+      "log": "workspace-lint.log"
+    }
+  },
+  "go_vet": {
+    "result": "passed",
+    "logs": [
+      "controls/hold-vet-post-review.log",
+      "check/independent-final-go-vet.log",
+      "resources/resource-vet.log",
+      "projection/go-route-projection-vet.log"
+    ]
+  },
+  "linux": {
+    "container": "multica-cwc-hold-ebee211030-final-routes-8494d8",
+    "id": "0b6a22de91d5b5555bd78f4b875a59eb5e26ec2dffa016c47da09c4b44fda504",
+    "image": "sha256:8a34c4ab3ea2c5cd194f07e317b2a8f09461d3c8b05c4e34c8ccd56d56024c4d",
+    "binary": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-cwc-hold-20261018-nvb9nij7/linux/server-final.test",
+    "binary_sha256": "4daefbc8c86f7a5c125e49df2e056bc05970737674d28b25758d2eb9aee527a2",
+    "log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-cwc-hold-20261018-nvb9nij7/linux/final-routes.log",
+    "log_sha256": "eab87c43e2408e11b8e4f912f29365df32ac135833f618a9afa28bd118f8ea47",
+    "exit_code": 0,
+    "host_mounts": [],
+    "requested_platform": "linux/arm64",
+    "passed": [
+      "TestCollaborationPartialResumeRoutesLinux",
+      "TestCollaborationRuntimeRoutesKeepManagedAndNarrowPurposesSeparate",
+      "TestCollaborationRuntimeOutcomeClientMatchesService",
+      "TestCollaborationSingleAgentRuntimeRoutesLinux",
+      "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux"
+    ],
+    "failed": [],
+    "skipped": [],
+    "kernel": "linux aarch64 6.12.68-linuxkit",
+    "image_platform": "linux/arm64"
+  },
+  "migration": {
+    "version": 698,
+    "invalid_indexes": 0,
+    "upgrade_and_guarded_rollback": "passed",
+    "logs": [
+      "controls/hold-migration-upgrade-green.jsonl",
+      "projection/go-route-projection-upgrade-green.jsonl",
+      "migration698-final-collaboration_hold.log",
+      "migration698-final-collaboration_hold_linux.log"
+    ]
+  },
+  "sqlc": {
+    "files": 103,
+    "drift": []
+  },
+  "documents": {
+    "requirements": 58,
+    "acceptance_criteria": 97,
+    "requirements_numbering_complete": true,
+    "acceptance_numbering_complete": true,
+    "relative_links_checked": 310,
+    "missing_links": [],
+    "context": {
+      "implement": {
+        "bytes": 211022,
+        "files": 8,
+        "not_fully_loaded": []
+      },
+      "check": {
+        "bytes": 211022,
+        "files": 8,
+        "not_fully_loaded": []
+      }
+    },
+    "gofmt_files": 44,
+    "gofmt_result": "passed",
+    "diff_check": "passed",
+    "source_drift": []
+  },
+  "source_manifest": "verification-source-manifest-hold-2026-10-18.json",
+  "independent_review": "research/verification-hold-review-2026-10-18.md",
+  "independent_blockers": 0,
+  "review_fixes": [
+    "committed_direct_agent_promote_hold",
+    "safe_legacy_reconfigure_mirror_upgrade",
+    "route_fixture_uses_real_channel_binding"
+  ],
+  "deferred": [
+    "Mixed A/S waiting eligibility and channel FIFO: a held squad can still block a pre-coalesced direct-agent input",
+    "Full frozen multi-target grants, true Switch movement and remaining waiting/never-launched transitions",
+    "External agent/squad configuration-writer durable hold/stop convergence",
+    "M08 comment delegation and M11 unread/consumed continuation, capacity-one squad proof",
+    "Attachment/Git and general provider adapters, legacy enrollment launch and non-Linux containment",
+    "Full Web/Desktop workflow, remaining P1-P8 and all 97 acceptance criteria"
+  ],
+  "commits": [
+    {
+      "scope": "implementation_and_specs",
+      "commit": "a389ef8596791cb8639ce21b27f64868cf93d715",
+      "files": 69
+    }
+  ],
+  "environment_cleanup": {
+    "status": "complete",
+    "removed_task_owned_containers": [
+      {
+        "id": "0a3961f0deb698be3ad9818234719907266d2e61894b349d5cd13dc3209e2127",
+        "name": "multica-cwc-hold-ebee211030"
+      },
+      {
+        "id": "0b6a22de91d5b5555bd78f4b875a59eb5e26ec2dffa016c47da09c4b44fda504",
+        "name": "multica-cwc-hold-ebee211030-final-routes-8494d8"
+      },
+      {
+        "id": "85e6d1ec4c358e34a4583d06d1d912f3ad272f97dd399f58358675ee1b5ca047",
+        "name": "multica-cwc-hold-ebee211030-redis"
+      },
+      {
+        "id": "d9cbdc1a0054063cd993340b9477e0240010db6466377c9105445df76ffcc3d2",
+        "name": "multica-cwc-hold-ebee211030-control-routes-a89940"
+      },
+      {
+        "id": "f5de28e9eac6dc4af373c11315378256c7cdbcc2d86a89c1f914d271df4a0a89",
+        "name": "multica-cwc-hold-ebee211030-control-routes-arm64-3471ee"
+      }
+    ],
+    "removed_network": "multica-cwc-hold-ebee211030-linux",
+    "evidence_retained": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-cwc-hold-20261018-nvb9nij7",
+    "application_environment_touched": false
+  }
+}
