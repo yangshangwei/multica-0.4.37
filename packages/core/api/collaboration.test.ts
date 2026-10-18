@@ -24,11 +24,11 @@ afterEach(() => {
 
 // The complete malformed/lineage matrix belongs to execution-schema.test.ts.
 // Both private detail transports must actually use that canonical boundary.
-it.each(reads.slice(0, 2))("validates the v2 execution projection for $name", async ({ read }) => {
+it.each(reads.slice(0, 2))("validates the v3 execution projection for $name", async ({ read }) => {
   const valid = collaborationExecutionIssueFixture;
   vi.stubGlobal("fetch", vi.fn()
     .mockResolvedValueOnce(new Response(JSON.stringify(valid)))
-    .mockResolvedValueOnce(new Response(JSON.stringify({ ...valid, execution: { ...valid.execution, protocol_version: 3 } }))));
+    .mockResolvedValueOnce(new Response(JSON.stringify({ ...valid, execution: { ...valid.execution, protocol_version: 4 } }))));
   const client = new ApiClient("https://api.example.test");
   await expect(read(client)).resolves.toMatchObject({
     execution: valid.execution,

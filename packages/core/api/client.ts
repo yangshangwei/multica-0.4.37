@@ -7,6 +7,11 @@ import {
   type CollaborationInformationReturnInput, type CollaborationAcceptanceInput, type CollaborationEditInput, type CollaborationRecipientInput,
   type CollaborationStatusAction, type CollaborationLifecycleAction, type CollaborationStatusInput, type CollaborationLifecycleInput,
 } from "../collaboration/schema";
+import {
+  parseCollaborationComments, parseCollaborationComment, parseCollaborationMentionTargets,
+  parseCollaborationTriggerPreview, parseCollaborationCommentReceipt, parseCollaborationNotifications,
+  parseCollaborationNotificationReceipt, type CollaborationCommentInput, type CollaborationPreviewInput,
+} from "../collaboration/content-schema";
 import { withRequestDeadline, type ApiRequestOptions } from "./request-lifecycle";
 export type { ApiRequestOptions } from "./request-lifecycle";
 import type { ProjectUpdateDraft, ProjectUpdateWriteInput, ProjectRiskSignal } from "../types/project-p1";
@@ -935,6 +940,63 @@ export class ApiClient {
     if (params.cursor !== undefined) query.set("cursor", params.cursor);
     const raw = await this.fetchCollaboration(`/api/me/workbench?${query}`, { signal: options?.signal });
     return parseCollaborationWorkbench(raw);
+  }
+
+  async getCollaborationComments(id: string, params: { cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {
+    const query = new URLSearchParams({ limit: String(params.limit ?? 100) });
+    if (params.cursor) query.set("cursor", params.cursor);
+    const result = parseCollaborationComments(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/comments?${query}`, { signal: options?.signal }));
+    return result && sameResourceIdentity(result.issue_id, id) ? result : null;
+  }
+
+  async getCollaborationComment(id: string, commentId: string, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationComment(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/comments/${encodeURIComponent(commentId)}`, { signal: options?.signal }));
+    return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.id, commentId) ? result : null;
+  }
+
+  async getCollaborationMentionTargets(id: string, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationMentionTargets(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/mention-targets`, { signal: options?.signal }));
+    return result && sameResourceIdentity(result.issue_id, id) ? result : null;
+  }
+
+  async previewCollaborationComment(id: string, input: CollaborationPreviewInput, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationTriggerPreview(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/comments/trigger-preview`, {
+      method: "POST", signal: options?.signal, body: JSON.stringify(input),
+    }));
+    return result && sameResourceIdentity(result.issue_id, id) ? result : null;
+  }
+
+  async createCollaborationComment(id: string, requestId: string, input: CollaborationCommentInput, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationCommentReceipt(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/comments`, {
+      method: "POST", signal: options?.signal, headers: { "Idempotency-Key": requestId }, body: JSON.stringify(input),
+    }));
+    return result && sameResourceIdentity(result.issue_id, id) ? result : null;
+  }
+
+  async editCollaborationComment(id: string, commentId: string, requestId: string, input: { content: string; expected_comment_revision: string }, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationCommentReceipt(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/comments/${encodeURIComponent(commentId)}`, {
+      method: "PATCH", signal: options?.signal, headers: { "Idempotency-Key": requestId }, body: JSON.stringify(input),
+    }));
+    return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.comment_id, commentId) ? result : null;
+  }
+
+  async deleteCollaborationComment(id: string, commentId: string, requestId: string, revision: string, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationCommentReceipt(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/comments/${encodeURIComponent(commentId)}`, {
+      method: "DELETE", signal: options?.signal, headers: { "Idempotency-Key": requestId }, body: JSON.stringify({ expected_comment_revision: revision }),
+    }));
+    return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.comment_id, commentId) ? result : null;
+  }
+
+  async getCollaborationNotifications(params: { cursor?: string; includeArchived?: boolean } = {}, options?: { signal?: AbortSignal }) {
+    const query = new URLSearchParams({ limit: "50" });
+    if (params.cursor) query.set("cursor", params.cursor);
+    if (params.includeArchived === true) query.set("include_archived", "true");
+    return parseCollaborationNotifications(await this.fetchCollaboration(`/api/me/collaboration-notifications?${query}`, { signal: options?.signal }));
+  }
+
+  async updateCollaborationNotification(id: string, action: "read" | "archive", options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationNotificationReceipt(await this.fetchCollaboration(`/api/me/collaboration-notifications/${encodeURIComponent(id)}/${action}`, { method: "POST", signal: options?.signal }));
+    return result && sameResourceIdentity(result.id, id) ? result : null;
   }
 
   private async writeCollaborationOperation(

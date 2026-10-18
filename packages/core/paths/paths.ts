@@ -12,6 +12,8 @@
  *  - Zero runtime deps means this module is safe in Node (tests) and browsers
  */
 
+import { accountPath } from "./account";
+
 const encode = (id: string) => encodeURIComponent(id);
 
 /**
@@ -123,6 +125,7 @@ export const paths = {
   workspace: workspaceScoped,
 
   // Global (pre-workspace) routes
+  account: accountPath,
   login: () => "/login",
   newWorkspace: () => "/workspaces/new",
   invite: (id: string) => `/invite/${encode(id)}`,
@@ -141,5 +144,6 @@ export type WorkspacePaths = ReturnType<typeof workspaceScoped>;
 const GLOBAL_PREFIXES = ["/login", "/workspaces/", "/invite/", "/invitations", "/onboarding", "/auth/", "/logout", "/signup"];
 
 export function isGlobalPath(path: string): boolean {
+  if (/^\/account(?:[?#]|$)/.test(path)) return true;
   return GLOBAL_PREFIXES.some((p) => path === p || path.startsWith(p));
 }

@@ -6,3 +6,12 @@ export { CollaborationFieldOptionsSchema, parseCollaborationFieldOptions } from 
 export type { CollaborationFieldOptions, CollaborationLabel, CollaborationPropertyDefinition } from "./schema";
 export { CollaborationExecutionSchema } from "./execution-schema";
 export type { CollaborationExecution, CollaborationExecutionTarget, CollaborationExecutionCommand, CollaborationExecutionGroup, CollaborationExecutionRun } from "./execution-schema";
+export { collaborationKeys, collaborationScope, collaborationAccessEpoch, isCollaborationScopeCurrent, isCollaborationDenied, clearCollaborationAccess, protectCollaborationRead, retainCollaborationScope, CollaborationUnavailableError } from "./access";
+export type { CollaborationScope } from "./access";
+export { useCollaborationScope, useCollaborationIssue, useCollaborationStatusOptions, collaborationIssueOptions, collaborationWorkbenchOptions } from "./queries";
+export { readCollaborationDrafts, saveCollaborationDraft, removeCollaborationDraft, clearCollaborationDrafts, retainCollaborationDraftScope, subscribeCollaborationDrafts, collaborationDraftRevision, CollaborationDraftError } from "./draft";
+export type { CollaborationDraft, CollaborationDraftScope } from "./draft";
+export { CollaborationActionSchema, collaborationWriteContext, parseCollaborationActionDraft, sendCollaborationAction, recoverCollaborationAction } from "./action";
+export type { CollaborationAction } from "./action";
+export * from "./content-schema";
+export { collaborationCommentsOptions, collaborationMentionTargetsOptions, collaborationNotificationsOptions } from "./content-queries";

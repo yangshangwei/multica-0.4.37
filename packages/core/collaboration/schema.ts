@@ -11,12 +11,13 @@ const statusAction = z.enum(["change_status", "complete", "cancel", "reopen", "r
 export type CollaborationStatusAction = z.infer<typeof statusAction>;
 export type CollaborationLifecycleAction = Extract<CollaborationStatusAction, "complete" | "cancel" | "reopen">;
 
-const accountSummary = z.object({
+export const CollaborationAccountSummarySchema = z.object({
   user_id: z.string().uuid(),
   name: z.string().catch("Unavailable account"),
   avatar_url: z.string().catch(""),
   external: z.boolean(),
 });
+const accountSummary = CollaborationAccountSummarySchema;
 
 const sourceWorkspaceSummary = z.object({
   id: z.string().uuid(),

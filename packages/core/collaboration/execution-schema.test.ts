@@ -34,13 +34,13 @@ describe("collaboration execution protocol", () => {
   });
 
   it.each([null, {}, [], "PRIVATE_EXECUTION", { ...execution, protocol_version: undefined }, { ...execution, protocol_version: 1 },
-    { ...execution, protocol_version: 3 }, { ...execution, protocol_version: "2" }, { ...execution, availability: "available" },
+    { ...execution, protocol_version: 2 }, { ...execution, protocol_version: 4 }, { ...execution, protocol_version: "3" }, { ...execution, availability: "available" },
     { ...execution, unavailable_reason: "future_reason" }, { ...execution, control: { ...execution.control, scope: "target" } },
   ])("refuses unknown or malformed present protocols", (value) => {
     expect(parse(value)).toBeNull();
   });
 
-  it.each(["targets", "commands", "groups", "runs", "legacy_unresolved"])("never treats missing or malformed %s as empty", (field) => {
+  it.each(["targets", "commands", "groups", "runs"])("never treats missing or malformed %s as empty", (field) => {
     for (const value of [undefined, null, "PRIVATE_COLLECTION", 1]) {
       expect(parse({ ...execution, [field]: value })).toBeNull();
     }
@@ -173,13 +173,69 @@ describe("collaboration execution protocol", () => {
     expect(result?.capabilities).toMatchObject({ read: true, comment: true, control_ai: false, submit_command: false });
   });
 
-  it("retains unresolved legacy barriers without guessing a target", () => {
-    const unresolved = { command_ids: [unknownId], run_ids: [unknownId], active_run_id: unknownId };
-    expect(parse({ ...execution, legacy_unresolved: unresolved })?.execution?.legacy_unresolved).toEqual(unresolved);
-    expect(parse({ ...execution, legacy_unresolved: { ...unresolved, run_ids: [] } })).toBeNull();
-    expect(parse({ ...execution, legacy_unresolved: { ...unresolved, command_ids: [agentCommand.id] } })).toBeNull();
-    expect(parse({ ...execution, legacy_unresolved: { ...unresolved, run_ids: [memberRun.id], active_run_id: memberRun.id } })).toBeNull();
-    expect(parse({ ...execution, legacy_unresolved: { ...unresolved, run_ids: [unknownId, unknownId] } })).toBeNull();
+  it("reads current execution without retaining deleted legacy mappings", () => {
+    const result = parse(execution);
+    expect(result?.execution?.protocol_version).toBe(3);
+    expect(result?.execution).not.toHaveProperty("legacy_unresolved");
+    expect(parse({ ...execution, protocol_version: 2, legacy_unresolved: { command_ids: [], run_ids: [], active_run_id: null } })).toBeNull();
+  });
+
+  it.each(["commands", "groups", "runs"] as const)("requires channel and batch identities on %s", (collection) => {
+    for (const field of ["channel_id", "batch_id"]) {
+      for (const value of [undefined, null, 1, "PRIVATE_ID", unknownId]) {
+        expect(parse({ ...execution, [collection]: [{ ...execution[collection][0], [field]: value }, ...execution[collection].slice(1)] })).toBeNull();
+      }
+    }
+  });
+
+  it("retains two immutable inputs in one execution batch", () => {
+    const batched = { ...execution, commands: [agentCommand, { ...waitingCommand, state: "in_flight", batch_id: agentCommand.batch_id, author_user_id: unknownId }, squadCommand] };
+    const result = parse(batched);
+    expect(result?.execution?.commands).toHaveLength(3);
+    expect(result?.execution?.groups).toHaveLength(2);
+    expect(result?.execution?.commands[1]).toEqual(batched.commands[1]);
+    expect(parse({ ...batched, commands: [agentCommand, { ...batched.commands[1], channel_id: unknownId }, squadCommand] })).toBeNull();
+    expect(parse({ ...batched, commands: [agentCommand, { ...batched.commands[1], batch_id: unknownId }, squadCommand] })).toBeNull();
+    for (const state of ["waiting", "succeeded", "failed", "stopped"]) {
+      expect(parse({ ...batched, commands: [agentCommand, { ...batched.commands[1], state }, squadCommand] })).toBeNull();
+    }
+  });
+
+  it("retains cancelled input tombstones while the surviving batch settles", () => {
+    const cancelled = { ...waitingCommand, batch_id: agentCommand.batch_id, state: "cancelled" };
+    expect(parse({ ...execution, commands: [agentCommand, cancelled, squadCommand] })?.execution?.commands[1]).toEqual(cancelled);
+    const terminal = { ...execution,
+      targets: [{ ...agentTarget, active_group_id: null }, squadTarget],
+      commands: [{ ...agentCommand, state: "stopped" }, cancelled, squadCommand],
+      groups: [{ ...agentGroup, state: "stopped", settled_at: "2026-10-17T00:00:00Z" }, squadGroup],
+      runs: [{ ...agentRun, progress_state: "settled", proof_state: "exited_proven", settled_at: "2026-10-17T00:00:00Z" }, leaderRun, memberRun],
+    };
+    expect(parse(terminal)?.execution?.commands[1]).toEqual(cancelled);
+    expect(parse({ ...terminal, commands: [terminal.commands[0], { ...cancelled, state: "in_flight" }, squadCommand] })).toBeNull();
+  });
+
+  it("rejects a waiting batch shared across channels before any group starts", () => {
+    const waiting = { ...execution,
+      targets: execution.targets.map((item) => ({ ...item, group_generation: "0", active_group_id: null })),
+      commands: execution.commands.map((item) => ({ ...item, state: "waiting" })), groups: [], runs: [],
+    };
+    expect(parse(waiting)?.execution?.commands).toHaveLength(3);
+    expect(parse({ ...waiting, commands: [waiting.commands[0], { ...waiting.commands[1], batch_id: squadCommand.batch_id }, waiting.commands[2]] })).toBeNull();
+  });
+
+  it("accepts a shared active group only for targets in the same channel", () => {
+    const alias = { ...agentTarget, id: unknownId, kind: "squad", resource_id: unknownId };
+    expect(parse({ ...execution, targets: [...execution.targets, alias] })?.execution?.targets).toHaveLength(3);
+    expect(parse({ ...execution, targets: [...execution.targets, { ...alias, channel_id: squadTarget.channel_id }] })).toBeNull();
+  });
+
+  it("requires a channel for every target with input or execution", () => {
+    expect(parse({ ...execution, targets: [{ ...agentTarget, channel_id: null }, squadTarget] })).toBeNull();
+    const unused = { ...execution, targets: [{ ...agentTarget, channel_id: null, group_generation: "0", active_group_id: null, next_command_seq: "1" }], commands: [], groups: [], runs: [] };
+    expect(parse(unused)?.execution?.targets[0]?.channel_id).toBeNull();
+    expect(parse({ ...unused, targets: [{ ...unused.targets[0], channel_id: undefined }] })).toBeNull();
+    expect(parse({ ...unused, targets: [{ ...unused.targets[0], group_generation: "1" }] })).toBeNull();
+    expect(parse({ ...unused, targets: [{ ...unused.targets[0], next_command_seq: "2" }] })).toBeNull();
   });
 
   it("discards private machine fields and logs no values on malformed execution", () => {

@@ -57,6 +57,7 @@ describe("clearClientSessionData", () => {
     const storage = makeStorage({
       // A workspace-scoped draft, through the registry.
       "multica_comment_drafts:acme": '{"issue-1":"A private draft"}',
+      "multica_collaboration_draft:account-scope:request": '{"content":"A private collaboration input"}',
       // A non-draft workspace-scoped key.
       "multica:chat:activeSessionId:acme": "session-1",
       // Desktop tab layout, whose paths carry slugs and issue ids.

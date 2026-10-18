@@ -7,6 +7,7 @@ const disposition = z.enum(["stopped", "cancelled"]).nullable();
 
 const target = z.object({
   id: uuid,
+  channel_id: uuid.nullable(),
   kind: z.enum(["agent", "squad"]),
   resource_id: uuid,
   target_epoch: positiveVersion,
@@ -22,6 +23,8 @@ const target = z.object({
 const command = z.object({
   id: uuid,
   target_id: uuid,
+  channel_id: uuid,
+  batch_id: uuid,
   input_event_id: uuid,
   sequence: positiveVersion,
   author_user_id: uuid,
@@ -32,6 +35,8 @@ const group = z.object({
   id: uuid,
   target_id: uuid,
   command_id: uuid,
+  channel_id: uuid,
+  batch_id: uuid,
   generation: positiveVersion,
   target_epoch: positiveVersion,
   config_version: positiveVersion,
@@ -46,6 +51,8 @@ const run = z.object({
   command_id: uuid,
   target_id: uuid,
   group_id: uuid,
+  channel_id: uuid,
+  batch_id: uuid,
   parent_run_id: uuid.nullable(),
   step_key: z.string().min(1).max(128),
   step_kind: z.enum(["agent", "leader", "member", "continuation"]),
@@ -61,10 +68,10 @@ const run = z.object({
 });
 
 const execution = z.object({
-  protocol_version: z.literal(2),
+  protocol_version: z.literal(3),
   issue_id: uuid,
   session_id: uuid,
-  // This foundation does not implement public execution/control endpoints.
+  // Client execution capabilities remain unavailable until full acceptance.
   availability: z.literal("unavailable"),
   unavailable_reason: z.literal("shared_runtime_unavailable"),
   target_set_version: positiveVersion,
@@ -73,7 +80,6 @@ const execution = z.object({
   commands: z.array(command),
   groups: z.array(group),
   runs: z.array(run),
-  legacy_unresolved: z.object({ command_ids: z.array(uuid), run_ids: z.array(uuid), active_run_id: uuid.nullable() }),
 });
 
 function unique(values: string[]): boolean {
@@ -87,28 +93,37 @@ function atMostVersion(left: string, right: string): boolean {
 }
 
 function consistentExecution(value: z.infer<typeof execution>): boolean {
-  const { targets, commands, groups, runs, legacy_unresolved: legacy } = value;
+  const { targets, commands, groups, runs } = value;
   const targetsById = new Map(targets.map((item) => [item.id, item]));
   const commandsById = new Map(commands.map((item) => [item.id, item]));
   const groupsById = new Map(groups.map((item) => [item.id, item]));
-  const groupsByCommand = new Map(groups.map((item) => [item.command_id, item]));
+  const groupsByBatch = new Map(groups.map((item) => [item.batch_id, item]));
   const runsById = new Map(runs.map((item) => [item.id, item]));
   if (targetsById.size !== targets.length || commandsById.size !== commands.length || groupsById.size !== groups.length || runsById.size !== runs.length ||
-    groupsByCommand.size !== groups.length || !unique(targets.map((item) => `${item.kind}:${item.resource_id}`)) ||
+    groupsByBatch.size !== groups.length || !unique(targets.map((item) => `${item.kind}:${item.resource_id}`)) ||
     !unique(commands.map((item) => `${item.target_id}:${item.sequence}`)) || !unique(commands.map((item) => `${item.input_event_id}:${item.target_id}`)) ||
-    !unique(groups.map((item) => `${item.target_id}:${item.generation}`)) || !unique(runs.map((item) => `${item.group_id}:${item.step_key}`)) ||
-    !unique(legacy.command_ids) || !unique(legacy.run_ids) || legacy.command_ids.some((id) => commandsById.has(id)) || legacy.run_ids.some((id) => runsById.has(id)) ||
-    (legacy.active_run_id !== null && !legacy.run_ids.includes(legacy.active_run_id))) return false;
+    !unique(groups.map((item) => `${item.channel_id}:${item.generation}`)) || !unique(runs.map((item) => `${item.group_id}:${item.step_key}`)) ||
+    !unique(groups.filter((item) => item.settled_at === null).map((item) => item.channel_id))) return false;
 
+  const batchChannels = new Map<string, string>();
   for (const item of commands) {
     const owner = targetsById.get(item.target_id);
-    if (!owner || !atMostVersion(item.sequence, owner.next_command_seq) || item.sequence === owner.next_command_seq) return false;
-    if (item.state !== "waiting" && item.state !== "cancelled" && !groupsByCommand.has(item.id)) return false;
+    if (!owner || owner.channel_id !== item.channel_id || !atMostVersion(item.sequence, owner.next_command_seq) || item.sequence === owner.next_command_seq) return false;
+    const channel = batchChannels.get(item.batch_id);
+    if (channel !== undefined && channel !== item.channel_id) return false;
+    batchChannels.set(item.batch_id, item.channel_id);
+    const batchGroup = groupsByBatch.get(item.batch_id);
+    if (batchGroup) {
+      if (batchGroup.channel_id !== item.channel_id) return false;
+      // Cancelled waiting inputs retain their batch identity but do not run.
+      if (item.state !== "cancelled" && item.state !== (batchGroup.settled_at === null ? "in_flight" : batchGroup.state)) return false;
+    } else if (item.state !== "waiting" && item.state !== "cancelled") return false;
   }
   for (const item of groups) {
     const owner = targetsById.get(item.target_id);
     const input = commandsById.get(item.command_id);
-    if (!owner || !input || input.target_id !== owner.id || !atMostVersion(item.generation, owner.group_generation) ||
+    if (!owner || !input || input.target_id !== owner.id || item.channel_id !== owner.channel_id || input.channel_id !== item.channel_id || input.batch_id !== item.batch_id ||
+      !atMostVersion(item.generation, owner.group_generation) ||
       !atMostVersion(item.target_epoch, owner.target_epoch) || !atMostVersion(item.config_version, owner.config_version)) return false;
     const terminal = item.state !== "active" && item.state !== "waiting_children" && item.state !== "ending";
     if (terminal !== (item.settled_at !== null)) return false;
@@ -117,9 +132,10 @@ function consistentExecution(value: z.infer<typeof execution>): boolean {
     } else if (owner.active_group_id !== item.id || owner.group_generation !== item.generation || input.state !== "in_flight") return false;
   }
   for (const item of targets) {
+    if (item.channel_id === null && (item.group_generation !== "0" || item.next_command_seq !== "1" || item.active_group_id !== null)) return false;
     if (item.active_group_id === null) continue;
     const active = groupsById.get(item.active_group_id);
-    if (!active || active.target_id !== item.id || active.settled_at !== null || active.generation !== item.group_generation) return false;
+    if (!active || active.channel_id !== item.channel_id || active.settled_at !== null || active.generation !== item.group_generation) return false;
   }
 
   const roots = new Set<string>();
@@ -127,6 +143,7 @@ function consistentExecution(value: z.infer<typeof execution>): boolean {
     const owner = targetsById.get(item.target_id);
     const root = groupsById.get(item.group_id);
     if (!owner || !root || root.target_id !== item.target_id || root.command_id !== item.command_id ||
+      root.channel_id !== item.channel_id || root.batch_id !== item.batch_id ||
       root.target_epoch !== item.target_epoch || root.config_version !== item.config_version) return false;
     const terminal = item.settled_at !== null;
     if (terminal !== (item.progress_state === "settled") || (terminal && item.proof_state === "unknown") || (root.settled_at !== null && !terminal)) return false;
