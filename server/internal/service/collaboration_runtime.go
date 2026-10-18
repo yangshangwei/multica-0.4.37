@@ -662,6 +662,9 @@ func (s *CollaborationService) promoteCollaborationRuntimeBatch(ctx context.Cont
 	if _, err = q.MirrorCollaborationChannelControl(ctx, channel.ID); err != nil {
 		return collaborationRuntimePromotion{}, err
 	}
+	if err = recordCollaborationExecutionChange(ctx, q, t.access.Issue.ID, group.ID, run.ID, "runtime_prepared"); err != nil {
+		return collaborationRuntimePromotion{}, err
+	}
 	return collaborationRuntimePromotion{RunID: run.ID}, nil
 }
 

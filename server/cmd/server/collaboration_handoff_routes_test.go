@@ -36,7 +36,7 @@ func TestCollaborationHandoffRoutesReturnInformationAndSubmitAcceptance(t *testi
 	session := fx.Insert(t, "collaboration_session", testutil.Cols{"issue_id": issue})
 	for _, actor := range []string{testUserID, developer} {
 		fx.InsertNoID(t, "issue_participant", testutil.Cols{"issue_id": issue, "user_id": actor}, "issue_id=$1 AND user_id=$2", issue, actor)
-		fx.InsertNoID(t, "collaboration_account_fence", testutil.Cols{"user_id": actor}, "user_id=$1", actor)
+		ensureCollaborationRouteAccountFence(t, fx, actor)
 	}
 	seedCollaborationRouteCommand(t, fx, session, developer, "waiting work")
 	fx.Cleanup(t, `DELETE FROM collaboration_operation WHERE scope_kind='issue' AND scope_id=$1`, issue)

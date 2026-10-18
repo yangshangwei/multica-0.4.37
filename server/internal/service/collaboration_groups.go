@@ -286,7 +286,7 @@ func (t *collaborationQueueTx) settleProvenGroup(ctx context.Context, target db.
 	if err = t.mirrorChannel(ctx, channel); err != nil {
 		return false, err
 	}
-	return true, nil
+	return true, recordCollaborationExecutionChange(ctx, t.q, t.access.Issue.ID, group.ID, pgtype.UUID{}, "execution_settled")
 }
 
 // Only affirmative nonlaunch evidence makes a consumed input unread again.

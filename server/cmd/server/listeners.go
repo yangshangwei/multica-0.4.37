@@ -77,18 +77,43 @@ func projectOutbound(eventType string, payload any) any {
 // without touching any of the event listeners below. This is Phase 0 of the
 // horizontal-scaling plan tracked in MUL-1138.
 func registerListeners(bus *events.Bus, b realtime.Broadcaster) {
+	bus.Subscribe("collaboration:workbench_changed", func(e events.Event) {
+		if e.ActorID != "" {
+			b.BroadcastToScope(realtime.ScopeAccount, e.ActorID, []byte(`{"type":"collaboration:workbench_changed","payload":{}}`))
+		}
+	})
+	// A source membership loss does not revoke independently valid issue
+	// participation. Account clients must revalidate both bases even when they
+	// never joined the source workspace room.
+	bus.Subscribe(protocol.EventMemberRemoved, func(e events.Event) {
+		payload, ok := e.Payload.(map[string]any)
+		if !ok {
+			return
+		}
+		userID, _ := payload["user_id"].(string)
+		workspaceID, _ := payload["workspace_id"].(string)
+		if userID == "" || workspaceID == "" {
+			return
+		}
+		frame, err := json.Marshal(map[string]any{"type": "collaboration:source_access_changed", "payload": map[string]string{"workspace_id": workspaceID}})
+		if err == nil {
+			b.BroadcastToScope(realtime.ScopeAccount, userID, frame)
+		}
+	})
+
 	// Personal events should NOT be broadcast to the whole workspace.
 	personalEvents := map[string]bool{
-		protocol.EventInboxNew:           true,
-		protocol.EventInboxRead:          true,
-		protocol.EventInboxArchived:      true,
-		protocol.EventInboxUnarchived:    true,
-		protocol.EventInboxBatchRead:     true,
-		protocol.EventInboxBatchArchived: true,
-		protocol.EventInvitationCreated:  true,
-		protocol.EventInvitationRevoked:  true,
-		protocol.EventChatSessionCreated: true,
-		protocol.EventChatSessionUpdated: true,
+		"collaboration:workbench_changed": true,
+		protocol.EventInboxNew:            true,
+		protocol.EventInboxRead:           true,
+		protocol.EventInboxArchived:       true,
+		protocol.EventInboxUnarchived:     true,
+		protocol.EventInboxBatchRead:      true,
+		protocol.EventInboxBatchArchived:  true,
+		protocol.EventInvitationCreated:   true,
+		protocol.EventInvitationRevoked:   true,
+		protocol.EventChatSessionCreated:  true,
+		protocol.EventChatSessionUpdated:  true,
 	}
 
 	// Helper: marshal event and send to a specific user.

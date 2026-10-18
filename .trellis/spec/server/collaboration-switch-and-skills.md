@@ -15,6 +15,10 @@ claim complete squad or Web/Desktop acceptance.
 - `POST .../switch-proposals/{proposalId}/consents/{agentId}/revoke`
 - `POST .../switch-proposals/{proposalId}/commit`
 - `GET /api/collaboration/issues/{id}/switch/operations/{requestId}`
+- `GET /api/collaboration/issues/{id}/resources`
+- `GET .../resources/options?execution_workspace_id=UUID`
+- `GET .../resources/identity?target_id=UUID&agent_id=UUID[&proposal_id=UUID]`
+- `GET .../resources/operations/{requestId}` and `GET .../participants`
 
 `CollaborationService` implements `ProposeTargetSwitch`,
 `ConsentTargetSwitchResource`, `RevokeTargetSwitchConsent`, `CommitTargetSwitch`
@@ -56,6 +60,24 @@ original success/refusal; a departed account receives exactly `redacted:true`,
 Machine credentials, disabled accounts and stale password identities are still
 denied. Redacted recovery never restores object access or returns target, proposal,
 grant or channel identities. Later consent never changes an old receipt.
+
+The resource form reads a minimal current target roster. Grant IDs and epochs
+are owner-only; installation/binding identity has its own current-owner endpoint
+and must match a resource in that issue's target or proposal. Candidate discovery
+requires the current organizer and an explicitly selected workspace where that
+human already has resource visibility. It does not add owners as participants
+or reveal an arbitrary workspace's directory. A missing supported enrollment
+produces an unavailable identity, not a guessed tuple.
+
+Proposal display may include minimal agent, runtime and owner labels from its
+existing roster. These additive labels never expose machine configuration or
+grant installation authority. Register/consent/revoke receipts include their
+original request ID and action; uncertain form writes recover those identities.
+The participant-management reader includes unrevoked disabled accounts with a
+minimal `account_active` flag and the same-snapshot collaboration revision.
+Keep it distinct from the effective mention list. Only a current creator may
+remove another participant; removing the handler still atomically hands back to
+the creator. Being visible in the management list grants no execution authority.
 
 Skill name, description, body, supporting-file path/content, origin/release
 configuration, binding enablement and plugin version changes affect execution.
@@ -110,6 +132,11 @@ the previous epochs cannot prove what content was consented to.
   no-op identity, restart/outbox and writer lock rollback.
 - Switch migration and concurrent-index tests; empty database upgrade plus
   retained history and unconditional downgrade refusal in disposable schemas.
+- Resource service/handler/schema tests cover explicit workspace visibility,
+  owner-only tuples, stale configuration with still-revocable own grants,
+  exact redacted recovery and disabled participant management. Shared forms
+  verify role-gated controls and original-key recovery; real browser tests
+  exercise consent/withdrawal/Switch and disabled-handler removal through APIs.
 
 ## 7. Wrong vs Correct
 

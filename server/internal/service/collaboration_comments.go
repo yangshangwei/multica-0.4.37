@@ -26,6 +26,8 @@ type CollaborationCommentInput struct {
 	Content             string
 	ParentID            pgtype.UUID
 	SuppressedTargetIDs []pgtype.UUID
+	DraftID             *pgtype.UUID  `json:",omitempty"`
+	AttachmentIDs       []pgtype.UUID `json:",omitempty"`
 }
 
 type CollaborationCommentTargetVersion struct {
@@ -46,6 +48,8 @@ type CollaborationEditCommentParams struct {
 	RequestID               string
 	Content                 string
 	ExpectedCommentRevision int64
+	DraftID                 *pgtype.UUID   `json:",omitempty"`
+	AttachmentIDs           *[]pgtype.UUID `json:",omitempty"`
 }
 
 type CollaborationCommentTargetResult struct {
@@ -77,6 +81,7 @@ type CollaborationCommentReceipt struct {
 	EventID         pgtype.UUID                        `json:"event_id"`
 	EventSeq        int64                              `json:"event_seq,string,omitempty"`
 	Targets         []CollaborationCommentTargetResult `json:"targets"`
+	AttachmentIDs   []pgtype.UUID                      `json:"attachment_ids,omitempty"`
 }
 
 type collaborationContentTx struct {

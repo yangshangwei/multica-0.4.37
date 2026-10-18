@@ -4,6 +4,29 @@ Creation and new client execution remain gated. The v5 `execution` projection
 retains channel order, original group-input history and every input reader; an unknown or missing
 protocol must never fall back to ordinary execution.
 
+The human `POST /api/collaboration/issues` is registered behind the persisted
+creation gate and checks explicit source authority. Unknown creation outcomes
+recover by the original key under `/creations/{requestId}`. Private attachments
+use dedicated drafts and current-authority byte endpoints; storage keys, public
+uploads and ordinary signed downloads are not substitutes. A draft bundle is
+consumed once, while an original request can be replayed. Removing a comment
+reference preserves delivered files and immutable input history. These human
+file APIs do not add file preparation to the contained CLI command surface below.
+
+The own-result GET `/creations/{requestId}/result?source_workspace_id=...` returns
+only actor/source/request identity, outcome and code. A validated HTTP 200
+`rejected` result seals the old key and allows a new explicit submission, including
+the same input after conditions improve. Unknown/missing results keep the old
+key; reading or reloading never submits automatically. A result grants no issue
+or source access; successful detail recovery retains its normal authorization.
+
+Account/issue WebSockets carry scoped invalidation facts and recheck authority
+before sending. Reconnection refreshes authorized views; it never resumes AI.
+Resource forms use only the current issue roster, explicitly accessible candidate
+spaces and each owner's own installation identity. A disabled participant may
+remain visible for creator-managed removal without becoming an effective mention
+or execution participant.
+
 On `unsupported_collaboration_action`, do not retry ordinary issue/comment writes,
 delete, batch or rerun elsewhere. Mixed edits refuse atomically. Machine credentials
 cannot borrow human/source membership for shared content or control. Ordinary

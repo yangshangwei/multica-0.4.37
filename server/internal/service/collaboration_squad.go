@@ -330,9 +330,16 @@ func (r *collaborationRuntimeState) createDerivedRun(ctx context.Context, resour
 	if err != nil {
 		return empty, err
 	}
-	return r.q.CreateCollaborationDerivedRun(ctx, db.CreateCollaborationDerivedRunParams{SessionID: r.session.ID, TargetID: r.group.TargetID, GroupID: r.group.ID, CommandID: r.group.CommandID, ParentRunID: parent, StepKey: key, StepKind: kind,
+	run, err := r.q.CreateCollaborationDerivedRun(ctx, db.CreateCollaborationDerivedRunParams{SessionID: r.session.ID, TargetID: r.group.TargetID, GroupID: r.group.ID, CommandID: r.group.CommandID, ParentRunID: parent, StepKey: key, StepKind: kind,
 		AgentID: grant.AgentID, TargetEpoch: r.group.TargetEpoch, ConfigVersion: r.group.ConfigVersion, GrantID: grant.ID, GrantEpoch: grant.Epoch, ResourceEpoch: runtime.CollaborationConfigEpoch, ExecutionWorkspaceID: grant.ExecutionWorkspaceID,
 		RuntimeID: grant.RuntimeID, InstallationID: grant.InstallationID, BindingID: grant.BindingID, BindingEpoch: grant.BindingEpoch, ChannelID: r.group.ChannelID, BatchID: r.group.BatchID, DeploymentID: r.run.DeploymentID, ResourceOwnerUserID: grant.OwnerUserID})
+	if err != nil {
+		return empty, err
+	}
+	if err = recordCollaborationExecutionChange(ctx, r.q, r.access.Issue.ID, r.group.ID, run.ID, "runtime_prepared"); err != nil {
+		return empty, err
+	}
+	return run, nil
 }
 
 func (r *collaborationRuntimeState) queueContinuation(ctx context.Context, parent pgtype.UUID) (pgtype.UUID, error) {
@@ -400,7 +407,7 @@ func (s *CollaborationService) RuntimeSquadActivity(ctx context.Context, runID p
 		if _, err = r.q.RecordCollaborationRuntimeOutcome(ctx, db.RecordCollaborationRuntimeOutcomeParams{RunID: runID, Outcome: business}); err != nil {
 			return false, err
 		}
-		return true, nil
+		return true, recordCollaborationExecutionChange(ctx, r.q, r.access.Issue.ID, r.group.ID, runID, "runtime_outcome_recorded")
 	})
 	return err
 }

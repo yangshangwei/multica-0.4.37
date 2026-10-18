@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"slices"
 	"strings"
 
 	"github.com/google/uuid"
@@ -23,10 +24,10 @@ func (s *CollaborationService) DeleteComment(ctx context.Context, p Collaboratio
 }
 
 func (s *CollaborationService) changeCollaborationComment(ctx context.Context, p CollaborationEditCommentParams, deleting bool) (CollaborationCommentReceipt, error) {
-	if !p.CommentID.Valid || p.ExpectedCommentRevision < 1 || (!deleting && (strings.TrimSpace(util.SanitizeTextForPostgres(p.Content)) == "" || len(p.Content) > 64<<10)) {
+	if !p.CommentID.Valid || p.ExpectedCommentRevision < 1 || (!deleting && len(p.Content) > 64<<10) {
 		return CollaborationCommentReceipt{}, collaborationError(http.StatusBadRequest, "invalid_comment_request")
 	}
-	if deleting && p.Content != "" {
+	if deleting && (p.Content != "" || p.DraftID != nil || p.AttachmentIDs != nil) {
 		return CollaborationCommentReceipt{}, collaborationError(http.StatusBadRequest, "invalid_comment_request")
 	}
 	kind := "edit_comment"
@@ -54,7 +55,23 @@ func (s *CollaborationService) changeCollaborationComment(ctx context.Context, p
 			return receipt, nil
 		}
 		content := util.SanitizeTextForPostgres(p.Content)
-		if !deleting && content == before.Content {
+		beforeIDs, err := collaborationCommentAttachmentIDs(ctx, t.q, p.IssueID, p.CommentID)
+		if err != nil {
+			return CollaborationCommentReceipt{}, err
+		}
+		afterIDs := slices.Clone(beforeIDs)
+		if deleting {
+			afterIDs = []pgtype.UUID{}
+		} else if p.AttachmentIDs != nil {
+			afterIDs = slices.Clone(*p.AttachmentIDs)
+			if _, err = bindCollaborationAttachments(ctx, t.q, p.IssueID, t.access.Issue.WorkspaceID, t.actor, p.DraftID, afterIDs, false); err != nil {
+				return CollaborationCommentReceipt{}, err
+			}
+		}
+		if !deleting && strings.TrimSpace(content) == "" && len(afterIDs) == 0 {
+			return CollaborationCommentReceipt{}, collaborationError(http.StatusBadRequest, "invalid_comment_request")
+		}
+		if !deleting && content == before.Content && sameCollaborationAttachmentIDs(beforeIDs, afterIDs) {
 			receipt.Status, receipt.Code = http.StatusOK, "unchanged"
 			return receipt, nil
 		}
@@ -74,7 +91,14 @@ func (s *CollaborationService) changeCollaborationComment(ctx context.Context, p
 		if deleting {
 			receipt.Code = "comment_deleted"
 		}
-		if err = t.recordCommentEvent(ctx, &receipt, &before.Content, after.Content); err != nil {
+		if err = t.q.RemoveCollaborationCommentAttachmentReferences(ctx, p.CommentID); err != nil {
+			return CollaborationCommentReceipt{}, err
+		}
+		if err = recordCollaborationAttachmentReferences(ctx, t.q, "comment", p.CommentID, after.Revision, afterIDs); err != nil {
+			return CollaborationCommentReceipt{}, err
+		}
+		receipt.AttachmentIDs = afterIDs
+		if err = t.recordCommentEvent(ctx, &receipt, &before.Content, after.Content, beforeIDs); err != nil {
 			return CollaborationCommentReceipt{}, err
 		}
 		if !deleting {
@@ -84,7 +108,7 @@ func (s *CollaborationService) changeCollaborationComment(ctx context.Context, p
 	})
 }
 
-func (t *collaborationContentTx) recordCommentEvent(ctx context.Context, receipt *CollaborationCommentReceipt, before *string, after string) error {
+func (t *collaborationContentTx) recordCommentEvent(ctx context.Context, receipt *CollaborationCommentReceipt, before *string, after string, beforeIDs []pgtype.UUID) error {
 	var err error
 	if !receipt.EventID.Valid {
 		receipt.EventID = util.MustParseUUID(uuid.NewString())
@@ -94,7 +118,8 @@ func (t *collaborationContentTx) recordCommentEvent(ctx context.Context, receipt
 		return err
 	}
 	payload, err := json.Marshal(collaborationCommentHistoryPayload{
-		CommentID: receipt.CommentID, CommentRevision: receipt.CommentRevision, Before: before, After: after, RequestID: t.operation.RequestID})
+		CommentID: receipt.CommentID, CommentRevision: receipt.CommentRevision, Before: before, After: after, RequestID: t.operation.RequestID,
+		BeforeAttachmentIDs: beforeIDs, AfterAttachmentIDs: receipt.AttachmentIDs})
 	if err != nil {
 		return err
 	}
@@ -106,6 +131,14 @@ func (t *collaborationContentTx) recordCommentEvent(ctx context.Context, receipt
 // GetCommentOperation recovers the original content-free result after an
 // uncertain response. Unlike content reads, the actor may have since departed.
 func (s *CollaborationService) GetCommentOperation(ctx context.Context, issueID pgtype.UUID, requestID string) (CollaborationCommentReceipt, error) {
+	return s.getCollaborationContentOperation(ctx, issueID, requestID, false)
+}
+
+func (s *CollaborationService) GetAttachmentDeliveryOperation(ctx context.Context, issueID pgtype.UUID, requestID string) (CollaborationCommentReceipt, error) {
+	return s.getCollaborationContentOperation(ctx, issueID, requestID, true)
+}
+
+func (s *CollaborationService) getCollaborationContentOperation(ctx context.Context, issueID pgtype.UUID, requestID string, attachment bool) (CollaborationCommentReceipt, error) {
 	if requestID == "" || len(requestID) > 128 {
 		return CollaborationCommentReceipt{}, collaborationError(http.StatusBadRequest, "invalid_request_id")
 	}
@@ -121,7 +154,7 @@ func (s *CollaborationService) GetCommentOperation(ctx context.Context, issueID 
 	if err != nil {
 		return CollaborationCommentReceipt{}, err
 	}
-	if operation.Kind != "create_comment" && operation.Kind != "edit_comment" && operation.Kind != "delete_comment" {
+	if attachment && operation.Kind != "deliver_attachments" || !attachment && operation.Kind != "create_comment" && operation.Kind != "edit_comment" && operation.Kind != "delete_comment" {
 		return CollaborationCommentReceipt{}, collaborationError(http.StatusNotFound, "not_found")
 	}
 	var receipt CollaborationCommentReceipt
@@ -136,6 +169,7 @@ func (s *CollaborationService) GetCommentOperation(ctx context.Context, issueID 
 		// Only completion identity survives loss of access; former recipients
 		// cannot use recovery to enumerate targets or current commands.
 		receipt.Targets = make([]CollaborationCommentTargetResult, 0)
+		receipt.AttachmentIDs = nil
 	}
 	return receipt, nil
 }

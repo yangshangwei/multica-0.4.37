@@ -20,6 +20,7 @@ type collaborationContentCursor struct {
 
 func prepareCollaborationContentRequest(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Cache-Control", "no-store")
+	w.Header().Set("Referrer-Policy", "no-referrer")
 	r.Header.Del("X-Workspace-ID")
 	r.Header.Del("X-Workspace-Slug")
 }
@@ -140,13 +141,15 @@ func (h *Handler) DeleteCollaborationComment(w http.ResponseWriter, r *http.Requ
 func (h *Handler) changeCollaborationComment(w http.ResponseWriter, r *http.Request, deleting bool) {
 	prepareCollaborationContentRequest(w, r)
 	var body struct {
-		Content                 *string `json:"content"`
-		ExpectedCommentRevision string  `json:"expected_comment_revision"`
+		Content                 *string   `json:"content"`
+		ExpectedCommentRevision string    `json:"expected_comment_revision"`
+		DraftID                 *string   `json:"draft_id"`
+		AttachmentIDs           *[]string `json:"attachment_ids"`
 	}
 	if !decodeCollaborationWorkflowBody(w, r, &body) {
 		return
 	}
-	if (deleting && body.Content != nil) || (!deleting && body.Content == nil) {
+	if (deleting && (body.Content != nil || body.DraftID != nil || body.AttachmentIDs != nil)) || (!deleting && body.Content == nil) {
 		writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_comment_request", "error": "Invalid comment request"})
 		return
 	}
@@ -166,6 +169,16 @@ func (h *Handler) changeCollaborationComment(w http.ResponseWriter, r *http.Requ
 	p := service.CollaborationEditCommentParams{IssueID: issue, CommentID: comment, RequestID: r.Header.Get("Idempotency-Key"), ExpectedCommentRevision: version}
 	if body.Content != nil {
 		p.Content = *body.Content
+	}
+	if body.AttachmentIDs != nil {
+		draft, ids, ok := collaborationAttachmentSelection(w, body.DraftID, *body.AttachmentIDs)
+		if !ok {
+			return
+		}
+		p.DraftID, p.AttachmentIDs = draft, &ids
+	} else if body.DraftID != nil {
+		writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_attachment_selection", "error": "invalid_attachment_selection"})
+		return
 	}
 	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
 	var receipt service.CollaborationCommentReceipt

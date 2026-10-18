@@ -38,7 +38,8 @@ type PATResolver interface {
 // workspaceID) is allowed to subscribe to a given scope. Implementations
 // typically perform a DB lookup on the underlying resource (task / chat
 // session) and verify it belongs to workspaceID. Implementations should
-// cache positive results to avoid hot-path DB load.
+// cache positive results to avoid hot-path DB load where permitted by that
+// resource contract. Account/issue scopes must revalidate current authority.
 type ScopeAuthorizer interface {
 	AuthorizeScope(ctx context.Context, userID, workspaceID, scopeType, scopeID string) (bool, error)
 }
@@ -217,19 +218,27 @@ type scopeKey struct {
 	ID   string
 }
 
+// Retain the delivery scope until the final write. Authorization at enqueue
+// time cannot protect a frame that waited while its viewer lost access.
+type outboundMessage struct {
+	data  []byte
+	scope scopeKey
+}
+
 func sk(t, id string) scopeKey { return scopeKey{Type: t, ID: id} }
 
 // Client represents a single WebSocket connection with identity and the set
 // of scopes it is currently subscribed to.
 type Client struct {
-	authorize   func() error
-	ctx         context.Context
-	cancel      context.CancelFunc
-	hub         *Hub
-	conn        *websocket.Conn
-	send        chan []byte
-	userID      string
-	workspaceID string
+	authorize    func() error
+	ctx          context.Context
+	cancel       context.CancelFunc
+	hub          *Hub
+	conn         *websocket.Conn
+	send         chan outboundMessage
+	userID       string
+	workspaceID  string
+	accountScope bool
 
 	// subscriptions is guarded by hub.mu. Tracks the scopes this client is
 	// currently in. Used to clean up rooms on disconnect.
@@ -379,10 +388,14 @@ func (h *Hub) Run() {
 			h.mu.Unlock()
 			M.ConnectsTotal.Add(1)
 			M.ActiveConnections.Add(1)
-			// Auto-subscribe to the workspace and user scopes.
+			// Workspace is optional. Account authorization was checked at connect
+			// and will be checked again before each protected outgoing frame.
 			h.subscribe(client, ScopeWorkspace, client.workspaceID)
 			if client.userID != "" {
 				h.subscribe(client, ScopeUser, client.userID)
+				if client.accountScope {
+					h.subscribe(client, ScopeAccount, client.userID)
+				}
 			}
 			slog.Info("ws client connected", "workspace_id", client.workspaceID, "user_id", client.userID, "total_clients", total)
 
@@ -561,7 +574,7 @@ func (h *Hub) BroadcastToScopeDedup(scopeType, scopeID string, message []byte, e
 			continue
 		}
 		select {
-		case client.send <- message:
+		case client.send <- outboundMessage{data: message, scope: key}:
 			sent++
 		default:
 			slow = append(slow, client)
@@ -597,7 +610,7 @@ func (h *Hub) fanoutAllDedup(message []byte, excludeWorkspace, eventID string) {
 			continue
 		}
 		select {
-		case client.send <- message:
+		case client.send <- outboundMessage{data: message}:
 			sent++
 		default:
 			slow = append(slow, client)
@@ -649,7 +662,7 @@ func (h *Hub) fanoutUser(userID string, message []byte, excludeWorkspace, eventI
 			continue
 		}
 		select {
-		case client.send <- message:
+		case client.send <- outboundMessage{data: message, scope: key}:
 			sent++
 		default:
 			slow = append(slow, client)
@@ -824,6 +837,11 @@ func writeWSAuthErrorAndClose(conn *websocket.Conn, payload []byte, attrs ...any
 // HandleWebSocket upgrades an HTTP connection to WebSocket with cookie or
 // first-message auth.
 func HandleWebSocket(hub *Hub, mc MembershipChecker, pr PATResolver, resolveSlug SlugResolver, w http.ResponseWriter, r *http.Request) {
+	accountConnection := r.URL.Query().Get("scope") == ScopeAccount
+	if scope := r.URL.Query().Get("scope"); scope != "" && !accountConnection || accountConnection && (r.URL.Query().Get("workspace_id") != "" || r.URL.Query().Get("workspace_slug") != "") {
+		http.Error(w, `{"error":"invalid connection scope"}`, http.StatusBadRequest)
+		return
+	}
 	workspaceID := r.URL.Query().Get("workspace_id")
 	if workspaceID == "" {
 		if slug := r.URL.Query().Get("workspace_slug"); slug != "" && resolveSlug != nil {
@@ -835,13 +853,17 @@ func HandleWebSocket(hub *Hub, mc MembershipChecker, pr PATResolver, resolveSlug
 			workspaceID = resolved
 		}
 	}
-	if workspaceID == "" {
+	if workspaceID == "" && !accountConnection {
 		http.Error(w, `{"error":"workspace_id or workspace_slug required"}`, http.StatusBadRequest)
 		return
 	}
 
 	var userID string
 	var authToken string
+	var connectionCtx context.Context
+	var accountScope bool
+	// Same deny-only legacy agent hints as the HTTP authentication adapter.
+	agentActor := r.Header.Get("X-Agent-ID") != "" || r.Header.Get("X-Task-ID") != ""
 	if cookie, err := r.Cookie(auth.AuthCookieName); err == nil && cookie.Value != "" {
 		authToken = cookie.Value
 		uid, errMsg := hub.authenticateToken(authToken, pr, r.Context())
@@ -856,11 +878,20 @@ func HandleWebSocket(hub *Hub, mc MembershipChecker, pr PATResolver, resolveSlug
 			http.Error(w, errMsg, status)
 			return
 		}
-		if !mc.IsMember(r.Context(), uid, workspaceID) {
+		if !accountConnection && !mc.IsMember(r.Context(), uid, workspaceID) {
 			http.Error(w, `{"error":"not a member of this workspace"}`, http.StatusForbidden)
 			return
 		}
 		userID = uid
+		connectionCtx, accountScope, err = hub.accountConnectionContext(r.Context(), authToken, userID, agentActor)
+		if accountConnection && (err != nil || !accountScope) {
+			status := http.StatusForbidden
+			if err != nil {
+				status = http.StatusServiceUnavailable
+			}
+			http.Error(w, `{"error":"account connection unavailable"}`, status)
+			return
+		}
 	}
 
 	conn, err := upgrader.Upgrade(w, r, nil)
@@ -889,7 +920,7 @@ func HandleWebSocket(hub *Hub, mc MembershipChecker, pr PATResolver, resolveSlug
 			writeWSAuthErrorAndClose(conn, []byte(errMsg), "workspace_id", workspaceID)
 			return
 		}
-		if !mc.IsMember(r.Context(), uid, workspaceID) {
+		if !accountConnection && !mc.IsMember(r.Context(), uid, workspaceID) {
 			writeWSAuthErrorAndClose(
 				conn,
 				[]byte(`{"error":"not a member of this workspace"}`),
@@ -899,6 +930,11 @@ func HandleWebSocket(hub *Hub, mc MembershipChecker, pr PATResolver, resolveSlug
 			return
 		}
 		userID = uid
+		connectionCtx, accountScope, err = hub.accountConnectionContext(r.Context(), authToken, userID, agentActor)
+		if accountConnection && (err != nil || !accountScope) {
+			writeWSAuthErrorAndClose(conn, []byte(`{"error":"account connection unavailable"}`), "user_id", userID)
+			return
+		}
 
 		if !writeWSAuthFrame(
 			conn,
@@ -928,23 +964,34 @@ func HandleWebSocket(hub *Hub, mc MembershipChecker, pr PATResolver, resolveSlug
 	)
 
 	client := &Client{
-		hub:         hub,
-		conn:        conn,
-		send:        make(chan []byte, 256),
-		userID:      userID,
-		workspaceID: workspaceID,
+		hub:          hub,
+		conn:         conn,
+		send:         make(chan outboundMessage, 256),
+		userID:       userID,
+		workspaceID:  workspaceID,
+		accountScope: accountScope,
 	}
-	client.ctx, client.cancel = context.WithCancel(context.WithoutCancel(r.Context()))
-	if auth.PasswordMode() {
-		client.authorize = func() error {
-			ctx, cancel := context.WithTimeout(client.ctx, 5*time.Second)
-			defer cancel()
-			identity, err := auth.CheckPasswordToken(ctx, hub.passwordQueries, authToken, false)
-			if err == nil && identity.Session.UserID != userID {
+	if connectionCtx == nil {
+		connectionCtx = r.Context()
+	}
+	client.ctx, client.cancel = context.WithCancel(context.WithoutCancel(connectionCtx))
+	client.authorize = func() error {
+		ctx, cancel := context.WithTimeout(client.ctx, 5*time.Second)
+		defer cancel()
+		uid, errMsg := hub.authenticateToken(authToken, pr, ctx)
+		if errMsg != "" || uid != userID {
+			return auth.ErrPasswordSession
+		}
+		if accountConnection {
+			allowed, err := client.authorizeScope(ScopeAccount, userID)
+			if err != nil {
+				return err
+			}
+			if !allowed {
 				return auth.ErrPasswordSession
 			}
-			return err
 		}
+		return nil
 	}
 	hub.register <- client
 
@@ -1033,12 +1080,26 @@ func (c *Client) handleFrame(raw []byte) {
 		c.sendJSON(map[string]string{"type": "pong"})
 	default:
 		// Unknown frame — ignore silently for forward compat.
-		slog.Debug("ws inbound: unknown frame", "type", f.Type, "user_id", c.userID)
+		// The untrusted type can itself contain private content or credentials.
+		slog.Debug("ws inbound: unknown frame", "user_id", c.userID)
 	}
 }
 
 func (c *Client) handleSubscribe(scope, id string) {
 	switch scope {
+	case ScopeAccount, ScopeIssue:
+		id = strings.ToLower(id)
+		ok, err := c.authorizeScope(scope, id)
+		if err != nil || !ok {
+			reason := "forbidden"
+			if err != nil {
+				reason = "lookup_failed"
+			}
+			M.SubscribeDeniedTotal(scope).Add(1)
+			c.sendJSON(map[string]any{"type": "subscribe_error", "payload": map[string]string{"scope": scope, "id": id, "error": reason}})
+			return
+		}
+		c.hub.subscribe(c, scope, id)
 	case ScopeWorkspace, ScopeUser:
 		// Implicit scopes — only allowed if it matches the connection identity.
 		if (scope == ScopeWorkspace && id != c.workspaceID) || (scope == ScopeUser && id != c.userID) {
@@ -1112,7 +1173,7 @@ func (c *Client) sendJSON(v any) {
 		return
 	}
 	select {
-	case c.send <- data:
+	case c.send <- outboundMessage{data: data}:
 	default:
 	}
 }
@@ -1135,7 +1196,10 @@ func (c *Client) writePump() {
 			if !c.authorized() {
 				return
 			}
-			if err := c.conn.WriteMessage(websocket.TextMessage, message); err != nil {
+			if !c.outboundScopeCurrent(message.scope) {
+				continue
+			}
+			if err := c.conn.WriteMessage(websocket.TextMessage, message.data); err != nil {
 				slog.Warn("websocket write error", "error", err, "user_id", c.userID, "workspace_id", c.workspaceID)
 				return
 			}

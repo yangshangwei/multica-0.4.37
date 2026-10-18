@@ -424,7 +424,10 @@ func main() {
 	// operations. Channel leases are initialized separately below so production
 	// can point them at a dedicated no-eviction Redis instance.
 	relayCtx, relayCancel := context.WithCancel(context.Background())
-	var broadcaster realtime.Broadcaster = hub
+	var broadcaster interface {
+		realtime.Broadcaster
+		realtime.RelayPublisher
+	} = hub
 	var storeRedis *redis.Client
 	var channelLeaseRedis *redis.Client
 	var relayWriteRedis *redis.Client
@@ -573,7 +576,8 @@ func main() {
 	defer analyticsClient.Close()
 
 	queries := db.New(pool)
-	hub.SetAuthorizer(newScopeAuthorizer(queries))
+	collaborationService := service.NewCollaborationService(queries, pool, nil)
+	hub.SetAuthorizer(&collaborationScopeAuthorizer{workspace: newScopeAuthorizer(queries), service: collaborationService})
 	// Order matters: subscriber listeners must register BEFORE notification listeners.
 	// The notification listener queries the subscriber table to determine recipients,
 	// so subscribers must be written first within the same synchronous event dispatch.
@@ -666,6 +670,7 @@ func main() {
 	// execution is disabled. Reuse the router-owned database/transaction owner.
 	go h.CollaborationAccountReconciler.Run(sweepCtx)
 	go h.CollaborationConfigReconciler.Run(sweepCtx)
+	go (&service.CollaborationRealtime{Queries: queries, TxStarter: pool, Publisher: broadcaster}).Run(sweepCtx)
 	var taskObservation, cancellationObservation adminWorkerObservation
 	go service.NewAdminOperationService(queries, pool, taskSvc).Run(sweepCtx, cancellationObservation.record)
 	registerAutopilotListeners(bus, autopilotSvc)

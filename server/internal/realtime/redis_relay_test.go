@@ -212,14 +212,14 @@ func TestDualWriteBroadcasterFansOutLocallyBeforePublishing(t *testing.T) {
 	hub.BroadcastToScopeDedup(ScopeWorkspace, "workspace-1", injectEventID(message, publisher.eventID), publisher.eventID)
 	select {
 	case duplicate := <-client.send:
-		t.Fatalf("expected redis loopback to dedup, got duplicate %s", duplicate)
+		t.Fatalf("expected redis loopback to dedup, got duplicate %s", duplicate.data)
 	case <-time.After(20 * time.Millisecond):
 	}
 }
 
 func attachRealtimeTestClient(hub *Hub, scopeType, scopeID string) *Client {
 	client := &Client{
-		send:          make(chan []byte, 2),
+		send:          make(chan outboundMessage, 2),
 		workspaceID:   "workspace-1",
 		userID:        "user-1",
 		subscriptions: map[scopeKey]bool{},
@@ -257,7 +257,8 @@ func (p *localFirstPublisher) PublishWithID(scopeType, scopeID, exclude string, 
 	p.eventID = id
 
 	select {
-	case p.localFrame = <-p.client.send:
+	case message := <-p.client.send:
+		p.localFrame = message.data
 	default:
 		p.t.Fatal("expected local fanout to happen before relay publish")
 	}

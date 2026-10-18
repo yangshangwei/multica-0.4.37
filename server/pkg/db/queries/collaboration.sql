@@ -1,5 +1,5 @@
 -- name: GetCollaborationAccess :one
-SELECT sqlc.embed(i), c.revision AS collaboration_revision, c.lifecycle_epoch,
+SELECT sqlc.embed(i), c.revision AS collaboration_revision, c.lifecycle_epoch, c.authority_epoch, s.event_seq,
        s.id AS session_id, s.queue_state, s.control_version,
        participant.epoch AS participant_epoch, account_fence.epoch AS account_epoch,
        (u.disabled_at IS NULL)::boolean AS account_active, u.email AS viewer_email,
@@ -165,10 +165,10 @@ WHERE id = sqlc.arg(channel_id)::uuid AND session_id = sqlc.arg(session_id)::uui
 RETURNING (next_command_seq - 1)::bigint AS command_seq;
 
 -- name: CreateCollaborationCommand :one
-INSERT INTO collaboration_command (session_id, target_id, input_event_id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content,channel_id,batch_id)
+INSERT INTO collaboration_command (session_id, target_id, input_event_id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content,channel_id,batch_id,attachments)
 VALUES (sqlc.arg(session_id)::uuid, sqlc.arg(target_id)::uuid, sqlc.arg(input_event_id)::uuid, sqlc.arg(seq)::bigint, sqlc.arg(author_user_id)::uuid,
         sqlc.arg(participant_epoch)::bigint, sqlc.arg(author_auth_epoch)::bigint,
-        sqlc.arg(lifecycle_epoch)::bigint, sqlc.arg(content)::text,sqlc.arg(channel_id)::uuid,sqlc.arg(batch_id)::uuid)
+        sqlc.arg(lifecycle_epoch)::bigint, sqlc.arg(content)::text,sqlc.arg(channel_id)::uuid,sqlc.arg(batch_id)::uuid,COALESCE(sqlc.narg(attachments)::jsonb,'[]'::jsonb))
 RETURNING *;
 
 -- name: LockCollaborationCommand :one

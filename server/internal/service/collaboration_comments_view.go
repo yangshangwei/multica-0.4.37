@@ -44,6 +44,7 @@ type CollaborationCommentView struct {
 	CanEdit         bool                           `json:"can_edit"`
 	CanResolve      bool                           `json:"can_resolve"`
 	Reactions       []CollaborationCommentReaction `json:"reactions"`
+	AttachmentIDs   []pgtype.UUID                  `json:"attachment_ids"`
 }
 
 type CollaborationCommentsPage struct {
@@ -129,6 +130,14 @@ func collaborationCommentViews(ctx context.Context, q *db.Queries, access Collab
 	if err != nil {
 		return nil, err
 	}
+	attachmentRows, err := q.ListCollaborationCommentAttachmentReferences(ctx, db.ListCollaborationCommentAttachmentReferencesParams{IssueID: access.Issue.ID, CommentIds: ids})
+	if err != nil {
+		return nil, err
+	}
+	attachments := make(map[pgtype.UUID][]pgtype.UUID)
+	for _, row := range attachmentRows {
+		attachments[row.CommentID] = append(attachments[row.CommentID], row.AttachmentID)
+	}
 	reactions, err := q.ListReactionsByCommentIDs(ctx, ids)
 	if err != nil {
 		return nil, err
@@ -154,7 +163,7 @@ func collaborationCommentViews(ctx context.Context, q *db.Queries, access Collab
 			CanEdit: access.Capabilities.Comment && row.AuthorType == "member" && row.AuthorID == viewer && row.Type == "comment" && !row.DeletedAt.Valid,
 			// Thread mutation routes are outside this vertical. Do not advertise
 			// a resolution action just because the underlying role permits it.
-			CanResolve: false, Reactions: make([]CollaborationCommentReaction, 0)}
+			CanResolve: false, Reactions: make([]CollaborationCommentReaction, 0), AttachmentIDs: make([]pgtype.UUID, 0)}
 		if row.AuthorType == "member" {
 			item.Author = accounts[row.AuthorID]
 		}
@@ -163,6 +172,8 @@ func collaborationCommentViews(ctx context.Context, q *db.Queries, access Collab
 		}
 		if row.DeletedAt.Valid {
 			item.Content = ""
+		} else {
+			item.AttachmentIDs = append(item.AttachmentIDs, attachments[row.ID]...)
 		}
 		for _, reaction := range byComment[row.ID] {
 			item.Reactions = append(item.Reactions, *reaction)
@@ -174,22 +185,26 @@ func collaborationCommentViews(ctx context.Context, q *db.Queries, access Collab
 }
 
 type collaborationCommentHistoryPayload struct {
-	CommentID       pgtype.UUID `json:"comment_id"`
-	CommentRevision int64       `json:"comment_revision,string"`
-	Before          *string     `json:"before"`
-	After           string      `json:"after"`
-	RequestID       string      `json:"request_id"`
+	CommentID           pgtype.UUID   `json:"comment_id"`
+	CommentRevision     int64         `json:"comment_revision,string"`
+	Before              *string       `json:"before"`
+	After               string        `json:"after"`
+	RequestID           string        `json:"request_id"`
+	BeforeAttachmentIDs []pgtype.UUID `json:"before_attachment_ids"`
+	AfterAttachmentIDs  []pgtype.UUID `json:"after_attachment_ids"`
 }
 
 type CollaborationCommentHistoryEntry struct {
-	EventID         pgtype.UUID                  `json:"event_id"`
-	EventSeq        int64                        `json:"event_seq,string"`
-	Kind            string                       `json:"kind"`
-	Actor           *CollaborationContentAccount `json:"actor"`
-	CreatedAt       time.Time                    `json:"created_at"`
-	CommentRevision int64                        `json:"comment_revision,string"`
-	Before          *string                      `json:"before"`
-	After           string                       `json:"after"`
+	EventID             pgtype.UUID                  `json:"event_id"`
+	EventSeq            int64                        `json:"event_seq,string"`
+	Kind                string                       `json:"kind"`
+	Actor               *CollaborationContentAccount `json:"actor"`
+	CreatedAt           time.Time                    `json:"created_at"`
+	CommentRevision     int64                        `json:"comment_revision,string"`
+	Before              *string                      `json:"before"`
+	After               string                       `json:"after"`
+	BeforeAttachmentIDs []pgtype.UUID                `json:"before_attachment_ids"`
+	AfterAttachmentIDs  []pgtype.UUID                `json:"after_attachment_ids"`
 }
 
 func (s *CollaborationService) CommentHistory(ctx context.Context, issueID, commentID pgtype.UUID) ([]CollaborationCommentHistoryEntry, error) {
@@ -219,7 +234,8 @@ func (s *CollaborationService) CommentHistory(ctx context.Context, issueID, comm
 				return errors.New("invalid collaboration comment history")
 			}
 			out = append(out, CollaborationCommentHistoryEntry{EventID: row.ID, EventSeq: row.EventSeq, Kind: row.Kind,
-				Actor: accounts[row.ActorUserID], CreatedAt: row.CreatedAt.Time, CommentRevision: payload.CommentRevision, Before: payload.Before, After: payload.After})
+				Actor: accounts[row.ActorUserID], CreatedAt: row.CreatedAt.Time, CommentRevision: payload.CommentRevision, Before: payload.Before, After: payload.After,
+				BeforeAttachmentIDs: payload.BeforeAttachmentIDs, AfterAttachmentIDs: payload.AfterAttachmentIDs})
 		}
 		return nil
 	})

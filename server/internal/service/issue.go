@@ -446,8 +446,11 @@ func (s *IssueService) CreateInTx(ctx context.Context, tx pgx.Tx, p IssueCreateP
 			ID:          p.ParentIssueID,
 			WorkspaceID: p.WorkspaceID,
 		})
-		if err != nil || !parent.ID.Valid {
+		if errors.Is(err, pgx.ErrNoRows) || err == nil && !parent.ID.Valid {
 			return IssueCreateResult{}, ErrParentIssueNotFound
+		}
+		if err != nil {
+			return IssueCreateResult{}, fmt.Errorf("read parent issue: %w", err)
 		}
 		if !admission.Formal(parent.AdmissionStatus) {
 			return IssueCreateResult{}, &admission.Blocked{IssueID: parent.ID}

@@ -15,6 +15,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/collaboration"
+	"github.com/multica-ai/multica/server/internal/storage"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
@@ -34,6 +35,7 @@ type CollaborationService struct {
 	Queries   *db.Queries
 	TxStarter TxStarter
 	Issues    *IssueService
+	Storage   storage.Storage
 }
 
 func NewCollaborationService(q *db.Queries, tx TxStarter, issues *IssueService) *CollaborationService {
@@ -46,6 +48,8 @@ type CollaborationIssueAccess struct {
 	Issue            db.Issue    `json:"-"`
 	Revision         int64       `json:"-"`
 	LifecycleEpoch   int64       `json:"-"`
+	AuthorityEpoch   int64       `json:"-"`
+	EventSequence    int64       `json:"-"`
 	SessionID        pgtype.UUID `json:"-"`
 	QueueState       string      `json:"-"`
 	ControlVersion   int64       `json:"-"`
@@ -100,6 +104,7 @@ func (s *CollaborationService) ResolveIssueAccess(ctx context.Context, q *db.Que
 		return result, collaborationError(http.StatusNotFound, "not_found")
 	}
 	return CollaborationIssueAccess{Issue: row.Issue, Revision: row.CollaborationRevision, LifecycleEpoch: row.LifecycleEpoch,
+		AuthorityEpoch: row.AuthorityEpoch, EventSequence: row.EventSeq,
 		SessionID: row.SessionID, QueueState: row.QueueState, ControlVersion: row.ControlVersion,
 		ParticipantEpoch: row.ParticipantEpoch, AccountEpoch: row.AccountEpoch, StatusCategory: row.StatusCategory,
 		InformationRequestID: row.InformationRequestID, Capabilities: caps}, nil
@@ -113,10 +118,16 @@ type CollaborationCreateParams struct {
 	Description       string
 	ProjectID         pgtype.UUID
 	ParentIssueID     pgtype.UUID
+	DraftID           *pgtype.UUID  `json:",omitempty"`
+	AttachmentIDs     []pgtype.UUID `json:",omitempty"`
 }
 
 func (s *CollaborationService) Create(ctx context.Context, p CollaborationCreateParams) (CollaborationIssueAccess, error) {
-	if principal, ok := collaboration.PrincipalFromContext(ctx); !ok || !principal.Human() {
+	principal, ok := collaboration.PrincipalFromContext(ctx)
+	if !ok || !principal.Human() {
+		return CollaborationIssueAccess{}, collaborationError(http.StatusForbidden, "forbidden")
+	}
+	if _, err := util.ParseUUID(principal.UserID); err != nil {
 		return CollaborationIssueAccess{}, collaborationError(http.StatusForbidden, "forbidden")
 	}
 	policy := ResolveIssueCountPolicy(ctx, s.Issues.Entitlements, p.SourceWorkspaceID)
@@ -126,7 +137,8 @@ func (s *CollaborationService) Create(ctx context.Context, p CollaborationCreate
 	}
 	defer tx.Rollback(ctx)
 	result, err := s.CreateInTx(ctx, tx, p, policy)
-	if err != nil {
+	var rejection *collaborationCreationRejection
+	if err != nil && !errors.As(err, &rejection) {
 		return CollaborationIssueAccess{}, err
 	}
 	if err := tx.Commit(ctx); err != nil {
@@ -134,11 +146,16 @@ func (s *CollaborationService) Create(ctx context.Context, p CollaborationCreate
 		// with a new request identity or create an ordinary issue as fallback.
 		return CollaborationIssueAccess{}, fmt.Errorf("commit collaboration creation: %w", err)
 	}
+	if rejection != nil {
+		return CollaborationIssueAccess{}, rejection.Unwrap()
+	}
 	return result, nil
 }
 
 // CreateInTx borrows the transaction and a policy resolved before locks. It
 // never commits, publishes ordinary issue events, or enqueues ordinary AI work.
+// A business refusal stages only its operation and returns an error. The owner
+// may commit that refusal or roll back; it is not durable until the owner commits.
 func (s *CollaborationService) CreateInTx(ctx context.Context, tx pgx.Tx, p CollaborationCreateParams, policy IssueCountPolicy) (CollaborationIssueAccess, error) {
 	var empty CollaborationIssueAccess
 	principal, ok := collaboration.PrincipalFromContext(ctx)
@@ -146,7 +163,10 @@ func (s *CollaborationService) CreateInTx(ctx context.Context, tx pgx.Tx, p Coll
 		return empty, collaborationError(http.StatusForbidden, "forbidden")
 	}
 	actorID, err := util.ParseUUID(principal.UserID)
-	if err != nil || !p.SourceWorkspaceID.Valid || !p.HandlerID.Valid || strings.TrimSpace(p.Title) == "" || len(p.RequestID) == 0 || len(p.RequestID) > 128 {
+	if err != nil {
+		return empty, collaborationError(http.StatusForbidden, "forbidden")
+	}
+	if !p.SourceWorkspaceID.Valid || !p.HandlerID.Valid || strings.TrimSpace(p.Title) == "" || len(p.RequestID) == 0 || len(p.RequestID) > 128 {
 		return empty, collaborationError(http.StatusBadRequest, "invalid_collaboration_creation")
 	}
 	encoded, err := json.Marshal(p)
@@ -157,15 +177,6 @@ func (s *CollaborationService) CreateInTx(ctx context.Context, tx pgx.Tx, p Coll
 	payloadHash := hex.EncodeToString(digest[:])
 	q := s.Queries.WithTx(tx)
 	opKey := db.GetCollaborationOperationParams{ScopeKind: "create", ScopeID: p.SourceWorkspaceID, ActorUserID: actorID, RequestID: p.RequestID}
-	// A completed request does not revalidate its old handler or require source
-	// membership/creation to remain enabled. It only revalidates current access.
-	previous, err := q.GetCollaborationOperation(ctx, opKey)
-	if err == nil {
-		return s.replayCollaborationCreation(ctx, q, previous, payloadHash)
-	}
-	if !errors.Is(err, pgx.ErrNoRows) {
-		return empty, err
-	}
 	ids := []pgtype.UUID{actorID}
 	if actorID != p.HandlerID {
 		ids = append(ids, p.HandlerID)
@@ -174,24 +185,18 @@ func (s *CollaborationService) CreateInTx(ctx context.Context, tx pgx.Tx, p Coll
 	if err != nil {
 		return empty, err
 	}
-	if len(users) != len(ids) {
-		return empty, collaborationError(http.StatusForbidden, "forbidden")
-	}
+	var actor db.User
 	for _, user := range users {
-		if user.DisabledAt.Valid || auth.IsTemporarilyDisabledUser(util.UUIDToString(user.ID), user.Email.String) {
-			return empty, collaborationError(http.StatusForbidden, "account_unavailable")
+		if user.ID == actorID {
+			actor = user
 		}
 	}
-	if auth.PasswordMode() {
-		ps, ok := auth.PasswordSessionFromContext(ctx)
-		if !ok || ps.UserID != principal.UserID {
-			return empty, collaborationError(http.StatusForbidden, "forbidden")
-		}
-		if _, err := auth.CheckPasswordVersion(ctx, q, principal.UserID, ps.Version); err != nil {
-			return empty, err
-		}
+	if err = authorizeWorkflowAccount(ctx, q, actorID, actor); err != nil {
+		return empty, err
 	}
-	previous, err = q.GetCollaborationOperation(ctx, opKey)
+	// The actor lock serializes requests for their original key. A completed
+	// request never re-admits its old recipient, source membership or gate.
+	previous, err := q.GetCollaborationOperation(ctx, opKey)
 	if err == nil {
 		return s.replayCollaborationCreation(ctx, q, previous, payloadHash)
 	}
@@ -201,9 +206,6 @@ func (s *CollaborationService) CreateInTx(ctx context.Context, tx pgx.Tx, p Coll
 	gate, err := q.LockCollaborationGateShared(ctx)
 	if err != nil {
 		return empty, err
-	}
-	if !gate.CreationEnabled {
-		return empty, collaborationError(http.StatusServiceUnavailable, "collaboration_unavailable")
 	}
 	if _, err := q.LockWorkspaceForChatSessionCreate(ctx, p.SourceWorkspaceID); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
@@ -217,17 +219,56 @@ func (s *CollaborationService) CreateInTx(ctx context.Context, tx pgx.Tx, p Coll
 		}
 		return empty, err
 	}
+	op, err := q.CreateCollaborationOperation(ctx, db.CreateCollaborationOperationParams{ScopeKind: "create", ScopeID: p.SourceWorkspaceID, ActorUserID: actorID, RequestID: p.RequestID, Kind: "create", PayloadHash: payloadHash})
+	if err != nil {
+		return empty, err
+	}
+	// Authorization precedes operation reservation. A closed gate and an
+	// unavailable recipient are settled business refusals, not future intents.
+	if !gate.CreationEnabled {
+		return empty, rejectCollaborationCreation(ctx, q, op, "collaboration_unavailable")
+	}
+	if len(users) != len(ids) {
+		return empty, rejectCollaborationCreation(ctx, q, op, "account_unavailable")
+	}
 	eligible, err := collaborationRecipientEligible(ctx, q, p.HandlerID, p.SourceWorkspaceID)
 	if err != nil {
 		return empty, err
 	}
 	if !eligible {
-		return empty, collaborationError(http.StatusForbidden, "account_unavailable")
+		return empty, rejectCollaborationCreation(ctx, q, op, "account_unavailable")
 	}
-	op, err := q.CreateCollaborationOperation(ctx, db.CreateCollaborationOperationParams{ScopeKind: "create", ScopeID: p.SourceWorkspaceID, ActorUserID: actorID, RequestID: p.RequestID, Kind: "create", PayloadHash: payloadHash})
-	if err != nil {
+	// Roll back all attempted creation effects before recording a typed refusal.
+	// Keep the actor/source/gate fences and original operation outside the savepoint.
+	if _, err = tx.Exec(ctx, "SAVEPOINT collaboration_creation"); err != nil {
 		return empty, err
 	}
+	result, err := s.createCollaborationIssueInTx(ctx, tx, p, policy, actorID, users)
+	if err != nil {
+		code := collaborationCreationBusinessRejection(err)
+		if code == "" {
+			return empty, err
+		}
+		if _, err = tx.Exec(ctx, "ROLLBACK TO SAVEPOINT collaboration_creation"); err != nil {
+			return empty, err
+		}
+		if _, err = tx.Exec(ctx, "RELEASE SAVEPOINT collaboration_creation"); err != nil {
+			return empty, err
+		}
+		return empty, rejectCollaborationCreation(ctx, q, op, code)
+	}
+	if _, err = tx.Exec(ctx, "RELEASE SAVEPOINT collaboration_creation"); err != nil {
+		return empty, err
+	}
+	if _, err = q.CompleteCollaborationCreation(ctx, db.CompleteCollaborationCreationParams{ID: op.ID, ResolvedIssueID: result.Issue.ID}); err != nil {
+		return empty, err
+	}
+	return result, nil
+}
+
+func (s *CollaborationService) createCollaborationIssueInTx(ctx context.Context, tx pgx.Tx, p CollaborationCreateParams, policy IssueCountPolicy, actorID pgtype.UUID, users []db.User) (CollaborationIssueAccess, error) {
+	var empty CollaborationIssueAccess
+	q := s.Queries.WithTx(tx)
 	for _, user := range users {
 		if _, err := q.EnsureCollaborationAccountFence(ctx, user.ID); err != nil {
 			return empty, err
@@ -252,6 +293,9 @@ func (s *CollaborationService) CreateInTx(ctx context.Context, tx pgx.Tx, p Coll
 	if _, err = q.CreateCollaborationSession(ctx, created.Issue.ID); err != nil {
 		return empty, err
 	}
+	if _, err = bindCollaborationAttachments(ctx, q, created.Issue.ID, p.SourceWorkspaceID, actorID, p.DraftID, p.AttachmentIDs, true); err != nil {
+		return empty, err
+	}
 	seq, err := q.AdvanceCollaborationEventSequence(ctx, created.Issue.ID)
 	if err != nil {
 		return empty, err
@@ -268,15 +312,19 @@ func (s *CollaborationService) CreateInTx(ctx context.Context, tx pgx.Tx, p Coll
 			return empty, err
 		}
 	}
-	if _, err = q.CompleteCollaborationCreation(ctx, db.CompleteCollaborationCreationParams{ID: op.ID, ResolvedIssueID: created.Issue.ID}); err != nil {
-		return empty, err
-	}
 	return s.ResolveIssueAccess(ctx, q, created.Issue.ID)
 }
 
 func (s *CollaborationService) replayCollaborationCreation(ctx context.Context, q *db.Queries, op db.CollaborationOperation, payloadHash string) (CollaborationIssueAccess, error) {
-	if !op.ResolvedIssueID.Valid || !op.CompletedAt.Valid {
-		return CollaborationIssueAccess{}, collaborationError(http.StatusConflict, "operation_incomplete")
+	result, err := decodeCollaborationCreationResult(op)
+	if err != nil {
+		return CollaborationIssueAccess{}, err
+	}
+	if result.Outcome == "rejected" {
+		if op.PayloadHash != payloadHash {
+			return CollaborationIssueAccess{}, collaborationError(http.StatusConflict, "idempotency_conflict")
+		}
+		return CollaborationIssueAccess{}, newCollaborationCreationRejection(result.Code)
 	}
 	access, err := s.ResolveIssueAccess(ctx, q, op.ResolvedIssueID)
 	if err != nil {
@@ -306,8 +354,12 @@ func (s *CollaborationService) GetCreation(ctx context.Context, workspaceID pgty
 	if err != nil {
 		return CollaborationIssueAccess{}, err
 	}
-	if !op.ResolvedIssueID.Valid || !op.CompletedAt.Valid {
-		return CollaborationIssueAccess{}, collaborationError(http.StatusConflict, "operation_incomplete")
+	result, err := decodeCollaborationCreationResult(op)
+	if err != nil {
+		return CollaborationIssueAccess{}, err
+	}
+	if result.Outcome != "created" {
+		return CollaborationIssueAccess{}, collaborationError(http.StatusNotFound, "not_found")
 	}
 	return s.ResolveIssueAccess(ctx, nil, op.ResolvedIssueID)
 }

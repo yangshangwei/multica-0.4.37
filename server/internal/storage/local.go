@@ -269,7 +269,7 @@ func (s *LocalStorage) ServeFile(w http.ResponseWriter, r *http.Request, filenam
 	// half-written .<key>.tmp) doesn't become a stable read API. Comes before
 	// any disk work so a path-traversal attempt at a sibling can't trigger an
 	// out-of-tree read.
-	if isInternalLocalPath(filename) {
+	if isInternalLocalPath(filename) || IsCollaborationPrivateKey(filename) {
 		http.NotFound(w, r)
 		return
 	}

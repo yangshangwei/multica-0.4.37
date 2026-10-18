@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"net/http"
+	"slices"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -31,6 +32,9 @@ func (s *CollaborationService) CreateComment(ctx context.Context, p Collaboratio
 	}
 	return s.mutateCollaborationContent(ctx, p.IssueID, p.RequestID, "create_comment", p, func(t *collaborationContentTx) (CollaborationCommentReceipt, error) {
 		if err := validateCollaborationCommentParent(ctx, t.q, t.access, p.ParentID); err != nil {
+			return CollaborationCommentReceipt{}, err
+		}
+		if _, err := bindCollaborationAttachments(ctx, t.q, p.IssueID, t.access.Issue.WorkspaceID, t.actor, p.DraftID, p.AttachmentIDs, false); err != nil {
 			return CollaborationCommentReceipt{}, err
 		}
 		var catalogue []CollaborationMentionTarget
@@ -78,6 +82,10 @@ func (s *CollaborationService) CreateComment(ctx context.Context, p Collaboratio
 		}
 		receipt := t.result("comment_created", http.StatusCreated)
 		receipt.CommentID, receipt.CommentRevision, receipt.EventID = comment.ID, comment.Revision, util.MustParseUUID(uuid.NewString())
+		receipt.AttachmentIDs = slices.Clone(p.AttachmentIDs)
+		if err = recordCollaborationAttachmentReferences(ctx, t.q, "comment", comment.ID, comment.Revision, p.AttachmentIDs); err != nil {
+			return CollaborationCommentReceipt{}, err
+		}
 		for i := range targets {
 			item := &targets[i]
 			if item.State != "waiting" {
@@ -86,7 +94,7 @@ func (s *CollaborationService) CreateComment(ctx context.Context, p Collaboratio
 			version := versions[item.TargetID]
 			queued, err := s.AppendCollaborationInputInTx(ctx, t.tx, CollaborationSubmitCommandParams{
 				CollaborationQueueRequest: p.CollaborationQueueRequest, TargetID: item.TargetID, InputEventID: receipt.EventID,
-				ExpectedTargetEpoch: version.ExpectedTargetEpoch, ExpectedConfigVersion: version.ExpectedConfigVersion, Content: comment.Content})
+				ExpectedTargetEpoch: version.ExpectedTargetEpoch, ExpectedConfigVersion: version.ExpectedConfigVersion, Content: comment.Content, AttachmentIDs: p.AttachmentIDs})
 			if err != nil {
 				return CollaborationCommentReceipt{}, err
 			}
@@ -105,7 +113,7 @@ func (s *CollaborationService) CreateComment(ctx context.Context, p Collaboratio
 			}
 		}
 		receipt.Targets = targets
-		if err = t.recordCommentEvent(ctx, &receipt, nil, comment.Content); err != nil {
+		if err = t.recordCommentEvent(ctx, &receipt, nil, comment.Content, nil); err != nil {
 			return CollaborationCommentReceipt{}, err
 		}
 		participants, err := collaborationMentionParticipants(ctx, t.q, t.access)

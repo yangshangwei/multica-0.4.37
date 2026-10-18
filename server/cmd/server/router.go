@@ -1391,6 +1391,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	// The authenticated /api/attachments/{id}/download route below is
 	// unchanged — this one is purely additive.
 	r.Get("/api/attachments/{id}/signed-download", h.DownloadAttachmentWithCapability)
+	r.Get("/api/collaboration/issues/{id}/attachments/{attachmentId}/capability", h.ReadCollaborationAttachmentCapability)
 
 	// These purpose-bound capabilities outlive ordinary account/daemon
 	// revocation only for their own run. Never wrap them in ordinary Auth.
@@ -1623,11 +1624,28 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Get("/api/me/collaboration-notifications", h.ListCollaborationNotifications)
 		r.Post("/api/me/collaboration-notifications/{notificationId}/read", h.ReadCollaborationNotification)
 		r.Post("/api/me/collaboration-notifications/{notificationId}/archive", h.ArchiveCollaborationNotification)
-		// Public collaboration creation remains unregistered until all workflow
-		// and runtime guards are ready. These routes use object/account authority.
+		// Creation uses the persisted default-disabled creation gate. Existing
+		// content and recovery continue to use current object/account authority.
+		r.Get("/api/collaboration/creation-options", h.GetCollaborationCreationOptions)
+		r.Post("/api/collaboration/issues", h.CreateCollaborationIssue)
+		r.Post("/api/collaboration/attachments/drafts", h.UploadCollaborationAttachmentDraft)
+		r.Get("/api/collaboration/attachments/drafts/{draftId}", h.ListCollaborationDraftAttachments)
+		r.Get("/api/collaboration/attachments/drafts/{draftId}/operations/{requestId}", h.GetCollaborationAttachmentUpload)
+		r.Get("/api/collaboration/attachments/drafts/{draftId}/{attachmentId}", h.GetCollaborationAttachment)
+		r.Get("/api/collaboration/attachments/drafts/{draftId}/{attachmentId}/content", h.GetCollaborationAttachmentContent)
+		r.Get("/api/collaboration/attachments/drafts/{draftId}/{attachmentId}/download", h.DownloadCollaborationAttachment)
+		r.Delete("/api/collaboration/attachments/drafts/{draftId}/{attachmentId}", h.DiscardCollaborationAttachmentDraft)
+		r.Get("/api/collaboration/issues/{id}/attachments", h.ListCollaborationAttachments)
+		r.Post("/api/collaboration/issues/{id}/attachments/deliver", h.DeliverCollaborationAttachments)
+		r.Get("/api/collaboration/issues/{id}/attachments/operations/{requestId}", h.GetCollaborationAttachmentDeliveryOperation)
+		r.Get("/api/collaboration/issues/{id}/attachments/{attachmentId}", h.GetCollaborationAttachment)
+		r.Get("/api/collaboration/issues/{id}/attachments/{attachmentId}/content", h.GetCollaborationAttachmentContent)
+		r.Get("/api/collaboration/issues/{id}/attachments/{attachmentId}/download", h.DownloadCollaborationAttachment)
+		r.Post("/api/collaboration/issues/{id}/attachments/{attachmentId}/capabilities", h.CreateCollaborationAttachmentCapability)
 		r.Get("/api/collaboration/issues/{id}", h.GetCollaborationIssue)
 		r.Get("/api/collaboration/issues/{id}/activity", h.ListCollaborationActivity)
 		r.Get("/api/collaboration/creations/{requestId}", h.GetCollaborationCreation)
+		r.Get("/api/collaboration/creations/{requestId}/result", h.GetCollaborationCreationResult)
 		r.Post("/api/collaboration/recipients/resolve", h.ResolveCollaborationRecipient)
 		r.Post("/api/collaboration/issues/{id}/participants", h.InviteCollaborationParticipant)
 		r.Post("/api/collaboration/issues/{id}/handoffs", h.TransferCollaborationIssue)
@@ -1639,6 +1657,11 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Get("/api/collaboration/issues/{id}/status-options", h.GetCollaborationStatusOptions)
 		r.Get("/api/collaboration/issues/{id}/field-options", h.GetCollaborationFieldOptions)
 		r.Post("/api/collaboration/issues/{id}/targets", h.RegisterCollaborationTarget)
+		r.Get("/api/collaboration/issues/{id}/resources", h.GetCollaborationResources)
+		r.Get("/api/collaboration/issues/{id}/participants", h.GetCollaborationParticipants)
+		r.Get("/api/collaboration/issues/{id}/resources/options", h.GetCollaborationResourceOptions)
+		r.Get("/api/collaboration/issues/{id}/resources/identity", h.GetCollaborationResourceIdentity)
+		r.Get("/api/collaboration/issues/{id}/resources/operations/{requestId}", h.GetCollaborationResourceOperation)
 		r.Post("/api/collaboration/issues/{id}/targets/{targetId}/consents", h.ConsentCollaborationTarget)
 		r.Post("/api/collaboration/issues/{id}/targets/{targetId}/switch-proposals", h.ProposeCollaborationTargetSwitch)
 		r.Get("/api/collaboration/issues/{id}/targets/{targetId}/switch-proposals", h.ListCollaborationTargetSwitchProposals)

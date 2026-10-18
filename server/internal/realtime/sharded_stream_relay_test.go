@@ -93,7 +93,7 @@ func TestShardedStreamRelayDeliverMessageUsesEnvelopeScope(t *testing.T) {
 	select {
 	case raw := <-client.send:
 		var frame map[string]any
-		if err := json.Unmarshal(raw, &frame); err != nil {
+		if err := json.Unmarshal(raw.data, &frame); err != nil {
 			t.Fatalf("delivered frame is not JSON: %v", err)
 		}
 		if frame["event_id"] != ev.EventID {
@@ -106,7 +106,7 @@ func TestShardedStreamRelayDeliverMessageUsesEnvelopeScope(t *testing.T) {
 	relay.deliverMessage(redis.XMessage{Values: envelopeRedisValues(ev)})
 	select {
 	case duplicate := <-client.send:
-		t.Fatalf("expected duplicate event id to be deduped, got %s", duplicate)
+		t.Fatalf("expected duplicate event id to be deduped, got %s", duplicate.data)
 	case <-time.After(20 * time.Millisecond):
 	}
 }
@@ -186,7 +186,7 @@ func TestShardedStreamRelayReadShardOnceReplaysRetainedMessages(t *testing.T) {
 	select {
 	case raw := <-client.send:
 		var frame map[string]any
-		if err := json.Unmarshal(raw, &frame); err != nil {
+		if err := json.Unmarshal(raw.data, &frame); err != nil {
 			t.Fatalf("delivered frame is not JSON: %v", err)
 		}
 		if frame["event_id"] != "event-replayed" {

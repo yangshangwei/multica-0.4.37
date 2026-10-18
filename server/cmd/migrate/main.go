@@ -217,6 +217,7 @@ var concurrentIndexCleanups = map[string]string{
 	"720_collaboration_comment_delegation_identity":             "idx_collaboration_delegation_comment_member",
 	"721_collaboration_queued_continuation":                     "idx_collaboration_queued_continuation",
 	"726_collaboration_leader_turn_identity":                    "idx_collaboration_run_leader_turn",
+	"728_collaboration_attachment_upload_request":               "collaboration_attachment_upload_request_idx",
 	"569_platform_admin_initialization_org":                     "platform_admin_initialization_org_uidx",
 	"570_platform_admin_initialization_singleton":               "platform_admin_initialization_singleton_uidx",
 	"551_iteration_settings_workspace":                          "iteration_settings_workspace",

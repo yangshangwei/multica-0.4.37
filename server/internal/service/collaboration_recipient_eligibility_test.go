@@ -152,12 +152,15 @@ func TestCollaborationRecipientCreationRejectsRestrictedAndSetupHandlers(t *test
 				}
 				f.fx.Exec(t, `UPDATE user_password_credential SET must_change_password=true WHERE user_id=$1`, f.handler)
 			}
-			_, err := f.svc.Create(ctx, f.params(t))
+			p := f.params(t)
+			_, err := f.svc.Create(ctx, p)
 			wantRecipientError(t, err, http.StatusForbidden, "account_unavailable")
 			if f.fx.Count(t, `SELECT count(*) FROM issue WHERE workspace_id=$1`, f.workspace) != 0 ||
-				f.fx.Count(t, `SELECT count(*) FROM collaboration_operation WHERE scope_id=$1`, f.workspace) != 0 ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_account_fence WHERE user_id=ANY($1::uuid[])`, []string{f.creator, f.handler}) != 0 {
-				t.Fatal("ineligible creation handler left partial issue, operation or authority")
+				t.Fatal("ineligible creation handler left a partial issue or authority")
+			}
+			if f.fx.Count(t, `SELECT count(*) FROM collaboration_operation WHERE scope_kind='create' AND scope_id=$1 AND actor_user_id=$2 AND request_id=$3 AND result_code='account_unavailable' AND resolved_issue_id IS NULL AND completed_at IS NOT NULL`, f.workspace, f.creator, p.RequestID) != 1 {
+				t.Fatal("ineligible creation handler did not seal its original request")
 			}
 		})
 	}

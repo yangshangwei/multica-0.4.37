@@ -47,7 +47,11 @@ type CollaborationIssueResponse struct {
 	Revision       string                      `json:"collaboration_revision"`
 	LifecycleEpoch string                      `json:"lifecycle_epoch"`
 	WriteContext   *CollaborationWriteContext  `json:"write_context,omitempty"`
-	Session        struct {
+	Realtime       struct {
+		EventSequence  string `json:"event_seq"`
+		AuthorityEpoch string `json:"authority_epoch"`
+	} `json:"realtime"`
+	Session struct {
 		ID             string `json:"id"`
 		QueueState     string `json:"queue_state"`
 		ControlVersion string `json:"control_version"`
@@ -143,6 +147,8 @@ func (h *Handler) collaborationIssueResponseInSnapshot(ctx context.Context, acce
 	out.SourceWorkspace.Identifier = fmt.Sprintf("%s-%d", h.getIssuePrefix(ctx, workspace.ID), i.Number)
 	out.Revision = strconv.FormatInt(access.Revision, 10)
 	out.LifecycleEpoch = strconv.FormatInt(access.LifecycleEpoch, 10)
+	out.Realtime.EventSequence = strconv.FormatInt(access.EventSequence, 10)
+	out.Realtime.AuthorityEpoch = strconv.FormatInt(access.AuthorityEpoch, 10)
 	if access.ParticipantEpoch.Valid && access.ParticipantEpoch.Int64 > 0 && access.AccountEpoch.Valid && access.AccountEpoch.Int64 > 0 {
 		out.WriteContext = &CollaborationWriteContext{ParticipantEpoch: strconv.FormatInt(access.ParticipantEpoch.Int64, 10), AccountEpoch: strconv.FormatInt(access.AccountEpoch.Int64, 10)}
 	}

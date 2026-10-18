@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"slices"
 	"strconv"
 
 	"github.com/jackc/pgx/v5"
@@ -16,10 +17,13 @@ import (
 
 type CollaborationSwitchResourceView struct {
 	collaboration.TargetResource
-	Consented  bool    `json:"consented"`
-	Revoked    bool    `json:"revoked"`
-	GrantID    *string `json:"grant_id"`
-	GrantEpoch *string `json:"grant_epoch"`
+	AgentName  string                        `json:"agent_name"`
+	Runtime    *CollaborationResourceRuntime `json:"runtime"`
+	Owner      *CollaborationContentAccount  `json:"owner"`
+	Consented  bool                          `json:"consented"`
+	Revoked    bool                          `json:"revoked"`
+	GrantID    *string                       `json:"grant_id"`
+	GrantEpoch *string                       `json:"grant_epoch"`
 }
 
 // This view excludes configuration bodies/fingerprints and installation IDs.
@@ -140,7 +144,11 @@ func (s *CollaborationService) readTargetSwitchProposals(ctx context.Context, is
 			ProposedTargetEpoch: proposal.BaseTargetEpoch + 1, ProposedConfigVersion: proposal.BaseConfigVersion + 1,
 			Status: "pending", Resources: make([]CollaborationSwitchResourceView, 0, len(roster))}
 		for _, resource := range roster {
-			item := CollaborationSwitchResourceView{TargetResource: resource}
+			summary, err := collaborationResourceSummary(ctx, q, access, resource)
+			if err != nil {
+				return nil, err
+			}
+			item := CollaborationSwitchResourceView{TargetResource: resource, AgentName: summary.AgentName, Runtime: summary.Runtime, Owner: summary.Owner}
 			for _, consent := range consents {
 				if resource.AgentID == util.UUIDToString(consent.AgentID) {
 					item.Consented, item.Revoked = !consent.RevokedAt.Valid, consent.RevokedAt.Valid
@@ -198,6 +206,12 @@ func (s *CollaborationService) readTargetSwitchProposals(ctx context.Context, is
 }
 
 func (s *CollaborationService) GetSwitchOperation(ctx context.Context, issueID pgtype.UUID, requestID string) (CollaborationQueueReceipt, error) {
+	return s.getCollaborationResourceOperation(ctx, issueID, requestID, "propose_target_switch", "consent_target_switch", "revoke_target_switch_consent", "commit_target_switch")
+}
+
+// Resource writes share actor-scoped receipt recovery, including the exact
+// content-free outcome after participation is lost. The route pins allowed kinds.
+func (s *CollaborationService) getCollaborationResourceOperation(ctx context.Context, issueID pgtype.UUID, requestID string, kinds ...string) (CollaborationQueueReceipt, error) {
 	principal, ok := collaboration.PrincipalFromContext(ctx)
 	if !ok || !principal.Human() {
 		return CollaborationQueueReceipt{}, collaborationError(http.StatusNotFound, "not_found")
@@ -231,9 +245,7 @@ func (s *CollaborationService) GetSwitchOperation(ctx context.Context, issueID p
 	if err != nil {
 		return CollaborationQueueReceipt{}, err
 	}
-	switch op.Kind {
-	case "propose_target_switch", "consent_target_switch", "revoke_target_switch_consent", "commit_target_switch":
-	default:
+	if !slices.Contains(kinds, op.Kind) {
 		return CollaborationQueueReceipt{}, collaborationError(http.StatusNotFound, "operation_not_found")
 	}
 	if !op.CompletedAt.Valid {

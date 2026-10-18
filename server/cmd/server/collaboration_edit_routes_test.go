@@ -36,7 +36,7 @@ func TestCollaborationEditRouteRetainsStatusWireAndExternalAuthority(t *testing.
 	session := fx.Insert(t, "collaboration_session", testutil.Cols{"issue_id": issue})
 	for _, user := range []string{testUserID, external} {
 		fx.InsertNoID(t, "issue_participant", testutil.Cols{"issue_id": issue, "user_id": user}, "issue_id=$1 AND user_id=$2", issue, user)
-		fx.InsertNoID(t, "collaboration_account_fence", testutil.Cols{"user_id": user}, "user_id=$1", user)
+		ensureCollaborationRouteAccountFence(t, fx, user)
 	}
 	seedCollaborationRouteCommand(t, fx, session, external, "Immutable command input")
 	fx.Cleanup(t, `DELETE FROM collaboration_operation WHERE scope_kind='issue' AND scope_id=$1`, issue)

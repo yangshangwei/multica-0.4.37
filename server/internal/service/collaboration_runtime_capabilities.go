@@ -189,12 +189,18 @@ func (s *CollaborationService) ClaimRuntimeRun(ctx context.Context, runID pgtype
 		if !collaborationCapabilityMatches(token, CollaborationTerminationTokenPrefix, term.TokenHash) {
 			return out, invalidCollaborationLedger("termination recovery hash mismatch")
 		}
+		newClaim := r.run.ProgressState == "prepared"
 		if _, err = r.q.ClaimCollaborationRuntimeRun(ctx, db.ClaimCollaborationRuntimeRunParams{RunID: runID, Containment: p.Containment}); err != nil {
 			return out, err
 		}
 		inputs, err := r.claimPromptSnapshot(ctx)
 		if err != nil {
 			return out, err
+		}
+		if newClaim {
+			if err = recordCollaborationExecutionChange(ctx, r.q, r.access.Issue.ID, r.group.ID, runID, "runtime_claimed"); err != nil {
+				return out, err
+			}
 		}
 		out = protocol.CollaborationRunClaimResponse{Identity: identity, Inputs: inputs, AgentID: util.UUIDToString(r.run.AgentID), ResourceOwnerID: util.UUIDToString(r.run.ResourceOwnerUserID), ExecutionWorkspaceID: util.UUIDToString(r.run.ExecutionWorkspaceID), TerminationToken: token}
 		return out, nil
@@ -310,6 +316,9 @@ func (s *CollaborationService) PermitRuntimeRun(ctx context.Context, runID pgtyp
 			if _, err = r.q.AuthorizeCollaborationAttempt(ctx, db.AuthorizeCollaborationAttemptParams{RunID: runID, AttemptSeq: seq}); err != nil {
 				return out, err
 			}
+			if err = recordCollaborationExecutionChange(ctx, r.q, r.access.Issue.ID, r.group.ID, runID, "runtime_permitted"); err != nil {
+				return out, err
+			}
 		}
 		return protocol.CollaborationRunPermitResponse{Identity: identity, AttemptSeq: p.AttemptSeq, AttemptNonce: p.AttemptNonce, BusinessToken: token}, nil
 	})
@@ -376,7 +385,7 @@ func (s *CollaborationService) RecordRuntimeOutcome(ctx context.Context, runID p
 		if _, err = q.RecordCollaborationRuntimeOutcome(ctx, db.RecordCollaborationRuntimeOutcomeParams{RunID: runID, Outcome: p.Outcome}); err != nil {
 			return false, err
 		}
-		return true, nil
+		return true, recordCollaborationExecutionChange(ctx, q, r.access.Issue.ID, r.group.ID, runID, "runtime_outcome_recorded")
 	})
 	return err
 }
@@ -536,6 +545,6 @@ func (s *CollaborationService) AcceptRuntimeProof(ctx context.Context, runID pgt
 				return out, err
 			}
 		}
-		return out, nil
+		return out, recordCollaborationExecutionChange(ctx, q, r.access.Issue.ID, r.group.ID, runID, "runtime_ended")
 	})
 }

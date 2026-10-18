@@ -167,10 +167,10 @@ func (q *Queries) CompleteCollaborationOperation(ctx context.Context, arg Comple
 }
 
 const createCollaborationCommand = `-- name: CreateCollaborationCommand :one
-INSERT INTO collaboration_command (session_id, target_id, input_event_id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content,channel_id,batch_id)
+INSERT INTO collaboration_command (session_id, target_id, input_event_id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content,channel_id,batch_id,attachments)
 VALUES ($1::uuid, $2::uuid, $3::uuid, $4::bigint, $5::uuid,
         $6::bigint, $7::bigint,
-        $8::bigint, $9::text,$10::uuid,$11::uuid)
+        $8::bigint, $9::text,$10::uuid,$11::uuid,COALESCE($12::jsonb,'[]'::jsonb))
 RETURNING id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id
 `
 
@@ -186,6 +186,7 @@ type CreateCollaborationCommandParams struct {
 	Content          string      `json:"content"`
 	ChannelID        pgtype.UUID `json:"channel_id"`
 	BatchID          pgtype.UUID `json:"batch_id"`
+	Attachments      []byte      `json:"attachments"`
 }
 
 func (q *Queries) CreateCollaborationCommand(ctx context.Context, arg CreateCollaborationCommandParams) (CollaborationCommand, error) {
@@ -201,6 +202,7 @@ func (q *Queries) CreateCollaborationCommand(ctx context.Context, arg CreateColl
 		arg.Content,
 		arg.ChannelID,
 		arg.BatchID,
+		arg.Attachments,
 	)
 	var i CollaborationCommand
 	err := row.Scan(
@@ -461,7 +463,7 @@ func (q *Queries) FinishCollaborationCommand(ctx context.Context, arg FinishColl
 }
 
 const getCollaborationAccess = `-- name: GetCollaborationAccess :one
-SELECT i.id, i.workspace_id, i.title, i.description, i.status, i.priority, i.assignee_type, i.assignee_id, i.creator_type, i.creator_id, i.parent_issue_id, i.acceptance_criteria, i.context_refs, i.position, i.due_date, i.created_at, i.updated_at, i.number, i.project_id, i.origin_type, i.origin_id, i.first_executed_at, i.start_date, i.metadata, i.stage, i.properties, i.revision, i.last_activity_at, i.admission_status, i.current_iteration_id, i.iteration_rollover_count, c.revision AS collaboration_revision, c.lifecycle_epoch,
+SELECT i.id, i.workspace_id, i.title, i.description, i.status, i.priority, i.assignee_type, i.assignee_id, i.creator_type, i.creator_id, i.parent_issue_id, i.acceptance_criteria, i.context_refs, i.position, i.due_date, i.created_at, i.updated_at, i.number, i.project_id, i.origin_type, i.origin_id, i.first_executed_at, i.start_date, i.metadata, i.stage, i.properties, i.revision, i.last_activity_at, i.admission_status, i.current_iteration_id, i.iteration_rollover_count, c.revision AS collaboration_revision, c.lifecycle_epoch, c.authority_epoch, s.event_seq,
        s.id AS session_id, s.queue_state, s.control_version,
        participant.epoch AS participant_epoch, account_fence.epoch AS account_epoch,
        (u.disabled_at IS NULL)::boolean AS account_active, u.email AS viewer_email,
@@ -490,6 +492,8 @@ type GetCollaborationAccessRow struct {
 	Issue                  Issue       `json:"issue"`
 	CollaborationRevision  int64       `json:"collaboration_revision"`
 	LifecycleEpoch         int64       `json:"lifecycle_epoch"`
+	AuthorityEpoch         int64       `json:"authority_epoch"`
+	EventSeq               int64       `json:"event_seq"`
 	SessionID              pgtype.UUID `json:"session_id"`
 	QueueState             string      `json:"queue_state"`
 	ControlVersion         int64       `json:"control_version"`
@@ -542,6 +546,8 @@ func (q *Queries) GetCollaborationAccess(ctx context.Context, arg GetCollaborati
 		&i.Issue.IterationRolloverCount,
 		&i.CollaborationRevision,
 		&i.LifecycleEpoch,
+		&i.AuthorityEpoch,
+		&i.EventSeq,
 		&i.SessionID,
 		&i.QueueState,
 		&i.ControlVersion,

@@ -39,6 +39,7 @@ type CollaborationSubmitCommandParams struct {
 	ExpectedTargetEpoch   int64
 	ExpectedConfigVersion int64
 	Content               string
+	AttachmentIDs         []pgtype.UUID `json:",omitempty"`
 }
 
 type CollaborationCancelCommandParams struct {
@@ -259,6 +260,10 @@ func (s *CollaborationService) collaborationQueueMutationInTx(ctx context.Contex
 	p CollaborationQueueRequest, kind, payloadHash string, payload any, mutate func(*collaborationQueueTx) (CollaborationQueueReceipt, error)) (CollaborationQueueReceipt, error) {
 	t := &collaborationQueueTx{q: s.Queries.WithTx(tx), actor: actor}
 	switch request := payload.(type) {
+	case CollaborationRegisterTargetParams, CollaborationRevokeGrantParams:
+		t.requestID, t.controlAction = p.RequestID, kind
+	case CollaborationConsentParams:
+		t.controlTarget = request.TargetID
 	case CollaborationProposeSwitchParams:
 		t.controlTarget = request.TargetID
 	case CollaborationSwitchConsentParams:

@@ -33,7 +33,7 @@ func TestCollaborationWorkflowRoutesPreserveResponsibilityAndMinimalRecovery(t *
 	fx.InsertNoID(t, "issue_collaboration", testutil.Cols{"issue_id": issue}, "issue_id=$1", issue)
 	fx.Insert(t, "collaboration_session", testutil.Cols{"issue_id": issue})
 	fx.InsertNoID(t, "issue_participant", testutil.Cols{"issue_id": issue, "user_id": testUserID}, "issue_id=$1 AND user_id=$2", issue, testUserID)
-	fx.InsertNoID(t, "collaboration_account_fence", testutil.Cols{"user_id": testUserID}, "user_id=$1", testUserID)
+	ensureCollaborationRouteAccountFence(t, fx, testUserID)
 	fx.Cleanup(t, `DELETE FROM collaboration_account_fence WHERE user_id=ANY($1::uuid[])`, []string{b, c, d})
 	for _, table := range []string{"issue_participant", "issue_handoff", "collaboration_event", "collaboration_notification"} {
 		fx.Cleanup(t, "DELETE FROM "+table+" WHERE issue_id=$1", issue)

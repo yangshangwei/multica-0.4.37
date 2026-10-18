@@ -225,7 +225,11 @@ func TestCollaborationCreationReceiptSurvivesSourceDepartureAndHandlerDisable(t 
 
 func TestCollaborationCreateRejectsUntrustedPrincipalBeforeDependencies(t *testing.T) {
 	svc := NewCollaborationService(nil, nil, nil)
-	for _, ctx := range []context.Context{context.Background(), auth.WithAuthenticatedPrincipal(context.Background(), auth.AuthenticatedPrincipal{UserID: "owner", Kind: auth.CredentialTask})} {
+	for _, ctx := range []context.Context{
+		context.Background(),
+		auth.WithAuthenticatedPrincipal(context.Background(), auth.AuthenticatedPrincipal{UserID: "owner", Kind: auth.CredentialTask}),
+		auth.WithAuthenticatedPrincipal(context.Background(), auth.AuthenticatedPrincipal{UserID: "invalid-actor", Kind: auth.CredentialJWT}),
+	} {
 		if _, err := svc.Create(ctx, CollaborationCreateParams{}); !collaborationErrorCode(err, "forbidden") {
 			t.Fatalf("untrusted creation: %v", err)
 		}

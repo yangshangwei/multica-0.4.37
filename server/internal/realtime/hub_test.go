@@ -136,7 +136,7 @@ func TestClientHandleSubscribeReportsLookupFailure(t *testing.T) {
 	hub.SetAuthorizer(failingScopeAuthorizer{})
 	client := &Client{
 		hub:           hub,
-		send:          make(chan []byte, 1),
+		send:          make(chan outboundMessage, 1),
 		userID:        testUserID,
 		workspaceID:   testWorkspaceID,
 		subscriptions: make(map[scopeKey]bool),
@@ -150,7 +150,7 @@ func TestClientHandleSubscribeReportsLookupFailure(t *testing.T) {
 			Type    string            `json:"type"`
 			Payload map[string]string `json:"payload"`
 		}
-		if err := json.Unmarshal(raw, &frame); err != nil {
+		if err := json.Unmarshal(raw.data, &frame); err != nil {
 			t.Fatalf("unmarshal subscribe error: %v", err)
 		}
 		if frame.Type != "subscribe_error" {

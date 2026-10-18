@@ -696,17 +696,23 @@ type CollaborationActiveLeaderOrder struct {
 }
 
 type CollaborationAttachment struct {
-	ID             pgtype.UUID        `json:"id"`
-	IssueID        pgtype.UUID        `json:"issue_id"`
-	DraftID        pgtype.UUID        `json:"draft_id"`
-	UploaderUserID pgtype.UUID        `json:"uploader_user_id"`
-	StorageKey     string             `json:"storage_key"`
-	Version        int64              `json:"version"`
-	Name           string             `json:"name"`
-	ContentType    string             `json:"content_type"`
-	SizeBytes      int64              `json:"size_bytes"`
-	CreatedAt      pgtype.Timestamptz `json:"created_at"`
-	DeliveredAt    pgtype.Timestamptz `json:"delivered_at"`
+	ID                pgtype.UUID        `json:"id"`
+	IssueID           pgtype.UUID        `json:"issue_id"`
+	DraftID           pgtype.UUID        `json:"draft_id"`
+	UploaderUserID    pgtype.UUID        `json:"uploader_user_id"`
+	StorageKey        string             `json:"storage_key"`
+	Version           int64              `json:"version"`
+	Name              string             `json:"name"`
+	ContentType       string             `json:"content_type"`
+	SizeBytes         int64              `json:"size_bytes"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+	DeliveredAt       pgtype.Timestamptz `json:"delivered_at"`
+	SourceWorkspaceID pgtype.UUID        `json:"source_workspace_id"`
+	IntendedIssueID   pgtype.UUID        `json:"intended_issue_id"`
+	UploadRequestID   pgtype.Text        `json:"upload_request_id"`
+	ContentSha256     pgtype.Text        `json:"content_sha256"`
+	EncryptionKey     []byte             `json:"encryption_key"`
+	DiscardedAt       pgtype.Timestamptz `json:"discarded_at"`
 }
 
 type CollaborationAttachmentReference struct {

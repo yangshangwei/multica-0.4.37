@@ -81,7 +81,10 @@ func TestCollaborationRoutesUseAuthenticatedAccountWithoutSourceMembership(t *te
 		t.Fatal("account read fabricated source membership")
 	}
 	call(outsiderJWT, http.MethodGet, path).Want(http.StatusNotFound)
-	call(testToken, http.MethodPost, "/api/collaboration/issues").Want(http.StatusNotFound)
+	closedCreate := testutil.JSONRequest(http.MethodPost, "/api/collaboration/issues", map[string]string{"source_workspace_id": testWorkspaceID, "title": "Creation remains gated"})
+	closedCreate.Header.Set("Authorization", "Bearer "+testToken)
+	closedCreate.Header.Set("Idempotency-Key", uuid.NewString())
+	testutil.Call(t, testServer.Config.Handler.ServeHTTP, closedCreate).Want(http.StatusServiceUnavailable)
 
 	// This machine owns a real running task and carries the source owner's ID.
 	// Neither that attribution nor its forged human headers grants content.

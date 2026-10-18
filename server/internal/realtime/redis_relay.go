@@ -675,6 +675,15 @@ func (d *DualWriteBroadcaster) BroadcastToScope(scopeType, scopeID string, messa
 	_ = d.relay.PublishWithID(scopeType, scopeID, "", message, id)
 }
 
+// PublishWithID lets durable outboxes retain their pending record when the
+// cross-node write fails. Local delivery can repeat safely under the same ID.
+func (d *DualWriteBroadcaster) PublishWithID(scopeType, scopeID, exclude string, frame []byte, id string) error {
+	if err := d.local.PublishWithID(scopeType, scopeID, exclude, frame, id); err != nil {
+		return err
+	}
+	return d.relay.PublishWithID(scopeType, scopeID, exclude, frame, id)
+}
+
 func (d *DualWriteBroadcaster) BroadcastToWorkspace(workspaceID string, message []byte) {
 	d.BroadcastToScope(ScopeWorkspace, workspaceID, message)
 }
@@ -705,4 +714,5 @@ func (r *RedisRelay) PublishWithID(scopeType, scopeID, exclude string, frame []b
 
 var _ Broadcaster = (*RedisRelay)(nil)
 var _ Broadcaster = (*DualWriteBroadcaster)(nil)
+var _ RelayPublisher = (*DualWriteBroadcaster)(nil)
 var _ RelayPublisher = (*RedisRelay)(nil)

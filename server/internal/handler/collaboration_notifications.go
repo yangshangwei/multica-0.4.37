@@ -62,5 +62,8 @@ func (h *Handler) setCollaborationNotificationState(w http.ResponseWriter, r *ht
 		writeCollaborationError(w, err)
 		return
 	}
+	// The committed notification row is the durable recovery source; this
+	// content-free hint updates the same viewer's other windows immediately.
+	h.publish("collaboration:workbench_changed", "", "member", requestUserID(r), nil)
 	writeJSON(w, http.StatusOK, receipt)
 }

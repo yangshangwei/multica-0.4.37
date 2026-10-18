@@ -147,9 +147,24 @@ func (t *collaborationQueueTx) appendInput(ctx context.Context, p CollaborationS
 	if !ok {
 		return t.receipt("target_not_found", http.StatusNotFound), false, nil
 	}
+	if err := validateCollaborationAttachmentIDs(p.AttachmentIDs); err != nil {
+		return CollaborationQueueReceipt{}, false, err
+	}
+	attachments := []byte("[]")
+	if len(p.AttachmentIDs) > 0 {
+		var err error
+		attachments, err = json.Marshal(p.AttachmentIDs)
+		if err != nil {
+			return CollaborationQueueReceipt{}, false, err
+		}
+	}
 	prior, err := t.q.GetCollaborationCommandInput(ctx, db.GetCollaborationCommandInputParams{TargetID: target.ID, InputEventID: p.InputEventID})
 	if err == nil {
-		if prior.Content != p.Content || prior.AuthorUserID != t.actor || prior.ParticipantEpoch != t.participant.Epoch || prior.AuthorAuthEpoch != t.account.Epoch || prior.LifecycleEpoch != t.access.LifecycleEpoch {
+		var priorAttachments []pgtype.UUID
+		if err = json.Unmarshal(prior.Attachments, &priorAttachments); err != nil {
+			return CollaborationQueueReceipt{}, false, invalidCollaborationLedger("invalid immutable attachments")
+		}
+		if prior.Content != p.Content || prior.AuthorUserID != t.actor || prior.ParticipantEpoch != t.participant.Epoch || prior.AuthorAuthEpoch != t.account.Epoch || prior.LifecycleEpoch != t.access.LifecycleEpoch || !sameCollaborationAttachmentIDs(priorAttachments, p.AttachmentIDs) {
 			return t.targetReceipt("input_event_conflict", http.StatusConflict, target), false, nil
 		}
 		r := t.targetReceipt("command_queued", http.StatusCreated, target)
@@ -167,6 +182,9 @@ func (t *collaborationQueueTx) appendInput(ctx context.Context, p CollaborationS
 			return CollaborationQueueReceipt{}, false, err
 		}
 		return t.targetReceipt(code, http.StatusConflict, target), false, nil
+	}
+	if _, err = bindCollaborationAttachments(ctx, t.q, p.IssueID, t.access.Issue.WorkspaceID, t.actor, nil, p.AttachmentIDs, false); err != nil {
+		return CollaborationQueueReceipt{}, false, err
 	}
 	channel, err := t.ensureTargetChannel(ctx, target)
 	if err != nil {
@@ -201,7 +219,7 @@ func (t *collaborationQueueTx) appendInput(ctx context.Context, p CollaborationS
 			return CollaborationQueueReceipt{}, false, err
 		}
 	}
-	commands = append(commands, db.CollaborationCommand{ID: target.ID, AuthorUserID: t.actor, ParticipantEpoch: t.participant.Epoch, AuthorAuthEpoch: t.account.Epoch, LifecycleEpoch: t.access.LifecycleEpoch, Content: p.Content, State: "waiting"})
+	commands = append(commands, db.CollaborationCommand{ID: target.ID, AuthorUserID: t.actor, ParticipantEpoch: t.participant.Epoch, AuthorAuthEpoch: t.account.Epoch, LifecycleEpoch: t.access.LifecycleEpoch, Content: p.Content, Attachments: attachments, State: "waiting"})
 	inputs, err := collaborationRunInputs(commands)
 	if err != nil {
 		return CollaborationQueueReceipt{}, false, err
@@ -244,8 +262,11 @@ func (t *collaborationQueueTx) appendInput(ctx context.Context, p CollaborationS
 	}
 	command, err := t.q.CreateCollaborationCommand(ctx, db.CreateCollaborationCommandParams{SessionID: t.session.ID, TargetID: target.ID, InputEventID: p.InputEventID,
 		Seq: seq, AuthorUserID: t.actor, ParticipantEpoch: t.participant.Epoch, AuthorAuthEpoch: t.account.Epoch, LifecycleEpoch: t.access.LifecycleEpoch, Content: p.Content,
-		ChannelID: channel.ID, BatchID: batch.ID})
+		ChannelID: channel.ID, BatchID: batch.ID, Attachments: attachments})
 	if err != nil {
+		return CollaborationQueueReceipt{}, false, err
+	}
+	if err = recordCollaborationAttachmentReferences(ctx, t.q, "command", command.ID, 1, p.AttachmentIDs); err != nil {
 		return CollaborationQueueReceipt{}, false, err
 	}
 	r := t.targetReceipt("command_queued", http.StatusCreated, target)

@@ -12,6 +12,8 @@ type collaborationCommentInputBody struct {
 	Content             string   `json:"content"`
 	ParentID            *string  `json:"parent_id"`
 	SuppressedTargetIDs []string `json:"suppressed_target_ids"`
+	DraftID             *string  `json:"draft_id"`
+	AttachmentIDs       []string `json:"attachment_ids"`
 }
 
 func collaborationCommentInput(w http.ResponseWriter, body collaborationCommentInputBody) (service.CollaborationCommentInput, bool) {
@@ -29,6 +31,11 @@ func collaborationCommentInput(w http.ResponseWriter, body collaborationCommentI
 			return input, false
 		}
 		input.SuppressedTargetIDs = append(input.SuppressedTargetIDs, id)
+	}
+	var ok bool
+	input.DraftID, input.AttachmentIDs, ok = collaborationAttachmentSelection(w, body.DraftID, body.AttachmentIDs)
+	if !ok {
+		return input, false
 	}
 	return input, true
 }

@@ -12,6 +12,20 @@ import (
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
+func ensureCollaborationRouteAccountFence(t *testing.T, fx *testutil.Fixture, userID string) {
+	t.Helper()
+	// Public creation may already have enrolled the shared TestMain account.
+	// Preserve its epoch and clean up only a fence this fixture inserted.
+	inserted, err := fx.Pool.Exec(t.Context(), `INSERT INTO collaboration_account_fence (user_id) VALUES ($1)
+		ON CONFLICT (user_id) DO NOTHING`, userID)
+	if err != nil {
+		t.Fatalf("setup: ensure collaboration account fence: %v", err)
+	}
+	if inserted.RowsAffected() == 1 {
+		fx.Cleanup(t, `DELETE FROM collaboration_account_fence WHERE user_id=$1`, userID)
+	}
+}
+
 // These route tests retain an already accepted input. They exercise human
 // workflow, not resource consent or execution admission, which remain disabled.
 func seedCollaborationRouteCommand(t *testing.T, fx *testutil.Fixture, session, author, content string) {
@@ -59,7 +73,7 @@ func TestCollaborationLifecycleRoutesKeepCreatorAuthorityAfterSourceDeparture(t 
 	session := fx.Insert(t, "collaboration_session", testutil.Cols{"issue_id": issue})
 	for _, actor := range []string{testUserID, handler} {
 		fx.InsertNoID(t, "issue_participant", testutil.Cols{"issue_id": issue, "user_id": actor}, "issue_id=$1 AND user_id=$2", issue, actor)
-		fx.InsertNoID(t, "collaboration_account_fence", testutil.Cols{"user_id": actor}, "user_id=$1", actor)
+		ensureCollaborationRouteAccountFence(t, fx, actor)
 	}
 	seedCollaborationRouteCommand(t, fx, session, handler, "waiting work")
 	fx.Cleanup(t, `DELETE FROM collaboration_operation WHERE scope_kind='issue' AND scope_id=$1`, issue)
