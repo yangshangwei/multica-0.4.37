@@ -432,3 +432,40 @@ Closed A01–A07 after a 96/100 native visual verdict, including an additional s
 
 - 任务保持 in_progress，接续 P1 剩余创建/来源字段，P3 私有内容/@提交/通知，P4 资源授权/运行身份/真实 proof。
 - 新增独立 runtime writer 前统一后置锁顺序；再完成调度/正向恢复、Web/Desktop 及完整 97 项 AC。
+
+
+## Session 85: M09 单智能体闭环与最终评审续作
+<!-- trellis-session: v=2 fp=375f284c127fe4d5 -->
+
+**Date**: 2026-10-18
+**Task**: M09 单智能体闭环与最终评审续作
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+按最终 Claude 文档核对当前实现，完成并验证 M09 单直接智能体文本闭环；原任务继续进行，后续控制阶段须重读最新执行契约。
+
+### Main Changes
+
+- 统一业务结果与 v3 通道/批次读取，修复迟到权限拒绝、FIFO、孤儿派发校验和迁移索引恢复。
+- 保留合批后的原业务断言，修正旧测试时间线、外部身份前提及 Query 故障注入。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `188a7f4a5b0dc0e08873389c6261be0a55f012f9` | feat(collaboration): keep single-agent execution ordered and provable |
+| `6794f4e3680526d0105df9d58fa93edc4f937603` | fix(collaboration): preserve current authority and batch identity in account reads |
+| `3737af87db8c4d7e364e870c32354a772a1a4939` | docs(collaboration): make the verified slice and remaining controls explicit |
+
+### Testing
+
+- [OK] Go 协作和运行端/CLI race、Linux 真 DB/API/daemon/namespace、core 3484 测试、全仓 lint/typecheck、迁移和 sqlc 通过；独立复核通过。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 在 target hold、多通道或 M11 开始前完整重读最新执行契约，再按更新后的控制/批次规则实现。
