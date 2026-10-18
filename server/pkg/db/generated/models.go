@@ -688,6 +688,13 @@ type CollaborationAccountInvalidation struct {
 	LastAttemptedAt   pgtype.Timestamptz `json:"last_attempted_at"`
 }
 
+type CollaborationActiveLeaderOrder struct {
+	RunID      pgtype.UUID `json:"run_id"`
+	GroupID    pgtype.UUID `json:"group_id"`
+	LeaderTurn int32       `json:"leader_turn"`
+	Cycle      bool        `json:"cycle"`
+}
+
 type CollaborationAttachment struct {
 	ID             pgtype.UUID        `json:"id"`
 	IssueID        pgtype.UUID        `json:"issue_id"`
@@ -801,6 +808,9 @@ type CollaborationDelegation struct {
 	State             string             `json:"state"`
 	DispositionReason pgtype.Text        `json:"disposition_reason"`
 	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+	SourceCommentID   pgtype.UUID        `json:"source_comment_id"`
+	MemberAgentID     pgtype.UUID        `json:"member_agent_id"`
+	RunID             pgtype.UUID        `json:"run_id"`
 }
 
 type CollaborationEvent struct {
@@ -840,6 +850,9 @@ type CollaborationExecutionGroup struct {
 	SettledAt         pgtype.Timestamptz `json:"settled_at"`
 	ChannelID         pgtype.UUID        `json:"channel_id"`
 	BatchID           pgtype.UUID        `json:"batch_id"`
+	WakePending       bool               `json:"wake_pending"`
+	WakeParentRunID   pgtype.UUID        `json:"wake_parent_run_id"`
+	NextLeaderTurn    int64              `json:"next_leader_turn"`
 }
 
 type CollaborationGrant struct {
@@ -864,6 +877,18 @@ type CollaborationGrant struct {
 	OwnerParticipantEpoch    pgtype.Int8        `json:"owner_participant_epoch"`
 	TargetEpoch              pgtype.Int8        `json:"target_epoch"`
 	ConfigurationFingerprint pgtype.Text        `json:"configuration_fingerprint"`
+}
+
+type CollaborationGroupDependency struct {
+	GroupID                  pgtype.UUID        `json:"group_id"`
+	CommandID                pgtype.UUID        `json:"command_id"`
+	TargetID                 pgtype.UUID        `json:"target_id"`
+	TargetEpoch              int64              `json:"target_epoch"`
+	ConfigVersion            int64              `json:"config_version"`
+	ConfigurationFingerprint string             `json:"configuration_fingerprint"`
+	Grants                   []byte             `json:"grants"`
+	DetachedAt               pgtype.Timestamptz `json:"detached_at"`
+	DetachReason             pgtype.Text        `json:"detach_reason"`
 }
 
 type CollaborationGroupInput struct {
@@ -944,6 +969,8 @@ type CollaborationRun struct {
 	DeploymentID         pgtype.UUID        `json:"deployment_id"`
 	ResourceOwnerUserID  pgtype.UUID        `json:"resource_owner_user_id"`
 	Containment          pgtype.Text        `json:"containment"`
+	PromptSnapshot       []byte             `json:"prompt_snapshot"`
+	LeaderTurn           pgtype.Int8        `json:"leader_turn"`
 }
 
 type CollaborationRunEvent struct {
@@ -1006,6 +1033,35 @@ type CollaborationSession struct {
 	PauseReason      string             `json:"pause_reason"`
 	CreatedAt        pgtype.Timestamptz `json:"created_at"`
 	TargetSetVersion int64              `json:"target_set_version"`
+}
+
+type CollaborationSwitchConsent struct {
+	ProposalID            pgtype.UUID        `json:"proposal_id"`
+	AgentID               pgtype.UUID        `json:"agent_id"`
+	OwnerUserID           pgtype.UUID        `json:"owner_user_id"`
+	OwnerAuthEpoch        int64              `json:"owner_auth_epoch"`
+	OwnerParticipantEpoch int64              `json:"owner_participant_epoch"`
+	IdentityKind          string             `json:"identity_kind"`
+	InstallationID        pgtype.UUID        `json:"installation_id"`
+	BindingID             pgtype.UUID        `json:"binding_id"`
+	BindingEpoch          int64              `json:"binding_epoch"`
+	ConsentedAt           pgtype.Timestamptz `json:"consented_at"`
+	RevokedAt             pgtype.Timestamptz `json:"revoked_at"`
+}
+
+type CollaborationSwitchProposal struct {
+	ID                       pgtype.UUID        `json:"id"`
+	IssueID                  pgtype.UUID        `json:"issue_id"`
+	SessionID                pgtype.UUID        `json:"session_id"`
+	TargetID                 pgtype.UUID        `json:"target_id"`
+	ProposedBy               pgtype.UUID        `json:"proposed_by"`
+	LifecycleEpoch           int64              `json:"lifecycle_epoch"`
+	BaseTargetEpoch          int64              `json:"base_target_epoch"`
+	BaseConfigVersion        int64              `json:"base_config_version"`
+	Roster                   []byte             `json:"roster"`
+	ConfigurationFingerprint string             `json:"configuration_fingerprint"`
+	CreatedAt                pgtype.Timestamptz `json:"created_at"`
+	CommittedAt              pgtype.Timestamptz `json:"committed_at"`
 }
 
 type CollaborationTarget struct {

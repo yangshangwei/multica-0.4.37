@@ -56,7 +56,7 @@ func (t *collaborationQueueTx) validateGroup(ctx context.Context, target db.Coll
 	byCommand := make(map[pgtype.UUID]db.CollaborationCommand, len(inputs))
 	for _, input := range inputs {
 		if input.SessionID != group.SessionID || input.ChannelID != group.ChannelID ||
-			(input.State != "in_flight" && input.State != "cancelled") || (input.State == "in_flight" && input.GroupID != group.ID) {
+			(input.State != "in_flight" && input.State != "cancelled" && input.State != "waiting") || ((input.State == "in_flight" || input.State == "waiting") && input.GroupID != group.ID) {
 			return invalidCollaborationLedger("batch input scope mismatch")
 		}
 		byCommand[input.ID] = input
@@ -79,18 +79,48 @@ func (t *collaborationQueueTx) validateGroup(ctx context.Context, target db.Coll
 	consumed := make(map[pgtype.UUID]bool, len(retained))
 	for _, input := range retained {
 		command, exists := byCommand[input.CommandID]
+		if !exists {
+			command, err = t.q.LockCollaborationCommand(ctx, db.LockCollaborationCommandParams{SessionID: t.session.ID, CommandID: input.CommandID})
+			if err != nil {
+				return err
+			}
+		}
 		run, runExists := byID[input.ConsumingRunID]
-		if !exists || !runExists || consumed[command.ID] || command.State != "in_flight" || command.GroupID != group.ID ||
-			input.ChannelID != group.ChannelID || input.BatchID != group.BatchID || input.Seq != command.Seq || run.GroupID != group.ID {
+		if !runExists || consumed[command.ID] || input.ChannelID != group.ChannelID || input.BatchID != group.BatchID || run.GroupID != group.ID {
 			return invalidCollaborationLedger("retained group input scope mismatch")
 		}
 		consumed[command.ID] = true
+		if command.GroupID != group.ID {
+			readers, err := collaborationInputReaders(input, runs)
+			if err != nil {
+				return err
+			}
+			if run.StepKind.String != "continuation" || !collaborationReadersNeverLaunched(readers) {
+				return invalidCollaborationLedger("returned input has a potentially launched reader")
+			}
+			dependencies, err := t.q.ListCollaborationGroupDependencies(ctx, group.ID)
+			if err != nil {
+				return err
+			}
+			detached := false
+			for _, dependency := range dependencies {
+				detached = detached || dependency.CommandID == command.ID && dependency.DetachedAt.Valid && dependency.DetachReason.String == "never_launched"
+			}
+			if !detached {
+				return invalidCollaborationLedger("returned input dependency is still active")
+			}
+			continue
+		}
+		if command.State != "in_flight" || command.BatchID != input.BatchID || command.ChannelID != input.ChannelID || command.Seq != input.Seq {
+			return invalidCollaborationLedger("retained group input scope mismatch")
+		}
 	}
 	for _, input := range inputs {
 		if input.State == "in_flight" && !consumed[input.ID] {
 			return invalidCollaborationLedger("consumed group input history missing")
 		}
 	}
+	leaderTurns := make(map[int64]bool)
 	for _, run := range runs {
 		if run.SettledAt.Valid && !collaborationRunProvenEnded(run) {
 			return invalidCollaborationLedger("settled run has contradictory termination evidence")
@@ -102,6 +132,12 @@ func (t *collaborationQueueTx) validateGroup(ctx context.Context, target db.Coll
 		}
 		matched := false
 		role := run.StepKind.String
+		if !group.SettledAt.Valid && (role == "agent" || role == "leader" || role == "continuation") {
+			if !run.LeaderTurn.Valid || run.LeaderTurn.Int64 < 1 || leaderTurns[run.LeaderTurn.Int64] {
+				return invalidCollaborationLedger("missing or repeated leader turn")
+			}
+			leaderTurns[run.LeaderTurn.Int64] = true
+		}
 		if role == "continuation" {
 			role = "leader"
 		}
@@ -137,6 +173,19 @@ func (t *collaborationQueueTx) validateGroup(ctx context.Context, target db.Coll
 		if _, exists := byID[delegation.ParentRunID]; !exists {
 			return invalidCollaborationLedger("delegation parent missing from group")
 		}
+		if delegation.SourceCommentID.Valid {
+			child, exists := byID[delegation.RunID]
+			if !exists || child.ParentRunID != delegation.ParentRunID || child.AgentID != delegation.MemberAgentID || child.StepKind.String != "member" {
+				return invalidCollaborationLedger("comment delegation child identity mismatch")
+			}
+			members, err := decodeCollaborationRoster[string](delegation.Members)
+			if err != nil {
+				return err
+			}
+			if len(members) != 1 || members[0] != util.UUIDToString(child.AgentID) {
+				return invalidCollaborationLedger("comment delegation member identity mismatch")
+			}
+		}
 	}
 	return nil
 }
@@ -147,6 +196,9 @@ func (t *collaborationQueueTx) stopGroup(ctx context.Context, target db.Collabor
 		return CollaborationTargetControlResult{}, err
 	}
 	if err = t.validateGroup(ctx, target, group, runs); err != nil {
+		return CollaborationTargetControlResult{}, err
+	}
+	if err = t.detachGroupUnreadInputs(ctx, group, reason); err != nil {
 		return CollaborationTargetControlResult{}, err
 	}
 	// Removing an author cancels an entirely never-permitted group. Any live
@@ -196,6 +248,14 @@ func (t *collaborationQueueTx) settleProvenGroup(ctx context.Context, target db.
 	if err = t.validateGroup(ctx, target, group, runs); err != nil {
 		return false, err
 	}
+	if group.ExpansionSealedAt.Valid {
+		if err = t.detachGroupUnreadInputs(ctx, group, "group_ended"); err != nil {
+			return false, err
+		}
+	}
+	if err = t.returnNeverLaunchedInputs(ctx, group, runs); err != nil {
+		return false, err
+	}
 	for _, run := range runs {
 		if err = t.q.ReleaseCollaborationRunReservation(ctx, run.ID); err != nil {
 			return false, err
@@ -236,9 +296,12 @@ func (t *collaborationQueueTx) returnNeverLaunchedInputs(ctx context.Context, gr
 	if len(runs) == 0 {
 		return invalidCollaborationLedger("settled group has no runs")
 	}
+	allNeverLaunched := true
+	byID := make(map[pgtype.UUID]db.CollaborationRun, len(runs))
 	for _, run := range runs {
+		byID[run.ID] = run
 		if !collaborationRunProvenEnded(run) || run.ProofState != "never_launched_proven" {
-			return nil
+			allNeverLaunched = false
 		}
 	}
 	retained, err := t.q.ListCollaborationGroupInputs(ctx, group.ID)
@@ -247,23 +310,41 @@ func (t *collaborationQueueTx) returnNeverLaunchedInputs(ctx context.Context, gr
 	}
 	var batch db.CollaborationBatch
 	for _, input := range retained {
+		consumer, exists := byID[input.ConsumingRunID]
+		if !exists {
+			return invalidCollaborationLedger("nonlaunch input consumer missing")
+		}
+		if consumer.StepKind.String == "continuation" {
+			readers, err := collaborationInputReaders(input, runs)
+			if err != nil {
+				return err
+			}
+			if !collaborationReadersNeverLaunched(readers) {
+				continue
+			}
+		} else if !group.SettledAt.Valid || !allNeverLaunched {
+			continue
+		}
 		command, err := t.q.LockCollaborationCommand(ctx, db.LockCollaborationCommandParams{SessionID: t.session.ID, CommandID: input.CommandID})
 		if err != nil {
+			return err
+		}
+		if command.GroupID != group.ID || command.State != "in_flight" {
+			continue
+		}
+		if err = t.q.DetachCollaborationGroupDependency(ctx, db.DetachCollaborationGroupDependencyParams{GroupID: group.ID, CommandID: command.ID, Reason: "never_launched"}); err != nil {
 			return err
 		}
 		code, err := collaborationCurrentBatchAuthors(ctx, t.q, t.access.Issue.ID, t.access.LifecycleEpoch, []db.CollaborationCommand{command}, "in_flight")
 		if err != nil {
 			return err
 		}
+		state, reason := "waiting", "never_launched"
 		if t.session.QueueState == "closed" || code != "" {
-			reason := group.DispositionReason.String
+			state, reason = "cancelled", group.DispositionReason.String
 			if reason == "" {
 				reason = "stale_authority"
 			}
-			if _, err = t.q.FinishCollaborationCommand(ctx, db.FinishCollaborationCommandParams{SessionID: t.session.ID, CommandID: command.ID, State: "cancelled", Reason: reason}); err != nil {
-				return err
-			}
-			continue
 		}
 		if !batch.ID.Valid {
 			batch, err = t.newWaitingBatch(ctx, group.ChannelID, group.TargetID)
@@ -271,9 +352,9 @@ func (t *collaborationQueueTx) returnNeverLaunchedInputs(ctx context.Context, gr
 				return err
 			}
 		}
-		if _, err = t.q.ReturnNeverLaunchedCollaborationInput(ctx, db.ReturnNeverLaunchedCollaborationInputParams{CommandID: command.ID, GroupID: group.ID, BatchID: batch.ID}); err != nil {
+		if _, err = t.q.ReturnNeverLaunchedCollaborationInput(ctx, db.ReturnNeverLaunchedCollaborationInputParams{CommandID: command.ID, GroupID: group.ID, BatchID: batch.ID, State: state, Reason: reason}); err != nil {
 			return err
 		}
 	}
-	return nil
+	return t.q.CloseEmptyCollaborationBatches(ctx, t.session.ID)
 }

@@ -112,6 +112,10 @@ func newCollaborationRouteFixture(t *testing.T) *collaborationRouteFixture {
 	for _, table := range tables {
 		f.fx.Exec(t, "CREATE TABLE "+pgx.Identifier{table}.Sanitize()+" (LIKE "+pgx.Identifier{"public", table}.Sanitize()+" INCLUDING ALL)")
 	}
+	// LIKE does not copy triggers. Use the production allocator in this
+	// schema so native executions have the same serialized turn identities.
+	f.fx.Exec(t, `CREATE TRIGGER collaboration_run_leader_turn BEFORE INSERT OR UPDATE ON collaboration_run
+		FOR EACH ROW EXECUTE FUNCTION public.collaboration_assign_leader_turn()`)
 	f.fx.InsertNoID(t, "collaboration_execution_gate", testutil.Cols{"id": 1, "enabled": true, "creation_enabled": false}, "id=$1", 1)
 	owner, contributor := f.user(t, ""), f.user(t, "")
 	f.fx.UserID = owner
@@ -396,7 +400,7 @@ func TestCollaborationRuntimeOutcomeClientMatchesService(t *testing.T) {
 			}
 			f.managed.request(t, f.ownerToken, false, http.MethodGet, "/api/collaboration/issues/"+f.issue, nil, nil).Want(http.StatusOK).JSON(&detail)
 			execution := detail.Execution
-			if execution.ProtocolVersion != 4 || len(execution.Commands) != 1 || len(execution.Groups) != 1 || len(execution.Runs) != 1 ||
+			if execution.ProtocolVersion != 5 || len(execution.Commands) != 1 || len(execution.Groups) != 1 || len(execution.Runs) != 1 ||
 				execution.Commands[0].ChannelID != claim.Identity.ChannelID || execution.Commands[0].BatchID != claim.Identity.BatchID ||
 				execution.Groups[0].BatchID != claim.Identity.BatchID || execution.Runs[0].BatchID != claim.Identity.BatchID ||
 				execution.Runs[0].BusinessOutcome == nil || *execution.Runs[0].BusinessOutcome != outcome || execution.Runs[0].SettledAt != nil {
@@ -548,7 +552,7 @@ func TestCollaborationSingleAgentRuntimeRoutesLinux(t *testing.T) {
 		Execution service.CollaborationExecutionView `json:"execution"`
 	}
 	f.managed.request(t, f.ownerToken, false, http.MethodGet, "/api/collaboration/issues/"+f.issue, nil, nil).Want(http.StatusOK).JSON(&detail)
-	if detail.Execution.ProtocolVersion != 4 || len(detail.Execution.Groups) != 3 || len(detail.Execution.Runs) != 3 {
+	if detail.Execution.ProtocolVersion != 5 || len(detail.Execution.Groups) != 3 || len(detail.Execution.Runs) != 3 {
 		t.Fatal("returned input made retained execution history unreadable")
 	}
 	list, err = client.List(ctx, f.runtime)
@@ -602,36 +606,23 @@ func TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux(t *testing.T) {
 	squad := *f
 	squad.target = util.UUIDToString(registered.TargetID)
 	consentCollaborationRouteTarget(t, &squad)
-	var rejected service.CollaborationCommentReceipt
+	var comment service.CollaborationCommentReceipt
 	f.managed.request(t, f.contributorToken, false, http.MethodPost, "/api/collaboration/issues/"+f.issue+"/comments", map[string]any{
 		"content":                  "[@Squad](mention://squad/" + squadID + ") keep this squad input held",
 		"expected_lifecycle_epoch": "1", "expected_participant_epoch": "1", "expected_account_epoch": "1",
 		"target_versions": []map[string]string{{"target_id": squad.target, "expected_target_epoch": "1", "expected_config_version": "1"}},
-	}, nil).Want(http.StatusCreated).JSON(&rejected)
-	if len(rejected.Targets) != 1 {
-		t.Fatalf("squad mention lost its per-target refusal: code=%s targets=%d", rejected.Code, len(rejected.Targets))
+	}, nil).Want(http.StatusCreated).JSON(&comment)
+	if len(comment.Targets) != 1 {
+		t.Fatalf("squad mention lost its per-target receipt: code=%s targets=%d", comment.Code, len(comment.Targets))
 	}
-	squadResult := rejected.Targets[0]
+	held := comment.Targets[0]
 	holdReason := "missing"
-	if squadResult.HoldReason != nil {
-		holdReason = string(*squadResult.HoldReason)
+	if held.HoldReason != nil {
+		holdReason = string(*held.HoldReason)
 	}
-	if squadResult.State != "blocked" || squadResult.Code != "squad_execution_unavailable" || squadResult.CommandID.Valid ||
+	if held.State != "waiting" || held.Code != "command_queued" || !held.CommandID.Valid ||
 		holdReason != string(collaboration.HoldInitial) {
-		t.Fatalf("squad mention bypassed M09 admission or lost its hold: state=%s code=%s command_valid=%t hold=%s", squadResult.State, squadResult.Code, squadResult.CommandID.Valid, holdReason)
-	}
-	// Squad storage precedes public squad execution. Seed retained waiting work
-	// through the authorized internal queue service; keep the HTTP gate intact.
-	contributor := auth.WithAuthenticatedPrincipal(t.Context(), auth.AuthenticatedPrincipal{UserID: f.contributor, Kind: auth.CredentialJWT})
-	contributor = auth.WithPasswordSession(contributor, auth.PasswordSession{UserID: f.contributor, Version: 1, Kind: "jwt"})
-	held, err := service.NewCollaborationService(q, f.managed.pool, nil).SubmitCommand(contributor, service.CollaborationSubmitCommandParams{
-		CollaborationQueueRequest: service.CollaborationQueueRequest{IssueID: util.MustParseUUID(f.issue), RequestID: uuid.NewString(),
-			ExpectedLifecycleEpoch: 1, ExpectedParticipantEpoch: 1, ExpectedAccountEpoch: 1},
-		TargetID: registered.TargetID, InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: 1, ExpectedConfigVersion: 1,
-		Content: "retained squad input stays held",
-	})
-	if err != nil || held.Status != http.StatusCreated || !held.CommandID.Valid {
-		t.Fatalf("could not seed authorized held squad input: status=%d code=%s command_valid=%t err=%v", held.Status, held.Code, held.CommandID.Valid, err)
+		t.Fatalf("squad mention lost its waiting input or initial hold: state=%s code=%s command_valid=%t hold=%s", held.State, held.Code, held.CommandID.Valid, holdReason)
 	}
 	direct := f.comment(t, false, "only this direct input may reach the provider")
 	if held.ChannelID != direct.Targets[0].ChannelID || held.CommandSequence >= direct.Targets[0].CommandSequence {
@@ -685,7 +676,7 @@ func TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux(t *testing.T) {
 		Execution service.CollaborationExecutionView `json:"execution"`
 	}
 	f.managed.request(t, f.ownerToken, false, http.MethodGet, "/api/collaboration/issues/"+f.issue, nil, nil).Want(http.StatusOK).JSON(&detail)
-	if detail.Execution.ProtocolVersion != 4 || len(detail.Execution.Channels) != 1 || len(detail.Execution.Targets) != 2 ||
+	if detail.Execution.ProtocolVersion != 5 || len(detail.Execution.Channels) != 1 || len(detail.Execution.Targets) != 2 ||
 		len(detail.Execution.Commands) != 2 || len(detail.Execution.Groups) != 1 || len(detail.Execution.Groups[0].Inputs) != 1 ||
 		detail.Execution.Groups[0].Inputs[0].CommandID != util.UUIDToString(direct.Targets[0].CommandID) {
 		t.Fatal("held and consumed input history lost its shared channel projection")

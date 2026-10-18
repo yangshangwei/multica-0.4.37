@@ -25,7 +25,7 @@ func (q *Queries) AdvanceCollaborationWorkflowRevision(ctx context.Context, issu
 
 const cancelCollaborationAuthorWaitingCommands = `-- name: CancelCollaborationAuthorWaitingCommands :exec
 UPDATE collaboration_command SET state = 'cancelled', reason = $1::text
-WHERE session_id = $2::uuid AND author_user_id = $3::uuid AND state = 'waiting'
+WHERE session_id = $2::uuid AND author_user_id = $3::uuid AND state = 'waiting' AND group_id IS NULL
 `
 
 type CancelCollaborationAuthorWaitingCommandsParams struct {
@@ -299,7 +299,7 @@ UPDATE collaboration_run SET
     disposition_reason = CASE WHEN forced_disposition IS NULL THEN $1::text ELSE disposition_reason END,
     forced_disposition = COALESCE(forced_disposition, 'cancelled'),
     claim_generation = claim_generation + CASE WHEN progress_state = 'ending' AND forced_disposition IS NOT NULL THEN 0 ELSE 1 END, progress_state = 'ending'
-WHERE id = $2::uuid AND settled_at IS NULL RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment
+WHERE id = $2::uuid AND settled_at IS NULL RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn
 `
 
 type RequestCollaborationRunCancellationParams struct {
@@ -352,6 +352,8 @@ func (q *Queries) RequestCollaborationRunCancellation(ctx context.Context, arg R
 		&i.DeploymentID,
 		&i.ResourceOwnerUserID,
 		&i.Containment,
+		&i.PromptSnapshot,
+		&i.LeaderTurn,
 	)
 	return i, err
 }

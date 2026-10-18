@@ -25,6 +25,13 @@ grep -n "func IsReservedContentPath"    server/internal/skill/reserved.go
 
 ## Import endpoint and route
 
+Shared collaboration consent is part of the write boundary: migration
+`709_collaboration_skill_content_invalidation.up.sql` advances enabled bound
+agents' config epochs for body/file/release changes. `replaceSkillFiles` in
+`server/internal/handler/skill_files.go` preserves unchanged file IDs, and
+`SetAgentSkills` diffs bindings. Actual update/refresh/plugin and no-op behavior
+is covered by service/handler `collaboration_skill_invalidation_test.go`.
+
 | Behavior | File:line |
 |---|---|
 | `ImportSkill` handler (`POST /api/skills/import`) | `server/internal/handler/skill.go:1882` |

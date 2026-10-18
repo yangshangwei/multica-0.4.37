@@ -64,6 +64,7 @@ type collaborationWorkflowTx struct {
 	catalog   []db.IssueStatus
 	users     map[pgtype.UUID]db.User
 	operation db.CollaborationOperation
+	handoffID pgtype.UUID
 }
 
 func (t *collaborationWorkflowTx) result(code string, status int) CollaborationWorkflowReceipt {
@@ -216,6 +217,7 @@ func (t *collaborationWorkflowTx) handoff(ctx context.Context, h collaborationHa
 		return db.IssueHandoff{}, err
 	}
 	t.access.Issue = after
+	t.handoffID = created.ID
 	return created, nil
 }
 
@@ -283,6 +285,9 @@ func (t *collaborationWorkflowTx) finishWith(ctx context.Context, code string, t
 		return CollaborationWorkflowReceipt{}, err
 	}
 	event := map[string]any{"target_user_id": target, "receipt": receipt, "request_id": t.operation.RequestID}
+	if t.handoffID.Valid {
+		event["handoff_id"] = t.handoffID
+	}
 	for key, value := range facts {
 		event[key] = value
 	}

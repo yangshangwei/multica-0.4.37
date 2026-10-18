@@ -13,6 +13,7 @@ import (
 	"runtime"
 	"syscall"
 
+	"github.com/multica-ai/multica/server/internal/cli"
 	"golang.org/x/sys/unix"
 )
 
@@ -76,7 +77,15 @@ func NamespaceHelperMain() int {
 	}
 	cmd := exec.Command("/agent", request.Arguments...)
 	cmd.Dir = "/work"
-	cmd.Env = []string{"LANG=C", "HOME=/work", "TMPDIR=/tmp", "PATH=/", "MULTICA_COLLABORATION_TOKEN=" + request.BusinessToken, "MULTICA_COLLABORATION_SERVER=" + request.ServerURL}
+	var input ProviderInput
+	if decodeStrict(request.Input, &input) != nil {
+		return 125
+	}
+	runEnvironment, err := cli.CollaborationEnvironment(input.Identity, request.ServerURL, request.BusinessToken)
+	if err != nil {
+		return 125
+	}
+	cmd.Env = append([]string{"LANG=C", "HOME=/work", "TMPDIR=/tmp", "PATH=/"}, runEnvironment...)
 	cmd.Stdin = bytes.NewReader(request.Input)
 	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
 	if err := cmd.Start(); err != nil {

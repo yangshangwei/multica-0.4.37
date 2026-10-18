@@ -20,6 +20,7 @@ import (
 type CollaborationRunnerConfig struct {
 	RuntimeID        string   `json:"runtime_id"`
 	Executable       string   `json:"executable"`
+	CLIExecutable    string   `json:"cli_executable,omitempty"`
 	Arguments        []string `json:"arguments"`
 	LedgerDirectory  string   `json:"ledger_directory"`
 	SandboxDirectory string   `json:"sandbox_directory"`
@@ -37,6 +38,9 @@ func parseCollaborationRunnerConfig(raw string) (*CollaborationRunnerConfig, err
 	d.DisallowUnknownFields()
 	if d.Decode(&cfg) != nil || d.Decode(new(any)) != io.EOF || !managedUUID.MatchString(cfg.RuntimeID) || !filepath.IsAbs(cfg.Executable) || !filepath.IsAbs(cfg.LedgerDirectory) || !filepath.IsAbs(cfg.SandboxDirectory) {
 		return nil, errors.New("invalid collaboration runner configuration")
+	}
+	if cfg.CLIExecutable != "" && !filepath.IsAbs(cfg.CLIExecutable) {
+		return nil, errors.New("collaboration CLI executable must be an explicit absolute path")
 	}
 	return &cfg, nil
 }
@@ -98,7 +102,7 @@ func (d *Daemon) initializeCollaborationPoller(ctx context.Context) (*collaborat
 	if err != nil {
 		return nil, 0, err
 	}
-	p := &collaborationPoller{daemon: d, config: config, ledger: ledger, controller: &collaborationrun.NamespaceController{Executable: config.Executable, Directory: config.SandboxDirectory, Arguments: config.Arguments}, proofClient: proofClient}
+	p := &collaborationPoller{daemon: d, config: config, ledger: ledger, controller: &collaborationrun.NamespaceController{Executable: config.Executable, CLIExecutable: config.CLIExecutable, Directory: config.SandboxDirectory, Arguments: config.Arguments}, proofClient: proofClient}
 	reserved := 0
 	for _, entry := range retained {
 		if entry.Unconfirmed {

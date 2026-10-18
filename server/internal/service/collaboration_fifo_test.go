@@ -276,7 +276,14 @@ func TestCollaborationFIFOFullHeldStagingBatchDoesNotRejectDirectInput(t *testin
 	if direct.BatchID == held.BatchID {
 		t.Fatal("full staging batch should split before accepting more input")
 	}
-	f.resumeManaged(t)
+	// The internal squad runner is now supported. Preserve this scenario's
+	// explicit hold instead of relying on the old unsupported-runtime refusal.
+	f.fx.Exec(t, `UPDATE collaboration_target SET hold_reason='grant_required',hold_version=hold_version+1 WHERE id=$1`, squad.ID)
+	resume := managedTargetResume(t, f, f.targetID)
+	f.fx.Exec(t, `UPDATE collaboration_session SET queue_state='active' WHERE id=$1`, f.issue.SessionID)
+	if _, err = f.svc.ResumeQueue(f.ctx, resume); err != nil {
+		t.Fatal(err)
+	}
 	_, _, claim := f.claimManaged(t)
 	if len(claim.Inputs) != 1 || claim.Inputs[0].CommandID != util.UUIDToString(direct.CommandID) {
 		t.Fatal("held staging batch blocked the later direct input")
@@ -475,6 +482,7 @@ func TestCollaborationSwitchLeavesUnrelatedOldChannelRunUntouched(t *testing.T) 
 	f.submitManaged(t, f.creator, "direct agent is already working")
 	f.resumeManaged(t)
 	runID, _, claim := f.claimManaged(t)
+	f.fx.Exec(t, `UPDATE collaboration_target SET hold_reason='switch_hold',hold_version=hold_version+1 WHERE id=$1`, squad.ID)
 	input, err := f.svc.SubmitCommand(f.ctx, CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), TargetID: squad.ID,
 		InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: 1, ExpectedConfigVersion: 1, Content: "squad waits for Switch"})
 	if err != nil {

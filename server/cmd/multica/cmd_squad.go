@@ -462,6 +462,9 @@ parent issue, so record against the parent.`,
 }
 
 func runSquadActivity(cmd *cobra.Command, args []string) error {
+	if handled, err := runCollaborationCLI(cmd, args, "squad activity"); handled {
+		return err
+	}
 	issueID := args[0]
 	outcome := args[1]
 
@@ -550,6 +553,7 @@ func init() {
 
 	// activity
 	squadActivityCmd.Flags().String("reason", "", "Short explanation of the decision")
+	squadActivityCmd.Flags().String("request-id", "", "Collaboration write UUID; reuse with the unchanged command after an uncertain result")
 	squadActivityCmd.Flags().String("output", "table", "Output format: table or json")
 
 	squadMemberCmd.AddCommand(squadMemberListCmd)

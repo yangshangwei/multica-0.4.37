@@ -91,7 +91,7 @@ func TestCollaborationExecutionViewPreservesBatchAndChannelIdentity(t *testing.T
 	if err = json.Unmarshal(encoded, &wire); err != nil {
 		t.Fatal(err)
 	}
-	if wire.ProtocolVersion != 4 || len(wire.Commands) != 2 || len(wire.Groups) != 1 ||
+	if wire.ProtocolVersion != 5 || len(wire.Commands) != 2 || len(wire.Groups) != 1 ||
 		wire.Targets[0].ChannelID != util.UUIDToString(channelID) || wire.Commands[1].ChannelID != util.UUIDToString(channelID) ||
 		wire.Commands[1].BatchID != wire.Groups[0].BatchID || wire.Groups[0].BatchID != util.UUIDToString(batchID) ||
 		len(wire.Runs) != 1 || wire.Runs[0].ChannelID != util.UUIDToString(channelID) || wire.Runs[0].BatchID != util.UUIDToString(batchID) {

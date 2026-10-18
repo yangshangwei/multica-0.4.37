@@ -30,9 +30,12 @@ func collaborationAccountFence(t *testing.T, f *platformAdminFixture, user pgtyp
 // reads can escape this fixture's private schema through its public fallback.
 func collaborationAccountIssue(t *testing.T, f *platformAdminFixture, user pgtype.UUID) (pgtype.UUID, *CollaborationService) {
 	t.Helper()
-	for _, table := range []string{"workspace", "member", "issue", "issue_status", "issue_collaboration", "collaboration_session", "issue_participant", "collaboration_operation", "collaboration_event", "collaboration_command", "collaboration_target", "collaboration_channel", "collaboration_batch", "collaboration_execution_group", "collaboration_delegation", "collaboration_grant", "collaboration_run", "collaboration_termination", "collaboration_runtime_enrollment", "collaboration_runtime_reservation", "collaboration_attempt", "collaboration_business_capability", "agent", "agent_invocation_target", "squad", "squad_member", "installation_daemon_binding", "managed_installation"} {
+	for _, table := range []string{"workspace", "member", "issue", "issue_status", "issue_collaboration", "collaboration_session", "issue_participant", "collaboration_operation", "collaboration_event", "collaboration_command", "collaboration_target", "collaboration_channel", "collaboration_batch", "collaboration_execution_group", "collaboration_group_input", "collaboration_group_dependency", "collaboration_delegation", "collaboration_grant", "collaboration_run", "collaboration_termination", "collaboration_runtime_enrollment", "collaboration_runtime_reservation", "collaboration_attempt", "collaboration_business_capability", "agent", "agent_invocation_target", "squad", "squad_member", "installation_daemon_binding", "managed_installation"} {
 		f.fx.Exec(t, "CREATE TABLE "+pgx.Identifier{table}.Sanitize()+" (LIKE "+pgx.Identifier{"public", table}.Sanitize()+" INCLUDING ALL)")
 	}
+	// LIKE omits triggers; retain the production turn allocator in this schema.
+	f.fx.Exec(t, `CREATE TRIGGER collaboration_run_leader_turn BEFORE INSERT OR UPDATE ON collaboration_run
+		FOR EACH ROW EXECUTE FUNCTION public.collaboration_assign_leader_turn()`)
 	f.fx.WorkspaceID = f.fx.Workspace(t, "Private collaboration", "account-"+uuid.NewString())
 	f.fx.UserID = util.UUIDToString(user)
 	id := f.fx.Issue(t, "Retained command", testutil.Cols{"assignee_type": "member", "assignee_id": user, "admission_status": "not_required"})

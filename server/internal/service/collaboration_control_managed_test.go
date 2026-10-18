@@ -179,7 +179,11 @@ func TestCollaborationResumeAliasesKeepIndependentHolds(t *testing.T) {
 			}
 			p := CollaborationResumeQueueParams{CollaborationStopQueueParams: f.issueControl(t), ExpectedExecutionEpoch: f.gateEpoch}
 			r, err := f.svc.ResumeQueue(f.ctx, p)
-			if err != nil || r.Code != "partially_resumed" || r.QueueState != "active" || len(r.Targets) != 2 || len(r.Channels) != 1 {
+			expectedCode := "partially_resumed"
+			if scenario == "squad_head" {
+				expectedCode = "resumed"
+			}
+			if err != nil || r.Code != expectedCode || r.QueueState != "active" || len(r.Targets) != 2 || len(r.Channels) != 1 {
 				t.Fatalf("alias resume did not return both views of one channel: %+v %v", r, err)
 			}
 			for _, result := range r.Targets {
@@ -191,18 +195,18 @@ func TestCollaborationResumeAliasesKeepIndependentHolds(t *testing.T) {
 			for _, hold := range r.TargetHolds {
 				holds[hold.TargetID] = hold
 			}
-			directCode, squadCode := "hold_released", "squad_runtime_unavailable"
+			directCode, squadCode := "hold_released", "hold_released"
 			if scenario == "unused_revoked_squad" {
 				squadCode = "grant_required"
 			} else if scenario == "revoked_input_target" {
 				directCode = "grant_required"
 			}
-			if len(holds) != 2 || holds[f.targetID].Code != directCode || holds[squad.ID].Code != squadCode || holds[squad.ID].HoldReason == nil {
-				t.Fatalf("an alias erased another target's hold or bypassed unsupported squad execution: %+v", holds)
+			if len(holds) != 2 || holds[f.targetID].Code != directCode || holds[squad.ID].Code != squadCode || (holds[squad.ID].HoldReason != nil) != (squadCode != "hold_released") {
+				t.Fatalf("an alias erased another target's independent authorization hold: %+v", holds)
 			}
 			if r.Targets[0].ControlVersion != r.Targets[1].ControlVersion ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE session_id=$1`, f.issue.SessionID) != 0 {
-				t.Fatal("alias resume advanced the same channel twice or skipped a blocked head to execute work")
+				t.Fatal("alias resume advanced the same channel twice or launched work during Resume")
 			}
 		})
 	}

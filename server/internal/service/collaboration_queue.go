@@ -53,6 +53,7 @@ type CollaborationCancelCommandParams struct {
 type CollaborationQueueReceipt struct {
 	Status           int                                 `json:"status"`
 	Code             string                              `json:"code"`
+	Redacted         bool                                `json:"redacted,omitempty"`
 	IssueID          pgtype.UUID                         `json:"issue_id"`
 	RequestID        string                              `json:"request_id,omitempty"`
 	Action           string                              `json:"action,omitempty"`
@@ -60,6 +61,7 @@ type CollaborationQueueReceipt struct {
 	Scope            collaboration.ControlScope          `json:"scope"`
 	TargetID         pgtype.UUID                         `json:"target_id"`
 	GrantID          pgtype.UUID                         `json:"grant_id"`
+	ProposalID       pgtype.UUID                         `json:"proposal_id,omitempty"`
 	ChannelID        pgtype.UUID                         `json:"channel_id"`
 	BatchID          pgtype.UUID                         `json:"batch_id"`
 	CommandID        pgtype.UUID                         `json:"command_id"`
@@ -90,10 +92,12 @@ type collaborationQueueTx struct {
 	controlAction string
 	controlScope  collaboration.ControlScope
 	controlTarget pgtype.UUID
+	proposalID    pgtype.UUID
 }
 
 func (t *collaborationQueueTx) receipt(code string, status int) CollaborationQueueReceipt {
 	r := CollaborationQueueReceipt{Code: code, Status: status, IssueID: t.access.Issue.ID, RequestID: t.requestID, Action: t.controlAction,
+		ProposalID:      t.proposalID,
 		ProtocolVersion: collaboration.ExecutionProtocolVersion, Scope: collaboration.ControlIssue, QueueState: t.session.QueueState,
 		ControlVersion: t.session.ControlVersion, TargetSetVersion: t.session.TargetSetVersion,
 		Channels: []CollaborationChannelControlResult{}, TargetHolds: []CollaborationTargetHoldResult{}}
@@ -155,9 +159,20 @@ func (s *CollaborationService) CancelWaitingCommand(ctx context.Context, p Colla
 		if t.access.Revision != p.ExpectedCollaborationRevision {
 			return t.receipt("stale_revision", http.StatusConflict), nil
 		}
-		command, err = t.q.CancelWaitingCollaborationCommand(ctx, db.CancelWaitingCollaborationCommandParams{SessionID: t.session.ID, CommandID: p.CommandID, Reason: "cancelled_by_participant"})
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
+		if command.GroupID.Valid {
+			group, err := t.q.LockCollaborationRuntimeGroup(ctx, command.GroupID)
+			if err != nil {
+				return CollaborationQueueReceipt{}, err
+			}
+			if err = t.detachUnreadInput(ctx, group, command, "cancelled", "cancelled_by_participant"); err != nil {
+				return CollaborationQueueReceipt{}, err
+			}
+			command.State = "cancelled"
+		} else {
+			command, err = t.q.CancelWaitingCollaborationCommand(ctx, db.CancelWaitingCollaborationCommandParams{SessionID: t.session.ID, CommandID: p.CommandID, Reason: "cancelled_by_participant"})
+			if err != nil {
+				return CollaborationQueueReceipt{}, err
+			}
 		}
 		if err = t.q.CloseEmptyCollaborationBatches(ctx, t.session.ID); err != nil {
 			return CollaborationQueueReceipt{}, err
@@ -243,6 +258,19 @@ func rollbackCollaborationQueue(ctx context.Context, tx pgx.Tx) {
 func (s *CollaborationService) collaborationQueueMutationInTx(ctx context.Context, tx pgx.Tx, actor pgtype.UUID,
 	p CollaborationQueueRequest, kind, payloadHash string, payload any, mutate func(*collaborationQueueTx) (CollaborationQueueReceipt, error)) (CollaborationQueueReceipt, error) {
 	t := &collaborationQueueTx{q: s.Queries.WithTx(tx), actor: actor}
+	switch request := payload.(type) {
+	case CollaborationProposeSwitchParams:
+		t.controlTarget = request.TargetID
+	case CollaborationSwitchConsentParams:
+		t.controlTarget, t.proposalID = request.TargetID, request.ProposalID
+	case CollaborationRevokeSwitchConsentParams:
+		t.controlTarget, t.proposalID = request.TargetID, request.ProposalID
+	case CollaborationCommitSwitchParams:
+		t.controlTarget, t.proposalID = request.Control.TargetID, request.ProposalID
+	}
+	if t.controlTarget.Valid {
+		t.requestID, t.controlAction, t.controlScope = p.RequestID, kind, collaboration.ControlTarget
+	}
 	if kind == "stop_queue" || kind == "resume_queue" {
 		t.requestID, t.controlAction = p.RequestID, strings.TrimSuffix(kind, "_queue")
 		var control CollaborationStopQueueParams
@@ -256,6 +284,9 @@ func (s *CollaborationService) collaborationQueueMutationInTx(ctx context.Contex
 		if control.Scope == collaboration.ControlTarget && len(control.Targets) == 1 {
 			t.controlTarget = control.Targets[0].TargetID
 		}
+	}
+	if kind == "cancel_command" {
+		t.requestID, t.controlAction = p.RequestID, kind
 	}
 	// Pre-read only discovers the source workspace; all authority is re-read
 	// after the actor, source issue/session and participant locks are held.
@@ -271,7 +302,7 @@ func (s *CollaborationService) collaborationQueueMutationInTx(ctx context.Contex
 	if _, err = t.q.LockCollaborationUsers(ctx, ids); err != nil {
 		return CollaborationQueueReceipt{}, err
 	}
-	if kind == "resume_queue" {
+	if kind == "resume_queue" || kind == "submit_command" {
 		// Every active-state write retains the shared gate fence until commit.
 		t.gate, err = t.q.LockCollaborationGateShared(ctx)
 		if err != nil {

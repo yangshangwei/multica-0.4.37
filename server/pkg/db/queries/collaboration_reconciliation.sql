@@ -100,7 +100,7 @@ UPDATE collaboration_command SET state = 'cancelled', reason = sqlc.arg(reason):
 WHERE session_id = sqlc.arg(session_id)::uuid
   AND author_user_id = sqlc.arg(user_id)::uuid
   AND author_auth_epoch < sqlc.arg(account_epoch)::bigint
-  AND state = 'waiting';
+  AND state = 'waiting' AND group_id IS NULL;
 
 -- name: RevokeObsoleteCollaborationOwnerGrants :execrows
 UPDATE collaboration_grant SET epoch = epoch + 1, revoked_at = now(), revocation_reason = sqlc.arg(reason)::text

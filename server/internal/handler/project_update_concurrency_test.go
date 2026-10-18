@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"errors"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
@@ -30,6 +31,7 @@ func (s progressTxStarter) Begin(ctx context.Context) (pgx.Tx, error) {
 type progressHookTx struct {
 	pgx.Tx
 	afterQuery   func(string)
+	afterRow     func(string, error)
 	beforeQuery  func(string)
 	beforeExec   func(string)
 	queryFailure func(string) error
@@ -37,6 +39,18 @@ type progressHookTx struct {
 type progressErrorRow struct{ err error }
 
 func (r progressErrorRow) Scan(...any) error { return r.err }
+
+type progressObservedRow struct {
+	pgx.Row
+	after func(error)
+}
+
+func (r progressObservedRow) Scan(dest ...any) error {
+	err := r.Row.Scan(dest...)
+	r.after(err)
+	return err
+}
+
 func (tx progressHookTx) QueryRow(ctx context.Context, sql string, args ...any) pgx.Row {
 	if tx.beforeQuery != nil {
 		tx.beforeQuery(sql)
@@ -49,6 +63,9 @@ func (tx progressHookTx) QueryRow(ctx context.Context, sql string, args ...any) 
 	row := tx.Tx.QueryRow(ctx, sql, args...)
 	if tx.afterQuery != nil {
 		tx.afterQuery(sql)
+	}
+	if tx.afterRow != nil {
+		return progressObservedRow{Row: row, after: func(err error) { tx.afterRow(sql, err) }}
 	}
 	return row
 }
@@ -527,36 +544,37 @@ func TestProjectUpdateEvidenceGrantRevocationRestartsRRAuthorization(t *testing.
 	if _, e = tx.Exec(ctx, "DELETE FROM agent_invocation_target WHERE agent_id=$1 AND target_id=$2", agent, user); e != nil {
 		t.Fatal(e)
 	}
-	reached := make(chan struct{})
+	reached := false
+	attempts := 0
 	var once sync.Once
 	h := *testHandler
-	h.TxStarter = progressTxStarter{base: testHandler.TxStarter, wrap: func(tx pgx.Tx) pgx.Tx {
-		return progressHookTx{Tx: tx, afterQuery: func(sql string) {
-			if strings.Contains(sql, "-- name: LockProjectUpdateEvidenceTargets") {
-				once.Do(func() { close(reached) })
+	h.TxStarter = progressTxStarter{base: testHandler.TxStarter, wrap: func(current pgx.Tx) pgx.Tx {
+		attempts++
+		return progressHookTx{Tx: current, afterRow: func(sql string, readErr error) {
+			// Revocation now also locks/updates the parent agent. Release it
+			// at this earlier conflict; the next RR attempt must reauthorize.
+			if strings.Contains(sql, "-- name: LockProjectUpdateEvidenceAgent ") {
+				once.Do(func() {
+					reached = true
+					var busy *pgconn.PgError
+					if !errors.As(readErr, &busy) || busy.Code != "55P03" {
+						t.Errorf("revocation did not block the agent locking read: %v", readErr)
+					}
+					if err := tx.Commit(ctx); err != nil {
+						t.Error(err)
+					}
+				})
 			}
 		}}
 	}}
-	done := make(chan int, 1)
-	go func() {
-		req := testutil.WithURLParams(request().WithContext(ctx), "id", p)
-		done <- testutil.Call(t, h.PreviewProjectUpdate, req).Code
-	}()
-	select {
-	case <-reached:
-	case <-ctx.Done():
-		t.Fatal("evidence grant locking read was not reached")
+	req := testutil.WithURLParams(request().WithContext(ctx), "id", p)
+	testutil.Call(t, h.PreviewProjectUpdate, req).Want(http.StatusForbidden)
+	if !reached || attempts < 2 {
+		t.Fatalf("evidence authorization did not restart its RR snapshot: reached=%t attempts=%d", reached, attempts)
 	}
-	if e = tx.Commit(ctx); e != nil {
-		t.Fatal(e)
-	}
-	select {
-	case status := <-done:
-		if status != 403 {
-			t.Fatalf("revoked grant status=%d", status)
-		}
-	case <-ctx.Done():
-		t.Fatal("grant retry stalled")
+	if dbfx.Count(t, "SELECT count(*) FROM agent_invocation_target WHERE agent_id=$1 AND target_id=$2", agent, user) != 0 ||
+		dbfx.Count(t, "SELECT count(*) FROM project_update WHERE project_id=$1", p) != 0 {
+		t.Fatal("revoked evidence retained permission or published a project update")
 	}
 }
 

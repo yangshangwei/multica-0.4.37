@@ -23,10 +23,11 @@ func TestCollaborationRegisteredTargetExecutionProjection(t *testing.T) {
 			ControlAI     bool `json:"control_ai"`
 			SubmitCommand bool `json:"submit_command"`
 		} `json:"capabilities"`
+		WriteContext *struct{} `json:"write_context"`
 	}
 	f.managed.request(t, f.ownerToken, false, http.MethodGet, path, nil, nil).Want(http.StatusOK).JSON(&out)
-	if out.Execution.ProtocolVersion != 4 || len(out.Execution.Targets) != 1 || len(out.Execution.Channels) != 1 || !out.Capabilities.Read ||
-		out.Capabilities.ControlAI || out.Capabilities.SubmitCommand || out.Execution.Availability != "unavailable" {
+	if out.Execution.ProtocolVersion != 5 || len(out.Execution.Targets) != 1 || len(out.Execution.Channels) != 1 || !out.Capabilities.Read ||
+		!out.Capabilities.ControlAI || out.WriteContext == nil || out.Capabilities.SubmitCommand || out.Execution.Availability != "unavailable" {
 		t.Fatalf("registered target lost its authorized, gated projection: %+v", out)
 	}
 	target, channel := out.Execution.Targets[0], out.Execution.Channels[0]
@@ -42,6 +43,13 @@ func TestCollaborationRegisteredTargetExecutionProjection(t *testing.T) {
 		len(out.Execution.Groups) != 0 || len(out.Execution.Runs) != 0 || out.Execution.Targets[0].HoldVersion != target.HoldVersion ||
 		out.Execution.Commands[0].GroupID != nil || out.Execution.Channels[0].NextCommandSeq != "2" {
 		t.Fatalf("registered target input became unreadable or changed execution intent: %+v", out.Execution)
+	}
+	reader := f.managed.user(t, "")
+	f.managed.fx.Member(t, f.managed.fx.WorkspaceID, reader, "member")
+	out.WriteContext = nil
+	f.managed.request(t, platformRouterJWT(t, reader, nil), false, http.MethodGet, path, nil, nil).Want(http.StatusOK).JSON(&out)
+	if !out.Capabilities.Read || out.Capabilities.ControlAI || out.Capabilities.SubmitCommand || out.WriteContext != nil {
+		t.Fatalf("source-only reader acquired participant controls: %+v", out)
 	}
 	// A fixture fix must not weaken the real read boundary for corrupt mirrors.
 	f.managed.fx.Exec(t, `UPDATE collaboration_target SET pause_reason='inconsistent_fixture' WHERE id=$1`, f.target)

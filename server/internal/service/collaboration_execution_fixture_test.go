@@ -180,6 +180,39 @@ func seedCollaborationGroupRun(t *testing.T, fx *testutil.Fixture, session pgtyp
 		"target_epoch": target.TargetEpoch, "config_version": target.ConfigVersion, "roster": encoded,
 		"channel_id": batch.ChannelID, "batch_id": batch.ID,
 	}))
+	// Synthetic promotion retains the same dependency identities as the real
+	// promotion writer, including each separate input in a merged batch.
+	for _, input := range inputs {
+		if input.State != "waiting" {
+			continue
+		}
+		var inputTarget db.CollaborationTarget
+		for _, item := range targets {
+			if item.ID == input.TargetID {
+				inputTarget = item
+			}
+		}
+		inputGrants, err := q.ListCollaborationTargetGrants(t.Context(), input.TargetID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		frozen := []collaborationFrozenGrant{}
+		for _, grant := range inputGrants {
+			if !grant.RevokedAt.Valid && grant.ConfigVersion.Int64 == inputTarget.ConfigVersion && grant.TargetEpoch.Int64 == inputTarget.TargetEpoch {
+				frozen = append(frozen, freezeCollaborationGrant(grant))
+			}
+		}
+		encoded, err := json.Marshal(frozen)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err = q.CreateCollaborationGroupDependency(t.Context(), db.CreateCollaborationGroupDependencyParams{GroupID: group, CommandID: input.ID,
+			TargetID: inputTarget.ID, TargetEpoch: inputTarget.TargetEpoch, ConfigVersion: inputTarget.ConfigVersion,
+			ConfigurationFingerprint: inputTarget.ConfigurationFingerprint.String, Grants: encoded}); err != nil {
+			t.Fatal(err)
+		}
+	}
+	fx.Cleanup(t, `DELETE FROM collaboration_group_dependency WHERE group_id=$1`, group)
 	id := util.MustParseUUID(fx.Insert(t, "collaboration_run", testutil.Cols{
 		"session_id": session, "command_id": command.CommandID, "target_id": target.ID, "group_id": group,
 		"step_key": "root", "step_kind": root.Role.String, "agent_id": root.AgentID,

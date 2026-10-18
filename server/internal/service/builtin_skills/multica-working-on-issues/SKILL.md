@@ -18,10 +18,14 @@ Every contract below is traced to source in
 
 ## Collaboration tasks require their own workflow
 
-Creation and client execution remain disabled. Unknown protocols and
+Creation and new client execution remain gated. Unknown protocols and
 `unsupported_collaboration_action` must never fall back to ordinary execution.
 Machine credentials and source membership alone grant no collaboration control.
-For shared input ordering, holds, proof and original-key recovery, read
+Inside an admitted collaboration run, the existing issue read/comment and squad
+activity commands use its narrow business context. Comment and activity writes
+require an explicit `--request-id`; retain the same UUID and payload after an
+uncertain result. For the supported command surface, shared input ordering,
+holds, proof and original-key recovery, read
 `references/collaboration-workflow.md` before acting. Ordinary rules below
 are not the shared APIs.
 

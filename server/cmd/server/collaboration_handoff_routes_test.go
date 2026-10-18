@@ -134,9 +134,9 @@ func TestCollaborationHandoffRoutesReturnInformationAndSubmitAcceptance(t *testi
 		accepted["session"].(map[string]any)["queue_state"] != "paused" || caps(accepted)["complete"] != true {
 		t.Fatalf("acceptance did not hand the open issue to the creator: %v", accepted)
 	}
-	// Human participation survives the handoff. The v2 HTTP projection keeps
-	// execution controls unavailable until their runtime protocol is delivered.
-	if developerView := detail(developerToken); caps(developerView)["comment"] != true || caps(developerView)["control_ai"] != false || caps(developerView)["transfer"] != false {
+	// Human participation and scoped controls survive an ordinary handoff.
+	// Public execution submission remains independently gated.
+	if developerView := detail(developerToken); caps(developerView)["comment"] != true || caps(developerView)["control_ai"] != true || caps(developerView)["submit_command"] != false || caps(developerView)["transfer"] != false {
 		t.Fatalf("former handler collaboration rights: %v", developerView["capabilities"])
 	}
 	if fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE session_id=$1 AND state='waiting'`, session) != 1 ||

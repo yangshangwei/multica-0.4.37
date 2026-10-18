@@ -38,7 +38,7 @@ UPDATE collaboration_command SET state = 'cancelled', reason = $1::text
 WHERE session_id = $2::uuid
   AND author_user_id = $3::uuid
   AND author_auth_epoch < $4::bigint
-  AND state = 'waiting'
+  AND state = 'waiting' AND group_id IS NULL
 `
 
 type CancelObsoleteCollaborationAuthorCommandsParams struct {

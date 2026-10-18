@@ -1395,6 +1395,9 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	// These purpose-bound capabilities outlive ordinary account/daemon
 	// revocation only for their own run. Never wrap them in ordinary Auth.
 	r.Post("/api/collaboration/runtime/runs/{runId}/outcome", h.RecordCollaborationRuntimeOutcome)
+	r.Get("/api/collaboration/runtime/runs/{runId}/context", h.GetCollaborationRuntimeContext)
+	r.Post("/api/collaboration/runtime/runs/{runId}/comments", h.CreateCollaborationRuntimeComment)
+	r.Post("/api/collaboration/runtime/runs/{runId}/squad-activity", h.RecordCollaborationRuntimeSquadActivity)
 	r.Get("/api/collaboration/runtime/runs/{runId}/stop-intent", h.GetCollaborationRuntimeStopIntent)
 	r.Post("/api/collaboration/runtime/runs/{runId}/proof", h.AcceptCollaborationRuntimeProof)
 	r.Group(func(r chi.Router) {
@@ -1623,6 +1626,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		// Public collaboration creation remains unregistered until all workflow
 		// and runtime guards are ready. These routes use object/account authority.
 		r.Get("/api/collaboration/issues/{id}", h.GetCollaborationIssue)
+		r.Get("/api/collaboration/issues/{id}/activity", h.ListCollaborationActivity)
 		r.Get("/api/collaboration/creations/{requestId}", h.GetCollaborationCreation)
 		r.Post("/api/collaboration/recipients/resolve", h.ResolveCollaborationRecipient)
 		r.Post("/api/collaboration/issues/{id}/participants", h.InviteCollaborationParticipant)
@@ -1636,10 +1640,18 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Get("/api/collaboration/issues/{id}/field-options", h.GetCollaborationFieldOptions)
 		r.Post("/api/collaboration/issues/{id}/targets", h.RegisterCollaborationTarget)
 		r.Post("/api/collaboration/issues/{id}/targets/{targetId}/consents", h.ConsentCollaborationTarget)
-		r.Post("/api/collaboration/issues/{id}/targets/{targetId}/runtime-binding", h.ReconfigureCollaborationTarget)
+		r.Post("/api/collaboration/issues/{id}/targets/{targetId}/switch-proposals", h.ProposeCollaborationTargetSwitch)
+		r.Get("/api/collaboration/issues/{id}/targets/{targetId}/switch-proposals", h.ListCollaborationTargetSwitchProposals)
+		r.Get("/api/collaboration/issues/{id}/targets/{targetId}/switch-proposals/{proposalId}", h.GetCollaborationTargetSwitchProposal)
+		r.Post("/api/collaboration/issues/{id}/targets/{targetId}/switch-proposals/{proposalId}/consents", h.ConsentCollaborationTargetSwitch)
+		r.Post("/api/collaboration/issues/{id}/targets/{targetId}/switch-proposals/{proposalId}/consents/{agentId}/revoke", h.RevokeCollaborationTargetSwitchConsent)
+		r.Post("/api/collaboration/issues/{id}/targets/{targetId}/switch-proposals/{proposalId}/commit", h.CommitCollaborationTargetSwitch)
+		r.Get("/api/collaboration/issues/{id}/switch/operations/{requestId}", h.GetCollaborationSwitchOperation)
 		r.Post("/api/collaboration/issues/{id}/grants/{grantId}/revoke", h.RevokeCollaborationGrant)
 		r.Post("/api/collaboration/issues/{id}/control", h.ControlCollaborationIssue)
 		r.Get("/api/collaboration/issues/{id}/control/operations/{requestId}", h.GetCollaborationControlOperation)
+		r.Post("/api/collaboration/issues/{id}/commands/{commandId}/cancel", h.CancelCollaborationWaitingCommand)
+		r.Get("/api/collaboration/issues/{id}/commands/operations/{requestId}", h.GetCollaborationCommandOperation)
 		r.Get("/api/collaboration/issues/{id}/comments", h.ListCollaborationComments)
 		r.Post("/api/collaboration/issues/{id}/comments", h.CreateCollaborationComment)
 		r.Get("/api/collaboration/issues/{id}/comments/operations/{requestId}", h.GetCollaborationCommentOperation)

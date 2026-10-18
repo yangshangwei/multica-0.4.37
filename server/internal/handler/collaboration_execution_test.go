@@ -121,15 +121,15 @@ func TestCollaborationExecutionHTTPProjection(t *testing.T) {
 	var out CollaborationIssueResponse
 	response := testutil.Call(t, testHandler.GetCollaborationIssue, r).Want(http.StatusOK).JSON(&out)
 	execution := out.Execution
-	if execution.ProtocolVersion != 4 || execution.IssueID != ids.issue || execution.SessionID != ids.session || execution.TargetSetVersion != "9007199254740999" ||
+	if execution.ProtocolVersion != 5 || execution.IssueID != ids.issue || execution.SessionID != ids.session || execution.TargetSetVersion != "9007199254740999" ||
 		execution.Control.Scope != "issue" || execution.Control.ControlVersion != out.Session.ControlVersion || execution.Control.QueueState != out.Session.QueueState {
 		t.Fatalf("execution did not carry the exact issue/control snapshot: %+v", execution)
 	}
 	if execution.Availability != "unavailable" || execution.UnavailableReason != "shared_runtime_unavailable" || out.Capabilities.ControlAI || out.Capabilities.SubmitCommand || !out.Capabilities.Comment {
 		t.Fatalf("foundation projection exposed execution or lost human comments: %+v", out)
 	}
-	// These historical fixtures have no grants or live runtime rows. The mask
-	// reflects missing public protocol support, not a grant requirement for Stop.
+	// This historical viewer has no account fence/write context. Its internal
+	// participation alone cannot provide the observed authority needed by controls.
 	access, err := service.NewCollaborationService(testHandler.Queries, testHandler.TxStarter, testHandler.IssueService).ResolveIssueAccess(r.Context(), nil, parseUUID(ids.issue))
 	if err != nil || !access.Capabilities.ControlAI || !access.Capabilities.SubmitCommand {
 		t.Fatalf("read availability masking changed internal participant authority: %+v, %v", access.Capabilities, err)

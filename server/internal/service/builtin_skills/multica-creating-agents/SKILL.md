@@ -423,6 +423,12 @@ at compile time and loaded from `SKILL.md` + sibling files. Both reach the
 provider as skill content — which is why capability belongs in a bound skill,
 not pasted into `instructions`.
 
+For shared collaboration targets, changes to enabled skill bindings, skill body,
+supporting files or release identity invalidate old resource consent. Affected
+targets remain held until fresh owner consent and explicit Resume. Repeating an
+identical binding set or bundle preserves consent; keeping a skill ID alone does
+not authorize changed instructions.
+
 ## Side effects needing approval
 
 Read-only (safe): `agent get`, `agent skills list`, `agent env get`.

@@ -38,7 +38,7 @@ WHERE r.runtime_id=$1 AND r.binding_id=$2 AND r.settled_at IS NULL AND r.forced_
   AND NOT EXISTS (SELECT 1 FROM collaboration_command c
       LEFT JOIN collaboration_target dependency ON dependency.id=c.target_id AND dependency.session_id=c.session_id
       WHERE c.batch_id=r.batch_id AND c.state='in_flight' AND (dependency.id IS NULL OR dependency.hold_reason IS NOT NULL))
-ORDER BY r.created_at,r.id LIMIT 16;
+ORDER BY CASE WHEN r.step_kind='continuation' THEN 1 ELSE 0 END,r.created_at,r.id LIMIT 16;
 
 -- name: ListCollaborationRuntimeWaitingTargets :many
 SELECT DISTINCT t.id,t.session_id,s.issue_id FROM collaboration_target t
@@ -46,7 +46,7 @@ JOIN collaboration_session s ON s.id=t.session_id
 JOIN collaboration_channel ch ON ch.id=t.channel_id
 JOIN collaboration_command c ON c.channel_id=ch.id AND c.target_id=t.id AND c.state='waiting' AND c.group_id IS NULL
 JOIN collaboration_grant g ON g.target_id=t.id AND g.config_version=t.config_version AND g.target_epoch=t.target_epoch AND g.revoked_at IS NULL
-WHERE t.kind='agent' AND t.hold_reason IS NULL AND g.runtime_id=$1 AND g.binding_id=$2 AND s.queue_state='active' AND ch.queue_state='active'
+WHERE g.role IN ('agent','leader') AND t.hold_reason IS NULL AND g.runtime_id=$1 AND g.binding_id=$2 AND s.queue_state='active' AND ch.queue_state='active'
 ORDER BY s.issue_id,t.id LIMIT 16;
 
 -- M09 uses exclusive namespace occupancy because no authoritative server-side
@@ -69,7 +69,7 @@ VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *;
 INSERT INTO collaboration_run(session_id,target_id,group_id,command_id,step_key,step_kind,agent_id,target_epoch,config_version,
     grant_id,grant_epoch,resource_epoch,execution_workspace_id,runtime_id,installation_id,binding_id,binding_epoch,
     channel_id,batch_id,deployment_id,resource_owner_user_id,progress_state)
-VALUES(sqlc.arg(session_id)::uuid,sqlc.arg(target_id)::uuid,sqlc.arg(group_id)::uuid,sqlc.arg(command_id)::uuid,'root','agent',
+VALUES(sqlc.arg(session_id)::uuid,sqlc.arg(target_id)::uuid,sqlc.arg(group_id)::uuid,sqlc.arg(command_id)::uuid,'root',sqlc.arg(step_kind)::text,
     sqlc.arg(agent_id)::uuid,sqlc.arg(target_epoch)::bigint,sqlc.arg(config_version)::bigint,sqlc.arg(grant_id)::uuid,sqlc.arg(grant_epoch)::bigint,
     sqlc.arg(resource_epoch)::bigint,sqlc.arg(execution_workspace_id)::uuid,sqlc.arg(runtime_id)::uuid,sqlc.arg(installation_id)::uuid,
     sqlc.arg(binding_id)::uuid,sqlc.arg(binding_epoch)::bigint,sqlc.arg(channel_id)::uuid,sqlc.arg(batch_id)::uuid,
@@ -161,12 +161,15 @@ WHERE id=$1 AND queue_state<>'closed' RETURNING *;
 
 -- name: SettleCollaborationProvenGroup :one
 UPDATE collaboration_execution_group g SET settled_at=now(),
-    state=COALESCE(g.forced_disposition,CASE WHEN EXISTS(SELECT 1 FROM collaboration_run r WHERE r.group_id=g.id AND r.step_kind='agent' AND r.business_outcome='success')
-        AND NOT EXISTS(SELECT 1 FROM collaboration_run r WHERE r.group_id=g.id AND r.business_outcome IS DISTINCT FROM 'success') THEN 'succeeded' ELSE 'failed' END)
+    state=COALESCE(g.forced_disposition,CASE WHEN (
+        SELECT r.business_outcome FROM collaboration_run r WHERE r.group_id=g.id AND r.step_kind IN ('agent','leader','continuation')
+        ORDER BY r.leader_turn DESC NULLS LAST LIMIT 1
+    )='success' THEN 'succeeded' ELSE 'failed' END)
 WHERE g.id=$1 AND g.settled_at IS NULL AND g.expansion_sealed_at IS NOT NULL
   AND EXISTS(SELECT 1 FROM collaboration_run r WHERE r.group_id=g.id)
   AND NOT EXISTS(SELECT 1 FROM collaboration_run r WHERE r.group_id=g.id AND (
       r.settled_at IS NULL OR r.proof_state NOT IN ('never_launched_proven','exited_proven') OR r.sealed_attempt_seq IS NULL OR r.sealed_attempt_seq<r.authorized_attempt_seq
+      OR r.step_kind IN ('agent','leader','continuation') AND r.leader_turn IS NULL
       OR r.session_id<>g.session_id OR r.target_id<>g.target_id OR r.command_id<>g.command_id
       OR r.channel_id IS DISTINCT FROM g.channel_id OR r.batch_id IS DISTINCT FROM g.batch_id))
   AND NOT EXISTS(SELECT 1 FROM collaboration_delegation d WHERE d.group_id=g.id AND d.state NOT IN ('settled','cancelled'))

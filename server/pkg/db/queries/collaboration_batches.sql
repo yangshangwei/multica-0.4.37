@@ -79,7 +79,7 @@ SELECT i.* FROM collaboration_group_input i JOIN collaboration_execution_group g
 WHERE g.session_id=$1 ORDER BY i.group_id,i.seq,i.command_id;
 
 -- name: ReturnNeverLaunchedCollaborationInput :one
-UPDATE collaboration_command c SET state='waiting',reason='never_launched',group_id=NULL,batch_id=sqlc.arg(batch_id)::uuid
+UPDATE collaboration_command c SET state=sqlc.arg(state)::text,reason=sqlc.arg(reason)::text,group_id=NULL,batch_id=sqlc.arg(batch_id)::uuid
 WHERE c.id=sqlc.arg(command_id)::uuid AND c.state='in_flight' AND c.group_id=sqlc.arg(group_id)::uuid
 RETURNING c.*;
 

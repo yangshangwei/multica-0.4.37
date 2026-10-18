@@ -184,7 +184,7 @@ func (q *Queries) GetCollaborationCommandInput(ctx context.Context, arg GetColla
 }
 
 const getCollaborationExecutionGroup = `-- name: GetCollaborationExecutionGroup :one
-SELECT id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at, channel_id, batch_id FROM collaboration_execution_group WHERE session_id = $1 AND id = $2
+SELECT id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at, channel_id, batch_id, wake_pending, wake_parent_run_id, next_leader_turn FROM collaboration_execution_group WHERE session_id = $1 AND id = $2
 `
 
 type GetCollaborationExecutionGroupParams struct {
@@ -212,6 +212,9 @@ func (q *Queries) GetCollaborationExecutionGroup(ctx context.Context, arg GetCol
 		&i.SettledAt,
 		&i.ChannelID,
 		&i.BatchID,
+		&i.WakePending,
+		&i.WakeParentRunID,
+		&i.NextLeaderTurn,
 	)
 	return i, err
 }
@@ -280,7 +283,7 @@ func (q *Queries) ListCollaborationCommands(ctx context.Context, sessionID pgtyp
 }
 
 const listCollaborationExecutionGroups = `-- name: ListCollaborationExecutionGroups :many
-SELECT id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at, channel_id, batch_id FROM collaboration_execution_group WHERE session_id = $1 ORDER BY target_id, generation
+SELECT id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at, channel_id, batch_id, wake_pending, wake_parent_run_id, next_leader_turn FROM collaboration_execution_group WHERE session_id = $1 ORDER BY target_id, generation
 `
 
 func (q *Queries) ListCollaborationExecutionGroups(ctx context.Context, sessionID pgtype.UUID) ([]CollaborationExecutionGroup, error) {
@@ -309,6 +312,9 @@ func (q *Queries) ListCollaborationExecutionGroups(ctx context.Context, sessionI
 			&i.SettledAt,
 			&i.ChannelID,
 			&i.BatchID,
+			&i.WakePending,
+			&i.WakeParentRunID,
+			&i.NextLeaderTurn,
 		); err != nil {
 			return nil, err
 		}
@@ -321,7 +327,7 @@ func (q *Queries) ListCollaborationExecutionGroups(ctx context.Context, sessionI
 }
 
 const listCollaborationRuns = `-- name: ListCollaborationRuns :many
-SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment FROM collaboration_run WHERE session_id = $1 ORDER BY created_at, id
+SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn FROM collaboration_run WHERE session_id = $1 ORDER BY created_at, id
 `
 
 func (q *Queries) ListCollaborationRuns(ctx context.Context, sessionID pgtype.UUID) ([]CollaborationRun, error) {
@@ -373,6 +379,8 @@ func (q *Queries) ListCollaborationRuns(ctx context.Context, sessionID pgtype.UU
 			&i.DeploymentID,
 			&i.ResourceOwnerUserID,
 			&i.Containment,
+			&i.PromptSnapshot,
+			&i.LeaderTurn,
 		); err != nil {
 			return nil, err
 		}
@@ -428,7 +436,7 @@ func (q *Queries) ListCollaborationTargets(ctx context.Context, sessionID pgtype
 }
 
 const lockCollaborationGroupDelegations = `-- name: LockCollaborationGroupDelegations :many
-SELECT id, group_id, parent_run_id, request_key, payload_hash, phase_key, members, continuation_key, state, disposition_reason, created_at FROM collaboration_delegation WHERE group_id = $1 ORDER BY id FOR UPDATE
+SELECT id, group_id, parent_run_id, request_key, payload_hash, phase_key, members, continuation_key, state, disposition_reason, created_at, source_comment_id, member_agent_id, run_id FROM collaboration_delegation WHERE group_id = $1 ORDER BY id FOR UPDATE
 `
 
 func (q *Queries) LockCollaborationGroupDelegations(ctx context.Context, groupID pgtype.UUID) ([]CollaborationDelegation, error) {
@@ -452,6 +460,9 @@ func (q *Queries) LockCollaborationGroupDelegations(ctx context.Context, groupID
 			&i.State,
 			&i.DispositionReason,
 			&i.CreatedAt,
+			&i.SourceCommentID,
+			&i.MemberAgentID,
+			&i.RunID,
 		); err != nil {
 			return nil, err
 		}
@@ -464,7 +475,7 @@ func (q *Queries) LockCollaborationGroupDelegations(ctx context.Context, groupID
 }
 
 const lockCollaborationGroupRuns = `-- name: LockCollaborationGroupRuns :many
-SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment FROM collaboration_run WHERE group_id = $1 ORDER BY id FOR UPDATE
+SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn FROM collaboration_run WHERE group_id = $1 ORDER BY id FOR UPDATE
 `
 
 func (q *Queries) LockCollaborationGroupRuns(ctx context.Context, groupID pgtype.UUID) ([]CollaborationRun, error) {
@@ -516,6 +527,8 @@ func (q *Queries) LockCollaborationGroupRuns(ctx context.Context, groupID pgtype
 			&i.DeploymentID,
 			&i.ResourceOwnerUserID,
 			&i.Containment,
+			&i.PromptSnapshot,
+			&i.LeaderTurn,
 		); err != nil {
 			return nil, err
 		}
@@ -619,7 +632,7 @@ func (q *Queries) LockCollaborationTargets(ctx context.Context, sessionID pgtype
 }
 
 const lockCollaborationUnsettledGroups = `-- name: LockCollaborationUnsettledGroups :many
-SELECT id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at, channel_id, batch_id FROM collaboration_execution_group WHERE session_id = $1 AND settled_at IS NULL
+SELECT id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at, channel_id, batch_id, wake_pending, wake_parent_run_id, next_leader_turn FROM collaboration_execution_group WHERE session_id = $1 AND settled_at IS NULL
 ORDER BY target_id, id FOR UPDATE
 `
 
@@ -649,6 +662,9 @@ func (q *Queries) LockCollaborationUnsettledGroups(ctx context.Context, sessionI
 			&i.SettledAt,
 			&i.ChannelID,
 			&i.BatchID,
+			&i.WakePending,
+			&i.WakeParentRunID,
+			&i.NextLeaderTurn,
 		); err != nil {
 			return nil, err
 		}
@@ -661,7 +677,7 @@ func (q *Queries) LockCollaborationUnsettledGroups(ctx context.Context, sessionI
 }
 
 const lockCollaborationUnsettledRuns = `-- name: LockCollaborationUnsettledRuns :many
-SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment FROM collaboration_run WHERE session_id = $1 AND settled_at IS NULL
+SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn FROM collaboration_run WHERE session_id = $1 AND settled_at IS NULL
 ORDER BY group_id, id FOR UPDATE
 `
 
@@ -716,6 +732,8 @@ func (q *Queries) LockCollaborationUnsettledRuns(ctx context.Context, sessionID 
 			&i.DeploymentID,
 			&i.ResourceOwnerUserID,
 			&i.Containment,
+			&i.PromptSnapshot,
+			&i.LeaderTurn,
 		); err != nil {
 			return nil, err
 		}
@@ -813,7 +831,7 @@ SET expansion_sealed_at = COALESCE(expansion_sealed_at, now()), state = 'ending'
     disposition_reason = CASE WHEN forced_disposition IS NULL THEN $1::text ELSE disposition_reason END,
     forced_disposition = COALESCE(forced_disposition, $2::text)
 WHERE id = $3::uuid AND settled_at IS NULL
-RETURNING id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at, channel_id, batch_id
+RETURNING id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at, channel_id, batch_id, wake_pending, wake_parent_run_id, next_leader_turn
 `
 
 type SealCollaborationGroupParams struct {
@@ -842,6 +860,9 @@ func (q *Queries) SealCollaborationGroup(ctx context.Context, arg SealCollaborat
 		&i.SettledAt,
 		&i.ChannelID,
 		&i.BatchID,
+		&i.WakePending,
+		&i.WakeParentRunID,
+		&i.NextLeaderTurn,
 	)
 	return i, err
 }
@@ -907,7 +928,7 @@ WHERE g.id = $1::uuid AND g.settled_at IS NULL
            OR r.sealed_attempt_seq < r.authorized_attempt_seq OR r.target_id <> g.target_id OR r.command_id <> g.command_id
            OR (r.parent_run_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM collaboration_run parent WHERE parent.id = r.parent_run_id AND parent.group_id = g.id))))
   AND NOT EXISTS (SELECT 1 FROM collaboration_delegation d WHERE d.group_id = g.id AND d.state NOT IN ('settled', 'cancelled'))
-RETURNING id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at, channel_id, batch_id
+RETURNING id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at, channel_id, batch_id, wake_pending, wake_parent_run_id, next_leader_turn
 `
 
 // All run and delegation writers hold the group lock. The final root input is
@@ -932,6 +953,9 @@ func (q *Queries) SettleStoppedCollaborationGroup(ctx context.Context, groupID p
 		&i.SettledAt,
 		&i.ChannelID,
 		&i.BatchID,
+		&i.WakePending,
+		&i.WakeParentRunID,
+		&i.NextLeaderTurn,
 	)
 	return i, err
 }

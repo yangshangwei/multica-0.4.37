@@ -52,12 +52,6 @@ type CollaborationConsentParams struct {
 	Identity              CollaborationResourceIdentity
 }
 
-type CollaborationReconfigureTargetParams struct {
-	CollaborationQueueRequest
-	Control CollaborationTargetControl
-	Roster  []collaboration.TargetResource
-}
-
 type collaborationResourceSnapshot struct {
 	Resource       collaboration.TargetResource `json:"resource"`
 	AgentEpoch     int64                        `json:"agent_epoch,string"`
@@ -599,147 +593,6 @@ func (s *CollaborationService) ConsentTargetResource(ctx context.Context, p Coll
 	})
 }
 
-// ReconfigureTarget keeps the typed target and immutable input history. It
-// requires the old resource's proof barrier to be clear and leaves a switch
-// hold for fresh consent. This pending configuration is not a completed Switch.
-func (s *CollaborationService) ReconfigureTarget(ctx context.Context, p CollaborationReconfigureTargetParams) (CollaborationQueueReceipt, error) {
-	control := CollaborationStopQueueParams{Scope: collaboration.ControlTarget, Targets: []CollaborationTargetControl{p.Control}}
-	if !normalizeCollaborationControl(&control) {
-		return CollaborationQueueReceipt{}, collaborationError(http.StatusBadRequest, "invalid_target_configuration")
-	}
-	p.Roster = append([]collaboration.TargetResource(nil), p.Roster...)
-	sort.Slice(p.Roster, func(i, j int) bool { return p.Roster[i].AgentID < p.Roster[j].AgentID })
-	return s.mutateCollaborationQueue(ctx, p.CollaborationQueueRequest, "reconfigure_target", p, func(t *collaborationQueueTx) (CollaborationQueueReceipt, error) {
-		if !t.access.Capabilities.Invite {
-			return t.receipt("forbidden", http.StatusForbidden), nil
-		}
-		if !t.access.Capabilities.SubmitCommand {
-			return t.receipt("issue_closed", http.StatusConflict), nil
-		}
-		if code, err := t.checkControl(ctx, control); code != "" || err != nil {
-			if err != nil {
-				return CollaborationQueueReceipt{}, err
-			}
-			return t.controlReceipt(code, http.StatusConflict, control), nil
-		}
-		target, _ := t.target(p.Control.TargetID)
-		deny := func(code string) (CollaborationQueueReceipt, error) {
-			return t.targetReceipt(code, http.StatusConflict, target), nil
-		}
-		if !validCollaborationRoster(collaboration.TargetKind(target.Kind), target.ResourceID, p.Roster) {
-			return t.receipt("invalid_target_configuration", http.StatusBadRequest), nil
-		}
-		if target.QueueState != "paused" && !target.HoldReason.Valid {
-			return deny("target_pause_required")
-		}
-		// The aggregate fence stabilizes these retained barriers without taking
-		// group/run locks before resource-grant locks.
-		groups, err := t.q.ListCollaborationExecutionGroups(ctx, t.session.ID)
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		knownGroups := make(map[pgtype.UUID]db.CollaborationExecutionGroup, len(groups))
-		for _, group := range groups {
-			knownGroups[group.ID] = group
-		}
-		if target.ActiveGroupID.Valid {
-			if group, exists := knownGroups[target.ActiveGroupID]; !exists || group.ChannelID != target.ChannelID {
-				return deny("stop_unconfirmed")
-			}
-		}
-		runs, err := t.q.ListCollaborationRuns(ctx, t.session.ID)
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		commands, err := t.q.ListCollaborationCommands(ctx, t.session.ID)
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		commandTargets := make(map[pgtype.UUID]pgtype.UUID, len(commands))
-		for _, command := range commands {
-			commandTargets[command.ID] = command.TargetID
-		}
-		for _, group := range groups {
-			dependent := group.TargetID == target.ID
-			inputs, err := t.q.ListCollaborationGroupInputs(ctx, group.ID)
-			if err != nil {
-				return CollaborationQueueReceipt{}, err
-			}
-			for _, input := range inputs {
-				inputTarget, exists := commandTargets[input.CommandID]
-				if !exists {
-					return CollaborationQueueReceipt{}, invalidCollaborationLedger("retained group input missing")
-				}
-				dependent = dependent || inputTarget == target.ID
-			}
-			if !dependent {
-				continue
-			}
-			if !group.SettledAt.Valid || !group.ExpansionSealedAt.Valid || len(inputs) == 0 {
-				return deny("stop_unconfirmed")
-			}
-			found := false
-			for _, run := range runs {
-				if run.GroupID != group.ID {
-					continue
-				}
-				found = true
-				if !collaborationRunProvenEnded(run) || run.ChannelID != group.ChannelID || run.BatchID != group.BatchID ||
-					run.TargetID != group.TargetID || run.CommandID != group.CommandID {
-					return deny("stop_unconfirmed")
-				}
-			}
-			if !found {
-				return deny("stop_unconfirmed")
-			}
-		}
-		for _, run := range runs {
-			if run.TargetID == target.ID {
-				if _, exists := knownGroups[run.GroupID]; !exists || !collaborationRunProvenEnded(run) {
-					return deny("stop_unconfirmed")
-				}
-			}
-		}
-		if code, err := t.validateResourceOwners(ctx, p.Roster); code != "" || err != nil {
-			if err != nil {
-				return CollaborationQueueReceipt{}, err
-			}
-			return deny(code)
-		}
-		if _, err = t.q.LockCollaborationTargetGrants(ctx, target.ID); err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		if err = lockCollaborationResources(ctx, t.q, collaboration.TargetKind(target.Kind), target.ResourceID, p.Roster); err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		configuration, code, err := collaborationConfigurationSnapshot(ctx, t.q, collaboration.TargetKind(target.Kind), target.ResourceID, p.Roster)
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		if code != "" {
-			return deny(code)
-		}
-		encoded, err := json.Marshal(p.Roster)
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		if err = t.q.RevokeCollaborationTargetConsents(ctx, db.RevokeCollaborationTargetConsentsParams{TargetID: target.ID, Reason: "configuration_changed"}); err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		target, err = t.q.ReconfigureCollaborationTarget(ctx, db.ReconfigureCollaborationTargetParams{TargetID: target.ID, SessionID: t.session.ID, Roster: encoded, ConfigurationFingerprint: configuration.Fingerprint})
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		t.replaceTarget(target)
-		target, err = t.moveReconfiguredTarget(ctx, target)
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		r := t.targetReceipt("target_reconfigured", http.StatusOK, target)
-		return r, t.event(ctx, "target_reconfigured", r)
-	})
-}
-
 // All pre-existing channels were locked in UUID order by the queue entry. A
 // missing destination is a new row owned by this transaction; never wait on an
 // upsert conflict after target/resource locks. Retry the complete source
@@ -827,6 +680,134 @@ func (t *collaborationQueueTx) validateResourceOwners(ctx context.Context, roste
 		}
 		if !eligible {
 			return "resource_owner_unavailable", nil
+		}
+	}
+	return "", nil
+}
+
+func (t *collaborationQueueTx) checkTargetSwitchProof(ctx context.Context, target db.CollaborationTarget) (string, error) {
+	// The aggregate fence stabilizes these retained barriers without taking
+	// group/run locks before resource-grant locks.
+	if target.ChannelID.Valid {
+		channel, exists := t.channel(target.ChannelID)
+		if !exists || channel.QueueState != target.QueueState || channel.ControlVersion != target.ControlVersion ||
+			channel.GroupGeneration != target.GroupGeneration || channel.ActiveGroupID != target.ActiveGroupID {
+			return "stop_unconfirmed", nil
+		}
+	}
+	groups, err := t.q.ListCollaborationExecutionGroups(ctx, t.session.ID)
+	if err != nil {
+		return "", err
+	}
+	knownGroups := make(map[pgtype.UUID]db.CollaborationExecutionGroup, len(groups))
+	for _, group := range groups {
+		knownGroups[group.ID] = group
+	}
+	if target.ActiveGroupID.Valid {
+		if group, exists := knownGroups[target.ActiveGroupID]; !exists || group.ChannelID != target.ChannelID || group.SettledAt.Valid {
+			return "stop_unconfirmed", nil
+		}
+	}
+	runs, err := t.q.ListCollaborationRuns(ctx, t.session.ID)
+	if err != nil {
+		return "", err
+	}
+	commands, err := t.q.ListCollaborationCommands(ctx, t.session.ID)
+	if err != nil {
+		return "", err
+	}
+	commandTargets := make(map[pgtype.UUID]pgtype.UUID, len(commands))
+	commandGroups := make(map[pgtype.UUID]bool)
+	for _, command := range commands {
+		commandTargets[command.ID] = command.TargetID
+		if command.TargetID == target.ID && command.GroupID.Valid {
+			if _, exists := knownGroups[command.GroupID]; !exists || command.State == "in_flight" {
+				return "stop_unconfirmed", nil
+			}
+			commandGroups[command.GroupID] = true
+		}
+	}
+	for _, group := range groups {
+		dependent := group.TargetID == target.ID || commandGroups[group.ID]
+		dependencies, err := t.q.ListCollaborationGroupDependencies(ctx, group.ID)
+		if err != nil {
+			return "", err
+		}
+		for _, dependency := range dependencies {
+			inputTarget, exists := commandTargets[dependency.CommandID]
+			if !exists || inputTarget != dependency.TargetID {
+				return "", invalidCollaborationLedger("retained dependency target mismatch")
+			}
+			// Detachment cannot erase the proof obligation of an old consumer.
+			dependent = dependent || dependency.TargetID == target.ID
+		}
+		inputs, err := t.q.ListCollaborationGroupInputs(ctx, group.ID)
+		if err != nil {
+			return "", err
+		}
+		for _, input := range inputs {
+			inputTarget, exists := commandTargets[input.CommandID]
+			if !exists {
+				return "", invalidCollaborationLedger("retained group input missing")
+			}
+			dependent = dependent || inputTarget == target.ID
+		}
+		if !dependent {
+			continue
+		}
+		if !group.SettledAt.Valid || !group.ExpansionSealedAt.Valid || len(inputs) == 0 {
+			return "stop_unconfirmed", nil
+		}
+		groupRuns := make(map[pgtype.UUID]db.CollaborationRun)
+		for _, run := range runs {
+			if run.GroupID != group.ID {
+				continue
+			}
+			groupRuns[run.ID] = run
+			if !collaborationRunProvenEnded(run) || run.ChannelID != group.ChannelID || run.BatchID != group.BatchID ||
+				run.TargetID != group.TargetID || run.CommandID != group.CommandID || run.SessionID != group.SessionID {
+				return "stop_unconfirmed", nil
+			}
+		}
+		if len(groupRuns) == 0 {
+			return "stop_unconfirmed", nil
+		}
+		for _, run := range groupRuns {
+			seen := make(map[pgtype.UUID]bool)
+			for current := run; current.ParentRunID.Valid; {
+				parent, exists := groupRuns[current.ParentRunID]
+				if !exists || seen[current.ID] {
+					return "stop_unconfirmed", nil
+				}
+				seen[current.ID] = true
+				current = parent
+			}
+		}
+		for _, input := range inputs {
+			if input.ChannelID != group.ChannelID || input.BatchID != group.BatchID {
+				return "stop_unconfirmed", nil
+			}
+			if input.ConsumingRunID.Valid {
+				if _, exists := groupRuns[input.ConsumingRunID]; !exists {
+					return "stop_unconfirmed", nil
+				}
+			}
+		}
+		delegations, err := t.q.ListCollaborationSwitchGroupDelegations(ctx, group.ID)
+		if err != nil {
+			return "", err
+		}
+		for _, delegation := range delegations {
+			if _, exists := groupRuns[delegation.ParentRunID]; !exists || (delegation.State != "settled" && delegation.State != "cancelled") {
+				return "stop_unconfirmed", nil
+			}
+		}
+	}
+	for _, run := range runs {
+		if run.TargetID == target.ID {
+			if _, exists := knownGroups[run.GroupID]; !exists || !collaborationRunProvenEnded(run) {
+				return "stop_unconfirmed", nil
+			}
 		}
 	}
 	return "", nil

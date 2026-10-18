@@ -71,6 +71,14 @@ func (s *CollaborationService) AppendCollaborationInputInTx(ctx context.Context,
 	if err != nil {
 		return CollaborationQueueReceipt{}, err
 	}
+	t.channels, err = q.ListCollaborationChannels(ctx, t.session.ID)
+	if err != nil {
+		return CollaborationQueueReceipt{}, err
+	}
+	t.gate, err = q.LockCollaborationGateShared(ctx)
+	if err != nil {
+		return CollaborationQueueReceipt{}, err
+	}
 	if !t.access.Capabilities.ControlAI {
 		return t.receipt("forbidden", http.StatusForbidden), nil
 	}
@@ -242,6 +250,13 @@ func (t *collaborationQueueTx) appendInput(ctx context.Context, p CollaborationS
 	}
 	r := t.targetReceipt("command_queued", http.StatusCreated, target)
 	r.CommandID, r.CommandSequence, r.ChannelID, r.BatchID = command.ID, command.Seq, channel.ID, batch.ID
+	joined, err := t.tryJoinSquad(ctx, command, target, channel)
+	if err != nil {
+		return CollaborationQueueReceipt{}, false, err
+	}
+	if joined {
+		r.Code, r.GroupID = "command_joined_squad", channel.ActiveGroupID
+	}
 	return r, true, nil
 }
 

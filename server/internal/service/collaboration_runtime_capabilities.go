@@ -138,6 +138,9 @@ func (s *CollaborationService) ClaimRuntimeRun(ctx context.Context, runID pgtype
 		if err = r.currentAdmission(ctx); err != nil {
 			return out, err
 		}
+		if err = r.reserveRun(ctx); err != nil {
+			return out, err
+		}
 		if r.run.Containment.Valid && r.run.Containment.String != p.Containment {
 			return out, collaborationError(http.StatusConflict, "runtime_capability_changed")
 		}
@@ -189,13 +192,44 @@ func (s *CollaborationService) ClaimRuntimeRun(ctx context.Context, runID pgtype
 		if _, err = r.q.ClaimCollaborationRuntimeRun(ctx, db.ClaimCollaborationRuntimeRunParams{RunID: runID, Containment: p.Containment}); err != nil {
 			return out, err
 		}
-		inputs, err := collaborationRunInputs(r.inputs)
+		inputs, err := r.claimPromptSnapshot(ctx)
 		if err != nil {
 			return out, err
 		}
 		out = protocol.CollaborationRunClaimResponse{Identity: identity, Inputs: inputs, AgentID: util.UUIDToString(r.run.AgentID), ResourceOwnerID: util.UUIDToString(r.run.ResourceOwnerUserID), ExecutionWorkspaceID: util.UUIDToString(r.run.ExecutionWorkspaceID), TerminationToken: token}
 		return out, nil
 	})
+}
+
+func (r *collaborationRuntimeState) claimPromptSnapshot(ctx context.Context) ([]protocol.CollaborationRunInput, error) {
+	if r.run.PromptSnapshot == nil {
+		if err := r.consumeJoinedInputs(ctx); err != nil {
+			return nil, err
+		}
+		commands := []db.CollaborationCommand{}
+		for _, input := range r.inputs {
+			if input.State == "in_flight" && input.GroupID == r.group.ID {
+				commands = append(commands, input)
+			}
+		}
+		inputs, err := collaborationRunInputs(commands)
+		if err != nil {
+			return nil, err
+		}
+		encoded, err := json.Marshal(inputs)
+		if err != nil {
+			return nil, err
+		}
+		r.run, err = r.q.FreezeCollaborationRunPrompt(ctx, db.FreezeCollaborationRunPromptParams{RunID: r.run.ID, PromptSnapshot: encoded})
+		if err != nil {
+			return nil, err
+		}
+	}
+	inputs, err := decodeCollaborationRoster[protocol.CollaborationRunInput](r.run.PromptSnapshot)
+	if err != nil {
+		return nil, err
+	}
+	return inputs, nil
 }
 
 func (s *CollaborationService) PermitRuntimeRun(ctx context.Context, runID pgtype.UUID, p protocol.CollaborationRunPermitRequest) (protocol.CollaborationRunPermitResponse, error) {
@@ -210,6 +244,9 @@ func (s *CollaborationService) PermitRuntimeRun(ctx context.Context, runID pgtyp
 			return out, err
 		}
 		if err = r.currentAdmission(ctx); err != nil {
+			return out, err
+		}
+		if err = r.requireReservation(ctx); err != nil {
 			return out, err
 		}
 		if r.run.Containment.String != p.Containment || p.Identity != collaborationRunIdentity(r.run, r.access.Issue.ID) {
@@ -300,6 +337,9 @@ func (s *CollaborationService) RecordRuntimeOutcome(ctx context.Context, runID p
 			return false, err
 		}
 		if err = r.currentAdmission(ctx); err != nil {
+			return false, err
+		}
+		if err = r.requireReservation(ctx); err != nil {
 			return false, err
 		}
 		if p.Identity != collaborationRunIdentity(r.run, r.access.Issue.ID) {
@@ -459,11 +499,37 @@ func (s *CollaborationService) AcceptRuntimeProof(ctx context.Context, runID pgt
 		if err = q.ReleaseCollaborationRunReservation(ctx, runID); err != nil {
 			return out, err
 		}
+		if err = q.SettleCollaborationRunDelegations(ctx, runID); err != nil {
+			return out, err
+		}
 		if !r.group.SettledAt.Valid {
 			if r.target.Kind == "agent" {
 				r.group, err = q.SealCollaborationCompletedGroup(ctx, r.group.ID)
 				if err != nil {
 					return out, err
+				}
+			} else if !r.group.ExpansionSealedAt.Valid {
+				if r.run.StepKind.String == "member" {
+					if err = q.ScheduleCollaborationSquadWakeup(ctx, db.ScheduleCollaborationSquadWakeupParams{ID: r.group.ID, WakeParentRunID: runID}); err != nil {
+						return out, err
+					}
+				} else {
+					runs, err := q.LockCollaborationGroupRuns(ctx, r.group.ID)
+					if err != nil {
+						return out, err
+					}
+					complete := !r.group.WakePending
+					for _, run := range runs {
+						if !run.SettledAt.Valid {
+							complete = false
+						}
+					}
+					if complete {
+						r.group, err = q.SealCollaborationCompletedGroup(ctx, r.group.ID)
+						if err != nil {
+							return out, err
+						}
+					}
 				}
 			}
 			if _, err = r.settleProvenGroup(ctx, r.target, r.group); err != nil {

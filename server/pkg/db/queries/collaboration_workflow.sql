@@ -73,7 +73,7 @@ WHERE issue_id = sqlc.arg(issue_id)::uuid AND owner_user_id = sqlc.arg(owner_use
 
 -- name: CancelCollaborationAuthorWaitingCommands :exec
 UPDATE collaboration_command SET state = 'cancelled', reason = sqlc.arg(reason)::text
-WHERE session_id = sqlc.arg(session_id)::uuid AND author_user_id = sqlc.arg(author_user_id)::uuid AND state = 'waiting';
+WHERE session_id = sqlc.arg(session_id)::uuid AND author_user_id = sqlc.arg(author_user_id)::uuid AND state = 'waiting' AND group_id IS NULL;
 
 -- Preserve the first effective forced-disposition root. The workflow event
 -- retains this departure's additional reason. This query never sets proof.

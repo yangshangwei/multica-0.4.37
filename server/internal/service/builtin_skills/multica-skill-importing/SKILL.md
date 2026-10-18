@@ -301,6 +301,13 @@ skill in place:
 - Permission: the skill's creator or a workspace `owner`/`admin` — broader than
   `import --on-conflict overwrite`, which stays creator-only.
 
+For a collaboration target using this skill, changed body, supporting files or
+release identity invalidate its old resource consent. The affected target is
+held and dependent work is stopped; fresh owner consent and explicit Resume are
+required. Identical bundle writes and presentation-only changes preserve consent.
+Keeping the same skill ID or agent binding does not preserve consent to changed
+execution instructions.
+
 The success response is the plain `SkillWithFilesResponse` (same shape as
 `multica skill get --with-content`), not the import result envelope. Failure modes to report
 instead of retrying in a loop:

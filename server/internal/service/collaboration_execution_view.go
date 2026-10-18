@@ -62,27 +62,37 @@ type CollaborationExecutionCommandView struct {
 }
 
 type CollaborationExecutionGroupInputView struct {
-	CommandID      string `json:"command_id"`
-	ChannelID      string `json:"channel_id"`
-	BatchID        string `json:"batch_id"`
-	Sequence       string `json:"sequence"`
-	ConsumingRunID string `json:"consuming_run_id"`
+	CommandID      string   `json:"command_id"`
+	ChannelID      string   `json:"channel_id"`
+	BatchID        string   `json:"batch_id"`
+	Sequence       string   `json:"sequence"`
+	ConsumingRunID string   `json:"consuming_run_id"`
+	ReaderRunIDs   []string `json:"reader_run_ids"`
+}
+
+type CollaborationExecutionUnreadInputView struct {
+	CommandID string `json:"command_id"`
+	ChannelID string `json:"channel_id"`
+	BatchID   string `json:"batch_id"`
+	Sequence  string `json:"sequence"`
 }
 
 type CollaborationExecutionGroupView struct {
-	ID                string                                 `json:"id"`
-	TargetID          string                                 `json:"target_id"`
-	CommandID         string                                 `json:"command_id"`
-	ChannelID         string                                 `json:"channel_id"`
-	BatchID           string                                 `json:"batch_id"`
-	Generation        string                                 `json:"generation"`
-	TargetEpoch       string                                 `json:"target_epoch"`
-	ConfigVersion     string                                 `json:"config_version"`
-	State             string                                 `json:"state"`
-	ExpansionSealedAt *string                                `json:"expansion_sealed_at"`
-	ForcedDisposition *string                                `json:"forced_disposition"`
-	SettledAt         *string                                `json:"settled_at"`
-	Inputs            []CollaborationExecutionGroupInputView `json:"inputs"`
+	ID                      string                                  `json:"id"`
+	TargetID                string                                  `json:"target_id"`
+	CommandID               string                                  `json:"command_id"`
+	ChannelID               string                                  `json:"channel_id"`
+	BatchID                 string                                  `json:"batch_id"`
+	Generation              string                                  `json:"generation"`
+	TargetEpoch             string                                  `json:"target_epoch"`
+	ConfigVersion           string                                  `json:"config_version"`
+	State                   string                                  `json:"state"`
+	ExpansionSealedAt       *string                                 `json:"expansion_sealed_at"`
+	ForcedDisposition       *string                                 `json:"forced_disposition"`
+	SettledAt               *string                                 `json:"settled_at"`
+	Inputs                  []CollaborationExecutionGroupInputView  `json:"inputs"`
+	UnreadInputs            []CollaborationExecutionUnreadInputView `json:"unread_inputs"`
+	QueuedContinuationRunID *string                                 `json:"queued_continuation_run_id"`
 }
 
 type CollaborationExecutionRunView struct {
@@ -166,13 +176,21 @@ func (s *CollaborationService) ExecutionView(ctx context.Context, access Collabo
 	if err != nil {
 		return out, err
 	}
-	return projectCollaborationExecution(session, gate, channels, targets, commands, groups, runs, inputs)
+	dependencies := []db.CollaborationGroupDependency{}
+	for _, group := range groups {
+		rows, err := s.Queries.ListCollaborationGroupDependencies(ctx, group.ID)
+		if err != nil {
+			return out, err
+		}
+		dependencies = append(dependencies, rows...)
+	}
+	return projectCollaborationExecution(session, gate, channels, targets, commands, groups, runs, inputs, dependencies)
 }
 
-func projectCollaborationExecution(session db.CollaborationSession, gate db.CollaborationExecutionGate, channels []db.CollaborationChannel, targets []db.CollaborationTarget, commands []db.CollaborationCommand, groups []db.CollaborationExecutionGroup, runs []db.CollaborationRun, inputs []db.CollaborationGroupInput) (CollaborationExecutionView, error) {
+func projectCollaborationExecution(session db.CollaborationSession, gate db.CollaborationExecutionGate, channels []db.CollaborationChannel, targets []db.CollaborationTarget, commands []db.CollaborationCommand, groups []db.CollaborationExecutionGroup, runs []db.CollaborationRun, inputs []db.CollaborationGroupInput, dependencySets ...[]db.CollaborationGroupDependency) (CollaborationExecutionView, error) {
 	invalid := errors.New("collaboration execution identities are unavailable")
 	out := CollaborationExecutionView{
-		ProtocolVersion: 4, IssueID: util.UUIDToString(session.IssueID), SessionID: util.UUIDToString(session.ID),
+		ProtocolVersion: 5, IssueID: util.UUIDToString(session.IssueID), SessionID: util.UUIDToString(session.ID),
 		Availability: "unavailable", UnavailableReason: "shared_runtime_unavailable", TargetSetVersion: strconv.FormatInt(session.TargetSetVersion, 10),
 		Control:       CollaborationExecutionControlView{Scope: "issue", QueueState: session.QueueState, ControlVersion: strconv.FormatInt(session.ControlVersion, 10)},
 		ExecutionGate: CollaborationExecutionGateView{Enabled: gate.Enabled, Epoch: strconv.FormatInt(gate.Epoch, 10)},
@@ -338,7 +356,7 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 			ChannelID: util.UUIDToString(group.ChannelID), BatchID: util.UUIDToString(group.BatchID),
 			Generation: strconv.FormatInt(group.Generation, 10), TargetEpoch: strconv.FormatInt(group.TargetEpoch, 10), ConfigVersion: strconv.FormatInt(group.ConfigVersion, 10),
 			State: group.State, ExpansionSealedAt: util.TimestampToPtr(group.ExpansionSealedAt), ForcedDisposition: util.TextToPtr(group.ForcedDisposition), SettledAt: util.TimestampToPtr(group.SettledAt),
-			Inputs: make([]CollaborationExecutionGroupInputView, 0),
+			Inputs: make([]CollaborationExecutionGroupInputView, 0), UnreadInputs: make([]CollaborationExecutionUnreadInputView, 0),
 		})
 	}
 	for _, channel := range channels {
@@ -350,6 +368,8 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 		}
 	}
 	runByID := make(map[pgtype.UUID]db.CollaborationRun, len(runs))
+	rootAgents := make(map[pgtype.UUID]pgtype.UUID)
+	queuedContinuations := make(map[pgtype.UUID]db.CollaborationRun)
 	rootGroups := make(map[pgtype.UUID]bool)
 	runSteps := make(map[string]bool, len(runs))
 	allRunsNeverLaunched := make(map[pgtype.UUID]bool, len(groups))
@@ -399,9 +419,17 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 				return CollaborationExecutionView{}, invalid
 			}
 			rootGroups[run.GroupID] = true
+			rootAgents[run.GroupID] = run.AgentID
 		case "member", "continuation":
 			if !run.ParentRunID.Valid {
 				return CollaborationExecutionView{}, invalid
+			}
+			if run.StepKind.String == "continuation" && run.ProgressState == "prepared" && !run.SettledAt.Valid && !run.ForcedDisposition.Valid {
+				if _, exists := queuedContinuations[run.GroupID]; exists {
+					return CollaborationExecutionView{}, invalid
+				}
+				queuedContinuations[run.GroupID] = run
+				out.Groups[groupIndexes[run.GroupID]].QueuedContinuationRunID = util.UUIDToPtr(run.ID)
 			}
 		default:
 			return CollaborationExecutionView{}, invalid
@@ -420,7 +448,13 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 			RecordingIncomplete: run.RecordingIncomplete, SettledAt: util.TimestampToPtr(run.SettledAt),
 		})
 	}
+	for _, run := range runs {
+		if run.StepKind.String == "continuation" && run.AgentID != rootAgents[run.GroupID] {
+			return CollaborationExecutionView{}, invalid
+		}
+	}
 	inputsByGroupCommand := make(map[[2]pgtype.UUID]db.CollaborationGroupInput, len(inputs))
+	inputNeverLaunched := make(map[[2]pgtype.UUID]bool, len(inputs))
 	type groupSequence struct {
 		group pgtype.UUID
 		seq   int64
@@ -432,7 +466,7 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 		consumer, consumerOK := runByID[input.ConsumingRunID]
 		if !groupOK || !commandOK || input.ChannelID != group.ChannelID || input.BatchID != group.BatchID || input.Seq <= 0 ||
 			input.Seq >= channelByID[group.ChannelID].NextCommandSeq || !consumerOK || consumer.GroupID != group.ID ||
-			(consumer.StepKind.String != "agent" && consumer.StepKind.String != "leader") {
+			(consumer.StepKind.String != "agent" && consumer.StepKind.String != "leader" && consumer.StepKind.String != "continuation") {
 			return CollaborationExecutionView{}, invalid
 		}
 		target, commandTarget := targetByID[group.TargetID], targetByID[command.TargetID]
@@ -448,20 +482,42 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 			return CollaborationExecutionView{}, invalid
 		}
 		sequenceOwners[position], groupSequences[sequence], inputsByGroupCommand[key] = input.CommandID, true, input
+		readers, err := collaborationInputReaders(input, runs)
+		if err != nil {
+			return CollaborationExecutionView{}, invalid
+		}
+		inputNeverLaunched[key] = collaborationReadersNeverLaunched(readers)
 		if command.GroupID != group.ID {
-			// This slice only consumes initial root inputs. A returned command
-			// preserves its original membership and needs complete nonlaunch proof.
-			if !group.SettledAt.Valid || group.State == "succeeded" || !allRunsNeverLaunched[group.ID] {
+			// A continuation input can return while other members work, but
+			// every run whose prompt contained it must prove nonlaunch.
+			returnedContinuation := consumer.StepKind.String == "continuation" && inputNeverLaunched[key]
+			if !returnedContinuation && (!group.SettledAt.Valid || group.State == "succeeded" || !allRunsNeverLaunched[group.ID]) {
 				return CollaborationExecutionView{}, invalid
+			}
+			if !group.SettledAt.Valid {
+				detached := false
+				for _, dependencies := range dependencySets {
+					for _, dependency := range dependencies {
+						detached = detached || dependency.GroupID == group.ID && dependency.CommandID == command.ID && dependency.DetachedAt.Valid && dependency.DetachReason.String == "never_launched"
+					}
+				}
+				if !detached {
+					return CollaborationExecutionView{}, invalid
+				}
 			}
 			if current, exists := groupByID[command.GroupID]; exists && current.ChannelID == group.ChannelID && current.Generation <= group.Generation {
 				return CollaborationExecutionView{}, invalid
 			}
 		}
+		readerIDs := make([]string, 0, len(readers))
+		for _, reader := range readers {
+			readerIDs = append(readerIDs, util.UUIDToString(reader.ID))
+		}
 		index := groupIndexes[group.ID]
 		out.Groups[index].Inputs = append(out.Groups[index].Inputs, CollaborationExecutionGroupInputView{
 			CommandID: util.UUIDToString(input.CommandID), ChannelID: util.UUIDToString(input.ChannelID), BatchID: util.UUIDToString(input.BatchID),
 			Sequence: strconv.FormatInt(input.Seq, 10), ConsumingRunID: util.UUIDToString(input.ConsumingRunID),
+			ReaderRunIDs: readerIDs,
 		})
 	}
 	for _, group := range groups {
@@ -481,6 +537,30 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 		}
 		group, groupOK := groupByID[command.GroupID]
 		input, inputOK := inputsByGroupCommand[[2]pgtype.UUID{command.GroupID, command.ID}]
+		if command.State == "waiting" {
+			queued, queuedOK := queuedContinuations[group.ID]
+			target := targetByID[group.TargetID]
+			commandTarget := targetByID[command.TargetID]
+			if !groupOK || inputOK || !queuedOK || target.Kind != "squad" || group.SettledAt.Valid || group.ExpansionSealedAt.Valid || group.ForcedDisposition.Valid ||
+				command.ChannelID != group.ChannelID || command.BatchID != group.BatchID ||
+				(command.TargetID != group.TargetID && (commandTarget.Kind != "agent" || commandTarget.ResourceID != queued.AgentID)) {
+				return CollaborationExecutionView{}, invalid
+			}
+			found := false
+			for _, dependencies := range dependencySets {
+				for _, dependency := range dependencies {
+					if dependency.GroupID == group.ID && dependency.CommandID == command.ID && dependency.TargetID == command.TargetID && !dependency.DetachedAt.Valid {
+						found = true
+					}
+				}
+			}
+			if !found {
+				return CollaborationExecutionView{}, invalid
+			}
+			index := groupIndexes[group.ID]
+			out.Groups[index].UnreadInputs = append(out.Groups[index].UnreadInputs, CollaborationExecutionUnreadInputView{CommandID: util.UUIDToString(command.ID), ChannelID: util.UUIDToString(command.ChannelID), BatchID: util.UUIDToString(command.BatchID), Sequence: strconv.FormatInt(command.Seq, 10)})
+			continue
+		}
 		if !groupOK || !inputOK || command.ChannelID != group.ChannelID || command.BatchID != group.BatchID || command.Seq != input.Seq {
 			return CollaborationExecutionView{}, invalid
 		}
@@ -488,7 +568,8 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 		if group.SettledAt.Valid {
 			expected = group.State
 		}
-		cancelledBeforeLaunch := command.State == "cancelled" && group.SettledAt.Valid && group.State != "succeeded" && allRunsNeverLaunched[group.ID]
+		consumer := runByID[input.ConsumingRunID]
+		cancelledBeforeLaunch := command.State == "cancelled" && group.SettledAt.Valid && (group.State != "succeeded" && allRunsNeverLaunched[group.ID] || consumer.StepKind.String == "continuation" && inputNeverLaunched[[2]pgtype.UUID{group.ID, command.ID}])
 		if command.State != expected && !cancelledBeforeLaunch {
 			return CollaborationExecutionView{}, invalid
 		}

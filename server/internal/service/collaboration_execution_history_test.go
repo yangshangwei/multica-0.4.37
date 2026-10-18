@@ -67,7 +67,7 @@ func TestCollaborationExecutionViewHistoricalInputWire(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if view.ProtocolVersion != 4 || view.Channels[0].NextCommandSeq != "2" || view.Commands[0].GroupID == nil ||
+	if view.ProtocolVersion != 5 || view.Channels[0].NextCommandSeq != "2" || view.Commands[0].GroupID == nil ||
 		*view.Commands[0].GroupID != util.UUIDToString(f.groups[0].ID) || len(view.Groups[0].Inputs) != 1 {
 		t.Fatalf("v4 current and historical membership missing: %+v", view)
 	}
@@ -108,6 +108,23 @@ func TestCollaborationExecutionViewRejectsIncompleteConsumption(t *testing.T) {
 				t.Fatalf("invalid %s became a readable execution", name)
 			}
 		})
+	}
+}
+
+func TestCollaborationExecutionViewRejectsMemberAsContinuationLeader(t *testing.T) {
+	f := newExecutionProjectionFixture()
+	f.targets[0].Kind = "squad"
+	f.targets[0].ResourceID = util.MustParseUUID(uuid.NewString())
+	f.runs[0].StepKind = pgtype.Text{String: "leader", Valid: true}
+	continuation := f.runs[0]
+	continuation.ID = util.MustParseUUID(uuid.NewString())
+	continuation.ParentRunID = f.runs[0].ID
+	continuation.StepKind = pgtype.Text{String: "continuation", Valid: true}
+	continuation.StepKey = pgtype.Text{String: "continuation", Valid: true}
+	continuation.AgentID = util.MustParseUUID(uuid.NewString())
+	f.runs = append(f.runs, continuation)
+	if _, err := f.project(); err == nil {
+		t.Fatal("member identity masqueraded as leader continuation")
 	}
 }
 

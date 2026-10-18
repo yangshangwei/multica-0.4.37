@@ -28,4 +28,4 @@ WHERE id = $1 AND queue_state = 'closed' RETURNING *;
 -- by the stop/proof protocol, never by the business issue's terminal status.
 -- name: CancelCollaborationWaitingCommands :exec
 UPDATE collaboration_command SET state = 'cancelled', reason = sqlc.arg(reason)::text
-WHERE session_id = sqlc.arg(session_id)::uuid AND state = 'waiting';
+WHERE session_id = sqlc.arg(session_id)::uuid AND state = 'waiting' AND group_id IS NULL;

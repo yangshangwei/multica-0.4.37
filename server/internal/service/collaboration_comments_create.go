@@ -99,6 +99,10 @@ func (s *CollaborationService) CreateComment(ctx context.Context, p Collaboratio
 			}
 			item.Code, item.CommandID, item.CommandSequence = queued.Code, queued.CommandID, queued.CommandSequence
 			item.ChannelID, item.BatchID = queued.ChannelID, queued.BatchID
+			if queued.Code == "command_joined_squad" {
+				item.GroupID = queued.GroupID
+				item.WaitingReason = "joined_squad"
+			}
 		}
 		receipt.Targets = targets
 		if err = t.recordCommentEvent(ctx, &receipt, nil, comment.Content); err != nil {

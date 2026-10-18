@@ -149,9 +149,8 @@ func (h *Handler) collaborationIssueResponseInSnapshot(ctx context.Context, acce
 	out.Session.ID, out.Session.QueueState = uuidToString(access.SessionID), access.QueueState
 	out.Session.ControlVersion = strconv.FormatInt(access.ControlVersion, 10)
 	out.Capabilities = access.Capabilities
-	// Internal role authority is unchanged. This read-only protocol does not
-	// expose execution/control endpoints yet; Stop must not depend on a grant
-	// when its dedicated endpoint becomes available.
+	// Submission remains gated. Controls require current human write context
+	// and a complete supported projection, independently of runtime availability.
 	out.Capabilities.ControlAI, out.Capabilities.SubmitCommand = false, false
 	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
 	out.CollaborationIssueFields, err = svc.IssueFields(ctx, access)
@@ -162,6 +161,7 @@ func (h *Handler) collaborationIssueResponseInSnapshot(ctx context.Context, acce
 	if err != nil {
 		return out, err
 	}
+	out.Capabilities.ControlAI = access.Capabilities.ControlAI && out.WriteContext != nil && out.Execution.ProtocolVersion == 5
 	request, err := svc.InformationRequestView(ctx, access)
 	if err != nil || request == nil {
 		return out, err

@@ -137,33 +137,6 @@ func (h *Handler) ConsentCollaborationTarget(w http.ResponseWriter, r *http.Requ
 	writeCollaborationResourceResponse(w, result, err)
 }
 
-func (h *Handler) ReconfigureCollaborationTarget(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Cache-Control", "no-store")
-	var body struct {
-		collaborationResourceRequestBody
-		Control service.CollaborationTargetControl `json:"control"`
-		Roster  []collaboration.TargetResource     `json:"roster"`
-	}
-	if !decodeCollaborationWorkflowBody(w, r, &body) {
-		return
-	}
-	request, ok := collaborationResourceRequest(w, r, body.collaborationResourceRequestBody)
-	if !ok {
-		return
-	}
-	target, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "targetId"), "target_id")
-	if !ok {
-		return
-	}
-	if body.Control.TargetID != target {
-		writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_target_configuration"})
-		return
-	}
-	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
-	result, err := svc.ReconfigureTarget(r.Context(), service.CollaborationReconfigureTargetParams{CollaborationQueueRequest: request, Control: body.Control, Roster: body.Roster})
-	writeCollaborationResourceResponse(w, result, err)
-}
-
 func (h *Handler) RevokeCollaborationGrant(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Cache-Control", "no-store")
 	var body struct {

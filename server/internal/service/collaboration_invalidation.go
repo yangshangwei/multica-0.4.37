@@ -65,10 +65,52 @@ func (t *collaborationQueueTx) stopInvalidatedWork(ctx context.Context, user pgt
 		return nil, err
 	}
 	selected := make(map[pgtype.UUID]string)
+	detached := 0
 	authorChannels := make(map[pgtype.UUID]bool)
 	byID := make(map[pgtype.UUID]db.CollaborationExecutionGroup, len(groups))
 	for _, group := range groups {
 		byID[group.ID] = group
+		joined, err := t.q.ListCollaborationGroupCommands(ctx, group.ID)
+		if err != nil {
+			return nil, err
+		}
+		dependencies, err := t.q.ListCollaborationGroupDependencies(ctx, group.ID)
+		if err != nil {
+			return nil, err
+		}
+		for _, input := range joined {
+			if input.State != "waiting" {
+				continue
+			}
+			authorInvalid := user.Valid && input.AuthorUserID == user && (epoch == 0 || input.AuthorAuthEpoch < epoch)
+			grantInvalid := false
+			for _, dependency := range dependencies {
+				if dependency.CommandID != input.ID || dependency.DetachedAt.Valid {
+					continue
+				}
+				frozen, err := decodeCollaborationRoster[collaborationFrozenGrant](dependency.Grants)
+				if err != nil {
+					return nil, err
+				}
+				for _, resource := range frozen {
+					id, err := util.ParseUUID(resource.GrantID)
+					if err != nil {
+						return nil, invalidCollaborationLedger("invalid unread dependency grant")
+					}
+					grantInvalid = grantInvalid || invalidGrants[id]
+				}
+			}
+			if authorInvalid || grantInvalid {
+				state := "waiting"
+				if authorInvalid {
+					state = "cancelled"
+				}
+				if err = t.detachUnreadInput(ctx, group, input, state, reason); err != nil {
+					return nil, err
+				}
+				detached++
+			}
+		}
 		command, err := t.q.LockCollaborationCommand(ctx, db.LockCollaborationCommandParams{SessionID: t.session.ID, CommandID: group.CommandID})
 		if err != nil {
 			return nil, err
@@ -84,6 +126,28 @@ func (t *collaborationQueueTx) stopInvalidatedWork(ctx context.Context, user pgt
 		if author || batchAuthor {
 			selected[group.ID] = "cancelled"
 			authorChannels[group.ChannelID] = true
+		}
+		dependencies, err = t.q.ListCollaborationGroupDependencies(ctx, group.ID)
+		if err != nil {
+			return nil, err
+		}
+		for _, dependency := range dependencies {
+			if dependency.DetachedAt.Valid {
+				continue
+			}
+			grants, err := decodeCollaborationRoster[collaborationFrozenGrant](dependency.Grants)
+			if err != nil {
+				return nil, err
+			}
+			for _, grant := range grants {
+				id, err := util.ParseUUID(grant.GrantID)
+				if err != nil {
+					return nil, invalidCollaborationLedger("dependency grant identity malformed")
+				}
+				if invalidGrants[id] && selected[group.ID] == "" {
+					selected[group.ID] = "stopped"
+				}
+			}
 		}
 		roster, err := decodeCollaborationRoster[collaboration.GroupResource](group.Roster)
 		if err != nil {
@@ -128,7 +192,7 @@ func (t *collaborationQueueTx) stopInvalidatedWork(ctx context.Context, user pgt
 			selected[group.ID] = "stopped"
 		}
 	}
-	if len(held) == 0 && len(selected) == 0 {
+	if len(held) == 0 && len(selected) == 0 && detached == 0 {
 		return nil, nil
 	}
 	for _, channel := range t.channels {

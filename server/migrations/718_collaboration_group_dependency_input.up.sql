@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY idx_collaboration_group_dependency_input ON collaboration_group_dependency(group_id,command_id);

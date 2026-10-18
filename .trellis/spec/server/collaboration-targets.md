@@ -3,21 +3,25 @@
 ## 1. Scope / Trigger
 
 Apply this contract to collaboration input, control, authorization, execution
-projection, and the managed daemon path. The current M09 slice supports one
-direct agent with a configured static Linux executable. Dedicated comment,
-consent, control and runtime APIs exist; public creation and client execution
-affordances remain disabled pending complete product acceptance.
+projection, and the managed daemon path. Direct and squad execution use an
+explicitly configured static Linux executable. Dedicated comment, consent,
+control and runtime APIs exist; creation and execution rollout remain gated
+pending complete product acceptance.
 
 Independent target holds, M04 receipts, channel FIFO, safe unstarted-input
 movement and durable configuration invalidation extend the M09 foundation.
-Promotion skips held/invalid S inputs so valid A input can advance. Full frozen
-multi-target grants, consent-ready atomic Switch, M08/M11 and full Web/Desktop
-delivery remain pending. `ReconfigureTarget` moves waiting input into a held
-pending configuration; that stage is not a completed Switch. Before starting
+Promotion skips held/invalid S inputs so valid A input can advance. Frozen
+multi-target grants, M08/M11 reader history and leader ordering are implemented
+in [the squad contract](collaboration-squads.md). The contained Multica CLI and
+actual daemon chain are covered by [the runtime contract](collaboration-runtime-cli.md).
+General providers and full product acceptance remain separate integration work. Consent-ready atomic Switch and shared skill content invalidation
+are implemented in [their dedicated contract](collaboration-switch-and-skills.md).
+`ReconfigureTarget` is now only a test fixture; public changes use staged Switch.
+Before starting
 the remaining areas, reread the
 latest [execution contract](../../tasks/10-10-cross-workspace-collaboration/research/execution-contract.md)
-and current task artifacts. Keep the current direct-agent runtime capability
-gate until the corresponding execution and capacity paths have evidence.
+and current task artifacts. Keep rollout gates until the corresponding
+execution and capacity paths have evidence.
 
 ## 2. Signatures
 
@@ -38,7 +42,7 @@ gate until the corresponding execution and capacity paths have evidence.
   `GET .../control/operations/{requestId}`. Human workflow operation lookup
   retains its separate response contract.
 - `ExecutionView`: the authorized repeatable-read issue snapshot includes the
-  v4 channel/input-history projection consumed by `packages/core/collaboration`.
+  v5 channel/input-history projection consumed by `packages/core/collaboration`.
 - `CollaborationConfigReconciler.Reconcile` / `Run`: drain the resource writer's
   durable invalidation intent, committing source effects and cursor together.
 - Managed runtime list/claim/permit, `RecordRuntimeOutcome`, stop-intent and proof:
@@ -115,12 +119,12 @@ from every input author's epochs. Recheck all batch authors before launch;
 using the earliest author as the run root does not replace the other authors.
 
 The current launch path requires a valid managed installation/MDT, an admitted
-Linux runtime, a direct agent and actual resource capacity. Legacy enrollment
-and squad storage are not permission to launch through this slice. Ordinary
+Linux runtime, an authorized direct/squad role and actual resource capacity.
+Legacy enrollment and squad storage alone are not permission to launch. Ordinary
 agent/PAT/plugin paths cannot obtain collaboration business or proof authority.
 
 The shared runtime DTO remains protocol **2**, independently of the UI execution
-projection's protocol **4**. `CollaborationRunIdentity` binds deployment,
+projection's protocol **5**. `CollaborationRunIdentity` binds deployment,
 installation, issue/session, target/channel/batch/group, run/fence, claim
 generation and launch nonce. Business outcomes use shared protocol constants
 `success` / `failure`; command/group terminal states remain `succeeded` / `failed`.
@@ -192,9 +196,10 @@ runtime/grant deletion.
 
 ### Input return, pending configuration movement and writer invalidation
 
-Only a group whose every run has settled, sealed `never_launched_proven`
-evidence and no contradictory started/success/progress fact may return its
-consumed inputs. Valid authors return to waiting at the original channel seq
+Root batch input returns only when every run in its group has settled, sealed
+`never_launched_proven` evidence and no contradictory started/success/progress
+fact. M11 continuation input uses every immutable prompt reader and may return
+while unrelated members continue; see [the reader contract](collaboration-squads.md). Valid authors return to waiting at the original channel seq
 with no current group and an unstarted batch; departed/obsolete authors or a
 closed session produce cancelled inputs. Historical group/run/input membership
 never moves. Runtime proof, reservations, terminal group disposition and the
@@ -202,14 +207,14 @@ new input position remain separate facts. Resource/account reconciliation must
 retain the locked lifecycle epoch in `access`; a zero placeholder wrongly
 cancels valid other-author input during owner-only invalidation.
 
-`ReconfigureTarget` validates pause/hold and the old target's proof barrier,
-preserves typed target identity and creates a pending new configuration.
+`CommitTargetSwitch` validates pause/hold, every new owner's proposal consent and
+the old target's proof barrier, preserving typed target identity.
 Existing channels are locked by UUID. A missing destination is a plain insert
 after validation; a unique collision retries the whole rolled-back transaction.
 Waiting inputs move in relative order to its tail under `switch_hold`.
 Cancelled inputs and all old group/run/proof history retain their old channel.
-Old lane control is unchanged; new consent and an explicit Resume are still
-required. This does not implement consent staging and atomic final Switch.
+Old lane control is unchanged; an explicit Resume is still required. Proposed
+configuration and owner consent remain separate until this final transaction.
 
 Migration 704 records configuration invalidation in the actual resource writer
 transaction. Agent/runtime/squad epochs, invoke membership, agent squad
@@ -222,33 +227,45 @@ dependent groups without pausing channels, even with execution disabled.
 Source effects and per-intent cursor are atomic. Failed resources rotate fairly;
 later epochs stay behind their unfinished predecessor. A delayed old intent
 must preserve a freshly reconfigured valid target and new grants. Shared skill
-content updates and the full future provider configuration matrix remain a
-separate completeness check before those capabilities can be enabled.
+content updates now feed agent epochs through migration 709; the remaining
+provider configuration matrix needs separate evidence before enabling it.
+
+Invocation-target writers also take the parent agent's `NOWAIT` fence. Tests
+must not assume they can insert or replace child grants after a parent commit
+while another authorization still holds that parent. Synchronize revocation at
+the actual agent locking read, then prove the retry denies stale authority.
+A late grant writer must fail its fence; only a subsequent fresh request may
+use a later committed grant.
 
 ### Read projection and account cache
 
-The issue's `execution.protocol_version` is **4**. It includes explicit
+The issue's `execution.protocol_version` is **5**. It includes explicit
 `channels`, same-snapshot `execution_gate {enabled, epoch}`, and each target's
 required `hold_reason`/`hold_version`. Target queue/control/pause/group mirrors
 must equal their channel. Missing/unknown hold facts never default to released.
 Targets carry nullable `channel_id` only while unused. `next_command_seq` belongs
 to the channel, not the target. Commands carry nullable current `group_id`;
 groups carry required `inputs[]` with command/channel/batch/sequence and a
-non-null `consuming_run_id`. Current waiting follows the current target channel.
-Historical membership follows the original group and consuming root, including
+non-null `consuming_run_id` and exact `reader_run_ids`. Current waiting follows
+the current target channel.
+Historical membership follows the original group and primary consumer, including
 after requeue or target movement. A member's nonlaunch proof cannot justify
 releasing input read by the root. Cancelled unconsumed tombstones retain their
 old channel/batch without becoming execution evidence. Missing rows, duplicate
 membership, impossible lineage, old/unknown versions and terminal groups without
-consistent evidence remain unavailable. Unread M11 membership is not enabled by
-this read protocol.
+consistent evidence remain unavailable. `unread_inputs` and the queued
+continuation ID remain distinct from consumed input. An early returned input
+needs nonlaunch proof for every reader, not only its primary consumer.
 
 No roster, grant, nonce, installation credential, working path or private input
 body is exposed by this projection. Versions remain exact signed-64-bit decimal
 strings. Ordinary issue revisions remain numeric. A missing old-server execution
 object preserves human reads with `execution=null`; an unknown present protocol
-is not silently accepted. Client `availability` and execution affordances remain
-unavailable until full acceptance, independently of internal participant rights.
+is not silently accepted. Rollout availability stays separate from valid human
+control rights: a supported execution DTO and valid write context may preserve
+the server's explicit `control_ai=true`. Stop and waiting cancellation do not
+require an enabled gate, live grant or online runtime. Resume still submits the
+complete observed gate/control/hold versions for server revalidation.
 
 Both success and error paths in `protectCollaborationRead` compare the captured
 account session and object access epoch. A delayed old denial after recovery
@@ -268,7 +285,7 @@ instead of optimistically projecting its old controls or holds into Query.
 | --- | --- |
 | Invalid target/input identity or conflicting input-event reuse | Reject; no guessed target or duplicate input |
 | Target/configuration, scope, gate or actor snapshot changed | Stable stale/refusal receipt; no implicit retry with newer authority |
-| Unknown/malformed v4 projection, missing input/run evidence | Private read unavailable; no execution fallback |
+| Unknown/malformed v5 projection, missing input/run evidence | Private read unavailable; no execution fallback |
 | Business outcome uses `succeeded` instead of `success` | Client rejection or `invalid_runtime_outcome`; no recorded outcome |
 | Outcome exists without proof | Reservation and execution barrier remain |
 | Owner disabled after launch | Business/list access denied; original minimal termination proof still accepted |
@@ -324,7 +341,7 @@ instead of optimistically projecting its old controls or holds into Query.
   actual external actor/resource owner separation, original request replay and
   unchanged proof identities. Fault injection must cover `Query` as well as
   `Exec` / `QueryRow`, including channel mirroring writes.
-- Runtime outcome HTTP and v4 service/handler/core tests: shared wire values,
+- Runtime outcome HTTP and v5 service/handler/core tests: shared wire values,
   exact versions, current/historical linkage, malformed responses and private logs.
 - `collaboration_execution_history_test.go` and core `execution-fifo-switch.test.ts`:
   repeated promotion, switched settled squads, cancelled tombstones, complete
@@ -332,6 +349,14 @@ instead of optimistically projecting its old controls or holds into Query.
 - Config invalidation service/handler/migration tests: actual configuration,
   membership and skill writers; no-op preservation; gate-independent consumption;
   newer valid consent; restart/fairness; rollback and source-lock contention.
+- Reconciler fixtures must isolate their outbox and gate while retaining real
+  triggers/scheduling. A global `limit=1` poll may validly process an unrelated
+  no-source tombstone before the blocked resource; never erase the public outbox
+  or weaken retry/fault assertions to force a test's item first.
+- Workspace deletion inventory classifies collaboration tables as retained.
+  Source deletion refuses for active, completed and cancelled shared issues and
+  preserves issue/session/participant/comment/event history. Execution-workspace
+  cleanup cannot erase retained grants, reservations or termination evidence.
 - Migration 699 tests: consumed versus pre-start-cancelled history, stable
   per-target order on upgrade, guarded mutations, replay and ambiguity refusal.
 - Core `access.test.ts`: a recovered epoch survives an older denied request.
@@ -360,7 +385,7 @@ one starts. Preserve separate input authors and immutable snapshots.
 Wrong: `outcome: "succeeded"`, obsolete execution projection v3, or proof settlement
 that only checks nonterminal delegation rows.
 
-Correct: business outcome `success`, execution projection v4, and shared retained
+Correct: business outcome `success`, execution projection v5, and shared retained
 ledger validation before any resource release. These version and state domains
 are independent.
 

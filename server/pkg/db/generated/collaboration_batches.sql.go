@@ -770,19 +770,27 @@ func (q *Queries) ResumeCollaborationChannel(ctx context.Context, id pgtype.UUID
 }
 
 const returnNeverLaunchedCollaborationInput = `-- name: ReturnNeverLaunchedCollaborationInput :one
-UPDATE collaboration_command c SET state='waiting',reason='never_launched',group_id=NULL,batch_id=$1::uuid
-WHERE c.id=$2::uuid AND c.state='in_flight' AND c.group_id=$3::uuid
+UPDATE collaboration_command c SET state=$1::text,reason=$2::text,group_id=NULL,batch_id=$3::uuid
+WHERE c.id=$4::uuid AND c.state='in_flight' AND c.group_id=$5::uuid
 RETURNING c.id, c.seq, c.author_user_id, c.participant_epoch, c.author_auth_epoch, c.lifecycle_epoch, c.content, c.attachments, c.state, c.reason, c.created_at, c.session_id, c.target_id, c.input_event_id, c.channel_id, c.batch_id, c.group_id
 `
 
 type ReturnNeverLaunchedCollaborationInputParams struct {
+	State     string      `json:"state"`
+	Reason    string      `json:"reason"`
 	BatchID   pgtype.UUID `json:"batch_id"`
 	CommandID pgtype.UUID `json:"command_id"`
 	GroupID   pgtype.UUID `json:"group_id"`
 }
 
 func (q *Queries) ReturnNeverLaunchedCollaborationInput(ctx context.Context, arg ReturnNeverLaunchedCollaborationInputParams) (CollaborationCommand, error) {
-	row := q.db.QueryRow(ctx, returnNeverLaunchedCollaborationInput, arg.BatchID, arg.CommandID, arg.GroupID)
+	row := q.db.QueryRow(ctx, returnNeverLaunchedCollaborationInput,
+		arg.State,
+		arg.Reason,
+		arg.BatchID,
+		arg.CommandID,
+		arg.GroupID,
+	)
 	var i CollaborationCommand
 	err := row.Scan(
 		&i.ID,

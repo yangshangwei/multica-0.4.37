@@ -1,7 +1,7 @@
 # Collaboration task boundaries
 
-Creation and client execution remain disabled. The v4 `execution` projection
-retains channel order and original group-input history; an unknown or missing
+Creation and new client execution remain gated. The v5 `execution` projection
+retains channel order, original group-input history and every input reader; an unknown or missing
 protocol must never fall back to ordinary execution.
 
 On `unsupported_collaboration_action`, do not retry ordinary issue/comment writes,
@@ -14,9 +14,59 @@ Use dedicated controls: target Resume is atomic, Resume All reports channel/hold
 results separately, and consent never releases a hold. Recover the original key
 at `control/operations/{requestId}` without automatic retries using newer versions.
 Resource withdrawal or rebinding never removes the old run's proof requirement.
-Held input cannot block valid input; only complete group nonlaunch proof permits
-return to waiting. Pending configuration still requires consent and Resume.
-Configuration writers persist invalidation; display renames alone do not revoke.
+Held input cannot block valid input. Root batch return requires complete group
+nonlaunch proof. M11 continuation input can return while unrelated members work
+only after every run that read it proves nonlaunch; one reader's proof cannot
+erase another reader's work. Final squad outcome follows the last group-allocated
+leader turn, not transaction timestamps. Environment changes use an immutable Switch proposal, each
+actual owner's consent, then an atomic commit after old work is proven ended.
+Commit leaves `switch_hold`; Resume is a separate explicit action. The former
+`runtime-binding` route is removed. Recover a Switch operation by its original
+key at `switch/operations/{requestId}`; late consent never changes a refusal.
+Configuration writers persist invalidation. Shared skill body, supporting-file
+and release changes invalidate enabled bindings and require fresh owner consent;
+identical bundles and presentation-only changes preserve consent.
+
+## Commands inside an admitted run
+
+The contained static Linux executor supplies five identity variables:
+`MULTICA_COLLABORATION_TOKEN` (`mcb_` business capability),
+`MULTICA_COLLABORATION_SERVER`, `MULTICA_COLLABORATION_CONTEXT` (complete run
+identity JSON), `MULTICA_COLLABORATION_ISSUE_ID` and
+`MULTICA_COLLABORATION_RUN_ID`. The latter IDs must match that JSON. Partial or
+conflicting identity refuses before ordinary profile or credential lookup.
+`MULTICA_COLLABORATION_RUNNER_CONFIG` configures the host daemon and is not a
+provider identity.
+
+Use only these existing commands for the bound issue UUID:
+
+```text
+multica issue get <issue-uuid> --output json|table
+multica issue comment list <issue-uuid> --output json|table
+multica issue comment add <issue-uuid> --content <text> --request-id <uuid>
+multica issue comment add <issue-uuid> --content-stdin --request-id <uuid>
+multica squad activity <issue-uuid> action|no_action|failed --request-id <uuid>
+```
+
+Comment add permits `--parent <comment-uuid>`; activity permits `--reason`.
+The two writers require `--request-id` in this run context. Keep a distinct UUID
+for each intended comment/activity, and repeat the exact UUID and payload after
+an uncertain response. Do not create a replacement key. This contract does not
+add idempotency to ordinary task commands. Authorization rejection means stop;
+do not sign in as the runtime owner or switch credentials.
+
+Reads return authorized run context and the newest 200 comments. Other commands,
+comment filters, attachments/content-file and profile/server/workspace overrides
+are unsupported here. M08 delegation uses a comment mentioning a frozen roster
+member, then the leader ends its turn. Member replies/completion coalesce a new
+leader continuation; an eligible human M11 input joins that continuation without
+rewriting a running prompt.
+
+Runner configuration may set an absolute `cli_executable`; the controller checks
+the binary and mounts it read-only at `/multica`. There is no ambient CLI discovery.
+Only business credentials reach the provider; managed and termination credentials
+stay with the supervisor. Static Linux CLI/daemon capacity-one tests do not prove
+general provider, Git/file preparation, or other-OS support.
 
 Human source members may reorder without advancing collaboration revision. Other
 edits/handoffs retain original versions and keys; stale status confirmation needs

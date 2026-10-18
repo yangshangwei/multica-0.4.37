@@ -3,8 +3,10 @@ package service
 import (
 	"context"
 	"errors"
+	"net/url"
 	"os"
 	"reflect"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -13,6 +15,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/multica-ai/multica/server/internal/collaboration"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
@@ -21,36 +24,73 @@ import (
 
 type configInvalidationFixture struct {
 	*managedCollaborationFixture
-	worker *CollaborationConfigReconciler
-	owned  []pgtype.UUID
+	worker      *CollaborationConfigReconciler
+	owned       []pgtype.UUID
+	databaseURL string
 }
 
-func newConfigInvalidationFixture(t *testing.T) *configInvalidationFixture {
+func newConfigInvalidationFixture(t *testing.T, shared ...*configInvalidationFixture) *configInvalidationFixture {
 	t.Helper()
 	f := &configInvalidationFixture{}
-	url := os.Getenv("DATABASE_URL")
-	// Fixture deletion itself emits resource tombstones. Run this last, on a
-	// fresh connection after the fixture pool closes, and only for owned IDs.
-	t.Cleanup(func() {
-		if len(f.owned) == 0 {
-			return
-		}
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		defer cancel()
-		conn, err := pgx.Connect(ctx, url)
-		if err != nil {
-			t.Errorf("connect for configuration fixture cleanup: %v", err)
-			return
-		}
-		defer conn.Close(ctx)
-		if _, err = conn.Exec(ctx, `DELETE FROM collaboration_config_invalidation WHERE resource_id=ANY($1::uuid[])`, f.owned); err != nil {
-			t.Errorf("cleanup owned configuration intents: %v", err)
-		}
-	})
+	if len(shared) > 0 {
+		f.databaseURL = shared[0].databaseURL
+	} else {
+		f.databaseURL = configInvalidationFixtureURL(t)
+	}
+	t.Setenv("DATABASE_URL", f.databaseURL)
 	f.managedCollaborationFixture = newManagedCollaborationFixture(t)
 	f.owned = []pgtype.UUID{f.grant.AgentID, f.runtime.ID}
 	f.worker = NewCollaborationConfigReconciler(f.svc.Queries, f.pool)
 	return f
+}
+
+func configInvalidationFixtureURL(t *testing.T) string {
+	t.Helper()
+	databaseURL := os.Getenv("DATABASE_URL")
+	if databaseURL == "" {
+		t.Skip("requires task-owned DATABASE_URL")
+	}
+	pool, err := pgxpool.New(t.Context(), databaseURL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(pool.Close)
+	schema := "collaboration_config_" + strings.ReplaceAll(uuid.NewString(), "-", "")
+	quoted := pgx.Identifier{schema}.Sanitize()
+	if _, err = pool.Exec(t.Context(), "CREATE SCHEMA "+quoted); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() {
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		if _, err := pool.Exec(ctx, "DROP SCHEMA "+quoted+" CASCADE"); err != nil {
+			t.Errorf("cleanup configuration fixture schema: %v", err)
+		}
+	})
+	// Keep real public resource/source tables and their writer triggers. Only
+	// deployment-global scheduling and gate state belong to this test, so
+	// another package cannot satisfy a limit-one assertion with its own intent.
+	for _, table := range []string{"collaboration_config_invalidation", "collaboration_execution_gate"} {
+		if _, err = pool.Exec(t.Context(), "CREATE TABLE "+pgx.Identifier{schema, table}.Sanitize()+
+			" (LIKE "+pgx.Identifier{"public", table}.Sanitize()+" INCLUDING ALL)"); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if _, err = pool.Exec(t.Context(), "INSERT INTO "+pgx.Identifier{schema, "collaboration_execution_gate"}.Sanitize()+
+		" SELECT * FROM public.collaboration_execution_gate"); err != nil {
+		t.Fatal(err)
+	}
+	if strings.HasPrefix(databaseURL, "postgres://") || strings.HasPrefix(databaseURL, "postgresql://") {
+		parsed, err := url.Parse(databaseURL)
+		if err != nil {
+			t.Fatal(err)
+		}
+		query := parsed.Query()
+		query.Set("search_path", schema+",public")
+		parsed.RawQuery = query.Encode()
+		return parsed.String()
+	}
+	return databaseURL + " search_path=" + schema + ",public"
 }
 
 func (f *configInvalidationFixture) updateAgent(t *testing.T) {
@@ -64,8 +104,8 @@ func (f *configInvalidationFixture) drain(t *testing.T) {
 	t.Helper()
 	ctx, cancel := context.WithTimeout(t.Context(), 30*time.Second)
 	defer cancel()
-	// Other service and handler tests also emit durable intents. Keep the
-	// real scheduling order while waiting only for this fixture's resources.
+	// Keep the real scheduling order, including other resources deliberately
+	// sharing this fixture's private deployment outbox.
 	for {
 		var pending int
 		err := f.pool.QueryRow(ctx, `SELECT count(*) FROM collaboration_config_invalidation
@@ -83,6 +123,37 @@ func (f *configInvalidationFixture) drain(t *testing.T) {
 		if processed == 0 {
 			t.Fatalf("fixture still has %d pending configuration intents without consumer progress", pending)
 		}
+	}
+}
+
+func TestCollaborationConfigurationFixtureDoesNotDependOnPublicOutbox(t *testing.T) {
+	if os.Getenv("DATABASE_URL") == "" {
+		t.Skip("requires task-owned DATABASE_URL")
+	}
+	pool, err := pgxpool.New(t.Context(), os.Getenv("DATABASE_URL"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(pool.Close)
+	f := newConfigInvalidationFixture(t)
+	f.updateAgent(t)
+	// The deployment-global queue can contain other packages' intents or be
+	// locked by another writer. Neither may replace this fixture's first step.
+	locked, err := pool.Begin(t.Context())
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer locked.Rollback(context.Background())
+	if _, err = locked.Exec(t.Context(), `LOCK TABLE public.collaboration_config_invalidation IN ACCESS EXCLUSIVE MODE`); err != nil {
+		t.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(t.Context(), 2*time.Second)
+	defer cancel()
+	if processed, err := f.worker.Reconcile(ctx, 1); err != nil || processed != 1 {
+		t.Fatalf("fixture's own source was not processed: %d %v", processed, err)
+	}
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND hold_reason='config_invalid'`, f.targetID) != 1 {
+		t.Fatal("fixture did not process its own source")
 	}
 }
 
@@ -353,7 +424,7 @@ func TestCollaborationConfigurationDeletedResourceWithoutGrantRetainsProof(t *te
 
 func TestCollaborationConfigurationAttemptFairnessSurvivesRestart(t *testing.T) {
 	blocked := newConfigInvalidationFixture(t)
-	healthy := newConfigInvalidationFixture(t)
+	healthy := newConfigInvalidationFixture(t, blocked)
 	blocked.updateAgent(t)
 	healthy.updateAgent(t)
 	holder, err := blocked.pool.Begin(t.Context())

@@ -189,6 +189,8 @@ go test ./internal/service -run TestBuiltinSkillsConformToTemplate
 | Contract | Line | Behavior |
 |---|---|---|
 | `LoadAgentSkills` | 1685 | `ListAgentSkills` + per-skill `ListSkillFiles` → content + supporting files for execution |
+| Shared skill changes invalidate resource consent | `migrations/709_collaboration_skill_content_invalidation.up.sql`; service/handler `collaboration_skill_invalidation_test.go` | Body/files/release or enabled-binding changes advance all affected agent epochs and durable invalidation; disabled bindings and presentation-only changes are excluded |
+| Idempotent bundle/binding replacement | `internal/handler/skill_files.go` `replaceSkillFiles`; `skill.go` `SetAgentSkills` | Preserve unchanged identities; reenable requested disabled bindings; no delete/reinsert consent churn |
 
 ## Built-in skills — `server/internal/service/builtin_skills.go`
 

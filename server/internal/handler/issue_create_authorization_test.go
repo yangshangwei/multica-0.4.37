@@ -497,8 +497,8 @@ func (rows *issueGrantReadRows) Close() {
 	rows.once.Do(rows.after)
 }
 
-// UpdateAgent writes its grant replacement after its agent update commits. A
-// newly inserted grant must not be used unless this transaction locked it.
+// Invocation-target writes share the agent configuration lock. A request that
+// captured its grant rows cannot be retroactively authorized by a late insert.
 func TestIssueAssignmentIgnoresGrantInsertedAfterLockRead(t *testing.T) {
 	for _, writer := range []string{"create", "update", "lifecycle"} {
 		t.Run(writer, func(t *testing.T) {
@@ -528,14 +528,16 @@ func TestIssueAssignmentIgnoresGrantInsertedAfterLockRead(t *testing.T) {
 				t.Fatal(err)
 			}
 			h := *testHandler
-			inserted := false
+			attempted := false
 			starter := issueGrantReadStarter{base: testPool, after: func() {
-				if inserted {
+				if attempted {
 					return
 				}
-				inserted = true
-				if _, e := testPool.Exec(ctx, `INSERT INTO agent_invocation_target (agent_id,target_type,target_id) VALUES ($1,'member',$2)`, target, originator); e != nil {
-					t.Error(e)
+				attempted = true
+				_, err := testPool.Exec(ctx, `INSERT INTO agent_invocation_target (agent_id,target_type,target_id) VALUES ($1,'member',$2)`, target, originator)
+				var busy *pgconn.PgError
+				if !errors.As(err, &busy) || busy.Code != "55P03" {
+					t.Errorf("late grant insert bypassed the held agent configuration lock: %v", err)
 				}
 			}}
 			h.TxStarter = starter
@@ -561,12 +563,24 @@ func TestIssueAssignmentIgnoresGrantInsertedAfterLockRead(t *testing.T) {
 			if response.Code != http.StatusForbidden {
 				t.Errorf("unlocked inserted grant authorized %s: HTTP %d %s", writer, response.Code, response.Body.String())
 			}
-			if !inserted {
+			if !attempted {
 				t.Fatal("grant read hook did not run")
+			}
+			if dbfx.Count(t, `SELECT count(*) FROM agent_invocation_target WHERE agent_id=$1`, target) != 0 {
+				t.Fatal("failed late grant insert left authorization behind")
 			}
 			if after := lifecycleAtomicSnapshot(t, source); after != before {
 				t.Fatal("denied late-grant operation changed issue, counter, audit or dispatch state")
 			}
+			// Once the first authorization transaction ends, a committed grant
+			// may authorize a new request, never the rejected request above.
+			dbfx.Exec(t, `INSERT INTO agent_invocation_target (agent_id,target_type,target_id) VALUES ($1,'member',$2)`, target, originator)
+			fresh := withURLParam(asAgent(newRequest(method, "/api/issues/"+source, body), creator, task).WithContext(ctx), "id", source)
+			status := http.StatusCreated
+			if writer == "update" {
+				status = http.StatusOK
+			}
+			testutil.Call(t, handler, fresh).Want(status)
 		})
 	}
 }

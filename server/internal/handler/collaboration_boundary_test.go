@@ -60,14 +60,35 @@ func TestLegacyMixedBatchRefusesBeforeAnyCollaborationSideEffects(t *testing.T) 
 }
 
 func TestWorkspaceWithCollaborationHistoryCannotBeDeleted(t *testing.T) {
-	ws := dbfx.Workspace(t, "Retained collaboration workspace", "collab-retained-"+uuid.NewString())
-	dbfx.Member(t, ws, testUserID, "owner")
-	issue := collaborationBoundaryIssue(t, ws)
-	dbfx.Exec(t, `UPDATE issue SET status='done' WHERE id=$1`, issue)
-	r := withURLParam(newRequest(http.MethodDelete, "/api/workspaces/"+ws, nil), "id", ws)
-	testutil.Call(t, testHandler.DeleteWorkspace, r).Want(http.StatusConflict)
-	if dbfx.Count(t, `SELECT count(*) FROM workspace WHERE id=$1`, ws) != 1 || dbfx.Count(t, `SELECT count(*) FROM issue WHERE id=$1`, issue) != 1 {
-		t.Fatal("rejected workspace deletion removed retained data")
+	for _, status := range []string{"todo", "done", "cancelled"} {
+		t.Run(status, func(t *testing.T) {
+			ws := dbfx.Workspace(t, "Retained collaboration workspace", "collab-retained-"+uuid.NewString())
+			dbfx.Member(t, ws, testUserID, "owner")
+			issue := collaborationBoundaryIssue(t, ws)
+			dbfx.Exec(t, `UPDATE issue SET status=$2 WHERE id=$1`, issue, status)
+			dbfx.Comment(t, issue, "Retained shared discussion", testutil.Cols{"workspace_id": ws})
+			dbfx.Insert(t, "collaboration_event", testutil.Cols{"issue_id": issue, "event_seq": 1,
+				"kind": "comment_created", "actor_user_id": testUserID, "payload": `{}`})
+			snapshot := func() string {
+				var result string
+				dbfx.QueryRow(t, `SELECT jsonb_build_object(
+					'workspace',(SELECT to_jsonb(w) FROM workspace w WHERE w.id=$1),
+					'issue',(SELECT to_jsonb(i) FROM issue i WHERE i.id=$2),
+					'collaboration',(SELECT to_jsonb(c) FROM issue_collaboration c WHERE c.issue_id=$2),
+					'session',(SELECT to_jsonb(s) FROM collaboration_session s WHERE s.issue_id=$2),
+					'participants',(SELECT jsonb_agg(to_jsonb(p) ORDER BY p.user_id) FROM issue_participant p WHERE p.issue_id=$2),
+					'comments',(SELECT jsonb_agg(to_jsonb(c) ORDER BY c.id) FROM comment c WHERE c.issue_id=$2),
+					'events',(SELECT jsonb_agg(to_jsonb(e) ORDER BY e.event_seq) FROM collaboration_event e WHERE e.issue_id=$2)
+				)::text`, ws, issue).Scan(&result)
+				return result
+			}
+			before := snapshot()
+			r := withURLParam(newRequest(http.MethodDelete, "/api/workspaces/"+ws, nil), "id", ws)
+			response := testutil.Call(t, testHandler.DeleteWorkspace, r).Want(http.StatusConflict).Map()
+			if response["code"] != "workspace_has_collaboration_records" || snapshot() != before {
+				t.Fatal("source deletion bypassed the history guard or partially removed retained data")
+			}
+		})
 	}
 }
 

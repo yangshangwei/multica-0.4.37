@@ -45,7 +45,7 @@ func (q *Queries) AdvanceCollaborationLifecycle(ctx context.Context, issueID pgt
 
 const cancelCollaborationWaitingCommands = `-- name: CancelCollaborationWaitingCommands :exec
 UPDATE collaboration_command SET state = 'cancelled', reason = $1::text
-WHERE session_id = $2::uuid AND state = 'waiting'
+WHERE session_id = $2::uuid AND state = 'waiting' AND group_id IS NULL
 `
 
 type CancelCollaborationWaitingCommandsParams struct {

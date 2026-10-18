@@ -8,7 +8,10 @@
 |-------|-------------|--------|
 | [Security Boundaries](./security-boundaries.md) | Credential minting gates and automation authorization principals | Active |
 | [Collaboration foundation](./collaboration-foundation.md) | Authority, creation, human workflow and pre-v2 execution history | Foundation |
-| [Collaboration targets](./collaboration-targets.md) | Channel FIFO, input history, holds, configuration invalidation, proof flow and v4 reads | Direct-agent execution + pending configuration movement; full product pending |
+| [Collaboration targets](./collaboration-targets.md) | Channel FIFO, input history, holds, configuration invalidation, proof flow and v5 reads | Direct/squad service foundation; full product pending |
+| [Collaboration squads](./collaboration-squads.md) | Frozen grants, M08/M11 readers, nonlaunch return and durable leader order | Static Linux CLI/daemon chain verified; full product pending |
+| [Collaboration runtime CLI](./collaboration-runtime-cli.md) | Narrow existing commands, original write IDs, contained CLI and actual daemon capacity | Static Linux chain verified; general provider/product gates remain |
+| [Collaboration Switch and skills](./collaboration-switch-and-skills.md) | Staged owner consent, atomic Switch and shared skill content invalidation | Implemented service boundaries; full product pending |
 | [Offline delivery](./offline-delivery.md) | Configuration forwarding, preserved overlays and upgrade verification | Active |
 | [Triage Admission](./triage.md) | Human review, inert intake, execution fences, CSV replay and retained audit data | Active |
 | [Iteration facts](./iterations.md) | Borrowed recorder, W01 lock batching, retry identity and current I1 limits | Active |

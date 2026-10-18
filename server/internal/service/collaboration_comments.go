@@ -63,6 +63,7 @@ type CollaborationCommentTargetResult struct {
 	CommandSequence int64                           `json:"command_sequence,string,omitempty"`
 	ChannelID       pgtype.UUID                     `json:"channel_id"`
 	BatchID         pgtype.UUID                     `json:"batch_id"`
+	GroupID         pgtype.UUID                     `json:"group_id"`
 }
 
 // A saved receipt contains identity and outcomes, never a replay of old content.
@@ -185,6 +186,12 @@ func (s *CollaborationService) collaborationContentInTx(ctx context.Context, tx 
 	}
 	if err = authorizeWorkflowAccount(ctx, t.q, actor, actorRow); err != nil {
 		return CollaborationCommentReceipt{}, err
+	}
+	if kind == "create_comment" {
+		t.gate, err = t.q.LockCollaborationGateShared(ctx)
+		if err != nil {
+			return CollaborationCommentReceipt{}, err
+		}
 	}
 	if _, err = t.q.LockWorkspaceForChatSessionCreate(ctx, hint.Issue.WorkspaceID); err != nil {
 		return CollaborationCommentReceipt{}, err

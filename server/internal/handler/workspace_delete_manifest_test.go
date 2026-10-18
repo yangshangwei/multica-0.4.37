@@ -19,6 +19,43 @@ const (
 // teardown. Adding a table requires an explicit ownership decision here; the
 // handler deletion graph must then implement that decision before CI passes.
 var workspaceDeletionManifest = map[string]workspaceDeleteAction{
+	// Collaboration identity, rollout and invalidation state belong to the
+	// deployment/accounts, rather than to the workspace being deleted.
+	"collaboration_account_fence":        workspaceDeleteKeep,
+	"collaboration_account_invalidation": workspaceDeleteKeep,
+	"collaboration_config_invalidation":  workspaceDeleteKeep,
+	"collaboration_execution_gate":       workspaceDeleteKeep,
+	// WorkspaceHasCollaborationRecords refuses source-workspace deletion,
+	// including ended issues. Execution-workspace teardown cannot erase this
+	// independently retained source history or its unfinished proof ledger.
+	"issue_collaboration":                workspaceDeleteKeep,
+	"issue_handoff":                      workspaceDeleteKeep,
+	"issue_participant":                  workspaceDeleteKeep,
+	"collaboration_attachment":           workspaceDeleteKeep,
+	"collaboration_attachment_reference": workspaceDeleteKeep,
+	"collaboration_attempt":              workspaceDeleteKeep,
+	"collaboration_batch":                workspaceDeleteKeep,
+	"collaboration_business_capability":  workspaceDeleteKeep,
+	"collaboration_channel":              workspaceDeleteKeep,
+	"collaboration_command":              workspaceDeleteKeep,
+	"collaboration_delegation":           workspaceDeleteKeep,
+	"collaboration_event":                workspaceDeleteKeep,
+	"collaboration_execution_group":      workspaceDeleteKeep,
+	"collaboration_grant":                workspaceDeleteKeep,
+	"collaboration_group_dependency":     workspaceDeleteKeep,
+	"collaboration_group_input":          workspaceDeleteKeep,
+	"collaboration_notification":         workspaceDeleteKeep,
+	"collaboration_operation":            workspaceDeleteKeep,
+	"collaboration_run":                  workspaceDeleteKeep,
+	"collaboration_run_event":            workspaceDeleteKeep,
+	"collaboration_runtime_challenge":    workspaceDeleteKeep,
+	"collaboration_runtime_enrollment":   workspaceDeleteKeep,
+	"collaboration_runtime_reservation":  workspaceDeleteKeep,
+	"collaboration_session":              workspaceDeleteKeep,
+	"collaboration_switch_consent":       workspaceDeleteKeep,
+	"collaboration_switch_proposal":      workspaceDeleteKeep,
+	"collaboration_target":               workspaceDeleteKeep,
+	"collaboration_termination":          workspaceDeleteKeep,
 	// Workspace teardown purges I1 history/outbox through
 	// DeleteWorkspaceIterationData in the existing owner transaction.
 	"workspace_iteration_settings": workspaceDelete,

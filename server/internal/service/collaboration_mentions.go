@@ -179,9 +179,6 @@ func collaborationCommentTargetPreview(access CollaborationIssueAccess, input Co
 			item.Code = "issue_closed"
 		case !access.Capabilities.SubmitCommand:
 			item.Code = "command_unavailable"
-		case target.Kind == collaboration.TargetSquad:
-			// M09 validates the direct-agent vertical before squad execution.
-			item.Code = "squad_execution_unavailable"
 		default:
 			item.State, item.Code, item.WaitingReason = "waiting", "command_queued", target.WaitingReason
 		}

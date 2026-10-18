@@ -616,6 +616,7 @@ func init() {
 	issueCommentAddCmd.Flags().String("parent", "", "Parent comment ID to reply under. A comment-triggered agent task must reply under its trigger comment; omitting --parent to post a top-level comment is rejected")
 	issueCommentAddCmd.Flags().StringSlice("attachment", nil, "File path(s) to attach (can be specified multiple times)")
 	issueCommentAddCmd.Flags().String("output", "json", "Output format: table or json")
+	issueCommentAddCmd.Flags().String("request-id", "", "Collaboration write UUID; reuse with the unchanged command after an uncertain result")
 
 	// issue comment update
 	issueCommentUpdateCmd.Flags().String("content", "", "New comment content (decodes \\n, \\r, \\t, \\\\; pipe via --content-stdin for multi-line bodies or to preserve literal backslashes)")
@@ -870,6 +871,9 @@ func pullRequestURL(pr map[string]any) string {
 }
 
 func runIssueGet(cmd *cobra.Command, args []string) error {
+	if handled, err := runCollaborationCLI(cmd, args, "issue get"); handled {
+		return err
+	}
 	client, err := newAPIClient(cmd)
 	if err != nil {
 		return err
@@ -1869,6 +1873,9 @@ func floatVal(m map[string]any, key string) float64 {
 // ---------------------------------------------------------------------------
 
 func runIssueCommentList(cmd *cobra.Command, args []string) error {
+	if handled, err := runCollaborationCLI(cmd, args, "issue comment list"); handled {
+		return err
+	}
 	client, err := newAPIClient(cmd)
 	if err != nil {
 		return err
@@ -2036,6 +2043,9 @@ func runIssueCommentList(cmd *cobra.Command, args []string) error {
 }
 
 func runIssueCommentAdd(cmd *cobra.Command, args []string) error {
+	if handled, err := runCollaborationCLI(cmd, args, "issue comment add"); handled {
+		return err
+	}
 	content, hasContent, err := resolveTextFlag(cmd, "content")
 	if err != nil {
 		return err

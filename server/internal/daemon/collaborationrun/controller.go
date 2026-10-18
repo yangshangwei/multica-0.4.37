@@ -25,6 +25,7 @@ const NamespaceHelperArg = "__multica_collaboration_namespace_init"
 // The capability probe must succeed on the actual kernel before a claim.
 type NamespaceController struct {
 	Executable       string
+	CLIExecutable    string
 	HelperExecutable string
 	Directory        string
 	Arguments        []string
@@ -222,31 +223,25 @@ func (c *NamespaceController) prepareRoot() (string, error) {
 	if !filepath.IsAbs(c.Executable) || !filepath.IsAbs(c.Directory) {
 		return "", ErrUnsupported
 	}
-	// Scripts and dynamically linked providers need a separate, verified adapter;
-	// silently exposing the host's loader/libraries/home would break isolation.
-	f, err := os.Open(c.Executable)
+	f, err := openStaticExecutable(c.Executable)
 	if err != nil {
-		return "", ErrUnsupported
+		return "", err
 	}
 	defer f.Close()
-	info, err := f.Stat()
-	if err != nil || !info.Mode().IsRegular() || info.Mode().Perm()&0111 == 0 {
-		return "", ErrUnsupported
-	}
-	binary, err := elf.NewFile(f)
-	if err != nil {
-		return "", ErrUnsupported
-	}
-	if binary.Type != elf.ET_EXEC && binary.Type != elf.ET_DYN {
-		return "", ErrUnsupported
-	}
-	if (runtime.GOARCH == "amd64" && binary.Machine != elf.EM_X86_64) || (runtime.GOARCH == "arm64" && binary.Machine != elf.EM_AARCH64) || (runtime.GOARCH != "amd64" && runtime.GOARCH != "arm64") {
-		return "", ErrUnsupported
-	}
-	for _, p := range binary.Progs {
-		if p.Type == elf.PT_INTERP {
-			return "", ErrUnsupported
+	binaries := []struct {
+		name string
+		file *os.File
+	}{{"agent", f}}
+	if c.CLIExecutable != "" {
+		command, err := openStaticExecutable(c.CLIExecutable)
+		if err != nil {
+			return "", err
 		}
+		defer command.Close()
+		binaries = append(binaries, struct {
+			name string
+			file *os.File
+		}{"multica", command})
 	}
 	if err := privateDirectory(c.Directory); err != nil {
 		return "", err
@@ -269,20 +264,61 @@ func (c *NamespaceController) prepareRoot() (string, error) {
 	if err := os.WriteFile(filepath.Join(root, "dev", "null"), nil, 0600); err != nil {
 		return "", err
 	}
-	out, err := os.OpenFile(filepath.Join(root, "agent"), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0500)
-	if err != nil {
-		return "", err
-	}
-	_, seekErr := f.Seek(0, io.SeekStart)
-	var copyErr error
-	if seekErr == nil {
-		_, copyErr = io.Copy(out, f)
-	}
-	if err := errors.Join(seekErr, copyErr, out.Close()); err != nil {
-		return "", err
+	for _, binary := range binaries {
+		out, err := os.OpenFile(filepath.Join(root, binary.name), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0500)
+		if err != nil {
+			return "", err
+		}
+		_, seekErr := binary.file.Seek(0, io.SeekStart)
+		var copyErr error
+		if seekErr == nil {
+			_, copyErr = io.Copy(out, binary.file)
+		}
+		if err := errors.Join(seekErr, copyErr, out.Close()); err != nil {
+			return "", err
+		}
 	}
 	ok = true
 	return root, nil
+}
+
+func openStaticExecutable(path string) (*os.File, error) {
+	// Scripts and dynamically linked providers need a separate, verified adapter;
+	// silently exposing the host's loader/libraries/home would break isolation.
+	if !filepath.IsAbs(path) {
+		return nil, ErrUnsupported
+	}
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, ErrUnsupported
+	}
+	ok := false
+	defer func() {
+		if !ok {
+			_ = f.Close()
+		}
+	}()
+	info, err := f.Stat()
+	if err != nil || !info.Mode().IsRegular() || info.Mode().Perm()&0111 == 0 {
+		return nil, ErrUnsupported
+	}
+	binary, err := elf.NewFile(f)
+	if err != nil {
+		return nil, ErrUnsupported
+	}
+	if binary.Type != elf.ET_EXEC && binary.Type != elf.ET_DYN {
+		return nil, ErrUnsupported
+	}
+	if (runtime.GOARCH == "amd64" && binary.Machine != elf.EM_X86_64) || (runtime.GOARCH == "arm64" && binary.Machine != elf.EM_AARCH64) || (runtime.GOARCH != "amd64" && runtime.GOARCH != "arm64") {
+		return nil, ErrUnsupported
+	}
+	for _, p := range binary.Progs {
+		if p.Type == elf.PT_INTERP {
+			return nil, ErrUnsupported
+		}
+	}
+	ok = true
+	return f, nil
 }
 
 func (p *Process) NamespaceID() string { return p.namespaceID }
