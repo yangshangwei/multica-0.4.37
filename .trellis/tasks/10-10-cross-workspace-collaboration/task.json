@@ -2,7 +2,7 @@
   "id": "cross-workspace-collaboration",
   "name": "cross-workspace-collaboration",
   "title": "跨账号任务流转与共享 AI 协作工作台",
-  "description": "支持独立工作空间按账号派单与协作；hold/M04 已验证，继续通道 FIFO、输入历史、切换迁移和持久配置失效收敛。",
+  "description": "支持独立工作空间按账号派单与协作；继续原子 Switch、M08/M11、共享技能正文失效与双端集成。",
   "status": "in_progress",
   "dev_type": null,
   "scope": null,
@@ -15,7 +15,7 @@
   "branch": "codex/cross-workspace-collaboration",
   "base_branch": "main",
   "worktree_path": null,
-  "commit": "33f584ae14f8eae77a96381e5c273ed3fecac497",
+  "commit": "374049cecd4a2f30595e9131722722d5c7782937",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -80,9 +80,22 @@
     ".trellis/tasks/10-10-cross-workspace-collaboration/verification-source-manifest-fifo-2026-10-18.json",
     ".trellis/tasks/10-10-cross-workspace-collaboration/verification-summary-fifo-2026-10-18.json",
     ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-fifo-review-2026-10-18.md",
-    ".trellis/tasks/10-10-cross-workspace-collaboration/research/core-fifo-switch-2026-10-18.md"
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/core-fifo-switch-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/continuation-completion-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/cli-runtime-handoff-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/cli-runtime-implementation-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/squad-completion-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-runtime-completion-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/grant-regression-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-completion-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-summary-completion-2026-10-18.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-source-manifest-completion-2026-10-18.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/remaining-product-work-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-desktop-account-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-workbench-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-fixture-knip-2026-10-18.md"
   ],
-  "notes": "2026-10-18：通道 FIFO、不可变消费历史、安全回队/待配置迁移、持久配置失效和 v4 读取已验证；Go1191+1211、Linux10、core3532、静态检查与104个sqlc通过。完整Switch/M08/M11及双端仍待完成。",
+  "notes": "2026-10-18：原子Switch、冻结授权/M08/M11、静态Linux CLI/daemon容量1闭环及已有协作单Web/macOS Desktop通过；TS11993、Go6168+6402、lint/typecheck15、sqlc108一致性及独立检查通过。默认跳过/静态分析既有项已记录。完整97项AC及创建/附件/资源写表单/通用provider等仍待完成。",
   "meta": {
     "planning_status": "approved_revision_in_implementation",
     "implementation_authorized": true,
@@ -116,7 +129,7 @@
       "source": "User requested latest-58 technical consistency review and validation during implementation; discussion §55",
       "scope": "Existing P1–P8 plan after technical review; no production deployment authorization"
     },
-    "current_phase": "fifo_configuration_history_slice_verified",
+    "current_phase": "verified_iteration_committed_remaining_product_pending",
     "technical_review": {
       "date": "2026-10-13",
       "report": "review-2026-10-13.md",
@@ -312,10 +325,10 @@
       ]
     },
     "next_steps": [
-      "Full frozen multi-target grants and consent-ready atomic Switch",
-      "M08 comment delegation and M11 unread/consumed continuations with real capacity-one execution",
-      "Shared skill-content invalidation and remaining provider/Git/attachment/enrollment/OS capability coverage",
-      "Full Web/Desktop P1-P8 journeys and all 97 acceptance criteria"
+      "公开协作创建与受控附件的完整交付和双端验收",
+      "目标注册/逐资源授权/Switch 写表单、参与人管理和其余编辑/评论能力",
+      "来源页面、账号实时、完整运行记录及通用 provider/Git/OS 能力",
+      "P7/P8 与全部97项产品验收"
     ],
     "implementation_commits": [
       "e6bc3759e8a07b480e6aedf246eda8304a253752",
@@ -323,11 +336,15 @@
       "188a7f4a5b0dc0e08873389c6261be0a55f012f9",
       "6794f4e3680526d0105df9d58fa93edc4f937603",
       "a389ef8596791cb8639ce21b27f64868cf93d715",
-      "33f584ae14f8eae77a96381e5c273ed3fecac497"
+      "33f584ae14f8eae77a96381e5c273ed3fecac497",
+      "b434d191dcc3df0e44d521e50839f9d315ec44f1",
+      "0155ee7353a02c082e6c49d61e7c652e7ad97ff4",
+      "6063a2682a10d7b5123f480f6aa56ab0f2e8ec9a",
+      "374049cecd4a2f30595e9131722722d5c7782937"
     ],
     "implementation_complete": false,
-    "quality_gate_scope": "fifo_configuration_history_slice",
-    "current_scope_doc": "continuation-fifo-2026-10-18.md",
+    "quality_gate_scope": "switch_squad_skill_existing_record_clients",
+    "current_scope_doc": "continuation-completion-2026-10-18.md",
     "followup_review": {
       "date": "2026-10-18",
       "report": "review-followup-2026-10-18.md",
@@ -457,6 +474,481 @@
         "33f584ae14f8eae77a96381e5c273ed3fecac497"
       ],
       "environment_cleanup": "complete"
+    },
+    "continuation_recovery": {
+      "date": "2026-10-18",
+      "source": "看一下当前任务的进度，请继续推进",
+      "baseline_head": "bd168d18e",
+      "evidence_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-cwc-resume-20261018-23vtl_pb",
+      "full_product_acceptance_complete": false
+    },
+    "completion_slice_validation": {
+      "date": "2026-10-18",
+      "status": "passed_existing_record_runtime_and_clients_slice",
+      "task_status": "in_progress",
+      "baseline_head": "bd168d18edb37829203cd97c980d3e36895cce64",
+      "evidence_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-cwc-resume-20261018-23vtl_pb",
+      "typescript": {
+        "core": 3602,
+        "views": 6897,
+        "docs": 62,
+        "desktop": 1143,
+        "web": 289,
+        "total": 11993
+      },
+      "go": {
+        "passed_top_level": 6168,
+        "passed_subtests": 6402,
+        "skipped_top_level": 81,
+        "passed_packages": 12,
+        "package_without_tests": 1,
+        "selection": "latest complete successful result per affected package; service/handler replaced by go-primary-final-race.jsonl",
+        "package_results": [
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/migrate",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/multica",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/server",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/cli",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/daemon",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/daemon/processtree",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/daemon/repocache",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "log": "go-primary-final-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/migrations",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "log": "go-primary-final-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/pkg/protocol",
+            "log": "go-full-affected-race.jsonl",
+            "result": "skip"
+          }
+        ],
+        "skips": [
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/migrate",
+            "test": "TestCommentContentBigramRequirementMatchesRealPGBigm"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/server",
+            "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/server",
+            "test": "TestCollaborationPartialResumeRoutesLinux"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/server",
+            "test": "TestCollaborationSingleAgentRuntimeRoutesLinux"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/server",
+            "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/server",
+            "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/server",
+            "test": "TestCollaborationSquadCapacityOneRoutesLinux"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/cli",
+            "test": "TestCLIConfig_UnknownFieldsArePreserved"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/daemon",
+            "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/daemon",
+            "test": "TestIsDriveRoot"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRequireDaemonWorkspaceAccess_CacheHit"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRequireDaemonWorkspaceAccess_CacheMissBackfills"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestMembershipCache_InvalidatedOnDeleteMember"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestMembershipCache_InvalidatedOnUpdateMember"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestMembershipCache_InvalidatedOnLeaveWorkspace"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestMembershipCache_InvalidatedOnDeleteWorkspace"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestIterationI1P95"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestIterationI1DisableP95"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLivenessStore_TouchAndIsAlive"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLivenessStore_TTLExpiry"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLivenessStore_Forget"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLivenessStore_BatchEmptyInput"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillListStore_CreateGetComplete"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillListStore_CreateWithoutMultiPermission"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillListStore_PopPendingAcrossInstances"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillListStore_PopPendingConcurrent"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillListStore_PendingTimeout"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillImportStore_PreservesCreatorID"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillImportStore_CreateWithoutMultiPermission"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillImportStore_CompletePreservesFiles"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillImportStore_PreservesConflict"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillImportStore_PopPendingAcrossInstances"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillListStore_PerRuntimeIsolation"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillListStore_PopPendingAtomicClaim"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillImportStore_PopPendingBatch"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelCatalogCache_RoundTrip"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelCatalogCache_SkipsUncacheableResults"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelCatalogCache_InvalidateAndExpiry"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelCatalogCache_DropsUndecodableSnapshot"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelListStore_CreateGetComplete"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelListStore_CreateWithoutMultiPermission"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelListStore_PopPendingAcrossInstances"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelListStore_PopPendingConcurrent"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelListStore_PendingTimeout"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelListStore_RunningTimeout"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelListStore_HasPending"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisUpdateStore_CreateGetComplete"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisUpdateStore_CreateWithoutMultiPermission"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisUpdateStore_PopPendingAcrossInstances"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisUpdateStore_ReportAndPollAcrossInstances"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisUpdateStore_FailAcrossInstances"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisUpdateStore_RejectsConcurrentActive"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisUpdateStore_RunningTimeoutClearsActive"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisUpdateStore_PopPendingConcurrent"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestTriageQueueScaleBaseline"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestTriageWireFixtures"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisWebhookRateLimiter_RejectsAboveLimit"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisWebhookIPRateLimiter_HasSeparateBudgetFromTokenLimiter"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisSlidingWindowRateLimiter_SeparatesInvitationNamespaces"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisSlidingWindowRateLimiter_PreservesWebhookFailOpenAndExposesErrors"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestMcpMarketPublicHTTPRecipeLifecycle"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestEmptyClaimCache_EmptyRuntimeIDIsNoOp"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestEmptyClaimCache_MarkAndIsEmptyVersionMatched"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestEmptyClaimCache_BumpInvalidatesPriorMark"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestEmptyClaimCache_StaleMarkRejected"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestEmptyClaimCache_TTL"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestEmptyClaimCache_RuntimeIsolation"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestReclaimCheckCache_TrackLaterAndForget"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestReclaimCheckCache_CollectionCheckAlignsBackstops"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestNotifyTaskAvailable_BumpsBeforeWakeup"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict"
+          }
+        ]
+      },
+      "static": {
+        "lint_typecheck_tasks": 15,
+        "go_vet": "passed_all_affected_then_changed_test_packages",
+        "go_compile": "82_packages",
+        "ui_exports": "passed",
+        "sqlc_files": 108,
+        "sqlc_drift": [],
+        "migration_version": 726,
+        "knip": "preexisting_findings_no_new_dependency_or_unlisted_import"
+      },
+      "native": {
+        "linux_existing_routes": 5,
+        "linux_real_cli_daemon_capacity_one": 1,
+        "desktop_macos_scenarios": 6,
+        "web_production_scenarios": 1,
+        "visual_verdict": 94,
+        "web_build": "5vA9q4KPddaHoty4Os0St"
+      },
+      "independent_review": "no_unresolved_defects_in_implemented_slice",
+      "creation_enabled": false,
+      "new_client_execution_enabled": false,
+      "full_product_acceptance_complete": false,
+      "acceptance_criteria": 97,
+      "full_product_criteria_checked": 0,
+      "remaining_report": "research/remaining-product-work-2026-10-18.md",
+      "report": "verification-completion-2026-10-18.md",
+      "work_commits": [
+        {
+          "key": "fixture",
+          "oid": "b434d191dcc3df0e44d521e50839f9d315ec44f1",
+          "files": 2,
+          "subject": "test(projects): keep canonical verification valid after task archival"
+        },
+        {
+          "key": "runtime",
+          "oid": "0155ee7353a02c082e6c49d61e7c652e7ad97ff4",
+          "files": 148,
+          "subject": "feat(collaboration): keep shared runs authorized and recoverable"
+        },
+        {
+          "key": "core",
+          "oid": "6063a2682a10d7b5123f480f6aa56ab0f2e8ec9a",
+          "files": 40,
+          "subject": "feat(collaboration): preserve account intent through uncertain responses"
+        },
+        {
+          "key": "clients",
+          "oid": "374049cecd4a2f30595e9131722722d5c7782937",
+          "files": 74,
+          "subject": "feat(collaboration): keep account work reachable across clients"
+        }
+      ]
     }
   }
 }

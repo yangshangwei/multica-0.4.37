@@ -1,6 +1,6 @@
 # 跨账号协作实施计划
 
-- 日期：2026-10-17；状态：用户已要求按最新需求核对代码并继续推进，任务恢复实施。已有 P1/P2/P4/P6 验证仍仅属于原基础，见 [progress.md](progress.md)；当前实施范围见[通道 FIFO 与配置失效续作](continuation-fifo-2026-10-18.md)，上一轮边界见[实施续作](continuation-revision-2026-10-17.md)。
+- 日期：2026-10-17；状态：用户已要求按最新需求核对代码并继续推进，任务恢复实施。已有 P1/P2/P4/P6 验证仍仅属于原基础，见 [progress.md](progress.md)；当前实施范围见[Switch、小队与双端续作](continuation-completion-2026-10-18.md)，上一轮边界见[实施续作](continuation-revision-2026-10-17.md)。
 - 依据：[PRD](prd.md)、[技术设计](design.md)、[执行协议](research/execution-contract.md)；源码索引见[研究摘要](research/design-contracts.md)。
 - 分支：`codex/cross-workspace-collaboration`。原授权见 discussion §55；本轮产品决定见 §57–§60、§64–§66 与[调整清单](mention-redesign-2026-10-17.md)。最新用户续作指令是修订方案的实施授权，已记录到 task.json。
 - 任务保留为规划与集成责任入口；下面按可验证阶段拆分工作，批准后可据此建立子任务，依赖以本文为准，不能从任务树推断。
@@ -29,7 +29,8 @@
 - [x] M09 之后完整重读当前执行/数据契约与讨论 §66 最后两轮修正，确认单目标恢复原子、整单恢复按 lane/hold 分项结算。
 - [x] M04 控制基础与目标 hold/version、资源失效、完整原回执及真实双直接智能体通道部分恢复已验证；见本轮推进与证据。
 - [x] 通道 FIFO、held/失效输入筛选、不可变消费历史、安全 never-launched 回队、待配置迁移、持久配置失效和 v4 读取通过本轮验证。
-- [ ] 完整冻结资源集合、授权就绪后的 Switch、M08/M11 小队派发/续作及完整双端控制继续按最新 §66 实施；本轮不替代这些验收。
+- [x] 逐输入冻结授权、授权就绪的原子 Switch、M08/M11 派发/读取与续作、真实静态 Linux CLI/daemon 容量 1 闭环通过；完整范围和限制见本轮报告。
+- [ ] 完整双端资源授权/Switch 写表单、公开创建/受控附件、通用供应商能力与其余产品验收继续按 P1–P8 完成。
 
 下方 P1–P8 已按本轮模型修订。标记已完成的早期基础项只证明旧结构存在，新 target/group/运行协议仍待实现；未受影响的人类流转与字段规则继续回归。旧单会话“唯一未结 run”不能作为多目标验收。
 
@@ -186,9 +187,9 @@ P1 后 P2/P3/P4 可独立研究和实现，但共享服务、router 和 migratio
 - [ ] R45 队列仅对有权者显示等待项取消，提交后按服务端结果更新并保留记录；状态已变时说明需使用停止入口，不能自动扩大操作为 Stop 或重排。
 - [ ] 工作台及来源任务页有明确“新建协作任务”入口/表单：来源创建权、本人/精确目标、私有 draft 上传、原子提交、同 UUID 导航及未知结果恢复；失败保留输入，无 enable/convert。
 - [ ] `/account` 集中构造/校验、登录返回地址、通知/分享/评论锚点；来源旧详情使用同一协作契约。
-- [ ] Web 账号 guard 独立于 workspace guard；零空间仍可访问获授权单据，创建另选来源空间。
-- [ ] Desktop App 启动/恢复不让 workspaceListUnavailable 阻塞已认证账号页；workspace list 500 仅在空间选择处重试，不能强制跳首空间/新建浮层；真实认证/强制改密仍阻断。
-- [ ] Desktop 扩展持久账号 tab/group，route classifier、sanitizer、Coordinator、deep link/pop-out、资源键和 memento 一起适配；保留 workspace tabs/pins/MRU。
+- [x] Web 账号 guard 独立于 workspace guard；零空间仍可访问获授权单据，创建另选来源空间。
+- [x] Desktop App 启动/恢复不让 workspaceListUnavailable 阻塞已认证账号页；workspace list 500 仅在空间选择处重试，不能强制跳首空间/新建浮层；真实认证/强制改密仍阻断。
+- [x] Desktop 扩展持久账号 tab/group，route classifier、sanitizer、Coordinator、deep link/pop-out、资源键和 memento 一起适配；保留 workspace tabs/pins/MRU。
 - [ ] 账号进入前清 workspace 镜像，旧布局晚卸载不能写回；A空间→account→B空间、StrictMode、重新登录/换 Server 和零空间启动均覆盖。
 - [ ] 多实体动作 await 服务器，未知结果重用原 key；转出后详情不消失、通知归档不删参与入口。
 - [ ] R54 来源列表/看板/时间线用 AccountSummary 显示外部人员并加“外部协作者”筛选；看板协作卡列内拖动按 R58 正常保存，拖到负责人列不乐观移卡，按能力打开转交入口或提示，状态列拖动仅 R47 非终态，完成/取消列拒绝并提示整单动作；普通任务拖动不变。
@@ -197,7 +198,7 @@ P1 后 P2/P3/P4 可独立研究和实现，但共享服务、router 和 migratio
 - [ ] R46 双端提交成功后显示已加入/已转交；仅邀请在参与列表可见，有派单才新增当前待办，不展示待接受按钮；接收人重登直接恢复服务器结果。
 - [ ] 挂载/聚焦、账号 WS 重新认证/重连重验权限快照；撤权推进 epoch、cancelQueries(revert:false)、清 Query/draft/upload/preview/局部 transcript，阻止迟到响应，保留仍合法的来源成员投影。
 - [ ] 展示真实队列/运行/proof 三种状态，键盘可操作、焦点返回、窄屏/缩放与共享 i18n；停止确认不依赖文案猜 task.status。
-- [ ] 更新 root CLAUDE 与 Desktop spec：持久账号目的地和一次性 WindowOverlay 有各自分类，Zustand 仍只存客户端状态。
+- [x] 更新 root CLAUDE 与 Desktop spec：持久账号目的地和一次性 WindowOverlay 有各自分类，Zustand 仍只存客户端状态。
 
 验证落点：纯 schema/权限/状态/路径在 core；shared component 测组合/提交/焦点；app 测路由/持久迁移。补旧 ordinary+shared 混合列表、新字符串 9/10 与超安全整数版本、current/participating 分离、暖缓存错过撤权再重连、getMe/workbench 成功但 workspace list 500。双端点击新建并带私有附件验证同一 UUID；Electron 隔离 profile/HTTP+WS/fake daemon 透传幂等/版本头，已有 tab 更新 ?issue=，重启保留布局但不泄漏前账号数据。
 
