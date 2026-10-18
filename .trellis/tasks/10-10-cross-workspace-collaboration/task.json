@@ -15,7 +15,7 @@
   "branch": "codex/cross-workspace-collaboration",
   "base_branch": "main",
   "worktree_path": null,
-  "commit": "f5259e24533a68ca9ed3d283810de7988bc3d753",
+  "commit": "6794f4e3680526d0105df9d58fa93edc4f937603",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -62,9 +62,13 @@
     ".trellis/tasks/10-10-cross-workspace-collaboration/research/revision-mention-client-audit-2026-10-17.md",
     ".trellis/tasks/10-10-cross-workspace-collaboration/verification-revision-2026-10-17.md",
     ".trellis/tasks/10-10-cross-workspace-collaboration/verification-summary-revision-2026-10-17.json",
-    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-revision-review-2026-10-17.md"
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-revision-review-2026-10-17.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/review-followup-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-summary-followup-2026-10-18.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-source-manifest-2026-10-18.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-followup-final-2026-10-18.md"
   ],
-  "notes": "2026-10-17：已按最新需求核对并完成多目标基础调整、普通执行入口隔离及 v2 读取；独立复核的两个停止完整性问题已修复。Go 1.26.6 race 323 顶层/638 子测试、core 3452 测试及静态/迁移检查通过。任务保持 in_progress，继续 P1/P3/P4 剩余内容/授权/运行协议及双端交付；97 项完整 AC 尚未完成。",
+  "notes": "2026-10-18：已核对 Claude 最后更新并完成 M09 单直接智能体文本闭环。真实 Linux/DB/API/daemon、Go race/vet、core 3484 测试、全仓 typecheck/lint、M10 保留与并发索引恢复、sqlc 一致性均通过；独立复核无剩余本轮阻塞。完整 97 AC 未完成，创建与客户端执行仍关闭；进入 target hold、多通道或 M11 前重读最新执行契约。",
   "meta": {
     "planning_status": "approved_revision_in_implementation",
     "implementation_authorized": true,
@@ -98,7 +102,7 @@
       "source": "User requested latest-58 technical consistency review and validation during implementation; discussion §55",
       "scope": "Existing P1–P8 plan after technical review; no production deployment authorization"
     },
-    "current_phase": "P1_P3_P4_remaining_work",
+    "current_phase": "M09_verified",
     "technical_review": {
       "date": "2026-10-13",
       "report": "review-2026-10-13.md",
@@ -294,16 +298,77 @@
       ]
     },
     "next_steps": [
-      "P1 remaining atomic creation/private draft and source field contracts",
-      "P3 protected content, typed mention submission and account notification delivery",
-      "P4 actual owner consent/admission, scoped runtime identity, launch/termination protocol",
-      "P5 real scheduler/delegation/positive Resume, then P6 Web/Desktop and P7/P8 integration"
+      "Before the next implementation phase, reread the latest execution-contract and reconcile the final Claude document revision",
+      "Implement target-level initial/grant/config/switch holds and per-channel/per-target Resume receipts",
+      "Implement cross-target lane FIFO, same-leader squad coalescing and switch resequencing",
+      "Preserve M08 comment delegation and implement M11 unread-input/continuation semantics",
+      "Complete attachment/Git delivery, provider adapters, remaining Web/Desktop P1–P8 and all 97 AC"
     ],
     "implementation_commits": [
       "e6bc3759e8a07b480e6aedf246eda8304a253752",
-      "f5259e24533a68ca9ed3d283810de7988bc3d753"
+      "f5259e24533a68ca9ed3d283810de7988bc3d753",
+      "188a7f4a5b0dc0e08873389c6261be0a55f012f9",
+      "6794f4e3680526d0105df9d58fa93edc4f937603"
     ],
     "implementation_complete": false,
-    "quality_gate_scope": "verified_foundation_revision_only"
+    "quality_gate_scope": "M09_single_direct_agent_text_slice",
+    "current_scope_doc": "review-followup-2026-10-18.md",
+    "followup_review": {
+      "date": "2026-10-18",
+      "report": "review-followup-2026-10-18.md",
+      "source": "Current user requested review of the completed Claude planning review and continuation based on implementation progress",
+      "status": "verified_single_agent_slice_independent_review_passed",
+      "baseline_head": "d62d6169c",
+      "confirmed_failures": [
+        "business_outcome_protocol_mismatch",
+        "stale_access_denial_after_epoch_recovery",
+        "v3_execution_projection_and_schema_incomplete",
+        "batch_input_order_uses_transaction_start_timestamp",
+        "proof_settlement_orphan_delegation_check",
+        "missing_concurrent_index_retry_registration",
+        "batch_and_external_identity_test_preconditions"
+      ],
+      "investigating": [],
+      "product_choices_reopened": false,
+      "full_product_acceptance_complete": false,
+      "context_validation": {
+        "implement": {
+          "bytes": 214542,
+          "files": 9,
+          "not_fully_loaded": []
+        },
+        "check": {
+          "bytes": 214542,
+          "files": 9,
+          "not_fully_loaded": []
+        }
+      },
+      "latest_document_update_acknowledged": true,
+      "future_contract_reread_required": true
+    },
+    "followup_implementation_validation": {
+      "date": "2026-10-18",
+      "status": "passed_M09_full_product_pending",
+      "report": "review-followup-2026-10-18.md",
+      "summary": "verification-summary-followup-2026-10-18.json",
+      "source_manifest": "verification-source-manifest-2026-10-18.json",
+      "independent_review": "research/verification-followup-final-2026-10-18.md",
+      "core_tests": 3484,
+      "go_collaboration_top_level": 300,
+      "go_collaboration_subtests": 517,
+      "go_runtime_top_level": 1995,
+      "go_runtime_subtests": 1987,
+      "linux_top_level": 24,
+      "creation_enabled": false,
+      "client_execution_enabled": false,
+      "single_agent_resume_verified": true,
+      "full_product_acceptance_passed": 0,
+      "migration_version": 697,
+      "concurrent_index_registrations_fixed": 82,
+      "commits": [
+        "188a7f4a5b0dc0e08873389c6261be0a55f012f9",
+        "6794f4e3680526d0105df9d58fa93edc4f937603"
+      ]
+    }
   }
 }

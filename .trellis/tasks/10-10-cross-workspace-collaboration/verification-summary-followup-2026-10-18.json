@@ -1,0 +1,252 @@
+{
+  "date": "2026-10-18",
+  "status": "verified_single_direct_agent_text_slice",
+  "baseline_head": "d62d6169cdbaec05717cd59fd94053e1ab19e320",
+  "evidence_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-review-followup-20261018-iluytkmz",
+  "scope": "M09 single direct agent with test-owned static Linux executable; public creation and client execution disabled",
+  "requirements": 58,
+  "acceptance_criteria": 97,
+  "full_product_acceptance_passed": 0,
+  "go_toolchain": "1.26.6",
+  "go_collaboration": {
+    "log": "go-collaboration-verified.jsonl",
+    "top_level_passed": 300,
+    "subtests_passed": 517,
+    "failed": [],
+    "skipped_tests": [
+      "TestCollaborationSingleAgentRuntimeRoutesLinux",
+      "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux"
+    ],
+    "packages": [
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "result": "pass"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "result": "pass"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "result": "pass"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/migrations",
+        "result": "pass"
+      }
+    ]
+  },
+  "go_runtime": {
+    "log": "go-runtime-final.jsonl",
+    "top_level_passed": 1995,
+    "subtests_passed": 1987,
+    "failed": [],
+    "skipped_tests": [
+      "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+      "TestIsDriveRoot"
+    ],
+    "packages": [
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon",
+        "result": "pass"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+        "result": "pass"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+        "result": "pass"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon/processtree",
+        "result": "pass"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon/repocache",
+        "result": "pass"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/multica",
+        "result": "pass"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/protocol",
+        "result": "skip"
+      }
+    ]
+  },
+  "core": {
+    "files": 261,
+    "tests": 3484,
+    "failed": 0,
+    "log": "core-full.log"
+  },
+  "workspace_typecheck": {
+    "tasks": 9,
+    "failed": 0,
+    "log": "workspace-typecheck.log"
+  },
+  "workspace_lint": {
+    "tasks": 6,
+    "failed": 0,
+    "log": "workspace-lint.log"
+  },
+  "go_vet": {
+    "result": "passed",
+    "log": "go-vet-final.log"
+  },
+  "migration": {
+    "version": 697,
+    "ledger_rows": 688,
+    "invalid_indexes": 0,
+    "legacy_retention": "passed",
+    "cleanup_registry_missing_entries_fixed": 82,
+    "registry_coverage_and_real_retry": "passed"
+  },
+  "sqlc": {
+    "files": 102,
+    "drift": []
+  },
+  "linux": {
+    "kernel": "Linux 6.12.68-linuxkit x86_64 GNU/Linux",
+    "image": "sha256:8a34c4ab3ea2c5cd194f07e317b2a8f09461d3c8b05c4e34c8ccd56d56024c4d",
+    "mode": "Docker-provided Linux kernel; privileged namespace tests, no host directory mounts",
+    "results": [
+      {
+        "log": "linux-routes-verified.log",
+        "passed": [
+          "TestCollaborationRuntimeRoutesKeepManagedAndNarrowPurposesSeparate",
+          "TestCollaborationRuntimeOutcomeClientMatchesService",
+          "TestCollaborationSingleAgentRuntimeRoutesLinux",
+          "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux"
+        ],
+        "skipped": [],
+        "failed": [],
+        "log_sha256": "3f0d36e235be42cc8725105bd0b20dffb233464a148e9cd816cc8ff0074c876a"
+      },
+      {
+        "log": "linux-daemon-final.log",
+        "passed": [
+          "TestCollaborationManagedPollerRequiresRegisteredRuntime",
+          "TestCollaborationBatchPollerSlotsAndRunnerLinux"
+        ],
+        "skipped": [],
+        "failed": [],
+        "log_sha256": "12ace8a1a2680754c9339303aac5a0cb5eff19748ec70fee9cb52403239e529d"
+      },
+      {
+        "log": "linux-runtime-final.log",
+        "passed": [
+          "TestClientPreservesAllInputAuthorsAndNarrowCredentials",
+          "TestClientRejectsBadSecondAuthorAndDuplicateIdentityField",
+          "TestClientNeverForwardsTokensAcrossRedirects",
+          "TestClientMissingStopIntentIsNotPermissionToContinue",
+          "TestClientBusinessOutcomesUseWireValues",
+          "TestLinuxNamespaceKillsDetachedDoubleForkAndEarlyStdio",
+          "TestLinuxNamespaceHidesSupervisorFilesAndDropsPrivileges",
+          "TestNonceBurnSurvivesRestartAndCannotLaunchAgain",
+          "TestSealAndProofSurviveRestartAndRefuseLateAttempt",
+          "TestLedgerLockExcludesAnotherProcess",
+          "TestLedgerCorruptionNeverCreatesFreshRun",
+          "TestLedgerRejectsSharedPermissionsAndSymlinks",
+          "TestUncertainPermitCannotBecomeExitProof",
+          "TestRetainedInventoryPreservesCapacityAndProofRecovery",
+          "TestLinuxRunnerHTTPOutcomeStopAndRevokedBusinessProof",
+          "TestLinuxSupervisorCrashClosesNamespaceButKeepsUnknown",
+          "TestRunnerRestartNeverRepeatsUncertainPermitOrFork",
+          "TestRunnerReplaysSameSealedProofAfterLostHTTPResponse"
+        ],
+        "skipped": [
+          "TestUnsupportedPlatformNeverAdvertisesContainment"
+        ],
+        "failed": [],
+        "log_sha256": "a868463745b93b9408401fc12d5668cad4a412e9ffcdb2d1749d2da85604f741"
+      }
+    ],
+    "binaries": [
+      {
+        "name": "multica-cwc-review-1018-6d0451-daemon-final",
+        "id": "e8031ce60b27d207a7d0b2878cce25d3cdbbc70d556facd6d4bbb94077208e8c",
+        "binary": "daemon-linux-final.test",
+        "sha256": "164dff0712de03618d7a4288ad49f5ff549f5753055ae46dd45942a1f47a0cec",
+        "log": "linux-daemon-final.log"
+      },
+      {
+        "name": "multica-cwc-review-1018-6d0451-runtime-final",
+        "id": "0e80b21a6def3ef34b82145e04d888bd48be3407c889d5f03c5bb26083aeccc8",
+        "binary": "runtime-linux-final.test",
+        "sha256": "3601a71faa70f8824839ab85cca8373ee92abc0c66e2b04dd7cb2bf3c5d498d3",
+        "log": "linux-runtime-final.log"
+      },
+      {
+        "name": "multica-cwc-review-1018-6d0451-routes-verified",
+        "id": "72805d4d77bb720e6b2480d532dd0fd96f7d9f53dd7f6f6153fd2896d3ead8a8",
+        "binary": "server-linux-verified.test",
+        "sha256": "0c02929e5d48357710f76439af4068b4df33b3ce7291d9e589a0b97063e31879",
+        "log": "linux-routes-verified.log"
+      }
+    ]
+  },
+  "independent_review": "research/verification-followup-final-2026-10-18.md",
+  "post_broad_review_test_repair": {
+    "file": "server/internal/service/collaboration_edit_test.go",
+    "red": "final-review-editor-red.log",
+    "green": "final-review-editor-green.log",
+    "result": "three roles passed with original assertions and source-membership guards"
+  },
+  "source_manifest": "verification-source-manifest-2026-10-18.json",
+  "continued_source_file_count": 175,
+  "session_changed_source_files": [
+    "packages/core/api/collaboration.test.ts",
+    "packages/core/collaboration/access.ts",
+    "packages/core/collaboration/execution-schema.test.ts",
+    "packages/core/collaboration/execution-schema.ts",
+    "server/cmd/migrate/main.go",
+    "server/cmd/server/collaboration_lifecycle_routes_test.go",
+    "server/cmd/server/collaboration_single_agent_routes_test.go",
+    "server/internal/daemon/collaboration_test.go",
+    "server/internal/daemon/collaborationrun/client.go",
+    "server/internal/daemon/collaborationrun/client_test.go",
+    "server/internal/daemon/collaborationrun/controller_linux_test.go",
+    "server/internal/daemon/collaborationrun/runner.go",
+    "server/internal/daemon/collaborationrun/runner_linux_test.go",
+    "server/internal/handler/collaboration_execution_test.go",
+    "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+    "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+    "server/internal/service/collaboration_account_reconciliation_test.go",
+    "server/internal/service/collaboration_batches_test.go",
+    "server/internal/service/collaboration_edit_test.go",
+    "server/internal/service/collaboration_execution_view.go",
+    "server/internal/service/collaboration_execution_view_test.go",
+    "server/internal/service/collaboration_groups.go",
+    "server/internal/service/collaboration_handoff_test.go",
+    "server/internal/service/collaboration_lifecycle_test.go",
+    "server/internal/service/collaboration_runtime_capabilities.go",
+    "server/internal/service/collaboration_workflow_test.go",
+    "server/pkg/db/generated/collaboration_batches.sql.go",
+    "server/pkg/db/queries/collaboration_batches.sql",
+    "server/pkg/protocol/collaboration.go"
+  ],
+  "deferred": [
+    "target holds and multi-lane final Resume semantics",
+    "cross-target lane FIFO and squad/M11 execution",
+    "attachment/Git delivery and general provider adapters",
+    "legacy enrollment launch",
+    "native macOS/Windows runtime containment",
+    "full Web/Desktop workflow and 97 AC acceptance",
+    "release/deployment"
+  ],
+  "commits": [
+    {
+      "scope": "server",
+      "commit": "188a7f4a5b0dc0e08873389c6261be0a55f012f9",
+      "files": 151
+    },
+    {
+      "scope": "core",
+      "commit": "6794f4e3680526d0105df9d58fa93edc4f937603",
+      "files": 24
+    }
+  ]
+}

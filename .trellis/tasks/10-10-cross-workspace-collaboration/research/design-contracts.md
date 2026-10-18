@@ -1,6 +1,6 @@
 # 实施必须保留的研究结论
 
-> 2026-10-17：M01–M03 及实施已确认，完整目标见[调整清单](../mention-redesign-2026-10-17.md)和主文档。当前多目标基础必须同时读取[代码规范](../../../spec/server/collaboration-targets.md)。下列源码观察保留研究日期，单 session/单执行等旧结论已被替代；真实运行协议与完整 @/双端验收仍未交付。
+> 2026-10-17：M01–M03 及实施已确认，完整目标见[调整清单](../mention-redesign-2026-10-17.md)和主文档。当前多目标基础必须同时读取[代码规范](../../../spec/server/collaboration-targets.md)，其按目标控制将由 lane 与目标 hold 取代。下列源码观察保留研究日期，单 session/单执行等旧结论已被替代；真实运行协议与完整 @/双端验收仍未交付。
 
 - 日期：2026-10-13；源码研究与技术复审摘要，产品实现/验收尚未完成。
 - 当前权威为 2026-10-17 修订的 [PRD](../prd.md)、[设计](../design.md)、[执行协议](execution-contract.md)、[实施计划](../implement.md)。R39 已确定仅新建；详细研究中的存量转换和早期状态建议不覆盖当前设计。
@@ -19,7 +19,7 @@
 
 ## 队列、可信结束与撤权
 
-1. 旧 comment 输入会合并并改 originator/accountable；完成回放也会合并（`server/internal/handler/comment.go:2060`、`:2132`；`server/internal/handler/daemon.go:4060`）。它们不能改写协作输入身份；旧 trigger/reconcile 对协作单隔离，新入口按 typed target 保存独立 FIFO/根组，组内派发不借旧监听另起根。
+1. 旧 comment 输入会合并并改 originator/accountable；完成回放也会合并（`server/internal/handler/comment.go:2060`、`:2132`；`server/internal/handler/daemon.go:4060`）。它们不能改写协作输入身份；旧 trigger/reconcile 对协作单隔离，新入口按 lane 保存批次 FIFO/根组、command 保留 typed target，组内派发不借旧监听另起根。
 2. `CancelTaskInTx` 将 DB task 立即 cancelled 并唤醒 waiters（`server/internal/service/task_cancellation.go:65`、`:137`），没有进程结束证明。整单/target 控制状态与各 group/run 的未结证明必须独立；task 终态、TTL、无心跳都不能解锁。
 3. 旧 start 只认 task ID/state，不能防已派发任务重复 fork（`server/internal/handler/daemon.go:3766`、`server/pkg/db/queries/agent.sql:1118`）。新协议有固定 run/fence/nonce、每次许可重验和 daemon 私有持久 launch 账本。
 4. 撤权后普通 HTTP/middleware、managed runtime 和本地 transport 都可能拒旧 cancel-ack。预发 supervisor 独占的 termination-purpose 能力，只读本 run 停止意图/交最小 proof，不读内容/claim/start/续租/resume，不给 provider 宽 token。
@@ -56,7 +56,7 @@ flowchart LR
   W[账号工作台] --> A[单据与目标授权]
   A --> I[唯一业务 issue / 共享历史]
   I --> S[session 整单控制]
-  S --> T[各 target / FIFO / 控制]
+  S --> T[各 lane / 批次 FIFO / 控制与目标 hold]
   T --> G[根 command / 执行组]
   G --> R[队长 / 成员 / 续作 run]
   P[各 owner 的资源授权] --> R
@@ -65,4 +65,4 @@ flowchart LR
   D -->|各 run 终结证明| G
 ```
 
-一个 session 仍可作为整单控制器，但不再是单个 AI 执行位置；根组完整结算才释放对应 target 的 FIFO。产品选择确认和数据关系设计均不代表当前代码已经交付。
+一个 session 仍可作为整单控制器，但不再是单个 AI 执行位置；根组完整结算才释放对应 lane。产品选择确认和数据关系设计均不代表当前代码已经交付。

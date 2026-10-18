@@ -1,21 +1,21 @@
 # 跨账号协作技术设计
 
-- 日期：2026-10-17；状态：M01–M03 产品选择及修订方案实施均已确认。按用户本次续作要求核对并调整现有代码，实施范围见[续作记录](continuation-revision-2026-10-17.md)。
+- 日期：2026-10-17；状态：M01–M11 产品选择及修订方案实施均已确认。当前实施范围见[单智能体闭环](continuation-single-agent-2026-10-17.md)。
 - 需求依据：[PRD](prd.md) 与[验收附表](acceptance.md)；执行顺序见[实施计划](implement.md)。
-- 当前调整依据：[需求设计调整](mention-redesign-2026-10-17.md)及讨论 §57–§62。本文描述完整目标模型；已落实的多目标存储、控制与读取契约见[当前代码规范](../../spec/server/collaboration-targets.md)，真实运行协议与完整界面仍待完成。
+- 当前调整依据：[需求设计调整](mention-redesign-2026-10-17.md)及讨论 §57–§66。本文描述完整目标模型；已落实的多目标存储、控制与读取契约见[当前代码规范](../../spec/server/collaboration-targets.md)，其按目标控制将由 lane 与目标 hold 取代；真实运行协议与完整界面仍待完成。
 - 具体关系与签名见[数据契约](research/data-contract.md)、[执行协议](research/execution-contract.md)；源码锚点见[研究摘要](research/design-contracts.md)。新能力保持未启用，普通任务行为不随本修订改变。
 
 ## D01. 唯一任务与两种空间
 
-一张单保留一份共享历史及一个 issue 级 session，只负责整单暂停/关闭；每个已授权 target 有独立的有序输入、控制版本和当前执行组。目标间可并行，小队成员/续作属于其组内工作。
+一张单保留一份共享历史及一个 issue 级 session，只负责整单暂停/关闭；执行通道（lane）按实际根智能体划分，各有有序输入、控制版本和当前执行组。lane 间可并行，小队成员/续作属于其组内工作。
 
 保留来源工作空间的一条 `issue`，不复制影子任务，不将外部协作者补成整个空间的成员。`issue_collaboration` 的存在是启用协作契约的权威事实；API 的协作标记由此派生，客户端不能通过 PATCH 标记转换普通任务。
 
-完整结构图见[研究索引](research/design-contracts.md#协作结构图)。
+完整结构图见[研究索引](research/design-contracts.md#当前协作结构图拟实施)。
 
 明确区分 `source_workspace_id`（业务、状态、内容归属）和 `execution_workspace_id`（agent、runtime、installation 归属）。来源 issue 的 UUID、编号、creator 和 workspace 不随转交、切换环境、结束或重开改变。
 
-当前处理人复用 `issue.assignee_type='member'` 和 `assignee_id=user.id`。现有字段实际存全局用户 UUID，不能改用 `member.id`。协作分支验证有效账号及本单参与关系；普通任务仍执行原空间成员规则。AI 资源通过 target/grant/授权清单绑定，不改写 issue 负责人。target 是有类型的 agent 或 squad；重复同一 target 去重，直接智能体和小队保留不同执行角色，不按显示名或同一队长静默合并，共享实际资源仍竞争同一容量。
+当前处理人复用 `issue.assignee_type='member'` 和 `assignee_id=user.id`。现有字段实际存全局用户 UUID，不能改用 `member.id`。协作分支验证有效账号及本单参与关系；普通任务仍执行原空间成员规则。AI 资源通过 target/grant/授权清单绑定，不改写 issue 负责人。target 是有类型的 agent 或 squad；重复同一 target 去重，@A 与 @S（队长 A）同 lane 同批合并为一次队长运行（M06），不按显示名合并，共享实际资源仍竞争同一容量。
 
 采用显式协作执行关联：engine task 使用独立 `purpose=collaboration`，普通 `issue_id/chat_session_id` 留空，由 run→execution_group→command/target 关联唯一来源 issue。实际执行者和原人类授权来源分开记录，派生不能改记为环境拥有者。解析 purpose 必须先于“无 issue/chat 则 quick-create”的旧回退。engine task 的 `context` 只存绑定 ID 和非敏感调度字段，不存来源正文。来源 transcript、结果、用量和附件独立持久化，不能仅引用会被执行空间清理的 task/message 行。
 
@@ -23,9 +23,9 @@
 
 ## D02. 持久数据与约束
 
-数据附表定义 issue 控制器、target、command、执行组和 run。每 issue 一个 session 保留；session 单 grant/run 权威和全局未结 run 唯一性由逐目标/组约束替代。迁移须保留历史与未结证明，不能只删旧索引放开并发。
+数据附表定义 issue 控制器、target、command、执行组和 run。每 issue 一个 session 保留；session 单 grant/run 权威和全局未结 run 唯一性由逐 lane/组约束替代。迁移须保留历史与未结证明（M10 删除旧单会话数据除外），不能只删旧索引放开并发。
 
-完整字段、身份版本、唯一性、迁移和索引规则见[数据契约](research/data-contract.md)。全局 user UUID、协作版本字符串与旧 Issue 数字版本分离；来源单据、逐目标输入顺序与组内派生记录由服务端持久化为权威。
+完整字段、身份版本、唯一性、迁移和索引规则见[数据契约](research/data-contract.md)。全局 user UUID、协作版本字符串与旧 Issue 数字版本分离；来源单据、逐 lane 输入顺序与组内派生记录由服务端持久化为权威。
 
 ## D03. 授权与身份
 
@@ -64,7 +64,7 @@ R42 接线约定（2026-10-14）：PATCH 的 `priority`、`label_ids`、`propert
 
 评论持久版本/墓碑、collaboration_event 编辑历史及附件永久归属/多引用按数据契约实施。R57 解决/取消解决与评论编辑/删除共用 issue 锁，锁后重验权限再清旧解决并写目标；仅两条 UPDATE 放在事务里不能防止两个不同目标并发成为已解决。普通评论/回应复用现有表，协作分支禁止硬删除和旧隐式触发；R24 的新评论 @执行只走专用入口，编辑/回应不产生根执行。
 
-执行记录保持 `originator_user_id=accountable_user_id=command.author_user_id`；另记不可变 creator、当前 handler、资源 owner 和供应商账号来源，不能为了通过私有 agent 校验将作者改成 owner。用量归属描述执行资源账号，不引入跨人自动结算或凭据共享。
+每条 command 保持 `originator_user_id=accountable_user_id=command.author_user_id`；合并批次的 run 记录全部作者，engine task 的 originator 取批次首条 command 作者，仅作展示/用量归属，授权以业务 token 为准；另记不可变 creator、当前 handler、资源 owner 和供应商账号来源，不能为了通过私有 agent 校验将作者改成 owner。用量归属描述执行资源账号，不引入跨人自动结算或凭据共享。
 
 精确查找使用 `kind=username|email|user_id` 加完整值及本单/合法创建上下文。复用账号归一化、UUID parser 和限流，最多返回一个供确认的账号摘要。无空值目录、姓名模糊查询或跨 Server 查找；查找没有写副作用，确认邀请/转交时重新校验。历史邮箱归一化若出现多匹配则拒绝歧义，不任选账号。
 
@@ -111,28 +111,28 @@ R46 在邀请/派单事务内重验当前 R12 角色和目标有效性，写参�
 
 ## D06. 多目标调度、控制与终结证明
 
-session 的 `queue_state=active|paused|closed` 是整单控制，target 保存自身控制状态、授权配置代次、单调输入序号和至多一个当前根执行组。不同目标按实际 agent/runtime/独占工作目录容量并行，同目标的外部输入保持 FIFO。
+session 的 `queue_state=active|paused|closed` 是整单控制。执行通道（lane）按实际根智能体划分，@A 与以 A 为队长的小队共用通道 A（M06）；lane 保存控制状态、授权配置代次、单调输入序号和至多一个当前根执行组。不同 lane 按实际 agent/runtime/独占工作目录容量并行。
 
-一条评论可生成多个目标 command，每个 command 对应一个 execution_group。组内 run 分别是智能体、队长、成员或续作；组保持目标的 FIFO 位置直到全部内部工作结算并封闭派生。成员不进入另一个目标的外部 FIFO；一个 run 完成不代表小队完成。command 的目标、输入/附件快照和真实人类作者不可变，不能在执行时取全局当前 grant 把 @A 交给 B。
+一条评论可生成多个目标 command，各自进入所属 lane。lane 忙碌或暂停时新 command 为 waiting；promote 按 FIFO 取合格输入成为一个 execution_group、一次运行（M07），同批 @S 使其以小队身份运行，遇另一支合格同队长小队截断，hold 或授权/配置失效者被跳过、不挡他人也不截断。每条 command 仍保留作者、快照、目标和附件；未开始时单条取消或作者移除只移出该条，已开始的组整批停止。组内 run 分别是智能体、队长、成员或续作；组保持 lane 位置直到全部内部工作结算并封闭派生。成员不进入另一个目标的外部 FIFO；一个 run 完成不代表小队完成。command 的目标、输入/附件快照和真实人类作者不可变，不能在执行时取全局当前 grant 把 @A 交给 B。
 
-**小队接续：** 队长持久记录成员工作/接续上下文后结束当前 run，取得合法 sealed proof 才释放实际 agent、机器和独占目录容量。组可进入 waiting_children 而不占已退出 run 的容量；成员使用各自授权/许可执行，其完成事件幂等产生同组队长 continuation，使用新的 run/fence/nonce 并继承原人类授权。不能让队长持有唯一 slot 阻塞等待成员；运行端不支持结束当前轮后接续时须明确拒绝该模式。容量为 1、崩溃重放和目录竞争必须实际验证。
+**小队接续（M08 保持现状，见[小队派发](research/squad-delegation-2026-10-17.md)）：** 队长照旧发 @成员 评论后结束当前 run，进程退出后释放实际容量；组进入 waiting_children 不占运行位。仅本组存活 run 发出、被 @ 者在冻结名册内且授权有效时，评论 @成员 才算组内派发，comment_id+成员去重。成员回帖或结束时在同组合并生成队长续作 run（新 run/fence/nonce，继承原人类授权），不依赖“负责人是小队”。小队仍在执行时人类再 @S 或 @队长，满足 E01“M11 并入”则并入下一次队长续作，组停止或结算时未被任何 run 读取的并入输入回到 waiting（M11）。容量为 1、崩溃重放和目录竞争必须实际验证。
 
 | 动作 | 持久结果 |
 | --- | --- |
 | 新评论 @有效目标 | 保存输入、各目标 command/回执；忙碌、暂停或离线时 waiting，不自动恢复；无效目标有独立拒绝结果 |
-| 取消 waiting command | 只取消选中目标输入，不删除同评论其他目标，不影响当前组或控制状态 |
-| Stop target | 暂停该 target，封闭当前组新派生，停止其已许可 run，取消该已停止组尚未启动的派生；其他根 command 保留等待，无关目标不变 |
+| 取消 waiting command | 只把选中输入移出待执行批次，不删除同评论其他目标，不影响当前组或控制状态 |
+| Stop target | 暂停该 target 所在 lane（同 lane 目标一起暂停），封闭当前组新派生，停止其已许可 run，取消尚未启动的派生；waiting 保留，其他 lane 不变 |
 | Stop issue | 先暂停整单，再处理全部目标/组；新增或重新授权目标也受整单暂停约束 |
-| Resume target | 整单 active、该目标无未结组/证明缺口且授权有效，才解除选中 target 的暂停；不改变其他目标 |
-| Resume issue | 同一控制事务核对全单需收尾执行和当前目标/资源；任何未确认停止、过期目标或无效 grant 都整笔拒绝，不改任何状态；全部通过才一起恢复，不静默部分成功 |
-| 作者移除/退出 | 跨目标取消其等待根输入，停止其运行组/派生并暂停受影响目标；其他作者等待输入保留 |
-| 资源撤回/owner 离开 | 撤对应本单 grants，暂停失效目标并停止受影响组；无关有效目标不变，owner 离开覆盖其本单全部资源 |
-| Switch target resource | creator/handler 组织，目标 paused、旧组可信结束、新组合获实际 owner 授权；保留目标身份和输入，切换后仍 paused |
+| Resume target | 整单 active、本目标配置/授权有效，且 lane 无证明缺口（暂停 lane 的未结组，或被强制停止缺 proof 的当前组），才释放本目标 hold 并解除 lane 暂停（同 lane 目标一起恢复）；任一不满足整笔拒绝、零写入；不改变其他 lane |
+| Resume issue | 整单级条件（终态、gate/epoch、协议、权限、目标集合版本）不满足则整笔拒绝。否则同一事务解除整单暂停，证明齐的 lane 恢复、授权有效且无强制停止缺 proof 组的 hold 目标释放，其余保持暂停/hold 并返回原因；已移除目标的遗留屏障不阻止解除整单暂停，但继续占用实际资源（M04） |
+| 作者移除/退出 | 跨 lane 移出并取消其未开始输入及未读取的并入输入；含其已读取输入的组整批停止（同批他人输入随之结束）并暂停该 lane；其他作者等待输入保留 |
+| 资源撤回/owner 离开 | 撤对应本单 grants，失效目标置 hold，停止受影响组，lane 不暂停；无关有效目标不变，owner 离开覆盖其本单全部资源 |
+| Switch target resource | creator/handler 组织，目标 paused、旧组可信结束、新组合获实际 owner 授权；保留目标身份和输入，切换后目标 switch_hold 仍不执行；换队长时 waiting 转入新队长 lane 末尾（E07） |
 | Complete/Cancel | 关闭整单、封闭全部派生、停止所有 run、取消全部等待输入，保留历史 |
 | Reopen | 整单/目标保持 paused，不复活旧组、停止/取消输入或旧授权 |
-| 正常组完成 | 全部 run/proof/派发均结算后才释放目标 FIFO；两个控制层均 active 且授权/容量允许才开始下一根输入 |
+| 正常组完成 | 全部 run/proof/派发均结算后才释放 lane；两个控制层均 active 且授权/容量允许才开始下一根输入 |
 
-首次 session/target 默认为 paused；授权、重新授权及切资源不解除暂停。忙碌/暂停/离线不是撤权，有效目标仍可选并显示等待原因；失效目标退出可选 @清单，历史和合法停止入口保留。
+首次 session 默认为 paused，新目标初始 hold；授权、重新授权及切资源不解除暂停或 hold。忙碌/暂停/离线不是撤权，有效目标仍可选并显示等待原因；失效目标退出可选 @清单，历史和合法停止入口保留。
 
 控制请求显式 `scope=target|issue`、相应控制版本及观察到的 active group/代次；全单操作还绑定目标集合版本。旧 stop 指向已经被新根组替换的目标时返回 stale_execution，不能误停后来工作；同组新成员仍在其控制闭包内。普通评论和进度不推进控制版本。
 
@@ -144,10 +144,10 @@ session 的 `queue_state=active|paused|closed` 是整单控制，target 保存�
 | --- | --- | --- |
 | 人类登录 | Web/Desktop 用户 | 仅该账号实际权限；body 的 actor 不可信 |
 | daemon 资源身份 | daemon | 原有 execution namespace/owner/installation/binding 门禁，不转交给协作者或 provider |
-| 协作执行业务凭据 | 当前 provider 子进程 | 显式 purpose，绑定本 issue/session/target/group/command/run/grant/epoch；默认拒绝所有未列入允许表的 API |
+| 协作执行业务凭据 | 当前 provider 子进程 | 显式 purpose，绑定本 issue/session/group（含其 command/target/grant 集合）/run/epoch；默认拒绝所有未列入允许表的 API |
 | 终结专用凭据 | supervisor 私有账本 | 只取本 run 停止意图、提交最小 fenced proof；不读内容、不写评论、不 claim/start/续租/resume/切资源 |
 
-业务凭据只允许本单最小上下文、本次过程/成果及服务器核验的组内派发。成员须在该组已授权资源清单内；服务器从父 run 固定组/目标/原人类身份，不能接受机器自行指定另一单或新根作者。普通输出 @不开放任意机器新根执行；全局 purpose 白名单默认拒绝其他路由。每次调用 `AuthorizeCollaborationBusinessCapability` 比较当前 run/task/group/target/command、原人类账号/参与 epoch、实际 owner 账号、grant/target/resource/lifecycle epoch、安装绑定及未撤销能力，写操作在同事务重验。不得降级到 owner 的人类成员权、普通 mat_ 或 PAT/JWT/MDT fallback，不导出 connected-app 凭据。
+业务凭据只允许本单最小上下文、本次过程/成果及服务器核验的组内派发。成员须在该组已授权资源清单内；服务器从父 run 固定组/目标/原人类身份，不能接受机器自行指定另一单或新根作者。普通输出 @不开放任意机器新根执行；全局 purpose 白名单默认拒绝其他路由。每次调用 `AuthorizeCollaborationBusinessCapability` 比较当前 run/task/group 及其 target/command 集合、原人类账号/参与 epoch、实际 owner 账号、grant/target/resource/lifecycle epoch、安装绑定及未撤销能力，写操作在同事务重验。不得降级到 owner 的人类成员权、普通 mat_ 或 PAT/JWT/MDT fallback，不导出 connected-app 凭据。
 
 认证兼容和版本来源固定在[执行协议 E07](research/execution-contract.md)：password 比较真实 session_version，中立协作账号 epoch 覆盖受支持的 legacy 人类登录。managed 复用合法安装绑定；legacy daemon 完成独立 challenge/key 的协作能力注册，不能放宽原 password-only enrollment，未注册不执行。grant 每次验证 agent/runtime 所属、关联、owner/私有约束、namespace/binding；变更组合即失效。
 
@@ -188,8 +188,8 @@ Server 按协议/provider/OS 与实际 containment 准入；未满足显示升�
 | `GET .../mention-targets` | 本单人员及完整有效授权的 typed AI targets，附控制/等待能力，不读其他资源目录 |
 | `POST .../targets`、`POST .../targets/{target}/consents` | creator/handler 组织待授权目标，各实际 owner 只确认自身资源；未齐备不进入可选清单 |
 | `POST .../comments/trigger-preview`、`POST .../comments` | 同一目标解析器，预览无副作用；发送保存不可变输入、逐目标回执和去重通知 |
-| `POST .../control` | scope=target/issue，stop/resume、版本、观察到的 group/目标集合；整单恢复原子校验 |
-| 专用组内 delegation/continuation | 父 run 窄能力，校验已授权成员和原组，不从普通监听创建新根 |
+| `POST .../control` | scope=target/issue，stop/resume、版本、观察到的 group/目标集合；整单恢复按 lane 与目标 hold 结算（M04），单目标恢复全有或全无 |
+| 组内派发/续作 | 协作入口把本组存活 run 评论中的 @成员 识别为派发，校验原组、冻结名册与授权；不从普通监听创建新根 |
 | `PATCH /api/collaboration/issues/{uuid}` | R41/R42/R47–R49、R58 `stage` 字段白名单（`position` 走普通排序写入，不推进协作版本）；版本、幂等、历史及来源选项校验，status 仅非终态且带 status_options_version |
 | `POST .../handoffs`、`information-returns`、`acceptance-submissions` | 明确业务意图、目标或 request ID、revision、幂等键 |
 | `POST .../participants`、`participants/{user}/remove`、`leave` | 身份及指令/资源/责任副作用同事务 |
@@ -212,11 +212,11 @@ R29 请求明确携带 `kind`、完整 `value` 以及恰好一个非 null 的 `i
 
 增加账号连接及显式 issue scope，不让外部参与者自动加入来源 workspace room。账号事件通知工作台/权限失效，并按 R52 向当前有效参与者（除操作者）写账号级通知，与 collaboration_event 同事务；旧 subscriber/inbox 监听对协作单的参与者跳过，不在来源空间写订阅或 inbox；旧 mention 监听对协作单整体跳过；新入口分别解析当前参与者和已授权 AI 目标，非参与者不写 inbox；本单内容事件只给当时有 read basis 的订阅者。订阅、重连和受保护消息发送前检查权限，撤权丢弃尚未发送的旧 payload。事件带 issue、seq、revision 和授权代次；outbox、轮询及快照补偿断线，不借重连恢复队列。其他执行空间成员只能看到其运维权限允许的无正文运行摘要，通用 task list/snapshot/message/WS 不泄漏来源内容。
 
-新评论以一次持久提交保存 comment/input、每个 AI target 的 accepted/blocked 结果、有效 command 和人员通知意图。单个目标无权/失效不吞掉其他合法目标或通知；数据库失败全部回滚。同 request ID 重放原回执，不重复插入评论、执行或通知；同 typed target 去重，agent 与 squad 角色不同不隐式合并。预览与发送共用解析器但后者重验；取消本次目标只抑制执行，不删文字。
+新评论以一次持久提交保存 comment/input、每个 AI target 的 accepted/blocked 结果、有效 command 和人员通知意图。单个目标无权/失效不吞掉其他合法目标或通知；数据库失败全部回滚。同 request ID 重放原回执，不重复插入评论、执行或通知；同 typed target 去重；@A 与 @S（队长 A）进入同一 lane 批次，合并为一次队长运行（M06）。预览与发送共用解析器但后者重验；取消本次目标只抑制执行，不删文字。
 
 目标登记由 creator/handler 组织，资源 owner 在合法权限内确认自身组合；小队所需资源未齐备不进入候选，不因小队授权把成员自动开放为独立 direct-agent 目标。配置/资源变化不得扩大旧授权；失效移除候选但保留历史，忙碌/暂停/离线仅显示等待。该清单不暴露其他空间机器目录或凭据。
 
-多目标控制 DTO 使用显式协议版本和 targets/groups 集合。只理解单 active_run 的客户端须显示不支持/只读并拒绝执行控制，不能把未知协议当作空闲或 fallback 普通执行；旧数字 Issue.revision 不变。
+多目标控制 DTO 使用显式协议版本和 targets/groups 集合。旧单会话协议已删除（M10），不识别该版本的客户端须显示不支持/只读并拒绝执行控制，不能把未知协议当作空闲或 fallback 普通执行；旧数字 Issue.revision 不变。
 
 附件首次上传进入私有协作 draft，创建时验证 uploader/目标并一次绑定。元数据/字节/preview/range/绑定均查同单授权。fetch 可带 cookie/bearer；无 cookie 的 Web 原生图片/下载和 Desktop 原生链接均使用用户/对象/权限版本绑定、每次兑付重验的短能力，由服务器代理字节。不能跳转公网/S3 URL，禁止 `/uploads/*` 与旧 signed-download fallback；不把 bearer 登录强制改成 cookie。
 
@@ -236,7 +236,7 @@ R56：评论/选区建子任务的 manual 与 agent 模式对协作单在 captur
 
 Desktop 为持久账号 TabGroup 增加 account/workspace/none scope，非一次性 WindowOverlay。仍由单个 tab Coordinator 投影路由；账号页进入前显式清 `setCurrentWorkspace(null, null)`。v1 一个工作台 tab，命中已有 tab 时也更新目标 `?issue=`；历史与 memento 包含 issue/view。持久格式迁移保留 workspace tabs、pin、MRU 和 history；离开某空间不删账号组。覆盖冷启动零空间、深链、pop-out 导航与跨 Server/账号清理。该持久全局目的地须在实现时同步 CLAUDE.md/Desktop spec 的路由分类，不复制一次性 overlay 规则。
 
-Query key 含 server/viewer/issue/session；列表另含归一化 view/筛选/排序，cursor 按 infinite-query 管。原 workspace key 仍含 wsId。挂载、账号 WS 重新认证/重连、窗口聚焦都重验权限/控制快照，不能继承 Infinity 而一直信旧缓存。Query 管服务器数据；Zustand/StorageAdapter 仅持账号隔离的布局、草稿、未知请求 key。每个 composer 默认普通评论，AI 模式显式可见，不跨单暗继承。
+Query key 含 server/viewer/issue/session；列表另含归一化 view/筛选/排序，cursor 按 infinite-query 管。原 workspace key 仍含 wsId。挂载、账号 WS 重新认证/重连、窗口聚焦都重验权限/控制快照，不能继承 Infinity 而一直信旧缓存。Query 管服务器数据；Zustand/StorageAdapter 仅持账号隔离的布局、草稿、未知请求 key。composer 没有单独的 AI 模式：发送前的触发预览列出本次将执行的 AI 目标及合并情况，可逐个取消，草稿不跨单继承。
 
 来源 membership 变更亦触发账号/issue 投影失效：重验两种访问依据，保留有效参与者的协作历史及发起人生命周期能力，清除已失效来源目录和结构编辑缓存。workspace loss 不等同 participant removal，不删除账号组；现有 workspace WS 重定向不能替代这次快照重验。
 
@@ -244,11 +244,11 @@ API JSON 经 schema/parseWithFallback；关键 ID/版本/能力无效则 unavail
 
 协作内容、通知、受控附件/短能力及操作回执的 parseWithFallback 统一使用 redact:true；畸形响应日志只保留端点/结果码，不能写入 received、正文、token、能力 URL 或含值的 Zod 详情。未知能力或协作模式不得降级为普通可执行单据。
 
-来源空间列表/看板/时间线按 R54 用服务端最小 AccountSummary 显示外部人员，不回退到成员表的 “Unknown”；协作卡的负责人列拖动改走转交入口，状态列拖动仅 R47 非终态，二者都不先乐观移卡。停止界面提供目标/小队与整单两级动作，区分已受理/等待确认/已确认，成员过程归所属组，结束单据仍展示未结 run。整单恢复失败保持原暂停并说明原因，不显示部分成功。断线、加载、空列表及无权分别表达；双端覆盖键盘、焦点、窄屏和 200% 缩放。代管共享窄表单，R40 明确选人、空候选禁提交，失败保留输入并刷新候选，不自动改选。
+来源空间列表/看板/时间线按 R54 用服务端最小 AccountSummary 显示外部人员，不回退到成员表的 “Unknown”；协作卡的负责人列拖动改走转交入口，状态列拖动仅 R47 非终态，二者都不先乐观移卡。停止界面提供目标/小队与整单两级动作，区分已受理/等待确认/已确认，成员过程归所属组，结束单据仍展示未结 run。整单恢复逐 lane 显示结果（“已恢复 N 个，M 个仍暂停”及原因），整单级拒绝时保持原暂停。断线、加载、空列表及无权分别表达；双端覆盖键盘、焦点、窄屏和 200% 缩放。代管共享窄表单，R40 明确选人、空候选禁提交，失败保留输入并刷新候选，不自动改选。
 
 ## D11. 上线、回退与风险边界
 
-1. 先部署加法 schema 和完整新旧 writer 防线，协作创建开关保持关闭；部署操作停止旧调度/后台 writer，确认所有可写节点支持同一协作协议再开放。不能混跑不识别 purpose 的旧服务。
+1. 先部署相对 main 为加法的 schema（M10 删除只针对未发布分支数据，执行后不可回退）和完整新旧 writer 防线，协作创建开关保持关闭；部署操作停止旧调度/后台 writer，确认所有可写节点支持同一协作协议再开放。不能混跑不识别 purpose 的旧服务。
 2. 再交付 daemon/supervisor 能力矩阵、Web/Desktop；未兼容 runtime 不领取协作任务，旧客户端最多使用服务器允许的投影/动作，不能 fallback 普通执行。
 3. 关闭创建仍保留读取/收尾。E06 持久 gate 先关再暂停所有 session；Resume 持 gate 共享锁至提交并比较 epoch。扫描完成才解除，旧意图失效，不自动恢复。
 4. 已存在协作状态后仅可回退到理解这些数据和门禁的兼容版本；不支持直接回退到旧二进制或 drop 表。暂停后仍保留收尾服务及未结屏障，恢复版本也不自动恢复队列。
@@ -258,4 +258,4 @@ API JSON 经 schema/parseWithFallback；关键 ID/版本/能力无效则 unavail
 
 ## D12. 修订状态与评审边界
 
-M01–M03 及修订方案实施已确认，当前稿采用整单控制器、逐目标 FIFO、组内派生及逐资源授权。当前存储/控制基础与 v2 读取见[代码规范](../../spec/server/collaboration-targets.md)；运行端许可/proof、正向恢复、完整 @提交和双端界面仍待实施。文档复审见 [review-2026-10-17.md](review-2026-10-17.md)，实施续作见讨论 §62；旧日期测试不替代本轮验证。
+M01–M03 及修订方案实施已确认，当前稿采用整单控制器、按根智能体分 lane 的批次 FIFO、组内派生及逐资源授权（M04–M11 见讨论 §64–§66）。当前存储/控制基础与 v2 读取见[代码规范](../../spec/server/collaboration-targets.md)；运行端许可/proof、正向恢复、完整 @提交和双端界面仍待实施。文档复审见 [review-2026-10-17.md](review-2026-10-17.md)，实施续作见讨论 §62；旧日期测试不替代本轮验证。

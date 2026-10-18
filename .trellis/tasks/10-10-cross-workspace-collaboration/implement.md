@@ -1,11 +1,15 @@
 # 跨账号协作实施计划
 
-- 日期：2026-10-17；状态：用户已要求按最新需求核对代码并继续推进，任务恢复实施。已有 P1/P2/P4/P6 验证仍仅属于原基础，见 [progress.md](progress.md)；当前代码调整边界见[实施续作](continuation-revision-2026-10-17.md)。
+- 日期：2026-10-17；状态：用户已要求按最新需求核对代码并继续推进，任务恢复实施。已有 P1/P2/P4/P6 验证仍仅属于原基础，见 [progress.md](progress.md)；当前实施范围见[单智能体闭环](continuation-single-agent-2026-10-17.md)，上一轮边界见[实施续作](continuation-revision-2026-10-17.md)。
 - 依据：[PRD](prd.md)、[技术设计](design.md)、[执行协议](research/execution-contract.md)；源码索引见[研究摘要](research/design-contracts.md)。
-- 分支：`codex/cross-workspace-collaboration`。原授权见 discussion §55；本轮产品决定见 §57–§60 与[调整清单](mention-redesign-2026-10-17.md)。最新用户续作指令是修订方案的实施授权，已记录到 task.json。
+- 分支：`codex/cross-workspace-collaboration`。原授权见 discussion §55；本轮产品决定见 §57–§60、§64–§66 与[调整清单](mention-redesign-2026-10-17.md)。最新用户续作指令是修订方案的实施授权，已记录到 task.json。
 - 任务保留为规划与集成责任入口；下面按可验证阶段拆分工作，批准后可据此建立子任务，依赖以本文为准，不能从任务树推断。
 
 当前基础调整及验证见[本轮结果](verification-revision-2026-10-17.md)；下方未勾选项继续按完整功能范围验收，不以存储/内部控制切片替代运行端与双端交付。
+
+## 当前续作：2026-10-18
+
+已完成[调整与推进计划](review-followup-2026-10-18.md)中的 M09 收尾与独立检查，证据见[本轮验证](verification-summary-followup-2026-10-18.json)。单直接 agent 的文本合批、启动/终结及恢复闭环已在真实 Linux/DB/API/daemon 环境跑通；v3 读取、权限代次、FIFO 和迁移恢复缺口已修复。后续开工前须完整重读最新执行契约，再做 target hold、M04 多 lane 新语义、同队长多目标合批与 M11；附件交付和完整双端界面另按原阶段验收。
 
 ## P0R. 本轮变更规划与影响收敛
 
@@ -14,11 +18,15 @@
 - [x] 用户确认 M01：不同目标在资源允许时可并行，同一目标输入保持有序；小队依赖和实际资源竞争列入技术定稿。
 - [x] 用户选择 M02 的 A 方案：按智能体/小队或整单停止/恢复，小队包含成员执行；无关目标保持状态，整单暂停不得被目标级恢复绕过。
 - [x] 用户选择 M03 的 A 方案：@仅展示本单已授权目标，creator/handler 组织新增，各实际 owner 确认，不开放额外资源发现。
-- [x] 修订 D01–D11 及 data/execution-contract：issue 控制器、逐目标 FIFO、根执行组/成员 run、逐资源授权和两级原子控制；保留 nonce/proof 与旧入口隔离。
-- [x] typed target 去重，直接智能体/小队保持独立角色；按实际资源共享容量。队长非阻塞派发/终结后释放 slot，再调度成员和幂等续作；不以队长 proof 结算全组。
+- [x] 修订 D01–D11 及 data/execution-contract：issue 控制器、逐 lane 批次 FIFO、根执行组/成员 run、逐资源授权和两级原子控制；保留 nonce/proof 与旧入口隔离。
+- [x] typed target 去重，@A 与 @S（队长 A）同 lane 合并（M06）；按实际资源共享容量。小队按现状派发（M08）：队长评论后结束并释放 slot，成员回帖/结束合并唤醒续作；不以队长 proof 结算全组。
 - [x] 重审 P1–P8 受影响清单、97 项 AC 主验证和旧客户端/迁移边界；保留既有数据与验证证据。
 - [x] 独立产品与执行契约复审；所有发现已修正，结论见 review-2026-10-17.md，完整规划摘要见 discussion §61。
 - [x] 用户要求“根据需求核对一下已经实现的代码是否需要调整，并请继续推进这个任务”，随后再次要求“继续推进”；已据此执行 task.py start，恢复实施。
+- [x] 审计后续决定 M04–M10 已记录（discussion §64）；M08 改为保持现有小队派发（§65），M11 人类再 @队长并入本组续作（§66）。
+- [x] M10、M06/M07 单目标基础与 M04 单 lane：前向删除旧单会话执行路径，保留当前输入/证明；通道/合批、停止及明确恢复已实现并通过本轮验证。
+- [x] M09 门禁：单直接智能体、单 lane 在 Docker 提供的真实 Linux 内核跑通评论→command→promote→claim→permit→supervisor→Stop→sealed proof→Resume→下一批及 never_launched；另验证真实 daemon 注册/槽位/Runner 接线。仅使用测试自建静态程序，macOS/Windows 运行能力不宣称支持。
+- [ ] 后续开工前重读最新执行契约；M04 多 lane/目标 hold、跨目标 FIFO、小队派发/续作及完整两级控制按最新 §66 增量实施，不能复用旧拒绝/暂停假设。
 
 下方 P1–P8 已按本轮模型修订。标记已完成的早期基础项只证明旧结构存在，新 target/group/运行协议仍待实现；未受影响的人类流转与字段规则继续回归。旧单会话“唯一未结 run”不能作为多目标验收。
 
@@ -71,7 +79,7 @@ P1 后 P2/P3/P4 可独立研究和实现，但共享服务、router 和 migratio
 ## P1. 数据、对象授权及原子新建
 
 - [x] 旧基础已建立协作/参与/交接/session/command/run/grant/outbox/终结与身份门禁；只证明原单目标 schema，不代表以下新增结构已交付。
-- [ ] 按新 D02 增加 target、授权资源清单、execution_group、派发/续作关系；根 command 固定目标/输入，run 归组且有独立 proof。替换旧 session 单 active_grant/run 权威及 command/run 一对一约束，逐目标至多一个当前根组。保留旧历史/未结证明，无法确定旧等待输入目标时保持暂停，不猜当前 grant 自动执行。
+- [ ] 按新 D02 增加 target、授权资源清单、execution_group、派发/续作关系；根 command 固定目标/输入，run 归组且有独立 proof。替换旧 session 单 active_grant/run 权威及 command/run 一对一约束，逐 lane 至多一个当前根组。按 M10 用前向迁移删除旧执行数据与 legacy_* 列，不映射、不隔离、不改写已提交迁移文件。
 - [x] 所有新索引（含主键/唯一键）各用单语句 CONCURRENTLY 迁移；无 FK/级联，检查 invalid index 与安全 down 前置条件。
 - [ ] 复用 `issue.assignee_id=user.id`，creator 保留真实用户；输出独立 source/execution scope，禁止虚构成员或代理 issue。
 - [ ] 新增事务内单据授权器与最小 AccountSummary，读与普通评论采用来源成员 OR 本单参与关系；角色/操作能力分开。R53：人类身份用白名单；只有绑定当前 target/group/run/资源的协作能力可进入执行白名单，其他 task_token/cloud_pat/plugin/IM/未知机器仍只得最小引用、写入拒绝；需要时由认证中间件显式标记人类来源，不能靠缺失 header 推断。
@@ -129,35 +137,36 @@ P1 后 P2/P3/P4 可独立研究和实现，但共享服务、router 和 migratio
 ## P4. 固定启动身份、监督器与窄凭据
 
 - [ ] 新增 collaboration purpose 与 claim/finalize/launch/progress/proof 协议；普通同空间 claim 不放宽。
-- [ ] 业务 token 绑定 issue/session/target/group/command/run/grant/账户与参与 epoch；全局路由默认拒绝，子进程无宽域 mat_/PAT fallback。
+- [ ] 业务 token 绑定 issue/session/group（含其 command/target/grant 集合）/run/账户与参与 epoch；全局路由默认拒绝，子进程无宽域 mat_/PAT fallback。
 - [ ] 每次业务 token 请求调用动态能力谓词，写事务再验，旧 token 不因重新参与/重开/新 grant 复活；不能借 owner 的来源成员权降级。
 - [ ] 按 E07 登记中立账号 epoch 更新者；password 使用真实会话版本，legacy 共享 runtime 有 owner 授权及持久 key challenge enrollment。保持原登录模式和 password-only 管理入口，不用空版本/空 binding 兜底。
 - [ ] 在可能启动前预发并持久化仅 supervisor 持有的终结 token，绑定原 deployment/install/run/fence/nonce；撤权后仍只收尾。
 - [ ] 本地账本使用跨进程锁、fsync、启动前 nonce burn、单调 attempt、最终 run seal；burn/fork/PID 回写窗口保守 unknown。内部尝试先证明前次退出再取新许可。
 - [ ] supervisor 覆盖每次 provider launch、内部 fallback 及全部派生进程；共享能力须证明封闭 containment，Windows Job 绑定失败不启动，Unix 单独进程组不足以准入。覆盖 setsid/改变组/双 fork/提前关闭 stdio/PID复用，无法保证则不宣告能力；观测丢失保留 unknown，不能签发完整 proof。
 - [ ] daemon owner、供应商账号、实际执行者和根 command 的人类作者分开。固定 typed target/配置与输入快照，各 run 重验实际资源授权；不能在成为队首时把 @A 改用全局当前 B。切资源须显式暂停/owner 授权，旧 epoch 不复活。
-- [ ] 小队组内派发使用父 run 窄能力与授权成员清单；持久派发和 continuation 幂等，原人类来源不可改写。队长结束并取得 proof 才释放真实 slot，成员 bypass 外部 FIFO；容量 1 和同目录竞争必须验证。
+- [ ] 小队按现状派发（M08）：本组存活 run 评论 @冻结名册内已授权成员才记派发，comment_id+成员去重；成员回帖/结束及满足 E01“M11 并入”的人类再 @S/@队长合并为一次队长续作，组停止或结算时未被任何 run 读取的并入输入回到 waiting，原人类来源不可改写；briefing 的 todo 子任务指派对协作单明确拒绝并有负例。队长评论后结束即释放真实 slot，成员 bypass 外部 FIFO；容量 1 和同目录竞争必须验证。
 - [ ] 文件通过已提交 Git/明确附件准备；新环境重置供应商恢复指针，不搬运未提交目录、私人 session 或其他平台凭据。
 
 验证：fake executable 起子孙进程、延迟/崩溃，逐点注入 burn/fork/PID/reap/seal 故障；另一 daemon 实例、重复 nonce/派发、迟到 fallback 不重复 fork。测 Windows Job 失败、token 路由矩阵、当前 grant/私有 owner 关系和认证×runtime enrollment/challenge 重放。撤用户/runtime 后只可提交旧 proof，不读正文/启动/续租/恢复；provider 无 supervisor 凭据。不用单个 ProcessExited mock 代替原生矩阵。
 
-## P5. 逐目标 FIFO、执行组与两级控制
+## P5. 逐 lane 批次、执行组与两级控制
 
-- [ ] 根 command 固定 typed target/输入/作者，逐目标 seq 和原子 active_group 占位；根组可包含多个成员/continuation run。不同目标可并行，同目标下一根 command 等整个组结算。
+- [ ] 根 command 固定 typed target/输入/作者，按实际根智能体进入 lane（M06），lane seq 和原子 active_group 占位；忙碌/暂停期间的输入 waiting，promote 按 FIFO 取合格输入一次运行（M07），遇第二支合格小队截断、hold/失效者被跳过；未开始时单条取消/作者移除只移出该条，已开始整批停止。根组可包含多个成员/continuation run；不同 lane 可并行，同 lane 下一批等整个组结算。
 - [ ] R45 取消单条 waiting：当前有效参与者且为作者/creator/handler；与 promote 同锁，取消状态、操作者/时间及事件同事务。不变更原文/seq、active_group、两个控制层状态/版本，不依赖 grant/gate；in_flight 或终态拒绝，不自动 Stop。测试三类允许主体、他人/撤权/转交、paused/维护及 cancel↔promote 的确定性竞争和幂等重放。
 - [ ] 按 E01 显式连接来源正式 admission、installation accepting、当前资源/绑定/账号和全局 gate；旧恢复例外不发新许可；真实资源容量不被目标名绕过，容量受限目标不堵住其他独立可运行目标。
 - [ ] E03 无许可占位由服务端原子撤派发并结算；永久 prepare 错误、临时投递故障和可能已有许可区别处理，不等不存在的 daemon 回执。
-- [ ] target/issue Stop 明确范围、观察到的组/目标集合版本；先挂起并封闭派生，再停止所有范围内 run。单目标不影响其他目标，整单暂停约束新增目标；proof 只清对应 run 屏障，不能恢复 gate。
+- [ ] target/issue Stop 明确范围、观察到的组/目标集合版本；先挂起并封闭派生，再停止所有范围内 run。单目标停止带同 lane 目标、不影响其他 lane，整单暂停约束新增目标；proof 只清对应 run 屏障，不能恢复 gate。
 - [ ] 移除/退出、撤 grant、owner 离开、生命周期 close/reopen 与相应取消/暂停/停止副作用同事务。
+- [ ] 目标 hold（initial/grant_required/config_invalid/switch_hold）：新建、撤权、epoch/配置失效、promote 发现失效与 Switch 同事务置 hold，撤权不暂停 lane；promote 跳过且不挡他人，可按 R45 取消；Resume target/All 验本目标配置且所在 lane 无强制停止缺 proof 的组后释放并逐个回执，重新授权不自动释放。换队长时 waiting 转入新队长 lane 末尾，新 lane 忙碌不阻止释放；新 lane 暂停时证明齐才一起恢复，否则整笔拒绝。单目标恢复全有或全无（AC40）。
 - [ ] 禁用作者/owner 的 auth epoch 即刻拒新许可，持久失效 fanout 不因快速恢复丢失；按顺序收敛受影响单据。
-- [ ] Resume target 不跨整单暂停；Resume issue 原子验证全范围 proof/当前目标/grants，任一失败不改任何 gate/target，不静默部分恢复。拒绝 key 永远重放原拒绝，旧 stop 不套到新组；重复恢复不重复启动既有工作。
-- [ ] 关闭旧隐式失败重试/merge/reconcile/rerun 及无归属 continuation 旁路；只允许同组持久、已授权的成员/续作。全部 run/派发结算且组封闭才释放该目标 FIFO；手动重做新建根 command。
+- [ ] Resume target 不跨整单暂停；Resume issue 按 M04 结算：整单级条件失败整笔拒绝；否则解除整单暂停，证明齐的 lane 恢复、授权有效的 hold 目标释放，其余保持暂停/hold 并逐个返回原因。原 key 重放原回执，旧 stop 不套到新组；重复恢复不重复启动既有工作。
+- [ ] 关闭旧隐式失败重试/merge/reconcile/rerun 及无归属 continuation 旁路；只允许同组持久、已授权的成员/续作。全部 run/派发结算且组封闭才释放该 lane；手动重做新建根 command。
 - [ ] E05 分开 business_outcome/forced_disposition/proof；proof 先到缺结果记 outcome_unconfirmed，结果先到无 proof 不解锁，停止优先于 late success。
 - [ ] 按 D08 清单覆盖 HTTP/WS、Plugin、CLI、队列 SQL、后台状态/孤儿/GC、整机停止及所有 teardown；同 purpose 进入同一 primitive。
 - [ ] 固定逐 writer 锁序和 NOWAIT 交汇点，所有 helper 借同一事务；冲突有限重试、commit 不明查原操作。
 - [ ] E06 gate 先关再扫描暂停；Resume/所有 active 写入持 FOR SHARE 到提交并比较 expected_execution_epoch。barrier 测覆盖读 gate→提交窗口及旧请求延迟到重新 enable；扫描完成才解除，不自动 active。关闭创建仍接收尾，未结 run 不因重启/超时/engine 清理消失。
 
-验证：使用数据库事务屏障/同步通道制造 stop↔claim/finalize/start/complete、close↔enqueue、remove↔launch、revoke↔resume、workspace delete↔create、runtime teardown↔proof 竞争，不靠任意 sleep 猜时间。指令 1 运行、2/3 排队时停，4 在 paused 加入，证明前拒恢复，同 key 之后仍拒；新请求恢复仅执行有效 2/3/4，1 不重试。至少两个调度 worker 验证同一 target 至多一个 active_group、不同 target 可并行；小队组内非阻塞派发在容量 1 时仍能前进。整单恢复拒绝必须零状态写入，新增目标不能越过整单暂停，其他 issue 不受影响。
+验证：使用数据库事务屏障/同步通道制造 stop↔claim/finalize/start/complete、close↔enqueue、remove↔launch、revoke↔resume、workspace delete↔create、runtime teardown↔proof 竞争，不靠任意 sleep 猜时间。指令 1 运行、2/3 排队时停，4 在 paused 加入，证明前拒恢复，同 key 之后仍拒；新请求恢复后有效 2/3/4 合为一批运行一次，1 不重试。至少两个调度 worker 验证同一 lane 至多一个 active_group、不同 lane 可并行；小队组内非阻塞派发在容量 1 时仍能前进。整单级恢复拒绝必须零状态写入，新增目标不能越过整单暂停，其他 issue 不受影响。
 
 ## P6. 共享界面与 Web / Desktop 路由
 
@@ -206,7 +215,7 @@ P1 后 P2/P3/P4 可独立研究和实现，但共享服务、router 和 migratio
 - [ ] 故障注入：丢响应/重复事件、Server/daemon 重启、旧 provider 未结、owner 禁用/解绑/删除、未结凭据与日志不完整。
 - [ ] 旧 Web/Desktop/Mobile/CLI/daemon 请求对协作数据无法绕过；普通任务原行为回归。未支持 Server/运行时显示不支持，禁止普通执行或公开下载 fallback。
 - [ ] 更新受影响 CLI 行为、`server/internal/service/builtin_skills/` 的 SKILL.md 与 source maps，以及必要用户说明。提交 Lore 决策记录，不纳入他人改动。
-- [ ] 验证加法迁移/功能关闭/兼容回退：开关关不丢读取与停止收敛；部署无旧 writer 后才能开创建，不能带活数据回退旧二进制或删表。
+- [ ] 验证相对 main 的加法迁移/功能关闭/兼容回退（M10 删除执行后不可回退）：开关关不丢读取与停止收敛；部署无旧 writer 后才能开创建，不能带活数据回退旧二进制或删表。
 - [ ] 留存 capability 矩阵、数据库竞争、原生进程树、双端 E2E 和权限负例的证据，独立 review 无未解决严重发现后才建议启用。
 
 ## 验收归属
@@ -267,4 +276,4 @@ git diff --check -- .trellis/tasks/10-10-cross-workspace-collaboration
 python3 .trellis/scripts/task.py validate .trellis/tasks/10-10-cross-workspace-collaboration
 ```
 
-并核对 JSON/JSONL、R/AC 完整性、相对链接、验收归属、jsonl 引用文件各 32768 bytes、prd/design/implement 各 65536 bytes 与总自动上下文 196608 bytes 限额（`.trellis/config.yaml` 的 `context_injection.max_total_bytes`）；结果和访谈/审批状态记入 task.json 与 discussion.md，不把 planning 改成已实施。
+并核对 JSON/JSONL、R/AC 完整性、相对链接、验收归属、jsonl 引用文件各 65536 bytes、prd/design/implement 各 65536 bytes 与总自动上下文 262144 bytes 限额（`.trellis/config.yaml` 的 `context_injection.max_total_bytes`）；结果和访谈/审批状态记入 task.json 与 discussion.md，不把 planning 改成已实施。

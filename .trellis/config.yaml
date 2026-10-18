@@ -143,9 +143,11 @@ channel:
 # Defaults: max_file_bytes 32768 (per implement.jsonl / check.jsonl referenced
 # file), max_artifact_bytes 65536 (per prd.md / design.md / implement.md),
 # max_total_bytes 131072 (whole injected payload; overflow degrades to index
-# lines). The total is raised so large planning tasks inline every file.
+# lines). The per-file and total caps are raised so large planning tasks
+# inline every file.
 context_injection:
-  max_total_bytes: 196608
+  max_file_bytes: 65536
+  max_total_bytes: 262144
 
 #-------------------------------------------------------------------------------
 # Per-turn prompt injection
