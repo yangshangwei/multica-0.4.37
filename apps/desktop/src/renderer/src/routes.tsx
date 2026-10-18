@@ -1,3 +1,4 @@
+import { DesktopAccountWorkbenchRoute } from "./platform/account-workbench-route";
 import { IterationsPage } from "@multica/views/iterations";
 import { useEffect } from "react";
 import { createMemoryRouter, Outlet, useMatches, useParams } from "react-router-dom";
@@ -90,7 +91,7 @@ function PageShell() {
 /**
  * Route definitions shared by all tabs.
  *
- * Every tab path is workspace-scoped: `/{slug}/{route}/...`. Pre-workspace
+ * Account is a persistent global tab. Workspace session paths are scoped: `/{slug}/{route}/...`. Pre-workspace
  * flows (create workspace, accept invite) are NOT routes — they render as a
  * window-level overlay via `WindowOverlay`, dispatched by the navigation
  * adapter's transition-path interception. The `activeWorkspaceSlug` in the
@@ -110,6 +111,7 @@ export const appRoutes: RouteObject[] = [
     errorElement: <DesktopRouteErrorPage />,
     children: [
       { index: true, element: null },
+      { path: "account", element: <DesktopAccountWorkbenchRoute /> },
       {
         path: ":workspaceSlug",
         element: <WorkspaceRouteLayout />,

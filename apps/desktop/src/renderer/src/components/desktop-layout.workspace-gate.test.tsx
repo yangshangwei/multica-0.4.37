@@ -23,8 +23,16 @@ import { RESOURCES } from "@multica/views/locales";
  */
 
 const state = vi.hoisted(() => ({
+  activeScope: "workspace" as "account" | "workspace",
   currentSlug: "acme" as string | null,
   wsList: [] as { id: string; slug: string }[],
+}));
+
+vi.mock("@/stores/tab-store", () => ({
+  useTabStore: Object.assign(
+    (selector: (value: typeof state) => unknown) => selector(state),
+    { getState: () => state },
+  ),
 }));
 
 vi.mock("@/hooks/use-tab-history", () => ({
@@ -106,6 +114,7 @@ vi.mock("@multica/views/chat", () => ({
 
 vi.mock("./tab-bar", () => ({ TabBar: () => null }));
 vi.mock("./window-overlay", () => ({ WindowOverlay: () => null }));
+vi.mock("./account-navigation", () => ({ DesktopAccountNavigation: () => null }));
 vi.mock("./tab-content", () => ({
   TabContent: () => <div data-testid="tab-content" />,
 }));
@@ -135,11 +144,32 @@ function renderShell() {
 }
 
 beforeEach(() => {
+  state.activeScope = "workspace";
   state.currentSlug = "acme";
   state.wsList = [{ id: "ws-1", slug: "acme" }];
 });
 
 describe("DesktopShell workspace gating", () => {
+  it("drops workspace chrome before a late route mirror clears on account entry", () => {
+    state.activeScope = "account";
+
+    const { queryByTestId } = renderShell();
+
+    expect(queryByTestId("tab-content")).not.toBeNull();
+    expect(queryByTestId("app-sidebar")).toBeNull();
+    expect(queryByTestId("search-command")).toBeNull();
+    expect(queryByTestId("global-shortcuts")).toBeNull();
+  });
+
+  it("reserves native toolbar space and removes the sidebar toggle in account scope", () => {
+    state.activeScope = "account";
+
+    const { container, queryByLabelText } = renderShell();
+
+    expect(container.querySelector("header")).toHaveStyle({ paddingLeft: "184px" });
+    expect(queryByLabelText("Toggle left sidebar")).toBeNull();
+  });
+
   it("mounts workspace-scoped chrome while the slug resolves", () => {
     const { queryByTestId } = renderShell();
 

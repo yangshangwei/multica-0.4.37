@@ -20,12 +20,24 @@ import { DesktopConnectionRecoveryBoundary } from "./connection-recovery-boundar
 import { useWorkspaceConnectionRecovery } from "../hooks/use-workspace-connection-recovery";
 import { IssueDetailPage } from "../pages/issue-detail-page";
 import { IssueWindowNavigationProvider } from "../platform/issue-window-navigation";
+import { DesktopAccountWorkbenchRoute } from "../platform/account-workbench-route";
 
 export function IssueWindow({ context }: { context: IssueWindowContext }) {
   const router = useMemo(
     () =>
       createMemoryRouter(
         [
+          {
+            path: "account",
+            element: (
+              <IssueWindowNavigationProvider>
+                <IssueWindowFrame>
+                  <DesktopAccountWorkbenchRoute />
+                </IssueWindowFrame>
+              </IssueWindowNavigationProvider>
+            ),
+            errorElement: <IssueWindowRouteError />,
+          },
           {
             path: ":workspaceSlug/issues/:id",
             element: <IssueWindowRoute />,

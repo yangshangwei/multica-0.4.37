@@ -9,6 +9,7 @@
     "test": "vitest run"
   },
   "exports": {
+    "./collaboration": "./collaboration/index.ts",
     "./changelog": "./changelog/index.ts",
     "./navigation": "./navigation/index.ts",
     "./common/actor-avatar": "./common/actor-avatar.tsx",

@@ -5,6 +5,7 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 // vi.hoisted shared state for all the stores / hooks the layout consumes.
 const state = vi.hoisted(() => ({
+  activeScope: "workspace" as "account" | "workspace",
   user: null as { id: string } | null,
   isAuthLoading: false,
   overlay: null as { type: string } | null,
@@ -110,7 +111,7 @@ vi.mock("@multica/views/onboarding", () => ({
 
 vi.mock("@/stores/tab-store", () => ({
   useTabStore: Object.assign(() => null, {
-    getState: () => ({ validateWorkspaceSlugs: vi.fn() }),
+    getState: () => ({ activeScope: state.activeScope, validateWorkspaceSlugs: vi.fn() }),
   }),
 }));
 
@@ -146,6 +147,7 @@ function renderLayout() {
 }
 
 beforeEach(() => {
+  state.activeScope = "workspace";
   state.user = { id: "u1" };
   state.isAuthLoading = false;
   state.overlay = null;
@@ -204,6 +206,15 @@ describe("WorkspaceRouteLayout", () => {
  * nothing until a `useWorkspaceId()` throw blanked the whole renderer.
  */
 describe("WorkspaceRouteLayout workspace singleton lifecycle", () => {
+  it("does not re-adopt stale workspace context after account navigation", () => {
+    state.activeScope = "account";
+    state.currentSlug = null;
+
+    renderLayout();
+
+    expect(state.currentSlug).toBeNull();
+  });
+
   it("adopts the workspace while it resolves", () => {
     renderLayout();
     expect(state.currentSlug).toBe("acme");

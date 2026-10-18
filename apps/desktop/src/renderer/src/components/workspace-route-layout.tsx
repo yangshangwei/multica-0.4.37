@@ -104,7 +104,7 @@ export function WorkspaceRouteLayout() {
   // run — is what makes the unmount release below safe. React renders the
   // incoming tree before it runs the outgoing tree's effect cleanups, so by
   // the time the old layout tries to release, the new one already owns.
-  if (workspace && workspaceSlug && !isWorkspaceDeletePending(workspace.id)) {
+  if (workspace && workspaceSlug && useTabStore.getState().activeScope !== "account" && !isWorkspaceDeletePending(workspace.id)) {
     singletonOwner = instanceId;
     setCurrentWorkspace(workspaceSlug, workspace.id);
   }

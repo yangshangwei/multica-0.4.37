@@ -126,6 +126,7 @@ Object.defineProperty(HTMLCanvasElement.prototype, "getContext", {
 });
 
 import { ReadonlyContent } from "../editor/readonly-content";
+import { RichContent } from "./rich-content";
 import { ChatMessageList } from "../chat/components/chat-message-list";
 import { taskMessagesOptions } from "@multica/core/chat/queries";
 
@@ -191,6 +192,21 @@ beforeEach(() => {
     svg: '<svg viewBox="0 0 123 45"><g><text>diagram</text></g></svg>',
   });
   resolveIssueIdentifierMock.mockReturnValue(null);
+});
+
+it("renders private collaboration content without workspace lookups or public file links", () => {
+  const { container } = render(<RichContent resourcePolicy="restricted" content={[
+    "# Shared instructions", "Read MUL-123 and [another issue](mention://issue/MUL-456).",
+    "![PRIVATE_FILE](https://cdn.example.test/uploads/private.png)",
+    "[PRIVATE_DOWNLOAD](https://cdn.example.test/uploads/private.txt)",
+    '```html\n<img src="https://cdn.example.test/PRIVATE_REMOTE_IMAGE">\n```',
+  ].join("\n\n")} />);
+  expect(screen.getByRole("heading", { name: "Shared instructions" })).toBeInTheDocument();
+  expect(resolveIssueIdentifierMock).not.toHaveBeenCalled();
+  expect(container.querySelector("img")).toBeNull();
+  expect(container.querySelector("iframe")).toBeNull();
+  expect(container.querySelector('a[href*="uploads"]')).toBeNull();
+  expect(container.querySelector('a[href*="cdn.example.test"]')).toBeNull();
 });
 
 /**

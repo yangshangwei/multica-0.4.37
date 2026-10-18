@@ -19,6 +19,7 @@ type MockTab = {
 };
 
 const state = vi.hoisted(() => ({
+  accountGroup: null as { activeTabId: string; tabs: MockTab[] } | null,
   activeWorkspaceSlug: "acme" as string | null,
   byWorkspace: {
     acme: {
@@ -63,7 +64,7 @@ vi.mock("@/stores/tab-store", () => {
   const useActiveGroup = () =>
     state.activeWorkspaceSlug
       ? (state.byWorkspace[state.activeWorkspaceSlug] ?? null)
-      : null;
+      : state.accountGroup;
   return { useTabStore, useActiveGroup };
 });
 
@@ -105,6 +106,7 @@ function TabBarWithI18n() {
 }
 
 function reset() {
+  state.accountGroup = null;
   state.activeWorkspaceSlug = "acme";
   state.byWorkspace = {
     acme: {
@@ -539,6 +541,22 @@ describe("TabBar overflow", () => {
 });
 
 describe("TabBar context menu", () => {
+  it("offers the existing popout action for an account issue tab", async () => {
+    state.activeWorkspaceSlug = null;
+    pres.title = "Unknown page";
+    const path = "/account?view=participating&issue=11111111-1111-4111-8111-111111111111";
+    state.accountGroup = {
+      activeTabId: "account",
+      tabs: [{ id: "account", url: path, title: "Collaboration", pinned: false }],
+    };
+    const { findByText, getByLabelText } = render(<TabBarWithI18n />);
+
+    fireEvent.contextMenu(getByLabelText("Collaboration"));
+    fireEvent.click(await findByText("Open as new window"));
+
+    expect(state.openIssueWindow).toHaveBeenCalledWith({ path, title: "Collaboration" });
+  });
+
   it("opens an issue-detail tab as a dedicated window", async () => {
     state.byWorkspace.acme.tabs = [
       {

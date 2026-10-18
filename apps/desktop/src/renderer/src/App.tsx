@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { parseDesktopAccountPath } from "../../shared/account-navigation";
 import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import { clearClientSessionData } from "@multica/core/platform";
 import { WindowOverlay } from "./components/window-overlay";
@@ -21,8 +22,9 @@ import { useWorkspaceConnectionRecovery } from "./hooks/use-workspace-connection
 import { DesktopShell } from "./components/desktop-layout";
 import { UpdateNotification, UpdateNotificationNavigationProvider } from "./components/update-notification";
 import { IssueWindow } from "./components/issue-window";
-import { useTabStore } from "./stores/tab-store";
+import { useTabStore, getActiveGroup } from "./stores/tab-store";
 import { useWindowOverlayStore } from "./stores/window-overlay-store";
+import { accountBootstrapDestination } from "./platform/account-bootstrap";
 import { useOpenSettingsShortcut } from "./hooks/use-open-settings-shortcut";
 import { useDaemonIPCBridge } from "./platform/daemon-ipc-bridge";
 import { syncDaemonOnLogin } from "./platform/daemon-login-sync";
@@ -74,13 +76,7 @@ function useCmdWCloseTab() {
         return;
       }
       const store = useTabStore.getState();
-      const { activeWorkspaceSlug, byWorkspace } = store;
-      if (!activeWorkspaceSlug) {
-        // No workspace — nothing to close, dismiss the window.
-        window.desktopAPI.closeWindow();
-        return;
-      }
-      const group = byWorkspace[activeWorkspaceSlug];
+      const group = getActiveGroup(store);
       if (!group || group.tabs.length <= 1) {
         // Last tab (or no tabs) — close the window.
         window.desktopAPI.closeWindow();
@@ -117,7 +113,7 @@ function IssueWindowContent() {
   );
 }
 
-function AppContent({ onServerEditorOpenChange }: { onServerEditorOpenChange: (open: boolean) => void }) {
+export function AppContent({ onServerEditorOpenChange }: { onServerEditorOpenChange: (open: boolean) => void }) {
   const user = useAuthStore((s) => s.user);
   const isLoading = useAuthStore((s) => s.isLoading);
   const authStatus = useAuthStore((s) => s.status);
@@ -140,13 +136,8 @@ function AppContent({ onServerEditorOpenChange }: { onServerEditorOpenChange: (o
     useWindowOverlayStore.getState().open({type: user?.requires_account_setup ? "account-setup" : "password-change"});
   }, [restricted, user]);
 
-  // Deep-link login runs loginWithToken → syncToken → listWorkspaces →
-  // setQueryData sequentially. loginWithToken sets user+isLoading=false
-  // as soon as getMe resolves, which would cause DesktopShell to mount
-  // before the workspace list is hydrated and briefly see `!workspace`.
-  // This local flag keeps the loading screen up until the whole chain
-  // finishes, so IndexRedirect gets a definitive workspace state on
-  // first render.
+  // Only authentication blocks account entry. Workspace loading belongs to
+  // the shared Query below and must not prolong this login transition.
   const [bootstrapping, setBootstrapping] = useState(false);
 
   const runtimeConfig = window.desktopAPI.runtimeConfig.ok
@@ -159,6 +150,32 @@ function AppContent({ onServerEditorOpenChange }: { onServerEditorOpenChange: (o
     if (!runtimeConfig) return;
     window.daemonAPI.setTargetApiUrl(runtimeConfig.apiUrl);
   }, [runtimeConfig]);
+
+  // Native links may arrive before identity recovery. Keep only the path;
+  // authorized account reads still run after the authentication gates.
+  const pendingAccountPath = useRef<string | null>(null);
+  useEffect(() => window.desktopAPI.onAccountOpen?.((value) => {
+    const path = parseDesktopAccountPath(value);
+    if (!path) return;
+    const current = useAuthStore.getState();
+    if (!current.user || current.status !== "authenticated" || current.user.requires_account_setup || current.user.requires_password_change) {
+      pendingAccountPath.current = path;
+      return;
+    }
+    if (runtimeConfig) useTabStore.getState().setSessionOwner(JSON.stringify([runtimeConfig.apiUrl, current.user.id]));
+    setCurrentWorkspace(null, null);
+    useWindowOverlayStore.getState().close();
+    useTabStore.getState().switchAccount(path);
+  }), [runtimeConfig]);
+  useEffect(() => {
+    if (!user || restricted || authStatus !== "authenticated" || !runtimeConfig || !pendingAccountPath.current) return;
+    const path = pendingAccountPath.current;
+    pendingAccountPath.current = null;
+    useTabStore.getState().setSessionOwner(JSON.stringify([runtimeConfig.apiUrl, user.id]));
+    setCurrentWorkspace(null, null);
+    useWindowOverlayStore.getState().close();
+    useTabStore.getState().switchAccount(path);
+  }, [user, restricted, authStatus, runtimeConfig]);
 
   // Listen for invite IDs delivered via deep link (multica://invite/<id>).
   // We open the overlay regardless of login state — if the user isn't logged
@@ -179,21 +196,13 @@ function AppContent({ onServerEditorOpenChange }: { onServerEditorOpenChange: (o
       setBootstrapping(true);
       try {
         await useAuthStore.getState().loginWithToken(token);
-        // Seed React Query cache with the workspace list so the index-route
-        // redirect (routes.tsx `IndexRedirect`) can resolve the initial
-        // destination without a second fetch. Workspace side-effects
-        // (setCurrentWorkspace, persist namespace) are synced later by
-        // WorkspaceRouteLayout when the URL resolves.
-        if (useAuthStore.getState().status !== "authenticated") return;
-        const wsList = await api.listWorkspaces({ timeoutMs: 10_000 });
-        qc.setQueryData(workspaceKeys.list(), wsList);
       } catch {
         // Token invalid or expired — user stays on login page
       } finally {
         setBootstrapping(false);
       }
     });
-  }, [qc]);
+  }, []);
 
   // Sync token and start the daemon whenever the user logs in. The ordering
   // inside syncDaemonOnLogin is load-bearing — see that module.
@@ -229,7 +238,7 @@ function AppContent({ onServerEditorOpenChange }: { onServerEditorOpenChange: (o
     workspaces,
     ready: workspaceListReady,
   } = workspaceList;
-  const { recovery: workspaceRecovery, retry: retryWorkspaceList } =
+  const { retry: retryWorkspaceList } =
     useWorkspaceConnectionRecovery(workspaceList, workspaceListEnabled);
   const wsCount = workspaces.length;
   const hasOnboarded = useHasOnboarded();
@@ -238,7 +247,23 @@ function AppContent({ onServerEditorOpenChange }: { onServerEditorOpenChange: (o
   // own daemon flips to offline/online sub-second instead of waiting on the
   // server's 75s sweeper. Resolves wsId from the active tab so workspace
   // switches automatically rebind the subscription.
+  const activeScope = useTabStore((s) => s.activeScope);
   const activeWorkspaceSlug = useTabStore((s) => s.activeWorkspaceSlug);
+  const sessionOwner = useTabStore((s) => s.sessionOwner);
+  const expectedOwner = user && runtimeConfig ? JSON.stringify([runtimeConfig.apiUrl, user.id]) : null;
+  const ownerReady = expectedOwner === null || sessionOwner === expectedOwner;
+  useLayoutEffect(() => {
+    if (expectedOwner) useTabStore.getState().setSessionOwner(expectedOwner);
+  }, [expectedOwner]);
+
+  useLayoutEffect(() => {
+    if (!ownerReady) return;
+    const destination = accountBootstrapDestination({ authenticated: !!user && authStatus === "authenticated", restricted, activeScope, workspaceListReady, workspaceListUnavailable: workspaceList.unavailable, workspaceCount: wsCount });
+    if (destination) {
+      setCurrentWorkspace(null, null);
+      useTabStore.getState().switchAccount();
+    }
+  }, [user, authStatus, restricted, activeScope, workspaceListReady, workspaceList.unavailable, wsCount, ownerReady]);
   const activeWsId = activeWorkspaceSlug
     ? workspaces.find((w) => w.slug === activeWorkspaceSlug)?.id
     : undefined;
@@ -260,7 +285,7 @@ function AppContent({ onServerEditorOpenChange }: { onServerEditorOpenChange: (o
   // /onboarding — we also clear the active workspace so the dashboard
   // doesn't render under the overlay with stale workspace context.
   useEffect(() => {
-    if (!user || restricted || !workspaceListReady) return undefined;
+    if (!user || restricted || !workspaceListReady || activeScope === "account") return undefined;
     const { overlay, open } = useWindowOverlayStore.getState();
     if (overlay) return undefined;
     if (hasOnboarded && wsCount > 0) return undefined;
@@ -301,7 +326,7 @@ function AppContent({ onServerEditorOpenChange }: { onServerEditorOpenChange: (o
     }
     open({ type: "new-workspace" });
     return undefined;
-  }, [user, restricted, workspaceListReady, wsCount, workspaces, hasOnboarded, qc]);
+  }, [user, restricted, workspaceListReady, wsCount, workspaces, hasOnboarded, qc, activeScope]);
 
 
   // Validate persisted tab state against the current user's workspace list,
@@ -316,14 +341,14 @@ function AppContent({ onServerEditorOpenChange }: { onServerEditorOpenChange: (o
   // Gate on authoritative data: pending and initial errors expose no data,
   // while a failed background refetch retains the last successful list.
   useLayoutEffect(() => {
-    if (!workspaceListReady) return;
+    if (!workspaceListReady || !ownerReady || restricted) return;
     const validSlugs = new Set(workspaces.map((w) => w.slug));
     useTabStore.getState().validateWorkspaceSlugs(validSlugs);
     const { activeWorkspaceSlug, switchWorkspace } = useTabStore.getState();
-    if (!activeWorkspaceSlug && workspaces.length > 0) {
+    if (!activeWorkspaceSlug && useTabStore.getState().activeScope !== "account" && workspaces.length > 0) {
       switchWorkspace(workspaces[0].slug);
     }
-  }, [workspaces, workspaceListReady]);
+  }, [workspaces, workspaceListReady, ownerReady, restricted]);
 
   // null = undecided (pre-login or list hasn't settled yet)
   // true  = session started with zero workspaces; next transition to >=1 triggers restart
@@ -350,15 +375,15 @@ function AppContent({ onServerEditorOpenChange }: { onServerEditorOpenChange: (o
 
   return (
     <DesktopConnectionRecoveryBoundary
-      recovery={authStatus === "recovering" ? authRecovery ?? PENDING_AUTH_RECOVERY : workspaceRecovery}
+      recovery={authStatus === "recovering" ? authRecovery ?? PENDING_AUTH_RECOVERY : null}
       onRetry={authStatus === "recovering" ? retryAuthentication : retryWorkspaceList}
       onEditorOpenChange={onServerEditorOpenChange}
     >
-      {isLoading || bootstrapping ? (
+      {isLoading || bootstrapping || !ownerReady ? (
         <div className="flex h-screen items-center justify-center">
           <MulticaIcon className="size-6 animate-pulse" />
         </div>
-      ) : restricted ? <WindowOverlay /> : user ? <DesktopShell /> : <DesktopLoginPage />}
+      ) : restricted ? <WindowOverlay /> : user ? <DesktopShell onRetryWorkspaceList={retryWorkspaceList} /> : <DesktopLoginPage />}
     </DesktopConnectionRecoveryBoundary>
   );
 }

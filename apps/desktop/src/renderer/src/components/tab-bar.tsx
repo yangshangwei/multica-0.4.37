@@ -43,6 +43,7 @@ import {
   ResourceLeadingVisual,
 } from "@multica/views/layout";
 import { parseIssueWindowPath } from "../../../shared/issue-window";
+import { parseAccountPath } from "@multica/core/paths";
 import { useT } from "@multica/views/i18n";
 
 const TAB_SCROLL_FADE_SIZE = 24;
@@ -222,7 +223,11 @@ function SortableTabItem({
   // query cache — a resource's own icon/status/avatar and its real title,
   // updated as the cache updates. `tab.title` is only a persisted first-frame
   // fallback. See @multica/views useTabPresentation.
-  const { visual, title } = useTabPresentation(tab.url, tab.title);
+  const presentation = useTabPresentation(tab.url, tab.title);
+  const { t: collaborationT } = useT("collaboration");
+  const account = parseAccountPath(tab.url);
+  const title = account ? collaborationT(($) => $.page.title) : presentation.title;
+  const visual = account ? { kind: "icon", icon: "ListTodo" } as const : presentation.visual;
 
   // Persist the active tab's resolved title so it survives as the next
   // session's first-frame fallback. The tab strip itself always renders the
@@ -759,7 +764,7 @@ export function TabBar() {
           shouldReduceMotion={shouldReduceMotion}
         />
       </div>
-      {group && <NewTabButton />}
+      {group && activeWorkspaceSlug && <NewTabButton />}
     </div>
   );
 }

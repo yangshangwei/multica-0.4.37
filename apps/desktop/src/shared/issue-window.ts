@@ -1,3 +1,5 @@
+import { accountPath, parseAccountPath } from "@multica/core/paths/account";
+
 export const ISSUE_WINDOW_ARGUMENT_PREFIX = "--multica-issue-window=";
 
 const MAX_ISSUE_WINDOW_PATH_LENGTH = 2_048;
@@ -10,10 +12,16 @@ export type IssueWindowRequest = {
   title: string;
 };
 
-export type IssueWindowContext = IssueWindowRequest & {
-  kind: "issue";
-  workspaceSlug: string;
+export type IssueWindowDestination = {
+  path: string;
   issueId: string;
+} & (
+  | { scope: "workspace"; workspaceSlug: string }
+  | { scope: "account" }
+);
+
+export type IssueWindowContext = IssueWindowRequest & IssueWindowDestination & {
+  kind: "issue";
 };
 
 export type DesktopWindowContext =
@@ -22,9 +30,8 @@ export type DesktopWindowContext =
 
 /**
  * Validate renderer-controlled input before it can become a BrowserWindow
- * launch argument. Dedicated windows are intentionally limited to one
- * workspace-scoped issue-detail route; list pages and every other app route
- * stay in the main tabbed window.
+ * launch argument. Dedicated windows host account or workspace issue details;
+ * list pages and other app destinations stay in the main tabbed window.
  */
 export function parseIssueWindowRequest(value: unknown): IssueWindowContext | null {
   if (!value || typeof value !== "object") return null;
@@ -42,20 +49,26 @@ export function parseIssueWindowRequest(value: unknown): IssueWindowContext | nu
   const title = rawTitle.slice(0, MAX_ISSUE_WINDOW_TITLE_LENGTH) || "Issue";
 
   return {
+    ...parsedPath,
     kind: "issue",
-    path: parsedPath.path,
     title,
-    workspaceSlug: parsedPath.workspaceSlug,
-    issueId: parsedPath.issueId,
   };
 }
 
 /** Return a canonical issue-detail path, or null for every other URL shape. */
 export function parseIssueWindowPath(
   value: unknown,
-): Pick<IssueWindowContext, "path" | "workspaceSlug" | "issueId"> | null {
+): IssueWindowDestination | null {
   if (typeof value !== "string") return null;
+  if (value.length > MAX_ISSUE_WINDOW_PATH_LENGTH) return null;
   if (!value.startsWith("/") || value.startsWith("//")) return null;
+
+  const account = parseAccountPath(value);
+  if (account) {
+    return account.issueId
+      ? { scope: "account", path: accountPath(account), issueId: account.issueId }
+      : null;
+  }
 
   let url: URL;
   try {
@@ -85,7 +98,7 @@ export function parseIssueWindowPath(
   const path = `/${workspaceSlug}/issues/${encodeURIComponent(issueId)}${url.search}${url.hash}`;
   if (path.length > MAX_ISSUE_WINDOW_PATH_LENGTH) return null;
 
-  return { path, workspaceSlug, issueId };
+  return { scope: "workspace", path, workspaceSlug, issueId };
 }
 
 export function encodeIssueWindowArgument(request: IssueWindowRequest): string {

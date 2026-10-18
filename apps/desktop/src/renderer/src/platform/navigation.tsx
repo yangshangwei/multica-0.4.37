@@ -5,7 +5,8 @@ import {
   type NavigationAdapter,
 } from "@multica/views/navigation";
 import { useAuthStore } from "@multica/core/auth";
-import { isReservedSlug } from "@multica/core/paths";
+import { parseAccountPath, isReservedSlug } from "@multica/core/paths";
+import { setCurrentWorkspace } from "@multica/core/platform";
 import {
   useTabStore,
   getActiveTab,
@@ -29,7 +30,7 @@ function requireRuntimeAppUrl(scope: string): string {
  * workspace-scoped (root, login, any reserved prefix).
  */
 function extractWorkspaceSlug(path: string): string | null {
-  const first = path.split("/").filter(Boolean)[0] ?? "";
+  const first = splitTabUrl(path).pathname.split("/").filter(Boolean)[0] ?? "";
   if (!first) return null;
   if (isReservedSlug(first)) return null;
   return first;
@@ -113,6 +114,12 @@ export function routeContentLinkPath(
   disposition: LinkClickIntent = "push",
 ): void {
   const store = useTabStore.getState();
+  if (parseAccountPath(path)) {
+    if (tryRouteToOverlay(path)) return;
+    setCurrentWorkspace(null, null);
+    store.switchAccount(path);
+    return;
+  }
   const slug = extractWorkspaceSlug(path);
   if (slug && slug !== store.activeWorkspaceSlug) {
     store.switchWorkspace(slug, path);
@@ -192,6 +199,11 @@ export function DesktopNavigationProvider({
           return;
         }
         if (tryRouteToOverlay(path)) return;
+        if (parseAccountPath(path)) {
+          setCurrentWorkspace(null, null);
+          useTabStore.getState().switchAccount(path);
+          return;
+        }
         const store = useTabStore.getState();
         const active = getActiveTab(store);
         if (active && active.url === path) return;
@@ -201,6 +213,11 @@ export function DesktopNavigationProvider({
       },
       replace: (path: string) => {
         if (tryRouteToOverlay(path)) return;
+        if (parseAccountPath(path)) {
+          setCurrentWorkspace(null, null);
+          useTabStore.getState().switchAccount(path, { replace: true });
+          return;
+        }
         if (tryRouteToOtherWorkspace(path)) return;
         useTabStore.getState().navigateActiveSession(path, { replace: true });
       },
@@ -239,6 +256,12 @@ export function DesktopNavigationProvider({
         // `activate: true` to bring the new tab to the foreground.
         const slug = extractWorkspaceSlug(path);
         const store = useTabStore.getState();
+        if (parseAccountPath(path)) {
+          if (tryRouteToOverlay(path)) return;
+          setCurrentWorkspace(null, null);
+          store.switchAccount(path);
+          return;
+        }
         if (slug && slug !== store.activeWorkspaceSlug) {
           store.switchWorkspace(slug, path);
           return;

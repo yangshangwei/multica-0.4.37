@@ -1,3 +1,4 @@
+import { parseAccountDeepLink, parseDesktopAccountPath } from "../shared/account-navigation";
 import { app, BrowserWindow, dialog, ipcMain, nativeImage, Notification, screen } from "electron";
 import { homedir } from "os";
 import { join } from "path";
@@ -245,6 +246,12 @@ function handleDeepLink(url: string): void {
       if (token && !serverSwitch.blocked && browserLoginAttempt.consume(parsed.searchParams.get("desktop_state"))) {
         dispatchToMainRenderer("auth:token", token);
       }
+      return;
+    }
+
+    const accountPath = parseAccountDeepLink(url);
+    if (accountPath && !serverSwitch.blocked) {
+      dispatchToMainRenderer("account:open", accountPath);
       return;
     }
 
@@ -570,7 +577,6 @@ function createIssueWindow(context: IssueWindowContext): void {
   const initialRouteContext = sanitizeRendererRouteContext({
     surface: "tab",
     path: context.path,
-    workspaceSlug: context.workspaceSlug,
   });
   if (initialRouteContext) {
     rendererRouteContexts.set(window.webContents, initialRouteContext);
@@ -750,6 +756,15 @@ if (!gotTheLock) {
       BrowserWindow.fromWebContents(event.sender)?.close();
     });
 
+    ipcMain.handle("window:open-account", (event, value: unknown) => {
+      const source = BrowserWindow.fromWebContents(event.sender);
+      const path = parseDesktopAccountPath(value);
+      if (!source || !path || serverSwitch.blocked) return { ok: false };
+      if (source === mainWindow ? !authSessionCoordinator.hasActiveMainSession() : !issueWindows.has(source) || !authSessionCoordinator.isCurrentIssueSession(source)) return { ok: false };
+      dispatchToMainRenderer("account:open", path);
+      return { ok: true };
+    });
+
     ipcMain.handle("window:open-issue", (event, request: unknown) => {
       if (!BrowserWindow.fromWebContents(event.sender)) {
         return { ok: false, reason: "invalid_request" } as const;
@@ -859,6 +874,7 @@ if (!gotTheLock) {
             authSessionGeneration += 1;
             mainRendererMessages.clear("auth:token");
             mainRendererMessages.clear("inbox:open");
+            mainRendererMessages.clear("account:open");
             for (const issue of issueWindows) if (!issue.isDestroyed()) issue.destroy();
             authSessionCoordinator.reportMain(null);
           },
@@ -940,6 +956,7 @@ if (!gotTheLock) {
         if (accountInvalidated) {
           authSessionGeneration += 1;
           mainRendererMessages.clear("inbox:open");
+          mainRendererMessages.clear("account:open");
         }
         return;
       }

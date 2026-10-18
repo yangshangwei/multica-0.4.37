@@ -9,6 +9,7 @@ import {
   type LinkClickIntent,
   type NavigationAdapter,
 } from "@multica/views/navigation";
+import { parseDesktopAccountPath } from "../../../shared/account-navigation";
 import { parseIssueWindowPath } from "../../../shared/issue-window";
 
 /**
@@ -48,6 +49,11 @@ function useContentLinkHandler(
           return;
         }
         void navigate(issuePath.path);
+        return;
+      }
+      const accountPath = parseDesktopAccountPath(path);
+      if (accountPath) {
+        void window.desktopAPI.openAccount(accountPath);
         return;
       }
       if (!runtimeConfig.ok) return;
@@ -95,8 +101,15 @@ export function IssueWindowNavigationProvider({
   const adapter = useMemo<NavigationAdapter>(() => {
     const navigateToIssue = (path: string, replace = false) => {
       const issuePath = parseIssueWindowPath(path);
-      if (!issuePath) return;
-      void navigate(issuePath.path, { replace });
+      if (issuePath) {
+        void navigate(issuePath.path, { replace });
+        return;
+      }
+      const accountPath = parseDesktopAccountPath(path);
+      if (accountPath) {
+        void window.desktopAPI.openAccount(accountPath);
+        return;
+      }
     };
 
     return {
@@ -107,10 +120,19 @@ export function IssueWindowNavigationProvider({
       searchParams: new URLSearchParams(location.search),
       hash: location.hash,
       openInNewTab: (path, title) => {
-        void window.desktopAPI.openIssueWindow({
-          path,
-          title: title ?? "Issue",
-        });
+        const issuePath = parseIssueWindowPath(path);
+        if (issuePath) {
+          void window.desktopAPI.openIssueWindow({
+            path: issuePath.path,
+            title: title ?? "Issue",
+          });
+          return;
+        }
+        const accountPath = parseDesktopAccountPath(path);
+        if (accountPath) {
+          void window.desktopAPI.openAccount(accountPath);
+          return;
+        }
       },
       getShareableUrl: (path) =>
         runtimeConfig.ok ? `${runtimeConfig.config.appUrl}${path}` : path,

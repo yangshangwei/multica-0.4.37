@@ -1,3 +1,5 @@
+import { useTabStore } from "../stores/tab-store";
+import { DesktopAccountNavigation } from "./account-navigation";
 import { useEffect, useLayoutEffect, useRef, useSyncExternalStore } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { animate, motion, useMotionValue, type MotionStyle } from "motion/react";
@@ -78,7 +80,7 @@ function useShellGeometry(target: number, shouldReduceMotion: boolean) {
   return value;
 }
 
-function WindowToolbar() {
+function WindowToolbar({ hasSidebar }: { hasSidebar: boolean }) {
   const { canGoBack, canGoForward, goBack, goForward } = useTabHistory();
   const navButtonClassName =
     "flex size-7 items-center justify-center rounded-md text-faint-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-30";
@@ -95,10 +97,10 @@ function WindowToolbar() {
         className="flex items-center gap-1 pl-[70px]"
         style={{ WebkitAppRegion: "no-drag" } as React.CSSProperties}
       >
-        <SidebarTrigger
+        {hasSidebar && <SidebarTrigger
           className="size-7 text-faint-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
           style={{ WebkitAppRegion: "no-drag" } as React.CSSProperties}
-        />
+        />}
         <div className="flex items-center gap-1">
           <button
             type="button"
@@ -150,9 +152,9 @@ function useNativeNavigationGestures() {
 // The main area's top bar doubles as a window drag region. When the sidebar
 // is not occupying main-flow width, leave room for the fixed window toolbar
 // so tabs do not land beneath the traffic lights / navigation controls.
-function MainTopBar({ shouldReduceMotion }: { shouldReduceMotion: boolean }) {
+function MainTopBar({ shouldReduceMotion, hasSidebar }: { shouldReduceMotion: boolean; hasSidebar: boolean }) {
   const { state, isCompact } = useSidebar();
-  const sidebarHidden = state === "collapsed" || isCompact;
+  const sidebarHidden = !hasSidebar || state === "collapsed" || isCompact;
   const toolbarOffset = useShellGeometry(
     sidebarHidden ? WINDOW_TOOLBAR_CLEARANCE : 0,
     shouldReduceMotion,
@@ -178,12 +180,13 @@ function MainTopBar({ shouldReduceMotion }: { shouldReduceMotion: boolean }) {
 // The canvas hugs the expanded sidebar with a hairline gap. When the sidebar
 // leaves the main flow, the left margin must grow to mirror the fixed mr-2 so
 // the floating canvas sits symmetrically inside the window frame.
-function MainCanvas({ children, shouldReduceMotion }: {
+function MainCanvas({ children, shouldReduceMotion, hasSidebar }: {
   children: React.ReactNode;
   shouldReduceMotion: boolean;
+  hasSidebar: boolean;
 }) {
   const { state, isCompact } = useSidebar();
-  const sidebarHidden = state === "collapsed" || isCompact;
+  const sidebarHidden = !hasSidebar || state === "collapsed" || isCompact;
   const marginLeft = useShellGeometry(sidebarHidden ? 8 : 2, shouldReduceMotion);
 
   return (
@@ -254,7 +257,8 @@ function DesktopInboxBridge() {
   return null;
 }
 
-export function DesktopShell() {
+export function DesktopShell({ onRetryWorkspaceList = () => {} }: { onRetryWorkspaceList?: () => void }) {
+  const activeScope = useTabStore((state) => state.activeScope);
   useInternalLinkHandler();
   useNativeNavigationGestures();
   useNavigationInputBindings();
@@ -291,7 +295,7 @@ export function DesktopShell() {
   // the singleton in the first place.
   const { data: workspaces = [] } = useQuery(workspaceListOptions());
   const slug =
-    currentSlug && workspaces.some((w) => w.slug === currentSlug)
+    activeScope !== "account" && currentSlug && workspaces.some((w) => w.slug === currentSlug)
       ? currentSlug
       : null;
 
@@ -326,7 +330,7 @@ export function DesktopShell() {
             className="flex-1 bg-app-shell [--sidebar-wrapper-fill:var(--app-shell)]"
           >
             {slug && <GlobalShortcuts />}
-            {slug && <WindowToolbar />}
+            <WindowToolbar hasSidebar={!!slug} />
             {slug && (
               <AppSidebar
                 topSlot={<SidebarTopSpacer />}
@@ -336,13 +340,14 @@ export function DesktopShell() {
             )}
             {/* Right side: header + content container */}
             <div className="flex flex-1 min-w-0 flex-col">
-              <MainTopBar shouldReduceMotion={shouldReduceMotion} />
-              <MainCanvas shouldReduceMotion={shouldReduceMotion}>
+                <MainTopBar shouldReduceMotion={shouldReduceMotion} hasSidebar={!!slug} />
+                <MainCanvas shouldReduceMotion={shouldReduceMotion} hasSidebar={!!slug}>
                 {/* Same indicator, same anchor as web: DashboardLayout puts it
                     at the top of SidebarInset, and MainCanvas is desktop's
                     equivalent relative/overflow-hidden content box. Desktop
                     used to have no navigation feedback at all — a click just
                     froze until the destination committed (MUL-6404). */}
+                <DesktopAccountNavigation onRetry={onRetryWorkspaceList} />
                 <NavigationProgress />
                 <TabContent />
                 {slug && <FloatingChat />}

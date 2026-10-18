@@ -186,3 +186,32 @@ describe("tab-coordinator restoration", () => {
     registerActiveHostElement(null);
   });
 });
+
+describe("account coordinator restoration", () => {
+  it("projects account queries through the sole router and isolates issue/view mementos", () => {
+    const a = "/account?view=current&issue=11111111-1111-4111-8111-111111111111";
+    const b = "/account?view=participating&issue=22222222-2222-4222-8222-222222222222";
+    __resetTabCoordinatorForTests();
+    useTabStore.getState().reset();
+    useTabStore.getState().switchAccount(a);
+    initTabCoordinator();
+    const id = getActiveTab(useTabStore.getState())!.id;
+    const adapter = createScrollRestorationAdapter(id);
+    adapter.setViewState?.("thread", "a-thread");
+    const host = document.createElement("div");
+    const scroller = document.createElement("div");
+    scroller.setAttribute("data-tab-scroll-root", "detail");
+    scroller.scrollTop = 350;
+    Object.defineProperty(scroller, "scrollHeight", { value: 2000 });
+    host.appendChild(scroller);
+    registerActiveHostElement(host);
+    useTabStore.getState().switchAccount(b);
+    expect(adapter.getViewState?.("thread")).toBeUndefined();
+    adapter.setViewState?.("thread", "b-thread");
+    useTabStore.getState().goBack();
+    expect(adapter.getViewState?.("thread")).toBe("a-thread");
+    expect(adapter.get("detail")?.top).toBe(350);
+    expect(getActiveTab(useTabStore.getState())?.id).toBe(id);
+    registerActiveHostElement(null);
+  });
+});

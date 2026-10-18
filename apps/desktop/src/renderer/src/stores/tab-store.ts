@@ -3,7 +3,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import { arrayMove } from "@dnd-kit/sortable";
 import { createPersistStorage, defaultStorage } from "@multica/core/platform";
 import { createSafeId } from "@multica/core/utils";
-import { isReservedSlug } from "@multica/core/paths";
+import { accountPath, parseAccountPath, accountRouteKey, isReservedSlug } from "@multica/core/paths";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -128,7 +128,15 @@ export interface WorkspaceTabGroup {
   recentTabIds: string[];
 }
 
+export type TabScope = "account" | "workspace" | "none";
+
 interface TabStore {
+  activeScope: TabScope;
+  accountGroup: WorkspaceTabGroup | null;
+  /** Server/viewer owner of persisted client state; never a credential. */
+  sessionOwner: string | null;
+  setSessionOwner: (owner: string) => void;
+  switchAccount: (path?: string, opts?: { replace?: boolean }) => void;
   /**
    * The workspace currently visible in the TabBar / TabContent. Null in three
    * cases:
@@ -290,7 +298,7 @@ interface TabStore {
 /** Extract the leading workspace slug from a path, or null if the path
  *  isn't workspace-scoped (global path, root, or empty). */
 function extractWorkspaceSlug(path: string): string | null {
-  const first = path.split("/").filter(Boolean)[0] ?? "";
+  const first = splitTabUrl(path).pathname.split("/").filter(Boolean)[0] ?? "";
   if (!first) return null;
   if (isReservedSlug(first)) return null;
   return first;
@@ -341,6 +349,10 @@ export function resourceKeyForUrl(url: string): string {
  * dropping the tab or substituting a default).
  */
 export function sanitizeTabPath(path: string): string | null {
+  if (splitTabUrl(path).pathname === "/account") {
+    const destination = parseAccountPath(path);
+    return destination ? accountPath(destination) : null;
+  }
   const { pathname, suffix } = splitTabUrl(path);
   const segments = pathname.split("/").filter(Boolean);
   const firstSegment = segments[0] ?? "";
@@ -495,14 +507,40 @@ export const useTabStore = create<TabStore>()(
   persist(
     (set, get) => ({
       activeWorkspaceSlug: null,
+      activeScope: "none",
+      accountGroup: null,
+      sessionOwner: null,
       byWorkspace: {},
       mountGeneration: 0,
+
+      setSessionOwner(owner) {
+        const previous = get().sessionOwner;
+        if (previous === owner) return;
+        if (previous !== null) {
+          set({ activeWorkspaceSlug: null, activeScope: "none", byWorkspace: {}, accountGroup: null, mountGeneration: 0, sessionOwner: owner });
+        } else {
+          // One-time migration adopts existing workspace-only tabs. Account
+          // tabs are never accepted without their persisted owner.
+          set({ sessionOwner: owner, accountGroup: null });
+        }
+      },
+
+      switchAccount(path, opts) {
+        const state = get();
+        const clean = path === undefined
+          ? state.accountGroup?.tabs[0]?.url ?? accountPath()
+          : sanitizeTabPath(path);
+        if (!clean || !parseAccountPath(clean)) return;
+        const previous = state.accountGroup?.tabs[0];
+        const tab = previous ? navigateSession(previous, clean, opts?.replace === true) : makeSession(clean, "");
+        set({ activeScope: "account", activeWorkspaceSlug: null, accountGroup: reconcileGroup(state.accountGroup, [tab], tab.id) });
+      },
 
       switchWorkspace(slug, openPath) {
         // Defensive no-op if slug is empty/invalid — callers like the
         // NavigationAdapter's path-parser should already have filtered
         // these, but belt-and-braces keeps garbage out of the store.
-        if (!slug) return;
+        if (!slug || isReservedSlug(slug)) return;
         const { byWorkspace } = get();
         const existing = byWorkspace[slug];
 
@@ -512,10 +550,11 @@ export const useTabStore = create<TabStore>()(
         if (!existing) {
           // First time entering this workspace — create the group.
           const cleanDesired = desiredPath ? sanitizeTabPath(desiredPath) : null;
-          const seedPath = cleanDesired ?? defaultPathFor(slug);
+          const seedPath = cleanDesired && extractWorkspaceSlug(cleanDesired) === slug ? cleanDesired : defaultPathFor(slug);
           const tab = makeSession(seedPath, "Issues");
           set({
             activeWorkspaceSlug: slug,
+            activeScope: "workspace",
             byWorkspace: {
               ...byWorkspace,
               [slug]: reconcileGroup(null, [tab], tab.id),
@@ -528,12 +567,13 @@ export const useTabStore = create<TabStore>()(
         // add a new one (when openPath was supplied and no tab matches it).
         if (desiredPath) {
           const clean = sanitizeTabPath(desiredPath);
-          if (clean) {
+          if (clean && extractWorkspaceSlug(clean) === slug) {
             const key = resourceKeyForUrl(clean);
             const match = existing.tabs.find((t) => t.resourceKey === key);
             if (match) {
               set({
                 activeWorkspaceSlug: slug,
+                activeScope: "workspace",
                 byWorkspace: {
                   ...byWorkspace,
                   [slug]: reconcileGroup(existing, existing.tabs, match.id),
@@ -544,6 +584,7 @@ export const useTabStore = create<TabStore>()(
             const tab = makeSession(clean, "Issues");
             set({
               activeWorkspaceSlug: slug,
+              activeScope: "workspace",
               byWorkspace: {
                 ...byWorkspace,
                 [slug]: reconcileGroup(
@@ -558,10 +599,14 @@ export const useTabStore = create<TabStore>()(
         }
 
         // No openPath (or openPath was rejected) — just restore the group.
-        set({ activeWorkspaceSlug: slug });
+        set({ activeWorkspaceSlug: slug, activeScope: "workspace" });
       },
 
       openTab(path, title, opts) {
+        if (parseAccountPath(path)) {
+          get().switchAccount(path);
+          return get().accountGroup?.activeTabId ?? "";
+        }
         const { activeWorkspaceSlug, byWorkspace } = get();
         const clean = sanitizeTabPath(path);
         if (!activeWorkspaceSlug || !clean) return "";
@@ -618,6 +663,10 @@ export const useTabStore = create<TabStore>()(
       },
 
       addTab(path, title) {
+        if (parseAccountPath(path)) {
+          get().switchAccount(path);
+          return get().accountGroup?.activeTabId ?? "";
+        }
         const { activeWorkspaceSlug, byWorkspace } = get();
         const clean = sanitizeTabPath(path);
         if (!activeWorkspaceSlug || !clean) return "";
@@ -639,6 +688,12 @@ export const useTabStore = create<TabStore>()(
       },
 
       closeTab(tabId) {
+        const state = get();
+        if (state.accountGroup?.activeTabId === tabId) {
+          const fresh = makeSession(accountPath(), "");
+          set({ accountGroup: reconcileGroup(null, [fresh], fresh.id) });
+          return;
+        }
         const { byWorkspace } = get();
         const hit = findTabLocation(byWorkspace, tabId);
         if (!hit) return;
@@ -680,6 +735,10 @@ export const useTabStore = create<TabStore>()(
       },
 
       setActiveTab(tabId) {
+        if (get().accountGroup?.activeTabId === tabId) {
+          get().switchAccount();
+          return;
+        }
         const { byWorkspace, activeWorkspaceSlug } = get();
         const hit = findTabLocation(byWorkspace, tabId);
         if (!hit) return;
@@ -687,6 +746,7 @@ export const useTabStore = create<TabStore>()(
         if (slug === activeWorkspaceSlug && group.activeTabId === tabId) return;
         set({
           activeWorkspaceSlug: slug,
+          activeScope: "workspace",
           byWorkspace: {
             ...byWorkspace,
             [slug]: reconcileGroup(group, group.tabs, tabId),
@@ -695,8 +755,8 @@ export const useTabStore = create<TabStore>()(
       },
 
       updateTab(tabId, patch) {
-        const { byWorkspace } = get();
-        const hit = findTabLocation(byWorkspace, tabId);
+        const state = get();
+        const hit = findSessionLocation(state, tabId);
         if (!hit) return;
         const { slug, group, index } = hit;
         const current = group.tabs[index];
@@ -706,56 +766,21 @@ export const useTabStore = create<TabStore>()(
         }
         const nextTabs = [...group.tabs];
         nextTabs[index] = next;
-        set({
-          byWorkspace: {
-            ...byWorkspace,
-            [slug]: { ...group, tabs: nextTabs },
-          },
-        });
+        set(groupPatch(state, slug, { ...group, tabs: nextTabs }));
       },
 
       navigateActiveSession(url, opts) {
-        const { activeWorkspaceSlug, byWorkspace } = get();
-        if (!activeWorkspaceSlug) return;
-        const group = byWorkspace[activeWorkspaceSlug];
-        if (!group) return;
-        const index = group.tabs.findIndex((t) => t.id === group.activeTabId);
-        if (index < 0) return;
+        const state = get();
+        if (state.activeScope === "account") {
+          if (parseAccountPath(url)) state.switchAccount(url, opts);
+          return;
+        }
+        const group = getActiveGroup(state);
+        const current = getActiveTab(state);
         const clean = sanitizeTabPath(url);
-        if (!clean) return;
-        // A session never navigates out of its workspace — cross-workspace
-        // pushes go through switchWorkspace at the adapter layer.
-        if (extractWorkspaceSlug(clean) !== activeWorkspaceSlug) return;
-
-        const current = group.tabs[index];
+        if (!group || !current || !clean || extractWorkspaceSlug(clean) !== state.activeWorkspaceSlug) return;
         if (current.url === clean) return;
-
-        const replace = opts?.replace === true;
-        const stack = replace
-          ? [
-              ...current.history.stack.slice(0, current.history.index),
-              clean,
-              ...current.history.stack.slice(current.history.index + 1),
-            ]
-          : [...current.history.stack.slice(0, current.history.index + 1), clean];
-        const historyIndex = replace
-          ? current.history.index
-          : current.history.index + 1;
-
-        const next: TabSession = {
-          ...current,
-          url: clean,
-          resourceKey: resourceKeyForUrl(clean),
-          history: { stack, index: historyIndex },
-        };
-        const nextTabs = [...group.tabs];
-        nextTabs[index] = next;
-        set({
-          byWorkspace: {
-            ...byWorkspace,
-            [activeWorkspaceSlug]: { ...group, tabs: nextTabs },
-          },
-        });
+        set(groupPatch(state, state.activeWorkspaceSlug, { ...group, tabs: group.tabs.map((tab) => tab.id === current.id ? navigateSession(current, clean, opts?.replace === true) : tab) }));
       },
 
       goBack() {
@@ -767,8 +792,8 @@ export const useTabStore = create<TabStore>()(
       },
 
       commitScrollMemento(tabId, routeKey, entries) {
-        const { byWorkspace } = get();
-        const hit = findTabLocation(byWorkspace, tabId);
+        const state = get();
+        const hit = findSessionLocation(state, tabId);
         if (!hit) return;
         const { slug, group, index } = hit;
         const current = group.tabs[index];
@@ -806,17 +831,12 @@ export const useTabStore = create<TabStore>()(
           ...current,
           memento: { ...current.memento, scroll: nextScroll },
         };
-        set({
-          byWorkspace: {
-            ...byWorkspace,
-            [slug]: { ...group, tabs: nextTabs },
-          },
-        });
+        set(groupPatch(state, slug, { ...group, tabs: nextTabs }));
       },
 
       commitViewState(tabId, routeKey, entryKey, value) {
-        const { byWorkspace } = get();
-        const hit = findTabLocation(byWorkspace, tabId);
+        const state = get();
+        const hit = findSessionLocation(state, tabId);
         if (!hit) return;
         const { slug, group, index } = hit;
         const current = group.tabs[index];
@@ -845,29 +865,17 @@ export const useTabStore = create<TabStore>()(
           ...current,
           memento: { ...current.memento, view: nextView },
         };
-        set({
-          byWorkspace: {
-            ...byWorkspace,
-            [slug]: { ...group, tabs: nextTabs },
-          },
-        });
+        set(groupPatch(state, slug, { ...group, tabs: nextTabs }));
       },
 
       reloadActiveTab() {
-        const { activeWorkspaceSlug, byWorkspace, mountGeneration } = get();
-        if (!activeWorkspaceSlug) return;
-        const group = byWorkspace[activeWorkspaceSlug];
-        if (!group) return;
-        if (!group.tabs.some((t) => t.id === group.activeTabId)) return;
-        set({ mountGeneration: mountGeneration + 1 });
+        if (!getActiveTab(get())) return;
+        set({ mountGeneration: get().mountGeneration + 1 });
       },
 
       closeActiveTab() {
-        const { activeWorkspaceSlug, byWorkspace, closeTab } = get();
-        if (!activeWorkspaceSlug) return;
-        const group = byWorkspace[activeWorkspaceSlug];
-        if (!group) return;
-        closeTab(group.activeTabId);
+        const active = getActiveTab(get());
+        if (active) get().closeTab(active.id);
       },
 
       moveTab(fromIndex, toIndex) {
@@ -903,6 +911,11 @@ export const useTabStore = create<TabStore>()(
       },
 
       togglePin(tabId) {
+        if (get().accountGroup?.activeTabId === tabId) {
+          const group = get().accountGroup!;
+          set({ accountGroup: { ...group, tabs: group.tabs.map((tab) => ({ ...tab, pinned: !tab.pinned })) } });
+          return;
+        }
         const { byWorkspace } = get();
         const hit = findTabLocation(byWorkspace, tabId);
         if (!hit) return;
@@ -934,7 +947,7 @@ export const useTabStore = create<TabStore>()(
       },
 
       validateWorkspaceSlugs(validSlugs) {
-        const { activeWorkspaceSlug, byWorkspace } = get();
+        const { activeWorkspaceSlug, byWorkspace, activeScope } = get();
         let changed = false;
         const nextByWorkspace: Record<string, WorkspaceTabGroup> = {};
         for (const slug of Object.keys(byWorkspace)) {
@@ -951,12 +964,12 @@ export const useTabStore = create<TabStore>()(
           changed = true;
         }
 
-        if (!nextActive) {
+        if (!nextActive && activeScope !== "account") {
           nextActive = Object.keys(nextByWorkspace)[0] ?? null;
           if (nextActive) changed = true;
         }
 
-        if (!nextActive) {
+        if (!nextActive && activeScope !== "account") {
           const fallbackSlug = validSlugs.values().next().value;
           if (fallbackSlug) {
             const fresh = defaultTabFor(fallbackSlug);
@@ -971,16 +984,16 @@ export const useTabStore = create<TabStore>()(
         }
 
         if (!changed) return;
-        set({ byWorkspace: nextByWorkspace, activeWorkspaceSlug: nextActive });
+        set({ byWorkspace: nextByWorkspace, activeWorkspaceSlug: nextActive, activeScope: activeScope === "account" ? "account" : nextActive ? "workspace" : "none" });
       },
 
       reset() {
-        set({ activeWorkspaceSlug: null, byWorkspace: {}, mountGeneration: 0 });
+        set({ activeWorkspaceSlug: null, activeScope: "none", accountGroup: null, sessionOwner: null, byWorkspace: {}, mountGeneration: 0 });
       },
     }),
     {
       name: "multica_tabs",
-      version: 4,
+      version: 5,
       storage: createJSONStorage(() => createPersistStorage(defaultStorage)),
       migrate: (persistedState, version) => {
         // v1 → v2: flat `tabs` array → per-workspace grouping.
@@ -1002,10 +1015,13 @@ export const useTabStore = create<TabStore>()(
         if (version < 4 && state && typeof state === "object") {
           state = migrateV3ToV4(state as V3Persisted);
         }
-        return state as V4Persisted;
+        return state as V5Persisted;
       },
       partialize: (state) => ({
         activeWorkspaceSlug: state.activeWorkspaceSlug,
+        activeScope: state.activeScope,
+        accountGroup: state.accountGroup,
+        sessionOwner: state.sessionOwner,
         // mountGeneration is deliberately excluded: reload pressure must
         // never persist across restarts.
         byWorkspace: Object.fromEntries(
@@ -1037,6 +1053,9 @@ export const useTabStore = create<TabStore>()(
 
 /** The persisted slice of the store — what `merge` reads and rebuilds. */
 interface PersistedTabState {
+  activeScope?: TabScope;
+  accountGroup?: WorkspaceTabGroup | null;
+  sessionOwner?: string | null;
   activeWorkspaceSlug: string | null;
   byWorkspace: Record<string, WorkspaceTabGroup>;
 }
@@ -1057,7 +1076,7 @@ export function mergePersistedTabs<T extends PersistedTabState>(
   persistedState: unknown,
   currentState: T,
 ): T {
-  const persisted = persistedState as Partial<V4Persisted> | undefined;
+  const persisted = persistedState as Partial<V5Persisted> | undefined;
   if (!persisted?.byWorkspace) return currentState;
 
   const byWorkspace: Record<string, WorkspaceTabGroup> = {};
@@ -1132,7 +1151,40 @@ export function mergePersistedTabs<T extends PersistedTabState>(
       ? persisted.activeWorkspaceSlug
       : (Object.keys(byWorkspace)[0] ?? null);
 
-  return { ...currentState, byWorkspace, activeWorkspaceSlug };
+  const owner = typeof persisted.sessionOwner === "string" ? persisted.sessionOwner : null;
+  const accountTab = owner ? persisted.accountGroup?.tabs?.find((tab) => typeof tab.url === "string" && parseAccountPath(tab.url)) : undefined;
+  let accountGroup: WorkspaceTabGroup | null = null;
+  if (accountTab) {
+    const clean = sanitizeTabPath(accountTab.url)!;
+    const rawStack = Array.isArray(accountTab.history?.stack) ? accountTab.history.stack : [clean];
+    const rawIndex = Number.isInteger(accountTab.history?.index)
+      ? Math.min(Math.max(accountTab.history.index, 0), rawStack.length - 1)
+      : rawStack.length - 1;
+    const stack: string[] = [];
+    let historyIndex = -1;
+    rawStack.forEach((url, index) => {
+      const destination = typeof url === "string" ? parseAccountPath(url) : null;
+      if (!destination) return;
+      const canonical = accountPath(destination);
+      if (index === rawIndex && canonical === clean) historyIndex = stack.length;
+      stack.push(canonical);
+    });
+    if (historyIndex < 0) historyIndex = stack.lastIndexOf(clean);
+    if (historyIndex < 0) {
+      historyIndex = stack.length;
+      stack.push(clean);
+    }
+    const tab: TabSession = {
+      ...makeSession(clean, typeof accountTab.title === "string" ? accountTab.title : ""),
+      id: typeof accountTab.id === "string" ? accountTab.id : createId(),
+      pinned: accountTab.pinned === true,
+      history: { stack, index: historyIndex },
+      memento: accountTab.memento?.scroll && accountTab.memento?.view ? accountTab.memento : emptyMemento(),
+    };
+    accountGroup = reconcileGroup(null, [tab], tab.id);
+  }
+  const accountActive = persisted.activeScope === "account" && accountGroup !== null;
+  return { ...currentState, byWorkspace, activeWorkspaceSlug: accountActive ? null : activeWorkspaceSlug, activeScope: accountActive ? "account" : activeWorkspaceSlug ? "workspace" : "none", accountGroup, sessionOwner: owner };
 }
 
 function stepHistory(
@@ -1140,9 +1192,8 @@ function stepHistory(
   set: (partial: Partial<TabStore>) => void,
   delta: -1 | 1,
 ) {
-  const { activeWorkspaceSlug, byWorkspace } = get();
-  if (!activeWorkspaceSlug) return;
-  const group = byWorkspace[activeWorkspaceSlug];
+  const state = get();
+  const group = getActiveGroup(state);
   if (!group) return;
   const index = group.tabs.findIndex((t) => t.id === group.activeTabId);
   if (index < 0) return;
@@ -1158,12 +1209,7 @@ function stepHistory(
   };
   const nextTabs = [...group.tabs];
   nextTabs[index] = next;
-  set({
-    byWorkspace: {
-      ...byWorkspace,
-      [activeWorkspaceSlug]: { ...group, tabs: nextTabs },
-    },
-  });
+  set(groupPatch(state, state.activeWorkspaceSlug, { ...group, tabs: nextTabs }));
 }
 
 // ---------------------------------------------------------------------------
@@ -1246,6 +1292,12 @@ interface V4PersistedGroup {
    * a stale id from a hand-edited payload can never become the active tab.
    */
   recentTabIds?: string[];
+}
+
+interface V5Persisted extends V4Persisted {
+  activeScope?: TabScope;
+  accountGroup?: WorkspaceTabGroup | null;
+  sessionOwner?: string | null;
 }
 
 interface V4Persisted {
@@ -1343,8 +1395,7 @@ export function migrateV1ToV2(v1: Partial<V1Persisted>): V2Persisted {
  * below.
  */
 export function getActiveTab(s: TabStore): TabSession | null {
-  if (!s.activeWorkspaceSlug) return null;
-  const group = s.byWorkspace[s.activeWorkspaceSlug];
+  const group = getActiveGroup(s);
   if (!group) return null;
   return group.tabs.find((t) => t.id === group.activeTabId) ?? null;
 }
@@ -1360,9 +1411,7 @@ export function getActiveTab(s: TabStore): TabSession | null {
  * primitive (use `useActiveTabIdentity` / `useActiveTabHistory` instead).
  */
 export function useActiveGroup(): WorkspaceTabGroup | null {
-  return useTabStore((s) =>
-    s.activeWorkspaceSlug ? (s.byWorkspace[s.activeWorkspaceSlug] ?? null) : null,
-  );
+  return useTabStore(getActiveGroup);
 }
 
 /**
@@ -1372,9 +1421,7 @@ export function useActiveGroup(): WorkspaceTabGroup | null {
 export function useActiveTabIdentity(): { slug: string | null; tabId: string | null } {
   const slug = useTabStore((s) => s.activeWorkspaceSlug);
   const tabId = useTabStore((s) =>
-    s.activeWorkspaceSlug
-      ? (s.byWorkspace[s.activeWorkspaceSlug]?.activeTabId ?? null)
-      : null,
+    getActiveGroup(s)?.activeTabId ?? null,
   );
   return { slug, tabId };
 }
@@ -1400,4 +1447,31 @@ export function useActiveTabHistory(): {
     (s) => getActiveTab(s)?.history.stack.length ?? 1,
   );
   return { historyIndex, historyLength };
+}
+
+/** Account state is separate from workspace groups, so workspace eviction cannot remove it. */
+export function getActiveGroup(state: PersistedTabState): WorkspaceTabGroup | null {
+  if (state.activeScope === "account") return state.accountGroup ?? null;
+  return state.activeWorkspaceSlug ? state.byWorkspace[state.activeWorkspaceSlug] ?? null : null;
+}
+
+export function restorationKeyForUrl(url: string): string {
+  return accountRouteKey(url) ?? splitTabUrl(url).pathname;
+}
+
+function findSessionLocation(state: TabStore, tabId: string) {
+  if (state.accountGroup?.activeTabId === tabId) return { slug: null, group: state.accountGroup, index: 0 };
+  return findTabLocation(state.byWorkspace, tabId);
+}
+
+function groupPatch(state: TabStore, slug: string | null, group: WorkspaceTabGroup): Partial<TabStore> {
+  return slug === null ? { accountGroup: group } : { byWorkspace: { ...state.byWorkspace, [slug]: group } };
+}
+
+function navigateSession(tab: TabSession, url: string, replace: boolean): TabSession {
+  if (tab.url === url) return tab;
+  const stack = replace
+    ? [...tab.history.stack.slice(0, tab.history.index), url, ...tab.history.stack.slice(tab.history.index + 1)]
+    : [...tab.history.stack.slice(0, tab.history.index + 1), url];
+  return { ...tab, url, resourceKey: resourceKeyForUrl(url), history: { stack, index: replace ? tab.history.index : tab.history.index + 1 } };
 }

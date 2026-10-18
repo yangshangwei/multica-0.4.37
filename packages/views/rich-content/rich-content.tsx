@@ -95,6 +95,9 @@ export type RichContentPhase = "streaming" | "settled";
 // inside a code block (MUL-3621).
 
 const ClosedFenceContext = createContext<ReadonlySet<number>>(new Set<number>());
+// Private account content has no authority to resolve workspace resources or
+// fetch public attachment URLs. A future controlled transport can widen this.
+const ResourcePolicyContext = createContext<"workspace" | "restricted">("workspace");
 
 function useIsFenceClosed(offset: number | undefined): boolean {
   const closed = useContext(ClosedFenceContext);
@@ -204,6 +207,7 @@ function unfurlableEntityLink(
 }
 
 function RichLink({ href, children }: { href?: string; children?: ReactNode }) {
+  const restricted = useContext(ResourcePolicyContext) === "restricted";
   const slug = useWorkspaceSlug();
   const appOrigin = useAppOrigin();
   // Platform probe only: `openInNewTab` present means desktop, where native
@@ -211,6 +215,8 @@ function RichLink({ href, children }: { href?: string; children?: ReactNode }) {
   // (web), modified clicks are left to the browser — the only way to get a
   // real background tab.
   const desktopTabs = !!useOptionalNavigation()?.openInNewTab;
+
+  if (restricted) return <span>{children}</span>;
 
   if (href?.startsWith("slash://skill/")) {
     return <span className="slash-command">{children}</span>;
@@ -341,11 +347,12 @@ function isMultiLineNode(node: ExtraProps["node"]): boolean {
  * diagram or preview iframe.
  */
 function RichCode({ className, children, node, ...props }: RichCodeProps) {
+  const restricted = useContext(ResourcePolicyContext) === "restricted";
   const language = /language-(\w+)/.exec(className || "")?.[1];
   const isBlock = isMultiLineNode(node);
   const isFenceClosed = useIsFenceClosed(nodeStartOffset(node));
 
-  if (isBlock && shouldUpgradeFence(language, isFenceClosed)) {
+  if (!restricted && isBlock && shouldUpgradeFence(language, isFenceClosed)) {
     // isRichFenceLanguage is re-checked for the type narrow; shouldUpgradeFence
     // already required it.
     if (isRichFenceLanguage(language)) {
@@ -387,13 +394,14 @@ function readFencedCodeChild(children: ReactNode): {
  * never matches.
  */
 function RichPre({ children }: RichPreProps) {
+  const restricted = useContext(ResourcePolicyContext) === "restricted";
   const { language, offset } = readFencedCodeChild(children);
   const isFenceClosed = useIsFenceClosed(offset);
 
   // Upgraded fences escape the <pre><code> envelope entirely. An OPEN
   // mermaid/html fence deliberately falls through to the normal code shell, so
   // a half-streamed diagram reads as ordinary source with copy chrome.
-  if (shouldUpgradeFence(language, isFenceClosed)) {
+  if (!restricted && shouldUpgradeFence(language, isFenceClosed)) {
     return <>{children}</>;
   }
 
@@ -407,32 +415,23 @@ function RichPre({ children }: RichPreProps) {
   );
 }
 
-// The components map is module-level and static: it never depends on density,
-// phase or the fence gate, so its identity is stable for the lifetime of the
-// app and react-markdown can bail out of unchanged subtrees.
-const COMPONENTS: Partial<Components> = {
-  a: RichLink,
-
-  // Images — unified through <Attachment>. The resolver context provided by
-  // AttachmentDownloadProvider turns a CDN URL into a full record when
-  // possible; external URLs render as plain images with lightbox-via-preview
-  // -modal. forceKind is mandatory: markdown `![]()` carries no content-type
-  // and alt is commonly empty, so without it images fall through to file-card
-  // chrome.
-  img: ({ src, alt }) => (
-    <AttachmentRenderer
+function RestrictedAwareImage({ src, alt }: ComponentPropsWithoutRef<"img">) {
+  const restricted = useContext(ResourcePolicyContext) === "restricted";
+  if (restricted) return <span>{alt}</span>;
+  return <AttachmentRenderer
       attachment={{
         kind: "url",
         url: typeof src === "string" ? src : "",
         filename: alt ?? "",
         forceKind: "image",
       }}
-    />
-  ),
+    />;
+}
 
-  // FileCard — intercept <div data-type="fileCard"> from preprocessMarkdown
-  div: ({ node, children, ...props }) => {
+function RestrictedAwareDiv({ node, children, ...props }: ComponentPropsWithoutRef<"div"> & ExtraProps) {
+    const restricted = useContext(ResourcePolicyContext) === "restricted";
     if (stringProperty(node, "dataType") === "fileCard") {
+      if (restricted) return <span>{stringProperty(node, "dataFilename")}</span>;
       const rawHref = stringProperty(node, "dataHref");
       const href = isAllowedFileCardHref(rawHref) ? rawHref : "";
       return (
@@ -446,7 +445,13 @@ const COMPONENTS: Partial<Components> = {
       );
     }
     return <div {...props}>{children}</div>;
-  },
+}
+
+// Static component identity preserves text selections across unrelated updates.
+const COMPONENTS: Partial<Components> = {
+  a: RichLink,
+  img: RestrictedAwareImage,
+  div: RestrictedAwareDiv,
 
   // Tables — wrap in tableWrapper div for border/radius/scroll (matches Tiptap)
   table: ({ children }) => (
@@ -482,6 +487,8 @@ const REHYPE_PLUGINS = [
 
 export interface RichContentProps {
   content: string;
+  /** Restricted account content cannot use workspace catalogs or public files. */
+  resourcePolicy?: "workspace" | "restricted";
   /**
    * Attachments associated with the surrounding entity (comment / issue body /
    * chat message). Inline `<img>` and file-card URLs matching one of these get
@@ -504,6 +511,7 @@ export interface RichContentProps {
 
 export const RichContent = memo(function RichContent({
   content,
+  resourcePolicy = "workspace",
   attachments,
   density = "document",
   phase = "settled",
@@ -520,9 +528,9 @@ export const RichContent = memo(function RichContent({
   const processed = useMemo(
     () =>
       highlightToHtml(
-        preprocessMarkdown(content, { cdnDomain, autolinkIssueIdentifiers: true }),
+        preprocessMarkdown(content, { cdnDomain: resourcePolicy === "restricted" ? "" : cdnDomain, autolinkIssueIdentifiers: resourcePolicy === "workspace" }),
       ),
-    [content, cdnDomain],
+    [content, cdnDomain, resourcePolicy],
   );
 
   // Derived from the SAME string handed to ReactMarkdown, so offsets line up
@@ -531,7 +539,7 @@ export const RichContent = memo(function RichContent({
   const closedFences = useMemo(() => computeClosedFenceOffsets(processed), [processed]);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const hover = useLinkHover(wrapperRef);
+  const hover = useLinkHover(wrapperRef, resourcePolicy === "restricted");
 
   // Memoize the react-markdown subtree on its only real inputs. Unrelated
   // parent re-renders (a sibling agent task streaming over WebSocket fires one
@@ -542,7 +550,7 @@ export const RichContent = memo(function RichContent({
   // code block (MUL-3621). A stable element reference lets React bail out.
   const markdown = useMemo(
     () => (
-      <ClosedFenceContext.Provider value={closedFences}>
+      <ResourcePolicyContext.Provider value={resourcePolicy}><ClosedFenceContext.Provider value={closedFences}>
         <ReactMarkdown
           remarkPlugins={REMARK_PLUGINS}
           rehypePlugins={REHYPE_PLUGINS}
@@ -551,9 +559,9 @@ export const RichContent = memo(function RichContent({
         >
           {processed}
         </ReactMarkdown>
-      </ClosedFenceContext.Provider>
+      </ClosedFenceContext.Provider></ResourcePolicyContext.Provider>
     ),
-    [processed, closedFences],
+    [processed, closedFences, resourcePolicy],
   );
 
   return (

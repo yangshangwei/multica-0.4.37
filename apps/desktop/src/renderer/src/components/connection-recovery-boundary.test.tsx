@@ -95,7 +95,7 @@ describe("DesktopConnectionRecoveryBoundary", () => {
 
   it("hands child-window editing to main instead of mounting a local editor", async () => {
     window.desktopAPI.windowContext = {
-      kind: "issue", workspaceSlug: "team", issueId: "issue-1", path: "/team/issues/issue-1", title: "Issue 1",
+      kind: "issue", scope: "workspace", workspaceSlug: "team", issueId: "issue-1", path: "/team/issues/issue-1", title: "Issue 1",
     };
     render(boundary(recovery));
     fireEvent.click(screen.getByRole("button", { name: "Change server" }));
@@ -107,7 +107,7 @@ describe("DesktopConnectionRecoveryBoundary", () => {
 
   it("leaves child recovery actionable when the main-window handoff fails", async () => {
     window.desktopAPI.windowContext = {
-      kind: "issue", workspaceSlug: "team", issueId: "issue-1", path: "/team/issues/issue-1", title: "Issue 1",
+      kind: "issue", scope: "workspace", workspaceSlug: "team", issueId: "issue-1", path: "/team/issues/issue-1", title: "Issue 1",
     };
     handoff.mockResolvedValue({ ok: false });
     render(boundary(recovery));

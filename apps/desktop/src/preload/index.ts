@@ -185,6 +185,10 @@ const desktopAPI = {
   /** Listen for auth token delivered via deep link */
   onAuthToken: (callback: (token: string) => void) =>
     subscribeToMainRendererChannel("auth:token", callback),
+  /** Listen for account destinations delivered through the main window. */
+  onAccountOpen: (callback: (path: string) => void) =>
+    subscribeToMainRendererChannel("account:open", callback),
+  openAccount: (path: string) => ipcRenderer.invoke("window:open-account", path),
   /** Listen for invitation IDs delivered via deep link */
   onInviteOpen: (callback: (invitationId: string) => void) =>
     subscribeToMainRendererChannel("invite:open", callback),

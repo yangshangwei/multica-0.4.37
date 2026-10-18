@@ -1,4 +1,6 @@
 import enAdmin from "./en/admin.json";
+import enCollaboration from "./en/collaboration.json";
+import zhHansCollaboration from "./zh-Hans/collaboration.json";
 import zhHansAdmin from "./zh-Hans/admin.json";
 import type { LocaleResources, SupportedLocale } from "@multica/core/i18n";
 import enCommon from "./en/common.json";
@@ -65,6 +67,7 @@ import zhHansDocs from "./zh-Hans/docs.json";
 // in exactly one place.
 export const RESOURCES: Record<SupportedLocale, LocaleResources> = {
   en: {
+    collaboration: enCollaboration,
     common: enCommon,
     auth: enAuth,
     admin: enAdmin,
@@ -97,6 +100,7 @@ export const RESOURCES: Record<SupportedLocale, LocaleResources> = {
     desktop: enDesktop,
   },
   "zh-Hans": {
+    collaboration: zhHansCollaboration,
     common: zhHansCommon,
     auth: zhHansAuth,
     admin: zhHansAdmin,

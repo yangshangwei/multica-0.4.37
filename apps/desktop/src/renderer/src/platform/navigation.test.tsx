@@ -30,6 +30,7 @@ vi.mock("@multica/core/auth", () => ({
 import { DesktopNavigationProvider, routeContentLinkPath } from "./navigation";
 import { currentPath, useNavigation } from "@multica/views/navigation";
 import { useTabStore, getActiveTab } from "@/stores/tab-store";
+import { getCurrentSlug, setCurrentWorkspace } from "@multica/core/platform";
 
 beforeEach(() => {
   overlay.open.mockReset();
@@ -309,5 +310,48 @@ describe("routeContentLinkPath (links inside content — MUL-5208)", () => {
     expect(
       state.byWorkspace.acme.tabs.some((t) => t.url === "/butter/issues/BUT-1"),
     ).toBe(false);
+  });
+});
+
+describe("account destinations", () => {
+  const a = "/account?view=current&issue=11111111-1111-4111-8111-111111111111";
+  const b = "/account?view=participating&issue=22222222-2222-4222-8222-222222222222";
+  it.each(["push", "replace", "content", "new-tab"])("clears workspace headers before %s publishes an account tab", (entry) => {
+    const nav = renderProvider();
+    setCurrentWorkspace("acme", "workspace-a");
+    const observed: (string | null)[] = [];
+    const unsubscribe = useTabStore.subscribe((state) => {
+      if (state.activeScope === "account") observed.push(getCurrentSlug());
+    });
+    try {
+      act(() => {
+        if (entry === "push") nav().push(a);
+        else if (entry === "replace") nav().replace(a);
+        else if (entry === "content") routeContentLinkPath(a);
+        else nav().openInNewTab!(a);
+      });
+      expect(observed.length).toBeGreaterThan(0);
+      expect(observed.every((slug) => slug === null)).toBe(true);
+    } finally {
+      unsubscribe();
+      setCurrentWorkspace(null, null);
+    }
+  });
+
+  it("push/replace/content/new-tab entry paths reuse the account group and retain workspace tabs", () => {
+    const nav = renderProvider();
+    const workspace = acmeGroup();
+    act(() => nav().push(a));
+    const id = getActiveTab(useTabStore.getState())!.id;
+    act(() => nav().replace(b));
+    expect(getActiveTab(useTabStore.getState())).toMatchObject({ id, url: b, history: { stack: [b], index: 0 } });
+    act(() => routeContentLinkPath(a, "foreground-tab"));
+    act(() => nav().openInNewTab!(b));
+    expect(useTabStore.getState().accountGroup?.tabs).toHaveLength(1);
+    expect(getActiveTab(useTabStore.getState())?.url).toBe(b);
+    expect(acmeGroup()).toBe(workspace);
+    act(() => nav().push("/butter/issues"));
+    expect(getActiveTab(useTabStore.getState())?.url).toBe("/butter/issues");
+    expect(useTabStore.getState().accountGroup?.tabs[0].url).toBe(b);
   });
 });
