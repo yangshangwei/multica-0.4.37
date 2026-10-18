@@ -95,6 +95,7 @@ describe("bucketDiagnosticPath", () => {
 
   it("keeps pre-workspace routes intact", () => {
     expect(bucketDiagnosticPath("/login")).toBe("/login");
+    expect(bucketDiagnosticPath("/account?view=current&issue=private-id#comment-private")).toBe("/account");
     expect(bucketDiagnosticPath("/workspaces/new")).toBe("/workspaces/new");
     expect(bucketDiagnosticPath("/invitations")).toBe("/invitations");
     expect(bucketDiagnosticPath("/auth/callback")).toBe("/auth/callback");

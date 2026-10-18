@@ -38,11 +38,14 @@ function state(client: QueryClient, scope: CollaborationScope, issueId: string |
 export function collaborationAccessEpoch(client: QueryClient, scope: CollaborationScope, issueId: string): number {
   return state(client, scope, issueId).epoch;
 }
+export function collaborationIssueAccessDenied(client: QueryClient, scope: CollaborationScope, issueId: string): boolean {
+  return state(client, scope, issueId).denied;
+}
 export function isCollaborationScopeCurrent(scope: CollaborationScope): boolean {
   return useAuthStore.getState().user?.id === scope.userId && collaborationScope(scope.userId).apiScope === scope.apiScope;
 }
 export function isCollaborationDenied(error: unknown): boolean {
-  return error instanceof ApiError && [401, 403, 404, 410].includes(error.status);
+  return error instanceof ApiError && !error.isStaleAuthResponse && [401, 403, 404, 410].includes(error.status);
 }
 export class CollaborationUnavailableError extends Error {
   constructor() { super("Collaboration response is unavailable"); this.name = "CollaborationUnavailableError"; }
@@ -64,6 +67,7 @@ export function clearCollaborationAccess(client: QueryClient, scope: Collaborati
     (entry.queryKey[3] !== "issue" || entry.queryKey[4] === issueId.toLowerCase());
   void client.cancelQueries({ predicate }, { revert: false });
   for (const query of client.getQueryCache().findAll({ predicate })) {
+    query.setData(undefined, { manual: true, updatedAt: 0 });
     query.setState({ data: undefined, dataUpdatedAt: 0, error: denied(), status: "error" });
   }
   for (const mutation of client.getMutationCache().getAll()) {

@@ -177,7 +177,9 @@ it.each(operations)("keeps $name HTTP rejection codes and original revision out 
   const client = new ApiClient("https://api.example.test", { logger: { ...noopLogger, error } });
   const result = invoke(client);
   await expect(result).rejects.toBeInstanceOf(ApiError);
-  await expect(result).rejects.toMatchObject({ status: 409, body });
+  await expect(result).rejects.toMatchObject({ status: 409, body: { code: body.code, collaboration_revision: body.collaboration_revision } });
+  await expect(result).rejects.not.toHaveProperty("body.error");
+  await expect(result).rejects.not.toHaveProperty("body.note");
   expect(error).toHaveBeenCalledOnce();
   expect(JSON.stringify(error.mock.calls)).not.toContain("PRIVATE_");
 });

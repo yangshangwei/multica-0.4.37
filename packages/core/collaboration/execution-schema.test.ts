@@ -16,6 +16,16 @@ const parse = (value: unknown) => parseCollaborationIssue({ ...valid, execution:
 afterEach(() => setSchemaLogger(noopLogger));
 
 describe("collaboration execution protocol", () => {
+  it("requires current human authority and a supported snapshot for controls while AI submission stays gated", () => {
+    const context = { participant_epoch: "1", account_epoch: "2" };
+    const supported = { ...valid, write_context: context, execution: { ...execution, execution_gate: { ...execution.execution_gate, enabled: false } } };
+    expect(parseCollaborationIssue(supported)?.capabilities).toMatchObject({ control_ai: true, submit_command: false });
+    expect(parseCollaborationIssue({ ...supported, write_context: null })?.capabilities.control_ai).toBe(false);
+    expect(parseCollaborationIssue({ ...supported, capabilities: { ...supported.capabilities, control_ai: false } })?.capabilities.control_ai).toBe(false);
+    expect(parseCollaborationIssue({ ...supported, execution: undefined })?.capabilities.control_ai).toBe(false);
+    expect(parseCollaborationIssue({ ...supported, write_context: { ...context, participant_epoch: "0" } })).toBeNull();
+    expect(parseCollaborationIssue({ ...supported, execution: { ...execution, protocol_version: 4 } })).toBeNull();
+  });
   it("retains typed targets, independent roots and member proof barriers", () => {
     const result = parseCollaborationIssue(valid);
     expect(result?.execution).toEqual(execution);
@@ -35,7 +45,7 @@ describe("collaboration execution protocol", () => {
   });
 
   it.each([null, {}, [], "PRIVATE_EXECUTION", { ...execution, protocol_version: undefined }, { ...execution, protocol_version: 1 },
-    { ...execution, protocol_version: 2 }, { ...execution, protocol_version: 3 }, { ...execution, protocol_version: 5 }, { ...execution, protocol_version: "4" }, { ...execution, availability: "available" },
+    { ...execution, protocol_version: 2 }, { ...execution, protocol_version: 3 }, { ...execution, protocol_version: 4 }, { ...execution, protocol_version: 6 }, { ...execution, protocol_version: "5" }, { ...execution, availability: "available" },
     { ...execution, unavailable_reason: "future_reason" }, { ...execution, control: { ...execution.control, scope: "target" } },
   ])("refuses unknown or malformed present protocols", (value) => {
     expect(parse(value)).toBeNull();
@@ -128,7 +138,7 @@ describe("collaboration execution protocol", () => {
     expect(parse({ ...execution, runs: [agentRun, leaderRun, { ...memberRun, parent_run_id: agentRun.id }] })).toBeNull();
     expect(parse({ ...execution, runs: [agentRun, leaderRun, { ...memberRun, parent_run_id: null }] })).toBeNull();
     expect(parse({ ...execution, runs: [agentRun, leaderRun, { ...memberRun, parent_run_id: memberRun.id }] })).toBeNull();
-    const continuation = { ...memberRun, id: unknownId, step_kind: "continuation", step_key: "continue", parent_run_id: memberRun.id };
+    const continuation = { ...memberRun, id: unknownId, agent_id: leaderRun.agent_id, step_kind: "continuation", step_key: "continue", parent_run_id: memberRun.id };
     expect(parse({ ...execution, runs: [agentRun, leaderRun, memberRun, continuation] })?.execution?.runs).toHaveLength(4);
     expect(parse({ ...execution, runs: [agentRun, leaderRun, { ...memberRun, parent_run_id: continuation.id }, continuation] })).toBeNull();
   });
@@ -184,7 +194,7 @@ describe("collaboration execution protocol", () => {
 
   it("reads current execution without retaining deleted legacy mappings", () => {
     const result = parse(execution);
-    expect(result?.execution?.protocol_version).toBe(4);
+    expect(result?.execution?.protocol_version).toBe(5);
     expect(result?.execution).not.toHaveProperty("legacy_unresolved");
     expect(parse({ ...execution, protocol_version: 2, legacy_unresolved: { command_ids: [], run_ids: [], active_run_id: null } })).toBeNull();
   });

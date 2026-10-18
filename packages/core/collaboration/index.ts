@@ -9,12 +9,27 @@ export type { CollaborationExecution, CollaborationExecutionChannel, Collaborati
 export { CollaborationControlInputSchema, CollaborationControlReceiptSchema, parseCollaborationControlReceipt, matchesCollaborationControlReceipt } from "./control-schema";
 export type { CollaborationControlInput, CollaborationControlReceipt, CollaborationChannelControlResult, CollaborationTargetHoldResult } from "./control-schema";
 export { prepareCollaborationControl, parseCollaborationControlDraft, sendCollaborationControl, recoverCollaborationControl } from "./control";
+export { CollaborationSwitchInputSchema, CollaborationSwitchProposalSchema, CollaborationSwitchReceiptSchema,
+  parseCollaborationSwitchProposal, parseCollaborationSwitchProposals, parseCollaborationSwitchReceipt, matchesCollaborationSwitchReceipt } from "./switch-schema";
+export type { CollaborationSwitchInput, CollaborationSwitchProposal, CollaborationSwitchReceipt } from "./switch-schema";
+export { prepareCollaborationSwitch, parseCollaborationSwitchDraft, sendCollaborationSwitch, recoverCollaborationSwitch,
+  collaborationSwitchProposalsOptions, collaborationSwitchProposalOptions } from "./switch";
+export type { CollaborationSwitchSelection } from "./switch";
 export { collaborationKeys, collaborationScope, collaborationAccessEpoch, isCollaborationScopeCurrent, isCollaborationDenied, clearCollaborationAccess, protectCollaborationRead, retainCollaborationScope, CollaborationUnavailableError } from "./access";
 export type { CollaborationScope } from "./access";
-export { useCollaborationScope, useCollaborationIssue, useCollaborationStatusOptions, collaborationIssueOptions, collaborationWorkbenchOptions } from "./queries";
+export { collaborationIssueAccessDenied } from "./access";
+export { useCollaborationScope, useCollaborationIssue, useCollaborationStatusOptions, collaborationIssueOptions, collaborationWorkbenchOptions, collaborationRecipientOptions, CollaborationRecipientNotFoundError } from "./queries";
 export { readCollaborationDrafts, saveCollaborationDraft, removeCollaborationDraft, clearCollaborationDrafts, retainCollaborationDraftScope, subscribeCollaborationDrafts, collaborationDraftRevision, CollaborationDraftError } from "./draft";
 export type { CollaborationDraft, CollaborationDraftScope } from "./draft";
 export { CollaborationActionSchema, collaborationWriteContext, parseCollaborationActionDraft, sendCollaborationAction, recoverCollaborationAction } from "./action";
 export type { CollaborationAction } from "./action";
+export { prepareCollaborationAction, executeCollaborationAction } from "./operation";
+export type { CollaborationActionIntent } from "./operation";
 export * from "./content-schema";
-export { collaborationCommentsOptions, collaborationMentionTargetsOptions, collaborationNotificationsOptions } from "./content-queries";
+export * from "./activity-schema";
+export { readCollaborationPendingDrafts, useCollaborationPendingDrafts } from "./pending";
+export { CollaborationCommandCancelInputSchema, CollaborationCommandCancelReceiptSchema, parseCollaborationCommandCancelReceipt, matchesCollaborationCommandCancelReceipt } from "./command-schema";
+export type { CollaborationCommandCancelInput, CollaborationCommandCancelReceipt } from "./command-schema";
+export { parseCollaborationCommandCancelDraft, prepareCollaborationCommandCancel, executeCollaborationCommandCancel } from "./command";
+export { parseCollaborationCommentDraft, prepareCollaborationComment, executeCollaborationComment, collaborationMentionMarkdown } from "./comment";
+export { collaborationCommentsOptions, collaborationCommentOptions, collaborationCommentHistoryOptions, collaborationMentionTargetsOptions, collaborationNotificationsOptions, collaborationActivityOptions, useCollaborationCommentPreview, useUpdateCollaborationNotification } from "./content-queries";

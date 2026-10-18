@@ -10,6 +10,7 @@
   },
   "exports": {
     "./collaboration": "./collaboration/index.ts",
+    "./collaboration/test-fixtures": "./collaboration/test-fixtures.ts",
     "./triage": "./triage/index.ts",
     "./triage/queries": "./triage/queries.ts",
     "./triage/mutations": "./triage/mutations.ts",
@@ -149,6 +150,7 @@
     "./modals": "./modals/index.ts",
     "./onboarding": "./onboarding/index.ts",
     "./paths": "./paths/index.ts",
+    "./paths/account": "./paths/account.ts",
     "./hooks": "./hooks.tsx",
     "./hooks/*": "./hooks/*.ts",
     "./query-client": "./query-client.ts",

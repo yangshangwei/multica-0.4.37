@@ -145,9 +145,11 @@ it.each(writes)("preserves the literal stale $name intent after a fresh-options 
   const client = new ApiClient("https://api.example.test", { logger: { ...noopLogger, error } });
   const result = invoke(client);
   await expect(result).rejects.toBeInstanceOf(ApiError);
-  await expect(result).rejects.toMatchObject({ status: 409, body: errorBody });
+  const { error: _privateError, ...validatedReceipt } = errorBody;
+  await expect(result).rejects.toMatchObject({ status: 409, body: validatedReceipt });
+  await expect(result).rejects.not.toHaveProperty("body.error");
   expect(fetchMock).toHaveBeenCalledTimes(1);
-  await expect(invoke(client)).rejects.toMatchObject({ status: 409, body: errorBody });
+  await expect(invoke(client)).rejects.toMatchObject({ status: 409, body: validatedReceipt });
   expect(fetchMock).toHaveBeenCalledTimes(2);
   for (const [, init] of fetchMock.mock.calls) {
     expect(new Headers(init.headers).get("Idempotency-Key")).toBe(input.requestId);

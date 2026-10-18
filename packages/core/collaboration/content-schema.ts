@@ -15,9 +15,15 @@ const targetResult = z.object({
   // Multiple immutable comment inputs may belong to one pending batch.
   channel_id: uuid.nullish().transform((value) => value ?? null),
   batch_id: uuid.nullish().transform((value) => value ?? null),
+  // Additive v2 data: old ordinary queues omit it; joined inputs require proof
+  // of their actual group below and never receive this null fallback.
+  group_id: uuid.nullish().transform((value) => value ?? null),
 }).refine((value) => value.target_id === null
   ? value.hold_version === null && value.hold_reason === null
-  : value.hold_version !== null && value.target_epoch !== undefined && value.config_version !== undefined);
+  : value.hold_version !== null && value.target_epoch !== undefined && value.config_version !== undefined)
+  .refine((value) => value.code === "command_joined_squad"
+    ? value.state === "waiting" && value.waiting_reason === "joined_squad" && value.group_id !== null && value.command_id !== null && value.command_sequence !== undefined && value.channel_id !== null && value.batch_id !== null && value.target_id !== null
+    : value.group_id === null);
 const uniqueTargets = <T extends { kind: string; resource_id: string }>(items: T[]) => new Set(items.map((item) => `${item.kind}:${item.resource_id}`)).size === items.length;
 
 export const CollaborationCommentSchema = z.object({
@@ -30,6 +36,16 @@ export const CollaborationCommentSchema = z.object({
 export const CollaborationCommentsSchema = z.object({
   issue_id: uuid, items: z.array(CollaborationCommentSchema), next_cursor: z.string().max(512).nullable(),
 }).refine((value) => value.items.every((item) => item.issue_id === value.issue_id) && new Set(value.items.map((item) => item.id)).size === value.items.length);
+
+export const CollaborationCommentHistorySchema = z.object({
+  issue_id: uuid, comment_id: uuid,
+  items: z.array(z.object({
+    event_id: uuid, event_seq: positiveVersion, kind: z.enum(["comment_created", "comment_edited", "comment_deleted"]),
+    actor: CollaborationAccountSummarySchema.nullable(), created_at: timestamp, comment_revision: positiveVersion,
+    before: z.string().nullable(), after: z.string(),
+  })),
+}).refine((value) => new Set(value.items.map((item) => item.event_id)).size === value.items.length &&
+  new Set(value.items.map((item) => item.event_seq)).size === value.items.length);
 
 export const CollaborationMentionTargetsSchema = z.object({
   protocol_version: z.literal(2), issue_id: uuid, participants: z.array(CollaborationAccountSummarySchema), can_submit_commands: z.boolean(),
@@ -46,7 +62,7 @@ export const CollaborationTriggerPreviewSchema = z.object({
   write_context: z.object({ participant_epoch: positiveVersion, account_epoch: positiveVersion }).nullish(),
   targets: z.array(targetResult).refine(uniqueTargets),
   recipients: z.array(z.object({ recipient: CollaborationAccountSummarySchema, is_mention: z.boolean() })),
-}).refine((value) => value.targets.every((item) => item.command_id === null && item.command_sequence === undefined) && new Set(value.recipients.map((item) => item.recipient.user_id.toLowerCase())).size === value.recipients.length);
+}).refine((value) => value.targets.every((item) => item.command_id === null && item.command_sequence === undefined && item.group_id === null) && new Set(value.recipients.map((item) => item.recipient.user_id.toLowerCase())).size === value.recipients.length);
 
 export const CollaborationCommentReceiptSchema = z.object({
   status: z.number().int(), code: z.string().min(1), protocol_version: z.literal(2),
@@ -83,6 +99,7 @@ function parse<T>(data: unknown, schema: z.ZodType<T>, endpoint: string): T | nu
 }
 export const parseCollaborationComments = (data: unknown) => parse(data, CollaborationCommentsSchema, "collaboration comments");
 export const parseCollaborationComment = (data: unknown) => parse(data, CollaborationCommentSchema, "collaboration comment");
+export const parseCollaborationCommentHistory = (data: unknown) => parse(data, CollaborationCommentHistorySchema, "collaboration comment history");
 export const parseCollaborationMentionTargets = (data: unknown) => parse(data, CollaborationMentionTargetsSchema, "collaboration mention targets");
 export const parseCollaborationTriggerPreview = (data: unknown) => parse(data, CollaborationTriggerPreviewSchema, "collaboration trigger preview");
 export const parseCollaborationCommentReceipt = (data: unknown) => parse(data, CollaborationCommentReceiptSchema, "collaboration comment receipt");

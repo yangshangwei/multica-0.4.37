@@ -27,13 +27,21 @@ describe("private collaboration content boundaries", () => {
   });
 
   it("separates a side-effect-free preview from accepted immutable inputs in a pending batch", () => {
-    const result = { target_id: id(4), kind: "agent", resource_id: id(5), target_epoch: "1", config_version: "1", state: "waiting", code: "command_queued", command_id: null, hold_reason: "initial", hold_version: "9007199254740993" };
+    const result = { target_id: id(4), kind: "agent", resource_id: id(5), target_epoch: "1", config_version: "1", state: "waiting", code: "command_queued", command_id: null, group_id: null, hold_reason: "initial", hold_version: "9007199254740993" };
     const preview = { protocol_version: 2, issue_id: id(3), lifecycle_epoch: "1", targets: [result], recipients: [{ recipient: account, is_mention: true }] };
     expect(parseCollaborationTriggerPreview(preview)).not.toBeNull();
     expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...result, command_id: id(6) }] })).toBeNull();
     const receipt = { status: 201, code: "comment_created", protocol_version: 2, issue_id: id(3), comment_id: id(2), comment_revision: "1", event_id: id(7), event_seq: "9", targets: [{ ...result, command_id: id(6), command_sequence: "1", channel_id: id(8), batch_id: id(9) }] };
     expect(parseCollaborationCommentReceipt(receipt)?.targets[0]?.batch_id).toBe(id(9));
+    expect(parseCollaborationCommentReceipt({ ...receipt, targets: [{ ...receipt.targets[0], group_id: undefined }] })?.targets[0]?.group_id).toBeNull();
     expect(parseCollaborationCommentReceipt({ ...receipt, targets: [result] })).toBeNull();
+    const joined = { ...receipt, targets: [{ ...receipt.targets[0], code: "command_joined_squad", waiting_reason: "joined_squad", group_id: id(10) }] };
+    expect(parseCollaborationCommentReceipt(joined)?.targets[0]?.group_id).toBe(id(10));
+    for (const patch of [{ group_id: null }, { group_id: undefined }, { waiting_reason: "waiting" }, { channel_id: null }, { batch_id: null }, { state: "blocked" }]) {
+      expect(parseCollaborationCommentReceipt({ ...joined, targets: [{ ...joined.targets[0], ...patch }] })).toBeNull();
+    }
+    expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...result, group_id: id(10) }] })).toBeNull();
+    expect(parseCollaborationCommentReceipt({ ...receipt, targets: [{ ...receipt.targets[0], group_id: id(10) }] })).toBeNull();
   });
 
   it("keeps hold feedback explicit and withholds it when the target is unavailable", () => {
@@ -42,7 +50,7 @@ describe("private collaboration content boundaries", () => {
     for (const patch of [{ hold_reason: undefined }, { hold_reason: "paused" }, { hold_version: null }, { hold_version: "0" }]) {
       expect(parseCollaborationMentionTargets({ ...candidates, targets: [{ ...target, ...patch }] })).toBeNull();
     }
-    const hidden = { target_id: null, kind: "agent", resource_id: id(5), state: "blocked", code: "target_unavailable", command_id: null, hold_reason: null, hold_version: null };
+    const hidden = { target_id: null, kind: "agent", resource_id: id(5), state: "blocked", code: "target_unavailable", command_id: null, group_id: null, hold_reason: null, hold_version: null };
     const preview = { protocol_version: 2, issue_id: id(3), lifecycle_epoch: "1", targets: [hidden], recipients: [] };
     expect(parseCollaborationTriggerPreview(preview)?.targets[0]?.hold_version).toBeNull();
     expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...hidden, hold_version: "1" }] })).toBeNull();

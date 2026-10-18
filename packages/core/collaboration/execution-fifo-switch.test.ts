@@ -67,7 +67,7 @@ function mixedSquadBatch() {
     targets: [{ ...agentTarget, channel_id: squadChannel.id, control: squadTarget.control, active_group_id: squadGroup.id }, squadTarget],
     commands: [directInput, squadInput],
     groups: [{ ...squadGroup, inputs: [directInput, squadInput].map((input) => ({ command_id: input.id,
-      channel_id: input.channel_id, batch_id: input.batch_id, sequence: input.sequence, consuming_run_id: leaderRun.id })) }],
+      channel_id: input.channel_id, batch_id: input.batch_id, sequence: input.sequence, consuming_run_id: leaderRun.id, reader_run_ids: [leaderRun.id, memberRun.id] })) }],
     runs: [{ ...leaderRun, agent_id: agentTarget.resource_id }, memberRun],
   };
 }
@@ -187,7 +187,7 @@ describe("collaboration channel FIFO and Switch history", () => {
     const batchId = "00000000-0000-4000-8000-000000000081";
     const runId = "00000000-0000-4000-8000-000000000082";
     const nextGroup = { ...agentGroup, id: unknownId, generation: "2", batch_id: batchId, state: "active", expansion_sealed_at: null, forced_disposition: null,
-      inputs: [{ ...agentGroup.inputs[0], batch_id: batchId, consuming_run_id: runId }] };
+      inputs: [{ ...agentGroup.inputs[0], batch_id: batchId, consuming_run_id: runId, reader_run_ids: [runId] }] };
     const retried = { ...requeued,
       channels: [{ ...agentChannel, active_group_id: nextGroup.id, group_generation: "2" }, squadChannel],
       targets: [{ ...agentTarget, active_group_id: nextGroup.id, group_generation: "2" }, squadTarget],
@@ -206,6 +206,7 @@ describe("collaboration channel FIFO and Switch history", () => {
   it("keeps a never-launched squad input's old membership after waiting migrates", () => {
     const switched = switchedSquad();
     const migrated = { ...switched,
+      groups: [agentGroup, { ...switched.groups[1], inputs: squadGroup.inputs.map((input) => ({ ...input, reader_run_ids: [leaderRun.id] })) }],
       commands: [agentCommand, waitingCommand, { ...squadCommand, state: "waiting", group_id: null,
         channel_id: agentChannel.id, batch_id: waitingCommand.batch_id, sequence: "3" }],
       runs: [agentRun, { ...leaderRun, proof_state: "never_launched_proven", business_outcome: null, settled_at: settledAt }],
@@ -273,7 +274,7 @@ describe("collaboration channel FIFO and Switch history", () => {
     expect(parse(migrated)).toBeNull();
   });
 
-  it("keeps waiting inputs detached until explicit M11 read membership is supported", () => {
+  it("rejects waiting input attached to an agent batch or forged as already consumed", () => {
     const waiting = { ...waitingCommand, batch_id: agentCommand.batch_id, group_id: agentGroup.id };
     expect(parse({ ...execution, commands: [agentCommand, waiting, squadCommand] })).toBeNull();
     const merged = { ...agentGroup.inputs[0], command_id: waiting.id, sequence: waiting.sequence, consuming_run_id: null };

@@ -49,10 +49,12 @@ const groupInput = z.object({
   channel_id: uuid,
   batch_id: uuid,
   sequence: positiveVersion,
-  // Initial batch inputs are consumed by the group's root. Unread M11
-  // membership needs a separate contract before null can become valid.
+  // A root or leader continuation consumed this input; unread joins are separate.
   consuming_run_id: uuid,
+  reader_run_ids: z.array(uuid).min(1),
 });
+
+const unreadInput = groupInput.omit({ consuming_run_id: true, reader_run_ids: true });
 
 const group = z.object({
   id: uuid,
@@ -68,6 +70,8 @@ const group = z.object({
   forced_disposition: disposition,
   settled_at: timestamp,
   inputs: z.array(groupInput).min(1),
+  unread_inputs: z.array(unreadInput),
+  queued_continuation_run_id: uuid.nullable(),
 });
 
 const run = z.object({
@@ -92,7 +96,7 @@ const run = z.object({
 });
 
 const execution = z.object({
-  protocol_version: z.literal(4),
+  protocol_version: z.literal(5),
   issue_id: uuid,
   session_id: uuid,
   // Client execution capabilities remain unavailable until full acceptance.
@@ -126,7 +130,20 @@ function consistentExecution(value: z.infer<typeof execution>): boolean {
   const groupsById = new Map(groups.map((item) => [item.id, item]));
   const groupsByBatch = new Map(groups.map((item) => [item.batch_id, item]));
   const inputsByGroup = new Map(groups.map((item) => [item.id, new Map(item.inputs.map((input) => [input.command_id, input]))]));
+  const unreadByGroup = new Map(groups.map((item) => [item.id, new Map(item.unread_inputs.map((input) => [input.command_id, input]))]));
   const runsById = new Map(runs.map((item) => [item.id, item]));
+  const rootRuns = new Map(runs.filter((item) => item.step_kind === "agent" || item.step_kind === "leader").map((item) => [item.group_id, item]));
+  const queuedRuns = runs.filter((item) => item.step_kind === "continuation" && item.progress_state === "prepared" && item.forced_disposition === null && item.settled_at === null);
+  if (!unique(queuedRuns.map((item) => item.group_id))) return false;
+  const queuedByGroup = new Map(queuedRuns.map((item) => [item.group_id, item.id]));
+  const continuationNeverLaunched = (consumer: z.infer<typeof run> | undefined) => consumer?.step_kind === "continuation" &&
+    consumer.settled_at !== null && consumer.progress_state === "settled" && consumer.proof_state === "never_launched_proven" && consumer.business_outcome !== "success";
+  const continuationInputNeverLaunched = (input: z.infer<typeof groupInput>) => continuationNeverLaunched(runsById.get(input.consuming_run_id)) &&
+    input.reader_run_ids.every((id) => {
+      const reader = runsById.get(id);
+      return reader !== undefined && reader.settled_at !== null && reader.progress_state === "settled" &&
+        reader.proof_state === "never_launched_proven" && reader.business_outcome !== "success";
+    });
   const allRunsNeverLaunched = new Map<string, boolean>();
   for (const item of runs) {
     const neverLaunched = item.settled_at !== null && item.proof_state === "never_launched_proven" && item.business_outcome !== "success";
@@ -156,9 +173,15 @@ function consistentExecution(value: z.infer<typeof execution>): boolean {
     }
     const currentGroup = groupsById.get(item.group_id);
     const input = inputsByGroup.get(item.group_id)?.get(item.id);
+    if (item.state === "waiting") {
+      const unread = unreadByGroup.get(item.group_id)?.get(item.id);
+      if (!currentGroup || !unread || input || currentGroup.channel_id !== item.channel_id || currentGroup.batch_id !== item.batch_id || unread.sequence !== item.sequence) return false;
+      continue;
+    }
     if (!currentGroup || !input || currentGroup.channel_id !== item.channel_id || currentGroup.batch_id !== item.batch_id ||
       input.sequence !== item.sequence) return false;
-    const cancelledBeforeLaunch = item.state === "cancelled" && currentGroup.settled_at !== null && currentGroup.state !== "succeeded" && allRunsNeverLaunched.get(currentGroup.id) === true;
+    const cancelledBeforeLaunch = item.state === "cancelled" &&
+      ((currentGroup.settled_at !== null && currentGroup.state !== "succeeded" && allRunsNeverLaunched.get(currentGroup.id) === true) || continuationInputNeverLaunched(input));
     if (item.state !== (currentGroup.settled_at === null ? "in_flight" : currentGroup.state) && !cancelledBeforeLaunch) return false;
   }
   for (const item of groups) {
@@ -169,28 +192,45 @@ function consistentExecution(value: z.infer<typeof execution>): boolean {
       !atMostVersion(item.generation, channel.group_generation) ||
       !atMostVersion(item.target_epoch, owner.target_epoch) || !atMostVersion(item.config_version, owner.config_version)) return false;
     const terminal = item.state !== "active" && item.state !== "waiting_children" && item.state !== "ending";
+    if (item.queued_continuation_run_id !== (queuedByGroup.get(item.id) ?? null)) return false;
     if (terminal !== (item.settled_at !== null)) return false;
     if (terminal) {
       if (item.expansion_sealed_at === null || (item.forced_disposition !== null && item.forced_disposition !== item.state)) return false;
     } else if (owner.channel_id !== item.channel_id || channel.active_group_id !== item.id || channel.group_generation !== item.generation) return false;
 
-    if (!unique(item.inputs.map((member) => member.command_id)) || !unique(item.inputs.map((member) => member.sequence))) return false;
+    if (!unique([...item.inputs, ...item.unread_inputs].map((member) => member.command_id)) ||
+      !unique([...item.inputs, ...item.unread_inputs].map((member) => member.sequence))) return false;
+    if (item.unread_inputs.length > 0 && (owner.kind !== "squad" || terminal || item.expansion_sealed_at !== null ||
+      item.forced_disposition !== null || item.queued_continuation_run_id === null)) return false;
+    for (const unread of item.unread_inputs) {
+      const command = commandsById.get(unread.command_id);
+      const commandTarget = command && targetsById.get(command.target_id);
+      const leader = rootRuns.get(item.id);
+      if (!command || !commandTarget || !leader || command.state !== "waiting" || command.group_id !== item.id ||
+        command.channel_id !== unread.channel_id || command.batch_id !== unread.batch_id || command.sequence !== unread.sequence ||
+        unread.channel_id !== item.channel_id || unread.batch_id !== item.batch_id ||
+        (command.target_id !== owner.id && (commandTarget.kind !== "agent" || commandTarget.resource_id !== leader.agent_id))) return false;
+    }
     for (const member of item.inputs) {
       const command = commandsById.get(member.command_id);
       const commandTarget = command && targetsById.get(command.target_id);
       const consumingRun = runsById.get(member.consuming_run_id);
       if (!command || !commandTarget || member.channel_id !== item.channel_id || member.batch_id !== item.batch_id ||
         !atMostVersion(member.sequence, channel.next_command_seq) || member.sequence === channel.next_command_seq ||
-        !consumingRun || consumingRun.group_id !== item.id || (consumingRun.step_kind !== "agent" && consumingRun.step_kind !== "leader")) return false;
+        !consumingRun || consumingRun.group_id !== item.id || !["agent", "leader", "continuation"].includes(consumingRun.step_kind) ||
+        consumingRun.agent_id !== rootRuns.get(item.id)?.agent_id) return false;
       if (command.target_id !== owner.id && (owner.kind !== "squad" || commandTarget.kind !== "agent" || commandTarget.resource_id !== consumingRun.agent_id)) return false;
+      if (!unique(member.reader_run_ids) || !member.reader_run_ids.includes(member.consuming_run_id) ||
+        member.reader_run_ids.some((id) => runsById.get(id)?.group_id !== item.id)) return false;
       const position = `${member.channel_id}:${member.sequence}`;
       const previousOwner = sequenceOwners.get(position);
       if (previousOwner !== undefined && previousOwner !== member.command_id) return false;
       sequenceOwners.set(position, member.command_id);
       if (command.group_id === item.id) continue;
       // Requeue changes only the command's current association. Its original
-      // consumed membership remains valid solely after a proven non-launch.
-      if (!terminal || item.state === "succeeded" || allRunsNeverLaunched.get(item.id) !== true) return false;
+      // An unlaunched continuation can return its input while unrelated member
+      // work remains active, only after every immutable prompt reader is safe.
+      if (!continuationInputNeverLaunched(member) && (!terminal || item.state === "succeeded" || allRunsNeverLaunched.get(item.id) !== true)) return false;
       const currentGroup = command.group_id === null ? undefined : groupsById.get(command.group_id);
       if (currentGroup?.channel_id === item.channel_id && atMostVersion(currentGroup.generation, item.generation)) return false;
     }
@@ -226,9 +266,10 @@ function consistentExecution(value: z.infer<typeof execution>): boolean {
     } else {
       const parent = item.parent_run_id === null ? undefined : runsById.get(item.parent_run_id);
       if (!parent || parent.group_id !== item.group_id || parent.id === item.id) return false;
+      if (item.step_kind === "continuation" && item.agent_id !== rootRuns.get(item.group_id)?.agent_id) return false;
     }
   }
-  if (groups.some((item) => item.settled_at !== null && !roots.has(item.id))) return false;
+  if (groups.some((item) => !roots.has(item.id))) return false;
   // Iterative traversal handles deep, untrusted parent chains without recursion.
   const checked = new Set<string>();
   for (const item of runs) {

@@ -38,7 +38,7 @@ it("captures one authorized snapshot and excludes hold/gate expectations from St
   const input = parseCollaborationControlDraft(draft);
   expect(input).toMatchObject({ expected_lifecycle_epoch: issue.lifecycle_epoch, expected_account_epoch: "9007199254740999", expected_execution_epoch: "9007199254740997" });
   expect(input.targets[0]).toMatchObject({ expected_hold_version: "9007199254740993" });
-  expect(issue.capabilities.control_ai).toBe(false);
+  expect(issue.capabilities).toMatchObject({ control_ai: true, submit_command: false });
   const stop = parseCollaborationControlDraft(prepareCollaborationControl(scope, issue, requestId, "stop", { scope: "target", targetId: issue.execution!.targets[0]!.id }));
   expect(stop.scope).toBe("target");
   expect(stop).not.toHaveProperty("expected_execution_epoch");
@@ -122,4 +122,16 @@ it("isolates the submitted intent from caller edits while its response is pendin
   finish(json(receipt));
   await expect(pending).resolves.toEqual(receipt);
   expect(readCollaborationDrafts(originalScope)).toEqual([]);
+});
+
+it("clears the protected issue when control recovery receives a fresh denial", async () => {
+  const { client, scope, issue, draft } = setup();
+  const queryKey = collaborationKeys.issue(scope, issue.id);
+  client.setQueryData(queryKey, issue);
+  const fetch = vi.fn().mockResolvedValueOnce(json({ code: "forbidden" }, 403));
+  vi.stubGlobal("fetch", fetch);
+  await expect(recoverCollaborationControl(client, scope, draft)).rejects.toMatchObject({ status: 403 });
+  expect(client.getQueryData(queryKey)).toBeUndefined();
+  expect(readCollaborationDrafts(draft.scope)).toEqual([]);
+  expect(fetch.mock.calls.map(([, init]) => init.method ?? "GET")).toEqual(["GET"]);
 });

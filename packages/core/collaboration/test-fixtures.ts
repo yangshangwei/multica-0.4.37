@@ -35,7 +35,7 @@ const settledAt = "2026-10-17T00:00:00Z";
 
 /** A complete read projection; runtime availability is separate from role rights. */
 export const collaborationExecutionFixture = {
-  protocol_version: 4,
+  protocol_version: 5,
   issue_id: id,
   session_id: id,
   availability: "unavailable",
@@ -64,11 +64,11 @@ export const collaborationExecutionFixture = {
   ],
   groups: [
     { id: agentGroupId, target_id: agentTargetId, command_id: agentCommandId, channel_id: agentChannelId, batch_id: agentBatchId, generation: "1", target_epoch: targetVersion, config_version: targetVersion,
-      state: "ending", expansion_sealed_at: settledAt, forced_disposition: "stopped", settled_at: null,
-      inputs: [{ command_id: agentCommandId, channel_id: agentChannelId, batch_id: agentBatchId, sequence: "1", consuming_run_id: executionId(13) }] },
+      state: "ending", expansion_sealed_at: settledAt, forced_disposition: "stopped", settled_at: null, unread_inputs: [], queued_continuation_run_id: null,
+      inputs: [{ command_id: agentCommandId, channel_id: agentChannelId, batch_id: agentBatchId, sequence: "1", consuming_run_id: executionId(13), reader_run_ids: [executionId(13)] }] },
     { id: squadGroupId, target_id: squadTargetId, command_id: squadCommandId, channel_id: squadChannelId, batch_id: squadBatchId, generation: "1", target_epoch: targetVersion, config_version: targetVersion,
-      state: "ending", expansion_sealed_at: settledAt, forced_disposition: "stopped", settled_at: null,
-      inputs: [{ command_id: squadCommandId, channel_id: squadChannelId, batch_id: squadBatchId, sequence: "1", consuming_run_id: leaderRunId }] },
+      state: "ending", expansion_sealed_at: settledAt, forced_disposition: "stopped", settled_at: null, unread_inputs: [], queued_continuation_run_id: null,
+      inputs: [{ command_id: squadCommandId, channel_id: squadChannelId, batch_id: squadBatchId, sequence: "1", consuming_run_id: leaderRunId, reader_run_ids: [leaderRunId, executionId(24)] }] },
   ],
   runs: [
     { id: executionId(13), command_id: agentCommandId, target_id: agentTargetId, channel_id: agentChannelId, batch_id: agentBatchId, group_id: agentGroupId, parent_run_id: null,

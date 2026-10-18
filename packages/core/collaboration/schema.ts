@@ -191,10 +191,9 @@ export const CollaborationIssueSchema = z.object({
     execution.control.queue_state === issue.session.queue_state && execution.control.control_version === issue.session.control_version);
 }, "Execution must belong to the current issue and control snapshot").transform((issue) => ({
   ...issue,
-  // These are protocol affordances, not the internal participant permission.
-  // No public execution/control path exists yet. Future Stop must depend on
-  // supported control protocol and human authority, never a current grant.
-  capabilities: { ...issue.capabilities, control_ai: false, submit_command: false },
+  // Human controls need a supported snapshot and current participant context.
+  // Stop/cancel do not require runtime availability; Resume rechecks admission.
+  capabilities: { ...issue.capabilities, control_ai: issue.capabilities.control_ai === true && issue.execution !== null && issue.write_context != null, submit_command: false },
 }));
 
 export type CollaborationIssue = z.infer<typeof CollaborationIssueSchema>;
@@ -251,6 +250,7 @@ export const CollaborationStatusOptionsSchema = z.object({
 export type CollaborationStatusOptions = z.infer<typeof CollaborationStatusOptionsSchema>;
 
 export const CollaborationOperationSchema = z.object({
+  status: z.number().int().min(200).max(599).optional(),
   code: z.string().refine((value) => value.trim().length > 0, "Operation code must not be empty"),
   collaboration_revision: positiveVersion,
   status_options: CollaborationStatusOptionsSchema.nullish(),
