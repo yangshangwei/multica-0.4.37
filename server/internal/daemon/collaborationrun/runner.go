@@ -96,14 +96,11 @@ func (r *Runner) Run(ctx context.Context, runID string, request protocol.Collabo
 	}
 	// A process exit is never a business result. Only the explicit provider
 	// record may be uploaded, using the still-current business capability.
-	var outcome struct {
-		Outcome string `json:"outcome"`
-		Body    string `json:"body"`
-	}
+	var outcome protocol.CollaborationProviderResult
 	var outcomeErr error
-	if !result.OutputTruncated && decodeStrict(result.Output, &outcome) == nil && (outcome.Outcome == protocol.CollaborationBusinessOutcomeSuccess || outcome.Outcome == protocol.CollaborationBusinessOutcomeFailure) {
+	if !result.OutputTruncated && decodeStrict(result.Output, &outcome) == nil && protocol.ValidateCollaborationProviderResult(outcome) == nil {
 		outcomeCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 10*time.Second)
-		outcomeErr = r.Client.Outcome(outcomeCtx, protocol.CollaborationRunOutcome{Identity: claim.Identity, EventID: uuid.NewString(), AttemptSeq: permit.AttemptSeq, AttemptNonce: permit.AttemptNonce, Outcome: outcome.Outcome, Body: outcome.Body}, permit.BusinessToken)
+		outcomeErr = r.Client.Outcome(outcomeCtx, protocol.CollaborationRunOutcome{Identity: claim.Identity, EventID: uuid.NewString(), AttemptSeq: permit.AttemptSeq, AttemptNonce: permit.AttemptNonce, Outcome: outcome.Outcome, Body: outcome.Body, Record: outcome.Record}, permit.BusinessToken)
 		cancel()
 	}
 	// Revoked business rights or a missing final result must not block the

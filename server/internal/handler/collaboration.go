@@ -27,6 +27,18 @@ type CollaborationWriteContext struct {
 	AccountEpoch     string `json:"account_epoch"`
 }
 
+type CollaborationOrdinaryChild struct {
+	ID         string `json:"id"`
+	Identifier string `json:"identifier"`
+	Title      string `json:"title"`
+	CanOpen    bool   `json:"can_open"`
+}
+
+type CollaborationOrdinaryChildren struct {
+	Items               []CollaborationOrdinaryChild `json:"items"`
+	SourceWorkspaceSlug *string                      `json:"source_workspace_slug"`
+}
+
 type CollaborationIssueResponse struct {
 	service.CollaborationIssueFields
 	ID              string  `json:"id"`
@@ -59,6 +71,7 @@ type CollaborationIssueResponse struct {
 	Execution                 service.CollaborationExecutionView       `json:"execution"`
 	CurrentInformationRequest *CollaborationInformationRequestResponse `json:"current_information_request"`
 	Capabilities              collaboration.Capabilities               `json:"capabilities"`
+	OrdinaryChildren          CollaborationOrdinaryChildren            `json:"ordinary_children"`
 }
 
 // CollaborationInformationRequestResponse names the open request and where a
@@ -144,7 +157,19 @@ func (h *Handler) collaborationIssueResponseInSnapshot(ctx context.Context, acce
 	out.Status, out.StatusCategory, out.Priority = i.Status, access.StatusCategory, i.Priority
 	out.StartDate, out.DueDate = dateToPtr(i.StartDate), dateToPtr(i.DueDate)
 	out.SourceWorkspace.ID, out.SourceWorkspace.Name = uuidToString(workspace.ID), workspace.Name
-	out.SourceWorkspace.Identifier = fmt.Sprintf("%s-%d", h.getIssuePrefix(ctx, workspace.ID), i.Number)
+	prefix := h.getIssuePrefix(ctx, workspace.ID)
+	out.SourceWorkspace.Identifier = fmt.Sprintf("%s-%d", prefix, i.Number)
+	children, err := h.Queries.ListCollaborationOrdinaryChildren(ctx, db.ListCollaborationOrdinaryChildrenParams{WorkspaceID: i.WorkspaceID, ParentIssueID: i.ID})
+	if err != nil {
+		return out, err
+	}
+	out.OrdinaryChildren.Items = make([]CollaborationOrdinaryChild, 0, len(children))
+	if access.SourceMember {
+		out.OrdinaryChildren.SourceWorkspaceSlug = &workspace.Slug
+	}
+	for _, child := range children {
+		out.OrdinaryChildren.Items = append(out.OrdinaryChildren.Items, CollaborationOrdinaryChild{ID: uuidToString(child.ID), Identifier: fmt.Sprintf("%s-%d", prefix, child.Number), Title: child.Title, CanOpen: access.SourceMember})
+	}
 	out.Revision = strconv.FormatInt(access.Revision, 10)
 	out.LifecycleEpoch = strconv.FormatInt(access.LifecycleEpoch, 10)
 	out.Realtime.EventSequence = strconv.FormatInt(access.EventSequence, 10)

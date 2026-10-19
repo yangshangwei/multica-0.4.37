@@ -5,6 +5,8 @@ export type { CollaborationRecipient, CollaborationRecipientInput } from "./sche
 export { CollaborationFieldOptionsSchema, parseCollaborationFieldOptions } from "./schema";
 export type { CollaborationFieldOptions, CollaborationLabel, CollaborationPropertyDefinition } from "./schema";
 export type { CollaborationSourceOptions, CollaborationSourceStructure, CollaborationIterationInput } from "./schema";
+export { CollaborationOrdinaryChildrenSchema } from "./schema";
+export type { CollaborationOrdinaryChildren } from "./schema";
 export { collaborationPropertyValueMatchesDefinition } from "./schema";
 export { collaborationFieldOptions } from "./field-queries";
 export { CollaborationCreationFieldsSchema } from "./creation-schema";
@@ -49,6 +51,8 @@ export { readCollaborationDeliveryRecords, saveCollaborationDeliveryRecord, fini
 export type { CollaborationDeliveryContext, CollaborationDeliveryScope, CollaborationDeliveryForm, CollaborationUploadDraft, CollaborationCreationDraft, CollaborationDeliveryRequest } from "./delivery-draft";
 export { useCollaborationDeliveryForm } from "./delivery-form";
 export * from "./activity-schema";
+export * from "./run-records-schema";
+export { collaborationRunRecordsOptions } from "./run-records-queries";
 export { readCollaborationPendingDrafts, useCollaborationPendingDrafts } from "./pending";
 export { CollaborationCommandCancelInputSchema, CollaborationCommandCancelReceiptSchema, parseCollaborationCommandCancelReceipt, matchesCollaborationCommandCancelReceipt } from "./command-schema";
 export type { CollaborationCommandCancelInput, CollaborationCommandCancelReceipt } from "./command-schema";

@@ -53,6 +53,35 @@ func runTestAgent() int {
 	if mode == "exit" {
 		return 0
 	}
+	if mode == "recorded" || mode == "partial_record" || mode == "invalid_record" || mode == "oversized_record" {
+		var input ProviderInput
+		if err := json.NewDecoder(os.Stdin).Decode(&input); err != nil || len(input.Inputs) != 2 {
+			return 48
+		}
+		large, zero, cost, notError := "9007199254740993", "0", "0.0000000001", false
+		messages := []protocol.CollaborationRecordedMessage{}
+		// Larger than the old 128 KiB stdout cap, but every explicit message
+		// and the whole recording remain inside the documented shared bounds.
+		for range 3 {
+			messages = append(messages, protocol.CollaborationRecordedMessage{Kind: "message", Role: "assistant", Body: strings.Repeat("r", 60<<10)})
+		}
+		messages = append(messages, protocol.CollaborationRecordedMessage{Kind: "tool_call", CallID: "read-1", Name: "read", Body: "recorded tool input"}, protocol.CollaborationRecordedMessage{Kind: "tool_result", CallID: "read-1", Body: "recorded tool result", IsError: &notError})
+		record := &protocol.CollaborationRunRecord{Version: 1, Completeness: "complete", Messages: messages, Usage: &protocol.CollaborationRunUsage{InputTokens: &large, OutputTokens: &zero, CostUSD: &cost}}
+		if mode == "partial_record" {
+			record.Completeness = "partial"
+		}
+		if mode == "invalid_record" {
+			negative := "-1"
+			record.Usage.InputTokens = &negative
+		}
+		if mode == "oversized_record" {
+			record.Messages[0].Body = strings.Repeat("r", protocol.CollaborationRecordTextLimit+1)
+		}
+		if err := json.NewEncoder(os.Stdout).Encode(protocol.CollaborationProviderResult{Outcome: "success", Body: "two immutable inputs", Record: record}); err != nil {
+			return 48
+		}
+		return 0
+	}
 	if mode == "success" || mode == "failure" || mode == "legacy_outcome" {
 		var input ProviderInput
 		if err := json.NewDecoder(os.Stdin).Decode(&input); err != nil || len(input.Inputs) != 2 {

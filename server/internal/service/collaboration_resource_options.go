@@ -61,7 +61,7 @@ func (s *CollaborationService) ResourceOptions(ctx context.Context, issueID, wor
 			if !agent.RuntimeID.Valid {
 				continue
 			}
-			runtime, err := q.GetAgentRuntime(ctx, agent.RuntimeID)
+			runtime, err := s.collaborationRuntimeLookup(q).Get(ctx, agent.RuntimeID)
 			if errors.Is(err, pgx.ErrNoRows) {
 				continue
 			}
@@ -109,7 +109,7 @@ func (s *CollaborationService) ResourceOptions(ctx context.Context, issueID, wor
 				} else if !eligible {
 					item.Available, item.Reason = false, "resource_owner_unavailable"
 				}
-				view, err := collaborationResourceSummary(ctx, q, access, resource)
+				view, err := s.collaborationResourceSummary(ctx, q, access, resource)
 				if err != nil {
 					return err
 				}

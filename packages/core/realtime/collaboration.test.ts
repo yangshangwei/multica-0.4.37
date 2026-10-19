@@ -100,6 +100,27 @@ it("accepts only empty account invalidations and fences obsolete sessions", () =
   expect(f.client.getQueryState(sourceKey)?.isInvalidated).toBe(false);
 });
 
+it("refreshes ordinary child references using a strict content-free hint without invalidating access or pending intent", () => {
+  const f = setup();
+  const otherKey = collaborationKeys.issue(f.scope, requestId);
+  f.client.setQueryData(otherKey, { title: "Another shared issue" });
+  saveCollaborationDraft(f.draft);
+  for (const payload of [null, {}, { issue_id: "invalid" }, { issue_id: issueId, title: "PRIVATE_CHILD" }, { issue_id: issueId, event_seq: "2" }]) {
+    f.emit("collaboration:children_changed", payload);
+    expect(f.client.getQueryState(f.key)?.isInvalidated).toBe(false);
+  }
+  f.emit("collaboration:children_changed", { issue_id: issueId.toUpperCase() });
+  expect(f.client.getQueryState(f.key)?.isInvalidated).toBe(true);
+  expect(f.client.getQueryState(otherKey)?.isInvalidated).toBe(false);
+  expect(f.client.getQueryData(f.key)).toEqual(f.issue);
+  expect(collaborationAccessEpoch(f.client, f.scope, issueId)).toBe(0);
+  expect(readCollaborationDrafts(f.draft.scope)).toEqual([f.draft]);
+  f.client.setQueryData(f.key, f.issue);
+  setApiInstance(new ApiClient("https://replacement.example"));
+  f.emit("collaboration:children_changed", { issue_id: issueId });
+  expect(f.client.getQueryState(f.key)?.isInvalidated).toBe(false);
+});
+
 it("fences a pending POST and old GET before clearing revoked content and drafts", async () => {
   const f = setup();
   let finish!: (response: Response) => void;

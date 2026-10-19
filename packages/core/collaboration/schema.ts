@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
+import { isReservedSlug } from "../paths/reserved-slugs";
 import type { IssuePriority } from "../types/issue";
 import { ISSUE_PROPERTY_TYPES, parseActorRef, type IssuePropertyValue } from "../types/property";
 import { CollaborationExecutionSchema } from "./execution-schema";
@@ -124,6 +125,17 @@ export const CollaborationSourceStructureSchema = z.object({
 });
 export type CollaborationSourceOptions = z.infer<typeof CollaborationSourceOptionsSchema>;
 export type CollaborationSourceStructure = z.infer<typeof CollaborationSourceStructureSchema>;
+export const CollaborationOrdinaryChildrenSchema = z.object({
+  items: z.array(z.object({
+    id: z.uuid().transform((id) => id.toLowerCase()), identifier: z.string().min(1),
+    title: z.string(), can_open: z.boolean(),
+  })),
+  source_workspace_slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+    .refine((slug) => !isReservedSlug(slug)).nullable(),
+}).refine((children) => new Set(children.items.map((child) => child.id)).size === children.items.length &&
+  children.items.every((child) => child.can_open === (children.source_workspace_slug !== null)),
+"Ordinary children require unique identities and consistent source access");
+export type CollaborationOrdinaryChildren = z.infer<typeof CollaborationOrdinaryChildrenSchema>;
 export const CollaborationFieldCatalogSchema = z.object({
   labels: labelSummaries,
   properties: propertyDefinitions.refine((items) => items.every((item) => item.archived === false), "Editing options must be active"),
@@ -166,6 +178,8 @@ export const CollaborationIssueSchema = z.object({
   properties: propertyValues.optional(),
   property_definitions: propertyDefinitions.optional(),
   source_structure: CollaborationSourceStructureSchema.optional(),
+  // An older server may omit this projection; absence never means no children.
+  ordinary_children: CollaborationOrdinaryChildrenSchema.optional(),
   source_workspace: sourceWorkspaceSummary,
   creator: accountSummary,
   handler: accountSummary,
@@ -197,7 +211,8 @@ export const CollaborationIssueSchema = z.object({
     submit_acceptance: z.boolean().catch(false),
   }),
   current_information_request: informationRequest.nullish(),
-}).refine((issue) => {
+}).refine((issue) => issue.ordinary_children?.items.every((child) => child.id !== issue.id.toLowerCase()) !== false,
+  "An ordinary child cannot be its shared parent").refine((issue) => {
   const values = issue.properties;
   const definitions = issue.property_definitions;
   if (values === undefined || definitions === undefined) return values === undefined && definitions === undefined;

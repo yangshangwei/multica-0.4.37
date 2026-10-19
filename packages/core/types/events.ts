@@ -13,6 +13,7 @@ export type WSEventType =
   | "subscribe_ack"
   | "subscribe_error"
   | "collaboration:changed"
+  | "collaboration:children_changed"
   | "collaboration:access_changed"
   | "collaboration:source_access_changed"
   | "collaboration:workbench_changed"

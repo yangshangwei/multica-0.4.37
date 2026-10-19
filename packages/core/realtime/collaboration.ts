@@ -10,7 +10,8 @@ import { useOptionalWS } from "./provider";
 
 const issueIdSchema = z.uuid().transform((id) => id.toLowerCase());
 const changeSchema = z.strictObject({ issue_id: issueIdSchema, event_seq: positiveVersion, collaboration_revision: positiveVersion, authority_epoch: positiveVersion });
-const accessSchema = z.union([changeSchema, z.strictObject({ issue_id: issueIdSchema })]);
+const issueHintSchema = z.strictObject({ issue_id: issueIdSchema });
+const accessSchema = z.union([changeSchema, issueHintSchema]);
 const snapshotSchema = z.object({ realtime: z.object({ event_seq: nonnegativeVersion }).optional() });
 const sourceSchema = z.object({ source_workspace: z.object({ id: issueIdSchema }) });
 const subscriptionSchema = z.object({ scope: z.literal("issue"), id: issueIdSchema, error: z.string().optional() });
@@ -72,6 +73,11 @@ export function bindCollaborationRealtime(client: QueryClient, scope: Collaborat
       if (!current()) return;
       const parsed = changeSchema.safeParse(payload);
       if (parsed.success && fresh(parsed.data.issue_id, parsed.data.event_seq)) refreshIssue(parsed.data.issue_id);
+    }),
+    transport.subscribe("collaboration:children_changed", (payload) => {
+      if (!current()) return;
+      const parsed = issueHintSchema.safeParse(payload);
+      if (parsed.success) refreshIssue(parsed.data.issue_id);
     }),
     transport.subscribe("collaboration:access_changed", (payload) => {
       if (!current()) return;

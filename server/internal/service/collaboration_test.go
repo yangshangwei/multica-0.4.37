@@ -10,6 +10,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/multica-ai/multica/server/internal/auth"
@@ -286,6 +287,13 @@ func (tx collaborationFailureTx) QueryRow(ctx context.Context, sql string, args 
 		return errRow{err: errors.New("injected collaboration persistence failure")}
 	}
 	return tx.Tx.QueryRow(ctx, sql, args...)
+}
+
+func (tx collaborationFailureTx) Exec(ctx context.Context, sql string, args ...any) (pgconn.CommandTag, error) {
+	if strings.HasPrefix(sql, "-- name: "+tx.queryName+" ") {
+		return pgconn.CommandTag{}, errors.New("injected collaboration persistence failure")
+	}
+	return tx.Tx.Exec(ctx, sql, args...)
 }
 
 func TestCollaborationCreationFailureRollsBackEveryOwnedRecord(t *testing.T) {

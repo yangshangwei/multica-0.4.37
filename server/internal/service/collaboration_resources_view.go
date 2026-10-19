@@ -96,7 +96,7 @@ func (s *CollaborationService) Resources(ctx context.Context, issueID pgtype.UUI
 				return err
 			}
 			for _, resource := range roster {
-				view, err := collaborationResourceSummary(ctx, q, access, resource)
+				view, err := s.collaborationResourceSummary(ctx, q, access, resource)
 				if err != nil {
 					return err
 				}
@@ -128,7 +128,7 @@ func (s *CollaborationService) Resources(ctx context.Context, issueID pgtype.UUI
 	return out, err
 }
 
-func collaborationResourceSummary(ctx context.Context, q *db.Queries, access CollaborationIssueAccess, resource collaboration.TargetResource) (CollaborationResourceView, error) {
+func (s *CollaborationService) collaborationResourceSummary(ctx context.Context, q *db.Queries, access CollaborationIssueAccess, resource collaboration.TargetResource) (CollaborationResourceView, error) {
 	view := CollaborationResourceView{TargetResource: resource}
 	agentID, runtimeID, ownerID, _, err := collaborationResourceUUIDs(resource)
 	if err != nil {
@@ -141,7 +141,7 @@ func collaborationResourceSummary(ctx context.Context, q *db.Queries, access Col
 	if err == nil {
 		view.AgentName = agent.Name
 	}
-	runtime, err := q.GetAgentRuntime(ctx, runtimeID)
+	runtime, err := s.collaborationRuntimeLookup(q).Get(ctx, runtimeID)
 	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		return view, err
 	}
@@ -261,7 +261,7 @@ func (s *CollaborationService) ResourceIdentity(ctx context.Context, issueID, ta
 			out.Reason = "target_configuration_changed"
 			return nil
 		}
-		out.Identity, err = currentCollaborationResourceIdentity(ctx, q, selected)
+		out.Identity, err = s.currentCollaborationResourceIdentity(ctx, q, selected)
 		if err != nil {
 			return err
 		}
@@ -273,12 +273,12 @@ func (s *CollaborationService) ResourceIdentity(ctx context.Context, issueID, ta
 	return out, err
 }
 
-func currentCollaborationResourceIdentity(ctx context.Context, q *db.Queries, resource collaboration.TargetResource) (*CollaborationResourceIdentity, error) {
+func (s *CollaborationService) currentCollaborationResourceIdentity(ctx context.Context, q *db.Queries, resource collaboration.TargetResource) (*CollaborationResourceIdentity, error) {
 	_, runtimeID, ownerID, workspaceID, err := collaborationResourceUUIDs(resource)
 	if err != nil {
 		return nil, err
 	}
-	runtime, err := q.GetAgentRuntime(ctx, runtimeID)
+	runtime, err := s.collaborationRuntimeLookup(q).Get(ctx, runtimeID)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return nil, nil
 	}

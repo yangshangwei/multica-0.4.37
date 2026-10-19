@@ -56,6 +56,7 @@ type CollaborationIssueAccess struct {
 	ParticipantEpoch pgtype.Int8 `json:"-"`
 	AccountEpoch     pgtype.Int8 `json:"-"`
 	StatusCategory   string      `json:"-"`
+	SourceMember     bool        `json:"-"`
 	// InformationRequestID is the open top of the request chain, if any.
 	InformationRequestID pgtype.UUID                `json:"-"`
 	Capabilities         collaboration.Capabilities `json:"capabilities"`
@@ -106,7 +107,7 @@ func (s *CollaborationService) ResolveIssueAccess(ctx context.Context, q *db.Que
 	return CollaborationIssueAccess{Issue: row.Issue, Revision: row.CollaborationRevision, LifecycleEpoch: row.LifecycleEpoch,
 		AuthorityEpoch: row.AuthorityEpoch, EventSequence: row.EventSeq,
 		SessionID: row.SessionID, QueueState: row.QueueState, ControlVersion: row.ControlVersion,
-		ParticipantEpoch: row.ParticipantEpoch, AccountEpoch: row.AccountEpoch, StatusCategory: row.StatusCategory,
+		ParticipantEpoch: row.ParticipantEpoch, AccountEpoch: row.AccountEpoch, StatusCategory: row.StatusCategory, SourceMember: row.SourceMember,
 		InformationRequestID: row.InformationRequestID, Capabilities: caps}, nil
 }
 

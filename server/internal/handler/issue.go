@@ -3865,6 +3865,9 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 	if err := tx.Commit(ctx); err != nil {
 		return db.Issue{}, current, false, fmt.Errorf("commit atomic issue update: %w", err)
 	}
+	if issue.ParentIssueID != current.ParentIssueID || issue.Title != current.Title || issue.AdmissionStatus != current.AdmissionStatus {
+		h.IssueService.PublishCollaborationChildrenChanged(ctx, current.ParentIssueID, issue.ParentIssueID)
+	}
 	return issue, current, attachmentsChanged, nil
 }
 
@@ -4632,6 +4635,11 @@ func (h *Handler) deleteIssuesAndCollectAttachmentURLs(r *http.Request, issues [
 	if err := tx.Commit(ctx); err != nil {
 		return issueDeleteResult{}, fmt.Errorf("commit issue delete: %w", err)
 	}
+	parents := make([]pgtype.UUID, 0, len(issues))
+	for _, issue := range issues {
+		parents = append(parents, issue.ParentIssueID)
+	}
+	h.IssueService.PublishCollaborationChildrenChanged(ctx, parents...)
 	return result, nil
 }
 

@@ -13,6 +13,7 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"reflect"
 	"strconv"
 	"strings"
 
@@ -193,7 +194,7 @@ func (s *CollaborationService) ClaimRuntimeRun(ctx context.Context, runID pgtype
 		if _, err = r.q.ClaimCollaborationRuntimeRun(ctx, db.ClaimCollaborationRuntimeRunParams{RunID: runID, Containment: p.Containment}); err != nil {
 			return out, err
 		}
-		inputs, err := r.claimPromptSnapshot(ctx)
+		inputs, err := s.claimPromptSnapshot(ctx, r)
 		if err != nil {
 			return out, err
 		}
@@ -207,7 +208,7 @@ func (s *CollaborationService) ClaimRuntimeRun(ctx context.Context, runID pgtype
 	})
 }
 
-func (r *collaborationRuntimeState) claimPromptSnapshot(ctx context.Context) ([]protocol.CollaborationRunInput, error) {
+func (s *CollaborationService) claimPromptSnapshot(ctx context.Context, r *collaborationRuntimeState) ([]protocol.CollaborationRunInput, error) {
 	if r.run.PromptSnapshot == nil {
 		if err := r.consumeJoinedInputs(ctx); err != nil {
 			return nil, err
@@ -228,6 +229,9 @@ func (r *collaborationRuntimeState) claimPromptSnapshot(ctx context.Context) ([]
 		}
 		r.run, err = r.q.FreezeCollaborationRunPrompt(ctx, db.FreezeCollaborationRunPromptParams{RunID: r.run.ID, PromptSnapshot: encoded})
 		if err != nil {
+			return nil, err
+		}
+		if err = s.freezeResourceRecording(ctx, r); err != nil {
 			return nil, err
 		}
 	}
@@ -326,7 +330,7 @@ func (s *CollaborationService) PermitRuntimeRun(ctx context.Context, runID pgtyp
 
 func (s *CollaborationService) RecordRuntimeOutcome(ctx context.Context, runID pgtype.UUID, token string, p protocol.CollaborationRunOutcome) error {
 	seq, ok := collaborationRuntimeVersion(p.AttemptSeq, false)
-	if !ok || len(p.EventID) == 0 || len(p.EventID) > 128 || len(p.Body) > 1<<20 || (p.Outcome != protocol.CollaborationBusinessOutcomeSuccess && p.Outcome != protocol.CollaborationBusinessOutcomeFailure) {
+	if !ok || len(p.EventID) == 0 || len(p.EventID) > 128 || protocol.ValidateCollaborationProviderResult(protocol.CollaborationProviderResult{Outcome: p.Outcome, Body: p.Body, Record: p.Record}) != nil {
 		return collaborationError(http.StatusBadRequest, "invalid_runtime_outcome")
 	}
 	if !strings.HasPrefix(token, CollaborationBusinessTokenPrefix) || len(token) != 68 {
@@ -364,7 +368,7 @@ func (s *CollaborationService) RecordRuntimeOutcome(ctx context.Context, runID p
 		prior, err := q.GetCollaborationRuntimeEvent(ctx, db.GetCollaborationRuntimeEventParams{RunID: runID, ProducerEventID: p.EventID})
 		if err == nil {
 			var saved protocol.CollaborationRunOutcome
-			if json.Unmarshal(prior.Payload, &saved) != nil || saved != p {
+			if prior.Kind != "outcome" || json.Unmarshal(prior.Payload, &saved) != nil || !reflect.DeepEqual(saved, p) {
 				return false, collaborationError(http.StatusConflict, "outcome_conflict")
 			}
 			return true, nil
@@ -373,7 +377,21 @@ func (s *CollaborationService) RecordRuntimeOutcome(ctx context.Context, runID p
 			return false, err
 		}
 		if r.run.BusinessOutcome.Valid {
-			return false, collaborationError(http.StatusConflict, "outcome_already_recorded")
+			// A squad activity can finish the business turn before stdout supplies
+			// its recording. Accept one matching immutable result; never replace
+			// that activity's outcome or an earlier stdout recording.
+			if r.run.BusinessOutcome.String != p.Outcome {
+				return false, collaborationError(http.StatusConflict, "outcome_already_recorded")
+			}
+			recorded, err := q.GetCollaborationRunRecordMetadata(ctx, db.GetCollaborationRunRecordMetadataParams{IssueID: r.access.Issue.ID, RunID: runID})
+			if err != nil {
+				return false, err
+			}
+			for _, event := range recorded {
+				if event.Kind == "outcome" {
+					return false, collaborationError(http.StatusConflict, "outcome_already_recorded")
+				}
+			}
 		}
 		payload, err := json.Marshal(p)
 		if err != nil {
@@ -382,8 +400,15 @@ func (s *CollaborationService) RecordRuntimeOutcome(ctx context.Context, runID p
 		if _, err = q.CreateCollaborationRuntimeOutcomeEvent(ctx, db.CreateCollaborationRuntimeOutcomeEventParams{IssueID: r.access.Issue.ID, RunID: runID, EventID: p.EventID, Payload: payload}); err != nil {
 			return false, err
 		}
-		if _, err = q.RecordCollaborationRuntimeOutcome(ctx, db.RecordCollaborationRuntimeOutcomeParams{RunID: runID, Outcome: p.Outcome}); err != nil {
-			return false, err
+		if !r.run.BusinessOutcome.Valid {
+			if _, err = q.RecordCollaborationRuntimeOutcome(ctx, db.RecordCollaborationRuntimeOutcomeParams{RunID: runID, Outcome: p.Outcome}); err != nil {
+				return false, err
+			}
+		}
+		if p.Record != nil && p.Record.Completeness == "partial" {
+			if err = q.MarkCollaborationRunRecordingIncomplete(ctx, runID); err != nil {
+				return false, err
+			}
 		}
 		return true, recordCollaborationExecutionChange(ctx, q, r.access.Issue.ID, r.group.ID, runID, "runtime_outcome_recorded")
 	})

@@ -143,7 +143,7 @@ WHERE id=sqlc.arg(run_id)::uuid AND business_outcome IS NULL AND settled_at IS N
 
 -- name: RecordCollaborationRuntimeProof :one
 UPDATE collaboration_run SET proof_state=sqlc.arg(proof_state)::text,sealed_attempt_seq=sqlc.arg(sealed_attempt_seq)::bigint,
-    recording_incomplete=(business_outcome IS NULL),progress_state='settled',settled_at=now()
+    recording_incomplete=(recording_incomplete OR business_outcome IS NULL),progress_state='settled',settled_at=now()
 WHERE id=sqlc.arg(run_id)::uuid AND settled_at IS NULL RETURNING *;
 
 -- name: RecordCollaborationTerminationProof :one

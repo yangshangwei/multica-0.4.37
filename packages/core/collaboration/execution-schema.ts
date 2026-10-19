@@ -294,3 +294,4 @@ export type CollaborationExecutionTarget = z.infer<typeof target>;
 export type CollaborationExecutionCommand = z.infer<typeof command>;
 export type CollaborationExecutionGroup = z.infer<typeof group>;
 export type CollaborationExecutionRun = z.infer<typeof run>;
+export const CollaborationExecutionRunSchema = run;

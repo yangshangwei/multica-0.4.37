@@ -31,6 +31,25 @@ Ordinary workspace iteration `move` previews/operations also refuse a batch
 containing a collaboration issue; use the dedicated authorized workflow.
 Automatic period closure/rollover retains its server-owned contract.
 
+Source members attach/detach ordinary children through the child's existing
+ordinary parent operation. The shared detail projects the complete ordinary
+child reference set; only source members get open links. Outside participants
+cannot browse a source directory or open those children. These writes preserve
+the parent's collaboration version, handler, participation and AI queue.
+
+Human readers use `GET /api/collaboration/issues/{id}/runs/{runId}/records`
+with opaque cursors and limit 1–100 (default 50). Every page rechecks current
+issue access. It returns source-owned run records and that run's frozen prompt;
+current batch placement or resource names cannot reconstruct old input/provenance.
+The supported static executor may add a version-1 `record` to its existing
+`{outcome,body}` result: bounded typed messages/tool records and exact optional
+usage. Missing counters are not zero; configured resource provenance does not
+identify a verified provider billing account. Proofs never carry missing logs.
+One completed/failed/confirmed-stopped group creates one durable account result
+event. A member or interim leader result is not whole-squad completion. Its
+notification opens the representative final run through an additive `run_id`
+anchor; current access still gates every read, and old clients open the issue.
+
 Human authors edit/delete ordinary comments with their original content revision;
 thread resolution and own reactions use dedicated discussion endpoints. They do
 not change content revisions, notify participants or dispatch AI. Discussion

@@ -169,3 +169,13 @@ is already known, then allow only the exact content-free receipt contract.
 Wrong: settle every HTTP 409, or normalize a refusal outside the access guard.
 Correct: interpret only the validated stale-revision refusal within the protected
 request; let the existing confirmed-result path retire its exact pending intent.
+
+## Recorded-run and ordinary-child reads
+
+See [the recorded-run contract](../../server/collaboration-records.md). Keep
+record pages inside the issue access/epoch guard, distinguish `run_not_found`
+from parent denial, and validate assembled page chains before cache writes.
+Cursor loops or conflicting immutable records refuse the page; identical
+overlap and a consistent full refresh remain valid. Missing telemetry is null,
+not zero. Result links preserve the old notification source shape and add an
+optional `run_id`; current denial removes that anchor.

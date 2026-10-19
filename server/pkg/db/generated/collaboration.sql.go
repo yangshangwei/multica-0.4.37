@@ -265,7 +265,7 @@ func (q *Queries) CreateCollaborationEvent(ctx context.Context, arg CreateCollab
 const createCollaborationNotification = `-- name: CreateCollaborationNotification :one
 INSERT INTO collaboration_notification (recipient_user_id, issue_id, event_seq, kind, is_mention)
 VALUES ($1, $2, $3, $4, $5)
-ON CONFLICT (recipient_user_id, issue_id, event_seq) DO NOTHING RETURNING id, recipient_user_id, issue_id, event_seq, kind, is_mention, created_at, read_at, archived_at, source_kind, source_id
+ON CONFLICT (recipient_user_id, issue_id, event_seq) DO NOTHING RETURNING id, recipient_user_id, issue_id, event_seq, kind, is_mention, created_at, read_at, archived_at, source_kind, source_id, run_id
 `
 
 type CreateCollaborationNotificationParams struct {
@@ -297,6 +297,7 @@ func (q *Queries) CreateCollaborationNotification(ctx context.Context, arg Creat
 		&i.ArchivedAt,
 		&i.SourceKind,
 		&i.SourceID,
+		&i.RunID,
 	)
 	return i, err
 }

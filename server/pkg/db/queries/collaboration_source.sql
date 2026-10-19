@@ -16,6 +16,15 @@ LEFT JOIN "user" creator ON creator.id=i.creator_id
 LEFT JOIN "user" handler ON handler.id=i.assignee_id
 WHERE i.workspace_id=sqlc.arg(workspace_id) AND i.id=ANY(sqlc.arg(issue_ids)::uuid[]);
 
+-- Only references are projected; ordinary ownership and execution stay intact.
+-- name: ListCollaborationOrdinaryChildren :many
+SELECT i.id, i.number, i.title
+FROM issue i
+WHERE i.workspace_id=sqlc.arg(workspace_id)::uuid AND i.parent_issue_id=sqlc.arg(parent_issue_id)::uuid
+  AND i.admission_status IN ('not_required','accepted')
+  AND NOT EXISTS (SELECT 1 FROM issue_collaboration c WHERE c.issue_id=i.id)
+ORDER BY i.number ASC;
+
 -- name: ListSourceCollaborationAccounts :many
 SELECT u.id AS user_id, u.name, u.avatar_url,
        NOT EXISTS (SELECT 1 FROM member m WHERE m.workspace_id=sqlc.arg(workspace_id) AND m.user_id=u.id) AS external

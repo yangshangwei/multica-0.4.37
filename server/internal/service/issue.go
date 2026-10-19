@@ -723,6 +723,7 @@ func (s *IssueService) publishIssueCreated(issue db.Issue, attachments []db.Atta
 	if s.Bus == nil {
 		return
 	}
+	s.PublishCollaborationChildrenChanged(context.Background(), issue.ParentIssueID)
 	var payload map[string]any
 	if opts.BroadcastPayload != nil {
 		payload = opts.BroadcastPayload(issue, attachments, labels)

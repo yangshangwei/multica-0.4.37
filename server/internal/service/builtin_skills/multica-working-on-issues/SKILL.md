@@ -24,9 +24,9 @@ Machine credentials and source membership alone grant no collaboration control.
 Inside an admitted collaboration run, the existing issue read/comment and squad
 activity commands use its narrow business context. Comment and activity writes
 require an explicit `--request-id`; retain the same UUID and payload after an
-uncertain result. For supported commands, controlled files and shared input order,
-holds, proof and original-key recovery, read
-`references/collaboration-workflow.md` before acting. Ordinary rules below
+uncertain result. For commands, controlled files, ordinary children, recorded
+inputs/usage, holds, proof and recovery, read `references/collaboration-workflow.md`
+before acting. Ordinary rules below
 are not the shared APIs. Source fields and discussion use current human authority
 and original request identities; editing or reacting never dispatches AI.
 

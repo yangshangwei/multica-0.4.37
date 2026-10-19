@@ -50,7 +50,11 @@ func decodeCollaborationRuntimeBody(w http.ResponseWriter, r *http.Request, targ
 		writeJSON(w, http.StatusUnsupportedMediaType, map[string]string{"code": "json_required", "error": "JSON request required"})
 		return false
 	}
-	raw, err := io.ReadAll(http.MaxBytesReader(w, r.Body, 96<<10))
+	limit := int64(96 << 10)
+	if _, outcome := target.(*protocol.CollaborationRunOutcome); outcome {
+		limit = protocol.CollaborationOutcomeJSONLimit
+	}
+	raw, err := io.ReadAll(http.MaxBytesReader(w, r.Body, limit))
 	if err != nil {
 		status := http.StatusBadRequest
 		var tooLarge *http.MaxBytesError

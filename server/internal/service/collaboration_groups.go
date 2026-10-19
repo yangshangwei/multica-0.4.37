@@ -286,6 +286,9 @@ func (t *collaborationQueueTx) settleProvenGroup(ctx context.Context, target db.
 	if err = t.mirrorChannel(ctx, channel); err != nil {
 		return false, err
 	}
+	if err = recordCollaborationGroupResult(ctx, t.q, t.access, settled, runs); err != nil {
+		return false, err
+	}
 	return true, recordCollaborationExecutionChange(ctx, t.q, t.access.Issue.ID, group.ID, pgtype.UUID{}, "execution_settled")
 }
 

@@ -95,6 +95,7 @@ type CollaborationNotificationView struct {
 	IsMention  bool        `json:"is_mention"`
 	SourceKind string      `json:"source_kind"`
 	SourceID   pgtype.UUID `json:"source_id"`
+	RunID      *string     `json:"run_id,omitempty"`
 	IssueTitle *string     `json:"issue_title"`
 	CanOpen    bool        `json:"can_open"`
 	CreatedAt  time.Time   `json:"created_at"`
@@ -183,6 +184,9 @@ func (s *CollaborationService) ListNotifications(ctx context.Context, p Collabor
 		// removed/denied notification with a title or private comment/event anchor.
 		if row.CanOpen && n.Kind != "removed" {
 			item.CanOpen, item.IssueTitle, item.SourceKind, item.SourceID = true, &row.IssueTitle, n.SourceKind, n.SourceID
+			if n.RunID.Valid && (n.Kind == "ai_completed" || n.Kind == "ai_failed" || n.Kind == "ai_stopped") {
+				item.RunID = util.UUIDToPtr(n.RunID)
+			}
 		}
 		out.Items = append(out.Items, item)
 	}

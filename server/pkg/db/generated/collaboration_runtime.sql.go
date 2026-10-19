@@ -1099,7 +1099,7 @@ func (q *Queries) RecordCollaborationRuntimeOutcome(ctx context.Context, arg Rec
 
 const recordCollaborationRuntimeProof = `-- name: RecordCollaborationRuntimeProof :one
 UPDATE collaboration_run SET proof_state=$1::text,sealed_attempt_seq=$2::bigint,
-    recording_incomplete=(business_outcome IS NULL),progress_state='settled',settled_at=now()
+    recording_incomplete=(recording_incomplete OR business_outcome IS NULL),progress_state='settled',settled_at=now()
 WHERE id=$3::uuid AND settled_at IS NULL RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn
 `
 

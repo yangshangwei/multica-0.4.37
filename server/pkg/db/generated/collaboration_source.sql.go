@@ -11,6 +11,47 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+const listCollaborationOrdinaryChildren = `-- name: ListCollaborationOrdinaryChildren :many
+SELECT i.id, i.number, i.title
+FROM issue i
+WHERE i.workspace_id=$1::uuid AND i.parent_issue_id=$2::uuid
+  AND i.admission_status IN ('not_required','accepted')
+  AND NOT EXISTS (SELECT 1 FROM issue_collaboration c WHERE c.issue_id=i.id)
+ORDER BY i.number ASC
+`
+
+type ListCollaborationOrdinaryChildrenParams struct {
+	WorkspaceID   pgtype.UUID `json:"workspace_id"`
+	ParentIssueID pgtype.UUID `json:"parent_issue_id"`
+}
+
+type ListCollaborationOrdinaryChildrenRow struct {
+	ID     pgtype.UUID `json:"id"`
+	Number int32       `json:"number"`
+	Title  string      `json:"title"`
+}
+
+// Only references are projected; ordinary ownership and execution stay intact.
+func (q *Queries) ListCollaborationOrdinaryChildren(ctx context.Context, arg ListCollaborationOrdinaryChildrenParams) ([]ListCollaborationOrdinaryChildrenRow, error) {
+	rows, err := q.db.Query(ctx, listCollaborationOrdinaryChildren, arg.WorkspaceID, arg.ParentIssueID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListCollaborationOrdinaryChildrenRow{}
+	for rows.Next() {
+		var i ListCollaborationOrdinaryChildrenRow
+		if err := rows.Scan(&i.ID, &i.Number, &i.Title); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listSourceCollaborationAccounts = `-- name: ListSourceCollaborationAccounts :many
 SELECT u.id AS user_id, u.name, u.avatar_url,
        NOT EXISTS (SELECT 1 FROM member m WHERE m.workspace_id=$1 AND m.user_id=u.id) AS external

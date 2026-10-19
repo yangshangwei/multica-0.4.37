@@ -100,8 +100,12 @@ export interface CollaborationPreviewInput { content: string; parent_id: string 
 export const CollaborationNotificationSchema = z.object({
   id: uuid, issue_id: uuid, event_seq: positiveVersion, kind: z.string(), is_mention: z.boolean(),
   source_kind: z.enum(["issue", "comment", "body"]), source_id: uuid.nullable(), issue_title: z.string().nullable(),
+  // Additive so installed clients can keep opening the issue without run support.
+  run_id: uuid.optional(),
   can_open: z.boolean(), created_at: timestamp, read_at: timestamp.nullable(), archived_at: timestamp.nullable(),
-}).refine((value) => value.can_open ? value.issue_title !== null && (value.source_kind !== "comment" || value.source_id !== null) : value.issue_title === null && value.source_kind === "issue" && value.source_id === null);
+}).refine((value) => value.can_open ? value.issue_title !== null && (value.source_kind !== "comment" || value.source_id !== null) : value.issue_title === null && value.source_kind === "issue" && value.source_id === null)
+  .refine((value) => value.run_id === undefined || (value.can_open && !value.is_mention &&
+    value.source_kind === "issue" && value.source_id === null && ["ai_completed", "ai_failed", "ai_stopped"].includes(value.kind)));
 export const CollaborationNotificationsSchema = z.object({
   items: z.array(CollaborationNotificationSchema), unread_count: z.number().int().nonnegative().safe(), next_cursor: z.string().max(512).nullable(),
 });

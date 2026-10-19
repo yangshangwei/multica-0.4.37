@@ -1644,6 +1644,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Post("/api/collaboration/issues/{id}/attachments/{attachmentId}/capabilities", h.CreateCollaborationAttachmentCapability)
 		r.Get("/api/collaboration/issues/{id}", h.GetCollaborationIssue)
 		r.Get("/api/collaboration/issues/{id}/activity", h.ListCollaborationActivity)
+		r.Get("/api/collaboration/issues/{id}/runs/{runId}/records", h.GetCollaborationRunRecords)
 		r.Get("/api/collaboration/creations/{requestId}", h.GetCollaborationCreation)
 		r.Get("/api/collaboration/creations/{requestId}/result", h.GetCollaborationCreationResult)
 		r.Post("/api/collaboration/recipients/resolve", h.ResolveCollaborationRecipient)

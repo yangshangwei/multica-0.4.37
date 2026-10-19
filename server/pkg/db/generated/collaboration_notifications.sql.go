@@ -14,7 +14,7 @@ import (
 const archiveCollaborationNotification = `-- name: ArchiveCollaborationNotification :one
 UPDATE collaboration_notification SET archived_at = COALESCE(archived_at, now())
 WHERE id = $1::uuid AND recipient_user_id = $2::uuid
-RETURNING id, recipient_user_id, issue_id, event_seq, kind, is_mention, created_at, read_at, archived_at, source_kind, source_id
+RETURNING id, recipient_user_id, issue_id, event_seq, kind, is_mention, created_at, read_at, archived_at, source_kind, source_id, run_id
 `
 
 type ArchiveCollaborationNotificationParams struct {
@@ -37,6 +37,7 @@ func (q *Queries) ArchiveCollaborationNotification(ctx context.Context, arg Arch
 		&i.ArchivedAt,
 		&i.SourceKind,
 		&i.SourceID,
+		&i.RunID,
 	)
 	return i, err
 }
@@ -59,7 +60,7 @@ INSERT INTO collaboration_notification
 VALUES ($1::uuid, $2::uuid, $3::bigint,
         $4::text, $5::boolean, $6::text, $7::uuid)
 ON CONFLICT (recipient_user_id, issue_id, event_seq) DO NOTHING
-RETURNING id, recipient_user_id, issue_id, event_seq, kind, is_mention, created_at, read_at, archived_at, source_kind, source_id
+RETURNING id, recipient_user_id, issue_id, event_seq, kind, is_mention, created_at, read_at, archived_at, source_kind, source_id, run_id
 `
 
 type CreateCollaborationContentNotificationParams struct {
@@ -97,12 +98,13 @@ func (q *Queries) CreateCollaborationContentNotification(ctx context.Context, ar
 		&i.ArchivedAt,
 		&i.SourceKind,
 		&i.SourceID,
+		&i.RunID,
 	)
 	return i, err
 }
 
 const listCollaborationNotifications = `-- name: ListCollaborationNotifications :many
-SELECT n.id, n.recipient_user_id, n.issue_id, n.event_seq, n.kind, n.is_mention, n.created_at, n.read_at, n.archived_at, n.source_kind, n.source_id, COALESCE(i.title, '')::text AS issue_title,
+SELECT n.id, n.recipient_user_id, n.issue_id, n.event_seq, n.kind, n.is_mention, n.created_at, n.read_at, n.archived_at, n.source_kind, n.source_id, n.run_id, COALESCE(i.title, '')::text AS issue_title,
        (n.kind <> 'removed' AND i.id IS NOT NULL AND (
            EXISTS (SELECT 1 FROM issue_participant p WHERE p.issue_id = n.issue_id
                    AND p.user_id = n.recipient_user_id AND p.revoked_at IS NULL)
@@ -160,6 +162,7 @@ func (q *Queries) ListCollaborationNotifications(ctx context.Context, arg ListCo
 			&i.CollaborationNotification.ArchivedAt,
 			&i.CollaborationNotification.SourceKind,
 			&i.CollaborationNotification.SourceID,
+			&i.CollaborationNotification.RunID,
 			&i.IssueTitle,
 			&i.CanOpen,
 		); err != nil {
@@ -176,7 +179,7 @@ func (q *Queries) ListCollaborationNotifications(ctx context.Context, arg ListCo
 const markCollaborationNotificationRead = `-- name: MarkCollaborationNotificationRead :one
 UPDATE collaboration_notification SET read_at = COALESCE(read_at, now())
 WHERE id = $1::uuid AND recipient_user_id = $2::uuid
-RETURNING id, recipient_user_id, issue_id, event_seq, kind, is_mention, created_at, read_at, archived_at, source_kind, source_id
+RETURNING id, recipient_user_id, issue_id, event_seq, kind, is_mention, created_at, read_at, archived_at, source_kind, source_id, run_id
 `
 
 type MarkCollaborationNotificationReadParams struct {
@@ -199,6 +202,7 @@ func (q *Queries) MarkCollaborationNotificationRead(ctx context.Context, arg Mar
 		&i.ArchivedAt,
 		&i.SourceKind,
 		&i.SourceID,
+		&i.RunID,
 	)
 	return i, err
 }

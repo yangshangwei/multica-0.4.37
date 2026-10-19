@@ -90,6 +90,7 @@ type CollaborationRunOutcome struct {
 	AttemptNonce string                   `json:"attempt_nonce"`
 	Outcome      string                   `json:"outcome"`
 	Body         string                   `json:"body"`
+	Record       *CollaborationRunRecord  `json:"record,omitempty"`
 }
 
 // CollaborationRunProof intentionally cannot carry content, paths or logs.

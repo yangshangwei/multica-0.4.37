@@ -144,7 +144,7 @@ func (s *CollaborationService) readTargetSwitchProposals(ctx context.Context, is
 			ProposedTargetEpoch: proposal.BaseTargetEpoch + 1, ProposedConfigVersion: proposal.BaseConfigVersion + 1,
 			Status: "pending", Resources: make([]CollaborationSwitchResourceView, 0, len(roster))}
 		for _, resource := range roster {
-			summary, err := collaborationResourceSummary(ctx, q, access, resource)
+			summary, err := s.collaborationResourceSummary(ctx, q, access, resource)
 			if err != nil {
 				return nil, err
 			}

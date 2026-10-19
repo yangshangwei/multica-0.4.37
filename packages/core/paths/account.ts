@@ -4,6 +4,7 @@ export interface AccountDestination {
   view: AccountView;
   issueId: string | null;
   commentId: string | null;
+  runId?: string | null;
   anchor?: "description";
 }
 
@@ -20,15 +21,22 @@ export function parseAccountPath(path: string): AccountDestination | null {
   const issueId = query.get("issue");
   if (issueId !== null && !uuid.test(issueId)) return null;
   if (url.hash === "#description") return issueId ? { view, issueId: issueId.toLowerCase(), commentId: null, anchor: "description" } : null;
+  if (url.hash.startsWith("#run-")) {
+    const runId = url.hash.slice("#run-".length);
+    return issueId && uuid.test(runId) ? { view, issueId: issueId.toLowerCase(), commentId: null, runId: runId.toLowerCase() } : null;
+  }
   const commentId = url.hash ? url.hash.slice("#comment-".length) : null;
   if (url.hash && (!issueId || !url.hash.startsWith("#comment-") || !uuid.test(commentId ?? ""))) return null;
   return { view, issueId: issueId?.toLowerCase() ?? null, commentId: commentId?.toLowerCase() ?? null };
 }
 
 export function accountPath(input: Partial<AccountDestination> = {}): string {
+  if (input.runId && (input.commentId || input.anchor)) throw new TypeError("Invalid account destination");
   const query = new URLSearchParams({ view: input.view ?? "current" });
   if (input.issueId) query.set("issue", input.issueId.toLowerCase());
-  const path = `/account?${query}${input.commentId ? `#comment-${input.commentId.toLowerCase()}` : input.anchor === "description" ? "#description" : ""}`;
+  const hash = input.runId ? `#run-${input.runId.toLowerCase()}`
+    : input.commentId ? `#comment-${input.commentId.toLowerCase()}` : input.anchor === "description" ? "#description" : "";
+  const path = `/account?${query}${hash}`;
   if (!parseAccountPath(path)) throw new TypeError("Invalid account destination");
   return path;
 }

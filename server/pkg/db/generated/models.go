@@ -918,6 +918,7 @@ type CollaborationNotification struct {
 	ArchivedAt      pgtype.Timestamptz `json:"archived_at"`
 	SourceKind      string             `json:"source_kind"`
 	SourceID        pgtype.UUID        `json:"source_id"`
+	RunID           pgtype.UUID        `json:"run_id"`
 }
 
 type CollaborationOperation struct {

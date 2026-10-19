@@ -10,6 +10,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/testutil"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 func TestCollaborationRuntimeManagedBoundaryRejectsBroadCredentials(t *testing.T) {
@@ -24,6 +25,29 @@ func TestCollaborationRuntimeManagedBoundaryRejectsBroadCredentials(t *testing.T
 			t.Fatal("runtime boundary delegated a broad credential or cached its refusal")
 		}
 	}
+}
+
+func TestCollaborationRuntimeRecordingHTTPRejectsMalformedPrivateTelemetry(t *testing.T) {
+	run := uuid.NewString()
+	valid := `{"identity":{"run_id":"` + run + `"},"event_id":"` + uuid.NewString() + `","attempt_seq":"1","attempt_nonce":"` + uuid.NewString() + `","outcome":"success","body":"PRIVATE_SENTINEL","record":{"version":1,"completeness":"complete","messages":[{"kind":"message","role":"assistant","body":"recorded"}],"usage":{"input_tokens":"0"}}}`
+	for _, raw := range []string{
+		strings.Replace(valid, `"version":1`, `"version":1,"version":1`, 1),
+		strings.Replace(valid, `"version":1`, `"version":1,"credential":"PRIVATE_SENTINEL"`, 1),
+		strings.Replace(valid, `"body":"recorded"`, `"body":"recorded","credential":"PRIVATE_SENTINEL"`, 1),
+		strings.Replace(valid, `"input_tokens":"0"`, `"input_tokens":"-1"`, 1),
+		strings.Replace(valid, `"body":"recorded"`, `"body":null`, 1),
+		strings.Replace(valid, `"body":"recorded"`, `"body":"`+strings.Repeat("x", protocol.CollaborationRecordTextLimit+1)+`"`, 1),
+	} {
+		r := withURLParam(newRequest(http.MethodPost, "/api/collaboration/runtime/runs/"+run+"/outcome", json.RawMessage(raw)), "runId", run)
+		r.Header.Set("Authorization", "Bearer "+service.CollaborationBusinessTokenPrefix+strings.Repeat("a", 64))
+		response := testutil.Call(t, (&Handler{}).RecordCollaborationRuntimeOutcome, r).Want(http.StatusBadRequest)
+		if strings.Contains(response.Body.String(), "PRIVATE_SENTINEL") || response.Header().Get("Cache-Control") != "no-store" {
+			t.Fatal("invalid recording leaked private payload or was cacheable")
+		}
+	}
+	r := withURLParam(newRequest(http.MethodPost, "/api/collaboration/runtime/runs/"+run+"/outcome", json.RawMessage(`{"body":"`+strings.Repeat("x", protocol.CollaborationOutcomeJSONLimit)+`"}`)), "runId", run)
+	r.Header.Set("Authorization", "Bearer "+service.CollaborationBusinessTokenPrefix+strings.Repeat("a", 64))
+	testutil.Call(t, (&Handler{}).RecordCollaborationRuntimeOutcome, r).Want(http.StatusRequestEntityTooLarge)
 }
 
 func TestCollaborationRuntimeHandlersRequireActualManagedSource(t *testing.T) {

@@ -132,7 +132,7 @@ func (c *Client) StopIntent(ctx context.Context, id protocol.CollaborationRunIde
 }
 
 func (c *Client) Outcome(ctx context.Context, in protocol.CollaborationRunOutcome, token string) error {
-	if validateIdentity(in.Identity) != nil || in.AttemptSeq != "1" || !validUUID(in.AttemptNonce) || !validUUID(in.EventID) || (in.Outcome != protocol.CollaborationBusinessOutcomeSuccess && in.Outcome != protocol.CollaborationBusinessOutcomeFailure) || len(in.Body) > 65536 {
+	if validateIdentity(in.Identity) != nil || in.AttemptSeq != "1" || !validUUID(in.AttemptNonce) || !validUUID(in.EventID) || protocol.ValidateCollaborationProviderResult(protocol.CollaborationProviderResult{Outcome: in.Outcome, Body: in.Body, Record: in.Record}) != nil {
 		return ErrProtocol
 	}
 	return c.request(ctx, http.MethodPost, runPath(in.Identity.RunID, "outcome"), token, in, nil)

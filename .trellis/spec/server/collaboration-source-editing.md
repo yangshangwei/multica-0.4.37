@@ -138,3 +138,12 @@ field editor, or a local pending-key deletion after a byte-limit error.
 
 Correct: current object/source authority, original-key shared operations, private
 reference projections, and an exact persisted result before retiring a request.
+
+## Ordinary children and recorded executions
+
+The R51/R52 increment now supplies the shared ordinary-child projection,
+content-free child refresh hints, retained run-record drilldowns and compatible
+result links. See [the executable contract](collaboration-records.md) for the
+current source/open authority, original ordinary writer ownership and record
+validation. This does not establish the reverse R58 parent-wakeup direction or
+the entire P8 compatibility matrix.

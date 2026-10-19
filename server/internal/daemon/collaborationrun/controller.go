@@ -84,7 +84,7 @@ func (b *limitedOutput) Write(p []byte) (int, error) {
 	b.mu.Lock()
 	defer b.mu.Unlock()
 	n := len(p)
-	remaining := 128*1024 - b.b.Len()
+	remaining := protocol.CollaborationOutcomeJSONLimit - b.b.Len()
 	if len(p) > remaining {
 		b.truncated = true
 		p = p[:remaining]

@@ -1,6 +1,7 @@
 import { parseIteration, IterationCapabilitiesSchema, IterationSettingsSchema, IterationListSchema, IterationDetailSchema, IterationIssuesSchema, IterationEventsSchema, IterationPreviewSchema, IterationWriteResultSchema, type IterationCreateInput, type IterationDraft, type IterationWriteInput } from "./iteration-schemas";
 import { z } from "zod";
 import { parseCollaborationActivity } from "../collaboration/activity-schema";
+import { parseCollaborationRunRecords } from "../collaboration/run-records-schema";
 import { parseCollaborationParticipants } from "../collaboration/participant-schema";
 import { CollaborationDiscussionSelectionSchema, parseCollaborationDiscussionReceipt, parseCollaborationIssueReactions, type CollaborationDiscussionSelection } from "../collaboration/discussion-schema";
 import { CollaborationCreationInputSchema, parseCollaborationCreationOptions, parseCollaborationCreationResult, type CollaborationCreationInput } from "../collaboration/creation-schema";
@@ -1121,6 +1122,22 @@ export class ApiClient {
     if (params.cursor) query.set("cursor", params.cursor);
     const result = parseCollaborationActivity(await this.fetchCollaborationOptionalHistory(`/api/collaboration/issues/${encodeURIComponent(id)}/activity?${query}`, { signal: options?.signal }));
     return result && sameResourceIdentity(result.issue_id, id) ? result : null;
+  }
+
+  async getCollaborationRunRecords(id: string, runId: string, params: { cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {
+    const limit = params.limit ?? 50;
+    if (![id, runId].every((value) => z.uuid().safeParse(value).success) || !Number.isInteger(limit) || limit < 1 || limit > 100 ||
+      (params.cursor !== undefined && !z.string().min(1).max(1024).safeParse(params.cursor).success)) {
+      throw new TypeError("Invalid collaboration records query");
+    }
+    const query = new URLSearchParams({ limit: String(limit) });
+    if (params.cursor !== undefined) query.set("cursor", params.cursor);
+    const result = parseCollaborationRunRecords(await this.fetchCollaborationOptionalHistory(
+      `/api/collaboration/issues/${encodeURIComponent(id)}/runs/${encodeURIComponent(runId)}/records?${query}`,
+      { signal: options?.signal, cache: "no-store" },
+    ));
+    return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.run.id, runId) &&
+      result.items.length <= limit && result.next_cursor !== params.cursor ? result : null;
   }
 
   async getCollaborationComment(id: string, commentId: string, options?: { signal?: AbortSignal }) {

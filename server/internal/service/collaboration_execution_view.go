@@ -439,14 +439,7 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 			previous = true
 		}
 		allRunsNeverLaunched[run.GroupID] = previous && provenEnded && run.ProofState == "never_launched_proven"
-		out.Runs = append(out.Runs, CollaborationExecutionRunView{
-			ID: util.UUIDToString(run.ID), CommandID: util.UUIDToString(run.CommandID), TargetID: util.UUIDToString(run.TargetID), GroupID: util.UUIDToString(run.GroupID),
-			ChannelID: util.UUIDToString(run.ChannelID), BatchID: util.UUIDToString(run.BatchID),
-			ParentRunID: util.UUIDToPtr(run.ParentRunID), StepKey: run.StepKey.String, StepKind: run.StepKind.String, AgentID: util.UUIDToString(run.AgentID),
-			TargetEpoch: strconv.FormatInt(run.TargetEpoch.Int64, 10), ConfigVersion: strconv.FormatInt(run.ConfigVersion.Int64, 10),
-			ProgressState: run.ProgressState, ProofState: run.ProofState, BusinessOutcome: util.TextToPtr(run.BusinessOutcome), ForcedDisposition: util.TextToPtr(run.ForcedDisposition),
-			RecordingIncomplete: run.RecordingIncomplete, SettledAt: util.TimestampToPtr(run.SettledAt),
-		})
+		out.Runs = append(out.Runs, collaborationRecordedRunView(run))
 	}
 	for _, run := range runs {
 		if run.StepKind.String == "continuation" && run.AgentID != rootAgents[run.GroupID] {

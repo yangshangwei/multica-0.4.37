@@ -6,9 +6,11 @@ import (
 	"log/slog"
 	"strings"
 
+	"github.com/google/uuid"
 	"github.com/multica-ai/multica/server/internal/events"
 	"github.com/multica-ai/multica/server/internal/handler"
 	"github.com/multica-ai/multica/server/internal/realtime"
+	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
@@ -77,6 +79,23 @@ func projectOutbound(eventType string, payload any) any {
 // without touching any of the event listeners below. This is Phase 0 of the
 // horizontal-scaling plan tracked in MUL-1138.
 func registerListeners(bus *events.Bus, b realtime.Broadcaster) {
+	bus.Subscribe(service.CollaborationChildrenChanged, func(e events.Event) {
+		payload, ok := e.Payload.(map[string]any)
+		if !ok || len(payload) != 1 {
+			return
+		}
+		id, ok := payload["issue_id"].(string)
+		if !ok {
+			return
+		}
+		if _, err := uuid.Parse(id); err != nil {
+			return
+		}
+		frame, err := json.Marshal(map[string]any{"type": service.CollaborationChildrenChanged, "payload": map[string]string{"issue_id": id}})
+		if err == nil {
+			b.BroadcastToScope(realtime.ScopeIssue, id, frame)
+		}
+	})
 	bus.Subscribe("collaboration:workbench_changed", func(e events.Event) {
 		if e.ActorID != "" {
 			b.BroadcastToScope(realtime.ScopeAccount, e.ActorID, []byte(`{"type":"collaboration:workbench_changed","payload":{}}`))
@@ -103,17 +122,18 @@ func registerListeners(bus *events.Bus, b realtime.Broadcaster) {
 
 	// Personal events should NOT be broadcast to the whole workspace.
 	personalEvents := map[string]bool{
-		"collaboration:workbench_changed": true,
-		protocol.EventInboxNew:            true,
-		protocol.EventInboxRead:           true,
-		protocol.EventInboxArchived:       true,
-		protocol.EventInboxUnarchived:     true,
-		protocol.EventInboxBatchRead:      true,
-		protocol.EventInboxBatchArchived:  true,
-		protocol.EventInvitationCreated:   true,
-		protocol.EventInvitationRevoked:   true,
-		protocol.EventChatSessionCreated:  true,
-		protocol.EventChatSessionUpdated:  true,
+		service.CollaborationChildrenChanged: true,
+		"collaboration:workbench_changed":    true,
+		protocol.EventInboxNew:               true,
+		protocol.EventInboxRead:              true,
+		protocol.EventInboxArchived:          true,
+		protocol.EventInboxUnarchived:        true,
+		protocol.EventInboxBatchRead:         true,
+		protocol.EventInboxBatchArchived:     true,
+		protocol.EventInvitationCreated:      true,
+		protocol.EventInvitationRevoked:      true,
+		protocol.EventChatSessionCreated:     true,
+		protocol.EventChatSessionUpdated:     true,
 	}
 
 	// Helper: marshal event and send to a specific user.

@@ -22,7 +22,7 @@ import (
 )
 
 func TestLinuxRunnerHTTPOutcomeStopAndRevokedBusinessProof(t *testing.T) {
-	for _, mode := range []string{"success", "failure", "exit", "stop_before_fork", "revoked_business", "legacy_outcome"} {
+	for _, mode := range []string{"success", "failure", "exit", "stop_before_fork", "revoked_business", "legacy_outcome", "recorded", "partial_record", "invalid_record", "oversized_record"} {
 		t.Run(mode, func(t *testing.T) {
 			outcomes, proofs := 0, 0
 			var attempt protocol.CollaborationRunPermitRequest
@@ -57,6 +57,16 @@ func TestLinuxRunnerHTTPOutcomeStopAndRevokedBusinessProof(t *testing.T) {
 					if outcome.Body != "two immutable inputs" || outcome.Outcome != wantOutcome || outcome.Identity != attempt.Identity || outcome.AttemptNonce != attempt.AttemptNonce || outcome.AttemptSeq != attempt.AttemptSeq {
 						t.Error("missing explicit business result or attempt identity")
 					}
+					if mode == "recorded" || mode == "partial_record" {
+						if outcome.Record == nil || len(outcome.Record.Messages) != 5 || outcome.Record.Usage == nil || outcome.Record.Usage.InputTokens == nil || *outcome.Record.Usage.InputTokens != "9007199254740993" || outcome.Record.Usage.OutputTokens == nil || *outcome.Record.Usage.OutputTokens != "0" || outcome.Record.Usage.TotalTokens != nil {
+							t.Error("stdout recording lost typed messages or exact/missing usage")
+						}
+						if mode == "partial_record" && outcome.Record.Completeness != "partial" {
+							t.Error("partial record was labelled complete")
+						}
+					} else if outcome.Record != nil {
+						t.Error("legacy provider acquired fabricated recording")
+					}
 					w.WriteHeader(204)
 				case strings.HasSuffix(r.URL.Path, "/proof"):
 					proofs++
@@ -84,7 +94,7 @@ func TestLinuxRunnerHTTPOutcomeStopAndRevokedBusinessProof(t *testing.T) {
 			}))
 			defer s.Close()
 			providerMode := "success"
-			if mode == "exit" || mode == "failure" || mode == "legacy_outcome" {
+			if mode == "exit" || mode == "failure" || mode == "legacy_outcome" || mode == "recorded" || mode == "partial_record" || mode == "invalid_record" || mode == "oversized_record" {
 				providerMode = mode
 			}
 			c := testController(t, providerMode)
@@ -107,10 +117,10 @@ func TestLinuxRunnerHTTPOutcomeStopAndRevokedBusinessProof(t *testing.T) {
 			if proofs != 1 {
 				t.Fatalf("proof count %d", proofs)
 			}
-			if (mode == "exit" || mode == "stop_before_fork" || mode == "legacy_outcome") && outcomes != 0 {
+			if (mode == "exit" || mode == "stop_before_fork" || mode == "legacy_outcome" || mode == "invalid_record" || mode == "oversized_record") && outcomes != 0 {
 				t.Fatal("OS exit, accepted Stop or a command terminal fabricated a business result")
 			}
-			if (mode == "success" || mode == "failure" || mode == "revoked_business") && outcomes != 1 {
+			if (mode == "success" || mode == "failure" || mode == "revoked_business" || mode == "recorded" || mode == "partial_record") && outcomes != 1 {
 				t.Fatalf("outcome count %d", outcomes)
 			}
 		})
