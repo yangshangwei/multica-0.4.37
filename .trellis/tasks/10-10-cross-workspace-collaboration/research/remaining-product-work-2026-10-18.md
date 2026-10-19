@@ -1,10 +1,20 @@
 # Remaining collaboration product work
 
-Updated 2026-10-19 after the source-page, field and discussion increment.
+Updated 2026-10-19 after the R51 child/entry and recorded-run/R52 increment.
 The filename is retained for existing handoff links. The parent remains
-`in_progress`; current evidence is in `../verification-source-editing-2026-10-19.md`.
+`in_progress`; current evidence is in `../verification-r51-r52-2026-10-19.md`.
 
 ## Implemented and verified in shared account/source surfaces
+
+- Complete ordinary-child references with current source-only opening, transient
+  content-free refresh, and ordinary write/execution isolation; safe shared
+  source/search/copy/open/bulk paths and native source/account run anchors.
+- Source-owned recorded run inputs/messages/tools/results, exact nullable usage
+  and frozen resource/provider provenance, paged protected reads and cache-chain
+  integrity; supported static runtime recording and retention after cleanup.
+- One durable account result notification per proven group completion/failure/
+  stop, compatible optional run anchors, known human-event labels and repeated
+  notification expansion/focus. Web and actual macOS Electron journeys passed.
 
 - Explicit source-page creation, shared same-UUID detail for source routes,
   panels and windows, minimal external accounts and source filtering, safe
@@ -44,15 +54,17 @@ The filename is retained for existing handoff links. The parent remains
 
 ## Required product work still absent or incomplete
 
-- R51 ordinary-child presentation in shared detail and the remaining exhaustive
-  source-entry/selection/share/filter compatibility matrix. Current source and
-  editing flows have their named tests; they do not establish every P6/P8 case.
-- Complete run transcript/usage/resource provenance and input snapshot display.
-  Current execution facts expose identities/state/proof/membership, with richer
-  recorded content still requiring authorized projections and shared views.
-- Every remaining R52 AI-result notification kind and complete trigger preview
-  facts for merged batches/continuations. Invalidation facts are not a substitute
-  for those persistent notification and presentation semantics.
+- The exhaustive P8 source-entry/selection/share/filter compatibility matrix.
+  R51 ordinary-child presentation and the named source/menu/search/batch/native
+  entry gaps are now implemented and verified; do not equate those cases with
+  every remaining platform/client acceptance scenario.
+- Complete trigger-preview facts for merged batches/continuations. Recorded
+  inputs, transcript/tool/result pages, exact nullable usage, frozen provenance
+  and proven group-result notifications are now implemented; historical missing
+  telemetry remains explicitly unavailable/incomplete.
+- R58/AC89 reverse-direction lifecycle wakeup: a collaboration child's completion
+  waking an ordinary agent parent is not established by the current R51 tests.
+  Ordinary children under a shared human-owned parent remain correctly isolated.
 - Runtime attachment-byte and committed-Git preparation, general provider
   adapters and non-Linux containment. Static Linux CLI/daemon tests do not prove
   user-installed providers or file preparation; normal tests never invoke them.

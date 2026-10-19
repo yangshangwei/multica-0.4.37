@@ -2,7 +2,7 @@
   "id": "cross-workspace-collaboration",
   "name": "cross-workspace-collaboration",
   "title": "跨账号任务流转与共享 AI 协作工作台",
-  "description": "支持独立工作空间按账号派单与协作；账号创建/私有附件、资源授权表单和实时已验证，继续来源页面、完整内容、运行文件/provider与代管验收。",
+  "description": "独立工作空间按账号协作；来源编辑、普通子任务、运行记录/用量/资源来源及AI结果通知已验证，继续触发预览、文件/provider、代管和完整验收。",
   "status": "in_progress",
   "dev_type": null,
   "scope": null,
@@ -15,7 +15,7 @@
   "branch": "codex/cross-workspace-collaboration",
   "base_branch": "main",
   "worktree_path": null,
-  "commit": "374049cecd4a2f30595e9131722722d5c7782937",
+  "commit": "c74d6c58cac31e2bc9ae96f6b209891ee3147264",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -95,13 +95,13 @@
     ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-workbench-2026-10-18.md",
     ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-fixture-knip-2026-10-18.md"
   ],
-  "notes": "2026-10-19：账号新建/私有附件、资源授权与Switch、禁用参与人管理、账号实时和持久拒绝后的恢复通过。TS12073、静态15、Web4、macOS Electron8、Linux6、sqlc112一致性及独立检查通过；默认跳过/既有静态项记录。来源页面/完整字段评论/运行记录与文件provider/P7-P8和全97项AC仍待完成。",
+  "notes": "2026-10-19：R51子任务/旧入口及记录/用量/来源/R52结果通知增量完成。TS12311、Go race完整分包、Web8、macOS Electron10、Linux10及独立复核通过；Knip存量无新增。父任务与默认发布门禁保持未完成/未开放。",
   "meta": {
     "planning_status": "approved_revision_in_implementation",
     "implementation_authorized": true,
     "open_product_questions": [],
     "pending_confirmation": null,
-    "review_status": "foundation_revision_verified",
+    "review_status": "r51_r52_increment_verified",
     "final_planning_summary_presented": true,
     "previous_final_summary": "discussion.md#32-最终规划摘要等待实现批准",
     "planning_validation": {
@@ -129,7 +129,7 @@
       "source": "User requested latest-58 technical consistency review and validation during implementation; discussion §55",
       "scope": "Existing P1–P8 plan after technical review; no production deployment authorization"
     },
-    "current_phase": "verified_iteration_committed_remaining_product_pending",
+    "current_phase": "verified_r51_r52_increment_remaining_product_pending",
     "technical_review": {
       "date": "2026-10-13",
       "report": "review-2026-10-13.md",
@@ -1032,6 +1032,31 @@
         "sha": "34a01fa16f76db19f37ac55e83003e0723c725fc",
         "subject": "feat(collaboration): keep shared work usable from source pages",
         "file_count": 94
+      }
+    ]
+  },
+  "continuation_r51_r52_2026_10_19": {
+    "status": "verified_increment",
+    "authorization": "用户明确要求推进共享详情中的普通子任务展示、旧入口兼容，以及完整运行记录、用量、资源来源和 AI 结果通知；复用现有实施任务与已批准设计。",
+    "plan": "continuation-r51-r52-2026-10-19.md",
+    "baseline_commit": "a157fd140",
+    "evidence_directory": ".omx/reports/cwc-r51-r52-20261019T110745Z",
+    "default_gates_enabled": false,
+    "full_product_acceptance_complete": false,
+    "completed_at": "2026-10-19T13:45:41.468122+00:00",
+    "verification": "verification-r51-r52-2026-10-19.md",
+    "summary": "verification-summary-r51-r52-2026-10-19.json",
+    "source_manifest": "verification-source-manifest-r51-r52-2026-10-19.json",
+    "commits": [
+      {
+        "oid": "28d8df6282c22014dd8387fe4b09a0af77953f7c",
+        "subject": "feat(collaboration): retain shared execution history and result notices",
+        "files": 71
+      },
+      {
+        "oid": "c74d6c58cac31e2bc9ae96f6b209891ee3147264",
+        "subject": "feat(collaboration): make shared children and run results usable across clients",
+        "files": 31
       }
     ]
   }
