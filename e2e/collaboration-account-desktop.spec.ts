@@ -1,14 +1,16 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { createServer } from "node:http";
 import pg from "pg";
-import { _electron as electron, test, expect, type ElectronApplication, type Page, type TestInfo } from "@playwright/test";
+import { _electron as electron, test, expect, type ElectronApplication, type Locator, type Page, type TestInfo } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
 import { seedCollaborationResourceJourney, type CollaborationResourceSnapshot } from "./fixtures/collaboration-resources";
 import { createCollaborationWithInitialFields, exerciseCollaborationDiscussion, exerciseCollaborationFields,
   seedCollaborationEditing } from "./fixtures/collaboration-editing";
+import { attachRecordedChild, detachRecordedChild, exerciseRecordedPages, recordedAccountPath,
+  removeRecordViewer, seedCollaborationRecordJourney, showRecordedUsage } from "./fixtures/collaboration-records";
 
 // Existing-record tests use a DB seed; the named creation/attachment test below
 // uses the actual gated creation API and an explicitly enabled isolated server.
@@ -23,7 +25,7 @@ type TabSnapshot = {
   activeWorkspaceSlug: string | null;
   sessionOwner: string | null;
   accountGroup: { tabs: { id: string; url: string; history: { stack: string[]; index: number }; memento: { scroll: Record<string, unknown> } }[] } | null;
-  byWorkspace: Record<string, { tabs: { id: string; pinned: boolean }[] }>;
+  byWorkspace: Record<string, { tabs: { id: string; pinned: boolean; url: string }[] }>;
 };
 interface Fixture {
   token: string;
@@ -252,6 +254,73 @@ async function nativeScreenshot(app: ElectronApplication, page: Page, path: stri
   writeFileSync(path, Buffer.from(png, "base64"));
 }
 
+async function scrollForNativeRecordCapture(page: Page, target: Locator) {
+  await target.evaluate((element) => {
+    const root = element.closest<HTMLElement>('[data-tab-scroll-root="account-detail"]');
+    if (!root) throw new Error("Native record capture requires its detail scroll root");
+    root.scrollTop += element.getBoundingClientRect().top - root.getBoundingClientRect().top - 12;
+  });
+  await expect.poll(async () => {
+    // capturePage can return the previous compositor frame immediately after
+    // a DOM scroll. Re-resolve the locator after two frames, not an old handle.
+    await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+    return target.evaluate((element) => {
+      const root = element.closest<HTMLElement>('[data-tab-scroll-root="account-detail"]');
+      return !!root && element.isConnected && Math.abs(element.getBoundingClientRect().top - root.getBoundingClientRect().top - 12) <= 1;
+    });
+  }).toBe(true);
+  await expect(target).toBeInViewport({ ratio: 1 });
+  return target.evaluate((element) => {
+    const root = element.closest<HTMLElement>('[data-tab-scroll-root="account-detail"]')!;
+    const box = element.getBoundingClientRect();
+    return { scrollTop: root.scrollTop, top: box.top, height: box.height, width: box.width, viewportWidth: innerWidth, viewportHeight: innerHeight };
+  });
+}
+
+async function copyNativeAccountLink(app: ElectronApplication, page: Page, expectedPath: string, testInfo: TestInfo, phase: string) {
+  const window = await app.browserWindow(page);
+  const focusState = async () => ({
+    native: await window.evaluate((target) => target.isFocused()),
+    contents: await window.evaluate((target) => target.webContents.isFocused()),
+    document: await page.evaluate(() => document.hasFocus()),
+  });
+  const beforeFocus = await focusState();
+  try {
+    // CDP clicks alone do not activate a background macOS application.
+    await app.evaluate(({ app }) => app.focus({ steal: true }));
+    await window.evaluate((target) => target.focus());
+    await expect.poll(focusState).toEqual({ native: true, contents: true, document: true });
+    const publicAppUrl = await page.evaluate(() => {
+      const config = (window as unknown as { desktopAPI: { runtimeConfig: { ok: boolean; config?: { appUrl: string } } } }).desktopAPI.runtimeConfig;
+      return config.ok ? config.config?.appUrl : undefined;
+    });
+    if (!publicAppUrl) throw new Error("The native copy fixture has no configured public app URL");
+    const origin = new URL(publicAppUrl).origin;
+    expect(["localhost", "127.0.0.1"]).toContain(new URL(publicAppUrl).hostname);
+    const expected = new URL(`${publicAppUrl}${expectedPath}`).href;
+    const sentinel = `multica-cwc-r51-r52-clipboard-${randomUUID()}`;
+    await app.evaluate(({ clipboard }, value) => clipboard.writeText(value), sentinel);
+    const classify = () => app.evaluate(({ clipboard }, values) => {
+      const value = clipboard.readText();
+      if (value === values.expected) return "expected_absolute";
+      if (value === values.sentinel) return "sentinel";
+      if (value === values.expectedPath) return "relative";
+      return value === "" ? "empty" : "other";
+    }, { expected, expectedPath, sentinel });
+    await page.getByRole("button", { name: "Copy link", exact: true }).click();
+    const immediate = await classify();
+    // A click does not await navigator.clipboard.writeText. Poll only a safe
+    // classification; arbitrary pre-existing clipboard text never enters logs.
+    await expect.poll(classify).toBe("expected_absolute");
+    const copied = await app.evaluate(({ clipboard }, value) => clipboard.readText() === value ? value : null, expected);
+    if (copied === null) throw new Error("The clipboard changed before the test-owned link could be verified");
+    expect(new URL(copied).origin).toBe(origin);
+    await testInfo.attach(`native-copy-${phase}`, { contentType: "application/json", body: JSON.stringify({ beforeFocus, afterFocus: await focusState(),
+      immediate, settled: "expected_absolute", configuredOrigin: origin, expectedPath }, null, 2) });
+    return copied;
+  } finally { await window.dispose(); }
+}
+
 async function attachFailure(app: ElectronApplication | undefined, testInfo: TestInfo) {
   const page = app?.windows()[0];
   if (!page || page.isClosed()) return;
@@ -340,6 +409,139 @@ test("Desktop creates a private collaboration issue, downloads through native IP
   } finally {
     await app?.close().catch(() => undefined);
     rmSync(profile, { recursive: true, force: true });
+  }
+});
+
+test("Desktop child links, recorded pages and result notifications survive popouts and restart", async ({ browserName: _browserName }, testInfo) => {
+  test.setTimeout(240_000);
+  const records = await seedCollaborationRecordJourney();
+  const sourceProfile = mkdtempSync(join(tmpdir(), "multica-collaboration-record-source-"));
+  const viewerProfile = mkdtempSync(join(tmpdir(), "multica-collaboration-record-viewer-"));
+  let app: ElectronApplication | undefined;
+  try {
+    const source = await openDesktop(sourceProfile, { token: records.member.getToken()!, deepLink: `multica://account${recordedAccountPath(records).slice("/account".length)}` });
+    app = source.app;
+    await source.start();
+    const sourceChildren = source.page.getByRole("region", { name: "Sub-issues", exact: true });
+    const childLink = sourceChildren.getByRole("link", { name: `${records.child.identifier} ${records.child.title}`, exact: true });
+    await expect(childLink).toBeVisible();
+    const href = new URL((await childLink.getAttribute("href"))!);
+    expect(href.pathname).toBe(`/${records.workspace.slug}/issues/${records.child.id}`);
+    await childLink.click();
+    await expect.poll(async () => (await snapshot(source.page)).activeWorkspaceSlug).toBe(records.workspace.slug);
+    await expect.poll(async () => (await snapshot(source.page)).byWorkspace[records.workspace.slug]?.tabs.some((tab) => tab.url.endsWith(`/issues/${records.child.identifier}`))).toBe(true);
+    await detachRecordedChild(source.page);
+    await expect.poll(async () => (await records.member.requestJSON<{ parent_issue_id: string | null }>(`/api/issues/${records.child.id}`)).parent_issue_id).toBeNull();
+    await attachRecordedChild(source.page, records);
+    await expect.poll(async () => (await records.member.requestJSON<{ parent_issue_id: string | null }>(`/api/issues/${records.child.id}`)).parent_issue_id).toBe(records.issue.id);
+    await deepLink(app, recordedAccountPath(records));
+    await expect(childLink).toBeVisible();
+    const copied = await copyNativeAccountLink(app, source.page, recordedAccountPath(records), testInfo, "source-account");
+    expect(new URL(copied).pathname + new URL(copied).search).toBe(recordedAccountPath(records));
+    const sourcePopupReady = app.waitForEvent("window");
+    await source.page.evaluate((path) => {
+      const api = (window as unknown as { desktopAPI: { openIssueWindow(input: { path: string; title: string }): Promise<unknown> } }).desktopAPI;
+      return api.openIssueWindow({ path, title: "Source run records" });
+    }, `/${records.workspace.slug}/issues/${records.issue.id}#run-${records.runId}`);
+    const sourcePopup = await sourcePopupReady;
+    const sourceRun = sourcePopup.locator(`[id="run-${records.runId}"]`);
+    await expect(sourceRun.getByText(records.input, { exact: true })).toBeVisible();
+    await expect(sourceRun).toBeFocused();
+    const accountRunLink = sourcePopup.getByRole("link", { name: "Open in collaboration", exact: true });
+    const sourceAccountUrl = new URL((await accountRunLink.getAttribute("href"))!);
+    expect(sourceAccountUrl.pathname + sourceAccountUrl.search + sourceAccountUrl.hash).toBe(recordedAccountPath(records, true));
+    const copiedRun = new URL(await copyNativeAccountLink(app, sourcePopup, recordedAccountPath(records, true), testInfo, "source-run"));
+    expect(copiedRun.pathname + copiedRun.search + copiedRun.hash).toBe(recordedAccountPath(records, true));
+    await expect(sourcePopup.getByRole("region", { name: "Sub-issues", exact: true }).getByRole("link", { name: `${records.child.identifier} ${records.child.title}`, exact: true })).toBeVisible();
+    await showRecordedUsage(sourcePopup, records.runId);
+    await nativeScreenshot(app, sourcePopup, testInfo.outputPath("desktop-record-source-popout.png"));
+    await sourcePopup.getByRole("region", { name: "Sub-issues", exact: true }).getByRole("link", { name: `${records.child.identifier} ${records.child.title}`, exact: true }).click();
+    await expect(sourcePopup.getByRole("button", { name: "Issue actions", exact: true })).toBeVisible();
+    await expect(sourcePopup.getByText(records.child.title, { exact: true }).first()).toBeVisible();
+    await Promise.all([sourcePopup.waitForEvent("close"), nativeCloseShortcut(app, sourcePopup)]);
+    expect(source.errors).toEqual([]);
+    await app.close();
+    app = undefined;
+
+    const viewer = await openDesktop(viewerProfile, { token: records.viewer.getToken()!, deepLink: `multica://account${new URL(copied).search}` });
+    app = viewer.app;
+    await viewer.start();
+    const outsideChildren = viewer.page.getByRole("region", { name: "Sub-issues", exact: true });
+    await expect(outsideChildren.getByText(records.child.title, { exact: true })).toBeVisible();
+    await expect(outsideChildren.getByRole("link")).toHaveCount(0);
+    await viewer.page.getByRole("button", { name: /Notifications/ }).click();
+    const notification = viewer.page.getByRole("listitem").filter({ has: viewer.page.getByText("AI execution failed", { exact: true }) });
+    await notification.getByRole("link", { name: records.issue.title, exact: true }).click();
+    await expect.poll(async () => (await snapshot(viewer.page)).accountGroup!.tabs[0].url).toBe(recordedAccountPath(records, true));
+    const selectedRun = viewer.page.locator(`[id="run-${records.runId}"]`);
+    await expect(selectedRun).toBeFocused();
+    await exerciseRecordedPages(viewer.page, records);
+    await selectedRun.getByRole("button", { name: `Hide records for ${records.runId}`, exact: true }).click();
+    await expect.poll(async () => (await snapshot(viewer.page)).accountGroup!.tabs[0].url).toBe(recordedAccountPath(records));
+    await viewer.page.getByRole("button", { name: /Notifications/ }).click();
+    await notification.getByRole("link", { name: records.issue.title, exact: true }).click();
+    await expect(selectedRun.getByText(records.input, { exact: true })).toBeVisible();
+    await expect(selectedRun).toBeFocused();
+    await expect.poll(async () => (await snapshot(viewer.page)).accountGroup!.tabs[0].url).toBe(recordedAccountPath(records, true));
+    await expect(viewer.page.locator('[data-slot="popover-content"]').filter({ has: viewer.page.getByText("Notifications", { exact: true }) })).toBeHidden();
+    await scrollForNativeRecordCapture(viewer.page, selectedRun.getByRole("button", { name: `Hide records for ${records.runId}`, exact: true }));
+    await nativeScreenshot(app, viewer.page, testInfo.outputPath("desktop-records-wide.png"));
+    const window = await app.browserWindow(viewer.page);
+    await window.evaluate((target) => { target.setContentSize(1100, 1000); target.webContents.setZoomFactor(2); });
+    await expect.poll(() => viewer.page.evaluate(() => innerWidth)).toBe(550);
+    const usageGeometry = await scrollForNativeRecordCapture(viewer.page, selectedRun.getByRole("region", { name: "Recorded usage", exact: true }));
+    expect(await viewer.page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+    const usageCapture = testInfo.outputPath("desktop-records-zoom200.png");
+    await nativeScreenshot(app, viewer.page, usageCapture);
+    const bodyGeometry = await scrollForNativeRecordCapture(viewer.page, selectedRun.getByText(/^Recorded step 2\./));
+    expect(await viewer.page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+    const bodyCapture = testInfo.outputPath("desktop-records-body-zoom200.png");
+    await nativeScreenshot(app, viewer.page, bodyCapture);
+    const usageDigest = createHash("sha256").update(readFileSync(usageCapture)).digest("hex");
+    const bodyDigest = createHash("sha256").update(readFileSync(bodyCapture)).digest("hex");
+    expect(bodyDigest).not.toBe(usageDigest);
+    await testInfo.attach("native-record-capture-readiness", { contentType: "application/json", body: JSON.stringify({ usageGeometry, bodyGeometry, usageDigest, bodyDigest }, null, 2) });
+    await window.evaluate((target) => { target.webContents.setZoomFactor(1); target.setContentSize(1380, 960); });
+    await window.dispose();
+    const beforeRestart = await snapshot(viewer.page);
+    expect(await viewer.page.evaluate((input) => Object.values(localStorage).some((value) => value.includes(input)), records.input)).toBe(false);
+    expect(viewer.errors).toEqual([]);
+    expect(viewer.accountHeaders.every((headers) => !headers["x-workspace-id"] && !headers["x-workspace-slug"])).toBe(true);
+    await app.close();
+    app = undefined;
+
+    const restarted = await openDesktop(viewerProfile, { token: records.viewer.getToken()! });
+    app = restarted.app;
+    await restarted.start();
+    await expect(restarted.page.getByText(records.input, { exact: true })).toBeVisible();
+    expect((await snapshot(restarted.page)).accountGroup!.tabs[0].id).toBe(beforeRestart.accountGroup!.tabs[0].id);
+    expect((await snapshot(restarted.page)).accountGroup!.tabs[0].url).toBe(recordedAccountPath(records, true));
+    const accountTabId = (await snapshot(restarted.page)).accountGroup!.tabs[0].id;
+    await restarted.page.locator(`[data-tab-id="${accountTabId}"]`).click({ button: "right" });
+    const popupReady = app.waitForEvent("window");
+    await restarted.page.getByText("Open as new window", { exact: true }).click();
+    const popup = await popupReady;
+    await expect(popup.getByText(records.input, { exact: true })).toBeVisible();
+    await expect(popup.getByRole("region", { name: "Sub-issues", exact: true }).getByRole("link")).toHaveCount(0);
+    await nativeScreenshot(app, popup, testInfo.outputPath("desktop-records-outside-popout.png"));
+    await removeRecordViewer(records);
+    for (const page of [restarted.page, popup]) {
+      await expect(page.getByText("You no longer have access to this issue.", { exact: true })).toBeVisible();
+      await expect(page.getByText(records.input, { exact: true })).toHaveCount(0);
+      await expect(page.getByRole("region", { name: "Run records", exact: true })).toHaveCount(0);
+    }
+    await Promise.all([popup.waitForEvent("close"), nativeCloseShortcut(app, popup)]);
+    expect(restarted.errors).toEqual([]);
+    await testInfo.attach("native-record-journey", { contentType: "application/json", body: JSON.stringify({ issueId: records.issue.id, childId: records.child.id,
+      representativeRunId: records.runId, groupId: records.groupId, copied, accountTabId, restoredAnchor: true, repeatedNotification: true, zoom: 2,
+      recordSource: "seeded retained source history; runtime ingestion verified separately", nativePageErrors: restarted.errors }, null, 2) });
+  } catch (error) {
+    await attachFailure(app, testInfo);
+    throw error;
+  } finally {
+    await app?.close().catch(() => undefined);
+    rmSync(sourceProfile, { recursive: true, force: true });
+    rmSync(viewerProfile, { recursive: true, force: true });
   }
 });
 

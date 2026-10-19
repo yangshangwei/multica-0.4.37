@@ -7,6 +7,7 @@ import { collaborationScope, parseCollaborationIssue, readCollaborationDrafts } 
 import { collaborationExecutionIssueFixture } from "@multica/core/collaboration/test-fixtures";
 import { renderWithI18n } from "../test/i18n";
 import { CollaborationExecutionPanel } from "./execution-panel";
+import { NavigationProvider } from "../navigation";
 
 // Core resource/Switch suites own authority, malformed DTO and recovery matrices.
 const source = collaborationExecutionIssueFixture;
@@ -29,7 +30,7 @@ function mount() {
   setApiInstance(new ApiClient("https://server.example"));
   const scope = collaborationScope(id);
   const issue = parseCollaborationIssue({ ...source, write_context: { participant_epoch: "1", account_epoch: "1" } })!;
-  renderWithI18n(<QueryClientProvider client={client}><CollaborationExecutionPanel scope={scope} issue={issue} /></QueryClientProvider>);
+  renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={{ pathname: "/account", searchParams: new URLSearchParams(), hash: "", push: vi.fn(), replace: vi.fn(), back: vi.fn(), getShareableUrl: (path) => `https://server.example${path}` }}><CollaborationExecutionPanel scope={scope} issue={issue} /></NavigationProvider></QueryClientProvider>);
   return { scope };
 }
 

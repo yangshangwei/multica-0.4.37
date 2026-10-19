@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { isCollaborationDenied, useCollaborationIssue, useCollaborationScope } from "@multica/core/collaboration";
 import type { SourceCollaborationAction } from "@multica/core/issues";
 import { useCollaborationRealtime } from "@multica/core/realtime";
-import { accountPath } from "@multica/core/paths";
+import { accountPath, type AccountDestination } from "@multica/core/paths";
 import type { Issue } from "@multica/core/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@multica/ui/components/ui/avatar";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@multica/ui/components/ui/dialog";
@@ -32,16 +32,17 @@ export function SourceCollaborationAccount({ account, showName = true }: {
   </span>;
 }
 
-export function SourceCollaborationDetail({ issueId, commentId, leading }: { issueId: string; commentId?: string; leading?: ReactNode }) {
+export function SourceCollaborationDetail({ issueId, commentId, runId, leading }: { issueId: string; commentId?: string; runId?: string; leading?: ReactNode }) {
   const scope = useCollaborationScope();
   const { t } = useT("collaboration");
   useCollaborationRealtime(scope, issueId);
+  const destination: AccountDestination = { view: "participating", issueId, commentId: runId ? null : commentId ?? null, runId };
   return <section className="flex min-h-0 min-w-0 flex-1 flex-col">
     <header className="flex shrink-0 flex-wrap items-center gap-3 px-4 py-3">{leading}
-      <AppLink className="inline-flex min-h-11 items-center text-body underline underline-offset-4" href={accountPath({ view: "participating", issueId, commentId: commentId ?? null })}>{t(($) => $.source.open)}</AppLink>
+      <AppLink className="inline-flex min-h-11 items-center text-body underline underline-offset-4" href={accountPath(destination)}>{t(($) => $.source.open)}</AppLink>
     </header>
     <div className="min-h-0 min-w-0 flex-1 overflow-y-auto px-4 pb-8" data-tab-scroll-root="account-detail">
-      {scope ? <CollaborationDetail key={`${scope.apiScope}:${scope.userId}:${issueId}`} scope={scope} destination={{ view: "participating", issueId, commentId: commentId ?? null }} /> : <CollaborationQueryState denied error={null} />}
+      {scope ? <CollaborationDetail key={`${scope.apiScope}:${scope.userId}:${issueId}`} scope={scope} destination={destination} /> : <CollaborationQueryState denied error={null} />}
     </div>
   </section>;
 }

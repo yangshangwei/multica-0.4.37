@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationCommentsOptions, collaborationCommentOptions, collaborationIssueAccessDenied, isCollaborationDenied, useCollaborationIssue, type CollaborationComment, type CollaborationScope } from "@multica/core/collaboration";
-import type { AccountDestination } from "@multica/core/paths";
+import { accountPath, type AccountDestination } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
+import { copyText } from "@multica/ui/lib/clipboard";
+import { Link2 } from "lucide-react";
+import { toast } from "sonner";
 import { RichContent } from "../rich-content";
 import { useT } from "../i18n";
 import { useCollaborationLabels } from "./labels";
@@ -15,10 +18,14 @@ import { CollaborationCommentList } from "./comment-list";
 import { CollaborationIssueReactions } from "./discussion-actions";
 import { CollaborationAttachmentPanel } from "./attachment-panel";
 import { CollaborationFieldSummary } from "./field-summary";
+import { CollaborationChildren } from "./children";
 import { useRestoredScrollRef } from "../platform";
+import { useNavigation } from "../navigation";
 
 export function CollaborationDetail({ scope, destination }: { scope: CollaborationScope; destination: AccountDestination }) {
   const { t } = useT("collaboration");
+  const { t: tIssues } = useT("issues");
+  const navigation = useNavigation();
   const labels = useCollaborationLabels();
   const client = useQueryClient();
   const issueId = destination.issueId!;
@@ -32,12 +39,12 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
   const restored = useRef(false);
   const restoreScroll = useRestoredScrollRef("account-detail");
   useEffect(() => {
-    if (!query.data || !comments.data || restored.current || destination.commentId || destination.anchor) return;
+    if (!query.data || !comments.data || restored.current || destination.commentId || destination.runId || destination.anchor) return;
     restoreScroll(root.current?.closest<HTMLElement>('[data-tab-scroll-root="account-detail"]') ?? null);
     restored.current = true;
-  }, [query.data, comments.data, restoreScroll, destination.commentId, destination.anchor]);
+  }, [query.data, comments.data, restoreScroll, destination.commentId, destination.runId, destination.anchor]);
   useEffect(() => {
-    const anchor = destination.commentId ? `comment-${destination.commentId}` : destination.anchor;
+    const anchor = destination.runId ? `run-${destination.runId}` : destination.commentId ? `comment-${destination.commentId}` : destination.anchor;
     if (!anchor) { consumedAnchor.current = null; return; }
     if (consumedAnchor.current === anchor) return;
     const element = root.current?.querySelector<HTMLElement>(`[id="${anchor}"]`);
@@ -46,7 +53,7 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
     container.scrollTop += element.getBoundingClientRect().top - container.getBoundingClientRect().top;
     element.focus({ preventScroll: true });
     consumedAnchor.current = anchor;
-  }, [destination.commentId, destination.anchor, query.data, comments.data, linkedComment.data]);
+  }, [destination.commentId, destination.runId, destination.anchor, query.data, comments.data, linkedComment.data]);
   const denied = collaborationIssueAccessDenied(client, scope, issueId);
   if (!query.data || denied || isCollaborationDenied(query.error)) return query.isPending
     ? <p role="status" className="py-10 text-body text-muted-foreground">{t(($) => $.page.loading)}</p>
@@ -57,7 +64,15 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
   return <div ref={root} className="mx-auto w-full min-w-0 max-w-4xl space-y-8">
     {query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}
     <header className="space-y-4">
-      <h2 className="text-heading font-semibold [overflow-wrap:anywhere]">{issue.title}</h2>
+      <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
+        <h2 className="min-w-0 flex-1 text-heading font-semibold [overflow-wrap:anywhere]">{issue.title}</h2>
+        <Button variant="ghost" size="sm" className="pointer-coarse:min-h-11" onClick={() => {
+          void copyText(navigation.getShareableUrl(accountPath({ ...destination, view: "participating" }))).then((copied) => {
+            if (copied) toast.success(tIssues(($) => $.detail.link_copied));
+            else toast.error(tIssues(($) => $.detail.link_copy_failed));
+          });
+        }}><Link2 className="size-4" />{tIssues(($) => $.actions.copy_link)}</Button>
+      </div>
       <dl className="flex flex-wrap gap-x-8 gap-y-3 text-caption [&_dt]:text-muted-foreground [&_dd]:mt-1 [&_dd]:text-body [&_dd]:[overflow-wrap:anywhere]">
         <div><dt>{t(($) => $.detail.status)}</dt><dd>{labels.status(issue.status)}</dd></div>
         <div><dt>{t(($) => $.detail.handler)}</dt><dd>{issue.handler.name}{issue.handler.external === true && <span className="ml-2 text-caption text-muted-foreground">{t(($) => $.detail.external)}</span>}</dd></div>
@@ -70,9 +85,10 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
       <RichContent resourcePolicy="restricted" content={issue.description} />
     </section>
     <CollaborationFieldSummary issue={issue} />
+    <CollaborationChildren issue={issue} />
     <CollaborationIssueReactions scope={scope} issue={issue} />
     <CollaborationAttachmentPanel scope={scope} issue={issue} />
-    <CollaborationExecutionPanel scope={scope} issue={issue} />
+    <CollaborationExecutionPanel scope={scope} issue={issue} selectedRunId={destination.runId} />
     <CollaborationActivity scope={scope} destination={destination} />
     <section className="min-w-0 space-y-4"><h3 className="text-body font-semibold">{t(($) => $.detail.comments)}</h3>
       {comments.isPending && <p role="status" className="text-body text-muted-foreground">{t(($) => $.page.loading)}</p>}

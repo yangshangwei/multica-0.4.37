@@ -17,6 +17,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Directory Structure](./directory-structure.md) | Module organization and file layout | To fill |
 | [Component Guidelines](./component-guidelines.md) | Component patterns, props, composition | Active |
 | [Settings Recovery](./settings-recovery.md) | Query access loss, awaited saves, token secrecy, settings accessibility and native verification | Active |
+| [Collaboration records and children](../../server/collaboration-records.md) | Source/account child and run views, notification links, repeated focus and native evidence | Current R51/R52 increment |
 | [Collaboration Workbench](../../core/frontend/collaboration-workbench.md) | Shared account views, scoped creation/files, resource forms and original-intent recovery | Gated workflow; full product pending |
 | [Add a computer](./connect-remote-computer.md) | Per-system installers, safe commands, inventory baselines and factual connection states | Active |
 | [Workspace Naming](./workspace-naming.md) | Series catalog, personal preference and manual URL/prefix ownership | Active |

@@ -75,6 +75,7 @@ const {
   mockSetTheme,
   mockTheme,
   mockPathname,
+  mockHash,
   mockGetShareableUrl,
   mockMembers,
   mockAgents,
@@ -96,6 +97,7 @@ const {
   mockSetTheme: vi.fn(),
   mockTheme: { current: "system" as "light" | "dark" | "system" },
   mockPathname: { current: "/ws-test/issues" as string },
+  mockHash: { current: "" },
   mockGetShareableUrl: vi.fn((p: string) => `https://app.multica/${p}`),
   mockMembers: {
     current: [] as Array<{
@@ -278,6 +280,7 @@ vi.mock("../navigation/context", () => {
   const adapter = () => ({
     push: mockPush,
     pathname: mockPathname.current,
+    hash: mockHash.current,
     getShareableUrl: mockGetShareableUrl,
   });
   return {
@@ -306,6 +309,7 @@ describe("SearchCommand", () => {
     mockSetTheme.mockReset();
     mockTheme.current = "system";
     mockPathname.current = "/ws-test/issues";
+    mockHash.current = "";
     triageSettingsState.current = { supported: true, enabled: false };
     mockGetShareableUrl.mockReset().mockImplementation((p: string) => `https://app.multica/${p}`);
     mockMembers.current = [];
@@ -668,6 +672,22 @@ describe("SearchCommand", () => {
     expect(mockClipboardWrite).toHaveBeenCalledWith("MUL-42");
     expect(mockToastSuccess).toHaveBeenCalledWith("Copied MUL-42");
 
+    writeSpy.mockRestore();
+  });
+
+  it("copies a source collaboration result as an account link with its run anchor", async () => {
+    const user = userEvent.setup();
+    const writeSpy = vi.spyOn(navigator.clipboard, "writeText").mockImplementation(mockClipboardWrite);
+    const id = "00000000-0000-4000-8000-000000000009";
+    const runId = "00000000-0000-4000-8000-000000000010";
+    const account = { user_id: id, name: "Outside", avatar_url: "", external: true };
+    mockPathname.current = `/ws-test/issues/${id}`;
+    mockHash.current = `#run-${runId}`;
+    mockAllIssues.current = [{ id, identifier: "MUL-9", title: "Shared", status: "todo", collaboration: { creator: account, handler: account, has_external_collaborators: true } }];
+    renderSearch();
+    await user.type(screen.getByPlaceholderText("Type a command or search..."), "copy");
+    await user.click(await screen.findByText((_, el) => el?.textContent === "Copy Issue Link" && el?.tagName === "SPAN"));
+    expect(mockGetShareableUrl).toHaveBeenCalledWith(`/account?view=participating&issue=${id}#run-${runId}`);
     writeSpy.mockRestore();
   });
 

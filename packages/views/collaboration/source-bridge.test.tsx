@@ -16,7 +16,7 @@ vi.mock("@multica/core/collaboration", async (original) => ({
 }));
 vi.mock("@multica/core/realtime", () => ({ useCollaborationRealtime: vi.fn() }));
 vi.mock("./creation-form", () => ({ CollaborationCreationEntry: ({ sourceWorkspaceId }: { sourceWorkspaceId?: string }) => <button>New collaboration in {sourceWorkspaceId}</button> }));
-vi.mock("./collaboration-detail", () => ({ CollaborationDetail: ({ destination }: { destination: { issueId: string; commentId?: string } }) => <p data-testid="shared-detail">{destination.issueId}:{destination.commentId}</p> }));
+vi.mock("./collaboration-detail", () => ({ CollaborationDetail: ({ destination }: { destination: { issueId: string; commentId?: string; runId?: string } }) => <p data-testid="shared-detail" data-run-id={destination.runId}>{destination.issueId}:{destination.commentId}</p> }));
 vi.mock("./workflow", () => ({ CollaborationWorkflow: ({ initialAction, initialStatus }: { initialAction?: string; initialStatus?: string }) => {
   const [draft, setDraft] = useState("");
   return <form aria-label="shared workflow">{initialAction}:{initialStatus}<input aria-label="Workflow draft" value={draft} onChange={(event) => setDraft(event.target.value)} /></form>;
@@ -35,6 +35,12 @@ describe("source collaboration bridge", () => {
     renderWithI18n(<SourceCollaborationDetail issueId={collaborationIssueFixture.id} commentId={commentId} />);
     expect(screen.getByTestId("shared-detail")).toHaveTextContent(`${collaborationIssueFixture.id}:${commentId}`);
     expect(screen.getByRole("link", { name: "Open in collaboration" })).toHaveAttribute("href", `/account?view=participating&issue=${collaborationIssueFixture.id}#comment-${commentId}`);
+  });
+  it("passes a selected run through shared detail and its account link", () => {
+    const runId = "00000000-0000-4000-8000-000000000010";
+    renderWithI18n(<SourceCollaborationDetail issueId={collaborationIssueFixture.id} runId={runId} />);
+    expect(screen.getByTestId("shared-detail")).toHaveAttribute("data-run-id", runId);
+    expect(screen.getByRole("link", { name: "Open in collaboration" })).toHaveAttribute("href", `/account?view=participating&issue=${collaborationIssueFixture.id}#run-${runId}`);
   });
   it("opens a scoped workflow after capability revalidation and closes accessibly", () => {
     const close = vi.fn();

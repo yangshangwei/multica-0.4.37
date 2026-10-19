@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import type { Issue, UpdateIssueRequest } from "@multica/core/types";
 import { useAuthStore } from "@multica/core/auth";
 import { useWorkspaceId } from "@multica/core/hooks";
-import { useWorkspacePaths } from "@multica/core/paths";
+import { accountPath, parseAccountPath, useWorkspacePaths } from "@multica/core/paths";
 import { useModalStore } from "@multica/core/modals";
 import { useUpdateIssue } from "@multica/core/issues/mutations";
 import { useIssueStatuses } from "@multica/core/issue-statuses/hooks";
@@ -25,6 +25,7 @@ export interface UseIssueActionsResult {
     updates: Partial<UpdateIssueRequest>,
     options?: IssueSurfaceMutationOptions,
   ) => void;
+  openInCurrentTab: () => void;
   openInNewTab: () => void;
   togglePin: () => void;
   copyLink: () => Promise<void>;
@@ -67,6 +68,14 @@ export function useIssueActions(issue: Issue | null): UseIssueActionsResult {
 
   const issueId = issue?.id ?? null;
   const issueIdentifier = issue?.identifier ?? null;
+  let issuePath = issueId ? issue?.collaboration
+    ? accountPath({ view: "participating", issueId })
+    : paths.issueDetail(issueIdentifier || issueId) : null;
+  if (issuePath && issue?.collaboration && navigation.hash &&
+    (navigation.pathname === paths.issueDetail(issue.id) || navigation.pathname === paths.issueDetail(issue.identifier))) {
+    const destination = parseAccountPath(`${issuePath}${navigation.hash}`);
+    if (destination) issuePath = accountPath(destination);
+  }
   const issueProjectId = issue?.project_id ?? null;
   const issueAssigneeType = issue?.assignee_type ?? null;
   const issueAssigneeId = issue?.assignee_id ?? null;
@@ -119,6 +128,10 @@ export function useIssueActions(issue: Issue | null): UseIssueActionsResult {
     [issue, issueId, entryOf, surfaceActions, updateIssue, openModal, t],
   );
 
+  const openInCurrentTab = useCallback(() => {
+    if (issuePath) navigation.push(issuePath);
+  }, [issuePath, navigation]);
+
   // Explicit "open it somewhere else" CTA, so the new tab takes focus
   // (`activate: true`) — the user is asking to move into the new context, not
   // to stash it for later the way modifier-click does. Same contract as the
@@ -127,24 +140,19 @@ export function useIssueActions(issue: Issue | null): UseIssueActionsResult {
   // Only desktop implements `openInNewTab`; on web it is undefined and we fall
   // back to a real browser tab via the shareable URL.
   const openInNewTab = useCallback(() => {
-    if (!issueId) return;
-    // Identifier form, same as copyLink: on web this becomes a real browser
-    // tab at the shareable URL, so it is a link the user sees and may copy out
-    // of the address bar. Opening on the UUID would also make the route
-    // immediately rewrite the fresh tab's URL.
-    const path = paths.issueDetail(issueIdentifier || issueId);
+    if (!issuePath) return;
     if (navigation.openInNewTab) {
-      navigation.openInNewTab(path, issueIdentifier ?? undefined, {
+      navigation.openInNewTab(issuePath, issueIdentifier ?? undefined, {
         activate: true,
       });
       return;
     }
     window.open(
-      navigation.getShareableUrl(path),
+      navigation.getShareableUrl(issuePath),
       "_blank",
       "noopener,noreferrer",
     );
-  }, [issueId, issueIdentifier, navigation, paths]);
+  }, [issuePath, issueIdentifier, navigation]);
 
   const togglePin = useCallback(() => {
     if (!issueId) return;
@@ -156,17 +164,16 @@ export function useIssueActions(issue: Issue | null): UseIssueActionsResult {
   }, [isPinned, issueId, createPin, deletePin]);
 
   const copyLink = useCallback(async () => {
-    if (!issueId) return;
-    // Share the identifier form (`/{ws}/issues/MUL-123`): a pasted link should
-    // say which issue it points at. The UUID form stays valid, so links copied
-    // before this still resolve.
-    const url = navigation.getShareableUrl(paths.issueDetail(issueIdentifier || issueId));
+    if (!issuePath) return;
+    // Shared destinations work for outside participants; ordinary links keep
+    // their human-readable source identifier.
+    const url = navigation.getShareableUrl(issuePath);
     if (await copyText(url)) {
       toast.success(t(($) => $.detail.link_copied));
     } else {
       toast.error(t(($) => $.detail.link_copy_failed));
     }
-  }, [paths, issueId, issueIdentifier, navigation, t]);
+  }, [issuePath, navigation, t]);
 
   const openCreateSubIssue = useCallback(() => {
     if (!issueId) return;
@@ -263,6 +270,7 @@ export function useIssueActions(issue: Issue | null): UseIssueActionsResult {
   return {
     isPinned,
     updateField,
+    openInCurrentTab,
     openInNewTab,
     togglePin,
     copyLink,

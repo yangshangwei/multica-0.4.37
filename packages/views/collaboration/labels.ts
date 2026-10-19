@@ -3,6 +3,14 @@ import { useT } from "../i18n";
 export function useCollaborationLabels() {
   const { t } = useT("collaboration");
   return {
+    proof: (state: string) => {
+      switch (state) {
+        case "unknown": return t(($) => $.execution.proofPending);
+        case "exited_proven": return t(($) => $.execution.proofConfirmed);
+        case "never_launched_proven": case "never_started_proven": return t(($) => $.execution.neverLaunched);
+        default: return t(($) => $.page.unavailable);
+      }
+    },
     reason: (code: string) => {
       switch (code) {
         case "target_registered": return t(($) => $.resources.registered);
@@ -87,6 +95,12 @@ export function useCollaborationLabels() {
         case "cancelled": return t(($) => $.execution.cancelled);
         case "waiting_children": return t(($) => $.execution.waiting_children);
         case "ending": return t(($) => $.execution.ending);
+        case "prepared": return t(($) => $.execution.prepared);
+        case "dispatched": return t(($) => $.execution.dispatched);
+        case "preparing": return t(($) => $.execution.preparing);
+        case "launch_authorized": return t(($) => $.execution.launch_authorized);
+        case "running": return t(($) => $.execution.running);
+        case "settled": return t(($) => $.execution.settled);
         case "initial": return t(($) => $.execution.initial);
         case "grant_required": return t(($) => $.execution.grant_required);
         case "config_invalid": return t(($) => $.execution.config_invalid);

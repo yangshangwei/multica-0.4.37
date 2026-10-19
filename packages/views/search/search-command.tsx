@@ -40,7 +40,7 @@ import { issueDetailOptions, issueTimelineOptions } from "@multica/core/issues/q
 import { useWorkspaceId } from "@multica/core";
 import { iterationCapabilitiesOptions } from "@multica/core/iterations";
 import { triageSettingsOptions } from "@multica/core/triage";
-import { useWorkspacePaths, WORKSPACE_PAGES } from "@multica/core/paths";
+import { accountPath, parseAccountPath, useWorkspacePaths, WORKSPACE_PAGES } from "@multica/core/paths";
 import type { WorkspacePageKey, WorkspacePaths } from "@multica/core/paths";
 import { useModalStore } from "@multica/core/modals";
 import { createShortcutChord } from "@multica/core/shortcuts";
@@ -335,7 +335,7 @@ export function SearchCommand() {
       })),
     [tNav, triageEnabled, iterationSupported],
   );
-  const { pathname, getShareableUrl } = useNavigation();
+  const { pathname, hash = "", getShareableUrl } = useNavigation();
   const intentNavigate = useIntentNavigate();
   const open = useSearchStore((s) => s.open);
   const setOpen = useSearchStore((s) => s.setOpen);
@@ -445,7 +445,12 @@ export function SearchCommand() {
           icon: Link2,
           keywords: ["copy", "link", "share", "url", identifier.toLowerCase()],
           onSelect: () => {
-            void copyText(getShareableUrl(pathname)).then((ok) => {
+            let path = currentIssue.collaboration ? accountPath({ view: "participating", issueId: currentIssue.id }) : pathname;
+            if (currentIssue.collaboration && hash) {
+              const destination = parseAccountPath(`${path}${hash}`);
+              if (destination) path = accountPath(destination);
+            }
+            void copyText(getShareableUrl(path)).then((ok) => {
               if (ok) toast.success(t(($) => $.toast.link_copied));
             });
             setOpen(false);
@@ -543,7 +548,7 @@ export function SearchCommand() {
     );
 
     return items;
-  }, [currentIssue, currentIssueId, getShareableUrl, pathname, queryClient, setOpen, setTheme, theme, t]);
+  }, [currentIssue, currentIssueId, getShareableUrl, pathname, hash, queryClient, setOpen, setTheme, theme, t]);
 
   const filteredCommands = useMemo(() => {
     const q = query.trim().toLowerCase();

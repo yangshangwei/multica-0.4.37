@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useCanonicalIssue } from "@multica/core/issues/canonical-id";
 import { useWorkspaceId } from "@multica/core/hooks";
-import { useWorkspacePaths } from "@multica/core/paths";
+import { parseAccountPath, useWorkspacePaths } from "@multica/core/paths";
 import { useNavigation } from "../../navigation";
 import { IssueDetail, IssueDetailSkeleton, IssueNotFound, IssueLoadError } from "./issue-detail";
 
@@ -50,19 +50,6 @@ export function parseCommentHighlightHash(hash: string): string | undefined {
   return match?.[1];
 }
 
-function useCommentHighlightHash(): { hash: string; commentId?: string } {
-  const read = () => typeof window === "undefined" ? "" : window.location.hash;
-  const [hash, setHash] = useState(read);
-
-  useEffect(() => {
-    const onHashChange = () => setHash(read());
-    window.addEventListener("hashchange", onHashChange);
-    return () => window.removeEventListener("hashchange", onHashChange);
-  }, []);
-
-  return { hash, commentId: parseCommentHighlightHash(hash) };
-}
-
 /**
  * Route-level wrapper around `IssueDetail` for `/{ws}/issues/{id}`.
  *
@@ -77,9 +64,12 @@ function useCommentHighlightHash(): { hash: string; commentId?: string } {
 export function IssueDetailRoute({ routeId, onDelete }: IssueDetailRouteProps) {
   const wsId = useWorkspaceId();
   const { canonicalId, issue, isResolving, notFound, accessDenied, error, isFetching, refetch } = useCanonicalIssue(wsId, routeId);
-  const highlight = useCommentHighlightHash();
+  // The adapter owns fragments in both browser and native MemoryRouter routes.
+  const { hash = "" } = useNavigation();
+  const runId = canonicalId && hash.startsWith("#run-")
+    ? parseAccountPath(`/account?issue=${canonicalId}${hash}`)?.runId ?? undefined : undefined;
 
-  useCanonicalIssueUrl(routeId, issue?.identifier, highlight.hash);
+  useCanonicalIssueUrl(routeId, issue?.identifier, hash);
 
   if (isResolving) return <IssueDetailSkeleton />;
 
@@ -96,7 +86,8 @@ export function IssueDetailRoute({ routeId, onDelete }: IssueDetailRouteProps) {
     <IssueDetail
       issueId={canonicalId}
       onDelete={onDelete}
-      highlightCommentId={highlight.commentId}
+      highlightCommentId={parseCommentHighlightHash(hash)}
+      highlightRunId={runId}
       resolutionError={error ? { isRetrying: isFetching, onRetry: () => void refetch() } : undefined}
     />
   );

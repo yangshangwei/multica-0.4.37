@@ -1,8 +1,6 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
-import { accountPath } from "@multica/core/paths";
-import { useNavigation } from "../../navigation";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
@@ -109,13 +107,13 @@ export function IssueActionsMenuItems({
 }: IssueActionsMenuItemsProps) {
   const { t } = useT("issues");
   const { t: tCollaboration } = useT("collaboration");
-  const navigation = useNavigation();
   const wsId = useWorkspaceId();
   const statusOptions = useStatusOptions(wsId);
   const { categoryOf, colorOf } = useIssueStatuses(wsId);
   const {
     isPinned,
     updateField,
+    openInCurrentTab,
     openInNewTab,
     togglePin,
     copyLink,
@@ -174,9 +172,13 @@ export function IssueActionsMenuItems({
     });
   }, [workdirCopyTarget, t]);
 
-  if (issue.collaboration) return <P.Item onClick={() => navigation.push(accountPath({ view: "participating", issueId: issue.id }))}>
-    <ExternalLink className="size-4" />{tCollaboration(($) => $.source.open)}
-  </P.Item>;
+  if (issue.collaboration) return <>
+    <P.Item onClick={openInCurrentTab}>
+      <ExternalLink className="size-4" />{tCollaboration(($) => $.source.open)}
+    </P.Item>
+    <P.Item onClick={openInNewTab}><ExternalLink className="size-4" />{t(($) => $.actions.open_in_new_tab)}</P.Item>
+    <P.Item onClick={copyLink}><Link2 className="size-4" />{t(($) => $.actions.copy_link)}</P.Item>
+  </>;
 
   return (
     <>

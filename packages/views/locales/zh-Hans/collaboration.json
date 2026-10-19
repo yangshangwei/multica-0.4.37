@@ -7,6 +7,82 @@
     "externalFilter": "外部协作者",
     "batchUnsupported": "请逐个打开协作任务，通过协作流程进行操作。"
   },
+  "children": {
+    "title": "子任务",
+    "empty": "暂无子任务。",
+    "unavailable": "此服务器暂不支持显示子任务引用。",
+    "independent": "子任务的访问权限和 AI 执行各自独立。"
+  },
+  "records": {
+    "title": "执行记录",
+    "open": "查看记录",
+    "close": "收起记录",
+    "openLabel": "查看执行 {{id}} 的记录",
+    "closeLabel": "收起执行 {{id}} 的记录",
+    "loading": "正在加载执行记录...",
+    "unavailable": "此执行暂不可用。",
+    "empty": "本次执行暂无已记录的内容。",
+    "more": "加载更多记录",
+    "permalink": "本次执行链接",
+    "groupStatus": "执行组状态",
+    "outcome": "本次执行结果",
+    "noOutcome": "尚未记录业务结果",
+    "recording": "过程记录",
+    "termination": "结束证明",
+    "coverage": {
+      "not_recorded": "未记录执行过程",
+      "partial": "记录不完整",
+      "complete": "记录完整"
+    },
+    "inputsMissing": "本次执行读取的输入未被记录。",
+    "resource": "已记录的资源",
+    "runId": "执行 ID",
+    "groupId": "执行组 ID",
+    "grant": "授权 ID",
+    "provider": "供应商",
+    "model": "模型",
+    "accountSource": "供应商账号来源",
+    "runtimeAccount": "运行时配置",
+    "notRecorded": "未记录",
+    "usage": "已记录的用量",
+    "usageMissing": "本次执行未记录用量。",
+    "usd": "{{value}} 美元",
+    "usageFields": {
+      "input_tokens": "输入 token",
+      "output_tokens": "输出 token",
+      "cache_read_tokens": "缓存读取 token",
+      "cache_creation_tokens": "缓存写入 token",
+      "total_tokens": "总 token",
+      "cost_usd": "费用（美元）"
+    },
+    "input": "已记录的输入",
+    "inputId": "输入 ID",
+    "roles": {
+      "assistant": "助手消息",
+      "user": "用户消息",
+      "system": "系统消息"
+    },
+    "toolCall": "工具调用 · {{name}}",
+    "toolResult": "工具结果",
+    "toolError": "工具错误",
+    "callId": "调用 {{id}}",
+    "comment": "已记录的评论",
+    "squadActivity": "AI 小队活动",
+    "squadOutcomes": {
+      "action": "已记录操作",
+      "no_action": "无需操作",
+      "failed": "失败"
+    },
+    "result": "已记录的结果",
+    "attachments": "已记录的附件引用"
+  },
+  "notifications": {
+    "removed": "你已被移出此协作任务。",
+    "aiCompleted": "AI 执行已完成",
+    "aiFailed": "AI 执行失败",
+    "aiStopped": "AI 停止已确认",
+    "mention": "提及了你"
+  },
   "fields": {
     "title": "任务字段",
     "labels": "标签",
@@ -247,6 +323,9 @@
     "member": "成员",
     "continuation": "续作",
     "prepared": "等待运行时",
+    "dispatched": "已派发",
+    "preparing": "准备中",
+    "settled": "已结束",
     "launch_authorized": "已获启动许可",
     "running": "运行中",
     "consumed": "已读取指令 {{sequence}}",

@@ -101,13 +101,13 @@ import { PullRequestList } from "./pull-request-list";
 import { useGitHubSettings } from "@multica/core/github";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@multica/core/auth";
-import { useWorkspacePaths } from "@multica/core/paths";
+import { accountPath, useWorkspacePaths } from "@multica/core/paths";
 import { useActorName } from "@multica/core/workspace/hooks";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { useRecentContextStore } from "@multica/core/chat";
 import { useModalStore } from "@multica/core/modals";
 import { issueListOptions, issueDetailOptions, childIssuesOptions, childIssueProgressOptions, issueAttachmentsOptions } from "@multica/core/issues/queries";
-import { SourceCollaborationDetail } from "../../collaboration/source-bridge";
+import { SourceCollaborationAccount, SourceCollaborationDetail } from "../../collaboration/source-bridge";
 import { findSourceIssue } from "@multica/core/issues";
 import { projectDetailOptions } from "@multica/core/projects/queries";
 import { ProjectIcon } from "../../projects/components/project-icon";
@@ -698,6 +698,10 @@ function SubIssueRow({
   const customPropsWithValue = customProperties.filter(
     (p) => child.properties?.[p.id] !== undefined,
   );
+  const dueDateLabel = child.due_date ? <span className={cn(
+    "flex shrink-0 items-center gap-1 text-caption tabular-nums",
+    !isDone && isPastDateOnly(child.due_date) ? "text-destructive" : "text-muted-foreground",
+  )}><CalendarDays className="size-3" />{shortDate(child.due_date)}</span> : null;
 
   const handleUpdate = useCallback(
     (updates: Partial<UpdateIssueRequest>) => {
@@ -762,7 +766,7 @@ function SubIssueRow({
             )}
           />
         </div>
-        <StatusPicker
+        {child.collaboration ? <StatusIcon status={child.status} category={issueStatusCategory(child) ?? undefined} className="h-[15px] w-[15px] shrink-0" /> : <StatusPicker
           status={child.status}
           onUpdate={handleUpdate}
           align="start"
@@ -772,15 +776,16 @@ function SubIssueRow({
               className="h-[15px] w-[15px] shrink-0"
             />
           }
-        />
+        />}
         <AppLink
-          href={paths.issueDetail(child.id)}
+          href={child.collaboration ? accountPath({ view: "participating", issueId: child.id }) : paths.issueDetail(child.id)}
+          aria-label={child.collaboration ? `${child.identifier} ${child.title}` : undefined}
           className="flex min-w-0 flex-1 items-center gap-2.5"
         >
           <span className="text-micro text-muted-foreground tabular-nums font-medium shrink-0">
             {child.identifier}
           </span>
-          <IssueAgentActivityIndicator issueId={child.id} />
+          {!child.collaboration && <IssueAgentActivityIndicator issueId={child.id} />}
           <span className="flex min-w-0 flex-1 items-center gap-1.5">
             <span
               className={cn(
@@ -834,27 +839,15 @@ function SubIssueRow({
             )}
           </span>
         </AppLink>
-        {rowProps.dueDate && child.due_date && (
+        {rowProps.dueDate && child.due_date && (child.collaboration ? dueDateLabel : (
           <DueDatePicker
             dueDate={child.due_date}
             onUpdate={handleUpdate}
             align="end"
-            trigger={
-              <span
-                className={cn(
-                  "flex shrink-0 items-center gap-1 text-caption tabular-nums",
-                  !isDone && isPastDateOnly(child.due_date)
-                    ? "text-destructive"
-                    : "text-muted-foreground",
-                )}
-              >
-                <CalendarDays className="size-3" />
-                {shortDate(child.due_date)}
-              </span>
-            }
+            trigger={dueDateLabel}
           />
-        )}
-        {rowProps.assignee && (
+        ))}
+        {rowProps.assignee && (child.collaboration ? <SourceCollaborationAccount account={child.collaboration.handler} /> : (
           <AssigneePicker
             assigneeType={child.assignee_type}
             assigneeId={child.assignee_id}
@@ -876,7 +869,7 @@ function SubIssueRow({
               )
             }
           />
-        )}
+        ))}
       </div>
     </IssueActionsContextMenu>
   );
@@ -987,6 +980,8 @@ interface IssueDetailProps {
   reviewContext?: ReactNode;
   /** When set, the issue detail will auto-scroll to this comment and briefly highlight it. */
   highlightCommentId?: string;
+  /** Source routes and embedded hosts pass the selected collaboration run UUID. */
+  highlightRunId?: string;
   /**
    * Bump to replay the `highlightCommentId` landing on an already-mounted
    * detail. A remount replays it by itself (fresh mount, cleared memento
@@ -1170,7 +1165,7 @@ export function IssueDetail(props: IssueDetailProps) {
   if (denied || (!query.data && (query.error || query.errorUpdatedAt > 0))) return <IssueLoadError accessDenied={denied} isRetrying={query.isFetching} onRetry={() => void query.refetch()} leading={props.leadingAction} />;
   if (!query.data) return <IssueDetailSkeleton leading={props.leadingAction} presentation={props.presentation} />;
   const known = findSourceIssue(client, wsId, query.data.id);
-  if (query.data.collaboration || known?.collaboration) return <SourceCollaborationDetail issueId={query.data.id} commentId={props.highlightCommentId} leading={props.leadingAction} />;
+  if (query.data.collaboration || known?.collaboration) return <SourceCollaborationDetail issueId={query.data.id} commentId={props.highlightCommentId} runId={props.highlightRunId} leading={props.leadingAction} />;
   return <OrdinaryIssueDetail {...props} />;
 }
 

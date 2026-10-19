@@ -7,6 +7,82 @@
     "externalFilter": "External collaborators",
     "batchUnsupported": "Open collaboration issues individually to use their shared workflow."
   },
+  "children": {
+    "title": "Sub-issues",
+    "empty": "No sub-issues.",
+    "unavailable": "Sub-issue references are unavailable on this server.",
+    "independent": "Sub-issues keep their own access and AI execution."
+  },
+  "records": {
+    "title": "Run records",
+    "open": "View records",
+    "close": "Hide records",
+    "openLabel": "View records for {{id}}",
+    "closeLabel": "Hide records for {{id}}",
+    "loading": "Loading run records...",
+    "unavailable": "This run is unavailable.",
+    "empty": "No entries have been recorded for this run.",
+    "more": "Load more records",
+    "permalink": "Link to this run",
+    "groupStatus": "Group status",
+    "outcome": "Run outcome",
+    "noOutcome": "No business result recorded",
+    "recording": "Process recording",
+    "termination": "Termination proof",
+    "coverage": {
+      "not_recorded": "Process not recorded",
+      "partial": "Partial recording",
+      "complete": "Complete recording"
+    },
+    "inputsMissing": "The inputs read by this run were not recorded.",
+    "resource": "Recorded resource",
+    "runId": "Run ID",
+    "groupId": "Group ID",
+    "grant": "Authorization ID",
+    "provider": "Provider",
+    "model": "Model",
+    "accountSource": "Provider account source",
+    "runtimeAccount": "Runtime configuration",
+    "notRecorded": "Not recorded",
+    "usage": "Recorded usage",
+    "usageMissing": "Usage was not recorded.",
+    "usd": "USD {{value}}",
+    "usageFields": {
+      "input_tokens": "Input tokens",
+      "output_tokens": "Output tokens",
+      "cache_read_tokens": "Cache read tokens",
+      "cache_creation_tokens": "Cache write tokens",
+      "total_tokens": "Total tokens",
+      "cost_usd": "Cost (USD)"
+    },
+    "input": "Recorded input",
+    "inputId": "Input ID",
+    "roles": {
+      "assistant": "Assistant message",
+      "user": "User message",
+      "system": "System message"
+    },
+    "toolCall": "Tool call · {{name}}",
+    "toolResult": "Tool result",
+    "toolError": "Tool error",
+    "callId": "Call {{id}}",
+    "comment": "Recorded comment",
+    "squadActivity": "Squad activity",
+    "squadOutcomes": {
+      "action": "Action recorded",
+      "no_action": "No action needed",
+      "failed": "Failed"
+    },
+    "result": "Recorded result",
+    "attachments": "Recorded attachment references"
+  },
+  "notifications": {
+    "removed": "You were removed from this collaboration issue.",
+    "aiCompleted": "AI execution completed",
+    "aiFailed": "AI execution failed",
+    "aiStopped": "AI stop confirmed",
+    "mention": "Mentioned you"
+  },
   "fields": {
     "title": "Issue fields",
     "labels": "Labels",
@@ -247,6 +323,9 @@
     "member": "Member",
     "continuation": "Continuation",
     "prepared": "Waiting for runtime",
+    "dispatched": "Dispatched",
+    "preparing": "Preparing",
+    "settled": "Ended",
     "launch_authorized": "Launch permitted",
     "running": "Running",
     "consumed": "Consumed input {{sequence}}",

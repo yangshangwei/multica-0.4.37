@@ -91,12 +91,14 @@ vi.mock("@multica/core/paths", async () => {
   };
 });
 
+const navigationState = vi.hoisted(() => ({ pathname: "/test/issues/issue-1", hash: "", openInNewTab: vi.fn(), push: vi.fn() }));
 vi.mock("../../../navigation", () => ({
   useNavigation: () => ({
-    push: vi.fn(),
-    pathname: "/test/issues/issue-1",
+    push: navigationState.push,
+    openInNewTab: navigationState.openInNewTab,
+    pathname: navigationState.pathname,
     searchParams: new URLSearchParams(),
-    hash: "",
+    hash: navigationState.hash,
     back: vi.fn(),
     replace: vi.fn(),
     getShareableUrl: (p: string) => `https://app.multica.com${p}`,
@@ -140,6 +142,10 @@ function wrapper({ children }: { children: React.ReactNode }) {
 }
 
 beforeEach(() => {
+  navigationState.pathname = "/test/issues/issue-1";
+  navigationState.hash = "";
+  navigationState.openInNewTab.mockClear();
+  navigationState.push.mockClear();
   mockOpenModal.mockReset();
   mockUpdateMutate.mockReset();
   mockCreatePinMutate.mockReset();
@@ -287,6 +293,33 @@ describe("useIssueActions", () => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
       "https://app.multica.com/test/issues/issue-1",
     );
+  });
+
+  it("copies shared issues using the account UUID destination", async () => {
+    const id = "00000000-0000-4000-8000-000000000009";
+    const account = { user_id: "user-1", name: "Outside", avatar_url: "", external: true };
+    const shared: Issue = { ...mockIssue, id, collaboration: { creator: account, handler: account, has_external_collaborators: true } };
+    const { result } = renderHook(() => useIssueActions(shared), { wrapper });
+    await act(async () => { await result.current.copyLink(); });
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(`https://app.multica.com/account?view=participating&issue=${id}`);
+  });
+
+  it("preserves the current shared issue's run anchor for copy/open but never carries it to a different row", async () => {
+    const id = "00000000-0000-4000-8000-000000000009";
+    const runId = "00000000-0000-4000-8000-000000000010";
+    const account = { user_id: "user-1", name: "Outside", avatar_url: "", external: true };
+    const shared: Issue = { ...mockIssue, id, collaboration: { creator: account, handler: account, has_external_collaborators: true } };
+    navigationState.pathname = "/test/issues/TES-1";
+    navigationState.hash = `#run-${runId}`;
+    const { result, rerender } = renderHook(() => useIssueActions(shared), { wrapper });
+    await act(async () => { await result.current.copyLink(); });
+    expect(navigator.clipboard.writeText).toHaveBeenLastCalledWith(`https://app.multica.com/account?view=participating&issue=${id}#run-${runId}`);
+    act(() => result.current.openInNewTab());
+    expect(navigationState.openInNewTab).toHaveBeenCalledWith(`/account?view=participating&issue=${id}#run-${runId}`, "TES-1", { activate: true });
+    navigationState.pathname = "/test/issues/TES-2";
+    rerender();
+    await act(async () => { await result.current.copyLink(); });
+    expect(navigator.clipboard.writeText).toHaveBeenLastCalledWith(`https://app.multica.com/account?view=participating&issue=${id}`);
   });
 
   it("openSetParent / openAddChild / openDeleteConfirm / openCreateSubIssue open the correct modal with payload", () => {

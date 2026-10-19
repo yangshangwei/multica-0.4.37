@@ -73,3 +73,19 @@ workspace bootstrap, or load `@multica/core` through sandboxed preload require.
 
 Correct: keep identity-scoped account state, independent workspace recovery and
 bundled pure validators within the existing native protocol.
+
+## Run anchors and native evidence
+
+Source/account links preserve validated `#run-<UUID>` through the navigation
+adapter, including native MemoryRouter and popouts; `window.location.hash` is
+not the route authority. Hiding the currently linked run clears only its own
+validated fragment so the same notification can reopen and refocus it.
+Popover final-focus handoff must permit navigation while Escape still returns
+focus to its trigger.
+
+Native copy tests wait for the exact absolute link from the existing configured
+share policy; a completed click is not proof that asynchronous clipboard writes
+have settled. Use test sentinels and avoid printing prior clipboard data. Keep
+clipboard preservation outside the product. For screenshots, await closed
+popovers, committed scroll geometry and renderer frames before `capturePage`;
+assert that usage and long-body captures show their intended, distinct states.

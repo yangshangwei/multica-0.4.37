@@ -20,7 +20,8 @@ import enTriage from "../../locales/en/triage.json";
 const TEST_RESOURCES = { en: { common: enCommon, issues: enIssues, triage: enTriage } };
 
 vi.mock("../../collaboration/source-bridge", () => ({
-  SourceCollaborationDetail: ({ issueId, commentId }: { issueId: string; commentId?: string }) => <div data-testid="source-collaboration-detail">{issueId}:{commentId}</div>,
+  SourceCollaborationDetail: ({ issueId, commentId, runId }: { issueId: string; commentId?: string; runId?: string }) => <div data-testid="source-collaboration-detail" data-run-id={runId}>{issueId}:{commentId}</div>,
+  SourceCollaborationAccount: ({ account }: { account: { name: string; external: boolean } }) => <span>{account.name}{account.external && " · External collaborator"}</span>,
 }));
 
 const mockViewport = vi.hoisted(() => ({ isMobile: false }));
@@ -117,6 +118,7 @@ vi.mock("@multica/core/paths", async () => {
 });
 
 // Mock navigation
+const navigationState = vi.hoisted(() => ({ pathname: "/issues/issue-1", hash: "", replace: vi.fn() }));
 vi.mock("../../navigation", () => ({
   AppLink: ({ children, href, ...props }: any) => (
     <a href={href} {...props}>
@@ -125,8 +127,9 @@ vi.mock("../../navigation", () => ({
   ),
   useNavigation: () => ({
     push: vi.fn(),
-    replace: vi.fn(),
-    pathname: "/issues/issue-1",
+    replace: navigationState.replace,
+    pathname: navigationState.pathname,
+    hash: navigationState.hash,
     getShareableUrl: (p: string) => `https://app.multica.com${p}`,
   }),
   useBackOrReplace: () => vi.fn(),
@@ -704,6 +707,8 @@ function hasHighlightedCommentBackground(root: ParentNode | null): boolean {
 describe("IssueDetail (shared)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    navigationState.pathname = "/issues/issue-1";
+    navigationState.hash = "";
     contentEditorMounts.count = 0;
     mockViewport.isMobile = false;
     // Default: issue loads successfully
@@ -738,6 +743,28 @@ describe("IssueDetail (shared)", () => {
     expect(mockApiObj.listTimeline).not.toHaveBeenCalled();
     expect(mockApiObj.listTasksByIssue).not.toHaveBeenCalled();
     expect(screen.queryByRole("button", { name: "Issue actions" })).not.toBeInTheDocument();
+  });
+
+  it("reads a source run anchor from the navigation adapter and preserves it while canonicalizing the issue", async () => {
+    const id = "cb240efb-154c-42a8-ae92-42b02676feca", runId = "00000000-0000-4000-8000-000000000010";
+    const account = { user_id: "external", name: "External handler", avatar_url: "", external: true };
+    mockApiObj.getIssue.mockResolvedValue({ ...mockIssue, id, collaboration: { creator: account, handler: account, has_external_collaborators: true } });
+    navigationState.pathname = `/test/issues/${id}`;
+    navigationState.hash = `#run-${runId}`;
+    const client = createTestQueryClient();
+    render(<I18nProvider locale="en" resources={TEST_RESOURCES}><QueryClientProvider client={client}><IssueDetailRoute routeId={id} /></QueryClientProvider></I18nProvider>);
+    expect(await screen.findByTestId("source-collaboration-detail")).toHaveAttribute("data-run-id", runId);
+    expect(navigationState.replace).toHaveBeenCalledWith(`/test/issues/TES-1#run-${runId}`);
+    expect(mockApiObj.listTasksByIssue).not.toHaveBeenCalled();
+    client.clear();
+  });
+
+  it("passes an explicitly selected run through an embedded collaboration panel", async () => {
+    const runId = "00000000-0000-4000-8000-000000000010";
+    const account = { user_id: "external", name: "External handler", avatar_url: "", external: true };
+    mockApiObj.getIssue.mockResolvedValue({ ...mockIssue, collaboration: { creator: account, handler: account, has_external_collaborators: true } });
+    renderIssueDetail(mockIssue.id, { highlightRunId: runId });
+    expect(await screen.findByTestId("source-collaboration-detail")).toHaveAttribute("data-run-id", runId);
   });
 
   it("retains a collaboration relationship already present in a source list when a partial detail omits it", async () => {
@@ -2358,6 +2385,19 @@ describe("IssueDetail (shared)", () => {
       due_date: null,
       priority: "none",
       ...overrides,
+    });
+
+    it("shows an independently shared child with an account link and safe summary instead of ordinary inline writes", async () => {
+      const id = "00000000-0000-4000-8000-000000000009";
+      const account = { user_id: "outside", name: "External handler", avatar_url: "", external: true };
+      mockApiObj.listChildIssues.mockResolvedValue({ issues: [subIssue({ id, identifier: "TES-9", title: "Shared child", due_date: "2026-10-21", assignee_type: "member", assignee_id: account.user_id, collaboration: { creator: account, handler: account, has_external_collaborators: true } })] });
+      renderIssueDetail();
+      const link = await screen.findByRole("link", { name: /TES-9 Shared child/ });
+      expect(link).toHaveAttribute("href", `/account?view=participating&issue=${id}`);
+      const row = screen.getByRole("checkbox", { name: /Select TES-9/ }).closest<HTMLElement>(".group\\/row")!;
+      expect(within(row).getByText(/External handler/)).toBeInTheDocument();
+      expect(within(row).queryByRole("button")).not.toBeInTheDocument();
+      expect(mockApiObj.updateIssue).not.toHaveBeenCalled();
     });
 
     it("renders priority, labels, due date and nested progress on rows", async () => {

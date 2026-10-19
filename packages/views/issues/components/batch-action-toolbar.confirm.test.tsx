@@ -5,6 +5,7 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import type { Issue, UpdateIssueRequest } from "@multica/core/types";
 import { BatchActionToolbar } from "./batch-action-toolbar";
+import { toast } from "sonner";
 
 // MUL-4155: batch status changes must apply directly (no run-confirm modal),
 // while agent/squad assignment still confirms and delete still confirms. These
@@ -23,6 +24,8 @@ vi.mock("@multica/core/issues/stores/selection-store", () => ({
 
 const batchUpdate = vi.hoisted(() => vi.fn().mockResolvedValue(undefined));
 const batchDelete = vi.hoisted(() => vi.fn().mockResolvedValue(undefined));
+const surface = vi.hoisted(() => ({ current: null as { batchUpdate: typeof batchUpdate; batchDelete: typeof batchDelete; isPending: boolean } | null }));
+vi.mock("../surface/actions-context", () => ({ useIssueSurfaceActionsOptional: () => surface.current }));
 vi.mock("@multica/core/issues/mutations", () => ({
   useBatchUpdateIssues: () => ({ mutateAsync: batchUpdate, isPending: false }),
   useBatchDeleteIssues: () => ({ mutateAsync: batchDelete, isPending: false }),
@@ -52,7 +55,7 @@ vi.mock("./pickers", () => ({
       ))}
     </div>
   ),
-  PriorityPicker: () => <div data-testid="priority-picker" />,
+  PriorityPicker: ({ onUpdate }: { onUpdate: (u: Partial<UpdateIssueRequest>) => void }) => <button data-testid="priority-picker" onClick={() => onUpdate({ priority: "urgent" })} />,
   AssigneePicker: ({ onUpdate }: { onUpdate: (u: Partial<UpdateIssueRequest>) => void }) => (
     <div>
       <button
@@ -100,9 +103,30 @@ beforeEach(() => {
   batchUpdate.mockClear();
   batchDelete.mockClear();
   openModal.mockClear();
+  selection.clear.mockClear();
+  surface.current = null;
+  vi.mocked(toast.error).mockClear();
 });
 
 describe("BatchActionToolbar status routing (MUL-4155)", () => {
+  it.each(["surface", "embedded"] as const)("blocks mixed shared selection before ordinary confirmation or transport in the %s toolbar", (placement) => {
+    const account = { user_id: "user-1", name: "Outside", avatar_url: "", external: true };
+    const shared = makeIssue({ id: "shared", collaboration: { creator: account, handler: account, has_external_collaborators: true } });
+    selection.selectedIds = new Set(["a", "shared"]);
+    if (placement === "surface") surface.current = { batchUpdate, batchDelete, isPending: false };
+    render(<BatchActionToolbar issues={[makeIssue(), shared]} />);
+    fireEvent.click(screen.getByTestId("assign-agent"));
+    fireEvent.click(screen.getByTestId("status-in_progress"));
+    fireEvent.click(screen.getByTestId("priority-picker"));
+    fireEvent.click(screen.getByText("label", { selector: "button.text-destructive" }));
+    expect(openModal).not.toHaveBeenCalled();
+    expect(batchUpdate).not.toHaveBeenCalled();
+    expect(batchDelete).not.toHaveBeenCalled();
+    expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Iteration batch selection")).not.toBeInTheDocument();
+    expect(selection.clear).not.toHaveBeenCalled();
+    expect(toast.error).toHaveBeenCalled();
+  });
   it("applies every status target directly, never opening the run-confirm modal", () => {
     for (const status of [...ACTIVE_STATUSES, ...TERMINAL_STATUSES, "backlog"]) {
       batchUpdate.mockClear();

@@ -51,6 +51,7 @@ export function BatchActionToolbar({
   placement?: "fixed-bottom" | "inline";
 }) {
   const { t } = useT("issues");
+  const { t: tCollaboration } = useT("collaboration");
   const selection = useIssueSurfaceSelection();
   const selectedIds = selection.selectedIds;
   const clear = selection.clear;
@@ -66,6 +67,7 @@ export function BatchActionToolbar({
     [issues, selectedIds],
   );
   const count = selectedIssues.length;
+  const containsCollaboration = selectedIssues.some((issue) => issue.collaboration != null);
 
   // Reflect the real shared value of the selected issues in each picker; fall
   // back to an empty (no-checkmark) state when the selection is mixed, instead
@@ -95,7 +97,14 @@ export function BatchActionToolbar({
     setDeleteOpen(false);
   }, [count]);
 
+  const refuseCollaborationBatch = () => {
+    if (!containsCollaboration) return false;
+    toast.error(tCollaboration(($) => $.source.batchUnsupported));
+    return true;
+  };
+
   const handleBatchUpdate = async (updates: Partial<UpdateIssueRequest>) => {
+    if (refuseCollaborationBatch()) return;
     try {
       if (surfaceActions) {
         await surfaceActions.batchUpdate(ids, updates);
@@ -127,6 +136,7 @@ export function BatchActionToolbar({
   };
 
   const handleBatchAssignee = (updates: Partial<UpdateIssueRequest>) => {
+    if (refuseCollaborationBatch()) return;
     if ((updates.assignee_type === "agent" || updates.assignee_type === "squad") && updates.assignee_id) {
       // Backlog never starts a run on assign (parking lot), so if every selected
       // issue is in backlog the confirm modal would only render an empty "won't
@@ -150,6 +160,7 @@ export function BatchActionToolbar({
   };
 
   const handleBatchDelete = async () => {
+    if (refuseCollaborationBatch()) { setDeleteOpen(false); return; }
     try {
       if (surfaceActions) {
         await surfaceActions.batchDelete(ids);
@@ -258,14 +269,14 @@ export function BatchActionToolbar({
           align="center"
         />
 
-        {selectedIssues[0]?.workspace_id && selectedIssues.every((issue) => issue.workspace_id === selectedIssues[0]?.workspace_id) && <IterationBatchAssignment key={JSON.stringify(ids)} wsId={selectedIssues[0].workspace_id} issueIds={ids} />}
+        {!containsCollaboration && selectedIssues[0]?.workspace_id && selectedIssues.every((issue) => issue.workspace_id === selectedIssues[0]?.workspace_id) && <IterationBatchAssignment key={JSON.stringify(ids)} wsId={selectedIssues[0].workspace_id} issueIds={ids} />}
 
         {/* Delete */}
         <Button
           variant="ghost"
           size="sm"
           disabled={loading}
-          onClick={() => setDeleteOpen(true)}
+          onClick={() => { if (!refuseCollaborationBatch()) setDeleteOpen(true); }}
           className="text-destructive hover:text-destructive"
         >
           <Trash2 className="size-3.5 mr-1" />

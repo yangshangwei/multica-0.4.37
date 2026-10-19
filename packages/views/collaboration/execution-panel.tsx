@@ -9,8 +9,9 @@ import { useCollaborationLabels } from "./labels";
 import { CollaborationQueryState } from "./query-state";
 import { CollaborationResourcePanel } from "./resource-panel";
 import { CollaborationSwitchPanel } from "./switch-panel";
+import { CollaborationRunDisclosure } from "./run-records";
 
-export function CollaborationExecutionPanel({ scope, issue }: { scope: CollaborationScope; issue: CollaborationIssue }) {
+export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { scope: CollaborationScope; issue: CollaborationIssue; selectedRunId?: string | null }) {
   const { t } = useT("collaboration");
   const labels = useCollaborationLabels();
   const client = useQueryClient();
@@ -83,9 +84,7 @@ export function CollaborationExecutionPanel({ scope, issue }: { scope: Collabora
         <ol className="space-y-4">{groups.map((group) => <li key={group.id} className="min-w-0 space-y-2">
           <p className="text-caption font-medium">{t(($) => $.execution.group)} · {labels.execution(group.state)}</p>
           <ul className="space-y-1 text-caption text-muted-foreground">{group.inputs.map((input) => <li key={input.command_id}>{t(($) => $.execution.consumed, { sequence: input.sequence })}</li>)}</ul>
-          <ul className="space-y-2">{execution.runs.filter((run) => run.group_id === group.id).map((run) => <li key={run.id} className="flex min-w-0 flex-wrap gap-x-3 gap-y-1 text-caption text-muted-foreground">
-            <span>{run.step_kind === "agent" ? t(($) => $.execution.agent) : t(($) => $.execution[run.step_kind])}</span><span className="break-all">{run.agent_id}</span><span>{run.proof_state === "unknown" ? t(($) => $.execution.proofPending) : run.proof_state === "exited_proven" ? t(($) => $.execution.proofConfirmed) : t(($) => $.execution.neverLaunched)}</span>{run.recording_incomplete === true && <span>{t(($) => $.execution.incomplete)}</span>}
-          </li>)}</ul>
+          <ul className="space-y-4">{execution.runs.filter((run) => run.group_id === group.id).map((run) => <CollaborationRunDisclosure key={run.id} scope={scope} issue={issue} run={run} group={group} selectedRunId={selectedRunId} />)}</ul>
         </li>)}</ol>
         <ul className="space-y-3">{execution.commands.filter((command) => command.channel_id === lane.id && command.state === "waiting").map((command) => <li key={command.id} className="min-w-0 space-y-2 text-caption text-muted-foreground">
           <p>{t(($) => $.execution.input, { sequence: command.sequence })} · {command.group_id !== null ? t(($) => $.composer.joined) : t(($) => $.execution.waiting)}</p>
@@ -96,5 +95,6 @@ export function CollaborationExecutionPanel({ scope, issue }: { scope: Collabora
       </div>;
     })}
     {execution?.targets.filter((target) => target.channel_id === null).map((target) => <p key={target.id} className="text-caption">{target.hold_reason ? labels.execution(target.hold_reason) : t(($) => $.execution.released)}</p>)}
+    {selectedRunId && execution && !execution.runs.some((run) => run.id === selectedRunId) && <p role="alert" className="text-body text-muted-foreground">{t(($) => $.records.unavailable)}</p>}
   </section>;
 }
