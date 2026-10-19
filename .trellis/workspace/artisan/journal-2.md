@@ -622,3 +622,45 @@ Implemented and verified target hold/control and resource invalidation boundarie
 ### Next Steps
 
 - 继续来源页面/完整字段评论、运行记录与R52通知、运行端文件/Git/通用provider、有限代管及P7/P8和全部97项验收；保留默认门禁，当前不归档父任务。
+
+
+## Session 90: 来源页面、日常编辑与原请求恢复验证
+<!-- trellis-session: v=2 fp=59168ffa55a73051 -->
+
+**Date**: 2026-10-19
+**Task**: 来源页面、日常编辑与原请求恢复验证
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+继续原跨账号协作任务，完成来源共享入口、字段/迭代与评论操作；独立检查、双端和视觉验证通过，父任务保持进行中。
+
+### Main Changes
+
+- 来源页面复用共享详情和动作；外部账号最小投影/筛选、空 WS 刷新与缓存隔离。
+- 初始与日常字段、来源结构/迭代、本人评论编辑/删除/回复/解决/回应；保留历史、附件和原请求。
+- 修复旧迭代移动旁路、UTF-8 超限恢复、后台/分页输入丢失、日志隐私、重复 React key 与卡片重叠。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `5c6ec11c763c3c246a130ba90fae200cdfa1391a` | feat(collaboration): keep source edits within shared authority |
+| `34a01fa16f76db19f37ac55e83003e0723c725fc` | feat(collaboration): keep shared work usable from source pages |
+| `2f799a97af8c0d0216dab07d2924d9be69ec803c` | docs(collaboration): preserve verified source editing contracts |
+
+### Testing
+
+- [OK] TypeScript 12162 项、15/15 lint/typecheck；115 个 SQL 生成文件无漂移。
+- [OK] Go 合并988顶层+1097子测试通过，8项条件跳过；相关 race/vet 与新边界回归通过。
+- [OK] 生产 Web6项、macOS Electron9项；视觉后续2个Web+1个Electron复验，94/100。
+- [OK] 源清单148文件匹配；测试服务/容器已停止，证据和隔离数据库保留。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 按 research/remaining-product-work-2026-10-18.md 接续 R51 普通子任务共享详情、完整运行记录与 R52 通知。
+- 完成运行端 Git/附件和通用供应商、其他 OS、P7 有限代管及 P8 全部验收；默认发布门禁保持关闭。
