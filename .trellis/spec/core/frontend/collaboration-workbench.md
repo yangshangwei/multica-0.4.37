@@ -4,8 +4,10 @@
 
 Apply to `packages/core/collaboration`, shared collaboration views and the
 `/account` route. The surface includes account records, resource/participant
-forms, gated creation and controlled attachment delivery. Full source-page
-integration and general AI execution retain their separate product gates.
+forms, gated creation and controlled attachment delivery. Source-page routing,
+fields, iterations and discussion editing follow the shared
+[source/editing contract](../../server/collaboration-source-editing.md).
+General AI execution and full product acceptance retain their separate gates.
 
 ## 2. Signatures
 

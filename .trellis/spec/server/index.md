@@ -10,6 +10,7 @@
 | [Collaboration foundation](./collaboration-foundation.md) | Authority, creation, human workflow and pre-v2 execution history | Foundation |
 | [Collaboration content](./collaboration-content.md) | Gated atomic creation, encrypted drafts, retained references and current-authority native downloads | Public API implemented; full product gate retained |
 | [Collaboration realtime](./collaboration-realtime.md) | Account/issue scopes, final-send authority, retained outbox and Query recovery | Account transport implemented; full product pending |
+| [Collaboration source and editing](./collaboration-source-editing.md) | Mixed source projections, source field/iteration transactions, comment recovery and content-free list invalidation | Current source/editing increment; full product pending |
 | [Collaboration targets](./collaboration-targets.md) | Channel FIFO, input history, holds, configuration invalidation, proof flow and v5 reads | Direct/squad service foundation; full product pending |
 | [Collaboration squads](./collaboration-squads.md) | Frozen grants, M08/M11 readers, nonlaunch return and durable leader order | Static Linux CLI/daemon chain verified; full product pending |
 | [Collaboration runtime CLI](./collaboration-runtime-cli.md) | Narrow existing commands, original write IDs, contained CLI and actual daemon capacity | Static Linux chain verified; general provider/product gates remain |

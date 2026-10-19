@@ -37,6 +37,11 @@ not become a private logging channel.
 The retained event is the outbox. Failed publication leaves it pending; retries
 reuse its ID and do not recreate notifications. Frames contain only scope IDs,
 event sequence, revision and authority generation, or an empty account hint.
+A source workspace receives only an empty `collaboration:workbench_changed`
+payload, with no issue ID or other private metadata. This lets nonparticipant
+source members refresh authorized lists through their existing workspace scope.
+Its stable `:source` outbox identity and failed publication retain normal retry
+semantics. Consumers reject a nonempty payload and never synthesize issue data.
 Do not forward stored event bodies, titles, runtime details or credentials.
 Runtime preparation, first claim/permit, outcome, proof and group settlement
 record ordered invalidation facts in their owning transaction; replay is inert.
@@ -64,6 +69,7 @@ focus and reconnect recovery for lost transient hints and older servers.
 | Last read basis revoked before send | Drop queued payload; invalidate private view |
 | Normal change arrives during a write | Preserve original key and completion |
 | Relay publish fails | Roll back delivery marker; retry same event |
+| Source member is not a participant | Empty workspace hint refreshes authorized source queries |
 | Reconnect / old socket callback | Revalidate snapshots / ignore stale callback |
 
 ## 5. Good / Base / Bad Cases
@@ -86,6 +92,8 @@ retry, removed recipients, redaction and runtime replay. Core WS/realtime suites
 cover ref-counts, reauth, late reads/writes, normal concurrent events and GET-only
 recovery. Browser tests must observe a live account WS and clear private content
 without reload; a poll-only success is not realtime integration evidence.
+The source-member case in `e2e/collaboration-editing-web.spec.ts` checks the empty
+workspace frame and list refresh while the account participating list stays empty.
 
 ## 7. Wrong vs Correct
 

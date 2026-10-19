@@ -1,10 +1,25 @@
 # Remaining collaboration product work
 
-Updated 2026-10-19 after the account creation/file/resource/realtime increment.
+Updated 2026-10-19 after the source-page, field and discussion increment.
 The filename is retained for existing handoff links. The parent remains
-`in_progress`; current evidence is in `../verification-product-2026-10-19.md`.
+`in_progress`; current evidence is in `../verification-source-editing-2026-10-19.md`.
 
-## Implemented and verified in the account workbench
+## Implemented and verified in shared account/source surfaces
+
+- Explicit source-page creation, shared same-UUID detail for source routes,
+  panels and windows, minimal external accounts and source filtering, safe
+  workflow routing for source actions, and pure column-local ordering.
+- Source/account query invalidation from confirmed operations and real WS,
+  including an empty source-workspace tick for nonparticipant source members.
+  Mixed response, query and error logging is redacted.
+- Labels/custom values, source-only project/parent/stage/iteration editors and
+  initial creation fields. Existing iteration transactions, reasons, versions
+  and explicit completed-issue confirmation are reused. Ordinary explicit
+  iteration moves cannot bypass the shared workflow; automatic rollover remains.
+- Author comment edit/delete, replies/anchors, tombstone/history/file retention,
+  resolution and own comment/issue reactions. Recovery preserves original keys
+  and input, including multibyte limits and exact emoji correlation. The UI
+  retains editors through background failures and pagination.
 
 - Existing account lists/details, human handoff/lifecycle/editing foundations,
   comments/history, control and original-key recovery from the previous pass.
@@ -29,15 +44,9 @@ The filename is retained for existing handoff links. The parent remains
 
 ## Required product work still absent or incomplete
 
-- Source-page creation entry and shared collaboration routing from ordinary
-  source detail/list/board/timeline. External-account summaries/filters and safe
-  drag-to-transfer/status behavior are not supplied by the account-only entry.
-- Labels/custom-property editors and source project/parent/iteration/stage
-  selectors. Current creation defaults status/priority and does not expose initial
-  iteration authoring. Existing server field support is not full UI acceptance.
-- Comment edit/delete/resolve/unresolve/reactions, replies and issue reactions.
-  Comment create, attachment delivery, anchors and history are present; endpoint
-  reference-removal tests do not establish the missing editing controls.
+- R51 ordinary-child presentation in shared detail and the remaining exhaustive
+  source-entry/selection/share/filter compatibility matrix. Current source and
+  editing flows have their named tests; they do not establish every P6/P8 case.
 - Complete run transcript/usage/resource provenance and input snapshot display.
   Current execution facts expose identities/state/proof/membership, with richer
   recorded content still requiring authorized projections and shared views.
@@ -51,7 +60,7 @@ The filename is retained for existing handoff links. The parent remains
   authorization, transaction and native integration acceptance.
 - Full P8/97-criterion acceptance and rollout preparation across all old entry
   points/platforms. Do not enable creation or execution merely because this
-  account-workbench increment passes.
+  source/editing increment passes.
 
 ## Remaining operational evidence and limits
 
