@@ -61,11 +61,14 @@ it("discards an in-flight exact lookup after the recipient text changes", async 
   expect(screen.getByRole("button", { name: "Confirm" })).toBeDisabled();
 });
 
-it("submits edits against their captured revision after a background refresh", async () => {
+// The receipt/error and access-epoch matrices live in core/collaboration/operation.test.ts.
+it("shows a real stale-revision refusal immediately and keeps input for an explicit new submit", async () => {
   setApiInstance(new ApiClient("https://server.example"));
   const scope = collaborationScope(id);
   const editable = { ...issue, start_date: null, due_date: null };
-  const fetch = vi.fn().mockResolvedValue(new Response(JSON.stringify({ status: 409, code: "stale_revision", collaboration_revision: "9007199254740994" }), { status: 409 }));
+  const fetch = vi.fn()
+    .mockResolvedValueOnce(new Response(JSON.stringify({ error: "stale_revision", code: "stale_revision", collaboration_revision: "9007199254740994" }), { status: 409 }))
+    .mockResolvedValueOnce(new Response(JSON.stringify({ code: "issue_edited", collaboration_revision: "9007199254740995" })));
   vi.stubGlobal("fetch", fetch);
   const ui = (value: typeof editable) => <QueryClientProvider client={client}><CollaborationWorkflow scope={scope} issue={value} /></QueryClientProvider>;
   const { rerender } = renderWithI18n(ui(editable));
@@ -79,6 +82,19 @@ it("submits edits against their captured revision after a background refresh", a
   expect(JSON.parse(fetch.mock.calls[0]?.[1]?.body)).toMatchObject({ title: "My retained title", expected_collaboration_revision: "9007199254740993" });
   expect(screen.getByLabelText("Title")).toHaveValue("My retained title");
   expect(await screen.findByText(/The server did not apply this action/)).toBeInTheDocument();
+  expect(screen.queryByText("Could not load collaboration. Try again.")).toBeNull();
+  expect(screen.queryByText(/The result is not confirmed/)).toBeNull();
+  expect(screen.queryByRole("button", { name: "Check original result" })).toBeNull();
+  expect(readCollaborationDrafts({ ...scope, issueId: id })).toEqual([]);
+  expect(fetch).toHaveBeenCalledTimes(1);
+  await user.click(screen.getByRole("button", { name: "Keep input and use current version" }));
+  expect(screen.getByLabelText("Title")).toHaveValue("My retained title");
+  expect(fetch).toHaveBeenCalledTimes(1);
+  await user.click(screen.getByRole("button", { name: "Confirm" }));
+  expect(await screen.findByText("Action confirmed.")).toBeInTheDocument();
+  expect(fetch).toHaveBeenCalledTimes(2);
+  expect(JSON.parse(fetch.mock.calls[1]?.[1]?.body)).toMatchObject({ title: "My retained title", expected_collaboration_revision: "9007199254740994" });
+  expect(new Headers(fetch.mock.calls[1]?.[1]?.headers).get("Idempotency-Key")).not.toBe(new Headers(fetch.mock.calls[0]?.[1]?.headers).get("Idempotency-Key"));
 });
 
 it("removes the selected participant only after confirmation with the captured revision", async () => {

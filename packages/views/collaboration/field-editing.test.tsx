@@ -37,10 +37,10 @@ function context() {
   return { scope, client };
 }
 
-it("keeps selected labels and false property input through a version refusal", async () => {
+it("restores selected labels and false property input after a lost response and recovered refusal", async () => {
   const { scope, client } = context();
   const fetch = vi.fn(async (input: string, init?: RequestInit) => input.includes("field-options") ? json(options)
-    : init?.method === "PATCH" ? json({ code: "stale_revision", collaboration_revision: "9007199254740994" }, 409)
+    : init?.method === "PATCH" ? Promise.reject(new TypeError("Response lost"))
       : input.includes("/operations/") ? json({ status: 409, code: "stale_revision", collaboration_revision: "9007199254740994" }) : json({ ...issue, execution: undefined }));
   vi.stubGlobal("fetch", fetch);
   const ui = (value: typeof issue) => <QueryClientProvider client={client}><CollaborationWorkflow scope={scope} issue={value} /></QueryClientProvider>;

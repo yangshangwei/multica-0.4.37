@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import pg from "pg";
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, type Page, type Request } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
 
 // Public creation remains gated. These disposable database records prove the
@@ -159,4 +159,144 @@ test("Web workbench keeps account scope through comments, uncertain cancellation
   expect(accountHeaders.length).toBeGreaterThan(5);
   expect(accountHeaders.every((headers) => !headers["x-workspace-id"] && !headers["x-workspace-slug"])).toBe(true);
   expect(errors).toEqual([]);
+});
+
+test("Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry", async ({ page, browser }, testInfo) => {
+  test.setTimeout(120_000);
+  test.skip(!apiUrl || !databaseUrl || !process.env.NEXT_PUBLIC_API_URL,
+    "Requires the isolated collaboration API/database and production Web with creation enabled");
+  for (const value of [apiUrl!, databaseUrl!, process.env.NEXT_PUBLIC_API_URL!]) {
+    expect(["localhost", "127.0.0.1"]).toContain(new URL(value).hostname);
+  }
+  expect(new URL(process.env.NEXT_PUBLIC_API_URL!).origin).toBe(new URL(apiUrl!).origin);
+
+  const key = randomUUID().slice(0, 10);
+  const creator = new TestApiClient();
+  const creatorEmail = `web-conflict-creator-${key}@example.invalid`;
+  const creatorName = `Browser conflict creator ${key}`;
+  await creator.login(creatorEmail, creatorName);
+  await creator.markUserOnboarded();
+  const source = await creator.ensureWorkspace("Browser conflict source", `web-conflict-source-${key}`);
+  const creatorAccount = await creator.requestJSON<{ id: string }>("/api/me");
+  const handler = new TestApiClient();
+  await handler.login(`web-conflict-handler-${key}@example.invalid`, "Browser external handler");
+  await handler.markUserOnboarded();
+  const external = await handler.ensureWorkspace("Browser conflict external", `web-conflict-external-${key}`);
+  const handlerAccount = await handler.requestJSON<{ id: string }>("/api/me");
+  expect((await creator.getWorkspaces()).map((workspace) => workspace.id)).toEqual([source.id]);
+  expect((await handler.getWorkspaces()).map((workspace) => workspace.id)).toEqual([external.id]);
+  expect(source.id).not.toBe(external.id);
+  expect(await creator.requestJSON("/api/collaboration/creation-options")).toMatchObject({ creation_enabled: true });
+  const issue = await creator.requestJSON<Snapshot & { title: string }>("/api/collaboration/issues", {
+    method: "POST", headers: { "Idempotency-Key": randomUUID() }, body: {
+      source_workspace_id: source.id, handler_user_id: handlerAccount.id,
+      title: `Browser lifecycle conflict ${key}`, description: "A real concurrent handoff must refuse an outdated completion without losing its form.", attachment_ids: [],
+    },
+  });
+
+  const handlerContext = await browser.newContext();
+  let releaseOriginal = () => {};
+  try {
+    const handlerPage = await handlerContext.newPage();
+    const errors: string[] = [];
+    const lifecyclePosts: Request[] = [];
+    const operationReads: string[] = [];
+    const lifecycle = `/api/collaboration/issues/${issue.id}/lifecycle`;
+    for (const view of [page, handlerPage]) view.on("pageerror", (error) => errors.push(error.message));
+    page.on("request", (request) => {
+      const path = new URL(request.url()).pathname;
+      if (path === lifecycle && request.method() === "POST") lifecyclePosts.push(request);
+      if (path.startsWith(`/api/collaboration/issues/${issue.id}/operations/`) && request.method() === "GET") operationReads.push(path);
+    });
+    await authenticatePage(page, creator.getToken()!);
+    await authenticatePage(handlerPage, handler.getToken()!);
+    const account = `/account?view=participating&issue=${issue.id}`;
+    await page.goto(account);
+    await handlerPage.goto(new URL(account, page.url()).href);
+    for (const view of [page, handlerPage]) {
+      await expect(view.getByRole("heading", { name: issue.title, exact: true })).toBeVisible();
+    }
+    await page.getByRole("button", { name: "Complete issue", exact: true }).click();
+    const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Complete issue", exact: true }) });
+    const status = form.getByLabel("Status", { exact: true });
+    await status.selectOption("done");
+    await expect(status).toHaveValue("done");
+
+    // Delay only the first real POST. The other account changes the same issue
+    // before the original request reaches the server; no receipt is fabricated.
+    const continueOriginal = new Promise<void>((resolve) => { releaseOriginal = resolve; });
+    await page.route(`**${lifecycle}`, async (route) => {
+      await continueOriginal;
+      await route.continue();
+    }, { times: 1 });
+    const originalRequest = page.waitForRequest((request) => new URL(request.url()).pathname === lifecycle && request.method() === "POST");
+    const originalResponse = page.waitForResponse((response) => new URL(response.url()).pathname === lifecycle && response.request().method() === "POST");
+    await form.getByRole("button", { name: "Confirm", exact: true }).click();
+    const original = await originalRequest;
+    const originalKey = original.headers()["idempotency-key"];
+    expect(originalKey).toBeTruthy();
+    expect(lifecyclePosts).toHaveLength(1);
+    expect(original.postDataJSON()).toMatchObject({ expected_collaboration_revision: issue.collaboration_revision, status: "done" });
+
+    await handlerPage.getByRole("button", { name: "Transfer", exact: true }).click();
+    const transfer = handlerPage.locator("form").filter({ has: handlerPage.getByRole("heading", { name: "Transfer", exact: true }) });
+    await transfer.getByLabel("Exact recipient", { exact: true }).fill(creatorEmail);
+    await transfer.getByRole("button", { name: "Find account", exact: true }).click();
+    await expect(transfer.getByText(`Selected account: ${creatorName}`, { exact: true })).toBeVisible();
+    await transfer.getByLabel("Note", { exact: true }).fill("Concurrent handoff makes the original completion stale.");
+    const transferred = handlerPage.waitForResponse((response) => new URL(response.url()).pathname === `/api/collaboration/issues/${issue.id}/handoffs` && response.request().method() === "POST");
+    await transfer.getByRole("button", { name: "Confirm", exact: true }).click();
+    expect((await transferred).status()).toBe(200);
+    const latest = await creator.requestJSON<Snapshot & { handler: { user_id: string }; status: string }>(`/api/collaboration/issues/${issue.id}`);
+    expect(latest.handler.user_id).toBe(creatorAccount.id);
+    expect(latest.collaboration_revision).not.toBe(issue.collaboration_revision);
+    expect(latest.status).toBe("todo");
+
+    releaseOriginal();
+    const refused = await originalResponse;
+    expect(refused.status()).toBe(409);
+    const refusedBody = await refused.json();
+    expect(refusedBody).toMatchObject({ code: "stale_revision" });
+    expect(refusedBody).not.toHaveProperty("status");
+    await expect(page.getByText("The server did not apply this action. Refresh the issue before trying again.", { exact: true })).toBeVisible();
+    await expect(page.getByText("Could not load collaboration. Try again.", { exact: true })).toHaveCount(0);
+    await expect(page.getByText("The result is not confirmed. Keep this request and check its original outcome.", { exact: true })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Check original result", exact: true })).toHaveCount(0);
+    await expect(form).toBeVisible();
+    await expect(status).toHaveValue("done");
+    const useCurrent = form.getByRole("button", { name: "Keep input and use current version", exact: true });
+    await expect(useCurrent).toBeEnabled();
+    expect(lifecyclePosts).toHaveLength(1);
+    expect(operationReads).toEqual([]);
+    await page.screenshot({ path: testInfo.outputPath("lifecycle-conflict-refused.png"), animations: "disabled" });
+
+    await useCurrent.click();
+    await expect(useCurrent).toHaveCount(0);
+    await expect(status).toHaveValue("done");
+    expect(lifecyclePosts).toHaveLength(1);
+    const completed = page.waitForResponse((response) => new URL(response.url()).pathname === lifecycle && response.request().method() === "POST");
+    await form.getByRole("button", { name: "Confirm", exact: true }).click();
+    const committed = await completed;
+    expect(committed.status()).toBe(200);
+    const freshKey = committed.request().headers()["idempotency-key"];
+    expect(freshKey).toBeTruthy();
+    expect(freshKey).not.toBe(originalKey);
+    expect(committed.request().postDataJSON()).toMatchObject({ expected_collaboration_revision: latest.collaboration_revision, status: "done" });
+    await expect(form).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Reopen issue", exact: true })).toBeVisible();
+    const final = await creator.requestJSON<Snapshot & { status: string; handler: { user_id: string }; execution: { commands: unknown[]; groups: unknown[]; runs: unknown[] } }>(`/api/collaboration/issues/${issue.id}`);
+    expect(final).toMatchObject({ id: issue.id, status: "done", handler: { user_id: creatorAccount.id }, execution: { commands: [], groups: [], runs: [] } });
+    expect(await creator.countIssueDispatches(issue.id)).toBe(0);
+    expect(lifecyclePosts).toHaveLength(2);
+    expect(operationReads).toEqual([]);
+    expect(errors).toEqual([]);
+    await page.screenshot({ path: testInfo.outputPath("lifecycle-conflict-completed.png"), animations: "disabled" });
+    await testInfo.attach("lifecycle-conflict-evidence", { body: JSON.stringify({ issueId: issue.id, sourceWorkspaceId: source.id,
+      externalWorkspaceId: external.id, originalKey, freshKey, originalRevision: issue.collaboration_revision, currentRevision: latest.collaboration_revision,
+      refusedStatus: refused.status(), refusedBody, committedStatus: committed.status(), lifecyclePosts: lifecyclePosts.length,
+      operationReads, finalStatus: final.status, unexpectedRuns: final.execution.runs.length, pageErrors: errors }, null, 2), contentType: "application/json" });
+  } finally {
+    releaseOriginal();
+    await handlerContext.close();
+  }
 });

@@ -51,6 +51,17 @@ explicit source authority before deleting its draft. Only a confirmed authority
 loss triggers protected cleanup. A failed authority refresh does not establish
 that loss.
 
+`executeCollaborationAction` settles a non-obsolete `ApiError` HTTP 409 only
+when the existing operation schema validates `code: "stale_revision"`, a positive
+decimal-string `collaboration_revision`, and an absent or matching body status.
+The current minimal workflow writer can omit body `status`; this known refusal
+must not remain an unknown request or render a query-loading error. Interpret it
+inside the awaited `protectCollaborationRead` callback, so scope/access-epoch
+checks still precede exact-draft retirement and authorized-view invalidation.
+Keep the form input and require explicit adoption of the latest baseline plus a
+new submit/key. Do not normalize arbitrary error codes or contradictory/malformed
+receipts, change the low-level API error contract, or retry automatically.
+
 Creation retirement requires the own-result GET's HTTP 200 and strict
 actor/source/request correlation with `outcome: rejected` and a recognized code.
 A 202 response, mismatched tuple or missing/malformed result remains unknown.
@@ -104,6 +115,8 @@ or baselines without silently replacing user intent.
 | Unknown execution or absent write context | No inferred control authority |
 | Supported participant with closed rollout gate | Stop/R45 remain available; Resume still validates |
 | Unknown write response or malformed receipt | Retain original key and pending intent |
+| Valid HTTP 409 stale_revision with absent/matching body status | Settle as refused; retain form input and require explicit latest-version submit |
+| Other statusless error code or contradictory body status | Preserve uncertain intent and original-key recovery |
 | Fresh recovery permission denial | Clear protected issue cache and obsolete drafts |
 | Access already denied before recovery | Accept only content-free own receipt |
 | Optional history route absent without object denial | Show history unavailable; retain authorized detail |
@@ -138,6 +151,13 @@ before checking immediate preview/detail cleanup. Native Electron exercises the
 production download IPC and restart with an isolated profile. Resource form E2E
 uses owned runtime/enrollment fixtures without launching an AI process.
 
+`collaboration/operation.test.ts` owns the statusless stale-revision refusal and
+unknown/denial/late-epoch matrix. Shared workflow tests must use the actual
+statusless 409 shape; remount recovery instead needs a genuinely lost response.
+`e2e/collaboration-workbench-web.spec.ts` verifies a real concurrent handoff,
+immediate refusal, no recovery GET or automatic POST, and an explicit same-page
+new-key completion. A browser reload must not hide this regression.
+
 ## 7. Wrong vs Correct
 
 Wrong: import request-bearing cancellation helpers from `ApiClient`, or always
@@ -145,3 +165,7 @@ drop the issue scope for GET recovery.
 
 Correct: import the pure schema leaf; retain the issue guard until access loss
 is already known, then allow only the exact content-free receipt contract.
+
+Wrong: settle every HTTP 409, or normalize a refusal outside the access guard.
+Correct: interpret only the validated stale-revision refusal within the protected
+request; let the existing confirmed-result path retire its exact pending intent.
