@@ -1,3 +1,4 @@
+import { invalidateCollaborationSourceViews } from "./invalidation";
 import { z } from "zod";
 import type { QueryClient } from "@tanstack/react-query";
 import { getApi } from "../api";
@@ -64,6 +65,7 @@ async function controlRequest(client: QueryClient, scope: CollaborationScope, so
     removeCollaborationDraft(draft, options?.storage);
     // The receipt is historical; re-read state rather than projecting it into
     // the live channel/hold cache, especially after operation recovery.
+    invalidateCollaborationSourceViews(client, scope, draft.scope.issueId);
     void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, draft.scope.issueId) });
     return result;
   } catch (error) {

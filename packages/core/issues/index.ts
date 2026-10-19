@@ -1,5 +1,6 @@
 export * from "./store";
 export * from "./canonical-id";
+export { findSourceIssue, sourceCollaborationAction, type SourceCollaborationAction } from "./source-collaboration";
 export * from "./queries";
 export * from "./mutations";
 export * from "./ws-updaters";

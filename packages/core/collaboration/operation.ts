@@ -5,6 +5,7 @@ import { CollaborationActionSchema, collaborationWriteContext, parseCollaboratio
 import { collaborationIssueAccessDenied, collaborationKeys, CollaborationUnavailableError, isCollaborationDenied, isCollaborationScopeCurrent, protectCollaborationRead, type CollaborationScope } from "./access";
 import { clearCollaborationDrafts, removeCollaborationDraft, saveCollaborationDraft, type CollaborationDraft } from "./draft";
 import type { CollaborationIssue } from "./schema";
+import { invalidateCollaborationSourceViews } from "./invalidation";
 
 type Intent<T = CollaborationAction> = T extends CollaborationAction ? Omit<T, keyof ReturnType<typeof collaborationWriteContext>> : never;
 export type CollaborationActionIntent = Intent;
@@ -29,6 +30,7 @@ export async function executeCollaborationAction(client: QueryClient, scope: Col
       return recovery ? recoverCollaborationAction(scope, draft) : sendCollaborationAction(scope, draft.scope.issueId, action);
     });
     removeCollaborationDraft(draft, storage);
+    invalidateCollaborationSourceViews(client, scope, draft.scope.issueId);
     if (!denied) void client.invalidateQueries({ queryKey: collaborationKeys.scope(scope) });
     return result;
   } catch (error) {

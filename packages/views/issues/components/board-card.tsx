@@ -14,6 +14,7 @@ import { descriptionPreview } from "./description-preview";
 import { formatDateOnly, isPastDateOnly } from "@multica/core/issues/date";
 import { CalendarClock, CalendarDays } from "lucide-react";
 import { ActorAvatar } from "../../common/actor-avatar";
+import { SourceCollaborationAccount } from "../../collaboration/source-bridge";
 import { PropertyIcon } from "../../common/property-icon";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { useActorName } from "@multica/core/workspace/hooks";
@@ -82,7 +83,7 @@ export const BoardCardContent = memo(function BoardCardContent({
     },
     [issue.id, surfaceActions, t],
   );
-  const canEdit = editable && !!surfaceActions;
+  const canEdit = editable && !!surfaceActions && !issue.collaboration;
 
   const showPriority = storeProperties.priority;
   const showDescription = storeProperties.description && issue.description;
@@ -102,7 +103,7 @@ export const BoardCardContent = memo(function BoardCardContent({
   const { getActorName } = useActorName();
   const assigneeName =
     showAssigneeName && issue.assignee_type && issue.assignee_id
-      ? getActorName(issue.assignee_type, issue.assignee_id)
+      ? issue.collaboration?.handler.name ?? getActorName(issue.assignee_type, issue.assignee_id)
       : null;
 
   const priorityLabel = t(($) => $.priority[issue.priority]);
@@ -139,7 +140,7 @@ export const BoardCardContent = memo(function BoardCardContent({
     ? "flex min-w-0 max-w-full items-center"
     : "inline-flex items-center";
 
-  const assigneeInner = hasAssignee ? (
+  const assigneeInner = issue.collaboration ? <SourceCollaborationAccount account={issue.collaboration.handler} showName={showAssigneeName} /> : hasAssignee ? (
     <span className="flex min-w-0 max-w-full items-center gap-1.5">
       <ActorAvatar
         actorType={issue.assignee_type!}
@@ -230,9 +231,9 @@ export const BoardCardContent = memo(function BoardCardContent({
 
       {/* Meta row: assignee (left), start date, due date, child progress (right) */}
       {showMetaRow && (
-        <div className="mt-2 flex items-center justify-between gap-2">
+        <div className={`mt-2 flex items-center justify-between gap-2${issue.collaboration ? " flex-wrap" : ""}`}>
           {showAssigneeSection && (
-            <div className="min-w-0 flex-1">
+            <div className={issue.collaboration ? "min-w-0 max-w-full flex-auto" : "min-w-0 flex-1"}>
               {assigneeNode}
             </div>
           )}

@@ -3,6 +3,7 @@ import { useQueryClient, type QueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { collaborationAccessEpoch, collaborationKeys, clearCollaborationAccess, clearCollaborationProjection, isCollaborationScopeCurrent, type CollaborationScope } from "../collaboration/access";
 import { collaborationIssueOptions } from "../collaboration/queries";
+import { invalidateCollaborationSourceViews, isCollaborationInvalidation } from "../collaboration/invalidation";
 import { nonnegativeVersion, positiveVersion } from "../collaboration/version";
 import type { WSEventType } from "../types/events";
 import { useOptionalWS } from "./provider";
@@ -42,13 +43,17 @@ export function bindCollaborationRealtime(client: QueryClient, scope: Collaborat
   };
   const refreshAccount = () => {
     if (!current()) return;
+    invalidateCollaborationSourceViews(client, scope);
     void client.invalidateQueries({ predicate: (query) => {
       const key = query.queryKey;
       return key[0] === "collaboration" && key[1] === scope.apiScope && key[2] === scope.userId && key[3] !== "issue";
     } });
   };
   const refreshIssue = (id: string) => {
-    if (current()) void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, id) });
+    if (current()) {
+      invalidateCollaborationSourceViews(client, scope, id);
+      void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, id) });
+    }
   };
   const recoverAccess = (id: string, sourceOnly = false) => {
     if (!current()) return;
@@ -93,7 +98,7 @@ export function bindCollaborationRealtime(client: QueryClient, scope: Collaborat
       refreshAccount();
     }),
     transport.subscribe("collaboration:workbench_changed", (payload) => {
-      if (!current() || !z.strictObject({}).safeParse(payload).success) return;
+      if (!current() || !isCollaborationInvalidation(payload)) return;
       refreshAccount();
       if (selected && subscriptionDenied) transport.revalidateScope("issue", selected);
     }),
@@ -114,6 +119,7 @@ export function bindCollaborationRealtime(client: QueryClient, scope: Collaborat
     }),
     transport.onAuthenticated(() => {
       if (!current()) return;
+      invalidateCollaborationSourceViews(client, scope);
       // Explicit cancellation covers a first GET with no cached data as well as
       // background refetches. It does not fence or cancel a pending POST.
       void client.cancelQueries({ queryKey: collaborationKeys.scope(scope) }, { revert: false }).then(() => {

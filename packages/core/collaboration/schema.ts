@@ -93,11 +93,11 @@ const actorValue = z.string().refine((value) => {
   return reference !== null && z.uuid().safeParse(reference.id).success;
 }, "Actor reference must contain a member UUID");
 
-function propertyValueMatchesDefinition(value: IssuePropertyValue, definition: CollaborationPropertyDefinition): boolean {
+export function collaborationPropertyValueMatchesDefinition(value: IssuePropertyValue, definition: CollaborationPropertyDefinition): boolean {
   switch (definition.type) {
     case "text":
     case "url": return typeof value === "string";
-    case "number": return typeof value === "number";
+    case "number": return typeof value === "number" && Number.isFinite(value);
     case "checkbox": return typeof value === "boolean";
     case "date": return z.iso.date().safeParse(value).success;
     case "select": return typeof value === "string" && definition.config.options?.some((option) => option.id === value) === true;
@@ -108,12 +108,32 @@ function propertyValueMatchesDefinition(value: IssuePropertyValue, definition: C
   }
 }
 
-export const CollaborationFieldOptionsSchema = z.object({
+export const CollaborationPropertyPatchSchema = z.record(
+  z.uuid(), z.union([z.string(), z.number(), z.boolean(), z.array(z.string()), z.null()]),
+).refine((values) => new Set(Object.keys(values).map((id) => id.toLowerCase())).size === Object.keys(values).length);
+
+const sourceReference = z.object({ id: z.uuid(), name: z.string(), identifier: z.string().optional() });
+const iterationReference = sourceReference.extend({ revision: positiveVersion, status: z.enum(["planned", "active", "completed", "cancelled"]) });
+export const CollaborationSourceOptionsSchema = z.object({
+  projects: z.array(sourceReference), parents: z.array(sourceReference), parents_truncated: z.boolean(),
+  iterations: z.array(iterationReference), iterations_enabled: z.boolean(),
+}).refine((value) => [value.projects, value.parents, value.iterations].every((items) => new Set(items.map((item) => item.id.toLowerCase())).size === items.length));
+export const CollaborationSourceStructureSchema = z.object({
+  issue_revision: positiveVersion, project: sourceReference.nullable(), parent_issue: sourceReference.nullable(),
+  iteration: iterationReference.nullable(), stage: z.number().int().min(1).max(2147483647).nullable(),
+});
+export type CollaborationSourceOptions = z.infer<typeof CollaborationSourceOptionsSchema>;
+export type CollaborationSourceStructure = z.infer<typeof CollaborationSourceStructureSchema>;
+export const CollaborationFieldCatalogSchema = z.object({
+  labels: labelSummaries,
+  properties: propertyDefinitions.refine((items) => items.every((item) => item.archived === false), "Editing options must be active"),
+});
+
+export const CollaborationFieldOptionsSchema = CollaborationFieldCatalogSchema.extend({
   issue_id: z.string().uuid(),
   source_workspace_id: z.string().uuid(),
   collaboration_revision: positiveVersion,
-  labels: labelSummaries,
-  properties: propertyDefinitions.refine((items) => items.every((item) => item.archived === false), "Editing options must be active"),
+  source_options: CollaborationSourceOptionsSchema.optional(),
 });
 
 export type CollaborationFieldOptions = z.infer<typeof CollaborationFieldOptionsSchema>;
@@ -145,6 +165,7 @@ export const CollaborationIssueSchema = z.object({
   labels: labelSummaries.optional(),
   properties: propertyValues.optional(),
   property_definitions: propertyDefinitions.optional(),
+  source_structure: CollaborationSourceStructureSchema.optional(),
   source_workspace: sourceWorkspaceSummary,
   creator: accountSummary,
   handler: accountSummary,
@@ -184,7 +205,7 @@ export const CollaborationIssueSchema = z.object({
   const entries = Object.entries(values);
   return entries.length === definitions.length && entries.every(([id, value]) => {
     const definition = byId.get(id.toLowerCase());
-    return definition !== undefined && propertyValueMatchesDefinition(value, definition);
+    return definition !== undefined && collaborationPropertyValueMatchesDefinition(value, definition);
   });
 }, "Current property values require matching definitions and value types").refine((issue) => {
   const execution = issue.execution;
@@ -306,6 +327,17 @@ export interface CollaborationEditInput extends CollaborationWriteInput {
   labelIds?: string[] | null;
   /** A per-definition patch; null at a key clears it, outer null preserves all. */
   properties?: Record<string, IssuePropertyValue | null> | null;
+  projectId?: string | null;
+  parentIssueId?: string | null;
+  stage?: number | null;
+}
+
+export interface CollaborationIterationInput extends CollaborationWriteInput {
+  iterationId: string | null;
+  expectedIssueRevision: string;
+  expectedIterationRevision?: string;
+  iterationReason: string;
+  allowCompleted?: boolean;
 }
 
 export interface CollaborationStatusInput extends CollaborationWriteInput {

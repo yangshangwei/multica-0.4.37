@@ -69,10 +69,18 @@ export const CollaborationTriggerPreviewSchema = z.object({
 
 export const CollaborationCommentReceiptSchema = z.object({
   status: z.number().int(), code: z.string().min(1), protocol_version: z.literal(2),
+  request_id: uuid.optional(), action: z.string().optional(),
   issue_id: uuid, comment_id: uuid, comment_revision: positiveVersion, event_id: uuid.nullish(), event_seq: positiveVersion.nullish(),
   targets: z.array(targetResult).refine(uniqueTargets),
   attachment_ids: collaborationAttachmentIds.optional(),
 }).refine((value) => {
+  if (value.status >= 400) {
+    const expectedStatus: Record<string, number> = { stale_comment_revision: 409, comment_deleted: 409, forbidden: 403, not_found: 404, invalid_comment_request: 400 };
+    return value.status === expectedStatus[value.code] &&
+      value.request_id !== undefined && (value.action === "edit_comment" || value.action === "delete_comment") &&
+      (value.code !== "invalid_comment_request" || value.action === "edit_comment") &&
+      value.event_id == null && value.event_seq == null && value.targets.length === 0;
+  }
   if (value.code === "unchanged") {
     return value.status === 200 && value.event_id == null && value.event_seq == null && value.targets.length === 0;
   }

@@ -33,6 +33,12 @@ export function collaborationCommentHistoryOptions(client: QueryClient, scope: C
     queryFn: ({ signal }) => protectCollaborationRead(client, scope, issueId, () => getApi().getCollaborationCommentHistory(issueId, commentId, { signal })),
   });
 }
+export function collaborationIssueReactionsOptions(client: QueryClient, scope: CollaborationScope, issueId: string) {
+  return queryOptions({
+    queryKey: [...collaborationKeys.issue(scope, issueId), "reactions"], ...freshness,
+    queryFn: ({ signal }) => protectCollaborationRead(client, scope, issueId, () => getApi().getCollaborationIssueReactions(issueId, { signal })),
+  });
+}
 export function collaborationMentionTargetsOptions(client: QueryClient, scope: CollaborationScope, issueId: string) {
   return queryOptions({
     queryKey: [...collaborationKeys.issue(scope, issueId), "mention-targets"], ...freshness,

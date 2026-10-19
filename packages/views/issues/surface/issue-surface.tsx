@@ -34,6 +34,7 @@ import { SwimLaneView } from "../components/swimlane-view";
 import { TableView } from "../components/table-view";
 import { useT } from "../../i18n";
 import { CollectionPageState } from "../../layout/collection-page";
+import { SourceCollaborationActionDialog } from "../../collaboration/source-bridge";
 import type { GanttRecoveryState } from "./use-issue-surface-data";
 import { IssueContextMenuProvider } from "../actions";
 import { IssueSurfaceActionsProvider } from "./actions-context";
@@ -286,6 +287,7 @@ function IssueSurfaceContent({
             }
           />
         )}
+        {controller.collaborationAction && <SourceCollaborationActionDialog action={controller.collaborationAction} close={controller.dismissCollaborationAction} />}
         {controller.ganttRecovery.failed && controller.ganttRecovery.hasData && (
           <GanttLoadNotice recovery={controller.ganttRecovery} />
         )}

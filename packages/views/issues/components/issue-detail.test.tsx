@@ -19,6 +19,10 @@ import enTriage from "../../locales/en/triage.json";
 
 const TEST_RESOURCES = { en: { common: enCommon, issues: enIssues, triage: enTriage } };
 
+vi.mock("../../collaboration/source-bridge", () => ({
+  SourceCollaborationDetail: ({ issueId, commentId }: { issueId: string; commentId?: string }) => <div data-testid="source-collaboration-detail">{issueId}:{commentId}</div>,
+}));
+
 const mockViewport = vi.hoisted(() => ({ isMobile: false }));
 
 // Counts MockContentEditor mounts. This pins the description to exactly one
@@ -642,6 +646,8 @@ function renderIssueDetailWithStatusCatalog(
   issueId = "issue-1",
 ) {
   const queryClient = createTestQueryClient();
+  // The source-mode read completes before ordinary catalog observers mount.
+  queryClient.setQueryDefaults(issueStatusKeys.list("ws-1"), { gcTime: Infinity });
   queryClient.setQueryData(issueStatusKeys.list("ws-1"), { statuses: entries });
   return render(
     <I18nProvider locale="en" resources={TEST_RESOURCES}>
@@ -722,6 +728,26 @@ describe("IssueDetail (shared)", () => {
     // Reset project mock — individual tests override per case. Default fixture
     // has project_id: null so getProject is not invoked.
     mockApiObj.getProject.mockReset();
+  });
+
+  it("classifies embedded collaboration detail before any ordinary execution or timeline hooks", async () => {
+    const account = { user_id: "external", name: "External handler", avatar_url: "", external: true };
+    mockApiObj.getIssue.mockResolvedValue({ ...mockIssue, collaboration: { creator: account, handler: account, has_external_collaborators: true } });
+    renderIssueDetail(mockIssue.id, { highlightCommentId: "linked-comment" });
+    expect(await screen.findByTestId("source-collaboration-detail")).toHaveTextContent(`${mockIssue.id}:linked-comment`);
+    expect(mockApiObj.listTimeline).not.toHaveBeenCalled();
+    expect(mockApiObj.listTasksByIssue).not.toHaveBeenCalled();
+    expect(screen.queryByRole("button", { name: "Issue actions" })).not.toBeInTheDocument();
+  });
+
+  it("retains a collaboration relationship already present in a source list when a partial detail omits it", async () => {
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: Infinity } } });
+    const account = { user_id: "external", name: "External handler", avatar_url: "", external: true };
+    client.setQueryData(["issues", "ws-1", "table-query", "rows", "source"], { rows: [{ issue: { ...mockIssue, collaboration: { creator: account, handler: account, has_external_collaborators: true } } }] });
+    render(<I18nProvider locale="en" resources={TEST_RESOURCES}><QueryClientProvider client={client}><IssueDetail issueId={mockIssue.id} /></QueryClientProvider></I18nProvider>);
+    expect(await screen.findByTestId("source-collaboration-detail")).toHaveTextContent(mockIssue.id);
+    expect(mockApiObj.listTimeline).not.toHaveBeenCalled();
+    client.clear();
   });
 
   it.each(["cb240efb-154c-42a8-ae92-42b02676feca", "TES-1"])("retries a cold HTTP 500 at route %s without claiming deletion", async (routeId) => {

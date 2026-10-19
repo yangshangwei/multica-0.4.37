@@ -27,6 +27,7 @@ import { propertyListOptions, useSetIssueProperty, useUnsetIssueProperty } from 
 import { useWorkspaceId } from "@multica/core/hooks";
 import type { IssueGrouping } from "@multica/core/issues/stores/view-store";
 import { useActorName } from "@multica/core/workspace/hooks";
+import { useIssueSurfaceActionsOptional } from "../surface/actions-context";
 import { BoardColumn, BOARD_CARD_WIDTH, type BoardColumnGroup } from "./board-column";
 import { BoardCardContent } from "./board-card";
 import { HiddenColumnsPanel, HiddenColumnRow } from "./hidden-columns-panel";
@@ -203,7 +204,8 @@ function buildGroups(
     if (issue.assignee_type && issue.assignee_id) {
       groups.set(id, {
         id,
-        title: getActorName(issue.assignee_type, issue.assignee_id),
+        title: issue.collaboration?.handler.name ?? getActorName(issue.assignee_type, issue.assignee_id),
+        account: issue.collaboration?.handler,
         assigneeType: issue.assignee_type,
         assigneeId: issue.assignee_id,
         createData: {
@@ -333,6 +335,7 @@ function BoardViewImpl({
       })
     : null;
   const { getActorName } = useActorName();
+  const surfaceActions = useIssueSurfaceActionsOptional();
   const groupedIssues = useMemo(
     () => (groupBranches?.enabled ? groupBranches.issues : issues),
     [groupBranches, issues],
@@ -352,8 +355,9 @@ function BoardViewImpl({
         return [{
           id: descriptor.key,
           title: actor
-            ? getActorName(actor.type, actor.id)
+            ? descriptor.value.account?.name ?? getActorName(actor.type, actor.id)
             : t(($) => $.filters.no_assignee),
+          account: descriptor.value.account,
           assigneeType: actor?.type ?? null,
           assigneeId: actor?.id ?? null,
           totalCount: descriptor.count,
@@ -534,6 +538,8 @@ function BoardViewImpl({
       const activeId = active.id as string;
       const overId = over.id as string;
 
+      if (issueMapRef.current.get(activeId)?.collaboration) return;
+
       setColumns((prev) => {
         const activeCol = findColumn(prev, activeId, groupIds);
         const overCol = findColumn(prev, overId, groupIds);
@@ -575,6 +581,16 @@ function BoardViewImpl({
       const overCol = findColumn(cols, overId, groupIds);
       if (!activeCol || !overCol) {
         resetColumns();
+        return;
+      }
+
+      const sourceIssue = issueMapRef.current.get(activeId);
+      if (sourceIssue?.collaboration && activeCol !== overCol) {
+        resetColumns();
+        const target = groupMap.get(overCol);
+        if (!target) return;
+        if (target.propertyId) surfaceActions?.openCollaboration?.({ issueId: activeId, action: "edit" });
+        else onMoveIssue(activeId, { ...getMoveUpdates(target, sourceIssue.position, sourceIssue), before_id: null, after_id: null });
         return;
       }
 
@@ -638,7 +654,7 @@ function BoardViewImpl({
           },
           beginSettle(),
         );
-        applyPropertyGroupValue(finalGroup, activeId);
+        if (!currentIssue?.collaboration) applyPropertyGroupValue(finalGroup, activeId);
         return;
       }
 
@@ -667,9 +683,9 @@ function BoardViewImpl({
         },
         beginSettle(),
       );
-      applyPropertyGroupValue(finalGroup, activeId);
+      if (!currentIssue?.collaboration) applyPropertyGroupValue(finalGroup, activeId);
     },
-    [groupedIssues, groups, grouping, groupingOptionIds, onMoveIssue, groupIds, groupMap, sortBy, beginSettle, columnsRef, isDraggingRef, setColumns, applyPropertyGroupValue],
+    [groupedIssues, groups, grouping, groupingOptionIds, onMoveIssue, groupIds, groupMap, sortBy, beginSettle, columnsRef, isDraggingRef, setColumns, applyPropertyGroupValue, surfaceActions],
   );
 
   const handleOrderMove = useCallback((issueId: string, direction: OrderDirection) => {

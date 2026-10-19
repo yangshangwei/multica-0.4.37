@@ -11,6 +11,14 @@ const actor = "member:00000000-0000-4000-8000-000000000004";
 
 afterEach(() => setSchemaLogger(noopLogger));
 
+it("preserves minimal source references and rejects a malformed source catalog", () => {
+  const source = { issue_revision: "9007199254740993", project: null, parent_issue: null, iteration: null, stage: null };
+  expect(parseCollaborationIssue({ ...issue, source_structure: source })?.source_structure).toEqual(source);
+  expect(parseCollaborationIssue({ ...issue, source_structure: { ...source, issue_revision: 9 } })).toBeNull();
+  expect(parseCollaborationFieldOptions({ ...options, source_options: { projects: [], parents: [], iterations: [], parents_truncated: false, iterations_enabled: true } })?.source_options).toEqual({ projects: [], parents: [], iterations: [], parents_truncated: false, iterations_enabled: true });
+  expect(parseCollaborationFieldOptions({ ...options, source_options: { projects: [], parents: [], iterations: [], iterations_enabled: true } })).toBeNull();
+});
+
 it("preserves missing older-server fields as unknown and explicit empty fields as empty", () => {
   const older = parseCollaborationIssue(issue);
   expect(older).not.toHaveProperty("labels");

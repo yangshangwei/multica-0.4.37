@@ -1,6 +1,7 @@
 "use client";
 
 import { iterationManagementEvent, refreshIterationSettingsDependents } from "../iterations/realtime";
+import { invalidateSourceIssueViews, isCollaborationInvalidation } from "../collaboration/invalidation";
 import { projectManagementEvent } from "../projects/realtime";
 import { clearProtectedProjectContent, markProjectDeleted, isProjectDeletePending } from "../projects/access";
 
@@ -993,6 +994,13 @@ export function useRealtimeSync(
     ]);
 
     const unsubAny = ws.onAny((msg) => {
+      if (msg.type === "collaboration:workbench_changed") {
+        const workspaceId = getCurrentWsId();
+        if (workspaceId && isCollaborationInvalidation(msg.payload)) {
+          debouncedRefresh(`collaboration-source:${workspaceId}`, () => invalidateSourceIssueViews(qc, workspaceId));
+        }
+        return;
+      }
       if (msg.type === "project:deleted" && msg.payload && typeof msg.payload === "object") {
         const payload = msg.payload as { project_id?: string; workspace_id?: string };
         const wsId = payload.workspace_id ?? getCurrentWsId();

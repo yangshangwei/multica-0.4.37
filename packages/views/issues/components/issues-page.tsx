@@ -1,6 +1,8 @@
 "use client";
 
 import { ListTodo } from "lucide-react";
+import { useWorkspaceId } from "@multica/core/hooks";
+import { SourceCollaborationCreation } from "../../collaboration/source-bridge";
 import type {
   Issue,
   IssueTableFacetSpec,
@@ -48,6 +50,7 @@ function IssuesSurfaceHeader({
 
 export function IssuesPage() {
   const { t } = useT("issues");
+  const wsId = useWorkspaceId();
   const scope = useIssuesScope("issues");
 
   return (
@@ -55,6 +58,7 @@ export function IssuesPage() {
       <PageHeader>
         <ListTodo className="h-4 w-4 text-muted-foreground" />
         <h1 className="text-body font-medium">{t(($) => $.page.breadcrumb_title)}</h1>
+        <div className="ml-auto"><SourceCollaborationCreation workspaceId={wsId} /></div>
       </PageHeader>
 
       <IssueSurface

@@ -135,6 +135,7 @@ export interface IssueTriggerPreview {
 }
 
 export interface ListIssuesParams {
+  external_collaborators?: boolean;
   limit?: number;
   offset?: number;
   workspace_id?: string;
@@ -229,6 +230,7 @@ export interface IssueActorRef {
 }
 
 export interface ListGroupedIssuesParams {
+  external_collaborators?: boolean;
   group_by: "assignee";
   limit?: number;
   offset?: number;
@@ -302,6 +304,7 @@ export type IssueTableScope =
   | { kind: "my"; relation: "assigned" | "created" | "involved" | "any" };
 
 export interface IssueTableFilters {
+  external_collaborators?: boolean;
   statuses?: IssueStatus[];
   priorities?: IssuePriority[];
   assignees?: IssueActorRef[];
@@ -392,7 +395,7 @@ export interface IssueTableParentRef {
 
 export type IssueTableGroupValue =
   | { kind: "status"; status: string }
-  | { kind: "assignee"; actor: IssueTableActorRef | null }
+  | { kind: "assignee"; actor: IssueTableActorRef | null; account?: NonNullable<Issue["collaboration"]>["handler"] }
   | { kind: "project"; project_id: string | null }
   | {
       kind: "parent";

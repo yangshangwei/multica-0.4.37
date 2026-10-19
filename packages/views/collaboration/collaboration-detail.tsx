@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
-import { collaborationCommentsOptions, collaborationCommentOptions, collaborationIssueAccessDenied, isCollaborationDenied, useCollaborationIssue, type CollaborationScope } from "@multica/core/collaboration";
+import { collaborationCommentsOptions, collaborationCommentOptions, collaborationIssueAccessDenied, isCollaborationDenied, useCollaborationIssue, type CollaborationComment, type CollaborationScope } from "@multica/core/collaboration";
 import type { AccountDestination } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
 import { RichContent } from "../rich-content";
@@ -11,8 +11,10 @@ import { CollaborationWorkflow } from "./workflow";
 import { CollaborationExecutionPanel } from "./execution-panel";
 import { CollaborationCommentComposer } from "./comment-composer";
 import { CollaborationActivity } from "./activity";
-import { CollaborationCommentHistory } from "./comment-history";
-import { CollaborationAttachmentPanel, CollaborationCommentAttachments } from "./attachment-panel";
+import { CollaborationCommentList } from "./comment-list";
+import { CollaborationIssueReactions } from "./discussion-actions";
+import { CollaborationAttachmentPanel } from "./attachment-panel";
+import { CollaborationFieldSummary } from "./field-summary";
 import { useRestoredScrollRef } from "../platform";
 
 export function CollaborationDetail({ scope, destination }: { scope: CollaborationScope; destination: AccountDestination }) {
@@ -25,6 +27,7 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
   const linkedComment = useQuery({ ...collaborationCommentOptions(client, scope, issueId, destination.commentId ?? ""),
     enabled: query.data?.capabilities.read === true && destination.commentId !== null && !comments.data?.pages.some((page) => page.items.some((comment) => comment.id === destination.commentId)) });
   const root = useRef<HTMLDivElement>(null);
+  const [replyTo, setReplyTo] = useState<CollaborationComment | null>(null);
   const consumedAnchor = useRef<string | null>(null);
   const restored = useRef(false);
   const restoreScroll = useRestoredScrollRef("account-detail");
@@ -66,6 +69,8 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
     <section id="description" tabIndex={-1} className="min-w-0 space-y-3"><h3 className="text-body font-semibold">{t(($) => $.detail.description)}</h3>
       <RichContent resourcePolicy="restricted" content={issue.description} />
     </section>
+    <CollaborationFieldSummary issue={issue} />
+    <CollaborationIssueReactions scope={scope} issue={issue} />
     <CollaborationAttachmentPanel scope={scope} issue={issue} />
     <CollaborationExecutionPanel scope={scope} issue={issue} />
     <CollaborationActivity scope={scope} destination={destination} />
@@ -74,14 +79,9 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
       {comments.error && <CollaborationQueryState error={comments.error} retry={() => void comments.refetch()} />}
       {linkedComment.error && <CollaborationQueryState error={linkedComment.error} retry={() => void linkedComment.refetch()} />}
       {comments.isSuccess && rows.length === 0 && <p className="text-body text-muted-foreground">{t(($) => $.detail.noComments)}</p>}
-      <ol className="space-y-6">{rows.map((comment) => <li id={`comment-${comment.id}`} tabIndex={-1} key={comment.id} className="min-w-0 space-y-3 rounded-md py-2 target:bg-accent">
-        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-caption text-muted-foreground"><span className="font-medium text-foreground">{comment.author?.name ?? t(($) => $.detail.unknownAuthor)}</span><time dateTime={comment.created_at}>{new Date(comment.created_at).toLocaleString()}</time>{comment.resolved_at !== null && <span>{t(($) => $.detail.resolved)}</span>}</div>
-        {comment.deleted_at !== null ? <p className="text-body text-muted-foreground">{t(($) => $.detail.deleted)}</p> : <RichContent resourcePolicy="restricted" content={comment.content} />}
-        {comment.deleted_at === null && <CollaborationCommentAttachments scope={scope} issueId={issueId} attachmentIds={comment.attachment_ids} />}
-        <CollaborationCommentHistory scope={scope} issueId={issueId} commentId={comment.id} />
-      </li>)}</ol>
+      <CollaborationCommentList key={`comments:${issueId}`} scope={scope} issue={issue} comments={rows} onReply={setReplyTo} />
       {comments.hasNextPage && <Button variant="outline" className="pointer-coarse:min-h-11" disabled={comments.isFetchingNextPage} onClick={() => void comments.fetchNextPage()}>{t(($) => $.page.more)}</Button>}
-      <CollaborationCommentComposer scope={scope} issue={issue} />
+      <CollaborationCommentComposer key={`composer:${issueId}`} scope={scope} issue={issue} replyTo={replyTo?.issue_id === issueId ? replyTo : null} onCancelReply={() => setReplyTo(null)} onSent={() => setReplyTo(null)} />
     </section>
   </div>;
 }

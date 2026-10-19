@@ -61,7 +61,7 @@ export function ActorPropertyPicker({
   triggerRender,
   emptyRow,
 }: {
-  property: IssueProperty;
+  property: Pick<IssueProperty, "type">;
   value: IssuePropertyValue | undefined;
   onChange: (value: IssuePropertyValue | undefined) => void;
   open: boolean;

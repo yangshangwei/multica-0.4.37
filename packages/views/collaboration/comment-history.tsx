@@ -5,6 +5,7 @@ import { Button } from "@multica/ui/components/ui/button";
 import { useT } from "../i18n";
 import { RichContent } from "../rich-content";
 import { CollaborationQueryState } from "./query-state";
+import { CollaborationCommentAttachments } from "./attachment-panel";
 
 export function CollaborationCommentHistory({ scope, issueId, commentId }: { scope: CollaborationScope; issueId: string; commentId: string }) {
   const { t } = useT("collaboration");
@@ -20,8 +21,8 @@ export function CollaborationCommentHistory({ scope, issueId, commentId }: { sco
       {query.isSuccess && query.data.items.length === 0 && <p className="text-caption text-muted-foreground">{t(($) => $.activity.empty)}</p>}
       {query.data?.items.map((item) => <div key={item.event_id} className="min-w-0 space-y-3">
         <p className="text-caption text-muted-foreground">{item.actor?.name ?? t(($) => $.detail.unknownAuthor)} · <time dateTime={item.created_at}>{new Date(item.created_at).toLocaleString()}</time></p>
-        {item.before !== null && <div className="space-y-1"><p className="text-caption text-muted-foreground">{t(($) => $.activity.before)}</p><RichContent resourcePolicy="restricted" content={item.before} /></div>}
-        <div className="space-y-1"><p className="text-caption text-muted-foreground">{t(($) => $.activity.after)}</p>{item.kind === "comment_deleted" ? <p className="text-body">{t(($) => $.detail.deleted)}</p> : <RichContent resourcePolicy="restricted" content={item.after} />}</div>
+        {item.before !== null && <div className="space-y-1"><p className="text-caption text-muted-foreground">{t(($) => $.activity.before)}</p><RichContent resourcePolicy="restricted" content={item.before} /><CollaborationCommentAttachments scope={scope} issueId={issueId} attachmentIds={item.before_attachment_ids ?? []} /></div>}
+        <div className="space-y-1"><p className="text-caption text-muted-foreground">{t(($) => $.activity.after)}</p>{item.kind === "comment_deleted" ? <p className="text-body">{t(($) => $.detail.deleted)}</p> : <RichContent resourcePolicy="restricted" content={item.after} />}<CollaborationCommentAttachments scope={scope} issueId={issueId} attachmentIds={item.after_attachment_ids ?? []} /></div>
       </div>)}
     </div>}
   </div>;

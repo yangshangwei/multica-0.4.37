@@ -7,6 +7,8 @@ import pg from "pg";
 import { _electron as electron, test, expect, type ElectronApplication, type Page, type TestInfo } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
 import { seedCollaborationResourceJourney, type CollaborationResourceSnapshot } from "./fixtures/collaboration-resources";
+import { createCollaborationWithInitialFields, exerciseCollaborationDiscussion, exerciseCollaborationFields,
+  seedCollaborationEditing } from "./fixtures/collaboration-editing";
 
 // Existing-record tests use a DB seed; the named creation/attachment test below
 // uses the actual gated creation API and an explicitly enabled isolated server.
@@ -341,6 +343,43 @@ test("Desktop creates a private collaboration issue, downloads through native IP
   }
 });
 
+test("Desktop authors initial fields and preserves discussion through shared edit controls", async ({ browserName: _browserName }, testInfo) => {
+  test.setTimeout(240_000);
+  const editing = await seedCollaborationEditing();
+  const profile = mkdtempSync(join(tmpdir(), "multica-collaboration-editing-"));
+  let app: ElectronApplication | undefined;
+  try {
+    const native = await openDesktop(profile, { token: editing.source.getToken()!, deepLink: "multica://account" });
+    app = native.app;
+    await native.start();
+    const issue = await createCollaborationWithInitialFields(native.page, editing);
+    await exerciseCollaborationFields(native.page, editing, issue.id);
+    const discussion = await exerciseCollaborationDiscussion(native.page, editing.source, issue.id);
+    expect((await snapshot(native.page)).accountGroup!.tabs).toHaveLength(1);
+    expect((await snapshot(native.page)).accountGroup!.tabs[0].url).toContain(`issue=${issue.id}`);
+    await nativeScreenshot(app, native.page, testInfo.outputPath("desktop-collaboration-editing.png"));
+    const window = await app.browserWindow(native.page);
+    await window.evaluate((target) => target.webContents.setZoomFactor(2));
+    await window.dispose();
+    await native.page.getByRole("button", { name: "Edit issue", exact: true }).click();
+    const editDescription = native.page.getByLabel("Description", { exact: true });
+    await editDescription.evaluate((element) => element.scrollIntoView({ block: "center" }));
+    await expect(editDescription).toBeInViewport({ ratio: 1 });
+    expect(await native.page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+    await nativeScreenshot(app, native.page, testInfo.outputPath("desktop-collaboration-editing-zoom200.png"));
+    expect(native.errors).toEqual([]);
+    expect(native.accountHeaders.every((headers) => !("x-workspace-id" in headers) && !("x-workspace-slug" in headers))).toBe(true);
+    await testInfo.attach("native-editing-evidence", { body: JSON.stringify({ issueId: issue.id, sourceWorkspaceId: editing.workspace.id,
+      discussion, zoom: 2, oneAccountTab: true }, null, 2), contentType: "application/json" });
+  } catch (error) {
+    await attachFailure(app, testInfo);
+    throw error;
+  } finally {
+    await app?.close().catch(() => undefined);
+    rmSync(profile, { recursive: true, force: true });
+  }
+});
+
 // The Web suite owns the authority/recovery matrix; this exercises the shared
 // resource forms in a real native account window with no executable runtime.
 test("Desktop resource owners authorize, withdraw and commit a held configuration switch", async ({ browserName: _browserName }, testInfo) => {
@@ -645,7 +684,10 @@ test("Desktop viewer and server changes discard the previous account tab and clo
     await deepLink(app, accountPath(fixture.issues[1], "participating"));
     await expect(native.page.getByRole("heading", { name: fixture.issues[1].title, exact: true })).toBeVisible();
     await app.close();
-    const otherEndpoint = apiUrl!.replace("127.0.0.1", "localhost");
+    const otherURL = new URL(apiUrl!);
+    otherURL.hostname = otherURL.hostname === "127.0.0.1" ? "localhost" : "127.0.0.1";
+    const otherEndpoint = otherURL.origin;
+    expect(otherEndpoint).not.toBe(new URL(apiUrl!).origin);
     const changedServer = await openDesktop(profile, { token: fixture.emptyToken, serverUrl: otherEndpoint });
     app = changedServer.app;
     await changedServer.start();

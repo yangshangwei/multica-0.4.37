@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
+import { accountPath } from "@multica/core/paths";
+import { useNavigation } from "../../navigation";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
@@ -106,6 +108,8 @@ export function IssueActionsMenuItems({
   onDeletedFallbackPath,
 }: IssueActionsMenuItemsProps) {
   const { t } = useT("issues");
+  const { t: tCollaboration } = useT("collaboration");
+  const navigation = useNavigation();
   const wsId = useWorkspaceId();
   const statusOptions = useStatusOptions(wsId);
   const { categoryOf, colorOf } = useIssueStatuses(wsId);
@@ -134,6 +138,7 @@ export function IssueActionsMenuItems({
     queryKey: issueKeys.tasks(issue.id),
     queryFn: () => api.listTasksByIssue(issue.id),
     staleTime: 30_000,
+    enabled: !issue.collaboration,
   });
   const workdirCopyTarget = useMemo(
     () => resolveWorkdirCopyTarget(tasks),
@@ -168,6 +173,10 @@ export function IssueActionsMenuItems({
       toast.success(t(($) => $.detail.workdir_path_copied));
     });
   }, [workdirCopyTarget, t]);
+
+  if (issue.collaboration) return <P.Item onClick={() => navigation.push(accountPath({ view: "participating", issueId: issue.id }))}>
+    <ExternalLink className="size-4" />{tCollaboration(($) => $.source.open)}
+  </P.Item>;
 
   return (
     <>

@@ -24,6 +24,7 @@ export function CollaborationActivity({ scope, destination }: { scope: Collabora
         <time dateTime={item.created_at}>{new Date(item.created_at).toLocaleString()}</time>
       </div>
       {!item.details_available && <p className="text-caption text-muted-foreground">{t(($) => $.activity.detailsUnavailable)}</p>}
+      {item.details_available && item.kind === "iteration_changed" && item.note && <p className="text-body whitespace-pre-wrap [overflow-wrap:anywhere]">{item.note}</p>}
       {item.handoff ? <div className="space-y-2 text-body">
         <p>{t(($) => $.activity.handoff, { from: item.handoff.from?.name ?? t(($) => $.detail.unknownAuthor), to: item.handoff.to?.name ?? t(($) => $.detail.unknownAuthor) })}</p>
         {item.handoff.note && <RichContent resourcePolicy="restricted" content={item.handoff.note} />}

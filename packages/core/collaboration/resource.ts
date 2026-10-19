@@ -1,3 +1,4 @@
+import { invalidateCollaborationSourceViews } from "./invalidation";
 import { z } from "zod";
 import { queryOptions, type QueryClient } from "@tanstack/react-query";
 import { getApi } from "../api";
@@ -78,7 +79,10 @@ export async function executeCollaborationResource(client: QueryClient, scope: C
     });
     if (!isCollaborationScopeCurrent(scope) || collaborationAccessEpoch(client, scope, draft.scope.issueId) !== epoch) throw new DOMException("Collaboration access changed", "AbortError");
     removeCollaborationDraft(draft, options?.storage);
-    if (!denied) void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, draft.scope.issueId) });
+    if (!denied) {
+      invalidateCollaborationSourceViews(client, scope, draft.scope.issueId);
+      void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, draft.scope.issueId) });
+    }
     return result;
   } catch (error) {
     if (isCollaborationDenied(error)) clearCollaborationDrafts(options?.storage, draft.scope);

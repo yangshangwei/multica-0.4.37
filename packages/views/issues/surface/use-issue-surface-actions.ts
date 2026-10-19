@@ -1,6 +1,10 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useWorkspaceId } from "@multica/core/hooks";
+import { useIssueStatuses } from "@multica/core/issue-statuses/hooks";
+import { findSourceIssue, sourceCollaborationAction, type SourceCollaborationAction } from "@multica/core/issues";
 import { toast } from "sonner";
 import type { UpdateIssueRequest } from "@multica/core/types";
 import {
@@ -32,6 +36,8 @@ export type MoveIssueUpdates = Pick<
 };
 
 export interface IssueSurfaceActionController {
+  collaborationAction: SourceCollaborationAction | null;
+  dismissCollaborationAction: () => void;
   actions: IssueSurfaceActions;
   openCreateIssue: (defaults?: IssueCreateDefaults) => void;
   moveIssue: (
@@ -48,6 +54,11 @@ export function useIssueSurfaceActions({
 }): IssueSurfaceActionController {
   const { t } = useT("projects");
   const { t: tIssues } = useT("issues");
+  const { t: tCollaboration } = useT("collaboration");
+  const client = useQueryClient();
+  const wsId = useWorkspaceId();
+  const { statuses } = useIssueStatuses(wsId);
+  const [collaborationAction, setCollaborationAction] = useState<SourceCollaborationAction | null>(null);
   const updateIssueMutation = useUpdateIssue();
   const batchUpdateMutation = useBatchUpdateIssues();
   const batchDeleteMutation = useBatchDeleteIssues();
@@ -58,6 +69,18 @@ export function useIssueSurfaceActions({
       updates: Partial<UpdateIssueRequest>,
       options?: IssueSurfaceMutationOptions,
     ) => {
+      const issue = findSourceIssue(client, wsId, issueId);
+      if (issue?.collaboration) {
+        const category = statuses.find((status) => status.key === updates.status)?.category;
+        const action = sourceCollaborationAction(issue, updates, category);
+        if (action) {
+          setCollaborationAction(action);
+          options?.onSettled?.();
+          return;
+        }
+        if (updates.position === undefined) { options?.onSettled?.(); return; }
+        updates = { position: updates.position, expected_revision: issue.revision };
+      }
       updateIssueMutation.mutate(
         { id: issueId, ...updates },
         {
@@ -77,7 +100,7 @@ export function useIssueSurfaceActions({
         },
       );
     },
-    [t, tIssues, updateIssueMutation],
+    [client, wsId, statuses, t, tIssues, updateIssueMutation],
   );
 
   const moveIssue = useCallback(
@@ -87,6 +110,11 @@ export function useIssueSurfaceActions({
       onSettled?: (error?: unknown) => void,
     ) => {
       const { before_id, after_id, ...optimisticUpdates } = updates;
+      if (findSourceIssue(client, wsId, issueId)?.collaboration) {
+        let error: unknown;
+        updateIssue(issueId, optimisticUpdates, { onError: (err) => { error = err; }, onSettled: () => onSettled?.(error) });
+        return;
+      }
       updateIssueMutation.mutate(
         {
           id: issueId,
@@ -107,7 +135,7 @@ export function useIssueSurfaceActions({
         },
       );
     },
-    [t, tIssues, updateIssueMutation],
+    [client, wsId, updateIssue, t, tIssues, updateIssueMutation],
   );
 
   const openCreateIssue = useCallback(
@@ -121,6 +149,7 @@ export function useIssueSurfaceActions({
 
   const actions = useMemo<IssueSurfaceActions>(
     () => ({
+      openCollaboration: setCollaborationAction,
       isPending:
         updateIssueMutation.isPending ||
         batchUpdateMutation.isPending ||
@@ -133,9 +162,15 @@ export function useIssueSurfaceActions({
           ...options,
         }),
       batchUpdate: async (issueIds, updates) => {
+        if (issueIds.some((id) => findSourceIssue(client, wsId, id)?.collaboration)) {
+          throw new Error(tCollaboration(($) => $.source.batchUnsupported));
+        }
         await batchUpdateMutation.mutateAsync({ ids: issueIds, updates });
       },
       batchDelete: async (issueIds) => {
+        if (issueIds.some((id) => findSourceIssue(client, wsId, id)?.collaboration)) {
+          throw new Error(tCollaboration(($) => $.source.batchUnsupported));
+        }
         await batchDeleteMutation.mutateAsync(issueIds);
       },
     }),
@@ -146,8 +181,11 @@ export function useIssueSurfaceActions({
       t,
       updateIssue,
       updateIssueMutation.isPending,
+      client,
+      wsId,
+      tCollaboration,
     ],
   );
 
-  return { actions, openCreateIssue, moveIssue };
+  return { actions, openCreateIssue, moveIssue, collaborationAction, dismissCollaborationAction: () => setCollaborationAction(null) };
 }

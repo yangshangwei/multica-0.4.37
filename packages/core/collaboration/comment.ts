@@ -1,3 +1,4 @@
+import { invalidateCollaborationSourceViews } from "./invalidation";
 import { z } from "zod";
 import type { QueryClient } from "@tanstack/react-query";
 import type { StorageAdapter } from "../types/storage";
@@ -13,9 +14,9 @@ export function parseCollaborationCommentDraft(draft: CollaborationDraft) {
   if (draft.kind !== "comment" || !parsed.success) throw new CollaborationUnavailableError();
   return parsed.data.input;
 }
-export function prepareCollaborationComment(scope: CollaborationScope, issueId: string, requestId: string, content: string, suppressed: string[], preview: CollaborationTriggerPreview, attachments?: { draftId?: string; attachmentIds: string[] }): CollaborationDraft {
+export function prepareCollaborationComment(scope: CollaborationScope, issueId: string, requestId: string, content: string, suppressed: string[], preview: CollaborationTriggerPreview, attachments?: { draftId?: string; attachmentIds: string[] }, parentId: string | null = null): CollaborationDraft {
   if (preview.issue_id !== issueId.toLowerCase() || !z.uuid().safeParse(requestId).success) throw new CollaborationUnavailableError();
-  const input = CollaborationCommentInputSchema.parse({ content, parent_id: null, suppressed_target_ids: suppressed,
+  const input = CollaborationCommentInputSchema.parse({ content, parent_id: parentId, suppressed_target_ids: suppressed,
     ...(attachments?.attachmentIds.length ? { ...(attachments.draftId ? { draft_id: attachments.draftId } : {}), attachment_ids: attachments.attachmentIds } : {}),
     expected_lifecycle_epoch: preview.lifecycle_epoch, expected_participant_epoch: preview.write_context?.participant_epoch ?? null,
     expected_account_epoch: preview.write_context?.account_epoch ?? null,
@@ -41,6 +42,7 @@ export async function executeCollaborationComment(client: QueryClient, scope: Co
       if (delivery) finishCollaborationDeliveryDraft(delivery.scope, deliveryDraftId, storage);
     }
     removeCollaborationDraft(draft, storage);
+    invalidateCollaborationSourceViews(client, scope, draft.scope.issueId);
     void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, draft.scope.issueId) });
     return receipt;
   } catch (error) { if (isCollaborationDenied(error)) clearCollaborationDrafts(storage, draft.scope); throw error; }

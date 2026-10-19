@@ -2,6 +2,7 @@ import { parseIteration, IterationCapabilitiesSchema, IterationSettingsSchema, I
 import { z } from "zod";
 import { parseCollaborationActivity } from "../collaboration/activity-schema";
 import { parseCollaborationParticipants } from "../collaboration/participant-schema";
+import { CollaborationDiscussionSelectionSchema, parseCollaborationDiscussionReceipt, parseCollaborationIssueReactions, type CollaborationDiscussionSelection } from "../collaboration/discussion-schema";
 import { CollaborationCreationInputSchema, parseCollaborationCreationOptions, parseCollaborationCreationResult, type CollaborationCreationInput } from "../collaboration/creation-schema";
 import { COLLABORATION_ATTACHMENT_MAX_BYTES, CollaborationAttachmentUploadInputSchema, CollaborationAttachmentSelectionSchema,
   parseCollaborationAttachment, parseCollaborationAttachments, parseCollaborationDraftAttachments,
@@ -12,7 +13,7 @@ import { PersonalAccessTokenListSchema, CreatePersonalAccessTokenResponseSchema 
 import {
   parseCollaborationIssue, parseCollaborationOperation, parseCollaborationWorkbench, parseCollaborationStatusOptions, parseCollaborationRecipient, parseCollaborationFieldOptions,
   type CollaborationWriteInput, type CollaborationParticipantInput, type CollaborationHandoffInput,
-  type CollaborationInformationReturnInput, type CollaborationAcceptanceInput, type CollaborationEditInput, type CollaborationRecipientInput,
+  type CollaborationInformationReturnInput, type CollaborationAcceptanceInput, type CollaborationEditInput, type CollaborationIterationInput, type CollaborationRecipientInput,
   type CollaborationStatusAction, type CollaborationLifecycleAction, type CollaborationStatusInput, type CollaborationLifecycleInput,
 } from "../collaboration/schema";
 import {
@@ -897,14 +898,20 @@ export class ApiClient {
     return `${this.endpointEpoch}:${this.credentialEpoch}`;
   }
 
-  private async fetchCollaboration(path: string, options?: RequestInit): Promise<unknown> {
+  private async fetchCollaboration(path: string, options?: RequestInit, expectedStatus?: number): Promise<unknown> {
     const scope = this.getSessionScope();
     const authEpoch = this.authEpoch;
     try {
-      const data = await this.fetch<unknown>(path, options);
+      let data: unknown;
+      if (expectedStatus === undefined) data = await this.fetch<unknown>(path, options);
+      else {
+        const response = await this.fetchRaw(path, { ...options, extraHeaders: { "Content-Type": "application/json" } });
+        data = response.status === expectedStatus ? await response.json() : undefined;
+      }
       if (scope !== this.getSessionScope() || authEpoch !== this.authEpoch) {
         throw new DOMException("Collaboration request superseded", "AbortError");
       }
+      options?.signal?.throwIfAborted();
       return data;
     } catch (error) {
       if (scope !== this.getSessionScope()) {
@@ -972,8 +979,11 @@ export class ApiClient {
     }
   }
 
-  async getCollaborationCreationOptions(sourceWorkspaceId?: string, options?: { signal?: AbortSignal }) {
-    const suffix = sourceWorkspaceId ? `?${new URLSearchParams({ source_workspace_id: sourceWorkspaceId })}` : "";
+  async getCollaborationCreationOptions(sourceWorkspaceId?: string, options?: { signal?: AbortSignal; parentSearch?: string }) {
+    const query = new URLSearchParams();
+    if (sourceWorkspaceId) query.set("source_workspace_id", sourceWorkspaceId);
+    if (sourceWorkspaceId && options?.parentSearch) query.set("parent_search", options.parentSearch);
+    const suffix = query.size ? `?${query}` : "";
     const result = parseCollaborationCreationOptions(await this.fetchCollaboration(`/api/collaboration/creation-options${suffix}`, { signal: options?.signal }));
     return result && (sourceWorkspaceId ? result.source !== null && sameResourceIdentity(result.source.id, sourceWorkspaceId) : result.source === null) ? result : null;
   }
@@ -1125,7 +1135,7 @@ export class ApiClient {
 
   async getCollaborationCommentOperation(id: string, requestId: string, options?: { signal?: AbortSignal }) {
     try {
-      const result = parseCollaborationCommentReceipt(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/comments/operations/${encodeURIComponent(requestId)}`, { signal: options?.signal }));
+      const result = parseCollaborationCommentReceipt(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/comments/operations/${encodeURIComponent(requestId)}`, { signal: options?.signal }, 200));
       return result && sameResourceIdentity(result.issue_id, id) ? result : null;
     } catch (error) {
       // This actor/key lookup runs before object access checks. A missing
@@ -1156,17 +1166,61 @@ export class ApiClient {
   }
 
   async editCollaborationComment(id: string, commentId: string, requestId: string, input: { content: string; expected_comment_revision: string; draft_id?: string; attachment_ids?: string[] }, options?: { signal?: AbortSignal }) {
-    const result = parseCollaborationCommentReceipt(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/comments/${encodeURIComponent(commentId)}`, {
+    const result = await this.writeCollaborationCommentChange(`/api/collaboration/issues/${encodeURIComponent(id)}/comments/${encodeURIComponent(commentId)}`, {
       method: "PATCH", signal: options?.signal, headers: { "Idempotency-Key": requestId }, body: JSON.stringify(input),
-    }));
-    return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.comment_id, commentId) && matchesCollaborationCommentAttachments(result, input.attachment_ids) ? result : null;
+    });
+    return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.comment_id, commentId) && (result.status >= 400 || matchesCollaborationCommentAttachments(result, input.attachment_ids)) ? result : null;
   }
 
   async deleteCollaborationComment(id: string, commentId: string, requestId: string, revision: string, options?: { signal?: AbortSignal }) {
-    const result = parseCollaborationCommentReceipt(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/comments/${encodeURIComponent(commentId)}`, {
+    const result = await this.writeCollaborationCommentChange(`/api/collaboration/issues/${encodeURIComponent(id)}/comments/${encodeURIComponent(commentId)}`, {
       method: "DELETE", signal: options?.signal, headers: { "Idempotency-Key": requestId }, body: JSON.stringify({ expected_comment_revision: revision }),
-    }));
+    });
     return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.comment_id, commentId) ? result : null;
+  }
+
+  private async writeCollaborationCommentChange(path: string, options: RequestInit) {
+    try { return parseCollaborationCommentReceipt(await this.fetchCollaboration(path, options, 200)); }
+    catch (error) {
+      // A persisted author/version refusal does not revoke the caller's read access.
+      if (error instanceof ApiError && error.status >= 400 && error.status < 500) {
+        const result = parseCollaborationCommentReceipt(error.body);
+        if (result && result.status === error.status) return result;
+      }
+      throw error;
+    }
+  }
+
+  async getCollaborationIssueReactions(id: string, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationIssueReactions(await this.fetchCollaborationOptionalHistory(`/api/collaboration/issues/${encodeURIComponent(id)}/reactions`, { signal: options?.signal }));
+    return result && sameResourceIdentity(result.issue_id, id) ? result : null;
+  }
+
+  async changeCollaborationDiscussion(id: string, requestId: string, input: CollaborationDiscussionSelection, options?: { signal?: AbortSignal }) {
+    const selection = CollaborationDiscussionSelectionSchema.parse(input);
+    const target = selection.commentId === null ? "" : `/comments/${encodeURIComponent(selection.commentId)}`;
+    const action = "emoji" in selection ? `/reactions/${encodeURIComponent(selection.emoji)}` : `/${selection.action}`;
+    let result;
+    try {
+      result = parseCollaborationDiscussionReceipt(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}${target}${action}`, {
+        method: selection.action === "remove_reaction" ? "DELETE" : "POST", signal: options?.signal, headers: { "Idempotency-Key": requestId },
+      }, 200));
+    } catch (error) {
+      if (!(error instanceof ApiError)) throw error;
+      result = parseCollaborationDiscussionReceipt(error.body);
+      if (!result || result.status !== error.status) throw error;
+    }
+    return result && sameResourceIdentity(result.issue_id, id) && result.request_id === requestId && result.comment_id === selection.commentId && result.action === selection.action && result.emoji === ("emoji" in selection ? selection.emoji : null) ? result : null;
+  }
+
+  async getCollaborationDiscussionOperation(id: string, requestId: string, options?: { signal?: AbortSignal }) {
+    try {
+      const result = parseCollaborationDiscussionReceipt(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/discussion/operations/${encodeURIComponent(requestId)}`, { signal: options?.signal }, 200));
+      return result && sameResourceIdentity(result.issue_id, id) && result.request_id === requestId ? result : null;
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 404 && z.object({ code: z.enum(["operation_not_found", "not_found"]) }).safeParse(error.body).success) return null;
+      throw error;
+    }
   }
 
   async getCollaborationNotifications(params: { cursor?: string; includeArchived?: boolean } = {}, options?: { signal?: AbortSignal }) {
@@ -1189,9 +1243,11 @@ export class ApiClient {
       action?: CollaborationLifecycleAction; status?: string; status_options_version?: string;
       title?: string; description?: string; start_date?: string | null; due_date?: string | null;
       priority?: CollaborationEditInput["priority"]; label_ids?: CollaborationEditInput["labelIds"]; properties?: CollaborationEditInput["properties"];
+      project_id?: string | null; parent_issue_id?: string | null; stage?: number | null;
+      current_iteration_id?: string | null; expected_revision?: string; expected_iteration_revision?: string; iteration_reason?: string; allow_completed?: boolean;
     },
     options?: { signal?: AbortSignal },
-    method: "POST" | "PATCH" = "POST",
+    method: "POST" | "PATCH" | "PUT" = "POST",
   ) {
     const raw = await this.fetchCollaborationWorkflow(path, {
       method,
@@ -1456,8 +1512,9 @@ export class ApiClient {
     return statusOptions?.action === action ? statusOptions : null;
   }
 
-  async getCollaborationFieldOptions(id: string, options?: { signal?: AbortSignal }) {
-    const raw = await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/field-options`, { signal: options?.signal });
+  async getCollaborationFieldOptions(id: string, options?: { signal?: AbortSignal; parentSearch?: string }) {
+    const suffix = options?.parentSearch ? `?${new URLSearchParams({ parent_search: options.parentSearch })}` : "";
+    const raw = await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/field-options${suffix}`, { signal: options?.signal });
     const fieldOptions = parseCollaborationFieldOptions(raw);
     return fieldOptions && sameResourceIdentity(fieldOptions.issue_id, id) ? fieldOptions : null;
   }
@@ -1478,7 +1535,18 @@ export class ApiClient {
       priority: input.priority,
       label_ids: input.labelIds,
       properties: input.properties,
+      project_id: input.projectId,
+      parent_issue_id: input.parentIssueId,
+      stage: input.stage,
     }, options, "PATCH");
+  }
+
+  async changeCollaborationIteration(id: string, input: CollaborationIterationInput, options?: { signal?: AbortSignal }) {
+    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/iteration`, input, {
+      current_iteration_id: input.iterationId, expected_revision: input.expectedIssueRevision,
+      expected_iteration_revision: input.expectedIterationRevision, iteration_reason: input.iterationReason,
+      allow_completed: input.allowCompleted,
+    }, options, "PUT");
   }
 
   async changeCollaborationLifecycle(id: string, input: CollaborationLifecycleInput, options?: { signal?: AbortSignal }) {
@@ -1749,7 +1817,8 @@ export class ApiClient {
     const start = Date.now();
     const method = init?.method ?? "GET";
     const collaborationRequest = path.startsWith("/api/collaboration/") || /^\/api\/me\/(?:workbench|collaboration-notifications)(?:[/?]|$)/.test(path);
-    const logPath = collaborationRequest ? path.split("?", 1)[0] : path;
+    const sourceIssueRequest = /^\/api\/issues(?:[/?]|$)/.test(path);
+    const logPath = collaborationRequest || sourceIssueRequest ? path.split("?", 1)[0] : path;
 
     // Captured where the headers are built: this is the credential the
     // request speaks for, and the 401 handler below compares it against the
@@ -1808,7 +1877,7 @@ export class ApiClient {
       // Session rejection has a recovery path; console.error would open the
       // development error overlay while the application returns to sign-in.
       const logLevel = status === 401 || status === 404 ? "warn" : "error";
-      this.logger[logLevel](`← ${status} ${logPath}`, { rid, duration: `${Date.now() - start}ms`, error: collaborationRequest ? "Collaboration request failed" : path.startsWith("/api/admin/resources") ? "Resource request failed" : message });
+      this.logger[logLevel](`← ${status} ${logPath}`, { rid, duration: `${Date.now() - start}ms`, error: collaborationRequest ? "Collaboration request failed" : sourceIssueRequest ? "Issue request failed" : path.startsWith("/api/admin/resources") ? "Resource request failed" : message });
       throw new ApiError(
         message,
         status,
@@ -1835,7 +1904,16 @@ export class ApiClient {
     if (res.status === 204) {
       return undefined as T;
     }
-    const data = await res.json();
+    let data: unknown;
+    try {
+      data = await res.json();
+    } catch (error) {
+      // JSON syntax errors can quote source issue bodies before schema redaction.
+      if (/^\/api\/issues(?:[/?]|$)/.test(path) && error instanceof SyntaxError) {
+        throw new Error("Issue response could not be decoded");
+      }
+      throw error;
+    }
     if (endpointEpoch !== this.endpointEpoch) throw new Error("Server session changed");
     init?.signal?.throwIfAborted();
     return data as T;
@@ -2009,6 +2087,7 @@ export class ApiClient {
     if (params?.assignee_id) search.set("assignee_id", params.assignee_id);
     if (params?.assignee_ids?.length) search.set("assignee_ids", params.assignee_ids.join(","));
     if (params?.assignee_types?.length) search.set("assignee_types", params.assignee_types.join(","));
+    if (params?.external_collaborators === true) search.set("external_collaborators", "true");
     if (params?.creator_id) search.set("creator_id", params.creator_id);
     if (params?.project_id) search.set("project_id", params.project_id);
     if (params?.assignee_filters?.length) {
@@ -2051,13 +2130,13 @@ export class ApiClient {
         body: JSON.stringify(Object.fromEntries(search)),
       });
       return parseWithFallback(raw, ListIssuesResponseSchema, EMPTY_LIST_ISSUES_RESPONSE, {
-        endpoint: "POST /api/issues/query",
+        endpoint: "POST /api/issues/query", redact: true,
       });
     }
     const path = `/api/issues?${search}`;
     const raw = await this.fetch<unknown>(path);
     return parseWithFallback(raw, ListIssuesResponseSchema, EMPTY_LIST_ISSUES_RESPONSE, {
-      endpoint: "GET /api/issues",
+      endpoint: "GET /api/issues", redact: true,
     });
   }
 
@@ -2069,6 +2148,7 @@ export class ApiClient {
     if (params.statuses?.length) search.set("statuses", params.statuses.join(","));
     if (params.priorities?.length) search.set("priorities", params.priorities.join(","));
     if (params.assignee_types?.length) search.set("assignee_types", params.assignee_types.join(","));
+    if (params.external_collaborators === true) search.set("external_collaborators", "true");
     if (params.assignee_id) search.set("assignee_id", params.assignee_id);
     if (params.assignee_ids?.length) search.set("assignee_ids", params.assignee_ids.join(","));
     if (params.creator_id) search.set("creator_id", params.creator_id);
@@ -2099,7 +2179,7 @@ export class ApiClient {
     if (params.sort_direction) search.set("direction", params.sort_direction);
     const raw = await this.fetch<unknown>(`/api/issues/grouped?${search}`);
     return parseWithFallback(raw, GroupedIssuesResponseSchema, EMPTY_GROUPED_ISSUES_RESPONSE, {
-      endpoint: "GET /api/issues/grouped",
+      endpoint: "GET /api/issues/grouped", redact: true,
     });
   }
 
@@ -2112,7 +2192,7 @@ export class ApiClient {
       raw,
       IssueTableGroupsResponseSchema,
       EMPTY_ISSUE_TABLE_GROUPS_RESPONSE,
-      { endpoint: "POST /api/issues/table/groups" },
+      { endpoint: "POST /api/issues/table/groups", redact: true },
     );
   }
 
@@ -2125,7 +2205,7 @@ export class ApiClient {
       raw,
       IssueTableRowsResponseSchema,
       EMPTY_ISSUE_TABLE_ROWS_RESPONSE,
-      { endpoint: "POST /api/issues/table/rows" },
+      { endpoint: "POST /api/issues/table/rows", redact: true },
     );
   }
 
@@ -2138,7 +2218,7 @@ export class ApiClient {
       raw,
       IssueTableFacetsResponseSchema,
       EMPTY_ISSUE_TABLE_FACETS_RESPONSE,
-      { endpoint: "POST /api/issues/table/facets" },
+      { endpoint: "POST /api/issues/table/facets", redact: true },
     );
   }
 
@@ -2152,7 +2232,7 @@ export class ApiClient {
       params.signal ? { signal: params.signal } : undefined,
     );
     return parseWithFallback(raw, SearchIssuesResponseSchema, EMPTY_SEARCH_ISSUES_RESPONSE, {
-      endpoint: "GET /api/issues/search",
+      endpoint: "GET /api/issues/search", redact: true,
     });
   }
 
@@ -2343,10 +2423,10 @@ export class ApiClient {
       workspaceRequestInit(options),
     );
     const issue = parseWithFallback<Issue | null>(raw, IssueSchema, null, {
-      endpoint: "GET /api/issues/:id",
+      endpoint: "GET /api/issues/:id", redact: true,
     });
     if (!issue) {
-      // parseWithFallback already logged the zod issues + raw payload.
+      // The schema warning identifies the endpoint without logging issue data.
       throw new Error("GET /api/issues/:id returned a malformed issue");
     }
     return issue;
@@ -2539,7 +2619,7 @@ export class ApiClient {
   async listChildIssues(id: string): Promise<{ issues: Issue[] }> {
     const raw = await this.fetch<unknown>(`/api/issues/${id}/children`);
     return parseWithFallback(raw, ChildIssuesResponseSchema, { issues: [] }, {
-      endpoint: "GET /api/issues/:id/children",
+      endpoint: "GET /api/issues/:id/children", redact: true,
     });
   }
 
@@ -2552,7 +2632,7 @@ export class ApiClient {
       `/api/issues/children?parent_ids=${parentIds.join(",")}`,
     );
     return parseWithFallback(raw, ChildIssuesResponseSchema, { issues: [] }, {
-      endpoint: "GET /api/issues/children",
+      endpoint: "GET /api/issues/children", redact: true,
     });
   }
 

@@ -243,9 +243,8 @@ const mockListSquads = vi.hoisted(() =>
     },
   ]),
 );
-vi.mock("@multica/core/api", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("@multica/core/api")>()),
-  api: {
+vi.mock("@multica/core/api", async (importOriginal) => {
+  const api = {
     getBaseUrl: () => "http://127.0.0.1:8080",
     listIssues: (...args: any[]) => mockListIssues(...args),
     listGroupedIssues: (...args: any[]) => mockListGroupedIssues(...args),
@@ -256,20 +255,15 @@ vi.mock("@multica/core/api", async (importOriginal) => ({
     listMembers: (...args: any[]) => mockListMembers(...args),
     listAgents: (...args: any[]) => mockListAgents(...args),
     listSquads: (...args: any[]) => mockListSquads(...args),
-  },
-  getApi: () => ({
-    listIssues: (...args: any[]) => mockListIssues(...args),
-    listGroupedIssues: (...args: any[]) => mockListGroupedIssues(...args),
-    listIssueTableGroups: (request: any) => mockListIssueTableGroups(request),
-    listIssueTableRows: (request: any) => mockListIssueTableRows(request),
-    listIssueTableFacets: (request: any) => mockListIssueTableFacets(request),
-    updateIssue: vi.fn(),
-    listMembers: (...args: any[]) => mockListMembers(...args),
-    listAgents: (...args: any[]) => mockListAgents(...args),
-    listSquads: (...args: any[]) => mockListSquads(...args),
-  }),
-  setApiInstance: vi.fn(),
-}));
+    getSessionScope: () => "test-session",
+  };
+  return {
+    ...(await importOriginal<typeof import("@multica/core/api")>()),
+    api,
+    getApi: () => api,
+    setApiInstance: vi.fn(),
+  };
+});
 
 // Mock issue config
 vi.mock("@multica/core/issues/config", () => ({

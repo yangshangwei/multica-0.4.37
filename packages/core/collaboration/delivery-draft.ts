@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { defaultStorage } from "../platform/storage";
 import type { StorageAdapter } from "../types/storage";
-import { CollaborationCreationInputSchema } from "./creation-schema";
+import { CollaborationCreationInputSchema, CollaborationCreationFieldsSchema } from "./creation-schema";
 import { CollaborationAttachmentSelectionSchema, collaborationAttachmentIds } from "./attachment-schema";
 import { CollaborationAccountSummarySchema } from "./schema";
 
@@ -17,7 +17,11 @@ export const CollaborationDeliveryFormSchema = z.strictObject({
   ...base, kind: z.literal("form"), purpose: z.enum(["creation", "comment", "attachment"]),
   title: z.string().max(1000), content: z.string().max(1_000_000), recipientQuery: z.string().max(1000),
   recipient: CollaborationAccountSummarySchema.nullable(), selectedAttachmentIds: collaborationAttachmentIds,
-}).refine((form) => (form.purpose === "creation") === (form.scope.context.kind === "creation"));
+  parentCommentId: uuid.nullable().optional(),
+  // A mutable form retains an unfinished numeric value; immutable requests
+  // still use the stricter creation schema before any transport begins.
+  initialFields: CollaborationCreationFieldsSchema.safeExtend({ stage: z.number().nullable().optional() }).optional(),
+}).refine((form) => (form.purpose === "creation") === (form.scope.context.kind === "creation") && (form.parentCommentId == null || form.purpose === "comment"));
 const fileSchema = z.strictObject({ name: z.string().min(1), type: z.string(), size: z.number().int().nonnegative().max(104857600), sha256: z.string().regex(/^[a-f0-9]{64}$/) });
 export const CollaborationUploadDraftSchema = z.strictObject({ ...base, kind: z.literal("upload"), requestId: uuid, file: fileSchema });
 export const CollaborationCreationDraftSchema = z.strictObject({ ...base, kind: z.literal("creation"), requestId: uuid, input: CollaborationCreationInputSchema.nullable() })

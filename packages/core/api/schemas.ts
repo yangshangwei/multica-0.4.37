@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CollaborationAccountSummarySchema } from "../collaboration/schema";
 import type {
   Agent,
   AgentBuilderRuntimeSwitch,
@@ -1272,6 +1273,12 @@ export const CommentSubIssueTaskResponseSchema = z.object({
 }).loose();
 
 export const IssueSchema = z.object({
+  // Authority-critical. A present malformed marker must never become ordinary.
+  collaboration: z.object({
+    creator: CollaborationAccountSummarySchema,
+    handler: CollaborationAccountSummarySchema,
+    has_external_collaborators: z.boolean(),
+  }).nullish(),
   admission_status: z.string().default("not_required"),
   id: z.string(),
   workspace_id: z.string(),
@@ -1520,6 +1527,7 @@ const IssueTableGroupValueSchema = z.discriminatedUnion("kind", [
   z.object({
     kind: z.literal("assignee"),
     actor: IssueTableActorRefSchema.nullable(),
+    account: CollaborationAccountSummarySchema.optional(),
   }).loose(),
   z.object({
     kind: z.literal("project"),

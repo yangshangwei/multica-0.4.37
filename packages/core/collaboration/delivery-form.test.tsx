@@ -21,3 +21,14 @@ it("rotates a remounted form when the original request retires its consumed bund
   expect(result.current.form.content).toBe("");
   expect(result.current.form.selectedAttachmentIds).toEqual([]);
 });
+
+it("preserves the reply parent with its draft across remounts and retires both after sending", () => {
+  const first = renderHook(() => useCollaborationDeliveryForm(scope, "comment"));
+  act(() => { first.result.current.update({ content: "Reply text", parentCommentId: scope.context.sourceWorkspaceId }); });
+  first.unmount();
+  const second = renderHook(() => useCollaborationDeliveryForm(scope, "comment"));
+  expect(second.result.current.form).toMatchObject({ content: "Reply text", parentCommentId: scope.context.sourceWorkspaceId });
+  act(() => { second.result.current.reset(); });
+  expect(second.result.current.form.content).toBe("");
+  expect(second.result.current.form.parentCommentId).toBeUndefined();
+});

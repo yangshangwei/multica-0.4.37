@@ -2,6 +2,7 @@
 
 import { createContext, useContext, type ReactNode } from "react";
 import type { Issue, UpdateIssueRequest } from "@multica/core/types";
+import type { SourceCollaborationAction } from "@multica/core/issues";
 import type { IssueCreateDefaults } from "./types";
 
 export type IssueSurfaceMutationOptions = {
@@ -12,6 +13,7 @@ export type IssueSurfaceMutationOptions = {
 };
 
 export interface IssueSurfaceActions {
+  openCollaboration?: (action: SourceCollaborationAction) => void;
   isPending: boolean;
   createIssue: (defaults?: IssueCreateDefaults) => void;
   updateIssue: (

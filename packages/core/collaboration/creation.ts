@@ -9,18 +9,19 @@ import { CollaborationCreationDraftSchema, finishCollaborationDeliveryDraft, rem
 import { collaborationDeliveryKey, protectCollaborationDelivery, reconcileCollaborationCreationSources } from "./delivery-access";
 import { CollaborationCreationRejectionCodeSchema, type CollaborationCreationRejectionCode } from "./creation-schema";
 import type { CollaborationIssue } from "./schema";
+import { invalidateCollaborationSourceViews } from "./invalidation";
 
 export class CollaborationCreationRejectedError extends Error {
   constructor(readonly code: CollaborationCreationRejectionCode) { super("The original creation was rejected"); this.name = "CollaborationCreationRejectedError"; }
 }
 
-export function collaborationCreationOptions(client: QueryClient, scope: CollaborationScope, sourceId?: string) {
+export function collaborationCreationOptions(client: QueryClient, scope: CollaborationScope, sourceId?: string, parentSearch = "") {
   const context = sourceId ? { kind: "creation" as const, sourceWorkspaceId: sourceId } : null;
   return queryOptions({
-    queryKey: context ? [...collaborationDeliveryKey(scope, context), "options"] : [...collaborationKeys.scope(scope), "creation-options"],
+    queryKey: context ? [...collaborationDeliveryKey(scope, context), "options", parentSearch] : [...collaborationKeys.scope(scope), "creation-options"],
     enabled: scope.userId !== "", staleTime: 0, retry: false, refetchOnMount: "always", refetchOnWindowFocus: "always", refetchInterval: 15_000,
     queryFn: async ({ signal }) => {
-      const load = () => getApi().getCollaborationCreationOptions(sourceId, { signal });
+      const load = () => getApi().getCollaborationCreationOptions(sourceId, { signal, parentSearch });
       const result = context ? await protectCollaborationDelivery(client, scope, context, load, true)
         : await protectCollaborationRead(client, scope, null, load);
       reconcileCollaborationCreationSources(client, scope, result.sources.map((source) => source.id));
@@ -47,6 +48,7 @@ export function prepareCollaborationCreation(form: CollaborationDeliveryForm, re
   if (form.scope.context.kind !== "creation" || form.purpose !== "creation") throw new CollaborationUnavailableError();
   return CollaborationCreationDraftSchema.parse({ kind: "creation", scope: form.scope, draftId: form.draftId, requestId, createdAt: Date.now(),
     input: { source_workspace_id: form.scope.context.sourceWorkspaceId, title: form.title, description: form.content,
+      ...form.initialFields,
       handler_user_id: form.recipient?.user_id ?? form.scope.userId,
       ...(form.selectedAttachmentIds.length ? { draft_id: form.draftId, attachment_ids: form.selectedAttachmentIds } : {}) } });
 }
@@ -108,6 +110,7 @@ export async function executeCollaborationCreation(client: QueryClient, scope: C
     throw new CollaborationCreationRejectedError(result.code);
   }
   finishCollaborationDeliveryDraft(draft.scope, draft.draftId, storage);
+  invalidateCollaborationSourceViews(client, scope, result.issue.id, result.issue.source_workspace.id);
   void client.invalidateQueries({ queryKey: collaborationKeys.scope(scope) });
   return result.issue;
 }

@@ -1,3 +1,4 @@
+import { invalidateCollaborationSourceViews } from "./invalidation";
 import { z } from "zod";
 import { queryOptions, type QueryClient } from "@tanstack/react-query";
 import { ApiError, getApi } from "../api";
@@ -99,7 +100,8 @@ export async function executeCollaborationAttachmentDelivery(client: QueryClient
     return receipt && receipt.attachment_ids.length === draft.input.attachment_ids.length && receipt.attachment_ids.every((id) => draft.input.attachment_ids.includes(id)) ? receipt : null;
   }, false, storage);
   finishCollaborationDeliveryDraft(draft.scope, draft.draftId, storage);
-  void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, issueId) });
+  invalidateCollaborationSourceViews(client, scope, issueId);
+    void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, issueId) });
   return result;
 }
 async function readIssueAttachment<T>(client: QueryClient, scope: CollaborationScope, issueId: string, request: () => Promise<T | null>, signal?: AbortSignal) {

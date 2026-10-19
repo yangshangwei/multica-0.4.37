@@ -62,6 +62,7 @@ export function listFilterDependsOn(
   // my:all is the union of assigned / created / involved — the assigned and
   // involved legs key on the assignee.
   if (scope === "all") return changed.assignee;
+  if (filter.external_collaborators === true && changed.assignee) return true;
   if (
     changed.assignee &&
     (filter.assignee_id !== undefined ||
@@ -92,6 +93,11 @@ export function issueMatchesListFilter(
   if (scope === "all") return "unknown";
 
   let unknown = false;
+
+  if (filter.external_collaborators === true) {
+    if (issue.id === undefined) unknown = true;
+    else if (issue.collaboration?.has_external_collaborators !== true) return false;
+  }
 
   if (filter.assignee_id !== undefined) {
     if (issue.assignee_id === undefined) unknown = true;

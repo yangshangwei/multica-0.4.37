@@ -4,6 +4,11 @@ export { CollaborationRecipientSchema, parseCollaborationRecipient } from "./sch
 export type { CollaborationRecipient, CollaborationRecipientInput } from "./schema";
 export { CollaborationFieldOptionsSchema, parseCollaborationFieldOptions } from "./schema";
 export type { CollaborationFieldOptions, CollaborationLabel, CollaborationPropertyDefinition } from "./schema";
+export type { CollaborationSourceOptions, CollaborationSourceStructure, CollaborationIterationInput } from "./schema";
+export { collaborationPropertyValueMatchesDefinition } from "./schema";
+export { collaborationFieldOptions } from "./field-queries";
+export { CollaborationCreationFieldsSchema } from "./creation-schema";
+export type { CollaborationCreationFields } from "./creation-schema";
 export { CollaborationExecutionSchema, CollaborationTargetHoldReasonSchema } from "./execution-schema";
 export type { CollaborationExecution, CollaborationExecutionChannel, CollaborationTargetHoldReason, CollaborationExecutionTarget, CollaborationExecutionCommand, CollaborationExecutionGroup, CollaborationExecutionRun } from "./execution-schema";
 export { CollaborationControlInputSchema, CollaborationControlReceiptSchema, parseCollaborationControlReceipt, matchesCollaborationControlReceipt } from "./control-schema";
@@ -49,4 +54,10 @@ export { CollaborationCommandCancelInputSchema, CollaborationCommandCancelReceip
 export type { CollaborationCommandCancelInput, CollaborationCommandCancelReceipt } from "./command-schema";
 export { parseCollaborationCommandCancelDraft, prepareCollaborationCommandCancel, executeCollaborationCommandCancel } from "./command";
 export { parseCollaborationCommentDraft, prepareCollaborationComment, executeCollaborationComment, collaborationMentionMarkdown } from "./comment";
+export { prepareCollaborationCommentChange, parseCollaborationCommentChangeDraft, executeCollaborationCommentChange } from "./comment-actions";
+export type { CollaborationCommentChange } from "./comment-actions";
+export { collaborationCommentWithinByteLimit } from "./text-limits";
+export * from "./discussion-schema";
+export { parseCollaborationDiscussionDraft, prepareCollaborationDiscussion, executeCollaborationDiscussion } from "./discussion";
+export { collaborationIssueReactionsOptions } from "./content-queries";
 export { collaborationCommentsOptions, collaborationCommentOptions, collaborationCommentHistoryOptions, collaborationMentionTargetsOptions, collaborationNotificationsOptions, collaborationActivityOptions, useCollaborationCommentPreview, useUpdateCollaborationNotification } from "./content-queries";

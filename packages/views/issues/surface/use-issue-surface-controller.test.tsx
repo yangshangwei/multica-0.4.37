@@ -1826,4 +1826,16 @@ describe("useIssueSurfaceController", () => {
     ]);
     expect(getAgentTaskSnapshot).not.toHaveBeenCalled();
   });
+  it("sends the external-collaborator filter with server windows and clears it", async () => {
+    const store = getIssueSurfaceViewStore("workspace:all");
+    store.getState().toggleExternalCollaborators();
+    const { result } = renderHook(() => useIssueSurfaceController({ scope: { type: "workspace", actorKind: "all" }, modes: ["board", "list", "table"] }), { wrapper: makeWrapper(qc, "workspace:all") });
+    await waitFor(() => expect(listIssueTableRows).toHaveBeenCalled());
+    expect(result.current.tableQuerySpec.filters.external_collaborators).toBe(true);
+    expect(result.current.hasActiveFilters).toBe(true);
+    expect(listIssueTableRows.mock.calls.every(([request]) => request.query.filters.external_collaborators === true)).toBe(true);
+    act(() => store.getState().clearFilters());
+    expect(result.current.tableQuerySpec.filters.external_collaborators).toBeUndefined();
+  });
+
 });

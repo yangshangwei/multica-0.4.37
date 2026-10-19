@@ -26,6 +26,8 @@ import { useT } from "../../../i18n";
 import { PropertyPicker, PickerItem } from "./property-picker";
 import { ActorPropertyPicker, ActorPropertyDisplay } from "./actor-property-picker";
 
+type PropertyValueDefinition = Pick<IssueProperty, "id" | "name" | "type" | "icon" | "config" | "archived">;
+
 const EDITABLE_PROPERTY_TYPES = [
   "select",
   "multi_select",
@@ -51,7 +53,7 @@ const EDITABLE_PROPERTY_TYPES = [
  *      whole value (MUL-6286 review).
  */
 export function isCustomPropertyReadOnly(
-  property: IssueProperty,
+  property: PropertyValueDefinition,
   value: IssuePropertyValue | undefined,
 ): boolean {
   if (property.archived) return true;
@@ -84,7 +86,7 @@ export function CustomPropertyValueEditor({
   onOpenChange,
 }: {
   issue: Issue;
-  property: IssueProperty;
+  property: PropertyValueDefinition;
   defaultOpen?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -134,7 +136,7 @@ export function CustomPropertyValueInput({
   trigger,
   triggerRender,
 }: {
-  property: IssueProperty;
+  property: PropertyValueDefinition;
   value: IssuePropertyValue | undefined;
   onChange: (value: IssuePropertyValue | undefined) => void;
   defaultOpen?: boolean;
@@ -371,7 +373,7 @@ function TextishPropertyEditor({
   trigger,
   triggerRender,
 }: {
-  property: IssueProperty;
+  property: PropertyValueDefinition;
   value: IssuePropertyValue | undefined;
   open: boolean;
   onOpenChange: (v: boolean) => void;
@@ -469,7 +471,7 @@ export function CustomPropertyValueDisplay({
   property,
   value,
 }: {
-  property: IssueProperty;
+  property: PropertyValueDefinition;
   value: IssuePropertyValue | undefined;
 }) {
   const { t } = useT("issues");

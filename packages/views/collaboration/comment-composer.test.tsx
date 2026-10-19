@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "@multica/core/api";
-import { collaborationScope, parseCollaborationIssue } from "@multica/core/collaboration";
+import { collaborationScope, parseCollaborationComment, parseCollaborationIssue } from "@multica/core/collaboration";
 import { renderWithI18n } from "../test/i18n";
 import { CollaborationCommentComposer } from "./comment-composer";
 
@@ -59,4 +59,33 @@ it("identifies notification recipients and rejected targets instead of calling t
   expect(await screen.findByText("Notified participant")).toBeInTheDocument();
   expect(screen.getByText("Target is unavailable or its configuration changed")).toBeInTheDocument();
   expect(screen.queryByText("Waiting")).toBeNull();
+});
+
+it("replies to an AI comment using its stable anchor without selecting any AI targets", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const scope = collaborationScope(id);
+  const replyTo = parseCollaborationComment({ id: target, issue_id: id, author_type: "agent", author: null, content: "Earlier AI output", type: "comment", parent_id: null,
+    comment_revision: "1", created_at: "2026-10-19T00:00:00Z", updated_at: "2026-10-19T00:00:00Z", deleted_at: null, resolved_at: null, resolved_by: null, can_edit: false, can_resolve: true, reactions: [] })!;
+  const fetch = vi.fn().mockImplementation(async (url: string, _init: RequestInit) => {
+    if (url.endsWith(`/comments/${target}`)) return new Response(JSON.stringify(replyTo));
+    if (url.endsWith("mention-targets")) return new Response(JSON.stringify({ protocol_version: 2, issue_id: id, participants: [account], can_submit_commands: false, targets: [] }));
+    if (url.endsWith("trigger-preview")) return new Response(JSON.stringify({ protocol_version: 2, issue_id: id, lifecycle_epoch: "1", recipients: [], targets: [] }));
+    return new Response(JSON.stringify({ protocol_version: 2, issue_id: id, status: 201, code: "comment_created", comment_id: eventId, comment_revision: "1", event_id: eventId, event_seq: "1", targets: [] }));
+  });
+  vi.stubGlobal("fetch", fetch);
+  const onSent = vi.fn();
+  const initial = renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentComposer scope={scope} issue={issue} replyTo={replyTo} onSent={onSent} /></QueryClientProvider>);
+  await userEvent.type(screen.getByLabelText("Add comment"), "Thanks for the explanation");
+  initial.unmount();
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentComposer scope={scope} issue={issue} onSent={onSent} /></QueryClientProvider>);
+  expect(await screen.findByText("Replying to Agent")).toBeInTheDocument();
+  await userEvent.click(screen.getByRole("button", { name: "Preview delivery" }));
+  await userEvent.click(await screen.findByRole("button", { name: "Send comment" }));
+  expect(await screen.findByText("Comment confirmed.")).toBeInTheDocument();
+  for (const [url, init] of fetch.mock.calls) {
+    if (url.endsWith("mention-targets") || url.endsWith(`/comments/${target}`)) continue;
+    expect(JSON.parse(String(init.body))).toMatchObject({ parent_id: target, content: "Thanks for the explanation", suppressed_target_ids: [] });
+    if (url.endsWith("/comments")) expect(JSON.parse(String(init.body)).target_versions).toEqual([]);
+  }
+  expect(onSent).toHaveBeenCalledOnce();
 });

@@ -27,6 +27,7 @@ import type { OrderDirection } from "../utils/adjacent-order";
 import type { ChildProgress } from "./list-row";
 import { useT } from "../../i18n";
 import { ActorAvatar } from "../../common/actor-avatar";
+import { SourceCollaborationAccount } from "../../collaboration/source-bridge";
 import { ProjectIcon } from "../../projects/components/project-icon";
 import { useRestoredScrollOffset, useRestoredScrollRef } from "../../platform";
 import { DeferredPopup } from "../../common/deferred-popup";
@@ -74,6 +75,7 @@ const BOARD_VIRTUALIZE_THRESHOLD = 30;
 const EMPTY_VIRTUOSO_COMPONENTS = {};
 
 export interface BoardColumnGroup {
+  account?: NonNullable<Issue["collaboration"]>["handler"];
   id: string;
   title: string;
   /** Board columns are CATEGORIES, never raw status keys. (MUL-6243) */
@@ -247,7 +249,7 @@ export const BoardColumn = memo(function BoardColumn({
               )}
             </DeferredPopup>
           )}
-          {onCreateIssue && (
+          {onCreateIssue && group.account?.external !== true && (
             <DeferredTooltip
               content={t(($) => $.board.add_issue_tooltip)}
               trigger={
@@ -405,7 +407,7 @@ function BoardGroupHeading({
   }
 
   const actorIcon =
-    group.assigneeType && group.assigneeId ? (
+    group.account ? <SourceCollaborationAccount account={group.account} showName={false} /> : group.assigneeType && group.assigneeId ? (
       <ActorAvatar
         actorType={group.assigneeType}
         actorId={group.assigneeId}

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { getApi, ApiError } from "../api";
 import type { CollaborationIssue, CollaborationOperation } from "./schema";
+import { CollaborationPropertyPatchSchema } from "./schema";
 import { positiveVersion } from "./version";
 import { CollaborationUnavailableError, isCollaborationScopeCurrent, type CollaborationScope } from "./access";
 import type { CollaborationDraft } from "./draft";
@@ -19,7 +20,11 @@ export const CollaborationActionSchema = z.discriminatedUnion("action", [
   z.object({ ...base, action: z.enum(["change_status", "complete", "cancel", "reopen"]), status: z.string().min(1), statusOptionsVersion: directed.statusOptionsVersion }),
   z.object({ ...base, action: z.literal("leave") }),
   z.object({ ...base, action: z.literal("remove"), targetUserId: z.uuid() }),
-  z.object({ ...base, action: z.literal("edit"), title: z.string().min(1), description: z.string(), startDate: z.iso.date().nullable(), dueDate: z.iso.date().nullable(), priority: z.enum(["none", "low", "medium", "high", "urgent"]) }),
+  z.object({ ...base, action: z.literal("edit"), title: z.string().min(1), description: z.string(), startDate: z.iso.date().nullable(), dueDate: z.iso.date().nullable(), priority: z.enum(["none", "low", "medium", "high", "urgent"]),
+    labelIds: z.array(z.uuid()).optional(), properties: CollaborationPropertyPatchSchema.optional() }),
+  z.strictObject({ ...base, action: z.literal("edit_source_structure"), projectId: z.uuid().nullable(), parentIssueId: z.uuid().nullable(), stage: z.number().int().min(1).max(2147483647).nullable() }),
+  z.strictObject({ ...base, action: z.literal("change_iteration"), iterationId: z.uuid().nullable(), expectedIssueRevision: positiveVersion,
+    expectedIterationRevision: positiveVersion.optional(), iterationReason: z.string().max(2000), allowCompleted: z.boolean().optional() }).refine((value) => (value.iterationId !== null) === (value.expectedIterationRevision !== undefined)),
 ]);
 export type CollaborationAction = z.infer<typeof CollaborationActionSchema>;
 
@@ -54,7 +59,8 @@ export async function sendCollaborationAction(scope: CollaborationScope, issueId
     case "complete": case "cancel": case "reopen": result = await api.changeCollaborationLifecycle(issueId, { ...action, action: action.action }); break;
     case "leave": result = await api.leaveCollaborationIssue(issueId, action); break;
     case "remove": result = await api.removeCollaborationParticipant(issueId, action.targetUserId, action); break;
-    case "edit": result = await api.editCollaborationIssue(issueId, action); break;
+    case "edit": case "edit_source_structure": result = await api.editCollaborationIssue(issueId, action); break;
+    case "change_iteration": result = await api.changeCollaborationIteration(issueId, action); break;
     default: throw new CollaborationUnavailableError();
   }
   if (!isCollaborationScopeCurrent(scope)) throw new DOMException("Collaboration session changed", "AbortError");

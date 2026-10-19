@@ -90,6 +90,7 @@ export function baselineFromQuery(query: Record<string, unknown>): IssueViewBase
     label: new Set(labelFilters),
     property,
     raw: {
+      ...(query.externalCollaborators === true ? { externalCollaborators: true } : {}),
       statusFilters,
       priorityFilters,
       assigneeFilters,

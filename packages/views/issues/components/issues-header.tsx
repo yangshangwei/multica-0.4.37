@@ -123,6 +123,7 @@ import { matchesPinyin } from "../../editor/extensions/pinyin-match";
 import { FILTER_ITEM_CLASS, HoverCheck } from "../../common/hover-check";
 import { WorkspaceAgentWorkingChip } from "./workspace-agent-working-chip";
 import { TableColumnPicker } from "./table-view";
+import { SourceCollaborationFilter } from "../../collaboration/source-filter";
 
 type LocalDateRange = {
   from: Date | undefined;
@@ -1864,6 +1865,7 @@ export function IssueDisplayControls({
 
   return (
     <div className="flex shrink-0 items-center gap-1">
+        <SourceCollaborationFilter />
         <IssueFilterMenu
           trigger={
             <Button

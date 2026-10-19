@@ -187,6 +187,8 @@ function ListViewImpl({
       const activeId = active.id as string;
       const overId = over.id as string;
 
+      if (issueMapRef.current.get(activeId)?.collaboration) return;
+
       setColumns((prev) => {
         const activeCol = findColumn(prev, activeId, groupIds);
         const overCol = findColumn(prev, overId, groupIds);
@@ -228,6 +230,14 @@ function ListViewImpl({
       const overCol = findColumn(cols, overId, groupIds);
       if (!activeCol || !overCol) {
         resetColumns();
+        return;
+      }
+
+      const sourceIssue = issueMapRef.current.get(activeId);
+      if (sourceIssue?.collaboration && activeCol !== overCol) {
+        resetColumns();
+        const target = groupMap.get(overCol);
+        if (target) onMoveIssue(activeId, { ...getMoveUpdates(target, sourceIssue.position, sourceIssue), before_id: null, after_id: null });
         return;
       }
 

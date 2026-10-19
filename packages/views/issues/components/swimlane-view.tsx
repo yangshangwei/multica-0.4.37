@@ -60,6 +60,7 @@ import { ListLoadMoreFooter } from "./list-load-more-footer";
 import { AppLink } from "../../navigation";
 import { ProjectIcon } from "../../projects/components/project-icon";
 import { ActorAvatar } from "../../common/actor-avatar";
+import { SourceCollaborationAccount } from "../../collaboration/source-bridge";
 import { VirtuosoSeed } from "../../common/virtuoso-seed";
 
 import { DeferredPopup } from "../../common/deferred-popup";
@@ -216,6 +217,7 @@ function computePosition(ids: string[], activeId: string, issueMap: Map<string, 
  * handler doesn't need to branch on grouping.
  */
 interface LaneGroup {
+  account?: NonNullable<Issue["collaboration"]>["handler"];
   /** Full lane key — `<grouping>:<rawId>`. Used in cell ids and as the dictionary key. */
   key: string;
   /** Unique-within-grouping id slice (after the grouping prefix). */
@@ -424,7 +426,8 @@ function buildAssigneeLanes(
       rawId,
       isPinned: false,
       isOrphan: false,
-      title: getActorName(assigneeType, assigneeId),
+      title: issue.collaboration?.handler.name ?? getActorName(assigneeType, assigneeId),
+      account: issue.collaboration?.handler,
       identifier: "",
       parentIssue: null,
       project: null,
@@ -522,8 +525,9 @@ function buildServerLanes(
         isPinned: actor === null,
         isOrphan: false,
         title: actor
-          ? getActorName(actor.type, actor.id)
+          ? value.account?.name ?? getActorName(actor.type, actor.id)
           : labels.noAssignee,
+        account: value.account,
         identifier: "",
         parentIssue: null,
         project: null,
@@ -1065,6 +1069,8 @@ function SwimLaneViewImpl({
       const activeId = active.id as string;
       const overId = over.id as string;
 
+      if (issueMapRef.current.get(activeId)?.collaboration) return;
+
       setLocalCells((prev) => {
         const activeCell = findCellIn(prev, cellSet, activeId);
         const overCell = findCellIn(prev, cellSet, overId);
@@ -1261,6 +1267,16 @@ function SwimLaneViewImpl({
         targetLaneForGuard.parentIssue.id === activeId
       ) {
         reset();
+        return;
+      }
+
+      const sourceIssue = issueMapRef.current.get(activeId);
+      if (sourceIssue?.collaboration && (activeCell.laneKey !== overCell.laneKey || activeCell.status !== overCell.status)) {
+        reset();
+        const target = laneByKey.get(overCell.laneKey);
+        if (target) onMoveIssue(activeId, { ...target.moveUpdates,
+          ...(issueColumnCategory(sourceIssue) === overCell.status ? {} : { status: overCell.status }),
+          position: sourceIssue.position, before_id: null, after_id: null });
         return;
       }
 
@@ -1696,6 +1712,7 @@ function DraggableSwimLane({
           )}
           {lane.project && <ProjectIcon project={lane.project} size="sm" />}
           {lane.actor && (
+            lane.account ? <SourceCollaborationAccount account={lane.account} showName={false} /> :
             <ActorAvatar
               actorType={lane.actor.type}
               actorId={lane.actor.id}

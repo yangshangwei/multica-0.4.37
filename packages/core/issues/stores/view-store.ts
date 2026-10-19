@@ -119,6 +119,7 @@ export interface ActorFilterValue {
 /** The nine query-defining filter fields as one value — what a saved view
  *  fixes, and what resets restore. */
 export interface FilterSnapshot {
+  externalCollaborators?: boolean;
   statusFilters: IssueStatus[];
   priorityFilters: IssuePriority[];
   assigneeFilters: ActorFilterValue[];
@@ -179,6 +180,8 @@ export const CARD_PROPERTY_OPTIONS: { key: keyof CardProperties; label: string }
 ];
 
 export interface IssueViewState {
+  externalCollaborators?: boolean;
+  toggleExternalCollaborators: () => void;
   viewMode: ViewMode;
   grouping: IssueGrouping;
   statusFilters: IssueStatus[];
@@ -292,6 +295,8 @@ export interface IssueViewState {
 }
 
 export const viewStoreSlice = (set: StoreApi<IssueViewState>["setState"]): IssueViewState => ({
+  externalCollaborators: false,
+  toggleExternalCollaborators: () => set((state) => ({ externalCollaborators: state.externalCollaborators !== true })),
   viewMode: "board",
   grouping: "status",
   statusFilters: [],
@@ -425,6 +430,7 @@ export const viewStoreSlice = (set: StoreApi<IssueViewState>["setState"]): Issue
     })),
   clearFilters: () =>
     set({
+      externalCollaborators: false,
       statusFilters: [],
       priorityFilters: [],
       assigneeFilters: [],
@@ -440,7 +446,7 @@ export const viewStoreSlice = (set: StoreApi<IssueViewState>["setState"]): Issue
       // was expressed as a status filter.
       hiddenStatusCategories: [],
     }),
-  resetFiltersTo: (snapshot) => set({ ...snapshot }),
+  resetFiltersTo: (snapshot) => set({ externalCollaborators: false, ...snapshot }),
   clearFilterDimension: (dimension) =>
     set((state) => {
       switch (dimension) {
@@ -556,6 +562,7 @@ export const viewStorePersistOptions = (name: string) => ({
   name,
   storage: createJSONStorage(() => createWorkspaceAwareStorage(defaultStorage)),
   partialize: (state: IssueViewState) => ({
+    externalCollaborators: state.externalCollaborators === true,
     // NOTE: `agentRunningFilter` is intentionally NOT persisted — running
     // state changes second-to-second, and a stored toggle would let users
     // return to an unexplained empty list. Keep it ephemeral. See the

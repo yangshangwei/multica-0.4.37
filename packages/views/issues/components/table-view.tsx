@@ -8,6 +8,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type ReactNode,
 } from "react";
 import {
   DndContext,
@@ -122,6 +123,10 @@ import {
 } from "@tanstack/react-query";
 import { runConfirmIntent } from "../actions/run-confirm-gate";
 import { ActorAvatar } from "../../common/actor-avatar";
+import { SourceCollaborationAccount } from "../../collaboration/source-bridge";
+import { StatusIcon } from "./status-icon";
+import { PriorityIcon } from "./priority-icon";
+import type { SourceCollaborationAction } from "@multica/core/issues";
 import { LabelChip } from "../../labels/label-chip";
 import { resolveClickIntent, useIntentNavigate } from "../../navigation";
 import { ProjectPicker } from "../../projects/components/project-picker";
@@ -138,7 +143,7 @@ import {
   StartDatePicker,
   StatusPicker,
 } from "./pickers";
-import { CustomPropertyValueEditor } from "./pickers/custom-property-picker";
+import { CustomPropertyValueDisplay, CustomPropertyValueEditor } from "./pickers/custom-property-picker";
 import {
   buildIssueTableCsv,
   getIssueTableSelectionRange,
@@ -929,6 +934,9 @@ function propertyDisplayValue(
  * change.
  */
 type TableViewMeta = {
+  openCollaboration?: (action: SourceCollaborationAction) => void;
+  projectMap: Map<string, Project>;
+  statusLabel: (key: string) => string;
   childProgressMap: Map<string, ChildProgress>;
   propertyById: Map<string, IssueProperty>;
   properties: IssueProperty[];
@@ -1118,6 +1126,23 @@ function IssueTableBodyCell({
     meta.updateIssue(issue, updates);
 
   const propertyId = propertyIdFromViewKey(key);
+  if (issue.collaboration && key !== "title") {
+    const account = key === "assignee" ? issue.collaboration.handler : key === "creator" ? issue.collaboration.creator : null;
+    const property = propertyId ? meta.propertyById.get(propertyId) : undefined;
+    let content: ReactNode = null;
+    if (account) content = <SourceCollaborationAccount account={account} />;
+    else if (property) content = <CustomPropertyValueDisplay property={property} value={issue.properties?.[property.id]} />;
+    else if (key === "status") content = <span className="inline-flex items-center gap-1.5"><StatusIcon status={issue.status} />{meta.statusLabel(issue.status)}</span>;
+    else if (key === "priority") content = <span className="inline-flex items-center gap-1.5"><PriorityIcon priority={issue.priority} />{t(($) => $.priority[issue.priority])}</span>;
+    else if (key === "start_date" || key === "due_date") content = issue[key] ?? t(($) => $.table.empty_value);
+    else if (key === "project") content = (issue.project_id ? meta.projectMap.get(issue.project_id)?.title ?? issue.project_id : null) ?? t(($) => $.table.empty_value);
+    else if (key === "labels") content = <span className="inline-flex min-w-0 gap-1 overflow-hidden">{(issue.labels ?? []).map((label) => <LabelChip key={label.id} label={label} />)}</span>;
+    if (content !== null) return key === "creator" ? content : <button type="button" className="flex min-w-0 max-w-full items-center truncate rounded px-1 py-0.5 text-left hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring"
+      aria-label={meta.columnLabel(key)} onClick={(event) => { event.stopPropagation();
+        if (meta.openCollaboration) meta.openCollaboration({ issueId: issue.id, action: key === "assignee" ? "transfer" : key === "status" ? "change_status" : "edit", status: key === "status" ? issue.status : undefined });
+        else meta.openIssue(issue);
+      }}>{content}</button>;
+  }
   if (propertyId) {
     const property = meta.propertyById.get(propertyId);
     if (!property) return null;
@@ -1137,8 +1162,8 @@ function IssueTableBodyCell({
       return (
         <InlineTitle
           row={issueRow}
-          editing={editorOpen}
-          onEditingChange={setEditorOpen}
+          editing={!issue.collaboration && editorOpen}
+          onEditingChange={(open) => { if (issue.collaboration && open) meta.openCollaboration?.({ issueId: issue.id, action: "edit" }); else setEditorOpen(open); }}
           onUpdate={onUpdate}
           onOpen={(event) => meta.openIssue(issue, event)}
           onCreateSubIssue={() => meta.createSubIssue(issue)}
@@ -1380,7 +1405,7 @@ export function TableView({
   // render and churn every consumer of the map below (MUL-5477).
   const groupProjectsQuery = useQuery({
     ...projectListOptions(wsId),
-    enabled: serverGroupSpec.kind === "project",
+    enabled: serverGroupSpec.kind === "project" || tableColumns.some((column) => column.key === "project"),
   });
   const groupProjectMap = useMemo(
     () =>
@@ -1787,7 +1812,7 @@ export function TableView({
       }
       if (value.kind === "assignee") {
         return value.actor
-          ? getActorName(value.actor.type, value.actor.id)
+          ? value.account?.name ?? getActorName(value.actor.type, value.actor.id)
           : t(($) => $.table.unassigned);
       }
       if (value.kind === "project") {
@@ -2174,6 +2199,9 @@ export function TableView({
   // table.options.meta at render time. What must NOT change per render are
   // the column defs' component identities below.
   const viewMeta: TableViewMeta = {
+    openCollaboration: actions?.openCollaboration,
+    projectMap: groupProjectMap,
+    statusLabel: resolveStatusLabel,
     childProgressMap,
     propertyById,
     properties,

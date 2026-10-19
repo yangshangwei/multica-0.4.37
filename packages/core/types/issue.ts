@@ -1,4 +1,5 @@
 import type { AdmissionStatus } from "./triage";
+import type { CollaborationIssue } from "../collaboration/schema";
 import type { Label } from "./label";
 import type { IssuePropertyValues } from "./property";
 
@@ -159,6 +160,8 @@ export interface IssueSourceContext {
 }
 
 export interface Issue {
+  /** Server-derived relationship; all workflow writes use the shared contract. */
+  collaboration?: (Pick<CollaborationIssue, "creator" | "handler"> & { has_external_collaborators: boolean }) | null;
   /** Absent only for servers predating triage; unknown values must fail closed. */
   admission_status?: AdmissionStatus;
   id: string;

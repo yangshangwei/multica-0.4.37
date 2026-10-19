@@ -1,3 +1,4 @@
+import { invalidateCollaborationSourceViews } from "./invalidation";
 import { z } from "zod";
 import { queryOptions, type QueryClient } from "@tanstack/react-query";
 import { getApi } from "../api";
@@ -98,7 +99,10 @@ async function switchRequest(client: QueryClient, scope: CollaborationScope, sou
     removeCollaborationDraft(draft, options?.storage);
     // Receipts describe the original operation, including old refusals. Both
     // the live execution state and proposal consent state need a fresh read.
-    if (!denied) void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, draft.scope.issueId) });
+    if (!denied) {
+      invalidateCollaborationSourceViews(client, scope, draft.scope.issueId);
+      void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, draft.scope.issueId) });
+    }
     return result;
   } catch (error) {
     if (isCollaborationDenied(error)) clearCollaborationDrafts(options?.storage, draft.scope);

@@ -10,6 +10,7 @@ import type { Issue, Project,
 } from "@multica/core/types";
 import { formatDateOnly } from "@multica/core/issues/date";
 import { ActorAvatar } from "../../common/actor-avatar";
+import { SourceCollaborationAccount } from "../../collaboration/source-bridge";
 import { PropertyIcon } from "../../common/property-icon";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { useQuery } from "@tanstack/react-query";
@@ -173,6 +174,7 @@ function ListRowContent({
             </span>
           )}
           {showAssignee && (
+            issue.collaboration ? <SourceCollaborationAccount account={issue.collaboration.handler} /> :
             <ActorAvatar
               actorType={issue.assignee_type!}
               actorId={issue.assignee_id!}

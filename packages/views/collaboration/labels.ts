@@ -69,6 +69,8 @@ export function useCollaborationLabels() {
         case "reopen": return t(($) => $.workflow.reopen);
         case "leave": return t(($) => $.workflow.leave);
         case "edit": return t(($) => $.workflow.edit);
+        case "edit_source_structure": return t(($) => $.fields.editSource);
+        case "change_iteration": return t(($) => $.fields.editIteration);
         default: return t(($) => $.workflow.pendingTitle);
       }
     },

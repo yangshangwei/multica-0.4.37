@@ -47,6 +47,7 @@ import { mergeIssueCreateDefaults } from "./create-defaults";
 import {
   useIssueSurfaceActions,
   type MoveIssueUpdates,
+  type IssueSurfaceActionController,
 } from "./use-issue-surface-actions";
 import { useIssueSurfaceData, type GanttRecoveryState } from "./use-issue-surface-data";
 import {
@@ -67,6 +68,8 @@ interface UseIssueSurfaceControllerInput {
 }
 
 export interface IssueSurfaceController {
+  collaborationAction: IssueSurfaceActionController["collaborationAction"];
+  dismissCollaborationAction: () => void;
   scopeKey: string;
   projectId?: string;
   createDefaults: IssueCreateDefaults;
@@ -223,6 +226,7 @@ export function useIssueSurfaceController({
   const sortDirection = useViewStore((s) => s.sortDirection);
   const dateFilter = useViewStore((s) => s.dateFilter);
   const statusFilters = useViewStore((s) => s.statusFilters);
+  const externalCollaborators = useViewStore((s) => s.externalCollaborators === true);
   const priorityFilters = useViewStore((s) => s.priorityFilters);
   const assigneeFilters = useViewStore((s) => s.assigneeFilters);
   const includeNoAssignee = useViewStore((s) => s.includeNoAssignee);
@@ -415,6 +419,7 @@ export function useIssueSurfaceController({
   // out: they have their own affordances and clearing filters would not undo
   // them.
   const hasActiveFilters =
+    externalCollaborators ||
     statusFilters.length > 0 ||
     priorityFilters.length > 0 ||
     assigneeFilters.length > 0 ||
@@ -491,6 +496,7 @@ export function useIssueSurfaceController({
     return {
       scope: queryScope,
       filters: {
+        ...(externalCollaborators ? { external_collaborators: true } : {}),
         ...(statusFilters.length > 0 ? { statuses: statusFilters } : {}),
         ...(priorityFilters.length > 0 ? { priorities: priorityFilters } : {}),
         ...(assigneeFilters.length > 0 ? { assignees: assigneeFilters } : {}),
@@ -518,6 +524,7 @@ export function useIssueSurfaceController({
     };
   }, [
     agentRunningFilter,
+    externalCollaborators,
     assigneeFilters,
     creatorFilters,
     dateParams,
@@ -702,6 +709,7 @@ export function useIssueSurfaceController({
   const membershipKey = useMemo(
     () =>
       JSON.stringify([
+        externalCollaborators,
         statusFilters,
         priorityFilters,
         assigneeFilters,
@@ -717,6 +725,7 @@ export function useIssueSurfaceController({
         debouncedActiveSearch,
       ]),
     [
+      externalCollaborators,
       agentRunningFilter,
       assigneeFilters,
       creatorFilters,
@@ -843,19 +852,22 @@ export function useIssueSurfaceController({
     return issues;
   }, [tableQuerySpec]);
 
-  const { actions, openCreateIssue, moveIssue } = useIssueSurfaceActions({
+  const { actions, openCreateIssue, moveIssue, collaborationAction, dismissCollaborationAction } = useIssueSurfaceActions({
     createDefaults: resolvedCreateDefaults,
   });
 
   const { ganttWorkingScopeIssues: _ganttWorkingScope, ...surfaceData } = data;
 
   return {
+    collaborationAction,
+    dismissCollaborationAction,
     scopeKey,
     projectId,
     createDefaults: resolvedCreateDefaults,
     viewMode: effectiveViewMode,
     allowGantt: allowedModes.has("gantt") && !!projectId,
     ...surfaceData,
+    filteredGanttIssues: externalCollaborators ? data.filteredGanttIssues.filter((issue) => issue.collaboration?.has_external_collaborators === true) : data.filteredGanttIssues,
     workingAgents,
     hasActiveFilters,
     statusPagination: usesServerStatusSurface

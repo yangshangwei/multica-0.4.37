@@ -11,6 +11,7 @@ import { readCollaborationDrafts, saveCollaborationDraft } from "../collaboratio
 import { defaultStorage } from "../platform/storage";
 import type { WSEventType } from "../types/events";
 import { bindCollaborationRealtime } from "./collaboration";
+import { issueKeys } from "../issues/queries";
 
 const actor = "00000000-0000-4000-8000-000000000001";
 const issueId = "00000000-0000-4000-8000-000000000002";
@@ -51,6 +52,8 @@ function setup() {
 
 it("subscribes once and preserves an original comment POST through ordinary updates", async () => {
   const f = setup();
+  const sourceKey = issueKeys.detail(f.issue.source_workspace.id, issueId);
+  f.client.setQueryData(sourceKey, { id: issueId, title: "Source snapshot" });
   let finish!: (response: Response) => void;
   vi.stubGlobal("fetch", vi.fn(() => new Promise<Response>((resolve) => { finish = resolve; })));
   const pending = executeCollaborationComment(f.client, f.scope, f.draft);
@@ -62,6 +65,39 @@ it("subscribes once and preserves an original comment POST through ordinary upda
   await expect(pending).resolves.toEqual(receipt);
   expect(readCollaborationDrafts(f.draft.scope)).toEqual([]);
   expect(f.subscribeScope).toHaveBeenCalledExactlyOnceWith("issue", issueId);
+  expect(f.client.getQueryState(sourceKey)?.isInvalidated).toBe(true);
+  expect(f.client.getQueryData(sourceKey)).toEqual({ id: issueId, title: "Source snapshot" });
+});
+
+it("refreshes source windows from issue events without copying a collaboration DTO", () => {
+  const f = setup();
+  const workspaceId = f.issue.source_workspace.id;
+  const keys = [issueKeys.detail(workspaceId, issueId), [...issueKeys.tableAll(workspaceId), "rows"],
+    issueKeys.children(workspaceId, "parent"), issueKeys.childrenByParents(workspaceId, ["parent"]),
+    issueKeys.projectGantt(workspaceId, "project"), ["projects", workspaceId], ["iterations", workspaceId]];
+  for (const key of keys) f.client.setQueryData(key, { source: true });
+  const other = issueKeys.detail("other-workspace", "other-issue");
+  f.client.setQueryData(other, { source: "other" });
+  f.emit("collaboration:changed", change("2"));
+  for (const key of keys) {
+    expect(f.client.getQueryState(key)?.isInvalidated).toBe(true);
+    expect(f.client.getQueryData(key)).toEqual({ source: true });
+  }
+  expect(f.client.getQueryState(other)?.isInvalidated).toBe(false);
+});
+
+it("accepts only empty account invalidations and fences obsolete sessions", () => {
+  const f = setup();
+  const sourceKey = issueKeys.detail("source-workspace", issueId);
+  f.client.setQueryData(sourceKey, { id: issueId });
+  f.emit("collaboration:workbench_changed", { issue_id: issueId });
+  expect(f.client.getQueryState(sourceKey)?.isInvalidated).toBe(false);
+  f.emit("collaboration:workbench_changed", {});
+  expect(f.client.getQueryState(sourceKey)?.isInvalidated).toBe(true);
+  f.client.setQueryData(sourceKey, { id: issueId });
+  setApiInstance(new ApiClient("https://another-server.example"));
+  f.emit("collaboration:workbench_changed", {});
+  expect(f.client.getQueryState(sourceKey)?.isInvalidated).toBe(false);
 });
 
 it("fences a pending POST and old GET before clearing revoked content and drafts", async () => {

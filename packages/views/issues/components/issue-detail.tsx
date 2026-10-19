@@ -99,7 +99,7 @@ import { QuickActionsSection } from "./quick-actions-section";
 import { PluginPanelSection } from "../../plugins";
 import { PullRequestList } from "./pull-request-list";
 import { useGitHubSettings } from "@multica/core/github";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@multica/core/auth";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { useActorName } from "@multica/core/workspace/hooks";
@@ -107,6 +107,8 @@ import { useWorkspaceId } from "@multica/core/hooks";
 import { useRecentContextStore } from "@multica/core/chat";
 import { useModalStore } from "@multica/core/modals";
 import { issueListOptions, issueDetailOptions, childIssuesOptions, childIssueProgressOptions, issueAttachmentsOptions } from "@multica/core/issues/queries";
+import { SourceCollaborationDetail } from "../../collaboration/source-bridge";
+import { findSourceIssue } from "@multica/core/issues";
 import { projectDetailOptions } from "@multica/core/projects/queries";
 import { ProjectIcon } from "../../projects/components/project-icon";
 import { issueLabelsOptions } from "@multica/core/labels";
@@ -1159,7 +1161,20 @@ export function IssueDetailSkeleton({ leading, presentation = "default" }: { lea
 // IssueDetail
 // ---------------------------------------------------------------------------
 
-export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = true, layoutId = "multica_issue_detail_layout", presentation = "default", reviewContext, highlightCommentId, highlightRequestToken, leadingAction, resolutionError }: IssueDetailProps) {
+export function IssueDetail(props: IssueDetailProps) {
+  const wsId = useWorkspaceId();
+  const client = useQueryClient();
+  const query = useQuery({ ...issueDetailOptions(wsId, props.issueId), refetchOnMount: "always", retryOnMount: false });
+  const denied = query.error instanceof ApiError && [401, 403, 404].includes(query.error.status);
+  if (denied && query.error instanceof ApiError && query.error.status === 404) return <IssueNotFound showBackLink={!props.onDelete} leading={props.leadingAction} />;
+  if (denied || (!query.data && (query.error || query.errorUpdatedAt > 0))) return <IssueLoadError accessDenied={denied} isRetrying={query.isFetching} onRetry={() => void query.refetch()} leading={props.leadingAction} />;
+  if (!query.data) return <IssueDetailSkeleton leading={props.leadingAction} presentation={props.presentation} />;
+  const known = findSourceIssue(client, wsId, query.data.id);
+  if (query.data.collaboration || known?.collaboration) return <SourceCollaborationDetail issueId={query.data.id} commentId={props.highlightCommentId} leading={props.leadingAction} />;
+  return <OrdinaryIssueDetail {...props} />;
+}
+
+function OrdinaryIssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = true, layoutId = "multica_issue_detail_layout", presentation = "default", reviewContext, highlightCommentId, highlightRequestToken, leadingAction, resolutionError }: IssueDetailProps) {
   const { t } = useT("issues");
   const timeAgo = useTimeAgo();
   const id = issueId;
@@ -1388,7 +1403,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
     // initialData, so always reconcile with the authoritative detail endpoint
     // when the detail view mounts. Without this, the global Infinity staleTime
     // hides source context until a full page refresh.
-    refetchOnMount: "always",
+    refetchOnMount: false,
     initialData: () => {
       const cached = allIssues.find((i) => i.id === id);
       return cached?.description != null ? cached : undefined;

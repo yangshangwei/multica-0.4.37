@@ -101,6 +101,24 @@ describe("useRealtimeSync — ws instance change", () => {
     expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: triageKeys.all("ws-1") });
   });
 
+  it("refreshes a source member's lists on a content-free workspace collaboration tick", () => {
+    vi.useFakeTimers();
+    try {
+      const ws = createMockWs();
+      renderHook(() => useRealtimeSync(ws, stores), { wrapper: createWrapper(qc) });
+      const onAny = vi.mocked(ws.onAny).mock.calls[0]![0];
+      invalidateSpy.mockClear();
+      onAny({ type: "collaboration:workbench_changed", payload: { issue: "private" } });
+      vi.advanceTimersByTime(100);
+      expect(invalidateSpy).not.toHaveBeenCalled();
+      onAny({ type: "collaboration:workbench_changed", payload: {} });
+      vi.advanceTimersByTime(100);
+      expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: issueKeys.all("ws-1") });
+      expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: projectKeys.all("ws-1") });
+      expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: ["iterations", "ws-1"] });
+    } finally { vi.useRealTimers(); }
+  });
+
   it.each([
     ["issue:updated", { issue: { id: "i1", workspace_id: "ws-1", admission_status: "pending", revision: 2, title: "Edited" } }],
     ["issue:deleted", { issue_id: "i1" }],

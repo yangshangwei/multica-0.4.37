@@ -1,3 +1,4 @@
+import { invalidateCollaborationSourceViews } from "./invalidation";
 import { z } from "zod";
 import type { QueryClient } from "@tanstack/react-query";
 import { getApi } from "../api";
@@ -35,7 +36,10 @@ export async function executeCollaborationCommandCancel(client: QueryClient, sco
       return result;
     });
     removeCollaborationDraft(draft);
-    if (!denied) void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, draft.scope.issueId) });
+    if (!denied) {
+      invalidateCollaborationSourceViews(client, scope, draft.scope.issueId);
+      void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, draft.scope.issueId) });
+    }
     return receipt;
   } catch (error) { if (isCollaborationDenied(error)) clearCollaborationDrafts(undefined, draft.scope); throw error; }
 }
