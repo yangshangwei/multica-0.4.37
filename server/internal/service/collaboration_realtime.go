@@ -138,6 +138,16 @@ func (s *CollaborationRealtime) deliverNext(ctx context.Context) (bool, error) {
 			return false, err
 		}
 	}
+	issue, err := q.GetIssue(ctx, event.IssueID)
+	if err != nil {
+		return false, err
+	}
+	// Source members may not be participants or subscribe to this issue. The
+	// workspace tick only invalidates their authorized lists; it carries no
+	// issue identity, content, actor or execution metadata.
+	if err = publish(realtime.ScopeWorkspace, util.UUIDToString(issue.WorkspaceID), "source", "collaboration:workbench_changed", struct{}{}); err != nil {
+		return false, err
+	}
 	if err = publish(realtime.ScopeIssue, util.UUIDToString(event.IssueID), "issue", "collaboration:changed", change); err != nil {
 		return false, err
 	}

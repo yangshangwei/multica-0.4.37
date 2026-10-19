@@ -142,7 +142,7 @@ func TestCollaborationEditHTTPStrictFieldsAndVersions(t *testing.T) {
 	}{
 		{"assignee", "assignee_id", nil}, {"project", "project_id", uuid.NewString()}, {"priority", "priority", "private-invalid-priority"},
 		{"properties", "properties", map[string]any{"custom": "x"}}, {"labels", "labels", []string{"x"}},
-		{"position", "position", 1}, {"iteration", "current_iteration_id", nil}, {"stage", "stage", 2},
+		{"position", "position", 1}, {"iteration", "current_iteration_id", nil}, {"stage", "stage", 0},
 		{"title_object", "title", map[string]any{}}, {"description_array", "description", []string{}},
 		{"numeric_date", "start_date", 42}, {"bad_date", "due_date", "private-unparseable-date"},
 		{"numeric_version", "expected_collaboration_revision", 1}, {"overflow", "expected_lifecycle_epoch", "9223372036854775808"},

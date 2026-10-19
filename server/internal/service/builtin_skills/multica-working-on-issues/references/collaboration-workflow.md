@@ -20,6 +20,31 @@ the same input after conditions improve. Unknown/missing results keep the old
 key; reading or reloading never submits automatically. A result grants no issue
 or source access; successful detail recovery retains its normal authorization.
 
+Human creation may author initial status, priority, dates, labels/property values
+and source structure/iteration in the same issue transaction. Later metadata
+edits use the shared PATCH; iteration membership uses the dedicated PUT with its
+source/issue/iteration versions and switch/removal reason. Project, parent,
+stage and iteration changes require current source membership as well as issue
+editing authority. Outside collaborators see only minimal references. A source
+card move cannot substitute for transfer or whole-issue lifecycle actions.
+Ordinary workspace iteration `move` previews/operations also refuse a batch
+containing a collaboration issue; use the dedicated authorized workflow.
+Automatic period closure/rollover retains its server-owned contract.
+
+Human authors edit/delete ordinary comments with their original content revision;
+thread resolution and own reactions use dedicated discussion endpoints. They do
+not change content revisions, notify participants or dispatch AI. Discussion
+receipts correlate issue/comment/request/action and the exact emoji. Comment
+content remains limited to 65,536 UTF-8 bytes; its PATCH JSON envelope permits
+512 KiB for escaping and old-request recovery. An oversized old request is
+retired only after a correlated persisted refusal is read, retaining text for a
+new explicit edit. Replies, tombstones, history and delivered files remain.
+
+Source workspace refresh events have an empty payload; consumers re-read under
+current authority. They neither carry private collaboration content nor add
+source membership or execution permission. The contained CLI surface below is
+unchanged by these human UI/API additions.
+
 Account/issue WebSockets carry scoped invalidation facts and recheck authority
 before sending. Reconnection refreshes authorized views; it never resumes AI.
 Resource forms use only the current issue roster, explicitly accessible candidate

@@ -19,11 +19,12 @@ type CollaborationCreationOptions struct {
 	Sources            []CollaborationCreationSource `json:"sources"`
 	Source             *CollaborationCreationSource  `json:"source"`
 	MaxAttachmentBytes int64                         `json:"max_attachment_bytes"`
+	Fields             *CollaborationCreationFields  `json:"fields,omitempty"`
 }
 
 // CreationOptions returns only the caller's source memberships. Closing the
 // gate remains observable without granting any cross-workspace discovery.
-func (s *CollaborationService) CreationOptions(ctx context.Context, source pgtype.UUID) (CollaborationCreationOptions, error) {
+func (s *CollaborationService) CreationOptions(ctx context.Context, source pgtype.UUID, parentSearch ...string) (CollaborationCreationOptions, error) {
 	out := CollaborationCreationOptions{Sources: make([]CollaborationCreationSource, 0), MaxAttachmentBytes: CollaborationAttachmentMaxBytes}
 	if p, ok := collaboration.PrincipalFromContext(ctx); !ok || !p.Human() {
 		return out, collaborationError(http.StatusForbidden, "forbidden")
@@ -60,5 +61,15 @@ func (s *CollaborationService) CreationOptions(ctx context.Context, source pgtyp
 		return out, err
 	}
 	out.CreationEnabled = gate.CreationEnabled
+	if source.Valid {
+		search, err := collaborationParentSearch(parentSearch)
+		if err != nil {
+			return out, err
+		}
+		out.Fields, err = collaborationCreationFields(ctx, q, source, search)
+		if err != nil {
+			return out, err
+		}
+	}
 	return out, tx.Commit(ctx)
 }

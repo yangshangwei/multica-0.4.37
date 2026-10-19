@@ -24,7 +24,7 @@ func (s *CollaborationService) DeleteComment(ctx context.Context, p Collaboratio
 }
 
 func (s *CollaborationService) changeCollaborationComment(ctx context.Context, p CollaborationEditCommentParams, deleting bool) (CollaborationCommentReceipt, error) {
-	if !p.CommentID.Valid || p.ExpectedCommentRevision < 1 || (!deleting && len(p.Content) > 64<<10) {
+	if !p.CommentID.Valid || p.ExpectedCommentRevision < 1 {
 		return CollaborationCommentReceipt{}, collaborationError(http.StatusBadRequest, "invalid_comment_request")
 	}
 	if deleting && (p.Content != "" || p.DraftID != nil || p.AttachmentIDs != nil) {
@@ -35,17 +35,28 @@ func (s *CollaborationService) changeCollaborationComment(ctx context.Context, p
 		kind = "delete_comment"
 	}
 	return s.mutateCollaborationContent(ctx, p.IssueID, p.RequestID, kind, p, func(t *collaborationContentTx) (CollaborationCommentReceipt, error) {
+		receipt := t.result("stale_comment_revision", http.StatusConflict)
+		receipt.RequestID, receipt.Action = p.RequestID, kind
+		receipt.CommentID, receipt.CommentRevision = p.CommentID, p.ExpectedCommentRevision
+		// Older clients counted JavaScript code units rather than UTF-8 bytes.
+		// Keep the same content limit, but seal their exact request with a refusal
+		// so a pending original can be recovered without guessing its outcome.
+		if !deleting && len(p.Content) > 64<<10 {
+			receipt.Code, receipt.Status = "invalid_comment_request", http.StatusBadRequest
+			return receipt, nil
+		}
 		before, err := t.q.GetCollaborationComment(ctx, db.GetCollaborationCommentParams{CommentID: p.CommentID, IssueID: p.IssueID, WorkspaceID: t.access.Issue.WorkspaceID})
 		if errors.Is(err, pgx.ErrNoRows) {
-			return t.result("not_found", http.StatusNotFound), nil
+			receipt.Code, receipt.Status = "not_found", http.StatusNotFound
+			return receipt, nil
 		}
 		if err != nil {
 			return CollaborationCommentReceipt{}, err
 		}
 		if before.AuthorType != "member" || before.AuthorID != t.actor || before.Type != "comment" {
-			return t.result("forbidden", http.StatusForbidden), nil
+			receipt.Code, receipt.Status = "forbidden", http.StatusForbidden
+			return receipt, nil
 		}
-		receipt := t.result("stale_comment_revision", http.StatusConflict)
 		receipt.CommentID, receipt.CommentRevision = before.ID, before.Revision
 		if before.DeletedAt.Valid {
 			receipt.Code = "comment_deleted"
@@ -73,6 +84,7 @@ func (s *CollaborationService) changeCollaborationComment(ctx context.Context, p
 		}
 		if !deleting && content == before.Content && sameCollaborationAttachmentIDs(beforeIDs, afterIDs) {
 			receipt.Status, receipt.Code = http.StatusOK, "unchanged"
+			receipt.AttachmentIDs = afterIDs
 			return receipt, nil
 		}
 		var after db.Comment

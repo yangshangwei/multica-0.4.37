@@ -10,6 +10,14 @@ line movement into a misleading contract.
 
 Collaboration overrides for protected objects:
 
+| Source/editing behavior | Source |
+| --- | --- |
+| Server-derived source marker, external filter/counts, safe machine child projection and shared detail controls | `server/internal/handler/collaboration_source.go`; `server/pkg/db/queries/collaboration_source.sql`; `packages/views/collaboration/source-bridge.tsx` |
+| Initial fields and source structure/iteration use existing transactions, held membership, versions and explicit reasons | `server/internal/service/collaboration_creation_fields.go`; `collaboration_source_fields.go`; `collaboration_iteration.go`; `packages/views/collaboration/workflow.tsx` |
+| Ordinary iteration move preview/apply rejects shared or mixed selections before reference capture; automatic lifecycle operations remain available | `server/internal/service/iteration_lifecycle_preview.go` (`prepareLifecycle`) |
+| Discussion changes preserve content versions, replies and original emoji receipts; UTF-8 refusals recover without local key deletion | `server/internal/service/collaboration_discussion.go`; `collaboration_comments_edit.go`; `server/internal/handler/collaboration_comment_limits_test.go`; `packages/core/collaboration/comment-actions.ts`; `discussion.ts` |
+| Source ticks carry no private identifiers/content and only invalidate authorized caches; mixed source logs are redacted | `server/internal/service/collaboration_realtime.go`; `packages/core/collaboration/invalidation.ts`; `packages/core/api/issue-source-redaction.test.ts` |
+
 | Behavior | Source |
 |---|---|
 | Legacy issue mutations and private machine detail access are refused for collaboration; position-only updates use a separate checked path | `server/internal/handler/handler.go` (`loadIssueForUser`, `loadIssueForUserWithCollaborationUpdate`); `server/internal/handler/collaboration_boundary.go` |

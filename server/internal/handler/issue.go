@@ -37,14 +37,15 @@ import (
 
 // IssueResponse is the JSON response for an issue.
 type IssueResponse struct {
-	AdmissionStatus string  `json:"admission_status"`
-	ID              string  `json:"id"`
-	WorkspaceID     string  `json:"workspace_id"`
-	Number          int32   `json:"number"`
-	Identifier      string  `json:"identifier"`
-	Title           string  `json:"title"`
-	Description     *string `json:"description"`
-	Status          string  `json:"status"`
+	Collaboration   *sourceIssueCollaboration `json:"collaboration,omitempty"`
+	AdmissionStatus string                    `json:"admission_status"`
+	ID              string                    `json:"id"`
+	WorkspaceID     string                    `json:"workspace_id"`
+	Number          int32                     `json:"number"`
+	Identifier      string                    `json:"identifier"`
+	Title           string                    `json:"title"`
+	Description     *string                   `json:"description"`
+	Status          string                    `json:"status"`
 	// StatusCategory is the canonical status whose platform behavior Status
 	// carries — identical to Status for the 7 built-ins, and the inherited
 	// category for a custom status. Omitted when the endpoint does not resolve
@@ -1037,6 +1038,16 @@ func (h *Handler) SearchIssues(w http.ResponseWriter, r *http.Request) {
 
 	prefix := h.getIssuePrefix(ctx, wsUUID)
 	fillSearch := h.newStatusCategoryFiller(ctx, wsUUID)
+	ids := make([]pgtype.UUID, 0, len(results))
+	for _, sr := range results {
+		if !sr.collaborationReference {
+			ids = append(ids, sr.issue.ID)
+		}
+	}
+	collaborations, ok := h.sourceIssueCollaborations(w, r, wsUUID, ids)
+	if !ok {
+		return
+	}
 	resp := make([]any, len(results))
 	for i, sr := range results {
 		if sr.collaborationReference {
@@ -1048,6 +1059,7 @@ func (h *Handler) SearchIssues(w http.ResponseWriter, r *http.Request) {
 			MatchSource:   sr.matchSource,
 		}
 		fillSearch(&sir.IssueResponse)
+		sir.Collaboration = collaborations[sir.ID]
 		// Always populate comment snippet when a matching comment exists
 		if sr.matchedCommentContent != "" {
 			snippet := extractSnippet(sr.matchedCommentContent, q)
@@ -1197,17 +1209,18 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		issues, err := h.Queries.ListOpenIssues(ctx, db.ListOpenIssuesParams{
-			WorkspaceID:        wsUUID,
-			MachinePrincipal:   machine,
-			TerminalStatusKeys: terminalStatusKeys,
-			Priority:           priorityFilter,
-			AssigneeID:         assigneeFilter,
-			AssigneeIds:        assigneeIdsFilter,
-			CreatorID:          creatorFilter,
-			ProjectID:          projectFilter,
-			InvolvesUserID:     involvesUserFilter,
-			MetadataFilter:     metadataFilter,
-			PropertiesFilter:   openPropertiesFilter,
+			WorkspaceID:           wsUUID,
+			MachinePrincipal:      machine,
+			ExternalCollaborators: r.URL.Query().Get("external_collaborators") == "true",
+			TerminalStatusKeys:    terminalStatusKeys,
+			Priority:              priorityFilter,
+			AssigneeID:            assigneeFilter,
+			AssigneeIds:           assigneeIdsFilter,
+			CreatorID:             creatorFilter,
+			ProjectID:             projectFilter,
+			InvolvesUserID:        involvesUserFilter,
+			MetadataFilter:        metadataFilter,
+			PropertiesFilter:      openPropertiesFilter,
 		})
 		if err != nil {
 			writeError(w, http.StatusInternalServerError, "failed to list issues")
@@ -1222,6 +1235,10 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		labelsMap := h.labelsByIssue(ctx, wsUUID, ids)
+		collaborations, ok := h.sourceIssueCollaborations(w, r, wsUUID, ids)
+		if !ok {
+			return
+		}
 		fillOpen := h.newStatusCategoryFiller(ctx, wsUUID)
 		resp := make([]any, len(issues))
 		for i, issue := range issues {
@@ -1230,6 +1247,7 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 				continue
 			}
 			item := openIssueRowToResponse(issue, prefix)
+			item.Collaboration = collaborations[item.ID]
 			fillOpen(&item)
 			labels := labelsMap[item.ID]
 			if labels == nil {
@@ -1363,6 +1381,9 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 
 	// Build dynamic SQL — same approach as ListGroupedIssues.
 	where := []string{"i.workspace_id = $1", "i.admission_status IN ('not_required', 'accepted')"}
+	if r.URL.Query().Get("external_collaborators") == "true" {
+		where = append(where, externalCollaboratorsPredicate)
+	}
 	if machine && !collaborationReferenceFiltersAllowed(r) {
 		where = append(where, "NOT ("+collaborationReferencePredicate+")")
 	}
@@ -1654,6 +1675,10 @@ LIMIT %s OFFSET %s`, whereSql, orderBy, limitRef, offsetRef)
 		}
 	}
 	labelsMap := h.labelsByIssue(ctx, wsUUID, ids)
+	collaborations, ok := h.sourceIssueCollaborations(w, r, wsUUID, ids)
+	if !ok {
+		return
+	}
 	resp := make([]any, len(issues))
 	fill := h.newStatusCategoryFiller(ctx, wsUUID)
 	for i, issue := range issues {
@@ -1662,6 +1687,7 @@ LIMIT %s OFFSET %s`, whereSql, orderBy, limitRef, offsetRef)
 			continue
 		}
 		item := issueListRowToResponse(issue, prefix)
+		item.Collaboration = collaborations[item.ID]
 		fill(&item)
 		labels := labelsMap[item.ID]
 		if labels == nil {
@@ -1871,6 +1897,9 @@ func (h *Handler) ListGroupedIssues(w http.ResponseWriter, r *http.Request) {
 	}
 
 	where := []string{"i.workspace_id = $1", "i.admission_status IN ('not_required', 'accepted')"}
+	if r.URL.Query().Get("external_collaborators") == "true" {
+		where = append(where, externalCollaboratorsPredicate)
+	}
 	if collaborationMachineRequest(r) {
 		// Group dimensions and totals are private to the collaboration.
 		where = append(where, "NOT ("+collaborationReferencePredicate+")")
@@ -2270,6 +2299,10 @@ ORDER BY
 		ids[i] = row.ID
 	}
 	labelsMap := h.labelsByIssue(ctx, wsUUID, ids)
+	collaborations, ok := h.sourceIssueCollaborations(w, r, wsUUID, ids)
+	if !ok {
+		return
+	}
 	prefix := h.getIssuePrefix(ctx, wsUUID)
 	// One Resolver for the whole page — a per-row filler would query the
 	// catalog once per custom-status row. (MUL-6243)
@@ -2293,6 +2326,7 @@ ORDER BY
 		}
 
 		issue := issueListRowToResponse(row.ListIssuesRow, prefix)
+		issue.Collaboration = collaborations[issue.ID]
 		fillGrouped(&issue)
 		labels := labelsMap[issue.ID]
 		if labels == nil {
@@ -2313,6 +2347,9 @@ func (h *Handler) GetIssue(w http.ResponseWriter, r *http.Request) {
 	}
 	prefix := h.getIssuePrefix(r.Context(), issue.WorkspaceID)
 	resp := issueToResponse(issue, prefix)
+	if !h.fillSourceIssueCollaboration(w, r, &resp) {
+		return
+	}
 	h.fillStatusCategory(r.Context(), issue.WorkspaceID, &resp)
 	detailLabels := h.labelsByIssue(r.Context(), issue.WorkspaceID, []pgtype.UUID{issue.ID})[uuidToString(issue.ID)]
 	if detailLabels == nil {
@@ -2389,8 +2426,12 @@ func (h *Handler) ListChildIssues(w http.ResponseWriter, r *http.Request) {
 		}
 		resp[i].Labels = &labels
 	}
+	projected, ok := h.projectSourceChildIssues(w, r, issue.WorkspaceID, resp)
+	if !ok {
+		return
+	}
 	writeJSON(w, http.StatusOK, map[string]any{
-		"issues": resp,
+		"issues": projected,
 	})
 }
 
@@ -2475,8 +2516,12 @@ func (h *Handler) ListChildrenByParents(w http.ResponseWriter, r *http.Request) 
 		}
 		resp[i].Labels = &labels
 	}
+	projected, ok := h.projectSourceChildIssues(w, r, wsUUID, resp)
+	if !ok {
+		return
+	}
 	writeJSON(w, http.StatusOK, map[string]any{
-		"issues": resp,
+		"issues": projected,
 	})
 }
 

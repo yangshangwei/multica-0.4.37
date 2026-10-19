@@ -19,13 +19,14 @@ type collaborationPublishedFrame struct {
 }
 
 type collaborationPublisher struct {
-	frames []collaborationPublishedFrame
-	fail   bool
+	frames    []collaborationPublishedFrame
+	fail      bool
+	failScope string
 }
 
 func (p *collaborationPublisher) PublishWithID(scope, id, exclude string, frame []byte, event string) error {
 	p.frames = append(p.frames, collaborationPublishedFrame{scope: scope, id: id, event: event, data: append([]byte(nil), frame...)})
-	if p.fail {
+	if p.fail || p.failScope == scope {
 		return errors.New("relay unavailable")
 	}
 	return nil
@@ -92,7 +93,7 @@ func TestCollaborationRealtimeOutboxRetriesWithoutPrivatePayloads(t *testing.T) 
 	if f.fx.Count(t, `SELECT count(*) FROM collaboration_event WHERE issue_id=$1 AND outbox_state='pending'`, issue.Issue.ID) != 0 {
 		t.Fatal("successful delivery stayed pending")
 	}
-	replayedFrames, issueDelivered := 0, false
+	replayedFrames, issueDelivered, sourceDelivered := 0, false, false
 	for _, frame := range publisher.frames {
 		if strings.Contains(string(frame.data), "PRIVATE_") {
 			t.Fatalf("private content leaked: %s", frame.data)
@@ -100,8 +101,14 @@ func TestCollaborationRealtimeOutboxRetriesWithoutPrivatePayloads(t *testing.T) 
 		if frame.event == first.event && frame.scope == first.scope && frame.id == first.id {
 			replayedFrames++
 		}
-		if frame.scope == realtime.ScopeWorkspace || frame.scope == realtime.ScopeUser {
+		if frame.scope == realtime.ScopeUser {
 			t.Fatalf("collaboration was published to ordinary audience: %+v", frame)
+		}
+		if frame.scope == realtime.ScopeWorkspace {
+			if frame.id != util.UUIDToString(issue.Issue.WorkspaceID) || string(frame.data) != `{"type":"collaboration:workbench_changed","payload":{}}` {
+				t.Fatalf("source invalidation must carry no issue content or identity: %+v", frame)
+			}
+			sourceDelivered = true
 		}
 		if frame.scope == realtime.ScopeIssue {
 			issueDelivered = frame.id == util.UUIDToString(issue.Issue.ID)
@@ -113,8 +120,8 @@ func TestCollaborationRealtimeOutboxRetriesWithoutPrivatePayloads(t *testing.T) 
 			}
 		}
 	}
-	if replayedFrames < 2 || !issueDelivered {
-		t.Fatal("stable replay or issue delivery missing")
+	if replayedFrames < 2 || !issueDelivered || !sourceDelivered {
+		t.Fatal("stable replay, issue delivery or source invalidation missing")
 	}
 	before := len(publisher.frames)
 	if count, err := worker.DeliverPending(f.ctx, 100); err != nil || count != 0 || len(publisher.frames) != before {
@@ -122,6 +129,44 @@ func TestCollaborationRealtimeOutboxRetriesWithoutPrivatePayloads(t *testing.T) 
 	}
 	if f.fx.Count(t, `SELECT count(*) FROM collaboration_notification WHERE issue_id=$1`, issue.Issue.ID) != 1 {
 		t.Fatal("outbox delivery recreated notifications")
+	}
+}
+
+func TestCollaborationRealtimeRetainsFailedSourceInvalidation(t *testing.T) {
+	f := newCollaborationFixture(t)
+	issue, err := f.svc.Create(f.ctx, f.params(t))
+	if err != nil {
+		t.Fatal(err)
+	}
+	publisher := &collaborationPublisher{failScope: realtime.ScopeWorkspace}
+	worker := &CollaborationRealtime{Queries: f.svc.Queries, TxStarter: f.pool, Publisher: publisher}
+	if count, err := worker.DeliverPending(f.ctx, 100); err == nil || count != 0 {
+		t.Fatalf("failed source publish reported delivery: %d %v", count, err)
+	}
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_event WHERE issue_id=$1 AND outbox_state='pending'`, issue.Issue.ID) != 1 {
+		t.Fatal("source relay failure retired the event")
+	}
+	publisher.failScope = ""
+	if count, err := worker.DeliverPending(f.ctx, 100); err != nil || count != 1 {
+		t.Fatalf("source invalidation did not recover: %d %v", count, err)
+	}
+	var sourceEvent string
+	sourceFrames := 0
+	for _, frame := range publisher.frames {
+		if frame.scope != realtime.ScopeWorkspace {
+			continue
+		}
+		if frame.id != util.UUIDToString(issue.Issue.WorkspaceID) || string(frame.data) != `{"type":"collaboration:workbench_changed","payload":{}}` {
+			t.Fatalf("source tick leaked private metadata: %+v", frame)
+		}
+		if sourceEvent != "" && sourceEvent != frame.event {
+			t.Fatal("source retry changed the delivery identity")
+		}
+		sourceEvent = frame.event
+		sourceFrames++
+	}
+	if sourceFrames != 2 || !strings.HasSuffix(sourceEvent, ":source") {
+		t.Fatal("source event did not retry with its stable identity")
 	}
 }
 

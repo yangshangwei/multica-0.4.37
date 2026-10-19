@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -10,14 +11,23 @@ import (
 )
 
 type collaborationCreateIssueBody struct {
-	SourceWorkspaceID string   `json:"source_workspace_id"`
-	HandlerUserID     *string  `json:"handler_user_id"`
-	Title             string   `json:"title"`
-	Description       string   `json:"description"`
-	ProjectID         *string  `json:"project_id"`
-	ParentIssueID     *string  `json:"parent_issue_id"`
-	DraftID           *string  `json:"draft_id"`
-	AttachmentIDs     []string `json:"attachment_ids"`
+	SourceWorkspaceID         string                     `json:"source_workspace_id"`
+	HandlerUserID             *string                    `json:"handler_user_id"`
+	Title                     string                     `json:"title"`
+	Description               string                     `json:"description"`
+	ProjectID                 *string                    `json:"project_id"`
+	ParentIssueID             *string                    `json:"parent_issue_id"`
+	DraftID                   *string                    `json:"draft_id"`
+	AttachmentIDs             []string                   `json:"attachment_ids"`
+	Status                    *string                    `json:"status"`
+	Priority                  *string                    `json:"priority"`
+	StartDate                 *string                    `json:"start_date"`
+	DueDate                   *string                    `json:"due_date"`
+	LabelIDs                  []string                   `json:"label_ids"`
+	Properties                map[string]json.RawMessage `json:"properties"`
+	Stage                     *int32                     `json:"stage"`
+	IterationID               *string                    `json:"current_iteration_id"`
+	ExpectedIterationRevision string                     `json:"expected_iteration_revision"`
 }
 
 func (h *Handler) CreateCollaborationIssue(w http.ResponseWriter, r *http.Request) {
@@ -31,7 +41,34 @@ func (h *Handler) CreateCollaborationIssue(w http.ResponseWriter, r *http.Reques
 	if !decodeCollaborationWorkflowBody(w, r, &body) {
 		return
 	}
-	p := service.CollaborationCreateParams{Title: body.Title, Description: body.Description, RequestID: r.Header.Get("Idempotency-Key")}
+	p := service.CollaborationCreateParams{Title: body.Title, Description: body.Description, RequestID: r.Header.Get("Idempotency-Key"),
+		Status: body.Status, Priority: body.Priority, StartDate: body.StartDate, DueDate: body.DueDate, Properties: body.Properties}
+	if body.Stage != nil {
+		p.Stage = &pgtype.Int4{Int32: *body.Stage, Valid: true}
+	}
+	if body.IterationID != nil {
+		id, ok := parseUUIDOrBadRequest(w, *body.IterationID, "current_iteration_id")
+		if !ok {
+			return
+		}
+		p.CurrentIterationID = &id
+		var valid bool
+		p.ExpectedIterationRevision, valid = collaborationPositiveVersion(body.ExpectedIterationRevision)
+		if !valid {
+			writeJSON(w, 400, map[string]string{"code": "invalid_request"})
+			return
+		}
+	} else if body.ExpectedIterationRevision != "" {
+		writeJSON(w, 400, map[string]string{"code": "invalid_request"})
+		return
+	}
+	for _, label := range body.LabelIDs {
+		id, ok := parseUUIDOrBadRequest(w, label, "label_id")
+		if !ok {
+			return
+		}
+		p.LabelIDs = append(p.LabelIDs, id)
+	}
 	handler := principal.UserID
 	if body.HandlerUserID != nil {
 		handler = *body.HandlerUserID
@@ -89,7 +126,11 @@ func (h *Handler) GetCollaborationCreationOptions(w http.ResponseWriter, r *http
 		}
 	}
 	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
-	out, err := svc.CreationOptions(r.Context(), source)
+	search, ok := collaborationParentSearchQuery(w, r)
+	if !ok {
+		return
+	}
+	out, err := svc.CreationOptions(r.Context(), source, search)
 	if err != nil {
 		writeCollaborationError(w, err)
 		return

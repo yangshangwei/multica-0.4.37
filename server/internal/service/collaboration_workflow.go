@@ -24,6 +24,8 @@ import (
 type CollaborationWorkflowRequest struct {
 	CollaborationQueueRequest
 	ExpectedCollaborationRevision int64
+	// An internal lock hint; the public iteration payload owns its digest.
+	targetIteration pgtype.UUID
 }
 
 type CollaborationParticipantParams struct {
@@ -59,12 +61,15 @@ type CollaborationWorkflowOperationReceipt struct {
 
 type collaborationWorkflowTx struct {
 	*collaborationQueueTx
-	tx        pgx.Tx
-	iteration db.Iteration
-	catalog   []db.IssueStatus
-	users     map[pgtype.UUID]db.User
-	operation db.CollaborationOperation
-	handoffID pgtype.UUID
+	tx                 pgx.Tx
+	iteration          db.Iteration
+	iterations         map[pgtype.UUID]db.Iteration
+	iterationsEnabled  bool
+	sourceMemberLocked bool
+	catalog            []db.IssueStatus
+	users              map[pgtype.UUID]db.User
+	operation          db.CollaborationOperation
+	handoffID          pgtype.UUID
 }
 
 func (t *collaborationWorkflowTx) result(code string, status int) CollaborationWorkflowReceipt {
@@ -340,6 +345,8 @@ func workflowRoleAllowed(t *collaborationWorkflowTx, kind string) bool {
 		return t.access.Capabilities.ControlAI && t.access.Issue.CreatorType == "member" && t.access.Issue.CreatorID == t.actor
 	case "change_status", "edit_issue":
 		return t.access.Capabilities.Edit
+	case "edit_source_structure", "change_iteration":
+		return t.sourceMemberLocked && t.access.Capabilities.EditSourceStructure
 	case "request_information", "return_information", "submit_acceptance":
 		// Directed handoffs check current responsibility inside the action, so a
 		// successful key still replays after responsibility moves away.
@@ -429,6 +436,13 @@ func (s *CollaborationService) workflowInTx(ctx context.Context, tx pgx.Tx, acto
 	if _, err = t.q.LockWorkspaceForChatSessionCreate(ctx, hint.Issue.WorkspaceID); err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}
+	if kind == "edit_source_structure" || kind == "change_iteration" {
+		_, err = t.q.LockCollaborationSourceMember(ctx, db.LockCollaborationSourceMemberParams{WorkspaceID: hint.Issue.WorkspaceID, UserID: actor})
+		t.sourceMemberLocked = err == nil
+		if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+			return CollaborationWorkflowReceipt{}, err
+		}
+	}
 	if err = t.q.LockIssueStatusCatalogShared(ctx, hint.Issue.WorkspaceID); err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}
@@ -441,7 +455,11 @@ func (s *CollaborationService) workflowInTx(ctx context.Context, tx pgx.Tx, acto
 	if err = iteration.LockWorkspace(ctx, tx, hint.Issue.WorkspaceID); err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}
-	t.iteration, err = iteration.LockIssueIteration(ctx, tx, hint.Issue.WorkspaceID, p.IssueID)
+	if kind == "change_iteration" {
+		err = t.lockIterationAssignment(ctx, hint.Issue.WorkspaceID, p.IssueID, p.targetIteration)
+	} else {
+		t.iteration, err = iteration.LockIssueIteration(ctx, tx, hint.Issue.WorkspaceID, p.IssueID)
+	}
 	if err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}
@@ -607,7 +625,7 @@ func (s *CollaborationService) GetWorkflowOperation(ctx context.Context, issueID
 		return CollaborationWorkflowOperationReceipt{}, err
 	}
 	switch op.Kind {
-	case "invite_participant", "transfer", "remove_participant", "leave", "complete", "cancel", "reopen", "change_status", "edit_issue",
+	case "invite_participant", "transfer", "remove_participant", "leave", "complete", "cancel", "reopen", "change_status", "edit_issue", "edit_source_structure", "change_iteration",
 		"request_information", "return_information", "submit_acceptance":
 	default:
 		return CollaborationWorkflowOperationReceipt{}, collaborationError(http.StatusNotFound, "not_found")

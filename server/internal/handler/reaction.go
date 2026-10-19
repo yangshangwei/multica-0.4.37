@@ -77,6 +77,9 @@ func (h *Handler) AddReaction(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Emoji string `json:"emoji"`
 	}
+	if h.rejectLegacyCollaborationWrite(w, r, comment.IssueID) {
+		return
+	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
 		return
@@ -154,6 +157,9 @@ func (h *Handler) RemoveReaction(w http.ResponseWriter, r *http.Request) {
 
 	var req struct {
 		Emoji string `json:"emoji"`
+	}
+	if h.rejectLegacyCollaborationWrite(w, r, comment.IssueID) {
+		return
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")

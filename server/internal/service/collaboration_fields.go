@@ -36,18 +36,20 @@ type CollaborationFieldOptions struct {
 	CollaborationRevision int64                             `json:"collaboration_revision,string"`
 	Labels                []CollaborationFieldLabel         `json:"labels"`
 	Properties            []CollaborationPropertyDefinition `json:"properties"`
+	SourceOptions         *CollaborationSourceOptions       `json:"source_options,omitempty"`
 }
 
 type CollaborationIssueFields struct {
 	Labels              []CollaborationFieldLabel         `json:"labels"`
 	Properties          map[string]json.RawMessage        `json:"properties"`
 	PropertyDefinitions []CollaborationPropertyDefinition `json:"property_definitions"`
+	SourceStructure     *CollaborationSourceStructure     `json:"source_structure,omitempty"`
 }
 
 // FieldOptions is an editing projection authorized by the source issue, not a
 // workspace directory. Authority and the catalog share a repeatable snapshot;
 // the edit itself rechecks selected definitions under its write locks.
-func (s *CollaborationService) FieldOptions(ctx context.Context, issueID pgtype.UUID) (CollaborationFieldOptions, error) {
+func (s *CollaborationService) FieldOptions(ctx context.Context, issueID pgtype.UUID, parentSearch ...string) (CollaborationFieldOptions, error) {
 	var out CollaborationFieldOptions
 	principal, ok := collaboration.PrincipalFromContext(ctx)
 	if !ok || !principal.Human() {
@@ -72,6 +74,10 @@ func (s *CollaborationService) FieldOptions(ctx context.Context, issueID pgtype.
 	if !access.Capabilities.Edit {
 		return out, collaborationError(http.StatusForbidden, "forbidden")
 	}
+	search, err := collaborationParentSearch(parentSearch)
+	if err != nil {
+		return out, err
+	}
 	labels, err := q.ListCollaborationFieldLabels(ctx, access.Issue.WorkspaceID)
 	if err != nil {
 		return out, err
@@ -92,6 +98,12 @@ func (s *CollaborationService) FieldOptions(ctx context.Context, issueID pgtype.
 		}
 		out.Properties = append(out.Properties, projected)
 	}
+	if access.Capabilities.EditSourceStructure {
+		out.SourceOptions, err = collaborationSourceOptions(ctx, q, access.Issue.WorkspaceID, issueID, search)
+		if err != nil {
+			return CollaborationFieldOptions{}, err
+		}
+	}
 	if err = tx.Commit(ctx); err != nil {
 		return CollaborationFieldOptions{}, err
 	}
@@ -107,6 +119,10 @@ func (s *CollaborationService) IssueFields(ctx context.Context, access Collabora
 		return out, collaborationError(http.StatusNotFound, "not_found")
 	}
 	var err error
+	out.SourceStructure, err = collaborationSourceStructure(ctx, s.Queries, access.Issue)
+	if err != nil {
+		return out, err
+	}
 	out.Properties, err = collaborationPropertyBag(access.Issue.Properties)
 	if err != nil {
 		return out, err

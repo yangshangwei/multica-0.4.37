@@ -81,19 +81,20 @@ type issueTableDateFilterRequest struct {
 }
 
 type issueTableFiltersRequest struct {
-	Statuses          []string                     `json:"statuses,omitempty"`
-	Priorities        []string                     `json:"priorities,omitempty"`
-	Assignees         []issueTableActorRef         `json:"assignees,omitempty"`
-	IncludeNoAssignee bool                         `json:"include_no_assignee,omitempty"`
-	Creators          []issueTableActorRef         `json:"creators,omitempty"`
-	ProjectIDs        []string                     `json:"project_ids,omitempty"`
-	IncludeNoProject  bool                         `json:"include_no_project,omitempty"`
-	LabelIDs          []string                     `json:"label_ids,omitempty"`
-	Properties        map[string][]string          `json:"properties,omitempty"`
-	Date              *issueTableDateFilterRequest `json:"date,omitempty"`
-	WorkingOnly       bool                         `json:"working_only,omitempty"`
-	WorkingIssueIDs   []string                     `json:"working_issue_ids,omitempty"`
-	IncludeSubIssues  *bool                        `json:"include_sub_issues,omitempty"`
+	ExternalCollaborators bool                         `json:"external_collaborators,omitempty"`
+	Statuses              []string                     `json:"statuses,omitempty"`
+	Priorities            []string                     `json:"priorities,omitempty"`
+	Assignees             []issueTableActorRef         `json:"assignees,omitempty"`
+	IncludeNoAssignee     bool                         `json:"include_no_assignee,omitempty"`
+	Creators              []issueTableActorRef         `json:"creators,omitempty"`
+	ProjectIDs            []string                     `json:"project_ids,omitempty"`
+	IncludeNoProject      bool                         `json:"include_no_project,omitempty"`
+	LabelIDs              []string                     `json:"label_ids,omitempty"`
+	Properties            map[string][]string          `json:"properties,omitempty"`
+	Date                  *issueTableDateFilterRequest `json:"date,omitempty"`
+	WorkingOnly           bool                         `json:"working_only,omitempty"`
+	WorkingIssueIDs       []string                     `json:"working_issue_ids,omitempty"`
+	IncludeSubIssues      *bool                        `json:"include_sub_issues,omitempty"`
 }
 
 type issueTableSortRequest struct {
@@ -407,6 +408,12 @@ func (h *Handler) compileIssueTableQuery(w http.ResponseWriter, r *http.Request,
 	}
 
 	where := []string{"i.workspace_id = $1", "i.admission_status IN ('not_required', 'accepted')"}
+	if collaborationMachineRequest(r) {
+		where = append(where, "NOT ("+collaborationReferencePredicate+")")
+	}
+	if spec.Filters.ExternalCollaborators {
+		where = append(where, externalCollaboratorsPredicate)
+	}
 	args := []any{workspaceUUID}
 	addArg := func(value any) string {
 		args = append(args, value)

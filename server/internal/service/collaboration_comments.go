@@ -72,6 +72,9 @@ type CollaborationCommentTargetResult struct {
 
 // A saved receipt contains identity and outcomes, never a replay of old content.
 type CollaborationCommentReceipt struct {
+	RequestID       string                             `json:"request_id,omitempty"`
+	Action          string                             `json:"action,omitempty"`
+	Emoji           json.RawMessage                    `json:"emoji,omitempty"`
 	Status          int                                `json:"status"`
 	Code            string                             `json:"code"`
 	ProtocolVersion int                                `json:"protocol_version"`

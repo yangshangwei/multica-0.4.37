@@ -111,15 +111,24 @@ func (s *CollaborationService) ResolveIssueAccess(ctx context.Context, q *db.Que
 }
 
 type CollaborationCreateParams struct {
-	SourceWorkspaceID pgtype.UUID
-	HandlerID         pgtype.UUID
-	RequestID         string
-	Title             string
-	Description       string
-	ProjectID         pgtype.UUID
-	ParentIssueID     pgtype.UUID
-	DraftID           *pgtype.UUID  `json:",omitempty"`
-	AttachmentIDs     []pgtype.UUID `json:",omitempty"`
+	SourceWorkspaceID         pgtype.UUID
+	HandlerID                 pgtype.UUID
+	RequestID                 string
+	Title                     string
+	Description               string
+	ProjectID                 pgtype.UUID
+	ParentIssueID             pgtype.UUID
+	DraftID                   *pgtype.UUID               `json:",omitempty"`
+	AttachmentIDs             []pgtype.UUID              `json:",omitempty"`
+	Status                    *string                    `json:",omitempty"`
+	Priority                  *string                    `json:",omitempty"`
+	StartDate                 *string                    `json:",omitempty"`
+	DueDate                   *string                    `json:",omitempty"`
+	LabelIDs                  []pgtype.UUID              `json:",omitempty"`
+	Properties                map[string]json.RawMessage `json:",omitempty"`
+	Stage                     *pgtype.Int4               `json:",omitempty"`
+	CurrentIterationID        *pgtype.UUID               `json:",omitempty"`
+	ExpectedIterationRevision int64                      `json:",omitempty"`
 }
 
 func (s *CollaborationService) Create(ctx context.Context, p CollaborationCreateParams) (CollaborationIssueAccess, error) {
@@ -274,9 +283,14 @@ func (s *CollaborationService) createCollaborationIssueInTx(ctx context.Context,
 			return empty, err
 		}
 	}
+	initial, targetIteration, err := s.prepareCollaborationCreationFields(ctx, tx, p)
+	if err != nil {
+		return empty, err
+	}
 	created, err := s.Issues.CreateInTx(ctx, tx, IssueCreateParams{
 		WorkspaceID: p.SourceWorkspaceID, Title: p.Title, Description: pgtype.Text{String: p.Description, Valid: true},
-		Status: "todo", Priority: "none", AssigneeType: pgtype.Text{String: "member", Valid: true}, AssigneeID: p.HandlerID,
+		Status: initial.Status, Priority: initial.Priority, StartDate: initial.StartDate, DueDate: initial.DueDate, Stage: initial.Stage, LabelIDs: p.LabelIDs,
+		AssigneeType: pgtype.Text{String: "member", Valid: true}, AssigneeID: p.HandlerID,
 		CreatorType: "member", CreatorID: actorID, ProjectID: p.ProjectID, ParentIssueID: p.ParentIssueID, AllowDuplicate: true,
 	}, policy)
 	if err != nil {
@@ -291,6 +305,10 @@ func (s *CollaborationService) createCollaborationIssueInTx(ctx context.Context,
 		}
 	}
 	if _, err = q.CreateCollaborationSession(ctx, created.Issue.ID); err != nil {
+		return empty, err
+	}
+	created.Issue, err = s.finishCollaborationCreationFields(ctx, tx, created.Issue, initial.Properties, targetIteration, actorID)
+	if err != nil {
 		return empty, err
 	}
 	if _, err = bindCollaborationAttachments(ctx, q, created.Issue.ID, p.SourceWorkspaceID, actorID, p.DraftID, p.AttachmentIDs, true); err != nil {

@@ -242,6 +242,22 @@ func (s *IterationService) prepareLifecycle(ctx context.Context, tx pgx.Tx, ws, 
 		if err = s.AuthorizeIssues(ctx, tx, p.issues); err != nil {
 			return p, err
 		}
+		if draft.Operation == "move" {
+			// Preview and apply share this owner. Explicit collaboration moves
+			// require the dedicated role/version workflow; whole-period closure
+			// and server rollover retain their existing membership semantics.
+			selected := make([]pgtype.UUID, len(p.issues))
+			for i, issue := range p.issues {
+				selected[i] = issue.ID
+			}
+			shared, err := q.AnyCollaborationIssuesInWorkspace(ctx, db.AnyCollaborationIssuesInWorkspaceParams{WorkspaceID: ws, IssueIds: selected})
+			if err != nil {
+				return p, err
+			}
+			if shared {
+				return p, iterationFailure(409, "unsupported_collaboration_action", "Use the collaboration workflow to change a collaboration issue's iteration")
+			}
+		}
 	}
 	references, err := iteration.CaptureIssueReferences(ctx, tx, ws, p.issues, lock)
 	if err != nil {

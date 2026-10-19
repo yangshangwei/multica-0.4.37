@@ -23,15 +23,29 @@ type CollaborationEditParams struct {
 	SetDueDate   bool
 	// Omit absent new fields from the digest so pre-R42 metadata operations
 	// retain their original payload identity. A present empty label set clears.
-	Priority   *string                    `json:"Priority,omitempty"`
-	LabelIDs   *[]pgtype.UUID             `json:"LabelIDs,omitempty"`
-	Properties map[string]json.RawMessage `json:"Properties,omitempty"`
+	Priority      *string                    `json:"Priority,omitempty"`
+	LabelIDs      *[]pgtype.UUID             `json:"LabelIDs,omitempty"`
+	Properties    map[string]json.RawMessage `json:"Properties,omitempty"`
+	ProjectID     *pgtype.UUID               `json:"ProjectID,omitempty"`
+	ParentIssueID *pgtype.UUID               `json:"ParentIssueID,omitempty"`
+	Stage         *pgtype.Int4               `json:"Stage,omitempty"`
 }
 
 func (s *CollaborationService) EditIssue(ctx context.Context, p CollaborationEditParams) (CollaborationWorkflowReceipt, error) {
-	return s.mutateCollaborationWorkflow(ctx, p.CollaborationWorkflowRequest, pgtype.UUID{}, "edit_issue", p, func(t *collaborationWorkflowTx) (CollaborationWorkflowReceipt, error) {
+	kind := "edit_issue"
+	if p.ProjectID != nil || p.ParentIssueID != nil || p.Stage != nil {
+		kind = "edit_source_structure"
+	}
+	return s.mutateCollaborationWorkflow(ctx, p.CollaborationWorkflowRequest, pgtype.UUID{}, kind, p, func(t *collaborationWorkflowTx) (CollaborationWorkflowReceipt, error) {
 		before := t.access.Issue
 		after := before
+		refusal, err := t.prepareSourceStructure(ctx, p, &after)
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		if refusal != "" {
+			return t.result(refusal, http.StatusBadRequest), nil
+		}
 		if p.Title != nil {
 			after.Title = util.SanitizeTextForPostgres(*p.Title)
 		}
@@ -73,7 +87,8 @@ func (s *CollaborationService) EditIssue(ctx context.Context, p CollaborationEdi
 		if refusal != "" {
 			return t.result(refusal, http.StatusBadRequest), nil
 		}
-		if before.Title == after.Title && before.Description == after.Description && startUnchanged && dueUnchanged &&
+		structureChanged := before.ProjectID != after.ProjectID || before.ParentIssueID != after.ParentIssueID || before.Stage != after.Stage
+		if before.Title == after.Title && before.Description == after.Description && startUnchanged && dueUnchanged && !structureChanged &&
 			before.Priority == after.Priority && !fields.labelsChanged && !fields.propertiesChanged {
 			return t.result("unchanged", http.StatusOK), nil
 		}
@@ -82,6 +97,7 @@ func (s *CollaborationService) EditIssue(ctx context.Context, p CollaborationEdi
 		if err != nil {
 			return CollaborationWorkflowReceipt{}, err
 		}
+		structure := after
 		after, err = t.q.UpdateCollaborationIssueFields(ctx, db.UpdateCollaborationIssueFieldsParams{
 			IssueID: before.ID, WorkspaceID: before.WorkspaceID, Title: after.Title, Description: after.Description,
 			StartDate: after.StartDate, DueDate: after.DueDate,
@@ -89,6 +105,14 @@ func (s *CollaborationService) EditIssue(ctx context.Context, p CollaborationEdi
 		})
 		if err != nil {
 			return CollaborationWorkflowReceipt{}, err
+		}
+		if structureChanged {
+			after, err = t.q.UpdateCollaborationIssueStructure(ctx, db.UpdateCollaborationIssueStructureParams{
+				IssueID: before.ID, WorkspaceID: before.WorkspaceID, ProjectID: structure.ProjectID, ParentIssueID: structure.ParentIssueID, Stage: structure.Stage,
+			})
+			if err != nil {
+				return CollaborationWorkflowReceipt{}, err
+			}
 		}
 		if fields.labelsChanged {
 			if err = t.replaceFieldLabels(ctx, fields.afterLabels); err != nil {
@@ -134,5 +158,6 @@ func (s *CollaborationService) EditIssue(ctx context.Context, p CollaborationEdi
 func collaborationEditedValues(issue db.Issue, labels []db.IssueLabel) map[string]any {
 	return map[string]any{"title": issue.Title, "description": util.TextToPtr(issue.Description),
 		"start_date": util.DateToPtr(issue.StartDate), "due_date": util.DateToPtr(issue.DueDate),
-		"priority": issue.Priority, "labels": collaborationFieldLabels(labels), "properties": json.RawMessage(issue.Properties)}
+		"priority": issue.Priority, "labels": collaborationFieldLabels(labels), "properties": json.RawMessage(issue.Properties),
+		"project_id": util.UUIDToPtr(issue.ProjectID), "parent_issue_id": util.UUIDToPtr(issue.ParentIssueID), "stage": issue.Stage}
 }

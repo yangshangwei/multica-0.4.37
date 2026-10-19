@@ -72,12 +72,16 @@ func collaborationPositiveVersion(value string) (int64, bool) {
 }
 
 func decodeCollaborationWorkflowBody(w http.ResponseWriter, r *http.Request, target any) bool {
+	return decodeCollaborationWorkflowBodyLimit(w, r, target, 64<<10)
+}
+
+func decodeCollaborationWorkflowBodyLimit(w http.ResponseWriter, r *http.Request, target any, maxBytes int64) bool {
 	mediaType, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil || mediaType != "application/json" {
 		writeJSON(w, http.StatusUnsupportedMediaType, map[string]string{"code": "json_required", "error": "JSON request required"})
 		return false
 	}
-	raw, err := io.ReadAll(http.MaxBytesReader(w, r.Body, 64<<10))
+	raw, err := io.ReadAll(http.MaxBytesReader(w, r.Body, maxBytes))
 	if err != nil {
 		var large *http.MaxBytesError
 		if errors.As(err, &large) {

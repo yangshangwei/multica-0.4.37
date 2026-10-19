@@ -364,6 +364,13 @@ SELECT i.id, i.workspace_id, i.title, i.description, i.status, i.priority,
 FROM issue i
 LEFT JOIN issue_collaboration collaboration ON collaboration.issue_id = i.id
 WHERE i.admission_status IN ('not_required', 'accepted') AND i.workspace_id = $1
+  AND (NOT sqlc.arg('external_collaborators')::boolean OR (
+       NOT sqlc.arg('machine_principal')::boolean AND collaboration.issue_id IS NOT NULL AND EXISTS (
+           SELECT 1 FROM issue_participant p JOIN "user" u ON u.id=p.user_id AND u.disabled_at IS NULL
+           WHERE p.issue_id=i.id AND p.revoked_at IS NULL
+             AND NOT EXISTS (SELECT 1 FROM member m WHERE m.workspace_id=i.workspace_id AND m.user_id=p.user_id)
+       )
+  ))
   -- Negate only known terminal keys so an unknown legacy key remains visible.
   -- A machine sees a reference regardless of private status, so comparing
   -- open_only and ordinary lists cannot reveal the collaboration's status.

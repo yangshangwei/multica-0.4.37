@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
@@ -38,6 +39,7 @@ type CollaborationActivityEntry struct {
 	IssueID          pgtype.UUID                   `json:"issue_id"`
 	EventSeq         int64                         `json:"event_seq,string"`
 	Kind             string                        `json:"kind"`
+	Note             string                        `json:"note,omitempty"`
 	Actor            *CollaborationContentAccount  `json:"actor"`
 	CreatedAt        time.Time                     `json:"created_at"`
 	DetailsAvailable bool                          `json:"details_available"`
@@ -62,13 +64,14 @@ type collaborationActivityPayload struct {
 	Status         *string         `json:"status"`
 	Before         json.RawMessage `json:"before"`
 	After          json.RawMessage `json:"after"`
+	Reason         string          `json:"reason"`
 }
 
 func collaborationActivityKind(kind string) string {
 	switch kind {
 	case "created", "participant_added", "participant_removed", "participant_left", "transferred",
 		"information_requested", "information_returned", "acceptance_submitted", "status_changed",
-		"completed", "cancelled", "reopened", "issue_edited", "comment_created", "comment_edited", "comment_deleted":
+		"completed", "cancelled", "reopened", "issue_edited", "iteration_changed", "comment_created", "comment_edited", "comment_deleted":
 		return kind
 	default:
 		return "other"
@@ -122,6 +125,7 @@ func (s *CollaborationService) ListActivity(ctx context.Context, issueID pgtype.
 			}
 			if !entry.DetailsAvailable {
 				entry.Target, entry.Handoff, entry.CommentID, entry.Changes = nil, nil, pgtype.UUID{}, make([]CollaborationActivityChange, 0)
+				entry.Note = ""
 			}
 			out.Items = append(out.Items, entry)
 		}
@@ -143,6 +147,17 @@ func projectCollaborationActivity(entry *CollaborationActivityEntry, payload col
 			return false
 		}
 		entry.Changes = append(entry.Changes, CollaborationActivityChange{Field: "status", Before: payload.PreviousStatus, After: payload.Status})
+		return true
+	case "iteration_changed":
+		if len(payload.Reason) > 2000 {
+			return false
+		}
+		entry.Note = payload.Reason
+		changes, ok := collaborationActivityEdits(payload.Before, payload.After)
+		if !ok || len(changes) != 1 || changes[0].Field != "current_iteration_id" {
+			return false
+		}
+		entry.Changes = changes
 		return true
 	case "issue_edited":
 		var ok bool
@@ -176,7 +191,7 @@ func collaborationActivityEdits(before, after json.RawMessage) ([]CollaborationA
 	if json.Unmarshal(before, &oldFields) != nil || json.Unmarshal(after, &newFields) != nil || oldFields == nil || newFields == nil {
 		return changes, false
 	}
-	for _, field := range []string{"title", "description", "start_date", "due_date", "priority", "labels", "properties"} {
+	for _, field := range []string{"title", "description", "start_date", "due_date", "priority", "labels", "properties", "project_id", "parent_issue_id", "stage", "current_iteration_id"} {
 		oldRaw, oldPresent := oldFields[field]
 		newRaw, newPresent := newFields[field]
 		if !oldPresent && !newPresent {
@@ -196,6 +211,17 @@ func collaborationActivityEdits(before, after json.RawMessage) ([]CollaborationA
 }
 
 func collaborationActivityField(field string, raw json.RawMessage) (*string, bool) {
+	if field == "stage" {
+		var stage *int32
+		if json.Unmarshal(raw, &stage) != nil || stage != nil && *stage < 1 {
+			return nil, false
+		}
+		if stage == nil {
+			return nil, true
+		}
+		value := strconv.FormatInt(int64(*stage), 10)
+		return &value, true
+	}
 	if field == "labels" {
 		var labels []struct {
 			ID   pgtype.UUID `json:"id"`
@@ -260,6 +286,11 @@ func collaborationActivityField(field string, raw json.RawMessage) (*string, boo
 	}
 	if value != nil && (field == "start_date" || field == "due_date") {
 		if _, err := util.ParseCalendarDate(*value); err != nil {
+			return nil, false
+		}
+	}
+	if value != nil && (field == "project_id" || field == "parent_issue_id" || field == "current_iteration_id") {
+		if _, err := util.ParseUUID(*value); err != nil {
 			return nil, false
 		}
 	}

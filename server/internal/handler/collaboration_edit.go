@@ -19,6 +19,9 @@ type collaborationEditBody struct {
 	Priority             json.RawMessage `json:"priority"`
 	LabelIDs             json.RawMessage `json:"label_ids"`
 	Properties           json.RawMessage `json:"properties"`
+	ProjectID            json.RawMessage `json:"project_id"`
+	ParentIssueID        json.RawMessage `json:"parent_issue_id"`
+	Stage                json.RawMessage `json:"stage"`
 	Status               json.RawMessage `json:"status"`
 	StatusOptionsVersion json.RawMessage `json:"status_options_version"`
 }
@@ -36,13 +39,32 @@ func (h *Handler) UpdateCollaborationIssue(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	metadata := len(body.Title) > 0 || len(body.Description) > 0 || len(body.StartDate) > 0 || len(body.DueDate) > 0 ||
-		len(body.Priority) > 0 || len(body.LabelIDs) > 0 || len(body.Properties) > 0
+		len(body.Priority) > 0 || len(body.LabelIDs) > 0 || len(body.Properties) > 0 || len(body.ProjectID) > 0 || len(body.ParentIssueID) > 0 || len(body.Stage) > 0
 	status := len(body.Status) > 0 || len(body.StatusOptionsVersion) > 0
 	if metadata && status {
 		writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_request", "error": "Status and content edits require separate requests"})
 		return
 	}
 	params := service.CollaborationEditParams{CollaborationWorkflowRequest: request, SetStartDate: len(body.StartDate) > 0, SetDueDate: len(body.DueDate) > 0}
+	params.ProjectID, ok = collaborationNullableUUID(w, body.ProjectID, "project_id")
+	if !ok {
+		return
+	}
+	params.ParentIssueID, ok = collaborationNullableUUID(w, body.ParentIssueID, "parent_issue_id")
+	if !ok {
+		return
+	}
+	if len(body.Stage) > 0 {
+		var stage *int32
+		if json.Unmarshal(body.Stage, &stage) != nil {
+			writeJSON(w, 400, map[string]string{"code": "invalid_request"})
+			return
+		}
+		params.Stage = &pgtype.Int4{}
+		if stage != nil {
+			params.Stage = &pgtype.Int4{Int32: *stage, Valid: true}
+		}
+	}
 	var targetStatus, statusVersion string
 	var labels *[]string
 	for _, field := range []struct {

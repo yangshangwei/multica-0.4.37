@@ -44,6 +44,10 @@ func collaborationCreationRejectionStatus(code string) int {
 		return http.StatusServiceUnavailable
 	case "invalid_attachment_selection", "parent_issue_not_found", "project_not_found":
 		return http.StatusBadRequest
+	case "invalid_priority", "invalid_start_date", "invalid_due_date", "invalid_labels", "invalid_properties", "property_archived", "invalid_property_value", "properties_too_large", "invalid_stage", "parent_cycle":
+		return http.StatusBadRequest
+	case "status_unavailable", "iteration_disabled", "iteration_not_found", "iteration_revision_conflict", "iteration_history_move_unsupported", "iteration_validation_failed":
+		return http.StatusConflict
 	case "attachment_not_found":
 		return http.StatusNotFound
 	case "attachment_scope_mismatch", "attachment_draft_consumed", "triage_review_required":
@@ -61,7 +65,9 @@ func collaborationCreationBusinessRejection(err error) string {
 	var domain *CollaborationError
 	if errors.As(err, &domain) {
 		switch domain.Code {
-		case "invalid_attachment_selection", "attachment_not_found", "attachment_scope_mismatch", "attachment_draft_consumed":
+		case "invalid_attachment_selection", "attachment_not_found", "attachment_scope_mismatch", "attachment_draft_consumed",
+			"invalid_priority", "invalid_start_date", "invalid_due_date", "invalid_labels", "invalid_properties", "property_archived", "invalid_property_value", "properties_too_large", "invalid_stage", "parent_cycle",
+			"status_unavailable", "iteration_disabled", "iteration_not_found", "iteration_revision_conflict", "iteration_history_move_unsupported", "iteration_validation_failed":
 			if domain.Status == collaborationCreationRejectionStatus(domain.Code) {
 				return domain.Code
 			}

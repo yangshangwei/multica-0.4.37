@@ -517,7 +517,7 @@ func TestCollaborationFieldOptionsAuthorityAndProjection(t *testing.T) {
 	if err := json.Unmarshal(fieldJSON(t, got), &encoded); err != nil {
 		t.Fatal(err)
 	}
-	if len(encoded) != 5 || !reflect.DeepEqual(got.Properties[0].Config, util.IssuePropertyConfig{}) {
+	if len(encoded) != 6 || got.SourceOptions == nil || !reflect.DeepEqual(got.Properties[0].Config, util.IssuePropertyConfig{}) {
 		t.Fatalf("options projection grew management metadata: %+v", encoded)
 	}
 }

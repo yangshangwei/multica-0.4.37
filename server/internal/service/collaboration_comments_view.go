@@ -160,10 +160,9 @@ func collaborationCommentViews(ctx context.Context, q *db.Queries, access Collab
 		item := CollaborationCommentView{ID: row.ID, IssueID: row.IssueID, AuthorType: row.AuthorType, Content: row.Content,
 			Type: row.Type, ParentID: row.ParentID, CommentRevision: row.Revision, CreatedAt: row.CreatedAt.Time, UpdatedAt: row.UpdatedAt.Time,
 			DeletedAt: collaborationContentTime(row.DeletedAt), ResolvedAt: collaborationContentTime(row.ResolvedAt),
-			CanEdit: access.Capabilities.Comment && row.AuthorType == "member" && row.AuthorID == viewer && row.Type == "comment" && !row.DeletedAt.Valid,
-			// Thread mutation routes are outside this vertical. Do not advertise
-			// a resolution action just because the underlying role permits it.
-			CanResolve: false, Reactions: make([]CollaborationCommentReaction, 0), AttachmentIDs: make([]pgtype.UUID, 0)}
+			CanEdit:    access.Capabilities.Comment && row.AuthorType == "member" && row.AuthorID == viewer && row.Type == "comment" && !row.DeletedAt.Valid,
+			CanResolve: access.Capabilities.Comment && (!row.DeletedAt.Valid || row.ResolvedAt.Valid),
+			Reactions:  make([]CollaborationCommentReaction, 0), AttachmentIDs: make([]pgtype.UUID, 0)}
 		if row.AuthorType == "member" {
 			item.Author = accounts[row.AuthorID]
 		}

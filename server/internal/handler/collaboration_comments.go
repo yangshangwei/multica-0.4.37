@@ -146,7 +146,14 @@ func (h *Handler) changeCollaborationComment(w http.ResponseWriter, r *http.Requ
 		DraftID                 *string   `json:"draft_id"`
 		AttachmentIDs           *[]string `json:"attachment_ids"`
 	}
-	if !decodeCollaborationWorkflowBody(w, r, &body) {
+	maxBodyBytes := int64(64 << 10)
+	if !deleting {
+		// Allow the JSON envelope and worst-case string escaping, including
+		// original drafts from clients that counted 64K JavaScript code units.
+		// The service still limits accepted comment text to 64KiB of UTF-8.
+		maxBodyBytes = 512 << 10
+	}
+	if !decodeCollaborationWorkflowBodyLimit(w, r, &body, maxBodyBytes) {
 		return
 	}
 	if (deleting && (body.Content != nil || body.DraftID != nil || body.AttachmentIDs != nil)) || (!deleting && body.Content == nil) {

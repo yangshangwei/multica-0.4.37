@@ -154,6 +154,9 @@ func (h *Handler) handleLegacyCollaborationUpdate(w http.ResponseWriter, r *http
 		return true
 	}
 	response := issueToResponse(updated, h.getIssuePrefix(r.Context(), updated.WorkspaceID))
+	if !h.fillSourceIssueCollaboration(w, r, &response) {
+		return true
+	}
 	h.newStatusCategoryFiller(r.Context(), updated.WorkspaceID)(&response)
 	writeJSON(w, http.StatusOK, response)
 	return true

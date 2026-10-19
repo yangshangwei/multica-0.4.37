@@ -16,7 +16,11 @@ func (h *Handler) GetCollaborationFieldOptions(w http.ResponseWriter, r *http.Re
 		return
 	}
 	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
-	options, err := svc.FieldOptions(r.Context(), id)
+	search, ok := collaborationParentSearchQuery(w, r)
+	if !ok {
+		return
+	}
+	options, err := svc.FieldOptions(r.Context(), id, search)
 	if err != nil {
 		writeCollaborationError(w, err)
 		return
