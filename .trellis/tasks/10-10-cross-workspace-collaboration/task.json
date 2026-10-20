@@ -2,7 +2,7 @@
   "id": "cross-workspace-collaboration",
   "name": "cross-workspace-collaboration",
   "title": "跨账号任务流转与共享 AI 协作工作台",
-  "description": "独立工作空间按账号协作；来源编辑、普通子任务、运行记录/用量/资源来源及AI结果通知已验证，继续触发预览、文件/provider、代管和完整验收。",
+  "description": "跨账号共享协作；触发预览合批/续作与协作子任务唤醒普通父任务增量已实现，继续运行端文件/provider、代管和完整验收。",
   "status": "in_progress",
   "dev_type": null,
   "scope": null,
@@ -15,7 +15,7 @@
   "branch": "codex/cross-workspace-collaboration",
   "base_branch": "main",
   "worktree_path": null,
-  "commit": "c74d6c58cac31e2bc9ae96f6b209891ee3147264",
+  "commit": "b6f1e3ec9",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -93,15 +93,21 @@
     ".trellis/tasks/10-10-cross-workspace-collaboration/research/remaining-product-work-2026-10-18.md",
     ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-desktop-account-2026-10-18.md",
     ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-workbench-2026-10-18.md",
-    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-fixture-knip-2026-10-18.md"
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-fixture-knip-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/continuation-preview-wakeup-2026-10-20.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/check-preview-wakeup-2026-10-20.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/implementation-parent-wakeup-2026-10-20.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/implementation-preview-server-2026-10-20.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/implementation-preview-client-2026-10-20.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-preview-wakeup-2026-10-20.md"
   ],
-  "notes": "2026-10-19：R51子任务/旧入口及记录/用量/来源/R52结果通知增量完成。TS12311、Go race完整分包、Web8、macOS Electron10、Linux10及独立复核通过；Knip存量无新增。父任务与默认发布门禁保持未完成/未开放。",
+  "notes": "2026-10-20：触发预览合批/续作与 R58/AC89 普通父任务唤醒增量验证通过；TS934、Go race104顶层、Web5及独立复核通过。父任务与默认发布门禁保持未完成/未开放。",
   "meta": {
     "planning_status": "approved_revision_in_implementation",
     "implementation_authorized": true,
     "open_product_questions": [],
     "pending_confirmation": null,
-    "review_status": "r51_r52_increment_verified",
+    "review_status": "preview_wakeup_increment_verified",
     "final_planning_summary_presented": true,
     "previous_final_summary": "discussion.md#32-最终规划摘要等待实现批准",
     "planning_validation": {
@@ -129,7 +135,7 @@
       "source": "User requested latest-58 technical consistency review and validation during implementation; discussion §55",
       "scope": "Existing P1–P8 plan after technical review; no production deployment authorization"
     },
-    "current_phase": "verified_r51_r52_increment_remaining_product_pending",
+    "current_phase": "verified_preview_wakeup_increment_remaining_product_pending",
     "technical_review": {
       "date": "2026-10-13",
       "report": "review-2026-10-13.md",
@@ -961,6 +967,24 @@
         }
       ],
       "test_services": "stopped; test databases and evidence retained"
+    },
+    "preview_wakeup_increment": {
+      "date": "2026-10-20",
+      "authorization": "User requested continuing trigger previews and collaboration child completion waking the parent in the existing task",
+      "status": "verified",
+      "continuation": "continuation-preview-wakeup-2026-10-20.md",
+      "review": "research/check-preview-wakeup-2026-10-20.md",
+      "full_product_acceptance_complete": false,
+      "creation_execution_defaults_changed": false,
+      "report": "verification-preview-wakeup-2026-10-20.md",
+      "typescript_tests": 934,
+      "go_race_top_level": 104,
+      "production_web_unique_scenarios": 5,
+      "visual_score": 94,
+      "commits": [
+        "5dd5ccd8b",
+        "b6f1e3ec9"
+      ]
     }
   },
   "continuation_product_2026_10_18": {

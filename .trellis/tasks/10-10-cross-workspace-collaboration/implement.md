@@ -1,5 +1,13 @@
 # 跨账号协作实施计划
 
+## 2026-10-20 增量已验证
+
+- [x] 触发预览补全有效输入合批、后续批次和当前小队续作；精确草稿身份与权限/暂停边界保持，旧响应继续兼容。
+- [x] R58/AC89 反向唤醒：协作子任务完成/取消后调用普通父任务阶段屏障；重放/回滚不派发，共享父任务隔离。
+- [x] 独立复核、相关 Go race/前端/静态检查和生产 Web 验证通过；[验证记录](verification-preview-wakeup-2026-10-20.md)保留范围及失败经过。
+
+以上仅勾选这两项增量，不替代下文其他阶段及全部 97 项验收。
+
 - 日期：2026-10-19；状态：任务保持实施，来源入口、字段/迭代、评论操作与来源实时增量已完成[本轮验证](verification-source-editing-2026-10-19.md)。已有验证各有范围，见 [progress.md](progress.md)；本轮边界见[来源与编辑续作](continuation-source-editing-2026-10-19.md)，后续从[当前未完清单](research/remaining-product-work-2026-10-18.md)继续。
 - 依据：[PRD](prd.md)、[技术设计](design.md)、[执行协议](research/execution-contract.md)；源码索引见[研究摘要](research/design-contracts.md)。
 - 分支：`codex/cross-workspace-collaboration`。原授权见 discussion §55；本轮产品决定见 §57–§60、§64–§66 与[调整清单](mention-redesign-2026-10-17.md)。最新用户续作指令是修订方案的实施授权，已记录到 task.json。

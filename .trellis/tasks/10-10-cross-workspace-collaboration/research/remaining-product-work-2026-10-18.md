@@ -1,10 +1,18 @@
 # Remaining collaboration product work
 
-Updated 2026-10-19 after the R51 child/entry and recorded-run/R52 increment.
+Updated 2026-10-20 after the trigger-preview and ordinary-parent-wakeup increment.
 The filename is retained for existing handoff links. The parent remains
-`in_progress`; current evidence is in `../verification-r51-r52-2026-10-19.md`.
+`in_progress`; current evidence is in `../verification-preview-wakeup-2026-10-20.md`.
 
 ## Implemented and verified in shared account/source surfaces
+
+- Read-only trigger-preview grouping for eligible pending inputs, later batches
+  and current squad continuations; compatible old responses and exact live-draft
+  identity before Send. Production Web English/Chinese coverage passed.
+- R58/AC89 reverse lifecycle bridge from a newly committed collaboration child
+  close to the existing ordinary-agent/squad parent stage barrier. Replay, denied
+  or failed commits do not dispatch; shared parents remain isolated. This retains
+  ordinary best-effort delivery rather than adding durable wakeup recovery.
 
 - Complete ordinary-child references with current source-only opening, transient
   content-free refresh, and ordinary write/execution isolation; safe shared
@@ -58,13 +66,6 @@ The filename is retained for existing handoff links. The parent remains
   R51 ordinary-child presentation and the named source/menu/search/batch/native
   entry gaps are now implemented and verified; do not equate those cases with
   every remaining platform/client acceptance scenario.
-- Complete trigger-preview facts for merged batches/continuations. Recorded
-  inputs, transcript/tool/result pages, exact nullable usage, frozen provenance
-  and proven group-result notifications are now implemented; historical missing
-  telemetry remains explicitly unavailable/incomplete.
-- R58/AC89 reverse-direction lifecycle wakeup: a collaboration child's completion
-  waking an ordinary agent parent is not established by the current R51 tests.
-  Ordinary children under a shared human-owned parent remain correctly isolated.
 - Runtime attachment-byte and committed-Git preparation, general provider
   adapters and non-Linux containment. Static Linux CLI/daemon tests do not prove
   user-installed providers or file preparation; normal tests never invoke them.

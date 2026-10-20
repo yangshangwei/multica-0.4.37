@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-20",
+  "status": "passed_increment",
+  "typescript": {
+    "core_tests": 808,
+    "views_tests": 126,
+    "total": 934
+  },
+  "go_race": {
+    "top_level": 104,
+    "including_subtests": 209,
+    "skips": 0,
+    "failures": 0
+  },
+  "builtin_skill_top_level": 3,
+  "typecheck_packages": [
+    "core",
+    "views",
+    "web",
+    "desktop"
+  ],
+  "lint": "passed; 27 existing views warnings",
+  "go_vet": "passed",
+  "browser": {
+    "mode": "production",
+    "unique_scenarios_passed": 5,
+    "main_run": {
+      "passed": 4,
+      "failed": 1
+    },
+    "corrected_legacy_contract_rerun": {
+      "passed": 1,
+      "failed": 0
+    },
+    "automatic_retries": 0
+  },
+  "visual": {
+    "score": 94,
+    "verdict": "pass"
+  },
+  "independent_review": "passed; shared-draft preview identity fixed",
+  "source_manifest": ".omx/reports/cwc-preview-wakeup-20261020/tested-source.json",
+  "full_product_acceptance_complete": false,
+  "new_migrations": 0,
+  "new_dependencies": 0,
+  "risks": [
+    "Ordinary parent wakeup remains best effort after commit.",
+    "No full-repository, packaged native desktop or real-provider run.",
+    "Pre-existing dirty work remains separate."
+  ],
+  "commits": [
+    "5dd5ccd8b",
+    "b6f1e3ec9"
+  ],
+  "isolated_api_web_stopped": true
+}

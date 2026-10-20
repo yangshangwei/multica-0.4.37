@@ -23,6 +23,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [ApiClient authEpoch](./api-client-auth-epoch.md) | Isolating a stale 401 from the current session | Active |
 | [Collaboration execution protocol](../../server/collaboration-targets.md) | v5 channel/input/reader history, exact hold/control receipts, original-key/access-epoch recovery and gated execution | Direct/squad foundation; full product pending |
 | [Collaboration recorded runs](../../server/collaboration-records.md) | Private record paging, exact usage, page-chain integrity, child hints and compatible run anchors | Current R51/R52 increment |
+| [Collaboration trigger previews](../../server/collaboration-preview-wakeup.md) | Additive grouping facts, strict peer validation and current-draft preview identity | Focused preview increment |
 | [Collaboration workbench](./collaboration-workbench.md) | Account reads, scoped creation/files, resource forms, schema boundaries and original-key recovery | Gated Web/Desktop workflow; full product pending |
 | [Settings Recovery](../../views/frontend/settings-recovery.md) | Exact-Query denial and cancellation rollback, PAT parsing and one-time secret ownership | Active |
 | [Connection Recovery](../../desktop/frontend/connection-recovery.md) | Recovery request deadlines/cancellation, transient auth metadata and workspace query errors | Active |

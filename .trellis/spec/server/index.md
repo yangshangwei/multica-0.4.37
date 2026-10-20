@@ -11,6 +11,7 @@
 | [Collaboration content](./collaboration-content.md) | Gated atomic creation, encrypted drafts, retained references and current-authority native downloads | Public API implemented; full product gate retained |
 | [Collaboration realtime](./collaboration-realtime.md) | Account/issue scopes, final-send authority, retained outbox and Query recovery | Account transport implemented; full product pending |
 | [Collaboration records and children](./collaboration-records.md) | Ordinary-child references, retained run telemetry, proven group notifications and shared run links | R51/R52 increment verified; full product pending |
+| [Collaboration preview and parent wakeup](./collaboration-preview-wakeup.md) | Read-only eligible batch/continuation facts and committed child-to-ordinary-parent stage wake | Focused increment; full product pending |
 | [Collaboration source and editing](./collaboration-source-editing.md) | Mixed source projections, source field/iteration transactions, comment recovery and content-free list invalidation | Current source/editing increment; full product pending |
 | [Collaboration targets](./collaboration-targets.md) | Channel FIFO, input history, holds, configuration invalidation, proof flow and v5 reads | Direct/squad service foundation; full product pending |
 | [Collaboration squads](./collaboration-squads.md) | Frozen grants, M08/M11 readers, nonlaunch return and durable leader order | Static Linux CLI/daemon chain verified; full product pending |
