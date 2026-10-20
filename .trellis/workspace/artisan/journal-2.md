@@ -664,3 +664,39 @@ Implemented and verified target hold/control and resource invalidation boundarie
 
 - 按 research/remaining-product-work-2026-10-18.md 接续 R51 普通子任务共享详情、完整运行记录与 R52 通知。
 - 完成运行端 Git/附件和通用供应商、其他 OS、P7 有限代管及 P8 全部验收；默认发布门禁保持关闭。
+
+
+## Session 94: 触发预览与普通父任务阶段唤醒
+<!-- trellis-session: v=2 fp=8d55991ca65fadfd -->
+
+**Date**: 2026-10-20
+**Task**: 触发预览与普通父任务阶段唤醒
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成原协作任务的预览合批/续作与 R58/AC89 反向父任务唤醒；独立复核及专项验证通过，父任务保持进行中。
+
+### Main Changes
+
+- 预览复用 FIFO 兼容/字节计算并绑定完整草稿身份；父任务复用既有阶段屏障与提交后唤醒。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `5dd5ccd8b` | feat(collaboration): make shared AI grouping visible before submission |
+| `b6f1e3ec9` | fix(collaboration): let completed shared children advance ordinary parents |
+| `9d3f99c4b` | docs(collaboration): preserve the verified preview and parent wakeup handoff |
+
+### Testing
+
+- [OK] 相关 TS934、Go race104顶层、生产 Web5场景、类型/lint/vet及视觉94通过；失败历史与范围保留在验证报告。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 运行端附件/Git、通用 provider/非 Linux 隔离、P7 有限代管和 P8 完整验收；默认门禁保持关闭。
