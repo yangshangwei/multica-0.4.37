@@ -60,12 +60,32 @@ export const CollaborationMentionTargetsSchema = z.object({
   })).refine(uniqueTargets),
 }).refine((value) => new Set(value.participants.map((item) => item.user_id.toLowerCase())).size === value.participants.length && new Set(value.targets.map((item) => item.target_id)).size === value.targets.length);
 
+// Preview facts describe the current projection, never a committed command or group.
+const previewTarget = targetResult.safeExtend({
+  grouping: z.object({
+    kind: z.enum(["pending_batch", "squad_continuation"]),
+    target_ids: z.array(uuid).min(1).refine((ids) => new Set(ids).size === ids.length),
+    has_existing_inputs: z.boolean(), follows_pending_batch: z.boolean(),
+  }).refine((value) => value.kind !== "squad_continuation" || value.follows_pending_batch === false).optional(),
+}).refine((value) => value.grouping === undefined ||
+  (value.state === "waiting" && value.hold_reason === null && value.target_id !== null && value.grouping.target_ids.includes(value.target_id)));
+
 export const CollaborationTriggerPreviewSchema = z.object({
   protocol_version: z.literal(2), issue_id: uuid, lifecycle_epoch: positiveVersion,
   write_context: z.object({ participant_epoch: positiveVersion, account_epoch: positiveVersion }).nullish(),
-  targets: z.array(targetResult).refine(uniqueTargets),
+  targets: z.array(previewTarget).refine(uniqueTargets),
   recipients: z.array(z.object({ recipient: CollaborationAccountSummarySchema, is_mention: z.boolean() })),
-}).refine((value) => value.targets.every((item) => item.command_id === null && item.command_sequence === undefined && item.group_id === null) && new Set(value.recipients.map((item) => item.recipient.user_id.toLowerCase())).size === value.recipients.length);
+}).refine((value) => value.targets.every((item) => item.command_id === null && item.command_sequence === undefined && item.group_id === null) && new Set(value.recipients.map((item) => item.recipient.user_id.toLowerCase())).size === value.recipients.length)
+  .refine((value) => {
+    const targets = new Map(value.targets.filter((item) => item.target_id !== null).map((item) => [item.target_id, item]));
+    if (targets.size !== value.targets.filter((item) => item.target_id !== null).length) return false;
+    return value.targets.every(({ grouping }) => grouping === undefined || grouping.target_ids.every((id) => {
+      const peer = targets.get(id)?.grouping;
+      return peer !== undefined && peer.kind === grouping.kind && peer.has_existing_inputs === grouping.has_existing_inputs &&
+        peer.follows_pending_batch === grouping.follows_pending_batch && peer.target_ids.length === grouping.target_ids.length &&
+        peer.target_ids.every((targetId) => grouping.target_ids.includes(targetId));
+    }));
+  });
 
 export const CollaborationCommentReceiptSchema = z.object({
   status: z.number().int(), code: z.string().min(1), protocol_version: z.literal(2),

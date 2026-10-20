@@ -39,6 +39,20 @@ func collaborationRunInputs(commands []db.CollaborationCommand) ([]protocol.Coll
 	return inputs, nil
 }
 
+func collaborationBatchTargetCompatible(squad pgtype.UUID, target db.CollaborationTarget) bool {
+	return target.Kind != string(collaboration.TargetSquad) || !squad.Valid || squad == target.ID
+}
+
+// Input grouping and promotion measure the same immutable runtime wire shape.
+func collaborationRunInputSize(input db.CollaborationCommand) (int, error) {
+	wire, err := collaborationRunInputs([]db.CollaborationCommand{input})
+	if err != nil {
+		return 0, err
+	}
+	encoded, err := json.Marshal(wire)
+	return len(encoded) - 2, err
+}
+
 // AppendCollaborationInputInTx is the comment writer's only queue primitive.
 // It never commits or writes an event/notification. Domain refusals return a
 // receipt so another valid target or human mention can still be committed.
@@ -340,18 +354,14 @@ func (t *collaborationQueueTx) selectWaitingInputs(ctx context.Context, channel 
 			}
 			checked[target.ID] = true
 		}
-		if target.Kind == string(collaboration.TargetSquad) && squad.Valid && squad != target.ID {
+		if !collaborationBatchTargetCompatible(squad, target) {
 			break
 		}
-		wire, err := collaborationRunInputs([]db.CollaborationCommand{input})
+		size, err := collaborationRunInputSize(input)
 		if err != nil {
 			return selection, err
 		}
-		encoded, err := json.Marshal(wire)
-		if err != nil {
-			return selection, err
-		}
-		nextBytes := encodedBytes + len(encoded) - 2
+		nextBytes := encodedBytes + size
 		if len(selection.inputs) > 0 {
 			nextBytes++
 		}

@@ -385,7 +385,17 @@
     "suppressed": "已取消 AI 触发",
     "sent": "评论已确认。",
     "joined": "已并入当前小队，等待读取。",
-    "blocked": "AI 触发未被接受。"
+    "blocked": "AI 触发未被接受。",
+    "grouping": {
+      "title": "AI 分组预览",
+      "previewOnly": "仅为当前预览，发送时会重新检查权限和队列状态。",
+      "pendingBatch": "预计进入待执行批次。",
+      "mergedSquad": "预计合并为同一次小队执行。",
+      "continuation": "预计并入当前 AI小队的下一次队长续作。",
+      "existingInputs": "包含之前的等待输入。",
+      "existingContinuation": "包含已在等待队长读取的输入。",
+      "laterBatch": "排在同一智能体队列的前一批次之后。"
+    }
   },
   "activity": {
     "title": "操作记录",

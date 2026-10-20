@@ -36,6 +36,30 @@ describe("collaboration content transport", () => {
     }
   });
 
+  it("validates the preview grouping at the account API boundary without sending execution intent", async () => {
+    setCurrentWorkspace("ambient", otherId);
+    const grouping = { kind: "squad_continuation", target_ids: [otherId], has_existing_inputs: false, follows_pending_batch: false };
+    const preview = { protocol_version: 2, issue_id: issueId, lifecycle_epoch: "1", recipients: [], targets: [{
+      target_id: otherId, kind: "agent", resource_id: requestId, target_epoch: "1", config_version: "1", hold_reason: null, hold_version: "1",
+      state: "waiting", code: "command_waiting", command_id: null, grouping,
+    }] };
+    const fetchMock = vi.fn().mockResolvedValueOnce(response(preview))
+      .mockResolvedValueOnce(response({ ...preview, targets: [{ ...preview.targets[0], grouping: { ...grouping, follows_pending_batch: true } }] }));
+    vi.stubGlobal("fetch", fetchMock);
+    const client = new ApiClient("https://server.example");
+    const input = { content: "Preview this comment", parent_id: null, suppressed_target_ids: [] };
+    expect((await client.previewCollaborationComment(issueId, input))?.targets[0]).toHaveProperty("grouping", grouping);
+    expect(await client.previewCollaborationComment(issueId, input)).toBeNull();
+    for (const [url, init] of fetchMock.mock.calls) {
+      expect(url).toBe(`https://server.example/api/collaboration/issues/${issueId}/comments/trigger-preview`);
+      const headers = new Headers(init.headers);
+      expect(headers.has("X-Workspace-ID")).toBe(false);
+      expect(headers.has("X-Workspace-Slug")).toBe(false);
+      expect(headers.has("Idempotency-Key")).toBe(false);
+      expect(JSON.parse(init.body)).toEqual(input);
+    }
+  });
+
   it("does not accept a read/archive receipt for a different notification", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response({ id: otherId, read_at: null, archived_at: null })));
     expect(await new ApiClient("https://server.example").updateCollaborationNotification(issueId, "archive")).toBeNull();

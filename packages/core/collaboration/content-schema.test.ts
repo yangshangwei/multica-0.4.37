@@ -11,6 +11,75 @@ const comment = { id: id(2), issue_id: id(3), author_type: "member", author: acc
 const target = { target_id: id(4), kind: "agent", resource_id: id(5), name: "Agent", target_epoch: "1", config_version: "1", queue_state: "paused", waiting_reason: "target_paused", execution_available: false, hold_reason: "initial", hold_version: "9007199254740993" };
 afterEach(() => setSchemaLogger(noopLogger));
 
+describe("trigger preview grouping", () => {
+  const direct = { target_id: id(4), kind: "agent", resource_id: id(5), target_epoch: "1", config_version: "1", hold_reason: null, hold_version: "1", state: "waiting", code: "command_waiting", command_id: null };
+  const squad = { ...direct, target_id: id(6), kind: "squad", resource_id: id(7) };
+  const grouping = { kind: "pending_batch", target_ids: [direct.target_id, squad.target_id], has_existing_inputs: true, follows_pending_batch: false };
+  const preview = { protocol_version: 2, issue_id: id(3), lifecycle_epoch: "1", targets: [{ ...direct, grouping }, { ...squad, grouping }], recipients: [] };
+
+  it("preserves same-comment grouping and distinguishes existing inputs, later batches and squad continuation", () => {
+    expect(parseCollaborationTriggerPreview(preview)?.targets[0]).toMatchObject({ grouping, command_id: null, group_id: null });
+    for (const facts of [
+      { ...grouping, target_ids: [direct.target_id], has_existing_inputs: false },
+      { ...grouping, target_ids: [direct.target_id], follows_pending_batch: true },
+      { ...grouping, target_ids: [direct.target_id], kind: "squad_continuation" },
+    ]) {
+      expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...direct, grouping: facts }] })?.targets[0]).toHaveProperty("grouping", facts);
+    }
+    expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...direct, grouping }, { ...squad, grouping: { ...grouping, target_ids: [...grouping.target_ids].reverse() } }] })).not.toBeNull();
+  });
+
+  it("accepts older previews without grouping without changing queued receipt semantics", () => {
+    expect(parseCollaborationTriggerPreview({ ...preview, targets: [direct] })?.targets[0]).not.toHaveProperty("grouping");
+    const receipt = { status: 201, code: "comment_created", protocol_version: 2, issue_id: id(3), comment_id: id(2), comment_revision: "1", event_id: id(8), event_seq: "1", targets: [{ ...direct, command_id: id(9), command_sequence: "1", grouping }] };
+    expect(parseCollaborationCommentReceipt(receipt)?.targets[0]).not.toHaveProperty("grouping");
+    expect(parseCollaborationCommentReceipt({ ...receipt, targets: [{ ...direct, grouping }] })).toBeNull();
+  });
+
+  it.each([
+    null,
+    {},
+    { ...grouping, kind: "started" },
+    { ...grouping, target_ids: [] },
+    { ...grouping, target_ids: [direct.target_id, direct.target_id] },
+    { ...grouping, target_ids: [squad.target_id] },
+    { ...grouping, target_ids: [direct.target_id, id(99)] },
+    { ...grouping, target_ids: [direct.target_id, "private-invalid-id"] },
+    { ...grouping, has_existing_inputs: undefined },
+    { ...grouping, has_existing_inputs: "true" },
+    { ...grouping, follows_pending_batch: undefined },
+    { ...grouping, follows_pending_batch: "false" },
+    { ...grouping, kind: "squad_continuation", follows_pending_batch: true },
+  ])("rejects malformed or contradictory grouping: %j", (invalid) => {
+    expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...direct, grouping: invalid }, { ...squad, grouping: invalid }] })).toBeNull();
+  });
+
+  it("requires reciprocal facts for eligible unsuppressed targets in the same preview", () => {
+    for (const patch of [
+      { grouping: undefined },
+      { grouping: { ...grouping, target_ids: [squad.target_id] } },
+      { grouping: { ...grouping, has_existing_inputs: false } },
+      { grouping: { ...grouping, follows_pending_batch: true } },
+      { grouping: { ...grouping, kind: "squad_continuation" } },
+      { state: "suppressed" },
+      { state: "blocked" },
+      { hold_reason: "initial" },
+    ]) {
+      expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...direct, grouping }, { ...squad, grouping, ...patch }] })).toBeNull();
+    }
+    expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...direct, target_id: null, target_epoch: undefined, config_version: undefined, hold_version: null, state: "blocked", grouping }] })).toBeNull();
+    expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...direct, grouping }, { ...squad, target_id: direct.target_id, grouping }] })).toBeNull();
+  });
+
+  it("redacts malformed grouping instead of logging its private values", () => {
+    const warn = vi.fn();
+    setSchemaLogger({ ...noopLogger, warn });
+    expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...direct, grouping: { ...grouping, kind: "PRIVATE_GROUPING_SENTINEL" } }] })).toBeNull();
+    expect(warn).toHaveBeenCalledOnce();
+    expect(JSON.stringify(warn.mock.calls)).not.toContain("PRIVATE_GROUPING_SENTINEL");
+  });
+});
+
 describe("private collaboration content boundaries", () => {
   it("retains exact versions, checks each comment belongs to the envelope, and rejects missing capabilities", () => {
     const page = { issue_id: id(3), items: [comment], next_cursor: null };

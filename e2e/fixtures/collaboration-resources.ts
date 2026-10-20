@@ -13,14 +13,14 @@ export interface CollaborationResourceSnapshot {
   execution: { targets: { id: string; resource_id: string; hold_reason: string | null }[]; runs: unknown[] };
 }
 
-export async function authenticateCollaborationResourcesPage(page: Page, actor: TestApiClient) {
+export async function authenticateCollaborationResourcesPage(page: Page, actor: TestApiClient, locale: "en" | "zh-Hans" = "en") {
   const token = actor.getToken();
   if (!token) throw new Error("Fixture actor has no login session");
   await page.addInitScript((value) => {
-    localStorage.setItem("multica_token", value);
-    localStorage.setItem("multica-locale", "en");
+    localStorage.setItem("multica_token", value.token);
+    localStorage.setItem("multica-locale", value.locale);
     localStorage.setItem("multica:chat:isOpen", "false");
-  }, token);
+  }, { token, locale });
 }
 
 /** Retained only in the caller's explicitly isolated DB. No daemon process,

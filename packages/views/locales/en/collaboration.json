@@ -385,7 +385,17 @@
     "suppressed": "AI trigger suppressed",
     "sent": "Comment confirmed.",
     "joined": "Joined the current squad; waiting to be read.",
-    "blocked": "AI trigger was not accepted."
+    "blocked": "AI trigger was not accepted.",
+    "grouping": {
+      "title": "AI grouping preview",
+      "previewOnly": "Preview only. Sending rechecks permissions and queue state.",
+      "pendingBatch": "Expected in a pending batch.",
+      "mergedSquad": "Expected to merge into one squad execution.",
+      "continuation": "Expected to join the current squad's next leader continuation.",
+      "existingInputs": "Includes earlier waiting input.",
+      "existingContinuation": "Includes input already waiting for the leader.",
+      "laterBatch": "Follows an earlier batch in the same agent's queue."
+    }
   },
   "activity": {
     "title": "Activity",

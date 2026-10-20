@@ -64,12 +64,12 @@ type CollaborationCommentWriteContext struct {
 }
 
 type CollaborationCommentPreview struct {
-	ProtocolVersion int                                `json:"protocol_version"`
-	IssueID         pgtype.UUID                        `json:"issue_id"`
-	LifecycleEpoch  int64                              `json:"lifecycle_epoch,string"`
-	WriteContext    *CollaborationCommentWriteContext  `json:"write_context,omitempty"`
-	Targets         []CollaborationCommentTargetResult `json:"targets"`
-	Recipients      []CollaborationCommentRecipient    `json:"recipients"`
+	ProtocolVersion int                                 `json:"protocol_version"`
+	IssueID         pgtype.UUID                         `json:"issue_id"`
+	LifecycleEpoch  int64                               `json:"lifecycle_epoch,string"`
+	WriteContext    *CollaborationCommentWriteContext   `json:"write_context,omitempty"`
+	Targets         []CollaborationCommentTargetPreview `json:"targets"`
+	Recipients      []CollaborationCommentRecipient     `json:"recipients"`
 }
 
 func (s *CollaborationService) MentionTargets(ctx context.Context, issueID pgtype.UUID) (CollaborationMentionCatalogue, error) {
@@ -142,8 +142,12 @@ func (s *CollaborationService) PreviewComment(ctx context.Context, issueID pgtyp
 		if err != nil {
 			return err
 		}
+		targets, err := s.previewCommentGrouping(ctx, q, access, actor, p, catalogue)
+		if err != nil {
+			return err
+		}
 		out = CollaborationCommentPreview{ProtocolVersion: CollaborationContentProtocolVersion, IssueID: issueID, LifecycleEpoch: access.LifecycleEpoch,
-			Targets: collaborationCommentTargetPreview(access, p, catalogue), Recipients: collaborationCommentRecipients(participants, actor, parseCollaborationMentions(p.Content))}
+			Targets: targets, Recipients: collaborationCommentRecipients(participants, actor, parseCollaborationMentions(p.Content))}
 		if access.ParticipantEpoch.Valid && access.AccountEpoch.Valid {
 			out.WriteContext = &CollaborationCommentWriteContext{ParticipantEpoch: access.ParticipantEpoch.Int64, AccountEpoch: access.AccountEpoch.Int64}
 		}

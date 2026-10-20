@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationCommentOptions, collaborationKeys, collaborationMentionMarkdown, collaborationMentionTargetsOptions, executeCollaborationComment,
   prepareCollaborationComment, useCollaborationCommentPreview, useCollaborationPendingDrafts,
   useCollaborationDeliveryForm,
-  type CollaborationComment, type CollaborationDraft, type CollaborationIssue, type CollaborationScope } from "@multica/core/collaboration";
+  type CollaborationComment, type CollaborationDraft, type CollaborationIssue, type CollaborationScope, type CollaborationTriggerPreview } from "@multica/core/collaboration";
 import { Button } from "@multica/ui/components/ui/button";
 import { Textarea } from "@multica/ui/components/ui/textarea";
 import { Checkbox } from "@multica/ui/components/ui/checkbox";
@@ -40,7 +40,14 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
   const mentions = useQuery({ ...collaborationMentionTargetsOptions(client, scope, issue.id), enabled: issue.capabilities.comment === true });
   const drafts = useCollaborationPendingDrafts({ ...scope, issueId: issue.id });
   const inspect = useCollaborationCommentPreview(scope, issue.id);
-  const preview = inspect.variables?.parent_id === parentId ? inspect.data : undefined;
+  const [inspectedDraftId, setInspectedDraftId] = useState<string | null>(null);
+  // Shared drafts can change outside this component's local reset handlers.
+  const inspected = inspect.variables;
+  const preview = inspectedDraftId === delivery.form.draftId && inspected?.content === content && inspected.parent_id === parentId &&
+    (inspected.suppressed_target_ids ?? []).join(",") === suppressed.join(",") &&
+    (inspected.attachment_ids ?? []).join(",") === delivery.form.selectedAttachmentIds.join(",") &&
+    inspected.draft_id === (delivery.form.selectedAttachmentIds.length ? delivery.form.draftId : undefined)
+    ? inspect.data : undefined;
   const send = useMutation({ mutationKey: [...collaborationKeys.issue(scope, issue.id), "comment-send"], retry: false, networkMode: "always", mutationFn: ({ draft, recovery }: { draft: CollaborationDraft; recovery: boolean }) => executeCollaborationComment(client, scope, draft, recovery),
     onSuccess: (receipt) => { if (receipt.status >= 200 && receipt.status < 300) { delivery.reset(); inspect.reset(); setSuppressed([]); onSent?.(); } } });
   const locked = inspect.isPending || send.isPending || drafts.comments.length > 0 || drafts.error || uploading || delivery.uploads.length > 0 || Boolean(delivery.error);
@@ -70,8 +77,11 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
     <CollaborationAttachmentPicker scope={scope} form={delivery.form} update={delivery.update} uploads={delivery.uploads} onBusyChange={setUploading}
       disabled={inspect.isPending || send.isPending || drafts.comments.length > 0 || drafts.error || Boolean(delivery.error)} onChange={() => inspect.reset()} />
     {Boolean(delivery.error) && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
-    <div className="flex flex-wrap gap-2"><Button variant="outline" type="button" disabled={locked || !content.trim()} onClick={() => inspect.mutate({ content, parent_id: parentId, suppressed_target_ids: suppressed,
-      ...(delivery.form.selectedAttachmentIds.length ? { draft_id: delivery.form.draftId, attachment_ids: delivery.form.selectedAttachmentIds } : {}) })} className="pointer-coarse:min-h-11">{t(($) => $.composer.preview)}</Button>
+    <div className="flex flex-wrap gap-2"><Button variant="outline" type="button" disabled={locked || !content.trim()} onClick={() => {
+      setInspectedDraftId(delivery.form.draftId);
+      inspect.mutate({ content, parent_id: parentId, suppressed_target_ids: suppressed,
+        ...(delivery.form.selectedAttachmentIds.length ? { draft_id: delivery.form.draftId, attachment_ids: delivery.form.selectedAttachmentIds } : {}) });
+    }} className="pointer-coarse:min-h-11">{t(($) => $.composer.preview)}</Button>
       <Button type="submit" disabled={!preview || locked || !content.trim()} className="pointer-coarse:min-h-11">{t(($) => $.composer.send)}</Button>
     </div>
     {preview && <div className="space-y-3 text-body"><p className="text-caption text-muted-foreground">{t(($) => $.composer.recipients, { count: preview.recipients.length })}</p>
@@ -83,6 +93,7 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
         }} /><span>{targetName(target)}
           <span className="block text-caption text-muted-foreground">{target.state === "suppressed" ? t(($) => $.composer.suppressed) : target.state === "blocked" ? labels.reason(target.code) : labels.reason(target.waiting_reason ?? target.hold_reason ?? "waiting")}</span></span></label>
       </li>)}</ul>
+      <CollaborationPreviewGrouping preview={preview} targetName={targetName} />
     </div>}
     {(inspect.error || send.error) && <CollaborationQueryState error={inspect.error ?? send.error} />}
     {drafts.error && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
@@ -90,4 +101,37 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
     {send.data && <div role="status" className="space-y-2"><p>{send.data.status < 300 ? t(($) => $.composer.sent) : t(($) => $.workflow.refused)}</p>{send.data.targets.map((target) => <p key={`${target.kind}:${target.resource_id}`} className="text-caption [overflow-wrap:anywhere]">{targetName(target)} · {target.state === "waiting" ? target.code === "command_joined_squad" ? t(($) => $.composer.joined) : labels.reason(target.waiting_reason ?? target.hold_reason ?? "waiting") : target.state === "suppressed" ? t(($) => $.composer.suppressed) : labels.reason(target.code)}</p>)}</div>}
     {!send.isPending && drafts.comments.map((draft) => <div key={draft.requestId} className="space-y-2"><p role="status">{t(($) => $.workflow.unknown)}</p><div className="flex flex-wrap gap-2"><Button type="button" variant="outline" disabled={drafts.error} onClick={() => send.mutate({ draft, recovery: true })}>{t(($) => $.workflow.recover)}</Button><Button type="button" variant="outline" disabled={drafts.error} onClick={() => send.mutate({ draft, recovery: false })}>{t(($) => $.workflow.retryOriginal)}</Button></div></div>)}
   </form>;
+}
+
+function CollaborationPreviewGrouping({ preview, targetName }: {
+  preview: CollaborationTriggerPreview;
+  targetName: (target: { kind: "agent" | "squad"; resource_id: string }) => string;
+}) {
+  const { t } = useT("collaboration");
+  const groups = new Map<string, NonNullable<CollaborationTriggerPreview["targets"][number]["grouping"]>>();
+  for (const target of preview.targets) {
+    if (target.grouping) groups.set([...target.grouping.target_ids].sort().join(":"), target.grouping);
+  }
+  if (!groups.size) return null;
+  return <section aria-label={t(($) => $.composer.grouping.title)} className="space-y-2">
+    <p className="text-caption text-muted-foreground">{t(($) => $.composer.grouping.previewOnly)}</p>
+    <ul className="space-y-3">{[...groups].map(([key, grouping]) => {
+      const targets = preview.targets.filter((target) => target.target_id !== null && grouping.target_ids.includes(target.target_id));
+      let description: string;
+      switch (grouping.kind) {
+        case "pending_batch":
+          description = targets.length > 1 && targets.some((target) => target.kind === "squad")
+            ? t(($) => $.composer.grouping.mergedSquad) : t(($) => $.composer.grouping.pendingBatch);
+          break;
+        case "squad_continuation": description = t(($) => $.composer.grouping.continuation); break;
+        default: return null;
+      }
+      return <li key={key} className="space-y-1 text-caption [overflow-wrap:anywhere]">
+        <p className="font-medium">{targets.map(targetName).join(", ")}</p>
+        <p className="text-muted-foreground">{description}</p>
+        {grouping.has_existing_inputs === true && <p className="text-muted-foreground">{grouping.kind === "squad_continuation" ? t(($) => $.composer.grouping.existingContinuation) : t(($) => $.composer.grouping.existingInputs)}</p>}
+        {grouping.follows_pending_batch === true && <p className="text-muted-foreground">{t(($) => $.composer.grouping.laterBatch)}</p>}
+      </li>;
+    })}</ul>
+  </section>;
 }
