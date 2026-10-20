@@ -50,6 +50,14 @@ type CollaborationWorkflowReceipt struct {
 	RunSettled            bool                        `json:"run_settled"`
 	Execution             *CollaborationQueueReceipt  `json:"execution,omitempty"`
 	StatusOptions         *CollaborationStatusOptions `json:"status_options,omitempty"`
+	// ParentWakeup is a best-effort effect of this committed invocation only.
+	// It never enters operation/history JSON, so replay cannot dispatch it again.
+	ParentWakeup *CollaborationParentWakeup `json:"-"`
+}
+
+type CollaborationParentWakeup struct {
+	Before db.Issue
+	After  db.Issue
 }
 
 // This is the only recovery projection allowed after object access is lost.

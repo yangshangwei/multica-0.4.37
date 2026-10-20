@@ -344,6 +344,7 @@ func (s *CollaborationService) ChangeStatus(ctx context.Context, p Collaboration
 }
 
 func (t *collaborationWorkflowTx) changeLifecycle(ctx context.Context, action, target string) (CollaborationWorkflowReceipt, error) {
+	before := t.access.Issue
 	previous := t.access.Issue.Status
 	code := "reopened"
 	var stopped *CollaborationQueueReceipt
@@ -396,7 +397,13 @@ func (t *collaborationWorkflowTx) changeLifecycle(ctx context.Context, action, t
 		return CollaborationWorkflowReceipt{}, err
 	}
 	t.access.Revision, t.access.LifecycleEpoch = state.Revision, state.LifecycleEpoch
-	return t.finishStatusChange(ctx, code, previous, stopped)
+	receipt, err := t.finishStatusChange(ctx, code, previous, stopped)
+	if err == nil && action != "reopen" && before.ParentIssueID.Valid {
+		// The common workflow owner discards the receipt on any write/commit
+		// error. Only a new successful close can carry this effect to its caller.
+		receipt.ParentWakeup = &CollaborationParentWakeup{Before: before, After: t.access.Issue}
+	}
+	return receipt, err
 }
 
 func (t *collaborationWorkflowTx) recordStatusChange(ctx context.Context, target string) error {

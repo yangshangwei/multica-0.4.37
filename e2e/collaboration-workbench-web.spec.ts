@@ -257,7 +257,8 @@ test("Web stale lifecycle conflict immediately reports refusal and preserves inp
     expect(refused.status()).toBe(409);
     const refusedBody = await refused.json();
     expect(refusedBody).toMatchObject({ code: "stale_revision" });
-    expect(refusedBody).not.toHaveProperty("status");
+    // Core owns statusless-response coverage; servers may also echo HTTP status.
+    if (Object.hasOwn(refusedBody, "status")) expect(refusedBody.status).toBe(refused.status());
     await expect(page.getByText("The server did not apply this action. Refresh the issue before trying again.", { exact: true })).toBeVisible();
     await expect(page.getByText("Could not load collaboration. Try again.", { exact: true })).toHaveCount(0);
     await expect(page.getByText("The result is not confirmed. Keep this request and check its original outcome.", { exact: true })).toHaveCount(0);

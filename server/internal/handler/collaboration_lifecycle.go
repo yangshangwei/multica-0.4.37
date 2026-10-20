@@ -54,5 +54,8 @@ func (h *Handler) ChangeCollaborationLifecycle(w http.ResponseWriter, r *http.Re
 	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
 	receipt, err := svc.ChangeLifecycle(r.Context(), service.CollaborationLifecycleParams{CollaborationWorkflowRequest: request,
 		Action: body.Action, TargetStatus: body.Status, StatusOptionsVersion: body.StatusOptionsVersion})
+	if err == nil && receipt.ParentWakeup != nil {
+		h.notifyParentOfChildDone(r.Context(), receipt.ParentWakeup.Before, receipt.ParentWakeup.After)
+	}
 	writeCollaborationWorkflowResponse(w, receipt, err)
 }

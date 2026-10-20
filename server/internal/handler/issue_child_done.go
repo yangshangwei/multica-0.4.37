@@ -270,11 +270,41 @@ func (h *Handler) notifyParentsOfBatchChildDone(ctx context.Context, completed [
 // its historical byte-identical copy, while a batch that finished several
 // children at once must not claim "the last sub-issue just finished".
 func (h *Handler) postChildDoneComment(ctx context.Context, parent, completed db.Issue, children []db.Issue, staged bool, closedStage int32, batch bool) {
+	// Recheck the parent after the sibling reads. The ordinary wake path must
+	// never post an ordinary comment or launch an executor on a shared parent,
+	// including a historical row whose assignee is inconsistent with that rule.
+	parent, err := h.Queries.GetIssue(ctx, parent.ID)
+	if err != nil {
+		slog.Warn("child done: failed to reload parent", "error", err)
+		return
+	}
+	parentStatus := issuestatus.Effective(ctx, h.Queries, parent.WorkspaceID, parent.Status)
+	if isTerminalChildStatus(parentStatus) || parentStatus == "backlog" || (parent.AssigneeType.Valid && parent.AssigneeType.String == "member") {
+		return
+	}
+	sharedParent, err := h.Queries.IsCollaborationIssue(ctx, parent.ID)
+	if err != nil || sharedParent {
+		if err != nil {
+			slog.Warn("child done: failed to resolve parent boundary", "error", err)
+		}
+		return
+	}
+	sharedChild, err := h.Queries.IsCollaborationIssue(ctx, completed.ID)
+	if err != nil {
+		slog.Warn("child done: failed to resolve child boundary", "error", err)
+		return
+	}
 	prefix := h.getIssuePrefix(ctx, completed.WorkspaceID)
 	identifier := prefix + "-" + strconv.Itoa(int(completed.Number))
 	childID := uuidToString(completed.ID)
 	title := sanitizeChildTitleForSystemComment(completed.Title)
 	parentID := uuidToString(parent.ID)
+	childReference := fmt.Sprintf("[%s](mention://issue/%s)", identifier, childID)
+	if sharedChild {
+		// Match the existing machine/source reference: identifier and title are
+		// allowed, but owning the parent does not grant access to this child.
+		childReference = identifier
+	}
 
 	// Build the parent-assignee mention prefix. Empty when the parent has no
 	// assignee or the assignee row is missing (deleted member, archived
@@ -287,25 +317,25 @@ func (h *Handler) postChildDoneComment(ctx context.Context, parent, completed db
 		advance := stageAdvanceInstruction(nextStage, parentID)
 		if batch {
 			content = fmt.Sprintf(
-				"%sStage %d of this issue is complete — its sub-issues just finished together in a batch update, most recently [%s](mention://issue/%s) — \"%s\". Stage progress — %s.%s",
-				mentionPrefix, closedStage, identifier, childID, title, summary, advance,
+				"%sStage %d of this issue is complete — its sub-issues just finished together in a batch update, most recently %s — \"%s\". Stage progress — %s.%s",
+				mentionPrefix, closedStage, childReference, title, summary, advance,
 			)
 		} else {
 			content = fmt.Sprintf(
-				"%sStage %d of this issue is complete — its last sub-issue [%s](mention://issue/%s) — \"%s\" — just finished. Stage progress — %s.%s",
-				mentionPrefix, closedStage, identifier, childID, title, summary, advance,
+				"%sStage %d of this issue is complete — its last sub-issue %s — \"%s\" — just finished. Stage progress — %s.%s",
+				mentionPrefix, closedStage, childReference, title, summary, advance,
 			)
 		}
 	} else {
 		if batch {
 			content = fmt.Sprintf(
-				"%sAll sub-issues are complete — they just finished together in a batch update, most recently [%s](mention://issue/%s) — \"%s\". Continue the parent: synthesize the children's results and move it forward, or — if nothing remains — run `multica issue status %s in_review` to mark the parent ready for review.",
-				mentionPrefix, identifier, childID, title, parentID,
+				"%sAll sub-issues are complete — they just finished together in a batch update, most recently %s — \"%s\". Continue the parent: synthesize the children's results and move it forward, or — if nothing remains — run `multica issue status %s in_review` to mark the parent ready for review.",
+				mentionPrefix, childReference, title, parentID,
 			)
 		} else {
 			content = fmt.Sprintf(
-				"%sAll sub-issues are complete — the last one, [%s](mention://issue/%s) — \"%s\", just finished. Continue the parent: synthesize the children's results and move it forward, or — if nothing remains — run `multica issue status %s in_review` to mark the parent ready for review.",
-				mentionPrefix, identifier, childID, title, parentID,
+				"%sAll sub-issues are complete — the last one, %s — \"%s\", just finished. Continue the parent: synthesize the children's results and move it forward, or — if nothing remains — run `multica issue status %s in_review` to mark the parent ready for review.",
+				mentionPrefix, childReference, title, parentID,
 			)
 		}
 	}

@@ -439,6 +439,10 @@ status (`done`/`cancelled`). A completion that does not close a stage is silent
 so the parent is woken once when the *last* sub-issue finishes — not on every
 child.
 
+Human completion/cancellation of a collaboration child uses this same barrier
+after commit. Its ordinary agent/squad parent can wake; a collaboration parent
+stays under shared controls. The wake carries only the shared child's identifier
+and title, without granting the parent agent access to its private content.
 Advancement is agent-driven: the server only detects the closed barrier and
 wakes the parent assignee, who then decides whether to promote the next stage's
 `backlog` sub-issues to `todo`.
@@ -494,11 +498,7 @@ multica issue create --title "Step 3" --parent <issue-id> --assignee <agent> --s
 
 ## References
 
-`references/working-on-issues-source-map.md` — accurate `file:line` for every
-contract above: triage admission/review and execution retry boundaries, the
-`pull-requests` CLI and route, the PR response field list,
-`derivePRState`, the two-path link (`extractIdentifiers`) vs close-intent
-(`extractClosingIdentifiers`) proof, the backlog enqueue lines, child-done
-notify, the stage column / `stageBarrierClosed` barrier and the `--stage` /
-`issue children` CLI, and the metadata CLI. Re-derive before depending on an
-exact line.
+`references/working-on-issues-source-map.md` maps these contracts to source:
+triage/retry, PR links and close intent, backlog enqueue, child-done/stage
+barriers, collaboration parent wakeup, and issue/metadata CLI behavior.
+Re-derive before depending on an exact line.
