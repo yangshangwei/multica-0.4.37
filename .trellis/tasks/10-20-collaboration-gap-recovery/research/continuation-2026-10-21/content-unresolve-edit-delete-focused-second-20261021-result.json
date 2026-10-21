@@ -1,0 +1,68 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^(TestCollaborationDiscussionResolveUnresolveUsesCurrentReadBasis|TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "environment": {
+    "GOTOOLCHAIN": "go1.26.6",
+    "database_alias": "service_s5",
+    "schema_expected_through": 737,
+    "real_provider_access": false
+  },
+  "started_at": "2026-10-21T10:46:19.466099+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_discussion_resume_test.go": "27b0abb0614ef71f96645ab3feb4063c4d33c9e071542c7747cb105b7894d747",
+    "server/internal/service/collaboration_comment_edit_delete_test.go": "774540ff21f0baf30bce03f624394352e73c1da940ee76e4c701eb2a16424a48",
+    "server/internal/service/collaboration_discussion.go": "e957eeda4c4cb01a0a572230a980f9f81953b5cd4c63dfdf29b2304f3a7e11e2",
+    "server/internal/service/collaboration_comments_edit.go": "216af6a930362643b1c3d9da12f65194c3b6946c5fbefe2a762653ac8f016970",
+    "server/internal/service/collaboration_comments_test.go": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576",
+    "server/internal/service/collaboration_recipient_eligibility_test.go": "6b0cee90974986966b8da3df013d5d64631320c5e48b8af40689d765656c53ea"
+  },
+  "finished_at": "2026-10-21T10:46:33.151295+00:00",
+  "elapsed_seconds": 13.677,
+  "returncode": 1,
+  "test_passes": [
+    "TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory/edit_first",
+    "TestCollaborationDiscussionResolveUnresolveUsesCurrentReadBasis/participant",
+    "TestCollaborationDiscussionResolveUnresolveUsesCurrentReadBasis/source_member",
+    "TestCollaborationDiscussionResolveUnresolveUsesCurrentReadBasis"
+  ],
+  "test_failures": [
+    "TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory/delete_first",
+    "TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory"
+  ],
+  "test_skips": [],
+  "top_level_pass_count": 1,
+  "package_results": [
+    {
+      "Action": "fail",
+      "Package": "github.com/multica-ai/multica/server/internal/service",
+      "Elapsed": 2.507
+    }
+  ],
+  "final_source_sha256": {
+    "server/internal/service/collaboration_discussion_resume_test.go": "27b0abb0614ef71f96645ab3feb4063c4d33c9e071542c7747cb105b7894d747",
+    "server/internal/service/collaboration_comment_edit_delete_test.go": "774540ff21f0baf30bce03f624394352e73c1da940ee76e4c701eb2a16424a48",
+    "server/internal/service/collaboration_discussion.go": "e957eeda4c4cb01a0a572230a980f9f81953b5cd4c63dfdf29b2304f3a7e11e2",
+    "server/internal/service/collaboration_comments_edit.go": "216af6a930362643b1c3d9da12f65194c3b6946c5fbefe2a762653ac8f016970",
+    "server/internal/service/collaboration_comments_test.go": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576",
+    "server/internal/service/collaboration_recipient_eligibility_test.go": "6b0cee90974986966b8da3df013d5d64631320c5e48b8af40689d765656c53ea"
+  }
+}

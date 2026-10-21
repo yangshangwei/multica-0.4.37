@@ -1,0 +1,33 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^(TestCollaborationDiscussionResolveUnresolveUsesCurrentReadBasis|TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/tmp/multica-gap-recovery-20261021-h6phxwo9/content-acceptance-head-bjg3a90e/server",
+  "start_utc": "2026-10-21T11:44:28.957873+00:00",
+  "duration_s": 18.881032791978214,
+  "source": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/content-isolated-head-source.json",
+  "returncode": 0,
+  "top_level_pass": [
+    "TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory",
+    "TestCollaborationDiscussionResolveUnresolveUsesCurrentReadBasis"
+  ],
+  "fail": [],
+  "skip": []
+}

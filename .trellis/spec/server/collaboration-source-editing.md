@@ -147,3 +147,26 @@ result links. See [the executable contract](collaboration-records.md) for the
 current source/open authority, original ordinary writer ownership and record
 validation. This does not establish the reverse R58 parent-wakeup direction or
 the entire P8 compatibility matrix.
+
+## Current content contention and resolution acceptance
+
+`TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory` uses public
+EditComment/DeleteComment with an actual PostgreSQL commit barrier and blocked
+writer observation. Edit-first preserves its revision-2 success and original
+stale-delete refusal; an explicitly fresh delete makes the final tombstone.
+Delete-first preserves its success and refuses both the old edit and every
+fresh resurrection attempt. Compare exact persisted receipt JSON, rather than
+nil/allocated-empty slice identity when an optional empty attachment list has
+the same `omitempty` wire. Both orders retain create/edit/delete actor/time,
+reply anchor, delivered private attachment bytes, and frozen AI input/group/run
+state. Do not use sleep or replace a real writer with a fabricated response.
+
+`TestCollaborationDiscussionResolveUnresolveUsesCurrentReadBasis` verifies both
+an external participant with no source membership and a source member with no
+participation. Resolve/unresolve alter only the defined resolution metadata and
+own exact receipts/events. They do not change content revision/history, AI,
+collaboration notifications or source inbox. Old resolve/unresolve keys never
+recompute after a later opposite action; lost read/comment authority refuses a
+new mutation while own content-free recovery stays available. Both positive
+paths must run; a successful resolve plus a forbidden unresolve is not complete
+thread-operation evidence.
