@@ -51,6 +51,26 @@ validated anchor for that same issue. Mixed collaboration batch actions reject
 before ordinary AI confirmation or transport, including toolbar fallback paths;
 ordinary issue behavior remains with its existing owner.
 
+### Outbound plugin and channel boundaries
+
+`PluginEventDispatcher.run` must classify the event's issue through
+`IsCollaborationIssue` before installation lookup, callback-token minting or
+HTTP. Withhold collaboration events and failed identity lookups. Actual
+issue/comment/task producer shapes are part of this boundary; malformed
+synthetic payload shapes require separate evidence rather than ordinary-event
+assumptions. The local TLS transport regression proves withheld private body,
+comment, file and record sentinels and a signed ordinary-child positive.
+
+Collaboration human/runtime writes persist their private events/records without
+ordinary task/chat/inbox events. A modern collaboration run has no ordinary
+`agent_task_queue` task identity. IM consumers retain their ordinary immutable
+`channel_task_delivery` and input-origin checks; knowing a shared run or child
+ID and having a live chat binding does not grant delivery or private context.
+The actual Slack subscriber test denies missing/failed delivery before account
+lookup, then verifies one authorized ordinary-child reply and durable message
+provenance. Other adapters' direct/stream/failure/relay/media private-context
+execution remains separate evidence; Slack pass is not an all-adapter claim.
+
 ### Recorded data and paging
 
 Authorize current trusted-human issue access on every page. After issue access

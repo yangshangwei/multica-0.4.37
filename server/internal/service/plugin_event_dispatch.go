@@ -234,6 +234,9 @@ func (d *PluginEventDispatcher) run(job dispatchJob) {
 	// Only now, past the flag: the id is needed to narrow the callback grant,
 	// and finding it means parsing the payload.
 	job.issueID = issueIDFromPayload(job.payload)
+	if withholdCollaborationEvent(ctx, job.issueID, d.service.Queries.IsCollaborationIssue) {
+		return
+	}
 
 	installations, err := d.service.Queries.ListWorkspacePluginInstallations(ctx, job.installation.WorkspaceID)
 	if err != nil {
@@ -255,6 +258,17 @@ func (d *PluginEventDispatcher) run(job dispatchJob) {
 			d.deliver(ctx, installation, hook, job)
 		}
 	}
+}
+
+// withholdCollaborationEvent keeps a collaboration issue's content away from
+// every hook (R53), whichever writer published the event. It fails closed when
+// the check cannot run. An event about no issue (zero id) is unaffected.
+func withholdCollaborationEvent(ctx context.Context, issueID pgtype.UUID, isCollaboration func(context.Context, pgtype.UUID) (bool, error)) bool {
+	if !issueID.Valid {
+		return false
+	}
+	shared, err := isCollaboration(ctx, issueID)
+	return err != nil || shared
 }
 
 func hookWantsEvent(hook plugincontract.Hook, eventType string) bool {

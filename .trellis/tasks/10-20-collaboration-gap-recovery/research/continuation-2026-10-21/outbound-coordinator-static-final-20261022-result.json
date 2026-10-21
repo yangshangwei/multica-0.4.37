@@ -1,0 +1,22 @@
+{
+  "command": [
+    "go",
+    "vet",
+    "-p",
+    "1",
+    "./internal/service",
+    "./internal/integrations/slack"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "returncode": 0,
+  "elapsed_s": 1.636,
+  "source_sha256": {
+    "server/internal/service/plugin_event_dispatch.go": "32d09f67f4834fce4388ef0ac65a898c44848f2f7f14752ac369c5a4f826975e",
+    "server/internal/service/plugin_event_dispatch_test.go": "71cfedb70ab225a001749062f3ceebca7314b88fce904e4d23670f1ee0c8fc62",
+    "server/internal/service/collaboration_outbound_boundary_test.go": "f565b46b2631214ccfc7a335683b2d16411f8872b59205ffe49fb63adde75786",
+    "server/internal/integrations/slack/collaboration_outbound_boundary_test.go": "41ee89285877f88ec2e43d755ea0def87b7084d02da6f1feb6060c8e67e9c9ab"
+  },
+  "at": "2026-10-21T16:52:13.670517+00:00",
+  "stdout_bytes": 0,
+  "stderr_bytes": 0
+}

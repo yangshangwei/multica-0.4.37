@@ -1,0 +1,9 @@
+{
+  "original_private_path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/outbound-boundary-focused-first-private.jsonl",
+  "original_sha256": "0723a34314d223dad497db55e56eb9095e49eaf9d30c4f82fba66887857bf306",
+  "safe_artifact": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/outbound-boundary-focused-first.jsonl",
+  "safe_sha256": "3cc6ba24a116cc9ad81638f86823ae8abaebab9a241e4f53278bfb5027c196a7",
+  "redacted_tokens": 1,
+  "event_statuses_preserved": true,
+  "reason": "First failed synthetic hook fixture printed its response body including a locally issued callback token. The production call revokes the token after completion; safe artifact keeps all failure events and only masks the token."
+}
