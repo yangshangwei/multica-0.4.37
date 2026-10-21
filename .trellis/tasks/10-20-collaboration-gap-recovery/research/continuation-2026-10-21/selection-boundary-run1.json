@@ -1,0 +1,142 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/multica-0.4.37/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/multica-gap-recovery-20261021-h6phxwo9/selection-boundary-run1-output",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-selection-boundary.spec.ts",
+      "file": "collaboration-selection-boundary.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "AC87 Web and actual Electron hide subtask creation for shared body/comment selections while ordinary children retain it",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 11945,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"AC87 ordinary body selection\"\u001b[39m\nReceived string:    \u001b[31m\"\u001b[39m\n\u001b[31m\"\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"AC87 ordinary body selection\"\u001b[39m\nReceived string:    \u001b[31m\"\u001b[39m\n\u001b[31m\"\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n    at selectText (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-selection-boundary.ts:113:3)\n    at inspectOrdinarySelection (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-selection-boundary.ts:146:16)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-selection-boundary.spec.ts:51:29",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-selection-boundary.ts",
+                      "column": 3,
+                      "line": 113
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures/collaboration-selection-boundary.ts:113\n\n  111 |   await page.mouse.move(bounds.right + 1, bounds.y, { steps: 16 });\n  112 |   await page.mouse.up();\n> 113 |   await expect.poll(() => page.evaluate(() => getSelection()?.toString() ?? \"\")).toContain(text);\n      |   ^\n  114 |   return { marker: text, selected: await page.evaluate(() => getSelection()?.toString() ?? \"\"), bounds };\n  115 | }\n  116 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-selection-boundary.ts",
+                        "column": 3,
+                        "line": 113
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"AC87 ordinary body selection\"\u001b[39m\nReceived string:    \u001b[31m\"\u001b[39m\n\u001b[31m\"\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n   at fixtures/collaboration-selection-boundary.ts:113\n\n  111 |   await page.mouse.move(bounds.right + 1, bounds.y, { steps: 16 });\n  112 |   await page.mouse.up();\n> 113 |   await expect.poll(() => page.evaluate(() => getSelection()?.toString() ?? \"\")).toContain(text);\n      |   ^\n  114 |   return { marker: text, selected: await page.evaluate(() => getSelection()?.toString() ?? \"\"), bounds };\n  115 | }\n  116 |\n    at selectText (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-selection-boundary.ts:113:3)\n    at inspectOrdinarySelection (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-selection-boundary.ts:146:16)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-selection-boundary.spec.ts:51:29"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-21T11:35:26.655Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "selection-boundary-identities",
+                      "contentType": "application/json",
+                      "body": "ewogICJjcml0ZXJpb24iOiAiQUM4NyIsCiAgImFjdG9yX2lkIjogIjhjNmZjNTExLWRiNDAtNDk2Ni1iYWVmLWRlNjljODBiYTAyZiIsCiAgImlzc3VlX2lkIjogIjAxYTE1ZTNlLWFiNjgtNzdmMy1iOGI5LWVhZmMwZjlkMTVkMCIsCiAgImNvbW1lbnRfaWQiOiAiMTE1ZmVhZjMtMTVkMC00OGY0LWIxM2YtY2E2MGJlZGNlZTA4IiwKICAib3JkaW5hcnlfaXNzdWVfaWQiOiAiMDFhMTVlM2UtYWJhYS03MGYyLWFiYWMtMmUxYmVmOTBmNmIyIiwKICAib3JkaW5hcnlfY29tbWVudF9pZCI6ICIwMWExNWUzZS1hYmM4LTc5M2ItODY4NC1mOTFiNTg3NjM0MWYiLAogICJlbnZpcm9ubWVudCI6IHsKICAgICJhcGkiOiAiaHR0cDovL2xvY2FsaG9zdDoxODk5NiIsCiAgICAid2ViIjogImh0dHA6Ly9sb2NhbGhvc3Q6MTM5MTYiLAogICAgInJlbmRlcmVyIjogImh0dHA6Ly9sb2NhbGhvc3Q6NjA5MCIsCiAgICAiZWxlY3Ryb25fb3MiOiAiZGFyd2luIiwKICAgICJwcm92aWRlcl9zdGFydGVkIjogZmFsc2UKICB9LAogICJzb3VyY2UiOiBbCiAgICB7CiAgICAgICJwYXRoIjogImUyZS9jb2xsYWJvcmF0aW9uLXNlbGVjdGlvbi1ib3VuZGFyeS5zcGVjLnRzIiwKICAgICAgInNoYTI1NiI6ICI0ZjdlYTJhZjEzY2ZhYmE3NTVmNDBhYjZjMzJiNzRlMDEzMzAyNWQ1YmI0NzczODZhMTU0ZDI2MWY1YzRkOWRjIgogICAgfSwKICAgIHsKICAgICAgInBhdGgiOiAiZTJlL2ZpeHR1cmVzL2NvbGxhYm9yYXRpb24tc2VsZWN0aW9uLWJvdW5kYXJ5LnRzIiwKICAgICAgInNoYTI1NiI6ICJiYzJmMTBjYTk2NjAwMDI2OTk3ODliMDk1MDU4Y2MzZmMyYmMyYWZkODQwMDk1MmI2MGYxZTQ4ZmE0ODg2MmIwIgogICAgfQogIF0sCiAgIndlYl9zaGFyZWQiOiB7CiAgICAiYm9keSI6IHsKICAgICAgIm1hcmtlciI6ICJBQzg3IHNoYXJlZCBib2R5IHNlbGVjdGlvbiIsCiAgICAgICJzZWxlY3RlZCI6ICJBQzg3IHNoYXJlZCBib2R5IHNlbGVjdGlvbiIsCiAgICAgICJib3VuZHMiOiB7CiAgICAgICAgImxlZnQiOiAzODQsCiAgICAgICAgInJpZ2h0IjogNTcwLjMyODEyNSwKICAgICAgICAieSI6IDM4MC41CiAgICAgIH0KICAgIH0sCiAgICAiY29tbWVudCI6IHsKICAgICAgIm1hcmtlciI6ICJBQzg3IHNoYXJlZCBjb21tZW50IHNlbGVjdGlvbiIsCiAgICAgICJzZWxlY3RlZCI6ICJBQzg3IHNoYXJlZCBjb21tZW50IHNlbGVjdGlvbiIsCiAgICAgICJib3VuZHMiOiB7CiAgICAgICAgImxlZnQiOiAzODQsCiAgICAgICAgInJpZ2h0IjogNTk4Ljc4MTI1LAogICAgICAgICJ5IjogMzkzLjI1CiAgICAgIH0KICAgIH0sCiAgICAiY3JlYXRlX3N1YnRhc2tfZW50cmllcyI6IDAKICB9LAogICJlbGVjdHJvbl9zaGFyZWQiOiB7CiAgICAiYm9keSI6IHsKICAgICAgIm1hcmtlciI6ICJBQzg3IHNoYXJlZCBib2R5IHNlbGVjdGlvbiIsCiAgICAgICJzZWxlY3RlZCI6ICJBQzg3IHNoYXJlZCBib2R5IHNlbGVjdGlvbiIsCiAgICAgICJib3VuZHMiOiB7CiAgICAgICAgImxlZnQiOiA0MTIuNSwKICAgICAgICAicmlnaHQiOiA1OTguODIwMzEyNSwKICAgICAgICAieSI6IDQ4MQogICAgICB9CiAgICB9LAogICAgImNvbW1lbnQiOiB7CiAgICAgICJtYXJrZXIiOiAiQUM4NyBzaGFyZWQgY29tbWVudCBzZWxlY3Rpb24iLAogICAgICAic2VsZWN0ZWQiOiAiQUM4NyBzaGFyZWQgY29tbWVudCBzZWxlY3Rpb24iLAogICAgICAiYm91bmRzIjogewogICAgICAgICJsZWZ0IjogNDEyLjUsCiAgICAgICAgInJpZ2h0IjogNjI3LjI4MTI1LAogICAgICAgICJ5IjogNTU5Ljc1CiAgICAgIH0KICAgIH0sCiAgICAiY3JlYXRlX3N1YnRhc2tfZW50cmllcyI6IDAKICB9LAogICJ3ZWJfc291cmNlX2NvbnRleHRfcmVxdWVzdHMiOiBbXSwKICAiZWxlY3Ryb25fc2hhcmVkX3NvdXJjZV9jb250ZXh0X3JlcXVlc3RzIjogW10sCiAgImVsZWN0cm9uX29yZGluYXJ5X3NvdXJjZV9jb250ZXh0X3JlcXVlc3RzIjogW10sCiAgIndlYl9lcnJvcnMiOiBbXQp9"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/selection-boundary-run1-output/collaboration-selection-bo-d6794-ordinary-children-retain-it-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-selection-boundary.ts",
+                    "column": 3,
+                    "line": 113
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "f1f9ccf487bccfab98fb-ff0ee90dad2517a8fd38",
+          "file": "collaboration-selection-boundary.spec.ts",
+          "line": 12,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-21T11:35:26.099Z",
+    "duration": 13281.358,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

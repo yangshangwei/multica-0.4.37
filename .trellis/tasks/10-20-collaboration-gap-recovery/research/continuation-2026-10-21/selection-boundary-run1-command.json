@@ -1,0 +1,21 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py",
+    "env",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-selection-boundary.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--project=chromium",
+    "--reporter=json",
+    "--output=/tmp/multica-gap-recovery-20261021-h6phxwo9/selection-boundary-run1-output"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "started_at": "2026-10-21T11:35:25.218425+00:00",
+  "exit_code": 1,
+  "finished_at": "2026-10-21T11:35:39.411958+00:00"
+}

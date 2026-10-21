@@ -1,0 +1,113 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/multica-0.4.37/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/multica-gap-recovery-20261021-h6phxwo9/selection-boundary-run2-output",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-selection-boundary.spec.ts",
+      "file": "collaboration-selection-boundary.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "AC87 Web and actual Electron hide subtask creation for shared body/comment selections while ordinary children retain it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9638,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-21T11:45:16.038Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "selection-boundary-identities",
+                      "contentType": "application/json",
+                      "body": "ewogICJjcml0ZXJpb24iOiAiQUM4NyIsCiAgImFjdG9yX2lkIjogIjQyYTJhYjNhLTYwYWUtNDhkNC04MjQ0LWQwYzY2YWUzMWVlZCIsCiAgImlzc3VlX2lkIjogIjAxYTE1ZTQ3LWE5MWEtN2FmMC1iZGJkLTgzODM2OTEzOGI0YSIsCiAgImNvbW1lbnRfaWQiOiAiYjQwM2ViNWItNjI4MS00ZjZjLWE5ZjktMTY4Y2QwMmQyNjk5IiwKICAib3JkaW5hcnlfaXNzdWVfaWQiOiAiMDFhMTVlNDctYTk0ZS03YWM5LThlYjEtZDcxZjVjNjQxMjMzIiwKICAib3JkaW5hcnlfY29tbWVudF9pZCI6ICIwMWExNWU0Ny1hOTZhLTcyYWItODhjMC01ZDNhZTI5N2VlYWEiLAogICJlbnZpcm9ubWVudCI6IHsKICAgICJhcGkiOiAiaHR0cDovL2xvY2FsaG9zdDoxODk5NiIsCiAgICAid2ViIjogImh0dHA6Ly9sb2NhbGhvc3Q6MTM5MTYiLAogICAgInJlbmRlcmVyIjogImh0dHA6Ly9sb2NhbGhvc3Q6NjA5MCIsCiAgICAiZWxlY3Ryb25fb3MiOiAiZGFyd2luIiwKICAgICJwcm92aWRlcl9zdGFydGVkIjogZmFsc2UKICB9LAogICJzb3VyY2UiOiBbCiAgICB7CiAgICAgICJwYXRoIjogImUyZS9jb2xsYWJvcmF0aW9uLXNlbGVjdGlvbi1ib3VuZGFyeS5zcGVjLnRzIiwKICAgICAgInNoYTI1NiI6ICI0ZjdlYTJhZjEzY2ZhYmE3NTVmNDBhYjZjMzJiNzRlMDEzMzAyNWQ1YmI0NzczODZhMTU0ZDI2MWY1YzRkOWRjIgogICAgfSwKICAgIHsKICAgICAgInBhdGgiOiAiZTJlL2ZpeHR1cmVzL2NvbGxhYm9yYXRpb24tc2VsZWN0aW9uLWJvdW5kYXJ5LnRzIiwKICAgICAgInNoYTI1NiI6ICI2ODRhNzg2OWY5YTM2ODAzNmYxMTk4OTU5OGYxNWRiOTNmMjY3NDFlZjUxYTNjMGVkMDM3ZTQ2MzJhMWZiMTJhIgogICAgfQogIF0sCiAgIndlYl9zaGFyZWQiOiB7CiAgICAiYm9keSI6IHsKICAgICAgIm1hcmtlciI6ICJBQzg3IHNoYXJlZCBib2R5IHNlbGVjdGlvbiIsCiAgICAgICJzZWxlY3RlZCI6ICJBQzg3IHNoYXJlZCBib2R5IHNlbGVjdGlvbiIsCiAgICAgICJib3VuZHMiOiB7CiAgICAgICAgImxlZnQiOiAzODQsCiAgICAgICAgInJpZ2h0IjogNTcwLjMyODEyNSwKICAgICAgICAieSI6IDM4MC41CiAgICAgIH0KICAgIH0sCiAgICAiY29tbWVudCI6IHsKICAgICAgIm1hcmtlciI6ICJBQzg3IHNoYXJlZCBjb21tZW50IHNlbGVjdGlvbiIsCiAgICAgICJzZWxlY3RlZCI6ICJBQzg3IHNoYXJlZCBjb21tZW50IHNlbGVjdGlvbiIsCiAgICAgICJib3VuZHMiOiB7CiAgICAgICAgImxlZnQiOiAzODQsCiAgICAgICAgInJpZ2h0IjogNTk4Ljc4MTI1LAogICAgICAgICJ5IjogMzkzLjI1CiAgICAgIH0KICAgIH0sCiAgICAiY3JlYXRlX3N1YnRhc2tfZW50cmllcyI6IDAKICB9LAogICJlbGVjdHJvbl9zaGFyZWQiOiB7CiAgICAiYm9keSI6IHsKICAgICAgIm1hcmtlciI6ICJBQzg3IHNoYXJlZCBib2R5IHNlbGVjdGlvbiIsCiAgICAgICJzZWxlY3RlZCI6ICJBQzg3IHNoYXJlZCBib2R5IHNlbGVjdGlvbiIsCiAgICAgICJib3VuZHMiOiB7CiAgICAgICAgImxlZnQiOiA0MTIuNSwKICAgICAgICAicmlnaHQiOiA1OTguODIwMzEyNSwKICAgICAgICAieSI6IDQ4MQogICAgICB9CiAgICB9LAogICAgImNvbW1lbnQiOiB7CiAgICAgICJtYXJrZXIiOiAiQUM4NyBzaGFyZWQgY29tbWVudCBzZWxlY3Rpb24iLAogICAgICAic2VsZWN0ZWQiOiAiQUM4NyBzaGFyZWQgY29tbWVudCBzZWxlY3Rpb24iLAogICAgICAiYm91bmRzIjogewogICAgICAgICJsZWZ0IjogNDEyLjUsCiAgICAgICAgInJpZ2h0IjogNjI3LjI4MTI1LAogICAgICAgICJ5IjogNTU5Ljc1CiAgICAgIH0KICAgIH0sCiAgICAiY3JlYXRlX3N1YnRhc2tfZW50cmllcyI6IDAKICB9LAogICJ3ZWJfb3JkaW5hcnkiOiB7CiAgICAiYm9keSI6IHsKICAgICAgIm1hcmtlciI6ICJBQzg3IG9yZGluYXJ5IGJvZHkgc2VsZWN0aW9uIiwKICAgICAgInNlbGVjdGVkIjogIkFDODcgb3JkaW5hcnkgYm9keSBzZWxlY3Rpb24iLAogICAgICAiYm91bmRzIjogewogICAgICAgICJsZWZ0IjogMjk5LAogICAgICAgICJyaWdodCI6IDQ5NC45MDYyNSwKICAgICAgICAieSI6IDE3OQogICAgICB9CiAgICB9LAogICAgImNvbW1lbnQiOiB7CiAgICAgICJtYXJrZXIiOiAiQUM4NyBvcmRpbmFyeSBjb21tZW50IHNlbGVjdGlvbiIsCiAgICAgICJzZWxlY3RlZCI6ICJBQzg3IG9yZGluYXJ5IGNvbW1lbnQgc2VsZWN0aW9uIiwKICAgICAgImJvdW5kcyI6IHsKICAgICAgICAibGVmdCI6IDM1NiwKICAgICAgICAicmlnaHQiOiA1ODAuMzc1LAogICAgICAgICJ5IjogNTA3Ljc1CiAgICAgIH0KICAgIH0sCiAgICAiY3JlYXRlX3N1YnRhc2tfZW50cmllcyI6IDIsCiAgICAicHJldmlldyI6IHsKICAgICAgInNvdXJjZV9pc3N1ZV9pZCI6ICIwMWExNWU0Ny1hOTRlLTdhYzktOGViMS1kNzFmNWM2NDEyMzMiLAogICAgICAic3RhdHVzIjogMjAwCiAgICB9CiAgfSwKICAiZWxlY3Ryb25fb3JkaW5hcnkiOiB7CiAgICAiYm9keSI6IHsKICAgICAgIm1hcmtlciI6ICJBQzg3IG9yZGluYXJ5IGJvZHkgc2VsZWN0aW9uIiwKICAgICAgInNlbGVjdGVkIjogIkFDODcgb3JkaW5hcnkgYm9keSBzZWxlY3Rpb24iLAogICAgICAiYm91bmRzIjogewogICAgICAgICJsZWZ0IjogNDMsCiAgICAgICAgInJpZ2h0IjogMjM4LjkwNjI1LAogICAgICAgICJ5IjogMjIwCiAgICAgIH0KICAgIH0sCiAgICAiY29tbWVudCI6IHsKICAgICAgIm1hcmtlciI6ICJBQzg3IG9yZGluYXJ5IGNvbW1lbnQgc2VsZWN0aW9uIiwKICAgICAgInNlbGVjdGVkIjogIkFDODcgb3JkaW5hcnkgY29tbWVudCBzZWxlY3Rpb24iLAogICAgICAiYm91bmRzIjogewogICAgICAgICJsZWZ0IjogMTAwLAogICAgICAgICJyaWdodCI6IDMyNC4zNjcxODc1LAogICAgICAgICJ5IjogNTQ4Ljc1CiAgICAgIH0KICAgIH0sCiAgICAiY3JlYXRlX3N1YnRhc2tfZW50cmllcyI6IDIsCiAgICAicHJldmlldyI6IHsKICAgICAgInNvdXJjZV9pc3N1ZV9pZCI6ICIwMWExNWU0Ny1hOTRlLTdhYzktOGViMS1kNzFmNWM2NDEyMzMiLAogICAgICAic3RhdHVzIjogMjAwCiAgICB9CiAgfSwKICAid2ViX3NvdXJjZV9jb250ZXh0X3JlcXVlc3RzIjogWwogICAgewogICAgICAibWV0aG9kIjogIkdFVCIsCiAgICAgICJwYXRoIjogIi9hcGkvY29tbWVudHMvMDFhMTVlNDctYTk2YS03MmFiLTg4YzAtNWQzYWUyOTdlZWFhL3N1Yi1pc3N1ZS1wcmV2aWV3IgogICAgfQogIF0sCiAgImVsZWN0cm9uX3NoYXJlZF9zb3VyY2VfY29udGV4dF9yZXF1ZXN0cyI6IFtdLAogICJlbGVjdHJvbl9vcmRpbmFyeV9zb3VyY2VfY29udGV4dF9yZXF1ZXN0cyI6IFsKICAgIHsKICAgICAgIm1ldGhvZCI6ICJHRVQiLAogICAgICAicGF0aCI6ICIvYXBpL2NvbW1lbnRzLzAxYTE1ZTQ3LWE5NmEtNzJhYi04OGMwLTVkM2FlMjk3ZWVhYS9zdWItaXNzdWUtcHJldmlldyIKICAgIH0KICBdLAogICJ3ZWJfZXJyb3JzIjogW10KfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f1f9ccf487bccfab98fb-ff0ee90dad2517a8fd38",
+          "file": "collaboration-selection-boundary.spec.ts",
+          "line": 12,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-21T11:45:15.546Z",
+    "duration": 10853.332,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
