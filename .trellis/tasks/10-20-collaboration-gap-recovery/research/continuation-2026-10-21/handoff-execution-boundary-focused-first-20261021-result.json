@@ -1,0 +1,65 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^(TestCollaborationTransferredHandlersShareExistingGrantAndControls|TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "environment": {
+    "GOTOOLCHAIN": "go1.26.6",
+    "database_alias": "service_s5",
+    "schema_migration": 737,
+    "real_provider_access": false
+  },
+  "started_at": "2026-10-21T13:55:46.673541+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_handoff_execution_boundary_test.go": "19571bdfadc78deb8efd1a192b9619b8d252815ac2715f1a8dcfbb8edf54e060",
+    "server/internal/service/collaboration_handoff.go": "5757c544bd97e96f506a1f5ad4d12775a2de2b8d7e69508d61be8a9685c84053",
+    "server/internal/service/collaboration_workflow.go": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+    "server/internal/service/collaboration_control.go": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+    "server/internal/service/collaboration_runtime.go": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+    "server/internal/service/collaboration_runtime_test.go": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+    "server/internal/service/collaboration_lifecycle.go": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4"
+  },
+  "finished_at": "2026-10-21T13:56:01.549877+00:00",
+  "elapsed_seconds": 14.868,
+  "returncode": 1,
+  "test_passes": [],
+  "test_failures": [
+    "TestCollaborationTransferredHandlersShareExistingGrantAndControls",
+    "TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion",
+    null
+  ],
+  "test_skips": [],
+  "package_results": [
+    {
+      "Action": "fail",
+      "Package": "github.com/multica-ai/multica/server/internal/service",
+      "Elapsed": 1.7389999999999999
+    }
+  ],
+  "final_source_sha256": {
+    "server/internal/service/collaboration_handoff_execution_boundary_test.go": "19571bdfadc78deb8efd1a192b9619b8d252815ac2715f1a8dcfbb8edf54e060",
+    "server/internal/service/collaboration_handoff.go": "5757c544bd97e96f506a1f5ad4d12775a2de2b8d7e69508d61be8a9685c84053",
+    "server/internal/service/collaboration_workflow.go": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+    "server/internal/service/collaboration_control.go": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+    "server/internal/service/collaboration_runtime.go": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+    "server/internal/service/collaboration_runtime_test.go": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+    "server/internal/service/collaboration_lifecycle.go": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4"
+  }
+}

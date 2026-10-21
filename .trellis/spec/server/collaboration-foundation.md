@@ -203,6 +203,26 @@ never changes session execution. Removal returns a removed handler to creator;
 creator cannot leave, and a handler must transfer before leaving. Re-enrollment
 advances the revoked participant epoch and never revives old commands/grants.
 
+`TestCollaborationTransferredHandlersShareExistingGrantAndControls` exercises
+creator, current handler and retained former handler after an actual invitation
+and transfer. Each actor submits through the same original issue grant; the
+managed daemon then claims and permits that input. The human actor Stops and
+explicitly Resumes only after the original proof.
+The newcomer acquires neither source membership nor a separate resource grant.
+An old `stop_unconfirmed` request remains refused after proof; only a fresh
+observed Resume may succeed. Former-handler transfer recovery uses the original
+actor-owned GET operation, without restoring current-handler write privileges.
+
+`TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion` issues a
+real service launch permit before `SubmitAcceptance`. The acceptance operation
+may change responsibility/status but must preserve every execution-owned row,
+waiting input and termination barrier. Compare session state excluding only
+`event_seq`, which legitimate human events advance. A subsequent authorized AI
+success and persisted human test-pass comment still leave the whole issue open;
+completion requires an explicit authorized creator/admin lifecycle operation.
+These database protocol fixtures use synthetic proof inputs. They do not prove
+provider execution or kernel containment.
+
 Creation, invitation and directed responsibility changes recheck recipient
 eligibility under the same user locks used by password setup/recovery/change.
 Known UUIDs cannot bypass disabled, setup-only or password-restricted account
