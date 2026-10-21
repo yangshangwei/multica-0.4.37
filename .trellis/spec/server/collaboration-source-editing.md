@@ -139,6 +139,31 @@ field editor, or a local pending-key deletion after a byte-limit error.
 Correct: current object/source authority, original-key shared operations, private
 reference projections, and an exact persisted result before retiring a request.
 
+## Deterministic source authority and external iteration evidence
+
+`collaboration_source_authority_race_test.go` holds the real leading writer at
+its transaction commit and observes the follower with `pg_blocking_pids` before
+release. Run both orderings for project/parent and iteration changes versus
+handler transfer and source-member departure. A departed or former noncreator
+handler cannot use stale source authority; a winning source change commits once
+before the competing writer. Target iteration metadata revision is an additional
+fence. Refused writes leave issue fields/membership/history untouched, while
+legitimate human changes preserve the retained execution rows. Do not replace
+these writer barriers with sleeps or a generic comment-permission assertion.
+
+`TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory` uses
+the ordinary source iteration HTTP start/end/rollover owners with an external
+collaboration assignee. The source caller can use complete statistics, preview
+and frozen history; the external handler still receives no source catalogs or
+maintenance authority. Responses retain assignee ID/type without email, username
+or private parent body. A missing source member join may yield an unavailable
+assignee name; this test does not establish the separate external display-name
+UI contract. Source structure and iteration membership remain separate writes.
+
+These tests prove database authority, version and projection boundaries. Full
+source-role/reason/request-separation acceptance requires its direct canonical
+assertions as well; counts alone do not complete AC80/81.
+
 ## Ordinary children and recorded executions
 
 The R51/R52 increment now supplies the shared ordinary-child projection,

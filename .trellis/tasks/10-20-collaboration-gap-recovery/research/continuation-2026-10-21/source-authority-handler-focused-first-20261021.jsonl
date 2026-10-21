@@ -1,0 +1,10 @@
+{"Time":"2026-10-21T22:25:00.73159+08:00","Action":"start","Package":"github.com/multica-ai/multica/server/internal/handler"}
+{"Time":"2026-10-21T22:25:01.866519+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Output":"EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)\n"}
+{"Time":"2026-10-21T22:25:01.866881+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Output":"2026/10/21 22:25:01 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false\n"}
+{"Time":"2026-10-21T22:25:01.954396+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/handler","Test":"TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory"}
+{"Time":"2026-10-21T22:25:01.954437+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Test":"TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory","Output":"=== RUN   TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory\n"}
+{"Time":"2026-10-21T22:25:02.193899+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Test":"TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory","Output":"--- PASS: TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory (0.24s)\n"}
+{"Time":"2026-10-21T22:25:02.193921+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/handler","Test":"TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory","Elapsed":0.24}
+{"Time":"2026-10-21T22:25:02.195679+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Output":"PASS\n"}
+{"Time":"2026-10-21T22:25:03.216075+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Output":"ok  \tgithub.com/multica-ai/multica/server/internal/handler\t2.484s\n"}
+{"Time":"2026-10-21T22:25:03.216166+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/handler","Elapsed":2.485}
