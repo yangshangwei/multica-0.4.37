@@ -1,0 +1,36 @@
+{
+  "started_at": "2026-10-21T11:51:40.033991+00:00",
+  "source_sha256": "2c80c3277f3d4d8891f1938f585f7f4bb6eb4cfe83f251bc080f03fdf6ea13fe",
+  "checks": [
+    {
+      "name": "gofmt",
+      "command": [
+        "gofmt",
+        "-d",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_grant_task_isolation_test.go"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "returncode": 0,
+      "elapsed_seconds": 0.02,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    },
+    {
+      "name": "vet",
+      "command": [
+        "go",
+        "vet",
+        "-p",
+        "1",
+        "./internal/service"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "returncode": 0,
+      "elapsed_seconds": 2.197,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    }
+  ],
+  "finished_at": "2026-10-21T11:51:42.251170+00:00",
+  "source_unchanged": true
+}

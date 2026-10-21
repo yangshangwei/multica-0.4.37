@@ -401,3 +401,24 @@ batch, or discard the locked lifecycle epoch in a system invalidation wrapper.
 
 Correct: keep immutable group-input membership and carry the real lifecycle
 epoch into the common queue transaction before deciding whether input can return.
+
+## Current paused-input and per-issue consent regression evidence
+
+`TestCollaborationPausedFollowupRequiresProofFreshResumeAndNeverRetriesStoppedInput`
+starts and permits input1, stops its target, and only then submits inputs2/3.
+Poll/read/reconnect-shaped operations keep them waiting through original proof;
+proof does not resume or retry input1. Old refused Resume and successful Stop
+keys retain their exact result. One fresh explicit Resume consumes2/3 together
+once; no-followup case remains idle. Unselected target and issue-level controls
+stay unchanged. Service proof fixtures are synthetic; actual Linux supervisors
+have separate evidence and cannot be inferred from this service test.
+
+`TestCollaborationGrantWithdrawalAndOwnerRejoinIsolateOtherTask` shares one exact
+owner/agent/runtime/binding across distinct issue grants. Withdrawal or voluntary
+leave/rejoin of issue1 must preserve issue2's full current grant/participant/
+control/history/proof/operations and mention catalogue. A peer submission must
+still succeed. Grant-only withdrawal preserves participation/input author rights;
+leave cancels that owner's waiting input. Reinvite never reactivates old grants
+or commands: renewed owner consent and a fresh explicit Resume remain separate,
+and old refused keys never become deferred permission. Scope per-issue revocation
+by issue+owner, not every grant using the same account/resource.

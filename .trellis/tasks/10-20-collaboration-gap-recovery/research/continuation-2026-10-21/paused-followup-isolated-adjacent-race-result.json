@@ -1,0 +1,45 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^(TestCollaborationPausedFollowup.*|TestCollaborationManagedStopProofPreservesFreshResumeIntent|TestCollaborationResumeAllEmptyScopeReleasesGlobalPause|TestCollaborationBatchKeepsOneFollowupBehindRunningWork|TestCollaborationQueueStaleStopCannotReachNextRun)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/tmp/multica-gap-recovery-20261021-h6phxwo9/content-acceptance-head-bjg3a90e/server",
+  "head": "aef77e9ce62b2f665f6a99676a79244b49fde497",
+  "only_product_source": "Exact HEAD, no shared dirty product copied",
+  "new_test_source": "server/internal/service/collaboration_paused_followup_test.go",
+  "new_test_sha256": "85ba407981009a381aed0c6e408032cf999891f6cba6b4b645ff70fb02e99793",
+  "other_added_test_files": [
+    "server/internal/service/collaboration_discussion_resume_test.go",
+    "server/internal/service/collaboration_comment_edit_delete_test.go",
+    "server/internal/service/collaboration_grant_task_isolation_test.go"
+  ],
+  "elapsed_s": 15.401242958992952,
+  "returncode": 0,
+  "passed": [
+    "TestCollaborationBatchKeepsOneFollowupBehindRunningWork",
+    "TestCollaborationResumeAllEmptyScopeReleasesGlobalPause",
+    "TestCollaborationPausedFollowupRequiresProofFreshResumeAndNeverRetriesStoppedInput/paused_inputs",
+    "TestCollaborationPausedFollowupRequiresProofFreshResumeAndNeverRetriesStoppedInput/empty_target",
+    "TestCollaborationPausedFollowupRequiresProofFreshResumeAndNeverRetriesStoppedInput",
+    "TestCollaborationQueueStaleStopCannotReachNextRun",
+    "TestCollaborationManagedStopProofPreservesFreshResumeIntent"
+  ],
+  "failed": [],
+  "skipped": []
+}

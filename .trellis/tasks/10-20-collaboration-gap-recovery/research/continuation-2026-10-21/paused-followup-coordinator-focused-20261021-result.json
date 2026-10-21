@@ -1,0 +1,33 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaborationPausedFollowupRequiresProofFreshResumeAndNeverRetriesStoppedInput$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "start_utc": "2026-10-21T12:22:55.828937+00:00",
+  "elapsed_s": 16.27125283400528,
+  "returncode": 0,
+  "pass": [
+    "TestCollaborationPausedFollowupRequiresProofFreshResumeAndNeverRetriesStoppedInput/paused_inputs",
+    "TestCollaborationPausedFollowupRequiresProofFreshResumeAndNeverRetriesStoppedInput/empty_target",
+    "TestCollaborationPausedFollowupRequiresProofFreshResumeAndNeverRetriesStoppedInput"
+  ],
+  "fail": [],
+  "skip": []
+}

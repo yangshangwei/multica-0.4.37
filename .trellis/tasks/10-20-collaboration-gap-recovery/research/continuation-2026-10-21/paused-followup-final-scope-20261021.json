@@ -1,0 +1,39 @@
+{
+  "checked_at": "2026-10-21T12:51:02.622626+00:00",
+  "source_sha256": "85ba407981009a381aed0c6e408032cf999891f6cba6b4b645ff70fb02e99793",
+  "product_helpers_unchanged": {
+    "server/internal/service/collaboration_control.go": true,
+    "server/internal/service/collaboration_runtime.go": true,
+    "server/internal/service/collaboration_queue.go": true,
+    "server/internal/service/collaboration_runtime_test.go": true,
+    "server/internal/service/collaboration_control_managed_test.go": true,
+    "server/internal/service/collaboration_control_test.go": true,
+    "server/internal/service/collaboration_execution_view.go": true
+  },
+  "coordinator_execution": {
+    "result_artifact": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/paused-followup-coordinator-focused-20261021-result.json",
+    "result_sha256": "85ab6ed54bfa4ca8239b41d27f131a3a328afe21ed13aed8d6d432deaad87f2f",
+    "raw_artifact": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/paused-followup-coordinator-focused-20261021.jsonl",
+    "raw_sha256": "428189173c33f29c9fb5272e62be3e96af2153f0105982109429e3afcf9c53df",
+    "stderr_bytes": 0,
+    "returncode": 0,
+    "top_level_pass_count": 1,
+    "all_test_pass_events": 3,
+    "fail": [],
+    "skip": [],
+    "package_elapsed_s": 3.974
+  },
+  "gofmt": {
+    "command": [
+      "gofmt",
+      "-d",
+      "server/internal/service/collaboration_paused_followup_test.go"
+    ],
+    "returncode": 0,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  "trailing_whitespace": [],
+  "implementer_db_rerun": false,
+  "adjacent_or_isolated_result": "coordinator owned; pending independent artifacts"
+}

@@ -1,0 +1,36 @@
+{
+  "prepared_at": "2026-10-21T11:32:56.578648+00:00",
+  "state": "prepared_not_executed",
+  "waiting_for": "root explicit service_s5 slot release",
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaborationPausedFollowupRequiresProofFreshResumeAndNeverRetriesStoppedInput$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "environment": {
+    "GOTOOLCHAIN": "go1.26.6",
+    "database_alias": "service_s5"
+  },
+  "new_test_sha256": "85ba407981009a381aed0c6e408032cf999891f6cba6b4b645ff70fb02e99793",
+  "subtests": [
+    "paused_inputs",
+    "empty_target"
+  ],
+  "updated_at": "2026-10-21T11:43:07.060076+00:00"
+}
