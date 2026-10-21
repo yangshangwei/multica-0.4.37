@@ -1,0 +1,63 @@
+{
+  "source": "server/internal/service/collaboration_mention_admission_states_test.go",
+  "source_sha256": "07338b91526b867f32e0fdff2865b2c42d9bc4b8949d8fce03b9f029eede6f57",
+  "checks": [
+    {
+      "name": "gofmt",
+      "command": [
+        "gofmt",
+        "-d",
+        "server/internal/service/collaboration_mention_admission_states_test.go"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "environment": {},
+      "started_at": "2026-10-21T15:55:51.851448+00:00",
+      "returncode": 0,
+      "elapsed_seconds": 0.013,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    },
+    {
+      "name": "vet",
+      "command": [
+        "go",
+        "vet",
+        "-p",
+        "1",
+        "./internal/service"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "environment": {
+        "GOTOOLCHAIN": "go1.26.6"
+      },
+      "started_at": "2026-10-21T15:55:51.864439+00:00",
+      "returncode": 0,
+      "elapsed_seconds": 2.082,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    }
+  ],
+  "source_unchanged": true,
+  "read_only_source_hashes_unchanged": {
+    "server/internal/service/collaboration_comments.go": true,
+    "server/internal/service/collaboration_comments_create.go": true,
+    "server/internal/service/collaboration_mentions.go": true,
+    "server/internal/service/collaboration_comments_edit.go": true,
+    "server/internal/service/collaboration_batches.go": true,
+    "server/internal/service/collaboration_authority.go": true,
+    "server/internal/service/collaboration_control.go": true,
+    "server/internal/service/collaboration_runtime.go": true,
+    "server/internal/service/collaboration_runtime_capabilities.go": true,
+    "server/internal/service/collaboration_workflow.go": true,
+    "server/internal/service/collaboration_lifecycle.go": true,
+    "server/internal/service/collaboration_runtime_test.go": true,
+    "server/internal/service/collaboration_queue_test.go": true,
+    "server/internal/service/collaboration_control_test.go": true,
+    "server/internal/service/collaboration_control_managed_test.go": true,
+    "server/internal/service/collaboration_comments_test.go": true,
+    "server/internal/service/collaboration_hold_test.go": true,
+    "server/internal/service/collaboration_lifecycle_test.go": true
+  },
+  "database_slot_released": true,
+  "no_further_db_commands": true
+}

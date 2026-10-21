@@ -1,0 +1,1313 @@
+{
+  "reviewed_at": "2026-10-21T16:35:07.111646+00:00",
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "role": "independent trellis-check; no recursion or product writes",
+  "criterion": "AC93",
+  "primary_owner": "P5",
+  "criterion_source": ".trellis/tasks/10-10-cross-workspace-collaboration/acceptance.md:105",
+  "criterion_text": "分别通过 @触发验证空闲、忙碌、暂停、停止未确认、撤资源、移除作者和整单终态。不得绕过权限、恢复屏障或另走普通执行路径；有效等待与实际开始可区分，普通无 @评论/回复和编辑仍不触发。",
+  "recommendation": "passed at assigned P5 backend trigger boundary after independent review; coordinator alone changes ledger",
+  "remaining_P5_clause_gaps": [],
+  "product_defects": [],
+  "mechanical_fixes": [],
+  "source": "server/internal/service/collaboration_mention_admission_states_test.go",
+  "source_sha256": "07338b91526b867f32e0fdff2865b2c42d9bc4b8949d8fce03b9f029eede6f57",
+  "state_clauses": [
+    {
+      "state": "idle",
+      "source_lines": [
+        23,
+        75,
+        138,
+        259
+      ],
+      "receipt": "waiting / command_queued / shared_runtime_unavailable",
+      "evidence": "No group before public List/Claim/Permit; exact event/author/body/target/channel/batch later consumed with one persisted attempt."
+    },
+    {
+      "state": "busy",
+      "source_lines": [
+        24,
+        77,
+        201,
+        221
+      ],
+      "receipt": "waiting / command_queued / target_busy",
+      "evidence": "Prior real comment Claim/Permit remains original unknown/unsettled run; repeated polls recover only old run, new input remains waiting in separate batch until original synthetic success/proof."
+    },
+    {
+      "state": "paused",
+      "source_lines": [
+        25,
+        79,
+        193,
+        235
+      ],
+      "receipt": "waiting / command_queued / issue_paused",
+      "evidence": "Actual issue Stop precedes typed comment; receipt is waiting and polls expose no run; explicit Resume is required before Claim/Permit."
+    },
+    {
+      "state": "unconfirmed_stop",
+      "source_lines": [
+        26,
+        84,
+        212,
+        237,
+        281
+      ],
+      "receipt": "waiting / command_queued / target_paused",
+      "evidence": "Actual permitted original retains stop intent, unknown proof and live reservation; Resume refusal snapshots unchanged; synthetic proof does not resume; refused key stays refused; only fresh explicit Resume consumes new input, original command stays stopped."
+    },
+    {
+      "state": "revoked_resource",
+      "source_lines": [
+        27,
+        91,
+        147,
+        285
+      ],
+      "receipt": "blocked / target_unavailable",
+      "evidence": "Actual RevokeGrant follows old permitted comment and waiting input; new human comment persists without command/group; full control/proof snapshot and old waiting input preserved; poll exposes no new run."
+    },
+    {
+      "state": "removed_author",
+      "source_lines": [
+        28,
+        99,
+        126,
+        287
+      ],
+      "receipt": "not_found, no comment or operation",
+      "evidence": "Actual RemoveParticipant on external handler prevents new @ comment and any operation; pending author input is cancelled with participant_removed; original run remains stopped/unknown/reserved."
+    },
+    {
+      "state": "terminal_issue",
+      "source_lines": [
+        29,
+        107,
+        147,
+        290
+      ],
+      "receipt": "blocked / issue_closed",
+      "evidence": "Actual public complete lifecycle precedes comment; human comment persists but no command/group; pending command cancelled with issue_completed; old permitted run remains stopped/unknown/reserved."
+    }
+  ],
+  "canonical_adjacent_clauses": {
+    "TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked": "Actual comment preview/send revalidation, A refused/B saved/H notified once, original-key replay and changed-payload conflict.",
+    "TestCollaborationCommentSourceMemberAndPlainRepliesStayHumanOnly": "Source-only human can comment but cannot execute (not_participant); ordinary reply to an agent-authored parent with unresolved @AI and unused target versions creates no command/participant.",
+    "TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing": "Distinct comment inputs coalesce only in waiting batch; edit/delete changes display and preserves original author/content inputs.",
+    "TestCollaborationRuntimeHoldBlocksClaimAndPermit": "Real managed Claim and Permit recheck target hold; no attempt saved or state changed on refusal.",
+    "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue": "Public complete/cancel paths retain paused/closed barriers, real identities and original stop; reopen retains cancelled waiting inputs and original run.",
+    "TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent": "Refused Resume remains refused after proof/epoch change; only fresh explicit current request activates future input.",
+    "TestLegacyExecutionCannotInheritCollaborationComments": "Actual ordinary service and SQL trigger/coalesced input writers refuse shared comment; ordinary task claim remains queued and returns no task."
+  },
+  "runs": [
+    {
+      "run_id": "mention-admission-focused-first-20261021",
+      "command": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^TestCollaborationMentionCommentAdmissionAcrossExecutionStates$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "result_artifact": "mention-admission-focused-first-20261021-result.json",
+      "result_sha256": "7f01422ccfc913c6362ffc824ed6cd216428cd9b6033f43bbdc4be35db55a560",
+      "raw_artifact": "mention-admission-focused-first-20261021.jsonl",
+      "raw_sha256": "18bf83f49f818134607d7945d1c5c495ce856cbb6592a4d7e570d0b833d483c6",
+      "metadata": {
+        "environment": {
+          "GOTOOLCHAIN": "go1.26.6",
+          "database_alias": "service_s5",
+          "schema_migration": 737,
+          "provider_execution": false
+        },
+        "source_sha256": {
+          "server/internal/service/collaboration_comments.go": "8bf74c1438f2c7f9446e747317bd1fc212c4fc0af83154074a8017b30898a085",
+          "server/internal/service/collaboration_comments_create.go": "5117be7583614a245a5fd4db2129d47e9c783e55ab2b7ee75ac205c4ef4f2f5d",
+          "server/internal/service/collaboration_mentions.go": "eed8e4fa3ff918223ec2e139ad78b160cd34c8e43a3e26fbc4783eb980d74508",
+          "server/internal/service/collaboration_comments_edit.go": "216af6a930362643b1c3d9da12f65194c3b6946c5fbefe2a762653ac8f016970",
+          "server/internal/service/collaboration_batches.go": "5ce1d33180d1abdd5ff11de3d0890fa0fbc43ba6ffef809c0070528262889409",
+          "server/internal/service/collaboration_authority.go": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+          "server/internal/service/collaboration_control.go": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+          "server/internal/service/collaboration_runtime.go": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+          "server/internal/service/collaboration_runtime_capabilities.go": "aa8bcd7f6be51e9070b015ab301b506f0a2f44920320a7ef5ca0b1ad7d478c15",
+          "server/internal/service/collaboration_workflow.go": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+          "server/internal/service/collaboration_lifecycle.go": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+          "server/internal/service/collaboration_runtime_test.go": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+          "server/internal/service/collaboration_queue_test.go": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+          "server/internal/service/collaboration_control_test.go": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+          "server/internal/service/collaboration_control_managed_test.go": "4e7feaecc081a08eeb982b9e06c487f982a6cb3c7504bec633c2302654ab15a7",
+          "server/internal/service/collaboration_comments_test.go": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576",
+          "server/internal/service/collaboration_hold_test.go": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e",
+          "server/internal/service/collaboration_lifecycle_test.go": "164c27d7f3e34ac838607b73ecb3f02a6c12d7ab19ac685636d0110404d5842f",
+          "server/internal/service/collaboration_mention_admission_states_test.go": "b62f41d0a1c50929e2a71a8422653c4ad327e8f0f5e9653c522c45dd5a5d5e0a"
+        },
+        "final_source_sha256": {
+          "server/internal/service/collaboration_comments.go": "8bf74c1438f2c7f9446e747317bd1fc212c4fc0af83154074a8017b30898a085",
+          "server/internal/service/collaboration_comments_create.go": "5117be7583614a245a5fd4db2129d47e9c783e55ab2b7ee75ac205c4ef4f2f5d",
+          "server/internal/service/collaboration_mentions.go": "eed8e4fa3ff918223ec2e139ad78b160cd34c8e43a3e26fbc4783eb980d74508",
+          "server/internal/service/collaboration_comments_edit.go": "216af6a930362643b1c3d9da12f65194c3b6946c5fbefe2a762653ac8f016970",
+          "server/internal/service/collaboration_batches.go": "5ce1d33180d1abdd5ff11de3d0890fa0fbc43ba6ffef809c0070528262889409",
+          "server/internal/service/collaboration_authority.go": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+          "server/internal/service/collaboration_control.go": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+          "server/internal/service/collaboration_runtime.go": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+          "server/internal/service/collaboration_runtime_capabilities.go": "aa8bcd7f6be51e9070b015ab301b506f0a2f44920320a7ef5ca0b1ad7d478c15",
+          "server/internal/service/collaboration_workflow.go": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+          "server/internal/service/collaboration_lifecycle.go": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+          "server/internal/service/collaboration_runtime_test.go": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+          "server/internal/service/collaboration_queue_test.go": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+          "server/internal/service/collaboration_control_test.go": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+          "server/internal/service/collaboration_control_managed_test.go": "4e7feaecc081a08eeb982b9e06c487f982a6cb3c7504bec633c2302654ab15a7",
+          "server/internal/service/collaboration_comments_test.go": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576",
+          "server/internal/service/collaboration_hold_test.go": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e",
+          "server/internal/service/collaboration_lifecycle_test.go": "164c27d7f3e34ac838607b73ecb3f02a6c12d7ab19ac685636d0110404d5842f",
+          "server/internal/service/collaboration_mention_admission_states_test.go": "b62f41d0a1c50929e2a71a8422653c4ad327e8f0f5e9653c522c45dd5a5d5e0a"
+        },
+        "returncode": 1,
+        "elapsed_seconds": 16.278,
+        "started_at": "2026-10-21T15:32:19.214833+00:00",
+        "finished_at": "2026-10-21T15:32:35.494290+00:00"
+      },
+      "events": [
+        {
+          "line": 9,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/idle",
+          "action": "fail",
+          "elapsed_seconds": 0.56,
+          "time": "2026-10-21T23:32:32.506393+08:00"
+        },
+        {
+          "line": 15,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/busy",
+          "action": "fail",
+          "elapsed_seconds": 0.47,
+          "time": "2026-10-21T23:32:32.972825+08:00"
+        },
+        {
+          "line": 21,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/paused",
+          "action": "fail",
+          "elapsed_seconds": 0.6,
+          "time": "2026-10-21T23:32:33.571371+08:00"
+        },
+        {
+          "line": 27,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/unconfirmed_stop",
+          "action": "fail",
+          "elapsed_seconds": 0.44,
+          "time": "2026-10-21T23:32:34.015288+08:00"
+        },
+        {
+          "line": 33,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/revoked_resource",
+          "action": "fail",
+          "elapsed_seconds": 0.47,
+          "time": "2026-10-21T23:32:34.487187+08:00"
+        },
+        {
+          "line": 39,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/removed_author",
+          "action": "fail",
+          "elapsed_seconds": 0.47,
+          "time": "2026-10-21T23:32:34.960931+08:00"
+        },
+        {
+          "line": 45,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/terminal_issue",
+          "action": "fail",
+          "elapsed_seconds": 0.49,
+          "time": "2026-10-21T23:32:35.4527+08:00"
+        },
+        {
+          "line": 47,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates",
+          "action": "fail",
+          "elapsed_seconds": 3.51,
+          "time": "2026-10-21T23:32:35.452719+08:00"
+        },
+        {
+          "line": 50,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": null,
+          "action": "fail",
+          "elapsed_seconds": 4.515,
+          "time": "2026-10-21T23:32:35.454902+08:00"
+        }
+      ],
+      "acceptance_evidence": false
+    },
+    {
+      "run_id": "mention-admission-focused-schema-fixed-20261021",
+      "command": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^TestCollaborationMentionCommentAdmissionAcrossExecutionStates$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "result_artifact": "mention-admission-focused-schema-fixed-20261021-result.json",
+      "result_sha256": "fea541eb2b96865b12119a027c31ccd9112f2523e1cc5c8a5031c32e179f548f",
+      "raw_artifact": "mention-admission-focused-schema-fixed-20261021.jsonl",
+      "raw_sha256": "2fd73abba2644e4484b43dc2857b414668f7e81c7027c7d95aa7d86855455b8f",
+      "metadata": {
+        "environment": {
+          "GOTOOLCHAIN": "go1.26.6",
+          "database_alias": "service_s5",
+          "schema_migration": 737,
+          "provider_execution": false
+        },
+        "source_sha256": {
+          "server/internal/service/collaboration_comments.go": "8bf74c1438f2c7f9446e747317bd1fc212c4fc0af83154074a8017b30898a085",
+          "server/internal/service/collaboration_comments_create.go": "5117be7583614a245a5fd4db2129d47e9c783e55ab2b7ee75ac205c4ef4f2f5d",
+          "server/internal/service/collaboration_mentions.go": "eed8e4fa3ff918223ec2e139ad78b160cd34c8e43a3e26fbc4783eb980d74508",
+          "server/internal/service/collaboration_comments_edit.go": "216af6a930362643b1c3d9da12f65194c3b6946c5fbefe2a762653ac8f016970",
+          "server/internal/service/collaboration_batches.go": "5ce1d33180d1abdd5ff11de3d0890fa0fbc43ba6ffef809c0070528262889409",
+          "server/internal/service/collaboration_authority.go": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+          "server/internal/service/collaboration_control.go": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+          "server/internal/service/collaboration_runtime.go": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+          "server/internal/service/collaboration_runtime_capabilities.go": "aa8bcd7f6be51e9070b015ab301b506f0a2f44920320a7ef5ca0b1ad7d478c15",
+          "server/internal/service/collaboration_workflow.go": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+          "server/internal/service/collaboration_lifecycle.go": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+          "server/internal/service/collaboration_runtime_test.go": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+          "server/internal/service/collaboration_queue_test.go": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+          "server/internal/service/collaboration_control_test.go": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+          "server/internal/service/collaboration_control_managed_test.go": "4e7feaecc081a08eeb982b9e06c487f982a6cb3c7504bec633c2302654ab15a7",
+          "server/internal/service/collaboration_comments_test.go": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576",
+          "server/internal/service/collaboration_hold_test.go": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e",
+          "server/internal/service/collaboration_lifecycle_test.go": "164c27d7f3e34ac838607b73ecb3f02a6c12d7ab19ac685636d0110404d5842f",
+          "server/internal/service/collaboration_mention_admission_states_test.go": "7af3b4eda508dc5748f40f4e3cde59d991ed1a633e4feef0f6bbfec6c7c33fd5"
+        },
+        "final_source_sha256": {
+          "server/internal/service/collaboration_comments.go": "8bf74c1438f2c7f9446e747317bd1fc212c4fc0af83154074a8017b30898a085",
+          "server/internal/service/collaboration_comments_create.go": "5117be7583614a245a5fd4db2129d47e9c783e55ab2b7ee75ac205c4ef4f2f5d",
+          "server/internal/service/collaboration_mentions.go": "eed8e4fa3ff918223ec2e139ad78b160cd34c8e43a3e26fbc4783eb980d74508",
+          "server/internal/service/collaboration_comments_edit.go": "216af6a930362643b1c3d9da12f65194c3b6946c5fbefe2a762653ac8f016970",
+          "server/internal/service/collaboration_batches.go": "5ce1d33180d1abdd5ff11de3d0890fa0fbc43ba6ffef809c0070528262889409",
+          "server/internal/service/collaboration_authority.go": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+          "server/internal/service/collaboration_control.go": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+          "server/internal/service/collaboration_runtime.go": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+          "server/internal/service/collaboration_runtime_capabilities.go": "aa8bcd7f6be51e9070b015ab301b506f0a2f44920320a7ef5ca0b1ad7d478c15",
+          "server/internal/service/collaboration_workflow.go": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+          "server/internal/service/collaboration_lifecycle.go": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+          "server/internal/service/collaboration_runtime_test.go": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+          "server/internal/service/collaboration_queue_test.go": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+          "server/internal/service/collaboration_control_test.go": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+          "server/internal/service/collaboration_control_managed_test.go": "4e7feaecc081a08eeb982b9e06c487f982a6cb3c7504bec633c2302654ab15a7",
+          "server/internal/service/collaboration_comments_test.go": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576",
+          "server/internal/service/collaboration_hold_test.go": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e",
+          "server/internal/service/collaboration_lifecycle_test.go": "164c27d7f3e34ac838607b73ecb3f02a6c12d7ab19ac685636d0110404d5842f",
+          "server/internal/service/collaboration_mention_admission_states_test.go": "7af3b4eda508dc5748f40f4e3cde59d991ed1a633e4feef0f6bbfec6c7c33fd5"
+        },
+        "returncode": 1,
+        "elapsed_seconds": 16.289,
+        "started_at": "2026-10-21T15:38:29.186035+00:00",
+        "finished_at": "2026-10-21T15:38:45.475293+00:00"
+      },
+      "events": [
+        {
+          "line": 8,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/idle",
+          "action": "pass",
+          "elapsed_seconds": 0.66,
+          "time": "2026-10-21T23:38:41.290602+08:00"
+        },
+        {
+          "line": 13,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/busy",
+          "action": "fail",
+          "elapsed_seconds": 0.62,
+          "time": "2026-10-21T23:38:41.908351+08:00"
+        },
+        {
+          "line": 18,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/paused",
+          "action": "pass",
+          "elapsed_seconds": 0.61,
+          "time": "2026-10-21T23:38:42.5167+08:00"
+        },
+        {
+          "line": 23,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/unconfirmed_stop",
+          "action": "pass",
+          "elapsed_seconds": 1,
+          "time": "2026-10-21T23:38:43.517215+08:00"
+        },
+        {
+          "line": 28,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/revoked_resource",
+          "action": "pass",
+          "elapsed_seconds": 0.63,
+          "time": "2026-10-21T23:38:44.143059+08:00"
+        },
+        {
+          "line": 33,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/removed_author",
+          "action": "pass",
+          "elapsed_seconds": 0.65,
+          "time": "2026-10-21T23:38:44.795552+08:00"
+        },
+        {
+          "line": 38,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/terminal_issue",
+          "action": "pass",
+          "elapsed_seconds": 0.64,
+          "time": "2026-10-21T23:38:45.438848+08:00"
+        },
+        {
+          "line": 40,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates",
+          "action": "fail",
+          "elapsed_seconds": 4.81,
+          "time": "2026-10-21T23:38:45.438873+08:00"
+        },
+        {
+          "line": 43,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": null,
+          "action": "fail",
+          "elapsed_seconds": 5.779,
+          "time": "2026-10-21T23:38:45.440991+08:00"
+        }
+      ],
+      "acceptance_evidence": false
+    },
+    {
+      "run_id": "mention-admission-focused-candidate-fixed-20261021",
+      "command": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^TestCollaborationMentionCommentAdmissionAcrossExecutionStates$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "result_artifact": "mention-admission-focused-candidate-fixed-20261021-result.json",
+      "result_sha256": "ff730d0622e7022e232b02e6cfd8f5adc7d6b8e2ac553fc4decae533c4874b27",
+      "raw_artifact": "mention-admission-focused-candidate-fixed-20261021.jsonl",
+      "raw_sha256": "5ebcced6881e9140fdc8ec8e240d7ae9633d74dc1c498d270829c3317b1ee93d",
+      "metadata": {
+        "environment": {
+          "GOTOOLCHAIN": "go1.26.6",
+          "database_alias": "service_s5",
+          "schema_migration": 737,
+          "provider_execution": false
+        },
+        "source_sha256": {
+          "server/internal/service/collaboration_comments.go": "8bf74c1438f2c7f9446e747317bd1fc212c4fc0af83154074a8017b30898a085",
+          "server/internal/service/collaboration_comments_create.go": "5117be7583614a245a5fd4db2129d47e9c783e55ab2b7ee75ac205c4ef4f2f5d",
+          "server/internal/service/collaboration_mentions.go": "eed8e4fa3ff918223ec2e139ad78b160cd34c8e43a3e26fbc4783eb980d74508",
+          "server/internal/service/collaboration_comments_edit.go": "216af6a930362643b1c3d9da12f65194c3b6946c5fbefe2a762653ac8f016970",
+          "server/internal/service/collaboration_batches.go": "5ce1d33180d1abdd5ff11de3d0890fa0fbc43ba6ffef809c0070528262889409",
+          "server/internal/service/collaboration_authority.go": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+          "server/internal/service/collaboration_control.go": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+          "server/internal/service/collaboration_runtime.go": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+          "server/internal/service/collaboration_runtime_capabilities.go": "aa8bcd7f6be51e9070b015ab301b506f0a2f44920320a7ef5ca0b1ad7d478c15",
+          "server/internal/service/collaboration_workflow.go": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+          "server/internal/service/collaboration_lifecycle.go": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+          "server/internal/service/collaboration_runtime_test.go": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+          "server/internal/service/collaboration_queue_test.go": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+          "server/internal/service/collaboration_control_test.go": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+          "server/internal/service/collaboration_control_managed_test.go": "4e7feaecc081a08eeb982b9e06c487f982a6cb3c7504bec633c2302654ab15a7",
+          "server/internal/service/collaboration_comments_test.go": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576",
+          "server/internal/service/collaboration_hold_test.go": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e",
+          "server/internal/service/collaboration_lifecycle_test.go": "164c27d7f3e34ac838607b73ecb3f02a6c12d7ab19ac685636d0110404d5842f",
+          "server/internal/service/collaboration_mention_admission_states_test.go": "07338b91526b867f32e0fdff2865b2c42d9bc4b8949d8fce03b9f029eede6f57"
+        },
+        "final_source_sha256": {
+          "server/internal/service/collaboration_comments.go": "8bf74c1438f2c7f9446e747317bd1fc212c4fc0af83154074a8017b30898a085",
+          "server/internal/service/collaboration_comments_create.go": "5117be7583614a245a5fd4db2129d47e9c783e55ab2b7ee75ac205c4ef4f2f5d",
+          "server/internal/service/collaboration_mentions.go": "eed8e4fa3ff918223ec2e139ad78b160cd34c8e43a3e26fbc4783eb980d74508",
+          "server/internal/service/collaboration_comments_edit.go": "216af6a930362643b1c3d9da12f65194c3b6946c5fbefe2a762653ac8f016970",
+          "server/internal/service/collaboration_batches.go": "5ce1d33180d1abdd5ff11de3d0890fa0fbc43ba6ffef809c0070528262889409",
+          "server/internal/service/collaboration_authority.go": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+          "server/internal/service/collaboration_control.go": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+          "server/internal/service/collaboration_runtime.go": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+          "server/internal/service/collaboration_runtime_capabilities.go": "aa8bcd7f6be51e9070b015ab301b506f0a2f44920320a7ef5ca0b1ad7d478c15",
+          "server/internal/service/collaboration_workflow.go": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+          "server/internal/service/collaboration_lifecycle.go": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+          "server/internal/service/collaboration_runtime_test.go": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+          "server/internal/service/collaboration_queue_test.go": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+          "server/internal/service/collaboration_control_test.go": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+          "server/internal/service/collaboration_control_managed_test.go": "4e7feaecc081a08eeb982b9e06c487f982a6cb3c7504bec633c2302654ab15a7",
+          "server/internal/service/collaboration_comments_test.go": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576",
+          "server/internal/service/collaboration_hold_test.go": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e",
+          "server/internal/service/collaboration_lifecycle_test.go": "164c27d7f3e34ac838607b73ecb3f02a6c12d7ab19ac685636d0110404d5842f",
+          "server/internal/service/collaboration_mention_admission_states_test.go": "07338b91526b867f32e0fdff2865b2c42d9bc4b8949d8fce03b9f029eede6f57"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 18.353,
+        "started_at": "2026-10-21T15:44:04.938151+00:00",
+        "finished_at": "2026-10-21T15:44:23.291293+00:00"
+      },
+      "events": [
+        {
+          "line": 8,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/idle",
+          "action": "pass",
+          "elapsed_seconds": 0.69,
+          "time": "2026-10-21T23:44:17.856888+08:00"
+        },
+        {
+          "line": 13,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/busy",
+          "action": "pass",
+          "elapsed_seconds": 0.9,
+          "time": "2026-10-21T23:44:18.756118+08:00"
+        },
+        {
+          "line": 18,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/paused",
+          "action": "pass",
+          "elapsed_seconds": 0.64,
+          "time": "2026-10-21T23:44:19.392125+08:00"
+        },
+        {
+          "line": 23,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/unconfirmed_stop",
+          "action": "pass",
+          "elapsed_seconds": 0.89,
+          "time": "2026-10-21T23:44:20.279152+08:00"
+        },
+        {
+          "line": 28,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/revoked_resource",
+          "action": "pass",
+          "elapsed_seconds": 0.63,
+          "time": "2026-10-21T23:44:20.908108+08:00"
+        },
+        {
+          "line": 33,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/removed_author",
+          "action": "pass",
+          "elapsed_seconds": 0.64,
+          "time": "2026-10-21T23:44:21.543403+08:00"
+        },
+        {
+          "line": 38,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/terminal_issue",
+          "action": "pass",
+          "elapsed_seconds": 0.68,
+          "time": "2026-10-21T23:44:22.222501+08:00"
+        },
+        {
+          "line": 40,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates",
+          "action": "pass",
+          "elapsed_seconds": 5.06,
+          "time": "2026-10-21T23:44:22.222529+08:00"
+        },
+        {
+          "line": 43,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": null,
+          "action": "pass",
+          "elapsed_seconds": 7.035,
+          "time": "2026-10-21T23:44:23.236998+08:00"
+        }
+      ],
+      "acceptance_evidence": true
+    },
+    {
+      "run_id": "mention-admission-adjacent-final-20261021",
+      "command": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^(TestCollaborationMentionCommentAdmissionAcrossExecutionStates|TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked|TestCollaborationCommentSourceMemberAndPlainRepliesStayHumanOnly|TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing|TestCollaborationRuntimeHoldBlocksClaimAndPermit|TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue|TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent|TestLegacyExecutionCannotInheritCollaborationComments)$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "result_artifact": "mention-admission-adjacent-final-20261021-result.json",
+      "result_sha256": "52e53476ee03e143ec1ab59310f45b20829b8093c6c437c4acd1c792aa37748b",
+      "raw_artifact": "mention-admission-adjacent-final-20261021.jsonl",
+      "raw_sha256": "586f0fd5fd06aae1cd3e1aab40b23419fa86308ace139dd95d307cfe1037c334",
+      "metadata": {
+        "environment": {
+          "GOTOOLCHAIN": "go1.26.6",
+          "database_alias": "service_s5",
+          "schema_migration": 737,
+          "provider_execution": false
+        },
+        "source_sha256": {
+          "server/internal/service/collaboration_comments.go": "8bf74c1438f2c7f9446e747317bd1fc212c4fc0af83154074a8017b30898a085",
+          "server/internal/service/collaboration_comments_create.go": "5117be7583614a245a5fd4db2129d47e9c783e55ab2b7ee75ac205c4ef4f2f5d",
+          "server/internal/service/collaboration_mentions.go": "eed8e4fa3ff918223ec2e139ad78b160cd34c8e43a3e26fbc4783eb980d74508",
+          "server/internal/service/collaboration_comments_edit.go": "216af6a930362643b1c3d9da12f65194c3b6946c5fbefe2a762653ac8f016970",
+          "server/internal/service/collaboration_batches.go": "5ce1d33180d1abdd5ff11de3d0890fa0fbc43ba6ffef809c0070528262889409",
+          "server/internal/service/collaboration_authority.go": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+          "server/internal/service/collaboration_control.go": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+          "server/internal/service/collaboration_runtime.go": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+          "server/internal/service/collaboration_runtime_capabilities.go": "aa8bcd7f6be51e9070b015ab301b506f0a2f44920320a7ef5ca0b1ad7d478c15",
+          "server/internal/service/collaboration_workflow.go": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+          "server/internal/service/collaboration_lifecycle.go": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+          "server/internal/service/collaboration_runtime_test.go": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+          "server/internal/service/collaboration_queue_test.go": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+          "server/internal/service/collaboration_control_test.go": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+          "server/internal/service/collaboration_control_managed_test.go": "4e7feaecc081a08eeb982b9e06c487f982a6cb3c7504bec633c2302654ab15a7",
+          "server/internal/service/collaboration_comments_test.go": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576",
+          "server/internal/service/collaboration_hold_test.go": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e",
+          "server/internal/service/collaboration_lifecycle_test.go": "164c27d7f3e34ac838607b73ecb3f02a6c12d7ab19ac685636d0110404d5842f",
+          "server/internal/service/collaboration_mention_admission_states_test.go": "07338b91526b867f32e0fdff2865b2c42d9bc4b8949d8fce03b9f029eede6f57"
+        },
+        "final_source_sha256": {
+          "server/internal/service/collaboration_comments.go": "8bf74c1438f2c7f9446e747317bd1fc212c4fc0af83154074a8017b30898a085",
+          "server/internal/service/collaboration_comments_create.go": "5117be7583614a245a5fd4db2129d47e9c783e55ab2b7ee75ac205c4ef4f2f5d",
+          "server/internal/service/collaboration_mentions.go": "eed8e4fa3ff918223ec2e139ad78b160cd34c8e43a3e26fbc4783eb980d74508",
+          "server/internal/service/collaboration_comments_edit.go": "216af6a930362643b1c3d9da12f65194c3b6946c5fbefe2a762653ac8f016970",
+          "server/internal/service/collaboration_batches.go": "5ce1d33180d1abdd5ff11de3d0890fa0fbc43ba6ffef809c0070528262889409",
+          "server/internal/service/collaboration_authority.go": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+          "server/internal/service/collaboration_control.go": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+          "server/internal/service/collaboration_runtime.go": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+          "server/internal/service/collaboration_runtime_capabilities.go": "aa8bcd7f6be51e9070b015ab301b506f0a2f44920320a7ef5ca0b1ad7d478c15",
+          "server/internal/service/collaboration_workflow.go": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+          "server/internal/service/collaboration_lifecycle.go": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+          "server/internal/service/collaboration_runtime_test.go": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+          "server/internal/service/collaboration_queue_test.go": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+          "server/internal/service/collaboration_control_test.go": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+          "server/internal/service/collaboration_control_managed_test.go": "4e7feaecc081a08eeb982b9e06c487f982a6cb3c7504bec633c2302654ab15a7",
+          "server/internal/service/collaboration_comments_test.go": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576",
+          "server/internal/service/collaboration_hold_test.go": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e",
+          "server/internal/service/collaboration_lifecycle_test.go": "164c27d7f3e34ac838607b73ecb3f02a6c12d7ab19ac685636d0110404d5842f",
+          "server/internal/service/collaboration_mention_admission_states_test.go": "07338b91526b867f32e0fdff2865b2c42d9bc4b8949d8fce03b9f029eede6f57"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 21.736,
+        "started_at": "2026-10-21T15:48:19.063113+00:00",
+        "finished_at": "2026-10-21T15:48:40.799310+00:00"
+      },
+      "events": [
+        {
+          "line": 5,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked",
+          "action": "pass",
+          "elapsed_seconds": 0.3,
+          "time": "2026-10-21T23:48:31.487152+08:00"
+        },
+        {
+          "line": 9,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing",
+          "action": "pass",
+          "elapsed_seconds": 0.25,
+          "time": "2026-10-21T23:48:31.741942+08:00"
+        },
+        {
+          "line": 13,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationCommentSourceMemberAndPlainRepliesStayHumanOnly",
+          "action": "pass",
+          "elapsed_seconds": 0.24,
+          "time": "2026-10-21T23:48:31.979754+08:00"
+        },
+        {
+          "line": 17,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationRuntimeHoldBlocksClaimAndPermit",
+          "action": "pass",
+          "elapsed_seconds": 0.47,
+          "time": "2026-10-21T23:48:32.455214+08:00"
+        },
+        {
+          "line": 23,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue/complete_permitted",
+          "action": "pass",
+          "elapsed_seconds": 0.34,
+          "time": "2026-10-21T23:48:32.792104+08:00"
+        },
+        {
+          "line": 27,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue/cancel_never_permitted",
+          "action": "pass",
+          "elapsed_seconds": 0.34,
+          "time": "2026-10-21T23:48:33.134799+08:00"
+        },
+        {
+          "line": 31,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue/cancel_preserves_first_stop",
+          "action": "pass",
+          "elapsed_seconds": 0.37,
+          "time": "2026-10-21T23:48:33.507301+08:00"
+        },
+        {
+          "line": 33,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue",
+          "action": "pass",
+          "elapsed_seconds": 1.05,
+          "time": "2026-10-21T23:48:33.507364+08:00"
+        },
+        {
+          "line": 40,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/idle",
+          "action": "pass",
+          "elapsed_seconds": 0.65,
+          "time": "2026-10-21T23:48:34.157578+08:00"
+        },
+        {
+          "line": 45,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/busy",
+          "action": "pass",
+          "elapsed_seconds": 0.89,
+          "time": "2026-10-21T23:48:35.044066+08:00"
+        },
+        {
+          "line": 50,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/paused",
+          "action": "pass",
+          "elapsed_seconds": 0.66,
+          "time": "2026-10-21T23:48:35.70493+08:00"
+        },
+        {
+          "line": 55,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/unconfirmed_stop",
+          "action": "pass",
+          "elapsed_seconds": 0.91,
+          "time": "2026-10-21T23:48:36.619844+08:00"
+        },
+        {
+          "line": 60,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/revoked_resource",
+          "action": "pass",
+          "elapsed_seconds": 0.63,
+          "time": "2026-10-21T23:48:37.25392+08:00"
+        },
+        {
+          "line": 65,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/removed_author",
+          "action": "pass",
+          "elapsed_seconds": 0.66,
+          "time": "2026-10-21T23:48:37.909973+08:00"
+        },
+        {
+          "line": 70,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/terminal_issue",
+          "action": "pass",
+          "elapsed_seconds": 0.68,
+          "time": "2026-10-21T23:48:38.587152+08:00"
+        },
+        {
+          "line": 72,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates",
+          "action": "pass",
+          "elapsed_seconds": 5.08,
+          "time": "2026-10-21T23:48:38.587171+08:00"
+        },
+        {
+          "line": 76,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent",
+          "action": "pass",
+          "elapsed_seconds": 0.53,
+          "time": "2026-10-21T23:48:39.113967+08:00"
+        },
+        {
+          "line": 82,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestLegacyExecutionCannotInheritCollaborationComments/service_trigger",
+          "action": "pass",
+          "elapsed_seconds": 0.11,
+          "time": "2026-10-21T23:48:39.22544+08:00"
+        },
+        {
+          "line": 86,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestLegacyExecutionCannotInheritCollaborationComments/service_coalesced",
+          "action": "pass",
+          "elapsed_seconds": 0.11,
+          "time": "2026-10-21T23:48:39.334762+08:00"
+        },
+        {
+          "line": 90,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestLegacyExecutionCannotInheritCollaborationComments/sql_trigger",
+          "action": "pass",
+          "elapsed_seconds": 0.13,
+          "time": "2026-10-21T23:48:39.46187+08:00"
+        },
+        {
+          "line": 94,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestLegacyExecutionCannotInheritCollaborationComments/sql_coalesced",
+          "action": "pass",
+          "elapsed_seconds": 0.13,
+          "time": "2026-10-21T23:48:39.58982+08:00"
+        },
+        {
+          "line": 98,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestLegacyExecutionCannotInheritCollaborationComments/claim",
+          "action": "pass",
+          "elapsed_seconds": 0.15,
+          "time": "2026-10-21T23:48:39.740819+08:00"
+        },
+        {
+          "line": 100,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestLegacyExecutionCannotInheritCollaborationComments",
+          "action": "pass",
+          "elapsed_seconds": 0.63,
+          "time": "2026-10-21T23:48:39.740839+08:00"
+        },
+        {
+          "line": 103,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": null,
+          "action": "pass",
+          "elapsed_seconds": 10.529,
+          "time": "2026-10-21T23:48:40.756721+08:00"
+        }
+      ],
+      "acceptance_evidence": true
+    },
+    {
+      "run_id": "mention-admission-isolated-head-race",
+      "command": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^TestCollaborationMentionCommentAdmissionAcrossExecutionStates$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "cwd": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-mention-admission-head-numyfmnm/server",
+      "result_artifact": "mention-admission-isolated-head-race-result.json",
+      "result_sha256": "5159dea8cfbe01dfa84c5ce37e57521714d588bbead94a567a0861f7dde1cdac",
+      "raw_artifact": "mention-admission-isolated-head-race.jsonl",
+      "raw_sha256": "54ae94bb8c2de128843f6120ebf77af23dd0c9e864fa4a1d1f250c8ebf144ab7",
+      "metadata": {
+        "returncode": 0,
+        "elapsed_s": 21.194,
+        "start": "2026-10-21T16:12:19.632190+00:00",
+        "end": "2026-10-21T16:12:40.826047+00:00",
+        "head": "7794f57d969fb583ddf02c830f6d1ab72186595d",
+        "only_added_source": "server/internal/service/collaboration_mention_admission_states_test.go",
+        "no_shared_dirty_source": true,
+        "sha256": "07338b91526b867f32e0fdff2865b2c42d9bc4b8949d8fce03b9f029eede6f57"
+      },
+      "events": [
+        {
+          "line": 8,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/idle",
+          "action": "pass",
+          "elapsed_seconds": 0.66,
+          "time": "2026-10-22T00:12:35.613315+08:00"
+        },
+        {
+          "line": 13,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/busy",
+          "action": "pass",
+          "elapsed_seconds": 0.81,
+          "time": "2026-10-22T00:12:36.423666+08:00"
+        },
+        {
+          "line": 18,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/paused",
+          "action": "pass",
+          "elapsed_seconds": 0.63,
+          "time": "2026-10-22T00:12:37.057865+08:00"
+        },
+        {
+          "line": 23,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/unconfirmed_stop",
+          "action": "pass",
+          "elapsed_seconds": 0.88,
+          "time": "2026-10-22T00:12:37.941587+08:00"
+        },
+        {
+          "line": 28,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/revoked_resource",
+          "action": "pass",
+          "elapsed_seconds": 0.6,
+          "time": "2026-10-22T00:12:38.538513+08:00"
+        },
+        {
+          "line": 33,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/removed_author",
+          "action": "pass",
+          "elapsed_seconds": 0.64,
+          "time": "2026-10-22T00:12:39.183513+08:00"
+        },
+        {
+          "line": 38,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/terminal_issue",
+          "action": "pass",
+          "elapsed_seconds": 0.59,
+          "time": "2026-10-22T00:12:39.775819+08:00"
+        },
+        {
+          "line": 40,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates",
+          "action": "pass",
+          "elapsed_seconds": 4.82,
+          "time": "2026-10-22T00:12:39.775837+08:00"
+        },
+        {
+          "line": 43,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": null,
+          "action": "pass",
+          "elapsed_seconds": 6.789,
+          "time": "2026-10-22T00:12:40.780223+08:00"
+        }
+      ],
+      "acceptance_evidence": true
+    },
+    {
+      "run_id": "mention-admission-coordinator-final-20261022",
+      "command": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^(TestCollaborationMentionCommentAdmissionAcrossExecutionStates|TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked|TestCollaborationCommentSourceMemberAndPlainRepliesStayHumanOnly|TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing|TestCollaborationRuntimeHoldBlocksClaimAndPermit|TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue|TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent|TestLegacyExecutionCannotInheritCollaborationComments)$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "result_artifact": "mention-admission-coordinator-final-20261022-result.json",
+      "result_sha256": "28ce8a34dbb2e7b5ecc63257ce1d092e9d27d770e0c51065eb863264fc430808",
+      "raw_artifact": "mention-admission-coordinator-final-20261022.jsonl",
+      "raw_sha256": "0f662a842e70e3c2eb02b4e19a20d6bbd4f65e1503d129ec744988a03c57e92c",
+      "metadata": {
+        "source_sha256": "07338b91526b867f32e0fdff2865b2c42d9bc4b8949d8fce03b9f029eede6f57",
+        "returncode": 0,
+        "elapsed_s": 14.86,
+        "start": "2026-10-21T16:21:25.473485+00:00",
+        "end": "2026-10-21T16:21:40.334536+00:00"
+      },
+      "events": [
+        {
+          "line": 5,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked",
+          "action": "pass",
+          "elapsed_seconds": 0.31,
+          "time": "2026-10-22T00:21:31.22386+08:00"
+        },
+        {
+          "line": 9,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing",
+          "action": "pass",
+          "elapsed_seconds": 0.26,
+          "time": "2026-10-22T00:21:31.486173+08:00"
+        },
+        {
+          "line": 13,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationCommentSourceMemberAndPlainRepliesStayHumanOnly",
+          "action": "pass",
+          "elapsed_seconds": 0.21,
+          "time": "2026-10-22T00:21:31.695506+08:00"
+        },
+        {
+          "line": 17,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationRuntimeHoldBlocksClaimAndPermit",
+          "action": "pass",
+          "elapsed_seconds": 0.5,
+          "time": "2026-10-22T00:21:32.194697+08:00"
+        },
+        {
+          "line": 23,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue/complete_permitted",
+          "action": "pass",
+          "elapsed_seconds": 0.37,
+          "time": "2026-10-22T00:21:32.567763+08:00"
+        },
+        {
+          "line": 27,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue/cancel_never_permitted",
+          "action": "pass",
+          "elapsed_seconds": 0.33,
+          "time": "2026-10-22T00:21:32.901932+08:00"
+        },
+        {
+          "line": 31,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue/cancel_preserves_first_stop",
+          "action": "pass",
+          "elapsed_seconds": 0.34,
+          "time": "2026-10-22T00:21:33.244322+08:00"
+        },
+        {
+          "line": 33,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue",
+          "action": "pass",
+          "elapsed_seconds": 1.05,
+          "time": "2026-10-22T00:21:33.244362+08:00"
+        },
+        {
+          "line": 40,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/idle",
+          "action": "pass",
+          "elapsed_seconds": 0.61,
+          "time": "2026-10-22T00:21:33.857641+08:00"
+        },
+        {
+          "line": 45,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/busy",
+          "action": "pass",
+          "elapsed_seconds": 0.84,
+          "time": "2026-10-22T00:21:34.699133+08:00"
+        },
+        {
+          "line": 50,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/paused",
+          "action": "pass",
+          "elapsed_seconds": 0.65,
+          "time": "2026-10-22T00:21:35.347486+08:00"
+        },
+        {
+          "line": 55,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/unconfirmed_stop",
+          "action": "pass",
+          "elapsed_seconds": 0.84,
+          "time": "2026-10-22T00:21:36.192267+08:00"
+        },
+        {
+          "line": 60,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/revoked_resource",
+          "action": "pass",
+          "elapsed_seconds": 0.62,
+          "time": "2026-10-22T00:21:36.808682+08:00"
+        },
+        {
+          "line": 65,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/removed_author",
+          "action": "pass",
+          "elapsed_seconds": 0.67,
+          "time": "2026-10-22T00:21:37.483767+08:00"
+        },
+        {
+          "line": 70,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/terminal_issue",
+          "action": "pass",
+          "elapsed_seconds": 0.64,
+          "time": "2026-10-22T00:21:38.123333+08:00"
+        },
+        {
+          "line": 72,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationMentionCommentAdmissionAcrossExecutionStates",
+          "action": "pass",
+          "elapsed_seconds": 4.88,
+          "time": "2026-10-22T00:21:38.123353+08:00"
+        },
+        {
+          "line": 76,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent",
+          "action": "pass",
+          "elapsed_seconds": 0.5,
+          "time": "2026-10-22T00:21:38.627111+08:00"
+        },
+        {
+          "line": 82,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestLegacyExecutionCannotInheritCollaborationComments/service_trigger",
+          "action": "pass",
+          "elapsed_seconds": 0.11,
+          "time": "2026-10-22T00:21:38.735923+08:00"
+        },
+        {
+          "line": 86,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestLegacyExecutionCannotInheritCollaborationComments/service_coalesced",
+          "action": "pass",
+          "elapsed_seconds": 0.11,
+          "time": "2026-10-22T00:21:38.843249+08:00"
+        },
+        {
+          "line": 90,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestLegacyExecutionCannotInheritCollaborationComments/sql_trigger",
+          "action": "pass",
+          "elapsed_seconds": 0.14,
+          "time": "2026-10-22T00:21:38.984612+08:00"
+        },
+        {
+          "line": 94,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestLegacyExecutionCannotInheritCollaborationComments/sql_coalesced",
+          "action": "pass",
+          "elapsed_seconds": 0.13,
+          "time": "2026-10-22T00:21:39.119373+08:00"
+        },
+        {
+          "line": 98,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestLegacyExecutionCannotInheritCollaborationComments/claim",
+          "action": "pass",
+          "elapsed_seconds": 0.15,
+          "time": "2026-10-22T00:21:39.264827+08:00"
+        },
+        {
+          "line": 100,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestLegacyExecutionCannotInheritCollaborationComments",
+          "action": "pass",
+          "elapsed_seconds": 0.64,
+          "time": "2026-10-22T00:21:39.264848+08:00"
+        },
+        {
+          "line": 103,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": null,
+          "action": "pass",
+          "elapsed_seconds": 10.321,
+          "time": "2026-10-22T00:21:40.279724+08:00"
+        }
+      ],
+      "acceptance_evidence": true
+    }
+  ],
+  "protected_sources": {
+    "server/internal/service/collaboration_comments.go": {
+      "sha256": "8bf74c1438f2c7f9446e747317bd1fc212c4fc0af83154074a8017b30898a085",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_comments_create.go": {
+      "sha256": "5117be7583614a245a5fd4db2129d47e9c783e55ab2b7ee75ac205c4ef4f2f5d",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_mentions.go": {
+      "sha256": "eed8e4fa3ff918223ec2e139ad78b160cd34c8e43a3e26fbc4783eb980d74508",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_comments_edit.go": {
+      "sha256": "216af6a930362643b1c3d9da12f65194c3b6946c5fbefe2a762653ac8f016970",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_batches.go": {
+      "sha256": "5ce1d33180d1abdd5ff11de3d0890fa0fbc43ba6ffef809c0070528262889409",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_authority.go": {
+      "sha256": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_control.go": {
+      "sha256": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_runtime.go": {
+      "sha256": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_runtime_capabilities.go": {
+      "sha256": "aa8bcd7f6be51e9070b015ab301b506f0a2f44920320a7ef5ca0b1ad7d478c15",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_workflow.go": {
+      "sha256": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_lifecycle.go": {
+      "sha256": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_runtime_test.go": {
+      "sha256": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_queue_test.go": {
+      "sha256": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_control_test.go": {
+      "sha256": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_control_managed_test.go": {
+      "sha256": "4e7feaecc081a08eeb982b9e06c487f982a6cb3c7504bec633c2302654ab15a7",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_comments_test.go": {
+      "sha256": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_hold_test.go": {
+      "sha256": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_lifecycle_test.go": {
+      "sha256": "164c27d7f3e34ac838607b73ecb3f02a6c12d7ab19ac685636d0110404d5842f",
+      "matches_baseline": true
+    }
+  },
+  "assertion_review": {
+    "direct_trigger": "Each setup and tested typed input uses CreateComment, not SubmitCommand; target is actual managed RegisterTarget/Consent fixture resource.",
+    "waiting_vs_start": "Waiting command/group-null receipt and exact event/author/body/target/channel/batch persisted row are compared before real service Claim; Claim checks frozen body and consumer run; actual persisted Permit attempt follows. This is service admission, not OS process start.",
+    "inert_paths": "Every scenario executes plain comment, unresolved-name reply and typed edit and compares full execution/commands; canonical parent reply is agent-authored.",
+    "no_ordinary_fallback": "All new comments dispatch_eligible=false, no ordinary task rows; canonical actual ordinary enqueue/coalescing/SQL/claim negatives pass.",
+    "old_inputs": "Previously cancelled comment command remains cancelled_by_participant; new trigger cannot rewrite old commands; stopped input stays stopped after fresh follow-up Resume; removed/terminal waiting cancellation reasons remain exact.",
+    "snapshot_scope": "controlStateSnapshot includes session/channels/targets/commands/groups/runs/grants/delegations/terminations/capabilities/attempts/reservations. Human events and session.event_seq excluded; valid append additionally excludes command rows and allocation counters, but caller separately checks every old command and exact new command. Inert/refused paths additionally snapshot full batches.",
+    "synthetic_proofs": "managedProof constructed service protocol exited_proven input; no provider/kernel process, containment or actual OS termination assertion."
+  },
+  "first_failure_assessment": [
+    {
+      "artifact": "mention-admission-focused-first-20261021.jsonl",
+      "result": "All cases failed on test query consuming_root_run_id absent from schema; corrected only new test to consuming_run_id. Not final passing evidence."
+    },
+    {
+      "artifact": "mention-admission-focused-schema-fixed-20261021.jsonl",
+      "result": "Only busy case plus parent failed because test expected empty candidate list. Actual original permitted run is recoverable; corrected new assertion requires exact original run, one run row and waiting new input. No production repair or barrier relaxation."
+    }
+  ],
+  "verification": {
+    "gofmt": "Reviewer ran gofmt -d on exact source, exit0 empty output.",
+    "vet": "Inspected exact-source mention-admission-static-final-20261021-result.json; go vet -p1 ./internal/service exit0, empty diagnostics.",
+    "go_typecheck": "Actual focused/adjacent/HEAD-only/fresh final -race package compilation passes.",
+    "tests": "Final current race 8 top-level /23 test pass events, no failure/skip; isolated HEAD one new identity/all seven states passes, no failure/skip.",
+    "reviewer_db_browser_build_runtime_commands": false
+  },
+  "standalone_commit": {
+    "head": "7794f57d969fb583ddf02c830f6d1ab72186595d",
+    "only_added_source": "server/internal/service/collaboration_mention_admission_states_test.go",
+    "isolated_source_manifest": "mention-admission-isolated-head-source.json",
+    "isolated_source_manifest_sha256": "7deb651e2583a0202489b522163593cc47a1c50dfbb1a15f7d0c361b46fad35b",
+    "no_dirty_product_dependency": true,
+    "environment": "Task-owned service_s5 schema737; Go1.26.6 darwin/arm64; guarded synthetic managed resource/permits/proofs.",
+    "lore_bound": "Commit new test and scoped evidence/spec only. Paid provider, natural kernel process/proof, other OS, packaged Main and new browser UI are Not-tested."
+  },
+  "limits": [
+    "P5 canonical trigger/service proof does not establish new UI or Web/Electron native behavior.",
+    "Permits/admission are real persisted service writes; outcome/proof payloads are synthetic.",
+    "Linux containment claim in test input is not actual Linux kernel execution; Go runs are darwin/arm64.",
+    "No actual provider account/quota, full Main/installer, unsupported OS or production rollout.",
+    "No matrix/catalog/progress/spec/index/task/archive change made by reviewer."
+  ]
+}

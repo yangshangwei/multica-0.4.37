@@ -404,6 +404,17 @@ epoch into the common queue transaction before deciding whether input can return
 
 ## Current paused-input and per-issue consent regression evidence
 
+`TestCollaborationMentionCommentAdmissionAcrossExecutionStates` enters through
+actual typed `@` CreateComment for idle, busy, paused, unconfirmed Stop, revoked
+resource, removed author and terminal issue. Saved waiting input is distinct
+from the later exact managed-daemon Claim/Permit; busy polling may return the
+original recoverable run but cannot start its new waiting batch. Plain comments,
+replies and typed edits never alter frozen execution input. Current author and
+resource denial preserve barriers, prior cancelled/stopped commands and their
+original receipts. A proof arrival does not Resume or turn an old refused key
+into intent. Service outcomes/proofs are synthetic; natural provider/kernel
+execution remains separate evidence.
+
 `TestCollaborationPausedFollowupRequiresProofFreshResumeAndNeverRetriesStoppedInput`
 starts and permits input1, stops its target, and only then submits inputs2/3.
 Poll/read/reconnect-shaped operations keep them waiting through original proof;
