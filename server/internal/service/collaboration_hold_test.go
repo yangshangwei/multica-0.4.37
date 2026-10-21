@@ -1,10 +1,12 @@
 package service
 
 import (
+	"errors"
 	"reflect"
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/collaboration"
 	"github.com/multica-ai/multica/server/internal/testutil"
@@ -420,13 +422,20 @@ func TestCollaborationPromoteHoldRequiredWritesRollback(t *testing.T) {
 			f.resumeManaged(t)
 			f.fx.Exec(t, `UPDATE agent SET instructions='changed before hold fault' WHERE id=$1`, f.grant.AgentID)
 			before := controlStateSnapshot(t, f.collaborationQueueFixture)
+			var commitFault *runtimeScanFaultStarter
 			if failure == "commit" {
-				f.svc.TxStarter = &queueFaultStarter{TxStarter: f.pool, commitFailure: true}
+				commitFault = &runtimeScanFaultStarter{TxStarter: f.pool, commitQuery: "SetCollaborationTargetHold",
+					commitError: errors.New("injected hold commit failure"), rejectCommit: true}
+				f.svc.TxStarter = commitFault
 			} else {
 				f.svc.TxStarter = workflowFaultStarter{TxStarter: f.pool, needle: failure}
 			}
-			if _, err := f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID); err == nil || before != controlStateSnapshot(t, f.collaborationQueueFixture) {
+			_, err := f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID)
+			if err == nil || before != controlStateSnapshot(t, f.collaborationQueueFixture) {
 				t.Fatalf("required hold %s failure was hidden or left partial state: %v", failure, err)
+			}
+			if commitFault != nil && (!errors.Is(err, commitFault.commitError) || commitFault.rejectedCommits != 1 || commitFault.lostCommits != 0) {
+				t.Fatalf("required hold commit fault missed or repeated its business transaction: %v rejected=%d committed=%d", err, commitFault.rejectedCommits, commitFault.lostCommits)
 			}
 		})
 	}
@@ -434,17 +443,39 @@ func TestCollaborationPromoteHoldRequiredWritesRollback(t *testing.T) {
 
 func TestCollaborationPromoteHoldUnknownCommitIsNotRetried(t *testing.T) {
 	f := newManagedCollaborationFixture(t)
-	f.submitManaged(t, f.handler, "unknown hold commit must not repeat its audit")
+	input := f.submitManaged(t, f.handler, "unknown hold commit must not repeat its audit")
 	f.resumeManaged(t)
 	f.fx.Exec(t, `UPDATE agent SET instructions='changed before uncertain commit' WHERE id=$1`, f.grant.AgentID)
-	fault := &queueFaultStarter{TxStarter: f.pool, lostCommit: true}
+	before := queueTarget(t, f.collaborationQueueFixture, f.targetID)
+	beforeChannel := holdChannelSnapshot(t, f, before.ChannelID)
+	// Scan cursors commit before promotion; lose the reply only after the
+	// transaction that writes the discovered hold has actually committed.
+	lost := &pgconn.PgError{Code: "40001", Message: "injected unknown commit reply"}
+	fault := &runtimeScanFaultStarter{TxStarter: f.pool, commitQuery: "SetCollaborationTargetHold", commitError: lost}
 	f.svc.TxStarter = fault
-	if _, err := f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID); err == nil || fault.begins.Load() != 1 {
-		t.Fatalf("uncertain promotion hold commit was retried or reported successful: %v", err)
+	runs, err := f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID)
+	if !errors.Is(err, lost) || len(runs.RunIDs) != 0 || fault.lostCommits != 1 {
+		t.Fatalf("uncertain promotion hold commit was retried or reported successful: %+v %v commits=%d", runs, err, fault.lostCommits)
+	}
+	after := queueTarget(t, f.collaborationQueueFixture, f.targetID)
+	if !after.HoldReason.Valid || after.HoldReason.String != "config_invalid" || after.HoldVersion != before.HoldVersion+1 ||
+		beforeChannel != holdChannelSnapshot(t, f, before.ChannelID) {
+		t.Fatalf("unknown commit did not persist exactly the discovered target hold: before=%+v after=%+v", before, after)
+	}
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='waiting' AND group_id IS NULL`, input.CommandID) != 1 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_execution_group WHERE session_id=$1`, f.issue.SessionID) != 0 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE session_id=$1`, f.issue.SessionID) != 0 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_runtime_reservation WHERE runtime_id=$1`, f.runtime.ID) != 0 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_event WHERE issue_id=$1 AND kind='target_hold_changed'`, f.issue.Issue.ID) != 1 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_event WHERE issue_id=$1 AND kind='target_hold_changed'
+			AND actor_user_id IS NULL AND payload->>'target_id'=$2 AND payload->>'code'='target_configuration_changed'
+			AND payload->'target_holds'->0->>'hold_reason'='config_invalid'
+			AND (payload->'target_holds'->0->>'hold_version')::bigint=$3`, f.issue.Issue.ID, util.UUIDToString(f.targetID), after.HoldVersion) != 1 {
+		t.Fatal("unknown hold commit consumed input, created execution, or lost its exact system audit")
 	}
 	f.svc.TxStarter = f.pool
 	state := controlStateSnapshot(t, f.collaborationQueueFixture)
-	runs, err := f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID)
+	runs, err = f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID)
 	if err != nil || len(runs.RunIDs) != 0 || state != controlStateSnapshot(t, f.collaborationQueueFixture) ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_event WHERE issue_id=$1 AND kind='target_hold_changed'`, f.issue.Issue.ID) != 1 {
 		t.Fatalf("uncertain hold commit recovery repeated mutation or launched input: %+v %v", runs, err)
