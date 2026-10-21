@@ -1,0 +1,35 @@
+{
+  "checked_at": "2026-10-21T13:24:16.856332+00:00",
+  "new_source_sha256": "389bd237027d1545ab12701e973f12b5fca699c66057fdf62bae5bb88cf1b879",
+  "existing_product_helpers_unchanged": {
+    "server/internal/handler/collaboration_boundary_test.go": true,
+    "server/internal/handler/collaboration_attachments_test.go": true,
+    "server/internal/handler/collaboration_authority.go": true,
+    "server/internal/handler/collaboration_comments_test.go": true,
+    "server/internal/handler/workspace.go": true,
+    "server/internal/handler/workspace_test.go": true
+  },
+  "preserved_original_expanded_boundary": true,
+  "race_returncode": 0,
+  "top_level_pass_count": 3,
+  "pass_events": 6,
+  "fail": [],
+  "skip": [],
+  "source_unchanged_during_race": true,
+  "package_elapsed_s": 2.902,
+  "vet_returncode": 0,
+  "gofmt": {
+    "command": [
+      "gofmt",
+      "-d",
+      "server/internal/handler/collaboration_workspace_preservation_test.go"
+    ],
+    "returncode": 0,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  "trailing_whitespace": [],
+  "references_untracked_offer_handlers_or_table": false,
+  "scope": "new standalone test, appendix and ac63-standalone evidence only",
+  "isolated_head_verification": "root owned"
+}

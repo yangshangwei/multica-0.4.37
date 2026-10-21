@@ -1,0 +1,37 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/handler",
+    "-run",
+    "^(TestCollaborationWorkspaceDeletionPreservesPrivateAttachmentsAndPermissions|TestDeleteWorkspace_OwnerSucceeds|TestDeleteWorkspace_PreservesOtherWorkspaceData)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/tmp/multica-gap-recovery-20261021-h6phxwo9/ac63-preservation-head-q_v6fi9p/server",
+  "head": "1918a41b9935e90b545a3c741b41dd28391f216a",
+  "only_added_source": "server/internal/handler/collaboration_workspace_preservation_test.go",
+  "duration_s": 36.71636862499872,
+  "returncode": 0,
+  "passed": [
+    "TestCollaborationWorkspaceDeletionPreservesPrivateAttachmentsAndPermissions/todo",
+    "TestCollaborationWorkspaceDeletionPreservesPrivateAttachmentsAndPermissions/done",
+    "TestCollaborationWorkspaceDeletionPreservesPrivateAttachmentsAndPermissions/cancelled",
+    "TestCollaborationWorkspaceDeletionPreservesPrivateAttachmentsAndPermissions",
+    "TestDeleteWorkspace_OwnerSucceeds",
+    "TestDeleteWorkspace_PreservesOtherWorkspaceData"
+  ],
+  "failed": [],
+  "skipped": []
+}

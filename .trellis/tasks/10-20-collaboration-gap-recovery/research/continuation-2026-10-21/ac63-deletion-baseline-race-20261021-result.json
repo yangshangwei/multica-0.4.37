@@ -1,0 +1,56 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/handler",
+    "-run",
+    "^(TestWorkspaceWithCollaborationHistoryCannotBeDeleted|TestDeleteWorkspace_OwnerSucceeds|TestDeleteWorkspace_PreservesOtherWorkspaceData)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "environment": {
+    "GOTOOLCHAIN": "go1.26.6",
+    "database_alias": "service_s5",
+    "schema_expected_through": 737,
+    "real_provider_access": false
+  },
+  "started_at": "2026-10-21T08:56:19.706120+00:00",
+  "source_sha256": {
+    "server/internal/handler/collaboration_boundary_test.go": "c34b1929285db1c68d9a96b6544128a3485e7e45015f0c7d5692fb8a5abbddf0",
+    "server/internal/handler/workspace_test.go": "b281eed61c6e0430d14a3dfb03a1a262b529a6bd99b427c5d8efe26dae28130a",
+    "server/internal/handler/workspace.go": "f3ff75784b9dfb0648ffac9277a5d2e24867efa4b841094293fe7ff33b3f37d7"
+  },
+  "finished_at": "2026-10-21T08:56:51.161701+00:00",
+  "elapsed_seconds": 31.452,
+  "returncode": 0,
+  "test_passes": [
+    "TestWorkspaceWithCollaborationHistoryCannotBeDeleted/todo",
+    "TestWorkspaceWithCollaborationHistoryCannotBeDeleted/done",
+    "TestWorkspaceWithCollaborationHistoryCannotBeDeleted/cancelled",
+    "TestWorkspaceWithCollaborationHistoryCannotBeDeleted",
+    "TestDeleteWorkspace_OwnerSucceeds",
+    "TestDeleteWorkspace_PreservesOtherWorkspaceData"
+  ],
+  "test_failures": [],
+  "test_skips": [],
+  "top_level_pass_count": 3,
+  "package_results": [
+    {
+      "Action": "pass",
+      "Package": "github.com/multica-ai/multica/server/internal/handler",
+      "Elapsed": 2.733
+    }
+  ]
+}

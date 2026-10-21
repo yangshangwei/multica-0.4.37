@@ -509,3 +509,21 @@ in the HTTP preview after a service has projected private source content.
 Correct: recheck the recipient inside the writer's locked transaction; reject
 the resolved source inside `BuildSourceIssueSnapshot` before projection, and map
 the bounded error consistently at every HTTP caller.
+
+## Source deletion refusal preserves actual relations
+
+`TestCollaborationWorkspaceDeletionPreservesPrivateAttachmentsAndPermissions`
+builds real source ownership, independent external participation and private
+execution ownership, registers an existing target and obtains owner consent,
+and delivers an encrypted private file through the collaboration comment API.
+For todo/done/cancelled history, DeleteWorkspace must return409
+`workspace_has_collaboration_records` before any teardown. The14 nonempty
+account/member/participant/fence/target/grant/enrollment/resource/attachment/
+reference/comment/event/operation arrays and source/execution/issue/session rows
+remain identical, and both independent viewers still read exact blob bytes.
+Ordinary owner deletion and other-workspace retention must stay green.
+A missing file or empty permissions fixture is insufficient preservation proof.
+Direct Register/Consent uses the existing contract so this regression can land
+independently of newer resource offer workflows; the offer-path integration test
+remains separately retained. Local encrypted storage is real test storage,
+not proof of external S3 behavior.

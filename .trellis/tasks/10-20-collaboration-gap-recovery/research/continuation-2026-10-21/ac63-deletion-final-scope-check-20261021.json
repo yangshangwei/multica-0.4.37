@@ -1,0 +1,62 @@
+{
+  "timestamp": "2026-10-21T09:23:12.053049+00:00",
+  "outside_function_unchanged": true,
+  "baseline_source_sha256": "c34b1929285db1c68d9a96b6544128a3485e7e45015f0c7d5692fb8a5abbddf0",
+  "final_source_sha256": "6d5f6b6b7b111009d653b974a619b17c7315487bbaf0d143ba9daffadea15ebd",
+  "out_of_scope_sha256": "1bd70f71860656a85a2aec2c4e85da52fae2069abca4b923a670580d096756b2",
+  "gofmt": {
+    "command": [
+      "gofmt",
+      "-d",
+      "server/internal/handler/collaboration_boundary_test.go"
+    ],
+    "returncode": 0,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  "trailing_whitespace": [],
+  "test_results": {
+    "ac63-deletion-baseline-race-20261021-result.json": {
+      "returncode": 0,
+      "top_level_pass_count": 3,
+      "test_passes": [
+        "TestWorkspaceWithCollaborationHistoryCannotBeDeleted/todo",
+        "TestWorkspaceWithCollaborationHistoryCannotBeDeleted/done",
+        "TestWorkspaceWithCollaborationHistoryCannotBeDeleted/cancelled",
+        "TestWorkspaceWithCollaborationHistoryCannotBeDeleted",
+        "TestDeleteWorkspace_OwnerSucceeds",
+        "TestDeleteWorkspace_PreservesOtherWorkspaceData"
+      ],
+      "package_results": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Elapsed": 2.733
+        }
+      ]
+    },
+    "ac63-deletion-expanded-race-first-20261021-result.json": {
+      "returncode": 0,
+      "top_level_pass_count": 3,
+      "test_passes": [
+        "TestWorkspaceWithCollaborationHistoryCannotBeDeleted/todo",
+        "TestWorkspaceWithCollaborationHistoryCannotBeDeleted/done",
+        "TestWorkspaceWithCollaborationHistoryCannotBeDeleted/cancelled",
+        "TestWorkspaceWithCollaborationHistoryCannotBeDeleted",
+        "TestDeleteWorkspace_OwnerSucceeds",
+        "TestDeleteWorkspace_PreservesOtherWorkspaceData"
+      ],
+      "package_results": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Elapsed": 2.956
+        }
+      ]
+    }
+  },
+  "vet_returncode": 0,
+  "source_unchanged_during_expanded_race": true,
+  "test_only_change": true,
+  "new_product_dependencies": 0
+}
