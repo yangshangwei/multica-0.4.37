@@ -1,0 +1,32 @@
+{
+  "at": "2026-10-21T23:52:10.916075+00:00",
+  "head_before": "8298157751aa6ca5ed4d9635175cdbf66dc50fa5",
+  "owned_commit_paths": [
+    "server/internal/service/collaboration_authority.go",
+    "server/internal/service/collaboration_resource_owner_identity_test.go",
+    ".trellis/spec/server/collaboration-targets.md",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-resource-identity-red-current-20261022-command.json",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-resource-identity-red-current-20261022-result.json",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-resource-identity-red-current-20261022.jsonl",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-resource-identity-red-current-20261022.stderr",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-isolated-head-source.json",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-isolated-head-command.json",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-isolated-head-result.json",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-isolated-head.jsonl",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-isolated-head.stderr",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-vet-command.json",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-vet-result.json",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-vet.stdout",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-vet.stderr",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-final-review.md",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-final-review.json"
+  ],
+  "source_sha256": {
+    "server/internal/service/collaboration_authority.go": "11842f553fe4ae1aefc0b44e3381fb86b28b7f5369545d0dd68aa30f433d493b",
+    "server/internal/service/collaboration_resource_owner_identity_test.go": "0150c893b834cde047a48a01ef97a8595cadb8c343e44aedf1ad5b8b5e6ea6fc",
+    ".trellis/spec/server/collaboration-targets.md": "5f9b9c95d08dd650d501eb359f5fe8add204b1e848f0b91541399b70afaae848"
+  },
+  "verified_isolated_head": true,
+  "review_decision": "approve_bounded_fix",
+  "full_acceptance_complete": false
+}

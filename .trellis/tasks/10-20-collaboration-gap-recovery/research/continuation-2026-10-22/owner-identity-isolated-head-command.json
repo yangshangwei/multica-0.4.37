@@ -1,0 +1,41 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s6_commit",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-gap-resume-20261022-zkx9kfqv/owner-isolated-head/server",
+  "database_alias": "service_s6_commit",
+  "started_at": "2026-10-21T23:45:40.820693+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_authority.go": "11842f553fe4ae1aefc0b44e3381fb86b28b7f5369545d0dd68aa30f433d493b",
+    "server/internal/service/collaboration_resource_owner_identity_test.go": "0150c893b834cde047a48a01ef97a8595cadb8c343e44aedf1ad5b8b5e6ea6fc"
+  },
+  "real_provider_account_access": false,
+  "production_gate_change": false,
+  "exit_code": 0,
+  "elapsed_s": 20.456,
+  "finished_at": "2026-10-21T23:46:01.276871+00:00",
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-isolated-head.jsonl",
+  "stdout_sha256": "df3d55e644a9d450498106bea4a64e91cd244209b8b89ffd33820321bd295253",
+  "source_changed_during_run": [],
+  "passed_top_level": 1,
+  "passed_including_subtests": 53,
+  "failed": [],
+  "skipped": []
+}

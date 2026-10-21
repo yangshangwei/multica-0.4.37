@@ -123,6 +123,25 @@ Linux runtime, an authorized direct/squad role and actual resource capacity.
 Legacy enrollment and squad storage alone are not permission to launch. Ordinary
 agent/PAT/plugin paths cannot obtain collaboration business or proof authority.
 
+`collaborationIdentityCurrent(ctx, q, resource, identity)` validates the stored
+resource owner independently of the current caller. After matching runtime,
+owner, workspace, installation and binding generations, derive a child context
+with the stored owner's `auth.PasswordSession` before `CheckPasswordVersion`.
+That check also validates the same managed binding, installation, organization
+and membership. A squad leader's daemon context must not make another member's
+valid resource appear `config_invalid`; it also cannot authorize that member's
+Claim or Permit. Public caller authentication remains a separate prerequisite.
+The child inherits cancellation/deadline and never overwrites the caller context.
+
+Missing/disabled owners, absent/stale passwords, missing/revoked bindings,
+retired installations and lost membership are ineligible. Database failures and
+request cancellation remain errors, not durable resource refusals. The canonical
+`TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller`
+checks same-owner daemon, different valid daemon and human callers, observes the
+actual password-query child context, and proves foreign/stale callers cannot
+claim the owner's retained input. These database tests do not prove provider
+execution or kernel containment.
+
 The shared runtime DTO remains protocol **2**, independently of the UI execution
 projection's protocol **5**. `CollaborationRunIdentity` binds deployment,
 installation, issue/session, target/channel/batch/group, run/fence, claim

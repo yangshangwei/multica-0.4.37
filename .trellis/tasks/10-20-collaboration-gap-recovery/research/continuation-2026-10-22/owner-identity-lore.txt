@@ -1,0 +1,20 @@
+fix(collaboration): let verified squad owners keep independent authority
+
+A leader daemon's password context was reused while validating another
+resource owner's stored binding. Valid mixed-owner squads became ineligible
+even though the owner's grant and runtime identity remained current.
+
+Validate that stored owner in a child context that preserves cancellation and
+deadline, while public Claim and Permit continue to authenticate their caller.
+Reuse CheckPasswordVersion's existing managed-binding check rather than
+checking the same binding twice. Keep generic auth and enrolled identity intact.
+
+Constraint: Owner resource validity must not confer daemon caller rights
+Rejected: Remove binding checks or use a background context | loses authority or cancellation fences
+Confidence: high
+Scope-risk: narrow
+Reversibility: clean
+Directive: Preserve owner-versus-caller separation and original request cancellation when validating squad grants
+Tested: Failure-first mixed-owner rejection; exact HEAD plus two sources race 1/53 without skips; service handoff race 112/406; service/auth vet; independent review
+Not-tested: Real provider accounts, installed full Main, other-OS containment and production rollout
+Co-authored-by: OmX <omx@oh-my-codex.dev>
