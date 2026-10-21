@@ -1,0 +1,1354 @@
+{
+  "schema_version": 1,
+  "reviewer": "trellis-check",
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "phase": "existing approved S6 acceptance review",
+  "head": "5baf8659296a4a04666e6eaaa60e5965ffc70725",
+  "authoritative_status_at_review": {
+    "not_verified_in_this_task": 27,
+    "passed": 70,
+    "failed": 0,
+    "skipped": 0,
+    "unsupported": 0
+  },
+  "authoritative_matrix_changed": false,
+  "source_files_edited": [],
+  "changed_files": [
+    "research/continuation-2026-10-21/offline-handoff-final-review.md",
+    "research/continuation-2026-10-21/offline-handoff-final-review.json"
+  ],
+  "source_hashes": [
+    {
+      "path": "e2e/collaboration-offline-handoff.spec.ts",
+      "sha256": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e",
+      "current_matches_run3_and_coordinator": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-offline-handoff.ts",
+      "sha256": "733fb4d46b603752c518ac316de0fa1258623b9b24cb7902b8be9d415be2fd35",
+      "current_matches_run3_and_coordinator": true
+    }
+  ],
+  "evidence_ids": {
+    "offline-handoff-run3-web": {
+      "catalog_registration_pending": true,
+      "scope": "production_web_browser",
+      "raw": "offline-handoff-run3.json",
+      "platform": "Web"
+    },
+    "offline-handoff-run3-native": {
+      "catalog_registration_pending": true,
+      "scope": "actual_electron_ipc_harness",
+      "raw": "offline-handoff-run3.json",
+      "platform": "Electron"
+    },
+    "offline-handoff-coordinator-rerun-web": {
+      "catalog_registration_pending": true,
+      "scope": "production_web_browser",
+      "raw": "offline-handoff-coordinator-rerun.json",
+      "platform": "Web"
+    },
+    "offline-handoff-coordinator-rerun-native": {
+      "catalog_registration_pending": true,
+      "scope": "actual_electron_ipc_harness",
+      "raw": "offline-handoff-coordinator-rerun.json",
+      "platform": "Electron"
+    },
+    "continuation-service-2": {
+      "catalog": "research/s6-evidence-map.json",
+      "raw": "go-service-partition-2.jsonl"
+    },
+    "continuation-go-other": {
+      "catalog": "research/s6-evidence-map.json",
+      "raw": "go-other-packages.jsonl"
+    }
+  },
+  "recommendations": [
+    {
+      "id": "AC59",
+      "requirements": "R02、R05、R07",
+      "primary_owner": "P6",
+      "criterion": "原处理人转出任务、归档通知并重新打开客户端后，仍能从个人工作台找到自己有协作权限的本单并查看记录，无需加入整个来源工作空间；该单不再计入其当前处理待办。已退出或被移除的账号不能继续凭旧协作身份使用这一入口。",
+      "source": ".trellis/tasks/10-10-cross-workspace-collaboration/acceptance.md",
+      "source_line": 67,
+      "previous_status": "not_verified_in_this_task",
+      "recommendation": "passed",
+      "coverage": "full_primary_layer_and_required_client_clauses",
+      "evidence_ids": [
+        "offline-handoff-run3-web",
+        "offline-handoff-run3-native",
+        "offline-handoff-coordinator-rerun-web",
+        "offline-handoff-coordinator-rerun-native",
+        "continuation-service-2",
+        "continuation-go-other"
+      ],
+      "clauses": [
+        {
+          "clause": "Transfer responsibility away, archive its original transfer notice, close/reopen a client and perform a fresh password login.",
+          "result": "passed",
+          "assertions": [
+            "e2e/fixtures/collaboration-offline-handoff.ts:234",
+            "e2e/fixtures/collaboration-offline-handoff.ts:241",
+            "e2e/fixtures/collaboration-offline-handoff.ts:244"
+          ]
+        },
+        {
+          "clause": "Find the same private records from participating workbench while current handling has zero items, with no source workspace membership.",
+          "result": "passed",
+          "assertions": [
+            "e2e/fixtures/collaboration-offline-handoff.ts:247",
+            "e2e/fixtures/collaboration-offline-handoff.ts:249",
+            "e2e/fixtures/collaboration-offline-handoff.ts:281"
+          ]
+        },
+        {
+          "clause": "Removed or departed participant cannot reuse the old collaboration entry.",
+          "result": "passed",
+          "assertions": [
+            "e2e/fixtures/collaboration-offline-handoff.ts:263",
+            "e2e/fixtures/collaboration-offline-handoff.ts:269",
+            "e2e/fixtures/collaboration-offline-handoff.ts:280",
+            "server/internal/service/collaboration_workflow_test.go:166",
+            "server/internal/handler/collaboration_test.go:139",
+            "server/pkg/db/queries/collaboration.sql:121"
+          ],
+          "scope": "Public removal in both actual clients; voluntary exit/current revoked-participant predicate at canonical backend."
+        }
+      ],
+      "remaining_gaps": []
+    },
+    {
+      "id": "AC77",
+      "requirements": "R02、R12、R13、R46",
+      "primary_owner": "P2",
+      "criterion": "有权者向离线的新账号邀请/派单，提交成功即加入；派单时责任和待办同时转移，接收人登录后直接可见，无待接受步骤。仅邀请不改变当前处理人；无权或目标失效时不部分生效，重放请求不重复交接。接收人的个人运行环境仍须本人按单授权。",
+      "source": ".trellis/tasks/10-10-cross-workspace-collaboration/acceptance.md",
+      "source_line": 86,
+      "previous_status": "not_verified_in_this_task",
+      "recommendation": "passed",
+      "coverage": "full_primary_layer_and_required_client_clauses",
+      "evidence_ids": [
+        "offline-handoff-run3-web",
+        "offline-handoff-run3-native",
+        "offline-handoff-coordinator-rerun-web",
+        "offline-handoff-coordinator-rerun-native",
+        "continuation-service-2",
+        "continuation-go-other"
+      ],
+      "clauses": [
+        {
+          "clause": "Authorized new-account invite/assignment while client is closed immediately commits participation/responsibility/workbench; fresh login opens without acceptance.",
+          "result": "passed",
+          "assertions": [
+            "e2e/fixtures/collaboration-offline-handoff.ts:193",
+            "e2e/fixtures/collaboration-offline-handoff.ts:199",
+            "e2e/fixtures/collaboration-offline-handoff.ts:205",
+            "e2e/fixtures/collaboration-offline-handoff.ts:211",
+            "e2e/fixtures/collaboration-offline-handoff.ts:224",
+            "e2e/fixtures/collaboration-offline-handoff.ts:227"
+          ]
+        },
+        {
+          "clause": "Invitation alone preserves current handler and execution.",
+          "result": "passed",
+          "assertions": [
+            "e2e/fixtures/collaboration-offline-handoff.ts:201",
+            "e2e/fixtures/collaboration-offline-handoff.ts:202",
+            "server/internal/service/collaboration_workflow_test.go:705"
+          ]
+        },
+        {
+          "clause": "Unauthorized, disabled/missing/stale/commit-time invalid target cannot partially enroll; participation/handoff/event/notification effects use one transaction.",
+          "result": "passed",
+          "assertions": [
+            "server/internal/service/collaboration_workflow_test.go:346",
+            "server/internal/service/collaboration_workflow_test.go:474",
+            "server/internal/service/collaboration_workflow_test.go:599",
+            "server/internal/service/collaboration_workflow.go:371"
+          ]
+        },
+        {
+          "clause": "Original-key replay leaves one handoff/outcome/notification; former handler old POST is 403 and original operation GET recovers without new mutation.",
+          "result": "passed",
+          "assertions": [
+            "e2e/fixtures/collaboration-offline-handoff.ts:130",
+            "e2e/fixtures/collaboration-offline-handoff.ts:139",
+            "e2e/fixtures/collaboration-offline-handoff.ts:142",
+            "e2e/fixtures/collaboration-offline-handoff.ts:145",
+            "server/internal/service/collaboration_workflow_test.go:406"
+          ]
+        },
+        {
+          "clause": "Invitation/assignment does not grant personal runtime; actual owner separately consents per issue.",
+          "result": "passed",
+          "assertions": [
+            "e2e/fixtures/collaboration-offline-handoff.ts:231",
+            "e2e/fixtures/collaboration-offline-handoff.ts:232",
+            "server/internal/service/collaboration_workflow_test.go:705",
+            "server/internal/service/collaboration_authority_test.go:67"
+          ]
+        }
+      ],
+      "remaining_gaps": []
+    },
+    {
+      "id": "AC83",
+      "requirements": "R02、R07、R52",
+      "primary_owner": "P6",
+      "criterion": "离线的外部参与者登录后在个人工作台看到派单、转交、补充请求/交回、提交验收、邀请、新评论及 AI 完成/失败/停止已确认的通知，可经账号工作台打开本单；操作者本人不收自己动作的通知。已读/归档不改变待办或权限；被移除者只收不含本单内容的移除通知，之后不能经旧通知打开本单。同为来源成员的参与者不在来源 inbox 重复收到；外部参与者不在来源空间产生 inbox 或订阅记录。通知投递失败不影响业务操作，重放不重复通知。",
+      "source": ".trellis/tasks/10-10-cross-workspace-collaboration/acceptance.md",
+      "source_line": 92,
+      "previous_status": "not_verified_in_this_task",
+      "recommendation": "not_verified_in_this_task",
+      "coverage": "partial_support",
+      "evidence_ids": [
+        "offline-handoff-run3-web",
+        "offline-handoff-run3-native",
+        "offline-handoff-coordinator-rerun-web",
+        "offline-handoff-coordinator-rerun-native",
+        "continuation-service-2",
+        "continuation-go-other"
+      ],
+      "clauses": [
+        {
+          "clause": "Offline invitation/transfer/new-comment notices, real fresh login and exact account comment anchor.",
+          "result": "passed_partial",
+          "assertions": [
+            "e2e/fixtures/collaboration-offline-handoff.ts:214",
+            "e2e/fixtures/collaboration-offline-handoff.ts:215",
+            "e2e/fixtures/collaboration-offline-handoff.ts:250",
+            "e2e/fixtures/collaboration-offline-handoff.ts:256"
+          ]
+        },
+        {
+          "clause": "Bounded self-notice avoidance, read/archive independence and content-free removed notice/old-link refusal.",
+          "result": "passed_partial",
+          "assertions": [
+            "e2e/fixtures/collaboration-offline-handoff.ts:216",
+            "e2e/fixtures/collaboration-offline-handoff.ts:170",
+            "e2e/fixtures/collaboration-offline-handoff.ts:238",
+            "e2e/fixtures/collaboration-offline-handoff.ts:271",
+            "e2e/fixtures/collaboration-offline-handoff.ts:280"
+          ]
+        },
+        {
+          "clause": "Every information/acceptance/proven AI lifecycle notification is available after offline login in both actual clients.",
+          "result": "not_verified",
+          "missing_kinds": [
+            "information_requested",
+            "information_returned",
+            "acceptance_submitted",
+            "ai_completed",
+            "ai_failed",
+            "ai_stopped"
+          ]
+        },
+        {
+          "clause": "Full source-member inbox dedup, external source inbox/subscriber isolation and post-commit delivery-failure/replay fanout.",
+          "result": "not_verified",
+          "scope": "Bounded service isolation and persisted-notification rollback/proof replay are supplemental support; they do not establish full offline fanout or external delivery failure semantics."
+        }
+      ],
+      "remaining_gaps": [
+        "Full dual-client offline information_requested/information_returned/acceptance_submitted/ai_completed/ai_failed/ai_stopped notification journey.",
+        "Full source-inbox/subscriber isolation/dedup and post-commit delivery-failure fanout."
+      ]
+    }
+  ],
+  "runs": {
+    "offline-handoff-run3": {
+      "stats": {
+        "startTime": "2026-10-21T14:06:53.086Z",
+        "duration": 25266.108,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "identity": "e2e/collaboration-offline-handoff.spec.ts::Web offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 11933,
+          "errors": [],
+          "evidence": {
+            "platform": "Web",
+            "source": [
+              {
+                "path": "e2e/collaboration-offline-handoff.spec.ts",
+                "sha256": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e"
+              },
+              {
+                "path": "e2e/fixtures/collaboration-offline-handoff.ts",
+                "sha256": "733fb4d46b603752c518ac316de0fa1258623b9b24cb7902b8be9d415be2fd35"
+              }
+            ],
+            "environment": {
+              "api": "http://localhost:18996",
+              "production_web": "http://localhost:13916",
+              "electron_renderer": null,
+              "electron_os": null,
+              "provider_account_access": false
+            },
+            "recipient_login_calls": 3,
+            "clients_closed_before_send": true,
+            "fresh_login_after_send_and_archive": true,
+            "source_memberships": [],
+            "covered_notifications": [
+              "participant_added",
+              "transferred",
+              "comment_created",
+              "removed"
+            ],
+            "remaining_AC83_kinds": [
+              "information_requested",
+              "information_returned",
+              "acceptance_submitted",
+              "ai_completed",
+              "ai_failed",
+              "ai_stopped"
+            ],
+            "errors": []
+          },
+          "states": {
+            "after_invite": {
+              "creator": {
+                "current_total": 1,
+                "participating_total": 1
+              },
+              "recipient": {
+                "current_total": 0,
+                "participating_total": 1
+              }
+            },
+            "after_assignment": {
+              "creator": {
+                "current_total": 0,
+                "participating_total": 1
+              },
+              "recipient": {
+                "current_total": 1,
+                "participating_total": 1
+              }
+            },
+            "after_transfer_back": {
+              "recipient": {
+                "current_total": 0,
+                "participating_total": 1
+              }
+            },
+            "after_archive_and_fresh_login": {
+              "recipient": {
+                "current_total": 0,
+                "participating_total": 1
+              }
+            },
+            "after_removal": {
+              "recipient": {
+                "current_total": 0,
+                "participating_total": 0
+              }
+            }
+          }
+        },
+        {
+          "identity": "e2e/collaboration-offline-handoff.spec.ts::Electron offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 11735,
+          "errors": [],
+          "evidence": {
+            "platform": "Electron",
+            "source": [
+              {
+                "path": "e2e/collaboration-offline-handoff.spec.ts",
+                "sha256": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e"
+              },
+              {
+                "path": "e2e/fixtures/collaboration-offline-handoff.ts",
+                "sha256": "733fb4d46b603752c518ac316de0fa1258623b9b24cb7902b8be9d415be2fd35"
+              }
+            ],
+            "environment": {
+              "api": "http://localhost:18996",
+              "production_web": "http://localhost:13916",
+              "electron_renderer": "http://localhost:6090",
+              "electron_os": "darwin",
+              "provider_account_access": false
+            },
+            "recipient_login_calls": 3,
+            "clients_closed_before_send": true,
+            "fresh_login_after_send_and_archive": true,
+            "source_memberships": [],
+            "covered_notifications": [
+              "participant_added",
+              "transferred",
+              "comment_created",
+              "removed"
+            ],
+            "remaining_AC83_kinds": [
+              "information_requested",
+              "information_returned",
+              "acceptance_submitted",
+              "ai_completed",
+              "ai_failed",
+              "ai_stopped"
+            ],
+            "errors": []
+          },
+          "states": {
+            "after_invite": {
+              "creator": {
+                "current_total": 1,
+                "participating_total": 1
+              },
+              "recipient": {
+                "current_total": 0,
+                "participating_total": 1
+              }
+            },
+            "after_assignment": {
+              "creator": {
+                "current_total": 0,
+                "participating_total": 1
+              },
+              "recipient": {
+                "current_total": 1,
+                "participating_total": 1
+              }
+            },
+            "after_transfer_back": {
+              "recipient": {
+                "current_total": 0,
+                "participating_total": 1
+              }
+            },
+            "after_archive_and_fresh_login": {
+              "recipient": {
+                "current_total": 0,
+                "participating_total": 1
+              }
+            },
+            "after_removal": {
+              "recipient": {
+                "current_total": 0,
+                "participating_total": 0
+              }
+            }
+          }
+        }
+      ],
+      "raw_sha256": "51109a3bfb72ee88aa8c2976c6f1ae307d5bb880f3085ce58d440d78e854a469"
+    },
+    "offline-handoff-coordinator-rerun": {
+      "stats": {
+        "startTime": "2026-10-21T14:40:10.772Z",
+        "duration": 20000.368,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "identity": "e2e/collaboration-offline-handoff.spec.ts::Web offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 8625,
+          "errors": [],
+          "evidence": {
+            "platform": "Web",
+            "source": [
+              {
+                "path": "e2e/collaboration-offline-handoff.spec.ts",
+                "sha256": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e"
+              },
+              {
+                "path": "e2e/fixtures/collaboration-offline-handoff.ts",
+                "sha256": "733fb4d46b603752c518ac316de0fa1258623b9b24cb7902b8be9d415be2fd35"
+              }
+            ],
+            "environment": {
+              "api": "http://localhost:18996",
+              "production_web": "http://localhost:13916",
+              "electron_renderer": null,
+              "electron_os": null,
+              "provider_account_access": false
+            },
+            "recipient_login_calls": 3,
+            "clients_closed_before_send": true,
+            "fresh_login_after_send_and_archive": true,
+            "source_memberships": [],
+            "covered_notifications": [
+              "participant_added",
+              "transferred",
+              "comment_created",
+              "removed"
+            ],
+            "remaining_AC83_kinds": [
+              "information_requested",
+              "information_returned",
+              "acceptance_submitted",
+              "ai_completed",
+              "ai_failed",
+              "ai_stopped"
+            ],
+            "errors": []
+          },
+          "states": {
+            "after_invite": {
+              "creator": {
+                "current_total": 1,
+                "participating_total": 1
+              },
+              "recipient": {
+                "current_total": 0,
+                "participating_total": 1
+              }
+            },
+            "after_assignment": {
+              "creator": {
+                "current_total": 0,
+                "participating_total": 1
+              },
+              "recipient": {
+                "current_total": 1,
+                "participating_total": 1
+              }
+            },
+            "after_transfer_back": {
+              "recipient": {
+                "current_total": 0,
+                "participating_total": 1
+              }
+            },
+            "after_archive_and_fresh_login": {
+              "recipient": {
+                "current_total": 0,
+                "participating_total": 1
+              }
+            },
+            "after_removal": {
+              "recipient": {
+                "current_total": 0,
+                "participating_total": 0
+              }
+            }
+          }
+        },
+        {
+          "identity": "e2e/collaboration-offline-handoff.spec.ts::Electron offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 10034,
+          "errors": [],
+          "evidence": {
+            "platform": "Electron",
+            "source": [
+              {
+                "path": "e2e/collaboration-offline-handoff.spec.ts",
+                "sha256": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e"
+              },
+              {
+                "path": "e2e/fixtures/collaboration-offline-handoff.ts",
+                "sha256": "733fb4d46b603752c518ac316de0fa1258623b9b24cb7902b8be9d415be2fd35"
+              }
+            ],
+            "environment": {
+              "api": "http://localhost:18996",
+              "production_web": "http://localhost:13916",
+              "electron_renderer": "http://localhost:6090",
+              "electron_os": "darwin",
+              "provider_account_access": false
+            },
+            "recipient_login_calls": 3,
+            "clients_closed_before_send": true,
+            "fresh_login_after_send_and_archive": true,
+            "source_memberships": [],
+            "covered_notifications": [
+              "participant_added",
+              "transferred",
+              "comment_created",
+              "removed"
+            ],
+            "remaining_AC83_kinds": [
+              "information_requested",
+              "information_returned",
+              "acceptance_submitted",
+              "ai_completed",
+              "ai_failed",
+              "ai_stopped"
+            ],
+            "errors": []
+          },
+          "states": {
+            "after_invite": {
+              "creator": {
+                "current_total": 1,
+                "participating_total": 1
+              },
+              "recipient": {
+                "current_total": 0,
+                "participating_total": 1
+              }
+            },
+            "after_assignment": {
+              "creator": {
+                "current_total": 0,
+                "participating_total": 1
+              },
+              "recipient": {
+                "current_total": 1,
+                "participating_total": 1
+              }
+            },
+            "after_transfer_back": {
+              "recipient": {
+                "current_total": 0,
+                "participating_total": 1
+              }
+            },
+            "after_archive_and_fresh_login": {
+              "recipient": {
+                "current_total": 0,
+                "participating_total": 1
+              }
+            },
+            "after_removal": {
+              "recipient": {
+                "current_total": 0,
+                "participating_total": 0
+              }
+            }
+          }
+        }
+      ],
+      "raw_sha256": "142ac84cbb5b0de47f68dbf5129cdb27a22a5fad517844372e2344371d271e7e"
+    }
+  },
+  "canonical_go_pass_events": [
+    {
+      "evidence_id": "continuation-service-2",
+      "identity": "internal/service::TestCollaborationWorkflowInviteTransferPreservesExecution",
+      "artifact": "go-service-partition-2.jsonl",
+      "line": 3585,
+      "pass_event": {
+        "Time": "2026-10-21T13:36:20.055246+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationWorkflowInviteTransferPreservesExecution",
+        "Elapsed": 0.25
+      },
+      "subtest_passes": 0,
+      "source": {
+        "path": "server/internal/service/collaboration_workflow_test.go",
+        "line": 705,
+        "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+        "matches_manifest": true
+      }
+    },
+    {
+      "evidence_id": "continuation-service-2",
+      "identity": "internal/service::TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything",
+      "artifact": "go-service-partition-2.jsonl",
+      "line": 3569,
+      "pass_event": {
+        "Time": "2026-10-21T13:36:19.193604+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything",
+        "Elapsed": 4.25
+      },
+      "subtest_passes": 15,
+      "source": {
+        "path": "server/internal/service/collaboration_workflow_test.go",
+        "line": 599,
+        "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+        "matches_manifest": true
+      }
+    },
+    {
+      "evidence_id": "continuation-service-2",
+      "identity": "internal/service::TestCollaborationWorkflowConcurrentIdentityAndRevision",
+      "artifact": "go-service-partition-2.jsonl",
+      "line": 3489,
+      "pass_event": {
+        "Time": "2026-10-21T13:36:14.008736+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationWorkflowConcurrentIdentityAndRevision",
+        "Elapsed": 0.32
+      },
+      "subtest_passes": 0,
+      "source": {
+        "path": "server/internal/service/collaboration_workflow_test.go",
+        "line": 406,
+        "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+        "matches_manifest": true
+      }
+    },
+    {
+      "evidence_id": "continuation-service-2",
+      "identity": "internal/service::TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals",
+      "artifact": "go-service-partition-2.jsonl",
+      "line": 3485,
+      "pass_event": {
+        "Time": "2026-10-21T13:36:13.688178+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals",
+        "Elapsed": 1.88
+      },
+      "subtest_passes": 10,
+      "source": {
+        "path": "server/internal/service/collaboration_workflow_test.go",
+        "line": 346,
+        "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+        "matches_manifest": true
+      }
+    },
+    {
+      "evidence_id": "continuation-service-2",
+      "identity": "internal/service::TestCollaborationOwnerConsentIsExplicitScopedAndIdempotent",
+      "artifact": "go-service-partition-2.jsonl",
+      "line": 253,
+      "pass_event": {
+        "Time": "2026-10-21T13:33:05.691589+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationOwnerConsentIsExplicitScopedAndIdempotent",
+        "Elapsed": 0.22
+      },
+      "subtest_passes": 0,
+      "source": {
+        "path": "server/internal/service/collaboration_authority_test.go",
+        "line": 67,
+        "sha256": "9804e0705acf9270b542e5476a7770d691b6fa26658558e24f050565d48cdfd9",
+        "matches_manifest": true
+      }
+    },
+    {
+      "evidence_id": "continuation-service-2",
+      "identity": "internal/service::TestCollaborationWorkflowNotificationsAndWorkbench",
+      "artifact": "go-service-partition-2.jsonl",
+      "line": 3441,
+      "pass_event": {
+        "Time": "2026-10-21T13:36:11.803083+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationWorkflowNotificationsAndWorkbench",
+        "Elapsed": 0.22
+      },
+      "subtest_passes": 0,
+      "source": {
+        "path": "server/internal/service/collaboration_workflow_test.go",
+        "line": 308,
+        "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+        "matches_manifest": true
+      }
+    },
+    {
+      "evidence_id": "continuation-service-2",
+      "identity": "internal/service::TestCollaborationWorkflowRechecksAccountsAndRolesAfterLock",
+      "artifact": "go-service-partition-2.jsonl",
+      "line": 3501,
+      "pass_event": {
+        "Time": "2026-10-21T13:36:14.580275+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationWorkflowRechecksAccountsAndRolesAfterLock",
+        "Elapsed": 0.57
+      },
+      "subtest_passes": 2,
+      "source": {
+        "path": "server/internal/service/collaboration_workflow_test.go",
+        "line": 474,
+        "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+        "matches_manifest": true
+      }
+    },
+    {
+      "evidence_id": "continuation-service-2",
+      "identity": "internal/service::TestCollaborationWorkflowReplaysExactLargeVersionsAndDisabledRefusal",
+      "artifact": "go-service-partition-2.jsonl",
+      "line": 3437,
+      "pass_event": {
+        "Time": "2026-10-21T13:36:11.579044+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationWorkflowReplaysExactLargeVersionsAndDisabledRefusal",
+        "Elapsed": 0.2
+      },
+      "subtest_passes": 0,
+      "source": {
+        "path": "server/internal/service/collaboration_workflow_test.go",
+        "line": 277,
+        "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+        "matches_manifest": true
+      }
+    },
+    {
+      "evidence_id": "continuation-service-2",
+      "identity": "internal/service::TestCollaborationWorkflowVoluntaryLeaveAndMinimalRecovery",
+      "artifact": "go-service-partition-2.jsonl",
+      "line": 3413,
+      "pass_event": {
+        "Time": "2026-10-21T13:36:10.338547+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationWorkflowVoluntaryLeaveAndMinimalRecovery",
+        "Elapsed": 0.25
+      },
+      "subtest_passes": 0,
+      "source": {
+        "path": "server/internal/service/collaboration_workflow_test.go",
+        "line": 167,
+        "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+        "matches_manifest": true
+      }
+    },
+    {
+      "evidence_id": "continuation-service-2",
+      "identity": "internal/service::TestCollaborationResultNotificationsRequireProvenTerminalGroup",
+      "artifact": "go-service-partition-2.jsonl",
+      "line": 2881,
+      "pass_event": {
+        "Time": "2026-10-21T13:35:20.295494+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationResultNotificationsRequireProvenTerminalGroup",
+        "Elapsed": 2.51
+      },
+      "subtest_passes": 5,
+      "source": {
+        "path": "server/internal/service/collaboration_result_notifications_test.go",
+        "line": 16,
+        "sha256": "0738215c6b3b7c9440749dd7f4b5fd67da69210078e5ff6a648261f5b07f133e",
+        "matches_manifest": true
+      }
+    },
+    {
+      "evidence_id": "continuation-service-2",
+      "identity": "internal/service::TestCollaborationResultNotificationRollbackAndConcurrentReplay",
+      "artifact": "go-service-partition-2.jsonl",
+      "line": 2885,
+      "pass_event": {
+        "Time": "2026-10-21T13:35:20.879546+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationResultNotificationRollbackAndConcurrentReplay",
+        "Elapsed": 0.58
+      },
+      "subtest_passes": 0,
+      "source": {
+        "path": "server/internal/service/collaboration_result_notifications_test.go",
+        "line": 105,
+        "sha256": "0738215c6b3b7c9440749dd7f4b5fd67da69210078e5ff6a648261f5b07f133e",
+        "matches_manifest": true
+      }
+    },
+    {
+      "evidence_id": "continuation-service-2",
+      "identity": "internal/service::TestCollaborationNotificationsLoseContentAndAnchorsWithAccess",
+      "artifact": "go-service-partition-2.jsonl",
+      "line": 2083,
+      "pass_event": {
+        "Time": "2026-10-21T13:34:43.326812+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationNotificationsLoseContentAndAnchorsWithAccess",
+        "Elapsed": 0.17
+      },
+      "subtest_passes": 0,
+      "source": {
+        "path": "server/internal/service/collaboration_notifications_test.go",
+        "line": 56,
+        "sha256": "48a03c00442e08b65402e852781616f5d00b4492c9e109df02bec4b5b23524ec",
+        "matches_manifest": true
+      }
+    },
+    {
+      "evidence_id": "continuation-go-other",
+      "identity": "internal/handler::TestCollaborationWorkbenchKeepsResponsibilityParticipationAndPaginationSeparate",
+      "artifact": "go-other-packages.jsonl",
+      "line": 35468,
+      "pass_event": {
+        "Time": "2026-10-21T13:16:30.579686+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/handler",
+        "Test": "TestCollaborationWorkbenchKeepsResponsibilityParticipationAndPaginationSeparate",
+        "Elapsed": 0.03
+      },
+      "subtest_passes": 0,
+      "source": {
+        "path": "server/internal/handler/collaboration_test.go",
+        "line": 83,
+        "sha256": "62f71ba54903e0621a80cb2622e123ac2bcf853e82c44144cef4cf20610801f8",
+        "matches_manifest": true
+      }
+    },
+    {
+      "evidence_id": "continuation-go-other",
+      "identity": "internal/handler::TestCollaborationWorkbenchWorksWithoutAnyWorkspaceMembership",
+      "artifact": "go-other-packages.jsonl",
+      "line": 35472,
+      "pass_event": {
+        "Time": "2026-10-21T13:16:30.588696+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/handler",
+        "Test": "TestCollaborationWorkbenchWorksWithoutAnyWorkspaceMembership",
+        "Elapsed": 0.01
+      },
+      "subtest_passes": 0,
+      "source": {
+        "path": "server/internal/handler/collaboration_test.go",
+        "line": 139,
+        "sha256": "62f71ba54903e0621a80cb2622e123ac2bcf853e82c44144cef4cf20610801f8",
+        "matches_manifest": true
+      }
+    }
+  ],
+  "provenance": {
+    "coordinator_preflight": {
+      "at": "2026-10-21T14:40:09.837664+00:00",
+      "head": "5baf8659296a4a04666e6eaaa60e5965ffc70725",
+      "application_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-admin-source",
+      "production_files_compared": 5138,
+      "current_application_differences": [],
+      "application_file_identity_sha256": "534a2079cf16ea3821c3f3b11a4be40186226f427a2ced763096adc0fa7d49a9",
+      "api_health": {
+        "status": "ok",
+        "pid": 68800,
+        "commit": "8ecb98883",
+        "started_at": "2026-10-21T10:49:37Z"
+      },
+      "api_provenance": {
+        "component": "api",
+        "mode": "development",
+        "build_id": "",
+        "command": "go run -ldflags '-X main.commit=8ecb98883' ./cmd/server (cwd: /tmp/multica-gap-recovery-20261021-h6phxwo9/verification-admin-source/server)",
+        "source_id": "3315c0bc363e1fa5a6b62b8316fabaaa494e9dbb179fa981dd467d1562c19265",
+        "configuration_id": "805fc993af4daf895e4de11a22cd372244d7845eed807b7eaa56a50f30b39cd3",
+        "commit": "8ecb98883",
+        "launcher_pid": 68733,
+        "started_at": "2026-10-21T10:49:28Z",
+        "listener_pid": 68800
+      },
+      "web_http_status": 200,
+      "web_build_id": "tP4r55FoDsuyXfi1EylGw",
+      "renderer_http_status": 200,
+      "renderer_index_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c",
+      "public_configuration": {
+        "managed_installation_supported": true,
+        "deployment_id": "f3a705a0-0193-435f-bc6d-05bc2074e905",
+        "platform_admin_available": true,
+        "auth_mode": "password",
+        "password_auth_available": true,
+        "password_signup_available": true,
+        "account_binding_available": false,
+        "cdn_domain": "localhost",
+        "allow_signup": true,
+        "daemon_server_url": "http://localhost:18996",
+        "daemon_app_url": "http://localhost:13916",
+        "messaging_integrations_enabled": true,
+        "posthog_key": "",
+        "posthog_host": "",
+        "analytics_environment": "dev",
+        "feature_flags": {
+          "agents_agent_builder": true,
+          "agents_skill_toggles": true,
+          "billing_workspace_subscriptions": false,
+          "composio_mcp_apps": false,
+          "plugins_v1": false,
+          "settings_resource_labels": true
+        },
+        "local_worktree_supported": true,
+        "agent_conversation_starters_supported": true
+      },
+      "production_rollout_changed": false,
+      "real_provider_account_access": false,
+      "source": [
+        {
+          "path": "e2e/collaboration-offline-handoff.spec.ts",
+          "sha256": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e"
+        },
+        {
+          "path": "e2e/fixtures/collaboration-offline-handoff.ts",
+          "sha256": "733fb4d46b603752c518ac316de0fa1258623b9b24cb7902b8be9d415be2fd35"
+        }
+      ]
+    },
+    "run3_preflight": {
+      "at": "2026-10-21T14:06:51.838662+00:00",
+      "api_health": {
+        "status": "ok",
+        "pid": 68800,
+        "commit": "8ecb98883",
+        "started_at": "2026-10-21T10:49:37Z"
+      },
+      "api_provenance": {
+        "component": "api",
+        "mode": "development",
+        "build_id": "",
+        "command": "go run -ldflags '-X main.commit=8ecb98883' ./cmd/server (cwd: /tmp/multica-gap-recovery-20261021-h6phxwo9/verification-admin-source/server)",
+        "source_id": "3315c0bc363e1fa5a6b62b8316fabaaa494e9dbb179fa981dd467d1562c19265",
+        "configuration_id": "805fc993af4daf895e4de11a22cd372244d7845eed807b7eaa56a50f30b39cd3",
+        "commit": "8ecb98883",
+        "launcher_pid": 68733,
+        "started_at": "2026-10-21T10:49:28Z",
+        "listener_pid": 68800
+      },
+      "web_http_status": 200,
+      "web_build_id": "tP4r55FoDsuyXfi1EylGw",
+      "renderer_http_status": 200,
+      "renderer_index_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c",
+      "public_configuration": {
+        "auth_mode": "password",
+        "platform_admin_available": true,
+        "managed_installation_supported": true,
+        "deployment_id": "f3a705a0-0193-435f-bc6d-05bc2074e905",
+        "messaging_integrations_enabled": true
+      },
+      "production_rollout_changed": false,
+      "real_provider_account_access": false,
+      "source": [
+        {
+          "path": "e2e/collaboration-offline-handoff.spec.ts",
+          "sha256": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e"
+        },
+        {
+          "path": "e2e/fixtures/collaboration-offline-handoff.ts",
+          "sha256": "733fb4d46b603752c518ac316de0fa1258623b9b24cb7902b8be9d415be2fd35"
+        }
+      ]
+    },
+    "api_running": {
+      "component": "api",
+      "mode": "development",
+      "build_id": "",
+      "command": "go run -ldflags '-X main.commit=8ecb98883' ./cmd/server (cwd: /tmp/multica-gap-recovery-20261021-h6phxwo9/verification-admin-source/server)",
+      "source_id": "3315c0bc363e1fa5a6b62b8316fabaaa494e9dbb179fa981dd467d1562c19265",
+      "configuration_id": "805fc993af4daf895e4de11a22cd372244d7845eed807b7eaa56a50f30b39cd3",
+      "commit": "8ecb98883",
+      "launcher_pid": 68733,
+      "started_at": "2026-10-21T10:49:28Z",
+      "listener_pid": 68800
+    },
+    "web_running": {
+      "component": "web",
+      "mode": "production",
+      "build_id": "tP4r55FoDsuyXfi1EylGw",
+      "command": "pnpm --filter @multica/web exec next start --port 13916",
+      "source_id": "58b3fa60203026715322f15875f607df0aac1487a544f7d277b43aa137ed35ef",
+      "configuration_id": "526b29f6d2edc3c37c7c6fedf70b2fe975d603c1e83d791d4492bdc259b5ead1",
+      "commit": "8ecb98883",
+      "launcher_pid": 76915,
+      "started_at": "2026-10-21T01:23:30Z",
+      "listener_pid": 76944
+    },
+    "coordinator_raw_hash_matches_result": true,
+    "run3_decoded_identities_equal_inline_reporter_attachments": true,
+    "runtime_snapshot_source_verified": {
+      "coordinator_non_test_product_files": 5138,
+      "current_application_differences": [],
+      "application_file_identity_sha256": "534a2079cf16ea3821c3f3b11a4be40186226f427a2ced763096adc0fa7d49a9",
+      "reviewer_non_test_initial_manifest_files": 4652,
+      "reviewer_differences": [],
+      "note": "Reviewer supplementary manifest subset is independent and narrower than coordinator current-file comparison; generated outputs in current workspace are not the snapshot used by this run."
+    },
+    "native_harness": {
+      "source_root": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-admin-source",
+      "main_sha256": "2765bc28a321d3f9770a4e7f43170ae0fc0abfd9cffa039ff890d7aaf6fc802c",
+      "harness_sha256": "f9021ab07635f2f48d0f90613fcd3c8558cb7262b3bdd2aca98edb31654475d2",
+      "preload_sha256": "e5b95b95037375b8996a84c7e7650b7c13839700b6f3fad7d90f2358e9ae803e",
+      "renderer_index_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c",
+      "native_os": "darwin",
+      "full_installed_main": false,
+      "actual_native_provider_daemon": false
+    },
+    "private_environment_read": false,
+    "configuration_hash_scope": "Retained safe runtime ID/public password/admin/managed configuration matching; no private credentials or configuration values recomputed.",
+    "isolated_acceptance_gate_enabled": true,
+    "production_rollout_changed": false,
+    "real_provider_account_access": false
+  },
+  "artifacts": [
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-coordinator-rerun-command.json",
+      "sha256": "c1cda65bfeb0a7418a7832ebfe3be74b2890de7513c0020e3ab391fde6a01f52"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-coordinator-rerun-preflight.json",
+      "sha256": "4860d1b72e110e9578f72792df84b7dd471a19169f503f99d72b8e9734c5436c"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-coordinator-rerun-result.json",
+      "sha256": "00e807c9b859e8b4c7ac584fa62985f1de82760abeacd69eeee69ca65faef9ea"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-coordinator-rerun.json",
+      "sha256": "142ac84cbb5b0de47f68dbf5129cdb27a22a5fad517844372e2344371d271e7e"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-coordinator-rerun.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-run1-command.json",
+      "sha256": "9958c3afa31628f584e5d52b1e74ca730eede2bd55f4f53c5f68d67e20e75886"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-run1-preflight.json",
+      "sha256": "0052fa9fb808ee2178d0c4d7bc2055c1dc67c340185ce525083e882f4d2ff817"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-run1.json",
+      "sha256": "744806113ef08e1fb1f12f02a1b793260a842dc103ece86b65f73f0a4fc51fe2"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-run1.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-run2-command.json",
+      "sha256": "2b549d527f2164b9e9fd9e469e5b39d9ddfe6a29be0511a523d706d5607f45b0"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-run2-identities.json",
+      "sha256": "59bf7206778ebbf1009a2f5b1dcfa0d356f262b261f7e55ce45926f7fdd70694"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-run2-preflight.json",
+      "sha256": "4234741cc70d73afd7c08b6dbe8ef762d9dbd181dc15c7b9450a79878c8249c2"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-run2.json",
+      "sha256": "7f3fc71a34d03b9c0368de2de0e5a558b0d9b6a6cdec5ae9c96e27e49c366e7a"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-run2.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-run3-command.json",
+      "sha256": "8bf22e635a2185a5217b06c32666786a6d6acd61dfb37fc8d32bca4f455ef8bc"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-run3-identities.json",
+      "sha256": "0a5b5f237fe783975dc21df863a25f45a57a57fa9cfaeb29e4f5fe94ed0929e5"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-run3-preflight.json",
+      "sha256": "e841c5abf5692ad3f59d694ca10d915ec0f3a1db9a7e59913d1a0a4b18b0fbcb"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-run3.json",
+      "sha256": "51109a3bfb72ee88aa8c2976c6f1ae307d5bb880f3085ce58d440d78e854a469"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/offline-handoff-run3.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/go-service-partition-2.jsonl",
+      "sha256": "1a1edb5507cf4a6b4259194d2d8abfe5c1d2ebb9f56672f52353d999ef07d99d"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/go-service-partition-2-command.json",
+      "sha256": "e68fda18fcac3a4c5b9999a361e69b117d811b675f0f7079383bb34b8da51509"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/go-other-packages.jsonl",
+      "sha256": "1e71354c2c8743c79c02081dba8450981af0e2b91c699afa1ded78cb470e37f8"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/source-environment-manifest.json",
+      "sha256": "3d05088176d7972b72421aae1ea8d51fea4534a9a35b34d0bfdd9c00a3a90e8d"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/gap-recovery-admin-20261021-api-post-extraction.running.json",
+      "sha256": "0da092742518dd75eb0f6ebe0c62ccfb6a6792b6f3f638a3b0ddfc162816e149"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/gap-recovery-admin-20261021-web.running.json",
+      "sha256": "8c787f9ec22aaed919f41444c9bf665a138c084c0a2f68d4e2fb9fd0d51162ef"
+    }
+  ],
+  "retained_attempts": [
+    {
+      "run": "offline-handoff-run1",
+      "exit_code": 1,
+      "expected": 0,
+      "unexpected": 2,
+      "skipped": 0,
+      "flaky": 0,
+      "reason": "Both real clients reached comment setup and failed 400. Fixture sent workflow-only expected_collaboration_revision; corrected accepted comment fields, without product/assertion relaxation.",
+      "fixture_sha256": "cfc7f671560d9ff6abce271f587fbaa34b855d3642b9dc20c120112d32e9fbe8",
+      "classification": "genuine earlier fixture failure"
+    },
+    {
+      "run": "offline-handoff-run2",
+      "exit_code": 0,
+      "expected": 2,
+      "unexpected": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "fixture_sha256": "be5b201929c30a6a0e9edf204b9e88fe39856aa3c57aeeace643c8755ced1355",
+      "classification": "earlier-source pass; not substituted for final run3/current rerun"
+    }
+  ],
+  "commit_dependency": {
+    "two_file_commit_self_contained": false,
+    "minimum_additional_source": "e2e/fixtures/collaboration-native.ts",
+    "source_sha256": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+    "originally_untracked": true,
+    "root_explicit_ownership": "Root explicitly took ownership of including the existing helper unchanged in the offline Lore slice.",
+    "shared_helper_added_to_review": true,
+    "direct_dependencies": "node:crypto,node:fs,node:path,@playwright/test only; launches tracked e2e/fixtures/collaboration-account-electron.mjs.",
+    "tracked_harness_and_direct_main_shared_modules_equal_HEAD": true,
+    "fixtures_ts_dirty_hunk_required": false,
+    "fixtures_ts_note": "HEAD password/login/register/getToken/requestJSON helpers suffice. Dirty countIssueDispatches row guard is never used by this flow.",
+    "account_path_dirty_hunk_required": false,
+    "account_path_note": "Only administration route support differs; offline view/issue/comment account paths are already supported at HEAD.",
+    "duplication_recommended": false,
+    "helper_review": {
+      "loopback": "Offline fixture/spec validate API, database, Web and renderer loopback; tracked native harness validates API/WS/renderer loopback and cancels non-loopback network traffic.",
+      "credentials": "Fresh public login JWT stays inside fixture closure and private isolated profile; environment passes task-owned settings. No credentials/cookies enter attached evidence.",
+      "profiles": "Each native open creates a new profile. All contexts/apps are owned in Sets; close deletes live handles; finally closes any remaining app/context then removes own mkdtemp profiles. firstWindow error also closes launched app.",
+      "errors_and_headers": "pageerror arrays must be empty; native errors/header predicates and zero daemonStarts are asserted at each close.",
+      "routes": "Uses actual tracked Main routing/IPC functions and built preload/renderer. This is not installed full Main startup.",
+      "screenshot_helpers": "nativeScreenshot/captureNativeSection compile and lint here but are not invoked by offline assertions. Their geometry/zoom behavior retains separate existing evidence; no new screenshot acceptance is inferred."
+    },
+    "remaining_limitation": "Full clean-HEAD product build/journey is not executed by this reviewer; current production source is shared dirty implementation. Root owns staging and final commit verification."
+  },
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "AC83-full-offline-fanout",
+      "kind": "missing_acceptance_evidence",
+      "file": "e2e/fixtures/collaboration-offline-handoff.ts",
+      "line": 298,
+      "issue": "Six required lifecycle/proven AI notification kinds are absent from the dual-client offline assertions.",
+      "recommendation": "Keep AC83 pending; extend exact notification kind/identity/link and current proof evidence."
+    },
+    {
+      "id": "AC83-inbox-delivery",
+      "kind": "missing_acceptance_evidence",
+      "file": "server/internal/service/collaboration_result_notifications_test.go",
+      "line": 105,
+      "issue": "Source inbox/subscriber isolation is bounded; notification-write rollback and concurrent proof replay do not prove post-commit external delivery failure leaves the business operation successful.",
+      "recommendation": "Keep AC83 partial and retain exact storage failure versus external delivery distinction."
+    }
+  ],
+  "verification": {
+    "scoped_lint": "passed",
+    "scoped_strict_typecheck": "passed",
+    "test_discovery": {
+      "status": "passed",
+      "tests": 2,
+      "does_not_execute_browser_or_db": true
+    },
+    "current_journey": {
+      "status": "passed",
+      "executed_by": "root coordinator",
+      "tests": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0,
+      "retries": 0,
+      "duration_ms": 20000.368,
+      "command": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py",
+        "env",
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-offline-handoff.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--project=chromium",
+        "--reporter=json",
+        "--output=/tmp/multica-gap-recovery-20261021-h6phxwo9/offline-handoff-coordinator-rerun-output"
+      ]
+    },
+    "reviewer_browser_or_db_tests_run": false,
+    "commands": [
+      {
+        "command": "pnpm exec eslint --config packages/core/eslint.config.mjs --rule 'import-x/no-extraneous-dependencies: [error, {devDependencies: true, includeTypes: false}]' e2e/collaboration-offline-handoff.spec.ts e2e/fixtures/collaboration-offline-handoff.ts",
+        "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+        "exit_code": 0,
+        "output": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n",
+        "wall_time_seconds": 1.879661083
+      },
+      {
+        "command": "pnpm exec tsc --noEmit --module ESNext --moduleResolution Bundler --target ES2022 --skipLibCheck --strict --esModuleInterop --types node e2e/collaboration-offline-handoff.spec.ts e2e/fixtures/collaboration-offline-handoff.ts",
+        "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+        "exit_code": 0,
+        "output": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n",
+        "wall_time_seconds": 3.24319175
+      },
+      {
+        "command": "pnpm exec playwright test e2e/collaboration-offline-handoff.spec.ts --list --project=chromium --reporter=list",
+        "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+        "exit_code": 0,
+        "output": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\nListing tests:\n  [chromium] › collaboration-offline-handoff.spec.ts:12:3 › Web offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal\n  [chromium] › collaboration-offline-handoff.spec.ts:12:3 › Electron offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal\nTotal: 2 tests in 1 file\n",
+        "wall_time_seconds": 1.3501959590000001
+      },
+      {
+        "command": "pnpm exec eslint --config packages/core/eslint.config.mjs --rule 'import-x/no-extraneous-dependencies: [error, {devDependencies: true, includeTypes: false}]' e2e/collaboration-offline-handoff.spec.ts e2e/fixtures/collaboration-offline-handoff.ts e2e/fixtures/collaboration-native.ts",
+        "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+        "exit_code": 0,
+        "output": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n",
+        "wall_time_seconds": 2.509731625
+      },
+      {
+        "command": "pnpm exec tsc --noEmit --module ESNext --moduleResolution Bundler --target ES2022 --skipLibCheck --strict --esModuleInterop --types node e2e/collaboration-offline-handoff.spec.ts e2e/fixtures/collaboration-offline-handoff.ts e2e/fixtures/collaboration-native.ts",
+        "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+        "exit_code": 0,
+        "output": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n",
+        "wall_time_seconds": 4.312074875
+      }
+    ],
+    "repository_whitespace_after_reports": "passed",
+    "task_validation_after_reports": "passed",
+    "report_json_artifacts_sources": "passed: 25 artifact hashes, two current source hashes, shared native helper hash and 14 exact canonical PASS records",
+    "post_write_commands": [
+      {
+        "command": "python3 - <<'PY'\nimport json,hashlib\nfrom pathlib import Path\nroot=Path('.trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21');task=root.parent.parent\np=root/'offline-handoff-final-review.json';v=json.loads(p.read_text())\nassert {r['id']:r['recommendation'] for r in v['recommendations']}=={'AC59':'passed','AC77':'passed','AC83':'not_verified_in_this_task'}\nassert all(c['exit_code']==0 for c in v['verification']['commands'])\nfor record in v['artifacts']:\n path=Path(record['path']);assert path.is_file(),path\n assert hashlib.sha256(path.read_bytes()).hexdigest()==record['sha256'],path\nfor record in v['source_hashes']:\n assert hashlib.sha256(Path(record['path']).read_bytes()).hexdigest()==record['sha256']\nassert hashlib.sha256(Path(v['commit_dependency']['minimum_additional_source']).read_bytes()).hexdigest()==v['commit_dependency']['source_sha256']\nassert len(v['canonical_go_pass_events'])==14 and all(e['pass_event']['Action']=='pass' for e in v['canonical_go_pass_events'])\nprint('Review JSON, recommendations, all25 artifacts, source/native hashes and14 exact canonical PASS records are valid.')\nprint('subtest_passes',sum(e['subtest_passes'] for e in v['canonical_go_pass_events']))\nprint('MD SHA256',hashlib.sha256((root/'offline-handoff-final-review.md').read_bytes()).hexdigest())\nprint('JSON SHA256',hashlib.sha256(p.read_bytes()).hexdigest())\nPY",
+        "exit_code": 0,
+        "output": "Review JSON, recommendations, all25 artifacts, source/native hashes and14 exact canonical PASS records are valid.\nsubtest_passes 32\nMD SHA256 55f305d4cb950aa631982524e098a307a16e1d81956715f66af8490c9b1b155c\nJSON SHA256 459e39914fe92919ae986bd2c4afc46e00b04a5c8418001d0a069e9c9dde2248\n"
+      },
+      {
+        "command": "python3 ./.trellis/scripts/task.py validate .trellis/tasks/10-20-collaboration-gap-recovery",
+        "exit_code": 0,
+        "output": "\u001b[0;34m=== Validating Context Files ===\u001b[0m\nTarget dir: /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-20-collaboration-gap-recovery\n\n  \u001b[0;32mimplement.jsonl: ✓ (15 entries)\u001b[0m\n  \u001b[0;32mcheck.jsonl: ✓ (16 entries)\u001b[0m\n\n\u001b[0;32m✓ All validations passed\u001b[0m\n"
+      },
+      {
+        "command": "git diff --check",
+        "exit_code": 0,
+        "output": ""
+      }
+    ]
+  },
+  "spec_sync": {
+    "status": "reviewed_root_update",
+    "path": ".trellis/spec/desktop/frontend/account-navigation.md",
+    "sha256": "26d359689be0be7f85a4df6b285c297e762694c08e7bab030c9195b1b37af4e6",
+    "assessment": "Root's new Tests Required paragraphs exactly match offline public invite/assignment, archive/new-login/workbench/refusal assertions; source membership and personal-runtime separation, current-authority POST versus original GET recovery and actual API login/native versus login-page/full Main scope are accurate. No AC83/full lifecycle notification promotion is implied."
+  },
+  "simplifications_made": [],
+  "remaining_risks": [
+    "AC83 is incomplete; no full criterion promotion is recommended.",
+    "Interactive password-login-page UX is not exercised; actual API login plus fresh real clients satisfies AC59/77 login-state requirements.",
+    "Only the recipient UI client is offline; read-only synthetic recipient API inspections observe committed state. No recipient acceptance mutation occurs.",
+    "Public removal is exercised on both clients. Voluntary exit is canonical backend/shared-revoked-predicate evidence, not an additional dual-client leave journey.",
+    "Task-only creation/execution gate is already enabled for synthetic acceptance. Production rollout/gates remain unchanged.",
+    "Native routing/IPC harness differs from installed full Main/installer/OS/provider acceptance.",
+    "Current-tree product source includes shared uncommitted implementation; root must include the native helper in the isolated Lore source slice.",
+    "No real provider account/quota action, monolithic make check or full native packaging suite was run by this reviewer."
+  ],
+  "parent_archivable": false
+}

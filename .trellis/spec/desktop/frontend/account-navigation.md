@@ -66,6 +66,22 @@ Before reruns, verify the static renderer URL is reachable; an exited helper
 process is not evidence of a product failure. Rebuild after shared-core changes.
 Native-service stubs do not prove packaged full Main startup or other OSes.
 
+`e2e/collaboration-offline-handoff.spec.ts` closes the recipient client before
+public invitation/assignment, then performs fresh password authentication into
+a new Web context or actual Electron profile. Invitation changes participation
+only; assignment moves responsibility and current workbench counts atomically,
+with no acceptance step. After transfer away, notification read/archive and a
+second client restart preserve the participating entry/history while the issue
+is absent from current work. Check exact list IDs/counts, not only page labels.
+
+After removal, retained notification links and the old account detail must lose
+their private title/comment and refuse entry; the independent creator retains
+the issue. Participation never creates source membership or personal runtime
+consent. Original POST replay is subject to current write authority; a former
+handler recovers its transfer receipt by GET instead. Fresh API authentication
+plus actual clients covers login-after-offline; login-page UX and installed full
+Main are separate evidence scopes.
+
 ## 7. Wrong vs Correct
 
 Wrong: preserve account content across viewer changes, treat account entry as

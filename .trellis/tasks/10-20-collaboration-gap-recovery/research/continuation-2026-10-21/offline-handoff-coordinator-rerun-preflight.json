@@ -1,0 +1,69 @@
+{
+  "at": "2026-10-21T14:40:09.837664+00:00",
+  "head": "5baf8659296a4a04666e6eaaa60e5965ffc70725",
+  "application_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-admin-source",
+  "production_files_compared": 5138,
+  "current_application_differences": [],
+  "application_file_identity_sha256": "534a2079cf16ea3821c3f3b11a4be40186226f427a2ced763096adc0fa7d49a9",
+  "api_health": {
+    "status": "ok",
+    "pid": 68800,
+    "commit": "8ecb98883",
+    "started_at": "2026-10-21T10:49:37Z"
+  },
+  "api_provenance": {
+    "component": "api",
+    "mode": "development",
+    "build_id": "",
+    "command": "go run -ldflags '-X main.commit=8ecb98883' ./cmd/server (cwd: /tmp/multica-gap-recovery-20261021-h6phxwo9/verification-admin-source/server)",
+    "source_id": "3315c0bc363e1fa5a6b62b8316fabaaa494e9dbb179fa981dd467d1562c19265",
+    "configuration_id": "805fc993af4daf895e4de11a22cd372244d7845eed807b7eaa56a50f30b39cd3",
+    "commit": "8ecb98883",
+    "launcher_pid": 68733,
+    "started_at": "2026-10-21T10:49:28Z",
+    "listener_pid": 68800
+  },
+  "web_http_status": 200,
+  "web_build_id": "tP4r55FoDsuyXfi1EylGw",
+  "renderer_http_status": 200,
+  "renderer_index_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c",
+  "public_configuration": {
+    "managed_installation_supported": true,
+    "deployment_id": "f3a705a0-0193-435f-bc6d-05bc2074e905",
+    "platform_admin_available": true,
+    "auth_mode": "password",
+    "password_auth_available": true,
+    "password_signup_available": true,
+    "account_binding_available": false,
+    "cdn_domain": "localhost",
+    "allow_signup": true,
+    "daemon_server_url": "http://localhost:18996",
+    "daemon_app_url": "http://localhost:13916",
+    "messaging_integrations_enabled": true,
+    "posthog_key": "",
+    "posthog_host": "",
+    "analytics_environment": "dev",
+    "feature_flags": {
+      "agents_agent_builder": true,
+      "agents_skill_toggles": true,
+      "billing_workspace_subscriptions": false,
+      "composio_mcp_apps": false,
+      "plugins_v1": false,
+      "settings_resource_labels": true
+    },
+    "local_worktree_supported": true,
+    "agent_conversation_starters_supported": true
+  },
+  "production_rollout_changed": false,
+  "real_provider_account_access": false,
+  "source": [
+    {
+      "path": "e2e/collaboration-offline-handoff.spec.ts",
+      "sha256": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-offline-handoff.ts",
+      "sha256": "733fb4d46b603752c518ac316de0fa1258623b9b24cb7902b8be9d415be2fd35"
+    }
+  ]
+}
