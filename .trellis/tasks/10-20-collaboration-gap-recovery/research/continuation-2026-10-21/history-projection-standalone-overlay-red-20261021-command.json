@@ -1,0 +1,46 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-overlay",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/history-projection-legacy-pgkv3av0/overlay.json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaborationCommandHistoryReason(PreservesNullableValues|FromSucceededManagedCommand)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "environment": {
+    "GOTOOLCHAIN": "go1.26.6",
+    "database_alias": "service_s5",
+    "schema_expected_through": 737,
+    "real_provider_access": false
+  },
+  "started_at": "2026-10-21T09:41:30.877039+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_command_history_reason.go": "b015d70086ff0646cd3ca16ad4012e2d48b2dea15d9138a78754c46c8e0f5a1b",
+    "server/internal/service/collaboration_command_history_reason_test.go": "3152071d3350f18099e924cd978067763b98dfbaa3e07c17ceb70523f17935ec",
+    "server/internal/service/collaboration_command_history.go": "6ddc3e26ef0d06a449140e6638731cb9693660b38b1d78ccd83d3c0c860ff2be",
+    "server/internal/service/collaboration_command_history_test.go": "869196731ce555206557c1464a4495a1aad6bab3aed22994ba56fcedb16df976"
+  },
+  "overlay": {
+    "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/history-projection-legacy-pgkv3av0/overlay.json",
+    "sha256": "e722b05f86e16ec6bedc89b994107dfe7f05e22aaba0a79d4cf804fbd2add4fb",
+    "replacement_path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/history-projection-legacy-pgkv3av0/collaboration_command_history_reason.go",
+    "replacement_sha256": "1e1a87516a25e694edd7813cc65a6306f91598081e3392f3fef8e55f5cf785cf",
+    "replacement_source": "package service\n\nimport (\n\t\"github.com/jackc/pgx/v5/pgtype\"\n\t\"github.com/multica-ai/multica/server/internal/util\"\n)\n\nfunc collaborationCommandHistoryReason(reason pgtype.Text) *string {\n\treturn util.TextToPtr(reason)\n}\n",
+    "scope": "temporary compiler overlay only; shared source untouched"
+  }
+}

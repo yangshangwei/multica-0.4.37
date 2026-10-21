@@ -1,0 +1,9 @@
+{"Time":"2026-10-21T15:47:58.992895+08:00","Action":"start","Package":"github.com/multica-ai/multica/server/internal/service"}
+{"Time":"2026-10-21T15:48:00.000055+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationCommandHistoryProjectsEmptyTerminalReasonAsNull"}
+{"Time":"2026-10-21T15:48:00.000282+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationCommandHistoryProjectsEmptyTerminalReasonAsNull","Output":"=== RUN   TestCollaborationCommandHistoryProjectsEmptyTerminalReasonAsNull\n"}
+{"Time":"2026-10-21T15:48:00.625394+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationCommandHistoryProjectsEmptyTerminalReasonAsNull","Output":"    collaboration_command_history_test.go:314: forbidden\n"}
+{"Time":"2026-10-21T15:48:00.718667+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationCommandHistoryProjectsEmptyTerminalReasonAsNull","Output":"--- FAIL: TestCollaborationCommandHistoryProjectsEmptyTerminalReasonAsNull (0.72s)\n"}
+{"Time":"2026-10-21T15:48:00.71873+08:00","Action":"fail","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationCommandHistoryProjectsEmptyTerminalReasonAsNull","Elapsed":0.72}
+{"Time":"2026-10-21T15:48:00.719938+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Output":"FAIL\n"}
+{"Time":"2026-10-21T15:48:00.723078+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Output":"FAIL\tgithub.com/multica-ai/multica/server/internal/service\t1.729s\n"}
+{"Time":"2026-10-21T15:48:00.723113+08:00","Action":"fail","Package":"github.com/multica-ai/multica/server/internal/service","Elapsed":1.73}
