@@ -161,8 +161,19 @@ assignee name; this test does not establish the separate external display-name
 UI contract. Source structure and iteration membership remain separate writes.
 
 These tests prove database authority, version and projection boundaries. Full
-source-role/reason/request-separation acceptance requires its direct canonical
-assertions as well; counts alone do not complete AC80/81.
+source-role/reason/request-separation acceptance additionally uses
+`TestCollaborationSourceStructureAndIterationRejectNonManagers` for source-only
+member/owner, other full participants and external/departed managers. Each actual
+structure/iteration branch refuses with an immutable own receipt and unchanged
+source/business/execution snapshots; read references expose no unselected catalog.
+`TestCollaborationIterationRemovalRequiresReasonAndOriginalRefusal` verifies
+missing and whitespace-only removal reasons for creator and current source
+handler, then one fresh explicit reasoned removal. Old refused keys never
+recompute after it. `TestCollaborationIterationPUTRejectsMetadataBeforeEffects`
+requires strict rejection of title/project/status/stage mixed into the dedicated
+PUT before effects, then a legal separate membership write and identical replay.
+These direct tests supplement the real writer races; generic metadata capability
+or ordinary iteration `move` assertions do not prove these dedicated branches.
 
 ## Ordinary children and recorded executions
 
