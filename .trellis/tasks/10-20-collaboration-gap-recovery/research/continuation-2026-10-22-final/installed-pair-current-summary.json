@@ -1,0 +1,49 @@
+{
+  "at": "2026-10-22T14:21:16.356941+00:00",
+  "stats": {
+    "startTime": "2026-10-22T14:18:14.317Z",
+    "duration": 54084.971,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "raw_sha256": "97b96230adaac5ea0ed36a3f3138f2f7e57b3825b5d351219cfccda2b6f3e756",
+  "actual_tests": [
+    {
+      "title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+      "file": "collaboration-installed-main.spec.ts",
+      "line": 139,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 41713,
+      "attachments": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-pair-reviewed-final-installed-full-main.png",
+          "sha256": "386f841af155043c92e3fd294b69430680666bf2af214750833be5915f4ebc86"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-pair-reviewed-final-installed-full-main-journey.json",
+          "sha256": "5c75199de167a879bb9497ae4ef336ae91039d20fa3a1ec0a97afd26c40c82a0"
+        }
+      ]
+    },
+    {
+      "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+      "file": "collaboration-installed-clients.spec.ts",
+      "line": 29,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 10585,
+      "attachments": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-pair-reviewed-final-installed-old-cli-boundary.json",
+          "sha256": "242bfdde56c00e40666e9b5502566b9303fe5435630c6a6cb4df72bdae283f94"
+        }
+      ]
+    }
+  ],
+  "source_unchanged": true,
+  "production_gate_changed": false,
+  "real_provider_accounts": false
+}

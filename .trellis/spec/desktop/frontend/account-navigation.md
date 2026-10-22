@@ -116,3 +116,34 @@ MemoryRouter. List/board/Gantt/comment and relative layout CLI evidence reuse
 the existing source fixture, with actual native sort transforms complete before
 pointer release. This harness exercises renderer/preload and named Main hooks;
 full installed Main/installer remains separate acceptance.
+
+
+## Current full packaged Main and cross-client continuation
+
+`e2e/collaboration-installed-main.spec.ts` starts the exact current unsigned
+Linux-arm64 electron-builder directory package under Xvfb, with full production
+Main/preload/renderer and `app.isPackaged=true`. A disposable container's real
+OS-default `/root` owns runtime config, daemon profile, updater and password
+session; do not override the user's home or replace native IPC services.
+Disable automatic daemon/update through their actual fresh profile files, verify
+bundled CLI version/bootstrap, and perform the real password login form.
+
+The same issue UUID passes Web→installed Main→Web handoff with unchanged creator,
+original session/channel/command identities and current capabilities. Use the
+actual per-lane resource scope when canceling: sequence1 can exist in multiple
+channels. Read cancelled input history after reload and full process restart;
+unknown Stop proof remains a barrier in both clients, with explicit partial
+Resume preserving it. Service-issued pending Permit is protocol simulation,
+not a native provider run or proof. Exact current package hashes and separate
+actual Linux natural-proof/reconnect evidence must retain their own scopes.
+
+
+The same installed-Main journey submits Request information, Return information
+and Submit for acceptance through their real forms on both Web and Desktop.
+Each side uses the one prescribed status option/current version and exact
+request identity; both clients observe the current handler/request and the
+same session/execution state. Before another intent, await actual post-navigation
+GET completion and read through the authenticated renderer: Electron can retire
+reload response bodies from CDP, even when HTTP200 has completed. A stale CDP
+body is no evidence of an unavailable issue and must not cause a write retry.
+Keep independent original receipts and actual rendered handler/status checks.

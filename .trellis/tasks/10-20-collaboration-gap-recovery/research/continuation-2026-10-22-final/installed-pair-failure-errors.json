@@ -1,0 +1,29 @@
+[
+  {
+    "title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+    "status": "failed",
+    "error": {
+      "message": "Error: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n409 !== 200\n\n    at originalResponse (file:///workspace/e2e/fixtures/collaboration-installed-main.mjs:139:10)\n    at async dispatch (file:///workspace/e2e/fixtures/collaboration-installed-main.mjs:205:23)\n    at async file:///workspace/e2e/fixtures/collaboration-installed-main.mjs:298:23",
+      "stack": "Error: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n409 !== 200\n\n    at originalResponse (file:///workspace/e2e/fixtures/collaboration-installed-main.mjs:139:10)\n    at async dispatch (file:///workspace/e2e/fixtures/collaboration-installed-main.mjs:205:23)\n    at async file:///workspace/e2e/fixtures/collaboration-installed-main.mjs:298:23\n    at originalResponse (/workspace/e2e/fixtures/collaboration-installed-main.mjs:139:10)\n    at async dispatch (/workspace/e2e/fixtures/collaboration-installed-main.mjs:205:23)\n    at async file:///workspace/e2e/fixtures/collaboration-installed-main.mjs:298:23\n    at Interface.<anonymous> (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-installed-main.ts:61:39)",
+      "location": {
+        "file": "/workspace/e2e/fixtures/collaboration-installed-main.mjs",
+        "column": 10,
+        "line": 139
+      }
+    }
+  },
+  {
+    "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+    "status": "failed",
+    "error": {
+      "message": "Error: ENOENT: no such file or directory, stat '/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-cli-relay-linux'",
+      "stack": "Error: ENOENT: no such file or directory, stat '/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-cli-relay-linux'\n    at invokeInstalledCLI (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-installed-clients.ts:44:40)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-installed-clients.spec.ts:93:28",
+      "location": {
+        "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-installed-clients.ts",
+        "column": 40,
+        "line": 44
+      },
+      "snippet": "\u001b[90m   at \u001b[39mfixtures/collaboration-installed-clients.ts:44\n\n  42 |   }\n  43 |   const relay = process.env.COLLABORATION_INSTALLED_CLI_RELAY;\n> 44 |   if (!relay || !isAbsolute(relay) || !statSync(relay).isFile()) throw new Error(\"The explicit test-only Linux relay is required\");\n     |                                        ^\n  45 |   if (input.args[0] !== \"issue\" || input.args.some((arg) => arg.startsWith(\"--server\") || arg.startsWith(\"--profile\"))) {\n  46 |     throw new Error(\"The installed-client slice allows only its explicit issue command\");\n  47 |   }"
+    }
+  }
+]

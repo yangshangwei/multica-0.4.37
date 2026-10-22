@@ -1,0 +1,123 @@
+{
+  "date": "2026-10-22T14:17:48.636457+00:00",
+  "report": "full-main-directed-third.stdout",
+  "report_sha256": "9a03c940a8b016327ec3cf07743729a62c1207787a8377f1adaa8ee4d674125a",
+  "stats": {
+    "startTime": "2026-10-22T14:16:21.105Z",
+    "duration": 40161.599,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "issue_id": "01a163f8-5a9b-7a4c-bf98-e6c9f6f9229f",
+  "main": {
+    "packaged": true,
+    "appPath": "/opt/multica/resources/app.asar",
+    "name": "Multica",
+    "version": "0.6.5-collaboration.63c0beeb5",
+    "executable": "/opt/multica/multica-desktop",
+    "home": "/root",
+    "userData": "/root/.config/Multica",
+    "platform": "linux",
+    "arch": "arm64",
+    "electron": "39.8.7"
+  },
+  "artifact_sha256": "35690546d3148df7c702ae39a5589e684eeb379893e34e79b2438ada578b3ea5",
+  "forms": [
+    {
+      "client": "electron",
+      "action": "request_information",
+      "request_id": "aa11a479-2d94-4700-9faf-97e0b3c103ff",
+      "code": "information_requested",
+      "status": "blocked",
+      "expected_revision": "4",
+      "receipt_revision": "5",
+      "handler_id": "cdd69dcb-1cd2-4d04-8c0e-0036042eea02",
+      "queue_state": "paused"
+    },
+    {
+      "client": "web",
+      "action": "return_information",
+      "request_id": "43568837-6c11-47a4-8383-73f5d95b4435",
+      "code": "information_returned",
+      "status": "todo",
+      "expected_revision": "5",
+      "receipt_revision": "6",
+      "handler_id": "6024c9c8-08da-4e35-a0f9-343d031d2b5e",
+      "queue_state": "paused"
+    },
+    {
+      "client": "electron",
+      "action": "submit_acceptance",
+      "request_id": "7329b145-2da4-4250-8ed2-65b29a7c77f8",
+      "code": "acceptance_submitted",
+      "status": "in_review",
+      "expected_revision": "6",
+      "receipt_revision": "7",
+      "handler_id": "cdd69dcb-1cd2-4d04-8c0e-0036042eea02",
+      "queue_state": "paused"
+    },
+    {
+      "client": "web",
+      "action": "request_information",
+      "request_id": "f904d72f-24f1-437f-bdad-45622ce896fa",
+      "code": "information_requested",
+      "status": "blocked",
+      "expected_revision": "7",
+      "receipt_revision": "8",
+      "handler_id": "6024c9c8-08da-4e35-a0f9-343d031d2b5e",
+      "queue_state": "paused"
+    },
+    {
+      "client": "electron",
+      "action": "return_information",
+      "request_id": "81d22bbf-f4a8-4c9d-9ca7-6f06f80a0a88",
+      "code": "information_returned",
+      "status": "in_review",
+      "expected_revision": "8",
+      "receipt_revision": "9",
+      "handler_id": "cdd69dcb-1cd2-4d04-8c0e-0036042eea02",
+      "queue_state": "paused"
+    },
+    {
+      "client": "web",
+      "action": "submit_acceptance",
+      "request_id": "a686b9b5-548f-4301-b09c-5b3f71d3c235",
+      "code": "acceptance_submitted",
+      "status": "in_review",
+      "expected_revision": "10",
+      "receipt_revision": "11",
+      "handler_id": "cdd69dcb-1cd2-4d04-8c0e-0036042eea02",
+      "queue_state": "paused"
+    }
+  ],
+  "activity_kinds": [
+    "acceptance_submitted",
+    "transferred",
+    "information_returned",
+    "information_requested",
+    "acceptance_submitted",
+    "information_returned",
+    "information_requested",
+    "transferred",
+    "participant_added",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "participant_added",
+    "created"
+  ],
+  "final_native_errors": [],
+  "scope": "Actual Web and packaged Linuxarm64 Main user forms; no provider/OS containment/other installers"
+}

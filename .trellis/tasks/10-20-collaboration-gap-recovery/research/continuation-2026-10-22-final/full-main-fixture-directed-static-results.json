@@ -1,0 +1,119 @@
+{
+  "date": "2026-10-22T14:17:00.636602+00:00",
+  "task": "10-20-collaboration-gap-recovery",
+  "checks": [
+    {
+      "name": "syntax",
+      "command": [
+        "node",
+        "--check",
+        "e2e/fixtures/collaboration-installed-main.mjs"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-10-22T14:16:54.743962+00:00",
+      "finished_at": "2026-10-22T14:16:54.765026+00:00",
+      "exit_code": 0,
+      "stdout": "full-main-fixture-directed-syntax.stdout",
+      "stderr": "full-main-fixture-directed-syntax.stderr"
+    },
+    {
+      "name": "typecheck",
+      "command": [
+        "pnpm",
+        "exec",
+        "tsc",
+        "--noEmit",
+        "--target",
+        "ES2022",
+        "--module",
+        "ESNext",
+        "--moduleResolution",
+        "Bundler",
+        "--strict",
+        "--noUnusedLocals",
+        "--noUnusedParameters",
+        "--skipLibCheck",
+        "--esModuleInterop",
+        "--allowSyntheticDefaultImports",
+        "--jsx",
+        "react-jsx",
+        "--lib",
+        "ES2022,DOM,DOM.Iterable",
+        "e2e/collaboration-installed-main.spec.ts",
+        "e2e/fixtures/collaboration-installed-main.ts"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-10-22T14:16:54.765064+00:00",
+      "finished_at": "2026-10-22T14:16:58.648001+00:00",
+      "exit_code": 0,
+      "stdout": "full-main-fixture-directed-typecheck.stdout",
+      "stderr": "full-main-fixture-directed-typecheck.stderr"
+    },
+    {
+      "name": "lint",
+      "command": [
+        "node",
+        ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/full-main-fixture-static.mjs"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-10-22T14:16:58.648108+00:00",
+      "finished_at": "2026-10-22T14:16:59.533536+00:00",
+      "exit_code": 0,
+      "stdout": "full-main-fixture-directed-lint.stdout",
+      "stderr": "full-main-fixture-directed-lint.stderr"
+    },
+    {
+      "name": "list",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-installed-main.spec.ts",
+        "--list"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-10-22T14:16:59.533576+00:00",
+      "finished_at": "2026-10-22T14:17:00.625717+00:00",
+      "exit_code": 0,
+      "stdout": "full-main-fixture-directed-list.stdout",
+      "stderr": "full-main-fixture-directed-list.stderr"
+    },
+    {
+      "name": "diff",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "e2e/collaboration-installed-main.spec.ts",
+        "e2e/fixtures/collaboration-installed-main.mjs",
+        "e2e/fixtures/collaboration-installed-main.ts"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-10-22T14:17:00.625769+00:00",
+      "finished_at": "2026-10-22T14:17:00.636562+00:00",
+      "exit_code": 0,
+      "stdout": "full-main-fixture-directed-diff.stdout",
+      "stderr": "full-main-fixture-directed-diff.stderr"
+    }
+  ],
+  "source_files": [
+    {
+      "file": "e2e/collaboration-installed-main.spec.ts",
+      "sha256": "fd3a0889d01b2336b62014c1dfc4d84bac6c30c2d28ef5bde76efe471cc76b86",
+      "bytes": 31000
+    },
+    {
+      "file": "e2e/fixtures/collaboration-installed-main.ts",
+      "sha256": "1d677378fe0aa34405c1ccba0bd8073ec14b4073135f4bad33b4f91418f027dc",
+      "bytes": 6770
+    },
+    {
+      "file": "e2e/fixtures/collaboration-installed-main.mjs",
+      "sha256": "f5ba85f0a7bb56c1facf61d5fac871e1351e03e13bb7ac307eafc3e1d408e319",
+      "bytes": 23553
+    }
+  ],
+  "scope": "six actual UI workflow branches plus fixture refresh; root owns executable reruns"
+}

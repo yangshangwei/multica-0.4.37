@@ -1,0 +1,119 @@
+{
+  "date": "2026-10-22T13:38:09.723702+00:00",
+  "task": "10-20-collaboration-gap-recovery",
+  "checks": [
+    {
+      "name": "syntax",
+      "command": [
+        "node",
+        "--check",
+        "e2e/fixtures/collaboration-installed-main.mjs"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-10-22T13:38:01.142437+00:00",
+      "finished_at": "2026-10-22T13:38:01.162891+00:00",
+      "exit_code": 0,
+      "stdout": "full-main-fixture-syntax.stdout",
+      "stderr": "full-main-fixture-syntax.stderr"
+    },
+    {
+      "name": "list",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-installed-main.spec.ts",
+        "--list"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-10-22T13:38:01.162940+00:00",
+      "finished_at": "2026-10-22T13:38:02.379580+00:00",
+      "exit_code": 0,
+      "stdout": "full-main-fixture-list.stdout",
+      "stderr": "full-main-fixture-list.stderr"
+    },
+    {
+      "name": "typecheck",
+      "command": [
+        "pnpm",
+        "exec",
+        "tsc",
+        "--noEmit",
+        "--target",
+        "ES2022",
+        "--module",
+        "ESNext",
+        "--moduleResolution",
+        "Bundler",
+        "--strict",
+        "--noUnusedLocals",
+        "--noUnusedParameters",
+        "--skipLibCheck",
+        "--esModuleInterop",
+        "--allowSyntheticDefaultImports",
+        "--jsx",
+        "react-jsx",
+        "--lib",
+        "ES2022,DOM,DOM.Iterable",
+        "e2e/collaboration-installed-main.spec.ts",
+        "e2e/fixtures/collaboration-installed-main.ts"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-10-22T13:38:02.379659+00:00",
+      "finished_at": "2026-10-22T13:38:08.733215+00:00",
+      "exit_code": 0,
+      "stdout": "full-main-fixture-typecheck.stdout",
+      "stderr": "full-main-fixture-typecheck.stderr"
+    },
+    {
+      "name": "lint",
+      "command": [
+        "node",
+        ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/full-main-fixture-static.mjs"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-10-22T13:38:08.733332+00:00",
+      "finished_at": "2026-10-22T13:38:09.708613+00:00",
+      "exit_code": 0,
+      "stdout": "full-main-fixture-lint.stdout",
+      "stderr": "full-main-fixture-lint.stderr"
+    },
+    {
+      "name": "diff",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "e2e/collaboration-installed-main.spec.ts",
+        "e2e/fixtures/collaboration-installed-main.ts",
+        "e2e/fixtures/collaboration-installed-main.mjs"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-10-22T13:38:09.708686+00:00",
+      "finished_at": "2026-10-22T13:38:09.723663+00:00",
+      "exit_code": 0,
+      "stdout": "full-main-fixture-diff.stdout",
+      "stderr": "full-main-fixture-diff.stderr"
+    }
+  ],
+  "source_files": [
+    {
+      "file": "e2e/collaboration-installed-main.spec.ts",
+      "sha256": "96f981a1e6510b0b17103003befdd18e51fa4973c7f9cdb59d44d521c1942802",
+      "bytes": 20797
+    },
+    {
+      "file": "e2e/fixtures/collaboration-installed-main.ts",
+      "sha256": "1d677378fe0aa34405c1ccba0bd8073ec14b4073135f4bad33b4f91418f027dc",
+      "bytes": 6770
+    },
+    {
+      "file": "e2e/fixtures/collaboration-installed-main.mjs",
+      "sha256": "84787c6279175fa3f62cc1319d5d855d680d4cc68d65ddc07f06d2a7ff958731",
+      "bytes": 17025
+    }
+  ],
+  "scope": "test-only static verification; live installed E2E owned by root"
+}

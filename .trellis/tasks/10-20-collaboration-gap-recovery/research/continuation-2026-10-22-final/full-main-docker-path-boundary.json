@@ -1,0 +1,7 @@
+{
+  "first_attempt": "Docker Desktop mount denied /tmp path",
+  "fix": "Use actual canonical /private/tmp bind source; symlink /tmp alias is not a configured shared source",
+  "product_changes": false,
+  "user_docker_settings_changed": false,
+  "first_attempt_product_evidence": false
+}
