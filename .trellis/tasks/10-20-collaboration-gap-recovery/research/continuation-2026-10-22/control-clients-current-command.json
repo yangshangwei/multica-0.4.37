@@ -1,0 +1,42 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-control-journey-web.spec.ts",
+    "e2e/collaboration-control-journey-desktop.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--project=chromium",
+    "--reporter=json",
+    "--output=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-gap-resume-20261022-zkx9kfqv/control-current-artifacts"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "database_alias": null,
+  "started_at": "2026-10-21T23:42:31.751246+00:00",
+  "source_sha256": {
+    "e2e/fixtures/collaboration-control-journey.ts": "a9ffc9f134dd0471c1dc984b6dcf2be130f98e390558e9940b0724a49cfd5488",
+    "e2e/collaboration-control-journey-web.spec.ts": "97189fd859b7d8a524b6686bb19f23f478600362f9eb9eed46b627acb886dc9b",
+    "e2e/collaboration-control-journey-desktop.spec.ts": "705b5648f4a675ab43283688e0145dbf6b7f6544eb38fed64e0f2e7214f62c01",
+    "e2e/fixtures/collaboration-native.ts": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94"
+  },
+  "real_provider_account_access": false,
+  "production_gate_change": false,
+  "exit_code": 1,
+  "elapsed_s": 28.264,
+  "finished_at": "2026-10-21T23:43:00.015537+00:00",
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-clients-current.stdout",
+  "stdout_sha256": "97041ebf400e5949688de5ebf70172f2bc9e03c94d700fe8ca6422a96a65787e",
+  "source_changed_during_run": [],
+  "playwright_stats": {
+    "startTime": "2026-10-21T23:42:32.689Z",
+    "duration": 27299.932,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-22T00:01:11.926554+00:00",
+  "reviewer": "root independent of content_creation two-alias implementation",
+  "file": "e2e/fixtures/collaboration-control-journey.ts",
+  "baseline_sha256": "1e6b3536b6ba030242320635e9892ee4df86dd63e10f5e81fbd84d63c8e4f512",
+  "current_sha256": "a9ffc9f134dd0471c1dc984b6dcf2be130f98e390558e9940b0724a49cfd5488",
+  "exact_only_two_return_aliases": true,
+  "setup_behavior_changed": false,
+  "closures_pre_existing": true,
+  "secrets_logged": false,
+  "caller_authority_changed": false,
+  "decision": "approve_two_authentication_return_aliases",
+  "executed_current_control_tests": "control-clients-final4/4",
+  "executed_alias_consumers": "content-clients-final3/3 both actual actors"
+}

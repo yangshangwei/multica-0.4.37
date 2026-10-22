@@ -1,0 +1,631 @@
+{
+  "issue_id": "01a160da-839c-7ed0-9a21-b134bf01b38a",
+  "installation_id": "a0338ba4-c202-4f4e-bb37-647de3115667",
+  "binding_id": "bc34cd02-1caf-46ba-99d6-b9fdd3a50bf9",
+  "runtime_id": "765fb007-010d-46b0-8a90-e6921e95e4ff",
+  "target_a": {
+    "kind": "agent",
+    "targetId": "2f1af5e3-aa1f-4a2b-a483-9c5b33de3943",
+    "resourceId": "9fc822c7-e012-44ad-a769-3b8b740762af",
+    "channelId": "06184374-4427-46f0-a283-56fe8976fdef"
+  },
+  "target_b": {
+    "kind": "agent",
+    "targetId": "aa873a05-0692-4db8-b199-7cb901d405bb",
+    "resourceId": "a2e271eb-1caf-41dd-ab8c-4fe74abac49a",
+    "channelId": "7c05261e-062d-40db-a901-0c4886abf05a"
+  },
+  "squad_s": {
+    "kind": "squad",
+    "targetId": "b4d424e9-90f6-447a-aac3-fa25c2d230f0",
+    "resourceId": "92233efb-57da-40dd-bf71-9a943c86ff4a",
+    "channelId": "2ae059fb-1370-4d56-aa29-b3a6b0501196"
+  },
+  "refused": {
+    "status": 409,
+    "code": "issue_paused",
+    "issue_id": "01a160da-839c-7ed0-9a21-b134bf01b38a",
+    "request_id": "21a3b9d0-4424-464d-b1a7-4dd8717da76a",
+    "action": "resume",
+    "protocol_version": 2,
+    "scope": "target",
+    "target_id": "aa873a05-0692-4db8-b199-7cb901d405bb",
+    "grant_id": null,
+    "proposal_id": null,
+    "channel_id": "7c05261e-062d-40db-a901-0c4886abf05a",
+    "batch_id": null,
+    "command_id": null,
+    "queue_state": "paused",
+    "control_version": "1",
+    "target_set_version": "4",
+    "group_id": null,
+    "group_settled": false,
+    "channels": [],
+    "target_holds": [],
+    "run_id": null,
+    "run_settled": false
+  },
+  "partial": {
+    "status": 200,
+    "code": "partially_resumed",
+    "issue_id": "01a160da-839c-7ed0-9a21-b134bf01b38a",
+    "request_id": "a689b8e6-8844-4287-9789-7bf3693792b2",
+    "action": "resume",
+    "protocol_version": 2,
+    "scope": "issue",
+    "target_id": null,
+    "grant_id": null,
+    "proposal_id": null,
+    "channel_id": null,
+    "batch_id": null,
+    "command_id": null,
+    "queue_state": "active",
+    "control_version": "2",
+    "target_set_version": "4",
+    "group_id": null,
+    "group_settled": false,
+    "targets": [
+      {
+        "target_id": "2f1af5e3-aa1f-4a2b-a483-9c5b33de3943",
+        "channel_id": "06184374-4427-46f0-a283-56fe8976fdef",
+        "code": "resumed",
+        "queue_state": "active",
+        "control_version": "2",
+        "group_generation": "0",
+        "group_id": null,
+        "group_settled": false,
+        "stopped_runs": 0,
+        "unsettled_runs": 0
+      },
+      {
+        "target_id": "b4d424e9-90f6-447a-aac3-fa25c2d230f0",
+        "channel_id": "2ae059fb-1370-4d56-aa29-b3a6b0501196",
+        "code": "resumed",
+        "queue_state": "active",
+        "control_version": "2",
+        "group_generation": "0",
+        "group_id": null,
+        "group_settled": false,
+        "stopped_runs": 0,
+        "unsettled_runs": 0
+      },
+      {
+        "target_id": "aa873a05-0692-4db8-b199-7cb901d405bb",
+        "channel_id": "7c05261e-062d-40db-a901-0c4886abf05a",
+        "code": "resumed",
+        "queue_state": "active",
+        "control_version": "2",
+        "group_generation": "0",
+        "group_id": null,
+        "group_settled": false,
+        "stopped_runs": 0,
+        "unsettled_runs": 0
+      }
+    ],
+    "channels": [
+      {
+        "channel_id": "06184374-4427-46f0-a283-56fe8976fdef",
+        "code": "resumed",
+        "queue_state": "active",
+        "control_version": "2",
+        "group_generation": "0",
+        "group_id": null,
+        "group_settled": false,
+        "stopped_runs": 0,
+        "unsettled_runs": 0
+      },
+      {
+        "channel_id": "2ae059fb-1370-4d56-aa29-b3a6b0501196",
+        "code": "resumed",
+        "queue_state": "active",
+        "control_version": "2",
+        "group_generation": "0",
+        "group_id": null,
+        "group_settled": false,
+        "stopped_runs": 0,
+        "unsettled_runs": 0
+      },
+      {
+        "channel_id": "7c05261e-062d-40db-a901-0c4886abf05a",
+        "code": "resumed",
+        "queue_state": "active",
+        "control_version": "2",
+        "group_generation": "0",
+        "group_id": null,
+        "group_settled": false,
+        "stopped_runs": 0,
+        "unsettled_runs": 0
+      }
+    ],
+    "target_holds": [
+      {
+        "target_id": "2f1af5e3-aa1f-4a2b-a483-9c5b33de3943",
+        "channel_id": "06184374-4427-46f0-a283-56fe8976fdef",
+        "code": "grant_required",
+        "hold_reason": "grant_required",
+        "hold_version": "3"
+      },
+      {
+        "target_id": "aa873a05-0692-4db8-b199-7cb901d405bb",
+        "channel_id": "7c05261e-062d-40db-a901-0c4886abf05a",
+        "code": "hold_released",
+        "hold_reason": null,
+        "hold_version": "3"
+      },
+      {
+        "target_id": "b4d424e9-90f6-447a-aac3-fa25c2d230f0",
+        "channel_id": "2ae059fb-1370-4d56-aa29-b3a6b0501196",
+        "code": "hold_released",
+        "hold_reason": null,
+        "hold_version": "4"
+      }
+    ],
+    "run_id": null,
+    "run_settled": false
+  },
+  "isolated_targets": [
+    {
+      "target": {
+        "kind": "agent",
+        "targetId": "aa873a05-0692-4db8-b199-7cb901d405bb",
+        "resourceId": "a2e271eb-1caf-41dd-ab8c-4fe74abac49a",
+        "channelId": "7c05261e-062d-40db-a901-0c4886abf05a"
+      },
+      "stopped": {
+        "status": 200,
+        "code": "already_ended",
+        "issue_id": "01a160da-839c-7ed0-9a21-b134bf01b38a",
+        "request_id": "d158c942-c972-47cc-a08e-16d80e506ba5",
+        "action": "stop",
+        "protocol_version": 2,
+        "scope": "target",
+        "target_id": "aa873a05-0692-4db8-b199-7cb901d405bb",
+        "grant_id": null,
+        "proposal_id": null,
+        "channel_id": "7c05261e-062d-40db-a901-0c4886abf05a",
+        "batch_id": null,
+        "command_id": null,
+        "queue_state": "paused",
+        "control_version": "3",
+        "target_set_version": "4",
+        "group_id": null,
+        "group_settled": false,
+        "targets": [
+          {
+            "target_id": "aa873a05-0692-4db8-b199-7cb901d405bb",
+            "channel_id": "7c05261e-062d-40db-a901-0c4886abf05a",
+            "code": "already_ended",
+            "queue_state": "paused",
+            "control_version": "3",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          }
+        ],
+        "channels": [
+          {
+            "channel_id": "7c05261e-062d-40db-a901-0c4886abf05a",
+            "code": "already_ended",
+            "queue_state": "paused",
+            "control_version": "3",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          }
+        ],
+        "target_holds": [],
+        "run_id": null,
+        "run_settled": false
+      },
+      "resumed": {
+        "status": 200,
+        "code": "resumed",
+        "issue_id": "01a160da-839c-7ed0-9a21-b134bf01b38a",
+        "request_id": "adecb5fd-c9fd-4056-ae47-5826777af3b6",
+        "action": "resume",
+        "protocol_version": 2,
+        "scope": "target",
+        "target_id": "aa873a05-0692-4db8-b199-7cb901d405bb",
+        "grant_id": null,
+        "proposal_id": null,
+        "channel_id": "7c05261e-062d-40db-a901-0c4886abf05a",
+        "batch_id": null,
+        "command_id": null,
+        "queue_state": "active",
+        "control_version": "4",
+        "target_set_version": "4",
+        "group_id": null,
+        "group_settled": false,
+        "targets": [
+          {
+            "target_id": "aa873a05-0692-4db8-b199-7cb901d405bb",
+            "channel_id": "7c05261e-062d-40db-a901-0c4886abf05a",
+            "code": "resumed",
+            "queue_state": "active",
+            "control_version": "4",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          }
+        ],
+        "channels": [
+          {
+            "channel_id": "7c05261e-062d-40db-a901-0c4886abf05a",
+            "code": "resumed",
+            "queue_state": "active",
+            "control_version": "4",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          }
+        ],
+        "target_holds": [
+          {
+            "target_id": "aa873a05-0692-4db8-b199-7cb901d405bb",
+            "channel_id": "7c05261e-062d-40db-a901-0c4886abf05a",
+            "code": "already_active",
+            "hold_reason": null,
+            "hold_version": "3"
+          }
+        ],
+        "run_id": null,
+        "run_settled": false
+      }
+    },
+    {
+      "target": {
+        "kind": "squad",
+        "targetId": "b4d424e9-90f6-447a-aac3-fa25c2d230f0",
+        "resourceId": "92233efb-57da-40dd-bf71-9a943c86ff4a",
+        "channelId": "2ae059fb-1370-4d56-aa29-b3a6b0501196"
+      },
+      "stopped": {
+        "status": 200,
+        "code": "already_ended",
+        "issue_id": "01a160da-839c-7ed0-9a21-b134bf01b38a",
+        "request_id": "5f756586-09ce-4a7f-b52e-1969be031d32",
+        "action": "stop",
+        "protocol_version": 2,
+        "scope": "target",
+        "target_id": "b4d424e9-90f6-447a-aac3-fa25c2d230f0",
+        "grant_id": null,
+        "proposal_id": null,
+        "channel_id": "2ae059fb-1370-4d56-aa29-b3a6b0501196",
+        "batch_id": null,
+        "command_id": null,
+        "queue_state": "paused",
+        "control_version": "3",
+        "target_set_version": "4",
+        "group_id": null,
+        "group_settled": false,
+        "targets": [
+          {
+            "target_id": "b4d424e9-90f6-447a-aac3-fa25c2d230f0",
+            "channel_id": "2ae059fb-1370-4d56-aa29-b3a6b0501196",
+            "code": "already_ended",
+            "queue_state": "paused",
+            "control_version": "3",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          }
+        ],
+        "channels": [
+          {
+            "channel_id": "2ae059fb-1370-4d56-aa29-b3a6b0501196",
+            "code": "already_ended",
+            "queue_state": "paused",
+            "control_version": "3",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          }
+        ],
+        "target_holds": [],
+        "run_id": null,
+        "run_settled": false
+      },
+      "resumed": {
+        "status": 200,
+        "code": "resumed",
+        "issue_id": "01a160da-839c-7ed0-9a21-b134bf01b38a",
+        "request_id": "6cee8f20-a4ef-4536-9a0c-a7b870a4708a",
+        "action": "resume",
+        "protocol_version": 2,
+        "scope": "target",
+        "target_id": "b4d424e9-90f6-447a-aac3-fa25c2d230f0",
+        "grant_id": null,
+        "proposal_id": null,
+        "channel_id": "2ae059fb-1370-4d56-aa29-b3a6b0501196",
+        "batch_id": null,
+        "command_id": null,
+        "queue_state": "active",
+        "control_version": "4",
+        "target_set_version": "4",
+        "group_id": null,
+        "group_settled": false,
+        "targets": [
+          {
+            "target_id": "b4d424e9-90f6-447a-aac3-fa25c2d230f0",
+            "channel_id": "2ae059fb-1370-4d56-aa29-b3a6b0501196",
+            "code": "resumed",
+            "queue_state": "active",
+            "control_version": "4",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          }
+        ],
+        "channels": [
+          {
+            "channel_id": "2ae059fb-1370-4d56-aa29-b3a6b0501196",
+            "code": "resumed",
+            "queue_state": "active",
+            "control_version": "4",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          }
+        ],
+        "target_holds": [
+          {
+            "target_id": "b4d424e9-90f6-447a-aac3-fa25c2d230f0",
+            "channel_id": "2ae059fb-1370-4d56-aa29-b3a6b0501196",
+            "code": "already_active",
+            "hold_reason": null,
+            "hold_version": "4"
+          }
+        ],
+        "run_id": null,
+        "run_settled": false
+      }
+    }
+  ],
+  "reconsented_resume": {
+    "status": 200,
+    "code": "resumed",
+    "issue_id": "01a160da-839c-7ed0-9a21-b134bf01b38a",
+    "request_id": "3a635c94-9eb9-4f9d-a307-04095793db3d",
+    "action": "resume",
+    "protocol_version": 2,
+    "scope": "target",
+    "target_id": "2f1af5e3-aa1f-4a2b-a483-9c5b33de3943",
+    "grant_id": null,
+    "proposal_id": null,
+    "channel_id": "06184374-4427-46f0-a283-56fe8976fdef",
+    "batch_id": null,
+    "command_id": null,
+    "queue_state": "active",
+    "control_version": "2",
+    "target_set_version": "4",
+    "group_id": null,
+    "group_settled": false,
+    "targets": [
+      {
+        "target_id": "2f1af5e3-aa1f-4a2b-a483-9c5b33de3943",
+        "channel_id": "06184374-4427-46f0-a283-56fe8976fdef",
+        "code": "already_active",
+        "queue_state": "active",
+        "control_version": "2",
+        "group_generation": "0",
+        "group_id": null,
+        "group_settled": false,
+        "stopped_runs": 0,
+        "unsettled_runs": 0
+      }
+    ],
+    "channels": [
+      {
+        "channel_id": "06184374-4427-46f0-a283-56fe8976fdef",
+        "code": "already_active",
+        "queue_state": "active",
+        "control_version": "2",
+        "group_generation": "0",
+        "group_id": null,
+        "group_settled": false,
+        "stopped_runs": 0,
+        "unsettled_runs": 0
+      }
+    ],
+    "target_holds": [
+      {
+        "target_id": "2f1af5e3-aa1f-4a2b-a483-9c5b33de3943",
+        "channel_id": "06184374-4427-46f0-a283-56fe8976fdef",
+        "code": "hold_released",
+        "hold_reason": null,
+        "hold_version": "5"
+      }
+    ],
+    "run_id": null,
+    "run_settled": false
+  },
+  "stopped_all": {
+    "status": 200,
+    "code": "already_ended",
+    "issue_id": "01a160da-839c-7ed0-9a21-b134bf01b38a",
+    "request_id": "4288d823-16d2-4790-8e96-3ce8d1f6039a",
+    "action": "stop",
+    "protocol_version": 2,
+    "scope": "issue",
+    "target_id": null,
+    "grant_id": null,
+    "proposal_id": null,
+    "channel_id": null,
+    "batch_id": null,
+    "command_id": null,
+    "queue_state": "paused",
+    "control_version": "3",
+    "target_set_version": "4",
+    "group_id": null,
+    "group_settled": false,
+    "targets": [
+      {
+        "target_id": "2f1af5e3-aa1f-4a2b-a483-9c5b33de3943",
+        "channel_id": "06184374-4427-46f0-a283-56fe8976fdef",
+        "code": "already_ended",
+        "queue_state": "paused",
+        "control_version": "3",
+        "group_generation": "0",
+        "group_id": null,
+        "group_settled": false,
+        "stopped_runs": 0,
+        "unsettled_runs": 0
+      },
+      {
+        "target_id": "aa873a05-0692-4db8-b199-7cb901d405bb",
+        "channel_id": "7c05261e-062d-40db-a901-0c4886abf05a",
+        "code": "already_ended",
+        "queue_state": "paused",
+        "control_version": "5",
+        "group_generation": "0",
+        "group_id": null,
+        "group_settled": false,
+        "stopped_runs": 0,
+        "unsettled_runs": 0
+      },
+      {
+        "target_id": "b4d424e9-90f6-447a-aac3-fa25c2d230f0",
+        "channel_id": "2ae059fb-1370-4d56-aa29-b3a6b0501196",
+        "code": "already_ended",
+        "queue_state": "paused",
+        "control_version": "5",
+        "group_generation": "0",
+        "group_id": null,
+        "group_settled": false,
+        "stopped_runs": 0,
+        "unsettled_runs": 0
+      }
+    ],
+    "channels": [
+      {
+        "channel_id": "06184374-4427-46f0-a283-56fe8976fdef",
+        "code": "already_ended",
+        "queue_state": "paused",
+        "control_version": "3",
+        "group_generation": "0",
+        "group_id": null,
+        "group_settled": false,
+        "stopped_runs": 0,
+        "unsettled_runs": 0
+      },
+      {
+        "channel_id": "2ae059fb-1370-4d56-aa29-b3a6b0501196",
+        "code": "already_ended",
+        "queue_state": "paused",
+        "control_version": "5",
+        "group_generation": "0",
+        "group_id": null,
+        "group_settled": false,
+        "stopped_runs": 0,
+        "unsettled_runs": 0
+      },
+      {
+        "channel_id": "7c05261e-062d-40db-a901-0c4886abf05a",
+        "code": "already_ended",
+        "queue_state": "paused",
+        "control_version": "5",
+        "group_generation": "0",
+        "group_id": null,
+        "group_settled": false,
+        "stopped_runs": 0,
+        "unsettled_runs": 0
+      }
+    ],
+    "target_holds": [],
+    "run_id": null,
+    "run_settled": false
+  },
+  "control_writes": [
+    {
+      "request_id": "21a3b9d0-4424-464d-b1a7-4dd8717da76a",
+      "action": "resume",
+      "scope": "target",
+      "target_ids": [
+        "aa873a05-0692-4db8-b199-7cb901d405bb"
+      ]
+    },
+    {
+      "request_id": "a689b8e6-8844-4287-9789-7bf3693792b2",
+      "action": "resume",
+      "scope": "issue",
+      "target_ids": [
+        "2f1af5e3-aa1f-4a2b-a483-9c5b33de3943",
+        "aa873a05-0692-4db8-b199-7cb901d405bb",
+        "b4d424e9-90f6-447a-aac3-fa25c2d230f0"
+      ]
+    },
+    {
+      "request_id": "d158c942-c972-47cc-a08e-16d80e506ba5",
+      "action": "stop",
+      "scope": "target",
+      "target_ids": [
+        "aa873a05-0692-4db8-b199-7cb901d405bb"
+      ]
+    },
+    {
+      "request_id": "adecb5fd-c9fd-4056-ae47-5826777af3b6",
+      "action": "resume",
+      "scope": "target",
+      "target_ids": [
+        "aa873a05-0692-4db8-b199-7cb901d405bb"
+      ]
+    },
+    {
+      "request_id": "5f756586-09ce-4a7f-b52e-1969be031d32",
+      "action": "stop",
+      "scope": "target",
+      "target_ids": [
+        "b4d424e9-90f6-447a-aac3-fa25c2d230f0"
+      ]
+    },
+    {
+      "request_id": "6cee8f20-a4ef-4536-9a0c-a7b870a4708a",
+      "action": "resume",
+      "scope": "target",
+      "target_ids": [
+        "b4d424e9-90f6-447a-aac3-fa25c2d230f0"
+      ]
+    },
+    {
+      "request_id": "3a635c94-9eb9-4f9d-a307-04095793db3d",
+      "action": "resume",
+      "scope": "target",
+      "target_ids": [
+        "2f1af5e3-aa1f-4a2b-a483-9c5b33de3943"
+      ]
+    },
+    {
+      "request_id": "4288d823-16d2-4790-8e96-3ce8d1f6039a",
+      "action": "stop",
+      "scope": "issue",
+      "target_ids": [
+        "2f1af5e3-aa1f-4a2b-a483-9c5b33de3943",
+        "aa873a05-0692-4db8-b199-7cb901d405bb",
+        "b4d424e9-90f6-447a-aac3-fa25c2d230f0"
+      ]
+    }
+  ],
+  "recovery_paths": [
+    "/api/collaboration/issues/01a160da-839c-7ed0-9a21-b134bf01b38a/control/operations/a689b8e6-8844-4287-9789-7bf3693792b2"
+  ],
+  "scope": "Real control UI and public managed registration for an offline synthetic remote Linux resource; no AI/process/proof execution",
+  "client_os": "darwin",
+  "resource_os": "synthetic remote linux",
+  "native_containment_claim": false
+}
