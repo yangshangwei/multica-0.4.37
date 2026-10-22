@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "reviewer": "trellis-check",
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "phase": "existing approved S6 acceptance review",
+  "criterion": "AC83",
+  "head_at_review": "cae15dd72ee568f28ce29b19f0c76765b72f26cd",
+  "authoritative_status_at_review": {"passed": 89, "not_verified_in_this_task": 8},
+  "authoritative_matrix_changed": false,
+  "source_files_edited": [],
+  "launched_clients_env_providers_db": false,
+  "decision": "recommend_promote_passed",
+  "decision_scope": "Whole AC83 clause set at current source; actual production Web + actual Electron IPC harness + Linux namespaces with explicit synthetic provider, plus canonical service race tests. Installed full Main, old clients, commercial provider account/quota, other OS and Mobile remain separate scopes.",
+  "blockers": [],
+  "evidence": {
+    "clients_raw": {
+      "path": "research/continuation-2026-10-22-resume/current-lane-notification-clients.stdout",
+      "sha256": "506299b1a544078c73af21a0425d4349d1ffa11c71ea8c708ba865522c0066c8",
+      "command": "research/continuation-2026-10-22-resume/current-lane-notification-clients-command.json",
+      "result": "research/continuation-2026-10-22-resume/current-lane-notification-clients-result.json",
+      "stats": {"expected": 8, "unexpected": 0, "skipped": 0, "flaky": 0},
+      "ac83_tests": [
+        {"identity": "e2e/collaboration-offline-result-notifications.spec.ts:15 Web", "status": "passed", "retry": 0, "duration_ms": 21386, "attachment_sha256": "90f2007d68af17fa867d1086a579b262f887b9d0482c16090c9e84630ae705f9", "attachment_file": "research/continuation-2026-10-22/current-session-web-notifications-identities.json"},
+        {"identity": "e2e/collaboration-offline-result-notifications.spec.ts:15 Electron", "status": "passed", "retry": 0, "duration_ms": 22482, "attachment_sha256": "d165c59ce8dc9337b547d274ab302b52f3e6e6664047ce09e3ab6ae2c9e2c85a", "attachment_file": "research/continuation-2026-10-22/current-session-electron-notifications-identities.json"}
+      ],
+      "embedded_attachments_equal_files": true,
+      "source_hashes_equal_current": true,
+      "binary_sha256": {"daemon.test": "57f9aa8c2306992964aa714eef324fb5435e8218f143bb28702378adbe67d358", "cross-client-provider": "80c3225030ff105764e3b65309d9b3e599c223a8914def1cb37ab6f3217a9f94"}
+    },
+    "canonical": {
+      "path": "research/continuation-2026-10-22-resume/notification-current-canonical.stdout",
+      "sha256": "87c23981b2e947511da8b2e10e5d88bf4b00178f942e719d07d3e7847aac0d80",
+      "reparsed": {"top_level_passed": 15, "including_subtests_passed": 31, "fail": [], "skip": []},
+      "test_sources_equal_current_and_committed": true
+    },
+    "offline_handoff": {
+      "result": "research/continuation-2026-10-21/offline-handoff-coordinator-rerun-result.json",
+      "preflight": "research/continuation-2026-10-21/offline-handoff-coordinator-rerun-preflight.json",
+      "stats": {"expected": 2, "unexpected": 0, "skipped": 0, "flaky": 0},
+      "spec_sha256_current": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e",
+      "fixture_sha256_current": "733fb4d46b603752c518ac316de0fa1258623b9b24cb7902b8be9d415be2fd35",
+      "commit": "28681f527"
+    },
+    "static": {
+      "typecheck": "research/continuation-2026-10-22-resume/lane-notification-typecheck-result.json",
+      "lint": "research/continuation-2026-10-22-resume/lane-notification-lint-result.json",
+      "exit_codes": [0, 0],
+      "recorded_sources_equal_current": true,
+      "trailing_whitespace_lines": 0
+    },
+    "credential_scan_attachments": {"matches": 0, "patterns": ["mcb_", "mdt_", "mul_", "mat_", "bearer", "jwt", "password", "cookie", "nonce", "token fields"]}
+  },
+  "clauses": [
+    {"clause": "offline external participant, real login, sees assignment/transfer/information request/return/acceptance/invite/new comment/AI completed/failed/stopped", "status": "verified", "evidence": "No workspaces/source membership; open+close client before events; logins unchanged; one fresh login (Web POST /auth/login, Electron password login into fresh profile). Six new kinds exactly once each. Invite seeded before first open; transferred (assignment and transfer) and comment_created from offline-handoff 2/2; 3 comment_created also present in final list."},
+    {"clause": "AI results notify only once confirmed", "status": "verified", "evidence": "Proof held at 503 with zero result notices and proof_state=unknown; after natural proof: succeeded/failed/stopped, exited_proven. Canonical success/failure/missing/stopped/never_launched: 0 before proof, Stop intent not announced, null actor."},
+    {"clause": "opens issue through the account workbench", "status": "verified", "evidence": "Popover title link opens heading on both clients; #run-<UUID> focuses Termination confirmed records; ai_failed shows No business result recorded / Partial recording, API business_outcome null and recording partial."},
+    {"clause": "actor receives no notice for own action", "status": "verified", "evidence": "Per workflow event the actor has 0 notices for that event_seq; the other participant and H have 1 each. Offline-handoff: creator gets none for own invite/assignment; H unchanged after own transfer-back. Canonical invite excludes actor."},
+    {"clause": "read/archive do not change handling or authority", "status": "verified", "evidence": "12 real UI POSTs return 200; issue snapshot, participating/current workbench unchanged after each; archive removes row only."},
+    {"clause": "removed participant gets only a content-free removal notice and cannot open via old notices", "status": "verified", "evidence": "Exactly one added removed notice (10 to 11); all items issue_title null, can_open false, source_id null, no run_id; account WS access_changed with ID/version-only keys; old result href denied on Web and Electron; issue and old run-records URLs 404; participating list empty; creator keeps the issue."},
+    {"clause": "source-member participant not duplicated in source inbox; external participant creates no source inbox/subscriber", "status": "verified", "evidence": "Creator source membership 1 and participant; H membership 0; inbox_item=0 and issue_subscriber=0 at four checkpoints; canonical workspace-wide and recipient-specific inbox 0, subscribers 0."},
+    {"clause": "notification delivery failure does not affect business operation", "status": "verified", "evidence": "Persistence failure rolls back atomically (InformationRequestRequiredWritesRollback/INSERT_INTO_collaboration_notification; ResultNotificationRollbackAndConcurrentReplay). Post-commit publisher failure keeps committed data with pending outbox, stable-identity retry and no private payload (RealtimeOutboxRetriesWithoutPrivatePayloads, RealtimeRetainsFailedSourceInvalidation)."},
+    {"clause": "replay does not duplicate notifications", "status": "verified", "evidence": "Original-key workflow replay: identical receipt, issue and notifications. Original natural proof bytes unchanged across retries; second replay returns 200 with identical issue/notice. Canonical concurrent replay gives exactly 2 recipients, not recomputed for later participant; outbox redelivery count stays 1. Offline-handoff covers invite/transfer replay."}
+  ],
+  "nonblocking_limitations": [
+    "Electron login-after-offline is a real password API login into a fresh isolated profile, not login-page UX or installed full Main.",
+    "Assignment and transfer share server kind transferred; no UI assertion covers creator receipt of H's transfer-back; same fanout is shown for information_requested and canonically for invite.",
+    "Comment self-exclusion is not reasserted here; relies on current AC90/91/97 retain_passed, not re-reviewed.",
+    "Browser source-isolation zero counts have no positive control; canonical tests and parent design.md:214 own that rule.",
+    "Canonical post-commit publisher failure uses a creation event; the generic outbox path is not repeated for every AC83 kind.",
+    "Browser ai_failed is natural missing-outcome/partial recording, not commercial model failure; canonical failure subtest covers explicit business failure.",
+    "Listener/build identity accepted from root preflight; not probed by this review."
+  ],
+  "separate_scopes_not_implied": ["installed full Main/installer", "old clients", "commercial provider account/quota", "other OS containment", "Mobile", "overall 97 acceptance"],
+  "writes": [
+    "research/continuation-2026-10-22/current-session-notification-review.md",
+    "research/continuation-2026-10-22/current-session-notification-review.json"
+  ]
+}

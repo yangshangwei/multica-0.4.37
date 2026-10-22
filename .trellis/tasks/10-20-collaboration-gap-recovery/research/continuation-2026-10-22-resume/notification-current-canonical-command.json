@@ -1,0 +1,34 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaboration(WorkflowNotificationsAndWorkbench|ResultNotificationsRequireProvenTerminalGroup|ResultNotificationRollbackAndConcurrentReplay|NotificationsLoseContentAndAnchorsWithAccess|WorkflowTransferRecordsIterationAndSupersedesInformation|RealtimeOutboxRetriesWithoutPrivatePayloads|RealtimeRetainsFailedSourceInvalidation|RealtimeRemovalReachesRevokedAccount|RealtimeAuthorizationKeepsIndependentReadBases|InformationChainReturnsLayerByLayer|InformationReturnRefusesUnavailableRequester|AcceptanceSubmissionReturnsOpenIssueToCreator|AcceptanceRefusesDisabledCreator|InformationRequestRolesAndClosedIssue|InformationRequestRequiredWritesRollback)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "started_at": "2026-10-22T06:02:23.214135+00:00",
+  "head": "cae15dd72ee568f28ce29b19f0c76765b72f26cd",
+  "source_sha256": {
+    "server/internal/service/collaboration_realtime_test.go": "9609106d2d5728e3fefaea00a93f5ad77b964789480cdee6803016841b1d2439",
+    "server/internal/service/collaboration_handoff_test.go": "99136f27f2331cd8aa384a45dca0c05b49cfc6831255ad32be71be2ce0f8e992",
+    "server/internal/service/collaboration_workflow_test.go": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+    "server/internal/service/collaboration_notifications_test.go": "48a03c00442e08b65402e852781616f5d00b4492c9e109df02bec4b5b23524ec",
+    "server/internal/service/collaboration_result_notifications_test.go": "0738215c6b3b7c9440749dd7f4b5fd67da69210078e5ff6a648261f5b07f133e"
+  },
+  "real_provider_account_access": false,
+  "production_gate_change": false
+}

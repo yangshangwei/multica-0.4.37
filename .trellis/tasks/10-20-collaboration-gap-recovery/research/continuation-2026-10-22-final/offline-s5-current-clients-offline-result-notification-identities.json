@@ -1,0 +1,2661 @@
+{
+  "sources": [
+    {
+      "path": "e2e/collaboration-offline-result-notifications.spec.ts",
+      "sha256": "86a2efd01f7d4e67bc83fb9452fb7fb1c22d7d8542045920aedc3f9166c8f117"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-offline-result-notifications.ts",
+      "sha256": "ab8c09d4600e354231e870721665798cbedd0cb584350f03cb96ebaeb3ac615c"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-offline-handoff.ts",
+      "sha256": "733fb4d46b603752c518ac316de0fa1258623b9b24cb7902b8be9d415be2fd35"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-lifecycle-controls.ts",
+      "sha256": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-cross-client-execution.ts",
+      "sha256": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-native.ts",
+      "sha256": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-cross-client-provider.go",
+      "sha256": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88"
+    }
+  ],
+  "binary_sources": [
+    {
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/continuation-linux/daemon.test",
+      "sha256": "57f9aa8c2306992964aa714eef324fb5435e8218f143bb28702378adbe67d358"
+    },
+    {
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/continuation-linux/cross-client-provider",
+      "sha256": "80c3225030ff105764e3b65309d9b3e599c223a8914def1cb37ab6f3217a9f94"
+    }
+  ],
+  "platform": "Electron",
+  "issue_id": "01a1634e-313a-7d3a-ba99-4f1bed30367a",
+  "recipient_id": "8ef3e425-25a3-4e9e-b778-f7d410e8c91e",
+  "environment": {
+    "api": "http://localhost:18996",
+    "production_web": "http://localhost:13916",
+    "native_renderer": "http://localhost:6090",
+    "real_provider_account_access": false,
+    "provider": "Existing explicit Linux stdlib executable; genuine failed/incomplete record after withheld outcome",
+    "installed_full_main": false
+  },
+  "offline_workflow": {
+    "events": [
+      {
+        "kind": "information_requested",
+        "actor_id": "59c1bb67-bf15-4381-a9d0-3b58292552de",
+        "request_id": "c3d0b9c0-c567-4c9f-91ef-c42b3ec7bf40",
+        "notification_id": "eb53b4ca-bb90-45e8-88a3-22fe3a6c7226",
+        "event_seq": "11"
+      },
+      {
+        "kind": "information_returned",
+        "actor_id": "783b8e72-5b85-4003-8d65-3e1c3a016581",
+        "request_id": "327bba59-5a59-47a6-908d-7d6831f39e3f",
+        "notification_id": "2086bb94-9f71-442d-9167-b27b5d7a75f7",
+        "event_seq": "12"
+      },
+      {
+        "kind": "acceptance_submitted",
+        "actor_id": "59c1bb67-bf15-4381-a9d0-3b58292552de",
+        "request_id": "8d858376-e5e1-482c-92f3-1f382ecb4c37",
+        "notification_id": "34d9a047-213c-495d-92a9-d111e482543a",
+        "event_seq": "13"
+      }
+    ],
+    "source_isolation": {
+      "creator_source_membership": 1,
+      "recipient_source_membership": 0,
+      "inbox_rows": 0,
+      "subscriber_rows": 0
+    }
+  },
+  "proven_results": {
+    "results": [
+      {
+        "kind": "ai_completed",
+        "run_id": "d5d8fd36-33d2-499d-a0cf-8c665b70b65d",
+        "group_id": "889ea989-97dd-4ad1-8472-28c05f5f1d7e",
+        "notification_id": "3098d239-bfe0-4915-a1c7-f6ed1a6f62c8",
+        "event_seq": "20",
+        "proof_replay": {
+          "status": 200,
+          "original_sha256": "81d8c3b33c4bbf551e25868390d30e32979ca5d7465e4750fc0c6caf3f33ec1f"
+        },
+        "missing_outcome": false
+      },
+      {
+        "kind": "ai_failed",
+        "run_id": "86944cd7-c8e1-4844-ba27-b0ddd1d0ef79",
+        "group_id": "109a9643-b16d-4622-819d-cfcbc0f23721",
+        "notification_id": "f994ef2c-4ff6-4313-bcd3-970e434485e4",
+        "event_seq": "27",
+        "proof_replay": {
+          "status": 200,
+          "original_sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+        },
+        "missing_outcome": true
+      },
+      {
+        "kind": "ai_stopped",
+        "run_id": "23016169-4da4-4792-97a4-b6afa08aef0a",
+        "group_id": "ad9b5453-1470-4b55-8140-13a8ca17c9c2",
+        "notification_id": "0796c371-984c-4e77-a93e-6bd1df51eabb",
+        "event_seq": "35",
+        "proof_replay": {
+          "status": 200,
+          "original_sha256": "bad590c279d02dcdba5c3a8994531e3403abe28bc7a0bf146697028808529ce5"
+        },
+        "missing_outcome": false
+      }
+    ],
+    "provider_observations": [
+      {
+        "lane": "A",
+        "namespace_id": "pid:[4026535233]",
+        "pid": 11,
+        "identity": {
+          "deployment_id": "f3a705a0-0193-435f-bc6d-05bc2074e905",
+          "installation_id": "e842a7fe-a074-49c2-93db-a49eb6bdbc93",
+          "issue_id": "01a1634e-313a-7d3a-ba99-4f1bed30367a",
+          "session_id": "bfd8a766-b7ec-4ce0-9e88-8edcbac75f20",
+          "target_id": "608dfc61-57eb-41f0-aa42-f5fc8ef68c96",
+          "channel_id": "3ae3e789-64cf-41cf-8885-80012d269f3d",
+          "batch_id": "6404dede-97d3-461d-ba25-9bb8bd6cf081",
+          "group_id": "889ea989-97dd-4ad1-8472-28c05f5f1d7e",
+          "run_id": "d5d8fd36-33d2-499d-a0cf-8c665b70b65d",
+          "fence": "1",
+          "claim_generation": "1"
+        },
+        "inputs": [
+          {
+            "command_id": "5fc3081f-4f26-4531-a944-2698c2cc01f6",
+            "author_user_id": "783b8e72-5b85-4003-8d65-3e1c3a016581",
+            "participant_epoch": "1",
+            "account_epoch": "1",
+            "lifecycle_epoch": "1",
+            "body": "AC83 completed input [@Independent execution agent A](mention://agent/e226ab15-5c6c-405b-9aad-fa5ce9a1fe22)",
+            "attachment_ids": []
+          }
+        ],
+        "started_ms": 2885.185875,
+        "released_ms": 3332.736208,
+        "closed_ms": 3334.343
+      },
+      {
+        "lane": "A",
+        "namespace_id": "pid:[4026535233]",
+        "pid": 11,
+        "identity": {
+          "deployment_id": "f3a705a0-0193-435f-bc6d-05bc2074e905",
+          "installation_id": "e842a7fe-a074-49c2-93db-a49eb6bdbc93",
+          "issue_id": "01a1634e-313a-7d3a-ba99-4f1bed30367a",
+          "session_id": "bfd8a766-b7ec-4ce0-9e88-8edcbac75f20",
+          "target_id": "608dfc61-57eb-41f0-aa42-f5fc8ef68c96",
+          "channel_id": "3ae3e789-64cf-41cf-8885-80012d269f3d",
+          "batch_id": "b7ef502d-da91-4eee-a11d-8f1745eccc42",
+          "group_id": "109a9643-b16d-4622-819d-cfcbc0f23721",
+          "run_id": "86944cd7-c8e1-4844-ba27-b0ddd1d0ef79",
+          "fence": "1",
+          "claim_generation": "1"
+        },
+        "inputs": [
+          {
+            "command_id": "0cec26ed-fadf-4d55-8be0-c3ca7789c07e",
+            "author_user_id": "783b8e72-5b85-4003-8d65-3e1c3a016581",
+            "participant_epoch": "1",
+            "account_epoch": "1",
+            "lifecycle_epoch": "1",
+            "body": "AC83 incomplete input [@Independent execution agent A](mention://agent/e226ab15-5c6c-405b-9aad-fa5ce9a1fe22)",
+            "attachment_ids": []
+          }
+        ],
+        "started_ms": 4473.624042,
+        "released_ms": 4533.97275,
+        "closed_ms": 4534.415208
+      },
+      {
+        "lane": "A",
+        "namespace_id": "pid:[4026535233]",
+        "pid": 12,
+        "identity": {
+          "deployment_id": "f3a705a0-0193-435f-bc6d-05bc2074e905",
+          "installation_id": "e842a7fe-a074-49c2-93db-a49eb6bdbc93",
+          "issue_id": "01a1634e-313a-7d3a-ba99-4f1bed30367a",
+          "session_id": "bfd8a766-b7ec-4ce0-9e88-8edcbac75f20",
+          "target_id": "608dfc61-57eb-41f0-aa42-f5fc8ef68c96",
+          "channel_id": "3ae3e789-64cf-41cf-8885-80012d269f3d",
+          "batch_id": "f3bbf8d7-ac73-4903-9239-304ff1e59605",
+          "group_id": "ad9b5453-1470-4b55-8140-13a8ca17c9c2",
+          "run_id": "23016169-4da4-4792-97a4-b6afa08aef0a",
+          "fence": "1",
+          "claim_generation": "1"
+        },
+        "inputs": [
+          {
+            "command_id": "3b694e0b-aa32-4e19-afaa-fb9a71836c94",
+            "author_user_id": "783b8e72-5b85-4003-8d65-3e1c3a016581",
+            "participant_epoch": "1",
+            "account_epoch": "1",
+            "lifecycle_epoch": "1",
+            "body": "AC83 stopped input [@Independent execution agent A](mention://agent/e226ab15-5c6c-405b-9aad-fa5ce9a1fe22)",
+            "attachment_ids": []
+          }
+        ],
+        "started_ms": 5833.49875,
+        "released_ms": null,
+        "closed_ms": 7857.743667
+      }
+    ],
+    "daemon_capacity": [
+      {
+        "lane": "A",
+        "messages": [
+          {
+            "max_concurrent_tasks": 1,
+            "ready": true
+          },
+          {
+            "active_tasks": 0,
+            "available_slots": 1,
+            "claims": 3,
+            "invalid_capacity": false
+          }
+        ],
+        "exit_code": 0
+      },
+      {
+        "lane": "B",
+        "messages": [
+          {
+            "max_concurrent_tasks": 1,
+            "ready": true
+          },
+          {
+            "active_tasks": 0,
+            "available_slots": 1,
+            "claims": 0,
+            "invalid_capacity": false
+          }
+        ],
+        "exit_code": 0
+      }
+    ],
+    "runtime_transport": {
+      "attempts": [
+        {
+          "path": "/api/daemon/register",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/register",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/permit",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/stop-intent",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/outcome",
+          "status": 200,
+          "sha256": "8955560500b89418f974c90577726ed900976c33990444bc3fbe107ac52e0b6a"
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/proof",
+          "status": 503,
+          "sha256": "81d8c3b33c4bbf551e25868390d30e32979ca5d7465e4750fc0c6caf3f33ec1f"
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/proof",
+          "status": 503,
+          "sha256": "81d8c3b33c4bbf551e25868390d30e32979ca5d7465e4750fc0c6caf3f33ec1f"
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/proof",
+          "status": 503,
+          "sha256": "81d8c3b33c4bbf551e25868390d30e32979ca5d7465e4750fc0c6caf3f33ec1f"
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/proof",
+          "status": 200,
+          "sha256": "81d8c3b33c4bbf551e25868390d30e32979ca5d7465e4750fc0c6caf3f33ec1f"
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/permit",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/stop-intent",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/outcome",
+          "status": 503,
+          "sha256": "e25ed34e6f6aacee47f5a4135531fd7190f5968340d727ac2ebffaba4e8578c4"
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+          "status": 503,
+          "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+          "status": 503,
+          "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+          "status": 503,
+          "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+          "status": 503,
+          "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+          "status": 503,
+          "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+          "status": 503,
+          "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+          "status": 503,
+          "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+          "status": 503,
+          "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+          "status": 200,
+          "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/permit",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/stop-intent",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/stop-intent",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/stop-intent",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/proof",
+          "status": 503,
+          "sha256": "bad590c279d02dcdba5c3a8994531e3403abe28bc7a0bf146697028808529ce5"
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/proof",
+          "status": 503,
+          "sha256": "bad590c279d02dcdba5c3a8994531e3403abe28bc7a0bf146697028808529ce5"
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/proof",
+          "status": 200,
+          "sha256": "bad590c279d02dcdba5c3a8994531e3403abe28bc7a0bf146697028808529ce5"
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+          "status": 200,
+          "sha256": null
+        },
+        {
+          "path": "/api/daemon/tasks/claim",
+          "status": 200,
+          "sha256": null
+        }
+      ],
+      "errors": [],
+      "proof_hashes": {
+        "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/proof": "81d8c3b33c4bbf551e25868390d30e32979ca5d7465e4750fc0c6caf3f33ec1f",
+        "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93",
+        "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/proof": "bad590c279d02dcdba5c3a8994531e3403abe28bc7a0bf146697028808529ce5"
+      }
+    },
+    "source_isolation": {
+      "creator_source_membership": 1,
+      "recipient_source_membership": 0,
+      "inbox_rows": 0,
+      "subscriber_rows": 0
+    }
+  },
+  "recipient_login_after_six_events": true,
+  "archived": [
+    {
+      "kind": "information_requested",
+      "id": "eb53b4ca-bb90-45e8-88a3-22fe3a6c7226",
+      "href": "http://localhost:18996/account?view=participating&issue=01a1634e-313a-7d3a-ba99-4f1bed30367a"
+    },
+    {
+      "kind": "information_returned",
+      "id": "2086bb94-9f71-442d-9167-b27b5d7a75f7",
+      "href": "http://localhost:18996/account?view=participating&issue=01a1634e-313a-7d3a-ba99-4f1bed30367a"
+    },
+    {
+      "kind": "acceptance_submitted",
+      "id": "34d9a047-213c-495d-92a9-d111e482543a",
+      "href": "http://localhost:18996/account?view=participating&issue=01a1634e-313a-7d3a-ba99-4f1bed30367a"
+    },
+    {
+      "kind": "ai_completed",
+      "id": "3098d239-bfe0-4915-a1c7-f6ed1a6f62c8",
+      "href": "http://localhost:18996/account?view=participating&issue=01a1634e-313a-7d3a-ba99-4f1bed30367a#run-d5d8fd36-33d2-499d-a0cf-8c665b70b65d",
+      "run_id": "d5d8fd36-33d2-499d-a0cf-8c665b70b65d"
+    },
+    {
+      "kind": "ai_failed",
+      "id": "f994ef2c-4ff6-4313-bcd3-970e434485e4",
+      "href": "http://localhost:18996/account?view=participating&issue=01a1634e-313a-7d3a-ba99-4f1bed30367a#run-86944cd7-c8e1-4844-ba27-b0ddd1d0ef79",
+      "run_id": "86944cd7-c8e1-4844-ba27-b0ddd1d0ef79"
+    },
+    {
+      "kind": "ai_stopped",
+      "id": "0796c371-984c-4e77-a93e-6bd1df51eabb",
+      "href": "http://localhost:18996/account?view=participating&issue=01a1634e-313a-7d3a-ba99-4f1bed30367a#run-23016169-4da4-4792-97a4-b6afa08aef0a",
+      "run_id": "23016169-4da4-4792-97a4-b6afa08aef0a"
+    }
+  ],
+  "source_isolation": {
+    "creator_source_membership": 1,
+    "recipient_source_membership": 0,
+    "inbox_rows": 0,
+    "subscriber_rows": 0
+  },
+  "removal": {
+    "removal": {
+      "code": "participant_removed",
+      "collaboration_revision": "6"
+    },
+    "redacted": [
+      {
+        "id": "687cccdd-cbf5-40cd-a4c2-94da4aae6a23",
+        "issue_id": "01a1634e-313a-7d3a-ba99-4f1bed30367a",
+        "event_seq": "38",
+        "kind": "removed",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-22T19:10:53.494603+08:00",
+        "read_at": null,
+        "archived_at": null
+      },
+      {
+        "id": "0796c371-984c-4e77-a93e-6bd1df51eabb",
+        "issue_id": "01a1634e-313a-7d3a-ba99-4f1bed30367a",
+        "event_seq": "35",
+        "kind": "ai_stopped",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-22T19:10:43.179165+08:00",
+        "read_at": "2026-10-22T19:10:52.816371+08:00",
+        "archived_at": "2026-10-22T19:10:52.916976+08:00"
+      },
+      {
+        "id": "0c51a1dd-10df-4a9e-8024-68ec289d9649",
+        "issue_id": "01a1634e-313a-7d3a-ba99-4f1bed30367a",
+        "event_seq": "30",
+        "kind": "comment_created",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-22T19:10:40.458423+08:00",
+        "read_at": null,
+        "archived_at": null
+      },
+      {
+        "id": "f994ef2c-4ff6-4313-bcd3-970e434485e4",
+        "issue_id": "01a1634e-313a-7d3a-ba99-4f1bed30367a",
+        "event_seq": "27",
+        "kind": "ai_failed",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-22T19:10:39.920369+08:00",
+        "read_at": "2026-10-22T19:10:51.714895+08:00",
+        "archived_at": "2026-10-22T19:10:51.811707+08:00"
+      },
+      {
+        "id": "503cdf6c-83d4-4b7c-b380-ae42a32b3888",
+        "issue_id": "01a1634e-313a-7d3a-ba99-4f1bed30367a",
+        "event_seq": "23",
+        "kind": "comment_created",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-22T19:10:39.259005+08:00",
+        "read_at": null,
+        "archived_at": null
+      },
+      {
+        "id": "3098d239-bfe0-4915-a1c7-f6ed1a6f62c8",
+        "issue_id": "01a1634e-313a-7d3a-ba99-4f1bed30367a",
+        "event_seq": "20",
+        "kind": "ai_completed",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-22T19:10:38.669082+08:00",
+        "read_at": "2026-10-22T19:10:50.365308+08:00",
+        "archived_at": "2026-10-22T19:10:50.479056+08:00"
+      },
+      {
+        "id": "26622753-ada1-412f-87bf-165e1ed3a6fb",
+        "issue_id": "01a1634e-313a-7d3a-ba99-4f1bed30367a",
+        "event_seq": "15",
+        "kind": "comment_created",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-22T19:10:37.442017+08:00",
+        "read_at": null,
+        "archived_at": null
+      },
+      {
+        "id": "34d9a047-213c-495d-92a9-d111e482543a",
+        "issue_id": "01a1634e-313a-7d3a-ba99-4f1bed30367a",
+        "event_seq": "13",
+        "kind": "acceptance_submitted",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-22T19:10:33.841783+08:00",
+        "read_at": "2026-10-22T19:10:49.266375+08:00",
+        "archived_at": "2026-10-22T19:10:49.395555+08:00"
+      },
+      {
+        "id": "2086bb94-9f71-442d-9167-b27b5d7a75f7",
+        "issue_id": "01a1634e-313a-7d3a-ba99-4f1bed30367a",
+        "event_seq": "12",
+        "kind": "information_returned",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-22T19:10:33.760705+08:00",
+        "read_at": "2026-10-22T19:10:48.167218+08:00",
+        "archived_at": "2026-10-22T19:10:48.264754+08:00"
+      },
+      {
+        "id": "eb53b4ca-bb90-45e8-88a3-22fe3a6c7226",
+        "issue_id": "01a1634e-313a-7d3a-ba99-4f1bed30367a",
+        "event_seq": "11",
+        "kind": "information_requested",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-22T19:10:33.621271+08:00",
+        "read_at": "2026-10-22T19:10:46.783153+08:00",
+        "archived_at": "2026-10-22T19:10:46.881427+08:00"
+      },
+      {
+        "id": "645a2e46-b61e-45ac-ba90-70e68dd25a82",
+        "issue_id": "01a1634e-313a-7d3a-ba99-4f1bed30367a",
+        "event_seq": "10",
+        "kind": "participant_added",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-22T19:10:31.888269+08:00",
+        "read_at": null,
+        "archived_at": null
+      }
+    ],
+    "old_result_href": "http://localhost:18996/account?view=participating&issue=01a1634e-313a-7d3a-ba99-4f1bed30367a#run-d5d8fd36-33d2-499d-a0cf-8c665b70b65d",
+    "old_entry_denied": true,
+    "source_isolation": {
+      "creator_source_membership": 1,
+      "recipient_source_membership": 0,
+      "inbox_rows": 0,
+      "subscriber_rows": 0
+    }
+  },
+  "account_frames": [
+    {
+      "type": "subscribe_ack",
+      "keys": [
+        "id",
+        "scope"
+      ]
+    },
+    {
+      "type": "collaboration:workbench_changed",
+      "keys": []
+    },
+    {
+      "type": "collaboration:workbench_changed",
+      "keys": []
+    },
+    {
+      "type": "collaboration:workbench_changed",
+      "keys": []
+    },
+    {
+      "type": "collaboration:workbench_changed",
+      "keys": []
+    },
+    {
+      "type": "collaboration:workbench_changed",
+      "keys": []
+    },
+    {
+      "type": "collaboration:workbench_changed",
+      "keys": []
+    },
+    {
+      "type": "collaboration:workbench_changed",
+      "keys": []
+    },
+    {
+      "type": "collaboration:workbench_changed",
+      "keys": []
+    },
+    {
+      "type": "collaboration:workbench_changed",
+      "keys": []
+    },
+    {
+      "type": "collaboration:workbench_changed",
+      "keys": []
+    },
+    {
+      "type": "collaboration:workbench_changed",
+      "keys": []
+    },
+    {
+      "type": "collaboration:workbench_changed",
+      "keys": []
+    },
+    {
+      "type": "collaboration:access_changed",
+      "keys": [
+        "issue_id",
+        "event_seq",
+        "collaboration_revision",
+        "authority_epoch"
+      ]
+    },
+    {
+      "type": "collaboration:workbench_changed",
+      "keys": []
+    },
+    {
+      "type": "collaboration:access_changed",
+      "keys": [
+        "issue_id"
+      ]
+    }
+  ],
+  "page_errors": [],
+  "transport_final": {
+    "attempts": [
+      {
+        "path": "/api/daemon/register",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/register",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/permit",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/stop-intent",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/outcome",
+        "status": 200,
+        "sha256": "8955560500b89418f974c90577726ed900976c33990444bc3fbe107ac52e0b6a"
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/proof",
+        "status": 503,
+        "sha256": "81d8c3b33c4bbf551e25868390d30e32979ca5d7465e4750fc0c6caf3f33ec1f"
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/proof",
+        "status": 503,
+        "sha256": "81d8c3b33c4bbf551e25868390d30e32979ca5d7465e4750fc0c6caf3f33ec1f"
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/proof",
+        "status": 503,
+        "sha256": "81d8c3b33c4bbf551e25868390d30e32979ca5d7465e4750fc0c6caf3f33ec1f"
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/proof",
+        "status": 200,
+        "sha256": "81d8c3b33c4bbf551e25868390d30e32979ca5d7465e4750fc0c6caf3f33ec1f"
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/permit",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/stop-intent",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/outcome",
+        "status": 503,
+        "sha256": "e25ed34e6f6aacee47f5a4135531fd7190f5968340d727ac2ebffaba4e8578c4"
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+        "status": 503,
+        "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+        "status": 503,
+        "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+        "status": 503,
+        "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+        "status": 503,
+        "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+        "status": 503,
+        "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+        "status": 503,
+        "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+        "status": 503,
+        "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+        "status": 503,
+        "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof",
+        "status": 200,
+        "sha256": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93"
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/permit",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/stop-intent",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/stop-intent",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/stop-intent",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/proof",
+        "status": 503,
+        "sha256": "bad590c279d02dcdba5c3a8994531e3403abe28bc7a0bf146697028808529ce5"
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/proof",
+        "status": 503,
+        "sha256": "bad590c279d02dcdba5c3a8994531e3403abe28bc7a0bf146697028808529ce5"
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/proof",
+        "status": 200,
+        "sha256": "bad590c279d02dcdba5c3a8994531e3403abe28bc7a0bf146697028808529ce5"
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=9c2dd2a2-3d28-4081-990e-0dc6fce1f0a1",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/collaboration/runtime/runs?runtime_id=6f50ed43-2092-4a4f-8bac-54be793c1685",
+        "status": 200,
+        "sha256": null
+      },
+      {
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "sha256": null
+      }
+    ],
+    "errors": [],
+    "proof_hashes": {
+      "/api/collaboration/runtime/runs/d5d8fd36-33d2-499d-a0cf-8c665b70b65d/proof": "81d8c3b33c4bbf551e25868390d30e32979ca5d7465e4750fc0c6caf3f33ec1f",
+      "/api/collaboration/runtime/runs/86944cd7-c8e1-4844-ba27-b0ddd1d0ef79/proof": "9c0dbdb89853e2389c8b175169b959d40d7598e15c98b7509a1f0c1e5f174f93",
+      "/api/collaboration/runtime/runs/23016169-4da4-4792-97a4-b6afa08aef0a/proof": "bad590c279d02dcdba5c3a8994531e3403abe28bc7a0bf146697028808529ce5"
+    }
+  }
+}

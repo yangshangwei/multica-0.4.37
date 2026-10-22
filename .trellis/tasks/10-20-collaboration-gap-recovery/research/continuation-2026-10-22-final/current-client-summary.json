@@ -1,0 +1,133 @@
+{
+  "at": "2026-10-22T11:18:03.919514+00:00",
+  "actual_tests": [
+    {
+      "run": "source-clients-final",
+      "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+      "file": "collaboration-source-surface.spec.ts",
+      "line": 11,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 28452,
+      "attachments": [
+        {
+          "name": "web-shared-reorder-drag-over",
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/source-clients-final-web-shared-reorder-drag-over.json",
+          "sha256": "e3cc9a49b6b1e1beddcfac36992f60e8c753d60cb2a16fd56149dd76fc308214"
+        },
+        {
+          "name": "web-board-layout-request",
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/source-clients-final-web-board-layout-request.json",
+          "sha256": "43c0def4b20c864172b5da294172edfe5acd16c44069d6cf874d185fac647b4b"
+        },
+        {
+          "name": "web-ordinary-drag-over",
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/source-clients-final-web-ordinary-drag-over.json",
+          "sha256": "af24a0307d4c4d7c12415a1061c37d794cb2c31e4bcf7ad0d96a4d002ec3fa79"
+        },
+        {
+          "name": "electron-source-entry",
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/source-clients-final-electron-source-entry.json",
+          "sha256": "4b8be3e6cb891b6daef0e03ceebeee44d21bc4ca980a1b70cb8fcf9ddfe7bd7b"
+        },
+        {
+          "name": "electron-shared-reorder-drag-over",
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/source-clients-final-electron-shared-reorder-drag-over.json",
+          "sha256": "e8542c9fb07d9cfe846cfb4cda5a0550c61647914f1f7bcf72d091079e7c41cb"
+        },
+        {
+          "name": "electron-board-layout-request",
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/source-clients-final-electron-board-layout-request.json",
+          "sha256": "bc796627a8a343b453f913860269aa72f01c8bd4ad88224766f735d6ff64a7b2"
+        },
+        {
+          "name": "electron-ordinary-drag-over",
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/source-clients-final-electron-ordinary-drag-over.json",
+          "sha256": "da836b9b1dc3b8baa07e38c8d39e2064a2db82151148ae8fe2a215b68831b20a"
+        },
+        {
+          "name": "source-surface-identities",
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/source-clients-final-source-surface-identities.json",
+          "sha256": "c12f792bbfa06d4c5460b3478226fc3b0b7c190b30c00c3e9be8bb4ac453286d"
+        }
+      ]
+    },
+    {
+      "run": "offline-s5-current-clients",
+      "title": "Desktop administers disabled-creator collaborations in the account shell and recovers the retained receipt",
+      "file": "collaboration-administration-desktop.spec.ts",
+      "line": 11,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 6492,
+      "attachments": [
+        {
+          "name": "administration-native-evidence",
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/offline-s5-current-clients-administration-native-evidence.json",
+          "sha256": "1e7adaaedefdd7d51893cece6b053f3b38bd4b9bddd7fed17dc4c8210e76e339"
+        },
+        {
+          "name": "administration-native-geometry",
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/offline-s5-current-clients-administration-native-geometry.json",
+          "sha256": "d2c3eb4e1fec0355753a66570b0f1bbafca55ca92d4941a673cbe3b633e93e1c"
+        }
+      ]
+    },
+    {
+      "run": "offline-s5-current-clients",
+      "title": "Web administers disabled-creator collaborations with explicit succession and original receipt recovery",
+      "file": "collaboration-administration-web.spec.ts",
+      "line": 61,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 4011,
+      "attachments": [
+        {
+          "name": "administration-web-evidence",
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/offline-s5-current-clients-administration-web-evidence.json",
+          "sha256": "2bc31522a15f40fbdb1ef4f24c7d7c73a41834a7335c1b5acf152ed0f23411e7"
+        },
+        {
+          "name": "administration-web-geometry",
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/offline-s5-current-clients-administration-web-geometry.json",
+          "sha256": "d6d2be40a669d13c87e72b57709ac3981085d86d4ae907e03ef1b66ae98653f9"
+        }
+      ]
+    },
+    {
+      "run": "offline-s5-current-clients",
+      "title": "Web offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "file": "collaboration-offline-result-notifications.spec.ts",
+      "line": 15,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 25076,
+      "attachments": [
+        {
+          "name": "offline-result-notification-identities",
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/offline-s5-current-clients-offline-result-notification-identities.json",
+          "sha256": "f2d235a7d17d28cb70ecf5d48bd59a5dcbca97b6efceb88188d6453ff6ad08cb"
+        }
+      ]
+    },
+    {
+      "run": "offline-s5-current-clients",
+      "title": "Electron offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "file": "collaboration-offline-result-notifications.spec.ts",
+      "line": 15,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 23760,
+      "attachments": [
+        {
+          "name": "offline-result-notification-identities",
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/offline-s5-current-clients-offline-result-notification-identities.json",
+          "sha256": "8589ab43be0ae0d7a74e0fa408ff858dfdecf25ddb4998fb65624309e37246bf"
+        }
+      ]
+    }
+  ],
+  "source_equality": true,
+  "real_provider_accounts": false,
+  "production_gate_change": false
+}
