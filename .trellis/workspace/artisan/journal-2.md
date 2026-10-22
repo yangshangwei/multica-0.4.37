@@ -739,3 +739,40 @@ Continued the existing task without replanning;96/97 exact clauses now pass with
 ### Next Steps
 
 - AC43 only: obtain separate real provider account/quota authorization and verify exact environment billing/provenance; keep task and parent in_progress.
+
+
+## Session 96: 归档跨账号协作遗漏补齐与运行恢复
+<!-- trellis-session: v=2 fp=8f38e4084d13e6b2 -->
+
+**Date**: 2026-10-22
+**Task**: 归档跨账号协作遗漏补齐与运行恢复
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+用户确认子任务完成并要求归档；保留96/97验收记录，AC43留在进行中的父任务跟踪。
+
+### Main Changes
+
+- 归档到 archive/2026-10/10-20-collaboration-gap-recovery，记录完成日期与用户归档决定，并更新父任务链接。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `94e19da3b` | Keep the current collaboration acceptance handoff recoverable |
+| `3e504db3d` | Retain only the real provider-account gap after current client acceptance |
+| `e13160fa0` | Keep first-version collaboration flows consistent in the complete packaged client |
+
+### Testing
+
+- [OK] 归档后上下文校验通过；1748份原有证据和262份其他未提交文件哈希未变，父任务保持in_progress。
+- [OK] 本轮只归档任务记录，未重跑产品测试。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 父任务继续跟踪AC43真实供应商账号、额度与来源验证；生产门禁保持关闭。
