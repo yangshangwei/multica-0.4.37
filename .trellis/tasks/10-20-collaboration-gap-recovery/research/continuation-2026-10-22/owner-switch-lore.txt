@@ -1,0 +1,20 @@
+test(collaboration): preserve authorized history when owners leave or switch
+
+Exercise one departing owner across two direct targets and another owner's
+squad member, preserving independent work and each original pending proof.
+Drive the public staged Switch behind a busy destination, then require fresh
+Resume to consume only surviving inputs with their original typed target.
+
+Observe the legitimate live claim-generation advance separately from frozen
+termination identity. Retain scoped delegation cleanup so test-owned rows do
+not contaminate later evidence.
+
+Constraint: Resource changes and departure cannot rewrite history or release unknown capacity
+Rejected: Infer behavior from row counts or seeded replacement grants | misses public authority and destination ordering
+Confidence: high
+Scope-risk: narrow
+Reversibility: clean
+Tested: Current adjacent race26/132, exact HEAD plus committed authority and test pair2/2, vet/gofmt, independent full AC40/49 review
+Not-tested: Complete AC96 catalogue/derived matrix, actual provider/kernel behavior in these service proof fixtures
+Directive: Stop may advance live claim_generation; preserve original termination identity and attempts
+Co-authored-by: OmX <omx@oh-my-codex.dev>

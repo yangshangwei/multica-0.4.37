@@ -1,0 +1,24 @@
+{
+  "command": [
+    "go",
+    "vet",
+    "-p",
+    "1",
+    "./internal/service"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "database_alias": null,
+  "started_at": "2026-10-21T23:55:20.310400+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_owner_departure_targets_test.go": "9660a9e826c25974a97490e7b358550d6d9f9425ab6c693dab542bd696fd4122",
+    "server/internal/service/collaboration_public_switch_resume_test.go": "ce1ac1cd8e0bce606f00ba0c4718b817a010a89a86ba5c37850464cdb1a00ede"
+  },
+  "real_provider_account_access": false,
+  "production_gate_change": false,
+  "exit_code": 0,
+  "elapsed_s": 1.852,
+  "finished_at": "2026-10-21T23:55:22.162448+00:00",
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-vet.stdout",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_changed_during_run": []
+}

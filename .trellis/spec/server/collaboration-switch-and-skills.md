@@ -146,3 +146,26 @@ changes in the final Switch transaction.
 
 Wrong: reimport identical files by deleting and recreating them. Correct: compare
 paths/content under the skill fence and change only the effective bundle diff.
+
+## Current public Switch and owner-departure evidence
+
+`TestCollaborationPublicSquadSwitchWaitsBehindBusyDestinationAndFreshResume`
+uses actual public service Propose/Consent/Commit/Resume after a real squad
+configuration update. Waiting S inputs move to the destination's tail with their
+original typed target, after an earlier direct input. That direct target continues
+while S remains `switch_hold`; a single waiting S cancellation stays cancelled.
+Proof/polling does not Resume S. Only fresh explicit Resume consumes surviving
+inputs in the new runtime. Compare complete old channel, stopped/cancelled
+commands and frozen group/input/dependency/proof/attempt identity, not just counts.
+
+`TestCollaborationOwnerDepartureRetractsMultipleTargetsAndSquadMember` removes
+one owner with two direct targets and a member of another owner's squad. All
+matching per-issue grants withdraw, that owner's waiting inputs cancel, other
+authors' inputs remain, and all affected permitted roots/member runs retain
+unknown-proof reservations. Other owner's completed/current/future history stays
+unchanged. A Stop legitimately advances live `claim_generation` once; retained
+termination identity, attempt/nonce and original resource/prompt facts remain
+immutable. Do not compare that revocable live generation as a frozen proof field.
+Cleanup must include the fixture's scoped delegation rows. These tests use real
+service authorization with synthetic proof requests; AC96's complete catalogue
+and derived matrix and actual provider/kernel evidence remain separate.
