@@ -1,0 +1,39 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/daemonws",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "database_alias": "service_s5",
+  "started_at": "2026-10-21T23:27:27.547776+00:00",
+  "source_sha256": {
+    "server/internal/daemonws/hub.go": "f13b49f4d47ea07cf2dc8ee3d4cab524d88f7d6b6dde49951e3a6093d2cb1ab4",
+    "server/internal/daemonws/connection_diagnostics.go": "5ea4068dba831bd2e623944edbd7dc9d93835eec1e8590429fdc913309d0a1d0"
+  },
+  "real_provider_account_access": false,
+  "production_gate_change": false,
+  "exit_code": 0,
+  "elapsed_s": 5.881,
+  "finished_at": "2026-10-21T23:27:33.432968+00:00",
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/daemonws-race.jsonl",
+  "stdout_sha256": "a7dd0401f05f8224d8d7f2d4a78d3aae24178b6aa34701941c1357abe3bccbed",
+  "source_changed_during_run": [],
+  "passed_top_level": 22,
+  "passed_including_subtests": 30,
+  "failed": [],
+  "skipped": []
+}

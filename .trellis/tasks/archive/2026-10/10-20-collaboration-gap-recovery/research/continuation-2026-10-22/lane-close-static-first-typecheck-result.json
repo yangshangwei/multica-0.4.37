@@ -1,0 +1,32 @@
+{
+  "command": [
+    "pnpm",
+    "exec",
+    "tsc",
+    "--noEmit",
+    "--module",
+    "ESNext",
+    "--moduleResolution",
+    "Bundler",
+    "--target",
+    "ES2022",
+    "--skipLibCheck",
+    "--strict",
+    "--noUncheckedIndexedAccess",
+    "--esModuleInterop",
+    "--types",
+    "node",
+    "e2e/collaboration-lane-close-controls.spec.ts",
+    "e2e/fixtures/collaboration-lane-close-controls.ts"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "at": "2026-10-22T00:12:27.087921+00:00",
+  "finished_at": "2026-10-22T00:12:30.274165+00:00",
+  "source_sha256": {
+    "e2e/collaboration-lane-close-controls.spec.ts": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+    "e2e/fixtures/collaboration-lane-close-controls.ts": "b16d1de73fa198ba49d23c17bd1bc6a313a1dc0f76d3e6a0ca11f8991c8bcf74"
+  },
+  "exit_code": 0,
+  "stdout": "lane-close-static-first-typecheck.stdout",
+  "stderr": "lane-close-static-first-typecheck.stderr"
+}

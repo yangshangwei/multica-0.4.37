@@ -1,0 +1,39 @@
+{
+  "at": "2026-10-22T00:19:52.115587+00:00",
+  "stats": {
+    "startTime": "2026-10-22T00:18:42.615Z",
+    "duration": 41400.909,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "title": "Web same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 20603,
+          "errors": [],
+          "identities": "lane-close-observed-web-identities.json"
+        }
+      ]
+    },
+    {
+      "title": "Electron same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 19556,
+          "errors": [],
+          "identities": "lane-close-observed-electron-identities.json"
+        }
+      ]
+    }
+  ]
+}

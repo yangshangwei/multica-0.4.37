@@ -1,0 +1,550 @@
+{
+  "continuation-service-1": {
+    "passed_top_level": 109,
+    "passed_including_subtests": 397,
+    "failed": 0,
+    "skipped": 0,
+    "package_outcomes": [
+      {
+        "package": "internal/service",
+        "status": "pass"
+      }
+    ],
+    "skipped_identities": []
+  },
+  "continuation-service-2": {
+    "passed_top_level": 354,
+    "passed_including_subtests": 913,
+    "failed": 0,
+    "skipped": 0,
+    "package_outcomes": [
+      {
+        "package": "internal/service",
+        "status": "pass"
+      }
+    ],
+    "skipped_identities": []
+  },
+  "continuation-service-3": {
+    "passed_top_level": 672,
+    "passed_including_subtests": 1335,
+    "failed": 0,
+    "skipped": 18,
+    "package_outcomes": [
+      {
+        "package": "internal/service",
+        "status": "pass"
+      }
+    ],
+    "skipped_identities": [
+      "internal/service::TestEmptyClaimCache_EmptyRuntimeIDIsNoOp",
+      "internal/service::TestEmptyClaimCache_MarkAndIsEmptyVersionMatched",
+      "internal/service::TestEmptyClaimCache_BumpInvalidatesPriorMark",
+      "internal/service::TestEmptyClaimCache_StaleMarkRejected",
+      "internal/service::TestEmptyClaimCache_TTL",
+      "internal/service::TestEmptyClaimCache_RuntimeIsolation",
+      "internal/service::TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline",
+      "internal/service::TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers",
+      "internal/service::TestReclaimCheckCache_TrackLaterAndForget",
+      "internal/service::TestReclaimCheckCache_CollectionCheckAlignsBackstops",
+      "internal/service::TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder",
+      "internal/service::TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen",
+      "internal/service::TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+      "internal/service::TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry",
+      "internal/service::TestNotifyTaskAvailable_BumpsBeforeWakeup",
+      "internal/service::TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp",
+      "internal/service::TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup",
+      "internal/service::TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict"
+    ]
+  },
+  "continuation-service-redis": {
+    "passed_top_level": 18,
+    "passed_including_subtests": 18,
+    "failed": 0,
+    "skipped": 0,
+    "package_outcomes": [
+      {
+        "package": "internal/service",
+        "status": "pass"
+      }
+    ],
+    "skipped_identities": []
+  },
+  "continuation-go-other": {
+    "passed_top_level": 6601,
+    "passed_including_subtests": 12333,
+    "failed": 0,
+    "skipped": 80,
+    "package_outcomes": [
+      {
+        "package": "cmd/backfill_codex_usage_cache",
+        "status": "pass"
+      },
+      {
+        "package": "cmd/backfill_issue_last_activity",
+        "status": "pass"
+      },
+      {
+        "package": "cmd/backfill_task_usage_hourly",
+        "status": "skip"
+      },
+      {
+        "package": "cmd/migrate",
+        "status": "pass"
+      },
+      {
+        "package": "cmd/multica",
+        "status": "pass"
+      },
+      {
+        "package": "cmd/server",
+        "status": "pass"
+      },
+      {
+        "package": "internal/auth",
+        "status": "pass"
+      },
+      {
+        "package": "internal/daemon",
+        "status": "pass"
+      },
+      {
+        "package": "internal/daemon/collaborationrun",
+        "status": "pass"
+      },
+      {
+        "package": "internal/daemon/execenv",
+        "status": "pass"
+      },
+      {
+        "package": "internal/daemon/processtree",
+        "status": "pass"
+      },
+      {
+        "package": "internal/daemon/repocache",
+        "status": "pass"
+      },
+      {
+        "package": "internal/handler",
+        "status": "pass"
+      },
+      {
+        "package": "internal/testutil",
+        "status": "pass"
+      },
+      {
+        "package": "pkg/agent",
+        "status": "pass"
+      },
+      {
+        "package": "pkg/composio",
+        "status": "pass"
+      },
+      {
+        "package": "pkg/db/generated",
+        "status": "pass"
+      },
+      {
+        "package": "pkg/dbid",
+        "status": "pass"
+      },
+      {
+        "package": "pkg/featureflag",
+        "status": "pass"
+      },
+      {
+        "package": "pkg/llm",
+        "status": "pass"
+      },
+      {
+        "package": "pkg/plugincontract",
+        "status": "pass"
+      },
+      {
+        "package": "pkg/protocol",
+        "status": "pass"
+      },
+      {
+        "package": "pkg/publicapi/v1",
+        "status": "pass"
+      },
+      {
+        "package": "pkg/redact",
+        "status": "pass"
+      },
+      {
+        "package": "pkg/remotemcp",
+        "status": "pass"
+      },
+      {
+        "package": "pkg/remotemcp/remotemcptest",
+        "status": "pass"
+      },
+      {
+        "package": "pkg/skillbundle",
+        "status": "pass"
+      },
+      {
+        "package": "pkg/taskfailure",
+        "status": "pass"
+      }
+    ],
+    "skipped_identities": [
+      "cmd/migrate::TestCommentContentBigramRequirementMatchesRealPGBigm",
+      "cmd/server::TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+      "cmd/server::TestCollaborationPartialResumeRoutesLinux",
+      "cmd/server::TestCollaborationSingleAgentRuntimeRoutesLinux",
+      "cmd/server::TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+      "cmd/server::TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+      "cmd/server::TestCollaborationSquadCapacityOneRoutesLinux",
+      "internal/auth::TestCloudPATVerifier_CacheHitSkipsHTTP",
+      "internal/auth::TestCloudPATVerifier_NegativesNotCached",
+      "internal/auth::TestCloudPATVerifier_LookupRejectsUnknownOwner",
+      "internal/auth::TestCloudPATVerifier_LookupSuccessIsCached",
+      "internal/auth::TestDaemonTokenCache_SetGetInvalidate",
+      "internal/auth::TestDaemonTokenCache_TTL",
+      "internal/auth::TestDaemonTokenCache_Set_RespectsClampedTTL",
+      "internal/auth::TestMembershipCache_SetGetInvalidate",
+      "internal/auth::TestMembershipCache_TTL",
+      "internal/auth::TestMembershipCache_IsolatesKeysByUser",
+      "internal/auth::TestPasswordLimiterSharedAtomicAdmission",
+      "internal/auth::TestPATCache_SetGetInvalidate",
+      "internal/auth::TestPATCache_TTL",
+      "internal/auth::TestPATCache_Set_RespectsClampedTTL",
+      "internal/daemon::TestCollaborationBatchPollerSlotsAndRunnerLinux",
+      "internal/daemon::TestIsDriveRoot",
+      "internal/handler::TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+      "internal/handler::TestRequireDaemonWorkspaceAccess_CacheHit",
+      "internal/handler::TestRequireDaemonWorkspaceAccess_CacheMissBackfills",
+      "internal/handler::TestMembershipCache_InvalidatedOnDeleteMember",
+      "internal/handler::TestMembershipCache_InvalidatedOnUpdateMember",
+      "internal/handler::TestMembershipCache_InvalidatedOnLeaveWorkspace",
+      "internal/handler::TestMembershipCache_InvalidatedOnDeleteWorkspace",
+      "internal/handler::TestIterationI1P95",
+      "internal/handler::TestIterationI1DisableP95",
+      "internal/handler::TestRedisLivenessStore_TouchAndIsAlive",
+      "internal/handler::TestRedisLivenessStore_TTLExpiry",
+      "internal/handler::TestRedisLivenessStore_Forget",
+      "internal/handler::TestRedisLivenessStore_BatchEmptyInput",
+      "internal/handler::TestRedisLocalSkillListStore_CreateGetComplete",
+      "internal/handler::TestRedisLocalSkillListStore_CreateWithoutMultiPermission",
+      "internal/handler::TestRedisLocalSkillListStore_PopPendingAcrossInstances",
+      "internal/handler::TestRedisLocalSkillListStore_PopPendingConcurrent",
+      "internal/handler::TestRedisLocalSkillListStore_PendingTimeout",
+      "internal/handler::TestRedisLocalSkillImportStore_PreservesCreatorID",
+      "internal/handler::TestRedisLocalSkillImportStore_CreateWithoutMultiPermission",
+      "internal/handler::TestRedisLocalSkillImportStore_CompletePreservesFiles",
+      "internal/handler::TestRedisLocalSkillImportStore_PreservesConflict",
+      "internal/handler::TestRedisLocalSkillImportStore_PopPendingAcrossInstances",
+      "internal/handler::TestRedisLocalSkillListStore_PerRuntimeIsolation",
+      "internal/handler::TestRedisLocalSkillListStore_PopPendingAtomicClaim",
+      "internal/handler::TestRedisLocalSkillImportStore_PopPendingBatch",
+      "internal/handler::TestRedisModelCatalogCache_RoundTrip",
+      "internal/handler::TestRedisModelCatalogCache_SkipsUncacheableResults",
+      "internal/handler::TestRedisModelCatalogCache_InvalidateAndExpiry",
+      "internal/handler::TestRedisModelCatalogCache_DropsUndecodableSnapshot",
+      "internal/handler::TestRedisModelListStore_CreateGetComplete",
+      "internal/handler::TestRedisModelListStore_CreateWithoutMultiPermission",
+      "internal/handler::TestRedisModelListStore_PopPendingAcrossInstances",
+      "internal/handler::TestRedisModelListStore_PopPendingConcurrent",
+      "internal/handler::TestRedisModelListStore_PendingTimeout",
+      "internal/handler::TestRedisModelListStore_RunningTimeout",
+      "internal/handler::TestRedisModelListStore_HasPending",
+      "internal/handler::TestRedisUpdateStore_CreateGetComplete",
+      "internal/handler::TestRedisUpdateStore_CreateWithoutMultiPermission",
+      "internal/handler::TestRedisUpdateStore_PopPendingAcrossInstances",
+      "internal/handler::TestRedisUpdateStore_ReportAndPollAcrossInstances",
+      "internal/handler::TestRedisUpdateStore_FailAcrossInstances",
+      "internal/handler::TestRedisUpdateStore_RejectsConcurrentActive",
+      "internal/handler::TestRedisUpdateStore_RunningTimeoutClearsActive",
+      "internal/handler::TestRedisUpdateStore_PopPendingConcurrent",
+      "internal/handler::TestFetchFromSkillsSh_AnthropicPptxIntegration",
+      "internal/handler::TestTriageQueueScaleBaseline",
+      "internal/handler::TestTriageWireFixtures",
+      "internal/handler::TestRedisWebhookRateLimiter_RejectsAboveLimit",
+      "internal/handler::TestRedisWebhookIPRateLimiter_HasSeparateBudgetFromTokenLimiter",
+      "internal/handler::TestRedisSlidingWindowRateLimiter_SeparatesInvitationNamespaces",
+      "internal/handler::TestRedisSlidingWindowRateLimiter_PreservesWebhookFailOpenAndExposesErrors",
+      "internal/handler::TestMcpMarketPublicHTTPRecipeLifecycle",
+      "pkg/agent::TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+      "pkg/agent::TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+      "pkg/agent::TestPiExecuteAttachesStdinPipe",
+      "pkg/agent::TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors"
+    ]
+  },
+  "continuation-go-remaining": {
+    "passed_top_level": 1873,
+    "passed_including_subtests": 3593,
+    "failed": 0,
+    "skipped": 14,
+    "package_outcomes": [
+      {
+        "package": "internal/admission",
+        "status": "skip"
+      },
+      {
+        "package": "internal/agentconfig",
+        "status": "skip"
+      },
+      {
+        "package": "internal/analytics",
+        "status": "pass"
+      },
+      {
+        "package": "internal/attribution",
+        "status": "pass"
+      },
+      {
+        "package": "internal/attributionbackfill",
+        "status": "pass"
+      },
+      {
+        "package": "internal/changelog",
+        "status": "pass"
+      },
+      {
+        "package": "internal/channelmedia",
+        "status": "pass"
+      },
+      {
+        "package": "internal/chatoriginbackfill",
+        "status": "skip"
+      },
+      {
+        "package": "internal/chattitle",
+        "status": "skip"
+      },
+      {
+        "package": "internal/cli",
+        "status": "pass"
+      },
+      {
+        "package": "internal/cloudruntime",
+        "status": "pass"
+      },
+      {
+        "package": "internal/collaboration",
+        "status": "pass"
+      },
+      {
+        "package": "internal/dbstartup",
+        "status": "pass"
+      },
+      {
+        "package": "internal/dispatch",
+        "status": "skip"
+      },
+      {
+        "package": "internal/docs",
+        "status": "pass"
+      },
+      {
+        "package": "internal/entitlement",
+        "status": "pass"
+      },
+      {
+        "package": "internal/entitlement/entitlementtest",
+        "status": "pass"
+      },
+      {
+        "package": "internal/events",
+        "status": "pass"
+      },
+      {
+        "package": "internal/featureflags",
+        "status": "pass"
+      },
+      {
+        "package": "internal/installation",
+        "status": "pass"
+      },
+      {
+        "package": "internal/integrations/channel",
+        "status": "pass"
+      },
+      {
+        "package": "internal/integrations/channel/engine",
+        "status": "pass"
+      },
+      {
+        "package": "internal/integrations/composio",
+        "status": "pass"
+      },
+      {
+        "package": "internal/integrations/dingtalk",
+        "status": "pass"
+      },
+      {
+        "package": "internal/integrations/ghsnapshot",
+        "status": "pass"
+      },
+      {
+        "package": "internal/integrations/lark",
+        "status": "pass"
+      },
+      {
+        "package": "internal/integrations/slack",
+        "status": "pass"
+      },
+      {
+        "package": "internal/integrations/telegram",
+        "status": "pass"
+      },
+      {
+        "package": "internal/integrations/vcs",
+        "status": "pass"
+      },
+      {
+        "package": "internal/integrations/wecom",
+        "status": "pass"
+      },
+      {
+        "package": "internal/issueactivitybackfill",
+        "status": "pass"
+      },
+      {
+        "package": "internal/issueguard",
+        "status": "pass"
+      },
+      {
+        "package": "internal/issueposition",
+        "status": "skip"
+      },
+      {
+        "package": "internal/issuestatus",
+        "status": "pass"
+      },
+      {
+        "package": "internal/iteration",
+        "status": "pass"
+      },
+      {
+        "package": "internal/logger",
+        "status": "pass"
+      },
+      {
+        "package": "internal/metrics",
+        "status": "pass"
+      },
+      {
+        "package": "internal/middleware",
+        "status": "pass"
+      },
+      {
+        "package": "internal/migrations",
+        "status": "pass"
+      },
+      {
+        "package": "internal/profiling",
+        "status": "skip"
+      },
+      {
+        "package": "internal/projecthealth",
+        "status": "pass"
+      },
+      {
+        "package": "internal/realtime",
+        "status": "pass"
+      },
+      {
+        "package": "internal/runtimeapps",
+        "status": "skip"
+      },
+      {
+        "package": "internal/scheduler",
+        "status": "pass"
+      },
+      {
+        "package": "internal/seatcapacity",
+        "status": "pass"
+      },
+      {
+        "package": "internal/selfexec",
+        "status": "pass"
+      },
+      {
+        "package": "internal/skill",
+        "status": "pass"
+      },
+      {
+        "package": "internal/storage",
+        "status": "pass"
+      },
+      {
+        "package": "internal/taskusagebackfill",
+        "status": "pass"
+      },
+      {
+        "package": "internal/triagecsv",
+        "status": "pass"
+      },
+      {
+        "package": "internal/util",
+        "status": "pass"
+      },
+      {
+        "package": "internal/util/secretbox",
+        "status": "pass"
+      }
+    ],
+    "skipped_identities": [
+      "internal/cli::TestCLIConfig_UnknownFieldsArePreserved",
+      "internal/integrations/wecom::TestRelay_ARetriedReplyKeepsItsPlaceInLine",
+      "internal/integrations/wecom::TestRelay_AReplyNoReplicaCouldSendIsCountedOnce",
+      "internal/integrations/wecom::TestRelay_ADeliveredReplyIsCountedOnceAndNotAlsoLost",
+      "internal/middleware::TestAuth_PATCacheHit",
+      "internal/middleware::TestDaemonAuth_DaemonTokenCacheHit",
+      "internal/middleware::TestDaemonAuth_PATCacheHit",
+      "internal/middleware::TestDaemonAuth_StripsClientSuppliedActorSource",
+      "internal/middleware::TestPluginRateLimitIsPerCredentialAndUsesStableProblem",
+      "internal/middleware::TestRateLimit_AllowsUnderLimit",
+      "internal/middleware::TestRateLimit_BlocksOverLimit",
+      "internal/middleware::TestRateLimit_RetryAfterHeader",
+      "internal/middleware::TestRateLimit_DifferentIPs",
+      "internal/middleware::TestRateLimit_LuaScript_SetsTTL"
+    ]
+  },
+  "continuation-go-other-redis": {
+    "passed_top_level": 73,
+    "passed_including_subtests": 73,
+    "failed": 0,
+    "skipped": 0,
+    "package_outcomes": [
+      {
+        "package": "internal/auth",
+        "status": "pass"
+      },
+      {
+        "package": "internal/handler",
+        "status": "pass"
+      },
+      {
+        "package": "internal/integrations/wecom",
+        "status": "pass"
+      },
+      {
+        "package": "internal/middleware",
+        "status": "pass"
+      }
+    ],
+    "skipped_identities": []
+  },
+  "continuation-linux-router": {
+    "passed_top_level": 6,
+    "passed_including_subtests": 6,
+    "failed": 0,
+    "skipped": 0,
+    "package_outcomes": [
+      {
+        "package": "cmd/server",
+        "status": "pass"
+      }
+    ],
+    "skipped_identities": []
+  },
+  "service_partition_union": {
+    "distinct_top_level_passed": 1153,
+    "missing": [],
+    "overlap": []
+  }
+}

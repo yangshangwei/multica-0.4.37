@@ -1,0 +1,42 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s6_other",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/handler",
+    "-run",
+    "^(TestSourceCollaborationProjectionAndExternalFilter|TestSourceCollaborationTableAndChildMachineBoundary|TestCollaborationPositionUsesSourceAuthorityWithoutChangingCollaborationVersion|TestCollaborationChildCompletionWakesOrdinaryParentOnce|TestCollaborationChildCompletionPreservesParentGuards|TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup|TestCollaborationChildWakeupRechecksParentBeforePublishing|TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "database_alias": "service_s6_other",
+  "started_at": "2026-10-22T00:16:40.857547+00:00",
+  "source_sha256": {
+    "server/internal/handler/collaboration_source_test.go": "4afa5217dc17e91f3462376d47e89c02c103318dd2bb63e0f1aed35fea54a655",
+    "server/internal/handler/collaboration_boundary_test.go": "6d5f6b6b7b111009d653b974a619b17c7315487bbaf0d143ba9daffadea15ebd",
+    "server/internal/handler/collaboration_parent_wakeup_test.go": "38444da9235fc5a0812511f8814aca26a8a1760b6835ba9ad2b68bb9e931124f"
+  },
+  "real_provider_account_access": false,
+  "production_gate_change": false,
+  "exit_code": 0,
+  "elapsed_s": 11.655,
+  "finished_at": "2026-10-22T00:16:52.513013+00:00",
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/source-projection-parent-canonical.jsonl",
+  "stdout_sha256": "93245a8510fbf61348f795926e3e094eb65b3a8e956de135e2e66d19786d0a6b",
+  "source_changed_during_run": [],
+  "passed_top_level": 8,
+  "passed_including_subtests": 31,
+  "failed": [],
+  "skipped": []
+}

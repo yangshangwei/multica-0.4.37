@@ -1,0 +1,62 @@
+{
+  "at": "2026-10-21T15:27:07.540671+00:00",
+  "source_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-source",
+  "current_application_differences": [],
+  "api_health": {
+    "status": "ok",
+    "pid": 46097,
+    "commit": "8ecb98883",
+    "started_at": "2026-10-21T15:25:15Z"
+  },
+  "api_provenance": {
+    "component": "api",
+    "mode": "development",
+    "build_id": "",
+    "command": "go run -ldflags '-X main.commit=8ecb98883' ./cmd/server (cwd: /tmp/multica-gap-recovery-20261021-h6phxwo9/verification-source/server)",
+    "source_id": "463358d60390d7964f1e702d868c1256533420f7ad8ae3bce478dff949be82c9",
+    "configuration_id": "27a3b48dc81d030a1d6edeb2b62708ccaafad14353bca7c17d36034ce5ced1a2",
+    "commit": "8ecb98883",
+    "launcher_pid": 46029,
+    "started_at": "2026-10-21T15:25:06Z",
+    "listener_pid": 46097
+  },
+  "configuration": {
+    "managed_installation_supported": false,
+    "deployment_id": "f3a705a0-0193-435f-bc6d-05bc2074e905",
+    "platform_admin_available": false,
+    "auth_mode": "legacy",
+    "password_auth_available": false,
+    "password_signup_available": false,
+    "account_binding_available": false,
+    "cdn_domain": "localhost",
+    "allow_signup": true,
+    "daemon_server_url": "http://localhost:18985",
+    "daemon_app_url": "http://localhost:13905",
+    "messaging_integrations_enabled": true,
+    "posthog_key": "",
+    "posthog_host": "",
+    "analytics_environment": "dev",
+    "feature_flags": {
+      "agents_agent_builder": true,
+      "agents_skill_toggles": true,
+      "billing_workspace_subscriptions": false,
+      "composio_mcp_apps": false,
+      "plugins_v1": false,
+      "settings_resource_labels": true
+    },
+    "local_worktree_supported": true,
+    "agent_conversation_starters_supported": true
+  },
+  "web_http_status": 200,
+  "web_mode": "production",
+  "web_build_id": "SrpeaQzGK_I-BlKn9Vy0e",
+  "renderer_http_status": 200,
+  "renderer_index_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c",
+  "sources": {
+    "e2e/collaboration-delivery-web.spec.ts": "22c6357b5567a6e93c9bd55e5156c89de8834d02bd3cf8a0825b258ab5899f31",
+    "e2e/collaboration-account-desktop.spec.ts": "b13c20a84228935c5d37248575a522a933c4e6694eefb4777089c661849b5be3",
+    "e2e/fixtures/collaboration-native.ts": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94"
+  },
+  "real_provider_account": false,
+  "production_gate_change": false
+}

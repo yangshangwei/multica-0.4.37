@@ -1,0 +1,28 @@
+
+==> Prerequisites
+    TMPDIR pinned to /tmp/multica-gap-recovery-20261021-h6phxwo9/dev-tmp (was /var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/) so builds outlive the run that made them.
+    ✓ node, go, curl found
+
+==> Environment
+    Reusing environment gap-recovery-verification-20261021 (ports 18985/13905, database multica_gap_api_v2)
+
+==> Database
+    ✓ multica_gap_api_v2 reachable through DATABASE_URL and migrated
+
+==> Components: api
+    ! api on :18985 is ours but its commit/source/configuration differs; restarting it.
+    ✓ api stopped (pid 85403)
+    api launching (pid 46029), log: /tmp/multica-gap-recovery-20261021-h6phxwo9/dev-registry/envs/gap-recovery-verification-20261021/logs/api.log
+    ✓ api healthy at http://localhost:18985 (pid 46097, commit 8ecb98883)
+
+✓ Environment ready.
+
+  API only    http://localhost:18985
+  Sign in     dev@localhost  ·  code 888888
+  Backend     http://localhost:18985   (GET /health reports pid + commit + started_at)
+  Commit      8ecb98883
+  Environment gap-recovery-verification-20261021 (expires 2026-10-22T01:50:59Z)
+
+  Inspect     make status
+  Stop        make down            (keeps the database, restarts in seconds)
+  Delete      make destroy         (drops the database and frees the slot)

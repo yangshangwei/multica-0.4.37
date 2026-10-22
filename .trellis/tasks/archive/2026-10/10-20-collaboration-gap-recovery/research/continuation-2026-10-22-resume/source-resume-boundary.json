@@ -1,0 +1,22 @@
+{
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "time": "2026-10-22T01:34:07.079627+00:00",
+  "original_sha256": {
+    "e2e/collaboration-source-surface.spec.ts": "3d28ddfbf1da4af7739adb4162816cb8511cb47c8c8f64f101f9d04b6dbd0494",
+    "e2e/fixtures/collaboration-source-surface.ts": "029b4906373479e57ef4fed487023b5eba61f8505a909dd98bdf8eda2cf670c1"
+  },
+  "remaining_assertions": [
+    "AC85 actual external avatars and minimal author wire in both clients",
+    "AC85 transfer source-only refusal, nonterminal and terminal drag plus ordinary controls",
+    "AC89 persistent DOM board order after board and CLI writes with unchanged collaboration/history/notifications",
+    "AC89 Stage-only source handler success and transfer/departure both actual commit orders"
+  ],
+  "owned_files": [
+    "e2e/collaboration-source-surface.spec.ts",
+    "e2e/fixtures/collaboration-source-surface.ts",
+    "server/internal/service/collaboration_source_stage_race_test.go"
+  ],
+  "current_source_e2e_receipt": "No actual E2E execution receipt exists in the original continuation; --list and static only.",
+  "stage_canonical_gap": "Existing structure race writes project/parent/title, not Stage; no inference from its name.",
+  "execution_boundary": "Existing S6 only; root owns production/DB/native scheduling, shared files, ledgers, specs and commits. No task creation/replanning or product/gate changes."
+}

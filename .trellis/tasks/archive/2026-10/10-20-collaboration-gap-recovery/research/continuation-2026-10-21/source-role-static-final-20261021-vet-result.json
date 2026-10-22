@@ -1,0 +1,21 @@
+{
+  "command": [
+    "go",
+    "vet",
+    "-p",
+    "1",
+    "./internal/service",
+    "./internal/handler"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "started_at": "2026-10-21T16:11:03.901145+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_source_roles_test.go": "f006430da597c8a62209f72b8f04c32d9104df2f13886b87e8f9b9ac69fe694d",
+    "server/internal/handler/collaboration_iteration_request_boundary_test.go": "7a081b2d5a46b11299b343ca8fcbb6cc5a13372bc77013abb9098fd14b8923a0"
+  },
+  "database_access": false,
+  "returncode": 0,
+  "finished_at": "2026-10-21T16:11:07.386947+00:00",
+  "stdout_bytes": 0,
+  "stderr_bytes": 0
+}

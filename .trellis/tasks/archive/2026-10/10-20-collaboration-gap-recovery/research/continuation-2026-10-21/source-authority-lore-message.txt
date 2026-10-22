@@ -1,0 +1,16 @@
+test(collaboration): reject stale source authority without disturbing execution
+
+Source field and iteration mutations need the current handler, source membership
+and iteration revision locked through commit. Observe both PostgreSQL writer
+orderings rather than infer race safety from a single successful mutation.
+An authorized source caller also needs usable iteration statistics, preview and
+history when the issue handler is external, with private identity redacted.
+
+Constraint: Preserve all shared product changes and use task-only schema 737
+Rejected: Sleep-based contention or generic metadata permission tests | cannot prove exact lock and domain boundaries
+Confidence: high
+Scope-risk: narrow
+Directive: Source-role, missing remove reason and mixed iteration PUT clauses remain separate acceptance gaps
+Tested: Guarded service/handler race adjacency 12 top-level; exact HEAD plus two new files 4/14; gofmt and scoped go vet
+Not-tested: Four pending AC80/81 direct assertions, external identity UI, real AI/kernel execution, installed clients and providers
+Co-authored-by: OmX <omx@oh-my-codex.dev>

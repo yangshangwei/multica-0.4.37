@@ -1,0 +1,15 @@
+test(collaboration): keep offline responsibility available after notification archive
+
+Invitation and assignment must commit while an external participant is offline.
+A fresh login after transfer and notification archive must restore the same
+participating issue without source membership or a second acceptance step.
+Retained notification and detail entries must refuse access after removal.
+
+Constraint: Preserve existing account fixtures and the shared dirty application
+Rejected: Reuse an old token as offline-login evidence | does not exercise new authentication or client restart
+Confidence: high
+Scope-risk: narrow
+Directive: Include the existing native helper unchanged; do not invent another Main harness
+Tested: Production Web and actual Electron 2/2 current journeys; three-file strict TypeScript and ESLint; exact source/environment and canonical backend review
+Not-tested: Six remaining lifecycle/result notification kinds, full delivery fanout, login-page UX, installed full Main and other OSes
+Co-authored-by: OmX <omx@oh-my-codex.dev>

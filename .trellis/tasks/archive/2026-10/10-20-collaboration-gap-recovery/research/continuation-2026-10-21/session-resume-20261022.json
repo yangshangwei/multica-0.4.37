@@ -1,0 +1,33 @@
+{
+  "at": "2026-10-21T16:29:45.563223+00:00",
+  "local_date": "2026-10-22",
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "task_status": "in_progress",
+  "unchanged_plan": true,
+  "work_done": [
+    "verified current previous pipeline/source receipts",
+    "committed handoff authority",
+    "committed offline handoff",
+    "committed source transaction race",
+    "implemented/verified direct mention state matrix",
+    "implemented/verified direct source roles/reason/HTTP request separation",
+    "implemented/verified plugin/Slack outbound with committed gate prerequisite isolated"
+  ],
+  "accepted_now": {
+    "passed": 76,
+    "not_verified_in_this_task": 21,
+    "failed": 0,
+    "skipped": 0,
+    "unsupported": 0
+  },
+  "production_rollout_changed": false,
+  "real_provider_account_access": false,
+  "remaining_boundaries": [
+    "21 criterion clauses pending independent/promoted or execution completion",
+    "full installed Main and old CLI/client compatibility",
+    "real provider quota",
+    "complete offline lifecycle/result fanout",
+    "Web/Electron pause/removal/whole-close/resume and same-lane scopes",
+    "source identity/drag/reorder UI and CLI"
+  ]
+}

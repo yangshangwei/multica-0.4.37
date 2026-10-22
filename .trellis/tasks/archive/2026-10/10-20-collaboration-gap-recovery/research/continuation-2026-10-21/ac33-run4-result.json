@@ -1,0 +1,59 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py",
+    "env",
+    "COLLABORATION_CROSS_CLIENT_DAEMON=/tmp/multica-gap-recovery-20261021-h6phxwo9/continuation-linux/daemon.test",
+    "COLLABORATION_CROSS_CLIENT_PROVIDER=/tmp/multica-gap-recovery-20261021-h6phxwo9/continuation-linux/cross-client-provider",
+    "COLLABORATION_CROSS_CLIENT_HOST_IPV4=192.168.65.254",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-cross-client-execution.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--project=chromium",
+    "--reporter=json",
+    "--output=/tmp/multica-gap-recovery-20261021-h6phxwo9/cross-client-run4"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "exit_code": 0,
+  "stats": {
+    "startTime": "2026-10-21T08:13:42.821Z",
+    "duration": 29039.23,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "artifacts": [
+    {
+      "path": ".omx/reports/cwc-gap-recovery-20261021/ac33-final/cross-client-run4.json",
+      "sha256": "2569f54320469122d23ac80c85d1219d7ff26b0fafee7630aae666649adc1f31",
+      "bytes": 125405
+    },
+    {
+      "path": ".omx/reports/cwc-gap-recovery-20261021/ac33-final/cross-client-run4.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": ".omx/reports/cwc-gap-recovery-20261021/ac33-final/electron-cross-client-results.png",
+      "sha256": "5a10217ad0ffaeca1ce5609577db0ecfeb63a1be9f127aea1867b8b97c7771fd",
+      "bytes": 318068
+    },
+    {
+      "path": ".omx/reports/cwc-gap-recovery-20261021/ac33-final/web-cross-client-results.png",
+      "sha256": "4a1b0314477b7c67dcc933d1296569d9a746f4bffaa0c1b57dcb30a1b5cfb920",
+      "bytes": 97682
+    }
+  ],
+  "identities": {
+    "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/ac33-cross-client-run4-identities.json",
+    "sha256": "370bd5232900fa78c0a830c38845049c76223954464ef91747709735c9b780e6"
+  },
+  "preflight": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/ac33-rerun-preflight.json",
+  "provider_accounts_accessed": false,
+  "at": "2026-10-21T08:40:13.975518+00:00"
+}

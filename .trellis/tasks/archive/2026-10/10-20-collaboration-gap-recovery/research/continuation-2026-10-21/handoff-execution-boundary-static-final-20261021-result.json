@@ -1,0 +1,36 @@
+{
+  "started_at": "2026-10-21T14:21:05.931870+00:00",
+  "source_sha256": "2711e8e6aea0e111f5438834e1bb5f116c2b1ffb7b071d4b9c39e8b434baefb6",
+  "checks": [
+    {
+      "name": "gofmt",
+      "command": [
+        "gofmt",
+        "-d",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_handoff_execution_boundary_test.go"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "returncode": 0,
+      "elapsed_seconds": 0.013,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    },
+    {
+      "name": "vet",
+      "command": [
+        "go",
+        "vet",
+        "-p",
+        "1",
+        "./internal/service"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "returncode": 0,
+      "elapsed_seconds": 1.634,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    }
+  ],
+  "finished_at": "2026-10-21T14:21:07.579454+00:00",
+  "source_unchanged": true
+}

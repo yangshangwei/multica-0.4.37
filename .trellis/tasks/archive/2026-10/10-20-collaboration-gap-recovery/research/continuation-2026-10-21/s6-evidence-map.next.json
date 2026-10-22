@@ -1,0 +1,4035 @@
+{
+  "schema_version": 1,
+  "audited_on": "2026-10-21",
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "scope": "Current-task acceptance evidence only; no product mutation, provider/account use or deployment.",
+  "source_contract": ".trellis/tasks/10-10-cross-workspace-collaboration/acceptance.md",
+  "rules": [
+    "Rows pass only when every stated clause is supported by executed current-task evidence; partial support retains not_verified_in_this_task.",
+    "An executed test and a discovered/source-reviewed test are distinct. Missing current test evidence is listed explicitly.",
+    "Historical 2026-10-19 QA is reference only. Current task failed attempts remain retained; final passing selections are never added to earlier repeated counts.",
+    "Linux kernel execution with synthetic providers, production Web, native Electron IPC harnesses, installed full Main, and authenticated provider smoke are separate scopes.",
+    "Production creation/execution gates remain closed. Task-only isolated fixtures may enable gates."
+  ],
+  "evidence": {
+    "s2-backend": {
+      "kind": "go_race_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s2-service-handler-race.jsonl",
+          "sha256": "9d8e95841c78f83637b7c228a204d2aa198eb097540241ea908ddc7095355ae4"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/check-s2-backend.md",
+      "command": "python3 /tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py service_s2 bash ../scripts/go-test-with-agent-cli-guard.sh go test -race ./internal/service ./internal/handler -run '^(TestCollaborationResourceOffer.*|TestCollaborationRegistrationChecksActualResourceOwner|TestCollaborationOwnerConsentIsExplicitScopedAndIdempotent|TestCollaborationConsentUsesCompleteSquadRoster|TestCollaborationTargetConsentRetainsInitialHold|TestCollaborationResourceOptions.*|TestCollaborationResourceHTTP.*|TestCollaborationResourceOperationRecoveryKeepsOriginalScope|TestCollaborationSwitchRecoveryAfterDepartureIsOwnAndRedacted)$' -count=1 -json",
+      "working_directory": "server",
+      "environment": {
+        "database_alias": "service_s2",
+        "os_arch": "darwin/arm64",
+        "toolchain": "go1.26.6",
+        "agent_cli_guard": true,
+        "identities": "synthetic"
+      },
+      "source_manifest": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s2-backend-delivered-sha256.json",
+      "executed_tests": {
+        "internal/service::TestCollaborationRegistrationChecksActualResourceOwner": {
+          "status": "passed",
+          "elapsed": 0.2
+        },
+        "internal/service::TestCollaborationOwnerConsentIsExplicitScopedAndIdempotent": {
+          "status": "passed",
+          "elapsed": 0.33
+        },
+        "internal/service::TestCollaborationConsentUsesCompleteSquadRoster": {
+          "status": "passed",
+          "elapsed": 0.27
+        },
+        "internal/service::TestCollaborationResourceOfferSquadStillRequiresEveryOwnerConsent": {
+          "status": "passed",
+          "elapsed": 0.41
+        },
+        "internal/service::TestCollaborationResourceOfferEveryOwnerMustRemainCurrent": {
+          "status": "passed",
+          "elapsed": 1.5
+        },
+        "internal/service::TestCollaborationResourceOfferAllOwnersAreEligibleBeforeSupply": {
+          "status": "passed",
+          "elapsed": 0.64
+        },
+        "internal/service::TestCollaborationResourceOfferSeparatesPrivateOwnerAndOrganizer": {
+          "status": "passed",
+          "elapsed": 0.31
+        },
+        "internal/handler::TestCollaborationResourceOfferHTTPPrivateOwnerAndOutsideOrganizer": {
+          "status": "passed",
+          "elapsed": 0.17
+        }
+      },
+      "limits": [
+        "Synthetic DB/HTTP evidence; native containment and browser UI require their own runs."
+      ],
+      "execution_counts": {
+        "internal/service": {
+          "passed_top_level": 23,
+          "failed_top_level": 0,
+          "skipped_top_level": 0,
+          "passed_subtests": 46,
+          "failed_subtests": 0,
+          "skipped_subtests": 0
+        },
+        "internal/handler": {
+          "passed_top_level": 12,
+          "failed_top_level": 0,
+          "skipped_top_level": 0,
+          "passed_subtests": 3,
+          "failed_subtests": 0,
+          "skipped_subtests": 0
+        }
+      },
+      "count_note": "Counts describe this recorded invocation; repeated tests across runs are not additive. executed_tests lists only identities used by this ledger."
+    },
+    "s2-migrations": {
+      "kind": "go_race_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s2-migrations-race-final.jsonl",
+          "sha256": "20d1f6066d2426703fb70d300285a316e58af1b4d62fafd1c10a31ea03701817"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/check-s2-backend.md",
+      "command": "python3 /tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py service_s2 bash ../scripts/go-test-with-agent-cli-guard.sh go test -race ./cmd/migrate -run '^TestCollaborationResourceOfferMigrations' -count=1 -json",
+      "working_directory": "server",
+      "environment": {
+        "database_alias": "service_s2",
+        "os_arch": "darwin/arm64",
+        "toolchain": "go1.26.6",
+        "agent_cli_guard": true,
+        "identities": "synthetic"
+      },
+      "source_manifest": "/tmp/multica-gap-recovery-20261021-h6phxwo9/check-s2-backend/evidence-summary.json",
+      "executed_tests": {},
+      "limits": [
+        "Synthetic DB/HTTP evidence; native containment and browser UI require their own runs."
+      ],
+      "execution_counts": {
+        "cmd/migrate": {
+          "passed_top_level": 4,
+          "failed_top_level": 0,
+          "skipped_top_level": 0,
+          "passed_subtests": 2,
+          "failed_subtests": 0,
+          "skipped_subtests": 0
+        }
+      },
+      "count_note": "Counts describe this recorded invocation; repeated tests across runs are not additive. executed_tests lists only identities used by this ledger."
+    },
+    "s3-review": {
+      "kind": "go_race_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/check-s3-s5-go-race.jsonl",
+          "sha256": "3377c69d116c83eccdea1528bd2bc14d0e573c7babbdc46833b753b6638a3970"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/check-s3-s5.md",
+      "command": "python3 /tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py review_s3_s5 bash ../scripts/go-test-with-agent-cli-guard.sh go test -race -p=1 ./internal/auth ./internal/service ./internal/handler ./internal/migrations ./cmd/migrate -run '^(TestTemporarilyDisabledUsers|TestAdminCollaboration|TestCollaborationCommand(Cancellation|History)|TestCollaborationCancellationMigration|TestCollaborationSquadHumanJoinClaimAndUnreadCancellation|TestCollaborationCommandHistoryMigrationRepairsInterruptedIndex|TestConcurrentIndexCleanupsMatchTheirMigrations|TestEveryConcurrentUpBuildHasCleanup|TestEveryConcurrentDownBuildHasCleanup)' -count=1 -json",
+      "working_directory": "server",
+      "environment": {
+        "database_alias": "review_s3_s5",
+        "os_arch": "darwin/arm64",
+        "toolchain": "go1.26.6",
+        "agent_cli_guard": true,
+        "identities": "synthetic"
+      },
+      "source_manifest": "/tmp/multica-gap-recovery-20261021-h6phxwo9/check-s3-s5-verification.json",
+      "executed_tests": {
+        "internal/service::TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator": {
+          "status": "passed",
+          "elapsed": 20.19
+        },
+        "internal/service::TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible": {
+          "status": "passed",
+          "elapsed": 10.35
+        },
+        "internal/service::TestAdminCollaborationTemporaryDisableMatchesAccountAvailability": {
+          "status": "passed",
+          "elapsed": 7.03
+        },
+        "internal/service::TestAdminCollaborationPasswordRestrictionsDoNotEnableAdministration": {
+          "status": "passed",
+          "elapsed": 2.35
+        },
+        "internal/service::TestAdminCollaborationReopenRetainsHealthyHandlerAndDoesNotGrantOrdinaryRights": {
+          "status": "passed",
+          "elapsed": 1.16
+        },
+        "internal/service::TestAdminCollaborationRecoveryPreservesOriginalKeyAndSuccessor": {
+          "status": "passed",
+          "elapsed": 1.23
+        },
+        "internal/service::TestAdminCollaborationLifecyclePreservesCreatorAndRealActor": {
+          "status": "passed",
+          "elapsed": 2.35
+        },
+        "internal/service::TestAdminCollaborationReopenAssignsExistingParticipantAtomically": {
+          "status": "passed",
+          "elapsed": 1.16
+        },
+        "internal/service::TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait": {
+          "status": "passed",
+          "elapsed": 12.85
+        },
+        "internal/service::TestAdminCollaborationAuthorityFencesRemainUntilCommit": {
+          "status": "passed",
+          "elapsed": 8.05
+        },
+        "internal/service::TestAdminCollaborationCloseReopenPreservesProofAndCancellationHistory": {
+          "status": "passed",
+          "elapsed": 1.26
+        },
+        "internal/service::TestAdminCollaborationIterationFailureRollsBackSuccessorAndReopen": {
+          "status": "passed",
+          "elapsed": 1.17
+        },
+        "internal/service::TestAdminCollaborationRequiredWritesRollbackEverything": {
+          "status": "passed",
+          "elapsed": 30.82
+        },
+        "internal/service::TestAdminCollaborationConcurrentOriginalKeyHasOneHandoff": {
+          "status": "passed",
+          "elapsed": 1.25
+        },
+        "internal/service::TestCollaborationCommandHistoryM11CancelClaimRace": {
+          "status": "passed",
+          "elapsed": 2.09
+        },
+        "internal/service::TestCollaborationCommandHistoryAutomaticM11Detach": {
+          "status": "passed",
+          "elapsed": 1.33
+        },
+        "internal/service::TestCollaborationCommandHistorySwitchThenCancelPreservesHistoricalPlacement": {
+          "status": "passed",
+          "elapsed": 0.39
+        },
+        "internal/service::TestCollaborationCommandCancellationExactProvenance": {
+          "status": "passed",
+          "elapsed": 1.28
+        },
+        "internal/service::TestCollaborationCommandHistoryOutlivesCommentAndAttachmentDisplay": {
+          "status": "passed",
+          "elapsed": 0.29
+        },
+        "internal/service::TestCollaborationCommandHistoryPagingAndCurrentAuthority": {
+          "status": "passed",
+          "elapsed": 0.35
+        },
+        "internal/service::TestCollaborationCommandCancellationUnknownCommitKeepsOneEvent": {
+          "status": "passed",
+          "elapsed": 0.23
+        },
+        "internal/handler::TestCollaborationCommandHistoryHTTPPagingAndPrivateBoundary": {
+          "status": "passed",
+          "elapsed": 0.16
+        }
+      },
+      "limits": [
+        "Synthetic DB/HTTP evidence; native containment and browser UI require their own runs."
+      ],
+      "execution_counts": {
+        "internal/auth": {
+          "passed_top_level": 2,
+          "failed_top_level": 0,
+          "skipped_top_level": 0,
+          "passed_subtests": 0,
+          "failed_subtests": 0,
+          "skipped_subtests": 0
+        },
+        "internal/service": {
+          "passed_top_level": 34,
+          "failed_top_level": 0,
+          "skipped_top_level": 0,
+          "passed_subtests": 117,
+          "failed_subtests": 0,
+          "skipped_subtests": 0
+        },
+        "internal/handler": {
+          "passed_top_level": 5,
+          "failed_top_level": 0,
+          "skipped_top_level": 0,
+          "passed_subtests": 0,
+          "failed_subtests": 0,
+          "skipped_subtests": 0
+        },
+        "internal/migrations": {
+          "passed_top_level": 1,
+          "failed_top_level": 0,
+          "skipped_top_level": 0,
+          "passed_subtests": 0,
+          "failed_subtests": 0,
+          "skipped_subtests": 0
+        },
+        "cmd/migrate": {
+          "passed_top_level": 4,
+          "failed_top_level": 0,
+          "skipped_top_level": 0,
+          "passed_subtests": 0,
+          "failed_subtests": 0,
+          "skipped_subtests": 0
+        }
+      },
+      "count_note": "Counts describe this recorded invocation; repeated tests across runs are not additive. executed_tests lists only identities used by this ledger."
+    },
+    "s5-service": {
+      "kind": "go_race_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s5-service-race.jsonl",
+          "sha256": "1b096d49d3ce5560c743a9b7ace9d0dfb403d5ed77f35a78e45d827b9417b01c"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/s5-admin-backend-implementation.md",
+      "command": "python3 /tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py service_s5 bash ../scripts/go-test-with-agent-cli-guard.sh go test -race ./internal/service -run '^Test(AdminCollaboration|PlatformAdmin|Collaboration(Lifecycle|Workflow|Status))' -count=1 -json",
+      "working_directory": "server",
+      "environment": {
+        "database_alias": "service_s5",
+        "os_arch": "darwin/arm64",
+        "toolchain": "go1.26.6",
+        "agent_cli_guard": true,
+        "identities": "synthetic"
+      },
+      "source_manifest": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s5-verification.json",
+      "executed_tests": {
+        "internal/service::TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator": {
+          "status": "passed",
+          "elapsed": 19.9
+        },
+        "internal/service::TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible": {
+          "status": "passed",
+          "elapsed": 10.21
+        },
+        "internal/service::TestAdminCollaborationReopenRetainsHealthyHandlerAndDoesNotGrantOrdinaryRights": {
+          "status": "passed",
+          "elapsed": 1.21
+        },
+        "internal/service::TestAdminCollaborationRecoveryPreservesOriginalKeyAndSuccessor": {
+          "status": "passed",
+          "elapsed": 1.8
+        },
+        "internal/service::TestAdminCollaborationLifecyclePreservesCreatorAndRealActor": {
+          "status": "passed",
+          "elapsed": 2.23
+        },
+        "internal/service::TestAdminCollaborationReopenAssignsExistingParticipantAtomically": {
+          "status": "passed",
+          "elapsed": 1.21
+        },
+        "internal/service::TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait": {
+          "status": "passed",
+          "elapsed": 12.63
+        },
+        "internal/service::TestAdminCollaborationAuthorityFencesRemainUntilCommit": {
+          "status": "passed",
+          "elapsed": 7.44
+        },
+        "internal/service::TestAdminCollaborationCloseReopenPreservesProofAndCancellationHistory": {
+          "status": "passed",
+          "elapsed": 1.23
+        },
+        "internal/service::TestAdminCollaborationIterationFailureRollsBackSuccessorAndReopen": {
+          "status": "passed",
+          "elapsed": 1.18
+        },
+        "internal/service::TestAdminCollaborationRequiredWritesRollbackEverything": {
+          "status": "passed",
+          "elapsed": 31.16
+        },
+        "internal/service::TestAdminCollaborationConcurrentOriginalKeyHasOneHandoff": {
+          "status": "passed",
+          "elapsed": 1.24
+        },
+        "internal/service::TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue": {
+          "status": "passed",
+          "elapsed": 1.09
+        },
+        "internal/service::TestCollaborationLifecycleAuthorityAndExplicitReopen": {
+          "status": "passed",
+          "elapsed": 0.93
+        },
+        "internal/service::TestCollaborationStatusChangesOnlyStatusAndRecordsIteration": {
+          "status": "passed",
+          "elapsed": 0.27
+        },
+        "internal/service::TestCollaborationStatusOptionsAreScopedAndRefusalsReplay": {
+          "status": "passed",
+          "elapsed": 0.27
+        },
+        "internal/service::TestCollaborationLifecycleRechecksCatalogAndPermitAfterLockWait": {
+          "status": "passed",
+          "elapsed": 1.11
+        },
+        "internal/service::TestCollaborationStatusOptionsRequireEligibleRoleAndActualCatalog": {
+          "status": "passed",
+          "elapsed": 0.23
+        },
+        "internal/service::TestCollaborationStatusCatalogRowsRemainLockedUntilCommit": {
+          "status": "passed",
+          "elapsed": 0.3
+        },
+        "internal/service::TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof": {
+          "status": "passed",
+          "elapsed": 1.99
+        },
+        "internal/service::TestCollaborationWorkflowVoluntaryLeaveAndMinimalRecovery": {
+          "status": "passed",
+          "elapsed": 0.26
+        },
+        "internal/service::TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution": {
+          "status": "passed",
+          "elapsed": 1.08
+        },
+        "internal/service::TestCollaborationWorkflowReplaysExactLargeVersionsAndDisabledRefusal": {
+          "status": "passed",
+          "elapsed": 0.19
+        },
+        "internal/service::TestCollaborationWorkflowNotificationsAndWorkbench": {
+          "status": "passed",
+          "elapsed": 0.24
+        },
+        "internal/service::TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals": {
+          "status": "passed",
+          "elapsed": 1.91
+        },
+        "internal/service::TestCollaborationWorkflowConcurrentIdentityAndRevision": {
+          "status": "passed",
+          "elapsed": 0.32
+        },
+        "internal/service::TestCollaborationWorkflowRechecksAccountsAndRolesAfterLock": {
+          "status": "passed",
+          "elapsed": 0.55
+        },
+        "internal/service::TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything": {
+          "status": "passed",
+          "elapsed": 4.24
+        },
+        "internal/service::TestCollaborationWorkflowInviteTransferPreservesExecution": {
+          "status": "passed",
+          "elapsed": 0.24
+        }
+      },
+      "limits": [
+        "Synthetic DB/HTTP evidence; native containment and browser UI require their own runs."
+      ],
+      "execution_counts": {
+        "internal/service": {
+          "passed_top_level": 76,
+          "failed_top_level": 0,
+          "skipped_top_level": 0,
+          "passed_subtests": 183,
+          "failed_subtests": 0,
+          "skipped_subtests": 0
+        }
+      },
+      "count_note": "Counts describe this recorded invocation; repeated tests across runs are not additive. executed_tests lists only identities used by this ledger."
+    },
+    "s5-handler": {
+      "kind": "go_race_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s5-handler-race.jsonl",
+          "sha256": "af6868fa4d0ea6f4296731f16d8bfb659ab6a105b70f8c2ca885ec5c374f4865"
+        },
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s5-handler-race-final.jsonl",
+          "sha256": "4b04dff72431904f7070d6d69965493c315af67bf72c1653356f8d679d7acf3f"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/s5-admin-backend-implementation.md",
+      "command": [
+        "python3 /tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py service_s5 bash ../scripts/go-test-with-agent-cli-guard.sh go test -race ./internal/handler -run '^Test(AdminCollaboration|AdminMeUsesHumanSessionWithoutWorkspace|AdminFeatureGateAndRoleOperationRecovery|LegacyIssueWritesCannotBypassCollaborationLifecycle|LegacyCollaborationCommentAndRerunPathsStayInert)$' -count=1 -json",
+        "python3 /tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py service_s5 bash ../scripts/go-test-with-agent-cli-guard.sh go test -race ./internal/handler -run '^TestAdminCollaboration' -count=1 -json"
+      ],
+      "working_directory": "server",
+      "environment": {
+        "database_alias": "service_s5",
+        "os_arch": "darwin/arm64",
+        "toolchain": "go1.26.6",
+        "agent_cli_guard": true,
+        "identities": "synthetic"
+      },
+      "source_manifest": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s5-verification.json",
+      "executed_tests": {
+        "internal/handler::TestLegacyIssueWritesCannotBypassCollaborationLifecycle": {
+          "status": "passed",
+          "elapsed": 0.03
+        },
+        "internal/handler::TestLegacyCollaborationCommentAndRerunPathsStayInert": {
+          "status": "passed",
+          "elapsed": 0.01
+        }
+      },
+      "limits": [
+        "Synthetic DB/HTTP evidence; native containment and browser UI require their own runs."
+      ],
+      "execution_counts": {
+        "internal/handler": {
+          "passed_top_level": 7,
+          "failed_top_level": 0,
+          "skipped_top_level": 0,
+          "passed_subtests": 0,
+          "failed_subtests": 0,
+          "skipped_subtests": 0
+        }
+      },
+      "count_note": "Counts describe this recorded invocation; repeated tests across runs are not additive. executed_tests lists only identities used by this ledger."
+    },
+    "s4-backend": {
+      "kind": "go_race_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/review-s4/backend-race-serial.jsonl",
+          "sha256": "271367fe7f3b1fc372a750a3c73e7a646837f7c5cd4eb9d5c3afd0978dd16378"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/check-s4-runtime.md",
+      "command": "python3 /tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py review_s4 bash ../scripts/go-test-with-agent-cli-guard.sh go test -race -p 1 ./internal/service ./internal/handler ./internal/migrations ./pkg/protocol -run '^TestCollaboration(Runtime|Managed|Termination|RemovalOfNonRoot|GroupDepend|Squad|Batch|Preparation)' -count=1 -json",
+      "working_directory": "server",
+      "environment": {
+        "database_alias": "review_s4",
+        "os_arch": "darwin/arm64",
+        "toolchain": "go1.26.6",
+        "agent_cli_guard": true,
+        "identities": "synthetic"
+      },
+      "source_manifest": "/tmp/multica-gap-recovery-20261021-h6phxwo9/review-s4/verification-summary.json",
+      "executed_tests": {
+        "internal/service::TestCollaborationBatchCoalescesDirectAgentAndOneSquad": {
+          "status": "passed",
+          "elapsed": 0.81
+        },
+        "internal/service::TestCollaborationBatchKeepsOneFollowupBehindRunningWork": {
+          "status": "passed",
+          "elapsed": 0.46
+        },
+        "internal/service::TestCollaborationRuntimeFreezesEveryInputDependencyAndPrompt": {
+          "status": "passed",
+          "elapsed": 0.56
+        },
+        "internal/service::TestCollaborationRuntimeHoldBlocksClaimAndPermit": {
+          "status": "passed",
+          "elapsed": 0.49
+        },
+        "internal/service::TestCollaborationRuntimePreparationInvocationFreezesLockedAgent": {
+          "status": "passed",
+          "elapsed": 0.61
+        },
+        "internal/service::TestCollaborationRuntimePreparationFreezesActualInputsAndDeliveredVersions": {
+          "status": "passed",
+          "elapsed": 0.61
+        },
+        "internal/service::TestCollaborationRuntimePreparationScopeAndRevocation": {
+          "status": "passed",
+          "elapsed": 0.69
+        },
+        "internal/service::TestCollaborationRuntimePreparationFreezesAdmittedCommit": {
+          "status": "passed",
+          "elapsed": 0.47
+        },
+        "internal/service::TestCollaborationRuntimeWaitingScanAdvancesPersistentRefusals": {
+          "status": "passed",
+          "elapsed": 1.49
+        },
+        "internal/service::TestCollaborationRuntimeCandidateScanAdvancesPersistentRefusals": {
+          "status": "passed",
+          "elapsed": 1.58
+        },
+        "internal/service::TestCollaborationManagedStopProofPreservesFreshResumeIntent": {
+          "status": "passed",
+          "elapsed": 0.66
+        },
+        "internal/service::TestCollaborationRemovalOfNonRootBatchAuthorStopsRun": {
+          "status": "passed",
+          "elapsed": 0.53
+        },
+        "internal/service::TestCollaborationSquadCommentCapacityOneLeaderMemberContinuation": {
+          "status": "passed",
+          "elapsed": 1.04
+        },
+        "internal/service::TestCollaborationSquadRuntimeCommentAuthorityAndMentionBoundary": {
+          "status": "passed",
+          "elapsed": 0.56
+        },
+        "internal/service::TestCollaborationSquadUnreadGrantRevocationDetachesOnlyAlias": {
+          "status": "passed",
+          "elapsed": 2.01
+        },
+        "internal/service::TestCollaborationSquadStopReturnsUnreadJoinWithoutRestartingIt": {
+          "status": "passed",
+          "elapsed": 2.26
+        },
+        "internal/service::TestCollaborationSquadActivityAndProofRemainSeparate": {
+          "status": "passed",
+          "elapsed": 1.76
+        },
+        "internal/service::TestCollaborationSquadHumanCommentQueuesAndJoinsWithTypedReceipt": {
+          "status": "passed",
+          "elapsed": 2.12
+        },
+        "internal/service::TestCollaborationSquadContinuationNonlaunchReturnsOnlyItsInput": {
+          "status": "passed",
+          "elapsed": 1.38
+        },
+        "internal/service::TestCollaborationSquadInputRechecksEveryResourceConsent": {
+          "status": "passed",
+          "elapsed": 1.57
+        },
+        "internal/handler::TestCollaborationRuntimePreparationHTTPRejectsCredentialFallbacks": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "internal/handler::TestCollaborationRuntimeManagedBoundaryRejectsBroadCredentials": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "internal/handler::TestCollaborationRuntimeNarrowHandlersNeverFallBackToOtherPurposes": {
+          "status": "passed",
+          "elapsed": 0
+        }
+      },
+      "limits": [
+        "Synthetic DB/HTTP evidence; native containment and browser UI require their own runs."
+      ],
+      "execution_counts": {
+        "internal/service": {
+          "passed_top_level": 81,
+          "failed_top_level": 0,
+          "skipped_top_level": 0,
+          "passed_subtests": 100,
+          "failed_subtests": 0,
+          "skipped_subtests": 0
+        },
+        "internal/handler": {
+          "passed_top_level": 7,
+          "failed_top_level": 0,
+          "skipped_top_level": 0,
+          "passed_subtests": 0,
+          "failed_subtests": 0,
+          "skipped_subtests": 0
+        },
+        "internal/migrations": {
+          "passed_top_level": 3,
+          "failed_top_level": 0,
+          "skipped_top_level": 0,
+          "passed_subtests": 0,
+          "failed_subtests": 0,
+          "skipped_subtests": 0
+        },
+        "pkg/protocol": {
+          "passed_top_level": 3,
+          "failed_top_level": 0,
+          "skipped_top_level": 0,
+          "passed_subtests": 12,
+          "failed_subtests": 0,
+          "skipped_subtests": 0
+        }
+      },
+      "count_note": "Counts describe this recorded invocation; repeated tests across runs are not additive. executed_tests lists only identities used by this ledger."
+    },
+    "s4-records": {
+      "kind": "go_race_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/review-s4/records-race.jsonl",
+          "sha256": "f4f034f042d9a96ff3327580ba45c3a5220a31c5d255965c0b7689e9a727a3b1"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/check-s4-runtime.md",
+      "command": "python3 /tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py review_s4 bash ../scripts/go-test-with-agent-cli-guard.sh go test -race ./internal/service -run '^TestCollaboration(PreparationRecords|RunRecords|RuntimePreparationObservationKeepsInstalledRecordsReadable)' -count=1 -json",
+      "working_directory": "server",
+      "environment": {
+        "database_alias": "review_s4",
+        "os_arch": "darwin/arm64",
+        "toolchain": "go1.26.6",
+        "agent_cli_guard": true,
+        "identities": "synthetic"
+      },
+      "source_manifest": "/tmp/multica-gap-recovery-20261021-h6phxwo9/review-s4/verification-summary.json",
+      "executed_tests": {
+        "internal/service::TestCollaborationPreparationRecordsRetainedAfterCleanup": {
+          "status": "passed",
+          "elapsed": 0.62
+        },
+        "internal/service::TestCollaborationRunRecordsPagingFrozenInputsAndRetention": {
+          "status": "passed",
+          "elapsed": 0.95
+        },
+        "internal/service::TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence": {
+          "status": "passed",
+          "elapsed": 0.55
+        }
+      },
+      "limits": [
+        "Synthetic DB/HTTP evidence; native containment and browser UI require their own runs."
+      ],
+      "execution_counts": {
+        "internal/service": {
+          "passed_top_level": 10,
+          "failed_top_level": 0,
+          "skipped_top_level": 0,
+          "passed_subtests": 18,
+          "failed_subtests": 0,
+          "skipped_subtests": 0
+        }
+      },
+      "count_note": "Counts describe this recorded invocation; repeated tests across runs are not additive. executed_tests lists only identities used by this ledger."
+    },
+    "s4-daemon": {
+      "kind": "go_race_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/review-s4/daemon-settings-green.jsonl",
+          "sha256": "7e26d668e0b0697af29993b009d6ab770da6597ddd92ebe3455cccb23bf82baa"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/check-s4-runtime.md",
+      "command": "GOTOOLCHAIN=go1.26.6 bash ../scripts/go-test-with-agent-cli-guard.sh go test -race -p 1 -parallel 1 ./internal/daemon/collaborationrun ./internal/daemon ./pkg/agent -run 'Collaboration|Preparation|ProviderBundle|ClientPreparation|Runner|Claude|StreamJSON' -count=1 -json",
+      "working_directory": "server",
+      "environment": {
+        "database_alias": null,
+        "os_arch": "darwin/arm64",
+        "toolchain": "go1.26.6",
+        "agent_cli_guard": true,
+        "identities": "synthetic"
+      },
+      "source_manifest": "/tmp/multica-gap-recovery-20261021-h6phxwo9/review-s4/verification-summary.json",
+      "executed_tests": {
+        "internal/daemon::TestCollaborationCandidatePagingAcrossRestart": {
+          "status": "passed",
+          "elapsed": 0.08
+        },
+        "internal/daemon::TestCollaborationRestartReservesUnknownMachineCapacity": {
+          "status": "passed",
+          "elapsed": 0.04
+        },
+        "internal/daemon::TestCollaborationBatchPollerSlotsAndRunnerLinux": {
+          "status": "skipped",
+          "elapsed": 0
+        }
+      },
+      "limits": [
+        "Synthetic DB/HTTP evidence; native containment and browser UI require their own runs."
+      ],
+      "execution_counts": {
+        "internal/daemon/collaborationrun": {
+          "passed_top_level": 16,
+          "failed_top_level": 0,
+          "skipped_top_level": 0,
+          "passed_subtests": 84,
+          "failed_subtests": 0,
+          "skipped_subtests": 0
+        },
+        "internal/daemon": {
+          "passed_top_level": 21,
+          "failed_top_level": 0,
+          "skipped_top_level": 1,
+          "passed_subtests": 14,
+          "failed_subtests": 0,
+          "skipped_subtests": 0
+        },
+        "pkg/agent": {
+          "passed_top_level": 78,
+          "failed_top_level": 0,
+          "skipped_top_level": 0,
+          "passed_subtests": 50,
+          "failed_subtests": 0,
+          "skipped_subtests": 1
+        }
+      },
+      "count_note": "Counts describe this recorded invocation; repeated tests across runs are not additive. executed_tests lists only identities used by this ledger."
+    },
+    "s4-native": {
+      "kind": "actual_linux_kernel_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/review-s4/native-settings-green.log",
+          "sha256": "b7ca8e391ca76214d5a66a499bc1fb94f20add615b427fdef91d4e11d54a5a50"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/check-s4-runtime.md",
+      "command": "docker exec -e MULTICA_REQUIRE_COLLAB_NAMESPACE=1 -e MULTICA_COLLAB_TEST_GIT_CONFIG=/opt/multica-git-fixture/git-tools-with-entropy.json multica-gap-recovery-native-full /collaborationrun-s4-check-settings-green.test -test.run '^TestLinux' -test.v -test.count=1",
+      "environment": {
+        "os_arch": "Linux arm64",
+        "kernel": "Docker Desktop linuxkit 6.12.68",
+        "container": "multica-gap-recovery-native-full",
+        "network": "none",
+        "host_mounts": "none",
+        "providers": "test-created static and Claude-protocol fake executables",
+        "git": "explicit Git 2.39.5 with declared loader/libraries"
+      },
+      "binary": {
+        "path": "/tmp/multica-s4-check-settings-green.test",
+        "sha256": "372ea64d61135ce4461bd941005387d850928a7413882aaa068f366588e7a864"
+      },
+      "executed_tests": {
+        "internal/daemon/collaborationrun::TestLinuxNamespaceKillsDetachedDoubleForkAndEarlyStdio": {
+          "status": "passed"
+        },
+        "internal/daemon/collaborationrun::TestLinuxNamespaceHidesSupervisorFilesAndDropsPrivileges": {
+          "status": "passed"
+        },
+        "internal/daemon/collaborationrun::TestLinuxPreparedGitExportsOnlyFixedCommitWithExplicitDynamicTools": {
+          "status": "passed"
+        },
+        "internal/daemon/collaborationrun::TestLinuxPreparedGitKeepsClaudeConfigurationAsData": {
+          "status": "passed"
+        },
+        "internal/daemon/collaborationrun::TestLinuxPreparedGitRefusesUnsupportedCommittedContent": {
+          "status": "passed"
+        },
+        "internal/daemon/collaborationrun::TestLinuxProviderBundleRejectsMissingNativeDependenciesAndWrongArchitecture": {
+          "status": "passed"
+        },
+        "internal/daemon/collaborationrun::TestLinuxPreparedRunMaterializesFilesAndUsesFreshExplicitAccount": {
+          "status": "passed"
+        },
+        "internal/daemon/collaborationrun::TestLinuxPreparedRunDistinguishesPreburnAndContainedFailure": {
+          "status": "passed"
+        },
+        "internal/daemon/collaborationrun::TestLinuxPreparedGitReapsDetachedObjectReaderBeforeProvider": {
+          "status": "passed"
+        },
+        "internal/daemon/collaborationrun::TestLinuxPreparedEntropyRequiresExplicitProviderDevice": {
+          "status": "passed"
+        },
+        "internal/daemon/collaborationrun::TestLinuxPreparationProbeNeverReadsAccountOrGitInputs": {
+          "status": "passed"
+        },
+        "internal/daemon/collaborationrun::TestLinuxPreparedStopDuringGitUsesExitedProofWithoutProvider": {
+          "status": "passed"
+        },
+        "internal/daemon/collaborationrun::TestLinuxPreparedSupervisorCrashDuringGitRetainsUnknown": {
+          "status": "passed"
+        },
+        "internal/daemon/collaborationrun::TestLinuxRunnerHTTPOutcomeStopAndRevokedBusinessProof": {
+          "status": "passed"
+        },
+        "internal/daemon/collaborationrun::TestLinuxSupervisorCrashClosesNamespaceButKeepsUnknown": {
+          "status": "passed"
+        }
+      },
+      "limits": [
+        "Real Linux process/namespace and Git evidence; no authenticated Claude binary/version/account/paid smoke.",
+        "No macOS/Windows runtime containment or installed Desktop startup evidence."
+      ]
+    },
+    "web-offers": {
+      "kind": "production_web_browser",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-web-collaboration.json",
+          "sha256": "f8278472cf212260ef4bf6d95a7e2ca7d2ad6fc22ba5479d42fc67fde0e3fbd2"
+        }
+      ],
+      "selected_tests": [
+        {
+          "file": "collaboration-resource-offers-web.spec.ts",
+          "line": 7,
+          "title": "a private owner offers a resource to an external organizer and independently authorizes it",
+          "status": "expected",
+          "project": "chromium",
+          "results": [
+            {
+              "status": "passed",
+              "startTime": "2026-10-21T02:09:07.153Z",
+              "duration": 7911,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "executed_tests": {
+        "e2e/collaboration-resource-offers-web.spec.ts::a private owner offers a resource to an external organizer and independently authorizes it": {
+          "status": "passed",
+          "line": 7
+        }
+      },
+      "source_manifest": "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-source-manifest.json",
+      "environment": {
+        "auth_mode": "legacy",
+        "database": "multica_gap_api_v2",
+        "api": "http://localhost:18985",
+        "web": "http://localhost:13905",
+        "web_build_id": "SrpeaQzGK_I-BlKn9Vy0e",
+        "api_listener_pid": 85510,
+        "source_id": "58b3fa60203026715322f15875f607df0aac1487a544f7d277b43aa137ed35ef",
+        "source_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-source",
+        "source_equivalence": "Same frozen product source as verification-admin-source; independently compiled legacy production Web.",
+        "provider_execution": false
+      },
+      "command": null,
+      "command_note": "Exact unified coordinator invocation pending; final JSON proves seven tests across the six named specs, zero failures/skips/flaky results.",
+      "limits": [
+        "Selected test support only; the whole seven-test run is not full 97-row acceptance.",
+        "No authenticated provider or installed client proof."
+      ]
+    },
+    "web-history": {
+      "kind": "production_web_browser",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-web-collaboration.json",
+          "sha256": "f8278472cf212260ef4bf6d95a7e2ca7d2ad6fc22ba5479d42fc67fde0e3fbd2"
+        }
+      ],
+      "selected_tests": [
+        {
+          "file": "collaboration-command-history-web.spec.ts",
+          "line": 8,
+          "title": "cancelled waiting commands retain original content after comment changes, refresh and another account reads",
+          "status": "expected",
+          "project": "chromium",
+          "results": [
+            {
+              "status": "passed",
+              "startTime": "2026-10-21T02:08:46.248Z",
+              "duration": 8886,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "executed_tests": {
+        "e2e/collaboration-command-history-web.spec.ts::cancelled waiting commands retain original content after comment changes, refresh and another account reads": {
+          "status": "passed",
+          "line": 8
+        }
+      },
+      "source_manifest": "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-source-manifest.json",
+      "environment": {
+        "auth_mode": "legacy",
+        "database": "multica_gap_api_v2",
+        "api": "http://localhost:18985",
+        "web": "http://localhost:13905",
+        "web_build_id": "SrpeaQzGK_I-BlKn9Vy0e",
+        "api_listener_pid": 85510,
+        "source_id": "58b3fa60203026715322f15875f607df0aac1487a544f7d277b43aa137ed35ef",
+        "source_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-source",
+        "source_equivalence": "Same frozen product source as verification-admin-source; independently compiled legacy production Web.",
+        "provider_execution": false
+      },
+      "command": null,
+      "command_note": "Exact unified coordinator invocation pending; final JSON proves seven tests across the six named specs, zero failures/skips/flaky results.",
+      "limits": [
+        "Selected test support only; the whole seven-test run is not full 97-row acceptance.",
+        "No authenticated provider or installed client proof."
+      ]
+    },
+    "native-offers": {
+      "kind": "actual_electron_ipc_harness",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s2-s3-desktop-v5.json",
+          "sha256": "51cf7c06600031bb5a960ae9b3c69c1c5f235ae6110625f3741d1bcd7cb7d606"
+        }
+      ],
+      "selected_test": {
+        "file": "collaboration-account-desktop.spec.ts",
+        "line": 337,
+        "title": "Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history",
+        "project": "chromium",
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "startTime": "2026-10-20T23:59:30.211Z",
+            "duration": 9478,
+            "retry": 0,
+            "attachments": []
+          }
+        ]
+      },
+      "executed_tests": {
+        "e2e/collaboration-account-desktop.spec.ts::Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history": {
+          "status": "passed",
+          "line": 337
+        }
+      },
+      "source_manifest": ".omx/reports/cwc-gap-recovery-20261021/verification-v2-build.json",
+      "environment": {
+        "web_build_id": "lzr0h9yNt3KNlpQxPX9pm",
+        "source_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-source",
+        "api": "http://localhost:18985",
+        "web": "http://localhost:13905",
+        "desktop_renderer": "http://localhost:6079",
+        "database": "multica_gap_api_v2",
+        "provider_execution": false
+      },
+      "command": null,
+      "command_note": "Coordinator consolidated invocation manifest pending; raw report contains exact selected test/project/results.",
+      "limits": [
+        "Actual Electron with isolated profiles and production IPC harness; no installed full Main startup.",
+        "One selected agent; no AI process execution."
+      ]
+    },
+    "s5-frontend": {
+      "kind": "scoped_typescript_unit_and_static",
+      "result": "passed",
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/check-s5-frontend.md",
+      "source_manifest": "/tmp/multica-gap-recovery-20261021-h6phxwo9/check-s5-frontend-verification.json",
+      "command_source": ".trellis/tasks/10-20-collaboration-gap-recovery/research/check-s5-frontend.md#fresh-verification",
+      "totals": {
+        "core": 247,
+        "views_distinct": 47,
+        "desktop_unit": 73,
+        "web_unit": 9,
+        "locale_parity": 66
+      },
+      "checks": {
+        "scoped_eslint": "passed",
+        "core_views_web_desktop_typecheck": "passed"
+      },
+      "limits": [
+        "Unit navigation is not a running browser/native S5 journey."
+      ]
+    },
+    "all-components": {
+      "kind": "typescript_component_and_helper_tests",
+      "result": "passed",
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/s3-all-implementation.md",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-s3-all-core-green.log"
+        },
+        {
+          "path": "/tmp/multica-s3-all-views-green.log"
+        }
+      ],
+      "command": [
+        "pnpm --filter @multica/core test collaboration",
+        "pnpm --filter @multica/views test collaboration"
+      ],
+      "executed_tests": {
+        "packages/views/collaboration/comment-composer.test.tsx::groups people and AI, inserts @all without losing explicit targets, and sends the reviewed delivery": {
+          "status": "passed"
+        }
+      },
+      "limits": [
+        "Incremental current-task run on documented S3a source; later complete core/views runs are separate evidence.",
+        "HTTP-mocked UI confirms wiring/suppression; server and browser behavior need their own evidence."
+      ]
+    },
+    "native-routes": {
+      "kind": "actual_linux_router_daemon_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-linux-router-collaboration.log",
+          "sha256": "eb310ba78fdda0e7b04bfe2d6863167442de008f42ef82bcfaeb8b9f713c5403"
+        }
+      ],
+      "command": null,
+      "command_note": "Coordinator command/binary/source manifest pending; actual RUN/PASS identities and terminal PASS read.",
+      "environment": {
+        "os_arch": "Linux arm64",
+        "database_alias": "linux_routes",
+        "provider_execution": "test-created executable only",
+        "database_network": "isolated task PostgreSQL network namespace"
+      },
+      "executed_tests": {
+        "cmd/server::TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux": {
+          "status": "passed",
+          "elapsed": "6.48s"
+        },
+        "cmd/server::TestCollaborationPartialResumeRoutesLinux": {
+          "status": "passed",
+          "elapsed": "2.59s"
+        },
+        "cmd/server::TestCollaborationSingleAgentRuntimeRoutesLinux": {
+          "status": "passed",
+          "elapsed": "1.32s"
+        },
+        "cmd/server::TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux": {
+          "status": "passed",
+          "elapsed": "0.67s"
+        },
+        "cmd/server::TestCollaborationRuntimeProofSurvivesOwnerDisableLinux": {
+          "status": "passed",
+          "elapsed": "0.74s"
+        },
+        "cmd/server::TestCollaborationSquadCapacityOneRoutesLinux": {
+          "status": "passed",
+          "elapsed": "1.10s"
+        }
+      },
+      "limits": [
+        "Real kernel/router/daemon integration with fake providers; no GUI or authenticated provider smoke."
+      ]
+    },
+    "native-daemon": {
+      "kind": "actual_linux_router_daemon_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-linux-daemon-collaboration.log",
+          "sha256": "e6568950a2639cf93ee4ed7156d5ab6108f95adbb6e82ab7ebc172b548b285e7"
+        }
+      ],
+      "command": null,
+      "command_note": "Coordinator command/binary/source manifest pending; actual RUN/PASS identities and terminal PASS read.",
+      "environment": {
+        "os_arch": "Linux arm64",
+        "database_alias": null,
+        "provider_execution": "test-created executable only",
+        "database_network": "isolated task PostgreSQL network namespace"
+      },
+      "executed_tests": {
+        "internal/daemon::TestCollaborationBatchPollerSlotsAndRunnerLinux": {
+          "status": "passed",
+          "elapsed": "0.33s"
+        }
+      },
+      "limits": [
+        "Real kernel/router/daemon integration with fake providers; no GUI or authenticated provider smoke."
+      ]
+    },
+    "source-inventory": {
+      "kind": "source_review_only",
+      "result": "not_verified_in_this_task",
+      "locations": {
+        "cmd/server::TestCollaborationRealtimeHTTPAndWebSocketShareCurrentAuthorization": {
+          "file": "server/cmd/server/collaboration_realtime_test.go",
+          "line": 22
+        },
+        "cmd/server::TestCollaborationSquadCapacityOneRoutesLinux": {
+          "file": "server/cmd/server/collaboration_squad_routes_test.go",
+          "line": 171
+        },
+        "cmd/server::TestCollaborationSingleAgentRuntimeRoutesLinux": {
+          "file": "server/cmd/server/collaboration_single_agent_routes_test.go",
+          "line": 416
+        },
+        "cmd/server::TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux": {
+          "file": "server/cmd/server/collaboration_single_agent_routes_test.go",
+          "line": 583
+        },
+        "cmd/server::TestCollaborationRuntimeProofSurvivesOwnerDisableLinux": {
+          "file": "server/cmd/server/collaboration_single_agent_routes_test.go",
+          "line": 686
+        },
+        "cmd/server::TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux": {
+          "file": "server/cmd/server/collaboration_daemon_cli_routes_test.go",
+          "line": 25
+        },
+        "cmd/server::TestCollaborationPartialResumeRoutesLinux": {
+          "file": "server/cmd/server/collaboration_hold_routes_test.go",
+          "line": 153
+        },
+        "internal/daemon::TestCollaborationCandidatePagingAcrossRestart": {
+          "file": "server/internal/daemon/collaboration_candidates_test.go",
+          "line": 32
+        },
+        "internal/daemon::TestCollaborationRestartReservesUnknownMachineCapacity": {
+          "file": "server/internal/daemon/collaboration_test.go",
+          "line": 55
+        },
+        "internal/daemon::TestCollaborationBatchPollerSlotsAndRunnerLinux": {
+          "file": "server/internal/daemon/collaboration_test.go",
+          "line": 187
+        },
+        "internal/daemon/collaborationrun::TestLinuxPreparedGitExportsOnlyFixedCommitWithExplicitDynamicTools": {
+          "file": "server/internal/daemon/collaborationrun/preparation_git_linux_test.go",
+          "line": 137
+        },
+        "internal/daemon/collaborationrun::TestLinuxPreparedRunMaterializesFilesAndUsesFreshExplicitAccount": {
+          "file": "server/internal/daemon/collaborationrun/preparation_linux_test.go",
+          "line": 435
+        },
+        "internal/daemon/collaborationrun::TestLinuxPreparationProbeNeverReadsAccountOrGitInputs": {
+          "file": "server/internal/daemon/collaborationrun/preparation_linux_test.go",
+          "line": 514
+        },
+        "internal/service::TestSourceContextCollaborationBuildersDenyBeforeProjection": {
+          "file": "server/internal/service/source_context_collaboration_test.go",
+          "line": 81
+        },
+        "internal/service::TestSourceContextOrdinaryChildRetainsOwnCaptureAndWorkspaceScope": {
+          "file": "server/internal/service/source_context_collaboration_test.go",
+          "line": 107
+        },
+        "internal/service::TestSourceContextCollaborationDirectWritersCannotUsePrebuiltCapture": {
+          "file": "server/internal/service/source_context_collaboration_test.go",
+          "line": 127
+        },
+        "internal/service::TestAdminCollaborationLifecyclePreservesCreatorAndRealActor": {
+          "file": "server/internal/service/admin_collaboration_test.go",
+          "line": 118
+        },
+        "internal/service::TestAdminCollaborationReopenAssignsExistingParticipantAtomically": {
+          "file": "server/internal/service/admin_collaboration_test.go",
+          "line": 141
+        },
+        "internal/service::TestCollaborationSourceStructureAuthorityAndAtomicEdit": {
+          "file": "server/internal/service/collaboration_source_fields_test.go",
+          "line": 44
+        },
+        "internal/service::TestCollaborationSourceStructureRejectsCyclesAndMixedFailure": {
+          "file": "server/internal/service/collaboration_source_fields_test.go",
+          "line": 89
+        },
+        "internal/service::TestCollaborationIterationAssignmentVersionsReasonsAndReplay": {
+          "file": "server/internal/service/collaboration_source_fields_test.go",
+          "line": 107
+        },
+        "internal/service::TestCollaborationCreationInitialFieldsAreOneRecoverableIssue": {
+          "file": "server/internal/service/collaboration_source_fields_test.go",
+          "line": 160
+        },
+        "internal/service::TestCollaborationIterationCompletedJoinRequiresExplicitConfirmation": {
+          "file": "server/internal/service/collaboration_source_fields_test.go",
+          "line": 198
+        },
+        "internal/service::TestCollaborationCreationInitialIterationRefusalNeverPartiallyCreates": {
+          "file": "server/internal/service/collaboration_source_fields_test.go",
+          "line": 219
+        },
+        "internal/service::TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait": {
+          "file": "server/internal/service/admin_collaboration_transaction_test.go",
+          "line": 18
+        },
+        "internal/service::TestAdminCollaborationAuthorityFencesRemainUntilCommit": {
+          "file": "server/internal/service/admin_collaboration_transaction_test.go",
+          "line": 107
+        },
+        "internal/service::TestAdminCollaborationCloseReopenPreservesProofAndCancellationHistory": {
+          "file": "server/internal/service/admin_collaboration_transaction_test.go",
+          "line": 200
+        },
+        "internal/service::TestAdminCollaborationIterationFailureRollsBackSuccessorAndReopen": {
+          "file": "server/internal/service/admin_collaboration_transaction_test.go",
+          "line": 239
+        },
+        "internal/service::TestAdminCollaborationRequiredWritesRollbackEverything": {
+          "file": "server/internal/service/admin_collaboration_transaction_test.go",
+          "line": 273
+        },
+        "internal/service::TestAdminCollaborationConcurrentOriginalKeyHasOneHandoff": {
+          "file": "server/internal/service/admin_collaboration_transaction_test.go",
+          "line": 356
+        },
+        "internal/service::TestCollaborationRegistrationChecksActualResourceOwner": {
+          "file": "server/internal/service/collaboration_authority_test.go",
+          "line": 14
+        },
+        "internal/service::TestCollaborationOwnerConsentIsExplicitScopedAndIdempotent": {
+          "file": "server/internal/service/collaboration_authority_test.go",
+          "line": 67
+        },
+        "internal/service::TestCollaborationConsentUsesCompleteSquadRoster": {
+          "file": "server/internal/service/collaboration_authority_test.go",
+          "line": 100
+        },
+        "internal/service::TestCollaborationPermissionRestoreCannotReviveConsent": {
+          "file": "server/internal/service/collaboration_authority_test.go",
+          "line": 219
+        },
+        "internal/service::TestCollaborationAccountReconciliationDisableRestore": {
+          "file": "server/internal/service/collaboration_account_reconciliation_test.go",
+          "line": 143
+        },
+        "internal/service::TestCollaborationSquadCommentCapacityOneLeaderMemberContinuation": {
+          "file": "server/internal/service/collaboration_squad_test.go",
+          "line": 91
+        },
+        "internal/service::TestCollaborationSquadRuntimeCommentAuthorityAndMentionBoundary": {
+          "file": "server/internal/service/collaboration_squad_test.go",
+          "line": 136
+        },
+        "internal/service::TestCollaborationSquadUnreadGrantRevocationDetachesOnlyAlias": {
+          "file": "server/internal/service/collaboration_squad_test.go",
+          "line": 318
+        },
+        "internal/service::TestCollaborationSquadStopReturnsUnreadJoinWithoutRestartingIt": {
+          "file": "server/internal/service/collaboration_squad_test.go",
+          "line": 349
+        },
+        "internal/service::TestCollaborationSquadActivityAndProofRemainSeparate": {
+          "file": "server/internal/service/collaboration_squad_test.go",
+          "line": 371
+        },
+        "internal/service::TestCollaborationSquadHumanCommentQueuesAndJoinsWithTypedReceipt": {
+          "file": "server/internal/service/collaboration_squad_test.go",
+          "line": 415
+        },
+        "internal/service::TestCollaborationSquadContinuationNonlaunchReturnsOnlyItsInput": {
+          "file": "server/internal/service/collaboration_squad_test.go",
+          "line": 447
+        },
+        "internal/service::TestCollaborationResultNotificationsRequireProvenTerminalGroup": {
+          "file": "server/internal/service/collaboration_result_notifications_test.go",
+          "line": 16
+        },
+        "internal/service::TestCollaborationResultNotificationRollbackAndConcurrentReplay": {
+          "file": "server/internal/service/collaboration_result_notifications_test.go",
+          "line": 105
+        },
+        "internal/service::TestCollaborationRuntimeWaitingScanAdvancesPersistentRefusals": {
+          "file": "server/internal/service/collaboration_runtime_scan_test.go",
+          "line": 182
+        },
+        "internal/service::TestCollaborationRuntimeCandidateScanAdvancesPersistentRefusals": {
+          "file": "server/internal/service/collaboration_runtime_scan_test.go",
+          "line": 216
+        },
+        "internal/service::TestCollaborationCommandCancellationExactProvenance": {
+          "file": "server/internal/service/collaboration_command_history_test.go",
+          "line": 19
+        },
+        "internal/service::TestCollaborationCommandHistoryOutlivesCommentAndAttachmentDisplay": {
+          "file": "server/internal/service/collaboration_command_history_test.go",
+          "line": 92
+        },
+        "internal/service::TestCollaborationCommandHistoryPagingAndCurrentAuthority": {
+          "file": "server/internal/service/collaboration_command_history_test.go",
+          "line": 159
+        },
+        "internal/service::TestCollaborationCommandCancellationUnknownCommitKeepsOneEvent": {
+          "file": "server/internal/service/collaboration_command_history_test.go",
+          "line": 345
+        },
+        "internal/service::TestCollaborationFIFOStopsAtSecondEligibleSquad": {
+          "file": "server/internal/service/collaboration_fifo_test.go",
+          "line": 74
+        },
+        "internal/service::TestCollaborationFIFOCancellationAndPromotionSerialize": {
+          "file": "server/internal/service/collaboration_fifo_test.go",
+          "line": 182
+        },
+        "internal/service::TestCollaborationCreateIsAtomicIdempotentAndScoped": {
+          "file": "server/internal/service/collaboration_test.go",
+          "line": 87
+        },
+        "internal/service::TestCollaborationAccessRevocationFallsBackOnlyToCurrentSourceMembership": {
+          "file": "server/internal/service/collaboration_test.go",
+          "line": 245
+        },
+        "internal/service::TestCollaborationCreationFailureRollsBackEveryOwnedRecord": {
+          "file": "server/internal/service/collaboration_test.go",
+          "line": 306
+        },
+        "internal/service::TestCollaborationCreationUnknownCommitRecoversOriginalIdentity": {
+          "file": "server/internal/service/collaboration_test.go",
+          "line": 333
+        },
+        "internal/service::TestCollaborationMentionParserKeepsTypedIdentityAndExplicitTargets": {
+          "file": "server/internal/service/collaboration_mentions_test.go",
+          "line": 14
+        },
+        "internal/service::TestCollaborationMentionParserLeavesPlainNamesAndUnresolvedTargetsInert": {
+          "file": "server/internal/service/collaboration_mentions_test.go",
+          "line": 29
+        },
+        "internal/service::TestCollaborationCommentPreviewIsReadOnlyAndKeepsIndependentPeopleAndTargets": {
+          "file": "server/internal/service/collaboration_mentions_test.go",
+          "line": 38
+        },
+        "internal/service::TestCollaborationCommentPreviewDoesNotPromoteSourceMembershipToExecution": {
+          "file": "server/internal/service/collaboration_mentions_test.go",
+          "line": 80
+        },
+        "internal/service::TestCollaborationAttachmentCreationBindingRollsBackWithRequiredWrites": {
+          "file": "server/internal/service/collaboration_attachments_test.go",
+          "line": 39
+        },
+        "internal/service::TestCollaborationAttachmentScopeCiphertextAndLiveAccess": {
+          "file": "server/internal/service/collaboration_attachments_test.go",
+          "line": 78
+        },
+        "internal/service::TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion": {
+          "file": "server/internal/service/collaboration_attachments_test.go",
+          "line": 238
+        },
+        "internal/service::TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity": {
+          "file": "server/internal/service/collaboration_attachments_test.go",
+          "line": 293
+        },
+        "internal/service::TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue": {
+          "file": "server/internal/service/collaboration_lifecycle_test.go",
+          "line": 53
+        },
+        "internal/service::TestCollaborationLifecycleAuthorityAndExplicitReopen": {
+          "file": "server/internal/service/collaboration_lifecycle_test.go",
+          "line": 164
+        },
+        "internal/service::TestCollaborationStatusChangesOnlyStatusAndRecordsIteration": {
+          "file": "server/internal/service/collaboration_lifecycle_test.go",
+          "line": 207
+        },
+        "internal/service::TestCollaborationStatusOptionsAreScopedAndRefusalsReplay": {
+          "file": "server/internal/service/collaboration_lifecycle_test.go",
+          "line": 247
+        },
+        "internal/service::TestCollaborationLifecycleRechecksCatalogAndPermitAfterLockWait": {
+          "file": "server/internal/service/collaboration_lifecycle_test.go",
+          "line": 398
+        },
+        "internal/service::TestCollaborationStatusOptionsRequireEligibleRoleAndActualCatalog": {
+          "file": "server/internal/service/collaboration_lifecycle_test.go",
+          "line": 482
+        },
+        "internal/service::TestCollaborationStatusCatalogRowsRemainLockedUntilCommit": {
+          "file": "server/internal/service/collaboration_lifecycle_test.go",
+          "line": 568
+        },
+        "internal/service::TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof": {
+          "file": "server/internal/service/collaboration_workflow_test.go",
+          "line": 51
+        },
+        "internal/service::TestCollaborationWorkflowVoluntaryLeaveAndMinimalRecovery": {
+          "file": "server/internal/service/collaboration_workflow_test.go",
+          "line": 167
+        },
+        "internal/service::TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution": {
+          "file": "server/internal/service/collaboration_workflow_test.go",
+          "line": 215
+        },
+        "internal/service::TestCollaborationWorkflowReplaysExactLargeVersionsAndDisabledRefusal": {
+          "file": "server/internal/service/collaboration_workflow_test.go",
+          "line": 277
+        },
+        "internal/service::TestCollaborationWorkflowNotificationsAndWorkbench": {
+          "file": "server/internal/service/collaboration_workflow_test.go",
+          "line": 308
+        },
+        "internal/service::TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals": {
+          "file": "server/internal/service/collaboration_workflow_test.go",
+          "line": 346
+        },
+        "internal/service::TestCollaborationWorkflowConcurrentIdentityAndRevision": {
+          "file": "server/internal/service/collaboration_workflow_test.go",
+          "line": 406
+        },
+        "internal/service::TestCollaborationWorkflowRechecksAccountsAndRolesAfterLock": {
+          "file": "server/internal/service/collaboration_workflow_test.go",
+          "line": 474
+        },
+        "internal/service::TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything": {
+          "file": "server/internal/service/collaboration_workflow_test.go",
+          "line": 599
+        },
+        "internal/service::TestCollaborationWorkflowInviteTransferPreservesExecution": {
+          "file": "server/internal/service/collaboration_workflow_test.go",
+          "line": 705
+        },
+        "internal/service::TestCollaborationWaitingInputsShareOnePendingBatch": {
+          "file": "server/internal/service/collaboration_batches_test.go",
+          "line": 101
+        },
+        "internal/service::TestCollaborationBatchCoalescesDirectAgentAndOneSquad": {
+          "file": "server/internal/service/collaboration_batches_test.go",
+          "line": 127
+        },
+        "internal/service::TestCollaborationBatchKeepsOneFollowupBehindRunningWork": {
+          "file": "server/internal/service/collaboration_batches_test.go",
+          "line": 151
+        },
+        "internal/service::TestCollaborationDiscussionKeepsContentVersionsAndOriginalActions": {
+          "file": "server/internal/service/collaboration_discussion_test.go",
+          "line": 15
+        },
+        "internal/service::TestCollaborationDiscussionRequiredWriteFailureRollsBackResolution": {
+          "file": "server/internal/service/collaboration_discussion_test.go",
+          "line": 108
+        },
+        "internal/service::TestCollaborationDiscussionResolvesOneReplyAndPreservesDeletedRoot": {
+          "file": "server/internal/service/collaboration_discussion_test.go",
+          "line": 150
+        },
+        "internal/service::TestCollaborationDiscussionSourceAccessAndOwnReactionRemoval": {
+          "file": "server/internal/service/collaboration_discussion_test.go",
+          "line": 191
+        },
+        "internal/service::TestCollaborationTypedTargetsCoalesceRootAndKeepInputIdentity": {
+          "file": "server/internal/service/collaboration_targets_test.go",
+          "line": 116
+        },
+        "internal/service::TestCollaborationTargetStopLeavesOtherTargetAndIssueActive": {
+          "file": "server/internal/service/collaboration_targets_test.go",
+          "line": 144
+        },
+        "internal/service::TestCollaborationIssueStopFencesChangedAndLaterTargetSets": {
+          "file": "server/internal/service/collaboration_targets_test.go",
+          "line": 175
+        },
+        "internal/service::TestCollaborationDepartureStopsAuthorAndOwnerGroupsOnly": {
+          "file": "server/internal/service/collaboration_targets_test.go",
+          "line": 248
+        },
+        "internal/service::TestCollaborationResourceRevocationPreservesAllWaitingAuthors": {
+          "file": "server/internal/service/collaboration_targets_test.go",
+          "line": 281
+        },
+        "internal/service::TestCollaborationWholeLifecycleKeepsAllTargetBarriersOnReopen": {
+          "file": "server/internal/service/collaboration_targets_test.go",
+          "line": 302
+        },
+        "internal/service::TestCollaborationRuntimePreparationInvocationFreezesLockedAgent": {
+          "file": "server/internal/service/collaboration_runtime_invocation_test.go",
+          "line": 14
+        },
+        "internal/service::TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator": {
+          "file": "server/internal/service/admin_collaboration_authority_test.go",
+          "line": 52
+        },
+        "internal/service::TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible": {
+          "file": "server/internal/service/admin_collaboration_authority_test.go",
+          "line": 166
+        },
+        "internal/service::TestAdminCollaborationTemporaryDisableMatchesAccountAvailability": {
+          "file": "server/internal/service/admin_collaboration_authority_test.go",
+          "line": 328
+        },
+        "internal/service::TestAdminCollaborationPasswordRestrictionsDoNotEnableAdministration": {
+          "file": "server/internal/service/admin_collaboration_authority_test.go",
+          "line": 403
+        },
+        "internal/service::TestAdminCollaborationReopenRetainsHealthyHandlerAndDoesNotGrantOrdinaryRights": {
+          "file": "server/internal/service/admin_collaboration_authority_test.go",
+          "line": 462
+        },
+        "internal/service::TestAdminCollaborationRecoveryPreservesOriginalKeyAndSuccessor": {
+          "file": "server/internal/service/admin_collaboration_authority_test.go",
+          "line": 491
+        },
+        "internal/service::TestCollaborationStopAliasIncludesEveryGroupDescendant": {
+          "file": "server/internal/service/collaboration_control_test.go",
+          "line": 350
+        },
+        "internal/service::TestCollaborationResumeAllEmptyScopeReleasesGlobalPause": {
+          "file": "server/internal/service/collaboration_control_test.go",
+          "line": 380
+        },
+        "internal/service::TestCollaborationRuntimeFreezesEveryInputDependencyAndPrompt": {
+          "file": "server/internal/service/collaboration_group_dependencies_test.go",
+          "line": 13
+        },
+        "internal/service::TestCollaborationUnusedAliasHoldKeepsHealthyGroup": {
+          "file": "server/internal/service/collaboration_hold_test.go",
+          "line": 65
+        },
+        "internal/service::TestCollaborationReconsentHoldRequiresFreshResumeBeforeLaunch": {
+          "file": "server/internal/service/collaboration_hold_test.go",
+          "line": 131
+        },
+        "internal/service::TestCollaborationRuntimeHoldBlocksClaimAndPermit": {
+          "file": "server/internal/service/collaboration_hold_test.go",
+          "line": 153
+        },
+        "internal/service::TestCollaborationTargetResumeInvalidGrantIsAtomic": {
+          "file": "server/internal/service/collaboration_hold_test.go",
+          "line": 207
+        },
+        "internal/service::TestCollaborationControlOperationReplaysOnlyAuthorizedOriginalResult": {
+          "file": "server/internal/service/collaboration_hold_test.go",
+          "line": 294
+        },
+        "internal/service::TestCollaborationPreparationRecordsRetainedAfterCleanup": {
+          "file": "server/internal/service/collaboration_preparation_records_test.go",
+          "line": 189
+        },
+        "internal/service::TestCollaborationResumeAllSettlesChannelsIndependently": {
+          "file": "server/internal/service/collaboration_control_managed_test.go",
+          "line": 76
+        },
+        "internal/service::TestCollaborationResumeAliasesKeepIndependentHolds": {
+          "file": "server/internal/service/collaboration_control_managed_test.go",
+          "line": 162
+        },
+        "internal/service::TestCollaborationQueueCancelUsesCurrentRolesAndPreservesOrder": {
+          "file": "server/internal/service/collaboration_queue_test.go",
+          "line": 172
+        },
+        "internal/service::TestCollaborationQueueStopPreservesBarrierAfterAnyPermit": {
+          "file": "server/internal/service/collaboration_queue_test.go",
+          "line": 229
+        },
+        "internal/service::TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent": {
+          "file": "server/internal/service/collaboration_queue_test.go",
+          "line": 291
+        },
+        "internal/service::TestCollaborationQueueStaleStopCannotReachNextRun": {
+          "file": "server/internal/service/collaboration_queue_test.go",
+          "line": 333
+        },
+        "internal/service::TestCollaborationQueueRejectsStaleIdentityAndMachine": {
+          "file": "server/internal/service/collaboration_queue_test.go",
+          "line": 354
+        },
+        "internal/service::TestCollaborationQueueCancelRechecksStateAfterSessionLock": {
+          "file": "server/internal/service/collaboration_queue_test.go",
+          "line": 385
+        },
+        "internal/service::TestCollaborationQueueResumeTreatsEitherBarrierAsUnconfirmed": {
+          "file": "server/internal/service/collaboration_queue_test.go",
+          "line": 505
+        },
+        "internal/service::TestCollaborationQueueConcurrentSameKeyAndLargeSequence": {
+          "file": "server/internal/service/collaboration_queue_test.go",
+          "line": 533
+        },
+        "internal/service::TestCollaborationAtomicSwitchRequiresEachOwnersNewConsent": {
+          "file": "server/internal/service/collaboration_switch_test.go",
+          "line": 109
+        },
+        "internal/service::TestCollaborationAtomicSwitchRejectsStaleConfigurationAndConsent": {
+          "file": "server/internal/service/collaboration_switch_test.go",
+          "line": 152
+        },
+        "internal/service::TestCollaborationAtomicSwitchMovesWaitingAndRetainsProofHistory": {
+          "file": "server/internal/service/collaboration_switch_test.go",
+          "line": 205
+        },
+        "internal/service::TestCollaborationAtomicSwitchRejectsContradictoryOldChannel": {
+          "file": "server/internal/service/collaboration_switch_test.go",
+          "line": 332
+        },
+        "internal/service::TestCollaborationEditRecordsCurrentActorAndImmutableExecution": {
+          "file": "server/internal/service/collaboration_edit_test.go",
+          "line": 28
+        },
+        "internal/service::TestCollaborationEditRejectsNonEditors": {
+          "file": "server/internal/service/collaboration_edit_test.go",
+          "line": 116
+        },
+        "internal/service::TestCollaborationEditNoopAndDateValidation": {
+          "file": "server/internal/service/collaboration_edit_test.go",
+          "line": 167
+        },
+        "internal/service::TestCollaborationEditStaleVersionsAndExactRecovery": {
+          "file": "server/internal/service/collaboration_edit_test.go",
+          "line": 202
+        },
+        "internal/service::TestCollaborationEditAndTransferSerializeAtCommit": {
+          "file": "server/internal/service/collaboration_edit_test.go",
+          "line": 304
+        },
+        "internal/service::TestCollaborationEditRechecksDeactivationAfterAccountLock": {
+          "file": "server/internal/service/collaboration_edit_test.go",
+          "line": 365
+        },
+        "internal/service::TestCollaborationEditRequiredWritesRollbackTogether": {
+          "file": "server/internal/service/collaboration_edit_test.go",
+          "line": 408
+        },
+        "internal/service::TestCollaborationResourceOfferSeparatesPrivateOwnerAndOrganizer": {
+          "file": "server/internal/service/collaboration_resource_offers_test.go",
+          "line": 113
+        },
+        "internal/service::TestCollaborationResourceOfferSquadStillRequiresEveryOwnerConsent": {
+          "file": "server/internal/service/collaboration_resource_offer_authority_test.go",
+          "line": 40
+        },
+        "internal/service::TestCollaborationResourceOfferEveryOwnerMustRemainCurrent": {
+          "file": "server/internal/service/collaboration_resource_offer_authority_test.go",
+          "line": 102
+        },
+        "internal/service::TestCollaborationResourceOfferAllOwnersAreEligibleBeforeSupply": {
+          "file": "server/internal/service/collaboration_resource_offer_authority_test.go",
+          "line": 261
+        },
+        "internal/service::TestCollaborationActivityRetainsExactHandoffAndEditHistory": {
+          "file": "server/internal/service/collaboration_activity_test.go",
+          "line": 16
+        },
+        "internal/service::TestCollaborationExecutionViewSwitchKeepsOriginalHistory": {
+          "file": "server/internal/service/collaboration_execution_history_test.go",
+          "line": 149
+        },
+        "internal/service::TestCollaborationRecipientExactLookupAndNoWrites": {
+          "file": "server/internal/service/collaboration_recipients_test.go",
+          "line": 26
+        },
+        "internal/service::TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase": {
+          "file": "server/internal/service/collaboration_recipients_test.go",
+          "line": 108
+        },
+        "internal/service::TestCollaborationRecipientAmbiguousAndUnavailable": {
+          "file": "server/internal/service/collaboration_recipients_test.go",
+          "line": 149
+        },
+        "internal/service::TestCollaborationRecipientContextAuthorizationPrecedesLookup": {
+          "file": "server/internal/service/collaboration_recipients_test.go",
+          "line": 194
+        },
+        "internal/service::TestCollaborationRecipientRechecksAuthorityAfterCandidateLookup": {
+          "file": "server/internal/service/collaboration_recipients_test.go",
+          "line": 284
+        },
+        "internal/service::TestCollaborationRunRecordsPagingFrozenInputsAndRetention": {
+          "file": "server/internal/service/collaboration_records_test.go",
+          "line": 29
+        },
+        "internal/service::TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence": {
+          "file": "server/internal/service/collaboration_records_test.go",
+          "line": 120
+        },
+        "internal/service::TestCollaborationManagedStopProofPreservesFreshResumeIntent": {
+          "file": "server/internal/service/collaboration_runtime_test.go",
+          "line": 208
+        },
+        "internal/service::TestCollaborationRemovalOfNonRootBatchAuthorStopsRun": {
+          "file": "server/internal/service/collaboration_runtime_test.go",
+          "line": 286
+        },
+        "internal/service::TestCollaborationFieldsTypedValuesAndHistory": {
+          "file": "server/internal/service/collaboration_fields_test.go",
+          "line": 55
+        },
+        "internal/service::TestCollaborationFieldsRejectInvalidSourceAndValues": {
+          "file": "server/internal/service/collaboration_fields_test.go",
+          "line": 166
+        },
+        "internal/service::TestCollaborationFieldsLabelRequiredWritesRollback": {
+          "file": "server/internal/service/collaboration_fields_test.go",
+          "line": 241
+        },
+        "internal/service::TestCollaborationFieldsRecheckAfterSourceDefinitionContention": {
+          "file": "server/internal/service/collaboration_fields_test.go",
+          "line": 350
+        },
+        "internal/service::TestCollaborationFieldOptionsAuthorityAndProjection": {
+          "file": "server/internal/service/collaboration_fields_test.go",
+          "line": 475
+        },
+        "internal/service::TestCollaborationBodyEditNotifiesOnlyAddedHumanMentions": {
+          "file": "server/internal/service/collaboration_notifications_test.go",
+          "line": 14
+        },
+        "internal/service::TestCollaborationNotificationsLoseContentAndAnchorsWithAccess": {
+          "file": "server/internal/service/collaboration_notifications_test.go",
+          "line": 56
+        },
+        "internal/service::TestCollaborationCommentPreviewGroupsTypedTargetsAndSplitsSecondSquad": {
+          "file": "server/internal/service/collaboration_mention_grouping_test.go",
+          "line": 49
+        },
+        "internal/service::TestCollaborationSquadInputRechecksEveryResourceConsent": {
+          "file": "server/internal/service/collaboration_targets_review_test.go",
+          "line": 63
+        },
+        "internal/service::TestCollaborationCommandHistoryM11CancelClaimRace": {
+          "file": "server/internal/service/collaboration_command_history_execution_test.go",
+          "line": 86
+        },
+        "internal/service::TestCollaborationCommandHistoryAutomaticM11Detach": {
+          "file": "server/internal/service/collaboration_command_history_execution_test.go",
+          "line": 169
+        },
+        "internal/service::TestCollaborationCommandHistorySwitchThenCancelPreservesHistoricalPlacement": {
+          "file": "server/internal/service/collaboration_command_history_execution_test.go",
+          "line": 212
+        },
+        "internal/service::TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked": {
+          "file": "server/internal/service/collaboration_comments_test.go",
+          "line": 45
+        },
+        "internal/service::TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing": {
+          "file": "server/internal/service/collaboration_comments_test.go",
+          "line": 81
+        },
+        "internal/service::TestCollaborationCommentAuthorEditRetainsHistoryAndDeletedReplyAnchor": {
+          "file": "server/internal/service/collaboration_comments_test.go",
+          "line": 143
+        },
+        "internal/service::TestCollaborationCommentEditsSerializeAndUnknownCommitDoesNotRepeat": {
+          "file": "server/internal/service/collaboration_comments_test.go",
+          "line": 189
+        },
+        "internal/service::TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification": {
+          "file": "server/internal/service/collaboration_comments_test.go",
+          "line": 243
+        },
+        "internal/service::TestCollaborationCommentSourceMemberAndPlainRepliesStayHumanOnly": {
+          "file": "server/internal/service/collaboration_comments_test.go",
+          "line": 264
+        },
+        "internal/service::TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants": {
+          "file": "server/internal/service/collaboration_comments_test.go",
+          "line": 288
+        },
+        "internal/service::TestCollaborationInformationChainReturnsLayerByLayer": {
+          "file": "server/internal/service/collaboration_handoff_test.go",
+          "line": 92
+        },
+        "internal/service::TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator": {
+          "file": "server/internal/service/collaboration_handoff_test.go",
+          "line": 261
+        },
+        "internal/service::TestCollaborationRuntimePreparationFreezesActualInputsAndDeliveredVersions": {
+          "file": "server/internal/service/collaboration_runtime_preparation_test.go",
+          "line": 145
+        },
+        "internal/service::TestCollaborationRuntimePreparationScopeAndRevocation": {
+          "file": "server/internal/service/collaboration_runtime_preparation_test.go",
+          "line": 203
+        },
+        "internal/service::TestCollaborationRuntimePreparationFreezesAdmittedCommit": {
+          "file": "server/internal/service/collaboration_runtime_preparation_test.go",
+          "line": 467
+        },
+        "internal/service::TestCollaborationRealtimeAuthorizationKeepsIndependentReadBases": {
+          "file": "server/internal/service/collaboration_realtime_test.go",
+          "line": 35
+        },
+        "internal/handler::TestSourceCollaborationProjectionAndExternalFilter": {
+          "file": "server/internal/handler/collaboration_source_test.go",
+          "line": 14
+        },
+        "internal/handler::TestSourceCollaborationTableAndChildMachineBoundary": {
+          "file": "server/internal/handler/collaboration_source_test.go",
+          "line": 105
+        },
+        "internal/handler::TestSourceContextCollaborationPreviewIsDenied": {
+          "file": "server/internal/handler/source_context_collaboration_test.go",
+          "line": 18
+        },
+        "internal/handler::TestSourceContextCollaborationBothModesRejectBeforeCopyOrAgentLookup": {
+          "file": "server/internal/handler/source_context_collaboration_test.go",
+          "line": 58
+        },
+        "internal/handler::TestSourceContextOrdinaryChildHTTPStillCreatesOwnSubtask": {
+          "file": "server/internal/handler/source_context_collaboration_test.go",
+          "line": 113
+        },
+        "internal/handler::TestCollaborationChildCompletionWakesOrdinaryParentOnce": {
+          "file": "server/internal/handler/collaboration_parent_wakeup_test.go",
+          "line": 121
+        },
+        "internal/handler::TestCollaborationChildCompletionPreservesParentGuards": {
+          "file": "server/internal/handler/collaboration_parent_wakeup_test.go",
+          "line": 160
+        },
+        "internal/handler::TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup": {
+          "file": "server/internal/handler/collaboration_parent_wakeup_test.go",
+          "line": 211
+        },
+        "internal/handler::TestCollaborationChildWakeupRechecksParentBeforePublishing": {
+          "file": "server/internal/handler/collaboration_parent_wakeup_test.go",
+          "line": 245
+        },
+        "internal/handler::TestLegacyIssueWritesCannotBypassCollaborationLifecycle": {
+          "file": "server/internal/handler/collaboration_boundary_test.go",
+          "line": 28
+        },
+        "internal/handler::TestLegacyMixedBatchRefusesBeforeAnyCollaborationSideEffects": {
+          "file": "server/internal/handler/collaboration_boundary_test.go",
+          "line": 115
+        },
+        "internal/handler::TestWorkspaceWithCollaborationHistoryCannotBeDeleted": {
+          "file": "server/internal/handler/collaboration_boundary_test.go",
+          "line": 132
+        },
+        "internal/handler::TestCollaborationPositionUsesSourceAuthorityWithoutChangingCollaborationVersion": {
+          "file": "server/internal/handler/collaboration_boundary_test.go",
+          "line": 165
+        },
+        "internal/handler::TestLegacyCollaborationCommentAndRerunPathsStayInert": {
+          "file": "server/internal/handler/collaboration_boundary_test.go",
+          "line": 181
+        },
+        "internal/handler::TestLegacyIssueDetailDoesNotExposeCollaborationToMachine": {
+          "file": "server/internal/handler/collaboration_boundary_test.go",
+          "line": 208
+        },
+        "internal/handler::TestCollaborationMachineSearchAndListKeepOnlyReferences": {
+          "file": "server/internal/handler/collaboration_boundary_test.go",
+          "line": 218
+        },
+        "internal/handler::TestCollaborationRuntimeManagedBoundaryRejectsBroadCredentials": {
+          "file": "server/internal/handler/collaboration_runtime_test.go",
+          "line": 16
+        },
+        "internal/handler::TestCollaborationRuntimeNarrowHandlersNeverFallBackToOtherPurposes": {
+          "file": "server/internal/handler/collaboration_runtime_test.go",
+          "line": 73
+        },
+        "internal/handler::TestResolveCollaborationRecipientStrictBody": {
+          "file": "server/internal/handler/collaboration_recipients_test.go",
+          "line": 36
+        },
+        "internal/handler::TestCollaborationSwitchHTTPMachineCannotBorrowOwnerConsent": {
+          "file": "server/internal/handler/collaboration_switch_test.go",
+          "line": 62
+        },
+        "internal/handler::TestCollaborationEditHTTPSourceFields": {
+          "file": "server/internal/handler/collaboration_edit_test.go",
+          "line": 73
+        },
+        "internal/handler::TestCollaborationResourceOfferHTTPPrivateOwnerAndOutsideOrganizer": {
+          "file": "server/internal/handler/collaboration_resource_offers_test.go",
+          "line": 64
+        },
+        "internal/handler::TestCollaborationRuntimePreparationHTTPRejectsCredentialFallbacks": {
+          "file": "server/internal/handler/collaboration_runtime_preparation_test.go",
+          "line": 159
+        },
+        "internal/handler::TestCollaborationCommentHTTPKeepsAuthorControlHistoryAndPrivateProjection": {
+          "file": "server/internal/handler/collaboration_comments_test.go",
+          "line": 30
+        },
+        "internal/handler::TestCollaborationOrdinaryChildrenCompleteAuthorizedProjection": {
+          "file": "server/internal/handler/collaboration_children_test.go",
+          "line": 16
+        },
+        "internal/handler::TestCollaborationOrdinaryChildWritesKeepParentStateAndEmitCommittedHints": {
+          "file": "server/internal/handler/collaboration_children_test.go",
+          "line": 71
+        },
+        "internal/handler::TestCollaborationCommandHistoryHTTPPagingAndPrivateBoundary": {
+          "file": "server/internal/handler/collaboration_command_history_test.go",
+          "line": 31
+        },
+        "internal/handler::TestCollaborationAccountReadIgnoresAmbientWorkspaceAndKeepsPrivateIdentity": {
+          "file": "server/internal/handler/collaboration_test.go",
+          "line": 14
+        },
+        "internal/handler::TestCollaborationIssueProjectsCalendarDatesForExternalParticipant": {
+          "file": "server/internal/handler/collaboration_test.go",
+          "line": 56
+        },
+        "internal/handler::TestCollaborationWorkbenchKeepsResponsibilityParticipationAndPaginationSeparate": {
+          "file": "server/internal/handler/collaboration_test.go",
+          "line": 83
+        },
+        "internal/handler::TestCollaborationWorkbenchWorksWithoutAnyWorkspaceMembership": {
+          "file": "server/internal/handler/collaboration_test.go",
+          "line": 139
+        },
+        "internal/handler::TestCollaborationControlHTTPRecoversOriginalStructuredRefusal": {
+          "file": "server/internal/handler/collaboration_control_test.go",
+          "line": 75
+        },
+        "internal/handler::TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes": {
+          "file": "server/internal/handler/collaboration_attachments_test.go",
+          "line": 59
+        },
+        "internal/handler::TestCollaborationCommentAttachmentDisplayRemovalKeepsDeliveredFile": {
+          "file": "server/internal/handler/collaboration_attachments_test.go",
+          "line": 140
+        },
+        "internal/handler::TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes": {
+          "file": "server/internal/handler/collaboration_attachments_test.go",
+          "line": 229
+        }
+      },
+      "limits": [
+        "A discovered test or code path alone is not a passing execution."
+      ]
+    },
+    "web-s5": {
+      "kind": "production_web_browser",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s5-administration-web-second.json",
+          "sha256": "5015dc6432cd4705a0446ea3ba0c4d46442caafa93da6fbec5f104cee67f7bc9"
+        },
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-source-manifest.json",
+          "sha256": "03f3947e5c7c472968ea44090c79e7e228809efb8ca69e577a91672e98ec686c"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/s5-administration-browser.md",
+      "command": "python3 /tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py pnpm exec playwright test e2e/collaboration-administration-web.spec.ts --project=chromium --workers=1 --retries=0 --reporter=json --output=.omx/reports/cwc-gap-recovery-20261021/s5-web-second",
+      "working_directory": "repository root",
+      "source_manifest": "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-source-manifest.json",
+      "environment": {
+        "auth_mode": "password",
+        "platform_admin_enabled": true,
+        "database": "multica_gap_api_admin",
+        "api": "http://localhost:18996",
+        "web": "http://localhost:13916",
+        "desktop_renderer": "http://localhost:6090",
+        "web_build_id": "tP4r55FoDsuyXfi1EylGw",
+        "source_id": "58b3fa60203026715322f15875f607df0aac1487a544f7d277b43aa137ed35ef",
+        "api_listener_pid": 76036,
+        "source_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-admin-source",
+        "identities": "synthetic",
+        "provider_execution": false
+      },
+      "selected_test": {
+        "file": "collaboration-administration-web.spec.ts",
+        "line": 61,
+        "title": "Web administers disabled-creator collaborations with explicit succession and original receipt recovery",
+        "status": "expected",
+        "project": "chromium",
+        "results": [
+          {
+            "status": "passed",
+            "startTime": "2026-10-21T01:40:39.404Z",
+            "duration": 3837,
+            "retry": 0
+          }
+        ]
+      },
+      "executed_tests": {
+        "e2e/collaboration-administration-web.spec.ts::Web administers disabled-creator collaborations with explicit succession and original receipt recovery": {
+          "status": "passed",
+          "line": 61
+        }
+      },
+      "limits": [
+        "English/light-theme bounded journey with zero runs; canonical DB tests own live-proof and transaction races.",
+        "Actual Electron uses the production IPC harness, not an installed packaged full Main."
+      ]
+    },
+    "native-s5": {
+      "kind": "actual_electron_ipc_harness",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s5-administration-native-first.json",
+          "sha256": "b0dc43cb8b6e4c830a5da09a86f70559d0e76002f3dd1fecc764bd05f2b77ab0"
+        },
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-source-manifest.json",
+          "sha256": "03f3947e5c7c472968ea44090c79e7e228809efb8ca69e577a91672e98ec686c"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/s5-administration-browser.md",
+      "command": "python3 /tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py pnpm exec playwright test e2e/collaboration-administration-desktop.spec.ts --project=chromium --workers=1 --retries=0 --reporter=json --output=.omx/reports/cwc-gap-recovery-20261021/s5-native-first",
+      "working_directory": "repository root",
+      "source_manifest": "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-source-manifest.json",
+      "environment": {
+        "auth_mode": "password",
+        "platform_admin_enabled": true,
+        "database": "multica_gap_api_admin",
+        "api": "http://localhost:18996",
+        "web": "http://localhost:13916",
+        "desktop_renderer": "http://localhost:6090",
+        "web_build_id": "tP4r55FoDsuyXfi1EylGw",
+        "source_id": "58b3fa60203026715322f15875f607df0aac1487a544f7d277b43aa137ed35ef",
+        "api_listener_pid": 76036,
+        "source_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-admin-source",
+        "identities": "synthetic",
+        "provider_execution": false
+      },
+      "selected_test": {
+        "file": "collaboration-administration-desktop.spec.ts",
+        "line": 11,
+        "title": "Desktop administers disabled-creator collaborations in the account shell and recovers the retained receipt",
+        "status": "expected",
+        "project": "chromium",
+        "results": [
+          {
+            "status": "passed",
+            "startTime": "2026-10-21T01:44:05.574Z",
+            "duration": 8539,
+            "retry": 0
+          }
+        ]
+      },
+      "executed_tests": {
+        "e2e/collaboration-administration-desktop.spec.ts::Desktop administers disabled-creator collaborations in the account shell and recovers the retained receipt": {
+          "status": "passed",
+          "line": 11
+        }
+      },
+      "limits": [
+        "English/light-theme bounded journey with zero runs; canonical DB tests own live-proof and transaction races.",
+        "Actual Electron uses the production IPC harness, not an installed packaged full Main."
+      ]
+    },
+    "web-offers-initial": {
+      "kind": "production_web_browser",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s2-s3-web-v3.json",
+          "sha256": "b923b2d0b60a61e344e8ff79fcb7bbbb8b5812368e528add7a287dd0e8098de4"
+        }
+      ],
+      "selected_test": {
+        "file": "collaboration-resource-offers-web.spec.ts",
+        "line": 7,
+        "title": "a private owner offers a resource to an external organizer and independently authorizes it",
+        "project": "chromium",
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "startTime": "2026-10-20T23:45:17.278Z",
+            "duration": 7756,
+            "retry": 0,
+            "attachments": []
+          }
+        ]
+      },
+      "executed_tests": {
+        "e2e/collaboration-resource-offers-web.spec.ts::a private owner offers a resource to an external organizer and independently authorizes it": {
+          "status": "passed",
+          "line": 7
+        }
+      },
+      "source_manifest": ".omx/reports/cwc-gap-recovery-20261021/verification-v2-build.json",
+      "environment": {
+        "web_build_id": "lzr0h9yNt3KNlpQxPX9pm",
+        "source_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-source",
+        "api": "http://localhost:18985",
+        "web": "http://localhost:13905",
+        "desktop_renderer": "http://localhost:6079",
+        "database": "multica_gap_api_v2",
+        "provider_execution": false
+      },
+      "command": null,
+      "command_note": "Coordinator consolidated invocation manifest pending; raw report contains exact selected test/project/results.",
+      "limits": [
+        "This report also contains a failed history test; only the named offer test is passing evidence.",
+        "One selected agent and online @all recipients; no multi-agent/squad/full-notification matrix."
+      ]
+    },
+    "web-history-initial": {
+      "kind": "production_web_browser",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s3-web-v4.json",
+          "sha256": "547765f6ccbb80197e3b8a41ed83c44e0480de6a277897bb3139a842b250c777"
+        }
+      ],
+      "selected_test": {
+        "file": "collaboration-command-history-web.spec.ts",
+        "line": 8,
+        "title": "cancelled waiting commands retain original content after comment changes, refresh and another account reads",
+        "project": "chromium",
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "startTime": "2026-10-20T23:46:58.240Z",
+            "duration": 8188,
+            "retry": 0,
+            "attachments": []
+          }
+        ]
+      },
+      "executed_tests": {
+        "e2e/collaboration-command-history-web.spec.ts::cancelled waiting commands retain original content after comment changes, refresh and another account reads": {
+          "status": "passed",
+          "line": 8
+        }
+      },
+      "source_manifest": ".omx/reports/cwc-gap-recovery-20261021/verification-v2-build.json",
+      "environment": {
+        "web_build_id": "lzr0h9yNt3KNlpQxPX9pm",
+        "source_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-source",
+        "api": "http://localhost:18985",
+        "web": "http://localhost:13905",
+        "desktop_renderer": "http://localhost:6079",
+        "database": "multica_gap_api_v2",
+        "provider_execution": false
+      },
+      "command": null,
+      "command_note": "Coordinator consolidated invocation manifest pending; raw report contains exact selected test/project/results.",
+      "limits": [
+        "Text command/cancellation journey; no attachment delivery or full Stop/Resume journey."
+      ]
+    },
+    "web-preparation": {
+      "kind": "production_web_browser",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-web-collaboration.json",
+          "sha256": "f8278472cf212260ef4bf6d95a7e2ca7d2ad6fc22ba5479d42fc67fde0e3fbd2"
+        }
+      ],
+      "selected_tests": [
+        {
+          "file": "collaboration-preparation-records-web.spec.ts",
+          "line": 7,
+          "title": "Web reads synthetic frozen preparation without inferring termination across refresh and viewers",
+          "status": "expected",
+          "project": "chromium",
+          "results": [
+            {
+              "status": "passed",
+              "startTime": "2026-10-21T02:08:55.992Z",
+              "duration": 6647,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "executed_tests": {
+        "e2e/collaboration-preparation-records-web.spec.ts::Web reads synthetic frozen preparation without inferring termination across refresh and viewers": {
+          "status": "passed",
+          "line": 7
+        }
+      },
+      "source_manifest": "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-source-manifest.json",
+      "environment": {
+        "auth_mode": "legacy",
+        "database": "multica_gap_api_v2",
+        "api": "http://localhost:18985",
+        "web": "http://localhost:13905",
+        "web_build_id": "SrpeaQzGK_I-BlKn9Vy0e",
+        "api_listener_pid": 85510,
+        "source_id": "58b3fa60203026715322f15875f607df0aac1487a544f7d277b43aa137ed35ef",
+        "source_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-source",
+        "source_equivalence": "Same frozen product source as verification-admin-source; independently compiled legacy production Web.",
+        "provider_execution": false
+      },
+      "command": null,
+      "command_note": "Exact unified coordinator invocation pending; final JSON proves seven tests across the six named specs, zero failures/skips/flaky results.",
+      "limits": [
+        "Selected test support only; the whole seven-test run is not full 97-row acceptance.",
+        "Frozen preparation/observations are synthetic fixture facts; no actual provider preparation/termination occurs in this UI run."
+      ]
+    },
+    "web-preview": {
+      "kind": "production_web_browser",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-web-collaboration.json",
+          "sha256": "f8278472cf212260ef4bf6d95a7e2ca7d2ad6fc22ba5479d42fc67fde0e3fbd2"
+        }
+      ],
+      "selected_tests": [
+        {
+          "file": "collaboration-preview-web.spec.ts",
+          "line": 8,
+          "title": "trigger preview explains shared and later batches before a suppressed target is sent",
+          "status": "expected",
+          "project": "chromium",
+          "results": [
+            {
+              "status": "passed",
+              "startTime": "2026-10-21T02:09:02.651Z",
+              "duration": 4492,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "executed_tests": {
+        "e2e/collaboration-preview-web.spec.ts::trigger preview explains shared and later batches before a suppressed target is sent": {
+          "status": "passed",
+          "line": 8
+        }
+      },
+      "source_manifest": "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-source-manifest.json",
+      "environment": {
+        "auth_mode": "legacy",
+        "database": "multica_gap_api_v2",
+        "api": "http://localhost:18985",
+        "web": "http://localhost:13905",
+        "web_build_id": "SrpeaQzGK_I-BlKn9Vy0e",
+        "api_listener_pid": 85510,
+        "source_id": "58b3fa60203026715322f15875f607df0aac1487a544f7d277b43aa137ed35ef",
+        "source_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-source",
+        "source_equivalence": "Same frozen product source as verification-admin-source; independently compiled legacy production Web.",
+        "provider_execution": false
+      },
+      "command": null,
+      "command_note": "Exact unified coordinator invocation pending; final JSON proves seven tests across the six named specs, zero failures/skips/flaky results.",
+      "limits": [
+        "Selected test support only; the whole seven-test run is not full 97-row acceptance.",
+        "Grouping/suppression is covered; this is not partial A-refused/B-valid/H-notified send or native GUI execution."
+      ]
+    },
+    "web-records": {
+      "kind": "production_web_browser",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-web-collaboration.json",
+          "sha256": "f8278472cf212260ef4bf6d95a7e2ca7d2ad6fc22ba5479d42fc67fde0e3fbd2"
+        }
+      ],
+      "selected_tests": [
+        {
+          "file": "collaboration-records-web.spec.ts",
+          "line": 6,
+          "title": "Web shares ordinary child references and retained run records through account notification links",
+          "status": "expected",
+          "project": "chromium",
+          "results": [
+            {
+              "status": "passed",
+              "startTime": "2026-10-21T02:09:24.314Z",
+              "duration": 11228,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "executed_tests": {
+        "e2e/collaboration-records-web.spec.ts::Web shares ordinary child references and retained run records through account notification links": {
+          "status": "passed",
+          "line": 6
+        }
+      },
+      "source_manifest": "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-source-manifest.json",
+      "environment": {
+        "auth_mode": "legacy",
+        "database": "multica_gap_api_v2",
+        "api": "http://localhost:18985",
+        "web": "http://localhost:13905",
+        "web_build_id": "SrpeaQzGK_I-BlKn9Vy0e",
+        "api_listener_pid": 85510,
+        "source_id": "58b3fa60203026715322f15875f607df0aac1487a544f7d277b43aa137ed35ef",
+        "source_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-source",
+        "source_equivalence": "Same frozen product source as verification-admin-source; independently compiled legacy production Web.",
+        "provider_execution": false
+      },
+      "command": null,
+      "command_note": "Exact unified coordinator invocation pending; final JSON proves seven tests across the six named specs, zero failures/skips/flaky results.",
+      "limits": [
+        "Selected test support only; the whole seven-test run is not full 97-row acceptance.",
+        "The ai_failed notification and run telemetry are synthetic retained fixture records, not actual provider work."
+      ]
+    },
+    "web-workbench": {
+      "kind": "production_web_browser",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-web-collaboration.json",
+          "sha256": "f8278472cf212260ef4bf6d95a7e2ca7d2ad6fc22ba5479d42fc67fde0e3fbd2"
+        }
+      ],
+      "selected_tests": [
+        {
+          "file": "collaboration-workbench-web.spec.ts",
+          "line": 23,
+          "title": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+          "status": "expected",
+          "project": "chromium",
+          "results": [
+            {
+              "status": "passed",
+              "startTime": "2026-10-21T02:09:15.079Z",
+              "duration": 6298,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "collaboration-workbench-web.spec.ts",
+          "line": 164,
+          "title": "Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry",
+          "status": "expected",
+          "project": "chromium",
+          "results": [
+            {
+              "status": "passed",
+              "startTime": "2026-10-21T02:09:21.381Z",
+              "duration": 2359,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "executed_tests": {
+        "e2e/collaboration-workbench-web.spec.ts::Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation": {
+          "status": "passed",
+          "line": 23
+        },
+        "e2e/collaboration-workbench-web.spec.ts::Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry": {
+          "status": "passed",
+          "line": 164
+        }
+      },
+      "source_manifest": "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-source-manifest.json",
+      "environment": {
+        "auth_mode": "legacy",
+        "database": "multica_gap_api_v2",
+        "api": "http://localhost:18985",
+        "web": "http://localhost:13905",
+        "web_build_id": "SrpeaQzGK_I-BlKn9Vy0e",
+        "api_listener_pid": 85510,
+        "source_id": "58b3fa60203026715322f15875f607df0aac1487a544f7d277b43aa137ed35ef",
+        "source_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-source",
+        "source_equivalence": "Same frozen product source as verification-admin-source; independently compiled legacy production Web.",
+        "provider_execution": false
+      },
+      "command": null,
+      "command_note": "Exact unified coordinator invocation pending; final JSON proves seven tests across the six named specs, zero failures/skips/flaky results.",
+      "limits": [
+        "Selected test support only; the whole seven-test run is not full 97-row acceptance.",
+        "No authenticated provider or installed client proof."
+      ]
+    },
+    "continuation-service-1": {
+      "kind": "go_race_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/go-service-partition-1.jsonl",
+          "sha256": "908053a239dfee9f6957b2bd947049b837ff42322563cafa8476e5e03a1dd4e7"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/pipeline-verification.md",
+      "working_directory": "server",
+      "environment": {
+        "os_arch": "darwin/arm64",
+        "toolchain": "go1.26.6",
+        "identities": "synthetic",
+        "schema_migration": 737,
+        "agent_cli_guard": true,
+        "actual_linux_namespaces": false
+      },
+      "source_manifest": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/source-environment-manifest.json",
+      "executed_tests": {
+        "internal/service::TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator": {
+          "status": "passed",
+          "elapsed": 19.27
+        },
+        "internal/service::TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible": {
+          "status": "passed",
+          "elapsed": 9.95
+        },
+        "internal/service::TestAdminCollaborationTemporaryDisableMatchesAccountAvailability": {
+          "status": "passed",
+          "elapsed": 6.76
+        },
+        "internal/service::TestAdminCollaborationPasswordRestrictionsDoNotEnableAdministration": {
+          "status": "passed",
+          "elapsed": 2.22
+        },
+        "internal/service::TestAdminCollaborationReopenRetainsHealthyHandlerAndDoesNotGrantOrdinaryRights": {
+          "status": "passed",
+          "elapsed": 1.14
+        },
+        "internal/service::TestAdminCollaborationRecoveryPreservesOriginalKeyAndSuccessor": {
+          "status": "passed",
+          "elapsed": 1.18
+        },
+        "internal/service::TestAdminCollaborationLifecyclePreservesCreatorAndRealActor": {
+          "status": "passed",
+          "elapsed": 2.24
+        },
+        "internal/service::TestAdminCollaborationReopenAssignsExistingParticipantAtomically": {
+          "status": "passed",
+          "elapsed": 1.14
+        },
+        "internal/service::TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait": {
+          "status": "passed",
+          "elapsed": 12.33
+        },
+        "internal/service::TestAdminCollaborationAuthorityFencesRemainUntilCommit": {
+          "status": "passed",
+          "elapsed": 7.49
+        },
+        "internal/service::TestAdminCollaborationCloseReopenPreservesProofAndCancellationHistory": {
+          "status": "passed",
+          "elapsed": 1.22
+        },
+        "internal/service::TestAdminCollaborationIterationFailureRollsBackSuccessorAndReopen": {
+          "status": "passed",
+          "elapsed": 1.19
+        },
+        "internal/service::TestAdminCollaborationRequiredWritesRollbackEverything": {
+          "status": "passed",
+          "elapsed": 29.64
+        },
+        "internal/service::TestAdminCollaborationConcurrentOriginalKeyHasOneHandoff": {
+          "status": "passed",
+          "elapsed": 1.2
+        },
+        "internal/service::TestCollaborationCommandHistoryM11CancelClaimRace": {
+          "status": "passed",
+          "elapsed": 2.01
+        },
+        "internal/service::TestCollaborationCommandHistoryAutomaticM11Detach": {
+          "status": "passed",
+          "elapsed": 1.46
+        },
+        "internal/service::TestCollaborationCommandHistorySwitchThenCancelPreservesHistoricalPlacement": {
+          "status": "passed",
+          "elapsed": 0.4
+        },
+        "internal/service::TestCollaborationCommandCancellationExactProvenance": {
+          "status": "passed",
+          "elapsed": 1.29
+        },
+        "internal/service::TestCollaborationCommandHistoryOutlivesCommentAndAttachmentDisplay": {
+          "status": "passed",
+          "elapsed": 0.25
+        },
+        "internal/service::TestCollaborationCommandHistoryPagingAndCurrentAuthority": {
+          "status": "passed",
+          "elapsed": 0.28
+        },
+        "internal/service::TestCollaborationCommandCancellationUnknownCommitKeepsOneEvent": {
+          "status": "passed",
+          "elapsed": 0.22
+        },
+        "internal/service::TestCollaborationRuntimeFreezesEveryInputDependencyAndPrompt": {
+          "status": "passed",
+          "elapsed": 0.53
+        },
+        "internal/service::TestCollaborationRuntimeHoldBlocksClaimAndPermit": {
+          "status": "passed",
+          "elapsed": 0.55
+        },
+        "internal/service::TestCollaborationResourceOfferSquadStillRequiresEveryOwnerConsent": {
+          "status": "passed",
+          "elapsed": 0.36
+        },
+        "internal/service::TestCollaborationResourceOfferEveryOwnerMustRemainCurrent": {
+          "status": "passed",
+          "elapsed": 1.53
+        },
+        "internal/service::TestCollaborationResourceOfferAllOwnersAreEligibleBeforeSupply": {
+          "status": "passed",
+          "elapsed": 0.71
+        },
+        "internal/service::TestCollaborationResourceOfferSeparatesPrivateOwnerAndOrganizer": {
+          "status": "passed",
+          "elapsed": 0.29
+        },
+        "internal/service::TestCollaborationRuntimePreparationInvocationFreezesLockedAgent": {
+          "status": "passed",
+          "elapsed": 0.51
+        },
+        "internal/service::TestCollaborationRuntimePreparationFreezesActualInputsAndDeliveredVersions": {
+          "status": "passed",
+          "elapsed": 0.61
+        },
+        "internal/service::TestCollaborationRuntimePreparationScopeAndRevocation": {
+          "status": "passed",
+          "elapsed": 0.65
+        },
+        "internal/service::TestCollaborationRuntimePreparationFreezesAdmittedCommit": {
+          "status": "passed",
+          "elapsed": 0.47
+        },
+        "internal/service::TestCollaborationRuntimeWaitingScanAdvancesPersistentRefusals": {
+          "status": "passed",
+          "elapsed": 1.43
+        },
+        "internal/service::TestCollaborationRuntimeCandidateScanAdvancesPersistentRefusals": {
+          "status": "passed",
+          "elapsed": 1.44
+        }
+      },
+      "execution_counts": {
+        "passed_top_level": 109,
+        "passed_including_subtests": 397,
+        "failed": 0,
+        "skipped": 0
+      },
+      "count_note": "One invocation; repeated and nested tests do not add acceptance criteria.",
+      "limits": [
+        "No authenticated provider accounts, paid quota, packaged Main or other-OS containment.",
+        "Original conditional/platform skips are retained; Redis and Linux supplements have separate exact results."
+      ]
+    },
+    "continuation-service-2": {
+      "kind": "go_race_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/go-service-partition-2.jsonl",
+          "sha256": "1a1edb5507cf4a6b4259194d2d8abfe5c1d2ebb9f56672f52353d999ef07d99d"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/pipeline-verification.md",
+      "working_directory": "server",
+      "environment": {
+        "os_arch": "darwin/arm64",
+        "toolchain": "go1.26.6",
+        "identities": "synthetic",
+        "schema_migration": 737,
+        "agent_cli_guard": true,
+        "actual_linux_namespaces": false
+      },
+      "source_manifest": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/source-environment-manifest.json",
+      "executed_tests": {
+        "internal/service::TestCollaborationAccountReconciliationDisableRestore": {
+          "status": "passed",
+          "elapsed": 3.52
+        },
+        "internal/service::TestCollaborationActivityRetainsExactHandoffAndEditHistory": {
+          "status": "passed",
+          "elapsed": 0.19
+        },
+        "internal/service::TestCollaborationAttachmentCreationBindingRollsBackWithRequiredWrites": {
+          "status": "passed",
+          "elapsed": 0.18
+        },
+        "internal/service::TestCollaborationAttachmentScopeCiphertextAndLiveAccess": {
+          "status": "passed",
+          "elapsed": 0.2
+        },
+        "internal/service::TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion": {
+          "status": "passed",
+          "elapsed": 0.27
+        },
+        "internal/service::TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity": {
+          "status": "passed",
+          "elapsed": 0.2
+        },
+        "internal/service::TestCollaborationRegistrationChecksActualResourceOwner": {
+          "status": "passed",
+          "elapsed": 0.17
+        },
+        "internal/service::TestCollaborationOwnerConsentIsExplicitScopedAndIdempotent": {
+          "status": "passed",
+          "elapsed": 0.22
+        },
+        "internal/service::TestCollaborationConsentUsesCompleteSquadRoster": {
+          "status": "passed",
+          "elapsed": 0.27
+        },
+        "internal/service::TestCollaborationPermissionRestoreCannotReviveConsent": {
+          "status": "passed",
+          "elapsed": 0.21
+        },
+        "internal/service::TestCollaborationWaitingInputsShareOnePendingBatch": {
+          "status": "passed",
+          "elapsed": 0.23
+        },
+        "internal/service::TestCollaborationBatchCoalescesDirectAgentAndOneSquad": {
+          "status": "passed",
+          "elapsed": 0.28
+        },
+        "internal/service::TestCollaborationBatchKeepsOneFollowupBehindRunningWork": {
+          "status": "passed",
+          "elapsed": 0.27
+        },
+        "internal/service::TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked": {
+          "status": "passed",
+          "elapsed": 0.26
+        },
+        "internal/service::TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing": {
+          "status": "passed",
+          "elapsed": 0.28
+        },
+        "internal/service::TestCollaborationCommentAuthorEditRetainsHistoryAndDeletedReplyAnchor": {
+          "status": "passed",
+          "elapsed": 0.2
+        },
+        "internal/service::TestCollaborationCommentEditsSerializeAndUnknownCommitDoesNotRepeat": {
+          "status": "passed",
+          "elapsed": 0.27
+        },
+        "internal/service::TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification": {
+          "status": "passed",
+          "elapsed": 0.7
+        },
+        "internal/service::TestCollaborationCommentSourceMemberAndPlainRepliesStayHumanOnly": {
+          "status": "passed",
+          "elapsed": 0.24
+        },
+        "internal/service::TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants": {
+          "status": "passed",
+          "elapsed": 0.18
+        },
+        "internal/service::TestCollaborationResumeAllSettlesChannelsIndependently": {
+          "status": "passed",
+          "elapsed": 0.54
+        },
+        "internal/service::TestCollaborationResumeAliasesKeepIndependentHolds": {
+          "status": "passed",
+          "elapsed": 0.91
+        },
+        "internal/service::TestCollaborationStopAliasIncludesEveryGroupDescendant": {
+          "status": "passed",
+          "elapsed": 0.34
+        },
+        "internal/service::TestCollaborationResumeAllEmptyScopeReleasesGlobalPause": {
+          "status": "passed",
+          "elapsed": 0.16
+        },
+        "internal/service::TestCollaborationDiscussionKeepsContentVersionsAndOriginalActions": {
+          "status": "passed",
+          "elapsed": 0.23
+        },
+        "internal/service::TestCollaborationDiscussionRequiredWriteFailureRollsBackResolution": {
+          "status": "passed",
+          "elapsed": 0.2
+        },
+        "internal/service::TestCollaborationDiscussionResolvesOneReplyAndPreservesDeletedRoot": {
+          "status": "passed",
+          "elapsed": 0.31
+        },
+        "internal/service::TestCollaborationDiscussionSourceAccessAndOwnReactionRemoval": {
+          "status": "passed",
+          "elapsed": 0.19
+        },
+        "internal/service::TestCollaborationEditRecordsCurrentActorAndImmutableExecution": {
+          "status": "passed",
+          "elapsed": 0.85
+        },
+        "internal/service::TestCollaborationEditRejectsNonEditors": {
+          "status": "passed",
+          "elapsed": 1.97
+        },
+        "internal/service::TestCollaborationEditNoopAndDateValidation": {
+          "status": "passed",
+          "elapsed": 0.24
+        },
+        "internal/service::TestCollaborationEditStaleVersionsAndExactRecovery": {
+          "status": "passed",
+          "elapsed": 0.23
+        },
+        "internal/service::TestCollaborationEditAndTransferSerializeAtCommit": {
+          "status": "passed",
+          "elapsed": 0.62
+        },
+        "internal/service::TestCollaborationEditRechecksDeactivationAfterAccountLock": {
+          "status": "passed",
+          "elapsed": 0.57
+        },
+        "internal/service::TestCollaborationEditRequiredWritesRollbackTogether": {
+          "status": "passed",
+          "elapsed": 1.54
+        },
+        "internal/service::TestCollaborationExecutionViewSwitchKeepsOriginalHistory": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "internal/service::TestCollaborationFieldsTypedValuesAndHistory": {
+          "status": "passed",
+          "elapsed": 0.25
+        },
+        "internal/service::TestCollaborationFieldsRejectInvalidSourceAndValues": {
+          "status": "passed",
+          "elapsed": 4.3
+        },
+        "internal/service::TestCollaborationFieldsLabelRequiredWritesRollback": {
+          "status": "passed",
+          "elapsed": 0.37
+        },
+        "internal/service::TestCollaborationFieldsRecheckAfterSourceDefinitionContention": {
+          "status": "passed",
+          "elapsed": 1.32
+        },
+        "internal/service::TestCollaborationFieldOptionsAuthorityAndProjection": {
+          "status": "passed",
+          "elapsed": 0.24
+        },
+        "internal/service::TestCollaborationFIFOStopsAtSecondEligibleSquad": {
+          "status": "passed",
+          "elapsed": 0.99
+        },
+        "internal/service::TestCollaborationFIFOCancellationAndPromotionSerialize": {
+          "status": "passed",
+          "elapsed": 0.91
+        },
+        "internal/service::TestCollaborationInformationChainReturnsLayerByLayer": {
+          "status": "passed",
+          "elapsed": 0.34
+        },
+        "internal/service::TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator": {
+          "status": "passed",
+          "elapsed": 0.27
+        },
+        "internal/service::TestCollaborationUnusedAliasHoldKeepsHealthyGroup": {
+          "status": "passed",
+          "elapsed": 0.35
+        },
+        "internal/service::TestCollaborationReconsentHoldRequiresFreshResumeBeforeLaunch": {
+          "status": "passed",
+          "elapsed": 0.43
+        },
+        "internal/service::TestCollaborationTargetResumeInvalidGrantIsAtomic": {
+          "status": "passed",
+          "elapsed": 0.32
+        },
+        "internal/service::TestCollaborationControlOperationReplaysOnlyAuthorizedOriginalResult": {
+          "status": "passed",
+          "elapsed": 0.26
+        },
+        "internal/service::TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue": {
+          "status": "passed",
+          "elapsed": 1.08
+        },
+        "internal/service::TestCollaborationLifecycleAuthorityAndExplicitReopen": {
+          "status": "passed",
+          "elapsed": 0.95
+        },
+        "internal/service::TestCollaborationStatusChangesOnlyStatusAndRecordsIteration": {
+          "status": "passed",
+          "elapsed": 0.32
+        },
+        "internal/service::TestCollaborationStatusOptionsAreScopedAndRefusalsReplay": {
+          "status": "passed",
+          "elapsed": 0.23
+        },
+        "internal/service::TestCollaborationLifecycleRechecksCatalogAndPermitAfterLockWait": {
+          "status": "passed",
+          "elapsed": 1.06
+        },
+        "internal/service::TestCollaborationStatusOptionsRequireEligibleRoleAndActualCatalog": {
+          "status": "passed",
+          "elapsed": 0.21
+        },
+        "internal/service::TestCollaborationStatusCatalogRowsRemainLockedUntilCommit": {
+          "status": "passed",
+          "elapsed": 0.3
+        },
+        "internal/service::TestCollaborationCommentPreviewGroupsTypedTargetsAndSplitsSecondSquad": {
+          "status": "passed",
+          "elapsed": 0.41
+        },
+        "internal/service::TestCollaborationMentionParserKeepsTypedIdentityAndExplicitTargets": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "internal/service::TestCollaborationMentionParserLeavesPlainNamesAndUnresolvedTargetsInert": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "internal/service::TestCollaborationCommentPreviewIsReadOnlyAndKeepsIndependentPeopleAndTargets": {
+          "status": "passed",
+          "elapsed": 0.18
+        },
+        "internal/service::TestCollaborationCommentPreviewDoesNotPromoteSourceMembershipToExecution": {
+          "status": "passed",
+          "elapsed": 0.31
+        },
+        "internal/service::TestCollaborationBodyEditNotifiesOnlyAddedHumanMentions": {
+          "status": "passed",
+          "elapsed": 0.25
+        },
+        "internal/service::TestCollaborationNotificationsLoseContentAndAnchorsWithAccess": {
+          "status": "passed",
+          "elapsed": 0.17
+        },
+        "internal/service::TestCollaborationPreparationRecordsRetainedAfterCleanup": {
+          "status": "passed",
+          "elapsed": 0.61
+        },
+        "internal/service::TestCollaborationQueueCancelUsesCurrentRolesAndPreservesOrder": {
+          "status": "passed",
+          "elapsed": 1.65
+        },
+        "internal/service::TestCollaborationQueueStopPreservesBarrierAfterAnyPermit": {
+          "status": "passed",
+          "elapsed": 1.77
+        },
+        "internal/service::TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent": {
+          "status": "passed",
+          "elapsed": 0.53
+        },
+        "internal/service::TestCollaborationQueueStaleStopCannotReachNextRun": {
+          "status": "passed",
+          "elapsed": 0.27
+        },
+        "internal/service::TestCollaborationQueueRejectsStaleIdentityAndMachine": {
+          "status": "passed",
+          "elapsed": 1.28
+        },
+        "internal/service::TestCollaborationQueueCancelRechecksStateAfterSessionLock": {
+          "status": "passed",
+          "elapsed": 0.31
+        },
+        "internal/service::TestCollaborationQueueResumeTreatsEitherBarrierAsUnconfirmed": {
+          "status": "passed",
+          "elapsed": 0.55
+        },
+        "internal/service::TestCollaborationQueueConcurrentSameKeyAndLargeSequence": {
+          "status": "passed",
+          "elapsed": 0.27
+        },
+        "internal/service::TestCollaborationRealtimeAuthorizationKeepsIndependentReadBases": {
+          "status": "passed",
+          "elapsed": 0.14
+        },
+        "internal/service::TestCollaborationRecipientExactLookupAndNoWrites": {
+          "status": "passed",
+          "elapsed": 0.21
+        },
+        "internal/service::TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase": {
+          "status": "passed",
+          "elapsed": 0.01
+        },
+        "internal/service::TestCollaborationRecipientAmbiguousAndUnavailable": {
+          "status": "passed",
+          "elapsed": 1.09
+        },
+        "internal/service::TestCollaborationRecipientContextAuthorizationPrecedesLookup": {
+          "status": "passed",
+          "elapsed": 2.84
+        },
+        "internal/service::TestCollaborationRecipientRechecksAuthorityAfterCandidateLookup": {
+          "status": "passed",
+          "elapsed": 0.92
+        },
+        "internal/service::TestCollaborationRunRecordsPagingFrozenInputsAndRetention": {
+          "status": "passed",
+          "elapsed": 0.73
+        },
+        "internal/service::TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence": {
+          "status": "passed",
+          "elapsed": 0.63
+        },
+        "internal/service::TestCollaborationResultNotificationsRequireProvenTerminalGroup": {
+          "status": "passed",
+          "elapsed": 2.51
+        },
+        "internal/service::TestCollaborationResultNotificationRollbackAndConcurrentReplay": {
+          "status": "passed",
+          "elapsed": 0.58
+        },
+        "internal/service::TestCollaborationManagedStopProofPreservesFreshResumeIntent": {
+          "status": "passed",
+          "elapsed": 0.67
+        },
+        "internal/service::TestCollaborationRemovalOfNonRootBatchAuthorStopsRun": {
+          "status": "passed",
+          "elapsed": 0.51
+        },
+        "internal/service::TestCollaborationSourceStructureAuthorityAndAtomicEdit": {
+          "status": "passed",
+          "elapsed": 0.25
+        },
+        "internal/service::TestCollaborationSourceStructureRejectsCyclesAndMixedFailure": {
+          "status": "passed",
+          "elapsed": 0.2
+        },
+        "internal/service::TestCollaborationIterationAssignmentVersionsReasonsAndReplay": {
+          "status": "passed",
+          "elapsed": 0.25
+        },
+        "internal/service::TestCollaborationCreationInitialFieldsAreOneRecoverableIssue": {
+          "status": "passed",
+          "elapsed": 0.19
+        },
+        "internal/service::TestCollaborationIterationCompletedJoinRequiresExplicitConfirmation": {
+          "status": "passed",
+          "elapsed": 0.23
+        },
+        "internal/service::TestCollaborationCreationInitialIterationRefusalNeverPartiallyCreates": {
+          "status": "passed",
+          "elapsed": 0.17
+        },
+        "internal/service::TestCollaborationSquadCommentCapacityOneLeaderMemberContinuation": {
+          "status": "passed",
+          "elapsed": 1.09
+        },
+        "internal/service::TestCollaborationSquadRuntimeCommentAuthorityAndMentionBoundary": {
+          "status": "passed",
+          "elapsed": 0.58
+        },
+        "internal/service::TestCollaborationSquadUnreadGrantRevocationDetachesOnlyAlias": {
+          "status": "passed",
+          "elapsed": 0.72
+        },
+        "internal/service::TestCollaborationSquadStopReturnsUnreadJoinWithoutRestartingIt": {
+          "status": "passed",
+          "elapsed": 0.68
+        },
+        "internal/service::TestCollaborationSquadActivityAndProofRemainSeparate": {
+          "status": "passed",
+          "elapsed": 0.65
+        },
+        "internal/service::TestCollaborationSquadHumanCommentQueuesAndJoinsWithTypedReceipt": {
+          "status": "passed",
+          "elapsed": 0.71
+        },
+        "internal/service::TestCollaborationSquadContinuationNonlaunchReturnsOnlyItsInput": {
+          "status": "passed",
+          "elapsed": 0.78
+        },
+        "internal/service::TestCollaborationAtomicSwitchRequiresEachOwnersNewConsent": {
+          "status": "passed",
+          "elapsed": 0.32
+        },
+        "internal/service::TestCollaborationAtomicSwitchRejectsStaleConfigurationAndConsent": {
+          "status": "passed",
+          "elapsed": 2.66
+        },
+        "internal/service::TestCollaborationAtomicSwitchMovesWaitingAndRetainsProofHistory": {
+          "status": "passed",
+          "elapsed": 0.73
+        },
+        "internal/service::TestCollaborationAtomicSwitchRejectsContradictoryOldChannel": {
+          "status": "passed",
+          "elapsed": 0.61
+        },
+        "internal/service::TestCollaborationSquadInputRechecksEveryResourceConsent": {
+          "status": "passed",
+          "elapsed": 1.92
+        },
+        "internal/service::TestCollaborationTypedTargetsCoalesceRootAndKeepInputIdentity": {
+          "status": "passed",
+          "elapsed": 0.33
+        },
+        "internal/service::TestCollaborationTargetStopLeavesOtherTargetAndIssueActive": {
+          "status": "passed",
+          "elapsed": 0.4
+        },
+        "internal/service::TestCollaborationIssueStopFencesChangedAndLaterTargetSets": {
+          "status": "passed",
+          "elapsed": 0.33
+        },
+        "internal/service::TestCollaborationDepartureStopsAuthorAndOwnerGroupsOnly": {
+          "status": "passed",
+          "elapsed": 0.68
+        },
+        "internal/service::TestCollaborationResourceRevocationPreservesAllWaitingAuthors": {
+          "status": "passed",
+          "elapsed": 0.31
+        },
+        "internal/service::TestCollaborationWholeLifecycleKeepsAllTargetBarriersOnReopen": {
+          "status": "passed",
+          "elapsed": 0.4
+        },
+        "internal/service::TestCollaborationCreateIsAtomicIdempotentAndScoped": {
+          "status": "passed",
+          "elapsed": 0.17
+        },
+        "internal/service::TestCollaborationAccessRevocationFallsBackOnlyToCurrentSourceMembership": {
+          "status": "passed",
+          "elapsed": 0.15
+        },
+        "internal/service::TestCollaborationCreationFailureRollsBackEveryOwnedRecord": {
+          "status": "passed",
+          "elapsed": 0.85
+        },
+        "internal/service::TestCollaborationCreationUnknownCommitRecoversOriginalIdentity": {
+          "status": "passed",
+          "elapsed": 0.16
+        },
+        "internal/service::TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof": {
+          "status": "passed",
+          "elapsed": 2.03
+        },
+        "internal/service::TestCollaborationWorkflowVoluntaryLeaveAndMinimalRecovery": {
+          "status": "passed",
+          "elapsed": 0.25
+        },
+        "internal/service::TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution": {
+          "status": "passed",
+          "elapsed": 1.04
+        },
+        "internal/service::TestCollaborationWorkflowReplaysExactLargeVersionsAndDisabledRefusal": {
+          "status": "passed",
+          "elapsed": 0.2
+        },
+        "internal/service::TestCollaborationWorkflowNotificationsAndWorkbench": {
+          "status": "passed",
+          "elapsed": 0.22
+        },
+        "internal/service::TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals": {
+          "status": "passed",
+          "elapsed": 1.88
+        },
+        "internal/service::TestCollaborationWorkflowConcurrentIdentityAndRevision": {
+          "status": "passed",
+          "elapsed": 0.32
+        },
+        "internal/service::TestCollaborationWorkflowRechecksAccountsAndRolesAfterLock": {
+          "status": "passed",
+          "elapsed": 0.57
+        },
+        "internal/service::TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything": {
+          "status": "passed",
+          "elapsed": 4.25
+        },
+        "internal/service::TestCollaborationWorkflowInviteTransferPreservesExecution": {
+          "status": "passed",
+          "elapsed": 0.25
+        },
+        "internal/service::TestSourceContextCollaborationBuildersDenyBeforeProjection": {
+          "status": "passed",
+          "elapsed": 0.23
+        },
+        "internal/service::TestSourceContextCollaborationDirectWritersCannotUsePrebuiltCapture": {
+          "status": "passed",
+          "elapsed": 0.29
+        }
+      },
+      "execution_counts": {
+        "passed_top_level": 354,
+        "passed_including_subtests": 913,
+        "failed": 0,
+        "skipped": 0
+      },
+      "count_note": "One invocation; repeated and nested tests do not add acceptance criteria.",
+      "limits": [
+        "No authenticated provider accounts, paid quota, packaged Main or other-OS containment.",
+        "Original conditional/platform skips are retained; Redis and Linux supplements have separate exact results."
+      ]
+    },
+    "continuation-service-3": {
+      "kind": "go_race_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/go-service-partition-3.jsonl",
+          "sha256": "876f6ca2aea52576b2d3da19c3da33abe7de67e30969af1d99af13987270623d"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/pipeline-verification.md",
+      "working_directory": "server",
+      "environment": {
+        "os_arch": "darwin/arm64",
+        "toolchain": "go1.26.6",
+        "identities": "synthetic",
+        "schema_migration": 737,
+        "agent_cli_guard": true,
+        "actual_linux_namespaces": false
+      },
+      "source_manifest": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/source-environment-manifest.json",
+      "executed_tests": {
+        "internal/service::TestSourceContextOrdinaryChildRetainsOwnCaptureAndWorkspaceScope": {
+          "status": "passed",
+          "elapsed": 0.13
+        }
+      },
+      "execution_counts": {
+        "passed_top_level": 672,
+        "passed_including_subtests": 1335,
+        "failed": 0,
+        "skipped": 18
+      },
+      "count_note": "One invocation; repeated and nested tests do not add acceptance criteria.",
+      "limits": [
+        "No authenticated provider accounts, paid quota, packaged Main or other-OS containment.",
+        "Original conditional/platform skips are retained; Redis and Linux supplements have separate exact results."
+      ]
+    },
+    "continuation-service-redis": {
+      "kind": "go_race_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/go-service-redis.jsonl",
+          "sha256": "303a188d684786d9bf4ee282316f6448b1ccfc72ac07f86f18d5183c7fffe804"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/pipeline-verification.md",
+      "working_directory": "server",
+      "environment": {
+        "os_arch": "darwin/arm64",
+        "toolchain": "go1.26.6",
+        "identities": "synthetic",
+        "schema_migration": 737,
+        "agent_cli_guard": true,
+        "actual_linux_namespaces": false
+      },
+      "source_manifest": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/source-environment-manifest.json",
+      "executed_tests": {},
+      "execution_counts": {
+        "passed_top_level": 18,
+        "passed_including_subtests": 18,
+        "failed": 0,
+        "skipped": 0
+      },
+      "count_note": "One invocation; repeated and nested tests do not add acceptance criteria.",
+      "limits": [
+        "No authenticated provider accounts, paid quota, packaged Main or other-OS containment.",
+        "Original conditional/platform skips are retained; Redis and Linux supplements have separate exact results."
+      ]
+    },
+    "continuation-go-other": {
+      "kind": "go_race_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/go-other-packages.jsonl",
+          "sha256": "1e71354c2c8743c79c02081dba8450981af0e2b91c699afa1ded78cb470e37f8"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/pipeline-verification.md",
+      "working_directory": "server",
+      "environment": {
+        "os_arch": "darwin/arm64",
+        "toolchain": "go1.26.6",
+        "identities": "synthetic",
+        "schema_migration": 737,
+        "agent_cli_guard": true,
+        "actual_linux_namespaces": false
+      },
+      "source_manifest": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/source-environment-manifest.json",
+      "executed_tests": {
+        "cmd/server::TestCollaborationRealtimeHTTPAndWebSocketShareCurrentAuthorization": {
+          "status": "passed",
+          "elapsed": 0.09
+        },
+        "internal/daemon::TestCollaborationCandidatePagingAcrossRestart": {
+          "status": "passed",
+          "elapsed": 0.07
+        },
+        "internal/daemon::TestCollaborationRestartReservesUnknownMachineCapacity": {
+          "status": "passed",
+          "elapsed": 0.03
+        },
+        "internal/handler::TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes": {
+          "status": "passed",
+          "elapsed": 0.05
+        },
+        "internal/handler::TestCollaborationCommentAttachmentDisplayRemovalKeepsDeliveredFile": {
+          "status": "passed",
+          "elapsed": 0.04
+        },
+        "internal/handler::TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes": {
+          "status": "passed",
+          "elapsed": 0.02
+        },
+        "internal/handler::TestLegacyIssueWritesCannotBypassCollaborationLifecycle": {
+          "status": "passed",
+          "elapsed": 0.01
+        },
+        "internal/handler::TestLegacyMixedBatchRefusesBeforeAnyCollaborationSideEffects": {
+          "status": "passed",
+          "elapsed": 0.01
+        },
+        "internal/handler::TestWorkspaceWithCollaborationHistoryCannotBeDeleted": {
+          "status": "passed",
+          "elapsed": 0.04
+        },
+        "internal/handler::TestCollaborationPositionUsesSourceAuthorityWithoutChangingCollaborationVersion": {
+          "status": "passed",
+          "elapsed": 0.01
+        },
+        "internal/handler::TestLegacyCollaborationCommentAndRerunPathsStayInert": {
+          "status": "passed",
+          "elapsed": 0.01
+        },
+        "internal/handler::TestLegacyIssueDetailDoesNotExposeCollaborationToMachine": {
+          "status": "passed",
+          "elapsed": 0.01
+        },
+        "internal/handler::TestCollaborationMachineSearchAndListKeepOnlyReferences": {
+          "status": "passed",
+          "elapsed": 0.14
+        },
+        "internal/handler::TestCollaborationOrdinaryChildrenCompleteAuthorizedProjection": {
+          "status": "passed",
+          "elapsed": 0.29
+        },
+        "internal/handler::TestCollaborationOrdinaryChildWritesKeepParentStateAndEmitCommittedHints": {
+          "status": "passed",
+          "elapsed": 0.08
+        },
+        "internal/handler::TestCollaborationCommandHistoryHTTPPagingAndPrivateBoundary": {
+          "status": "passed",
+          "elapsed": 0.05
+        },
+        "internal/handler::TestCollaborationCommentHTTPKeepsAuthorControlHistoryAndPrivateProjection": {
+          "status": "passed",
+          "elapsed": 0.03
+        },
+        "internal/handler::TestCollaborationControlHTTPRecoversOriginalStructuredRefusal": {
+          "status": "passed",
+          "elapsed": 0.05
+        },
+        "internal/handler::TestCollaborationEditHTTPSourceFields": {
+          "status": "passed",
+          "elapsed": 0.03
+        },
+        "internal/handler::TestCollaborationChildCompletionWakesOrdinaryParentOnce": {
+          "status": "passed",
+          "elapsed": 0.12
+        },
+        "internal/handler::TestCollaborationChildCompletionPreservesParentGuards": {
+          "status": "passed",
+          "elapsed": 0.31
+        },
+        "internal/handler::TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup": {
+          "status": "passed",
+          "elapsed": 0.11
+        },
+        "internal/handler::TestCollaborationChildWakeupRechecksParentBeforePublishing": {
+          "status": "passed",
+          "elapsed": 0.04
+        },
+        "internal/handler::TestResolveCollaborationRecipientStrictBody": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "internal/handler::TestCollaborationResourceOfferHTTPPrivateOwnerAndOutsideOrganizer": {
+          "status": "passed",
+          "elapsed": 0.08
+        },
+        "internal/handler::TestCollaborationRuntimePreparationHTTPRejectsCredentialFallbacks": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "internal/handler::TestCollaborationRuntimeManagedBoundaryRejectsBroadCredentials": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "internal/handler::TestCollaborationRuntimeNarrowHandlersNeverFallBackToOtherPurposes": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "internal/handler::TestSourceCollaborationProjectionAndExternalFilter": {
+          "status": "passed",
+          "elapsed": 0.04
+        },
+        "internal/handler::TestSourceCollaborationTableAndChildMachineBoundary": {
+          "status": "passed",
+          "elapsed": 0.03
+        },
+        "internal/handler::TestCollaborationSwitchHTTPMachineCannotBorrowOwnerConsent": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "internal/handler::TestCollaborationAccountReadIgnoresAmbientWorkspaceAndKeepsPrivateIdentity": {
+          "status": "passed",
+          "elapsed": 0.01
+        },
+        "internal/handler::TestCollaborationIssueProjectsCalendarDatesForExternalParticipant": {
+          "status": "passed",
+          "elapsed": 0.02
+        },
+        "internal/handler::TestCollaborationWorkbenchKeepsResponsibilityParticipationAndPaginationSeparate": {
+          "status": "passed",
+          "elapsed": 0.03
+        },
+        "internal/handler::TestCollaborationWorkbenchWorksWithoutAnyWorkspaceMembership": {
+          "status": "passed",
+          "elapsed": 0.01
+        },
+        "internal/handler::TestSourceContextCollaborationPreviewIsDenied": {
+          "status": "passed",
+          "elapsed": 0.02
+        },
+        "internal/handler::TestSourceContextCollaborationBothModesRejectBeforeCopyOrAgentLookup": {
+          "status": "passed",
+          "elapsed": 0.13
+        },
+        "internal/handler::TestSourceContextOrdinaryChildHTTPStillCreatesOwnSubtask": {
+          "status": "passed",
+          "elapsed": 0.08
+        }
+      },
+      "execution_counts": {
+        "passed_top_level": 6601,
+        "passed_including_subtests": 12333,
+        "failed": 0,
+        "skipped": 80
+      },
+      "count_note": "One invocation; repeated and nested tests do not add acceptance criteria.",
+      "limits": [
+        "No authenticated provider accounts, paid quota, packaged Main or other-OS containment.",
+        "Original conditional/platform skips are retained; Redis and Linux supplements have separate exact results."
+      ]
+    },
+    "continuation-go-remaining": {
+      "kind": "go_race_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/go-remaining-packages.jsonl",
+          "sha256": "de59266def0bf98ea12d38d50339d84834f043ccc16e5ddf01339ec98f21bdd4"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/pipeline-verification.md",
+      "working_directory": "server",
+      "environment": {
+        "os_arch": "darwin/arm64",
+        "toolchain": "go1.26.6",
+        "identities": "synthetic",
+        "schema_migration": 737,
+        "agent_cli_guard": true,
+        "actual_linux_namespaces": false
+      },
+      "source_manifest": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/source-environment-manifest.json",
+      "executed_tests": {},
+      "execution_counts": {
+        "passed_top_level": 1873,
+        "passed_including_subtests": 3593,
+        "failed": 0,
+        "skipped": 14
+      },
+      "count_note": "One invocation; repeated and nested tests do not add acceptance criteria.",
+      "limits": [
+        "No authenticated provider accounts, paid quota, packaged Main or other-OS containment.",
+        "Original conditional/platform skips are retained; Redis and Linux supplements have separate exact results."
+      ]
+    },
+    "continuation-go-other-redis": {
+      "kind": "go_race_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/go-other-redis.jsonl",
+          "sha256": "880e2c33a812a4e2c8ce6a065595311f2a334a43fcc4bdbcec116d423231b54f"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/pipeline-verification.md",
+      "working_directory": "server",
+      "environment": {
+        "os_arch": "darwin/arm64",
+        "toolchain": "go1.26.6",
+        "identities": "synthetic",
+        "schema_migration": 737,
+        "agent_cli_guard": true,
+        "actual_linux_namespaces": false
+      },
+      "source_manifest": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/source-environment-manifest.json",
+      "executed_tests": {},
+      "execution_counts": {
+        "passed_top_level": 73,
+        "passed_including_subtests": 73,
+        "failed": 0,
+        "skipped": 0
+      },
+      "count_note": "One invocation; repeated and nested tests do not add acceptance criteria.",
+      "limits": [
+        "No authenticated provider accounts, paid quota, packaged Main or other-OS containment.",
+        "Original conditional/platform skips are retained; Redis and Linux supplements have separate exact results."
+      ]
+    },
+    "continuation-linux-router": {
+      "kind": "linux_kernel_router_daemon",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/linux-router.jsonl",
+          "sha256": "411f23c1e244550118dcbf7a09d4fdb6062be74e9b0bda627b827257f9acaf0b"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/pipeline-verification.md",
+      "working_directory": "server",
+      "environment": {
+        "os_arch": "linux/arm64",
+        "toolchain": "go1.26.6",
+        "identities": "synthetic",
+        "schema_migration": 737,
+        "agent_cli_guard": false,
+        "actual_linux_namespaces": true
+      },
+      "source_manifest": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/source-environment-manifest.json",
+      "executed_tests": {
+        "cmd/server::TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux": {
+          "status": "passed",
+          "elapsed": 3.89
+        },
+        "cmd/server::TestCollaborationPartialResumeRoutesLinux": {
+          "status": "passed",
+          "elapsed": 4.16
+        },
+        "cmd/server::TestCollaborationSingleAgentRuntimeRoutesLinux": {
+          "status": "passed",
+          "elapsed": 2.64
+        },
+        "cmd/server::TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux": {
+          "status": "passed",
+          "elapsed": 1.16
+        },
+        "cmd/server::TestCollaborationRuntimeProofSurvivesOwnerDisableLinux": {
+          "status": "passed",
+          "elapsed": 1.08
+        },
+        "cmd/server::TestCollaborationSquadCapacityOneRoutesLinux": {
+          "status": "passed",
+          "elapsed": 2.66
+        }
+      },
+      "execution_counts": {
+        "passed_top_level": 6,
+        "passed_including_subtests": 6,
+        "failed": 0,
+        "skipped": 0
+      },
+      "count_note": "One invocation; repeated and nested tests do not add acceptance criteria.",
+      "limits": [
+        "No authenticated provider accounts, paid quota, packaged Main or other-OS containment.",
+        "Original conditional/platform skips are retained; Redis and Linux supplements have separate exact results."
+      ]
+    },
+    "continuation-mentions-web": {
+      "kind": "production_web_browser",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".omx/reports/cwc-gap-recovery-20261021/continuation-mentions-web/attempt-6.json",
+          "sha256": "2d48e6a14ce3864cf138a76485a379d9d768c26b6662a699165843e024fb75dd"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/mention-journeys.md",
+      "working_directory": ".",
+      "executed_tests": {
+        "e2e/collaboration-mention-journeys-web.spec.ts::Web mixed H+A+B+S mentions retain one comment and exact queued target associations": {
+          "status": "passed",
+          "line": 46,
+          "duration_ms": 5098
+        },
+        "e2e/collaboration-mention-journeys-web.spec.ts::Web owner revocation after preview refuses only A and original-key replay stays deduplicated": {
+          "status": "passed",
+          "line": 46,
+          "duration_ms": 5986
+        },
+        "e2e/collaboration-mention-journeys-web.spec.ts::Web offline mentions survive a fresh context and edits notify only newly added people": {
+          "status": "passed",
+          "line": 65,
+          "duration_ms": 7715
+        }
+      },
+      "execution_counts": {
+        "startTime": "2026-10-21T05:25:19.363Z",
+        "duration": 19953.773,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "source_manifest": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/source-environment-manifest.json",
+      "environment": {
+        "identities": "synthetic",
+        "api": "http://localhost:18985",
+        "web_mode": "production",
+        "native_client_os": null,
+        "packaged_main": false,
+        "real_provider_account": false
+      },
+      "limits": [
+        "Native renderer/Main/preload harness is separate from installed full Main startup.",
+        "Pending Permit without proof establishes the server/UI barrier, not a running provider process."
+      ]
+    },
+    "continuation-mentions-native": {
+      "kind": "actual_electron_ipc_harness",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".omx/reports/cwc-gap-recovery-20261021/continuation-mentions-desktop/attempt-2.json",
+          "sha256": "e1ce9d447a426572fdba786c69a1eb7c551fed11115d8d3cadfc4ee763d5a552"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/mention-journeys.md",
+      "working_directory": ".",
+      "executed_tests": {
+        "e2e/collaboration-mention-journeys-desktop.spec.ts::Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations": {
+          "status": "passed",
+          "line": 97,
+          "duration_ms": 6792
+        },
+        "e2e/collaboration-mention-journeys-desktop.spec.ts::Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated": {
+          "status": "passed",
+          "line": 102,
+          "duration_ms": 6695
+        },
+        "e2e/collaboration-mention-journeys-desktop.spec.ts::Desktop offline mentions survive a fresh profile and edits notify only newly added people": {
+          "status": "passed",
+          "line": 107,
+          "duration_ms": 10613
+        }
+      },
+      "execution_counts": {
+        "startTime": "2026-10-21T05:30:55.562Z",
+        "duration": 24614.935,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "source_manifest": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/source-environment-manifest.json",
+      "environment": {
+        "identities": "synthetic",
+        "api": "http://localhost:18985",
+        "web_mode": "production",
+        "native_client_os": "darwin",
+        "packaged_main": false,
+        "real_provider_account": false
+      },
+      "limits": [
+        "Native renderer/Main/preload harness is separate from installed full Main startup.",
+        "Pending Permit without proof establishes the server/UI barrier, not a running provider process."
+      ]
+    },
+    "continuation-controls-web": {
+      "kind": "production_web_browser",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".omx/reports/cwc-gap-recovery-20261021/continuation-controls-web-v5.json",
+          "sha256": "10665857af923f80ccacd62c11833a4491d86663b76c2c107940f809f4f76d40"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/control-journeys.md",
+      "working_directory": ".",
+      "executed_tests": {
+        "e2e/collaboration-control-journey-web.spec.ts::Web controls recover partial Resume, isolate agent/squad lanes and stop the whole issue": {
+          "status": "passed",
+          "line": 10,
+          "duration_ms": 7034
+        },
+        "e2e/collaboration-control-journey-web.spec.ts::Web pending termination proof keeps A paused while whole Resume releases B and squad S": {
+          "status": "passed",
+          "line": 10,
+          "duration_ms": 6784
+        }
+      },
+      "execution_counts": {
+        "startTime": "2026-10-21T05:26:03.465Z",
+        "duration": 15002.672999999999,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "source_manifest": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/source-environment-manifest.json",
+      "environment": {
+        "identities": "synthetic",
+        "api": "http://localhost:18996",
+        "web_mode": "production",
+        "native_client_os": null,
+        "packaged_main": false,
+        "real_provider_account": false
+      },
+      "limits": [
+        "Native renderer/Main/preload harness is separate from installed full Main startup.",
+        "Pending Permit without proof establishes the server/UI barrier, not a running provider process."
+      ]
+    },
+    "continuation-controls-native": {
+      "kind": "actual_electron_ipc_harness",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".omx/reports/cwc-gap-recovery-20261021/continuation-controls-desktop-v2.json",
+          "sha256": "bacaf0e97be66a59a1513b843fecc468092271c6f6beabc24d173cae871c1a56"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/control-journeys.md",
+      "working_directory": ".",
+      "executed_tests": {
+        "e2e/collaboration-control-journey-desktop.spec.ts::Desktop controls recover partial Resume, isolate agent/squad lanes and stop the whole issue": {
+          "status": "passed",
+          "line": 14,
+          "duration_ms": 7779
+        },
+        "e2e/collaboration-control-journey-desktop.spec.ts::Desktop pending termination proof keeps A paused while whole Resume releases B and squad S": {
+          "status": "passed",
+          "line": 14,
+          "duration_ms": 6136
+        }
+      },
+      "execution_counts": {
+        "startTime": "2026-10-21T05:32:40.523Z",
+        "duration": 14464.781,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "source_manifest": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/source-environment-manifest.json",
+      "environment": {
+        "identities": "synthetic",
+        "api": "http://localhost:18996",
+        "web_mode": "production",
+        "native_client_os": "darwin",
+        "packaged_main": false,
+        "real_provider_account": false
+      },
+      "limits": [
+        "Native renderer/Main/preload harness is separate from installed full Main startup.",
+        "Pending Permit without proof establishes the server/UI barrier, not a running provider process."
+      ]
+    },
+    "continuation-admin-web": {
+      "kind": "production_web_browser",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/playwright-admin-web.json",
+          "sha256": "44c505fe80bd7d303513fcadf385ce9ec2a2c7e97e909fcfab5331a0e3bc8967"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/pipeline-verification.md",
+      "working_directory": ".",
+      "executed_tests": {
+        "e2e/collaboration-administration-web.spec.ts::Web administers disabled-creator collaborations with explicit succession and original receipt recovery": {
+          "status": "passed",
+          "line": 61,
+          "duration_ms": 4468
+        }
+      },
+      "execution_counts": {
+        "startTime": "2026-10-21T05:15:55.861Z",
+        "duration": 5684.657,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "source_manifest": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/source-environment-manifest.json",
+      "environment": {
+        "identities": "synthetic",
+        "api": "http://localhost:18996",
+        "web_mode": "production",
+        "native_client_os": null,
+        "packaged_main": false,
+        "real_provider_account": false
+      },
+      "limits": [
+        "Native renderer/Main/preload harness is separate from installed full Main startup.",
+        "Pending Permit without proof establishes the server/UI barrier, not a running provider process."
+      ]
+    },
+    "continuation-admin-native": {
+      "kind": "actual_electron_ipc_harness",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/playwright-admin-desktop.json",
+          "sha256": "691a46c582d2880a443d9e6257582f8446dffee6f5ecba7a02b471c470c961f2"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/pipeline-verification.md",
+      "working_directory": ".",
+      "executed_tests": {
+        "e2e/collaboration-administration-desktop.spec.ts::Desktop administers disabled-creator collaborations in the account shell and recovers the retained receipt": {
+          "status": "passed",
+          "line": 11,
+          "duration_ms": 5992
+        }
+      },
+      "execution_counts": {
+        "startTime": "2026-10-21T05:16:43.832Z",
+        "duration": 6556.795,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "source_manifest": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/source-environment-manifest.json",
+      "environment": {
+        "identities": "synthetic",
+        "api": "http://localhost:18996",
+        "web_mode": "production",
+        "native_client_os": "darwin",
+        "packaged_main": false,
+        "real_provider_account": false
+      },
+      "limits": [
+        "Native renderer/Main/preload harness is separate from installed full Main startup.",
+        "Pending Permit without proof establishes the server/UI barrier, not a running provider process."
+      ]
+    },
+    "continuation-prerequisites": {
+      "kind": "production_web_browser",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/playwright-prerequisites.json",
+          "sha256": "0bb3ab50d20bb481f97ad65e5b12b847512af2d0b675e3fc8c2e4a0f2395c964"
+        }
+      ],
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/pipeline-verification.md",
+      "working_directory": ".",
+      "executed_tests": {
+        "e2e/collaboration-command-history-web.spec.ts::cancelled waiting commands retain original content after comment changes, refresh and another account reads": {
+          "status": "passed",
+          "line": 8,
+          "duration_ms": 10847
+        },
+        "e2e/collaboration-resource-offers-web.spec.ts::a private owner offers a resource to an external organizer and independently authorizes it": {
+          "status": "passed",
+          "line": 7,
+          "duration_ms": 8017
+        }
+      },
+      "execution_counts": {
+        "startTime": "2026-10-21T05:09:01.851Z",
+        "duration": 20326.274,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "source_manifest": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/source-environment-manifest.json",
+      "environment": {
+        "identities": "synthetic",
+        "api": "http://localhost:18985",
+        "web_mode": "production",
+        "native_client_os": null,
+        "packaged_main": false,
+        "real_provider_account": false
+      },
+      "limits": [
+        "Native renderer/Main/preload harness is separate from installed full Main startup.",
+        "Pending Permit without proof establishes the server/UI barrier, not a running provider process."
+      ]
+    }
+  },
+  "platform_limits": [
+    {
+      "scope": "Linux static_json_v1 and claude_stream_json_v1 fake protocol/explicit bundle",
+      "status": "passed",
+      "evidence": [
+        "s4-native",
+        "native-routes",
+        "native-daemon"
+      ],
+      "limit": "Confirms stated synthetic execution contracts only."
+    },
+    {
+      "scope": "Real Claude executable/version/account/quota",
+      "status": "not_verified_in_this_task",
+      "reason": "Separate explicit account/quota authorization required; no lookup or account use performed."
+    },
+    {
+      "scope": "macOS collaboration runtime containment",
+      "status": "unsupported",
+      "reason": "No accepted namespace-equivalent controller; product refuses launch."
+    },
+    {
+      "scope": "Windows collaboration runtime containment",
+      "status": "unsupported",
+      "reason": "No verified Job containment controller; product refuses launch."
+    },
+    {
+      "scope": "Other stock provider adapters",
+      "status": "not_verified_in_this_task",
+      "reason": "No stock-provider native execution/version matrix; a generic static-JSON contract is not evidence for ordinary provider CLI compatibility."
+    },
+    {
+      "scope": "Installed packaged Desktop/full Main/upgrade and S3/Redis fault acceptance",
+      "status": "not_verified_in_this_task",
+      "reason": "Current harness/unit/kernel evidence does not cover these environments."
+    }
+  ],
+  "provider_registry": {
+    "source": "server/pkg/agent/agent.go",
+    "sha256": "f104293d2d41ac57dd7ffad4b52574ef474967ac0a1f565beca44af1c58373de",
+    "families": [
+      "claude",
+      "codebuddy",
+      "codex",
+      "copilot",
+      "opencode",
+      "codearts",
+      "deveco",
+      "openclaw",
+      "hermes",
+      "pi",
+      "cursor",
+      "kimi",
+      "reasonix",
+      "dsh",
+      "kiro",
+      "antigravity",
+      "qoder",
+      "qoderclicn",
+      "traecli",
+      "grok",
+      "qwen",
+      "qwenpaw",
+      "mcode",
+      "dim",
+      "zeroclaw"
+    ],
+    "stock_provider_matrix": [
+      {
+        "family": "claude",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "claude_stream_json_v1 is tested with an explicit fake executable; no authenticated stock executable/version/account/quota."
+      },
+      {
+        "family": "codebuddy",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "codex",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "Native generic static-JSON/router fixtures use this runtime identifier; they do not execute stock Codex."
+      },
+      {
+        "family": "copilot",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "opencode",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "codearts",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "deveco",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "openclaw",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "hermes",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "pi",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "cursor",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "kimi",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "reasonix",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "dsh",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "kiro",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "antigravity",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "qoder",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "qoderclicn",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "traecli",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "grok",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "qwen",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "qwenpaw",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "mcode",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "dim",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      },
+      {
+        "family": "zeroclaw",
+        "linux": "not_verified_in_this_task",
+        "macos": "unsupported",
+        "windows": "unsupported",
+        "linux_evidence": "No stock provider executable/version/account run is recorded."
+      }
+    ],
+    "note": "Registry eligibility is not collaboration provider support. Only the explicit generic static-JSON and Claude stream protocol contracts have synthetic Linux evidence; other stock adapters are not inferred from the ordinary-provider registry."
+  },
+  "retained_attempts": [
+    {
+      "artifact": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s2-s3-web-v3.json",
+      "status": "failed",
+      "scope": "History test failed while the selected offer test passed; history later passed in s3-web-v4.json."
+    },
+    {
+      "artifact": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-views-collaboration.log",
+      "status": "failed",
+      "result": "3 timeouts / 91 passes; the serial rerun later passed 94/94."
+    },
+    {
+      "artifact": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s5-administration-web-first.json",
+      "status": "failed",
+      "scope": "Fixture expected manual recovery after the existing immediate GET had already settled the original receipt; later corrected test passed without a product change.",
+      "superseded_by": "web-s5"
+    }
+  ]
+}

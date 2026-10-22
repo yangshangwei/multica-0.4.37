@@ -1,0 +1,1184 @@
+[
+  {
+    "issue_id": "01a15ec0-bed0-741a-ae62-203598ea0a32",
+    "creator_id": "afafd0ba-90ae-488b-8bde-b8b617785b72",
+    "recipient_id": "714ea562-4612-4846-be5e-52ad4fefd18c",
+    "source_workspace_id": "1fd23248-8af2-40ea-946c-614fcbf676ee",
+    "invite": {
+      "request_id": "288d4e13-366a-4a4b-807c-a0679653d18d",
+      "body": {
+        "expected_collaboration_revision": "1",
+        "expected_lifecycle_epoch": "1",
+        "expected_participant_epoch": "1",
+        "expected_account_epoch": "1",
+        "target_user_id": "714ea562-4612-4846-be5e-52ad4fefd18c"
+      },
+      "receipt": {
+        "code": "participant_added",
+        "collaboration_revision": "2"
+      },
+      "original_key_replay": {
+        "code": "participant_added",
+        "collaboration_revision": "2"
+      },
+      "current_issue": {
+        "labels": [],
+        "properties": {},
+        "property_definitions": [],
+        "source_structure": {
+          "issue_revision": "1",
+          "project": null,
+          "parent_issue": null,
+          "iteration": null,
+          "stage": null
+        },
+        "id": "01a15ec0-bed0-741a-ae62-203598ea0a32",
+        "title": "Offline handoff 63dd87e3e64c",
+        "description": "Private offline handoff discussion and retained responsibility.",
+        "status": "todo",
+        "status_category": "todo",
+        "priority": "none",
+        "start_date": null,
+        "due_date": null,
+        "source_workspace": {
+          "id": "1fd23248-8af2-40ea-946c-614fcbf676ee",
+          "name": "Offline handoff source",
+          "identifier": "OFFL-1"
+        },
+        "creator": {
+          "user_id": "afafd0ba-90ae-488b-8bde-b8b617785b72",
+          "name": "Offline creator P",
+          "avatar_url": "",
+          "external": false
+        },
+        "handler": {
+          "user_id": "afafd0ba-90ae-488b-8bde-b8b617785b72",
+          "name": "Offline creator P",
+          "avatar_url": "",
+          "external": false
+        },
+        "collaboration_revision": "2",
+        "lifecycle_epoch": "1",
+        "write_context": {
+          "participant_epoch": "1",
+          "account_epoch": "1"
+        },
+        "realtime": {
+          "event_seq": "2",
+          "authority_epoch": "2"
+        },
+        "session": {
+          "id": "aa09f7a6-ef16-4e3a-acad-28f46f9ad44d",
+          "queue_state": "paused",
+          "control_version": "1"
+        },
+        "execution": {
+          "protocol_version": 5,
+          "issue_id": "01a15ec0-bed0-741a-ae62-203598ea0a32",
+          "session_id": "aa09f7a6-ef16-4e3a-acad-28f46f9ad44d",
+          "availability": "unavailable",
+          "unavailable_reason": "shared_runtime_unavailable",
+          "target_set_version": "1",
+          "control": {
+            "scope": "issue",
+            "queue_state": "paused",
+            "control_version": "1"
+          },
+          "execution_gate": {
+            "enabled": true,
+            "epoch": "3"
+          },
+          "channels": [],
+          "targets": [],
+          "commands": [],
+          "groups": [],
+          "runs": []
+        },
+        "current_information_request": null,
+        "capabilities": {
+          "reference": true,
+          "read": true,
+          "comment": true,
+          "control_ai": true,
+          "submit_command": false,
+          "invite": true,
+          "transfer": true,
+          "remove_participants": true,
+          "leave": false,
+          "edit": true,
+          "edit_source_structure": true,
+          "reorder": true,
+          "change_status": true,
+          "complete": true,
+          "cancel": true,
+          "reopen": false,
+          "resolve_thread": true,
+          "react": true,
+          "request_information": true,
+          "return_information": false,
+          "submit_acceptance": false
+        },
+        "ordinary_children": {
+          "items": [],
+          "source_workspace_slug": "offline-63dd87e3e64c"
+        }
+      }
+    },
+    "assignment": {
+      "request_id": "dedac903-b829-4e75-b546-78f3f949e6be",
+      "body": {
+        "expected_collaboration_revision": "2",
+        "expected_lifecycle_epoch": "1",
+        "expected_participant_epoch": "1",
+        "expected_account_epoch": "1",
+        "target_user_id": "714ea562-4612-4846-be5e-52ad4fefd18c",
+        "purpose": "transfer",
+        "note": "Offline assignment requires no acceptance step."
+      },
+      "receipt": {
+        "code": "transferred",
+        "collaboration_revision": "3"
+      },
+      "original_key_replay": {
+        "code": "transferred",
+        "collaboration_revision": "3"
+      },
+      "current_issue": {
+        "labels": [],
+        "properties": {},
+        "property_definitions": [],
+        "source_structure": {
+          "issue_revision": "2",
+          "project": null,
+          "parent_issue": null,
+          "iteration": null,
+          "stage": null
+        },
+        "id": "01a15ec0-bed0-741a-ae62-203598ea0a32",
+        "title": "Offline handoff 63dd87e3e64c",
+        "description": "Private offline handoff discussion and retained responsibility.",
+        "status": "todo",
+        "status_category": "todo",
+        "priority": "none",
+        "start_date": null,
+        "due_date": null,
+        "source_workspace": {
+          "id": "1fd23248-8af2-40ea-946c-614fcbf676ee",
+          "name": "Offline handoff source",
+          "identifier": "OFFL-1"
+        },
+        "creator": {
+          "user_id": "afafd0ba-90ae-488b-8bde-b8b617785b72",
+          "name": "Offline creator P",
+          "avatar_url": "",
+          "external": false
+        },
+        "handler": {
+          "user_id": "714ea562-4612-4846-be5e-52ad4fefd18c",
+          "name": "Offline external handler H",
+          "avatar_url": "",
+          "external": true
+        },
+        "collaboration_revision": "3",
+        "lifecycle_epoch": "1",
+        "write_context": {
+          "participant_epoch": "1",
+          "account_epoch": "1"
+        },
+        "realtime": {
+          "event_seq": "3",
+          "authority_epoch": "3"
+        },
+        "session": {
+          "id": "aa09f7a6-ef16-4e3a-acad-28f46f9ad44d",
+          "queue_state": "paused",
+          "control_version": "1"
+        },
+        "execution": {
+          "protocol_version": 5,
+          "issue_id": "01a15ec0-bed0-741a-ae62-203598ea0a32",
+          "session_id": "aa09f7a6-ef16-4e3a-acad-28f46f9ad44d",
+          "availability": "unavailable",
+          "unavailable_reason": "shared_runtime_unavailable",
+          "target_set_version": "1",
+          "control": {
+            "scope": "issue",
+            "queue_state": "paused",
+            "control_version": "1"
+          },
+          "execution_gate": {
+            "enabled": true,
+            "epoch": "3"
+          },
+          "channels": [],
+          "targets": [],
+          "commands": [],
+          "groups": [],
+          "runs": []
+        },
+        "current_information_request": null,
+        "capabilities": {
+          "reference": true,
+          "read": true,
+          "comment": true,
+          "control_ai": true,
+          "submit_command": false,
+          "invite": true,
+          "transfer": true,
+          "remove_participants": true,
+          "leave": false,
+          "edit": true,
+          "edit_source_structure": true,
+          "reorder": true,
+          "change_status": true,
+          "complete": true,
+          "cancel": true,
+          "reopen": false,
+          "resolve_thread": true,
+          "react": true,
+          "request_information": true,
+          "return_information": false,
+          "submit_acceptance": false
+        },
+        "ordinary_children": {
+          "items": [],
+          "source_workspace_slug": "offline-63dd87e3e64c"
+        }
+      }
+    },
+    "transfer_back": {
+      "request_id": "d3a2c122-6f1a-4193-8b81-77bf000776f2",
+      "body": {
+        "expected_collaboration_revision": "3",
+        "expected_lifecycle_epoch": "1",
+        "expected_participant_epoch": "1",
+        "expected_account_epoch": "1",
+        "target_user_id": "afafd0ba-90ae-488b-8bde-b8b617785b72",
+        "purpose": "transfer",
+        "note": "Former handler hands responsibility back to creator."
+      },
+      "receipt": {
+        "code": "transferred",
+        "collaboration_revision": "4"
+      },
+      "original_key_replay": {
+        "code": "transferred",
+        "collaboration_revision": "4"
+      },
+      "current_issue": {
+        "labels": [],
+        "properties": {},
+        "property_definitions": [],
+        "source_structure": {
+          "issue_revision": "4",
+          "project": null,
+          "parent_issue": null,
+          "iteration": null,
+          "stage": null
+        },
+        "id": "01a15ec0-bed0-741a-ae62-203598ea0a32",
+        "title": "Offline handoff 63dd87e3e64c",
+        "description": "Private offline handoff discussion and retained responsibility.",
+        "status": "todo",
+        "status_category": "todo",
+        "priority": "none",
+        "start_date": null,
+        "due_date": null,
+        "source_workspace": {
+          "id": "1fd23248-8af2-40ea-946c-614fcbf676ee",
+          "name": "Offline handoff source",
+          "identifier": "OFFL-1"
+        },
+        "creator": {
+          "user_id": "afafd0ba-90ae-488b-8bde-b8b617785b72",
+          "name": "Offline creator P",
+          "avatar_url": "",
+          "external": false
+        },
+        "handler": {
+          "user_id": "afafd0ba-90ae-488b-8bde-b8b617785b72",
+          "name": "Offline creator P",
+          "avatar_url": "",
+          "external": false
+        },
+        "collaboration_revision": "4",
+        "lifecycle_epoch": "1",
+        "write_context": {
+          "participant_epoch": "1",
+          "account_epoch": "1"
+        },
+        "realtime": {
+          "event_seq": "5",
+          "authority_epoch": "4"
+        },
+        "session": {
+          "id": "aa09f7a6-ef16-4e3a-acad-28f46f9ad44d",
+          "queue_state": "paused",
+          "control_version": "1"
+        },
+        "execution": {
+          "protocol_version": 5,
+          "issue_id": "01a15ec0-bed0-741a-ae62-203598ea0a32",
+          "session_id": "aa09f7a6-ef16-4e3a-acad-28f46f9ad44d",
+          "availability": "unavailable",
+          "unavailable_reason": "shared_runtime_unavailable",
+          "target_set_version": "1",
+          "control": {
+            "scope": "issue",
+            "queue_state": "paused",
+            "control_version": "1"
+          },
+          "execution_gate": {
+            "enabled": true,
+            "epoch": "3"
+          },
+          "channels": [],
+          "targets": [],
+          "commands": [],
+          "groups": [],
+          "runs": []
+        },
+        "current_information_request": null,
+        "capabilities": {
+          "reference": true,
+          "read": true,
+          "comment": true,
+          "control_ai": true,
+          "submit_command": false,
+          "invite": true,
+          "transfer": true,
+          "remove_participants": true,
+          "leave": false,
+          "edit": true,
+          "edit_source_structure": true,
+          "reorder": true,
+          "change_status": true,
+          "complete": true,
+          "cancel": true,
+          "reopen": false,
+          "resolve_thread": true,
+          "react": true,
+          "request_information": true,
+          "return_information": false,
+          "submit_acceptance": false
+        },
+        "ordinary_children": {
+          "items": [],
+          "source_workspace_slug": "offline-63dd87e3e64c"
+        }
+      }
+    },
+    "archived": {
+      "notification_id": "66e6f2ee-7611-4cf9-8bf9-c19c3dbc2ad0",
+      "old_href": "/account?view=participating&issue=01a15ec0-bed0-741a-ae62-203598ea0a32",
+      "state": {
+        "id": "66e6f2ee-7611-4cf9-8bf9-c19c3dbc2ad0",
+        "issue_id": "01a15ec0-bed0-741a-ae62-203598ea0a32",
+        "event_seq": "3",
+        "kind": "transferred",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": "Offline handoff 63dd87e3e64c",
+        "can_open": true,
+        "created_at": "2026-10-21T21:57:34.416157+08:00",
+        "read_at": "2026-10-21T21:57:37.003274+08:00",
+        "archived_at": "2026-10-21T21:57:37.088731+08:00"
+      }
+    },
+    "recipient_login_calls": 3,
+    "clients_closed_before_send": true,
+    "fresh_login_after_send_and_archive": true,
+    "source_memberships": [],
+    "retained_comment_id": "99c8bc14-9cc5-4888-a31c-fa20e91a2b70",
+    "retained_comment_href": "/account?view=participating&issue=01a15ec0-bed0-741a-ae62-203598ea0a32#comment-99c8bc14-9cc5-4888-a31c-fa20e91a2b70",
+    "removal": {
+      "code": "participant_removed",
+      "collaboration_revision": "5"
+    },
+    "removed_notifications": [
+      {
+        "id": "d909d1a3-0958-4e3b-af9f-13b87aba8e88",
+        "issue_id": "01a15ec0-bed0-741a-ae62-203598ea0a32",
+        "event_seq": "6",
+        "kind": "removed",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-21T21:57:39.218612+08:00",
+        "read_at": null,
+        "archived_at": null
+      },
+      {
+        "id": "a6b9517e-4c82-44ec-93d9-2ccec3e8a11c",
+        "issue_id": "01a15ec0-bed0-741a-ae62-203598ea0a32",
+        "event_seq": "4",
+        "kind": "comment_created",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-21T21:57:34.582388+08:00",
+        "read_at": null,
+        "archived_at": null
+      },
+      {
+        "id": "66e6f2ee-7611-4cf9-8bf9-c19c3dbc2ad0",
+        "issue_id": "01a15ec0-bed0-741a-ae62-203598ea0a32",
+        "event_seq": "3",
+        "kind": "transferred",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-21T21:57:34.416157+08:00",
+        "read_at": "2026-10-21T21:57:37.003274+08:00",
+        "archived_at": "2026-10-21T21:57:37.088731+08:00"
+      },
+      {
+        "id": "bb535fcc-251f-40b3-89d2-57355640726e",
+        "issue_id": "01a15ec0-bed0-741a-ae62-203598ea0a32",
+        "event_seq": "2",
+        "kind": "participant_added",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-21T21:57:33.995258+08:00",
+        "read_at": null,
+        "archived_at": null
+      }
+    ],
+    "final_issue": {
+      "labels": [],
+      "properties": {},
+      "property_definitions": [],
+      "source_structure": {
+        "issue_revision": "4",
+        "project": null,
+        "parent_issue": null,
+        "iteration": null,
+        "stage": null
+      },
+      "id": "01a15ec0-bed0-741a-ae62-203598ea0a32",
+      "title": "Offline handoff 63dd87e3e64c",
+      "description": "Private offline handoff discussion and retained responsibility.",
+      "status": "todo",
+      "status_category": "todo",
+      "priority": "none",
+      "start_date": null,
+      "due_date": null,
+      "source_workspace": {
+        "id": "1fd23248-8af2-40ea-946c-614fcbf676ee",
+        "name": "Offline handoff source",
+        "identifier": "OFFL-1"
+      },
+      "creator": {
+        "user_id": "afafd0ba-90ae-488b-8bde-b8b617785b72",
+        "name": "Offline creator P",
+        "avatar_url": "",
+        "external": false
+      },
+      "handler": {
+        "user_id": "afafd0ba-90ae-488b-8bde-b8b617785b72",
+        "name": "Offline creator P",
+        "avatar_url": "",
+        "external": false
+      },
+      "collaboration_revision": "5",
+      "lifecycle_epoch": "1",
+      "write_context": {
+        "participant_epoch": "1",
+        "account_epoch": "1"
+      },
+      "realtime": {
+        "event_seq": "6",
+        "authority_epoch": "5"
+      },
+      "session": {
+        "id": "aa09f7a6-ef16-4e3a-acad-28f46f9ad44d",
+        "queue_state": "paused",
+        "control_version": "1"
+      },
+      "execution": {
+        "protocol_version": 5,
+        "issue_id": "01a15ec0-bed0-741a-ae62-203598ea0a32",
+        "session_id": "aa09f7a6-ef16-4e3a-acad-28f46f9ad44d",
+        "availability": "unavailable",
+        "unavailable_reason": "shared_runtime_unavailable",
+        "target_set_version": "1",
+        "control": {
+          "scope": "issue",
+          "queue_state": "paused",
+          "control_version": "1"
+        },
+        "execution_gate": {
+          "enabled": true,
+          "epoch": "3"
+        },
+        "channels": [],
+        "targets": [],
+        "commands": [],
+        "groups": [],
+        "runs": []
+      },
+      "current_information_request": null,
+      "capabilities": {
+        "reference": true,
+        "read": true,
+        "comment": true,
+        "control_ai": true,
+        "submit_command": false,
+        "invite": true,
+        "transfer": true,
+        "remove_participants": true,
+        "leave": false,
+        "edit": true,
+        "edit_source_structure": true,
+        "reorder": true,
+        "change_status": true,
+        "complete": true,
+        "cancel": true,
+        "reopen": false,
+        "resolve_thread": true,
+        "react": true,
+        "request_information": true,
+        "return_information": false,
+        "submit_acceptance": false
+      },
+      "ordinary_children": {
+        "items": [],
+        "source_workspace_slug": "offline-63dd87e3e64c"
+      }
+    },
+    "covered_notifications": [
+      "participant_added",
+      "transferred",
+      "comment_created",
+      "removed"
+    ],
+    "remaining_AC83_kinds": [
+      "information_requested",
+      "information_returned",
+      "acceptance_submitted",
+      "ai_completed",
+      "ai_failed",
+      "ai_stopped"
+    ],
+    "platform": "Web",
+    "source": [
+      {
+        "path": "e2e/collaboration-offline-handoff.spec.ts",
+        "sha256": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e"
+      },
+      {
+        "path": "e2e/fixtures/collaboration-offline-handoff.ts",
+        "sha256": "be5b201929c30a6a0e9edf204b9e88fe39856aa3c57aeeace643c8755ced1355"
+      }
+    ],
+    "environment": {
+      "api": "http://localhost:18996",
+      "production_web": "http://localhost:13916",
+      "electron_renderer": null,
+      "electron_os": null,
+      "provider_account_access": false
+    },
+    "errors": []
+  },
+  {
+    "issue_id": "01a15ec0-e257-7c5c-9326-0656232e2a7b",
+    "creator_id": "71079b73-c76e-4f24-bd3d-9f7fdcdbf68f",
+    "recipient_id": "7e526a11-0f9e-4202-84e6-d050dc65f2e2",
+    "source_workspace_id": "f003f6c2-1d26-4b6d-a4c1-02f678b39479",
+    "invite": {
+      "request_id": "d1df402b-778b-4c85-ad8a-19348fb18650",
+      "body": {
+        "expected_collaboration_revision": "1",
+        "expected_lifecycle_epoch": "1",
+        "expected_participant_epoch": "1",
+        "expected_account_epoch": "1",
+        "target_user_id": "7e526a11-0f9e-4202-84e6-d050dc65f2e2"
+      },
+      "receipt": {
+        "code": "participant_added",
+        "collaboration_revision": "2"
+      },
+      "original_key_replay": {
+        "code": "participant_added",
+        "collaboration_revision": "2"
+      },
+      "current_issue": {
+        "labels": [],
+        "properties": {},
+        "property_definitions": [],
+        "source_structure": {
+          "issue_revision": "1",
+          "project": null,
+          "parent_issue": null,
+          "iteration": null,
+          "stage": null
+        },
+        "id": "01a15ec0-e257-7c5c-9326-0656232e2a7b",
+        "title": "Offline handoff a12cf963b9da",
+        "description": "Private offline handoff discussion and retained responsibility.",
+        "status": "todo",
+        "status_category": "todo",
+        "priority": "none",
+        "start_date": null,
+        "due_date": null,
+        "source_workspace": {
+          "id": "f003f6c2-1d26-4b6d-a4c1-02f678b39479",
+          "name": "Offline handoff source",
+          "identifier": "OFFL-1"
+        },
+        "creator": {
+          "user_id": "71079b73-c76e-4f24-bd3d-9f7fdcdbf68f",
+          "name": "Offline creator P",
+          "avatar_url": "",
+          "external": false
+        },
+        "handler": {
+          "user_id": "71079b73-c76e-4f24-bd3d-9f7fdcdbf68f",
+          "name": "Offline creator P",
+          "avatar_url": "",
+          "external": false
+        },
+        "collaboration_revision": "2",
+        "lifecycle_epoch": "1",
+        "write_context": {
+          "participant_epoch": "1",
+          "account_epoch": "1"
+        },
+        "realtime": {
+          "event_seq": "2",
+          "authority_epoch": "2"
+        },
+        "session": {
+          "id": "aabbb47e-35a5-40c7-b61c-b8b048a8a8f4",
+          "queue_state": "paused",
+          "control_version": "1"
+        },
+        "execution": {
+          "protocol_version": 5,
+          "issue_id": "01a15ec0-e257-7c5c-9326-0656232e2a7b",
+          "session_id": "aabbb47e-35a5-40c7-b61c-b8b048a8a8f4",
+          "availability": "unavailable",
+          "unavailable_reason": "shared_runtime_unavailable",
+          "target_set_version": "1",
+          "control": {
+            "scope": "issue",
+            "queue_state": "paused",
+            "control_version": "1"
+          },
+          "execution_gate": {
+            "enabled": true,
+            "epoch": "3"
+          },
+          "channels": [],
+          "targets": [],
+          "commands": [],
+          "groups": [],
+          "runs": []
+        },
+        "current_information_request": null,
+        "capabilities": {
+          "reference": true,
+          "read": true,
+          "comment": true,
+          "control_ai": true,
+          "submit_command": false,
+          "invite": true,
+          "transfer": true,
+          "remove_participants": true,
+          "leave": false,
+          "edit": true,
+          "edit_source_structure": true,
+          "reorder": true,
+          "change_status": true,
+          "complete": true,
+          "cancel": true,
+          "reopen": false,
+          "resolve_thread": true,
+          "react": true,
+          "request_information": true,
+          "return_information": false,
+          "submit_acceptance": false
+        },
+        "ordinary_children": {
+          "items": [],
+          "source_workspace_slug": "offline-a12cf963b9da"
+        }
+      }
+    },
+    "assignment": {
+      "request_id": "a8d5db84-7ba0-4cc3-802b-1e81f2e25c6c",
+      "body": {
+        "expected_collaboration_revision": "2",
+        "expected_lifecycle_epoch": "1",
+        "expected_participant_epoch": "1",
+        "expected_account_epoch": "1",
+        "target_user_id": "7e526a11-0f9e-4202-84e6-d050dc65f2e2",
+        "purpose": "transfer",
+        "note": "Offline assignment requires no acceptance step."
+      },
+      "receipt": {
+        "code": "transferred",
+        "collaboration_revision": "3"
+      },
+      "original_key_replay": {
+        "code": "transferred",
+        "collaboration_revision": "3"
+      },
+      "current_issue": {
+        "labels": [],
+        "properties": {},
+        "property_definitions": [],
+        "source_structure": {
+          "issue_revision": "2",
+          "project": null,
+          "parent_issue": null,
+          "iteration": null,
+          "stage": null
+        },
+        "id": "01a15ec0-e257-7c5c-9326-0656232e2a7b",
+        "title": "Offline handoff a12cf963b9da",
+        "description": "Private offline handoff discussion and retained responsibility.",
+        "status": "todo",
+        "status_category": "todo",
+        "priority": "none",
+        "start_date": null,
+        "due_date": null,
+        "source_workspace": {
+          "id": "f003f6c2-1d26-4b6d-a4c1-02f678b39479",
+          "name": "Offline handoff source",
+          "identifier": "OFFL-1"
+        },
+        "creator": {
+          "user_id": "71079b73-c76e-4f24-bd3d-9f7fdcdbf68f",
+          "name": "Offline creator P",
+          "avatar_url": "",
+          "external": false
+        },
+        "handler": {
+          "user_id": "7e526a11-0f9e-4202-84e6-d050dc65f2e2",
+          "name": "Offline external handler H",
+          "avatar_url": "",
+          "external": true
+        },
+        "collaboration_revision": "3",
+        "lifecycle_epoch": "1",
+        "write_context": {
+          "participant_epoch": "1",
+          "account_epoch": "1"
+        },
+        "realtime": {
+          "event_seq": "3",
+          "authority_epoch": "3"
+        },
+        "session": {
+          "id": "aabbb47e-35a5-40c7-b61c-b8b048a8a8f4",
+          "queue_state": "paused",
+          "control_version": "1"
+        },
+        "execution": {
+          "protocol_version": 5,
+          "issue_id": "01a15ec0-e257-7c5c-9326-0656232e2a7b",
+          "session_id": "aabbb47e-35a5-40c7-b61c-b8b048a8a8f4",
+          "availability": "unavailable",
+          "unavailable_reason": "shared_runtime_unavailable",
+          "target_set_version": "1",
+          "control": {
+            "scope": "issue",
+            "queue_state": "paused",
+            "control_version": "1"
+          },
+          "execution_gate": {
+            "enabled": true,
+            "epoch": "3"
+          },
+          "channels": [],
+          "targets": [],
+          "commands": [],
+          "groups": [],
+          "runs": []
+        },
+        "current_information_request": null,
+        "capabilities": {
+          "reference": true,
+          "read": true,
+          "comment": true,
+          "control_ai": true,
+          "submit_command": false,
+          "invite": true,
+          "transfer": true,
+          "remove_participants": true,
+          "leave": false,
+          "edit": true,
+          "edit_source_structure": true,
+          "reorder": true,
+          "change_status": true,
+          "complete": true,
+          "cancel": true,
+          "reopen": false,
+          "resolve_thread": true,
+          "react": true,
+          "request_information": true,
+          "return_information": false,
+          "submit_acceptance": false
+        },
+        "ordinary_children": {
+          "items": [],
+          "source_workspace_slug": "offline-a12cf963b9da"
+        }
+      }
+    },
+    "transfer_back": {
+      "request_id": "e492c3c2-d646-4721-b68d-9a8df4ac7a6b",
+      "body": {
+        "expected_collaboration_revision": "3",
+        "expected_lifecycle_epoch": "1",
+        "expected_participant_epoch": "1",
+        "expected_account_epoch": "1",
+        "target_user_id": "71079b73-c76e-4f24-bd3d-9f7fdcdbf68f",
+        "purpose": "transfer",
+        "note": "Former handler hands responsibility back to creator."
+      },
+      "receipt": {
+        "code": "transferred",
+        "collaboration_revision": "4"
+      },
+      "original_key_replay": {
+        "code": "transferred",
+        "collaboration_revision": "4"
+      },
+      "current_issue": {
+        "labels": [],
+        "properties": {},
+        "property_definitions": [],
+        "source_structure": {
+          "issue_revision": "4",
+          "project": null,
+          "parent_issue": null,
+          "iteration": null,
+          "stage": null
+        },
+        "id": "01a15ec0-e257-7c5c-9326-0656232e2a7b",
+        "title": "Offline handoff a12cf963b9da",
+        "description": "Private offline handoff discussion and retained responsibility.",
+        "status": "todo",
+        "status_category": "todo",
+        "priority": "none",
+        "start_date": null,
+        "due_date": null,
+        "source_workspace": {
+          "id": "f003f6c2-1d26-4b6d-a4c1-02f678b39479",
+          "name": "Offline handoff source",
+          "identifier": "OFFL-1"
+        },
+        "creator": {
+          "user_id": "71079b73-c76e-4f24-bd3d-9f7fdcdbf68f",
+          "name": "Offline creator P",
+          "avatar_url": "",
+          "external": false
+        },
+        "handler": {
+          "user_id": "71079b73-c76e-4f24-bd3d-9f7fdcdbf68f",
+          "name": "Offline creator P",
+          "avatar_url": "",
+          "external": false
+        },
+        "collaboration_revision": "4",
+        "lifecycle_epoch": "1",
+        "write_context": {
+          "participant_epoch": "1",
+          "account_epoch": "1"
+        },
+        "realtime": {
+          "event_seq": "5",
+          "authority_epoch": "4"
+        },
+        "session": {
+          "id": "aabbb47e-35a5-40c7-b61c-b8b048a8a8f4",
+          "queue_state": "paused",
+          "control_version": "1"
+        },
+        "execution": {
+          "protocol_version": 5,
+          "issue_id": "01a15ec0-e257-7c5c-9326-0656232e2a7b",
+          "session_id": "aabbb47e-35a5-40c7-b61c-b8b048a8a8f4",
+          "availability": "unavailable",
+          "unavailable_reason": "shared_runtime_unavailable",
+          "target_set_version": "1",
+          "control": {
+            "scope": "issue",
+            "queue_state": "paused",
+            "control_version": "1"
+          },
+          "execution_gate": {
+            "enabled": true,
+            "epoch": "3"
+          },
+          "channels": [],
+          "targets": [],
+          "commands": [],
+          "groups": [],
+          "runs": []
+        },
+        "current_information_request": null,
+        "capabilities": {
+          "reference": true,
+          "read": true,
+          "comment": true,
+          "control_ai": true,
+          "submit_command": false,
+          "invite": true,
+          "transfer": true,
+          "remove_participants": true,
+          "leave": false,
+          "edit": true,
+          "edit_source_structure": true,
+          "reorder": true,
+          "change_status": true,
+          "complete": true,
+          "cancel": true,
+          "reopen": false,
+          "resolve_thread": true,
+          "react": true,
+          "request_information": true,
+          "return_information": false,
+          "submit_acceptance": false
+        },
+        "ordinary_children": {
+          "items": [],
+          "source_workspace_slug": "offline-a12cf963b9da"
+        }
+      }
+    },
+    "archived": {
+      "notification_id": "2fd74228-b496-4299-99c5-70abf46dea5e",
+      "old_href": "http://localhost:18996/account?view=participating&issue=01a15ec0-e257-7c5c-9326-0656232e2a7b",
+      "state": {
+        "id": "2fd74228-b496-4299-99c5-70abf46dea5e",
+        "issue_id": "01a15ec0-e257-7c5c-9326-0656232e2a7b",
+        "event_seq": "3",
+        "kind": "transferred",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": "Offline handoff a12cf963b9da",
+        "can_open": true,
+        "created_at": "2026-10-21T21:57:45.302065+08:00",
+        "read_at": "2026-10-21T21:57:48.215301+08:00",
+        "archived_at": "2026-10-21T21:57:48.314697+08:00"
+      }
+    },
+    "recipient_login_calls": 3,
+    "clients_closed_before_send": true,
+    "fresh_login_after_send_and_archive": true,
+    "source_memberships": [],
+    "retained_comment_id": "f10b757d-1618-4957-8d20-11581dcd42e4",
+    "retained_comment_href": "http://localhost:18996/account?view=participating&issue=01a15ec0-e257-7c5c-9326-0656232e2a7b#comment-f10b757d-1618-4957-8d20-11581dcd42e4",
+    "removal": {
+      "code": "participant_removed",
+      "collaboration_revision": "5"
+    },
+    "removed_notifications": [
+      {
+        "id": "ea07f36e-6f47-4e15-8d81-1609eb722de5",
+        "issue_id": "01a15ec0-e257-7c5c-9326-0656232e2a7b",
+        "event_seq": "6",
+        "kind": "removed",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-21T21:57:50.757526+08:00",
+        "read_at": null,
+        "archived_at": null
+      },
+      {
+        "id": "6a769557-e5b1-494c-b7cb-8e33636e5ba5",
+        "issue_id": "01a15ec0-e257-7c5c-9326-0656232e2a7b",
+        "event_seq": "4",
+        "kind": "comment_created",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-21T21:57:45.50073+08:00",
+        "read_at": null,
+        "archived_at": null
+      },
+      {
+        "id": "2fd74228-b496-4299-99c5-70abf46dea5e",
+        "issue_id": "01a15ec0-e257-7c5c-9326-0656232e2a7b",
+        "event_seq": "3",
+        "kind": "transferred",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-21T21:57:45.302065+08:00",
+        "read_at": "2026-10-21T21:57:48.215301+08:00",
+        "archived_at": "2026-10-21T21:57:48.314697+08:00"
+      },
+      {
+        "id": "44a983e2-4692-4cbf-99d7-4b09c765e4f8",
+        "issue_id": "01a15ec0-e257-7c5c-9326-0656232e2a7b",
+        "event_seq": "2",
+        "kind": "participant_added",
+        "is_mention": false,
+        "source_kind": "issue",
+        "source_id": null,
+        "issue_title": null,
+        "can_open": false,
+        "created_at": "2026-10-21T21:57:44.766575+08:00",
+        "read_at": null,
+        "archived_at": null
+      }
+    ],
+    "final_issue": {
+      "labels": [],
+      "properties": {},
+      "property_definitions": [],
+      "source_structure": {
+        "issue_revision": "4",
+        "project": null,
+        "parent_issue": null,
+        "iteration": null,
+        "stage": null
+      },
+      "id": "01a15ec0-e257-7c5c-9326-0656232e2a7b",
+      "title": "Offline handoff a12cf963b9da",
+      "description": "Private offline handoff discussion and retained responsibility.",
+      "status": "todo",
+      "status_category": "todo",
+      "priority": "none",
+      "start_date": null,
+      "due_date": null,
+      "source_workspace": {
+        "id": "f003f6c2-1d26-4b6d-a4c1-02f678b39479",
+        "name": "Offline handoff source",
+        "identifier": "OFFL-1"
+      },
+      "creator": {
+        "user_id": "71079b73-c76e-4f24-bd3d-9f7fdcdbf68f",
+        "name": "Offline creator P",
+        "avatar_url": "",
+        "external": false
+      },
+      "handler": {
+        "user_id": "71079b73-c76e-4f24-bd3d-9f7fdcdbf68f",
+        "name": "Offline creator P",
+        "avatar_url": "",
+        "external": false
+      },
+      "collaboration_revision": "5",
+      "lifecycle_epoch": "1",
+      "write_context": {
+        "participant_epoch": "1",
+        "account_epoch": "1"
+      },
+      "realtime": {
+        "event_seq": "6",
+        "authority_epoch": "5"
+      },
+      "session": {
+        "id": "aabbb47e-35a5-40c7-b61c-b8b048a8a8f4",
+        "queue_state": "paused",
+        "control_version": "1"
+      },
+      "execution": {
+        "protocol_version": 5,
+        "issue_id": "01a15ec0-e257-7c5c-9326-0656232e2a7b",
+        "session_id": "aabbb47e-35a5-40c7-b61c-b8b048a8a8f4",
+        "availability": "unavailable",
+        "unavailable_reason": "shared_runtime_unavailable",
+        "target_set_version": "1",
+        "control": {
+          "scope": "issue",
+          "queue_state": "paused",
+          "control_version": "1"
+        },
+        "execution_gate": {
+          "enabled": true,
+          "epoch": "3"
+        },
+        "channels": [],
+        "targets": [],
+        "commands": [],
+        "groups": [],
+        "runs": []
+      },
+      "current_information_request": null,
+      "capabilities": {
+        "reference": true,
+        "read": true,
+        "comment": true,
+        "control_ai": true,
+        "submit_command": false,
+        "invite": true,
+        "transfer": true,
+        "remove_participants": true,
+        "leave": false,
+        "edit": true,
+        "edit_source_structure": true,
+        "reorder": true,
+        "change_status": true,
+        "complete": true,
+        "cancel": true,
+        "reopen": false,
+        "resolve_thread": true,
+        "react": true,
+        "request_information": true,
+        "return_information": false,
+        "submit_acceptance": false
+      },
+      "ordinary_children": {
+        "items": [],
+        "source_workspace_slug": "offline-a12cf963b9da"
+      }
+    },
+    "covered_notifications": [
+      "participant_added",
+      "transferred",
+      "comment_created",
+      "removed"
+    ],
+    "remaining_AC83_kinds": [
+      "information_requested",
+      "information_returned",
+      "acceptance_submitted",
+      "ai_completed",
+      "ai_failed",
+      "ai_stopped"
+    ],
+    "platform": "Electron",
+    "source": [
+      {
+        "path": "e2e/collaboration-offline-handoff.spec.ts",
+        "sha256": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e"
+      },
+      {
+        "path": "e2e/fixtures/collaboration-offline-handoff.ts",
+        "sha256": "be5b201929c30a6a0e9edf204b9e88fe39856aa3c57aeeace643c8755ced1355"
+      }
+    ],
+    "environment": {
+      "api": "http://localhost:18996",
+      "production_web": "http://localhost:13916",
+      "electron_renderer": "http://localhost:6090",
+      "electron_os": "darwin",
+      "provider_account_access": false
+    },
+    "errors": []
+  }
+]

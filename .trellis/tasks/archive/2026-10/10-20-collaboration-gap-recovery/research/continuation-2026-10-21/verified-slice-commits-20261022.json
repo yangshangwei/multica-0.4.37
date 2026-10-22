@@ -1,0 +1,45 @@
+{
+  "at": "2026-10-21T17:16:35.318528+00:00",
+  "task_status": "in_progress",
+  "commits": [
+    {
+      "commit": "ccedea89ea41751acdd0681a63183b64990b19d1",
+      "files": 26,
+      "intent": "test(collaboration): keep transferred authority and validation distinct from completion"
+    },
+    {
+      "commit": "28681f527c6ff2c10d25be0ba3a31ba4802aaa4a",
+      "files": 25,
+      "intent": "test(collaboration): keep offline responsibility available after notification archive"
+    },
+    {
+      "commit": "7794f57d969fb583ddf02c830f6d1ab72186595d",
+      "files": 26,
+      "intent": "test(collaboration): reject stale source authority without disturbing execution"
+    },
+    {
+      "commit": "cef01d9542aea241c60f5c0c51cf7ccd55c39481",
+      "files": 31,
+      "intent": "test(collaboration): make every mention state honor the same execution barriers"
+    },
+    {
+      "commit": "1cb3f507300123612612ee0d5d166aa6f033f6eb",
+      "files": 32,
+      "intent": "fix(collaboration): keep private issue events out of plugin transport"
+    },
+    {
+      "commit": "8298157751aa6ca5ed4d9635175cdbf66dc50fa5",
+      "files": 20,
+      "intent": "test(collaboration): keep source planning behind its exact role and request boundaries"
+    }
+  ],
+  "acceptance_counts": {
+    "passed": 79,
+    "not_verified_in_this_task": 18,
+    "failed": 0,
+    "skipped": 0,
+    "unsupported": 0
+  },
+  "scope_note": "Only explicit verified code/spec/evidence paths staged; task metadata/catalog still separate pending continued evidence integration",
+  "production_rollout": false
+}

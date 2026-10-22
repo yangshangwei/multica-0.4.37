@@ -1,0 +1,132 @@
+{
+  "creator_platform": "Web",
+  "sources": [
+    {
+      "path": "e2e/collaboration-lane-close-controls.spec.ts",
+      "sha256": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-lane-close-controls.ts",
+      "sha256": "b16d1de73fa198ba49d23c17bd1bc6a313a1dc0f76d3e6a0ca11f8991c8bcf74"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-lifecycle-controls.ts",
+      "sha256": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-cross-client-execution.ts",
+      "sha256": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-native.ts",
+      "sha256": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-cross-client-provider.go",
+      "sha256": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88"
+    }
+  ],
+  "issue_id": "01a160f4-ca4b-7d71-b951-f60526bf30a4",
+  "writes": [
+    {
+      "client": "web",
+      "actor_id": "3cb9dbc2-9363-435c-97ee-0b15440a36cb",
+      "path": "/api/collaboration/issues/01a160f4-ca4b-7d71-b951-f60526bf30a4/targets",
+      "method": "POST",
+      "request_id": "41d77163-b8c7-4f05-9f87-0dbc2fa31747"
+    },
+    {
+      "client": "web",
+      "actor_id": "3cb9dbc2-9363-435c-97ee-0b15440a36cb",
+      "path": "/api/collaboration/issues/01a160f4-ca4b-7d71-b951-f60526bf30a4/targets/a8df2a76-aa8f-4eaf-bf7d-5d5bcb07682a/consents",
+      "method": "POST",
+      "request_id": "b439229a-7908-45f6-82b7-8aca3ef2c87b"
+    },
+    {
+      "client": "web",
+      "actor_id": "3cb9dbc2-9363-435c-97ee-0b15440a36cb",
+      "path": "/api/collaboration/issues/01a160f4-ca4b-7d71-b951-f60526bf30a4/targets/a8df2a76-aa8f-4eaf-bf7d-5d5bcb07682a/consents",
+      "method": "POST",
+      "request_id": "fdaa6a30-fc43-4690-a0a9-ca4b7061e2d6"
+    },
+    {
+      "client": "web",
+      "actor_id": "3cb9dbc2-9363-435c-97ee-0b15440a36cb",
+      "path": "/api/collaboration/issues/01a160f4-ca4b-7d71-b951-f60526bf30a4/control",
+      "method": "POST",
+      "request_id": "ae42c59a-31c0-404c-b7ac-e9e3806f5ba9"
+    },
+    {
+      "client": "web",
+      "actor_id": "3cb9dbc2-9363-435c-97ee-0b15440a36cb",
+      "path": "/api/collaboration/issues/01a160f4-ca4b-7d71-b951-f60526bf30a4/comments/trigger-preview",
+      "method": "POST",
+      "request_id": null
+    },
+    {
+      "client": "web",
+      "actor_id": "3cb9dbc2-9363-435c-97ee-0b15440a36cb",
+      "path": "/api/collaboration/issues/01a160f4-ca4b-7d71-b951-f60526bf30a4/comments",
+      "method": "POST",
+      "request_id": "99e056d4-a088-4c49-ae50-78f06f0e1cd9"
+    },
+    {
+      "client": "web",
+      "actor_id": "3cb9dbc2-9363-435c-97ee-0b15440a36cb",
+      "path": "/api/collaboration/issues/01a160f4-ca4b-7d71-b951-f60526bf30a4/comments/trigger-preview",
+      "method": "POST",
+      "request_id": null
+    },
+    {
+      "client": "web",
+      "actor_id": "3cb9dbc2-9363-435c-97ee-0b15440a36cb",
+      "path": "/api/collaboration/issues/01a160f4-ca4b-7d71-b951-f60526bf30a4/comments",
+      "method": "POST",
+      "request_id": "517a206e-3ea4-4727-93d0-98f28982a74a"
+    },
+    {
+      "client": "web",
+      "actor_id": "3cb9dbc2-9363-435c-97ee-0b15440a36cb",
+      "path": "/api/collaboration/issues/01a160f4-ca4b-7d71-b951-f60526bf30a4/control",
+      "method": "POST",
+      "request_id": "591f69bc-a6bc-4805-8f90-42d9980878ac"
+    },
+    {
+      "client": "web",
+      "actor_id": "3cb9dbc2-9363-435c-97ee-0b15440a36cb",
+      "path": "/api/collaboration/issues/01a160f4-ca4b-7d71-b951-f60526bf30a4/control",
+      "method": "POST",
+      "request_id": "906cc1fa-e7ca-4e65-aeeb-a8c2a5d33797"
+    },
+    {
+      "client": "web",
+      "actor_id": "3cb9dbc2-9363-435c-97ee-0b15440a36cb",
+      "path": "/api/collaboration/issues/01a160f4-ca4b-7d71-b951-f60526bf30a4/grants/ca8d8d4b-6f02-4257-9771-0bce6d2f5984/revoke",
+      "method": "POST",
+      "request_id": "b5ea202a-de98-4b83-a738-702e52680a0f"
+    },
+    {
+      "client": "web",
+      "actor_id": "3cb9dbc2-9363-435c-97ee-0b15440a36cb",
+      "path": "/api/collaboration/issues/01a160f4-ca4b-7d71-b951-f60526bf30a4/control",
+      "method": "POST",
+      "request_id": "fe4c07a9-b7a1-49e5-ae33-5161fffcb253"
+    },
+    {
+      "client": "web",
+      "actor_id": "3cb9dbc2-9363-435c-97ee-0b15440a36cb",
+      "path": "/api/collaboration/issues/01a160f4-ca4b-7d71-b951-f60526bf30a4/control",
+      "method": "POST",
+      "request_id": "d18d2bf8-99c4-41ae-b54d-e64ec3755b84"
+    }
+  ],
+  "captures": [
+    {
+      "stage": "same-lane-stop-a-and-s",
+      "client": "web",
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/lane-close-clients-first/collaboration-lane-close-c-937ea-issue-pause-for-new-targets-chromium/web-same-lane-stop-a-and-s-web.png"
+    }
+  ],
+  "errors": [],
+  "native_errors": []
+}

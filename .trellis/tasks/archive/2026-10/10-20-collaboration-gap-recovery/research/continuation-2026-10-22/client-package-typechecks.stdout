@@ -1,0 +1,13 @@
+Scope: 4 of 11 workspace projects
+packages/core typecheck$ tsc --noEmit
+packages/core typecheck: Done
+packages/views typecheck$ tsc --noEmit
+packages/views typecheck: Done
+apps/desktop typecheck$ pnpm run typecheck:node && pnpm run typecheck:web
+apps/web typecheck$ tsc --noEmit
+apps/desktop typecheck: > @multica/desktop@0.1.0 typecheck:node /Volumes/artisan/code/2026/multica-0.4.37/apps/desktop
+apps/desktop typecheck: > tsc --noEmit -p tsconfig.node.json --composite false
+apps/desktop typecheck: > @multica/desktop@0.1.0 typecheck:web /Volumes/artisan/code/2026/multica-0.4.37/apps/desktop
+apps/desktop typecheck: > tsc --noEmit -p tsconfig.web.json --composite false
+apps/web typecheck: Done
+apps/desktop typecheck: Done

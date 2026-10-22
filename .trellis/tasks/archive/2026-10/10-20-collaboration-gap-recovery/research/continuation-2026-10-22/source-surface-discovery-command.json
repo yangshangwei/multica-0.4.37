@@ -1,0 +1,24 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-source-surface.spec.ts",
+    "--list"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "database_alias": null,
+  "started_at": "2026-10-22T00:25:25.685563+00:00",
+  "source_sha256": {},
+  "real_provider_account_access": false,
+  "production_gate_change": false,
+  "exit_code": 0,
+  "elapsed_s": 1.172,
+  "finished_at": "2026-10-22T00:25:26.858370+00:00",
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/source-surface-discovery.stdout",
+  "stdout_sha256": "4527cfe0eaa9a81fdea24e692df2f85069b3a38cb2257aaff8276d068f3fa0fe",
+  "source_changed_during_run": []
+}

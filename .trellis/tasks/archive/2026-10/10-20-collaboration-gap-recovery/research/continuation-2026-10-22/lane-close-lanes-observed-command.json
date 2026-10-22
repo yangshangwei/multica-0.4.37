@@ -1,0 +1,32 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py",
+    "env",
+    "COLLABORATION_CROSS_CLIENT_DAEMON=/tmp/multica-gap-recovery-20261021-h6phxwo9/continuation-linux/daemon.test",
+    "COLLABORATION_CROSS_CLIENT_PROVIDER=/tmp/multica-gap-recovery-20261021-h6phxwo9/continuation-linux/cross-client-provider",
+    "COLLABORATION_CROSS_CLIENT_HOST_IPV4=192.168.65.254",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-lane-close-controls.spec.ts",
+    "--grep",
+    "same-lane",
+    "--workers=1",
+    "--retries=0",
+    "--project=chromium",
+    "--reporter=json",
+    "--output=/tmp/multica-gap-recovery-20261021-h6phxwo9/lane-close-lanes-observed"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "started_at": "2026-10-22T00:18:41.869572+00:00",
+  "source_sha256": {
+    "e2e/collaboration-lane-close-controls.spec.ts": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+    "e2e/fixtures/collaboration-lane-close-controls.ts": "9f7c65c95c6c642f6161e0f783bcd56814bc57d1760b547426e242b586693eec",
+    "e2e/fixtures/collaboration-lifecycle-controls.ts": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+    "e2e/fixtures/collaboration-cross-client-execution.ts": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+    "e2e/fixtures/collaboration-native.ts": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94"
+  },
+  "preflight": "lane-close-preflight.json"
+}

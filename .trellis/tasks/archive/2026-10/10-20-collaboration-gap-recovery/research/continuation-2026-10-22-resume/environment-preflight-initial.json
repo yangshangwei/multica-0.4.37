@@ -1,0 +1,122 @@
+{
+  "at": "2026-10-22T01:18:01.242335+00:00",
+  "head": "238d4bb3974094ce55ab911c99cf2eedb845d278",
+  "endpoints": {
+    "api": "http://localhost:18996",
+    "web": "http://localhost:13916",
+    "desktop": "http://localhost:6090",
+    "database": "multica_gap_api_admin",
+    "offset": 916
+  },
+  "checks": {
+    "api/health": {
+      "status": 200,
+      "sha256": "fc6aafc44d2b184ac6c8dae6e781e43c0bcfdae6ae43b8a1ce1bf92286c2abd3",
+      "body": {
+        "status": "ok",
+        "pid": 22414,
+        "commit": "8ecb98883",
+        "started_at": "2026-10-21T23:29:04Z"
+      }
+    },
+    "api/api/config": {
+      "status": 200,
+      "sha256": "86adae673029371bafa800007cb5de27b33dbac5af4d50f53492eb9c8b04ff99",
+      "body": {
+        "managed_installation_supported": true,
+        "deployment_id": "f3a705a0-0193-435f-bc6d-05bc2074e905",
+        "platform_admin_available": true,
+        "auth_mode": "password",
+        "password_auth_available": true,
+        "password_signup_available": true,
+        "account_binding_available": false,
+        "cdn_domain": "localhost",
+        "allow_signup": true,
+        "daemon_server_url": "http://localhost:18996",
+        "daemon_app_url": "http://localhost:13916",
+        "messaging_integrations_enabled": true,
+        "posthog_key": "",
+        "posthog_host": "",
+        "analytics_environment": "dev",
+        "feature_flags": {
+          "agents_agent_builder": true,
+          "agents_skill_toggles": true,
+          "billing_workspace_subscriptions": false,
+          "composio_mcp_apps": false,
+          "plugins_v1": false,
+          "settings_resource_labels": true
+        },
+        "local_worktree_supported": true,
+        "agent_conversation_starters_supported": true
+      }
+    },
+    "web": {
+      "status": 200,
+      "sha256": "0749f164d36c18acb16d2386d0c3992d60c2e945854b7cc8af67f1801ac2aafd"
+    },
+    "desktop": {
+      "status": 200,
+      "sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c"
+    }
+  },
+  "source_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-admin-source",
+  "compared_product_files": 4514,
+  "product_differences": [
+    "apps/web/.source/index.ts",
+    "apps/desktop/.omc/project-memory.json",
+    "apps/desktop/.omc/state/sessions/1708eb94-2cbe-4142-9475-60a8eefafe56/session-started.json",
+    "apps/desktop/.gstack/squads-preview/main.tsx",
+    "apps/desktop/.gstack/squads-preview/index.html",
+    "apps/desktop/.gstack/squads-preview/check.mjs",
+    "apps/desktop/.gstack/squads-preview/server.mjs",
+    "server/data/uploads/workspaces/19bbcd57-3007-474e-91b9-d7d49460a6ee/01a0fdd3-169a-7d2f-99b5-6f1b72367f1f.png.meta.json",
+    "server/data/uploads/workspaces/b98c810b-68e0-4c11-abec-e8600d13ca06/01a117b8-96cb-71b5-8996-5349cd0775f0.png.meta.json",
+    "server/data/uploads/workspaces/4d5c93ac-5771-4814-a0ae-7e4e87c01001/01a10a85-bc47-7d36-b1e5-94659c637f11.txt.meta.json",
+    "server/data/uploads/workspaces/a56b54b5-77d6-4aac-aefa-b06801683556/01a0bb9b-65a4-78ba-93d2-8806f3e6f01a.png.meta.json",
+    "server/data/uploads/workspaces/26c4695f-1f58-411d-865f-95b425f6d213/01a0de0a-c89c-7bcb-b80d-292075e1685c.png.meta.json",
+    "server/data/uploads/workspaces/3c2ba217-dce1-4822-8c8a-fc8345bc0886/01a0cee3-f131-7ee4-9db9-30c48b8450ee.png.meta.json",
+    "server/data/uploads/workspaces/c4be4cf9-4a79-444e-abb5-957d4027fc19/01a117b8-9a49-715f-a624-d9e7f640fb50.txt.meta.json",
+    "server/data/uploads/workspaces/89c5a52b-d315-4cb9-a873-04f917ac1877/01a117b8-ad6b-70bb-bf5f-fef2ba01007f.txt.meta.json",
+    "server/data/uploads/workspaces/6c8e1a9c-0536-48df-8a34-8e093d41cc5b/01a10a71-3b92-7a19-b4a2-47b442711e8f.txt.meta.json",
+    "server/data/uploads/workspaces/ea006df9-a91a-41ed-b488-d03cd8333fb9/01a0e3b3-398f-7cc5-b405-709bf1429c15.png.meta.json",
+    "server/data/uploads/workspaces/cd418b76-b05c-457e-8b75-d5cb4f3b6082/01a1170b-c99b-738a-8cd6-21dbbf96d976.txt.meta.json",
+    "server/data/uploads/workspaces/1bd70bb1-6578-47cf-80f5-b074ab3658a3/01a10a81-a506-7e2c-a1e1-e40a8e753d9b.txt.meta.json",
+    "server/data/uploads/workspaces/5992a507-82f6-4f06-9f74-10754848c2cb/01a10a6d-a449-723a-ba63-dbdd07469484.png.meta.json",
+    "server/data/uploads/workspaces/d0f8c890-2cef-439e-9a92-38b7098f62a4/01a0d314-375b-7ccd-8489-02b66ca8c86e.png.meta.json",
+    "server/data/uploads/workspaces/58306074-9d1c-4bc7-bb60-a9227c789491/01a0bbc8-de8a-7c15-8ea5-864da51d6dfa.png.meta.json",
+    "server/data/uploads/workspaces/7a63692c-6549-489e-b55e-f18f4f0018ef/01a10a71-456b-77c0-b62f-69927a96d922.txt.meta.json",
+    "server/data/uploads/workspaces/6ea376a5-a590-4b29-8439-b6d08c2eedff/01a10a75-622e-7c5f-a3d6-7f62996bcd69.txt.meta.json",
+    "server/data/uploads/workspaces/252dfd18-88d8-4d31-be4d-35963849f712/01a10a81-8e57-7799-be90-5d3ea3e2a73d.txt.meta.json",
+    "server/data/uploads/workspaces/418bf426-1da1-42a4-b638-f000160b11fa/01a1170b-b109-76c2-a3d4-7ff4e743b533.png.meta.json",
+    "server/data/uploads/workspaces/5cc0ac08-8e62-47a8-a344-ad8b1940f5e5/01a10a75-7938-78be-a857-64246e32522a.txt.meta.json",
+    "server/data/uploads/workspaces/e8f13ee3-c47d-40e0-adbd-ff4a37d99a0c/01a0bc19-c8d7-721b-94a4-74e6ea5e2c0a.png.meta.json",
+    "server/data/uploads/workspaces/c10efda1-e325-4c87-9a3d-8d780b98957c/01a0e5e7-717f-7007-bf83-c082c7b92ebb.png.meta.json",
+    "server/data/uploads/workspaces/afadfd09-fbaf-41b9-96fe-2dec17a0ccd5/01a1144b-c84a-74a3-8fa8-68fcca57a2b2.png.meta.json",
+    "server/data/uploads/workspaces/f0755376-5e5a-4041-813c-ff6d0bab0b53/01a12552-233e-7714-80a4-ddadc050b8c2.txt.meta.json",
+    "server/data/uploads/workspaces/2815f4de-98a7-431d-a01d-e259bf7ccb0a/01a0f0f0-4b59-7dcb-be21-562c80809a86.md.meta.json",
+    "server/data/uploads/workspaces/8d5793c1-ccce-43a5-a566-64db68110268/01a1144b-cbd5-7933-9ce2-f8389340d3b1.txt.meta.json",
+    "server/data/uploads/workspaces/acb91375-377e-40b4-9c52-46f9f2267817/01a0d303-b3f2-7b1b-82a3-48898ab3ad4d.png.meta.json",
+    "server/data/uploads/workspaces/06217d98-e15d-46ab-a1ad-513523a24a1d/01a1170b-b492-74da-bbff-299ae76340a3.txt.meta.json",
+    "server/data/uploads/workspaces/10e42866-db0e-4d5f-a12f-347a7bc8d333/01a0de21-ba94-7ccd-a045-aabc56a96675.png.meta.json",
+    "server/data/uploads/workspaces/584b91ec-0940-4e8f-831f-efaa277da591/01a144fb-d93d-7a0a-a41e-6752a0134832.txt.meta.json",
+    "server/data/uploads/workspaces/849bd9fd-44fc-4bef-9680-ed125b5159a8/01a1144b-df2f-7cc1-9052-9cea2e9c19b3.txt.meta.json",
+    "server/data/uploads/workspaces/cf977144-abf4-4a1f-9be5-2d7faa32b087/01a11345-61c4-7b52-b347-186c270e1773.png.meta.json",
+    "server/data/uploads/workspaces/d35db246-96f0-4dc6-ba44-5bb2c51f7724/01a0cec9-baaa-7f13-97c8-7ede783683a2.png.meta.json",
+    "server/data/uploads/workspaces/daa6f412-1f2e-46e6-939f-3f1dba29defc/01a0ea4a-312b-7966-a8db-7139c1b81f87.png.meta.json",
+    "server/data/uploads/workspaces/27d6167c-3bce-487d-aeb8-cc190c560e0d/01a0c6ac-4c92-7422-a8e6-9efec47c373c.png.meta.json",
+    "server/data/uploads/workspaces/51108612-89a6-4dda-b2bf-4a48c6349dc6/01a11345-654a-75df-a6e5-8999fb5d493c.txt.meta.json",
+    "server/data/uploads/workspaces/48c860cf-4f7a-4f2c-b509-b0b0ca06b6a3/01a12552-0b49-7ed0-9aac-e0e834bb4493.png.meta.json",
+    "server/data/uploads/workspaces/7cdbac3b-9732-4da7-a7e9-be5cdb42390e/01a11345-7a5e-7e5b-9517-716bd70474d9.txt.meta.json",
+    "server/data/uploads/workspaces/21e332ac-70ef-433f-95ba-1a7b18ef822c/01a144fb-d4ca-7416-9af6-f5cb0173722e.png.meta.json",
+    "server/data/uploads/workspaces/29663791-cf69-4382-9d33-fcc97f06a7c6/01a0c47c-a40b-7bc3-9f46-caabad7d955f.png.meta.json",
+    "server/data/uploads/workspaces/c2647e8d-95ea-4af7-89b9-4eae0c4072d2/01a12552-0f7b-7df2-b9f7-2a6bc5ff95ab.txt.meta.json",
+    "server/data/uploads/workspaces/51fcc602-cd8b-4af8-82fb-c7130498ce88/01a10a85-a827-7426-8413-26b80c491e46.txt.meta.json",
+    "server/data/uploads/workspaces/96c6f5ac-4f7c-4ccc-af2f-b4c060a88dbc/01a0c703-2cbf-7cd1-84e0-71f20aa70a7f.png.meta.json",
+    "server/data/uploads/workspaces/30d67981-c7c3-48e2-8169-2cf53ab0a8ba/01a083ec-bc1e-7835-8b90-5e65d4e1fa41.png.meta.json",
+    "server/data/uploads/workspaces/30d67981-c7c3-48e2-8169-2cf53ab0a8ba/01a08bc7-51af-7841-8ebd-f761528f95b2.png.meta.json",
+    "server/data/uploads/workspaces/19258106-b8b5-4ee2-a68a-6e17e52a210b/01a10a4b-5aa1-79bc-9e9a-1188dfcacf51.png.meta.json",
+    "server/data/uploads/workspaces/50a0a3cc-c1b0-415e-a5a5-ff5bb2de4e3b/01a144fb-ee85-778d-8828-9f8b1a9b47bb.txt.meta.json"
+  ],
+  "production_gate_change": false,
+  "real_provider_account_access": false
+}

@@ -1,0 +1,67 @@
+--- baseline/server/internal/service/collaboration_public_switch_resume_test.go
++++ server/internal/service/collaboration_public_switch_resume_test.go
+@@ -66,11 +66,24 @@
+ 			retainedTerminal = append(retainedTerminal, input)
+ 		}
+ 	}
++	var oldHistory string
++	f.fx.QueryRow(t, `SELECT jsonb_build_object(
++		'group',(SELECT to_jsonb(g) FROM collaboration_execution_group g WHERE id=$1),
++		'runs',(SELECT jsonb_agg(to_jsonb(r) ORDER BY r.id) FROM collaboration_run r WHERE group_id=$1),
++		'inputs',(SELECT jsonb_agg(to_jsonb(i) ORDER BY i.command_id) FROM collaboration_group_input i WHERE group_id=$1),
++		'dependencies',(SELECT jsonb_agg(to_jsonb(d) ORDER BY d.command_id) FROM collaboration_group_dependency d WHERE group_id=$1),
++		'proofs',(SELECT jsonb_agg(to_jsonb(p) ORDER BY p.run_id) FROM collaboration_termination p WHERE run_id IN (SELECT id FROM collaboration_run WHERE group_id=$1)),
++		'attempts',(SELECT jsonb_agg(to_jsonb(a) ORDER BY a.run_id,a.attempt_seq) FROM collaboration_attempt a WHERE run_id IN (SELECT id FROM collaboration_run WHERE group_id=$1))
++	)::text`, stopped.claim.Identity.GroupID).Scan(&oldHistory)
+ 	// The resource writer changes the actual squad configuration. Public staged
+ 	// Switch must separately capture and consent that new configuration; it must
+ 	// never use the test-only ReconfigureTarget wrapper as a replacement.
+-	f.fx.Exec(t, `UPDATE squad SET leader_id=$2 WHERE id=$1`, squadID, destination.grant.AgentID)
++	if _, err := f.svc.Queries.UpdateSquad(f.ctx, db.UpdateSquadParams{ID: squadID, LeaderID: destination.grant.AgentID,
++		ExpectedWorkspaceID: util.MustParseUUID(f.workspace)}); err != nil {
++		t.Fatal(err)
++	}
+ 	beforeSwitch := queueTarget(t, old.collaborationQueueFixture, squad.ID)
++	stagedSnapshot := ownerSwitchTargetSnapshot(t, f, squad.ID)
+ 	proposalParams := CollaborationProposeSwitchParams{CollaborationQueueRequest: f.request(), TargetID: squad.ID,
+ 		ExpectedTargetEpoch: beforeSwitch.TargetEpoch, ExpectedConfigVersion: beforeSwitch.ConfigVersion,
+ 		Roster: []collaboration.TargetResource{ownerSwitchResource(destination, "leader")}}
+@@ -87,6 +100,9 @@
+ 	if _, err := f.svc.ConsentTargetSwitchResource(f.ctx, consent); err != nil {
+ 		t.Fatal(err)
+ 	}
++	if stagedSnapshot != ownerSwitchTargetSnapshot(t, f, squad.ID) {
++		t.Fatal("public proposal/consent changed live target, waiting input or retained execution")
++	}
+ 	commit := CollaborationCommitSwitchParams{CollaborationQueueRequest: f.request(), ProposalID: proposal.ProposalID, Control: targetControl(beforeSwitch)}
+ 	switched, err := f.svc.CommitTargetSwitch(f.ctx, commit)
+ 	if err != nil || switched.Code != "target_switched" {
+@@ -144,7 +160,8 @@
+ 	runID, _, claim := squadExecution.claimManaged(t)
+ 	if len(claim.Inputs) != 2 || claim.Inputs[0].CommandID != util.UUIDToString(first.CommandID) || claim.Inputs[1].CommandID != util.UUIDToString(second.CommandID) ||
+ 		claim.Identity.TargetID != util.UUIDToString(squad.ID) || claim.Identity.ChannelID != util.UUIDToString(head.ChannelID) || claim.AgentID != util.UUIDToString(destination.grant.AgentID) ||
+-		claim.Identity.ConfigVersion != "2" || claim.Identity.RunID == stopped.claim.Identity.RunID {
++		f.fx.Count(t, `SELECT count(*) FROM collaboration_execution_group WHERE id=$1 AND config_version=$2 AND target_id=$3 AND channel_id=$4`,
++			claim.Identity.GroupID, current.ConfigVersion, squad.ID, head.ChannelID) != 1 || claim.Identity.RunID == stopped.claim.Identity.RunID {
+ 		t.Fatal("fresh resumed S did not continue exact original typed inputs in the replacement environment")
+ 	}
+ 	permitToken, permitNonce := permitSquadRun(t, &squadExecution, runID, claim)
+@@ -166,6 +183,18 @@
+ 	if err != nil || !reflect.DeepEqual(channelAfter, oldChannel) {
+ 		t.Fatalf("public Switch changed old channel controls/history: %v", err)
+ 	}
++	var afterHistory string
++	f.fx.QueryRow(t, `SELECT jsonb_build_object(
++		'group',(SELECT to_jsonb(g) FROM collaboration_execution_group g WHERE id=$1),
++		'runs',(SELECT jsonb_agg(to_jsonb(r) ORDER BY r.id) FROM collaboration_run r WHERE group_id=$1),
++		'inputs',(SELECT jsonb_agg(to_jsonb(i) ORDER BY i.command_id) FROM collaboration_group_input i WHERE group_id=$1),
++		'dependencies',(SELECT jsonb_agg(to_jsonb(d) ORDER BY d.command_id) FROM collaboration_group_dependency d WHERE group_id=$1),
++		'proofs',(SELECT jsonb_agg(to_jsonb(p) ORDER BY p.run_id) FROM collaboration_termination p WHERE run_id IN (SELECT id FROM collaboration_run WHERE group_id=$1)),
++		'attempts',(SELECT jsonb_agg(to_jsonb(a) ORDER BY a.run_id,a.attempt_seq) FROM collaboration_attempt a WHERE run_id IN (SELECT id FROM collaboration_run WHERE group_id=$1))
++	)::text`, stopped.claim.Identity.GroupID).Scan(&afterHistory)
++	if oldHistory != afterHistory {
++		t.Fatal("public Switch/Resume changed the original stopped group, grants, attempts or proof history")
++	}
+ 	beforeRecovery := controlStateSnapshot(t, f.collaborationQueueFixture)
+ 	recovered, err := f.svc.GetSwitchOperation(f.ctx, f.issue.Issue.ID, commit.RequestID)
+ 	if err != nil || !reflect.DeepEqual(recovered, switched) || beforeRecovery != controlStateSnapshot(t, f.collaborationQueueFixture) {

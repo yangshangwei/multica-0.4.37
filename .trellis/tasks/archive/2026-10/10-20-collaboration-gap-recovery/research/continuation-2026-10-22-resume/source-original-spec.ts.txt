@@ -1,0 +1,135 @@
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { test, expect, type Page } from "@playwright/test";
+import { openDesktop, nativeScreenshot } from "./fixtures/collaboration-native";
+import { boardCard, boardDisplay, chooseView, dragBoard, runReorderCLI, seedSourceSurface, sourceCurrent, sourceSnapshot } from "./fixtures/collaboration-source-surface";
+
+// Password cookies and CLI credentials stay outside traces.
+test.use({ actionTimeout: 15_000, trace: "off", screenshot: "off" });
+
+test("Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order", async ({ page }, info) => {
+  test.setTimeout(240_000);
+  test.skip(process.env.E2E_PASSWORD_AUTH !== "1", "Requires explicit task-owned password production services");
+  const fixture = await seedSourceSurface();
+  const origin = info.project.use.baseURL!;
+  const profile = mkdtempSync(join(tmpdir(), "multica-source-surface-"));
+  let native: Awaited<ReturnType<typeof openDesktop>> | undefined;
+  const errors: string[] = [];
+  const captures: string[] = [];
+  const observed: Record<string, unknown>[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  const sourceIdentities: unknown[] = [];
+  page.on("response", async (response) => {
+    if (new URL(response.url()).pathname !== "/api/issues" || response.request().method() !== "GET") return;
+    try {
+      const result: { issues?: { id: string; collaboration?: unknown }[] } = await response.json();
+      const item = result.issues?.find((issue) => issue.id === fixture.shared.id);
+      if (item?.collaboration) sourceIdentities.push(item.collaboration);
+    } catch { /* Responses aborted during navigation are not accepted evidence. */ }
+  });
+
+  async function inspect(current: Page, name: string, navigate: (path: string) => Promise<void>) {
+    await navigate(fixture.listPath);
+    await expect(current.getByText(fixture.shared.title, { exact: true }).first()).toBeVisible();
+    await chooseView(current, "List");
+    const row = current.locator("a").filter({ hasText: fixture.shared.title }).first();
+    await expect(row).toContainText(fixture.external.name);
+    await expect(row).toContainText("External collaborator");
+    await expect(row).not.toContainText("Unknown");
+    await expect(row.locator(`[title="${fixture.external.name}"]`)).toBeVisible();
+    await current.getByRole("button", { name: "External collaborators", exact: true }).click();
+    await expect(current.getByText(fixture.first.title, { exact: true })).toHaveCount(0);
+    await expect(current.getByText(fixture.shared.title, { exact: true }).first()).toBeVisible();
+    await current.getByRole("button", { name: "External collaborators", exact: true }).click();
+    await expect(current.getByText(fixture.first.title, { exact: true }).first()).toBeVisible();
+    await chooseView(current, "Board");
+    await boardDisplay(current, "Assignee");
+    await expect(boardCard(current, fixture.shared.title)).toContainText("External collaborator");
+    await expect(boardCard(current, fixture.shared.title)).not.toContainText("Unknown");
+    await expect(current.locator(`[title="${fixture.external.name}"]`).first()).toBeVisible();
+    const before = await sourceSnapshot(fixture);
+    const destination = boardCard(current, fixture.first.title);
+    const writes: string[] = [];
+    const request = (req: import("@playwright/test").Request) => {
+      if (new URL(req.url()).pathname === `/api/issues/${fixture.shared.id}` && ["PUT", "PATCH"].includes(req.method())) writes.push(req.postData() ?? "");
+    };
+    current.on("request", request);
+    await dragBoard(current, boardCard(current, fixture.shared.title), destination, async () => {
+      expect(await sourceSnapshot(fixture)).toEqual(before);
+      expect(writes).toEqual([]);
+    });
+    const dialog = current.getByRole("dialog", { name: "Collaboration workflow", exact: true });
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByRole("heading", { name: "Transfer", exact: true })).toBeVisible();
+    expect(writes).toEqual([]);
+    expect(await sourceSnapshot(fixture)).toEqual(before);
+    await current.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+    current.off("request", request);
+
+    await boardDisplay(current, "Status");
+    const layout = await sourceSnapshot(fixture);
+    const original = await sourceCurrent(fixture);
+    const reordered = current.waitForResponse((response) => new URL(response.url()).pathname === `/api/issues/${fixture.shared.id}` && response.request().method() === "PUT");
+    await dragBoard(current, boardCard(current, fixture.shared.title), boardCard(current, fixture.second.title));
+    const move = await reordered;
+    expect(move.status()).toBe(200);
+    expect(move.request().postDataJSON()).toMatchObject({ expected_revision: original.revision });
+    expect(Object.keys(move.request().postDataJSON()).sort()).toEqual(["expected_revision", "position"]);
+    const after = await sourceCurrent(fixture);
+    expect(after.position).not.toBe(original.position);
+    expect(await sourceSnapshot(fixture)).toEqual(layout);
+    await current.reload();
+    await expect(boardCard(current, fixture.shared.title)).toBeVisible();
+    expect((await sourceCurrent(fixture)).position).toBe(after.position);
+    await info.attach(`${name}-board-layout-request`, { contentType: "application/json", body: JSON.stringify({ before: original.position, after: after.position,
+      request: move.request().postDataJSON(), workflow_unchanged: true }, null, 2) });
+    const cli = await runReorderCLI(fixture, fixture.first.id);
+    expect((await sourceCurrent(fixture)).position).toBeLessThan((await sourceCurrent(fixture, fixture.first.id)).position);
+    expect(await sourceSnapshot(fixture)).toEqual(layout);
+    observed.push({ client: name, cli });
+
+    await navigate(fixture.projectPath);
+    await expect(current.getByText(fixture.project.title, { exact: true }).first()).toBeVisible();
+    await chooseView(current, "Gantt");
+    const timeline = current.getByRole("listitem").filter({ hasText: fixture.shared.title }).first();
+    await expect(timeline).toContainText("External collaborator");
+    await expect(timeline.locator(`[title="${fixture.external.name}"]`)).toBeVisible();
+    await expect(timeline).not.toContainText("Unknown");
+    await navigate(fixture.detailPath);
+    await expect(current.getByRole("heading", { name: fixture.shared.title, exact: true })).toBeVisible();
+    const comment = current.locator(`[id="comment-${fixture.comment.comment_id}"]`);
+    await expect(comment).toContainText(fixture.external.name);
+    await expect(comment).toContainText("External collaborator");
+    await expect(comment).not.toContainText("Unknown");
+    await expect(comment.locator('[data-slot="avatar"]')).toBeVisible();
+    const path = info.outputPath(`${name}-source-external-comment.png`);
+    if (native && current === native.page) await nativeScreenshot(native.app, current, path);
+    else await current.screenshot({ path, animations: "disabled" });
+    captures.push(path);
+  }
+
+  try {
+    await fixture.creator.authenticate(page);
+    await inspect(page, "web", async (path) => { await page.goto(new URL(path, origin).href); });
+    native = await openDesktop(profile, { token: fixture.creator.client.getToken()!, deepLink: `multica://account?view=participating&issue=${fixture.shared.id}` });
+    await native.start();
+    await expect(native.page.getByRole("heading", { name: fixture.shared.title, exact: true })).toBeVisible();
+    await inspect(native.page, "electron", async (path) => { await native!.page.goto(new URL(path, process.env.COLLABORATION_ELECTRON_RENDERER_URL!).href); });
+    expect(sourceIdentities.length).toBeGreaterThan(0);
+    for (const summary of sourceIdentities) {
+      expect(summary).toMatchObject({ handler: { user_id: fixture.external.id, name: fixture.external.name, external: true } });
+      expect(JSON.stringify(summary)).not.toMatch(/"(?:email|username)"/);
+    }
+    expect(errors).toEqual([]);
+    expect(native.errors).toEqual([]);
+    await info.attach("source-surface-identities", { contentType: "application/json", body: JSON.stringify({ issue_id: fixture.shared.id,
+      creator_id: fixture.creator.id, external_handler_id: fixture.external.id, observer_id: fixture.observer.id,
+      comment_id: fixture.comment.comment_id, source_identity: sourceIdentities, observations: observed, captures,
+      scope: "Actual Web/Electron source surface and CLI layout; no provider or full installed Main", remaining_clauses: ["source-only refusal and nonterminal/terminal status drag; stage-specific contention"] }, null, 2) });
+  } finally {
+    await native?.app.close().catch(() => undefined);
+    rmSync(profile, { recursive: true, force: true });
+  }
+});

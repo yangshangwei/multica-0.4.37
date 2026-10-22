@@ -1,0 +1,22 @@
+--- baseline/server/internal/service/collaboration_authority.go
++++ server/internal/service/collaboration_authority.go
+@@ -261,14 +261,11 @@
+ 		binding.WorkspaceID != workspaceID || !runtime.DaemonID.Valid || runtime.DaemonID.String != binding.DaemonID || binding.State != "active" || binding.RevokedAt.Valid {
+ 		return false, nil
+ 	}
+-	if _, err = auth.CheckPasswordVersion(ctx, q, resource.OwnerUserID, binding.AuthVersion); errors.Is(err, auth.ErrPasswordSession) {
+-		return false, nil
+-	}
+-	if err != nil {
+-		return false, err
+-	}
+-	err = auth.CheckManagedBinding(ctx, q, auth.PasswordSession{UserID: resource.OwnerUserID, Version: binding.AuthVersion, Kind: "daemon_token",
+-		WorkspaceID: resource.ExecutionWorkspaceID, DaemonID: binding.DaemonID, BindingID: util.UUIDToString(binding.ID), BindingEpoch: binding.BindingEpoch})
++	// Validate the stored resource owner independently of the request caller.
++	// The child context keeps request cancellation and deadlines intact.
++	owner := auth.PasswordSession{UserID: resource.OwnerUserID, Version: binding.AuthVersion, Kind: "daemon_token",
++		WorkspaceID: resource.ExecutionWorkspaceID, DaemonID: binding.DaemonID, BindingID: util.UUIDToString(binding.ID), BindingEpoch: binding.BindingEpoch}
++	_, err = auth.CheckPasswordVersion(auth.WithPasswordSession(ctx, owner), q, owner.UserID, owner.Version)
+ 	if errors.Is(err, auth.ErrPasswordSession) {
+ 		return false, nil
+ 	}

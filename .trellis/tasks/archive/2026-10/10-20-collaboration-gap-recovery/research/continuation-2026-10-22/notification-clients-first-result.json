@@ -1,0 +1,77 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py",
+    "env",
+    "COLLABORATION_CROSS_CLIENT_DAEMON=/tmp/multica-gap-recovery-20261021-h6phxwo9/continuation-linux/daemon.test",
+    "COLLABORATION_CROSS_CLIENT_PROVIDER=/tmp/multica-gap-recovery-20261021-h6phxwo9/continuation-linux/cross-client-provider",
+    "COLLABORATION_CROSS_CLIENT_HOST_IPV4=192.168.65.254",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-offline-result-notifications.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=json",
+    "--output",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/notification-clients-first-artifacts"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "start": "2026-10-22T00:21:26.429888+00:00",
+  "environment_scope": "task-owned password/admin API18996/production Web13916/renderer6090",
+  "preflight": "content-admin-preflight.json",
+  "real_provider_account_access": false,
+  "installed_full_main": false,
+  "returncode": 1,
+  "end": "2026-10-22T00:22:00.662557+00:00",
+  "raw_sha256": "ac1df1224f6cd602e80474541d36b3cfc2ce8069b4dd23ad58838dc190362f45",
+  "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+  "stats": {
+    "startTime": "2026-10-22T00:21:27.357Z",
+    "duration": 33252.836,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "Web offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "file": "collaboration-offline-result-notifications.spec.ts",
+      "line": 15,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 21537,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "Electron offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "file": "collaboration-offline-result-notifications.spec.ts",
+      "line": 15,
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "retry": 0,
+          "duration": 10303,
+          "errors": [
+            {
+              "location": {
+                "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-lifecycle-controls.ts",
+                "column": 29,
+                "line": 193
+              },
+              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m409\u001b[39m\n\n   at fixtures/collaboration-lifecycle-controls.ts:193\n\n  191 |   await button.click();\n  192 |   const response = await responsePromise;\n> 193 |   expect(response.status()).toBe(status);\n      |                             ^\n  194 |   const receipt: CollaborationControlReceipt = await response.json();\n  195 |   const requestId = response.request().headers()[\"idempotency-key\"];\n  196 |   if (!requestId) throw new Error(\"Actual lifecycle UI control omitted its immutable request ID\");\n    at lifecycleControl (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-lifecycle-controls.ts:193:29)\n    at publishOfflineRunResults (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-offline-result-notifications.ts:203:22)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-offline-result-notifications.spec.ts:91:33"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

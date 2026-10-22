@@ -1,0 +1,15 @@
+test(collaboration): keep source planning behind its exact role and request boundaries
+
+Direct source field and iteration operations must reject source-only or other
+participant roles even when generic human editing remains available. Missing
+removal reasons and metadata mixed into iteration PUT must leave every business
+and execution row intact, with immutable original-key refusals.
+
+Constraint: Preserve source membership and independent collaboration participation
+Rejected: Infer dedicated source permissions from generic metadata tests | skips actual operation branches
+Confidence: high
+Scope-risk: narrow
+Directive: A source field edit and iteration membership change have distinct request and authority owners
+Tested: Current serial race22/95; focused3/44; exact HEAD plus two files3/44; independent AC80/81 full-clause review; gofmt/vet
+Not-tested: AC85 external identity and drag UI, native client installation, actual provider/kernel execution and quota
+Co-authored-by: OmX <omx@oh-my-codex.dev>

@@ -1,0 +1,29 @@
+{
+  "at": "2026-10-21T15:25:02.773348+00:00",
+  "snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-source",
+  "backup": "/tmp/multica-gap-recovery-20261021-h6phxwo9/legacy-api-history-before-refresh",
+  "changed_source": [
+    {
+      "path": "server/internal/service/collaboration_command_history.go",
+      "previous_sha256": "cbc59830447e9c8cb0cd5750189f85ee8e93ed750234127970d4469c578f36e9",
+      "current_sha256": "6ddc3e26ef0d06a449140e6638731cb9693660b38b1d78ccd83d3c0c860ff2be"
+    },
+    {
+      "path": "server/internal/service/collaboration_command_history_reason.go",
+      "previous_sha256": null,
+      "current_sha256": "b015d70086ff0646cd3ca16ad4012e2d48b2dea15d9138a78754c46c8e0f5a1b"
+    }
+  ],
+  "original_api_listener": 85510,
+  "production_gate_change": false,
+  "frontend_changed": false,
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-dev.py",
+    "up",
+    "--components",
+    "api",
+    "--web-mode",
+    "production"
+  ]
+}

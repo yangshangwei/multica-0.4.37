@@ -1,0 +1,41 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py",
+    "env",
+    "COLLABORATION_CROSS_CLIENT_DAEMON=/tmp/multica-gap-recovery-20261021-h6phxwo9/continuation-linux/daemon.test",
+    "COLLABORATION_CROSS_CLIENT_PROVIDER=/tmp/multica-gap-recovery-20261021-h6phxwo9/continuation-linux/cross-client-provider",
+    "COLLABORATION_CROSS_CLIENT_HOST_IPV4=192.168.65.254",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-offline-result-notifications.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=json",
+    "--output",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/notification-native-second-artifacts",
+    "--grep",
+    "^Electron offline external"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "start": "2026-10-22T00:24:00.000211+00:00",
+  "environment_scope": "task-owned password/admin API18996/production Web13916/renderer6090",
+  "preflight": "content-admin-preflight.json",
+  "real_provider_account_access": false,
+  "installed_full_main": false,
+  "returncode": 1,
+  "end": "2026-10-22T00:24:01.130494+00:00",
+  "raw_sha256": "680b3e58dbd1c50b01d2d07667219b03d76c41b285131f3f4b5d679c433242c2",
+  "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+  "stats": {
+    "startTime": "2026-10-22T00:24:00.938Z",
+    "duration": 173.58900000000006,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": []
+}

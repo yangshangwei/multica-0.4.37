@@ -1,6 +1,25 @@
 # Remaining collaboration product work
 
-Updated 2026-10-20 after the trigger-preview and ordinary-parent-wakeup increment.
+## Current status — 2026-10-22
+
+The user declared the omission/recovery child task complete and requested
+archival. It is now retained under
+[`archive/2026-10/10-20-collaboration-gap-recovery`](../../archive/2026-10/10-20-collaboration-gap-recovery/archive-summary-2026-10-22.md).
+The latest child acceptance ledger records **96 passed / 1 not verified /
+0 failed**. Only AC43 real-provider account, quota and execution provenance
+verification remains with this parent, which stays `in_progress`. Separate
+authorization is still required for real-provider account access and rollout;
+production creation and execution gates remain closed.
+
+See the [final child handoff](../../archive/2026-10/10-20-collaboration-gap-recovery/handoff-2026-10-22-final.md)
+for current evidence and limits. The sections below retain the historical
+2026-10-20 inventory; their pending labels are superseded by that handoff and
+the preserved acceptance ledger.
+
+## Historical inventory — 2026-10-20
+
+Updated 2026-10-20 after the trigger-preview and ordinary-parent-wakeup increment
+and the omission/recovery planning audit.
 The filename is retained for existing handoff links. The parent remains
 `in_progress`; current evidence is in `../verification-preview-wakeup-2026-10-20.md`.
 
@@ -62,6 +81,22 @@ The filename is retained for existing handoff links. The parent remains
 
 ## Required product work still absent or incomplete
 
+- Failed-prefix scheduling and proof recovery: fixed first-16 waiting/candidate
+  scans, per-object wake/promotion errors that return before existing candidates,
+  first-candidate daemon retries, and fixed first-8 retained-proof recovery need
+  bounded fair progress. Preserve reservations, derived-run priority, unknown
+  capacity and original sealed proofs. The source audit identifies sufficient
+  failure conditions; existing restart/ledger tests do not prove these repaired.
+- Private-resource supply when the organizer has no membership in the owner's
+  execution workspace. Manage/Add/consent forms already work for their tested
+  inventory scope; they do not complete the owner-differs-from-organizer path.
+  Keep creator/handler organization, prior owner participation and each actual
+  owner's explicit consent, without exposing a private inventory through `@`.
+- The human `@all` selector and retained cancellation-input history. The server
+  already parses `mention://all/all` and records cancellations, but the shared
+  composer lacks that selector and waiting-only display does not retain the
+  immutable cancelled input/provenance after refresh. Use the original
+  R55/AC86 and R15/R45/AC19/AC76 contracts rather than rebuilding working writes.
 - The exhaustive P8 source-entry/selection/share/filter compatibility matrix.
   R51 ordinary-child presentation and the named source/menu/search/batch/native
   entry gaps are now implemented and verified; do not equate those cases with
@@ -74,6 +109,12 @@ The filename is retained for existing handoff links. The parent remains
 - Full P8/97-criterion acceptance and rollout preparation across all old entry
   points/platforms. Do not enable creation or execution merely because this
   source/editing increment passes.
+
+The complete planning inventory, recovery conditions and 97-criterion owner
+ledger are in the child task
+[`10-20-collaboration-gap-recovery`](../../archive/2026-10/10-20-collaboration-gap-recovery/prd.md).
+Its plan remains `planning`; this update records omissions and does not claim
+their implementation or full product acceptance.
 
 ## Remaining operational evidence and limits
 

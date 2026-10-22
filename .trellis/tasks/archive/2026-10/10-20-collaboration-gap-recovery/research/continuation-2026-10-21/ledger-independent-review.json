@@ -1,0 +1,3562 @@
+{
+  "reviewed_at_utc": "2026-10-21T09:37:19.529606+00:00",
+  "phase": "complete",
+  "authoritative_baseline_counts": {
+    "not_verified_in_this_task": 69,
+    "passed": 28
+  },
+  "protected_definition_sha256": "e29ead58ba9e2c45a4099a52611c55e12dcae3b735136e058aafc87674cf217e",
+  "97_ids_unique": true,
+  "parent_primary_layer_mapping_verified": true,
+  "proposal_count": 44,
+  "approved_proposed_ids": [
+    "AC01",
+    "AC03",
+    "AC04",
+    "AC05",
+    "AC07",
+    "AC08",
+    "AC11",
+    "AC14",
+    "AC18",
+    "AC23",
+    "AC24",
+    "AC25",
+    "AC26",
+    "AC29",
+    "AC35",
+    "AC36",
+    "AC37",
+    "AC39",
+    "AC41",
+    "AC45",
+    "AC46",
+    "AC48",
+    "AC58",
+    "AC60",
+    "AC61",
+    "AC62",
+    "AC64",
+    "AC71",
+    "AC72",
+    "AC73",
+    "AC76",
+    "AC79",
+    "AC86",
+    "AC90",
+    "AC91",
+    "AC92",
+    "AC95",
+    "AC97"
+  ],
+  "pending_proposed_ids": [
+    "AC10",
+    "AC38",
+    "AC40",
+    "AC50",
+    "AC74",
+    "AC88"
+  ],
+  "rejected_as_product_failure_ids": [],
+  "newly_approved_ids": [
+    "AC01",
+    "AC03",
+    "AC04",
+    "AC05",
+    "AC07",
+    "AC08",
+    "AC11",
+    "AC14",
+    "AC18",
+    "AC23",
+    "AC24",
+    "AC25",
+    "AC26",
+    "AC29",
+    "AC33",
+    "AC35",
+    "AC36",
+    "AC37",
+    "AC39",
+    "AC41",
+    "AC45",
+    "AC46",
+    "AC48",
+    "AC58",
+    "AC60",
+    "AC61",
+    "AC62",
+    "AC64",
+    "AC71",
+    "AC72",
+    "AC73",
+    "AC76",
+    "AC79",
+    "AC86",
+    "AC92"
+  ],
+  "already_applied_ids": [
+    "AC02",
+    "AC12",
+    "AC68",
+    "AC82",
+    "AC90",
+    "AC91",
+    "AC95",
+    "AC97"
+  ],
+  "max_counts_after_root_integration": {
+    "passed": 63,
+    "not_verified_in_this_task": 34
+  },
+  "records": [
+    {
+      "id": "AC01",
+      "primary_owner": "P1",
+      "criterion": "同一套 Multica Server 部署中，两个使用不同工作空间的账号之间完成授权派单，接收人无需成为整个来源空间的普通成员，也能在个人工作台访问获共享的本单；来源空间的其他资源仍受各自权限保护。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationCreateIsAtomicIdempotentAndScoped": {
+          "source": {
+            "path": "server/internal/service/collaboration_test.go",
+            "line": 87,
+            "sha256": "3c8b9ef3be8809966946e03b0927f336b3f0611392fe563fb1dd6edabd321c52"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.17
+            }
+          ]
+        },
+        "internal/service::TestCollaborationAccessRevocationFallsBackOnlyToCurrentSourceMembership": {
+          "source": {
+            "path": "server/internal/service/collaboration_test.go",
+            "line": 245,
+            "sha256": "3c8b9ef3be8809966946e03b0927f336b3f0611392fe563fb1dd6edabd321c52"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.15
+            }
+          ]
+        },
+        "internal/handler::TestCollaborationWorkbenchWorksWithoutAnyWorkspaceMembership": {
+          "source": {
+            "path": "server/internal/handler/collaboration_test.go",
+            "line": 139,
+            "sha256": "62f71ba54903e0621a80cb2622e123ac2bcf853e82c44144cef4cf20610801f8"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.01
+            }
+          ]
+        },
+        "internal/handler::TestCollaborationAccountReadIgnoresAmbientWorkspaceAndKeepsPrivateIdentity": {
+          "source": {
+            "path": "server/internal/handler/collaboration_test.go",
+            "line": 14,
+            "sha256": "62f71ba54903e0621a80cb2622e123ac2bcf853e82c44144cef4cf20610801f8"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.01
+            }
+          ]
+        }
+      },
+      "primary_layer": "P1 数据/权限",
+      "decision": "approve_promotion",
+      "clause_assessment": "Atomic creation assigns the external account without source membership; account/workbench HTTP reads ignore ambient workspace and preserve minimal identity. Independent source-only and revoked-reader bases are checked. P1 primary evidence; resource-offer browsers are corroboration.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationCreateIsAtomicIdempotentAndScoped",
+        "internal/service::TestCollaborationAccessRevocationFallsBackOnlyToCurrentSourceMembership",
+        "internal/handler::TestCollaborationWorkbenchWorksWithoutAnyWorkspaceMembership",
+        "internal/handler::TestCollaborationAccountReadIgnoresAmbientWorkspaceAndKeepsPrivateIdentity"
+      ]
+    },
+    {
+      "id": "AC02",
+      "primary_owner": "P2",
+      "criterion": "接收人离线时仍能收到持久待办；重新登录查询可见。读取或归档通知不会代替业务处理完成。",
+      "current_status": "passed",
+      "identities": {
+        "internal/service::TestCollaborationWorkflowNotificationsAndWorkbench": {
+          "source": {
+            "path": "server/internal/service/collaboration_workflow_test.go",
+            "line": 308,
+            "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.22
+            }
+          ]
+        },
+        "internal/service::TestCollaborationNotificationsLoseContentAndAnchorsWithAccess": {
+          "source": {
+            "path": "server/internal/service/collaboration_notifications_test.go",
+            "line": 56,
+            "sha256": "48a03c00442e08b65402e852781616f5d00b4492c9e109df02bec4b5b23524ec"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.17
+            }
+          ]
+        },
+        "internal/handler::TestCollaborationWorkbenchKeepsResponsibilityParticipationAndPaginationSeparate": {
+          "source": {
+            "path": "server/internal/handler/collaboration_test.go",
+            "line": 83,
+            "sha256": "62f71ba54903e0621a80cb2622e123ac2bcf853e82c44144cef4cf20610801f8"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.03
+            }
+          ]
+        }
+      },
+      "primary_layer": "P2 流转/责任",
+      "decision": "retain_passed",
+      "clause_assessment": "Persistent workbench/notification predicates pass; final Web and Electron offline journeys perform fresh API login, recover one anchored notice, and read/archive without business completion. Interactive login-page rendering is not claimed.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationWorkflowNotificationsAndWorkbench",
+        "internal/service::TestCollaborationNotificationsLoseContentAndAnchorsWithAccess",
+        "internal/handler::TestCollaborationWorkbenchKeepsResponsibilityParticipationAndPaginationSeparate"
+      ]
+    },
+    {
+      "id": "AC03",
+      "primary_owner": "P2",
+      "criterion": "任务可转给产品、测试或开发账号，交接说明和交接目的可查，任务身份及此前历史保留。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationWorkflowInviteTransferPreservesExecution": {
+          "source": {
+            "path": "server/internal/service/collaboration_workflow_test.go",
+            "line": 705,
+            "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.25
+            }
+          ]
+        },
+        "internal/service::TestCollaborationWorkflowConcurrentIdentityAndRevision": {
+          "source": {
+            "path": "server/internal/service/collaboration_workflow_test.go",
+            "line": 406,
+            "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.32
+            }
+          ]
+        },
+        "internal/service::TestCollaborationActivityRetainsExactHandoffAndEditHistory": {
+          "source": {
+            "path": "server/internal/service/collaboration_activity_test.go",
+            "line": 16,
+            "sha256": "1fa2e0eb52b68cee6932bd001b06b87185becdbcb246f46ef70a3e1ada7a8ee8"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.19
+            }
+          ]
+        }
+      },
+      "primary_layer": "P2 流转/责任",
+      "decision": "approve_promotion",
+      "clause_assessment": "Invite/transfer retains the same issue and status; committed activity projects the exact handoff note, purpose/from/to and immutable earlier history; revision/concurrent same-key tests pass.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationWorkflowInviteTransferPreservesExecution",
+        "internal/service::TestCollaborationWorkflowConcurrentIdentityAndRevision",
+        "internal/service::TestCollaborationActivityRetainsExactHandoffAndEditHistory"
+      ]
+    },
+    {
+      "id": "AC04",
+      "primary_owner": "P2",
+      "criterion": "提交阶段结果给测试或另一位开发后，接收人能够接续处理，整单不会仅因转交自动完成。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationWorkflowInviteTransferPreservesExecution": {
+          "source": {
+            "path": "server/internal/service/collaboration_workflow_test.go",
+            "line": 705,
+            "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.25
+            }
+          ]
+        },
+        "internal/service::TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator": {
+          "source": {
+            "path": "server/internal/service/collaboration_handoff_test.go",
+            "line": 261,
+            "sha256": "99136f27f2331cd8aa384a45dca0c05b49cfc6831255ad32be71be2ce0f8e992"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.27
+            }
+          ]
+        },
+        "internal/service::TestCollaborationInformationChainReturnsLayerByLayer": {
+          "source": {
+            "path": "server/internal/service/collaboration_handoff_test.go",
+            "line": 92,
+            "sha256": "99136f27f2331cd8aa384a45dca0c05b49cfc6831255ad32be71be2ce0f8e992"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.34
+            }
+          ]
+        }
+      },
+      "primary_layer": "P2 流转/责任",
+      "decision": "approve_promotion",
+      "clause_assessment": "Acceptance and information-return writes move current responsibility while keeping a nonterminal issue and queue/run state; the recipient retains handling/acceptance capability.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationWorkflowInviteTransferPreservesExecution",
+        "internal/service::TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator",
+        "internal/service::TestCollaborationInformationChainReturnsLayerByLayer"
+      ]
+    },
+    {
+      "id": "AC05",
+      "primary_owner": "P1",
+      "criterion": "获授权协作者能读取并跟踪本单专属讨论、已记录的 AI 执行消息及结果，来源工作空间普通成员保留既有基础访问；不具备有效协作授权或来源空间访问权限的账号不能读取。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationRunRecordsPagingFrozenInputsAndRetention": {
+          "source": {
+            "path": "server/internal/service/collaboration_records_test.go",
+            "line": 29,
+            "sha256": "1db8526fdc0dedff17a719fefe93c4e5c145d308c9f4651abc18dfda2d5fbe50"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.73
+            }
+          ]
+        },
+        "internal/service::TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence": {
+          "source": {
+            "path": "server/internal/service/collaboration_records_test.go",
+            "line": 120,
+            "sha256": "1db8526fdc0dedff17a719fefe93c4e5c145d308c9f4651abc18dfda2d5fbe50"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.63
+            }
+          ]
+        },
+        "internal/service::TestCollaborationAccessRevocationFallsBackOnlyToCurrentSourceMembership": {
+          "source": {
+            "path": "server/internal/service/collaboration_test.go",
+            "line": 245,
+            "sha256": "3c8b9ef3be8809966946e03b0927f336b3f0611392fe563fb1dd6edabd321c52"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.15
+            }
+          ]
+        },
+        "internal/handler::TestCollaborationCommentHTTPKeepsAuthorControlHistoryAndPrivateProjection": {
+          "source": {
+            "path": "server/internal/handler/collaboration_comments_test.go",
+            "line": 30,
+            "sha256": "a1fa453c133baffa5bac3a0b609f56d5cbdaf96e0cae4957019b02db896cd7d1"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.03
+            }
+          ]
+        }
+      },
+      "primary_layer": "P1 数据/权限",
+      "decision": "approve_promotion",
+      "clause_assessment": "Frozen input/record/result paging and resource cleanup retention pass; current participant/source-only ACLs govern records/comments and old cursors cannot restore revoked reads.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationRunRecordsPagingFrozenInputsAndRetention",
+        "internal/service::TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence",
+        "internal/service::TestCollaborationAccessRevocationFallsBackOnlyToCurrentSourceMembership",
+        "internal/handler::TestCollaborationCommentHTTPKeepsAuthorControlHistoryAndPrivateProjection"
+      ]
+    },
+    {
+      "id": "AC07",
+      "primary_owner": "P5",
+      "criterion": "同一 AI 会话已有执行时，后续指令进入队列，不将新指令伪装为已经实时送达运行中的 AI。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationBatchKeepsOneFollowupBehindRunningWork": {
+          "source": {
+            "path": "server/internal/service/collaboration_batches_test.go",
+            "line": 151,
+            "sha256": "ece847099cc9c1fb38139177d4f25dfee9389e0cd458a4eca81519aeb421dcb8"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.27
+            }
+          ]
+        },
+        "internal/service::TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing": {
+          "source": {
+            "path": "server/internal/service/collaboration_comments_test.go",
+            "line": 81,
+            "sha256": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.28
+            }
+          ]
+        },
+        "internal/service::TestCollaborationWaitingInputsShareOnePendingBatch": {
+          "source": {
+            "path": "server/internal/service/collaboration_batches_test.go",
+            "line": 101,
+            "sha256": "ece847099cc9c1fb38139177d4f25dfee9389e0cd458a4eca81519aeb421dcb8"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.23
+            }
+          ]
+        }
+      },
+      "primary_layer": "P5 队列/终结",
+      "decision": "approve_promotion",
+      "clause_assessment": "Current batch freezes after start; later inputs share one distinct waiting batch, retain authors/body, and never appear in the saved claim prompt. UI wiring is separate from this P5 proof.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationBatchKeepsOneFollowupBehindRunningWork",
+        "internal/service::TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing",
+        "internal/service::TestCollaborationWaitingInputsShareOnePendingBatch"
+      ]
+    },
+    {
+      "id": "AC08",
+      "primary_owner": "P5",
+      "criterion": "指令 1 运行、2 和 3 排队时，停止操作使 1 停止并挂起 2、3；停止过程不能因为竞态自动启动下一条。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "cmd/server::TestCollaborationSingleAgentRuntimeRoutesLinux": {
+          "source": {
+            "path": "server/cmd/server/collaboration_single_agent_routes_test.go",
+            "line": 416,
+            "sha256": "712448531822bc68d84226374a881eecefe5d67f2e4cd570da4ced5f52ab5493"
+          },
+          "pass": [
+            {
+              "artifact": "linux-router.jsonl",
+              "elapsed": 2.64
+            }
+          ]
+        },
+        "internal/service::TestCollaborationQueueStopPreservesBarrierAfterAnyPermit": {
+          "source": {
+            "path": "server/internal/service/collaboration_queue_test.go",
+            "line": 229,
+            "sha256": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 1.77
+            }
+          ]
+        },
+        "internal/service::TestCollaborationQueueStaleStopCannotReachNextRun": {
+          "source": {
+            "path": "server/internal/service/collaboration_queue_test.go",
+            "line": 333,
+            "sha256": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.27
+            }
+          ]
+        }
+      },
+      "primary_layer": "P5 队列/终结",
+      "decision": "approve_promotion",
+      "clause_assessment": "Actual Linux Stop produces sealed proof for run 1 while inputs 2/3 remain in the follow-up batch; missing proof refuses Resume, and stale Stop cannot reach the next run.",
+      "required_test_identities": [
+        "cmd/server::TestCollaborationSingleAgentRuntimeRoutesLinux",
+        "internal/service::TestCollaborationQueueStopPreservesBarrierAfterAnyPermit",
+        "internal/service::TestCollaborationQueueStaleStopCannotReachNextRun"
+      ]
+    },
+    {
+      "id": "AC10",
+      "primary_owner": "P5",
+      "criterion": "明确恢复后 2、3（及暂停期间加入的指令）合为一批执行一次（M07），1 不自动重试；如无后续指令则保持空闲。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationManagedStopProofPreservesFreshResumeIntent": {
+          "source": {
+            "path": "server/internal/service/collaboration_runtime_test.go",
+            "line": 208,
+            "sha256": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.67
+            }
+          ]
+        },
+        "internal/service::TestCollaborationBatchKeepsOneFollowupBehindRunningWork": {
+          "source": {
+            "path": "server/internal/service/collaboration_batches_test.go",
+            "line": 151,
+            "sha256": "ece847099cc9c1fb38139177d4f25dfee9389e0cd458a4eca81519aeb421dcb8"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.27
+            }
+          ]
+        },
+        "cmd/server::TestCollaborationSingleAgentRuntimeRoutesLinux": {
+          "source": {
+            "path": "server/cmd/server/collaboration_single_agent_routes_test.go",
+            "line": 416,
+            "sha256": "712448531822bc68d84226374a881eecefe5d67f2e4cd570da4ced5f52ab5493"
+          },
+          "pass": [
+            {
+              "artifact": "linux-router.jsonl",
+              "elapsed": 2.64
+            }
+          ]
+        },
+        "internal/service::TestCollaborationResumeAllEmptyScopeReleasesGlobalPause": {
+          "source": {
+            "path": "server/internal/service/collaboration_control_test.go",
+            "line": 380,
+            "sha256": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.16
+            }
+          ]
+        }
+      },
+      "primary_layer": "P5 队列/终结",
+      "decision": "pending",
+      "clause_assessment": "Actual Linux test adds 2/3 before Stop, not while paused. The cited empty-scope test has no target, not a stopped target with no next input. Need exact paused-period additions included once after fresh Resume and an empty target staying idle without retrying input 1.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationManagedStopProofPreservesFreshResumeIntent",
+        "internal/service::TestCollaborationBatchKeepsOneFollowupBehindRunningWork",
+        "cmd/server::TestCollaborationSingleAgentRuntimeRoutesLinux",
+        "internal/service::TestCollaborationResumeAllEmptyScopeReleasesGlobalPause"
+      ]
+    },
+    {
+      "id": "AC11",
+      "primary_owner": "P2",
+      "criterion": "运行中转交不停止当前执行；挂起中转交不恢复队列；原协作者的权限保持。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationWorkflowInviteTransferPreservesExecution": {
+          "source": {
+            "path": "server/internal/service/collaboration_workflow_test.go",
+            "line": 705,
+            "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.25
+            }
+          ]
+        },
+        "internal/service::TestCollaborationInformationChainReturnsLayerByLayer": {
+          "source": {
+            "path": "server/internal/service/collaboration_handoff_test.go",
+            "line": 92,
+            "sha256": "99136f27f2331cd8aa384a45dca0c05b49cfc6831255ad32be71be2ce0f8e992"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.34
+            }
+          ]
+        },
+        "internal/service::TestCollaborationWorkflowNotificationsAndWorkbench": {
+          "source": {
+            "path": "server/internal/service/collaboration_workflow_test.go",
+            "line": 308,
+            "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.22
+            }
+          ]
+        }
+      },
+      "primary_layer": "P2 流转/责任",
+      "decision": "approve_promotion",
+      "clause_assessment": "Running transfer is directly checked. Paused transfers use the same Transfer→changeHandler→finish path, which writes no channel/run/control state; paused workflow executions also pass. Prior participants are not revoked.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationWorkflowInviteTransferPreservesExecution",
+        "internal/service::TestCollaborationInformationChainReturnsLayerByLayer",
+        "internal/service::TestCollaborationWorkflowNotificationsAndWorkbench"
+      ]
+    },
+    {
+      "id": "AC12",
+      "primary_owner": "P5",
+      "criterion": "参与者能分辨控制请求的操作者、受理状态和实际执行结果；重复请求和过期操作不会造成重复执行或错误恢复。",
+      "current_status": "passed",
+      "identities": {
+        "internal/service::TestCollaborationControlOperationReplaysOnlyAuthorizedOriginalResult": {
+          "source": {
+            "path": "server/internal/service/collaboration_hold_test.go",
+            "line": 296,
+            "sha256": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.26
+            }
+          ]
+        },
+        "internal/service::TestCollaborationQueueStaleStopCannotReachNextRun": {
+          "source": {
+            "path": "server/internal/service/collaboration_queue_test.go",
+            "line": 333,
+            "sha256": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.27
+            }
+          ]
+        },
+        "internal/handler::TestCollaborationControlHTTPRecoversOriginalStructuredRefusal": {
+          "source": {
+            "path": "server/internal/handler/collaboration_control_test.go",
+            "line": 75,
+            "sha256": "fdffacc9da9fab97c3144ff10d1ce7838a67df5265313a21bce79c3a4e75ec9d"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.05
+            }
+          ]
+        }
+      },
+      "primary_layer": "P5 队列/终结",
+      "decision": "retain_passed",
+      "clause_assessment": "Original success/refusal, actor/key ownership and stale-stop fencing pass in current service/handler results; Web/Electron per-lane unknown/partial/stop-unconfirmed explanations are corroborated by actual Linux proof progression.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationControlOperationReplaysOnlyAuthorizedOriginalResult",
+        "internal/service::TestCollaborationQueueStaleStopCannotReachNextRun",
+        "internal/handler::TestCollaborationControlHTTPRecoversOriginalStructuredRefusal"
+      ]
+    },
+    {
+      "id": "AC14",
+      "primary_owner": "P2",
+      "criterion": "转交后，新的当前处理人取得新增协作者权限；并非发起人的原处理人不再拥有这项权限，仍保留本单查看、评论、指挥、停止和恢复权限。发起人的新增协作者权限不随转交变化，执行与队列状态仍遵守 R11。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationWorkflowInviteTransferPreservesExecution": {
+          "source": {
+            "path": "server/internal/service/collaboration_workflow_test.go",
+            "line": 705,
+            "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.25
+            }
+          ]
+        },
+        "internal/service::TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals": {
+          "source": {
+            "path": "server/internal/service/collaboration_workflow_test.go",
+            "line": 346,
+            "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 1.88
+            }
+          ]
+        },
+        "internal/service::TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator": {
+          "source": {
+            "path": "server/internal/service/collaboration_handoff_test.go",
+            "line": 261,
+            "sha256": "99136f27f2331cd8aa384a45dca0c05b49cfc6831255ad32be71be2ce0f8e992"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.27
+            }
+          ]
+        },
+        "internal/collaboration::TestCollaborationAccessKeepsMembershipAndParticipationIndependent": {
+          "source": {
+            "path": "server/internal/collaboration/access_test.go",
+            "line": 46,
+            "sha256": "d0863327ec3b27cbffca4c7c0f421d17ce8831887d7043d010a612f47edc1554"
+          },
+          "pass": [
+            {
+              "artifact": "go-remaining-packages.jsonl",
+              "elapsed": 0
+            }
+          ]
+        },
+        "internal/collaboration::TestExternalHandlerCannotReopenThroughOrdinaryStatusChange": {
+          "source": {
+            "path": "server/internal/collaboration/access_test.go",
+            "line": 27,
+            "sha256": "d0863327ec3b27cbffca4c7c0f421d17ce8831887d7043d010a612f47edc1554"
+          },
+          "pass": [
+            {
+              "artifact": "go-remaining-packages.jsonl",
+              "elapsed": 0
+            }
+          ]
+        },
+        "internal/collaboration::TestDirectedHandoffsFollowCurrentResponsibility": {
+          "source": {
+            "path": "server/internal/collaboration/access_test.go",
+            "line": 106,
+            "sha256": "d0863327ec3b27cbffca4c7c0f421d17ce8831887d7043d010a612f47edc1554"
+          },
+          "pass": [
+            {
+              "artifact": "go-remaining-packages.jsonl",
+              "elapsed": 0
+            }
+          ]
+        }
+      },
+      "primary_layer": "P2 流转/责任",
+      "decision": "approve_promotion",
+      "clause_assessment": "Current role derivation is participant plus creator/handler; old handler retains read/comment/control but loses invite/transfer, new handler gains management, and creator management remains. Source role predicates and directed handoffs pass.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationWorkflowInviteTransferPreservesExecution",
+        "internal/service::TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals",
+        "internal/service::TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator",
+        "internal/collaboration::TestCollaborationAccessKeepsMembershipAndParticipationIndependent",
+        "internal/collaboration::TestExternalHandlerCannotReopenThroughOrdinaryStatusChange",
+        "internal/collaboration::TestDirectedHandoffsFollowCurrentResponsibility"
+      ]
+    },
+    {
+      "id": "AC18",
+      "primary_owner": "P3",
+      "criterion": "协作者被移除后，不能继续凭原协作身份读取本单、发表评论或发起 AI 控制请求，也不能凭此前的按单运行资源授权绕过移除结果；直接链接、实时订阅和附件请求应使用一致的协作权限判断。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationRuntimePreparationScopeAndRevocation": {
+          "source": {
+            "path": "server/internal/service/collaboration_runtime_preparation_test.go",
+            "line": 203,
+            "sha256": "5fdb09fa47c4f3e8df0078af9a9eae9324e9544364534afaa1fd79439f46b385"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 0.65
+            }
+          ]
+        },
+        "internal/service::TestCollaborationCommandHistoryPagingAndCurrentAuthority": {
+          "source": {
+            "path": "server/internal/service/collaboration_command_history_test.go",
+            "line": 161,
+            "sha256": "869196731ce555206557c1464a4495a1aad6bab3aed22994ba56fcedb16df976"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 0.28
+            }
+          ]
+        },
+        "internal/service::TestCollaborationRealtimeAuthorizationKeepsIndependentReadBases": {
+          "source": {
+            "path": "server/internal/service/collaboration_realtime_test.go",
+            "line": 35,
+            "sha256": "9609106d2d5728e3fefaea00a93f5ad77b964789480cdee6803016841b1d2439"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.14
+            }
+          ]
+        },
+        "internal/handler::TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes": {
+          "source": {
+            "path": "server/internal/handler/collaboration_attachments_test.go",
+            "line": 229,
+            "sha256": "63922cf6442ad54ed794492ea0450c58b5e9d95f5502d0c4d2b473d377d0119e"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.02
+            }
+          ]
+        },
+        "cmd/server::TestCollaborationRealtimeHTTPAndWebSocketShareCurrentAuthorization": {
+          "source": {
+            "path": "server/cmd/server/collaboration_realtime_test.go",
+            "line": 22,
+            "sha256": "62d6ff48ffc62e6bc0559f0209d302a74b4d94becddd66e42da92069426641eb"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.09
+            }
+          ]
+        }
+      },
+      "primary_layer": "P3 内容/实时",
+      "decision": "approve_promotion",
+      "clause_assessment": "Current object permission is reused by history, comments/control, runtime preparation, realtime scope and slow attachment reads. HTTP/WS and final-byte revocation tests pass; retained grants/history are not authority.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationRuntimePreparationScopeAndRevocation",
+        "internal/service::TestCollaborationCommandHistoryPagingAndCurrentAuthority",
+        "internal/service::TestCollaborationRealtimeAuthorizationKeepsIndependentReadBases",
+        "internal/handler::TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes",
+        "cmd/server::TestCollaborationRealtimeHTTPAndWebSocketShareCurrentAuthorization"
+      ]
+    },
+    {
+      "id": "AC23",
+      "primary_owner": "P5",
+      "criterion": "停止请求已受理但执行端断线、旧执行尚未确认结束时，恢复请求被拒绝并告知等待原因；通道继续挂起，不启动下一条指令，也不保存待确认后自动生效的恢复请求。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationManagedStopProofPreservesFreshResumeIntent": {
+          "source": {
+            "path": "server/internal/service/collaboration_runtime_test.go",
+            "line": 208,
+            "sha256": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.67
+            }
+          ]
+        },
+        "cmd/server::TestCollaborationPartialResumeRoutesLinux": {
+          "source": {
+            "path": "server/cmd/server/collaboration_hold_routes_test.go",
+            "line": 153,
+            "sha256": "972ee7fe7a4fc7e71254958744c82e00feed2f421cd35040aa2015a80fbc4a59"
+          },
+          "pass": [
+            {
+              "artifact": "linux-router.jsonl",
+              "elapsed": 4.16
+            }
+          ]
+        },
+        "internal/service::TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent": {
+          "source": {
+            "path": "server/internal/service/collaboration_queue_test.go",
+            "line": 291,
+            "sha256": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.53
+            }
+          ]
+        },
+        "internal/service::TestCollaborationQueueResumeTreatsEitherBarrierAsUnconfirmed": {
+          "source": {
+            "path": "server/internal/service/collaboration_queue_test.go",
+            "line": 505,
+            "sha256": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.55
+            }
+          ]
+        }
+      },
+      "primary_layer": "P5 队列/终结",
+      "decision": "approve_promotion",
+      "clause_assessment": "Public managed permit plus missing-proof barrier refuses Resume with stop_unconfirmed and identical business state; the real Linux withheld-proof test lets the independent lane continue only within its scope.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationManagedStopProofPreservesFreshResumeIntent",
+        "cmd/server::TestCollaborationPartialResumeRoutesLinux",
+        "internal/service::TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent",
+        "internal/service::TestCollaborationQueueResumeTreatsEitherBarrierAsUnconfirmed"
+      ]
+    },
+    {
+      "id": "AC24",
+      "primary_owner": "P5",
+      "criterion": "旧执行随后确认结束时，即使此前有人请求过恢复，会话仍保持挂起；重放此前被拒绝的请求不能自动恢复。只有仍有权限的协作者重新发起明确恢复操作，才可从下一条有效指令继续。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationManagedStopProofPreservesFreshResumeIntent": {
+          "source": {
+            "path": "server/internal/service/collaboration_runtime_test.go",
+            "line": 208,
+            "sha256": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.67
+            }
+          ]
+        },
+        "cmd/server::TestCollaborationPartialResumeRoutesLinux": {
+          "source": {
+            "path": "server/cmd/server/collaboration_hold_routes_test.go",
+            "line": 153,
+            "sha256": "972ee7fe7a4fc7e71254958744c82e00feed2f421cd35040aa2015a80fbc4a59"
+          },
+          "pass": [
+            {
+              "artifact": "linux-router.jsonl",
+              "elapsed": 4.16
+            }
+          ]
+        },
+        "internal/service::TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent": {
+          "source": {
+            "path": "server/internal/service/collaboration_queue_test.go",
+            "line": 291,
+            "sha256": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.53
+            }
+          ]
+        }
+      },
+      "primary_layer": "P5 队列/终结",
+      "decision": "approve_promotion",
+      "clause_assessment": "Real sealed proof frees only the original reservation; old refusal/partial keys remain original and no pending intention resumes. A fresh authorized explicit Resume advances next input.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationManagedStopProofPreservesFreshResumeIntent",
+        "cmd/server::TestCollaborationPartialResumeRoutesLinux",
+        "internal/service::TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent"
+      ]
+    },
+    {
+      "id": "AC25",
+      "primary_owner": "P2",
+      "criterion": "任务由产品 P 发起，开发 D 将任务转给 P 补充信息；P 执行\"补充完成并交回\"后，当前处理人回到提出本次补充请求的 D，P 和 D 的当前待办随责任转移而更新，任务身份及协作历史保留。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationWorkflowNotificationsAndWorkbench": {
+          "source": {
+            "path": "server/internal/service/collaboration_workflow_test.go",
+            "line": 308,
+            "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.22
+            }
+          ]
+        },
+        "internal/service::TestCollaborationInformationChainReturnsLayerByLayer": {
+          "source": {
+            "path": "server/internal/service/collaboration_handoff_test.go",
+            "line": 92,
+            "sha256": "99136f27f2331cd8aa384a45dca0c05b49cfc6831255ad32be71be2ce0f8e992"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.34
+            }
+          ]
+        }
+      },
+      "primary_layer": "P2 流转/责任",
+      "decision": "approve_promotion",
+      "clause_assessment": "Nested information requests unwind to their persisted requester, preserving issue/history; workbench responsibility follows current assignee independently of notification archive state.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationWorkflowNotificationsAndWorkbench",
+        "internal/service::TestCollaborationInformationChainReturnsLayerByLayer"
+      ]
+    },
+    {
+      "id": "AC26",
+      "primary_owner": "P2",
+      "criterion": "补充信息期间仅发表评论不会自动交回；明确执行交回动作不会把整单标记为完成，也不会停止、恢复或重启本单 AI。普通转交已有的协作权限保留规则继续适用。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationInformationChainReturnsLayerByLayer": {
+          "source": {
+            "path": "server/internal/service/collaboration_handoff_test.go",
+            "line": 92,
+            "sha256": "99136f27f2331cd8aa384a45dca0c05b49cfc6831255ad32be71be2ce0f8e992"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.34
+            }
+          ]
+        },
+        "internal/service::TestCollaborationCommentSourceMemberAndPlainRepliesStayHumanOnly": {
+          "source": {
+            "path": "server/internal/service/collaboration_comments_test.go",
+            "line": 264,
+            "sha256": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.24
+            }
+          ]
+        }
+      },
+      "primary_layer": "P2 流转/责任",
+      "decision": "approve_promotion",
+      "clause_assessment": "Ordinary reply/unresolved mentions remain human-only; explicit information return restores the nonterminal source status while current run and waiting command identity/control remain unchanged.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationInformationChainReturnsLayerByLayer",
+        "internal/service::TestCollaborationCommentSourceMemberAndPlainRepliesStayHumanOnly"
+      ]
+    },
+    {
+      "id": "AC29",
+      "primary_owner": "P2",
+      "criterion": "非发起人的当前处理人提交最终结果并执行\"提交验收并转交\"后，当前处理责任和待办一起转给发起人；原处理人不再承担当前处理责任，发起人能从个人工作台找到本单并进行验收。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationWorkflowNotificationsAndWorkbench": {
+          "source": {
+            "path": "server/internal/service/collaboration_workflow_test.go",
+            "line": 308,
+            "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.22
+            }
+          ]
+        },
+        "internal/service::TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator": {
+          "source": {
+            "path": "server/internal/service/collaboration_handoff_test.go",
+            "line": 261,
+            "sha256": "99136f27f2331cd8aa384a45dca0c05b49cfc6831255ad32be71be2ce0f8e992"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.27
+            }
+          ]
+        }
+      },
+      "primary_layer": "P2 流转/责任",
+      "decision": "approve_promotion",
+      "clause_assessment": "SubmitAcceptance moves handler to creator and preserves in_review, waiting inputs and former participant rights. Current-workbench query proves only the new assignee has current responsibility.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationWorkflowNotificationsAndWorkbench",
+        "internal/service::TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator"
+      ]
+    },
+    {
+      "id": "AC33",
+      "primary_owner": "P5",
+      "criterion": "不同协作者跨 Web/Desktop 向同一单指定 A/B 两个目标，在双方授权有效、资源容量充足且无暂停时，B 无须等待 A 完成即可执行；A 忙碌期间连续的多条 @A 并入一个待执行批次，A 结束后作为一次后续处理执行，单条取消只移出该条。分别保存目标、真实提交人和执行关系，结果归同一单；不能把 B 的指令交给 A，也不能按客户端重复执行。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "e2e/collaboration-cross-client-execution.spec.ts::AC33 Web and actual Electron collaborators execute independent A/B namespaces and one coalesced A follow-up": {
+          "source": {
+            "path": "e2e/collaboration-cross-client-execution.spec.ts",
+            "line": 16,
+            "sha256": "3485662826b2afc9ab82dadbbe3e3d71dfad6bcb9c3bee9c4419c63a6d3b5416"
+          },
+          "pass": [
+            {
+              "artifact": "/tmp/multica-gap-recovery-20261021-h6phxwo9/cross-client-run4.json",
+              "duration_ms": 27441,
+              "retry": 0
+            }
+          ]
+        }
+      },
+      "fresh_provenance": [
+        "ac33-rerun-preflight.json",
+        "ac33-api-source-refresh.json",
+        "gap-recovery-admin-20261021-api-after-history.running.json",
+        "ac33-cross-client-run4-identities.json",
+        "history-projection-history-cancellation-race-20261021.jsonl"
+      ],
+      "primary_layer": "P5 队列/终结",
+      "decision": "approve_promotion",
+      "clause_assessment": "Run4 combines production Web and actual Electron with two synthetic owners/workspaces and simultaneous distinct Linux namespaces. B settles while A stays live; A2/A3/A4 wait, exact A3 cancellation leaves A1/B and controls unchanged, and next A run consumes only A2+A4. Both clients reload all five command histories and three proven successful results; daemon capacity summaries return two/one claims and zero active tasks.",
+      "required_test_identities": [
+        "e2e/collaboration-cross-client-execution.spec.ts::AC33 Web and actual Electron collaborators execute independent A/B namespaces and one coalesced A follow-up"
+      ]
+    },
+    {
+      "id": "AC35",
+      "primary_owner": "P5",
+      "criterion": "有权参与者新发评论并明确 @已获授权的智能体或小队时，发送即提交对应执行，不额外要求“发给 AI”；小队由队长接入组织工作。普通无 @评论、仅回复 AI、纯文本名字及未解析为具体对象的 `@AI` 不自动执行，发送前可预览并取消本次目标。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationSquadHumanCommentQueuesAndJoinsWithTypedReceipt": {
+          "source": {
+            "path": "server/internal/service/collaboration_squad_test.go",
+            "line": 415,
+            "sha256": "9846be39515723e29e6d2a3f5f97ad3f2bfb12d3fdd9ef7d7ca2f6e57f573326"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.71
+            }
+          ]
+        },
+        "internal/service::TestCollaborationMentionParserLeavesPlainNamesAndUnresolvedTargetsInert": {
+          "source": {
+            "path": "server/internal/service/collaboration_mentions_test.go",
+            "line": 29,
+            "sha256": "9952655a07cf966ad29553c481e3225030ab775a47e313d1848f614ec9793bc6"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0
+            }
+          ]
+        },
+        "internal/service::TestCollaborationCommentSourceMemberAndPlainRepliesStayHumanOnly": {
+          "source": {
+            "path": "server/internal/service/collaboration_comments_test.go",
+            "line": 264,
+            "sha256": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.24
+            }
+          ]
+        },
+        "internal/service::TestCollaborationCommentPreviewIsReadOnlyAndKeepsIndependentPeopleAndTargets": {
+          "source": {
+            "path": "server/internal/service/collaboration_mentions_test.go",
+            "line": 38,
+            "sha256": "9952655a07cf966ad29553c481e3225030ab775a47e313d1848f614ec9793bc6"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.18
+            }
+          ]
+        }
+      },
+      "primary_layer": "P5 队列/终结",
+      "decision": "approve_promotion",
+      "clause_assessment": "Typed mentions submit directly through the shared comment path; parser/plain/reply/source-only negatives stay inert, read-only preview and per-target suppression preserve text. Current Web/Electron mixed journeys verify the send/preview wiring.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationSquadHumanCommentQueuesAndJoinsWithTypedReceipt",
+        "internal/service::TestCollaborationMentionParserLeavesPlainNamesAndUnresolvedTargetsInert",
+        "internal/service::TestCollaborationCommentSourceMemberAndPlainRepliesStayHumanOnly",
+        "internal/service::TestCollaborationCommentPreviewIsReadOnlyAndKeepsIndependentPeopleAndTargets"
+      ]
+    },
+    {
+      "id": "AC36",
+      "primary_owner": "P5",
+      "criterion": "每个有效 @执行目标保留输入快照、实际提交者及入队结果；通道忙碌时并入待执行批次，适用范围挂起时继续等待明确恢复。新 @不解除挂起，回执不能把等待/暂停写成已经开始；跨目标调度按 M01 验证。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationRuntimeFreezesEveryInputDependencyAndPrompt": {
+          "source": {
+            "path": "server/internal/service/collaboration_group_dependencies_test.go",
+            "line": 13,
+            "sha256": "11fec3f2e77d67a75b098892c8b09a013bdbecf303f2296682c31b8a06168e8c"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 0.53
+            }
+          ]
+        },
+        "internal/service::TestCollaborationBatchKeepsOneFollowupBehindRunningWork": {
+          "source": {
+            "path": "server/internal/service/collaboration_batches_test.go",
+            "line": 151,
+            "sha256": "ece847099cc9c1fb38139177d4f25dfee9389e0cd458a4eca81519aeb421dcb8"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.27
+            }
+          ]
+        },
+        "internal/service::TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing": {
+          "source": {
+            "path": "server/internal/service/collaboration_comments_test.go",
+            "line": 81,
+            "sha256": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.28
+            }
+          ]
+        },
+        "internal/service::TestCollaborationTypedTargetsCoalesceRootAndKeepInputIdentity": {
+          "source": {
+            "path": "server/internal/service/collaboration_targets_test.go",
+            "line": 116,
+            "sha256": "fa50282a74ab50ea4856adbcb16ff6c716db0b6a98b2215b17bd9598083aabef"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.33
+            }
+          ]
+        },
+        "cmd/server::TestCollaborationPartialResumeRoutesLinux": {
+          "source": {
+            "path": "server/cmd/server/collaboration_hold_routes_test.go",
+            "line": 153,
+            "sha256": "972ee7fe7a4fc7e71254958744c82e00feed2f421cd35040aa2015a80fbc4a59"
+          },
+          "pass": [
+            {
+              "artifact": "linux-router.jsonl",
+              "elapsed": 4.16
+            }
+          ]
+        }
+      },
+      "primary_layer": "P5 队列/终结",
+      "decision": "approve_promotion",
+      "clause_assessment": "Each input freezes distinct author/target/grant/prompt, busy lane follow-ups wait, new mentions preserve pause and receipts say waiting. AC33 actual cross-client overlap supplies independent M01 execution; no online delivery to a running prompt is inferred.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationRuntimeFreezesEveryInputDependencyAndPrompt",
+        "internal/service::TestCollaborationBatchKeepsOneFollowupBehindRunningWork",
+        "internal/service::TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing",
+        "internal/service::TestCollaborationTypedTargetsCoalesceRootAndKeepInputIdentity",
+        "cmd/server::TestCollaborationPartialResumeRoutesLinux"
+      ]
+    },
+    {
+      "id": "AC37",
+      "primary_owner": "P4",
+      "criterion": "撤回某资源时阻止所有依赖该 grant 的新执行，停止相关组/派生并挂起目标，保留输入和历史；无关有效目标不变。失效目标移出候选，旧选择在服务端被拒；不能把撤权生效显示成进程已结束。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationRuntimeHoldBlocksClaimAndPermit": {
+          "source": {
+            "path": "server/internal/service/collaboration_hold_test.go",
+            "line": 155,
+            "sha256": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 0.55
+            }
+          ]
+        },
+        "internal/service::TestCollaborationSquadUnreadGrantRevocationDetachesOnlyAlias": {
+          "source": {
+            "path": "server/internal/service/collaboration_squad_test.go",
+            "line": 318,
+            "sha256": "9846be39515723e29e6d2a3f5f97ad3f2bfb12d3fdd9ef7d7ca2f6e57f573326"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.72
+            }
+          ]
+        },
+        "internal/service::TestCollaborationResourceRevocationPreservesAllWaitingAuthors": {
+          "source": {
+            "path": "server/internal/service/collaboration_targets_test.go",
+            "line": 281,
+            "sha256": "fa50282a74ab50ea4856adbcb16ff6c716db0b6a98b2215b17bd9598083aabef"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.31
+            }
+          ]
+        },
+        "internal/service::TestCollaborationUnusedAliasHoldKeepsHealthyGroup": {
+          "source": {
+            "path": "server/internal/service/collaboration_hold_test.go",
+            "line": 67,
+            "sha256": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.35
+            }
+          ]
+        },
+        "internal/service::TestCollaborationConsentCurrentAuthority": {
+          "source": {
+            "path": "server/internal/service/collaboration_authority_test.go",
+            "line": 137,
+            "sha256": "9804e0705acf9270b542e5476a7770d691b6fa26658558e24f050565d48cdfd9"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 1.4
+            }
+          ]
+        }
+      },
+      "primary_layer": "P4 资源/执行协议",
+      "decision": "approve_promotion",
+      "clause_assessment": "Exact frozen grant invalidation blocks claim/permit, holds its target and stops dependents without inventing proof. Another healthy alias/group is snapshot-identical; current catalog hides obsolete consent and rejects its old selection.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationRuntimeHoldBlocksClaimAndPermit",
+        "internal/service::TestCollaborationSquadUnreadGrantRevocationDetachesOnlyAlias",
+        "internal/service::TestCollaborationResourceRevocationPreservesAllWaitingAuthors",
+        "internal/service::TestCollaborationUnusedAliasHoldKeepsHealthyGroup",
+        "internal/service::TestCollaborationConsentCurrentAuthority"
+      ]
+    },
+    {
+      "id": "AC38",
+      "primary_owner": "P4",
+      "criterion": "旧执行确认结束但授权仍无效时不能恢复；重新取得有效授权后，队列仍等待有权限的协作者明确恢复，不自动重做已停止指令。本次资源授权撤回不取消其他任务的授权，也不自动移除本单协作者。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationTargetResumeInvalidGrantIsAtomic": {
+          "source": {
+            "path": "server/internal/service/collaboration_hold_test.go",
+            "line": 209,
+            "sha256": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.32
+            }
+          ]
+        },
+        "internal/service::TestCollaborationReconsentHoldRequiresFreshResumeBeforeLaunch": {
+          "source": {
+            "path": "server/internal/service/collaboration_hold_test.go",
+            "line": 133,
+            "sha256": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.43
+            }
+          ]
+        },
+        "internal/service::TestCollaborationPermissionRestoreCannotReviveConsent": {
+          "source": {
+            "path": "server/internal/service/collaboration_authority_test.go",
+            "line": 219,
+            "sha256": "9804e0705acf9270b542e5476a7770d691b6fa26658558e24f050565d48cdfd9"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.21
+            }
+          ]
+        }
+      },
+      "primary_layer": "P4 资源/执行协议",
+      "decision": "pending",
+      "clause_assessment": "Grant revoke/restore and explicit Resume barriers are tested on one issue. No current snapshot checks the same owner/resource grant on a different issue remains unchanged after this per-issue withdrawal; participation preservation is source-backed but the explicit cross-task isolation clause still lacks execution evidence.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationTargetResumeInvalidGrantIsAtomic",
+        "internal/service::TestCollaborationReconsentHoldRequiresFreshResumeBeforeLaunch",
+        "internal/service::TestCollaborationPermissionRestoreCannotReviveConsent"
+      ]
+    },
+    {
+      "id": "AC39",
+      "primary_owner": "P4",
+      "criterion": "仅发起人和当前处理人可执行运行环境切换；旧执行未确认结束、队列未挂起或新环境未取得拥有者的本单授权时，均不能完成切换，不得借切换绕过停止确认或资源授权。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationAtomicSwitchRequiresEachOwnersNewConsent": {
+          "source": {
+            "path": "server/internal/service/collaboration_switch_test.go",
+            "line": 109,
+            "sha256": "0de4f53edc0beacd2c36f34be87dd5f665dcea94c11fceae798f1974408f8b53"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.32
+            }
+          ]
+        },
+        "internal/service::TestCollaborationAtomicSwitchRejectsStaleConfigurationAndConsent": {
+          "source": {
+            "path": "server/internal/service/collaboration_switch_test.go",
+            "line": 152,
+            "sha256": "0de4f53edc0beacd2c36f34be87dd5f665dcea94c11fceae798f1974408f8b53"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 2.66
+            }
+          ]
+        },
+        "internal/service::TestCollaborationAtomicSwitchRejectsContradictoryOldChannel": {
+          "source": {
+            "path": "server/internal/service/collaboration_switch_test.go",
+            "line": 332,
+            "sha256": "0de4f53edc0beacd2c36f34be87dd5f665dcea94c11fceae798f1974408f8b53"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.61
+            }
+          ]
+        },
+        "internal/handler::TestCollaborationSwitchHTTPMachineCannotBorrowOwnerConsent": {
+          "source": {
+            "path": "server/internal/handler/collaboration_switch_test.go",
+            "line": 62,
+            "sha256": "d98791c1350ae1fd7072c110ef9c67d52accbd6324a6a82b23b609caf1cf4828"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0
+            }
+          ]
+        },
+        "internal/service::TestCollaborationAtomicSwitchStagingDoesNotChangeLiveConfiguration": {
+          "source": {
+            "path": "server/internal/service/collaboration_switch_test.go",
+            "line": 66,
+            "sha256": "0de4f53edc0beacd2c36f34be87dd5f665dcea94c11fceae798f1974408f8b53"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.23
+            }
+          ]
+        }
+      },
+      "primary_layer": "P4 资源/执行协议",
+      "decision": "approve_promotion",
+      "clause_assessment": "Atomic proposal commit requires every new owner consent, exact lifecycle/config/hold/binding and old proof; machine and nonmanager authority cannot borrow consent. No live target changes on refusal.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationAtomicSwitchRequiresEachOwnersNewConsent",
+        "internal/service::TestCollaborationAtomicSwitchRejectsStaleConfigurationAndConsent",
+        "internal/service::TestCollaborationAtomicSwitchRejectsContradictoryOldChannel",
+        "internal/handler::TestCollaborationSwitchHTTPMachineCannotBorrowOwnerConsent",
+        "internal/service::TestCollaborationAtomicSwitchStagingDoesNotChangeLiveConfiguration"
+      ]
+    },
+    {
+      "id": "AC40",
+      "primary_owner": "P4",
+      "criterion": "明确范围的环境切换保留同单历史、指令原目标及状态，继续挂起；明确恢复后才在合法新环境接续，不重做停止/取消条目，不把 @A 改成 @B。新增目标与环境替换分别处理，普通转交不隐式切换；小队换队长时等待输入转入新队长通道末尾，恢复该小队前不执行、可单条取消，不阻塞新通道其他目标；切换控制遵守已确认 M02，替换资源须由对应拥有者按单授权，不改变指令原目标。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationCommandHistorySwitchThenCancelPreservesHistoricalPlacement": {
+          "source": {
+            "path": "server/internal/service/collaboration_command_history_execution_test.go",
+            "line": 212,
+            "sha256": "6978398af22418d18d081aa48a964137708d9b96730c902efdb5aee493a25cf1"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 0.4
+            }
+          ]
+        },
+        "internal/service::TestCollaborationWorkflowInviteTransferPreservesExecution": {
+          "source": {
+            "path": "server/internal/service/collaboration_workflow_test.go",
+            "line": 705,
+            "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.25
+            }
+          ]
+        },
+        "internal/service::TestCollaborationAtomicSwitchMovesWaitingAndRetainsProofHistory": {
+          "source": {
+            "path": "server/internal/service/collaboration_switch_test.go",
+            "line": 205,
+            "sha256": "0de4f53edc0beacd2c36f34be87dd5f665dcea94c11fceae798f1974408f8b53"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.73
+            }
+          ]
+        },
+        "internal/service::TestCollaborationExecutionViewSwitchKeepsOriginalHistory": {
+          "source": {
+            "path": "server/internal/service/collaboration_execution_history_test.go",
+            "line": 149,
+            "sha256": "c6ebebe29280f519eddd69df49370e81afc4407c98a5217947a3e3b9f740bccf"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0
+            }
+          ]
+        }
+      },
+      "primary_layer": "P4 资源/执行协议",
+      "decision": "pending",
+      "clause_assessment": "Public staged atomic Switch proves consent/hold/history and new-leader tail placement, and fixture ReconfigureTarget tests prove control primitives. Missing a current public atomic Switch to a new leader followed by fresh explicit Resume/claim while the destination is busy, proving unrelated destination work is preserved and stopped/cancelled entries are not replayed. Test-only ReconfigureTarget is not that public flow.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationCommandHistorySwitchThenCancelPreservesHistoricalPlacement",
+        "internal/service::TestCollaborationWorkflowInviteTransferPreservesExecution",
+        "internal/service::TestCollaborationAtomicSwitchMovesWaitingAndRetainsProofHistory",
+        "internal/service::TestCollaborationExecutionViewSwitchKeepsOriginalHistory"
+      ]
+    },
+    {
+      "id": "AC41",
+      "primary_owner": "P4",
+      "criterion": "新环境可以基于已提交的 Git 代码或明确交付的附件准备本单所需文件；准备文件或完成环境切换本身不启动执行，仍须满足 R26 的授权、停止确认和明确恢复条件。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationRuntimePreparationFreezesActualInputsAndDeliveredVersions": {
+          "source": {
+            "path": "server/internal/service/collaboration_runtime_preparation_test.go",
+            "line": 145,
+            "sha256": "5fdb09fa47c4f3e8df0078af9a9eae9324e9544364534afaa1fd79439f46b385"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 0.61
+            }
+          ]
+        },
+        "internal/service::TestCollaborationRuntimePreparationFreezesAdmittedCommit": {
+          "source": {
+            "path": "server/internal/service/collaboration_runtime_preparation_test.go",
+            "line": 467,
+            "sha256": "5fdb09fa47c4f3e8df0078af9a9eae9324e9544364534afaa1fd79439f46b385"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 0.47
+            }
+          ]
+        },
+        "internal/service::TestCollaborationRuntimePreparationScopeAndRevocation": {
+          "source": {
+            "path": "server/internal/service/collaboration_runtime_preparation_test.go",
+            "line": 203,
+            "sha256": "5fdb09fa47c4f3e8df0078af9a9eae9324e9544364534afaa1fd79439f46b385"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 0.65
+            }
+          ]
+        },
+        "internal/daemon/collaborationrun::TestLinuxPreparedGitExportsOnlyFixedCommitWithExplicitDynamicTools": {
+          "source": {
+            "path": "server/internal/daemon/collaborationrun/preparation_git_linux_test.go",
+            "line": 137,
+            "sha256": "89a31179e42c9a4935a50aa9df2888c3fc2bd9e60c228437172cfc46a6c16bd8"
+          },
+          "pass": [
+            {
+              "artifact": "/tmp/multica-gap-recovery-20261021-h6phxwo9/review-s4/native-settings-green.log",
+              "status": "PASS actual linux",
+              "run_id": "s4-native"
+            }
+          ]
+        },
+        "internal/daemon/collaborationrun::TestLinuxPreparedRunMaterializesFilesAndUsesFreshExplicitAccount": {
+          "source": {
+            "path": "server/internal/daemon/collaborationrun/preparation_linux_test.go",
+            "line": 435,
+            "sha256": "455f6ccb2e061cbc6b495d2e9ed6c9c65c2ea51f3f796a24048840e1281aad95"
+          },
+          "pass": [
+            {
+              "artifact": "/tmp/multica-gap-recovery-20261021-h6phxwo9/review-s4/native-settings-green.log",
+              "status": "PASS actual linux",
+              "run_id": "s4-native"
+            }
+          ]
+        },
+        "internal/service::TestCollaborationAtomicSwitchMovesWaitingAndRetainsProofHistory": {
+          "source": {
+            "path": "server/internal/service/collaboration_switch_test.go",
+            "line": 205,
+            "sha256": "0de4f53edc0beacd2c36f34be87dd5f665dcea94c11fceae798f1974408f8b53"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.73
+            }
+          ]
+        }
+      },
+      "primary_layer": "P4 资源/执行协议",
+      "decision": "approve_promotion",
+      "clause_assessment": "Current preparation freezes delivered file versions and explicit Git commit; hash-matching actual Linux preparation tests export fixed committed content to a fresh environment. Switch remains held and launch still requires its ordinary proof/authority/Resume gates; no real account is inferred.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationRuntimePreparationFreezesActualInputsAndDeliveredVersions",
+        "internal/service::TestCollaborationRuntimePreparationFreezesAdmittedCommit",
+        "internal/service::TestCollaborationRuntimePreparationScopeAndRevocation",
+        "internal/daemon/collaborationrun::TestLinuxPreparedGitExportsOnlyFixedCommitWithExplicitDynamicTools",
+        "internal/daemon/collaborationrun::TestLinuxPreparedRunMaterializesFilesAndUsesFreshExplicitAccount",
+        "internal/service::TestCollaborationAtomicSwitchMovesWaitingAndRetainsProofHistory"
+      ]
+    },
+    {
+      "id": "AC45",
+      "primary_owner": "P1",
+      "criterion": "可以使用同一 Server 内接收人的完整用户名、邮箱或账号 ID 精确定位并确认目标；姓名片段、空查询或模糊条件不能通过本功能列出账号目录。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationRecipientExactLookupAndNoWrites": {
+          "source": {
+            "path": "server/internal/service/collaboration_recipients_test.go",
+            "line": 26,
+            "sha256": "2e579cb4cd2fba68cf77b9fd96f55ef1979e0aec22e26ee2a1c302fdd92c549b"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.21
+            }
+          ]
+        },
+        "internal/service::TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase": {
+          "source": {
+            "path": "server/internal/service/collaboration_recipients_test.go",
+            "line": 108,
+            "sha256": "2e579cb4cd2fba68cf77b9fd96f55ef1979e0aec22e26ee2a1c302fdd92c549b"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.01
+            }
+          ]
+        },
+        "internal/service::TestCollaborationRecipientAmbiguousAndUnavailable": {
+          "source": {
+            "path": "server/internal/service/collaboration_recipients_test.go",
+            "line": 149,
+            "sha256": "2e579cb4cd2fba68cf77b9fd96f55ef1979e0aec22e26ee2a1c302fdd92c549b"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 1.09
+            }
+          ]
+        },
+        "internal/handler::TestResolveCollaborationRecipientStrictBody": {
+          "source": {
+            "path": "server/internal/handler/collaboration_recipients_test.go",
+            "line": 36,
+            "sha256": "216c124269f76d9da94d78bce5156ae94b46feed5e7517e12c4aa3cd355f572c"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0
+            }
+          ]
+        }
+      },
+      "primary_layer": "P1 数据/权限",
+      "decision": "approve_promotion",
+      "clause_assessment": "Exact complete username/email/user_id normalization returns one minimal account; partial names, empty/wildcard/ambiguous/malformed inputs are refused before directory lookup or writes.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationRecipientExactLookupAndNoWrites",
+        "internal/service::TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase",
+        "internal/service::TestCollaborationRecipientAmbiguousAndUnavailable",
+        "internal/handler::TestResolveCollaborationRecipientStrictBody"
+      ]
+    },
+    {
+      "id": "AC46",
+      "primary_owner": "P1",
+      "criterion": "精确查找成功本身不会新增协作者或转交任务；只有具备相应权限的人明确确认操作后才变更协作关系或处理责任，无匹配账号时不产生这些变更。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals": {
+          "source": {
+            "path": "server/internal/service/collaboration_workflow_test.go",
+            "line": 346,
+            "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 1.88
+            }
+          ]
+        },
+        "internal/service::TestCollaborationRecipientExactLookupAndNoWrites": {
+          "source": {
+            "path": "server/internal/service/collaboration_recipients_test.go",
+            "line": 26,
+            "sha256": "2e579cb4cd2fba68cf77b9fd96f55ef1979e0aec22e26ee2a1c302fdd92c549b"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.21
+            }
+          ]
+        },
+        "internal/service::TestCollaborationRecipientContextAuthorizationPrecedesLookup": {
+          "source": {
+            "path": "server/internal/service/collaboration_recipients_test.go",
+            "line": 194,
+            "sha256": "2e579cb4cd2fba68cf77b9fd96f55ef1979e0aec22e26ee2a1c302fdd92c549b"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 2.84
+            }
+          ]
+        },
+        "internal/service::TestCollaborationRecipientRechecksAuthorityAfterCandidateLookup": {
+          "source": {
+            "path": "server/internal/service/collaboration_recipients_test.go",
+            "line": 284,
+            "sha256": "2e579cb4cd2fba68cf77b9fd96f55ef1979e0aec22e26ee2a1c302fdd92c549b"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.92
+            }
+          ]
+        }
+      },
+      "primary_layer": "P1 数据/权限",
+      "decision": "approve_promotion",
+      "clause_assessment": "Recipient lookup succeeds in a DB-enforced read-only transaction and snapshots participant/member/grant/issue/events unchanged. Current management authority is rechecked after candidate lookup; only separate explicit operations mutate relationships.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals",
+        "internal/service::TestCollaborationRecipientExactLookupAndNoWrites",
+        "internal/service::TestCollaborationRecipientContextAuthorizationPrecedesLookup",
+        "internal/service::TestCollaborationRecipientRechecksAuthorityAfterCandidateLookup"
+      ]
+    },
+    {
+      "id": "AC48",
+      "primary_owner": "P5",
+      "criterion": "主动退出后，原协作权限失效，本人未执行指令自动取消；若本人指令正在运行，则请求停止并挂起所属通道，其他协作者的排队指令保留。退出者不能再发起控制或恢复，停止未确认时仍拒绝恢复。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution": {
+          "source": {
+            "path": "server/internal/service/collaboration_workflow_test.go",
+            "line": 215,
+            "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 1.04
+            }
+          ]
+        },
+        "internal/service::TestCollaborationWorkflowVoluntaryLeaveAndMinimalRecovery": {
+          "source": {
+            "path": "server/internal/service/collaboration_workflow_test.go",
+            "line": 167,
+            "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.25
+            }
+          ]
+        },
+        "internal/service::TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent": {
+          "source": {
+            "path": "server/internal/service/collaboration_queue_test.go",
+            "line": 291,
+            "sha256": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.53
+            }
+          ]
+        }
+      },
+      "primary_layer": "P5 队列/终结",
+      "decision": "approve_promotion",
+      "clause_assessment": "Leave/removal cancels only obsolete author waiting input, stops its consumed work with retained proof barrier, and preserves other authors. Current-only authority blocks departed controls; historical receipt recovery remains minimal.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution",
+        "internal/service::TestCollaborationWorkflowVoluntaryLeaveAndMinimalRecovery",
+        "internal/service::TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent"
+      ]
+    },
+    {
+      "id": "AC50",
+      "primary_owner": "P4",
+      "criterion": "资源拥有者重新加入本单不会自动恢复原授权或队列；须在旧执行确认结束并重新取得有效授权后，由有权限的协作者明确恢复。该离开事件不撤回其对其他任务提供的授权。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof": {
+          "source": {
+            "path": "server/internal/service/collaboration_workflow_test.go",
+            "line": 51,
+            "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 2.03
+            }
+          ]
+        },
+        "internal/service::TestCollaborationPermissionRestoreCannotReviveConsent": {
+          "source": {
+            "path": "server/internal/service/collaboration_authority_test.go",
+            "line": 219,
+            "sha256": "9804e0705acf9270b542e5476a7770d691b6fa26658558e24f050565d48cdfd9"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.21
+            }
+          ]
+        },
+        "internal/service::TestCollaborationReconsentHoldRequiresFreshResumeBeforeLaunch": {
+          "source": {
+            "path": "server/internal/service/collaboration_hold_test.go",
+            "line": 133,
+            "sha256": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.43
+            }
+          ]
+        }
+      },
+      "primary_layer": "P4 资源/执行协议",
+      "decision": "pending",
+      "clause_assessment": "Reinvite leaves old grant revoked and old commands cancelled; fresh consent/Resume guards pass. The same departing owner/resource grant on another issue is not snapshotted, so the explicit other-task grant-isolation clause is still pending.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof",
+        "internal/service::TestCollaborationPermissionRestoreCannotReviveConsent",
+        "internal/service::TestCollaborationReconsentHoldRequiresFreshResumeBeforeLaunch"
+      ]
+    },
+    {
+      "id": "AC58",
+      "primary_owner": "P5",
+      "criterion": "已完成或已取消的任务不能通过 @智能体/小队、旧“发给 AI”入口或恢复继续执行，也不能新增派生工作。重开不复活停止/取消条目，旧执行及其应收尾派生工作未确认结束时遵守恢复屏障；相同结束类别的自定义状态也适用。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue": {
+          "source": {
+            "path": "server/internal/service/collaboration_lifecycle_test.go",
+            "line": 53,
+            "sha256": "164c27d7f3e34ac838607b73ecb3f02a6c12d7ab19ac685636d0110404d5842f"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 1.08
+            }
+          ]
+        },
+        "internal/service::TestCollaborationSquadActivityAndProofRemainSeparate": {
+          "source": {
+            "path": "server/internal/service/collaboration_squad_test.go",
+            "line": 371,
+            "sha256": "9846be39515723e29e6d2a3f5f97ad3f2bfb12d3fdd9ef7d7ca2f6e57f573326"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.65
+            }
+          ]
+        },
+        "internal/handler::TestLegacyIssueWritesCannotBypassCollaborationLifecycle": {
+          "source": {
+            "path": "server/internal/handler/collaboration_boundary_test.go",
+            "line": 28,
+            "sha256": "c34b1929285db1c68d9a96b6544128a3485e7e45015f0c7d5692fb8a5abbddf0"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.01
+            }
+          ]
+        },
+        "internal/handler::TestLegacyCollaborationCommentAndRerunPathsStayInert": {
+          "source": {
+            "path": "server/internal/handler/collaboration_boundary_test.go",
+            "line": 181,
+            "sha256": "c34b1929285db1c68d9a96b6544128a3485e7e45015f0c7d5692fb8a5abbddf0"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.01
+            }
+          ]
+        },
+        "internal/service::TestCollaborationWholeLifecycleKeepsAllTargetBarriersOnReopen": {
+          "source": {
+            "path": "server/internal/service/collaboration_targets_test.go",
+            "line": 302,
+            "sha256": "fa50282a74ab50ea4856adbcb16ff6c716db0b6a98b2215b17bd9598083aabef"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.4
+            }
+          ]
+        }
+      },
+      "primary_layer": "P5 队列/终结",
+      "decision": "approve_promotion",
+      "clause_assessment": "Whole lifecycle close cancels pending work, seals all descendant expansion and retains possibly live proof barriers. Reopen remains paused and old commands remain cancelled; legacy comment/status/rerun and terminal-category requests stay inert.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue",
+        "internal/service::TestCollaborationSquadActivityAndProofRemainSeparate",
+        "internal/handler::TestLegacyIssueWritesCannotBypassCollaborationLifecycle",
+        "internal/handler::TestLegacyCollaborationCommentAndRerunPathsStayInert",
+        "internal/service::TestCollaborationWholeLifecycleKeepsAllTargetBarriersOnReopen"
+      ]
+    },
+    {
+      "id": "AC60",
+      "primary_owner": "P1",
+      "criterion": "来源空间普通成员未加入本单时保留查看/普通评论，但即使 @真实智能体/小队也不能触发执行；直接请求同样拒绝，不能伪装已入队。该成员不凭来源身份取得 AI 控制、转交、移除或整单管理权限。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationCommentSourceMemberAndPlainRepliesStayHumanOnly": {
+          "source": {
+            "path": "server/internal/service/collaboration_comments_test.go",
+            "line": 264,
+            "sha256": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.24
+            }
+          ]
+        },
+        "internal/service::TestCollaborationCommentPreviewDoesNotPromoteSourceMembershipToExecution": {
+          "source": {
+            "path": "server/internal/service/collaboration_mentions_test.go",
+            "line": 80,
+            "sha256": "9952655a07cf966ad29553c481e3225030ab775a47e313d1848f614ec9793bc6"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.31
+            }
+          ]
+        },
+        "internal/service::TestCollaborationAccessRevocationFallsBackOnlyToCurrentSourceMembership": {
+          "source": {
+            "path": "server/internal/service/collaboration_test.go",
+            "line": 245,
+            "sha256": "3c8b9ef3be8809966946e03b0927f336b3f0611392fe563fb1dd6edabd321c52"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.15
+            }
+          ]
+        }
+      },
+      "primary_layer": "P1 数据/权限",
+      "decision": "approve_promotion",
+      "clause_assessment": "Source-only member retains ordinary read/comment; actual typed AI preview/send produces blocked not_participant without a command or membership. Capability predicates withhold control/transfer/lifecycle authority.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationCommentSourceMemberAndPlainRepliesStayHumanOnly",
+        "internal/service::TestCollaborationCommentPreviewDoesNotPromoteSourceMembershipToExecution",
+        "internal/service::TestCollaborationAccessRevocationFallsBackOnlyToCurrentSourceMembership"
+      ]
+    },
+    {
+      "id": "AC61",
+      "primary_owner": "P3",
+      "criterion": "账号退出或被移出本单协作后，若来源空间成员身份仍有效，可以继续凭该身份查看和普通评论，但旧协作控制权限失效；若两种访问依据都已失效，详情、历史、附件和实时访问均应拒绝。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationWorkflowVoluntaryLeaveAndMinimalRecovery": {
+          "source": {
+            "path": "server/internal/service/collaboration_workflow_test.go",
+            "line": 167,
+            "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.25
+            }
+          ]
+        },
+        "internal/handler::TestCollaborationCommandHistoryHTTPPagingAndPrivateBoundary": {
+          "source": {
+            "path": "server/internal/handler/collaboration_command_history_test.go",
+            "line": 31,
+            "sha256": "4f284f5822d6e0bc390554d123b05741c0397dc336c043d06a604b6c0aac9a16"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.05
+            }
+          ]
+        },
+        "internal/service::TestCollaborationAccessRevocationFallsBackOnlyToCurrentSourceMembership": {
+          "source": {
+            "path": "server/internal/service/collaboration_test.go",
+            "line": 245,
+            "sha256": "3c8b9ef3be8809966946e03b0927f336b3f0611392fe563fb1dd6edabd321c52"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.15
+            }
+          ]
+        },
+        "internal/service::TestCollaborationRealtimeAuthorizationKeepsIndependentReadBases": {
+          "source": {
+            "path": "server/internal/service/collaboration_realtime_test.go",
+            "line": 35,
+            "sha256": "9609106d2d5728e3fefaea00a93f5ad77b964789480cdee6803016841b1d2439"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.14
+            }
+          ]
+        },
+        "internal/service::TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity": {
+          "source": {
+            "path": "server/internal/service/collaboration_attachments_test.go",
+            "line": 293,
+            "sha256": "6231ea4376e93e0efd6e05672a2ab02816755e008b107f9a7020b97da1fe021f"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.2
+            }
+          ]
+        }
+      },
+      "primary_layer": "P3 内容/实时",
+      "decision": "approve_promotion",
+      "clause_assessment": "Independent source membership survives participant revocation solely for read/comment. Losing both bases denies detail, history, native bytes and realtime; a rejoined membership never redeems its predecessor capability.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationWorkflowVoluntaryLeaveAndMinimalRecovery",
+        "internal/handler::TestCollaborationCommandHistoryHTTPPagingAndPrivateBoundary",
+        "internal/service::TestCollaborationAccessRevocationFallsBackOnlyToCurrentSourceMembership",
+        "internal/service::TestCollaborationRealtimeAuthorizationKeepsIndependentReadBases",
+        "internal/service::TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity"
+      ]
+    },
+    {
+      "id": "AC62",
+      "primary_owner": "P2",
+      "criterion": "来源工作空间存在共享任务记录时，删除请求被拒绝并告知原因；记录处于完成或取消状态，或者其他协作者已退出，都不能绕过这一限制。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/handler::TestWorkspaceWithCollaborationHistoryCannotBeDeleted": {
+          "source": {
+            "path": "server/internal/handler/collaboration_boundary_test.go",
+            "line": 132,
+            "sha256": "c34b1929285db1c68d9a96b6544128a3485e7e45015f0c7d5692fb8a5abbddf0"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.04
+            }
+          ]
+        }
+      },
+      "primary_layer": "P2 流转/责任",
+      "decision": "approve_promotion",
+      "clause_assessment": "Deletion HTTP tests reject todo/done/cancelled and preserve their retained snapshot with an explicit code. WorkspaceHasCollaborationRecords queries retained source records and does not depend on participant liveness; exits cannot bypass it.",
+      "required_test_identities": [
+        "internal/handler::TestWorkspaceWithCollaborationHistoryCannotBeDeleted"
+      ]
+    },
+    {
+      "id": "AC64",
+      "primary_owner": "P2",
+      "criterion": "协作者退出、被移除或账号被禁用，不会因此删除已形成的本单历史、执行记录或已交付附件；账号及权限失效也不能通过保留的历史记录恢复其访问能力。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationCommandHistoryOutlivesCommentAndAttachmentDisplay": {
+          "source": {
+            "path": "server/internal/service/collaboration_command_history_test.go",
+            "line": 94,
+            "sha256": "869196731ce555206557c1464a4495a1aad6bab3aed22994ba56fcedb16df976"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 0.25
+            }
+          ]
+        },
+        "internal/service::TestCollaborationRunRecordsPagingFrozenInputsAndRetention": {
+          "source": {
+            "path": "server/internal/service/collaboration_records_test.go",
+            "line": 29,
+            "sha256": "1db8526fdc0dedff17a719fefe93c4e5c145d308c9f4651abc18dfda2d5fbe50"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.73
+            }
+          ]
+        },
+        "internal/service::TestCollaborationPreparationRecordsRetainedAfterCleanup": {
+          "source": {
+            "path": "server/internal/service/collaboration_preparation_records_test.go",
+            "line": 189,
+            "sha256": "c3cf1263ea713bc7315630ae3464da68ee79fc91fb7ba3030829a6aff01283c2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.61
+            }
+          ]
+        },
+        "internal/service::TestCollaborationAccountReconciliationDisableRestore": {
+          "source": {
+            "path": "server/internal/service/collaboration_account_reconciliation_test.go",
+            "line": 143,
+            "sha256": "47540f2623cc3652e9e310f733e2f08e7954379e0dddd8739079d16782775cd5"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 3.52
+            }
+          ]
+        },
+        "internal/handler::TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes": {
+          "source": {
+            "path": "server/internal/handler/collaboration_attachments_test.go",
+            "line": 59,
+            "sha256": "63922cf6442ad54ed794492ea0450c58b5e9d95f5502d0c4d2b473d377d0119e"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.05
+            }
+          ]
+        }
+      },
+      "primary_layer": "P2 流转/责任",
+      "decision": "approve_promotion",
+      "clause_assessment": "Command/attachment display and engine/resource cleanup leave source-owned historical records and delivery; account disable/restore invalidation preserves immutable run/proof identity. Current ACL rejects revoked readers and old capabilities.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationCommandHistoryOutlivesCommentAndAttachmentDisplay",
+        "internal/service::TestCollaborationRunRecordsPagingFrozenInputsAndRetention",
+        "internal/service::TestCollaborationPreparationRecordsRetainedAfterCleanup",
+        "internal/service::TestCollaborationAccountReconciliationDisableRestore",
+        "internal/handler::TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes"
+      ]
+    },
+    {
+      "id": "AC68",
+      "primary_owner": "P1",
+      "criterion": "首版不暴露存量普通任务直接转换入口，旧普通任务及其既有执行、附件按原契约运行；不能通过改标记、旧 API 或客户端补请求绕过协作任务的创建与权限初始化。",
+      "current_status": "passed",
+      "identities": {
+        "internal/handler::TestLegacyIssueWritesCannotBypassCollaborationLifecycle": {
+          "source": {
+            "path": "server/internal/handler/collaboration_boundary_test.go",
+            "line": 28,
+            "sha256": "c34b1929285db1c68d9a96b6544128a3485e7e45015f0c7d5692fb8a5abbddf0"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.01
+            }
+          ]
+        },
+        "internal/handler::TestLegacyCollaborationCommentAndRerunPathsStayInert": {
+          "source": {
+            "path": "server/internal/handler/collaboration_boundary_test.go",
+            "line": 181,
+            "sha256": "c34b1929285db1c68d9a96b6544128a3485e7e45015f0c7d5692fb8a5abbddf0"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.01
+            }
+          ]
+        },
+        "internal/handler::TestLegacyMixedBatchRefusesBeforeAnyCollaborationSideEffects": {
+          "source": {
+            "path": "server/internal/handler/collaboration_boundary_test.go",
+            "line": 115,
+            "sha256": "c34b1929285db1c68d9a96b6544128a3485e7e45015f0c7d5692fb8a5abbddf0"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.01
+            }
+          ]
+        },
+        "internal/service::TestLegacyExecutionSQLBoundaryAndOrdinaryChild": {
+          "source": {
+            "path": "server/internal/service/legacy_execution_boundary_test.go",
+            "line": 139,
+            "sha256": "8488f844a6525deed9540ac9fc1de3ac4636cd84000268a0aa540ba58a6c7e28"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 4.71
+            }
+          ]
+        },
+        "internal/service::TestLegacyExecutionQuickCreateReferenceAndCapturedSource": {
+          "source": {
+            "path": "server/internal/service/legacy_execution_boundary_test.go",
+            "line": 357,
+            "sha256": "8488f844a6525deed9540ac9fc1de3ac4636cd84000268a0aa540ba58a6c7e28"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 0.4
+            }
+          ]
+        },
+        "internal/service::TestLegacyExecutionUnrelatedChatAndQuickCreateStillStart": {
+          "source": {
+            "path": "server/internal/service/legacy_execution_boundary_test.go",
+            "line": 389,
+            "sha256": "8488f844a6525deed9540ac9fc1de3ac4636cd84000268a0aa540ba58a6c7e28"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 0.34
+            }
+          ]
+        }
+      },
+      "primary_layer": "P1 数据/权限",
+      "decision": "retain_passed",
+      "clause_assessment": "Current handler legacy/mixed-batch refusals occur before effects; ordinary/ordinary-child enqueue/claim/retry/quick-create/chat still work; collaboration attachments cannot escape ordinary download/capability boundaries. P1 backend proof, not installed old-binary acceptance.",
+      "required_test_identities": [
+        "internal/handler::TestLegacyIssueWritesCannotBypassCollaborationLifecycle",
+        "internal/handler::TestLegacyCollaborationCommentAndRerunPathsStayInert",
+        "internal/handler::TestLegacyMixedBatchRefusesBeforeAnyCollaborationSideEffects",
+        "internal/service::TestLegacyExecutionSQLBoundaryAndOrdinaryChild",
+        "internal/service::TestLegacyExecutionQuickCreateReferenceAndCapturedSource",
+        "internal/service::TestLegacyExecutionUnrelatedChatAndQuickCreateStillStart"
+      ]
+    },
+    {
+      "id": "AC71",
+      "primary_owner": "P1",
+      "criterion": "有效发起人和当前处理人均可修改同一协作任务的标题、正文，其他获授权查看者能看到最新内容及修改记录；记录包含真实操作者、时间和前后内容，失败不留下部分修改。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationEditRecordsCurrentActorAndImmutableExecution": {
+          "source": {
+            "path": "server/internal/service/collaboration_edit_test.go",
+            "line": 28,
+            "sha256": "06296f55e29fa5e5304e8ce24bf1b4b212f223b4b9f0ea81a752e75886090b2c"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.85
+            }
+          ]
+        },
+        "internal/service::TestCollaborationEditRequiredWritesRollbackTogether": {
+          "source": {
+            "path": "server/internal/service/collaboration_edit_test.go",
+            "line": 408,
+            "sha256": "06296f55e29fa5e5304e8ce24bf1b4b212f223b4b9f0ea81a752e75886090b2c"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 1.54
+            }
+          ]
+        },
+        "internal/service::TestCollaborationActivityRetainsExactHandoffAndEditHistory": {
+          "source": {
+            "path": "server/internal/service/collaboration_activity_test.go",
+            "line": 16,
+            "sha256": "1fa2e0eb52b68cee6932bd001b06b87185becdbcb246f46ef70a3e1ada7a8ee8"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.19
+            }
+          ]
+        }
+      },
+      "primary_layer": "P1 数据/权限",
+      "decision": "approve_promotion",
+      "clause_assessment": "Creator/external handler edits preserve same issue and log exact actor/time/before/after. Authorized readers see current content/activity; every required-write fault rolls back fields/versions/history/operation.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationEditRecordsCurrentActorAndImmutableExecution",
+        "internal/service::TestCollaborationEditRequiredWritesRollbackTogether",
+        "internal/service::TestCollaborationActivityRetainsExactHandoffAndEditHistory"
+      ]
+    },
+    {
+      "id": "AC72",
+      "primary_owner": "P1",
+      "criterion": "转交后非发起人的原处理人失去编辑权；仅有普通协作、来源空间成员或平台代管身份不能编辑。并发转交、撤权或过期版本不能静默覆盖正文；编辑不改写已入队 AI 指令快照，也不自动启动或恢复执行。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationEditRejectsNonEditors": {
+          "source": {
+            "path": "server/internal/service/collaboration_edit_test.go",
+            "line": 116,
+            "sha256": "06296f55e29fa5e5304e8ce24bf1b4b212f223b4b9f0ea81a752e75886090b2c"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 1.97
+            }
+          ]
+        },
+        "internal/service::TestCollaborationEditAndTransferSerializeAtCommit": {
+          "source": {
+            "path": "server/internal/service/collaboration_edit_test.go",
+            "line": 304,
+            "sha256": "06296f55e29fa5e5304e8ce24bf1b4b212f223b4b9f0ea81a752e75886090b2c"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.62
+            }
+          ]
+        },
+        "internal/service::TestCollaborationEditRechecksDeactivationAfterAccountLock": {
+          "source": {
+            "path": "server/internal/service/collaboration_edit_test.go",
+            "line": 365,
+            "sha256": "06296f55e29fa5e5304e8ce24bf1b4b212f223b4b9f0ea81a752e75886090b2c"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.57
+            }
+          ]
+        },
+        "internal/service::TestCollaborationEditStaleVersionsAndExactRecovery": {
+          "source": {
+            "path": "server/internal/service/collaboration_edit_test.go",
+            "line": 202,
+            "sha256": "06296f55e29fa5e5304e8ce24bf1b4b212f223b4b9f0ea81a752e75886090b2c"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.23
+            }
+          ]
+        },
+        "internal/service::TestCollaborationEditRecordsCurrentActorAndImmutableExecution": {
+          "source": {
+            "path": "server/internal/service/collaboration_edit_test.go",
+            "line": 28,
+            "sha256": "06296f55e29fa5e5304e8ce24bf1b4b212f223b4b9f0ea81a752e75886090b2c"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.85
+            }
+          ]
+        }
+      },
+      "primary_layer": "P1 数据/权限",
+      "decision": "approve_promotion",
+      "clause_assessment": "Noneditor/former-handler/source/disabled/machine matrices refuse. Deterministic edit-first/transfer-first and account-lock rechecks prevent stale overwrites; immutable running/waiting inputs and launch/control state remain unchanged.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationEditRejectsNonEditors",
+        "internal/service::TestCollaborationEditAndTransferSerializeAtCommit",
+        "internal/service::TestCollaborationEditRechecksDeactivationAfterAccountLock",
+        "internal/service::TestCollaborationEditStaleVersionsAndExactRecovery",
+        "internal/service::TestCollaborationEditRecordsCurrentActorAndImmutableExecution"
+      ]
+    },
+    {
+      "id": "AC73",
+      "primary_owner": "P1",
+      "criterion": "发起人和当前处理人可修改本单优先级、标签及自定义字段值；选项取来源空间，其他空间或失效选项不能写入。转交后非发起人的原处理人及普通协作者无此权；跨空间编辑不开放无关资源或标签/字段定义管理，冲突、失败不留下部分修改。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationFieldsTypedValuesAndHistory": {
+          "source": {
+            "path": "server/internal/service/collaboration_fields_test.go",
+            "line": 55,
+            "sha256": "0613434d77b017f287d67c7689a3cd59be3a8c68f2c8b486409ec5ba85b4eef8"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.25
+            }
+          ]
+        },
+        "internal/service::TestCollaborationFieldsRejectInvalidSourceAndValues": {
+          "source": {
+            "path": "server/internal/service/collaboration_fields_test.go",
+            "line": 166,
+            "sha256": "0613434d77b017f287d67c7689a3cd59be3a8c68f2c8b486409ec5ba85b4eef8"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 4.3
+            }
+          ]
+        },
+        "internal/service::TestCollaborationFieldsLabelRequiredWritesRollback": {
+          "source": {
+            "path": "server/internal/service/collaboration_fields_test.go",
+            "line": 241,
+            "sha256": "0613434d77b017f287d67c7689a3cd59be3a8c68f2c8b486409ec5ba85b4eef8"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.37
+            }
+          ]
+        },
+        "internal/service::TestCollaborationFieldsRecheckAfterSourceDefinitionContention": {
+          "source": {
+            "path": "server/internal/service/collaboration_fields_test.go",
+            "line": 350,
+            "sha256": "0613434d77b017f287d67c7689a3cd59be3a8c68f2c8b486409ec5ba85b4eef8"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 1.32
+            }
+          ]
+        },
+        "internal/service::TestCollaborationFieldOptionsAuthorityAndProjection": {
+          "source": {
+            "path": "server/internal/service/collaboration_fields_test.go",
+            "line": 475,
+            "sha256": "0613434d77b017f287d67c7689a3cd59be3a8c68f2c8b486409ec5ba85b4eef8"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.24
+            }
+          ]
+        },
+        "internal/service::TestCollaborationEditRejectsNonEditors": {
+          "source": {
+            "path": "server/internal/service/collaboration_edit_test.go",
+            "line": 116,
+            "sha256": "06296f55e29fa5e5304e8ce24bf1b4b212f223b4b9f0ea81a752e75886090b2c"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 1.97
+            }
+          ]
+        }
+      },
+      "primary_layer": "P1 数据/权限",
+      "decision": "approve_promotion",
+      "clause_assessment": "Typed priority/labels/properties use source-owned options and strict values; foreign/archived options and stale definitions roll back atomically. Noneditor role matrix and source field-options projection keep unrelated management inaccessible.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationFieldsTypedValuesAndHistory",
+        "internal/service::TestCollaborationFieldsRejectInvalidSourceAndValues",
+        "internal/service::TestCollaborationFieldsLabelRequiredWritesRollback",
+        "internal/service::TestCollaborationFieldsRecheckAfterSourceDefinitionContention",
+        "internal/service::TestCollaborationFieldOptionsAuthorityAndProjection",
+        "internal/service::TestCollaborationEditRejectsNonEditors"
+      ]
+    },
+    {
+      "id": "AC74",
+      "primary_owner": "P3",
+      "criterion": "仍有本单评论权限的作者可编辑/删除自己的普通评论；编辑历史可查，删除显示标记并保留回复定位和真实操作者。非作者或失去评论权限者被拒绝；并发编辑/删除及重试不抹历史或复活已删除评论，不改 AI 指令/执行/审计，也不触发执行。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationCommentAuthorEditRetainsHistoryAndDeletedReplyAnchor": {
+          "source": {
+            "path": "server/internal/service/collaboration_comments_test.go",
+            "line": 143,
+            "sha256": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.2
+            }
+          ]
+        },
+        "internal/service::TestCollaborationCommentEditsSerializeAndUnknownCommitDoesNotRepeat": {
+          "source": {
+            "path": "server/internal/service/collaboration_comments_test.go",
+            "line": 189,
+            "sha256": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.27
+            }
+          ]
+        },
+        "internal/service::TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification": {
+          "source": {
+            "path": "server/internal/service/collaboration_comments_test.go",
+            "line": 243,
+            "sha256": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.7
+            }
+          ]
+        },
+        "internal/service::TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing": {
+          "source": {
+            "path": "server/internal/service/collaboration_comments_test.go",
+            "line": 81,
+            "sha256": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.28
+            }
+          ]
+        },
+        "internal/handler::TestCollaborationCommentHTTPKeepsAuthorControlHistoryAndPrivateProjection": {
+          "source": {
+            "path": "server/internal/handler/collaboration_comments_test.go",
+            "line": 30,
+            "sha256": "a1fa453c133baffa5bac3a0b609f56d5cbdaf96e0cae4957019b02db896cd7d1"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.03
+            }
+          ]
+        }
+      },
+      "primary_layer": "P3 内容/实时",
+      "decision": "pending",
+      "clause_assessment": "Current concurrency test races two edits and checks one stale result; separate sequential edit/delete is green. No current deterministic edit-versus-delete contention proves both orderings retain history and cannot revive a tombstone. Keep the explicit concurrent edit/delete clause pending.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationCommentAuthorEditRetainsHistoryAndDeletedReplyAnchor",
+        "internal/service::TestCollaborationCommentEditsSerializeAndUnknownCommitDoesNotRepeat",
+        "internal/service::TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification",
+        "internal/service::TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing",
+        "internal/handler::TestCollaborationCommentHTTPKeepsAuthorControlHistoryAndPrivateProjection"
+      ]
+    },
+    {
+      "id": "AC76",
+      "primary_owner": "P5",
+      "criterion": "指令 1 执行、2/3 等待时，具备当前协作权限的 3 的作者、发起人或当前处理人可取消 3，保留原文/作者及取消者/时间；1 不停止，2 顺序不变，已挂起队列不恢复。其他协作者或失权者被拒绝；取消与开始竞争时只按当前状态生效，已进入当前执行则明确拒绝且不自动转为停止，重试不重复记录或复活指令。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationCommandCancellationExactProvenance": {
+          "source": {
+            "path": "server/internal/service/collaboration_command_history_test.go",
+            "line": 21,
+            "sha256": "869196731ce555206557c1464a4495a1aad6bab3aed22994ba56fcedb16df976"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 1.29
+            }
+          ]
+        },
+        "internal/service::TestCollaborationCommandHistoryM11CancelClaimRace": {
+          "source": {
+            "path": "server/internal/service/collaboration_command_history_execution_test.go",
+            "line": 86,
+            "sha256": "6978398af22418d18d081aa48a964137708d9b96730c902efdb5aee493a25cf1"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 2.01
+            }
+          ]
+        },
+        "internal/service::TestCollaborationCommandCancellationUnknownCommitKeepsOneEvent": {
+          "source": {
+            "path": "server/internal/service/collaboration_command_history_test.go",
+            "line": 402,
+            "sha256": "869196731ce555206557c1464a4495a1aad6bab3aed22994ba56fcedb16df976"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 0.22
+            }
+          ]
+        },
+        "internal/service::TestCollaborationQueueCancelUsesCurrentRolesAndPreservesOrder": {
+          "source": {
+            "path": "server/internal/service/collaboration_queue_test.go",
+            "line": 172,
+            "sha256": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 1.65
+            }
+          ]
+        },
+        "internal/service::TestCollaborationQueueCancelRechecksStateAfterSessionLock": {
+          "source": {
+            "path": "server/internal/service/collaboration_queue_test.go",
+            "line": 385,
+            "sha256": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.31
+            }
+          ]
+        },
+        "internal/service::TestCollaborationFIFOCancellationAndPromotionSerialize": {
+          "source": {
+            "path": "server/internal/service/collaboration_fifo_test.go",
+            "line": 182,
+            "sha256": "0b15cafe54deab9448eb69716988bacae14e6df0ca3fc0e603af7075a3453f70"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.91
+            }
+          ]
+        }
+      },
+      "primary_layer": "P5 队列/终结",
+      "decision": "approve_promotion",
+      "clause_assessment": "Manual and M11 cancellation preserve exact author/body/actor/time/event; current role and state rechecks, both claim/cancel orderings, FIFO and lost-commit replay pass. AC33 supplies actual busy run/other-lane preservation and one-input cancellation.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationCommandCancellationExactProvenance",
+        "internal/service::TestCollaborationCommandHistoryM11CancelClaimRace",
+        "internal/service::TestCollaborationCommandCancellationUnknownCommitKeepsOneEvent",
+        "internal/service::TestCollaborationQueueCancelUsesCurrentRolesAndPreservesOrder",
+        "internal/service::TestCollaborationQueueCancelRechecksStateAfterSessionLock",
+        "internal/service::TestCollaborationFIFOCancellationAndPromotionSerialize"
+      ]
+    },
+    {
+      "id": "AC79",
+      "primary_owner": "P1",
+      "criterion": "发起人和当前处理人可设置、修改或清空开始/截止日期，日期格式沿用普通任务；协作者能看到真实操作者、时间及前后值。转交后非发起人的原处理人、普通协作者及来源普通成员被拒绝；修改不触发 AI、不改已入队指令，并发转交或过期版本不静默覆盖。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationEditRecordsCurrentActorAndImmutableExecution": {
+          "source": {
+            "path": "server/internal/service/collaboration_edit_test.go",
+            "line": 28,
+            "sha256": "06296f55e29fa5e5304e8ce24bf1b4b212f223b4b9f0ea81a752e75886090b2c"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.85
+            }
+          ]
+        },
+        "internal/service::TestCollaborationEditNoopAndDateValidation": {
+          "source": {
+            "path": "server/internal/service/collaboration_edit_test.go",
+            "line": 167,
+            "sha256": "06296f55e29fa5e5304e8ce24bf1b4b212f223b4b9f0ea81a752e75886090b2c"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.24
+            }
+          ]
+        },
+        "internal/service::TestCollaborationEditAndTransferSerializeAtCommit": {
+          "source": {
+            "path": "server/internal/service/collaboration_edit_test.go",
+            "line": 304,
+            "sha256": "06296f55e29fa5e5304e8ce24bf1b4b212f223b4b9f0ea81a752e75886090b2c"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.62
+            }
+          ]
+        },
+        "internal/service::TestCollaborationEditRejectsNonEditors": {
+          "source": {
+            "path": "server/internal/service/collaboration_edit_test.go",
+            "line": 116,
+            "sha256": "06296f55e29fa5e5304e8ce24bf1b4b212f223b4b9f0ea81a752e75886090b2c"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 1.97
+            }
+          ]
+        },
+        "internal/handler::TestCollaborationIssueProjectsCalendarDatesForExternalParticipant": {
+          "source": {
+            "path": "server/internal/handler/collaboration_test.go",
+            "line": 56,
+            "sha256": "62f71ba54903e0621a80cb2622e123ac2bcf853e82c44144cef4cf20610801f8"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.02
+            }
+          ]
+        }
+      },
+      "primary_layer": "P1 数据/权限",
+      "decision": "approve_promotion",
+      "clause_assessment": "Calendar date set/clear/format and external read are explicit; actor/time/before/after is retained in edit history. Current role/revision/account/transfer fences and immutable AI input/control checks pass.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationEditRecordsCurrentActorAndImmutableExecution",
+        "internal/service::TestCollaborationEditNoopAndDateValidation",
+        "internal/service::TestCollaborationEditAndTransferSerializeAtCommit",
+        "internal/service::TestCollaborationEditRejectsNonEditors",
+        "internal/handler::TestCollaborationIssueProjectsCalendarDatesForExternalParticipant"
+      ]
+    },
+    {
+      "id": "AC82",
+      "primary_owner": "P1",
+      "criterion": "来源成员可按普通任务规则把来源空间普通任务挂到协作单下或移出；子任务仍是普通任务，其 AI 执行不进入本单队列、不使用本单资源授权，也不改变本单参与人、处理人或协作版本。外部协作者在本单详情只见不可打开的最小引用，接口不返回子任务正文或来源任务目录；其他空间的任务或无权成员挂入被拒绝，移出或删除子任务不抹本单历史，失败不留部分修改。",
+      "current_status": "passed",
+      "identities": {
+        "internal/handler::TestCollaborationOrdinaryChildrenCompleteAuthorizedProjection": {
+          "source": {
+            "path": "server/internal/handler/collaboration_children_test.go",
+            "line": 16,
+            "sha256": "267bdb04fdf0a5b8358d1e12eb45ccfa7cdf83fa72291729f4aaf079235852fc"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.29
+            }
+          ]
+        },
+        "internal/handler::TestCollaborationOrdinaryChildWritesKeepParentStateAndEmitCommittedHints": {
+          "source": {
+            "path": "server/internal/handler/collaboration_children_test.go",
+            "line": 71,
+            "sha256": "267bdb04fdf0a5b8358d1e12eb45ccfa7cdf83fa72291729f4aaf079235852fc"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.08
+            }
+          ]
+        },
+        "internal/handler::TestSourceCollaborationTableAndChildMachineBoundary": {
+          "source": {
+            "path": "server/internal/handler/collaboration_source_test.go",
+            "line": 105,
+            "sha256": "4afa5217dc17e91f3462376d47e89c02c103318dd2bb63e0f1aed35fea54a655"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.03
+            }
+          ]
+        },
+        "internal/service::TestLegacyExecutionSQLBoundaryAndOrdinaryChild": {
+          "source": {
+            "path": "server/internal/service/legacy_execution_boundary_test.go",
+            "line": 139,
+            "sha256": "8488f844a6525deed9540ac9fc1de3ac4636cd84000268a0aa540ba58a6c7e28"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 4.71
+            }
+          ]
+        },
+        "internal/service::TestLegacyExecutionQuickCreateReferenceAndCapturedSource": {
+          "source": {
+            "path": "server/internal/service/legacy_execution_boundary_test.go",
+            "line": 357,
+            "sha256": "8488f844a6525deed9540ac9fc1de3ac4636cd84000268a0aa540ba58a6c7e28"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 0.4
+            }
+          ]
+        },
+        "internal/service::TestLegacyExecutionUnrelatedChatAndQuickCreateStillStart": {
+          "source": {
+            "path": "server/internal/service/legacy_execution_boundary_test.go",
+            "line": 389,
+            "sha256": "8488f844a6525deed9540ac9fc1de3ac4636cd84000268a0aa540ba58a6c7e28"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-1.jsonl",
+              "elapsed": 0.34
+            }
+          ]
+        }
+      },
+      "primary_layer": "P1 数据/权限",
+      "decision": "retain_passed",
+      "clause_assessment": "Ordinary-child attach/move/rename/detach/delete retains collaboration parent identity/history and emits content-free hints. External/machine readers receive bounded references; ordinary execution remains outside collaboration resources.",
+      "required_test_identities": [
+        "internal/handler::TestCollaborationOrdinaryChildrenCompleteAuthorizedProjection",
+        "internal/handler::TestCollaborationOrdinaryChildWritesKeepParentStateAndEmitCommittedHints",
+        "internal/handler::TestSourceCollaborationTableAndChildMachineBoundary",
+        "internal/service::TestLegacyExecutionSQLBoundaryAndOrdinaryChild",
+        "internal/service::TestLegacyExecutionQuickCreateReferenceAndCapturedSource",
+        "internal/service::TestLegacyExecutionUnrelatedChatAndQuickCreateStillStart"
+      ]
+    },
+    {
+      "id": "AC86",
+      "primary_owner": "P3",
+      "criterion": "提及选择器区分人员与 AI；人员仅本单参与者及 @all，AI 仅本单已获完整有效授权的具体智能体/小队，不显示个人或其他空间的额外资源目录。新评论有效 @agent/@squad 按 R24 执行，人员收到去重通知；非参与者不被邀请/通知/授权，@all 不吞掉显式 AI 目标。撤权/配置失效后候选移除且发送重验；正文/评论编辑只通知新增有效人员，不自动执行。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationMentionParserKeepsTypedIdentityAndExplicitTargets": {
+          "source": {
+            "path": "server/internal/service/collaboration_mentions_test.go",
+            "line": 14,
+            "sha256": "9952655a07cf966ad29553c481e3225030ab775a47e313d1848f614ec9793bc6"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0
+            }
+          ]
+        },
+        "internal/service::TestCollaborationCommentPreviewIsReadOnlyAndKeepsIndependentPeopleAndTargets": {
+          "source": {
+            "path": "server/internal/service/collaboration_mentions_test.go",
+            "line": 38,
+            "sha256": "9952655a07cf966ad29553c481e3225030ab775a47e313d1848f614ec9793bc6"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.18
+            }
+          ]
+        },
+        "internal/service::TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked": {
+          "source": {
+            "path": "server/internal/service/collaboration_comments_test.go",
+            "line": 45,
+            "sha256": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.26
+            }
+          ]
+        },
+        "internal/service::TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants": {
+          "source": {
+            "path": "server/internal/service/collaboration_comments_test.go",
+            "line": 288,
+            "sha256": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.18
+            }
+          ]
+        },
+        "internal/service::TestCollaborationBodyEditNotifiesOnlyAddedHumanMentions": {
+          "source": {
+            "path": "server/internal/service/collaboration_notifications_test.go",
+            "line": 14,
+            "sha256": "48a03c00442e08b65402e852781616f5d00b4492c9e109df02bec4b5b23524ec"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.25
+            }
+          ]
+        },
+        "internal/service::TestCollaborationConsentCurrentAuthority": {
+          "source": {
+            "path": "server/internal/service/collaboration_authority_test.go",
+            "line": 137,
+            "sha256": "9804e0705acf9270b542e5476a7770d691b6fa26658558e24f050565d48cdfd9"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 1.4
+            }
+          ]
+        }
+      },
+      "primary_layer": "P3 内容/实时",
+      "decision": "approve_promotion",
+      "clause_assessment": "Human/all and typed AI identities remain separate; valid catalog derives complete current consent and scope, stale consent/config is hidden and rejected. Mixed Web/Electron, no invite, original-key dedup and body/comment human-only edit deltas pass.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationMentionParserKeepsTypedIdentityAndExplicitTargets",
+        "internal/service::TestCollaborationCommentPreviewIsReadOnlyAndKeepsIndependentPeopleAndTargets",
+        "internal/service::TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked",
+        "internal/service::TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants",
+        "internal/service::TestCollaborationBodyEditNotifiesOnlyAddedHumanMentions",
+        "internal/service::TestCollaborationConsentCurrentAuthority"
+      ]
+    },
+    {
+      "id": "AC88",
+      "primary_owner": "P3",
+      "criterion": "参与者和来源普通成员均可解决、取消解决本单评论线程，每个线程只保留一条解决记录并显示真实操作者；也可添加、移除自己对评论和本单的表情回应。机器身份和已失去评论权限者被拒绝。解决或回应不改评论内容/历史，不影响 AI 指令或执行，不产生 R52 通知，也不在来源空间为外部创建人或评论作者写 inbox。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationDiscussionKeepsContentVersionsAndOriginalActions": {
+          "source": {
+            "path": "server/internal/service/collaboration_discussion_test.go",
+            "line": 15,
+            "sha256": "e8b8b35d30f9b58f2e1eb8c2a92c1cca7199a836e9c3a4537b8cf80ee1a39e59"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.23
+            }
+          ]
+        },
+        "internal/service::TestCollaborationDiscussionSourceAccessAndOwnReactionRemoval": {
+          "source": {
+            "path": "server/internal/service/collaboration_discussion_test.go",
+            "line": 191,
+            "sha256": "e8b8b35d30f9b58f2e1eb8c2a92c1cca7199a836e9c3a4537b8cf80ee1a39e59"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.19
+            }
+          ]
+        },
+        "internal/service::TestCollaborationDiscussionRequiredWriteFailureRollsBackResolution": {
+          "source": {
+            "path": "server/internal/service/collaboration_discussion_test.go",
+            "line": 108,
+            "sha256": "e8b8b35d30f9b58f2e1eb8c2a92c1cca7199a836e9c3a4537b8cf80ee1a39e59"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.2
+            }
+          ]
+        },
+        "internal/service::TestCollaborationDiscussionResolvesOneReplyAndPreservesDeletedRoot": {
+          "source": {
+            "path": "server/internal/service/collaboration_discussion_test.go",
+            "line": 150,
+            "sha256": "e8b8b35d30f9b58f2e1eb8c2a92c1cca7199a836e9c3a4537b8cf80ee1a39e59"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.31
+            }
+          ]
+        },
+        "internal/handler::TestCollaborationDiscussionHTTPUsesPrivateRoutesAndOwnReceipts": {
+          "source": {
+            "path": "server/internal/handler/collaboration_discussion_test.go",
+            "line": 14,
+            "sha256": "1a6f4684dd662c22e484490575ae4e506b6a7c00f07e9a3ab4c6107600c3c3e5"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.06
+            }
+          ]
+        },
+        "internal/handler::TestCollaborationDiscussionLegacyPathsCannotMutateOrNotify": {
+          "source": {
+            "path": "server/internal/handler/collaboration_discussion_test.go",
+            "line": 46,
+            "sha256": "1a6f4684dd662c22e484490575ae4e506b6a7c00f07e9a3ab4c6107600c3c3e5"
+          },
+          "pass": [
+            {
+              "artifact": "go-other-packages.jsonl",
+              "elapsed": 0.03
+            }
+          ]
+        }
+      },
+      "primary_layer": "P3 内容/实时",
+      "decision": "pending",
+      "clause_assessment": "Resolve/one-thread/reaction/ACL/rollback/machine/legacy negatives pass, but the only service unresolve attempt occurs after departure and correctly refuses. No authorized successful unresolve is asserted for a participant or source-only commenter; the full positive clause is not current evidence.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationDiscussionKeepsContentVersionsAndOriginalActions",
+        "internal/service::TestCollaborationDiscussionSourceAccessAndOwnReactionRemoval",
+        "internal/service::TestCollaborationDiscussionRequiredWriteFailureRollsBackResolution",
+        "internal/service::TestCollaborationDiscussionResolvesOneReplyAndPreservesDeletedRoot",
+        "internal/handler::TestCollaborationDiscussionHTTPUsesPrivateRoutesAndOwnReceipts",
+        "internal/handler::TestCollaborationDiscussionLegacyPathsCannotMutateOrNotify"
+      ]
+    },
+    {
+      "id": "AC90",
+      "primary_owner": "P3",
+      "criterion": "同条新评论 @人 H、智能体 A/B 和小队 S，保留一张单与一条评论，各目标有明确执行关联，H 只收一条含评论定位的账号通知；人员参与关系、当前处理人和业务状态不变，AI 执行不被人员提及抑制。",
+      "current_status": "passed",
+      "identities": {
+        "internal/service::TestCollaborationBatchCoalescesDirectAgentAndOneSquad": {
+          "source": {
+            "path": "server/internal/service/collaboration_batches_test.go",
+            "line": 127,
+            "sha256": "ece847099cc9c1fb38139177d4f25dfee9389e0cd458a4eca81519aeb421dcb8"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.28
+            }
+          ]
+        }
+      },
+      "primary_layer": "P3 内容/实时",
+      "decision": "retain_passed",
+      "clause_assessment": "Final three-test Web/Electron runs preserve one H+A+B+S comment and exact per-target command/channel/batch/input identities, one H anchor, same issue/handler/participation, and independent AI queue submission.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationBatchCoalescesDirectAgentAndOneSquad"
+      ]
+    },
+    {
+      "id": "AC91",
+      "primary_owner": "P6",
+      "criterion": "发送前预览准确显示具体 AI 目标、人员接收者及等待/暂停/不可用状态；可取消本次 AI 目标而保留文字，预览无执行/通知副作用。发送时重验已经变化的参与权限和资源状态，失败有对应目标反馈，不伪装全部成功。A 被拒、B 有效且 @人 H 时，只保存一条评论，B 入队、H 通知一次、A 无执行；重试不重复任何副作用。",
+      "current_status": "passed",
+      "identities": {},
+      "primary_layer": "P6 双端体验",
+      "decision": "retain_passed",
+      "clause_assessment": "Final Web/Electron preview/suppression/unavailable and A-revoke-after-preview tests prove truthful partial outcomes, B waiting, H exactly one notice, no A execution and identical original-key replay without extra writes.",
+      "required_test_identities": []
+    },
+    {
+      "id": "AC92",
+      "primary_owner": "P5",
+      "criterion": "重复同一 typed target、请求重试和事件重放不重复执行/通知，保留作者及输入。同条评论 @A 与 @S（队长 A）合并为一次以 S 身份的队长运行，预览注明合并；另一支由 A 任队长的小队进入通道 A 的下一批次。共享同一实际 agent/runtime 时仍受共同容量约束。",
+      "current_status": "not_verified_in_this_task",
+      "identities": {
+        "internal/service::TestCollaborationBatchCoalescesDirectAgentAndOneSquad": {
+          "source": {
+            "path": "server/internal/service/collaboration_batches_test.go",
+            "line": 127,
+            "sha256": "ece847099cc9c1fb38139177d4f25dfee9389e0cd458a4eca81519aeb421dcb8"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.28
+            }
+          ]
+        },
+        "internal/service::TestCollaborationTypedTargetsCoalesceRootAndKeepInputIdentity": {
+          "source": {
+            "path": "server/internal/service/collaboration_targets_test.go",
+            "line": 116,
+            "sha256": "fa50282a74ab50ea4856adbcb16ff6c716db0b6a98b2215b17bd9598083aabef"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.33
+            }
+          ]
+        },
+        "internal/service::TestCollaborationFIFOStopsAtSecondEligibleSquad": {
+          "source": {
+            "path": "server/internal/service/collaboration_fifo_test.go",
+            "line": 74,
+            "sha256": "0b15cafe54deab9448eb69716988bacae14e6df0ca3fc0e603af7075a3453f70"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.99
+            }
+          ]
+        },
+        "internal/service::TestCollaborationCommentPreviewGroupsTypedTargetsAndSplitsSecondSquad": {
+          "source": {
+            "path": "server/internal/service/collaboration_mention_grouping_test.go",
+            "line": 49,
+            "sha256": "52b5d5537aea565209fe29bbf7fb84f7a83703ffe7659a8bf649a0f4fb3a1ab1"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.41
+            }
+          ]
+        },
+        "internal/service::TestCollaborationQueueConcurrentSameKeyAndLargeSequence": {
+          "source": {
+            "path": "server/internal/service/collaboration_queue_test.go",
+            "line": 533,
+            "sha256": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.27
+            }
+          ]
+        },
+        "internal/service::TestCollaborationPendingDerivedRunDefersOtherLaneRoot": {
+          "source": {
+            "path": "server/internal/service/collaboration_runtime_admission_test.go",
+            "line": 104,
+            "sha256": "0d767308812728aa871caa03e460c80b7cd781e8080d3e76e9f6d8d3d0ccb83b"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 1.17
+            }
+          ]
+        },
+        "internal/service::TestCollaborationReservedCandidateIsOfferedBeforeOlderDerivedRun": {
+          "source": {
+            "path": "server/internal/service/collaboration_runtime_admission_test.go",
+            "line": 137,
+            "sha256": "0d767308812728aa871caa03e460c80b7cd781e8080d3e76e9f6d8d3d0ccb83b"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.98
+            }
+          ]
+        },
+        "internal/service::TestCollaborationRevokedDerivedRunDoesNotDeferPromotion": {
+          "source": {
+            "path": "server/internal/service/collaboration_runtime_admission_test.go",
+            "line": 161,
+            "sha256": "0d767308812728aa871caa03e460c80b7cd781e8080d3e76e9f6d8d3d0ccb83b"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.88
+            }
+          ]
+        },
+        "cmd/server::TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux": {
+          "source": {
+            "path": "server/cmd/server/collaboration_daemon_cli_routes_test.go",
+            "line": 25,
+            "sha256": "4617bbb5b1a2c782c8e6dcdfde990f1d61d86a641d541cc891c7b0a499ddba9a"
+          },
+          "pass": [
+            {
+              "artifact": "linux-router.jsonl",
+              "elapsed": 3.89
+            }
+          ]
+        }
+      },
+      "primary_layer": "P5 队列/终结",
+      "decision": "approve_promotion",
+      "clause_assessment": "Typed/event/key retries preserve one input; A plus same-leader S selects one effective squad root, second eligible squad cuts FIFO and preview follows that split. Real Linux capacity-one squad/daemon plus shared-runtime reservation/derived-priority tests corroborate common resource capacity.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationBatchCoalescesDirectAgentAndOneSquad",
+        "internal/service::TestCollaborationTypedTargetsCoalesceRootAndKeepInputIdentity",
+        "internal/service::TestCollaborationFIFOStopsAtSecondEligibleSquad",
+        "internal/service::TestCollaborationCommentPreviewGroupsTypedTargetsAndSplitsSecondSquad",
+        "internal/service::TestCollaborationQueueConcurrentSameKeyAndLargeSequence",
+        "internal/service::TestCollaborationPendingDerivedRunDefersOtherLaneRoot",
+        "internal/service::TestCollaborationReservedCandidateIsOfferedBeforeOlderDerivedRun",
+        "internal/service::TestCollaborationRevokedDerivedRunDoesNotDeferPromotion",
+        "cmd/server::TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux"
+      ]
+    },
+    {
+      "id": "AC95",
+      "primary_owner": "P5",
+      "criterion": "双端支持停止/恢复一个智能体、小队或本单全部 AI。小队停止覆盖队长及已派生成员并阻止新增派生；整单停止覆盖全部目标及其队列，新增目标不能绕过。恢复所选范围前取得其中各已许可执行的终结证明，同通道目标一起恢复，其他通道的未选目标保持状态；整单暂停期间不能靠单目标恢复放行。移除跨目标取消该作者等待输入，整单结束覆盖全部工作，不遗漏后代、复活旧指令或自动恢复；资源撤回按已确认 M03 的实际授权关联目标。整单恢复时证明齐、授权有效的目标恢复，停止未确认或 grant 无效的目标保持目标级暂停并显示原因，界面不显示全部恢复；仅整单级条件不满足时整笔拒绝。重放原 key 返回原结果，剩余目标之后可单独恢复（M04）。",
+      "current_status": "passed",
+      "identities": {
+        "cmd/server::TestCollaborationPartialResumeRoutesLinux": {
+          "source": {
+            "path": "server/cmd/server/collaboration_hold_routes_test.go",
+            "line": 153,
+            "sha256": "972ee7fe7a4fc7e71254958744c82e00feed2f421cd35040aa2015a80fbc4a59"
+          },
+          "pass": [
+            {
+              "artifact": "linux-router.jsonl",
+              "elapsed": 4.16
+            }
+          ]
+        },
+        "cmd/server::TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux": {
+          "source": {
+            "path": "server/cmd/server/collaboration_daemon_cli_routes_test.go",
+            "line": 25,
+            "sha256": "4617bbb5b1a2c782c8e6dcdfde990f1d61d86a641d541cc891c7b0a499ddba9a"
+          },
+          "pass": [
+            {
+              "artifact": "linux-router.jsonl",
+              "elapsed": 3.89
+            }
+          ]
+        }
+      },
+      "primary_layer": "P5 队列/终结",
+      "decision": "retain_passed",
+      "clause_assessment": "Final Web/Electron agent/squad/all controls plus current canonical descendant/scope/lifecycle tests and actual Linux partial Resume/capacity-one routes support the full two-level control contract. UI pending-Permit fixture is not claimed as process containment.",
+      "required_test_identities": [
+        "cmd/server::TestCollaborationPartialResumeRoutesLinux",
+        "cmd/server::TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux"
+      ]
+    },
+    {
+      "id": "AC97",
+      "primary_owner": "P3",
+      "criterion": "离线人类参与者被 @后登录可见一条账号通知，评论提及定位原评论，正文提及定位本单正文或对应修改记录；已读/归档不改变待办，同条普通评论通知去重，操作者不收自身通知。分别覆盖评论/正文编辑仅通知新增有效人员；非参与者不自动获邀或收到私有内容，@小队不自动把其人类成员加入协作。",
+      "current_status": "passed",
+      "identities": {
+        "internal/service::TestCollaborationWorkflowNotificationsAndWorkbench": {
+          "source": {
+            "path": "server/internal/service/collaboration_workflow_test.go",
+            "line": 308,
+            "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+          },
+          "pass": [
+            {
+              "artifact": "go-service-partition-2.jsonl",
+              "elapsed": 0.22
+            }
+          ]
+        }
+      },
+      "primary_layer": "P3 内容/实时",
+      "decision": "retain_passed",
+      "clause_assessment": "Final Web/Electron fresh-login offline journeys prove one durable notice, correct comment/body anchors, read/archive independence, no self/nonparticipant notification and only newly effective people on separate body/comment edits; squad human members remain uninvited.",
+      "required_test_identities": [
+        "internal/service::TestCollaborationWorkflowNotificationsAndWorkbench"
+      ]
+    }
+  ],
+  "artifact_checks": [
+    {
+      "run_id": "all-components",
+      "path": "/tmp/multica-s3-all-core-green.log",
+      "sha256": "603834a15b53cff22831fa73d3ffa27aded945e1a01739643f8c7ff746737537",
+      "catalog_sha256_present": false
+    },
+    {
+      "run_id": "all-components",
+      "path": "/tmp/multica-s3-all-views-green.log",
+      "sha256": "1dcbe4cf1d9a328b6fa1f9689972211bd0bc2ebee34c6285d9997b964d21b6a1",
+      "catalog_sha256_present": false
+    },
+    {
+      "run_id": "continuation-controls-native",
+      "path": ".omx/reports/cwc-gap-recovery-20261021/continuation-controls-desktop-v2.json",
+      "sha256": "bacaf0e97be66a59a1513b843fecc468092271c6f6beabc24d173cae871c1a56",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "continuation-controls-web",
+      "path": ".omx/reports/cwc-gap-recovery-20261021/continuation-controls-web-v5.json",
+      "sha256": "10665857af923f80ccacd62c11833a4491d86663b76c2c107940f809f4f76d40",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "continuation-go-other",
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/go-other-packages.jsonl",
+      "sha256": "1e71354c2c8743c79c02081dba8450981af0e2b91c699afa1ded78cb470e37f8",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "continuation-linux-router",
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/linux-router.jsonl",
+      "sha256": "411f23c1e244550118dcbf7a09d4fdb6062be74e9b0bda627b827257f9acaf0b",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "continuation-mentions-native",
+      "path": ".omx/reports/cwc-gap-recovery-20261021/continuation-mentions-desktop/attempt-2.json",
+      "sha256": "e1ce9d447a426572fdba786c69a1eb7c551fed11115d8d3cadfc4ee763d5a552",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "continuation-mentions-web",
+      "path": ".omx/reports/cwc-gap-recovery-20261021/continuation-mentions-web/attempt-6.json",
+      "sha256": "2d48e6a14ce3864cf138a76485a379d9d768c26b6662a699165843e024fb75dd",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "continuation-service-1",
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/go-service-partition-1.jsonl",
+      "sha256": "908053a239dfee9f6957b2bd947049b837ff42322563cafa8476e5e03a1dd4e7",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "continuation-service-2",
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/go-service-partition-2.jsonl",
+      "sha256": "1a1edb5507cf4a6b4259194d2d8abfe5c1d2ebb9f56672f52353d999ef07d99d",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "native-offers",
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s2-s3-desktop-v5.json",
+      "sha256": "51cf7c06600031bb5a960ae9b3c69c1c5f235ae6110625f3741d1bcd7cb7d606",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "native-routes",
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-linux-router-collaboration.log",
+      "sha256": "eb310ba78fdda0e7b04bfe2d6863167442de008f42ef82bcfaeb8b9f713c5403",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "s3-review",
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/check-s3-s5-go-race.jsonl",
+      "sha256": "3377c69d116c83eccdea1528bd2bc14d0e573c7babbdc46833b753b6638a3970",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "s4-backend",
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/review-s4/backend-race-serial.jsonl",
+      "sha256": "271367fe7f3b1fc372a750a3c73e7a646837f7c5cd4eb9d5c3afd0978dd16378",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "s4-native",
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/review-s4/native-settings-green.log",
+      "sha256": "b7ca8e391ca76214d5a66a499bc1fb94f20add615b427fdef91d4e11d54a5a50",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "s4-records",
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/review-s4/records-race.jsonl",
+      "sha256": "f4f034f042d9a96ff3327580ba45c3a5220a31c5d255965c0b7689e9a727a3b1",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "s5-handler",
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s5-handler-race.jsonl",
+      "sha256": "af6868fa4d0ea6f4296731f16d8bfb659ab6a105b70f8c2ca885ec5c374f4865",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "s5-handler",
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s5-handler-race-final.jsonl",
+      "sha256": "4b04dff72431904f7070d6d69965493c315af67bf72c1653356f8d679d7acf3f",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "s5-service",
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/s5-service-race.jsonl",
+      "sha256": "1b096d49d3ce5560c743a9b7ace9d0dfb403d5ed77f35a78e45d827b9417b01c",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "web-history",
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-web-collaboration.json",
+      "sha256": "f8278472cf212260ef4bf6d95a7e2ca7d2ad6fc22ba5479d42fc67fde0e3fbd2",
+      "catalog_sha256_present": true
+    },
+    {
+      "run_id": "web-offers",
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-web-collaboration.json",
+      "sha256": "f8278472cf212260ef4bf6d95a7e2ca7d2ad6fc22ba5479d42fc67fde0e3fbd2",
+      "catalog_sha256_present": true
+    }
+  ],
+  "ac33_run4_report_sha256": "2569f54320469122d23ac80c85d1219d7ff26b0fafee7630aae666649adc1f31",
+  "ac33_attachment_sha256": "370bd5232900fa78c0a830c38845049c76223954464ef91747709735c9b780e6",
+  "verification": {
+    "scoped_eslint_exit_code": 0,
+    "strict_e2e_typescript_exit_code": 0,
+    "task_context_validation_exit_code": 0,
+    "product_suites_rerun": false,
+    "native_or_environment_mutation": false
+  },
+  "limitations": [
+    "Report and audit-safe JSON only; root owns matrix/catalog/spec/progress/commits.",
+    "All other unreviewed rows retain pending status; six rejected promotions are evidence gaps, not product failures.",
+    "Real provider/account/quota, stock-provider/version, macOS/Windows containment, installed full Main/installer, legacy installed binaries, full unified make check and unrun fault suites are not claimed.",
+    "No creation/execution rollout change; parent and child stay in_progress."
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "checked_at": "2026-10-21T14:32:31.080349+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_source_authority_race_test.go": "992d1afb1ee9d71e48daabffe682a6dc034fe593beac97b101ef37dbe9c0f979",
+    "server/internal/handler/collaboration_external_iteration_test.go": "fe5b0bfe6ac6d377238e40c3ec1475f84cb17eb9c83983cfb3d830079b1a98f7"
+  },
+  "existing_product_helpers_unchanged": {
+    "server/internal/service/collaboration_source_fields.go": true,
+    "server/internal/service/collaboration_iteration.go": true,
+    "server/internal/service/collaboration_workflow.go": true,
+    "server/internal/service/collaboration_edit.go": true,
+    "server/internal/service/collaboration_source_fields_test.go": true,
+    "server/internal/handler/collaboration_source_fields.go": true,
+    "server/internal/handler/iteration_history.go": true,
+    "server/internal/handler/iteration_management.go": true
+  },
+  "test_results": {
+    "source-authority-service-focused-first-20261021": {
+      "result_sha256": "f384da02e3341eee33481adb4f7634cac60229e9a284b31701d8cf0ffc984256",
+      "raw_sha256": "0150ccf48559aaeb88ed5530ffa3fba61435dd3588c83cf5cd1930c38a30d9d0",
+      "returncode": 0,
+      "top_level_pass_count": 3,
+      "all_pass_events": 13,
+      "package_results": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Elapsed": 6.033
+        }
+      ],
+      "fail": [],
+      "skip": []
+    },
+    "source-authority-handler-focused-first-20261021": {
+      "result_sha256": "41beccf274a1a45f2710d8350fbe13cbd94e2f69d0ba054651b0d8ec19c6dad5",
+      "raw_sha256": "587655cecb87c592425dcbb31af4f35d9d7a3e83f66a821a459e4e074c2663a7",
+      "returncode": 0,
+      "top_level_pass_count": 1,
+      "all_pass_events": 1,
+      "package_results": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Elapsed": 2.485
+        }
+      ],
+      "fail": [],
+      "skip": []
+    }
+  },
+  "vet_returncode": 0,
+  "gofmt": {
+    "command": [
+      "gofmt",
+      "-d",
+      "server/internal/service/collaboration_source_authority_race_test.go",
+      "server/internal/handler/collaboration_external_iteration_test.go"
+    ],
+    "returncode": 0,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  "trailing_whitespace": [],
+  "scope": "two approved new test files and source-authority evidence only; no product changes",
+  "adjacent_and_independent_checks": "coordinator owned"
+}

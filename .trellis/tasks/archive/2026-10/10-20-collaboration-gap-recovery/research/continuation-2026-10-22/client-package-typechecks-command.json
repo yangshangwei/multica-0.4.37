@@ -1,0 +1,28 @@
+{
+  "command": [
+    "pnpm",
+    "--filter",
+    "@multica/core",
+    "--filter",
+    "@multica/views",
+    "--filter",
+    "@multica/web",
+    "--filter",
+    "@multica/desktop",
+    "typecheck"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "database_alias": null,
+  "started_at": "2026-10-21T23:46:42.668864+00:00",
+  "source_sha256": {
+    "e2e/fixtures/collaboration-control-journey.ts": "a9ffc9f134dd0471c1dc984b6dcf2be130f98e390558e9940b0724a49cfd5488"
+  },
+  "real_provider_account_access": false,
+  "production_gate_change": false,
+  "exit_code": 0,
+  "elapsed_s": 103.169,
+  "finished_at": "2026-10-21T23:48:25.838336+00:00",
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/client-package-typechecks.stdout",
+  "stdout_sha256": "39476481a11a74058b9beabeb5109a5b4d05c8f4653c9c1eb816b73ae05bf9d4",
+  "source_changed_during_run": []
+}

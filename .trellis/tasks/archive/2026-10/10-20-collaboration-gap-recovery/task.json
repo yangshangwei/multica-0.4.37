@@ -1,0 +1,56 @@
+{
+  "id": "collaboration-gap-recovery",
+  "name": "collaboration-gap-recovery",
+  "title": "跨账号协作遗漏补齐与运行恢复",
+  "description": "核对原计划和最新待办的遗漏，复现失败前缀对调度和停止证明恢复的阻塞，制定补齐与完整验收计划。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": "collaboration",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-20",
+  "completedAt": "2026-10-22",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "10-10-cross-workspace-collaboration",
+  "relatedFiles": [
+    ".trellis/tasks/10-20-collaboration-gap-recovery/prd.md",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/design.md",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/implement.md",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/acceptance-matrix.json",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/runtime-recovery.md",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/product-gaps.md",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/runtime-admin-acceptance.md",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/planning-verification.json",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/planning-summary.md",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/planning-review.md",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/planning-final-review-2026-10-21.md",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/check-s1-coordinator-2026-10-21.md",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/check-cross-slice-2026-10-21.md",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/handoff-2026-10-21.md"
+  ],
+  "notes": "Final planning review passed on 2026-10-21; F1/F2 closed. User approved implementation of planning-summary.md: 按计划开始实施. Start with S1, then follow reviewed dependencies through S6. Existing changes preserved in /tmp/multica-gap-recovery-20261021-h6phxwo9/. Real provider smoke and rollout retain separate authorization gates.\n2026-10-22: User declared this child task complete and explicitly requested archival. The latest acceptance ledger stays 96 passed / 1 not verified / 0 failed. AC43 real-provider account/quota verification remains tracked by the in-progress parent; no provider access or production rollout authorization is inferred.",
+  "meta": {
+    "archive_decision": {
+      "date": "2026-10-22",
+      "source": "User: 跨账号协作遗漏补齐与运行恢复 做完了，请归档",
+      "acceptance_passed": 96,
+      "acceptance_not_verified": [
+        "AC43"
+      ],
+      "acceptance_failed": 0,
+      "remaining_owner": "10-10-cross-workspace-collaboration",
+      "full_product_acceptance_complete": false,
+      "real_provider_authorized": false,
+      "production_rollout_authorized": false,
+      "summary": "archive-summary-2026-10-22.md"
+    }
+  }
+}

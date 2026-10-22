@@ -1,0 +1,14 @@
+{
+  "at": "2026-10-22T00:16:33.465200+00:00",
+  "query": "SELECT json_build_object('kind',kind,'request_id',request_id,'http_status',http_status,'response',response) FROM collaboration_operation WHERE scope_id='01a160f4-ca4b-7d71-b951-f60526bf30a4' AND request_id IN ('fe4c07a9-b7a1-49e5-ae33-5161fffcb253','d18d2bf8-99c4-41ae-b54d-e64ec3755b84') ORDER BY created_at",
+  "command": [
+    "psql",
+    "<task DATABASE_URL>",
+    "-XAt",
+    "-c",
+    "SELECT json_build_object('kind',kind,'request_id',request_id,'http_status',http_status,'response',response) FROM collaboration_operation WHERE scope_id='01a160f4-ca4b-7d71-b951-f60526bf30a4' AND request_id IN ('fe4c07a9-b7a1-49e5-ae33-5161fffcb253','d18d2bf8-99c4-41ae-b54d-e64ec3755b84') ORDER BY created_at"
+  ],
+  "exit_code": 1,
+  "rows": [],
+  "stderr": "ERROR:  column \"http_status\" does not exist\nLINE 1: ...'kind',kind,'request_id',request_id,'http_status',http_statu...\n                                                             ^\n"
+}

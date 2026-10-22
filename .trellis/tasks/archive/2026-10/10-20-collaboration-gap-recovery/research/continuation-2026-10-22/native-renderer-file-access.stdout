@@ -1,0 +1,38 @@
+PASS trusted main script, dynamic import, worker, preload and file cache seed
+PASS shared-session issue window assets
+PASS inline: local fetch/XHR, scripts, images, styles, nested frames and worker denied
+PASS inline: interactive JavaScript and HTTP script/fetch retained
+PASS inline: HTTP self-navigation retains file denial
+PASS inline: file self-navigation rejected
+PASS attachment: local fetch/XHR, scripts, images, styles, nested frames and worker denied
+PASS attachment: interactive JavaScript and HTTP script/fetch retained
+PASS attachment: HTTP self-navigation retains file denial
+PASS attachment: file self-navigation rejected
+PASS full-page: local fetch/XHR, scripts, images, styles, nested frames and worker denied
+PASS full-page: interactive JavaScript and HTTP script/fetch retained
+PASS full-page: HTTP self-navigation retains file denial
+PASS full-page: file self-navigation rejected
+PASS recreated main and surviving issue window retain denial
+PASS trusted HTTP image and PDF viewer retained; header handler composed
+{
+  "electron": "39.8.7",
+  "passed": [
+    "trusted main script, dynamic import, worker, preload and file cache seed",
+    "shared-session issue window assets",
+    "inline: local fetch/XHR, scripts, images, styles, nested frames and worker denied",
+    "inline: interactive JavaScript and HTTP script/fetch retained",
+    "inline: HTTP self-navigation retains file denial",
+    "inline: file self-navigation rejected",
+    "attachment: local fetch/XHR, scripts, images, styles, nested frames and worker denied",
+    "attachment: interactive JavaScript and HTTP script/fetch retained",
+    "attachment: HTTP self-navigation retains file denial",
+    "attachment: file self-navigation rejected",
+    "full-page: local fetch/XHR, scripts, images, styles, nested frames and worker denied",
+    "full-page: interactive JavaScript and HTTP script/fetch retained",
+    "full-page: HTTP self-navigation retains file denial",
+    "full-page: file self-navigation rejected",
+    "recreated main and surviving issue window retain denial",
+    "trusted HTTP image and PDF viewer retained; header handler composed"
+  ],
+  "failures": []
+}

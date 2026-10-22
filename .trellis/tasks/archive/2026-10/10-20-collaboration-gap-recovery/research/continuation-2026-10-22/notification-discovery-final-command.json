@@ -1,0 +1,17 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-offline-result-notifications.spec.ts",
+    "--list",
+    "--workers=1",
+    "--retries=0"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "start": "2026-10-22T00:26:46.390213+00:00",
+  "task": "10-20-collaboration-gap-recovery"
+}

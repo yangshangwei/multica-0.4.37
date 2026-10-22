@@ -1,0 +1,36 @@
+{
+  "at": "2026-10-21T08:10:46.236639+00:00",
+  "api_health": {
+    "status": "ok",
+    "pid": 35969,
+    "commit": "8ecb98883",
+    "started_at": "2026-10-21T08:02:51Z"
+  },
+  "api_provenance": {
+    "component": "api",
+    "mode": "development",
+    "build_id": "",
+    "command": "go run -ldflags '-X main.commit=8ecb98883' ./cmd/server (cwd: /tmp/multica-gap-recovery-20261021-h6phxwo9/verification-admin-source/server)",
+    "source_id": "ce1302b0147cb2da420e5dc24069143c5f2a4a41933a56d9e4b8ce6711f28e90",
+    "configuration_id": "805fc993af4daf895e4de11a22cd372244d7845eed807b7eaa56a50f30b39cd3",
+    "commit": "8ecb98883",
+    "launcher_pid": 35863,
+    "started_at": "2026-10-21T08:02:40Z",
+    "listener_pid": 35969
+  },
+  "web_http_status": 200,
+  "web_build_id": "tP4r55FoDsuyXfi1EylGw",
+  "renderer_http_status": 200,
+  "renderer_index_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c",
+  "public_configuration": {
+    "auth_mode": "password",
+    "platform_admin_available": true,
+    "managed_installation_supported": true,
+    "deployment_id": "f3a705a0-0193-435f-bc6d-05bc2074e905",
+    "messaging_integrations_enabled": true
+  },
+  "product_history_sha256": "a23ad56dae751bc9cf7f0ef226292f3bea7ff3661cc7ebc6310bde49ef79e526",
+  "provider_sha256": "80c3225030ff105764e3b65309d9b3e599c223a8914def1cb37ab6f3217a9f94",
+  "production_rollout_changed": false,
+  "real_provider_account_access": false
+}

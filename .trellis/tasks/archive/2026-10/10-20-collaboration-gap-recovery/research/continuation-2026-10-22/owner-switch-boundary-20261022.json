@@ -1,0 +1,35 @@
+{
+  "at": "2026-10-21T23:25:13.353715+00:00",
+  "head": "8298157751aa6ca5ed4d9635175cdbf66dc50fa5",
+  "branch": "codex/cross-workspace-collaboration",
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "mode": "existing S6 implementation; no new task or planning",
+  "ownership": [
+    "server/internal/service/collaboration_authority.go",
+    "server/internal/service/collaboration_resource_owner_identity_test.go",
+    "server/internal/service/collaboration_owner_departure_targets_test.go",
+    "server/internal/service/collaboration_public_switch_resume_test.go"
+  ],
+  "before_sha256": {
+    "server/internal/service/collaboration_authority.go": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+    "server/internal/service/collaboration_resource_owner_identity_test.go": "f82f7e103236d97ae41f8f2dc555c068032c18633b41e2fd667915e4df714d5e",
+    "server/internal/service/collaboration_owner_departure_targets_test.go": "0431d9ec125601ebbb107418b2fba58f6094904895c4ffd577db391662ea4b4c",
+    "server/internal/service/collaboration_public_switch_resume_test.go": "cb9e5bff1cd2e57616516868b80470dce14bcb9c8edcfd32d3c53079c9673d11"
+  },
+  "change_boundary": {
+    "gap": "A verified managed resource owner is rejected when CheckPasswordVersion inherits a different daemon caller binding. Two unfinished regression tests also fail compilation.",
+    "behavior_owner": "collaborationIdentityCurrent after the stored managed binding/resource tuple is checked",
+    "fix": "Derive a child context from the request using the verified stored owner PasswordSession before checking that owner password version. Keep caller authentication at its independent public entry.",
+    "tests": "Finish retained mixed-owner, multi-target+squad-member departure, and public Switch+busy destination+fresh Resume assertions.",
+    "excluded": "No generic auth, SQL/generated/router/schema/spec/ledger changes. No provider/kernel claim from service proofs, no gates or rollout change."
+  },
+  "retained_red": {
+    "resource_identity": "research/continuation-2026-10-21/owner-switch-resource-identity-red-20261022.jsonl is a build failure; no behavior tests executed.",
+    "mixed_owner": "research/continuation-2026-10-21/owner-switch-departure-owner-context-20261022.jsonl genuinely fails config_invalid at independent squad leader candidate."
+  },
+  "environment": {
+    "database_alias": "service_s5",
+    "schema_migration": 737,
+    "wrapper": "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py"
+  }
+}

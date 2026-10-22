@@ -1,0 +1,19 @@
+{
+  "exit_code": 0,
+  "elapsed_s": 10.719,
+  "finished_at": "2026-10-22T06:21:09.959383+00:00",
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-resume/outbound-current-redis-final.stdout",
+  "stdout_sha256": "e0820955eae6ef99ae8aa7004dad36e1f97b0bbc36ba94b3c6dbb35ea033f7db",
+  "stderr_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-resume/outbound-current-redis-final.stderr",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_changed_during_run": [],
+  "passed_top_level": 3,
+  "passed_including_subtests": 3,
+  "passed_tests": [
+    "TestRelay_ARetriedReplyKeepsItsPlaceInLine",
+    "TestRelay_AReplyNoReplicaCouldSendIsCountedOnce",
+    "TestRelay_ADeliveredReplyIsCountedOnceAndNotAlsoLost"
+  ],
+  "failed": [],
+  "skipped": []
+}

@@ -1,0 +1,10 @@
+{
+  "at": "2026-10-21T15:27:07.317772+00:00",
+  "attempt": "creation-delivery current preflight before history refresh",
+  "execution_started": false,
+  "failure_scope": "task application snapshot identity",
+  "mismatched_source": [
+    "server/internal/service/collaboration_command_history.go"
+  ],
+  "resolution": "Copy exact already verified projection/helper into owned legacy snapshot and restart only its API; no frontend or production gate change"
+}

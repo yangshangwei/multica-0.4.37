@@ -1,0 +1,51 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaboration(ResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller|OwnerDepartureRetractsMultipleTargetsAndSquadMember|PublicSquadSwitchWaitsBehindBusyDestinationAndFreshResume)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "start": "2026-10-21T23:54:07.354605+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_authority.go": "11842f553fe4ae1aefc0b44e3381fb86b28b7f5369545d0dd68aa30f433d493b",
+    "server/internal/service/collaboration_resource_owner_identity_test.go": "0150c893b834cde047a48a01ef97a8595cadb8c343e44aedf1ad5b8b5e6ea6fc",
+    "server/internal/service/collaboration_owner_departure_targets_test.go": "9660a9e826c25974a97490e7b358550d6d9f9425ab6c693dab542bd696fd4122",
+    "server/internal/service/collaboration_public_switch_resume_test.go": "ce1ac1cd8e0bce606f00ba0c4718b817a010a89a86ba5c37850464cdb1a00ede"
+  },
+  "database_alias": "service_s5",
+  "schema_migration": 737,
+  "returncode": 0,
+  "elapsed_s": 19.832,
+  "end": "2026-10-21T23:54:27.191331+00:00",
+  "source_sha256_after": {
+    "server/internal/service/collaboration_authority.go": "11842f553fe4ae1aefc0b44e3381fb86b28b7f5369545d0dd68aa30f433d493b",
+    "server/internal/service/collaboration_resource_owner_identity_test.go": "0150c893b834cde047a48a01ef97a8595cadb8c343e44aedf1ad5b8b5e6ea6fc",
+    "server/internal/service/collaboration_owner_departure_targets_test.go": "9660a9e826c25974a97490e7b358550d6d9f9425ab6c693dab542bd696fd4122",
+    "server/internal/service/collaboration_public_switch_resume_test.go": "ce1ac1cd8e0bce606f00ba0c4718b817a010a89a86ba5c37850464cdb1a00ede"
+  },
+  "test_events": {
+    "pass": 55,
+    "fail": 0,
+    "skip": 0
+  },
+  "top_level": {
+    "pass": 3,
+    "fail": 0,
+    "skip": 0
+  }
+}

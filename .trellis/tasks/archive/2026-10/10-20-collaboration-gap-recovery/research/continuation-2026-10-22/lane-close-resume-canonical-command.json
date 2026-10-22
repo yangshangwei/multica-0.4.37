@@ -1,0 +1,42 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaboration(TargetStopLeavesOtherTargetAndIssueActive|IssueStopFencesChangedAndLaterTargetSets|ResumeAliasesKeepIndependentHolds|WholeLifecycleKeepsAllTargetBarriersOnReopen|LifecycleCloseAndReopenPreservePermanentQueue|CommandCancellationExactProvenance)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "database_alias": "service_s5",
+  "started_at": "2026-10-22T03:20:18.520759+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_targets_test.go": "fa50282a74ab50ea4856adbcb16ff6c716db0b6a98b2215b17bd9598083aabef",
+    "server/internal/service/collaboration_lifecycle.go": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+    "server/internal/service/collaboration_groups.go": "384a12992e99fb9569728e15ae400d4de26d40a39e120a4953e6f91d23524ec7"
+  },
+  "real_provider_account_access": false,
+  "production_gate_change": false,
+  "exit_code": 0,
+  "elapsed_s": 19.419,
+  "finished_at": "2026-10-22T03:20:37.941439+00:00",
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-resume-canonical.jsonl",
+  "stdout_sha256": "45d9d69cc6e66f7f34f03099b75d5109a4e2e2c4ecee9db135f96ac0feb604cf",
+  "source_changed_during_run": [],
+  "passed_top_level": 6,
+  "passed_including_subtests": 17,
+  "failed": [],
+  "skipped": []
+}

@@ -1,0 +1,31 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaborationOwnerDepartureRetractsMultipleTargetsAndSquadMember$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "start": "2026-10-21T17:14:08.472018+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_owner_departure_targets_test.go": "23a93e58fbc157c59e23301b8cf79da1942206399d172d2b0fb0d0dbcc4daa12",
+    "server/internal/service/collaboration_runtime.go": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+    "server/internal/service/collaboration_authority.go": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd"
+  },
+  "schema_migration": 737,
+  "database_alias": "service_s5"
+}

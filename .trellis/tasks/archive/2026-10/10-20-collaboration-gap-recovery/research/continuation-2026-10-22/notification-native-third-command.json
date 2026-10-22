@@ -1,0 +1,28 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py",
+    "env",
+    "COLLABORATION_CROSS_CLIENT_DAEMON=/tmp/multica-gap-recovery-20261021-h6phxwo9/continuation-linux/daemon.test",
+    "COLLABORATION_CROSS_CLIENT_PROVIDER=/tmp/multica-gap-recovery-20261021-h6phxwo9/continuation-linux/cross-client-provider",
+    "COLLABORATION_CROSS_CLIENT_HOST_IPV4=192.168.65.254",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-offline-result-notifications.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=json",
+    "--output",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/notification-native-third-artifacts",
+    "--grep",
+    "Electron offline external"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "start": "2026-10-22T00:25:20.740448+00:00",
+  "environment_scope": "task-owned password/admin API18996/production Web13916/renderer6090",
+  "preflight": "content-admin-preflight.json",
+  "real_provider_account_access": false,
+  "installed_full_main": false
+}

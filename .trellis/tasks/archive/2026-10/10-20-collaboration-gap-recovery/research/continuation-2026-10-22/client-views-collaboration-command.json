@@ -1,0 +1,22 @@
+{
+  "command": [
+    "pnpm",
+    "--filter",
+    "@multica/views",
+    "test",
+    "collaboration",
+    "--maxWorkers=1"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "database_alias": null,
+  "started_at": "2026-10-21T23:46:45.195091+00:00",
+  "source_sha256": {},
+  "real_provider_account_access": false,
+  "production_gate_change": false,
+  "exit_code": 0,
+  "elapsed_s": 51.935,
+  "finished_at": "2026-10-21T23:47:37.131410+00:00",
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/client-views-collaboration.stdout",
+  "stdout_sha256": "2a64403e37c894649ba686cc421a231b37a90c1f8dec938a288c9db5d5ea8b32",
+  "source_changed_during_run": []
+}

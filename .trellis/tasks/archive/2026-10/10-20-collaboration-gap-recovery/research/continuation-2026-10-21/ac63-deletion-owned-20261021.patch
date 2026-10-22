@@ -1,0 +1,143 @@
+--- a/server/internal/handler/collaboration_boundary_test.go
++++ b/server/internal/handler/collaboration_boundary_test.go
+@@ -132,31 +132,134 @@
+ func TestWorkspaceWithCollaborationHistoryCannotBeDeleted(t *testing.T) {
+ 	for _, status := range []string{"todo", "done", "cancelled"} {
+ 		t.Run(status, func(t *testing.T) {
++			t.Setenv("MULTICA_AUTH_MODE", "legacy")
++			t.Setenv("MULTICA_DEPLOYMENT_ID", "68150177-594d-45d8-8a84-bc979b498b04")
++			h := collaborationFileHandler(t)
+ 			ws := dbfx.Workspace(t, "Retained collaboration workspace", "collab-retained-"+uuid.NewString())
+ 			dbfx.Member(t, ws, testUserID, "owner")
+ 			issue := collaborationBoundaryIssue(t, ws)
++			external := dbfx.User(t, "External retained resource owner", "retained-owner-"+uuid.NewString()+"@example.test")
++			execution := dbfx.Workspace(t, "Retained private execution workspace", "retained-execution-"+uuid.NewString())
++			dbfx.Member(t, execution, external, "owner")
++			dbfx.InsertNoID(t, "issue_participant", testutil.Cols{"issue_id": issue, "user_id": external}, "issue_id=$1 AND user_id=$2", issue, external)
++			for _, user := range []string{testUserID, external} {
++				dbfx.InsertNoID(t, "collaboration_account_fence", testutil.Cols{"user_id": user}, "user_id=$1", user)
++			}
++			for _, table := range []string{"comment", "collaboration_event", "collaboration_notification", "collaboration_resource_offer", "collaboration_grant"} {
++				dbfx.Cleanup(t, "DELETE FROM "+table+" WHERE issue_id=$1", issue)
++			}
++			dbfx.Cleanup(t, `DELETE FROM collaboration_operation WHERE scope_kind='issue' AND scope_id=$1`, issue)
++			dbfx.Cleanup(t, `DELETE FROM collaboration_channel WHERE session_id IN (SELECT id FROM collaboration_session WHERE issue_id=$1)`, issue)
++			dbfx.Cleanup(t, `DELETE FROM collaboration_target WHERE session_id IN (SELECT id FROM collaboration_session WHERE issue_id=$1)`, issue)
++			var owned []string
++			t.Cleanup(func() {
++				if _, err := testPool.Exec(context.Background(), `DELETE FROM collaboration_config_invalidation WHERE resource_id=ANY($1::uuid[])`, owned); err != nil {
++					t.Errorf("cleanup retained resource configuration intents: %v", err)
++				}
++			})
++			fx := testutil.New(testPool, execution, external)
++			runtime := fx.Runtime(t, "Retained private offline runtime", testutil.Cols{"status": "offline"})
++			agent := fx.Agent(t, "Retained private agent", runtime)
++			owned = []string{runtime, agent}
++			installation := uuid.NewString()
++			binding := fx.Insert(t, "collaboration_runtime_enrollment", testutil.Cols{"deployment_id": auth.ManagedDeploymentID(), "owner_user_id": external,
++				"execution_workspace_id": execution, "runtime_id": runtime, "installation_id": installation, "public_key": make([]byte, 32)})
++
++			// Persist actual offer/adoption/owner consent without granting the
++			// source organizer membership in the private execution workspace.
++			offerBody := switchHTTPBody()
++			offerBody["execution_workspace_id"], offerBody["kind"], offerBody["resource_id"] = execution, "agent", agent
++			offerBody["roster"] = []map[string]string{{"role": "agent", "agent_id": agent, "runtime_id": runtime, "owner_user_id": external, "execution_workspace_id": execution}}
++			var offered, adopted, consented service.CollaborationQueueReceipt
++			testutil.Call(t, h.OfferCollaborationResource, collaborationContentRequest(http.MethodPost, issue, "", external, uuid.NewString(), offerBody)).Want(http.StatusCreated).JSON(&offered)
++			if offered.OfferID == nil {
++				t.Fatal("retained resource offer missing its identity")
++			}
++			adoptBody := switchHTTPBody()
++			adoptBody["expected_offer_version"], adoptBody["expected_target_set_version"] = "1", "1"
++			testutil.Call(t, h.AdoptCollaborationResourceOffer, withURLParams(collaborationContentRequest(http.MethodPost, issue, "", testUserID, uuid.NewString(), adoptBody),
++				"offerId", *offered.OfferID)).Want(http.StatusCreated).JSON(&adopted)
++			consentBody := switchHTTPBody()
++			consentBody["agent_id"], consentBody["expected_target_epoch"], consentBody["expected_config_version"] = agent, "1", "1"
++			consentBody["identity"] = map[string]string{"kind": "enrolled", "installation_id": installation, "binding_id": binding, "binding_epoch": "1"}
++			testutil.Call(t, h.ConsentCollaborationTarget, withURLParams(collaborationContentRequest(http.MethodPost, issue, "", external, uuid.NewString(), consentBody),
++				"targetId", uuidToString(adopted.TargetID))).Want(http.StatusCreated).JSON(&consented)
++			if !consented.GrantID.Valid || dbfx.Count(t, `SELECT count(*) FROM collaboration_grant WHERE id=$1 AND issue_id=$2 AND target_id=$3
++				AND owner_user_id=$4 AND execution_workspace_id=$5 AND agent_id=$6 AND runtime_id=$7 AND binding_id=$8 AND revoked_at IS NULL`,
++				consented.GrantID, issue, adopted.TargetID, external, execution, agent, runtime, binding) != 1 {
++				t.Fatal("refusal fixture lacks the actual resource owner's target grant")
++			}
++
++			draft, attachment := collaborationUploadedFile(t, h, issue, external)
++			var comment service.CollaborationCommentReceipt
++			testutil.Call(t, h.CreateCollaborationComment, collaborationContentRequest(http.MethodPost, issue, "", external, uuid.NewString(),
++				map[string]any{"content": "Retained shared discussion", "expected_lifecycle_epoch": "1", "draft_id": draft,
++					"attachment_ids": []string{uuidToString(attachment.ID)}})).Want(http.StatusCreated).JSON(&comment)
++			if dbfx.Count(t, `SELECT count(*) FROM collaboration_attachment WHERE id=$1 AND issue_id=$2 AND uploader_user_id=$3
++				AND source_workspace_id=$4 AND encryption_key IS NOT NULL AND delivered_at IS NOT NULL`, attachment.ID, issue, external, ws) != 1 ||
++				dbfx.Count(t, `SELECT count(*) FROM collaboration_attachment_reference WHERE attachment_id=$1 AND removed_at IS NULL
++					AND ((reference_kind='issue' AND reference_id=$2) OR (reference_kind='comment' AND reference_id=$3))`, attachment.ID, issue, comment.CommentID) != 2 {
++				t.Fatal("refusal fixture lacks a delivered encrypted attachment and its issue/comment references")
++			}
++			if dbfx.Count(t, `SELECT count(*) FROM member WHERE workspace_id=$1 AND user_id=$2 AND role='owner'`, ws, testUserID) != 1 ||
++				dbfx.Count(t, `SELECT count(*) FROM member WHERE workspace_id=$1 AND user_id=$2 AND role='owner'`, execution, external) != 1 ||
++				dbfx.Count(t, `SELECT count(*) FROM member WHERE (workspace_id=$1 AND user_id=$2) OR (workspace_id=$3 AND user_id=$4)`, ws, external, execution, testUserID) != 0 ||
++				dbfx.Count(t, `SELECT count(*) FROM issue_participant WHERE issue_id=$1 AND user_id=ANY($2::uuid[]) AND revoked_at IS NULL`, issue, []string{testUserID, external}) != 2 {
++				t.Fatal("refusal fixture does not preserve separate source membership, external participation and execution ownership")
++			}
+ 			dbfx.Exec(t, `UPDATE issue SET status=$2 WHERE id=$1`, issue, status)
+-			dbfx.Comment(t, issue, "Retained shared discussion", testutil.Cols{"workspace_id": ws})
+-			dbfx.Insert(t, "collaboration_event", testutil.Cols{"issue_id": issue, "event_seq": 1,
+-				"kind": "comment_created", "actor_user_id": testUserID, "payload": `{}`})
++			for _, viewer := range []string{testUserID, external} {
++				if response := testutil.Call(t, h.GetCollaborationAttachmentContent, collaborationFileRequest(http.MethodGet, issue, "", uuidToString(attachment.ID), viewer, nil)).Want(http.StatusOK); response.Text() != "controlled private bytes" {
++					t.Fatal("retained attachment fixture has no readable private blob")
++				}
++			}
+ 			snapshot := func() string {
+ 				var result string
+ 				dbfx.QueryRow(t, `SELECT jsonb_build_object(
+ 					'workspace',(SELECT to_jsonb(w) FROM workspace w WHERE w.id=$1),
++					'execution_workspace',(SELECT to_jsonb(w) FROM workspace w WHERE w.id=$3),
+ 					'issue',(SELECT to_jsonb(i) FROM issue i WHERE i.id=$2),
+ 					'collaboration',(SELECT to_jsonb(c) FROM issue_collaboration c WHERE c.issue_id=$2),
+ 					'session',(SELECT to_jsonb(s) FROM collaboration_session s WHERE s.issue_id=$2),
++					'accounts',(SELECT jsonb_agg(to_jsonb(u) ORDER BY u.id) FROM "user" u WHERE u.id=ANY($4::uuid[])),
++					'members',(SELECT jsonb_agg(to_jsonb(m) ORDER BY m.workspace_id,m.user_id) FROM member m WHERE m.workspace_id IN ($1,$3)),
+ 					'participants',(SELECT jsonb_agg(to_jsonb(p) ORDER BY p.user_id) FROM issue_participant p WHERE p.issue_id=$2),
++					'account_fences',(SELECT jsonb_agg(to_jsonb(f) ORDER BY f.user_id) FROM collaboration_account_fence f WHERE f.user_id=ANY($4::uuid[])),
++					'targets',(SELECT jsonb_agg(to_jsonb(t) ORDER BY t.id) FROM collaboration_target t WHERE t.session_id IN (SELECT id FROM collaboration_session WHERE issue_id=$2)),
++					'grants',(SELECT jsonb_agg(to_jsonb(g) ORDER BY g.id) FROM collaboration_grant g WHERE g.issue_id=$2),
++					'enrollments',(SELECT jsonb_agg(to_jsonb(e) ORDER BY e.id) FROM collaboration_runtime_enrollment e WHERE e.id IN (SELECT binding_id FROM collaboration_grant WHERE issue_id=$2)),
++					'agents',(SELECT jsonb_agg(to_jsonb(a) ORDER BY a.id) FROM agent a WHERE a.id IN (SELECT agent_id FROM collaboration_grant WHERE issue_id=$2)),
++					'runtimes',(SELECT jsonb_agg(to_jsonb(r) ORDER BY r.id) FROM agent_runtime r WHERE r.id IN (SELECT runtime_id FROM collaboration_grant WHERE issue_id=$2)),
++					'offers',(SELECT jsonb_agg(to_jsonb(o) ORDER BY o.id) FROM collaboration_resource_offer o WHERE o.issue_id=$2),
++					'attachments',(SELECT jsonb_agg(to_jsonb(a) ORDER BY a.id) FROM collaboration_attachment a WHERE a.issue_id=$2),
++					'attachment_references',(SELECT jsonb_agg(to_jsonb(r) ORDER BY r.attachment_id,r.reference_kind,r.reference_id,r.reference_revision)
++						FROM collaboration_attachment_reference r WHERE r.attachment_id IN (SELECT id FROM collaboration_attachment WHERE issue_id=$2)),
+ 					'comments',(SELECT jsonb_agg(to_jsonb(c) ORDER BY c.id) FROM comment c WHERE c.issue_id=$2),
+-					'events',(SELECT jsonb_agg(to_jsonb(e) ORDER BY e.event_seq) FROM collaboration_event e WHERE e.issue_id=$2)
+-				)::text`, ws, issue).Scan(&result)
++					'events',(SELECT jsonb_agg(to_jsonb(e) ORDER BY e.event_seq) FROM collaboration_event e WHERE e.issue_id=$2),
++					'operations',(SELECT jsonb_agg(to_jsonb(o) ORDER BY o.id) FROM collaboration_operation o WHERE o.scope_kind='issue' AND o.scope_id=$2)
++					)::text`, ws, issue, execution, []string{testUserID, external}).Scan(&result)
+ 				return result
+ 			}
+ 			before := snapshot()
++			var fields map[string]json.RawMessage
++			if err := json.Unmarshal([]byte(before), &fields); err != nil {
++				t.Fatal(err)
++			}
++			for _, relation := range []string{"accounts", "members", "participants", "account_fences", "targets", "grants", "enrollments", "agents", "runtimes", "offers", "attachments", "attachment_references", "comments", "events", "operations"} {
++				var rows []json.RawMessage
++				if err := json.Unmarshal(fields[relation], &rows); err != nil || len(rows) == 0 {
++					t.Fatalf("refusal snapshot lacks seeded %s evidence: %v", relation, err)
++				}
++			}
+ 			r := withURLParam(newRequest(http.MethodDelete, "/api/workspaces/"+ws, nil), "id", ws)
+-			response := testutil.Call(t, testHandler.DeleteWorkspace, r).Want(http.StatusConflict).Map()
++			response := testutil.Call(t, h.DeleteWorkspace, r).Want(http.StatusConflict).Map()
+ 			if response["code"] != "workspace_has_collaboration_records" || snapshot() != before {
+ 				t.Fatal("source deletion bypassed the history guard or partially removed retained data")
++			}
++			for _, viewer := range []string{testUserID, external} {
++				if response := testutil.Call(t, h.GetCollaborationAttachmentContent, collaborationFileRequest(http.MethodGet, issue, "", uuidToString(attachment.ID), viewer, nil)).Want(http.StatusOK); response.Text() != "controlled private bytes" {
++					t.Fatal("refused source deletion removed private blob bytes or either current read basis")
++				}
+ 			}
+ 		})
+ 	}

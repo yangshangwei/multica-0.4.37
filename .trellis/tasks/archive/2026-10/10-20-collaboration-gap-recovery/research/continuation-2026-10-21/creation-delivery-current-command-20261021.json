@@ -1,0 +1,22 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-test.py",
+    "env",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-delivery-web.spec.ts",
+    "e2e/collaboration-account-desktop.spec.ts",
+    "--grep",
+    "(Web creates one private issue after lost upload/create responses|Desktop creates a private collaboration issue, downloads through native IPC and restores the same issue)",
+    "--workers=1",
+    "--retries=0",
+    "--project=chromium",
+    "--reporter=json",
+    "--output=/tmp/multica-gap-recovery-20261021-h6phxwo9/creation-delivery-current-output"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "start": "2026-10-21T15:27:07.542792+00:00"
+}

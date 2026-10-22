@@ -1,0 +1,49 @@
+{
+  "at": "2026-10-21T23:28:37.002826+00:00",
+  "mutation_scope": "exact task-owned API source snapshot file after failure-first green regression",
+  "patches": [
+    {
+      "snapshot": "verification-source",
+      "source": "server/internal/service/collaboration_authority.go",
+      "sha256_before": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+      "sha256_after": "11842f553fe4ae1aefc0b44e3381fb86b28b7f5369545d0dd68aa30f433d493b",
+      "backup": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-gap-resume-20261022-zkx9kfqv/verification-source/authority-before.go"
+    },
+    {
+      "snapshot": "verification-admin-source",
+      "source": "server/internal/service/collaboration_authority.go",
+      "sha256_before": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+      "sha256_after": "11842f553fe4ae1aefc0b44e3381fb86b28b7f5369545d0dd68aa30f433d493b",
+      "backup": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-gap-resume-20261022-zkx9kfqv/verification-admin-source/authority-before.go"
+    }
+  ],
+  "production_gate_change": false,
+  "real_provider_account_access": false,
+  "restart_receipts": {
+    "gap-recovery-admin-20261021": {
+      "component": "api",
+      "mode": "development",
+      "build_id": "",
+      "command": "go run -ldflags '-X main.commit=8ecb98883' ./cmd/server (cwd: /tmp/multica-gap-recovery-20261021-h6phxwo9/verification-admin-source/server)",
+      "source_id": "1e29021a392ca6c6cdc7d9932453af61973d696322f914bf59ed0d0eeca71f79",
+      "configuration_id": "805fc993af4daf895e4de11a22cd372244d7845eed807b7eaa56a50f30b39cd3",
+      "commit": "8ecb98883",
+      "launcher_pid": 22331,
+      "started_at": "2026-10-21T23:28:54Z",
+      "listener_pid": 22414
+    },
+    "gap-recovery-verification-20261021": {
+      "component": "api",
+      "mode": "development",
+      "build_id": "",
+      "command": "go run -ldflags '-X main.commit=8ecb98883' ./cmd/server (cwd: /tmp/multica-gap-recovery-20261021-h6phxwo9/verification-source/server)",
+      "source_id": "5da64e7ae5dcba25107862234e6cc138d2e744e412f7c4ad303e926a6296f5cf",
+      "configuration_id": "27a3b48dc81d030a1d6edeb2b62708ccaafad14353bca7c17d36034ce5ced1a2",
+      "commit": "8ecb98883",
+      "launcher_pid": 23168,
+      "started_at": "2026-10-21T23:31:08Z",
+      "listener_pid": 23252
+    }
+  },
+  "confirmed_at": "2026-10-21T23:42:01.614069+00:00"
+}

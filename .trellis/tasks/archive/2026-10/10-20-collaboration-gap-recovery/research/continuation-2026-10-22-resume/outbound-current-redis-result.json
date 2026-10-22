@@ -1,0 +1,21 @@
+{
+  "exit_code": 1,
+  "elapsed_s": 17.991,
+  "finished_at": "2026-10-22T06:19:30.441647+00:00",
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-resume/outbound-current-redis.stdout",
+  "stdout_sha256": "397bba5d756834e553f47bc32472c82e05cfb2f243cf09c220285932ae0b2091",
+  "stderr_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-resume/outbound-current-redis.stderr",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_changed_during_run": [],
+  "passed_top_level": 2,
+  "passed_including_subtests": 2,
+  "passed_tests": [
+    "TestRelay_AReplyNoReplicaCouldSendIsCountedOnce",
+    "TestRelay_ADeliveredReplyIsCountedOnceAndNotAlsoLost"
+  ],
+  "failed": [
+    "TestRelay_ARetriedReplyKeepsItsPlaceInLine",
+    "github.com/multica-ai/multica/server/internal/integrations/wecom"
+  ],
+  "skipped": []
+}

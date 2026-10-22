@@ -1,0 +1,30 @@
+{
+  "at": "2026-10-22T01:25:51.099808+00:00",
+  "head": "238d4bb3974094ce55ab911c99cf2eedb845d278",
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "ownership": [
+    "server/internal/integrations/lark/collaboration_outbound_boundary_test.go",
+    "server/internal/integrations/dingtalk/collaboration_outbound_boundary_test.go",
+    "server/internal/integrations/telegram/collaboration_outbound_boundary_test.go",
+    "server/internal/integrations/wecom/collaboration_outbound_boundary_test.go"
+  ],
+  "before_sha256": {
+    "server/internal/integrations/lark/collaboration_outbound_boundary_test.go": "8f6bd2c8e35d32306c384a63f05bbc3a04a799ab810258ad2294869e1302ca82",
+    "server/internal/integrations/dingtalk/collaboration_outbound_boundary_test.go": "14d95959f005e4bf256c51fa63e96bbd0713ba5717f6980a015c4d72ea97ed66",
+    "server/internal/integrations/telegram/collaboration_outbound_boundary_test.go": "586fa2463d86c4a055b0bb13fe97e0a5b3ff20f5044445d0f7845e5105a76ee1",
+    "server/internal/integrations/wecom/collaboration_outbound_boundary_test.go": "2eb6350b7b77bd8e5f2c9f83b57e15dc6aece9845071333f9d6f8f13ab42b294"
+  },
+  "gap": "Prior transport assertions never reached callbacks: fixture included participant/target consent generations without mandatory configuration_fingerprint; WeCom reply relay also lacks immutable delivery validation.",
+  "change_boundary": "Complete fixture consent evidence in existing owned adapter files, then extend WeCom relay tampering/inactive/malformed negatives with ordinary positive. Product relay guard is root-owned; AC96 only new service file after source write allocation.",
+  "existing_red": "research/continuation-2026-10-22/outbound-im-first-red-20261022.jsonl",
+  "database_alias": "service_s6_other",
+  "excluded": [
+    "other dirty files",
+    "shared product/helper/SQL changes",
+    "new task or replanning",
+    "global ledger/spec/progress",
+    "real IM transport or provider accounts",
+    "service_s5 or browser environments",
+    "commits"
+  ]
+}

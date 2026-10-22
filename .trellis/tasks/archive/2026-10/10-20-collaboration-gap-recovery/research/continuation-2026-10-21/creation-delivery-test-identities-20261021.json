@@ -1,0 +1,30 @@
+{
+  "identities": [
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop creates a private collaboration issue, downloads through native IPC and restores the same issue",
+      "line": 319,
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 5446
+        }
+      ]
+    },
+    {
+      "file": "collaboration-delivery-web.spec.ts",
+      "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+      "line": 21,
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 7116
+        }
+      ]
+    }
+  ],
+  "raw_sha256": "7d644d51adf8c6e34f7ea4b1de0ba4342f00f805fc52e61c68fb69e14ac87294",
+  "scope": "Current actual production Web and Electron harness only"
+}

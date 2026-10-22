@@ -1,0 +1,36 @@
+{
+  "stats": {
+    "startTime": "2026-10-21T11:00:52.168Z",
+    "duration": 20149.701,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "exit_code": 0,
+  "artifacts": [
+    {
+      "path": ".omx/reports/cwc-gap-recovery-20261021/ac33-post-extraction/cross-client-run5.json",
+      "sha256": "463d26d2b225f79cb4c8df207c5363ec841dce4679f9ac0033fb7c23e182be01",
+      "bytes": 125394
+    },
+    {
+      "path": ".omx/reports/cwc-gap-recovery-20261021/ac33-post-extraction/cross-client-run5.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": ".omx/reports/cwc-gap-recovery-20261021/ac33-post-extraction/electron-cross-client-results.png",
+      "sha256": "07b6d2b8f6ac40043d1e817adbefaf4db6bbb957e4b6af8742d277178192e05f",
+      "bytes": 319655
+    },
+    {
+      "path": ".omx/reports/cwc-gap-recovery-20261021/ac33-post-extraction/web-cross-client-results.png",
+      "sha256": "fa374fb061156a240b335bd3e8ab02e487829825e8f4637fc96cc2d2597df846",
+      "bytes": 99304
+    }
+  ],
+  "preflight": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/ac33-run5-preflight.json",
+  "source_semantic_change": false,
+  "purpose": "post-extraction exact task API rerun"
+}

@@ -1,0 +1,34 @@
+{
+  "at": "2026-10-21T14:45:19.657776+00:00",
+  "stage": "read-only verification of completed current-task partition receipts",
+  "expected": 1153,
+  "passed_distinct": 1153,
+  "missing": [],
+  "runs": [
+    {
+      "artifact": "go-service-partition-1.jsonl",
+      "sha256": "908053a239dfee9f6957b2bd947049b837ff42322563cafa8476e5e03a1dd4e7",
+      "top_level_passed": 109,
+      "failures": []
+    },
+    {
+      "artifact": "go-service-partition-2.jsonl",
+      "sha256": "1a1edb5507cf4a6b4259194d2d8abfe5c1d2ebb9f56672f52353d999ef07d99d",
+      "top_level_passed": 354,
+      "failures": []
+    },
+    {
+      "artifact": "go-service-partition-3.jsonl",
+      "sha256": "876f6ca2aea52576b2d3da19c3da33abe7de67e30969af1d99af13987270623d",
+      "top_level_passed": 672,
+      "failures": []
+    },
+    {
+      "artifact": "go-service-redis.jsonl",
+      "sha256": "303a188d684786d9bf4ee282316f6448b1ccfc72ac07f86f18d5183c7fffe804",
+      "top_level_passed": 18,
+      "failures": []
+    }
+  ],
+  "new_monolithic_make_check": false
+}

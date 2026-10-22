@@ -1,0 +1,113 @@
+--- baseline/server/internal/service/collaboration_owner_departure_targets_test.go
++++ server/internal/service/collaboration_owner_departure_targets_test.go
+@@ -2,6 +2,8 @@
+ 
+ import (
+ 	"context"
++	"encoding/json"
++	"reflect"
+ 	"testing"
+ 
+ 	"github.com/google/uuid"
+@@ -139,6 +141,7 @@
+ 
+ func TestCollaborationOwnerDepartureRetractsMultipleTargetsAndSquadMember(t *testing.T) {
+ 	f := newManagedCollaborationFixture(t)
++	f.fx.Cleanup(t, `DELETE FROM collaboration_delegation WHERE group_id IN (SELECT id FROM collaboration_execution_group WHERE session_id=$1)`, f.issue.SessionID)
+ 	d := f.outsider
+ 	f.fx.Member(t, f.workspace, d, "member")
+ 	f.fx.InsertNoID(t, "user_password_credential", testutil.Cols{"user_id": d, "username": "multitarget" + uuid.NewString()[:8],
+@@ -183,8 +186,22 @@
+ 		t.Fatalf("actual squad member delegation: %+v %v", delegated, err)
+ 	}
+ 	_, memberRequest, memberClaim := member.claimManaged(t)
+-	if memberClaim.Identity.RunID != util.UUIDToString(delegated.RunIDs[0]) {
++	if memberClaim.Identity.RunID != util.UUIDToString(delegated.RunIDs[0]) || memberClaim.ResourceOwnerID != d ||
++		memberClaim.AgentID != util.UUIDToString(member.grant.AgentID) || memberClaim.ExecutionWorkspaceID != f.workspace {
+ 		t.Fatal("derived member did not claim its original delegated identity")
++	}
++	memberRun, err := f.svc.Queries.GetCollaborationRuntimeRun(f.ctx, delegated.RunIDs[0])
++	if err != nil || memberRun.ParentRunID != active[2].run || memberRun.GrantID != member.grant.ID || memberRun.GrantEpoch != member.grant.Epoch ||
++		memberRun.RuntimeID != member.runtime.ID || memberRun.BindingID != member.binding.ID || memberRun.BindingEpoch != member.binding.BindingEpoch ||
++		memberRun.InstallationID != member.installation.ID || memberRun.ResourceOwnerUserID != member.runtime.OwnerID || memberRun.StepKind.String != "member" {
++		t.Fatalf("derived member borrowed the leader's resource/consent/runtime identity: %v", err)
++	}
++	beforeMember := controlStateSnapshot(t, f.collaborationQueueFixture)
++	if _, err := f.svc.ClaimRuntimeRun(leader.daemonCtx, memberRun.ID, memberRequest); err == nil || beforeMember != controlStateSnapshot(t, f.collaborationQueueFixture) {
++		t.Fatalf("leader credential acquired another owner's member execution: %v", err)
++	}
++	if _, err := f.svc.RuntimeContext(context.Background(), memberRun.ID, active[2].permit.BusinessToken); err == nil || beforeMember != controlStateSnapshot(t, f.collaborationQueueFixture) {
++		t.Fatalf("leader business token expanded into member capability: %v", err)
+ 	}
+ 	memberPermit, err := member.svc.PermitRuntimeRun(member.daemonCtx, delegated.RunIDs[0], protocol.CollaborationRunPermitRequest{Identity: memberClaim.Identity,
+ 		AttemptSeq: "1", AttemptNonce: uuid.NewString(), Containment: protocol.CollaborationContainmentLinuxPIDNamespace})
+@@ -203,6 +220,19 @@
+ 	f.fx.QueryRow(t, `SELECT jsonb_build_object(
+ 		'inputs',(SELECT jsonb_agg(to_jsonb(i) ORDER BY i.group_id,i.command_id) FROM collaboration_group_input i
+ 			WHERE i.group_id IN (SELECT id FROM collaboration_execution_group WHERE session_id=$1)),
++		'consumed_commands',(SELECT jsonb_agg(to_jsonb(c) ORDER BY c.id) FROM collaboration_command c WHERE c.session_id=$1 AND c.state<>'waiting'),
++		'dependencies',(SELECT jsonb_agg(to_jsonb(d)-'detached_at'-'detach_reason' ORDER BY d.group_id,d.command_id) FROM collaboration_group_dependency d
++			WHERE d.group_id IN (SELECT id FROM collaboration_execution_group WHERE session_id=$1)),
++		'run_identity',(SELECT jsonb_agg(jsonb_build_object('id',r.id,'target',r.target_id,'group',r.group_id,'command',r.command_id,
++			'agent',r.agent_id,'runtime',r.runtime_id,'owner',r.resource_owner_user_id,'grant',r.grant_id,'grant_epoch',r.grant_epoch,
++			'binding',r.binding_id,'binding_epoch',r.binding_epoch,'installation',r.installation_id,'target_epoch',r.target_epoch,
++			'config_version',r.config_version,'channel',r.channel_id,'batch',r.batch_id,'parent',r.parent_run_id,
++			'fence',r.fence,'launch_nonce',r.launch_nonce,'prompt',r.prompt_snapshot) ORDER BY r.id)
++			FROM collaboration_run r WHERE r.session_id=$1),
++		'proof_identity',(SELECT jsonb_agg(to_jsonb(p)-'stop_requested_at'-'confirmed_at'-'proof' ORDER BY p.run_id) FROM collaboration_termination p
++			WHERE p.run_id IN (SELECT id FROM collaboration_run WHERE session_id=$1)),
++		'attempts',(SELECT jsonb_agg(to_jsonb(a) ORDER BY a.run_id,a.attempt_seq) FROM collaboration_attempt a
++			WHERE a.run_id IN (SELECT id FROM collaboration_run WHERE session_id=$1)),
+ 		'records',(SELECT jsonb_agg(to_jsonb(e) ORDER BY e.run_id,e.seq) FROM collaboration_run_event e WHERE e.issue_id=$2)
+ 	)::text`, f.issue.SessionID, f.issue.Issue.ID).Scan(&immutable)
+ 	ownerCtx := collaborationPasswordContext(util.MustParseUUID(d), 1)
+@@ -224,7 +254,8 @@
+ 		}
+ 	}
+ 	for _, old := range active {
+-		if f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND forced_disposition='stopped' AND proof_state='unknown' AND settled_at IS NULL`, old.run) != 1 ||
++		if f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND forced_disposition='stopped' AND proof_state='unknown' AND settled_at IS NULL
++			AND claim_generation=$2::bigint+1`, old.run, old.claim.Identity.ClaimGeneration) != 1 ||
+ 			f.fx.Count(t, `SELECT count(*) FROM collaboration_termination WHERE run_id=$1 AND stop_requested_at IS NOT NULL AND confirmed_at IS NULL AND proof IS NULL`, old.run) != 1 ||
+ 			f.fx.Count(t, `SELECT count(*) FROM collaboration_runtime_reservation WHERE run_id=$1 AND released_at IS NULL`, old.run) != 1 {
+ 			t.Fatal("owner departure fabricated proof or released a permitted direct/squad execution")
+@@ -246,9 +277,37 @@
+ 	f.fx.QueryRow(t, `SELECT jsonb_build_object(
+ 		'inputs',(SELECT jsonb_agg(to_jsonb(i) ORDER BY i.group_id,i.command_id) FROM collaboration_group_input i
+ 			WHERE i.group_id IN (SELECT id FROM collaboration_execution_group WHERE session_id=$1)),
++		'consumed_commands',(SELECT jsonb_agg(to_jsonb(c) ORDER BY c.id) FROM collaboration_command c WHERE c.session_id=$1 AND c.id NOT IN
++			(SELECT unnest($3::uuid[])) AND c.state<>'waiting'),
++		'dependencies',(SELECT jsonb_agg(to_jsonb(d)-'detached_at'-'detach_reason' ORDER BY d.group_id,d.command_id) FROM collaboration_group_dependency d
++			WHERE d.group_id IN (SELECT id FROM collaboration_execution_group WHERE session_id=$1)),
++		'run_identity',(SELECT jsonb_agg(jsonb_build_object('id',r.id,'target',r.target_id,'group',r.group_id,'command',r.command_id,
++			'agent',r.agent_id,'runtime',r.runtime_id,'owner',r.resource_owner_user_id,'grant',r.grant_id,'grant_epoch',r.grant_epoch,
++			'binding',r.binding_id,'binding_epoch',r.binding_epoch,'installation',r.installation_id,'target_epoch',r.target_epoch,
++			'config_version',r.config_version,'channel',r.channel_id,'batch',r.batch_id,'parent',r.parent_run_id,
++			'fence',r.fence,'launch_nonce',r.launch_nonce,'prompt',r.prompt_snapshot) ORDER BY r.id)
++			FROM collaboration_run r WHERE r.session_id=$1),
++		'proof_identity',(SELECT jsonb_agg(to_jsonb(p)-'stop_requested_at'-'confirmed_at'-'proof' ORDER BY p.run_id) FROM collaboration_termination p
++			WHERE p.run_id IN (SELECT id FROM collaboration_run WHERE session_id=$1)),
++		'attempts',(SELECT jsonb_agg(to_jsonb(a) ORDER BY a.run_id,a.attempt_seq) FROM collaboration_attempt a
++			WHERE a.run_id IN (SELECT id FROM collaboration_run WHERE session_id=$1)),
+ 		'records',(SELECT jsonb_agg(to_jsonb(e) ORDER BY e.run_id,e.seq) FROM collaboration_run_event e WHERE e.issue_id=$2)
+-	)::text`, f.issue.SessionID, f.issue.Issue.ID).Scan(&afterImmutable)
+-	if afterImmutable != immutable || f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND queue_state='active' AND control_version=2`, f.issue.SessionID) != 1 ||
++	)::text`, f.issue.SessionID, f.issue.Issue.ID, cancelled).Scan(&afterImmutable)
++	if afterImmutable != immutable {
++		var beforeFields, afterFields map[string]json.RawMessage
++		if err := json.Unmarshal([]byte(immutable), &beforeFields); err != nil {
++			t.Fatal(err)
++		}
++		if err := json.Unmarshal([]byte(afterImmutable), &afterFields); err != nil {
++			t.Fatal(err)
++		}
++		for key, before := range beforeFields {
++			if !reflect.DeepEqual(before, afterFields[key]) {
++				t.Fatalf("owner departure changed retained %s facts", key)
++			}
++		}
++	}
++	if f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND queue_state='active' AND control_version=2`, f.issue.SessionID) != 1 ||
+ 		f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND forced_disposition IS NULL AND settled_at IS NULL`, independent.run) != 1 {
+ 		t.Fatal("owner departure erased immutable history or changed whole-issue/other-owner execution")
+ 	}

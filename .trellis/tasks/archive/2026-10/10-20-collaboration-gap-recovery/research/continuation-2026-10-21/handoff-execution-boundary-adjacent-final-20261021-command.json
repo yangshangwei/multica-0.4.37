@@ -1,0 +1,59 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^(TestCollaborationTransferredHandlersShareExistingGrantAndControls|TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion|TestCollaborationWorkflowInviteTransferPreservesExecution|TestCollaborationQueueRejectsStaleIdentityAndMachine|TestCollaborationTargetStopLeavesOtherTargetAndIssueActive|TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent|TestCollaborationOwnerConsentIsExplicitScopedAndIdempotent|TestCollaborationConsentUsesCompleteSquadRoster|TestCollaborationResourceOfferSquadStillRequiresEveryOwnerConsent|TestCollaborationSquadInputRechecksEveryResourceConsent|TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator|TestCollaborationInformationChainReturnsLayerByLayer|TestCollaborationLifecycleAuthorityAndExplicitReopen|TestAdminCollaborationLifecyclePreservesCreatorAndRealActor)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "environment": {
+    "GOTOOLCHAIN": "go1.26.6",
+    "database_alias": "service_s5",
+    "schema_migration": 737,
+    "real_provider_access": false
+  },
+  "started_at": "2026-10-21T14:13:26.074643+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_handoff_execution_boundary_test.go": "2711e8e6aea0e111f5438834e1bb5f116c2b1ffb7b071d4b9c39e8b434baefb6",
+    "server/internal/service/collaboration_handoff.go": "5757c544bd97e96f506a1f5ad4d12775a2de2b8d7e69508d61be8a9685c84053",
+    "server/internal/service/collaboration_workflow.go": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+    "server/internal/service/collaboration_control.go": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+    "server/internal/service/collaboration_runtime.go": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+    "server/internal/service/collaboration_runtime_test.go": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+    "server/internal/service/collaboration_lifecycle.go": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+    "server/internal/service/collaboration_handoff_test.go": "99136f27f2331cd8aa384a45dca0c05b49cfc6831255ad32be71be2ce0f8e992",
+    "server/internal/service/collaboration_workflow_test.go": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+    "server/internal/service/collaboration_authority_test.go": "9804e0705acf9270b542e5476a7770d691b6fa26658558e24f050565d48cdfd9",
+    "server/internal/service/collaboration_targets_review_test.go": "8ee17bfef1702248089c9373f81045b55856eac4f22d8e5aa6d894b03116dcee"
+  },
+  "expected_top_level_identities": [
+    "TestCollaborationTransferredHandlersShareExistingGrantAndControls",
+    "TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion",
+    "TestCollaborationWorkflowInviteTransferPreservesExecution",
+    "TestCollaborationQueueRejectsStaleIdentityAndMachine",
+    "TestCollaborationTargetStopLeavesOtherTargetAndIssueActive",
+    "TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent",
+    "TestCollaborationOwnerConsentIsExplicitScopedAndIdempotent",
+    "TestCollaborationConsentUsesCompleteSquadRoster",
+    "TestCollaborationResourceOfferSquadStillRequiresEveryOwnerConsent",
+    "TestCollaborationSquadInputRechecksEveryResourceConsent",
+    "TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator",
+    "TestCollaborationInformationChainReturnsLayerByLayer",
+    "TestCollaborationLifecycleAuthorityAndExplicitReopen",
+    "TestAdminCollaborationLifecyclePreservesCreatorAndRealActor"
+  ]
+}

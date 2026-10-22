@@ -1,0 +1,57 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/integrations/lark",
+    "./internal/integrations/dingtalk",
+    "./internal/integrations/telegram",
+    "./internal/integrations/wecom",
+    "-run",
+    "^Test(CollaborationOutbound|TwoReplicas|Relay_|DeliverRelayed|DrainDelivers|RelayedInbox)",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/tmp/multica-gap-recovery-20261021-h6phxwo9/outbound-isolated-head-mk_9pnw7/server",
+  "started_at": "2026-10-22T06:03:59.897743+00:00",
+  "source": {
+    "at": "2026-10-22T06:03:59.764031+00:00",
+    "head": "cae15dd72ee568f28ce29b19f0c76765b72f26cd",
+    "isolated_source": "/tmp/multica-gap-recovery-20261021-h6phxwo9/outbound-isolated-head-mk_9pnw7",
+    "copied_files": {
+      "server/internal/integrations/lark/collaboration_outbound_boundary_test.go": "1ad4f5a7f56bdfab10f7ee1f5b318c20a0e4f3c11be2ce48519179d6df2e1bf7",
+      "server/internal/integrations/dingtalk/collaboration_outbound_boundary_test.go": "9079b5c2fda9657b384b4c888da320484f049be35cf0d8b24e66ba56bda7d8d6",
+      "server/internal/integrations/telegram/collaboration_outbound_boundary_test.go": "a2b2c233e00324243daac55ef9551a6ef86ed63a83418e60af6bb4d862fc5c9f",
+      "server/internal/integrations/wecom/collaboration_outbound_boundary_test.go": "cbfeb9d085b04526103ab347c2649a61a538af673bad81b09e35f5525d28929a",
+      "server/internal/integrations/wecom/relay_outbound.go": "c0b2be0d56ddde20435dadc2e6de6e04b8ea998a240a73cb75066b22f6f6f1d6",
+      "server/internal/integrations/wecom/outbound_test.go": "e575bf3a5ba0a7a41dc9ecd2e3df02460c1caf8c6c6763aecfee231a6d3596ad",
+      "server/internal/integrations/wecom/outbound_two_replica_db_test.go": "2ff230b4f9d3db8b9c767c6b50c6112870a14ee72606e83964c918155b71d672"
+    },
+    "scope": "Exact HEAD plus only seven independently owned outbound files",
+    "database_alias": "service_s5",
+    "uses_no_user_cli": true
+  },
+  "external_im": false,
+  "commercial_provider": false,
+  "exit_code": 0,
+  "elapsed_s": 46.315,
+  "raw_sha256": "d4f1cf37534bfe1d09443bc9fef784edff7c9806304fa91d52f6610c5719a77d",
+  "passed_top_level": 25,
+  "passed_including_subtests": 65,
+  "failed": [],
+  "skipped": [
+    "TestRelay_ARetriedReplyKeepsItsPlaceInLine",
+    "TestRelay_AReplyNoReplicaCouldSendIsCountedOnce",
+    "TestRelay_ADeliveredReplyIsCountedOnceAndNotAlsoLost"
+  ]
+}

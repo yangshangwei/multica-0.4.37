@@ -1,0 +1,431 @@
+{
+  "at": "2026-10-22T00:31:23.363478+00:00",
+  "sources": {
+    "e2e/collaboration-offline-result-notifications.spec.ts": "86a2efd01f7d4e67bc83fb9452fb7fb1c22d7d8542045920aedc3f9166c8f117",
+    "e2e/fixtures/collaboration-offline-result-notifications.ts": "ab8c09d4600e354231e870721665798cbedd0cb584350f03cb96ebaeb3ac615c"
+  },
+  "source_changed_during_final": false,
+  "test_outcomes": {
+    "startTime": "2026-10-22T00:27:42.381Z",
+    "duration": 41418.579,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "canonical_union": {
+    "sets": [
+      {
+        "stem": "notification-service-canonical",
+        "top_level": [
+          "TestCollaborationNotificationsLoseContentAndAnchorsWithAccess",
+          "TestCollaborationResultNotificationRollbackAndConcurrentReplay",
+          "TestCollaborationResultNotificationsRequireProvenTerminalGroup",
+          "TestCollaborationWorkflowNotificationsAndWorkbench",
+          "TestCollaborationWorkflowTransferRecordsIterationAndSupersedesInformation"
+        ],
+        "passes": 10,
+        "source_matches": true
+      },
+      {
+        "stem": "notification-delivery-canonical",
+        "top_level": [
+          "TestCollaborationAcceptanceRefusesDisabledCreator",
+          "TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator",
+          "TestCollaborationInformationChainReturnsLayerByLayer",
+          "TestCollaborationInformationRequestRequiredWritesRollback",
+          "TestCollaborationInformationRequestRolesAndClosedIssue",
+          "TestCollaborationInformationReturnRefusesUnavailableRequester",
+          "TestCollaborationRealtimeAuthorizationKeepsIndependentReadBases",
+          "TestCollaborationRealtimeOutboxRetriesWithoutPrivatePayloads",
+          "TestCollaborationRealtimeRemovalReachesRevokedAccount",
+          "TestCollaborationRealtimeRetainsFailedSourceInvalidation"
+        ],
+        "passes": 21,
+        "source_matches": true
+      }
+    ],
+    "union_top_level": 15,
+    "union_pass_identities": 31,
+    "union_identities": [
+      "TestCollaborationAcceptanceRefusesDisabledCreator",
+      "TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator",
+      "TestCollaborationInformationChainReturnsLayerByLayer",
+      "TestCollaborationInformationRequestRequiredWritesRollback",
+      "TestCollaborationInformationRequestRequiredWritesRollback/INSERT_INTO_collaboration_event",
+      "TestCollaborationInformationRequestRequiredWritesRollback/INSERT_INTO_collaboration_notification",
+      "TestCollaborationInformationRequestRequiredWritesRollback/INSERT_INTO_issue_handoff",
+      "TestCollaborationInformationRequestRequiredWritesRollback/INSERT_INTO_issue_participant",
+      "TestCollaborationInformationRequestRequiredWritesRollback/UPDATE_collaboration_operation",
+      "TestCollaborationInformationRequestRequiredWritesRollback/UPDATE_issue_AS_i_SET",
+      "TestCollaborationInformationRequestRequiredWritesRollback/UPDATE_issue_SET_assignee_type",
+      "TestCollaborationInformationRequestRequiredWritesRollback/UPDATE_issue_collaboration_SET_active_information_request_id_=_$1",
+      "TestCollaborationInformationRequestRequiredWritesRollback/UPDATE_issue_collaboration_SET_revision",
+      "TestCollaborationInformationRequestRolesAndClosedIssue",
+      "TestCollaborationInformationReturnRefusesUnavailableRequester",
+      "TestCollaborationInformationReturnRefusesUnavailableRequester/disabled",
+      "TestCollaborationInformationReturnRefusesUnavailableRequester/removed",
+      "TestCollaborationNotificationsLoseContentAndAnchorsWithAccess",
+      "TestCollaborationRealtimeAuthorizationKeepsIndependentReadBases",
+      "TestCollaborationRealtimeOutboxRetriesWithoutPrivatePayloads",
+      "TestCollaborationRealtimeRemovalReachesRevokedAccount",
+      "TestCollaborationRealtimeRetainsFailedSourceInvalidation",
+      "TestCollaborationResultNotificationRollbackAndConcurrentReplay",
+      "TestCollaborationResultNotificationsRequireProvenTerminalGroup",
+      "TestCollaborationResultNotificationsRequireProvenTerminalGroup/failure",
+      "TestCollaborationResultNotificationsRequireProvenTerminalGroup/missing",
+      "TestCollaborationResultNotificationsRequireProvenTerminalGroup/never_launched",
+      "TestCollaborationResultNotificationsRequireProvenTerminalGroup/stopped",
+      "TestCollaborationResultNotificationsRequireProvenTerminalGroup/success",
+      "TestCollaborationWorkflowNotificationsAndWorkbench",
+      "TestCollaborationWorkflowTransferRecordsIterationAndSupersedesInformation"
+    ],
+    "fail": 0,
+    "skip": 0
+  },
+  "static_config": {
+    "original_path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/notification-static/tsconfig.json",
+    "sha256": "f8eb51b6fd67a23044f4192382c4cd267804ba0bee2a05bfaadd9d58ebaf814b",
+    "content": {
+      "extends": "/Volumes/artisan/code/2026/multica-0.4.37/packages/tsconfig/react-library.json",
+      "compilerOptions": {
+        "noEmit": true,
+        "declaration": false,
+        "declarationMap": false,
+        "sourceMap": false,
+        "incremental": false,
+        "baseUrl": "/Volumes/artisan/code/2026/multica-0.4.37",
+        "paths": {
+          "@multica/core/*": [
+            "/Volumes/artisan/code/2026/multica-0.4.37/packages/core/*"
+          ]
+        },
+        "typeRoots": [
+          "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/@types"
+        ]
+      },
+      "include": [
+        "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-offline-result-notifications.spec.ts",
+        "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-offline-result-notifications.ts"
+      ],
+      "exclude": []
+    }
+  },
+  "artifacts": [
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-boundary.json",
+      "sha256": "804e68b3ad5a759cbe655c63caf598c11ddf5b4924c89bd9ae3dd3f6db815e58",
+      "bytes": 1996
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-canonical-receipt-review.json",
+      "sha256": "6be1ade5adfa1e5da9d302915b921eea97e52ab8e4ccf10c870a12dae1e550bb",
+      "bytes": 3912
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-clients-final-command.json",
+      "sha256": "bc7c4e7398498da408eb109901fbfb9de8c016fd840337199cc26cf9b4dfe52c",
+      "bytes": 1012
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-clients-final-offline-result-notification-identities-15.json",
+      "sha256": "49dc460a0c4fa7c776ff4f61e9756017db7ca4eb6cf1dcdd4652dc7654f61038",
+      "bytes": 76870
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-clients-final-result.json",
+      "sha256": "eee3791d330f0b6b428a51762537ad88893d615fde58b1c0e73e6b23344519ce",
+      "bytes": 2296
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-clients-final.json",
+      "sha256": "2ecf366d217091c7c5e83150fcafdc8285df2f9adbc1cc529d4ef9bce4d01b42",
+      "bytes": 202874
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-clients-final.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-clients-first-command.json",
+      "sha256": "5240461a25a05950e8d94aa76492894565a1ecb71cf7dd64a0edfd2787a09196",
+      "bytes": 1012
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-clients-first-offline-result-notification-identities-15.json",
+      "sha256": "606f26da8d7077c9c1adbfc9fb40c942ab5e807e0e6716f857916665bfc07d7d",
+      "bytes": 24888
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-clients-first-result.json",
+      "sha256": "87c2cc5679451bc6644d353ffdbbf5531e25e950e3658712660c78358976cf38",
+      "bytes": 3716
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-clients-first.json",
+      "sha256": "ac1df1224f6cd602e80474541d36b3cfc2ce8069b4dd23ad58838dc190362f45",
+      "bytes": 160438
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-clients-first.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-current.md",
+      "sha256": "1c05094fc1aff4a61170a164da2e9bb6a6ba86ae0266b2b49c3538eff11e5af7",
+      "bytes": 8853
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-delivery-canonical-command.json",
+      "sha256": "d28e6d68eb00fe8e49c450a3151cc8a30df24afedb5647d2d4962dee7636b961",
+      "bytes": 1749
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-delivery-canonical-result.json",
+      "sha256": "f68af563e7a27bc90c90772c68b614766b25e4554aa5f789798ba256eb2ee1bc",
+      "bytes": 452
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-delivery-canonical.jsonl",
+      "sha256": "df834dd3c918c4c0bfeb5cdc781919319ff2b9d2e16aba907cad7857abf94eed",
+      "bytes": 22806
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-delivery-canonical.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-discovery-final-command.json",
+      "sha256": "003f1011289f75d89137268e464350b3628b258386fb5a53f48a70d7e4a81fbd",
+      "bytes": 417
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-discovery-final-result.json",
+      "sha256": "83bde5557d1898c2ba929394caedf3b71a8dbe1557301a9704ad3c62330933a2",
+      "bytes": 701
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-discovery-final.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-discovery-final.stdout",
+      "sha256": "21eb6a8af36a714a5b9898fb1079c7281f617e678a6bb1255a260cea5f9dea1b",
+      "bytes": 471
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-discovery-first-command.json",
+      "sha256": "30835dacaafef96ebc65cbd7fcd079c0e83d1db95f2ec47ae0ce8e501e4f909b",
+      "bytes": 417
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-discovery-first-result.json",
+      "sha256": "0a8952d0ba3cf86d6cd75660d7521cfbf5d2fe0cc650358976f4fc0eac633122",
+      "bytes": 701
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-discovery-first.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-discovery-first.stdout",
+      "sha256": "21eb6a8af36a714a5b9898fb1079c7281f617e678a6bb1255a260cea5f9dea1b",
+      "bytes": 471
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-eslint-final-command.json",
+      "sha256": "acf1337d83140a4b600dba4f6d7e6b7f31ba0cce539a8eba744ff9571e4ab921",
+      "bytes": 438
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-eslint-final-result.json",
+      "sha256": "795455b124a3411af5bde677d8e01be498caa9ae194b3c721720826bc8aca7d3",
+      "bytes": 720
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-eslint-final.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-eslint-final.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-eslint-first-command.json",
+      "sha256": "4c906561ecd6dd080da186fa600ce272dc2a6d5706665819b7d2850823279ea7",
+      "bytes": 438
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-eslint-first-result.json",
+      "sha256": "ab9a3c5384668eb0045b948a2b625cb9247cef204e27cb5c6bdd8dfa49a44e9c",
+      "bytes": 720
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-eslint-first.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-eslint-first.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-final-electron-identities.json",
+      "sha256": "49dc460a0c4fa7c776ff4f61e9756017db7ca4eb6cf1dcdd4652dc7654f61038",
+      "bytes": 76870
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-final-identities-manifest.json",
+      "sha256": "e169cbe3314d95e6168a62cd37c919b0c644801ea2155e1fe00a00ea95186171",
+      "bytes": 1764
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-final-web-identities.json",
+      "sha256": "e04dd78209d8326232064496ba42169d41e147a3f362e4ad59cb572e517720a8",
+      "bytes": 71906
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-native-second-command.json",
+      "sha256": "7fa37657eae3dad5290ce86ffb591d5b005e3ffd752e97dc578d57ca0dcddb34",
+      "bytes": 1060
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-native-second-result.json",
+      "sha256": "2b7d9cf1f1cfa6a785b33dfe6e66eecd8bd8a8d3df18e9070ed3f4a9ccded4ec",
+      "bytes": 1482
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-native-second.json",
+      "sha256": "680b3e58dbd1c50b01d2d07667219b03d76c41b285131f3f4b5d679c433242c2",
+      "bytes": 1826
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-native-second.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-native-third-command.json",
+      "sha256": "ee47b5539cdd29abc00057be0160e7c8d02b49f78b1a00daa87f65d90c284fc6",
+      "bytes": 1058
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-native-third-offline-result-notification-identities-15.json",
+      "sha256": "4b58ff8224166df6bcb336e80a7663ecbf49d220a17d4445304f29e6045d75a4",
+      "bytes": 85057
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-native-third-result.json",
+      "sha256": "23cbc6ff0829aa5341a5c86295059b61f039727402a3f749bdf78a6e8aadcd95",
+      "bytes": 1910
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-native-third.json",
+      "sha256": "f5333153bb6329c3843dcd8d90b5fcf72fac4fbc61b9572109edaff51b1ef296",
+      "bytes": 116516
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-native-third.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-redaction-final-check.json",
+      "sha256": "e3d52fdc98d1dcc84f40c2641dfbb0af8c9f3f00668f276b6d1060c9083894c4",
+      "bytes": 399
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-service-canonical-command.json",
+      "sha256": "44ff0abd18ca37bbc9a545ee383c2988878df280c47cfc535d95e6d5af650734",
+      "bytes": 1770
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-service-canonical-result.json",
+      "sha256": "d936d8b39d145846c3849200128f854195bc847d7d044d6cfc98de5ee5661e23",
+      "bytes": 450
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-service-canonical.jsonl",
+      "sha256": "269f383bfd5edc970d17681913481e3e6b7f5fa9160b563c06e1671ca83bcaaa",
+      "bytes": 10788
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-service-canonical.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-tsc-final-command.json",
+      "sha256": "c4f460f0df14094b1b1aae2c879d679b988f278f25374001942aed99a3e6a477",
+      "bytes": 299
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-tsc-final-result.json",
+      "sha256": "a1fb7779f0f2b4aa77adbcda26069ed49dde33b3387d7ab2ae894f77caaddaab",
+      "bytes": 581
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-tsc-final.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-tsc-final.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-tsc-first-command.json",
+      "sha256": "8e1453a37aac215bcd5a94046fc4ac88d381eb2900020095db08216c4fc344bd",
+      "bytes": 299
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-tsc-first-result.json",
+      "sha256": "4dbb18225caa2e496203d835adc4a15c447f7c1767733caadf923d99b097b906",
+      "bytes": 583
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-tsc-first.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-tsc-first.stdout",
+      "sha256": "df6daad1d324db6cbce9c4503081e42702ec00fe30a92aab71b12adccd67819f",
+      "bytes": 836
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-tsc-second-command.json",
+      "sha256": "c47b5d8814030877010f55b29c0b5661aca2436b5c5eaa74f75538018f48b7cb",
+      "bytes": 299
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-tsc-second-result.json",
+      "sha256": "ae7662bdc9dfc3161bd14679052870d4d45032785cf5389747920182aa3f3b5b",
+      "bytes": 581
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-tsc-second.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-tsc-second.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  ],
+  "independent_review_required": true,
+  "acceptance_promotion": false,
+  "product_source_changed": false,
+  "real_provider_account_access": false,
+  "gates_changed": false
+}

@@ -1,0 +1,179 @@
+{
+ "reviewer": "outbound-check",
+ "at": "2026-10-22T06:33:57.834031+00:00",
+ "task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+ "head": "cae15dd72ee568f28ce29b19f0c76765b72f26cd",
+ "mutations_by_reviewer": [
+  "this md",
+  "this json"
+ ],
+ "db_tests_run_by_reviewer": false,
+ "external_im_or_provider": false,
+ "source_sha256": {
+  "server/internal/integrations/wecom/relay_outbound.go": "c0b2be0d56ddde20435dadc2e6de6e04b8ea998a240a73cb75066b22f6f6f1d6",
+  "server/internal/integrations/wecom/outbound_test.go": "e575bf3a5ba0a7a41dc9ecd2e3df02460c1caf8c6c6763aecfee231a6d3596ad",
+  "server/internal/integrations/wecom/outbound_two_replica_db_test.go": "2ff230b4f9d3db8b9c767c6b50c6112870a14ee72606e83964c918155b71d672",
+  "server/internal/integrations/lark/collaboration_outbound_boundary_test.go": "1ad4f5a7f56bdfab10f7ee1f5b318c20a0e4f3c11be2ce48519179d6df2e1bf7",
+  "server/internal/integrations/dingtalk/collaboration_outbound_boundary_test.go": "9079b5c2fda9657b384b4c888da320484f049be35cf0d8b24e66ba56bda7d8d6",
+  "server/internal/integrations/telegram/collaboration_outbound_boundary_test.go": "a2b2c233e00324243daac55ef9551a6ef86ed63a83418e60af6bb4d862fc5c9f",
+  "server/internal/integrations/wecom/collaboration_outbound_boundary_test.go": "cbfeb9d085b04526103ab347c2649a61a538af673bad81b09e35f5525d28929a",
+  "server/internal/integrations/lark/outbound.go": "5d922e8aa483a19cc64aed59b00f7c5f7a67fa5090d303719e87de8865eb2139",
+  "server/internal/integrations/dingtalk/outbound.go": "872f838638bc44186fd198c465e93d796d0c5e7679d6752a1711876ca4def257",
+  "server/internal/integrations/telegram/outbound.go": "758e6cdb3153ddfa677c5d179ea3f140f9e06b61ddbc9064287c1651144d95de",
+  "server/internal/integrations/wecom/outbound.go": "e5e668f1852be24936b72e504d1c866c2a5a8dc37a86a869c314a17c72026b63",
+  "server/internal/integrations/wecom/outbound_media.go": "9e56d19f4baec903cb30e9e503dc43ae3da93987625397f33e58f369c76c5e60",
+  "server/internal/integrations/wecom/relay_ordering_db_test.go": "1d7f3ccb588aa7dd6b4042dcf17a20f1914e4143262f36476bf4f431228dedf0"
+ },
+ "decision": {
+  "wecom_relay_fix": "accept",
+  "fixture_corrections": "accept_provenance_not_weakening (8 files incl. relay_ordering_db_test.go sibling workspace)",
+  "ac84": "partial"
+ },
+ "fix_checks": [
+  "q nil terminal",
+  "task uuid",
+  "delivery exact task/channel/installation/chat/chat_type",
+  "session/workspace uuid (publisher task.go:7112 sets WorkspaceID)",
+  "task id+chat_session",
+  "TaskInputIsChannelIngested",
+  "installation id/workspace/active",
+  "ErrNoRows terminal; other errors outcomeProvablyNotSent stage-only log",
+  "all before sender/text/media; inbox unchanged"
+ ],
+ "evidence": [
+  {
+   "run": "continuation-2026-10-22/outbound-im-resume2-red",
+   "exit": 1,
+   "top": "4/7 pass",
+   "tests": "24/43 pass, 19 fail",
+   "role": "pre-fix red retained"
+  },
+  {
+   "run": "research/continuation-2026-10-22-resume/outbound-current-red",
+   "exit": 1,
+   "stdout_sha256": "6d03ad802fcecfa320a5655e9c5eb00d9b5bd811765f51b8646808e04267d6b5",
+   "role": "pre-fix red at cae15dd72"
+  },
+  {
+   "run": "research/continuation-2026-10-22-resume/outbound-current-green",
+   "exit": 1,
+   "top": "7 pass",
+   "tests": "43 pass; ReadFault x4 failed",
+   "role": "first fix terminal-on-DB-fault, refined"
+  },
+  {
+   "run": "research/continuation-2026-10-22-resume/outbound-current-green2",
+   "exit": 0,
+   "top": 8,
+   "tests": 48,
+   "stdout_sha256": "9edda796b95e53ed640fe0f0ed788ca98b600abb0423fe2a71007fdad13f1bfa",
+   "role": "canonical; manifest predates fixture edits"
+  },
+  {
+   "run": "research/continuation-2026-10-22-resume/outbound-current-adjacent-first",
+   "exit": 1,
+   "top": "868 pass",
+   "tests": "1339 pass; 7 old relay fixture tests failed",
+   "source_changed_during_run": [
+    "wecom/outbound_test.go",
+    "wecom/outbound_two_replica_db_test.go"
+   ],
+   "role": "retained failure; not unioned"
+  },
+  {
+   "run": "research/continuation-2026-10-22-resume/outbound-current-adjacent-final",
+   "exit": 0,
+   "top": 875,
+   "tests": 1346,
+   "skipped": 3,
+   "stdout_sha256": "816da4df08628bda28f5f62cfa58790eb80a201d0292568ccd52fbbfacbdaae9",
+   "current_drift": [
+    "server/internal/integrations/wecom/relay_ordering_db_test.go"
+   ],
+   "drift_note": "test-only 8th file edited after; its 3 Redis tests were skipped in this run"
+  },
+  {
+   "run": "continuation-2026-10-22/outbound-current-isolated-head",
+   "exit": 0,
+   "top": 25,
+   "tests": 65,
+   "skipped": 3,
+   "redis": false,
+   "raw_sha256": "d4f1cf37534bfe1d09443bc9fef784edff7c9806304fa91d52f6610c5719a77d",
+   "files": 7,
+   "note": "run cited by root message"
+  },
+  {
+   "run": "research/continuation-2026-10-22-resume/outbound-current-vet",
+   "exit": 0,
+   "note": "manifest predates 8th-file edit; checker re-ran go vet four packages on current source exit0 and gofmt -l clean"
+  },
+  {
+   "run": "research/continuation-2026-10-22-resume/outbound-current-redis",
+   "exit": 1,
+   "top": "2/3",
+   "failed": [
+    "TestRelay_ARetriedReplyKeepsItsPlaceInLine"
+   ],
+   "assertion": "relay_ordering_db_test.go:228 the chat received [答案一], want both answers",
+   "stdout_sha256": "397bba5d756834e553f47bc32472c82e05cfb2f243cf09c220285932ae0b2091",
+   "role": "retained first adjunct failure; sibling fixture lacked workspace"
+  },
+  {
+   "run": "research/continuation-2026-10-22-resume/outbound-current-redis-final",
+   "exit": 0,
+   "top": 3,
+   "tests": 3,
+   "stdout_sha256": "e0820955eae6ef99ae8aa7004dad36e1f97b0bbc36ba94b3c6dbb35ea033f7db",
+   "current_drift": []
+  },
+  {
+   "run": "research/continuation-2026-10-22-resume/outbound-current-isolated-final",
+   "exit": 0,
+   "top": 28,
+   "tests": 68,
+   "skipped": 0,
+   "redis": true,
+   "files": 8,
+   "stdout_sha256": "c0f4fc5b5dac7838d6b11d351b4044220be15250ccfb603286af1355f96571c5",
+   "copied_match_current": true,
+   "role": "authoritative isolated"
+  }
+ ],
+ "open_findings": [
+  {
+   "id": "F1",
+   "severity": "low",
+   "file": "server/internal/integrations/wecom/outbound_media.go:182",
+   "summary": "relay frame MessageID not bound to validated task/session; ListAttachmentsByChatMessage filters chat_message_id+workspace only (attachment.sql:166); same-workspace ordinary chat attachments of another session reachable by stale/tampered frame; collaboration_attachment not reachable",
+   "test": "none"
+  },
+  {
+   "id": "F2",
+   "severity": "low",
+   "file": "server/internal/integrations/wecom/relay_outbound.go:566",
+   "summary": "read-fault retry exhaustion later counted drop_no_connection by publisher watcher; observability only"
+  },
+  {
+   "id": "F3",
+   "severity": "info",
+   "summary": "Redis Release after read fault not asserted in collaboration test (dedupe nil); generic relay release paths pass in isolated run with REDIS_TEST_URL"
+  },
+  {
+   "id": "F4",
+   "severity": "info",
+   "summary": "inbox relay has no receiver recheck; collaboration excluded at producer only"
+  }
+ ],
+ "ac84_remaining": [
+  "Lark/Telegram EventTaskCancelled subscribers not in boundary kinds",
+  "Lark/DingTalk/Telegram media/file outbound not covered",
+  "Slack typing_indicator subscribers not covered",
+  "non-IM clauses (minimal reference, write denial, dedicated identity, unknown identity not human) need current-run citation",
+  "AC96 derived matrix separate"
+ ],
+ "checker_reverify": {
+  "go_vet_four_packages_current": 0,
+  "gofmt_eight_files": "clean"
+ }
+}

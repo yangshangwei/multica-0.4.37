@@ -1,0 +1,70 @@
+{
+  "sets": [
+    {
+      "stem": "notification-service-canonical",
+      "top_level": [
+        "TestCollaborationNotificationsLoseContentAndAnchorsWithAccess",
+        "TestCollaborationResultNotificationRollbackAndConcurrentReplay",
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup",
+        "TestCollaborationWorkflowNotificationsAndWorkbench",
+        "TestCollaborationWorkflowTransferRecordsIterationAndSupersedesInformation"
+      ],
+      "passes": 10,
+      "source_matches": true
+    },
+    {
+      "stem": "notification-delivery-canonical",
+      "top_level": [
+        "TestCollaborationAcceptanceRefusesDisabledCreator",
+        "TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator",
+        "TestCollaborationInformationChainReturnsLayerByLayer",
+        "TestCollaborationInformationRequestRequiredWritesRollback",
+        "TestCollaborationInformationRequestRolesAndClosedIssue",
+        "TestCollaborationInformationReturnRefusesUnavailableRequester",
+        "TestCollaborationRealtimeAuthorizationKeepsIndependentReadBases",
+        "TestCollaborationRealtimeOutboxRetriesWithoutPrivatePayloads",
+        "TestCollaborationRealtimeRemovalReachesRevokedAccount",
+        "TestCollaborationRealtimeRetainsFailedSourceInvalidation"
+      ],
+      "passes": 21,
+      "source_matches": true
+    }
+  ],
+  "union_top_level": 15,
+  "union_pass_identities": 31,
+  "union_identities": [
+    "TestCollaborationAcceptanceRefusesDisabledCreator",
+    "TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator",
+    "TestCollaborationInformationChainReturnsLayerByLayer",
+    "TestCollaborationInformationRequestRequiredWritesRollback",
+    "TestCollaborationInformationRequestRequiredWritesRollback/INSERT_INTO_collaboration_event",
+    "TestCollaborationInformationRequestRequiredWritesRollback/INSERT_INTO_collaboration_notification",
+    "TestCollaborationInformationRequestRequiredWritesRollback/INSERT_INTO_issue_handoff",
+    "TestCollaborationInformationRequestRequiredWritesRollback/INSERT_INTO_issue_participant",
+    "TestCollaborationInformationRequestRequiredWritesRollback/UPDATE_collaboration_operation",
+    "TestCollaborationInformationRequestRequiredWritesRollback/UPDATE_issue_AS_i_SET",
+    "TestCollaborationInformationRequestRequiredWritesRollback/UPDATE_issue_SET_assignee_type",
+    "TestCollaborationInformationRequestRequiredWritesRollback/UPDATE_issue_collaboration_SET_active_information_request_id_=_$1",
+    "TestCollaborationInformationRequestRequiredWritesRollback/UPDATE_issue_collaboration_SET_revision",
+    "TestCollaborationInformationRequestRolesAndClosedIssue",
+    "TestCollaborationInformationReturnRefusesUnavailableRequester",
+    "TestCollaborationInformationReturnRefusesUnavailableRequester/disabled",
+    "TestCollaborationInformationReturnRefusesUnavailableRequester/removed",
+    "TestCollaborationNotificationsLoseContentAndAnchorsWithAccess",
+    "TestCollaborationRealtimeAuthorizationKeepsIndependentReadBases",
+    "TestCollaborationRealtimeOutboxRetriesWithoutPrivatePayloads",
+    "TestCollaborationRealtimeRemovalReachesRevokedAccount",
+    "TestCollaborationRealtimeRetainsFailedSourceInvalidation",
+    "TestCollaborationResultNotificationRollbackAndConcurrentReplay",
+    "TestCollaborationResultNotificationsRequireProvenTerminalGroup",
+    "TestCollaborationResultNotificationsRequireProvenTerminalGroup/failure",
+    "TestCollaborationResultNotificationsRequireProvenTerminalGroup/missing",
+    "TestCollaborationResultNotificationsRequireProvenTerminalGroup/never_launched",
+    "TestCollaborationResultNotificationsRequireProvenTerminalGroup/stopped",
+    "TestCollaborationResultNotificationsRequireProvenTerminalGroup/success",
+    "TestCollaborationWorkflowNotificationsAndWorkbench",
+    "TestCollaborationWorkflowTransferRecordsIterationAndSupersedesInformation"
+  ],
+  "fail": 0,
+  "skip": 0
+}
