@@ -2,7 +2,7 @@
 
 Status: **audit in progress; full acceptance remains false**. All 97 parent IDs, criterion text, requirement references, source locations and primary owners are preserved. This lane changes only this report, the task acceptance matrix and its focused evidence catalog.
 
-The current ledger contains **94 passed / 3 not verified / 0 failed / 0 skipped / 0 unsupported rows** after independent clause-level review and the current follow-ups.
+The current ledger contains **96 passed / 1 not verified / 0 failed / 0 skipped / 0 unsupported rows** after independent clause-level review and the current follow-ups.
 
 ## Evidence rules
 
@@ -219,3 +219,22 @@ RemainingAC31/32/43 require complete installed Main/old released client evidence
 and separately authorized commercial provider executable/accounts/quota matrix.
 Unsigned build/harness and synthetic Linux processes cannot substitute for those.
 Full acceptance remains false, task/parent in_progress, production gates closed.
+
+
+## Original AC32 current package/protocol review
+
+AC32 now passes its original P5 wording after exact prior packaged CLI1/1 plus current CLI/daemon/service20/47 and actual natural Linux client/daemon reconnect2/2. All current source/receipts matched and original97 definitions remain unchanged. The earlier ledger's extra all-release publisher/old-GUI matrix was an assessment, not an original criterion. AC31 remains pending for request-information/return/acceptance UI form submissions and stable final full Main workflow; AC43 remains separately unauthorized real account/quota evidence. Current authoritative ledger95/2.
+
+
+## Current final installed-Main whole AC31 closure
+
+Independent finalreview closes the concrete three-workflow UI gap and paired
+rerun. Full productionMain real password/nativeIPC/CLIbootstrap plus six real
+Web/Desktop Request/Return/Submit forms pass current directed1/1 and paired2/2,
+no skip/retry/flaky/source drift. Same UUID/creator/handler/currentpermissions/
+history/session/queues remain exact through bothtransfers andfullrestart.
+The original requirement does not add a signedinstaller/all-OSdistribution
+clause; unsigneddirectory package scope is retained explicitly. AC31andAC32now
+pass their originalowners; authoritativeledger96passed/1pendingAC43. All97
+protected definitions unchanged. Realprovider account/version/quota remains
+separately unauthorized, fullacceptancefalse/taskparentin_progress/gatesclosed.

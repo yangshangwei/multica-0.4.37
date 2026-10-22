@@ -315,3 +315,24 @@
   No parent/child archive or production creation/execution gate change.
 
 - Current verified Lore slices: 80b7af5da outbound, b665756f9 catalogue, fbf5cc2ef source, 0a17aa7b2 offline. Authoritative ledger94/3; parent/child not archived.
+
+- Installed prior CLI Lore `a1d17d2ee` records exact cached v0.6.7 ordinary200/nine shared409, current20/47 protocol race and natural Linux reconnect2/2. Full original AC32 independently promoted; ledger95 passed/2 pending (AC31/43), protected97 definitions unchanged. AC31 now specifically needs actual three human-workflow UI branches (request/return/acceptance), being added to existing full Main case. Production gate/provider accounts and archive stay closed.
+
+
+## 2026-10-22 installed client closure
+
+- Current full packaged Linux-arm64 Main uses genuine password form/native IPC/
+  daemon preferences and bundled CLI. Exact app/source identities unchanged.
+  Web/native Request information, Return information and Submit for acceptance
+  each have current actual form submits (6total) and correct original version/
+  status/request/handler, retaining same issue/session/execution/queue.
+- Complete directed1/1 and final pairedfull Main/old CLI2/2 pass, zero retries/
+  skips/errors. Earlier stale B control and retired CDPbody fixture failures are
+  retained separately; post-navigation GET/current authenticated renderer reads
+  own the next intent. Actual Linux natural proof/client-daemon reconnect2/2
+  and current protocol20/47 are independently linked.
+- Independent originalAC31/32 reviews are applied. Ledger96 passed/1pending
+  (AC43), original97 fields and SHAunchanged; full acceptancefalse.
+- Lore `a1d17d2ee` prior packagedCLI and `e13160fa0` full Main six-form slice
+  include exact tests/spec/evidence only. Production creation/execution/rollout
+  and real provider accounts/quota stay closed; neither task is archived.

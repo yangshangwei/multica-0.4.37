@@ -13026,6 +13026,423 @@
       "limits": [
         "Required persistence rollback versus post-commit delivery failure are distinct; no commercial model failure claim."
       ]
+    },
+    "continuation-installed-old-cli": {
+      "kind": "old_packaged_cli_actual_http",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-old-cli-final-playwright.json",
+          "sha256": "e0aecbdd09db1a4f8a5d964f6a287324925a3619d3e06c171720eeccde56bb6d"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-old-cli-final-command.json",
+          "sha256": "360bc50b793bba204cec27a6563e28dd2dedebf8882a62de6812d0ecb71c7a6c"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-old-cli-final-result.json",
+          "sha256": "69bc5feb353e8b2b6a120799113357428ea34db248514c9694d886b138e6fdf5"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-review-ac32.md",
+          "sha256": "725af935bc362a7d1f851f7423121bf5f75a12a37f4fcfd1b884c90d3d5ddfca"
+        }
+      ],
+      "executed_tests": {
+        "collaboration-installed-clients.spec.ts::cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands": {
+          "status": "passed",
+          "line": 29,
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 14839
+            }
+          ]
+        }
+      },
+      "statistics": {
+        "startTime": "2026-10-22T13:26:14.018Z",
+        "duration": 15611.807999999999,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "limits": [
+        "Exact task-owned package/protocol boundaries only; no publisher-signature/all-platform/real-provider assertion."
+      ]
+    },
+    "continuation-installed-reconnect": {
+      "kind": "actual_web_electron_linux_reconnect",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-natural-reconnect-current.stdout",
+          "sha256": "87b879714eec6d0ddbad571aca70e2e0e5590f0869b241a8fba2d9773f8df7b3"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-natural-reconnect-current-command.json",
+          "sha256": "ae150c9b9323ab22a90dbfc68506c07d8c97b868f40862cd71876bfb392ae247"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-natural-reconnect-current-result.json",
+          "sha256": "02635b68902972771adae049b1903434a5c01cd8b0cdf9f52b17ab70a0b7a36c"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-review-ac32.md",
+          "sha256": "725af935bc362a7d1f851f7423121bf5f75a12a37f4fcfd1b884c90d3d5ddfca"
+        }
+      ],
+      "executed_tests": {
+        "collaboration-lifecycle-controls.spec.ts::Web creator removal keeps paused inputs and original natural proof through client and daemon reconnect": {
+          "status": "passed",
+          "line": 14,
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 29107
+            }
+          ]
+        },
+        "collaboration-lifecycle-controls.spec.ts::Electron creator removal keeps paused inputs and original natural proof through client and daemon reconnect": {
+          "status": "passed",
+          "line": 14,
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 22550
+            }
+          ]
+        }
+      },
+      "statistics": {
+        "startTime": "2026-10-22T13:39:54.674Z",
+        "duration": 53126.356999999996,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "limits": [
+        "Exact task-owned package/protocol boundaries only; no publisher-signature/all-platform/real-provider assertion."
+      ]
+    },
+    "continuation-installed-protocol-canonical": {
+      "kind": "go_race_tests",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-canonical-current.stdout",
+          "sha256": "df70e1947d1e594bd64a42a19363b3b95b19437342ff56f47aac77f359de1e70"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-canonical-current-command.json",
+          "sha256": "c4ee14263bbd7c44833929505045932a23675fb3ac716254251cca1898f0ece5"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-canonical-current-result.json",
+          "sha256": "c121a2a781234f7a26e6c34eb95d3cd492ee23c8298e68a7c956ec4d063c009b"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-review-ac32.md",
+          "sha256": "725af935bc362a7d1f851f7423121bf5f75a12a37f4fcfd1b884c90d3d5ddfca"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-review-ac32.json",
+          "sha256": "11141f9ce5483092972c569c7cc439aa8d3908d1971dc57dd13dc2f463e275e6"
+        }
+      ],
+      "executed_tests": {
+        "internal/service::TestCollaborationResumeRollbackAndOriginalCommitRecovery": {
+          "status": "passed",
+          "elapsed": 1
+        },
+        "internal/service::TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/never_permitted": {
+          "status": "passed",
+          "elapsed": 0.57
+        },
+        "internal/service::TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/permitted_without_started": {
+          "status": "passed",
+          "elapsed": 0.72
+        },
+        "internal/service::TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/business_success_without_proof": {
+          "status": "passed",
+          "elapsed": 0.69
+        },
+        "internal/service::TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/inconsistent_started_without_permit": {
+          "status": "passed",
+          "elapsed": 0.41
+        },
+        "internal/service::TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/inconsistent_success_without_permit": {
+          "status": "passed",
+          "elapsed": 0.3
+        },
+        "internal/service::TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/inconsistent_running_without_permit": {
+          "status": "passed",
+          "elapsed": 0.62
+        },
+        "internal/service::TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/unrecognized_progress_without_permit": {
+          "status": "passed",
+          "elapsed": 0.56
+        },
+        "internal/service::TestCollaborationQueueStopPreservesBarrierAfterAnyPermit": {
+          "status": "passed",
+          "elapsed": 3.88
+        },
+        "internal/service::TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent": {
+          "status": "passed",
+          "elapsed": 1.98
+        },
+        "internal/service::TestCollaborationQueueResumeTreatsEitherBarrierAsUnconfirmed/pointer": {
+          "status": "passed",
+          "elapsed": 0.49
+        },
+        "internal/service::TestCollaborationQueueResumeTreatsEitherBarrierAsUnconfirmed/run": {
+          "status": "passed",
+          "elapsed": 0.26
+        },
+        "internal/service::TestCollaborationQueueResumeTreatsEitherBarrierAsUnconfirmed": {
+          "status": "passed",
+          "elapsed": 0.75
+        },
+        "internal/service::TestCollaborationRuntimePreparationLegacyRejectsFilesWithoutClaiming": {
+          "status": "passed",
+          "elapsed": 0.83
+        },
+        "internal/service::TestCollaborationRuntimePreparationLegacyNoFileWireStaysUnchanged": {
+          "status": "passed",
+          "elapsed": 0.96
+        },
+        "internal/service::TestCollaborationManagedStopProofPreservesFreshResumeIntent": {
+          "status": "passed",
+          "elapsed": 0.99
+        },
+        "internal/service::TestCollaborationRemovalOfNonRootBatchAuthorStopsRun": {
+          "status": "passed",
+          "elapsed": 0.89
+        },
+        "internal/daemon::TestCollaborationCandidatePagingAcrossRestart/legacy_order": {
+          "status": "passed",
+          "elapsed": 0.02
+        },
+        "internal/daemon::TestCollaborationCandidatePagingAcrossRestart/single_candidate_pages": {
+          "status": "passed",
+          "elapsed": 0.07
+        },
+        "internal/daemon::TestCollaborationCandidatePagingAcrossRestart": {
+          "status": "passed",
+          "elapsed": 0.09
+        },
+        "internal/daemon::TestCollaborationProofRecoveryRetainsUnknownAndDamagedLedgerBarriers": {
+          "status": "passed",
+          "elapsed": 0.05
+        },
+        "internal/daemon::TestCollaborationRestartReservesUnknownMachineCapacity": {
+          "status": "passed",
+          "elapsed": 0.05
+        },
+        "internal/handler::TestLegacyIssueWritesCannotBypassCollaborationLifecycle": {
+          "status": "passed",
+          "elapsed": 0.04
+        },
+        "internal/handler::TestLegacyCollaborationCommentAndRerunPathsStayInert": {
+          "status": "passed",
+          "elapsed": 0.02
+        },
+        "cmd/multica::TestCollaborationCLIRejectsOrdinaryClientFallback": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIIssueGetUsesOnlyItsRunContext": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLICommentListDoesNotLoadWorkspaceActors/json": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLICommentListDoesNotLoadWorkspaceActors/table": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLICommentListDoesNotLoadWorkspaceActors": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/other_issue": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/attachment": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/content_file": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/missing_request": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIWholeCommandGuard/config_show": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIWholeCommandGuard/auth_status": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIWholeCommandGuard/workspace_list": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIWholeCommandGuard/issue_update": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIWholeCommandGuard/daemon_start": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIWholeCommandGuard": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity/comment": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity/activity": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/other_run": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/401": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/403": {
+          "status": "passed",
+          "elapsed": 0
+        },
+        "cmd/multica::TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice": {
+          "status": "passed",
+          "elapsed": 0
+        }
+      },
+      "execution_counts": {
+        "top_level": 20,
+        "total": 47,
+        "failed": 0,
+        "skipped": 0
+      },
+      "limits": [
+        "Current CLI/daemon and original legacy Claim wire; new old packaged CLI covers generic old HTTP writes."
+      ]
+    },
+    "continuation-installed-full-main-current": {
+      "kind": "full_packaged_main_and_production_web",
+      "result": "passed",
+      "artifacts": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-pair-reviewed-final.stdout",
+          "sha256": "97b96230adaac5ea0ed36a3f3138f2f7e57b3825b5d351219cfccda2b6f3e756"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-pair-reviewed-final-command.json",
+          "sha256": "2ee7308769d8085a8ef1fd992d136b9c752f508a01c65d9b7aeffc88a601b83b"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-pair-reviewed-final-result.json",
+          "sha256": "0431c7b8945e0bb17fc56f00417c968c954ea4fba43ade7177becabe829ead68"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-pair-reviewed-final-installed-full-main-journey.json",
+          "sha256": "5c75199de167a879bb9497ae4ef336ae91039d20fa3a1ec0a97afd26c40c82a0"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/full-main-review-ac31-final.md",
+          "sha256": "8c53e58e6b979149ec1f626585ba7015bc30aeecf56d861260c781792e62ce7b"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/full-main-review-ac31-final.json",
+          "sha256": "51eaf55ddeda8528ebedbee39eb831e8fd6ef1edbd879691d1c77f7f37be1369"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/full-main-package-identity.json",
+          "sha256": "96ffc857bdd4c1911462266269008f0ae6dca74760f4a0cf6848cfb79f3c89e8"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/full-main-fixture-directed-static-results.json",
+          "sha256": "05f62eb3fa7fe98915b4d8d789806ba7bc1ec94bb0cf9dd4ebc319697db77a09"
+        },
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/installed-pair-current-summary.json",
+          "sha256": "19dc6aaf8988b42a57ac5d10875468fe404c02ddb83e14be916f2fc55fd870ef"
+        }
+      ],
+      "executed_tests": {
+        "collaboration-installed-clients.spec.ts::cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands": {
+          "status": "passed",
+          "line": 29,
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 10585
+            }
+          ]
+        },
+        "collaboration-installed-main.spec.ts::installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume": {
+          "status": "passed",
+          "line": 139,
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 41713
+            }
+          ]
+        }
+      },
+      "statistics": {
+        "startTime": "2026-10-22T14:18:14.317Z",
+        "duration": 54084.971,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "environment": {
+        "OS": "linux",
+        "arch": "arm64",
+        "electron": "39.8.7",
+        "native_IPC_auth_stubs": false,
+        "default_OS_home": "/root in disposable task container",
+        "signed_distribution": false,
+        "package": "unsigned electron-builder directory",
+        "commercial_provider": false
+      },
+      "report": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/full-main-review-ac31-final.md",
+      "limits": [
+        "Full packaged Main current source, real password/native services and six real human form submits; unsigned local directory package does not prove system installer/signature or every OS.",
+        "Remote pending Permit is service protocol simulation with no provider execution or supplied proof; separate actual Linux run/proof/reconnect evidence retains its scope."
+      ]
     }
   },
   "platform_limits": [

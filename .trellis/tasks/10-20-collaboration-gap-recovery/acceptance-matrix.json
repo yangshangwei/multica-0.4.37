@@ -1581,11 +1581,12 @@
         "S2",
         "S6"
       ],
-      "status": "not_verified_in_this_task",
+      "status": "passed",
       "test_identities": [
         "e2e/collaboration-resource-offers-web.spec.ts::a private owner offers a resource to an external organizer and independently authorizes it",
         "e2e/collaboration-command-history-web.spec.ts::cancelled waiting commands retain original content after comment changes, refresh and another account reads",
-        "e2e/collaboration-account-desktop.spec.ts::Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history"
+        "e2e/collaboration-account-desktop.spec.ts::Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history",
+        "collaboration-installed-main.spec.ts::installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume"
       ],
       "evidence": [
         {
@@ -1617,13 +1618,22 @@
           "catalog": "research/s6-evidence-map.json",
           "scope": "go_race_tests",
           "coverage": "partial_support"
+        },
+        {
+          "run_id": "continuation-installed-full-main-current",
+          "catalog": "research/s6-evidence-map.json",
+          "scope": "full_packaged_main_and_production_web",
+          "coverage": "complete_clause_support"
         }
       ],
-      "assessment": "Current-task support is partial; the remaining clauses below are not reported as passing.",
-      "remaining_gaps": [
-        "Full first-version flows across Web and Desktop, cross-client handoff/authority/queue continuity, and installed full Main startup remain broader than the current S2/S3/S4/S5 harness journeys."
-      ],
-      "missing_current_test_evidence": []
+      "assessment": "Independent original whole P6 review confirms existing dual-client first-version flows plus current complete packaged Main real password/transfer/control/comment/cancel/history/restart and six actual Request/Return/Submit forms (both clients). Same UUID/creator/handler/current permissions/session/queue/execution remain consistent; final pair2/2 exactsource closes previous UI gap.",
+      "remaining_gaps": [],
+      "missing_current_test_evidence": [],
+      "independent_review": {
+        "report": "research/continuation-2026-10-22-final/full-main-review-ac31-final.md",
+        "decision": "promote",
+        "scope": "Original full AC31"
+      }
     },
     {
       "id": "AC32",
@@ -1636,14 +1646,17 @@
         "S4",
         "S6"
       ],
-      "status": "not_verified_in_this_task",
+      "status": "passed",
       "test_identities": [
         "internal/handler::TestLegacyIssueWritesCannotBypassCollaborationLifecycle",
         "internal/handler::TestLegacyCollaborationCommentAndRerunPathsStayInert",
         "internal/daemon::TestCollaborationCandidatePagingAcrossRestart",
         "internal/daemon::TestCollaborationRestartReservesUnknownMachineCapacity",
         "cmd/server::TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
-        "cmd/server::TestCollaborationRuntimeProofSurvivesOwnerDisableLinux"
+        "cmd/server::TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+        "collaboration-installed-clients.spec.ts::cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+        "collaboration-lifecycle-controls.spec.ts::Web creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+        "collaboration-lifecycle-controls.spec.ts::Electron creator removal keeps paused inputs and original natural proof through client and daemon reconnect"
       ],
       "evidence": [
         {
@@ -1663,13 +1676,34 @@
           "catalog": "research/s6-evidence-map.json",
           "scope": "actual_linux_router_daemon_tests",
           "coverage": "partial_support"
+        },
+        {
+          "run_id": "continuation-installed-old-cli",
+          "catalog": "research/s6-evidence-map.json",
+          "scope": "old_packaged_cli_actual_http",
+          "coverage": "complete_clause_support"
+        },
+        {
+          "run_id": "continuation-installed-reconnect",
+          "catalog": "research/s6-evidence-map.json",
+          "scope": "actual_web_electron_linux_reconnect",
+          "coverage": "complete_clause_support"
+        },
+        {
+          "run_id": "continuation-installed-protocol-canonical",
+          "catalog": "research/s6-evidence-map.json",
+          "scope": "go_race_tests",
+          "coverage": "complete_clause_support"
         }
       ],
-      "assessment": "Current-task support is partial; the remaining clauses below are not reported as passing.",
-      "remaining_gaps": [
-        "Current protocol/legacy endpoint regressions and native test binaries do not establish an installed old CLI/daemon/client compatibility matrix."
-      ],
-      "missing_current_test_evidence": []
+      "assessment": "Independent exact original P5 review: actual prior packaged CLI ordinary200 and nine shared409 invariants, current narrow CLI/daemon/legacy unchanged wire and actual Linux proof/reconnect/removal2/2 complete the original control clauses. Unstated all-release publisher/old-GUI matrix remains a separate limit.",
+      "remaining_gaps": [],
+      "missing_current_test_evidence": [],
+      "independent_review": {
+        "report": "research/continuation-2026-10-22-final/installed-review-ac32.md",
+        "decision": "promote",
+        "scope": "Original full AC32"
+      }
     },
     {
       "id": "AC33",
@@ -5389,8 +5423,8 @@
     "Production creation/execution gates remain off; only task-owned isolated QA fixtures enabled them.",
     "AC33 actual Web/Electron overlap, batching, single cancellation and natural Linux proof pass current run4; this does not certify stock providers/accounts or installed Main.",
     "AC10/38/40/50/74/88 proposal promotions were rejected for exact missing clauses by independent review; no product failures inferred.",
-    "Current dual-client mixed mentions6/6, S5/offline notifications4/4, source/CLI strengthened1/1 and complete natural AC33 individual pass are linked by exact current source; installed full Main/old released clients remain separate.",
-    "Current knip exits1 for11 unused files/two dependency entries identical to HEAD; no new cleanup in this task."
+    "Current knip exits1 for11 unused files/two dependency entries identical to HEAD; no new cleanup in this task.",
+    "Current full production packaged Main/real password/six directed UI actions and cached prior CLI bytes are verified; publisher signing/all-release/system installer trust and every OS variant remain separate, not extra AC31/32 clauses."
   ],
   "audit": {
     "date": "2026-10-22",
@@ -5399,8 +5433,8 @@
     "report": "research/s6-acceptance-audit.md",
     "evidence_catalog": "research/s6-evidence-map.json",
     "status_counts": {
-      "not_verified_in_this_task": 3,
-      "passed": 94,
+      "not_verified_in_this_task": 1,
+      "passed": 96,
       "failed": 0,
       "skipped": 0,
       "unsupported": 0
@@ -5408,11 +5442,11 @@
     "historical_qa_counts_as_current_pass": false,
     "continuation_report": "research/continuation-2026-10-21/ledger-independent-review.md",
     "protected_definition_sha256": "e29ead58ba9e2c45a4099a52611c55e12dcae3b735136e058aafc87674cf217e",
-    "updated_at_utc": "2026-10-22T12:26:35.507321+00:00",
+    "updated_at_utc": "2026-10-22T14:24:58.941178+00:00",
     "latest_handoff_review": "research/continuation-2026-10-21/handoff-execution-final-review.md",
     "latest_offline_review": "research/continuation-2026-10-21/offline-handoff-final-review.md",
     "latest_mention_admission_review": "research/continuation-2026-10-21/mention-admission-final-review.md",
     "latest_source_role_review": "research/continuation-2026-10-21/source-role-final-review.md",
-    "latest_current_review": "research/continuation-2026-10-22-final/ledger-application.json"
+    "latest_current_review": "research/continuation-2026-10-22-final/installed-final-ledger-application.json"
   }
 }
