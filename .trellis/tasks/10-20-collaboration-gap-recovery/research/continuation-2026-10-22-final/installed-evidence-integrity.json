@@ -1,0 +1,21 @@
+{
+  "artifact_count": 71,
+  "credential_patterns_present": false,
+  "owned_containers_remaining": [],
+  "owned_volumes_remaining": [],
+  "diff_check_command": [
+    "git",
+    "diff",
+    "--check",
+    "--",
+    "e2e/collaboration-installed-clients.spec.ts",
+    "e2e/fixtures/collaboration-installed-clients.ts",
+    "e2e/fixtures/collaboration-installed-cli-relay.go"
+  ],
+  "diff_check_exit_code": 0,
+  "source_sha256": {
+    "e2e/collaboration-installed-clients.spec.ts": "f556266ea6cf579b05ab3f6d2e21fe8c2f38552a0a6ee0a3e77a194511965f17",
+    "e2e/fixtures/collaboration-installed-clients.ts": "51487a607e05e52d9cf33a5357a889fc422f7713dc63e10b6720657a627d45c9",
+    "e2e/fixtures/collaboration-installed-cli-relay.go": "79e19af24fed37dfe3a44e022e9ef1f82ff323ef071186ad6ad14d7b2401571d"
+  }
+}

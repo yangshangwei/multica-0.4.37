@@ -1,0 +1,28 @@
+{
+  "exit_code": 1,
+  "elapsed_s": 1.413627,
+  "finished_at": "2026-10-22T13:10:21.271981+00:00",
+  "source_changed_during_run": [],
+  "installed-old-cli-first.stdout_sha256": "f272c77e55102d4824367ac1d4c847835c115d72bf9bc7ef30cd4c6834c1df42",
+  "installed-old-cli-first.stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+  "installed-old-cli-first-playwright.json_sha256": "a6d53676f5e59ea67438fe24717cdadf5377b4575c78f357acded43948bebb68",
+  "stats": {
+    "startTime": "2026-10-22T13:10:20.866Z",
+    "duration": 380.645,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "errors": [
+    {
+      "message": "First argument must use the object destructuring pattern: _fixtures",
+      "location": {
+        "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-installed-clients.spec.ts",
+        "line": 29,
+        "column": 1
+      },
+      "snippet": "\u001b[90m   at \u001b[39mcollaboration-installed-clients.spec.ts:29\n\n  27 | }\n  28 |\n> 29 | test(\"cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands\", async (_fixtures, info) => {\n     | ^\n  30 |   test.skip(!controlEnvironmentReady() || !process.env.COLLABORATION_INSTALLED_CLI_RELAY,\n  31 |     \"Requires the existing isolated password API, exact cached OCI package and explicit Linux stdio relay\");\n  32 |   test.setTimeout(240_000);"
+    }
+  ]
+}

@@ -85,3 +85,24 @@ uncertain comment with a new identifier.
 
 Correct: reject incomplete run context and preserve the caller's original
 request UUID; use only the admitted run's business API and contained executable.
+
+
+## Current packaged prior-CLI compatibility evidence
+
+`e2e/collaboration-installed-clients.spec.ts` runs exact locally delivered
+v0.6.7 OCI `/app/multica` bytes, immutable image digest and genuine client version/
+platform/OS headers. A network-none/read-only container uses private stdio to
+forward only the expected legacy issue method/path to the task API. The ordinary
+PUT positive succeeds; old status/comment/rerun writes refuse in paused,
+permitted-stop-unconfirmed and removed-author states with exact resource,
+participant, history, queue and control snapshots unchanged. Author removal
+retains its independent source read basis solely to reach the shared boundary;
+own original content-free receipt remains identical. Prior package publisher
+signature and old Desktop release trust are separate from this no-bypass claim.
+
+Current canonical no-file legacy Claim wire stays unchanged; unsupported file
+preparation rejects before claiming. Actual Linux daemon network interruption
+and original natural proof recovery preserve pause and removed/cancelled author
+input across client/daemon reconnect; proof never implies automatic Resume.
+The packaged prior CLI case plus those exact current protocol/daemon contracts
+supply AC32. No fixture starts a commercial provider or changes rollout gates.

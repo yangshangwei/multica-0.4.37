@@ -1,0 +1,27 @@
+
+Running 1 test using 1 worker
+
+
+
+
+
+[1A[2K[1/1] [chromium] › e2e/collaboration-installed-clients.spec.ts:29:1 › cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands
+[1A[2K  1) [chromium] › e2e/collaboration-installed-clients.spec.ts:29:1 › cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands 
+
+    Error: The actual packaged CLI result is missing
+
+       at fixtures/collaboration-installed-clients.ts:126
+
+      124 |     expect(exit, diagnostic.replaceAll(input.token, "[redacted]")).toBe(0);
+      125 |     expect(errors).toEqual([]);
+    > 126 |     if (!result || typeof result.exit_code !== "number") throw new Error("The actual packaged CLI result is missing");
+          |                                                                ^
+      127 |     expect(requests).toHaveLength(1);
+      128 |     return { args: input.args, exitCode: result.exit_code, requests, stdout: result.stdout ?? "", stderr: result.stderr ?? "",
+      129 |       evidence: { args: input.args, exit_code: result.exit_code, requests, stdout_sha256: digest(result.stdout ?? ""),
+        at invokeInstalledCLI (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-installed-clients.ts:126:64)
+        at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-installed-clients.spec.ts:93:22
+
+
+[1A[2K  1 failed
+    [chromium] › e2e/collaboration-installed-clients.spec.ts:29:1 › cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands 

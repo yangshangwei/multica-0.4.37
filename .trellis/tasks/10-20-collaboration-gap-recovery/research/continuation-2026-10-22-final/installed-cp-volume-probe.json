@@ -1,0 +1,73 @@
+{
+  "at": "2026-10-22T13:15:52.517169+00:00",
+  "steps": [
+    {
+      "command": [
+        "docker",
+        "volume",
+        "create",
+        "multica-installed-relay-e078524f-22cf-48a7-9ede-dd98828d7f51"
+      ],
+      "exit_code": 0,
+      "stdout": "multica-installed-relay-e078524f-22cf-48a7-9ede-dd98828d7f51\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "create",
+        "--name",
+        "multica-installed-stage-8d8f1e69-73ce-4e2e-88cc-7716aba80362",
+        "--network",
+        "none",
+        "--read-only",
+        "--platform",
+        "linux/amd64",
+        "--mount",
+        "type=volume,src=multica-installed-relay-e078524f-22cf-48a7-9ede-dd98828d7f51,dst=/fixture",
+        "--entrypoint",
+        "/bin/true",
+        "sha256:8d5ede4df2fa4b66d499803b95428b729fcb6ba753b3800e9b931b968ee16104"
+      ],
+      "exit_code": 0,
+      "stdout": "b205b2b530d147e37c78571fdfb9e56020b65391ba3bd110f172a64e46fe1286\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "cp",
+        "/private/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-cli-relay",
+        "multica-installed-stage-8d8f1e69-73ce-4e2e-88cc-7716aba80362:/fixture/relay"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "--force",
+        "multica-installed-stage-8d8f1e69-73ce-4e2e-88cc-7716aba80362"
+      ],
+      "exit_code": 0,
+      "stdout": "multica-installed-stage-8d8f1e69-73ce-4e2e-88cc-7716aba80362\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "rm",
+        "multica-installed-relay-e078524f-22cf-48a7-9ede-dd98828d7f51"
+      ],
+      "exit_code": 0,
+      "stdout": "multica-installed-relay-e078524f-22cf-48a7-9ede-dd98828d7f51\n",
+      "stderr": ""
+    }
+  ],
+  "network": "none",
+  "provider_access": false,
+  "product_test_executed": false
+}

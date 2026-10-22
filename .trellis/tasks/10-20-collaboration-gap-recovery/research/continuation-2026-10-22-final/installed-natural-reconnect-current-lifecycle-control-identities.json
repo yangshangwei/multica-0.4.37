@@ -1,0 +1,4926 @@
+{
+  "original": {
+    "client": "web",
+    "actorId": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+    "targetId": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+    "content": "Lifecycle original handler input [@Independent execution agent A](mention://agent/e2c0694f-adbe-4d48-b728-862702cafc5e)",
+    "marker": "Lifecycle original handler input",
+    "requestId": "6209f390-4e38-433e-ae6d-2dd1ca3638e4",
+    "receipt": {
+      "status": 201,
+      "code": "comment_created",
+      "protocol_version": 2,
+      "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+      "comment_id": "1e85f03d-c1c7-4cd7-aa39-5e91bd10edd5",
+      "comment_revision": "1",
+      "event_id": "e17e1f9a-288c-4baa-8cac-1fcfa703ce97",
+      "event_seq": "13",
+      "targets": [
+        {
+          "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+          "kind": "agent",
+          "resource_id": "e2c0694f-adbe-4d48-b728-862702cafc5e",
+          "target_epoch": "1",
+          "config_version": "1",
+          "hold_reason": null,
+          "hold_version": "3",
+          "state": "waiting",
+          "code": "command_queued",
+          "waiting_reason": "shared_runtime_unavailable",
+          "command_id": "4f2b8806-f400-4b5c-8128-71125fdcd758",
+          "command_sequence": "1",
+          "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+          "batch_id": "07e88b19-4441-4ee7-a76b-de2cad132cf7",
+          "group_id": null
+        }
+      ]
+    },
+    "commandId": "4f2b8806-f400-4b5c-8128-71125fdcd758",
+    "batchId": "07e88b19-4441-4ee7-a76b-de2cad132cf7",
+    "sequence": "1",
+    "preview": {
+      "protocol_version": 2,
+      "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+      "lifecycle_epoch": "1",
+      "write_context": {
+        "participant_epoch": "1",
+        "account_epoch": "1"
+      },
+      "targets": [
+        {
+          "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+          "kind": "agent",
+          "resource_id": "e2c0694f-adbe-4d48-b728-862702cafc5e",
+          "target_epoch": "1",
+          "config_version": "1",
+          "hold_reason": null,
+          "hold_version": "3",
+          "state": "waiting",
+          "code": "command_queued",
+          "waiting_reason": "shared_runtime_unavailable",
+          "command_id": null,
+          "channel_id": null,
+          "batch_id": null,
+          "group_id": null,
+          "grouping": {
+            "kind": "pending_batch",
+            "target_ids": [
+              "ce16c61e-e3a6-44e0-8213-cdf3160f7e86"
+            ],
+            "has_existing_inputs": false,
+            "follows_pending_batch": false
+          }
+        }
+      ],
+      "recipients": [
+        {
+          "recipient": {
+            "user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+            "name": "Cross-client collaborator A",
+            "avatar_url": "",
+            "external": false
+          },
+          "is_mention": false
+        }
+      ]
+    }
+  },
+  "survivor": {
+    "client": "electron",
+    "actorId": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+    "targetId": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+    "content": "Lifecycle remaining creator queued input [@Independent execution agent A](mention://agent/e2c0694f-adbe-4d48-b728-862702cafc5e)",
+    "marker": "Lifecycle remaining creator queued input",
+    "requestId": "ced35be3-c5a9-4395-818e-710bdcd1c233",
+    "receipt": {
+      "status": 201,
+      "code": "comment_created",
+      "protocol_version": 2,
+      "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+      "comment_id": "38b11703-82cb-473d-93cb-5435994b7496",
+      "comment_revision": "1",
+      "event_id": "ef6634c3-182b-405e-b06e-2759bc2095dd",
+      "event_seq": "18",
+      "targets": [
+        {
+          "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+          "kind": "agent",
+          "resource_id": "e2c0694f-adbe-4d48-b728-862702cafc5e",
+          "target_epoch": "1",
+          "config_version": "1",
+          "hold_reason": null,
+          "hold_version": "3",
+          "state": "waiting",
+          "code": "command_queued",
+          "waiting_reason": "target_busy",
+          "command_id": "491d4952-68d4-41c6-b850-10f89822f216",
+          "command_sequence": "3",
+          "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+          "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+          "group_id": null
+        }
+      ]
+    },
+    "commandId": "491d4952-68d4-41c6-b850-10f89822f216",
+    "batchId": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+    "sequence": "3",
+    "preview": {
+      "protocol_version": 2,
+      "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+      "lifecycle_epoch": "1",
+      "write_context": {
+        "participant_epoch": "1",
+        "account_epoch": "1"
+      },
+      "targets": [
+        {
+          "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+          "kind": "agent",
+          "resource_id": "e2c0694f-adbe-4d48-b728-862702cafc5e",
+          "target_epoch": "1",
+          "config_version": "1",
+          "hold_reason": null,
+          "hold_version": "3",
+          "state": "waiting",
+          "code": "command_queued",
+          "waiting_reason": "target_busy",
+          "command_id": null,
+          "channel_id": null,
+          "batch_id": null,
+          "group_id": null,
+          "grouping": {
+            "kind": "pending_batch",
+            "target_ids": [
+              "ce16c61e-e3a6-44e0-8213-cdf3160f7e86"
+            ],
+            "has_existing_inputs": true,
+            "follows_pending_batch": false
+          }
+        }
+      ],
+      "recipients": [
+        {
+          "recipient": {
+            "user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+            "name": "Cross-client collaborator B",
+            "avatar_url": "",
+            "external": true
+          },
+          "is_mention": false
+        }
+      ]
+    }
+  },
+  "authorWaiting": {
+    "client": "web",
+    "actorId": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+    "targetId": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+    "content": "Lifecycle cancelled author's queued input [@Independent execution agent A](mention://agent/e2c0694f-adbe-4d48-b728-862702cafc5e)",
+    "marker": "Lifecycle cancelled author's queued input",
+    "requestId": "7e6aa5bc-3edb-4b15-af18-890ebebc2fbf",
+    "receipt": {
+      "status": 201,
+      "code": "comment_created",
+      "protocol_version": 2,
+      "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+      "comment_id": "ad16b387-69cf-4662-a569-3fcf38eb97c8",
+      "comment_revision": "1",
+      "event_id": "4379b0e3-c27d-4ca9-812a-33d9a65e7cd0",
+      "event_seq": "17",
+      "targets": [
+        {
+          "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+          "kind": "agent",
+          "resource_id": "e2c0694f-adbe-4d48-b728-862702cafc5e",
+          "target_epoch": "1",
+          "config_version": "1",
+          "hold_reason": null,
+          "hold_version": "3",
+          "state": "waiting",
+          "code": "command_queued",
+          "waiting_reason": "target_busy",
+          "command_id": "c28e0052-cf26-40c6-a352-52d85bdd8869",
+          "command_sequence": "2",
+          "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+          "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+          "group_id": null
+        }
+      ]
+    },
+    "commandId": "c28e0052-cf26-40c6-a352-52d85bdd8869",
+    "batchId": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+    "sequence": "2",
+    "preview": {
+      "protocol_version": 2,
+      "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+      "lifecycle_epoch": "1",
+      "write_context": {
+        "participant_epoch": "1",
+        "account_epoch": "1"
+      },
+      "targets": [
+        {
+          "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+          "kind": "agent",
+          "resource_id": "e2c0694f-adbe-4d48-b728-862702cafc5e",
+          "target_epoch": "1",
+          "config_version": "1",
+          "hold_reason": null,
+          "hold_version": "3",
+          "state": "waiting",
+          "code": "command_queued",
+          "waiting_reason": "target_busy",
+          "command_id": null,
+          "channel_id": null,
+          "batch_id": null,
+          "group_id": null,
+          "grouping": {
+            "kind": "pending_batch",
+            "target_ids": [
+              "ce16c61e-e3a6-44e0-8213-cdf3160f7e86"
+            ],
+            "has_existing_inputs": false,
+            "follows_pending_batch": false
+          }
+        }
+      ],
+      "recipients": [
+        {
+          "recipient": {
+            "user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+            "name": "Cross-client collaborator A",
+            "avatar_url": "",
+            "external": false
+          },
+          "is_mention": false
+        }
+      ]
+    }
+  },
+  "pausedAuthorWaiting": {
+    "client": "web",
+    "actorId": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+    "targetId": "d264050d-2072-4f5b-a877-187ef4b69c69",
+    "content": "Lifecycle author input submitted to an already paused target [@Independent execution agent B](mention://agent/d26fdea4-d165-42d9-99e8-2b5d757fce8e)",
+    "marker": "Lifecycle author input submitted to an already paused target",
+    "requestId": "f91db1f6-28b0-47a3-886d-e4dee6175093",
+    "receipt": {
+      "status": 201,
+      "code": "comment_created",
+      "protocol_version": 2,
+      "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+      "comment_id": "01532757-8ecb-445b-b646-c86ff273d4b6",
+      "comment_revision": "1",
+      "event_id": "c1c594f6-847c-4740-ad59-806ae0389ed6",
+      "event_seq": "20",
+      "targets": [
+        {
+          "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+          "kind": "agent",
+          "resource_id": "d26fdea4-d165-42d9-99e8-2b5d757fce8e",
+          "target_epoch": "1",
+          "config_version": "1",
+          "hold_reason": null,
+          "hold_version": "3",
+          "state": "waiting",
+          "code": "command_queued",
+          "waiting_reason": "target_paused",
+          "command_id": "e301406c-8cab-4614-9389-4b38495e7d0f",
+          "command_sequence": "1",
+          "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+          "batch_id": "6169ac55-1d3a-423b-a345-61c6f74fc5f6",
+          "group_id": null
+        }
+      ]
+    },
+    "commandId": "e301406c-8cab-4614-9389-4b38495e7d0f",
+    "batchId": "6169ac55-1d3a-423b-a345-61c6f74fc5f6",
+    "sequence": "1",
+    "preview": {
+      "protocol_version": 2,
+      "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+      "lifecycle_epoch": "1",
+      "write_context": {
+        "participant_epoch": "1",
+        "account_epoch": "1"
+      },
+      "targets": [
+        {
+          "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+          "kind": "agent",
+          "resource_id": "d26fdea4-d165-42d9-99e8-2b5d757fce8e",
+          "target_epoch": "1",
+          "config_version": "1",
+          "hold_reason": null,
+          "hold_version": "3",
+          "state": "waiting",
+          "code": "command_queued",
+          "waiting_reason": "target_paused",
+          "command_id": null,
+          "channel_id": null,
+          "batch_id": null,
+          "group_id": null,
+          "grouping": {
+            "kind": "pending_batch",
+            "target_ids": [
+              "d264050d-2072-4f5b-a877-187ef4b69c69"
+            ],
+            "has_existing_inputs": false,
+            "follows_pending_batch": false
+          }
+        }
+      ],
+      "recipients": [
+        {
+          "recipient": {
+            "user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+            "name": "Cross-client collaborator A",
+            "avatar_url": "",
+            "external": false
+          },
+          "is_mention": false
+        }
+      ]
+    }
+  },
+  "addedWhilePaused": {
+    "client": "electron",
+    "actorId": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+    "targetId": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+    "content": "Lifecycle added during target pause [@Independent execution agent A](mention://agent/e2c0694f-adbe-4d48-b728-862702cafc5e)",
+    "marker": "Lifecycle added during target pause",
+    "requestId": "49c5b47e-18f7-425d-b442-3b7a095635ed",
+    "receipt": {
+      "status": 201,
+      "code": "comment_created",
+      "protocol_version": 2,
+      "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+      "comment_id": "37260ada-57b6-439d-be5b-773be3f8499a",
+      "comment_revision": "1",
+      "event_id": "01fe2c16-6483-42a0-8f86-94adac19bf74",
+      "event_seq": "24",
+      "targets": [
+        {
+          "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+          "kind": "agent",
+          "resource_id": "e2c0694f-adbe-4d48-b728-862702cafc5e",
+          "target_epoch": "1",
+          "config_version": "1",
+          "hold_reason": null,
+          "hold_version": "3",
+          "state": "waiting",
+          "code": "command_queued",
+          "waiting_reason": "target_paused",
+          "command_id": "f183f70a-d389-42a7-b949-d0c8ea1b1616",
+          "command_sequence": "4",
+          "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+          "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+          "group_id": null
+        }
+      ]
+    },
+    "commandId": "f183f70a-d389-42a7-b949-d0c8ea1b1616",
+    "batchId": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+    "sequence": "4",
+    "preview": {
+      "protocol_version": 2,
+      "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+      "lifecycle_epoch": "1",
+      "write_context": {
+        "participant_epoch": "1",
+        "account_epoch": "1"
+      },
+      "targets": [
+        {
+          "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+          "kind": "agent",
+          "resource_id": "e2c0694f-adbe-4d48-b728-862702cafc5e",
+          "target_epoch": "1",
+          "config_version": "1",
+          "hold_reason": null,
+          "hold_version": "3",
+          "state": "waiting",
+          "code": "command_queued",
+          "waiting_reason": "target_paused",
+          "command_id": null,
+          "channel_id": null,
+          "batch_id": null,
+          "group_id": null,
+          "grouping": {
+            "kind": "pending_batch",
+            "target_ids": [
+              "ce16c61e-e3a6-44e0-8213-cdf3160f7e86"
+            ],
+            "has_existing_inputs": true,
+            "follows_pending_batch": false
+          }
+        }
+      ],
+      "recipients": []
+    }
+  },
+  "resubmitted": {
+    "client": "web",
+    "actorId": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+    "targetId": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+    "content": "Lifecycle cancelled author's queued input [@Independent execution agent A](mention://agent/e2c0694f-adbe-4d48-b728-862702cafc5e)",
+    "marker": "Lifecycle cancelled author's queued input",
+    "requestId": "1387c057-d08a-4ac0-8321-9ce8f846fcc4",
+    "receipt": {
+      "status": 201,
+      "code": "comment_created",
+      "protocol_version": 2,
+      "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+      "comment_id": "6e26f4da-2c5a-49f5-8516-afc3b0e2c583",
+      "comment_revision": "1",
+      "event_id": "b33b5a0b-c088-4f3a-b5fc-3fa59eb3833b",
+      "event_seq": "29",
+      "targets": [
+        {
+          "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+          "kind": "agent",
+          "resource_id": "e2c0694f-adbe-4d48-b728-862702cafc5e",
+          "target_epoch": "1",
+          "config_version": "1",
+          "hold_reason": null,
+          "hold_version": "3",
+          "state": "waiting",
+          "code": "command_queued",
+          "waiting_reason": "target_paused",
+          "command_id": "fbcb83e8-45eb-4bf9-85bd-0bb0c70a69a6",
+          "command_sequence": "5",
+          "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+          "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+          "group_id": null
+        }
+      ]
+    },
+    "commandId": "fbcb83e8-45eb-4bf9-85bd-0bb0c70a69a6",
+    "batchId": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+    "sequence": "5",
+    "preview": {
+      "protocol_version": 2,
+      "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+      "lifecycle_epoch": "1",
+      "write_context": {
+        "participant_epoch": "3",
+        "account_epoch": "1"
+      },
+      "targets": [
+        {
+          "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+          "kind": "agent",
+          "resource_id": "e2c0694f-adbe-4d48-b728-862702cafc5e",
+          "target_epoch": "1",
+          "config_version": "1",
+          "hold_reason": null,
+          "hold_version": "3",
+          "state": "waiting",
+          "code": "command_queued",
+          "waiting_reason": "target_paused",
+          "command_id": null,
+          "channel_id": null,
+          "batch_id": null,
+          "group_id": null,
+          "grouping": {
+            "kind": "pending_batch",
+            "target_ids": [
+              "ce16c61e-e3a6-44e0-8213-cdf3160f7e86"
+            ],
+            "has_existing_inputs": true,
+            "follows_pending_batch": false
+          }
+        }
+      ],
+      "recipients": [
+        {
+          "recipient": {
+            "user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+            "name": "Cross-client collaborator A",
+            "avatar_url": "",
+            "external": false
+          },
+          "is_mention": false
+        }
+      ]
+    }
+  },
+  "removal": {
+    "receipt": {
+      "code": "participant_removed",
+      "collaboration_revision": "2"
+    },
+    "requestId": "2e74b4fb-0f2c-456f-a201-d7e659e50f41"
+  },
+  "refused": {
+    "receipt": {
+      "status": 409,
+      "code": "stop_unconfirmed",
+      "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+      "request_id": "9f04f428-9fbd-4535-962d-d468981423bc",
+      "action": "resume",
+      "protocol_version": 2,
+      "scope": "target",
+      "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+      "grant_id": null,
+      "proposal_id": null,
+      "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+      "batch_id": null,
+      "command_id": null,
+      "queue_state": "paused",
+      "control_version": "3",
+      "target_set_version": "4",
+      "group_id": "955a9c33-f4fa-4de9-8213-ccca7fd3b9ca",
+      "group_settled": false,
+      "channels": [],
+      "target_holds": [],
+      "run_id": null,
+      "run_settled": false
+    },
+    "requestId": "9f04f428-9fbd-4535-962d-d468981423bc",
+    "input": {
+      "expected_lifecycle_epoch": "1",
+      "expected_participant_epoch": "1",
+      "expected_account_epoch": "1",
+      "action": "resume",
+      "scope": "target",
+      "expected_execution_epoch": "3",
+      "targets": [
+        {
+          "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+          "expected_target_epoch": "1",
+          "expected_config_version": "1",
+          "expected_control_version": "3",
+          "observed_group_id": "955a9c33-f4fa-4de9-8213-ccca7fd3b9ca",
+          "observed_group_generation": "1",
+          "expected_hold_version": "3"
+        }
+      ]
+    }
+  },
+  "resumed": {
+    "receipt": {
+      "status": 200,
+      "code": "resumed",
+      "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+      "request_id": "e88027f4-4ca7-4a80-af70-b4dc2a9f9f6e",
+      "action": "resume",
+      "protocol_version": 2,
+      "scope": "target",
+      "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+      "grant_id": null,
+      "proposal_id": null,
+      "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+      "batch_id": null,
+      "command_id": null,
+      "queue_state": "active",
+      "control_version": "4",
+      "target_set_version": "4",
+      "group_id": null,
+      "group_settled": false,
+      "targets": [
+        {
+          "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+          "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+          "code": "resumed",
+          "queue_state": "active",
+          "control_version": "4",
+          "group_generation": "1",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        }
+      ],
+      "channels": [
+        {
+          "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+          "code": "resumed",
+          "queue_state": "active",
+          "control_version": "4",
+          "group_generation": "1",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        }
+      ],
+      "target_holds": [
+        {
+          "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+          "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+          "code": "already_active",
+          "hold_reason": null,
+          "hold_version": "3"
+        }
+      ],
+      "run_id": null,
+      "run_settled": false
+    },
+    "requestId": "e88027f4-4ca7-4a80-af70-b4dc2a9f9f6e",
+    "input": {
+      "expected_lifecycle_epoch": "1",
+      "expected_participant_epoch": "1",
+      "expected_account_epoch": "1",
+      "action": "resume",
+      "scope": "target",
+      "expected_execution_epoch": "3",
+      "targets": [
+        {
+          "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+          "expected_target_epoch": "1",
+          "expected_config_version": "1",
+          "expected_control_version": "3",
+          "observed_group_id": null,
+          "observed_group_generation": "1",
+          "expected_hold_version": "3"
+        }
+      ]
+    }
+  },
+  "paused_target_stop": {
+    "receipt": {
+      "status": 200,
+      "code": "already_ended",
+      "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+      "request_id": "b673e9df-edb6-48d4-8334-a8abd698dce1",
+      "action": "stop",
+      "protocol_version": 2,
+      "scope": "target",
+      "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+      "grant_id": null,
+      "proposal_id": null,
+      "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+      "batch_id": null,
+      "command_id": null,
+      "queue_state": "paused",
+      "control_version": "3",
+      "target_set_version": "4",
+      "group_id": null,
+      "group_settled": false,
+      "targets": [
+        {
+          "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+          "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+          "code": "already_ended",
+          "queue_state": "paused",
+          "control_version": "3",
+          "group_generation": "0",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        }
+      ],
+      "channels": [
+        {
+          "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+          "code": "already_ended",
+          "queue_state": "paused",
+          "control_version": "3",
+          "group_generation": "0",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        }
+      ],
+      "target_holds": [],
+      "run_id": null,
+      "run_settled": false
+    },
+    "requestId": "b673e9df-edb6-48d4-8334-a8abd698dce1",
+    "input": {
+      "expected_lifecycle_epoch": "1",
+      "expected_participant_epoch": "1",
+      "expected_account_epoch": "1",
+      "action": "stop",
+      "scope": "target",
+      "targets": [
+        {
+          "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+          "expected_target_epoch": "1",
+          "expected_config_version": "1",
+          "expected_control_version": "2",
+          "observed_group_id": null,
+          "observed_group_generation": "0"
+        }
+      ]
+    }
+  },
+  "paused_cancelled_target_reconsent": {
+    "status": 201,
+    "code": "resource_consented",
+    "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+    "request_id": "4ccae371-5018-45a8-8972-47c9c0992331",
+    "action": "consent_resource",
+    "protocol_version": 2,
+    "scope": "target",
+    "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+    "grant_id": "ca119aa1-9a05-4610-9212-f091a23ba423",
+    "proposal_id": null,
+    "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+    "batch_id": null,
+    "command_id": null,
+    "queue_state": "paused",
+    "control_version": "3",
+    "target_set_version": "4",
+    "group_id": null,
+    "group_settled": false,
+    "channels": [],
+    "target_holds": [],
+    "run_id": null,
+    "run_settled": false
+  },
+  "paused_cancelled_target_resume": {
+    "receipt": {
+      "status": 200,
+      "code": "resumed",
+      "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+      "request_id": "39914b7c-2caa-48c5-9fd7-6c26149716c2",
+      "action": "resume",
+      "protocol_version": 2,
+      "scope": "target",
+      "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+      "grant_id": null,
+      "proposal_id": null,
+      "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+      "batch_id": null,
+      "command_id": null,
+      "queue_state": "active",
+      "control_version": "4",
+      "target_set_version": "4",
+      "group_id": null,
+      "group_settled": false,
+      "targets": [
+        {
+          "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+          "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+          "code": "resumed",
+          "queue_state": "active",
+          "control_version": "4",
+          "group_generation": "0",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        }
+      ],
+      "channels": [
+        {
+          "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+          "code": "resumed",
+          "queue_state": "active",
+          "control_version": "4",
+          "group_generation": "0",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        }
+      ],
+      "target_holds": [
+        {
+          "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+          "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+          "code": "hold_released",
+          "hold_reason": null,
+          "hold_version": "6"
+        }
+      ],
+      "run_id": null,
+      "run_settled": false
+    },
+    "requestId": "39914b7c-2caa-48c5-9fd7-6c26149716c2",
+    "input": {
+      "expected_lifecycle_epoch": "1",
+      "expected_participant_epoch": "1",
+      "expected_account_epoch": "1",
+      "action": "resume",
+      "scope": "target",
+      "expected_execution_epoch": "3",
+      "targets": [
+        {
+          "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+          "expected_target_epoch": "1",
+          "expected_config_version": "1",
+          "expected_control_version": "3",
+          "observed_group_id": null,
+          "observed_group_generation": "0",
+          "expected_hold_version": "5"
+        }
+      ]
+    }
+  },
+  "independent_target": "49e75ce3-5ee9-47bf-b8cb-d4d66a29f3f6",
+  "peer_issue": "01a163d7-717d-7e38-a375-71a83234538a",
+  "paused_execution": {
+    "protocol_version": 5,
+    "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+    "session_id": "af9b2f35-e894-4647-ac93-f3b220e51ab7",
+    "availability": "unavailable",
+    "unavailable_reason": "shared_runtime_unavailable",
+    "target_set_version": "4",
+    "control": {
+      "scope": "issue",
+      "queue_state": "active",
+      "control_version": "2"
+    },
+    "execution_gate": {
+      "enabled": true,
+      "epoch": "3"
+    },
+    "channels": [
+      {
+        "id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "queue_state": "paused",
+        "control_version": "3",
+        "group_generation": "1",
+        "next_command_seq": "5",
+        "active_group_id": "955a9c33-f4fa-4de9-8213-ccca7fd3b9ca",
+        "pause_reason": "participant_removed"
+      },
+      {
+        "id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+        "queue_state": "paused",
+        "control_version": "3",
+        "group_generation": "0",
+        "next_command_seq": "2",
+        "active_group_id": null,
+        "pause_reason": "participant_stop"
+      },
+      {
+        "id": "be22d55a-1deb-4b9b-91db-951168e23586",
+        "queue_state": "active",
+        "control_version": "2",
+        "group_generation": "0",
+        "next_command_seq": "1",
+        "active_group_id": null,
+        "pause_reason": ""
+      }
+    ],
+    "targets": [
+      {
+        "id": "49e75ce3-5ee9-47bf-b8cb-d4d66a29f3f6",
+        "channel_id": "be22d55a-1deb-4b9b-91db-951168e23586",
+        "kind": "agent",
+        "resource_id": "f6d3685d-d3b6-49a9-bd53-80f1be8b7a2f",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "active",
+          "control_version": "2"
+        },
+        "group_generation": "0",
+        "active_group_id": null,
+        "pause_reason": "",
+        "revoked_at": null
+      },
+      {
+        "id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "kind": "agent",
+        "resource_id": "e2c0694f-adbe-4d48-b728-862702cafc5e",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "paused",
+          "control_version": "3"
+        },
+        "group_generation": "1",
+        "active_group_id": "955a9c33-f4fa-4de9-8213-ccca7fd3b9ca",
+        "pause_reason": "participant_removed",
+        "revoked_at": null
+      },
+      {
+        "id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+        "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+        "kind": "agent",
+        "resource_id": "d26fdea4-d165-42d9-99e8-2b5d757fce8e",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": "grant_required",
+        "hold_version": "4",
+        "control": {
+          "scope": "target",
+          "queue_state": "paused",
+          "control_version": "3"
+        },
+        "group_generation": "0",
+        "active_group_id": null,
+        "pause_reason": "participant_stop",
+        "revoked_at": null
+      }
+    ],
+    "commands": [
+      {
+        "id": "4f2b8806-f400-4b5c-8128-71125fdcd758",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "07e88b19-4441-4ee7-a76b-de2cad132cf7",
+        "group_id": "955a9c33-f4fa-4de9-8213-ccca7fd3b9ca",
+        "input_event_id": "e17e1f9a-288c-4baa-8cac-1fcfa703ce97",
+        "sequence": "1",
+        "author_user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+        "state": "in_flight"
+      },
+      {
+        "id": "c28e0052-cf26-40c6-a352-52d85bdd8869",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+        "group_id": null,
+        "input_event_id": "4379b0e3-c27d-4ca9-812a-33d9a65e7cd0",
+        "sequence": "2",
+        "author_user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+        "state": "cancelled"
+      },
+      {
+        "id": "491d4952-68d4-41c6-b850-10f89822f216",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+        "group_id": null,
+        "input_event_id": "ef6634c3-182b-405e-b06e-2759bc2095dd",
+        "sequence": "3",
+        "author_user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+        "state": "waiting"
+      },
+      {
+        "id": "f183f70a-d389-42a7-b949-d0c8ea1b1616",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+        "group_id": null,
+        "input_event_id": "01fe2c16-6483-42a0-8f86-94adac19bf74",
+        "sequence": "4",
+        "author_user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+        "state": "waiting"
+      },
+      {
+        "id": "e301406c-8cab-4614-9389-4b38495e7d0f",
+        "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+        "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+        "batch_id": "6169ac55-1d3a-423b-a345-61c6f74fc5f6",
+        "group_id": null,
+        "input_event_id": "c1c594f6-847c-4740-ad59-806ae0389ed6",
+        "sequence": "1",
+        "author_user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+        "state": "cancelled"
+      }
+    ],
+    "groups": [
+      {
+        "id": "955a9c33-f4fa-4de9-8213-ccca7fd3b9ca",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "command_id": "4f2b8806-f400-4b5c-8128-71125fdcd758",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "07e88b19-4441-4ee7-a76b-de2cad132cf7",
+        "generation": "1",
+        "target_epoch": "1",
+        "config_version": "1",
+        "state": "ending",
+        "expansion_sealed_at": "2026-10-22T21:40:36+08:00",
+        "forced_disposition": "stopped",
+        "settled_at": null,
+        "inputs": [
+          {
+            "command_id": "4f2b8806-f400-4b5c-8128-71125fdcd758",
+            "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+            "batch_id": "07e88b19-4441-4ee7-a76b-de2cad132cf7",
+            "sequence": "1",
+            "consuming_run_id": "2a38b09f-4fb6-480c-9a6e-24f4cd954e10",
+            "reader_run_ids": [
+              "2a38b09f-4fb6-480c-9a6e-24f4cd954e10"
+            ]
+          }
+        ],
+        "unread_inputs": [],
+        "queued_continuation_run_id": null
+      }
+    ],
+    "runs": [
+      {
+        "id": "2a38b09f-4fb6-480c-9a6e-24f4cd954e10",
+        "command_id": "4f2b8806-f400-4b5c-8128-71125fdcd758",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "group_id": "955a9c33-f4fa-4de9-8213-ccca7fd3b9ca",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "07e88b19-4441-4ee7-a76b-de2cad132cf7",
+        "parent_run_id": null,
+        "step_key": "root",
+        "step_kind": "agent",
+        "agent_id": "e2c0694f-adbe-4d48-b728-862702cafc5e",
+        "target_epoch": "1",
+        "config_version": "1",
+        "progress_state": "ending",
+        "proof_state": "unknown",
+        "business_outcome": null,
+        "forced_disposition": "stopped",
+        "recording_incomplete": false,
+        "settled_at": null
+      }
+    ]
+  },
+  "proof_confirmed_execution": {
+    "protocol_version": 5,
+    "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+    "session_id": "af9b2f35-e894-4647-ac93-f3b220e51ab7",
+    "availability": "unavailable",
+    "unavailable_reason": "shared_runtime_unavailable",
+    "target_set_version": "4",
+    "control": {
+      "scope": "issue",
+      "queue_state": "active",
+      "control_version": "2"
+    },
+    "execution_gate": {
+      "enabled": true,
+      "epoch": "3"
+    },
+    "channels": [
+      {
+        "id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "queue_state": "paused",
+        "control_version": "3",
+        "group_generation": "1",
+        "next_command_seq": "5",
+        "active_group_id": null,
+        "pause_reason": "participant_removed"
+      },
+      {
+        "id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+        "queue_state": "paused",
+        "control_version": "3",
+        "group_generation": "0",
+        "next_command_seq": "2",
+        "active_group_id": null,
+        "pause_reason": "participant_stop"
+      },
+      {
+        "id": "be22d55a-1deb-4b9b-91db-951168e23586",
+        "queue_state": "active",
+        "control_version": "2",
+        "group_generation": "0",
+        "next_command_seq": "1",
+        "active_group_id": null,
+        "pause_reason": ""
+      }
+    ],
+    "targets": [
+      {
+        "id": "49e75ce3-5ee9-47bf-b8cb-d4d66a29f3f6",
+        "channel_id": "be22d55a-1deb-4b9b-91db-951168e23586",
+        "kind": "agent",
+        "resource_id": "f6d3685d-d3b6-49a9-bd53-80f1be8b7a2f",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "active",
+          "control_version": "2"
+        },
+        "group_generation": "0",
+        "active_group_id": null,
+        "pause_reason": "",
+        "revoked_at": null
+      },
+      {
+        "id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "kind": "agent",
+        "resource_id": "e2c0694f-adbe-4d48-b728-862702cafc5e",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "paused",
+          "control_version": "3"
+        },
+        "group_generation": "1",
+        "active_group_id": null,
+        "pause_reason": "participant_removed",
+        "revoked_at": null
+      },
+      {
+        "id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+        "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+        "kind": "agent",
+        "resource_id": "d26fdea4-d165-42d9-99e8-2b5d757fce8e",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": "grant_required",
+        "hold_version": "4",
+        "control": {
+          "scope": "target",
+          "queue_state": "paused",
+          "control_version": "3"
+        },
+        "group_generation": "0",
+        "active_group_id": null,
+        "pause_reason": "participant_stop",
+        "revoked_at": null
+      }
+    ],
+    "commands": [
+      {
+        "id": "4f2b8806-f400-4b5c-8128-71125fdcd758",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "07e88b19-4441-4ee7-a76b-de2cad132cf7",
+        "group_id": "955a9c33-f4fa-4de9-8213-ccca7fd3b9ca",
+        "input_event_id": "e17e1f9a-288c-4baa-8cac-1fcfa703ce97",
+        "sequence": "1",
+        "author_user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+        "state": "stopped"
+      },
+      {
+        "id": "c28e0052-cf26-40c6-a352-52d85bdd8869",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+        "group_id": null,
+        "input_event_id": "4379b0e3-c27d-4ca9-812a-33d9a65e7cd0",
+        "sequence": "2",
+        "author_user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+        "state": "cancelled"
+      },
+      {
+        "id": "491d4952-68d4-41c6-b850-10f89822f216",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+        "group_id": null,
+        "input_event_id": "ef6634c3-182b-405e-b06e-2759bc2095dd",
+        "sequence": "3",
+        "author_user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+        "state": "waiting"
+      },
+      {
+        "id": "f183f70a-d389-42a7-b949-d0c8ea1b1616",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+        "group_id": null,
+        "input_event_id": "01fe2c16-6483-42a0-8f86-94adac19bf74",
+        "sequence": "4",
+        "author_user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+        "state": "waiting"
+      },
+      {
+        "id": "e301406c-8cab-4614-9389-4b38495e7d0f",
+        "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+        "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+        "batch_id": "6169ac55-1d3a-423b-a345-61c6f74fc5f6",
+        "group_id": null,
+        "input_event_id": "c1c594f6-847c-4740-ad59-806ae0389ed6",
+        "sequence": "1",
+        "author_user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+        "state": "cancelled"
+      }
+    ],
+    "groups": [
+      {
+        "id": "955a9c33-f4fa-4de9-8213-ccca7fd3b9ca",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "command_id": "4f2b8806-f400-4b5c-8128-71125fdcd758",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "07e88b19-4441-4ee7-a76b-de2cad132cf7",
+        "generation": "1",
+        "target_epoch": "1",
+        "config_version": "1",
+        "state": "stopped",
+        "expansion_sealed_at": "2026-10-22T21:40:36+08:00",
+        "forced_disposition": "stopped",
+        "settled_at": "2026-10-22T21:40:40+08:00",
+        "inputs": [
+          {
+            "command_id": "4f2b8806-f400-4b5c-8128-71125fdcd758",
+            "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+            "batch_id": "07e88b19-4441-4ee7-a76b-de2cad132cf7",
+            "sequence": "1",
+            "consuming_run_id": "2a38b09f-4fb6-480c-9a6e-24f4cd954e10",
+            "reader_run_ids": [
+              "2a38b09f-4fb6-480c-9a6e-24f4cd954e10"
+            ]
+          }
+        ],
+        "unread_inputs": [],
+        "queued_continuation_run_id": null
+      }
+    ],
+    "runs": [
+      {
+        "id": "2a38b09f-4fb6-480c-9a6e-24f4cd954e10",
+        "command_id": "4f2b8806-f400-4b5c-8128-71125fdcd758",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "group_id": "955a9c33-f4fa-4de9-8213-ccca7fd3b9ca",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "07e88b19-4441-4ee7-a76b-de2cad132cf7",
+        "parent_run_id": null,
+        "step_key": "root",
+        "step_kind": "agent",
+        "agent_id": "e2c0694f-adbe-4d48-b728-862702cafc5e",
+        "target_epoch": "1",
+        "config_version": "1",
+        "progress_state": "settled",
+        "proof_state": "exited_proven",
+        "business_outcome": null,
+        "forced_disposition": "stopped",
+        "recording_incomplete": true,
+        "settled_at": "2026-10-22T21:40:40+08:00"
+      }
+    ]
+  },
+  "final_execution": {
+    "protocol_version": 5,
+    "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+    "session_id": "af9b2f35-e894-4647-ac93-f3b220e51ab7",
+    "availability": "unavailable",
+    "unavailable_reason": "shared_runtime_unavailable",
+    "target_set_version": "4",
+    "control": {
+      "scope": "issue",
+      "queue_state": "active",
+      "control_version": "2"
+    },
+    "execution_gate": {
+      "enabled": true,
+      "epoch": "3"
+    },
+    "channels": [
+      {
+        "id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "queue_state": "active",
+        "control_version": "4",
+        "group_generation": "2",
+        "next_command_seq": "6",
+        "active_group_id": null,
+        "pause_reason": ""
+      },
+      {
+        "id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+        "queue_state": "active",
+        "control_version": "4",
+        "group_generation": "0",
+        "next_command_seq": "2",
+        "active_group_id": null,
+        "pause_reason": ""
+      },
+      {
+        "id": "be22d55a-1deb-4b9b-91db-951168e23586",
+        "queue_state": "active",
+        "control_version": "2",
+        "group_generation": "0",
+        "next_command_seq": "1",
+        "active_group_id": null,
+        "pause_reason": ""
+      }
+    ],
+    "targets": [
+      {
+        "id": "49e75ce3-5ee9-47bf-b8cb-d4d66a29f3f6",
+        "channel_id": "be22d55a-1deb-4b9b-91db-951168e23586",
+        "kind": "agent",
+        "resource_id": "f6d3685d-d3b6-49a9-bd53-80f1be8b7a2f",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "active",
+          "control_version": "2"
+        },
+        "group_generation": "0",
+        "active_group_id": null,
+        "pause_reason": "",
+        "revoked_at": null
+      },
+      {
+        "id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "kind": "agent",
+        "resource_id": "e2c0694f-adbe-4d48-b728-862702cafc5e",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "active",
+          "control_version": "4"
+        },
+        "group_generation": "2",
+        "active_group_id": null,
+        "pause_reason": "",
+        "revoked_at": null
+      },
+      {
+        "id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+        "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+        "kind": "agent",
+        "resource_id": "d26fdea4-d165-42d9-99e8-2b5d757fce8e",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "6",
+        "control": {
+          "scope": "target",
+          "queue_state": "active",
+          "control_version": "4"
+        },
+        "group_generation": "0",
+        "active_group_id": null,
+        "pause_reason": "",
+        "revoked_at": null
+      }
+    ],
+    "commands": [
+      {
+        "id": "4f2b8806-f400-4b5c-8128-71125fdcd758",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "07e88b19-4441-4ee7-a76b-de2cad132cf7",
+        "group_id": "955a9c33-f4fa-4de9-8213-ccca7fd3b9ca",
+        "input_event_id": "e17e1f9a-288c-4baa-8cac-1fcfa703ce97",
+        "sequence": "1",
+        "author_user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+        "state": "stopped"
+      },
+      {
+        "id": "c28e0052-cf26-40c6-a352-52d85bdd8869",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+        "group_id": null,
+        "input_event_id": "4379b0e3-c27d-4ca9-812a-33d9a65e7cd0",
+        "sequence": "2",
+        "author_user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+        "state": "cancelled"
+      },
+      {
+        "id": "491d4952-68d4-41c6-b850-10f89822f216",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+        "group_id": "a5105c63-d830-4e4b-9cd1-c4f2ee731e30",
+        "input_event_id": "ef6634c3-182b-405e-b06e-2759bc2095dd",
+        "sequence": "3",
+        "author_user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+        "state": "succeeded"
+      },
+      {
+        "id": "f183f70a-d389-42a7-b949-d0c8ea1b1616",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+        "group_id": "a5105c63-d830-4e4b-9cd1-c4f2ee731e30",
+        "input_event_id": "01fe2c16-6483-42a0-8f86-94adac19bf74",
+        "sequence": "4",
+        "author_user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+        "state": "succeeded"
+      },
+      {
+        "id": "fbcb83e8-45eb-4bf9-85bd-0bb0c70a69a6",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+        "group_id": "a5105c63-d830-4e4b-9cd1-c4f2ee731e30",
+        "input_event_id": "b33b5a0b-c088-4f3a-b5fc-3fa59eb3833b",
+        "sequence": "5",
+        "author_user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+        "state": "succeeded"
+      },
+      {
+        "id": "e301406c-8cab-4614-9389-4b38495e7d0f",
+        "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+        "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+        "batch_id": "6169ac55-1d3a-423b-a345-61c6f74fc5f6",
+        "group_id": null,
+        "input_event_id": "c1c594f6-847c-4740-ad59-806ae0389ed6",
+        "sequence": "1",
+        "author_user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+        "state": "cancelled"
+      }
+    ],
+    "groups": [
+      {
+        "id": "955a9c33-f4fa-4de9-8213-ccca7fd3b9ca",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "command_id": "4f2b8806-f400-4b5c-8128-71125fdcd758",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "07e88b19-4441-4ee7-a76b-de2cad132cf7",
+        "generation": "1",
+        "target_epoch": "1",
+        "config_version": "1",
+        "state": "stopped",
+        "expansion_sealed_at": "2026-10-22T21:40:36+08:00",
+        "forced_disposition": "stopped",
+        "settled_at": "2026-10-22T21:40:40+08:00",
+        "inputs": [
+          {
+            "command_id": "4f2b8806-f400-4b5c-8128-71125fdcd758",
+            "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+            "batch_id": "07e88b19-4441-4ee7-a76b-de2cad132cf7",
+            "sequence": "1",
+            "consuming_run_id": "2a38b09f-4fb6-480c-9a6e-24f4cd954e10",
+            "reader_run_ids": [
+              "2a38b09f-4fb6-480c-9a6e-24f4cd954e10"
+            ]
+          }
+        ],
+        "unread_inputs": [],
+        "queued_continuation_run_id": null
+      },
+      {
+        "id": "a5105c63-d830-4e4b-9cd1-c4f2ee731e30",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "command_id": "491d4952-68d4-41c6-b850-10f89822f216",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+        "generation": "2",
+        "target_epoch": "1",
+        "config_version": "1",
+        "state": "succeeded",
+        "expansion_sealed_at": "2026-10-22T21:40:45+08:00",
+        "forced_disposition": null,
+        "settled_at": "2026-10-22T21:40:45+08:00",
+        "inputs": [
+          {
+            "command_id": "491d4952-68d4-41c6-b850-10f89822f216",
+            "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+            "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+            "sequence": "3",
+            "consuming_run_id": "aeec4fba-741e-47eb-b7ff-46b1951c1a46",
+            "reader_run_ids": [
+              "aeec4fba-741e-47eb-b7ff-46b1951c1a46"
+            ]
+          },
+          {
+            "command_id": "f183f70a-d389-42a7-b949-d0c8ea1b1616",
+            "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+            "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+            "sequence": "4",
+            "consuming_run_id": "aeec4fba-741e-47eb-b7ff-46b1951c1a46",
+            "reader_run_ids": [
+              "aeec4fba-741e-47eb-b7ff-46b1951c1a46"
+            ]
+          },
+          {
+            "command_id": "fbcb83e8-45eb-4bf9-85bd-0bb0c70a69a6",
+            "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+            "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+            "sequence": "5",
+            "consuming_run_id": "aeec4fba-741e-47eb-b7ff-46b1951c1a46",
+            "reader_run_ids": [
+              "aeec4fba-741e-47eb-b7ff-46b1951c1a46"
+            ]
+          }
+        ],
+        "unread_inputs": [],
+        "queued_continuation_run_id": null
+      }
+    ],
+    "runs": [
+      {
+        "id": "2a38b09f-4fb6-480c-9a6e-24f4cd954e10",
+        "command_id": "4f2b8806-f400-4b5c-8128-71125fdcd758",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "group_id": "955a9c33-f4fa-4de9-8213-ccca7fd3b9ca",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "07e88b19-4441-4ee7-a76b-de2cad132cf7",
+        "parent_run_id": null,
+        "step_key": "root",
+        "step_kind": "agent",
+        "agent_id": "e2c0694f-adbe-4d48-b728-862702cafc5e",
+        "target_epoch": "1",
+        "config_version": "1",
+        "progress_state": "settled",
+        "proof_state": "exited_proven",
+        "business_outcome": null,
+        "forced_disposition": "stopped",
+        "recording_incomplete": true,
+        "settled_at": "2026-10-22T21:40:40+08:00"
+      },
+      {
+        "id": "aeec4fba-741e-47eb-b7ff-46b1951c1a46",
+        "command_id": "491d4952-68d4-41c6-b850-10f89822f216",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "group_id": "a5105c63-d830-4e4b-9cd1-c4f2ee731e30",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+        "parent_run_id": null,
+        "step_key": "root",
+        "step_kind": "agent",
+        "agent_id": "e2c0694f-adbe-4d48-b728-862702cafc5e",
+        "target_epoch": "1",
+        "config_version": "1",
+        "progress_state": "settled",
+        "proof_state": "exited_proven",
+        "business_outcome": "success",
+        "forced_disposition": null,
+        "recording_incomplete": false,
+        "settled_at": "2026-10-22T21:40:45+08:00"
+      }
+    ]
+  },
+  "provider_observations": [
+    {
+      "lane": "A",
+      "namespace_id": "pid:[4026532803]",
+      "pid": 12,
+      "identity": {
+        "deployment_id": "f3a705a0-0193-435f-bc6d-05bc2074e905",
+        "installation_id": "9cb79f66-9077-447d-b0d1-5c670831eb1e",
+        "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+        "session_id": "af9b2f35-e894-4647-ac93-f3b220e51ab7",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "07e88b19-4441-4ee7-a76b-de2cad132cf7",
+        "group_id": "955a9c33-f4fa-4de9-8213-ccca7fd3b9ca",
+        "run_id": "2a38b09f-4fb6-480c-9a6e-24f4cd954e10",
+        "fence": "1",
+        "claim_generation": "1"
+      },
+      "inputs": [
+        {
+          "command_id": "4f2b8806-f400-4b5c-8128-71125fdcd758",
+          "author_user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+          "participant_epoch": "1",
+          "account_epoch": "1",
+          "lifecycle_epoch": "1",
+          "body": "Lifecycle original handler input [@Independent execution agent A](mention://agent/e2c0694f-adbe-4d48-b728-862702cafc5e)",
+          "attachment_ids": []
+        }
+      ],
+      "started_ms": 3383.176917,
+      "released_ms": null,
+      "closed_ms": 6450.723375
+    },
+    {
+      "lane": "A",
+      "namespace_id": "pid:[4026532803]",
+      "pid": 11,
+      "identity": {
+        "deployment_id": "f3a705a0-0193-435f-bc6d-05bc2074e905",
+        "installation_id": "9cb79f66-9077-447d-b0d1-5c670831eb1e",
+        "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+        "session_id": "af9b2f35-e894-4647-ac93-f3b220e51ab7",
+        "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+        "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+        "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+        "group_id": "a5105c63-d830-4e4b-9cd1-c4f2ee731e30",
+        "run_id": "aeec4fba-741e-47eb-b7ff-46b1951c1a46",
+        "fence": "1",
+        "claim_generation": "1"
+      },
+      "inputs": [
+        {
+          "command_id": "491d4952-68d4-41c6-b850-10f89822f216",
+          "author_user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+          "participant_epoch": "1",
+          "account_epoch": "1",
+          "lifecycle_epoch": "1",
+          "body": "Lifecycle remaining creator queued input [@Independent execution agent A](mention://agent/e2c0694f-adbe-4d48-b728-862702cafc5e)",
+          "attachment_ids": []
+        },
+        {
+          "command_id": "f183f70a-d389-42a7-b949-d0c8ea1b1616",
+          "author_user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+          "participant_epoch": "1",
+          "account_epoch": "1",
+          "lifecycle_epoch": "1",
+          "body": "Lifecycle added during target pause [@Independent execution agent A](mention://agent/e2c0694f-adbe-4d48-b728-862702cafc5e)",
+          "attachment_ids": []
+        },
+        {
+          "command_id": "fbcb83e8-45eb-4bf9-85bd-0bb0c70a69a6",
+          "author_user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+          "participant_epoch": "3",
+          "account_epoch": "1",
+          "lifecycle_epoch": "1",
+          "body": "Lifecycle cancelled author's queued input [@Independent execution agent A](mention://agent/e2c0694f-adbe-4d48-b728-862702cafc5e)",
+          "attachment_ids": []
+        }
+      ],
+      "started_ms": 14331.882042,
+      "released_ms": 14804.368209,
+      "closed_ms": 14804.875334
+    }
+  ],
+  "runtime_transport": {
+    "attempts": [
+      {
+        "method": "POST",
+        "path": "/api/daemon/register",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/register",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/permit",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/stop-intent",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/stop-intent",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/stop-intent",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/stop-intent",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 0,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 0,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 0,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 0,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 0,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 0,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 0,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 0,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 0,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 0,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 503,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof",
+        "status": 200,
+        "body_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/aeec4fba-741e-47eb-b7ff-46b1951c1a46/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/aeec4fba-741e-47eb-b7ff-46b1951c1a46/permit",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/aeec4fba-741e-47eb-b7ff-46b1951c1a46/stop-intent",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/aeec4fba-741e-47eb-b7ff-46b1951c1a46/outcome",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/aeec4fba-741e-47eb-b7ff-46b1951c1a46/proof",
+        "status": 200,
+        "body_sha256": "c1eb405efa376d4f3f353ebfeca4a7919538291896869d3e90056405f6fdbe71"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      }
+    ],
+    "errors": [],
+    "original_proof_hashes": {
+      "/api/collaboration/runtime/runs/2a38b09f-4fb6-480c-9a6e-24f4cd954e10/proof": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e",
+      "/api/collaboration/runtime/runs/aeec4fba-741e-47eb-b7ff-46b1951c1a46/proof": "c1eb405efa376d4f3f353ebfeca4a7919538291896869d3e90056405f6fdbe71"
+    }
+  },
+  "original_proof_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e",
+  "cancelled_history_before_reconnect": {
+    "id": "c28e0052-cf26-40c6-a352-52d85bdd8869",
+    "session_id": "af9b2f35-e894-4647-ac93-f3b220e51ab7",
+    "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+    "target": {
+      "kind": "agent",
+      "resource_id": "e2c0694f-adbe-4d48-b728-862702cafc5e"
+    },
+    "input_event_id": "4379b0e3-c27d-4ca9-812a-33d9a65e7cd0",
+    "input_event_seq": "17",
+    "comment_id": "ad16b387-69cf-4662-a569-3fcf38eb97c8",
+    "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+    "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+    "group_id": null,
+    "seq": "2",
+    "author_user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+    "author": {
+      "user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+      "name": "Cross-client collaborator B",
+      "avatar_url": "",
+      "external": true
+    },
+    "content": "Lifecycle cancelled author's queued input [@Independent execution agent A](mention://agent/e2c0694f-adbe-4d48-b728-862702cafc5e)",
+    "attachment_ids": [],
+    "state": "cancelled",
+    "reason": "participant_removed",
+    "created_at": "2026-10-22T21:40:34.495667+08:00",
+    "cancellation": {
+      "event_id": "264a301c-da20-40cf-8a4f-34984fa63dfe",
+      "event_seq": "22",
+      "actor_user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+      "actor": {
+        "user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+        "name": "Cross-client collaborator A",
+        "avatar_url": "",
+        "external": false
+      },
+      "created_at": "2026-10-22T21:40:36.85621+08:00",
+      "kind": "automatic"
+    }
+  },
+  "cancelled_history_after_resume": {
+    "id": "c28e0052-cf26-40c6-a352-52d85bdd8869",
+    "session_id": "af9b2f35-e894-4647-ac93-f3b220e51ab7",
+    "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+    "target": {
+      "kind": "agent",
+      "resource_id": "e2c0694f-adbe-4d48-b728-862702cafc5e"
+    },
+    "input_event_id": "4379b0e3-c27d-4ca9-812a-33d9a65e7cd0",
+    "input_event_seq": "17",
+    "comment_id": "ad16b387-69cf-4662-a569-3fcf38eb97c8",
+    "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+    "batch_id": "43e4017d-ac77-4987-a608-d238c7b43d5a",
+    "group_id": null,
+    "seq": "2",
+    "author_user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+    "author": {
+      "user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+      "name": "Cross-client collaborator B",
+      "avatar_url": "",
+      "external": true
+    },
+    "content": "Lifecycle cancelled author's queued input [@Independent execution agent A](mention://agent/e2c0694f-adbe-4d48-b728-862702cafc5e)",
+    "attachment_ids": [],
+    "state": "cancelled",
+    "reason": "participant_removed",
+    "created_at": "2026-10-22T21:40:34.495667+08:00",
+    "cancellation": {
+      "event_id": "264a301c-da20-40cf-8a4f-34984fa63dfe",
+      "event_seq": "22",
+      "actor_user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+      "actor": {
+        "user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+        "name": "Cross-client collaborator A",
+        "avatar_url": "",
+        "external": false
+      },
+      "created_at": "2026-10-22T21:40:36.85621+08:00",
+      "kind": "automatic"
+    }
+  },
+  "paused_cancelled_history_before_reconnect": {
+    "id": "e301406c-8cab-4614-9389-4b38495e7d0f",
+    "session_id": "af9b2f35-e894-4647-ac93-f3b220e51ab7",
+    "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+    "target": {
+      "kind": "agent",
+      "resource_id": "d26fdea4-d165-42d9-99e8-2b5d757fce8e"
+    },
+    "input_event_id": "c1c594f6-847c-4740-ad59-806ae0389ed6",
+    "input_event_seq": "20",
+    "comment_id": "01532757-8ecb-445b-b646-c86ff273d4b6",
+    "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+    "batch_id": "6169ac55-1d3a-423b-a345-61c6f74fc5f6",
+    "group_id": null,
+    "seq": "1",
+    "author_user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+    "author": {
+      "user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+      "name": "Cross-client collaborator B",
+      "avatar_url": "",
+      "external": true
+    },
+    "content": "Lifecycle author input submitted to an already paused target [@Independent execution agent B](mention://agent/d26fdea4-d165-42d9-99e8-2b5d757fce8e)",
+    "attachment_ids": [],
+    "state": "cancelled",
+    "reason": "participant_removed",
+    "created_at": "2026-10-22T21:40:35.95856+08:00",
+    "cancellation": {
+      "event_id": "f0db997a-8de1-4562-94bf-ec19052a4a14",
+      "event_seq": "21",
+      "actor_user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+      "actor": {
+        "user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+        "name": "Cross-client collaborator A",
+        "avatar_url": "",
+        "external": false
+      },
+      "created_at": "2026-10-22T21:40:36.85621+08:00",
+      "kind": "automatic"
+    }
+  },
+  "paused_cancelled_history_after_resume": {
+    "id": "e301406c-8cab-4614-9389-4b38495e7d0f",
+    "session_id": "af9b2f35-e894-4647-ac93-f3b220e51ab7",
+    "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+    "target": {
+      "kind": "agent",
+      "resource_id": "d26fdea4-d165-42d9-99e8-2b5d757fce8e"
+    },
+    "input_event_id": "c1c594f6-847c-4740-ad59-806ae0389ed6",
+    "input_event_seq": "20",
+    "comment_id": "01532757-8ecb-445b-b646-c86ff273d4b6",
+    "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+    "batch_id": "6169ac55-1d3a-423b-a345-61c6f74fc5f6",
+    "group_id": null,
+    "seq": "1",
+    "author_user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+    "author": {
+      "user_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+      "name": "Cross-client collaborator B",
+      "avatar_url": "",
+      "external": true
+    },
+    "content": "Lifecycle author input submitted to an already paused target [@Independent execution agent B](mention://agent/d26fdea4-d165-42d9-99e8-2b5d757fce8e)",
+    "attachment_ids": [],
+    "state": "cancelled",
+    "reason": "participant_removed",
+    "created_at": "2026-10-22T21:40:35.95856+08:00",
+    "cancellation": {
+      "event_id": "f0db997a-8de1-4562-94bf-ec19052a4a14",
+      "event_seq": "21",
+      "actor_user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+      "actor": {
+        "user_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+        "name": "Cross-client collaborator A",
+        "avatar_url": "",
+        "external": false
+      },
+      "created_at": "2026-10-22T21:40:36.85621+08:00",
+      "kind": "automatic"
+    }
+  },
+  "scope": "Actual Web/Electron public UI, actual contained Linux synthetic provider and original natural sealed proof; no real provider account",
+  "creator_platform": "Electron",
+  "sources": [
+    {
+      "path": "e2e/collaboration-lifecycle-controls.spec.ts",
+      "sha256": "da1bc19cb1fbd6074b6b9b85df47a89e05730e2608a0997b19724d66915a1fd4"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-lifecycle-controls.ts",
+      "sha256": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-cross-client-execution.ts",
+      "sha256": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-native.ts",
+      "sha256": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-cross-client-provider.go",
+      "sha256": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88"
+    }
+  ],
+  "initial_resume": {
+    "receipt": {
+      "status": 200,
+      "code": "resumed",
+      "issue_id": "01a163d7-6f18-7bbf-95d4-079467bc8605",
+      "request_id": "4de2ff97-8c58-4fd5-b76a-b2cecf7a79dd",
+      "action": "resume",
+      "protocol_version": 2,
+      "scope": "issue",
+      "target_id": null,
+      "grant_id": null,
+      "proposal_id": null,
+      "channel_id": null,
+      "batch_id": null,
+      "command_id": null,
+      "queue_state": "active",
+      "control_version": "2",
+      "target_set_version": "4",
+      "group_id": null,
+      "group_settled": false,
+      "targets": [
+        {
+          "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+          "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+          "code": "resumed",
+          "queue_state": "active",
+          "control_version": "2",
+          "group_generation": "0",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        },
+        {
+          "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+          "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+          "code": "resumed",
+          "queue_state": "active",
+          "control_version": "2",
+          "group_generation": "0",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        },
+        {
+          "target_id": "49e75ce3-5ee9-47bf-b8cb-d4d66a29f3f6",
+          "channel_id": "be22d55a-1deb-4b9b-91db-951168e23586",
+          "code": "resumed",
+          "queue_state": "active",
+          "control_version": "2",
+          "group_generation": "0",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        }
+      ],
+      "channels": [
+        {
+          "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+          "code": "resumed",
+          "queue_state": "active",
+          "control_version": "2",
+          "group_generation": "0",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        },
+        {
+          "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+          "code": "resumed",
+          "queue_state": "active",
+          "control_version": "2",
+          "group_generation": "0",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        },
+        {
+          "channel_id": "be22d55a-1deb-4b9b-91db-951168e23586",
+          "code": "resumed",
+          "queue_state": "active",
+          "control_version": "2",
+          "group_generation": "0",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        }
+      ],
+      "target_holds": [
+        {
+          "target_id": "49e75ce3-5ee9-47bf-b8cb-d4d66a29f3f6",
+          "channel_id": "be22d55a-1deb-4b9b-91db-951168e23586",
+          "code": "hold_released",
+          "hold_reason": null,
+          "hold_version": "3"
+        },
+        {
+          "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+          "channel_id": "0c5e81ae-a8bd-427d-b4b9-5b1ab3b942b3",
+          "code": "hold_released",
+          "hold_reason": null,
+          "hold_version": "3"
+        },
+        {
+          "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+          "channel_id": "6b2c99a1-d900-411a-83d0-f53e661f5288",
+          "code": "hold_released",
+          "hold_reason": null,
+          "hold_version": "3"
+        }
+      ],
+      "run_id": null,
+      "run_settled": false
+    },
+    "requestId": "4de2ff97-8c58-4fd5-b76a-b2cecf7a79dd",
+    "input": {
+      "expected_lifecycle_epoch": "1",
+      "expected_participant_epoch": "1",
+      "expected_account_epoch": "1",
+      "expected_control_version": "1",
+      "expected_target_set_version": "4",
+      "action": "resume",
+      "scope": "issue",
+      "expected_execution_epoch": "3",
+      "targets": [
+        {
+          "target_id": "49e75ce3-5ee9-47bf-b8cb-d4d66a29f3f6",
+          "expected_target_epoch": "1",
+          "expected_config_version": "1",
+          "expected_control_version": "1",
+          "observed_group_id": null,
+          "observed_group_generation": "0",
+          "expected_hold_version": "2"
+        },
+        {
+          "target_id": "ce16c61e-e3a6-44e0-8213-cdf3160f7e86",
+          "expected_target_epoch": "1",
+          "expected_config_version": "1",
+          "expected_control_version": "1",
+          "observed_group_id": null,
+          "observed_group_generation": "0",
+          "expected_hold_version": "2"
+        },
+        {
+          "target_id": "d264050d-2072-4f5b-a877-187ef4b69c69",
+          "expected_target_epoch": "1",
+          "expected_config_version": "1",
+          "expected_control_version": "1",
+          "observed_group_id": null,
+          "observed_group_generation": "0",
+          "expected_hold_version": "2"
+        }
+      ]
+    }
+  },
+  "captures": [
+    {
+      "stage": "removed-stop-unconfirmed",
+      "client": "electron",
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-natural-reconnect-current/collaboration-lifecycle-co-8cae2-client-and-daemon-reconnect-chromium/electron-removed-stop-unconfirmed.png"
+    },
+    {
+      "stage": "natural-proof-confirmed-still-paused",
+      "client": "electron",
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-natural-reconnect-current/collaboration-lifecycle-co-8cae2-client-and-daemon-reconnect-chromium/electron-natural-proof-confirmed-still-paused.png"
+    }
+  ],
+  "reconnects": [
+    {
+      "web_fetch_failed": true,
+      "electron_renderer_fetch_failed": true,
+      "native_account_ipc_blocked": true,
+      "restored_fetch_status": [
+        200,
+        200
+      ],
+      "native_account_ipc_restored": true
+    },
+    {
+      "web_fetch_failed": true,
+      "electron_renderer_fetch_failed": true,
+      "native_account_ipc_blocked": true,
+      "restored_fetch_status": [
+        200,
+        200
+      ],
+      "native_account_ipc_restored": true
+    }
+  ],
+  "writes": [
+    {
+      "client": "web",
+      "actor_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/comments/trigger-preview",
+      "method": "POST",
+      "request_id": null
+    },
+    {
+      "client": "web",
+      "actor_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/comments",
+      "method": "POST",
+      "request_id": "6209f390-4e38-433e-ae6d-2dd1ca3638e4"
+    },
+    {
+      "client": "web",
+      "actor_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/comments/trigger-preview",
+      "method": "POST",
+      "request_id": null
+    },
+    {
+      "client": "web",
+      "actor_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/comments",
+      "method": "POST",
+      "request_id": "7e6aa5bc-3edb-4b15-af18-890ebebc2fbf"
+    },
+    {
+      "client": "web",
+      "actor_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/comments/trigger-preview",
+      "method": "POST",
+      "request_id": null
+    },
+    {
+      "client": "web",
+      "actor_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/comments",
+      "method": "POST",
+      "request_id": "f91db1f6-28b0-47a3-886d-e4dee6175093"
+    },
+    {
+      "client": "web",
+      "actor_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/comments/trigger-preview",
+      "method": "POST",
+      "request_id": null
+    },
+    {
+      "client": "web",
+      "actor_id": "288c93af-8ca5-4e5d-9de4-28a1668b0dec",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/comments",
+      "method": "POST",
+      "request_id": "1387c057-d08a-4ac0-8321-9ce8f846fcc4"
+    },
+    {
+      "client": "electron",
+      "actor_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/control",
+      "method": "POST",
+      "request_id": "4de2ff97-8c58-4fd5-b76a-b2cecf7a79dd"
+    },
+    {
+      "client": "electron",
+      "actor_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/comments/trigger-preview",
+      "method": "POST",
+      "request_id": null
+    },
+    {
+      "client": "electron",
+      "actor_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/comments",
+      "method": "POST",
+      "request_id": "ced35be3-c5a9-4395-818e-710bdcd1c233"
+    },
+    {
+      "client": "electron",
+      "actor_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/control",
+      "method": "POST",
+      "request_id": "b673e9df-edb6-48d4-8334-a8abd698dce1"
+    },
+    {
+      "client": "electron",
+      "actor_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/participants/288c93af-8ca5-4e5d-9de4-28a1668b0dec/remove",
+      "method": "POST",
+      "request_id": "2e74b4fb-0f2c-456f-a201-d7e659e50f41"
+    },
+    {
+      "client": "electron",
+      "actor_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/comments/trigger-preview",
+      "method": "POST",
+      "request_id": null
+    },
+    {
+      "client": "electron",
+      "actor_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/comments",
+      "method": "POST",
+      "request_id": "49c5b47e-18f7-425d-b442-3b7a095635ed"
+    },
+    {
+      "client": "electron",
+      "actor_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/control",
+      "method": "POST",
+      "request_id": "9f04f428-9fbd-4535-962d-d468981423bc"
+    },
+    {
+      "client": "electron",
+      "actor_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/control",
+      "method": "POST",
+      "request_id": "39914b7c-2caa-48c5-9fd7-6c26149716c2"
+    },
+    {
+      "client": "electron",
+      "actor_id": "0194fb66-1c92-4272-8337-4bbbfe25ca7f",
+      "path": "/api/collaboration/issues/01a163d7-6f18-7bbf-95d4-079467bc8605/control",
+      "method": "POST",
+      "request_id": "e88027f4-4ca7-4a80-af70-b4dc2a9f9f6e"
+    }
+  ],
+  "environment": {
+    "api": "http://localhost:18996",
+    "production_web": "http://localhost:13916",
+    "native_renderer": "http://localhost:6090",
+    "native_os": "darwin",
+    "execution_os": "actual Linux namespaces with explicit test-owned stdlib provider",
+    "provider_account_access": false,
+    "renderer_network": "Chromium fetch interrupted on both clients",
+    "native_ipc_boundary": "Production window:open-account server-switch rejection and explicit restore; independent of renderer fetch"
+  },
+  "remaining_AC34": "No same-lane squad alias or whole-pause/new-target journey in this bounded removal slice",
+  "remaining_AC57": "No complete/cancel live-run UI in this bounded removal slice"
+}

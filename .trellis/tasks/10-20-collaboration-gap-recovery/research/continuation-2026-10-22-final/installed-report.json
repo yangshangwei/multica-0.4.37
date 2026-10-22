@@ -1,0 +1,408 @@
+{
+  "date": "2026-10-22T13:31:43.053925+00:00",
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "criteria": [
+    "AC31",
+    "AC32"
+  ],
+  "state": "bounded current proof complete; independent criterion review requested",
+  "changed_files": [
+    "e2e/collaboration-installed-clients.spec.ts",
+    "e2e/fixtures/collaboration-installed-clients.ts",
+    "e2e/fixtures/collaboration-installed-cli-relay.go"
+  ],
+  "evidence_files": [
+    "installed-boundary.md",
+    "installed-inventory.json",
+    "installed-old-cli-final-command.json",
+    "installed-old-cli-final-result.json",
+    "installed-old-cli-final-playwright.json",
+    "installed-old-cli-final-evidence.json",
+    "installed-canonical-race-command.json",
+    "installed-canonical-race-result.json",
+    "installed-typescript-final-result.json",
+    "installed-lint-final-result.json",
+    "installed-go-vet-result.json",
+    "installed-evidence-integrity.json"
+  ],
+  "old_cli_package": {
+    "image": "sha256:8d5ede4df2fa4b66d499803b95428b729fcb6ba753b3800e9b931b968ee16104",
+    "binary": "/app/multica",
+    "version": {
+      "arch": "amd64",
+      "commit": "9caea35808afc8d05fb6135bfc74d4bfb0b45cf1",
+      "date": "2026-10-17T05:56:15Z",
+      "go": "go1.26.9",
+      "os": "linux",
+      "version": "v0.6.7"
+    },
+    "command": [
+      "run",
+      "--rm",
+      "--pull",
+      "never",
+      "--read-only",
+      "--network",
+      "none",
+      "--platform",
+      "linux/amd64",
+      "--entrypoint",
+      "/app/multica",
+      "sha256:8d5ede4df2fa4b66d499803b95428b729fcb6ba753b3800e9b931b968ee16104",
+      "version",
+      "--output",
+      "json"
+    ],
+    "scope": "Existing local offline OCI package bytes; not publisher signature or installed Desktop"
+  },
+  "current_packaged_cli_result": {
+    "startTime": "2026-10-22T13:26:14.018Z",
+    "duration": 15611.807999999999,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "actual_legacy_calls": [
+    {
+      "stage": "ordinary-positive",
+      "actor": "bbfdcd5d-cf35-4878-afb8-55bf878c03a5",
+      "args": [
+        "issue",
+        "update",
+        "01a163ca-7e75-7140-ba91-f7d5eb65cb97",
+        "--status",
+        "done",
+        "--output",
+        "json"
+      ],
+      "requests": [
+        {
+          "method": "PUT",
+          "path": "/api/issues/01a163ca-7e75-7140-ba91-f7d5eb65cb97",
+          "status": 200,
+          "body_sha256": "e378058155516106ec27571a247c0a3985759e505d4ab2351d638a9ac6ce7c25",
+          "client_version": "v0.6.7",
+          "client_platform": "cli",
+          "client_os": "linux"
+        }
+      ]
+    },
+    {
+      "stage": "paused",
+      "actor": "bbfdcd5d-cf35-4878-afb8-55bf878c03a5",
+      "args": [
+        "issue",
+        "update",
+        "01a163ca-7aa5-729b-afe7-4514e1513b6f",
+        "--status",
+        "done",
+        "--output",
+        "json"
+      ],
+      "requests": [
+        {
+          "method": "PUT",
+          "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f",
+          "status": 409,
+          "body_sha256": "e378058155516106ec27571a247c0a3985759e505d4ab2351d638a9ac6ce7c25",
+          "client_version": "v0.6.7",
+          "client_platform": "cli",
+          "client_os": "linux"
+        }
+      ]
+    },
+    {
+      "stage": "paused",
+      "actor": "bbfdcd5d-cf35-4878-afb8-55bf878c03a5",
+      "args": [
+        "issue",
+        "comment",
+        "add",
+        "01a163ca-7aa5-729b-afe7-4514e1513b6f",
+        "--content",
+        "old CLI paused must remain inert",
+        "--output",
+        "json"
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f/comments",
+          "status": 409,
+          "body_sha256": "e08c44d6df111e508947c4bbbec88beb37d23e39f5cc6fe9426d605b9c7ba70c",
+          "client_version": "v0.6.7",
+          "client_platform": "cli",
+          "client_os": "linux"
+        }
+      ]
+    },
+    {
+      "stage": "paused",
+      "actor": "bbfdcd5d-cf35-4878-afb8-55bf878c03a5",
+      "args": [
+        "issue",
+        "rerun",
+        "01a163ca-7aa5-729b-afe7-4514e1513b6f",
+        "--output",
+        "json"
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f/rerun",
+          "status": 409,
+          "body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "client_version": "v0.6.7",
+          "client_platform": "cli",
+          "client_os": "linux"
+        }
+      ]
+    },
+    {
+      "stage": "stop-unconfirmed",
+      "actor": "bbfdcd5d-cf35-4878-afb8-55bf878c03a5",
+      "args": [
+        "issue",
+        "update",
+        "01a163ca-7aa5-729b-afe7-4514e1513b6f",
+        "--status",
+        "done",
+        "--output",
+        "json"
+      ],
+      "requests": [
+        {
+          "method": "PUT",
+          "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f",
+          "status": 409,
+          "body_sha256": "e378058155516106ec27571a247c0a3985759e505d4ab2351d638a9ac6ce7c25",
+          "client_version": "v0.6.7",
+          "client_platform": "cli",
+          "client_os": "linux"
+        }
+      ]
+    },
+    {
+      "stage": "stop-unconfirmed",
+      "actor": "bbfdcd5d-cf35-4878-afb8-55bf878c03a5",
+      "args": [
+        "issue",
+        "comment",
+        "add",
+        "01a163ca-7aa5-729b-afe7-4514e1513b6f",
+        "--content",
+        "old CLI stop-unconfirmed must remain inert",
+        "--output",
+        "json"
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f/comments",
+          "status": 409,
+          "body_sha256": "f06f2f55a736a255098f8e9e078e395d1cb746ad84180de0149f87ed9d23d2f2",
+          "client_version": "v0.6.7",
+          "client_platform": "cli",
+          "client_os": "linux"
+        }
+      ]
+    },
+    {
+      "stage": "stop-unconfirmed",
+      "actor": "bbfdcd5d-cf35-4878-afb8-55bf878c03a5",
+      "args": [
+        "issue",
+        "rerun",
+        "01a163ca-7aa5-729b-afe7-4514e1513b6f",
+        "--output",
+        "json"
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f/rerun",
+          "status": 409,
+          "body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "client_version": "v0.6.7",
+          "client_platform": "cli",
+          "client_os": "linux"
+        }
+      ]
+    },
+    {
+      "stage": "participant-removed",
+      "actor": "6181c9ef-45d8-4318-bb78-93e823093609",
+      "args": [
+        "issue",
+        "update",
+        "01a163ca-7aa5-729b-afe7-4514e1513b6f",
+        "--status",
+        "done",
+        "--output",
+        "json"
+      ],
+      "requests": [
+        {
+          "method": "PUT",
+          "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f",
+          "status": 409,
+          "body_sha256": "e378058155516106ec27571a247c0a3985759e505d4ab2351d638a9ac6ce7c25",
+          "client_version": "v0.6.7",
+          "client_platform": "cli",
+          "client_os": "linux"
+        }
+      ]
+    },
+    {
+      "stage": "participant-removed",
+      "actor": "6181c9ef-45d8-4318-bb78-93e823093609",
+      "args": [
+        "issue",
+        "comment",
+        "add",
+        "01a163ca-7aa5-729b-afe7-4514e1513b6f",
+        "--content",
+        "old CLI participant-removed must remain inert",
+        "--output",
+        "json"
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f/comments",
+          "status": 409,
+          "body_sha256": "de383aa8854852c9e0b91adf7ab20fcf704c4ad44b1cda4d6d6cf70cd77cbabe",
+          "client_version": "v0.6.7",
+          "client_platform": "cli",
+          "client_os": "linux"
+        }
+      ]
+    },
+    {
+      "stage": "participant-removed",
+      "actor": "6181c9ef-45d8-4318-bb78-93e823093609",
+      "args": [
+        "issue",
+        "rerun",
+        "01a163ca-7aa5-729b-afe7-4514e1513b6f",
+        "--output",
+        "json"
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f/rerun",
+          "status": 409,
+          "body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "client_version": "v0.6.7",
+          "client_platform": "cli",
+          "client_os": "linux"
+        }
+      ]
+    }
+  ],
+  "current_race": {
+    "top_level_pass": 15,
+    "counts": {
+      "pass": 47,
+      "fail": 0,
+      "skip": 0
+    },
+    "identities": [
+      "github.com/multica-ai/multica/server/internal/handler::TestLegacyIssueWritesCannotBypassCollaborationLifecycle",
+      "github.com/multica-ai/multica/server/internal/handler::TestLegacyCollaborationCommentAndRerunPathsStayInert",
+      "github.com/multica-ai/multica/server/internal/daemon::TestCollaborationCandidatePagingAcrossRestart/legacy_order",
+      "github.com/multica-ai/multica/server/internal/daemon::TestCollaborationCandidatePagingAcrossRestart/single_candidate_pages",
+      "github.com/multica-ai/multica/server/internal/daemon::TestCollaborationCandidatePagingAcrossRestart",
+      "github.com/multica-ai/multica/server/internal/daemon::TestCollaborationProofRecoveryRotatesHTTPFailuresAcrossRestart",
+      "github.com/multica-ai/multica/server/internal/daemon::TestCollaborationProofRecoveryRetainsUnknownAndDamagedLedgerBarriers",
+      "github.com/multica-ai/multica/server/internal/daemon::TestCollaborationRestartReservesUnknownMachineCapacity",
+      "github.com/multica-ai/multica/server/internal/cli::TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_TOKEN",
+      "github.com/multica-ai/multica/server/internal/cli::TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_SERVER",
+      "github.com/multica-ai/multica/server/internal/cli::TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_CONTEXT",
+      "github.com/multica-ai/multica/server/internal/cli::TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_ISSUE_ID",
+      "github.com/multica-ai/multica/server/internal/cli::TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_RUN_ID",
+      "github.com/multica-ai/multica/server/internal/cli::TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/other_run",
+      "github.com/multica-ai/multica/server/internal/cli::TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/other_issue",
+      "github.com/multica-ai/multica/server/internal/cli::TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/zero_version",
+      "github.com/multica-ai/multica/server/internal/cli::TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/rounded_version",
+      "github.com/multica-ai/multica/server/internal/cli::TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/duplicate_field",
+      "github.com/multica-ai/multica/server/internal/cli::TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/unknown_field",
+      "github.com/multica-ai/multica/server/internal/cli::TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/server_credentials",
+      "github.com/multica-ai/multica/server/internal/cli::TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/server_query",
+      "github.com/multica-ai/multica/server/internal/cli::TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/ordinary_token",
+      "github.com/multica-ai/multica/server/internal/cli::TestCollaborationEnvironmentRequiresCompleteMatchingIdentity",
+      "github.com/multica-ai/multica/server/internal/cli::TestCollaborationHostConfigurationDoesNotSelectProviderIdentity",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIRejectsOrdinaryClientFallback",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIIssueGetUsesOnlyItsRunContext",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLICommentListDoesNotLoadWorkspaceActors/json",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLICommentListDoesNotLoadWorkspaceActors/table",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLICommentListDoesNotLoadWorkspaceActors",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/other_issue",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/attachment",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/content_file",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/missing_request",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIWholeCommandGuard/config_show",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIWholeCommandGuard/auth_status",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIWholeCommandGuard/workspace_list",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIWholeCommandGuard/issue_update",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIWholeCommandGuard/daemon_start",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIWholeCommandGuard",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity/comment",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity/activity",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/other_run",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/401",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/403",
+      "github.com/multica-ai/multica/server/cmd/multica::TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice"
+    ],
+    "database_alias": "service_s5",
+    "migration_floor": 737
+  },
+  "source_sha256": {
+    "e2e/collaboration-installed-clients.spec.ts": "f556266ea6cf579b05ab3f6d2e21fe8c2f38552a0a6ee0a3e77a194511965f17",
+    "e2e/fixtures/collaboration-installed-clients.ts": "51487a607e05e52d9cf33a5357a889fc422f7713dc63e10b6720657a627d45c9",
+    "e2e/fixtures/collaboration-installed-cli-relay.go": "79e19af24fed37dfe3a44e022e9ef1f82ff323ef071186ad6ad14d7b2401571d"
+  },
+  "scope_limits": [
+    "CLI source version is genuine previously delivered local offline package v0.6.7, not downloaded publisher-signature verified release",
+    "One synthetic server-issued Claim/Permit is withheld; no provider/daemon process/outcome/proof is started by the new case",
+    "Canonical current restart/proof recovery race uses production daemon logic and test-owned transport, not a historical daemon process",
+    "Root supplies natural Linux current daemon+proof/reconnect current task evidence separately",
+    "No actual installed current full Main in this lane; Mac cache is dirty/local and not launched",
+    "No Windows installer lifecycle, released old Desktop UI, other OS/provider execution or paid accounts/quota",
+    "AC31/32 remain unchanged in ledger; independent parent review owns interpretation"
+  ],
+  "observed_corrections": [
+    {
+      "run": "installed-old-cli-first",
+      "cause": "Playwright first argument must destructure fixtures; no test ran"
+    },
+    {
+      "run": "installed-old-cli-second",
+      "cause": "Docker cp into readonly rootfs refuses before CLI request; switched to task-owned volume stage"
+    },
+    {
+      "run": "installed-old-cli-third",
+      "cause": "Zero exit code omitted by Go omitempty; fixed result frame serialization"
+    },
+    {
+      "run": "installed-old-cli-fourth",
+      "cause": "Fixture guessed command-history URL instead of actual /commands?limit=100"
+    },
+    {
+      "run": "installed-old-cli-fifth",
+      "cause": "Original command key belongs to removed original handler, not creator; other actor404 is intended"
+    },
+    {
+      "run": "installed-old-cli-sixth",
+      "cause": "Existing comment recovery has no fabricated redacted/request fields and source read remains allowed; exact original content-free receipt used"
+    }
+  ],
+  "no_provider_accounts_accessed": true,
+  "production_gates_changed": false,
+  "user_home_or_config_changed": false,
+  "commits_made_by_lane": false
+}

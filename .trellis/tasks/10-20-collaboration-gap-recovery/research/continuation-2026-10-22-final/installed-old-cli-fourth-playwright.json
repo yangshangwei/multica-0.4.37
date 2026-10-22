@@ -1,0 +1,131 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/multica-0.4.37/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-old-cli-fourth",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-installed-clients.spec.ts",
+      "file": "collaboration-installed-clients.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 3557,
+                  "error": {
+                    "message": "Error: GET /api/collaboration/issues/01a163c3-a755-7822-b816-f231617c15fd/command-history failed: 404",
+                    "stack": "Error: GET /api/collaboration/issues/01a163c3-a755-7822-b816-f231617c15fd/command-history failed: 404\n    at TestApiClient.requestJSON (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures.ts:405:29)\n    at snapshot (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-installed-clients.spec.ts:45:14)\n    at oldCommands (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-installed-clients.spec.ts:73:20)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-installed-clients.spec.ts:104:26",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures.ts",
+                      "column": 29,
+                      "line": 405
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.ts:405\n\n  403 |       body: options.body === undefined ? undefined : JSON.stringify(options.body),\n  404 |     });\n> 405 |     if (!response.ok) throw new Error(`${options.method ?? \"GET\"} ${path} failed: ${response.status}`);\n      |                             ^\n  406 |     return response.json() as Promise<T>;\n  407 |   }\n  408 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures.ts",
+                        "column": 29,
+                        "line": 405
+                      },
+                      "message": "Error: GET /api/collaboration/issues/01a163c3-a755-7822-b816-f231617c15fd/command-history failed: 404\n\n   at fixtures.ts:405\n\n  403 |       body: options.body === undefined ? undefined : JSON.stringify(options.body),\n  404 |     });\n> 405 |     if (!response.ok) throw new Error(`${options.method ?? \"GET\"} ${path} failed: ${response.status}`);\n      |                             ^\n  406 |     return response.json() as Promise<T>;\n  407 |   }\n  408 |\n    at TestApiClient.requestJSON (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures.ts:405:29)\n    at snapshot (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-installed-clients.spec.ts:45:14)\n    at oldCommands (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-installed-clients.spec.ts:73:20)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-installed-clients.spec.ts:104:26"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-22T13:18:48.218Z",
+                  "annotations": [],
+                  "attachments": [],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures.ts",
+                    "column": 29,
+                    "line": 405
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "fd5ac1de3961c8d4dca4-0e16f2831ca6846cb36d",
+          "file": "collaboration-installed-clients.spec.ts",
+          "line": 29,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-22T13:18:47.671Z",
+    "duration": 4130.464,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

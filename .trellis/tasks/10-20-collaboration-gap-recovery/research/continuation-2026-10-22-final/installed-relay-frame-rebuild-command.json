@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "build",
+    "-o",
+    "/private/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-cli-relay",
+    "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-installed-cli-relay.go"
+  ],
+  "environment_overrides": {
+    "GOOS": "linux",
+    "GOARCH": "amd64",
+    "CGO_ENABLED": "0"
+  },
+  "source_sha256": "79e19af24fed37dfe3a44e022e9ef1f82ff323ef071186ad6ad14d7b2401571d",
+  "at": "2026-10-22T13:18:45.231721+00:00"
+}

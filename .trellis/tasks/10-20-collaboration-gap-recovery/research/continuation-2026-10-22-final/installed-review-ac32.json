@@ -1,0 +1,615 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/evidence_check (trellis-check)",
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "at": "2026-10-22T13:44:24.397545+00:00",
+  "head_at_review": "63c0beeb5d62496baccdebc670a9485d84e4ca60",
+  "criterion": {
+    "id": "AC32",
+    "primary_owner": "P5",
+    "source": ".trellis/tasks/10-10-cross-workspace-collaboration/acceptance.md:40",
+    "wording": "CLI/daemon 配套适配本单执行和控制规则；既有接口请求、旧客户端调用或 daemon 重连不能绕过队列挂起、停止未确认时拒绝恢复及协作者被移除后的指令处置规则。",
+    "wording_sha256": "d9a35ded8717ebdf9429737950ada31340101f72bae310b3f4b827a2d4bd3abd"
+  },
+  "write_scope": [
+    "research/continuation-2026-10-22-final/installed-review-ac32.md",
+    "research/continuation-2026-10-22-final/installed-review-ac32.json"
+  ],
+  "product_test_spec_ledger_env_mutations": false,
+  "DB_clients_containers_provider_started_by_reviewer": false,
+  "decision": "recommend_promote_full_original_AC32",
+  "blocking_clause_gaps": [],
+  "clauses": [
+    {
+      "clause": "CLI/daemon adapt execution and controls",
+      "status": "verified",
+      "evidence": "Current narrow CLI context/ordinary-client fallback/unsupported command/file/cross-issue/uncertain-write original identity tests; current service Stop/Resume/unknown-proof/exact recovery semantics; actual current daemon managed context/proof/reconnect all exercised. Old no-file strict claim wire stays exactly6 fields; unsupported files reject without Claim/termination/attempt/events."
+    },
+    {
+      "clause": "Existing API/old clients cannot bypass queue pause",
+      "status": "verified",
+      "evidence": "Actual OCI prior-version executable ordinary PUT success200 proves working authentication/transport. Its status/comment/rerun old routes409 at paused queued-input state preserve complete issue/execution/history/participants/resources and ordinary-dispatch count0. Current legacy handlers same refusals, current live daemon paused waiting and reconnect no extra launch."
+    },
+    {
+      "clause": "Unconfirmed stopping cannot be bypassed by restore/reconnect",
+      "status": "verified",
+      "evidence": "Actual oldCLI3 mutations under server-issued permitted run+Stop unknown remain409/no state change. Current20/47 service target Resume stop_unconfirmed and no deferred intent before/after proof; original refused key cannot become later Resume. Actual Linux network interruption+held503 natural proof/reconnect2/2 remains paused, Resume409, release proof still paused until fresh explicit Resume."
+    },
+    {
+      "clause": "Removed collaborator input disposition cannot be bypassed",
+      "status": "verified",
+      "evidence": "Actual oldCLI3 mutations after participant removal cancelled original waiting input remain409 even source membership retained. Current canonical nonroot multi-author run is stopped. Actual live daemon author-removal cancels waiting inputs across active and paused targets, retains original history, preserves survivor input and namespaces; re-invite/reconnect/consent/Resume does not revive old cancelled ID, only new-key resubmission executes."
+    }
+  ],
+  "evidence": {
+    "old_cli": {
+      "raw_playwright": {
+        "path": "research/continuation-2026-10-22-final/installed-old-cli-final-playwright.json",
+        "sha256": "e0aecbdd09db1a4f8a5d964f6a287324925a3619d3e06c171720eeccde56bb6d"
+      },
+      "result": {
+        "path": "research/continuation-2026-10-22-final/installed-old-cli-final-result.json",
+        "sha256": "69bc5feb353e8b2b6a120799113357428ea34db248514c9694d886b138e6fdf5"
+      },
+      "command": {
+        "path": "research/continuation-2026-10-22-final/installed-old-cli-final-command.json",
+        "sha256": "360bc50b793bba204cec27a6563e28dd2dedebf8882a62de6812d0ecb71c7a6c"
+      },
+      "saved_evidence": {
+        "path": "research/continuation-2026-10-22-final/installed-old-cli-final-evidence.json",
+        "sha256": "8ffbdd1f4c39286c8ba4a115160292b2645e315a211d507d679c4fa14ed8f844"
+      },
+      "stats": {
+        "startTime": "2026-10-22T13:26:14.018Z",
+        "duration": 15611.807999999999,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "collaboration-installed-clients.spec.ts",
+          "line": 29,
+          "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+          "status": "passed",
+          "retry": 0,
+          "errors": []
+        }
+      ],
+      "embedded_attachment_sha256": "030937a6f873986b3e3cc63c9a1e5a88487d0a798ed54afdab446a8bbfc4465d",
+      "embedded_parsed_equal_saved": true,
+      "embedded_bytes_equal_saved": false,
+      "byte_difference_note": "Saved artifact reformat; parsed content exactly equals embedded original. Raw Playwright hash and embedded hash both retained.",
+      "source_hashes_current": true,
+      "image": "sha256:8d5ede4df2fa4b66d499803b95428b729fcb6ba753b3800e9b931b968ee16104",
+      "version": {
+        "arch": "amd64",
+        "commit": "9caea35808afc8d05fb6135bfc74d4bfb0b45cf1",
+        "date": "2026-10-17T05:56:15Z",
+        "go": "go1.26.9",
+        "os": "linux",
+        "version": "v0.6.7"
+      },
+      "calls": [
+        {
+          "stage": "ordinary-positive",
+          "actor": "bbfdcd5d-cf35-4878-afb8-55bf878c03a5",
+          "request": {
+            "method": "PUT",
+            "path": "/api/issues/01a163ca-7e75-7140-ba91-f7d5eb65cb97",
+            "status": 200,
+            "body_sha256": "e378058155516106ec27571a247c0a3985759e505d4ab2351d638a9ac6ce7c25",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          },
+          "exit_code": 0
+        },
+        {
+          "stage": "paused",
+          "actor": "bbfdcd5d-cf35-4878-afb8-55bf878c03a5",
+          "request": {
+            "method": "PUT",
+            "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f",
+            "status": 409,
+            "body_sha256": "e378058155516106ec27571a247c0a3985759e505d4ab2351d638a9ac6ce7c25",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          },
+          "exit_code": 1
+        },
+        {
+          "stage": "paused",
+          "actor": "bbfdcd5d-cf35-4878-afb8-55bf878c03a5",
+          "request": {
+            "method": "POST",
+            "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f/comments",
+            "status": 409,
+            "body_sha256": "e08c44d6df111e508947c4bbbec88beb37d23e39f5cc6fe9426d605b9c7ba70c",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          },
+          "exit_code": 1
+        },
+        {
+          "stage": "paused",
+          "actor": "bbfdcd5d-cf35-4878-afb8-55bf878c03a5",
+          "request": {
+            "method": "POST",
+            "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f/rerun",
+            "status": 409,
+            "body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          },
+          "exit_code": 1
+        },
+        {
+          "stage": "stop-unconfirmed",
+          "actor": "bbfdcd5d-cf35-4878-afb8-55bf878c03a5",
+          "request": {
+            "method": "PUT",
+            "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f",
+            "status": 409,
+            "body_sha256": "e378058155516106ec27571a247c0a3985759e505d4ab2351d638a9ac6ce7c25",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          },
+          "exit_code": 1
+        },
+        {
+          "stage": "stop-unconfirmed",
+          "actor": "bbfdcd5d-cf35-4878-afb8-55bf878c03a5",
+          "request": {
+            "method": "POST",
+            "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f/comments",
+            "status": 409,
+            "body_sha256": "f06f2f55a736a255098f8e9e078e395d1cb746ad84180de0149f87ed9d23d2f2",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          },
+          "exit_code": 1
+        },
+        {
+          "stage": "stop-unconfirmed",
+          "actor": "bbfdcd5d-cf35-4878-afb8-55bf878c03a5",
+          "request": {
+            "method": "POST",
+            "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f/rerun",
+            "status": 409,
+            "body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          },
+          "exit_code": 1
+        },
+        {
+          "stage": "participant-removed",
+          "actor": "6181c9ef-45d8-4318-bb78-93e823093609",
+          "request": {
+            "method": "PUT",
+            "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f",
+            "status": 409,
+            "body_sha256": "e378058155516106ec27571a247c0a3985759e505d4ab2351d638a9ac6ce7c25",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          },
+          "exit_code": 1
+        },
+        {
+          "stage": "participant-removed",
+          "actor": "6181c9ef-45d8-4318-bb78-93e823093609",
+          "request": {
+            "method": "POST",
+            "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f/comments",
+            "status": 409,
+            "body_sha256": "de383aa8854852c9e0b91adf7ab20fcf704c4ad44b1cda4d6d6cf70cd77cbabe",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          },
+          "exit_code": 1
+        },
+        {
+          "stage": "participant-removed",
+          "actor": "6181c9ef-45d8-4318-bb78-93e823093609",
+          "request": {
+            "method": "POST",
+            "path": "/api/issues/01a163ca-7aa5-729b-afe7-4514e1513b6f/rerun",
+            "status": 409,
+            "body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          },
+          "exit_code": 1
+        }
+      ],
+      "ordinary200_count": 1,
+      "shared409_count": 9,
+      "old_daemon_or_provider_started": false,
+      "snapshot_count": 3,
+      "own_recovery": "Current same-original actor200, exact receipt, no content; independent source membership remains.",
+      "other_actor404": "Retained prior fifth fixture failure exposed intended other-actor404. Final test does not separately assert this again; not falsely called current-case assertion.",
+      "raw_credential_patterns": 0
+    },
+    "initial_cli_daemon_canonical15_47": {
+      "command": {
+        "path": "research/continuation-2026-10-22-final/installed-canonical-race-command.json",
+        "sha256": "c199e01e992ce8d560c448398fcd40e3304bd0fe1ab1bd131136d347641bd505"
+      },
+      "result": {
+        "path": "research/continuation-2026-10-22-final/installed-canonical-race-result.json",
+        "sha256": "46c5136b5059e6ff593aa7bb0388c19831f8be285a1cbe4113027c20625967f3"
+      },
+      "raw": {
+        "path": "research/continuation-2026-10-22-final/installed-canonical-race.stdout",
+        "sha256": "4a396975a5be9173abb6e19a340fb24d131f5afe70decfadb3bf96893be23c46"
+      },
+      "top_level_pass": 15,
+      "including_subtests_pass": 47,
+      "fail_events": 0,
+      "skip_events": 0,
+      "exit_code": 0,
+      "source_changed_during_run": [],
+      "passed_tests": [
+        "TestLegacyIssueWritesCannotBypassCollaborationLifecycle",
+        "TestLegacyCollaborationCommentAndRerunPathsStayInert",
+        "TestCollaborationCandidatePagingAcrossRestart/legacy_order",
+        "TestCollaborationCandidatePagingAcrossRestart/single_candidate_pages",
+        "TestCollaborationCandidatePagingAcrossRestart",
+        "TestCollaborationProofRecoveryRotatesHTTPFailuresAcrossRestart",
+        "TestCollaborationProofRecoveryRetainsUnknownAndDamagedLedgerBarriers",
+        "TestCollaborationRestartReservesUnknownMachineCapacity",
+        "TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_TOKEN",
+        "TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_SERVER",
+        "TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_CONTEXT",
+        "TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_ISSUE_ID",
+        "TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_RUN_ID",
+        "TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/other_run",
+        "TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/other_issue",
+        "TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/zero_version",
+        "TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/rounded_version",
+        "TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/duplicate_field",
+        "TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/unknown_field",
+        "TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/server_credentials",
+        "TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/server_query",
+        "TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/ordinary_token",
+        "TestCollaborationEnvironmentRequiresCompleteMatchingIdentity",
+        "TestCollaborationHostConfigurationDoesNotSelectProviderIdentity",
+        "TestCollaborationCLIRejectsOrdinaryClientFallback",
+        "TestCollaborationCLIIssueGetUsesOnlyItsRunContext",
+        "TestCollaborationCLICommentListDoesNotLoadWorkspaceActors/json",
+        "TestCollaborationCLICommentListDoesNotLoadWorkspaceActors/table",
+        "TestCollaborationCLICommentListDoesNotLoadWorkspaceActors",
+        "TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/other_issue",
+        "TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/attachment",
+        "TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/content_file",
+        "TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/missing_request",
+        "TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP",
+        "TestCollaborationCLIWholeCommandGuard/config_show",
+        "TestCollaborationCLIWholeCommandGuard/auth_status",
+        "TestCollaborationCLIWholeCommandGuard/workspace_list",
+        "TestCollaborationCLIWholeCommandGuard/issue_update",
+        "TestCollaborationCLIWholeCommandGuard/daemon_start",
+        "TestCollaborationCLIWholeCommandGuard",
+        "TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity/comment",
+        "TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity/activity",
+        "TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity",
+        "TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/other_run",
+        "TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/401",
+        "TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/403",
+        "TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice"
+      ],
+      "argv": [
+        "python3",
+        "/private/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "./internal/handler",
+        "./internal/daemon",
+        "./internal/cli",
+        "./cmd/multica",
+        "-run",
+        "^(TestLegacyIssueWritesCannotBypassCollaborationLifecycle|TestLegacyCollaborationCommentAndRerunPathsStayInert|TestCollaborationCandidatePagingAcrossRestart|TestCollaborationRestartReservesUnknownMachineCapacity|TestCollaborationProofRecoveryRotatesHTTPFailuresAcrossRestart|TestCollaborationProofRecoveryRetainsUnknownAndDamagedLedgerBarriers|TestCollaborationCLI.*|TestCollaborationEnvironmentRequiresCompleteMatchingIdentity|TestCollaborationHostConfigurationDoesNotSelectProviderIdentity)$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "source_manifest_count": 4
+    },
+    "fresh_full_AC32_canonical20_47": {
+      "command": {
+        "path": "research/continuation-2026-10-22-final/installed-canonical-current-command.json",
+        "sha256": "c4ee14263bbd7c44833929505045932a23675fb3ac716254251cca1898f0ece5"
+      },
+      "result": {
+        "path": "research/continuation-2026-10-22-final/installed-canonical-current-result.json",
+        "sha256": "c121a2a781234f7a26e6c34eb95d3cd492ee23c8298e68a7c956ec4d063c009b"
+      },
+      "raw": {
+        "path": "research/continuation-2026-10-22-final/installed-canonical-current.stdout",
+        "sha256": "df70e1947d1e594bd64a42a19363b3b95b19437342ff56f47aac77f359de1e70"
+      },
+      "top_level_pass": 20,
+      "including_subtests_pass": 47,
+      "fail_events": 0,
+      "skip_events": 0,
+      "exit_code": 0,
+      "source_changed_during_run": [],
+      "passed_tests": [
+        "TestCollaborationResumeRollbackAndOriginalCommitRecovery",
+        "TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/never_permitted",
+        "TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/permitted_without_started",
+        "TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/business_success_without_proof",
+        "TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/inconsistent_started_without_permit",
+        "TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/inconsistent_success_without_permit",
+        "TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/inconsistent_running_without_permit",
+        "TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/unrecognized_progress_without_permit",
+        "TestCollaborationQueueStopPreservesBarrierAfterAnyPermit",
+        "TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent",
+        "TestCollaborationQueueResumeTreatsEitherBarrierAsUnconfirmed/pointer",
+        "TestCollaborationQueueResumeTreatsEitherBarrierAsUnconfirmed/run",
+        "TestCollaborationQueueResumeTreatsEitherBarrierAsUnconfirmed",
+        "TestCollaborationRuntimePreparationLegacyRejectsFilesWithoutClaiming",
+        "TestCollaborationRuntimePreparationLegacyNoFileWireStaysUnchanged",
+        "TestCollaborationManagedStopProofPreservesFreshResumeIntent",
+        "TestCollaborationRemovalOfNonRootBatchAuthorStopsRun",
+        "TestCollaborationCandidatePagingAcrossRestart/legacy_order",
+        "TestCollaborationCandidatePagingAcrossRestart/single_candidate_pages",
+        "TestCollaborationCandidatePagingAcrossRestart",
+        "TestCollaborationProofRecoveryRetainsUnknownAndDamagedLedgerBarriers",
+        "TestCollaborationRestartReservesUnknownMachineCapacity",
+        "TestLegacyIssueWritesCannotBypassCollaborationLifecycle",
+        "TestLegacyCollaborationCommentAndRerunPathsStayInert",
+        "TestCollaborationCLIRejectsOrdinaryClientFallback",
+        "TestCollaborationCLIIssueGetUsesOnlyItsRunContext",
+        "TestCollaborationCLICommentListDoesNotLoadWorkspaceActors/json",
+        "TestCollaborationCLICommentListDoesNotLoadWorkspaceActors/table",
+        "TestCollaborationCLICommentListDoesNotLoadWorkspaceActors",
+        "TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/other_issue",
+        "TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/attachment",
+        "TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/content_file",
+        "TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/missing_request",
+        "TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP",
+        "TestCollaborationCLIWholeCommandGuard/config_show",
+        "TestCollaborationCLIWholeCommandGuard/auth_status",
+        "TestCollaborationCLIWholeCommandGuard/workspace_list",
+        "TestCollaborationCLIWholeCommandGuard/issue_update",
+        "TestCollaborationCLIWholeCommandGuard/daemon_start",
+        "TestCollaborationCLIWholeCommandGuard",
+        "TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity/comment",
+        "TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity/activity",
+        "TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity",
+        "TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/other_run",
+        "TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/401",
+        "TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/403",
+        "TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice"
+      ],
+      "argv": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/service",
+        "./internal/daemon",
+        "./internal/handler",
+        "./cmd/multica",
+        "-run",
+        "^(TestCollaborationManagedStopProofPreservesFreshResumeIntent|TestCollaborationRemovalOfNonRootBatchAuthorStopsRun|TestCollaborationQueueStopPreservesBarrierAfterAnyPermit|TestCollaborationQueueResumeTreatsEitherBarrierAsUnconfirmed|TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent|TestCollaborationResumeRollbackAndOriginalCommitRecovery|TestCollaborationRuntimePreparationLegacyNoFileWireStaysUnchanged|TestCollaborationRuntimePreparationLegacyRejectsFilesWithoutClaiming|TestCollaborationRestartReservesUnknownMachineCapacity|TestCollaborationCandidatePagingAcrossRestart|TestCollaborationProofRecoveryRetainsUnknownAndDamagedLedgerBarriers|TestLegacyIssueWritesCannotBypassCollaborationLifecycle|TestLegacyCollaborationCommentAndRerunPathsStayInert|TestCollaborationCLI)",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "source_manifest_count": 7280
+    },
+    "natural_current": {
+      "raw": {
+        "path": "research/continuation-2026-10-22-final/installed-natural-reconnect-current.stdout",
+        "sha256": "87b879714eec6d0ddbad571aca70e2e0e5590f0869b241a8fba2d9773f8df7b3"
+      },
+      "command": {
+        "path": "research/continuation-2026-10-22-final/installed-natural-reconnect-current-command.json",
+        "sha256": "ae150c9b9323ab22a90dbfc68506c07d8c97b868f40862cd71876bfb392ae247"
+      },
+      "result": {
+        "path": "research/continuation-2026-10-22-final/installed-natural-reconnect-current-result.json",
+        "sha256": "02635b68902972771adae049b1903434a5c01cd8b0cdf9f52b17ab70a0b7a36c"
+      },
+      "stats": {
+        "startTime": "2026-10-22T13:39:54.674Z",
+        "duration": 53126.356999999996,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "exit_code": 0,
+      "source_changed_during_run": [],
+      "tests": [
+        {
+          "file": "collaboration-lifecycle-controls.spec.ts",
+          "line": 14,
+          "title": "Web creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+          "status": "passed",
+          "retry": 0,
+          "errors": []
+        },
+        {
+          "file": "collaboration-lifecycle-controls.spec.ts",
+          "line": 14,
+          "title": "Electron creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+          "status": "passed",
+          "retry": 0,
+          "errors": []
+        }
+      ],
+      "attachments": [
+        {
+          "platform": "Web",
+          "name": "lifecycle-control-identities",
+          "sha256": "8995bd488944010fb9708af934a9e037f79bd822a3b4ac4e1f333b184a461ed8",
+          "sources_current": true,
+          "source_sha256": {
+            "e2e/collaboration-lifecycle-controls.spec.ts": "da1bc19cb1fbd6074b6b9b85df47a89e05730e2608a0997b19724d66915a1fd4",
+            "e2e/fixtures/collaboration-lifecycle-controls.ts": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+            "e2e/fixtures/collaboration-cross-client-execution.ts": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+            "e2e/fixtures/collaboration-native.ts": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+            "e2e/fixtures/collaboration-cross-client-provider.go": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88"
+          },
+          "refused_resume_code": "stop_unconfirmed",
+          "refused_resume_status": 409,
+          "client_reconnects": 2,
+          "runtime_offline_attempts": 7,
+          "held_proof_503_attempts": 31,
+          "runtime_errors": [],
+          "removed_waiting_history_unchanged": true,
+          "paused_removed_history_unchanged": true,
+          "removed_history_state": "cancelled",
+          "original_proof_sha256": "373ca2311d8a38aea4501fab41a44212935a9830c0457aaafc63a6332ac15755",
+          "actual_linux_namespaces": [
+            "pid:[4026532803]",
+            "pid:[4026532803]"
+          ],
+          "credential_scan_matches": 0
+        },
+        {
+          "platform": "Electron",
+          "name": "lifecycle-control-identities",
+          "sha256": "2f9d4d664ef638e045a6bedb98c30153c729e2eac34457a8d602f17ed6b7fcf3",
+          "sources_current": true,
+          "source_sha256": {
+            "e2e/collaboration-lifecycle-controls.spec.ts": "da1bc19cb1fbd6074b6b9b85df47a89e05730e2608a0997b19724d66915a1fd4",
+            "e2e/fixtures/collaboration-lifecycle-controls.ts": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+            "e2e/fixtures/collaboration-cross-client-execution.ts": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+            "e2e/fixtures/collaboration-native.ts": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+            "e2e/fixtures/collaboration-cross-client-provider.go": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88"
+          },
+          "refused_resume_code": "stop_unconfirmed",
+          "refused_resume_status": 409,
+          "client_reconnects": 2,
+          "runtime_offline_attempts": 10,
+          "held_proof_503_attempts": 24,
+          "runtime_errors": [],
+          "removed_waiting_history_unchanged": true,
+          "paused_removed_history_unchanged": true,
+          "removed_history_state": "cancelled",
+          "original_proof_sha256": "e50d438f989830b920cd37d3cd113e65f37853ffd95c9236579a74cdd778f66e",
+          "actual_linux_namespaces": [
+            "pid:[4026532803]",
+            "pid:[4026532803]"
+          ],
+          "credential_scan_matches": 0
+        }
+      ]
+    },
+    "package_provenance": {
+      "inventory": {
+        "path": "research/continuation-2026-10-22-final/installed-inventory.json",
+        "sha256": "b0e9b8d4ca13ac9d0ac976bcb84640607b3a7c4b85ad29dc1ec1c0bfbf8a599a"
+      },
+      "original_delivery_file": "dist/release/0.6.7/verification-v0.6.7.json",
+      "original_delivery_sha256": "0cc921ee0747dfab042ce8d0fe853bbd4c748886fbfd38bd94ef5819ecb26a3a",
+      "delivery_type": "local offline artifacts",
+      "source_commit": "9caea35808afc8d05fb6135bfc74d4bfb0b45cf1",
+      "saved_OCI_images_file": ".omx/qa/release-0.6.7/saved-images.json",
+      "saved_OCI_images_sha256": "80486abac76fa67f17669e31ada39dbdcc6fad34c130bb824705e5a12e9ec558",
+      "saved_backend_digest_matches": true,
+      "publisher_signature_required_by_AC32": false
+    },
+    "relay": {
+      "path": "e2e/fixtures/collaboration-installed-cli-relay.go",
+      "sha256": "79e19af24fed37dfe3a44e022e9ef1f82ff323ef071186ad6ad14d7b2401571d",
+      "binary_sha256": "3b988b5583ec5adbb587bf98dc6f6ced79f4ff7eaa62e6e8c0a1cb92a6ed00c7",
+      "request_bridge": "Actual immutable /app/multica loopbackHTTP->private Docker stdio->host exact expected legacy method/path->current API. Original Authorization/version/platform/OS and body bytes validated, response status/body forwarded; no synthetic rejection response counted.",
+      "constraints": "network none/read-only/no-new-privileges/cap-dropALL, task volume+tmpfs; no host home override/config use; no old daemon/updater/provider commands."
+    },
+    "current_source_sha256": {
+      "e2e/collaboration-installed-clients.spec.ts": "f556266ea6cf579b05ab3f6d2e21fe8c2f38552a0a6ee0a3e77a194511965f17",
+      "e2e/fixtures/collaboration-installed-clients.ts": "51487a607e05e52d9cf33a5357a889fc422f7713dc63e10b6720657a627d45c9",
+      "e2e/fixtures/collaboration-installed-cli-relay.go": "79e19af24fed37dfe3a44e022e9ef1f82ff323ef071186ad6ad14d7b2401571d",
+      "e2e/fixtures/collaboration-control-journey.ts": "a9ffc9f134dd0471c1dc984b6dcf2be130f98e390558e9940b0724a49cfd5488",
+      "server/internal/handler/collaboration_boundary_test.go": "6d5f6b6b7b111009d653b974a619b17c7315487bbaf0d143ba9daffadea15ebd",
+      "server/internal/daemon/collaboration_candidates_test.go": "e484aebbd05c70a0e95564f1ddaf84967ac6199293217f1164b3c969799ac7b1",
+      "server/internal/daemon/collaboration_recovery_test.go": "c5ce258a32de2ea16f9b9c1b69709599097f8a9233e867fddc64656363f2226a",
+      "server/internal/daemon/collaboration_test.go": "07dcc4a2c807c933d8cec568f18d8530bd018ef30664c2991a605ef3de092c5a",
+      "server/internal/daemon/collaboration.go": "a17db8f3670f55c13f8aec1e0741ccdae88bcd818ae5e5b4238b81f4c0faae7e",
+      "server/cmd/multica/cmd_collaboration_test.go": "4f02bd43c183b274b30edd16b0d2345f8afe1bcb5791abee54905043fd8da82f",
+      "server/cmd/multica/cmd_collaboration.go": "fe8daad9bc35e6128fec6b3adf3235036271915cc816deef9bf43c99f7005758",
+      "server/internal/cli/collaboration.go": "427ab4ddb4c9dc3a31559fdffa5b043cc298251b3749d5c094586536e0580e61",
+      "server/internal/service/collaboration_runtime_test.go": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+      "server/internal/service/collaboration_control_test.go": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+      "server/internal/service/collaboration_control_managed_test.go": "4e7feaecc081a08eeb982b9e06c487f982a6cb3c7504bec633c2302654ab15a7",
+      "server/internal/service/collaboration_runtime_preparation_test.go": "5fdb09fa47c4f3e8df0078af9a9eae9324e9544364534afaa1fd79439f46b385"
+    },
+    "relevant_service_cli_daemon_current_manifest_matches": true
+  },
+  "old_daemon_question": {
+    "started_in_new_case": false,
+    "complete_old_release_matrix_required_by_original_clause": false,
+    "assessment": "Original clause requires existing requests/old calls OR daemon reconnect not bypassing semantics. Prior-version actual CLI executes the legacy writes; current real managed daemon reconnect plus current strict wire/no-file/file-refusal and startup-ledger barriers cover the daemon obligation. It does not require launching every prior daemon release or platform.",
+    "not_certified": [
+      "v0.6.7 daemon process compatibility",
+      "all old released Desktop/CLI/daemon versions",
+      "signed publisher/registry trust",
+      "installer/OS matrix"
+    ]
+  },
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "type": "evidence_precision",
+      "summary": "installed-canonical-race15/47 manifest only includes4 E2E sources and its test spec predates final oldCLI bytes; do not call it a complete final Go source manifest. Fresh installed-canonical-current20/47 includes7280 files and all relevant current hashes."
+    },
+    {
+      "type": "evidence_precision",
+      "summary": "Embedded oldCLI attachment and saved JSON differ byte formatting, equal parsed content; record both hashes."
+    },
+    {
+      "type": "evidence_precision",
+      "summary": "Other-actor recovery404 belongs to prior retained fifth run, current test only own actor200. Neither is an AC32 full-clause blocker."
+    },
+    {
+      "type": "scope",
+      "summary": "Old CLI does not have new control UI/commands in this case; actual old mutations are guarded and current matching CLI/daemon controls plus real reconnect prove original P5 scope. Do not require absent functionality."
+    },
+    {
+      "type": "scope",
+      "summary": "No old daemon launched; package signature/install/fullMain/provider scope is separate and not required by AC32 wording."
+    }
+  ],
+  "verification": {
+    "lint": "Current installed-lint-final exit0 source hashes equal, scoped diff check pass",
+    "typecheck": "Current strict installed-typescript-final exit0 source hashes equal",
+    "go_static": "Recorded installed-go-vet stdlib relay exit0 current SHA, reviewer gofmt -l clean",
+    "tests": "Actual oldCLI1/1, initial15/47, fresh20/47, actual live Linux reconnect2/2 independently parsed and source checked; reviewer launches no DB/client/env",
+    "integrity": {
+      "path": "research/continuation-2026-10-22-final/installed-evidence-integrity.json",
+      "sha256": "f1b15df03759ec451d7dfa13c3b59bcc9ca8ba6cad0654f6d391a4ae7b59287e"
+    }
+  }
+}

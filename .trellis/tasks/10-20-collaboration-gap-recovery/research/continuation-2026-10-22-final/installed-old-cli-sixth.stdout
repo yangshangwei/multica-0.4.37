@@ -1,0 +1,35 @@
+
+Running 1 test using 1 worker
+
+
+
+
+
+[1A[2K[1/1] [chromium] › e2e/collaboration-installed-clients.spec.ts:29:1 › cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands
+[1A[2K  1) [chromium] › e2e/collaboration-installed-clients.spec.ts:29:1 › cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
+
+    [32m- Expected  - 2[39m
+    [31m+ Received  + 0[39m
+
+    [2m  Object {[22m
+    [2m    "code": "comment_created",[22m
+    [2m    "issue_id": "01a163c6-3b8d-7e9a-877b-d419b7027d60",[22m
+    [32m-   "redacted": true,[39m
+    [32m-   "request_id": "8817933f-64cd-4d57-8cc3-6ddb69b459ee",[39m
+    [2m    "status": 201,[22m
+    [2m  }[22m
+
+      135 |       headers: { Authorization: `Bearer ${fixture.handler.getToken()!}` } });
+      136 |     expect(removedRecovery.status).toBe(200);
+    > 137 |     expect(await removedRecovery.json()).toMatchObject({ redacted: true, issue_id: fixture.issueId,
+          |                                          ^
+      138 |       request_id: removedInput.requestId, code: "comment_created", status: 201 });
+      139 |     expect((await read()).execution).toEqual(removedBefore.issue.execution);
+      140 |     expect((await read()).session.queue_state).toBe("paused");
+        at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-installed-clients.spec.ts:137:42
+
+
+[1A[2K  1 failed
+    [chromium] › e2e/collaboration-installed-clients.spec.ts:29:1 › cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands 
