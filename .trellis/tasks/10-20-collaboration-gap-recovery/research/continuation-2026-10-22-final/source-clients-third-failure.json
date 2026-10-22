@@ -1,0 +1,29 @@
+{
+  "stats": {
+    "startTime": "2026-10-22T10:07:14.080Z",
+    "duration": 11099.765000000001,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "observations": [
+    {
+      "status": "failed",
+      "error": {
+        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m409\u001b[39m",
+        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m409\u001b[39m\n    at inspect (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:133:41)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:186:5",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts",
+          "column": 41,
+          "line": 133
+        },
+        "snippet": "  131 |       const restored = current.waitForResponse((response) => new URL(response.url()).pathname === `/api/collaboration/issues/${fixture.shared.id}` && response.request().method() === \"PATCH\");\n  132 |       await dialog.getByRole(\"button\", { name: \"Confirm\", exact: true }).click();\n> 133 |       expect((await restored).status()).toBe(200);\n      |                                         ^\n  134 |       expect((await sourceCurrent(fixture)).status).toBe(\"todo\");\n  135 |       await current.keyboard.press(\"Escape\");\n  136 |       await expect(dialog).toHaveCount(0);"
+      },
+      "attachments": [
+        "web-board-layout-request",
+        "error-context"
+      ]
+    }
+  ]
+}

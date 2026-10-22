@@ -105,3 +105,14 @@ have settled. Use test sentinels and avoid printing prior clipboard data. Keep
 clipboard preservation outside the product. For screenshots, await closed
 popovers, committed scroll geometry and renderer frames before `capturePage`;
 assert that usage and long-body captures show their intended, distinct states.
+
+
+## Source surface native navigation evidence
+
+A fresh native session may legitimately restore the account shell while its
+workspace list loads. Source E2E selects the actual `Workspaces` combobox before
+using workspace sidebar links; a renderer URL cannot select the tab-owned
+MemoryRouter. List/board/Gantt/comment and relative layout CLI evidence reuse
+the existing source fixture, with actual native sort transforms complete before
+pointer release. This harness exercises renderer/preload and named Main hooks;
+full installed Main/installer remains separate acceptance.

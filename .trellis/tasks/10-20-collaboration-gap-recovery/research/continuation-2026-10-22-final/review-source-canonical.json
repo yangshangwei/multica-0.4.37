@@ -1,0 +1,437 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/evidence_check (trellis-check)",
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "at": "2026-10-22T10:38:59.994814+00:00",
+  "head_at_review": "cae15dd72ee568f28ce29b19f0c76765b72f26cd",
+  "writes": [
+    "research/continuation-2026-10-22-final/review-source-canonical.md",
+    "research/continuation-2026-10-22-final/review-source-canonical.json"
+  ],
+  "product_test_spec_ledger_environment_mutation": false,
+  "db_clients_provider_launched": false,
+  "scope": "Test-only source stage file, canonical source handlers, exact AC89; final source UI/CLI not evaluated",
+  "decision": {
+    "new_stage_test_file": "accept_for_single_file_HEAD_isolation_and_root_run",
+    "AC89": "hold_full_criterion_until_final_dual_client_board_CLI_receipt",
+    "AC85": "hold_full_criterion_until_final_dual_client_identity_and_drag_receipt"
+  },
+  "source_file": {
+    "path": "server/internal/service/collaboration_source_stage_race_test.go",
+    "sha256": "a66cf7821a22bb67e7fdca05fdafef2b650b26bf87d78ad90cdd6b38d8b36e89",
+    "top_level_tests": 3,
+    "top_level_identities": [
+      "TestCollaborationSourceManagerStageOnlyEditRecordsOnce",
+      "TestCollaborationSourceStageTransferBothCommitOrders",
+      "TestCollaborationSourceStageDepartureBothCommitOrders"
+    ],
+    "subcase_count": 6,
+    "current_executed_receipt": {
+      "path": "research/continuation-2026-10-22-final/source-machine-runtime-canonical.stdout",
+      "sha256": "fa46a880bb382b3aeed59f0e918726446a4196697d936998f686114c8dfd6d67"
+    },
+    "current_executed_top_plus_subcases": 9,
+    "syntax_format_clean": true
+  },
+  "evidence": {
+    "original_source_handler": {
+      "command": {
+        "path": "research/continuation-2026-10-22/source-projection-parent-canonical-command.json",
+        "sha256": "2ed988514848b96e5a91ccab83adaec07e635b924ac4f9b42327b09fd2d7311f"
+      },
+      "result": {
+        "path": "research/continuation-2026-10-22/source-projection-parent-canonical-result.json",
+        "sha256": "ec41a860e4afe965742e628faa0a387b9ea055b3f02cf615be2b7834eda6ea88"
+      },
+      "raw": {
+        "path": "research/continuation-2026-10-22/source-projection-parent-canonical.jsonl",
+        "sha256": "93245a8510fbf61348f795926e3e094eb65b3a8e956de135e2e66d19786d0a6b"
+      },
+      "raw_hash_matches_receipt": true,
+      "exit_code": 0,
+      "top_level_passed": 8,
+      "including_subtests_passed": 31,
+      "fail_events": 0,
+      "skip_events": 0,
+      "source_changed_during_run": [],
+      "command_argv": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s6_other",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/handler",
+        "-run",
+        "^(TestSourceCollaborationProjectionAndExternalFilter|TestSourceCollaborationTableAndChildMachineBoundary|TestCollaborationPositionUsesSourceAuthorityWithoutChangingCollaborationVersion|TestCollaborationChildCompletionWakesOrdinaryParentOnce|TestCollaborationChildCompletionPreservesParentGuards|TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup|TestCollaborationChildWakeupRechecksParentBeforePublishing|TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit)$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "passed_tests": [
+        "TestCollaborationPositionUsesSourceAuthorityWithoutChangingCollaborationVersion",
+        "TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit/commit_",
+        "TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit/commit_rollback",
+        "TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit/commit_unknown_commit",
+        "TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit",
+        "TestCollaborationChildCompletionWakesOrdinaryParentOnce/agent",
+        "TestCollaborationChildCompletionWakesOrdinaryParentOnce/squad",
+        "TestCollaborationChildCompletionWakesOrdinaryParentOnce",
+        "TestCollaborationChildCompletionPreservesParentGuards/same_stage_open",
+        "TestCollaborationChildCompletionPreservesParentGuards/earlier_stage_open",
+        "TestCollaborationChildCompletionPreservesParentGuards/later_stage_parked",
+        "TestCollaborationChildCompletionPreservesParentGuards/unstaged_sibling_open",
+        "TestCollaborationChildCompletionPreservesParentGuards/unstaged_in_staged_set",
+        "TestCollaborationChildCompletionPreservesParentGuards/cancelled_sibling",
+        "TestCollaborationChildCompletionPreservesParentGuards/backlog_parent",
+        "TestCollaborationChildCompletionPreservesParentGuards/terminal_parent",
+        "TestCollaborationChildCompletionPreservesParentGuards/human_parent",
+        "TestCollaborationChildCompletionPreservesParentGuards/shared_parent",
+        "TestCollaborationChildCompletionPreservesParentGuards/shared_parent_legacy_agent",
+        "TestCollaborationChildCompletionPreservesParentGuards",
+        "TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/custom_done",
+        "TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/cancel",
+        "TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/custom_terminal_parent",
+        "TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/custom_backlog_parent",
+        "TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup",
+        "TestCollaborationChildWakeupRechecksParentBeforePublishing/terminal",
+        "TestCollaborationChildWakeupRechecksParentBeforePublishing/human",
+        "TestCollaborationChildWakeupRechecksParentBeforePublishing/shared",
+        "TestCollaborationChildWakeupRechecksParentBeforePublishing",
+        "TestSourceCollaborationProjectionAndExternalFilter",
+        "TestSourceCollaborationTableAndChildMachineBoundary"
+      ],
+      "source_manifest_count": 3
+    },
+    "current_source_machine_runtime": {
+      "command": {
+        "path": "research/continuation-2026-10-22-final/source-machine-runtime-canonical-command.json",
+        "sha256": "d9ae26783c1dc97d191ed39e8cd7d91fb643629b104b021f5c0c9075c14ef768"
+      },
+      "result": {
+        "path": "research/continuation-2026-10-22-final/source-machine-runtime-canonical-result.json",
+        "sha256": "ea62d28c001a53150503b03d466e1d015474fe4517afa9a1fc341d99c49e81e4"
+      },
+      "raw": {
+        "path": "research/continuation-2026-10-22-final/source-machine-runtime-canonical.stdout",
+        "sha256": "fa46a880bb382b3aeed59f0e918726446a4196697d936998f686114c8dfd6d67"
+      },
+      "raw_hash_matches_receipt": true,
+      "exit_code": 0,
+      "top_level_passed": 23,
+      "including_subtests_passed": 75,
+      "fail_events": 0,
+      "skip_events": 0,
+      "source_changed_during_run": [],
+      "command_argv": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/handler",
+        "./internal/service",
+        "-run",
+        "^(TestSourceCollaboration|TestCollaborationPosition|TestCollaborationChild(Completion|Terminal|Wakeup)|TestCollaborationMachine|TestLegacyIssueDetail|TestCollaborationRuntimeManagedBoundary|TestCollaborationRuntimeNarrowHandlers|TestCollaborationQueueRejectsStaleIdentityAndMachine|TestCollaborationSquadRuntimeCommentAuthorityAndMentionBoundary|TestCollaborationSquadInputRechecksEveryResourceConsent|TestCollaborationRuntimeFreezesEveryInputDependencyAndPrompt|TestCollaborationSourceManagerStageOnlyEditRecordsOnce|TestCollaborationSourceStage(Transfer|Departure)BothCommitOrders|TestCollaborationOutbound)",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "passed_tests": [
+        "TestCollaborationPositionUsesSourceAuthorityWithoutChangingCollaborationVersion",
+        "TestLegacyIssueDetailDoesNotExposeCollaborationToMachine",
+        "TestCollaborationMachineSearchAndListKeepOnlyReferences/task_token",
+        "TestCollaborationMachineSearchAndListKeepOnlyReferences/cloud_pat",
+        "TestCollaborationMachineSearchAndListKeepOnlyReferences/#00",
+        "TestCollaborationMachineSearchAndListKeepOnlyReferences/future_machine",
+        "TestCollaborationMachineSearchAndListKeepOnlyReferences/missing_context",
+        "TestCollaborationMachineSearchAndListKeepOnlyReferences",
+        "TestCollaborationMachineReferencesDoNotRevealStatusOrPrivateOrdering",
+        "TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit/commit_",
+        "TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit/commit_rollback",
+        "TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit/commit_unknown_commit",
+        "TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit",
+        "TestCollaborationChildCompletionWakesOrdinaryParentOnce/agent",
+        "TestCollaborationChildCompletionWakesOrdinaryParentOnce/squad",
+        "TestCollaborationChildCompletionWakesOrdinaryParentOnce",
+        "TestCollaborationChildCompletionPreservesParentGuards/same_stage_open",
+        "TestCollaborationChildCompletionPreservesParentGuards/earlier_stage_open",
+        "TestCollaborationChildCompletionPreservesParentGuards/later_stage_parked",
+        "TestCollaborationChildCompletionPreservesParentGuards/unstaged_sibling_open",
+        "TestCollaborationChildCompletionPreservesParentGuards/unstaged_in_staged_set",
+        "TestCollaborationChildCompletionPreservesParentGuards/cancelled_sibling",
+        "TestCollaborationChildCompletionPreservesParentGuards/backlog_parent",
+        "TestCollaborationChildCompletionPreservesParentGuards/terminal_parent",
+        "TestCollaborationChildCompletionPreservesParentGuards/human_parent",
+        "TestCollaborationChildCompletionPreservesParentGuards/shared_parent",
+        "TestCollaborationChildCompletionPreservesParentGuards/shared_parent_legacy_agent",
+        "TestCollaborationChildCompletionPreservesParentGuards",
+        "TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/custom_done",
+        "TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/cancel",
+        "TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/custom_terminal_parent",
+        "TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/custom_backlog_parent",
+        "TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup",
+        "TestCollaborationChildWakeupRechecksParentBeforePublishing/terminal",
+        "TestCollaborationChildWakeupRechecksParentBeforePublishing/human",
+        "TestCollaborationChildWakeupRechecksParentBeforePublishing/shared",
+        "TestCollaborationChildWakeupRechecksParentBeforePublishing",
+        "TestCollaborationRuntimeManagedBoundaryRejectsBroadCredentials",
+        "TestCollaborationRuntimeNarrowHandlersNeverFallBackToOtherPurposes",
+        "TestSourceCollaborationProjectionAndExternalFilter",
+        "TestSourceCollaborationTableAndChildMachineBoundary",
+        "TestCollaborationRuntimeFreezesEveryInputDependencyAndPrompt",
+        "TestCollaborationOutboundPluginDispatcherWithholdsPrivateEvents/issue.created",
+        "TestCollaborationOutboundPluginDispatcherWithholdsPrivateEvents/issue.updated",
+        "TestCollaborationOutboundPluginDispatcherWithholdsPrivateEvents/comment.created",
+        "TestCollaborationOutboundPluginDispatcherWithholdsPrivateEvents/task.completed",
+        "TestCollaborationOutboundPluginDispatcherWithholdsPrivateEvents/task.failed",
+        "TestCollaborationOutboundPluginDispatcherWithholdsPrivateEvents",
+        "TestCollaborationOutboundPublicWritesStayOffOrdinaryEventBus",
+        "TestCollaborationOutboundManagedResultStaysOffOrdinaryChatEvents",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/machine",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/participant_epoch",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/account_epoch",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/lifecycle_epoch",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/closed",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/unknown_status",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/source_member_only",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine",
+        "TestCollaborationSourceManagerStageOnlyEditRecordsOnce/creator",
+        "TestCollaborationSourceManagerStageOnlyEditRecordsOnce/current_handler",
+        "TestCollaborationSourceManagerStageOnlyEditRecordsOnce",
+        "TestCollaborationSourceStageTransferBothCommitOrders/stage_first",
+        "TestCollaborationSourceStageTransferBothCommitOrders/transfer_first",
+        "TestCollaborationSourceStageTransferBothCommitOrders",
+        "TestCollaborationSourceStageDepartureBothCommitOrders/stage_first",
+        "TestCollaborationSourceStageDepartureBothCommitOrders/departure_first",
+        "TestCollaborationSourceStageDepartureBothCommitOrders",
+        "TestCollaborationSquadRuntimeCommentAuthorityAndMentionBoundary",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/complete_offline_roster",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/missing_member_consent",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/member_owner_epoch_changed",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/member_runtime_owner_changed",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/member_enrollment_revoked",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/squad_leader_changed",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent"
+      ],
+      "source_manifest_count": 7274
+    },
+    "unchanged_existing_role_isolated_result": {
+      "path": "research/continuation-2026-10-21/source-role-isolated-head-race-result.json",
+      "sha256": "f8b002aead7202c7859832c473ef85b2f9eb203cdecc071d79967064eadd516c"
+    },
+    "role_test_sha256_current": "f006430da597c8a62209f72b8f04c32d9104df2f13886b87e8f9b9ac69fe694d",
+    "role_test_equals_isolated_recorded": true,
+    "relevant_source_hashes": {
+      "server/internal/service/collaboration_source_stage_race_test.go": {
+        "current_sha256": "a66cf7821a22bb67e7fdca05fdafef2b650b26bf87d78ad90cdd6b38d8b36e89",
+        "matches_current_canonical_manifest": true,
+        "matches_original_manifest": null
+      },
+      "server/internal/service/collaboration_source_authority_race_test.go": {
+        "current_sha256": "992d1afb1ee9d71e48daabffe682a6dc034fe593beac97b101ef37dbe9c0f979",
+        "matches_current_canonical_manifest": true,
+        "matches_original_manifest": null
+      },
+      "server/internal/service/collaboration_recipient_eligibility_test.go": {
+        "current_sha256": "6b0cee90974986966b8da3df013d5d64631320c5e48b8af40689d765656c53ea",
+        "matches_current_canonical_manifest": true,
+        "matches_original_manifest": null
+      },
+      "server/internal/service/collaboration_workflow_test.go": {
+        "current_sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+        "matches_current_canonical_manifest": true,
+        "matches_original_manifest": null
+      },
+      "server/internal/service/collaboration_source_roles_test.go": {
+        "current_sha256": "f006430da597c8a62209f72b8f04c32d9104df2f13886b87e8f9b9ac69fe694d",
+        "matches_current_canonical_manifest": true,
+        "matches_original_manifest": null
+      },
+      "server/internal/service/collaboration_queue_test.go": {
+        "current_sha256": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+        "matches_current_canonical_manifest": true,
+        "matches_original_manifest": null
+      },
+      "server/internal/service/collaboration_control_test.go": {
+        "current_sha256": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+        "matches_current_canonical_manifest": true,
+        "matches_original_manifest": null
+      },
+      "server/internal/service/collaboration_fields_test.go": {
+        "current_sha256": "0613434d77b017f287d67c7689a3cd59be3a8c68f2c8b486409ec5ba85b4eef8",
+        "matches_current_canonical_manifest": true,
+        "matches_original_manifest": null
+      },
+      "server/internal/service/collaboration_edit.go": {
+        "current_sha256": "3839bfff490c58ad0eeb2f0fbdf357cc67f9148357f5b11d8cf542839cfcf1a1",
+        "matches_current_canonical_manifest": true,
+        "matches_original_manifest": null
+      },
+      "server/internal/service/collaboration_source_fields.go": {
+        "current_sha256": "794004765369b97bb9f3960f3eb5b7b48ab4bc0a104c12d41265c0ccba03f1a0",
+        "matches_current_canonical_manifest": true,
+        "matches_original_manifest": null
+      },
+      "server/internal/service/collaboration_workflow.go": {
+        "current_sha256": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+        "matches_current_canonical_manifest": true,
+        "matches_original_manifest": null
+      },
+      "server/internal/handler/collaboration_source_test.go": {
+        "current_sha256": "4afa5217dc17e91f3462376d47e89c02c103318dd2bb63e0f1aed35fea54a655",
+        "matches_current_canonical_manifest": true,
+        "matches_original_manifest": true
+      },
+      "server/internal/handler/collaboration_boundary_test.go": {
+        "current_sha256": "6d5f6b6b7b111009d653b974a619b17c7315487bbaf0d143ba9daffadea15ebd",
+        "matches_current_canonical_manifest": true,
+        "matches_original_manifest": true
+      },
+      "server/internal/handler/collaboration_parent_wakeup_test.go": {
+        "current_sha256": "38444da9235fc5a0812511f8814aca26a8a1760b6835ba9ad2b68bb9e931124f",
+        "matches_current_canonical_manifest": true,
+        "matches_original_manifest": true
+      }
+    }
+  },
+  "isolation": {
+    "recommended_base_head": "cae15dd72ee568f28ce29b19f0c76765b72f26cd",
+    "only_added_file": "server/internal/service/collaboration_source_stage_race_test.go",
+    "dependency_helpers": [
+      {
+        "helpers": "sourceAuthorityCommitOrder",
+        "file": "server/internal/service/collaboration_source_authority_race_test.go",
+        "sha256": "992d1afb1ee9d71e48daabffe682a6dc034fe593beac97b101ef37dbe9c0f979",
+        "equals_HEAD": true
+      },
+      {
+        "helpers": "recipientCommitStarter",
+        "file": "server/internal/service/collaboration_recipient_eligibility_test.go",
+        "sha256": "6b0cee90974986966b8da3df013d5d64631320c5e48b8af40689d765656c53ea",
+        "equals_HEAD": true
+      },
+      {
+        "helpers": "waitWorkflowBlocked/workflowRequest",
+        "file": "server/internal/service/collaboration_workflow_test.go",
+        "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+        "equals_HEAD": true
+      },
+      {
+        "helpers": "sourceRoleBusinessSnapshot/sourceRoleExecutionSnapshot",
+        "file": "server/internal/service/collaboration_source_roles_test.go",
+        "sha256": "f006430da597c8a62209f72b8f04c32d9104df2f13886b87e8f9b9ac69fe694d",
+        "equals_HEAD": true
+      },
+      {
+        "helpers": "newCollaborationQueueFixture/submit/run",
+        "file": "server/internal/service/collaboration_queue_test.go",
+        "sha256": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+        "equals_HEAD": true
+      },
+      {
+        "helpers": "controlStateSnapshot",
+        "file": "server/internal/service/collaboration_control_test.go",
+        "sha256": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+        "equals_HEAD": true
+      },
+      {
+        "helpers": "fieldJSON",
+        "file": "server/internal/service/collaboration_fields_test.go",
+        "sha256": "0613434d77b017f287d67c7689a3cd59be3a8c68f2c8b486409ec5ba85b4eef8",
+        "equals_HEAD": true
+      }
+    ],
+    "all_helper_files_HEAD_equal": true,
+    "product_dependency_notes": [
+      "EditIssue/source fields are HEAD-identical. Current workflow.go has only depart cancellation provenance drift; no stage/transfer branch/source-member lock drift. Stage tests perform member DELETE rather than participant departure, so this dirty change is not a required behavior dependency.",
+      "Current handler boundary file has unrelated dirty tests. Exact position test function and fixture match HEAD; source/parent handler files are HEAD-identical. No handler file is needed to add the stage-only slice.",
+      "Use all three test identities. Running only transfer/departure pair omits creator+current-handler positive history identity."
+    ],
+    "recommended_guarded_selector": "^TestCollaboration(SourceManagerStageOnlyEditRecordsOnce|SourceStage(Transfer|Departure)BothCommitOrders)$",
+    "recommended_guarded_command": "python3 <task-owned with-db.py> service_s5 bash ../scripts/go-test-with-agent-cli-guard.sh go test -json -race ./internal/service -run '^TestCollaboration(SourceManagerStageOnlyEditRecordsOnce|SourceStage(Transfer|Departure)BothCommitOrders)$' -p 1 -parallel 1 -count=1 -timeout=30m",
+    "isolated_run_performed_by_reviewer": false
+  },
+  "AC89_clauses": [
+    {
+      "clause": "Source member layout reorder does not advance collaboration version/history and machine refusal",
+      "status": "canonical_verified",
+      "evidence": "Actual handler position=-42, collaboration revision1, machine403; source projection test verifies layout reorder causes no collaboration_event; actual Reorder only updates position in guarded source transaction. Final board/CLI persistence remains separate."
+    },
+    {
+      "clause": "Source creator/current handler may set only child stage with durable exact history",
+      "status": "verified_current",
+      "evidence": "Current all3 stage run passes creator/current_handler. Stage1->2, exact ordinary+collaboration revisions, one issue_edited event with actor/request/before/after; original-key replay leaves business and execution unchanged."
+    },
+    {
+      "clause": "Completion follows ordinary stage parent wake semantics",
+      "status": "verified_current",
+      "evidence": "Original8/31 and repeated current23/75 cover agent/squad, stage/sibling/category/human/shared/backlog guards, parent re-read, sanitized child reference, task provenance, original-key replay and post-commit timing."
+    },
+    {
+      "clause": "Other people cannot edit stage",
+      "status": "existing_current_task_canonical_verified",
+      "evidence": "Unchanged source roles source_member/source_owner/participant/source_participant/external_handler/departed_handler/departed_creator each stage refusal with exact business/execution equality; same source bytes in isolated role receipt and HEAD."
+    },
+    {
+      "clause": "Transfer/departure races never accept stale stage authority",
+      "status": "verified_current",
+      "evidence": "True PostgreSQL first Commit barrier+pg_blocking_pids for both orders. Stage-first forces stale transfer then fresh transfer; transfer-first refuses old handler; departure-first refuses stage; stage-first membership held through commit. Post-race new-key former/departed writes still forbidden and exact snapshots unchanged."
+    },
+    {
+      "clause": "Web/Electron same-column drag and CLI reorder persist without snapback/notification/history",
+      "status": "pending_final_clients",
+      "evidence": "No final dual-client source receipt is evaluated here; current source fixture iteration is not counted as passed."
+    }
+  ],
+  "AC85_remaining": [
+    "Final production Web and actual Electron list/board/timeline/comment show external name/avatar/tag, no Unknown, no email/username, actual external filter. Current canonical handler covers minimal projection/filter/table/child only.",
+    "Complete actual cross-assignee no optimistic move/no assignee write, authorized transfer entry and unauthorized explanation.",
+    "Nonterminal status R47 validation and terminal refusal/whole-issue explanation across both clients.",
+    "Ordinary issue drag control and final stable current-source hashes/receipts."
+  ],
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "type": "evidence_boundary",
+      "summary": "Source-stage single-file isolated HEAD race not yet supplied; feasible and root-owned, not run by reviewer."
+    },
+    {
+      "type": "evidence_boundary",
+      "summary": "Parent wake deliberately retains ordinary best-effort semantics: post-commit crash/error/uncertain commit can lose wake and replay does not repair. Current tests expose this; do not imply durable outbox."
+    },
+    {
+      "type": "scope_boundary",
+      "summary": "Final dual-client source journey remains in progress, no full AC85/89 promotion now."
+    }
+  ],
+  "verification": {
+    "gofmt": {
+      "command": "gofmt -l internal/service/collaboration_source_stage_race_test.go",
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "exit_code": 0,
+      "output": "empty"
+    },
+    "go_vet": {
+      "command": "GOTOOLCHAIN=go1.26.6 go vet ./internal/service",
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "exit_code": 0,
+      "output": "empty"
+    },
+    "tests": "Read-only parsed original8/31 and current23/75 receipts, including all3+6 stage identities; no DB/client run by reviewer",
+    "typescript": "not applicable for this Go/test-only review"
+  }
+}

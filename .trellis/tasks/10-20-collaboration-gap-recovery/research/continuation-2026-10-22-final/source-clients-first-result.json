@@ -1,0 +1,17 @@
+{
+  "exit_code": 1,
+  "product_test_result": "fixture_setup_failure",
+  "stats": {
+    "startTime": "2026-10-22T09:39:56.610Z",
+    "duration": 2266.432,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/source-clients-first.stdout",
+  "stdout_sha256": "7bf9d96ab03636edc877481af2e1a4503ea52f9422c468c1b85dc12ce02c8643",
+  "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+  "collector_error": "Go event parser received scalar JSON line from Playwright report; corrected outside repo for next run",
+  "failure": "Password-only actor has no email. Existing workspace invitation endpoint requires email; source role fixture must seed its explicit member row instead."
+}

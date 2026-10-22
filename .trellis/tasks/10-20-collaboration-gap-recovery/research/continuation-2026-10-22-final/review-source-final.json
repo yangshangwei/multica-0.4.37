@@ -1,0 +1,356 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/evidence_check (trellis-check)",
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "at": "2026-10-22T12:19:33.019537+00:00",
+  "head_at_review": "cae15dd72ee568f28ce29b19f0c76765b72f26cd",
+  "writes": [
+    "research/continuation-2026-10-22-final/review-source-final.md",
+    "research/continuation-2026-10-22-final/review-source-final.json"
+  ],
+  "source_test_spec_ledger_environment_mutations_by_reviewer": false,
+  "db_clients_providers_started_by_reviewer": false,
+  "decision": {
+    "AC85": "recommend_promote_passed_whole_clause",
+    "AC89": "recommend_promote_passed_whole_clause"
+  },
+  "blocking_findings": [],
+  "root_fixed_review_findings": [
+    {
+      "issue": "No ordinary shared /move subroute in zero-write observer",
+      "root_fix": "Observe exact /api/issues/shared and every subpath plus collaboration root/subpaths",
+      "verified_in_final_receipt": true
+    },
+    {
+      "issue": "Server position persisted but rendered order not asserted after refresh",
+      "root_fix": "Compare actual Todo rendered DOM IDs against API numeric position sort after board reload and CLI reload on both clients",
+      "verified_in_final_receipt": true
+    }
+  ],
+  "evidence": {
+    "final_clients": {
+      "raw": {
+        "path": "research/continuation-2026-10-22-final/source-clients-reviewed-final.stdout",
+        "sha256": "583524a22e92cb80bd28d39ad0d64cdcf266b2a9c6368fcf4a13d809b0ed8bdc"
+      },
+      "command": {
+        "path": "research/continuation-2026-10-22-final/source-clients-reviewed-final-command.json",
+        "sha256": "e04b4445f27550702ec88a37ee96633d2afd56a922d7cd20b8286f600d803e61"
+      },
+      "result": {
+        "path": "research/continuation-2026-10-22-final/source-clients-reviewed-final-result.json",
+        "sha256": "cb9b783cc414a2e486e26d4f3501282a54b8d34a56eb0666e42206e695a28326"
+      },
+      "summary": {
+        "path": "research/continuation-2026-10-22-final/source-reviewed-summary.json",
+        "sha256": "23aedc15194d1346ee110aee6eba72a0b678b42bb014acd2bfdde94db61e4cb0"
+      },
+      "exit_code": 0,
+      "stats": {
+        "startTime": "2026-10-22T12:06:00.853Z",
+        "duration": 32144.142,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-source-surface.spec.ts",
+          "line": 11,
+          "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+          "status": "passed",
+          "retry": 0,
+          "errors": []
+        }
+      ],
+      "source_changed_during_run": [],
+      "command_argv": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py",
+        "env",
+        "COLLABORATION_SOURCE_CLI=/tmp/multica-gap-recovery-20261021-h6phxwo9/final-source-cli",
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-source-surface.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--project=chromium",
+        "--reporter=json",
+        "--output=/tmp/multica-gap-recovery-20261021-h6phxwo9/final-source-clients-reviewed-final"
+      ],
+      "attachments": [
+        {
+          "name": "web-shared-reorder-drag-over",
+          "path": "research/continuation-2026-10-22-final/source-clients-reviewed-final-web-shared-reorder-drag-over.json",
+          "sha256": "c4ba83ef8cdfea5b08a55ee24a794b5ba8cc995f0b7cf0cf66aefda179bf7380",
+          "embedded_equal_saved": true,
+          "credential_scan_matches": 0
+        },
+        {
+          "name": "web-board-layout-request",
+          "path": "research/continuation-2026-10-22-final/source-clients-reviewed-final-web-board-layout-request.json",
+          "sha256": "43825277d171675044b36eb7fb32d97c1a4be91bb7c13db86a272a94727789e0",
+          "embedded_equal_saved": true,
+          "credential_scan_matches": 0
+        },
+        {
+          "name": "web-ordinary-drag-over",
+          "path": "research/continuation-2026-10-22-final/source-clients-reviewed-final-web-ordinary-drag-over.json",
+          "sha256": "8c7916d8e59f1154c6233312e5c4e7e3437ad8caa91fbe9ec596e319e5b08775",
+          "embedded_equal_saved": true,
+          "credential_scan_matches": 0
+        },
+        {
+          "name": "electron-source-entry",
+          "path": "research/continuation-2026-10-22-final/source-clients-reviewed-final-electron-source-entry.json",
+          "sha256": "4b8be3e6cb891b6daef0e03ceebeee44d21bc4ca980a1b70cb8fcf9ddfe7bd7b",
+          "embedded_equal_saved": true,
+          "credential_scan_matches": 0
+        },
+        {
+          "name": "electron-shared-reorder-drag-over",
+          "path": "research/continuation-2026-10-22-final/source-clients-reviewed-final-electron-shared-reorder-drag-over.json",
+          "sha256": "b89a99c6587b56cd25aa47779c7e0995028b5142f25a364e451e7d53a391afd8",
+          "embedded_equal_saved": true,
+          "credential_scan_matches": 0
+        },
+        {
+          "name": "electron-board-layout-request",
+          "path": "research/continuation-2026-10-22-final/source-clients-reviewed-final-electron-board-layout-request.json",
+          "sha256": "bc796627a8a343b453f913860269aa72f01c8bd4ad88224766f735d6ff64a7b2",
+          "embedded_equal_saved": true,
+          "credential_scan_matches": 0
+        },
+        {
+          "name": "electron-ordinary-drag-over",
+          "path": "research/continuation-2026-10-22-final/source-clients-reviewed-final-electron-ordinary-drag-over.json",
+          "sha256": "9d98415fc69cd9dd2bad1df027084a835ce18d262b0c4deaee2d1886e6b81be9",
+          "embedded_equal_saved": true,
+          "credential_scan_matches": 0
+        },
+        {
+          "name": "source-surface-identities",
+          "path": "research/continuation-2026-10-22-final/source-clients-reviewed-final-source-surface-identities.json",
+          "sha256": "1bc7877e736ebce4d568d3d5cfbee38fdb587fb11cf63b8131047e82a4f8b83b",
+          "embedded_equal_saved": true,
+          "credential_scan_matches": 0
+        }
+      ]
+    },
+    "source_files": {
+      "e2e/collaboration-source-surface.spec.ts": {
+        "sha256": "a2cbafc2a5e7aa8cdc13cc0844b680e3853b0442c06f9db445e39b1a0bfb8179",
+        "receipt_equal": true
+      },
+      "e2e/fixtures/collaboration-source-surface.ts": {
+        "sha256": "4188a8299f3cf78657853df494e8fc56ea74fc1d4974482e80b2fd4004cded64",
+        "receipt_equal": true
+      },
+      "e2e/fixtures/collaboration-native.ts": {
+        "sha256": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+        "receipt_equal": true
+      },
+      "packages/core/issues/source-collaboration.ts": {
+        "sha256": "f94412af1985bfe8457e27be2390d013ed03bb6296e2719155b157d390d2c82d",
+        "receipt_equal": true
+      },
+      "packages/core/issues/source-collaboration.test.ts": {
+        "sha256": "cd925626efaaf3f3a88b7d652ddb23fdeb281033eadf1bbb977049c4779fe9ba",
+        "receipt_equal": true
+      },
+      "packages/views/collaboration/source-bridge.tsx": {
+        "sha256": "e86735b81e0ae98b1f293a80b18b5f6ebf223fbe3910539f405cdd9076c8b7a9",
+        "receipt_equal": true
+      },
+      "packages/views/collaboration/source-bridge.test.tsx": {
+        "sha256": "3e5994280721e2ae429d9344cf22e3ab8c07b511279ca27769efada6fb0c9dbd",
+        "receipt_equal": true
+      },
+      "packages/views/issues/components/board-view.tsx": {
+        "sha256": "e94a8f0beb1654afee49527abd1588370a4f35ba2aa1a5954c3bc918d106dd87",
+        "receipt_equal": true
+      },
+      "packages/views/issues/components/board-card.tsx": {
+        "sha256": "7bcd40f2b89243eeafcc0e4c9fb1f36c2144c8b4b3a3d22846ba27ed78ea603f",
+        "receipt_equal": true
+      },
+      "packages/views/issues/components/gantt-view.tsx": {
+        "sha256": "509731a3da9f8bdff25f9cb6b9974501fe1c77a927ae287abe89fba7fbdee572",
+        "receipt_equal": true
+      },
+      "packages/views/issues/surface/use-issue-surface-actions.ts": {
+        "sha256": "acade58d80df1a7b316da21ddbc567b33317e5b060517214788c9b412b4f14e8",
+        "receipt_equal": true
+      },
+      "packages/views/issues/surface/use-issue-surface-actions.collaboration.test.tsx": {
+        "sha256": "d10ad4207b0c73a5ddc5968cb52acd1ee17146389b5da2d5f17d470c78438059",
+        "receipt_equal": true
+      }
+    },
+    "earlier_clients_partial": {
+      "raw": {
+        "path": "research/continuation-2026-10-22-final/source-clients-final.stdout",
+        "sha256": "a50303202baf172c45fc161f4a39ece9db8639d8b6693514a3383f5580896318"
+      },
+      "stats": {
+        "expected": 1,
+        "unexpected": 0,
+        "skipped": 0,
+        "flaky": 0
+      },
+      "scope": "Earlier source identity/drag/CLI pass before strengthened ordinary /move observer and DOM order assertions; retained separately, superseded for full claim."
+    },
+    "canonical_source_parent": {
+      "path": "research/continuation-2026-10-22/source-projection-parent-canonical.jsonl",
+      "sha256": "93245a8510fbf61348f795926e3e094eb65b3a8e956de135e2e66d19786d0a6b"
+    },
+    "canonical_source_runtime": {
+      "path": "research/continuation-2026-10-22-final/source-machine-runtime-canonical.stdout",
+      "sha256": "fa46a880bb382b3aeed59f0e918726446a4196697d936998f686114c8dfd6d67"
+    },
+    "stage_isolated": {
+      "raw": {
+        "path": "research/continuation-2026-10-22-final/source-stage-isolated-head.stdout",
+        "sha256": "5c8c7e93873586d596da23aa9996725bd1f84062cb45a15c38d63cafff7341bf"
+      },
+      "result": {
+        "path": "research/continuation-2026-10-22-final/source-stage-isolated-head-result.json",
+        "sha256": "6ec419cf3f559bf4fd678d69aef20913befe9ab7e4dd216d3f13226af1887414"
+      },
+      "top": 3,
+      "total": 9,
+      "fail": 0,
+      "skip": 0,
+      "exact_HEAD_plus_only_file": true
+    },
+    "previous_canonical_review": {
+      "path": "research/continuation-2026-10-22-final/review-source-canonical.md",
+      "sha256": "032fbba68aae8f0104b4d6dac1c3428f28b18b9fe27578b00f00f2b813ddc6bf"
+    },
+    "cli": {
+      "binary_sha256": "4b4c949a8bf90cf6bc0e2cb149f7c9c7c9e66d516f367d1023cf77486c326fb8",
+      "build_result": {
+        "path": "research/continuation-2026-10-22-final/source-cli-build-result.json",
+        "sha256": "de0e3f184fa8970436c854be924b7b25fca73cd5dbd520bcb800c4b8beafa2e3"
+      },
+      "build_command": {
+        "path": "research/continuation-2026-10-22-final/source-cli-build-command.json",
+        "sha256": "4c5bdff2962ee93c31bac76312c1a594bcf8d117145ded30ed22573bc41da47d"
+      },
+      "94_CLI_source_paths_same_build_and_client_manifest": true,
+      "task_built_binary_hash_matches_current_file": true,
+      "uses_human_source_credentials_and_no_provider": true
+    }
+  },
+  "AC85_clauses": [
+    {
+      "clause": "External name/avatar/external mark in list/board/timeline/comment; no Unknown/private account fields",
+      "status": "verified",
+      "evidence": "Both production Web and actual Electron inspect List row name+tag+title, Board tag+tooltip, Gantt tag+tooltip and comment visible name/avatar/tag/no Unknown. Core minimal schema+handler projection owns email/username stripping, source_identity network summary has no such keys. Blank avatar_url uses actual visible initial fallback, no image upload claim."
+    },
+    {
+      "clause": "External collaborators filter",
+      "status": "verified",
+      "evidence": "Both clients toggle pressed filter, ordinary control disappears, shared remains; toggling off restores ordinary control. Canonical source handler covers membership/participant revocation and filter/count."
+    },
+    {
+      "clause": "Cross-assignee move no optimistic card/assignee write, authorized transfer dialog",
+      "status": "verified",
+      "evidence": "Both clients inspect DB snapshot and actual column IDs while drag-over and after release, all ordinary/collaboration writes watched including ordinary /move subpath. Exact Transfer/recipient field visible for creator; no assignment write or optimistic column change."
+    },
+    {
+      "clause": "Unauthorized source member gets clear refusal",
+      "status": "verified",
+      "evidence": "Actual Web observer is source member only and sees exact alert, no writer or optimistic move and same source snapshot. Same shared Board/SourceAction implementation runs both shells; source-bridge canonical denies capability/write_context. Native duplicate matrix is not required to verify a platform-neutral shared guard."
+    },
+    {
+      "clause": "Nonterminal R47 checked; terminal complete/cancel denied with whole-issue prompt",
+      "status": "verified",
+      "evidence": "Both shells drag to In Progress and see current shared workflow/status options, no prior optimistic/write mutation. Web Confirm+restore performs public collaboration PATCH, actual status changes. Both Done drops show Complete/Cancel/Reopen explanation without write/snapshot change. Core source mapping covers cancelled/custom terminal; existing current canonical R47 owns role/catalog/terminal/refusal/concurrency semantics."
+    },
+    {
+      "clause": "Ordinary drag unchanged",
+      "status": "verified",
+      "evidence": "Both actual clients observe ordinary column optimistic movement, then real POST /api/issues/{ordinary}/move with status and before_id:null/after_id:null, 200 and persisted target status. Shared snapshot unchanged. Internal hook test uses move_intent but actual public wire is POST /move; do not report PUT wire."
+    }
+  ],
+  "AC89_clauses": [
+    {
+      "clause": "Source board same-column and CLI order persist without snapback",
+      "status": "verified",
+      "evidence": "Both clients actual shared PUT contains only position+expected_revision, server position changes. Strengthened assertions after board reload compare rendered Todo DOM ID order to source API numeric positions. CLI issue reorder --before uses explicit current-built binary, then API position and fresh DOM order after reload match. All4 rendered order checks ran."
+    },
+    {
+      "clause": "No collaboration version/history/notification effects; machine reorder refused",
+      "status": "verified",
+      "evidence": "Exact sourceSnapshot equality preserves c.revision/lifecycle/handler/status/events (excluding outbox-state delivery only)/notifications/session across board and CLI moves. Current source handler position tests machine403 and version1; canonical source projection no event; ordinary issue revision may increase, as intended."
+    },
+    {
+      "clause": "Current source creator/handler sets child stage and records; other roles refused",
+      "status": "verified",
+      "evidence": "Current stage3/9 and exact HEAD+one file3/9 verify creator/current_handler stage-only history/actor/request/before/after/replay and exact execution preservation; unchanged source role test covers seven nonmanager/departed/external stage refusals."
+    },
+    {
+      "clause": "Completion follows ordinary stage parent wake semantics",
+      "status": "verified",
+      "evidence": "Source handler8/31 and current23/75 repeat actual parent hook category/agent/squad/sibling-stage/parent guards, sanitized minimal child reference, task provenance, commit timing and exact replay. Wake is ordinary best-effort, not durable retry."
+    },
+    {
+      "clause": "Concurrent transfer/source departure never preserves obsolete authority",
+      "status": "verified",
+      "evidence": "Actual PostgreSQL commit barrier and pg_blocking_pids in both stage/transfer/departure commit orders, new-key former/departed handler denial and exact source/execution snapshots."
+    }
+  ],
+  "limit_notes": [
+    "Actual nonmanager source drag refusal is Web only; the platform-independent shared Board/SourceAction guard is in both shells and canonical tests. No unnecessary native matrix duplication required for the same shared logic.",
+    "Nonterminal submission Confirm/restore actual path is Web only; both shells drag/routing/options and shared R47 canonical matrices establish behavior.",
+    "Actual terminal drag is Done only; cancelled/custom terminal category mapping is Core canonical and server R47 refuses done/cancelled.",
+    "Fixture avatar_url is blank: visible fallback/avatar component and name/tag proven, not external uploaded image request.",
+    "Source network private field assertion records Web /api/issues collaboration summary, not full raw Electron network body; same handler/Core schema and shared renderer supply native minimal projection.",
+    "Native uses actual account Workspaces selector then sidebar/row MemoryRouter navigation; token profile is actual Electron IPC harness, not installed full Main.",
+    "Parent wake retains existing ordinary best-effort crash/error/uncertain-commit boundaries; original replay does not restore a lost wake.",
+    "No paid provider, provider process, OS containment, installed/old client, rollout or Mobile claim."
+  ],
+  "verification": {
+    "source_lint": {
+      "result": {
+        "path": "research/continuation-2026-10-22-final/source-lint-reviewed-result.json",
+        "sha256": "027132d2d800dc66da9476439a7c943a5350be8c708609aff95b837e54f0a31b"
+      },
+      "exit_code": 0,
+      "sources_current": true
+    },
+    "source_typecheck": {
+      "result": {
+        "path": "research/continuation-2026-10-22-final/source-typecheck-reviewed-result.json",
+        "sha256": "d5d1623eca6975e28ff2db9bab590c34c558ad5bfd9d7e60b23dfd7733d5dea0"
+      },
+      "exit_code": 0,
+      "sources_current": true
+    },
+    "core_collaboration": {
+      "result": {
+        "path": "research/continuation-2026-10-22-final/core-collaboration-final-result.json",
+        "sha256": "e0e63508122d23fc6bf78234b39b6ca2cfd79e0abf55c345420241845f16d51a"
+      },
+      "tests": 1024,
+      "source-collaboration_in_selector": true
+    },
+    "views_collaboration": {
+      "result": {
+        "path": "research/continuation-2026-10-22-final/views-collaboration-final-result.json",
+        "sha256": "dfe42807a69abf66d29891ddb8f8f890a21a315e2000e4d2bbd2eb64aef21cfa"
+      },
+      "tests": 94,
+      "source-bridge_and_surface_in_selector": true
+    },
+    "diff_check": {
+      "command": "git diff --check -- e2e/collaboration-source-surface.spec.ts e2e/fixtures/collaboration-source-surface.ts",
+      "exit_code": 0
+    },
+    "tests": "Read-only raw/evidence verification, no repeated client/DB launches"
+  }
+}

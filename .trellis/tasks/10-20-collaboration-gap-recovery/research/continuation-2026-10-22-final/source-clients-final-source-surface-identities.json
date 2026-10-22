@@ -1,0 +1,160 @@
+{
+  "issue_id": "01a16351-c401-7839-8bdc-9eedb2053177",
+  "creator_id": "a1338a25-442f-42ec-9c0d-d1b121bda05f",
+  "external_handler_id": "64f5e206-eb16-402b-9265-0c6277394dc5",
+  "observer_id": "11a2fe35-2cfa-43d2-a22b-37a0c13d5a4f",
+  "comment_id": "753e27ad-fa9b-4b1b-9218-6ba8f9e6704d",
+  "source_identity": [
+    {
+      "creator": {
+        "user_id": "a1338a25-442f-42ec-9c0d-d1b121bda05f",
+        "name": "Source creator b732528a2ab7",
+        "avatar_url": "",
+        "external": false
+      },
+      "handler": {
+        "user_id": "64f5e206-eb16-402b-9265-0c6277394dc5",
+        "name": "External source handler b732528a2ab7",
+        "avatar_url": "",
+        "external": true
+      },
+      "has_external_collaborators": true
+    }
+  ],
+  "observations": [
+    {
+      "client": "web",
+      "cli": {
+        "command": [
+          "<task-owned-built-cli>",
+          "issue",
+          "reorder",
+          "01a16351-c401-7839-8bdc-9eedb2053177",
+          "--before",
+          "01a16351-c41f-7d71-a354-87fc1fa9ee93"
+        ],
+        "binary_sha256": "4b4c949a8bf90cf6bc0e2cb149f7c9c7c9e66d516f367d1023cf77486c326fb8",
+        "result": {
+          "admission_status": "not_required",
+          "assignee_id": "64f5e206-eb16-402b-9265-0c6277394dc5",
+          "assignee_type": "member",
+          "collaboration": {
+            "creator": {
+              "avatar_url": "",
+              "external": false,
+              "name": "Source creator b732528a2ab7",
+              "user_id": "a1338a25-442f-42ec-9c0d-d1b121bda05f"
+            },
+            "handler": {
+              "avatar_url": "",
+              "external": true,
+              "name": "External source handler b732528a2ab7",
+              "user_id": "64f5e206-eb16-402b-9265-0c6277394dc5"
+            },
+            "has_external_collaborators": true
+          },
+          "created_at": "2026-10-22T19:14:25+08:00",
+          "creator_id": "a1338a25-442f-42ec-9c0d-d1b121bda05f",
+          "creator_type": "member",
+          "current_iteration_id": null,
+          "description": "Private source collaboration body.",
+          "due_date": "2026-11-02",
+          "id": "01a16351-c401-7839-8bdc-9eedb2053177",
+          "identifier": "SOUR-1",
+          "iteration_rollover_count": 0,
+          "last_activity_at": "2026-10-22T19:14:25.471031+08:00",
+          "metadata": {},
+          "number": 1,
+          "parent_issue_id": null,
+          "position": 99,
+          "priority": "none",
+          "project_id": "e09bc232-ab4d-4f85-9fd6-faf6b3c594e2",
+          "properties": {},
+          "revision": 5,
+          "stage": null,
+          "start_date": "2026-10-22",
+          "status": "todo",
+          "status_category": "todo",
+          "status_name": "",
+          "title": "Shared source identity b732528a2ab7",
+          "updated_at": "2026-10-22T19:14:25+08:00",
+          "workspace_id": "a18ce413-4324-42c7-abd0-ad8aa309c459"
+        }
+      }
+    },
+    {
+      "client": "web-source-only",
+      "refusal": true,
+      "ordinary_writes": 0,
+      "optimistic_move": false
+    },
+    {
+      "client": "electron",
+      "cli": {
+        "command": [
+          "<task-owned-built-cli>",
+          "issue",
+          "reorder",
+          "01a16351-c401-7839-8bdc-9eedb2053177",
+          "--before",
+          "01a16351-c41f-7d71-a354-87fc1fa9ee93"
+        ],
+        "binary_sha256": "4b4c949a8bf90cf6bc0e2cb149f7c9c7c9e66d516f367d1023cf77486c326fb8",
+        "result": {
+          "admission_status": "not_required",
+          "assignee_id": "64f5e206-eb16-402b-9265-0c6277394dc5",
+          "assignee_type": "member",
+          "collaboration": {
+            "creator": {
+              "avatar_url": "",
+              "external": false,
+              "name": "Source creator b732528a2ab7",
+              "user_id": "a1338a25-442f-42ec-9c0d-d1b121bda05f"
+            },
+            "handler": {
+              "avatar_url": "",
+              "external": true,
+              "name": "External source handler b732528a2ab7",
+              "user_id": "64f5e206-eb16-402b-9265-0c6277394dc5"
+            },
+            "has_external_collaborators": true
+          },
+          "created_at": "2026-10-22T19:14:25+08:00",
+          "creator_id": "a1338a25-442f-42ec-9c0d-d1b121bda05f",
+          "creator_type": "member",
+          "current_iteration_id": null,
+          "description": "Private source collaboration body.",
+          "due_date": "2026-11-02",
+          "id": "01a16351-c401-7839-8bdc-9eedb2053177",
+          "identifier": "SOUR-1",
+          "iteration_rollover_count": 0,
+          "last_activity_at": "2026-10-22T19:14:35.699433+08:00",
+          "metadata": {},
+          "number": 1,
+          "parent_issue_id": null,
+          "position": 99,
+          "priority": "none",
+          "project_id": "e09bc232-ab4d-4f85-9fd6-faf6b3c594e2",
+          "properties": {},
+          "revision": 9,
+          "stage": null,
+          "start_date": "2026-10-22",
+          "status": "todo",
+          "status_category": "todo",
+          "status_name": "",
+          "title": "Shared source identity b732528a2ab7",
+          "updated_at": "2026-10-22T19:14:35+08:00",
+          "workspace_id": "a18ce413-4324-42c7-abd0-ad8aa309c459"
+        }
+      }
+    }
+  ],
+  "captures": [
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-source-clients-final/collaboration-source-surfa-1d694-ity-and-scoped-layout-order-chromium/web-source-external-comment.png",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-source-clients-final/collaboration-source-surfa-1d694-ity-and-scoped-layout-order-chromium/electron-source-external-comment.png"
+  ],
+  "scope": "Actual Web/Electron source surface and CLI layout; no provider or full installed Main",
+  "canonical_clauses": [
+    "machine reorder refusal; stage-specific authority/contention and parent wakeup"
+  ]
+}

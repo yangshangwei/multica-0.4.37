@@ -206,3 +206,24 @@ recompute after a later opposite action; lost read/comment authority refuses a
 new mutation while own content-free recovery stays available. Both positive
 paths must run; a successful resolve plus a forbidden unresolve is not complete
 thread-operation evidence.
+
+
+## Current source surface and phase evidence
+
+`e2e/collaboration-source-surface.spec.ts` uses production Web and actual Electron
+with the same source UUID to verify list/board/Gantt/comment external identity,
+external filtering and immutable cross-assignee/terminal drag refusal. A valid
+nonterminal drop enters the shared versioned workflow; ordinary cards keep their
+canonical `POST /api/issues/:id/move` with adjacent anchors. Column-local shared
+reorder sends only `position` and ordinary `expected_revision`; task-built
+`issue reorder --before` persists with no collaboration revision, history or
+notification change. Preserve exact event business fields while asynchronous
+`outbox_state` delivery is observed separately.
+
+`TestCollaborationSourceManagerStageOnlyEditRecordsOnce` pins creator and current
+source-handler stage-only1→2, exact original receipt and actor/request/before/after
+history. `TestCollaborationSourceStageTransferBothCommitOrders` and
+`TestCollaborationSourceStageDepartureBothCommitOrders` use real commit/PID lock
+barriers to reject old roles and source membership in both orders; fresh old-role
+keys remain denied. Ordinary best-effort parent stage wakeup remains its existing
+handler owner and is not a durable delivery contract.
