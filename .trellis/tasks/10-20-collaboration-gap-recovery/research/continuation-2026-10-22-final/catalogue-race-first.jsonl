@@ -1,0 +1,9 @@
+{"Time":"2026-10-22T18:14:52.723946+08:00","Action":"start","Package":"github.com/multica-ai/multica/server/internal/service"}
+{"Time":"2026-10-22T18:14:53.697173+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationCatalogueAuthorityMatrix"}
+{"Time":"2026-10-22T18:14:53.69724+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationCatalogueAuthorityMatrix","Output":"=== RUN   TestCollaborationCatalogueAuthorityMatrix\n"}
+{"Time":"2026-10-22T18:14:53.990021+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationCatalogueAuthorityMatrix","Output":"    collaboration_catalogue_matrix_test.go:77: uninvited resource owner acquired per-issue consent: forbidden\n"}
+{"Time":"2026-10-22T18:14:54.046864+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationCatalogueAuthorityMatrix","Output":"--- FAIL: TestCollaborationCatalogueAuthorityMatrix (0.35s)\n"}
+{"Time":"2026-10-22T18:14:54.046928+08:00","Action":"fail","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationCatalogueAuthorityMatrix","Elapsed":0.35}
+{"Time":"2026-10-22T18:14:54.048771+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Output":"FAIL\n"}
+{"Time":"2026-10-22T18:14:54.05191+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Output":"FAIL\tgithub.com/multica-ai/multica/server/internal/service\t1.328s\n"}
+{"Time":"2026-10-22T18:14:54.051974+08:00","Action":"fail","Package":"github.com/multica-ai/multica/server/internal/service","Elapsed":1.328}

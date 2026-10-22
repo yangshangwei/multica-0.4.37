@@ -125,3 +125,24 @@ production validator because a private fixture omitted its trigger.
 
 Correct: allocate order under the group lock and install the actual database
 contracts in the isolated fixture used to verify it.
+
+
+## Complete catalogue and derived-owner current matrix
+
+`TestCollaborationCatalogueAuthorityMatrix` connects three actual participating
+resource owners' consent to one leader and two independently bound member runs.
+Registration never substitutes for consent; incomplete or proxy confirmation
+never admits the typed squad. A newly invited participant reuses identical
+existing per-issue grants without source membership or a new owner signature.
+Valid issue-pause, offline, occupied namespace and target-pause selections remain
+available and wait; one fresh Resume consumes original inputs in FIFO.
+
+Every dependency freezes all actual grant/owner/configuration/installation/binding
+facts. Each derived run retains its own exact provenance and rechecks the entire
+frozen resource set. Leader business/daemon credentials do not authorize members.
+Changing one member configuration or binding invalidates old selections and
+credentials; restoring old values does not restore old consent. Owner Leave
+withdraws every direct/squad grant while retaining truthful reservations,
+original termination capability, permitted Stop and readable execution/input/run
+history. This is database/service evidence; synthetic proof payloads do not
+establish a provider process or kernel containment.

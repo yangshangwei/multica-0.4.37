@@ -1,0 +1,10 @@
+{"Time":"2026-10-22T18:21:31.505432+08:00","Action":"start","Package":"github.com/multica-ai/multica/server/internal/service"}
+{"Time":"2026-10-22T18:21:32.498327+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationCatalogueAuthorityMatrix"}
+{"Time":"2026-10-22T18:21:32.498479+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationCatalogueAuthorityMatrix","Output":"=== RUN   TestCollaborationCatalogueAuthorityMatrix\n"}
+{"Time":"2026-10-22T18:21:35.261417+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationCatalogueAuthorityMatrix","Output":"    collaboration_catalogue_matrix_test.go:306: exec: ERROR: null value in column \"instructions\" of relation \"agent\" violates not-null constraint (SQLSTATE 23502)\n"}
+{"Time":"2026-10-22T18:21:35.26464+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationCatalogueAuthorityMatrix","Output":"        SQL: UPDATE agent SET instructions=NULL WHERE id=$1\n"}
+{"Time":"2026-10-22T18:21:35.316141+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationCatalogueAuthorityMatrix","Output":"--- FAIL: TestCollaborationCatalogueAuthorityMatrix (2.82s)\n"}
+{"Time":"2026-10-22T18:21:35.316171+08:00","Action":"fail","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationCatalogueAuthorityMatrix","Elapsed":2.82}
+{"Time":"2026-10-22T18:21:35.317021+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Output":"FAIL\n"}
+{"Time":"2026-10-22T18:21:35.318779+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Output":"FAIL\tgithub.com/multica-ai/multica/server/internal/service\t3.813s\n"}
+{"Time":"2026-10-22T18:21:35.318802+08:00","Action":"fail","Package":"github.com/multica-ai/multica/server/internal/service","Elapsed":3.8129999999999997}

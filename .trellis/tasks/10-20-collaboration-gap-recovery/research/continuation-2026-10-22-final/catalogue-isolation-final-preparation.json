@@ -1,0 +1,88 @@
+{
+  "prepared_at": "2026-10-22T10:32:57.999872+00:00",
+  "base_HEAD": "cae15dd72ee568f28ce29b19f0c76765b72f26cd",
+  "snapshot_root": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-catalogue-isolated-20261022-jl473qfi",
+  "only_added_file": "server/internal/service/collaboration_catalogue_matrix_test.go",
+  "owned_sha256": "13f89645cc13574d43328d0f08b6aa236daa09ba8b43c9a130960881510112c3",
+  "helper_sources": {
+    "ownerSwitchNamespace": {
+      "file": "server/internal/service/collaboration_owner_departure_targets_test.go",
+      "present_in_HEAD": true
+    },
+    "ownerSwitchResource": {
+      "file": "server/internal/service/collaboration_owner_departure_targets_test.go",
+      "present_in_HEAD": true
+    },
+    "ownerSwitchConsent": {
+      "file": "server/internal/service/collaboration_owner_departure_targets_test.go",
+      "present_in_HEAD": true
+    },
+    "ownerSwitchRegister": {
+      "file": "server/internal/service/collaboration_owner_departure_targets_test.go",
+      "present_in_HEAD": true
+    },
+    "newManagedCollaborationFixture": {
+      "file": "server/internal/service/collaboration_runtime_test.go",
+      "present_in_HEAD": true
+    },
+    "permitSquadRun": {
+      "file": "server/internal/service/collaboration_squad_test.go",
+      "present_in_HEAD": true
+    },
+    "authorityCatalogue": {
+      "file": "server/internal/service/collaboration_authority_test.go",
+      "present_in_HEAD": true
+    },
+    "controlStateSnapshot": {
+      "file": "server/internal/service/collaboration_control_test.go",
+      "present_in_HEAD": true
+    },
+    "submitManagedControlInput": {
+      "file": "server/internal/service/collaboration_control_managed_test.go",
+      "present_in_HEAD": true
+    },
+    "managedTargetResume": {
+      "file": "server/internal/service/collaboration_control_managed_test.go",
+      "present_in_HEAD": true
+    },
+    "workflowRequest": {
+      "file": "server/internal/service/collaboration_workflow_test.go",
+      "present_in_HEAD": true
+    },
+    "queueTarget": {
+      "file": "server/internal/service/collaboration_targets_test.go",
+      "present_in_HEAD": true
+    },
+    "freezeCollaborationGrant": {
+      "file": "server/internal/service/collaboration_group_dependencies.go",
+      "present_in_HEAD": true
+    }
+  },
+  "argv": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaborationCatalogueAuthorityMatrix$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-catalogue-isolated-20261022-jl473qfi/server",
+  "executed": false,
+  "db_coordination": "Root owns the isolated DB execution after canonical source-machine runtime tests",
+  "provider_calls": false,
+  "refreshed_at": "2026-10-22T10:47:34.888830+00:00",
+  "previous_owned_sha256": "ad11449b0da1d746160c0f7d867836792291eb4784963d9841c03939735f726e",
+  "history_source": "Tracked HEAD ExecutionView + ListCollaborationBatchInputs + RunRecords; no CommandHistory source dependency"
+}
