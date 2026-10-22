@@ -1,0 +1,64 @@
+{
+  "user_authorized_slice_commits": true,
+  "baseline_head": "cae15dd72ee568f28ce29b19f0c76765b72f26cd",
+  "baseline_index_empty": true,
+  "commits": [
+    {
+      "slice": "outbound",
+      "intent": "Prevent relayed chat replies from bypassing private collaboration delivery",
+      "code": [
+        "server/internal/integrations/wecom/relay_outbound.go",
+        "server/internal/integrations/wecom/outbound_test.go",
+        "server/internal/integrations/wecom/outbound_two_replica_db_test.go",
+        "server/internal/integrations/wecom/relay_ordering_db_test.go",
+        "server/internal/integrations/wecom/collaboration_outbound_boundary_test.go",
+        "server/internal/integrations/lark/collaboration_outbound_boundary_test.go",
+        "server/internal/integrations/dingtalk/collaboration_outbound_boundary_test.go",
+        "server/internal/integrations/telegram/collaboration_outbound_boundary_test.go",
+        "server/internal/integrations/slack/collaboration_typing_boundary_test.go"
+      ],
+      "spec": [
+        ".trellis/spec/server/collaboration-records.md"
+      ]
+    },
+    {
+      "slice": "catalogue",
+      "intent": "Keep every actual resource owner authoritative through derived collaboration runs",
+      "code": [
+        "server/internal/service/collaboration_catalogue_matrix_test.go"
+      ],
+      "spec": [
+        ".trellis/spec/server/collaboration-squads.md"
+      ]
+    },
+    {
+      "slice": "source",
+      "intent": "Preserve external source identity and layout without changing collaboration authority",
+      "code": [
+        "server/internal/service/collaboration_source_stage_race_test.go",
+        "e2e/collaboration-source-surface.spec.ts",
+        "e2e/fixtures/collaboration-source-surface.ts"
+      ],
+      "spec": [
+        ".trellis/spec/server/collaboration-source-editing.md",
+        ".trellis/spec/desktop/frontend/account-navigation.md"
+      ]
+    },
+    {
+      "slice": "offline",
+      "intent": "Keep offline workflow and proven-result notifications actionable across clients",
+      "code": [
+        "e2e/collaboration-offline-result-notifications.spec.ts",
+        "e2e/fixtures/collaboration-offline-result-notifications.ts"
+      ],
+      "spec": []
+    },
+    {
+      "slice": "ledger",
+      "intent": "Make the current collaboration acceptance boundary traceable",
+      "code": [],
+      "spec": []
+    }
+  ],
+  "all_other_dirty_product_files_preserved": true
+}

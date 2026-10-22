@@ -1,0 +1,63 @@
+{
+  "raw_sha256": "ae59fad87a8157d0fbc0a0e2f56774c0988589885ade741bef21e77388426d27",
+  "stats": {
+    "startTime": "2026-10-22T11:36:05.612Z",
+    "duration": 46694.987,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "actual_tests": [
+    {
+      "title": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "line": 97,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 8696
+    },
+    {
+      "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "line": 102,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 6565
+    },
+    {
+      "title": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "line": 107,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 10041
+    },
+    {
+      "title": "Web mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "line": 46,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 4196
+    },
+    {
+      "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "line": 46,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 5501
+    },
+    {
+      "title": "Web offline mentions survive a fresh context and edits notify only newly added people",
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "line": 65,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 8910
+    }
+  ],
+  "environment": "Existing legacy task-owned API18985/Web13905/renderer6079. Initial password-environment run refused send-code before fixture setup, retained separately.",
+  "real_providers": false
+}

@@ -1,0 +1,25 @@
+{
+  "at": "2026-10-22T12:32:18.359096+00:00",
+  "repairs": [
+    {
+      "run": "all-components",
+      "path": "/tmp/multica-s3-all-core-green.log",
+      "reason": "no_original_recorded_hash",
+      "exists": true
+    },
+    {
+      "run": "all-components",
+      "path": "/tmp/multica-s3-all-views-green.log",
+      "reason": "no_original_recorded_hash",
+      "exists": true
+    },
+    {
+      "run": "continuation-20261022-cross-client-current",
+      "original_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/cross-client-prerequisite-review.json",
+      "retained_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-final/prior-cross-client-review-at-head.json",
+      "sha256": "4b5a242ad7dafca9a1c3f26bdc75b4d821e199a3e6d32176bcc4e2fe26311ccc",
+      "current_changed_file_preserved": true
+    }
+  ],
+  "new_execution_inferred": false
+}
