@@ -452,3 +452,16 @@ leave cancels that owner's waiting input. Reinvite never reactivates old grants
 or commands: renewed owner consent and a fresh explicit Resume remain separate,
 and old refused keys never become deferred permission. Scope per-issue revocation
 by issue+owner, not every grant using the same account/resource.
+
+`e2e/collaboration-lifecycle-controls.spec.ts` exercises both creator platforms
+against the same public removal/Stop/Resume APIs and actual Linux Runner. Append
+an author's input while B is already paused as well as behind a busy A run;
+removal cancels both without launching creator follow-up. Hold the original
+natural sealed-proof transport and compare its request hash through failure,
+daemon reconnect and final acknowledgement. Client refresh, Chromium network
+reconnect and account-window IPC availability are distinct observed surfaces.
+Proof settlement does not Resume. Reinvite, renewed B consent and fresh B Resume
+do not revive its cancelled input; A resumes only fresh/surviving inputs once.
+Keep exact original history and unrelated target/peer issue snapshots. This is
+synthetic provider execution in real Linux namespaces, separate from provider
+account/quota and full installed Main evidence.

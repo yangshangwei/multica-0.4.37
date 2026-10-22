@@ -1,0 +1,196 @@
+{
+  "at": "2026-10-21T23:42:02.605006+00:00",
+  "execution_owner": "root coordinator; this lane independently parsed completed receipt",
+  "raw_sha256": "24735e696d5eb4e1bf212659d908b62c39b51af2138156a70751a640457f95e8",
+  "recorded_sha_match": true,
+  "exit_code": 0,
+  "passed_top_level": 15,
+  "passed_including_subtests": 35,
+  "failed": [],
+  "skipped": [],
+  "package_outcomes": [
+    {
+      "Time": "2026-10-22T07:41:00.939612+08:00",
+      "Action": "pass",
+      "Package": "github.com/multica-ai/multica/server/internal/service",
+      "Elapsed": 15.427
+    }
+  ],
+  "pass_identities": [
+    {
+      "line": 7,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationCommandHistoryAutomaticM11Detach/remove"
+    },
+    {
+      "line": 11,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationCommandHistoryAutomaticM11Detach/complete"
+    },
+    {
+      "line": 13,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationCommandHistoryAutomaticM11Detach"
+    },
+    {
+      "line": 19,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationResumeAliasesKeepIndependentHolds/unused_revoked_squad"
+    },
+    {
+      "line": 23,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationResumeAliasesKeepIndependentHolds/squad_head"
+    },
+    {
+      "line": 27,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationResumeAliasesKeepIndependentHolds/revoked_input_target"
+    },
+    {
+      "line": 29,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationResumeAliasesKeepIndependentHolds"
+    },
+    {
+      "line": 33,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationReconsentHoldRequiresFreshResumeBeforeLaunch"
+    },
+    {
+      "line": 39,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue/complete_permitted"
+    },
+    {
+      "line": 43,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue/cancel_never_permitted"
+    },
+    {
+      "line": 47,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue/cancel_preserves_first_stop"
+    },
+    {
+      "line": 49,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue"
+    },
+    {
+      "line": 55,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationPausedFollowupRequiresProofFreshResumeAndNeverRetriesStoppedInput/paused_inputs"
+    },
+    {
+      "line": 59,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationPausedFollowupRequiresProofFreshResumeAndNeverRetriesStoppedInput/empty_target"
+    },
+    {
+      "line": 61,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationPausedFollowupRequiresProofFreshResumeAndNeverRetriesStoppedInput"
+    },
+    {
+      "line": 65,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent"
+    },
+    {
+      "line": 69,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationManagedStopProofPreservesFreshResumeIntent"
+    },
+    {
+      "line": 73,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationRemovalOfNonRootBatchAuthorStopsRun"
+    },
+    {
+      "line": 77,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationTargetStopLeavesOtherTargetAndIssueActive"
+    },
+    {
+      "line": 81,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationIssueStopFencesChangedAndLaterTargetSets"
+    },
+    {
+      "line": 85,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDepartureStopsAuthorAndOwnerGroupsOnly"
+    },
+    {
+      "line": 89,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWholeLifecycleKeepsAllTargetBarriersOnReopen"
+    },
+    {
+      "line": 95,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/never_permitted_author"
+    },
+    {
+      "line": 99,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/permitted_author"
+    },
+    {
+      "line": 103,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/permitted_owner_other_author"
+    },
+    {
+      "line": 107,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/never_permitted_owner_other_author"
+    },
+    {
+      "line": 111,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/preserve_first_stop"
+    },
+    {
+      "line": 115,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/contradictory_running_without_permit"
+    },
+    {
+      "line": 117,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof"
+    },
+    {
+      "line": 121,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowVoluntaryLeaveAndMinimalRecovery"
+    },
+    {
+      "line": 127,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution/unrelated_participant"
+    },
+    {
+      "line": 131,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution/idle_active_owner"
+    },
+    {
+      "line": 135,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution/leaving_author"
+    },
+    {
+      "line": 139,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution/leaving_owner"
+    },
+    {
+      "line": 141,
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution"
+    }
+  ]
+}
