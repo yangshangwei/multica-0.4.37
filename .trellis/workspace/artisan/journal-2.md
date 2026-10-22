@@ -700,3 +700,42 @@ Implemented and verified target hold/control and resource invalidation boundarie
 ### Next Steps
 
 - 运行端附件/Git、通用 provider/非 Linux 隔离、P7 有限代管和 P8 完整验收；默认门禁保持关闭。
+
+## Session 95: Collaboration gap recovery current source, installed Main and old CLI acceptance
+<!-- trellis-session: v=2 fp=33d9d7ed864b90ec -->
+
+**Date**: 2026-10-22
+**Task**: Collaboration gap recovery current source, installed Main and old CLI acceptance
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Continued the existing task without replanning;96/97 exact clauses now pass with current race, Web/Electron/full Main and old CLI evidence. Real provider account/quota remains unverified and production gates closed.
+
+### Main Changes
+
+- WeCom relay validates immutable delivery before private wire/media; multiowner catalogue, source ordering/stage and offline/installed client evidence added.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `80b7af5da` | Prevent relayed chat replies from bypassing private collaboration delivery |
+| `b665756f9` | Keep every actual resource owner authoritative through derived collaboration runs |
+| `fbf5cc2ef` | Preserve external source identity and layout without changing collaboration authority |
+| `0a17aa7b2` | Keep offline workflow and proven-result notifications actionable across clients |
+| `63c0beeb5` | Make the current collaboration acceptance boundary traceable |
+| `a1d17d2ee` | Keep prior packaged CLI calls inside current collaboration control fences |
+| `e13160fa0` | Keep first-version collaboration flows consistent in the complete packaged client |
+
+### Testing
+
+- [OK] Current handoff112/406, source23/75, isolated outbound33/97, Core1024 Views94 Admin239/28; installed pair2/2 and natural reconnect2/2;404 evidence hashes and97 definitions verified.
+
+### Status
+
+[OK] **Verified slices recorded; task remains in_progress (AC43 pending)**
+
+### Next Steps
+
+- AC43 only: obtain separate real provider account/quota authorization and verify exact environment billing/provenance; keep task and parent in_progress.
