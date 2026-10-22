@@ -1,0 +1,526 @@
+{
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "head": "cae15dd72ee568f28ce29b19f0c76765b72f26cd",
+  "canonical_receipt": "outbound-tail-adjacent-result.json",
+  "full_ac84_promotion": false,
+  "real_provider_account_access": false,
+  "external_im": false,
+  "production_gate_change": false,
+  "runs": {
+    "narrow-first": {
+      "exit_code": 1,
+      "started_at": "2026-10-22T10:07:46.127594+00:00",
+      "finished_at": "2026-10-22T10:08:16.878105+00:00",
+      "duration_seconds": 30.719,
+      "counts": {
+        "passed": 67,
+        "failed": 0,
+        "skipped": 0
+      },
+      "top_level_counts": {
+        "passed": 11,
+        "failed": 0,
+        "skipped": 0
+      },
+      "packages": {
+        "github.com/multica-ai/multica/server/internal/integrations/lark": "pass",
+        "github.com/multica-ai/multica/server/internal/integrations/dingtalk": "pass",
+        "github.com/multica-ai/multica/server/internal/integrations/telegram": "pass",
+        "github.com/multica-ai/multica/server/internal/integrations/wecom": "pass",
+        "github.com/multica-ai/multica/server/internal/integrations/slack": "fail"
+      },
+      "stdout_sha256": "34eff05607b992bdf7b4b89b0afb20aed9f139470702cb0472e44cdee5f30866",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_changed_during_run": []
+    },
+    "narrow-final": {
+      "exit_code": 0,
+      "started_at": "2026-10-22T10:11:24.232131+00:00",
+      "finished_at": "2026-10-22T10:11:56.763562+00:00",
+      "duration_seconds": 32.413,
+      "counts": {
+        "passed": 77,
+        "failed": 0,
+        "skipped": 0
+      },
+      "top_level_counts": {
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0
+      },
+      "packages": {
+        "github.com/multica-ai/multica/server/internal/integrations/lark": "pass",
+        "github.com/multica-ai/multica/server/internal/integrations/dingtalk": "pass",
+        "github.com/multica-ai/multica/server/internal/integrations/telegram": "pass",
+        "github.com/multica-ai/multica/server/internal/integrations/wecom": "pass",
+        "github.com/multica-ai/multica/server/internal/integrations/slack": "pass"
+      },
+      "stdout_sha256": "724cd8800fccdf5681b911ec2e7859317e63aa1eb632bb9608a523db2813f91c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_changed_during_run": [
+        "server/internal/service/collaboration_catalogue_matrix_test.go"
+      ]
+    },
+    "adjacent": {
+      "exit_code": 0,
+      "started_at": "2026-10-22T10:15:30.513370+00:00",
+      "finished_at": "2026-10-22T10:16:38.199149+00:00",
+      "duration_seconds": 67.555,
+      "counts": {
+        "passed": 414,
+        "failed": 0,
+        "skipped": 3
+      },
+      "top_level_counts": {
+        "passed": 238,
+        "failed": 0,
+        "skipped": 3
+      },
+      "packages": {
+        "github.com/multica-ai/multica/server/internal/integrations/lark": "pass",
+        "github.com/multica-ai/multica/server/internal/integrations/dingtalk": "pass",
+        "github.com/multica-ai/multica/server/internal/integrations/telegram": "pass",
+        "github.com/multica-ai/multica/server/internal/integrations/wecom": "pass",
+        "github.com/multica-ai/multica/server/internal/integrations/slack": "pass"
+      },
+      "stdout_sha256": "d2ac55764fe6a4c254c56ecd1176515b66d4a7e44818c53cb1ef6c2fe4834ae2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_changed_during_run": []
+    },
+    "vet": {
+      "exit_code": 0,
+      "started_at": "2026-10-22T10:16:17.445311+00:00",
+      "finished_at": "2026-10-22T10:16:19.565726+00:00",
+      "duration_seconds": 2.003,
+      "counts": {
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0
+      },
+      "top_level_counts": {
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0
+      },
+      "packages": {},
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_changed_during_run": []
+    },
+    "redis-final": {
+      "exit_code": 0,
+      "started_at": "2026-10-22T10:27:35.255770+00:00",
+      "finished_at": "2026-10-22T10:27:43.745920+00:00",
+      "duration_seconds": 8.313,
+      "counts": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      "top_level_counts": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      "packages": {
+        "github.com/multica-ai/multica/server/internal/integrations/wecom": "pass"
+      },
+      "stdout_sha256": "f8c9321c10848b2a03e80859a65f4fd08fbf63f85bb0fc17b9d5222e560389b7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_changed_during_run": []
+    },
+    "isolated-final": {
+      "exit_code": 0,
+      "started_at": "2026-10-22T11:58:13.360268+00:00",
+      "finished_at": "2026-10-22T11:59:05.756147+00:00",
+      "duration_seconds": 52.249,
+      "counts": {
+        "passed": 97,
+        "failed": 0,
+        "skipped": 0
+      },
+      "top_level_counts": {
+        "passed": 33,
+        "failed": 0,
+        "skipped": 0
+      },
+      "packages": {
+        "github.com/multica-ai/multica/server/internal/integrations/lark": "pass",
+        "github.com/multica-ai/multica/server/internal/integrations/dingtalk": "pass",
+        "github.com/multica-ai/multica/server/internal/integrations/telegram": "pass",
+        "github.com/multica-ai/multica/server/internal/integrations/wecom": "pass",
+        "github.com/multica-ai/multica/server/internal/integrations/slack": "pass"
+      },
+      "stdout_sha256": "e80db4c95c7a0682db22ad9e715b783c2bd6541c1252d74c1f28b1f8f4be7281",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_changed_during_run": []
+    }
+  },
+  "changed_source_files": {
+    "server/internal/integrations/lark/collaboration_outbound_boundary_test.go": "7dfe4cff6b1296637d6953edab9187c196a4e6c7f528d5eaad210dd8445f4cd9",
+    "server/internal/integrations/dingtalk/collaboration_outbound_boundary_test.go": "07f820b1e30dbb3e3687c800a20f5e65a141545e1791cad2ac13a7208bc86dbe",
+    "server/internal/integrations/telegram/collaboration_outbound_boundary_test.go": "8ed776a2e0265a4537686a21e9e3f0a46fa23ff7efea7ea88434626888d4e5bd",
+    "server/internal/integrations/slack/collaboration_typing_boundary_test.go": "a988f1bb13b8de8203e76827cc11627f04b2bbe285e11f843c29de1ea51732aa"
+  },
+  "untouched_owned_wecom": "cbfeb9d085b04526103ab347c2649a61a538af673bad81b09e35f5525d28929a",
+  "boundary_tests": [
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "test": "TestCollaborationOutboundLarkPrivateFinalAndFailureRequireImmutableDelivery/shared_source_run/final_text"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "test": "TestCollaborationOutboundLarkPrivateFinalAndFailureRequireImmutableDelivery/shared_source_run/final_markdown"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "test": "TestCollaborationOutboundLarkPrivateFinalAndFailureRequireImmutableDelivery/shared_source_run/failure_card"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "test": "TestCollaborationOutboundLarkPrivateFinalAndFailureRequireImmutableDelivery/ordinary_child_without_delivery/final_text"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "test": "TestCollaborationOutboundLarkPrivateFinalAndFailureRequireImmutableDelivery/ordinary_child_without_delivery/final_markdown"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "test": "TestCollaborationOutboundLarkPrivateFinalAndFailureRequireImmutableDelivery/ordinary_child_without_delivery/failure_card"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "test": "TestCollaborationOutboundLarkPrivateFinalAndFailureRequireImmutableDelivery"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "test": "TestCollaborationOutboundLarkPrivateAttachmentPayloadsCannotBypassTextBoundary/shared_source_run/text_and_attachment"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "test": "TestCollaborationOutboundLarkPrivateAttachmentPayloadsCannotBypassTextBoundary/shared_source_run/file_only"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "test": "TestCollaborationOutboundLarkPrivateAttachmentPayloadsCannotBypassTextBoundary/ordinary_child_without_delivery/text_and_attachment"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "test": "TestCollaborationOutboundLarkPrivateAttachmentPayloadsCannotBypassTextBoundary/ordinary_child_without_delivery/file_only"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "test": "TestCollaborationOutboundLarkPrivateAttachmentPayloadsCannotBypassTextBoundary"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "test": "TestCollaborationOutboundLarkCancelledOnlyClearsTrackedReaction/shared_source_run"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "test": "TestCollaborationOutboundLarkCancelledOnlyClearsTrackedReaction/ordinary_child_without_delivery"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "test": "TestCollaborationOutboundLarkCancelledOnlyClearsTrackedReaction"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "test": "TestCollaborationOutboundDingTalkPrivateFinalAndFailureNeverReachHTTPWithoutDelivery/shared_source_run/final"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "test": "TestCollaborationOutboundDingTalkPrivateFinalAndFailureNeverReachHTTPWithoutDelivery/shared_source_run/failure"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "test": "TestCollaborationOutboundDingTalkPrivateFinalAndFailureNeverReachHTTPWithoutDelivery/ordinary_child_without_delivery/final"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "test": "TestCollaborationOutboundDingTalkPrivateFinalAndFailureNeverReachHTTPWithoutDelivery/ordinary_child_without_delivery/failure"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "test": "TestCollaborationOutboundDingTalkPrivateFinalAndFailureNeverReachHTTPWithoutDelivery"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "test": "TestCollaborationOutboundDingTalkPrivateAttachmentPayloadsCannotBypassTextBoundary/shared_source_run/text_and_attachment"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "test": "TestCollaborationOutboundDingTalkPrivateAttachmentPayloadsCannotBypassTextBoundary/shared_source_run/file_only"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "test": "TestCollaborationOutboundDingTalkPrivateAttachmentPayloadsCannotBypassTextBoundary/ordinary_child_without_delivery/text_and_attachment"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "test": "TestCollaborationOutboundDingTalkPrivateAttachmentPayloadsCannotBypassTextBoundary/ordinary_child_without_delivery/file_only"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "test": "TestCollaborationOutboundDingTalkPrivateAttachmentPayloadsCannotBypassTextBoundary"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "test": "TestCollaborationOutboundTelegramPrivateFinalFailureAndStreamNeverReachHTTPWithoutDelivery/shared_source_run/final"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "test": "TestCollaborationOutboundTelegramPrivateFinalFailureAndStreamNeverReachHTTPWithoutDelivery/shared_source_run/failure"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "test": "TestCollaborationOutboundTelegramPrivateFinalFailureAndStreamNeverReachHTTPWithoutDelivery/shared_source_run/stream"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "test": "TestCollaborationOutboundTelegramPrivateFinalFailureAndStreamNeverReachHTTPWithoutDelivery/shared_source_run/text_and_attachment"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "test": "TestCollaborationOutboundTelegramPrivateFinalFailureAndStreamNeverReachHTTPWithoutDelivery/shared_source_run/file_only"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "test": "TestCollaborationOutboundTelegramPrivateFinalFailureAndStreamNeverReachHTTPWithoutDelivery/shared_source_run/cancelled"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "test": "TestCollaborationOutboundTelegramPrivateFinalFailureAndStreamNeverReachHTTPWithoutDelivery/ordinary_child_without_delivery/final"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "test": "TestCollaborationOutboundTelegramPrivateFinalFailureAndStreamNeverReachHTTPWithoutDelivery/ordinary_child_without_delivery/failure"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "test": "TestCollaborationOutboundTelegramPrivateFinalFailureAndStreamNeverReachHTTPWithoutDelivery/ordinary_child_without_delivery/stream"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "test": "TestCollaborationOutboundTelegramPrivateFinalFailureAndStreamNeverReachHTTPWithoutDelivery/ordinary_child_without_delivery/text_and_attachment"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "test": "TestCollaborationOutboundTelegramPrivateFinalFailureAndStreamNeverReachHTTPWithoutDelivery/ordinary_child_without_delivery/file_only"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "test": "TestCollaborationOutboundTelegramPrivateFinalFailureAndStreamNeverReachHTTPWithoutDelivery/ordinary_child_without_delivery/cancelled"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "test": "TestCollaborationOutboundTelegramPrivateFinalFailureAndStreamNeverReachHTTPWithoutDelivery"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomPrivateDirectAndFileOnlyRequireDeliveryBeforeSenderOrStorage/shared_source_run/final"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomPrivateDirectAndFileOnlyRequireDeliveryBeforeSenderOrStorage/shared_source_run/file_only"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomPrivateDirectAndFileOnlyRequireDeliveryBeforeSenderOrStorage/ordinary_child_without_delivery/final"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomPrivateDirectAndFileOnlyRequireDeliveryBeforeSenderOrStorage/ordinary_child_without_delivery/file_only"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomPrivateDirectAndFileOnlyRequireDeliveryBeforeSenderOrStorage"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayReceiverRejectsPrivateAndUnknownDeliveryBeforeWire/shared_source_run"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayReceiverRejectsPrivateAndUnknownDeliveryBeforeWire/ordinary_child_without_delivery"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayReceiverRejectsPrivateAndUnknownDeliveryBeforeWire/delivery_lookup_failure"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayReceiverRejectsPrivateAndUnknownDeliveryBeforeWire"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayOrdinaryChildUsesItsExactDeliveryAndOwnMedia"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayRejectsTamperedOrInactiveDelivery/installation"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayRejectsTamperedOrInactiveDelivery/chat"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayRejectsTamperedOrInactiveDelivery/chat_type"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayRejectsTamperedOrInactiveDelivery/session"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayRejectsTamperedOrInactiveDelivery/workspace"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayRejectsTamperedOrInactiveDelivery/missing_task"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayRejectsTamperedOrInactiveDelivery/malformed_task"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayRejectsTamperedOrInactiveDelivery/malformed_session"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayRejectsTamperedOrInactiveDelivery/malformed_workspace"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayRejectsTamperedOrInactiveDelivery/inactive_installation"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayRejectsTamperedOrInactiveDelivery/other_channel"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayRejectsTamperedOrInactiveDelivery/web_input"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayRejectsTamperedOrInactiveDelivery/missing_queries"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayRejectsTamperedOrInactiveDelivery"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayReadFaultRetainsRetryWithoutPrivateWire/delivery"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayReadFaultRetainsRetryWithoutPrivateWire/task"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayReadFaultRetainsRetryWithoutPrivateWire/origin"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayReadFaultRetainsRetryWithoutPrivateWire/installation"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "test": "TestCollaborationOutboundWecomRelayReadFaultRetainsRetryWithoutPrivateWire"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "test": "TestCollaborationOutboundSlackRejectsSharedAndChildWithoutChannelDelivery/shared_run"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "test": "TestCollaborationOutboundSlackRejectsSharedAndChildWithoutChannelDelivery/ordinary_child_without_delivery"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "test": "TestCollaborationOutboundSlackRejectsSharedAndChildWithoutChannelDelivery"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "test": "TestCollaborationOutboundSlackTypingPrivateEventsOnlyClearTrackedOrdinaryState/shared_source_run/chat:done"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "test": "TestCollaborationOutboundSlackTypingPrivateEventsOnlyClearTrackedOrdinaryState/shared_source_run/task:failed"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "test": "TestCollaborationOutboundSlackTypingPrivateEventsOnlyClearTrackedOrdinaryState/shared_source_run/task:cancelled"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "test": "TestCollaborationOutboundSlackTypingPrivateEventsOnlyClearTrackedOrdinaryState/ordinary_child_without_tracked_reaction/chat:done"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "test": "TestCollaborationOutboundSlackTypingPrivateEventsOnlyClearTrackedOrdinaryState/ordinary_child_without_tracked_reaction/task:failed"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "test": "TestCollaborationOutboundSlackTypingPrivateEventsOnlyClearTrackedOrdinaryState/ordinary_child_without_tracked_reaction/task:cancelled"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "test": "TestCollaborationOutboundSlackTypingPrivateEventsOnlyClearTrackedOrdinaryState"
+    }
+  ],
+  "root_remaining_non_im_clauses": [
+    "agent/machine minimal parent reference",
+    "all collaboration write denials",
+    "dedicated run identity current-authority reads",
+    "unknown identity never treated as human"
+  ],
+  "derived_scope": "AC96",
+  "source_drift_since_canonical": [
+    "server/internal/service/collaboration_catalogue_matrix_test.go"
+  ],
+  "redis_supplement": {
+    "database_alias": "service_s6_other",
+    "url": "redis://127.0.0.1:57244/0",
+    "preflight": "outbound-tail-redis-preflight.json",
+    "passed": [
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+        "test": "TestRelay_ARetriedReplyKeepsItsPlaceInLine"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+        "test": "TestRelay_AReplyNoReplicaCouldSendIsCountedOnce"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+        "test": "TestRelay_ADeliveredReplyIsCountedOnceAndNotAlsoLost"
+      }
+    ],
+    "interpretation": "Separate 3/3 supplemental current evidence; adjacent retains original 3 skips."
+  },
+  "commit_isolation": {
+    "base_head": "cae15dd72ee568f28ce29b19f0c76765b72f26cd",
+    "archive_sha256": "bdd207e0f9cb5877c9080f3091fcac8d3499ae7210ed456cfb69086e296721c0",
+    "isolation_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-outbound-isolated-final-20261022-1z3ujb0h",
+    "copied_file_count": 9,
+    "copied_files": {
+      "server/internal/integrations/lark/collaboration_outbound_boundary_test.go": "7dfe4cff6b1296637d6953edab9187c196a4e6c7f528d5eaad210dd8445f4cd9",
+      "server/internal/integrations/dingtalk/collaboration_outbound_boundary_test.go": "07f820b1e30dbb3e3687c800a20f5e65a141545e1791cad2ac13a7208bc86dbe",
+      "server/internal/integrations/telegram/collaboration_outbound_boundary_test.go": "8ed776a2e0265a4537686a21e9e3f0a46fa23ff7efea7ea88434626888d4e5bd",
+      "server/internal/integrations/wecom/collaboration_outbound_boundary_test.go": "cbfeb9d085b04526103ab347c2649a61a538af673bad81b09e35f5525d28929a",
+      "server/internal/integrations/slack/collaboration_typing_boundary_test.go": "a988f1bb13b8de8203e76827cc11627f04b2bbe285e11f843c29de1ea51732aa",
+      "server/internal/integrations/wecom/relay_outbound.go": "c0b2be0d56ddde20435dadc2e6de6e04b8ea998a240a73cb75066b22f6f6f1d6",
+      "server/internal/integrations/wecom/outbound_test.go": "e575bf3a5ba0a7a41dc9ecd2e3df02460c1caf8c6c6763aecfee231a6d3596ad",
+      "server/internal/integrations/wecom/outbound_two_replica_db_test.go": "2ff230b4f9d3db8b9c767c6b50c6112870a14ee72606e83964c918155b71d672",
+      "server/internal/integrations/wecom/relay_ordering_db_test.go": "1d7f3ccb588aa7dd6b4042dcf17a20f1914e4143262f36476bf4f431228dedf0"
+    },
+    "root_copied_files_changed_during_run": [],
+    "receipt": "outbound-tail-isolated-final-result.json",
+    "scope": "Base HEAD archive plus only the exact nine outbound source/test files; no other working-tree files copied."
+  }
+}

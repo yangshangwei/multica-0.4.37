@@ -83,12 +83,12 @@ type fakeOutboundQueries struct {
 func askedOverWecom() *bool  { asked := true; return &asked }
 func askedInTheWebUI() *bool { asked := false; return &asked }
 
-func (f *fakeOutboundQueries) GetChannelTaskDelivery(context.Context, pgtype.UUID) (db.ChannelTaskDelivery, error) {
+func (f *fakeOutboundQueries) GetChannelTaskDelivery(_ context.Context, taskID pgtype.UUID) (db.ChannelTaskDelivery, error) {
 	if f.sessionErr != nil {
 		return db.ChannelTaskDelivery{}, f.sessionErr
 	}
 	return db.ChannelTaskDelivery{
-		BindingID: f.sessionBinding.ID, InstallationID: f.sessionBinding.InstallationID,
+		TaskID: taskID, BindingID: f.sessionBinding.ID, InstallationID: f.sessionBinding.InstallationID,
 		ChannelType: channelTypeWecom, ChannelChatID: f.sessionBinding.ChannelChatID,
 		ChatType:         f.sessionBinding.ChatType,
 		ChannelMessageID: f.sessionBinding.LastMessageID, ChannelThreadID: f.sessionBinding.LastThreadID,

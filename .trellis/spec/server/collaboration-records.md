@@ -66,10 +66,48 @@ ordinary task/chat/inbox events. A modern collaboration run has no ordinary
 `agent_task_queue` task identity. IM consumers retain their ordinary immutable
 `channel_task_delivery` and input-origin checks; knowing a shared run or child
 ID and having a live chat binding does not grant delivery or private context.
-The actual Slack subscriber test denies missing/failed delivery before account
-lookup, then verifies one authorized ordinary-child reply and durable message
-provenance. Other adapters' direct/stream/failure/relay/media private-context
-execution remains separate evidence; Slack pass is not an all-adapter claim.
+The actual subscriber regressions deny missing/failed delivery before account,
+credential, sender or storage lookup. Slack, Lark, DingTalk, Telegram and Wecom
+retain ordinary-child transport positives; direct/stream/failure/file-only
+selectors must verify their actual package paths independently.
+
+Wecom `deliverRelayed(ctx, relayFrame)` is a separate delivery boundary from
+its publisher. For `kind: reply`, revalidate the immutable delivery's task,
+installation, channel, chat and chat type; task session and channel-ingested
+input origin; and current active installation/workspace before text or media.
+A live socket, shared run UUID, stale frame or private source parent is not
+permission. `TaskID`, `SessionID` and `WorkspaceID` must be valid exact IDs.
+Missing queries/rows, malformed or mismatched facts and inactive authority end
+the reply without wire/storage. A temporary read error before wire releases
+the claim through `outcomeProvablyNotSent` for the existing bounded original
+event retry. Log only a fixed lookup stage, never the underlying private error.
+Keep attempted-write/ack-timeout outcomes conservative and inbox pushes with
+their existing separate delivery semantics.
+
+`TestCollaborationOutboundWecomRelayReadFaultRetainsRetryWithoutPrivateWire`
+fails each delivery/task/origin/installation query, asserts zero wire/storage
+and private diagnostic leakage, recovers the same event once and deduplicates
+its replay. Ordinary relay wire/Redis fixtures must retain actual workspace,
+task/session, delivery and provenance; nil queries or an empty workspace do not
+prove the sender positive. Real DB/media/socket regressions remain separate
+from commercial IM endpoints or provider accounts.
+
+### Existing IM cancellation and attachment-field exits
+
+Lark/DingTalk/Telegram completion paths are text/card only; their query/client
+interfaces have no outbound attachment reader or binary upload. Inbound media
+capabilities do not imply an outbound file API. Run attachment-bearing/file-only
+maps through their actual subscribers and assert no account/credential/wire
+access on protected identities, with exact ordinary text positives. Do not
+invent an absent binary-send implementation to fill a test matrix.
+
+Lark cancellation removes only a previously tracked ordinary typing reaction.
+Telegram cancellation clears its tracked stream and sends no replacement text.
+Slack chat-done/failure/cancellation subscribers likewise remove only their
+tracked ordinary reaction once. Untracked shared/private identities preserve
+unrelated ordinary state and touch no installation, credentials or local wire.
+Real loopback transport and private sentinel assertions are required; these
+state-only exits have no private business-content lookup surface.
 
 ### Recorded data and paging
 

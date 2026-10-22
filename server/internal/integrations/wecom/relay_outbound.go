@@ -62,12 +62,15 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
 	"github.com/multica-ai/multica/server/internal/events"
+	"github.com/multica-ai/multica/server/internal/integrations/channel"
 	"github.com/multica-ai/multica/server/internal/integrations/channel/engine"
 	"github.com/multica-ai/multica/server/internal/realtime"
 	"github.com/multica-ai/multica/server/internal/util"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
 // relayPublisher is the slice of the realtime relay this package needs.
@@ -986,6 +989,52 @@ func (o *Outbound) deliverRelayed(ctx context.Context, f relayFrame) deliveryOut
 	if err != nil || !instID.Valid {
 		return outcomeDone // unaddressable; a retry cannot make it addressable
 	}
+	if f.Kind == relayKindReply {
+		if o.q == nil {
+			return outcomeDone
+		}
+		taskID, err := util.ParseUUID(f.TaskID)
+		if err != nil || !taskID.Valid {
+			return outcomeDone
+		}
+		// A live socket and a replayed frame do not authorize a reply. Recheck
+		// its exact immutable channel delivery before text or media can leave.
+		delivery, err := o.q.GetChannelTaskDelivery(ctx, taskID)
+		if err != nil {
+			return o.relayReadFailure(ctx, "delivery", err)
+		}
+		if delivery.TaskID != taskID || delivery.ChannelType != channelTypeWecom ||
+			delivery.InstallationID != instID || delivery.ChannelChatID != f.ChatID ||
+			aibotChatTypeFromChannel(channel.ChatType(delivery.ChatType)) != f.ChatType {
+			return outcomeDone
+		}
+		sessionID, sessionErr := util.ParseUUID(f.SessionID)
+		workspaceID, workspaceErr := util.ParseUUID(f.WorkspaceID)
+		if sessionErr != nil || workspaceErr != nil || !sessionID.Valid || !workspaceID.Valid {
+			return outcomeDone
+		}
+		task, err := o.q.GetAgentTask(ctx, taskID)
+		if err != nil {
+			return o.relayReadFailure(ctx, "task", err)
+		}
+		if task.ID != taskID || task.ChatSessionID != sessionID {
+			return outcomeDone
+		}
+		fromChannel, err := engine.TaskInputIsChannelIngested(ctx, o.q, task)
+		if err != nil {
+			return o.relayReadFailure(ctx, "origin", err)
+		}
+		if !fromChannel {
+			return outcomeDone
+		}
+		inst, err := o.q.GetChannelInstallation(ctx, db.GetChannelInstallationParams{ID: instID, ChannelType: channelTypeWecom})
+		if err != nil {
+			return o.relayReadFailure(ctx, "installation", err)
+		}
+		if inst.ID != instID || inst.WorkspaceID != workspaceID || inst.Status != string(InstallationActive) {
+			return outcomeDone
+		}
+	}
 	if o.senders == nil {
 		return outcomeNotOurs
 	}
@@ -1037,6 +1086,16 @@ func (o *Outbound) deliverRelayed(ctx context.Context, f relayFrame) deliveryOut
 		}, f.Content == "")
 	}
 	return outcomeDone
+}
+
+func (o *Outbound) relayReadFailure(ctx context.Context, stage string, err error) deliveryOutcome {
+	if errors.Is(err, pgx.ErrNoRows) {
+		return outcomeDone
+	}
+	// Lookup errors can contain private data. The stage is sufficient to
+	// diagnose a retry before any text, attachment or socket was accessed.
+	o.logger.WarnContext(ctx, "wecom relay: reply lookup unavailable; retrying", "stage", stage)
+	return outcomeProvablyNotSent
 }
 
 // ownsSocket is the pre-claim ownership gate. Cheap by design: one map read.
