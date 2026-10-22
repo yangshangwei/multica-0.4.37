@@ -1,0 +1,19 @@
+test(collaboration): retain private files when comment display references disappear
+
+Prove real typed human and owned AI creation remains idle in both clients.
+Then remove a comment file reference and delete the remaining attached
+comment, preserving the frozen AI input and permanent issue delivery.
+
+Both clients refresh and restart to preview/download original file bytes
+from issue and history. Revoke/reinvite the reader and require old capabilities
+to stay denied before expiry while fresh authorized reads remain available.
+
+Constraint: Current display references do not own retained file lifecycle
+Rejected: Delete files with their last comment reference | loses immutable history and AI inputs
+Confidence: high
+Scope-risk: narrow
+Reversibility: clean
+Tested: Actual Web/Electron3/3 with twelve byte-equal downloads, backend race13/19, strict TypeScript/root ESLint, independent full AC67/75 review
+Not-tested: Real provider accounts, full installed Main/installer, old-client startup and other-OS containment
+Directive: Verify PATCH and current comment for removed attachment IDs; edit receipt may omit the empty field
+Co-authored-by: OmX <omx@oh-my-codex.dev>

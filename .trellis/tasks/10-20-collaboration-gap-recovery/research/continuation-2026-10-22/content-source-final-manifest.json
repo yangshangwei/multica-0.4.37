@@ -1,0 +1,70 @@
+{
+  "at": "2026-10-21T23:44:11.678486+00:00",
+  "sources": [
+    {
+      "path": "e2e/collaboration-retained-attachment.spec.ts",
+      "sha256": "ad691690e092dec6ba07a1df38a0cc4106477b0d84ac7f62ef9b70da30766f23",
+      "bytes": 9793
+    },
+    {
+      "path": "e2e/fixtures/collaboration-retained-attachments.ts",
+      "sha256": "48172c02a31223aa504a57443defab1b92f1c4c03e329b47a67fe747dae24938",
+      "bytes": 33530
+    },
+    {
+      "path": "e2e/fixtures/collaboration-control-journey.ts",
+      "sha256": "a9ffc9f134dd0471c1dc984b6dcf2be130f98e390558e9940b0724a49cfd5488",
+      "bytes": 48965
+    },
+    {
+      "path": "e2e/fixtures/collaboration-native.ts",
+      "sha256": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+      "bytes": 7804
+    },
+    {
+      "path": "e2e/fixtures/collaboration-account-electron.mjs",
+      "sha256": "f9021ab07635f2f48d0f90613fcd3c8558cb7262b3bdd2aca98edb31654475d2",
+      "bytes": 8687
+    }
+  ],
+  "source_changed_during_final": [],
+  "changed_files": [
+    "e2e/collaboration-retained-attachment.spec.ts",
+    "e2e/fixtures/collaboration-retained-attachments.ts",
+    "e2e/fixtures/collaboration-control-journey.ts (two return-only closures)"
+  ],
+  "unmodified_existing_specs": [
+    "e2e/collaboration-delivery-web.spec.ts",
+    "e2e/collaboration-account-desktop.spec.ts"
+  ],
+  "final_clients": {
+    "startTime": "2026-10-21T23:41:14.870Z",
+    "duration": 28064.248,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "backend": {
+    "exit_code": 0,
+    "elapsed_s": 45.373,
+    "finished_at": "2026-10-21T23:36:37.455189+00:00",
+    "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/content-backend-current.jsonl",
+    "stdout_sha256": "9273df4a40809fffd71e5a4b0bbaa7c880ca57499ac6fd95f795e6ea24bfeb18",
+    "source_changed_during_run": [],
+    "passed_top_level": 13,
+    "passed_including_subtests": 19,
+    "failed": [],
+    "skipped": []
+  },
+  "exact_clauses": {
+    "AC67": "actual Web+Electron typed human/owned AI body; current source/participants/control/delivery one identity and initial idle preserved through original-key replay/refresh/restart; thirteen canonical race tests own atomicity/ciphertext",
+    "AC75": "Web author and Electron authorized reader; real UI attachment removal and sibling deletion; twelve exact-byte issue/history downloads across refresh and client restart; frozen command/control and sibling unaffected; revoked old content+download capabilities404 before expiry after remove/rejoin"
+  },
+  "scope_boundaries": [
+    "synthetic managed Linux resource remains offline; no process/provider account starts",
+    "actual production download IPC harness; full installed Main/packaging/old-client evidence separate",
+    "full canonical permission matrix stays backend primary; no added DOM matrix",
+    "review and ledger promotion belong to coordinator and independent reviewer"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s6_other",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "./internal/handler",
+    "-run",
+    "^TestCollaboration(CreateIsAtomicIdempotentAndScoped|CreationFailureRollsBackEveryOwnedRecord|CreationUnknownCommitRecoversOriginalIdentity|AttachmentCreationBindingRollsBackWithRequiredWrites|AttachmentScopeCiphertextAndLiveAccess|AttachmentUnknownCommitPreservesOriginalBytes|AttachmentCommandSnapshotOutlivesCommentDeletion|AttachmentSourceOnlyCapabilityTracksMembershipIdentity|AttachmentHTTPUsesScopedUploadAndRevocableNativeBytes|CommentAttachmentDisplayRemovalKeepsDeliveredFile|AttachmentCapabilityRejectsTamperingAndInvalidSelections|AttachmentSlowReadRechecksRevocationBeforeBytes|PrivateObjectsRejectOrdinaryFileCapabilities)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "database_alias": "service_s6_other",
+  "started_at": "2026-10-21T23:35:52.081393+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_attachments_test.go": "6231ea4376e93e0efd6e05672a2ab02816755e008b107f9a7020b97da1fe021f",
+    "server/internal/handler/collaboration_attachments_test.go": "63922cf6442ad54ed794492ea0450c58b5e9d95f5502d0c4d2b473d377d0119e",
+    "server/internal/service/collaboration_test.go": "3c8b9ef3be8809966946e03b0927f336b3f0611392fe563fb1dd6edabd321c52"
+  },
+  "real_provider_account_access": false,
+  "production_gate_change": false,
+  "exit_code": 0,
+  "elapsed_s": 45.373,
+  "finished_at": "2026-10-21T23:36:37.455189+00:00",
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/content-backend-current.jsonl",
+  "stdout_sha256": "9273df4a40809fffd71e5a4b0bbaa7c880ca57499ac6fd95f795e6ea24bfeb18",
+  "source_changed_during_run": [],
+  "passed_top_level": 13,
+  "passed_including_subtests": 19,
+  "failed": [],
+  "skipped": []
+}

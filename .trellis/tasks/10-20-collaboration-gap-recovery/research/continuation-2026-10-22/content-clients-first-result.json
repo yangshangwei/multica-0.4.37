@@ -1,0 +1,87 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-retained-attachment.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=json",
+    "--output",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/content-clients-first-artifacts"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "start": "2026-10-21T23:39:30.508501+00:00",
+  "environment_scope": "task-owned password/admin API18996/production Web13916/renderer6090",
+  "preflight": "content-admin-preflight.json",
+  "real_provider_account_access": false,
+  "installed_full_main": false,
+  "returncode": 1,
+  "end": "2026-10-21T23:39:50.719059+00:00",
+  "raw_sha256": "34ef8919a230ccb2ec31dd6fc2e15089089ecb4bface939534b521db50c971e0",
+  "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+  "stats": {
+    "startTime": "2026-10-21T23:39:31.237Z",
+    "duration": 19452.184,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "file": "collaboration-retained-attachment.spec.ts",
+      "line": 141,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 6444,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "file": "collaboration-retained-attachment.spec.ts",
+      "line": 141,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 7116,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+      "file": "collaboration-retained-attachment.spec.ts",
+      "line": 156,
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "retry": 0,
+          "duration": 4469,
+          "errors": [
+            {
+              "location": {
+                "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-retained-attachments.ts",
+                "column": 19,
+                "line": 202
+              },
+              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoMatchObject\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 0\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"attachment_ids\": Array [],\u001b[39m\n\u001b[2m    \"comment_id\": \"ca27faef-7fbe-473d-8b7f-995567591841\",\u001b[22m\n\u001b[2m    \"targets\": Array [],\u001b[22m\n\u001b[2m  }\u001b[22m\n\n   at fixtures/collaboration-retained-attachments.ts:202\n\n  200 |   expect(response.status()).toBe(200);\n  201 |   const receipt = CollaborationCommentReceiptSchema.parse(await response.json());\n> 202 |   expect(receipt).toMatchObject({ comment_id: commentId, attachment_ids: [], targets: [] });\n      |                   ^\n  203 |   await expect(editor).toHaveCount(0);\n  204 |   await expect(comment.getByRole(\"button\", { name: `Preview ${file.name}`, exact: true })).toHaveCount(0);\n  205 |   return { request_id: response.request().headers()[\"idempotency-key\"], comment_id: commentId, event_id: receipt.event_id, event_seq: receipt.event_seq };\n    at removeDisplayReference (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-retained-attachments.ts:202:19)\n    at exerciseRetainedAttachments (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-retained-attachments.ts:300:19)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-retained-attachment.spec.ts:166:22"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

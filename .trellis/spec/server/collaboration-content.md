@@ -177,3 +177,29 @@ delivered file when its last current comment reference disappears.
 
 Correct: persist immutable file IDs, authorize every byte request through the
 current issue, and retain delivered history independently of display references.
+
+## Current typed creation and retained-file acceptance
+
+`e2e/collaboration-retained-attachment.spec.ts` uses the public shared form in
+Web and Electron with a body containing a real human and creator-owned typed
+AI mention. First draft upload is private; creation, original-key replay,
+refresh and client restart preserve one issue, both participants, the paused
+control and empty commands/groups/runs. Canonical creation/attachment service
+tests separately prove atomic rollback, unknown commits and ciphertext storage.
+Do not infer creation inertness from a body with no typed mention.
+
+The retained-file case removes one comment's display reference and deletes a
+second attached comment. Verify the actual PATCH `attachment_ids: []` and the
+current comment GET; an edit receipt may omit the empty list. Other comment
+references and the original frozen AI command remain unchanged until their own
+explicit action. Both clients preview issue, edited/deleted-comment history and
+command-history bytes after refresh and restart; downloads compare the original
+bytes, including Electron's real file-download IPC completion. No remaining
+current comment reference is required for permanent issue delivery.
+
+Revoke a reader while its preview is open, then check redaction and old preview
+and download capabilities before their expiry. Reinvite permits fresh current
+reads but does not revive those old capabilities. Anonymous reads deny without
+a public redirect. These actual client tests use isolated password sessions and
+synthetic offline resources; installed Main, other OS containment and real
+provider accounts remain separate evidence.

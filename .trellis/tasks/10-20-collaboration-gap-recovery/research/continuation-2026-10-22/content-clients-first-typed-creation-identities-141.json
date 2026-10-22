@@ -1,0 +1,440 @@
+{
+  "issue_id": "01a160d5-bc92-7bd7-a72b-3daca084efcc",
+  "fixture_issue_id": "01a160d5-afd9-731c-b4f7-0fd76d7d6067",
+  "request_id": "5ce40a1d-cd8e-4381-99ae-7fab21346f9f",
+  "creation_actor": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+  "handler_id": "a596f44d-33e8-4042-94ab-2c4ac97f37c9",
+  "source_workspace_id": "f40d5b95-b130-4ca1-b138-7cfebe8fae0b",
+  "typed_agent": {
+    "id": "df879451-a1cb-41a3-bc81-4748e7add1af",
+    "catalogue_issue_id": "01a160d5-afd9-731c-b4f7-0fd76d7d6067",
+    "target_id": "63215fb0-988e-4816-a3ff-454b132d98cd",
+    "owned_by_creator": true
+  },
+  "typed_human": {
+    "id": "a596f44d-33e8-4042-94ab-2c4ac97f37c9",
+    "catalogue_issue_id": "01a160d5-afd9-731c-b4f7-0fd76d7d6067",
+    "initial_handler": true
+  },
+  "body_sha256": "b4fd998853af00a7f8f22aebd622dc75bf265ad28a37f83a5fb75414ce1c2cc9",
+  "attachment_id": "88e466f9-5066-45f0-91ed-c467b7813fb1",
+  "attachment_version": "1",
+  "first_upload_private": true,
+  "initial_session": {
+    "id": "f710094e-c455-4f5b-aa34-145fdb2ca368",
+    "queue_state": "paused",
+    "control_version": "1"
+  },
+  "final_session": {
+    "id": "f710094e-c455-4f5b-aa34-145fdb2ca368",
+    "queue_state": "paused",
+    "control_version": "1"
+  },
+  "ordinary_dispatch_count": 0,
+  "exact_source_issue_matches": 1,
+  "firstDownload": {
+    "sha256": "fb042046a735cd6fc2cfb059d12437b7506a3946c6d6f5d1f751c6568cc303b1",
+    "filename": "typed-creation.txt",
+    "bytes": 65
+  },
+  "refresh_and_restart_preserve_idle": true,
+  "platform": "Electron",
+  "sources": [
+    {
+      "path": "e2e/collaboration-retained-attachment.spec.ts",
+      "sha256": "ad691690e092dec6ba07a1df38a0cc4106477b0d84ac7f62ef9b70da30766f23"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-retained-attachments.ts",
+      "sha256": "d4edbf4fc68f898e71543a53719d96e8eb2fff8fabce5f2bd462dcc4e0302523"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-control-journey.ts",
+      "sha256": "a9ffc9f134dd0471c1dc984b6dcf2be130f98e390558e9940b0724a49cfd5488"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-native.ts",
+      "sha256": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-account-electron.mjs",
+      "sha256": "f9021ab07635f2f48d0f90613fcd3c8558cb7262b3bdd2aca98edb31654475d2"
+    }
+  ],
+  "requests": [
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/creation-options",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/creation-options",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/recipients/resolve",
+      "method": "POST",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/attachments/drafts/3ee9daab-b91d-4deb-8d65-e65b9c7b71b8",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/attachments/drafts",
+      "method": "POST",
+      "request_id": "17628cb9-3629-4060-9a19-f0ee5e808373",
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/attachments/drafts/3ee9daab-b91d-4deb-8d65-e65b9c7b71b8",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues",
+      "method": "POST",
+      "request_id": "5ce40a1d-cd8e-4381-99ae-7fab21346f9f",
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/creation-options",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/creation-options",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/attachments/drafts/3ee9daab-b91d-4deb-8d65-e65b9c7b71b8",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/recipients/resolve",
+      "method": "POST",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/reactions",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/attachments",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/activity",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/mention-targets",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/comments",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/attachments/88e466f9-5066-45f0-91ed-c467b7813fb1/content",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/attachments/88e466f9-5066-45f0-91ed-c467b7813fb1/capabilities",
+      "method": "POST",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/reactions",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/attachments",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/activity",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/mention-targets",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/comments",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/reactions",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/attachments",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/activity",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/mention-targets",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/comments",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Electron",
+      "actor_id": "92994cf7-8660-4e5e-96b1-1d0b0e3e92b4",
+      "path": "/api/collaboration/issues/01a160d5-bc92-7bd7-a72b-3daca084efcc/attachments/88e466f9-5066-45f0-91ed-c467b7813fb1/content",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    }
+  ],
+  "errors": [],
+  "native_sessions": [
+    {
+      "errors": [],
+      "no_ambient_workspace": true,
+      "daemon_starts": 0
+    },
+    {
+      "errors": [],
+      "no_ambient_workspace": true,
+      "daemon_starts": 0
+    }
+  ],
+  "environment": {
+    "api": "http://localhost:18996",
+    "production_web": "http://localhost:13916",
+    "renderer": "http://localhost:6090",
+    "native_os": "darwin",
+    "real_provider_account_access": false,
+    "installed_full_main": false,
+    "source_preflight": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/content-admin-preflight.json"
+  }
+}

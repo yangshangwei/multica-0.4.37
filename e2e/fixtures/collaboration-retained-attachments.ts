@@ -1,0 +1,395 @@
+import { createHash, randomUUID } from "node:crypto";
+import { expect, type Locator, type Page } from "@playwright/test";
+import type { TestApiClient } from "../fixtures";
+import { CollaborationIssueSchema, type CollaborationIssue } from "../../packages/core/collaboration/schema";
+import { CollaborationAttachmentSchema, CollaborationAttachmentsSchema, parseCollaborationAttachmentCapability,
+  type CollaborationAttachment } from "../../packages/core/collaboration/attachment-schema";
+import { CollaborationCommentSchema, CollaborationCommentReceiptSchema, CollaborationCommentHistorySchema,
+  CollaborationMentionTargetsSchema, CollaborationCommentsSchema } from "../../packages/core/collaboration/content-schema";
+import { CollaborationCommandHistorySchema } from "../../packages/core/collaboration/command-history-schema";
+import { CollaborationParticipantsSchema } from "../../packages/core/collaboration/participant-schema";
+import { seedCollaborationControlJourney } from "./collaboration-control-journey";
+
+export interface RetainedSession {
+  page: Page;
+  platform: "Web" | "Electron";
+  navigate(path: string): Promise<void>;
+  restart(): Promise<RetainedSession>;
+  download(button: Locator, name: string, bytes: Buffer, stage: string): Promise<{ sha256: string; filename: string; bytes: number }>;
+}
+
+export function retainedAttachmentEnvironment() {
+  if (process.env.E2E_PASSWORD_AUTH !== "1") throw new Error("Retained attachment acceptance requires the owned password environment");
+  const apiUrl = process.env.COLLABORATION_E2E_API_URL;
+  const rendererUrl = process.env.COLLABORATION_ELECTRON_RENDERER_URL;
+  for (const value of [apiUrl, rendererUrl, process.env.NEXT_PUBLIC_API_URL, process.env.DATABASE_URL]) {
+    if (!value || !["localhost", "127.0.0.1"].includes(new URL(value).hostname)) throw new Error("Retained attachments require explicit loopback services");
+  }
+  expect(new URL(apiUrl!).origin).toBe(new URL(process.env.NEXT_PUBLIC_API_URL!).origin);
+  expect(["", "multica", "postgres", "template0", "template1"]).not.toContain(new URL(process.env.DATABASE_URL!).pathname.slice(1));
+  return { apiUrl: apiUrl!, rendererUrl: rendererUrl! };
+}
+
+/** Reuse public enrollment/consent without calling the optional simulated daemon. */
+export async function seedRetainedAttachments() {
+  retainedAttachmentEnvironment();
+  const fixture = await seedCollaborationControlJourney();
+  const issue = await readIssue(fixture.creator, fixture.issueId);
+  expect(issue.session.queue_state).toBe("paused");
+  expect(issue.execution).toMatchObject({ groups: [], runs: [], commands: [] });
+  const catalogue = CollaborationMentionTargetsSchema.parse(await fixture.creator.requestJSON(`${issueRoot(fixture.issueId)}/mention-targets`));
+  const agent = catalogue.targets.find((target) => target.target_id === fixture.agentA.targetId);
+  const human = catalogue.participants.find((participant) => participant.user_id === fixture.creatorId);
+  if (!agent) throw new Error("The real consented agent is missing from its authorized catalogue");
+  if (!human) throw new Error("The typed human recipient is missing from the current participant catalogue");
+  expect(agent).toMatchObject({ kind: "agent", resource_id: fixture.agentA.resourceId, queue_state: "paused" });
+  const resource = await fixture.owner.requestJSON<{ id: string; name: string; owner_id: string; runtime_id: string; workspace_id: string }>(`/api/agents/${agent.resource_id}`);
+  expect(resource).toMatchObject({ id: agent.resource_id, name: agent.name, owner_id: fixture.ownerId,
+    runtime_id: fixture.runtimeId, workspace_id: fixture.executionWorkspace.id });
+  expect((await fixture.owner.requestJSON<{ id: string; status: string }[]>("/api/runtimes?owner=me"))
+    .find((runtime) => runtime.id === fixture.runtimeId)?.status).toBe("offline");
+  return { ...fixture, initial: issue, agent, human };
+}
+export type RetainedAttachmentFixture = Awaited<ReturnType<typeof seedRetainedAttachments>>;
+
+const issueRoot = (id: string) => `/api/collaboration/issues/${id}`;
+const accountPath = (id: string) => `/account?view=participating&issue=${id}`;
+const digest = (bytes: string | Buffer) => createHash("sha256").update(bytes).digest("hex");
+const readIssue = async (actor: TestApiClient, id: string) => CollaborationIssueSchema.parse(await actor.requestJSON(issueRoot(id)));
+const readComments = async (actor: TestApiClient, id: string) => CollaborationCommentsSchema.parse(await actor.requestJSON(`${issueRoot(id)}/comments?limit=100`));
+const readComment = async (actor: TestApiClient, id: string, commentId: string) => CollaborationCommentSchema.parse(await actor.requestJSON(`${issueRoot(id)}/comments/${commentId}`));
+const readHistory = async (actor: TestApiClient, id: string, commentId: string) => CollaborationCommentHistorySchema.parse(await actor.requestJSON(`${issueRoot(id)}/comments/${commentId}/history`));
+const readFiles = async (actor: TestApiClient, id: string) => CollaborationAttachmentsSchema.parse(await actor.requestJSON(`${issueRoot(id)}/attachments`));
+const readCommands = async (actor: TestApiClient, id: string) => CollaborationCommandHistorySchema.parse(await actor.requestJSON(`${issueRoot(id)}/commands?limit=100`));
+
+function observations(issue: CollaborationIssue) {
+  if (!issue.write_context) throw new Error("Current human write observations are required");
+  return { expected_collaboration_revision: issue.collaboration_revision, expected_lifecycle_epoch: issue.lifecycle_epoch,
+    expected_participant_epoch: issue.write_context.participant_epoch, expected_account_epoch: issue.write_context.account_epoch };
+}
+
+async function authenticatedBytes(apiUrl: string, actor: TestApiClient, path: string) {
+  return fetch(`${apiUrl}${path}`, { headers: { Authorization: `Bearer ${actor.getToken()!}` }, redirect: "error" });
+}
+
+function assertPrivateResponse(response: Response, status: number) {
+  expect(response.status).toBe(status);
+  expect(response.redirected).toBe(false);
+  expect(response.headers.get("cache-control")).toContain("no-store");
+  expect(response.headers.get("referrer-policy")).toBe("no-referrer");
+}
+
+async function assertIdle(fixture: RetainedAttachmentFixture, actor: TestApiClient, id: string) {
+  const issue = await readIssue(actor, id);
+  expect(issue.session.queue_state).toBe("paused");
+  expect(issue.execution).toMatchObject({ targets: [], channels: [], commands: [], groups: [], runs: [] });
+  expect(await actor.countIssueDispatches(id)).toBe(0);
+  expect(await readCommands(actor, id)).toMatchObject({ items: [], next_cursor: null });
+  expect((await readIssue(fixture.creator, fixture.issueId)).session).toEqual(fixture.initial.session);
+  expect((await readIssue(fixture.creator, fixture.issueId)).execution).toEqual(fixture.initial.execution);
+  return issue;
+}
+
+async function preview(session: RetainedSession, container: Locator, file: CollaborationAttachment, bytes: Buffer) {
+  await container.getByRole("button", { name: `Preview ${file.name}`, exact: true }).first().click();
+  const dialog = session.page.getByRole("dialog", { name: file.name, exact: true });
+  await expect(dialog.locator("pre")).toHaveText(bytes.toString());
+  await dialog.getByRole("button", { name: "Close preview", exact: true }).click();
+  await expect(dialog).toHaveCount(0);
+}
+
+/** The creator owns and can invoke the actual typed agent. Creating remains inert. */
+export async function exerciseTypedCreation(session: RetainedSession, fixture: RetainedAttachmentFixture) {
+  const { page } = session;
+  const body = `Creation keeps typed input inert: [@${fixture.human.name}](mention://member/${fixture.human.user_id}) [@${fixture.agent.name}](mention://agent/${fixture.agent.resource_id})`;
+  const title = `Typed retained creation ${randomUUID().slice(0, 10)}`;
+  const bytes = Buffer.from(`Private typed creation bytes ${randomUUID()}`);
+  await session.navigate("/account");
+  await page.getByRole("button", { name: "New collaboration issue", exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
+  await dialog.getByLabel("Title", { exact: true }).fill(title);
+  await dialog.getByLabel("Description", { exact: true }).fill(body);
+  await dialog.getByLabel("Full username, email, or account ID").fill(fixture.creatorId);
+  await dialog.getByRole("button", { name: "Find account", exact: true }).click();
+  await dialog.getByRole("button", { name: "Use this account", exact: true }).click();
+  const uploadPending = page.waitForResponse((response) => new URL(response.url()).pathname === "/api/collaboration/attachments/drafts" && response.request().method() === "POST");
+  await dialog.getByLabel("Attach files", { exact: true }).setInputFiles({ name: "typed-creation.txt", mimeType: "text/plain", buffer: bytes });
+  const uploadResponse = await uploadPending;
+  expect(uploadResponse.status()).toBe(201);
+  const uploaded = CollaborationAttachmentSchema.parse(await uploadResponse.json());
+  expect(uploaded).toMatchObject({ issue_id: null, intended_issue_id: null, source_workspace_id: fixture.executionWorkspace.id, uploader_user_id: fixture.ownerId });
+  const uploadKeys = Object.keys(await uploadResponse.json());
+  for (const privateKey of ["url", "storage_key", "encryption_key", "digest"]) expect(uploadKeys).not.toContain(privateKey);
+  const draftContent = `/api/collaboration/attachments/drafts/${uploaded.draft_id}/${uploaded.id}/content`;
+  const ownDraft = await authenticatedBytes(fixture.apiUrl, fixture.owner, draftContent);
+  assertPrivateResponse(ownDraft, 200);
+  expect(Buffer.from(await ownDraft.arrayBuffer())).toEqual(bytes);
+  assertPrivateResponse(await authenticatedBytes(fixture.apiUrl, fixture.handler, draftContent), 404);
+  await expect(dialog.getByRole("checkbox", { name: "Include typed-creation.txt", exact: true })).toBeChecked();
+  const createdPending = page.waitForResponse((response) => new URL(response.url()).pathname === "/api/collaboration/issues" && response.request().method() === "POST");
+  await dialog.getByRole("button", { name: "Create collaboration issue", exact: true }).click();
+  const response = await createdPending;
+  expect(response.status()).toBe(201);
+  const input: unknown = response.request().postDataJSON();
+  expect(input).toMatchObject({ source_workspace_id: fixture.executionWorkspace.id, handler_user_id: fixture.creatorId,
+    title, description: body, draft_id: uploaded.draft_id, attachment_ids: [uploaded.id] });
+  const requestId = response.request().headers()["idempotency-key"];
+  expect(requestId).toMatch(/^[0-9a-f-]{36}$/i);
+  const created = CollaborationIssueSchema.parse(await response.json());
+  expect(created).toMatchObject({ title, description: body, source_workspace: { id: fixture.executionWorkspace.id },
+    creator: { user_id: fixture.ownerId }, handler: { user_id: fixture.creatorId }, session: { queue_state: "paused", control_version: "1" } });
+  await expect(page.getByRole("heading", { name: title, exact: true })).toBeVisible();
+  const current = await assertIdle(fixture, fixture.owner, created.id);
+  expect(current.session).toEqual(created.session);
+  expect(current.execution).toEqual(created.execution);
+  expect((await readComments(fixture.owner, created.id)).items).toEqual([]);
+  const participants = CollaborationParticipantsSchema.parse(await fixture.owner.requestJSON(`${issueRoot(created.id)}/participants`));
+  expect(participants.participants.map((participant) => participant.user_id).sort()).toEqual([fixture.ownerId, fixture.creatorId].sort());
+  const files = await readFiles(fixture.owner, created.id);
+  expect(files.attachments).toHaveLength(1);
+  const file = files.attachments[0]!;
+  expect(file).toMatchObject({ id: uploaded.id, issue_id: created.id, draft_id: uploaded.draft_id, version: uploaded.version });
+  const replayed = CollaborationIssueSchema.parse(await fixture.owner.requestJSON("/api/collaboration/issues", {
+    method: "POST", headers: { "Idempotency-Key": requestId! }, body: input,
+  }));
+  expect(replayed.id).toBe(created.id);
+  expect(CollaborationIssueSchema.parse(await fixture.owner.requestJSON(`/api/collaboration/creations/${requestId}?source_workspace_id=${fixture.executionWorkspace.id}`)).id).toBe(created.id);
+  const sourceList = await fixture.owner.requestJSON<{ issues: { id: string; title: string }[] }>(`/api/issues?q=${encodeURIComponent(title)}&limit=100`);
+  expect(sourceList.issues.filter((issue) => issue.title === title).map((issue) => issue.id)).toEqual([created.id]);
+  const source = await fixture.owner.requestJSON<{ id: string; assignee_type: string | null; assignee_id: string | null; collaboration: { creator: { user_id: string }; handler: { user_id: string } } }>(`/api/issues/${created.id}`);
+  expect(source).toMatchObject({ id: created.id, collaboration: { creator: { user_id: fixture.ownerId }, handler: { user_id: fixture.creatorId } } });
+  expect(source).toMatchObject({ assignee_type: "member", assignee_id: fixture.creatorId });
+  await preview(session, page.getByRole("region", { name: "Attachments", exact: true }), file, bytes);
+  const firstDownload = await session.download(page.getByRole("region", { name: "Attachments", exact: true })
+    .getByRole("button", { name: `Download ${file.name}`, exact: true }), file.name, bytes, "typed-creation");
+  await page.reload();
+  await expect(page.getByRole("heading", { name: title, exact: true })).toBeVisible();
+  expect((await assertIdle(fixture, fixture.owner, created.id)).session).toEqual(created.session);
+  session = await session.restart();
+  await expect(session.page.getByRole("heading", { name: title, exact: true })).toBeVisible();
+  expect((await assertIdle(fixture, fixture.owner, created.id)).execution).toEqual(created.execution);
+  await preview(session, session.page.getByRole("region", { name: "Attachments", exact: true }), file, bytes);
+  return { issue_id: created.id, fixture_issue_id: fixture.issueId, request_id: requestId, creation_actor: fixture.ownerId,
+    handler_id: fixture.creatorId, source_workspace_id: fixture.executionWorkspace.id,
+    typed_agent: { id: fixture.agent.resource_id, catalogue_issue_id: fixture.issueId, target_id: fixture.agent.target_id, owned_by_creator: true },
+    typed_human: { id: fixture.human.user_id, catalogue_issue_id: fixture.issueId, initial_handler: true },
+    body_sha256: digest(body), attachment_id: file.id, attachment_version: file.version, first_upload_private: true,
+    initial_session: created.session, final_session: (await readIssue(fixture.owner, created.id)).session,
+    ordinary_dispatch_count: 0, exact_source_issue_matches: sourceList.issues.filter((issue) => issue.title === title).length,
+    firstDownload, refresh_and_restart_preserve_idle: true, platform: session.platform };
+}
+
+async function historyContainer(page: Page, commentId: string) {
+  const comment = page.locator(`[id="comment-${commentId}"]`);
+  const toggle = comment.getByRole("button", { name: "Comment history", exact: true });
+  if (await toggle.getAttribute("aria-expanded") !== "true") await toggle.click();
+  const controls = await toggle.getAttribute("aria-controls");
+  expect(controls).not.toBeNull();
+  return comment.locator(`[id="${controls}"]`);
+}
+
+async function removeDisplayReference(page: Page, fixture: RetainedAttachmentFixture, commentId: string, file: CollaborationAttachment) {
+  const comment = page.locator(`[id="comment-${commentId}"]`);
+  await comment.getByRole("button", { name: "Edit comment", exact: true }).click();
+  const editor = comment.getByRole("form", { name: "Edit comment", exact: true });
+  await editor.getByLabel("Edit comment text", { exact: true }).fill("Current display no longer references the retained file.");
+  await editor.getByRole("checkbox", { name: file.name, exact: true }).uncheck();
+  const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${issueRoot(fixture.issueId)}/comments/${commentId}` && response.request().method() === "PATCH");
+  await editor.getByRole("button", { name: "Save comment", exact: true }).click();
+  const response = await pending;
+  expect(response.status()).toBe(200);
+  expect(response.request().postDataJSON()).toMatchObject({ attachment_ids: [] });
+  const receipt = CollaborationCommentReceiptSchema.parse(await response.json());
+  expect(receipt).toMatchObject({ comment_id: commentId, targets: [] });
+  expect(await readComment(fixture.creator, fixture.issueId, commentId)).toMatchObject({
+    content: "Current display no longer references the retained file.", attachment_ids: [], deleted_at: null,
+  });
+  await expect(editor).toHaveCount(0);
+  await expect(comment.getByRole("button", { name: `Preview ${file.name}`, exact: true })).toHaveCount(0);
+  return { request_id: response.request().headers()["idempotency-key"], comment_id: commentId, event_id: receipt.event_id, event_seq: receipt.event_seq };
+}
+
+async function deleteComment(page: Page, fixture: RetainedAttachmentFixture, commentId: string, file: CollaborationAttachment) {
+  const comment = page.locator(`[id="comment-${commentId}"]`);
+  await comment.getByRole("button", { name: "Delete comment", exact: true }).click();
+  const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${issueRoot(fixture.issueId)}/comments/${commentId}` && response.request().method() === "DELETE");
+  await comment.getByRole("button", { name: "Confirm deletion", exact: true }).click();
+  const response = await pending;
+  expect(response.status()).toBe(200);
+  const receipt = CollaborationCommentReceiptSchema.parse(await response.json());
+  expect(receipt).toMatchObject({ comment_id: commentId, targets: [] });
+  await expect(comment.getByText("Comment deleted", { exact: true })).toBeVisible();
+  await expect(comment.getByRole("button", { name: `Preview ${file.name}`, exact: true })).toHaveCount(0);
+  return { request_id: response.request().headers()["idempotency-key"], comment_id: commentId, event_id: receipt.event_id, event_seq: receipt.event_seq };
+}
+
+async function displayAndDownload(session: RetainedSession, file: CollaborationAttachment, bytes: Buffer,
+  commandId: string, removedId: string, deletedId: string, stage: string) {
+  const page = session.page;
+  for (const id of [removedId, deletedId]) {
+    const comment = page.locator(`[id="comment-${id}"]`);
+    await expect(comment.getByRole("button", { name: "Comment history", exact: true })).toHaveAttribute("aria-expanded", "false");
+    await expect(comment.getByRole("button", { name: `Preview ${file.name}`, exact: true })).toHaveCount(0);
+  }
+  await expect(page.locator(`[id="comment-${deletedId}"]`).getByText("Comment deleted", { exact: true })).toBeVisible();
+  const panel = page.getByRole("region", { name: "Attachments", exact: true });
+  await preview(session, panel, file, bytes);
+  const issueDownload = await session.download(panel.getByRole("button", { name: `Download ${file.name}`, exact: true }), file.name, bytes, `${stage}-issue`);
+  const history = await historyContainer(page, removedId);
+  await preview(session, history, file, bytes);
+  const historyDownload = await session.download(history.getByRole("button", { name: `Download ${file.name}`, exact: true }).first(), file.name, bytes, `${stage}-history`);
+  await page.locator(`[id="comment-${removedId}"]`).getByRole("button", { name: "Comment history", exact: true }).click();
+  const deletedHistory = await historyContainer(page, deletedId);
+  await preview(session, deletedHistory, file, bytes);
+  const deletedHistoryDownload = await session.download(deletedHistory.getByRole("button", { name: `Download ${file.name}`, exact: true }).first(), file.name, bytes, `${stage}-deleted-history`);
+  await page.locator(`[id="comment-${deletedId}"]`).getByRole("button", { name: "Comment history", exact: true }).click();
+  const commandToggle = page.getByRole("button", { name: "Command history", exact: true });
+  if (await commandToggle.getAttribute("aria-expanded") !== "true") await commandToggle.click();
+  const command = page.getByRole("region", { name: "Command history", exact: true }).locator(`[data-command-id="${commandId}"]`);
+  await expect(command).toContainText("Frozen file input");
+  await preview(session, command, file, bytes);
+  await commandToggle.click();
+  return { platform: session.platform, stage, issueDownload, historyDownload, deletedHistoryDownload, command_preview: true };
+}
+
+/** Both public comment mutations and last-display-reference loss retain delivery. */
+export async function exerciseRetainedAttachments(author: RetainedSession, reader: RetainedSession, fixture: RetainedAttachmentFixture) {
+  const root = issueRoot(fixture.issueId);
+  await author.navigate(accountPath(fixture.issueId));
+  await reader.navigate(accountPath(fixture.issueId));
+  await expect(author.page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
+  await expect(reader.page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
+  const composer = author.page.getByRole("form", { name: "Comments", exact: true });
+  await composer.getByLabel("Add comment", { exact: true }).fill("Frozen file input");
+  await composer.getByRole("button", { name: fixture.agent.name, exact: true }).click();
+  const content = await composer.getByLabel("Add comment", { exact: true }).inputValue();
+  expect(content).toContain(`mention://agent/${fixture.agent.resource_id}`);
+  const bytes = Buffer.from(`Retained file bytes ${randomUUID()}`);
+  const uploadPending = author.page.waitForResponse((response) => new URL(response.url()).pathname === "/api/collaboration/attachments/drafts" && response.request().method() === "POST");
+  await composer.getByLabel("Attach files", { exact: true }).setInputFiles({ name: "retained-comment.txt", mimeType: "text/plain", buffer: bytes });
+  const upload = await uploadPending;
+  expect(upload.status()).toBe(201);
+  const uploaded = CollaborationAttachmentSchema.parse(await upload.json());
+  expect(uploaded).toMatchObject({ issue_id: null, intended_issue_id: fixture.issueId, uploader_user_id: fixture.creatorId });
+  await expect(composer.getByRole("checkbox", { name: "Include retained-comment.txt", exact: true })).toBeChecked();
+  await composer.getByRole("button", { name: "Preview delivery", exact: true }).click();
+  await expect(composer.getByRole("button", { name: "Send comment", exact: true })).toBeEnabled();
+  const postedPending = author.page.waitForResponse((response) => new URL(response.url()).pathname === `${root}/comments` && response.request().method() === "POST");
+  await composer.getByRole("button", { name: "Send comment", exact: true }).click();
+  const posted = await postedPending;
+  expect(posted.status()).toBe(201);
+  const receipt = CollaborationCommentReceiptSchema.parse(await posted.json());
+  expect(receipt.attachment_ids).toEqual([uploaded.id]);
+  expect(receipt.targets).toHaveLength(1);
+  const inputTarget = receipt.targets[0]!;
+  expect(inputTarget).toMatchObject({ target_id: fixture.agent.target_id, kind: "agent", resource_id: fixture.agent.resource_id, state: "waiting" });
+  if (!inputTarget.command_id) throw new Error("The accepted file input has no immutable command identity");
+  const file = (await readFiles(fixture.creator, fixture.issueId)).attachments.find((item) => item.id === uploaded.id)!;
+  expect(file).toMatchObject({ id: uploaded.id, issue_id: fixture.issueId });
+  const original = (await readCommands(fixture.creator, fixture.issueId)).items.find((item) => item.id === inputTarget.command_id)!;
+  expect(original).toMatchObject({ comment_id: receipt.comment_id, content, attachment_ids: [file.id], state: "waiting", cancellation: null });
+  const issue = await readIssue(fixture.creator, fixture.issueId);
+  const authority = observations(issue);
+  const sibling = CollaborationCommentReceiptSchema.parse(await fixture.creator.requestJSON(`${root}/comments`, {
+    method: "POST", headers: { "Idempotency-Key": randomUUID() }, body: {
+      content: "Separate sibling display reference", attachment_ids: [file.id], parent_id: null, suppressed_target_ids: [], target_versions: [],
+      expected_lifecycle_epoch: authority.expected_lifecycle_epoch, expected_participant_epoch: authority.expected_participant_epoch, expected_account_epoch: authority.expected_account_epoch,
+    },
+  }));
+  expect(sibling.attachment_ids).toEqual([file.id]);
+  expect(sibling.targets).toEqual([]);
+  const siblingBefore = await readComment(fixture.creator, fixture.issueId, sibling.comment_id);
+  const controls = (await readIssue(fixture.creator, fixture.issueId)).execution!;
+  await expect(author.page.locator(`[id="comment-${sibling.comment_id}"]`).getByRole("button", { name: `Preview ${file.name}`, exact: true })).toBeVisible();
+  const removal = await removeDisplayReference(author.page, fixture, receipt.comment_id, file);
+  expect(await readComment(fixture.creator, fixture.issueId, sibling.comment_id)).toEqual(siblingBefore);
+  await expect(author.page.locator(`[id="comment-${sibling.comment_id}"]`).getByRole("button", { name: `Preview ${file.name}`, exact: true })).toBeVisible();
+  expect((await readCommands(fixture.creator, fixture.issueId)).items.find((item) => item.id === original.id)).toEqual(original);
+  const deletion = await deleteComment(author.page, fixture, sibling.comment_id, file);
+  const finalComments = await readComments(fixture.creator, fixture.issueId);
+  expect(finalComments.items.filter((comment) => [receipt.comment_id, sibling.comment_id].includes(comment.id))).toHaveLength(2);
+  expect(finalComments.items.every((comment) => !comment.attachment_ids.includes(file.id))).toBe(true);
+  const removedHistory = await readHistory(fixture.creator, fixture.issueId, receipt.comment_id);
+  expect(removedHistory.items.find((item) => item.event_id === removal.event_id)).toMatchObject({ kind: "comment_edited", before_attachment_ids: [file.id], after_attachment_ids: [] });
+  const deletedHistory = await readHistory(fixture.creator, fixture.issueId, sibling.comment_id);
+  expect(deletedHistory.items.find((item) => item.event_id === deletion.event_id)).toMatchObject({ kind: "comment_deleted", before_attachment_ids: [file.id], after_attachment_ids: [] });
+  expect((await readCommands(fixture.creator, fixture.issueId)).items.find((item) => item.id === original.id)).toEqual(original);
+  expect((await readIssue(fixture.creator, fixture.issueId)).execution).toEqual(controls);
+  expect((await readFiles(fixture.handler, fixture.issueId)).attachments.find((item) => item.id === file.id)).toEqual(file);
+  const deliveries: Awaited<ReturnType<typeof displayAndDownload>>[] = [];
+  for (const [role, session] of [["author", author], ["reader", reader]] as const) {
+    await session.page.reload();
+    await expect(session.page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
+    deliveries.push(await displayAndDownload(session, file, bytes, original.id, receipt.comment_id, sibling.comment_id, `${role}-refresh`));
+  }
+  author = await author.restart();
+  reader = await reader.restart();
+  for (const [role, session] of [["author", author], ["reader", reader]] as const) {
+    await expect(session.page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
+    deliveries.push(await displayAndDownload(session, file, bytes, original.id, receipt.comment_id, sibling.comment_id, `${role}-restart`));
+  }
+  const rawPreviewCapability: unknown = await fixture.handler.requestJSON(`${root}/attachments/${file.id}/capabilities`, { method: "POST", body: { intent: "content" } });
+  const previewCapability = parseCollaborationAttachmentCapability(rawPreviewCapability, fixture.apiUrl, fixture.issueId, file.id, file.version);
+  if (!previewCapability) throw new Error("The current preview capability does not match its retained identity");
+  const beforePreviewRevoke = await fetch(previewCapability.url, { redirect: "error" });
+  assertPrivateResponse(beforePreviewRevoke, 200);
+  expect(Buffer.from(await beforePreviewRevoke.arrayBuffer())).toEqual(bytes);
+  const rawCapability: unknown = await fixture.handler.requestJSON(`${root}/attachments/${file.id}/capabilities`, { method: "POST", body: { intent: "download" } });
+  const capability = parseCollaborationAttachmentCapability(rawCapability, fixture.apiUrl, fixture.issueId, file.id, file.version);
+  if (!capability) throw new Error("The current file capability does not match its retained identity");
+  const beforeRevoke = await fetch(capability.url, { redirect: "error" });
+  assertPrivateResponse(beforeRevoke, 200);
+  expect(Buffer.from(await beforeRevoke.arrayBuffer())).toEqual(bytes);
+  await reader.page.getByRole("region", { name: "Attachments", exact: true }).getByRole("button", { name: `Preview ${file.name}`, exact: true }).click();
+  await expect(reader.page.getByRole("dialog", { name: file.name, exact: true }).locator("pre")).toHaveText(bytes.toString());
+  const removalReceipt = await fixture.creator.requestJSON<{ code: string; request_id: string }>(`${root}/participants/${fixture.handlerId}/remove`, {
+    method: "POST", headers: { "Idempotency-Key": randomUUID() }, body: observations(await readIssue(fixture.creator, fixture.issueId)),
+  });
+  expect(removalReceipt.code).toBe("participant_removed");
+  await expect(reader.page.getByRole("dialog")).toHaveCount(0);
+  await expect(reader.page.getByRole("heading", { name: fixture.title, exact: true })).toHaveCount(0);
+  await expect(reader.page.getByText(bytes.toString(), { exact: true })).toHaveCount(0);
+  await expect(reader.page.getByText("You no longer have access to this issue.", { exact: true })).toBeVisible();
+  expect(Date.now()).toBeLessThan(Date.parse(capability.expires_at));
+  assertPrivateResponse(await fetch(capability.url, { redirect: "error" }), 404);
+  expect(Date.now()).toBeLessThan(Date.parse(previewCapability.expires_at));
+  assertPrivateResponse(await fetch(previewCapability.url, { redirect: "error" }), 404);
+  for (const path of [root, `${root}/attachments/${file.id}`, `${root}/attachments/${file.id}/content`, `${root}/comments/${receipt.comment_id}/history`, `${root}/commands?limit=100`]) {
+    expect((await authenticatedBytes(fixture.apiUrl, fixture.handler, path)).status).toBe(404);
+  }
+  expect((await fetch(`${fixture.apiUrl}${root}/attachments/${file.id}/capability`, { redirect: "error" })).status).toBe(404);
+  expect((await fetch(`${fixture.apiUrl}${root}/attachments/${file.id}/content`, { redirect: "error" })).status).toBe(401);
+  const creatorRead = await authenticatedBytes(fixture.apiUrl, fixture.creator, `${root}/attachments/${file.id}/content`);
+  assertPrivateResponse(creatorRead, 200);
+  expect(Buffer.from(await creatorRead.arrayBuffer())).toEqual(bytes);
+  expect((await readFiles(fixture.creator, fixture.issueId)).attachments.find((item) => item.id === file.id)).toEqual(file);
+  await author.page.reload();
+  await expect(author.page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
+  await preview(author, author.page.getByRole("region", { name: "Attachments", exact: true }), file, bytes);
+  const rejoin = await fixture.creator.requestJSON<{ code: string }>(`${root}/participants`, {
+    method: "POST", headers: { "Idempotency-Key": randomUUID() }, body: {
+      ...observations(await readIssue(fixture.creator, fixture.issueId)), target_user_id: fixture.handlerId,
+    },
+  });
+  expect(rejoin.code).toBe("participant_added");
+  expect(Date.now()).toBeLessThan(Date.parse(capability.expires_at));
+  assertPrivateResponse(await fetch(capability.url, { redirect: "error" }), 404);
+  expect(Date.now()).toBeLessThan(Date.parse(previewCapability.expires_at));
+  assertPrivateResponse(await fetch(previewCapability.url, { redirect: "error" }), 404);
+  const restoredRead = await authenticatedBytes(fixture.apiUrl, fixture.handler, `${root}/attachments/${file.id}/content`);
+  assertPrivateResponse(restoredRead, 200);
+  expect(Buffer.from(await restoredRead.arrayBuffer())).toEqual(bytes);
+  expect((await readCommands(fixture.creator, fixture.issueId)).items.find((item) => item.id === original.id)).toEqual(original);
+  expect((await readIssue(fixture.creator, fixture.issueId)).execution).toEqual(controls);
+  expect(await fixture.owner.countIssueDispatches(fixture.issueId)).toBe(0);
+  return { issue_id: fixture.issueId, author_platform: author.platform, reader_platform: reader.platform,
+    author_id: fixture.creatorId, removed_reader_id: fixture.handlerId, attachment_id: file.id, attachment_version: file.version,
+    file_sha256: digest(bytes), removed_comment_id: receipt.comment_id, deleted_comment_id: sibling.comment_id,
+    command_id: original.id, immutable_command_sha256: digest(JSON.stringify(original)), input_event_id: original.input_event_id,
+    comment_request_id: posted.request().headers()["idempotency-key"], removal, deletion, sibling_unchanged_after_other_reference_removal: true,
+    no_remaining_current_comment_file_reference: true, issue_and_history_deliveries: deliveries,
+    access_removal_request_id: removalReceipt.request_id, old_capability_status_after_remove: 404, old_capability_status_after_rejoin: 404,
+    old_preview_capability_status_after_remove: 404, old_preview_capability_status_after_rejoin: 404,
+    creator_bytes_after_reader_removal: true, restored_reader_current_bytes: true, ordinary_dispatch_count: 0,
+    runtime_process_started: false, scope: "public_password_sessions_and_actual_clients" };
+}

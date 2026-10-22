@@ -1,0 +1,469 @@
+{
+  "issue_id": "01a160d7-3581-7426-9b4f-2c5b2f80584e",
+  "fixture_issue_id": "01a160d7-2ac8-7785-b6c1-ccd429b022fb",
+  "request_id": "d9ffd0dc-a74e-4206-a83e-4eaf15ec96e4",
+  "creation_actor": "38f913b7-f497-4993-9641-f5acc01a60d9",
+  "handler_id": "a16838a9-99fd-4df8-aa9c-b6e5fcfcfa61",
+  "source_workspace_id": "4e8c1e9d-e3fb-4b7c-a456-39eb9116fb37",
+  "typed_agent": {
+    "id": "2922bbfb-586d-477e-aec3-6f68bb8cf0bc",
+    "catalogue_issue_id": "01a160d7-2ac8-7785-b6c1-ccd429b022fb",
+    "target_id": "db5212ad-56c1-46ed-a0b1-4f1b2adbe156",
+    "owned_by_creator": true
+  },
+  "typed_human": {
+    "id": "a16838a9-99fd-4df8-aa9c-b6e5fcfcfa61",
+    "catalogue_issue_id": "01a160d7-2ac8-7785-b6c1-ccd429b022fb",
+    "initial_handler": true
+  },
+  "body_sha256": "1465939c36724394a9ee2126778ec7ac344ebb5e033ed70480680522fa37f129",
+  "attachment_id": "3b09a108-6f78-4275-bb96-6b7338742a6b",
+  "attachment_version": "1",
+  "first_upload_private": true,
+  "initial_session": {
+    "id": "46076ce9-65a6-47b8-9fdf-3b900f61abe7",
+    "queue_state": "paused",
+    "control_version": "1"
+  },
+  "final_session": {
+    "id": "46076ce9-65a6-47b8-9fdf-3b900f61abe7",
+    "queue_state": "paused",
+    "control_version": "1"
+  },
+  "ordinary_dispatch_count": 0,
+  "exact_source_issue_matches": 1,
+  "firstDownload": {
+    "sha256": "3f90f192fb17ea853e540ba4e3167355704bc614d23d532ad379be94373963d6",
+    "filename": "typed-creation.txt",
+    "bytes": 65
+  },
+  "refresh_and_restart_preserve_idle": true,
+  "platform": "Web",
+  "sources": [
+    {
+      "path": "e2e/collaboration-retained-attachment.spec.ts",
+      "sha256": "ad691690e092dec6ba07a1df38a0cc4106477b0d84ac7f62ef9b70da30766f23"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-retained-attachments.ts",
+      "sha256": "48172c02a31223aa504a57443defab1b92f1c4c03e329b47a67fe747dae24938"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-control-journey.ts",
+      "sha256": "a9ffc9f134dd0471c1dc984b6dcf2be130f98e390558e9940b0724a49cfd5488"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-native.ts",
+      "sha256": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-account-electron.mjs",
+      "sha256": "f9021ab07635f2f48d0f90613fcd3c8558cb7262b3bdd2aca98edb31654475d2"
+    }
+  ],
+  "requests": [
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/creation-options",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/creation-options",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/recipients/resolve",
+      "method": "POST",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/attachments/drafts/a2af1380-e69f-46ef-96f1-e5a9bdf295af",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/attachments/drafts",
+      "method": "POST",
+      "request_id": "ade2829f-5bcb-4a9c-8a33-a85dfa4cd534",
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/attachments/drafts/a2af1380-e69f-46ef-96f1-e5a9bdf295af",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues",
+      "method": "POST",
+      "request_id": "d9ffd0dc-a74e-4206-a83e-4eaf15ec96e4",
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/creation-options",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/creation-options",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/attachments/drafts/a2af1380-e69f-46ef-96f1-e5a9bdf295af",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/recipients/resolve",
+      "method": "POST",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/reactions",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/attachments",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/activity",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/mention-targets",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/comments",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/attachments/3b09a108-6f78-4275-bb96-6b7338742a6b/content",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/attachments/3b09a108-6f78-4275-bb96-6b7338742a6b/capabilities",
+      "method": "POST",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/attachments/3b09a108-6f78-4275-bb96-6b7338742a6b/capability",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/reactions",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/attachments",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/activity",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/mention-targets",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/comments",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/reactions",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/me/workbench",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/reactions",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/attachments",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/activity",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/mention-targets",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/comments",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    },
+    {
+      "platform": "Web",
+      "actor_id": "38f913b7-f497-4993-9641-f5acc01a60d9",
+      "path": "/api/collaboration/issues/01a160d7-3581-7426-9b4f-2c5b2f80584e/attachments/3b09a108-6f78-4275-bb96-6b7338742a6b/content",
+      "method": "GET",
+      "request_id": null,
+      "ambient_workspace": false
+    }
+  ],
+  "errors": [],
+  "native_sessions": [],
+  "environment": {
+    "api": "http://localhost:18996",
+    "production_web": "http://localhost:13916",
+    "renderer": null,
+    "native_os": null,
+    "real_provider_account_access": false,
+    "installed_full_main": false,
+    "source_preflight": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/content-admin-preflight.json"
+  }
+}
