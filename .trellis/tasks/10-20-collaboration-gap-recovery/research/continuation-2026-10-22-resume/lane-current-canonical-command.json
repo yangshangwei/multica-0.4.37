@@ -1,0 +1,32 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaboration(TargetStopLeavesOtherTargetAndIssueActive|IssueStopFencesChangedAndLaterTargetSets|ResumeAliasesKeepIndependentHolds|WholeLifecycleKeepsAllTargetBarriersOnReopen|LifecycleCloseAndReopenPreservePermanentQueue|CommandCancellationExactProvenance)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "started_at": "2026-10-22T05:34:38.633759+00:00",
+  "head": "238d4bb3974094ce55ab911c99cf2eedb845d278",
+  "source_sha256": {
+    "server/internal/service/collaboration_targets_test.go": "fa50282a74ab50ea4856adbcb16ff6c716db0b6a98b2215b17bd9598083aabef",
+    "server/internal/service/collaboration_lifecycle.go": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+    "server/internal/service/collaboration_command_cancellation.go": "7f5c5290bcae1d5c13872fcdbebc6e27dabf41e080cc77cef6d7764ebd621f8b"
+  },
+  "real_provider_account_access": false,
+  "production_gate_change": false
+}

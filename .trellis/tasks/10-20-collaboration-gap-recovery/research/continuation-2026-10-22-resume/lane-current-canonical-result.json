@@ -1,0 +1,33 @@
+{
+  "exit_code": 0,
+  "elapsed_s": 12.227,
+  "finished_at": "2026-10-22T05:34:50.874418+00:00",
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-resume/lane-current-canonical.stdout",
+  "stdout_sha256": "89f5227ce93c9e05368bfb50e8f18cc8768cebfc5c841bcacdf1515370f60b1b",
+  "stderr_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-resume/lane-current-canonical.stderr",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_changed_during_run": [],
+  "passed_top_level": 6,
+  "passed_including_subtests": 17,
+  "passed_tests": [
+    "TestCollaborationCommandCancellationExactProvenance/manual",
+    "TestCollaborationCommandCancellationExactProvenance/remove",
+    "TestCollaborationCommandCancellationExactProvenance/leave",
+    "TestCollaborationCommandCancellationExactProvenance/complete",
+    "TestCollaborationCommandCancellationExactProvenance/cancel",
+    "TestCollaborationCommandCancellationExactProvenance",
+    "TestCollaborationResumeAliasesKeepIndependentHolds/unused_revoked_squad",
+    "TestCollaborationResumeAliasesKeepIndependentHolds/squad_head",
+    "TestCollaborationResumeAliasesKeepIndependentHolds/revoked_input_target",
+    "TestCollaborationResumeAliasesKeepIndependentHolds",
+    "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue/complete_permitted",
+    "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue/cancel_never_permitted",
+    "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue/cancel_preserves_first_stop",
+    "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue",
+    "TestCollaborationTargetStopLeavesOtherTargetAndIssueActive",
+    "TestCollaborationIssueStopFencesChangedAndLaterTargetSets",
+    "TestCollaborationWholeLifecycleKeepsAllTargetBarriersOnReopen"
+  ],
+  "failed": [],
+  "skipped": []
+}

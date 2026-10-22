@@ -1,0 +1,47 @@
+{
+  "at": "2026-10-22T04:47:08.243665+00:00",
+  "head": "238d4bb3974094ce55ab911c99cf2eedb845d278",
+  "endpoints": {
+    "api": {
+      "url": "http://127.0.0.1:18996/health",
+      "status": 200,
+      "body_sha256": "fc6aafc44d2b184ac6c8dae6e781e43c0bcfdae6ae43b8a1ce1bf92286c2abd3",
+      "health": {
+        "status": "ok",
+        "pid": 22414,
+        "commit": "8ecb98883",
+        "started_at": "2026-10-21T23:29:04Z"
+      },
+      "listener_pids": [
+        "22414"
+      ]
+    },
+    "web": {
+      "url": "http://127.0.0.1:13916",
+      "status": 200,
+      "body_sha256": "0749f164d36c18acb16d2386d0c3992d60c2e945854b7cc8af67f1801ac2aafd",
+      "listener_pids": [
+        "76944"
+      ]
+    },
+    "renderer": {
+      "url": "http://127.0.0.1:6090",
+      "status": 200,
+      "body_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c",
+      "listener_pids": [
+        "36145"
+      ]
+    }
+  },
+  "product_snapshot_diffs": {
+    "verification-source": [],
+    "verification-admin-source": []
+  },
+  "flags": {
+    "provider_accounts": false,
+    "production_change": false
+  },
+  "web_build_id": "tP4r55FoDsuyXfi1EylGw",
+  "renderer_built_index_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c",
+  "application_files": 3280
+}

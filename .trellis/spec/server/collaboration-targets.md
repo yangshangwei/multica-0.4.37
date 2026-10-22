@@ -194,6 +194,29 @@ unique `channels` and `target_holds` decisions plus `issue_id`, `request_id` and
 replay/GET recovery returns the original success or refusal, never a future
 intention. Stop HTTP requests omit Resume-only gate/hold fields.
 
+Stopping agent A also pauses the one actual channel shared by squads led by A.
+The receipt lists each affected typed target and the channel once; both clients
+display those aliases. Resuming an alias restores the channel only after its
+proof checks. A different alias's independent `grant_required` hold stays held
+until renewed owner consent and a fresh explicit Resume. A separate B channel
+can Stop/Resume while the issue is active without changing A's channel or holds.
+
+Whole-issue Stop also fences subsequently registered targets. A new fully
+consented target stays selectable for waiting input, but target Resume returns
+`issue_paused`; changing clients does not release the global pause. An observed
+Paused label alone is not a version: a second Stop may advance control versions
+without changing that label. Capture a fresh authoritative snapshot for a new
+human action, while keeping an earlier refused key and receipt immutable.
+
+Creator `POST /api/collaboration/issues/{id}/lifecycle` with `action: complete`
+or `cancel` closes business state, pauses channels and stops live groups. Every
+author's waiting command is cancelled with retained body/target/batch/sequence
+and exact automatic `issue_completed` or `issue_cancelled` actor/event/time.
+Consumed live inputs remain distinct. Closed/disabled Resume and unconfirmed
+termination must coexist in the UI until each original natural proof arrives;
+one run's proof cannot settle another. Proof never reopens the issue or revives
+cancelled commands. An unrelated issue's current state stays identical.
+
 Resource-only invalidation holds affected current targets and calls `stopGroup`
 for exact frozen dependencies, leaving channel pause/control untouched. Author
 departure still pauses channels whose consumed batch contains that author.
@@ -360,6 +383,13 @@ instead of optimistically projecting its old controls or holds into Query.
   actual external actor/resource owner separation, original request replay and
   unchanged proof identities. Fault injection must cover `Query` as well as
   `Exec` / `QueryRow`, including channel mirroring writes.
+- `e2e/collaboration-lane-close-controls.spec.ts`: both creator platforms show
+  agent/squad aliases, independent revoked alias holds, separate B controls and
+  whole pause after new target registration/client switch. Complete and Cancel
+  each interrupt two actual Linux provider runs, retain all authors' cancelled
+  waiting history and show Closed plus unconfirmed termination in both clients.
+  Hold original sealed-proof transport, then accept A and B separately with
+  stable proof hashes; never replace the actual supervisor proof in the fixture.
 - Runtime outcome HTTP and v5 service/handler/core tests: shared wire values,
   exact versions, current/historical linkage, malformed responses and private logs.
 - `collaboration_execution_history_test.go` and core `execution-fifo-switch.test.ts`:

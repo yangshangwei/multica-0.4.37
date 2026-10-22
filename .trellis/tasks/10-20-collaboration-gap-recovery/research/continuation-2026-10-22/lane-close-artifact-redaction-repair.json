@@ -1,0 +1,41 @@
+{
+  "at": "2026-10-22T00:28:28.879759+00:00",
+  "quarantine_directory": "/tmp/multica-gap-recovery-20261021-h6phxwo9/lane-close-private-quarantine",
+  "permissions": {
+    "directory": "0700",
+    "original_files": "0600"
+  },
+  "records": [
+    {
+      "file": "lane-close-observed-web-identities.json",
+      "original_sha256": "91981a1452e447ab4b0bfe4bfe04ddadcb48feaeb8ccf959bb53bca7cdcdf70e"
+    },
+    {
+      "file": "lane-close-observed-electron-identities.json",
+      "original_sha256": "f0536a5193840338614750b87993bdfaed52582cee0589c1863bd00aa7ce5d6f"
+    },
+    {
+      "file": "lane-close-first-electron-same-lane-identities.json",
+      "original_sha256": "5cbaa41bf892ade90aa224395be42f88554afb8bc0cc508a2e4eacbb7a3251bc"
+    },
+    {
+      "file": "lane-close-clients-first.json",
+      "original_sha256": "9bb504f867ce6701c4343199423638222c2e196d35acb6be66da14fbfc2e4587"
+    },
+    {
+      "file": "lane-close-lanes-observed.json",
+      "original_sha256": "2b859bf58468641a7f8e798384b3efb550cb50e68f752764d995e1b8cf115642"
+    }
+  ],
+  "sanitized_files": [
+    "lane-close-observed-web-identities.json",
+    "lane-close-observed-electron-identities.json",
+    "lane-close-first-electron-same-lane-identities.json",
+    "lane-close-clients-first.json",
+    "lane-close-lanes-observed.json"
+  ],
+  "public_projection": "target_id/resource_id/channel_id/name only, no runtime/credential",
+  "synthetic_credential_values_printed": false,
+  "original_files_preserved": true,
+  "sanitized_raw_is_original_verdict_not_new_execution": true
+}
