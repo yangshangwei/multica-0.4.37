@@ -299,6 +299,10 @@ WHERE workspace_id = $1 AND admission_status IN ('not_required','accepted')
   AND project_id IS NOT DISTINCT FROM sqlc.arg('project_id')::uuid
   AND parent_issue_id IS NOT DISTINCT FROM sqlc.arg('parent_issue_id')::uuid
   AND lower(btrim(regexp_replace(title, '[[:space:]]+', ' ', 'g'))) = sqlc.arg('normalized_title')
+  -- Collaboration issues are created with AllowDuplicate and never block an
+  -- ordinary create. Matching them would return their private body in the
+  -- 409 and let callers probe their project, parent and open state (R53).
+  AND NOT EXISTS (SELECT 1 FROM issue_collaboration c WHERE c.issue_id = issue.id)
 ORDER BY created_at ASC
 LIMIT 1;
 

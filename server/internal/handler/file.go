@@ -479,6 +479,11 @@ func (h *Handler) UploadFile(w http.ResponseWriter, r *http.Request) {
 				writeError(w, http.StatusForbidden, "invalid issue_id")
 				return
 			}
+			// Collaboration files go through the private draft/bind flow. The
+			// generic ledger would bypass its storage, revisions and broadcasts.
+			if h.rejectLegacyCollaborationWrite(w, r, issue.ID) {
+				return
+			}
 			params.IssueID = issue.ID
 		}
 		if commentID := r.FormValue("comment_id"); commentID != "" {
@@ -489,6 +494,9 @@ func (h *Handler) UploadFile(w http.ResponseWriter, r *http.Request) {
 			comment, err := h.Queries.GetComment(r.Context(), commentUUID)
 			if err != nil || uuidToString(comment.WorkspaceID) != workspaceID {
 				writeError(w, http.StatusForbidden, "invalid comment_id")
+				return
+			}
+			if h.rejectLegacyCollaborationWrite(w, r, comment.IssueID) {
 				return
 			}
 			params.CommentID = comment.ID

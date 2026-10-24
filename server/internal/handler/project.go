@@ -942,6 +942,23 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return err
 		}
+		// Clearing project_id on a collaboration issue would change its source
+		// structure outside the collaboration workflow and its record (R49). The
+		// workspace iteration fence held above is also taken by collaboration
+		// structure and creation writers, so none can join this project meanwhile.
+		if len(issues) > 0 {
+			issueIDs := make([]pgtype.UUID, 0, len(issues))
+			for _, issue := range issues {
+				issueIDs = append(issueIDs, issue.ID)
+			}
+			shared, err := q.AnyCollaborationIssuesInWorkspace(r.Context(), db.AnyCollaborationIssuesInWorkspaceParams{WorkspaceID: ws, IssueIds: issueIDs})
+			if err != nil {
+				return err
+			}
+			if shared {
+				return projectErr(409, "project_has_collaboration_issues", "This project has collaboration issues. Move them out of it before deleting.")
+			}
+		}
 
 		records, err := iteration.PrepareIssueRecords(r.Context(), tx, issues, lockedIterations)
 		if err != nil {

@@ -60,6 +60,17 @@ func WriteIssueStatus(ctx context.Context, starter TxStarter, queries *db.Querie
 	if err != nil {
 		return before, after, false, err
 	}
+	// System writers (PR merge, failed-task reset) never move a collaboration
+	// issue: its terminal states belong to the creator and close every target
+	// with them (R19/R34/R35). The relation is created with the issue, so the
+	// row lock above makes this read stable.
+	shared, err := q.IsCollaborationIssue(ctx, before.ID)
+	if err != nil {
+		return before, after, false, err
+	}
+	if shared {
+		return before, before, false, nil
+	}
 	allowed, err := policy(ctx, q, before)
 	if err != nil {
 		return before, after, false, err

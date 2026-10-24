@@ -40,6 +40,27 @@ func (q *Queries) AllocateCollaborationCommandSequence(ctx context.Context, arg 
 	return command_seq, err
 }
 
+const anyCollaborationChildIssues = `-- name: AnyCollaborationChildIssues :one
+SELECT EXISTS (
+    SELECT 1 FROM issue_collaboration c JOIN issue i ON i.id = c.issue_id
+    WHERE i.workspace_id = $1::uuid AND i.parent_issue_id = ANY($2::uuid[])
+)::boolean
+`
+
+type AnyCollaborationChildIssuesParams struct {
+	WorkspaceID pgtype.UUID   `json:"workspace_id"`
+	ParentIds   []pgtype.UUID `json:"parent_ids"`
+}
+
+// Unlocked pre-check for ordinary parent deletion; the delete transaction
+// repeats the check under its write fences.
+func (q *Queries) AnyCollaborationChildIssues(ctx context.Context, arg AnyCollaborationChildIssuesParams) (bool, error) {
+	row := q.db.QueryRow(ctx, anyCollaborationChildIssues, arg.WorkspaceID, arg.ParentIds)
+	var column_1 bool
+	err := row.Scan(&column_1)
+	return column_1, err
+}
+
 const anyCollaborationIssuesInWorkspace = `-- name: AnyCollaborationIssuesInWorkspace :one
 SELECT EXISTS (
     SELECT 1 FROM issue_collaboration c JOIN issue i ON i.id = c.issue_id
@@ -725,6 +746,30 @@ func (q *Queries) IsCollaborationIssue(ctx context.Context, issueID pgtype.UUID)
 	var column_1 bool
 	err := row.Scan(&column_1)
 	return column_1, err
+}
+
+const listCollaborationIssueIDs = `-- name: ListCollaborationIssueIDs :many
+SELECT issue_id FROM issue_collaboration WHERE issue_id = ANY($1::uuid[])
+`
+
+func (q *Queries) ListCollaborationIssueIDs(ctx context.Context, issueIds []pgtype.UUID) ([]pgtype.UUID, error) {
+	rows, err := q.db.Query(ctx, listCollaborationIssueIDs, issueIds)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []pgtype.UUID{}
+	for rows.Next() {
+		var issue_id pgtype.UUID
+		if err := rows.Scan(&issue_id); err != nil {
+			return nil, err
+		}
+		items = append(items, issue_id)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const listCollaborationWorkbench = `-- name: ListCollaborationWorkbench :many

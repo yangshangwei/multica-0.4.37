@@ -86,10 +86,21 @@ SELECT * FROM issue_participant WHERE issue_id = $1 AND user_id = $2;
 -- name: IsCollaborationIssue :one
 SELECT EXISTS (SELECT 1 FROM issue_collaboration WHERE issue_id = $1)::boolean;
 
+-- name: ListCollaborationIssueIDs :many
+SELECT issue_id FROM issue_collaboration WHERE issue_id = ANY(sqlc.arg(issue_ids)::uuid[]);
+
 -- name: AnyCollaborationIssuesInWorkspace :one
 SELECT EXISTS (
     SELECT 1 FROM issue_collaboration c JOIN issue i ON i.id = c.issue_id
     WHERE i.workspace_id = sqlc.arg(workspace_id)::uuid AND i.id = ANY(sqlc.arg(issue_ids)::uuid[])
+)::boolean;
+
+-- name: AnyCollaborationChildIssues :one
+-- Unlocked pre-check for ordinary parent deletion; the delete transaction
+-- repeats the check under its write fences.
+SELECT EXISTS (
+    SELECT 1 FROM issue_collaboration c JOIN issue i ON i.id = c.issue_id
+    WHERE i.workspace_id = sqlc.arg(workspace_id)::uuid AND i.parent_issue_id = ANY(sqlc.arg(parent_ids)::uuid[])
 )::boolean;
 
 -- name: UpdateCollaborationPosition :one

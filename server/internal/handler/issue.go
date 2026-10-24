@@ -4450,6 +4450,34 @@ func (h *Handler) isAgentAssigneeReady(ctx context.Context, issue db.Issue) bool
 	return false
 }
 
+// errIssueHasCollaborationChildren refuses an ordinary delete that would detach
+// a collaboration issue, rewriting its parent/stage outside the collaboration
+// workflow, without its record or version (R49).
+var errIssueHasCollaborationChildren = errors.New("issue has collaboration sub-issues")
+
+func writeIssueHasCollaborationChildren(w http.ResponseWriter) {
+	writeJSON(w, http.StatusConflict, map[string]string{"error": "This issue has collaboration sub-issues. Remove them from it before deleting.", "code": "issue_has_collaboration_children"})
+}
+
+// rejectCollaborationChildDelete runs before any delete side effect (task
+// cancellation, autopilot failure), so a refused delete changes nothing. The
+// delete transaction repeats the check under its write fences.
+func (h *Handler) rejectCollaborationChildDelete(w http.ResponseWriter, r *http.Request, workspaceID pgtype.UUID, parentIDs []pgtype.UUID) bool {
+	if len(parentIDs) == 0 {
+		return false
+	}
+	shared, err := h.Queries.AnyCollaborationChildIssues(r.Context(), db.AnyCollaborationChildIssuesParams{WorkspaceID: workspaceID, ParentIds: parentIDs})
+	if err != nil {
+		writeError(w, http.StatusServiceUnavailable, "collaboration access unavailable")
+		return true
+	}
+	if shared {
+		writeIssueHasCollaborationChildren(w)
+		return true
+	}
+	return false
+}
+
 func (h *Handler) DeleteIssue(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	issue, ok := h.loadIssueForUser(w, r, id)
@@ -4463,6 +4491,9 @@ func (h *Handler) DeleteIssue(w http.ResponseWriter, r *http.Request) {
 	if !h.requireAgentAutonomy(w, r, uuidToString(issue.WorkspaceID), service.AutonomyContributor, "delete issues") {
 		return
 	}
+	if h.rejectCollaborationChildDelete(w, r, issue.WorkspaceID, []pgtype.UUID{issue.ID}) {
+		return
+	}
 
 	h.TaskService.CancelTasksForIssue(r.Context(), issue.ID)
 	// Fail any linked autopilot runs before delete (ON DELETE SET NULL clears issue_id).
@@ -4470,6 +4501,10 @@ func (h *Handler) DeleteIssue(w http.ResponseWriter, r *http.Request) {
 
 	deleteResult, err := h.deleteIssueAndCollectAttachmentURLs(r, issue, nil)
 	if err != nil {
+		if errors.Is(err, errIssueHasCollaborationChildren) {
+			writeIssueHasCollaborationChildren(w)
+			return
+		}
 		if writeIssueUpdateAccessError(w, err) {
 			return
 		}
@@ -4568,6 +4603,25 @@ func (h *Handler) deleteIssuesAndCollectAttachmentURLs(r *http.Request, issues [
 	}
 	if err = h.authorizeIssueDeletion(r, tx, workspaceID, actorType, actorID); err != nil {
 		return issueDeleteResult{}, err
+	}
+	// Authoritative repeat of rejectCollaborationChildDelete. The workspace
+	// iteration fence taken by lockIssueWriteFences is the one collaboration
+	// structure and creation writers also take, so no collaboration child can be
+	// attached to these parents until this transaction ends.
+	children := make([]pgtype.UUID, 0, len(lockedIssues))
+	for _, locked := range lockedIssues {
+		if !selected[locked.ID] {
+			children = append(children, locked.ID)
+		}
+	}
+	if len(children) > 0 {
+		shared, err := qtx.AnyCollaborationIssuesInWorkspace(ctx, db.AnyCollaborationIssuesInWorkspaceParams{WorkspaceID: workspaceID, IssueIds: children})
+		if err != nil {
+			return issueDeleteResult{}, err
+		}
+		if shared {
+			return issueDeleteResult{}, errIssueHasCollaborationChildren
+		}
 	}
 	records, err := iteration.PrepareIssueRecords(ctx, tx, issues, lockedIterations)
 	if err != nil {
@@ -5139,6 +5193,15 @@ func (h *Handler) BatchDeleteIssues(w http.ResponseWriter, r *http.Request) {
 	if h.rejectLegacyCollaborationBatch(w, r, wsUUID, req.IssueIDs) {
 		return
 	}
+	parentIDs := make([]pgtype.UUID, 0, len(req.IssueIDs))
+	for _, issueID := range req.IssueIDs {
+		if parsed, err := util.ParseUUID(issueID); err == nil {
+			parentIDs = append(parentIDs, parsed)
+		}
+	}
+	if h.rejectCollaborationChildDelete(w, r, wsUUID, parentIDs) {
+		return
+	}
 	issues := make([]db.Issue, 0, len(req.IssueIDs))
 	excludedIDs := make([]pgtype.UUID, 0, len(req.IssueIDs))
 	seenIssueIDs := make(map[pgtype.UUID]struct{}, len(req.IssueIDs))
@@ -5167,6 +5230,10 @@ func (h *Handler) BatchDeleteIssues(w http.ResponseWriter, r *http.Request) {
 	deleteResult, err := h.deleteIssuesAndCollectAttachmentURLs(r, issues, excludedIDs)
 	if err != nil {
 		slog.Warn("batch delete issues failed", "error", err)
+		if errors.Is(err, errIssueHasCollaborationChildren) {
+			writeIssueHasCollaborationChildren(w)
+			return
+		}
 		if writeIssueUpdateAccessError(w, err) {
 			return
 		}

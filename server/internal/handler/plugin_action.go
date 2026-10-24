@@ -251,6 +251,19 @@ func (h *Handler) pluginIssueForUser(w http.ResponseWriter, r *http.Request, cal
 		publicapiv1.WriteProblem(w, r, http.StatusNotFound, "not_found", "issue not found")
 		return db.Issue{}, false
 	}
+	// A collaboration issue is shared across accounts under its own authority
+	// (R53): a plugin is a machine caller and never reaches its content or
+	// writes, through the install token or the browser bridge alike. 404, like
+	// any issue outside the caller's reach, so the id is not confirmed.
+	shared, err := h.Queries.IsCollaborationIssue(r.Context(), issue.ID)
+	if err != nil {
+		publicapiv1.WriteProblem(w, r, http.StatusInternalServerError, "internal_error", "failed to load the issue")
+		return db.Issue{}, false
+	}
+	if shared {
+		publicapiv1.WriteProblem(w, r, http.StatusNotFound, "not_found", "issue not found")
+		return db.Issue{}, false
+	}
 	// A callback grant issued about one issue reaches only that issue. Without
 	// this the grant is worth every issue in the workspace its actor can see,
 	// for the whole five minutes it lives.

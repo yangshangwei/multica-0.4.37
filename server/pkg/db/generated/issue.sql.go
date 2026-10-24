@@ -564,6 +564,10 @@ WHERE workspace_id = $1 AND admission_status IN ('not_required','accepted')
   AND project_id IS NOT DISTINCT FROM $3::uuid
   AND parent_issue_id IS NOT DISTINCT FROM $4::uuid
   AND lower(btrim(regexp_replace(title, '[[:space:]]+', ' ', 'g'))) = $5
+  -- Collaboration issues are created with AllowDuplicate and never block an
+  -- ordinary create. Matching them would return their private body in the
+  -- 409 and let callers probe their project, parent and open state (R53).
+  AND NOT EXISTS (SELECT 1 FROM issue_collaboration c WHERE c.issue_id = issue.id)
 ORDER BY created_at ASC
 LIMIT 1
 `
