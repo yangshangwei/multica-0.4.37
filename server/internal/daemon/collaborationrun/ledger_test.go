@@ -213,8 +213,9 @@ func TestRetainedInventoryPreservesCapacityAndProofRecovery(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(entries) != 1 || !entries[0].Unconfirmed || entries[0].CanProve {
-		t.Fatalf("uncertain permit lost capacity: %+v", entries)
+	// Nothing can fork before Burn: a pending permit is recoverable, not capacity.
+	if len(entries) != 1 || entries[0].Unconfirmed || !entries[0].CanProve {
+		t.Fatalf("pre-burn permit retained capacity: %+v", entries)
 	}
 	r, err = l.Lock(testIdentity().DeploymentID, testIdentity().InstallationID, testIdentity().RunID)
 	if err != nil {
@@ -223,7 +224,7 @@ func TestRetainedInventoryPreservesCapacityAndProofRecovery(t *testing.T) {
 	if err := r.Authorize(); err != nil {
 		t.Fatal(err)
 	}
-	if err := r.NeverLaunched(); err != nil {
+	if err := r.Burn(); err != nil {
 		t.Fatal(err)
 	}
 	if err := r.Close(); err != nil {
@@ -233,7 +234,52 @@ func TestRetainedInventoryPreservesCapacityAndProofRecovery(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(entries) != 1 || entries[0].Unconfirmed || !entries[0].CanProve {
-		t.Fatalf("known tombstone was not recoverable: %+v", entries)
+	if len(entries) != 1 || !entries[0].Unconfirmed || entries[0].CanProve {
+		t.Fatalf("burned attempt lost capacity: %+v", entries)
+	}
+	r, err = l.Lock(testIdentity().DeploymentID, testIdentity().InstallationID, testIdentity().RunID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer r.Close()
+	// A burned record can never become a nonlaunch tombstone or a new permit.
+	if err := r.NeverLaunched(); !errors.Is(err, ErrUnconfirmed) {
+		t.Fatalf("burned attempt became never-launched: %v", err)
+	}
+	if err := r.Authorize(); !errors.Is(err, ErrUnconfirmed) {
+		t.Fatalf("burned attempt returned to authorization: %v", err)
+	}
+	if err := r.RequestPermit("1", "00000000-0000-4000-8000-000000000012"); !errors.Is(err, ErrUnconfirmed) {
+		t.Fatalf("burned attempt requested another permit: %v", err)
+	}
+}
+
+func TestUnrequestedRegistrationSealsAttemptZeroTombstone(t *testing.T) {
+	l := newTestLedger(t)
+	r := registerTestRun(t, l)
+	if err := r.NeverLaunched(); err != nil {
+		t.Fatal(err)
+	}
+	proof, err := r.Seal()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if proof.State != "never_launched_proven" || proof.SealedAttemptSeq != "0" || proof.LastAuthorizedAttemptSeq != "0" || proof.AttemptNonce != "" || proof.ExitCode != nil {
+		t.Fatalf("unrequested registration proof: %+v", proof)
+	}
+	if err := r.Close(); err != nil {
+		t.Fatal(err)
+	}
+	reloaded, err := l.Lock(testIdentity().DeploymentID, testIdentity().InstallationID, testIdentity().RunID)
+	if err != nil {
+		t.Fatalf("attempt-zero tombstone did not reload: %v", err)
+	}
+	defer reloaded.Close()
+	if err := reloaded.RequestPermit("1", "00000000-0000-4000-8000-000000000011"); !errors.Is(err, ErrSealed) {
+		t.Fatalf("sealed registration requested a permit: %v", err)
+	}
+	again, err := reloaded.Seal()
+	if err != nil || again != proof {
+		t.Fatalf("sealed proof replay changed: %+v %v", again, err)
 	}
 }

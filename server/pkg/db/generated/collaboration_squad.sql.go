@@ -535,41 +535,6 @@ func (q *Queries) ListCollaborationRuntimeComments(ctx context.Context, issueID 
 	return items, nil
 }
 
-const listCollaborationSquadWakeups = `-- name: ListCollaborationSquadWakeups :many
-SELECT g.wake_parent_run_id FROM collaboration_execution_group g
-JOIN collaboration_target t ON t.id=g.target_id AND t.kind='squad' AND t.hold_reason IS NULL
-JOIN collaboration_grant grant_row ON grant_row.target_id=t.id AND grant_row.role='leader'
-  AND grant_row.config_version=g.config_version AND grant_row.target_epoch=g.target_epoch AND grant_row.revoked_at IS NULL
-WHERE g.wake_pending AND g.settled_at IS NULL AND g.expansion_sealed_at IS NULL
-  AND grant_row.runtime_id=$1 AND grant_row.binding_id=$2
-ORDER BY g.created_at,g.id LIMIT 16
-`
-
-type ListCollaborationSquadWakeupsParams struct {
-	RuntimeID pgtype.UUID `json:"runtime_id"`
-	BindingID pgtype.UUID `json:"binding_id"`
-}
-
-func (q *Queries) ListCollaborationSquadWakeups(ctx context.Context, arg ListCollaborationSquadWakeupsParams) ([]pgtype.UUID, error) {
-	rows, err := q.db.Query(ctx, listCollaborationSquadWakeups, arg.RuntimeID, arg.BindingID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []pgtype.UUID{}
-	for rows.Next() {
-		var wake_parent_run_id pgtype.UUID
-		if err := rows.Scan(&wake_parent_run_id); err != nil {
-			return nil, err
-		}
-		items = append(items, wake_parent_run_id)
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
 const scheduleCollaborationSquadWakeup = `-- name: ScheduleCollaborationSquadWakeup :exec
 UPDATE collaboration_execution_group SET wake_pending=true,wake_parent_run_id=$2
 WHERE id=$1 AND settled_at IS NULL AND expansion_sealed_at IS NULL

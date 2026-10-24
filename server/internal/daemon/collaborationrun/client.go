@@ -17,6 +17,10 @@ import (
 
 var ErrProtocol = errors.New("invalid collaboration runtime response")
 
+// ErrTransport means no HTTP response was observed. The server may still have
+// committed the request, so callers replay the same idempotent payload.
+var ErrTransport = errors.New("collaboration runtime transport failed")
+
 // Client has no workspace-header, cookie, PAT or ordinary-task fallback. Even
 // when the managed credential has been revoked, Proof uses only its old narrow
 // termination capability and can be replayed independently of Claim.
@@ -177,7 +181,7 @@ func (c *Client) request(ctx context.Context, method, path, token string, in, ou
 	}
 	resp, err := c.http.Do(req)
 	if err != nil {
-		return errors.New("collaboration runtime transport failed")
+		return ErrTransport
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {

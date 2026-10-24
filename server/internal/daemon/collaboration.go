@@ -10,6 +10,7 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
+	"time"
 
 	"github.com/multica-ai/multica/server/internal/daemon/collaborationrun"
 	"github.com/multica-ai/multica/server/pkg/protocol"
@@ -49,7 +50,7 @@ type collaborationPoller struct {
 	daemon      *Daemon
 	config      *CollaborationRunnerConfig
 	ledger      *collaborationrun.Ledger
-	controller  *collaborationrun.NamespaceController
+	controller  collaborationrun.Launcher
 	proofClient *collaborationrun.Client
 	enabled     bool
 	active      atomic.Bool
@@ -128,27 +129,43 @@ func reserveCollaborationSlots(sem chan int, count int) {
 	}
 }
 
-func (p *collaborationPoller) recoverProofs(ctx context.Context) error {
-	entries, err := p.ledger.Retained()
+func (p *collaborationPoller) recoverProofs(ctx context.Context) (err error) {
+	roundCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	recovery, err := p.ledger.BeginProofRecovery()
+	if errors.Is(err, collaborationrun.ErrBusy) {
+		return ctx.Err()
+	}
 	if err != nil {
 		return err
 	}
-	recovered := 0
-	for _, entry := range entries {
-		if !entry.CanProve {
-			continue
+	defer func() {
+		if closeErr := recovery.Close(); closeErr != nil {
+			err = errors.Join(err, collaborationrun.ErrUnconfirmed)
 		}
-		if recovered >= 8 {
+	}()
+	runner := &collaborationrun.Runner{Ledger: p.ledger, Client: p.proofClient}
+	for roundCtx.Err() == nil {
+		entry, err := recovery.Next()
+		if err != nil {
+			return err
+		}
+		if entry == nil || roundCtx.Err() != nil {
 			break
 		}
-		recovered++
-		runner := &collaborationrun.Runner{Ledger: p.ledger, Client: p.proofClient}
 		request := protocol.CollaborationRunClaimRequest{DeploymentID: entry.Identity.DeploymentID, InstallationID: entry.Identity.InstallationID}
-		if err := runner.Run(ctx, entry.Identity.RunID, request); err != nil && !errors.Is(err, collaborationrun.ErrBusy) {
+		if err := runner.Run(roundCtx, entry.Identity.RunID, request); errors.Is(err, collaborationrun.ErrUnconfirmed) {
+			return err
+		} else if err != nil && !errors.Is(err, collaborationrun.ErrBusy) {
 			p.daemon.logger.Warn("collaboration proof remains pending", "run_id", entry.Identity.RunID)
 		}
 	}
-	return nil
+	// Exhausting this round's budget postpones proof work without stopping the
+	// machine poller. Caller cancellation still ends the poll loop promptly.
+	return ctx.Err()
 }
 
 func (p *collaborationPoller) managedClient() (*collaborationrun.Client, protocol.CollaborationRunClaimRequest, error) {

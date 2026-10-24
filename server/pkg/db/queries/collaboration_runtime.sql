@@ -29,8 +29,13 @@ SELECT * FROM collaboration_termination WHERE run_id=$1 FOR UPDATE;
 INSERT INTO collaboration_termination(issue_id,run_id,fence,launch_nonce,deployment_id,installation_id,identity_kind,public_key,token_hash,runtime_identity,token_ciphertext)
 VALUES($1,$2,$3,$4,$5,$6,'managed',$7,$8,$9,$10) RETURNING *;
 
--- name: ListCollaborationRuntimeCandidates :many
-SELECT r.id FROM collaboration_run r JOIN collaboration_grant g ON g.id=r.grant_id AND g.revoked_at IS NULL
+-- All three candidate queries share this eligibility predicate. The priority
+-- lookup covers the complete scope, independently of any pagination position.
+-- name: GetCollaborationRuntimeCandidatePriority :one
+SELECT (CASE WHEN EXISTS (
+    SELECT 1 FROM collaboration_runtime_reservation reserve WHERE reserve.run_id=r.id AND reserve.released_at IS NULL
+) THEN 0 ELSE 2 END + CASE WHEN r.step_kind='continuation' THEN 1 ELSE 0 END)::integer AS priority
+FROM collaboration_run r JOIN collaboration_grant g ON g.id=r.grant_id AND g.revoked_at IS NULL
 JOIN collaboration_target t ON t.id=r.target_id AND t.session_id=r.session_id AND t.hold_reason IS NULL
 JOIN issue_participant p ON p.issue_id=g.issue_id AND p.user_id=g.owner_user_id AND p.revoked_at IS NULL AND p.epoch=g.owner_participant_epoch
 JOIN collaboration_account_fence f ON f.user_id=g.owner_user_id AND f.epoch=g.owner_auth_epoch
@@ -38,7 +43,47 @@ WHERE r.runtime_id=$1 AND r.binding_id=$2 AND r.settled_at IS NULL AND r.forced_
   AND NOT EXISTS (SELECT 1 FROM collaboration_command c
       LEFT JOIN collaboration_target dependency ON dependency.id=c.target_id AND dependency.session_id=c.session_id
       WHERE c.batch_id=r.batch_id AND c.state='in_flight' AND (dependency.id IS NULL OR dependency.hold_reason IS NOT NULL))
-ORDER BY CASE WHEN r.step_kind='continuation' THEN 1 ELSE 0 END,r.created_at,r.id LIMIT 16;
+ORDER BY priority LIMIT 1;
+
+-- Recheck the highest tier in the page snapshot too: a reservation may appear
+-- while a poller is waiting for the selected tier's cursor lock. An empty old
+-- tier must not be filled with lower-priority rows, including during wrap. A
+-- daemon attempts one run per dispatch, so persist only one offered position;
+-- advancing a larger page would repeatedly skip its unattempted suffix.
+-- name: ListCollaborationRuntimeCandidates :many
+WITH candidates AS (
+SELECT r.id,r.created_at,(CASE WHEN EXISTS (
+    SELECT 1 FROM collaboration_runtime_reservation reserve WHERE reserve.run_id=r.id AND reserve.released_at IS NULL
+) THEN 0 ELSE 2 END + CASE WHEN r.step_kind='continuation' THEN 1 ELSE 0 END)::integer AS priority
+FROM collaboration_run r JOIN collaboration_grant g ON g.id=r.grant_id AND g.revoked_at IS NULL
+JOIN collaboration_target t ON t.id=r.target_id AND t.session_id=r.session_id AND t.hold_reason IS NULL
+JOIN issue_participant p ON p.issue_id=g.issue_id AND p.user_id=g.owner_user_id AND p.revoked_at IS NULL AND p.epoch=g.owner_participant_epoch
+JOIN collaboration_account_fence f ON f.user_id=g.owner_user_id AND f.epoch=g.owner_auth_epoch
+WHERE r.runtime_id=sqlc.arg(runtime_id)::uuid AND r.binding_id=sqlc.arg(binding_id)::uuid AND r.settled_at IS NULL AND r.forced_disposition IS NULL
+  AND NOT EXISTS (SELECT 1 FROM collaboration_command c
+      LEFT JOIN collaboration_target dependency ON dependency.id=c.target_id AND dependency.session_id=c.session_id
+      WHERE c.batch_id=r.batch_id AND c.state='in_flight' AND (dependency.id IS NULL OR dependency.hold_reason IS NOT NULL))
+)
+SELECT id,created_at,priority FROM candidates
+WHERE priority=sqlc.arg(priority)::integer AND priority=(SELECT min(priority) FROM candidates)
+  AND (sqlc.narg(after_created_at)::timestamptz IS NULL OR (created_at,id)>(sqlc.narg(after_created_at)::timestamptz,sqlc.narg(after_id)::uuid))
+ORDER BY created_at,id LIMIT 1;
+
+-- The existence of pending unreserved work is independent of candidate pages
+-- and priority cursors. Revoked, held, forced and settled rows stay excluded.
+-- name: HasCollaborationRuntimePendingDerivedRun :one
+SELECT EXISTS (
+SELECT 1
+FROM collaboration_run r JOIN collaboration_grant g ON g.id=r.grant_id AND g.revoked_at IS NULL
+JOIN collaboration_target t ON t.id=r.target_id AND t.session_id=r.session_id AND t.hold_reason IS NULL
+JOIN issue_participant p ON p.issue_id=g.issue_id AND p.user_id=g.owner_user_id AND p.revoked_at IS NULL AND p.epoch=g.owner_participant_epoch
+JOIN collaboration_account_fence f ON f.user_id=g.owner_user_id AND f.epoch=g.owner_auth_epoch
+WHERE r.runtime_id=$1 AND r.binding_id=$2 AND r.settled_at IS NULL AND r.forced_disposition IS NULL
+  AND NOT EXISTS (SELECT 1 FROM collaboration_command c
+      LEFT JOIN collaboration_target dependency ON dependency.id=c.target_id AND dependency.session_id=c.session_id
+      WHERE c.batch_id=r.batch_id AND c.state='in_flight' AND (dependency.id IS NULL OR dependency.hold_reason IS NOT NULL))
+  AND NOT EXISTS (SELECT 1 FROM collaboration_runtime_reservation reserve WHERE reserve.run_id=r.id AND reserve.released_at IS NULL)
+)::boolean;
 
 -- name: ListCollaborationRuntimeWaitingTargets :many
 SELECT DISTINCT t.id,t.session_id,s.issue_id FROM collaboration_target t
@@ -46,8 +91,31 @@ JOIN collaboration_session s ON s.id=t.session_id
 JOIN collaboration_channel ch ON ch.id=t.channel_id
 JOIN collaboration_command c ON c.channel_id=ch.id AND c.target_id=t.id AND c.state='waiting' AND c.group_id IS NULL
 JOIN collaboration_grant g ON g.target_id=t.id AND g.config_version=t.config_version AND g.target_epoch=t.target_epoch AND g.revoked_at IS NULL
-WHERE g.role IN ('agent','leader') AND t.hold_reason IS NULL AND g.runtime_id=$1 AND g.binding_id=$2 AND s.queue_state='active' AND ch.queue_state='active'
+WHERE g.role IN ('agent','leader') AND t.hold_reason IS NULL AND g.runtime_id=sqlc.arg(runtime_id)::uuid AND g.binding_id=sqlc.arg(binding_id)::uuid AND s.queue_state='active' AND ch.queue_state='active'
+  AND (sqlc.narg(after_issue_id)::uuid IS NULL OR (s.issue_id,t.id)>(sqlc.narg(after_issue_id)::uuid,sqlc.narg(after_id)::uuid))
 ORDER BY s.issue_id,t.id LIMIT 16;
+
+-- name: ListCollaborationRuntimeWakeups :many
+SELECT DISTINCT g.id,g.created_at,g.wake_parent_run_id FROM collaboration_execution_group g
+JOIN collaboration_target t ON t.id=g.target_id AND t.kind='squad' AND t.hold_reason IS NULL
+JOIN collaboration_grant grant_row ON grant_row.target_id=t.id AND grant_row.role='leader'
+  AND grant_row.config_version=g.config_version AND grant_row.target_epoch=g.target_epoch AND grant_row.revoked_at IS NULL
+WHERE g.wake_pending AND g.settled_at IS NULL AND g.expansion_sealed_at IS NULL
+  AND grant_row.runtime_id=sqlc.arg(runtime_id)::uuid AND grant_row.binding_id=sqlc.arg(binding_id)::uuid
+  AND (sqlc.narg(after_created_at)::timestamptz IS NULL OR (g.created_at,g.id)>(sqlc.narg(after_created_at)::timestamptz,sqlc.narg(after_id)::uuid))
+ORDER BY g.created_at,g.id LIMIT 16;
+
+-- name: EnsureCollaborationRuntimeScanCursor :exec
+INSERT INTO collaboration_runtime_scan_cursor(runtime_id,binding_id,scan_kind) VALUES($1,$2,$3)
+ON CONFLICT(runtime_id,binding_id,scan_kind) DO NOTHING;
+
+-- name: LockCollaborationRuntimeScanCursor :one
+SELECT * FROM collaboration_runtime_scan_cursor WHERE runtime_id=$1 AND binding_id=$2 AND scan_kind=$3 FOR UPDATE;
+
+-- name: AdvanceCollaborationRuntimeScanCursor :exec
+UPDATE collaboration_runtime_scan_cursor
+SET after_issue_id=sqlc.narg(after_issue_id)::uuid,after_created_at=sqlc.narg(after_created_at)::timestamptz,after_id=sqlc.narg(after_id)::uuid
+WHERE runtime_id=sqlc.arg(runtime_id)::uuid AND binding_id=sqlc.arg(binding_id)::uuid AND scan_kind=sqlc.arg(scan_kind)::text;
 
 -- M09 uses exclusive namespace occupancy because no authoritative server-side
 -- machine capacity exists yet. It is not a multi-target capacity declaration.

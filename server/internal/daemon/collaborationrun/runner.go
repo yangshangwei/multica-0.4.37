@@ -3,6 +3,7 @@ package collaborationrun
 import (
 	"context"
 	"errors"
+	"net/http"
 	"time"
 
 	"github.com/google/uuid"
@@ -11,14 +12,30 @@ import (
 
 var ErrProofPending = errors.New("collaboration sealed proof awaits acknowledgement")
 
+// Launcher is the containment boundary. NamespaceController is the production
+// implementation; tests substitute a fake that never resolves an agent CLI.
+type Launcher interface {
+	Probe(context.Context) error
+	Start(context.Context, ProviderInput) (*Process, error)
+}
+
 // Runner is the single-attempt daemon adapter. Ordinary providers, task tokens,
 // automatic fallback and squad delegation are intentionally absent here.
 type Runner struct {
 	Ledger           *Ledger
 	Client           *Client
-	Controller       *NamespaceController
+	Controller       Launcher
 	StopPollInterval time.Duration
+	// PermitAttempts bounds replays of the same attempt seq/nonce after a lost
+	// or transient response. Zero values use the defaults below.
+	PermitAttempts int
+	PermitBackoff  time.Duration
 }
+
+const (
+	defaultPermitAttempts = 3
+	defaultPermitBackoff  = 250 * time.Millisecond
+)
 
 func (r *Runner) Run(ctx context.Context, runID string, request protocol.CollaborationRunClaimRequest) error {
 	if r.Ledger == nil || r.Client == nil {
@@ -34,6 +51,15 @@ func (r *Runner) Run(ctx context.Context, runID string, request protocol.Collabo
 		case phaseAcknowledged:
 			return nil
 		case phaseReaped, phaseNeverLaunched, phaseSealed, phaseProof:
+			return r.finish(ctx, local)
+		case phaseRegistered, phasePermitPending, phaseAuthorized:
+			// Nothing forked before the durable burn. The original claim inputs
+			// are not retained, so converge instead of relaunching. Recovery uses
+			// the caller's shared deadline; foreground abandonment below may
+			// still finish a proof after execution shutdown.
+			if err := local.NeverLaunched(); err != nil {
+				return err
+			}
 			return r.finish(ctx, local)
 		default:
 			return ErrUnconfirmed
@@ -56,22 +82,21 @@ func (r *Runner) Run(ctx context.Context, runID string, request protocol.Collabo
 	if err := local.RequestPermit(permitRequest.AttemptSeq, permitRequest.AttemptNonce); err != nil {
 		return err
 	}
-	permit, err := r.Client.Permit(ctx, permitRequest)
+	permit, err := r.permit(ctx, permitRequest)
 	if err != nil {
-		return errors.Join(ErrUnconfirmed, err)
+		// An explicit refusal or exhausted replay leaves no provider process:
+		// the burn below has not happened, so prove nonlaunch and free capacity.
+		return errors.Join(err, r.abandon(ctx, local))
 	}
 	if permit.BusinessToken == claim.TerminationToken {
-		return ErrUnconfirmed
+		return errors.Join(ErrProtocol, r.abandon(ctx, local))
 	}
 	if err := local.Authorize(); err != nil {
 		return err
 	}
 	stop, stopErr := r.Client.StopIntent(ctx, claim.Identity, claim.TerminationToken)
 	if stopErr != nil || stop.StopRequested || ctx.Err() != nil {
-		if err := local.NeverLaunched(); err != nil {
-			return err
-		}
-		return errors.Join(stopErr, r.finish(context.WithoutCancel(ctx), local))
+		return errors.Join(stopErr, r.abandon(ctx, local))
 	}
 	// This is the last durable transition before any fork. No code path returns
 	// from a burned/unknown record to authorization, including after restart.
@@ -85,7 +110,7 @@ func (r *Runner) Run(ctx context.Context, runID string, request protocol.Collabo
 	if err := local.RecordProcess(process.NamespaceID()); err != nil {
 		_ = process.Stop()
 		_, _ = process.Wait()
-		return err
+		return errors.Join(ErrUnconfirmed, err)
 	}
 	result, err := r.observe(ctx, process, claim.Identity, claim.TerminationToken)
 	if err != nil {
@@ -120,6 +145,53 @@ func (r *Runner) finish(ctx context.Context, local *RunLedger) error {
 		return errors.Join(ErrProofPending, err)
 	}
 	return local.Acknowledge(receipt.ReceiptID)
+}
+
+// abandon is reachable only before Burn. It never returns to authorization; the
+// proof uses the narrow termination capability, so shutdown cannot cancel it.
+func (r *Runner) abandon(ctx context.Context, local *RunLedger) error {
+	if err := local.NeverLaunched(); err != nil {
+		return err
+	}
+	return r.finish(context.WithoutCancel(ctx), local)
+}
+
+// permit replays the identical attempt seq/nonce, which the server treats as
+// idempotent. Only transport loss and transient statuses are retried.
+func (r *Runner) permit(ctx context.Context, in protocol.CollaborationRunPermitRequest) (protocol.CollaborationRunPermitResponse, error) {
+	attempts, backoff := r.PermitAttempts, r.PermitBackoff
+	if attempts <= 0 {
+		attempts = defaultPermitAttempts
+	}
+	if backoff <= 0 {
+		backoff = defaultPermitBackoff
+	}
+	var err error
+	for attempt := 0; attempt < attempts; attempt++ {
+		if attempt > 0 {
+			timer := time.NewTimer(backoff << (attempt - 1))
+			select {
+			case <-timer.C:
+			case <-ctx.Done():
+				timer.Stop()
+				return protocol.CollaborationRunPermitResponse{}, errors.Join(err, ctx.Err())
+			}
+		}
+		var out protocol.CollaborationRunPermitResponse
+		out, err = r.Client.Permit(ctx, in)
+		if err == nil || !retryablePermitError(err) {
+			return out, err
+		}
+	}
+	return protocol.CollaborationRunPermitResponse{}, err
+}
+
+func retryablePermitError(err error) bool {
+	var status *HTTPError
+	if errors.As(err, &status) {
+		return status.Status == http.StatusRequestTimeout || status.Status == http.StatusTooManyRequests || status.Status >= 500
+	}
+	return errors.Is(err, ErrTransport) || errors.Is(err, ErrProtocol)
 }
 
 func (r *Runner) observe(ctx context.Context, p *Process, id protocol.CollaborationRunIdentity, token string) (ContainmentResult, error) {

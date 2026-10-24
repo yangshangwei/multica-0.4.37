@@ -93,6 +93,7 @@ func newManagedCollaborationFixture(t *testing.T) *managedCollaborationFixture {
 	if err != nil {
 		t.Fatal(err)
 	}
+	f.fx.Cleanup(t, `DELETE FROM collaboration_runtime_scan_cursor WHERE runtime_id=$1 OR runtime_id IN (SELECT runtime_id FROM collaboration_grant WHERE issue_id=$2)`, f.runtime.ID, issue.Issue.ID)
 	f.binding, err = f.svc.Queries.GetInstallationBinding(f.ctx, util.MustParseUUID(bindingID))
 	if err != nil {
 		t.Fatal(err)

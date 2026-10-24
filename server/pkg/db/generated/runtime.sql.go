@@ -181,6 +181,9 @@ func (q *Queries) CountUndrainedTasksByRuntimeOrAgent(ctx context.Context, arg C
 }
 
 const deleteAgentRuntime = `-- name: DeleteAgentRuntime :exec
+WITH deleted_scan_cursors AS (
+    DELETE FROM collaboration_runtime_scan_cursor WHERE runtime_id = $1
+)
 DELETE FROM agent_runtime WHERE id = $1
 `
 

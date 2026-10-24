@@ -25,6 +25,8 @@ var workspaceDeletionManifest = map[string]workspaceDeleteAction{
 	"collaboration_account_invalidation": workspaceDeleteKeep,
 	"collaboration_config_invalidation":  workspaceDeleteKeep,
 	"collaboration_execution_gate":       workspaceDeleteKeep,
+	// Scan positions belong to the runtime being deleted, not retained history.
+	"collaboration_runtime_scan_cursor": workspaceDelete,
 	// WorkspaceHasCollaborationRecords refuses source-workspace deletion,
 	// including ended issues. Execution-workspace teardown cannot erase this
 	// independently retained source history or its unfinished proof ledger.

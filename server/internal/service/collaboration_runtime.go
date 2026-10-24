@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
+	"log/slog"
 	"net/http"
 	"strconv"
 	"time"
@@ -21,6 +21,13 @@ import (
 
 const CollaborationBusinessTokenPrefix = "mcb_"
 const CollaborationTerminationTokenPrefix = "mct_"
+
+const (
+	collaborationScanReserved               = "reserved"
+	collaborationScanReservedContinuation   = "reserved_continuation"
+	collaborationScanUnreserved             = "unreserved"
+	collaborationScanUnreservedContinuation = "unreserved_continuation"
+)
 
 // Runtime support is independent of availability, capacity and human consent.
 // Public squad entry is separately gated until native capacity verification.
@@ -412,6 +419,16 @@ func collaborationRunIdentity(run db.CollaborationRun, issueID pgtype.UUID) prot
 		GroupID: util.UUIDToString(run.GroupID), RunID: util.UUIDToString(run.ID), Fence: strconv.FormatInt(run.Fence, 10), ClaimGeneration: strconv.FormatInt(run.ClaimGeneration, 10), LaunchNonce: util.UUIDToString(run.LaunchNonce)}
 }
 
+// A commit error never becomes a local refusal, even when its underlying error
+// resembles a rolled-back conflict. Only the original identity may reconcile it.
+type collaborationRuntimeCommitError struct{ err error }
+
+func (e *collaborationRuntimeCommitError) Error() string {
+	return "commit collaboration runtime operation: " + e.err.Error()
+}
+
+func (e *collaborationRuntimeCommitError) Unwrap() error { return e.err }
+
 func collaborationRuntimeMutation[T any](ctx context.Context, s *CollaborationService, fn func(pgx.Tx) (T, error)) (T, error) {
 	var empty T
 	for attempt := 0; attempt < 3; attempt++ {
@@ -423,7 +440,7 @@ func collaborationRuntimeMutation[T any](ctx context.Context, s *CollaborationSe
 		if err == nil {
 			if err = tx.Commit(ctx); err != nil {
 				rollbackCollaborationQueue(ctx, tx)
-				return empty, fmt.Errorf("commit collaboration runtime operation: %w", err)
+				return empty, &collaborationRuntimeCommitError{err: err}
 			}
 			return result, nil
 		}
@@ -445,26 +462,165 @@ func collaborationRuntimeMutation[T any](ctx context.Context, s *CollaborationSe
 	return empty, collaborationError(http.StatusServiceUnavailable, "collaboration_busy")
 }
 
+type collaborationRuntimeScanPosition struct {
+	issueID   pgtype.UUID
+	createdAt pgtype.Timestamptz
+	id        pgtype.UUID
+}
+
+// Reserve one bounded page under a short, shared cursor lock, then commit the
+// position before any object transaction. A crash can delay an opportunity until
+// wrap; it cannot reset every poll to a persistent failure prefix. Cursor writes
+// do not establish admission, successful promotion, or a successful claim.
+func collaborationRuntimeScanPage[T any](ctx context.Context, s *CollaborationService, runtimeID, bindingID pgtype.UUID, kind string,
+	read func(*db.Queries, db.CollaborationRuntimeScanCursor) ([]T, error),
+	position func(T) collaborationRuntimeScanPosition,
+) ([]T, error) {
+	return collaborationRuntimeMutation(ctx, s, func(tx pgx.Tx) ([]T, error) {
+		q := s.Queries.WithTx(tx)
+		// Teardown locks the runtime before deleting its scan positions. Take
+		// that same runtime -> cursor order, then recheck authority under the
+		// fence so a delayed scan cannot recreate metadata after deletion.
+		if _, err := q.LockAgentRuntime(ctx, runtimeID); err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return nil, collaborationError(http.StatusNotFound, "runtime_not_found")
+			}
+			return nil, err
+		}
+		_, binding, err := s.authorizeCollaborationDaemon(ctx, q, runtimeID)
+		if err != nil {
+			return nil, err
+		}
+		if binding.ID != bindingID {
+			return nil, collaborationError(http.StatusForbidden, "managed_runtime_required")
+		}
+		if err = q.EnsureCollaborationRuntimeScanCursor(ctx, db.EnsureCollaborationRuntimeScanCursorParams{RuntimeID: runtimeID, BindingID: bindingID, ScanKind: kind}); err != nil {
+			return nil, err
+		}
+		cursor, err := q.LockCollaborationRuntimeScanCursor(ctx, db.LockCollaborationRuntimeScanCursorParams{RuntimeID: runtimeID, BindingID: bindingID, ScanKind: kind})
+		if err != nil {
+			return nil, err
+		}
+		rows, err := read(q, cursor)
+		if err != nil {
+			return nil, err
+		}
+		if len(rows) == 0 && cursor.AfterID.Valid {
+			// Wrap at most once, retaining the same scan scope and priority.
+			cursor.AfterIssueID = pgtype.UUID{}
+			cursor.AfterCreatedAt = pgtype.Timestamptz{}
+			cursor.AfterID = pgtype.UUID{}
+			rows, err = read(q, cursor)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if len(rows) == 0 {
+			// A newly higher priority can make this tier temporarily empty.
+			// No opportunity was offered, so preserve its previous progress.
+			return rows, nil
+		}
+		last := position(rows[len(rows)-1])
+		if err = q.AdvanceCollaborationRuntimeScanCursor(ctx, db.AdvanceCollaborationRuntimeScanCursorParams{RuntimeID: runtimeID, BindingID: bindingID, ScanKind: kind,
+			AfterIssueID: last.issueID, AfterCreatedAt: last.createdAt, AfterID: last.id}); err != nil {
+			return nil, err
+		}
+		return rows, nil
+	})
+}
+
+func (s *CollaborationService) scanRuntimeWakeups(ctx context.Context, runtimeID, bindingID pgtype.UUID) ([]db.ListCollaborationRuntimeWakeupsRow, error) {
+	return collaborationRuntimeScanPage(ctx, s, runtimeID, bindingID, "wake", func(q *db.Queries, cursor db.CollaborationRuntimeScanCursor) ([]db.ListCollaborationRuntimeWakeupsRow, error) {
+		return q.ListCollaborationRuntimeWakeups(ctx, db.ListCollaborationRuntimeWakeupsParams{RuntimeID: runtimeID, BindingID: bindingID, AfterCreatedAt: cursor.AfterCreatedAt, AfterID: cursor.AfterID})
+	}, func(row db.ListCollaborationRuntimeWakeupsRow) collaborationRuntimeScanPosition {
+		return collaborationRuntimeScanPosition{createdAt: row.CreatedAt, id: row.ID}
+	})
+}
+
+func (s *CollaborationService) scanRuntimeWaitingTargets(ctx context.Context, runtimeID, bindingID pgtype.UUID) ([]db.ListCollaborationRuntimeWaitingTargetsRow, error) {
+	return collaborationRuntimeScanPage(ctx, s, runtimeID, bindingID, "waiting", func(q *db.Queries, cursor db.CollaborationRuntimeScanCursor) ([]db.ListCollaborationRuntimeWaitingTargetsRow, error) {
+		return q.ListCollaborationRuntimeWaitingTargets(ctx, db.ListCollaborationRuntimeWaitingTargetsParams{RuntimeID: runtimeID, BindingID: bindingID, AfterIssueID: cursor.AfterIssueID, AfterID: cursor.AfterID})
+	}, func(row db.ListCollaborationRuntimeWaitingTargetsRow) collaborationRuntimeScanPosition {
+		return collaborationRuntimeScanPosition{issueID: row.IssueID, id: row.ID}
+	})
+}
+
+func (s *CollaborationService) scanRuntimeCandidates(ctx context.Context, runtimeID, bindingID pgtype.UUID) ([]db.ListCollaborationRuntimeCandidatesRow, error) {
+	priority, err := s.Queries.GetCollaborationRuntimeCandidatePriority(ctx, db.GetCollaborationRuntimeCandidatePriorityParams{RuntimeID: runtimeID, BindingID: bindingID})
+	if errors.Is(err, pgx.ErrNoRows) {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+	priorities := [...]string{collaborationScanReserved, collaborationScanReservedContinuation,
+		collaborationScanUnreserved, collaborationScanUnreservedContinuation}
+	if priority < 0 || int(priority) >= len(priorities) {
+		return nil, invalidCollaborationLedger("unknown runtime candidate priority")
+	}
+	kind := priorities[priority]
+	return collaborationRuntimeScanPage(ctx, s, runtimeID, bindingID, kind, func(q *db.Queries, cursor db.CollaborationRuntimeScanCursor) ([]db.ListCollaborationRuntimeCandidatesRow, error) {
+		return q.ListCollaborationRuntimeCandidates(ctx, db.ListCollaborationRuntimeCandidatesParams{RuntimeID: runtimeID, BindingID: bindingID, Priority: priority,
+			AfterCreatedAt: cursor.AfterCreatedAt, AfterID: cursor.AfterID})
+	}, func(row db.ListCollaborationRuntimeCandidatesRow) collaborationRuntimeScanPosition {
+		return collaborationRuntimeScanPosition{createdAt: row.CreatedAt, id: row.ID}
+	})
+}
+
+// Only named object-level failures are isolated. In particular, daemon identity,
+// request cancellation, unclassified errors and database/commit errors propagate.
+func collaborationRuntimeObjectFailure(ctx context.Context, err error) string {
+	if ctx.Err() != nil || errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+		return ""
+	}
+	var commit *collaborationRuntimeCommitError
+	if errors.As(err, &commit) {
+		return ""
+	}
+	if errors.Is(err, errInvalidCollaborationLedger) {
+		return "invalid_execution_ledger"
+	}
+	var denied *CollaborationError
+	if !errors.As(err, &denied) {
+		return ""
+	}
+	if denied.Status == http.StatusServiceUnavailable && denied.Code == "collaboration_busy" {
+		return denied.Code
+	}
+	if denied.Status >= 500 {
+		return ""
+	}
+	switch denied.Code {
+	case "run_not_found", "stale_source", "stale_authority", "grant_required", "target_configuration_changed",
+		"target_held", "target_paused", "channel_busy", "issue_paused", "issue_closed", "execution_stopped",
+		"stop_unconfirmed", "batch_empty", "runtime_upgrade_required", "installation_stopped", "runtime_offline",
+		"runtime_busy", "derived_run_pending", "collaboration_execution_unavailable", "resource_owner_not_participant", "resource_owner_unavailable":
+		return denied.Code
+	default:
+		return ""
+	}
+}
+
 func (s *CollaborationService) ListRuntimeRuns(ctx context.Context, runtimeID pgtype.UUID) (protocol.CollaborationRunListResponse, error) {
 	result := protocol.CollaborationRunListResponse{RunIDs: []string{}}
 	_, binding, err := s.authorizeCollaborationDaemon(ctx, s.Queries, runtimeID)
 	if err != nil {
 		return result, err
 	}
-	wakes, err := s.Queries.ListCollaborationSquadWakeups(ctx, db.ListCollaborationSquadWakeupsParams{RuntimeID: runtimeID, BindingID: binding.ID})
+	wakes, err := s.scanRuntimeWakeups(ctx, runtimeID, binding.ID)
 	if err != nil {
 		return result, err
 	}
-	for _, parent := range wakes {
-		if err = s.drainSquadWakeup(ctx, parent); err != nil {
-			var denied *CollaborationError
-			if errors.As(err, &denied) && denied.Status < 500 {
+	for _, wake := range wakes {
+		if err = s.drainSquadWakeup(ctx, wake.WakeParentRunID); err != nil {
+			if code := collaborationRuntimeObjectFailure(ctx, err); code != "" {
+				slog.WarnContext(ctx, "collaboration runtime wake deferred", "group_id", util.UUIDToString(wake.ID), "code", code)
 				continue
 			}
 			return result, err
 		}
 	}
-	waiting, err := s.Queries.ListCollaborationRuntimeWaitingTargets(ctx, db.ListCollaborationRuntimeWaitingTargetsParams{RuntimeID: runtimeID, BindingID: binding.ID})
+	waiting, err := s.scanRuntimeWaitingTargets(ctx, runtimeID, binding.ID)
 	if err != nil {
 		return result, err
 	}
@@ -475,22 +631,23 @@ func (s *CollaborationService) ListRuntimeRuns(ctx context.Context, runtimeID pg
 		if err == nil && promotion.RefusalCode != "" {
 			// The hold and audit committed. This remains a refused promotion,
 			// while actual transaction errors never enter this path.
-			err = collaborationError(http.StatusConflict, promotion.RefusalCode)
+			slog.DebugContext(ctx, "collaboration runtime promotion refused", "target_id", util.UUIDToString(candidate.ID), "code", promotion.RefusalCode)
+			continue
 		}
 		if err != nil {
-			var denied *CollaborationError
-			if errors.As(err, &denied) && denied.Status < 500 {
+			if code := collaborationRuntimeObjectFailure(ctx, err); code != "" {
+				slog.WarnContext(ctx, "collaboration runtime promotion deferred", "target_id", util.UUIDToString(candidate.ID), "code", code)
 				continue
 			}
 			return result, err
 		}
 	}
-	ids, err := s.Queries.ListCollaborationRuntimeCandidates(ctx, db.ListCollaborationRuntimeCandidatesParams{RuntimeID: runtimeID, BindingID: binding.ID})
+	candidates, err := s.scanRuntimeCandidates(ctx, runtimeID, binding.ID)
 	if err != nil {
 		return result, err
 	}
-	for _, id := range ids {
-		result.RunIDs = append(result.RunIDs, util.UUIDToString(id))
+	for _, candidate := range candidates {
+		result.RunIDs = append(result.RunIDs, util.UUIDToString(candidate.ID))
 	}
 	return result, nil
 }
@@ -613,6 +770,18 @@ func (s *CollaborationService) promoteCollaborationRuntimeBatch(ctx context.Cont
 	}
 	if occupied {
 		return deny("runtime_busy")
+	}
+	// A squad member or continuation reserves only when claimed. While this
+	// runtime still offers such a run, a new root must not take the namespace
+	// first, or the derived run starves behind every other lane (R23). The set
+	// uses the daemon's complete candidate predicate, independent of its current
+	// page/tier, so revoked, held, forced or settled runs never defer promotion.
+	derived, err := q.HasCollaborationRuntimePendingDerivedRun(ctx, db.HasCollaborationRuntimePendingDerivedRunParams{RuntimeID: runtimeID, BindingID: binding.ID})
+	if err != nil {
+		return collaborationRuntimePromotion{}, err
+	}
+	if derived {
+		return deny("derived_run_pending")
 	}
 	batch, err := t.prepareSelectedBatch(ctx, selection)
 	if err != nil {

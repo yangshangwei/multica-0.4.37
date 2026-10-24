@@ -189,7 +189,7 @@ func TestCollaborationFIFOCancellationAndPromotionSerialize(t *testing.T) {
 			var once sync.Once
 			unblock := func() { once.Do(func() { close(release) }) }
 			defer unblock()
-			barrier := recipientCommitStarter{TxStarter: f.pool, reached: make(chan int, 1), release: release}
+			barrier := runtimeSourceCommitStarter{recipientCommitStarter{TxStarter: f.pool, reached: make(chan int, 1), release: release}}
 			svc := *f.svc
 			svc.TxStarter = barrier
 			actorCtx, cancel := context.WithTimeout(f.ctx, 15*time.Second)

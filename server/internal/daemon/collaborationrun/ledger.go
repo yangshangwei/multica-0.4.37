@@ -107,8 +107,10 @@ func (l *Ledger) Retained() ([]RetainedRun, error) {
 			continue
 		case phaseReaped, phaseNeverLaunched, phaseSealed, phaseProof:
 			retained = append(retained, RetainedRun{Identity: id, CanProve: true})
-		case phaseRegistered:
-			retained = append(retained, RetainedRun{Identity: id})
+		case phaseRegistered, phasePermitPending, phaseAuthorized:
+			// Nothing can fork before the durable burn. These converge to a
+			// never-launched proof and hold no machine capacity meanwhile.
+			retained = append(retained, RetainedRun{Identity: id, CanProve: true})
 		default:
 			retained = append(retained, RetainedRun{Identity: id, Unconfirmed: true})
 		}
@@ -187,13 +189,20 @@ func (r *RunLedger) load() error {
 	if record.Version != 1 || validateIdentity(record.Identity) != nil || record.Identity.DeploymentID != r.deploymentID || record.Identity.InstallationID != r.installationID || record.Identity.RunID != r.runID || record.TerminationToken == "" {
 		return ErrUnconfirmed
 	}
+	unrequested := record.AttemptSeq == "0" && record.AttemptNonce == ""
+	requested := record.AttemptSeq == "1" && validUUID(record.AttemptNonce)
 	switch record.Phase {
 	case phaseRegistered:
-		if record.AttemptSeq != "0" || record.AttemptNonce != "" {
+		if !unrequested {
 			return ErrUnconfirmed
 		}
-	case phasePermitPending, phaseAuthorized, phaseBurned, phaseRecorded, phaseReaped, phaseNeverLaunched, phaseSealed, phaseProof, phaseAcknowledged:
-		if record.AttemptSeq != "1" || !validUUID(record.AttemptNonce) {
+	case phasePermitPending, phaseAuthorized, phaseBurned, phaseRecorded, phaseReaped:
+		if !requested {
+			return ErrUnconfirmed
+		}
+	case phaseNeverLaunched, phaseSealed, phaseProof, phaseAcknowledged:
+		// A registration abandoned before any permit request seals attempt 0.
+		if !requested && !(unrequested && record.NeverLaunched) {
 			return ErrUnconfirmed
 		}
 	default:
@@ -301,9 +310,18 @@ func (r *RunLedger) Reap(exitCode int) error {
 	return r.persist(next)
 }
 
+// NeverLaunched is legal only before the durable burn. A burned or later
+// record can never return here, so it can never return to authorization.
 func (r *RunLedger) NeverLaunched() error {
-	if err := r.checkPhase(phaseAuthorized); err != nil {
-		return err
+	if r.failed || r.record == nil || r.lock == nil {
+		return ErrUnconfirmed
+	}
+	switch r.record.Phase {
+	case phaseRegistered, phasePermitPending, phaseAuthorized:
+	case phaseSealed, phaseProof, phaseAcknowledged:
+		return ErrSealed
+	default:
+		return ErrUnconfirmed
 	}
 	next := *r.record
 	next.Phase, next.NeverLaunched = phaseNeverLaunched, true

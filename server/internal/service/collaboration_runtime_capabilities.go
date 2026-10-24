@@ -495,10 +495,17 @@ func (s *CollaborationService) AcceptRuntimeProof(ctx context.Context, runID pgt
 			}
 			return out, nil
 		}
-		if last != r.run.AuthorizedAttemptSeq {
+		// A supervisor that requested a permit cannot know whether the server
+		// committed it before a lost response or a racing Stop. When no permit
+		// was ever authorized, its sealed nonlaunch for that attempt dominates:
+		// settling the run also blocks any later permit from committing.
+		unpermittedNonlaunch := p.State == "never_launched_proven" && r.run.AuthorizedAttemptSeq == 0 && last == 1
+		switch {
+		case unpermittedNonlaunch:
+			// No attempt row exists for an unauthorized permit request.
+		case last != r.run.AuthorizedAttemptSeq:
 			return out, collaborationError(http.StatusConflict, "stale_attempt_proof")
-		}
-		if last > 0 {
+		case last > 0:
 			attempt, err := q.GetCollaborationAttempt(ctx, db.GetCollaborationAttemptParams{RunID: runID, AttemptSeq: last})
 			if err != nil {
 				return out, err
@@ -506,13 +513,16 @@ func (s *CollaborationService) AcceptRuntimeProof(ctx context.Context, runID pgt
 			if attempt.AttemptNonce != p.AttemptNonce || strconv.FormatInt(attempt.ClaimGeneration, 10) != identity.ClaimGeneration || attempt.Containment != p.Containment {
 				return out, collaborationError(http.StatusConflict, "stale_attempt_proof")
 			}
-		} else if p.State != "never_launched_proven" {
+		case p.State != "never_launched_proven":
 			return out, collaborationError(http.StatusConflict, "invalid_runtime_proof")
 		}
 		if p.State == "never_launched_proven" && (r.run.StartedAt.Valid || r.run.BusinessOutcome.String == protocol.CollaborationBusinessOutcomeSuccess) {
 			return out, collaborationError(http.StatusConflict, "contradictory_runtime_proof")
 		}
-		if r.run.SettledAt.Valid && (r.run.ProofState != p.State || r.run.SealedAttemptSeq.Int64 != sealed) {
+		// A Stop may already have settled an unpermitted run as nonlaunched
+		// (sealed 0). The supervisor's own nonlaunch proof confirms that fact;
+		// accept it without rewriting the settled run.
+		if r.run.SettledAt.Valid && (r.run.ProofState != p.State || (r.run.SealedAttemptSeq.Int64 != sealed && !unpermittedNonlaunch)) {
 			return out, collaborationError(http.StatusConflict, "proof_conflict")
 		}
 		if !r.run.SettledAt.Valid {
@@ -527,49 +537,64 @@ func (s *CollaborationService) AcceptRuntimeProof(ctx context.Context, runID pgt
 		if _, err = q.RecordCollaborationTerminationProof(ctx, db.RecordCollaborationTerminationProofParams{RunID: runID, ReceiptID: p.ReceiptID, ReceiptDigest: digest, Proof: encoded}); err != nil {
 			return out, err
 		}
-		if err = q.RevokeCollaborationRunBusinessCapabilities(ctx, runID); err != nil {
+		if err = completeProvenRuntimeRun(ctx, r); err != nil {
 			return out, err
-		}
-		if err = q.ReleaseCollaborationRunReservation(ctx, runID); err != nil {
-			return out, err
-		}
-		if err = q.SettleCollaborationRunDelegations(ctx, runID); err != nil {
-			return out, err
-		}
-		if !r.group.SettledAt.Valid {
-			if r.target.Kind == "agent" {
-				r.group, err = q.SealCollaborationCompletedGroup(ctx, r.group.ID)
-				if err != nil {
-					return out, err
-				}
-			} else if !r.group.ExpansionSealedAt.Valid {
-				if r.run.StepKind.String == "member" {
-					if err = q.ScheduleCollaborationSquadWakeup(ctx, db.ScheduleCollaborationSquadWakeupParams{ID: r.group.ID, WakeParentRunID: runID}); err != nil {
-						return out, err
-					}
-				} else {
-					runs, err := q.LockCollaborationGroupRuns(ctx, r.group.ID)
-					if err != nil {
-						return out, err
-					}
-					complete := !r.group.WakePending
-					for _, run := range runs {
-						if !run.SettledAt.Valid {
-							complete = false
-						}
-					}
-					if complete {
-						r.group, err = q.SealCollaborationCompletedGroup(ctx, r.group.ID)
-						if err != nil {
-							return out, err
-						}
-					}
-				}
-			}
-			if _, err = r.settleProvenGroup(ctx, r.target, r.group); err != nil {
-				return out, err
-			}
 		}
 		return out, recordCollaborationExecutionChange(ctx, q, r.access.Issue.ID, r.group.ID, runID, "runtime_ended")
 	})
+}
+
+// Both authenticated sealed proofs and the server's affirmative zero-permit
+// fact use these same post-proof effects. The caller owns the aggregate locks;
+// no current grant is required here because historical proof must survive it.
+func completeProvenRuntimeRun(ctx context.Context, r *collaborationRuntimeState) error {
+	if !collaborationRunProvenEnded(r.run) {
+		return invalidCollaborationLedger("runtime completion requires proven termination")
+	}
+	q, runID := r.q, r.run.ID
+	if err := q.RevokeCollaborationRunBusinessCapabilities(ctx, runID); err != nil {
+		return err
+	}
+	if err := q.ReleaseCollaborationRunReservation(ctx, runID); err != nil {
+		return err
+	}
+	if err := q.SettleCollaborationRunDelegations(ctx, runID); err != nil {
+		return err
+	}
+	if !r.group.SettledAt.Valid {
+		var err error
+		if r.target.Kind == "agent" {
+			r.group, err = q.SealCollaborationCompletedGroup(ctx, r.group.ID)
+			if err != nil {
+				return err
+			}
+		} else if !r.group.ExpansionSealedAt.Valid {
+			if r.run.StepKind.String == "member" {
+				if err = q.ScheduleCollaborationSquadWakeup(ctx, db.ScheduleCollaborationSquadWakeupParams{ID: r.group.ID, WakeParentRunID: runID}); err != nil {
+					return err
+				}
+			} else {
+				runs, err := q.LockCollaborationGroupRuns(ctx, r.group.ID)
+				if err != nil {
+					return err
+				}
+				complete := !r.group.WakePending
+				for _, run := range runs {
+					if !run.SettledAt.Valid {
+						complete = false
+					}
+				}
+				if complete {
+					r.group, err = q.SealCollaborationCompletedGroup(ctx, r.group.ID)
+					if err != nil {
+						return err
+					}
+				}
+			}
+		}
+		if _, err = r.settleProvenGroup(ctx, r.target, r.group); err != nil {
+			return err
+		}
+	}
+	return nil
 }

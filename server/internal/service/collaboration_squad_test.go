@@ -204,6 +204,21 @@ func TestCollaborationSquadHumanJoinClaimAndUnreadCancellation(t *testing.T) {
 	}
 	memberToken, memberNonce := permitSquadRun(t, f, memberRun, memberClaim)
 	finishSquadRun(t, f, memberRun, memberClaim, memberToken, memberNonce, "success")
+	// Runtime polling offers one currently eligible candidate. Discover the
+	// continuation after its member releases capacity, as the daemon does.
+	list, err = f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, id := range list.RunIDs {
+		r, err := f.svc.Queries.GetCollaborationRuntimeRun(f.ctx, util.MustParseUUID(id))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if r.StepKind.String == "continuation" {
+			continuation = r.ID
+		}
+	}
 	continuationClaim, err := f.svc.ClaimRuntimeRun(f.daemonCtx, continuation, request)
 	if err != nil {
 		t.Fatal(err)
@@ -256,20 +271,28 @@ func TestCollaborationSquadUnreadAuthorDepartureDoesNotStopOtherWork(t *testing.
 			joined := f.submitManaged(t, f.handler, "other author's joined input")
 			if consumed {
 				finishSquadRun(t, f, root, claim, token, nonce, "success")
-				list, err := f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID)
-				if err != nil {
-					t.Fatal(err)
-				}
-				for _, id := range list.RunIDs {
-					run, err := f.svc.Queries.GetCollaborationRuntimeRun(f.ctx, util.MustParseUUID(id))
+				claimNext := func(kind string) (pgtype.UUID, protocol.CollaborationRunClaimResponse) {
+					t.Helper()
+					list, err := f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID)
+					if err != nil || len(list.RunIDs) != 1 {
+						t.Fatalf("one offered %s: %+v %v", kind, list, err)
+					}
+					run, err := f.svc.Queries.GetCollaborationRuntimeRun(f.ctx, util.MustParseUUID(list.RunIDs[0]))
+					if err != nil || run.StepKind.String != kind {
+						t.Fatalf("offered run must be %s: got %s, %v", kind, run.StepKind.String, err)
+					}
+					claimed, err := f.svc.ClaimRuntimeRun(f.daemonCtx, run.ID, request)
 					if err != nil {
 						t.Fatal(err)
 					}
-					if run.StepKind.String == "continuation" {
-						if _, err = f.svc.ClaimRuntimeRun(f.daemonCtx, run.ID, request); err != nil {
-							t.Fatal(err)
-						}
-					}
+					return run.ID, claimed
+				}
+				memberRun, memberClaim := claimNext("member")
+				memberToken, memberNonce := permitSquadRun(t, f, memberRun, memberClaim)
+				finishSquadRun(t, f, memberRun, memberClaim, memberToken, memberNonce, "success")
+				claimNext("continuation")
+				if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='in_flight'`, joined.CommandID) != 1 {
+					t.Fatal("continuation did not consume the joined author's input before departure")
 				}
 			}
 			_, err := f.svc.RemoveParticipant(f.ctx, CollaborationParticipantParams{CollaborationWorkflowRequest: workflowRequest(f.collaborationQueueFixture, 1), TargetUserID: util.MustParseUUID(f.handler)})

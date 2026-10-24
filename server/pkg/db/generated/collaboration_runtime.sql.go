@@ -11,6 +11,33 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+const advanceCollaborationRuntimeScanCursor = `-- name: AdvanceCollaborationRuntimeScanCursor :exec
+UPDATE collaboration_runtime_scan_cursor
+SET after_issue_id=$1::uuid,after_created_at=$2::timestamptz,after_id=$3::uuid
+WHERE runtime_id=$4::uuid AND binding_id=$5::uuid AND scan_kind=$6::text
+`
+
+type AdvanceCollaborationRuntimeScanCursorParams struct {
+	AfterIssueID   pgtype.UUID        `json:"after_issue_id"`
+	AfterCreatedAt pgtype.Timestamptz `json:"after_created_at"`
+	AfterID        pgtype.UUID        `json:"after_id"`
+	RuntimeID      pgtype.UUID        `json:"runtime_id"`
+	BindingID      pgtype.UUID        `json:"binding_id"`
+	ScanKind       string             `json:"scan_kind"`
+}
+
+func (q *Queries) AdvanceCollaborationRuntimeScanCursor(ctx context.Context, arg AdvanceCollaborationRuntimeScanCursorParams) error {
+	_, err := q.db.Exec(ctx, advanceCollaborationRuntimeScanCursor,
+		arg.AfterIssueID,
+		arg.AfterCreatedAt,
+		arg.AfterID,
+		arg.RuntimeID,
+		arg.BindingID,
+		arg.ScanKind,
+	)
+	return err
+}
+
 const assignCollaborationChannelGroup = `-- name: AssignCollaborationChannelGroup :one
 UPDATE collaboration_channel SET active_group_id=$1::uuid,group_generation=group_generation+1
 WHERE id=$2::uuid AND active_group_id IS NULL RETURNING id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at, next_command_seq
@@ -568,6 +595,22 @@ func (q *Queries) CreateCollaborationTerminationCapability(ctx context.Context, 
 	return i, err
 }
 
+const ensureCollaborationRuntimeScanCursor = `-- name: EnsureCollaborationRuntimeScanCursor :exec
+INSERT INTO collaboration_runtime_scan_cursor(runtime_id,binding_id,scan_kind) VALUES($1,$2,$3)
+ON CONFLICT(runtime_id,binding_id,scan_kind) DO NOTHING
+`
+
+type EnsureCollaborationRuntimeScanCursorParams struct {
+	RuntimeID pgtype.UUID `json:"runtime_id"`
+	BindingID pgtype.UUID `json:"binding_id"`
+	ScanKind  string      `json:"scan_kind"`
+}
+
+func (q *Queries) EnsureCollaborationRuntimeScanCursor(ctx context.Context, arg EnsureCollaborationRuntimeScanCursorParams) error {
+	_, err := q.db.Exec(ctx, ensureCollaborationRuntimeScanCursor, arg.RuntimeID, arg.BindingID, arg.ScanKind)
+	return err
+}
+
 const getCollaborationAttempt = `-- name: GetCollaborationAttempt :one
 SELECT run_id, attempt_seq, attempt_nonce, claim_generation, containment, authorized_at FROM collaboration_attempt WHERE run_id=$1 AND attempt_seq=$2
 `
@@ -716,6 +759,35 @@ func (q *Queries) GetCollaborationGrant(ctx context.Context, id pgtype.UUID) (Co
 	return i, err
 }
 
+const getCollaborationRuntimeCandidatePriority = `-- name: GetCollaborationRuntimeCandidatePriority :one
+SELECT (CASE WHEN EXISTS (
+    SELECT 1 FROM collaboration_runtime_reservation reserve WHERE reserve.run_id=r.id AND reserve.released_at IS NULL
+) THEN 0 ELSE 2 END + CASE WHEN r.step_kind='continuation' THEN 1 ELSE 0 END)::integer AS priority
+FROM collaboration_run r JOIN collaboration_grant g ON g.id=r.grant_id AND g.revoked_at IS NULL
+JOIN collaboration_target t ON t.id=r.target_id AND t.session_id=r.session_id AND t.hold_reason IS NULL
+JOIN issue_participant p ON p.issue_id=g.issue_id AND p.user_id=g.owner_user_id AND p.revoked_at IS NULL AND p.epoch=g.owner_participant_epoch
+JOIN collaboration_account_fence f ON f.user_id=g.owner_user_id AND f.epoch=g.owner_auth_epoch
+WHERE r.runtime_id=$1 AND r.binding_id=$2 AND r.settled_at IS NULL AND r.forced_disposition IS NULL
+  AND NOT EXISTS (SELECT 1 FROM collaboration_command c
+      LEFT JOIN collaboration_target dependency ON dependency.id=c.target_id AND dependency.session_id=c.session_id
+      WHERE c.batch_id=r.batch_id AND c.state='in_flight' AND (dependency.id IS NULL OR dependency.hold_reason IS NOT NULL))
+ORDER BY priority LIMIT 1
+`
+
+type GetCollaborationRuntimeCandidatePriorityParams struct {
+	RuntimeID pgtype.UUID `json:"runtime_id"`
+	BindingID pgtype.UUID `json:"binding_id"`
+}
+
+// All three candidate queries share this eligibility predicate. The priority
+// lookup covers the complete scope, independently of any pagination position.
+func (q *Queries) GetCollaborationRuntimeCandidatePriority(ctx context.Context, arg GetCollaborationRuntimeCandidatePriorityParams) (int32, error) {
+	row := q.db.QueryRow(ctx, getCollaborationRuntimeCandidatePriority, arg.RuntimeID, arg.BindingID)
+	var priority int32
+	err := row.Scan(&priority)
+	return priority, err
+}
+
 const getCollaborationRuntimeEvent = `-- name: GetCollaborationRuntimeEvent :one
 SELECT id, issue_id, run_id, producer_event_id, seq, kind, payload, created_at FROM collaboration_run_event WHERE run_id=$1 AND producer_event_id=$2
 `
@@ -845,8 +917,10 @@ func (q *Queries) GetCollaborationTermination(ctx context.Context, runID pgtype.
 	return i, err
 }
 
-const listCollaborationRuntimeCandidates = `-- name: ListCollaborationRuntimeCandidates :many
-SELECT r.id FROM collaboration_run r JOIN collaboration_grant g ON g.id=r.grant_id AND g.revoked_at IS NULL
+const hasCollaborationRuntimePendingDerivedRun = `-- name: HasCollaborationRuntimePendingDerivedRun :one
+SELECT EXISTS (
+SELECT 1
+FROM collaboration_run r JOIN collaboration_grant g ON g.id=r.grant_id AND g.revoked_at IS NULL
 JOIN collaboration_target t ON t.id=r.target_id AND t.session_id=r.session_id AND t.hold_reason IS NULL
 JOIN issue_participant p ON p.issue_id=g.issue_id AND p.user_id=g.owner_user_id AND p.revoked_at IS NULL AND p.epoch=g.owner_participant_epoch
 JOIN collaboration_account_fence f ON f.user_id=g.owner_user_id AND f.epoch=g.owner_auth_epoch
@@ -854,27 +928,82 @@ WHERE r.runtime_id=$1 AND r.binding_id=$2 AND r.settled_at IS NULL AND r.forced_
   AND NOT EXISTS (SELECT 1 FROM collaboration_command c
       LEFT JOIN collaboration_target dependency ON dependency.id=c.target_id AND dependency.session_id=c.session_id
       WHERE c.batch_id=r.batch_id AND c.state='in_flight' AND (dependency.id IS NULL OR dependency.hold_reason IS NOT NULL))
-ORDER BY CASE WHEN r.step_kind='continuation' THEN 1 ELSE 0 END,r.created_at,r.id LIMIT 16
+  AND NOT EXISTS (SELECT 1 FROM collaboration_runtime_reservation reserve WHERE reserve.run_id=r.id AND reserve.released_at IS NULL)
+)::boolean
 `
 
-type ListCollaborationRuntimeCandidatesParams struct {
+type HasCollaborationRuntimePendingDerivedRunParams struct {
 	RuntimeID pgtype.UUID `json:"runtime_id"`
 	BindingID pgtype.UUID `json:"binding_id"`
 }
 
-func (q *Queries) ListCollaborationRuntimeCandidates(ctx context.Context, arg ListCollaborationRuntimeCandidatesParams) ([]pgtype.UUID, error) {
-	rows, err := q.db.Query(ctx, listCollaborationRuntimeCandidates, arg.RuntimeID, arg.BindingID)
+// The existence of pending unreserved work is independent of candidate pages
+// and priority cursors. Revoked, held, forced and settled rows stay excluded.
+func (q *Queries) HasCollaborationRuntimePendingDerivedRun(ctx context.Context, arg HasCollaborationRuntimePendingDerivedRunParams) (bool, error) {
+	row := q.db.QueryRow(ctx, hasCollaborationRuntimePendingDerivedRun, arg.RuntimeID, arg.BindingID)
+	var column_1 bool
+	err := row.Scan(&column_1)
+	return column_1, err
+}
+
+const listCollaborationRuntimeCandidates = `-- name: ListCollaborationRuntimeCandidates :many
+WITH candidates AS (
+SELECT r.id,r.created_at,(CASE WHEN EXISTS (
+    SELECT 1 FROM collaboration_runtime_reservation reserve WHERE reserve.run_id=r.id AND reserve.released_at IS NULL
+) THEN 0 ELSE 2 END + CASE WHEN r.step_kind='continuation' THEN 1 ELSE 0 END)::integer AS priority
+FROM collaboration_run r JOIN collaboration_grant g ON g.id=r.grant_id AND g.revoked_at IS NULL
+JOIN collaboration_target t ON t.id=r.target_id AND t.session_id=r.session_id AND t.hold_reason IS NULL
+JOIN issue_participant p ON p.issue_id=g.issue_id AND p.user_id=g.owner_user_id AND p.revoked_at IS NULL AND p.epoch=g.owner_participant_epoch
+JOIN collaboration_account_fence f ON f.user_id=g.owner_user_id AND f.epoch=g.owner_auth_epoch
+WHERE r.runtime_id=$4::uuid AND r.binding_id=$5::uuid AND r.settled_at IS NULL AND r.forced_disposition IS NULL
+  AND NOT EXISTS (SELECT 1 FROM collaboration_command c
+      LEFT JOIN collaboration_target dependency ON dependency.id=c.target_id AND dependency.session_id=c.session_id
+      WHERE c.batch_id=r.batch_id AND c.state='in_flight' AND (dependency.id IS NULL OR dependency.hold_reason IS NOT NULL))
+)
+SELECT id,created_at,priority FROM candidates
+WHERE priority=$1::integer AND priority=(SELECT min(priority) FROM candidates)
+  AND ($2::timestamptz IS NULL OR (created_at,id)>($2::timestamptz,$3::uuid))
+ORDER BY created_at,id LIMIT 1
+`
+
+type ListCollaborationRuntimeCandidatesParams struct {
+	Priority       int32              `json:"priority"`
+	AfterCreatedAt pgtype.Timestamptz `json:"after_created_at"`
+	AfterID        pgtype.UUID        `json:"after_id"`
+	RuntimeID      pgtype.UUID        `json:"runtime_id"`
+	BindingID      pgtype.UUID        `json:"binding_id"`
+}
+
+type ListCollaborationRuntimeCandidatesRow struct {
+	ID        pgtype.UUID        `json:"id"`
+	CreatedAt pgtype.Timestamptz `json:"created_at"`
+	Priority  int32              `json:"priority"`
+}
+
+// Recheck the highest tier in the page snapshot too: a reservation may appear
+// while a poller is waiting for the selected tier's cursor lock. An empty old
+// tier must not be filled with lower-priority rows, including during wrap. A
+// daemon attempts one run per dispatch, so persist only one offered position;
+// advancing a larger page would repeatedly skip its unattempted suffix.
+func (q *Queries) ListCollaborationRuntimeCandidates(ctx context.Context, arg ListCollaborationRuntimeCandidatesParams) ([]ListCollaborationRuntimeCandidatesRow, error) {
+	rows, err := q.db.Query(ctx, listCollaborationRuntimeCandidates,
+		arg.Priority,
+		arg.AfterCreatedAt,
+		arg.AfterID,
+		arg.RuntimeID,
+		arg.BindingID,
+	)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []pgtype.UUID{}
+	items := []ListCollaborationRuntimeCandidatesRow{}
 	for rows.Next() {
-		var id pgtype.UUID
-		if err := rows.Scan(&id); err != nil {
+		var i ListCollaborationRuntimeCandidatesRow
+		if err := rows.Scan(&i.ID, &i.CreatedAt, &i.Priority); err != nil {
 			return nil, err
 		}
-		items = append(items, id)
+		items = append(items, i)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
@@ -888,13 +1017,16 @@ JOIN collaboration_session s ON s.id=t.session_id
 JOIN collaboration_channel ch ON ch.id=t.channel_id
 JOIN collaboration_command c ON c.channel_id=ch.id AND c.target_id=t.id AND c.state='waiting' AND c.group_id IS NULL
 JOIN collaboration_grant g ON g.target_id=t.id AND g.config_version=t.config_version AND g.target_epoch=t.target_epoch AND g.revoked_at IS NULL
-WHERE g.role IN ('agent','leader') AND t.hold_reason IS NULL AND g.runtime_id=$1 AND g.binding_id=$2 AND s.queue_state='active' AND ch.queue_state='active'
+WHERE g.role IN ('agent','leader') AND t.hold_reason IS NULL AND g.runtime_id=$1::uuid AND g.binding_id=$2::uuid AND s.queue_state='active' AND ch.queue_state='active'
+  AND ($3::uuid IS NULL OR (s.issue_id,t.id)>($3::uuid,$4::uuid))
 ORDER BY s.issue_id,t.id LIMIT 16
 `
 
 type ListCollaborationRuntimeWaitingTargetsParams struct {
-	RuntimeID pgtype.UUID `json:"runtime_id"`
-	BindingID pgtype.UUID `json:"binding_id"`
+	RuntimeID    pgtype.UUID `json:"runtime_id"`
+	BindingID    pgtype.UUID `json:"binding_id"`
+	AfterIssueID pgtype.UUID `json:"after_issue_id"`
+	AfterID      pgtype.UUID `json:"after_id"`
 }
 
 type ListCollaborationRuntimeWaitingTargetsRow struct {
@@ -904,7 +1036,12 @@ type ListCollaborationRuntimeWaitingTargetsRow struct {
 }
 
 func (q *Queries) ListCollaborationRuntimeWaitingTargets(ctx context.Context, arg ListCollaborationRuntimeWaitingTargetsParams) ([]ListCollaborationRuntimeWaitingTargetsRow, error) {
-	rows, err := q.db.Query(ctx, listCollaborationRuntimeWaitingTargets, arg.RuntimeID, arg.BindingID)
+	rows, err := q.db.Query(ctx, listCollaborationRuntimeWaitingTargets,
+		arg.RuntimeID,
+		arg.BindingID,
+		arg.AfterIssueID,
+		arg.AfterID,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -913,6 +1050,55 @@ func (q *Queries) ListCollaborationRuntimeWaitingTargets(ctx context.Context, ar
 	for rows.Next() {
 		var i ListCollaborationRuntimeWaitingTargetsRow
 		if err := rows.Scan(&i.ID, &i.SessionID, &i.IssueID); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listCollaborationRuntimeWakeups = `-- name: ListCollaborationRuntimeWakeups :many
+SELECT DISTINCT g.id,g.created_at,g.wake_parent_run_id FROM collaboration_execution_group g
+JOIN collaboration_target t ON t.id=g.target_id AND t.kind='squad' AND t.hold_reason IS NULL
+JOIN collaboration_grant grant_row ON grant_row.target_id=t.id AND grant_row.role='leader'
+  AND grant_row.config_version=g.config_version AND grant_row.target_epoch=g.target_epoch AND grant_row.revoked_at IS NULL
+WHERE g.wake_pending AND g.settled_at IS NULL AND g.expansion_sealed_at IS NULL
+  AND grant_row.runtime_id=$1::uuid AND grant_row.binding_id=$2::uuid
+  AND ($3::timestamptz IS NULL OR (g.created_at,g.id)>($3::timestamptz,$4::uuid))
+ORDER BY g.created_at,g.id LIMIT 16
+`
+
+type ListCollaborationRuntimeWakeupsParams struct {
+	RuntimeID      pgtype.UUID        `json:"runtime_id"`
+	BindingID      pgtype.UUID        `json:"binding_id"`
+	AfterCreatedAt pgtype.Timestamptz `json:"after_created_at"`
+	AfterID        pgtype.UUID        `json:"after_id"`
+}
+
+type ListCollaborationRuntimeWakeupsRow struct {
+	ID              pgtype.UUID        `json:"id"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+	WakeParentRunID pgtype.UUID        `json:"wake_parent_run_id"`
+}
+
+func (q *Queries) ListCollaborationRuntimeWakeups(ctx context.Context, arg ListCollaborationRuntimeWakeupsParams) ([]ListCollaborationRuntimeWakeupsRow, error) {
+	rows, err := q.db.Query(ctx, listCollaborationRuntimeWakeups,
+		arg.RuntimeID,
+		arg.BindingID,
+		arg.AfterCreatedAt,
+		arg.AfterID,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListCollaborationRuntimeWakeupsRow{}
+	for rows.Next() {
+		var i ListCollaborationRuntimeWakeupsRow
+		if err := rows.Scan(&i.ID, &i.CreatedAt, &i.WakeParentRunID); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
@@ -1003,6 +1189,30 @@ func (q *Queries) LockCollaborationRuntimeRun(ctx context.Context, id pgtype.UUI
 		&i.Containment,
 		&i.PromptSnapshot,
 		&i.LeaderTurn,
+	)
+	return i, err
+}
+
+const lockCollaborationRuntimeScanCursor = `-- name: LockCollaborationRuntimeScanCursor :one
+SELECT runtime_id, binding_id, scan_kind, after_issue_id, after_created_at, after_id FROM collaboration_runtime_scan_cursor WHERE runtime_id=$1 AND binding_id=$2 AND scan_kind=$3 FOR UPDATE
+`
+
+type LockCollaborationRuntimeScanCursorParams struct {
+	RuntimeID pgtype.UUID `json:"runtime_id"`
+	BindingID pgtype.UUID `json:"binding_id"`
+	ScanKind  string      `json:"scan_kind"`
+}
+
+func (q *Queries) LockCollaborationRuntimeScanCursor(ctx context.Context, arg LockCollaborationRuntimeScanCursorParams) (CollaborationRuntimeScanCursor, error) {
+	row := q.db.QueryRow(ctx, lockCollaborationRuntimeScanCursor, arg.RuntimeID, arg.BindingID, arg.ScanKind)
+	var i CollaborationRuntimeScanCursor
+	err := row.Scan(
+		&i.RuntimeID,
+		&i.BindingID,
+		&i.ScanKind,
+		&i.AfterIssueID,
+		&i.AfterCreatedAt,
+		&i.AfterID,
 	)
 	return i, err
 }

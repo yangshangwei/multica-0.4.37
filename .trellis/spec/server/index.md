@@ -16,6 +16,7 @@
 | [Collaboration targets](./collaboration-targets.md) | Channel FIFO, input history, holds, configuration invalidation, proof flow and v5 reads | Direct/squad service foundation; full product pending |
 | [Collaboration squads](./collaboration-squads.md) | Frozen grants, M08/M11 readers, nonlaunch return and durable leader order | Static Linux CLI/daemon chain verified; full product pending |
 | [Collaboration runtime CLI](./collaboration-runtime-cli.md) | Narrow existing commands, original write IDs, contained CLI and actual daemon capacity | Static Linux chain verified; general provider/product gates remain |
+| [Collaboration runtime recovery](./collaboration-runtime-recovery.md) | Persistent fair scans, actual candidate consumption, deletion fences and bounded original-proof recovery | Recovery increment verified; full product pending |
 | [Collaboration Switch and skills](./collaboration-switch-and-skills.md) | Staged owner consent, atomic Switch and shared skill content invalidation | Implemented service boundaries; full product pending |
 | [Offline delivery](./offline-delivery.md) | Configuration forwarding, preserved overlays and upgrade verification | Active |
 | [Triage Admission](./triage.md) | Human review, inert intake, execution fences, CSV replay and retained audit data | Active |

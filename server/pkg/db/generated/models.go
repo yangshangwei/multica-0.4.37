@@ -1031,6 +1031,15 @@ type CollaborationRuntimeReservation struct {
 	ReleasedAt           pgtype.Timestamptz `json:"released_at"`
 }
 
+type CollaborationRuntimeScanCursor struct {
+	RuntimeID      pgtype.UUID        `json:"runtime_id"`
+	BindingID      pgtype.UUID        `json:"binding_id"`
+	ScanKind       string             `json:"scan_kind"`
+	AfterIssueID   pgtype.UUID        `json:"after_issue_id"`
+	AfterCreatedAt pgtype.Timestamptz `json:"after_created_at"`
+	AfterID        pgtype.UUID        `json:"after_id"`
+}
+
 type CollaborationSession struct {
 	ID               pgtype.UUID        `json:"id"`
 	IssueID          pgtype.UUID        `json:"issue_id"`

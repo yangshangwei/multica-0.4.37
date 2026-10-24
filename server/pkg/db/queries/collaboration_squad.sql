@@ -55,15 +55,6 @@ WHERE id=$1 AND settled_at IS NULL AND expansion_sealed_at IS NULL;
 -- name: ClearCollaborationSquadWakeup :exec
 UPDATE collaboration_execution_group SET wake_pending=false WHERE id=$1;
 
--- name: ListCollaborationSquadWakeups :many
-SELECT g.wake_parent_run_id FROM collaboration_execution_group g
-JOIN collaboration_target t ON t.id=g.target_id AND t.kind='squad' AND t.hold_reason IS NULL
-JOIN collaboration_grant grant_row ON grant_row.target_id=t.id AND grant_row.role='leader'
-  AND grant_row.config_version=g.config_version AND grant_row.target_epoch=g.target_epoch AND grant_row.revoked_at IS NULL
-WHERE g.wake_pending AND g.settled_at IS NULL AND g.expansion_sealed_at IS NULL
-  AND grant_row.runtime_id=$1 AND grant_row.binding_id=$2
-ORDER BY g.created_at,g.id LIMIT 16;
-
 -- The source and channel locks serialize joining against FIFO and settlement.
 -- name: JoinCollaborationUnreadInput :one
 UPDATE collaboration_command SET group_id=sqlc.arg(group_id)::uuid,batch_id=sqlc.arg(batch_id)::uuid,reason='joined_squad'

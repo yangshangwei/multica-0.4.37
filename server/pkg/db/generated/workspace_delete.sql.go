@@ -607,6 +607,11 @@ func (q *Queries) DeleteWorkspacePullRequests(ctx context.Context, workspaceID p
 
 const deleteWorkspaceRuntimesAndProjects = `-- name: DeleteWorkspaceRuntimesAndProjects :exec
 WITH
+deleted_runtime_scan_cursors AS (
+    DELETE FROM collaboration_runtime_scan_cursor cursor
+    USING agent_runtime runtime
+    WHERE cursor.runtime_id = runtime.id AND runtime.workspace_id = $1
+),
 deleted_runtimes AS (
     DELETE FROM agent_runtime WHERE agent_runtime.workspace_id = $1
 ),

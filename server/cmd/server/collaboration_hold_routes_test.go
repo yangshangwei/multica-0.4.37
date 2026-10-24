@@ -276,7 +276,7 @@ func TestCollaborationPartialResumeRoutesLinux(t *testing.T) {
 	if err != nil || len(listB.RunIDs) != 1 || listB.RunIDs[0] == runB {
 		t.Fatalf("resumed B could not advance independently of A: %v", err)
 	}
-	runnerB.Controller.Arguments = []string{collaborationRouteFakeArg, "succeed", listenerB.Addr().String()}
+	runnerB.Controller.(*collaborationrun.NamespaceController).Arguments = []string{collaborationRouteFakeArg, "succeed", listenerB.Addr().String()}
 	if err = runnerB.Run(ctx, listB.RunIDs[0], requestB); err != nil {
 		t.Fatalf("B's subsequent real provider failed: %v", err)
 	}
@@ -326,7 +326,7 @@ func TestCollaborationPartialResumeRoutesLinux(t *testing.T) {
 	if err != nil || len(listA.RunIDs) != 1 || listA.RunIDs[0] == runA {
 		t.Fatalf("fresh A Resume did not promote its retained waiting input: %v", err)
 	}
-	runnerA.Controller.Arguments = []string{collaborationRouteFakeArg, "succeed", listenerA.Addr().String()}
+	runnerA.Controller.(*collaborationrun.NamespaceController).Arguments = []string{collaborationRouteFakeArg, "succeed", listenerA.Addr().String()}
 	if err = runnerA.Run(ctx, listA.RunIDs[0], requestA); err != nil {
 		t.Fatalf("A's fresh real provider failed: %v", err)
 	}
