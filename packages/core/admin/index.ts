@@ -30,3 +30,5 @@ export * from "./alert-schema";
 export * from "./view-params";
 export * from "./resource-schema";
 export * from "./resource-queries";
+export * from "./collaboration-schema";
+export * from "./collaboration-queries";

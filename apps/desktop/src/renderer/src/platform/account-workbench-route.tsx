@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { parseAccountPath } from "@multica/core/paths";
+import { accountPath, parseAccountPath } from "@multica/core/paths";
 import { setCurrentWorkspace } from "@multica/core/platform";
 import { useAuthStore } from "@multica/core/auth";
 import { AccountWorkbenchPage } from "@multica/views/collaboration";
@@ -16,5 +16,5 @@ export function DesktopAccountWorkbenchRoute() {
   setCurrentWorkspace(null, null);
   const destination = parseAccountPath(`${location.pathname}${location.search}${location.hash}`);
   if (!user || user.requires_account_setup || user.requires_password_change || !destination) return null;
-  return <AccountWorkbenchPage destination={destination} />;
+  return <AccountWorkbenchPage destination={destination} administrationHref={accountPath({ administration: true })} />;
 }

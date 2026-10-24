@@ -4,6 +4,7 @@ import type { StorageAdapter } from "../types/storage";
 import type { AdminControlInput } from "./operation-queries";
 import { adminVersionSchema } from "./control-schema";
 import { adminAlertChangeSchema } from "./alert-schema";
+import { AdminCollaborationChangeSchema } from "./collaboration-schema";
 
 const storagePrefix = "multica_admin_control_draft:";
 let storage: StorageAdapter = defaultStorage;
@@ -15,9 +16,16 @@ const inputSchema = z.discriminatedUnion("action", [
   z.object({ ...base, action: z.literal("cancel"), body: z.object({ expectedExecutionFence: z.object({ runtimeId: z.uuid().nullable(), dispatchedAt: z.iso.datetime({ offset: true }).nullable(), targetVersion: adminVersionSchema }), reason }) }),
   z.object({ ...base, action: z.literal("alert"), body: adminAlertChangeSchema }),
 ]);
-const draftSchema = z.object({ scope: scopeSchema, input: inputSchema, createdAt: z.number().int().positive() });
+const collaborationInputSchema = z.strictObject({
+  ...base, action: z.literal("collaboration"), creatorUserId: z.uuid(), handlerUserId: z.uuid(), body: AdminCollaborationChangeSchema,
+});
+const storedInputSchema = z.discriminatedUnion("action", [...inputSchema.options, collaborationInputSchema]);
+const draftSchema = z.object({ scope: scopeSchema, input: storedInputSchema, createdAt: z.number().int().positive() });
 export type AdminControlDraftScope = z.output<typeof scopeSchema>;
-export type AdminControlDraft = z.output<typeof draftSchema>;
+type StoredDraft = z.output<typeof draftSchema>;
+export type AdminControlDraft = StoredDraft & { input: AdminControlInput };
+export type AdminCollaborationInput = z.output<typeof collaborationInputSchema>;
+export type AdminCollaborationDraft = StoredDraft & { input: AdminCollaborationInput };
 export class AdminControlDraftError extends Error {
   constructor() { super("The original administrative request could not be preserved"); this.name = "AdminControlDraftError"; }
 }
@@ -28,12 +36,12 @@ function targetPrefix(scope: AdminControlDraftScope, id: string): string {
 function draftKey(scope: AdminControlDraftScope, input: Pick<AdminControlInput, "id" | "key">): string {
   return `${targetPrefix(scope, input.id)}${input.key}`;
 }
-function readDrafts(scope: AdminControlDraftScope, id: string): AdminControlDraft[] {
+function readDrafts(scope: AdminControlDraftScope, id: string): StoredDraft[] {
   try {
     // Enumeration is required so simultaneous tabs can retain independent
     // original keys without a shared read-modify-write index.
     if (!storage.keys) throw new AdminControlDraftError();
-    const drafts: AdminControlDraft[] = [];
+    const drafts: StoredDraft[] = [];
     for (const key of storage.keys().filter(key => key.startsWith(targetPrefix(scope, id)))) {
       const raw = storage.getItem(key);
       if (raw === null) continue;
@@ -45,11 +53,20 @@ function readDrafts(scope: AdminControlDraftScope, id: string): AdminControlDraf
   } catch { throw new AdminControlDraftError(); }
 }
 export function readAdminControlDraft(scope: AdminControlDraftScope, id: string): AdminControlDraft | null {
-  return readDrafts(scope, id)[0] ?? null;
+  const draft = readDrafts(scope, id)[0];
+  if (!draft) return null;
+  if (draft.input.action === "collaboration") throw new AdminControlDraftError();
+  return { ...draft, input: draft.input };
 }
-export function saveAdminControlDraft(scope: AdminControlDraftScope, input: AdminControlInput): void {
+export function readAdminCollaborationDraft(scope: AdminControlDraftScope, id: string): AdminCollaborationDraft | null {
+  const draft = readDrafts(scope, id)[0];
+  if (!draft) return null;
+  if (draft.input.action !== "collaboration") throw new AdminControlDraftError();
+  return { ...draft, input: draft.input };
+}
+export function saveAdminControlDraft(scope: AdminControlDraftScope, input: AdminControlInput | AdminCollaborationInput): void {
   try {
-    const normalized = inputSchema.parse(input);
+    const normalized = storedInputSchema.parse(input);
     const drafts = readDrafts(scope, input.id);
     const existing = drafts.find(draft => draft.input.key === input.key);
     if (existing) {

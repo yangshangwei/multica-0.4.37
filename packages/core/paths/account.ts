@@ -2,6 +2,7 @@
 export type AccountView = "current" | "participating";
 export interface AccountDestination {
   view: AccountView;
+  administration?: true;
   issueId: string | null;
   commentId: string | null;
   runId?: string | null;
@@ -15,11 +16,15 @@ export function parseAccountPath(path: string): AccountDestination | null {
   const url = new URL(path, "https://account.invalid");
   if (url.pathname !== "/account" || url.origin !== "https://account.invalid") return null;
   const { searchParams: query } = url;
-  if ([...query.keys()].some((key) => !["view", "issue"].includes(key) || query.getAll(key).length !== 1)) return null;
+  if ([...query.keys()].some((key) => !["view", "issue", "administration"].includes(key) || query.getAll(key).length !== 1)) return null;
   const view = query.get("view") ?? "current";
   if (view !== "current" && view !== "participating") return null;
   const issueId = query.get("issue");
   if (issueId !== null && !uuid.test(issueId)) return null;
+  if (query.has("administration")) {
+    if (query.get("administration") !== "collaboration" || view !== "current" || url.hash) return null;
+    return { view, administration: true, issueId: issueId?.toLowerCase() ?? null, commentId: null };
+  }
   if (url.hash === "#description") return issueId ? { view, issueId: issueId.toLowerCase(), commentId: null, anchor: "description" } : null;
   if (url.hash.startsWith("#run-")) {
     const runId = url.hash.slice("#run-".length);
@@ -33,6 +38,7 @@ export function parseAccountPath(path: string): AccountDestination | null {
 export function accountPath(input: Partial<AccountDestination> = {}): string {
   if (input.runId && (input.commentId || input.anchor)) throw new TypeError("Invalid account destination");
   const query = new URLSearchParams({ view: input.view ?? "current" });
+  if (input.administration) query.set("administration", "collaboration");
   if (input.issueId) query.set("issue", input.issueId.toLowerCase());
   const hash = input.runId ? `#run-${input.runId.toLowerCase()}`
     : input.commentId ? `#comment-${input.commentId.toLowerCase()}` : input.anchor === "description" ? "#description" : "";
@@ -44,5 +50,5 @@ export function accountPath(input: Partial<AccountDestination> = {}): string {
 /** One tab, but independent scroll/view state for every selected issue and list. */
 export function accountRouteKey(path: string): string | null {
   const parsed = parseAccountPath(path);
-  return parsed ? accountPath({ view: parsed.view, issueId: parsed.issueId }) : null;
+  return parsed ? accountPath({ view: parsed.view, issueId: parsed.issueId, administration: parsed.administration }) : null;
 }

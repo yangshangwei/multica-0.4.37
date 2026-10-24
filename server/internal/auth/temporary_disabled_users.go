@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+	"sort"
 	"strings"
 )
 
@@ -19,6 +20,23 @@ var temporarilyDisabledUserIDs = map[string]struct{}{
 var temporarilyDisabledUserEmails = map[string]struct{}{
 	"pdzzer68@embassybase.com": {},
 	"gtwtrox@mowan666.com":     {},
+}
+
+// TemporarilyDisabledUsers returns independent, sorted filter values for
+// internal queries that must apply the emergency denylist before pagination.
+// These values are not an account directory or a response projection.
+func TemporarilyDisabledUsers() (userIDs, emails []string) {
+	userIDs = make([]string, 0, len(temporarilyDisabledUserIDs))
+	emails = make([]string, 0, len(temporarilyDisabledUserEmails))
+	for id := range temporarilyDisabledUserIDs {
+		userIDs = append(userIDs, id)
+	}
+	for email := range temporarilyDisabledUserEmails {
+		emails = append(emails, email)
+	}
+	sort.Strings(userIDs)
+	sort.Strings(emails)
+	return userIDs, emails
 }
 
 func IsTemporarilyDisabledUser(userID, email string) bool {

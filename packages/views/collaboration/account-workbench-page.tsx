@@ -14,9 +14,25 @@ import { CollaborationDetail } from "./collaboration-detail";
 import { CollaborationNotifications } from "./notifications";
 import { CollaborationCreationEntry } from "./creation-form";
 import { useRestoredScrollRef, useRestoredViewState, useViewStateWriter } from "../platform";
+import { AdminCollaborationPage, AdminCollaborationEntry } from "../admin/collaboration/collaboration-page";
+import adminStyles from "../admin/admin-visual.module.css";
 
 /** Account identity owns every query; selected detail is independent of list membership. */
-export function AccountWorkbenchPage({ destination }: { destination: AccountDestination }) {
+export function AccountWorkbenchPage({ destination, administrationHref }: { destination: AccountDestination; administrationHref?: string }) {
+  return destination.administration ? <AccountAdministrationPage issueId={destination.issueId} />
+    : <CollaborationWorkbenchPage destination={destination} administrationHref={administrationHref} />;
+}
+
+function AccountAdministrationPage({ issueId }: { issueId: string | null }) {
+  const { t } = useT("collaboration");
+  const scroll = useRestoredScrollRef("account-administration");
+  return <main ref={scroll} data-tab-scroll-root="account-administration" className={`${adminStyles.theme} h-full min-h-0 min-w-0 space-y-6 overflow-y-auto p-4 text-foreground sm:p-6`}>
+    <AppLink href={accountPath()} className="inline-flex min-h-11 items-center text-body underline underline-offset-4">{t(($) => $.page.title)}</AppLink>
+    <AdminCollaborationPage issueId={issueId} hrefForIssue={(id) => accountPath({ administration: true, issueId: id })} />
+  </main>;
+}
+
+function CollaborationWorkbenchPage({ destination, administrationHref }: { destination: AccountDestination; administrationHref?: string }) {
   const { t } = useT("collaboration");
   const scope = useCollaborationScope();
   useCollaborationRealtime(scope, destination.issueId);
@@ -31,6 +47,7 @@ export function AccountWorkbenchPage({ destination }: { destination: AccountDest
         </AppLink>)}
       </nav>
       <CollaborationCreationEntry key={`create:${scope.apiScope}:${scope.userId}`} scope={scope} />
+      {administrationHref && <AdminCollaborationEntry href={administrationHref} />}
       <CollaborationNotifications key={`${scope.apiScope}:${scope.userId}`} scope={scope} view={destination.view} />
     </header>
     <WorkbenchBody key={`${scope.apiScope}:${scope.userId}:${accountRouteKey(accountPath(destination))}`} scope={scope} destination={destination} />

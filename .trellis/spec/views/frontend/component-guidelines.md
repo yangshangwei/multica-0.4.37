@@ -224,11 +224,12 @@ Mobile uses generated Lucide nodes with its existing SVG renderer. Refresh after
 
 ### Administration-only visual surfaces
 
-The Electron renderer does not mount `@multica/views/admin`, but its Tailwind
-source scan includes the entire views package. Administration presentation must
-therefore stay in the locally imported `admin/admin-visual.module.css`; never
-move its custom properties to global tokens or shared primitives. Its sibling
-`.css.d.ts` declares only that module, not a wildcard asset type.
+The Electron account shell mounts the limited collaboration administration page
+and the shared `AdminSessionBoundary`. It does not gain the general Web admin
+console. Administration presentation stays in the locally imported
+`admin/admin-visual.module.css`; apply its theme only to that page subtree and
+never move its custom properties to global tokens or shared primitives. Its
+sibling `.css.d.ts` declares only that module, not a wildcard asset type.
 
 Apply the local theme to both AdminShell and the mobile Sheet portal. A portal
 does not inherit custom properties from the shell's DOM subtree. Use rectangular
@@ -239,8 +240,10 @@ The overview's highlighted metrics retain accessible value descriptions,
 current-state drilldown parameters, and the distinction between unknown data
 and zero. Other administration pages receive a single content surface, without
 changing their forms or tables. After a visual change, verify administration
-routes in both locales/themes and check a separate desktop build for absence of
-administration-specific CSS, in addition to the desktop regression suite.
+routes in both locales/themes and verify the limited Desktop page plus an
+ordinary Desktop route. Administration styles must remain local even though
+the renderer now contains that CSS. Keep native session/scope cleanup above
+routes so leaving the page cannot retain a prior account's administrative cache.
 
 Administration list refinements keep display and query semantics separate.
 `AdminFilterSummary` accepts an explicit field allowlist and reads the submitted

@@ -54,4 +54,22 @@ describe("account destinations", () => {
     expect(() => accountPath({ issueId, runId, commentId })).toThrow();
     expect(() => accountPath({ issueId, runId, anchor: "description" })).toThrow();
   });
+
+  it("retains the limited administration destination as its own account-tab view", () => {
+    const destination = { administration: true as const, issueId };
+    const path = `/account?view=current&administration=collaboration&issue=${issueId}`;
+    expect(accountPath(destination)).toBe(path);
+    expect(parseAccountPath(path)).toEqual({ view: "current", administration: true, issueId, commentId: null });
+    expect(accountRouteKey(path)).toBe(path);
+    expect(accountRouteKey(path)).not.toBe(accountRouteKey(accountPath({ issueId })));
+    expect(accountPath({ administration: true })).toBe("/account?view=current&administration=collaboration");
+  });
+
+  it("keeps administrative metadata links separate from ordinary content anchors and views", () => {
+    for (const query of ["administration=all", "administration=collaboration&view=participating",
+      "administration=collaboration&administration=collaboration", `administration=collaboration&issue=${issueId}#run-${runId}`,
+      `administration=collaboration&issue=${issueId}#comment-${commentId}`, `administration=collaboration&issue=${issueId}#description`]) {
+      expect(parseAccountPath(`/account?${query}`)).toBeNull();
+    }
+  });
 });

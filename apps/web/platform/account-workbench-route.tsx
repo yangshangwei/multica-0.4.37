@@ -21,5 +21,5 @@ export function AccountWorkbenchRoute() {
   useEffect(() => {
     if (!valid) navigation.replace(accountPath());
   }, [valid, navigation]);
-  return destination ? <AccountWorkbenchPage destination={destination} /> : null;
+  return destination ? <AccountWorkbenchPage destination={destination} administrationHref="/admin/collaboration" /> : null;
 }

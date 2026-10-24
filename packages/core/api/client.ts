@@ -58,6 +58,9 @@ import { parseAdminInstallationList, parseAdminInstallationDetail, parseAdminUna
 import { parseAdminExecutionList, parseAdminExecution, parseAdminIssueList } from "../admin/execution-schemas";
 import { parseAdminUsers, parseAdminUserDetail, parseAdminUserOperation, parseAdminUserOperations, type AdminUserFilters, type AdminAccountAction, type AdminAccountChange, type AdminRoleChange } from "../admin/user-schema";
 import { parseAdminMe } from "../admin/schema";
+import { AdminCollaborationChangeSchema, parseAdminCollaborationIssueList, parseAdminCollaborationDetail,
+  parseAdminCollaborationCandidates, parseAdminCollaborationResult, matchesAdminCollaborationResult,
+  type AdminCollaborationChange } from "../admin/collaboration-schema";
 import { parseAdminOperation, parseAdminAdmissionResult, parseAdminCancellationResult } from "../admin/operation-schema";
 import type { AdminAdmissionChange, AdminExecutionCancellation } from "../admin/control-schema";
 import { parseAdminOverview, parseAdminHealth, parseAdminSettings, parseAdminWorkspaces, parseAdminAudit } from "../admin/observability-schema";
@@ -1619,6 +1622,51 @@ export class ApiClient {
   async getAdminMe(options?: { signal?: AbortSignal }) {
     const raw = await this.fetch<unknown>("/api/admin/me", { signal: options?.signal });
     return parseAdminMe(raw);
+  }
+
+  private adminCollaborationPageQuery(params: { limit?: number; cursor?: string } = {}) {
+    const query = z.strictObject({ limit: z.number().int().min(1).max(100).optional(), cursor: z.uuid().optional() }).parse(params);
+    const search = new URLSearchParams();
+    if (query.limit !== undefined) search.set("limit", String(query.limit));
+    if (query.cursor) search.set("cursor", query.cursor);
+    return search.size ? `?${search}` : "";
+  }
+
+  async getAdminCollaborationIssues(params: { limit?: number; cursor?: string } = {}, options?: { signal?: AbortSignal }) {
+    return parseAdminCollaborationIssueList(await this.fetch<unknown>(`/api/admin/collaboration/issues${this.adminCollaborationPageQuery(params)}`, { signal: options?.signal }));
+  }
+
+  async getAdminCollaborationIssue(id: string, options?: { signal?: AbortSignal }) {
+    z.uuid().parse(id);
+    const result = parseAdminCollaborationDetail(await this.fetch<unknown>(`/api/admin/collaboration/issues/${encodeURIComponent(id)}`, { signal: options?.signal }));
+    return result?.issueId === id.toLowerCase() ? result : null;
+  }
+
+  async getAdminCollaborationCandidates(id: string, params: { limit?: number; cursor?: string } = {}, options?: { signal?: AbortSignal }) {
+    z.uuid().parse(id);
+    const result = parseAdminCollaborationCandidates(await this.fetch<unknown>(`/api/admin/collaboration/issues/${encodeURIComponent(id)}/reopen-candidates${this.adminCollaborationPageQuery(params)}`, { signal: options?.signal }));
+    return result?.issueId === id.toLowerCase() ? result : null;
+  }
+
+  async changeAdminCollaborationLifecycle(id: string, body: AdminCollaborationChange, key: string) {
+    z.uuid().parse(id);
+    z.uuid().parse(key);
+    const input = AdminCollaborationChangeSchema.parse(body);
+    const raw = await this.fetch<unknown>(`/api/admin/collaboration/issues/${encodeURIComponent(id)}/lifecycle`, {
+      method: "POST", headers: { "Idempotency-Key": key }, body: JSON.stringify({ action: input.action,
+        expected_collaboration_revision: input.expectedCollaborationRevision, expected_status: input.expectedStatus,
+        target_status: input.targetStatus, status_options_version: input.statusOptionsVersion, reason: input.reason,
+        successor_user_id: input.successorUserId }),
+    });
+    const result = parseAdminCollaborationResult(raw);
+    return result && matchesAdminCollaborationResult(result, id, key, input) ? result : null;
+  }
+
+  async getAdminCollaborationOperation(id: string, key: string, options?: { signal?: AbortSignal }) {
+    z.uuid().parse(id);
+    z.uuid().parse(key);
+    const result = parseAdminCollaborationResult(await this.fetch<unknown>(`/api/admin/collaboration/issues/${encodeURIComponent(id)}/operations/${encodeURIComponent(key)}`, { signal: options?.signal }));
+    return result && matchesAdminCollaborationResult(result, id, key) ? result : null;
   }
 
   async getAdminResources(kind: AdminResourceKind, options?: { signal?: AbortSignal }) {

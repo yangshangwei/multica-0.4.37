@@ -18,3 +18,4 @@ export { AdminSettingsPage } from "./settings/settings-page";
 export { AdminWorkspacesPage } from "./workspaces/workspaces-page";
 export { AdminAuditPage } from "./audit/audit-page";
 export { AdminResourcesPage } from "./resources/resources-page";
+export { AdminCollaborationPage, AdminCollaborationEntry } from "./collaboration/collaboration-page";
