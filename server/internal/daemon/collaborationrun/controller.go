@@ -1,6 +1,7 @@
 package collaborationrun
 
 import (
+	"bufio"
 	"bytes"
 	"context"
 	"debug/elf"
@@ -20,31 +21,39 @@ import (
 
 const NamespaceHelperArg = "__multica_collaboration_namespace_init"
 
-// NamespaceController only supports a configured static Linux executable. It
-// never discovers an ambient provider, mounts a home directory or uses Docker.
-// The capability probe must succeed on the actual kernel before a claim.
+// NamespaceController accepts either the original static executable or an
+// explicit, validated file bundle. A successful native kernel probe is required
+// before either can claim work; neither path discovers ambient providers.
 type NamespaceController struct {
 	Executable       string
 	CLIExecutable    string
 	HelperExecutable string
 	Directory        string
 	Arguments        []string
+	Bundle           *ProviderBundleConfig
 }
 
 type ProviderInput struct {
-	Identity      protocol.CollaborationRunIdentity `json:"identity"`
-	Inputs        []protocol.CollaborationRunInput  `json:"inputs"`
-	BusinessToken string                            `json:"-"`
-	ServerURL     string                            `json:"-"`
+	Identity      protocol.CollaborationRunIdentity  `json:"identity"`
+	Inputs        []protocol.CollaborationRunInput   `json:"inputs"`
+	BusinessToken string                             `json:"-"`
+	ServerURL     string                             `json:"-"`
+	Preparation   *protocol.CollaborationPreparation `json:"preparation,omitempty"`
+	prepared      *PreparedRun
 }
 
 type namespaceRequest struct {
-	Root          string          `json:"root"`
-	Arguments     []string        `json:"arguments"`
-	Input         json.RawMessage `json:"input"`
-	BusinessToken string          `json:"business_token"`
-	ServerURL     string          `json:"server_url"`
-	Probe         bool            `json:"probe"`
+	Root            string                 `json:"root"`
+	Arguments       []string               `json:"arguments"`
+	Input           json.RawMessage        `json:"input"`
+	BusinessToken   string                 `json:"business_token"`
+	ServerURL       string                 `json:"server_url"`
+	Probe           bool                   `json:"probe"`
+	ProbeGit        bool                   `json:"probe_git,omitempty"`
+	Devices         []string               `json:"devices,omitempty"`
+	ProbeGitDevices []string               `json:"probe_git_devices,omitempty"`
+	Execution       *preparedExecution     `json:"execution,omitempty"`
+	Git             *gitPreparationRequest `json:"git,omitempty"`
 }
 
 type namespaceReady struct {
@@ -53,9 +62,10 @@ type namespaceReady struct {
 }
 
 type ContainmentResult struct {
-	ExitCode        int
-	Output          []byte
-	OutputTruncated bool
+	ExitCode         int
+	Output           []byte
+	OutputTruncated  bool
+	PreparationFacts []preparationFact
 }
 
 // Process observes the namespace init, never an arbitrary PID/PGID. Wait only
@@ -72,6 +82,7 @@ type Process struct {
 	waitErr     error
 	stopOnce    sync.Once
 	stopErr     error
+	facts       <-chan []preparationFact
 }
 
 type limitedOutput struct {
@@ -118,13 +129,30 @@ func (c *NamespaceController) Start(ctx context.Context, input ProviderInput) (*
 }
 
 func (c *NamespaceController) start(ctx context.Context, input ProviderInput, probe bool) (*Process, error) {
-	root, err := c.prepareRoot()
+	var root string
+	var execution *preparedExecution
+	var err error
+	if c.Bundle != nil {
+		if probe {
+			root, err = c.prepareBundleRoot(ctx, true)
+		} else if input.prepared == nil || input.Preparation == nil {
+			return nil, ErrUnsupported
+		} else {
+			root, execution = input.prepared.root, &input.prepared.execution
+		}
+	} else {
+		if input.Preparation != nil || input.prepared != nil {
+			return nil, ErrUnsupported
+		}
+		root, err = c.prepareRoot()
+	}
 	if err != nil {
 		return nil, err
 	}
 	ok := false
+	forked := false
 	defer func() {
-		if !ok {
+		if !ok && !forked && input.prepared == nil {
 			_ = os.RemoveAll(root)
 		}
 	}()
@@ -142,7 +170,15 @@ func (c *NamespaceController) start(ctx context.Context, input ProviderInput, pr
 	if err != nil {
 		return nil, err
 	}
-	request, err := json.Marshal(namespaceRequest{Root: root, Arguments: c.Arguments, Input: body, BusinessToken: input.BusinessToken, ServerURL: input.ServerURL, Probe: probe})
+	configuration := namespaceRequest{Root: root, Arguments: c.Arguments, Input: body, BusinessToken: input.BusinessToken, ServerURL: input.ServerURL,
+		Probe: probe, ProbeGit: probe && c.Bundle != nil && c.Bundle.Git != nil, Execution: execution}
+	if c.Bundle != nil {
+		configuration.Devices = c.Bundle.preparationDevices()
+		if configuration.ProbeGit {
+			configuration.ProbeGitDevices = c.Bundle.Git.Devices
+		}
+	}
+	request, err := json.Marshal(configuration)
 	if err != nil || len(request) > 2*1024*1024 {
 		return nil, errors.New("collaboration batch exceeds local input limit")
 	}
@@ -168,16 +204,33 @@ func (c *NamespaceController) start(ctx context.Context, input ProviderInput, pr
 			_ = liveW.Close()
 		}
 	}()
+	factsR, factsW, err := os.Pipe()
+	if err != nil {
+		return nil, err
+	}
+	defer factsW.Close()
+	defer func() {
+		if !forked {
+			_ = factsR.Close()
+		}
+	}()
 	output := &limitedOutput{}
 	cmd := exec.CommandContext(ctx, helper, NamespaceHelperArg)
 	cmd.Env = []string{"LANG=C"}
-	cmd.ExtraFiles = []*os.File{configR, readyW, liveR}
+	cmd.ExtraFiles = []*os.File{configR, readyW, liveR, factsW}
 	cmd.Stdout, cmd.Stderr = output, io.Discard
 	configureNamespace(cmd)
 	if err := cmd.Start(); err != nil {
 		return nil, ErrUnsupported
 	}
-	p := &Process{cmd: cmd, liveness: liveW, root: root, output: output, waitDone: make(chan struct{})}
+	forked = true
+	_ = factsW.Close()
+	facts := make(chan []preparationFact, 1)
+	go func() {
+		defer factsR.Close()
+		facts <- readPreparationFacts(factsR)
+	}()
+	p := &Process{cmd: cmd, liveness: liveW, root: root, output: output, waitDone: make(chan struct{}), facts: facts}
 	_ = configR.Close()
 	_ = readyW.Close()
 	_ = liveR.Close()
@@ -347,12 +400,42 @@ func (p *Process) Wait() (ContainmentResult, error) {
 			}
 			p.result = ContainmentResult{ExitCode: p.cmd.ProcessState.ExitCode(), Output: append([]byte(nil), p.output.b.Bytes()...), OutputTruncated: p.output.truncated}
 		}
+		if p.facts != nil {
+			p.result.PreparationFacts = <-p.facts
+		}
 		// A private per-run copy is removed only after the namespace is reaped.
-		if err := os.RemoveAll(p.root); err != nil {
-			p.waitErr = errors.Join(p.waitErr, err)
+		if p.waitErr == nil {
+			if err := os.RemoveAll(p.root); err != nil {
+				p.waitErr = errors.Join(p.waitErr, err)
+			}
 		}
 		close(p.waitDone)
 	})
 	<-p.waitDone
 	return p.result, p.waitErr
+}
+
+func readPreparationFacts(r io.Reader) []preparationFact {
+	scanner := bufio.NewScanner(io.LimitReader(r, 32<<10))
+	scanner.Buffer(make([]byte, 4096), 4096)
+	var facts []preparationFact
+	seen := make(map[string]bool)
+	for scanner.Scan() {
+		var fact preparationFact
+		if decodeStrict(scanner.Bytes(), &fact) != nil || len(facts) >= 8 || !validPreparationFact(fact) || seen[fact.Stage+"/"+fact.State] {
+			return nil
+		}
+		seen[fact.Stage+"/"+fact.State] = true
+		facts = append(facts, fact)
+	}
+	if scanner.Err() != nil {
+		return nil
+	}
+	return facts
+}
+
+func validPreparationFact(f preparationFact) bool {
+	return (f.Stage == "attachments" || f.Stage == "bundle" || f.Stage == "git" || f.Stage == "workspace") &&
+		(f.State == "prepared" && f.Code == "" || f.State == "failed" && (f.Code == "attachment_unavailable" || f.Code == "input_limit_exceeded" ||
+			f.Code == "bundle_unavailable" || f.Code == "git_unavailable" || f.Code == "configuration_changed" || f.Code == "cancelled" || f.Code == "preparation_unavailable"))
 }

@@ -13,6 +13,7 @@ import { useT } from "../i18n";
 import { CollaborationCommentAttachments } from "./attachment-panel";
 import { useCollaborationLabels } from "./labels";
 import { CollaborationQueryState } from "./query-state";
+import { CollaborationPreparationSummary } from "./preparation-summary";
 
 export function CollaborationRunDisclosure({ scope, issue, run, group, selectedRunId }: {
   scope: CollaborationScope; issue: CollaborationIssue; run: CollaborationExecutionRun;
@@ -79,6 +80,7 @@ function RunRecords({ scope, issueId, runId, group }: { scope: CollaborationScop
       {!page.recording.inputs_recorded && <p className="text-caption text-muted-foreground">{t(($) => $.records.inputsMissing)}</p>}
       <AppLink href={accountPath({ view: "participating", issueId, runId })} className="inline-flex min-h-11 items-center text-caption underline underline-offset-4">{t(($) => $.records.permalink)}</AppLink>
       <RecordedResource page={page} groupId={group.id} />
+      <CollaborationPreparationSummary preparation={page.preparation} />
       <RecordedUsage usage={page.usage} />
       {items.length === 0 && <p className="text-body text-muted-foreground">{t(($) => $.records.empty)}</p>}
       <ol className="space-y-6">{items.map((item) => <RecordedEntry key={item.id} item={item} scope={scope} issueId={issueId} />)}</ol>

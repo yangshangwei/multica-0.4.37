@@ -528,7 +528,7 @@ func (q *Queries) TryLockCollaborationAuthorityNamespace(ctx context.Context, do
 }
 
 const tryLockCollaborationAuthorityRuntimes = `-- name: TryLockCollaborationAuthorityRuntimes :many
-SELECT id, workspace_id, daemon_id, name, runtime_mode, provider, status, device_info, metadata, last_seen_at, created_at, updated_at, owner_id, legacy_daemon_id, visibility, profile_id, custom_name, collaboration_config_epoch FROM agent_runtime WHERE id = ANY($1::uuid[]) ORDER BY id FOR SHARE NOWAIT
+SELECT id, workspace_id, daemon_id, name, runtime_mode, provider, status, device_info, metadata, last_seen_at, created_at, updated_at, owner_id, legacy_daemon_id, visibility, profile_id, custom_name, collaboration_config_epoch, collaboration_capabilities FROM agent_runtime WHERE id = ANY($1::uuid[]) ORDER BY id FOR SHARE NOWAIT
 `
 
 func (q *Queries) TryLockCollaborationAuthorityRuntimes(ctx context.Context, ids []pgtype.UUID) ([]AgentRuntime, error) {
@@ -559,6 +559,7 @@ func (q *Queries) TryLockCollaborationAuthorityRuntimes(ctx context.Context, ids
 			&i.ProfileID,
 			&i.CustomName,
 			&i.CollaborationConfigEpoch,
+			&i.CollaborationCapabilities,
 		); err != nil {
 			return nil, err
 		}

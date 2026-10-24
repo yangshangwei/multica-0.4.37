@@ -17,6 +17,7 @@ vi.mock("../auth", () => ({ useAuthStore: { getState: () => auth } }));
 const cleanups: (() => void)[] = [];
 afterEach(() => { cleanups.splice(0).reverse().forEach((dispose) => dispose()); auth.user.id = actorId; vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
+const preparation = { version: 1, attachments: [], git: null, stages: [{ seq: "3", stage: "workspace", state: "prepared" }] };
 
 function setup() {
   const api = new ApiClient("https://server.example");
@@ -160,6 +161,45 @@ describe("protected recorded-run paging", () => {
     expect(observer.getCurrentResult().error).toBeNull();
     expect(observer.getCurrentResult().data?.pages).toEqual([refreshed, final]);
     expect(observer.getCurrentResult().data?.pageParams).toEqual([undefined, "new-page-two"]);
+  });
+
+  it.each(["changed-stage", "missing-summary", "introduced-summary"])("refuses %s within one preparation snapshot without clearing issue access", async (condition) => {
+    const f = setup();
+    const first = { ...fixture, preparation: condition === "introduced-summary" ? null : preparation, items: fixture.items.slice(0, 2), next_cursor: "page-two" };
+    const second = { ...fixture, preparation: condition === "missing-summary" ? null
+      : { ...preparation, stages: [{ seq: "4", stage: "workspace", state: "failed", code: "preparation_unavailable" }] }, items: fixture.items.slice(2) };
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce(json(first)).mockResolvedValueOnce(json(second)));
+    await f.client.fetchInfiniteQuery(f.options);
+    const observer = new InfiniteQueryObserver(f.client, { ...f.options, enabled: false });
+    cleanups.push(observer.subscribe(() => {}));
+    await observer.fetchNextPage();
+    expect(observer.getCurrentResult().error).toMatchObject({ name: "CollaborationUnavailableError" });
+    expect(observer.getCurrentResult().data?.pages).toEqual([first]);
+    expect(f.client.getQueryData(f.issueKey)).toEqual(collaborationIssueFixture);
+    expect(collaborationIssueAccessDenied(f.client, f.scope, issueId)).toBe(false);
+  });
+
+  it("keeps the preparation watermark within a chain and permits a coherent full refresh", async () => {
+    const f = setup();
+    const first = { ...fixture, preparation, items: fixture.items.slice(0, 2), next_cursor: "old-two" };
+    const second = { ...fixture, preparation, items: fixture.items.slice(2) };
+    const changed = { ...preparation, stages: [{ seq: "5", stage: "workspace", state: "failed", code: "cancelled" }] };
+    const refreshed = { ...first, preparation: changed, next_cursor: "new-two" };
+    const final = { ...second, preparation: changed };
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce(json(first)).mockResolvedValueOnce(json(second))
+      .mockResolvedValueOnce(json(refreshed)).mockResolvedValueOnce(json(final)));
+    await f.client.fetchInfiniteQuery(f.options);
+    const observer = new InfiniteQueryObserver(f.client, { ...f.options, enabled: false });
+    cleanups.push(observer.subscribe(() => {}));
+    await observer.fetchNextPage();
+    expect(observer.getCurrentResult().error).toBeNull();
+    expect(observer.getCurrentResult().data?.pages).toEqual([first, second]);
+    await observer.refetch();
+    expect(observer.getCurrentResult().error).toBeNull();
+    expect(observer.getCurrentResult().data?.pages).toEqual([refreshed, final]);
+    expect(observer.getCurrentResult().data?.pageParams).toEqual([undefined, "new-two"]);
+    clearCollaborationAccess(f.client, f.scope, issueId);
+    expect(observer.getCurrentResult().data).toBeUndefined();
   });
 
   it("revokes every loaded record page when access is lost during fetch-next-page", async () => {

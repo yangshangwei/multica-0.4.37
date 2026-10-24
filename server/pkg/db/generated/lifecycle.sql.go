@@ -206,7 +206,7 @@ func (q *Queries) LockLifecycleOriginTask(ctx context.Context, arg LockLifecycle
 }
 
 const lockLifecycleRuntime = `-- name: LockLifecycleRuntime :one
-SELECT id, workspace_id, daemon_id, name, runtime_mode, provider, status, device_info, metadata, last_seen_at, created_at, updated_at, owner_id, legacy_daemon_id, visibility, profile_id, custom_name, collaboration_config_epoch FROM agent_runtime WHERE id = $1 AND workspace_id = $2 FOR KEY SHARE NOWAIT
+SELECT id, workspace_id, daemon_id, name, runtime_mode, provider, status, device_info, metadata, last_seen_at, created_at, updated_at, owner_id, legacy_daemon_id, visibility, profile_id, custom_name, collaboration_config_epoch, collaboration_capabilities FROM agent_runtime WHERE id = $1 AND workspace_id = $2 FOR KEY SHARE NOWAIT
 `
 
 type LockLifecycleRuntimeParams struct {
@@ -236,6 +236,7 @@ func (q *Queries) LockLifecycleRuntime(ctx context.Context, arg LockLifecycleRun
 		&i.ProfileID,
 		&i.CustomName,
 		&i.CollaborationConfigEpoch,
+		&i.CollaborationCapabilities,
 	)
 	return i, err
 }

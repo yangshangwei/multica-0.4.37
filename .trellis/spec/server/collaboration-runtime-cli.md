@@ -3,9 +3,10 @@
 ## 1. Scope / Trigger
 
 Apply when changing the existing CLI commands inside a collaboration run or
-their static Linux daemon/controller integration. This is an explicit contained
-executor contract; general providers, Git/attachments and other OS runtimes need
-their own acceptance before rollout.
+their Linux daemon/controller integration. This is an explicit contained
+executor contract. Negotiated attachment/Git preparation and provider bundles
+follow [collaboration-preparation.md](./collaboration-preparation.md); real
+provider versions and other OS runtimes still require separate acceptance.
 
 ## 2. Signatures
 
@@ -38,8 +39,9 @@ The CLI does not generate a replacement key or add a disk operation journal.
 This does not introduce idempotency to ordinary task commands. Capability
 rejection means stop; it never invites logging in as the resource owner.
 
-The controller verifies the explicit CLI using the provider's static executable
-and architecture checks. No installed executable discovery occurs. Only business
+The legacy controller verifies the explicit CLI using its static executable
+and architecture checks; a prepared bundle must declare the full executable
+closure instead. No installed executable discovery occurs. Only business
 capability and immutable identity enter the provider environment; supervisor
 termination and managed credentials remain private. Existing PID containment,
 privilege drop, nonce ledger and proof sealing stay authoritative.

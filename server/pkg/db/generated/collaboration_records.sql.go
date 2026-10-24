@@ -37,7 +37,7 @@ func (q *Queries) CreateCollaborationResultNotification(ctx context.Context, arg
 }
 
 const getCollaborationRecordedRun = `-- name: GetCollaborationRecordedRun :one
-SELECT r.id, r.task_id, r.grant_id, r.grant_epoch, r.resource_epoch, r.execution_workspace_id, r.runtime_id, r.installation_id, r.binding_id, r.binding_epoch, r.fence, r.claim_generation, r.launch_nonce, r.progress_state, r.business_outcome, r.forced_disposition, r.disposition_reason, r.proof_state, r.authorized_attempt_seq, r.sealed_attempt_seq, r.recording_incomplete, r.created_at, r.started_at, r.settled_at, r.session_id, r.command_id, r.target_id, r.group_id, r.parent_run_id, r.step_key, r.step_kind, r.agent_id, r.target_epoch, r.config_version, r.channel_id, r.batch_id, r.deployment_id, r.resource_owner_user_id, r.containment, r.prompt_snapshot, r.leader_turn FROM collaboration_run r
+SELECT r.id, r.task_id, r.grant_id, r.grant_epoch, r.resource_epoch, r.execution_workspace_id, r.runtime_id, r.installation_id, r.binding_id, r.binding_epoch, r.fence, r.claim_generation, r.launch_nonce, r.progress_state, r.business_outcome, r.forced_disposition, r.disposition_reason, r.proof_state, r.authorized_attempt_seq, r.sealed_attempt_seq, r.recording_incomplete, r.created_at, r.started_at, r.settled_at, r.session_id, r.command_id, r.target_id, r.group_id, r.parent_run_id, r.step_key, r.step_kind, r.agent_id, r.target_epoch, r.config_version, r.channel_id, r.batch_id, r.deployment_id, r.resource_owner_user_id, r.containment, r.prompt_snapshot, r.leader_turn, r.preparation_snapshot FROM collaboration_run r
 JOIN collaboration_session s ON s.id=r.session_id
 WHERE s.issue_id=$1::uuid AND r.id=$2::uuid
 `
@@ -94,6 +94,7 @@ func (q *Queries) GetCollaborationRecordedRun(ctx context.Context, arg GetCollab
 		&i.Containment,
 		&i.PromptSnapshot,
 		&i.LeaderTurn,
+		&i.PreparationSnapshot,
 	)
 	return i, err
 }
@@ -153,11 +154,57 @@ func (q *Queries) GetCollaborationRunRecordSequence(ctx context.Context, arg Get
 	return column_1, err
 }
 
+const listCollaborationRunPreparationRecords = `-- name: ListCollaborationRunPreparationRecords :many
+SELECT DISTINCT ON (payload->>'stage') id, issue_id, run_id, producer_event_id, seq, kind, payload, created_at FROM collaboration_run_event
+WHERE issue_id=$1::uuid AND run_id=$2::uuid
+  AND kind='preparation' AND seq <= $3::bigint
+ORDER BY payload->>'stage', seq DESC LIMIT 5
+`
+
+type ListCollaborationRunPreparationRecordsParams struct {
+	IssueID    pgtype.UUID `json:"issue_id"`
+	RunID      pgtype.UUID `json:"run_id"`
+	ThroughSeq int64       `json:"through_seq"`
+}
+
+// Latest facts at the record cursor's watermark, not a scan returned to the
+// caller. A fifth/unknown stage is a corruption sentinel, never a public fact.
+func (q *Queries) ListCollaborationRunPreparationRecords(ctx context.Context, arg ListCollaborationRunPreparationRecordsParams) ([]CollaborationRunEvent, error) {
+	rows, err := q.db.Query(ctx, listCollaborationRunPreparationRecords, arg.IssueID, arg.RunID, arg.ThroughSeq)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []CollaborationRunEvent{}
+	for rows.Next() {
+		var i CollaborationRunEvent
+		if err := rows.Scan(
+			&i.ID,
+			&i.IssueID,
+			&i.RunID,
+			&i.ProducerEventID,
+			&i.Seq,
+			&i.Kind,
+			&i.Payload,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listCollaborationRunRecordEvents = `-- name: ListCollaborationRunRecordEvents :many
 SELECT id, issue_id, run_id, producer_event_id, seq, kind, payload, created_at FROM collaboration_run_event
 WHERE issue_id=$1::uuid AND run_id=$2::uuid
   AND seq >= $3::bigint AND seq <= $4::bigint
-  AND kind <> 'resource_snapshot'
+  -- Preparation has its own negotiated contract; installed record-item
+  -- readers retain their existing discriminated kinds.
+  AND kind NOT IN ('resource_snapshot', 'preparation')
 ORDER BY seq LIMIT $5::int
 `
 

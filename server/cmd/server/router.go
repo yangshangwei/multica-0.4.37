@@ -1393,10 +1393,14 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	r.Get("/api/attachments/{id}/signed-download", h.DownloadAttachmentWithCapability)
 	r.Get("/api/collaboration/issues/{id}/attachments/{attachmentId}/capability", h.ReadCollaborationAttachmentCapability)
 
-	// These purpose-bound capabilities outlive ordinary account/daemon
-	// revocation only for their own run. Never wrap them in ordinary Auth.
+	// Run endpoints validate their own purpose-bound capabilities. Termination
+	// recovery survives revocation; business access rechecks current authority.
+	// Never replace these checks with ordinary Auth.
 	r.Post("/api/collaboration/runtime/runs/{runId}/outcome", h.RecordCollaborationRuntimeOutcome)
 	r.Get("/api/collaboration/runtime/runs/{runId}/context", h.GetCollaborationRuntimeContext)
+	r.Get("/api/collaboration/runtime/runs/{runId}/preparation", h.GetCollaborationRuntimePreparation)
+	r.Get("/api/collaboration/runtime/runs/{runId}/attachments/{attachmentId}/content", h.GetCollaborationRuntimeAttachmentContent)
+	r.Post("/api/collaboration/runtime/runs/{runId}/preparation/observations", h.RecordCollaborationRuntimePreparation)
 	r.Post("/api/collaboration/runtime/runs/{runId}/comments", h.CreateCollaborationRuntimeComment)
 	r.Post("/api/collaboration/runtime/runs/{runId}/squad-activity", h.RecordCollaborationRuntimeSquadActivity)
 	r.Get("/api/collaboration/runtime/runs/{runId}/stop-intent", h.GetCollaborationRuntimeStopIntent)
@@ -1405,6 +1409,8 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Use(handler.RequireCollaborationManagedBearer)
 		r.Use(middleware.DaemonAuth(queries, patCache, daemonTokenCache, cloudPATVerifier))
 		r.Get("/api/collaboration/runtime/runs", h.ListCollaborationRuntimeRuns)
+		r.Get("/api/collaboration/runtime/capabilities", h.GetCollaborationRuntimeCapabilities)
+		r.Post("/api/collaboration/runtime/capabilities", h.RegisterCollaborationRuntimeCapabilities)
 		r.Post("/api/collaboration/runtime/runs/{runId}/claim", h.ClaimCollaborationRuntimeRun)
 		r.Post("/api/collaboration/runtime/runs/{runId}/permit", h.PermitCollaborationRuntimeRun)
 	})
@@ -1639,6 +1645,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Post("/api/collaboration/issues/{id}/attachments/deliver", h.DeliverCollaborationAttachments)
 		r.Get("/api/collaboration/issues/{id}/attachments/operations/{requestId}", h.GetCollaborationAttachmentDeliveryOperation)
 		r.Get("/api/collaboration/issues/{id}/attachments/{attachmentId}", h.GetCollaborationAttachment)
+		r.Get("/api/collaboration/issues/{id}/attachments/{attachmentId}/content", h.GetCollaborationAttachmentContent)
 		r.Get("/api/collaboration/issues/{id}/attachments/{attachmentId}/download", h.DownloadCollaborationAttachment)
 		r.Post("/api/collaboration/issues/{id}/attachments/{attachmentId}/capabilities", h.CreateCollaborationAttachmentCapability)
 		r.Get("/api/collaboration/issues/{id}", h.GetCollaborationIssue)

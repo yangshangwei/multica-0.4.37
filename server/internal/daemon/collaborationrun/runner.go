@@ -28,8 +28,9 @@ type Runner struct {
 	StopPollInterval time.Duration
 	// PermitAttempts bounds replays of the same attempt seq/nonce after a lost
 	// or transient response. Zero values use the defaults below.
-	PermitAttempts int
-	PermitBackoff  time.Duration
+	PermitAttempts     int
+	PermitBackoff      time.Duration
+	RuntimeConfigEpoch string
 }
 
 const (
@@ -94,6 +95,42 @@ func (r *Runner) Run(ctx context.Context, runID string, request protocol.Collabo
 	if err := local.Authorize(); err != nil {
 		return err
 	}
+	input := ProviderInput{Identity: claim.Identity, Inputs: claim.Inputs, BusinessToken: permit.BusinessToken, ServerURL: r.Client.baseURL, Preparation: claim.Preparation}
+	var prepared *PreparedRun
+	burned := false
+	defer func() {
+		if !burned {
+			_ = prepared.discard()
+		}
+	}()
+	if claim.Preparation != nil {
+		prepare := func() error {
+			controller, ok := r.Controller.(PreparationController)
+			if !ok || r.RuntimeConfigEpoch != "" && r.RuntimeConfigEpoch != claim.Preparation.Resource.RuntimeConfigEpoch {
+				return preparationFailure("bundle", "configuration_changed", ErrUnsupported)
+			}
+			prepareCtx, cancel := context.WithTimeout(ctx, time.Duration(claim.Preparation.Limits.TimeoutSeconds)*time.Second)
+			defer cancel()
+			var err error
+			prepared, err = controller.Prepare(prepareCtx, input, r.Client)
+			if err != nil {
+				return err
+			}
+			if err := r.Client.CheckPreparation(prepareCtx, *claim.Preparation, claim.Inputs, permit.BusinessToken); err != nil {
+				return preparationFailure("workspace", "configuration_changed", err)
+			}
+			return nil
+		}
+		if err := prepare(); err != nil {
+			fact := preparationFact{Stage: "workspace", State: "failed", Code: "preparation_unavailable"}
+			var failed *PreparationFailure
+			if errors.As(err, &failed) {
+				fact = failed.fact
+			}
+			return errors.Join(err, r.recordPreparationFact(ctx, claim, permit, fact), r.abandon(ctx, local))
+		}
+		input.prepared = prepared
+	}
 	stop, stopErr := r.Client.StopIntent(ctx, claim.Identity, claim.TerminationToken)
 	if stopErr != nil || stop.StopRequested || ctx.Err() != nil {
 		return errors.Join(stopErr, r.abandon(ctx, local))
@@ -103,7 +140,8 @@ func (r *Runner) Run(ctx context.Context, runID string, request protocol.Collabo
 	if err := local.Burn(); err != nil {
 		return err
 	}
-	process, err := r.Controller.Start(ctx, ProviderInput{Identity: claim.Identity, Inputs: claim.Inputs, BusinessToken: permit.BusinessToken, ServerURL: r.Client.baseURL})
+	burned = true
+	process, err := r.Controller.Start(ctx, input)
 	if err != nil {
 		return errors.Join(ErrUnconfirmed, err)
 	}
@@ -123,9 +161,14 @@ func (r *Runner) Run(ctx context.Context, runID string, request protocol.Collabo
 	// record may be uploaded, using the still-current business capability.
 	var outcome protocol.CollaborationProviderResult
 	var outcomeErr error
+	if claim.Preparation != nil {
+		for _, fact := range result.PreparationFacts {
+			outcomeErr = errors.Join(outcomeErr, r.recordPreparationFact(ctx, claim, permit, fact))
+		}
+	}
 	if !result.OutputTruncated && decodeStrict(result.Output, &outcome) == nil && protocol.ValidateCollaborationProviderResult(outcome) == nil {
 		outcomeCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 10*time.Second)
-		outcomeErr = r.Client.Outcome(outcomeCtx, protocol.CollaborationRunOutcome{Identity: claim.Identity, EventID: uuid.NewString(), AttemptSeq: permit.AttemptSeq, AttemptNonce: permit.AttemptNonce, Outcome: outcome.Outcome, Body: outcome.Body, Record: outcome.Record}, permit.BusinessToken)
+		outcomeErr = errors.Join(outcomeErr, r.Client.Outcome(outcomeCtx, protocol.CollaborationRunOutcome{Identity: claim.Identity, EventID: uuid.NewString(), AttemptSeq: permit.AttemptSeq, AttemptNonce: permit.AttemptNonce, Outcome: outcome.Outcome, Body: outcome.Body, Record: outcome.Record}, permit.BusinessToken))
 		cancel()
 	}
 	// Revoked business rights or a missing final result must not block the

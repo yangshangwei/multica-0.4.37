@@ -78,6 +78,10 @@ func (c *Client) Claim(ctx context.Context, runID string, in protocol.Collaborat
 	if !validUUID(runID) || !validUUID(in.DeploymentID) || !validUUID(in.InstallationID) || !validUUID(in.RuntimeID) || !validUUID(in.BindingID) || !positiveDecimal(in.BindingEpoch) || in.ProtocolVersion != protocol.CollaborationRuntimeProtocolVersion || in.Containment != protocol.CollaborationContainmentLinuxPIDNamespace {
 		return out, ErrProtocol
 	}
+	if in.PreparationVersion != 0 && in.PreparationVersion != protocol.CollaborationPreparationVersion ||
+		in.PreparationVersion == 0 && in.BundleDigest != "" || in.PreparationVersion != 0 && !validDigest(in.BundleDigest) {
+		return out, ErrProtocol
+	}
 	if err := c.request(ctx, http.MethodPost, runPath(runID, "claim"), c.managedToken, in, &out); err != nil {
 		return out, err
 	}
@@ -91,10 +95,20 @@ func (c *Client) Claim(ctx context.Context, runID string, in protocol.Collaborat
 		}
 		seen[input.CommandID] = true
 		for _, id := range input.AttachmentIDs {
-			if !validUUID(id) {
+			if !validUUID(id) || in.PreparationVersion == 0 {
 				return out, ErrProtocol
 			}
 		}
+	}
+	if in.PreparationVersion == 0 {
+		if out.Preparation != nil {
+			return out, ErrProtocol
+		}
+	} else if protocol.ValidateCollaborationPreparation(out.Preparation, out.Identity, out.Inputs) != nil ||
+		out.Preparation.Provider.BundleDigest != in.BundleDigest || out.Preparation.Resource.RuntimeID != in.RuntimeID ||
+		out.Preparation.Resource.AgentID != out.AgentID || out.Preparation.Resource.OwnerUserID != out.ResourceOwnerID ||
+		out.Preparation.Resource.ExecutionWorkspaceID != out.ExecutionWorkspaceID {
+		return out, ErrProtocol
 	}
 	return out, nil
 }

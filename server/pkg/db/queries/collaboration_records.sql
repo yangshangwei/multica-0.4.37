@@ -12,11 +12,21 @@ WHERE issue_id=$1 AND run_id=$2 AND kind IN ('resource_snapshot','outcome') ORDE
 -- name: GetCollaborationRunRecordSequence :one
 SELECT COALESCE(max(seq),0)::bigint FROM collaboration_run_event WHERE issue_id=$1 AND run_id=$2;
 
+-- Latest facts at the record cursor's watermark, not a scan returned to the
+-- caller. A fifth/unknown stage is a corruption sentinel, never a public fact.
+-- name: ListCollaborationRunPreparationRecords :many
+SELECT DISTINCT ON (payload->>'stage') * FROM collaboration_run_event
+WHERE issue_id=sqlc.arg(issue_id)::uuid AND run_id=sqlc.arg(run_id)::uuid
+  AND kind='preparation' AND seq <= sqlc.arg(through_seq)::bigint
+ORDER BY payload->>'stage', seq DESC LIMIT 5;
+
 -- name: ListCollaborationRunRecordEvents :many
 SELECT * FROM collaboration_run_event
 WHERE issue_id=sqlc.arg(issue_id)::uuid AND run_id=sqlc.arg(run_id)::uuid
   AND seq >= sqlc.arg(after_seq)::bigint AND seq <= sqlc.arg(through_seq)::bigint
-  AND kind <> 'resource_snapshot'
+  -- Preparation has its own negotiated contract; installed record-item
+  -- readers retain their existing discriminated kinds.
+  AND kind NOT IN ('resource_snapshot', 'preparation')
 ORDER BY seq LIMIT sqlc.arg(row_limit)::int;
 
 -- name: MarkCollaborationRunRecordingIncomplete :exec

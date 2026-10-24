@@ -204,24 +204,25 @@ type AgentMcpServer struct {
 }
 
 type AgentRuntime struct {
-	ID                       pgtype.UUID        `json:"id"`
-	WorkspaceID              pgtype.UUID        `json:"workspace_id"`
-	DaemonID                 pgtype.Text        `json:"daemon_id"`
-	Name                     string             `json:"name"`
-	RuntimeMode              string             `json:"runtime_mode"`
-	Provider                 string             `json:"provider"`
-	Status                   string             `json:"status"`
-	DeviceInfo               string             `json:"device_info"`
-	Metadata                 []byte             `json:"metadata"`
-	LastSeenAt               pgtype.Timestamptz `json:"last_seen_at"`
-	CreatedAt                pgtype.Timestamptz `json:"created_at"`
-	UpdatedAt                pgtype.Timestamptz `json:"updated_at"`
-	OwnerID                  pgtype.UUID        `json:"owner_id"`
-	LegacyDaemonID           pgtype.Text        `json:"legacy_daemon_id"`
-	Visibility               string             `json:"visibility"`
-	ProfileID                pgtype.UUID        `json:"profile_id"`
-	CustomName               pgtype.Text        `json:"custom_name"`
-	CollaborationConfigEpoch int64              `json:"collaboration_config_epoch"`
+	ID                        pgtype.UUID        `json:"id"`
+	WorkspaceID               pgtype.UUID        `json:"workspace_id"`
+	DaemonID                  pgtype.Text        `json:"daemon_id"`
+	Name                      string             `json:"name"`
+	RuntimeMode               string             `json:"runtime_mode"`
+	Provider                  string             `json:"provider"`
+	Status                    string             `json:"status"`
+	DeviceInfo                string             `json:"device_info"`
+	Metadata                  []byte             `json:"metadata"`
+	LastSeenAt                pgtype.Timestamptz `json:"last_seen_at"`
+	CreatedAt                 pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt                 pgtype.Timestamptz `json:"updated_at"`
+	OwnerID                   pgtype.UUID        `json:"owner_id"`
+	LegacyDaemonID            pgtype.Text        `json:"legacy_daemon_id"`
+	Visibility                string             `json:"visibility"`
+	ProfileID                 pgtype.UUID        `json:"profile_id"`
+	CustomName                pgtype.Text        `json:"custom_name"`
+	CollaborationConfigEpoch  int64              `json:"collaboration_config_epoch"`
+	CollaborationCapabilities []byte             `json:"collaboration_capabilities"`
 }
 
 type AgentSkill struct {
@@ -999,6 +1000,7 @@ type CollaborationRun struct {
 	Containment          pgtype.Text        `json:"containment"`
 	PromptSnapshot       []byte             `json:"prompt_snapshot"`
 	LeaderTurn           pgtype.Int8        `json:"leader_turn"`
+	PreparationSnapshot  []byte             `json:"preparation_snapshot"`
 }
 
 type CollaborationRunEvent struct {

@@ -44,23 +44,26 @@ type CollaborationRunInput struct {
 }
 
 type CollaborationRunClaimRequest struct {
-	ProtocolVersion int    `json:"protocol_version"`
-	DeploymentID    string `json:"deployment_id"`
-	InstallationID  string `json:"installation_id"`
-	RuntimeID       string `json:"runtime_id"`
-	BindingID       string `json:"binding_id"`
-	BindingEpoch    string `json:"binding_epoch"`
-	Containment     string `json:"containment"`
+	ProtocolVersion    int    `json:"protocol_version"`
+	DeploymentID       string `json:"deployment_id"`
+	InstallationID     string `json:"installation_id"`
+	RuntimeID          string `json:"runtime_id"`
+	BindingID          string `json:"binding_id"`
+	BindingEpoch       string `json:"binding_epoch"`
+	Containment        string `json:"containment"`
+	PreparationVersion int    `json:"preparation_version,omitempty"`
+	BundleDigest       string `json:"bundle_digest,omitempty"`
 }
 
 // TerminationToken belongs only to the supervisor and its private ledger.
 type CollaborationRunClaimResponse struct {
-	Identity             CollaborationRunIdentity `json:"identity"`
-	Inputs               []CollaborationRunInput  `json:"inputs"`
-	AgentID              string                   `json:"agent_id"`
-	ResourceOwnerID      string                   `json:"resource_owner_user_id"`
-	ExecutionWorkspaceID string                   `json:"execution_workspace_id"`
-	TerminationToken     string                   `json:"termination_token"`
+	Identity             CollaborationRunIdentity  `json:"identity"`
+	Inputs               []CollaborationRunInput   `json:"inputs"`
+	AgentID              string                    `json:"agent_id"`
+	ResourceOwnerID      string                    `json:"resource_owner_user_id"`
+	ExecutionWorkspaceID string                    `json:"execution_workspace_id"`
+	TerminationToken     string                    `json:"termination_token"`
+	Preparation          *CollaborationPreparation `json:"preparation,omitempty"`
 }
 
 type CollaborationRunPermitRequest struct {

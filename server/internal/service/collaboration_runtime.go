@@ -584,17 +584,21 @@ func collaborationRuntimeObjectFailure(ctx context.Context, err error) string {
 	if !errors.As(err, &denied) {
 		return ""
 	}
-	if denied.Status == http.StatusServiceUnavailable && denied.Code == "collaboration_busy" {
+	if denied.Status == http.StatusServiceUnavailable && (denied.Code == "collaboration_busy" || denied.Code == "runtime_preparation_unavailable" || denied.Code == "attachment_unavailable") {
 		return denied.Code
 	}
 	if denied.Status >= 500 {
 		return ""
 	}
+	if unsupportedPreparationConfigurationCode(denied.Code) {
+		return denied.Code
+	}
 	switch denied.Code {
 	case "run_not_found", "stale_source", "stale_authority", "grant_required", "target_configuration_changed",
 		"target_held", "target_paused", "channel_busy", "issue_paused", "issue_closed", "execution_stopped",
 		"stop_unconfirmed", "batch_empty", "runtime_upgrade_required", "installation_stopped", "runtime_offline",
-		"runtime_busy", "derived_run_pending", "collaboration_execution_unavailable", "resource_owner_not_participant", "resource_owner_unavailable":
+		"runtime_busy", "derived_run_pending", "collaboration_execution_unavailable", "resource_owner_not_participant", "resource_owner_unavailable",
+		"runtime_preparation_unsupported", "runtime_preparation_limits", "runtime_preparation_unavailable", "runtime_capability_changed":
 		return denied.Code
 	default:
 		return ""
@@ -763,6 +767,9 @@ func (s *CollaborationService) promoteCollaborationRuntimeBatch(ctx context.Cont
 	}
 	if runtime.Status != "online" {
 		return deny("runtime_offline")
+	}
+	if err = s.checkPreparationPromotion(ctx, t, selection); err != nil {
+		return collaborationRuntimePromotion{}, err
 	}
 	occupied, err := q.CollaborationRuntimeNamespaceOccupied(ctx, db.CollaborationRuntimeNamespaceOccupiedParams{WorkspaceID: runtime.WorkspaceID, DaemonID: runtime.DaemonID.String})
 	if err != nil {

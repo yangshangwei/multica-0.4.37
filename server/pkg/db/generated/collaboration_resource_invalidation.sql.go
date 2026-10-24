@@ -368,7 +368,7 @@ func (q *Queries) TryLockCollaborationResourceReservations(ctx context.Context, 
 }
 
 const tryLockCollaborationResourceRuns = `-- name: TryLockCollaborationResourceRuns :many
-SELECT r.id, r.task_id, r.grant_id, r.grant_epoch, r.resource_epoch, r.execution_workspace_id, r.runtime_id, r.installation_id, r.binding_id, r.binding_epoch, r.fence, r.claim_generation, r.launch_nonce, r.progress_state, r.business_outcome, r.forced_disposition, r.disposition_reason, r.proof_state, r.authorized_attempt_seq, r.sealed_attempt_seq, r.recording_incomplete, r.created_at, r.started_at, r.settled_at, r.session_id, r.command_id, r.target_id, r.group_id, r.parent_run_id, r.step_key, r.step_kind, r.agent_id, r.target_epoch, r.config_version, r.channel_id, r.batch_id, r.deployment_id, r.resource_owner_user_id, r.containment, r.prompt_snapshot, r.leader_turn FROM collaboration_run r WHERE r.session_id = $1
+SELECT r.id, r.task_id, r.grant_id, r.grant_epoch, r.resource_epoch, r.execution_workspace_id, r.runtime_id, r.installation_id, r.binding_id, r.binding_epoch, r.fence, r.claim_generation, r.launch_nonce, r.progress_state, r.business_outcome, r.forced_disposition, r.disposition_reason, r.proof_state, r.authorized_attempt_seq, r.sealed_attempt_seq, r.recording_incomplete, r.created_at, r.started_at, r.settled_at, r.session_id, r.command_id, r.target_id, r.group_id, r.parent_run_id, r.step_key, r.step_kind, r.agent_id, r.target_epoch, r.config_version, r.channel_id, r.batch_id, r.deployment_id, r.resource_owner_user_id, r.containment, r.prompt_snapshot, r.leader_turn, r.preparation_snapshot FROM collaboration_run r WHERE r.session_id = $1
   AND (r.settled_at IS NULL OR EXISTS (SELECT 1 FROM collaboration_execution_group g WHERE g.id = r.group_id AND g.settled_at IS NULL))
 ORDER BY r.id FOR UPDATE OF r NOWAIT
 `
@@ -426,6 +426,7 @@ func (q *Queries) TryLockCollaborationResourceRuns(ctx context.Context, sessionI
 			&i.Containment,
 			&i.PromptSnapshot,
 			&i.LeaderTurn,
+			&i.PreparationSnapshot,
 		); err != nil {
 			return nil, err
 		}

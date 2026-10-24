@@ -105,6 +105,7 @@ type CollaborationRunRecordsPage struct {
 	Run             CollaborationExecutionRunView   `json:"run"`
 	Resource        CollaborationRunResource        `json:"resource"`
 	Recording       CollaborationRunRecording       `json:"recording"`
+	Preparation     *CollaborationRunPreparation    `json:"preparation,omitempty"`
 	Usage           *protocol.CollaborationRunUsage `json:"usage"`
 	Items           []CollaborationRunRecordItem    `json:"items"`
 	NextCursor      *string                         `json:"next_cursor"`
@@ -223,6 +224,10 @@ func (s *CollaborationService) RunRecords(ctx context.Context, issueID, runID pg
 		position, positionOK := collaborationRuntimeVersion(cursor.EventSeq, false)
 		if !throughOK || through > latest || !positionOK || position > through && position-through != 1 || cursor.InputOffset < 0 || cursor.InputOffset > len(inputs) || cursor.ItemOffset < 0 || cursor.ItemOffset > protocol.CollaborationRecordItemLimit {
 			return invalidQuery
+		}
+		out.Preparation, err = readCollaborationPreparationRecords(ctx, q, issueID, run, inputs, through)
+		if err != nil {
+			return err
 		}
 		metadata, err := q.GetCollaborationRunRecordMetadata(ctx, db.GetCollaborationRunRecordMetadataParams{IssueID: issueID, RunID: runID})
 		if err != nil {

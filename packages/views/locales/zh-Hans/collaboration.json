@@ -556,5 +556,31 @@
     },
     "details": "指令详情",
     "inputEvent": "输入事件"
+  },
+  "runPreparation": {
+    "title": "运行准备",
+    "attachments_other": "{{count}} 个已记录的附件版本",
+    "fileVersion": "版本 {{version}} · {{bytes}} 字节",
+    "fileId": "附件 ID",
+    "gitCommit": "固定 Git 提交",
+    "stages": {
+      "attachments": "附件",
+      "bundle": "运行文件",
+      "git": "Git 文件",
+      "workspace": "工作目录"
+    },
+    "states": {
+      "prepared": "已准备",
+      "failed": "准备失败"
+    },
+    "failures": {
+      "attachment_unavailable": "已记录的附件不可用。",
+      "input_limit_exceeded": "准备内容超出了大小或文件数量限制。",
+      "bundle_unavailable": "运行文件不可用。",
+      "git_unavailable": "无法准备固定 Git 提交。",
+      "configuration_changed": "资源配置已变更。",
+      "cancelled": "准备已取消。",
+      "preparation_unavailable": "无法完成准备。"
+    }
   }
 }

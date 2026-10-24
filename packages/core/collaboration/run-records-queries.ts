@@ -11,7 +11,11 @@ function shareRecordedPages(previous: unknown, next: unknown): unknown {
   const data = next as InfiniteData<CollaborationRunRecords, string | undefined>;
   const cursors = new Set<string>();
   const records = new Map<string, string>();
+  const preparation = JSON.stringify(data.pages[0]?.preparation ?? null);
   for (const [index, page] of data.pages.entries()) {
+    // Every page shares the same server watermark and frozen manifest. A full
+    // refresh may advance it, but one chain must not splice newer stage facts.
+    if (JSON.stringify(page.preparation ?? null) !== preparation) throw new CollaborationUnavailableError();
     const cursor = data.pageParams[index];
     if (cursor !== undefined) cursors.add(cursor);
     if (page.next_cursor !== null && cursors.has(page.next_cursor)) throw new CollaborationUnavailableError();

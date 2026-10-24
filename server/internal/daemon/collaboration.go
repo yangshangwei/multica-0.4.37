@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -19,12 +20,14 @@ import (
 // CollaborationRunnerConfig is an explicit single-runtime opt-in. It never
 // reuses provider discovery, private account directories or ordinary task args.
 type CollaborationRunnerConfig struct {
-	RuntimeID        string   `json:"runtime_id"`
-	Executable       string   `json:"executable"`
-	CLIExecutable    string   `json:"cli_executable,omitempty"`
-	Arguments        []string `json:"arguments"`
-	LedgerDirectory  string   `json:"ledger_directory"`
-	SandboxDirectory string   `json:"sandbox_directory"`
+	RuntimeID                  string                                 `json:"runtime_id"`
+	Executable                 string                                 `json:"executable"`
+	CLIExecutable              string                                 `json:"cli_executable,omitempty"`
+	Arguments                  []string                               `json:"arguments"`
+	LedgerDirectory            string                                 `json:"ledger_directory"`
+	SandboxDirectory           string                                 `json:"sandbox_directory"`
+	ExpectedRuntimeConfigEpoch string                                 `json:"expected_runtime_config_epoch,omitempty"`
+	Bundle                     *collaborationrun.ProviderBundleConfig `json:"bundle,omitempty"`
 }
 
 func parseCollaborationRunnerConfig(raw string) (*CollaborationRunnerConfig, error) {
@@ -37,8 +40,19 @@ func parseCollaborationRunnerConfig(raw string) (*CollaborationRunnerConfig, err
 	var cfg CollaborationRunnerConfig
 	d := json.NewDecoder(strings.NewReader(raw))
 	d.DisallowUnknownFields()
-	if d.Decode(&cfg) != nil || d.Decode(new(any)) != io.EOF || !managedUUID.MatchString(cfg.RuntimeID) || !filepath.IsAbs(cfg.Executable) || !filepath.IsAbs(cfg.LedgerDirectory) || !filepath.IsAbs(cfg.SandboxDirectory) {
+	if d.Decode(&cfg) != nil || d.Decode(new(any)) != io.EOF || !managedUUID.MatchString(cfg.RuntimeID) || !filepath.IsAbs(cfg.LedgerDirectory) || !filepath.IsAbs(cfg.SandboxDirectory) {
 		return nil, errors.New("invalid collaboration runner configuration")
+	}
+	if cfg.Bundle == nil {
+		if !filepath.IsAbs(cfg.Executable) || cfg.ExpectedRuntimeConfigEpoch != "" {
+			return nil, errors.New("invalid collaboration executable configuration")
+		}
+	} else {
+		epoch, err := strconv.ParseInt(cfg.ExpectedRuntimeConfigEpoch, 10, 64)
+		if err != nil || epoch < 1 || strconv.FormatInt(epoch, 10) != cfg.ExpectedRuntimeConfigEpoch || cfg.Bundle.Validate() != nil ||
+			cfg.Executable != "" || cfg.CLIExecutable != "" || len(cfg.Arguments) != 0 {
+			return nil, errors.New("invalid collaboration provider bundle configuration")
+		}
 	}
 	if cfg.CLIExecutable != "" && !filepath.IsAbs(cfg.CLIExecutable) {
 		return nil, errors.New("collaboration CLI executable must be an explicit absolute path")
@@ -103,7 +117,7 @@ func (d *Daemon) initializeCollaborationPoller(ctx context.Context) (*collaborat
 	if err != nil {
 		return nil, 0, err
 	}
-	p := &collaborationPoller{daemon: d, config: config, ledger: ledger, controller: &collaborationrun.NamespaceController{Executable: config.Executable, CLIExecutable: config.CLIExecutable, Directory: config.SandboxDirectory, Arguments: config.Arguments}, proofClient: proofClient}
+	p := &collaborationPoller{daemon: d, config: config, ledger: ledger, controller: &collaborationrun.NamespaceController{Executable: config.Executable, CLIExecutable: config.CLIExecutable, Directory: config.SandboxDirectory, Arguments: config.Arguments, Bundle: config.Bundle}, proofClient: proofClient}
 	reserved := 0
 	for _, entry := range retained {
 		if entry.Unconfirmed {
@@ -216,6 +230,20 @@ func (p *collaborationPoller) dispatch(pollCtx, runCtx context.Context, slot int
 	if err != nil {
 		return false
 	}
+	runtimeConfigEpoch := ""
+	if p.config.Bundle != nil {
+		capabilities, err := p.config.Bundle.Capabilities()
+		if err != nil {
+			return false
+		}
+		registration, err := client.EnsureCapabilities(pollCtx, request, p.config.ExpectedRuntimeConfigEpoch, capabilities)
+		if err != nil {
+			return false
+		}
+		runtimeConfigEpoch = registration.RuntimeConfigEpoch
+		request.PreparationVersion = protocol.CollaborationPreparationVersion
+		request.BundleDigest = capabilities.Provider.BundleDigest
+	}
 	candidates, err := client.List(pollCtx, request.RuntimeID)
 	if err != nil {
 		return false
@@ -235,7 +263,7 @@ func (p *collaborationPoller) dispatch(pollCtx, runCtx context.Context, slot int
 	p.daemon.activeTasks.Add(1)
 	go func() {
 		defer wg.Done()
-		runner := &collaborationrun.Runner{Ledger: p.ledger, Client: client, Controller: p.controller}
+		runner := &collaborationrun.Runner{Ledger: p.ledger, Client: client, Controller: p.controller, RuntimeConfigEpoch: runtimeConfigEpoch}
 		err := runner.Run(runCtx, runID, request)
 		if errors.Is(err, collaborationrun.ErrUnconfirmed) {
 			p.blocked.Store(runID, true)

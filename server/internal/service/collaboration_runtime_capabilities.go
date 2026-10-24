@@ -126,7 +126,15 @@ func (s *CollaborationService) ClaimRuntimeRun(ctx context.Context, runID pgtype
 	if p.ProtocolVersion != protocol.CollaborationRuntimeProtocolVersion || p.Containment != protocol.CollaborationContainmentLinuxPIDNamespace || !runID.Valid {
 		return protocol.CollaborationRunClaimResponse{}, collaborationError(http.StatusBadRequest, "unsupported_runtime_protocol")
 	}
-	return collaborationRuntimeMutation(ctx, s, func(tx pgx.Tx) (protocol.CollaborationRunClaimResponse, error) {
+	if p.PreparationVersion != 0 || p.BundleDigest != "" {
+		digest, err := hex.DecodeString(p.BundleDigest)
+		if p.PreparationVersion != protocol.CollaborationPreparationVersion || err != nil || len(digest) != 32 || strings.ToLower(p.BundleDigest) != p.BundleDigest {
+			return protocol.CollaborationRunClaimResponse{}, collaborationError(http.StatusBadRequest, "unsupported_runtime_preparation")
+		}
+	}
+	var refusal error
+	claimed, err := collaborationRuntimeMutation(ctx, s, func(tx pgx.Tx) (protocol.CollaborationRunClaimResponse, error) {
+		refusal = nil
 		var out protocol.CollaborationRunClaimResponse
 		r, err := s.lockCollaborationRuntimeRun(ctx, tx, runID, true, true)
 		if err != nil {
@@ -137,6 +145,18 @@ func (s *CollaborationService) ClaimRuntimeRun(ctx context.Context, runID pgtype
 			return out, collaborationError(http.StatusConflict, "stale_runtime_binding")
 		}
 		if err = r.currentAdmission(ctx); err != nil {
+			return out, err
+		}
+		preparation, err := s.preparationForClaim(ctx, r, p)
+		if err != nil {
+			settled, settleErr := s.settleUnclaimedPreparationRefusal(ctx, r, err)
+			if settleErr != nil {
+				return out, settleErr
+			}
+			if settled {
+				refusal = err
+				return out, nil
+			}
 			return out, err
 		}
 		if err = r.reserveRun(ctx); err != nil {
@@ -194,7 +214,7 @@ func (s *CollaborationService) ClaimRuntimeRun(ctx context.Context, runID pgtype
 		if _, err = r.q.ClaimCollaborationRuntimeRun(ctx, db.ClaimCollaborationRuntimeRunParams{RunID: runID, Containment: p.Containment}); err != nil {
 			return out, err
 		}
-		inputs, err := s.claimPromptSnapshot(ctx, r)
+		inputs, err := s.claimPromptSnapshot(ctx, r, preparation)
 		if err != nil {
 			return out, err
 		}
@@ -204,11 +224,22 @@ func (s *CollaborationService) ClaimRuntimeRun(ctx context.Context, runID pgtype
 			}
 		}
 		out = protocol.CollaborationRunClaimResponse{Identity: identity, Inputs: inputs, AgentID: util.UUIDToString(r.run.AgentID), ResourceOwnerID: util.UUIDToString(r.run.ResourceOwnerUserID), ExecutionWorkspaceID: util.UUIDToString(r.run.ExecutionWorkspaceID), TerminationToken: token}
+		if preparation != nil {
+			manifest, err := s.readRuntimePreparation(ctx, r)
+			if err != nil {
+				return protocol.CollaborationRunClaimResponse{}, err
+			}
+			out.Preparation = &manifest
+		}
 		return out, nil
 	})
+	if err != nil {
+		return protocol.CollaborationRunClaimResponse{}, err
+	}
+	return claimed, refusal
 }
 
-func (s *CollaborationService) claimPromptSnapshot(ctx context.Context, r *collaborationRuntimeState) ([]protocol.CollaborationRunInput, error) {
+func (s *CollaborationService) claimPromptSnapshot(ctx context.Context, r *collaborationRuntimeState, preparation *protocol.CollaborationRuntimeCapabilityRegistration) ([]protocol.CollaborationRunInput, error) {
 	if r.run.PromptSnapshot == nil {
 		if err := r.consumeJoinedInputs(ctx); err != nil {
 			return nil, err
@@ -227,7 +258,11 @@ func (s *CollaborationService) claimPromptSnapshot(ctx context.Context, r *colla
 		if err != nil {
 			return nil, err
 		}
-		r.run, err = r.q.FreezeCollaborationRunPrompt(ctx, db.FreezeCollaborationRunPromptParams{RunID: r.run.ID, PromptSnapshot: encoded})
+		if preparation == nil {
+			r.run, err = r.q.FreezeCollaborationRunPrompt(ctx, db.FreezeCollaborationRunPromptParams{RunID: r.run.ID, PromptSnapshot: encoded})
+		} else {
+			err = s.freezePreparedPrompt(ctx, r, inputs, encoded, preparation)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -258,6 +293,11 @@ func (s *CollaborationService) PermitRuntimeRun(ctx context.Context, runID pgtyp
 		}
 		if err = r.requireReservation(ctx); err != nil {
 			return out, err
+		}
+		if r.run.PreparationSnapshot != nil {
+			if _, err = s.readRuntimePreparation(ctx, r); err != nil {
+				return out, err
+			}
 		}
 		if r.run.Containment.String != p.Containment || p.Identity != collaborationRunIdentity(r.run, r.access.Issue.ID) {
 			return out, collaborationError(http.StatusConflict, "stale_execution")

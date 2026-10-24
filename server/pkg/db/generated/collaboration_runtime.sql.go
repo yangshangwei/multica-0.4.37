@@ -85,7 +85,7 @@ func (q *Queries) AssignCollaborationChannelTargetGroups(ctx context.Context, ar
 
 const authorizeCollaborationAttempt = `-- name: AuthorizeCollaborationAttempt :one
 UPDATE collaboration_run SET authorized_attempt_seq=$1::bigint,progress_state='launch_authorized'
-WHERE id=$2::uuid AND authorized_attempt_seq=0 AND settled_at IS NULL AND forced_disposition IS NULL RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn
+WHERE id=$2::uuid AND authorized_attempt_seq=0 AND settled_at IS NULL AND forced_disposition IS NULL RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot
 `
 
 type AuthorizeCollaborationAttemptParams struct {
@@ -138,6 +138,7 @@ func (q *Queries) AuthorizeCollaborationAttempt(ctx context.Context, arg Authori
 		&i.Containment,
 		&i.PromptSnapshot,
 		&i.LeaderTurn,
+		&i.PreparationSnapshot,
 	)
 	return i, err
 }
@@ -145,7 +146,7 @@ func (q *Queries) AuthorizeCollaborationAttempt(ctx context.Context, arg Authori
 const claimCollaborationRuntimeRun = `-- name: ClaimCollaborationRuntimeRun :one
 UPDATE collaboration_run SET progress_state=CASE WHEN progress_state='prepared' THEN 'preparing' ELSE progress_state END,
     containment=$1::text
-WHERE id=$2::uuid AND settled_at IS NULL AND forced_disposition IS NULL RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn
+WHERE id=$2::uuid AND settled_at IS NULL AND forced_disposition IS NULL RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot
 `
 
 type ClaimCollaborationRuntimeRunParams struct {
@@ -198,6 +199,7 @@ func (q *Queries) ClaimCollaborationRuntimeRun(ctx context.Context, arg ClaimCol
 		&i.Containment,
 		&i.PromptSnapshot,
 		&i.LeaderTurn,
+		&i.PreparationSnapshot,
 	)
 	return i, err
 }
@@ -443,7 +445,7 @@ VALUES($1::uuid,$2::uuid,$3::uuid,$4::uuid,'root',$5::text,
     $6::uuid,$7::bigint,$8::bigint,$9::uuid,$10::bigint,
     $11::bigint,$12::uuid,$13::uuid,$14::uuid,
     $15::uuid,$16::bigint,$17::uuid,$18::uuid,
-    $19::uuid,$20::uuid,'prepared') RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn
+    $19::uuid,$20::uuid,'prepared') RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot
 `
 
 type CreateCollaborationRuntimeRunParams struct {
@@ -535,6 +537,7 @@ func (q *Queries) CreateCollaborationRuntimeRun(ctx context.Context, arg CreateC
 		&i.Containment,
 		&i.PromptSnapshot,
 		&i.LeaderTurn,
+		&i.PreparationSnapshot,
 	)
 	return i, err
 }
@@ -814,7 +817,7 @@ func (q *Queries) GetCollaborationRuntimeEvent(ctx context.Context, arg GetColla
 }
 
 const getCollaborationRuntimeRun = `-- name: GetCollaborationRuntimeRun :one
-SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn FROM collaboration_run WHERE id=$1
+SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot FROM collaboration_run WHERE id=$1
 `
 
 func (q *Queries) GetCollaborationRuntimeRun(ctx context.Context, id pgtype.UUID) (CollaborationRun, error) {
@@ -862,6 +865,7 @@ func (q *Queries) GetCollaborationRuntimeRun(ctx context.Context, id pgtype.UUID
 		&i.Containment,
 		&i.PromptSnapshot,
 		&i.LeaderTurn,
+		&i.PreparationSnapshot,
 	)
 	return i, err
 }
@@ -1141,7 +1145,7 @@ func (q *Queries) LockCollaborationRuntimeGroup(ctx context.Context, id pgtype.U
 }
 
 const lockCollaborationRuntimeRun = `-- name: LockCollaborationRuntimeRun :one
-SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn FROM collaboration_run WHERE id=$1 FOR UPDATE
+SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot FROM collaboration_run WHERE id=$1 FOR UPDATE
 `
 
 func (q *Queries) LockCollaborationRuntimeRun(ctx context.Context, id pgtype.UUID) (CollaborationRun, error) {
@@ -1189,6 +1193,7 @@ func (q *Queries) LockCollaborationRuntimeRun(ctx context.Context, id pgtype.UUI
 		&i.Containment,
 		&i.PromptSnapshot,
 		&i.LeaderTurn,
+		&i.PreparationSnapshot,
 	)
 	return i, err
 }
@@ -1250,7 +1255,7 @@ func (q *Queries) LockCollaborationTermination(ctx context.Context, runID pgtype
 
 const recordCollaborationRuntimeOutcome = `-- name: RecordCollaborationRuntimeOutcome :one
 UPDATE collaboration_run SET business_outcome=$1::text
-WHERE id=$2::uuid AND business_outcome IS NULL AND settled_at IS NULL RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn
+WHERE id=$2::uuid AND business_outcome IS NULL AND settled_at IS NULL RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot
 `
 
 type RecordCollaborationRuntimeOutcomeParams struct {
@@ -1303,6 +1308,7 @@ func (q *Queries) RecordCollaborationRuntimeOutcome(ctx context.Context, arg Rec
 		&i.Containment,
 		&i.PromptSnapshot,
 		&i.LeaderTurn,
+		&i.PreparationSnapshot,
 	)
 	return i, err
 }
@@ -1310,7 +1316,7 @@ func (q *Queries) RecordCollaborationRuntimeOutcome(ctx context.Context, arg Rec
 const recordCollaborationRuntimeProof = `-- name: RecordCollaborationRuntimeProof :one
 UPDATE collaboration_run SET proof_state=$1::text,sealed_attempt_seq=$2::bigint,
     recording_incomplete=(recording_incomplete OR business_outcome IS NULL),progress_state='settled',settled_at=now()
-WHERE id=$3::uuid AND settled_at IS NULL RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn
+WHERE id=$3::uuid AND settled_at IS NULL RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot
 `
 
 type RecordCollaborationRuntimeProofParams struct {
@@ -1364,6 +1370,7 @@ func (q *Queries) RecordCollaborationRuntimeProof(ctx context.Context, arg Recor
 		&i.Containment,
 		&i.PromptSnapshot,
 		&i.LeaderTurn,
+		&i.PreparationSnapshot,
 	)
 	return i, err
 }

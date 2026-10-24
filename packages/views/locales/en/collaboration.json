@@ -556,5 +556,32 @@
     },
     "details": "Input details",
     "inputEvent": "Input event"
+  },
+  "runPreparation": {
+    "title": "Run preparation",
+    "attachments_one": "{{count}} recorded attachment version",
+    "attachments_other": "{{count}} recorded attachment versions",
+    "fileVersion": "Version {{version}} · {{bytes}} bytes",
+    "fileId": "Attachment ID",
+    "gitCommit": "Fixed Git commit",
+    "stages": {
+      "attachments": "Attachments",
+      "bundle": "Runtime files",
+      "git": "Git files",
+      "workspace": "Working directory"
+    },
+    "states": {
+      "prepared": "Prepared",
+      "failed": "Preparation failed"
+    },
+    "failures": {
+      "attachment_unavailable": "The recorded attachment was unavailable.",
+      "input_limit_exceeded": "Preparation exceeded its size or file limit.",
+      "bundle_unavailable": "The runtime files were unavailable.",
+      "git_unavailable": "The fixed Git commit could not be prepared.",
+      "configuration_changed": "The resource configuration changed.",
+      "cancelled": "Preparation was cancelled.",
+      "preparation_unavailable": "Preparation could not be completed."
+    }
   }
 }

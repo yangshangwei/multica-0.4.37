@@ -1,6 +1,7 @@
 package agent
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -365,6 +366,10 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 }
 
 func (b *claudeBackend) handleAssistant(msg claudeSDKMessage, ch chan<- Message, usage map[string]TokenUsage) assistantTurn {
+	return handleClaudeAssistant(msg, ch, usage)
+}
+
+func handleClaudeAssistant(msg claudeSDKMessage, ch chan<- Message, usage map[string]TokenUsage) assistantTurn {
 	var content claudeMessageContent
 	if err := json.Unmarshal(msg.Message, &content); err != nil {
 		// Unreadable body: understood stays false so the caller drops any
@@ -400,7 +405,9 @@ func (b *claudeBackend) handleAssistant(msg claudeSDKMessage, ch chan<- Message,
 			toolUseCount++
 			var input map[string]any
 			if block.Input != nil {
-				_ = json.Unmarshal(block.Input, &input)
+				decoder := json.NewDecoder(bytes.NewReader(block.Input))
+				decoder.UseNumber()
+				_ = decoder.Decode(&input)
 			}
 			trySend(ch, Message{
 				Type:   MessageToolUse,
@@ -449,24 +456,35 @@ func (b *claudeBackend) handleUser(msg claudeSDKMessage, ch chan<- Message) bool
 
 func (b *claudeBackend) handleControlRequest(msg claudeSDKMessage, stdin interface{ Write([]byte) (int, error) }) {
 	// Auto-approve all tool uses in autonomous/daemon mode.
+	data, forced, toolName, err := buildClaudeControlResponse(msg)
+	if err != nil {
+		b.cfg.Logger.Warn("claude: failed to marshal control response", "error", err)
+		return
+	}
+	if forced {
+		b.cfg.Logger.Info("claude: forced foreground tool execution", "request_id", msg.RequestID, "tool", toolName)
+	}
+	if _, err := stdin.Write(data); err != nil {
+		b.cfg.Logger.Warn("claude: failed to write control response", "error", err)
+	}
+}
+
+func buildClaudeControlResponse(msg claudeSDKMessage) ([]byte, bool, string, error) {
 	var req claudeControlRequestPayload
 	if err := json.Unmarshal(msg.Request, &req); err != nil {
-		return
+		return nil, false, "", err
 	}
 
 	var inputMap map[string]any
 	if req.Input != nil {
-		_ = json.Unmarshal(req.Input, &inputMap)
+		decoder := json.NewDecoder(bytes.NewReader(req.Input))
+		decoder.UseNumber()
+		_ = decoder.Decode(&inputMap)
 	}
 	if inputMap == nil {
 		inputMap = map[string]any{}
 	}
-	if forceClaudeToolInputForeground(inputMap) {
-		b.cfg.Logger.Info("claude: forced foreground tool execution",
-			"request_id", msg.RequestID,
-			"tool", req.ToolName,
-		)
-	}
+	forced := forceClaudeToolInputForeground(inputMap)
 
 	response := map[string]any{
 		"type": "control_response",
@@ -482,13 +500,9 @@ func (b *claudeBackend) handleControlRequest(msg claudeSDKMessage, stdin interfa
 
 	data, err := json.Marshal(response)
 	if err != nil {
-		b.cfg.Logger.Warn("claude: failed to marshal control response", "error", err)
-		return
+		return nil, false, req.ToolName, err
 	}
-	data = append(data, '\n')
-	if _, err := stdin.Write(data); err != nil {
-		b.cfg.Logger.Warn("claude: failed to write control response", "error", err)
-	}
+	return append(data, '\n'), forced, req.ToolName, nil
 }
 
 func forceClaudeToolInputForeground(input map[string]any) bool {

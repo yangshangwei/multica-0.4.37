@@ -9,6 +9,9 @@ import (
 )
 
 func TestMain(m *testing.M) {
+	if code, handled := runPreparedTestFixture(); handled {
+		os.Exit(code)
+	}
 	if len(os.Args) == 2 && os.Args[1] == NamespaceHelperArg {
 		os.Exit(NamespaceHelperMain())
 	}
