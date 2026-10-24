@@ -1,4 +1,5 @@
 export { AdminShell } from "./admin-shell";
+export { AdminSessionBoundary } from "./admin-session-boundary";
 export { AdminExecutionListPage } from "./executions/execution-list";
 export { AdminExecutionDetailPage } from "./executions/execution-detail";
 export { AdminIssueListPage } from "./issues/issue-list";

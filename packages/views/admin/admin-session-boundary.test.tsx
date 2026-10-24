@@ -7,6 +7,8 @@ import { adminApiScope, adminKeys } from "@multica/core/admin";
 import type { User } from "@multica/core/types";
 import { AdminSessionBoundary } from "./admin-session-boundary";
 
+// Both Web and Desktop mount this boundary above routes; keep its behavior
+// matrix beside the shared implementation rather than in either app.
 const user: User = { id: "admin", name: "Admin", email: "", avatar_url: null, onboarded_at: null, onboarding_questionnaire: {}, starter_content_state: null, language: null, profile_description: "", timezone: null, created_at: "", updated_at: "" };
 
 describe("admin cache boundary outside administration routes", () => {

@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { parseDesktopAccountPath } from "../../shared/account-navigation";
+import { AdminSessionBoundary } from "@multica/views/admin";
 import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import { clearClientSessionData } from "@multica/core/platform";
 import { WindowOverlay } from "./components/window-overlay";
@@ -530,6 +531,7 @@ export default function App() {
           localeAdapter={localeAdapter}
         >
           <DesktopAuthSessionBridge />
+          <AdminSessionBoundary />
           <DesktopInstallationMetadataBridge />
           {windowContext.kind === "main" && <CloseBehaviorPrompt />}
           {windowContext.kind === "main" && <DiagnosticRouteReporter />}
