@@ -267,7 +267,9 @@ func (h *Handler) SubmitCollaborationAcceptance(w http.ResponseWriter, r *http.R
 func writeCollaborationWorkflowResponse(w http.ResponseWriter, receipt service.CollaborationWorkflowReceipt, err error) {
 	if err != nil {
 		if receipt.Code != "" && receipt.CollaborationRevision > 0 && receipt.Status >= 400 {
-			body := map[string]any{"code": receipt.Code, "error": receipt.Code,
+			// The refusal was committed with its operation record. Carrying its
+			// status lets clients settle it as final instead of an unknown result.
+			body := map[string]any{"code": receipt.Code, "error": receipt.Code, "status": receipt.Status,
 				"collaboration_revision": strconv.FormatInt(receipt.CollaborationRevision, 10)}
 			if receipt.StatusOptions != nil {
 				body["status_options"] = receipt.StatusOptions

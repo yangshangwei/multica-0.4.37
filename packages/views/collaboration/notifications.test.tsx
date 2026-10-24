@@ -56,3 +56,15 @@ it("distinguishes human handoffs and assignments from content-free removal notif
   expect(within(screen.getByRole("link", { name: "Other issue" }).closest("li")!).getByText("Activity recorded")).toBeInTheDocument();
   expect(screen.queryByText("future_event")).not.toBeInTheDocument();
 });
+
+it("describes an assignment to the recipient in Chinese without using the creation form's self-selection label", async () => {
+  const notification = { id, issue_id: id, event_seq: "1", kind: "assigned", is_mention: false, source_kind: "issue", source_id: null,
+    issue_title: "产品派单给开发", can_open: true, created_at: "2026-10-19T00:00:00Z", read_at: null, archived_at: null };
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({ items: [notification], unread_count: 1, next_cursor: null }))));
+  setApiInstance(new ApiClient("https://server.example"));
+  renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={{ pathname: "/account", searchParams: new URLSearchParams(), hash: "", push: vi.fn(), replace: vi.fn(), back: vi.fn(), getShareableUrl: (path) => `https://server.example${path}` }}><CollaborationNotifications scope={collaborationScope(id)} view="current" /></NavigationProvider></QueryClientProvider>, { locale: "zh-Hans" });
+  await userEvent.click(await screen.findByRole("button", { name: /通知.*1 条未读/ }));
+  const row = screen.getByRole("link", { name: "产品派单给开发" }).closest("li")!;
+  expect(within(row).getByText("任务已分配给你")).toBeInTheDocument();
+  expect(within(row).queryByText("已选择自己")).not.toBeInTheDocument();
+});

@@ -67,11 +67,21 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
       <Button type="button" variant="ghost" size="sm" disabled={locked} className="pointer-coarse:min-h-11" onClick={() => { delivery.update({ parentCommentId: null }); inspect.reset(); onCancelReply?.(); }}>{t(($) => $.commentActions.cancelReply)}</Button></div>}
     {parent.error && <CollaborationQueryState error={parent.error} retry={() => void parent.refetch()} />}
     <Textarea ref={textarea} id={fieldId} placeholder={t(($) => $.composer.placeholder)} value={content} disabled={locked} onChange={(event) => change(event.target.value)} className="min-h-28" />
-    {mentions.data && <div className="flex min-w-0 flex-wrap gap-2" role="group" aria-label={t(($) => $.composer.mentions)}>
-      {mentions.data.participants.map((person) => <Button key={person.user_id} type="button" size="sm" variant="ghost" disabled={locked} className="h-auto min-h-8 whitespace-normal [overflow-wrap:anywhere] pointer-coarse:min-h-11"
-        onClick={() => change(`${content}${content ? " " : ""}${collaborationMentionMarkdown("member", person.user_id, person.name, mentions.data!)}`)}>{person.name}</Button>)}
-      {mentions.data.targets.map((target) => <Button key={target.target_id} type="button" size="sm" variant="ghost" disabled={locked} className="h-auto min-h-8 whitespace-normal [overflow-wrap:anywhere] pointer-coarse:min-h-11"
-        onClick={() => change(`${content}${content ? " " : ""}${collaborationMentionMarkdown(target.kind, target.resource_id, target.name, mentions.data!)}`)}>{target.name}</Button>)}
+    {mentions.data && <div className="min-w-0 space-y-3" role="group" aria-label={t(($) => $.composer.mentions)}>
+      <div role="group" aria-labelledby={`${fieldId}-people`} className="min-w-0 space-y-1">
+        <p id={`${fieldId}-people`} className="text-caption font-medium text-muted-foreground">{t(($) => $.composer.mentionPeople)}</p>
+        <div className="flex min-w-0 flex-wrap gap-2">
+          <Button type="button" size="sm" variant="ghost" disabled={locked} className="h-auto min-h-8 whitespace-normal [overflow-wrap:anywhere] pointer-coarse:min-h-11"
+            onClick={() => change(`${content}${content ? " " : ""}${collaborationMentionMarkdown("all", "all", "all", mentions.data!)}`)}>{t(($) => $.composer.mentionAll)}</Button>
+          {mentions.data.participants.map((person) => <Button key={person.user_id} type="button" size="sm" variant="ghost" disabled={locked} className="h-auto min-h-8 whitespace-normal [overflow-wrap:anywhere] pointer-coarse:min-h-11"
+            onClick={() => change(`${content}${content ? " " : ""}${collaborationMentionMarkdown("member", person.user_id, person.name, mentions.data!)}`)}>{person.name}</Button>)}
+        </div>
+      </div>
+      {mentions.data.targets.length > 0 && <div role="group" aria-labelledby={`${fieldId}-ai`} className="min-w-0 space-y-1">
+        <p id={`${fieldId}-ai`} className="text-caption font-medium text-muted-foreground">{t(($) => $.composer.mentionAI)}</p>
+        <div className="flex min-w-0 flex-wrap gap-2">{mentions.data.targets.map((target) => <Button key={target.target_id} type="button" size="sm" variant="ghost" disabled={locked} className="h-auto min-h-8 whitespace-normal [overflow-wrap:anywhere] pointer-coarse:min-h-11"
+          onClick={() => change(`${content}${content ? " " : ""}${collaborationMentionMarkdown(target.kind, target.resource_id, target.name, mentions.data!)}`)}>{target.name}</Button>)}</div>
+      </div>}
     </div>}
     {mentions.error && <CollaborationQueryState error={mentions.error} retry={() => void mentions.refetch()} />}
     <CollaborationAttachmentPicker scope={scope} form={delivery.form} update={delivery.update} uploads={delivery.uploads} onBusyChange={setUploading}

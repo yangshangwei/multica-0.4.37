@@ -127,30 +127,60 @@ it("describes a possible squad continuation in Chinese before any comment is sen
   expect(screen.queryByText("已并入当前小队，等待读取。")).not.toBeInTheDocument();
 });
 
-it("inserts only issue-authorized mentions, previews suppression, and confirms server delivery", async () => {
+// Syntax and authority cases belong to core/collaboration/comment.test.ts;
+// human notification expansion/deduplication belongs to the server comment tests.
+it("groups people and AI, inserts @all without losing explicit targets, and sends the reviewed delivery", async () => {
   setApiInstance(new ApiClient("https://server.example"));
   const scope = collaborationScope(id);
+  const squadId = "00000000-0000-4000-8000-000000000005";
+  const recipient = { ...account, user_id: "00000000-0000-4000-8000-000000000006", name: "Human participant" };
   const candidate = { target_id: target, kind: "agent", resource_id: agent, target_epoch: "1", config_version: "1", hold_reason: null, hold_version: "1", state: "waiting", code: "command_waiting", command_id: null };
+  const squad = { ...candidate, target_id: squadId, kind: "squad", resource_id: squadId };
   const fetch = vi.fn().mockImplementation(async (url: string, init: RequestInit) => {
-    if (url.endsWith("mention-targets")) return new Response(JSON.stringify({ protocol_version: 2, issue_id: id, participants: [account], can_submit_commands: false,
-      targets: [{ target_id: target, kind: "agent", resource_id: agent, name: "Authorized agent", target_epoch: "1", config_version: "1", queue_state: "paused", hold_reason: null, hold_version: "1", waiting_reason: "queue_paused", execution_available: false }] }));
+    if (url.endsWith("mention-targets")) return new Response(JSON.stringify({ protocol_version: 2, issue_id: id, participants: [account, recipient], can_submit_commands: true,
+      targets: [{ ...candidate, name: "Authorized agent", queue_state: "paused", waiting_reason: "queue_paused", execution_available: false },
+        { ...squad, name: "Authorized squad", queue_state: "paused", waiting_reason: "queue_paused", execution_available: false }] }));
     const body = JSON.parse(String(init.body));
-    if (url.endsWith("trigger-preview")) return new Response(JSON.stringify({ protocol_version: 2, issue_id: id, lifecycle_epoch: "1", write_context: { participant_epoch: "2", account_epoch: "3" }, recipients: [], targets: [{ ...candidate, state: body.suppressed_target_ids.length ? "suppressed" : "waiting" }] }));
-    return new Response(JSON.stringify({ protocol_version: 2, issue_id: id, status: 201, code: "comment_created", comment_id: eventId, comment_revision: "1", event_id: eventId, event_seq: "1", targets: [{ ...candidate, state: "suppressed" }] }));
+    if (url.endsWith("trigger-preview")) return new Response(JSON.stringify({ protocol_version: 2, issue_id: id, lifecycle_epoch: "1", write_context: { participant_epoch: "2", account_epoch: "3" },
+      recipients: [{ recipient, is_mention: true }], targets: [{ ...candidate, state: body.suppressed_target_ids.length ? "suppressed" : "waiting" }, squad] }));
+    return new Response(JSON.stringify({ protocol_version: 2, issue_id: id, status: 201, code: "comment_created", comment_id: eventId, comment_revision: "1", event_id: eventId, event_seq: "1",
+      targets: [{ ...candidate, state: "suppressed" }, { ...squad, command_id: eventId, command_sequence: "1" }] }));
   });
   vi.stubGlobal("fetch", fetch);
   renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentComposer scope={scope} issue={issue} /></QueryClientProvider>);
   const user = userEvent.setup();
-  await user.click(await screen.findByRole("button", { name: "Authorized agent" }));
-  expect(screen.getByLabelText("Add comment")).toHaveValue(`[@Authorized agent](mention://agent/${agent})`);
+  const people = within(await screen.findByRole("group", { name: "People" }));
+  const ai = within(screen.getByRole("group", { name: "AI targets" }));
+  expect(people.getByText("People")).toBeVisible();
+  expect(ai.getByText("AI targets")).toBeVisible();
+  expect(ai.queryByRole("button", { name: /@all/ })).not.toBeInTheDocument();
+  await user.click(people.getByRole("button", { name: "Human participant" }));
+  await user.click(ai.getByRole("button", { name: "Authorized agent" }));
+  await user.click(ai.getByRole("button", { name: "Authorized squad" }));
+  const explicit = `[@Human participant](mention://member/${recipient.user_id}) [@Authorized agent](mention://agent/${agent}) [@Authorized squad](mention://squad/${squadId})`;
+  expect(screen.getByLabelText("Add comment")).toHaveValue(explicit);
   await user.click(screen.getByRole("button", { name: "Preview delivery" }));
-  await user.click(await screen.findByRole("checkbox"));
+  expect(await screen.findByRole("checkbox", { name: /Authorized squad/ })).toBeChecked();
+  expect(screen.getByRole("button", { name: "Send comment" })).toBeEnabled();
+
+  await user.click(people.getByRole("button", { name: "@all · All participants" }));
+  const content = `${explicit} [@all](mention://all/all)`;
+  expect(screen.getByLabelText("Add comment")).toHaveValue(content);
   expect(screen.getByRole("button", { name: "Send comment" })).toBeDisabled();
+  expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
+  await user.click(screen.getByRole("button", { name: "Preview delivery" }));
+  expect(await screen.findByText("1 notification recipients")).toBeVisible();
+  expect(fetch.mock.calls.filter(([url]) => String(url).endsWith("/comments"))).toHaveLength(0);
+  await user.click(screen.getByRole("checkbox", { name: /Authorized agent/ }));
+  expect(screen.getByRole("button", { name: "Send comment" })).toBeDisabled();
+  expect(screen.getByLabelText("Add comment")).toHaveValue(content);
   await user.click(screen.getByRole("button", { name: "Preview delivery" }));
   await user.click(screen.getByRole("button", { name: "Send comment" }));
   expect(await screen.findByText("Comment confirmed.")).toBeInTheDocument();
-  const post = fetch.mock.calls.find(([url]) => String(url).endsWith("/comments"))!;
-  expect(JSON.parse(String(post[1].body))).toMatchObject({ suppressed_target_ids: [target], expected_participant_epoch: "2" });
+  const posts = fetch.mock.calls.filter(([url]) => String(url).endsWith("/comments"));
+  expect(posts).toHaveLength(1);
+  expect(JSON.parse(String(posts[0]![1].body))).toMatchObject({ content, suppressed_target_ids: [target], expected_participant_epoch: "2", expected_account_epoch: "3",
+    target_versions: [{ target_id: target, expected_target_epoch: "1", expected_config_version: "1" }, { target_id: squadId, expected_target_epoch: "1", expected_config_version: "1" }] });
   expect(fetch.mock.calls.every(([url]) => !String(url).includes("/api/workspaces"))).toBe(true);
 });
 

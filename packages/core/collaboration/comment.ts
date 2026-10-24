@@ -49,7 +49,11 @@ export async function executeCollaborationComment(client: QueryClient, scope: Co
 }
 
 /** Suggestions come only from this issue's authorized projection. */
-export function collaborationMentionMarkdown(kind: "member" | "agent" | "squad", id: string, name: string, source: CollaborationMentionTargets): string {
+export function collaborationMentionMarkdown(kind: "member" | "agent" | "squad" | "all", id: string, name: string, source: CollaborationMentionTargets): string {
+  if (kind === "all") {
+    if (id !== "all") throw new CollaborationUnavailableError();
+    return "[@all](mention://all/all)";
+  }
   const allowed = kind === "member" ? source.participants.some((account) => account.user_id === id) : source.targets.some((target) => target.kind === kind && target.resource_id === id);
   if (!allowed || !z.uuid().safeParse(id).success) throw new CollaborationUnavailableError();
   const label = name.replace(/[\\[\]\r\n]/g, " ");

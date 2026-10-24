@@ -23,7 +23,7 @@ export const collaborationKeys = {
   notifications: (scope: CollaborationScope) => [...collaborationKeys.scope(scope), "notifications"] as const,
 };
 
-interface Access { epoch: number; denied: boolean }
+interface Access { epoch: number; denied: boolean; denialError: ApiError | null }
 const access = new WeakMap<QueryClient, Map<string, Access>>();
 const accessKey = (scope: CollaborationScope, issueId: string | null) => JSON.stringify([...collaborationKeys.scope(scope), issueId?.toLowerCase() ?? null]);
 function state(client: QueryClient, scope: CollaborationScope, issueId: string | null): Access {
@@ -31,7 +31,7 @@ function state(client: QueryClient, scope: CollaborationScope, issueId: string |
   if (!entries) { entries = new Map(); access.set(client, entries); }
   const key = accessKey(scope, issueId);
   let current = entries.get(key);
-  if (!current) { current = { epoch: 0, denied: false }; entries.set(key, current); }
+  if (!current) { current = { epoch: 0, denied: false, denialError: null }; entries.set(key, current); }
   return current;
 }
 
@@ -61,6 +61,7 @@ export function clearCollaborationAccess(client: QueryClient, scope: Collaborati
   const current = state(client, scope, issueId);
   current.epoch += 1;
   current.denied = true;
+  current.denialError = denied();
   state(client, scope, null).epoch += 1;
   clearCollaborationDrafts(undefined, { ...scope, issueId });
   const predicate = (entry: { queryKey: QueryKey }) => ownedKey(entry.queryKey, scope) &&
@@ -68,7 +69,7 @@ export function clearCollaborationAccess(client: QueryClient, scope: Collaborati
   void client.cancelQueries({ predicate }, { revert: false });
   for (const query of client.getQueryCache().findAll({ predicate })) {
     query.setData(undefined, { manual: true, updatedAt: 0 });
-    query.setState({ data: undefined, dataUpdatedAt: 0, error: denied(), status: "error" });
+    query.setState({ data: undefined, dataUpdatedAt: 0, error: current.denialError, status: "error" });
   }
   for (const mutation of client.getMutationCache().getAll()) {
     const key = mutation.options.mutationKey;
@@ -103,12 +104,23 @@ export async function protectCollaborationRead<T>(
 ): Promise<T> {
   if (!isCollaborationScopeCurrent(scope)) throw superseded();
   const before = { ...state(client, scope, issueId) };
-  if (before.denied && !allowRecovery) throw denied();
+  if (before.denied && !allowRecovery) throw before.denialError ?? denied();
   try {
     const value = await request();
     if (!isCollaborationScopeCurrent(scope) || state(client, scope, issueId).epoch !== before.epoch) throw superseded();
     if (value === null) throw new CollaborationUnavailableError();
-    if (allowRecovery) state(client, scope, issueId).denied = false;
+    if (allowRecovery) {
+      const current = state(client, scope, issueId);
+      current.denied = false;
+      current.denialError = null;
+      if (before.denialError) {
+        // Clear only this denial's propagated errors, including disabled reads.
+        // Query reset() could restore data from before access was revoked.
+        for (const query of client.getQueryCache().findAll({ predicate: (entry) => ownedKey(entry.queryKey, scope) && entry.state.error === before.denialError })) {
+          query.setState({ data: undefined, dataUpdatedAt: 0, error: null, errorUpdatedAt: 0, status: "pending", fetchFailureCount: 0, fetchFailureReason: null });
+        }
+      }
+    }
     return value;
   } catch (error) {
     if (!isCollaborationScopeCurrent(scope) || state(client, scope, issueId).epoch !== before.epoch) throw superseded();

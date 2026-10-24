@@ -89,7 +89,8 @@ func TestCollaborationWorkflowRoutesPreserveResponsibilityAndMinimalRecovery(t *
 	call(bToken, http.MethodPost, base+"/participants", uuid.NewString(), input("5", d)).Want(http.StatusForbidden)
 	leaveKey := uuid.NewString()
 	refusal := call(cToken, http.MethodPost, base+"/leave", leaveKey, input("5", "")).Want(http.StatusConflict).Map()
-	if refusal["code"] != "handler_must_transfer" {
+	// The committed refusal carries its status so clients settle it as final.
+	if refusal["code"] != "handler_must_transfer" || refusal["status"] != float64(http.StatusConflict) {
 		t.Fatalf("handler leave refusal: %v", refusal)
 	}
 	verify(call(testToken, http.MethodPost, base+"/participants/"+c+"/remove", uuid.NewString(), input("5", "")), "participant_removed", "6")

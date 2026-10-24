@@ -95,6 +95,18 @@ epoch. Recoveries started with current access still use the issue guard so a
 fresh denial clears its cache. Only already-known access loss uses the
 account-only guard and accepts content-free recovery.
 
+Each issue denial retains the exact `ApiError` instance propagated into its
+protected Query entries. A successful, current-epoch authoritative issue read
+clears only that instance from the current Server/viewer cache. Cleared reads
+remain data-free and pending; disabled comment/parent reads remain idle. Do not
+use Query `reset()` for this recovery: it can restore revoked `initialData`.
+Keep genuine child errors, other issue denials and obsolete-response fences.
+An unavailable or failed authority read does not clear the denial.
+
+Assignment notifications use `notifications.assigned`, with recipient-facing
+text in both languages. `creation.assignedSelf` belongs to the self-selection
+state of the creation form and must not label another person's assignment.
+
 Cancelled/Switch redacted receipts contain exactly `redacted`,
 `protocol_version`, `issue_id`, `request_id`, `action`, `status`, `code`.
 Zero-valued extra execution fields are not the same wire contract. Missing or
@@ -118,6 +130,8 @@ or baselines without silently replacing user intent.
 | Valid HTTP 409 stale_revision with absent/matching body status | Settle as refused; retain form input and require explicit latest-version submit |
 | Other statusless error code or contradictory body status | Preserve uncertain intent and original-key recovery |
 | Fresh recovery permission denial | Clear protected issue cache and obsolete drafts |
+| Current-epoch authority read succeeds after denial | Clear that denial's propagated Query errors without restoring old data or fetching inactive reads |
+| Authority recovery is unavailable or fails | Retain denial and data-free protected state |
 | Access already denied before recovery | Accept only content-free own receipt |
 | Optional history route absent without object denial | Show history unavailable; retain authorized detail |
 | Late lookup/read after scope change | Abort/ignore; preserve the current scope |
@@ -157,6 +171,13 @@ statusless 409 shape; remount recovery instead needs a genuinely lost response.
 `e2e/collaboration-workbench-web.spec.ts` verifies a real concurrent handoff,
 immediate refusal, no recovery GET or automatic POST, and an explicit same-page
 new-key completion. A browser reload must not hide this regression.
+
+`collaboration/access.test.ts` owns denial recovery for disabled Query observers,
+revoked initial data, unrelated errors and another issue's denial. Browser
+acceptance keeps the denied recipient's page open through a transfer, then
+verifies the old prompt disappears and a comment saves without an entire-page
+reload. `views/collaboration/notifications.test.tsx` verifies the Chinese
+assignment text independently from the creation form's self-selection text.
 
 ## 7. Wrong vs Correct
 

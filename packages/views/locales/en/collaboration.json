@@ -77,6 +77,7 @@
     "attachments": "Recorded attachment references"
   },
   "notifications": {
+    "assigned": "Assigned to you",
     "removed": "You were removed from this collaboration issue.",
     "aiCompleted": "AI execution completed",
     "aiFailed": "AI execution failed",
@@ -395,7 +396,10 @@
       "existingInputs": "Includes earlier waiting input.",
       "existingContinuation": "Includes input already waiting for the leader.",
       "laterBatch": "Follows an earlier batch in the same agent's queue."
-    }
+    },
+    "mentionPeople": "People",
+    "mentionAI": "AI targets",
+    "mentionAll": "@all · All participants"
   },
   "activity": {
     "title": "Activity",

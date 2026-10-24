@@ -26,6 +26,21 @@ it("restricts mention insertion to the issue projection and escapes authored lab
   expect(() => collaborationMentionMarkdown("agent", actor, "Outside", source)).toThrow();
 });
 
+it.each(["All participants", "本任务全体人员"])("inserts canonical @all from the issue projection regardless of the label (%s) or AI authority", (name) => {
+  const source = parseCollaborationMentionTargets({ protocol_version: 2, issue_id: actor, participants: [{ user_id: actor, name: "Name", avatar_url: "", external: true }], can_submit_commands: false, targets: [] })!;
+  expect(collaborationMentionMarkdown("all", "all", name, source)).toBe("[@all](mention://all/all)");
+});
+
+it.each(["", "ALL", actor, "all/all"])("rejects a noncanonical @all identity (%s)", (id) => {
+  const source = parseCollaborationMentionTargets({ protocol_version: 2, issue_id: actor, participants: [], can_submit_commands: false, targets: [] })!;
+  expect(() => collaborationMentionMarkdown("all", id, "All participants", source)).toThrow();
+});
+
+it.each(["member", "agent", "squad"] as const)("does not treat all as a %s identity", (kind) => {
+  const source = parseCollaborationMentionTargets({ protocol_version: 2, issue_id: actor, participants: [{ user_id: actor, name: "Name", avatar_url: "", external: true }], can_submit_commands: false, targets: [] })!;
+  expect(() => collaborationMentionMarkdown(kind, "all", "All participants", source)).toThrow();
+});
+
 it("saves immutable preview authority before comment send and recovers by GET without reposting", async () => {
   setApiInstance(new ApiClient("https://server.example"));
   const scope = collaborationScope(actor);

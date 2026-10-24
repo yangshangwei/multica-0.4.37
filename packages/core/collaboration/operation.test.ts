@@ -72,6 +72,16 @@ it("retires a durable refusal and keeps it refused when recovered through HTTP 2
   await expect(executeCollaborationAction(client, scope, draft, true, storage)).resolves.toEqual(receipt);
 });
 
+it("settles any committed workflow refusal that carries its HTTP status", async () => {
+  const { scope, draft } = setup();
+  const receipt = { status: 409, code: "issue_closed", collaboration_revision: "9007199254740994" };
+  const fetch = vi.fn().mockResolvedValueOnce(json({ ...receipt, error: "issue_closed" }, 409));
+  vi.stubGlobal("fetch", fetch);
+  await expect(executeCollaborationAction(client, scope, draft, false, storage)).resolves.toEqual(receipt);
+  expect(readCollaborationDrafts(draft.scope, storage)).toEqual([]);
+  expect(fetch).toHaveBeenCalledTimes(1);
+});
+
 it("retires an actual HTTP 409 stale-revision refusal without a body status", async () => {
   const { scope, issue, draft } = setup();
   const queryKey = collaborationKeys.issue(scope, issue.id);

@@ -21,7 +21,7 @@ export function CollaborationNotifications({ scope, view }: { scope: Collaborati
       case "ai_completed": return t(($) => $.notifications.aiCompleted);
       case "ai_failed": return t(($) => $.notifications.aiFailed);
       case "ai_stopped": return t(($) => $.notifications.aiStopped);
-      case "assigned": return t(($) => $.creation.assignedSelf);
+      case "assigned": return t(($) => $.notifications.assigned);
       case "removed": return t(($) => $.notifications.removed);
       case "created": case "participant_added": case "participant_removed": case "participant_left":
       case "transferred": case "information_requested": case "information_returned": case "acceptance_submitted":

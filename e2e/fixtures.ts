@@ -439,7 +439,9 @@ export class TestApiClient {
          WHERE task.issue_id = $1 AND agent.workspace_id = $2`,
         [issueId, this.workspaceId],
       );
-      return Number(result.rows[0].count);
+      const row = result.rows[0];
+      if (!row) throw new Error("The dispatch count query returned no row");
+      return Number(row.count);
     } finally {
       await client.end();
     }
