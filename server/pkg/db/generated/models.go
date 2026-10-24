@@ -936,6 +936,26 @@ type CollaborationOperation struct {
 	CompletedAt     pgtype.Timestamptz `json:"completed_at"`
 }
 
+type CollaborationResourceOffer struct {
+	ID                       pgtype.UUID        `json:"id"`
+	IssueID                  pgtype.UUID        `json:"issue_id"`
+	OfferedBy                pgtype.UUID        `json:"offered_by"`
+	LifecycleEpoch           int64              `json:"lifecycle_epoch"`
+	Kind                     string             `json:"kind"`
+	ResourceID               pgtype.UUID        `json:"resource_id"`
+	ExecutionWorkspaceID     pgtype.UUID        `json:"execution_workspace_id"`
+	Roster                   []byte             `json:"roster"`
+	ConfigurationFingerprint string             `json:"configuration_fingerprint"`
+	ResourceAuthority        []byte             `json:"resource_authority"`
+	Version                  int64              `json:"version"`
+	State                    string             `json:"state"`
+	CreatedAt                pgtype.Timestamptz `json:"created_at"`
+	WithdrawnAt              pgtype.Timestamptz `json:"withdrawn_at"`
+	AdoptedAt                pgtype.Timestamptz `json:"adopted_at"`
+	AdoptedBy                pgtype.UUID        `json:"adopted_by"`
+	TargetID                 pgtype.UUID        `json:"target_id"`
+}
+
 type CollaborationRun struct {
 	ID                   pgtype.UUID        `json:"id"`
 	TaskID               pgtype.UUID        `json:"task_id"`

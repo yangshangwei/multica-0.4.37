@@ -254,8 +254,9 @@ func (s *CollaborationService) getCollaborationResourceOperation(ctx context.Con
 	var receipt CollaborationQueueReceipt
 	if err = json.Unmarshal(op.Result, &receipt); err != nil || receipt.Code == "" || receipt.Code != op.ResultCode.String ||
 		receipt.Status < 200 || receipt.Status > 599 || receipt.IssueID != issueID || receipt.RequestID != requestID || receipt.Action != op.Kind ||
-		receipt.ProtocolVersion != collaboration.ExecutionProtocolVersion || receipt.Channels == nil || receipt.TargetHolds == nil {
-		return CollaborationQueueReceipt{}, errors.New("invalid collaboration Switch receipt")
+		receipt.ProtocolVersion != collaboration.ExecutionProtocolVersion || receipt.Channels == nil || receipt.TargetHolds == nil ||
+		!validCollaborationOfferReceipt(op.Kind, issueID, requestID, receipt) {
+		return CollaborationQueueReceipt{}, errors.New("invalid collaboration resource receipt")
 	}
 	access, err := s.ResolveIssueAccess(ctx, q, issueID)
 	var accessDenied *CollaborationError

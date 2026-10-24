@@ -254,7 +254,29 @@
     "switched": "Configuration switched. Explicit resume is still required.",
     "pauseRequired": "Pause this target and wait for its previous work to end before applying the proposal.",
     "proposalVersion": "Configuration {{version}}",
-    "refresh": "Refresh resources"
+    "refresh": "Refresh resources",
+    "offer": "Offer resource",
+    "adoptOffer": "Adopt resource",
+    "withdrawOffer": "Withdraw offer",
+    "offersTitle": "Offered resources",
+    "offerDescription": "Offer a resource you own for this collaboration. The creator or handler can adopt it; each owner then authorizes their resource.",
+    "noOffers": "No resources have been offered.",
+    "offeredBy": "Offered by {{name}}",
+    "offerStates": {
+      "offered": "Awaiting adoption",
+      "withdrawn": "Withdrawn",
+      "adopted": "Adopted"
+    },
+    "offerConfirmation": "After adoption, each resource owner must authorize their resource before this collaboration can use it.",
+    "withdrawOfferEffect": "Withdraw this offer before it is adopted. Authorization for an adopted resource is managed in its resource controls.",
+    "moreOffers": "More offered resources",
+    "offered": "Resource offered.",
+    "offerAdopted": "Resource adopted. Each owner can now authorize their resource.",
+    "offerWithdrawn": "Resource offer withdrawn.",
+    "staleOffer": "This resource offer has changed. Refresh it before confirming again.",
+    "offerNotFound": "This resource offer is unavailable.",
+    "notOwned": "You can only offer a resource you own.",
+    "previousOffers": "Previous offered resources"
   },
   "execution": {
     "title": "AI execution",

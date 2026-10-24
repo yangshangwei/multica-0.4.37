@@ -62,23 +62,47 @@ export const CollaborationResourceInputSchema = z.discriminatedUnion("action", [
   z.strictObject({ ...authority, action: z.literal("consent_resource"), target_id: uuid, agent_id: uuid,
     expected_target_epoch: positiveVersion, expected_config_version: positiveVersion, identity: CollaborationResourceIdentitySchema }),
   z.strictObject({ ...authority, action: z.literal("revoke_grant"), grant_id: uuid, expected_grant_epoch: positiveVersion }),
+  z.strictObject({ ...authority, action: z.literal("offer_resource"), execution_workspace_id: uuid, kind: z.enum(["agent", "squad"]), resource_id: uuid,
+    roster: z.array(CollaborationTargetResourceSchema).min(1).max(256) })
+    .refine((value) => collaborationResourceRosterIsValid({ ...value, resources: value.roster }) && value.roster.every((item) => item.execution_workspace_id === value.execution_workspace_id)),
+  z.strictObject({ ...authority, action: z.literal("withdraw_resource_offer"), offer_id: uuid, expected_offer_version: positiveVersion }),
+  z.strictObject({ ...authority, action: z.literal("adopt_resource_offer"), offer_id: uuid, expected_offer_version: positiveVersion, expected_target_set_version: positiveVersion }),
 ]);
 export type CollaborationResourceInput = z.infer<typeof CollaborationResourceInputSchema>;
 
-const action = z.enum(["register_target", "consent_resource", "revoke_grant"]);
+const action = z.enum(["register_target", "consent_resource", "revoke_grant", "offer_resource", "withdraw_resource_offer", "adopt_resource_offer"]);
 const failure = z.enum(["not_found", "forbidden", "stale_authority", "stale_scope", "stale_grant", "stale_target", "target_exists", "target_not_found",
-  "issue_closed", "owner_not_participant", "resource_owner_not_participant", "resource_owner_unavailable", "target_configuration_changed", "runtime_registration_required", "invalid_target_configuration"]);
-const code = z.union([z.enum(["target_registered", "resource_consented", "grant_revoked", "grant_already_revoked"]), failure]);
+  "issue_closed", "owner_not_participant", "resource_owner_not_participant", "resource_owner_unavailable", "target_configuration_changed", "runtime_registration_required", "invalid_target_configuration",
+  "invalid_resource_offer", "invalid_resource_offer_query", "resource_offer_not_found", "stale_offer", "offer_withdrawn", "offer_adopted", "resource_not_owned", "resource_workspace_unavailable", "resource_options_unavailable", "resource_not_found"]);
+const code = z.union([z.enum(["target_registered", "resource_consented", "grant_revoked", "grant_already_revoked", "resource_offered", "resource_offer_withdrawn", "resource_offer_adopted"]), failure]);
 const receiptBase = { protocol_version: z.literal(2), issue_id: uuid, request_id: z.string().min(1).max(128), action, status: z.number().int().min(200).max(599), code };
 function validOutcome(value: { action: z.infer<typeof action>; code: string; status: number }) {
   if (failure.safeParse(value.code).success) return value.status >= 400;
   if (value.status !== 200 && value.status !== 201) return false;
-  return value.action === "register_target" ? value.code === "target_registered" : value.action === "consent_resource" ? value.code === "resource_consented"
-    : value.code === "grant_revoked" || value.code === "grant_already_revoked";
+  switch (value.action) {
+    case "register_target": return value.code === "target_registered";
+    case "consent_resource": return value.code === "resource_consented";
+    case "revoke_grant": return value.code === "grant_revoked" || value.code === "grant_already_revoked";
+    case "offer_resource": return value.status === 201 && value.code === "resource_offered";
+    case "withdraw_resource_offer": return value.status === 200 && value.code === "resource_offer_withdrawn";
+    case "adopt_resource_offer": return value.status === 201 && value.code === "resource_offer_adopted";
+    default: return false;
+  }
 }
-const fullReceipt = z.object({ ...receiptBase, redacted: z.literal(false).optional(), scope: z.enum(["issue", "target"]), target_id: uuid.nullable(), grant_id: uuid.nullable() })
-  .refine(validOutcome).refine((value) => value.status >= 400 || value.action === "revoke_grant" ||
-    (value.scope === "target" && value.target_id !== null && (value.action !== "consent_resource" || value.grant_id !== null)));
+const fullReceipt = z.object({ ...receiptBase, redacted: z.literal(false).optional(), scope: z.enum(["issue", "target"]), target_id: uuid.nullable(), grant_id: uuid.nullable(),
+  offer_id: uuid.optional(), offer_version: positiveVersion.optional(),
+}).refine(validOutcome).refine((value) => {
+  if (value.offer_version !== undefined && value.offer_id === undefined) return false;
+  if (value.status >= 400) return true;
+  switch (value.action) {
+    case "offer_resource": return value.offer_id !== undefined && value.offer_version === "1" && value.scope === "issue" && value.target_id === null && value.grant_id === null;
+    case "withdraw_resource_offer": return value.offer_id !== undefined && value.offer_version === "2" && value.scope === "issue" && value.target_id === null && value.grant_id === null;
+    case "adopt_resource_offer": return value.offer_id !== undefined && value.offer_version === "2" && value.scope === "target" && value.target_id !== null && value.grant_id === null;
+    case "revoke_grant": return true;
+    case "register_target": case "consent_resource": return value.scope === "target" && value.target_id !== null && (value.action !== "consent_resource" || value.grant_id !== null);
+    default: return false;
+  }
+});
 const redactedReceipt = z.strictObject({ ...receiptBase, redacted: z.literal(true) }).refine(validOutcome);
 export const CollaborationResourceReceiptSchema = z.union([redactedReceipt, fullReceipt]);
 export type CollaborationResourceReceipt = z.infer<typeof CollaborationResourceReceiptSchema>;
@@ -90,8 +114,12 @@ export const parseCollaborationResourceIdentity = (value: unknown) => parse(valu
 export const parseCollaborationResourceReceipt = (value: unknown) => parse(value, CollaborationResourceReceiptSchema, "collaboration resource receipt");
 
 export function matchesCollaborationResourceReceipt(receipt: CollaborationResourceReceipt, issueId: string, requestId: string, input: CollaborationResourceInput) {
-  return receipt.issue_id === issueId.toLowerCase() && receipt.request_id === requestId && receipt.action === input.action &&
-    (receipt.redacted === true || input.action !== "consent_resource" || receipt.target_id === input.target_id || receipt.status >= 400 && receipt.target_id === null);
+  if (receipt.issue_id !== issueId.toLowerCase() || receipt.request_id !== requestId || receipt.action !== input.action) return false;
+  if (receipt.redacted === true) return true;
+  if (input.action === "adopt_resource_offer" || input.action === "withdraw_resource_offer") {
+    return receipt.offer_id === input.offer_id && (receipt.status >= 400 || receipt.offer_version === (BigInt(input.expected_offer_version) + 1n).toString());
+  }
+  return input.action !== "consent_resource" || receipt.target_id === input.target_id || receipt.status >= 400 && receipt.target_id === null;
 }
 export function collaborationResourceRequest(issueId: string, input: CollaborationResourceInput) {
   const root = `/api/collaboration/issues/${encodeURIComponent(issueId)}`;
@@ -105,6 +133,11 @@ export function collaborationResourceRequest(issueId: string, input: Collaborati
     case "revoke_grant": {
       const { grant_id, action: _action, ...body } = input;
       return { path: `${root}/grants/${encodeURIComponent(grant_id)}/revoke`, body };
+    }
+    case "offer_resource": return { path: `${root}/resources/offers`, body: data };
+    case "adopt_resource_offer": case "withdraw_resource_offer": {
+      const { offer_id, action: _action, ...body } = input;
+      return { path: `${root}/resources/offers/${encodeURIComponent(offer_id)}/${operation === "adopt_resource_offer" ? "adopt" : "withdraw"}`, body };
     }
     default: throw new TypeError("Invalid collaboration resource intent");
   }

@@ -48,6 +48,7 @@ var workspaceDeletionManifest = map[string]workspaceDeleteAction{
 	"collaboration_group_input":          workspaceDeleteKeep,
 	"collaboration_notification":         workspaceDeleteKeep,
 	"collaboration_operation":            workspaceDeleteKeep,
+	"collaboration_resource_offer":       workspaceDeleteKeep,
 	"collaboration_run":                  workspaceDeleteKeep,
 	"collaboration_run_event":            workspaceDeleteKeep,
 	"collaboration_runtime_challenge":    workspaceDeleteKeep,

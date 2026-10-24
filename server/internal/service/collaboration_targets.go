@@ -83,57 +83,63 @@ func (s *CollaborationService) RegisterTarget(ctx context.Context, p Collaborati
 	p.Roster = append([]collaboration.TargetResource(nil), p.Roster...)
 	sort.Slice(p.Roster, func(i, j int) bool { return p.Roster[i].AgentID < p.Roster[j].AgentID })
 	return s.mutateCollaborationQueue(ctx, p.CollaborationQueueRequest, "register_target", p, func(t *collaborationQueueTx) (CollaborationQueueReceipt, error) {
-		if !t.access.Capabilities.Invite {
-			return t.receipt("forbidden", http.StatusForbidden), nil
-		}
-		if !t.access.Capabilities.SubmitCommand {
-			return t.receipt("issue_closed", http.StatusConflict), nil
-		}
-		if t.session.TargetSetVersion != p.ExpectedTargetSetVersion {
-			return t.receipt("stale_scope", http.StatusConflict), nil
-		}
-		for _, existing := range t.targets {
-			if existing.Kind == string(p.Kind) && existing.ResourceID == p.ResourceID {
-				return t.targetReceipt("target_exists", http.StatusConflict, existing), nil
-			}
-		}
-		if code, err := t.validateResourceOwners(ctx, p.Roster); code != "" || err != nil {
-			if err != nil {
-				return CollaborationQueueReceipt{}, err
-			}
-			return t.receipt(code, http.StatusConflict), nil
-		}
-		if err := lockCollaborationResources(ctx, t.q, p.Kind, p.ResourceID, p.Roster); err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		configuration, code, err := collaborationConfigurationSnapshot(ctx, t.q, p.Kind, p.ResourceID, p.Roster)
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		if code != "" {
-			return t.receipt(code, http.StatusConflict), nil
-		}
-		roster, err := json.Marshal(p.Roster)
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		target, err := t.q.CreateConsentedCollaborationTarget(ctx, db.CreateConsentedCollaborationTargetParams{SessionID: t.session.ID,
-			Kind: string(p.Kind), ResourceID: p.ResourceID, Roster: roster, ConfigurationFingerprint: pgtype.Text{String: configuration.Fingerprint, Valid: true}})
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		t.targets = append(t.targets, target)
-		if _, err = t.ensureTargetChannel(ctx, target); err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		target, _ = t.target(target.ID)
-		t.session, err = t.q.AdvanceCollaborationTargetSet(ctx, t.session.ID)
-		if err != nil {
-			return CollaborationQueueReceipt{}, err
-		}
-		r := t.targetReceipt("target_registered", http.StatusCreated, target)
-		return r, t.event(ctx, "target_registered", r)
+		return t.registerTarget(ctx, p)
 	})
+}
+
+// Both direct registration and adoption borrow this exact primitive. Only the
+// queue transaction owner may commit the target, channel, event and operation.
+func (t *collaborationQueueTx) registerTarget(ctx context.Context, p CollaborationRegisterTargetParams) (CollaborationQueueReceipt, error) {
+	if !t.access.Capabilities.Invite {
+		return t.receipt("forbidden", http.StatusForbidden), nil
+	}
+	if !t.access.Capabilities.SubmitCommand {
+		return t.receipt("issue_closed", http.StatusConflict), nil
+	}
+	if t.session.TargetSetVersion != p.ExpectedTargetSetVersion {
+		return t.receipt("stale_scope", http.StatusConflict), nil
+	}
+	for _, existing := range t.targets {
+		if existing.Kind == string(p.Kind) && existing.ResourceID == p.ResourceID {
+			return t.targetReceipt("target_exists", http.StatusConflict, existing), nil
+		}
+	}
+	if code, err := t.validateResourceOwners(ctx, p.Roster); code != "" || err != nil {
+		if err != nil {
+			return CollaborationQueueReceipt{}, err
+		}
+		return t.receipt(code, http.StatusConflict), nil
+	}
+	if err := lockCollaborationResources(ctx, t.q, p.Kind, p.ResourceID, p.Roster); err != nil {
+		return CollaborationQueueReceipt{}, err
+	}
+	configuration, code, err := collaborationConfigurationSnapshot(ctx, t.q, p.Kind, p.ResourceID, p.Roster)
+	if err != nil {
+		return CollaborationQueueReceipt{}, err
+	}
+	if code != "" {
+		return t.receipt(code, http.StatusConflict), nil
+	}
+	roster, err := json.Marshal(p.Roster)
+	if err != nil {
+		return CollaborationQueueReceipt{}, err
+	}
+	target, err := t.q.CreateConsentedCollaborationTarget(ctx, db.CreateConsentedCollaborationTargetParams{SessionID: t.session.ID,
+		Kind: string(p.Kind), ResourceID: p.ResourceID, Roster: roster, ConfigurationFingerprint: pgtype.Text{String: configuration.Fingerprint, Valid: true}})
+	if err != nil {
+		return CollaborationQueueReceipt{}, err
+	}
+	t.targets = append(t.targets, target)
+	if _, err = t.ensureTargetChannel(ctx, target); err != nil {
+		return CollaborationQueueReceipt{}, err
+	}
+	target, _ = t.target(target.ID)
+	t.session, err = t.q.AdvanceCollaborationTargetSet(ctx, t.session.ID)
+	if err != nil {
+		return CollaborationQueueReceipt{}, err
+	}
+	r := t.targetReceipt("target_registered", http.StatusCreated, target)
+	return r, t.event(ctx, "target_registered", r)
 }
 
 func validCollaborationRoster(kind collaboration.TargetKind, resourceID pgtype.UUID, roster []collaboration.TargetResource) bool {

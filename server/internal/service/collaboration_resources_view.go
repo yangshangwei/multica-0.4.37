@@ -322,5 +322,5 @@ func (s *CollaborationService) currentCollaborationResourceIdentity(ctx context.
 }
 
 func (s *CollaborationService) GetResourceOperation(ctx context.Context, issueID pgtype.UUID, requestID string) (CollaborationQueueReceipt, error) {
-	return s.getCollaborationResourceOperation(ctx, issueID, requestID, "register_target", "consent_resource", "revoke_grant")
+	return s.getCollaborationResourceOperation(ctx, issueID, requestID, "register_target", "consent_resource", "revoke_grant", "offer_resource", "withdraw_resource_offer", "adopt_resource_offer")
 }

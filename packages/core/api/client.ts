@@ -32,6 +32,7 @@ import { withRequestDeadline, type ApiRequestOptions } from "./request-lifecycle
 import { CollaborationResourceInputSchema, collaborationResourceRequest, matchesCollaborationResourceReceipt,
   parseCollaborationResources, parseCollaborationResourceOptions, parseCollaborationResourceIdentity, parseCollaborationResourceReceipt,
   type CollaborationResourceInput } from "../collaboration/resource-schema";
+import { parseCollaborationResourceOffer, parseCollaborationResourceOffersPage } from "../collaboration/resource-offer-schema";
 export type { ApiRequestOptions } from "./request-lifecycle";
 import type { ProjectUpdateDraft, ProjectUpdateWriteInput, ProjectRiskSignal } from "../types/project-p1";
 import { parseProjectP1, ProjectCapabilitiesSchema, ProjectPlanningTimezoneSchema, ProjectOverviewSchema,
@@ -1458,6 +1459,32 @@ export class ApiClient {
     const raw = await this.fetchCollaborationSwitch(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/options?${query}`, "read", { signal: options?.signal }, true);
     const result = parseCollaborationResourceOptions(raw.body);
     return result?.issue_id === id.toLowerCase() && result.execution_workspace_id === workspaceId.toLowerCase() ? result : null;
+  }
+
+  async getCollaborationResourceOfferOptions(id: string, workspaceId: string, options?: { signal?: AbortSignal }) {
+    if (![id, workspaceId].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid collaboration resource scope");
+    const query = new URLSearchParams({ execution_workspace_id: workspaceId });
+    const raw = await this.fetchCollaborationSwitch(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/offers/options?${query}`, "read", { signal: options?.signal }, true);
+    const result = parseCollaborationResourceOptions(raw.body);
+    return result?.issue_id === id.toLowerCase() && result.execution_workspace_id === workspaceId.toLowerCase() ? result : null;
+  }
+
+  async listCollaborationResourceOffers(id: string, cursor: string | null = null, options?: { signal?: AbortSignal }) {
+    if (!z.uuid().safeParse(id).success || cursor !== null && !z.string().min(1).max(512).regex(/^[A-Za-z0-9_-]+$/).safeParse(cursor).success) {
+      throw new TypeError("Invalid collaboration resource offer scope");
+    }
+    const query = new URLSearchParams({ limit: "50" });
+    if (cursor !== null) query.set("cursor", cursor);
+    const raw = await this.fetchCollaborationSwitch(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/offers?${query}`, "read", { signal: options?.signal }, true);
+    const result = parseCollaborationResourceOffersPage(raw.body);
+    return result?.issue_id === id.toLowerCase() && (cursor === null || result.next_cursor !== cursor) ? result : null;
+  }
+
+  async getCollaborationResourceOffer(id: string, offerId: string, options?: { signal?: AbortSignal }) {
+    if (![id, offerId].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid collaboration resource offer identity");
+    const raw = await this.fetchCollaborationSwitch(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/offers/${encodeURIComponent(offerId)}`, "read", { signal: options?.signal }, true);
+    const result = parseCollaborationResourceOffer(raw.body);
+    return result?.issue_id === id.toLowerCase() && result.offer_id === offerId.toLowerCase() ? result : null;
   }
 
   async getCollaborationResourceIdentity(id: string, targetId: string, agentId: string, proposalId: string | null, options?: { signal?: AbortSignal }) {

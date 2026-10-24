@@ -34,9 +34,19 @@ type CollaborationResourceOptions struct {
 // one authorized snapshot. No client-supplied predicate or ambient workspace is used.
 func (s *CollaborationService) ResourceOptions(ctx context.Context, issueID, workspaceID pgtype.UUID,
 	visible func(db.Member, db.Agent, db.AgentRuntime, []db.AgentInvocationTarget) bool) (CollaborationResourceOptions, error) {
+	return s.resourceOptions(ctx, issueID, workspaceID, visible, false)
+}
+
+func (s *CollaborationService) ResourceOfferOptions(ctx context.Context, issueID, workspaceID pgtype.UUID,
+	visible func(db.Member, db.Agent, db.AgentRuntime, []db.AgentInvocationTarget) bool) (CollaborationResourceOptions, error) {
+	return s.resourceOptions(ctx, issueID, workspaceID, visible, true)
+}
+
+func (s *CollaborationService) resourceOptions(ctx context.Context, issueID, workspaceID pgtype.UUID,
+	visible func(db.Member, db.Agent, db.AgentRuntime, []db.AgentInvocationTarget) bool, ownedOnly bool) (CollaborationResourceOptions, error) {
 	out := CollaborationResourceOptions{ProtocolVersion: 1, IssueID: issueID, ExecutionWorkspaceID: workspaceID, Items: make([]CollaborationResourceOption, 0)}
 	err := s.readCollaborationContent(ctx, issueID, func(q *db.Queries, access CollaborationIssueAccess) error {
-		if !access.Capabilities.Invite || !access.Capabilities.SubmitCommand || visible == nil || !workspaceID.Valid {
+		if !access.Capabilities.ControlAI || !ownedOnly && !access.Capabilities.Invite || !access.Capabilities.SubmitCommand || visible == nil || !workspaceID.Valid {
 			return collaborationError(http.StatusNotFound, "resource_options_unavailable")
 		}
 		principal, _ := collaboration.PrincipalFromContext(ctx)
@@ -58,24 +68,11 @@ func (s *CollaborationService) ResourceOptions(ctx context.Context, issueID, wor
 		resources := make(map[pgtype.UUID]collaboration.TargetResource)
 		names := make(map[pgtype.UUID]string)
 		for _, agent := range agents {
-			if !agent.RuntimeID.Valid {
-				continue
-			}
-			runtime, err := s.collaborationRuntimeLookup(q).Get(ctx, agent.RuntimeID)
-			if errors.Is(err, pgx.ErrNoRows) {
-				continue
-			}
+			runtime, allowed, err := s.collaborationVisibleInventoryResource(ctx, q, member, agent, visible)
 			if err != nil {
 				return err
 			}
-			if runtime.WorkspaceID != workspaceID || !runtime.OwnerID.Valid {
-				continue
-			}
-			targets, err := q.ListAgentInvocationTargets(ctx, agent.ID)
-			if err != nil {
-				return err
-			}
-			if !visible(member, agent, runtime, targets) {
+			if !allowed {
 				continue
 			}
 			resources[agent.ID] = collaboration.TargetResource{Role: "agent", AgentID: util.UUIDToString(agent.ID), RuntimeID: util.UUIDToString(runtime.ID),
@@ -86,29 +83,34 @@ func (s *CollaborationService) ResourceOptions(ctx context.Context, issueID, wor
 			if !validCollaborationRoster(kind, id, roster) {
 				return nil
 			}
+			if ownedOnly {
+				owned := false
+				for _, resource := range roster {
+					owned = owned || resource.OwnerUserID == util.UUIDToString(actor)
+				}
+				if !owned {
+					return nil
+				}
+			}
 			_, reason, err := collaborationConfigurationSnapshot(ctx, q, kind, id, roster)
 			if err != nil {
 				return err
 			}
-			item := CollaborationResourceOption{Kind: kind, ResourceID: id, Name: name, Available: reason == "", Reason: reason, Resources: make([]CollaborationResourceView, 0, len(roster))}
-			for _, resource := range roster {
-				owner, err := util.ParseUUID(resource.OwnerUserID)
+			ownerReason, err := (&collaborationQueueTx{q: q, access: access}).validateResourceOwners(ctx, roster)
+			if err != nil {
+				return err
+			}
+			if ownerReason != "" {
+				reason = ownerReason
+			}
+			if ownedOnly && reason == "" {
+				_, reason, err = s.collaborationOfferAuthorities(ctx, q, issueID, roster)
 				if err != nil {
 					return err
 				}
-				participant, err := q.GetCollaborationParticipant(ctx, db.GetCollaborationParticipantParams{IssueID: issueID, UserID: owner})
-				if err != nil && !errors.Is(err, pgx.ErrNoRows) {
-					return err
-				}
-				eligible, eligibilityErr := collaborationRecipientEligible(ctx, q, owner, workspaceID)
-				if eligibilityErr != nil {
-					return eligibilityErr
-				}
-				if err != nil || participant.RevokedAt.Valid {
-					item.Available, item.Reason = false, "resource_owner_not_participant"
-				} else if !eligible {
-					item.Available, item.Reason = false, "resource_owner_unavailable"
-				}
+			}
+			item := CollaborationResourceOption{Kind: kind, ResourceID: id, Name: name, Available: reason == "", Reason: reason, Resources: make([]CollaborationResourceView, 0, len(roster))}
+			for _, resource := range roster {
 				view, err := s.collaborationResourceSummary(ctx, q, access, resource)
 				if err != nil {
 					return err
@@ -165,4 +167,68 @@ func (s *CollaborationService) ResourceOptions(ctx context.Context, issueID, wor
 		return nil
 	})
 	return out, err
+}
+
+// Inventory options and direct offers use the same visibility predicate and
+// transaction-local lookups. A caller cannot bypass its picker with a POST.
+func (s *CollaborationService) collaborationVisibleInventoryResource(ctx context.Context, q *db.Queries, member db.Member, agent db.Agent,
+	visible func(db.Member, db.Agent, db.AgentRuntime, []db.AgentInvocationTarget) bool) (db.AgentRuntime, bool, error) {
+	if visible == nil || !agent.RuntimeID.Valid || agent.WorkspaceID != member.WorkspaceID {
+		return db.AgentRuntime{}, false, nil
+	}
+	runtime, err := s.collaborationRuntimeLookup(q).Get(ctx, agent.RuntimeID)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return db.AgentRuntime{}, false, nil
+	}
+	if err != nil {
+		return db.AgentRuntime{}, false, err
+	}
+	if runtime.WorkspaceID != member.WorkspaceID || !runtime.OwnerID.Valid {
+		return db.AgentRuntime{}, false, nil
+	}
+	targets, err := q.ListAgentInvocationTargets(ctx, agent.ID)
+	if err != nil {
+		return db.AgentRuntime{}, false, err
+	}
+	return runtime, visible(member, agent, runtime, targets), nil
+}
+
+func (s *CollaborationService) collaborationOfferRosterVisible(ctx context.Context, q *db.Queries, actor, workspace pgtype.UUID, roster []collaboration.TargetResource,
+	visible func(db.Member, db.Agent, db.AgentRuntime, []db.AgentInvocationTarget) bool) (string, error) {
+	if visible == nil {
+		return "resource_options_unavailable", nil
+	}
+	member, err := q.GetMemberByUserAndWorkspace(ctx, db.GetMemberByUserAndWorkspaceParams{WorkspaceID: workspace, UserID: actor})
+	if errors.Is(err, pgx.ErrNoRows) {
+		return "resource_workspace_unavailable", nil
+	}
+	if err != nil {
+		return "", err
+	}
+	owned := false
+	for _, resource := range roster {
+		agentID, err := util.ParseUUID(resource.AgentID)
+		if err != nil {
+			return "", err
+		}
+		agent, err := q.GetAgent(ctx, agentID)
+		if errors.Is(err, pgx.ErrNoRows) {
+			return "resource_options_unavailable", nil
+		}
+		if err != nil {
+			return "", err
+		}
+		runtime, allowed, err := s.collaborationVisibleInventoryResource(ctx, q, member, agent, visible)
+		if err != nil {
+			return "", err
+		}
+		if !allowed {
+			return "resource_options_unavailable", nil
+		}
+		owned = owned || runtime.OwnerID == actor
+	}
+	if !owned {
+		return "resource_not_owned", nil
+	}
+	return "", nil
 }

@@ -9,16 +9,23 @@ import { collaborationAccessEpoch, collaborationIssueAccessDenied, collaboration
 import { clearCollaborationDrafts, removeCollaborationDraft, saveCollaborationDraft, type CollaborationDraft } from "./draft";
 import { CollaborationResourceInputSchema, type CollaborationResourceInput, type CollaborationResources, type CollaborationResourceOption,
   type CollaborationResourceIdentityView, type CollaborationTargetResource } from "./resource-schema";
+import { CollaborationResourceOfferSchema, type CollaborationResourceOffer, type CollaborationResourceOffersPage } from "./resource-offer-schema";
 
 const payloadSchema = z.strictObject({ domain: z.literal("target_resource"), requestId: z.uuid(), input: CollaborationResourceInputSchema });
 export type CollaborationResourceSelection =
   | { action: "register_target"; candidate: CollaborationResourceOption }
+  | { action: "offer_resource"; candidate: CollaborationResourceOption; executionWorkspaceId: string; offers: CollaborationResourceOffersPage }
+  | { action: "adopt_resource_offer"; offer: CollaborationResourceOffer }
+  | { action: "withdraw_resource_offer"; offer: CollaborationResourceOffer }
   | { action: "consent_resource"; targetId: string; agentId: string; identity: CollaborationResourceIdentityView }
   | { action: "revoke_grant"; targetId: string; agentId: string };
 
 export function canOrganizeCollaborationResources(scope: CollaborationScope, issue: CollaborationIssue): boolean {
+  return canOfferCollaborationResources(scope, issue) && issue.capabilities.invite === true && [issue.creator.user_id, issue.handler.user_id].includes(scope.userId);
+}
+
+export function canOfferCollaborationResources(scope: CollaborationScope, issue: CollaborationIssue): boolean {
   return isCollaborationScopeCurrent(scope) && issue.write_context != null && issue.execution !== null && issue.capabilities.control_ai === true &&
-    issue.capabilities.invite === true && [issue.creator.user_id, issue.handler.user_id].includes(scope.userId) &&
     ["backlog", "todo", "in_progress", "in_review", "blocked"].includes(issue.status_category) && issue.session.queue_state !== "closed";
 }
 
@@ -28,13 +35,31 @@ export function collaborationResourceRoster(candidate: { resources: Collaboratio
 
 export function prepareCollaborationResource(scope: CollaborationScope, issue: CollaborationIssue, resources: CollaborationResources, requestId: string, selection: CollaborationResourceSelection): CollaborationDraft {
   if (!isCollaborationScopeCurrent(scope) || !issue.write_context || issue.capabilities.control_ai !== true || !issue.execution ||
-    resources.issue_id !== issue.id.toLowerCase() || resources.lifecycle_epoch !== issue.lifecycle_epoch || resources.target_set_version !== issue.execution.target_set_version) throw new CollaborationUnavailableError();
+    resources.issue_id !== issue.id.toLowerCase() || resources.lifecycle_epoch !== issue.lifecycle_epoch) throw new CollaborationUnavailableError();
+  if (selection.action !== "offer_resource" && selection.action !== "withdraw_resource_offer" && resources.target_set_version !== issue.execution.target_set_version) throw new CollaborationUnavailableError();
   const base = { expected_lifecycle_epoch: issue.lifecycle_epoch, expected_participant_epoch: issue.write_context.participant_epoch, expected_account_epoch: issue.write_context.account_epoch };
   let input: unknown;
   if (selection.action === "register_target") {
     if (!canOrganizeCollaborationResources(scope, issue) || resources.can_organize !== true || selection.candidate.available !== true) throw new CollaborationUnavailableError();
     input = { ...base, action: selection.action, kind: selection.candidate.kind, resource_id: selection.candidate.resource_id,
       expected_target_set_version: resources.target_set_version, roster: collaborationResourceRoster(selection.candidate) };
+  } else if (selection.action === "offer_resource") {
+    const { candidate, offers } = selection;
+    if (!canOfferCollaborationResources(scope, issue) || offers.issue_id !== issue.id.toLowerCase() || offers.lifecycle_epoch !== issue.lifecycle_epoch || offers.can_offer !== true ||
+      candidate.available !== true || !candidate.resources.some((item) => item.owner_user_id === scope.userId)) throw new CollaborationUnavailableError();
+    input = { ...base, action: selection.action, execution_workspace_id: selection.executionWorkspaceId, kind: candidate.kind, resource_id: candidate.resource_id,
+      roster: collaborationResourceRoster(candidate) };
+  } else if (selection.action === "adopt_resource_offer" || selection.action === "withdraw_resource_offer") {
+    const parsed = CollaborationResourceOfferSchema.safeParse(selection.offer);
+    if (!parsed.success || parsed.data.issue_id !== issue.id.toLowerCase() || parsed.data.state !== "offered") throw new CollaborationUnavailableError();
+    const offer = parsed.data;
+    if (selection.action === "adopt_resource_offer") {
+      if (!canOrganizeCollaborationResources(scope, issue) || resources.can_organize !== true || offer.can_adopt !== true) throw new CollaborationUnavailableError();
+      input = { ...base, action: selection.action, offer_id: offer.offer_id, expected_offer_version: offer.version, expected_target_set_version: resources.target_set_version };
+    } else {
+      if (offer.can_withdraw !== true || offer.offered_by?.user_id.toLowerCase() !== scope.userId) throw new CollaborationUnavailableError();
+      input = { ...base, action: selection.action, offer_id: offer.offer_id, expected_offer_version: offer.version };
+    }
   } else {
     const target = resources.targets.find((item) => item.target_id === selection.targetId);
     const current = issue.execution.targets.find((item) => item.id === selection.targetId);
@@ -105,4 +130,17 @@ export function collaborationResourceOptionsOptions(client: QueryClient, scope: 
 export function collaborationResourceIdentityOptions(client: QueryClient, scope: CollaborationScope, issueId: string, targetId: string, agentId: string, proposalId: string | null = null) {
   return queryOptions({ queryKey: [...collaborationKeys.issue(scope, issueId), "resource-identity", targetId, agentId, proposalId], staleTime: 0, retry: false,
     queryFn: ({ signal }) => protectCollaborationRead(client, scope, issueId, () => getApi().getCollaborationResourceIdentity(issueId, targetId, agentId, proposalId, { signal })) });
+}
+
+export function collaborationResourceOffersOptions(client: QueryClient, scope: CollaborationScope, issueId: string, cursor: string | null = null) {
+  return queryOptions({ queryKey: [...collaborationKeys.issue(scope, issueId), "resource-offers", cursor], staleTime: 0, retry: false,
+    queryFn: ({ signal }) => protectCollaborationRead(client, scope, issueId, () => getApi().listCollaborationResourceOffers(issueId, cursor, { signal })) });
+}
+export function collaborationResourceOfferOptions(client: QueryClient, scope: CollaborationScope, issueId: string, offerId: string) {
+  return queryOptions({ queryKey: [...collaborationKeys.issue(scope, issueId), "resource-offer", offerId.toLowerCase()], staleTime: 0, retry: false,
+    queryFn: ({ signal }) => protectCollaborationRead(client, scope, issueId, () => getApi().getCollaborationResourceOffer(issueId, offerId, { signal })) });
+}
+export function collaborationResourceOfferCandidatesOptions(client: QueryClient, scope: CollaborationScope, issueId: string, workspaceId: string) {
+  return queryOptions({ queryKey: [...collaborationKeys.issue(scope, issueId), "resource-offer-options", workspaceId.toLowerCase()], staleTime: 0, retry: false, enabled: z.uuid().safeParse(workspaceId).success,
+    queryFn: ({ signal }) => protectCollaborationRead(client, scope, issueId, () => getApi().getCollaborationResourceOfferOptions(issueId, workspaceId, { signal })) });
 }

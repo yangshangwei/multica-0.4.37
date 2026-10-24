@@ -23,8 +23,11 @@ export { prepareCollaborationSwitch, parseCollaborationSwitchDraft, sendCollabor
   collaborationSwitchProposalsOptions, collaborationSwitchProposalOptions } from "./switch";
 export type { CollaborationSwitchSelection } from "./switch";
 export * from "./resource-schema";
-export { canOrganizeCollaborationResources, collaborationResourceRoster, prepareCollaborationResource, parseCollaborationResourceDraft, executeCollaborationResource,
-  collaborationResourcesOptions, collaborationResourceOptionsOptions, collaborationResourceIdentityOptions, collaborationResourceWorkspacesOptions } from "./resource";
+export { CollaborationResourceOfferSchema, CollaborationResourceOffersPageSchema, parseCollaborationResourceOffer, parseCollaborationResourceOffersPage } from "./resource-offer-schema";
+export type { CollaborationResourceOffer, CollaborationResourceOffersPage } from "./resource-offer-schema";
+export { canOrganizeCollaborationResources, canOfferCollaborationResources, collaborationResourceRoster, prepareCollaborationResource, parseCollaborationResourceDraft, executeCollaborationResource,
+  collaborationResourcesOptions, collaborationResourceOptionsOptions, collaborationResourceIdentityOptions, collaborationResourceWorkspacesOptions,
+  collaborationResourceOffersOptions, collaborationResourceOfferOptions, collaborationResourceOfferCandidatesOptions } from "./resource";
 export type { CollaborationResourceSelection } from "./resource";
 export { prepareCollaborationParticipantRemoval, collaborationParticipantsOptions } from "./participant";
 export { CollaborationParticipantsSchema, parseCollaborationParticipants } from "./participant-schema";

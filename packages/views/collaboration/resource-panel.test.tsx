@@ -1,13 +1,14 @@
 import { afterEach, expect, it, vi } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { act, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "@multica/core/api";
-import { collaborationScope, parseCollaborationIssue, readCollaborationDrafts } from "@multica/core/collaboration";
+import { collaborationIssueOptions, collaborationKeys, collaborationScope, executeCollaborationResource, parseCollaborationIssue, readCollaborationDrafts } from "@multica/core/collaboration";
 import { collaborationExecutionIssueFixture } from "@multica/core/collaboration/test-fixtures";
 import { renderWithI18n } from "../test/i18n";
 import { CollaborationExecutionPanel } from "./execution-panel";
 import { NavigationProvider } from "../navigation";
+import { CollaborationResourcePanel } from "./resource-panel";
 
 // Core resource/Switch suites own authority, malformed DTO and recovery matrices.
 const source = collaborationExecutionIssueFixture;
@@ -104,4 +105,72 @@ it("commits an authorized Switch proposal only after reviewing the explicit resu
   await user.click(screen.getByRole("button", { name: "Apply configuration" }));
   expect(await screen.findByText("Configuration switched. Explicit resume is still required.")).toBeInTheDocument();
   expect(fetch.mock.calls.some(([url]) => url.endsWith("/control"))).toBe(false);
+});
+
+it("waits for coherent issue and resource observations before opening consent after another actor adopts", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const scope = collaborationScope(id);
+  const before = { ...source, write_context: { participant_epoch: "1", account_epoch: "1" }, execution: {
+    ...source.execution, target_set_version: "1", channels: [], targets: [], commands: [], groups: [], runs: [],
+  } };
+  const currentTarget = { ...target, channel_id: null, target_epoch: "1", config_version: "1", group_generation: "0", active_group_id: null, hold_reason: "initial" };
+  const after = { ...before, execution: { ...before.execution, target_set_version: "2", targets: [currentTarget] } };
+  const currentResources = { ...resources, target_set_version: "2", targets: [{ ...resources.targets[0]!, target_epoch: "1", config_version: "1" }] };
+  let adopted = false;
+  let releaseIssue!: () => void;
+  const issueReady = new Promise<void>((resolve) => { releaseIssue = resolve; });
+  const fetch = vi.fn().mockImplementation(async (url: string, init: RequestInit) => {
+    if (url.endsWith(`/api/collaboration/issues/${id}`)) { if (adopted) await issueReady; return json(adopted ? after : before); }
+    if (url.endsWith("/resources")) return json(adopted ? currentResources : { ...resources, target_set_version: "1", targets: [] });
+    if (url.includes("/resources/offers?")) return json({ protocol_version: 1, issue_id: id, lifecycle_epoch: source.lifecycle_epoch, target_set_version: adopted ? "2" : "1", can_offer: true, items: [], next_cursor: null });
+    if (url.includes("/resources/identity?")) return json(identity);
+    if (url.endsWith("/consents")) return json({ protocol_version: 2, issue_id: id, request_id: new Headers(init.headers).get("Idempotency-Key"), action: "consent_resource", status: 201,
+      code: "resource_consented", scope: "target", target_id: target.id, grant_id: id }, 201);
+    throw new Error(`Unexpected URL ${url}`);
+  });
+  vi.stubGlobal("fetch", fetch);
+  function LiveIssue() {
+    const query = useQuery(collaborationIssueOptions(client, scope, id));
+    return query.data ? <CollaborationResourcePanel scope={scope} issue={query.data} locked={false} submit={(draft) => executeCollaborationResource(client, scope, draft)} /> : null;
+  }
+  renderWithI18n(<QueryClientProvider client={client}><LiveIssue /></QueryClientProvider>);
+  const user = userEvent.setup();
+  await user.click(await screen.findByRole("button", { name: "Manage AI resources" }));
+  await screen.findByText("No AI targets have been registered.");
+  adopted = true;
+  const previousIssueReads = fetch.mock.calls.filter(([url]) => url.endsWith(`/api/collaboration/issues/${id}`)).length;
+  await user.click(screen.getByRole("button", { name: "Refresh resources" }));
+  const authorize = await screen.findByRole("button", { name: "Authorize Implementation agent" });
+  expect(authorize).toBeDisabled();
+  expect(fetch.mock.calls.filter(([url]) => url.endsWith(`/api/collaboration/issues/${id}`)).length).toBeGreaterThan(previousIssueReads);
+  await user.click(authorize);
+  expect(fetch.mock.calls.some(([url]) => url.includes("/resources/identity?"))).toBe(false);
+  await act(async () => { releaseIssue(); });
+  await waitFor(() => expect(authorize).toBeEnabled());
+  await user.click(authorize);
+  const confirm = await screen.findByRole("button", { name: "Confirm authorization" });
+  await waitFor(() => expect(confirm).toBeEnabled());
+
+  // A later configuration change keeps the open observation frozen. Explicit
+  // refresh releases that unsubmitted selection and fetches a new matching pair.
+  currentTarget.config_version = "2";
+  currentResources.targets[0]!.config_version = "2";
+  const reconfigured = parseCollaborationIssue(after);
+  expect(reconfigured).not.toBeNull();
+  await act(async () => {
+    client.setQueryData(collaborationKeys.issue(scope, id), reconfigured!);
+    await client.invalidateQueries({ queryKey: [...collaborationKeys.issue(scope, id), "resources"] });
+  });
+  await waitFor(() => expect(confirm).toBeDisabled());
+  await user.click(screen.getByRole("button", { name: "Refresh resources" }));
+  await waitFor(() => expect(screen.queryByRole("button", { name: "Confirm authorization" })).not.toBeInTheDocument());
+  await waitFor(() => expect(authorize).toBeEnabled());
+  await user.click(authorize);
+  await user.click(await screen.findByRole("button", { name: "Confirm authorization" }));
+  await waitFor(() => expect(fetch.mock.calls.filter(([, init]) => init.method === "POST")).toHaveLength(1));
+  const post = fetch.mock.calls.find(([, init]) => init.method === "POST")!;
+  expect(post[0]).toContain(`/targets/${target.id}/consents`);
+  expect(JSON.parse(post[1].body)).toMatchObject({ expected_target_epoch: "1", expected_config_version: "2", agent_id: resource.agent_id });
+  expect(JSON.parse(post[1].body)).not.toHaveProperty("target_id");
+  expect(readCollaborationDrafts({ ...scope, issueId: id })).toEqual([]);
 });

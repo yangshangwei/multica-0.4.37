@@ -254,7 +254,29 @@
     "switched": "配置已切换，仍需明确恢复执行。",
     "pauseRequired": "请先暂停此目标，并等待旧执行结束后再提交提案。",
     "proposalVersion": "配置 {{version}}",
-    "refresh": "刷新资源"
+    "refresh": "刷新资源",
+    "offer": "提供资源",
+    "adoptOffer": "采纳资源",
+    "withdrawOffer": "撤回提供",
+    "offersTitle": "已提供的资源",
+    "offerDescription": "提供你拥有的资源，由发起人或当前处理人采纳，再由各位资源所有者分别授权。",
+    "noOffers": "暂无已提供的资源。",
+    "offeredBy": "由 {{name}} 提供",
+    "offerStates": {
+      "offered": "等待采纳",
+      "withdrawn": "已撤回",
+      "adopted": "已采纳"
+    },
+    "offerConfirmation": "采纳后，各位资源所有者还需分别授权，才能在本任务中使用。",
+    "withdrawOfferEffect": "撤回尚未采纳的资源。已采纳资源的授权需在资源管理中撤回。",
+    "moreOffers": "更多已提供的资源",
+    "offered": "资源已提供。",
+    "offerAdopted": "资源已采纳，各位资源所有者现在可以分别授权。",
+    "offerWithdrawn": "已撤回资源提供。",
+    "staleOffer": "资源提供记录已变更，请刷新后重新确认。",
+    "offerNotFound": "此资源提供记录不可用。",
+    "notOwned": "只能提供由你拥有的资源。",
+    "previousOffers": "上一页资源"
   },
   "execution": {
     "title": "AI 执行",

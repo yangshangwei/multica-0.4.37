@@ -14,6 +14,14 @@ export function useCollaborationLabels() {
     reason: (code: string) => {
       switch (code) {
         case "target_registered": return t(($) => $.resources.registered);
+        case "resource_offered": return t(($) => $.resources.offered);
+        case "resource_offer_adopted": return t(($) => $.resources.offerAdopted);
+        case "resource_offer_withdrawn": return t(($) => $.resources.offerWithdrawn);
+        case "offer_adopted": return t(($) => $.resources.offerStates.adopted);
+        case "offer_withdrawn": return t(($) => $.resources.offerStates.withdrawn);
+        case "stale_offer": return t(($) => $.resources.staleOffer);
+        case "resource_offer_not_found": return t(($) => $.resources.offerNotFound);
+        case "resource_not_owned": return t(($) => $.resources.notOwned);
         case "resource_consented": return t(($) => $.resources.authorized);
         case "grant_revoked": case "grant_already_revoked": return t(($) => $.resources.withdrawn);
         case "switch_proposed": return t(($) => $.resources.proposed);

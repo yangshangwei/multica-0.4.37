@@ -63,6 +63,8 @@ type CollaborationQueueReceipt struct {
 	TargetID         pgtype.UUID                         `json:"target_id"`
 	GrantID          pgtype.UUID                         `json:"grant_id"`
 	ProposalID       pgtype.UUID                         `json:"proposal_id,omitempty"`
+	OfferID          *string                             `json:"offer_id,omitempty"`
+	OfferVersion     int64                               `json:"offer_version,string,omitempty"`
 	ChannelID        pgtype.UUID                         `json:"channel_id"`
 	BatchID          pgtype.UUID                         `json:"batch_id"`
 	CommandID        pgtype.UUID                         `json:"command_id"`
@@ -94,11 +96,14 @@ type collaborationQueueTx struct {
 	controlScope  collaboration.ControlScope
 	controlTarget pgtype.UUID
 	proposalID    pgtype.UUID
+	offerID       pgtype.UUID
+	offerVersion  int64
 }
 
 func (t *collaborationQueueTx) receipt(code string, status int) CollaborationQueueReceipt {
 	r := CollaborationQueueReceipt{Code: code, Status: status, IssueID: t.access.Issue.ID, RequestID: t.requestID, Action: t.controlAction,
-		ProposalID:      t.proposalID,
+		ProposalID: t.proposalID,
+		OfferID:    util.UUIDToPtr(t.offerID), OfferVersion: t.offerVersion,
 		ProtocolVersion: collaboration.ExecutionProtocolVersion, Scope: collaboration.ControlIssue, QueueState: t.session.QueueState,
 		ControlVersion: t.session.ControlVersion, TargetSetVersion: t.session.TargetSetVersion,
 		Channels: []CollaborationChannelControlResult{}, TargetHolds: []CollaborationTargetHoldResult{}}
@@ -260,8 +265,12 @@ func (s *CollaborationService) collaborationQueueMutationInTx(ctx context.Contex
 	p CollaborationQueueRequest, kind, payloadHash string, payload any, mutate func(*collaborationQueueTx) (CollaborationQueueReceipt, error)) (CollaborationQueueReceipt, error) {
 	t := &collaborationQueueTx{q: s.Queries.WithTx(tx), actor: actor}
 	switch request := payload.(type) {
-	case CollaborationRegisterTargetParams, CollaborationRevokeGrantParams:
+	case CollaborationRegisterTargetParams, CollaborationRevokeGrantParams, CollaborationOfferResourceParams:
 		t.requestID, t.controlAction = p.RequestID, kind
+	case CollaborationWithdrawResourceOfferParams:
+		t.requestID, t.controlAction, t.offerID = p.RequestID, kind, request.OfferID
+	case CollaborationAdoptResourceOfferParams:
+		t.requestID, t.controlAction, t.offerID = p.RequestID, kind, request.OfferID
 	case CollaborationConsentParams:
 		t.controlTarget = request.TargetID
 	case CollaborationProposeSwitchParams:
@@ -377,7 +386,8 @@ func (s *CollaborationService) collaborationQueueMutationInTx(ctx context.Contex
 		if err = json.Unmarshal(previous.Result, &receipt); err != nil {
 			return receipt, fmt.Errorf("decode collaboration receipt: %w", err)
 		}
-		if receipt.Code == "" || receipt.Code != previous.ResultCode.String || receipt.Status < 200 || receipt.Status > 599 {
+		if receipt.Code == "" || receipt.Code != previous.ResultCode.String || receipt.Status < 200 || receipt.Status > 599 ||
+			!validCollaborationOfferReceipt(previous.Kind, p.IssueID, p.RequestID, receipt) {
 			return CollaborationQueueReceipt{}, errors.New("invalid collaboration operation receipt")
 		}
 		return receipt, nil
