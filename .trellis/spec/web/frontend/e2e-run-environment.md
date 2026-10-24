@@ -164,6 +164,20 @@ Report exact test identities and actual executions separately from code branch
 coverage. Inventory entries, conditional skips, route mocks, and HTTP-only
 integration tests must not be presented as full browser or native coverage.
 
+Password-authenticated browser fixtures must obtain both cookies from the real
+`POST /auth/login` response. `multica_auth` is HttpOnly; `multica_csrf` supplies
+the signed value the API client sends as `X-CSRF-Token`. Injecting only the auth
+cookie permits reads but correctly produces `403 CSRF validation failed` on
+collaboration control writes. Keep this fixture error separate from product
+control refusals. Never attach credentials or cookie values to test evidence.
+
+Before a retained Electron run, probe its exact renderer URL and compare the
+response with the matching built `index.html`. A previous static-helper process
+can exit while the API and production Web remain healthy. Restore only the
+known task-owned helper after confirming the port is empty, then record its new
+listener and artifact hash; no application rebuild is needed when source and
+built artifacts still match.
+
 ## Responsive captures and stable task navigation
 
 Wait for a Base UI popup to become visible before asserting an option is absent

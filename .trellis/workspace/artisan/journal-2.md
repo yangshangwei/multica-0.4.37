@@ -666,6 +666,113 @@ Implemented and verified target hold/control and resource invalidation boundarie
 - 完成运行端 Git/附件和通用供应商、其他 OS、P7 有限代管及 P8 全部验收；默认发布门禁保持关闭。
 
 
+## Session 91: 跨工作区协作专项 QA 与报告
+<!-- trellis-session: v=2 fp=2b8ae28d5814607b -->
+
+**Date**: 2026-10-19
+**Task**: 跨工作区协作专项 QA 与报告
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+记录独立工作区 A/B/C 流转、Web/Electron、前后端回归及两条并发恢复路径；报告保留 P2 提示问题与全部失败历史。
+
+### Main Changes
+
+- 新增测试报告、结构化结果和测试子任务归档；父协作任务保持进行中，无产品源码改动。
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] 标准 Web 6、macOS Electron 9、补测 4 次通过；客户端历史 22 次：19 pass、3 fail，0 自动重试。
+- [OK] 前端 901 条通过；Go 581 顶层和 900 子测试通过、7 显式跳过、另 4 Linux 未执行；所选 lint/typecheck/race/vet 通过。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 跟进 CWC-QA-001（P2）初始并发拒绝提示；补真实 provider、Linux runtime、安装包与全量验收。
+
+
+## Session 92: 修复跨工作区并发拒绝提示 P2
+<!-- trellis-session: v=2 fp=d0da04c904ecfec1 -->
+
+**Date**: 2026-10-19
+**Task**: 修复跨工作区并发拒绝提示 P2
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+明确的 stale_revision 409 立即按拒绝收敛，保留原页输入与显式新键提交；网络未知、权限和访问版本屏障保留。
+
+### Main Changes
+
+- 运行代码仅修改共享 operation.ts；新增/更新回归并记录精确规范；修复提交 a157fd140。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `a157fd140` | fix(collaboration): keep known revision conflicts out of uncertain recovery |
+
+### Testing
+
+- [OK] Core/API 47 文件680项、共享界面13文件46项、生产Web7项通过；四包类型、受影响lint、差异检查和独立审查通过。
+- [OK] 真实双账号409立即拒绝；无reload、无恢复GET、两次生命周期POST、新key200同单done、无AI/pageerror；服务已停止，数据与证据保留。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 原协作父任务保持进行中；真实provider、Linux runtime及原生安装包完整验收仍按原范围推进。
+
+
+## Session 93: Shared children, recorded runs and result notifications
+<!-- trellis-session: v=2 fp=2b2585b94c499864 -->
+
+**Date**: 2026-10-19
+**Task**: Shared children, recorded runs and result notifications
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成既有跨工作区协作任务的 R51 子任务/旧入口及运行记录、用量、来源与 R52 结果通知增量，保留父任务进行中。
+
+### Main Changes
+
+- Added source-authorized ordinary children, shared recorded runs and compatible result links across Web and Desktop.
+- Preserved immutable source data, exact nullable usage, proven group notifications, current access and native focus.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `28d8df628` | feat(collaboration): retain shared execution history and result notices |
+| `c74d6c58c` | feat(collaboration): make shared children and run results usable across clients |
+| `a4b9f188b` | docs(collaboration): preserve the verified children and records handoff |
+
+### Testing
+
+- [OK] TypeScript 12311 passed; full Go race coverage completed, including all 1039 service cases in isolated partitions.
+- [OK] Production Web 8 and macOS Electron 10 unique journeys passed; actual Linux 10 cases and native file boundaries passed.
+- [OK] Independent reviews closed; visual94; Knip2475 baseline findings with no additions.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Continue trigger-preview completeness, runtime files/Git and provider adapters, P7 administration and full P8 acceptance.
+
+
 ## Session 94: 触发预览与普通父任务阶段唤醒
 <!-- trellis-session: v=2 fp=8d55991ca65fadfd -->
 
@@ -700,6 +807,7 @@ Implemented and verified target hold/control and resource invalidation boundarie
 ### Next Steps
 
 - 运行端附件/Git、通用 provider/非 Linux 隔离、P7 有限代管和 P8 完整验收；默认门禁保持关闭。
+
 
 ## Session 95: Collaboration gap recovery current source, installed Main and old CLI acceptance
 <!-- trellis-session: v=2 fp=33d9d7ed864b90ec -->

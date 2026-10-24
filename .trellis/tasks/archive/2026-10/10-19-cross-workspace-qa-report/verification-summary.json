@@ -1,0 +1,152 @@
+{
+  "status": "DONE_WITH_CONCERNS",
+  "date": "2026-10-19",
+  "timezone": "America/Los_Angeles",
+  "commit": "8fc94420221ddde15a02aa8feffea18f55b54f88",
+  "trellis_task": "cross-workspace-qa-report",
+  "canonical_web_pass": 6,
+  "canonical_electron_pass": 9,
+  "additional_successful_executions": 4,
+  "browser_execution_history": {
+    "executions": 22,
+    "passed": 19,
+    "failed": 3,
+    "automatic_retries": 0
+  },
+  "frontend": {
+    "files": 71,
+    "passed_records": 901
+  },
+  "go": {
+    "packages_passed": 13,
+    "top_level_passed": 581,
+    "top_level_explicit_skip": 7,
+    "subtests_passed": 900,
+    "selected_linux_without_execution": 4
+  },
+  "static": {
+    "eslint_commands_passed": 3,
+    "typecheck_commands_passed": 4,
+    "go_vet_passed": true,
+    "go_race_enabled": true
+  },
+  "issues": [
+    {
+      "id": "CWC-QA-001",
+      "severity": "P2",
+      "status": "observed_unfixed",
+      "title": "明确的并发拒绝先呈现为加载失败/结果未确认",
+      "recovery_verified": [
+        "refresh_then_new_request",
+        "retain_input_and_current_version_without_reload"
+      ]
+    }
+  ],
+  "executions": [
+    {
+      "artifact": "web/results.json",
+      "stats": {
+        "startTime": "2026-10-19T08:32:23.573Z",
+        "duration": 39874.197,
+        "expected": 6,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "artifact": "desktop/results.json",
+      "stats": {
+        "startTime": "2026-10-19T08:34:56.714Z",
+        "duration": 36039.916,
+        "expected": 9,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "artifact": "web/human-results.json",
+      "stats": {
+        "startTime": "2026-10-19T08:34:58.001Z",
+        "duration": 5312.82,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      }
+    },
+    {
+      "artifact": "web/human-verified.json",
+      "stats": {
+        "startTime": "2026-10-19T08:35:51.155Z",
+        "duration": 13097.164999999999,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      }
+    },
+    {
+      "artifact": "web/human-stable.json",
+      "stats": {
+        "startTime": "2026-10-19T08:39:30.540Z",
+        "duration": 14334.166000000001,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "artifact": "web/race.json",
+      "stats": {
+        "startTime": "2026-10-19T08:39:31.787Z",
+        "duration": 4047.282,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "artifact": "web/recovery-followup-initial.json",
+      "stats": {
+        "startTime": "2026-10-19T09:33:31.147Z",
+        "duration": 1078.7959999999998,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      }
+    },
+    {
+      "artifact": "web/recovery-followup-final.json",
+      "stats": {
+        "startTime": "2026-10-19T09:34:54.613Z",
+        "duration": 3829.06,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "artifact": "web/recovery-inline.json",
+      "stats": {
+        "startTime": "2026-10-19T09:39:39.234Z",
+        "duration": 3255.051,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    }
+  ],
+  "healthScore": null,
+  "healthScoreReason": "专项范围不足以计算全站健康分。",
+  "task_archive": ".trellis/tasks/archive/2026-10/10-19-cross-workspace-qa-report",
+  "journal_session": 91,
+  "completed_at": "2026-10-19T09:48:08.373330+00:00",
+  "final_independent_review": "final-report-review.md"
+}

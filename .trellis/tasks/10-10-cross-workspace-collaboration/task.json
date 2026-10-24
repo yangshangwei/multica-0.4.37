@@ -18,7 +18,10 @@
   "commit": "b6f1e3ec9",
   "pr_url": null,
   "subtasks": [],
-  "children": [],
+  "children": [
+    "10-19-cross-workspace-qa-report",
+    "10-20-collaboration-gap-recovery"
+  ],
   "parent": null,
   "relatedFiles": [
     ".trellis/tasks/10-10-cross-workspace-collaboration/mention-redesign-2026-10-17.md",
@@ -331,10 +334,11 @@
       ]
     },
     "next_steps": [
-      "公开协作创建与受控附件的完整交付和双端验收",
-      "目标注册/逐资源授权/Switch 写表单、参与人管理和其余编辑/评论能力",
-      "来源页面、账号实时、完整运行记录及通用 provider/Git/OS 能力",
-      "P7/P8 与全部97项产品验收"
+      "先修复失败前缀的调度/停止证明恢复进度：服务端扫描/局部错误隔离、daemon候选/proof轮转，保留未知容量和原证明。规划见子任务10-20-collaboration-gap-recovery。",
+      "补齐组织者无资源拥有者私人空间成员权的明确资源提供/授权链路、@all选择入口和不可变取消指令历史。",
+      "运行端附件字节与已提交 Git 准备、通用 provider 适配器与非 Linux 隔离",
+      "P7 有限管理员生命周期/继任表单及其密码/管理员授权、事务与原生集成验收",
+      "P8 来源入口/选择/共享/筛选兼容矩阵、全部97项产品验收与发布准备；默认门禁保持关闭"
     ],
     "implementation_commits": [
       "e6bc3759e8a07b480e6aedf246eda8304a253752",
