@@ -71,9 +71,10 @@ SELECT * FROM collaboration_grant WHERE issue_id = $1 AND owner_user_id = $2 ORD
 UPDATE collaboration_grant SET epoch = epoch + 1, revoked_at = now(), revocation_reason = sqlc.arg(reason)::text
 WHERE issue_id = sqlc.arg(issue_id)::uuid AND owner_user_id = sqlc.arg(owner_user_id)::uuid AND revoked_at IS NULL;
 
--- name: CancelCollaborationAuthorWaitingCommands :exec
+-- name: CancelCollaborationAuthorWaitingCommands :many
 UPDATE collaboration_command SET state = 'cancelled', reason = sqlc.arg(reason)::text
-WHERE session_id = sqlc.arg(session_id)::uuid AND author_user_id = sqlc.arg(author_user_id)::uuid AND state = 'waiting' AND group_id IS NULL;
+WHERE session_id = sqlc.arg(session_id)::uuid AND author_user_id = sqlc.arg(author_user_id)::uuid AND state = 'waiting' AND group_id IS NULL
+RETURNING *;
 
 -- Preserve the first effective forced-disposition root. The workflow event
 -- retains this departure's additional reason. This query never sets proof.

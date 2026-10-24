@@ -229,6 +229,9 @@ func (t *collaborationQueueTx) invalidateAccount(ctx context.Context, intent db.
 	if err != nil {
 		return err
 	}
+	if err = t.recordCommandCancellations(ctx, cancelled); err != nil {
+		return err
+	}
 	revoked, err := t.q.RevokeObsoleteCollaborationOwnerGrants(ctx, db.RevokeObsoleteCollaborationOwnerGrantsParams{
 		IssueID: t.access.Issue.ID, UserID: intent.UserID, AccountEpoch: intent.AccountEpoch, Reason: intent.Reason,
 	})
@@ -239,7 +242,7 @@ func (t *collaborationQueueTx) invalidateAccount(ctx context.Context, intent db.
 	if err != nil {
 		return err
 	}
-	if cancelled == 0 && revoked == 0 && stopped == nil {
+	if len(cancelled) == 0 && revoked == 0 && stopped == nil {
 		return nil
 	}
 	seq, err := t.q.AdvanceCollaborationEventSequence(ctx, t.access.Issue.ID)
@@ -253,7 +256,7 @@ func (t *collaborationQueueTx) invalidateAccount(ctx context.Context, intent db.
 		CancelledCommands int64                      `json:"cancelled_commands"`
 		RevokedGrants     int64                      `json:"revoked_grants"`
 		Stop              *CollaborationQueueReceipt `json:"stop,omitempty"`
-	}{util.UUIDToString(intent.UserID), intent.AccountEpoch, intent.Reason, cancelled, revoked, stopped})
+	}{util.UUIDToString(intent.UserID), intent.AccountEpoch, intent.Reason, int64(len(cancelled)), revoked, stopped})
 	if err != nil {
 		return err
 	}

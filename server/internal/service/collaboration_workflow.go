@@ -268,7 +268,11 @@ func (t *collaborationWorkflowTx) depart(ctx context.Context, target pgtype.UUID
 	if err = t.q.RevokeCollaborationOwnerGrants(ctx, db.RevokeCollaborationOwnerGrantsParams{IssueID: t.access.Issue.ID, OwnerUserID: target, Reason: reason}); err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}
-	if err = t.q.CancelCollaborationAuthorWaitingCommands(ctx, db.CancelCollaborationAuthorWaitingCommandsParams{SessionID: t.session.ID, AuthorUserID: target, Reason: reason}); err != nil {
+	cancelled, err := t.q.CancelCollaborationAuthorWaitingCommands(ctx, db.CancelCollaborationAuthorWaitingCommandsParams{SessionID: t.session.ID, AuthorUserID: target, Reason: reason})
+	if err != nil {
+		return CollaborationWorkflowReceipt{}, err
+	}
+	if err = t.recordCommandCancellations(ctx, cancelled); err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}
 	stopped, err := t.stopInvalidatedWork(ctx, target, 0, grants, reason)

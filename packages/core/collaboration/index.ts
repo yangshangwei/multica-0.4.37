@@ -25,6 +25,10 @@ export type { CollaborationSwitchSelection } from "./switch";
 export * from "./resource-schema";
 export { CollaborationResourceOfferSchema, CollaborationResourceOffersPageSchema, parseCollaborationResourceOffer, parseCollaborationResourceOffersPage } from "./resource-offer-schema";
 export type { CollaborationResourceOffer, CollaborationResourceOffersPage } from "./resource-offer-schema";
+export { CollaborationCommandHistoryTargetSchema, CollaborationCommandCancellationSchema, CollaborationCommandHistoryEntrySchema,
+  CollaborationCommandHistorySchema, parseCollaborationCommandHistory } from "./command-history-schema";
+export type { CollaborationCommandHistoryEntry, CollaborationCommandHistory } from "./command-history-schema";
+export { collaborationCommandHistoryOptions } from "./command-history-queries";
 export { canOrganizeCollaborationResources, canOfferCollaborationResources, collaborationResourceRoster, prepareCollaborationResource, parseCollaborationResourceDraft, executeCollaborationResource,
   collaborationResourcesOptions, collaborationResourceOptionsOptions, collaborationResourceIdentityOptions, collaborationResourceWorkspacesOptions,
   collaborationResourceOffersOptions, collaborationResourceOfferOptions, collaborationResourceOfferCandidatesOptions } from "./resource";

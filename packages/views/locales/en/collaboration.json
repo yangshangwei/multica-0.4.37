@@ -529,5 +529,32 @@
     "retained": "Delivered files remain on this issue when a comment or its file reference is removed.",
     "previewAction": "Preview",
     "downloadAction": "Download"
+  },
+  "commandHistory": {
+    "title": "Command history",
+    "empty": "No commands yet.",
+    "more": "Load more commands",
+    "sequence": "Sequence",
+    "target": "Target",
+    "reason": "Reason",
+    "cancellation": "Cancellation",
+    "cancelledBy": "Cancelled by",
+    "cancelledAt": "Cancelled at",
+    "automaticCancellation": "Cancelled automatically",
+    "missingCancellation": "Cancellation details were not recorded.",
+    "eventId": "Event ID",
+    "eventSequence": "Event sequence",
+    "originalComment": "Open original comment",
+    "reasons": {
+      "cancelled_by_participant": "Cancelled by a participant",
+      "participant_removed": "The author was removed",
+      "participant_left": "The author left",
+      "issue_completed": "The collaboration was completed",
+      "issue_cancelled": "The collaboration was cancelled",
+      "credentials_revoked": "The author's credentials were revoked",
+      "stale_authority": "The original authorization is no longer valid"
+    },
+    "details": "Input details",
+    "inputEvent": "Input event"
   }
 }

@@ -221,6 +221,7 @@ var concurrentIndexCleanups = map[string]string{
 	"731_collaboration_runtime_scan_cursor_identity":            "idx_collaboration_runtime_scan_cursor_identity",
 	"733_collaboration_resource_offer_id":                       "idx_collaboration_resource_offer_id",
 	"734_collaboration_resource_offer_issue_history":            "idx_collaboration_resource_offer_issue_history",
+	"736_collaboration_command_history":                         "collaboration_command_history_idx",
 	"569_platform_admin_initialization_org":                     "platform_admin_initialization_org_uidx",
 	"570_platform_admin_initialization_singleton":               "platform_admin_initialization_singleton_uidx",
 	"551_iteration_settings_workspace":                          "iteration_settings_workspace",

@@ -370,7 +370,11 @@ func (t *collaborationWorkflowTx) changeLifecycle(ctx context.Context, action, t
 		if err != nil {
 			return CollaborationWorkflowReceipt{}, err
 		}
-		if err = t.q.CancelCollaborationWaitingCommands(ctx, db.CancelCollaborationWaitingCommandsParams{SessionID: t.session.ID, Reason: reason}); err != nil {
+		cancelled, err := t.q.CancelCollaborationWaitingCommands(ctx, db.CancelCollaborationWaitingCommandsParams{SessionID: t.session.ID, Reason: reason})
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		if err = t.recordCommandCancellations(ctx, cancelled); err != nil {
 			return CollaborationWorkflowReceipt{}, err
 		}
 		selected := make(map[pgtype.UUID]string, len(t.targets))

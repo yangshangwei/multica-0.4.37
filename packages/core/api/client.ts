@@ -33,6 +33,7 @@ import { CollaborationResourceInputSchema, collaborationResourceRequest, matches
   parseCollaborationResources, parseCollaborationResourceOptions, parseCollaborationResourceIdentity, parseCollaborationResourceReceipt,
   type CollaborationResourceInput } from "../collaboration/resource-schema";
 import { parseCollaborationResourceOffer, parseCollaborationResourceOffersPage } from "../collaboration/resource-offer-schema";
+import { parseCollaborationCommandHistory } from "../collaboration/command-history-schema";
 export type { ApiRequestOptions } from "./request-lifecycle";
 import type { ProjectUpdateDraft, ProjectUpdateWriteInput, ProjectRiskSignal } from "../types/project-p1";
 import { parseProjectP1, ProjectCapabilitiesSchema, ProjectPlanningTimezoneSchema, ProjectOverviewSchema,
@@ -1139,6 +1140,20 @@ export class ApiClient {
     ));
     return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.run.id, runId) &&
       result.items.length <= limit && result.next_cursor !== params.cursor ? result : null;
+  }
+
+  async getCollaborationCommandHistory(id: string, params: { cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {
+    const limit = params.limit ?? 50;
+    if (!z.uuid().safeParse(id).success || !Number.isInteger(limit) || limit < 1 || limit > 100 ||
+      (params.cursor !== undefined && !z.string().min(1).max(1024).safeParse(params.cursor).success)) {
+      throw new TypeError("Invalid collaboration command history query");
+    }
+    const query = new URLSearchParams({ limit: String(limit) });
+    if (params.cursor !== undefined) query.set("cursor", params.cursor);
+    const result = parseCollaborationCommandHistory(await this.fetchCollaborationOptionalHistory(
+      `/api/collaboration/issues/${encodeURIComponent(id)}/commands?${query}`, { signal: options?.signal, cache: "no-store" },
+    ));
+    return result && sameResourceIdentity(result.issue_id, id) && result.items.length <= limit && result.next_cursor !== params.cursor ? result : null;
   }
 
   async getCollaborationComment(id: string, commentId: string, options?: { signal?: AbortSignal }) {

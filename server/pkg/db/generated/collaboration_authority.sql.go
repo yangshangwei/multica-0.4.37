@@ -205,7 +205,7 @@ func (q *Queries) ListCollaborationTargetGrants(ctx context.Context, targetID pg
 }
 
 const lockCollaborationSessionCommands = `-- name: LockCollaborationSessionCommands :many
-SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id FROM collaboration_command WHERE session_id = $1 ORDER BY id FOR UPDATE
+SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id, cancellation_event_id FROM collaboration_command WHERE session_id = $1 ORDER BY id FOR UPDATE
 `
 
 // Lock retained inputs before any group/run writer, including detached and
@@ -237,6 +237,7 @@ func (q *Queries) LockCollaborationSessionCommands(ctx context.Context, sessionI
 			&i.ChannelID,
 			&i.BatchID,
 			&i.GroupID,
+			&i.CancellationEventID,
 		); err != nil {
 			return nil, err
 		}

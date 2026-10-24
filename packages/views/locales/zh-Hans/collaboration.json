@@ -529,5 +529,32 @@
     "retained": "删除评论或移除其中的附件引用后，已交付文件仍保留在本任务中。",
     "previewAction": "预览",
     "downloadAction": "下载"
+  },
+  "commandHistory": {
+    "title": "指令历史",
+    "empty": "暂无指令记录。",
+    "more": "加载更多指令",
+    "sequence": "序号",
+    "target": "目标",
+    "reason": "原因",
+    "cancellation": "取消记录",
+    "cancelledBy": "取消操作者",
+    "cancelledAt": "取消时间",
+    "automaticCancellation": "自动取消",
+    "missingCancellation": "取消详情未记录。",
+    "eventId": "事件 ID",
+    "eventSequence": "事件序号",
+    "originalComment": "查看原评论",
+    "reasons": {
+      "cancelled_by_participant": "参与者取消了此指令",
+      "participant_removed": "指令作者已被移除",
+      "participant_left": "指令作者已退出",
+      "issue_completed": "协作任务已完成",
+      "issue_cancelled": "协作任务已取消",
+      "credentials_revoked": "指令作者的凭据已撤销",
+      "stale_authority": "原有授权已失效"
+    },
+    "details": "指令详情",
+    "inputEvent": "输入事件"
   }
 }

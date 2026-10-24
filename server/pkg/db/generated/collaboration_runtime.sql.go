@@ -1565,7 +1565,7 @@ WITH consumed AS (
     UPDATE collaboration_command c SET state='in_flight',group_id=b.group_id
     FROM collaboration_batch b WHERE c.batch_id=$1 AND b.id=c.batch_id AND b.state='in_flight'
       AND c.state='waiting' AND c.group_id IS NULL
-    RETURNING c.id, c.seq, c.author_user_id, c.participant_epoch, c.author_auth_epoch, c.lifecycle_epoch, c.content, c.attachments, c.state, c.reason, c.created_at, c.session_id, c.target_id, c.input_event_id, c.channel_id, c.batch_id, c.group_id
+    RETURNING c.id, c.seq, c.author_user_id, c.participant_epoch, c.author_auth_epoch, c.lifecycle_epoch, c.content, c.attachments, c.state, c.reason, c.created_at, c.session_id, c.target_id, c.input_event_id, c.channel_id, c.batch_id, c.group_id, c.cancellation_event_id
 )
 INSERT INTO collaboration_group_input(group_id,command_id,channel_id,batch_id,seq,consuming_run_id)
 SELECT c.group_id,c.id,c.channel_id,c.batch_id,c.seq,r.id FROM consumed c

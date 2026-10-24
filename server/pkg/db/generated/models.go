@@ -771,23 +771,24 @@ type CollaborationChannel struct {
 }
 
 type CollaborationCommand struct {
-	ID               pgtype.UUID        `json:"id"`
-	Seq              int64              `json:"seq"`
-	AuthorUserID     pgtype.UUID        `json:"author_user_id"`
-	ParticipantEpoch int64              `json:"participant_epoch"`
-	AuthorAuthEpoch  int64              `json:"author_auth_epoch"`
-	LifecycleEpoch   int64              `json:"lifecycle_epoch"`
-	Content          string             `json:"content"`
-	Attachments      []byte             `json:"attachments"`
-	State            string             `json:"state"`
-	Reason           pgtype.Text        `json:"reason"`
-	CreatedAt        pgtype.Timestamptz `json:"created_at"`
-	SessionID        pgtype.UUID        `json:"session_id"`
-	TargetID         pgtype.UUID        `json:"target_id"`
-	InputEventID     pgtype.UUID        `json:"input_event_id"`
-	ChannelID        pgtype.UUID        `json:"channel_id"`
-	BatchID          pgtype.UUID        `json:"batch_id"`
-	GroupID          pgtype.UUID        `json:"group_id"`
+	ID                  pgtype.UUID        `json:"id"`
+	Seq                 int64              `json:"seq"`
+	AuthorUserID        pgtype.UUID        `json:"author_user_id"`
+	ParticipantEpoch    int64              `json:"participant_epoch"`
+	AuthorAuthEpoch     int64              `json:"author_auth_epoch"`
+	LifecycleEpoch      int64              `json:"lifecycle_epoch"`
+	Content             string             `json:"content"`
+	Attachments         []byte             `json:"attachments"`
+	State               string             `json:"state"`
+	Reason              pgtype.Text        `json:"reason"`
+	CreatedAt           pgtype.Timestamptz `json:"created_at"`
+	SessionID           pgtype.UUID        `json:"session_id"`
+	TargetID            pgtype.UUID        `json:"target_id"`
+	InputEventID        pgtype.UUID        `json:"input_event_id"`
+	ChannelID           pgtype.UUID        `json:"channel_id"`
+	BatchID             pgtype.UUID        `json:"batch_id"`
+	GroupID             pgtype.UUID        `json:"group_id"`
+	CancellationEventID pgtype.UUID        `json:"cancellation_event_id"`
 }
 
 type CollaborationConfigInvalidation struct {

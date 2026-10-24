@@ -274,8 +274,12 @@ func (t *collaborationQueueTx) settleProvenGroup(ctx context.Context, target db.
 	if err = t.returnNeverLaunchedInputs(ctx, settled, runs); err != nil {
 		return false, err
 	}
-	if err = t.q.FinishCollaborationBatchInputs(ctx, db.FinishCollaborationBatchInputsParams{BatchID: group.BatchID,
-		State: settled.State, Reason: settled.DispositionReason.String}); err != nil {
+	finished, err := t.q.FinishCollaborationBatchInputs(ctx, db.FinishCollaborationBatchInputsParams{BatchID: group.BatchID,
+		State: settled.State, Reason: settled.DispositionReason.String})
+	if err != nil {
+		return false, err
+	}
+	if err = t.recordCommandCancellations(ctx, finished); err != nil {
 		return false, err
 	}
 	if err = t.q.ClearCollaborationChannelGroup(ctx, db.ClearCollaborationChannelGroupParams{ID: group.ChannelID, ActiveGroupID: group.ID}); err != nil {
@@ -355,8 +359,14 @@ func (t *collaborationQueueTx) returnNeverLaunchedInputs(ctx context.Context, gr
 				return err
 			}
 		}
-		if _, err = t.q.ReturnNeverLaunchedCollaborationInput(ctx, db.ReturnNeverLaunchedCollaborationInputParams{CommandID: command.ID, GroupID: group.ID, BatchID: batch.ID, State: state, Reason: reason}); err != nil {
+		returned, err := t.q.ReturnNeverLaunchedCollaborationInput(ctx, db.ReturnNeverLaunchedCollaborationInputParams{CommandID: command.ID, GroupID: group.ID, BatchID: batch.ID, State: state, Reason: reason})
+		if err != nil {
 			return err
+		}
+		if returned.State == "cancelled" {
+			if err = t.recordCommandCancellation(ctx, returned); err != nil {
+				return err
+			}
 		}
 	}
 	return t.q.CloseEmptyCollaborationBatches(ctx, t.session.ID)

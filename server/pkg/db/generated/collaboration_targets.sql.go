@@ -150,7 +150,7 @@ func (q *Queries) CreateCollaborationTarget(ctx context.Context, arg CreateColla
 }
 
 const getCollaborationCommandInput = `-- name: GetCollaborationCommandInput :one
-SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id FROM collaboration_command WHERE target_id = $1 AND input_event_id = $2
+SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id, cancellation_event_id FROM collaboration_command WHERE target_id = $1 AND input_event_id = $2
 `
 
 type GetCollaborationCommandInputParams struct {
@@ -179,6 +179,7 @@ func (q *Queries) GetCollaborationCommandInput(ctx context.Context, arg GetColla
 		&i.ChannelID,
 		&i.BatchID,
 		&i.GroupID,
+		&i.CancellationEventID,
 	)
 	return i, err
 }
@@ -241,7 +242,7 @@ func (q *Queries) GetCollaborationSession(ctx context.Context, issueID pgtype.UU
 }
 
 const listCollaborationCommands = `-- name: ListCollaborationCommands :many
-SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id FROM collaboration_command WHERE session_id = $1 ORDER BY channel_id, seq
+SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id, cancellation_event_id FROM collaboration_command WHERE session_id = $1 ORDER BY channel_id, seq
 `
 
 func (q *Queries) ListCollaborationCommands(ctx context.Context, sessionID pgtype.UUID) ([]CollaborationCommand, error) {
@@ -271,6 +272,7 @@ func (q *Queries) ListCollaborationCommands(ctx context.Context, sessionID pgtyp
 			&i.ChannelID,
 			&i.BatchID,
 			&i.GroupID,
+			&i.CancellationEventID,
 		); err != nil {
 			return nil, err
 		}

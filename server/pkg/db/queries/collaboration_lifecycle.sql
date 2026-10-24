@@ -26,6 +26,7 @@ WHERE id = $1 AND queue_state = 'closed' RETURNING *;
 
 -- Only waiting work is cancelled. An in-flight command is settled exclusively
 -- by the stop/proof protocol, never by the business issue's terminal status.
--- name: CancelCollaborationWaitingCommands :exec
+-- name: CancelCollaborationWaitingCommands :many
 UPDATE collaboration_command SET state = 'cancelled', reason = sqlc.arg(reason)::text
-WHERE session_id = sqlc.arg(session_id)::uuid AND state = 'waiting' AND group_id IS NULL;
+WHERE session_id = sqlc.arg(session_id)::uuid AND state = 'waiting' AND group_id IS NULL
+RETURNING *;

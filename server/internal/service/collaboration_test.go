@@ -289,6 +289,13 @@ func (tx collaborationFailureTx) QueryRow(ctx context.Context, sql string, args 
 	return tx.Tx.QueryRow(ctx, sql, args...)
 }
 
+func (tx collaborationFailureTx) Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error) {
+	if strings.HasPrefix(sql, "-- name: "+tx.queryName+" ") {
+		return nil, errors.New("injected collaboration persistence failure")
+	}
+	return tx.Tx.Query(ctx, sql, args...)
+}
+
 func (tx collaborationFailureTx) Exec(ctx context.Context, sql string, args ...any) (pgconn.CommandTag, error) {
 	if strings.HasPrefix(sql, "-- name: "+tx.queryName+" ") {
 		return pgconn.CommandTag{}, errors.New("injected collaboration persistence failure")

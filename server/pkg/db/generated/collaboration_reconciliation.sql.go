@@ -33,12 +33,13 @@ func (q *Queries) AdvanceCollaborationAccountInvalidation(ctx context.Context, a
 	return result.RowsAffected(), nil
 }
 
-const cancelObsoleteCollaborationAuthorCommands = `-- name: CancelObsoleteCollaborationAuthorCommands :execrows
+const cancelObsoleteCollaborationAuthorCommands = `-- name: CancelObsoleteCollaborationAuthorCommands :many
 UPDATE collaboration_command SET state = 'cancelled', reason = $1::text
 WHERE session_id = $2::uuid
   AND author_user_id = $3::uuid
   AND author_auth_epoch < $4::bigint
   AND state = 'waiting' AND group_id IS NULL
+RETURNING id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id, cancellation_event_id
 `
 
 type CancelObsoleteCollaborationAuthorCommandsParams struct {
@@ -51,17 +52,48 @@ type CancelObsoleteCollaborationAuthorCommandsParams struct {
 // The source/session locks serialize this with all control/authority writers.
 // Epoch comparisons must use the persisted intent, never the current account
 // epoch or disabled flag: an older intent must preserve freshly authorized work.
-func (q *Queries) CancelObsoleteCollaborationAuthorCommands(ctx context.Context, arg CancelObsoleteCollaborationAuthorCommandsParams) (int64, error) {
-	result, err := q.db.Exec(ctx, cancelObsoleteCollaborationAuthorCommands,
+func (q *Queries) CancelObsoleteCollaborationAuthorCommands(ctx context.Context, arg CancelObsoleteCollaborationAuthorCommandsParams) ([]CollaborationCommand, error) {
+	rows, err := q.db.Query(ctx, cancelObsoleteCollaborationAuthorCommands,
 		arg.Reason,
 		arg.SessionID,
 		arg.UserID,
 		arg.AccountEpoch,
 	)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
-	return result.RowsAffected(), nil
+	defer rows.Close()
+	items := []CollaborationCommand{}
+	for rows.Next() {
+		var i CollaborationCommand
+		if err := rows.Scan(
+			&i.ID,
+			&i.Seq,
+			&i.AuthorUserID,
+			&i.ParticipantEpoch,
+			&i.AuthorAuthEpoch,
+			&i.LifecycleEpoch,
+			&i.Content,
+			&i.Attachments,
+			&i.State,
+			&i.Reason,
+			&i.CreatedAt,
+			&i.SessionID,
+			&i.TargetID,
+			&i.InputEventID,
+			&i.ChannelID,
+			&i.BatchID,
+			&i.GroupID,
+			&i.CancellationEventID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const completeCollaborationAccountInvalidation = `-- name: CompleteCollaborationAccountInvalidation :execrows

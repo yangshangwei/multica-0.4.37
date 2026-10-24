@@ -43,9 +43,10 @@ func (q *Queries) AdvanceCollaborationLifecycle(ctx context.Context, issueID pgt
 	return i, err
 }
 
-const cancelCollaborationWaitingCommands = `-- name: CancelCollaborationWaitingCommands :exec
+const cancelCollaborationWaitingCommands = `-- name: CancelCollaborationWaitingCommands :many
 UPDATE collaboration_command SET state = 'cancelled', reason = $1::text
 WHERE session_id = $2::uuid AND state = 'waiting' AND group_id IS NULL
+RETURNING id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id, cancellation_event_id
 `
 
 type CancelCollaborationWaitingCommandsParams struct {
@@ -55,9 +56,43 @@ type CancelCollaborationWaitingCommandsParams struct {
 
 // Only waiting work is cancelled. An in-flight command is settled exclusively
 // by the stop/proof protocol, never by the business issue's terminal status.
-func (q *Queries) CancelCollaborationWaitingCommands(ctx context.Context, arg CancelCollaborationWaitingCommandsParams) error {
-	_, err := q.db.Exec(ctx, cancelCollaborationWaitingCommands, arg.Reason, arg.SessionID)
-	return err
+func (q *Queries) CancelCollaborationWaitingCommands(ctx context.Context, arg CancelCollaborationWaitingCommandsParams) ([]CollaborationCommand, error) {
+	rows, err := q.db.Query(ctx, cancelCollaborationWaitingCommands, arg.Reason, arg.SessionID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []CollaborationCommand{}
+	for rows.Next() {
+		var i CollaborationCommand
+		if err := rows.Scan(
+			&i.ID,
+			&i.Seq,
+			&i.AuthorUserID,
+			&i.ParticipantEpoch,
+			&i.AuthorAuthEpoch,
+			&i.LifecycleEpoch,
+			&i.Content,
+			&i.Attachments,
+			&i.State,
+			&i.Reason,
+			&i.CreatedAt,
+			&i.SessionID,
+			&i.TargetID,
+			&i.InputEventID,
+			&i.ChannelID,
+			&i.BatchID,
+			&i.GroupID,
+			&i.CancellationEventID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const closeCollaborationSession = `-- name: CloseCollaborationSession :one

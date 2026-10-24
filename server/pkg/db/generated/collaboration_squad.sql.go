@@ -23,7 +23,7 @@ func (q *Queries) ClearCollaborationSquadWakeup(ctx context.Context, id pgtype.U
 const consumeCollaborationJoinedInputs = `-- name: ConsumeCollaborationJoinedInputs :exec
 WITH consumed AS (
     UPDATE collaboration_command SET state='in_flight'
-    WHERE group_id=$2::uuid AND state='waiting' RETURNING id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id
+    WHERE group_id=$2::uuid AND state='waiting' RETURNING id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id, cancellation_event_id
 )
 INSERT INTO collaboration_group_input(group_id,command_id,channel_id,batch_id,seq,consuming_run_id)
 SELECT group_id,id,channel_id,batch_id,seq,$1::uuid FROM consumed
@@ -282,7 +282,7 @@ func (q *Queries) DetachCollaborationGroupDependency(ctx context.Context, arg De
 
 const detachCollaborationUnreadInput = `-- name: DetachCollaborationUnreadInput :one
 UPDATE collaboration_command SET group_id=NULL,batch_id=$1::uuid,state=$2::text,reason=$3::text
-WHERE id=$4::uuid AND group_id=$5::uuid AND state='waiting' RETURNING id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id
+WHERE id=$4::uuid AND group_id=$5::uuid AND state='waiting' RETURNING id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id, cancellation_event_id
 `
 
 type DetachCollaborationUnreadInputParams struct {
@@ -320,6 +320,7 @@ func (q *Queries) DetachCollaborationUnreadInput(ctx context.Context, arg Detach
 		&i.ChannelID,
 		&i.BatchID,
 		&i.GroupID,
+		&i.CancellationEventID,
 	)
 	return i, err
 }
@@ -412,7 +413,7 @@ func (q *Queries) GetCollaborationRuntimeReservation(ctx context.Context, runID 
 
 const joinCollaborationUnreadInput = `-- name: JoinCollaborationUnreadInput :one
 UPDATE collaboration_command SET group_id=$1::uuid,batch_id=$2::uuid,reason='joined_squad'
-WHERE id=$3::uuid AND state='waiting' AND group_id IS NULL RETURNING id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id
+WHERE id=$3::uuid AND state='waiting' AND group_id IS NULL RETURNING id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id, cancellation_event_id
 `
 
 type JoinCollaborationUnreadInputParams struct {
@@ -443,12 +444,13 @@ func (q *Queries) JoinCollaborationUnreadInput(ctx context.Context, arg JoinColl
 		&i.ChannelID,
 		&i.BatchID,
 		&i.GroupID,
+		&i.CancellationEventID,
 	)
 	return i, err
 }
 
 const listCollaborationGroupCommands = `-- name: ListCollaborationGroupCommands :many
-SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id FROM collaboration_command WHERE group_id=$1 ORDER BY seq,id
+SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id, cancellation_event_id FROM collaboration_command WHERE group_id=$1 ORDER BY seq,id
 `
 
 func (q *Queries) ListCollaborationGroupCommands(ctx context.Context, groupID pgtype.UUID) ([]CollaborationCommand, error) {
@@ -478,6 +480,7 @@ func (q *Queries) ListCollaborationGroupCommands(ctx context.Context, groupID pg
 			&i.ChannelID,
 			&i.BatchID,
 			&i.GroupID,
+			&i.CancellationEventID,
 		); err != nil {
 			return nil, err
 		}

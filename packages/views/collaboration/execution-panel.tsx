@@ -10,6 +10,7 @@ import { CollaborationQueryState } from "./query-state";
 import { CollaborationResourcePanel } from "./resource-panel";
 import { CollaborationSwitchPanel } from "./switch-panel";
 import { CollaborationRunDisclosure } from "./run-records";
+import { CollaborationCommandHistory } from "./command-history";
 
 export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { scope: CollaborationScope; issue: CollaborationIssue; selectedRunId?: string | null }) {
   const { t } = useT("collaboration");
@@ -96,5 +97,6 @@ export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { s
     })}
     {execution?.targets.filter((target) => target.channel_id === null).map((target) => <p key={target.id} className="text-caption">{target.hold_reason ? labels.execution(target.hold_reason) : t(($) => $.execution.released)}</p>)}
     {selectedRunId && execution && !execution.runs.some((run) => run.id === selectedRunId) && <p role="alert" className="text-body text-muted-foreground">{t(($) => $.records.unavailable)}</p>}
+    <CollaborationCommandHistory key={`${scope.apiScope}:${scope.userId}:${issue.id}`} scope={scope} issueId={issue.id} />
   </section>;
 }

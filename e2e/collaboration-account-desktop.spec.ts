@@ -1,23 +1,25 @@
 import { createHash, randomUUID } from "node:crypto";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { join } from "node:path";
 import { createServer } from "node:http";
 import pg from "pg";
-import { _electron as electron, test, expect, type ElectronApplication, type Locator, type Page, type TestInfo } from "@playwright/test";
+import { test, expect, type ElectronApplication, type Locator, type Page, type TestInfo } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
+import { openDesktop, deepLink, nativeScreenshot, captureNativeSection, responseEvidence, type NativeHarness } from "./fixtures/collaboration-native";
 import { seedCollaborationResourceJourney, type CollaborationResourceSnapshot } from "./fixtures/collaboration-resources";
 import { createCollaborationWithInitialFields, exerciseCollaborationDiscussion, exerciseCollaborationFields,
   seedCollaborationEditing } from "./fixtures/collaboration-editing";
 import { attachRecordedChild, detachRecordedChild, exerciseRecordedPages, recordedAccountPath,
   removeRecordViewer, seedCollaborationRecordJourney, showRecordedUsage } from "./fixtures/collaboration-records";
+import { exerciseCollaborationResourceOffers, resourceOfferAccountPath, seedCollaborationResourceOfferJourney } from "./fixtures/collaboration-resource-offers";
+import { exerciseCollaborationCommandHistory } from "./fixtures/collaboration-command-history";
 
 // Existing-record tests use a DB seed; the named creation/attachment test below
 // uses the actual gated creation API and an explicitly enabled isolated server.
 const apiUrl = process.env.COLLABORATION_E2E_API_URL;
 const rendererUrl = process.env.COLLABORATION_ELECTRON_RENDERER_URL;
 const databaseUrl = process.env.DATABASE_URL;
-const root = resolve(import.meta.dirname, "..");
 type Workspace = { id: string; slug: string; name: string };
 type Issue = { id: string; title: string };
 type TabSnapshot = {
@@ -38,15 +40,7 @@ interface Fixture {
   workspaceB: Workspace;
   issues: Issue[];
 }
-interface NativeHarness {
-  start(): void;
-  deepLink(url: string): void;
-  deliverLogin(token: string): void;
-  setBlocked(blocked: boolean): void;
-  evidence: { daemonStarts: number; nativeIssueRequests: { scope: string; path: string }[] };
-}
 let fixture: Fixture;
-const responseEvidence = new WeakMap<ElectronApplication, { path: string; status: number }[]>();
 
 interface ControlledApi {
   workspaces?: Workspace[];
@@ -184,54 +178,8 @@ function accountPath(issue: Issue, view = "current") {
   return `/account?view=${view}&issue=${issue.id}`;
 }
 
-async function openDesktop(profile: string, options: { token?: string; deepLink?: string; serverUrl?: string } = {}) {
-  const executablePath = join(root, "apps/desktop/node_modules/electron/dist", process.platform === "darwin"
-    ? "Electron.app/Contents/MacOS/Electron" : process.platform === "win32" ? "electron.exe" : "electron");
-  const env: Record<string, string> = {
-    ...Object.fromEntries(Object.entries(process.env).filter((entry): entry is [string, string] => entry[1] !== undefined)),
-    COLLABORATION_ELECTRON_PROFILE: profile,
-    COLLABORATION_E2E_API_URL: options.serverUrl ?? apiUrl!,
-    COLLABORATION_ELECTRON_WS_URL: `${apiUrl!.replace("http", "ws")}/ws`,
-    COLLABORATION_ELECTRON_DEEP_LINK: options.deepLink ?? "" };
-  delete env.ELECTRON_RUN_AS_NODE;
-  const app = await electron.launch({ executablePath, args: [join(root, "e2e/fixtures/collaboration-account-electron.mjs")], env, timeout: 20_000 });
-  let page: Page;
-  try {
-    page = await app.firstWindow({ timeout: 15_000 });
-  } catch (error) {
-    await app.close().catch(() => undefined);
-    throw error;
-  }
-  const responses: { path: string; status: number }[] = [];
-  responseEvidence.set(app, responses);
-  page.on("response", (response) => {
-    const path = new URL(response.url()).pathname;
-    if (path.startsWith("/api/")) responses.push({ path, status: response.status() });
-  });
-  const errors: string[] = [];
-  page.on("pageerror", (error) => errors.push(error.message));
-  const accountHeaders: Record<string, string>[] = [];
-  page.on("request", (request) => {
-    if (/\/api\/(collaboration\/|me\/workbench)/.test(request.url())) accountHeaders.push(request.headers());
-  });
-  await app.context().addInitScript(({ token, seed }) => {
-    if (localStorage.getItem("desktop-account-test-seed") === seed) return;
-    localStorage.setItem("desktop-account-test-seed", seed);
-    if (token) localStorage.setItem("multica_token", token);
-    localStorage.setItem("multica-locale", "en");
-    localStorage.setItem("multica:chat:isOpen", "false");
-  }, { token: options.token, seed: randomUUID() });
-  const start = () => app.evaluate(() => (globalThis as unknown as { desktopAccountAcceptance: NativeHarness }).desktopAccountAcceptance.start());
-  return { app, page, errors, accountHeaders, start };
-}
-
 async function snapshot(page: Page): Promise<TabSnapshot> {
   return page.evaluate(() => JSON.parse(localStorage.getItem("multica_tabs") ?? "null").state);
-}
-
-async function deepLink(app: ElectronApplication, path: string) {
-  await app.evaluate((_electron, value) => (globalThis as unknown as { desktopAccountAcceptance: NativeHarness })
-    .desktopAccountAcceptance.deepLink(`multica://account${value.slice("/account".length)}`), path);
 }
 
 async function nativeCloseShortcut(app: ElectronApplication, page: Page) {
@@ -245,13 +193,6 @@ async function nativeCloseShortcut(app: ElectronApplication, page: Page) {
     });
   });
   await window.dispose();
-}
-
-async function nativeScreenshot(app: ElectronApplication, page: Page, path: string) {
-  const window = await app.browserWindow(page);
-  const png = await window.evaluate(async (target) => (await target.webContents.capturePage()).toPNG().toString("base64"));
-  await window.dispose();
-  writeFileSync(path, Buffer.from(png, "base64"));
 }
 
 async function scrollForNativeRecordCapture(page: Page, target: Locator) {
@@ -331,6 +272,49 @@ async function attachFailure(app: ElectronApplication | undefined, testInfo: Tes
   writeFileSync(responsesPath, JSON.stringify(responseEvidence.get(app!) ?? [], null, 2));
   await testInfo.attach("desktop-account-failure-text", { body: await page.locator("body").innerText(), contentType: "text/plain" });
 }
+
+test("Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history", async ({ browserName: _browserName }, testInfo) => {
+  test.setTimeout(300_000);
+  test.skip(!process.env.MULTICA_DEPLOYMENT_ID, "Requires the task-owned deployment with collaboration creation enabled");
+  const journey = await seedCollaborationResourceOfferJourney();
+  const ownerProfile = mkdtempSync(join(tmpdir(), "multica-offer-owner-"));
+  const handlerProfile = mkdtempSync(join(tmpdir(), "multica-offer-handler-"));
+  const applications: ElectronApplication[] = [];
+  const captures: Record<string, unknown>[] = [];
+  try {
+    const owner = await openDesktop(ownerProfile, { token: journey.owner.getToken() ?? undefined,
+      deepLink: `multica://account${resourceOfferAccountPath(journey).slice("/account".length)}` });
+    applications.push(owner.app);
+    const handler = await openDesktop(handlerProfile, { token: journey.handler.getToken() ?? undefined,
+      deepLink: `multica://account${resourceOfferAccountPath(journey).slice("/account".length)}` });
+    applications.push(handler.app);
+    await owner.start();
+    await handler.start();
+    const appFor = (page: Page) => page === owner.page ? owner.app : handler.app;
+    const navigate = (page: Page, path: string) => deepLink(appFor(page), path);
+    const capture = async (stage: string, page: Page, focus: Locator) => {
+      captures.push(...await captureNativeSection(appFor(page), page, focus, stage, (name) => testInfo.outputPath(name)));
+    };
+    const resources = await exerciseCollaborationResourceOffers(owner.page, handler.page, journey, { navigate, capture });
+    await testInfo.attach("desktop-resource-offer-identities", { contentType: "application/json", body: JSON.stringify(resources, null, 2) });
+    const history = await exerciseCollaborationCommandHistory(handler.page, owner.page, journey, resources, { navigate, capture });
+    await testInfo.attach("desktop-command-history-identities", { contentType: "application/json", body: JSON.stringify(history, null, 2) });
+    await testInfo.attach("desktop-native-capture-geometry", { contentType: "application/json", body: JSON.stringify(captures, null, 2) });
+    for (const native of [owner, handler]) {
+      expect(native.errors).toEqual([]);
+      expect(native.accountHeaders.length).toBeGreaterThan(10);
+      expect(native.accountHeaders.every((headers) => !headers["x-workspace-id"] && !headers["x-workspace-slug"])).toBe(true);
+      expect(await native.app.evaluate(() => (globalThis as unknown as { desktopAccountAcceptance: NativeHarness }).desktopAccountAcceptance.evidence.daemonStarts)).toBe(0);
+    }
+  } catch (error) {
+    for (const app of applications) await attachFailure(app, testInfo);
+    throw error;
+  } finally {
+    for (const app of applications.reverse()) await app.close().catch(() => undefined);
+    rmSync(ownerProfile, { recursive: true, force: true });
+    rmSync(handlerProfile, { recursive: true, force: true });
+  }
+});
 
 test("Desktop creates a private collaboration issue, downloads through native IPC and restores the same issue", async ({ browserName: _browserName }, testInfo) => {
   test.setTimeout(120_000);

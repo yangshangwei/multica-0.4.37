@@ -95,12 +95,13 @@ SELECT * FROM collaboration_session WHERE issue_id = $1 FOR UPDATE NOWAIT;
 -- The source/session locks serialize this with all control/authority writers.
 -- Epoch comparisons must use the persisted intent, never the current account
 -- epoch or disabled flag: an older intent must preserve freshly authorized work.
--- name: CancelObsoleteCollaborationAuthorCommands :execrows
+-- name: CancelObsoleteCollaborationAuthorCommands :many
 UPDATE collaboration_command SET state = 'cancelled', reason = sqlc.arg(reason)::text
 WHERE session_id = sqlc.arg(session_id)::uuid
   AND author_user_id = sqlc.arg(user_id)::uuid
   AND author_auth_epoch < sqlc.arg(account_epoch)::bigint
-  AND state = 'waiting' AND group_id IS NULL;
+  AND state = 'waiting' AND group_id IS NULL
+RETURNING *;
 
 -- name: RevokeObsoleteCollaborationOwnerGrants :execrows
 UPDATE collaboration_grant SET epoch = epoch + 1, revoked_at = now(), revocation_reason = sqlc.arg(reason)::text

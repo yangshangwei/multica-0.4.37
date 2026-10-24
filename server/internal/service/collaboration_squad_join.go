@@ -133,8 +133,14 @@ func (t *collaborationQueueTx) detachUnreadInput(ctx context.Context, group db.C
 		}
 		batchID = batch.ID
 	}
-	_, err := t.q.DetachCollaborationUnreadInput(ctx, db.DetachCollaborationUnreadInputParams{GroupID: group.ID, CommandID: command.ID, BatchID: batchID, State: state, Reason: reason})
-	return err
+	detached, err := t.q.DetachCollaborationUnreadInput(ctx, db.DetachCollaborationUnreadInputParams{GroupID: group.ID, CommandID: command.ID, BatchID: batchID, State: state, Reason: reason})
+	if err != nil {
+		return err
+	}
+	if detached.State == "cancelled" {
+		return t.recordCommandCancellation(ctx, detached)
+	}
+	return nil
 }
 
 func (t *collaborationQueueTx) detachGroupUnreadInputs(ctx context.Context, group db.CollaborationExecutionGroup, reason string) error {

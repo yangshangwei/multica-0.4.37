@@ -62,7 +62,7 @@ func (q *Queries) AnyCollaborationIssuesInWorkspace(ctx context.Context, arg Any
 const cancelWaitingCollaborationCommand = `-- name: CancelWaitingCollaborationCommand :one
 UPDATE collaboration_command SET state = 'cancelled', reason = $1::text
 WHERE session_id = $2::uuid AND id = $3::uuid AND state = 'waiting'
-RETURNING id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id
+RETURNING id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id, cancellation_event_id
 `
 
 type CancelWaitingCollaborationCommandParams struct {
@@ -92,6 +92,7 @@ func (q *Queries) CancelWaitingCollaborationCommand(ctx context.Context, arg Can
 		&i.ChannelID,
 		&i.BatchID,
 		&i.GroupID,
+		&i.CancellationEventID,
 	)
 	return i, err
 }
@@ -171,7 +172,7 @@ INSERT INTO collaboration_command (session_id, target_id, input_event_id, seq, a
 VALUES ($1::uuid, $2::uuid, $3::uuid, $4::bigint, $5::uuid,
         $6::bigint, $7::bigint,
         $8::bigint, $9::text,$10::uuid,$11::uuid,COALESCE($12::jsonb,'[]'::jsonb))
-RETURNING id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id
+RETURNING id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id, cancellation_event_id
 `
 
 type CreateCollaborationCommandParams struct {
@@ -223,6 +224,7 @@ func (q *Queries) CreateCollaborationCommand(ctx context.Context, arg CreateColl
 		&i.ChannelID,
 		&i.BatchID,
 		&i.GroupID,
+		&i.CancellationEventID,
 	)
 	return i, err
 }
@@ -423,7 +425,7 @@ const finishCollaborationCommand = `-- name: FinishCollaborationCommand :one
 UPDATE collaboration_command SET state = $1::text, reason = $2::text
 WHERE session_id = $3::uuid AND id = $4::uuid
   AND state = 'in_flight' AND $1::text IN ('stopped', 'cancelled')
-RETURNING id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id
+RETURNING id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id, cancellation_event_id
 `
 
 type FinishCollaborationCommandParams struct {
@@ -459,6 +461,7 @@ func (q *Queries) FinishCollaborationCommand(ctx context.Context, arg FinishColl
 		&i.ChannelID,
 		&i.BatchID,
 		&i.GroupID,
+		&i.CancellationEventID,
 	)
 	return i, err
 }
@@ -845,7 +848,7 @@ func (q *Queries) ListCollaborationWorkbench(ctx context.Context, arg ListCollab
 }
 
 const lockCollaborationCommand = `-- name: LockCollaborationCommand :one
-SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id FROM collaboration_command
+SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id, cancellation_event_id FROM collaboration_command
 WHERE session_id = $1::uuid AND id = $2::uuid
 FOR UPDATE
 `
@@ -876,6 +879,7 @@ func (q *Queries) LockCollaborationCommand(ctx context.Context, arg LockCollabor
 		&i.ChannelID,
 		&i.BatchID,
 		&i.GroupID,
+		&i.CancellationEventID,
 	)
 	return i, err
 }

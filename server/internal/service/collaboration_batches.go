@@ -325,12 +325,11 @@ func (t *collaborationQueueTx) selectWaitingInputs(ctx context.Context, channel 
 		if code, err := collaborationCurrentBatchAuthors(ctx, t.q, t.access.Issue.ID, t.access.LifecycleEpoch, []db.CollaborationCommand{input}, "waiting"); err != nil {
 			return selection, err
 		} else if code != "" {
-			if _, err = t.q.CancelWaitingCollaborationCommand(ctx, db.CancelWaitingCollaborationCommandParams{SessionID: t.session.ID, CommandID: input.ID, Reason: "stale_authority"}); err != nil {
+			cancelled, err := t.q.CancelWaitingCollaborationCommand(ctx, db.CancelWaitingCollaborationCommandParams{SessionID: t.session.ID, CommandID: input.ID, Reason: "stale_authority"})
+			if err != nil {
 				return selection, err
 			}
-			receipt := t.targetReceipt("command_cancelled", http.StatusOK, target)
-			receipt.CommandID, receipt.CommandSequence, receipt.ChannelID, receipt.BatchID = input.ID, input.Seq, input.ChannelID, input.BatchID
-			if err = t.event(ctx, "command_cancelled", receipt); err != nil {
+			if err = t.recordCommandCancellation(ctx, cancelled); err != nil {
 				return selection, err
 			}
 			selection.refusal = code

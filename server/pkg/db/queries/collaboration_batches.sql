@@ -104,9 +104,10 @@ FROM collaboration_channel ch WHERE ch.id=$1 AND t.channel_id=ch.id RETURNING t.
 UPDATE collaboration_batch SET state=sqlc.arg(state)::text,settled_at=now()
 WHERE id=sqlc.arg(batch_id)::uuid AND state='in_flight' RETURNING *;
 
--- name: FinishCollaborationBatchInputs :exec
+-- name: FinishCollaborationBatchInputs :many
 UPDATE collaboration_command SET state=sqlc.arg(state)::text,reason=sqlc.arg(reason)::text
-WHERE batch_id=sqlc.arg(batch_id)::uuid AND state='in_flight';
+WHERE batch_id=sqlc.arg(batch_id)::uuid AND state='in_flight'
+RETURNING *;
 
 -- name: ClearCollaborationChannelGroup :exec
 UPDATE collaboration_channel SET active_group_id=NULL WHERE id=$1 AND active_group_id=$2;

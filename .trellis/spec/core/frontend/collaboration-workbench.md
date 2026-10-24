@@ -107,6 +107,13 @@ Assignment notifications use `notifications.assigned`, with recipient-facing
 text in both languages. `creation.assignedSelf` belongs to the self-selection
 state of the creation form and must not label another person's assignment.
 
+Command-history `reason` is a required nullable nonempty string. Successful
+commands with absent/empty stored reasons must be projected as `null` by the
+service; keep strict Core parsing and every nonempty cancellation/failure reason.
+The full cross-client batch test must reopen actual Web and Electron history
+through that parser after natural outcome and proof. See the
+[command-history wire contract](../../server/collaboration-command-history.md).
+
 Cancelled/Switch redacted receipts contain exactly `redacted`,
 `protocol_version`, `issue_id`, `request_id`, `action`, `status`, `code`.
 Zero-valued extra execution fields are not the same wire contract. Missing or
@@ -164,6 +171,28 @@ uses public creation with actual uploads and observes the account WebSocket
 before checking immediate preview/detail cleanup. Native Electron exercises the
 production download IPC and restart with an isolated profile. Resource form E2E
 uses owned runtime/enrollment fixtures without launching an AI process.
+
+Mixed-mention journeys keep one H+A+B+S comment and correlate each queued AI
+command with its target, channel, batch and input event. Revoke A only after the
+real preview, then verify B's queue entry, H's single located notification and
+the identical original-key receipt. A subsequent unavailable-target preview is
+read-only. Toggling an AI checkbox invalidates and unmounts the preview: browser
+tests click the observed control, then assert the new preview rather than wait
+for the retired checkbox's checked state.
+
+Offline notification acceptance closes the recipient client before delivery
+and performs a real login before opening its fresh context/profile. Reusing an
+old token alone does not establish login-after-offline. Read/archive preserve
+current handling; comment/body edits notify only newly effective human
+recipients and retain the appropriate comment/body anchor.
+
+Control journeys distinguish an actual server-issued Claim/Permit with withheld
+proof from kernel containment. The former verifies the UI's unconfirmed Stop,
+partial Resume and immutable original receipt; actual process/proof behavior
+comes from the Linux supervisor tests. Exercise agent, squad and whole-issue
+controls, compare every unselected lane/hold, and require a fresh observed
+explicit Resume after renewed consent. Public runtime credentials remain in
+fixture closures and never enter screenshots, traces or attached evidence.
 
 `collaboration/operation.test.ts` owns the statusless stale-revision refusal and
 unknown/denial/late-epoch matrix. Shared workflow tests must use the actual

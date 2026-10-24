@@ -179,13 +179,16 @@ func (s *CollaborationService) CancelWaitingCommand(ctx context.Context, p Colla
 			if err != nil {
 				return CollaborationQueueReceipt{}, err
 			}
+			if err = t.recordCommandCancellation(ctx, command); err != nil {
+				return CollaborationQueueReceipt{}, err
+			}
 		}
 		if err = t.q.CloseEmptyCollaborationBatches(ctx, t.session.ID); err != nil {
 			return CollaborationQueueReceipt{}, err
 		}
 		receipt := t.targetReceipt("command_cancelled", http.StatusOK, target)
 		receipt.CommandID, receipt.CommandSequence, receipt.ChannelID, receipt.BatchID = command.ID, command.Seq, command.ChannelID, command.BatchID
-		return receipt, t.event(ctx, "command_cancelled", receipt)
+		return receipt, nil
 	})
 }
 

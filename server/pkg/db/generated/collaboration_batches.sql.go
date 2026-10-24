@@ -241,9 +241,10 @@ func (q *Queries) FinishCollaborationBatch(ctx context.Context, arg FinishCollab
 	return i, err
 }
 
-const finishCollaborationBatchInputs = `-- name: FinishCollaborationBatchInputs :exec
+const finishCollaborationBatchInputs = `-- name: FinishCollaborationBatchInputs :many
 UPDATE collaboration_command SET state=$1::text,reason=$2::text
 WHERE batch_id=$3::uuid AND state='in_flight'
+RETURNING id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id, cancellation_event_id
 `
 
 type FinishCollaborationBatchInputsParams struct {
@@ -252,13 +253,47 @@ type FinishCollaborationBatchInputsParams struct {
 	BatchID pgtype.UUID `json:"batch_id"`
 }
 
-func (q *Queries) FinishCollaborationBatchInputs(ctx context.Context, arg FinishCollaborationBatchInputsParams) error {
-	_, err := q.db.Exec(ctx, finishCollaborationBatchInputs, arg.State, arg.Reason, arg.BatchID)
-	return err
+func (q *Queries) FinishCollaborationBatchInputs(ctx context.Context, arg FinishCollaborationBatchInputsParams) ([]CollaborationCommand, error) {
+	rows, err := q.db.Query(ctx, finishCollaborationBatchInputs, arg.State, arg.Reason, arg.BatchID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []CollaborationCommand{}
+	for rows.Next() {
+		var i CollaborationCommand
+		if err := rows.Scan(
+			&i.ID,
+			&i.Seq,
+			&i.AuthorUserID,
+			&i.ParticipantEpoch,
+			&i.AuthorAuthEpoch,
+			&i.LifecycleEpoch,
+			&i.Content,
+			&i.Attachments,
+			&i.State,
+			&i.Reason,
+			&i.CreatedAt,
+			&i.SessionID,
+			&i.TargetID,
+			&i.InputEventID,
+			&i.ChannelID,
+			&i.BatchID,
+			&i.GroupID,
+			&i.CancellationEventID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const listCollaborationBatchInputs = `-- name: ListCollaborationBatchInputs :many
-SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id FROM collaboration_command WHERE batch_id=$1
+SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id, cancellation_event_id FROM collaboration_command WHERE batch_id=$1
 ORDER BY seq,id
 `
 
@@ -290,6 +325,7 @@ func (q *Queries) ListCollaborationBatchInputs(ctx context.Context, batchID pgty
 			&i.ChannelID,
 			&i.BatchID,
 			&i.GroupID,
+			&i.CancellationEventID,
 		); err != nil {
 			return nil, err
 		}
@@ -338,7 +374,7 @@ func (q *Queries) ListCollaborationBatches(ctx context.Context, sessionID pgtype
 }
 
 const listCollaborationChannelWaitingInputs = `-- name: ListCollaborationChannelWaitingInputs :many
-SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id FROM collaboration_command WHERE channel_id=$1 AND state='waiting' ORDER BY seq,id
+SELECT id, seq, author_user_id, participant_epoch, author_auth_epoch, lifecycle_epoch, content, attachments, state, reason, created_at, session_id, target_id, input_event_id, channel_id, batch_id, group_id, cancellation_event_id FROM collaboration_command WHERE channel_id=$1 AND state='waiting' ORDER BY seq,id
 `
 
 func (q *Queries) ListCollaborationChannelWaitingInputs(ctx context.Context, channelID pgtype.UUID) ([]CollaborationCommand, error) {
@@ -368,6 +404,7 @@ func (q *Queries) ListCollaborationChannelWaitingInputs(ctx context.Context, cha
 			&i.ChannelID,
 			&i.BatchID,
 			&i.GroupID,
+			&i.CancellationEventID,
 		); err != nil {
 			return nil, err
 		}
@@ -653,7 +690,7 @@ func (q *Queries) MirrorCollaborationChannelPause(ctx context.Context, arg Mirro
 const moveCollaborationWaitingInput = `-- name: MoveCollaborationWaitingInput :one
 UPDATE collaboration_command c SET channel_id=$1::uuid,batch_id=$2::uuid,seq=$3::bigint
 WHERE c.id=$4::uuid AND c.state='waiting' AND c.group_id IS NULL
-RETURNING c.id, c.seq, c.author_user_id, c.participant_epoch, c.author_auth_epoch, c.lifecycle_epoch, c.content, c.attachments, c.state, c.reason, c.created_at, c.session_id, c.target_id, c.input_event_id, c.channel_id, c.batch_id, c.group_id
+RETURNING c.id, c.seq, c.author_user_id, c.participant_epoch, c.author_auth_epoch, c.lifecycle_epoch, c.content, c.attachments, c.state, c.reason, c.created_at, c.session_id, c.target_id, c.input_event_id, c.channel_id, c.batch_id, c.group_id, c.cancellation_event_id
 `
 
 type MoveCollaborationWaitingInputParams struct {
@@ -689,6 +726,7 @@ func (q *Queries) MoveCollaborationWaitingInput(ctx context.Context, arg MoveCol
 		&i.ChannelID,
 		&i.BatchID,
 		&i.GroupID,
+		&i.CancellationEventID,
 	)
 	return i, err
 }
@@ -772,7 +810,7 @@ func (q *Queries) ResumeCollaborationChannel(ctx context.Context, id pgtype.UUID
 const returnNeverLaunchedCollaborationInput = `-- name: ReturnNeverLaunchedCollaborationInput :one
 UPDATE collaboration_command c SET state=$1::text,reason=$2::text,group_id=NULL,batch_id=$3::uuid
 WHERE c.id=$4::uuid AND c.state='in_flight' AND c.group_id=$5::uuid
-RETURNING c.id, c.seq, c.author_user_id, c.participant_epoch, c.author_auth_epoch, c.lifecycle_epoch, c.content, c.attachments, c.state, c.reason, c.created_at, c.session_id, c.target_id, c.input_event_id, c.channel_id, c.batch_id, c.group_id
+RETURNING c.id, c.seq, c.author_user_id, c.participant_epoch, c.author_auth_epoch, c.lifecycle_epoch, c.content, c.attachments, c.state, c.reason, c.created_at, c.session_id, c.target_id, c.input_event_id, c.channel_id, c.batch_id, c.group_id, c.cancellation_event_id
 `
 
 type ReturnNeverLaunchedCollaborationInputParams struct {
@@ -810,6 +848,7 @@ func (q *Queries) ReturnNeverLaunchedCollaborationInput(ctx context.Context, arg
 		&i.ChannelID,
 		&i.BatchID,
 		&i.GroupID,
+		&i.CancellationEventID,
 	)
 	return i, err
 }
