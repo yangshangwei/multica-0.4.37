@@ -4,7 +4,19 @@ import { nonnegativeVersion, positiveVersion } from "./version";
 const uuid = z.string().uuid().transform((value) => value.toLowerCase());
 const timestamp = z.string().datetime({ offset: true }).nullable();
 const disposition = z.enum(["stopped", "cancelled"]).nullable();
+export const COLLABORATION_EXECUTION_VIEW_VERSION = 6;
+export const CollaborationExecutionViewVersionSchema = z.literal(COLLABORATION_EXECUTION_VIEW_VERSION);
+/** Capture comprehension with a new intent; never add it while replaying one. */
+export function collaborationExecutionViewInput(execution: { protocol_version: number } | null | undefined): { execution_view_version?: 6 } {
+  return execution?.protocol_version === COLLABORATION_EXECUTION_VIEW_VERSION ? { execution_view_version: COLLABORATION_EXECUTION_VIEW_VERSION } : {};
+}
 export const CollaborationTargetHoldReasonSchema = z.enum(["initial", "grant_required", "config_invalid", "switch_hold"]);
+export const CollaborationExecutionModeSchema = z.enum(["linux_pid_namespace_v1", "host_process_supervision_v1"]);
+export const CollaborationDescendantCleanupSchema = z.object({
+  state: z.enum(["tracked_scope_complete", "best_effort", "unverified"]),
+  scope: z.enum(["process_group", "windows_job", "direct_process", "remote_session", "mixed"]),
+  attempted: z.boolean(),
+}).refine((value) => value.state !== "best_effort" || value.attempted);
 
 const channel = z.object({
   id: uuid,
@@ -74,7 +86,7 @@ const group = z.object({
   queued_continuation_run_id: uuid.nullable(),
 });
 
-const run = z.object({
+const runBase = z.object({
   id: uuid,
   command_id: uuid,
   target_id: uuid,
@@ -95,7 +107,26 @@ const run = z.object({
   settled_at: timestamp,
 });
 
-const execution = z.object({
+// Explicitly exclude v6 markers from the legacy branch. Otherwise a malformed
+// host observation could pass a union by having its mode fields stripped.
+const legacyRun = runBase.extend({
+  execution_mode: z.never().optional(),
+  descendant_cleanup: z.never().optional(),
+  launch_count: z.never().optional(),
+});
+const modeRun = runBase.extend({
+  execution_mode: CollaborationExecutionModeSchema,
+  proof_state: z.enum(["unknown", "never_launched_proven", "never_started_proven", "exited_proven", "host_exit_observed"]),
+  descendant_cleanup: CollaborationDescendantCleanupSchema.nullable(),
+  launch_count: nonnegativeVersion,
+}).refine((value) => {
+  if (value.execution_mode === "linux_pid_namespace_v1") return value.proof_state !== "host_exit_observed" && value.descendant_cleanup === null;
+  if (value.proof_state === "exited_proven") return false;
+  return value.proof_state !== "host_exit_observed" || value.launch_count !== "0" && value.descendant_cleanup !== null;
+}, "Termination evidence must match the fixed execution mode");
+const run = z.union([modeRun, legacyRun]);
+
+const executionV5 = z.object({
   protocol_version: z.literal(5),
   issue_id: uuid,
   session_id: uuid,
@@ -109,8 +140,10 @@ const execution = z.object({
   targets: z.array(target),
   commands: z.array(command),
   groups: z.array(group),
-  runs: z.array(run),
+  runs: z.array(legacyRun),
 });
+const executionV6 = executionV5.extend({ protocol_version: CollaborationExecutionViewVersionSchema, runs: z.array(modeRun) });
+const execution = z.discriminatedUnion("protocol_version", [executionV5, executionV6]);
 
 function unique(values: string[]): boolean {
   return new Set(values).size === values.length;

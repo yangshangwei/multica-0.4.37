@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
 import { CollaborationAccountSummarySchema } from "./schema";
-import { CollaborationTargetHoldReasonSchema } from "./execution-schema";
+import { CollaborationExecutionViewVersionSchema, CollaborationTargetHoldReasonSchema } from "./execution-schema";
 import { positiveVersion } from "./version";
 import { collaborationAttachmentIds } from "./attachment-schema";
 
@@ -24,7 +24,9 @@ const targetResult = z.object({
   : value.hold_version !== null && value.target_epoch !== undefined && value.config_version !== undefined)
   .refine((value) => value.code === "command_joined_squad"
     ? value.state === "waiting" && value.waiting_reason === "joined_squad" && value.group_id !== null && value.command_id !== null && value.command_sequence !== undefined && value.channel_id !== null && value.batch_id !== null && value.target_id !== null
-    : value.group_id === null);
+    : value.group_id === null)
+  .refine((value) => value.code !== "collaboration_client_upgrade_required" ||
+    value.state === "blocked" && value.command_id === null && value.command_sequence === undefined);
 const uniqueTargets = <T extends { kind: string; resource_id: string }>(items: T[]) => new Set(items.map((item) => `${item.kind}:${item.resource_id}`)).size === items.length;
 
 export const CollaborationCommentSchema = z.object({
@@ -51,6 +53,7 @@ export const CollaborationCommentHistorySchema = z.object({
   new Set(value.items.map((item) => item.event_seq)).size === value.items.length);
 
 export const CollaborationMentionTargetsSchema = z.object({
+  execution_view_version: CollaborationExecutionViewVersionSchema.optional(),
   protocol_version: z.literal(2), issue_id: uuid, participants: z.array(CollaborationAccountSummarySchema), can_submit_commands: z.boolean(),
   targets: z.array(z.object({
     target_id: uuid, kind: z.enum(["agent", "squad"]), resource_id: uuid, name: z.string(),
@@ -71,6 +74,7 @@ const previewTarget = targetResult.safeExtend({
   (value.state === "waiting" && value.hold_reason === null && value.target_id !== null && value.grouping.target_ids.includes(value.target_id)));
 
 export const CollaborationTriggerPreviewSchema = z.object({
+  execution_view_version: CollaborationExecutionViewVersionSchema.optional(),
   protocol_version: z.literal(2), issue_id: uuid, lifecycle_epoch: positiveVersion,
   write_context: z.object({ participant_epoch: positiveVersion, account_epoch: positiveVersion }).nullish(),
   targets: z.array(previewTarget).refine(uniqueTargets),
@@ -108,6 +112,7 @@ export const CollaborationCommentReceiptSchema = z.object({
 });
 
 export const CollaborationCommentInputSchema = z.object({
+  execution_view_version: CollaborationExecutionViewVersionSchema.optional(),
   content: z.string().trim().min(1), parent_id: uuid.nullable(), suppressed_target_ids: z.array(uuid),
   draft_id: uuid.optional(), attachment_ids: collaborationAttachmentIds.optional(),
   expected_lifecycle_epoch: positiveVersion,
@@ -115,7 +120,7 @@ export const CollaborationCommentInputSchema = z.object({
   target_versions: z.array(z.object({ target_id: uuid, expected_target_epoch: positiveVersion, expected_config_version: positiveVersion })),
 });
 export type CollaborationCommentInput = z.infer<typeof CollaborationCommentInputSchema>;
-export interface CollaborationPreviewInput { content: string; parent_id: string | null; suppressed_target_ids: string[]; draft_id?: string; attachment_ids?: string[] }
+export interface CollaborationPreviewInput { content: string; parent_id: string | null; suppressed_target_ids: string[]; draft_id?: string; attachment_ids?: string[]; execution_view_version?: 6 }
 
 export const CollaborationNotificationSchema = z.object({
   id: uuid, issue_id: uuid, event_seq: positiveVersion, kind: z.string(), is_mention: z.boolean(),

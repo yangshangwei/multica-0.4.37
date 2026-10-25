@@ -23,7 +23,7 @@ it("invalidates grouping when another form updates the shared draft", async () =
   setApiInstance(new ApiClient("https://server.example"));
   const scope = collaborationScope(id);
   const candidate = { target_id: target, kind: "agent", resource_id: agent, name: "Leader", target_epoch: "1", config_version: "1", hold_reason: null, hold_version: "1" };
-  const fetch = vi.fn().mockImplementation(async (url: string) => new Response(JSON.stringify(url.endsWith("mention-targets")
+  const fetch = vi.fn().mockImplementation(async (url: string) => new Response(JSON.stringify(new URL(url).pathname.endsWith("mention-targets")
     ? { protocol_version: 2, issue_id: id, participants: [], can_submit_commands: true, targets: [{ ...candidate, queue_state: "active", waiting_reason: "waiting", execution_available: false }] }
     : { protocol_version: 2, issue_id: id, lifecycle_epoch: "1", recipients: [], targets: [{ ...candidate, state: "waiting", code: "command_queued", command_id: null,
       grouping: { kind: "pending_batch", target_ids: [target], has_existing_inputs: false, follows_pending_batch: false } }] })));
@@ -68,7 +68,7 @@ it("shows merged and later pending batches, then requires a fresh preview after 
   const later = { ...squad, target_id: laterId, resource_id: laterId, name: "Review squad" };
   const candidates = [direct, squad, later];
   const fetch = vi.fn().mockImplementation(async (url: string, init: RequestInit) => {
-    if (url.endsWith("mention-targets")) return new Response(JSON.stringify({ protocol_version: 2, issue_id: id, participants: [], can_submit_commands: true,
+    if (new URL(url).pathname.endsWith("mention-targets")) return new Response(JSON.stringify({ protocol_version: 2, issue_id: id, participants: [], can_submit_commands: true,
       targets: candidates.map((item) => ({ ...item, queue_state: "active", waiting_reason: "waiting", execution_available: false })) }));
     const body = JSON.parse(String(init.body));
     const firstBatch = [target, body.suppressed_target_ids.includes(squadId) ? laterId : squadId].filter((value) => !body.suppressed_target_ids.includes(value));
@@ -114,7 +114,7 @@ it("describes a possible squad continuation in Chinese before any comment is sen
   setApiInstance(new ApiClient("https://server.example"));
   const scope = collaborationScope(id);
   const candidate = { target_id: target, kind: "agent", resource_id: agent, name: "Leader", target_epoch: "1", config_version: "1", hold_reason: null, hold_version: "1" };
-  vi.stubGlobal("fetch", vi.fn().mockImplementation(async (url: string) => new Response(JSON.stringify(url.endsWith("mention-targets")
+  vi.stubGlobal("fetch", vi.fn().mockImplementation(async (url: string) => new Response(JSON.stringify(new URL(url).pathname.endsWith("mention-targets")
     ? { protocol_version: 2, issue_id: id, participants: [], can_submit_commands: true, targets: [{ ...candidate, queue_state: "active", waiting_reason: "waiting", execution_available: false }] }
     : { protocol_version: 2, issue_id: id, lifecycle_epoch: "1", recipients: [], targets: [{ ...candidate, state: "waiting", code: "command_waiting", command_id: null,
       grouping: { kind: "squad_continuation", target_ids: [target], has_existing_inputs: true, follows_pending_batch: false } }] }))));
@@ -137,7 +137,7 @@ it("groups people and AI, inserts @all without losing explicit targets, and send
   const candidate = { target_id: target, kind: "agent", resource_id: agent, target_epoch: "1", config_version: "1", hold_reason: null, hold_version: "1", state: "waiting", code: "command_waiting", command_id: null };
   const squad = { ...candidate, target_id: squadId, kind: "squad", resource_id: squadId };
   const fetch = vi.fn().mockImplementation(async (url: string, init: RequestInit) => {
-    if (url.endsWith("mention-targets")) return new Response(JSON.stringify({ protocol_version: 2, issue_id: id, participants: [account, recipient], can_submit_commands: true,
+    if (new URL(url).pathname.endsWith("mention-targets")) return new Response(JSON.stringify({ protocol_version: 2, issue_id: id, participants: [account, recipient], can_submit_commands: true,
       targets: [{ ...candidate, name: "Authorized agent", queue_state: "paused", waiting_reason: "queue_paused", execution_available: false },
         { ...squad, name: "Authorized squad", queue_state: "paused", waiting_reason: "queue_paused", execution_available: false }] }));
     const body = JSON.parse(String(init.body));
@@ -187,7 +187,7 @@ it("groups people and AI, inserts @all without losing explicit targets, and send
 it("identifies notification recipients and rejected targets instead of calling them waiting", async () => {
   setApiInstance(new ApiClient("https://server.example"));
   const scope = collaborationScope(id);
-  vi.stubGlobal("fetch", vi.fn().mockImplementation(async (url: string) => new Response(JSON.stringify(url.endsWith("mention-targets")
+  vi.stubGlobal("fetch", vi.fn().mockImplementation(async (url: string) => new Response(JSON.stringify(new URL(url).pathname.endsWith("mention-targets")
     ? { protocol_version: 2, issue_id: id, participants: [account], can_submit_commands: false, targets: [] }
     : { protocol_version: 2, issue_id: id, lifecycle_epoch: "1", recipients: [{ recipient: { ...account, name: "Notified participant" }, is_mention: true }],
       targets: [{ target_id: null, kind: "agent", resource_id: agent, state: "blocked", code: "target_unavailable", command_id: null, hold_reason: null, hold_version: null }] }))));
@@ -206,7 +206,7 @@ it("replies to an AI comment using its stable anchor without selecting any AI ta
     comment_revision: "1", created_at: "2026-10-19T00:00:00Z", updated_at: "2026-10-19T00:00:00Z", deleted_at: null, resolved_at: null, resolved_by: null, can_edit: false, can_resolve: true, reactions: [] })!;
   const fetch = vi.fn().mockImplementation(async (url: string, _init: RequestInit) => {
     if (url.endsWith(`/comments/${target}`)) return new Response(JSON.stringify(replyTo));
-    if (url.endsWith("mention-targets")) return new Response(JSON.stringify({ protocol_version: 2, issue_id: id, participants: [account], can_submit_commands: false, targets: [] }));
+    if (new URL(url).pathname.endsWith("mention-targets")) return new Response(JSON.stringify({ protocol_version: 2, issue_id: id, participants: [account], can_submit_commands: false, targets: [] }));
     if (url.endsWith("trigger-preview")) return new Response(JSON.stringify({ protocol_version: 2, issue_id: id, lifecycle_epoch: "1", recipients: [], targets: [] }));
     return new Response(JSON.stringify({ protocol_version: 2, issue_id: id, status: 201, code: "comment_created", comment_id: eventId, comment_revision: "1", event_id: eventId, event_seq: "1", targets: [] }));
   });
@@ -221,7 +221,7 @@ it("replies to an AI comment using its stable anchor without selecting any AI ta
   await userEvent.click(await screen.findByRole("button", { name: "Send comment" }));
   expect(await screen.findByText("Comment confirmed.")).toBeInTheDocument();
   for (const [url, init] of fetch.mock.calls) {
-    if (url.endsWith("mention-targets") || url.endsWith(`/comments/${target}`)) continue;
+    if (new URL(url).pathname.endsWith("mention-targets") || url.endsWith(`/comments/${target}`)) continue;
     expect(JSON.parse(String(init.body))).toMatchObject({ parent_id: target, content: "Thanks for the explanation", suppressed_target_ids: [] });
     if (url.endsWith("/comments")) expect(JSON.parse(String(init.body)).target_versions).toEqual([]);
   }

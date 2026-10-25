@@ -85,6 +85,13 @@ export const collaborationExecutionFixture = {
 
 export const collaborationExecutionIssueFixture = { ...collaborationIssueFixture, execution: collaborationExecutionFixture };
 
+export const collaborationHostExecutionFixture = {
+  ...collaborationExecutionFixture, protocol_version: 6,
+  runs: collaborationExecutionFixture.runs.map((run, index) => ({ ...run,
+    execution_mode: index === 0 ? "host_process_supervision_v1" : "linux_pid_namespace_v1", launch_count: "1", descendant_cleanup: null,
+  })),
+};
+
 export const collaborationControlRequestId = executionId(70);
 export const collaborationControlResumeInput = {
   action: "resume" as const, scope: "issue" as const,

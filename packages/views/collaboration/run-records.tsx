@@ -43,14 +43,16 @@ export function CollaborationRunDisclosure({ scope, issue, run, group, selectedR
     <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2 text-caption text-muted-foreground">
       <span className="font-medium text-foreground">{t(($) => $.execution[run.step_kind])}</span>
       <span className="[overflow-wrap:anywhere]">{run.agent_id}</span>
+      {run.execution_mode === "host_process_supervision_v1" && <span>{t(($) => $.host.mode)}</span>}
       <span>{labels.execution(run.progress_state)}</span>
-      <span>{labels.proof(run.proof_state)}</span>
-      {run.recording_incomplete === true && <span>{t(($) => $.execution.incomplete)}</span>}
+      <span>{labels.proof(run.proof_state, run.execution_mode, run.forced_disposition)}</span>
+      {run.recording_incomplete === true && <span>{run.execution_mode === "host_process_supervision_v1" && run.proof_state === "host_exit_observed" ? t(($) => $.host.incomplete) : t(($) => $.execution.incomplete)}</span>}
       <Button variant="outline" size="sm" className="pointer-coarse:min-h-11" aria-expanded={open} aria-controls={`records-${run.id}`}
         aria-label={t(($) => open ? $.records.closeLabel : $.records.openLabel, { id: run.id })} onClick={toggle}>
         {open ? t(($) => $.records.close) : t(($) => $.records.open)}
       </Button>
     </div>
+    {run.execution_mode === "host_process_supervision_v1" && <p className="text-caption text-muted-foreground"><RunCleanup run={run} /></p>}
     {open && <RunRecords key={`${scope.apiScope}:${scope.userId}:${issueId}:${run.id}`} scope={scope} issueId={issueId} runId={run.id} group={group} />}
   </li>;
 }
@@ -71,12 +73,18 @@ function RunRecords({ scope, issueId, runId, group }: { scope: CollaborationScop
     {page && run && <>
       <dl className="grid min-w-0 gap-x-6 gap-y-3 text-body sm:grid-cols-2 [&_dt]:text-caption [&_dt]:text-muted-foreground [&_dd]:mt-1 [&_dd]:[overflow-wrap:anywhere]">
         <div><dt>{t(($) => $.records.groupStatus)}</dt><dd>{labels.execution(group.state)}</dd></div>
-        <div><dt>{t(($) => $.records.outcome)}</dt><dd>{run.forced_disposition !== null
+        <div><dt>{t(($) => $.records.outcome)}</dt><dd>{run.execution_mode !== "host_process_supervision_v1" && run.forced_disposition !== null
           ? run.settled_at === null ? t(($) => $.execution.stopRequested) : labels.execution(run.forced_disposition)
           : run.business_outcome === "success" ? t(($) => $.execution.succeeded) : run.business_outcome === "failure" ? t(($) => $.execution.failed) : t(($) => $.records.noOutcome)}</dd></div>
         <div><dt>{t(($) => $.records.recording)}</dt><dd>{t(($) => $.records.coverage[page.recording.status])}</dd></div>
-        <div><dt>{t(($) => $.records.termination)}</dt><dd>{labels.proof(run.proof_state)}</dd></div>
+        <div><dt>{run.execution_mode === "host_process_supervision_v1" ? t(($) => $.host.termination) : t(($) => $.records.termination)}</dt><dd>{labels.proof(run.proof_state, run.execution_mode, run.forced_disposition)}</dd></div>
+        {run.execution_mode === "host_process_supervision_v1" && <>
+          <div><dt>{t(($) => $.host.modeLabel)}</dt><dd>{t(($) => $.host.mode)}</dd></div>
+          <div><dt>{t(($) => $.host.cleanup)}</dt><dd><RunCleanup run={run} /></dd></div>
+          <div><dt>{t(($) => $.host.cleanupScope)}</dt><dd>{run.descendant_cleanup ? t(($) => $.host.scopes[run.descendant_cleanup!.scope]) : t(($) => $.records.notRecorded)}</dd></div>
+        </>}
       </dl>
+      {run.launch_count !== undefined && <p className="text-caption text-muted-foreground">{t(($) => $.host.launches, { launches: run.launch_count })}</p>}
       {!page.recording.inputs_recorded && <p className="text-caption text-muted-foreground">{t(($) => $.records.inputsMissing)}</p>}
       <AppLink href={accountPath({ view: "participating", issueId, runId })} className="inline-flex min-h-11 items-center text-caption underline underline-offset-4">{t(($) => $.records.permalink)}</AppLink>
       <RecordedResource page={page} groupId={group.id} />
@@ -89,12 +97,22 @@ function RunRecords({ scope, issueId, runId, group }: { scope: CollaborationScop
   </section>;
 }
 
+function RunCleanup({ run }: { run: CollaborationExecutionRun }) {
+  const { t } = useT("collaboration");
+  switch (run.descendant_cleanup?.state) {
+    case "tracked_scope_complete": return t(($) => $.host.cleanupTracked);
+    case "best_effort": return run.proof_state === "host_exit_observed" ? t(($) => $.host.cleanupBestEffort) : t(($) => $.host.cleanupAttempted);
+    case "unverified": default: return t(($) => $.host.cleanupUnverified);
+  }
+}
+
 function RecordedResource({ page, groupId }: { page: CollaborationRunRecords; groupId: string }) {
   const { t } = useT("collaboration");
   const resource = page.resource;
   const references = [
     [t(($) => $.records.runId), page.run.id], [t(($) => $.records.groupId), groupId],
     [t(($) => $.execution.agent), resource.agent_id], [t(($) => $.resources.runtime), resource.runtime_id],
+    ...(resource.agent_owner_user_id ? [[t(($) => $.host.agentOwner), resource.agent_owner_user_id]] : []),
     [t(($) => $.resources.owner), resource.resource_owner_user_id], [t(($) => $.resources.workspace), resource.execution_workspace_id],
     [t(($) => $.records.grant), resource.grant_id], [t(($) => $.records.provider), resource.provider], [t(($) => $.records.model), resource.model],
     [t(($) => $.records.accountSource), resource.account_source === "runtime_configuration" ? t(($) => $.records.runtimeAccount) : null],

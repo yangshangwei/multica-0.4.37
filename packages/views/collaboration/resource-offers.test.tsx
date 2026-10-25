@@ -50,12 +50,12 @@ function harness(initiallyOffered = false) {
     grant_id: action === "consent_resource" ? uuid(20) : null,
     ...(action === "consent_resource" ? {} : { offer_id: offerId, offer_version: action === "offer_resource" ? "1" : "2" }) });
   const fetch = vi.fn().mockImplementation(async (url: string, init: RequestInit) => {
-    if (url.endsWith("/resources")) return json({ protocol_version: 1, issue_id: id, lifecycle_epoch: "1", target_set_version: source.execution.target_set_version,
+    if (new URL(url).pathname.endsWith("/resources")) return json({ protocol_version: 1, issue_id: id, lifecycle_epoch: "1", target_set_version: source.execution.target_set_version,
       can_organize: canOrganize() && !state.closed, targets: state.adopted ? [{ target_id: targetId, kind: "squad", resource_id: squadId, name: "Private squad", target_epoch: "1", config_version: "1",
         authorized: state.grants.size === 2, reason: state.grants.size === 2 ? "" : "grant_required", resources: resourceView() }] : [] });
     if (url.includes("/resources/offers?")) return json({ protocol_version: 1, issue_id: id, lifecycle_epoch: "1", target_set_version: source.execution.target_set_version, can_offer: !state.closed, items: state.offered ? [offer()] : [], next_cursor: null });
-    if (url.endsWith(`/resources/offers/${offerId}`)) return json(offer());
-    if (url.endsWith("/api/workspaces")) return json([{ id: auth.user.id === organizer ? id : workspaceId, name: auth.user.id === organizer ? "Source workspace" : "Private workspace", slug: "resources", role: "owner" }]);
+    if (new URL(url).pathname.endsWith(`/resources/offers/${offerId}`)) return json(offer());
+    if (new URL(url).pathname.endsWith("/api/workspaces")) return json([{ id: auth.user.id === organizer ? id : workspaceId, name: auth.user.id === organizer ? "Source workspace" : "Private workspace", slug: "resources", role: "owner" }]);
     if (url.includes("/resources/offers/options?")) return json({ protocol_version: 1, issue_id: id, execution_workspace_id: workspaceId,
       items: state.hiddenInventory ? [] : [{ kind: "squad", resource_id: squadId, name: "Private squad", available: true, reason: "", resources: resourceView() }] });
     if (url.includes("/resources/identity?")) {
@@ -64,21 +64,21 @@ function harness(initiallyOffered = false) {
     }
     if (url.includes("/resources/operations/")) return json(receipt(state.withdrawRequest, "withdraw_resource_offer", "resource_offer_withdrawn", 200));
     const requestId = new Headers(init.headers).get("Idempotency-Key")!;
-    if (url.endsWith("/resources/offers") && init.method === "POST") {
+    if (new URL(url).pathname.endsWith("/resources/offers") && init.method === "POST") {
       if (JSON.parse(String(init.body)).expected_participant_epoch !== state.participantEpoch) return json({ ...receipt(requestId, "offer_resource", "stale_authority", 409), offer_id: undefined, offer_version: undefined }, 409);
       state.offered = true; return json(receipt(requestId, "offer_resource", "resource_offered"), 201);
     }
-    if (url.endsWith(`/offers/${offerId}/adopt`)) {
+    if (new URL(url).pathname.endsWith(`/offers/${offerId}/adopt`)) {
       if (state.staleAdopt) { state.withdrawn = true; return json(receipt(requestId, "adopt_resource_offer", "stale_offer", 409), 409); }
       state.adopted = true;
       return json(receipt(requestId, "adopt_resource_offer", "resource_offer_adopted"), 201);
     }
-    if (url.endsWith(`/offers/${offerId}/withdraw`)) {
+    if (new URL(url).pathname.endsWith(`/offers/${offerId}/withdraw`)) {
       state.withdrawn = true; state.withdrawRequest = requestId;
       if (state.lostWithdraw) throw new TypeError("Lost response");
       return json(receipt(requestId, "withdraw_resource_offer", "resource_offer_withdrawn", 200));
     }
-    if (url.endsWith("/consents")) { state.grants.add(JSON.parse(String(init.body)).agent_id); return json(receipt(requestId, "consent_resource", "resource_consented"), 201); }
+    if (new URL(url).pathname.endsWith("/consents")) { state.grants.add(JSON.parse(String(init.body)).agent_id); return json(receipt(requestId, "consent_resource", "resource_consented"), 201); }
     throw new Error(`Unexpected URL ${url}`);
   });
   vi.stubGlobal("fetch", fetch);
@@ -181,7 +181,7 @@ it("recovers a lost withdrawal using the original request without revoking a gra
   const writes = fetch.mock.calls.filter(([, init]) => init.method === "POST");
   expect(writes).toHaveLength(1);
   expect(writes[0]?.[0]).toContain(`/offers/${offerId}/withdraw`);
-  expect(fetch.mock.calls.some(([url]) => url.endsWith(`/resources/operations/${state.withdrawRequest}`))).toBe(true);
+  expect(fetch.mock.calls.some(([url]) => new URL(url).pathname.endsWith(`/resources/operations/${state.withdrawRequest}`))).toBe(true);
 });
 
 it("hides a selected inventory resource once a current refresh no longer discloses it", async () => {
@@ -301,7 +301,7 @@ it("preserves the original pending operation when organizer authority disappears
   let loseResponse!: () => void;
   const delayed = new Promise<void>((resolve) => { loseResponse = resolve; });
   fetch.mockImplementation(async (url: string, init: RequestInit) => {
-    if (url.endsWith(`/offers/${offerId}/adopt`)) { await delayed; throw new TypeError("Lost response"); }
+    if (new URL(url).pathname.endsWith(`/offers/${offerId}/adopt`)) { await delayed; throw new TypeError("Lost response"); }
     return originalFetch(url, init);
   });
   const view = mount(coOwner);

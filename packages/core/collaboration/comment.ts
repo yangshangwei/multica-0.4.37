@@ -17,6 +17,7 @@ export function parseCollaborationCommentDraft(draft: CollaborationDraft) {
 export function prepareCollaborationComment(scope: CollaborationScope, issueId: string, requestId: string, content: string, suppressed: string[], preview: CollaborationTriggerPreview, attachments?: { draftId?: string; attachmentIds: string[] }, parentId: string | null = null): CollaborationDraft {
   if (preview.issue_id !== issueId.toLowerCase() || !z.uuid().safeParse(requestId).success) throw new CollaborationUnavailableError();
   const input = CollaborationCommentInputSchema.parse({ content, parent_id: parentId, suppressed_target_ids: suppressed,
+    ...(preview.execution_view_version === undefined ? {} : { execution_view_version: preview.execution_view_version }),
     ...(attachments?.attachmentIds.length ? { ...(attachments.draftId ? { draft_id: attachments.draftId } : {}), attachment_ids: attachments.attachmentIds } : {}),
     expected_lifecycle_epoch: preview.lifecycle_epoch, expected_participant_epoch: preview.write_context?.participant_epoch ?? null,
     expected_account_epoch: preview.write_context?.account_epoch ?? null,

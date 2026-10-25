@@ -10,11 +10,23 @@ import { CollaborationQueryState } from "./query-state";
 
 export type CollaborationExecutionSubmit = (draft: CollaborationDraft, recover?: boolean) => Promise<{ status: number; code: string } | undefined>;
 
-export function CollaborationResourceSummary({ resource }: { resource: Pick<CollaborationResourceView, "owner" | "runtime"> }) {
+type ResourceSummary = Pick<CollaborationResourceView, "agent_id" | "owner_user_id"> & Partial<Pick<CollaborationResourceView,
+  "owner" | "runtime" | "agent_name" | "execution_mode" | "agent_owner_user_id" | "provider" | "provider_version" | "account_source">>;
+
+export function CollaborationResourceSummary({ resource }: { resource: ResourceSummary }) {
   const { t } = useT("collaboration");
+  const host = resource.execution_mode === "host_process_supervision_v1";
+  const agentOwner = resource.owner && resource.agent_owner_user_id === resource.owner.user_id ? resource.owner.name : resource.agent_owner_user_id;
+  const provider = resource.provider ?? resource.runtime?.provider;
   return <dl className="space-y-1 text-caption text-muted-foreground [overflow-wrap:anywhere]">
+    {host && <div><dt className="inline">{t(($) => $.host.agentOwner)}: </dt><dd className="inline">{agentOwner ?? t(($) => $.resources.unknownOwner)}</dd></div>}
     <div><dt className="inline">{t(($) => $.resources.owner)}: </dt><dd className="inline">{resource.owner?.name ?? t(($) => $.resources.unknownOwner)}</dd></div>
     <div><dt className="inline">{t(($) => $.resources.runtime)}: </dt><dd className="inline">{resource.runtime ? runtimeDisplayLabel(resource.runtime) : t(($) => $.resources.unknownRuntime)}</dd></div>
+    {host && <>
+      <div><dt className="inline">{t(($) => $.host.modeLabel)}: </dt><dd className="inline">{t(($) => $.host.mode)}</dd></div>
+      <div><dt className="inline">{t(($) => $.records.provider)}: </dt><dd className="inline">{provider ? [provider, resource.provider_version].filter(Boolean).join(" ") : t(($) => $.records.notRecorded)}</dd></div>
+      <div><dt className="inline">{t(($) => $.records.accountSource)}: </dt><dd className="inline">{resource.account_source === "runtime_configuration" ? t(($) => $.records.runtimeAccount) : t(($) => $.records.notRecorded)}</dd></div>
+    </>}
   </dl>;
 }
 
@@ -82,8 +94,10 @@ export function CollaborationResourceCandidateForm({ scope, issueId, title, conf
   </form>;
 }
 
-export function CollaborationResourceConsentForm({ scope, issueId, targetId, agentId, proposalId = null, name, locked, disabled = false, prepare, submit, close }: {
+export function CollaborationResourceConsentForm({ scope, issueId, targetId, agentId, proposalId = null, name, resource, executionViewVersion, locked, disabled = false, prepare, submit, close }: {
   scope: CollaborationScope; issueId: string; targetId: string; agentId: string; proposalId?: string | null; name: string; locked: boolean; disabled?: boolean;
+  resource: ResourceSummary | undefined;
+  executionViewVersion: number | undefined;
   prepare: (identity: CollaborationResourceIdentityView) => CollaborationDraft; submit: CollaborationExecutionSubmit; close: () => void;
 }) {
   const { t } = useT("collaboration");
@@ -91,20 +105,32 @@ export function CollaborationResourceConsentForm({ scope, issueId, targetId, age
   const client = useQueryClient();
   const [error, setError] = useState<unknown>(null);
   const identity = useQuery(collaborationResourceIdentityOptions(client, scope, issueId, targetId, agentId, proposalId));
-  const ready = !locked && !disabled && identity.isSuccess && !identity.isFetching && identity.data.identity !== null;
+  const host = resource?.execution_mode === "host_process_supervision_v1";
+  const modeKnown = executionViewVersion !== 6 || resource?.execution_mode !== undefined;
+  const summaryReady = modeKnown && resource !== undefined && resource.agent_id === agentId && resource.owner_user_id === scope.userId &&
+    (!host || resource.agent_owner_user_id !== undefined && resource.runtime != null && resource.owner != null &&
+      (resource.provider ?? resource.runtime.provider) !== "" && resource.account_source === "runtime_configuration");
+  const ready = !locked && !disabled && summaryReady && identity.isSuccess && !identity.isFetching && identity.data.identity !== null;
   return <form className="min-w-0 space-y-3 py-3" onSubmit={(event) => {
     event.preventDefault();
     if (!ready || !identity.data) return;
     try { const draft = prepare(identity.data); void submit(draft).then(close); } catch (failure) { setError(failure); }
   }}>
-    <h5 className="text-body font-semibold [overflow-wrap:anywhere]">{t(($) => $.resources.authorize, { name })}</h5>
-    <p className="text-caption text-muted-foreground">{t(($) => $.resources.consentPurpose)}</p>
+    <h5 className="text-body font-semibold [overflow-wrap:anywhere]">{host || !modeKnown ? t(($) => $.host.authorizeTitle) : t(($) => $.resources.authorize, { name })}</h5>
+    {(host || !modeKnown) && <p className="text-body [overflow-wrap:anywhere]">{name} · {agentId}</p>}
+    {resource && <CollaborationResourceSummary resource={resource} />}
+    {modeKnown && <p className="text-caption text-muted-foreground">{host ? t(($) => $.host.authorizeBody) : t(($) => $.resources.consentPurpose)}</p>}
+    {host && <>
+      <p className="text-caption text-muted-foreground">{t(($) => $.host.access)}</p>
+      <p className="text-caption text-muted-foreground">{t(($) => $.host.stopScope)}</p>
+    </>}
+    {!summaryReady && <p role="status" className="text-body">{t(($) => $.host.unavailable)}</p>}
     {disabled && <p role="status" className="text-body">{t(($) => $.execution.staleRequest)}</p>}
     {identity.isFetching && <p role="status">{t(($) => $.page.loading)}</p>}
     {identity.error && <CollaborationQueryState error={identity.error} retry={() => void identity.refetch()} />}
     {error != null && <CollaborationQueryState error={error} />}
     {identity.data?.identity === null && <p role="status" className="text-body">{labels.reason(identity.data.reason)}</p>}
-    <div className="flex flex-wrap gap-2"><Button type="submit" disabled={!ready} className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]">{t(($) => $.resources.confirmAuthorization)}</Button>
+    <div className="flex flex-wrap gap-2"><Button type="submit" disabled={!ready} className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]">{host || !modeKnown ? t(($) => $.host.authorize) : t(($) => $.resources.confirmAuthorization)}</Button>
       <Button type="button" variant="ghost" disabled={locked} onClick={close} className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]">{t(($) => $.workflow.dismiss)}</Button></div>
   </form>;
 }

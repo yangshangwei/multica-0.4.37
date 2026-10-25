@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "@multica/core/api";
 import { collaborationIssueOptions, collaborationKeys, collaborationScope, executeCollaborationResource, parseCollaborationIssue, readCollaborationDrafts } from "@multica/core/collaboration";
-import { collaborationExecutionIssueFixture } from "@multica/core/collaboration/test-fixtures";
+import { collaborationExecutionIssueFixture, collaborationHostExecutionFixture } from "@multica/core/collaboration/test-fixtures";
 import { renderWithI18n } from "../test/i18n";
 import { CollaborationExecutionPanel } from "./execution-panel";
 import { NavigationProvider } from "../navigation";
@@ -27,21 +27,65 @@ vi.mock("@multica/core/auth", () => ({ useAuthStore: { getState: () => ({ user: 
 const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 afterEach(() => { client.clear(); localStorage.clear(); vi.unstubAllGlobals(); });
 const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), { status });
-function mount() {
+function mount(host = false) {
   setApiInstance(new ApiClient("https://server.example"));
   const scope = collaborationScope(id);
-  const issue = parseCollaborationIssue({ ...source, write_context: { participant_epoch: "1", account_epoch: "1" } })!;
+  const issue = parseCollaborationIssue({ ...source, execution: host ? collaborationHostExecutionFixture : source.execution, write_context: { participant_epoch: "1", account_epoch: "1" } })!;
   renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={{ pathname: "/account", searchParams: new URLSearchParams(), hash: "", push: vi.fn(), replace: vi.fn(), back: vi.fn(), getShareableUrl: (path) => `https://server.example${path}` }}><CollaborationExecutionPanel scope={scope} issue={issue} /></NavigationProvider></QueryClientProvider>);
   return { scope };
 }
 
+it("shows the host boundary and separate resource identities before consent", async () => {
+  const agentOwner = "00000000-0000-4000-8000-000000000098";
+  const hostResource = { ...resource, execution_mode: "host_process_supervision_v1", agent_owner_user_id: agentOwner,
+    provider: "codex", provider_version: "0.100.0", account_source: "runtime_configuration" };
+  const fetch = vi.fn().mockImplementation(async (url: string, init: RequestInit) => {
+    if (new URL(url).pathname.endsWith("/resources")) return json({ ...resources, targets: [{ ...resources.targets[0], resources: [hostResource] }] });
+    if (url.includes("/resources/identity?")) return json(identity);
+    if (new URL(url).pathname.endsWith("/consents")) return json({ protocol_version: 2, issue_id: id, request_id: new Headers(init.headers).get("Idempotency-Key"),
+      action: "consent_resource", status: 201, code: "resource_consented", scope: "target", target_id: target.id, grant_id: id }, 201);
+    throw new Error(`Unexpected URL ${url}`);
+  });
+  vi.stubGlobal("fetch", fetch);
+  mount(true);
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Manage AI resources" }));
+  await user.click(await screen.findByRole("button", { name: "Authorize Implementation agent" }));
+  expect(await screen.findByRole("heading", { name: "Allow this issue to use this agent" })).toBeInTheDocument();
+  expect(screen.getByText(/The directory is not an operating-system sandbox/)).toBeInTheDocument();
+  expect(screen.getAllByText(agentOwner).length).toBeGreaterThan(0);
+  expect(screen.getAllByText("codex 0.100.0").length).toBeGreaterThan(0);
+  expect(screen.getAllByText("Runtime configuration").length).toBeGreaterThan(0);
+  await user.click(await screen.findByRole("button", { name: "Authorize for this issue" }));
+  await screen.findByText("Resource authorized. Explicit resume is still required.");
+  const posts = fetch.mock.calls.filter(([, init]) => init.method === "POST");
+  expect(posts).toHaveLength(1);
+  expect(JSON.parse(posts[0]![1].body)).toMatchObject({ execution_view_version: 6, expected_config_version: target.config_version });
+});
+
+it("disables v6 consent when its resource response lacks all execution metadata", async () => {
+  const fetch = vi.fn().mockImplementation(async (url: string, _init: RequestInit) => {
+    if (new URL(url).pathname.endsWith("/resources")) return json(resources);
+    if (url.includes("/resources/identity?")) return json(identity);
+    throw new Error(`Unexpected URL ${url}`);
+  });
+  vi.stubGlobal("fetch", fetch);
+  mount(true);
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Manage AI resources" }));
+  await user.click(await screen.findByRole("button", { name: "Authorize Implementation agent" }));
+  expect(await screen.findByRole("button", { name: "Authorize for this issue" })).toBeDisabled();
+  expect(screen.queryByRole("button", { name: "Confirm authorization" })).not.toBeInTheDocument();
+  expect(fetch.mock.calls.filter(([, init]) => init.method === "POST")).toHaveLength(0);
+});
+
 it("confirms the real owner's resource and recovers a lost response without resuming", async () => {
   let requestId = "";
   const fetch = vi.fn().mockImplementation(async (url: string, init: RequestInit) => {
-    if (url.endsWith("/resources")) return json(resources);
+    if (new URL(url).pathname.endsWith("/resources")) return json(resources);
     if (url.includes("/resources/identity?")) return json(identity);
     if (url.includes("/resources/operations/")) return json({ protocol_version: 2, issue_id: id, request_id: requestId, action: "consent_resource", status: 201, code: "resource_consented", scope: "target", target_id: target.id, grant_id: id });
-    if (url.endsWith("/consents")) { requestId = new Headers(init.headers).get("Idempotency-Key")!; throw new TypeError("Lost response"); }
+    if (new URL(url).pathname.endsWith("/consents")) { requestId = new Headers(init.headers).get("Idempotency-Key")!; throw new TypeError("Lost response"); }
     throw new Error(`Unexpected URL ${url}`);
   });
   vi.stubGlobal("fetch", fetch);
@@ -55,17 +99,17 @@ it("confirms the real owner's resource and recovers a lost response without resu
   expect(await screen.findByText("Resource authorized. Explicit resume is still required.")).toBeInTheDocument();
   await waitFor(() => expect(readCollaborationDrafts({ ...scope, issueId: id })).toEqual([]));
   expect(fetch.mock.calls.filter(([, init]) => init.method === "POST")).toHaveLength(1);
-  expect(fetch.mock.calls.some(([url]) => url.endsWith("/control"))).toBe(false);
+  expect(fetch.mock.calls.some(([url]) => new URL(url).pathname.endsWith("/control"))).toBe(false);
 });
 
 it("registers only a selected candidate from the explicit workspace", async () => {
   const newAgent = "00000000-0000-4000-8000-000000000098";
   const fetch = vi.fn().mockImplementation(async (url: string, init: RequestInit) => {
-    if (url.endsWith("/resources")) return json(resources);
-    if (url.endsWith("/api/workspaces")) return json([{ id, name: "Resource workspace", slug: "resources", role: "owner" }]);
+    if (new URL(url).pathname.endsWith("/resources")) return json(resources);
+    if (new URL(url).pathname.endsWith("/api/workspaces")) return json([{ id, name: "Resource workspace", slug: "resources", role: "owner" }]);
     if (url.includes("/resources/options?")) return json({ protocol_version: 1, issue_id: id, execution_workspace_id: id,
       items: [{ kind: "agent", resource_id: newAgent, name: "New agent", available: true, reason: "", resources: [{ ...resource, agent_id: newAgent }] }] });
-    if (url.endsWith("/targets")) return json({ protocol_version: 2, issue_id: id, request_id: new Headers(init.headers).get("Idempotency-Key"), action: "register_target", status: 201, code: "target_registered", scope: "target", target_id: newAgent, grant_id: null }, 201);
+    if (new URL(url).pathname.endsWith("/targets")) return json({ protocol_version: 2, issue_id: id, request_id: new Headers(init.headers).get("Idempotency-Key"), action: "register_target", status: 201, code: "target_registered", scope: "target", target_id: newAgent, grant_id: null }, 201);
     throw new Error(`Unexpected URL ${url}`);
   });
   vi.stubGlobal("fetch", fetch);
@@ -89,8 +133,8 @@ it("commits an authorized Switch proposal only after reviewing the explicit resu
     status: "consent_ready", reason: "", resources: [{ role: "agent", agent_id: resource.agent_id, runtime_id: runtimeId,
       execution_workspace_id: id, owner_user_id: id, consented: true, revoked: false, grant_id: null, grant_epoch: null }] };
   const fetch = vi.fn().mockImplementation(async (url: string, init: RequestInit) => {
-    if (url.endsWith("/switch-proposals")) return json([proposal]);
-    if (url.endsWith("/commit")) return json({ protocol_version: 2, issue_id: id, request_id: new Headers(init.headers).get("Idempotency-Key"), action: "commit_target_switch", status: 200, code: "target_switched",
+    if (new URL(url).pathname.endsWith("/switch-proposals")) return json([proposal]);
+    if (new URL(url).pathname.endsWith("/commit")) return json({ protocol_version: 2, issue_id: id, request_id: new Headers(init.headers).get("Idempotency-Key"), action: "commit_target_switch", status: 200, code: "target_switched",
       scope: "target", target_id: target.id, proposal_id: proposalId, channel_id: target.channel_id, queue_state: "paused", control_version: target.control.control_version,
       target_set_version: source.execution.target_set_version, group_id: null, group_settled: false, grant_id: null, batch_id: null, command_id: null, run_id: null, run_settled: false, channels: [], target_holds: [] });
     throw new Error(`Unexpected URL ${url}`);
@@ -104,7 +148,7 @@ it("commits an authorized Switch proposal only after reviewing the explicit resu
   expect(fetch.mock.calls.filter(([, init]) => init.method === "POST")).toHaveLength(0);
   await user.click(screen.getByRole("button", { name: "Apply configuration" }));
   expect(await screen.findByText("Configuration switched. Explicit resume is still required.")).toBeInTheDocument();
-  expect(fetch.mock.calls.some(([url]) => url.endsWith("/control"))).toBe(false);
+  expect(fetch.mock.calls.some(([url]) => new URL(url).pathname.endsWith("/control"))).toBe(false);
 });
 
 it("waits for coherent issue and resource observations before opening consent after another actor adopts", async () => {
@@ -120,11 +164,11 @@ it("waits for coherent issue and resource observations before opening consent af
   let releaseIssue!: () => void;
   const issueReady = new Promise<void>((resolve) => { releaseIssue = resolve; });
   const fetch = vi.fn().mockImplementation(async (url: string, init: RequestInit) => {
-    if (url.endsWith(`/api/collaboration/issues/${id}`)) { if (adopted) await issueReady; return json(adopted ? after : before); }
-    if (url.endsWith("/resources")) return json(adopted ? currentResources : { ...resources, target_set_version: "1", targets: [] });
+    if (new URL(url).pathname.endsWith(`/api/collaboration/issues/${id}`)) { if (adopted) await issueReady; return json(adopted ? after : before); }
+    if (new URL(url).pathname.endsWith("/resources")) return json(adopted ? currentResources : { ...resources, target_set_version: "1", targets: [] });
     if (url.includes("/resources/offers?")) return json({ protocol_version: 1, issue_id: id, lifecycle_epoch: source.lifecycle_epoch, target_set_version: adopted ? "2" : "1", can_offer: true, items: [], next_cursor: null });
     if (url.includes("/resources/identity?")) return json(identity);
-    if (url.endsWith("/consents")) return json({ protocol_version: 2, issue_id: id, request_id: new Headers(init.headers).get("Idempotency-Key"), action: "consent_resource", status: 201,
+    if (new URL(url).pathname.endsWith("/consents")) return json({ protocol_version: 2, issue_id: id, request_id: new Headers(init.headers).get("Idempotency-Key"), action: "consent_resource", status: 201,
       code: "resource_consented", scope: "target", target_id: target.id, grant_id: id }, 201);
     throw new Error(`Unexpected URL ${url}`);
   });
@@ -138,11 +182,11 @@ it("waits for coherent issue and resource observations before opening consent af
   await user.click(await screen.findByRole("button", { name: "Manage AI resources" }));
   await screen.findByText("No AI targets have been registered.");
   adopted = true;
-  const previousIssueReads = fetch.mock.calls.filter(([url]) => url.endsWith(`/api/collaboration/issues/${id}`)).length;
+  const previousIssueReads = fetch.mock.calls.filter(([url]) => new URL(url).pathname.endsWith(`/api/collaboration/issues/${id}`)).length;
   await user.click(screen.getByRole("button", { name: "Refresh resources" }));
   const authorize = await screen.findByRole("button", { name: "Authorize Implementation agent" });
   expect(authorize).toBeDisabled();
-  expect(fetch.mock.calls.filter(([url]) => url.endsWith(`/api/collaboration/issues/${id}`)).length).toBeGreaterThan(previousIssueReads);
+  expect(fetch.mock.calls.filter(([url]) => new URL(url).pathname.endsWith(`/api/collaboration/issues/${id}`)).length).toBeGreaterThan(previousIssueReads);
   await user.click(authorize);
   expect(fetch.mock.calls.some(([url]) => url.includes("/resources/identity?"))).toBe(false);
   await act(async () => { releaseIssue(); });

@@ -32,6 +32,11 @@ export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { s
   } });
   const receipt = control.data?.action === "stop" || control.data?.action === "resume" ? control.data : null;
   const execution = issue.execution;
+  const hostMode = "host_process_supervision_v1";
+  const hasHostRuns = execution?.runs.some((run) => run.execution_mode === hostMode) === true;
+  const channelMode = (id: string | null) => execution?.runs.some((run) => run.channel_id === id && run.execution_mode === hostMode) ? hostMode : undefined;
+  const targetMode = (id: string | null) => channelMode(execution?.targets.find((target) => target.id === id)?.channel_id ?? null);
+  const receiptMode = receipt?.scope === "target" ? targetMode(receipt.target_id) : hasHostRuns ? hostMode : undefined;
   const canControl = issue.capabilities.control_ai === true && issue.write_context != null;
   const locked = control.isPending || pending.execution.length > 0 || pending.error;
   const laneName = (id: string) => t(($) => $.execution.lane, { number: (execution?.channels.findIndex((lane) => lane.id === id) ?? -1) + 1 });
@@ -52,18 +57,22 @@ export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { s
   }
   return <section aria-label={t(($) => $.execution.title)} className="min-w-0 space-y-4">
     <h3 className="text-body font-semibold">{t(($) => $.execution.title)}</h3>
-    <p className="text-caption text-muted-foreground">{t(($) => $.execution.unavailable)}</p>
+    {execution?.protocol_version !== 6
+      ? <p className="text-caption text-muted-foreground">{t(($) => $.execution.unavailable)}</p>
+      : execution.execution_gate.enabled !== true && <p className="text-caption text-muted-foreground">{t(($) => $.execution.newExecutionDisabled)}</p>}
     <p className="text-caption text-muted-foreground">{t(($) => $.execution.stopScope)}</p>
+    {hasHostRuns && <p className="text-caption text-muted-foreground">{t(($) => $.host.stopScope)}</p>}
     <p className="text-body">{labels.execution(issue.session.queue_state)}</p>
     {canControl && execution && <div className="flex flex-wrap gap-2"><Button variant="outline" disabled={locked} onClick={() => act("stop")}>{t(($) => $.execution.stopAll)}</Button><Button variant="outline" disabled={locked || issue.session.queue_state === "closed"} onClick={() => act("resume")}>{t(($) => $.execution.resumeAll)}</Button></div>}
     {pending.error && <p role="alert" className="text-body">{t(($) => $.workflow.storageError)}</p>}
     {control.error && <CollaborationQueryState error={control.error} />}
     {control.isPending && <p role="status">{t(($) => $.workflow.pending)}</p>}
-    {receipt && <div role="status" aria-label={t(($) => $.execution.controlResult)} className="space-y-2 text-body"><p>{receipt.status >= 400 ? labels.reason(receipt.code) : receipt.action === "resume"
-      ? t(($) => $.execution.partial, { resumed: receipt.channels.filter((lane) => lane.queue_state === "active").length, paused: receipt.channels.filter((lane) => lane.queue_state === "paused").length }) : labels.reason(receipt.code)}</p>
+    {receipt && <div role="status" aria-label={t(($) => $.execution.controlResult)} className="space-y-2 text-body"><p>{receipt.status >= 400 ? labels.reason(receipt.code, receiptMode) : receipt.action === "resume"
+      ? receipt.code === "resumed" && receiptMode === hostMode ? t(($) => $.host.resumed)
+        : t(($) => $.execution.partial, { resumed: receipt.channels.filter((lane) => lane.queue_state === "active").length, paused: receipt.channels.filter((lane) => lane.queue_state === "paused").length }) : labels.reason(receipt.code, receiptMode)}</p>
       {receipt.action === "resume" && <p>{t(($) => $.execution.holdRemaining, { count: receipt.target_holds.filter((target) => target.hold_reason !== null).length })}</p>}
-      <ul className="space-y-2 text-caption">{receipt.channels.map((lane) => <li key={lane.channel_id}>{laneName(lane.channel_id)} · {labels.reason(lane.code)}</li>)}
-        {receipt.target_holds.map((target) => <li key={target.target_id} className="[overflow-wrap:anywhere]">{targetName(target.target_id)} · {labels.reason(target.code)}</li>)}</ul>
+      <ul className="space-y-2 text-caption">{receipt.channels.map((lane) => <li key={lane.channel_id}>{laneName(lane.channel_id)} · {labels.reason(lane.code, channelMode(lane.channel_id))}</li>)}
+        {receipt.target_holds.map((target) => <li key={target.target_id} className="[overflow-wrap:anywhere]">{targetName(target.target_id)} · {labels.reason(target.code, targetMode(target.target_id))}</li>)}</ul>
     </div>}
     {control.data?.action === "cancel_command" && <p role="status" className="text-body">{control.data.code === "command_cancelled" ? t(($) => $.execution.cancelledInput) : labels.reason(control.data.code)}</p>}
     {control.data && ["register_target", "consent_resource", "revoke_grant", "offer_resource", "adopt_resource_offer", "withdraw_resource_offer", "propose_target_switch", "consent_target_switch", "revoke_target_switch_consent", "commit_target_switch"].includes(control.data.action) && <p role="status" className="text-body">{labels.reason(control.data.code)}</p>}

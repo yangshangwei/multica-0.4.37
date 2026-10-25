@@ -2,10 +2,11 @@ import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
 import { nonnegativeVersion, positiveVersion } from "./version";
 import { CollaborationAccountSummarySchema } from "./schema";
-import { CollaborationResourceRuntimeSchema } from "./resource-schema";
+import { collaborationResourceExecutionFields, collaborationResourceExecutionIsValid, CollaborationResourceRuntimeSchema } from "./resource-schema";
+import { CollaborationExecutionViewVersionSchema } from "./execution-schema";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
-const authority = { expected_lifecycle_epoch: positiveVersion, expected_participant_epoch: positiveVersion, expected_account_epoch: positiveVersion };
+const authority = { execution_view_version: CollaborationExecutionViewVersionSchema.optional(), expected_lifecycle_epoch: positiveVersion, expected_participant_epoch: positiveVersion, expected_account_epoch: positiveVersion };
 const resource = z.strictObject({ role: z.enum(["agent", "leader", "member"]), agent_id: uuid, runtime_id: uuid, execution_workspace_id: uuid, owner_user_id: uuid });
 const roster = z.array(resource).min(1).max(256).refine((items) => new Set(items.map((item) => item.agent_id)).size === items.length);
 const control = z.strictObject({ target_id: uuid, expected_target_epoch: positiveVersion, expected_config_version: positiveVersion,
@@ -24,8 +25,9 @@ export const CollaborationSwitchInputSchema = z.discriminatedUnion("action", [
 export type CollaborationSwitchInput = z.infer<typeof CollaborationSwitchInputSchema>;
 
 const resourceView = resource.extend({ consented: z.boolean(), revoked: z.boolean(), grant_id: uuid.nullable(), grant_epoch: positiveVersion.nullable(),
+  ...collaborationResourceExecutionFields,
   agent_name: z.string().optional(), runtime: CollaborationResourceRuntimeSchema.nullable().optional(), owner: CollaborationAccountSummarySchema.nullable().optional(),
-}).strip().refine((value) => !(value.consented && value.revoked) && (value.grant_id === null) === (value.grant_epoch === null) &&
+}).strip().refine(collaborationResourceExecutionIsValid).refine((value) => !(value.consented && value.revoked) && (value.grant_id === null) === (value.grant_epoch === null) &&
   (value.runtime == null || value.runtime.id === value.runtime_id) && (value.owner == null || value.owner.user_id.toLowerCase() === value.owner_user_id));
 
 function nextVersion(proposed: string, base: string): boolean {
@@ -50,7 +52,8 @@ const outcomes = {
 const refusal = z.enum(["stale_authority", "stale_scope", "stale_control_version", "stale_execution", "stale_target", "stale_hold", "stale_admission",
   "issue_closed", "forbidden", "target_not_found", "target_pause_required", "invalid_target_configuration", "config_invalid", "grant_required",
   "stop_unconfirmed", "runtime_registration_required", "runtime_upgrade_required", "resource_unavailable", "owner_not_participant", "resource_owner_not_participant", "resource_owner_unavailable", "target_configuration_changed",
-  "switch_proposal_not_found", "switch_consent_not_found", "switch_already_committed", "stale_switch_proposal", "stale_switch_consent", "switch_consent_required"]);
+  "switch_proposal_not_found", "switch_consent_not_found", "switch_already_committed", "stale_switch_proposal", "stale_switch_consent", "switch_consent_required",
+  "collaboration_client_upgrade_required", "execution_mode_unsupported", "execution_consent_required"]);
 
 const fullSwitchReceipt = z.object({
   redacted: z.literal(false).optional(),
@@ -104,5 +107,6 @@ export function collaborationSwitchRequest(issueId: string, input: Collaboration
   }
 }
 function authorityBody(input: CollaborationSwitchInput) {
-  return { expected_lifecycle_epoch: input.expected_lifecycle_epoch, expected_participant_epoch: input.expected_participant_epoch, expected_account_epoch: input.expected_account_epoch };
+  return { ...(input.execution_view_version === undefined ? {} : { execution_view_version: input.execution_view_version }),
+    expected_lifecycle_epoch: input.expected_lifecycle_epoch, expected_participant_epoch: input.expected_participant_epoch, expected_account_epoch: input.expected_account_epoch };
 }

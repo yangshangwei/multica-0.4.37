@@ -4,6 +4,10 @@ import { setSchemaLogger } from "../api/schema";
 import { noopLogger } from "../logger";
 import { CollaborationResourceInputSchema, collaborationResourceRequest, matchesCollaborationResourceReceipt, parseCollaborationResources, parseCollaborationResourceReceipt, parseCollaborationResourceIdentity, parseCollaborationResourceOptions } from "./resource-schema";
 import { resourcesFixture, resourceIdentityFixture, resourceReceiptFixture, resourceOptionsFixture } from "./resource-test-fixtures";
+import { parseCollaborationResourceOffer } from "./resource-offer-schema";
+import { resourceOfferFixture } from "./resource-offer-test-fixtures";
+import { parseCollaborationSwitchProposal } from "./switch-schema";
+import { switchProposal } from "./switch-test-fixtures";
 afterEach(() => setSchemaLogger(noopLogger));
 
 it("requires complete unique resource rosters and paired owner grant facts", () => {
@@ -13,6 +17,22 @@ it("requires complete unique resource rosters and paired owner grant facts", () 
   expect(parseCollaborationResources(invalid)).toBeNull();
   expect(parseCollaborationResources({ ...resourcesFixture, can_organize: undefined })).toBeNull();
   expect(parseCollaborationResourceOptions(resourceOptionsFixture)?.items).toHaveLength(1);
+});
+
+it("rejects partial host metadata across resource, offer and Switch reads", () => {
+  const metadata = { execution_mode: "host_process_supervision_v1", agent_owner_user_id: resourceIdentityFixture.issue_id,
+    provider: "codex", provider_version: "0.118.0", account_source: "runtime_configuration" };
+  const parse = (fields: object) => [
+    parseCollaborationResources({ ...resourcesFixture, targets: [{ ...resourcesFixture.targets[0], resources: [{ ...resourcesFixture.targets[0]!.resources[0], ...fields }] }] }),
+    parseCollaborationResourceOffer({ ...resourceOfferFixture, resources: [{ ...resourceOfferFixture.resources[0], ...fields }] }),
+    parseCollaborationSwitchProposal({ ...switchProposal, resources: switchProposal.resources.map((resource) => ({ ...resource, ...fields })) }),
+  ];
+  expect(parse(metadata).every((value) => value !== null)).toBe(true);
+  for (const patch of [
+    { execution_mode: undefined }, { execution_mode: "linux_pid_namespace_v1" }, { provider: undefined },
+    { provider_version: undefined }, { provider_version: null }, { account_source: undefined },
+  ]) expect(parse({ ...metadata, ...patch })).toEqual([null, null, null]);
+  expect(parse({}).every((value) => value !== null)).toBe(true);
 });
 
 it("keeps binding epochs exact and rejects an unregistered identity claiming readiness", () => {

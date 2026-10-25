@@ -3,11 +3,10 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { canOrganizeCollaborationResources, collaborationResourceRoster, collaborationSwitchProposalsOptions, prepareCollaborationSwitch,
   type CollaborationDraft, type CollaborationIssue, type CollaborationScope, type CollaborationSwitchProposal } from "@multica/core/collaboration";
 import { Button } from "@multica/ui/components/ui/button";
-import { runtimeDisplayLabel } from "@multica/core/runtimes";
 import { useT } from "../i18n";
 import { useCollaborationLabels } from "./labels";
 import { CollaborationQueryState } from "./query-state";
-import { CollaborationResourceCandidateForm, CollaborationResourceConfirmation, CollaborationResourceConsentForm, type CollaborationExecutionSubmit } from "./resource-form";
+import { CollaborationResourceCandidateForm, CollaborationResourceConfirmation, CollaborationResourceConsentForm, CollaborationResourceSummary, type CollaborationExecutionSubmit } from "./resource-form";
 
 type Selection = { issue: CollaborationIssue } & (
   | { action: "propose" }
@@ -42,8 +41,7 @@ export function CollaborationSwitchPanel({ scope, issue, targetId, locked, submi
         <h5 className="text-body font-medium">{t(($) => $.resources.proposalVersion, { version: proposal.proposed_config_version })} · {labels.execution(proposal.status)}</h5>
         <ul className="space-y-3">{proposal.resources.map((resource) => <li key={resource.agent_id} className="min-w-0 space-y-2">
           <p className="text-body [overflow-wrap:anywhere]">{t(($) => $.execution[resource.role])} · {resource.agent_name || resource.agent_id}</p>
-          <p className="text-caption text-muted-foreground [overflow-wrap:anywhere]">{t(($) => $.resources.runtime)}: {resource.runtime ? runtimeDisplayLabel(resource.runtime) : resource.runtime_id}</p>
-          {resource.owner && <p className="text-caption text-muted-foreground [overflow-wrap:anywhere]">{t(($) => $.resources.owner)}: {resource.owner.name}</p>}
+          <CollaborationResourceSummary resource={resource} />
           <p className="text-caption">{resource.revoked ? t(($) => $.execution.consentRevoked) : resource.consented ? t(($) => $.execution.consented) : t(($) => $.execution.consentMissing)}</p>
           {resource.owner_user_id === scope.userId && proposal.status !== "committed" && <div className="flex flex-wrap gap-2">
             {!resource.consented && !resource.revoked && proposal.status !== "stale" && <Button variant="outline" size="sm" disabled={locked || query.isFetching || selection !== null} className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]" onClick={() => setSelection({ action: "consent", issue, proposal, agentId: resource.agent_id, name: resource.agent_name || resource.agent_id })}>{t(($) => $.resources.authorize, { name: resource.agent_name || resource.agent_id })}</Button>}
@@ -66,6 +64,8 @@ export function CollaborationSwitchPanel({ scope, issue, targetId, locked, submi
         catch (failure) { setError(failure); }
       }} />}
       {selection?.action === "consent" && <CollaborationResourceConsentForm scope={scope} issueId={issue.id} targetId={targetId} agentId={selection.agentId} proposalId={selection.proposal.proposal_id} name={selection.name} locked={locked} close={close} submit={submit}
+        executionViewVersion={issue.execution?.protocol_version}
+        resource={selection.proposal.resources.find((resource) => resource.agent_id === selection.agentId)}
         prepare={(identity) => prepareCollaborationSwitch(scope, selection.issue, crypto.randomUUID(), { action: "consent_target_switch", targetId, proposalId: selection.proposal.proposal_id, agentId: selection.agentId, identity: identity.identity! }, selection.proposal)} />}
       {selection?.action === "revoke" && <CollaborationResourceConfirmation title={t(($) => $.resources.switchWithdraw)} effect={t(($) => $.resources.switchWithdrawEffect)} confirmLabel={t(($) => $.resources.switchWithdraw)} draft={selection.draft} locked={locked} close={close} submit={submit} />}
       {selection?.action === "commit" && <CollaborationResourceConfirmation title={t(($) => $.resources.commitTitle)} effect={t(($) => $.resources.commitEffect)} confirmLabel={t(($) => $.resources.confirmCommit)} draft={selection.draft} locked={locked} close={close} submit={submit} />}

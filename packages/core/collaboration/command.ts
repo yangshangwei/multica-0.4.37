@@ -6,6 +6,7 @@ import { collaborationIssueAccessDenied, collaborationKeys, CollaborationUnavail
 import { clearCollaborationDrafts, removeCollaborationDraft, saveCollaborationDraft, type CollaborationDraft } from "./draft";
 import type { CollaborationIssue } from "./schema";
 import { CollaborationCommandCancelInputSchema } from "./command-schema";
+import { collaborationExecutionViewInput } from "./execution-schema";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 const payload = z.strictObject({ domain: z.literal("cancel_command"), commandId: uuid, input: CollaborationCommandCancelInputSchema });
@@ -18,6 +19,7 @@ export function prepareCollaborationCommandCancel(scope: CollaborationScope, iss
   const command = issue.execution?.commands.find((item) => item.id === commandId && item.state === "waiting");
   if (!command || !issue.write_context || ![command.author_user_id, issue.creator.user_id, issue.handler.user_id].includes(scope.userId)) throw new CollaborationUnavailableError();
   const input = CollaborationCommandCancelInputSchema.parse({ expected_lifecycle_epoch: issue.lifecycle_epoch, expected_participant_epoch: issue.write_context.participant_epoch,
+    ...collaborationExecutionViewInput(issue.execution),
     expected_account_epoch: issue.write_context.account_epoch, expected_collaboration_revision: issue.collaboration_revision, target_id: command.target_id });
   return { scope: { server: scope.server, userId: scope.userId, issueId: issue.id }, requestId, kind: "operation", payload: { domain: "cancel_command", commandId, input }, createdAt: Date.now() };
 }

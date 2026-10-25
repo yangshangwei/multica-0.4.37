@@ -21,7 +21,7 @@ describe("collaboration run-record transport", () => {
     await expect(new ApiClient("https://server.example").getCollaborationRunRecords(issueId, runId, { cursor: "opaque+/position=2", limit: 50 }, { signal })).resolves.toEqual(fixture);
     expect(fetch).toHaveBeenCalledOnce();
     const [url, init] = fetch.mock.calls[0]! as unknown as [string, RequestInit];
-    expect(url).toBe(`https://server.example/api/collaboration/issues/${issueId}/runs/${runId}/records?limit=50&cursor=opaque%2B%2Fposition%3D2`);
+    expect(url).toBe(`https://server.example/api/collaboration/issues/${issueId}/runs/${runId}/records?limit=50&cursor=opaque%2B%2Fposition%3D2&execution_view_version=6`);
     expect(new Headers(init.headers).has("X-Workspace-ID")).toBe(false);
     expect(new Headers(init.headers).has("X-Workspace-Slug")).toBe(false);
     expect(init.cache).toBe("no-store");

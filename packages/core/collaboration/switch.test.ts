@@ -8,7 +8,7 @@ import { parseCollaborationIssue } from "./schema";
 import { parseCollaborationActionDraft } from "./action";
 import { parseCollaborationControlDraft } from "./control";
 import { readCollaborationDrafts, saveCollaborationDraft } from "./draft";
-import { collaborationExecutionIssueFixture } from "./test-fixtures";
+import { collaborationExecutionIssueFixture, collaborationHostExecutionFixture } from "./test-fixtures";
 import { collaborationSwitchProposalOptions, collaborationSwitchProposalsOptions, parseCollaborationSwitchDraft,
   prepareCollaborationSwitch, recoverCollaborationSwitch, sendCollaborationSwitch } from "./switch";
 import { switchIssueId as issueId, switchTargetId as targetId, switchProposalId as proposalId, switchRequestId as requestId,
@@ -61,6 +61,15 @@ it("does not turn organization rights into another owner's consent", () => {
     { action: "propose_target_switch", targetId, roster: [resource] })).toThrow();
   expect(() => prepareCollaborationSwitch(scope, issue, requestId, { action: "commit_target_switch", targetId, proposalId }, { ...proposal, status: "stale" })).toThrow();
   expect(() => prepareCollaborationSwitch(scope, issue, requestId, { action: "propose_target_switch", targetId, roster: [{ ...resource, agent_id: otherId }] })).toThrow();
+});
+
+it("requires explicit execution mode on a v6 Switch consent", () => {
+  const { scope, issue } = setup();
+  const hostIssue = parseCollaborationIssue({ ...issue, execution: collaborationHostExecutionFixture })!;
+  const selection = { action: "consent_target_switch" as const, targetId, proposalId, agentId: resource.agent_id,
+    identity: { kind: "managed" as const, installation_id: issueId, binding_id: otherId, binding_epoch: "1" } };
+  expect(() => prepareCollaborationSwitch(scope, hostIssue, requestId, selection, proposal)).toThrow();
+  expect(parseCollaborationSwitchDraft(prepareCollaborationSwitch(scope, issue, requestId, selection, proposal)).execution_view_version).toBeUndefined();
 });
 
 it("freezes proposal rosters and consent bindings without borrowing later live facts", () => {
