@@ -5,11 +5,18 @@ import { accountBootstrapDestination } from "./account-bootstrap";
 describe("authenticated account boot", () => {
   const ready = { authenticated: true, restricted: false, activeScope: "none" as const, workspaceListReady: false, workspaceListUnavailable: false, workspaceCount: 0 };
   it.each([
-    { workspaceListReady: false, workspaceListUnavailable: false },
     { workspaceListReady: false, workspaceListUnavailable: true },
     { workspaceListReady: true, workspaceListUnavailable: false },
-  ])("opens account independently of workspace list: %o", (list) => {
+  ])("opens account when no workspace can be chosen: %o", (list) => {
     expect(accountBootstrapDestination({ ...ready, ...list })).toBe("account");
+  });
+  it("waits for a pending list instead of defaulting a fresh session to account", () => {
+    expect(accountBootstrapDestination(ready)).toBeNull();
+  });
+  // Regression: a fresh sign-in with workspaces used to stay on the account tab,
+  // hiding the workspace sidebar (projects-p1-desktop, triage-desktop, ...).
+  it("leaves a fresh session with workspaces to first-workspace selection", () => {
+    expect(accountBootstrapDestination({ ...ready, workspaceListReady: true, workspaceCount: 2 })).toBeNull();
   });
   it("preserves restored account selection with available workspaces", () => {
     expect(accountBootstrapDestination({ ...ready, activeScope: "account", workspaceListReady: true, workspaceCount: 3 })).toBeNull();

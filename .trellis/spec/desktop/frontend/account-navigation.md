@@ -40,6 +40,7 @@ omit its unavailable toggle and show the localized account tab/window title.
 | Condition | Result |
 | --- | --- |
 | Workspace list zero/pending/500 | Account remains usable; workspace recovery is separate |
+| Fresh session (no restored tab), list ready with workspaces | Open the first workspace; account stays one click away in the navigation bar |
 | Login/setup/password restriction | Existing guard blocks account content |
 | Account navigation from a workspace | Clear mirror before subscribers observe the new tab |
 | Repeated persisted URL | Restore saved index, not the last equal URL |
