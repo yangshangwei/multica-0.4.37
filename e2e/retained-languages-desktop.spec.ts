@@ -76,7 +76,8 @@ for (const retired of ["ja", "ko"]) {
       await page.getByRole("menuitem", { name: "Desktop version 0.4.40-test", exact: true }).click();
       await page.getByRole("tab", { name: "Preferences", exact: true }).click();
       await page.getByRole("combobox", { name: "Language", exact: true }).click();
-      await expect(page.getByRole("option")).toHaveText(["English", "中文"]);
+      // Scope to the open popup: the account navigation's native Workspaces select also exposes options.
+      await expect(page.getByRole("listbox").getByRole("option")).toHaveText(["English", "中文"]);
       await page.getByRole("option", { name: "中文", exact: true }).click();
       await expect(page.locator("html")).toHaveAttribute("lang", "zh-CN");
       await expect(page.getByRole("combobox", { name: "语言", exact: true })).toContainText("中文");
