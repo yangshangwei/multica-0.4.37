@@ -1,5 +1,7 @@
 # 跨账号协作技术设计
 
+> 2026-10-25 执行边界修订：用户保留按单授权与参与者共同控制，确认采用普通本机执行权限。后续隔离、停止和恢复语义以[运行时修订方案](../10-24-cross-platform-collaboration-runtime/prd.md)及[待实施代码契约](../../spec/server/collaboration-host-execution.md)为准；当前代码、旧 Linux 运行和历史验收仍按原模式解释，本次不表示已实施。
+
 - 日期：2026-10-17；状态：M01–M11 产品选择及修订方案实施均已确认。当前实施范围见[通道 FIFO 与配置失效续作](continuation-fifo-2026-10-18.md)。
 - 需求依据：[PRD](prd.md) 与[验收附表](acceptance.md)；执行顺序见[实施计划](implement.md)。
 - 当前调整依据：[需求设计调整](mention-redesign-2026-10-17.md)及讨论 §57–§66。本文描述完整目标模型；已落实的多目标存储、控制与读取契约见[当前代码规范](../../spec/server/collaboration-targets.md)，其按目标控制将由 lane 与目标 hold 取代；真实运行协议与完整界面仍待完成。
@@ -145,7 +147,7 @@ session 的 `queue_state=active|paused|closed` 是整单控制。执行通道（
 | 人类登录 | Web/Desktop 用户 | 仅该账号实际权限；body 的 actor 不可信 |
 | daemon 资源身份 | daemon | 原有 execution namespace/owner/installation/binding 门禁，不转交给协作者或 provider |
 | 协作执行业务凭据 | 当前 provider 子进程 | 显式 purpose，绑定本 issue/session/group（含其 command/target/grant 集合）/run/epoch；默认拒绝所有未列入允许表的 API |
-| 终结专用凭据 | supervisor 私有账本 | 只取本 run 停止意图、提交最小 fenced proof；不读内容、不写评论、不 claim/start/续租/resume/切资源 |
+| 终结专用凭据 | 监督器管理的账本（普通模式不作同用户进程隔离保证） | 只取本 run 停止意图、提交最小 fenced proof；不读内容、不写评论、不 claim/start/续租/resume/切资源 |
 
 业务凭据只允许本单最小上下文、本次过程/成果及服务器核验的组内派发。成员须在该组已授权资源清单内；服务器从父 run 固定组/目标/原人类身份，不能接受机器自行指定另一单或新根作者。普通输出 @不开放任意机器新根执行；全局 purpose 白名单默认拒绝其他路由。每次调用 `AuthorizeCollaborationBusinessCapability` 比较当前 run/task/group 及其 target/command 集合、原人类账号/参与 epoch、实际 owner 账号、grant/target/resource/lifecycle epoch、安装绑定及未撤销能力，写操作在同事务重验。不得降级到 owner 的人类成员权、普通 mat_ 或 PAT/JWT/MDT fallback，不导出 connected-app 凭据。
 
@@ -155,7 +157,7 @@ session 的 `queue_state=active|paused|closed` 是整单控制。执行通道（
 
 业务能力撤回后不通过终结通道继续上传正文、附件、路径或任意结果。已入库过程/用量保留；未能入库的尾部标记记录不完整，不能为了补日志放宽撤权，也不能让日志失败阻塞合法的进程终结证明。R05 共享系统已记录内容，不承诺回收未上传数据。
 
-Server 按协议/provider/OS 与实际 containment 准入；未满足显示升级/不支持。现有 ProcessExited 不统一，需要 supervisor；Windows Job 绑定失败拒绝启动，其他平台不能只查直接子进程或原进程组。PGID 消失不能证明调用 setsid/双 fork 的后代已退出；共享能力必须证明全部派生进程被封闭在可监督的执行范围内，提示词禁止后台、PID/PPID 轮询及未观察到进程不构成保证。无法提供此能力则拒绝共享启动；已失去完整观测的 run 保持 unknown。能力矩阵由 fake executable 和原生测试证明，详见执行复审 EX01。
+执行按固定模式区分保证。旧 linux_pid_namespace_v1 保留封闭 namespace、完整后代收尾与原 proof 条件。新 host_process_supervision_v1 复用普通 Provider 的本机权限和 Job/进程组等管理方式，以每次已登记启动的真实等待/适配器终态观测生成 host_exit_observed；后代清理范围单独记录，不再要求证明所有脱离管理范围的进程均已消失。Job 绑定失败等普通降级不得隐藏，实际模式必须有经过验证的直接启动/等待观测。ProcessExited、业务结果或 EOF 不能作为跨 Provider 统一强证明；未知启动和未观测结束仍保留恢复屏障。具体协议、重新授权、准备与验收由[普通本机执行设计](../10-24-cross-platform-collaboration-runtime/design.md)和[待实施代码契约](../../spec/server/collaboration-host-execution.md)取代本段原“所有平台实现等价 containment”的后续要求。
 
 协议信任绑定 daemon，不能证明恶意宿主行为；API ACL 不等于 OS 沙箱，不启用脱管后台 launch。代码通过已提交 Git/明确附件准备，不自动同步或启动。供应商 session 只在资源匹配、上次可信结束时复用，换环境重建上下文。
 
@@ -250,7 +252,7 @@ API JSON 经 schema/parseWithFallback；关键 ID/版本/能力无效则 unavail
 ## D11. 上线、回退与风险边界
 
 1. 先部署相对 main 为加法的 schema（M10 删除只针对未发布分支数据，执行后不可回退）和完整新旧 writer 防线，协作创建开关保持关闭；部署操作停止旧调度/后台 writer，确认所有可写节点支持同一协作协议再开放。不能混跑不识别 purpose 的旧服务。
-2. 再交付 daemon/supervisor 能力矩阵、Web/Desktop；未兼容 runtime 不领取协作任务，旧客户端最多使用服务器允许的投影/动作，不能 fallback 普通执行。
+2. 再交付 daemon/supervisor 能力矩阵、Web/Desktop；未兼容 runtime 不领取协作任务，旧客户端最多使用服务器允许的投影/动作，不能在未经本单授权和新模式准入时自动 fallback 普通任务业务路径；新宿主模式必须经专门协作适配器接入。
 3. 关闭创建仍保留读取/收尾。E06 持久 gate 先关再暂停所有 session；Resume 持 gate 共享锁至提交并比较 epoch。扫描完成才解除，旧意图失效，不自动恢复。
 4. 已存在协作状态后仅可回退到理解这些数据和门禁的兼容版本；不支持直接回退到旧二进制或 drop 表。暂停后仍保留收尾服务及未结屏障，恢复版本也不自动恢复队列。
 5. 观测等待长度/年龄、停止待确认时间、outbox 堆积、失效作者/资源、能力拒绝及重复 nonce；日志只记录 ID/结果码，不记录私有正文或凭据。

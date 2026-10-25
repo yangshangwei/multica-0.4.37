@@ -1,5 +1,7 @@
 # 跨账号协作实施计划
 
+> 2026-10-25 执行边界修订：用户保留按单授权与参与者共同控制，确认采用普通本机执行权限。后续隔离、停止和恢复语义以[运行时修订方案](../10-24-cross-platform-collaboration-runtime/prd.md)及[待实施代码契约](../../spec/server/collaboration-host-execution.md)为准；当前代码、旧 Linux 运行和历史验收仍按原模式解释，本次不表示已实施。
+
 ## 2026-10-20 增量已验证
 
 - [x] 触发预览补全有效输入合批、后续批次和当前小队续作；精确草稿身份与权限/暂停边界保持，旧响应继续兼容。
@@ -160,12 +162,12 @@ P1 后 P2/P3/P4 可独立研究和实现，但共享服务、router 和 migratio
 - [ ] 按 E07 登记中立账号 epoch 更新者；password 使用真实会话版本，legacy 共享 runtime 有 owner 授权及持久 key challenge enrollment。保持原登录模式和 password-only 管理入口，不用空版本/空 binding 兜底。
 - [ ] 在可能启动前预发并持久化仅 supervisor 持有的终结 token，绑定原 deployment/install/run/fence/nonce；撤权后仍只收尾。
 - [ ] 本地账本使用跨进程锁、fsync、启动前 nonce burn、单调 attempt、最终 run seal；burn/fork/PID 回写窗口保守 unknown。内部尝试先证明前次退出再取新许可。
-- [ ] supervisor 覆盖每次 provider launch、内部 fallback 及全部派生进程；共享能力须证明封闭 containment，Windows Job 绑定失败不启动，Unix 单独进程组不足以准入。覆盖 setsid/改变组/双 fork/提前关闭 stdio/PID复用，无法保证则不宣告能力；观测丢失保留 unknown，不能签发完整 proof。
+- [ ] 执行边界修订由[运行时任务 S1–S6](../10-24-cross-platform-collaboration-runtime/implement.md)承接：登记每次实际 provider/helper launch 与内部 fallback，普通本机模式按受管理终态结算并单独报告后代清理范围；不沿用全后代隔离保证。未知启动仍为 unknown。旧 Linux run 的 namespace/proof 条件继续保持，不能改标或用普通观察替代。
 - [ ] daemon owner、供应商账号、实际执行者和根 command 的人类作者分开。固定 typed target/配置与输入快照，各 run 重验实际资源授权；不能在成为队首时把 @A 改用全局当前 B。切资源须显式暂停/owner 授权，旧 epoch 不复活。
 - [ ] 小队按现状派发（M08）：本组存活 run 评论 @冻结名册内已授权成员才记派发，comment_id+成员去重；成员回帖/结束及满足 E01“M11 并入”的人类再 @S/@队长合并为一次队长续作，组停止或结算时未被任何 run 读取的并入输入回到 waiting，原人类来源不可改写；briefing 的 todo 子任务指派对协作单明确拒绝并有负例。队长评论后结束即释放真实 slot，成员 bypass 外部 FIFO；容量 1 和同目录竞争必须验证。
 - [ ] 文件通过已提交 Git/明确附件准备；新环境重置供应商恢复指针，不搬运未提交目录、私人 session 或其他平台凭据。
 
-验证：fake executable 起子孙进程、延迟/崩溃，逐点注入 burn/fork/PID/reap/seal 故障；另一 daemon 实例、重复 nonce/派发、迟到 fallback 不重复 fork。测 Windows Job 失败、token 路由矩阵、当前 grant/私有 owner 关系和认证×runtime enrollment/challenge 重放。撤用户/runtime 后只可提交旧 proof，不读正文/启动/续租/恢复；provider 无 supervisor 凭据。不用单个 ProcessExited mock 代替原生矩阵。
+验证：fake executable 起子孙进程、延迟/崩溃，逐点注入 burn/fork/PID/reap/seal 故障；另一 daemon 实例、重复 nonce/派发、迟到 fallback 不重复 fork。测 Windows Job 失败、token 路由矩阵、当前 grant/私有 owner 关系和认证×runtime enrollment/challenge 重放。撤用户/runtime 后只可提交旧 proof，不读正文/启动/续租/恢复；适配器不主动把 supervisor 凭据传给 Provider；普通本机模式不保证同一系统用户下无法读取其文件。不用单个 ProcessExited mock 代替原生矩阵。
 
 ## P5. 逐 lane 批次、执行组与两级控制
 
