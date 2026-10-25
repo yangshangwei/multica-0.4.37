@@ -115,6 +115,8 @@ jobs:
               - 'docker/entrypoint.sh'
               - 'scripts/test-go.sh'
               - 'scripts/test-go.test.sh'
+              - 'scripts/check-collaboration-native-tests.mjs'
+              - 'scripts/check-collaboration-native-tests.test.mjs'
               # makefile-build.test.sh asserts how `make build` names its
               # output binaries, so a change to either side must run it.
               - 'scripts/makefile-build.test.sh'
@@ -588,7 +590,7 @@ jobs:
   # Preserve the existing required-check name while allowing tests, generated
   # SQL verification, and the vulnerability scan to run independently.
   backend:
-    needs: [backend-tests, sqlc-check, go-vulnerability-scan]
+    needs: [backend-tests, sqlc-check, go-vulnerability-scan, collaboration-host-native]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
@@ -597,14 +599,63 @@ jobs:
           TEST_RESULT: ${{ needs.backend-tests.result }}
           SQLC_RESULT: ${{ needs.sqlc-check.result }}
           VULNERABILITY_RESULT: ${{ needs.go-vulnerability-scan.result }}
+          COLLABORATION_HOST_RESULT: ${{ needs.collaboration-host-native.result }}
         run: |
           echo "backend-tests:        $TEST_RESULT"
           echo "sqlc-check:           $SQLC_RESULT"
           echo "go-vulnerability-scan: $VULNERABILITY_RESULT"
-          if [ "$TEST_RESULT" != "success" ] || [ "$SQLC_RESULT" != "success" ] || [ "$VULNERABILITY_RESULT" != "success" ]; then
+          echo "collaboration-host-native: $COLLABORATION_HOST_RESULT"
+          if [ "$TEST_RESULT" != "success" ] || [ "$SQLC_RESULT" != "success" ] || [ "$VULNERABILITY_RESULT" != "success" ] || [ "$COLLABORATION_HOST_RESULT" != "success" ]; then
             echo "::error::backend validation failed"
             exit 1
           fi
+
+  collaboration-host-native:
+    needs: changes
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        if: ${{ needs.changes.outputs.backend == 'true' }}
+        uses: actions/checkout@v6
+      - name: Setup Go
+        if: ${{ needs.changes.outputs.backend == 'true' }}
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.x"
+          check-latest: true
+          cache-dependency-path: server/go.sum
+      - name: Setup Node.js
+        if: ${{ needs.changes.outputs.backend == 'true' }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Verify native evidence gate
+        if: ${{ needs.changes.outputs.backend == 'true' }}
+        shell: bash
+        run: node --test scripts/check-collaboration-native-tests.test.mjs
+      - name: Native host lifecycle and recovery
+        if: ${{ needs.changes.outputs.backend == 'true' }}
+        shell: bash
+        run: |
+          mkdir -p native-collaboration
+          go version > native-collaboration/runtime.txt
+          go env GOOS GOARCH >> native-collaboration/runtime.txt
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            go -C server test -json -p 1 -parallel 2 -count=1 -timeout=5m ./pkg/agent ./internal/daemon/collaborationrun ./internal/daemon ./internal/cli -run '^(TestHost|TestCollaborationHost)' | tee native-collaboration/tests.jsonl
+          else
+            bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test -json -p 1 -parallel 2 -count=1 -timeout=5m ./pkg/agent ./internal/daemon/collaborationrun ./internal/daemon ./internal/cli -run '^(TestHost|TestCollaborationHost)' | tee native-collaboration/tests.jsonl
+          fi
+          node scripts/check-collaboration-native-tests.mjs native-collaboration/tests.jsonl "$RUNNER_OS"
+      - name: Retain native verification evidence
+        if: ${{ always() && needs.changes.outputs.backend == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: collaboration-host-${{ matrix.os }}
+          path: native-collaboration/
 
   windows-execenv:
     # The environment-preparation deadline owns a process tree, not just a Go

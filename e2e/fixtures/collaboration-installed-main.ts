@@ -30,10 +30,10 @@ export class InstalledMainClient {
   private stderrBytes = 0;
   private ignoredOutputLines = 0;
 
-  constructor() {
+  constructor(options: { image?: string } = {}) {
     const appDir = process.env.COLLABORATION_INSTALLED_APP_DIR;
     const appVolume = process.env.COLLABORATION_INSTALLED_APP_VOLUME;
-    const image = process.env.COLLABORATION_INSTALLED_IMAGE;
+    const image = options.image ?? process.env.COLLABORATION_INSTALLED_IMAGE;
     if ((!appDir && !appVolume) || !image) throw new Error("Installed Main requires an explicit task-owned Docker image and electron-builder directory package");
     if (appVolume && !/^multica-gap-full-main-package-[a-z0-9-]+$/.test(appVolume)) throw new Error("Installed Main requires a named task-owned package volume");
     const repo = realpathSync(path.resolve(import.meta.dirname, "../.."));

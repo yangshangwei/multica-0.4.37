@@ -22,6 +22,7 @@ let app;
 let page;
 let apiUrl;
 let appUrl;
+let executionViewVersion;
 
 function scrub(value) {
   let text = typeof value === "string" ? value : JSON.stringify(value);
@@ -103,6 +104,11 @@ function observations(issue) {
 
 async function read(requestPath) {
   assert(/^\/api\/(?:collaboration\/issues\/[0-9a-f-]{36}(?:\/(?:commands|participants|activity|mention-targets)(?:\?.*)?)?|me\/(?:workbench|collaboration-notifications)(?:\?.*)?|workspaces|me)$/.test(requestPath), "Only named read-only collaboration paths are available");
+  // Host acceptance opts in explicitly. Existing installed-client journeys
+  // keep their original unversioned read contract and runtime semantics.
+  if (executionViewVersion === 6 && /^\/api\/collaboration\/issues\/[0-9a-f-]{36}$/.test(requestPath)) {
+    requestPath += "?execution_view_version=6";
+  }
   return page.evaluate(async ({ base, requestPath }) => {
     const token = localStorage.getItem("multica_token");
     if (!token) throw new Error("The real password form has not persisted a desktop session");
@@ -110,6 +116,14 @@ async function read(requestPath) {
     if (!response.ok) throw new Error(`Installed client read ${requestPath} returned ${response.status}`);
     return response.json();
   }, { base: apiUrl, requestPath });
+}
+
+async function cliAvailable() {
+  return page.evaluate(async (hostView) => {
+    if (!hostView) return window.daemonAPI.isCliInstalled();
+    const path = await window.daemonAPI.getCliPath();
+    return typeof path === "string" && path.trim().length > 0;
+  }, executionViewVersion === 6);
 }
 
 async function metadata() {
@@ -130,8 +144,9 @@ async function metadata() {
   const native = await page.evaluate(async () => ({
     appInfo: window.desktopAPI.appInfo, config: window.desktopAPI.runtimeConfig,
     daemon: await window.daemonAPI.getStatus(), preferences: await window.daemonAPI.getPrefs(),
-    cliInstalled: await window.daemonAPI.isCliInstalled(), updater: await window.updater.getPreferences(),
+    updater: await window.updater.getPreferences(),
   }));
+  native.cliInstalled = await cliAvailable();
   assert.equal(native.appInfo.version, main.version);
   assert.equal(native.appInfo.os, "linux");
   assert.equal(native.config.ok, true);
@@ -172,7 +187,7 @@ async function launch() {
   await expect.poll(() => page.url()).toMatch(/^file:\/\/\/opt\/multica\/resources\/app\.asar\/out\/renderer\/index\.html/);
   await expect.poll(() => page.evaluate(() => typeof window.daemonAPI?.getPrefs)).toBe("function");
   await expect.poll(() => page.evaluate(() => window.daemonAPI.getStatus().then((status) => status.state)), { timeout: 90_000 }).toBe("stopped");
-  await expect.poll(() => page.evaluate(() => window.daemonAPI.isCliInstalled()), { timeout: 90_000 }).toBe(true);
+  await expect.poll(cliAvailable, { timeout: 90_000 }).toBe(true);
 }
 
 async function originalResponse(pending, expectedStatus, baseline) {
@@ -195,6 +210,8 @@ async function originalResponse(pending, expectedStatus, baseline) {
 async function dispatch(message) {
   switch (message.command) {
     case "init": {
+      assert(message.executionViewVersion === undefined || message.executionViewVersion === 6);
+      executionViewVersion = message.executionViewVersion;
       assert.equal(process.platform, "linux");
       assert.equal(homedir(), "/root");
       assert(existsSync(executable) && existsSync(packagePath), "Mount the current electron-builder directory package");
@@ -298,6 +315,41 @@ async function dispatch(message) {
       await expect(entry).toContainText(message.state);
       if (message.reason) await expect(entry).toContainText(message.reason);
       return { commandId: message.commandId, text: await entry.innerText() };
+    }
+    case "host-records": {
+      assert.equal(executionViewVersion, 6, "Host records require the explicit v6 fixture read contract");
+      assert(/^[0-9a-f-]{36}$/.test(message.runId));
+      const issue = await refreshIssue(message.issueId);
+      assert.equal(issue.execution.protocol_version, 6);
+      assert.equal(issue.execution.execution_gate.enabled, true);
+      const run = issue.execution.runs.find((value) => value.id === message.runId);
+      assert(run, "The current issue must own the requested host run");
+      assert.equal(run.execution_mode, "host_process_supervision_v1");
+      assert.equal(run.proof_state, "host_exit_observed");
+      assert.equal(run.launch_count, "1");
+      assert.equal(run.forced_disposition, message.stopped ? "stopped" : null);
+      const panel = execution();
+      await expect(panel).not.toContainText("Shared AI execution is unavailable.");
+      await expect(panel).not.toContainText("New AI execution is disabled.");
+      const disclosure = panel.locator(`[id="run-${message.runId}"]`);
+      await expect(disclosure).toContainText(message.stopped ? "Managed execution stopped" : "Managed execution ended");
+      const toggle = disclosure.locator(`button[aria-controls="records-${message.runId}"]`);
+      if (await toggle.getAttribute("aria-expanded") !== "true") await toggle.click();
+      const records = disclosure.getByRole("region", { name: "Run records", exact: true });
+      await expect(records).toContainText("Standard host execution");
+      await expect(records).toContainText("Direct launches: 1");
+      await expect(records).toContainText("Observed cleanup scope");
+      await expect(records).not.toContainText("Termination confirmed");
+      for (const marker of message.markers ?? []) await expect(records).toContainText(marker);
+      await disclosure.evaluate((element) => {
+        const root = element.closest('[data-tab-scroll-root="account-detail"]');
+        if (!root) throw new Error("Packaged account detail scroll root is missing");
+        root.scrollTop += element.getBoundingClientRect().top - root.getBoundingClientRect().top - 12;
+      });
+      await page.evaluate(async () => { await document.fonts.ready;
+        await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))); });
+      await expect(disclosure).toBeInViewport();
+      return { run, text: await records.innerText(), display: "packaged production renderer", nativeIPCStubs: false };
     }
     case "handoff": {
       const baseline = await refreshIssue(message.issueId);
