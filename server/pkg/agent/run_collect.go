@@ -331,7 +331,7 @@ func startCollector(cmd *exec.Cmd, env []string) (*collector, error) {
 	go func() { defer wg.Done(); _ = c.stdout.absorb(outR) }()
 	go func() { defer wg.Done(); _ = c.stderr.absorb(errR) }()
 	go func() { wg.Wait(); close(c.readers) }()
-	go func() { c.waitErr = cmd.Wait(); close(c.waitDone) }()
+	go func() { c.waitErr = waitOwnedProcessTree(cmd); close(c.waitDone) }()
 
 	return c, nil
 }

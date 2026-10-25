@@ -111,7 +111,46 @@ func (c Command) Argv(args ...string) []string {
 // reintroduce GH #7046. TestOnlyLaunchGoSpawnsRuntimeProcesses enforces it.
 func (c Command) exec(ctx context.Context, args ...string) *exec.Cmd {
 	warnLaunchPrefixOverlap(c.Prefix, args, c.logger)
-	return newRuntimeCmd(exec.CommandContext(ctx, c.Path, c.Argv(args...)...))
+	return bindCommandLifecycle(ctx, newRuntimeCmd(exec.CommandContext(ctx, c.Path, c.Argv(args...)...)))
+}
+
+// CommandContext builds an explicitly selected preparation helper under the
+// same launch gate as the provider. Configure its bounded streams/Dir/Env, then
+// call Lifecycle.Run or Lifecycle.Start/Wait, never exec.Cmd.Start/Wait.
+func (l *LaunchLifecycle) CommandContext(ctx context.Context, info LaunchInfo, executable string, args ...string) *exec.Cmd {
+	ctx = context.WithValue(ctx, executionLifecycleKey{}, executionLifecycleContext{lifecycle: l, info: info})
+	return NewCommand(executable, nil).exec(ctx, args...)
+}
+
+func startOwnedProcessTree(cmd *exec.Cmd, logger *slog.Logger) error {
+	if value, ok := observedRuntimeCommands.Load(cmd); ok {
+		return value.(*observedLaunch).start(logger)
+	}
+	return startNativeProcessTree(cmd, logger)
+}
+
+func waitOwnedProcessTree(cmd *exec.Cmd) error {
+	value, observed := observedRuntimeCommands.Load(cmd)
+	if !observed {
+		return cmd.Wait()
+	}
+	state := value.(*observedLaunch)
+	if err := state.beginWait(); err != nil {
+		return err
+	}
+	return waitObservedProcessTree(state)
+}
+
+// The caller must have admitted this wait with beginWait. Provider adapters
+// retain ownership until their cleanup checks finish; lifecycle helpers release
+// it in LaunchLifecycle.Wait. In particular, Codex still needs Job accounting
+// after this call to decide whether its existing internal retry is safe.
+func waitObservedProcessTree(state *observedLaunch) error {
+	err := state.cmd.Wait()
+	// Receipt failures fence future starts through Lifecycle.Err without
+	// masquerading as a native exit error in the provider's business result.
+	_ = state.waited()
+	return err
 }
 
 // newRuntimeCmd applies the process-lifecycle defaults every runtime process in
@@ -166,7 +205,7 @@ func runOwned(cmd *exec.Cmd, logger *slog.Logger) error {
 	if err := startOwnedProcessTree(cmd, logger); err != nil {
 		return err
 	}
-	err := cmd.Wait()
+	err := waitOwnedProcessTree(cmd)
 	// The probe is over the moment its leader is: nothing it spawned should
 	// outlive the answer. Signalling before the release covers Unix, where
 	// releasing a process group is a no-op; on Windows closing the Job Object
@@ -267,7 +306,7 @@ type invocationChooser func(execName, lookedUp string, args []string, logger *sl
 func (c Command) execVia(ctx context.Context, choose invocationChooser, lookedUp string, args []string, logger *slog.Logger) (*exec.Cmd, string, []string) {
 	warnLaunchPrefixOverlap(c.Prefix, args, logger)
 	argv0, cmdArgs := choose(c.Path, lookedUp, c.Argv(args...), logger)
-	return newRuntimeCmd(exec.CommandContext(ctx, argv0, cmdArgs...)), argv0, cmdArgs
+	return bindCommandLifecycle(ctx, newRuntimeCmd(exec.CommandContext(ctx, argv0, cmdArgs...))), argv0, cmdArgs
 }
 
 // withFilteredPrefix returns a copy of the command whose prefix has been

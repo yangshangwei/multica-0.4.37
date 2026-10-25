@@ -187,6 +187,11 @@ func isPiToolNameByte(b byte) bool {
 }
 
 func (b *piBackend) Execute(ctx context.Context, prompt string, opts ExecOptions) (*Session, error) {
+	var lifecycleErr error
+	ctx, lifecycleErr = withExecutionLifecycle(ctx, opts, b.cfg.provider)
+	if lifecycleErr != nil {
+		return nil, lifecycleErr
+	}
 	label := b.providerLabel
 	if label == "" {
 		label = "pi"
@@ -428,7 +433,7 @@ func (b *piBackend) Execute(ctx context.Context, prompt string, opts ExecOptions
 			trySend(msgCh, Message{Type: MessageText, Content: d})
 		}
 
-		waitErr := cmd.Wait()
+		waitErr := waitOwnedProcessTree(cmd)
 		releaseProcessGroup(cmd)
 		duration := time.Since(startTime)
 

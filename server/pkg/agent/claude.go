@@ -40,6 +40,11 @@ type claudeBackend struct {
 }
 
 func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOptions) (*Session, error) {
+	var lifecycleErr error
+	ctx, lifecycleErr = withExecutionLifecycle(ctx, opts, b.cfg.provider)
+	if lifecycleErr != nil {
+		return nil, lifecycleErr
+	}
 	execPath := b.cfg.ExecutablePath
 	if execPath == "" {
 		execPath = "claude"
@@ -128,7 +133,7 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 	msgCh := make(chan Message, 256)
 	resCh := make(chan Result, 1)
 
-	// procDone closes once cmd.Wait() returns, letting the cancellation handler
+	// procDone closes once waitOwnedProcessTree(cmd) returns, letting the cancellation handler
 	// skip a process that already exited and avoid signalling a dead/reused pid.
 	procDone := make(chan struct{})
 
@@ -197,7 +202,7 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 				signalProcessGroup(cmd, syscall.SIGTERM)
 				// Escalate to a group SIGKILL unless the WHOLE process group has
 				// exited within the grace window. This must key off the process
-				// group, not procDone: procDone only means cmd.Wait() returned
+				// group, not procDone: procDone only means waitOwnedProcessTree(cmd) returned
 				// for the leader, so a SIGTERM-ignoring descendant that does not
 				// hold claude's stdout would let the leader exit, close procDone,
 				// and skip the SIGKILL — leaking exactly the orphan this fix
@@ -276,7 +281,7 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 		closeStdin()
 
 		// Wait for process exit, then release the cancellation handler.
-		exitErr := cmd.Wait()
+		exitErr := waitOwnedProcessTree(cmd)
 		close(procDone)
 		// The leader is reaped; drop ownership. On Windows that closes the Job
 		// Object, which kills anything still inside it — precisely what should
@@ -310,7 +315,7 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 			completionGuardError,
 		)
 
-		// cmd.Wait() has returned — os/exec's stderr copy goroutine has
+		// waitOwnedProcessTree(cmd) has returned — os/exec's stderr copy goroutine has
 		// observed every byte claude wrote to stderr before exiting, so
 		// stderrBuf.Tail() is safe to sample now. Attach the tail to any
 		// non-empty failure message; callers upstream surface this as the

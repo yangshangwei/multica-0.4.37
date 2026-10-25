@@ -72,6 +72,11 @@ type devecoBackend struct {
 }
 
 func (b *devecoBackend) Execute(ctx context.Context, prompt string, opts ExecOptions) (*Session, error) {
+	var lifecycleErr error
+	ctx, lifecycleErr = withExecutionLifecycle(ctx, opts, b.cfg.provider)
+	if lifecycleErr != nil {
+		return nil, lifecycleErr
+	}
 	execPath := b.cfg.ExecutablePath
 	if execPath == "" {
 		execPath = "deveco"
@@ -160,7 +165,7 @@ func (b *devecoBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 	msgCh := make(chan Message, 256)
 	resCh := make(chan Result, 1)
 
-	// procDone closes once cmd.Wait() returns, letting the cancellation handler
+	// procDone closes once waitOwnedProcessTree(cmd) returns, letting the cancellation handler
 	// skip a process that already exited and avoid signalling a dead pid.
 	procDone := make(chan struct{})
 
@@ -196,7 +201,7 @@ func (b *devecoBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 		startTime := time.Now()
 		scanResult := b.processEvents(stdout, msgCh)
 
-		exitErr := cmd.Wait()
+		exitErr := waitOwnedProcessTree(cmd)
 		close(procDone)
 		releaseProcessGroup(cmd)
 		duration := time.Since(startTime)

@@ -41,6 +41,11 @@ type antigravityBackend struct {
 }
 
 func (b *antigravityBackend) Execute(ctx context.Context, prompt string, opts ExecOptions) (*Session, error) {
+	var lifecycleErr error
+	ctx, lifecycleErr = withExecutionLifecycle(ctx, opts, b.cfg.provider)
+	if lifecycleErr != nil {
+		return nil, lifecycleErr
+	}
 	execPath := b.cfg.ExecutablePath
 	if execPath == "" {
 		execPath = "agy"
@@ -152,7 +157,7 @@ func (b *antigravityBackend) Execute(ctx context.Context, prompt string, opts Ex
 			b.cfg.Logger.Warn("agy stdout scanner error", "err", err)
 		}
 
-		waitErr := cmd.Wait()
+		waitErr := waitOwnedProcessTree(cmd)
 		releaseProcessGroup(cmd)
 		duration := time.Since(startTime)
 
