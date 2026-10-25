@@ -202,6 +202,11 @@ func buildDshMCPServers(raw json.RawMessage, logger interface {
 }
 
 func (b *dshBackend) Execute(ctx context.Context, prompt string, opts ExecOptions) (*Session, error) {
+	var lifecycleErr error
+	ctx, lifecycleErr = withExecutionLifecycle(ctx, opts, b.cfg.provider)
+	if lifecycleErr != nil {
+		return nil, lifecycleErr
+	}
 	execPath := b.cfg.ExecutablePath
 	if execPath == "" {
 		execPath = "dsh"
@@ -264,7 +269,7 @@ func (b *dshBackend) Execute(ctx context.Context, prompt string, opts ExecOption
 	}
 	if err := writeFrame(command); err != nil {
 		signalProcessGroup(cmd, syscall.SIGKILL)
-		_ = cmd.Wait()
+		_ = waitOwnedProcessTree(cmd)
 		releaseProcessGroup(cmd)
 		cancel()
 		return nil, fmt.Errorf("send dsh execute command: %w", err)
@@ -321,7 +326,7 @@ func (b *dshBackend) Execute(ctx context.Context, prompt string, opts ExecOption
 		if scanErr != nil {
 			_ = stdout.Close()
 		}
-		exitErr := cmd.Wait()
+		exitErr := waitOwnedProcessTree(cmd)
 		close(procDone)
 		releaseProcessGroup(cmd)
 
@@ -461,7 +466,7 @@ func discoverDshModels(ctx context.Context, runtimeCmd Command) ([]Model, error)
 		}
 	}
 	scanErr := scanner.Err()
-	exitErr := cmd.Wait()
+	exitErr := waitOwnedProcessTree(cmd)
 	releaseProcessGroup(cmd)
 	if scanErr != nil {
 		return nil, scanErr

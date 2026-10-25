@@ -1,67 +1,92 @@
-# 跨平台协作执行运行时支持
+# 复用普通执行能力的跨平台协作执行
 
-## Goal
+## 状态与决策来源
 
-让协作 AI 执行在产品行为上与普通 Multica 桌面端、CLI 和一般智能体执行保持一致：用户无需按操作系统选择不同的协作能力；Linux、Windows、macOS 运行时都能参与同一套 claim、permit、停止、结果记录、终止证明、重启恢复、附件/Git 准备和 Provider bundle 流程。
+- 2026-10-25：用户明确接受“协作者的指令获得普通智能体已有的本机执行能力”，要求细化复用方案，并正式调整隔离与停止保证。
+- 保留按单授权、参与者共同控制的产品模型；此前讨论过的“只能操作自己的智能体”不采用。
+- 本文替代原来的“三个平台实现等价 Linux 隔离”目标。普通本机执行代码已进入实施与验收，旧 Linux 执行保留原语义；实际开放范围见 [验收记录](verification.md)。
+- 复用现有任务；用户已授权并于 2026-10-25 激活实施，状态为 in_progress。安装包、真实账号和三平台完整验收尚未全部完成。
 
-## Background / Confirmed facts
+## 目标与用户价值
 
-- 当前协作执行协议把 containment 固定为 `linux_pid_namespace_v1`：`server/pkg/protocol/collaboration.go:6`、`server/internal/service/collaboration_runtime_capabilities.go:126,282,493`、`server/internal/daemon/collaborationrun/client.go:78,121`、`server/internal/daemon/collaborationrun/runner.go:82`。
-- 能力注册只接受 `OS=linux`、`Arch=amd64|arm64`，并要求 Linux PID namespace 和附件格式：`server/pkg/protocol/collaboration_preparation.go:276-281`。服务端还要求安装记录的 OS 与能力报告一致：`server/internal/service/collaboration_runtime_preparation_capabilities.go:97-103`。
-- 当前 Linux controller 依赖 user/PID/mount/IPC/UTS namespace、tmpfs、proc、pivot root、`/dev/urandom` 设备绑定、`prctl` 权限收缩和 namespace init 的死亡证明：`server/internal/daemon/collaborationrun/controller_linux.go`。
-- 非 Linux 构建目前把 controller 标记为 unsupported：`server/internal/daemon/collaborationrun/controller_unsupported.go`。macOS 只复用了 POSIX ledger/source-file 辅助代码，不能证明协作 containment；Windows 没有对应实现。
-- Provider bundle 校验写死 ELF、Linux loader/library triplet 和 `runtime.GOARCH`：`server/internal/daemon/collaborationrun/controller.go:338-375`、`provider_bundle.go:302-370`。因此 macOS Mach-O、Windows PE、平台路径和动态依赖闭包尚未覆盖。
-- 终止证明、容量占用和重启恢复依赖当前 process/namespace identity；现有普通进程树工具的 Windows Job Object 和 Unix process group 只能作为参考，不能直接替代协作执行要求的 containment proof：`server/internal/daemon/processtree/`、`.trellis/spec/server/collaboration-targets.md:158-164`。
-- 现有端到端协作路由和 CLI/daemon 验收测试明确只在 Linux 执行，macOS/Windows containment 仍被规范定义为拒绝：`server/cmd/server/collaboration_*_routes_test.go`、`.trellis/spec/server/collaboration-preparation.md:101-110`。
-- 普通 Multica 的安装、桌面端和一般 daemon 已覆盖 macOS、Windows、Linux；这只能证明普通执行跨平台，不能证明协作执行的跨平台安全边界。
+让 Windows、macOS、Linux 上已配置的普通智能体执行能力承载协作任务。用户沿用对应运行环境的工具和账号，通过同一张任务共享指令、结果及控制；无需为本轮实现 Linux 等价沙箱或安装虚拟机。
 
-## Requirements
+协作者可以触发智能体在普通配置允许的本机范围内工作。产品不再承诺该范围被操作系统限制在本任务文件之内。不同 Provider、版本和运行模式的实际能力须分别验证，不能将“普通任务能启动”直接等同于完整协作支持。
 
-### Product behavior
+## 已确认事实
 
-- 同一协作执行 API、状态机、UI 投影、CLI 业务命令和重试身份在三种操作系统上保持一致。
-- OS/CPU/containment 只作为运行时内部能力协商和诊断信息，不成为用户需要选择的产品分支。
-- 默认支持 Linux amd64/arm64、macOS amd64/arm64、Windows amd64/arm64；32 位 x86/ia32 不纳入本轮目标，除非规划阶段重新批准。
-- 每个平台都必须在无法提供等价终止、凭据隔离、工作区隔离或恢复证明时 fail closed，不得降级为普通无隔离任务后继续声称“协作执行”。
+- 现有按单授权允许当前及以后合法加入的参与者共用目标；Agent owner、运行资源 owner、真实指令作者是不同身份。
+- 普通 Provider 已有统一执行接口、消息、结果和用量输出，能够复用；普通任务整体业务入口仍主动拒绝协作单。
+- 普通执行的权限与停止强度并不统一：部分配置跳过交互确认；Windows 可退回无 Job 执行；Unix 进程组不覆盖脱离进程组的后代。
+- 旧协作协议、账本、准备流程及结算逻辑与 Linux namespace 强证明耦合。此次调整涉及执行接入及终止语义，不能只去掉操作系统检查。
+- 证据与代码位置集中于 [设计的源码依据](design.md#源码依据)。
 
-### Compatibility and protocol
+## 产品要求
 
-- 保留现有 run identity、request UUID、nonce ledger、claim/permit/outcome/proof 语义及数据库持久化边界。
-- 将当前 Linux-specific containment 字段扩展为可校验的平台 containment capability；旧 Linux 客户端继续可用，服务端不能接受未知或未经注册的 containment。
-- capability registration 必须声明 OS、arch、containment adapter/version、Provider bundle format/version 和实际 probe 结果；claim、permit、proof 必须绑定同一份冻结 capability。
-- 服务端必须区分“平台不支持”“能力注册过期/变化”“运行中止但终止未证明”，并保留当前容量和更新 barrier 语义。
+| ID | 要求 | 可观察的规则 |
+| --- | --- | --- |
+| H01 | 保留按单授权 | 组织者、实际资源拥有者及参与者规则沿用原协作 PRD；仅本单有效目标可被选择。@人只通知，@智能体不自动授权。 |
+| H02 | 接受普通本机权限 | 授权说明明确列出使用的智能体、运行环境、供应商账号来源及执行边界；允许使用普通配置已有的本机能力，不承诺宿主文件、账号或工具的操作系统隔离。不能主动替协作者注入拥有者的宽域 Multica 凭据。 |
+| H03 | 独立协作会话 | 相同协作身份可接续；不得复用私人聊天、普通任务、另一任务或另一部署的会话。无法核实旧会话归属时建立新会话并说明上下文重建。 |
+| H04 | 独立工作目录 | 每个协作执行身份拥有独立工作目录/工作树和运行临时目录。仍以明确的 Git 提交与附件准备交付文件，不自动迁移个人未提交修改。目录分离用于组织工作和减少串用，不宣传为安全沙箱。 |
+| H05 | 真实作者与资源身份 | 逐条保留指令作者；分别显示实际智能体、智能体拥有者和运行资源拥有者。小队派生保留根指令及父子关系，不能改写为 daemon 登录人或队长的人类拥有者。 |
+| H06 | 本单业务访问 | 提供给执行程序的 Multica 业务凭据仅用于本单及本次允许的读写；停止收尾凭据与业务凭据逻辑分开。普通本机权限意味着不能保证同一系统用户下的程序无法访问宿主其他凭据。 |
+| H07 | 审计与结果 | 记录请求、指令、每次实际启动、重试、停止、结果、用量和回执，均绑定原身份。按本单权限查看共享记录，不主动共享私人会话、环境变量、账号文件、完整启动参数或本机路径。 |
+| H08 | 防重复执行 | 网络重试重放原请求和回执，不重新启动。一次逻辑执行内每次真实 Provider 启动都受记录和启动许可约束，包括 Provider 内部重试。启动存在疑点时不能自动再跑一次。 |
+| H09 | 三类结束事实 | 分别表达业务结果、受管理执行是否结束、后代清理情况。受管理执行结束可以用于普通模式结算；后代清理仅按实际观察范围说明，不能宣称全部派生进程均已消失。 |
+| H10 | 停止与明确恢复 | 停止先阻止所选范围新输入消费和派生，再请求取消已有执行；未观测到受管理执行结束时显示“停止未确认”，拒绝恢复。结束回执、重连和重新授权均不自动恢复，也不复活被停止/取消的指令。 |
+| H11 | 断网与重启 | 暂时网络错误沿用普通任务语义：已运行的执行可以继续；没有新的服务端许可不能启动新尝试或派生。获知撤权/任务结束后请求停止。重启只恢复原记录与上报，不自动重跑未确认执行。 |
+| H12 | 共同控制与小队 | 保留目标/小队/整单控制、通道顺序、合批、不同目标并行及容量一的小队接续。每个成员和续作独立登记启动和结束，父进程结束不能代替成员结束。 |
+| H13 | 原有业务流程 | 转交不换执行账号、不移动会话、不重启智能体；完成/取消整单仍封闭本单新执行并请求停止已有执行。业务任务结束与实际执行结束分别显示。 |
+| H14 | 授权变更与升级 | 从 Linux 隔离执行切到普通本机执行属于授权范围变化，原资源拥有者须重新确认一次本单授权；不是每条指令确认。旧在途执行按原模式收尾，旧未确认记录不重置。 |
+| H15 | 平台与 Provider 准入 | 目标平台保留 Linux、macOS、Windows 的 amd64/arm64 矩阵。逐 Provider/版本/本地或远端模式公开实际验收结果；不支持的组合明确不可用，不静默换工具、账号或执行模式。 |
+| H16 | 安装客户端兼容 | 新客户端能读取旧 Linux 执行；旧客户端不能把普通结束观测显示为旧的强证明。不能表达新模式的客户端保留人类任务读取/评论能力，直接 AI 操作由服务端返回稳定升级拒绝码；旧版至少显示既有不可用状态，不能承诺旧二进制展示新文案。含 AI 提及的混合评论保留评论与人员通知，仅拒绝不兼容 AI 目标。 |
+| H17 | 如实展示权限变化 | 授权、执行记录、停止状态、能力诊断和交付文档统一采用 [文案契约](copy.md)，不得继续对普通模式使用“仅能访问本任务目录”“全部子进程已确认结束”等表述。 |
 
-### Native runtime adapters
+## 停止语义
 
-- Linux 保留现有 namespace adapter，抽取与平台无关的 Runner/ledger/proof 接口。
-- macOS 提供独立的 process containment、工作区/临时目录隔离、凭据注入、子进程树终止和终止证明实现；必须明确使用受支持的 macOS 原生机制，不能把 `sandbox-exec` 或普通 PGID 直接当作已验证等价物。
-- Windows 提供独立的 Job Object、进程创建/继承控制、工作区/临时目录隔离、凭据注入和终止证明实现；必须覆盖 Job Object 逃逸、父进程先退出、继承句柄和服务/桌面进程权限边界。
-- Provider bundle 的可执行文件格式、架构、动态依赖和系统文件白名单按 ELF、Mach-O、PE/Windows loader 分别验证；禁止 PATH 发现、宿主 home/配置隐式泄漏和未经声明的 Provider fallback。
-- 运行时探测应在注册前验证平台实际能力；探测失败时不参加协作候选，不影响普通 Multica 任务。
+“受管理执行结束”指本次所有已登记的直接执行启动已经确认未启动或完成真实生命周期等待/适配器终态观察，运行已封口，不会再自行重试。不能单凭成功文本、退出码零、输出流关闭、失联、超时或 PID 查询为空推断。
 
-### Verification
+在这一事实成立后，后代清理可以仅为尽力清理或范围未验证；普通模式可以结算，但界面必须保留实际范围。已知仍在运行的、适配器承诺管理的执行，以及启动记录缺失、身份不确定或未完成等待，继续属于“未确认”。
 
-- 为 Linux、macOS、Windows 各建立 native acceptance lane，覆盖单 Agent、squad leader/member/continuation、Stop/Resume、取消、Provider outcome、失联恢复、重启 proof recovery、容量一、附件/Git preparation 和 bundle 校验。
-- 每个平台至少验证 direct child、double-fork/后台 descendant、关闭 stdio、leader 先退出、强制终止、重启后 retained ledger、错误/篡改 capability 和错误架构 executable。
-- 不能用 Docker Linux、Wine、交叉编译或仅 mock 的 renderer 结果宣称 macOS/Windows 原生验收通过。
+不新增“忽略未确认并强制恢复”。此次降低的是隔离与后代覆盖保证，没有取消防重复和未确认恢复屏障。新模式按其自身终态契约收尾，不要求补一个不存在的 Linux namespace 证明。
 
-## Acceptance Criteria
+## 范围
 
-- [ ] Linux amd64/arm64 现有协作流程回归通过，协议和数据库状态不发生无意变化。
-- [ ] macOS amd64/arm64 与 Windows amd64/arm64 daemon 能完成 capability probe/register，并能被服务端作为协作候选；不支持的能力仍 fail closed。
-- [ ] 三个平台都能完成一次真实单 Agent 和一次 squad（leader/member/continuation）执行，结果、评论/活动、容量释放和 proof 与 Linux 语义一致。
-- [ ] 三个平台都能在 Stop、取消、父进程退出、Provider double-fork、网络中断和 daemon 重启后维持当前 unconfirmed/proof/recovery 语义，不提前释放槽位或自动 Resume。
-- [ ] 三个平台的 legacy executable 和 prepared Provider bundle 都拒绝错误格式、错误 arch、动态依赖闭包不完整、路径替换、未声明设备/库和隐式凭据来源。
-- [ ] 旧 Linux runtime/client 与新服务端兼容；未知 containment/version/OS/arch/adapter 被拒绝且不改变队列、grant、history、resource 或 control 状态。
-- [ ] 文档、安装包/CLI 产物、CI matrix、原生 runner 和故障诊断清楚标识“普通执行跨平台”与“协作执行 capability 已通过原生验收”的区别。
+### 纳入
 
-## Out of scope / Deferred
+- 协作授权与普通 Provider 执行接口的接入、独立会话/目录、结果/用量/审计。
+- 执行能力协商、真实启动记录、停止/恢复、故障恢复、容量及小队。
+- 明确附件/Git输入、现有 Provider 配置的准确适配；无法实现的选项明确拒绝。
+- Windows/macOS/Linux 原生验证、客户端兼容、升级与文案同步。
 
-- 不改变普通 Multica 任务的权限模型、Codex/Claude 等 Provider 自带沙箱默认值或桌面 UI 的普通运行时选择器。
-- 不在本轮新增 Provider 类型、OAuth/home/session 账户适配器、MCP/Composio/skills 能力；先复用现有受限 adapter，并按平台扩展文件格式验证。
-- 不承诺 Linux 以外平台可以复用 Linux namespace 的安全强度；平台 adapter 必须分别证明其 containment 和 proof 属性。
-- 不把 32 位 x86/ia32、FreeBSD、Android、iOS 纳入默认支持矩阵。
+### 不纳入
 
-## Key decision
+- Windows AppContainer、macOS 等价 namespace 沙箱、Linux 虚拟机和远程执行集群。
+- 更改普通任务自身权限默认值，开放普通任务凭据直接访问协作单，或改为仅本人操作智能体。
+- 自动授权新增资源、自动搬运个人目录、强制解除未确认执行、任意恢复私人会话。
+- 新增 Provider 类型、跨独立 Server 协作、Mobile 新协作界面。
+- “先选人再选智能体”的完整提及选择器改版；授权和审计中的拥有者标识属于本轮必要范围。
 
-- 本轮按**完整等价安全边界**规划：prepared bundle、附件/Git、终止证明、容量 barrier、重启恢复和 squad leader/member/continuation 都必须纳入三平台验收。这样首期交付范围较大，但不会出现“界面上跨平台、关键执行路径仍是 Linux 特供”的半成品状态。
+## 验收标准
+
+| ID | 对应要求 | 验收结果 |
+| --- | --- | --- |
+| HA01 | H01/H02/H14 | 已授权的 B 可调用 A 的本单目标；无授权、过期授权及原隔离模式授权切换后均拒绝。资源拥有者看到新边界并确认，其他任务授权不变。 |
+| HA02 | H03/H04 | 同名智能体、相同账号跨部署/任务、私人聊天和普通任务之间不串会话/目录；同一合法协作身份可接续，但两个合法 run 不能同时占用同一会话/目录；未知旧执行不提前释放其使用权。不支持恢复时明确建立新会话。 |
+| HA03 | H05/H07 | 两个人合批、小队成员及续作保留每条真实作者、资源来源和派生关系；输出自报作者不能改变服务器身份。 |
+| HA04 | H06 | 使用协作业务凭据的跨单/普通任务/管理接口请求拒绝；执行参数不主动携带拥有者普通登录或 daemon 管理凭据；不把这一 API 限制宣传成宿主隔离。 |
+| HA05 | H08 | 重复发送、丢回执、双 daemon、内部重试、外层重试和启动前后崩溃均不重复执行同一启动身份，不重复计费记录；停止后不发生新的 fallback。 |
+| HA06 | H09/H10 | 业务成功、受管理执行结束和后代清理可独立组合；脱离进程组的测试后代不被误报为已清理；未知启动不能结算或恢复。 |
+| HA07 | H10/H11 | 断网中执行可继续但不新增许可；Server 停止显示待执行端确认。重连/重启仅重放原状态和回执，不自动恢复或重跑。 |
+| HA08 | H12/H13 | 单目标、整单和小队停止范围正确，容量一能完成队长→成员→续作；转交不切环境，结束整单不遗漏已登记的成员执行。 |
+| HA09 | H04/H15 | 三平台已公布的 Provider 组合完成明确附件/Git、模型/指令等配置适配；不支持的选项不会被忽略，不因不支持而改走其他账号/Provider。 |
+| HA10 | H14/H16 | 新旧模式回执交叉拒绝，旧 Linux 执行正常收尾；旧客户端不误读新终态，未知版本拒绝；混合评论仅拒绝不兼容 AI 目标，保留人类评论/通知与生命周期操作；未确认账本和请求墓碑不被升级清除。 |
+| HA11 | H17 | 中英文授权与所有状态入口遵守 copy.md；无虚假的全后代清理、目录沙箱或断网立即停止承诺。 |
+| HA12 | 全部 | Go/前端相关检查及三平台原生故障矩阵通过；交叉编译、模拟 UI 或一个成功示例不能替代完整验收。 |
+
+## 决策状态与技术验证
+
+用户已确认产品模型、普通本机权限及降低隔离/停止保证的方向。停止未确认仍阻止恢复、暂时断网不强制停止、旧授权重新确认，作为保留现有业务约束并采用普通执行语义的具体规划规则，需随本次完整方案一起复核。
+
+Provider 生命周期回调、操作系统进程身份和本地锁的具体接入点在实施阶段以真实进程测试验证；在无法获得声明范围的终态观察时不开放该组合。当前没有三平台实现完成或验收通过的声明。

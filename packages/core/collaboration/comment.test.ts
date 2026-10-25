@@ -5,7 +5,7 @@ import { ApiClient, setApiInstance } from "../api";
 import { collaborationIssueAccessDenied, collaborationKeys, collaborationScope } from "./access";
 import { parseCollaborationMentionTargets, parseCollaborationTriggerPreview } from "./content-schema";
 import { readCollaborationDrafts } from "./draft";
-import { collaborationMentionMarkdown, executeCollaborationComment, prepareCollaborationComment } from "./comment";
+import { collaborationMentionMarkdown, executeCollaborationComment, parseCollaborationCommentDraft, prepareCollaborationComment } from "./comment";
 import { newCollaborationDeliveryForm, readCollaborationDeliveryRecords, saveCollaborationDeliveryRecord } from "./delivery-draft";
 
 const actor = "00000000-0000-4000-8000-000000000001";
@@ -18,6 +18,18 @@ const client = new QueryClient();
 afterEach(() => { client.clear(); values.clear(); vi.unstubAllGlobals(); });
 const json = (data: unknown) => new Response(JSON.stringify(data));
 const receipt = { status: 201, code: "comment_created", protocol_version: 2, issue_id: actor, comment_id: other, comment_revision: "1", event_id: key, event_seq: "1", targets: [] };
+
+it("retains the preview's negotiated execution semantics in the original comment", () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const scope = collaborationScope(actor);
+  const raw = { protocol_version: 2, execution_view_version: 6, issue_id: actor, lifecycle_epoch: "1", targets: [], recipients: [] };
+  const preview = parseCollaborationTriggerPreview(raw)!;
+  const draft = prepareCollaborationComment(scope, actor, key, "Original comment", [], preview);
+  expect(parseCollaborationCommentDraft(draft)).toHaveProperty("execution_view_version", 6);
+  const old = parseCollaborationTriggerPreview({ ...raw, execution_view_version: undefined })!;
+  expect(parseCollaborationCommentDraft(prepareCollaborationComment(scope, actor, key, "Old comment", [], old))).not.toHaveProperty("execution_view_version");
+  expect(parseCollaborationTriggerPreview({ ...raw, execution_view_version: 7 })).toBeNull();
+});
 
 it("restricts mention insertion to the issue projection and escapes authored labels", () => {
   const source = parseCollaborationMentionTargets({ protocol_version: 2, issue_id: actor, participants: [{ user_id: actor, name: "Name", avatar_url: "", external: true }], can_submit_commands: false, targets: [] })!;

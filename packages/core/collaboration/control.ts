@@ -5,6 +5,7 @@ import { getApi } from "../api";
 import type { StorageAdapter } from "../types/storage";
 import type { CollaborationIssue } from "./schema";
 import { CollaborationControlInputSchema, type CollaborationControlInput } from "./control-schema";
+import { collaborationExecutionViewInput } from "./execution-schema";
 import { collaborationAccessEpoch, collaborationKeys, CollaborationUnavailableError, isCollaborationDenied, isCollaborationScopeCurrent, protectCollaborationRead, type CollaborationScope } from "./access";
 import { clearCollaborationDrafts, removeCollaborationDraft, saveCollaborationDraft, type CollaborationDraft } from "./draft";
 
@@ -20,6 +21,7 @@ export function prepareCollaborationControl(
   const execution = issue.execution;
   const selected = selection.scope === "issue" ? execution.targets : execution.targets.filter((target) => target.id === selection.targetId.toLowerCase());
   const parsed = CollaborationControlInputSchema.safeParse({
+    ...collaborationExecutionViewInput(execution),
     action, scope: selection.scope,
     expected_lifecycle_epoch: issue.lifecycle_epoch,
     expected_participant_epoch: issue.write_context.participant_epoch,

@@ -51,11 +51,12 @@ func parseCollaborationMentions(content string) collaborationMentionSet {
 }
 
 type CollaborationMentionCatalogue struct {
-	ProtocolVersion   int                           `json:"protocol_version"`
-	IssueID           pgtype.UUID                   `json:"issue_id"`
-	Participants      []CollaborationContentAccount `json:"participants"`
-	Targets           []CollaborationMentionTarget  `json:"targets"`
-	CanSubmitCommands bool                          `json:"can_submit_commands"`
+	ExecutionViewVersion int                           `json:"execution_view_version,omitempty"`
+	ProtocolVersion      int                           `json:"protocol_version"`
+	IssueID              pgtype.UUID                   `json:"issue_id"`
+	Participants         []CollaborationContentAccount `json:"participants"`
+	Targets              []CollaborationMentionTarget  `json:"targets"`
+	CanSubmitCommands    bool                          `json:"can_submit_commands"`
 }
 
 type CollaborationCommentWriteContext struct {
@@ -64,16 +65,23 @@ type CollaborationCommentWriteContext struct {
 }
 
 type CollaborationCommentPreview struct {
-	ProtocolVersion int                                 `json:"protocol_version"`
-	IssueID         pgtype.UUID                         `json:"issue_id"`
-	LifecycleEpoch  int64                               `json:"lifecycle_epoch,string"`
-	WriteContext    *CollaborationCommentWriteContext   `json:"write_context,omitempty"`
-	Targets         []CollaborationCommentTargetPreview `json:"targets"`
-	Recipients      []CollaborationCommentRecipient     `json:"recipients"`
+	ExecutionViewVersion int                                 `json:"execution_view_version,omitempty"`
+	ProtocolVersion      int                                 `json:"protocol_version"`
+	IssueID              pgtype.UUID                         `json:"issue_id"`
+	LifecycleEpoch       int64                               `json:"lifecycle_epoch,string"`
+	WriteContext         *CollaborationCommentWriteContext   `json:"write_context,omitempty"`
+	Targets              []CollaborationCommentTargetPreview `json:"targets"`
+	Recipients           []CollaborationCommentRecipient     `json:"recipients"`
 }
 
 func (s *CollaborationService) MentionTargets(ctx context.Context, issueID pgtype.UUID) (CollaborationMentionCatalogue, error) {
 	out := CollaborationMentionCatalogue{ProtocolVersion: CollaborationContentProtocolVersion, IssueID: issueID}
+	if err := validateCollaborationExecutionRead(ctx); err != nil {
+		return out, err
+	}
+	if CollaborationExecutionViewVersion(ctx) == 6 {
+		out.ExecutionViewVersion = 6
+	}
 	err := s.readCollaborationContent(ctx, issueID, func(q *db.Queries, access CollaborationIssueAccess) error {
 		var err error
 		out.Participants, err = collaborationMentionParticipants(ctx, q, access)
@@ -81,6 +89,26 @@ func (s *CollaborationService) MentionTargets(ctx context.Context, issueID pgtyp
 			return err
 		}
 		out.Targets, err = s.AuthorizedMentionTargets(ctx, q, access)
+		if err != nil {
+			return err
+		}
+		if CollaborationExecutionViewVersion(ctx) != 6 {
+			all, err := q.ListCollaborationTargets(ctx, access.SessionID)
+			if err != nil {
+				return err
+			}
+			compatible := make([]CollaborationMentionTarget, 0, len(out.Targets))
+			for _, target := range out.Targets {
+				host, err := collaborationScopeUsesHost(ctx, q, access.SessionID, all, map[pgtype.UUID]bool{target.TargetID: true})
+				if err != nil {
+					return err
+				}
+				if !host {
+					compatible = append(compatible, target)
+				}
+			}
+			out.Targets = compatible
+		}
 		out.CanSubmitCommands = access.Capabilities.SubmitCommand
 		return err
 	})
@@ -118,6 +146,9 @@ func validateCollaborationCommentParent(ctx context.Context, q *db.Queries, acce
 
 func (s *CollaborationService) PreviewComment(ctx context.Context, issueID pgtype.UUID, p CollaborationCommentInput) (CollaborationCommentPreview, error) {
 	var out CollaborationCommentPreview
+	if err := validateCollaborationExecutionRead(ctx); err != nil {
+		return out, err
+	}
 	if err := validateCollaborationCommentInput(p); err != nil {
 		return out, err
 	}
@@ -146,8 +177,26 @@ func (s *CollaborationService) PreviewComment(ctx context.Context, issueID pgtyp
 		if err != nil {
 			return err
 		}
+		if CollaborationExecutionViewVersion(ctx) != 6 {
+			results := make([]CollaborationCommentTargetResult, len(targets))
+			for i := range targets {
+				results[i] = targets[i].CollaborationCommentTargetResult
+			}
+			if err := blockLegacyHostCommentTargets(ctx, q, access, 0, results); err != nil {
+				return err
+			}
+			for i := range targets {
+				targets[i].CollaborationCommentTargetResult = results[i]
+				if results[i].Code == "collaboration_client_upgrade_required" {
+					targets[i].Grouping = nil
+				}
+			}
+		}
 		out = CollaborationCommentPreview{ProtocolVersion: CollaborationContentProtocolVersion, IssueID: issueID, LifecycleEpoch: access.LifecycleEpoch,
 			Targets: targets, Recipients: collaborationCommentRecipients(participants, actor, parseCollaborationMentions(p.Content))}
+		if CollaborationExecutionViewVersion(ctx) == 6 {
+			out.ExecutionViewVersion = 6
+		}
 		if access.ParticipantEpoch.Valid && access.AccountEpoch.Valid {
 			out.WriteContext = &CollaborationCommentWriteContext{ParticipantEpoch: access.ParticipantEpoch.Int64, AccountEpoch: access.AccountEpoch.Int64}
 		}

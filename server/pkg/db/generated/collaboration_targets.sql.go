@@ -929,8 +929,8 @@ WHERE g.id = $1::uuid AND g.settled_at IS NULL
   AND g.expansion_sealed_at IS NOT NULL AND g.forced_disposition IN ('stopped', 'cancelled')
   AND EXISTS (SELECT 1 FROM collaboration_run r WHERE r.group_id = g.id)
   AND NOT EXISTS (SELECT 1 FROM collaboration_run r WHERE r.group_id = g.id
-      AND (r.settled_at IS NULL OR r.proof_state = 'unknown' OR r.sealed_attempt_seq IS NULL
-           OR r.sealed_attempt_seq < r.authorized_attempt_seq OR r.target_id <> g.target_id OR r.command_id <> g.command_id
+      AND (NOT collaboration_managed_execution_ended(r.containment,r.proof_state,r.progress_state,r.settled_at,r.authorized_attempt_seq,r.sealed_attempt_seq,r.started_at,r.business_outcome)
+           OR r.target_id <> g.target_id OR r.command_id <> g.command_id
            OR (r.parent_run_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM collaboration_run parent WHERE parent.id = r.parent_run_id AND parent.group_id = g.id))))
   AND NOT EXISTS (SELECT 1 FROM collaboration_delegation d WHERE d.group_id = g.id AND d.state NOT IN ('settled', 'cancelled'))
 RETURNING id, session_id, target_id, command_id, generation, target_epoch, config_version, roster, state, expansion_sealed_at, forced_disposition, disposition_reason, created_at, settled_at, channel_id, batch_id, wake_pending, wake_parent_run_id, next_leader_turn

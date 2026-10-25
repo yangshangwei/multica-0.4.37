@@ -1,9 +1,9 @@
 {
   "id": "cross-platform-collaboration-runtime",
   "name": "cross-platform-collaboration-runtime",
-  "title": "跨平台协作执行运行时支持",
-  "description": "梳理并规划让协作 AI 执行运行时在 Linux、Windows 和 macOS 上保持一致能力",
-  "status": "planning",
+  "title": "复用普通执行能力的跨平台协作执行",
+  "description": "保留按单协作授权、独立会话、真实作者、审计和防重复执行，复用普通 Provider 的本机执行能力并如实调整隔离及停止保证",
+  "status": "in_progress",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -12,7 +12,7 @@
   "assignee": "artisan",
   "createdAt": "2026-10-24",
   "completedAt": null,
-  "branch": null,
+  "branch": "codex/cross-workspace-collaboration",
   "base_branch": "main",
   "worktree_path": null,
   "commit": null,
@@ -21,6 +21,6 @@
   "children": [],
   "parent": null,
   "relatedFiles": [],
-  "notes": "",
+  "notes": "2026-10-25 用户授权并激活现有任务；2026-10-26 已实现 v3/v6、逐启动许可/回执、普通 Provider 接入、持久会话/账本及双端文案。原生 macOS 和 Linux arm64 测试已取得阶段证据，Windows 仍待原生验收。正在完成全范围复核和 make check；保留其他任务改动，尚未发布。",
   "meta": {}
 }

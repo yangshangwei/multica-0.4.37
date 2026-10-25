@@ -20,7 +20,7 @@ it("reads complete Switch proposals with matching path identities and exact vers
   const api = new ApiClient(baseUrl);
   await expect(api.listCollaborationTargetSwitchProposals(issueId, targetId)).resolves.toEqual([proposal]);
   await expect(api.getCollaborationTargetSwitchProposal(issueId, targetId, proposalId)).resolves.toEqual(proposal);
-  expect(fetchMock.mock.calls.map(([url]) => url)).toEqual([path, `${path}/${proposalId}`]);
+  expect(fetchMock.mock.calls.map(([url]) => url)).toEqual([`${path}?execution_view_version=6`, `${path}/${proposalId}?execution_view_version=6`]);
   for (const [, init] of fetchMock.mock.calls) {
     expect(init.method ?? "GET").toBe("GET");
     const headers = new Headers(init.headers);

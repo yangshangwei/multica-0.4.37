@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -10,13 +11,19 @@ import (
 )
 
 type collaborationResourceRequestBody struct {
-	ExpectedLifecycleEpoch   string `json:"expected_lifecycle_epoch"`
-	ExpectedParticipantEpoch string `json:"expected_participant_epoch"`
-	ExpectedAccountEpoch     string `json:"expected_account_epoch"`
+	ExecutionViewVersion     json.RawMessage `json:"execution_view_version,omitempty"`
+	ExpectedLifecycleEpoch   string          `json:"expected_lifecycle_epoch"`
+	ExpectedParticipantEpoch string          `json:"expected_participant_epoch"`
+	ExpectedAccountEpoch     string          `json:"expected_account_epoch"`
 }
 
 func collaborationResourceRequest(w http.ResponseWriter, r *http.Request, body collaborationResourceRequestBody) (service.CollaborationQueueRequest, bool) {
 	var result service.CollaborationQueueRequest
+	version, ok := collaborationExecutionWriteVersion(w, body.ExecutionViewVersion)
+	if !ok {
+		return result, false
+	}
+	result.ExecutionViewVersion = version
 	w.Header().Set("Cache-Control", "no-store")
 	r.Header.Del("X-Workspace-ID")
 	r.Header.Del("X-Workspace-Slug")

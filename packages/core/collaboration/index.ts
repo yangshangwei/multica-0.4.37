@@ -11,7 +11,7 @@ export { collaborationPropertyValueMatchesDefinition } from "./schema";
 export { collaborationFieldOptions } from "./field-queries";
 export { CollaborationCreationFieldsSchema } from "./creation-schema";
 export type { CollaborationCreationFields } from "./creation-schema";
-export { CollaborationExecutionSchema, CollaborationTargetHoldReasonSchema } from "./execution-schema";
+export { CollaborationExecutionSchema, CollaborationTargetHoldReasonSchema, collaborationExecutionViewInput } from "./execution-schema";
 export type { CollaborationExecution, CollaborationExecutionChannel, CollaborationTargetHoldReason, CollaborationExecutionTarget, CollaborationExecutionCommand, CollaborationExecutionGroup, CollaborationExecutionRun } from "./execution-schema";
 export { CollaborationControlInputSchema, CollaborationControlReceiptSchema, parseCollaborationControlReceipt, matchesCollaborationControlReceipt } from "./control-schema";
 export type { CollaborationControlInput, CollaborationControlReceipt, CollaborationChannelControlResult, CollaborationTargetHoldResult } from "./control-schema";

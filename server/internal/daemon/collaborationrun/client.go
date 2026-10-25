@@ -75,42 +75,64 @@ func (c *Client) Claim(ctx context.Context, runID string, in protocol.Collaborat
 	if c.managedToken == "" {
 		return out, ErrUnsupported
 	}
-	if !validUUID(runID) || !validUUID(in.DeploymentID) || !validUUID(in.InstallationID) || !validUUID(in.RuntimeID) || !validUUID(in.BindingID) || !positiveDecimal(in.BindingEpoch) || in.ProtocolVersion != protocol.CollaborationRuntimeProtocolVersion || in.Containment != protocol.CollaborationContainmentLinuxPIDNamespace {
+	if !validUUID(runID) || !validUUID(in.DeploymentID) || !validUUID(in.InstallationID) || !validUUID(in.RuntimeID) || !validUUID(in.BindingID) || !positiveDecimal(in.BindingEpoch) || !protocol.CollaborationRuntimeModeVersion(in.ProtocolVersion, in.Containment) {
 		return out, ErrProtocol
 	}
-	if in.PreparationVersion != 0 && in.PreparationVersion != protocol.CollaborationPreparationVersion ||
+	host := in.ProtocolVersion == protocol.CollaborationHostRuntimeProtocolVersion
+	if host {
+		if in.PreparationVersion != protocol.CollaborationHostPreparationVersion || !validDigest(in.CapabilityDigest) || in.BundleDigest != "" {
+			return out, ErrProtocol
+		}
+	} else if in.CapabilityDigest != "" || in.PreparationVersion != 0 && in.PreparationVersion != protocol.CollaborationPreparationVersion ||
 		in.PreparationVersion == 0 && in.BundleDigest != "" || in.PreparationVersion != 0 && !validDigest(in.BundleDigest) {
 		return out, ErrProtocol
 	}
 	if err := c.request(ctx, http.MethodPost, runPath(runID, "claim"), c.managedToken, in, &out); err != nil {
 		return out, err
 	}
+	return out, validateClaimResponse(out, runID, in)
+}
+
+// Retained claims pass the same validation before they can resume waiting for
+// their session. A private ledger file is not a substitute for input validation.
+func validateClaimResponse(out protocol.CollaborationRunClaimResponse, runID string, in protocol.CollaborationRunClaimRequest) error {
 	if validateIdentity(out.Identity) != nil || out.Identity.DeploymentID != in.DeploymentID || out.Identity.InstallationID != in.InstallationID || out.Identity.RunID != runID || out.TerminationToken == "" || !validUUID(out.AgentID) || !validUUID(out.ResourceOwnerID) || !validUUID(out.ExecutionWorkspaceID) || len(out.Inputs) == 0 || len(out.Inputs) > 1024 {
-		return out, ErrProtocol
+		return ErrProtocol
+	}
+	if in.ProtocolVersion == protocol.CollaborationHostRuntimeProtocolVersion {
+		if out.ProtocolVersion != in.ProtocolVersion || out.Containment != in.Containment || out.HostContext == nil || out.HostContext.RuntimeID != in.RuntimeID {
+			return ErrProtocol
+		}
+		if _, err := hostSessionKey(out); err != nil || out.HostContext.ParentRunID != nil && !validUUID(*out.HostContext.ParentRunID) ||
+			out.Preparation.Resource.AgentOwnerUserID != out.HostContext.AgentOwnerUserID {
+			return ErrProtocol
+		}
+	} else if out.ProtocolVersion != 0 || out.Containment != "" || out.HostContext != nil {
+		return ErrProtocol
 	}
 	seen := make(map[string]bool)
 	for _, input := range out.Inputs {
 		if !validUUID(input.CommandID) || !validUUID(input.AuthorUserID) || !positiveDecimal(input.ParticipantEpoch) || !positiveDecimal(input.AccountEpoch) || !positiveDecimal(input.LifecycleEpoch) || seen[input.CommandID] {
-			return out, ErrProtocol
+			return ErrProtocol
 		}
 		seen[input.CommandID] = true
 		for _, id := range input.AttachmentIDs {
 			if !validUUID(id) || in.PreparationVersion == 0 {
-				return out, ErrProtocol
+				return ErrProtocol
 			}
 		}
 	}
 	if in.PreparationVersion == 0 {
 		if out.Preparation != nil {
-			return out, ErrProtocol
+			return ErrProtocol
 		}
-	} else if protocol.ValidateCollaborationPreparation(out.Preparation, out.Identity, out.Inputs) != nil ||
-		out.Preparation.Provider.BundleDigest != in.BundleDigest || out.Preparation.Resource.RuntimeID != in.RuntimeID ||
+	} else if protocol.ValidateCollaborationPreparation(out.Preparation, out.Identity, out.Inputs) != nil || out.Preparation.Version != in.PreparationVersion ||
+		out.Preparation.Provider.BundleDigest != in.BundleDigest || out.Preparation.CapabilityDigest != in.CapabilityDigest || out.Preparation.Resource.RuntimeID != in.RuntimeID ||
 		out.Preparation.Resource.AgentID != out.AgentID || out.Preparation.Resource.OwnerUserID != out.ResourceOwnerID ||
 		out.Preparation.Resource.ExecutionWorkspaceID != out.ExecutionWorkspaceID {
-		return out, ErrProtocol
+		return ErrProtocol
 	}
-	return out, nil
+	return nil
 }
 
 func (c *Client) Permit(ctx context.Context, in protocol.CollaborationRunPermitRequest) (protocol.CollaborationRunPermitResponse, error) {
@@ -118,23 +140,40 @@ func (c *Client) Permit(ctx context.Context, in protocol.CollaborationRunPermitR
 	if c.managedToken == "" {
 		return out, ErrUnsupported
 	}
-	if validateIdentity(in.Identity) != nil || in.AttemptSeq != "1" || !validUUID(in.AttemptNonce) || in.Containment != protocol.CollaborationContainmentLinuxPIDNamespace {
+	if validateIdentity(in.Identity) != nil || !validUUID(in.AttemptNonce) {
+		return out, ErrProtocol
+	}
+	if in.ProtocolVersion == protocol.CollaborationHostRuntimeProtocolVersion {
+		if in.Containment != protocol.CollaborationContainmentHostProcessSupervision || !validHostAttempt(in.AttemptSeq) || in.LaunchDescriptor == nil || protocol.ValidateCollaborationLaunchDescriptor(*in.LaunchDescriptor) != nil {
+			return out, ErrProtocol
+		}
+	} else if in.ProtocolVersion != 0 || in.AttemptSeq != "1" || in.Containment != protocol.CollaborationContainmentLinuxPIDNamespace || in.LaunchDescriptor != nil {
 		return out, ErrProtocol
 	}
 	if err := c.request(ctx, http.MethodPost, runPath(in.Identity.RunID, "permit"), c.managedToken, in, &out); err != nil {
 		return out, err
 	}
-	if out.Identity != in.Identity || out.AttemptSeq != in.AttemptSeq || out.AttemptNonce != in.AttemptNonce || out.BusinessToken == "" {
+	if out.ProtocolVersion != in.ProtocolVersion || out.Identity != in.Identity || out.AttemptSeq != in.AttemptSeq || out.AttemptNonce != in.AttemptNonce || out.BusinessToken == "" {
 		return out, ErrProtocol
 	}
 	return out, nil
 }
 
 func (c *Client) StopIntent(ctx context.Context, id protocol.CollaborationRunIdentity, token string) (protocol.CollaborationRunStopIntent, error) {
+	return c.stopIntent(ctx, id, token, 0, "")
+}
+
+func (c *Client) HostStopIntent(ctx context.Context, id protocol.CollaborationRunIdentity, token string) (protocol.CollaborationRunStopIntent, error) {
+	return c.stopIntent(ctx, id, token, protocol.CollaborationHostRuntimeProtocolVersion, protocol.CollaborationContainmentHostProcessSupervision)
+}
+
+func (c *Client) stopIntent(ctx context.Context, id protocol.CollaborationRunIdentity, token string, version int, containment string) (protocol.CollaborationRunStopIntent, error) {
 	var out protocol.CollaborationRunStopIntent
 	var raw struct {
-		Identity      protocol.CollaborationRunIdentity `json:"identity"`
-		StopRequested *bool                             `json:"stop_requested"`
+		ProtocolVersion int                               `json:"protocol_version,omitempty"`
+		Containment     string                            `json:"containment,omitempty"`
+		Identity        protocol.CollaborationRunIdentity `json:"identity"`
+		StopRequested   *bool                             `json:"stop_requested"`
 	}
 	if validateIdentity(id) != nil {
 		return out, ErrProtocol
@@ -142,15 +181,23 @@ func (c *Client) StopIntent(ctx context.Context, id protocol.CollaborationRunIde
 	if err := c.request(ctx, http.MethodGet, runPath(id.RunID, "stop-intent"), token, nil, &raw); err != nil {
 		return out, err
 	}
-	if raw.Identity != id || raw.StopRequested == nil {
+	if raw.Identity != id || raw.StopRequested == nil || raw.ProtocolVersion != version || raw.Containment != containment {
 		return out, ErrProtocol
 	}
 	out.Identity, out.StopRequested = raw.Identity, *raw.StopRequested
+	out.ProtocolVersion, out.Containment = raw.ProtocolVersion, raw.Containment
 	return out, nil
 }
 
 func (c *Client) Outcome(ctx context.Context, in protocol.CollaborationRunOutcome, token string) error {
-	if validateIdentity(in.Identity) != nil || in.AttemptSeq != "1" || !validUUID(in.AttemptNonce) || !validUUID(in.EventID) || protocol.ValidateCollaborationProviderResult(protocol.CollaborationProviderResult{Outcome: in.Outcome, Body: in.Body, Record: in.Record}) != nil {
+	if validateIdentity(in.Identity) != nil || !validUUID(in.AttemptNonce) || !validUUID(in.EventID) || protocol.ValidateCollaborationProviderResult(protocol.CollaborationProviderResult{Outcome: in.Outcome, Body: in.Body, Record: in.Record}) != nil {
+		return ErrProtocol
+	}
+	if in.ProtocolVersion == protocol.CollaborationHostRuntimeProtocolVersion {
+		if in.Containment != protocol.CollaborationContainmentHostProcessSupervision || !validHostAttempt(in.AttemptSeq) {
+			return ErrProtocol
+		}
+	} else if in.ProtocolVersion != 0 || in.Containment != "" || in.AttemptSeq != "1" {
 		return ErrProtocol
 	}
 	return c.request(ctx, http.MethodPost, runPath(in.Identity.RunID, "outcome"), token, in, nil)
@@ -161,10 +208,17 @@ func (c *Client) Proof(ctx context.Context, in protocol.CollaborationRunProof, t
 	if validateIdentity(in.Identity) != nil || !validUUID(in.ReceiptID) {
 		return out, ErrProtocol
 	}
+	if in.ProtocolVersion == protocol.CollaborationHostRuntimeProtocolVersion {
+		if protocol.ValidateCollaborationHostProof(in) != nil {
+			return out, ErrProtocol
+		}
+	} else if in.ProtocolVersion != 0 || in.Containment != protocol.CollaborationContainmentLinuxPIDNamespace || in.Launches != nil || in.Cleanup != nil {
+		return out, ErrProtocol
+	}
 	if err := c.request(ctx, http.MethodPost, runPath(in.Identity.RunID, "proof"), token, in, &out); err != nil {
 		return out, err
 	}
-	if out.Identity != in.Identity || out.ReceiptID != in.ReceiptID || !out.Accepted {
+	if out.ProtocolVersion != in.ProtocolVersion || out.Identity != in.Identity || out.ReceiptID != in.ReceiptID || !out.Accepted {
 		return out, ErrProtocol
 	}
 	return out, nil
@@ -202,7 +256,10 @@ func (c *Client) request(ctx context.Context, method, path, token string, in, ou
 		return &HTTPError{Status: resp.StatusCode}
 	}
 	raw, err := io.ReadAll(io.LimitReader(resp.Body, 2*1024*1024+1))
-	if err != nil || len(raw) > 2*1024*1024 {
+	if err != nil {
+		return ErrTransport
+	}
+	if len(raw) > 2*1024*1024 {
 		return ErrProtocol
 	}
 	if out == nil {

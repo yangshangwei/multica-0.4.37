@@ -10,6 +10,7 @@ import { clearCollaborationDrafts, removeCollaborationDraft, saveCollaborationDr
 import { CollaborationResourceInputSchema, type CollaborationResourceInput, type CollaborationResources, type CollaborationResourceOption,
   type CollaborationResourceIdentityView, type CollaborationTargetResource } from "./resource-schema";
 import { CollaborationResourceOfferSchema, type CollaborationResourceOffer, type CollaborationResourceOffersPage } from "./resource-offer-schema";
+import { collaborationExecutionViewInput } from "./execution-schema";
 
 const payloadSchema = z.strictObject({ domain: z.literal("target_resource"), requestId: z.uuid(), input: CollaborationResourceInputSchema });
 export type CollaborationResourceSelection =
@@ -37,7 +38,7 @@ export function prepareCollaborationResource(scope: CollaborationScope, issue: C
   if (!isCollaborationScopeCurrent(scope) || !issue.write_context || issue.capabilities.control_ai !== true || !issue.execution ||
     resources.issue_id !== issue.id.toLowerCase() || resources.lifecycle_epoch !== issue.lifecycle_epoch) throw new CollaborationUnavailableError();
   if (selection.action !== "offer_resource" && selection.action !== "withdraw_resource_offer" && resources.target_set_version !== issue.execution.target_set_version) throw new CollaborationUnavailableError();
-  const base = { expected_lifecycle_epoch: issue.lifecycle_epoch, expected_participant_epoch: issue.write_context.participant_epoch, expected_account_epoch: issue.write_context.account_epoch };
+  const base = { ...collaborationExecutionViewInput(issue.execution), expected_lifecycle_epoch: issue.lifecycle_epoch, expected_participant_epoch: issue.write_context.participant_epoch, expected_account_epoch: issue.write_context.account_epoch };
   let input: unknown;
   if (selection.action === "register_target") {
     if (!canOrganizeCollaborationResources(scope, issue) || resources.can_organize !== true || selection.candidate.available !== true) throw new CollaborationUnavailableError();
@@ -70,6 +71,7 @@ export function prepareCollaborationResource(scope: CollaborationScope, issue: C
       input = { ...base, action: selection.action, grant_id: resource.grant_id, expected_grant_epoch: resource.grant_epoch };
     } else {
       const identity = selection.identity;
+      if (issue.execution.protocol_version === 6 && resource.execution_mode === undefined) throw new CollaborationUnavailableError();
       if (resource.can_consent !== true || issue.session.queue_state === "closed" || identity.issue_id !== issue.id.toLowerCase() || identity.target_id !== target.target_id ||
         identity.agent_id !== resource.agent_id || identity.proposal_id !== null || !identity.identity) throw new CollaborationUnavailableError();
       input = { ...base, action: selection.action, target_id: target.target_id, agent_id: resource.agent_id, expected_target_epoch: target.target_epoch,

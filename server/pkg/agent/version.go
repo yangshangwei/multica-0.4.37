@@ -147,6 +147,44 @@ type semver struct {
 // "2.1.100 (Claude Code)" — it extracts the first three numeric components.
 var versionRe = regexp.MustCompile(`v?(\d+)\.(\d+)\.(\d+)`)
 
+var hostVersionRe = regexp.MustCompile(`^v?(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$`)
+var hostFixtureVersionRe = regexp.MustCompile(`^fixture-[0-9]+(?:[._+-][0-9A-Za-z-]+)*$`)
+
+// NormalizeHostProviderVersion removes only known version-banner decoration.
+// Host capabilities bind the exact prerelease/build identity; parseSemver's
+// numeric comparison would silently merge distinct builds. Ordinary version
+// diagnostics keep their original banner. Explicit fixture-N versions remain
+// available for test-owned executables, not as platform acceptance evidence.
+func NormalizeHostProviderVersion(provider, value string) (string, bool) {
+	if !HostLifecycleSupported(provider, "local") || len(value) > 256 {
+		return "", false
+	}
+	value = strings.TrimSpace(value)
+	switch provider {
+	case "claude":
+		value = strings.TrimSuffix(value, " (Claude Code)")
+	case "codex":
+		value = strings.TrimPrefix(value, "codex-cli ")
+	case "opencode":
+		if strings.HasPrefix(value, "opencode ") {
+			value = strings.TrimPrefix(value, "opencode ")
+		} else {
+			value = strings.TrimPrefix(value, "OpenCode ")
+		}
+	}
+	value = strings.TrimSpace(value)
+	if len(value) > 128 {
+		return "", false
+	}
+	if hostFixtureVersionRe.MatchString(value) {
+		return value, true
+	}
+	if !hostVersionRe.MatchString(value) {
+		return "", false
+	}
+	return strings.TrimPrefix(value, "v"), true
+}
+
 // parseSemver extracts a semver from a version string.
 func parseSemver(raw string) (semver, error) {
 	m := versionRe.FindStringSubmatch(raw)

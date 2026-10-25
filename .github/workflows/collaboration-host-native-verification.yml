@@ -1,0 +1,59 @@
+# Verification-only snapshot. Do not merge this branch-specific workflow into product branches.
+name: Collaboration host runtime verification snapshot
+on:
+  push:
+    branches:
+      - codex/verify-collaboration-host-runtime-20261026
+permissions:
+  contents: read
+concurrency:
+  group: collaboration-host-verification-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-host:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+    env:
+      MULTICA_RUN_REAL_AGENT_SMOKE: "0"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.26.x
+          check-latest: true
+          cache-dependency-path: server/go.sum
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Verify native evidence gate
+        shell: bash
+        run: node --test scripts/check-collaboration-native-tests.test.mjs
+      - name: Native host lifecycle and recovery
+        shell: bash
+        run: |
+          mkdir -p native-collaboration
+          go version > native-collaboration/runtime.txt
+          go env GOOS GOARCH >> native-collaboration/runtime.txt
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            go -C server test -json -p 1 -parallel 2 -count=1 -timeout=5m ./pkg/agent ./internal/daemon/collaborationrun ./internal/daemon ./internal/cli -run '^(TestHost|TestCollaborationHost)' | tee native-collaboration/tests.jsonl
+          else
+            bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test -json -p 1 -parallel 2 -count=1 -timeout=5m ./pkg/agent ./internal/daemon/collaborationrun ./internal/daemon ./internal/cli -run '^(TestHost|TestCollaborationHost)' | tee native-collaboration/tests.jsonl
+          fi
+          node scripts/check-collaboration-native-tests.mjs native-collaboration/tests.jsonl "$RUNNER_OS"
+      - name: Retain native verification evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: collaboration-host-verification-${{ matrix.os }}-${{ github.sha }}
+          path: native-collaboration/
+        if: ${{ always() }}

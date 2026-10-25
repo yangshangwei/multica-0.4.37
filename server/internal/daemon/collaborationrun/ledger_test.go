@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"runtime"
 	"testing"
 
@@ -279,7 +280,7 @@ func TestUnrequestedRegistrationSealsAttemptZeroTombstone(t *testing.T) {
 		t.Fatalf("sealed registration requested a permit: %v", err)
 	}
 	again, err := reloaded.Seal()
-	if err != nil || again != proof {
+	if err != nil || !reflect.DeepEqual(again, proof) {
 		t.Fatalf("sealed proof replay changed: %+v %v", again, err)
 	}
 }

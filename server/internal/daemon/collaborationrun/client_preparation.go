@@ -75,7 +75,7 @@ func (c *Client) EnsureCapabilities(ctx context.Context, identity protocol.Colla
 	if out.RuntimeConfigEpoch != expectedEpoch {
 		return empty, ErrProtocol
 	}
-	in := protocol.CollaborationRuntimeCapabilitiesRequest{ProtocolVersion: protocol.CollaborationRuntimeProtocolVersion,
+	in := protocol.CollaborationRuntimeCapabilitiesRequest{ProtocolVersion: identity.ProtocolVersion,
 		DeploymentID: identity.DeploymentID, InstallationID: identity.InstallationID, RuntimeID: identity.RuntimeID, BindingID: identity.BindingID,
 		BindingEpoch: identity.BindingEpoch, ExpectedRuntimeConfigEpoch: expectedEpoch, Capabilities: caps}
 	out = empty

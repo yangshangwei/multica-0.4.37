@@ -2,7 +2,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationCommentOptions, collaborationKeys, collaborationMentionMarkdown, collaborationMentionTargetsOptions, executeCollaborationComment,
   prepareCollaborationComment, useCollaborationCommentPreview, useCollaborationPendingDrafts,
-  useCollaborationDeliveryForm,
+  useCollaborationDeliveryForm, collaborationExecutionViewInput,
   type CollaborationComment, type CollaborationDraft, type CollaborationIssue, type CollaborationScope, type CollaborationTriggerPreview } from "@multica/core/collaboration";
 import { Button } from "@multica/ui/components/ui/button";
 import { Textarea } from "@multica/ui/components/ui/textarea";
@@ -43,7 +43,9 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
   const [inspectedDraftId, setInspectedDraftId] = useState<string | null>(null);
   // Shared drafts can change outside this component's local reset handlers.
   const inspected = inspect.variables;
+  const executionView = collaborationExecutionViewInput(issue.execution);
   const preview = inspectedDraftId === delivery.form.draftId && inspected?.content === content && inspected.parent_id === parentId &&
+    inspected.execution_view_version === executionView.execution_view_version &&
     (inspected.suppressed_target_ids ?? []).join(",") === suppressed.join(",") &&
     (inspected.attachment_ids ?? []).join(",") === delivery.form.selectedAttachmentIds.join(",") &&
     inspected.draft_id === (delivery.form.selectedAttachmentIds.length ? delivery.form.draftId : undefined)
@@ -89,7 +91,7 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
     {Boolean(delivery.error) && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
     <div className="flex flex-wrap gap-2"><Button variant="outline" type="button" disabled={locked || !content.trim()} onClick={() => {
       setInspectedDraftId(delivery.form.draftId);
-      inspect.mutate({ content, parent_id: parentId, suppressed_target_ids: suppressed,
+      inspect.mutate({ ...executionView, content, parent_id: parentId, suppressed_target_ids: suppressed,
         ...(delivery.form.selectedAttachmentIds.length ? { draft_id: delivery.form.draftId, attachment_ids: delivery.form.selectedAttachmentIds } : {}) });
     }} className="pointer-coarse:min-h-11">{t(($) => $.composer.preview)}</Button>
       <Button type="submit" disabled={!preview || locked || !content.trim()} className="pointer-coarse:min-h-11">{t(($) => $.composer.send)}</Button>

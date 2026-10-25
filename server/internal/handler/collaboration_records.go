@@ -9,6 +9,9 @@ import (
 )
 
 func (h *Handler) GetCollaborationRunRecords(w http.ResponseWriter, r *http.Request) {
+	if !collaborationExecutionRead(w, r) {
+		return
+	}
 	prepareCollaborationContentRequest(w, r)
 	issue, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "id"), "issue_id")
 	if !ok {

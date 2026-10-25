@@ -11,6 +11,7 @@ import { parseCollaborationResourceIdentity, parseCollaborationResources, parseC
 import { parseCollaborationResourceOffer, parseCollaborationResourceOffersPage } from "./resource-offer-schema";
 import { resourceOfferFixture, resourceOffersPageFixture } from "./resource-offer-test-fixtures";
 import { resourceIssue, resourcesFixture, resourceReceiptFixture, resourceIdentityFixture, resourceOptionsFixture } from "./resource-test-fixtures";
+import { collaborationHostExecutionFixture } from "./test-fixtures";
 
 const auth = vi.hoisted(() => ({ user: { id: "00000000-0000-4000-8000-000000000001" } }));
 vi.mock("../auth", () => ({ useAuthStore: { getState: () => auth } }));
@@ -38,6 +39,13 @@ it("checks current ownership and records the observed target and binding version
   otherOwner.targets[0]!.resources[0]!.owner_user_id = "00000000-0000-4000-8000-000000000002";
   expect(() => prepareCollaborationResource(scope, issue, otherOwner, draft.requestId, selection)).toThrow();
   expect(() => prepareCollaborationResource(scope, issue, { ...resources, target_set_version: "1" }, draft.requestId, selection)).toThrow();
+});
+
+it("refuses v6 consent when all execution metadata is absent without breaking v5 consent", () => {
+  const { scope, issue, resources, selection, draft } = setup();
+  const hostIssue = parseCollaborationIssue({ ...issue, execution: collaborationHostExecutionFixture })!;
+  expect(() => prepareCollaborationResource(scope, hostIssue, resources, draft.requestId, selection)).toThrow();
+  expect(parseCollaborationResourceDraft(prepareCollaborationResource(scope, issue, resources, draft.requestId, selection)).execution_view_version).toBeUndefined();
 });
 
 it("preserves an unknown resource write and recovers by GET without replacement versions", async () => {

@@ -1,11 +1,12 @@
 import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
-import { CollaborationTargetHoldReasonSchema } from "./execution-schema";
+import { CollaborationExecutionViewVersionSchema, CollaborationTargetHoldReasonSchema } from "./execution-schema";
 import { nonnegativeVersion, positiveVersion } from "./version";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 const requestId = z.string().min(1).max(128).regex(/^[^\r\n]+$/);
 const authority = {
+  execution_view_version: CollaborationExecutionViewVersionSchema.optional(),
   expected_lifecycle_epoch: positiveVersion,
   expected_participant_epoch: positiveVersion,
   expected_account_epoch: positiveVersion,
@@ -39,6 +40,7 @@ const refusalCodes = [
   "stale_authority", "stale_scope", "stale_control_version", "stale_execution", "stale_target", "stale_hold", "stale_admission",
   "issue_closed", "issue_paused", "command_unavailable", "collaboration_execution_unavailable",
   "grant_required", "config_invalid", "stop_unconfirmed", "runtime_upgrade_required", "squad_runtime_unavailable",
+  "collaboration_client_upgrade_required", "execution_mode_unsupported", "execution_consent_required",
 ] as const;
 const channelFields = {
   code: z.enum(["resumed", "already_active", "stop_unconfirmed", "stop_requested", "already_ended"]),

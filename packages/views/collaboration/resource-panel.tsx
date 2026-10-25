@@ -60,7 +60,7 @@ export function CollaborationResourcePanel({ scope, issue, locked, submit }: { s
       {query.isSuccess && query.data.targets.length === 0 && <p className="text-body text-muted-foreground">{t(($) => $.resources.empty)}</p>}
       <ul className="space-y-5">{query.data?.targets.map((target) => <li key={target.target_id} className="min-w-0 space-y-3">
         <div className="space-y-1"><h4 className="text-body font-semibold [overflow-wrap:anywhere]">{target.name || target.resource_id}</h4>
-          {target.reason !== "" && <p className="text-caption text-muted-foreground">{labels.reason(target.reason)}</p>}</div>
+          {target.reason !== "" && <p className="text-caption text-muted-foreground">{labels.reason(target.reason, target.resources.some((resource) => resource.execution_mode === "host_process_supervision_v1") ? "host_process_supervision_v1" : undefined)}</p>}</div>
         <ul className="space-y-3">{target.resources.map((resource) => <li key={resource.agent_id} className="min-w-0 space-y-2">
           <p className="text-body [overflow-wrap:anywhere]">{resource.agent_name || resource.agent_id} · {t(($) => $.execution[resource.role])}</p>
           <CollaborationResourceSummary resource={resource} />
@@ -79,6 +79,8 @@ export function CollaborationResourcePanel({ scope, issue, locked, submit }: { s
         catch (failure) { setError(failure); }
       }} />}
       {selection?.action === "consent" && <CollaborationResourceConsentForm scope={scope} issueId={issue.id} targetId={selection.targetId} agentId={selection.agentId} name={selection.name} locked={locked} disabled={!consentCurrent} close={close} submit={submit}
+        executionViewVersion={issue.execution?.protocol_version}
+        resource={selectedTarget?.resources.find((resource) => resource.agent_id === selection.agentId)}
         prepare={(identity) => prepareCollaborationResource(scope, selection.issue, selection.resources, crypto.randomUUID(), { action: "consent_resource", targetId: selection.targetId, agentId: selection.agentId, identity })} />}
       {selection?.action === "revoke" && <CollaborationResourceConfirmation title={t(($) => $.resources.withdrawTitle)} effect={t(($) => $.resources.withdrawEffect)} confirmLabel={t(($) => $.resources.confirmWithdraw)} draft={selection.draft} locked={locked} close={close} submit={submit} />}
       {query.isSuccess && <CollaborationResourceOffers scope={scope} issue={issue} resources={query.data} locked={locked || selection !== null} submit={submit} />}

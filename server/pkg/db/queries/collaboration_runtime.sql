@@ -181,9 +181,28 @@ SELECT * FROM collaboration_attempt WHERE run_id=$1 AND attempt_seq=$2;
 -- name: CreateCollaborationAttempt :exec
 INSERT INTO collaboration_attempt(run_id,attempt_seq,attempt_nonce,claim_generation,containment) VALUES($1,$2,$3,$4,$5);
 
+-- name: CreateCollaborationHostAttempt :exec
+INSERT INTO collaboration_attempt(run_id,attempt_seq,attempt_nonce,claim_generation,containment,launch_descriptor,terminal_observation,authorized_at)
+VALUES(sqlc.arg(run_id)::uuid,sqlc.arg(attempt_seq)::bigint,sqlc.arg(attempt_nonce)::text,sqlc.arg(claim_generation)::bigint,
+    'host_process_supervision_v1',sqlc.narg(launch_descriptor)::jsonb,sqlc.narg(terminal_observation)::jsonb,
+    CASE WHEN sqlc.narg(launch_descriptor)::jsonb IS NULL THEN NULL ELSE now() END);
+
+-- name: ListCollaborationAttempts :many
+SELECT * FROM collaboration_attempt WHERE run_id=$1 ORDER BY attempt_seq;
+
+-- name: RecordCollaborationLaunchTermination :one
+UPDATE collaboration_attempt SET terminal_observation=sqlc.arg(observation)::jsonb
+WHERE run_id=sqlc.arg(run_id)::uuid AND attempt_seq=sqlc.arg(attempt_seq)::bigint AND terminal_observation IS NULL RETURNING *;
+
 -- name: AuthorizeCollaborationAttempt :one
 UPDATE collaboration_run SET authorized_attempt_seq=sqlc.arg(attempt_seq)::bigint,progress_state='launch_authorized'
 WHERE id=sqlc.arg(run_id)::uuid AND authorized_attempt_seq=0 AND settled_at IS NULL AND forced_disposition IS NULL RETURNING *;
+
+-- name: AuthorizeCollaborationHostAttempt :one
+UPDATE collaboration_run SET authorized_attempt_seq=sqlc.arg(attempt_seq)::bigint,progress_state='launch_authorized'
+WHERE id=sqlc.arg(run_id)::uuid AND containment='host_process_supervision_v1'
+    AND authorized_attempt_seq=sqlc.arg(attempt_seq)::bigint-1 AND settled_at IS NULL AND sealed_attempt_seq IS NULL
+    AND forced_disposition IS NULL RETURNING *;
 
 -- name: GetCollaborationBusinessCapability :one
 SELECT * FROM collaboration_business_capability WHERE run_id=$1 AND attempt_seq=$2;
@@ -236,7 +255,7 @@ UPDATE collaboration_execution_group g SET settled_at=now(),
 WHERE g.id=$1 AND g.settled_at IS NULL AND g.expansion_sealed_at IS NOT NULL
   AND EXISTS(SELECT 1 FROM collaboration_run r WHERE r.group_id=g.id)
   AND NOT EXISTS(SELECT 1 FROM collaboration_run r WHERE r.group_id=g.id AND (
-      r.settled_at IS NULL OR r.proof_state NOT IN ('never_launched_proven','exited_proven') OR r.sealed_attempt_seq IS NULL OR r.sealed_attempt_seq<r.authorized_attempt_seq
+      NOT collaboration_managed_execution_ended(r.containment,r.proof_state,r.progress_state,r.settled_at,r.authorized_attempt_seq,r.sealed_attempt_seq,r.started_at,r.business_outcome)
       OR r.step_kind IN ('agent','leader','continuation') AND r.leader_turn IS NULL
       OR r.session_id<>g.session_id OR r.target_id<>g.target_id OR r.command_id<>g.command_id
       OR r.channel_id IS DISTINCT FROM g.channel_id OR r.batch_id IS DISTINCT FROM g.batch_id))
@@ -245,8 +264,8 @@ RETURNING *;
 
 -- name: ReleaseCollaborationRunReservation :exec
 UPDATE collaboration_runtime_reservation reserve SET released_at=COALESCE(reserve.released_at,now()) FROM collaboration_run r
-WHERE reserve.run_id=$1 AND r.id=reserve.run_id AND r.settled_at IS NOT NULL
-    AND r.proof_state IN ('never_launched_proven','exited_proven') AND r.sealed_attempt_seq>=r.authorized_attempt_seq;
+WHERE reserve.run_id=$1 AND r.id=reserve.run_id
+    AND collaboration_managed_execution_ended(r.containment,r.proof_state,r.progress_state,r.settled_at,r.authorized_attempt_seq,r.sealed_attempt_seq,r.started_at,r.business_outcome);
 
 -- name: ClearCollaborationChannelTargetGroups :many
 UPDATE collaboration_target SET active_group_id=NULL WHERE channel_id=$1 AND active_group_id=$2 RETURNING *;

@@ -26,6 +26,9 @@ type Backend interface {
 type ExecOptions struct {
 	Cwd   string
 	Model string
+	// Lifecycle is supplied by the collaboration adapter. Nil preserves the
+	// ordinary execution path; it never confers authorization by itself.
+	Lifecycle *LaunchLifecycle
 	// SystemPrompt carries the Multica runtime brief for the few providers
 	// that cannot pick it up from disk. The daemon leaves it empty for every
 	// other provider (see daemon.providerNeedsInlineSystemPrompt), because the
@@ -198,6 +201,10 @@ const CostUSDTicksPerUSD = 10_000_000_000
 
 // Result is the final outcome after an agent session completes.
 type Result struct {
+	// BusinessOutcomeMissing distinguishes an absent provider result from the
+	// ordinary caller's status default. Collaboration must not turn an empty
+	// stream and a process exit into a business success or failure.
+	BusinessOutcomeMissing bool `json:"-"`
 	// ProcessExited is affirmative process-reap evidence, not inferred from
 	// task status or channel closure. Providers that cannot prove it leave false.
 	ProcessExited bool   `json:"-"`

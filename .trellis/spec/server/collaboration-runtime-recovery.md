@@ -1,5 +1,7 @@
 # Collaboration scheduling and proof recovery
 
+> 2026-10-26: ordinary host execution has a separate [implementation contract](./collaboration-host-execution.md) and default-closed admission. The Linux namespace guarantees below apply only to the retained legacy branch; do not apply them to host execution. Platform/account acceptance remains tracked by the active runtime task.
+
 ## 1. Scope / Trigger
 
 Apply when changing runtime polling, candidate pagination, retained proof

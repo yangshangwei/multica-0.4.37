@@ -1405,6 +1405,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	r.Post("/api/collaboration/runtime/runs/{runId}/squad-activity", h.RecordCollaborationRuntimeSquadActivity)
 	r.Get("/api/collaboration/runtime/runs/{runId}/stop-intent", h.GetCollaborationRuntimeStopIntent)
 	r.Post("/api/collaboration/runtime/runs/{runId}/proof", h.AcceptCollaborationRuntimeProof)
+	r.Post("/api/collaboration/runtime/runs/{runId}/launches/{launchId}/termination", h.AcceptCollaborationLaunchTermination)
 	r.Group(func(r chi.Router) {
 		r.Use(handler.RequireCollaborationManagedBearer)
 		r.Use(middleware.DaemonAuth(queries, patCache, daemonTokenCache, cloudPATVerifier))

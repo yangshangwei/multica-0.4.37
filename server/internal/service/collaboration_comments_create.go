@@ -17,7 +17,7 @@ func (s *CollaborationService) CreateComment(ctx context.Context, p Collaboratio
 	if err := validateCollaborationCommentInput(p.CollaborationCommentInput); err != nil {
 		return CollaborationCommentReceipt{}, err
 	}
-	if p.ExpectedLifecycleEpoch < 1 || p.ExpectedParticipantEpoch < 0 || p.ExpectedAccountEpoch < 0 || len(p.TargetVersions) > 256 {
+	if p.ExpectedLifecycleEpoch < 1 || p.ExpectedParticipantEpoch < 0 || p.ExpectedAccountEpoch < 0 || len(p.TargetVersions) > 256 || p.ExecutionViewVersion != 0 && p.ExecutionViewVersion != 6 {
 		return CollaborationCommentReceipt{}, collaborationError(http.StatusBadRequest, "invalid_comment_request")
 	}
 	versions := make(map[pgtype.UUID]CollaborationCommentTargetVersion, len(p.TargetVersions))
@@ -46,6 +46,9 @@ func (s *CollaborationService) CreateComment(ctx context.Context, p Collaboratio
 			}
 		}
 		targets := collaborationCommentTargetPreview(t.access, p.CollaborationCommentInput, catalogue)
+		if err := blockLegacyHostCommentTargets(ctx, t.q, t.access, p.ExecutionViewVersion, targets); err != nil {
+			return CollaborationCommentReceipt{}, err
+		}
 		positions := make(map[pgtype.UUID]int)
 		for i := range targets {
 			item := &targets[i]

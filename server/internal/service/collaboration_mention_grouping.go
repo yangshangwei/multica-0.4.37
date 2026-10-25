@@ -215,7 +215,7 @@ func (s *CollaborationService) previewSquadContinuation(ctx context.Context, q *
 	}
 	reader := *s
 	reader.Queries = q
-	view, err := reader.ExecutionView(ctx, access)
+	view, err := reader.ExecutionView(WithCollaborationExecutionViewVersion(ctx, 6), access)
 	if err != nil {
 		return nil, pgtype.UUID{}, err
 	}

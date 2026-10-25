@@ -1,5 +1,7 @@
 # Collaboration runtime preparation
 
+> 2026-10-26: ordinary host execution has a separate [implementation contract](./collaboration-host-execution.md) and default-closed admission. The Linux namespace guarantees below apply only to the retained legacy branch; do not apply them to host execution. Platform/account acceptance remains tracked by the active runtime task.
+
 Apply to preparation negotiation, explicit provider bundles, attachments/Git,
 the contained Runner and their source-owned human summaries. Runtime/proof
 protocol 2 is unchanged; preparation and provider bundles negotiate version 1.

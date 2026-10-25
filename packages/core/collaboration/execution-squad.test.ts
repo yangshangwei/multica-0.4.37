@@ -11,6 +11,7 @@ const ended = "2026-10-18T00:00:00Z";
 
 function joinedSquad() {
   const value = CollaborationExecutionSchema.parse(collaborationExecutionFixture);
+  if (value.protocol_version !== 5) throw new Error("Expected the legacy squad fixture");
   value.control.queue_state = "active";
   const group = value.groups[1]!, target = value.targets[1]!, channel = value.channels[1]!;
   group.state = "active"; group.expansion_sealed_at = null; group.forced_disposition = null;

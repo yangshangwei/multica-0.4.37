@@ -3,6 +3,7 @@ import { parseWithFallback } from "../api/schema";
 import { CollaborationExecutionRunSchema } from "./execution-schema";
 import { collaborationTextByteLength } from "./text-limits";
 import { nonnegativeVersion, positiveVersion } from "./version";
+import { collaborationResourceExecutionFields } from "./resource-schema";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 const recordId = z.string().min(1).max(200);
@@ -61,6 +62,7 @@ const preparation = z.object({
 export const CollaborationRunRecordsSchema = z.object({
   protocol_version: z.literal(1), issue_id: uuid, run: CollaborationExecutionRunSchema,
   resource: z.object({
+    ...collaborationResourceExecutionFields,
     agent_id: uuid, runtime_id: uuid, resource_owner_user_id: uuid, execution_workspace_id: uuid, grant_id: uuid,
     provider: recordedName.nullable(), model: recordedName.nullable(), account_source: z.literal("runtime_configuration").nullable(),
   }),
@@ -73,6 +75,7 @@ export const CollaborationRunRecordsSchema = z.object({
   const terminal = run.settled_at !== null;
   if (resource.agent_id !== run.agent_id || terminal !== (run.progress_state === "settled") ||
     (terminal && run.proof_state === "unknown") || run.parent_run_id === run.id) return false;
+  if (resource.execution_mode !== undefined && resource.execution_mode !== (run.execution_mode ?? "linux_pid_namespace_v1")) return false;
   if ((run.step_kind === "agent" || run.step_kind === "leader") !== (run.parent_run_id === null)) return false;
   if (run.recording_incomplete && recording.status !== "partial") return false;
   if (preparation && (!recording.inputs_recorded || items.some((item) => item.kind === "input" &&

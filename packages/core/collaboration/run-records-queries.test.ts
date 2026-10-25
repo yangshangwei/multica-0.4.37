@@ -55,8 +55,8 @@ describe("protected recorded-run paging", () => {
     vi.stubGlobal("fetch", fetch);
     await expect(f.client.fetchInfiniteQuery(f.options)).rejects.toMatchObject({ name: "CollaborationUnavailableError" });
     expect(fetch.mock.calls.map((call) => call[0])).toEqual([
-      `https://server.example/api/collaboration/issues/${issueId}/runs/${runId}/records?limit=50`,
-      `https://server.example/api/collaboration/issues/${issueId}`,
+      `https://server.example/api/collaboration/issues/${issueId}/runs/${runId}/records?limit=50&execution_view_version=6`,
+      `https://server.example/api/collaboration/issues/${issueId}?execution_view_version=6`,
     ]);
     expect(collaborationIssueAccessDenied(f.client, f.scope, issueId)).toBe(false);
     expect(collaborationAccessEpoch(f.client, f.scope, issueId)).toBe(0);

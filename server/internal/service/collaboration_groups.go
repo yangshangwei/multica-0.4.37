@@ -9,17 +9,23 @@ import (
 	"github.com/multica-ai/multica/server/internal/collaboration"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 func collaborationRunProvenEnded(run db.CollaborationRun) bool {
 	if !run.SettledAt.Valid || run.ProgressState != "settled" || !run.SealedAttemptSeq.Valid || run.SealedAttemptSeq.Int64 < run.AuthorizedAttemptSeq {
 		return false
 	}
+	if run.Containment.Valid && run.Containment.String != protocol.CollaborationContainmentLinuxPIDNamespace && run.Containment.String != protocol.CollaborationContainmentHostProcessSupervision {
+		return false
+	}
 	switch run.ProofState {
 	case "never_launched_proven":
 		return !run.StartedAt.Valid && run.BusinessOutcome.String != "success"
 	case "exited_proven":
-		return true
+		return run.Containment.String != protocol.CollaborationContainmentHostProcessSupervision
+	case "host_exit_observed":
+		return run.Containment.String == protocol.CollaborationContainmentHostProcessSupervision && run.AuthorizedAttemptSeq > 0 && run.SealedAttemptSeq.Int64 == run.AuthorizedAttemptSeq
 	default:
 		return false
 	}
@@ -205,7 +211,7 @@ func (t *collaborationQueueTx) stopGroup(ctx context.Context, target db.Collabor
 	// descendant turns the root disposition into stopped, preserving first cause.
 	if disposition == "cancelled" {
 		for _, run := range runs {
-			if !run.SettledAt.Valid && !collaborationRunNeverLaunched(run) || run.AuthorizedAttemptSeq > 0 || run.ProofState == "exited_proven" {
+			if !run.SettledAt.Valid && !collaborationRunNeverLaunched(run) || run.AuthorizedAttemptSeq > 0 || run.ProofState == "exited_proven" || run.ProofState == "host_exit_observed" {
 				disposition = "stopped"
 				break
 			}

@@ -1,15 +1,17 @@
 import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
 import { positiveVersion } from "./version";
+import { CollaborationExecutionViewVersionSchema } from "./execution-schema";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 export const CollaborationCommandCancelInputSchema = z.strictObject({
+  execution_view_version: CollaborationExecutionViewVersionSchema.optional(),
   expected_lifecycle_epoch: positiveVersion, expected_participant_epoch: positiveVersion, expected_account_epoch: positiveVersion,
   target_id: uuid, expected_collaboration_revision: positiveVersion,
 });
 export type CollaborationCommandCancelInput = z.infer<typeof CollaborationCommandCancelInputSchema>;
 const result = { protocol_version: z.literal(2), issue_id: uuid, request_id: z.string().min(1).max(128), action: z.literal("cancel_command"), status: z.number().int().min(200).max(599),
-  code: z.enum(["command_cancelled", "command_not_waiting", "stale_revision", "stale_authority", "stale_scope", "forbidden", "not_found", "target_not_found", "issue_closed"]) };
+  code: z.enum(["command_cancelled", "command_not_waiting", "stale_revision", "stale_authority", "stale_scope", "forbidden", "not_found", "target_not_found", "issue_closed", "collaboration_client_upgrade_required"]) };
 const redacted = z.strictObject({ ...result, redacted: z.literal(true) });
 const full = z.object({ ...result, redacted: z.literal(false).optional(), scope: z.enum(["target", "issue"]), target_id: uuid.nullable(),
   command_id: uuid.nullable(), command_sequence: positiveVersion.optional(), channel_id: uuid.nullable(), batch_id: uuid.nullable(), group_id: uuid.nullable(),

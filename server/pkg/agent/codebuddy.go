@@ -94,6 +94,11 @@ func buildCodebuddyArgs(opts ExecOptions, logger *slog.Logger) []string {
 }
 
 func (b *codebuddyBackend) Execute(ctx context.Context, prompt string, opts ExecOptions) (*Session, error) {
+	var lifecycleErr error
+	ctx, lifecycleErr = withExecutionLifecycle(ctx, opts, b.cfg.provider)
+	if lifecycleErr != nil {
+		return nil, lifecycleErr
+	}
 	execPath := b.cfg.ExecutablePath
 	if execPath == "" {
 		execPath = "codebuddy"
@@ -278,7 +283,7 @@ func (b *codebuddyBackend) Execute(ctx context.Context, prompt string, opts Exec
 		closeStdin()
 
 		// Wait for process exit.
-		exitErr := cmd.Wait()
+		exitErr := waitOwnedProcessTree(cmd)
 		releaseProcessGroup(cmd)
 		duration := time.Since(startTime)
 		// writeDone is buffered (cap 1) and the writer always sends — by the

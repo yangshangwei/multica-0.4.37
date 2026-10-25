@@ -7,6 +7,7 @@ import type { CollaborationIssue } from "./schema";
 import { CollaborationSwitchInputSchema, type CollaborationSwitchInput, type CollaborationSwitchProposal } from "./switch-schema";
 import { canOrganizeCollaborationResources } from "./resource";
 import { collaborationResourceRosterIsValid } from "./resource-schema";
+import { collaborationExecutionViewInput } from "./execution-schema";
 import { collaborationAccessEpoch, collaborationIssueAccessDenied, collaborationKeys, CollaborationUnavailableError, isCollaborationDenied,
   isCollaborationScopeCurrent, protectCollaborationRead, type CollaborationScope } from "./access";
 import { clearCollaborationDrafts, removeCollaborationDraft, saveCollaborationDraft, type CollaborationDraft } from "./draft";
@@ -38,9 +39,10 @@ export function prepareCollaborationSwitch(
     } else {
       const resource = proposal.resources.find((item) => item.agent_id === selection.agentId && item.owner_user_id === scope.userId);
       if (!resource || resource.revoked === true || (selection.action === "revoke_target_switch_consent" && resource.consented !== true)) throw new CollaborationUnavailableError();
+      if (selection.action === "consent_target_switch" && issue.execution.protocol_version === 6 && resource.execution_mode === undefined) throw new CollaborationUnavailableError();
     }
   }
-  const base = { action: selection.action, target_id: target.id, expected_lifecycle_epoch: issue.lifecycle_epoch,
+  const base = { ...collaborationExecutionViewInput(issue.execution), action: selection.action, target_id: target.id, expected_lifecycle_epoch: issue.lifecycle_epoch,
     expected_participant_epoch: issue.write_context.participant_epoch, expected_account_epoch: issue.write_context.account_epoch };
   let input: unknown;
   switch (selection.action) {

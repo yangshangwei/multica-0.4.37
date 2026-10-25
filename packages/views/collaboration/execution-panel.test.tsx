@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "@multica/core/api";
 import { collaborationScope, parseCollaborationIssue, readCollaborationDrafts } from "@multica/core/collaboration";
-import { collaborationControlReceiptFixture, collaborationExecutionIssueFixture } from "@multica/core/collaboration/test-fixtures";
+import { collaborationControlReceiptFixture, collaborationExecutionIssueFixture, collaborationHostExecutionFixture } from "@multica/core/collaboration/test-fixtures";
 import { renderWithI18n } from "../test/i18n";
 import { CollaborationExecutionPanel } from "./execution-panel";
 import { NavigationProvider } from "../navigation";
@@ -14,13 +14,34 @@ vi.mock("@multica/core/auth", () => ({ useAuthStore: { getState: () => ({ user: 
 const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 afterEach(() => { client.clear(); localStorage.clear(); vi.unstubAllGlobals(); });
 
-function mount(selectedRunId?: string) {
+function mount(selectedRunId?: string, execution = collaborationExecutionIssueFixture.execution) {
   setApiInstance(new ApiClient("https://server.example"));
   const scope = collaborationScope(id);
-  const issue = parseCollaborationIssue({ ...collaborationExecutionIssueFixture, write_context: { participant_epoch: "1", account_epoch: "1" } })!;
+  const issue = parseCollaborationIssue({ ...collaborationExecutionIssueFixture, execution, write_context: { participant_epoch: "1", account_epoch: "1" } })!;
   renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={{ pathname: "/account", searchParams: new URLSearchParams(), hash: "", push: vi.fn(), replace: vi.fn(), back: vi.fn(), getShareableUrl: (path) => `https://server.example${path}` }}><CollaborationExecutionPanel scope={scope} issue={issue} selectedRunId={selectedRunId} /></NavigationProvider></QueryClientProvider>);
   return { scope, issue };
 }
+
+it("does not mark enabled host execution as unavailable", () => {
+  mount(undefined, collaborationHostExecutionFixture);
+  expect(screen.queryByText("Shared AI execution is unavailable.")).not.toBeInTheDocument();
+  expect(screen.queryByText("New AI execution is disabled.")).not.toBeInTheDocument();
+  expect(screen.getByText("Standard host execution")).toBeInTheDocument();
+});
+
+it("distinguishes disabled new execution from retained host execution facts", () => {
+  mount(undefined, { ...collaborationHostExecutionFixture,
+    execution_gate: { ...collaborationHostExecutionFixture.execution_gate, enabled: false } });
+  expect(screen.getByText("New AI execution is disabled.")).toBeInTheDocument();
+  expect(screen.queryByText("Shared AI execution is unavailable.")).not.toBeInTheDocument();
+  expect(screen.getByText("Execution state unconfirmed; cannot resume yet")).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Stop all" })).toBeEnabled();
+});
+
+it("retains the unavailable message for a legacy execution view", () => {
+  mount();
+  expect(screen.getByText("Shared AI execution is unavailable.")).toBeInTheDocument();
+});
 
 function recordedPage() {
   const run = parseCollaborationIssue(collaborationExecutionIssueFixture)!.execution!.runs[1]!;

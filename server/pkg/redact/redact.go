@@ -61,6 +61,10 @@ var patterns = []secretPattern{
 	// JWT tokens (three base64url segments)
 	{regexp.MustCompile(`\bey[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b`), "[REDACTED JWT]"},
 
+	// Collaboration business/termination capabilities can appear as bare text
+	// or JSON values without a Bearer header or a key=value prefix.
+	{regexp.MustCompile(`\b(?:mcb|mct)_[a-f0-9]{64}\b`), "[REDACTED MULTICA CAPABILITY]"},
+
 	// Generic "Bearer <token>" in output
 	{regexp.MustCompile(`(?i)\bBearer\s+[A-Za-z0-9\-._~+/]+=*\b`), "Bearer [REDACTED]"},
 

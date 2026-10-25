@@ -263,6 +263,11 @@ var (
 )
 
 func (b *hermesBackend) Execute(ctx context.Context, prompt string, opts ExecOptions) (*Session, error) {
+	var lifecycleErr error
+	ctx, lifecycleErr = withExecutionLifecycle(ctx, opts, b.cfg.provider)
+	if lifecycleErr != nil {
+		return nil, lifecycleErr
+	}
 	execPath := b.cfg.ExecutablePath
 	if execPath == "" {
 		execPath = "hermes"
@@ -328,7 +333,7 @@ func (b *hermesBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 	// `cmd.Stderr = io.MultiWriter(...)` so we have a join point
 	// (`stderrDone`) before the failure-promotion decision. With the
 	// MultiWriter form, exec's internal copy goroutine is only
-	// joined by `cmd.Wait()`, which runs in the deferred cleanup —
+	// joined by `waitOwnedProcessTree(cmd)`, which runs in the deferred cleanup —
 	// after `promoteACPResultOnProviderError` already consulted the
 	// sniffer. That race lost the 429 / usage-limit message under
 	// CI load and surfaced as a flaky test
@@ -436,7 +441,7 @@ func (b *hermesBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 			// process alive; waiting first would then block until the overall
 			// task timeout and make a later deferred cancel ineffective.
 			cancel()
-			_ = cmd.Wait()
+			_ = waitOwnedProcessTree(cmd)
 			releaseProcessGroup(cmd)
 		}()
 

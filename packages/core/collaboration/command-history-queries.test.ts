@@ -138,7 +138,7 @@ describe("protected command history paging", () => {
       .mockResolvedValueOnce(json(collaborationIssueFixture));
     vi.stubGlobal("fetch", fetch);
     await expect(f.client.fetchInfiniteQuery(f.options)).rejects.toMatchObject({ name: "CollaborationUnavailableError" });
-    expect(fetch.mock.calls[1]?.[0]).toBe(`https://server.example/api/collaboration/issues/${issueId}`);
+    expect(fetch.mock.calls[1]?.[0]).toBe(`https://server.example/api/collaboration/issues/${issueId}?execution_view_version=6`);
     expect(collaborationIssueAccessDenied(f.client, f.scope, issueId)).toBe(false);
     expect(collaborationAccessEpoch(f.client, f.scope, issueId)).toBe(0);
     expect(f.client.getQueryData(f.issueKey)).toEqual(collaborationIssueFixture);

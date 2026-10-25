@@ -2,6 +2,7 @@ import { parseIteration, IterationCapabilitiesSchema, IterationSettingsSchema, I
 import { z } from "zod";
 import { parseCollaborationActivity } from "../collaboration/activity-schema";
 import { parseCollaborationRunRecords } from "../collaboration/run-records-schema";
+import { COLLABORATION_EXECUTION_VIEW_VERSION } from "../collaboration/execution-schema";
 import { parseCollaborationParticipants } from "../collaboration/participant-schema";
 import { CollaborationDiscussionSelectionSchema, parseCollaborationDiscussionReceipt, parseCollaborationIssueReactions, type CollaborationDiscussionSelection } from "../collaboration/discussion-schema";
 import { CollaborationCreationInputSchema, parseCollaborationCreationOptions, parseCollaborationCreationResult, type CollaborationCreationInput } from "../collaboration/creation-schema";
@@ -672,6 +673,10 @@ function workspaceRequestInit(options?: { workspaceId?: string; signal?: AbortSi
   };
 }
 
+function collaborationExecutionReadPath(path: string): string {
+  return `${path}${path.includes("?") ? "&" : "?"}execution_view_version=${COLLABORATION_EXECUTION_VIEW_VERSION}`;
+}
+
 function sameResourceIdentity(actual: string, expected: string): boolean {
   if (actual === expected) return true;
   // UUID parsers accept uppercase/compact references and return canonical
@@ -904,12 +909,31 @@ export class ApiClient {
     return `${this.endpointEpoch}:${this.credentialEpoch}`;
   }
 
+  private async fetchCollaborationVersionedRead<T>(path: string, options: RequestInit | undefined, read: (path: string) => Promise<T>): Promise<T> {
+    const scope = this.getSessionScope();
+    const authEpoch = this.authEpoch;
+    try { return await read(path); }
+    catch (error) {
+      const queryStart = path.indexOf("?");
+      const query = new URLSearchParams(queryStart < 0 ? "" : path.slice(queryStart + 1));
+      if ((options?.method ?? "GET").toUpperCase() !== "GET" || query.getAll("execution_view_version").length !== 1 ||
+        query.get("execution_view_version") !== String(COLLABORATION_EXECUTION_VIEW_VERSION) || !(error instanceof ApiError) || error.status !== 400 ||
+        !z.object({ code: z.enum(["invalid_records_query", "invalid_resource_scope", "invalid_resource_offer_query"]) }).safeParse(error.body).success) throw error;
+      if (scope !== this.getSessionScope() || authEpoch !== this.authEpoch) throw new DOMException("Collaboration request superseded", "AbortError");
+      options?.signal?.throwIfAborted();
+      // Installed pre-v6 servers reject this extra query parameter. Retry one
+      // read with its original scope; writes and malformed responses never retry.
+      query.delete("execution_view_version");
+      return read(`${path.slice(0, queryStart)}${query.size ? `?${query}` : ""}`);
+    }
+  }
+
   private async fetchCollaboration(path: string, options?: RequestInit, expectedStatus?: number): Promise<unknown> {
     const scope = this.getSessionScope();
     const authEpoch = this.authEpoch;
     try {
       let data: unknown;
-      if (expectedStatus === undefined) data = await this.fetch<unknown>(path, options);
+      if (expectedStatus === undefined) data = await this.fetchCollaborationVersionedRead(path, options, (candidate) => this.fetch<unknown>(candidate, options));
       else {
         const response = await this.fetchRaw(path, { ...options, extraHeaders: { "Content-Type": "application/json" } });
         data = response.status === expectedStatus ? await response.json() : undefined;
@@ -942,14 +966,14 @@ export class ApiClient {
   }
 
   async getCollaborationIssue(id: string, options?: { signal?: AbortSignal }) {
-    const raw = await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}`, { signal: options?.signal });
+    const raw = await this.fetchCollaboration(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}`), { signal: options?.signal });
     const issue = parseCollaborationIssue(raw);
     return issue && sameResourceIdentity(issue.id, id) ? issue : null;
   }
 
   async getCollaborationCreation(sourceWorkspaceId: string, requestId: string, options?: { signal?: AbortSignal }) {
     const query = new URLSearchParams({ source_workspace_id: sourceWorkspaceId });
-    const raw = await this.fetchCollaborationRecovery(`/api/collaboration/creations/${encodeURIComponent(requestId)}?${query}`, options);
+    const raw = await this.fetchCollaborationRecovery(collaborationExecutionReadPath(`/api/collaboration/creations/${encodeURIComponent(requestId)}?${query}`), options);
     const issue = parseCollaborationIssue(raw);
     return issue && sameResourceIdentity(issue.source_workspace.id, sourceWorkspaceId) ? issue : null;
   }
@@ -1138,7 +1162,7 @@ export class ApiClient {
     const query = new URLSearchParams({ limit: String(limit) });
     if (params.cursor !== undefined) query.set("cursor", params.cursor);
     const result = parseCollaborationRunRecords(await this.fetchCollaborationOptionalHistory(
-      `/api/collaboration/issues/${encodeURIComponent(id)}/runs/${encodeURIComponent(runId)}/records?${query}`,
+      collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/runs/${encodeURIComponent(runId)}/records?${query}`),
       { signal: options?.signal, cache: "no-store" },
     ));
     return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.run.id, runId) &&
@@ -1183,7 +1207,7 @@ export class ApiClient {
   }
 
   async getCollaborationMentionTargets(id: string, options?: { signal?: AbortSignal }) {
-    const result = parseCollaborationMentionTargets(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/mention-targets`, { signal: options?.signal }));
+    const result = parseCollaborationMentionTargets(await this.fetchCollaboration(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/mention-targets`), { signal: options?.signal }));
     return result && sameResourceIdentity(result.issue_id, id) ? result : null;
   }
 
@@ -1428,7 +1452,8 @@ export class ApiClient {
     const scope = this.getSessionScope();
     const authEpoch = this.authEpoch;
     try {
-      const response = await this.fetchRaw(path, { ...options, extraHeaders: { "Content-Type": "application/json" } });
+      const response = await this.fetchCollaborationVersionedRead(path, options,
+        (candidate) => this.fetchRaw(candidate, { ...options, extraHeaders: { "Content-Type": "application/json" } }));
       const body: unknown = await response.json();
       if (scope !== this.getSessionScope() || authEpoch !== this.authEpoch) {
         throw new DOMException("Collaboration request superseded", "AbortError");
@@ -1459,7 +1484,7 @@ export class ApiClient {
 
   async getCollaborationResources(id: string, options?: { signal?: AbortSignal }) {
     if (!z.uuid().safeParse(id).success) throw new TypeError("Invalid collaboration issue");
-    const raw = await this.fetchCollaborationSwitch(`/api/collaboration/issues/${encodeURIComponent(id)}/resources`, "read", { signal: options?.signal }, true);
+    const raw = await this.fetchCollaborationSwitch(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/resources`), "read", { signal: options?.signal }, true);
     const result = parseCollaborationResources(raw.body);
     return result?.issue_id === id.toLowerCase() ? result : null;
   }
@@ -1474,7 +1499,7 @@ export class ApiClient {
   async getCollaborationResourceOptions(id: string, workspaceId: string, options?: { signal?: AbortSignal }) {
     if (![id, workspaceId].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid collaboration resource scope");
     const query = new URLSearchParams({ execution_workspace_id: workspaceId });
-    const raw = await this.fetchCollaborationSwitch(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/options?${query}`, "read", { signal: options?.signal }, true);
+    const raw = await this.fetchCollaborationSwitch(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/options?${query}`), "read", { signal: options?.signal }, true);
     const result = parseCollaborationResourceOptions(raw.body);
     return result?.issue_id === id.toLowerCase() && result.execution_workspace_id === workspaceId.toLowerCase() ? result : null;
   }
@@ -1482,7 +1507,7 @@ export class ApiClient {
   async getCollaborationResourceOfferOptions(id: string, workspaceId: string, options?: { signal?: AbortSignal }) {
     if (![id, workspaceId].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid collaboration resource scope");
     const query = new URLSearchParams({ execution_workspace_id: workspaceId });
-    const raw = await this.fetchCollaborationSwitch(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/offers/options?${query}`, "read", { signal: options?.signal }, true);
+    const raw = await this.fetchCollaborationSwitch(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/offers/options?${query}`), "read", { signal: options?.signal }, true);
     const result = parseCollaborationResourceOptions(raw.body);
     return result?.issue_id === id.toLowerCase() && result.execution_workspace_id === workspaceId.toLowerCase() ? result : null;
   }
@@ -1493,14 +1518,14 @@ export class ApiClient {
     }
     const query = new URLSearchParams({ limit: "50" });
     if (cursor !== null) query.set("cursor", cursor);
-    const raw = await this.fetchCollaborationSwitch(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/offers?${query}`, "read", { signal: options?.signal }, true);
+    const raw = await this.fetchCollaborationSwitch(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/offers?${query}`), "read", { signal: options?.signal }, true);
     const result = parseCollaborationResourceOffersPage(raw.body);
     return result?.issue_id === id.toLowerCase() && (cursor === null || result.next_cursor !== cursor) ? result : null;
   }
 
   async getCollaborationResourceOffer(id: string, offerId: string, options?: { signal?: AbortSignal }) {
     if (![id, offerId].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid collaboration resource offer identity");
-    const raw = await this.fetchCollaborationSwitch(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/offers/${encodeURIComponent(offerId)}`, "read", { signal: options?.signal }, true);
+    const raw = await this.fetchCollaborationSwitch(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/offers/${encodeURIComponent(offerId)}`), "read", { signal: options?.signal }, true);
     const result = parseCollaborationResourceOffer(raw.body);
     return result?.issue_id === id.toLowerCase() && result.offer_id === offerId.toLowerCase() ? result : null;
   }
@@ -1509,7 +1534,7 @@ export class ApiClient {
     if (![id, targetId, agentId, ...(proposalId ? [proposalId] : [])].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid collaboration resource identity");
     const query = new URLSearchParams({ target_id: targetId, agent_id: agentId });
     if (proposalId !== null) query.set("proposal_id", proposalId);
-    const raw = await this.fetchCollaborationSwitch(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/identity?${query}`, "read", { signal: options?.signal }, true);
+    const raw = await this.fetchCollaborationSwitch(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/identity?${query}`), "read", { signal: options?.signal }, true);
     const result = parseCollaborationResourceIdentity(raw.body);
     return result?.issue_id === id.toLowerCase() && result.target_id === targetId.toLowerCase() && result.agent_id === agentId.toLowerCase() && result.proposal_id === (proposalId?.toLowerCase() ?? null) ? result : null;
   }
@@ -1528,7 +1553,7 @@ export class ApiClient {
   async listCollaborationTargetSwitchProposals(id: string, targetId: string, options?: { signal?: AbortSignal }) {
     if (![id, targetId].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid collaboration Switch identity");
     const path = `/api/collaboration/issues/${encodeURIComponent(id)}/targets/${encodeURIComponent(targetId)}/switch-proposals`;
-    const raw = await this.fetchCollaborationSwitch(path, "read", { signal: options?.signal });
+    const raw = await this.fetchCollaborationSwitch(collaborationExecutionReadPath(path), "read", { signal: options?.signal });
     const result = parseCollaborationSwitchProposals(raw.body);
     return result?.every((proposal) => sameResourceIdentity(proposal.target_id, targetId)) ? result : null;
   }
@@ -1536,7 +1561,7 @@ export class ApiClient {
   async getCollaborationTargetSwitchProposal(id: string, targetId: string, proposalId: string, options?: { signal?: AbortSignal }) {
     if (![id, targetId, proposalId].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid collaboration Switch identity");
     const path = `/api/collaboration/issues/${encodeURIComponent(id)}/targets/${encodeURIComponent(targetId)}/switch-proposals/${encodeURIComponent(proposalId)}`;
-    const raw = await this.fetchCollaborationSwitch(path, "read", { signal: options?.signal });
+    const raw = await this.fetchCollaborationSwitch(collaborationExecutionReadPath(path), "read", { signal: options?.signal });
     const result = parseCollaborationSwitchProposal(raw.body);
     return result && sameResourceIdentity(result.target_id, targetId) && sameResourceIdentity(result.proposal_id, proposalId) ? result : null;
   }

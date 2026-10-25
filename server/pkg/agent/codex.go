@@ -900,6 +900,11 @@ func isCodexBareTomlKey(s string) bool {
 }
 
 func (b *codexBackend) Execute(ctx context.Context, prompt string, opts ExecOptions) (*Session, error) {
+	var lifecycleErr error
+	ctx, lifecycleErr = withExecutionLifecycle(ctx, opts, b.cfg.provider)
+	if lifecycleErr != nil {
+		return nil, lifecycleErr
+	}
 	firstSession, err := b.executeOnce(ctx, prompt, opts, 1)
 	if err != nil {
 		return nil, err
@@ -1093,7 +1098,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 	// default sends SIGKILL only to cmd.Process (the leader); we instead
 	// signal the whole process group so descendants die too. Returning
 	// nil keeps exec from logging a spurious error; cmd.WaitDelay below
-	// still backstops cmd.Wait() if the kill leaves an open pipe.
+	// still backstops waitOwnedProcessTree(cmd) if the kill leaves an open pipe.
 	cmd.Cancel = func() error {
 		if cmd.Process != nil {
 			signalProcessGroup(cmd, syscall.SIGKILL)
@@ -1101,7 +1106,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 		return nil
 	}
 	// Bound the wait after the context is cancelled so a stuck child (or an
-	// open pipe held by a grandchild) can't hang cmd.Wait() forever. Matches
+	// open pipe held by a grandchild) can't hang waitOwnedProcessTree(cmd) forever. Matches
 	// the other long-lived backends (claude, copilot, cursor, …).
 	cmd.WaitDelay = codexProcessWaitDelay()
 	b.cfg.logAgentCommand(cmd, newAgentCommandLogArgs(codexArgs, trustAgentCommandPositional(0, "app-server")))
@@ -1248,8 +1253,8 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 		c.markProcessExited(errCodexProcessExited)
 	}()
 
-	// drainAndWait closes stdin so codex shuts down, then joins cmd.Wait().
-	// cmd.Wait() is the only Go-stdlib-documented synchronization point for
+	// drainAndWait closes stdin so codex shuts down, then joins waitOwnedProcessTree(cmd).
+	// waitOwnedProcessTree(cmd) is the only Go-stdlib-documented synchronization point for
 	// os/exec's internal stderr/stdout copy goroutines — until it returns,
 	// stderrBuf may not have observed every byte codex wrote before it
 	// exited, and stderrBuf.Tail() can come back empty or truncated. Any
@@ -1263,9 +1268,9 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 	// scanner.Err() set, fails all in-flight RPCs via markProcessExited, and
 	// closes readerDone — but the codex child process is still alive and is
 	// now blocked trying to write the rest of the oversized line into a
-	// stdout pipe nobody is reading. A naive stdin.Close()+cmd.Wait() then
+	// stdout pipe nobody is reading. A naive stdin.Close()+waitOwnedProcessTree(cmd) then
 	// hangs forever: codex never reaches its stdin-read syscall, so it never
-	// sees EOF, never exits, and cmd.Wait() never returns. The lifecycle
+	// sees EOF, never exits, and waitOwnedProcessTree(cmd) never returns. The lifecycle
 	// goroutine therefore never sends a failed Result, the outer daemon
 	// blocks on its result channel, and the higher-level fresh-session
 	// fallback never fires.
@@ -1278,17 +1283,17 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 	//     stdout on its own (clean shutdown — gives OTEL batch exporters a
 	//     chance to flush) OR when the scanner errors out (overflow case —
 	//     readerDone is already closed and the select returns immediately).
-	//     Per os/exec docs, calling cmd.Wait() while reads are still
+	//     Per os/exec docs, calling waitOwnedProcessTree(cmd) while reads are still
 	//     in-flight on a StdoutPipe-returned pipe is incorrect because Wait
 	//     closes the pipe and turns pending reads into spurious errors, so
 	//     we must wait for the reader first.
 	//
-	//  2. Wait for cmd.Wait() to return, capped by another
+	//  2. Wait for waitOwnedProcessTree(cmd) to return, capped by another
 	//     codexGracefulShutdownTimeout. Normally this returns immediately
 	//     because the process has already exited. In the stuck-child case
 	//     the process is still alive — we cancel the runCtx, which fires
 	//     cmd.Cancel (the group-SIGKILL helper installed above), and
-	//     cmd.WaitDelay then guarantees cmd.Wait() returns even if pipes
+	//     cmd.WaitDelay then guarantees waitOwnedProcessTree(cmd) returns even if pipes
 	//     stay open.
 	var waitOnce sync.Once
 	var cleanupConfirmed bool
@@ -1304,18 +1309,18 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 			startProcessWait := func() {
 				startWait.Do(func() {
 					go func() {
-						cleanupWaitErr = cmd.Wait()
+						cleanupWaitErr = waitOwnedProcessTree(cmd)
 						close(waitCh)
 					}()
 				})
 			}
 
-			// Phase 1: let the reader finish before invoking cmd.Wait().
+			// Phase 1: let the reader finish before invoking waitOwnedProcessTree(cmd).
 			select {
 			case <-readerDone:
 				// reader drained cleanly (codex shutdown closed stdout)
 				// or aborted early (e.g. scanner overflow). Either way it
-				// is now safe to call cmd.Wait().
+				// is now safe to call waitOwnedProcessTree(cmd).
 			case <-time.After(grace):
 				// codex did not close stdout within the grace window. Force
 				// the shutdown via context cancellation — cmd.Cancel
@@ -1342,7 +1347,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 				}
 			}
 
-			// Phase 2: bound cmd.Wait() in case the process is still alive
+			// Phase 2: bound waitOwnedProcessTree(cmd) in case the process is still alive
 			// (scanner-overflow case: reader exited early on its own while
 			// codex stayed blocked writing into a full stdout pipe).
 			startProcessWait()
@@ -1358,7 +1363,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 				cancel()
 				// WaitDelay (10s) is the final backstop: even if the
 				// group-kill races with an open pipe held by a
-				// descendant, cmd.Wait() returns within WaitDelay of the
+				// descendant, waitOwnedProcessTree(cmd) returns within WaitDelay of the
 				// cancel.
 				<-waitCh
 				waitReturned = true
@@ -1699,7 +1704,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 
 		// Run cleanup. drainAndWait handles the graceful-then-cancel pattern
 		// in two bounded phases (see its declaration): wait for the reader,
-		// then wait for cmd.Wait(), force-cancelling either if the grace
+		// then wait for waitOwnedProcessTree(cmd), force-cancelling either if the grace
 		// window expires. A clean shutdown lets codex flush OTEL telemetry;
 		// a stuck process is killed via the process-group SIGKILL.
 		drainAndWait()
@@ -1709,7 +1714,13 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 		}
 		stderrTail := sanitizeCodexDiagnostic(stderrBuf.Tail())
 		if timeoutDiagnostic.Kind != codexTimeoutNone {
-			timeoutDiagnostic.CodexVersion = detectCodexVersionForDiagnostics(context.Background(), b.cfg.commandAt(execPath), cmd.Env, b.cfg.Logger)
+			if opts.Lifecycle != nil {
+				// Collaboration already froze this version. A diagnostic process
+				// must not bypass its launch permits or a stop after the real wait.
+				timeoutDiagnostic.CodexVersion = codexVersion
+			} else {
+				timeoutDiagnostic.CodexVersion = detectCodexVersionForDiagnostics(context.Background(), b.cfg.commandAt(execPath), cmd.Env, b.cfg.Logger)
+			}
 			finalError = buildCodexTimeoutDiagnosticError(timeoutDiagnostic, stderrTail)
 		}
 

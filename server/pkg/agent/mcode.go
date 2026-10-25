@@ -76,6 +76,11 @@ func (s *mcodeMessageStream) close() {
 }
 
 func (b *mcodeBackend) Execute(ctx context.Context, prompt string, opts ExecOptions) (*Session, error) {
+	var lifecycleErr error
+	ctx, lifecycleErr = withExecutionLifecycle(ctx, opts, b.cfg.provider)
+	if lifecycleErr != nil {
+		return nil, lifecycleErr
+	}
 	execPath := b.cfg.ExecutablePath
 	if execPath == "" {
 		execPath = "mcode"
@@ -198,7 +203,7 @@ func (b *mcodeBackend) Execute(ctx context.Context, prompt string, opts ExecOpti
 			// descendant may ignore stdin EOF, so waiting first can deadlock every
 			// early-return path, including a rejected session resume.
 			cancel()
-			_ = cmd.Wait()
+			_ = waitOwnedProcessTree(cmd)
 			releaseProcessGroup(cmd)
 		}()
 

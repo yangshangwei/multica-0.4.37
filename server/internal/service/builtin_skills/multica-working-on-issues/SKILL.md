@@ -1,6 +1,6 @@
 ---
 name: multica-working-on-issues
-description: "Use when acting on a Multica issue beyond what the brief covers: triage admission and human review, PR linking vs close intent, reading a linked PR's real state, metadata keys, comment revision checks, status-change side effects, sub-issue todo vs backlog."
+description: "Use when acting on a Multica issue beyond what the brief covers: collaboration authority and execution, triage admission and human review, PR linking vs close intent, reading a linked PR's real state, metadata keys, comment revision checks, status-change side effects, sub-issue todo vs backlog."
 user-invocable: false
 allowed-tools: Bash(multica *), Bash(git *), Bash(gh *)
 ---
@@ -21,14 +21,12 @@ Every contract below is traced to source in
 Creation and new client execution remain gated. Unknown protocols and
 `unsupported_collaboration_action` must never fall back to ordinary execution.
 Machine credentials and source membership alone grant no collaboration control.
-Inside an admitted collaboration run, the existing issue read/comment and squad
-activity commands use its narrow business context. Comment and activity writes
-require an explicit `--request-id`; retain the same UUID and payload after an
-uncertain result. For commands, controlled files, ordinary children, recorded
-inputs/usage, holds, proof and recovery, read `references/collaboration-workflow.md`
-before acting. Ordinary rules below
-are not the shared APIs. Source fields and discussion use current human authority
-and original request identities; editing or reacting never dispatches AI.
+Host execution reuses ordinary Provider permissions; separate directories are not
+an OS sandbox. Before collaboration commands, files, consent or recovery, read
+`references/collaboration-workflow.md` for mode-specific guarantees. Admitted runs
+use narrow business context for issue read/comment and squad activity. Writers
+retain the explicit `--request-id` and exact payload across uncertainty. Ordinary
+rules below are not shared APIs; editing or reacting never dispatches AI.
 
 ## Triage admission precedes formal issue work
 

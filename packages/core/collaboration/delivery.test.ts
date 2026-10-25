@@ -224,7 +224,7 @@ it.each([false, true])("rechecks issue authority after an ambiguous file denial 
 
   await expect(loadCollaborationAttachmentPreview(client, scope, file)).rejects.toThrow();
 
-  expect(fetch.mock.calls[1]?.[0]).toBe(`https://server.example/api/collaboration/issues/${actor}`);
+  expect(fetch.mock.calls[1]?.[0]).toBe(`https://server.example/api/collaboration/issues/${actor}?execution_view_version=6`);
   expect(client.getQueryData(queryKey)).toEqual(denied ? undefined : { description: "Authorized issue content" });
 });
 

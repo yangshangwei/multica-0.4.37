@@ -3,15 +3,18 @@ import { useT } from "../i18n";
 export function useCollaborationLabels() {
   const { t } = useT("collaboration");
   return {
-    proof: (state: string) => {
+    proof: (state: string, mode?: string, disposition?: string | null) => {
       switch (state) {
-        case "unknown": return t(($) => $.execution.proofPending);
+        case "unknown": return mode === "host_process_supervision_v1" ? t(($) => $.host.unknown) : t(($) => $.execution.proofPending);
         case "exited_proven": return t(($) => $.execution.proofConfirmed);
+        case "host_exit_observed": return mode === "host_process_supervision_v1"
+          ? disposition === "stopped" || disposition === "cancelled" ? t(($) => $.host.stopped) : t(($) => $.host.ended)
+          : t(($) => $.page.unavailable);
         case "never_launched_proven": case "never_started_proven": return t(($) => $.execution.neverLaunched);
         default: return t(($) => $.page.unavailable);
       }
     },
-    reason: (code: string) => {
+    reason: (code: string, mode?: string) => {
       switch (code) {
         case "target_registered": return t(($) => $.resources.registered);
         case "resource_offered": return t(($) => $.resources.offered);
@@ -43,18 +46,24 @@ export function useCollaborationLabels() {
         case "runtime_offline": return t(($) => $.execution.offline);
         case "shared_runtime_unavailable": case "collaboration_execution_unavailable": case "command_unavailable": return t(($) => $.execution.unavailable);
         case "runtime_upgrade_required": return t(($) => $.execution.upgrade);
+        case "collaboration_client_upgrade_required": return t(($) => $.host.upgrade);
+        case "execution_mode_unsupported": return t(($) => $.host.unavailable);
+        case "execution_consent_required": return t(($) => $.host.reauthorize);
+        case "execution_identity_mismatch": return t(($) => $.execution.staleRequest);
+        case "remote_execution_unconfirmed": return t(($) => $.host.unknown);
         case "squad_runtime_unavailable": return t(($) => $.execution.squadUnavailable);
         case "not_participant": return t(($) => $.execution.notParticipant);
         case "target_unavailable": case "stale_target": return t(($) => $.execution.targetUnavailable);
         case "issue_closed": return t(($) => $.execution.closed);
-        case "stop_unconfirmed": return t(($) => $.execution.proofPending);
+        case "stop_unconfirmed": return mode === "host_process_supervision_v1" ? t(($) => $.host.unknown) : t(($) => $.execution.proofPending);
         case "grant_required": return t(($) => $.execution.grant_required);
-        case "config_invalid": return t(($) => $.execution.config_invalid);
+        case "config_invalid": return mode === "host_process_supervision_v1" ? t(($) => $.host.reauthorize) : t(($) => $.execution.config_invalid);
         case "initial": return t(($) => $.execution.initial);
         case "switch_hold": return t(($) => $.execution.switch_hold);
-        case "resumed": case "already_active": case "hold_released": return t(($) => $.execution.active);
-        case "stop_requested": return t(($) => $.execution.stopRequested);
-        case "already_ended": return t(($) => $.execution.proofConfirmed);
+        case "resumed": return mode === "host_process_supervision_v1" ? t(($) => $.host.resumed) : t(($) => $.execution.active);
+        case "already_active": case "hold_released": return t(($) => $.execution.active);
+        case "stop_requested": return mode === "host_process_supervision_v1" ? t(($) => $.host.stopRequested) : t(($) => $.execution.stopRequested);
+        case "already_ended": return mode === "host_process_supervision_v1" ? t(($) => $.host.ended) : t(($) => $.execution.proofConfirmed);
         case "command_not_waiting": return t(($) => $.execution.notWaiting);
         case "stale_authority": case "stale_scope": case "stale_control_version": case "stale_execution": case "stale_hold": case "stale_admission": case "stale_revision": return t(($) => $.execution.staleRequest);
         default: return t(($) => $.page.unavailable);

@@ -192,7 +192,7 @@ func (h *Handler) collaborationIssueResponseInSnapshot(ctx context.Context, acce
 	if err != nil {
 		return out, err
 	}
-	out.Capabilities.ControlAI = access.Capabilities.ControlAI && out.WriteContext != nil && out.Execution.ProtocolVersion == 5
+	out.Capabilities.ControlAI = access.Capabilities.ControlAI && out.WriteContext != nil && !out.Execution.RequiresUpgrade && (out.Execution.ProtocolVersion == 5 || out.Execution.ProtocolVersion == 6)
 	request, err := svc.InformationRequestView(ctx, access)
 	if err != nil || request == nil {
 		return out, err
@@ -213,6 +213,9 @@ func (h *Handler) collaborationIssueResponseInSnapshot(ctx context.Context, acce
 }
 
 func (h *Handler) GetCollaborationIssue(w http.ResponseWriter, r *http.Request) {
+	if !collaborationExecutionRead(w, r) {
+		return
+	}
 	w.Header().Set("Cache-Control", "no-store")
 	id, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "id"), "issue id")
 	if !ok {
@@ -235,6 +238,9 @@ func (h *Handler) GetCollaborationIssue(w http.ResponseWriter, r *http.Request) 
 }
 
 func (h *Handler) GetCollaborationCreation(w http.ResponseWriter, r *http.Request) {
+	if !collaborationExecutionRead(w, r) {
+		return
+	}
 	w.Header().Set("Cache-Control", "no-store")
 	source, ok := parseUUIDOrBadRequest(w, r.URL.Query().Get("source_workspace_id"), "source workspace id")
 	if !ok {

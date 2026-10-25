@@ -1,14 +1,15 @@
 import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
 import { CollaborationAccountSummarySchema } from "./schema";
-import { CollaborationResourceRuntimeSchema, CollaborationTargetResourceSchema, collaborationResourceRosterIsValid } from "./resource-schema";
+import { CollaborationResourceRuntimeSchema, CollaborationTargetResourceSchema, collaborationResourceExecutionFields, collaborationResourceExecutionIsValid, collaborationResourceRosterIsValid } from "./resource-schema";
 import { positiveVersion } from "./version";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 const timestamp = z.iso.datetime({ offset: true });
 const resource = CollaborationTargetResourceSchema.extend({
+  ...collaborationResourceExecutionFields,
   agent_name: z.string(), runtime: CollaborationResourceRuntimeSchema.nullable(), owner: CollaborationAccountSummarySchema.nullable(),
-}).strip().refine((value) => (value.runtime === null || value.runtime.id === value.runtime_id) &&
+}).strip().refine(collaborationResourceExecutionIsValid).refine((value) => (value.runtime === null || value.runtime.id === value.runtime_id) &&
   (value.owner === null || value.owner.user_id.toLowerCase() === value.owner_user_id));
 
 export const CollaborationResourceOfferSchema = z.object({

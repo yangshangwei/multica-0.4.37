@@ -257,6 +257,9 @@ func (r *Runner) recordPreparationFact(ctx context.Context, claim protocol.Colla
 	eventID := uuid.NewSHA1(nonce, []byte("collaboration-preparation/"+fact.Stage+"/"+fact.State)).String()
 	observation := protocol.CollaborationPreparationObservation{Identity: claim.Identity, EventID: eventID, AttemptSeq: permit.AttemptSeq,
 		AttemptNonce: permit.AttemptNonce, ManifestDigest: claim.Preparation.ManifestDigest, Stage: fact.Stage, State: fact.State, Code: fact.Code}
+	if claim.ProtocolVersion == protocol.CollaborationHostRuntimeProtocolVersion {
+		observation.ProtocolVersion, observation.Containment = claim.ProtocolVersion, claim.Containment
+	}
 	observationCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 3*time.Second)
 	defer cancel()
 	return r.Client.ObservePreparation(observationCtx, observation, permit.BusinessToken)

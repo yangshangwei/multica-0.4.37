@@ -28,6 +28,8 @@ case "${1:-}" in
     printf '%s\n' \
       github.com/multica-ai/multica/server \
       github.com/multica-ai/multica/server/internal/daemon \
+      github.com/multica-ai/multica/server/internal/handler \
+      github.com/multica-ai/multica/server/internal/service \
       github.com/multica-ai/multica/server/pkg/agent \
       github.com/multica-ai/multica/server/pkg/agent/internal/testutil
     ;;
@@ -44,7 +46,7 @@ chmod 755 "$BIN_DIR/go"
 
 PATH="$BIN_DIR:$PATH" bash "$SCRIPT_DIR/test-go.sh" --race
 
-expected_calls='test -timeout=40m -race -p 2 -parallel 2 github.com/multica-ai/multica/server github.com/multica-ai/multica/server/internal/daemon
+expected_calls='test -timeout=40m -race -p 1 -parallel 2 github.com/multica-ai/multica/server github.com/multica-ai/multica/server/internal/daemon github.com/multica-ai/multica/server/internal/handler github.com/multica-ai/multica/server/internal/service
 test -timeout=40m -race -p 2 -parallel 2 ./pkg/agent/...'
 actual_calls=$(cat "$CALLS_FILE")
 if [ "$actual_calls" != "$expected_calls" ]; then

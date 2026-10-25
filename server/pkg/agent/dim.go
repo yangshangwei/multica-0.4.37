@@ -169,6 +169,11 @@ func (s *dimMessageStream) close() {
 }
 
 func (b *dimBackend) Execute(ctx context.Context, prompt string, opts ExecOptions) (*Session, error) {
+	var lifecycleErr error
+	ctx, lifecycleErr = withExecutionLifecycle(ctx, opts, b.cfg.provider)
+	if lifecycleErr != nil {
+		return nil, lifecycleErr
+	}
 	execPath := b.cfg.ExecutablePath
 	if execPath == "" {
 		execPath = "dim"
@@ -301,7 +306,7 @@ func (b *dimBackend) Execute(ctx context.Context, prompt string, opts ExecOption
 		// exec.CommandContext kills the child if it is still alive, THEN
 		// close stdin and wait. The previous order (stdin.Close → cmd.Wait →
 		// cancel) left cancel() unreachable when a child ignored stdin EOF
-		// and never exited, hanging cmd.Wait() forever and never closing
+		// and never exited, hanging waitOwnedProcessTree(cmd) forever and never closing
 		// resCh. cmd.Wait is bounded so a still-stuck child cannot block the
 		// final Result either.
 		defer func() {
@@ -315,7 +320,7 @@ func (b *dimBackend) Execute(ctx context.Context, prompt string, opts ExecOption
 			cancel()
 			stdin.Close()
 			waitDone := make(chan struct{})
-			go func() { _ = cmd.Wait(); close(waitDone) }()
+			go func() { _ = waitOwnedProcessTree(cmd); close(waitDone) }()
 			select {
 			case <-waitDone:
 			case <-time.After(dimProcessWaitTimeout):

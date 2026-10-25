@@ -55,7 +55,22 @@ func collaborationRuntimeTargetSupported(ctx context.Context, q *db.Queries, tar
 		if err != nil {
 			return "", err
 		}
-		if installation.Lifecycle != "active" || installation.Os.String != "linux" || util.UUIDToString(installation.DeploymentID) != auth.ManagedDeploymentID() {
+		if installation.Lifecycle != "active" || util.UUIDToString(installation.DeploymentID) != auth.ManagedDeploymentID() {
+			return "runtime_upgrade_required", nil
+		}
+		runtime, err := (RuntimeLookup{Queries: q, Source: "task"}).Get(ctx, grant.RuntimeID)
+		if err != nil {
+			return "", err
+		}
+		registration, err := collaborationRegisteredCapabilities(runtime)
+		if err != nil {
+			return "", err
+		}
+		if registration != nil && registration.Capabilities.Host != nil {
+			if !collaborationInstallationMatchesOS(installation.Os.String, registration.Capabilities.OS) {
+				return "execution_mode_unsupported", nil
+			}
+		} else if installation.Os.String != "linux" {
 			return "runtime_upgrade_required", nil
 		}
 		matched++

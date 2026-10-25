@@ -8,7 +8,7 @@ import { parseCollaborationIssue } from "./schema";
 import { parseCollaborationActionDraft } from "./action";
 import { readCollaborationDrafts, saveCollaborationDraft } from "./draft";
 import { parseCollaborationControlDraft, prepareCollaborationControl, recoverCollaborationControl, sendCollaborationControl } from "./control";
-import { collaborationControlReceiptFixture as receipt, collaborationControlRequestId as requestId, collaborationExecutionIssueFixture } from "./test-fixtures";
+import { collaborationControlReceiptFixture as receipt, collaborationControlRequestId as requestId, collaborationExecutionIssueFixture, collaborationHostExecutionFixture } from "./test-fixtures";
 
 const auth = vi.hoisted(() => ({ user: { id: "00000000-0000-4000-8000-000000000001" } }));
 const stored = vi.hoisted(() => new Map<string, string>());
@@ -45,6 +45,21 @@ it("captures one authorized snapshot and excludes hold/gate expectations from St
   expect(stop).not.toHaveProperty("expected_control_version");
   expect(stop.targets[0]).not.toHaveProperty("expected_hold_version");
   expect(() => parseCollaborationActionDraft(draft)).toThrow();
+});
+
+it("captures v6 comprehension without upgrading a retained v5 control request", async () => {
+  const { client, scope, issue, draft } = setup();
+  const current = parseCollaborationIssue({ ...issue, execution: collaborationHostExecutionFixture })!;
+  const fresh = prepareCollaborationControl(scope, current, requestId, "resume", { scope: "issue" });
+  expect(parseCollaborationControlDraft(fresh)).toHaveProperty("execution_view_version", 6);
+  expect(parseCollaborationControlDraft(draft)).not.toHaveProperty("execution_view_version");
+  const fetch = vi.fn().mockRejectedValueOnce(new TypeError("offline")).mockResolvedValueOnce(json(receipt));
+  vi.stubGlobal("fetch", fetch);
+  await expect(sendCollaborationControl(client, scope, fresh)).rejects.toThrow();
+  const retained = readCollaborationDrafts(fresh.scope)[0]!;
+  await expect(recoverCollaborationControl(client, scope, retained)).resolves.toEqual(receipt);
+  expect(JSON.parse(fetch.mock.calls[0]?.[1].body)).toHaveProperty("execution_view_version", 6);
+  expect(fetch.mock.calls[1]?.[1].method ?? "GET").toBe("GET");
 });
 
 it("persists the immutable original intent before transport and updates state only by refetch", async () => {

@@ -9,6 +9,9 @@ import (
 )
 
 func TestMain(m *testing.M) {
+	if code, handled := runHostProviderFixture(); handled {
+		os.Exit(code)
+	}
 	if code, handled := runPreparedTestFixture(); handled {
 		os.Exit(code)
 	}

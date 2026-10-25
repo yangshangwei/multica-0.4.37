@@ -32,7 +32,7 @@ type managedCollaborationFixture struct {
 // This fixture establishes real persisted managed/owner-consent prerequisites.
 // The tests below exercise server protocol state only; native containment is
 // proven separately by collaborationrun tests and the real-router Linux loop.
-func newManagedCollaborationFixture(t *testing.T) *managedCollaborationFixture {
+func newManagedCollaborationFixture(t *testing.T, runtimeModes ...string) *managedCollaborationFixture {
 	t.Helper()
 	t.Setenv("MULTICA_AUTH_MODE", "legacy")
 	t.Setenv("MULTICA_DEPLOYMENT_ID", "68150177-594d-45d8-8a84-bc979b498b04")
@@ -68,7 +68,11 @@ func newManagedCollaborationFixture(t *testing.T) *managedCollaborationFixture {
 	}
 	inst := f.fx.Insert(t, "managed_installation", testutil.Cols{"deployment_id": auth.ManagedDeploymentID(), "organization_id": org.ID, "public_key": []byte(public), "key_fingerprint": installation.Digest(public), "responsible_user_id": f.creator, "os": "linux"})
 	daemon := uuid.NewString()
-	runtimeID := f.fx.Runtime(t, "Managed collaboration fake runtime", testutil.Cols{"owner_id": f.creator, "daemon_id": daemon, "provider": "codex", "status": "online"})
+	runtimeMode := "cloud"
+	if len(runtimeModes) > 0 {
+		runtimeMode = runtimeModes[0]
+	}
+	runtimeID := f.fx.Runtime(t, "Managed collaboration fake runtime", testutil.Cols{"owner_id": f.creator, "daemon_id": daemon, "provider": "codex", "status": "online", "runtime_mode": runtimeMode})
 	agentID := f.fx.Agent(t, "Managed collaboration fake agent "+uuid.NewString(), runtimeID, testutil.Cols{"owner_id": f.creator, "permission_mode": "private"})
 	bindingID := f.fx.Insert(t, "installation_daemon_binding", testutil.Cols{"installation_id": inst, "workspace_id": f.workspace, "daemon_id": daemon, "principal_user_id": f.creator, "auth_version": 1, "binding_epoch": 1})
 	t.Setenv("MULTICA_AUTH_MODE", "password")

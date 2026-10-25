@@ -103,8 +103,17 @@ func (s *CollaborationService) checkPreparationPromotion(ctx context.Context, t 
 			if err != nil {
 				return err
 			}
+			// Once host execution is opened, every resource in a newly
+			// promoted group must use that mode. Namespace support remains
+			// only for draining groups already claimed before the cutover.
+			if t.gate.HostExecutionEnabled && (saved == nil || saved.Capabilities.Containment != protocol.CollaborationContainmentHostProcessSupervision) {
+				return collaborationError(http.StatusConflict, "execution_mode_unsupported")
+			}
 			if len(files) == 0 && saved == nil {
 				continue
+			}
+			if saved != nil && saved.Capabilities.Host != nil && !t.gate.HostExecutionEnabled {
+				return collaborationError(http.StatusConflict, "execution_mode_unsupported")
 			}
 			installationID, installErr := util.ParseUUID(grant.InstallationID)
 			bindingID, bindingErr := util.ParseUUID(grant.BindingID)
@@ -154,6 +163,9 @@ func (s *CollaborationService) preparationForClaim(ctx context.Context, r *colla
 		if err != nil {
 			return nil, err
 		}
+		if saved != nil && saved.Capabilities.Host != nil {
+			return nil, collaborationError(http.StatusConflict, "execution_mode_unsupported")
+		}
 		if len(files) > 0 || saved != nil && saved.Capabilities.Git != nil {
 			return nil, collaborationError(http.StatusConflict, "runtime_preparation_unsupported")
 		}
@@ -175,8 +187,15 @@ func (s *CollaborationService) preparationForClaim(ctx context.Context, r *colla
 	if err != nil {
 		return nil, err
 	}
-	if saved.Capabilities.Provider.BundleDigest != p.BundleDigest || runtime.CollaborationConfigEpoch != r.run.ResourceEpoch {
+	if saved.Capabilities.PreparationVersion != p.PreparationVersion || saved.Capabilities.Containment != p.Containment ||
+		saved.Capabilities.Provider.BundleDigest != p.BundleDigest || runtime.CollaborationConfigEpoch != r.run.ResourceEpoch {
 		return nil, collaborationError(http.StatusConflict, "runtime_capability_changed")
+	}
+	if saved.Capabilities.Host != nil {
+		digest, err := protocol.CollaborationRuntimeCapabilityDigest(saved.Capabilities)
+		if err != nil || digest != p.CapabilityDigest {
+			return nil, collaborationError(http.StatusConflict, "runtime_capability_changed")
+		}
 	}
 	if r.run.PromptSnapshot == nil {
 		if err = checkPreparationSquadInstructions(ctx, r.q, r.target); err != nil {
@@ -315,12 +334,24 @@ func (s *CollaborationService) freezePreparedPrompt(ctx context.Context, r *coll
 	if err != nil {
 		return err
 	}
-	manifest := protocol.CollaborationPreparation{Version: protocol.CollaborationPreparationVersion,
+	manifest := protocol.CollaborationPreparation{Version: registration.Capabilities.PreparationVersion,
 		Identity: collaborationRunIdentity(r.run, r.access.Issue.ID), CommandIDs: make([]string, 0, len(inputs)),
 		Resource: protocol.CollaborationPreparationResource{AgentID: util.UUIDToString(r.run.AgentID), RuntimeID: util.UUIDToString(r.run.RuntimeID),
 			OwnerUserID: util.UUIDToString(r.run.ResourceOwnerUserID), ExecutionWorkspaceID: util.UUIDToString(r.run.ExecutionWorkspaceID),
 			TargetEpoch: strconv.FormatInt(r.run.TargetEpoch.Int64, 10), ConfigVersion: strconv.FormatInt(r.run.ConfigVersion.Int64, 10), RuntimeConfigEpoch: registration.RuntimeConfigEpoch},
-		Provider: registration.Capabilities.Provider, Invocation: invocation, Attachments: files, Git: registration.Capabilities.Git, Limits: registration.Capabilities.Limits}
+		Provider: registration.Capabilities.Provider, Invocation: invocation, Attachments: files, Git: registration.Capabilities.Git, Limits: registration.Capabilities.Limits,
+		Host: registration.Capabilities.Host}
+	if manifest.Host != nil {
+		manifest.CapabilityDigest, err = protocol.CollaborationRuntimeCapabilityDigest(registration.Capabilities)
+		if err != nil {
+			return err
+		}
+		actor, err := r.q.GetAgent(ctx, r.run.AgentID)
+		if err != nil {
+			return err
+		}
+		manifest.Resource.AgentOwnerUserID = util.UUIDToString(actor.OwnerID)
+	}
 	for _, input := range inputs {
 		manifest.CommandIDs = append(manifest.CommandIDs, input.CommandID)
 	}
@@ -363,7 +394,7 @@ func (s *CollaborationService) readRuntimePreparation(ctx context.Context, r *co
 		return out, err
 	}
 	if registration.RuntimeConfigEpoch != out.Resource.RuntimeConfigEpoch || registration.Capabilities.Provider != out.Provider ||
-		registration.Capabilities.Limits != out.Limits || !reflect.DeepEqual(registration.Capabilities.Git, out.Git) {
+		registration.Capabilities.Limits != out.Limits || !reflect.DeepEqual(registration.Capabilities.Git, out.Git) || !reflect.DeepEqual(registration.Capabilities.Host, out.Host) {
 		return out, collaborationError(http.StatusConflict, "runtime_capability_changed")
 	}
 	return out, nil
@@ -435,11 +466,15 @@ func (s *CollaborationService) RecordRuntimePreparation(ctx context.Context, run
 		if p.Identity != manifest.Identity || p.ManifestDigest != manifest.ManifestDigest || p.Stage == "git" && manifest.Git == nil {
 			return empty, collaborationError(http.StatusConflict, "stale_preparation")
 		}
-		attempt, err := r.q.GetCollaborationAttempt(ctx, db.GetCollaborationAttemptParams{RunID: runID, AttemptSeq: 1})
+		if !collaborationRuntimeMessageMode(p.ProtocolVersion, p.Containment, r.run.Containment.String) {
+			return empty, collaborationError(http.StatusConflict, "execution_identity_mismatch")
+		}
+		seq, _ := collaborationRuntimeVersion(p.AttemptSeq, false)
+		attempt, err := r.q.GetCollaborationAttempt(ctx, db.GetCollaborationAttemptParams{RunID: runID, AttemptSeq: seq})
 		if err != nil {
 			return empty, err
 		}
-		if attempt.AttemptNonce != p.AttemptNonce || attempt.ClaimGeneration != r.run.ClaimGeneration || r.run.AuthorizedAttemptSeq != 1 {
+		if attempt.AttemptNonce != p.AttemptNonce || attempt.ClaimGeneration != r.run.ClaimGeneration || r.run.AuthorizedAttemptSeq != seq {
 			return empty, collaborationError(http.StatusConflict, "stale_execution")
 		}
 		receipt := protocol.CollaborationPreparationObservationReceipt{Identity: p.Identity, EventID: p.EventID, ManifestDigest: p.ManifestDigest, Recorded: true}

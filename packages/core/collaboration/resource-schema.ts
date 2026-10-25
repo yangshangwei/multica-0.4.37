@@ -2,6 +2,7 @@ import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
 import { CollaborationAccountSummarySchema } from "./schema";
 import { positiveVersion } from "./version";
+import { CollaborationExecutionModeSchema, CollaborationExecutionViewVersionSchema } from "./execution-schema";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 export const CollaborationTargetResourceSchema = z.strictObject({
@@ -14,11 +15,24 @@ export const CollaborationResourceIdentitySchema = z.strictObject({
 export type CollaborationTargetResource = z.infer<typeof CollaborationTargetResourceSchema>;
 export const CollaborationResourceRuntimeSchema = z.object({ id: uuid, name: z.string(), custom_name: z.string().nullable(), provider: z.string() });
 
+export const collaborationResourceExecutionFields = {
+  execution_mode: CollaborationExecutionModeSchema.optional(), agent_owner_user_id: uuid.optional(),
+  provider: z.string().min(1).max(128).nullable().optional(), provider_version: z.string().min(1).max(128).nullable().optional(),
+  account_source: z.literal("runtime_configuration").nullable().optional(),
+};
+export function collaborationResourceExecutionIsValid(value: {
+  execution_mode?: z.infer<typeof CollaborationExecutionModeSchema>; provider?: string | null; provider_version?: string | null; account_source?: string | null;
+}): boolean {
+  if (value.execution_mode === undefined) return value.provider === undefined && value.provider_version === undefined && value.account_source === undefined;
+  if (value.execution_mode === "linux_pid_namespace_v1") return value.provider_version == null;
+  return Boolean(value.provider && value.provider_version) && value.account_source === "runtime_configuration";
+}
 const resourceView = CollaborationTargetResourceSchema.extend({
+  ...collaborationResourceExecutionFields,
   agent_name: z.string(), runtime: CollaborationResourceRuntimeSchema.nullable(),
   owner: CollaborationAccountSummarySchema.nullable(), consented: z.boolean(), grant_id: uuid.nullable(), grant_epoch: positiveVersion.nullable(),
   can_consent: z.boolean(), can_revoke: z.boolean(),
-}).strip().refine((value) => (value.grant_id === null) === (value.grant_epoch === null) &&
+}).strip().refine(collaborationResourceExecutionIsValid).refine((value) => (value.grant_id === null) === (value.grant_epoch === null) &&
   (!value.can_revoke || value.grant_id !== null) && !(value.can_consent && (value.consented || value.can_revoke)) &&
   (value.runtime === null || value.runtime.id === value.runtime_id) && (value.owner === null || value.owner.user_id.toLowerCase() === value.owner_user_id));
 export type CollaborationResourceView = z.infer<typeof resourceView>;
@@ -54,7 +68,7 @@ export const CollaborationResourceIdentityViewSchema = z.object({ issue_id: uuid
 }).refine((value) => (value.identity !== null) === (value.reason === ""));
 export type CollaborationResourceIdentityView = z.infer<typeof CollaborationResourceIdentityViewSchema>;
 
-const authority = { expected_lifecycle_epoch: positiveVersion, expected_participant_epoch: positiveVersion, expected_account_epoch: positiveVersion };
+const authority = { execution_view_version: CollaborationExecutionViewVersionSchema.optional(), expected_lifecycle_epoch: positiveVersion, expected_participant_epoch: positiveVersion, expected_account_epoch: positiveVersion };
 export const CollaborationResourceInputSchema = z.discriminatedUnion("action", [
   z.strictObject({ ...authority, action: z.literal("register_target"), kind: z.enum(["agent", "squad"]), resource_id: uuid,
     expected_target_set_version: positiveVersion, roster: z.array(CollaborationTargetResourceSchema).min(1).max(256) })
@@ -73,7 +87,8 @@ export type CollaborationResourceInput = z.infer<typeof CollaborationResourceInp
 const action = z.enum(["register_target", "consent_resource", "revoke_grant", "offer_resource", "withdraw_resource_offer", "adopt_resource_offer"]);
 const failure = z.enum(["not_found", "forbidden", "stale_authority", "stale_scope", "stale_grant", "stale_target", "target_exists", "target_not_found",
   "issue_closed", "owner_not_participant", "resource_owner_not_participant", "resource_owner_unavailable", "target_configuration_changed", "runtime_registration_required", "invalid_target_configuration",
-  "invalid_resource_offer", "invalid_resource_offer_query", "resource_offer_not_found", "stale_offer", "offer_withdrawn", "offer_adopted", "resource_not_owned", "resource_workspace_unavailable", "resource_options_unavailable", "resource_not_found"]);
+  "invalid_resource_offer", "invalid_resource_offer_query", "resource_offer_not_found", "stale_offer", "offer_withdrawn", "offer_adopted", "resource_not_owned", "resource_workspace_unavailable", "resource_options_unavailable", "resource_not_found",
+  "collaboration_client_upgrade_required", "execution_mode_unsupported", "execution_consent_required"]);
 const code = z.union([z.enum(["target_registered", "resource_consented", "grant_revoked", "grant_already_revoked", "resource_offered", "resource_offer_withdrawn", "resource_offer_adopted"]), failure]);
 const receiptBase = { protocol_version: z.literal(2), issue_id: uuid, request_id: z.string().min(1).max(128), action, status: z.number().int().min(200).max(599), code };
 function validOutcome(value: { action: z.infer<typeof action>; code: string; status: number }) {
