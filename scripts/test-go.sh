@@ -9,7 +9,8 @@ usage() {
   echo "usage: $0 [--race]" >&2
 }
 
-go_test_args=(test)
+# internal/service alone takes ~13 min under -race, past go test's 10 min default.
+go_test_args=(test -timeout=40m)
 case "$#" in
   0) ;;
   1)

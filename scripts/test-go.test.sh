@@ -44,8 +44,8 @@ chmod 755 "$BIN_DIR/go"
 
 PATH="$BIN_DIR:$PATH" bash "$SCRIPT_DIR/test-go.sh" --race
 
-expected_calls='test -race -p 2 -parallel 2 github.com/multica-ai/multica/server github.com/multica-ai/multica/server/internal/daemon
-test -race -p 2 -parallel 2 ./pkg/agent/...'
+expected_calls='test -timeout=40m -race -p 2 -parallel 2 github.com/multica-ai/multica/server github.com/multica-ai/multica/server/internal/daemon
+test -timeout=40m -race -p 2 -parallel 2 ./pkg/agent/...'
 actual_calls=$(cat "$CALLS_FILE")
 if [ "$actual_calls" != "$expected_calls" ]; then
   echo "unexpected go test calls:" >&2
