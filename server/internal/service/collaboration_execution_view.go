@@ -2,14 +2,17 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"net/http"
 	"strconv"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/collaboration"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 type CollaborationExecutionControlView struct {
@@ -96,29 +99,33 @@ type CollaborationExecutionGroupView struct {
 }
 
 type CollaborationExecutionRunView struct {
-	ID                  string  `json:"id"`
-	CommandID           string  `json:"command_id"`
-	TargetID            string  `json:"target_id"`
-	GroupID             string  `json:"group_id"`
-	ChannelID           string  `json:"channel_id"`
-	BatchID             string  `json:"batch_id"`
-	ParentRunID         *string `json:"parent_run_id"`
-	StepKey             string  `json:"step_key"`
-	StepKind            string  `json:"step_kind"`
-	AgentID             string  `json:"agent_id"`
-	TargetEpoch         string  `json:"target_epoch"`
-	ConfigVersion       string  `json:"config_version"`
-	ProgressState       string  `json:"progress_state"`
-	ProofState          string  `json:"proof_state"`
-	BusinessOutcome     *string `json:"business_outcome"`
-	ForcedDisposition   *string `json:"forced_disposition"`
-	RecordingIncomplete bool    `json:"recording_incomplete"`
-	SettledAt           *string `json:"settled_at"`
+	ExecutionMode       string          `json:"execution_mode,omitempty"`
+	LaunchCount         *string         `json:"launch_count,omitempty"`
+	DescendantCleanup   json.RawMessage `json:"descendant_cleanup,omitempty"`
+	ID                  string          `json:"id"`
+	CommandID           string          `json:"command_id"`
+	TargetID            string          `json:"target_id"`
+	GroupID             string          `json:"group_id"`
+	ChannelID           string          `json:"channel_id"`
+	BatchID             string          `json:"batch_id"`
+	ParentRunID         *string         `json:"parent_run_id"`
+	StepKey             string          `json:"step_key"`
+	StepKind            string          `json:"step_kind"`
+	AgentID             string          `json:"agent_id"`
+	TargetEpoch         string          `json:"target_epoch"`
+	ConfigVersion       string          `json:"config_version"`
+	ProgressState       string          `json:"progress_state"`
+	ProofState          string          `json:"proof_state"`
+	BusinessOutcome     *string         `json:"business_outcome"`
+	ForcedDisposition   *string         `json:"forced_disposition"`
+	RecordingIncomplete bool            `json:"recording_incomplete"`
+	SettledAt           *string         `json:"settled_at"`
 }
 
 // CollaborationExecutionView is a read projection, never a grant catalogue or
 // an admission decision. Runtime identities, roster, input bodies and tokens stay out.
 type CollaborationExecutionView struct {
+	RequiresUpgrade   bool                                `json:"-"`
 	ProtocolVersion   int                                 `json:"protocol_version"`
 	IssueID           string                              `json:"issue_id"`
 	SessionID         string                              `json:"session_id"`
@@ -138,6 +145,9 @@ type CollaborationExecutionView struct {
 // just like IssueFields. It performs no writes and does not reauthorize grants.
 func (s *CollaborationService) ExecutionView(ctx context.Context, access CollaborationIssueAccess) (CollaborationExecutionView, error) {
 	var out CollaborationExecutionView
+	if err := validateCollaborationExecutionRead(ctx); err != nil {
+		return out, err
+	}
 	if !access.Capabilities.Read {
 		return out, collaborationError(http.StatusNotFound, "not_found")
 	}
@@ -184,7 +194,93 @@ func (s *CollaborationService) ExecutionView(ctx context.Context, access Collabo
 		}
 		dependencies = append(dependencies, rows...)
 	}
-	return projectCollaborationExecution(session, gate, channels, targets, commands, groups, runs, inputs, dependencies)
+	out, err = projectCollaborationExecution(session, gate, channels, targets, commands, groups, runs, inputs, dependencies)
+	if err != nil {
+		return out, err
+	}
+	if CollaborationExecutionViewVersion(ctx) == 5 {
+		host, err := collaborationProjectionUsesHost(ctx, s.Queries, targets, runs)
+		if err != nil {
+			return CollaborationExecutionView{}, err
+		}
+		if host {
+			return legacyUnavailableExecution(out), nil
+		}
+		return out, nil
+	}
+	out.ProtocolVersion = 6
+	for i, run := range runs {
+		if err := s.projectExecutionRunMode(ctx, s.Queries, access.Issue.ID, run, &out.Runs[i]); err != nil {
+			return CollaborationExecutionView{}, err
+		}
+	}
+	return out, nil
+}
+
+func legacyUnavailableExecution(view CollaborationExecutionView) CollaborationExecutionView {
+	view.ProtocolVersion, view.RequiresUpgrade, view.ExecutionGate.Enabled = 5, true, false
+	view.Channels = []CollaborationExecutionChannelView{}
+	view.Targets = []CollaborationExecutionTargetView{}
+	view.Commands = []CollaborationExecutionCommandView{}
+	view.Groups = []CollaborationExecutionGroupView{}
+	view.Runs = []CollaborationExecutionRunView{}
+	return view
+}
+
+func (s *CollaborationService) projectExecutionRunMode(ctx context.Context, q *db.Queries, issueID pgtype.UUID, run db.CollaborationRun, view *CollaborationExecutionRunView) error {
+	mode := run.Containment.String
+	if mode == "" {
+		mode = protocol.CollaborationContainmentLinuxPIDNamespace
+		if run.ProgressState == "prepared" && run.RuntimeID.Valid {
+			runtime, err := s.collaborationRuntimeLookup(q).Get(ctx, run.RuntimeID)
+			if err == nil {
+				registration, err := collaborationRegisteredCapabilities(runtime)
+				if err != nil {
+					return err
+				}
+				if registration != nil {
+					mode = registration.Capabilities.Containment
+				}
+			} else if !errors.Is(err, pgx.ErrNoRows) {
+				return err
+			}
+		}
+	}
+	if mode != protocol.CollaborationContainmentLinuxPIDNamespace && mode != protocol.CollaborationContainmentHostProcessSupervision {
+		return invalidCollaborationLedger("execution mode unavailable")
+	}
+	view.ExecutionMode = mode
+	count := strconv.FormatInt(run.AuthorizedAttemptSeq, 10)
+	view.LaunchCount, view.DescendantCleanup = &count, json.RawMessage("null")
+	if mode == protocol.CollaborationContainmentLinuxPIDNamespace {
+		if run.ProofState == "host_exit_observed" {
+			return invalidCollaborationLedger("mixed termination mode")
+		}
+		return nil
+	}
+	if run.ProofState == "exited_proven" {
+		return invalidCollaborationLedger("mixed termination mode")
+	}
+	if run.ProofState == "host_exit_observed" || run.ProofState == "never_launched_proven" && run.AuthorizedAttemptSeq > 0 {
+		termination, err := q.GetCollaborationTermination(ctx, run.ID)
+		if err != nil {
+			return err
+		}
+		identity, err := collaborationRecordedRunIdentity(issueID, run, termination)
+		if err != nil {
+			return err
+		}
+		var proof protocol.CollaborationRunProof
+		if !termination.ConfirmedAt.Valid || decodeCollaborationPreparationJSON(termination.Proof, &proof) != nil || protocol.ValidateCollaborationHostProof(proof) != nil ||
+			proof.Identity != identity || proof.State != run.ProofState || proof.SealedAttemptSeq != count {
+			return invalidCollaborationLedger("host termination observation unavailable")
+		}
+		view.DescendantCleanup, err = json.Marshal(proof.Cleanup)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func projectCollaborationExecution(session db.CollaborationSession, gate db.CollaborationExecutionGate, channels []db.CollaborationChannel, targets []db.CollaborationTarget, commands []db.CollaborationCommand, groups []db.CollaborationExecutionGroup, runs []db.CollaborationRun, inputs []db.CollaborationGroupInput, dependencySets ...[]db.CollaborationGroupDependency) (CollaborationExecutionView, error) {
@@ -400,7 +496,7 @@ func projectCollaborationExecution(session db.CollaborationSession, gate db.Coll
 			return CollaborationExecutionView{}, invalid
 		}
 		switch run.ProofState {
-		case "unknown", "never_launched_proven", "never_started_proven", "exited_proven":
+		case "unknown", "never_launched_proven", "never_started_proven", "exited_proven", "host_exit_observed":
 		default:
 			return CollaborationExecutionView{}, invalid
 		}

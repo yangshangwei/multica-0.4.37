@@ -53,10 +53,13 @@ type CollaborationRunClaimRequest struct {
 	Containment        string `json:"containment"`
 	PreparationVersion int    `json:"preparation_version,omitempty"`
 	BundleDigest       string `json:"bundle_digest,omitempty"`
+	CapabilityDigest   string `json:"capability_digest,omitempty"`
 }
 
 // TerminationToken belongs only to the supervisor and its private ledger.
 type CollaborationRunClaimResponse struct {
+	ProtocolVersion      int                       `json:"protocol_version,omitempty"`
+	Containment          string                    `json:"containment,omitempty"`
 	Identity             CollaborationRunIdentity  `json:"identity"`
 	Inputs               []CollaborationRunInput   `json:"inputs"`
 	AgentID              string                    `json:"agent_id"`
@@ -64,52 +67,64 @@ type CollaborationRunClaimResponse struct {
 	ExecutionWorkspaceID string                    `json:"execution_workspace_id"`
 	TerminationToken     string                    `json:"termination_token"`
 	Preparation          *CollaborationPreparation `json:"preparation,omitempty"`
+	HostContext          *CollaborationHostContext `json:"host_context,omitempty"`
 }
 
 type CollaborationRunPermitRequest struct {
-	Identity     CollaborationRunIdentity `json:"identity"`
-	AttemptSeq   string                   `json:"attempt_seq"`
-	AttemptNonce string                   `json:"attempt_nonce"`
-	Containment  string                   `json:"containment"`
+	ProtocolVersion  int                            `json:"protocol_version,omitempty"`
+	Identity         CollaborationRunIdentity       `json:"identity"`
+	AttemptSeq       string                         `json:"attempt_seq"`
+	AttemptNonce     string                         `json:"attempt_nonce"`
+	Containment      string                         `json:"containment"`
+	LaunchDescriptor *CollaborationLaunchDescriptor `json:"launch_descriptor,omitempty"`
 }
 
 type CollaborationRunPermitResponse struct {
-	Identity      CollaborationRunIdentity `json:"identity"`
-	AttemptSeq    string                   `json:"attempt_seq"`
-	AttemptNonce  string                   `json:"attempt_nonce"`
-	BusinessToken string                   `json:"business_token"`
+	ProtocolVersion int                      `json:"protocol_version,omitempty"`
+	Identity        CollaborationRunIdentity `json:"identity"`
+	AttemptSeq      string                   `json:"attempt_seq"`
+	AttemptNonce    string                   `json:"attempt_nonce"`
+	BusinessToken   string                   `json:"business_token"`
 }
 
 type CollaborationRunStopIntent struct {
-	Identity      CollaborationRunIdentity `json:"identity"`
-	StopRequested bool                     `json:"stop_requested"`
+	ProtocolVersion int                      `json:"protocol_version,omitempty"`
+	Containment     string                   `json:"containment,omitempty"`
+	Identity        CollaborationRunIdentity `json:"identity"`
+	StopRequested   bool                     `json:"stop_requested"`
 }
 
 // Business outcomes are separate from OS exit observations and sealed proofs.
 type CollaborationRunOutcome struct {
-	Identity     CollaborationRunIdentity `json:"identity"`
-	EventID      string                   `json:"event_id"`
-	AttemptSeq   string                   `json:"attempt_seq"`
-	AttemptNonce string                   `json:"attempt_nonce"`
-	Outcome      string                   `json:"outcome"`
-	Body         string                   `json:"body"`
-	Record       *CollaborationRunRecord  `json:"record,omitempty"`
+	ProtocolVersion int                      `json:"protocol_version,omitempty"`
+	Containment     string                   `json:"containment,omitempty"`
+	Identity        CollaborationRunIdentity `json:"identity"`
+	EventID         string                   `json:"event_id"`
+	AttemptSeq      string                   `json:"attempt_seq"`
+	AttemptNonce    string                   `json:"attempt_nonce"`
+	Outcome         string                   `json:"outcome"`
+	Body            string                   `json:"body"`
+	Record          *CollaborationRunRecord  `json:"record,omitempty"`
 }
 
 // CollaborationRunProof intentionally cannot carry content, paths or logs.
 type CollaborationRunProof struct {
-	ReceiptID                string                   `json:"receipt_id"`
-	Identity                 CollaborationRunIdentity `json:"identity"`
-	LastAuthorizedAttemptSeq string                   `json:"last_authorized_attempt_seq"`
-	SealedAttemptSeq         string                   `json:"sealed_attempt_seq"`
-	AttemptNonce             string                   `json:"attempt_nonce"`
-	State                    string                   `json:"state"`
-	Containment              string                   `json:"containment"`
-	ExitCode                 *int                     `json:"exit_code,omitempty"`
+	ProtocolVersion          int                              `json:"protocol_version,omitempty"`
+	ReceiptID                string                           `json:"receipt_id"`
+	Identity                 CollaborationRunIdentity         `json:"identity"`
+	LastAuthorizedAttemptSeq string                           `json:"last_authorized_attempt_seq"`
+	SealedAttemptSeq         string                           `json:"sealed_attempt_seq"`
+	AttemptNonce             string                           `json:"attempt_nonce"`
+	State                    string                           `json:"state"`
+	Containment              string                           `json:"containment"`
+	ExitCode                 *int                             `json:"exit_code,omitempty"`
+	Launches                 []CollaborationLaunchTermination `json:"launches,omitempty"`
+	Cleanup                  *CollaborationCleanupObservation `json:"cleanup,omitempty"`
 }
 
 type CollaborationRunProofReceipt struct {
-	ReceiptID string                   `json:"receipt_id"`
-	Identity  CollaborationRunIdentity `json:"identity"`
-	Accepted  bool                     `json:"accepted"`
+	ProtocolVersion int                      `json:"protocol_version,omitempty"`
+	ReceiptID       string                   `json:"receipt_id"`
+	Identity        CollaborationRunIdentity `json:"identity"`
+	Accepted        bool                     `json:"accepted"`
 }

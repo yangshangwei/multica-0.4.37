@@ -25,9 +25,11 @@ const (
 )
 
 type CollaborationContext struct {
-	Identity protocol.CollaborationRunIdentity
-	Server   string
-	Token    string
+	ProtocolVersion int
+	Containment     string
+	Identity        protocol.CollaborationRunIdentity
+	Server          string
+	Token           string
 }
 
 // Host runner configuration is not a provider identity. Only these five
@@ -48,7 +50,7 @@ func ReadCollaborationContext() (*CollaborationContext, error) {
 	invalid := errors.New("incomplete or invalid collaboration run identity; use the identity supplied by the admitted runtime")
 	value := &CollaborationContext{Server: os.Getenv(CollaborationServerEnv), Token: os.Getenv(CollaborationTokenEnv)}
 	raw := os.Getenv(CollaborationContextEnv)
-	if len(raw) > 4096 || decodeCollaborationIdentity(raw, &value.Identity) != nil ||
+	if len(raw) > 4096 || decodeCollaborationContext(raw, value) != nil ||
 		!strings.HasPrefix(value.Token, "mcb_") || len(value.Token) != 68 {
 		return nil, invalid
 	}
@@ -81,38 +83,75 @@ func ReadCollaborationContext() (*CollaborationContext, error) {
 	return value, nil
 }
 
-func decodeCollaborationIdentity(raw string, out *protocol.CollaborationRunIdentity) error {
+func collaborationObjectFields(raw string) (map[string]json.RawMessage, error) {
 	d := json.NewDecoder(strings.NewReader(raw))
 	start, err := d.Token()
 	if err != nil || start != json.Delim('{') {
-		return errors.New("invalid collaboration identity object")
+		return nil, errors.New("invalid collaboration identity object")
 	}
 	fields := make(map[string]json.RawMessage)
 	for d.More() {
 		key, err := d.Token()
 		if err != nil {
-			return err
+			return nil, err
 		}
 		name, ok := key.(string)
 		if _, exists := fields[name]; !ok || exists {
-			return errors.New("duplicate collaboration identity field")
+			return nil, errors.New("duplicate collaboration identity field")
 		}
 		var value json.RawMessage
 		if err = d.Decode(&value); err != nil {
-			return err
+			return nil, err
 		}
 		fields[name] = value
 	}
 	if end, err := d.Token(); err != nil || end != json.Delim('}') || d.Decode(new(any)) != io.EOF {
-		return errors.New("invalid collaboration identity object")
+		return nil, errors.New("invalid collaboration identity object")
+	}
+	return fields, nil
+}
+
+func decodeCollaborationIdentity(raw string, out *protocol.CollaborationRunIdentity) error {
+	fields, err := collaborationObjectFields(raw)
+	if err != nil {
+		return err
 	}
 	data, err := json.Marshal(fields)
 	if err != nil {
 		return err
 	}
-	d = json.NewDecoder(bytes.NewReader(data))
+	d := json.NewDecoder(bytes.NewReader(data))
 	d.DisallowUnknownFields()
 	return d.Decode(out)
+}
+
+type hostCollaborationContextWire struct {
+	ProtocolVersion int             `json:"protocol_version"`
+	Containment     string          `json:"containment"`
+	Identity        json.RawMessage `json:"identity"`
+}
+
+func decodeCollaborationContext(raw string, out *CollaborationContext) error {
+	fields, err := collaborationObjectFields(raw)
+	if err != nil {
+		return err
+	}
+	if _, versioned := fields["protocol_version"]; !versioned {
+		out.ProtocolVersion, out.Containment = protocol.CollaborationRuntimeProtocolVersion, protocol.CollaborationContainmentLinuxPIDNamespace
+		return decodeCollaborationIdentity(raw, &out.Identity)
+	}
+	var wire hostCollaborationContextWire
+	d := json.NewDecoder(strings.NewReader(raw))
+	d.DisallowUnknownFields()
+	if len(fields) != 3 || d.Decode(&wire) != nil || wire.ProtocolVersion != protocol.CollaborationHostRuntimeProtocolVersion ||
+		wire.Containment != protocol.CollaborationContainmentHostProcessSupervision || len(wire.Identity) == 0 {
+		return errors.New("unsupported collaboration execution context")
+	}
+	if err := decodeCollaborationIdentity(string(wire.Identity), &out.Identity); err != nil {
+		return err
+	}
+	out.ProtocolVersion, out.Containment = wire.ProtocolVersion, wire.Containment
+	return nil
 }
 
 type CollaborationRuntimeComment struct {
@@ -193,4 +232,18 @@ func CollaborationEnvironment(identity protocol.CollaborationRunIdentity, server
 	}
 	return []string{CollaborationTokenEnv + "=" + token, CollaborationServerEnv + "=" + server,
 		CollaborationContextEnv + "=" + strings.TrimSpace(data.String()), CollaborationIssueEnv + "=" + identity.IssueID, CollaborationRunEnv + "=" + identity.RunID}, nil
+}
+
+func HostCollaborationEnvironment(identity protocol.CollaborationRunIdentity, server, token string) ([]string, error) {
+	raw, err := json.Marshal(identity)
+	if err != nil {
+		return nil, err
+	}
+	context, err := json.Marshal(hostCollaborationContextWire{ProtocolVersion: protocol.CollaborationHostRuntimeProtocolVersion,
+		Containment: protocol.CollaborationContainmentHostProcessSupervision, Identity: raw})
+	if err != nil {
+		return nil, err
+	}
+	return []string{CollaborationTokenEnv + "=" + token, CollaborationServerEnv + "=" + server, CollaborationContextEnv + "=" + string(context),
+		CollaborationIssueEnv + "=" + identity.IssueID, CollaborationRunEnv + "=" + identity.RunID}, nil
 }

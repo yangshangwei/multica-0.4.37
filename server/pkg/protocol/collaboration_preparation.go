@@ -61,6 +61,7 @@ type CollaborationRuntimeCapabilities struct {
 	Provider           CollaborationPreparationProvider `json:"provider"`
 	Git                *CollaborationPreparationGit     `json:"git,omitempty"`
 	Limits             CollaborationPreparationLimits   `json:"limits"`
+	Host               *CollaborationHostCapability     `json:"host,omitempty"`
 }
 
 type CollaborationRuntimeCapabilitiesRequest struct {
@@ -93,6 +94,7 @@ type CollaborationRuntimeCapabilitiesResponse struct {
 
 type CollaborationPreparationResource struct {
 	AgentID              string `json:"agent_id"`
+	AgentOwnerUserID     string `json:"agent_owner_user_id,omitempty"`
 	RuntimeID            string `json:"runtime_id"`
 	OwnerUserID          string `json:"owner_user_id"`
 	ExecutionWorkspaceID string `json:"execution_workspace_id"`
@@ -159,16 +161,18 @@ func (p *CollaborationPreparationInvocation) UnmarshalJSON(raw []byte) error {
 // CommandIDs correlate with the actual first-claim prompt without publishing a
 // hash of private input text. Both snapshots are committed together exactly once.
 type CollaborationPreparation struct {
-	Version        int                                  `json:"version"`
-	Identity       CollaborationRunIdentity             `json:"identity"`
-	CommandIDs     []string                             `json:"command_ids"`
-	Resource       CollaborationPreparationResource     `json:"resource"`
-	Provider       CollaborationPreparationProvider     `json:"provider"`
-	Invocation     CollaborationPreparationInvocation   `json:"invocation"`
-	Attachments    []CollaborationPreparationAttachment `json:"attachments"`
-	Git            *CollaborationPreparationGit         `json:"git,omitempty"`
-	Limits         CollaborationPreparationLimits       `json:"limits"`
-	ManifestDigest string                               `json:"manifest_digest,omitempty"`
+	Version          int                                  `json:"version"`
+	Identity         CollaborationRunIdentity             `json:"identity"`
+	CommandIDs       []string                             `json:"command_ids"`
+	Resource         CollaborationPreparationResource     `json:"resource"`
+	Provider         CollaborationPreparationProvider     `json:"provider"`
+	Invocation       CollaborationPreparationInvocation   `json:"invocation"`
+	Attachments      []CollaborationPreparationAttachment `json:"attachments"`
+	Git              *CollaborationPreparationGit         `json:"git,omitempty"`
+	Limits           CollaborationPreparationLimits       `json:"limits"`
+	ManifestDigest   string                               `json:"manifest_digest,omitempty"`
+	Host             *CollaborationHostCapability         `json:"host,omitempty"`
+	CapabilityDigest string                               `json:"capability_digest,omitempty"`
 }
 
 func (p *CollaborationPreparation) UnmarshalJSON(raw []byte) error {
@@ -190,14 +194,16 @@ func (p *CollaborationPreparation) UnmarshalJSON(raw []byte) error {
 // Observations record preparation facts only. They neither authorize launch nor
 // settle an outcome, release a reservation or assert process termination.
 type CollaborationPreparationObservation struct {
-	Identity       CollaborationRunIdentity `json:"identity"`
-	EventID        string                   `json:"event_id"`
-	AttemptSeq     string                   `json:"attempt_seq"`
-	AttemptNonce   string                   `json:"attempt_nonce"`
-	ManifestDigest string                   `json:"manifest_digest"`
-	Stage          string                   `json:"stage"`
-	State          string                   `json:"state"`
-	Code           string                   `json:"code,omitempty"`
+	ProtocolVersion int                      `json:"protocol_version,omitempty"`
+	Containment     string                   `json:"containment,omitempty"`
+	Identity        CollaborationRunIdentity `json:"identity"`
+	EventID         string                   `json:"event_id"`
+	AttemptSeq      string                   `json:"attempt_seq"`
+	AttemptNonce    string                   `json:"attempt_nonce"`
+	ManifestDigest  string                   `json:"manifest_digest"`
+	Stage           string                   `json:"stage"`
+	State           string                   `json:"state"`
+	Code            string                   `json:"code,omitempty"`
 }
 
 type CollaborationPreparationObservationReceipt struct {
@@ -205,6 +211,22 @@ type CollaborationPreparationObservationReceipt struct {
 	EventID        string                   `json:"event_id"`
 	ManifestDigest string                   `json:"manifest_digest"`
 	Recorded       bool                     `json:"recorded"`
+}
+
+func (p *CollaborationPreparationObservation) UnmarshalJSON(raw []byte) error {
+	type wire CollaborationPreparationObservation
+	var value wire
+	if err := decodeCollaborationHostObject(raw, &value, "identity", "event_id", "attempt_seq", "attempt_nonce", "manifest_digest", "stage", "state"); err != nil {
+		return err
+	}
+	if value.ProtocolVersion == 0 {
+		var fields map[string]json.RawMessage
+		if err := json.Unmarshal(raw, &fields); err != nil || fields["protocol_version"] != nil || fields["containment"] != nil {
+			return errors.New("invalid legacy collaboration preparation observation")
+		}
+	}
+	*p = CollaborationPreparationObservation(value)
+	return ValidateCollaborationPreparationObservation(*p)
 }
 
 func preparationUUID(value string) bool {
@@ -273,9 +295,22 @@ func preparationGit(g *CollaborationPreparationGit) bool {
 }
 
 func ValidateCollaborationRuntimeCapabilities(c CollaborationRuntimeCapabilities) error {
+	if c.Containment == CollaborationContainmentHostProcessSupervision {
+		if c.Version != CollaborationHostCapabilityVersion || c.PreparationVersion != CollaborationHostPreparationVersion ||
+			(c.OS != "linux" && c.OS != "darwin" && c.OS != "windows") || (c.Arch != "amd64" && c.Arch != "arm64") ||
+			c.AttachmentFormat != CollaborationAttachmentFormat || !hostProvider(c.Provider, c.Host) || !preparationLimits(c.Limits) || !preparationGit(c.Git) {
+			return errors.New("invalid collaboration host capabilities")
+		}
+		for _, scope := range c.Host.SupervisionScopes {
+			if c.OS == "windows" && scope == "process_group" || c.OS != "windows" && scope == "windows_job" {
+				return errors.New("invalid collaboration host supervision scope")
+			}
+		}
+		return nil
+	}
 	if c.Version != CollaborationProviderBundleVersion || c.PreparationVersion != CollaborationPreparationVersion || c.OS != "linux" ||
 		(c.Arch != "amd64" && c.Arch != "arm64") || c.Containment != CollaborationContainmentLinuxPIDNamespace ||
-		c.AttachmentFormat != CollaborationAttachmentFormat || !preparationProvider(c.Provider) || !preparationLimits(c.Limits) || !preparationGit(c.Git) {
+		c.AttachmentFormat != CollaborationAttachmentFormat || c.Host != nil || !preparationProvider(c.Provider) || !preparationLimits(c.Limits) || !preparationGit(c.Git) {
 		return errors.New("invalid collaboration runtime capabilities")
 	}
 	return nil
@@ -311,7 +346,16 @@ func CollaborationPreparationAttachmentDestination(id, version string) string {
 
 func validatePreparationShape(p *CollaborationPreparation) error {
 	invalid := errors.New("invalid collaboration preparation")
-	if p == nil || p.Version != CollaborationPreparationVersion || !preparationIdentity(p.Identity) || !preparationProvider(p.Provider) || ValidateCollaborationPreparationInvocation(p.Invocation) != nil ||
+	if p == nil {
+		return invalid
+	}
+	providerValid := p.Version == CollaborationPreparationVersion && p.Host == nil && preparationProvider(p.Provider) ||
+		p.Version == CollaborationHostPreparationVersion && hostProvider(p.Provider, p.Host)
+	if p.Version == CollaborationHostPreparationVersion && (!preparationHex(p.CapabilityDigest, 64) || !preparationUUID(p.Resource.AgentOwnerUserID)) ||
+		p.Version == CollaborationPreparationVersion && (p.CapabilityDigest != "" || p.Resource.AgentOwnerUserID != "") {
+		return invalid
+	}
+	if !providerValid || !preparationIdentity(p.Identity) || ValidateCollaborationPreparationInvocation(p.Invocation) != nil ||
 		!preparationLimits(p.Limits) || !preparationGit(p.Git) || len(p.CommandIDs) == 0 || len(p.CommandIDs) > 1024 ||
 		p.Attachments == nil || len(p.Attachments) > p.Limits.FileCount {
 		return invalid
@@ -402,7 +446,12 @@ func ValidateCollaborationPreparation(p *CollaborationPreparation, identity Coll
 
 func ValidateCollaborationPreparationObservation(p CollaborationPreparationObservation) error {
 	invalid := errors.New("invalid collaboration preparation observation")
-	if !preparationIdentity(p.Identity) || !preparationUUID(p.EventID) || p.AttemptSeq != "1" || !preparationUUID(p.AttemptNonce) || !preparationHex(p.ManifestDigest, 64) {
+	validAttempt := p.ProtocolVersion == 0 && p.Containment == "" && p.AttemptSeq == "1"
+	if p.ProtocolVersion == CollaborationHostRuntimeProtocolVersion && p.Containment == CollaborationContainmentHostProcessSupervision && preparationVersion(p.AttemptSeq) {
+		seq, err := strconv.ParseInt(p.AttemptSeq, 10, 64)
+		validAttempt = err == nil && seq <= CollaborationHostMaxLaunches
+	}
+	if !preparationIdentity(p.Identity) || !preparationUUID(p.EventID) || !validAttempt || !preparationUUID(p.AttemptNonce) || !preparationHex(p.ManifestDigest, 64) {
 		return invalid
 	}
 	switch p.Stage {

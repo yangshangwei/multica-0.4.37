@@ -189,6 +189,9 @@ func (h *Handler) CommitCollaborationTargetSwitch(w http.ResponseWriter, r *http
 }
 
 func (h *Handler) GetCollaborationTargetSwitchProposal(w http.ResponseWriter, r *http.Request) {
+	if !collaborationExecutionRead(w, r) {
+		return
+	}
 	prepareCollaborationContentRequest(w, r)
 	issue, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "id"), "issue_id")
 	if !ok {
@@ -208,6 +211,9 @@ func (h *Handler) GetCollaborationTargetSwitchProposal(w http.ResponseWriter, r 
 }
 
 func (h *Handler) ListCollaborationTargetSwitchProposals(w http.ResponseWriter, r *http.Request) {
+	if !collaborationExecutionRead(w, r) {
+		return
+	}
 	prepareCollaborationContentRequest(w, r)
 	issue, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "id"), "issue_id")
 	if !ok {

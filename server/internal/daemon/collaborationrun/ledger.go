@@ -48,6 +48,7 @@ type ledgerRecord struct {
 	NeverLaunched    bool                              `json:"never_launched"`
 	ExitCode         *int                              `json:"exit_code,omitempty"`
 	Proof            *protocol.CollaborationRunProof   `json:"proof,omitempty"`
+	Host             *hostLedgerRecord                 `json:"host,omitempty"`
 }
 
 func (r ledgerRecord) String() string   { return "collaboration ledger (credentials redacted)" }
@@ -61,7 +62,13 @@ type RetainedRun struct {
 	Identity    protocol.CollaborationRunIdentity
 	Unconfirmed bool
 	CanProve    bool
+	Host        bool
+	Waiting     bool
+	SessionKey  string
+	RuntimeID   string
 }
+
+const maxLedgerBytes = 4 << 20
 
 // Retained supplies restart capacity barriers and sealed-proof recovery without
 // exposing credentials. An unreadable record is an error, never an empty queue.
@@ -83,9 +90,9 @@ func (l *Ledger) Retained() ([]RetainedRun, error) {
 		if err != nil {
 			return nil, ErrUnconfirmed
 		}
-		raw, readErr := io.ReadAll(io.LimitReader(f, 65537))
+		raw, readErr := io.ReadAll(io.LimitReader(f, maxLedgerBytes+1))
 		closeErr := f.Close()
-		if readErr != nil || closeErr != nil || len(raw) > 65536 {
+		if readErr != nil || closeErr != nil || len(raw) > maxLedgerBytes {
 			return nil, ErrUnconfirmed
 		}
 		var record ledgerRecord
@@ -102,6 +109,12 @@ func (l *Ledger) Retained() ([]RetainedRun, error) {
 			return nil, ErrUnconfirmed
 		}
 		record = *check.record
+		if record.Version == 2 {
+			if record.Phase != phaseAcknowledged || hostOutcomePending(record.Host) {
+				retained = append(retained, retainedHostRun(record))
+			}
+			continue
+		}
 		switch record.Phase {
 		case phaseAcknowledged:
 			continue
@@ -178,15 +191,25 @@ func (r *RunLedger) load() error {
 		return err
 	}
 	defer f.Close()
-	b, err := io.ReadAll(io.LimitReader(f, 65537))
-	if err != nil || len(b) > 65536 {
+	b, err := io.ReadAll(io.LimitReader(f, maxLedgerBytes+1))
+	if err != nil || len(b) > maxLedgerBytes {
 		return ErrUnconfirmed
 	}
 	var record ledgerRecord
 	if err := decodeStrict(b, &record); err != nil {
 		return err
 	}
-	if record.Version != 1 || validateIdentity(record.Identity) != nil || record.Identity.DeploymentID != r.deploymentID || record.Identity.InstallationID != r.installationID || record.Identity.RunID != r.runID || record.TerminationToken == "" {
+	if validateIdentity(record.Identity) != nil || record.Identity.DeploymentID != r.deploymentID || record.Identity.InstallationID != r.installationID || record.Identity.RunID != r.runID || record.TerminationToken == "" {
+		return ErrUnconfirmed
+	}
+	if record.Version == 2 {
+		if err := validateHostLedgerRecord(record); err != nil {
+			return err
+		}
+		r.record = &record
+		return nil
+	}
+	if record.Version != 1 || record.Host != nil || len(b) > 65536 {
 		return ErrUnconfirmed
 	}
 	unrequested := record.AttemptSeq == "0" && record.AttemptNonce == ""
@@ -226,6 +249,9 @@ func (r *RunLedger) persist(next ledgerRecord) error {
 		return ErrUnconfirmed
 	}
 	b, err := json.Marshal(next)
+	if err == nil && len(b) > maxLedgerBytes {
+		err = ErrUnconfirmed
+	}
 	if err == nil {
 		err = atomicPrivateWrite(r.path, b)
 	}
@@ -316,6 +342,9 @@ func (r *RunLedger) NeverLaunched() error {
 	if r.failed || r.record == nil || r.lock == nil {
 		return ErrUnconfirmed
 	}
+	if r.record.Version != 1 {
+		return ErrUnconfirmed
+	}
 	switch r.record.Phase {
 	case phaseRegistered, phasePermitPending, phaseAuthorized:
 	case phaseSealed, phaseProof, phaseAcknowledged:
@@ -331,6 +360,9 @@ func (r *RunLedger) NeverLaunched() error {
 func (r *RunLedger) Seal() (protocol.CollaborationRunProof, error) {
 	if r.failed || r.record == nil {
 		return protocol.CollaborationRunProof{}, ErrUnconfirmed
+	}
+	if r.record.Version == 2 {
+		return r.sealHost()
 	}
 	if r.record.Phase == phaseProof || r.record.Phase == phaseAcknowledged {
 		return *r.record.Proof, nil
@@ -373,7 +405,7 @@ func (r *RunLedger) Acknowledge(receiptID string) error {
 func privateDirectory(path string) error {
 	info, err := os.Lstat(path)
 	if errors.Is(err, os.ErrNotExist) {
-		if err := os.Mkdir(path, 0700); err != nil {
+		if err := createPrivateDirectory(path); err != nil {
 			return err
 		}
 		if err := syncDirectory(filepath.Dir(path)); err != nil {
@@ -384,7 +416,7 @@ func privateDirectory(path string) error {
 	if err != nil {
 		return err
 	}
-	if !info.IsDir() || info.Mode().Perm()&0077 != 0 || !ownedByCurrentUser(info) {
+	if !info.IsDir() || !privateDirectoryOwner(path, info) {
 		return errors.New("collaboration storage must be a private owned directory")
 	}
 	return nil
@@ -400,6 +432,10 @@ func atomicPrivateWrite(path string, data []byte) error {
 		return err
 	}
 	defer os.Remove(f.Name())
+	if err := protectNewPrivateFile(f); err != nil {
+		_ = f.Close()
+		return err
+	}
 	if _, err := f.Write(data); err != nil {
 		_ = f.Close()
 		return err
@@ -411,18 +447,10 @@ func atomicPrivateWrite(path string, data []byte) error {
 	if err := f.Close(); err != nil {
 		return err
 	}
-	if err := os.Rename(f.Name(), path); err != nil {
+	if err := replacePrivateFile(f.Name(), path); err != nil {
 		return err
 	}
 	return syncDirectory(dir)
-}
-
-func syncDirectory(dir string) error {
-	f, err := os.Open(dir)
-	if err != nil {
-		return err
-	}
-	return errors.Join(f.Sync(), f.Close())
 }
 
 func validUUID(s string) bool {

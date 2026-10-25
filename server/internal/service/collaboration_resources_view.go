@@ -12,6 +12,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/collaboration"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 type CollaborationResourceRuntime struct {
@@ -23,6 +24,7 @@ type CollaborationResourceRuntime struct {
 
 type CollaborationResourceView struct {
 	collaboration.TargetResource
+	CollaborationResourceExecution
 	AgentName  string                        `json:"agent_name"`
 	Runtime    *CollaborationResourceRuntime `json:"runtime"`
 	Owner      *CollaborationContentAccount  `json:"owner"`
@@ -31,6 +33,14 @@ type CollaborationResourceView struct {
 	GrantEpoch *string                       `json:"grant_epoch"`
 	CanConsent bool                          `json:"can_consent"`
 	CanRevoke  bool                          `json:"can_revoke"`
+}
+
+type CollaborationResourceExecution struct {
+	ExecutionMode    string  `json:"execution_mode,omitempty"`
+	AgentOwnerUserID string  `json:"agent_owner_user_id,omitempty"`
+	Provider         *string `json:"provider,omitempty"`
+	ProviderVersion  *string `json:"provider_version,omitempty"`
+	AccountSource    *string `json:"account_source,omitempty"`
 }
 
 type CollaborationTargetResources struct {
@@ -59,6 +69,9 @@ type CollaborationResourcesView struct {
 // separate owner-only reader; a stale grant remains withdrawable by its owner.
 func (s *CollaborationService) Resources(ctx context.Context, issueID pgtype.UUID) (CollaborationResourcesView, error) {
 	out := CollaborationResourcesView{ProtocolVersion: 1, IssueID: issueID, Targets: make([]CollaborationTargetResources, 0)}
+	if err := validateCollaborationExecutionRead(ctx); err != nil {
+		return out, err
+	}
 	err := s.readCollaborationContent(ctx, issueID, func(q *db.Queries, access CollaborationIssueAccess) error {
 		if !access.Capabilities.ControlAI {
 			return collaborationError(http.StatusNotFound, "resource_access_denied")
@@ -84,6 +97,11 @@ func (s *CollaborationService) Resources(ctx context.Context, issueID pgtype.UUI
 				return err
 			}
 			configurationCurrent := code == "" && target.ConfigurationFingerprint.Valid && configuration.Fingerprint == target.ConfigurationFingerprint.String && !target.RevokedAt.Valid
+			host, err := collaborationScopeUsesHost(ctx, q, access.SessionID, targets, map[pgtype.UUID]bool{target.ID: true})
+			if err != nil {
+				return err
+			}
+			legacyHost := host && CollaborationExecutionViewVersion(ctx) != 6
 			_, authorizationCode, err := authorizeCollaborationTargetInput(ctx, q, issueID, target)
 			if err != nil {
 				return err
@@ -91,6 +109,9 @@ func (s *CollaborationService) Resources(ctx context.Context, issueID pgtype.UUI
 			item := CollaborationTargetResources{TargetID: target.ID, Kind: collaboration.TargetKind(target.Kind), ResourceID: target.ResourceID,
 				Name: configuration.Name, TargetEpoch: target.TargetEpoch, ConfigVersion: target.ConfigVersion, Authorized: authorizationCode == "", Reason: authorizationCode,
 				Resources: make([]CollaborationResourceView, 0, len(roster))}
+			if legacyHost {
+				item.Authorized, item.Reason, out.CanOrganize = false, "collaboration_client_upgrade_required", false
+			}
 			grants, err := q.ListCollaborationTargetGrants(ctx, target.ID)
 			if err != nil {
 				return err
@@ -118,7 +139,7 @@ func (s *CollaborationService) Resources(ctx context.Context, issueID pgtype.UUI
 						view.GrantID, view.GrantEpoch, view.CanRevoke = util.UUIDToPtr(grant.ID), &epoch, true
 					}
 				}
-				view.CanConsent = owned && configurationCurrent && access.Capabilities.SubmitCommand && !view.Consented && !view.CanRevoke
+				view.CanConsent = !legacyHost && owned && configurationCurrent && access.Capabilities.SubmitCommand && !view.Consented && !view.CanRevoke
 				item.Resources = append(item.Resources, view)
 			}
 			out.Targets = append(out.Targets, item)
@@ -140,6 +161,9 @@ func (s *CollaborationService) collaborationResourceSummary(ctx context.Context,
 	}
 	if err == nil {
 		view.AgentName = agent.Name
+		if CollaborationExecutionViewVersion(ctx) == 6 {
+			view.AgentOwnerUserID = util.UUIDToString(agent.OwnerID)
+		}
 	}
 	runtime, err := s.collaborationRuntimeLookup(q).Get(ctx, runtimeID)
 	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
@@ -151,6 +175,21 @@ func (s *CollaborationService) collaborationResourceSummary(ctx context.Context,
 			custom = &runtime.CustomName.String
 		}
 		view.Runtime = &CollaborationResourceRuntime{ID: runtime.ID, Name: runtime.Name, CustomName: custom, Provider: runtime.Provider}
+		if CollaborationExecutionViewVersion(ctx) == 6 {
+			view.ExecutionMode, view.Provider = protocol.CollaborationContainmentLinuxPIDNamespace, &runtime.Provider
+			registration, err := collaborationRegisteredCapabilities(runtime)
+			if err != nil {
+				return view, err
+			}
+			if registration != nil {
+				view.ExecutionMode = registration.Capabilities.Containment
+				source := registration.Capabilities.Provider.AccountSource
+				view.AccountSource = &source
+				if registration.Capabilities.Host != nil {
+					view.ProviderVersion = &registration.Capabilities.Host.ProviderVersion
+				}
+			}
+		}
 	}
 	accounts, err := collaborationContentAccounts(ctx, q, access.Issue.WorkspaceID, []pgtype.UUID{ownerID})
 	if err != nil {
@@ -199,6 +238,9 @@ type CollaborationResourceIdentityView struct {
 
 func (s *CollaborationService) ResourceIdentity(ctx context.Context, issueID, targetID, agentID, proposalID pgtype.UUID) (CollaborationResourceIdentityView, error) {
 	out := CollaborationResourceIdentityView{IssueID: issueID, TargetID: targetID, AgentID: agentID, ProposalID: proposalID}
+	if err := validateCollaborationExecutionRead(ctx); err != nil {
+		return out, err
+	}
 	err := s.readCollaborationContent(ctx, issueID, func(q *db.Queries, access CollaborationIssueAccess) error {
 		if !access.Capabilities.ControlAI {
 			return collaborationError(http.StatusNotFound, "resource_not_found")

@@ -601,7 +601,7 @@ func (q *Queries) GetCollaborationAccountFence(ctx context.Context, userID pgtyp
 }
 
 const getCollaborationGate = `-- name: GetCollaborationGate :one
-SELECT id, enabled, creation_enabled, epoch, freeze_operation_id, freeze_progress FROM collaboration_execution_gate WHERE id = 1
+SELECT id, enabled, creation_enabled, epoch, freeze_operation_id, freeze_progress, host_execution_enabled FROM collaboration_execution_gate WHERE id = 1
 `
 
 func (q *Queries) GetCollaborationGate(ctx context.Context) (CollaborationExecutionGate, error) {
@@ -614,6 +614,7 @@ func (q *Queries) GetCollaborationGate(ctx context.Context) (CollaborationExecut
 		&i.Epoch,
 		&i.FreezeOperationID,
 		&i.FreezeProgress,
+		&i.HostExecutionEnabled,
 	)
 	return i, err
 }
@@ -931,7 +932,7 @@ func (q *Queries) LockCollaborationCommand(ctx context.Context, arg LockCollabor
 }
 
 const lockCollaborationGateShared = `-- name: LockCollaborationGateShared :one
-SELECT id, enabled, creation_enabled, epoch, freeze_operation_id, freeze_progress FROM collaboration_execution_gate WHERE id = 1 FOR SHARE
+SELECT id, enabled, creation_enabled, epoch, freeze_operation_id, freeze_progress, host_execution_enabled FROM collaboration_execution_gate WHERE id = 1 FOR SHARE
 `
 
 func (q *Queries) LockCollaborationGateShared(ctx context.Context) (CollaborationExecutionGate, error) {
@@ -944,6 +945,7 @@ func (q *Queries) LockCollaborationGateShared(ctx context.Context) (Collaboratio
 		&i.Epoch,
 		&i.FreezeOperationID,
 		&i.FreezeProgress,
+		&i.HostExecutionEnabled,
 	)
 	return i, err
 }

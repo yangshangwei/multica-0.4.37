@@ -25,6 +25,7 @@ import (
 // These services are internal until runtime admission and controlled content
 // are complete; no ordinary task enqueue or runtime fallback is permitted.
 type CollaborationQueueRequest struct {
+	ExecutionViewVersion     int `json:"execution_view_version,omitempty"`
 	IssueID                  pgtype.UUID
 	RequestID                string
 	ExpectedLifecycleEpoch   int64
@@ -212,7 +213,7 @@ func (s *CollaborationService) mutateCollaborationQueue(ctx context.Context, p C
 		return CollaborationQueueReceipt{}, collaborationError(http.StatusForbidden, "forbidden")
 	}
 	actor, err := util.ParseUUID(principal.UserID)
-	if err != nil || !p.IssueID.Valid || len(p.RequestID) == 0 || len(p.RequestID) > 128 ||
+	if err != nil || !p.IssueID.Valid || len(p.RequestID) == 0 || len(p.RequestID) > 128 || (p.ExecutionViewVersion != 0 && p.ExecutionViewVersion != 6) ||
 		p.ExpectedLifecycleEpoch < 1 || p.ExpectedParticipantEpoch < 1 || p.ExpectedAccountEpoch < 1 {
 		return CollaborationQueueReceipt{}, collaborationError(http.StatusBadRequest, "invalid_queue_request")
 	}
@@ -406,7 +407,15 @@ func (s *CollaborationService) collaborationQueueMutationInTx(ctx context.Contex
 	if t.access.LifecycleEpoch != p.ExpectedLifecycleEpoch || t.participant.Epoch != p.ExpectedParticipantEpoch || t.account.Epoch != p.ExpectedAccountEpoch {
 		receipt = t.receipt("stale_authority", http.StatusConflict)
 	} else {
-		receipt, err = mutate(t)
+		required, checkErr := t.hostClientRequiredForMutation(ctx, kind, payload)
+		if checkErr != nil {
+			return CollaborationQueueReceipt{}, checkErr
+		}
+		if required && p.ExecutionViewVersion != 6 {
+			receipt = t.receipt("collaboration_client_upgrade_required", http.StatusConflict)
+		} else {
+			receipt, err = mutate(t)
+		}
 		if err != nil {
 			return CollaborationQueueReceipt{}, err
 		}

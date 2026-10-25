@@ -25,6 +25,10 @@ func (h *Handler) CreateCollaborationComment(w http.ResponseWriter, r *http.Requ
 	if !decodeCollaborationWorkflowBody(w, r, &body) {
 		return
 	}
+	viewVersion, validVersion := collaborationExecutionWriteVersion(w, body.ExecutionViewVersion)
+	if !validVersion {
+		return
+	}
 	issue, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "id"), "issue_id")
 	if !ok {
 		return
@@ -34,7 +38,7 @@ func (h *Handler) CreateCollaborationComment(w http.ResponseWriter, r *http.Requ
 		return
 	}
 	p := service.CollaborationCreateCommentParams{CollaborationCommentInput: input,
-		CollaborationQueueRequest: service.CollaborationQueueRequest{IssueID: issue, RequestID: r.Header.Get("Idempotency-Key")},
+		CollaborationQueueRequest: service.CollaborationQueueRequest{IssueID: issue, RequestID: r.Header.Get("Idempotency-Key"), ExecutionViewVersion: viewVersion},
 		TargetVersions:            make([]service.CollaborationCommentTargetVersion, 0, len(body.TargetVersions))}
 	for _, version := range []struct {
 		value *string

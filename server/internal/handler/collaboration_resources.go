@@ -11,6 +11,9 @@ import (
 )
 
 func collaborationResourceRead(w http.ResponseWriter, r *http.Request) (pgtype.UUID, bool) {
+	if !collaborationExecutionRead(w, r) {
+		return pgtype.UUID{}, false
+	}
 	prepareCollaborationContentRequest(w, r)
 	principal, ok := collaboration.PrincipalFromContext(r.Context())
 	if !ok || !principal.Human() {

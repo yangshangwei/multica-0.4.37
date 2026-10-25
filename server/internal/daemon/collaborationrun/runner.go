@@ -25,6 +25,7 @@ type Runner struct {
 	Ledger           *Ledger
 	Client           *Client
 	Controller       Launcher
+	Host             *HostExecutor
 	StopPollInterval time.Duration
 	// PermitAttempts bounds replays of the same attempt seq/nonce after a lost
 	// or transient response. Zero values use the defaults below.
@@ -47,6 +48,9 @@ func (r *Runner) Run(ctx context.Context, runID string, request protocol.Collabo
 		return err
 	}
 	defer local.Close()
+	if request.ProtocolVersion == protocol.CollaborationHostRuntimeProtocolVersion || local.record != nil && local.record.Version == 2 {
+		return r.runHost(ctx, local, runID, request)
+	}
 	if local.record != nil {
 		switch local.record.Phase {
 		case phaseAcknowledged:

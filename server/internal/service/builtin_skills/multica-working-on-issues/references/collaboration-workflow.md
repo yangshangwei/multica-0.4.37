@@ -1,8 +1,43 @@
 # Collaboration task boundaries
 
-Creation and new client execution remain gated. The v5 `execution` projection
-retains channel order, original group-input history and every input reader; an unknown or missing
-protocol must never fall back to ordinary execution.
+Creation and new host execution remain gated. Human readers negotiate
+`execution_view_version=6` to receive fixed execution modes and separate managed
+termination/descendant cleanup facts. Channel order, original group-input history
+and every input reader remain available. v5 readers get an unavailable graph for
+host execution while retaining human issue access; direct host AI operations
+require v6. A mixed legacy comment retains its human content/notifications and
+blocks only incompatible AI targets. Replaying its original request after an
+upgrade does not enqueue those targets.
+
+Host mode reuses ordinary Provider execution on Linux, macOS and Windows.
+Resource owners authorize the selected agent/runtime, account source and tool
+permissions once for this issue, including its future authorized participants.
+Separate sessions and directories organize work; they are not an OS sandbox.
+The process can use host files, accounts and tools allowed by ordinary runtime
+configuration. Explicit attachments and fixed Git commits remain the prepared
+input; private dirty worktrees are not copied automatically.
+
+Every direct Provider/helper launch, including internal retries, has its own
+durable identity, current permit and terminal observation. A retry requires the
+previous launch's accepted termination and an unsealed, authorized run. Stop
+seals dispatch before cancellation; a transient disconnect can leave existing
+host work running, but cannot authorize another launch. A recovered receipt or
+renewed grant never resumes a queue.
+
+Business outcome, managed execution end and descendant cleanup are independent.
+`host_exit_observed` means the registered execution lifecycle ended and launches
+are sealed. Cleanup may be best-effort or unverified outside that managed scope;
+it never proves every detached background program disappeared. Unknown starts
+or waits retain their recovery barrier. Outcome upload failure does not block a
+valid end receipt; missing server records remain incomplete. An exact stored
+outcome may recover its original ACK after settlement, but that does not allow a
+new result write or restart.
+
+Legacy Linux namespace runs retain `exited_proven` and their original proof
+rules. Once host cutover is enabled, new roots require host capability; already
+claimed legacy groups drain under their fixed original mode. Mode or managed
+permission changes invalidate old consent, and renewed consent still needs an
+explicit Resume.
 
 The human `POST /api/collaboration/issues` is registered behind the persisted
 creation gate and checks explicit source authority. Unknown creation outcomes
@@ -11,7 +46,7 @@ use dedicated drafts and current-authority byte endpoints; storage keys, public
 uploads and ordinary signed downloads are not substitutes. A draft bundle is
 consumed once, while an original request can be replayed. Removing a comment
 reference preserves delivered files and immutable input history. These human
-file APIs do not add file preparation to the contained CLI command surface below.
+file APIs do not expand the issue-bound CLI command surface below.
 
 The own-result GET `/creations/{requestId}/result?source_workspace_id=...` returns
 only actor/source/request identity, outcome and code. A validated HTTP 200
@@ -37,11 +72,12 @@ child reference set; only source members get open links. Outside participants
 cannot browse a source directory or open those children. These writes preserve
 the parent's collaboration version, handler, participation and AI queue.
 
-Human readers use `GET /api/collaboration/issues/{id}/runs/{runId}/records`
+Human readers use `GET /api/collaboration/issues/{id}/runs/{runId}/records?execution_view_version=6`
 with opaque cursors and limit 1–100 (default 50). Every page rechecks current
 issue access. It returns source-owned run records and that run's frozen prompt;
 current batch placement or resource names cannot reconstruct old input/provenance.
-The supported static executor may add a version-1 `record` to its existing
+The ordinary Provider adapter records bounded messages and exact usage under the
+original run/input authors. The legacy static executor may add a version-1 `record` to its existing
 `{outcome,body}` result: bounded typed messages/tool records and exact optional
 usage. Missing counters are not zero; configured resource provenance does not
 identify a verified provider billing account. Proofs never carry missing logs.
@@ -61,7 +97,7 @@ new explicit edit. Replies, tombstones, history and delivered files remain.
 
 Source workspace refresh events have an empty payload; consumers re-read under
 current authority. They neither carry private collaboration content nor add
-source membership or execution permission. The contained CLI surface below is
+source membership or execution permission. The issue-bound CLI surface below is
 unchanged by these human UI/API additions.
 
 Account/issue WebSockets carry scoped invalidation facts and recheck authority
@@ -96,11 +132,13 @@ identical bundles and presentation-only changes preserve consent.
 
 ## Commands inside an admitted run
 
-The contained static Linux executor supplies five identity variables:
+Both supported execution modes supply five identity variables:
 `MULTICA_COLLABORATION_TOKEN` (`mcb_` business capability),
-`MULTICA_COLLABORATION_SERVER`, `MULTICA_COLLABORATION_CONTEXT` (complete run
-identity JSON), `MULTICA_COLLABORATION_ISSUE_ID` and
-`MULTICA_COLLABORATION_RUN_ID`. The latter IDs must match that JSON. Partial or
+`MULTICA_COLLABORATION_SERVER`, `MULTICA_COLLABORATION_CONTEXT`,
+`MULTICA_COLLABORATION_ISSUE_ID` and `MULTICA_COLLABORATION_RUN_ID`.
+Legacy v2 context is the complete run identity JSON. Host v3 wraps that identity
+as `{protocol_version:3,containment:"host_process_supervision_v1",identity:...}`.
+The issue/run variables must match the bound identity. Partial, unknown-version or
 conflicting identity refuses before ordinary profile or credential lookup.
 `MULTICA_COLLABORATION_RUNNER_CONFIG` configures the host daemon and is not a
 provider identity.
@@ -129,11 +167,18 @@ member, then the leader ends its turn. Member replies/completion coalesce a new
 leader continuation; an eligible human M11 input joins that continuation without
 rewriting a running prompt.
 
-Runner configuration may set an absolute `cli_executable`; the controller checks
-the binary and mounts it read-only at `/multica`. There is no ambient CLI discovery.
-Only business credentials reach the provider; managed and termination credentials
-stay with the supervisor. Static Linux CLI/daemon capacity-one tests do not prove
-general provider, Git/file preparation, or other-OS support.
+Host runner configuration selects the already registered ordinary runtime and
+its verified provider version. It uses the current Multica CLI and an independent
+collaboration working directory; legacy static configuration instead mounts its
+explicit CLI at `/multica`. The adapter supplies only issue-scoped business
+credentials, refreshing them for each real attempt. Managed and termination
+credentials are not injected into Provider arguments/environment. This is an
+application protocol boundary, not secrecy from a hostile process under the same
+OS user. Native Windows shell/batch wrappers require a Job before resume and
+confirmation that their managed Provider child ended; native executables can use
+the declared direct-process downgrade. Platform/Provider combinations stay
+unavailable until their actual acceptance evidence is recorded. Compilation and
+one successful fixture are not general Provider or platform acceptance.
 
 Human source members may reorder without advancing collaboration revision. Other
 edits/handoffs retain original versions and keys; stale status confirmation needs

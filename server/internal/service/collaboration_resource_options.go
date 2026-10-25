@@ -45,6 +45,9 @@ func (s *CollaborationService) ResourceOfferOptions(ctx context.Context, issueID
 func (s *CollaborationService) resourceOptions(ctx context.Context, issueID, workspaceID pgtype.UUID,
 	visible func(db.Member, db.Agent, db.AgentRuntime, []db.AgentInvocationTarget) bool, ownedOnly bool) (CollaborationResourceOptions, error) {
 	out := CollaborationResourceOptions{ProtocolVersion: 1, IssueID: issueID, ExecutionWorkspaceID: workspaceID, Items: make([]CollaborationResourceOption, 0)}
+	if err := validateCollaborationExecutionRead(ctx); err != nil {
+		return out, err
+	}
 	err := s.readCollaborationContent(ctx, issueID, func(q *db.Queries, access CollaborationIssueAccess) error {
 		if !access.Capabilities.ControlAI || !ownedOnly && !access.Capabilities.Invite || !access.Capabilities.SubmitCommand || visible == nil || !workspaceID.Valid {
 			return collaborationError(http.StatusNotFound, "resource_options_unavailable")
@@ -107,6 +110,15 @@ func (s *CollaborationService) resourceOptions(ctx context.Context, issueID, wor
 				_, reason, err = s.collaborationOfferAuthorities(ctx, q, issueID, roster)
 				if err != nil {
 					return err
+				}
+			}
+			if reason == "" && CollaborationExecutionViewVersion(ctx) != 6 {
+				host, err := collaborationRosterUsesHost(ctx, q, roster)
+				if err != nil {
+					return err
+				}
+				if host {
+					reason = "collaboration_client_upgrade_required"
 				}
 			}
 			item := CollaborationResourceOption{Kind: kind, ResourceID: id, Name: name, Available: reason == "", Reason: reason, Resources: make([]CollaborationResourceView, 0, len(roster))}

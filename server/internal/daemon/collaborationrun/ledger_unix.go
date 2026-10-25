@@ -15,6 +15,24 @@ func ownedByCurrentUser(info os.FileInfo) bool {
 	return ok && int(stat.Uid) == os.Getuid()
 }
 
+func createPrivateDirectory(path string) error { return os.Mkdir(path, 0700) }
+
+func privateDirectoryOwner(_ string, info os.FileInfo) bool {
+	return info.Mode().Perm()&0077 == 0 && ownedByCurrentUser(info)
+}
+
+func protectNewPrivateFile(*os.File) error { return nil }
+
+func replacePrivateFile(from, to string) error { return os.Rename(from, to) }
+
+func syncDirectory(dir string) error {
+	f, err := os.Open(dir)
+	if err != nil {
+		return err
+	}
+	return errors.Join(f.Sync(), f.Close())
+}
+
 func privateFile(path string, flags int) (*os.File, error) {
 	fd, err := unix.Open(path, flags|unix.O_NOFOLLOW|unix.O_CLOEXEC, 0600)
 	if err != nil {

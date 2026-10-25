@@ -66,9 +66,56 @@ func decodeCollaborationRuntimeBody(w http.ResponseWriter, r *http.Request, targ
 	}
 	decoder := json.NewDecoder(bytes.NewReader(raw))
 	decoder.DisallowUnknownFields()
-	if iteration.ValidateObjectJSON(raw) != nil || decoder.Decode(target) != nil {
+	if iteration.ValidateObjectJSON(raw) != nil || decoder.Decode(target) != nil || !collaborationRuntimeBodyShape(raw, target) {
 		writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_runtime_request", "error": "Invalid runtime request"})
 		return false
+	}
+	return true
+}
+
+func collaborationRuntimeBodyShape(raw []byte, target any) bool {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil {
+		return false
+	}
+	var forbidden []string
+	switch value := target.(type) {
+	case *protocol.CollaborationRunClaimRequest:
+		if value.ProtocolVersion == protocol.CollaborationRuntimeProtocolVersion {
+			forbidden = []string{"capability_digest"}
+		}
+		if value.ProtocolVersion == protocol.CollaborationHostRuntimeProtocolVersion {
+			forbidden = []string{"bundle_digest"}
+		}
+	case *protocol.CollaborationRunPermitRequest:
+		if value.ProtocolVersion != protocol.CollaborationHostRuntimeProtocolVersion {
+			forbidden = []string{"protocol_version", "launch_descriptor"}
+		}
+	case *protocol.CollaborationRunProof:
+		if value.ProtocolVersion != protocol.CollaborationHostRuntimeProtocolVersion {
+			forbidden = []string{"protocol_version", "launches", "cleanup"}
+		} else {
+			forbidden = []string{"exit_code"}
+		}
+	case *protocol.CollaborationRunOutcome:
+		if value.ProtocolVersion != protocol.CollaborationHostRuntimeProtocolVersion {
+			forbidden = []string{"protocol_version", "containment"}
+		}
+	case *protocol.CollaborationRuntimeCapabilitiesRequest:
+		if value.ProtocolVersion == protocol.CollaborationRuntimeProtocolVersion {
+			var capability map[string]json.RawMessage
+			if json.Unmarshal(fields["capabilities"], &capability) != nil {
+				return false
+			}
+			if _, present := capability["host"]; present {
+				return false
+			}
+		}
+	}
+	for _, field := range forbidden {
+		if _, present := fields[field]; present {
+			return false
+		}
 	}
 	return true
 }
@@ -221,6 +268,40 @@ func (h *Handler) AcceptCollaborationRuntimeProof(w http.ResponseWriter, r *http
 	}
 	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
 	result, err := svc.AcceptRuntimeProof(r.Context(), run, token, body)
+	if err != nil {
+		writeCollaborationError(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, result)
+}
+
+func (h *Handler) AcceptCollaborationLaunchTermination(w http.ResponseWriter, r *http.Request) {
+	token, ok := collaborationNarrowBearer(w, r, service.CollaborationTerminationTokenPrefix)
+	if !ok {
+		return
+	}
+	var body protocol.CollaborationLaunchTermination
+	if !decodeCollaborationRuntimeBody(w, r, &body) {
+		return
+	}
+	run, ok := collaborationRuntimeRunID(w, r, &body.Identity.RunID)
+	if !ok {
+		return
+	}
+	launch, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "launchId"), "launch_id")
+	if !ok {
+		return
+	}
+	expected, ok := parseUUIDOrBadRequest(w, body.LaunchID, "launch_id")
+	if !ok {
+		return
+	}
+	if launch != expected {
+		writeJSON(w, http.StatusConflict, map[string]string{"code": "execution_identity_mismatch", "error": "Launch identity does not match request"})
+		return
+	}
+	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+	result, err := svc.AcceptRuntimeLaunchTermination(r.Context(), run, token, body)
 	if err != nil {
 		writeCollaborationError(w, err)
 		return

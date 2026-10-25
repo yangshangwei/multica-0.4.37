@@ -143,6 +143,68 @@ func (q *Queries) AuthorizeCollaborationAttempt(ctx context.Context, arg Authori
 	return i, err
 }
 
+const authorizeCollaborationHostAttempt = `-- name: AuthorizeCollaborationHostAttempt :one
+UPDATE collaboration_run SET authorized_attempt_seq=$1::bigint,progress_state='launch_authorized'
+WHERE id=$2::uuid AND containment='host_process_supervision_v1'
+    AND authorized_attempt_seq=$1::bigint-1 AND settled_at IS NULL AND sealed_attempt_seq IS NULL
+    AND forced_disposition IS NULL RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot
+`
+
+type AuthorizeCollaborationHostAttemptParams struct {
+	AttemptSeq int64       `json:"attempt_seq"`
+	RunID      pgtype.UUID `json:"run_id"`
+}
+
+func (q *Queries) AuthorizeCollaborationHostAttempt(ctx context.Context, arg AuthorizeCollaborationHostAttemptParams) (CollaborationRun, error) {
+	row := q.db.QueryRow(ctx, authorizeCollaborationHostAttempt, arg.AttemptSeq, arg.RunID)
+	var i CollaborationRun
+	err := row.Scan(
+		&i.ID,
+		&i.TaskID,
+		&i.GrantID,
+		&i.GrantEpoch,
+		&i.ResourceEpoch,
+		&i.ExecutionWorkspaceID,
+		&i.RuntimeID,
+		&i.InstallationID,
+		&i.BindingID,
+		&i.BindingEpoch,
+		&i.Fence,
+		&i.ClaimGeneration,
+		&i.LaunchNonce,
+		&i.ProgressState,
+		&i.BusinessOutcome,
+		&i.ForcedDisposition,
+		&i.DispositionReason,
+		&i.ProofState,
+		&i.AuthorizedAttemptSeq,
+		&i.SealedAttemptSeq,
+		&i.RecordingIncomplete,
+		&i.CreatedAt,
+		&i.StartedAt,
+		&i.SettledAt,
+		&i.SessionID,
+		&i.CommandID,
+		&i.TargetID,
+		&i.GroupID,
+		&i.ParentRunID,
+		&i.StepKey,
+		&i.StepKind,
+		&i.AgentID,
+		&i.TargetEpoch,
+		&i.ConfigVersion,
+		&i.ChannelID,
+		&i.BatchID,
+		&i.DeploymentID,
+		&i.ResourceOwnerUserID,
+		&i.Containment,
+		&i.PromptSnapshot,
+		&i.LeaderTurn,
+		&i.PreparationSnapshot,
+	)
+	return i, err
+}
+
 const claimCollaborationRuntimeRun = `-- name: ClaimCollaborationRuntimeRun :one
 UPDATE collaboration_run SET progress_state=CASE WHEN progress_state='prepared' THEN 'preparing' ELSE progress_state END,
     containment=$1::text
@@ -317,6 +379,34 @@ func (q *Queries) CreateCollaborationBusinessCapability(ctx context.Context, arg
 		arg.AttemptSeq,
 		arg.TokenHash,
 		arg.TokenCiphertext,
+	)
+	return err
+}
+
+const createCollaborationHostAttempt = `-- name: CreateCollaborationHostAttempt :exec
+INSERT INTO collaboration_attempt(run_id,attempt_seq,attempt_nonce,claim_generation,containment,launch_descriptor,terminal_observation,authorized_at)
+VALUES($1::uuid,$2::bigint,$3::text,$4::bigint,
+    'host_process_supervision_v1',$5::jsonb,$6::jsonb,
+    CASE WHEN $5::jsonb IS NULL THEN NULL ELSE now() END)
+`
+
+type CreateCollaborationHostAttemptParams struct {
+	RunID               pgtype.UUID `json:"run_id"`
+	AttemptSeq          int64       `json:"attempt_seq"`
+	AttemptNonce        string      `json:"attempt_nonce"`
+	ClaimGeneration     int64       `json:"claim_generation"`
+	LaunchDescriptor    []byte      `json:"launch_descriptor"`
+	TerminalObservation []byte      `json:"terminal_observation"`
+}
+
+func (q *Queries) CreateCollaborationHostAttempt(ctx context.Context, arg CreateCollaborationHostAttemptParams) error {
+	_, err := q.db.Exec(ctx, createCollaborationHostAttempt,
+		arg.RunID,
+		arg.AttemptSeq,
+		arg.AttemptNonce,
+		arg.ClaimGeneration,
+		arg.LaunchDescriptor,
+		arg.TerminalObservation,
 	)
 	return err
 }
@@ -615,7 +705,7 @@ func (q *Queries) EnsureCollaborationRuntimeScanCursor(ctx context.Context, arg 
 }
 
 const getCollaborationAttempt = `-- name: GetCollaborationAttempt :one
-SELECT run_id, attempt_seq, attempt_nonce, claim_generation, containment, authorized_at FROM collaboration_attempt WHERE run_id=$1 AND attempt_seq=$2
+SELECT run_id, attempt_seq, attempt_nonce, claim_generation, containment, authorized_at, launch_descriptor, terminal_observation FROM collaboration_attempt WHERE run_id=$1 AND attempt_seq=$2
 `
 
 type GetCollaborationAttemptParams struct {
@@ -633,6 +723,8 @@ func (q *Queries) GetCollaborationAttempt(ctx context.Context, arg GetCollaborat
 		&i.ClaimGeneration,
 		&i.Containment,
 		&i.AuthorizedAt,
+		&i.LaunchDescriptor,
+		&i.TerminalObservation,
 	)
 	return i, err
 }
@@ -950,6 +1042,39 @@ func (q *Queries) HasCollaborationRuntimePendingDerivedRun(ctx context.Context, 
 	return column_1, err
 }
 
+const listCollaborationAttempts = `-- name: ListCollaborationAttempts :many
+SELECT run_id, attempt_seq, attempt_nonce, claim_generation, containment, authorized_at, launch_descriptor, terminal_observation FROM collaboration_attempt WHERE run_id=$1 ORDER BY attempt_seq
+`
+
+func (q *Queries) ListCollaborationAttempts(ctx context.Context, runID pgtype.UUID) ([]CollaborationAttempt, error) {
+	rows, err := q.db.Query(ctx, listCollaborationAttempts, runID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []CollaborationAttempt{}
+	for rows.Next() {
+		var i CollaborationAttempt
+		if err := rows.Scan(
+			&i.RunID,
+			&i.AttemptSeq,
+			&i.AttemptNonce,
+			&i.ClaimGeneration,
+			&i.Containment,
+			&i.AuthorizedAt,
+			&i.LaunchDescriptor,
+			&i.TerminalObservation,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listCollaborationRuntimeCandidates = `-- name: ListCollaborationRuntimeCandidates :many
 WITH candidates AS (
 SELECT r.id,r.created_at,(CASE WHEN EXISTS (
@@ -1253,6 +1378,33 @@ func (q *Queries) LockCollaborationTermination(ctx context.Context, runID pgtype
 	return i, err
 }
 
+const recordCollaborationLaunchTermination = `-- name: RecordCollaborationLaunchTermination :one
+UPDATE collaboration_attempt SET terminal_observation=$1::jsonb
+WHERE run_id=$2::uuid AND attempt_seq=$3::bigint AND terminal_observation IS NULL RETURNING run_id, attempt_seq, attempt_nonce, claim_generation, containment, authorized_at, launch_descriptor, terminal_observation
+`
+
+type RecordCollaborationLaunchTerminationParams struct {
+	Observation []byte      `json:"observation"`
+	RunID       pgtype.UUID `json:"run_id"`
+	AttemptSeq  int64       `json:"attempt_seq"`
+}
+
+func (q *Queries) RecordCollaborationLaunchTermination(ctx context.Context, arg RecordCollaborationLaunchTerminationParams) (CollaborationAttempt, error) {
+	row := q.db.QueryRow(ctx, recordCollaborationLaunchTermination, arg.Observation, arg.RunID, arg.AttemptSeq)
+	var i CollaborationAttempt
+	err := row.Scan(
+		&i.RunID,
+		&i.AttemptSeq,
+		&i.AttemptNonce,
+		&i.ClaimGeneration,
+		&i.Containment,
+		&i.AuthorizedAt,
+		&i.LaunchDescriptor,
+		&i.TerminalObservation,
+	)
+	return i, err
+}
+
 const recordCollaborationRuntimeOutcome = `-- name: RecordCollaborationRuntimeOutcome :one
 UPDATE collaboration_run SET business_outcome=$1::text
 WHERE id=$2::uuid AND business_outcome IS NULL AND settled_at IS NULL RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot
@@ -1422,8 +1574,8 @@ func (q *Queries) RecordCollaborationTerminationProof(ctx context.Context, arg R
 
 const releaseCollaborationRunReservation = `-- name: ReleaseCollaborationRunReservation :exec
 UPDATE collaboration_runtime_reservation reserve SET released_at=COALESCE(reserve.released_at,now()) FROM collaboration_run r
-WHERE reserve.run_id=$1 AND r.id=reserve.run_id AND r.settled_at IS NOT NULL
-    AND r.proof_state IN ('never_launched_proven','exited_proven') AND r.sealed_attempt_seq>=r.authorized_attempt_seq
+WHERE reserve.run_id=$1 AND r.id=reserve.run_id
+    AND collaboration_managed_execution_ended(r.containment,r.proof_state,r.progress_state,r.settled_at,r.authorized_attempt_seq,r.sealed_attempt_seq,r.started_at,r.business_outcome)
 `
 
 func (q *Queries) ReleaseCollaborationRunReservation(ctx context.Context, runID pgtype.UUID) error {
@@ -1502,7 +1654,7 @@ UPDATE collaboration_execution_group g SET settled_at=now(),
 WHERE g.id=$1 AND g.settled_at IS NULL AND g.expansion_sealed_at IS NOT NULL
   AND EXISTS(SELECT 1 FROM collaboration_run r WHERE r.group_id=g.id)
   AND NOT EXISTS(SELECT 1 FROM collaboration_run r WHERE r.group_id=g.id AND (
-      r.settled_at IS NULL OR r.proof_state NOT IN ('never_launched_proven','exited_proven') OR r.sealed_attempt_seq IS NULL OR r.sealed_attempt_seq<r.authorized_attempt_seq
+      NOT collaboration_managed_execution_ended(r.containment,r.proof_state,r.progress_state,r.settled_at,r.authorized_attempt_seq,r.sealed_attempt_seq,r.started_at,r.business_outcome)
       OR r.step_kind IN ('agent','leader','continuation') AND r.leader_turn IS NULL
       OR r.session_id<>g.session_id OR r.target_id<>g.target_id OR r.command_id<>g.command_id
       OR r.channel_id IS DISTINCT FROM g.channel_id OR r.batch_id IS DISTINCT FROM g.batch_id))

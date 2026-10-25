@@ -44,6 +44,15 @@ func collaborationRegisteredCapabilities(runtime db.AgentRuntime) (*protocol.Col
 	return &saved, nil
 }
 
+// Installation metadata uses the public platform name; native Go capabilities
+// retain GOOS. Normalize this single spelling difference at their boundary.
+func collaborationInstallationMatchesOS(installationOS, capabilityOS string) bool {
+	if capabilityOS == "darwin" {
+		capabilityOS = "macos"
+	}
+	return installationOS == capabilityOS
+}
+
 func (s *CollaborationService) lockPreparationRuntime(ctx context.Context, q *db.Queries, runtimeID pgtype.UUID) (db.AgentRuntime, db.InstallationDaemonBinding, error) {
 	runtime, binding, err := s.authorizeCollaborationDaemon(ctx, q, runtimeID)
 	if err != nil {
@@ -75,7 +84,7 @@ func (s *CollaborationService) RegisterRuntimeCapabilities(ctx context.Context, 
 	var empty protocol.CollaborationRuntimeCapabilitiesResponse
 	expected, valid := collaborationRuntimeVersion(p.ExpectedRuntimeConfigEpoch, false)
 	runtimeID, idErr := util.ParseUUID(p.RuntimeID)
-	if p.ProtocolVersion != protocol.CollaborationRuntimeProtocolVersion || !valid || expected == math.MaxInt64 || idErr != nil ||
+	if !protocol.CollaborationRuntimeModeVersion(p.ProtocolVersion, p.Capabilities.Containment) || !valid || expected == math.MaxInt64 || idErr != nil ||
 		protocol.ValidateCollaborationRuntimeCapabilities(p.Capabilities) != nil {
 		return empty, collaborationError(http.StatusBadRequest, "invalid_runtime_capabilities")
 	}
@@ -99,7 +108,8 @@ func (s *CollaborationService) RegisterRuntimeCapabilities(ctx context.Context, 
 			family = builtin.ProtocolFamily
 		}
 		if !agent.IsSupportedType(family) || runtime.ProfileID.Valid || p.Capabilities.Provider.Provider != runtime.Provider ||
-			p.Capabilities.Provider.ProtocolFamily != family || installation.Lifecycle != "active" || installation.Os.String != p.Capabilities.OS {
+			p.Capabilities.Provider.ProtocolFamily != family || installation.Lifecycle != "active" || !collaborationInstallationMatchesOS(installation.Os.String, p.Capabilities.OS) ||
+			p.Capabilities.Host != nil && runtime.RuntimeMode != "local" {
 			return empty, collaborationError(http.StatusConflict, "unsupported_runtime_configuration")
 		}
 		saved, err := collaborationRegisteredCapabilities(runtime)

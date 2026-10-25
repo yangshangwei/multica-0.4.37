@@ -726,12 +726,14 @@ type CollaborationAttachmentReference struct {
 }
 
 type CollaborationAttempt struct {
-	RunID           pgtype.UUID        `json:"run_id"`
-	AttemptSeq      int64              `json:"attempt_seq"`
-	AttemptNonce    string             `json:"attempt_nonce"`
-	ClaimGeneration int64              `json:"claim_generation"`
-	Containment     string             `json:"containment"`
-	AuthorizedAt    pgtype.Timestamptz `json:"authorized_at"`
+	RunID               pgtype.UUID        `json:"run_id"`
+	AttemptSeq          int64              `json:"attempt_seq"`
+	AttemptNonce        string             `json:"attempt_nonce"`
+	ClaimGeneration     int64              `json:"claim_generation"`
+	Containment         string             `json:"containment"`
+	AuthorizedAt        pgtype.Timestamptz `json:"authorized_at"`
+	LaunchDescriptor    []byte             `json:"launch_descriptor"`
+	TerminalObservation []byte             `json:"terminal_observation"`
 }
 
 type CollaborationBatch struct {
@@ -833,12 +835,13 @@ type CollaborationEvent struct {
 }
 
 type CollaborationExecutionGate struct {
-	ID                int16       `json:"id"`
-	Enabled           bool        `json:"enabled"`
-	CreationEnabled   bool        `json:"creation_enabled"`
-	Epoch             int64       `json:"epoch"`
-	FreezeOperationID pgtype.UUID `json:"freeze_operation_id"`
-	FreezeProgress    pgtype.UUID `json:"freeze_progress"`
+	ID                   int16       `json:"id"`
+	Enabled              bool        `json:"enabled"`
+	CreationEnabled      bool        `json:"creation_enabled"`
+	Epoch                int64       `json:"epoch"`
+	FreezeOperationID    pgtype.UUID `json:"freeze_operation_id"`
+	FreezeProgress       pgtype.UUID `json:"freeze_progress"`
+	HostExecutionEnabled bool        `json:"host_execution_enabled"`
 }
 
 type CollaborationExecutionGroup struct {

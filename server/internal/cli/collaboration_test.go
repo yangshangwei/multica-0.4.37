@@ -77,3 +77,26 @@ func TestCollaborationHostConfigurationDoesNotSelectProviderIdentity(t *testing.
 		t.Fatalf("host configuration interfered with ordinary CLI startup: %+v %v", run, err)
 	}
 }
+
+func TestCollaborationHostContextUsesOnlyItsVersionedIssueIdentity(t *testing.T) {
+	id := collaborationEnvironmentFixture(t)
+	identity, _ := json.Marshal(id)
+	raw := `{"protocol_version":3,"containment":"host_process_supervision_v1","identity":` + string(identity) + `}`
+	t.Setenv(CollaborationContextEnv, raw)
+	if run, err := ReadCollaborationContext(); err != nil || run.Identity != id {
+		t.Fatalf("valid host collaboration context was not understood: %v", err)
+	}
+	for _, invalid := range []string{
+		strings.Replace(raw, `"protocol_version":3`, `"protocol_version":4`, 1),
+		strings.Replace(raw, `"protocol_version":3`, `"protocol_version":2`, 1),
+		strings.Replace(raw, "host_process_supervision_v1", "linux_pid_namespace_v1", 1),
+		strings.Replace(raw, `"protocol_version":3`, `"protocol_version":4,"protocol_version":3`, 1),
+		strings.TrimSuffix(raw, "}") + `,"ordinary_token":"forbidden"}`,
+		strings.Replace(raw, `"identity":`, `"private_session":`, 1),
+	} {
+		t.Setenv(CollaborationContextEnv, invalid)
+		if run, err := ReadCollaborationContext(); err == nil || run != nil {
+			t.Fatal("incompatible host context could fall through to ordinary CLI authority")
+		}
+	}
+}

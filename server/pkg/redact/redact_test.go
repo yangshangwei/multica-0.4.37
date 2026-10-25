@@ -56,6 +56,23 @@ func TestRedactGitHubToken(t *testing.T) {
 // runtime string is identical, so the patterns are exercised exactly the same.
 func asm(parts ...string) string { return strings.Join(parts, "") }
 
+func TestRedactCollaborationCapabilities(t *testing.T) {
+	t.Parallel()
+	for _, prefix := range []string{"mcb_", "mct_"} {
+		capability := asm(prefix, strings.Repeat("a0", 32))
+		for _, text := range []string{capability, "copied value: " + capability, `{"credential":"` + capability + `"}`} {
+			if got := Text(text); strings.Contains(got, capability) || !strings.Contains(got, "[REDACTED MULTICA CAPABILITY]") {
+				t.Fatal("plain collaboration capability was not redacted")
+			}
+		}
+		for _, identifier := range []string{prefix + "resource", prefix + "1234", prefix + strings.Repeat("a", 63), prefix + strings.Repeat("a", 65)} {
+			if Text(identifier) != identifier {
+				t.Fatal("a non-capability identifier was changed")
+			}
+		}
+	}
+}
+
 // TestRedactGitHubFineGrainedToken guards the github_pat_ prefix used by
 // GitHub fine-grained personal access tokens. The classic-token pattern only
 // covers ghp_/gho_/ghu_/ghs_/ghr_, so before the dedicated pattern was added a

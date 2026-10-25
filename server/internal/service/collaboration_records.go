@@ -24,6 +24,9 @@ import (
 )
 
 type CollaborationRunResource struct {
+	ExecutionMode        string  `json:"execution_mode,omitempty"`
+	AgentOwnerUserID     string  `json:"agent_owner_user_id,omitempty"`
+	ProviderVersion      *string `json:"provider_version,omitempty"`
 	AgentID              string  `json:"agent_id"`
 	RuntimeID            string  `json:"runtime_id"`
 	ResourceOwnerUserID  string  `json:"resource_owner_user_id"`
@@ -139,6 +142,9 @@ func collaborationRecordedRunView(run db.CollaborationRun) CollaborationExecutio
 
 func (s *CollaborationService) RunRecords(ctx context.Context, issueID, runID pgtype.UUID, p CollaborationRunRecordsQuery) (CollaborationRunRecordsPage, error) {
 	out := CollaborationRunRecordsPage{ProtocolVersion: 1, IssueID: util.UUIDToString(issueID), Items: []CollaborationRunRecordItem{}}
+	if err := validateCollaborationExecutionRead(ctx); err != nil {
+		return out, err
+	}
 	invalidQuery := collaborationError(http.StatusBadRequest, "invalid_records_query")
 	if !issueID.Valid || !runID.Valid || p.Limit < 1 || p.Limit > 100 || len(p.Cursor) > 1024 {
 		return out, invalidQuery
@@ -153,6 +159,9 @@ func (s *CollaborationService) RunRecords(ctx context.Context, issueID, runID pg
 		}
 		if run.SessionID != access.SessionID || !run.GroupID.Valid || !run.AgentID.Valid || !run.RuntimeID.Valid || !run.ResourceOwnerUserID.Valid || !run.ExecutionWorkspaceID.Valid || !run.GrantID.Valid {
 			return invalidCollaborationLedger("record identity invalid")
+		}
+		if CollaborationExecutionViewVersion(ctx) != 6 && run.Containment.String == protocol.CollaborationContainmentHostProcessSupervision {
+			return collaborationError(http.StatusConflict, "collaboration_client_upgrade_required")
 		}
 		group, err := q.GetCollaborationExecutionGroup(ctx, db.GetCollaborationExecutionGroupParams{SessionID: access.SessionID, ID: run.GroupID})
 		if err != nil {
@@ -172,11 +181,16 @@ func (s *CollaborationService) RunRecords(ctx context.Context, issueID, runID pg
 			return invalidCollaborationLedger("record progress invalid")
 		}
 		switch run.ProofState {
-		case "unknown", "never_launched_proven", "never_started_proven", "exited_proven":
+		case "unknown", "never_launched_proven", "never_started_proven", "exited_proven", "host_exit_observed":
 		default:
 			return invalidCollaborationLedger("record proof invalid")
 		}
 		out.Run = collaborationRecordedRunView(run)
+		if CollaborationExecutionViewVersion(ctx) == 6 {
+			if err := s.projectExecutionRunMode(ctx, q, issueID, run, &out.Run); err != nil {
+				return err
+			}
+		}
 		out.Resource = CollaborationRunResource{AgentID: util.UUIDToString(run.AgentID), RuntimeID: util.UUIDToString(run.RuntimeID), ResourceOwnerUserID: util.UUIDToString(run.ResourceOwnerUserID), ExecutionWorkspaceID: util.UUIDToString(run.ExecutionWorkspaceID), GrantID: util.UUIDToString(run.GrantID)}
 		out.Recording = CollaborationRunRecording{Status: "not_recorded", InputsRecorded: run.PromptSnapshot != nil}
 		if run.RecordingIncomplete {
@@ -192,6 +206,19 @@ func (s *CollaborationService) RunRecords(ctx context.Context, issueID, runID pg
 			inputs, err = decodeCollaborationRoster[protocol.CollaborationRunInput](run.PromptSnapshot)
 			if err != nil || inputs == nil || len(inputs) > 1024 {
 				return invalidCollaborationLedger("record prompt invalid")
+			}
+		}
+		if CollaborationExecutionViewVersion(ctx) == 6 {
+			out.Resource.ExecutionMode = out.Run.ExecutionMode
+			if run.PreparationSnapshot != nil {
+				manifest, err := readRecordedPreparationManifest(ctx, q, issueID, run, inputs)
+				if err != nil {
+					return err
+				}
+				if manifest.Host != nil {
+					out.Resource.AgentOwnerUserID = manifest.Resource.AgentOwnerUserID
+					out.Resource.ProviderVersion = &manifest.Host.ProviderVersion
+				}
 			}
 		}
 		digest := sha256.Sum256(run.PromptSnapshot)

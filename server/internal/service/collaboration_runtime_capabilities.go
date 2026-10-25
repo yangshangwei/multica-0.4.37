@@ -123,10 +123,18 @@ func collaborationFrozenIdentity(term db.CollaborationTermination) (protocol.Col
 }
 
 func (s *CollaborationService) ClaimRuntimeRun(ctx context.Context, runID pgtype.UUID, p protocol.CollaborationRunClaimRequest) (protocol.CollaborationRunClaimResponse, error) {
-	if p.ProtocolVersion != protocol.CollaborationRuntimeProtocolVersion || p.Containment != protocol.CollaborationContainmentLinuxPIDNamespace || !runID.Valid {
+	if !protocol.CollaborationRuntimeModeVersion(p.ProtocolVersion, p.Containment) || !runID.Valid {
 		return protocol.CollaborationRunClaimResponse{}, collaborationError(http.StatusBadRequest, "unsupported_runtime_protocol")
 	}
-	if p.PreparationVersion != 0 || p.BundleDigest != "" {
+	host := p.ProtocolVersion == protocol.CollaborationHostRuntimeProtocolVersion
+	if host {
+		digest, err := hex.DecodeString(p.CapabilityDigest)
+		if p.PreparationVersion != protocol.CollaborationHostPreparationVersion || p.BundleDigest != "" || err != nil || len(digest) != 32 || strings.ToLower(p.CapabilityDigest) != p.CapabilityDigest {
+			return protocol.CollaborationRunClaimResponse{}, collaborationError(http.StatusBadRequest, "unsupported_runtime_preparation")
+		}
+	} else if p.CapabilityDigest != "" {
+		return protocol.CollaborationRunClaimResponse{}, collaborationError(http.StatusBadRequest, "unsupported_runtime_protocol")
+	} else if p.PreparationVersion != 0 || p.BundleDigest != "" {
 		digest, err := hex.DecodeString(p.BundleDigest)
 		if p.PreparationVersion != protocol.CollaborationPreparationVersion || err != nil || len(digest) != 32 || strings.ToLower(p.BundleDigest) != p.BundleDigest {
 			return protocol.CollaborationRunClaimResponse{}, collaborationError(http.StatusBadRequest, "unsupported_runtime_preparation")
@@ -146,6 +154,29 @@ func (s *CollaborationService) ClaimRuntimeRun(ctx context.Context, runID pgtype
 		}
 		if err = r.currentAdmission(ctx); err != nil {
 			return out, err
+		}
+		if host && !r.gate.HostExecutionEnabled {
+			return out, collaborationError(http.StatusConflict, "execution_mode_unsupported")
+		}
+		if !host && r.gate.HostExecutionEnabled {
+			legacyDrain := r.run.Containment.String == protocol.CollaborationContainmentLinuxPIDNamespace && r.run.PromptSnapshot != nil
+			if !legacyDrain && r.run.ParentRunID.Valid {
+				// A retained namespace squad still needs its separately admitted
+				// members and leader continuations to finish in the original mode.
+				runs, err := r.q.LockCollaborationGroupRuns(ctx, r.group.ID)
+				if err != nil {
+					return out, err
+				}
+				for _, root := range runs {
+					if !root.ParentRunID.Valid && root.StepKey.String == "root" && root.Containment.String == protocol.CollaborationContainmentLinuxPIDNamespace && root.PromptSnapshot != nil {
+						legacyDrain = true
+						break
+					}
+				}
+			}
+			if !legacyDrain {
+				return out, collaborationError(http.StatusConflict, "execution_mode_unsupported")
+			}
 		}
 		preparation, err := s.preparationForClaim(ctx, r, p)
 		if err != nil {
@@ -230,6 +261,12 @@ func (s *CollaborationService) ClaimRuntimeRun(ctx context.Context, runID pgtype
 				return protocol.CollaborationRunClaimResponse{}, err
 			}
 			out.Preparation = &manifest
+			if host {
+				out.ProtocolVersion, out.Containment = protocol.CollaborationHostRuntimeProtocolVersion, p.Containment
+				out.HostContext = &protocol.CollaborationHostContext{AgentOwnerUserID: manifest.Resource.AgentOwnerUserID,
+					RuntimeID: util.UUIDToString(r.run.RuntimeID), Role: r.run.StepKind.String, StepKey: r.run.StepKey.String,
+					ParentRunID: util.UUIDToPtr(r.run.ParentRunID), SessionGeneration: strconv.FormatInt(r.run.ConfigVersion.Int64, 10) + ":" + strconv.FormatInt(r.run.ResourceEpoch, 10)}
+			}
 		}
 		return out, nil
 	})
@@ -278,8 +315,11 @@ func (s *CollaborationService) claimPromptSnapshot(ctx context.Context, r *colla
 }
 
 func (s *CollaborationService) PermitRuntimeRun(ctx context.Context, runID pgtype.UUID, p protocol.CollaborationRunPermitRequest) (protocol.CollaborationRunPermitResponse, error) {
+	if p.ProtocolVersion == protocol.CollaborationHostRuntimeProtocolVersion || p.Containment == protocol.CollaborationContainmentHostProcessSupervision {
+		return s.permitHostRuntimeRun(ctx, runID, p)
+	}
 	seq, ok := collaborationRuntimeVersion(p.AttemptSeq, false)
-	if !ok || seq != 1 || len(p.AttemptNonce) < 16 || len(p.AttemptNonce) > 128 || p.Containment != protocol.CollaborationContainmentLinuxPIDNamespace {
+	if p.ProtocolVersion != 0 || p.LaunchDescriptor != nil || !ok || seq != 1 || len(p.AttemptNonce) < 16 || len(p.AttemptNonce) > 128 || p.Containment != protocol.CollaborationContainmentLinuxPIDNamespace {
 		return protocol.CollaborationRunPermitResponse{}, collaborationError(http.StatusBadRequest, "invalid_runtime_attempt")
 	}
 	return collaborationRuntimeMutation(ctx, s, func(tx pgx.Tx) (protocol.CollaborationRunPermitResponse, error) {
@@ -379,11 +419,20 @@ func (s *CollaborationService) RecordRuntimeOutcome(ctx context.Context, runID p
 	_, err := collaborationRuntimeMutation(ctx, s, func(tx pgx.Tx) (bool, error) {
 		q := s.Queries.WithTx(tx)
 		capability, err := q.GetCollaborationBusinessCapabilityByHash(ctx, db.GetCollaborationBusinessCapabilityByHashParams{RunID: runID, TokenHash: collaborationCapabilityHash(token)})
-		if errors.Is(err, pgx.ErrNoRows) || err == nil && (capability.RevokedAt.Valid || capability.AttemptSeq != seq) {
+		if errors.Is(err, pgx.ErrNoRows) || err == nil && capability.AttemptSeq != seq {
 			return false, collaborationError(http.StatusForbidden, "business_capability_required")
 		}
 		if err != nil {
 			return false, err
+		}
+		// An issued capability may confirm its own already recorded event after
+		// revocation or settlement. This branch performs no business write and
+		// returns no stored content. New events still pass every current gate.
+		if recorded, err := acknowledgeRecordedRuntimeOutcome(ctx, q, runID, p); recorded || err != nil {
+			return recorded, err
+		}
+		if capability.RevokedAt.Valid {
+			return false, collaborationError(http.StatusForbidden, "business_capability_required")
 		}
 		r, err := s.lockCollaborationRuntimeRun(ctx, tx, runID, true, false)
 		if err != nil {
@@ -397,6 +446,9 @@ func (s *CollaborationService) RecordRuntimeOutcome(ctx context.Context, runID p
 		}
 		if p.Identity != collaborationRunIdentity(r.run, r.access.Issue.ID) {
 			return false, collaborationError(http.StatusConflict, "stale_execution")
+		}
+		if !collaborationRuntimeMessageMode(p.ProtocolVersion, p.Containment, r.run.Containment.String) {
+			return false, collaborationError(http.StatusConflict, "execution_identity_mismatch")
 		}
 		attempt, err := q.GetCollaborationAttempt(ctx, db.GetCollaborationAttemptParams{RunID: runID, AttemptSeq: seq})
 		if err != nil {
@@ -455,6 +507,49 @@ func (s *CollaborationService) RecordRuntimeOutcome(ctx context.Context, runID p
 	return err
 }
 
+// Call only after finding the originally issued mcb hash for this run/attempt.
+// Immutable termination and attempt identities survive current authority loss;
+// their receipt acknowledgement must not require a fresh grant or reservation.
+func acknowledgeRecordedRuntimeOutcome(ctx context.Context, q *db.Queries, runID pgtype.UUID, p protocol.CollaborationRunOutcome) (bool, error) {
+	prior, err := q.GetCollaborationRuntimeEvent(ctx, db.GetCollaborationRuntimeEventParams{RunID: runID, ProducerEventID: p.EventID})
+	if errors.Is(err, pgx.ErrNoRows) {
+		return false, nil
+	}
+	if err != nil {
+		return false, err
+	}
+	if prior.Kind != "outcome" {
+		return false, collaborationError(http.StatusConflict, "outcome_conflict")
+	}
+	seq, _ := collaborationRuntimeVersion(p.AttemptSeq, false)
+	attempt, err := q.GetCollaborationAttempt(ctx, db.GetCollaborationAttemptParams{RunID: runID, AttemptSeq: seq})
+	if err != nil {
+		return false, err
+	}
+	if attempt.AttemptNonce != p.AttemptNonce || strconv.FormatInt(attempt.ClaimGeneration, 10) != p.Identity.ClaimGeneration {
+		return false, collaborationError(http.StatusConflict, "stale_execution")
+	}
+	if !collaborationRuntimeMessageMode(p.ProtocolVersion, p.Containment, attempt.Containment) {
+		return false, collaborationError(http.StatusConflict, "execution_identity_mismatch")
+	}
+	term, err := q.GetCollaborationTermination(ctx, runID)
+	if err != nil {
+		return false, err
+	}
+	identity, err := collaborationFrozenIdentity(term)
+	if err != nil {
+		return false, err
+	}
+	if identity != p.Identity || prior.RunID != runID || util.UUIDToString(prior.IssueID) != identity.IssueID {
+		return false, collaborationError(http.StatusConflict, "stale_execution")
+	}
+	var saved protocol.CollaborationRunOutcome
+	if decodeCollaborationPreparationJSON(prior.Payload, &saved) != nil || !reflect.DeepEqual(saved, p) {
+		return false, collaborationError(http.StatusConflict, "outcome_conflict")
+	}
+	return true, nil
+}
+
 func authorizeCollaborationTermination(ctx context.Context, q *db.Queries, runID pgtype.UUID, token string) (db.CollaborationTermination, error) {
 	var empty db.CollaborationTermination
 	if !strings.HasPrefix(token, CollaborationTerminationTokenPrefix) || len(token) != 68 {
@@ -483,14 +578,23 @@ func (s *CollaborationService) RuntimeStopIntent(ctx context.Context, runID pgty
 		if err != nil {
 			return out, err
 		}
-		return protocol.CollaborationRunStopIntent{Identity: identity, StopRequested: term.StopRequestedAt.Valid || r.run.ForcedDisposition.Valid || r.run.SettledAt.Valid || r.session.QueueState != "active" || r.channel.QueueState != "active"}, nil
+		out = protocol.CollaborationRunStopIntent{Identity: identity, StopRequested: term.StopRequestedAt.Valid || r.run.ForcedDisposition.Valid || r.run.SettledAt.Valid || r.session.QueueState != "active" || r.channel.QueueState != "active"}
+		if r.run.Containment.String == protocol.CollaborationContainmentHostProcessSupervision {
+			out.ProtocolVersion, out.Containment = protocol.CollaborationHostRuntimeProtocolVersion, r.run.Containment.String
+		}
+		return out, nil
 	})
 }
 
 func (s *CollaborationService) AcceptRuntimeProof(ctx context.Context, runID pgtype.UUID, token string, p protocol.CollaborationRunProof) (protocol.CollaborationRunProofReceipt, error) {
 	last, okLast := collaborationRuntimeVersion(p.LastAuthorizedAttemptSeq, true)
 	sealed, okSealed := collaborationRuntimeVersion(p.SealedAttemptSeq, true)
-	if !okLast || !okSealed || last != sealed || len(p.ReceiptID) == 0 || len(p.ReceiptID) > 128 || p.Containment != protocol.CollaborationContainmentLinuxPIDNamespace ||
+	host := p.ProtocolVersion == protocol.CollaborationHostRuntimeProtocolVersion && p.Containment == protocol.CollaborationContainmentHostProcessSupervision
+	if host {
+		if protocol.ValidateCollaborationHostProof(p) != nil {
+			return protocol.CollaborationRunProofReceipt{}, collaborationError(http.StatusBadRequest, "invalid_runtime_proof")
+		}
+	} else if p.ProtocolVersion != 0 || p.Launches != nil || p.Cleanup != nil || !okLast || !okSealed || last != sealed || len(p.ReceiptID) == 0 || len(p.ReceiptID) > 128 || p.Containment != protocol.CollaborationContainmentLinuxPIDNamespace ||
 		(p.State != "never_launched_proven" && p.State != "exited_proven") || p.ExitCode != nil && (*p.ExitCode < -255 || *p.ExitCode > 255) {
 		return protocol.CollaborationRunProofReceipt{}, collaborationError(http.StatusBadRequest, "invalid_runtime_proof")
 	}
@@ -523,12 +627,18 @@ func (s *CollaborationService) AcceptRuntimeProof(ctx context.Context, runID pgt
 		if identity != p.Identity {
 			return out, collaborationError(http.StatusConflict, "stale_execution")
 		}
+		if r.run.Containment.String != p.Containment {
+			return out, collaborationError(http.StatusConflict, "execution_identity_mismatch")
+		}
 		expected := collaborationRunIdentity(r.run, r.access.Issue.ID)
 		expected.ClaimGeneration = identity.ClaimGeneration
 		if expected != identity {
 			return out, invalidCollaborationLedger("proof identity no longer matches retained run")
 		}
 		out = protocol.CollaborationRunProofReceipt{ReceiptID: p.ReceiptID, Identity: identity, Accepted: true}
+		if host {
+			out.ProtocolVersion = protocol.CollaborationHostRuntimeProtocolVersion
+		}
 		if term.ConfirmedAt.Valid {
 			if term.ReceiptID.String != p.ReceiptID || term.ReceiptDigest.String != digest {
 				return out, collaborationError(http.StatusConflict, "proof_conflict")
@@ -539,7 +649,12 @@ func (s *CollaborationService) AcceptRuntimeProof(ctx context.Context, runID pgt
 		// committed it before a lost response or a racing Stop. When no permit
 		// was ever authorized, its sealed nonlaunch for that attempt dominates:
 		// settling the run also blocks any later permit from committing.
-		unpermittedNonlaunch := p.State == "never_launched_proven" && r.run.AuthorizedAttemptSeq == 0 && last == 1
+		if host {
+			if err = validateHostProofAttempts(ctx, q, r.run, p); err != nil {
+				return out, err
+			}
+		}
+		unpermittedNonlaunch := !host && p.State == "never_launched_proven" && r.run.AuthorizedAttemptSeq == 0 && last == 1
 		switch {
 		case unpermittedNonlaunch:
 			// No attempt row exists for an unauthorized permit request.

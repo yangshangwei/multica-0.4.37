@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -9,11 +10,12 @@ import (
 )
 
 type collaborationCommentInputBody struct {
-	Content             string   `json:"content"`
-	ParentID            *string  `json:"parent_id"`
-	SuppressedTargetIDs []string `json:"suppressed_target_ids"`
-	DraftID             *string  `json:"draft_id"`
-	AttachmentIDs       []string `json:"attachment_ids"`
+	ExecutionViewVersion json.RawMessage `json:"execution_view_version,omitempty"`
+	Content              string          `json:"content"`
+	ParentID             *string         `json:"parent_id"`
+	SuppressedTargetIDs  []string        `json:"suppressed_target_ids"`
+	DraftID              *string         `json:"draft_id"`
+	AttachmentIDs        []string        `json:"attachment_ids"`
 }
 
 func collaborationCommentInput(w http.ResponseWriter, body collaborationCommentInputBody) (service.CollaborationCommentInput, bool) {
@@ -41,6 +43,9 @@ func collaborationCommentInput(w http.ResponseWriter, body collaborationCommentI
 }
 
 func (h *Handler) GetCollaborationMentionTargets(w http.ResponseWriter, r *http.Request) {
+	if !collaborationExecutionRead(w, r) {
+		return
+	}
 	prepareCollaborationContentRequest(w, r)
 	issue, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "id"), "issue_id")
 	if !ok {
@@ -60,6 +65,13 @@ func (h *Handler) PreviewCollaborationComment(w http.ResponseWriter, r *http.Req
 	var body collaborationCommentInputBody
 	if !decodeCollaborationWorkflowBody(w, r, &body) {
 		return
+	}
+	version, valid := collaborationExecutionWriteVersion(w, body.ExecutionViewVersion)
+	if !valid {
+		return
+	}
+	if version == 6 {
+		r = r.WithContext(service.WithCollaborationExecutionViewVersion(r.Context(), 6))
 	}
 	issue, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "id"), "issue_id")
 	if !ok {
