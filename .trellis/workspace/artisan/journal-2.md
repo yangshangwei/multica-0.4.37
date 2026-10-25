@@ -884,3 +884,47 @@ Continued the existing task without replanning;96/97 exact clauses now pass with
 ### Next Steps
 
 - 父任务继续跟踪AC43真实供应商账号、额度与来源验证；生产门禁保持关闭。
+
+
+## Session 97: 跨平台协作普通执行：实现与安装版验收
+<!-- trellis-session: v=2 fp=5be7ef6a909ab98c -->
+
+**Date**: 2026-10-26
+**Task**: 跨平台协作普通执行：实现与安装版验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+复用普通 Provider 的协作执行已本地提交，完整检查及 Web/Linux full Main 专项通过；Windows CI 和真实账号门禁待授权，任务保持进行中。
+
+### Main Changes
+
+继续现有 `10-24-cross-platform-collaboration-runtime`，不新建重复任务。新模式复用普通 Backend/ExecOptions/Session，保留按单授权、共享参与者控制、原作者/资源拥有者、独立会话目录和未确认执行屏障；旧 Linux 运行按原模式收尾。新准入仍默认关闭。
+
+本轮补齐 v6 可用性提示：开启执行时去掉旧版全局不可用提示，关闭时只说明新的执行未开放。保留既有记录和停止操作。组件回归先失败后通过。
+
+原生证据检查器修复了“父用例通过但子用例跳过”的假通过，补齐 OS 参数校验和七个回归。macOS arm64 在 Go 1.26.9/1.27.0 下各通过 46 个顶层用例、62 个子用例，无跳过，11 个必需用例均通过。Linux arm64 的非 root 原生生命周期/runner 证据保留。
+
+生产 Web/原生 Electron host 流程通过（1 test, 25.7s）。独立工作树构建当前 Linux arm64/Electron 39.8.7 目录包，保持原 checkout 的 Windows 安装包和旧目录包卷不变。安装版真实 Main/preload/renderer 控制 macOS host 的流程通过（1 test, 22.0s），覆盖共享 Agent、目标 Stop、应用重启后仍暂停、混合作者明确 Resume、三个真实启动及回执/容量。
+
+第三次完整检查的静态、TS、Go race/vet 均通过；浏览器 260 通过、128 按环境跳过，一次邀请跳转超过原 5s 断言。原日志/截图完整保留；11 次原用例带 trace 运行和 8 次被动诊断均通过，无法证明根因，未改业务逻辑或放宽超时。最终完整检查保留失败 trace 并以 exit 0 通过：浏览器 261 通过、128 按环境跳过，原邀请用例在 2.8s 内通过；所有静态、TS、Go race/vet 和清理步骤通过。原始单次超时仍记录为未解释历史，不声称修复。
+
+本地已准备原生 CI 快照 `92bb6d86`，临时分支 `codex/verify-collaboration-host-runtime-20261026` 仅触发原生验证。公开仓库上传授权和真实 Provider 账号 smoke 授权均尚未收到。没有合并 main、发布安装包或使用真实 Provider 账号。任务保留 in_progress；Windows/账号/其余平台安装交付门禁不冒充完成。
+
+本机详细证据位于 `/tmp/multica-host-runtime.HiUXkC/`；长期结论和范围见任务 `verification.md`、`progress.md` 及 `collaboration-host-execution.md`。
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `75d4d341c037721c991799d12332edc4a1a9d736` | test(verification): prevent cross-package fixture interference |
+| `e4df692885c73ca33214597113fada25c89c799c` | feat(agent): prevent unobserved launches during collaboration |
+| `8bfc84ad17fb529baf8a82a7dfd42b3e3d59b6f8` | feat(collaboration): preserve shared control with ordinary host permissions |
+| `88d9949b1f068058466aba0f704cbf93e28a9de4` | feat(collaboration): prevent overstated host execution guarantees |
+| `a76605caca6c5da6c31af30579c8a98c348846ad` | test(collaboration): require native and packaged host evidence |
+| `9d7221ad84d0309138fa25cb1c938c411d1a6f37` | docs(collaboration): keep host rollout tied to recorded acceptance |
+
+### Status
+
+[OK] **Completed**

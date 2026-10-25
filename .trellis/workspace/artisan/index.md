@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-2.md`
-- **Total Sessions**: 96
-- **Last Active**: 2026-10-22
+- **Total Sessions**: 97
+- **Last Active**: 2026-10-26
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-2.md` | ~886 | Active |
+| `journal-2.md` | ~930 | Active |
 | `journal-1.md` | ~1987 | Archived |
 <!-- @@@/auto:active-documents -->
 
@@ -30,6 +30,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 97 | 2026-10-26 | 跨平台协作普通执行：实现与安装版验收 | `75d4d341c037721c991799d12332edc4a1a9d736`, `e4df692885c73ca33214597113fada25c89c799c`, `8bfc84ad17fb529baf8a82a7dfd42b3e3d59b6f8`, `88d9949b1f068058466aba0f704cbf93e28a9de4`, `a76605caca6c5da6c31af30579c8a98c348846ad`, `9d7221ad84d0309138fa25cb1c938c411d1a6f37` | `codex/cross-workspace-collaboration` |
 | 96 | 2026-10-22 | 归档跨账号协作遗漏补齐与运行恢复 | `94e19da3b`, `3e504db3d`, `e13160fa0` | `codex/cross-workspace-collaboration` |
 | 95 | 2026-10-22 | Collaboration gap recovery current source, installed Main and old CLI acceptance | `80b7af5da`, `b665756f9`, `fbf5cc2ef`, `0a17aa7b2`, `63c0beeb5`, `a1d17d2ee`, `e13160fa0` | `codex/cross-workspace-collaboration` |
 | 94 | 2026-10-20 | 触发预览与普通父任务阶段唤醒 | `5dd5ccd8b`, `b6f1e3ec9`, `9d3f99c4b` | `codex/cross-workspace-collaboration` |
