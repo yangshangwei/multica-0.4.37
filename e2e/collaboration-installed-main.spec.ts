@@ -138,6 +138,8 @@ async function webInformationForm(page: Page, issueId: string, action: DirectedA
 
 test("installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume", async ({ page }, testInfo) => {
   test.setTimeout(600_000);
+  // The packaged image opts into this lane; once selected, a partial setup still fails loudly.
+  test.skip(!process.env.COLLABORATION_INSTALLED_IMAGE, "Requires a task-owned packaged Linux full Main image and password API");
   const required = ["COLLABORATION_INSTALLED_IMAGE", "COLLABORATION_E2E_API_URL", "NEXT_PUBLIC_API_URL", "MULTICA_DEPLOYMENT_ID", "DATABASE_URL"];
   for (const key of required) expect(process.env[key], `Explicit task-owned ${key}`).toBeTruthy();
   expect(process.env.COLLABORATION_INSTALLED_APP_DIR || process.env.COLLABORATION_INSTALLED_APP_VOLUME).toBeTruthy();
