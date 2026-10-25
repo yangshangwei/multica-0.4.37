@@ -645,7 +645,12 @@ test("Desktop account links retain one tab across workspaces, popouts and restar
     app = native.app;
     const page = native.page;
     await native.start();
-    await expect(page.getByRole("heading", { name: "Collaboration", exact: true })).toBeVisible();
+    // A fresh sign-in with workspaces opens a workspace; account stays one click away.
+    // The workspace sidebar renders only once a workspace resolves; locator assertions
+    // retry across the boot navigation, while page.evaluate would throw mid-navigation.
+    await expect(page.locator('[data-sidebar="menu-button"]').first()).toBeVisible();
+    await expect(page.locator('nav[aria-label="Collaboration"]').getByRole("link", { name: "Collaboration", exact: true })).toBeVisible();
+    await expect.poll(async () => (await snapshot(page).catch(() => null))?.activeScope).toBe("workspace");
     await page.getByRole("combobox", { name: "Workspaces", exact: true }).selectOption(fixture.workspaceA.slug);
     await expect.poll(async () => (await snapshot(page)).activeWorkspaceSlug).toBe(fixture.workspaceA.slug);
     const workspaceTabId = (await snapshot(page)).byWorkspace[fixture.workspaceA.slug].tabs[0].id;
