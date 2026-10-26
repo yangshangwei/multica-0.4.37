@@ -57,11 +57,14 @@ import (
   "os"
   "github.com/multica-ai/multica/server/pkg/protocol"
 )
+// Drafts carry an empty manifest_digest until sealing. The protocol type now
+// validates while decoding, so decode drafts through a method-free copy.
+type observationDraft protocol.CollaborationPreparationObservation
 func main() {
   var request struct {
     Manifest protocol.CollaborationPreparation
     Inputs []protocol.CollaborationRunInput
-    Observations []protocol.CollaborationPreparationObservation
+    Observations []observationDraft
     Result protocol.CollaborationProviderResult
   }
   must := func(err error) { if err != nil { panic("synthetic preparation protocol validation failed") } }
@@ -71,15 +74,17 @@ func main() {
   must(protocol.SealCollaborationPreparation(&request.Manifest))
   must(protocol.ValidateCollaborationPreparation(&request.Manifest, request.Manifest.Identity, request.Inputs))
   must(protocol.ValidateCollaborationProviderResult(request.Result))
-  for i := range request.Observations {
-    item := &request.Observations[i]
+  observations := make([]protocol.CollaborationPreparationObservation, 0, len(request.Observations))
+  for _, draft := range request.Observations {
+    item := protocol.CollaborationPreparationObservation(draft)
     item.ManifestDigest = request.Manifest.ManifestDigest
-    must(protocol.ValidateCollaborationPreparationObservation(*item))
+    must(protocol.ValidateCollaborationPreparationObservation(item))
     if item.Identity != request.Manifest.Identity || item.Stage == "git" && request.Manifest.Git == nil {
       must(errors.New("unrelated synthetic observation"))
     }
+    observations = append(observations, item)
   }
-  must(json.NewEncoder(os.Stdout).Encode(map[string]any{"manifest":request.Manifest, "observations":request.Observations}))
+  must(json.NewEncoder(os.Stdout).Encode(map[string]any{"manifest":request.Manifest, "observations":observations}))
 }
 `;
 
