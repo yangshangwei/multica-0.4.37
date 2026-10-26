@@ -215,7 +215,8 @@ async function metadata() {
   assert.equal(native.config.config.appUrl, appUrl);
   assert.equal(native.preferences.autoStart, false);
   assert.equal(native.updater.automaticUpdates, false);
-  assert.equal(native.daemon.state, "stopped");
+  await expect.poll(() => page.evaluate(() => window.daemonAPI.getStatus()), { timeout: 30_000 }).toMatchObject({ state: "stopped" });
+  native.daemon = await page.evaluate(() => window.daemonAPI.getStatus());
   assert.equal(native.cliInstalled, true);
   const tabs = await page.evaluate(() => {
     const state = JSON.parse(localStorage.getItem("multica_tabs") ?? "null")?.state;
@@ -247,6 +248,15 @@ async function launch() {
       clientOS: headers["x-client-os"] ?? null });
   });
   await expect.poll(() => new URL(page.url()).protocol).toBe("file:");
+  await expect.poll(() => new URL(page.url()).pathname).toBe(`${packagePath}/out/renderer/index.html`);
+  // A fresh packaged acceptance home has no locale preference. The journey
+  // uses English labels and must initialize that preference before the first
+  // password-form interaction, including after a packaged restart.
+  await page.evaluate(() => {
+    localStorage.setItem("multica-locale", "en");
+    localStorage.setItem("multica:chat:isOpen", "false");
+  });
+  await page.reload();
   await expect.poll(() => new URL(page.url()).pathname).toBe(`${packagePath}/out/renderer/index.html`);
   await expect.poll(() => page.evaluate(() => typeof window.daemonAPI?.getPrefs)).toBe("function");
   await expect.poll(() => page.evaluate(() => window.daemonAPI.getStatus().then((status) => status.state)), { timeout: 90_000 }).toBe("stopped");

@@ -60,6 +60,28 @@ upgrade, automatic updates, macOS/Windows installers, vendor accounts or
 publication. No fresh full repository gate is claimed for this fixture-only
 continuation.
 
+## macOS packaged full Main acceptance — 2026-10-27
+
+The packaged macOS arm64 control journey passed after the fixture explicitly
+opened the task-owned creation/host gates, waited for the enrolled runtime to be
+online, initialized the fresh acceptance home in English, and waited through the
+short post-login daemon `starting` state before asserting it was stopped. The
+same Electron 39.8.7 ad-hoc signed `.app`, ZIP and DMG were used for the run;
+the acceptance home and `userData` were task-owned and isolated.
+
+The run used the real password form and a separately running test-owned native
+host fixture. It passed with 1 expected test, 0 unexpected, 0 skipped and 0
+retries in 29.9 seconds. It covered shared participant input, target Stop,
+restart while paused, mixed-author input, explicit Resume, three real host
+launches, v3 lifecycle receipts, capacity release, sealed ledger records and
+`host_exit_observed`. Gate cleanup restored all three booleans to `false` and
+advanced the database epoch to 8. Machine-readable hashes and scope limits are
+in [the acceptance evidence](research/macos-packaged-acceptance-2026-10-27.json).
+
+This proves packaged macOS arm64 control against the test-owned host fixture.
+It does not prove a real Provider account through the installed delivery, other
+macOS architectures, Windows, notarization or release readiness.
+
 ## Verified during implementation
 
 | Area | Evidence | Result |
@@ -78,7 +100,7 @@ continuation.
 | Production Web/native Electron host journey | Four real test-owned native starts; shared participant use, scoped Stop, independent issue, mixed-author explicit Resume, current CLI hash, attachment bytes and v3 receipts | Final rerun passed: 1 test, 25.7s; both clients had zero page errors |
 | Availability copy | v6 enabled/disabled and legacy v5 behavior, preserving retained facts and Stop; actual Web/native captures | 11 component tests passed; 19 final screenshots; visual review passed (96/100) |
 | Native CI evidence gate | Missing/unsupported OS, missing/failed required tests and skipped required descendants | 7 script regressions passed; corrected gate accepted all 11 required macOS cases |
-| Packaged full Main host journey | Current Linux arm64 Main/preload/renderer with real synthetic-user password login; native macOS host v3 runtime; target Stop, app restart while paused, mixed-author explicit Resume, history, current CLI/attachments and capacity | Passed: 1 test, 22.0s; three real host launches and two native screenshots |
+| Packaged full Main host journey | Linux arm64 installed/directory clients and macOS arm64 packaged `.app` against the native host fixture; real password login, target Stop, app restart while paused, mixed-author explicit Resume, history, CLI/attachments and capacity | Linux `.deb` 30.418s + directory 26.853s; macOS `.app` 29.9s; all final runs passed with zero retries/skips |
 | Complete repository gate | Third `make check`, Go 1.26.9, fresh API/Go databases, serialized Go packages | Static/TS/all Go race/vet passed; browser result 260 passed, 128 skipped, 1 invitation-navigation timeout. Run ended and cleaned its services/Go DB; investigation remains open |
 | Final traced repository gate | Canonical `scripts/check.sh --trace=retain-on-failure`, identical checks with failure-trace retention and zero retries | Passed, exit 0: all static/TS/Go race/vet checks; browser 261 passed, 128 environment-gated skips (13.9m). Services stopped and isolated Go DB dropped successfully |
 
@@ -88,7 +110,7 @@ continuation.
 
 | OS | Arch | Native lifecycle/ledger | Host backend/file fixture | Authenticated Provider/version | Packaged acceptance / admission |
 | --- | --- | --- | --- | --- | --- |
-| macOS | arm64 | Passed; 46 top-level tests + 62 subtests, zero failures/skips in both final toolchains | Claude fixture + Git passed; actual Web/Electron host composition passed | Not run | Full Main package pending; not released |
+| macOS | arm64 | Passed; 46 top-level tests + 62 subtests, zero failures/skips in both final toolchains | Claude fixture + Git passed; actual Web/Electron host composition passed | Claude Code 2.1.310 smoke passed; full installed-delivery Provider/account acceptance pending | Packaged `.app` full Main control against test-owned host fixture passed; ad-hoc local artifacts, not released |
 | Linux | arm64 | Host suite passed in a native arm64 Linux container | Claude fixture + Git passed | Not run | Directory full Main and real Debian 12 `.deb` installation/control passed against macOS fixture runtime; no release/admission |
 | Linux | amd64 | Cross-compilation only | Pending native CI | Not run | Unavailable |
 | macOS | amd64 | Pending | Pending | Not run | Unavailable |
@@ -101,7 +123,7 @@ The supported local backend adapters are Claude, Codex and OpenCode. Remote/gate
 
 - Native Windows CI publication approval remains pending. A verification-only branch is ready; no push or workflow run has occurred.
 - Native Windows failure matrix and remaining packaged platform combinations. Linux arm64 lifecycle/runner and current directory-packaged full Main client acceptance have passed, with their separate execution scopes recorded.
-- Separately authorized real-Provider smoke for an initial delivery combination.
+- Installed-delivery Provider/account acceptance for the selected initial combination.
 - Remaining platform/package rollout stays disabled; keep this task in progress until the required native/account acceptance is satisfied.
 
 ## S6 continuation — 2026-10-26

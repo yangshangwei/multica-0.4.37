@@ -10,6 +10,7 @@ import type {
   CollaborationCommandHistory, CollaborationCommentInput, CollaborationCommentReceipt, CollaborationControlReceipt,
   CollaborationIssue, CollaborationMentionTargets, CollaborationResourceOptions, CollaborationResources, CollaborationRunRecords, CollaborationTriggerPreview,
 } from "@multica/core/collaboration";
+import pg from "pg";
 import { TestApiClient } from "../fixtures";
 
 const execute = promisify(execFile);
@@ -50,6 +51,13 @@ interface HostHTTPFact { operation: string; run_id: string; protocol_version: nu
 interface HostDaemonSummary { claims: number; invalid_capacity: boolean; available_slots: number; active_tasks: number; http: HostHTTPFact[] }
 interface HostReady { ready: true; protocol_version: number; execution_mode: string; preparation_version: number; runtime_config_epoch: string; max_concurrent_tasks: number; os: string; arch: string }
 
+interface CollaborationGateState {
+  enabled: boolean;
+  creation_enabled: boolean;
+  host_execution_enabled: boolean;
+  epoch: string;
+}
+
 function environment() {
   const keys = ["DATABASE_URL", "COLLABORATION_E2E_API_URL", "NEXT_PUBLIC_API_URL", "MULTICA_DEPLOYMENT_ID", "PLAYWRIGHT_BASE_URL",
     "COLLABORATION_ELECTRON_RENDERER_URL", "COLLABORATION_HOST_DAEMON", "COLLABORATION_HOST_PROVIDER", "COLLABORATION_HOST_CLI"];
@@ -65,6 +73,76 @@ function environment() {
     if (!isAbsolute(process.env[key]!) || !statSync(process.env[key]!).isFile()) throw new Error(`${key} must name an explicit built fixture executable`);
   }
   return { apiUrl: process.env.COLLABORATION_E2E_API_URL!, deploymentId: process.env.MULTICA_DEPLOYMENT_ID! };
+}
+
+/**
+ * Packaged acceptance owns an isolated database, but the production defaults
+ * keep collaboration creation and host execution closed. Open those gates
+ * explicitly for the fixture and restore the exact prior state after the
+ * daemon closes so a setup failure cannot leave the task environment open.
+ */
+async function openHostAcceptanceGate(): Promise<() => Promise<void>> {
+  const databaseUrl = process.env.DATABASE_URL;
+  if (!databaseUrl) throw new Error("Host acceptance requires an explicit isolated DATABASE_URL");
+  const db = new pg.Client(databaseUrl);
+  await db.connect();
+  let previous: CollaborationGateState | undefined;
+  try {
+    await db.query("BEGIN");
+    const result = await db.query<CollaborationGateState>(
+      "SELECT enabled, creation_enabled, host_execution_enabled, epoch FROM collaboration_execution_gate WHERE id=1 FOR UPDATE",
+    );
+    previous = result.rows[0];
+    if (!previous) throw new Error("The isolated database has no collaboration execution gate");
+    if (!previous.enabled || !previous.creation_enabled || !previous.host_execution_enabled) {
+      await db.query(
+        "UPDATE collaboration_execution_gate SET enabled=true, creation_enabled=true, host_execution_enabled=true, epoch=epoch+1 WHERE id=1",
+      );
+    }
+    await db.query("COMMIT");
+  } catch (error) {
+    await db.query("ROLLBACK").catch(() => undefined);
+    throw error;
+  } finally {
+    await db.end();
+  }
+
+  const original = previous;
+  let restored = false;
+  return async () => {
+    if (restored) return;
+    restored = true;
+    const restore = new pg.Client(databaseUrl);
+    await restore.connect();
+    try {
+      await restore.query("BEGIN");
+      const result = await restore.query<CollaborationGateState>(
+        "SELECT enabled, creation_enabled, host_execution_enabled, epoch FROM collaboration_execution_gate WHERE id=1 FOR UPDATE",
+      );
+      const current = result.rows[0];
+      if (!current) throw new Error("The isolated database lost its collaboration execution gate");
+      if (current.enabled !== original.enabled || current.creation_enabled !== original.creation_enabled
+        || current.host_execution_enabled !== original.host_execution_enabled) {
+        await restore.query(
+          "UPDATE collaboration_execution_gate SET enabled=$1, creation_enabled=$2, host_execution_enabled=$3, epoch=epoch+1 WHERE id=1",
+          [original.enabled, original.creation_enabled, original.host_execution_enabled],
+        );
+      }
+      await restore.query("COMMIT");
+    } catch (error) {
+      await restore.query("ROLLBACK").catch(() => undefined);
+      throw error;
+    } finally {
+      await restore.end();
+    }
+  };
+}
+
+async function waitForHostRuntime(owner: TestApiClient, runtimeId: string) {
+  await expect.poll(async () => {
+    const runtimes = await owner.requestJSON<{ id: string; status: string }[]>("/api/runtimes?owner=me");
+    return runtimes.find((runtime) => runtime.id === runtimeId)?.status ?? "missing";
+  }, { timeout: 30_000, message: "The host runtime must be online before creating the packaged acceptance issue" }).toBe("online");
 }
 
 function authority(issue: CollaborationIssue) {
@@ -255,39 +333,49 @@ function hostLedgerEvidence(directory: string) {
 
 export async function seedHostRuntime() {
   const env = environment();
-  const configuration = await fetch(`${env.apiUrl}/api/config`);
-  expect(configuration.status).toBe(200);
-  expect(await configuration.json()).toMatchObject({ auth_mode: "password", managed_installation_supported: true, deployment_id: env.deploymentId });
-  const suffix = randomUUID().replaceAll("-", "").slice(0, 12);
-  const actor = async (label: string) => {
-    const client = new TestApiClient();
-    const username = `host${label.toLowerCase()}${suffix}`, password = `Host-${randomUUID()}!`;
-    const user = await client.registerPassword(username, password, `Host collaborator ${label}`);
-    const onboarded = await client.requestJSON<{ onboarded_at: string | null }>("/api/me/onboarding/complete", { method: "POST", body: {} });
-    expect(onboarded.onboarded_at).not.toBeNull();
-    return { client, id: user.id,
-      authenticateInstalled: (login: (credentials: { username: string; password: string; userId: string }) => Promise<unknown>) =>
-        login({ username, password, userId: user.id }),
-      async authenticateWeb(page: Page) {
-      const response = await page.request.post(`${env.apiUrl}/auth/login`, { data: { username, password } });
-      expect(response.status()).toBe(200);
-      const cookies = await page.context().cookies(env.apiUrl);
-      expect(cookies.some((cookie) => cookie.name === "multica_auth" && cookie.httpOnly)).toBe(true);
-      expect(cookies.some((cookie) => cookie.name === "multica_csrf" && !cookie.httpOnly)).toBe(true);
-    } };
+  const restoreGate = await openHostAcceptanceGate();
+  let daemon: Awaited<ReturnType<typeof startHostDaemon>> | undefined;
+  const closeCurrentDaemon = async () => {
+    const current = daemon;
+    daemon = undefined;
+    if (current) await current.close();
   };
-  const webActor = await actor("Web"), desktopActor = await actor("Electron");
-  const sourceWorkspace = await webActor.client.ensureWorkspace("Host acceptance source", `host-source-${suffix}`);
-  const workspace = await webActor.client.requestJSON<{ id: string; slug: string }>("/api/workspaces", { method: "POST", body: {
-    name: "Private host acceptance resource", slug: `host-resource-${suffix}`,
-  } });
-  expect(workspace.id).not.toBe(sourceWorkspace.id);
-  webActor.client.setWorkspaceId(workspace.id);
-  webActor.client.setWorkspaceSlug(workspace.slug);
-  const runtime = await enrollRuntime(webActor.client, webActor.id, workspace.id, env.apiUrl, env.deploymentId);
-  const delayDaemon = process.env.COLLABORATION_DELAY_HOST_DAEMON === "1";
-  let daemon: Awaited<ReturnType<typeof startHostDaemon>> | undefined = await startHostDaemon(runtime, env.apiUrl, delayDaemon);
   try {
+    const configuration = await fetch(`${env.apiUrl}/api/config`);
+    expect(configuration.status).toBe(200);
+    expect(await configuration.json()).toMatchObject({ auth_mode: "password", managed_installation_supported: true, deployment_id: env.deploymentId });
+    const suffix = randomUUID().replaceAll("-", "").slice(0, 12);
+    const actor = async (label: string) => {
+      const client = new TestApiClient();
+      const username = `host${label.toLowerCase()}${suffix}`, password = `Host-${randomUUID()}!`;
+      const user = await client.registerPassword(username, password, `Host collaborator ${label}`);
+      const onboarded = await client.requestJSON<{ onboarded_at: string | null }>("/api/me/onboarding/complete", { method: "POST", body: {} });
+      expect(onboarded.onboarded_at).not.toBeNull();
+      return { client, id: user.id,
+        authenticateInstalled: (login: (credentials: { username: string; password: string; userId: string }) => Promise<unknown>) =>
+          login({ username, password, userId: user.id }),
+        async authenticateWeb(page: Page) {
+        const response = await page.request.post(`${env.apiUrl}/auth/login`, { data: { username, password } });
+        expect(response.status()).toBe(200);
+        const cookies = await page.context().cookies(env.apiUrl);
+        expect(cookies.some((cookie) => cookie.name === "multica_auth" && cookie.httpOnly)).toBe(true);
+        expect(cookies.some((cookie) => cookie.name === "multica_csrf" && !cookie.httpOnly)).toBe(true);
+      } };
+    };
+    const webActor = await actor("Web"), desktopActor = await actor("Electron");
+    const sourceWorkspace = await webActor.client.ensureWorkspace("Host acceptance source", `host-source-${suffix}`);
+    const workspace = await webActor.client.requestJSON<{ id: string; slug: string }>("/api/workspaces", { method: "POST", body: {
+      name: "Private host acceptance resource", slug: `host-resource-${suffix}`,
+    } });
+    expect(workspace.id).not.toBe(sourceWorkspace.id);
+    webActor.client.setWorkspaceId(workspace.id);
+    webActor.client.setWorkspaceSlug(workspace.slug);
+    const runtime = await enrollRuntime(webActor.client, webActor.id, workspace.id, env.apiUrl, env.deploymentId);
+    const delayDaemon = process.env.COLLABORATION_DELAY_HOST_DAEMON === "1";
+    daemon = await startHostDaemon(runtime, env.apiUrl, delayDaemon);
+    await waitForHostRuntime(webActor.client, runtime.runtimeId);
+    expect(await webActor.client.requestJSON<{ creation_enabled: boolean }>("/api/collaboration/creation-options"))
+      .toMatchObject({ creation_enabled: true });
     const agent = await webActor.client.requestJSON<{ id: string; name: string }>("/api/agents", { method: "POST", body: {
       name: "Shared host fixture agent", runtime_id: runtime.runtimeId, permission_mode: "private",
     } });
@@ -337,11 +425,24 @@ export async function seedHostRuntime() {
         channelId: target.channel_id, agentId: agent.id, name: agent.name, attachment });
     }
     if (delayDaemon) {
-      await daemon.close();
+      await closeCurrentDaemon();
       daemon = await startHostDaemon(runtime, env.apiUrl);
+      await waitForHostRuntime(webActor.client, runtime.runtimeId);
     }
-    return { ...env, webActor, desktopActor, sourceWorkspace, workspace, runtime, daemon, main: issues[0]!, separate: issues[1]! };
-  } catch (error) { await daemon?.close(); throw error; }
+    if (!daemon) throw new Error("The host daemon disappeared before the packaged acceptance fixture was ready");
+    const rawClose = daemon.close;
+    let closePromise: ReturnType<typeof rawClose> | undefined;
+    const close = async () => {
+      closePromise ??= (async () => {
+        try { return await rawClose(); } finally { await restoreGate(); }
+      })();
+      return closePromise;
+    };
+    return { ...env, webActor, desktopActor, sourceWorkspace, workspace, runtime, daemon: { ...daemon, close }, main: issues[0]!, separate: issues[1]! };
+  } catch (error) {
+    try { await closeCurrentDaemon(); } finally { await restoreGate(); }
+    throw error;
+  }
 }
 export type HostFixture = Awaited<ReturnType<typeof seedHostRuntime>>;
 

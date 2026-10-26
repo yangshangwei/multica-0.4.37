@@ -140,6 +140,34 @@ that this endpoint has the database.
    container installation does not prove other OS installers, upgrades,
    signatures, vendor-account execution or release readiness.
 
+### macOS packaged Main acceptance
+
+1. **Scope:** macOS arm64 packaged `.app` control is a separate acceptance fact
+   from directory or Linux package execution. Use the same full host-control
+   journey with a fresh task-owned `MULTICA_PACKAGED_ACCEPTANCE_HOME`.
+2. **Contracts:** the fixture must pass the real `.app` executable explicitly,
+   map Electron `home` and `userData` into that acceptance home, and retain the
+   app, executable, ASAR and bundled CLI hashes. Ad-hoc local signing is a test
+   artifact and does not establish notarized release readiness.
+3. **Fixture setup:** open `collaboration_execution_gate.creation_enabled`,
+   `enabled` and `host_execution_enabled` only in the isolated acceptance
+   database. Save the original booleans; restore them after daemon close or any
+   setup failure, and keep the gate epoch monotonic. Wait for the enrolled host
+   runtime to report `online` before creating Agents or issues; a heartbeat or
+   claim race must not be recorded as a packaged-client result.
+4. **Renderer setup:** fresh acceptance homes have no locale preference. Set the
+   renderer locale to English before the password form is exercised. After real
+   login, allow the short asynchronous daemon `starting` transition to settle
+   before asserting the configured `autoStart=false` state is `stopped`.
+5. **Validation:** require the real password form, native IPC, target Stop,
+   paused restart, mixed-author explicit Resume, v3 lifecycle receipts, sealed
+   ledger records and `host_exit_observed`. Run with zero automatic retries and
+   zero skips. Keep the test-owned host fixture scope separate from authenticated
+   Provider/account acceptance.
+6. **Cleanup:** close the packaged Main and host daemon even when evidence
+   collection rejects; verify all three gate booleans are false, the owned API/
+   Web listeners are stopped, and no task-owned packaged process remains.
+
 Production Web startup uses `pnpm --filter @multica/web build`, then
 `pnpm --filter @multica/web exec next start --port <allocated-port>`. The build
 receives `NEXT_PUBLIC_API_URL` / `NEXT_PUBLIC_WS_URL`, and `REMOTE_API_URL` points
