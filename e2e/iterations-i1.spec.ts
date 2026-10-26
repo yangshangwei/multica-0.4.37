@@ -4,7 +4,6 @@ import { p1Session, p1Failure, p1Capture, p1NoOverflow } from "./fixtures/projec
 import { iterationClosureFlow, iterationDateRange, iterationOptOut } from "./fixtures/iterations-i1";
 
 test("I1 Web manual planning, atomic carryover and immutable history", async ({ page }, info) => {
-  test.skip(process.env.MULTICA_RUN_I1_E2E !== "1", "Requires isolated I1 test API fixture");
   test.setTimeout(180_000);
   const { api, workspace } = await p1Session(page);
   try {
@@ -31,7 +30,6 @@ test("I1 Web manual planning, atomic carryover and immutable history", async ({ 
 });
 
 test("I1 Web starts the chosen next period atomically and disables the complete workspace", async ({ page }, info) => {
-  test.skip(process.env.MULTICA_RUN_I1_E2E !== "1", "Requires isolated I1 test API fixture");
   test.setTimeout(180_000);
   const { api, workspace } = await p1Session(page);
   try {
@@ -47,7 +45,6 @@ test("I1 Web starts the chosen next period atomically and disables the complete 
 
 // Choice/error/statistics matrices live in the core and views suites; this proves their browser wiring.
 test("I1 Web retries detail reads, creates work in the searched iteration and opens chart data by keyboard", async ({ page }, info) => {
-  test.skip(process.env.MULTICA_RUN_I1_E2E !== "1", "Requires isolated I1 test API fixture");
   const { api, workspace } = await p1Session(page);
   const base = `/api/workspaces/${workspace.id}`;
   try {
