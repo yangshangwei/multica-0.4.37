@@ -187,6 +187,9 @@ test("capability market isolates workspace resources, preferences and transient 
     await expect(dialog).toHaveCount(0);
     await page.getByRole("button", { name: new RegExp(`${first.name}$`) }).click();
     await page.getByRole("menuitem", { name: new RegExp(`${second.name}$`) }).click();
+    // Wait for the switch to land, as above: until then the sidebar's Skills
+    // link still points at the first workspace.
+    await expect(page).toHaveURL(`/${second.slug}/issues`);
     await page.getByRole("link", { name: "Skills", exact: true }).click();
     await expect(page.getByText(secondName, { exact: true })).toBeVisible();
     await expect(page.getByText(firstName, { exact: true })).toHaveCount(0);
