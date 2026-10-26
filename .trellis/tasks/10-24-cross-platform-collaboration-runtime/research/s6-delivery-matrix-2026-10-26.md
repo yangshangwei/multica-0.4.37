@@ -26,6 +26,6 @@
 
 ## 尚未闭合的阻塞
 
-本轮 macOS packaged full-control 运行在真实 `.app` 启动和隔离配置阶段之后，于 `seedHostRuntime` 的 issue 创建阶段收到 503；同一独立数据库中伴随 host daemon claim 500/注册时序竞态。API/Web 临时服务和数据库已停止/清理，原始日志保留。该失败没有证明 packaged Main 控制流程失败，也不能替代成功的完整控制证据；下一次应先修复/隔离 host fixture 的注册与 claim 时序，再重跑相同 `.app` 和临时 home。
+本轮 macOS packaged full-control 运行在真实 `.app` 启动和隔离配置阶段之后，于 `seedHostRuntime` 的 issue 创建阶段收到 503。独立数据库的协作创建 gate 未在夹具启动前显式打开，另一轮还观察到 host daemon claim 500/注册时序竞态；这是验收环境准备/夹具门禁问题，不能归因于 packaged Main。API/Web 临时服务和数据库已停止/清理，原始日志保留。该失败没有证明 packaged Main 控制流程失败，也不能替代成功的完整控制证据；下一次应显式打开 `collaboration_execution_gate` 的创建开关，并修复/隔离 host fixture 的注册与 claim 时序，再重跑相同 `.app` 和临时 home。
 
 Windows 原生 runner、其他安装格式、真实 Provider 账号的完整断网/重启闭环，以及发布授权仍未完成。生产准入和发布开关保持关闭。

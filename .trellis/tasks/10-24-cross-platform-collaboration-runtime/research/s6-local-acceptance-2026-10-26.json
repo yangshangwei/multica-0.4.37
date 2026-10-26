@@ -43,9 +43,10 @@
   },
   "macos_full_control_attempt": {
     "result": "blocked_before_control_flow",
-    "failure": "POST /api/collaboration/issues returned 503 during seedHostRuntime; associated host fixture claim/register timing produced a 500 in the same run",
+    "failure": "POST /api/collaboration/issues returned 503 during seedHostRuntime; the isolated database did not explicitly open collaboration_execution_gate creation before the fixture run, and another attempt also showed host claim/register timing 500",
     "independent_database": true,
     "services_cleaned": true,
+    "gate_setup_gap": "fixture must explicitly set collaboration_execution_gate.enabled=true and creation_enabled=true before issue creation",
     "production_admission_opened": false,
     "release_published": false
   },
