@@ -225,7 +225,7 @@ export async function seedCollaborationPreparationRecords() {
       (issue_id,run_id,fence,launch_nonce,deployment_id,installation_id,identity_kind,public_key,token_hash,runtime_identity,token_ciphertext)
       VALUES ($1,$2,1,$3,$4,$5,'managed',$6,$7,$8::jsonb,$9)`,
       [issue.id, prepared.runId, prepared.launchNonce, environment.deploymentId, prepared.installationId,
-        randomBytes(32), "e".repeat(64), JSON.stringify(identity), randomBytes(48)]);
+        randomBytes(32), randomBytes(32).toString("hex"), JSON.stringify(identity), randomBytes(48)]);
     await db.query("INSERT INTO collaboration_attempt (run_id,attempt_seq,attempt_nonce,claim_generation,containment) VALUES ($1,1,$2,1,'linux_pid_namespace_v1')", [prepared.runId, attemptNonce]);
     await db.query("INSERT INTO collaboration_run_event (issue_id,run_id,producer_event_id,seq,kind,payload) VALUES ($1,$2,'resource-snapshot',1,'resource_snapshot',$3::jsonb)",
       [issue.id, prepared.runId, JSON.stringify({ provider: "fixture-provider", model: "fixture-model", account_source: "runtime_configuration" })]);
