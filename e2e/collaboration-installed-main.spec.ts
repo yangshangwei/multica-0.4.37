@@ -147,7 +147,8 @@ test("installed Linux full Main and production Web hand off the same issue, pres
   const webURL = String(testInfo.project.use.baseURL);
   const fixture = await seedCollaborationControlJourney();
   const root = `/api/collaboration/issues/${fixture.issueId}`;
-  const readWeb = () => fixture.creator.requestJSON<CollaborationIssue>(root);
+  // Read with the production Web client's v6 execution view so comparisons with its own reads use the same contract.
+  const readWeb = () => fixture.creator.requestJSON<CollaborationIssue>(`${root}?execution_view_version=6`);
   const actor = new TestApiClient();
   const username = `s6installed${randomUUID().replaceAll("-", "").slice(0, 12)}`;
   const password = `Installed-${randomUUID()}!`;
@@ -179,7 +180,7 @@ test("installed Linux full Main and production Web hand off the same issue, pres
     nativeExecutionScope: "Full packaged production Main/preload/renderer and bundled CLI version bootstrap; remote permit is a public protocol simulation with no executable, outcome or proof" };
   let started = false;
   try {
-    const boot = await native.command<InstalledMainMetadata>("init", { apiUrl: dockerTaskURL(fixture.apiUrl), appUrl: dockerTaskURL(webURL) }, 180_000);
+    const boot = await native.command<InstalledMainMetadata>("init", { apiUrl: dockerTaskURL(fixture.apiUrl), appUrl: dockerTaskURL(webURL), executionViewVersion: 6 }, 180_000);
     started = true;
     evidence.boot = boot;
     expect(boot.main.packaged).toBe(true);
