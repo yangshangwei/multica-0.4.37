@@ -54,6 +54,10 @@ type CollaborationRunClaimRequest struct {
 	PreparationVersion int    `json:"preparation_version,omitempty"`
 	BundleDigest       string `json:"bundle_digest,omitempty"`
 	CapabilityDigest   string `json:"capability_digest,omitempty"`
+	// MemoryVersion declares shared-context support for this claim only. It is
+	// not a registered runtime capability and never enters a capability digest,
+	// so upgrading a daemon cannot advance a configuration epoch or revoke consent.
+	MemoryVersion int `json:"memory_version,omitempty"`
 }
 
 // TerminationToken belongs only to the supervisor and its private ledger.

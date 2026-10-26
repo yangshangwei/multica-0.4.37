@@ -15,6 +15,7 @@ const listCollaborationActivityEvents = `-- name: ListCollaborationActivityEvent
 SELECT id, issue_id, event_seq, actor_user_id, kind, payload, created_at
 FROM collaboration_event
 WHERE issue_id = $1::uuid
+  AND kind <> 'memory_changed'
   AND ($2::bigint IS NULL OR event_seq < $2::bigint)
 ORDER BY event_seq DESC
 LIMIT $3::int
@@ -38,6 +39,7 @@ type ListCollaborationActivityEventsRow struct {
 
 // Reads run inside the same repeatable-read snapshot as object authorization.
 // The service projects allowed fields; stored JSON is never an HTTP DTO.
+// Shared-context writes are audited by their version history, not activity.
 func (q *Queries) ListCollaborationActivityEvents(ctx context.Context, arg ListCollaborationActivityEventsParams) ([]ListCollaborationActivityEventsRow, error) {
 	rows, err := q.db.Query(ctx, listCollaborationActivityEvents, arg.IssueID, arg.BeforeSeq, arg.RowLimit)
 	if err != nil {

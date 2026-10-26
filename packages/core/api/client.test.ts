@@ -2868,3 +2868,40 @@ describe("agent category response compatibility", () => {
     }
   });
 });
+
+describe("ApiClient shared-context compatibility", () => {
+  const issueId = "00000000-0000-4000-8000-000000000002";
+  const requestId = "00000000-0000-4000-8000-000000000003";
+  const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), {
+    status, headers: { "Content-Type": "application/json" },
+  });
+  const empty = { issue_id: issueId, version: "0", content: "", bytes: 0, max_bytes: 131072,
+    author: null, created_at: null, restored_from_version: null, can_edit: true, can_purge: true };
+
+  it("returns null for a well-formed response belonging to another issue", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(json({ ...empty, issue_id: "00000000-0000-4000-8000-000000000004" })));
+    await expect(new ApiClient("https://api.example.test").getCollaborationMemory(issueId)).resolves.toBeNull();
+  });
+
+  it("rejects overflow cursors locally and accepts a sealed stale-write receipt", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(json({ request_id: requestId, action: "memory_update", status: 409,
+      code: "stale_memory_version", protocol_version: 1, issue_id: issueId, version: null, current_version: "2", max_bytes: 131072 }, 409));
+    vi.stubGlobal("fetch", fetchMock);
+    const client = new ApiClient("https://api.example.test");
+    await expect(client.getCollaborationMemoryVersions(issueId, { cursor: "9223372036854775808" })).rejects.toThrow(TypeError);
+    await expect(client.updateCollaborationMemory(issueId, requestId, { expected_version: "1", content: "stale" })).resolves.toMatchObject({ code: "stale_memory_version", status: 409 });
+    expect(fetchMock).toHaveBeenCalledOnce();
+  });
+
+  it("keeps an HTTP/receipt mismatch unconfirmed instead of retiring the write", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(json({ request_id: requestId, action: "memory_update", status: 409,
+      code: "stale_memory_version", protocol_version: 1, issue_id: issueId, version: null, current_version: "2", max_bytes: 131072 })));
+    await expect(new ApiClient("https://api.example.test").updateCollaborationMemory(issueId, requestId, { expected_version: "1", content: "draft" })).resolves.toBeNull();
+  });
+
+  it("drops malformed version pages instead of returning partial history", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(json({ issue_id: issueId, current_version: "1", max_bytes: 131072, can_purge: true,
+      items: [{ version: "1", bytes: 1, author: null, created_at: "2026-10-26T00:00:00Z", restored_from_version: null, purged: true, purged_at: null, purged_by: null, purged_by_admin: false }], next_cursor: null })));
+    await expect(new ApiClient("https://api.example.test").getCollaborationMemoryVersions(issueId)).resolves.toBeNull();
+  });
+});

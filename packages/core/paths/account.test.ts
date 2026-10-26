@@ -55,6 +55,23 @@ describe("account destinations", () => {
     expect(() => accountPath({ issueId, runId, anchor: "description" })).toThrow();
   });
 
+  it("round-trips exact shared-context versions and keeps their scroll state under the issue", () => {
+    const root = accountPath({ view: "participating", issueId, anchor: "memory" });
+    expect(parseAccountPath(root)).toEqual({ view: "participating", issueId, commentId: null, anchor: "memory" });
+    const version = "9007199254740993";
+    const path = accountPath({ issueId, memoryVersion: version });
+    expect(path).toBe(`/account?view=current&issue=${issueId}#memory-v${version}`);
+    expect(parseAccountPath(path)?.memoryVersion).toBe(version);
+    expect(accountRouteKey(path)).toBe(accountPath({ issueId }));
+    for (const suffix of ["0", "01", "-1", "1e3", "9223372036854775808", "1%2Fother"]) {
+      expect(parseAccountPath(`/account?issue=${issueId}#memory-v${suffix}`)).toBeNull();
+    }
+    expect(parseAccountPath("/account#memory")).toBeNull();
+    expect(() => accountPath({ issueId, runId, memoryVersion: "1" })).toThrow();
+    expect(() => accountPath({ issueId, commentId, anchor: "memory" })).toThrow();
+    expect(() => accountPath({ administration: true, issueId, memoryVersion: "1" })).toThrow();
+  });
+
   it("retains the limited administration destination as its own account-tab view", () => {
     const destination = { administration: true as const, issueId };
     const path = `/account?view=current&administration=collaboration&issue=${issueId}`;

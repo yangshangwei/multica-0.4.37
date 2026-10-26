@@ -143,7 +143,7 @@ conflicting identity refuses before ordinary profile or credential lookup.
 `MULTICA_COLLABORATION_RUNNER_CONFIG` configures the host daemon and is not a
 provider identity.
 
-Use only these existing commands for the bound issue UUID:
+Use only these commands for the bound issue UUID:
 
 ```text
 multica issue get <issue-uuid> --output json|table
@@ -151,18 +151,38 @@ multica issue comment list <issue-uuid> --output json|table
 multica issue comment add <issue-uuid> --content <text> --request-id <uuid>
 multica issue comment add <issue-uuid> --content-stdin --request-id <uuid>
 multica squad activity <issue-uuid> action|no_action|failed --request-id <uuid>
+multica collaboration memory show <issue-uuid> --output table|json
+multica collaboration memory update <issue-uuid> --base-version <n> --request-id <uuid> --content-stdin|--content-file <file>
 ```
 
 Comment add permits `--parent <comment-uuid>`; activity permits `--reason`.
-The two writers require `--request-id` in this run context. Keep a distinct UUID
-for each intended comment/activity, and repeat the exact UUID and payload after
-an uncertain response. Do not create a replacement key. This contract does not
-add idempotency to ordinary task commands. Authorization rejection means stop;
-do not sign in as the runtime owner or switch credentials.
+The three writers require `--request-id` in this run context. Keep a distinct UUID
+for each intended comment/activity/memory write, and repeat the exact UUID and
+payload after an uncertain response. Do not create a replacement key. This
+contract does not add idempotency to ordinary task commands. Authorization
+rejection means stop; do not sign in as the runtime owner or switch credentials.
 
 Reads return authorized run context and the newest 200 comments. Other commands,
-comment filters, attachments/content-file and profile/server/workspace overrides
-are unsupported here. M08 delegation uses a comment mentioning a frozen roster
+comment filters, attachments, comment content-file and profile/server/workspace
+overrides are unsupported here.
+
+Shared context ("collaboration memory") is one versioned document per issue: the
+current state that every collaborating agent and human maintains, separate from
+comments. Host runs claim with shared-context support; after the launch permit
+the daemon reads the run's base version and puts it in the prompt's `memory`
+field (`{version, content}`, version 0 is empty). The text never enters the brief
+file or the local ledger, and a failed read leaves the provider unlaunched. A
+fresh-session retry receives the same base. Runs claimed without support (legacy
+namespace runs, older daemons) get no `memory` field and `memory_unsupported`.
+`memory show` returns the latest version. `memory update` replaces the whole
+document: rewrite it to the current state instead of appending a log, with
+`--base-version` set to the version you merged from. A newer write refuses with
+`stale_memory_version`; show, merge and update from that version. The server
+redacts secrets before its byte limit (`max_bytes`, deployment-configured, default
+128 KiB) and idempotency check, so never write credentials. Runtime-local file
+links are refused; reference paths in inline code. `--content-file` must stay
+inside the working directory. Writes use the comment gate, so a stopped run or
+closed issue refuses them. M08 delegation uses a comment mentioning a frozen roster
 member, then the leader ends its turn. Member replies/completion coalesce a new
 leader continuation; an eligible human M11 input joins that continuation without
 rewriting a running prompt.

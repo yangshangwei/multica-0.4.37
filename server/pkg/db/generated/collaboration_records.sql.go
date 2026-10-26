@@ -37,7 +37,7 @@ func (q *Queries) CreateCollaborationResultNotification(ctx context.Context, arg
 }
 
 const getCollaborationRecordedRun = `-- name: GetCollaborationRecordedRun :one
-SELECT r.id, r.task_id, r.grant_id, r.grant_epoch, r.resource_epoch, r.execution_workspace_id, r.runtime_id, r.installation_id, r.binding_id, r.binding_epoch, r.fence, r.claim_generation, r.launch_nonce, r.progress_state, r.business_outcome, r.forced_disposition, r.disposition_reason, r.proof_state, r.authorized_attempt_seq, r.sealed_attempt_seq, r.recording_incomplete, r.created_at, r.started_at, r.settled_at, r.session_id, r.command_id, r.target_id, r.group_id, r.parent_run_id, r.step_key, r.step_kind, r.agent_id, r.target_epoch, r.config_version, r.channel_id, r.batch_id, r.deployment_id, r.resource_owner_user_id, r.containment, r.prompt_snapshot, r.leader_turn, r.preparation_snapshot FROM collaboration_run r
+SELECT r.id, r.task_id, r.grant_id, r.grant_epoch, r.resource_epoch, r.execution_workspace_id, r.runtime_id, r.installation_id, r.binding_id, r.binding_epoch, r.fence, r.claim_generation, r.launch_nonce, r.progress_state, r.business_outcome, r.forced_disposition, r.disposition_reason, r.proof_state, r.authorized_attempt_seq, r.sealed_attempt_seq, r.recording_incomplete, r.created_at, r.started_at, r.settled_at, r.session_id, r.command_id, r.target_id, r.group_id, r.parent_run_id, r.step_key, r.step_kind, r.agent_id, r.target_epoch, r.config_version, r.channel_id, r.batch_id, r.deployment_id, r.resource_owner_user_id, r.containment, r.prompt_snapshot, r.leader_turn, r.preparation_snapshot, r.memory_mode, r.memory_base_version FROM collaboration_run r
 JOIN collaboration_session s ON s.id=r.session_id
 WHERE s.issue_id=$1::uuid AND r.id=$2::uuid
 `
@@ -95,6 +95,8 @@ func (q *Queries) GetCollaborationRecordedRun(ctx context.Context, arg GetCollab
 		&i.PromptSnapshot,
 		&i.LeaderTurn,
 		&i.PreparationSnapshot,
+		&i.MemoryMode,
+		&i.MemoryBaseVersion,
 	)
 	return i, err
 }

@@ -4,7 +4,7 @@ import type { StorageAdapter } from "../types/storage";
 import type { AdminControlInput } from "./operation-queries";
 import { adminVersionSchema } from "./control-schema";
 import { adminAlertChangeSchema } from "./alert-schema";
-import { AdminCollaborationChangeSchema } from "./collaboration-schema";
+import { AdminCollaborationChangeSchema, AdminCollaborationMemoryPurgeSchema } from "./collaboration-schema";
 
 const storagePrefix = "multica_admin_control_draft:";
 let storage: StorageAdapter = defaultStorage;
@@ -86,9 +86,54 @@ export function removeAdminControlDraft(scope: AdminControlDraftScope, id: strin
   storage.removeItem(storedKey);
   if (storage.getItem(storedKey) !== null) throw new AdminControlDraftError();
 }
+// Shared-context purges keep their own namespace so a pending purge never
+// blocks or is mistaken for the issue's lifecycle request.
+const memoryStoragePrefix = `${storagePrefix}memory:`;
+const memoryInputSchema = z.strictObject({ ...base, action: z.literal("collaboration_memory"), creatorUserId: z.uuid(), body: AdminCollaborationMemoryPurgeSchema });
+const memoryDraftSchema = z.object({ scope: scopeSchema, input: memoryInputSchema, createdAt: z.number().int().positive() });
+export type AdminCollaborationMemoryInput = z.output<typeof memoryInputSchema>;
+export type AdminCollaborationMemoryDraft = z.output<typeof memoryDraftSchema>;
+function memoryPrefix(scope: AdminControlDraftScope, id: string): string {
+  return `${memoryStoragePrefix}${encodeURIComponent(JSON.stringify([scope.server, scope.userId, scope.organizationId, id]))}:`;
+}
+export function readAdminCollaborationMemoryDraft(scope: AdminControlDraftScope, id: string): AdminCollaborationMemoryDraft | null {
+  try {
+    if (!storage.keys) throw new AdminControlDraftError();
+    const drafts: AdminCollaborationMemoryDraft[] = [];
+    for (const key of storage.keys().filter(key => key.startsWith(memoryPrefix(scope, id)))) {
+      const raw = storage.getItem(key);
+      if (raw === null) continue;
+      const draft = memoryDraftSchema.parse(JSON.parse(raw));
+      if (`${memoryPrefix(draft.scope, draft.input.id)}${draft.input.key}` !== key) throw new AdminControlDraftError();
+      drafts.push(draft);
+    }
+    return drafts.sort((a, b) => a.createdAt - b.createdAt || a.input.key.localeCompare(b.input.key))[0] ?? null;
+  } catch { throw new AdminControlDraftError(); }
+}
+export function saveAdminCollaborationMemoryDraft(scope: AdminControlDraftScope, input: AdminCollaborationMemoryInput): void {
+  try {
+    const normalized = memoryInputSchema.parse(input);
+    const existing = readAdminCollaborationMemoryDraft(scope, input.id);
+    if (existing) {
+      if (existing.input.key !== normalized.key || JSON.stringify(existing.input) !== JSON.stringify(normalized)) throw new AdminControlDraftError();
+      return;
+    }
+    const key = `${memoryPrefix(scope, normalized.id)}${normalized.key}`;
+    const encoded = JSON.stringify(memoryDraftSchema.parse({ scope, input: normalized, createdAt: Date.now() }));
+    storage.setItem(key, encoded);
+    if (storage.getItem(key) !== encoded) throw new AdminControlDraftError();
+  } catch { throw new AdminControlDraftError(); }
+}
+export function removeAdminCollaborationMemoryDraft(scope: AdminControlDraftScope, id: string, key: string): void {
+  const storedKey = `${memoryPrefix(scope, id)}${key}`;
+  storage.removeItem(storedKey);
+  if (storage.getItem(storedKey) !== null) throw new AdminControlDraftError();
+}
+
 /** Only session termination clears all command intents; workspace cleanup must not. */
 export function clearAdminControlDrafts(adapter: StorageAdapter = storage): void {
   try {
+    // The prefix also covers the shared-context purge namespace.
     for (const key of adapter.keys?.() ?? []) {
       if (key.startsWith(storagePrefix)) adapter.removeItem(key);
     }

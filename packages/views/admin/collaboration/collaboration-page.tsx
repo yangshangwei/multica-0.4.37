@@ -8,6 +8,7 @@ import { useT } from "../../i18n";
 import { AppLink } from "../../navigation";
 import { adminTouchLinkClass } from "../executions/list-controls";
 import { AdminCollaborationControls } from "./collaboration-controls";
+import { AdminCollaborationMemoryControls } from "./collaboration-memory-controls";
 
 const buttonClass = "h-auto min-h-11 whitespace-normal text-left";
 
@@ -105,5 +106,6 @@ function AdminCollaborationDetail({ scope, issueId, hrefForIssue }: { scope: Adm
       : query.isError ? <p role="alert" className="max-w-prose text-body text-muted-foreground">{restored ? t($ => $.collaboration.creatorRestored) : t($ => $.collaboration.metadataUnavailable)}</p>
       : <p role="status" className="text-body text-muted-foreground">{t($ => $.collaboration.loading)}</p>}
     <AdminCollaborationControls scope={scope} issueId={issueId} detail={detail} refreshing={query.isFetching} />
+    <AdminCollaborationMemoryControls scope={scope} issueId={issueId} detail={detail} refreshing={query.isFetching} />
   </>;
 }

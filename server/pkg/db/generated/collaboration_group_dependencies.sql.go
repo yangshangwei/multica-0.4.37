@@ -41,7 +41,7 @@ func (q *Queries) CreateCollaborationGroupDependency(ctx context.Context, arg Cr
 
 const freezeCollaborationRunPrompt = `-- name: FreezeCollaborationRunPrompt :one
 UPDATE collaboration_run SET prompt_snapshot=$1::jsonb
-WHERE id=$2::uuid AND prompt_snapshot IS NULL AND settled_at IS NULL RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot
+WHERE id=$2::uuid AND prompt_snapshot IS NULL AND settled_at IS NULL RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot, memory_mode, memory_base_version
 `
 
 type FreezeCollaborationRunPromptParams struct {
@@ -95,6 +95,8 @@ func (q *Queries) FreezeCollaborationRunPrompt(ctx context.Context, arg FreezeCo
 		&i.PromptSnapshot,
 		&i.LeaderTurn,
 		&i.PreparationSnapshot,
+		&i.MemoryMode,
+		&i.MemoryBaseVersion,
 	)
 	return i, err
 }

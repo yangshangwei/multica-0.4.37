@@ -58,11 +58,14 @@ const healthSchema = z.object({ ...observationEnvelope, detector_state: healthSt
   .transform(value => ({ scope: value.scope, asOf: value.as_of, dataQuality: value.data_quality, detectorState: value.detector_state, sources: value.sources }));
 const optionalBoolean = z.boolean().nullable();
 const settingsSchema = z.object({ ...observationEnvelope,
-  configuration: z.object({ auth_mode: z.string().nullable(), registration_enabled: optionalBoolean, registration_policy: z.string().nullable(), managed_installations_enabled: optionalBoolean, workspace_creation_enabled: optionalBoolean, read_only: z.literal(true), source: z.enum(["deployment", "unknown"]).catch("unknown") }),
+  configuration: z.object({ auth_mode: z.string().nullable(), registration_enabled: optionalBoolean, registration_policy: z.string().nullable(), managed_installations_enabled: optionalBoolean, workspace_creation_enabled: optionalBoolean,
+    // Additive: older servers omit it, and an unusable value displays as unknown.
+    collaboration_memory_max_bytes: z.number().int().positive().safe().nullish().catch(null).transform(value => value ?? null),
+    read_only: z.literal(true), source: z.enum(["deployment", "unknown"]).catch("unknown") }),
   retention: z.object({ confirmed_operations_days: optionalCount, alerts_days: optionalCount, audit_days: optionalCount, automatic_deletion_enabled: z.literal(false), policy_source: z.enum(["configured", "unknown"]).catch("unknown") }),
   refresh_intervals_seconds: z.object({ list: observationCount, detail: observationCount }),
 }).transform(value => ({ scope: value.scope, asOf: value.as_of, dataQuality: value.data_quality,
-  configuration: { authMode: value.configuration.auth_mode, registrationEnabled: value.configuration.registration_enabled, registrationPolicy: value.configuration.registration_policy, managedInstallationsEnabled: value.configuration.managed_installations_enabled, workspaceCreationEnabled: value.configuration.workspace_creation_enabled, readOnly: value.configuration.read_only, source: value.configuration.source },
+  configuration: { authMode: value.configuration.auth_mode, registrationEnabled: value.configuration.registration_enabled, registrationPolicy: value.configuration.registration_policy, managedInstallationsEnabled: value.configuration.managed_installations_enabled, workspaceCreationEnabled: value.configuration.workspace_creation_enabled, collaborationMemoryMaxBytes: value.configuration.collaboration_memory_max_bytes, readOnly: value.configuration.read_only, source: value.configuration.source },
   retention: { confirmedOperationsDays: value.retention.confirmed_operations_days, alertsDays: value.retention.alerts_days, auditDays: value.retention.audit_days, automaticDeletionEnabled: value.retention.automatic_deletion_enabled, policySource: value.retention.policy_source },
   refreshIntervalsSeconds: value.refresh_intervals_seconds,
 }));

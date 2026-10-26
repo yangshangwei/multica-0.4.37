@@ -140,6 +140,10 @@ func (s *CollaborationService) ClaimRuntimeRun(ctx context.Context, runID pgtype
 			return protocol.CollaborationRunClaimResponse{}, collaborationError(http.StatusBadRequest, "unsupported_runtime_preparation")
 		}
 	}
+	memoryMode, err := collaborationClaimMemoryMode(p)
+	if err != nil {
+		return protocol.CollaborationRunClaimResponse{}, err
+	}
 	var refusal error
 	claimed, err := collaborationRuntimeMutation(ctx, s, func(tx pgx.Tx) (protocol.CollaborationRunClaimResponse, error) {
 		refusal = nil
@@ -245,9 +249,15 @@ func (s *CollaborationService) ClaimRuntimeRun(ctx context.Context, runID pgtype
 		if _, err = r.q.ClaimCollaborationRuntimeRun(ctx, db.ClaimCollaborationRuntimeRunParams{RunID: runID, Containment: p.Containment}); err != nil {
 			return out, err
 		}
+		freezing := r.run.PromptSnapshot == nil
 		inputs, err := s.claimPromptSnapshot(ctx, r, preparation)
 		if err != nil {
 			return out, err
+		}
+		if freezing {
+			if err = recordClaimMemoryMode(ctx, r, memoryMode); err != nil {
+				return out, err
+			}
 		}
 		if newClaim {
 			if err = recordCollaborationExecutionChange(ctx, r.q, r.access.Issue.ID, r.group.ID, runID, "runtime_claimed"); err != nil {

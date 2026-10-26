@@ -583,7 +583,8 @@
     "deletionDisabled": "Automatic deletion is not enabled.",
     "refresh": "Refresh intervals",
     "listSeconds": "Lists (seconds)",
-    "detailSeconds": "Details (seconds)"
+    "detailSeconds": "Details (seconds)",
+    "collaborationMemory": "Shared context limit (bytes)"
   },
   "workspaces": {
     "title": "Workspaces",
@@ -842,6 +843,37 @@
     "rejected": "This change was refused. Refresh task details and start a new confirmation.",
     "invalid": "Choose an available status and, when required, an eligible participant.",
     "failed": "The result could not be confirmed. Check the original request.",
-    "reasonInvalid": "The reason is too long or contains unsupported characters. Edit it and try again."
+    "reasonInvalid": "The reason is too long or contains unsupported characters. Edit it and try again.",
+    "memory": {
+      "title": "Shared context versions",
+      "description": "Purge the text of a reported historical version. Text is never shown here; confirm the version number with the reporter.",
+      "loading": "Loading shared context versions...",
+      "empty": "This collaboration has no saved shared context versions.",
+      "unavailable": "Shared context versions are unavailable.",
+      "more": "Load more versions",
+      "version": "v{{version}}",
+      "current": "Current version",
+      "purged": "Purged",
+      "bytes": "{{bytes}} bytes",
+      "agent": "{{name}} (agent)",
+      "unknownWriter": "Unknown writer",
+      "purge": "Purge v{{version}}",
+      "confirmTitle": "Purge the text of v{{version}}",
+      "confirmNotice": "The text is removed permanently. The version number, size and writer remain. This action is recorded with your account and reason.",
+      "reason": "Purge reason",
+      "reasonRequired": "Enter a reason for this purge.",
+      "reasonInvalid": "The reason is too long or contains unsupported characters. Edit it and try again.",
+      "confirm": "Purge text",
+      "cancel": "Cancel",
+      "pendingTitle": "Original purge request",
+      "receiptTitle": "Recorded shared context purge",
+      "outcome": "The text of v{{version}} was purged.",
+      "rejected": "This purge was refused. Refresh the versions and start again.",
+      "check": "Check original result",
+      "retryOriginal": "Retry original request",
+      "notRecorded": "No result is recorded yet. The original request is preserved.",
+      "failed": "The result could not be confirmed. Check the original request.",
+      "dismiss": "Close receipt"
+    }
   }
 }

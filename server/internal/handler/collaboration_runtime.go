@@ -45,14 +45,20 @@ func requireCollaborationManagedSource(w http.ResponseWriter, r *http.Request) b
 // Runtime JSON has a bounded outcome body plus fixed identity fields. It uses
 // the same duplicate/unknown-field policy as the human collaboration API.
 func decodeCollaborationRuntimeBody(w http.ResponseWriter, r *http.Request, target any) bool {
+	limit := int64(96 << 10)
+	if _, outcome := target.(*protocol.CollaborationRunOutcome); outcome {
+		limit = protocol.CollaborationOutcomeJSONLimit
+	}
+	return decodeCollaborationRuntimeBodyLimit(w, r, target, limit)
+}
+
+// decodeCollaborationRuntimeBodyLimit is the same strict decoder with a
+// caller-chosen read bound, for bodies sized by deployment configuration.
+func decodeCollaborationRuntimeBodyLimit(w http.ResponseWriter, r *http.Request, target any, limit int64) bool {
 	mediaType, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil || mediaType != "application/json" {
 		writeJSON(w, http.StatusUnsupportedMediaType, map[string]string{"code": "json_required", "error": "JSON request required"})
 		return false
-	}
-	limit := int64(96 << 10)
-	if _, outcome := target.(*protocol.CollaborationRunOutcome); outcome {
-		limit = protocol.CollaborationOutcomeJSONLimit
 	}
 	raw, err := io.ReadAll(http.MaxBytesReader(w, r.Body, limit))
 	if err != nil {
@@ -82,7 +88,8 @@ func collaborationRuntimeBodyShape(raw []byte, target any) bool {
 	switch value := target.(type) {
 	case *protocol.CollaborationRunClaimRequest:
 		if value.ProtocolVersion == protocol.CollaborationRuntimeProtocolVersion {
-			forbidden = []string{"capability_digest"}
+			// Shared context is host-only; a namespace claim never declares it.
+			forbidden = []string{"capability_digest", "memory_version"}
 		}
 		if value.ProtocolVersion == protocol.CollaborationHostRuntimeProtocolVersion {
 			forbidden = []string{"bundle_digest"}

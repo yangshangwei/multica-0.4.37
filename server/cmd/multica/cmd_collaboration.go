@@ -13,7 +13,8 @@ import (
 
 func collaborationCommandAllowed(operation string) bool {
 	switch operation {
-	case "issue get", "issue comment list", "issue comment add", "squad activity":
+	case "issue get", "issue comment list", "issue comment add", "squad activity",
+		"collaboration memory show", "collaboration memory update":
 		return true
 	default:
 		return false
@@ -43,6 +44,9 @@ func validateCollaborationCLI(run *cli.CollaborationContext, cmd *cobra.Command,
 	if operation == "squad activity" {
 		allowed["reason"], allowed["request-id"] = true, true
 	}
+	if operation == "collaboration memory update" {
+		allowed["base-version"], allowed["request-id"], allowed["content-stdin"], allowed["content-file"] = true, true, true, true
+	}
 	var unsupported string
 	cmd.Flags().Visit(func(flag *pflag.Flag) {
 		if !allowed[flag.Name] && unsupported == "" {
@@ -52,7 +56,7 @@ func validateCollaborationCLI(run *cli.CollaborationContext, cmd *cobra.Command,
 	if unsupported != "" {
 		return fmt.Errorf("--%s is unavailable inside a collaboration run", unsupported)
 	}
-	if operation == "issue comment add" || operation == "squad activity" {
+	if operation == "issue comment add" || operation == "squad activity" || operation == "collaboration memory update" {
 		request, _ := cmd.Flags().GetString("request-id")
 		id, err := uuid.Parse(request)
 		if err != nil || id == uuid.Nil || id.String() != request {

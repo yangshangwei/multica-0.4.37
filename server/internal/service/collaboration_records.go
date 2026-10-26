@@ -191,6 +191,9 @@ func (s *CollaborationService) RunRecords(ctx context.Context, issueID, runID pg
 				return err
 			}
 		}
+		if out.Run.Memory, err = collaborationRunMemoryMarker(ctx, q, run); err != nil {
+			return err
+		}
 		out.Resource = CollaborationRunResource{AgentID: util.UUIDToString(run.AgentID), RuntimeID: util.UUIDToString(run.RuntimeID), ResourceOwnerUserID: util.UUIDToString(run.ResourceOwnerUserID), ExecutionWorkspaceID: util.UUIDToString(run.ExecutionWorkspaceID), GrantID: util.UUIDToString(run.GrantID)}
 		out.Recording = CollaborationRunRecording{Status: "not_recorded", InputsRecorded: run.PromptSnapshot != nil}
 		if run.RecordingIncomplete {

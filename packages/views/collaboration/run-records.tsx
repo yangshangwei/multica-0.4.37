@@ -47,6 +47,7 @@ export function CollaborationRunDisclosure({ scope, issue, run, group, selectedR
       <span>{labels.execution(run.progress_state)}</span>
       <span>{labels.proof(run.proof_state, run.execution_mode, run.forced_disposition)}</span>
       {run.recording_incomplete === true && <span>{run.execution_mode === "host_process_supervision_v1" && run.proof_state === "host_exit_observed" ? t(($) => $.host.incomplete) : t(($) => $.execution.incomplete)}</span>}
+      <RunMemoryStatus run={run} issueId={issueId} />
       <Button variant="outline" size="sm" className="pointer-coarse:min-h-11" aria-expanded={open} aria-controls={`records-${run.id}`}
         aria-label={t(($) => open ? $.records.closeLabel : $.records.openLabel, { id: run.id })} onClick={toggle}>
         {open ? t(($) => $.records.close) : t(($) => $.records.open)}
@@ -95,6 +96,19 @@ function RunRecords({ scope, issueId, runId, group }: { scope: CollaborationScop
     </>}
     {query.hasNextPage && <Button variant="outline" className="pointer-coarse:min-h-11" disabled={query.isFetchingNextPage} onClick={() => void query.fetchNextPage()}>{t(($) => $.records.more)}</Button>}
   </section>;
+}
+
+function RunMemoryStatus({ run, issueId }: { run: CollaborationExecutionRun; issueId: string }) {
+  const { t } = useT("collaboration");
+  const memory = run.memory;
+  if (!memory) return null;
+  if (memory.support === "unsupported") return <span>{t(($) => $.records.memoryUnsupported)}</span>;
+  if (memory.support !== "supported") return null;
+  const base = memory.base_version === null ? t(($) => $.records.notRecorded)
+    : memory.base_version === "0" ? t(($) => $.records.memoryBaseEmpty)
+      : <AppLink className="underline underline-offset-4" href={accountPath({ view: "participating", issueId, memoryVersion: memory.base_version })}>{t(($) => $.records.memoryBase, { version: memory.base_version })}</AppLink>;
+  if (memory.written_version === null) return <span>{base} · {t(($) => $.records.memoryNotUpdated)}</span>;
+  return <span>{base} · <AppLink className="underline underline-offset-4" href={accountPath({ view: "participating", issueId, memoryVersion: memory.written_version })}>{t(($) => $.records.memoryWrote, { version: memory.written_version })}</AppLink></span>;
 }
 
 function RunCleanup({ run }: { run: CollaborationExecutionRun }) {

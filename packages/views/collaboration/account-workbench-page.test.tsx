@@ -92,6 +92,8 @@ it("keeps account administration on dedicated metadata reads and administration 
     role: "super_admin", supported: true, allowedActions: [] });
   vi.spyOn(api, "getAdminCollaborationIssues").mockResolvedValue({ scope: administrationIssue.scope, items: [administrationIssue], nextCursor: null });
   vi.spyOn(api, "getAdminCollaborationIssue").mockResolvedValue(administrationIssue);
+  vi.spyOn(api, "getAdminCollaborationMemoryVersions").mockResolvedValue({ scope: administrationIssue.scope, issueId: administrationIssue.issueId,
+    currentVersion: "0", items: [], nextCursor: null });
   const ordinaryFetch = vi.fn().mockRejectedValue(new Error("Ordinary reads must not mount during administration"));
   vi.stubGlobal("fetch", ordinaryFetch);
   const content = (path: string) => {

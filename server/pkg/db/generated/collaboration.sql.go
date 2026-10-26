@@ -680,7 +680,7 @@ func (q *Queries) GetCollaborationParticipant(ctx context.Context, arg GetCollab
 }
 
 const getCollaborationRun = `-- name: GetCollaborationRun :one
-SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot FROM collaboration_run
+SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot, memory_mode, memory_base_version FROM collaboration_run
 WHERE session_id = $1::uuid AND id = $2::uuid
 `
 
@@ -735,6 +735,8 @@ func (q *Queries) GetCollaborationRun(ctx context.Context, arg GetCollaborationR
 		&i.PromptSnapshot,
 		&i.LeaderTurn,
 		&i.PreparationSnapshot,
+		&i.MemoryMode,
+		&i.MemoryBaseVersion,
 	)
 	return i, err
 }
@@ -1159,7 +1161,7 @@ SET disposition_reason = CASE WHEN forced_disposition IS NULL THEN $1::text ELSE
     forced_disposition = COALESCE(forced_disposition, 'stopped'),
     claim_generation = claim_generation + CASE WHEN progress_state = 'ending' AND forced_disposition IS NOT NULL THEN 0 ELSE 1 END, progress_state = 'ending'
 WHERE id = $2::uuid AND settled_at IS NULL
-RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot
+RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot, memory_mode, memory_base_version
 `
 
 type RequestCollaborationRunStopParams struct {
@@ -1213,6 +1215,8 @@ func (q *Queries) RequestCollaborationRunStop(ctx context.Context, arg RequestCo
 		&i.PromptSnapshot,
 		&i.LeaderTurn,
 		&i.PreparationSnapshot,
+		&i.MemoryMode,
+		&i.MemoryBaseVersion,
 	)
 	return i, err
 }
@@ -1233,7 +1237,7 @@ SET sealed_attempt_seq = 0, proof_state = 'never_launched_proven', progress_stat
 WHERE id = $1::uuid AND authorized_attempt_seq = 0
   AND started_at IS NULL AND settled_at IS NULL AND proof_state = 'unknown'
   AND (business_outcome IS NULL OR business_outcome = 'failure')
-RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot
+RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot, memory_mode, memory_base_version
 `
 
 // A server-issued launch permit is the authority here. Absence of a PID,
@@ -1287,6 +1291,8 @@ func (q *Queries) SettleNeverLaunchedCollaborationRun(ctx context.Context, runID
 		&i.PromptSnapshot,
 		&i.LeaderTurn,
 		&i.PreparationSnapshot,
+		&i.MemoryMode,
+		&i.MemoryBaseVersion,
 	)
 	return i, err
 }

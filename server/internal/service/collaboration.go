@@ -36,6 +36,9 @@ type CollaborationService struct {
 	TxStarter TxStarter
 	Issues    *IssueService
 	Storage   storage.Storage
+	// MemoryMaxBytes is the deployment shared-context limit. Zero (tests and
+	// callers that never touch shared context) means the documented default.
+	MemoryMaxBytes int
 }
 
 func NewCollaborationService(q *db.Queries, tx TxStarter, issues *IssueService) *CollaborationService {

@@ -113,6 +113,9 @@ services:
       MULTICA_DATABASE_CONNECT_TIMEOUT: ${MULTICA_DATABASE_CONNECT_TIMEOUT:-5s}
       MULTICA_SHUTDOWN_HOLD_DURATION: ${MULTICA_SHUTDOWN_HOLD_DURATION:-}
       MULTICA_RUNTIME_RECONNECT_GRACE: ${MULTICA_RUNTIME_RECONNECT_GRACE:-}
+      # Shared context document limit in UTF-8 bytes. The server default is
+      # 131072 (128 KiB); valid overrides range from 32768 to 524288.
+      MULTICA_COLLABORATION_MEMORY_MAX_BYTES: ${MULTICA_COLLABORATION_MEMORY_MAX_BYTES:-}
       # Project rollout remains configurable; iterations use workspace settings.
       FF_PROJECTS_P1: ${FF_PROJECTS_P1:-true}
       MULTICA_AUTH_MODE: ${MULTICA_AUTH_MODE:-legacy}

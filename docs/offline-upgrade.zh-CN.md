@@ -16,6 +16,10 @@
 
 升级默认保留现有认证方式。需要在桌面端设备自动注册与用户名密码注册之间选择时，先阅读[第七节：认证方式配置与迁移](#authentication-mode)，再安排切换；仅安装新版桌面端不会改变服务端认证模式。
 
+本版本支持协作单的协作上下文（Shared context）。服务端通过 `MULTICA_COLLABORATION_MEMORY_MAX_BYTES` 控制文档的 UTF-8 字节上限，默认 `131072`（128 KiB），可调范围为 `32768`–`524288`（32–512 KiB）；越界值会使 API 拒绝启动。修改后必须重启或重建 backend。调低上限后，已有文档仍可读取和注入，下一次写入需要符合新上限。
+
+同时升级服务端和运行时守护进程时，**先升级服务端（包括数据库迁移和 Web），完成 `/healthz` 与登录验收，再升级 daemon**。旧 daemon 在新服务端上会继续执行但会标记为不支持协作上下文；反过来先升级 daemon，旧服务端可能拒绝其领取请求。升级 daemon 不会重新授权或改变现有目标挂起状态。
+
 ## V0.6.6 升级范围
 
 本次交付为 Linux x86-64（`linux/amd64`）服务端升级包和 Windows x64（64 位）桌面安装器，应用版本为 `0.6.6`。Linux 包不适用于 32 位 x86。以现有容器镜像、`/health` 的版本和数据库迁移记录确定升级起点；此前 v0.6.0 本地交付与 v0.6.1 正式交付不能混用。
@@ -44,6 +48,7 @@
 | `MULTICA_ADMIN_*_RETENTION_DAYS` | 空 | 三项已声明的管理保留期现在可传入；只展示策略，不启用自动清理 |
 | `MULTICA_CLI_INSTALL_COMMAND_WINDOWS` / `_MACOS` / `_LINUX` | 空 | 为各系统提供完整内网安装命令；有自定义来源时，未配置系统不会回退公网 |
 | `MULTICA_CLI_INSTALL_COMMAND` | 空 | 保留旧客户端命令；新版仅作为 macOS/Linux 的备用命令 |
+| `MULTICA_COLLABORATION_MEMORY_MAX_BYTES` | `131072`（128 KiB） | 协作上下文文档上限，按 UTF-8 字节计算；可调范围 `32768`–`524288`，越界时 API 启动失败 |
 
 `JWT_SECRET`、数据库账号密码、各集成加密密钥、公开 URL、端口及客户端身份文件均须保留。Web 和 Windows Desktop 应配套更新：新版 Desktop 的浏览器登录需要兼容 Web 返回一次性 `desktop_state`。先完成服务端/Web 升级与登录验收，再发布桌面更新。
 

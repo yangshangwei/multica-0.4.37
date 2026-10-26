@@ -57,10 +57,12 @@ type AdminCollaborationReceipt struct {
 }
 
 type AdminCollaborationResult struct {
-	Operation    db.AdminOperation          `json:"-"`
-	Result       AdminCollaborationReceipt  `json:"result"`
-	Replayed     bool                       `json:"-"`
-	ParentWakeup *CollaborationParentWakeup `json:"-"`
+	Operation db.AdminOperation         `json:"-"`
+	Result    AdminCollaborationReceipt `json:"result"`
+	// MemoryResult replaces Result for a shared-context purge operation.
+	MemoryResult *AdminCollaborationMemoryReceipt `json:"-"`
+	Replayed     bool                             `json:"-"`
+	ParentWakeup *CollaborationParentWakeup       `json:"-"`
 }
 
 func (s *AdminCollaborationService) authorize(ctx context.Context, q *db.Queries, organization pgtype.UUID) (PlatformAdminIdentity, error) {

@@ -181,6 +181,25 @@ func parseLLMMaxRetries(raw string) (*llm.RetryOverride, error) {
 	return override, nil
 }
 
+// parseCollaborationMemoryMaxBytes turns MULTICA_COLLABORATION_MEMORY_MAX_BYTES
+// into the shared-context byte limit. Like parseLLMMaxRetries it fails the boot
+// instead of falling back: a limit silently restored to the default would make
+// every agent and client report a ceiling the operator did not configure.
+func parseCollaborationMemoryMaxBytes(raw string) (int, error) {
+	raw = strings.TrimSpace(raw)
+	if raw == "" {
+		return service.CollaborationMemoryDefaultMaxBytes, nil
+	}
+	v, err := strconv.Atoi(raw)
+	if err != nil {
+		return 0, fmt.Errorf("must be an integer number of bytes, got %q", raw)
+	}
+	if v < service.CollaborationMemoryMinMaxBytes || v > service.CollaborationMemoryHardMaxBytes {
+		return 0, fmt.Errorf("must be between %d and %d bytes, got %d", service.CollaborationMemoryMinMaxBytes, service.CollaborationMemoryHardMaxBytes, v)
+	}
+	return v, nil
+}
+
 func envPositiveInt64(name string, def int64) int64 {
 	raw := os.Getenv(name)
 	if raw == "" {
@@ -632,20 +651,26 @@ func main() {
 		slog.Error("invalid MULTICA_LLM_MAX_RETRIES", "error", err)
 		os.Exit(1)
 	}
+	collaborationMemoryMaxBytes, err := parseCollaborationMemoryMaxBytes(os.Getenv("MULTICA_COLLABORATION_MEMORY_MAX_BYTES"))
+	if err != nil {
+		slog.Error("invalid MULTICA_COLLABORATION_MEMORY_MAX_BYTES", "error", err)
+		os.Exit(1)
+	}
 
 	r, h := NewRouterWithOptions(pool, hub, bus, analyticsClient, storeRedis, RouterOptions{
-		HTTPMetrics:         httpMetrics,
-		BusinessMetrics:     businessMetrics,
-		ChannelLeaseMetrics: channelLeaseMetrics,
-		ChannelLeaseRedis:   channelLeaseRedis,
-		WecomMetrics:        wecomMetrics,
-		DaemonHub:           daemonHub,
-		DaemonWakeup:        daemonWakeup,
-		WecomSenders:        wecomSenders,
-		WecomRelayOutbound:  wecomRelayOutbound,
-		FeatureFlags:        flags,
-		HeartbeatScheduler:  heartbeatScheduler,
-		LLMMaxRetries:       llmMaxRetries,
+		HTTPMetrics:                 httpMetrics,
+		BusinessMetrics:             businessMetrics,
+		ChannelLeaseMetrics:         channelLeaseMetrics,
+		ChannelLeaseRedis:           channelLeaseRedis,
+		WecomMetrics:                wecomMetrics,
+		DaemonHub:                   daemonHub,
+		DaemonWakeup:                daemonWakeup,
+		WecomSenders:                wecomSenders,
+		WecomRelayOutbound:          wecomRelayOutbound,
+		FeatureFlags:                flags,
+		HeartbeatScheduler:          heartbeatScheduler,
+		LLMMaxRetries:               llmMaxRetries,
+		CollaborationMemoryMaxBytes: collaborationMemoryMaxBytes,
 	})
 
 	srv := newMainHTTPServer(":"+port, r)

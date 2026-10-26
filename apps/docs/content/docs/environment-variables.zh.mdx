@@ -42,6 +42,9 @@ MULTICA_PUBLIC_URL=https://api.multica.example.com
 | `LOG_LEVEL` | 应用默认 | 日志级别 |
 | `MULTICA_SHUTDOWN_HOLD_DURATION` | `0` | 收到终止信号后，开始优雅退出前等待多久 |
 | `MULTICA_RUNTIME_RECONNECT_GRACE` | `3h` | 运行时离线后可重新连接且不终止在途 task 的宽限时间；低于 `150s` 时按 `150s` 处理 |
+| `MULTICA_COLLABORATION_MEMORY_MAX_BYTES` | `131072`（128 KiB） | 协作单协作上下文 Markdown 文档的最大 UTF-8 字节数；有效范围为 `32768`–`524288`（32–512 KiB），超出范围会拒绝 API 启动 |
+
+协作上下文是每张协作单一份的 Markdown 文档，用于让不同运行、机器和供应商账号上的智能体交接当前发现与决定。服务端会向客户端返回当前上限，客户端不应自行写死。调低上限后，已有文档仍可读取并注入运行，但下一次写入必须符合新上限。修改后要重启 API；使用 Compose 时重建 backend 容器才会生效。
 
 在 Kubernetes 中设置 shutdown hold 时，`terminationGracePeriodSeconds` 要大于 hold 与实际退出所需时间之和。
 
