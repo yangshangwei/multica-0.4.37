@@ -2,6 +2,27 @@
 
 This task is in progress. The records below distinguish code/adapter tests from Provider-account and packaged-platform acceptance. Nothing here enables production admission.
 
+## Resumed control and installed-client acceptance — 2026-10-26
+
+The original identity inventory is **31/31 passed**. The original collaboration
+inventory is **58/58 passed**: 30 retained qualified-source records plus the 28
+previously pending originals executed at `1bfd169dc`. The final selected new
+results contain no retries, skips or extra originals. Main-session verification
+matched each original file/project/title to an actual expected-pass result.
+
+Current Linux arm64 full Main/preload/renderer, native macOS host composition,
+Linux namespace control/recovery, cached v0.6.7 CLI boundaries, offline flows and
+both-client administration passed in their explicitly configured environments.
+Package hashes stayed identical across the shared-path recovery. The first
+Docker-125 prerequisite failure remains retained alongside the successful rerun.
+
+The isolated gates are closed and owned API/Web/renderer/test processes stopped;
+data, worktrees and raw evidence remain. See
+[the exact acceptance handoff](acceptance-continuation-2026-10-26.md) and its
+sanitized machine-readable evidence. Native Windows/remaining installer and
+authenticated Provider-account gates are still pending; this inventory result
+does not open production admission or complete the broader platform matrix.
+
 ## Verified during implementation
 
 | Area | Evidence | Result |

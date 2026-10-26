@@ -40,6 +40,56 @@ Password administration requires its own production-Web run and synthetic actors
 Give independent specs distinct administrator accounts so login/reauth limits
 remain active without one shared fixture exhausting the account budget.
 
+### Password acceptance startup configuration
+
+1. **Scope:** switching a task-owned API from legacy to password authentication,
+   including managed-installation and collaboration-control acceptance.
+2. **Signature:** `auth.ValidatePasswordConfig()` in
+   `server/internal/auth/password_config.go` runs before the API can serve tests.
+3. **Contract:** set `MULTICA_AUTH_MODE=password`, disable device authentication,
+   clear `MULTICA_CLOUD_URL`, and explicitly select
+   `MULTICA_PASSWORD_LIMITER_MODE=single` for one task-owned API process. Multiple
+   API processes require `shared` and the same `REDIS_URL`.
+4. **Errors:** a missing or unsupported limiter mode rejects startup with
+   `password mode requires MULTICA_PASSWORD_LIMITER_MODE=single or shared`;
+   `shared` without Redis and password mode with device/Cloud authentication are
+   also rejected. A retained registry record is not a live listener.
+5. **Cases:** a complete single-process fixture starts; an unchanged legacy
+   fixture keeps its previous mode; changing only `MULTICA_AUTH_MODE` is an
+   incomplete password fixture.
+6. **Verification:** retain the startup command and exit, probe the actual owned
+   listener, and check `/api/config` reports password authentication before
+   running browser tests. Keep the existing `password_config_test.go` matrix
+   and real browser login assertions; do not bypass startup validation.
+7. **Wrong / correct:** do not treat a stale process record or health failure as
+   a browser authentication defect. Complete the isolated configuration,
+   restart only its owned services, and verify the live configuration. Apply
+   this to the task copy, preserving the source deployment's authentication
+   settings. Deployment guidance is in
+   `docs/offline-upgrade.zh-CN.md`, sections 7.2 and 7.5.1.
+
+### Docker packaged Main prerequisites
+
+1. **Scope:** Linux directory-packaged Main acceptance through the cached,
+   explicitly selected task image.
+2. **Signature:** `new InstalledMainClient({ image? })` resolves the fixture
+   repository and `COLLABORATION_INSTALLED_APP_DIR` with `realpathSync()` before
+   binding them; a named `COLLABORATION_INSTALLED_APP_VOLUME` is the alternative.
+3. **Contract:** Docker must share both resolved bind paths. A host-readable
+   directory or matching ASAR hash alone does not prove the bind is available.
+4. **Errors:** a denied bind exits Docker with 125 before Main starts. Preserve
+   that prerequisite failure rather than report it as an application failure.
+5. **Cases:** a verified shared source/package runs; a previously verified
+   package retains its pinned bytes; an unshared `/private/tmp` source fails.
+6. **Verification:** probe the actual resolved paths with the selected cached
+   image, retain source/ASAR/executable/CLI hashes, then verify the real Main
+   flow. Recheck hashes and owned listener identity after relocation.
+7. **Wrong / correct:** do not weaken assertions or change global Docker
+   sharing to make a retained fixture work. Use a task-owned verified shared
+   location, preserving the original worktrees and evidence. Check filesystem
+   device IDs before `git worktree move`; across devices, create same-commit
+   worktree copies and verify their bytes instead of forcing the move.
+
 `psql` must be available on PATH. Database creation uses the PostgreSQL endpoint
 in `DATABASE_URL`; a Docker container with the same database name is not proof
 that this endpoint has the database.

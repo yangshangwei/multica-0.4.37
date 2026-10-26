@@ -1,0 +1,32 @@
+{
+  "verified_at": "2026-10-26T07:48:26.552622+00:00",
+  "scope": "build and file provenance only; flow acceptance recorded separately",
+  "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+  "package_source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+  "platform": "linux",
+  "arch": "arm64",
+  "package_dir": "/private/tmp/multica-specialized-acceptance-20261026/collaboration-package-source/apps/desktop/dist/linux-arm64-unpacked",
+  "publish": "never",
+  "real_provider_accounts": false,
+  "artifacts": [
+    {
+      "path": "multica-desktop",
+      "size": 191696160,
+      "sha256": "379334fb6707615062d32fcc481a8a8d3140938531378ccba14f3fa169665043"
+    },
+    {
+      "path": "resources/app.asar",
+      "size": 480141225,
+      "sha256": "1d1bd76378cfa011e8b8beb89c471adb5f608e5b076fd5a37a5c07a5ffe19b2e"
+    },
+    {
+      "path": "resources/app.asar.unpacked/resources/bin/multica",
+      "size": 28020550,
+      "sha256": "e904528290e473efefd83faaf541060236a3916cb42c4d487b61c26f1feeb60a"
+    }
+  ],
+  "source_sync_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/current-source-sync.json",
+  "source_sync_sha256": "9ef0f64b20cc7e08168bd5f12b00f4432e613c218d96fc37163f42a0278780dd",
+  "build_records_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/native/build-records.json",
+  "build_records_sha256": "42dd9d21725476dda9943d43ff5c0bcd71c7853bae07ee2f7e4c0e2cbef3bbcf"
+}
