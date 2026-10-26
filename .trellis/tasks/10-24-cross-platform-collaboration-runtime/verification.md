@@ -23,6 +23,43 @@ sanitized machine-readable evidence. Native Windows/remaining installer and
 authenticated Provider-account gates are still pending; this inventory result
 does not open production admission or complete the broader platform matrix.
 
+## Debian installation continuation — 2026-10-26
+
+Independent recovery audit matched all 89 retained identity/collaboration
+originals to one actual pass each and verified 51 evidence/artifact hashes.
+The inventory remains 31/31 and 58/58 with its original source qualifications.
+See [the audit](research/progress-reaudit-2026-10-26.json).
+
+The pinned accepted Linux payload was wrapped in a real arm64 `.deb` using
+`--prepackaged`; its original three file hashes stayed identical. Fresh Debian
+12 arm64 container installation verified actual `dpkg` ownership/status,
+architecture, Debian/application/CLI versions, desktop/protocol/icon metadata
+and preservation of the standalone CLI command. Offline install preflight
+passed after the separate test image received three declared runtime
+dependencies. The original dependency failure remains intact.
+
+Final full Main runs passed with no retries/skips: installed Debian client
+30.418s; original directory client 26.853s. Both run the existing real password
+login, scoped Stop, restart while paused, retained history and explicit mixed
+author Resume assertions against the separate native macOS fixture Provider.
+An initial new assertion missed the CLI's existing leading `v`; its failure is
+retained, and only the comparison was normalized. Review also repaired cleanup
+so daemon teardown rejection cannot bypass Main close or failure attachment.
+
+Final scoped ESLint, strict E2E TypeScript, syntax and diff checks passed;
+[independent review](research/installer-review-2026-10-26.md) has no unresolved
+finding. Gates are closed at epoch 7; owned API/Web stopped, ports
+19180/14100/6274 are closed and no owned test containers remain. Data and all
+raw attempts are retained. Exact hashes, commands, image dependency versions,
+results and cleanup are in
+[the installer evidence](research/deb-install-acceptance-2026-10-26.json).
+
+This root/Xvfb container uses the existing `--no-sandbox` test path and does not
+prove OS sandbox configuration, other distributions/architectures, in-place
+upgrade, automatic updates, macOS/Windows installers, vendor accounts or
+publication. No fresh full repository gate is claimed for this fixture-only
+continuation.
+
 ## Verified during implementation
 
 | Area | Evidence | Result |
@@ -52,7 +89,7 @@ does not open production admission or complete the broader platform matrix.
 | OS | Arch | Native lifecycle/ledger | Host backend/file fixture | Authenticated Provider/version | Packaged acceptance / admission |
 | --- | --- | --- | --- | --- | --- |
 | macOS | arm64 | Passed; 46 top-level tests + 62 subtests, zero failures/skips in both final toolchains | Claude fixture + Git passed; actual Web/Electron host composition passed | Not run | Full Main package pending; not released |
-| Linux | arm64 | Host suite passed in a native arm64 Linux container | Claude fixture + Git passed | Not run | Current directory-packaged full Main host-control journey passed against macOS runtime; no release/admission |
+| Linux | arm64 | Host suite passed in a native arm64 Linux container | Claude fixture + Git passed | Not run | Directory full Main and real Debian 12 `.deb` installation/control passed against macOS fixture runtime; no release/admission |
 | Linux | amd64 | Cross-compilation only | Pending native CI | Not run | Unavailable |
 | macOS | amd64 | Pending | Pending | Not run | Unavailable |
 | Windows | amd64 | Cross-compilation only, including ACL/Job fault tests | Pending native CI | Not run | Unavailable |

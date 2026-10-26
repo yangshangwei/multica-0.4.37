@@ -1,0 +1,353 @@
+{
+  "recorded_at": "2026-10-26T12:47:15.066368+00:00",
+  "scope": "Debian 12 arm64 package-manager installation and full Main controls; separate native Darwin fixture Provider runtime.",
+  "application_source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+  "fixture_patch": {
+    "synced_at": "2026-10-26T12:41:19.475374+00:00",
+    "application_source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+    "root_head": "70914d6d8651697a04d668a9724bd2c4e900af22",
+    "runner": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-acceptance-current-20261026/collaboration-source",
+    "backup": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/fixture-history/20261026T124119Z",
+    "fixture_patch_sha256": "84fa658e5cc2613c75988dfdb841fdac7dbd0f623dbdfc628289927a7a508e7a",
+    "files": [
+      {
+        "path": "e2e/fixtures/collaboration-installed-main.ts",
+        "before_sha256": "bb946e015a4ebbc497324426b10c9a8e531b87af51b3ef862fc6e1555389380e",
+        "after_sha256": "bb946e015a4ebbc497324426b10c9a8e531b87af51b3ef862fc6e1555389380e"
+      },
+      {
+        "path": "e2e/fixtures/collaboration-installed-main.mjs",
+        "before_sha256": "eefd9f7d249890c3fe0b8b81a2c31c35cb1d534ade7e347821222edcef59d055",
+        "after_sha256": "eefd9f7d249890c3fe0b8b81a2c31c35cb1d534ade7e347821222edcef59d055"
+      },
+      {
+        "path": "e2e/collaboration-host-installed.spec.ts",
+        "before_sha256": "13126cfc756c084335ab2bea7bfe062e88144bfb5e87dca325c960d8a4d0e017",
+        "after_sha256": "819ebce437699c360a61e0515af6b8a29740f60464aaa684cac7de2979fca606"
+      }
+    ]
+  },
+  "original_inventory_unchanged": {
+    "identity_passed": 31,
+    "collaboration_passed": 58,
+    "collaboration_retained_source": 30,
+    "collaboration_new_source": 28
+  },
+  "independent_original_audit": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-24-cross-platform-collaboration-runtime/research/progress-reaudit-2026-10-26.json",
+    "sha256": "7d6a344b2b0583a5a0dbdcebd9b5872e3c7404d64ae306ef268644d821338b79"
+  },
+  "package": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/package/multica-desktop-0.6.5-179-g1bfd169dc-linux-arm64.deb",
+    "size": 166477828,
+    "sha256": "7e23d62da6189d128bb08dd2caa011a8ca61ea6ad5256d346c331ec794b1c346"
+  },
+  "accepted_input_artifacts": [
+    {
+      "path": "multica-desktop",
+      "size": 191696160,
+      "sha256": "379334fb6707615062d32fcc481a8a8d3140938531378ccba14f3fa169665043"
+    },
+    {
+      "path": "resources/app.asar",
+      "size": 480141225,
+      "sha256": "1d1bd76378cfa011e8b8beb89c471adb5f608e5b076fd5a37a5c07a5ffe19b2e"
+    },
+    {
+      "path": "resources/app.asar.unpacked/resources/bin/multica",
+      "size": 28020550,
+      "sha256": "e904528290e473efefd83faaf541060236a3916cb42c4d487b61c26f1feeb60a"
+    }
+  ],
+  "accepted_input_bytes_rechecked_after_runs": true,
+  "build": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/build.json",
+    "sha256": "248334feef3b2381ddcfeceaad6dae840df8d76218df6d81f22c7e4f8474cd62"
+  },
+  "environment": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/environment-ready.json",
+    "sha256": "132fc0d43858fb6eda6271aeea43ff9add92051e685ba6e2b463256ab2c4f767"
+  },
+  "image": {
+    "command": [
+      "docker",
+      "build",
+      "--pull=false",
+      "--tag",
+      "multica-collaboration-deb-acceptance:20261026",
+      "-"
+    ],
+    "base_tag": "multica-gap-full-main:20261022",
+    "base_image_id": "sha256:db164dd5195d37ded1e6732eec4cc6b87decac66825be15fae9c7b87b2bac6c4",
+    "dockerfile_sha256": "f73f24256b5cc395e3bab5584876fc7e1c7473e0738ea6ff715365cfca036857",
+    "started_at": "2026-10-26T12:27:27.925189+00:00",
+    "scope": "Task-only acceptance image; repository dependencies, product payload and cached base unchanged",
+    "exit_code": 0,
+    "ended_at": "2026-10-26T12:27:38.735187+00:00",
+    "duration_seconds": 10.81,
+    "image_id": "sha256:0d433ecf8ede66777494051568fd760468be288fd99d36d80bc68d022769471c",
+    "image_tag": "multica-collaboration-deb-acceptance:20261026",
+    "installed_dependencies": [
+      "libnotify4 0.8.1-1 arm64",
+      "libsecret-1-0 0.20.5-3 arm64",
+      "xdg-utils 1.1.3-4.1 all"
+    ],
+    "base_image_unchanged": true
+  },
+  "offline_preflight": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/install-preflight-dependencies-ready.json",
+    "sha256": "2fa79ff0bc02121d6dcc9bae43537c76ece60557e802b0edcaafcbe1769c6975"
+  },
+  "retained_initial_preflight_failure": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/install-preflight.json",
+    "sha256": "cc3a49fe85e8a63ac807bffcb89a816a727036ee7f98d34f4dd3b70c92c59f67"
+  },
+  "runs": [
+    {
+      "run": "directory-regression",
+      "title": "Linux packaged full Main controls a real native host run and explicitly resumes the shared Agent",
+      "project": "chromium",
+      "actual_status": "passed",
+      "actual_executions": 1,
+      "retry": 0,
+      "duration_ms": 26240,
+      "command_exit": 0,
+      "results": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/runs/directory-regression/collaboration-host-installed.json",
+        "sha256": "7f1bb2130ff13ddd9504c91fadf155ad7f79611c9bbfbd460bee2897ba739dab"
+      },
+      "runner_record": {
+        "spec": "collaboration-host-installed.spec.ts",
+        "exit_code": 0,
+        "started_at": "2026-10-26T12:25:51.741767+00:00",
+        "duration_seconds": 28.5,
+        "overrides": [],
+        "expected": 1,
+        "unexpected": 0,
+        "skipped": 0,
+        "flaky": 0
+      },
+      "scope": "Initial default-mode regression before Debian-only Exec assertion correction."
+    },
+    {
+      "run": "deb-installed",
+      "title": "Linux packaged full Main controls a real native host run and explicitly resumes the shared Agent",
+      "project": "chromium",
+      "actual_status": "failed",
+      "actual_executions": 1,
+      "retry": 0,
+      "duration_ms": 7670,
+      "command_exit": 1,
+      "results": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/runs/deb-installed/collaboration-host-installed.json",
+        "sha256": "9080f8340185b54b002efc19ca3ab778566485f5777bd4454c82073fb24901b8"
+      },
+      "runner_record": {
+        "spec": "collaboration-host-installed.spec.ts",
+        "exit_code": 1,
+        "started_at": "2026-10-26T12:31:35.771477+00:00",
+        "duration_seconds": 9.9,
+        "overrides": [
+          "COLLABORATION_HOST_INSTALLED_ASAR_SHA256",
+          "COLLABORATION_HOST_INSTALLED_IMAGE",
+          "COLLABORATION_INSTALLED_APP_DIR",
+          "COLLABORATION_INSTALLED_APP_VOLUME",
+          "COLLABORATION_INSTALLED_CLI_SHA256",
+          "COLLABORATION_INSTALLED_DEB",
+          "COLLABORATION_INSTALLED_DEB_SHA256",
+          "COLLABORATION_INSTALLED_EXECUTABLE_SHA256"
+        ],
+        "expected": 0,
+        "unexpected": 1,
+        "skipped": 0,
+        "flaky": 0
+      },
+      "scope": "Retained new assertion failure: raw CLI git version has a leading v; no runtime was enrolled."
+    },
+    {
+      "run": "deb-installed-final",
+      "title": "Linux packaged full Main controls a real native host run and explicitly resumes the shared Agent",
+      "project": "chromium",
+      "actual_status": "passed",
+      "actual_executions": 1,
+      "retry": 0,
+      "duration_ms": 30418,
+      "command_exit": 0,
+      "results": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/runs/deb-installed-final/collaboration-host-installed.json",
+        "sha256": "67e09949574bad6079bdfff76924913cec9eeebc9fac79f78faff4a7ca54c117"
+      },
+      "runner_record": {
+        "spec": "collaboration-host-installed.spec.ts",
+        "exit_code": 0,
+        "started_at": "2026-10-26T12:41:19.639178+00:00",
+        "duration_seconds": 32.6,
+        "overrides": [
+          "COLLABORATION_HOST_INSTALLED_ASAR_SHA256",
+          "COLLABORATION_HOST_INSTALLED_IMAGE",
+          "COLLABORATION_INSTALLED_APP_DIR",
+          "COLLABORATION_INSTALLED_APP_VOLUME",
+          "COLLABORATION_INSTALLED_CLI_SHA256",
+          "COLLABORATION_INSTALLED_DEB",
+          "COLLABORATION_INSTALLED_DEB_SHA256",
+          "COLLABORATION_INSTALLED_EXECUTABLE_SHA256"
+        ],
+        "expected": 1,
+        "unexpected": 0,
+        "skipped": 0,
+        "flaky": 0
+      },
+      "evidence": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/runs/deb-installed-final/collaboration-host-installed/collaboration-host-install-24c58-ly-resumes-the-shared-Agent-chromium/installed-host-evidence.json",
+        "sha256": "50261c65fa44bd76632d26bf0e574f454eeac3b3da760ba28628b80999d8bdd0"
+      },
+      "image_id": "sha256:0d433ecf8ede66777494051568fd760468be288fd99d36d80bc68d022769471c",
+      "application": {
+        "platform": "linux",
+        "arch": "arm64",
+        "version": "0.6.5-179-g1bfd169dc",
+        "appPath": "/opt/Multica/resources/app.asar",
+        "executable": "/opt/Multica/multica-desktop"
+      },
+      "raw_cli_version": "v0.6.5-179-g1bfd169dc",
+      "managed_launches": 3,
+      "page_errors": [],
+      "captures": [
+        {
+          "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/runs/deb-installed-final/collaboration-host-installed/collaboration-host-install-24c58-ly-resumes-the-shared-Agent-chromium/installed-host-ended.png",
+          "sha256": "4359b8abf2122214e2cce90e0fdb3a964e69c7b2ecf3f0953f2ebe26ce47994b"
+        },
+        {
+          "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/runs/deb-installed-final/collaboration-host-installed/collaboration-host-install-24c58-ly-resumes-the-shared-Agent-chromium/installed-host-stopped.png",
+          "sha256": "e7d137202882b6ed6b842ec6ff264e0916fffa60e18396561856cc2d5651b074"
+        }
+      ],
+      "installation": {
+        "kind": "deb",
+        "packageName": "multica",
+        "version": "0.6.5~179~g1bfd169dc",
+        "architecture": "arm64",
+        "status": "install ok installed",
+        "debSha256": "7e23d62da6189d128bb08dd2caa011a8ca61ea6ad5256d346c331ec794b1c346",
+        "executableSha256": "379334fb6707615062d32fcc481a8a8d3140938531378ccba14f3fa169665043",
+        "asarSha256": "1d1bd76378cfa011e8b8beb89c471adb5f608e5b076fd5a37a5c07a5ffe19b2e",
+        "cliSha256": "e904528290e473efefd83faaf541060236a3916cb42c4d487b61c26f1feeb60a",
+        "desktopEntry": "/usr/share/applications/multica-desktop.desktop",
+        "desktopLauncher": "/usr/bin/multica-desktop",
+        "cliPathUnclaimed": true,
+        "standaloneCliPreserved": true,
+        "packageManager": {
+          "command": [
+            "dpkg",
+            "--install",
+            "/acceptance/package.deb"
+          ],
+          "exitCode": 0,
+          "stdout": "Selecting previously unselected package multica.\n(Reading database ... 30608 files and directories currently installed.)\nPreparing to unpack /acceptance/package.deb ...\nUnpacking multica (0.6.5~179~g1bfd169dc) ...\nSetting up multica (0.6.5~179~g1bfd169dc) ...\nupdate-alternatives: using /opt/Multica/multica-desktop to provide /usr/bin/multica-desktop (multica-desktop) in auto mode\nProcessing triggers for hicolor-icon-theme (0.17-2) ...\n",
+          "stderr": "unshare: unshare failed: Operation not permitted\n"
+        }
+      }
+    },
+    {
+      "run": "directory-final",
+      "title": "Linux packaged full Main controls a real native host run and explicitly resumes the shared Agent",
+      "project": "chromium",
+      "actual_status": "passed",
+      "actual_executions": 1,
+      "retry": 0,
+      "duration_ms": 26853,
+      "command_exit": 0,
+      "results": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/runs/directory-final/collaboration-host-installed.json",
+        "sha256": "e122fa17c8a229914dcdf1e793d2779a078dcc4a49ca110763ccb62ebecae7bc"
+      },
+      "runner_record": {
+        "spec": "collaboration-host-installed.spec.ts",
+        "exit_code": 0,
+        "started_at": "2026-10-26T12:43:23.471509+00:00",
+        "duration_seconds": 28.9,
+        "overrides": [],
+        "expected": 1,
+        "unexpected": 0,
+        "skipped": 0,
+        "flaky": 0
+      },
+      "evidence": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/runs/directory-final/collaboration-host-installed/collaboration-host-install-24c58-ly-resumes-the-shared-Agent-chromium/installed-host-evidence.json",
+        "sha256": "eb0877d954e77b192db5ed1cfdb19bb45accbc2081fe2044e50130bcfedec5b4"
+      },
+      "image_id": "sha256:db164dd5195d37ded1e6732eec4cc6b87decac66825be15fae9c7b87b2bac6c4",
+      "application": {
+        "platform": "linux",
+        "arch": "arm64",
+        "version": "0.6.5-179-g1bfd169dc",
+        "appPath": "/opt/multica/resources/app.asar",
+        "executable": "/opt/multica/multica-desktop"
+      },
+      "raw_cli_version": "v0.6.5-179-g1bfd169dc",
+      "managed_launches": 3,
+      "page_errors": [],
+      "captures": [
+        {
+          "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/runs/directory-final/collaboration-host-installed/collaboration-host-install-24c58-ly-resumes-the-shared-Agent-chromium/installed-host-ended.png",
+          "sha256": "286e34ae407c39cb0db673eb76dae4fac2cd6027c3bbea38d72339fb3b014d99"
+        },
+        {
+          "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/runs/directory-final/collaboration-host-installed/collaboration-host-install-24c58-ly-resumes-the-shared-Agent-chromium/installed-host-stopped.png",
+          "sha256": "4d2d1859632d1ce25051364d223c246ae180e41cb06608106c06bae6ee5792a6"
+        }
+      ]
+    }
+  ],
+  "final_selected_passes": 2,
+  "final_selected_retries": 0,
+  "final_selected_skips": 0,
+  "cleanup": {
+    "verified_at": "2026-10-26T12:45:59.926489+00:00",
+    "gate": {
+      "creation_enabled": false,
+      "enabled": false,
+      "host_execution_enabled": false,
+      "epoch": 7
+    },
+    "ports": {
+      "19180": {
+        "listening": false
+      },
+      "14100": {
+        "listening": false
+      },
+      "6274": {
+        "listening": false
+      }
+    },
+    "running_owned_containers": {
+      "multica-collaboration-main-": [],
+      "multica-collaboration-deb-preflight-": []
+    },
+    "owned_services_stop_exit": 0,
+    "database_and_data_retained": true,
+    "packages_and_images_retained": true,
+    "production_admission_changed": false,
+    "release_published": false
+  },
+  "cleanup_evidence": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/cleanup.json",
+    "sha256": "5e23b10aa0862efaaa365f65208fae59bf87f2635960f8bb6bb7159905225940"
+  },
+  "independent_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-24-cross-platform-collaboration-runtime/research/installer-review-2026-10-26.md",
+    "sha256": "6a8421c1d6fb940567922735e5bbb2691d92b363b7b3da555e3f2590b9055d2d"
+  },
+  "static_checks": "Independent final scoped ESLint, strict E2E tsc, node --check and git diff --check passed; commands in review.",
+  "limitations": [
+    "Existing root/Xvfb --no-sandbox container scope; postinst namespace probe warning retained.",
+    "Test-owned Provider executables only; no vendor account or quota acceptance.",
+    "No native Windows/macOS installer, other distribution/architecture, upgrade, automatic update or release acceptance.",
+    "Earlier full repository checks remain historical; this fixture-only slice did not rerun the full repository gate."
+  ],
+  "task_status": "in_progress",
+  "production_admission_opened": false,
+  "release_published": false,
+  "fixture_commit": "4d9f47928c44ad3ffabc65cf4add06101d0eb86c"
+}
