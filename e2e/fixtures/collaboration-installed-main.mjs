@@ -119,11 +119,11 @@ async function read(requestPath) {
 }
 
 async function cliAvailable() {
-  return page.evaluate(async (hostView) => {
-    if (!hostView) return window.daemonAPI.isCliInstalled();
+  // The packaged preload exposes only getCliPath since the daemon diagnostics backport (dc60bfc87).
+  return page.evaluate(async () => {
     const path = await window.daemonAPI.getCliPath();
     return typeof path === "string" && path.trim().length > 0;
-  }, executionViewVersion === 6);
+  });
 }
 
 async function metadata() {
