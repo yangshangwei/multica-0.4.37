@@ -17,6 +17,8 @@ import (
 
 type CollaborationSwitchResourceView struct {
 	collaboration.TargetResource
+	// v6 consent forms need the same execution summary as the resources view.
+	CollaborationResourceExecution
 	AgentName  string                        `json:"agent_name"`
 	Runtime    *CollaborationResourceRuntime `json:"runtime"`
 	Owner      *CollaborationContentAccount  `json:"owner"`
@@ -148,7 +150,8 @@ func (s *CollaborationService) readTargetSwitchProposals(ctx context.Context, is
 			if err != nil {
 				return nil, err
 			}
-			item := CollaborationSwitchResourceView{TargetResource: resource, AgentName: summary.AgentName, Runtime: summary.Runtime, Owner: summary.Owner}
+			item := CollaborationSwitchResourceView{TargetResource: resource, CollaborationResourceExecution: summary.CollaborationResourceExecution,
+				AgentName: summary.AgentName, Runtime: summary.Runtime, Owner: summary.Owner}
 			for _, consent := range consents {
 				if resource.AgentID == util.UUIDToString(consent.AgentID) {
 					item.Consented, item.Revoked = !consent.RevokedAt.Valid, consent.RevokedAt.Valid

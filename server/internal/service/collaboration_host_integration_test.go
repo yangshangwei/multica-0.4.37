@@ -189,6 +189,64 @@ func TestCollaborationHostIntegrationResourceMetadataAndLegacyAvailability(t *te
 	}
 }
 
+// Regression: the consent form requires the v6 execution summary on switch
+// proposal resources too, or nobody can consent to a pending switch.
+func TestCollaborationHostIntegrationSwitchProposalCarriesExecutionMetadata(t *testing.T) {
+	f, caps := newHostCollaborationFixture(t)
+	switchCleanup(t, f.collaborationQueueFixture)
+	target := queueTarget(t, f.collaborationQueueFixture, f.targetID)
+	proposal, err := f.svc.ProposeTargetSwitch(f.ctx, CollaborationProposeSwitchParams{CollaborationQueueRequest: hostQueueRequest(f),
+		TargetID: target.ID, ExpectedTargetEpoch: target.TargetEpoch, ExpectedConfigVersion: target.ConfigVersion, Roster: switchRoster(t, target)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	view, err := f.svc.GetTargetSwitchProposal(WithCollaborationExecutionViewVersion(f.ctx, 6), f.issue.Issue.ID, target.ID, proposal.ProposalID)
+	if err != nil || len(view.Resources) != 1 {
+		t.Fatalf("v6 switch proposal unavailable: %v", err)
+	}
+	// Decode the wire contract the consent form reads, not the Go struct.
+	raw, err := json.Marshal(view.Resources[0])
+	if err != nil {
+		t.Fatal(err)
+	}
+	var wire struct {
+		ExecutionMode    string  `json:"execution_mode"`
+		AgentOwnerUserID string  `json:"agent_owner_user_id"`
+		Provider         *string `json:"provider"`
+		ProviderVersion  *string `json:"provider_version"`
+		AccountSource    *string `json:"account_source"`
+	}
+	if err := json.Unmarshal(raw, &wire); err != nil {
+		t.Fatal(err)
+	}
+	if wire.ExecutionMode != caps.Containment || wire.AgentOwnerUserID != f.creator ||
+		wire.Provider == nil || *wire.Provider != f.runtime.Provider || wire.ProviderVersion == nil || *wire.ProviderVersion != caps.Host.ProviderVersion ||
+		wire.AccountSource == nil || *wire.AccountSource != "runtime_configuration" {
+		t.Fatalf("switch proposal resource lacks the v6 execution summary: %s", raw)
+	}
+	for _, private := range []string{"configuration_digest", "capability_digest", "installation_id", "binding_id", "custom_env", "instructions"} {
+		if strings.Contains(string(raw), private) {
+			t.Fatalf("switch proposal resource exposed private field %s", private)
+		}
+	}
+	legacy, err := f.svc.GetTargetSwitchProposal(f.ctx, f.issue.Issue.ID, target.ID, proposal.ProposalID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if raw, err = json.Marshal(legacy.Resources[0]); err != nil {
+		t.Fatal(err)
+	}
+	var top map[string]json.RawMessage
+	if err := json.Unmarshal(raw, &top); err != nil {
+		t.Fatal(err)
+	}
+	for _, field := range []string{"execution_mode", "provider", "provider_version", "account_source", "agent_owner_user_id"} {
+		if _, ok := top[field]; ok {
+			t.Fatalf("v5 switch proposal gained v6 field %s: %s", field, raw)
+		}
+	}
+}
+
 func TestCollaborationHostIntegrationMixedCommentKeepsHumanEffectsAndOriginalRefusal(t *testing.T) {
 	f, _ := newHostCollaborationFixture(t)
 	f.fx.Cleanup(t, `DELETE FROM comment WHERE issue_id=$1`, f.issue.Issue.ID)
