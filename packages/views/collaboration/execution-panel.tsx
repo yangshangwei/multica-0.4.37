@@ -12,6 +12,10 @@ import { CollaborationSwitchPanel } from "./switch-panel";
 import { CollaborationRunDisclosure } from "./run-records";
 import { CollaborationCommandHistory } from "./command-history";
 
+// A Resume counts a lane by its result. A grant withdrawal stops a run without
+// pausing its lane, so a lane still behind its stop barrier can be active.
+const laneResumed = (lane: { code: string }) => lane.code === "resumed" || lane.code === "already_active";
+
 export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { scope: CollaborationScope; issue: CollaborationIssue; selectedRunId?: string | null }) {
   const { t } = useT("collaboration");
   const labels = useCollaborationLabels();
@@ -69,7 +73,7 @@ export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { s
     {control.isPending && <p role="status">{t(($) => $.workflow.pending)}</p>}
     {receipt && <div role="status" aria-label={t(($) => $.execution.controlResult)} className="space-y-2 text-body"><p>{receipt.status >= 400 ? labels.reason(receipt.code, receiptMode) : receipt.action === "resume"
       ? receipt.code === "resumed" && receiptMode === hostMode ? t(($) => $.host.resumed)
-        : t(($) => $.execution.partial, { resumed: receipt.channels.filter((lane) => lane.queue_state === "active").length, paused: receipt.channels.filter((lane) => lane.queue_state === "paused").length }) : labels.reason(receipt.code, receiptMode)}</p>
+        : t(($) => $.execution.partial, { resumed: receipt.channels.filter(laneResumed).length, paused: receipt.channels.filter((lane) => !laneResumed(lane)).length }) : labels.reason(receipt.code, receiptMode)}</p>
       {receipt.action === "resume" && <p>{t(($) => $.execution.holdRemaining, { count: receipt.target_holds.filter((target) => target.hold_reason !== null).length })}</p>}
       <ul className="space-y-2 text-caption">{receipt.channels.map((lane) => <li key={lane.channel_id}>{laneName(lane.channel_id)} · {labels.reason(lane.code, channelMode(lane.channel_id))}</li>)}
         {receipt.target_holds.map((target) => <li key={target.target_id} className="[overflow-wrap:anywhere]">{targetName(target.target_id)} · {labels.reason(target.code, targetMode(target.target_id))}</li>)}</ul>

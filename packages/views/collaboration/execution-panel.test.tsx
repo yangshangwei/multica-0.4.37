@@ -136,6 +136,22 @@ it("shows each partial Resume decision while preserving the live paused snapshot
   expect(screen.getAllByText("Paused").length).toBeGreaterThan(0);
 });
 
+it("counts a lane still behind its stop barrier as paused even when its queue was never paused", async () => {
+  // A grant withdrawal stops the run without pausing its lane, so a later
+  // Resume returns stop_unconfirmed on an active lane. The headline must
+  // follow each lane's result, not its queue state.
+  const [resumed, blocked] = collaborationControlReceiptFixture.channels;
+  const activeBlocked = { ...blocked!, queue_state: "active" };
+  const receipt = { ...collaborationControlReceiptFixture, channels: [resumed!, activeBlocked],
+    targets: collaborationControlReceiptFixture.targets.map((target) => target.channel_id === activeBlocked.channel_id ? { ...target, queue_state: "active" } : target) };
+  vi.stubGlobal("fetch", vi.fn().mockImplementation(async (_url: string, init: RequestInit) => new Response(JSON.stringify({ ...receipt, request_id: new Headers(init.headers).get("Idempotency-Key") }))));
+  mount();
+  await userEvent.click(screen.getByRole("button", { name: "Resume all" }));
+  const result = await screen.findByRole("status", { name: "Control result" });
+  expect(within(result).getByText("1 lanes resumed; 1 remain paused.")).toBeInTheDocument();
+  expect(within(result).getByText(/Execution lane 2 · Termination unconfirmed/)).toBeInTheDocument();
+});
+
 it("recovers a waiting cancellation using its original key without turning it into Stop", async () => {
   const waiting = collaborationExecutionIssueFixture.execution.commands[1]!;
   let requestId = "";
