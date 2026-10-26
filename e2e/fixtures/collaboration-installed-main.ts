@@ -27,7 +27,7 @@ export interface InstalledMainWrite<Receipt, Input = unknown> { receipt: Receipt
  * replies, reports and Playwright traces contain no fixture password or token. */
 export class InstalledMainClient {
   readonly containerName = `multica-collaboration-main-${randomUUID().slice(0, 12)}`;
-  readonly packageRoot: "/opt/multica" | "/opt/Multica";
+  readonly packageRoot: string;
   private readonly child: ChildProcessWithoutNullStreams;
   private sequence = 0;
   private readonly pending = new Map<number, { resolve(value: unknown): void; reject(error: Error): void; timer: NodeJS.Timeout }>();
@@ -35,7 +35,20 @@ export class InstalledMainClient {
   private stderrBytes = 0;
   private ignoredOutputLines = 0;
 
-  constructor(options: { image?: string } = {}) {
+  constructor(options: { image?: string; executablePath?: string; acceptanceHome?: string } = {}) {
+    if (options.executablePath) {
+      if (process.platform !== "darwin") throw new Error("Native packaged Main acceptance is macOS-only");
+      if (!options.acceptanceHome || !path.isAbsolute(options.acceptanceHome)) throw new Error("Native packaged Main requires an absolute acceptance home");
+      this.packageRoot = path.join(options.executablePath, "../..", "Resources");
+      const repo = realpathSync(path.resolve(import.meta.dirname, "../.."));
+      this.child = spawn(process.execPath, [path.join(repo, "e2e/fixtures/collaboration-installed-main.mjs")], {
+        stdio: "pipe",
+        env: { ...process.env, COLLABORATION_INSTALLED_MAIN_EXECUTABLE: realpathSync(options.executablePath),
+          MULTICA_PACKAGED_ACCEPTANCE: "1", MULTICA_PACKAGED_ACCEPTANCE_HOME: options.acceptanceHome },
+      });
+      this.attachProtocolHandlers();
+      return;
+    }
     const appDir = process.env.COLLABORATION_INSTALLED_APP_DIR;
     const appVolume = process.env.COLLABORATION_INSTALLED_APP_VOLUME;
     const deb = process.env.COLLABORATION_INSTALLED_DEB;
@@ -57,6 +70,10 @@ export class InstalledMainClient {
       ...packageMount, "--workdir", "/workspace", image,
       "xvfb-run", "-a", "-s", "-screen 0 1600x1400x24", "node", "/workspace/e2e/fixtures/collaboration-installed-main.mjs"],
     { stdio: "pipe" });
+    this.attachProtocolHandlers();
+  }
+
+  private attachProtocolHandlers() {
     // Native logging is intentionally counted, never forwarded or attached.
     this.child.stderr.on("data", (chunk: Buffer) => { this.stderrBytes += chunk.length; });
     const lines = createInterface({ input: this.child.stdout });

@@ -104,6 +104,33 @@ The supported local backend adapters are Claude, Codex and OpenCode. Remote/gate
 - Separately authorized real-Provider smoke for an initial delivery combination.
 - Remaining platform/package rollout stays disabled; keep this task in progress until the required native/account acceptance is satisfied.
 
+## S6 continuation — 2026-10-26
+
+The first delivery matrix is recorded in
+[research/s6-delivery-matrix-2026-10-26.md](research/s6-delivery-matrix-2026-10-26.md).
+The local machine completed a guarded real Provider smoke using Claude Code
+2.1.310 on macOS arm64. The smoke passed in 43.129s and used a test-owned
+collaboration server/issue; it returned the fixed `HOST_SMOKE_OK` marker and
+did not modify files, comments or accounts. Raw output and its hash are in
+[the S6 evidence](research/s6-local-acceptance-2026-10-26.json).
+
+The focused lifecycle evidence also passed for session replay, fresh-session
+fallback rules, scoped Stop, transient disconnect, receipt replay and logical
+session ownership after supervisor restart. This is separate from the real
+Provider smoke because those fault cases intentionally use the repository's
+test-owned provider fixture.
+
+The current source produced an unsigned/ad-hoc macOS arm64 `.app` and ZIP
+with Electron 39.8.7. A packaged acceptance-home opt-in now maps Electron
+`home`, `userData`, runtime config and daemon preferences into a task-owned
+temporary directory. Its focused tests, Desktop Node typecheck, lint and
+strict E2E fixture checks passed. A full packaged macOS control attempt reached
+the packaged startup/isolation path but stopped before collaboration control:
+the seed fixture received HTTP 503 while creating the issue, with an associated
+host claim/register timing failure. This attempt is retained as a blocked
+fixture run, not a packaged-control pass. The temporary API/Web/DB were
+stopped or dropped; production admission and release remain closed.
+
 ## Local implementation commits
 
 These commits are on `codex/cross-workspace-collaboration` and have not been pushed. The separate native CI snapshot remains a verification-only branch.

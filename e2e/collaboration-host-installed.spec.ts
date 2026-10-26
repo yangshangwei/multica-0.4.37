@@ -32,40 +32,43 @@ function hostComment(write: InstalledComment, issue: HostIssue, marker: string, 
 
 test.use({ actionTimeout: 20_000, trace: "off", screenshot: "off", video: "off" });
 
-test("Linux packaged full Main controls a real native host run and explicitly resumes the shared Agent", async ({ page }, testInfo) => {
+test("Packaged full Main controls a real native host run and explicitly resumes the shared Agent", async ({ page }, testInfo) => {
   test.setTimeout(480_000);
+  const nativeExecutable = process.env.COLLABORATION_INSTALLED_MAIN_EXECUTABLE;
   const image = process.env.COLLABORATION_HOST_INSTALLED_IMAGE;
   // This separate opt-in must be checked before package mounts, credentials,
   // API fixtures or runtime enrollment. Never pull an absent image implicitly.
-  test.skip(!image, "Requires an explicitly selected local host-acceptance packaged Main image");
-  const inspected = await execute("docker", ["image", "inspect", "--format", "{{.Id}}", image!], { timeout: 10_000 })
-    .then(({ stdout }) => stdout.trim(), () => null);
-  if (inspected === null) throw new Error("The explicitly selected packaged Main image is unavailable locally; this fixture never pulls an image");
-  expect(inspected).toMatch(/^sha256:[0-9a-f]{64}$/);
+  test.skip(!image && !nativeExecutable, "Requires an explicitly selected packaged Main image or macOS app executable");
+  const inspected = image ? await execute("docker", ["image", "inspect", "--format", "{{.Id}}", image], { timeout: 10_000 })
+    .then(({ stdout }) => stdout.trim(), () => null) : null;
+  if (image && inspected === null) throw new Error("The explicitly selected packaged Main image is unavailable locally; this fixture never pulls an image");
+  if (image) expect(inspected).toMatch(/^sha256:[0-9a-f]{64}$/);
   const packageHash = process.env.COLLABORATION_HOST_INSTALLED_ASAR_SHA256;
-  expect(packageHash, "Pin the current task-owned app.asar").toMatch(/^[0-9a-f]{64}$/);
+  if (!nativeExecutable) expect(packageHash, "Pin the current task-owned app.asar").toMatch(/^[0-9a-f]{64}$/);
   const deb = process.env.COLLABORATION_INSTALLED_DEB;
-  expect(deb || process.env.COLLABORATION_INSTALLED_APP_VOLUME || process.env.COLLABORATION_INSTALLED_APP_DIR).toBeTruthy();
+  if (!nativeExecutable) expect(deb || process.env.COLLABORATION_INSTALLED_APP_VOLUME || process.env.COLLABORATION_INSTALLED_APP_DIR).toBeTruthy();
   const expectedInstallation = deb ? { executableSha256: process.env.COLLABORATION_INSTALLED_EXECUTABLE_SHA256,
     asarSha256: packageHash, cliSha256: process.env.COLLABORATION_INSTALLED_CLI_SHA256 } : undefined;
   const apiURL = process.env.COLLABORATION_E2E_API_URL!;
   const webURL = String(testInfo.project.use.baseURL);
-  const native = new InstalledMainClient({ image });
+  const acceptanceHome = nativeExecutable ? process.env.MULTICA_PACKAGED_ACCEPTANCE_HOME : undefined;
+  if (nativeExecutable) expect(acceptanceHome).toMatch(/^\//);
+  const native = new InstalledMainClient(nativeExecutable ? { executablePath: nativeExecutable, acceptanceHome } : { image });
   let fixture: HostFixture | undefined;
   let daemonClosed = false;
-  const evidence: Record<string, unknown> = { client: "Linux arm64 packaged production Main/preload/renderer", image_id: inspected,
-    scope: "Packaged Linux client controls the separately running native host fixture; this does not establish Linux daemon execution support.",
-    realProviderAccounts: false, nativeIPCStubs: false, authInjection: false, homeOverride: false };
+  const evidence: Record<string, unknown> = { client: nativeExecutable ? "macOS arm64 packaged production Main/preload/renderer" : "Linux arm64 packaged production Main/preload/renderer", image_id: inspected,
+    scope: nativeExecutable ? "Packaged macOS client controls the separately running native host fixture with an isolated acceptance home." : "Packaged Linux client controls the separately running native host fixture; this does not establish Linux daemon execution support.",
+    realProviderAccounts: false, nativeIPCStubs: false, authInjection: false, homeOverride: Boolean(nativeExecutable) };
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   try {
-    const boot = await native.command<InstalledMainMetadata>("init", { apiUrl: dockerTaskURL(apiURL), appUrl: dockerTaskURL(webURL), executionViewVersion: 6,
+    const boot = await native.command<InstalledMainMetadata>("init", { apiUrl: nativeExecutable ? apiURL : dockerTaskURL(apiURL), appUrl: nativeExecutable ? webURL : dockerTaskURL(webURL), executionViewVersion: 6,
       ...(expectedInstallation ? { expectedInstallation } : {}) }, 180_000);
     evidence.boot = boot;
-    expect(boot.main).toMatchObject({ packaged: true, name: "Multica", platform: "linux", arch: "arm64", electron: "39.8.7" });
-    expect(boot.artifactSha256).toBe(packageHash);
+    expect(boot.main).toMatchObject({ packaged: true, name: "Multica", platform: nativeExecutable ? "darwin" : "linux", arch: nativeExecutable ? "arm64" : "arm64", electron: "39.8.7" });
+    if (!nativeExecutable) expect(boot.artifactSha256).toBe(packageHash);
     expect(new URL(boot.rendererUrl).protocol).toBe("file:");
-    expect(new URL(boot.rendererUrl).pathname).toBe(`${native.packageRoot}/resources/app.asar/out/renderer/index.html`);
+    expect(new URL(boot.rendererUrl).pathname).toBe(nativeExecutable ? `${native.packageRoot}/app.asar/out/renderer/index.html` : `${native.packageRoot}/resources/app.asar/out/renderer/index.html`);
     expect(boot.bundledCLI?.version).toBeTruthy();
     if (deb) {
       expect(boot.installation).toMatchObject({ kind: "deb", packageName: "multica", architecture: "arm64", status: "install ok installed",
@@ -167,7 +170,7 @@ test("Linux packaged full Main controls a real native host run and explicitly re
     expect(status.errors).toEqual([]);
     expect(status.accountRequests.some((request) => request.method === "POST")).toBe(true);
     expect(status.accountRequests.every((request) => !request.workspaceId && !request.workspaceSlug)).toBe(true);
-    expect(status.accountRequests.filter((request) => request.method === "POST").every((request) => request.clientOS === "linux" && request.clientVersion === boot.main.version)).toBe(true);
+    expect(status.accountRequests.filter((request) => request.method === "POST").every((request) => request.clientOS === (nativeExecutable ? "macos" : "linux") && request.clientVersion === boot.main.version)).toBe(true);
     expect(await f.webActor.client.countIssueDispatches(issue.id)).toBe(0);
     const summary = await f.daemon.close();
     daemonClosed = true;

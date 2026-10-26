@@ -11,9 +11,13 @@ import { _electron as electron, expect } from "@playwright/test";
 // This process controls the packaged executable. It never imports an alternate
 // Main, replaces IPC handlers, injects auth, or changes the OS home directory.
 const debSha256 = process.env.COLLABORATION_INSTALLED_DEB_SHA256;
-const packageRoot = debSha256 === undefined ? "/opt/multica" : "/opt/Multica";
-const executable = `${packageRoot}/multica-desktop`;
-const packagePath = `${packageRoot}/resources/app.asar`;
+const nativeExecutable = process.env.COLLABORATION_INSTALLED_MAIN_EXECUTABLE;
+const nativeMode = Boolean(nativeExecutable);
+const nativeContents = nativeMode ? path.resolve(nativeExecutable, "../..") : null;
+const packageRoot = nativeMode ? path.join(nativeContents, "Resources") : debSha256 === undefined ? "/opt/multica" : "/opt/Multica";
+const executable = nativeMode ? nativeExecutable : `${packageRoot}/multica-desktop`;
+const packagePath = nativeMode ? `${packageRoot}/app.asar` : `${packageRoot}/resources/app.asar`;
+const bundledCliPath = nativeMode ? `${packagePath}.unpacked/resources/bin/multica` : `${packageRoot}/resources/app.asar.unpacked/resources/bin/multica`;
 const protocolPrefix = "MULTICA_INSTALLED_REPLY ";
 const secrets = new Set();
 const errors = [];
@@ -91,7 +95,7 @@ function installDeb(expected) {
 
 function taskEndpoint(value, field) {
   const url = new URL(value);
-  assert.equal(url.hostname, "host.docker.internal", `${field} must use the explicit Docker host task endpoint`);
+  if (!nativeMode) assert.equal(url.hostname, "host.docker.internal", `${field} must use the explicit Docker host task endpoint`);
   assert.equal(url.protocol, "http:");
   assert(!url.username && !url.password && !url.search && !url.hash);
   assert(url.port && Number(url.port) > 1024);
@@ -185,12 +189,17 @@ async function metadata() {
   }));
   assert.equal(main.packaged, true);
   assert.equal(main.name, "Multica");
-  assert.equal(main.home, "/root");
-  assert.equal(main.userData, "/root/.config/Multica");
+  if (nativeMode) {
+    assert.equal(main.home, process.env.MULTICA_PACKAGED_ACCEPTANCE_HOME);
+    assert.equal(main.userData, path.join(main.home, ".config", "Multica"));
+  } else {
+    assert.equal(main.home, "/root");
+    assert.equal(main.userData, "/root/.config/Multica");
+  }
   assert.equal(main.appPath, packagePath);
   assert.equal(main.executable, executable);
-  assert.equal(main.platform, "linux");
-  assert.equal(main.arch, "arm64");
+  assert.equal(main.platform, nativeMode ? process.platform : "linux");
+  assert.equal(main.arch, nativeMode ? process.arch : "arm64");
   assert.equal(main.electron, "39.8.7");
   const native = await page.evaluate(async () => ({
     appInfo: window.desktopAPI.appInfo, config: window.desktopAPI.runtimeConfig,
@@ -199,7 +208,7 @@ async function metadata() {
   }));
   native.cliInstalled = await cliAvailable();
   assert.equal(native.appInfo.version, main.version);
-  assert.equal(native.appInfo.os, "linux");
+  assert.equal(native.appInfo.os, nativeMode ? "macos" : "linux");
   assert.equal(native.config.ok, true);
   assert.equal(native.config.source, "configured");
   assert.equal(native.config.config.apiUrl, apiUrl);
@@ -219,7 +228,9 @@ async function metadata() {
 }
 
 async function launch() {
-  app = await electron.launch({ executablePath: executable, args: ["--no-sandbox"], timeout: 60_000 });
+  app = await electron.launch({ executablePath: executable, args: nativeMode ? [] : ["--no-sandbox"],
+    ...(nativeMode ? { env: { ...process.env, MULTICA_PACKAGED_ACCEPTANCE: "1", MULTICA_PACKAGED_ACCEPTANCE_HOME: process.env.MULTICA_PACKAGED_ACCEPTANCE_HOME } } : {}),
+    timeout: 60_000 });
   page = await app.firstWindow({ timeout: 45_000 });
   page.setDefaultTimeout(20_000);
   page.on("pageerror", (error) => errors.push(scrub(error.message)));
@@ -268,18 +279,24 @@ async function dispatch(message) {
     case "init": {
       assert(message.executionViewVersion === undefined || message.executionViewVersion === 6);
       executionViewVersion = message.executionViewVersion;
-      assert.equal(process.platform, "linux");
-      assert.equal(homedir(), "/root");
+      if (nativeMode) {
+        assert.equal(process.platform, "darwin");
+      } else {
+        assert.equal(process.platform, "linux");
+        assert.equal(homedir(), "/root");
+      }
       if (debSha256 !== undefined) installation = installDeb(message.expectedInstallation);
       assert(existsSync(executable) && existsSync(packagePath), "Mount the current electron-builder directory package");
       apiUrl = taskEndpoint(message.apiUrl, "apiUrl");
       appUrl = taskEndpoint(message.appUrl, "appUrl");
-      createProfileFile("/root/.multica/desktop.json", { schemaVersion: 1, apiUrl, appUrl,
+      const home = nativeMode ? process.env.MULTICA_PACKAGED_ACCEPTANCE_HOME : "/root";
+      const userData = nativeMode ? path.join(home, ".config", "Multica") : "/root/.config/Multica";
+      createProfileFile(path.join(home, ".multica", "desktop.json"), { schemaVersion: 1, apiUrl, appUrl,
         wsUrl: `${apiUrl.replace("http:", "ws:")}/ws`, updateUrl: `${apiUrl}/desktop` });
-      createProfileFile("/root/.multica/desktop_prefs.json", { autoStart: false, autoStop: false });
-      createProfileFile("/root/.config/Multica/updater-preferences.json", { automaticUpdates: false });
+      createProfileFile(path.join(home, ".multica", "desktop_prefs.json"), { autoStart: false, autoStop: false });
+      createProfileFile(path.join(userData, "updater-preferences.json"), { automaticUpdates: false });
       await launch();
-      const cli = `${packageRoot}/resources/app.asar.unpacked/resources/bin/multica`;
+      const cli = bundledCliPath;
       const result = spawnSync(cli, ["version", "--output", "json"], { encoding: "utf8", timeout: 10_000 });
       assert.equal(result.status, 0, "The bundled CLI version command must execute on the actual container OS");
       const version = JSON.parse(result.stdout);

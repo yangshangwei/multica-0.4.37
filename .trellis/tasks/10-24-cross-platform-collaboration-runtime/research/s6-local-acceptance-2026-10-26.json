@@ -1,0 +1,59 @@
+{
+  "recorded_at": "2026-10-26T15:50:00Z",
+  "scope": "S6 local delivery matrix, real Provider smoke, focused lifecycle checks and macOS packaged startup/isolation attempt",
+  "source_head": "564e3c51c",
+  "real_provider": {
+    "provider": "claude",
+    "version": "2.1.310",
+    "os": "darwin",
+    "arch": "arm64",
+    "mode": "host_process_supervision_v1/local",
+    "test": "TestHostProviderAccountSmoke",
+    "result": "passed",
+    "duration_seconds": 43.129,
+    "log": ".omx/reports/collaboration-real-provider-20261026/claude-host-smoke.log",
+    "log_sha256": "cb8997b35cafd5f10f51dc0163dd57e39fe613f780568a8b0d9883d9d2de9901",
+    "account_scope": "test-owned collaboration server and issue; actual local Claude Code account; no file/comment/background side effects"
+  },
+  "lifecycle_focus": {
+    "result": "passed",
+    "tests": [
+      "TestHostRunnerReusesOrdinaryProviderAndOriginalPermitAndProof",
+      "TestHostRunnerOfflineKeepsRunningAndOnlyReplaysReceipts",
+      "TestHostRunnerFreshRetryGetsNewTokenAndStopForbidsFallback",
+      "TestHostSessionLockKeepsUnknownOwnershipAfterSupervisorRestart",
+      "TestHostLedgerUnissuedPermitTombstoneDoesNotInventAnAuthorizedLaunch"
+    ],
+    "log": ".omx/reports/collaboration-real-provider-20261026/lifecycle-fixture.jsonl",
+    "log_sha256": "96d33f2de460fd764dcc46059fa21ebd04cea20bb281b7c821a32368d34e2de7"
+  },
+  "macos_package": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "electron": "39.8.7",
+    "version": "0.6.5-183-g564e3c51c-dirty",
+    "artifact": "apps/desktop/dist/multica-desktop-0.6.5-183-g564e3c51c-dirty-mac-arm64.zip",
+    "artifact_sha256": "1600b9dd9b1eb227cf186b32f3281f76b5093ee7c0a4a5e8cdbbe275447bdbed",
+    "main_sha256": "0cb46a890899d1fed09cb856dca45bc668e3db89252a38a5b72108a8ba2d31da",
+    "asar_sha256": "cec0ab1ed3ea1cfe39510bd96d534783199f6b14a1459599cc44cd27049f093e",
+    "bundled_cli_sha256": "1797ecd4c9204827dd50c54814270de5c7c06db465f2225cd7e72747ddd4bdb6",
+    "signature": "ad-hoc",
+    "dmg": "not built: dmg-builder download disconnected",
+    "acceptance_home_isolation": "implemented and unit-tested; packaged startup reached the isolated path before host fixture setup failed"
+  },
+  "macos_full_control_attempt": {
+    "result": "blocked_before_control_flow",
+    "failure": "POST /api/collaboration/issues returned 503 during seedHostRuntime; associated host fixture claim/register timing produced a 500 in the same run",
+    "independent_database": true,
+    "services_cleaned": true,
+    "production_admission_opened": false,
+    "release_published": false
+  },
+  "remaining_gates": [
+    "Native Windows runner and failure matrix",
+    "Re-run macOS packaged full control after fixing host fixture registration/claim sequencing",
+    "Native Windows/macOS installer delivery beyond the local macOS ZIP",
+    "Real Provider account acceptance on the selected installed delivery combination",
+    "Final release review, owner re-consent and publication"
+  ]
+}

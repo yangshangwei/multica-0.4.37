@@ -172,6 +172,10 @@ func runCollaborationHostRouterHarness() error {
 		"runtime_config_epoch": registration.RuntimeConfigEpoch, "max_concurrent_tasks": 1, "os": runtime.GOOS, "arch": runtime.GOARCH}); err != nil {
 		return err
 	}
+	if os.Getenv("COLLABORATION_HOST_READY_ONLY") == "1" {
+		_, _ = io.Copy(io.Discard, os.Stdin)
+		return json.NewEncoder(os.Stdout).Encode(map[string]any{"claims": 0, "invalid_capacity": false, "available_slots": 1, "active_tasks": 0, "http": []collaborationHostHTTPFact{}})
+	}
 	go func() { _, _ = io.Copy(io.Discard, os.Stdin); cancel() }()
 	var work sync.WaitGroup
 	d.runBatchPoller(ctx, ctx, sem, make(chan struct{}, 1), &work)

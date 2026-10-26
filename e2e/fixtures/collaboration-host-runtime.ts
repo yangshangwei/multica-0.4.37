@@ -115,7 +115,7 @@ async function enrollRuntime(owner: TestApiClient, ownerId: string, workspaceId:
     runtimeConfigEpoch: capabilities.runtime_config_epoch, credential };
 }
 
-async function startHostDaemon(runtime: HostRuntime, apiUrl: string) {
+async function startHostDaemon(runtime: HostRuntime, apiUrl: string, readyOnly = false) {
   const directory = mkdtempSync(join(tmpdir(), "multica-host-runtime-"));
   const extension = process.platform === "win32" ? ".exe" : "";
   const provider = join(directory, `fixture-provider${extension}`);
@@ -168,6 +168,7 @@ async function startHostDaemon(runtime: HostRuntime, apiUrl: string) {
   if (address === null || typeof address === "string") throw new Error("Host callback has no loopback port");
   const env: NodeJS.ProcessEnv = { HOME: directory, USERPROFILE: directory, XDG_CONFIG_HOME: directory, CLAUDE_CONFIG_DIR: directory,
     COLLABORATION_HOST_E2E_CALLBACK: `127.0.0.1:${address.port}` };
+  if (readyOnly) env.COLLABORATION_HOST_READY_ONLY = "1";
   for (const key of ["PATH", "TMPDIR", "TMP", "TEMP", "SYSTEMROOT", "SystemRoot", "WINDIR", "COMSPEC"]) {
     if (process.env[key]) env[key] = process.env[key];
   }
@@ -284,7 +285,8 @@ export async function seedHostRuntime() {
   webActor.client.setWorkspaceId(workspace.id);
   webActor.client.setWorkspaceSlug(workspace.slug);
   const runtime = await enrollRuntime(webActor.client, webActor.id, workspace.id, env.apiUrl, env.deploymentId);
-  const daemon = await startHostDaemon(runtime, env.apiUrl);
+  const delayDaemon = process.env.COLLABORATION_DELAY_HOST_DAEMON === "1";
+  let daemon: Awaited<ReturnType<typeof startHostDaemon>> | undefined = await startHostDaemon(runtime, env.apiUrl, delayDaemon);
   try {
     const agent = await webActor.client.requestJSON<{ id: string; name: string }>("/api/agents", { method: "POST", body: {
       name: "Shared host fixture agent", runtime_id: runtime.runtimeId, permission_mode: "private",
@@ -293,7 +295,7 @@ export async function seedHostRuntime() {
     for (const label of ["shared", "separate"] as const) {
       const draftId = randomUUID();
       let attachment: HostIssue["attachment"] = null;
-      if (label === "shared") {
+      if (label === "shared" && process.env.COLLABORATION_SKIP_HOST_ATTACHMENT !== "1") {
         const body = "Explicit host acceptance attachment. No private files or account data.\n";
         const upload = new FormData();
         upload.set("draft_id", draftId);
@@ -334,8 +336,12 @@ export async function seedHostRuntime() {
       issues.push({ id: issue.id, title: issue.title, description: issue.description, targetId: target.id,
         channelId: target.channel_id, agentId: agent.id, name: agent.name, attachment });
     }
+    if (delayDaemon) {
+      await daemon.close();
+      daemon = await startHostDaemon(runtime, env.apiUrl);
+    }
     return { ...env, webActor, desktopActor, sourceWorkspace, workspace, runtime, daemon, main: issues[0]!, separate: issues[1]! };
-  } catch (error) { await daemon.close(); throw error; }
+  } catch (error) { await daemon?.close(); throw error; }
 }
 export type HostFixture = Awaited<ReturnType<typeof seedHostRuntime>>;
 

@@ -17,6 +17,7 @@ import { createRendererWebPreferences } from "./renderer-web-preferences";
 import { installRendererFileAccess } from "./renderer-file-access";
 import { getAppVersion } from "./app-version";
 import { loadRuntimeConfig, saveRuntimeConfig } from "./runtime-config-loader";
+import { configurePackagedAcceptanceHome } from "./packaged-acceptance-home";
 import { openRuntimeConfigEditorFromWindow } from "./runtime-config-editor";
 import {
   deviceIdentityFilePath,
@@ -642,6 +643,14 @@ if (is.dev) {
   // productName / the build pipeline. Must run before requestSingleInstanceLock().
   app.setName("Multica");
 }
+
+// A packaged acceptance run may provide an isolated OS home. This must happen
+// before the single-instance lock and before runtime config/daemon preferences
+// are read. Normal installations leave Electron's platform home untouched.
+configurePackagedAcceptanceHome({
+  isDev: is.dev,
+  setPath: (name, value) => app.setPath(name, value),
+});
 
 // --- Protocol registration -----------------------------------------------
 

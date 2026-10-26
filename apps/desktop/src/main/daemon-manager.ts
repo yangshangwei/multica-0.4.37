@@ -17,7 +17,7 @@ import {
   type StatsListener,
 } from "fs";
 import { join } from "path";
-import { homedir, hostname } from "os";
+import { hostname } from "os";
 import type {
   DaemonStatus,
   DaemonDiagnostic,
@@ -64,7 +64,9 @@ import { transitionManagedDaemon, type ManagedPendingReason, type ManagedTransit
 import type { InstallationMetadataProof } from "../shared/managed-installation";
 
 const POLL_INTERVAL_MS = 5_000;
-const PREFS_PATH = join(homedir(), ".multica", "desktop_prefs.json");
+function prefsPath(): string {
+  return join(app.getPath("home"), ".multica", "desktop_prefs.json");
+}
 const LOG_TAIL_RETRY_MS = 2_000;
 const LOG_TAIL_MAX_RETRIES = 5;
 // How long a start may sit in "starting" (with no /health) before we probe the
@@ -233,7 +235,7 @@ async function configureManagedSession(token: string, userId: string, daemonToke
   managedPendingReason = "switching";
   const target = targetApiBaseUrl;
   const pending = prepareManagedInstallationSession({
-    homeDirectory: homedir(), profile: active.name, apiBaseUrl: target, userToken: token, daemonToken, userId,
+    homeDirectory: app.getPath("home"), profile: active.name, apiBaseUrl: target, userToken: token, daemonToken, userId,
     desktopVersion: app.getVersion(), os: process.platform === "darwin" ? "macos" : normalizeHostOS(process.platform), previousDeploymentId,
     onMetadataProof: (value) => {
       if (generation === managedGeneration && activeProfile?.name === active.name && targetApiBaseUrl === target) publishInstallationMetadata(value);
@@ -1026,8 +1028,9 @@ async function restartDaemonAfterCredentialChange(
 }
 
 async function loadPrefs(): Promise<DaemonPrefs> {
+  const path = prefsPath();
   try {
-    const raw = await readFile(PREFS_PATH, "utf-8");
+    const raw = await readFile(path, "utf-8");
     const parsed = JSON.parse(raw);
     return { ...DEFAULT_PREFS, ...parsed };
   } catch {
@@ -1036,9 +1039,10 @@ async function loadPrefs(): Promise<DaemonPrefs> {
 }
 
 async function savePrefs(prefs: DaemonPrefs): Promise<void> {
-  const dir = join(homedir(), ".multica");
+  const path = prefsPath();
+  const dir = join(app.getPath("home"), ".multica");
   await mkdir(dir, { recursive: true });
-  await writeFile(PREFS_PATH, JSON.stringify(prefs, null, 2), "utf-8");
+  await writeFile(path, JSON.stringify(prefs, null, 2), "utf-8");
 }
 
 async function clearToken(strict = false): Promise<void> {
