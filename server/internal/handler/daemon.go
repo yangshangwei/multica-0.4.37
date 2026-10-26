@@ -4023,7 +4023,9 @@ func (h *Handler) CompleteTask(w http.ResponseWriter, r *http.Request) {
 // triggered follow-ups hit the WHERE first_executed_at IS NULL clause and
 // no-op, so the funnel counts unique issues, not tasks.
 func (h *Handler) emitIssueExecutedOnFirstCompletion(r *http.Request, task *db.AgentTaskQueue) {
-	if task == nil {
+	// CompleteTask answers a late /complete for an already-finalized task with
+	// the existing row, so a cancelled or failed run reaches this point too.
+	if task == nil || task.Status != "completed" {
 		return
 	}
 	marked, err := h.Queries.MarkIssueFirstExecuted(r.Context(), task.IssueID)
