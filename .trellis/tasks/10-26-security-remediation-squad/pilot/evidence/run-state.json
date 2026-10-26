@@ -1,0 +1,40 @@
+{
+  "workspace_id": "d6eaf4b9-07bc-4aa4-b3ee-5a4bc733949c",
+  "squad_id": "ac1a40c2-a655-4453-b86d-745796a454bc",
+  "project_id": "e9f1b898-709a-4aee-9b75-5d72cf55e950",
+  "daemon_id": "019fef71-c14f-757e-9ad2-a9750d306456",
+  "runtime_id": "39443bc2-1bf7-4515-8bdd-4684a41d64c9",
+  "container": "multica-security-pilot-20261027",
+  "baseline_ref": "3c00fabd4415a6497a90fda491fd49129d758183",
+  "model_fallback": "opencode/big-pickle",
+  "issues": {
+    "production-escalation": {
+      "id": "01a1790f-905e-762a-9f44-822df2d97c93",
+      "identifier": "POLA-3",
+      "status": "todo"
+    },
+    "dependency-advisory": {
+      "id": "01a1791f-fea8-7781-b150-2c29c866ecf1",
+      "identifier": "POLA-4",
+      "status": "backlog",
+      "dispatched": false
+    },
+    "code-authorization": {
+      "id": "01a1791f-fec8-735b-9603-07776e9686d4",
+      "identifier": "POLA-5",
+      "status": "backlog",
+      "dispatched": false
+    },
+    "other-supply-chain": {
+      "id": "01a1791f-fed6-7046-9de8-0f1d4ea9102e",
+      "identifier": "POLA-6",
+      "status": "backlog",
+      "dispatched": false
+    }
+  },
+  "phase": "phase1_model_blocked",
+  "runtime_session": "stopped_after_recovery_verification",
+  "temporary_daemon_credential_removed": true,
+  "auxiliary_runtime_created_then_removed": "5298abfa-cf95-4926-a9c2-47e6ac4f5265",
+  "next_step": "Use an available authorized model configuration, verify egress constraints, restart the isolated original daemon and rerun POLA-3 before assigning POLA-4/5/6."
+}

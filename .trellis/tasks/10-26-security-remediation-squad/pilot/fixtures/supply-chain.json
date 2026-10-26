@@ -1,0 +1,18 @@
+{
+  "synthetic": true,
+  "kind": "build-tool",
+  "artifact": "pilot-build-helper",
+  "source": "https://artifacts.invalid/pilot-build-helper/1.0.0",
+  "artifact_sha256": null,
+  "provenance": null,
+  "sbom": null,
+  "evidence_state": "unknown",
+  "decision": "hold",
+  "next_owner": "pilot-build-owner",
+  "required_evidence": [
+    "Reviewed artifact digest from an independently trusted source",
+    "Producer identity and build provenance",
+    "Component inventory and runtime permission boundary"
+  ],
+  "network_execution_permitted": false
+}

@@ -137,6 +137,41 @@ defaults apply when creating agents or materializing a missing role skill;
 existing workspace copies are reused without overwriting customized content.
 `builtin_agent_templates_test.go` pins the full role-to-skill and autonomy maps.
 
+### Runtime recovery must preserve role provenance
+
+When an existing role's runtime is offline, ordinary `multica agent copy`
+uses the generic agent-create path. It copies editable instructions and skills,
+but does not preserve `template_key`, `template_version` or `autonomy_level`.
+Do not treat the resulting custom agent as a replacement with the source role's
+declared authority, or widen access to make a pilot run.
+
+`POST /api/agents/from-template` copies the declared autonomy and template
+identity onto an ordinary agent and defaults to private Access. Explicit
+permission settings remain supported. It accepts only listed role keys;
+unlisted squad leaders such as `maintenance-lead` are rejected.
+`POST /api/squads/from-template` reuses existing workspace agents by template
+key and preserves their runtime, edits and skills. Supplying a new runtime to
+that request does not relocate reused members. Restoring the original daemon
+identity preserves those bindings; rebinding a shared agent changes the
+execution location for every squad that uses it.
+
+Validate runtime owner/workspace, agent `runtime_id`, `template_key`,
+`template_version`, `autonomy_level`, Access and skills separately from
+connectivity. A runtime heartbeat proves registration; it does not prove model
+authentication, a successful role turn, or independent QA. Read pending and
+active tasks before restarting a shared daemon. With a user PAT/JWT, workspace
+discovery covers all account memberships even when the CLI profile has a
+selected `workspace_id`; a workspace-scoped daemon token remains limited to
+its bound workspace.
+
+Regression anchors: `TestCreateAgentFromTemplate_CopiesTheRoleOntoAnOrdinaryAgent`,
+`TestCreateAgentFromTemplate_RejectsUnknownAndUnlistedKeys`,
+`TestCreateSquadFromTemplate_ReusesExistingRoleAgents`, and
+`TestCreateSquadFromTemplate_ReusedAgentKeepsItsEdits`. Their assertions concern
+template identity, declared authority and retained workspace edits; use a real
+task result to establish model execution. A copied prompt plus an online badge
+is insufficient evidence of a functioning role.
+
 The existing architecture, security, release, reliability and progress skills also
 carry the five governance checks identified by the lifecycle review: old-client/plugin
 contract matrices, trust-boundary and supply-chain/SBOM review, recovery/RPO/RTO
