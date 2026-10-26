@@ -21,6 +21,8 @@ test("C13 an ordinary agent's task token sees a collaboration issue only as a re
   test.setTimeout(120_000);
   test.skip(!apiUrl || !process.env.DATABASE_URL || process.env.E2E_PASSWORD_AUTH === "1",
     "Requires the legacy-auth collaboration lane (email-code fixtures and a member-session daemon)");
+  // The machine calls go to API_BASE; the lane gate names COLLABORATION_E2E_API_URL. They must be one server.
+  expect(new URL(API_BASE).origin).toBe(new URL(apiUrl!).origin);
   expect(await (await fetch(`${API_BASE}/api/config`)).json()).toMatchObject({ auth_mode: "legacy" });
 
   // The workspace keeps its collaboration record, so it is not deleted at the

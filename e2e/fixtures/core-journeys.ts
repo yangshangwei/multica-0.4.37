@@ -3,10 +3,10 @@ import pg from "pg";
 import { expect, test as base, type Browser, type BrowserContext, type Page } from "@playwright/test";
 import { TestApiClient } from "../fixtures";
 
-// Shared helpers for the core business journey specs. They mirror the
-// file-local helpers in e2e/core-business-journeys.spec.ts (G1–G4): real
-// accounts and workspaces, server-state reads over the API or SQL, and a
-// daemon that speaks the real HTTP protocol without running any agent CLI.
+// Shared helpers for the core business journey specs (G1–G8 and the workflow
+// journeys): real accounts and workspaces, server-state reads over the API or
+// SQL, and a daemon that speaks the real HTTP protocol without running any
+// agent CLI.
 export type Workspace = { id: string; slug: string; name: string };
 export type Actor = { api: TestApiClient; workspace: Workspace; userId: string; name: string; email: string };
 export type Issue = { id: string; identifier: string; title: string; status: string };

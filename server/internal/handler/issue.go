@@ -5110,6 +5110,10 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 			"status_changed":     statusChanged,
 			"priority_changed":   priorityChanged,
 			"project_changed":    projectChanged,
+			// The listeners address the "unassigned" notice and the activity's
+			// from-side with these, as they do for UpdateIssue.
+			"prev_assignee_type": textToPtr(prevIssue.AssigneeType),
+			"prev_assignee_id":   uuidToPtr(prevIssue.AssigneeID),
 		})
 
 		// Reassignment does not cancel existing tasks (#4963 / MUL-4113) —

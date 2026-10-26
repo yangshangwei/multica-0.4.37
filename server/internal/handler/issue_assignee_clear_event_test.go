@@ -10,22 +10,26 @@ import (
 )
 
 // captureIssueUpdated runs call against a copy of testHandler with its own bus
-// and returns the assignee_changed flag of every issue:updated event published.
-func captureIssueUpdated(t *testing.T, call func(h *Handler)) []bool {
+// and returns the payload of every issue:updated event published.
+func captureIssueUpdated(t *testing.T, call func(h *Handler)) []map[string]any {
 	t.Helper()
 	h := *testHandler
 	h.Bus = events.New()
-	var flags []bool
+	var payloads []map[string]any
 	h.Bus.Subscribe(protocol.EventIssueUpdated, func(event events.Event) {
 		payload, ok := event.Payload.(map[string]any)
 		if !ok {
 			t.Fatalf("issue:updated payload = %#v", event.Payload)
 		}
-		changed, _ := payload["assignee_changed"].(bool)
-		flags = append(flags, changed)
+		payloads = append(payloads, payload)
 	})
 	call(&h)
-	return flags
+	return payloads
+}
+
+func assigneeChangedFlag(payload map[string]any) bool {
+	changed, _ := payload["assignee_changed"].(bool)
+	return changed
 }
 
 // Clearing an assignee sends explicit nulls (the picker's "Unassigned" option,
@@ -34,29 +38,36 @@ func captureIssueUpdated(t *testing.T, call func(h *Handler)) []bool {
 // previous assignee gets no "unassigned" notice and no activity is recorded.
 func TestUpdateIssue_ExplicitNullAssigneeReportsAssigneeChanged(t *testing.T) {
 	for _, tc := range []struct {
-		name string
-		body map[string]any
-		want bool
+		name     string
+		assigned bool
+		body     map[string]any
+		want     bool
 	}{
-		{"clear_both", map[string]any{"assignee_type": nil, "assignee_id": nil}, true},
-		{"title_only", map[string]any{"title": "Retitled, still assigned"}, false},
+		{"clear_both", true, map[string]any{"assignee_type": nil, "assignee_id": nil}, true},
+		{"title_only", true, map[string]any{"title": "Retitled, still assigned"}, false},
+		{"already_unassigned", false, map[string]any{"assignee_type": nil, "assignee_id": nil}, false},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			issueID := dbfx.Issue(t, "Explicit null unassign", testutil.Cols{
-				"assignee_type": "member", "assignee_id": testUserID,
-			})
+			cols := testutil.Cols{}
+			if tc.assigned {
+				cols = testutil.Cols{"assignee_type": "member", "assignee_id": testUserID}
+			}
+			issueID := dbfx.Issue(t, "Explicit null unassign", cols)
 			req := testutil.WithURLParams(testutil.WithHeaders(testutil.JSONRequest("PUT", "/api/issues/"+issueID, tc.body),
 				"X-User-ID", testUserID, "X-Workspace-ID", testWorkspaceID), "id", issueID)
-			flags := captureIssueUpdated(t, func(h *Handler) {
+			payloads := captureIssueUpdated(t, func(h *Handler) {
 				testutil.Call(t, h.UpdateIssue, req).Want(http.StatusOK)
 			})
-			if len(flags) != 1 || flags[0] != tc.want {
-				t.Fatalf("assignee_changed flags = %v, want [%v]", flags, tc.want)
+			if len(payloads) != 1 || assigneeChangedFlag(payloads[0]) != tc.want {
+				t.Fatalf("issue:updated payloads = %v, want one with assignee_changed=%v", payloads, tc.want)
 			}
 		})
 	}
 }
 
+// The batch toolbar's "Unassigned" takes the same path, and its event must
+// name the previous assignee the way UpdateIssue does: the notification and
+// activity listeners address the "unassigned" notice and the from-side by it.
 func TestBatchUpdateIssues_ExplicitNullAssigneeReportsAssigneeChanged(t *testing.T) {
 	first := dbfx.Issue(t, "Batch explicit null unassign A", testutil.Cols{"assignee_type": "member", "assignee_id": testUserID})
 	second := dbfx.Issue(t, "Batch explicit null unassign B", testutil.Cols{"assignee_type": "member", "assignee_id": testUserID})
@@ -64,10 +75,18 @@ func TestBatchUpdateIssues_ExplicitNullAssigneeReportsAssigneeChanged(t *testing
 		"issue_ids": []string{first, second},
 		"updates":   map[string]any{"assignee_type": nil, "assignee_id": nil},
 	}), "X-User-ID", testUserID, "X-Workspace-ID", testWorkspaceID)
-	flags := captureIssueUpdated(t, func(h *Handler) {
+	payloads := captureIssueUpdated(t, func(h *Handler) {
 		testutil.Call(t, h.BatchUpdateIssues, req).Want(http.StatusOK)
 	})
-	if len(flags) != 2 || !flags[0] || !flags[1] {
-		t.Fatalf("assignee_changed flags = %v, want [true true]", flags)
+	if len(payloads) != 2 {
+		t.Fatalf("issue:updated payloads = %d, want 2", len(payloads))
+	}
+	for _, payload := range payloads {
+		prevType, _ := payload["prev_assignee_type"].(*string)
+		prevID, _ := payload["prev_assignee_id"].(*string)
+		if !assigneeChangedFlag(payload) || prevType == nil || *prevType != "member" || prevID == nil || *prevID != testUserID {
+			t.Fatalf("batch payload = assignee_changed %v, prev_assignee_type %v, prev_assignee_id %v; want true, member, %s",
+				payload["assignee_changed"], prevType, prevID, testUserID)
+		}
 	}
 }
