@@ -91,7 +91,7 @@ async function lists(actor: HandoffActor, issueId: string) {
   const participating = await actor.client.requestJSON<CollaborationWorkbench>("/api/me/workbench?view=participating");
   return { current, participating, currentIds: current.items.map((item) => item.id), participatingIds: participating.items.map((item) => item.id), issueId };
 }
-async function assertLists(actor: HandoffActor, fixture: OfflineHandoffFixture, current: boolean, participating: boolean) {
+export async function assertLists(actor: HandoffActor, fixture: OfflineHandoffFixture, current: boolean, participating: boolean) {
   await expect.poll(async () => { const result = await lists(actor, fixture.issueId); return [result.currentIds, result.participatingIds]; })
     .toEqual([current ? [fixture.issueId] : [], participating ? [fixture.issueId] : []]);
   return lists(actor, fixture.issueId);
@@ -104,7 +104,7 @@ function assertExecutionAndBusiness(before: CollaborationIssue, after: Collabora
   expect(after.execution?.commands ?? []).toEqual([]);
 }
 
-async function uiWorkflow(session: HandoffSession, fixture: OfflineHandoffFixture, actor: HandoffActor,
+export async function uiWorkflow(session: HandoffSession, fixture: OfflineHandoffFixture, actor: HandoffActor,
   action: "invite" | "transfer", target: HandoffActor, note = "") {
   const page = session.page;
   await page.getByRole("button", { name: action === "invite" ? "Add participant" : "Transfer", exact: true }).click();
@@ -176,7 +176,7 @@ async function archiveTransfer(session: HandoffSession, fixture: OfflineHandoffF
   return { notification_id: notification.id, old_href: href, state: (await handoffNotifications(fixture.recipient, fixture.issueId)).find((item) => item.id === notification.id) };
 }
 
-async function checkVisibleLists(session: HandoffSession, fixture: OfflineHandoffFixture, actor: HandoffActor, current: boolean) {
+export async function checkVisibleLists(session: HandoffSession, fixture: OfflineHandoffFixture, actor: HandoffActor, current: boolean) {
   await session.navigate("/account?view=current");
   const region = session.page.getByRole("region", { name: "Collaboration issues", exact: true });
   await expect(region.getByRole("link", { name: new RegExp(fixture.title) })).toHaveCount(current ? 1 : 0);

@@ -8,13 +8,13 @@ import { TestApiClient } from "../fixtures";
 
 interface Challenge { challenge_id: string; signature_payload: string; body_payload: string }
 interface ResourceReceipt { status: number; code: string; offer_id: string | null; offer_version: string | null; target_id: string | null }
-interface ControlTarget { kind: "agent" | "squad"; targetId: string; resourceId: string; channelId: string }
+export interface ControlTarget { kind: "agent" | "squad"; targetId: string; resourceId: string; channelId: string }
 interface RuntimeIdentity {
   deployment_id: string; installation_id: string; issue_id: string; session_id: string;
   target_id: string; channel_id: string; batch_id: string; group_id: string; run_id: string;
   fence: string; claim_generation: string; launch_nonce: string;
 }
-interface PendingControlRun { commandId: string; batchId: string; groupId: string; runId: string }
+export interface PendingControlRun { commandId: string; batchId: string; groupId: string; runId: string }
 export interface ControlJourneyAdapter {
   navigate(page: Page, path: string): Promise<void>;
   capture?(stage: string, page: Page, focus: Locator): Promise<void>;
@@ -101,7 +101,7 @@ async function enrollOfflineControlRuntime(owner: TestApiClient, workspaceId: st
   };
 }
 
-async function consentControlTarget(owner: TestApiClient, root: string, targetId: string, runtime: { installationId: string; bindingId: string }) {
+export async function consentControlTarget(owner: TestApiClient, root: string, targetId: string, runtime: { installationId: string; bindingId: string }) {
   const registered = await owner.requestJSON<CollaborationResources>(`${root}/resources`);
   const target = registered.targets.find((item) => item.target_id === targetId);
   if (!target) throw new Error("The adopted target is missing from the owner's resources");
@@ -218,8 +218,8 @@ export async function authenticateControlWeb(page: Page, fixture: CollaborationC
   await page.addInitScript(() => { localStorage.setItem("multica-locale", "en"); localStorage.setItem("multica:chat:isOpen", "false"); });
 }
 
-const panelFor = (page: Page) => page.getByRole("region", { name: "AI execution", exact: true });
-function targetRow(page: Page, target: ControlTarget) {
+export const panelFor = (page: Page) => page.getByRole("region", { name: "AI execution", exact: true });
+export function targetRow(page: Page, target: ControlTarget) {
   return panelFor(page).getByRole("listitem").filter({ has: page.getByText(target.resourceId, { exact: true }) })
     .filter({ has: page.getByRole("button", { name: "Stop target", exact: true }) });
 }
@@ -260,7 +260,7 @@ async function assertControlView(page: Page, fixture: CollaborationControlJourne
   }
 }
 
-function assertUntouchedLanes(fixture: CollaborationControlJourney, before: CollaborationIssue, after: CollaborationIssue, selected: ControlTarget) {
+export function assertUntouchedLanes(fixture: CollaborationControlJourney, before: CollaborationIssue, after: CollaborationIssue, selected: ControlTarget) {
   expect(after.session).toEqual(before.session);
   for (const target of fixture.targets.filter((target) => target.targetId !== selected.targetId)) {
     expect(after.execution!.channels.find((lane) => lane.id === target.channelId)).toEqual(before.execution!.channels.find((lane) => lane.id === target.channelId));
@@ -271,7 +271,7 @@ function assertUntouchedLanes(fixture: CollaborationControlJourney, before: Coll
   expect(after.execution!.runs).toEqual(before.execution!.runs);
 }
 
-interface ObservedControl { receipt: CollaborationControlReceipt; requestId: string; input: CollaborationControlInput }
+export interface ObservedControl { receipt: CollaborationControlReceipt; requestId: string; input: CollaborationControlInput }
 function observeControlRequests(page: Page, root: string) {
   const writes: { request_id: string; action: string; scope: string; target_ids: string[] }[] = [];
   const recoveryPaths: string[] = [];
@@ -286,7 +286,7 @@ function observeControlRequests(page: Page, root: string) {
   page.on("request", record);
   return { writes, recoveryPaths, dispose: () => page.off("request", record) };
 }
-async function clickControl(page: Page, fixture: CollaborationControlJourney, button: Locator, status: number, loseResponse = false): Promise<ObservedControl> {
+export async function clickControl(page: Page, fixture: CollaborationControlJourney, button: Locator, status: number, loseResponse = false): Promise<ObservedControl> {
   const path = `${issuePath(fixture)}/control`;
   const readResponse = async (response: Pick<APIResponse, "status" | "json">, request: Request): Promise<ObservedControl> => {
     expect(response.status()).toBe(status);
