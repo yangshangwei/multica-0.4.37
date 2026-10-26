@@ -44,7 +44,10 @@ test("Linux packaged full Main controls a real native host run and explicitly re
   expect(inspected).toMatch(/^sha256:[0-9a-f]{64}$/);
   const packageHash = process.env.COLLABORATION_HOST_INSTALLED_ASAR_SHA256;
   expect(packageHash, "Pin the current task-owned app.asar").toMatch(/^[0-9a-f]{64}$/);
-  expect(process.env.COLLABORATION_INSTALLED_APP_VOLUME || process.env.COLLABORATION_INSTALLED_APP_DIR).toBeTruthy();
+  const deb = process.env.COLLABORATION_INSTALLED_DEB;
+  expect(deb || process.env.COLLABORATION_INSTALLED_APP_VOLUME || process.env.COLLABORATION_INSTALLED_APP_DIR).toBeTruthy();
+  const expectedInstallation = deb ? { executableSha256: process.env.COLLABORATION_INSTALLED_EXECUTABLE_SHA256,
+    asarSha256: packageHash, cliSha256: process.env.COLLABORATION_INSTALLED_CLI_SHA256 } : undefined;
   const apiURL = process.env.COLLABORATION_E2E_API_URL!;
   const webURL = String(testInfo.project.use.baseURL);
   const native = new InstalledMainClient({ image });
@@ -56,12 +59,21 @@ test("Linux packaged full Main controls a real native host run and explicitly re
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   try {
-    const boot = await native.command<InstalledMainMetadata>("init", { apiUrl: dockerTaskURL(apiURL), appUrl: dockerTaskURL(webURL), executionViewVersion: 6 }, 180_000);
+    const boot = await native.command<InstalledMainMetadata>("init", { apiUrl: dockerTaskURL(apiURL), appUrl: dockerTaskURL(webURL), executionViewVersion: 6,
+      ...(expectedInstallation ? { expectedInstallation } : {}) }, 180_000);
+    evidence.boot = boot;
     expect(boot.main).toMatchObject({ packaged: true, name: "Multica", platform: "linux", arch: "arm64", electron: "39.8.7" });
     expect(boot.artifactSha256).toBe(packageHash);
-    expect(boot.rendererUrl).toMatch(/^file:\/\/\/opt\/multica\/resources\/app\.asar\/out\/renderer\/index\.html/);
+    expect(new URL(boot.rendererUrl).protocol).toBe("file:");
+    expect(new URL(boot.rendererUrl).pathname).toBe(`${native.packageRoot}/resources/app.asar/out/renderer/index.html`);
     expect(boot.bundledCLI?.version).toBeTruthy();
-    evidence.boot = boot;
+    if (deb) {
+      expect(boot.installation).toMatchObject({ kind: "deb", packageName: "multica", architecture: "arm64", status: "install ok installed",
+        debSha256: process.env.COLLABORATION_INSTALLED_DEB_SHA256, ...expectedInstallation, cliPathUnclaimed: true, standaloneCliPreserved: true });
+      // FPM maps SemVer prerelease separators to Debian's tilde ordering.
+      expect(boot.installation?.version).toBe(boot.main.version.replaceAll("-", "~"));
+      expect(boot.bundledCLI?.version.replace(/^v/, "")).toBe(boot.main.version);
+    } else expect(boot.installation).toBeUndefined();
     fixture = await seedHostRuntime();
     const f = fixture, issue = f.main;
     evidence.runtime = f.daemon.ready;
@@ -170,17 +182,23 @@ test("Linux packaged full Main controls a real native host run and explicitly re
     evidence.packaged_status = status;
     expect(errors).toEqual([]);
   } finally {
-    if (fixture) {
-      evidence.provider_observations = fixture.daemon.evidence();
-      if (!daemonClosed) evidence.daemon = await fixture.daemon.close();
+    try {
+      if (fixture) {
+        evidence.provider_observations = fixture.daemon.evidence();
+        if (!daemonClosed) evidence.daemon = await fixture.daemon.close();
+      }
+    } finally {
+      evidence.transport = native.transportEvidence;
+      evidence.web_errors = errors;
+      try {
+        await native.close();
+      } finally {
+        const encoded = JSON.stringify(evidence, null, 2);
+        expect(encoded).not.toMatch(/\b(?:mcb_|mct_|mdt_|mat_)[A-Za-z0-9_.-]+/);
+        const path = testInfo.outputPath("installed-host-evidence.json");
+        writeFileSync(path, encoded, { mode: 0o600 });
+        await testInfo.attach("installed-host-evidence", { contentType: "application/json", path });
+      }
     }
-    evidence.transport = native.transportEvidence;
-    evidence.web_errors = errors;
-    await native.close();
-    const encoded = JSON.stringify(evidence, null, 2);
-    expect(encoded).not.toMatch(/\b(?:mcb_|mct_|mdt_|mat_)[A-Za-z0-9_.-]+/);
-    const path = testInfo.outputPath("installed-host-evidence.json");
-    writeFileSync(path, encoded, { mode: 0o600 });
-    await testInfo.attach("installed-host-evidence", { contentType: "application/json", path });
   }
 });

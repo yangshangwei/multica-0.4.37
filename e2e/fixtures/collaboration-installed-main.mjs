@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import path from "node:path";
 import process from "node:process";
@@ -10,8 +10,10 @@ import { _electron as electron, expect } from "@playwright/test";
 
 // This process controls the packaged executable. It never imports an alternate
 // Main, replaces IPC handlers, injects auth, or changes the OS home directory.
-const executable = "/opt/multica/multica-desktop";
-const packagePath = "/opt/multica/resources/app.asar";
+const debSha256 = process.env.COLLABORATION_INSTALLED_DEB_SHA256;
+const packageRoot = debSha256 === undefined ? "/opt/multica" : "/opt/Multica";
+const executable = `${packageRoot}/multica-desktop`;
+const packagePath = `${packageRoot}/resources/app.asar`;
 const protocolPrefix = "MULTICA_INSTALLED_REPLY ";
 const secrets = new Set();
 const errors = [];
@@ -23,6 +25,7 @@ let page;
 let apiUrl;
 let appUrl;
 let executionViewVersion;
+let installation;
 
 function scrub(value) {
   let text = typeof value === "string" ? value : JSON.stringify(value);
@@ -36,6 +39,54 @@ function reply(id, value, error) {
 
 function sha(file) {
   return createHash("sha256").update(readFileSync(file)).digest("hex");
+}
+
+function installDeb(expected) {
+  assert.match(debSha256, /^[0-9a-f]{64}$/);
+  assert.equal(sha("/acceptance/package.deb"), debSha256, "Install only the pinned .deb bytes");
+  for (const field of ["executableSha256", "asarSha256", "cliSha256"]) assert.match(expected?.[field], /^[0-9a-f]{64}$/);
+  assert(!existsSync(packageRoot), "The real package install requires a fresh container");
+  const run = (command, args) => {
+    const result = spawnSync(command, args, { encoding: "utf8", timeout: 90_000, maxBuffer: 16 * 1024 * 1024 });
+    assert.equal(result.status, 0, `${command} failed: ${result.stderr}`);
+    return result;
+  };
+  const field = (name) => run("dpkg-deb", ["--field", "/acceptance/package.deb", name]).stdout.trim();
+  const packageName = field("Package");
+  const version = field("Version");
+  const architecture = field("Architecture");
+  assert.equal(packageName, "multica");
+  assert.equal(architecture, "arm64");
+  const standaloneCli = "/usr/bin/multica";
+  const sentinel = "#!/bin/sh\n# Test-owned standalone CLI placeholder.\nexit 73\n";
+  assert(!existsSync(standaloneCli), "The fresh container must not carry a user CLI");
+  writeFileSync(standaloneCli, sentinel, { mode: 0o755 });
+  const command = ["dpkg", "--install", "/acceptance/package.deb"];
+  const installed = run(command[0], command.slice(1));
+  const [status, installedVersion, installedArch] = run("dpkg-query", ["--show", "--showformat=${Status}\n${Version}\n${Architecture}", packageName]).stdout.trim().split("\n");
+  assert.equal(status, "install ok installed");
+  assert.equal(installedVersion, version);
+  assert.equal(installedArch, architecture);
+  const files = run("dpkg-query", ["--listfiles", packageName]).stdout.trim().split("\n");
+  const cli = `${packageRoot}/resources/app.asar.unpacked/resources/bin/multica`;
+  for (const file of [executable, packagePath, cli]) assert(files.includes(file), `Installed package must own ${file}`);
+  const hashes = { executableSha256: sha(executable), asarSha256: sha(packagePath), cliSha256: sha(cli) };
+  assert.deepEqual(hashes, expected);
+  const desktopEntry = "/usr/share/applications/multica-desktop.desktop";
+  assert(files.includes(desktopEntry));
+  const desktop = readFileSync(desktopEntry, "utf8");
+  for (const line of ["Name=Multica", "Exec=/opt/Multica/multica-desktop %U", "Icon=multica-desktop", "StartupWMClass=Multica", "MimeType=x-scheme-handler/multica;"]) {
+    assert(desktop.split("\n").includes(line), `Installed desktop entry must retain ${line}`);
+  }
+  for (const size of [16, 24, 32, 48, 64, 128, 256, 512]) {
+    assert(files.includes(`/usr/share/icons/hicolor/${size}x${size}/apps/multica-desktop.png`));
+  }
+  assert.equal(realpathSync("/usr/bin/multica-desktop"), executable);
+  assert(!files.includes(standaloneCli), "Desktop must not claim the standalone CLI command");
+  assert.equal(readFileSync(standaloneCli, "utf8"), sentinel, "Installing Desktop must preserve the separate CLI");
+  return { kind: "deb", packageName, version, architecture, status, debSha256, ...hashes,
+    desktopEntry, desktopLauncher: "/usr/bin/multica-desktop", cliPathUnclaimed: true, standaloneCliPreserved: true,
+    packageManager: { command, exitCode: installed.status, stdout: installed.stdout, stderr: installed.stderr } };
 }
 
 function taskEndpoint(value, field) {
@@ -164,7 +215,7 @@ async function metadata() {
       accountTabs: state.accountGroup?.tabs.map(({ id, url }) => ({ id, url })) ?? [] };
   });
   return { main, native, tabs, rendererUrl: page.url(), artifactSha256: sha(packagePath), executableSha256: sha(executable),
-    errors: [...errors], accountRequests: [...accountRequests], responses: [...responses], writes: [...writes] };
+    errors: [...errors], accountRequests: [...accountRequests], responses: [...responses], writes: [...writes], ...(installation ? { installation } : {}) };
 }
 
 async function launch() {
@@ -184,7 +235,8 @@ async function launch() {
       workspaceSlug: headers["x-workspace-slug"] ?? null, clientVersion: headers["x-client-version"] ?? null,
       clientOS: headers["x-client-os"] ?? null });
   });
-  await expect.poll(() => page.url()).toMatch(/^file:\/\/\/opt\/multica\/resources\/app\.asar\/out\/renderer\/index\.html/);
+  await expect.poll(() => new URL(page.url()).protocol).toBe("file:");
+  await expect.poll(() => new URL(page.url()).pathname).toBe(`${packagePath}/out/renderer/index.html`);
   await expect.poll(() => page.evaluate(() => typeof window.daemonAPI?.getPrefs)).toBe("function");
   await expect.poll(() => page.evaluate(() => window.daemonAPI.getStatus().then((status) => status.state)), { timeout: 90_000 }).toBe("stopped");
   await expect.poll(cliAvailable, { timeout: 90_000 }).toBe(true);
@@ -209,11 +261,16 @@ async function originalResponse(pending, expectedStatus, baseline) {
 
 async function dispatch(message) {
   switch (message.command) {
+    case "install": {
+      installation = installDeb(message.expectedInstallation);
+      return installation;
+    }
     case "init": {
       assert(message.executionViewVersion === undefined || message.executionViewVersion === 6);
       executionViewVersion = message.executionViewVersion;
       assert.equal(process.platform, "linux");
       assert.equal(homedir(), "/root");
+      if (debSha256 !== undefined) installation = installDeb(message.expectedInstallation);
       assert(existsSync(executable) && existsSync(packagePath), "Mount the current electron-builder directory package");
       apiUrl = taskEndpoint(message.apiUrl, "apiUrl");
       appUrl = taskEndpoint(message.appUrl, "appUrl");
@@ -222,7 +279,7 @@ async function dispatch(message) {
       createProfileFile("/root/.multica/desktop_prefs.json", { autoStart: false, autoStop: false });
       createProfileFile("/root/.config/Multica/updater-preferences.json", { automaticUpdates: false });
       await launch();
-      const cli = "/opt/multica/resources/app.asar.unpacked/resources/bin/multica";
+      const cli = `${packageRoot}/resources/app.asar.unpacked/resources/bin/multica`;
       const result = spawnSync(cli, ["version", "--output", "json"], { encoding: "utf8", timeout: 10_000 });
       assert.equal(result.status, 0, "The bundled CLI version command must execute on the actual container OS");
       const version = JSON.parse(result.stdout);

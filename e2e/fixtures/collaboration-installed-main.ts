@@ -15,6 +15,10 @@ export interface InstalledMainMetadata {
     clientVersion: string | null; clientOS: string | null }[];
   responses: { path: string; status: number; method: string }[];
   bundledCLI?: { version: string; sha256: string; command: string[] };
+  installation?: { kind: "deb"; packageName: string; version: string; architecture: string; status: string;
+    debSha256: string; executableSha256: string; asarSha256: string; cliSha256: string;
+    desktopEntry: string; desktopLauncher: string; cliPathUnclaimed: boolean; standaloneCliPreserved: boolean;
+    packageManager: { command: string[]; exitCode: number; stdout: string; stderr: string } };
 }
 
 export interface InstalledMainWrite<Receipt, Input = unknown> { receipt: Receipt; requestId: string; input: Input; resultText: string }
@@ -23,6 +27,7 @@ export interface InstalledMainWrite<Receipt, Input = unknown> { receipt: Receipt
  * replies, reports and Playwright traces contain no fixture password or token. */
 export class InstalledMainClient {
   readonly containerName = `multica-collaboration-main-${randomUUID().slice(0, 12)}`;
+  readonly packageRoot: "/opt/multica" | "/opt/Multica";
   private readonly child: ChildProcessWithoutNullStreams;
   private sequence = 0;
   private readonly pending = new Map<number, { resolve(value: unknown): void; reject(error: Error): void; timer: NodeJS.Timeout }>();
@@ -33,13 +38,20 @@ export class InstalledMainClient {
   constructor(options: { image?: string } = {}) {
     const appDir = process.env.COLLABORATION_INSTALLED_APP_DIR;
     const appVolume = process.env.COLLABORATION_INSTALLED_APP_VOLUME;
+    const deb = process.env.COLLABORATION_INSTALLED_DEB;
+    const debSha256 = process.env.COLLABORATION_INSTALLED_DEB_SHA256;
     const image = options.image ?? process.env.COLLABORATION_INSTALLED_IMAGE;
-    if ((!appDir && !appVolume) || !image) throw new Error("Installed Main requires an explicit task-owned Docker image and electron-builder directory package");
+    if ((!appDir && !appVolume && !deb) || !image) throw new Error("Installed Main requires an explicit task-owned Docker image and directory package or .deb");
+    if (deb && (appDir || appVolume)) throw new Error("Select either an installed .deb or a directory package, never both");
+    if (deb && (!deb.endsWith(".deb") || !/^[0-9a-f]{64}$/.test(debSha256 ?? ""))) throw new Error("Installed Main requires an explicitly pinned .deb SHA-256");
     if (appVolume && !/^multica-gap-full-main-package-[a-z0-9-]+$/.test(appVolume)) throw new Error("Installed Main requires a named task-owned package volume");
+    this.packageRoot = deb ? "/opt/Multica" : "/opt/multica";
     const repo = realpathSync(path.resolve(import.meta.dirname, "../.."));
-    const packageMount = appVolume
-      ? ["--mount", `type=volume,source=${appVolume},target=/opt/multica,readonly`]
-      : ["--volume", `${realpathSync(appDir!)}:/opt/multica:ro`];
+    const packageMount = deb
+      ? ["--volume", `${realpathSync(deb)}:/acceptance/package.deb:ro`, "--env", `COLLABORATION_INSTALLED_DEB_SHA256=${debSha256}`]
+      : appVolume
+        ? ["--mount", `type=volume,source=${appVolume},target=/opt/multica,readonly`]
+        : ["--volume", `${realpathSync(appDir!)}:/opt/multica:ro`];
     this.child = spawn("docker", ["run", "--rm", "--init", "-i", "--name", this.containerName,
       "--add-host", "host.docker.internal:host-gateway", "--volume", `${repo}:/workspace:ro`,
       ...packageMount, "--workdir", "/workspace", image,

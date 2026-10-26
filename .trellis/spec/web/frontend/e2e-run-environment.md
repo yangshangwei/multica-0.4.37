@@ -94,6 +94,52 @@ remain active without one shared fixture exhausting the account budget.
 in `DATABASE_URL`; a Docker container with the same database name is not proof
 that this endpoint has the database.
 
+### Debian installed Main acceptance
+
+1. **Scope:** package-manager installation is a separate acceptance fact from
+   running an electron-builder directory package. Reuse the full Main
+   host-control journey in `e2e/collaboration-host-installed.spec.ts`.
+2. **Signatures:** `InstalledMainClient` selects an explicit
+   `COLLABORATION_INSTALLED_DEB` instead of `COLLABORATION_INSTALLED_APP_DIR` or
+   `COLLABORATION_INSTALLED_APP_VOLUME`. Build from accepted bytes with
+   `electron-builder --prepackaged <directory> --linux deb --arm64 --publish never`
+   and a fresh `-c.directories.output=<directory>`; the full `package.mjs`
+   wrapper deletes its old `dist` before rebuilding and is unsuitable here.
+3. **Contracts:** pin `COLLABORATION_INSTALLED_DEB_SHA256`,
+   `COLLABORATION_INSTALLED_EXECUTABLE_SHA256`,
+   `COLLABORATION_HOST_INSTALLED_ASAR_SHA256` and
+   `COLLABORATION_INSTALLED_CLI_SHA256`. The fresh UUID-owned container mounts
+   only the `.deb` read-only and installs with real `dpkg`; Main runs from
+   `/opt/Multica`, while the directory mode retains `/opt/multica`. Keep the
+   installed Debian version and application version separately and verify the
+   build tool's Debian prerelease conversion, rather than equating two reads
+   of the same package metadata. The current builder maps application `-` to
+   Debian `~`; the bundled CLI can retain git's leading `v`. Compare the CLI
+   after the existing single-leading-`v` normalization and keep all raw versions
+   in evidence (`bundle-cli.mjs`, `package.mjs`, `main/app-version.ts`).
+4. **Validation / errors:** mixed package modes, missing bytes, invalid pins,
+   hash drift, failed dependency/install status, wrong architecture/version,
+   misplaced payload or desktop metadata must fail acceptance. A configured
+   prerequisite failure is never a successful skip. Do not force dependencies
+   or substitute a directory mount after installation fails.
+5. **Cases:** a pinned `.deb` owns the expected executable/ASAR/CLI and desktop
+   entry; the directory variant retains its original behavior; an unrelated
+   standalone `multica` command survives installation unchanged. The desktop
+   launcher is `multica-desktop`.
+6. **Required verification:** retain installation output, package status,
+   ownership, versions, all three installed hashes, desktop protocol/icon
+   metadata and CLI-name separation. Run the real password-form,
+   Stop/restart/explicit-Resume journey in both modes without retries. Preserve
+   actual `file:` renderer paths, native IPC and fixture-only Provider scope.
+   Attach boot observations before assertions and always close the owned Main
+   container even if daemon evidence collection or cleanup rejects.
+7. **Wrong / correct:** do not describe unpacking an archive as installation,
+   rebuild accepted payloads during repackaging, or count the two modes as new
+   originals in an existing inventory. Record the installer run separately
+   with its source, package hash and actual execution results. Debian arm64
+   container installation does not prove other OS installers, upgrades,
+   signatures, vendor-account execution or release readiness.
+
 Production Web startup uses `pnpm --filter @multica/web build`, then
 `pnpm --filter @multica/web exec next start --port <allocated-port>`. The build
 receives `NEXT_PUBLIC_API_URL` / `NEXT_PUBLIC_WS_URL`, and `REMOTE_API_URL` points
