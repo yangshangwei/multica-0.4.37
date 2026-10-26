@@ -3,6 +3,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { Extension } from "@tiptap/core";
+import { Selection } from "@tiptap/pm/state";
 import { Document } from "@tiptap/extension-document";
 import { Paragraph } from "@tiptap/extension-paragraph";
 import { Text } from "@tiptap/extension-text";
@@ -120,6 +121,23 @@ function createTitleKeymap(opts: {
 // Component
 // ---------------------------------------------------------------------------
 
+const NON_TEXT_INPUT_TYPES = new Set(["button", "checkbox", "color", "file", "hidden", "image", "radio", "range", "reset", "submit"]);
+
+/**
+ * True when focus is in a text-entry field other than this title editor.
+ * `isFocused` is Tiptap's own focus flag; it never reads the view, which may
+ * not be mounted yet.
+ */
+function otherTextEntryFocused(editor: { isFocused: boolean }): boolean {
+  if (editor.isFocused) return false;
+  const active = document.activeElement;
+  if (!(active instanceof HTMLElement)) return false;
+  // ProseMirror marks its root with the attribute; reading it (rather than
+  // isContentEditable) also keeps the check meaningful under jsdom.
+  if (active.closest('[contenteditable]:not([contenteditable="false"])') || active instanceof HTMLTextAreaElement) return true;
+  return active instanceof HTMLInputElement && !NON_TEXT_INPUT_TYPES.has(active.type);
+}
+
 const TitleEditor = forwardRef<TitleEditorRef, TitleEditorProps>(
   function TitleEditor(
     {
@@ -217,11 +235,22 @@ const TitleEditor = forwardRef<TitleEditorRef, TitleEditorProps>(
       onReadyRef.current?.();
     }, [editor]);
 
-    // Auto-focus after mount — delay to wait for Dialog open animation
+    // Auto-focus after mount — delay to wait for Dialog open animation. If the
+    // user already moved into another text field inside that window, leave
+    // focus there: pulling it back sends their typing into the title. The
+    // check and the focus run in one task. `commands.focus` would defer
+    // `view.focus()` to the next animation frame, after the check went stale.
     useEffect(() => {
       if (autoFocus && editor) {
         const timer = setTimeout(() => {
-          editor.commands.focus("end");
+          if (editor.isDestroyed || otherTextEntryFocused(editor)) return;
+          try {
+            const { state, view } = editor;
+            view.dispatch(state.tr.setSelection(Selection.atEnd(state.doc)));
+            view.focus();
+          } catch {
+            // The view is not mounted (the editor unmounted inside the delay).
+          }
         }, 50);
         return () => clearTimeout(timer);
       }
