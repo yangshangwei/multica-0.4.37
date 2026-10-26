@@ -63,3 +63,4 @@ For visual verification, use an existing isolated renderer/Electron fixture with
 - [x] Final desktop test suite: 96 files / 1184 tests passed; typecheck and lint passed.
 - [x] Seven isolated renderer scenarios and visual verdict passed.
 - [x] Updated the executable diagnostic spec and recorded evidence/limits in `verification.md`.
+- [x] User confirmed verification and requested archival (2026-10-26).

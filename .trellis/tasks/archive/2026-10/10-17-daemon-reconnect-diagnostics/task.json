@@ -3,7 +3,7 @@
   "name": "daemon-reconnect-diagnostics",
   "title": "细化桌面守护进程重连异常与诊断步骤",
   "description": "为 Windows 桌面设置中的设备重连和 CLI 安装失败提供可区分的错误原因与初步排查指引，保持现有身份校验。",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -11,11 +11,11 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-10-17",
-  "completedAt": null,
+  "completedAt": "2026-10-26",
   "branch": "codex/daemon-reconnect-diagnostics",
   "base_branch": "main",
   "worktree_path": null,
-  "commit": null,
+  "commit": "0a567894ae5c4b3d1b1537c073bc37b4e5bd222d",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -48,6 +48,16 @@
     "packages/views/locales/en/settings.json",
     "packages/views/locales/zh-Hans/settings.json"
   ],
-  "notes": "Implementation and independent review complete. Final desktop: 96 test files / 1184 tests, typecheck and lint passed; one existing lint warning. Seven isolated renderer scenarios passed. Native Windows/live-server/installer delivery not performed.",
-  "meta": {}
+  "notes": "Implementation and independent review complete. Final desktop: 96 test files / 1184 tests, typecheck and lint passed; one existing lint warning. Seven isolated renderer scenarios passed. Original agent verification excluded native Windows/live-server/installer delivery. User confirmed verification and requested archival on 2026-10-26.",
+  "meta": {
+    "userAcceptance": {
+      "date": "2026-10-26",
+      "confirmedBy": "artisan",
+      "statement": "请归档吧，我验证过了",
+      "commits": [
+        "0a567894ae5c4b3d1b1537c073bc37b4e5bd222d",
+        "dc60bfc87badb591a6da10447b0d6f69b0f22b2f"
+      ]
+    }
+  }
 }
