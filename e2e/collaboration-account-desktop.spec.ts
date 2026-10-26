@@ -510,7 +510,10 @@ test("Desktop child links, recorded pages and result notifications survive popou
     await nativeScreenshot(app, popup, testInfo.outputPath("desktop-records-outside-popout.png"));
     await removeRecordViewer(records);
     for (const page of [restarted.page, popup]) {
-      await expect(page.getByText("You no longer have access to this issue.", { exact: true })).toBeVisible();
+      // Sections can each report the loss briefly before the page-level state replaces them.
+      const lost = page.getByText("You no longer have access to this issue.", { exact: true });
+      await expect(lost).toHaveCount(1);
+      await expect(lost).toBeVisible();
       await expect(page.getByText(records.input, { exact: true })).toHaveCount(0);
       await expect(page.getByRole("region", { name: "Run records", exact: true })).toHaveCount(0);
     }
