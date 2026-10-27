@@ -33,8 +33,8 @@ following, independent AI review, or production security.
 Run local checks from the repository root:
 
 ```bash
-python3 -B .trellis/tasks/10-26-security-remediation-squad/pilot/simulation/test_provider.py
-sh -n .trellis/tasks/10-26-security-remediation-squad/pilot/simulation/codex-scripted-simulation
+python3 -B .trellis/tasks/archive/2026-10/10-26-security-remediation-squad/pilot/simulation/test_provider.py
+sh -n .trellis/tasks/archive/2026-10/10-26-security-remediation-squad/pilot/simulation/codex-scripted-simulation
 ```
 
 Independent existing handler tests and their disposable-database/no-skip
