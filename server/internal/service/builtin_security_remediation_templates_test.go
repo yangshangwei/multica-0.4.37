@@ -12,8 +12,8 @@ func TestAgentRoleTemplates_SecurityRemediationLead(t *testing.T) {
 	if !ok {
 		t.Fatal("security-remediation-lead is missing")
 	}
-	if leader.Listed || leader.Version != 1 || leader.Autonomy != AutonomyCoordinator || leader.MaxConcurrentTasks != 2 {
-		t.Errorf("leader defaults = listed:%t version:%d autonomy:%s concurrency:%d, want false/1/coordinator/2",
+	if leader.Listed || leader.Version != 1 || leader.Autonomy != AutonomyCoordinator || leader.MaxConcurrentTasks != 6 {
+		t.Errorf("leader defaults = listed:%t version:%d autonomy:%s concurrency:%d, want false/1/coordinator/6",
 			leader.Listed, leader.Version, leader.Autonomy, leader.MaxConcurrentTasks)
 	}
 	if len(leader.RoleSkills) != 0 {

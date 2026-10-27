@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/multica-ai/multica/server/internal/agentconfig"
 	"github.com/multica-ai/multica/server/internal/skill"
 )
 
@@ -270,8 +271,8 @@ func TestAgentRoleTemplate_ProgressReporterDefaults(t *testing.T) {
 	if !ok {
 		t.Fatal("progress-reporter template missing from the roster")
 	}
-	if !template.Listed || template.Version != 1 || template.MaxConcurrentTasks != 1 {
-		t.Errorf("reporter defaults = listed:%t version:%d concurrency:%d, want true, 1, 1", template.Listed, template.Version, template.MaxConcurrentTasks)
+	if !template.Listed || template.Version != 1 || template.MaxConcurrentTasks != 6 {
+		t.Errorf("reporter defaults = listed:%t version:%d concurrency:%d, want true, 1, 6", template.Listed, template.Version, template.MaxConcurrentTasks)
 	}
 	if template.DefaultName != "Progress Reporter" || template.Title("zh") != "进展报告员" {
 		t.Errorf("reporter names = %q / %q, want Progress Reporter / 进展报告员", template.DefaultName, template.Title("zh"))
@@ -397,8 +398,8 @@ func TestDiagnostician_EvidenceContract(t *testing.T) {
 	if !ok {
 		t.Fatal("diagnostician template missing from the roster")
 	}
-	if !role.Listed || role.Version != 1 || role.MaxConcurrentTasks != 1 {
-		t.Errorf("diagnostician defaults = listed:%t version:%d concurrency:%d, want true, 1, 1", role.Listed, role.Version, role.MaxConcurrentTasks)
+	if !role.Listed || role.Version != 1 || role.MaxConcurrentTasks != 6 {
+		t.Errorf("diagnostician defaults = listed:%t version:%d concurrency:%d, want true, 1, 6", role.Listed, role.Version, role.MaxConcurrentTasks)
 	}
 	for _, other := range AgentRoleTemplates() {
 		if other.Key != role.Key && other.AvatarEmoji == role.AvatarEmoji {
@@ -614,8 +615,9 @@ func TestAgentRoleTemplates_LocalizedCopyIsComplete(t *testing.T) {
 				t.Errorf("%s has no %s description", template.Key, language)
 			}
 		}
-		if template.MaxConcurrentTasks < 1 {
-			t.Errorf("%s max_concurrent_tasks = %d, want >= 1", template.Key, template.MaxConcurrentTasks)
+		// Built-in roles share the blank-agent default; tuning is per agent.
+		if template.MaxConcurrentTasks != agentconfig.DefaultMaxConcurrentTasks {
+			t.Errorf("%s max_concurrent_tasks = %d, want the agent default %d", template.Key, template.MaxConcurrentTasks, agentconfig.DefaultMaxConcurrentTasks)
 		}
 		if strings.TrimSpace(template.AvatarEmoji) == "" {
 			t.Errorf("%s has no avatar emoji", template.Key)

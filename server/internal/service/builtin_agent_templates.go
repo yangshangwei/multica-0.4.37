@@ -112,8 +112,9 @@ type AgentRoleTemplate struct {
 	// Autonomy is the level a fresh copy starts at. A workspace may raise or
 	// lower it afterwards; the template only chooses the default.
 	Autonomy AutonomyLevel
-	// MaxConcurrentTasks is the per-agent scheduler cap. Reviewers and analysts
-	// are cheap and bursty; an implementer holding a working tree is not.
+	// MaxConcurrentTasks is the per-agent scheduler cap a fresh copy starts at.
+	// Every built-in role uses the same default as a blank agent; a workspace
+	// tunes it per agent afterwards.
 	MaxConcurrentTasks int32
 	// RoleSkills names built-in role skills (builtin_role_skills/<name>) that are
 	// materialized as workspace skills and attached on creation. Kept to one per

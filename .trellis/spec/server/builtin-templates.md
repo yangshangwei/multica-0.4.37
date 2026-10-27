@@ -73,13 +73,13 @@ requirement clarification; other leads use their existing routing instructions.
 Progress Reporter uses Contributor only so a
 successfully delivered report can move its own assigned report issue to
 `in_review`; its instructions keep business issues and repository files
-read-only. Its sole default role skill is `multica-progress-report`, and its
-concurrency cap is one. Contributor is an existing permission level, not a
+read-only. Its sole default role skill is `multica-progress-report`.
+Contributor is an existing permission level, not a
 report-only API sandbox; never claim the role's narrower instructions add a
 new server-enforced boundary.
 
 Diagnostician brings the listed roster to fourteen roles and the role-skill catalog
-to fifteen entries. It uses Contributor, concurrency one, and only
+to fifteen entries. It uses Contributor and only
 `multica-debugging` (`quality`, `microscope`). It reproduces an observed failure,
 tests hypotheses, and hands evidence and a suggested fix direction to the
 Implementer; it does not submit the fix or change issue status. Confirmed causes
@@ -90,21 +90,21 @@ or exposed credentials require reporting and stopping for human handling.
 These narrower role/skill instructions do not add a server-enforced sandbox.
 
 Reliability Engineer and Agent Evaluator are the two additional listed roles with
-independent evidence deliverables. Reliability Engineer uses Contributor,
-concurrency one, and `multica-reliability-engineering` (`operations`, `server`)
+independent evidence deliverables. Reliability Engineer uses Contributor
+and `multica-reliability-engineering` (`operations`, `server`)
 to report SLI/SLO, error-budget, capacity, degradation and recovery evidence;
-it does not perform production operations. Agent Evaluator uses Observer,
-concurrency two, and `multica-agent-evaluation` (`quality`, `bot`) to run
+it does not perform production operations. Agent Evaluator uses Observer
+and `multica-agent-evaluation` (`quality`, `bot`) to run
 versioned Agent/Skill/MCP cases and report correctness, safety, cost, latency
 and drift; it does not replace code, security, QA or release review. Both roles
 mark missing baselines or signals as unknown and require human approval for
 production, credential, customer-data or paid-model actions.
 
 Experience Validation Engineer and Migration Reviewer are listed specialists after
-the two-cycle workload gate was met. Experience Validation Engineer uses Contributor,
-concurrency two, and `multica-experience-validation` (`quality`, `globe`) to provide
+the two-cycle workload gate was met. Experience Validation Engineer uses Contributor
+and `multica-experience-validation` (`quality`, `globe`) to provide
 browser/client, accessibility and outcome-risk evidence. Migration Reviewer uses
-Observer, template version two, concurrency two, and `multica-migration-review` (`operations`, `database`)
+Observer, template version two, and `multica-migration-review` (`operations`, `database`)
 to provide compatibility-window, validation, retry and rollback evidence. Neither
 executes production actions or changes code, schema or client contracts. Review
 Gate and Release seat both roles; Maintenance also seats Migration Reviewer for
@@ -134,6 +134,11 @@ do not provision the role by default. The corresponding squad instructions and
 leader templates must describe the same handoff; changing only one layer creates
 conflicting routing advice at claim time.
 
+Every role template, listed or squad leader, and 小阿孚 start at
+`agentconfig.DefaultMaxConcurrentTasks` (6), the blank-agent default. Do not
+give a built-in role its own concurrency literal; per-agent tuning happens after
+creation. `TestAgentRoleTemplates_LocalizedCopyIsComplete` pins the rule.
+
 Increment template and role-skill versions for material behavior changes. These
 defaults apply when creating agents or materializing a missing role skill;
 existing workspace copies are reused without overwriting customized content.
@@ -142,7 +147,7 @@ existing workspace copies are reused without overwriting customized content.
 ### Security remediation v1
 
 `security-remediation` is the ninth built-in squad. Its dedicated unlisted
-`security-remediation-lead` is version 1, Coordinator, concurrency two, with no
+`security-remediation-lead` is version 1, Coordinator, with no
 new role skill. The seven seats reuse Product Analyst, Security Reviewer,
 Diagnostician, Implementer, QA Engineer, Migration Reviewer and Code Reviewer.
 Keep it before the Operator-bearing release/incident entries, preserve existing
