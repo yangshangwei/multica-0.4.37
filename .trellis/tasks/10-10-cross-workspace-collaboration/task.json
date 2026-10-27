@@ -2,7 +2,7 @@
   "id": "cross-workspace-collaboration",
   "name": "cross-workspace-collaboration",
   "title": "跨账号任务流转与共享 AI 协作工作台",
-  "description": "跨账号共享协作；触发预览合批/续作与协作子任务唤醒普通父任务增量已实现，继续运行端文件/provider、代管和完整验收。",
+  "description": "跨账号共享协作；遗漏补齐子任务已于 2026-10-22 归档（台账 96 通过 / AC43 未验证 / 0 失败），小队执行与切换后恢复的原生 host E2E 及 Switch generation 修复已提交（91004d47a、f8993a684）。剩余：合入 main、经授权的 AC43 真实账号验收；跨平台执行与 Windows 交付归 10-24。",
   "status": "in_progress",
   "dev_type": null,
   "scope": null,
@@ -104,7 +104,7 @@
     ".trellis/tasks/10-10-cross-workspace-collaboration/research/implementation-preview-client-2026-10-20.md",
     ".trellis/tasks/10-10-cross-workspace-collaboration/verification-preview-wakeup-2026-10-20.md"
   ],
-  "notes": "2026-10-20：触发预览合批/续作与 R58/AC89 普通父任务唤醒增量验证通过；TS934、Go race104顶层、Web5及独立复核通过。父任务与默认发布门禁保持未完成/未开放。",
+  "notes": "2026-10-20：触发预览合批/续作与 R58/AC89 普通父任务唤醒增量验证通过；TS934、Go race104顶层、Web5及独立复核通过。父任务与默认发布门禁保持未完成/未开放。 2026-10-27 状态校准：meta.next_steps 自 2026-10-20 起过时，其中失败前缀恢复、资源提供授权链路、@all、取消指令历史与 P7 有限代管已由 10-20-collaboration-gap-recovery 完成；运行端 provider 与非 Linux 执行改由 10-24 以 host 模式承接。台账 67 条 passed 仅有 Go 证据，8d1b2b09d 已补 Web E2E（重开、离开、运行中撤权、转交链、删除空间被拦、越权拒绝、机器边界）；AC92/AC94 小队真实执行与 AC39–AC42 切换后恢复/准备仍无 E2E。 2026-10-28：小队执行与切换后恢复的原生 host E2E 及 Switch generation 修复已提交（91004d47a、f8993a684）。",
   "meta": {
     "planning_status": "approved_revision_in_implementation",
     "implementation_authorized": true,
@@ -138,7 +138,7 @@
       "source": "User requested latest-58 technical consistency review and validation during implementation; discussion §55",
       "scope": "Existing P1–P8 plan after technical review; no production deployment authorization"
     },
-    "current_phase": "verified_preview_wakeup_increment_remaining_product_pending",
+    "current_phase": "e2e_backfill_committed_main_merge_and_ac43_pending",
     "technical_review": {
       "date": "2026-10-13",
       "report": "review-2026-10-13.md",
@@ -334,11 +334,9 @@
       ]
     },
     "next_steps": [
-      "先修复失败前缀的调度/停止证明恢复进度：服务端扫描/局部错误隔离、daemon候选/proof轮转，保留未知容量和原证明。规划见子任务10-20-collaboration-gap-recovery。",
-      "补齐组织者无资源拥有者私人空间成员权的明确资源提供/授权链路、@all选择入口和不可变取消指令历史。",
-      "运行端附件字节与已提交 Git 准备、通用 provider 适配器与非 Linux 隔离",
-      "P7 有限管理员生命周期/继任表单及其密码/管理员授权、事务与原生集成验收",
-      "P8 来源入口/选择/共享/筛选兼容矩阵、全部97项产品验收与发布准备；默认门禁保持关闭"
+      "把 main（分叉点 296c377a4，落后 45 / 领先 181）合入本分支并跑 make check；时机由用户决定。",
+      "AC43 真实供应商账号/额度溯源：至少两个环境、不同账号，覆盖多目标、小队与普通转交；必须先取得用户对账号和额度的明确授权。",
+      "Windows 原生验证、安装包与发布归 10-24；生产创建/执行门禁保持关闭，开放与发版由用户决定。"
     ],
     "implementation_commits": [
       "e6bc3759e8a07b480e6aedf246eda8304a253752",
@@ -989,6 +987,46 @@
         "5dd5ccd8b",
         "b6f1e3ec9"
       ]
+    },
+    "status_refresh_2026_10_27": {
+      "reason": "next_steps and current_phase were unchanged since 2026-10-20 and listed work a child task had already finished",
+      "ledger": ".trellis/tasks/archive/2026-10/10-20-collaboration-gap-recovery/acceptance-matrix.json",
+      "ledger_counts": {
+        "passed": 96,
+        "not_verified": 1,
+        "failed": 0
+      },
+      "ledger_not_verified": [
+        "AC43"
+      ],
+      "ledger_passed_without_e2e": 67,
+      "e2e_backfill_commit": "8d1b2b09d",
+      "e2e_gaps_open": [],
+      "coverage_audit": ".omx/reports/core-journey-audit-20261025/collab-audit.md",
+      "completed_children": [
+        "10-19-cross-workspace-qa-report",
+        "10-20-collaboration-gap-recovery"
+      ],
+      "related_tasks": {
+        "10-24-cross-platform-collaboration-runtime": "in_progress; owns host-mode execution, Windows native evidence, installers",
+        "10-26-collaboration-memory": "archived; merged in c67346c73"
+      },
+      "branch_vs_main": {
+        "merge_base": "296c377a4",
+        "behind": 45,
+        "ahead": 181
+      },
+      "production_gates_open": false,
+      "e2e_backfill_2026_10_27": {
+        "worktree": "removed after commit; built and verified from 5701a7695",
+        "squad_spec": "e2e/collaboration-host-squad.spec.ts: AC92/AC94 passed 3/3 on native host lane",
+        "switch_spec": "e2e/collaboration-host-switch.spec.ts: AC39-AC42 passed 2/2 after the generation fix",
+        "blocking_bug": "fixed in 91004d47a: promotion uses max(channel.group_generation, target max generation)+1 and AssignCollaborationChannelGroup sets that value; regression TestCollaborationSwitchToFreshChannelStartsANewTargetGeneration failed with SQLSTATE 23505 before and passes after",
+        "commits": [
+          "91004d47a",
+          "f8993a684"
+        ]
+      }
     }
   },
   "continuation_product_2026_10_18": {

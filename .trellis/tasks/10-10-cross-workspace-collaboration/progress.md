@@ -1,6 +1,14 @@
 # 实现进度
 
-## 当前：2026-10-20 触发预览与父任务唤醒已验证
+## 当前：2026-10-27 状态校准
+
+下面 2026-10-20 及更早段落列出的后续工作已大多完成，不要照它继续推进。失败前缀恢复、资源提供授权链路、@all、取消指令历史和 P7 有限代管由子任务 `10-20-collaboration-gap-recovery` 完成，于 2026-10-22 归档；其[验收台账](../archive/2026-10/10-20-collaboration-gap-recovery/acceptance-matrix.json)为 96 通过、AC43 未验证、0 失败。运行端 provider 与非 Linux 执行改由 `10-24-cross-platform-collaboration-runtime` 以 host 模式承接，Windows 原生验证和安装包也归该任务。
+
+台账中 67 条 passed 只有 Go 证据。`8d1b2b09d` 已补重开、离开、运行中撤权、转交链、删除空间被拦、越权拒绝和机器边界的 Web E2E。
+
+同日补了两个原生 host 规格，在基于 `5701a7695` 的任务 worktree 中验证后提交为 `91004d47a`（修复与回归测试）和 `f8993a684`（E2E）。`collaboration-host-squad.spec.ts` 覆盖 AC92/AC94，3/3 通过。`collaboration-host-switch.spec.ts` 覆盖 AC39 的拒绝条件与 switch_hold，均通过；但切换后的显式恢复被一个产品缺陷挡住：新通道的 group generation 从 0 开始计数，与唯一索引 `idx_collaboration_group_generation(target_id, generation)` 冲突，新 runtime 拉取运行列表一直返回 503，当日已在同一 worktree 修复：新组 generation 取通道计数与该目标历史最大值中的较大者加一，通道计数随之取这个值；回归测试 `TestCollaborationSwitchToFreshChannelStartsANewTargetGeneration` 修复前报 23505，修复后通过。切换规格随后 2/2 通过，AC40–AC42 有了 E2E 证据。之后是合入 main 和经授权的 AC43 真实账号验收。完整待办见 `task.json` 的 `meta.next_steps` 与 `meta.status_refresh_2026_10_27`。
+
+## 已验证：2026-10-20 触发预览与父任务唤醒
 
 本轮已补齐有效输入的合批/后续批次/小队续作预览，以及协作子任务完成/取消后按阶段唤醒普通 agent/小队父任务。独立复核修复共享草稿变化后沿用旧预览的问题。934 项相关 TypeScript 测试、104 个 Go race 顶层用例、类型/lint/vet、5 个生产 Web 场景与视觉检查通过，范围及失败经过见[本轮验证](verification-preview-wakeup-2026-10-20.md)。
 
