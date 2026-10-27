@@ -21,9 +21,13 @@
   "children": [],
   "parent": null,
   "relatedFiles": [],
-  "notes": "2026-10-27重试：POLA-3/4/5/6及8个手动派发的独立成员子任务POLA-7～14均in_review，3文件合成补丁六项测试通过。只更新试点squad v2指令后，显式小队mention触发真正leader，修正缺少[]的成员链接后生成精确delegation成员task；leader结束后成员启动，但成员因免费额度耗尽被取消、无结果，leader又误记no_action，未证明返回/收口。早期leader直接实现与代写、报告误述、诊断/实现本人交接及网络出站约束仍待验收。最终容器停止、临时认证清理、历史角色绑定保留。阶段一未通过，阶段二未启动。",
+  "notes": "2026-10-27 按用户要求停止真实运行时并完成脚本模拟。POLA-19～22 均 in_review；真实产品队列29次成功角色执行，另保留并恢复两次早期失败。24项后端契约零跳过，14项模拟工具测试及12个证据破坏样例、独立Trellis复核通过。只验证脚本化流程和合成补丁，不证明模型判断/指令遵守。临时容器/数据库/凭据已清理，原共享角色未改；八个私有副本保留模拟绑定。见 pilot/simulation-results-20261027.md。原真实模型门槛与阶段二未通过，任务保持进行中。",
   "meta": {
-    "phase": "phase1_real_results_routing_gate_open",
-    "pilot_project_id": "e9f1b898-709a-4aee-9b75-5d72cf55e950"
+    "phase": "phase1_scripted_simulation_verified",
+    "pilot_project_id": "e9f1b898-709a-4aee-9b75-5d72cf55e950",
+    "real_model_gate_passed": false,
+    "simulation_project_id": "6d369c93-b6af-4a83-8fba-93b1489e0789",
+    "simulation_squad_id": "26156f72-d413-42be-a075-e46f2b9184ea",
+    "simulation_runtime_id": "191dac8a-0b3f-4c2d-90a4-51da68ecfd6a"
   }
 }

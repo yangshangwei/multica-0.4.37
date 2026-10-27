@@ -1,8 +1,10 @@
 # 阶段一试点结果
 
-状态：`phase1_real_results_routing_gate_open`（2026-10-27 重试后）。任务保持 `in_progress`，阶段一尚未验收，阶段二未启动。
+当前状态：`phase1_scripted_simulation_verified`。按用户“不调用真实运行时”的最新要求，四个脚本模拟案例已完成真实产品流程，见 [模拟结果](simulation-results-20261027.md)。任务保持 `in_progress`；原真实模型验收与阶段二准入仍未通过。
 
-## 当前结论
+模拟产生 29 次成功角色任务执行，另保留两次已恢复的演练失败；现有后端契约 24 项、模拟工具 14 项和证据交叉检查通过。脚本的预设判断与补丁不作为模型能力证据。真实 Codex 接入曾因上游拒绝 SDK 客户端而失败，相关环境已停止并清理；下面保留此前 OpenCode 试点历史。
+
+## 此前 OpenCode 试点结论（历史）
 
 用户要求“再试一下”后，沿用原 daemon/runtime 和隔离容器完成了真实模型任务。短探测中 `mimo-v2.5-free`、`muse-spark-1.2-contributor-free` 返回 `UnknownError`，`opencode/nemotron-3.5-lightning-free` 返回 `READY`，随后作为 daemon fallback 完成案例。没有改写共享 agent 的模型、角色来源、自治等级、Access 或 skills。
 

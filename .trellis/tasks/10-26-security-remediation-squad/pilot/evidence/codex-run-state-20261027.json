@@ -1,0 +1,69 @@
+{
+  "daemon_id": "c0c6dc99-815f-4165-bde4-dae0a01de144",
+  "container": "multica-security-codex-pilot-20261027",
+  "gateway": "multica-security-codex-gateway-20261027",
+  "internal_network": "multica-security-codex-internal-20261027",
+  "egress_network": "multica-security-codex-egress-20261027",
+  "profile": "security-codex-pilot",
+  "workspace_id": "d6eaf4b9-07bc-4aa4-b3ee-5a4bc733949c",
+  "squad_id": "ac1a40c2-a655-4453-b86d-745796a454bc",
+  "project_id": "e9f1b898-709a-4aee-9b75-5d72cf55e950",
+  "gateway_ip": "172.19.0.3",
+  "baseline_ref": "242680c911af9427ec69ae59c53742c54a33dbf9",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "max",
+  "model_provider_url": "https://agentrouter.org/v1",
+  "gateway_configured": true,
+  "model_credential_location": "gateway_only",
+  "private_model_credential_copied_to_provider": false,
+  "runtime_id": "89c5d4e5-17e1-472a-b462-49d01d86f801",
+  "daemon_started": false,
+  "roles": {
+    "maintenance-lead": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+    "product-analyst": "50b4bb2e-d4c4-4c70-8dd8-3d48963b475a",
+    "security-reviewer": "ce9b9709-d57c-4ea2-9e9f-7f62fe17a917",
+    "diagnostician": "ac023f51-1185-4ee0-8639-80ab4f0e3051",
+    "implementer": "f7047fd3-7d3e-465a-ae56-77ac0979ab3f",
+    "qa-engineer": "d2be88b0-de73-4199-b217-f1e19c6062dd",
+    "migration-reviewer": "37e1cafb-fb87-4eff-b621-43c7e031f616",
+    "code-reviewer": "80df3eb5-b64c-4e93-afa2-75c2b8526911"
+  },
+  "squad_configured": true,
+  "instructions_sha256": "63c0f11ec1a29b7d16d9b288abe6bac1a7503b5f6770c20310a60a78ab4d53c6",
+  "issues": {
+    "other-supply-chain": {
+      "id": "01a17bc5-fb13-73b1-9042-8055e71fd784",
+      "identifier": "POLA-15",
+      "title": "Codex 续跑：供应链缺证与真实交接",
+      "status": "backlog"
+    },
+    "dependency-advisory": {
+      "id": "01a17bc5-fb30-77c0-a436-ce86436be138",
+      "identifier": "POLA-16",
+      "title": "Codex 续跑：合成依赖公告修复",
+      "status": "backlog"
+    },
+    "code-authorization": {
+      "id": "01a17bc5-fb3d-7ac1-9043-73bd150e480c",
+      "identifier": "POLA-17",
+      "title": "Codex 续跑：工作区授权诊断与修复",
+      "status": "backlog"
+    },
+    "production-escalation": {
+      "id": "01a17bc5-fb4c-724d-b29b-5937d09ac3bf",
+      "identifier": "POLA-18",
+      "title": "Codex 续跑：生产风险升级桌面演练",
+      "status": "backlog"
+    }
+  },
+  "phase": "phase1_simulation_requested",
+  "roundtrip_started_at": "2026-10-27T05:15:17.918615+00:00",
+  "sdk_metadata_retry_comment_id": "01a17bdd-0e97-766c-8b59-39aa6149ec83",
+  "sdk_metadata_retry_at": "2026-10-27T05:37:27.264155+00:00",
+  "runtime_session": "removed_after_switch_to_scripted_simulation",
+  "temporary_daemon_credential_removed": true,
+  "gateway_model_credential_removed": true,
+  "container_removed": true,
+  "gateway_removed": true,
+  "latest_mode": "scripted_simulation_verified"
+}

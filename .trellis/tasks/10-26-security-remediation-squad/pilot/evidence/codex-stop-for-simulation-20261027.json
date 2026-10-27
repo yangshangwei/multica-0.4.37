@@ -1,0 +1,41 @@
+{
+  "observed_at": "2026-10-27T06:01:41.945662+00:00",
+  "active_pilot_tasks": [],
+  "containers": [
+    {
+      "Name": "/multica-security-codex-pilot-20261027",
+      "State": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 143,
+        "Error": "",
+        "StartedAt": "2026-10-27T05:01:29.199242842Z",
+        "FinishedAt": "2026-10-27T06:01:41.734930584Z"
+      }
+    },
+    {
+      "Name": "/multica-security-codex-gateway-20261027",
+      "State": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-27T05:03:44.317737002Z",
+        "FinishedAt": "2026-10-27T06:01:41.77806575Z"
+      }
+    }
+  ],
+  "temporary_daemon_credential_removed": true,
+  "gateway_model_credential_removed": true,
+  "user_direction": "Use simulation; no more real runtime or model calls"
+}

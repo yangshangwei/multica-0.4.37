@@ -1,0 +1,133 @@
+{
+  "mode": "scripted_simulation",
+  "observed_at": "2026-10-27T08:25:05.175107+00:00",
+  "issue": {
+    "id": "01a17c62-9483-798d-b65b-f6d0e44208b3",
+    "workspace_id": "d6eaf4b9-07bc-4aa4-b3ee-5a4bc733949c",
+    "identifier": "POLA-22",
+    "title": "【脚本模拟】生产升级桌面演练",
+    "status": "in_review",
+    "assignee_type": "squad",
+    "assignee_id": "26156f72-d413-42be-a075-e46f2b9184ea",
+    "project_id": "6d369c93-b6af-4a83-8fba-93b1489e0789"
+  },
+  "task_runs": [
+    {
+      "id": "01a17c76-6807-7850-aaf1-e8b269257c94",
+      "agent_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "runtime_id": "191dac8a-0b3f-4c2d-90a4-51da68ecfd6a",
+      "issue_id": "01a17c62-9483-798d-b65b-f6d0e44208b3",
+      "workspace_id": "d6eaf4b9-07bc-4aa4-b3ee-5a4bc733949c",
+      "status": "completed",
+      "priority": 2,
+      "dispatched_at": "2026-10-27T16:24:57+08:00",
+      "started_at": "2026-10-27T16:24:57+08:00",
+      "completed_at": "2026-10-27T16:24:59+08:00",
+      "result": {
+        "output": "SCRIPTED SIMULATION — NO MODEL: sequence settled at in_review; real-model gate remains open.",
+        "pr_url": "",
+        "session_id": "",
+        "session_rollout_missing": true,
+        "work_dir": "/work/tasks/polaris-fkx-5a4bc733949c/pola-22-e8b269257c94/workdir"
+      },
+      "error": null,
+      "attempt": 1,
+      "max_attempts": 2,
+      "is_leader_task": true,
+      "created_at": "2026-10-27T16:24:57+08:00",
+      "work_dir": "/work/tasks/polaris-fkx-5a4bc733949c/pola-22-e8b269257c94/workdir",
+      "relative_work_dir": "polaris-fkx-5a4bc733949c/pola-22-e8b269257c94/workdir",
+      "trigger_comment_id": "01a17c76-67f2-7841-b66a-a5b38614f59e",
+      "delivered_comment_ids": [
+        "01a17c76-67f2-7841-b66a-a5b38614f59e"
+      ],
+      "trigger_summary": "[@安全修复流程小队（脚本模拟）](mention://squad/26156f72-d413-42be-a075-e46f2b9184ea) SCRIPTED SIMULATION — NO MODEL. Start the configured production-escalation sequence. Preserve distinct diagnostic, implementatio…",
+      "kind": "comment",
+      "attribution": {
+        "source": "direct_human",
+        "precise": true,
+        "initiator": {
+          "id": "1e486130-bb06-4e6e-8be9-dd58c8eb83be"
+        },
+        "originator": {
+          "id": "1e486130-bb06-4e6e-8be9-dd58c8eb83be"
+        },
+        "evidence": {
+          "kind": "comment",
+          "ref_id": "01a17c76-67f2-7841-b66a-a5b38614f59e"
+        }
+      }
+    }
+  ],
+  "comments": [
+    {
+      "id": "01a17c76-67f2-7841-b66a-a5b38614f59e",
+      "issue_id": "01a17c62-9483-798d-b65b-f6d0e44208b3",
+      "author_type": "member",
+      "author_id": "1e486130-bb06-4e6e-8be9-dd58c8eb83be",
+      "content": "[@安全修复流程小队（脚本模拟）](mention://squad/26156f72-d413-42be-a075-e46f2b9184ea) SCRIPTED SIMULATION — NO MODEL. Start the configured production-escalation sequence. Preserve distinct diagnostic, implementation and QA identities, use only local fixtures and product queue handoffs, and settle at in_review.",
+      "type": "comment",
+      "parent_id": null,
+      "created_at": "2026-10-27T16:24:57+08:00",
+      "updated_at": "2026-10-27T16:24:57+08:00"
+    },
+    {
+      "id": "01a17c76-68b8-71e8-b85f-b298240f4a7a",
+      "issue_id": "01a17c62-9483-798d-b65b-f6d0e44208b3",
+      "author_type": "agent",
+      "author_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "content": "SCRIPTED SIMULATION — NO MODEL\nSIMULATION_RECORD {\"kind\": \"final\", \"role\": \"maintenance-lead\", \"simulation\": \"security-squad-sim-20261027\", \"stage\": 0, \"task\": \"01a17c76-6807-7850-aaf1-e8b269257c94\"}\n\n## Security triage\n- type: other\n- source: synthetic local fixture; scripted assessment\n- affected_surface: isolated synthetic lab only\n- severity: unknown\n- exploitability: unknown\n- evidence_state: unknown\n- production_impact: no\n- route: incident\n- blocked_actions: production, secret, external notice, destructive\n- next_owner: human incident owner\n\nCompleted product task IDs: {}\nSimulated incident/release handoff to a human incident owner. No operator task, production command, credential operation or external notification is authorized or executed.",
+      "type": "comment",
+      "parent_id": "01a17c76-67f2-7841-b66a-a5b38614f59e",
+      "created_at": "2026-10-27T16:24:57+08:00",
+      "updated_at": "2026-10-27T16:24:57+08:00",
+      "source_task_id": "01a17c76-6807-7850-aaf1-e8b269257c94"
+    }
+  ],
+  "timeline": [
+    {
+      "type": "activity",
+      "id": "01a17c62-9485-773f-8e4e-f45489a3a61a",
+      "actor_type": "member",
+      "actor_id": "1e486130-bb06-4e6e-8be9-dd58c8eb83be",
+      "created_at": "2026-10-27T16:03:17+08:00",
+      "action": "created",
+      "details": {}
+    },
+    {
+      "type": "activity",
+      "id": "01a17c76-68d0-7854-86ee-84755e34fbe4",
+      "actor_type": "agent",
+      "actor_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "created_at": "2026-10-27T16:24:57+08:00",
+      "action": "status_changed",
+      "details": {
+        "to": "in_review",
+        "from": "backlog"
+      }
+    },
+    {
+      "type": "activity",
+      "id": "01a17c76-68f5-797d-bf4a-36b814e3356a",
+      "actor_type": "agent",
+      "actor_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "created_at": "2026-10-27T16:24:57+08:00",
+      "action": "squad_leader_evaluated",
+      "details": {
+        "reason": "SCRIPTED SIMULATION — NO MODEL: finite sequence finished; human review",
+        "outcome": "no_action",
+        "task_id": "01a17c76-6807-7850-aaf1-e8b269257c94",
+        "squad_id": "26156f72-d413-42be-a075-e46f2b9184ea"
+      }
+    },
+    {
+      "type": "activity",
+      "id": "01a17c76-712e-757a-8f22-2f09e4891022",
+      "actor_type": "agent",
+      "actor_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "created_at": "2026-10-27T16:24:59+08:00",
+      "action": "task_completed",
+      "details": {}
+    }
+  ]
+}

@@ -186,6 +186,80 @@ compliance. `TestCreateComment_SquadMentionTriggersLeader` and
 `TestClaim_LeaderTaskFromCommentMention_InjectsBriefing` cover the product
 paths; real task and comment provenance is still needed for pilot acceptance.
 
+### Scenario: scripted squad integration checks
+
+#### 1. Scope / Trigger
+
+Use a deterministic provider double when validating squad plumbing without a
+real model. It can exercise actual queue/auth/comment/return/status paths, but
+its canned decisions and patch replay do not establish model judgment or
+instruction compliance. Label every simulated report and retain earlier failures.
+
+#### 2. Signatures
+
+- `MULTICA_CODEX_PATH` can select a test-created app-server executable; the
+  `codex` provider key then selects an adapter, not proof of a real Codex process.
+- `daemon.taskMulticaEnvironment` supplies `MULTICA_TOKEN`, `MULTICA_AGENT_ID`,
+  `MULTICA_TASK_ID`, `MULTICA_WORKSPACE_ID` and the task CLI configuration.
+- `multica issue comment add <issue> --parent <current-trigger> --content-file ./report.md`
+  and `multica squad activity <issue> action|no_action --reason <text>` use the
+  current task's authority and provenance.
+
+#### 3. Contracts
+
+Require the supplied `mat_` credential for role actions; an operator's human
+credential is setup authority, not a substitute for a member's identity. Match
+the product comment's `author_id` and `source_task_id` to the actual task. Member
+dispatch and leader return require precise `delegation`, the correct
+`delegated_from_task_id`, and the corresponding trigger comment. Headings and
+self-reported task IDs are insufficient.
+
+Write agent comment files inside the current workdir. The CLI rejects an external
+`/tmp` file unless explicitly overridden; a simulation should follow the same
+boundary rather than use `--allow-external-file`. Its process deadline must leave
+the CLI's transport timeout and context grace time to report the result.
+
+An unlisted leader cannot be recreated with the listed-role endpoint. If an
+authorized pilot needs a custom coordinator, set its declared autonomy through
+the normal human-only update, verify it before use, and retain `template_key` as
+empty. Record source template/version/content hash separately as `derived_from`.
+Do not fabricate built-in provenance or rebind unrelated shared roles.
+
+#### 4. Validation & Error Matrix
+
+| Observation | Permitted conclusion / handling |
+| --- | --- |
+| Malformed mention creates no member task | Syntax rejection verified; no successful dispatch |
+| Actual member comment wakes one leader | Return wiring verified for those task identities |
+| Scripted QA command succeeds | Fixture check passed; no independent AI judgment claim |
+| Comment write times out | Outcome uncertain; read back before a fresh trigger |
+| Standalone CLI returns `READY` | That client worked; SDK/squad execution remains unproven |
+| Handler package exits 0 without test events | Verification failed; do not accept a silent DB skip |
+
+#### 5. Good / Base / Bad Cases
+
+Good: a labelled script drives actual task-token operations and an independent
+checker verifies persisted actors, source tasks, return edges and activity.
+Base: the same product paths remain available to a real provider.
+Bad: count a canned report, human-authored member result, or online runtime badge
+as a completed model-driven security workflow.
+
+#### 6. Tests Required
+
+Retain the private-owner return, no-action and current-leader attribution checks
+in `squad_worker_comment_wakes_leader_test.go`, `squad_no_action_test.go` and
+`squad_evaluation_provenance_test.go`. Run handler tests against an explicitly
+selected disposable, migrated `DATABASE_URL`: `handler/TestMain` otherwise defaults
+to the local application database and can exit 0 after `Skipping tests`.
+Assert the exact expected `run`/`pass` event sets, no skips/failures, and use
+`scripts/go-test-with-agent-cli-guard.sh` to reject ambient agent CLI execution.
+
+#### 7. Wrong vs Correct
+
+Wrong: `task.status == completed` implies real-model acceptance.
+Correct: separately record execution mode, verify the persisted task/comment
+graph and actual commands, and leave model behavior unverified for a scripted run.
+
 The existing architecture, security, release, reliability and progress skills also
 carry the five governance checks identified by the lifecycle review: old-client/plugin
 contract matrices, trust-boundary and supply-chain/SBOM review, recovery/RPO/RTO

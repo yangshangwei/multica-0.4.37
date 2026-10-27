@@ -1,0 +1,132 @@
+{
+  "mode": "scripted_simulation",
+  "verified_cases": 4,
+  "cases": {
+    "other-supply-chain": {
+      "identifier": "POLA-19",
+      "status": "in_review",
+      "verified_member_stages": 1,
+      "completed_tasks": 3,
+      "failed_attempts_retained": 1,
+      "member_return_links": {
+        "0": {
+          "member_task": "01a17c6a-5a1f-7534-89cb-b6ae00ff2ecd",
+          "return_task": "01a17c6a-6333-74be-92be-f9aa09a85523"
+        }
+      },
+      "activity_outcomes": {
+        "01a17c6a-5922-70cb-aacf-ed0aae10ec09": "action",
+        "01a17c6a-6333-74be-92be-f9aa09a85523": "no_action"
+      }
+    },
+    "dependency-advisory": {
+      "identifier": "POLA-20",
+      "status": "in_review",
+      "verified_member_stages": 6,
+      "completed_tasks": 14,
+      "failed_attempts_retained": 1,
+      "member_return_links": {
+        "0": {
+          "member_task": "01a17c6c-427c-7e6b-9922-cf8348c4510e",
+          "return_task": "01a17c6c-4bcb-7271-9668-9f955489eee3"
+        },
+        "1": {
+          "member_task": "01a17c6c-54d4-7bb4-ada3-9acbe9ae9175",
+          "return_task": "01a17c6c-5dd1-718a-8759-05b5889e784a"
+        },
+        "2": {
+          "member_task": "01a17c73-0e0c-7714-9013-109a991aab73",
+          "return_task": "01a17c73-16f4-7e57-a27c-30f1af4329b3"
+        },
+        "3": {
+          "member_task": "01a17c73-1fc2-7f23-8f3c-492d144edbb8",
+          "return_task": "01a17c73-28be-7ac9-9c02-f92d3f477466"
+        },
+        "4": {
+          "member_task": "01a17c73-31af-747c-a4fd-ef9ef9eb076e",
+          "return_task": "01a17c73-3aac-7877-83ec-b801117580e0"
+        },
+        "5": {
+          "member_task": "01a17c73-4389-7186-9c5d-211923115fa1",
+          "return_task": "01a17c73-4c5a-740b-8187-3d899191c728"
+        }
+      },
+      "activity_outcomes": {
+        "01a17c6c-41c0-7422-b1fd-c6c4a2736d98": "action",
+        "01a17c6c-4bcb-7271-9668-9f955489eee3": "action",
+        "01a17c6c-5dd1-718a-8759-05b5889e784a": "action",
+        "01a17c73-0d2e-7660-969d-f485fd1f5876": "action",
+        "01a17c73-16f4-7e57-a27c-30f1af4329b3": "action",
+        "01a17c73-28be-7ac9-9c02-f92d3f477466": "action",
+        "01a17c73-3aac-7877-83ec-b801117580e0": "action",
+        "01a17c73-4c5a-740b-8187-3d899191c728": "no_action"
+      }
+    },
+    "code-authorization": {
+      "identifier": "POLA-21",
+      "status": "in_review",
+      "verified_member_stages": 5,
+      "completed_tasks": 11,
+      "failed_attempts_retained": 0,
+      "member_return_links": {
+        "0": {
+          "member_task": "01a17c75-f26e-73b9-9a71-a22b33583d75",
+          "return_task": "01a17c75-fb89-7cc9-b5b2-b1db0b357441"
+        },
+        "1": {
+          "member_task": "01a17c76-049a-7f3a-b007-da1392c6a5a2",
+          "return_task": "01a17c76-0d9e-7518-a365-806a76291678"
+        },
+        "2": {
+          "member_task": "01a17c76-16a5-7a87-adea-36ea2a8436bf",
+          "return_task": "01a17c76-1f92-73eb-b62b-ff9209cb23f3"
+        },
+        "3": {
+          "member_task": "01a17c76-2874-7704-9f23-a55a12a38299",
+          "return_task": "01a17c76-31ac-7a19-a1fb-b37f35eed501"
+        },
+        "4": {
+          "member_task": "01a17c76-3a75-7518-9ed3-603faebd2015",
+          "return_task": "01a17c76-439a-780e-8a27-90ec618bff64"
+        }
+      },
+      "activity_outcomes": {
+        "01a17c75-f15f-7687-b3c4-a1cf224a4e20": "action",
+        "01a17c75-fb89-7cc9-b5b2-b1db0b357441": "action",
+        "01a17c76-0d9e-7518-a365-806a76291678": "action",
+        "01a17c76-1f92-73eb-b62b-ff9209cb23f3": "action",
+        "01a17c76-31ac-7a19-a1fb-b37f35eed501": "action",
+        "01a17c76-439a-780e-8a27-90ec618bff64": "no_action"
+      }
+    },
+    "production-escalation": {
+      "identifier": "POLA-22",
+      "status": "in_review",
+      "verified_member_stages": 0,
+      "completed_tasks": 1,
+      "failed_attempts_retained": 0,
+      "member_return_links": {},
+      "activity_outcomes": {
+        "01a17c76-6807-7850-aaf1-e8b269257c94": "no_action"
+      }
+    }
+  },
+  "successful_tasks": 29,
+  "acknowledged_failed_attempts": {
+    "01a17c66-5204-7261-b347-8fa6c44cdcdd": {
+      "case": "other-supply-chain",
+      "error": "SCRIPTED SIMULATION — NO MODEL: Multica CLI rejected simulation operation: --content-file path \"/tmp/multica-task-3033026163/tmpm8l1k7zj.md\" resolves outside the current working directory; write agent temp files inside the task workdir (e.g. ./content.md) rather than machine-shared paths like /tmp, where another run's stale file can be read by mistake. Pass --allow-external-file to override.\n"
+    },
+    "01a17c6c-669c-7599-9af8-b0f7ff25f3b8": {
+      "case": "dependency-advisory",
+      "error": "SCRIPTED SIMULATION — NO MODEL: Command '['/usr/local/bin/multica', 'issue', 'comment', 'add', '01a17c62-946f-74f1-a9d8-99ce5e23709e', '--parent', '01a17c6c-6692-71e0-bfcd-e273c23233a5', '--content-file', '/work/lab/.simulation-comment-h15er4me.md', '--output', 'json']' timed out after 30 seconds"
+    }
+  },
+  "diagnostic_failure_reproduced": true,
+  "qa_test_counts": [
+    3,
+    6
+  ],
+  "model_behavior_verified": false,
+  "real_runtime_invoked": false
+}

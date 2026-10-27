@@ -1,0 +1,24 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/handler",
+    "-count=1",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-timeout=5m",
+    "-json",
+    "-run",
+    "^(TestCommentMentionsAnyone|TestPreviewCommentTriggers_MalformedMentionIDDoesNotPanic|TestBuildSquadLeaderBriefing_MentionsRoundTrip|TestCreateComment_SquadMentionStampsSquadIDOnLeaderTask|TestClaim_LeaderTaskFromCommentMention_InjectsBriefing|TestClaim_NonLeaderTask_NoBriefing|TestShouldEnqueueOnComment_PrivateAgentGate|TestCreateComment_SquadMentionPrivateLeaderBlocksPlainMember|TestCreateComment_WorkerAgentCommentWakesPrivateSquadLeader_MUL4015|TestCreateComment_WorkerAgentCommentDoesNotWakeLeader_WhenLeaderTaskPending|TestCreateComment_SquadLeaderSelfMentionCompletedTaskDoesNotFakeSuccess|TestCompleteTask_DoesNotReconcilePlainWorkerReplyOnSquadIssue|TestCompleteTask_SquadLeaderNoActionDoesNotSynthesizeComment|TestCompleteTask_SquadLeaderNoActionCanonicalizesTaskID|TestCompleteTask_SquadLeaderActionStillSynthesizesComment|TestCreateComment_SquadLeaderNoActionRejectsComment|TestRecordSquadLeaderEvaluation_AcceptedOnNonSquadAssignedIssue|TestRecordSquadLeaderEvaluation_AcceptedOnChildIssueBoundTask|TestRecordSquadLeaderEvaluation_RejectsNonLeaderTask|TestRecordSquadLeaderEvaluation_RejectsLeaderTaskWithoutSquadID|TestRecordSquadLeaderEvaluation_RejectsCrossIssueTaskAndNamesTaskIssue|TestRecordSquadLeaderEvaluation_RejectsForeignAgentWithoutLeakingTaskIssue|TestRecordSquadLeaderEvaluation_RejectsForeignWorkspaceTaskWithoutLeakingItsIssue|TestRecordSquadLeaderEvaluation_RejectsAfterLeaderChange)$"
+  ],
+  "exit_code": 0,
+  "database": "security_squad_sim_contracts",
+  "container": "multica-security-sim-contracts-20261027"
+}

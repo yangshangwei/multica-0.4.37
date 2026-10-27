@@ -1,6 +1,10 @@
 # 安全修复小队试点包
 
-状态：`phase1_real_results_routing_gate_open`（2026-10-27 重试后）
+当前状态：`phase1_scripted_simulation_verified`（2026-10-27，按用户要求改为模拟）。
+
+四个脚本模拟案例已完成，真实产品队列中有 29 次成功角色任务执行；24 项现有后端契约测试、14 项模拟工具测试与证据交叉校验通过。模拟环境没有真实 agent CLI 或模型出口。结果与边界见 [模拟结果](simulation-results-20261027.md)，重建入口见 [模拟工具](simulation/README.md)。原真实模型验收仍未通过，阶段二未启动。
+
+## 此前真实运行记录
 
 原 daemon/runtime 已恢复并完成真实模型任务，8 个角色保留原身份、自治等级、模板来源和私有 Access。`opencode/nemotron-3.5-lightning-free` 短探测返回 `READY` 后，四个父案例 `POLA-3`～`POLA-6` 和八个独立成员子任务 `POLA-7`～`POLA-14` 均已交到 `in_review`。隔离实验室的依赖与授权补丁通过六项测试，供应链风险继续保持 `hold/unknown`。
 
