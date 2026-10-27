@@ -1,0 +1,25 @@
+{
+  "observed_at": "2026-10-27T03:58:57.255468+00:00",
+  "credential_count": 0,
+  "probes": [
+    {
+      "model": "opencode/mimo-v2.5-free",
+      "outcome": "UnknownError",
+      "ref": "err_bc139622"
+    },
+    {
+      "model": "opencode/muse-spark-1.2-contributor-free",
+      "outcome": "UnknownError",
+      "ref": "err_02a081c3"
+    },
+    {
+      "model": "opencode/nemotron-3.5-lightning-free",
+      "outcome": "success",
+      "output": "READY",
+      "cost": 0
+    }
+  ],
+  "selected_fallback": "opencode/nemotron-3.5-lightning-free",
+  "shared_agent_model_modified": false,
+  "initial_probe_note": "A temporary-directory ownership mismatch was diagnosed; bounded non-task probe temp was chowned to node before the retry. Failed env invocation did not establish provider availability."
+}

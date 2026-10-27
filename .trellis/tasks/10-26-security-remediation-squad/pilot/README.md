@@ -1,20 +1,22 @@
 # 安全修复小队试点包
 
-状态：`blocked_pending_model_config`（2026-10-27）
+状态：`phase1_real_results_routing_gate_open`（2026-10-27 重试后）
 
-原 daemon/runtime 的恢复已在隔离容器中验证，8 个角色继续保留原身份、自治等级、模板来源和私有 Access。真实升级演练 `POLA-3` 已到达模型服务，但匿名 OpenCode 返回额度限制；当前没有成功的角色输出。三类案例 `POLA-4`、`POLA-5`、`POLA-6` 已预建为未分配的 backlog。容器已停止，临时开发凭据副本已移除，等待可用模型配置和网络边界检查后续跑。
+原 daemon/runtime 已恢复并完成真实模型任务，8 个角色保留原身份、自治等级、模板来源和私有 Access。`opencode/nemotron-3.5-lightning-free` 短探测返回 `READY` 后，四个父案例 `POLA-3`～`POLA-6` 和八个独立成员子任务 `POLA-7`～`POLA-14` 均已交到 `in_review`。隔离实验室的依赖与授权补丁通过六项测试，供应链风险继续保持 `hold/unknown`。
 
-当前证据见 `trial-results.md`、`evidence/run-state.json`；合成失败基线见 `fixtures/`，隔离副本和独立 QA 顺序见 `fixture-guide.md`，恢复运行时的方法见 `runtime/README.md`。这些准备材料不代表阶段一验收通过。
+阶段一尚未验收：两次修复由 leader 直接实现，它还曾以自己的身份代写成员报告；操作者随后手动派发独立审查子任务。进一步只修改试点小队指令后，已证明一条真正的 leader → 安全审查员委派，包含精确 Markdown mention、真实成员 task 和 delegation 来源；成员随后因匿名模型限额未返回结果，leader 又误把派发记录为 `no_action`，未证明成员返回与 leader 收口。诊断工程师和实现工程师本人的交接、报告准确性、网络出站约束仍需补验。最终容器已停止，临时开发认证副本已删除。
+
+当前证据见 `trial-results.md`、`evidence/real-pilot-summary-20261027.json` 和 `evidence/run-state.json`；最后的派活验证见 `evidence/retry-routing-validation-20261027.json`，最终清理见 `evidence/routing-final-cleanup-20261027.json`；可移植的补丁回放见 `evidence/portable-replay-20261027.json`。合成失败基线保留在 `fixtures/`，实际补丁保存在隔离副本及 `evidence/lab-diff-20261027.patch`。恢复方法见 `runtime/README.md`。前次 `blocked_pending_model_config` 及其失败任务保留为历史，不能覆盖本次成功结果，也不能用本次测试通过替代路由验收。
 
 这份试点包把阶段一变成可以重复执行的工作区操作。它只使用非生产仓库、脱敏输入和现有角色，不创建新的产品模板，也不允许 agent 触及生产、真实凭据或客户原始数据。
 
 ## 运行前置条件
 
 1. CLI 已登录目标 Multica 服务器，并选定试点工作区。
-2. 恢复专用非生产容器中的原 daemon ID，并核对其所有成员工作空间的旧任务队列。profile 的 `workspace_id` 不限制 daemon 的工作空间发现范围。
+2. 恢复专用非生产容器中的原 daemon ID，并核对其所有成员工作空间的旧任务队列。用户 PAT/JWT profile 的 `workspace_id` 不限制账号成员工作空间的发现范围；工作空间 daemon token 仍受自身绑定范围限制。
 3. 试点操作者拥有创建/运行角色 agent 和 squad 的权限；所有新 agent 的 Access 先保持私有或指定试点成员。
 4. 不向 runtime 注入生产数据库密码、个人 SSH key、长期云凭据或可写生产 MCP。
-5. 提供可用的模型配置；补齐 API/模型出站目的地约束的验证。当前容器默认 bridge 的出站访问未受限制，不能据此勾选完整的网络最小权限验收。
+5. 使用经本轮真实执行验证的模型配置，并在新运行前检查其可用性；匿名服务可发生限额、传输或证书错误。补齐 API/模型出站目的地约束的验证，当前默认 bridge 不能证明完整的网络最小权限。
 
 ## 试点花名册
 
@@ -33,7 +35,7 @@
 
 ## 小队指令
 
-把下面的内容作为试点 squad instructions；成员自身的模板指令继续有效：
+下面保留首次案例使用的原始指令作为历史。当前试运行小队已通过成对的 `expected_instructions` / `expected_updated_at` 前置条件更新为 `runtime/pilot-instructions-v2.md`，只加强此小队的协调、精确 mention 和结束回合要求；8 人 roster、共享角色内容、自治与 Access 不变。新指令只证明了真实派发，成员返回与收口仍待验证。
 
 ```text
 你负责协调安全事项的非生产分诊和修复证据。
@@ -49,12 +51,12 @@ other：按配置、供应链、Agent/Skill/MCP、运行信号选择安全审查
 修改代码的成员不能验证自己的修改。派活后记录成员、理由和停止条件；整体证据齐全后交 review-gate 或人工，不把父任务标记为 done。
 ```
 
-## 执行顺序
+## 下一轮执行顺序
 
-1. 用 `cases/dependency-advisory.md`、`cases/code-authorization.md` 和 `cases/other-supply-chain.md` 各创建一条非生产 issue，依次分配给本小队。
-2. 对每条 issue 使用 `evidence-template.md` 回读评论和 activity，记录实际路由、成员、命令、测试结果、未知项和下一 owner。
-3. 用 `cases/production-escalation.md` 做一次只读升级演练：不执行生产动作，只确认人工审批请求和 incident/release 交接内容。
-4. 三类案例都闭环后，填写 `trial-results.md`，列出误分流、重复交接、指令冲突和模板缺口。
+1. 复用试点 v2 指令，恢复可用模型后完成已证明委派的成员返回与 leader 收口，并纠正派发应记 `action` 的错误。用 `[@小队名](mention://squad/<UUID>)` 激活真正的 leader；其成员交接使用 `[@成员名](mention://agent/<UUID>)`。仅回复 leader 旧评论会走普通 agent 回合，不能替代小队激活。精确链接必须保留方括号，最终仍以真实 task、评论作者和 `source_task_id` 为证。
+2. 用已记录的失败基线验证 `diagnostician → implementer → QA` 的实际分工；不得由 leader 实现或替成员写结论。补丁正确性与路由正确性分别留证。
+3. 回读所有角色评论、activity 和任务结果，更正测试数量、基线/当前 diff、来源哈希及版本锁定的权限含义；统一分诊字段继续使用规定枚举。
+4. 补齐 API/模型目的地约束，保持供应链缺证事项的 `hold/unknown` 和 owner。四例满足完整验收后才进入阶段二。
 
 ## 安全停止条件
 

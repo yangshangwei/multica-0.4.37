@@ -21,9 +21,9 @@
   "children": [],
   "parent": null,
   "relatedFiles": [],
-  "notes": "2026-10-27: 沿用用户选择恢复原 daemon/runtime，已验证隔离容器内的连接与真实任务启动，保留8个角色来源/自治/Access。POLA-3受匿名模型额度限制，POLA-4/5/6已建未分配backlog。容器已停止且临时认证已移除；等待可用模型配置，网络出站约束和真实角色验收尚未闭合，阶段二未启动。",
+  "notes": "2026-10-27重试：POLA-3/4/5/6及8个手动派发的独立成员子任务POLA-7～14均in_review，3文件合成补丁六项测试通过。只更新试点squad v2指令后，显式小队mention触发真正leader，修正缺少[]的成员链接后生成精确delegation成员task；leader结束后成员启动，但成员因免费额度耗尽被取消、无结果，leader又误记no_action，未证明返回/收口。早期leader直接实现与代写、报告误述、诊断/实现本人交接及网络出站约束仍待验收。最终容器停止、临时认证清理、历史角色绑定保留。阶段一未通过，阶段二未启动。",
   "meta": {
-    "phase": "phase1_model_blocked",
+    "phase": "phase1_real_results_routing_gate_open",
     "pilot_project_id": "e9f1b898-709a-4aee-9b75-5d72cf55e950"
   }
 }

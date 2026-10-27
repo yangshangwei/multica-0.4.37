@@ -172,6 +172,20 @@ template identity, declared authority and retained workspace edits; use a real
 task result to establish model execution. A copied prompt plus an online badge
 is insufficient evidence of a functioning role.
 
+For squad handoffs, `util.ParseMentions` reads Markdown links such as
+`[@Reviewer](mention://agent/<UUID>)`; plain `@Reviewer` or a missing bracket
+does not enqueue that member. The comment CLI sends content without converting
+names. A human reply to a leader's comment can create an ordinary agent turn
+through `EnqueueTaskForThreadParent`, without squad-leader briefing. Explicitly
+mention the squad when the next turn needs its leader protocol. A leader's
+member handoff must produce a distinct member run with `source=delegation`,
+the originating leader task and trigger comment; role headings authored by
+the leader do not establish independent review. Capture the current runtime
+briefing when investigating delivery, and distinguish its presence from model
+compliance. `TestCreateComment_SquadMentionTriggersLeader` and
+`TestClaim_LeaderTaskFromCommentMention_InjectsBriefing` cover the product
+paths; real task and comment provenance is still needed for pilot acceptance.
+
 The existing architecture, security, release, reliability and progress skills also
 carry the five governance checks identified by the lifecycle review: old-client/plugin
 contract matrices, trust-boundary and supply-chain/SBOM review, recovery/RPO/RTO

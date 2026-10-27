@@ -6,7 +6,7 @@
 - [x] 运行 `python3 ./.trellis/scripts/task.py start .trellis/tasks/10-26-security-remediation-squad`，确认任务进入 `in_progress`。
 - [x] 不在 `task.py start` 前修改产品代码、模板注册表或运行生产操作。
 
-2026-10-27 续接沿用已获批准的阶段一和“恢复旧 runtime”选择，不重新建任务。当前状态为 `blocked_pending_model_config`；实际证据、案例 ID 和续跑条件见 `pilot/trial-results.md`。
+2026-10-27 续接沿用已获批准的阶段一和“恢复旧 runtime”选择，不重新建任务。重试后状态为 `phase1_real_results_routing_gate_open`：模型可执行、四个父案例与八个独立成员子任务均已交到 `in_review`，另有一次真实 leader → 成员委派已证明，但成员模型额度耗尽后取消、无结果，且派发误记 `no_action`；完整返回/收口、职责分离、报告准确性和网络门槛未闭合，阶段二未启动。证据见 `pilot/trial-results.md`。
 
 ## 阶段一：当前工作区试点
 
@@ -27,23 +27,27 @@
 - [x] 创建“安全修复小队（试运行）”，把阶段一路由和统一交接字段写入 squad instructions。
 - [x] 记录成员重用情况；不要覆盖已有 workspace-owned 指令或 skill。
 
-8 个角色的 Access 均保留 `private`，没有扩大或重绑。角色来源、指令摘要及 6 个去重 skill 的内容摘要已记录在 `pilot/evidence/`。A3 的四个案例已创建，但只有升级演练发生过真实执行尝试，且被模型服务阻塞；A3/A4 仍待验收。
+8 个角色的 Access 均保留 `private`，没有扩大或重绑。角色来源、指令摘要及 6 个去重 skill 的内容摘要已记录在 `pilot/evidence/`。A3 的四个案例均有成功真实任务，独立成员子任务 `POLA-7`～`POLA-14` 已完成；两次修复仍由 leader 直接实现，成员审查由操作者补派，A3/A4 的完整路由验收仍未通过。试点小队指令随后通过成对内容/时间前置条件更新为 `pilot/runtime/pilot-instructions-v2.md`，共享角色和 roster 不变。
 
 ### A3. 演练三个安全事项
 
 - [ ] 组件漏洞：使用一个脱敏/合成依赖公告，覆盖受影响性判断、单项升级、锁文件/来源、回归验证和安全复审。
 - [ ] 代码漏洞：使用一个本地可复现的权限/输入/数据边界案例，覆盖安全审查、必要时诊断、最小修复、负面测试和独立 QA。
 - [ ] 其他风险：使用配置/供应链/Agent 或运行边界案例，覆盖 `hold`/`unknown`、证据缺口 owner 和条件性专家交接。
-- [ ] 至少让一个案例走过 migration-reviewer 分支；若没有实际契约变化，记录跳过理由。
+- [x] 至少让一个案例走过 migration-reviewer 分支；若没有实际契约变化，记录跳过理由。
 - [ ] 至少让一个未知根因案例走过 diagnostician 分支；保留无修复时失败的最小用例。
-- [ ] 至少演练一次“当前生产可利用、凭据暴露或客户数据暴露”的输入：leader 先请求人工，再转 incident/release；确认没有生产命令被执行。
+- [x] 至少演练一次“当前生产可利用、凭据暴露或客户数据暴露”的输入：leader 先请求人工，再转 incident/release；确认没有生产命令被执行。
+
+本轮执行证据：`POLA-4` 依赖补丁与 `POLA-5` 授权补丁经隔离实验室和可移植回放均六项通过；`POLA-6` 与真实安全审查子任务保持供应链 `hold/unknown`；`POLA-3` 交接草案及三个枚举纠正已留证。迁移分支由操作者手动派发 `POLA-7` 验证，不等于 leader 自主路由；`diagnostician`、`implementer` 本人的交接尚未执行。组件/代码完整路由条目继续保持未完成。
 
 ### A4. 试点验收
 
 - [ ] 从 issue 评论和 activity 记录中回读每个案例的 `type`、`severity`、`evidence_state`、`production_impact`、`route`、`blocked_actions` 和 `next_owner`。
-- [ ] 由未修改代码的成员完成 QA/安全复审；确认评论没有 secret、客户原始数据或可用 exploit。
-- [ ] 汇总误分流、重复交接、缺失证据、角色指令冲突和需要产品支持的决策。
+- [x] 由未修改代码的成员完成 QA/安全复审；确认评论没有 secret、客户原始数据或可用 exploit。
+- [x] 汇总误分流、重复交接、缺失证据、角色指令冲突和需要产品支持的决策。
 - [ ] 只有三类案例均满足闭环且所有 blocking gap 有 owner 时，才创建阶段二实现子任务。
+
+独立身份已通过子任务 task/评论核对，但部分报告仍有错误摘要、测试计数和权限推断；独立审查完成不表示报告内容全数可采信。操作者需回读原始命令更正这些误述，完整分诊字段和真实自主交接仍待验收。最后使用显式小队 mention 触发真正 leader 并修正成员 Markdown 链接后，已生成精确 `delegation` 的安全审查员任务；成员因匿名额度耗尽于 12:09:35 取消、无结果，leader 派发时误记 `no_action`。实际新回合 briefing 投影已保存，但旧回合注入情况未知；一次派发不完成成员返回或全链验收。最终容器已停止、四个 namespace 无排队/活动任务、临时认证副本清理完毕，见 `pilot/evidence/routing-final-cleanup-20261027.json`。
 
 ## 阶段二：固化内置能力
 

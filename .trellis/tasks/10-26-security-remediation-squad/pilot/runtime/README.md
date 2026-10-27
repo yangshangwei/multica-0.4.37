@@ -2,6 +2,8 @@
 
 此目录保留阶段一实际使用的 `Dockerfile` 和 `opencode-pilot` 包装器。默认操作到准备镜像为止；容器启动、凭据配置和 task 触发由主会话在模型可用后处理。这里不包含启动脚本、凭据或试点通过结论。
 
+2026-10-27 重试已实际使用 `opencode/nemotron-3.5-lightning-free` 完成四个父案例和八个独立成员子任务，记录在 `../evidence/real-pilot-summary-20261027.json`。最后一次只读派活验证创建了真实成员 run，但该模型随后也返回匿名额度不足；成员已取消，完整返回回环未验证。最终容器停止、临时开发 profile 移除，见 `../evidence/routing-final-cleanup-20261027.json`。下文首次模型失败属于较早的恢复记录，不能用来否定重试中的成功任务，也不能把成功任务当作阶段一验收。
+
 本轮模型受阻后，容器已停止，容器内开发认证配置已移除。继续使用保留容器时应先确认其状态并通过原本地认证来源恢复配置；不要重复创建同名容器或假定保留容器仍持有凭据。最初构建的镜像中的包装器曾经缺少临时目录所有权处理，运行时随后通过 `docker cp` 修正；本目录保存的是修正版，重新创建容器前应按下方命令重建镜像。
 
 ## 已执行的环境与身份
@@ -74,7 +76,7 @@ docker exec --detach \
     --agent-timeout 3m --no-auto-update --no-auto-reload
 ```
 
-任务本身没有指定模型时，daemon 使用 `MULTICA_OPENCODE_MODEL` 的 fallback；明确的 task/agent 模型设置优先。实际尝试 `opencode/big-pickle` 遇到匿名免费额度限制，`opencode/hy3-free` 遇到传输错误。最后一次模型运行自动重试后超时，没有成功的角色评论；主会话观察到没有待执行 task。这些失败不能登记为有效路由、独立 QA 或阶段一通过。
+任务本身没有指定模型时，daemon 使用 `MULTICA_OPENCODE_MODEL` 的 fallback；明确的 task/agent 模型设置优先。首次恢复尝试 `opencode/big-pickle` 遇到匿名免费额度限制，`opencode/hy3-free` 遇到传输错误；当时自动重试后超时，没有成功角色评论。后续 `nemotron-3.5-lightning-free` 重试使用 5 分钟单任务上限，完成了真实任务；最后的 delegated member 又遇到额度限制并取消。这些不同时间的结果必须分别保留，不能把失败或单次成功直接登记为阶段一通过。
 
 ## 工作目录和权限修复
 
@@ -89,4 +91,4 @@ docker exec --detach \
 - 本目录只做 shell 语法、来源字节一致性与内容边界检查，不额外触发 provider 调用。
 - Docker 仍使用默认 bridge，出站访问未受限制。它提供独立文件系统，但尚未满足完整的网络最小权限门槛；必须配置并验证所需的 API/模型目的地范围后再做试点验收。
 - 未挂载 host HOME/socket、root profile 不可由角色读取，不等于角色间存在独立操作系统沙箱；同一容器中的角色都以 `node` 运行。
-- 三类案例和生产升级演练仍需真实评论、activity、可追溯执行结果与独立验证。模型恢复与网络约束未闭合前，阶段二继续等待。
+- 真实任务与独立验证现已留存，但仍需完成诊断/实现角色本人交接、派活 activity 的正确标记、报告准确性、成员返回回环及网络目的地验证。试运行小队已通过条件更新采用 `pilot-instructions-v2.md`，其中 UUID 仅属于此试点，不能写入产品模板或当作新增权限。

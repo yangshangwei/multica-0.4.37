@@ -6,35 +6,47 @@
   "runtime_id": "39443bc2-1bf7-4515-8bdd-4684a41d64c9",
   "container": "multica-security-pilot-20261027",
   "baseline_ref": "3c00fabd4415a6497a90fda491fd49129d758183",
-  "model_fallback": "opencode/big-pickle",
+  "model_fallback": "opencode/nemotron-3.5-lightning-free",
   "issues": {
     "production-escalation": {
       "id": "01a1790f-905e-762a-9f44-822df2d97c93",
       "identifier": "POLA-3",
-      "status": "todo"
+      "status": "in_review"
     },
     "dependency-advisory": {
       "id": "01a1791f-fea8-7781-b150-2c29c866ecf1",
       "identifier": "POLA-4",
-      "status": "backlog",
-      "dispatched": false
+      "status": "in_review",
+      "dispatched": true
     },
     "code-authorization": {
       "id": "01a1791f-fec8-735b-9603-07776e9686d4",
       "identifier": "POLA-5",
-      "status": "backlog",
-      "dispatched": false
+      "status": "in_review",
+      "dispatched": true
     },
     "other-supply-chain": {
       "id": "01a1791f-fed6-7046-9de8-0f1d4ea9102e",
       "identifier": "POLA-6",
-      "status": "backlog",
-      "dispatched": false
+      "status": "in_review",
+      "dispatched": true
     }
   },
-  "phase": "phase1_model_blocked",
-  "runtime_session": "stopped_after_recovery_verification",
+  "phase": "phase1_real_results_routing_gate_open",
+  "runtime_session": "stopped_after_retry_and_routing_validation",
   "temporary_daemon_credential_removed": true,
   "auxiliary_runtime_created_then_removed": "5298abfa-cf95-4926-a9c2-47e6ac4f5265",
-  "next_step": "Use an available authorized model configuration, verify egress constraints, restart the isolated original daemon and rerun POLA-3 before assigning POLA-4/5/6."
+  "next_step": "Resume quota-backed delegated member return and correct activity outcome; exercise actual diagnostician/implementer separation, report accuracy and network destination controls before phase-one acceptance. Phase two remains unstarted.",
+  "child_issues": {
+    "dependency-migration-review": "01a17b43-d781-71a1-983f-f6769b2d6835",
+    "dependency-qa": "01a17b46-566b-7910-ba14-b532ad77d810",
+    "dependency-security-review": "01a17b48-214d-700f-853e-010f7e23a761",
+    "dependency-code-review": "01a17b4a-43eb-7ec9-b720-5e302cdf22a8",
+    "authorization-qa": "01a17b5e-6ab6-771c-a8a3-d9b3a7e77dd7",
+    "authorization-security-review": "01a17b60-5bc0-7b04-ac5e-7506b013fce2",
+    "authorization-code-review": "01a17b63-95ee-727c-82cf-8699680f8f66",
+    "supply-chain-security-review": "01a17b71-fabc-7a21-af87-ae90d2963047"
+  },
+  "retry_auxiliary_runtime_created_then_removed": "4a181074-c97c-474e-86cf-1e60616e257b",
+  "routing_only_evidence": "retry-routing-validation-20261027.json"
 }
