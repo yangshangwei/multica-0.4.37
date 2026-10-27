@@ -414,9 +414,17 @@ var kindMessages = map[ErrorKind][2]string{
 // already exists", "set parent_id (--parent) to <id>"). Agents took the retry
 // hint literally and burned hours re-sending an unchanged request (GH #6264,
 // GH #5948), and the server-side wording added in MUL-4417 never reached them.
+//
+// 403 belongs here for the same reason. The autonomy guards
+// (handler/agent_autonomy.go) write a denial meant for the agent to read: its
+// level, the level the action needs, and that the work should be handed to
+// someone at that level. The generic copy replaced all of that with "check that
+// you are in the right workspace", which sent an Observer agent to re-check a
+// workspace that was never the problem.
 var serverMessagePrefixes = map[ErrorKind][2]string{
 	KindValidation: {"Invalid request: ", "请求无效："},
 	KindConflict:   {"Request conflict: ", "请求冲突："},
+	KindForbidden:  {"Permission denied: ", "权限不足："},
 }
 
 // messageFor returns the localized message for a kind.
@@ -488,10 +496,10 @@ func userMessage(err error, lang Language) string {
 		if kind == KindAuthRequired && httpErr.TaskScoped {
 			return messageFor(KindTaskTokenRejected, lang)
 		}
-		// Validation and conflict errors carry a useful server-provided
-		// message; surface it instead of the generic line. A body we cannot
-		// recognize still falls back to the template, so this never dumps a
-		// raw response at the user.
+		// Validation, conflict and permission errors carry a useful
+		// server-provided message; surface it instead of the generic line. A
+		// body we cannot recognize still falls back to the template, so this
+		// never dumps a raw response at the user.
 		if prefix, ok := serverMessagePrefixes[kind]; ok {
 			if serverMsg := extractServerMessage(httpErr.Body); serverMsg != "" {
 				if lang == LangZH {

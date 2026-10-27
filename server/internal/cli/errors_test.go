@@ -191,6 +191,62 @@ func TestFormatErrorConflictFallsBackToGenericTemplate(t *testing.T) {
 	}
 }
 
+// TestFormatErrorForbiddenUsesServerMessage pins the autonomy denial reaching
+// the agent. The server names the level, the requirement and the hand-off; the
+// generic template ("check that you are in the right workspace") sent an
+// Observer agent looking for a workspace problem that did not exist.
+func TestFormatErrorForbiddenUsesServerMessage(t *testing.T) {
+	withLang(t, "en_US.UTF-8")
+	httpErr := &HTTPError{
+		Method:     "PUT",
+		Path:       "/api/issues/abc",
+		StatusCode: 403,
+		Body:       `{"error":"your autonomy level is observer, which cannot change an issue's status or assignee — that requires contributor. Report what is needed and hand it to a human or an agent at that level instead."}`,
+	}
+	wrapped := fmt.Errorf("update issue: %w", httpErr)
+
+	got := FormatError(wrapped, false)
+	if !strings.Contains(got, "Permission denied: ") || !strings.Contains(got, "your autonomy level is observer") {
+		t.Errorf("expected server forbidden message surfaced, got %q", got)
+	}
+	if strings.Contains(got, "right workspace") {
+		t.Errorf("generic workspace template should be replaced by the server message, got %q", got)
+	}
+	if strings.Contains(got, "/api/issues/abc") {
+		t.Errorf("user message leaked the request path: %q", got)
+	}
+	// The friendlier copy must not change how scripts branch on the failure.
+	if code := ExitCodeFor(wrapped); code != ExitAuth {
+		t.Errorf("ExitCodeFor = %d, want %d", code, ExitAuth)
+	}
+}
+
+func TestFormatErrorForbiddenChineseLocale(t *testing.T) {
+	withLang(t, "zh_CN.UTF-8")
+	httpErr := &HTTPError{StatusCode: 403, Body: `{"error":"this endpoint is only available to human actors"}`}
+	got := FormatError(httpErr, false)
+	if !strings.Contains(got, "权限不足：") || !strings.Contains(got, "this endpoint is only available to human actors") {
+		t.Errorf("expected Chinese forbidden prefix with server message, got %q", got)
+	}
+}
+
+func TestFormatErrorForbiddenFallsBackToGenericTemplate(t *testing.T) {
+	withLang(t, "en_US.UTF-8")
+	for _, body := range []string{
+		`<html><body>403 Forbidden</body></html>`,
+		`{"code":"grant_required"}`,
+		``,
+	} {
+		got := FormatError(&HTTPError{StatusCode: 403, Body: body}, false)
+		if !strings.Contains(got, "right workspace") {
+			t.Errorf("body %q: expected generic forbidden template, got %q", body, got)
+		}
+		if body != "" && strings.Contains(got, body) {
+			t.Errorf("body %q: raw body leaked into user message %q", body, got)
+		}
+	}
+}
+
 // TestExtractServerMessagePrefersProseOverMachineCode covers the endpoints that
 // put a stable code in "error" and the sentence in "message" (issue-table
 // cursor responses). The sentence is what helps a person.
