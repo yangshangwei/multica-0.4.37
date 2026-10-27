@@ -1,8 +1,9 @@
 import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
 import { CollaborationAccountSummarySchema, CollaborationStatusOptionsSchema } from "../collaboration/schema";
-import { positiveVersion } from "../collaboration/version";
+import { nonnegativeVersion, positiveVersion } from "../collaboration/version";
 import { collaborationTextByteLength } from "../collaboration/text-limits";
+import { CollaborationMemoryVersionMetaSchema, compareCollaborationMemoryVersions } from "../collaboration/memory-schema";
 import { adminOperationSchema } from "./operation-schema";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
@@ -84,6 +85,44 @@ export function matchesAdminCollaborationResult(value: AdminCollaborationResult,
     BigInt(result.collaborationRevision) > BigInt(input.expectedCollaborationRevision) &&
     result.handlerUserId === (input.successorUserId ?? result.previousHandlerUserId);
 }
+
+// R38 shared-context disposal reads version metadata only; no text is exposed.
+export const AdminCollaborationMemoryVersionsSchema = z.object({
+  scope: uuid, issue_id: uuid, current_version: nonnegativeVersion,
+  items: z.array(CollaborationMemoryVersionMetaSchema).max(100), next_cursor: positiveVersion.nullable(),
+}).refine((page) => page.items.every((item, index) => compareCollaborationMemoryVersions(item.version, page.current_version) <= 0 &&
+  (index === 0 || compareCollaborationMemoryVersions(item.version, page.items[index - 1]!.version) < 0)) &&
+  (page.next_cursor === null || page.next_cursor === page.items.at(-1)?.version))
+  .transform((value) => ({ scope: value.scope, issueId: value.issue_id, currentVersion: value.current_version, items: value.items, nextCursor: value.next_cursor }));
+export type AdminCollaborationMemoryVersions = z.output<typeof AdminCollaborationMemoryVersionsSchema>;
+
+export const AdminCollaborationMemoryPurgeSchema = z.strictObject({
+  version: positiveVersion,
+  reason: z.string().trim().min(1).refine((value) => !value.includes("\0") && collaborationTextByteLength(value) <= 1000),
+});
+export type AdminCollaborationMemoryPurge = z.output<typeof AdminCollaborationMemoryPurgeSchema>;
+
+const memoryReceipt = z.object({
+  issue_id: uuid, request_id: uuid, action: z.literal("purge_memory"), code: z.literal("memory_purged"),
+  version: positiveVersion, current_version: positiveVersion, bytes: z.number().int().nonnegative().safe(),
+  creator_user_id: uuid, purged_at: z.iso.datetime({ offset: true }),
+}).refine((value) => compareCollaborationMemoryVersions(value.version, value.current_version) < 0)
+  .transform((value) => ({ issueId: value.issue_id, requestId: value.request_id, action: value.action, code: value.code,
+    version: value.version, currentVersion: value.current_version, bytes: value.bytes, creatorUserId: value.creator_user_id, purgedAt: value.purged_at }));
+export const AdminCollaborationMemoryResultSchema = z.object({ operation: adminOperationSchema, result: memoryReceipt })
+  .refine(({ operation, result }) => operation.targetKind === "collaboration_issue" && operation.targetId.toLowerCase() === result.issueId &&
+    operation.actorId !== null && operation.kind === "collaboration.purge_memory" && operation.resultCode === result.code &&
+    operation.state === "applied" && operation.confirmation === "not_required");
+export type AdminCollaborationMemoryResult = z.output<typeof AdminCollaborationMemoryResultSchema>;
+
+export function matchesAdminCollaborationMemoryResult(value: AdminCollaborationMemoryResult, issueId: string, key: string, input?: AdminCollaborationMemoryPurge): boolean {
+  return value.result.issueId === issueId.toLowerCase() && value.result.requestId === key.toLowerCase() &&
+    (!input || value.result.version === input.version);
+}
+export const parseAdminCollaborationMemoryVersions = (raw: unknown): AdminCollaborationMemoryVersions | null =>
+  parseWithFallback(raw, AdminCollaborationMemoryVersionsSchema, null, { endpoint: "GET /api/admin/collaboration/issues/:id/memory/versions", redact: true });
+export const parseAdminCollaborationMemoryResult = (raw: unknown): AdminCollaborationMemoryResult | null =>
+  parseWithFallback(raw, AdminCollaborationMemoryResultSchema, null, { endpoint: "admin collaboration shared context purge result", redact: true });
 
 export const parseAdminCollaborationIssueList = (raw: unknown): AdminCollaborationIssueList | null =>
   parseWithFallback(raw, AdminCollaborationIssueListSchema, null, { endpoint: "GET /api/admin/collaboration/issues", redact: true });

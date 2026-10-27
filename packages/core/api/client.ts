@@ -2,6 +2,9 @@ import { parseIteration, IterationCapabilitiesSchema, IterationSettingsSchema, I
 import { z } from "zod";
 import { parseCollaborationActivity } from "../collaboration/activity-schema";
 import { parseCollaborationRunRecords } from "../collaboration/run-records-schema";
+import { parseCollaborationMemory, parseCollaborationMemoryReceipt, parseCollaborationMemoryVersion, parseCollaborationMemoryVersions,
+  type CollaborationMemoryActionName, type CollaborationMemoryReceipt } from "../collaboration/memory-schema";
+import { positiveVersion } from "../collaboration/version";
 import { COLLABORATION_EXECUTION_VIEW_VERSION } from "../collaboration/execution-schema";
 import { parseCollaborationParticipants } from "../collaboration/participant-schema";
 import { CollaborationDiscussionSelectionSchema, parseCollaborationDiscussionReceipt, parseCollaborationIssueReactions, type CollaborationDiscussionSelection } from "../collaboration/discussion-schema";
@@ -61,7 +64,8 @@ import { parseAdminUsers, parseAdminUserDetail, parseAdminUserOperation, parseAd
 import { parseAdminMe } from "../admin/schema";
 import { AdminCollaborationChangeSchema, parseAdminCollaborationIssueList, parseAdminCollaborationDetail,
   parseAdminCollaborationCandidates, parseAdminCollaborationResult, matchesAdminCollaborationResult,
-  type AdminCollaborationChange } from "../admin/collaboration-schema";
+  AdminCollaborationMemoryPurgeSchema, parseAdminCollaborationMemoryVersions, parseAdminCollaborationMemoryResult, matchesAdminCollaborationMemoryResult,
+  type AdminCollaborationChange, type AdminCollaborationMemoryPurge } from "../admin/collaboration-schema";
 import { parseAdminOperation, parseAdminAdmissionResult, parseAdminCancellationResult } from "../admin/operation-schema";
 import type { AdminAdmissionChange, AdminExecutionCancellation } from "../admin/control-schema";
 import { parseAdminOverview, parseAdminHealth, parseAdminSettings, parseAdminWorkspaces, parseAdminAudit } from "../admin/observability-schema";
@@ -1283,6 +1287,78 @@ export class ApiClient {
     }
   }
 
+  // Shared context ("memory") reads use the optional-route path: an older server
+  // without the route is unavailable, and only a structured denial clears access.
+  async getCollaborationMemory(id: string, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationMemory(await this.fetchCollaborationOptionalHistory(`/api/collaboration/issues/${encodeURIComponent(id)}/memory`, { signal: options?.signal, cache: "no-store" }));
+    return result && sameResourceIdentity(result.issue_id, id) ? result : null;
+  }
+
+  async getCollaborationMemoryVersions(id: string, params: { cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {
+    const limit = params.limit ?? 50;
+    if (!z.uuid().safeParse(id).success || !Number.isInteger(limit) || limit < 1 || limit > 100 ||
+      (params.cursor !== undefined && !positiveVersion.safeParse(params.cursor).success)) throw new TypeError("Invalid shared-context history query");
+    const query = new URLSearchParams({ limit: String(limit) });
+    if (params.cursor !== undefined) query.set("cursor", params.cursor);
+    const result = parseCollaborationMemoryVersions(await this.fetchCollaborationOptionalHistory(
+      `/api/collaboration/issues/${encodeURIComponent(id)}/memory/versions?${query}`, { signal: options?.signal, cache: "no-store" }));
+    // A page continues strictly below its cursor; anything else is a forged or cyclic page.
+    return result && sameResourceIdentity(result.issue_id, id) && result.items.length <= limit &&
+      (params.cursor === undefined || result.items.every((item) => BigInt(item.version) < BigInt(params.cursor!))) ? result : null;
+  }
+
+  async getCollaborationMemoryVersion(id: string, version: string, options?: { signal?: AbortSignal }) {
+    if (!positiveVersion.safeParse(version).success) throw new TypeError("Invalid shared-context version");
+    // A missing version is a structured memory_version_not_found, which this
+    // optional-route reader treats as unavailable rather than issue denial.
+    const result = parseCollaborationMemoryVersion(await this.fetchCollaborationOptionalHistory(
+      `/api/collaboration/issues/${encodeURIComponent(id)}/memory/versions/${encodeURIComponent(version)}`, { signal: options?.signal, cache: "no-store" }));
+    return result && sameResourceIdentity(result.issue_id, id) && result.version === version ? result : null;
+  }
+
+  async updateCollaborationMemory(id: string, requestId: string, input: { expected_version: string; content: string }, options?: { signal?: AbortSignal }) {
+    return this.writeCollaborationMemory(id, requestId, "memory_update", `/api/collaboration/issues/${encodeURIComponent(id)}/memory`,
+      { method: "PUT", body: JSON.stringify({ expected_version: input.expected_version, content: input.content }), signal: options?.signal });
+  }
+
+  async restoreCollaborationMemoryVersion(id: string, requestId: string, version: string, input: { expected_version: string }, options?: { signal?: AbortSignal }) {
+    return this.writeCollaborationMemory(id, requestId, "memory_restore", `/api/collaboration/issues/${encodeURIComponent(id)}/memory/versions/${encodeURIComponent(version)}/restore`,
+      { method: "POST", body: JSON.stringify({ expected_version: input.expected_version }), signal: options?.signal });
+  }
+
+  async purgeCollaborationMemoryVersion(id: string, requestId: string, version: string, input: { reason: string }, options?: { signal?: AbortSignal }) {
+    const result = await this.writeCollaborationMemory(id, requestId, "memory_purge", `/api/collaboration/issues/${encodeURIComponent(id)}/memory/versions/${encodeURIComponent(version)}/purge`,
+      { method: "POST", body: JSON.stringify({ reason: input.reason }), signal: options?.signal });
+    return result && (result.version === null || result.version === version) ? result : null;
+  }
+
+  /** The original-key result is content-free and readable after access loss. */
+  async getCollaborationMemoryOperation(id: string, requestId: string, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationMemoryReceipt(await this.fetchCollaborationRecovery(
+      `/api/collaboration/issues/${encodeURIComponent(id)}/memory/operations/${encodeURIComponent(requestId)}`, options));
+    return result && sameResourceIdentity(result.issue_id, id) && result.request_id === requestId ? result : null;
+  }
+
+  private async writeCollaborationMemory(id: string, requestId: string, action: CollaborationMemoryActionName, path: string, init: RequestInit): Promise<CollaborationMemoryReceipt | null> {
+    let result: CollaborationMemoryReceipt | null;
+    try {
+      result = parseCollaborationMemoryReceipt(await this.fetchCollaboration(path, { ...init, headers: { "Idempotency-Key": requestId } }, 200));
+      if (result?.status !== 200) return null;
+    } catch (error) {
+      if (!(error instanceof ApiError)) throw error;
+      // Sealed refusals keep HTTP status equal to the receipt status. They do not
+      // revoke the caller's read access; a plain role/access error still does.
+      const receipt = error.status >= 400 && error.status < 500 ? parseCollaborationMemoryReceipt(error.body) : null;
+      if (!receipt || receipt.status !== error.status) {
+        // A bodyless 404 is an absent route on an older server, not issue denial.
+        if (error.status === 404 && !z.object({ code: z.string() }).safeParse(error.body).success) return null;
+        throw error;
+      }
+      result = receipt;
+    }
+    return result && sameResourceIdentity(result.issue_id, id) && result.request_id === requestId && result.action === action ? result : null;
+  }
+
   async getCollaborationNotifications(params: { cursor?: string; includeArchived?: boolean } = {}, options?: { signal?: AbortSignal }) {
     const query = new URLSearchParams({ limit: "50" });
     if (params.cursor) query.set("cursor", params.cursor);
@@ -1685,6 +1761,36 @@ export class ApiClient {
     });
     const result = parseAdminCollaborationResult(raw);
     return result && matchesAdminCollaborationResult(result, id, key, input) ? result : null;
+  }
+
+  async getAdminCollaborationMemoryVersions(id: string, params: { limit?: number; cursor?: string } = {}, options?: { signal?: AbortSignal }) {
+    z.uuid().parse(id);
+    const query = z.strictObject({ limit: z.number().int().min(1).max(100).optional(), cursor: positiveVersion.optional() }).parse(params);
+    const search = new URLSearchParams();
+    if (query.limit !== undefined) search.set("limit", String(query.limit));
+    if (query.cursor) search.set("cursor", query.cursor);
+    const result = parseAdminCollaborationMemoryVersions(await this.fetch<unknown>(
+      `/api/admin/collaboration/issues/${encodeURIComponent(id)}/memory/versions${search.size ? `?${search}` : ""}`, { signal: options?.signal }));
+    return result?.issueId === id.toLowerCase() ? result : null;
+  }
+
+  async purgeAdminCollaborationMemoryVersion(id: string, body: AdminCollaborationMemoryPurge, key: string) {
+    z.uuid().parse(id);
+    z.uuid().parse(key);
+    const input = AdminCollaborationMemoryPurgeSchema.parse(body);
+    const result = parseAdminCollaborationMemoryResult(await this.fetch<unknown>(
+      `/api/admin/collaboration/issues/${encodeURIComponent(id)}/memory/versions/${encodeURIComponent(input.version)}/purge`, {
+        method: "POST", headers: { "Idempotency-Key": key }, body: JSON.stringify({ reason: input.reason }),
+      }));
+    return result && matchesAdminCollaborationMemoryResult(result, id, key, input) ? result : null;
+  }
+
+  /** The shared administration operation GET returns the purge-specific result shape. */
+  async getAdminCollaborationMemoryOperation(id: string, key: string, options?: { signal?: AbortSignal }) {
+    z.uuid().parse(id);
+    z.uuid().parse(key);
+    const result = parseAdminCollaborationMemoryResult(await this.fetch<unknown>(`/api/admin/collaboration/issues/${encodeURIComponent(id)}/operations/${encodeURIComponent(key)}`, { signal: options?.signal }));
+    return result && matchesAdminCollaborationMemoryResult(result, id, key) ? result : null;
   }
 
   async getAdminCollaborationOperation(id: string, key: string, options?: { signal?: AbortSignal }) {

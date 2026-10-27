@@ -24,9 +24,10 @@ Machine credentials and source membership alone grant no collaboration control.
 Host execution reuses ordinary Provider permissions; separate directories are not
 an OS sandbox. Before collaboration commands, files, consent or recovery, read
 `references/collaboration-workflow.md` for mode-specific guarantees. Admitted runs
-use narrow business context for issue read/comment and squad activity. Writers
-retain the explicit `--request-id` and exact payload across uncertainty. Ordinary
-rules below are not shared APIs; editing or reacting never dispatches AI.
+use narrow business context for issue read/comment, squad activity and the shared
+context (`multica collaboration memory show|update`). Writers retain the explicit
+`--request-id` and exact payload across uncertainty. Ordinary rules below are not
+shared APIs; editing or reacting never dispatches AI.
 
 ## Triage admission precedes formal issue work
 

@@ -8,11 +8,12 @@ import { parseCollaborationCommandCancelDraft } from "./command";
 import { parseCollaborationControlDraft } from "./control";
 import { parseCollaborationSwitchDraft } from "./switch";
 import { parseCollaborationResourceDraft } from "./resource";
+import { parseCollaborationMemoryDraft } from "./memory-actions";
 import { collaborationDraftRevision, CollaborationDraftError, readCollaborationDrafts, subscribeCollaborationDrafts, type CollaborationDraft, type CollaborationDraftScope } from "./draft";
 import type { StorageAdapter } from "../types/storage";
 
 export function readCollaborationPendingDrafts(scope: CollaborationDraftScope, storage?: StorageAdapter) {
-  const result = { actions: [] as CollaborationDraft[], comments: [] as CollaborationDraft[], commentChanges: [] as CollaborationDraft[], discussion: [] as CollaborationDraft[], execution: [] as CollaborationDraft[], error: false };
+  const result = { actions: [] as CollaborationDraft[], comments: [] as CollaborationDraft[], commentChanges: [] as CollaborationDraft[], discussion: [] as CollaborationDraft[], execution: [] as CollaborationDraft[], memory: [] as CollaborationDraft[], error: false };
   try {
     for (const draft of readCollaborationDrafts(scope, storage)) {
       if (draft.kind === "comment") {
@@ -29,6 +30,7 @@ export function readCollaborationPendingDrafts(scope: CollaborationDraftScope, s
         case "target_switch": parseCollaborationSwitchDraft(draft); result.execution.push(draft); break;
         case "target_resource": parseCollaborationResourceDraft(draft); result.execution.push(draft); break;
         case "cancel_command": parseCollaborationCommandCancelDraft(draft); result.execution.push(draft); break;
+        case "memory": parseCollaborationMemoryDraft(draft); result.memory.push(draft); break;
         case undefined: parseCollaborationActionDraft(draft); result.actions.push(draft); break;
         default: throw new CollaborationDraftError();
       }

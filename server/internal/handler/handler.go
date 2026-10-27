@@ -204,6 +204,10 @@ type Config struct {
 	// contents are validated on each request; failures preserve the last valid
 	// snapshot and explicitly mark the response stale.
 	ChangelogFile string
+	// CollaborationMemoryMaxBytes is the parsed
+	// MULTICA_COLLABORATION_MEMORY_MAX_BYTES shared-context limit. cmd/server
+	// fails the boot on an out-of-range value; zero means the default.
+	CollaborationMemoryMaxBytes int
 }
 
 type cloudRuntimeProxy interface {

@@ -24,6 +24,9 @@ vi.mock("../platform", () => ({ useRestoredScrollRef: () => () => {} }));
 vi.mock("../rich-content", () => ({ RichContent: () => null }));
 vi.mock("./workflow", () => ({ CollaborationWorkflow: () => null }));
 vi.mock("./execution-panel", () => ({ CollaborationExecutionPanel: ({ selectedRunId }: { selectedRunId?: string }) => selectedRunId ? <div id={`run-${selectedRunId}`} data-testid="linked-run" tabIndex={-1} /> : null }));
+// The detail composition suite isolates its sibling identities; shared-context
+// query/mutation behavior is covered by memory-panel.test.tsx.
+vi.mock("./memory-panel", () => ({ CollaborationMemoryPanel: () => null }));
 vi.mock("./activity", () => ({ CollaborationActivity: () => null }));
 vi.mock("./discussion-actions", () => ({ CollaborationIssueReactions: () => null }));
 vi.mock("./attachment-panel", () => ({ CollaborationAttachmentPanel: () => null }));

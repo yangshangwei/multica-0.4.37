@@ -116,7 +116,7 @@ VALUES($1::uuid,$2::uuid,$3::uuid,$4::uuid,
     $8::uuid,$9::bigint,$10::bigint,$11::uuid,$12::bigint,
     $13::bigint,$14::uuid,$15::uuid,$16::uuid,
     $17::uuid,$18::bigint,$19::uuid,$20::uuid,
-    $21::uuid,$22::uuid,'prepared') RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot
+    $21::uuid,$22::uuid,'prepared') RETURNING id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot, memory_mode, memory_base_version
 `
 
 type CreateCollaborationDerivedRunParams struct {
@@ -213,6 +213,8 @@ func (q *Queries) CreateCollaborationDerivedRun(ctx context.Context, arg CreateC
 		&i.PromptSnapshot,
 		&i.LeaderTurn,
 		&i.PreparationSnapshot,
+		&i.MemoryMode,
+		&i.MemoryBaseVersion,
 	)
 	return i, err
 }
@@ -338,7 +340,7 @@ func (q *Queries) GetCollaborationBusinessRunByHash(ctx context.Context, tokenHa
 }
 
 const getCollaborationQueuedContinuation = `-- name: GetCollaborationQueuedContinuation :one
-SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot FROM collaboration_run WHERE group_id=$1 AND step_kind='continuation' AND progress_state='prepared'
+SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot, memory_mode, memory_base_version FROM collaboration_run WHERE group_id=$1 AND step_kind='continuation' AND progress_state='prepared'
     AND settled_at IS NULL AND forced_disposition IS NULL
 `
 
@@ -388,6 +390,8 @@ func (q *Queries) GetCollaborationQueuedContinuation(ctx context.Context, groupI
 		&i.PromptSnapshot,
 		&i.LeaderTurn,
 		&i.PreparationSnapshot,
+		&i.MemoryMode,
+		&i.MemoryBaseVersion,
 	)
 	return i, err
 }

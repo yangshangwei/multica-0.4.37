@@ -6,10 +6,16 @@ export interface AccountDestination {
   issueId: string | null;
   commentId: string | null;
   runId?: string | null;
-  anchor?: "description";
+  anchor?: "description" | "memory";
+  /** Exact shared-context version; implies the memory section. */
+  memoryVersion?: string | null;
 }
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+// Shared-context versions are positive signed-64-bit decimal strings.
+function memoryVersion(value: string): boolean {
+  return /^[1-9][0-9]{0,18}$/.test(value) && BigInt(value) <= 9223372036854775807n;
+}
 
 export function parseAccountPath(path: string): AccountDestination | null {
   if (!/^\/account(?:[?#]|$)/.test(path)) return null;
@@ -25,7 +31,13 @@ export function parseAccountPath(path: string): AccountDestination | null {
     if (query.get("administration") !== "collaboration" || view !== "current" || url.hash) return null;
     return { view, administration: true, issueId: issueId?.toLowerCase() ?? null, commentId: null };
   }
-  if (url.hash === "#description") return issueId ? { view, issueId: issueId.toLowerCase(), commentId: null, anchor: "description" } : null;
+  if (url.hash === "#description" || url.hash === "#memory") {
+    return issueId ? { view, issueId: issueId.toLowerCase(), commentId: null, anchor: url.hash === "#memory" ? "memory" : "description" } : null;
+  }
+  if (url.hash.startsWith("#memory-v")) {
+    const version = url.hash.slice("#memory-v".length);
+    return issueId && memoryVersion(version) ? { view, issueId: issueId.toLowerCase(), commentId: null, memoryVersion: version } : null;
+  }
   if (url.hash.startsWith("#run-")) {
     const runId = url.hash.slice("#run-".length);
     return issueId && uuid.test(runId) ? { view, issueId: issueId.toLowerCase(), commentId: null, runId: runId.toLowerCase() } : null;
@@ -36,12 +48,13 @@ export function parseAccountPath(path: string): AccountDestination | null {
 }
 
 export function accountPath(input: Partial<AccountDestination> = {}): string {
-  if (input.runId && (input.commentId || input.anchor)) throw new TypeError("Invalid account destination");
+  if ([input.runId, input.commentId, input.anchor, input.memoryVersion].filter(Boolean).length > 1) throw new TypeError("Invalid account destination");
   const query = new URLSearchParams({ view: input.view ?? "current" });
   if (input.administration) query.set("administration", "collaboration");
   if (input.issueId) query.set("issue", input.issueId.toLowerCase());
   const hash = input.runId ? `#run-${input.runId.toLowerCase()}`
-    : input.commentId ? `#comment-${input.commentId.toLowerCase()}` : input.anchor === "description" ? "#description" : "";
+    : input.commentId ? `#comment-${input.commentId.toLowerCase()}`
+      : input.memoryVersion ? `#memory-v${input.memoryVersion}` : input.anchor ? `#${input.anchor}` : "";
   const path = `/account?${query}${hash}`;
   if (!parseAccountPath(path)) throw new TypeError("Invalid account destination");
   return path;

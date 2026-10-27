@@ -105,6 +105,13 @@ const runBase = z.object({
   forced_disposition: disposition,
   recording_incomplete: z.boolean(),
   settled_at: timestamp,
+  // Additive shared-context facts, absent for runs before the feature. They are
+  // display-only: an unknown support value or malformed fact is dropped.
+  memory: z.object({
+    support: z.enum(["supported", "unsupported"]),
+    base_version: nonnegativeVersion.nullable(),
+    written_version: positiveVersion.nullable(),
+  }).optional().catch(undefined),
 });
 
 // Explicitly exclude v6 markers from the legacy branch. Otherwise a malformed

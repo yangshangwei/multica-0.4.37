@@ -255,6 +255,10 @@ type RouterOptions struct {
 	// any test that happened to have the variable set. nil means unset, which
 	// is what tests and NewRouter get.
 	LLMMaxRetries *llm.RetryOverride
+	// CollaborationMemoryMaxBytes carries the parsed
+	// MULTICA_COLLABORATION_MEMORY_MAX_BYTES limit, injected for the same
+	// fail-the-boot reason. Zero means the default.
+	CollaborationMemoryMaxBytes int
 }
 
 func buildChannelSupervisor(
@@ -453,6 +457,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		LLMMaxRetries:                 opts.LLMMaxRetries,
 		ServerVersion:                 normalizeServerVersion(version),
 		ChangelogFile:                 strings.TrimSpace(os.Getenv("CHANGELOG_FILE")),
+		CollaborationMemoryMaxBytes:   service.EffectiveCollaborationMemoryMaxBytes(opts.CollaborationMemoryMaxBytes),
 	}
 	h := handler.New(queries, pool, hub, bus, emailSvc, store, cfSigner, analyticsClient, signupConfig, daemonHub)
 	mode, registrationPolicy := "classic", "disabled"
@@ -465,7 +470,8 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	h.AdminReadConfig = handler.AdminReadConfig{Configured: true, AuthMode: mode, RegistrationEnabled: signupConfig.AllowSignup, RegistrationPolicy: registrationPolicy,
 		ManagedInstallationsEnabled: signupConfig.ManagedInstallationsEnabled, WorkspaceCreationEnabled: !signupConfig.DisableWorkspaceCreation,
 		ConfirmedOperationsDays: configuredAdminRetention("MULTICA_ADMIN_CONFIRMED_OPERATIONS_RETENTION_DAYS"),
-		AlertsDays:              configuredAdminRetention("MULTICA_ADMIN_ALERT_RETENTION_DAYS"), AuditDays: configuredAdminRetention("MULTICA_ADMIN_AUDIT_RETENTION_DAYS")}
+		AlertsDays:              configuredAdminRetention("MULTICA_ADMIN_ALERT_RETENTION_DAYS"), AuditDays: configuredAdminRetention("MULTICA_ADMIN_AUDIT_RETENTION_DAYS"),
+		CollaborationMemoryMaxBytes: signupConfig.CollaborationMemoryMaxBytes}
 	h.PasswordLimiter = auth.NewPasswordLimiter(rdb)
 	invitationRateLimits := handler.DefaultInvitationRateLimits()
 	invitationRateLimits.Actor.Limit = envNonNegativeInt("RATE_LIMIT_INVITATION_ACTOR_10M", invitationRateLimits.Actor.Limit)
@@ -1403,6 +1409,9 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	r.Post("/api/collaboration/runtime/runs/{runId}/preparation/observations", h.RecordCollaborationRuntimePreparation)
 	r.Post("/api/collaboration/runtime/runs/{runId}/comments", h.CreateCollaborationRuntimeComment)
 	r.Post("/api/collaboration/runtime/runs/{runId}/squad-activity", h.RecordCollaborationRuntimeSquadActivity)
+	r.Post("/api/collaboration/runtime/runs/{runId}/memory/base", h.GetCollaborationRuntimeMemoryBase)
+	r.Get("/api/collaboration/runtime/runs/{runId}/memory", h.GetCollaborationRuntimeMemory)
+	r.Put("/api/collaboration/runtime/runs/{runId}/memory", h.UpdateCollaborationRuntimeMemory)
 	r.Get("/api/collaboration/runtime/runs/{runId}/stop-intent", h.GetCollaborationRuntimeStopIntent)
 	r.Post("/api/collaboration/runtime/runs/{runId}/proof", h.AcceptCollaborationRuntimeProof)
 	r.Post("/api/collaboration/runtime/runs/{runId}/launches/{launchId}/termination", h.AcceptCollaborationLaunchTermination)
@@ -1708,6 +1717,15 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Post("/api/collaboration/issues/{id}/reactions/{emoji}", h.AddCollaborationIssueReaction)
 		r.Delete("/api/collaboration/issues/{id}/reactions/{emoji}", h.RemoveCollaborationIssueReaction)
 		r.Get("/api/collaboration/issues/{id}/discussion/operations/{requestId}", h.GetCollaborationDiscussionOperation)
+		// Shared context has its own version counter; writes never advance the
+		// issue revision, notify, or enter the activity feed.
+		r.Get("/api/collaboration/issues/{id}/memory", h.GetCollaborationMemory)
+		r.Put("/api/collaboration/issues/{id}/memory", h.UpdateCollaborationMemory)
+		r.Get("/api/collaboration/issues/{id}/memory/versions", h.ListCollaborationMemoryVersions)
+		r.Get("/api/collaboration/issues/{id}/memory/versions/{version}", h.GetCollaborationMemoryVersion)
+		r.Post("/api/collaboration/issues/{id}/memory/versions/{version}/restore", h.RestoreCollaborationMemoryVersion)
+		r.Post("/api/collaboration/issues/{id}/memory/versions/{version}/purge", h.PurgeCollaborationMemoryVersion)
+		r.Get("/api/collaboration/issues/{id}/memory/operations/{requestId}", h.GetCollaborationMemoryOperation)
 		r.Patch("/api/collaboration/issues/{id}", h.UpdateCollaborationIssue)
 		r.Post("/api/collaboration/issues/{id}/lifecycle", h.ChangeCollaborationLifecycle)
 		r.Post("/api/installations/challenges", h.InstallationChallenge)
@@ -1744,6 +1762,8 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 			r.Get("/collaboration/issues/{id}", h.AdminCollaborationIssue)
 			r.Get("/collaboration/issues/{id}/reopen-candidates", h.AdminCollaborationReopenCandidates)
 			r.Post("/collaboration/issues/{id}/lifecycle", h.AdminCollaborationLifecycle)
+			r.Get("/collaboration/issues/{id}/memory/versions", h.AdminCollaborationMemoryVersions)
+			r.Post("/collaboration/issues/{id}/memory/versions/{version}/purge", h.AdminCollaborationMemoryPurge)
 			r.Get("/collaboration/issues/{id}/operations/{requestId}", h.AdminCollaborationOperation)
 			r.Get("/users", h.AdminUsers)
 			r.Get("/users/{id}", h.AdminUser)

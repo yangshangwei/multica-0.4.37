@@ -911,6 +911,27 @@ type CollaborationGroupInput struct {
 	ConsumingRunID pgtype.UUID `json:"consuming_run_id"`
 }
 
+type CollaborationMemoryVersion struct {
+	ID                  pgtype.UUID        `json:"id"`
+	IssueID             pgtype.UUID        `json:"issue_id"`
+	Version             int64              `json:"version"`
+	Content             string             `json:"content"`
+	Bytes               int32              `json:"bytes"`
+	AuthorKind          string             `json:"author_kind"`
+	AuthorUserID        pgtype.UUID        `json:"author_user_id"`
+	AgentID             pgtype.UUID        `json:"agent_id"`
+	RunID               pgtype.UUID        `json:"run_id"`
+	ResourceOwnerUserID pgtype.UUID        `json:"resource_owner_user_id"`
+	RequestID           pgtype.Text        `json:"request_id"`
+	RequestHash         pgtype.Text        `json:"request_hash"`
+	RestoredFromVersion pgtype.Int8        `json:"restored_from_version"`
+	PurgedAt            pgtype.Timestamptz `json:"purged_at"`
+	PurgedByUserID      pgtype.UUID        `json:"purged_by_user_id"`
+	PurgedByAdmin       bool               `json:"purged_by_admin"`
+	PurgeReason         pgtype.Text        `json:"purge_reason"`
+	CreatedAt           pgtype.Timestamptz `json:"created_at"`
+}
+
 type CollaborationNotification struct {
 	ID              pgtype.UUID        `json:"id"`
 	RecipientUserID pgtype.UUID        `json:"recipient_user_id"`
@@ -1004,6 +1025,8 @@ type CollaborationRun struct {
 	PromptSnapshot       []byte             `json:"prompt_snapshot"`
 	LeaderTurn           pgtype.Int8        `json:"leader_turn"`
 	PreparationSnapshot  []byte             `json:"preparation_snapshot"`
+	MemoryMode           pgtype.Text        `json:"memory_mode"`
+	MemoryBaseVersion    pgtype.Int8        `json:"memory_base_version"`
 }
 
 type CollaborationRunEvent struct {

@@ -329,7 +329,7 @@ func (q *Queries) ListCollaborationExecutionGroups(ctx context.Context, sessionI
 }
 
 const listCollaborationRuns = `-- name: ListCollaborationRuns :many
-SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot FROM collaboration_run WHERE session_id = $1 ORDER BY created_at, id
+SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot, memory_mode, memory_base_version FROM collaboration_run WHERE session_id = $1 ORDER BY created_at, id
 `
 
 func (q *Queries) ListCollaborationRuns(ctx context.Context, sessionID pgtype.UUID) ([]CollaborationRun, error) {
@@ -384,6 +384,8 @@ func (q *Queries) ListCollaborationRuns(ctx context.Context, sessionID pgtype.UU
 			&i.PromptSnapshot,
 			&i.LeaderTurn,
 			&i.PreparationSnapshot,
+			&i.MemoryMode,
+			&i.MemoryBaseVersion,
 		); err != nil {
 			return nil, err
 		}
@@ -478,7 +480,7 @@ func (q *Queries) LockCollaborationGroupDelegations(ctx context.Context, groupID
 }
 
 const lockCollaborationGroupRuns = `-- name: LockCollaborationGroupRuns :many
-SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot FROM collaboration_run WHERE group_id = $1 ORDER BY id FOR UPDATE
+SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot, memory_mode, memory_base_version FROM collaboration_run WHERE group_id = $1 ORDER BY id FOR UPDATE
 `
 
 func (q *Queries) LockCollaborationGroupRuns(ctx context.Context, groupID pgtype.UUID) ([]CollaborationRun, error) {
@@ -533,6 +535,8 @@ func (q *Queries) LockCollaborationGroupRuns(ctx context.Context, groupID pgtype
 			&i.PromptSnapshot,
 			&i.LeaderTurn,
 			&i.PreparationSnapshot,
+			&i.MemoryMode,
+			&i.MemoryBaseVersion,
 		); err != nil {
 			return nil, err
 		}
@@ -681,7 +685,7 @@ func (q *Queries) LockCollaborationUnsettledGroups(ctx context.Context, sessionI
 }
 
 const lockCollaborationUnsettledRuns = `-- name: LockCollaborationUnsettledRuns :many
-SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot FROM collaboration_run WHERE session_id = $1 AND settled_at IS NULL
+SELECT id, task_id, grant_id, grant_epoch, resource_epoch, execution_workspace_id, runtime_id, installation_id, binding_id, binding_epoch, fence, claim_generation, launch_nonce, progress_state, business_outcome, forced_disposition, disposition_reason, proof_state, authorized_attempt_seq, sealed_attempt_seq, recording_incomplete, created_at, started_at, settled_at, session_id, command_id, target_id, group_id, parent_run_id, step_key, step_kind, agent_id, target_epoch, config_version, channel_id, batch_id, deployment_id, resource_owner_user_id, containment, prompt_snapshot, leader_turn, preparation_snapshot, memory_mode, memory_base_version FROM collaboration_run WHERE session_id = $1 AND settled_at IS NULL
 ORDER BY group_id, id FOR UPDATE
 `
 
@@ -739,6 +743,8 @@ func (q *Queries) LockCollaborationUnsettledRuns(ctx context.Context, sessionID 
 			&i.PromptSnapshot,
 			&i.LeaderTurn,
 			&i.PreparationSnapshot,
+			&i.MemoryMode,
+			&i.MemoryBaseVersion,
 		); err != nil {
 			return nil, err
 		}

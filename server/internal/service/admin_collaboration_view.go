@@ -296,6 +296,17 @@ func (s *AdminCollaborationService) GetOperation(ctx context.Context, organizati
 		if op.TargetID != issueID {
 			return pgx.ErrNoRows
 		}
+		if op.Kind == "collaboration."+adminCollaborationMemoryPurge {
+			memory, err := loadAdminCollaborationMemoryReceipt(ctx, q, op)
+			if err != nil {
+				return err
+			}
+			if memory.CreatorUserID != row.CreatorUserID {
+				return platformError(503, "admin_operation_unavailable", "The original administration identity is unavailable")
+			}
+			out = AdminCollaborationResult{Operation: op, MemoryResult: &memory, Replayed: true}
+			return nil
+		}
 		receipt, err := loadAdminCollaborationReceipt(ctx, q, op)
 		if err != nil {
 			return err

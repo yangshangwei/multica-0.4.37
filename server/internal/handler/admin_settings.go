@@ -3,6 +3,8 @@ package handler
 import (
 	"net/http"
 	"time"
+
+	"github.com/multica-ai/multica/server/internal/service"
 )
 
 // AdminReadConfig contains only the deployment settings this read API exposes.
@@ -17,6 +19,8 @@ type AdminReadConfig struct {
 	ConfirmedOperationsDays     *int
 	AlertsDays                  *int
 	AuditDays                   *int
+	// CollaborationMemoryMaxBytes is the effective shared-context byte limit.
+	CollaborationMemoryMaxBytes int
 }
 
 func positiveAdminDays(value *int) *int {
@@ -35,10 +39,11 @@ func (h *Handler) AdminSettings(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	config := h.AdminReadConfig
-	configuration := map[string]any{"auth_mode": nil, "registration_enabled": nil, "registration_policy": nil, "managed_installations_enabled": nil, "workspace_creation_enabled": nil, "read_only": true, "source": "unknown"}
+	configuration := map[string]any{"auth_mode": nil, "registration_enabled": nil, "registration_policy": nil, "managed_installations_enabled": nil, "workspace_creation_enabled": nil, "collaboration_memory_max_bytes": nil, "read_only": true, "source": "unknown"}
 	quality := "unknown"
 	if config.Configured {
-		configuration = map[string]any{"auth_mode": config.AuthMode, "registration_enabled": config.RegistrationEnabled, "registration_policy": config.RegistrationPolicy, "managed_installations_enabled": config.ManagedInstallationsEnabled, "workspace_creation_enabled": config.WorkspaceCreationEnabled, "read_only": true, "source": "deployment"}
+		configuration = map[string]any{"auth_mode": config.AuthMode, "registration_enabled": config.RegistrationEnabled, "registration_policy": config.RegistrationPolicy, "managed_installations_enabled": config.ManagedInstallationsEnabled, "workspace_creation_enabled": config.WorkspaceCreationEnabled,
+			"collaboration_memory_max_bytes": service.EffectiveCollaborationMemoryMaxBytes(config.CollaborationMemoryMaxBytes), "read_only": true, "source": "deployment"}
 		quality = "complete"
 	}
 	operations, alerts, audit := positiveAdminDays(config.ConfirmedOperationsDays), positiveAdminDays(config.AlertsDays), positiveAdminDays(config.AuditDays)

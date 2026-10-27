@@ -1,9 +1,11 @@
 -- Reads run inside the same repeatable-read snapshot as object authorization.
 -- The service projects allowed fields; stored JSON is never an HTTP DTO.
+-- Shared-context writes are audited by their version history, not activity.
 -- name: ListCollaborationActivityEvents :many
 SELECT id, issue_id, event_seq, actor_user_id, kind, payload, created_at
 FROM collaboration_event
 WHERE issue_id = sqlc.arg(issue_id)::uuid
+  AND kind <> 'memory_changed'
   AND (sqlc.narg(before_seq)::bigint IS NULL OR event_seq < sqlc.narg(before_seq)::bigint)
 ORDER BY event_seq DESC
 LIMIT sqlc.arg(row_limit)::int;

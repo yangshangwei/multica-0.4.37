@@ -128,25 +128,29 @@ func (s *CollaborationRealtime) deliverNext(ctx context.Context) (bool, error) {
 			}
 		}
 	}
-	accounts, err := q.ListCollaborationRealtimeAccounts(ctx, db.ListCollaborationRealtimeAccountsParams{IssueID: event.IssueID, EventSeq: event.EventSeq})
-	if err != nil {
-		return false, err
-	}
-	for _, account := range accounts {
-		id := util.UUIDToString(account)
-		if err = publish(realtime.ScopeAccount, id, "account:"+id, "collaboration:workbench_changed", struct{}{}); err != nil {
+	// A shared-context change alters no list projection, so only open issue
+	// views refresh; account and source workbenches receive no tick.
+	if event.Kind != CollaborationMemoryChangedEvent {
+		accounts, err := q.ListCollaborationRealtimeAccounts(ctx, db.ListCollaborationRealtimeAccountsParams{IssueID: event.IssueID, EventSeq: event.EventSeq})
+		if err != nil {
 			return false, err
 		}
-	}
-	issue, err := q.GetIssue(ctx, event.IssueID)
-	if err != nil {
-		return false, err
-	}
-	// Source members may not be participants or subscribe to this issue. The
-	// workspace tick only invalidates their authorized lists; it carries no
-	// issue identity, content, actor or execution metadata.
-	if err = publish(realtime.ScopeWorkspace, util.UUIDToString(issue.WorkspaceID), "source", "collaboration:workbench_changed", struct{}{}); err != nil {
-		return false, err
+		for _, account := range accounts {
+			id := util.UUIDToString(account)
+			if err = publish(realtime.ScopeAccount, id, "account:"+id, "collaboration:workbench_changed", struct{}{}); err != nil {
+				return false, err
+			}
+		}
+		issue, err := q.GetIssue(ctx, event.IssueID)
+		if err != nil {
+			return false, err
+		}
+		// Source members may not be participants or subscribe to this issue. The
+		// workspace tick only invalidates their authorized lists; it carries no
+		// issue identity, content, actor or execution metadata.
+		if err = publish(realtime.ScopeWorkspace, util.UUIDToString(issue.WorkspaceID), "source", "collaboration:workbench_changed", struct{}{}); err != nil {
+			return false, err
+		}
 	}
 	if err = publish(realtime.ScopeIssue, util.UUIDToString(event.IssueID), "issue", "collaboration:changed", change); err != nil {
 		return false, err

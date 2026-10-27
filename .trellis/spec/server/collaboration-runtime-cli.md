@@ -12,9 +12,11 @@ provider versions and other OS runtimes still require separate acceptance.
 
 ## 2. Signatures
 
-Supported commands are `issue get`, `issue comment list`, `issue comment add`
-and `squad activity`, using the bound issue UUID. The two writers require
-`--request-id <uuid>` in collaboration mode. Runner configuration accepts optional
+Supported commands are `issue get`, `issue comment list`, `issue comment add`,
+`squad activity`, `collaboration memory show` and `collaboration memory update`,
+using the bound issue UUID. The three writers require `--request-id <uuid>` in
+collaboration mode. `collaboration memory` exists only inside a run; outside one
+it refuses instead of reaching an ordinary profile. Runner configuration accepts optional
 absolute `cli_executable`, verified and mounted read-only at `/multica`.
 
 Five variables identify the provider run: `MULTICA_COLLABORATION_TOKEN`,
@@ -31,10 +33,23 @@ refuse. Runtime commands use only the run-scoped business endpoints; they never
 borrow the resource owner's user/daemon token or workspace actor directory.
 
 Comment writes accept content or stdin and an optional parent UUID. Activity
-accepts action/no_action/failed and a reason. Filters, attachments/content-file,
-profile/server/workspace overrides and other operations are unsupported. Reads
-return the authorized run context and its newest 200 comments. Every response
-must match the admitted run/issue.
+accepts action/no_action/failed and a reason. Filters, attachments, comment
+content-file, profile/server/workspace overrides and other operations are
+unsupported. Reads return the authorized run context and its newest 200
+comments. Every response must match the admitted run/issue.
+
+Shared-context update replaces the whole document from `--base-version` (a
+canonical non-negative decimal) with `--content-stdin` or `--content-file`; the
+file must resolve inside the working directory and there is no override. There is
+no inline `--content`. Runtime-local file links are refused through
+`rejectLocalPathLinks`, because a run carries no MULTICA_AGENT_ID and the gated
+`guardLocalPathLinks` would skip it. Each refusal names its next action:
+`stale_memory_version` gives the current version and the runnable `memory show
+<issue-uuid>` command; `memory_too_large` gives the submitted size and limit; a
+413 from the request read bound (no receipt) says to shorten and re-check with
+`memory show <issue-uuid>`; `memory_write_conflict` says the request ID was used
+with another base version or content. Capability rejection and unknown results
+keep the shared guidance above.
 
 The caller retains the original request UUID and payload across uncertainty.
 The CLI does not generate a replacement key or add a disk operation journal.
@@ -59,6 +74,8 @@ state or parent proof cannot release a child's slot or barrier.
 | Partial/mismatched/duplicate run identity | Reject before profile or ordinary request |
 | Another issue UUID or Server override | Reject without widening capability |
 | Unsupported file/command/filter | Reject before ordinary side effects |
+| Memory update with bad base/request ID, external file or local link | Reject before HTTP |
+| Stale/too-large/reused-key memory write | Name the next command; no automatic retry |
 | Uncertain write response | Original UUID and payload remain the retry identity |
 | Revoked business capability | Stop; no credential fallback |
 | Missing/nonstatic/wrong-architecture explicit CLI | Controller refuses support/start |
@@ -76,6 +93,8 @@ state or parent proof cannot release a child's slot or barrier.
 
 `cmd_collaboration_test.go` and `internal/cli/collaboration_test.go` cover scope,
 ordinary behavior, malformed identity, unsupported operations and retry identity.
+`cmd_collaboration_memory_test.go` covers registration/allowlist, run-scoped
+show/update, pre-HTTP refusals, refusal guidance and out-of-run refusal.
 Controller/ledger tests retain namespace and nonce/proof coverage.
 `TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux` exercises actual
 registration/router/PostgreSQL, production slot polling, test-built CLI commands,

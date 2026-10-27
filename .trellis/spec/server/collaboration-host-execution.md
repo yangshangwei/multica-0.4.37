@@ -83,6 +83,14 @@ Use shared files only through the frozen attachment/Git preparation contract. Ke
 
 The selected Multica CLI is copied into a private run-local bin under `multica`/`multica.exe`, and that bin precedes PATH. Prepending only the selected file's source directory is insufficient: a differently named binary could otherwise resolve an ambient CLI. Codex uses ordinary account/config helpers with a collaboration-local session home; source account refresh is not a private-session import.
 
+### Shared context
+
+Host claims (protocol 3 only) set `memory_version=1`. It is a claim-only declaration: not a registered capability, not part of the capability digest, so it never advances a configuration epoch or invalidates consent. The first claim records `collaboration_run.memory_mode` (`supported`/`unsupported`) in the transaction that freezes the prompt; later claims never rewrite it.
+
+After the launch permit and session wait, the runner calls `POST .../runs/{runId}/memory/base` with the business capability. The server freezes `memory_base_version` on the first call (`RuntimeMemoryBase`); later calls return that version (a purged base is replaced by the current version). The fresh-session retry calls it again and injects what it returns. The injected base reaches the Provider only as the prompt's `memory` field `{version, content}`. It is not written to the brief file, the local ledger or audit fields, and the prompt is not part of the run recording; the brief carries only fixed guidance and the `memory show`/`update` commands. Text an agent later reads with `memory show` is a tool result and is recorded like any other, redacted and bounded. `409 memory_unsupported` runs without `memory` and without the brief guidance. Any other final failure, including exhausted transport/5xx/408/429 retries, leaves the Provider unlaunched and settles the authorized launch as `not_started`; a fresh-session retry that cannot re-read its base never starts the fallback.
+
+Runtime `GET`/`PUT .../memory` use the runtime comment gate plus `memory_mode=supported`. AI writes are redacted with `redact.Text` before the byte limit, the `(run_id, request_id)` replay comparison and storage.
+
 ### Starts, retries and audit
 
 Each physical launch has an immutable tuple containing run/fence/claim generation, launch_id UUID, monotonic attempt sequence and nonce, launch kind, fixed capability and configuration. Persist before the irreversible start and acknowledge the actual process-instance identity afterwards.
@@ -196,6 +204,9 @@ Runtime handlers and service admission use the following stable refusals. Config
 | Late identical stored outcome | ACK only, with original business capability and unchanged state |
 | Unsupported preparation or ignored invocation option | Explicit refusal before launch; no preparation=0 bypass |
 | Ambiguous historical record or unreadable ledger | Retain original identity/barrier, report recovery failure |
+| Shared-context base `memory_unsupported` | Launch without `memory` field or brief guidance |
+| Shared-context base refused or retries exhausted | No Provider start; authorized launch settles `not_started` |
+| Fresh-session retry cannot re-read its base | Fallback never requests a permit or starts |
 
 ## 5. Good / Base / Bad Cases
 
@@ -216,6 +227,7 @@ Runtime handlers and service admission use the following stable refusals. Config
 - API/client tests: v3/v2 and v6/v5 strict parsing, malformed response behavior, valid legacy unavailable projections, stable per-target upgrade refusals, mixed comments/human lifecycle preservation, existing old-client unavailable labels, and no dangling graph references.
 - User copy tests/review: no all-descendants, OS-sandbox, instantaneous offline stop or exactly-once tool-effect claim for host mode; enabled v6 execution cannot display the legacy global unavailable banner.
 - Default tests use only test-owned executable paths. Authenticated real-provider smoke remains separately authorized under CLAUDE.md.
+- Shared context (`host_memory_test.go`): the claim declares support, the prompt carries the base while brief, ledger and permit/preparation/termination/outcome/proof payloads do not, unsupported runs omit it, refusal/exhaustion never launch, a transient failure recovers, and a fresh-session retry re-reads its base or never starts; the client rejects malformed bases and keeps refusal codes. The base freeze itself is a server contract and belongs in the service tests.
 
 Canonical added suites include `collaboration_host_runtime_test.go`, `collaboration_host_integration_test.go`, `collaboration_host_cutover_test.go`, `collaboration_outcome_receipt_test.go`, `collaboration_execution_version_test.go`, `host_ledger_test.go`, `host_session_test.go`, `host_runner_test.go`, `host_review_test.go`, `host_git_test.go`, `launch_lifecycle*_test.go` and `execution-host.test.ts`. CI `collaboration-host-native` records actual OS/arch and requires named native tests to pass rather than skip. `host_agentintegration_test.go` is behind both `agentintegration` and explicit `MULTICA_RUN_REAL_AGENT_SMOKE=1`; its default gate must precede Provider discovery/account access.
 

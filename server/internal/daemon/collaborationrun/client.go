@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"strings"
 	"time"
+	"unicode/utf8"
 
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
@@ -33,7 +34,12 @@ type Client struct {
 func (c *Client) String() string   { return "collaboration client (credentials redacted)" }
 func (c *Client) GoString() string { return c.String() }
 
-type HTTPError struct{ Status int }
+// HTTPError carries the response status and, when the bounded error body is a
+// collaboration refusal, its stable code. The body text itself is discarded.
+type HTTPError struct {
+	Status int
+	Code   string
+}
 
 func (e *HTTPError) Error() string { return fmt.Sprintf("collaboration runtime HTTP %d", e.Status) }
 
@@ -80,10 +86,11 @@ func (c *Client) Claim(ctx context.Context, runID string, in protocol.Collaborat
 	}
 	host := in.ProtocolVersion == protocol.CollaborationHostRuntimeProtocolVersion
 	if host {
-		if in.PreparationVersion != protocol.CollaborationHostPreparationVersion || !validDigest(in.CapabilityDigest) || in.BundleDigest != "" {
+		if in.PreparationVersion != protocol.CollaborationHostPreparationVersion || !validDigest(in.CapabilityDigest) || in.BundleDigest != "" ||
+			in.MemoryVersion != 0 && in.MemoryVersion != protocol.CollaborationMemoryVersion {
 			return out, ErrProtocol
 		}
-	} else if in.CapabilityDigest != "" || in.PreparationVersion != 0 && in.PreparationVersion != protocol.CollaborationPreparationVersion ||
+	} else if in.MemoryVersion != 0 || in.CapabilityDigest != "" || in.PreparationVersion != 0 && in.PreparationVersion != protocol.CollaborationPreparationVersion ||
 		in.PreparationVersion == 0 && in.BundleDigest != "" || in.PreparationVersion != 0 && !validDigest(in.BundleDigest) {
 		return out, ErrProtocol
 	}
@@ -224,9 +231,35 @@ func (c *Client) Proof(ctx context.Context, in protocol.CollaborationRunProof, t
 	return out, nil
 }
 
+// collaborationMemoryResponseLimit bounds a shared-context response: the
+// 512 KiB hard ceiling can expand six-fold under JSON escaping.
+const collaborationMemoryResponseLimit = 6*512<<10 + 64<<10
+
+// MemoryBase returns the shared-context version this run starts from. Repeated
+// calls for the same run, including a fresh-session retry, return the same
+// version unless that version was purged.
+func (c *Client) MemoryBase(ctx context.Context, id protocol.CollaborationRunIdentity, token string) (protocol.CollaborationRunMemory, error) {
+	var out protocol.CollaborationRunMemory
+	if validateIdentity(id) != nil {
+		return out, ErrProtocol
+	}
+	if err := c.requestLimit(ctx, http.MethodPost, runPath(id.RunID, "memory/base"), token, struct{}{}, &out, collaborationMemoryResponseLimit); err != nil {
+		return out, err
+	}
+	if out.IssueID != id.IssueID || out.RunID != id.RunID || out.Version != "0" && !positiveDecimal(out.Version) ||
+		out.Version == "0" && out.Content != "" || out.Bytes != len(out.Content) || !utf8.ValidString(out.Content) || strings.ContainsRune(out.Content, 0) {
+		return out, ErrProtocol
+	}
+	return out, nil
+}
+
 func runPath(id, action string) string { return "/api/collaboration/runtime/runs/" + id + "/" + action }
 
 func (c *Client) request(ctx context.Context, method, path, token string, in, out any) error {
+	return c.requestLimit(ctx, method, path, token, in, out, 2*1024*1024)
+}
+
+func (c *Client) requestLimit(ctx context.Context, method, path, token string, in, out any, limit int64) error {
 	if token == "" || strings.ContainsAny(token, "\r\n") {
 		return ErrProtocol
 	}
@@ -253,13 +286,20 @@ func (c *Client) request(ctx context.Context, method, path, token string, in, ou
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return &HTTPError{Status: resp.StatusCode}
+		failure := &HTTPError{Status: resp.StatusCode}
+		var refusal struct {
+			Code string `json:"code"`
+		}
+		if body, err := io.ReadAll(io.LimitReader(resp.Body, 4096)); err == nil && json.Unmarshal(body, &refusal) == nil && len(refusal.Code) <= 128 {
+			failure.Code = refusal.Code
+		}
+		return failure
 	}
-	raw, err := io.ReadAll(io.LimitReader(resp.Body, 2*1024*1024+1))
+	raw, err := io.ReadAll(io.LimitReader(resp.Body, limit+1))
 	if err != nil {
 		return ErrTransport
 	}
-	if len(raw) > 2*1024*1024 {
+	if int64(len(raw)) > limit {
 		return ErrProtocol
 	}
 	if out == nil {

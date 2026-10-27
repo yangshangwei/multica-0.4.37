@@ -73,6 +73,7 @@ func init() {
 	configCmd.GroupID = groupAdditional
 	updateCmd.GroupID = groupAdditional
 	versionCmd.GroupID = groupAdditional
+	collaborationCmd.GroupID = groupAdditional
 
 	rootCmd.AddCommand(issueCmd)
 	rootCmd.AddCommand(projectCmd)
@@ -96,6 +97,7 @@ func init() {
 	rootCmd.AddCommand(configCmd)
 	rootCmd.AddCommand(updateCmd)
 	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(collaborationCmd)
 
 	initHelp(rootCmd)
 }

@@ -120,6 +120,9 @@ type CollaborationExecutionRunView struct {
 	ForcedDisposition   *string         `json:"forced_disposition"`
 	RecordingIncomplete bool            `json:"recording_incomplete"`
 	SettledAt           *string         `json:"settled_at"`
+	// Memory is projected only by run records; omitted for runs created before
+	// shared context existed and by the execution view.
+	Memory *CollaborationRunMemoryView `json:"memory,omitempty"`
 }
 
 // CollaborationExecutionView is a read projection, never a grant catalogue or
@@ -213,6 +216,11 @@ func (s *CollaborationService) ExecutionView(ctx context.Context, access Collabo
 		if err := s.projectExecutionRunMode(ctx, s.Queries, access.Issue.ID, run, &out.Runs[i]); err != nil {
 			return CollaborationExecutionView{}, err
 		}
+		memory, err := collaborationRunMemoryMarker(ctx, s.Queries, run)
+		if err != nil {
+			return CollaborationExecutionView{}, err
+		}
+		out.Runs[i].Memory = memory
 	}
 	return out, nil
 }

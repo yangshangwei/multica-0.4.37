@@ -583,7 +583,8 @@
     "deletionDisabled": "尚未启用自动清理。",
     "refresh": "刷新间隔",
     "listSeconds": "列表（秒）",
-    "detailSeconds": "详情（秒）"
+    "detailSeconds": "详情（秒）",
+    "collaborationMemory": "协作上下文上限（字节）"
   },
   "workspaces": {
     "title": "工作空间",
@@ -842,6 +843,37 @@
     "rejected": "本次变更已被拒绝，请刷新任务详情后重新确认。",
     "invalid": "请选择可用状态，并在需要时选择符合条件的参与者。",
     "failed": "暂时无法确认结果，请查询原请求。",
-    "reasonInvalid": "原因过长或包含不支持的字符，请修改后重试。"
+    "reasonInvalid": "原因过长或包含不支持的字符，请修改后重试。",
+    "memory": {
+      "title": "协作上下文版本",
+      "description": "清除被报告的历史版本正文。这里不显示正文，请与报告人核对版本号。",
+      "loading": "正在加载协作上下文版本...",
+      "empty": "此协作任务还没有已保存的协作上下文版本。",
+      "unavailable": "协作上下文版本暂不可用。",
+      "more": "加载更多版本",
+      "version": "v{{version}}",
+      "current": "当前版本",
+      "purged": "已清除",
+      "bytes": "{{bytes}} 字节",
+      "agent": "{{name}}（智能体）",
+      "unknownWriter": "未知写入者",
+      "purge": "清除 v{{version}}",
+      "confirmTitle": "清除 v{{version}} 的正文",
+      "confirmNotice": "正文将被永久删除，版本号、大小和写入者会保留。此操作会连同你的账号和原因一起记录。",
+      "reason": "清除原因",
+      "reasonRequired": "请填写清除原因。",
+      "reasonInvalid": "原因过长或包含不支持的字符，请修改后重试。",
+      "confirm": "清除正文",
+      "cancel": "取消",
+      "pendingTitle": "原清除请求",
+      "receiptTitle": "已记录的协作上下文清除",
+      "outcome": "v{{version}} 的正文已清除。",
+      "rejected": "此清除请求被拒绝，请刷新版本列表后重新开始。",
+      "check": "查询原结果",
+      "retryOriginal": "重试原请求",
+      "notRecorded": "暂无已记录的结果，原请求已保留。",
+      "failed": "无法确认结果，请查询原请求。",
+      "dismiss": "关闭回执"
+    }
   }
 }

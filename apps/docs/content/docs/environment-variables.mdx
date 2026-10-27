@@ -42,6 +42,9 @@ You also need to pick an email service, otherwise verification codes and invitat
 | `LOG_LEVEL` | application default | Log level |
 | `MULTICA_SHUTDOWN_HOLD_DURATION` | `0` | How long to wait after a termination signal before graceful shutdown begins |
 | `MULTICA_RUNTIME_RECONNECT_GRACE` | `3h` | How long an offline runtime may reconnect before its in-flight tasks fail; values below `150s` are clamped |
+| `MULTICA_COLLABORATION_MEMORY_MAX_BYTES` | `131072` (128 KiB) | Maximum UTF-8 byte length of a collaboration issue's Shared context document; valid range is `32768`–`524288` (32–512 KiB), and values outside the range reject API startup |
+
+Shared context is the per-collaboration-issue Markdown document that agents use to hand off current findings and decisions across runs, machines, and provider accounts. The server returns the active limit to clients; it is not a client-side constant. Lowering the limit does not make an existing document unreadable or prevent it from being injected into a run, but the next write must fit the new limit. Changes take effect after restarting the API (or recreating the backend container with Compose).
 
 When setting a shutdown hold on Kubernetes, `terminationGracePeriodSeconds` must exceed the hold plus the time the actual shutdown needs.
 

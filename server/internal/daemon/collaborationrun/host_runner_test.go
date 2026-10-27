@@ -35,7 +35,8 @@ func runHostProviderFixture() (int, bool) {
 		_, _ = fmt.Fprintln(os.Stdout, "selected collaboration CLI")
 		return 0, true
 	}
-	if _, err := bufio.NewReader(os.Stdin).ReadString('\n'); err != nil {
+	input, err := bufio.NewReader(os.Stdin).ReadString('\n')
+	if err != nil {
 		return 21, true
 	}
 	run, err := cli.ReadCollaborationContext()
@@ -47,7 +48,7 @@ func runHostProviderFixture() (int, bool) {
 		return 23, true
 	}
 	cwd, _ := os.Getwd()
-	_ = json.NewEncoder(f).Encode(map[string]any{"run_id": run.Identity.RunID, "token": run.Token, "cwd": cwd, "temp": os.Getenv("TMPDIR"), "args": os.Args[1:]})
+	_ = json.NewEncoder(f).Encode(map[string]any{"run_id": run.Identity.RunID, "token": run.Token, "cwd": cwd, "temp": os.Getenv("TMPDIR"), "args": os.Args[1:], "input": input})
 	_ = f.Close()
 	resume := false
 	for _, arg := range os.Args[1:] {
@@ -118,6 +119,14 @@ type hostRunFixture struct {
 	loseProofReply       bool
 	loseOutcomeReply     bool
 	failOutcome          bool
+	// Shared context served by memory/base; the zero value is the empty
+	// document. memoryFailures answer reads in order; a zero Status entry
+	// serves the document for that read.
+	claimMemoryVersion int
+	memoryVersion      string
+	memoryContent      string
+	memoryFailures     []HTTPError
+	memoryReads        int
 }
 
 func newHostRunFixture(t *testing.T, mode string) *hostRunFixture {
@@ -184,7 +193,32 @@ func (f *hostRunFixture) serve(w http.ResponseWriter, r *http.Request) {
 	}
 	switch {
 	case strings.HasSuffix(r.URL.Path, "/claim"):
+		var claimed protocol.CollaborationRunClaimRequest
+		if err := json.NewDecoder(r.Body).Decode(&claimed); err != nil {
+			f.t.Error(err)
+		}
+		f.claimMemoryVersion = claimed.MemoryVersion
 		_ = json.NewEncoder(w).Encode(f.claim)
+	case strings.HasSuffix(r.URL.Path, "/memory/base"):
+		if !strings.HasPrefix(r.Header.Get("Authorization"), "Bearer mcb_") {
+			f.t.Error("shared context was not read with the business capability")
+		}
+		f.memoryReads++
+		if len(f.memoryFailures) > 0 {
+			failure := f.memoryFailures[0]
+			f.memoryFailures = f.memoryFailures[1:]
+			if failure.Status != 0 {
+				w.WriteHeader(failure.Status)
+				_ = json.NewEncoder(w).Encode(map[string]string{"code": failure.Code})
+				return
+			}
+		}
+		version := f.memoryVersion
+		if version == "" {
+			version = "0"
+		}
+		_ = json.NewEncoder(w).Encode(protocol.CollaborationRunMemory{IssueID: f.claim.Identity.IssueID, RunID: f.claim.Identity.RunID,
+			Version: version, Content: f.memoryContent, Bytes: len(f.memoryContent), MaxBytes: 64 << 10})
 	case strings.HasSuffix(r.URL.Path, "/permit"):
 		var p protocol.CollaborationRunPermitRequest
 		if err := json.NewDecoder(r.Body).Decode(&p); err != nil {
