@@ -4,6 +4,7 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"crypto/rand"
 	"crypto/sha256"
@@ -37,6 +38,69 @@ func main() {
 func fixtureDigest(value []byte) string {
 	sum := sha256.Sum256(value)
 	return hex.EncodeToString(sum[:])
+}
+
+// fixtureAction is a test-scripted business write. Comments and squad activity
+// go through the run-local CLI and therefore the same capability, allowlist and
+// request-id rules as an agent; write_file only touches the issue workdir.
+type fixtureAction struct {
+	Kind      string `json:"kind"`
+	RequestID string `json:"request_id"`
+	Content   string `json:"content"`
+	Outcome   string `json:"outcome"`
+	Reason    string `json:"reason"`
+	Path      string `json:"path"`
+}
+
+func runFixtureAction(cli, issueID, work string, action fixtureAction) map[string]any {
+	receipt := map[string]any{"kind": action.Kind, "request_id": action.RequestID}
+	var args []string
+	switch action.Kind {
+	case "comment":
+		args = []string{"issue", "comment", "add", issueID, "--request-id", action.RequestID, "--content", action.Content, "--output", "json"}
+	case "squad_activity":
+		args = []string{"squad", "activity", issueID, action.Outcome, "--request-id", action.RequestID, "--reason", action.Reason, "--output", "json"}
+	case "write_file":
+		if !filepath.IsLocal(action.Path) {
+			receipt["error"] = "path was not local"
+			return receipt
+		}
+		target := filepath.Join(work, action.Path)
+		if err := os.MkdirAll(filepath.Dir(target), 0o700); err != nil {
+			receipt["error"] = "directory could not be created"
+			return receipt
+		}
+		if err := os.WriteFile(target, []byte(action.Content), 0o600); err != nil {
+			receipt["error"] = "file could not be written"
+			return receipt
+		}
+		receipt["sha256"] = fixtureDigest([]byte(action.Content))
+		return receipt
+	default:
+		receipt["error"] = "unknown action"
+		return receipt
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	defer cancel()
+	command := exec.CommandContext(ctx, cli, args...)
+	var stderr strings.Builder
+	command.Stderr = &stderr
+	output, err := command.Output()
+	if err != nil {
+		message := stderr.String()
+		if len(message) > 2000 {
+			message = message[:2000]
+		}
+		receipt["error"] = strings.TrimSpace(message)
+		return receipt
+	}
+	var result json.RawMessage
+	if json.Unmarshal(output, &result) != nil {
+		receipt["error"] = "CLI output was not JSON"
+		return receipt
+	}
+	receipt["result"] = result
+	return receipt
 }
 
 func runHostFixture() error {
@@ -122,11 +186,16 @@ func runHostFixture() error {
 		return fmt.Errorf("real Multica CLI could not read its admitted issue")
 	}
 	var shared struct {
-		IssueID     string          `json:"issue_id"`
-		AgentID     string          `json:"agent_id"`
-		Title       string          `json:"title"`
-		Description string          `json:"description"`
-		Inputs      json.RawMessage `json:"inputs"`
+		IssueID         string          `json:"issue_id"`
+		AgentID         string          `json:"agent_id"`
+		Title           string          `json:"title"`
+		Description     string          `json:"description"`
+		Inputs          json.RawMessage `json:"inputs"`
+		SquadID         *string         `json:"squad_id"`
+		StepKind        string          `json:"step_kind"`
+		Roster          json.RawMessage `json:"roster"`
+		Comments        json.RawMessage `json:"comments"`
+		DispatchComment string          `json:"dispatch_comment"`
 	}
 	if json.Unmarshal(rawContext, &shared) != nil || shared.IssueID != issueID || shared.AgentID != input.AgentID {
 		return fmt.Errorf("real Multica CLI returned a different context")
@@ -149,6 +218,36 @@ func runHostFixture() error {
 			return fmt.Errorf("prepared attachment was missing")
 		}
 		files[file.ID] = fixtureDigest(content)
+	}
+	// Relative names and digests only, so a test can prove which files a new
+	// environment received without learning any private absolute path.
+	workFiles := make(map[string]string)
+	walkErr := filepath.WalkDir(work, func(path string, entry os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() && entry.Name() == ".git" {
+			return filepath.SkipDir
+		}
+		if !entry.Type().IsRegular() {
+			return nil
+		}
+		if len(workFiles) >= 256 {
+			return fmt.Errorf("workdir listing exceeded its limit")
+		}
+		relative, err := filepath.Rel(work, path)
+		if err != nil {
+			return err
+		}
+		content, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		workFiles[filepath.ToSlash(relative)] = fixtureDigest(content)
+		return nil
+	})
+	if walkErr != nil {
+		return fmt.Errorf("prepared workdir could not be listed")
 	}
 	resume := ""
 	for index, arg := range os.Args[1:] {
@@ -180,16 +279,42 @@ func runHostFixture() error {
 		"protocol_version": wire.ProtocolVersion, "execution_mode": wire.Containment,
 		"workdir_hash": fixtureDigest([]byte(work)), "temp_hash": fixtureDigest([]byte(os.Getenv("TMPDIR"))),
 		"session_hash": fixtureDigest([]byte(session)), "resumed": resume != "", "brief_hash": fixtureDigest(brief),
-		"cli_hash": hex.EncodeToString(cliHash.Sum(nil)), "cli_context": shared, "attachment_hashes": files}); err != nil {
+		"cli_hash": hex.EncodeToString(cliHash.Sum(nil)), "cli_context": shared, "attachment_hashes": files, "workdir_files": workFiles}); err != nil {
 		return fmt.Errorf("fixture callback could not be recorded")
 	}
 	encoder := json.NewEncoder(os.Stdout)
 	if err := encoder.Encode(map[string]any{"type": "system", "subtype": "init", "session_id": session}); err != nil {
 		return err
 	}
-	var release [1]byte
-	if _, err := io.ReadFull(connection, release[:]); err != nil || release[0] != 'r' {
-		return fmt.Errorf("fixture release was not received")
+	// 'r' ends the turn. 'a' plus one JSON line asks the fixture to perform
+	// scripted business writes through the same run-local CLI an agent uses.
+	reader := bufio.NewReader(connection)
+	for {
+		control, err := reader.ReadByte()
+		if err != nil {
+			return fmt.Errorf("fixture release was not received")
+		}
+		if control == 'r' {
+			break
+		}
+		if control != 'a' {
+			return fmt.Errorf("fixture control byte was invalid")
+		}
+		line, err := reader.ReadBytes('\n')
+		if err != nil || len(line) > 1<<20 {
+			return fmt.Errorf("fixture actions were not one bounded line")
+		}
+		var actions []fixtureAction
+		if err := json.Unmarshal(line, &actions); err != nil || len(actions) == 0 || len(actions) > 8 {
+			return fmt.Errorf("fixture actions were invalid")
+		}
+		receipts := make([]map[string]any, 0, len(actions))
+		for _, action := range actions {
+			receipts = append(receipts, runFixtureAction(cli, issueID, work, action))
+		}
+		if err := json.NewEncoder(connection).Encode(map[string]any{"receipts": receipts}); err != nil {
+			return fmt.Errorf("fixture action receipts could not be returned")
+		}
 	}
 	return encoder.Encode(map[string]any{"type": "result", "subtype": "success", "is_error": false, "session_id": session,
 		"result": "Host fixture result for " + runID, "model": "host-fixture-model", "num_turns": 1,

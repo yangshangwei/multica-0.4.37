@@ -7,8 +7,8 @@ import { isAbsolute, join } from "node:path";
 import { promisify } from "node:util";
 import { expect, type Locator, type Page } from "@playwright/test";
 import type {
-  CollaborationCommandHistory, CollaborationCommentInput, CollaborationCommentReceipt, CollaborationControlReceipt,
-  CollaborationIssue, CollaborationMentionTargets, CollaborationResourceOptions, CollaborationResources, CollaborationRunRecords, CollaborationTriggerPreview,
+  CollaborationCommandHistory, CollaborationCommentInput, CollaborationCommentReceipt, CollaborationControlReceipt, CollaborationIssue,
+  CollaborationMentionTargets, CollaborationResourceIdentityView, CollaborationResourceOptions, CollaborationResources, CollaborationRunRecords, CollaborationTriggerPreview,
 } from "@multica/core/collaboration";
 import pg from "pg";
 import { TestApiClient } from "../fixtures";
@@ -16,8 +16,8 @@ import { TestApiClient } from "../fixtures";
 const execute = promisify(execFile);
 export const hostMode = "host_process_supervision_v1";
 export const hostAccountPath = (id: string) => `/account?view=participating&issue=${id}`;
-const issueRoot = (id: string) => `/api/collaboration/issues/${id}`;
-const versioned = (path: string) => `${path}${path.includes("?") ? "&" : "?"}execution_view_version=6`;
+export const issueRoot = (id: string) => `/api/collaboration/issues/${id}`;
+export const versioned = (path: string) => `${path}${path.includes("?") ? "&" : "?"}execution_view_version=6`;
 export const hostRuntimeConfigured = () => ["COLLABORATION_HOST_DAEMON", "COLLABORATION_HOST_PROVIDER", "COLLABORATION_HOST_CLI"]
   .some((key) => process.env[key] !== undefined);
 
@@ -26,23 +26,36 @@ interface ManagedCredential {
   binding_id: string; binding_epoch: string; capability_version: string; daemon_token: string;
   expires_at: string; principal_user_id: string; auth_version: string;
 }
-interface HostRuntime {
+export interface HostRuntime {
   runtimeId: string; workspaceId: string; daemonId: string; deploymentId: string; installationId: string;
   runtimeConfigEpoch: string; credential: ManagedCredential;
 }
 interface ResourceReceipt { status: number; code: string; offer_id: string | null; offer_version: string | null; target_id: string | null }
 interface HostInput { command_id: string; author_user_id: string; body: string; attachment_ids: string[] }
+interface HostRuntimeComment { id: string; author_type: string; author_id: string; content: string; parent_id: string | null }
 export interface HostVisit {
   identity: Record<string, string>;
   inputs: HostInput[];
   agent_id: string; agent_owner_id: string; resource_owner_id: string;
   protocol_version: number; execution_mode: string;
   workdir_hash: string; temp_hash: string; session_hash: string; brief_hash: string; cli_hash: string; resumed: boolean;
-  cli_context: { issue_id: string; agent_id: string; title: string; description: string; inputs: HostInput[] };
+  cli_context: { issue_id: string; agent_id: string; title: string; description: string; inputs: HostInput[];
+    squad_id: string | null; step_kind: string; roster: { agent_id: string; name: string; role: string }[];
+    comments: HostRuntimeComment[]; dispatch_comment: string };
   attachment_hashes: Record<string, string>;
+  /** Relative path to SHA-256 for every regular file in the issue workdir, excluding `.git`. */
+  workdir_files: Record<string, string>;
   started_ms: number; released_ms: number | null; closed_ms: number | null;
   socket: Socket;
+  replies: HostActionReply[];
 }
+/** A business write the fake provider performs through its run-local CLI. */
+export type HostAction =
+  | { kind: "comment"; request_id: string; content: string }
+  | { kind: "squad_activity"; request_id: string; outcome: "action" | "no_action" | "failed"; reason: string }
+  | { kind: "write_file"; path: string; content: string };
+export interface HostActionReceipt { kind: string; request_id?: string; result?: unknown; error?: string; sha256?: string }
+interface HostActionReply { receipts: HostActionReceipt[] }
 export interface HostIssue {
   id: string; title: string; description: string; targetId: string; channelId: string; agentId: string; name: string;
   attachment: { id: string; name: string; sha256: string } | null;
@@ -58,8 +71,8 @@ interface CollaborationGateState {
   epoch: string;
 }
 
-function environment() {
-  const keys = ["DATABASE_URL", "COLLABORATION_E2E_API_URL", "NEXT_PUBLIC_API_URL", "MULTICA_DEPLOYMENT_ID", "PLAYWRIGHT_BASE_URL",
+export function hostEnvironment() {
+  const keys =["DATABASE_URL", "COLLABORATION_E2E_API_URL", "NEXT_PUBLIC_API_URL", "MULTICA_DEPLOYMENT_ID", "PLAYWRIGHT_BASE_URL",
     "COLLABORATION_ELECTRON_RENDERER_URL", "COLLABORATION_HOST_DAEMON", "COLLABORATION_HOST_PROVIDER", "COLLABORATION_HOST_CLI"];
   const missing = keys.filter((key) => !process.env[key]);
   if (process.env.E2E_PASSWORD_AUTH !== "1") missing.push("E2E_PASSWORD_AUTH=1");
@@ -81,7 +94,7 @@ function environment() {
  * explicitly for the fixture and restore the exact prior state after the
  * daemon closes so a setup failure cannot leave the task environment open.
  */
-async function openHostAcceptanceGate(): Promise<() => Promise<void>> {
+export async function openHostAcceptanceGate(): Promise<() => Promise<void>> {
   const databaseUrl = process.env.DATABASE_URL;
   if (!databaseUrl) throw new Error("Host acceptance requires an explicit isolated DATABASE_URL");
   const db = new pg.Client(databaseUrl);
@@ -138,20 +151,20 @@ async function openHostAcceptanceGate(): Promise<() => Promise<void>> {
   };
 }
 
-async function waitForHostRuntime(owner: TestApiClient, runtimeId: string) {
+export async function waitForHostRuntime(owner: TestApiClient, runtimeId: string) {
   await expect.poll(async () => {
     const runtimes = await owner.requestJSON<{ id: string; status: string }[]>("/api/runtimes?owner=me");
     return runtimes.find((runtime) => runtime.id === runtimeId)?.status ?? "missing";
   }, { timeout: 30_000, message: "The host runtime must be online before creating the packaged acceptance issue" }).toBe("online");
 }
 
-function authority(issue: CollaborationIssue) {
+export function hostAuthority(issue: CollaborationIssue) {
   if (!issue.write_context) throw new Error("Host acceptance requires a current human participant");
   return { expected_lifecycle_epoch: issue.lifecycle_epoch, expected_participant_epoch: issue.write_context.participant_epoch,
     expected_account_epoch: issue.write_context.account_epoch, execution_view_version: 6 };
 }
 
-async function enrollRuntime(owner: TestApiClient, ownerId: string, workspaceId: string, apiUrl: string, deploymentId: string): Promise<HostRuntime> {
+export async function enrollHostRuntime(owner: TestApiClient, ownerId: string, workspaceId: string, apiUrl: string, deploymentId: string): Promise<HostRuntime> {
   const keys = generateKeyPairSync("ed25519");
   const publicKey = keys.publicKey.export({ format: "der", type: "spki" }).subarray(-32).toString("base64url");
   const proof = (challenge: Challenge) => ({ challenge_id: challenge.challenge_id,
@@ -193,7 +206,7 @@ async function enrollRuntime(owner: TestApiClient, ownerId: string, workspaceId:
     runtimeConfigEpoch: capabilities.runtime_config_epoch, credential };
 }
 
-async function startHostDaemon(runtime: HostRuntime, apiUrl: string, readyOnly = false) {
+export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, readyOnly = false) {
   const directory = mkdtempSync(join(tmpdir(), "multica-host-runtime-"));
   const extension = process.platform === "win32" ? ".exe" : "";
   const provider = join(directory, `fixture-provider${extension}`);
@@ -222,14 +235,24 @@ async function startHostDaemon(runtime: HostRuntime, apiUrl: string, readyOnly =
       if (visit) visit.closed_ms = now();
     });
     socket.on("data", (chunk: string) => {
-      if (complete) return;
       body += chunk;
       if (body.length > 1_000_000) { errors.push("Provider callback exceeded its limit"); socket.destroy(); return; }
+      if (complete) {
+        // Later lines answer scripted actions, in the order they were sent.
+        const visit = visits.find((item) => item.socket === socket);
+        for (let end = body.indexOf("\n"); end >= 0; end = body.indexOf("\n")) {
+          try { visit?.replies.push(JSON.parse(body.slice(0, end))); } catch { errors.push("Provider action reply was not JSON"); }
+          body = body.slice(end + 1);
+        }
+        return;
+      }
       const end = body.indexOf("\n");
       if (end < 0) return;
       complete = true;
+      const first = body.slice(0, end);
+      body = body.slice(end + 1);
       try {
-        const visit: Omit<HostVisit, "socket" | "started_ms" | "released_ms" | "closed_ms"> = JSON.parse(body.slice(0, end));
+        const visit: Omit<HostVisit, "socket" | "started_ms" | "released_ms" | "closed_ms" | "replies"> = JSON.parse(first);
         expect(visit.protocol_version).toBe(3);
         expect(visit.execution_mode).toBe(hostMode);
         expect(visit.identity.deployment_id).toBe(runtime.deploymentId);
@@ -237,7 +260,7 @@ async function startHostDaemon(runtime: HostRuntime, apiUrl: string, readyOnly =
         expect(visit.identity).not.toHaveProperty("launch_nonce");
         for (const hash of [visit.workdir_hash, visit.temp_hash, visit.session_hash, visit.brief_hash]) expect(hash).toMatch(/^[0-9a-f]{64}$/);
         if (visits.some((item) => item.identity.run_id === visit.identity.run_id)) throw new Error("A run launched more than once");
-        visits.push({ ...visit, socket, started_ms: now(), released_ms: null, closed_ms: null });
+        visits.push({ ...visit, socket, started_ms: now(), released_ms: null, closed_ms: null, replies: [] });
       } catch { errors.push("Provider callback identity or payload was invalid"); socket.destroy(); }
     });
   });
@@ -275,6 +298,8 @@ async function startHostDaemon(runtime: HostRuntime, apiUrl: string, readyOnly =
   const close = async () => {
     if (closed) throw new Error("Host daemon cleanup was invoked twice");
     closed = true;
+    // A suspended daemon cannot read EOF; resuming an already running one is a no-op.
+    if (child.exitCode === null) child.kill("SIGCONT");
     child.stdin.end();
     const killTimer = setTimeout(() => child.kill("SIGKILL"), 20_000);
     const exitCode = await exit;
@@ -305,6 +330,28 @@ async function startHostDaemon(runtime: HostRuntime, apiUrl: string, readyOnly =
         visit.released_ms = now();
         visit.socket.write("r");
       },
+      /**
+       * Suspends the native daemon process so the server cannot receive its
+       * termination facts; thaw lets it observe Stop and report them. This is a
+       * runtime that has not yet confirmed termination, not a forged proof.
+       */
+      freeze() {
+        if (closed || child.exitCode !== null || !child.kill("SIGSTOP")) throw new Error("Native daemon could not be suspended");
+      },
+      thaw() {
+        if (closed || child.exitCode !== null || !child.kill("SIGCONT")) throw new Error("Native daemon could not be resumed");
+      },
+      /** Has the running provider perform business writes through its run-local CLI, then keep the turn open. */
+      async act(visit: HostVisit, actions: HostAction[]) {
+        if (visit.released_ms !== null || visit.socket.destroyed) throw new Error("Provider cannot act after release or Stop");
+        const before = visit.replies.length;
+        visit.socket.write(`a${JSON.stringify(actions)}\n`);
+        await expect.poll(() => ({ errors, closed: visit.socket.destroyed, replies: visit.replies.length }), { timeout: 30_000 })
+          .toEqual({ errors: [], closed: false, replies: before + 1 });
+        const receipts = visit.replies[before]!.receipts;
+        expect(receipts.map((receipt) => receipt.error ?? null)).toEqual(actions.map(() => null));
+        return receipts;
+      },
       evidence: () => visits.map(({ socket: _socket, ...visit }) => visit),
     };
   } catch (error) {
@@ -331,8 +378,67 @@ function hostLedgerEvidence(directory: string) {
   });
 }
 
+/** A synthetic password account, onboarded, that can sign in to Web or an installed client. */
+export async function createHostActor(apiUrl: string, label: string, suffix: string) {
+  const client = new TestApiClient();
+  const username = `host${label.toLowerCase()}${suffix}`, password = `Host-${randomUUID()}!`;
+  const user = await client.registerPassword(username, password, `Host collaborator ${label}`);
+  const onboarded = await client.requestJSON<{ onboarded_at: string | null }>("/api/me/onboarding/complete", { method: "POST", body: {} });
+  expect(onboarded.onboarded_at).not.toBeNull();
+  return { client, id: user.id,
+    authenticateInstalled: (login: (credentials: { username: string; password: string; userId: string }) => Promise<unknown>) =>
+      login({ username, password, userId: user.id }),
+    async authenticateWeb(page: Page) {
+      const response = await page.request.post(`${apiUrl}/auth/login`, { data: { username, password } });
+      expect(response.status()).toBe(200);
+      const cookies = await page.context().cookies(apiUrl);
+      expect(cookies.some((cookie) => cookie.name === "multica_auth" && cookie.httpOnly)).toBe(true);
+      expect(cookies.some((cookie) => cookie.name === "multica_csrf" && !cookie.httpOnly)).toBe(true);
+    } };
+}
+export type HostActor = Awaited<ReturnType<typeof createHostActor>>;
+
+/**
+ * Public offer, adoption and per-resource owner consent for one agent or squad
+ * target, each resource bound to the managed identity of its own host runtime.
+ */
+export async function adoptHostTarget(owner: HostActor, ownerId: string, issueId: string, workspaceId: string,
+  kind: "agent" | "squad", resourceId: string, expected: { role: string; agentId: string; runtime: HostRuntime }[]) {
+  const root = issueRoot(issueId);
+  const current = () => owner.client.requestJSON<CollaborationIssue>(versioned(root));
+  const options = await owner.client.requestJSON<CollaborationResourceOptions>(versioned(`${root}/resources/offers/options?execution_workspace_id=${workspaceId}`));
+  const option = options.items.find((item) => item.kind === kind && item.resource_id === resourceId);
+  if (!option?.available) throw new Error(`The host ${kind} ${resourceId} is not offerable (${option?.reason ?? "missing"})`);
+  expect(option.resources.map((item) => ({ role: item.role, agent_id: item.agent_id, runtime_id: item.runtime_id })).sort((a, b) => a.agent_id.localeCompare(b.agent_id)))
+    .toEqual(expected.map((item) => ({ role: item.role, agent_id: item.agentId, runtime_id: item.runtime.runtimeId })).sort((a, b) => a.agent_id.localeCompare(b.agent_id)));
+  for (const item of option.resources) expect(item).toMatchObject({ owner_user_id: ownerId, execution_mode: hostMode });
+  const offer = await owner.client.requestJSON<ResourceReceipt>(`${root}/resources/offers`, { method: "POST", headers: { "Idempotency-Key": randomUUID() }, body: {
+    ...hostAuthority(await current()), kind, resource_id: resourceId, execution_workspace_id: workspaceId,
+    roster: option.resources.map(({ role, agent_id, runtime_id, execution_workspace_id, owner_user_id }) => ({ role, agent_id, runtime_id, execution_workspace_id, owner_user_id })),
+  } });
+  expect(offer).toMatchObject({ status: 201, code: "resource_offered" });
+  const before = await owner.client.requestJSON<CollaborationResources>(versioned(`${root}/resources`));
+  const adoption = await owner.client.requestJSON<ResourceReceipt>(`${root}/resources/offers/${offer.offer_id}/adopt`, { method: "POST", headers: { "Idempotency-Key": randomUUID() }, body: {
+    ...hostAuthority(await current()), expected_offer_version: offer.offer_version, expected_target_set_version: before.target_set_version,
+  } });
+  expect(adoption).toMatchObject({ status: 201, code: "resource_offer_adopted" });
+  const target = (await owner.client.requestJSON<CollaborationResources>(versioned(`${root}/resources`))).targets.find((item) => item.target_id === adoption.target_id);
+  if (!target) throw new Error("Adopted host target is not visible");
+  for (const resource of target.resources) {
+    const runtime = expected.find((item) => item.agentId === resource.agent_id)!.runtime;
+    const identity = await owner.client.requestJSON<CollaborationResourceIdentityView>(versioned(`${root}/resources/identity?target_id=${target.target_id}&agent_id=${resource.agent_id}`));
+    expect(identity.identity?.installation_id).toBe(runtime.installationId);
+    const consent = await owner.client.requestJSON<{ code: string }>(`${root}/targets/${target.target_id}/consents`, { method: "POST", headers: { "Idempotency-Key": randomUUID() }, body: {
+      ...hostAuthority(await current()), agent_id: resource.agent_id, expected_target_epoch: target.target_epoch,
+      expected_config_version: target.config_version, identity: identity.identity,
+    } });
+    expect(consent.code).toBe("resource_consented");
+  }
+  return { targetId: adoption.target_id!, resourceId, name: option.name };
+}
+
 export async function seedHostRuntime() {
-  const env = environment();
+  const env = hostEnvironment();
   const restoreGate = await openHostAcceptanceGate();
   let daemon: Awaited<ReturnType<typeof startHostDaemon>> | undefined;
   const closeCurrentDaemon = async () => {
@@ -345,24 +451,7 @@ export async function seedHostRuntime() {
     expect(configuration.status).toBe(200);
     expect(await configuration.json()).toMatchObject({ auth_mode: "password", managed_installation_supported: true, deployment_id: env.deploymentId });
     const suffix = randomUUID().replaceAll("-", "").slice(0, 12);
-    const actor = async (label: string) => {
-      const client = new TestApiClient();
-      const username = `host${label.toLowerCase()}${suffix}`, password = `Host-${randomUUID()}!`;
-      const user = await client.registerPassword(username, password, `Host collaborator ${label}`);
-      const onboarded = await client.requestJSON<{ onboarded_at: string | null }>("/api/me/onboarding/complete", { method: "POST", body: {} });
-      expect(onboarded.onboarded_at).not.toBeNull();
-      return { client, id: user.id,
-        authenticateInstalled: (login: (credentials: { username: string; password: string; userId: string }) => Promise<unknown>) =>
-          login({ username, password, userId: user.id }),
-        async authenticateWeb(page: Page) {
-        const response = await page.request.post(`${env.apiUrl}/auth/login`, { data: { username, password } });
-        expect(response.status()).toBe(200);
-        const cookies = await page.context().cookies(env.apiUrl);
-        expect(cookies.some((cookie) => cookie.name === "multica_auth" && cookie.httpOnly)).toBe(true);
-        expect(cookies.some((cookie) => cookie.name === "multica_csrf" && !cookie.httpOnly)).toBe(true);
-      } };
-    };
-    const webActor = await actor("Web"), desktopActor = await actor("Electron");
+    const webActor = await createHostActor(env.apiUrl, "Web", suffix), desktopActor = await createHostActor(env.apiUrl, "Electron", suffix);
     const sourceWorkspace = await webActor.client.ensureWorkspace("Host acceptance source", `host-source-${suffix}`);
     const workspace = await webActor.client.requestJSON<{ id: string; slug: string }>("/api/workspaces", { method: "POST", body: {
       name: "Private host acceptance resource", slug: `host-resource-${suffix}`,
@@ -370,7 +459,7 @@ export async function seedHostRuntime() {
     expect(workspace.id).not.toBe(sourceWorkspace.id);
     webActor.client.setWorkspaceId(workspace.id);
     webActor.client.setWorkspaceSlug(workspace.slug);
-    const runtime = await enrollRuntime(webActor.client, webActor.id, workspace.id, env.apiUrl, env.deploymentId);
+    const runtime = await enrollHostRuntime(webActor.client, webActor.id, workspace.id, env.apiUrl, env.deploymentId);
     const delayDaemon = process.env.COLLABORATION_DELAY_HOST_DAEMON === "1";
     daemon = await startHostDaemon(runtime, env.apiUrl, delayDaemon);
     await waitForHostRuntime(webActor.client, runtime.runtimeId);
@@ -410,13 +499,13 @@ export async function seedHostRuntime() {
         execution_mode: hostMode, provider: "claude", provider_version: "fixture-1", account_source: "runtime_configuration" });
       const current = () => webActor.client.requestJSON<CollaborationIssue>(versioned(root));
       const offer = await webActor.client.requestJSON<ResourceReceipt>(`${root}/resources/offers`, { method: "POST", headers: { "Idempotency-Key": randomUUID() }, body: {
-        ...authority(await current()), kind: "agent", resource_id: agent.id, execution_workspace_id: workspace.id,
+        ...hostAuthority(await current()), kind: "agent", resource_id: agent.id, execution_workspace_id: workspace.id,
         roster: option.resources.map(({ role, agent_id, runtime_id, execution_workspace_id, owner_user_id }) => ({ role, agent_id, runtime_id, execution_workspace_id, owner_user_id })),
       } });
       expect(offer).toMatchObject({ status: 201, code: "resource_offered", target_id: null });
       const resources = await webActor.client.requestJSON<CollaborationResources>(versioned(`${root}/resources`));
       const adoption = await webActor.client.requestJSON<ResourceReceipt>(`${root}/resources/offers/${offer.offer_id}/adopt`, { method: "POST", headers: { "Idempotency-Key": randomUUID() }, body: {
-        ...authority(await current()), expected_offer_version: offer.offer_version, expected_target_set_version: resources.target_set_version,
+        ...hostAuthority(await current()), expected_offer_version: offer.offer_version, expected_target_set_version: resources.target_set_version,
       } });
       expect(adoption).toMatchObject({ status: 201, code: "resource_offer_adopted" });
       const target = (await current()).execution?.targets.find((item) => item.id === adoption.target_id);
