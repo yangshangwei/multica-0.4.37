@@ -170,7 +170,7 @@ var builtinSquadTemplates = []SquadTemplate{
 			"zh": "定性、复现；原因不明时先做带证据的诊断，再带回归测试修复、验证；严重级别决定何时上报。",
 		},
 	},
-	// The remaining six use the listed working roles. What differs is the
+	// The remaining templates use the listed working roles. What differs is the
 	// routing policy, which is the point: a squad is an orchestration of roles, so
 	// two squads sharing a roster but disagreeing about sequencing and about what
 	// escalates are genuinely different squads. Incident and Bug Fix are the clearest
@@ -305,6 +305,51 @@ var builtinSquadTemplates = []SquadTemplate{
 		Descriptions: map[string]string{
 			"en": "Dependency upgrades, advisories and flaky tests — diagnose unknown failures, then change one item at a time.",
 			"zh": "依赖升级、安全公告和不稳定测试：原因未知时先诊断，再一次处理一项，并确保可回滚。",
+		},
+	},
+	{
+		Key:               "security-remediation",
+		Version:           1,
+		DefaultName:       "Security Remediation Squad",
+		AvatarEmoji:       "🛡️",
+		LeaderTemplateKey: "security-remediation-lead",
+		Members: []SquadRoleSlot{
+			{TemplateKey: "product-analyst", Roles: map[string]string{
+				"en": "Clarifies the report, affected assets, severity and acceptance criteria",
+				"zh": "澄清报告、受影响资产、严重程度和验收标准",
+			}},
+			{TemplateKey: "security-reviewer", Roles: map[string]string{
+				"en": "Checks applicability, trust boundaries and the final security evidence without writing exploits",
+				"zh": "审查适用性、信任边界和最终安全证据，不编写攻击载荷",
+			}},
+			{TemplateKey: "diagnostician", Roles: map[string]string{
+				"en": "Investigates unknown causes within its role limits, handing security stops to a human",
+				"zh": "在既有职责范围内调查未知原因；触及安全停止条件时交人工处理",
+			}},
+			{TemplateKey: "implementer", Roles: map[string]string{
+				"en": "Makes one minimal repair with a regression test on an isolated branch",
+				"zh": "在隔离分支上完成单项最小修复并补回归测试",
+			}},
+			{TemplateKey: "qa-engineer", Roles: map[string]string{
+				"en": "Independently verifies the original risk, denial paths and regression results",
+				"zh": "独立验证原始风险、拒绝路径和回归结果",
+			}},
+			{TemplateKey: "migration-reviewer", Roles: map[string]string{
+				"en": "Reviews compatibility and rollback limits when schema, API, client or stored data contracts change",
+				"zh": "涉及 schema、API、客户端或存储数据契约变更时审查兼容性和回滚限制",
+			}},
+			{TemplateKey: "code-reviewer", Roles: map[string]string{
+				"en": "Reviews the final diff for correctness, scope and failure paths independently of its author",
+				"zh": "独立于修改者审查最终 diff 的正确性、范围和失败路径",
+			}},
+		},
+		Titles: map[string]string{
+			"en": "Security Remediation Squad",
+			"zh": "安全漏洞修复小队",
+		},
+		Descriptions: map[string]string{
+			"en": "Triages dependency, code and other security risks, routes minimal repairs and independent review, and hands production risks to people.",
+			"zh": "分诊依赖、代码和其他安全风险，安排最小修复与独立审查；生产风险交人工处理。",
 		},
 	},
 	{

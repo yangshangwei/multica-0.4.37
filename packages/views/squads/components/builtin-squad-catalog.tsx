@@ -26,6 +26,7 @@ export function BuiltinSquadCatalog({ squads }: { squads: readonly Squad[] }) {
     ["discovery", t(($) => $.catalog.summaries.discovery)],
     ["docs", t(($) => $.catalog.summaries.docs)],
     ["maintenance", t(($) => $.catalog.summaries.maintenance)],
+    ["security-remediation", t(($) => $.catalog.summaries.security_remediation)],
     ["release", t(($) => $.catalog.summaries.release)],
     ["incident", t(($) => $.catalog.summaries.incident)],
   ]);

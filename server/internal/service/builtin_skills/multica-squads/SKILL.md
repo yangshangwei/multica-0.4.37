@@ -158,21 +158,32 @@ the backend adds the new leader as a squad member with role `leader`.
 
 ### Staffing from a built-in squad template
 
-`GET /api/squads/templates` lists the platform's squad templates;
-`POST /api/squads/from-template` staffs one. No CLI command yet — this is the
-Squads page's "Use a template" action.
+`GET /api/squads/templates` lists the platform's squad templates.
+`POST /api/squads/from-template` creates a standalone squad on the requested
+runtime and returns the squad plus `created_agent_ids` / `reused_agent_ids`.
+It does not associate that squad with a project. There is no template-staffing
+CLI command.
 
-Eight templates ship with the binary: `feature-delivery`, `bug-fix`,
-`review-gate`, `discovery`, `docs`, `maintenance`, `release`, `incident`. They
-are eight rosters and eight routing policies, not eight execution models — every
-one produces an ordinary squad. Their rosters draw on the same listed working role
+The catalog's "Apply to project" action opens a project/runtime chooser and uses
+`PUT /api/projects/{id}/execution-squads` with `{squads: [...]}`. That endpoint
+replaces the full ordered selection, so the dialog preserves the existing
+choices and appends the selected `template_key`, optional `runtime_id` and
+`language`. "Connect later" saves a `needs_runtime` selection; preparation can
+also return `failed` with recovery on the project. Neither configuring a project
+nor receiving a successful response starts an agent run or proves runtime readiness.
+
+Nine templates ship with the binary: `feature-delivery`, `bug-fix`,
+`review-gate`, `discovery`, `docs`, `maintenance`, `security-remediation`,
+`release`, `incident`. Each supplies a roster and routing policy and produces
+an ordinary squad. Their rosters draw on the same listed working role
 templates and overlap heavily, so the difference between two of them lives in the
 squad `instructions`, not in the seats. `diagnostician` is intentionally seated
-only in `bug-fix`, `maintenance`, and `incident`: it handles an unexplained
+only in `bug-fix`, `maintenance`, `security-remediation`, and `incident`: it handles an unexplained
 failure, not routine delivery, review, discovery, documentation, or release work.
 
-One transaction creates the missing role agents, the squad, and the whole roster,
-so a failure leaves nothing behind. Routing is unchanged: the leader receives the
+Standalone staffing uses one transaction to create the missing role agents, the
+squad, and the whole roster, so a failure leaves nothing behind. Routing is
+unchanged: the leader receives the
 work and dispatches by `@mention` exactly as in a hand-built squad. What the
 template supplies is the roster and the `instructions` (the leader's routing
 policy), copied onto the row and workspace-owned from then on.
@@ -189,23 +200,39 @@ Two behaviors matter when debugging one:
   (English fallback), so a `zh` staffing conflicts with a hand-built
   实现工程师, not "Implementer".
 
-The three diagnostic workflows have different boundaries:
+The diagnostic workflows have different boundaries:
 
 - `bug-fix` sends an observed failure to `diagnostician` after reproduction and
   before an `implementer` changes code, when the cause is still unknown;
 - `maintenance` uses it only for an unexplained flaky test or upgrade failure;
+- `security-remediation` separates unknown-cause diagnosis from implementation
+  within the member's existing role limits. A security-related stop or unknown
+  needing human input halts automatic dispatch; the leader cannot override it;
 - `incident` restores service first, then assigns a separate, follow-up root-cause
   task after recovery. Diagnosis must never delay mitigation.
+
+`security-remediation` adds one unlisted Coordinator leader and reuses seven
+working roles. Dependency risks go through applicability review, conditional
+migration review, one minimal repair and independent QA/code/security review;
+code risks add diagnosis only when permitted; other risks start with security
+evidence and stay `hold/unknown` with an owner when evidence is missing. Production
+exploitability, credential/customer-data exposure and high-risk actions stop local
+execution for human and existing `incident`/`release` handling. An unavailable
+handoff target leaves an explicit human hold. The template adds no sandbox,
+permissions or proof of real-model behavior. Final delivery reaches `in_review`
+only when the issue is assigned to this squad and its injected operating protocol
+grants status ownership. Guest mentions and quick-create without that ownership
+preserve the current assignee and status and deliver comments/activity only.
 
 `squad.template_key` / `template_version` record the provenance. They are not
 status: a staffed squad is an ordinary squad.
 
 An agent with a declared autonomy level needs at least `coordinator` to staff or
 modify a squad. Template staffing also checks the highest level in its roster
-against the caller's level. In practice that splits the eight in two: `release`
+against the caller's level. In practice that splits the nine in two: `release`
 and `incident` seat the Release Engineer, so their ceiling is `operator` and a
 `coordinator` agent is refused with 403 — nothing may create an agent more
-privileged than itself. The other six have a `coordinator` ceiling (every leader
+privileged than itself. The other seven have a `coordinator` ceiling (every leader
 seat is a coordinator) and a `coordinator` agent can staff them. Human and
 undeclared callers are unaffected either way.
 

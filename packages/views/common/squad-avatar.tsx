@@ -11,6 +11,7 @@ const TEMPLATE_ICONS: Record<string, AvatarIconName> = {
   discovery: "telescope",
   docs: "book-open",
   maintenance: "wrench",
+  "security-remediation": "shield-check",
   release: "package",
   incident: "siren",
 };

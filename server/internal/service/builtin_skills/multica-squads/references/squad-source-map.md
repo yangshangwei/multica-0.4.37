@@ -90,17 +90,30 @@ Source:
 
 ```text
 server/internal/handler/squad_template.go          # ListSquadTemplates, CreateSquadFromTemplate, provisionSquadTemplate, resolveTemplateAgentInTx
+server/internal/handler/project_execution_squad.go # ConfigureProjectSquads
 server/internal/service/builtin_squad_templates.go # SquadTemplate registry, TemplateKeys()
 server/pkg/db/queries/squad.sql                    # CreateSquadFromTemplate
 server/pkg/db/queries/agent.sql                    # GetAgentByWorkspaceAndTemplateKey
+packages/views/squads/components/builtin-squad-catalog.tsx
+packages/views/projects/components/use-squad-for-project-dialog.tsx
+packages/core/projects/mutations.ts                # useConfigureProjectSquads
+packages/core/api/client.ts                        # configureProjectSquads
 ```
 
 Contracts:
 
 - `GET /api/squads/templates` is workspace-independent: the registry ships with
   the binary, so the answer is identical for every workspace on the server;
-- staffing is ONE transaction (`provisionSquadTemplate`) covering the missing
-  role agents, the squad row and every `squad_member` row — a partially staffed
+- standalone `POST /api/squads/from-template` creates an ordinary squad without
+  associating a project and returns created/reused agent IDs;
+- the catalog's "Apply to project" dialog uses
+  `PUT /api/projects/{id}/execution-squads` with `{squads: [...]}`, preserving the
+  existing ordered choices and appending the template/runtime/language selection.
+  The PUT replaces the complete list. Without a runtime the choice remains
+  `needs_runtime`; preparation can retain a `failed` choice for project recovery.
+  Configuration does not start an agent run or establish readiness;
+- standalone staffing is ONE transaction (`provisionSquadTemplate`) covering the
+  missing role agents, the squad row and every `squad_member` row — a partially staffed
   squad is not a reachable state;
 - provisioning order is leader first (`SquadTemplate.TemplateKeys`), because the
   squad row cannot be written without `leader_id`;
@@ -123,8 +136,24 @@ Contracts:
 - the built-in `diagnostician` seat is conditional by workflow: `bug-fix` uses it
   between reproduction and implementation when the cause is unknown,
   `maintenance` uses it for unexplained flaky-test or upgrade failures, and
-  `incident` uses it only for a separate post-recovery follow-up; the other five
+  `security-remediation` separates permitted unknown-cause diagnosis from repair
+  while honoring every member's human-required stop; `incident` uses it only for
+  a separate post-recovery follow-up; the other five
   templates do not provision it;
+- `security-remediation` v1 has a dedicated unlisted `security-remediation-lead`
+  v1 (Coordinator, concurrency two) and seven existing working roles, with no
+  Operator or new role skill. Its two instruction files require exact current-roster
+  Markdown mentions, one dispatch with `action`, actual member task/comment
+  provenance before advancing, and final `no_action`. An `in_review` transition
+  additionally requires actual assignment to this squad and status ownership
+  in the injected operating protocol; guest/quick-create turns without ownership
+  retain the current assignee and status and deliver comments/activity only.
+  Missing evidence or member safety stops halt dispatch for human handling;
+  production/sensitive-data risks hand off to existing incident/release owners.
+  These are template instructions, not an extra execution sandbox or evidence of
+  model compliance. `builtin_security_remediation_templates_test.go` and
+  `squad_template_security_test.go` cover the content, catalog, private creation,
+  authority, reuse and owning/guest runtime-brief composition contracts;
 - the leader is created from an unlisted role template at `coordinator`
   autonomy; member seats keep their own role's default level;
 - declared agent callers need Coordinator, and cannot staff a template whose
@@ -251,9 +280,11 @@ Contracts:
   that confirms the overall goal is met. Squad Operating Protocol
   (`squad_briefing.go`) still states the ongoing `in_progress` → later
   `in_review` responsibility for owning leaders. `StartTask` / `CompleteTask`
-  do not write issue status. There is no assignee gate anymore: a guest leader
-  writes nothing not because it lacks a grant but because a turn that did not
-  move the issue's state has nothing to record.
+  do not write issue status. The briefing selects `squadParentStatusOwned` only
+  for an issue actually assigned to this squad; guest mentions and quick-create
+  receive `squadParentStatusNotOwned`. That Agent Identity prohibition outranks
+  the workflow's general status guidance. Composition regressions live in
+  `squad_parent_status_contract_test.go` and `squad_template_security_test.go`.
 - status names are category rules: custom statuses inherit their category's
   behavior in full (MUL-6243, `server/internal/issuestatus/issuestatus.go`
   `Effective`/`Resolve`); the brief lists the workspace catalog when any custom
@@ -342,8 +373,9 @@ Contracts:
   `multica issue status <parent-id> in_review`. The Squad Operating Protocol's
   standing "Own the parent issue status" responsibility (present exactly when
   the issue is assigned to this squad) states the same expectation; the system
-  comment marks the wrap-up moment. Since MUL-6417 the write itself needs no
-  grant — the brief's fact judgment covers it — but `done` remains
+  comment marks the wrap-up moment. The owning leader's standing instruction
+  permits this transition without a fresh status request; it does not grant
+  status ownership to a guest leader. `done` remains
   human / integration owned.
 
 ## Private Leader Access

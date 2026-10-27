@@ -125,9 +125,11 @@ protocol.
 
 The default squad placement is deliberately narrow. `bug-fix` seats the
 Diagnostician between reproduction and implementation when the cause is unknown;
-`maintenance` seats it for unexplained flaky-test or upgrade failures; and
+`maintenance` seats it for unexplained flaky-test or upgrade failures;
 `incident` seats it for a separate post-recovery root-cause follow-up without
-delaying mitigation. Feature delivery, review gate, discovery, docs, and release
+delaying mitigation; and `security-remediation` seats it for permitted diagnosis
+of unknown causes while preserving its mandatory safety stops. Feature delivery,
+review gate, discovery, docs, and release
 do not provision the role by default. The corresponding squad instructions and
 leader templates must describe the same handoff; changing only one layer creates
 conflicting routing advice at claim time.
@@ -136,6 +138,40 @@ Increment template and role-skill versions for material behavior changes. These
 defaults apply when creating agents or materializing a missing role skill;
 existing workspace copies are reused without overwriting customized content.
 `builtin_agent_templates_test.go` pins the full role-to-skill and autonomy maps.
+
+### Security remediation v1
+
+`security-remediation` is the ninth built-in squad. Its dedicated unlisted
+`security-remediation-lead` is version 1, Coordinator, concurrency two, with no
+new role skill. The seven seats reuse Product Analyst, Security Reviewer,
+Diagnostician, Implementer, QA Engineer, Migration Reviewer and Code Reviewer.
+Keep it before the Operator-bearing release/incident entries, preserve existing
+template versions, and retain private creation and workspace-copy reuse.
+
+The template coordinates non-production dependency, code and other-risk work.
+Unknown evidence retains an owner and `hold/unknown`; production exposure and
+high-risk operations go to human/incident/release handling. Existing member
+stops, including the Diagnostician's security stop, remain authoritative. A
+simulation can prove plumbing and fixture behavior, not model judgment or a
+runtime sandbox.
+
+Squad-leader identity does not imply ownership of the issue. Both instruction
+bodies must condition status transitions on the issue actually being assigned
+to this squad and the injected protocol granting status ownership. Guest
+`@squad` and quick-create turns keep the existing assignee/status and deliver
+comments/activity only. `buildSquadLeaderBriefing(..., false)` must not compose
+an unconditional status-write instruction with its non-owner restriction.
+
+Regression anchors: `builtin_security_remediation_templates_test.go` checks the
+registry, roster, authority and instruction contracts; `squad_template_security_test.go`
+covers private creation, reuse, autonomy, hidden-leader rejection and owning/guest
+briefing composition. The shared catalog uses the original server template for
+project adoption, preserves unknown-key description fallback, and localizes only
+display summaries. Its project action writes the complete `/execution-squads`
+list; the standalone `/api/squads/from-template` endpoint remains separate.
+The persisted project selection uses `state: configured`; execution readiness is
+derived separately by `getProjectSquadReadiness`. An offline runtime fixture can
+prove successful configuration without establishing a `ready` execution state.
 
 ### Runtime recovery must preserve role provenance
 

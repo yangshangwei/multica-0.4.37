@@ -1,0 +1,445 @@
+{
+  "admission": "User explicitly authorized phase two based on verified simulation and product contracts; real model behavior remains unverified.",
+  "static_tasks_passed": 15,
+  "typescript_tests_passed": 12807,
+  "go_race_suite": "passed",
+  "go_vet": "passed",
+  "browser_cases_covered": 32,
+  "browser_initial_stats": {
+    "startTime": "2026-10-27T11:37:18.423Z",
+    "duration": 41335.661,
+    "expected": 30,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  },
+  "browser_corrected_test_rerun_stats": {
+    "startTime": "2026-10-27T11:49:52.367Z",
+    "duration": 8844.185,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "browser_initial_tests": [
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "the roster is listed with its autonomy defaults",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 14,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "a client cannot choose its own autonomy_level or template_key",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 50,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "an unlisted leader key is refused",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "an Observer may edit an issue but not direct it",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 100,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "a Contributor may direct an issue",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 26,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "a capitalized status key does not slip past the gate",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 51,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "an explicit null assignee is a direction change",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 74,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "a batch of one is not a way around the gate",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 56,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "an Observer cannot delete issues, singly or in a batch",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 63,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "an Observer cannot staff a role at all",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "an Operator may staff agents at or below its own level",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 45,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "a Coordinator cannot mint an Operator",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 46,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "a Coordinator may staff lower-level agents and an equal-level squad leader",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 79,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "an agent without a declared level retains its staffing access",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 170,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "an agent cannot promote itself through UpdateAgent",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 43,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "a person may still set an agent's level",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 53,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "an agent files a request, only a person decides it",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 96,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "\"executed\" is a status, not a decision a client can post",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 128,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "an unknown risk class is refused",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 6,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "the roster and the squad are created together",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 66,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "an existing role agent is reused, not re-applied",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 102,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "an Observer cannot staff a squad",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 41,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "staffing cannot pull in a role agent the caller may not invoke",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 288,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "a Contributor cannot edit a squad or its membership",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 55,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "title": "a Contributor cannot create or delete standing automation",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 99,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-role-template.spec.ts",
+      "title": "opens existing members without mutation and restores template browsing",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2473,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-role-template.spec.ts",
+      "title": "offers a template starting point and creates from a role",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1306,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "agent-role-template.spec.ts",
+      "title": "shows the diagnostician evidence contract and server-owned defaults",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1270,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "project-squad-workspace.spec.ts",
+      "title": "keeps project work visible with 1, 8 and 20 squads and persists explicit defaults and issue links",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 13602,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "security-remediation-squad.spec.ts",
+      "title": "security remediation catalog and project adoption (en)",
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "duration_ms": 2400,
+          "errors": [
+            "Error: expect(received).toMatchObject(expected)\n\n- Expected  - 1\n+ Received  + 1\n\n  Object {\n-   \"state\": \"ready\",\n+   \"state\": \"configured\",\n    \"template_key\": \"security-remediation\",\n  }\n\n  91 |       expect(saved.execution_squads).toHaveLength(1);\n  92 |       const selection = saved.execution_squads[0]!;\n> 93 |       expect(selection).toMatchObject({ state: \"ready\", template_key: \"security-remediation\" });\n     |                         ^\n  94 |       expect(selection.squad_id).toBeTruthy();\n  95 |       const squad = await api.requestJSON<Squad>(`/api/squads/${selection.squad_id}`);\n  96 |       expect(squad).toMatchObject({ name: labels.title, template_key: \"security-remediation\", template_version: 1 });\n    at /Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/security-remediation-phase2/checkout/e2e/security-remediation-squad.spec.ts:93:25"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "security-remediation-squad.spec.ts",
+      "title": "security remediation catalog and project adoption (zh-Hans)",
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "duration_ms": 3798,
+          "errors": [
+            "Error: expect(received).toMatchObject(expected)\n\n- Expected  - 1\n+ Received  + 1\n\n  Object {\n-   \"state\": \"ready\",\n+   \"state\": \"configured\",\n    \"template_key\": \"security-remediation\",\n  }\n\n  91 |       expect(saved.execution_squads).toHaveLength(1);\n  92 |       const selection = saved.execution_squads[0]!;\n> 93 |       expect(selection).toMatchObject({ state: \"ready\", template_key: \"security-remediation\" });\n     |                         ^\n  94 |       expect(selection.squad_id).toBeTruthy();\n  95 |       const squad = await api.requestJSON<Squad>(`/api/squads/${selection.squad_id}`);\n  96 |       expect(squad).toMatchObject({ name: labels.title, template_key: \"security-remediation\", template_version: 1 });\n    at /Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/security-remediation-phase2/checkout/e2e/security-remediation-squad.spec.ts:93:25"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "squads-audit.spec.ts",
+      "title": "squad audit: browser interactions, responsive layout and performance",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 9846,
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "browser_rerun_tests": [
+    {
+      "file": "security-remediation-squad.spec.ts",
+      "title": "security remediation catalog and project adoption (en)",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3983,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "security-remediation-squad.spec.ts",
+      "title": "security remediation catalog and project adoption (zh-Hans)",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3413,
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "original_pipeline_exit": 1,
+  "original_pipeline_stop": "Existing work-management-local environment owns the main checkout Web build; product/static/unit stages passed.",
+  "browser_continuation": "Separate ignored worktree; 30 product/test file hashes match the final main checkout; production API/Web only.",
+  "real_runtime_invoked": false,
+  "unverified": "Real-model instruction following, independent reasoning, and production behavior."
+}

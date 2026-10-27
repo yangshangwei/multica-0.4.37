@@ -45,6 +45,7 @@ test("squad audit: browser interactions, responsive layout and performance", asy
       ["maintenance", "Maintenance squad"], ["bug-fix", "Bug fix squad"],
       ["incident", "Incident squad"], ["feature-delivery", "Feature squad"],
       ["docs", "Documentation squad"], ["discovery", "Discovery squad"],
+      ["security-remediation", "Security remediation squad"],
     ]) {
       await api.requestJSON("/api/squads/from-template", { method: "POST", body: { template_key: key, runtime_id: runtime.id, name } });
     }
@@ -166,7 +167,7 @@ test("squad audit: browser interactions, responsive layout and performance", asy
     }
     await page.getByRole("button", { name: "Clear filters", exact: true }).focus();
     await page.keyboard.press("Enter");
-    await expect(page.getByRole("row").filter({ has: page.locator('a[href*="/squads/"]') })).toHaveCount(8);
+    await expect(page.getByRole("row").filter({ has: page.locator('a[href*="/squads/"]') })).toHaveCount(9);
     await page.evaluate(() => { document.documentElement.classList.remove("dark"); document.documentElement.classList.add("light"); });
 
     // Sorting and row actions must keep navigation in place.

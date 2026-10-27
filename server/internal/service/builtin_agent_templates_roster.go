@@ -369,6 +369,22 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		},
 	},
 	{
+		Key:                "security-remediation-lead",
+		Version:            1,
+		DefaultName:        "Security Remediation Lead",
+		AvatarEmoji:        "🛡️",
+		Autonomy:           AutonomyCoordinator,
+		MaxConcurrentTasks: 2,
+		Titles: map[string]string{
+			"en": "Security Remediation Lead",
+			"zh": "安全漏洞修复负责人",
+		},
+		Descriptions: map[string]string{
+			"en": "Routes security triage, minimal repairs and independent verification, stopping for human handling when production or sensitive data is at risk.",
+			"zh": "安排安全分诊、最小修复和独立验证；涉及生产或敏感数据风险时停止并交人工处理。",
+		},
+	},
+	{
 		Key:                "release-lead",
 		Version:            3,
 		DefaultName:        "Release Lead",

@@ -1,5 +1,9 @@
 # 执行计划：安全漏洞修复小队两阶段落地
 
+## 当前步骤：第二阶段已获授权
+
+用户明确要求“推进第二阶段”，在已知真实模型未验证的情况下授权按模拟与产品契约固化模板。继续遵守不调用真实运行时的要求，在当前任务执行下方 B1～B4，不另建任务；执行边界与更新准入决定见 `phase2-plan.md`。此前“阶段二未启动”的条目是历史记录。
+
 ## 当前授权续跑：模拟验证
 
 用户于 2026-10-27 明确要求停止真实运行时调用，改做模拟可行性验证；本节优先于下面历史续跑步骤。详细边界见 `pilot/simulation-plan-20261027.md`。
@@ -66,35 +70,35 @@
 
 ### B1. 新增内置 leader 和 squad 模板
 
-- [ ] 在 `server/internal/service/builtin_agent_templates_roster.go` 注册未列出的 `security-remediation-lead`，自治等级 Coordinator、并发上限 2、版本 1。
-- [ ] 新增 `server/internal/service/builtin_agent_templates/security-remediation-lead/INSTRUCTIONS.md`，只包含试点已验证的安全分流、停止条件、交接和父任务状态规则。
-- [ ] 在 `server/internal/service/builtin_squad_templates.go` 增加 `security-remediation`，版本 1、双语标题/描述、leader 和成员说明。
-- [ ] 新增 `server/internal/service/builtin_squad_templates/security-remediation/INSTRUCTIONS.md`，保持与 leader/成员指令一致；禁止新增未在试点中证明的职责。
-- [ ] 不新增数据库表、迁移、审批风险类别或新的执行模型。
+- [x] 在 `server/internal/service/builtin_agent_templates_roster.go` 注册未列出的 `security-remediation-lead`，自治等级 Coordinator、并发上限 2、版本 1。
+- [x] 新增 `server/internal/service/builtin_agent_templates/security-remediation-lead/INSTRUCTIONS.md`，只包含试点已验证的安全分流、停止条件、交接和父任务状态规则。
+- [x] 在 `server/internal/service/builtin_squad_templates.go` 增加 `security-remediation`，版本 1、双语标题/描述、leader 和成员说明。
+- [x] 新增 `server/internal/service/builtin_squad_templates/security-remediation/INSTRUCTIONS.md`，保持与 leader/成员指令一致；禁止新增未在试点中证明的职责。
+- [x] 不新增数据库表、迁移、审批风险类别或新的执行模型。
 
 ### B2. 服务器测试与边界回归
 
-- [ ] 更新角色/小队注册表测试：leader 一对一、template key/version、语言、角色文件存在、最大自治等级为 Coordinator、roster 不含 Operator。
-- [ ] 更新 handler 模板列表/创建测试：新模板出现在列表，能够完整创建/复用 roster，默认 Access 仍私有，Coordinator 可以创建而不能越过自治上限。
-- [ ] 为安全模板指令写最小文本契约测试：三类路由、incident/release 交接、禁止 exploit/secret/production 动作、`unknown`/`hold` 规则存在。
-- [ ] 不添加真实攻击载荷；安全回归使用权限拒绝、租户边界、空/超限输入、锁文件/版本解析等安全 fixture。
+- [x] 更新角色/小队注册表测试：leader 一对一、template key/version、语言、角色文件存在、最大自治等级为 Coordinator、roster 不含 Operator。
+- [x] 更新 handler 模板列表/创建测试：新模板出现在列表，能够完整创建/复用 roster，默认 Access 仍私有，Coordinator 可以创建而不能越过自治上限。
+- [x] 为安全模板指令写最小文本契约测试：三类路由、incident/release 交接、禁止 exploit/secret/production 动作、`unknown`/`hold` 规则存在。
+- [x] 不添加真实攻击载荷；安全回归使用权限拒绝、租户边界、空/超限输入、锁文件/版本解析等安全 fixture。
 
 ### B3. 前端、API 和文档
 
-- [ ] 在 `packages/views/squads/components/builtin-squad-catalog.tsx` 的摘要映射中加入 `security-remediation`；保留后端 description 回退。
-- [ ] 在 `packages/views` 的 squads 中英文/中文 locale 添加模板摘要，避免新模板显示为未翻译的后端文本。
-- [ ] 更新 `apps/docs/content/docs/squads.mdx`、`squads.zh.mdx`、角色模板和安全模型相关说明，写清试点结论、权限和事故交接。
-- [ ] 确认 `SquadTemplateSchema` 的字符串 key/loose array contract 无需改变；若新增字段才按 API 兼容规则添加 schema 与 malformed-response 测试。
-- [ ] 如仓库文档生成流程要求，同步 `server/internal/docs/content/pages/` 的生成副本，不手工修改生成产物以外的内容。
+- [x] 在 `packages/views/squads/components/builtin-squad-catalog.tsx` 的摘要映射中加入 `security-remediation`；保留后端 description 回退。
+- [x] 在 `packages/views` 的 squads 中英文/中文 locale 添加模板摘要，避免新模板显示为未翻译的后端文本。
+- [x] 更新 `apps/docs/content/docs/squads.mdx`、`squads.zh.mdx`、角色模板和安全模型相关说明，写清试点结论、权限和事故交接。
+- [x] 确认 `SquadTemplateSchema` 的字符串 key/loose array contract 无需改变；若新增字段才按 API 兼容规则添加 schema 与 malformed-response 测试。
+- [x] 如仓库文档生成流程要求，同步 `server/internal/docs/content/pages/` 的生成副本，不手工修改生成产物以外的内容。
 
 ### B4. 完整验证与交付
 
-- [ ] 运行服务器窄测：`(cd server && go test ./internal/service ./internal/handler -run 'Test(AgentRoleTemplates|SquadTemplates|ListSquadTemplates|CreateSquadFromTemplate)' -count=1)`。
-- [ ] 运行前端相关测试：`pnpm test`（或按 Turborepo filter 运行 `packages/core`、`packages/views` 的模板/小队测试）和 `pnpm typecheck`。
-- [ ] 运行相关 E2E：构建后的应用上执行 `e2e/squads-audit.spec.ts`、`e2e/project-squad-workspace.spec.ts` 以及新增的模板创建/权限回归；不要用 `next dev` 冷编译结果替代验证。
-- [ ] 运行 `make check`，记录通过数、失败项和未运行范围。
-- [ ] 用 `trellis-check` 完成 spec、lint、typecheck、测试、跨层数据流和权限边界复核。
-- [ ] 先在 `in_review` 交付，不由小队或其 leader 标记 `done`；准备 Lore commit trailers 后再提交。
+- [x] 运行服务器窄测：`(cd server && go test ./internal/service ./internal/handler -run 'Test(AgentRoleTemplates|SquadTemplates|ListSquadTemplates|CreateSquadFromTemplate)' -count=1)`。
+- [x] 运行前端相关测试：`pnpm test`（或按 Turborepo filter 运行 `packages/core`、`packages/views` 的模板/小队测试）和 `pnpm typecheck`。
+- [x] 运行相关 E2E：构建后的应用上执行 `e2e/squads-audit.spec.ts`、`e2e/project-squad-workspace.spec.ts` 以及新增的模板创建/权限回归；不要用 `next dev` 冷编译结果替代验证。
+- [x] 运行 `make check` 对应的 `scripts/check.sh` 完整静态/TS/Go 流水线，E2E 使用相关小队、目录、采用与自治用例文件选择器；记录通过数、失败项和未运行范围，不启动真实 provider。
+- [x] 用 `trellis-check` 完成 spec、lint、typecheck、测试、跨层数据流和权限边界复核。
+- [x] 先在 `in_review` 交付，不由小队或其 leader 标记 `done`；准备 Lore commit trailers 后再提交。
 
 ## 风险和回滚点
 

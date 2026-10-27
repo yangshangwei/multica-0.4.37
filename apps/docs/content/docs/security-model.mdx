@@ -31,6 +31,14 @@ Pick whichever fits your infrastructure — they are listed from lightest to str
 
 Whichever you choose, treat the credentials reachable from that environment as credentials the agent may use: scope tokens narrowly, prefer per-purpose deploy keys over your personal SSH key, and avoid leaving unrelated production credentials in that user's home directory.
 
+## Security remediation workloads
+
+Run the [Security Remediation Squad](/squads#security-remediation) in a dedicated nonproduction environment with only the required repositories, sanitized evidence and network access. Keep production credentials, raw customer data and tools that can write to production out of that environment.
+
+The template uses a Coordinator leader and existing Observer/Contributor roles, with no Operator. Those autonomy levels, private-by-default Access and role instructions do not restrict the daemon user's filesystem or network privileges. Scripted workflow checks do not establish that a model will assess every risk correctly or follow every instruction.
+
+An exploitable current deployment, production impact, exposed credentials or customer data requires stopping local work and handing evidence to a human and the Incident Response or Release workflow. Missing evidence stays `unknown` with a named owner. Production changes, credential access or rotation, external notices and irreversible actions retain their individual approval requirements; the remediation squad does not execute them.
+
 ## What Multica does isolate
 
 These are real, but they are conveniences and blast-radius reduction — not a security boundary against a task that actively tries to escape:

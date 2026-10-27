@@ -1,0 +1,22 @@
+{
+  "command": [
+    "bash",
+    "scripts/check.sh",
+    "e2e/security-remediation-squad.spec.ts",
+    "e2e/squads-audit.spec.ts",
+    "e2e/project-squad-workspace.spec.ts",
+    "e2e/agent-role-template.spec.ts",
+    "e2e/agent-autonomy-gates.spec.ts"
+  ],
+  "started_at": "2026-10-27T09:46:23.235403+00:00",
+  "completed_at": "2026-10-27T10:27:22.119256+00:00",
+  "exit_code": 1,
+  "e2e_scope": [
+    "e2e/security-remediation-squad.spec.ts",
+    "e2e/squads-audit.spec.ts",
+    "e2e/project-squad-workspace.spec.ts",
+    "e2e/agent-role-template.spec.ts",
+    "e2e/agent-autonomy-gates.spec.ts"
+  ],
+  "real_runtime_allowed": false
+}

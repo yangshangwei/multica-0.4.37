@@ -4,7 +4,7 @@
   "title": "设计安全漏洞修复 AI 小队",
   "description": "盘点当前 AI 小队能力，设计组件、代码与其他安全漏洞修复的角色分工、工作流和验证边界",
   "status": "in_progress",
-  "dev_type": null,
+  "dev_type": "fullstack",
   "scope": null,
   "package": null,
   "priority": "P2",
@@ -21,13 +21,17 @@
   "children": [],
   "parent": null,
   "relatedFiles": [],
-  "notes": "2026-10-27 按用户要求停止真实运行时并完成脚本模拟。POLA-19～22 均 in_review；真实产品队列29次成功角色执行，另保留并恢复两次早期失败。24项后端契约零跳过，14项模拟工具测试及12个证据破坏样例、独立Trellis复核通过。只验证脚本化流程和合成补丁，不证明模型判断/指令遵守。临时容器/数据库/凭据已清理，原共享角色未改；八个私有副本保留模拟绑定。见 pilot/simulation-results-20261027.md。原真实模型门槛与阶段二未通过，任务保持进行中。",
+  "notes": "用户在了解真实模型未验证的限制后明确授权推进第二阶段；新增security-remediation v1与专用Coordinator leader，复用七个角色、私有创建和旧实例内容。15项静态任务、12807项TS测试、Go race/vet通过；56项后端窄测及8项归属修复回归通过；隔离生产Web验收32项已覆盖（30首轮通过+2修正预期后通过）。独立复核无阻塞。未调用真实运行时/模型，真实模型行为不记为通过。交付详见phase2-results.md，原真实模型条目保留作未来验证参考。",
   "meta": {
-    "phase": "phase1_scripted_simulation_verified",
+    "phase": "phase2_verified",
     "pilot_project_id": "e9f1b898-709a-4aee-9b75-5d72cf55e950",
     "real_model_gate_passed": false,
     "simulation_project_id": "6d369c93-b6af-4a83-8fba-93b1489e0789",
     "simulation_squad_id": "26156f72-d413-42be-a075-e46f2b9184ea",
-    "simulation_runtime_id": "191dac8a-0b3f-4c2d-90a4-51da68ecfd6a"
+    "simulation_runtime_id": "191dac8a-0b3f-4c2d-90a4-51da68ecfd6a",
+    "phase2_authorized_by_user": true,
+    "phase2_admission_basis": "verified_simulation_and_product_contracts",
+    "real_runtime_calls_allowed": false,
+    "phase2_verified": true
   }
 }

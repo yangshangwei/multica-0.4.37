@@ -178,6 +178,7 @@ func TestSquadTemplates_RosterIsCoherent(t *testing.T) {
 	wantKeys := []string{
 		"feature-delivery", "bug-fix",
 		"review-gate", "discovery", "docs", "maintenance",
+		"security-remediation",
 		"release", "incident",
 	}
 	if len(templates) != len(wantKeys) {
@@ -232,9 +233,10 @@ func TestSquadTemplates_RosterIsCoherent(t *testing.T) {
 
 func TestSquadTemplates_DiagnosticianPlacementMatchesFailureWorkflows(t *testing.T) {
 	want := map[string][]string{
-		"bug-fix":     {"原因未知", "诊断工程师", "实现工程师"},
-		"maintenance": {"原因未知", "诊断工程师", "不稳定测试"},
-		"incident":    {"独立后续任务", "诊断工程师", "不等待"},
+		"bug-fix":              {"原因未知", "诊断工程师", "实现工程师"},
+		"maintenance":          {"原因未知", "诊断工程师", "不稳定测试"},
+		"security-remediation": {"原因未知", "诊断工程师", "实现工程师"},
+		"incident":             {"独立后续任务", "诊断工程师", "不等待"},
 	}
 
 	for _, squad := range SquadTemplates() {
@@ -262,10 +264,11 @@ func TestSquadTemplates_DiagnosticianPlacementMatchesFailureWorkflows(t *testing
 
 func TestSquadTemplates_LifecycleEvidenceRouting(t *testing.T) {
 	want := map[string][]string{
-		"review-gate": {"agent-evaluator", "experience-validation-engineer", "migration-reviewer"},
-		"release":     {"reliability-engineer", "agent-evaluator", "experience-validation-engineer", "migration-reviewer"},
-		"maintenance": {"migration-reviewer"},
-		"incident":    {"reliability-engineer"},
+		"review-gate":          {"agent-evaluator", "experience-validation-engineer", "migration-reviewer"},
+		"release":              {"reliability-engineer", "agent-evaluator", "experience-validation-engineer", "migration-reviewer"},
+		"maintenance":          {"migration-reviewer"},
+		"security-remediation": {"migration-reviewer"},
+		"incident":             {"reliability-engineer"},
 	}
 	for _, squad := range SquadTemplates() {
 		seen := map[string]bool{}
@@ -364,9 +367,10 @@ func TestReleaseGateGovernanceDrill_Contract(t *testing.T) {
 
 func TestSquadLeads_ExplainDiagnosticianHandoff(t *testing.T) {
 	want := map[string][]string{
-		"bug-fix-lead":     {"诊断工程师", "原因未知"},
-		"maintenance-lead": {"诊断工程师", "不稳定测试"},
-		"incident-lead":    {"诊断工程师", "独立后续任务", "不等待"},
+		"bug-fix-lead":              {"诊断工程师", "原因未知"},
+		"maintenance-lead":          {"诊断工程师", "不稳定测试"},
+		"security-remediation-lead": {"诊断工程师", "原因未知"},
+		"incident-lead":             {"诊断工程师", "独立后续任务", "不等待"},
 	}
 
 	for key, contracts := range want {
@@ -433,12 +437,13 @@ func TestSquadTemplates_LeadersAreOneToOne(t *testing.T) {
 // staff it — a permission change that must be a deliberate edit here.
 func TestSquadTemplates_MaxAutonomyMatchesRoster(t *testing.T) {
 	want := map[string]AutonomyLevel{
-		"feature-delivery": AutonomyCoordinator,
-		"bug-fix":          AutonomyCoordinator,
-		"review-gate":      AutonomyCoordinator,
-		"discovery":        AutonomyCoordinator,
-		"docs":             AutonomyCoordinator,
-		"maintenance":      AutonomyCoordinator,
+		"feature-delivery":     AutonomyCoordinator,
+		"bug-fix":              AutonomyCoordinator,
+		"review-gate":          AutonomyCoordinator,
+		"discovery":            AutonomyCoordinator,
+		"docs":                 AutonomyCoordinator,
+		"maintenance":          AutonomyCoordinator,
+		"security-remediation": AutonomyCoordinator,
 		// The two rosters that seat the Release Engineer. Staffing either one mints an
 		// Operator, so only a caller allowed to grant Operator may do it.
 		"release":  AutonomyOperator,

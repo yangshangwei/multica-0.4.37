@@ -1,0 +1,47 @@
+{
+  "command": [
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "test",
+    "./internal/service",
+    "./internal/handler",
+    "-run",
+    "^Test(SquadTemplates_SecurityRemediation(InstructionContracts|ParentStatusOwnership|StatusBriefing)|SquadsSkillCoversLeaderRoutingContract|AgentRoleTemplates_InstructionsCarryTheContract|CreateSquadFromTemplate_SecurityRemediationPrivateRoster|SquadAssignedLeaderCanWrapUpOnCommentTurn|GuestLeaderCannotChangeStatusOnCommentTurn)$",
+    "-count=1",
+    "-json"
+  ],
+  "exit_code": 0,
+  "packages": {
+    "service": {
+      "expected": [
+        "TestAgentRoleTemplates_InstructionsCarryTheContract",
+        "TestSquadTemplates_SecurityRemediationInstructionContracts",
+        "TestSquadTemplates_SecurityRemediationParentStatusOwnership",
+        "TestSquadsSkillCoversLeaderRoutingContract"
+      ],
+      "top_level_passes": 4,
+      "all_passes": 18,
+      "missing_run": [],
+      "missing_pass": [],
+      "unexpected_run": []
+    },
+    "handler": {
+      "expected": [
+        "TestCreateSquadFromTemplate_SecurityRemediationPrivateRoster",
+        "TestGuestLeaderCannotChangeStatusOnCommentTurn",
+        "TestSquadAssignedLeaderCanWrapUpOnCommentTurn",
+        "TestSquadTemplates_SecurityRemediationStatusBriefing"
+      ],
+      "top_level_passes": 4,
+      "all_passes": 8,
+      "missing_run": [],
+      "missing_pass": [],
+      "unexpected_run": []
+    }
+  },
+  "failures": [],
+  "skips": [],
+  "verified": true
+}

@@ -219,6 +219,7 @@ func TestAgentRoleTemplates_DefaultRoleSkills(t *testing.T) {
 		"review-gate-lead":               nil,
 		"docs-lead":                      nil,
 		"maintenance-lead":               nil,
+		"security-remediation-lead":      nil,
 		"release-lead":                   {"multica-rollout-and-canary-verification"},
 		"incident-lead":                  {"multica-incident-learning"},
 	}
