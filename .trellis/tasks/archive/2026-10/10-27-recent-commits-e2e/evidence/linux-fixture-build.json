@@ -1,0 +1,59 @@
+{
+  "head": "a8e374bb99c5f3c407f76c2d607e623ce15d6552",
+  "commands": [
+    {
+      "arch": "arm64",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-p",
+        "2",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/bin/linux-arm64-daemon",
+        "./internal/daemon"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arch": "arm64",
+      "command": [
+        "go",
+        "build",
+        "-p",
+        "2",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/bin/linux-arm64-provider",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/e2e/fixtures/collaboration-cross-client-provider.go"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arch": "amd64",
+      "command": [
+        "go",
+        "build",
+        "-p",
+        "2",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/bin/linux-amd64-cli-relay",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/e2e/fixtures/collaboration-installed-cli-relay.go"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "files": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/bin/linux-arm64-daemon",
+      "sha256": "0992f8d75cdbe74a6535147e23553908ab5771d18ebfcbf95d5b4d80fb63e453"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/bin/linux-arm64-provider",
+      "sha256": "2047a8fbaad264a0d239f912c9f257181ceb56d08b80641ace939648b811a420"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/bin/linux-amd64-cli-relay",
+      "sha256": "f5b41ef36f1070684295910bb7621252a50a892580b553f0ae999c677c5887f5"
+    }
+  ]
+}
