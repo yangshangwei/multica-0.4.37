@@ -268,6 +268,24 @@ throughput; do not change production defaults or weaken login assertions. Go
 Redis integration tests require `REDIS_TEST_URL`, using a separate Redis instance
 because fixtures flush their assigned logical databases.
 
+Password registration has a separate `register-ip` budget: 30 requests per five
+minutes in `auth_password.go`. The email-auth variables above do not change it.
+Run independent password specs in bounded batches or separate task-owned API
+processes. With `MULTICA_PASSWORD_LIMITER_MODE=single`, restarting only the owned
+API between independent specs gives each fixture a fresh budget while retaining
+all rate-limit assertions within a spec. A 429 during fixture registration is
+not evidence that the later product journey failed. Keep distinct synthetic
+administrators per spec and preserve the account-level login/reauth limits.
+
+`mcp-desktop.spec.ts` and `password-binding-desktop.spec.ts` serve
+`apps/desktop/out/renderer` from their own checkout. An external
+`COLLABORATION_ELECTRON_SOURCE_ROOT` does not redirect those paths. Build there,
+or copy the matching renderer/preload from a verified same-source build and
+compare hashes before running; otherwise the fixture proxy returns 502 and the
+native root remains blank. The compiled-CLI acceptance in
+`upstream-backports-cli.spec.ts` likewise requires `MULTICA_E2E_CLI_BINARY` to
+resolve inside that checkout's `server/bin`, not a separate evidence directory.
+
 Live changelog tests mutate a task-owned feed. Enter cleanup protection before
 authentication, fixture setup or publication; a setup failure must leave the
 original feed and remove temporary repositories. Do not run two publication

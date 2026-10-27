@@ -66,7 +66,7 @@ async function managerFixture() {
   });
   const modules: Record<string, unknown> = {
     electron: {
-      app: { getVersion: () => "0.5.0", on: vi.fn(), quit: vi.fn() },
+      app: { getVersion: () => "0.5.0", getPath: () => root, on: vi.fn(), quit: vi.fn() },
       ipcMain: { handle: (channel: string, handler: IPCHandler) => handlers.set(channel, handler), on: vi.fn() },
       BrowserWindow: { getAllWindows: () => [] }, shell: {},
     },
