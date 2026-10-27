@@ -821,7 +821,14 @@ func (s *CollaborationService) promoteCollaborationRuntimeBatch(ctx context.Cont
 	if err != nil {
 		return collaborationRuntimePromotion{}, err
 	}
-	group, err := q.CreateCollaborationRuntimeGroup(ctx, db.CreateCollaborationRuntimeGroupParams{SessionID: t.session.ID, TargetID: target.ID, CommandID: root.ID, Generation: channel.GroupGeneration + 1, TargetEpoch: target.TargetEpoch, ConfigVersion: target.ConfigVersion, Roster: roster, ChannelID: channel.ID, BatchID: batch.ID})
+	// Generations are ordered per channel and unique per target. A Switch can move
+	// a target onto a channel whose counter is behind the target's own history.
+	previous, err := q.GetCollaborationTargetMaxGroupGeneration(ctx, target.ID)
+	if err != nil {
+		return collaborationRuntimePromotion{}, err
+	}
+	generation := max(channel.GroupGeneration, previous) + 1
+	group, err := q.CreateCollaborationRuntimeGroup(ctx, db.CreateCollaborationRuntimeGroupParams{SessionID: t.session.ID, TargetID: target.ID, CommandID: root.ID, Generation: generation, TargetEpoch: target.TargetEpoch, ConfigVersion: target.ConfigVersion, Roster: roster, ChannelID: channel.ID, BatchID: batch.ID})
 	if err != nil {
 		return collaborationRuntimePromotion{}, err
 	}
@@ -844,7 +851,7 @@ func (s *CollaborationService) promoteCollaborationRuntimeBatch(ctx context.Cont
 	if _, err = q.StartCollaborationBatch(ctx, db.StartCollaborationBatchParams{BatchID: batch.ID, CommandID: root.ID, GroupID: group.ID}); err != nil {
 		return collaborationRuntimePromotion{}, err
 	}
-	if _, err = q.AssignCollaborationChannelGroup(ctx, db.AssignCollaborationChannelGroupParams{ChannelID: channel.ID, GroupID: group.ID}); err != nil {
+	if _, err = q.AssignCollaborationChannelGroup(ctx, db.AssignCollaborationChannelGroupParams{ChannelID: channel.ID, GroupID: group.ID, Generation: generation}); err != nil {
 		return collaborationRuntimePromotion{}, err
 	}
 	if err = q.StartCollaborationBatchInputs(ctx, batch.ID); err != nil {

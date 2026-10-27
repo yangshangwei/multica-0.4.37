@@ -201,3 +201,85 @@ func TestCollaborationPublicSquadSwitchWaitsBehindBusyDestinationAndFreshResume(
 		t.Fatalf("old public Switch GET replay changed execution: %+v %v", recovered, err)
 	}
 }
+
+// A Switch can move a target onto a root agent that never had a channel in this
+// issue. That channel's counter starts at zero, but the target already owns a
+// group generation on its old channel; the first group in the new lane must
+// still be a new generation for the target, or every promotion fails forever.
+func TestCollaborationSwitchToFreshChannelStartsANewTargetGeneration(t *testing.T) {
+	f := newManagedCollaborationFixture(t)
+	switchCleanup(t, f.collaborationQueueFixture)
+	squadID := util.MustParseUUID(f.fx.Squad(t, "Fresh channel switch squad", util.UUIDToString(f.grant.AgentID)))
+	old := *f
+	oldQueue := *f.collaborationQueueFixture
+	old.collaborationQueueFixture = &oldQueue
+	squad := ownerSwitchRegister(t, &old, collaboration.TargetSquad, squadID, []collaboration.TargetResource{ownerSwitchResource(f, "leader")})
+	old.grant = ownerSwitchConsent(t, &old, squad)
+	f.resumeManaged(t)
+	stoppedInput := submitManagedControlInput(t, &old, queueTarget(t, old.collaborationQueueFixture, squad.ID), f.creator, "Fresh channel stopped input")
+	stopped := ownerSwitchClaimPermit(t, &old, stoppedInput)
+	if _, err := f.svc.StopQueue(f.ctx, managedTargetResume(t, &old, squad.ID).CollaborationStopQueueParams); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := f.svc.AcceptRuntimeProof(context.Background(), stopped.run, stopped.claim.TerminationToken, managedProof(stopped.claim.Identity, stopped.permit.AttemptNonce)); err != nil {
+		t.Fatal(err)
+	}
+	waiting := submitManagedControlInput(t, &old, queueTarget(t, old.collaborationQueueFixture, squad.ID), f.creator, "Fresh channel retained input")
+
+	// The replacement leader's runtime has no target, channel or group here yet.
+	destination := ownerSwitchNamespace(t, f, f.creator, "Fresh channel leader")
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_channel WHERE session_id=$1 AND root_agent_id=$2`, f.issue.SessionID, destination.grant.AgentID) != 0 {
+		t.Fatal("fixture precondition: the replacement leader already has a channel")
+	}
+	if _, err := f.svc.Queries.UpdateSquad(f.ctx, db.UpdateSquadParams{ID: squadID, LeaderID: destination.grant.AgentID,
+		ExpectedWorkspaceID: util.MustParseUUID(f.workspace)}); err != nil {
+		t.Fatal(err)
+	}
+	before := queueTarget(t, old.collaborationQueueFixture, squad.ID)
+	proposal, err := f.svc.ProposeTargetSwitch(f.ctx, CollaborationProposeSwitchParams{CollaborationQueueRequest: f.request(), TargetID: squad.ID,
+		ExpectedTargetEpoch: before.TargetEpoch, ExpectedConfigVersion: before.ConfigVersion,
+		Roster: []collaboration.TargetResource{ownerSwitchResource(destination, "leader")}})
+	if err != nil || proposal.Code != "switch_proposed" {
+		t.Fatalf("fresh channel Switch proposal: %+v %v", proposal, err)
+	}
+	if _, err := f.svc.ConsentTargetSwitchResource(f.ctx, CollaborationSwitchConsentParams{CollaborationQueueRequest: f.request(), TargetID: squad.ID,
+		ProposalID: proposal.ProposalID, AgentID: destination.grant.AgentID, Identity: CollaborationResourceIdentity{Kind: "managed",
+			InstallationID: f.installation.ID, BindingID: destination.binding.ID, BindingEpoch: destination.binding.BindingEpoch}}); err != nil {
+		t.Fatal(err)
+	}
+	switched, err := f.svc.CommitTargetSwitch(f.ctx, CollaborationCommitSwitchParams{CollaborationQueueRequest: f.request(), ProposalID: proposal.ProposalID, Control: targetControl(before)})
+	if err != nil || switched.Code != "target_switched" {
+		t.Fatalf("fresh channel Switch commit: %+v %v", switched, err)
+	}
+	current := queueTarget(t, old.collaborationQueueFixture, squad.ID)
+	if current.ChannelID == squad.ChannelID || current.GroupGeneration != 0 || current.HoldReason.String != "switch_hold" {
+		t.Fatalf("Switch did not move the target onto a fresh, held channel: %+v", current)
+	}
+
+	squadExecution := *destination
+	squadQueue := *destination.collaborationQueueFixture
+	squadExecution.collaborationQueueFixture = &squadQueue
+	squadExecution.targetID = squad.ID
+	if _, err := f.svc.ResumeQueue(f.ctx, managedTargetResume(t, &squadExecution, squad.ID)); err != nil {
+		t.Fatal(err)
+	}
+	runID, _, claim := squadExecution.claimManaged(t)
+	if len(claim.Inputs) != 1 || claim.Inputs[0].CommandID != util.UUIDToString(waiting.CommandID) || claim.Identity.ChannelID != util.UUIDToString(current.ChannelID) ||
+		claim.Identity.GroupID == stopped.claim.Identity.GroupID {
+		t.Fatalf("fresh lane did not continue the retained input in a new group: %+v", claim)
+	}
+	var oldGeneration, newGeneration, channelGeneration, targetGeneration int64
+	f.fx.QueryRow(t, `SELECT (SELECT generation FROM collaboration_execution_group WHERE id=$1),
+		(SELECT generation FROM collaboration_execution_group WHERE id=$2),
+		(SELECT group_generation FROM collaboration_channel WHERE id=$3),
+		(SELECT group_generation FROM collaboration_target WHERE id=$4)`,
+		stopped.claim.Identity.GroupID, claim.Identity.GroupID, current.ChannelID, squad.ID).Scan(&oldGeneration, &newGeneration, &channelGeneration, &targetGeneration)
+	if newGeneration <= oldGeneration || channelGeneration != newGeneration || targetGeneration != newGeneration {
+		t.Fatalf("new lane generation old=%d new=%d channel=%d target=%d", oldGeneration, newGeneration, channelGeneration, targetGeneration)
+	}
+	token, nonce := permitSquadRun(t, &squadExecution, runID, claim)
+	finishSquadRun(t, &squadExecution, runID, claim, token, nonce, "success")
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_execution_group WHERE id=$1 AND settled_at IS NOT NULL`, claim.Identity.GroupID) != 1 {
+		t.Fatal("the fresh lane's first group did not settle")
+	}
+}

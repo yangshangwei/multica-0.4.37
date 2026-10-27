@@ -39,17 +39,20 @@ func (q *Queries) AdvanceCollaborationRuntimeScanCursor(ctx context.Context, arg
 }
 
 const assignCollaborationChannelGroup = `-- name: AssignCollaborationChannelGroup :one
-UPDATE collaboration_channel SET active_group_id=$1::uuid,group_generation=group_generation+1
-WHERE id=$2::uuid AND active_group_id IS NULL RETURNING id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at, next_command_seq
+UPDATE collaboration_channel SET active_group_id=$1::uuid,group_generation=$2::bigint
+WHERE id=$3::uuid AND active_group_id IS NULL AND group_generation < $2::bigint RETURNING id, session_id, root_agent_id, queue_state, control_version, group_generation, next_batch_seq, active_group_id, pause_reason, created_at, next_command_seq
 `
 
 type AssignCollaborationChannelGroupParams struct {
-	GroupID   pgtype.UUID `json:"group_id"`
-	ChannelID pgtype.UUID `json:"channel_id"`
+	GroupID    pgtype.UUID `json:"group_id"`
+	Generation int64       `json:"generation"`
+	ChannelID  pgtype.UUID `json:"channel_id"`
 }
 
+// The channel counter takes the new group's generation, which may skip values
+// when a switched target brings a higher generation from its previous channel.
 func (q *Queries) AssignCollaborationChannelGroup(ctx context.Context, arg AssignCollaborationChannelGroupParams) (CollaborationChannel, error) {
-	row := q.db.QueryRow(ctx, assignCollaborationChannelGroup, arg.GroupID, arg.ChannelID)
+	row := q.db.QueryRow(ctx, assignCollaborationChannelGroup, arg.GroupID, arg.Generation, arg.ChannelID)
 	var i CollaborationChannel
 	err := row.Scan(
 		&i.ID,
@@ -990,6 +993,17 @@ func (q *Queries) GetCollaborationSessionByID(ctx context.Context, id pgtype.UUI
 		&i.TargetSetVersion,
 	)
 	return i, err
+}
+
+const getCollaborationTargetMaxGroupGeneration = `-- name: GetCollaborationTargetMaxGroupGeneration :one
+SELECT COALESCE(MAX(generation), 0)::bigint AS generation FROM collaboration_execution_group WHERE target_id=$1
+`
+
+func (q *Queries) GetCollaborationTargetMaxGroupGeneration(ctx context.Context, targetID pgtype.UUID) (int64, error) {
+	row := q.db.QueryRow(ctx, getCollaborationTargetMaxGroupGeneration, targetID)
+	var generation int64
+	err := row.Scan(&generation)
+	return generation, err
 }
 
 const getCollaborationTermination = `-- name: GetCollaborationTermination :one

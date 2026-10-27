@@ -162,9 +162,14 @@ INSERT INTO collaboration_group_input(group_id,command_id,channel_id,batch_id,se
 SELECT c.group_id,c.id,c.channel_id,c.batch_id,c.seq,r.id FROM consumed c
 JOIN collaboration_run r ON r.group_id=c.group_id AND r.parent_run_id IS NULL AND r.step_key='root';
 
+-- The channel counter takes the new group's generation, which may skip values
+-- when a switched target brings a higher generation from its previous channel.
 -- name: AssignCollaborationChannelGroup :one
-UPDATE collaboration_channel SET active_group_id=sqlc.arg(group_id)::uuid,group_generation=group_generation+1
-WHERE id=sqlc.arg(channel_id)::uuid AND active_group_id IS NULL RETURNING *;
+UPDATE collaboration_channel SET active_group_id=sqlc.arg(group_id)::uuid,group_generation=sqlc.arg(generation)::bigint
+WHERE id=sqlc.arg(channel_id)::uuid AND active_group_id IS NULL AND group_generation < sqlc.arg(generation)::bigint RETURNING *;
+
+-- name: GetCollaborationTargetMaxGroupGeneration :one
+SELECT COALESCE(MAX(generation), 0)::bigint AS generation FROM collaboration_execution_group WHERE target_id=$1;
 
 -- name: AssignCollaborationChannelTargetGroups :exec
 UPDATE collaboration_target SET active_group_id=sqlc.arg(group_id)::uuid,group_generation=sqlc.arg(group_generation)::bigint
