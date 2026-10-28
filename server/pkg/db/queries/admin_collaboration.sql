@@ -79,3 +79,25 @@ ORDER BY u.id LIMIT sqlc.arg(page_limit)::int;
 
 -- name: CountAdminCollaborationUnsettledRuns :one
 SELECT count(*)::bigint FROM collaboration_run WHERE session_id=$1 AND settled_at IS NULL;
+
+-- Gate writes take the row after the actor lock in CreateOperationInTx, the
+-- same actor-then-gate order that collaboration writers use with FOR SHARE.
+-- name: LockCollaborationGateForAdmin :one
+SELECT * FROM collaboration_execution_gate WHERE id = 1 FOR UPDATE;
+
+-- Creation is independent of the execution epoch, so this never bumps it.
+-- name: SetCollaborationCreationEnabled :one
+UPDATE collaboration_execution_gate SET creation_enabled = sqlc.arg(creation_enabled)::boolean
+WHERE id = 1 RETURNING *;
+
+-- Opening execution raises the epoch so intents admitted while it was closed
+-- stay stale_admission after the reopen.
+-- name: OpenCollaborationExecution :one
+UPDATE collaboration_execution_gate SET enabled = true, epoch = epoch + 1
+WHERE id = 1 RETURNING *;
+
+-- name: FinishAdminCollaborationGateOperation :one
+UPDATE admin_operation SET state=sqlc.arg('state')::text,result_code=sqlc.arg('result_code')::text,
+ confirmation='not_required',reconciliation_state='complete',
+ applied_at=sqlc.narg('applied_at')::timestamptz,version=version+1,updated_at=now()
+WHERE id=sqlc.arg('id')::uuid AND target_kind='collaboration_gate' AND kind='collaboration.gate' RETURNING *;

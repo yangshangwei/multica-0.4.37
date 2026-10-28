@@ -22,6 +22,65 @@ func (q *Queries) CountAdminCollaborationUnsettledRuns(ctx context.Context, sess
 	return column_1, err
 }
 
+const finishAdminCollaborationGateOperation = `-- name: FinishAdminCollaborationGateOperation :one
+UPDATE admin_operation SET state=$1::text,result_code=$2::text,
+ confirmation='not_required',reconciliation_state='complete',
+ applied_at=$3::timestamptz,version=version+1,updated_at=now()
+WHERE id=$4::uuid AND target_kind='collaboration_gate' AND kind='collaboration.gate' RETURNING id, organization_id, actor_kind, actor_id, actor_auth_version, target_kind, target_id, kind, idempotency_key, payload_hash, reason, state, result_code, version, confirmation, reconciliation_state, target_installation_id, target_task_id, binding_id, binding_epoch, execution_fence, root_operation_id, ack_deadline, accepted_at, applied_at, confirmed_at, created_at, updated_at, execution_runtime_id, execution_dispatched_at, next_reconcile_at, effects_completed_at
+`
+
+type FinishAdminCollaborationGateOperationParams struct {
+	State      string             `json:"state"`
+	ResultCode string             `json:"result_code"`
+	AppliedAt  pgtype.Timestamptz `json:"applied_at"`
+	ID         pgtype.UUID        `json:"id"`
+}
+
+func (q *Queries) FinishAdminCollaborationGateOperation(ctx context.Context, arg FinishAdminCollaborationGateOperationParams) (AdminOperation, error) {
+	row := q.db.QueryRow(ctx, finishAdminCollaborationGateOperation,
+		arg.State,
+		arg.ResultCode,
+		arg.AppliedAt,
+		arg.ID,
+	)
+	var i AdminOperation
+	err := row.Scan(
+		&i.ID,
+		&i.OrganizationID,
+		&i.ActorKind,
+		&i.ActorID,
+		&i.ActorAuthVersion,
+		&i.TargetKind,
+		&i.TargetID,
+		&i.Kind,
+		&i.IdempotencyKey,
+		&i.PayloadHash,
+		&i.Reason,
+		&i.State,
+		&i.ResultCode,
+		&i.Version,
+		&i.Confirmation,
+		&i.ReconciliationState,
+		&i.TargetInstallationID,
+		&i.TargetTaskID,
+		&i.BindingID,
+		&i.BindingEpoch,
+		&i.ExecutionFence,
+		&i.RootOperationID,
+		&i.AckDeadline,
+		&i.AcceptedAt,
+		&i.AppliedAt,
+		&i.ConfirmedAt,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.ExecutionRuntimeID,
+		&i.ExecutionDispatchedAt,
+		&i.NextReconcileAt,
+		&i.EffectsCompletedAt,
+	)
+	return i, err
+}
+
 const getAdminCollaborationIssue = `-- name: GetAdminCollaborationIssue :one
 SELECT i.id AS issue_id, i.number, i.workspace_id AS source_workspace_id,
        w.name AS source_name, w.issue_prefix AS source_prefix,
@@ -322,4 +381,68 @@ func (q *Queries) LockAdminCollaborationSourceScope(ctx context.Context, arg Loc
 	var organization_id pgtype.UUID
 	err := row.Scan(&organization_id)
 	return organization_id, err
+}
+
+const lockCollaborationGateForAdmin = `-- name: LockCollaborationGateForAdmin :one
+SELECT id, enabled, creation_enabled, epoch, freeze_operation_id, freeze_progress, host_execution_enabled FROM collaboration_execution_gate WHERE id = 1 FOR UPDATE
+`
+
+// Gate writes take the row after the actor lock in CreateOperationInTx, the
+// same actor-then-gate order that collaboration writers use with FOR SHARE.
+func (q *Queries) LockCollaborationGateForAdmin(ctx context.Context) (CollaborationExecutionGate, error) {
+	row := q.db.QueryRow(ctx, lockCollaborationGateForAdmin)
+	var i CollaborationExecutionGate
+	err := row.Scan(
+		&i.ID,
+		&i.Enabled,
+		&i.CreationEnabled,
+		&i.Epoch,
+		&i.FreezeOperationID,
+		&i.FreezeProgress,
+		&i.HostExecutionEnabled,
+	)
+	return i, err
+}
+
+const openCollaborationExecution = `-- name: OpenCollaborationExecution :one
+UPDATE collaboration_execution_gate SET enabled = true, epoch = epoch + 1
+WHERE id = 1 RETURNING id, enabled, creation_enabled, epoch, freeze_operation_id, freeze_progress, host_execution_enabled
+`
+
+// Opening execution raises the epoch so intents admitted while it was closed
+// stay stale_admission after the reopen.
+func (q *Queries) OpenCollaborationExecution(ctx context.Context) (CollaborationExecutionGate, error) {
+	row := q.db.QueryRow(ctx, openCollaborationExecution)
+	var i CollaborationExecutionGate
+	err := row.Scan(
+		&i.ID,
+		&i.Enabled,
+		&i.CreationEnabled,
+		&i.Epoch,
+		&i.FreezeOperationID,
+		&i.FreezeProgress,
+		&i.HostExecutionEnabled,
+	)
+	return i, err
+}
+
+const setCollaborationCreationEnabled = `-- name: SetCollaborationCreationEnabled :one
+UPDATE collaboration_execution_gate SET creation_enabled = $1::boolean
+WHERE id = 1 RETURNING id, enabled, creation_enabled, epoch, freeze_operation_id, freeze_progress, host_execution_enabled
+`
+
+// Creation is independent of the execution epoch, so this never bumps it.
+func (q *Queries) SetCollaborationCreationEnabled(ctx context.Context, creationEnabled bool) (CollaborationExecutionGate, error) {
+	row := q.db.QueryRow(ctx, setCollaborationCreationEnabled, creationEnabled)
+	var i CollaborationExecutionGate
+	err := row.Scan(
+		&i.ID,
+		&i.Enabled,
+		&i.CreationEnabled,
+		&i.Epoch,
+		&i.FreezeOperationID,
+		&i.FreezeProgress,
+		&i.HostExecutionEnabled,
+	)
+	return i, err
 }

@@ -1758,6 +1758,8 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 			r.Get("/tasks/{id}", h.AdminTask)
 			r.Post("/tasks/{id}/cancel", h.AdminCancelTask)
 			r.Get("/issues", h.AdminIssues)
+			r.Get("/collaboration/gate", h.AdminCollaborationGate)
+			r.Post("/collaboration/gate", h.AdminChangeCollaborationGate)
 			r.Get("/collaboration/issues", h.AdminCollaborationIssues)
 			r.Get("/collaboration/issues/{id}", h.AdminCollaborationIssue)
 			r.Get("/collaboration/issues/{id}/reopen-candidates", h.AdminCollaborationReopenCandidates)

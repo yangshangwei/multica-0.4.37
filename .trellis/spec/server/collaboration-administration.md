@@ -37,7 +37,9 @@ or selection. Refresh never selects a replacement successor automatically.
 
 ## Atomic writes and recovery
 
-Only complete/cancel/reopen are admitted. Capture UUID request key, revision,
+Only complete/cancel/reopen are admitted on issues. The deployment-wide gate
+switch at `/api/admin/collaboration/gate` is a separate platform control; see
+`collaboration-foundation.md`. Capture UUID request key, revision,
 expected status, target status/options version, reason and conditional successor.
 The reason is nonempty, NUL-free UTF-8, at most 1,000 bytes after trimming;
 status keys are bounded to 128 bytes. JavaScript character counts are not byte

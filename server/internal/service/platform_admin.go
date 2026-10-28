@@ -442,6 +442,9 @@ func (s *PlatformAdminService) CreateOperationInTx(ctx context.Context, tx pgx.T
 	collaborationCode := map[string]string{"collaboration.complete": "completed", "collaboration.cancel": "cancelled", "collaboration.reopen": "reopened",
 		"collaboration.purge_memory": "memory_purged"}[p.Kind]
 	validAction = validAction || collaborationCode != "" && p.TargetKind == "collaboration_issue" && p.ResultCode == collaborationCode
+	// The deployment-wide gate is addressed through the administered organization.
+	gateCode := p.ResultCode == "collaboration_creation_opened" || p.ResultCode == "collaboration_creation_closed" || p.ResultCode == "collaboration_execution_opened"
+	validAction = validAction || p.Kind == "collaboration.gate" && p.TargetKind == "collaboration_gate" && p.TargetID == actor.OrganizationID && gateCode
 	if !validAction || p.State != "applied" {
 		return empty, false, platformError(http.StatusBadRequest, "invalid_operation", "The operation kind or state is not supported")
 	}

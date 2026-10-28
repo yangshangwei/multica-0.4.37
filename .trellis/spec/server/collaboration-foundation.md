@@ -92,6 +92,18 @@ It never calls the ordinary create wrapper, publishes ordinary creation events,
 or invents a source-space membership for an external handler. The gate row starts
 with both `enabled=false` and `creation_enabled=false`.
 
+The console writes the gate only through `POST /api/admin/collaboration/gate`
+(super admin, reason, `Idempotency-Key`; `admin_operation` kind
+`collaboration.gate`, target the administered organization). It admits
+`open_creation`, `close_creation` and `open_execution`. Opening execution must
+carry `expected_execution_epoch` (creation must not), raises the epoch and never
+writes a session or target active; it is refused when the epoch moved or while a
+freeze is recorded. It does not verify that no queue is still active, so a gate
+closed by raw SQL resumes leftover active queues on open. Closing execution stays absent until the E06 freeze scan
+exists. Creation changes leave the epoch alone. A refused precondition commits
+a failed `collaboration_gate_conflict` receipt under the original key, because
+creation has no monotonic version to rule out a late original request.
+
 A completed creation key does not depend on its old handler staying enabled or
 the source membership/creation switch remaining open. Rebuild its response from
 current authorized data; never replay an old private response or change keys after
