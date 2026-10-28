@@ -89,8 +89,21 @@ is not evidence of real process termination, which P4/P5 must validate.
 Creation stores the source issue, participants, paused session, event/notification
 intent, and completed operation in one transaction using `IssueService.CreateInTx`.
 It never calls the ordinary create wrapper, publishes ordinary creation events,
-or invents a source-space membership for an external handler. The gate row starts
-with both `enabled=false` and `creation_enabled=false`.
+or invents a source-space membership for an external handler. Historical
+migrations 571–612 start the gate with both `enabled=false` and
+`creation_enabled=false`; migration 620 also closes them during protocol cutover.
+Migration 744 sets `creation_enabled DEFAULT true` after those migrations. It
+enables the existing singleton only when no successful `admin_operation` with
+kind `collaboration.gate`, target kind `collaboration_gate`, and result code
+`collaboration_creation_opened` or `collaboration_creation_closed` exists.
+Otherwise it preserves the current stored choice, including an explicit close.
+Failed operations and execution-only changes do not count as creation choices;
+raw SQL has no setting provenance and is treated as the old default. The
+migration leaves execution, host admission, epoch and freeze state untouched.
+Its down migration restores only the column default, preserving stored choices.
+Do not edit the historical defaults or force creation open on every startup:
+the additive migration must run once through the migration ledger so an
+administrator's later close survives restarts and upgrades.
 
 The console writes the gate only through `POST /api/admin/collaboration/gate`
 (super admin, reason, `Idempotency-Key`; `admin_operation` kind
