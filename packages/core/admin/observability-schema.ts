@@ -81,6 +81,7 @@ const auditSnapshot = z.object({
   auth_version: snapshotVersion, version: snapshotVersion.or(z.uuid()), admission_version: snapshotVersion, binding_epoch: snapshotVersion,
   state: snapshotCode, status: snapshotCode, admission: snapshotCode, result_code: snapshotCode, confirmation: snapshotCode, reconciliation_state: snapshotCode, rule: snapshotCode, severity: snapshotCode, resolution_code: snapshotCode.nullable(),
   assignee_id: snapshotId, assigned_to: snapshotId, responsible_user_id: snapshotId, related_task_id: snapshotId,
+  creation_enabled: z.boolean().optional(), execution_enabled: z.boolean().optional(), host_execution_enabled: z.boolean().optional(), execution_epoch: snapshotVersion,
 }).nullish().transform(value => value ?? {});
 const auditSchema = z.object({ ...observationPage, items: z.array(z.object({
   id: z.uuid(), operation_id: z.uuid().nullable(), actor_kind: z.string(), actor_user_id: z.uuid().nullable(), actor_display_name: z.string().nullable(), actor_snapshot_quality: z.enum(["captured", "unknown"]).catch("unknown"),

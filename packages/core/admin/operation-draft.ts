@@ -15,6 +15,10 @@ const inputSchema = z.discriminatedUnion("action", [
   z.object({ ...base, action: z.literal("admission"), body: z.object({ admission: z.enum(["accepting", "stopped"]), expectedAdmissionVersion: adminVersionSchema, reason }) }),
   z.object({ ...base, action: z.literal("cancel"), body: z.object({ expectedExecutionFence: z.object({ runtimeId: z.uuid().nullable(), dispatchedAt: z.iso.datetime({ offset: true }).nullable(), targetVersion: adminVersionSchema }), reason }) }),
   z.object({ ...base, action: z.literal("alert"), body: adminAlertChangeSchema }),
+  z.object({ ...base, action: z.literal("collaboration_gate"), body: z.union([
+    z.strictObject({ action: z.enum(["open_creation", "close_creation"]), reason }),
+    z.strictObject({ action: z.literal("open_execution"), expectedExecutionEpoch: adminVersionSchema, reason }),
+  ]) }),
 ]);
 const collaborationInputSchema = z.strictObject({
   ...base, action: z.literal("collaboration"), creatorUserId: z.uuid(), handlerUserId: z.uuid(), body: AdminCollaborationChangeSchema,

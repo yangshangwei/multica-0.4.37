@@ -20,6 +20,14 @@ export interface AdminExecutionCancellation {
   expectedExecutionFence: AdminExecutionFence;
   reason: string;
 }
+// Closing execution is not offered: it needs a durable freeze the server lacks.
+export const adminCollaborationGateActions = ["open_creation", "close_creation", "open_execution"] as const;
+export type AdminCollaborationGateAction = typeof adminCollaborationGateActions[number];
+// Opening execution carries the epoch the administrator saw; every close
+// raises it, so a late original request cannot reopen a later close.
+export type AdminCollaborationGateChange =
+  { action: "open_creation" | "close_creation"; reason: string } |
+  { action: "open_execution"; expectedExecutionEpoch: string; reason: string };
 export function canControlAdmission(role: string | undefined, target: {
   lifecycle: string; admission: string; allowedActions?: readonly string[]; admissionVersion?: string;
 }): "stopped" | "accepting" | null {

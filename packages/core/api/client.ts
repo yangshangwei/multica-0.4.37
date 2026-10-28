@@ -67,7 +67,8 @@ import { AdminCollaborationChangeSchema, parseAdminCollaborationIssueList, parse
   AdminCollaborationMemoryPurgeSchema, parseAdminCollaborationMemoryVersions, parseAdminCollaborationMemoryResult, matchesAdminCollaborationMemoryResult,
   type AdminCollaborationChange, type AdminCollaborationMemoryPurge } from "../admin/collaboration-schema";
 import { parseAdminOperation, parseAdminAdmissionResult, parseAdminCancellationResult } from "../admin/operation-schema";
-import type { AdminAdmissionChange, AdminExecutionCancellation } from "../admin/control-schema";
+import type { AdminAdmissionChange, AdminCollaborationGateChange, AdminExecutionCancellation } from "../admin/control-schema";
+import { parseAdminCollaborationGate, parseAdminCollaborationGateResult } from "../admin/collaboration-gate-schema";
 import { parseAdminOverview, parseAdminHealth, parseAdminSettings, parseAdminWorkspaces, parseAdminAudit } from "../admin/observability-schema";
 import { parseAdminAlert, parseAdminAlerts, parseAdminAlertResult, type AdminAlertChange } from "../admin/alert-schema";
 import { configStore } from "../config";
@@ -1923,6 +1924,18 @@ export class ApiClient {
 
   async getAdminSettings(options?: { signal?: AbortSignal }) {
     return parseAdminSettings(await this.fetch<unknown>("/api/admin/settings", { signal: options?.signal }));
+  }
+
+  async getAdminCollaborationGate(options?: { signal?: AbortSignal }) {
+    return parseAdminCollaborationGate(await this.fetch<unknown>("/api/admin/collaboration/gate", { signal: options?.signal }));
+  }
+
+  async changeAdminCollaborationGate(body: AdminCollaborationGateChange, key: string) {
+    return parseAdminCollaborationGateResult(await this.fetch<unknown>("/api/admin/collaboration/gate", {
+      method: "POST", headers: { "Idempotency-Key": key },
+      body: JSON.stringify({ action: body.action, reason: body.reason,
+        ...(body.action === "open_execution" ? { expected_execution_epoch: body.expectedExecutionEpoch } : {}) }),
+    }));
   }
 
   async changeAdminAdmission(id: string, body: AdminAdmissionChange, key: string) {

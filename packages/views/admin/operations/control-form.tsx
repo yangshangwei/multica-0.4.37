@@ -3,7 +3,7 @@ import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { ApiError } from "@multica/core/api";
 import {
   AdminControlUncertainError, AdminControlDraftError, useAdminControlMutation, useAdminControlLookup,
-  adminAlertChangeSchema, type AdminAlertAction, type AdminControlInput, type AdminExecutionFence, type AdminOperation, type AdminScope,
+  adminAlertChangeSchema, type AdminAlertAction, type AdminCollaborationGateAction, type AdminControlInput, type AdminExecutionFence, type AdminOperation, type AdminScope,
 } from "@multica/core/admin";
 import { Button } from "@multica/ui/components/ui/button";
 import { Textarea } from "@multica/ui/components/ui/textarea";
@@ -16,7 +16,8 @@ import { AdminAlertFields } from "../alerts/alert-fields";
 export type AdminControlTarget = { id: string } & (
   { action: "cancel"; fence: AdminExecutionFence } |
   { action: "admission"; admission: "accepting" | "stopped"; version: string } |
-  { action: "alert"; alertAction: AdminAlertAction; version: string; requiresResolution?: boolean }
+  { action: "alert"; alertAction: AdminAlertAction; version: string; requiresResolution?: boolean } |
+  { action: "collaboration_gate"; gateAction: AdminCollaborationGateAction; epoch: string }
 );
 export function AdminControlForm({ scope, target, restoredInput, onClose, onRefresh }: {
   scope: AdminScope; target: AdminControlTarget; restoredInput?: AdminControlInput; onClose(): void; onRefresh(): Promise<unknown> | void;
@@ -41,6 +42,8 @@ export function AdminControlForm({ scope, target, restoredInput, onClose, onRefr
   const action = target.action === "cancel" ? "cancel" : target.action === "admission" && target.admission === "stopped" ? "stop" : "resume";
   const notice = target.action === "cancel" ? "cancelNotice" : target.action === "admission" && target.admission === "stopped" ? "stopNotice" : "resumeNotice";
   const alertNotice = target.action === "alert" ? target.alertAction === "acknowledge" ? "acknowledgeNotice" : target.alertAction === "assign" ? "assignNotice" : target.requiresResolution ? "closeNotice" : "closeRecoveredNotice" : null;
+  const title = target.action === "alert" ? t($ => $.alerts[target.alertAction]) : target.action === "collaboration_gate" ? t($ => $.settings.gate.actions[target.gateAction]) : t($ => $.operations[action]);
+  const description = alertNotice ? t($ => $.alerts[alertNotice]) : target.action === "collaboration_gate" ? t($ => $.settings.gate.notices[target.gateAction]) : t($ => $.operations[notice]);
 
   const restoreLookup = lookup.mutateAsync;
   useEffect(() => {
@@ -84,7 +87,9 @@ export function AdminControlForm({ scope, target, restoredInput, onClose, onRefr
     }
     const input: AdminControlInput | null = snapshot.current ?? alertInput ?? (target.action === "cancel"
       ? { id: target.id, key, action: "cancel", body: { expectedExecutionFence: target.fence, reason } }
-      : target.action === "admission" ? { id: target.id, key, action: "admission", body: { admission: target.admission, expectedAdmissionVersion: target.version, reason } } : null);
+      : target.action === "admission" ? { id: target.id, key, action: "admission", body: { admission: target.admission, expectedAdmissionVersion: target.version, reason } }
+      : target.action === "collaboration_gate" ? { id: target.id, key, action: "collaboration_gate", body: target.gateAction === "open_execution"
+        ? { action: target.gateAction, expectedExecutionEpoch: target.epoch, reason } : { action: target.gateAction, reason } } : null);
     if (!input) return;
     snapshot.current = input;
     setFeedback("");
@@ -107,11 +112,11 @@ export function AdminControlForm({ scope, target, restoredInput, onClose, onRefr
   }
   if (receipt) return <div className="space-y-3"><AdminOperationReceipt key={receipt.id} scope={scope} id={receipt.id} initialData={receipt} requestKey={key} /><Button variant="ghost" onClick={onClose}>{t($ => $.operations.dismiss)}</Button></div>;
   return <section aria-labelledby="control-action-title" className="space-y-4 rounded-md border border-surface-border p-5">
-    <h2 id="control-action-title" className="text-body-lg font-semibold">{target.action === "alert" ? t($ => $.alerts[target.alertAction]) : t($ => $.operations[action])}</h2>
-    <p className="max-w-prose text-body text-muted-foreground">{alertNotice ? t($ => $.alerts[alertNotice]) : t($ => $.operations[notice])}</p>
+    <h2 id="control-action-title" className="text-body-lg font-semibold">{title}</h2>
+    <p className="max-w-prose text-body text-muted-foreground">{description}</p>
     <dl className="grid gap-3 text-caption sm:grid-cols-2">
-      <div className="min-w-0"><dt className="text-muted-foreground">{t($ => $.operations.target)}</dt><dd className="break-all">{target.id}</dd></div>
-      <div><dt className="text-muted-foreground">{t($ => $.operations.version)}</dt><dd>{target.action === "cancel" ? target.fence.targetVersion : target.version}</dd></div>
+      <div className="min-w-0"><dt className="text-muted-foreground">{t($ => $.operations.target)}</dt><dd className="break-all">{target.action === "collaboration_gate" ? t($ => $.settings.gate.target) : target.id}</dd></div>
+      {target.action !== "collaboration_gate" && <div><dt className="text-muted-foreground">{t($ => $.operations.version)}</dt><dd>{target.action === "cancel" ? target.fence.targetVersion : target.version}</dd></div>}
       {target.action === "cancel" && <><div className="min-w-0"><dt className="text-muted-foreground">{t($ => $.operations.runtime)}</dt><dd className="break-all">{target.fence.runtimeId ?? t($ => $.operations.notDispatched)}</dd></div><div><dt className="text-muted-foreground">{t($ => $.operations.dispatch)}</dt><dd>{target.fence.dispatchedAt ? formatAdminTime(target.fence.dispatchedAt, nav.searchParams.get("timezone") ?? "UTC") : t($ => $.operations.notDispatched)}</dd></div></>}
     </dl>
     <form className="grid max-w-xl gap-4" onSubmit={submit}>

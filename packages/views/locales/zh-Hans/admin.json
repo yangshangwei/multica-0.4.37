@@ -376,7 +376,11 @@
       "admission_stopped": "服务端已停止新领取，在途执行继续。",
       "admission_accepting": "服务端已恢复新领取。",
       "unknown": "暂无可识别的完成依据。",
-      "execution_fence_conflict": "取消前执行状态已变化，本次请求未取消该执行。请刷新目标后再发起新操作。"
+      "execution_fence_conflict": "取消前执行状态已变化，本次请求未取消该执行。请刷新目标后再发起新操作。",
+      "collaboration_creation_opened": "本次请求已为本服务器开放新建协作任务。",
+      "collaboration_creation_closed": "本次请求已为本服务器关闭新建协作任务，已有任务不受影响。",
+      "collaboration_execution_opened": "本次请求已为协作任务开放 AI 执行。",
+      "collaboration_gate_conflict": "协作开关在本次请求前已变化，未做任何修改。请刷新后再发起新操作。"
     },
     "storageFailed": "无法保存原请求，尚未发送新操作。请恢复浏览器存储访问后刷新。",
     "restoring": "正在检查先前请求...",
@@ -563,7 +567,7 @@
   },
   "settings": {
     "title": "部署设置",
-    "description": "显示部署提供的只读设置。修改需通过部署配置完成。",
+    "description": "部署设置为只读，需通过部署配置修改。协作开关可在此修改。",
     "configuration": "当前配置",
     "authMode": "认证模式",
     "registration": "允许注册",
@@ -584,7 +588,33 @@
     "refresh": "刷新间隔",
     "listSeconds": "列表（秒）",
     "detailSeconds": "详情（秒）",
-    "collaborationMemory": "协作上下文上限（字节）"
+    "collaborationMemory": "协作上下文上限（字节）",
+    "gate": {
+      "title": "协作",
+      "hint": "服务器级开关。只有超级管理员可以在此修改，每次修改都会把原因记入管理审计。",
+      "creation": "新建协作任务",
+      "execution": "AI 执行",
+      "mode": "执行方式",
+      "hostMode": "普通本机执行",
+      "isolatedMode": "Linux 隔离执行",
+      "open": "已开放",
+      "closed": "未开放",
+      "target": "本服务器的协作开关",
+      "creationWithoutExecution": "成员可以新建协作任务，但在开放 AI 执行之前，智能体不会运行这些任务。",
+      "closeExecutionUnavailable": "暂不支持在此关闭 AI 执行。安全关闭需要先停止进行中的执行。",
+      "loading": "正在加载协作开关…",
+      "error": "无法加载协作开关。",
+      "actions": {
+        "open_creation": "开放新建协作任务",
+        "close_creation": "关闭新建协作任务",
+        "open_execution": "开放 AI 执行"
+      },
+      "notices": {
+        "open_creation": "成员可以在自己的工作空间新建协作任务，并共享给已确认的账号。",
+        "close_creation": "停止新建协作任务。已有任务、评论和执行不受影响。",
+        "open_execution": "允许智能体在协作任务中运行。仍处于活跃状态的队列会立即继续；已暂停的队列保持暂停，需由参与者恢复，恢复前可能需要刷新页面。"
+      }
+    }
   },
   "workspaces": {
     "title": "工作空间",
@@ -635,7 +665,8 @@
       "alertAssign": "分配告警",
       "alertClose": "关闭告警",
       "resourcePublish": "发布资源",
-      "resourceWithdraw": "撤下资源"
+      "resourceWithdraw": "撤下资源",
+      "collaborationGate": "调整协作开关"
     },
     "resultCodes": {
       "applied": "已应用",
@@ -657,7 +688,11 @@
       "executionFenceConflict": "执行状态已变更，需要刷新",
       "resourceRequested": "操作请求已记录",
       "resourcePublishApplied": "资源已发布",
-      "resourceWithdrawApplied": "资源已撤下"
+      "resourceWithdrawApplied": "资源已撤下",
+      "collaborationCreationOpened": "已开放新建协作任务",
+      "collaborationCreationClosed": "已关闭新建协作任务",
+      "collaborationExecutionOpened": "已开放 AI 执行",
+      "collaborationGateConflict": "开关已变化，需要刷新"
     },
     "phaseCodes": {
       "request": "已请求",
@@ -671,7 +706,8 @@
       "task": "执行",
       "user": "账号",
       "alert": "告警",
-      "resource": "资源"
+      "resource": "资源",
+      "collaborationGate": "协作开关"
     },
     "targetSummary": "操作对象",
     "resultLabel": "结果"

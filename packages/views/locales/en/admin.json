@@ -376,7 +376,11 @@
       "admission_stopped": "The server has stopped new claims. In-flight work continues.",
       "admission_accepting": "The server permits new claims again.",
       "unknown": "No recognized completion evidence is available.",
-      "execution_fence_conflict": "The execution changed before cancellation. This request did not cancel it. Refresh the target before starting a new request."
+      "execution_fence_conflict": "The execution changed before cancellation. This request did not cancel it. Refresh the target before starting a new request.",
+      "collaboration_creation_opened": "This request opened new collaboration issues on this server.",
+      "collaboration_creation_closed": "This request closed new collaboration issues on this server. Existing issues were unchanged.",
+      "collaboration_execution_opened": "This request opened AI execution for collaboration issues.",
+      "collaboration_gate_conflict": "The collaboration switches changed before this request. Nothing was changed. Refresh before starting a new request."
     },
     "storageFailed": "The original request could not be preserved. No new operation was sent. Restore browser storage access and refresh.",
     "restoring": "Checking for an earlier request...",
@@ -563,7 +567,7 @@
   },
   "settings": {
     "title": "Deployment settings",
-    "description": "Read-only settings supplied by the deployment. Changes are made through deployment configuration.",
+    "description": "Deployment settings are read-only and change through deployment configuration. Collaboration switches can be changed here.",
     "configuration": "Configuration",
     "authMode": "Authentication mode",
     "registration": "Registration enabled",
@@ -584,7 +588,33 @@
     "refresh": "Refresh intervals",
     "listSeconds": "Lists (seconds)",
     "detailSeconds": "Details (seconds)",
-    "collaborationMemory": "Shared context limit (bytes)"
+    "collaborationMemory": "Shared context limit (bytes)",
+    "gate": {
+      "title": "Collaboration",
+      "hint": "Server-wide switches. Only a super administrator can change them here, and each change records a reason in the audit trail.",
+      "creation": "New collaboration issues",
+      "execution": "AI execution",
+      "mode": "Execution mode",
+      "hostMode": "Standard host execution",
+      "isolatedMode": "Isolated Linux execution",
+      "open": "Open",
+      "closed": "Closed",
+      "target": "Collaboration switches for this server",
+      "creationWithoutExecution": "Members can create collaboration issues, but agents will not run on them until AI execution is open.",
+      "closeExecutionUnavailable": "AI execution cannot be closed here yet. Closing it safely requires stopping work in progress first.",
+      "loading": "Loading collaboration switches…",
+      "error": "Collaboration switches could not be loaded.",
+      "actions": {
+        "open_creation": "Open new collaboration issues",
+        "close_creation": "Close new collaboration issues",
+        "open_execution": "Open AI execution"
+      },
+      "notices": {
+        "open_creation": "Members can create collaboration issues from their workspaces and share them with confirmed accounts.",
+        "close_creation": "Stops new collaboration issues. Existing issues, comments and execution are unchanged.",
+        "open_execution": "Lets agents run on collaboration issues. Queues that are still active resume immediately; paused queues stay paused until a participant resumes them, and participants may need to refresh before resuming."
+      }
+    }
   },
   "workspaces": {
     "title": "Workspaces",
@@ -635,7 +665,8 @@
       "alertAssign": "Assign alert",
       "alertClose": "Close alert",
       "resourcePublish": "Publish resource",
-      "resourceWithdraw": "Withdraw resource"
+      "resourceWithdraw": "Withdraw resource",
+      "collaborationGate": "Change collaboration switches"
     },
     "resultCodes": {
       "applied": "Applied",
@@ -657,7 +688,11 @@
       "executionFenceConflict": "Execution changed; refresh required",
       "resourceRequested": "Operation requested",
       "resourcePublishApplied": "Resource published",
-      "resourceWithdrawApplied": "Resource withdrawn"
+      "resourceWithdrawApplied": "Resource withdrawn",
+      "collaborationCreationOpened": "Collaboration creation opened",
+      "collaborationCreationClosed": "Collaboration creation closed",
+      "collaborationExecutionOpened": "AI execution opened",
+      "collaborationGateConflict": "Switches changed; refresh required"
     },
     "phaseCodes": {
       "request": "Requested",
@@ -671,7 +706,8 @@
       "task": "Execution",
       "user": "Account",
       "alert": "Alert",
-      "resource": "Resource"
+      "resource": "Resource",
+      "collaborationGate": "Collaboration switches"
     },
     "targetSummary": "Target",
     "resultLabel": "Result"

@@ -1,6 +1,6 @@
 "use client";
 import { queryOptions, useQuery } from "@tanstack/react-query";
-import { getApi } from "../api";
+import { ApiError, getApi } from "../api";
 import { useAuthStore } from "../auth";
 import { adminApiScope, adminKeys, AdminUnsupportedError, type AdminScope } from "./queries";
 import { useAdminAccess } from "./use-admin-access";
@@ -41,6 +41,26 @@ export function adminHealthOptions(scope: AdminScope) {
 export function adminSettingsOptions(scope: AdminScope) {
   return scopedRead(scope, "settings", new URLSearchParams(), (_filters, signal) => getApi().getAdminSettings({ signal }));
 }
+export function adminCollaborationGateOptions(scope: AdminScope) {
+  return queryOptions({
+    queryKey: adminKeys.resource(scope, "collaboration-gate"),
+    queryFn: async ({ signal }) => {
+      assertScope(scope);
+      let result;
+      try { result = await getApi().getAdminCollaborationGate({ signal }); }
+      catch (error) {
+        assertScope(scope);
+        // A server without gate controls has no route; the page omits the section.
+        if (error instanceof ApiError && error.status === 404) return null;
+        throw error;
+      }
+      assertScope(scope);
+      if (!result || result.scope !== scope.organizationId) throw new AdminUnsupportedError();
+      return result;
+    },
+    retry: false, staleTime: 0, gcTime: 0, refetchInterval: 15_000, refetchIntervalInBackground: false,
+  });
+}
 export function adminAlertOptions(scope: AdminScope, id: string) {
   return queryOptions({
     queryKey: adminKeys.resource(scope, "alert", { id }),
@@ -63,4 +83,5 @@ export function useAdminWorkspaces(params: URLSearchParams) { const { scope, ena
 export function useAdminAudit(params: URLSearchParams) { const { scope, enabled } = useAdminObservationScope(); return useQuery({ ...adminAuditOptions(scope, params), enabled }); }
 export function useAdminHealth() { const { scope, enabled } = useAdminObservationScope(); return useQuery({ ...adminHealthOptions(scope), enabled }); }
 export function useAdminSettings() { const { scope, enabled } = useAdminObservationScope(); return useQuery({ ...adminSettingsOptions(scope), enabled }); }
+export function useAdminCollaborationGate() { const { scope, enabled } = useAdminObservationScope(); return useQuery({ ...adminCollaborationGateOptions(scope), enabled }); }
 export function useAdminAlert(id: string) { const { scope, enabled } = useAdminObservationScope(); return useQuery({ ...adminAlertOptions(scope, id), enabled: enabled && !!id }); }

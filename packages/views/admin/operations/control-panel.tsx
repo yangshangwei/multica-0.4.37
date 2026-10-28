@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
-import { adminApiScope, canCancelExecution, canControlAdmission, useAdminAccess, useAdminControlDraft, type AdminExecution, type AdminInstallation, type AdminScope } from "@multica/core/admin";
+import { adminApiScope, canCancelExecution, canControlAdmission, useAdminAccess, useAdminControlDraft, type AdminCollaborationGate, type AdminExecution, type AdminInstallation, type AdminScope } from "@multica/core/admin";
 import { Button } from "@multica/ui/components/ui/button";
 import { useT } from "../../i18n";
 import { AdminControlForm, type AdminControlTarget } from "./control-form";
@@ -14,7 +14,8 @@ export function AdminControlPanel({ id, scope, target = null, label = "", target
   if (saved.loading) return <p role="status" className="text-caption text-muted-foreground">{t($ => $.operations.restoring)}</p>;
   if (saved.error) return <p role="alert" className="text-body">{t($ => $.operations.storageFailed)}</p>;
   const input = saved.draft?.input;
-  const restored: AdminControlTarget | null = input ? input.action === "alert" ? { id: input.id, action: "alert", alertAction: input.body.action, version: input.body.expectedVersion, requiresResolution: input.body.action === "close" && !!input.body.resolutionCode } : input.action === "cancel" ? { id: input.id, action: "cancel", fence: input.body.expectedExecutionFence } : { id: input.id, action: "admission", admission: input.body.admission, version: input.body.expectedAdmissionVersion } : null;
+  const restored: AdminControlTarget | null = input ? input.action === "alert" ? { id: input.id, action: "alert", alertAction: input.body.action, version: input.body.expectedVersion, requiresResolution: input.body.action === "close" && !!input.body.resolutionCode } : input.action === "cancel" ? { id: input.id, action: "cancel", fence: input.body.expectedExecutionFence }
+    : input.action === "collaboration_gate" ? { id: input.id, action: "collaboration_gate", gateAction: input.body.action, epoch: input.body.action === "open_execution" ? input.body.expectedExecutionEpoch : "" } : { id: input.id, action: "admission", admission: input.body.admission, version: input.body.expectedAdmissionVersion } : null;
   const selected = snapshot ?? restored;
   return selected ? <AdminControlForm key={input?.key ?? "new"} scope={scope} target={selected} restoredInput={input} onRefresh={onRefresh} onClose={() => { setSnapshot(null); saved.reload(); requestAnimationFrame(() => trigger.current?.focus()); }} />
     : <div className="flex flex-wrap gap-3">{(targets ?? (target ? [{ target, label }] : [])).map(item => <Button key={item.label} ref={node => { if (triggerLabel.current === item.label) trigger.current = node; }} variant="outline" onClick={event => { triggerLabel.current = item.label; trigger.current = event.currentTarget; setSnapshot(item.target); }}>{item.label}</Button>)}</div>;
@@ -35,4 +36,15 @@ export function AdminExecutionControls({ execution, onRefresh }: { execution: Ad
   const scope = { apiScope: adminApiScope(), userId: access.identity.userId, organizationId: access.identity.organizationId };
   const target: AdminControlTarget | null = canCancelExecution(access.identity?.role, execution) && execution.executionFence ? { id: execution.id, action: "cancel", fence: execution.executionFence } : null;
   return <AdminControlPanel key={JSON.stringify(scope)} id={execution.id} scope={scope} target={target} label={t($ => $.operations.cancel)} onRefresh={onRefresh} />;
+}
+// The server lists only actions the current role and gate state permit, so a
+// stale page cannot offer closing execution or a second open.
+export function AdminCollaborationGateControls({ gate, onRefresh }: { gate: AdminCollaborationGate; onRefresh(): Promise<unknown> | void }) {
+  const { t } = useT("admin");
+  const access = useAdminAccess();
+  if (access.status !== "ready" || access.identity?.role !== "super_admin" || access.identity.organizationId !== gate.scope) return null;
+  const scope = { apiScope: adminApiScope(), userId: access.identity.userId, organizationId: access.identity.organizationId };
+  // The epoch shown when the button is pressed is frozen into the request.
+  const targets = gate.allowedActions.map(gateAction => ({ target: { id: gate.scope, action: "collaboration_gate", gateAction, epoch: gate.executionEpoch } satisfies AdminControlTarget, label: t($ => $.settings.gate.actions[gateAction]) }));
+  return <AdminControlPanel key={JSON.stringify(scope)} id={gate.scope} scope={scope} targets={targets} onRefresh={onRefresh} />;
 }
