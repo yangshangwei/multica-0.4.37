@@ -18,6 +18,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Component Guidelines](./component-guidelines.md) | Component patterns, props, composition | To fill |
 | [Hook Guidelines](./hook-guidelines.md) | Custom hooks, data fetching patterns | To fill |
 | [State Management](./state-management.md) | Local state, global state, server state | To fill |
+| [Global scope navigation](../../core/frontend/global-scope-navigation.md) | Last workspace pointer, no-path resume and fixed shell geometry | Active |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [Intranet Updates](./intranet-updates.md) | Release publication, Nginx static download page, first-install data contracts and installed-client validation | Filled |

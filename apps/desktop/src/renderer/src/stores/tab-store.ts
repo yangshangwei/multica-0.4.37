@@ -132,6 +132,11 @@ export type TabScope = "account" | "workspace" | "none";
 
 interface TabStore {
   activeScope: TabScope;
+  /** Last visited workspace; account scope deliberately clears the active slug. */
+  lastWorkspaceSlug: string | null;
+  /** Transient focus intent; explicit same-URL opens still get a new key. */
+  isScopeResume: boolean;
+  navigationKey: number;
   accountGroup: WorkspaceTabGroup | null;
   /** Server/viewer owner of persisted client state; never a credential. */
   sessionOwner: string | null;
@@ -507,6 +512,9 @@ export const useTabStore = create<TabStore>()(
   persist(
     (set, get) => ({
       activeWorkspaceSlug: null,
+      lastWorkspaceSlug: null,
+      isScopeResume: false,
+      navigationKey: 0,
       activeScope: "none",
       accountGroup: null,
       sessionOwner: null,
@@ -517,7 +525,7 @@ export const useTabStore = create<TabStore>()(
         const previous = get().sessionOwner;
         if (previous === owner) return;
         if (previous !== null) {
-          set({ activeWorkspaceSlug: null, activeScope: "none", byWorkspace: {}, accountGroup: null, mountGeneration: 0, sessionOwner: owner });
+          set({ activeWorkspaceSlug: null, lastWorkspaceSlug: null, isScopeResume: false, navigationKey: 0, activeScope: "none", byWorkspace: {}, accountGroup: null, mountGeneration: 0, sessionOwner: owner });
         } else {
           // One-time migration adopts existing workspace-only tabs. Account
           // tabs are never accepted without their persisted owner.
@@ -527,13 +535,21 @@ export const useTabStore = create<TabStore>()(
 
       switchAccount(path, opts) {
         const state = get();
+        if (path === undefined && state.activeScope === "account") return;
         const clean = path === undefined
           ? state.accountGroup?.tabs[0]?.url ?? accountPath()
           : sanitizeTabPath(path);
         if (!clean || !parseAccountPath(clean)) return;
         const previous = state.accountGroup?.tabs[0];
         const tab = previous ? navigateSession(previous, clean, opts?.replace === true) : makeSession(clean, "");
-        set({ activeScope: "account", activeWorkspaceSlug: null, accountGroup: reconcileGroup(state.accountGroup, [tab], tab.id) });
+        set({
+          activeScope: "account",
+          activeWorkspaceSlug: null,
+          lastWorkspaceSlug: state.activeWorkspaceSlug ?? state.lastWorkspaceSlug,
+          isScopeResume: path === undefined && previous !== undefined,
+          navigationKey: state.navigationKey + 1,
+          accountGroup: reconcileGroup(state.accountGroup, [tab], tab.id),
+        });
       },
 
       switchWorkspace(slug, openPath) {
@@ -541,8 +557,17 @@ export const useTabStore = create<TabStore>()(
         // NavigationAdapter's path-parser should already have filtered
         // these, but belt-and-braces keeps garbage out of the store.
         if (!slug || isReservedSlug(slug)) return;
-        const { byWorkspace } = get();
+        const state = get();
+        const { byWorkspace } = state;
         const existing = byWorkspace[slug];
+        if (openPath === undefined && state.activeScope === "workspace" && state.activeWorkspaceSlug === slug) return;
+        const activation = {
+          activeWorkspaceSlug: slug,
+          lastWorkspaceSlug: slug,
+          activeScope: "workspace" as const,
+          isScopeResume: openPath === undefined && existing !== undefined,
+          navigationKey: state.navigationKey + 1,
+        };
 
         // Decide the desired active path for this workspace.
         const desiredPath = openPath ?? (existing ? null : defaultPathFor(slug));
@@ -553,8 +578,7 @@ export const useTabStore = create<TabStore>()(
           const seedPath = cleanDesired && extractWorkspaceSlug(cleanDesired) === slug ? cleanDesired : defaultPathFor(slug);
           const tab = makeSession(seedPath, "Issues");
           set({
-            activeWorkspaceSlug: slug,
-            activeScope: "workspace",
+            ...activation,
             byWorkspace: {
               ...byWorkspace,
               [slug]: reconcileGroup(null, [tab], tab.id),
@@ -572,8 +596,7 @@ export const useTabStore = create<TabStore>()(
             const match = existing.tabs.find((t) => t.resourceKey === key);
             if (match) {
               set({
-                activeWorkspaceSlug: slug,
-                activeScope: "workspace",
+                ...activation,
                 byWorkspace: {
                   ...byWorkspace,
                   [slug]: reconcileGroup(existing, existing.tabs, match.id),
@@ -583,8 +606,7 @@ export const useTabStore = create<TabStore>()(
             }
             const tab = makeSession(clean, "Issues");
             set({
-              activeWorkspaceSlug: slug,
-              activeScope: "workspace",
+              ...activation,
               byWorkspace: {
                 ...byWorkspace,
                 [slug]: reconcileGroup(
@@ -599,7 +621,7 @@ export const useTabStore = create<TabStore>()(
         }
 
         // No openPath (or openPath was rejected) — just restore the group.
-        set({ activeWorkspaceSlug: slug, activeScope: "workspace" });
+        set(activation);
       },
 
       openTab(path, title, opts) {
@@ -746,7 +768,10 @@ export const useTabStore = create<TabStore>()(
         if (slug === activeWorkspaceSlug && group.activeTabId === tabId) return;
         set({
           activeWorkspaceSlug: slug,
+          lastWorkspaceSlug: slug,
           activeScope: "workspace",
+          isScopeResume: true,
+          navigationKey: get().navigationKey + 1,
           byWorkspace: {
             ...byWorkspace,
             [slug]: reconcileGroup(group, group.tabs, tabId),
@@ -780,7 +805,11 @@ export const useTabStore = create<TabStore>()(
         const clean = sanitizeTabPath(url);
         if (!group || !current || !clean || extractWorkspaceSlug(clean) !== state.activeWorkspaceSlug) return;
         if (current.url === clean) return;
-        set(groupPatch(state, state.activeWorkspaceSlug, { ...group, tabs: group.tabs.map((tab) => tab.id === current.id ? navigateSession(current, clean, opts?.replace === true) : tab) }));
+        set({
+          ...groupPatch(state, state.activeWorkspaceSlug, { ...group, tabs: group.tabs.map((tab) => tab.id === current.id ? navigateSession(current, clean, opts?.replace === true) : tab) }),
+          isScopeResume: false,
+          navigationKey: state.navigationKey + 1,
+        });
       },
 
       goBack() {
@@ -947,7 +976,7 @@ export const useTabStore = create<TabStore>()(
       },
 
       validateWorkspaceSlugs(validSlugs) {
-        const { activeWorkspaceSlug, byWorkspace, activeScope } = get();
+        const { activeWorkspaceSlug, lastWorkspaceSlug, byWorkspace, activeScope } = get();
         let changed = false;
         const nextByWorkspace: Record<string, WorkspaceTabGroup> = {};
         for (const slug of Object.keys(byWorkspace)) {
@@ -983,12 +1012,16 @@ export const useTabStore = create<TabStore>()(
           }
         }
 
+        const nextLast = activeScope !== "account" && nextActive
+          ? nextActive
+          : lastWorkspaceSlug && validSlugs.has(lastWorkspaceSlug) ? lastWorkspaceSlug : null;
+        if (nextLast !== lastWorkspaceSlug) changed = true;
         if (!changed) return;
-        set({ byWorkspace: nextByWorkspace, activeWorkspaceSlug: nextActive, activeScope: activeScope === "account" ? "account" : nextActive ? "workspace" : "none" });
+        set({ byWorkspace: nextByWorkspace, activeWorkspaceSlug: nextActive, lastWorkspaceSlug: nextLast, activeScope: activeScope === "account" ? "account" : nextActive ? "workspace" : "none" });
       },
 
       reset() {
-        set({ activeWorkspaceSlug: null, activeScope: "none", accountGroup: null, sessionOwner: null, byWorkspace: {}, mountGeneration: 0 });
+        set({ activeWorkspaceSlug: null, lastWorkspaceSlug: null, isScopeResume: false, navigationKey: 0, activeScope: "none", accountGroup: null, sessionOwner: null, byWorkspace: {}, mountGeneration: 0 });
       },
     }),
     {
@@ -1019,6 +1052,7 @@ export const useTabStore = create<TabStore>()(
       },
       partialize: (state) => ({
         activeWorkspaceSlug: state.activeWorkspaceSlug,
+        lastWorkspaceSlug: state.lastWorkspaceSlug,
         activeScope: state.activeScope,
         accountGroup: state.accountGroup,
         sessionOwner: state.sessionOwner,
@@ -1053,6 +1087,7 @@ export const useTabStore = create<TabStore>()(
 
 /** The persisted slice of the store — what `merge` reads and rebuilds. */
 interface PersistedTabState {
+  lastWorkspaceSlug?: string | null;
   activeScope?: TabScope;
   accountGroup?: WorkspaceTabGroup | null;
   sessionOwner?: string | null;
@@ -1151,6 +1186,12 @@ export function mergePersistedTabs<T extends PersistedTabState>(
       ? persisted.activeWorkspaceSlug
       : (Object.keys(byWorkspace)[0] ?? null);
 
+  // Legacy profiles can identify only their active workspace, not historical MRU.
+  const savedLastWorkspace = persisted.lastWorkspaceSlug === undefined
+    ? persisted.activeWorkspaceSlug : persisted.lastWorkspaceSlug;
+  const lastWorkspaceSlug = typeof savedLastWorkspace === "string" && Object.hasOwn(byWorkspace, savedLastWorkspace)
+    ? savedLastWorkspace : null;
+
   const owner = typeof persisted.sessionOwner === "string" ? persisted.sessionOwner : null;
   const accountTab = owner ? persisted.accountGroup?.tabs?.find((tab) => typeof tab.url === "string" && parseAccountPath(tab.url)) : undefined;
   let accountGroup: WorkspaceTabGroup | null = null;
@@ -1184,7 +1225,7 @@ export function mergePersistedTabs<T extends PersistedTabState>(
     accountGroup = reconcileGroup(null, [tab], tab.id);
   }
   const accountActive = persisted.activeScope === "account" && accountGroup !== null;
-  return { ...currentState, byWorkspace, activeWorkspaceSlug: accountActive ? null : activeWorkspaceSlug, activeScope: accountActive ? "account" : activeWorkspaceSlug ? "workspace" : "none", accountGroup, sessionOwner: owner };
+  return { ...currentState, byWorkspace, lastWorkspaceSlug, isScopeResume: true, navigationKey: 0, activeWorkspaceSlug: accountActive ? null : activeWorkspaceSlug, activeScope: accountActive ? "account" : activeWorkspaceSlug ? "workspace" : "none", accountGroup, sessionOwner: owner };
 }
 
 function stepHistory(
@@ -1209,7 +1250,11 @@ function stepHistory(
   };
   const nextTabs = [...group.tabs];
   nextTabs[index] = next;
-  set(groupPatch(state, state.activeWorkspaceSlug, { ...group, tabs: nextTabs }));
+  set({
+    ...groupPatch(state, state.activeWorkspaceSlug, { ...group, tabs: nextTabs }),
+    isScopeResume: false,
+    navigationKey: state.navigationKey + 1,
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -1295,6 +1340,7 @@ interface V4PersistedGroup {
 }
 
 interface V5Persisted extends V4Persisted {
+  lastWorkspaceSlug?: string | null;
   activeScope?: TabScope;
   accountGroup?: WorkspaceTabGroup | null;
   sessionOwner?: string | null;

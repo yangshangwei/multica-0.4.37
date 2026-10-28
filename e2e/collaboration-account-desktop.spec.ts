@@ -6,7 +6,7 @@ import { createServer } from "node:http";
 import pg from "pg";
 import { test, expect, type ElectronApplication, type Locator, type Page, type TestInfo } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
-import { openDesktop, deepLink, nativeScreenshot, captureNativeSection, responseEvidence, type NativeHarness } from "./fixtures/collaboration-native";
+import { openDesktop, deepLink, selectDesktopWorkspace, nativeScreenshot, captureNativeSection, responseEvidence, type NativeHarness } from "./fixtures/collaboration-native";
 import { seedCollaborationResourceJourney, type CollaborationResourceSnapshot } from "./fixtures/collaboration-resources";
 import { createCollaborationWithInitialFields, exerciseCollaborationDiscussion, exerciseCollaborationFields,
   seedCollaborationEditing } from "./fixtures/collaboration-editing";
@@ -652,16 +652,16 @@ test("Desktop account links retain one tab across workspaces, popouts and restar
     // The workspace sidebar renders only once a workspace resolves; locator assertions
     // retry across the boot navigation, while page.evaluate would throw mid-navigation.
     await expect(page.locator('[data-sidebar="menu-button"]').first()).toBeVisible();
-    await expect(page.locator('nav[aria-label="Collaboration"]').getByRole("link", { name: "Collaboration", exact: true })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Application navigation", exact: true }).getByRole("button", { name: "Collaboration", exact: true })).toBeVisible();
     await expect.poll(async () => (await snapshot(page).catch(() => null))?.activeScope).toBe("workspace");
-    await page.getByRole("combobox", { name: "Workspaces", exact: true }).selectOption(fixture.workspaceA.slug);
+    await selectDesktopWorkspace(page, fixture.workspaceA);
     await expect.poll(async () => (await snapshot(page)).activeWorkspaceSlug).toBe(fixture.workspaceA.slug);
     const workspaceTabId = (await snapshot(page)).byWorkspace[fixture.workspaceA.slug].tabs[0].id;
     await page.locator(`[data-tab-id="${workspaceTabId}"]`).click({ button: "right" });
     await page.getByText("Pin tab", { exact: true }).click();
     await page.getByRole("button", { name: "New tab", exact: true }).click();
     await page.screenshot({ path: testInfo.outputPath("desktop-workspace-a.png"), animations: "disabled" });
-    await page.locator('nav[aria-label="Collaboration"]').getByRole("link", { name: "Collaboration", exact: true }).click();
+    await page.getByRole("navigation", { name: "Application navigation", exact: true }).getByRole("button", { name: "Collaboration", exact: true }).click();
     await page.getByRole("region", { name: "Collaboration issues" }).getByRole("link", { name: new RegExp(fixture.issues[0].title) }).click();
     await expect(page.getByRole("heading", { name: fixture.issues[0].title, exact: true })).toBeVisible();
     const accountTabId = (await snapshot(page)).accountGroup!.tabs[0].id;
@@ -709,7 +709,7 @@ test("Desktop account links retain one tab across workspaces, popouts and restar
     await expect(child.getByRole("heading", { name: fixture.issues[0].title, exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: fixture.issues[1].title, exact: true })).toBeVisible();
     await Promise.all([child.waitForEvent("close", { timeout: 10_000 }), nativeCloseShortcut(app, child)]);
-    await page.getByRole("combobox", { name: "Workspaces", exact: true }).selectOption(fixture.workspaceB.slug);
+    await selectDesktopWorkspace(page, fixture.workspaceB);
     await expect.poll(async () => (await snapshot(page)).activeWorkspaceSlug).toBe(fixture.workspaceB.slug);
     await deepLink(app, accountPath(fixture.issues[0]));
     await expect(page.getByRole("heading", { name: fixture.issues[0].title, exact: true })).toBeVisible();

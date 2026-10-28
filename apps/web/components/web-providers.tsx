@@ -11,6 +11,7 @@ import packageJson from "../package.json";
 import { AdminSessionBoundary } from "@/platform/admin-session-boundary";
 import { WebNavigationProvider } from "@/platform/navigation";
 import { WebScrollRestorationProvider } from "@/platform/scroll-restoration";
+import { WebScopeShell } from "@/platform/scope-shell";
 import {
   setLoggedInCookie,
   clearLoggedInCookie,
@@ -112,7 +113,7 @@ export function WebProviders({
     >
       <WebNavigationProvider>
         <AdminSessionBoundary />
-        <WebScrollRestorationProvider><AccountGate>{children}</AccountGate></WebScrollRestorationProvider>
+        <WebScrollRestorationProvider><AccountGate><WebScopeShell>{children}</WebScopeShell></AccountGate></WebScrollRestorationProvider>
       </WebNavigationProvider>
     </CoreProvider>
   );

@@ -43,6 +43,32 @@ function receipt(requestId: string, version: string | null, code = "memory_updat
     current_version: version ?? "2", code, status, max_bytes: 131072, ...(status === 200 ? { bytes: 8, event_seq: "3" } : {}) };
 }
 
+it("does not refocus a shared-context anchor on resume but focuses a fresh open", async () => {
+  const view = (resume: boolean, navigationKey: number) => <QueryClientProvider client={client}><CollaborationMemoryPanel scope={scope} issue={issue}
+    destination={{ view: "current", issueId: issue.id, commentId: null, anchor: "memory" }} isScopeResume={resume} navigationKey={navigationKey} /></QueryClientProvider>;
+  const mounted = renderWithI18n(view(true, 1));
+  await screen.findByText("Initial decision");
+  expect(document.getElementById("memory")).not.toHaveFocus();
+  mounted.rerender(view(false, 2));
+  expect(document.getElementById("memory")).toHaveFocus();
+});
+
+it("leaves a dismissed version dialog closed on resume and reopens it for an explicit link", async () => {
+  const version = vi.spyOn(api, "getCollaborationMemoryVersion").mockRejectedValue(new Error("Version unavailable in fixture"));
+  const view = (resume: boolean, navigationKey: number) => <QueryClientProvider client={client}><CollaborationMemoryPanel scope={scope} issue={issue}
+    destination={{ view: "current", issueId: issue.id, commentId: null, memoryVersion: "1" }} isScopeResume={resume} navigationKey={navigationKey} /></QueryClientProvider>;
+  const mounted = renderWithI18n(view(true, 1));
+  await screen.findByText("Initial decision");
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  expect(version).not.toHaveBeenCalled();
+  mounted.rerender(view(false, 2));
+  await screen.findByRole("dialog");
+  await userEvent.keyboard("{Escape}");
+  await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+  mounted.rerender(view(false, 3));
+  expect(await screen.findByRole("dialog")).toBeVisible();
+});
+
 it("keeps the editing base and text after a stale save until the user explicitly rebases", async () => {
   const update = vi.spyOn(api, "updateCollaborationMemory").mockImplementationOnce(async (_id, key) => receipt(key, null, "stale_memory_version", 409))
     .mockImplementationOnce(async (_id, key) => receipt(key, "3"));

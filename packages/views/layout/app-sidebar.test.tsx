@@ -499,7 +499,6 @@ describe("nav structure", () => {
       "/acme/mcp",
       "/acme/marketplace",
       "/acme/runtimes",
-      "/account?view=current",
       // footer
       "/acme/usage",
       "/acme/settings",

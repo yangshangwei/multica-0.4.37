@@ -40,21 +40,23 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
   const restored = useRef(false);
   const restoreScroll = useRestoredScrollRef("account-detail");
   useEffect(() => {
-    if (!query.data || !comments.data || restored.current || destination.commentId || destination.runId || destination.anchor) return;
+    if (!query.data || !comments.data || restored.current) return;
+    if (!navigation.isScopeResume && (destination.commentId || destination.runId || destination.anchor)) return;
     restoreScroll(root.current?.closest<HTMLElement>('[data-tab-scroll-root="account-detail"]') ?? null);
     restored.current = true;
-  }, [query.data, comments.data, restoreScroll, destination.commentId, destination.runId, destination.anchor]);
+  }, [query.data, comments.data, restoreScroll, destination.commentId, destination.runId, destination.anchor, navigation.isScopeResume]);
   useEffect(() => {
     const anchor = destination.runId ? `run-${destination.runId}` : destination.commentId ? `comment-${destination.commentId}` : destination.anchor;
-    if (!anchor) { consumedAnchor.current = null; return; }
-    if (consumedAnchor.current === anchor) return;
+    if (!anchor || navigation.isScopeResume) { consumedAnchor.current = null; return; }
+    const intent = `${navigation.navigationKey ?? 0}:${anchor}`;
+    if (consumedAnchor.current === intent) return;
     const element = root.current?.querySelector<HTMLElement>(`[id="${anchor}"]`);
     const container = element?.closest<HTMLElement>('[data-tab-scroll-root="account-detail"]');
     if (!element || !container) return;
     container.scrollTop += element.getBoundingClientRect().top - container.getBoundingClientRect().top;
     element.focus({ preventScroll: true });
-    consumedAnchor.current = anchor;
-  }, [destination.commentId, destination.runId, destination.anchor, query.data, comments.data, linkedComment.data]);
+    consumedAnchor.current = intent;
+  }, [destination.commentId, destination.runId, destination.anchor, query.data, comments.data, linkedComment.data, navigation.isScopeResume, navigation.navigationKey]);
   const denied = collaborationIssueAccessDenied(client, scope, issueId);
   if (!query.data || denied || isCollaborationDenied(query.error)) return query.isPending
     ? <p role="status" className="py-10 text-body text-muted-foreground">{t(($) => $.page.loading)}</p>
@@ -90,7 +92,7 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
     <CollaborationIssueReactions scope={scope} issue={issue} />
     <CollaborationAttachmentPanel scope={scope} issue={issue} />
     <CollaborationExecutionPanel scope={scope} issue={issue} selectedRunId={destination.runId} />
-    <CollaborationMemoryPanel scope={scope} issue={issue} destination={destination} />
+    <CollaborationMemoryPanel scope={scope} issue={issue} destination={destination} isScopeResume={navigation.isScopeResume} navigationKey={navigation.navigationKey} />
     <CollaborationActivity scope={scope} destination={destination} />
     <section className="min-w-0 space-y-4"><h3 className="text-body font-semibold">{t(($) => $.detail.comments)}</h3>
       {comments.isPending && <p role="status" className="text-body text-muted-foreground">{t(($) => $.page.loading)}</p>}

@@ -4,9 +4,11 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { useRestoredScrollOffset, useRestoredViewState, useViewStateWriter } from "@multica/views/platform";
 import { WebScrollRestorationProvider } from "./scroll-restoration";
 
-const route = vi.hoisted(() => ({ pathname: "/" }));
-vi.mock("next/navigation", () => ({ usePathname: () => route.pathname }));
-beforeEach(() => { route.pathname = window.location.pathname; });
+const route = vi.hoisted(() => ({ pathname: "/", query: "", owner: "viewer" }));
+vi.mock("next/navigation", () => ({ usePathname: () => route.pathname, useSearchParams: () => new URLSearchParams(route.query) }));
+vi.mock("./navigation-owner", () => ({ useWebNavigationOwner: () => route.owner }));
+let testIdentity = 0;
+beforeEach(() => { route.pathname = window.location.pathname; route.query = ""; route.owner = `viewer-${++testIdentity}`; });
 
 function ScrollProbe({ containerKey }: { containerKey: string }) {
   const restored = useRestoredScrollOffset(containerKey);
@@ -24,6 +26,46 @@ function scrollContainer(el: HTMLElement, top: number) {
 }
 
 describe("WebScrollRestorationProvider", () => {
+  it("keeps account view and selected issue offsets separate", () => {
+    route.pathname = "/account";
+    const first = "view=current&issue=00000000-0000-4000-8000-000000000001";
+    route.query = first;
+    const page = () => <WebScrollRestorationProvider><div data-tab-scroll-root="account-detail" data-testid="container" /><ScrollProbe containerKey="account-detail" /></WebScrollRestorationProvider>;
+    const view = render(page());
+    scrollContainer(screen.getByTestId("container"), 480);
+    route.query = "view=participating&issue=00000000-0000-4000-8000-000000000002";
+    view.rerender(page());
+    expect(screen.getByTestId("restored")).toHaveTextContent("none");
+    scrollContainer(screen.getByTestId("container"), 720);
+    route.query = first;
+    view.rerender(page());
+    expect(screen.getByTestId("restored")).toHaveTextContent("480");
+  });
+
+  it("clears private mementos on identity change, including switching back", () => {
+    const page = () => <WebScrollRestorationProvider><div data-tab-scroll-root="private" data-testid="container" /><ScrollProbe containerKey="private" /></WebScrollRestorationProvider>;
+    const firstOwner = route.owner;
+    const view = render(page());
+    scrollContainer(screen.getByTestId("container"), 480);
+    route.owner = "another-server-or-viewer";
+    view.rerender(page());
+    expect(screen.getByTestId("restored")).toHaveTextContent("none");
+    route.owner = firstOwner;
+    view.rerender(page());
+    expect(screen.getByTestId("restored")).toHaveTextContent("none");
+  });
+
+  it("captures against the committed render when browser history still names the old route", () => {
+    route.pathname = "/other/issues";
+    const page = () => <WebScrollRestorationProvider><div data-tab-scroll-root="main" data-testid="container" /><ScrollProbe containerKey="main" /></WebScrollRestorationProvider>;
+    const view = render(page());
+    scrollContainer(screen.getByTestId("container"), 620);
+    view.rerender(page());
+    expect(screen.getByTestId("restored")).toHaveTextContent("620");
+    route.pathname = window.location.pathname;
+    view.rerender(page());
+    expect(screen.getByTestId("restored")).toHaveTextContent("none");
+  });
   it("clears only the named origin entry while preserving current-route writes", () => {
     const origin = "/acme/autopilots";
     function ViewStateProbe({ focusKey }: { focusKey: string }) {

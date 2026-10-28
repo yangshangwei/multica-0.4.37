@@ -10,7 +10,8 @@ import { renderWithI18n } from "../test/i18n";
 import { CollaborationDetail } from "./collaboration-detail";
 
 const state = vi.hoisted(() => ({ comments: [] as { id: string; created_at: string }[], pending: true, children: undefined as CollaborationIssue["ordinary_children"] }));
-const navigation = vi.hoisted(() => ({ push: vi.fn(), prefetch: vi.fn(), getShareableUrl: (path: string) => `https://detail.example${path}` }));
+const navigation = vi.hoisted(() => ({ push: vi.fn(), prefetch: vi.fn(), isScopeResume: false, navigationKey: 0, getShareableUrl: (path: string) => `https://detail.example${path}` }));
+const restoreScroll = vi.hoisted(() => vi.fn());
 const client = new QueryClient();
 const issue = parseCollaborationIssue(collaborationIssueFixture)!;
 vi.mock("@multica/core/collaboration", async (original) => ({ ...await original<typeof import("@multica/core/collaboration")>(), useCollaborationIssue: (_scope: unknown, id: string) => ({ data: { ...issue, id, ordinary_children: state.children } }) }));
@@ -20,7 +21,7 @@ vi.mock("@tanstack/react-query", async (original) => ({ ...await original<typeof
   useQuery: () => ({ data: undefined }),
   useInfiniteQuery: () => ({ data: { pages: [{ items: state.comments }] }, isPending: state.pending, isSuccess: !state.pending }),
 }));
-vi.mock("../platform", () => ({ useRestoredScrollRef: () => () => {} }));
+vi.mock("../platform", () => ({ useRestoredScrollRef: () => restoreScroll }));
 vi.mock("../rich-content", () => ({ RichContent: () => null }));
 vi.mock("./workflow", () => ({ CollaborationWorkflow: () => null }));
 vi.mock("./execution-panel", () => ({ CollaborationExecutionPanel: ({ selectedRunId }: { selectedRunId?: string }) => selectedRunId ? <div id={`run-${selectedRunId}`} data-testid="linked-run" tabIndex={-1} /> : null }));
@@ -38,7 +39,27 @@ vi.mock("./comment-composer", () => ({ CollaborationCommentComposer: function Co
   const [value, setValue] = useState("");
   return <form data-testid="comment-composer"><textarea aria-label="Composer draft" value={value} onChange={(event) => setValue(event.target.value)} /></form>;
 } }));
-afterEach(() => { client.clear(); state.comments = []; state.pending = true; state.children = undefined; navigation.push.mockClear(); navigation.prefetch.mockClear(); vi.restoreAllMocks(); });
+afterEach(() => { client.clear(); state.comments = []; state.pending = true; state.children = undefined; navigation.push.mockClear(); navigation.prefetch.mockClear(); navigation.isScopeResume = false; navigation.navigationKey = 0; restoreScroll.mockReset(); vi.restoreAllMocks(); });
+
+it("restores an anchored detail on scope resume and refocuses repeated explicit opens", () => {
+  setApiInstance(new ApiClient("https://detail.example"));
+  const runId = "00000000-0000-4000-8000-000000000009";
+  navigation.isScopeResume = true;
+  const view = () => <section data-tab-scroll-root="account-detail"><CollaborationDetail scope={collaborationScope(issue.creator.user_id)} destination={{ view: "current", issueId: issue.id, commentId: null, runId }} /></section>;
+  const mounted = renderWithI18n(view());
+  expect(restoreScroll).toHaveBeenCalledWith(document.querySelector('[data-tab-scroll-root="account-detail"]'));
+  expect(screen.getByTestId("linked-run")).not.toHaveFocus();
+  navigation.isScopeResume = false;
+  navigation.navigationKey += 1;
+  mounted.rerender(view());
+  expect(screen.getByTestId("linked-run")).toHaveFocus();
+  screen.getByLabelText("Composer draft").focus();
+  mounted.rerender(view());
+  expect(screen.getByLabelText("Composer draft")).toHaveFocus();
+  navigation.navigationKey += 1;
+  mounted.rerender(view());
+  expect(screen.getByTestId("linked-run")).toHaveFocus();
+});
 
 // Wire/privacy matrices belong to core's child schema tests. This verifies the
 // common detail composition used by account, source, panels and native windows.

@@ -23,7 +23,7 @@ import { RichContent } from "../rich-content";
 import { useLocale, useT } from "../i18n";
 import { CollaborationQueryState } from "./query-state";
 
-interface PanelProps { scope: CollaborationScope; issue: CollaborationIssue; destination?: AccountDestination }
+interface PanelProps { scope: CollaborationScope; issue: CollaborationIssue; destination?: AccountDestination; isScopeResume?: boolean; navigationKey?: number }
 interface Editor { baseVersion: string; content: string }
 interface Confirmation { action: "restore" | "purge"; version: string; snapshot: CollaborationMemory }
 
@@ -47,7 +47,7 @@ function MemoryAttribution({ author, createdAt, issueId }: { author: Collaborati
   </dl>;
 }
 
-function MemoryPanel({ scope, issue, destination }: PanelProps) {
+function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigationKey = 0 }: PanelProps) {
   const { t } = useT("collaboration");
   const client = useQueryClient();
   const fieldId = useId();
@@ -58,7 +58,7 @@ function MemoryPanel({ scope, issue, destination }: PanelProps) {
   const [editor, setEditor] = useState<Editor | null>(null);
   const [expanded, setExpanded] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
-  const [selectedVersion, setSelectedVersion] = useState<string | null>(destination?.memoryVersion ?? null);
+  const [selectedVersion, setSelectedVersion] = useState<string | null>(isScopeResume ? null : destination?.memoryVersion ?? null);
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
   const [reason, setReason] = useState("");
   const [feedback, setFeedback] = useState<string | null>(null);
@@ -124,11 +124,11 @@ function MemoryPanel({ scope, issue, destination }: PanelProps) {
     if (!denied) return;
     setEditor(null); setConfirmation(null); setSelectedVersion(null); setReason(""); setFeedback(null); resetSend();
   }, [denied, resetSend]); // The access fence also removes retained requests and Query data.
-  useEffect(() => { setSelectedVersion(destination?.memoryVersion ?? null); }, [destination?.memoryVersion]);
+  useEffect(() => { if (!isScopeResume) setSelectedVersion(destination?.memoryVersion ?? null); }, [destination?.memoryVersion, isScopeResume, navigationKey]);
   useEffect(() => {
-    if (destination?.anchor !== "memory" || memoryVersion === undefined) return;
+    if (isScopeResume || destination?.anchor !== "memory" || memoryVersion === undefined) return;
     root.current?.scrollIntoView?.({ block: "start" }); root.current?.focus({ preventScroll: true });
-  }, [destination?.anchor, memoryVersion]);
+  }, [destination?.anchor, memoryVersion, isScopeResume, navigationKey]);
 
   if (denied) return <CollaborationQueryState denied error={memoryQuery.error} />;
   if (memoryQuery.isPending) return <section id="memory" tabIndex={-1} className="min-w-0 space-y-3"><h3 className="text-body font-semibold">{t(($) => $.memory.title)}</h3><p role="status" className="text-body text-muted-foreground">{t(($) => $.memory.loading)}</p></section>;

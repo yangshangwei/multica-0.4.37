@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, type ReactNode } from "react";
-import { usePathname } from "next/navigation";
+import { useLayoutEffect, useMemo, type ReactNode } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { accountRouteKey } from "@multica/core/paths";
 import {
   ScrollRestorationProvider,
   type ScrollRestorationAdapter,
 } from "@multica/views/platform";
+import { useWebNavigationOwner } from "./navigation-owner";
 
 /**
  * Web half of the MUL-4741 scroll-restoration protocol (desktop's half lives
@@ -18,17 +20,18 @@ import {
  * Capture is continuous rather than before-navigation: the App Router has no
  * reliable "about to leave" hook, so a capture-phase scroll listener records
  * each marked container's offset as the user scrolls, keyed by
- * `pathname::containerKey`. Serving is the same pull-based adapter desktop
+ * `routeKey::containerKey`. Serving is the same pull-based adapter desktop
  * uses — views read the offset at mount through `useRestoredScrollOffset` /
  * `useRestoredScrollRef`.
  *
- * Keying by pathname (not by history entry) matches desktop's memento
+ * Workspace pathname/accountRouteKey (not history entry) matches desktop's memento
  * semantics: returning to a route — via back or via a fresh link — restores
  * where you last were on it. The map is module state: per browser tab (web
  * tabs are real tabs), reset on full reload where the browser's own
  * restoration takes over.
  */
 const savedOffsets = new Map<string, { top: number; height: number }>();
+let currentOwner: string | null = null;
 
 /**
  * Generic view-state entries (the desktop memento's second cargo — e.g.
@@ -60,13 +63,26 @@ export function WebScrollRestorationProvider({
   children: ReactNode;
 }) {
   const pathname = usePathname();
-  useEffect(() => {
+  const searchParams = useSearchParams();
+  const owner = useWebNavigationOwner();
+  const query = searchParams.toString();
+  const routeKey = accountRouteKey(`${pathname}${query ? `?${query}` : ""}`) ?? pathname;
+  // Isolate reads during the identity-changing render, before child ref/effect
+  // restoration can run. Old adapters also check ownership before writes.
+  if (currentOwner !== owner) {
+    savedOffsets.clear();
+    savedViewState.clear();
+    suppressedUntil.clear();
+    currentOwner = owner;
+  }
+  useLayoutEffect(() => {
     const onScroll = (e: Event) => {
+      if (!owner || currentOwner !== owner) return;
       const el = e.target;
       if (!(el instanceof HTMLElement)) return;
       const raw = el.getAttribute("data-tab-scroll-root");
       if (raw === null) return;
-      const key = mementoKey(window.location.pathname, raw || "main");
+      const key = mementoKey(routeKey, raw || "main");
       const suppressed = suppressedUntil.get(key);
       if (suppressed !== undefined) {
         if (performance.now() < suppressed) return;
@@ -88,12 +104,13 @@ export function WebScrollRestorationProvider({
     });
     return () =>
       window.removeEventListener("scroll", onScroll, { capture: true });
-  }, []);
+  }, [owner, routeKey]);
 
   const adapter = useMemo<ScrollRestorationAdapter>(
     () => ({
       get(containerKey) {
-        const key = mementoKey(pathname, containerKey);
+        if (!owner || currentOwner !== owner) return undefined;
+        const key = mementoKey(routeKey, containerKey);
         const saved = savedOffsets.get(key);
         if (saved) {
           // The caller is about to restore this offset — shield the memento
@@ -103,19 +120,21 @@ export function WebScrollRestorationProvider({
         return saved;
       },
       getViewState(entryKey) {
+        if (!owner || currentOwner !== owner) return undefined;
         return savedViewState.get(
-          mementoKey(pathname, entryKey),
+          mementoKey(routeKey, entryKey),
         );
       },
       setViewState(entryKey, value, routePathname) {
-        const key = mementoKey(routePathname ?? pathname, entryKey);
+        if (!owner || currentOwner !== owner) return;
+        const key = mementoKey(routePathname ? accountRouteKey(routePathname) ?? routePathname : routeKey, entryKey);
         if (value === undefined) savedViewState.delete(key);
         else savedViewState.set(key, value);
       },
     }),
     // Render-time reads must follow Next's route, which can differ from
     // window.location while a navigation is being prepared or committed.
-    [pathname],
+    [routeKey, owner],
   );
 
   return (

@@ -1,12 +1,19 @@
 "use client";
 
-import { Suspense, useEffect, useSyncExternalStore } from "react";
+import { createContext, Suspense, useCallback, useContext, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import {
   NavigationProvider,
   type NavigationAdapter,
 } from "@multica/views/navigation";
 import { canGoBackInApp } from "./in-app-history";
+
+const ScopeResumeContext = createContext<(path: string) => void>(() => undefined);
+
+/** Global scope controls resume; ordinary navigation remains an explicit open. */
+export function useWebScopeResume() {
+  return useContext(ScopeResumeContext);
+}
 
 /**
  * Web half of the `multica:navigate` bridge — the event shared content
@@ -18,7 +25,7 @@ import { canGoBackInApp } from "./in-app-history";
  * closest the web can get: JS cannot open a background tab, so both tab
  * dispositions land as a foreground browser tab.
  */
-function useInternalLinkHandler(router: ReturnType<typeof useRouter>) {
+function useInternalLinkHandler(push: (path: string) => void) {
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (
@@ -37,11 +44,11 @@ function useInternalLinkHandler(router: ReturnType<typeof useRouter>) {
         );
         return;
       }
-      router.push(path);
+      push(path);
     };
     window.addEventListener("multica:navigate", handler);
     return () => window.removeEventListener("multica:navigate", handler);
-  }, [router]);
+  }, [push]);
 }
 
 /**
@@ -68,22 +75,55 @@ function NavigationProviderInner({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [intent, setIntent] = useState({ path: "", resume: false, key: 0 });
+  const push = useCallback((path: string) => {
+    setIntent((previous) => ({ path, resume: false, key: previous.key + 1 }));
+    router.push(path);
+  }, [router]);
+  const replace = useCallback((path: string) => {
+    setIntent((previous) => ({ path, resume: false, key: previous.key + 1 }));
+    router.replace(path);
+  }, [router]);
+  const resume = useCallback((path: string) => {
+    setIntent((previous) => ({ path, resume: true, key: previous.key + 1 }));
+    router.push(path, { scroll: false });
+  }, [router]);
   const hash = useSyncExternalStore(
     subscribeToHash,
     () => window.location.hash,
     () => "",
   );
-  useInternalLinkHandler(router);
+  useInternalLinkHandler(push);
+  const query = searchParams.toString();
+  const route = pathname + (query ? `?${query}` : "");
+  const location = route + hash;
+  const targetsRenderedRoute = intent.path.split("#")[0] === route;
+  const [committedIntent, setCommittedIntent] = useState({ location, resume: false, key: 0 });
+  // Next may keep the outgoing route mounted while a push is pending. Its
+  // detail must retain the old focus intent until the destination renders.
+  // Adjust during render so incoming children receive the intent on first mount.
+  if (committedIntent.location !== location || (targetsRenderedRoute && committedIntent.key !== intent.key)) {
+    setCommittedIntent({ location, resume: targetsRenderedRoute && intent.resume, key: intent.key });
+  }
+  const clearIntent = useCallback(() => {
+    setIntent((previous) => ({ path: "", resume: false, key: previous.key + 1 }));
+  }, []);
+  useEffect(() => {
+    window.addEventListener("popstate", clearIntent);
+    return () => window.removeEventListener("popstate", clearIntent);
+  }, [clearIntent]);
 
-  const adapter: NavigationAdapter = {
-    push: router.push,
-    replace: router.replace,
-    back: router.back,
-    forward: router.forward,
+  const adapter: NavigationAdapter = useMemo(() => ({
+    push,
+    replace,
+    back: () => { clearIntent(); router.back(); },
+    forward: () => { clearIntent(); router.forward(); },
     canGoBack: canGoBackInApp,
     pathname,
     searchParams: new URLSearchParams(searchParams.toString()),
     hash,
+    isScopeResume: committedIntent.resume,
+    navigationKey: committedIntent.key,
     getShareableUrl: (path: string) =>
       typeof window === "undefined" ? path : window.location.origin + path,
     // router.prefetch is a no-op in dev mode by Next.js design; in production
@@ -92,9 +132,9 @@ function NavigationProviderInner({
     prefetch: (path: string) => {
       router.prefetch(path);
     },
-  };
+  }), [push, replace, clearIntent, router, pathname, searchParams, hash, committedIntent.resume, committedIntent.key]);
 
-  return <NavigationProvider value={adapter}>{children}</NavigationProvider>;
+  return <ScopeResumeContext.Provider value={resume}><NavigationProvider value={adapter}>{children}</NavigationProvider></ScopeResumeContext.Provider>;
 }
 
 export function WebNavigationProvider({

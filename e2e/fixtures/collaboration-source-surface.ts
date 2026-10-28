@@ -1,3 +1,4 @@
+import { selectDesktopWorkspace } from "./collaboration-native";
 import { randomUUID, createHash } from "node:crypto";
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, statSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -173,7 +174,7 @@ export async function navigateNative(page: Page, fixture: SourceSurface, path: s
   const sidebar = (name: string) => page.getByRole("link", { name: name === "Issues" ? /^(Issues|Workspace issues)$/ : name, exact: true }).and(page.locator('[data-sidebar="menu-button"]'));
   if (path === fixture.listPath) {
     if (await sidebar("Issues").count() === 0) {
-      await page.getByRole("combobox", { name: "Workspaces", exact: true }).selectOption(fixture.workspace.slug);
+      await selectDesktopWorkspace(page, fixture.workspace);
     }
     await sidebar("Issues").click();
   } else if (path === fixture.projectPath) {

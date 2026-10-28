@@ -28,6 +28,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Quick-create Actor Picker](./quick-create-actor-picker.md) | Local favorites/recent actors, scoped hydration, full-description search and nested-picker focus | Active |
 | [Hook Guidelines](./hook-guidelines.md) | Custom hooks, data fetching patterns | To fill |
 | [State Management](./state-management.md) | Local state, global state, server state | To fill |
+| [Global scope navigation](../../core/frontend/global-scope-navigation.md) | Persistent shell switch, restored collaboration state and direct-link focus | Active |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | Active |
 | [Desktop Core Interaction](./desktop-core-accessibility.md) | Hidden-chat focus/portals, collection recovery/selection, detail tabs, shell motion and bounded Gantt | Active |
 | [Triage History](./triage-history.md) | Date-grouped event identity, snapshot reuse, applied filters and truthful empty-page recovery | Active |

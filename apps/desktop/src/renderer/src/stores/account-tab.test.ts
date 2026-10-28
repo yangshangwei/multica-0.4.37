@@ -7,6 +7,69 @@ const b = accountPath({ view: "participating", issueId: "22222222-2222-4222-8222
 beforeEach(() => useTabStore.getState().reset());
 
 describe("persistent account tab", () => {
+  it("resumes the most recent workspace and account details without replacing their state", () => {
+    const store = useTabStore.getState();
+    store.setSessionOwner("server:viewer");
+    store.switchWorkspace("acme");
+    store.switchWorkspace("butter", "/butter/projects/project-b?tab=overview");
+    const workspaceTab = getActiveTab(useTabStore.getState())!;
+    store.switchAccount(b);
+    const accountTab = getActiveTab(useTabStore.getState())!;
+    store.commitViewState(accountTab.id, b, "account-search", "needle");
+    store.commitScrollMemento(accountTab.id, b, { "account-detail": { top: 480, height: 1500 } });
+    const account = useTabStore.getState().accountGroup;
+
+    expect(useTabStore.getState().lastWorkspaceSlug).toBe("butter");
+    store.switchWorkspace(useTabStore.getState().lastWorkspaceSlug!);
+    expect(getActiveTab(useTabStore.getState())).toBe(workspaceTab);
+    store.switchAccount();
+    expect(getActiveTab(useTabStore.getState())).toBe(account?.tabs[0]);
+    expect(useTabStore.getState().isScopeResume).toBe(true);
+    const before = useTabStore.getState();
+    store.switchAccount();
+    expect(useTabStore.getState()).toBe(before);
+  });
+
+  it("persists the last workspace while account-active and clears invalid or previous-owner pointers", () => {
+    const store = useTabStore.getState();
+    store.setSessionOwner("server:viewer");
+    store.switchWorkspace("acme");
+    store.switchWorkspace("butter");
+    store.switchAccount(b);
+    const serialized = JSON.parse(localStorage.getItem("multica_tabs")!).state;
+    expect(serialized.lastWorkspaceSlug).toBe("butter");
+    expect(serialized.isScopeResume).toBeUndefined();
+    expect(serialized.navigationKey).toBeUndefined();
+    const restored = mergePersistedTabs(serialized, useTabStore.getState());
+    expect(restored.lastWorkspaceSlug).toBe("butter");
+    expect(restored.activeWorkspaceSlug).toBeNull();
+    const invalid = mergePersistedTabs({ ...serialized, lastWorkspaceSlug: "gone" }, useTabStore.getState());
+    expect(invalid.lastWorkspaceSlug).toBeNull();
+
+    store.validateWorkspaceSlugs(new Set(["acme"]));
+    expect(useTabStore.getState().lastWorkspaceSlug).toBeNull();
+    expect(getActiveTab(useTabStore.getState())?.url).toBe(b);
+    store.switchWorkspace("acme");
+    store.setSessionOwner("other-server:viewer");
+    expect(useTabStore.getState().lastWorkspaceSlug).toBeNull();
+    store.switchWorkspace("acme");
+    store.reset();
+    expect(useTabStore.getState().lastWorkspaceSlug).toBeNull();
+  });
+
+  it("adopts a legacy active workspace and records cross-workspace tab activation", () => {
+    const store = useTabStore.getState();
+    store.switchWorkspace("acme");
+    const acme = getActiveTab(useTabStore.getState())!;
+    store.switchWorkspace("butter");
+    store.setActiveTab(acme.id);
+    expect(useTabStore.getState().lastWorkspaceSlug).toBe("acme");
+    const legacy = { activeWorkspaceSlug: "butter", byWorkspace: useTabStore.getState().byWorkspace };
+    expect(mergePersistedTabs(legacy, useTabStore.getState()).lastWorkspaceSlug).toBe("butter");
+    store.validateWorkspaceSlugs(new Set(["butter"]));
+    expect(useTabStore.getState().lastWorkspaceSlug).toBe("butter");
+  });
+
   it("reuses one account tab while updating query selection and preserving workspace pins/MRU", () => {
     const store = useTabStore.getState();
     store.switchWorkspace("acme");

@@ -27,7 +27,7 @@ vi.mock("@multica/core/auth", () => ({
   }),
 }));
 
-import { DesktopNavigationProvider, routeContentLinkPath } from "./navigation";
+import { DesktopNavigationProvider, resumeDesktopScope, routeContentLinkPath } from "./navigation";
 import { currentPath, useNavigation } from "@multica/views/navigation";
 import { useTabStore, getActiveTab } from "@/stores/tab-store";
 import { getCurrentSlug, setCurrentWorkspace } from "@multica/core/platform";
@@ -316,6 +316,49 @@ describe("routeContentLinkPath (links inside content — MUL-5208)", () => {
 describe("account destinations", () => {
   const a = "/account?view=current&issue=11111111-1111-4111-8111-111111111111";
   const b = "/account?view=participating&issue=22222222-2222-4222-8222-222222222222";
+  it("resumes both scopes in one action while explicit same-anchor links request fresh focus", () => {
+    const nav = renderProvider();
+    const linked = `${b}#description`;
+    act(() => nav().push("/butter/projects/project-b?tab=overview"));
+    const workspace = getActiveTab(useTabStore.getState())!;
+    setCurrentWorkspace("butter", "workspace-b");
+    act(() => nav().push(linked));
+    const account = getActiveTab(useTabStore.getState())!;
+    act(() => { expect(resumeDesktopScope("workspace", ["acme", "butter"])).toBe(true); });
+    expect(getActiveTab(useTabStore.getState())).toBe(workspace);
+    setCurrentWorkspace("butter", "workspace-b");
+    act(() => { expect(resumeDesktopScope("account")).toBe(true); });
+    expect(getCurrentSlug()).toBeNull();
+    expect(getActiveTab(useTabStore.getState())).toBe(account);
+    expect(nav().isScopeResume).toBe(true);
+    const resumedKey = nav().navigationKey!;
+    const state = useTabStore.getState();
+    act(() => resumeDesktopScope("account"));
+    expect(useTabStore.getState()).toBe(state);
+    act(() => nav().push(linked));
+    expect(nav().isScopeResume).toBe(false);
+    expect(nav().navigationKey).toBeGreaterThan(resumedKey);
+    const firstFocusKey = nav().navigationKey!;
+    act(() => nav().push(linked));
+    expect(nav().navigationKey).toBeGreaterThan(firstFocusKey);
+    expect(getActiveTab(useTabStore.getState())?.history.stack).toEqual([linked]);
+  });
+
+  it("uses authoritative workspace fallback and preserves unresolved discovery", () => {
+    useTabStore.getState().switchWorkspace("butter", "/butter/projects");
+    useTabStore.getState().switchAccount(a);
+    expect(resumeDesktopScope("workspace", ["acme"])).toBe(true);
+    expect(useTabStore.getState().activeWorkspaceSlug).toBe("acme");
+    useTabStore.getState().reset();
+    useTabStore.getState().switchAccount(a);
+    expect(resumeDesktopScope("workspace")).toBe(false);
+    expect(getActiveTab(useTabStore.getState())?.url).toBe(a);
+    expect(overlay.open).not.toHaveBeenCalled();
+    expect(resumeDesktopScope("workspace", [])).toBe(true);
+    expect(overlay.open).toHaveBeenCalledWith({ type: "new-workspace" });
+    expect(getActiveTab(useTabStore.getState())?.url).toBe(a);
+  });
+
   it.each(["push", "replace", "content", "new-tab"])("clears workspace headers before %s publishes an account tab", (entry) => {
     const nav = renderProvider();
     setCurrentWorkspace("acme", "workspace-a");

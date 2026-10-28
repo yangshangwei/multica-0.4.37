@@ -29,12 +29,12 @@ export function DashboardLayout({
   return (
     <DashboardGuard
       loadingFallback={
-        <div className="flex h-svh items-center justify-center">
+        <div className="flex h-full items-center justify-center">
           {loadingIndicator}
         </div>
       }
     >
-      <SidebarProvider className="h-svh bg-app-shell">
+      <SidebarProvider className="h-full min-h-0 bg-app-shell">
         <GlobalShortcuts />
         <WorkspacePresencePrefetch />
         <AppSidebar searchSlot={searchSlot} />

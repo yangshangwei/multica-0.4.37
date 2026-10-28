@@ -41,7 +41,7 @@ import { WindowOverlay } from "./window-overlay";
 import { UpdateNotificationNavigationBridge } from "./update-notification";
 
 const TOP_BAR_HEIGHT_CLASS = "h-12";
-const WINDOW_TOOLBAR_CLEARANCE = 184;
+const WINDOW_TOOLBAR_CLEARANCE = 120;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const toolbarMotion = {
   type: "spring",
@@ -88,13 +88,13 @@ function WindowToolbar({ hasSidebar }: { hasSidebar: boolean }) {
   return (
     <div
       className={cn(
-        "fixed left-0 top-0 z-30 flex w-[184px] shrink-0 items-center px-3",
+        "fixed left-0 top-12 z-30 flex w-30 shrink-0 items-center px-3",
         TOP_BAR_HEIGHT_CLASS,
       )}
       style={{ WebkitAppRegion: "drag" } as React.CSSProperties}
     >
       <div
-        className="flex items-center gap-1 pl-[70px]"
+        className="flex items-center gap-1"
         style={{ WebkitAppRegion: "no-drag" } as React.CSSProperties}
       >
         {hasSidebar && <SidebarTrigger
@@ -313,21 +313,22 @@ export function DesktopShell({ onRetryWorkspaceList = () => {} }: { onRetryWorks
       <WorkspaceSlugProvider slug={slug}>
         <UpdateNotificationNavigationBridge workspaceSlug={slug} />
         <DesktopInboxBridge />
-        <div className="flex h-screen bg-app-shell">
+        <div className="flex h-screen min-h-0 flex-col bg-app-shell">
+          <DesktopAccountNavigation onRetry={onRetryWorkspaceList} />
           {/* bg-app-shell is the wrapper's non-inset fill, so it also owns the
               non-inset half of --sidebar-wrapper-fill. sidebar.tsx supplies the
               inset half of both. Anything that has to paint an opaque layer
               over this wrapper (the tab flares) reads the variable rather than
               re-deriving which of the two is in play. */}
           {/* hasExternalTrigger: WindowToolbar below parks a SidebarTrigger
-              beside the traffic lights, where it is always reachable. Page
+              below the global scope row, where it is always reachable. Page
               headers inside the canvas must not add their own fallback one on
               top of it — desktop windows sit below `xl`, exactly where that
               fallback renders, so every page showed a second identical icon
               50px under this one (MUL-6218). */}
           <SidebarProvider
             hasExternalTrigger
-            className="flex-1 bg-app-shell [--sidebar-wrapper-fill:var(--app-shell)]"
+            className="min-h-0 flex-1 bg-app-shell [--sidebar-wrapper-fill:var(--app-shell)] [&_[data-slot=sidebar-container]]:top-12 [&_[data-slot=sidebar-container]]:h-[calc(100svh-3rem)]"
           >
             {slug && <GlobalShortcuts />}
             <WindowToolbar hasSidebar={!!slug} />
@@ -347,7 +348,6 @@ export function DesktopShell({ onRetryWorkspaceList = () => {} }: { onRetryWorks
                     equivalent relative/overflow-hidden content box. Desktop
                     used to have no navigation feedback at all — a click just
                     froze until the destination committed (MUL-6404). */}
-                <DesktopAccountNavigation onRetry={onRetryWorkspaceList} />
                 <NavigationProgress />
                 <TabContent />
                 {slug && <FloatingChat />}

@@ -1,0 +1,13 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+Running 3 tests using 1 worker
+
+(node:11283) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11283) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › e2e/collaboration-account-desktop.spec.ts:640:1 › Desktop account links retain one tab across workspaces, popouts and restart (7.7s)
+  ✓  2 [chromium] › e2e/collaboration-account-desktop.spec.ts:756:1 › Desktop cold account links work without workspaces and survive a controlled list error (4.0s)
+  ✓  3 [chromium] › e2e/collaboration-account-desktop.spec.ts:790:1 › Desktop login opens the pending account destination while workspace loading is stalled (1.1s)
+
+  3 passed (14.1s)

@@ -15,14 +15,15 @@ const router = vi.hoisted(() => ({
   back: vi.fn(),
   prefetch: vi.fn(),
 }));
+const route = vi.hoisted(() => ({ pathname: "/acme/issues", query: "" }));
 
 vi.mock("next/navigation", () => ({
   useRouter: () => router,
-  usePathname: () => "/acme/issues",
-  useSearchParams: () => new URLSearchParams(),
+  usePathname: () => route.pathname,
+  useSearchParams: () => new URLSearchParams(route.query),
 }));
 
-import { WebNavigationProvider } from "./navigation";
+import { WebNavigationProvider, useWebScopeResume } from "./navigation";
 import { useNavigation, type NavigationAdapter } from "@multica/views/navigation";
 
 function navigate(path: string) {
@@ -47,6 +48,63 @@ function renderAdapter(): () => NavigationAdapter {
 
 beforeEach(() => {
   router.push.mockReset();
+  route.pathname = "/acme/issues";
+  route.query = "";
+});
+
+describe("Web scope resume intent", () => {
+  it("retains the outgoing focus intent until the resumed destination renders", () => {
+    route.pathname = "/account";
+    route.query = "view=participating&issue=00000000-0000-4000-8000-000000000001";
+    const account = `${route.pathname}?${route.query}#description`;
+    let adapter!: NavigationAdapter;
+    let resume!: (path: string) => void;
+    function Probe() { adapter = useNavigation(); resume = useWebScopeResume(); return null; }
+    const page = () => <WebNavigationProvider><Probe /></WebNavigationProvider>;
+    const view = render(page());
+    act(() => adapter.push(account));
+    const explicitKey = adapter.navigationKey;
+    act(() => resume("/acme/projects/p1"));
+    expect(adapter.navigationKey).toBe(explicitKey);
+    expect(adapter.isScopeResume).toBe(false);
+
+    route.pathname = "/acme/projects/p1";
+    route.query = "";
+    view.rerender(page());
+    expect(adapter.navigationKey).not.toBe(explicitKey);
+    expect(adapter.isScopeResume).toBe(true);
+    const resumedKey = adapter.navigationKey;
+
+    act(() => resume(account));
+    expect(adapter.navigationKey).toBe(resumedKey);
+    expect(adapter.isScopeResume).toBe(true);
+    route.pathname = "/account";
+    route.query = "view=participating&issue=00000000-0000-4000-8000-000000000001";
+    view.rerender(page());
+    expect(adapter.navigationKey).not.toBe(resumedKey);
+    expect(adapter.isScopeResume).toBe(true);
+  });
+
+  it("keeps resume distinct from repeated explicit opens of the same anchor", () => {
+    route.pathname = "/account";
+    route.query = "view=participating&issue=00000000-0000-4000-8000-000000000001";
+    const path = `${route.pathname}?${route.query}#description`;
+    let adapter!: NavigationAdapter;
+    let resume!: (path: string) => void;
+    function Probe() { adapter = useNavigation(); resume = useWebScopeResume(); return null; }
+    render(<WebNavigationProvider><Probe /></WebNavigationProvider>);
+    act(() => resume(path));
+    expect(router.push).toHaveBeenLastCalledWith(path, { scroll: false });
+    expect(adapter.isScopeResume).toBe(true);
+    const resumedKey = adapter.navigationKey;
+    act(() => adapter.push(path));
+    expect(router.push).toHaveBeenLastCalledWith(path);
+    expect(adapter.isScopeResume).toBe(false);
+    expect(adapter.navigationKey).not.toBe(resumedKey);
+    const explicitKey = adapter.navigationKey;
+    act(() => adapter.push(path));
+    expect(adapter.navigationKey).not.toBe(explicitKey);
+  });
 });
 
 describe("WebNavigationProvider internal link bridge", () => {

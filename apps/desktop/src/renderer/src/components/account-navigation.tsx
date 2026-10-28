@@ -1,24 +1,32 @@
-import { accountPath, paths } from "@multica/core/paths";
 import { useWorkspaceList } from "@multica/core/workspace";
 import { Button } from "@multica/ui/components/ui/button";
-import { AppLink, useNavigation } from "@multica/views/navigation";
+import { GlobalScopeNavigation } from "@multica/views/layout";
+import { useNavigation } from "@multica/views/navigation";
 import { useT } from "@multica/views/i18n";
+import { Plus, RotateCw } from "lucide-react";
+import { resumeDesktopScope } from "../platform/navigation";
 import { useTabStore } from "../stores/tab-store";
 
-/** Workspace selection stays optional in the authenticated account shell. */
+/** This shell row survives account entry and workspace-sidebar collapse. */
 export function DesktopAccountNavigation({ onRetry }: { onRetry: () => void }) {
   const { t } = useT("collaboration");
   const { t: layout } = useT("layout");
   const list = useWorkspaceList();
   const nav = useNavigation();
   const activeScope = useTabStore((state) => state.activeScope);
-  return <nav aria-label={t(($) => $.page.title)} className="flex min-w-0 flex-wrap items-center gap-3 px-4 py-2 text-body" style={{ WebkitAppRegion: "no-drag" } as React.CSSProperties}>
-    <AppLink href={accountPath()} aria-current={activeScope === "account" ? "page" : undefined} className="rounded-md px-3 py-2 hover:bg-accent aria-[current=page]:font-semibold focus-visible:ring-2 focus-visible:ring-ring">{t(($) => $.page.title)}</AppLink>
-    <select aria-label={layout(($) => $.sidebar.workspaces_label)} value="" onChange={(event) => { if (event.target.value) nav.push(paths.workspace(event.target.value).issues()); }} className="max-w-64 rounded-md bg-background px-3 py-2 focus-visible:ring-2 focus-visible:ring-ring">
-      <option value="">{layout(($) => $.sidebar.workspaces_label)}</option>
-      {list.workspaces.map((workspace) => <option key={workspace.id} value={workspace.slug}>{workspace.name}</option>)}
-    </select>
-    {list.unavailable && <Button variant="ghost" disabled={list.isFetching} onClick={onRetry}>{t(($) => $.page.refresh)}</Button>}
-    <Button variant="ghost" onClick={() => nav.push("/workspaces/new")}>{layout(($) => $.sidebar.create_workspace)}</Button>
-  </nav>;
+  return <div data-slot="global-scope-bar" className="flex h-12 min-w-0 shrink-0 items-center bg-app-shell pr-3 pl-20" style={{ WebkitAppRegion: "drag" } as React.CSSProperties}>
+    <div className="min-w-0 flex-1" style={{ WebkitAppRegion: "no-drag" } as React.CSSProperties}>
+      <GlobalScopeNavigation
+        activeScope={activeScope}
+        onWorkspace={() => {
+          const slugs = list.ready ? list.workspaces.map((workspace) => workspace.slug) : undefined;
+          if (!resumeDesktopScope("workspace", slugs)) onRetry();
+        }}
+        onCollaboration={() => { resumeDesktopScope("account"); }}
+      >
+        {list.unavailable && <Button variant="ghost" size="icon" aria-label={t(($) => $.page.refresh)} title={t(($) => $.page.refresh)} disabled={list.isFetching} onClick={onRetry}><RotateCw className="size-4" /></Button>}
+        <Button variant="ghost" size="icon" aria-label={layout(($) => $.sidebar.create_workspace)} title={layout(($) => $.sidebar.create_workspace)} onClick={() => nav.push("/workspaces/new")}><Plus className="size-4" /></Button>
+      </GlobalScopeNavigation>
+    </div>
+  </div>;
 }

@@ -1,0 +1,12 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+Running 2 tests using 1 worker
+
+(node:11108) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11108) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › e2e/global-scope-navigation.spec.ts:54:3 › Web global switching resumes the task, collaboration filters and both scroll positions (3.6s)
+  ✓  2 [chromium] › e2e/global-scope-navigation.spec.ts:54:3 › Desktop global switching resumes the task, collaboration filters and both scroll positions (5.1s)
+
+  2 passed (9.8s)

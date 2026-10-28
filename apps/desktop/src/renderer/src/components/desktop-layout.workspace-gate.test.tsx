@@ -114,7 +114,7 @@ vi.mock("@multica/views/chat", () => ({
 
 vi.mock("./tab-bar", () => ({ TabBar: () => null }));
 vi.mock("./window-overlay", () => ({ WindowOverlay: () => null }));
-vi.mock("./account-navigation", () => ({ DesktopAccountNavigation: () => null }));
+vi.mock("./account-navigation", () => ({ DesktopAccountNavigation: () => <div data-testid="global-scope-navigation" /> }));
 vi.mock("./tab-content", () => ({
   TabContent: () => <div data-testid="tab-content" />,
 }));
@@ -166,7 +166,7 @@ describe("DesktopShell workspace gating", () => {
 
     const { container, queryByLabelText } = renderShell();
 
-    expect(container.querySelector("header")).toHaveStyle({ paddingLeft: "184px" });
+    expect(container.querySelector("header")).toHaveStyle({ paddingLeft: "120px" });
     expect(queryByLabelText("Toggle left sidebar")).toBeNull();
   });
 
@@ -200,6 +200,19 @@ describe("DesktopShell workspace gating", () => {
     const { queryByTestId } = renderShell();
 
     expect(queryByTestId("tab-content")).not.toBeNull();
+  });
+
+  it.each(["workspace", "account"] as const)("keeps the global switch outside the sidebar and canvas in %s scope", (scope) => {
+    state.activeScope = scope;
+    if (scope === "account") state.wsList = [];
+    const { getByTestId, container } = renderShell();
+    const scopeNavigation = getByTestId("global-scope-navigation");
+    const canvas = getByTestId("tab-content").parentElement!;
+    const sidebarWrapper = container.querySelector('[data-slot="sidebar-wrapper"]')!;
+    expect(canvas.contains(scopeNavigation)).toBe(false);
+    expect(sidebarWrapper.contains(scopeNavigation)).toBe(false);
+    expect(sidebarWrapper).toHaveClass("min-h-0");
+    expect(scopeNavigation.parentElement).toBe(sidebarWrapper.parentElement);
   });
 
   // The shell had no navigation feedback at all before MUL-6404 — the bar

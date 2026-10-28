@@ -164,7 +164,7 @@ describe("DesktopShell sidebar trigger", () => {
       });
     }
 
-    for (const [padding, margin] of [[184, 8], [0, 2]]) {
+    for (const [padding, margin] of [[120, 8], [0, 2]]) {
       fireEvent.click(trigger);
       for (let frame = 0; frame < 5; frame++) {
         await act(async () => {
@@ -194,15 +194,15 @@ describe("DesktopShell sidebar trigger", () => {
       await nextFrame();
     }
     expect(Number.parseFloat(header.style.paddingLeft)).toBeGreaterThan(0);
-    expect(Number.parseFloat(header.style.paddingLeft)).toBeLessThan(184);
+    expect(Number.parseFloat(header.style.paddingLeft)).toBeLessThan(120);
 
     act(() => {
       reducedMotion = true;
       mediaEvents.dispatchEvent(new Event("change"));
     });
     await nextFrame();
-    expect(header.style.paddingLeft).toBe("184px");
-    expect(dragRegion.style.left).toBe("184px");
+    expect(header.style.paddingLeft).toBe("120px");
+    expect(dragRegion.style.left).toBe("120px");
     expect(canvas.style.marginLeft).toBe("8px");
 
     act(() => {
@@ -212,6 +212,6 @@ describe("DesktopShell sidebar trigger", () => {
     fireEvent.click(trigger);
     await nextFrame();
     expect(Number.parseFloat(header.style.paddingLeft)).toBeGreaterThan(0);
-    expect(Number.parseFloat(header.style.paddingLeft)).toBeLessThan(184);
+    expect(Number.parseFloat(header.style.paddingLeft)).toBeLessThan(120);
   });
 });

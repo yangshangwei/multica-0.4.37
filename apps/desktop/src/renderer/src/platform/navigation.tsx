@@ -5,7 +5,7 @@ import {
   type NavigationAdapter,
 } from "@multica/views/navigation";
 import { useAuthStore } from "@multica/core/auth";
-import { parseAccountPath, isReservedSlug } from "@multica/core/paths";
+import { accountPath, parseAccountPath, isReservedSlug } from "@multica/core/paths";
 import { setCurrentWorkspace } from "@multica/core/platform";
 import {
   useTabStore,
@@ -97,6 +97,33 @@ function tryRouteToOtherWorkspace(path: string): boolean {
   return true;
 }
 
+/** Global scope controls resume existing sessions instead of opening a default URL. */
+export function resumeDesktopScope(
+  scope: "workspace" | "account",
+  workspaceSlugs?: readonly string[],
+): boolean {
+  const store = useTabStore.getState();
+  if (store.activeScope === scope) return true;
+  if (scope === "account") {
+    tryRouteToOverlay(accountPath());
+    setCurrentWorkspace(null, null);
+    store.switchAccount();
+    return true;
+  }
+  const last = store.lastWorkspaceSlug;
+  const slug = last && (workspaceSlugs === undefined || workspaceSlugs.includes(last))
+    ? last : workspaceSlugs?.[0];
+  if (!slug) {
+    if (workspaceSlugs === undefined) return false;
+    tryRouteToOverlay("/workspaces/new");
+    return true;
+  }
+  const overlay = useWindowOverlayStore.getState();
+  if (overlay.overlay) overlay.close();
+  store.switchWorkspace(slug);
+  return true;
+}
+
 /**
  * Execute a content link (the `multica:navigate` event fired by the shared
  * editor/markdown link handler) with the disposition the click resolved to:
@@ -182,6 +209,8 @@ export function DesktopNavigationProvider({
   // The active session's url IS the location. Primitive subscription: this
   // only re-renders when the active url actually changes.
   const activeUrl = useActiveTabUrl();
+  const isScopeResume = useTabStore((state) => state.isScopeResume);
+  const navigationKey = useTabStore((state) => state.navigationKey);
   const location = useMemo(() => {
     const url = activeUrl ?? "/";
     const { pathname, suffix } = splitTabUrl(url);
@@ -239,6 +268,8 @@ export function DesktopNavigationProvider({
       // The tab's URL is the only place the fragment survives on desktop: the
       // renderer's own `window.location` is the packaged file:// page.
       hash: location.hash,
+      isScopeResume,
+      navigationKey,
       openInNewTab: (
         path: string,
         title?: string,
@@ -270,7 +301,7 @@ export function DesktopNavigationProvider({
       },
       getShareableUrl: (path: string) => `${appUrl}${path}`,
     }),
-    [appUrl, location],
+    [appUrl, location, isScopeResume, navigationKey],
   );
 
   return <NavigationProvider value={adapter}>{children}</NavigationProvider>;

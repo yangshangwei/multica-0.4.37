@@ -65,7 +65,7 @@ import {
   issueViewContainerKey,
   useActiveIssueViewStore,
 } from "@multica/core/issue-views/active-view-store";
-import { accountPath, useCurrentWorkspace, useWorkspacePaths, paths } from "@multica/core/paths";
+import { useCurrentWorkspace, useWorkspacePaths, paths } from "@multica/core/paths";
 import { workspaceListOptions, myInvitationListOptions, workspaceKeys } from "@multica/core/workspace/queries";
 import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -489,7 +489,6 @@ interface AppSidebarProps {
 
 export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, headerStyle }: AppSidebarProps = {}) {
   const { t } = useT("layout");
-  const { t: collaborationT } = useT("collaboration");
   const { pathname, push } = useNavigation();
   const user = useAuthStore((s) => s.user);
   const userId = useAuthStore((s) => s.user?.id);
@@ -953,7 +952,6 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
 
         <SidebarFooter className="p-2">
           <SidebarMenu className="gap-0.5">
-            <NavRow href={accountPath()} label={collaborationT(($) => $.page.title)} isActive={pathname === "/account"} />
             {bottomNav.map((item) => {
               const href = p[item.key]();
               return (
