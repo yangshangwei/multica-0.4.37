@@ -324,7 +324,14 @@
       "error_daemon_version": "该智能体的守护进程 CLI（{{current}}）低于要求的 {{min}}。请升级守护进程后再使用通过智能体创建。",
       "error_unknown": "提交失败，请重试。",
       "sub_issue_of": "作为 {{identifier}} 的子任务",
-      "prompt_label": "任务描述"
+      "prompt_label": "任务描述",
+      "autonomy_blocked_title": "{{name}} 无法创建这个任务",
+      "autonomy_blocked_reason_agent": "通过智能体创建会让智能体自己创建任务，这需要\"{{required}}\"或更高的自治等级。{{name}} 的自治等级是\"{{level}}\"：可以读取、分析和评论，但不能创建任务，也不能修改状态或负责人，所以这次请求会失败。",
+      "autonomy_blocked_reason_squad": "通过智能体创建会让AI小队的队长自己创建任务，这需要\"{{required}}\"或更高的自治等级。{{name}} 的队长自治等级是\"{{level}}\"：可以读取、分析和评论，但不能创建任务，也不能修改状态或负责人，所以这次请求会失败。",
+      "autonomy_blocked_next": "请手动创建任务并分配给 {{name}}，它会接手任务，并在评论中回复分析结果。如果仍想通过智能体创建，请改选自治等级为\"{{required}}\"或更高的智能体。",
+      "autonomy_blocked_action": "手动创建并分配给 {{name}}",
+      "autonomy_blocked_tooltip": "所选对象不能创建任务，请改为手动创建。",
+      "error_autonomy": "负责创建任务的智能体（选择AI小队时为队长）自治等级为\"{{level}}\"，不能创建任务；通过智能体创建需要\"{{required}}\"或更高。请手动创建任务并完成分配，或换一个创建对象。"
     },
     "actor_picker": {
       "mika": "小阿孚",
@@ -375,7 +382,9 @@
       "project_failed": "无法加载项目小队。",
       "retry_project": "重试项目",
       "creator_hint": "默认由所选对象负责，也可在描述中另行指定。",
-      "no_project_matches": "当前筛选下没有项目小队。"
+      "no_project_matches": "当前筛选下没有项目小队。",
+      "disabled_autonomy_agent": "自治等级为\"{{level}}\"，不能创建任务。请手动创建任务后分配给该智能体。",
+      "disabled_autonomy_squad": "队长的自治等级为\"{{level}}\"，不能创建任务。请手动创建任务后分配给该AI小队。"
     },
     "creator_recommendations": {
       "choose": "帮我选智能体",

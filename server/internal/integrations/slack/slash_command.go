@@ -53,6 +53,7 @@ const (
 	slashLinkAccountFallback  = "Link your Slack account to Multica first, then try `/issue` again."
 	slashIssueLimitText       = "⚠️ This workspace has reached its issue limit. Open Multica to view the available recovery options."
 	slashInternalErrorText    = "⚠️ Something went wrong creating the issue. Please try again."
+	slashAutonomyText         = "⚠️ The agent connected to this Slack app can only read, analyse and comment, so it cannot create issues. Create the issue in Multica and assign it to the agent, or ask an admin to connect an agent at Contributor level or above."
 	slashDisabledText         = "This Slack app isn't connected to Multica (or was disconnected). Ask a workspace admin to reconnect it."
 	slashNewStartedText       = "✅ Started a new Multica chat."
 	slashNewThreadGuideText   = "In a channel, start the new chat from the target thread with `@Multica /new`."
@@ -287,6 +288,12 @@ func (p *SlashCommandProcessor) process(ctx context.Context, cmd slack.SlashComm
 		var limitErr *service.IssueLimitReachedError
 		if errors.As(err, &limitErr) {
 			return slashIssueLimitText
+		}
+		// Retrying cannot help: the installation's agent is below the level
+		// quick-create needs, and only a person can change which agent it is.
+		var autonomyErr *service.QuickCreateAutonomyError
+		if errors.As(err, &autonomyErr) {
+			return slashAutonomyText
 		}
 		p.logger.WarnContext(ctx, "slack slash command: enqueue quick-create failed",
 			"app_id", cmd.APIAppID, "error", err)

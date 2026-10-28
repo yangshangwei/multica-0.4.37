@@ -20,6 +20,18 @@ describe("creator seed precedence", () => {
   it("skips a known inaccessible ref but never treats an ID from the other actor type as valid", () => {
     expect(resolveQuickCreateCreator({...base,defaultActor:s("a2"),lastActor:a("a2")})).toEqual(a("a2"));
   });
+  it("skips remembered creators that cannot create issues but honors explicit picks", () => {
+    const canCreate = (actor: { type: "agent" | "squad"; id: string }) => actor.id !== "a1";
+    // Default, last accepted and the first-agent fallback all move past a1.
+    expect(resolveQuickCreateCreator({...base,canCreate,defaultActor:a("a1"),lastActor:s("s1")})).toEqual(s("s1"));
+    expect(resolveQuickCreateCreator({...base,canCreate,lastActor:a("a1")})).toEqual(a("a2"));
+    expect(resolveQuickCreateCreator({...base,canCreate})).toEqual(a("a2"));
+    // A caller or draft is what the user asked for; the panel explains it.
+    expect(resolveQuickCreateCreator({...base,canCreate,callers:[a("a1")]})).toEqual(a("a1"));
+    expect(resolveQuickCreateCreator({...base,canCreate,draftActor:a("a1")})).toEqual(a("a1"));
+    // No usable agent left means no pick rather than an unusable one.
+    expect(resolveQuickCreateCreator({...base,agents:[{id:"a1"}],squads:[],canCreate})).toBeNull();
+  });
   it("waits for unknown agent permissions before defaulting", () => {
     expect(resolveQuickCreateCreator({...base,agentsKnown:false})).toBeNull();
     expect(resolveQuickCreateCreator({...base,agents:[]})).toBeNull();

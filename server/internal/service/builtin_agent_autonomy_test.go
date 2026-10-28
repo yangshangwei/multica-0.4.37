@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"os"
 	"strings"
 	"testing"
@@ -46,6 +47,21 @@ func TestAutonomyAtLeast_Ordering(t *testing.T) {
 		if got := AutonomyAtLeast(tc.have, tc.want); got != tc.ok {
 			t.Errorf("AutonomyAtLeast(%q, %q) = %v, want %v", tc.have, tc.want, got, tc.ok)
 		}
+	}
+}
+
+// Quick-create's whole run is one `multica issue create`, so it must refuse
+// exactly the levels CreateIssue refuses, and keep undeclared agents working.
+func TestCheckQuickCreateAutonomy(t *testing.T) {
+	for _, level := range []string{"", "supervisor", "contributor", "coordinator", "operator"} {
+		if err := CheckQuickCreateAutonomy(level); err != nil {
+			t.Errorf("CheckQuickCreateAutonomy(%q) = %v, want nil", level, err)
+		}
+	}
+	err := CheckQuickCreateAutonomy("observer")
+	var autonomyErr *QuickCreateAutonomyError
+	if !errors.As(err, &autonomyErr) || autonomyErr.Level != "observer" {
+		t.Fatalf("CheckQuickCreateAutonomy(observer) = %v, want a QuickCreateAutonomyError for observer", err)
 	}
 }
 

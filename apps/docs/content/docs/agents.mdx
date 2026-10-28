@@ -77,6 +77,8 @@ An agent created from a [role template](/agents-create#role-templates) also carr
 
 This is not only a label. Multica applies it in two places at once: the API rejects the calls the level forbids when the agent makes them, and the same rules are added to the agent's prompt on every run, from the server, where a workspace cannot edit them away.
 
+**Create with agent** needs Contributor or above, because it asks the agent (a squad's leader, for a squad) to create the issue itself. An Observer is shown disabled in that picker, and the request is refused before it is queued. To give an Observer work, create the issue manually and assign it; it replies with its analysis in a comment.
+
 An agent with no level declared — every agent created before role templates existed — is unaffected. Nothing about its behaviour changes.
 
 An agent keeps the level its template gave it. Only a person can change that level — an agent cannot raise its own ceiling, even though it acts with its owner's identity — and the agent's settings screen does not offer that control yet.

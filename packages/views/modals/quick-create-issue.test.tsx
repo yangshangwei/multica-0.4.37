@@ -38,6 +38,7 @@ const mockSetManual = vi.hoisted(() => vi.fn());
 const mockSetAgent = vi.hoisted(() => vi.fn());
 const mockSetActiveMode = vi.hoisted(() => vi.fn());
 const mockClearDraft = vi.hoisted(() => vi.fn());
+const mockRefetchAgents = vi.hoisted(() => vi.fn());
 
 const sourceContextPanelData = {
   anchor_comment_id: "comment-source",
@@ -145,7 +146,7 @@ const mockSquadsData = vi.hoisted(
 );
 
 const mockAgentsData = vi.hoisted(() => ({
-  list: [] as Array<{ id: string; name: string; archived_at: string | null; runtime_id: string; template_key?: string; description?: string }>,
+  list: [] as Array<{ id: string; name: string; archived_at: string | null; runtime_id: string; template_key?: string; description?: string; autonomy_level?: string }>,
 }));
 
 // Per-test override for the runtimes list. Non-admin members receive a
@@ -176,6 +177,7 @@ vi.mock("@tanstack/react-query", () => ({
       case "agents":
         return {
           data: mockAgentsData.list,
+          refetch: mockRefetchAgents,
         };
       case "runtimes":
         return { data: mockRuntimesData.list };
@@ -458,17 +460,21 @@ vi.mock("@multica/ui/components/ui/dialog", () => ({
 vi.mock("./creator-recommendations", () => ({ CreatorRecommendations: ({ children }: { children?: ReactNode }) => <>{children}</> }));
 
 vi.mock("./quick-create-actor-picker", () => ({
-  QuickCreateActorPicker: ({ actor, visibleAgents, visibleSquads, onPick }: {
+  QuickCreateActorPicker: ({ actor, visibleAgents, visibleSquads, onPick, disabledReasons }: {
     actor: { type: "agent" | "squad"; id: string } | null;
     visibleAgents: Array<{ id: string; name: string }>;
     visibleSquads: Array<{ id: string; name: string }>;
     onPick: (actor: { type: "agent" | "squad"; id: string }) => void;
+    disabledReasons?: ReadonlyMap<string, string>;
   }) => <>{(["agent", "squad"] as const).flatMap((type) =>
-    (type === "agent" ? visibleAgents : visibleSquads).map((item) => (
-      <button key={`${type}:${item.id}`} type="button"
-        data-selected={actor?.type === type && actor.id === item.id ? "true" : "false"}
-        onClick={() => onPick({ type, id: item.id })}>{item.name}</button>
-    )))}</>,
+    (type === "agent" ? visibleAgents : visibleSquads).map((item) => {
+      const reason = disabledReasons?.get(`${type}:${item.id}`);
+      return (
+        <button key={`${type}:${item.id}`} type="button" disabled={!!reason} data-reason={reason}
+          data-selected={actor?.type === type && actor.id === item.id ? "true" : "false"}
+          onClick={() => onPick({ type, id: item.id })}>{item.name}</button>
+      );
+    }))}</>,
 }));
 
 vi.mock("@multica/ui/components/ui/button", () => ({
@@ -509,10 +515,11 @@ import enModals from "../locales/en/modals.json";
 import enEditor from "../locales/en/editor.json";
 import enProjects from "../locales/en/projects.json";
 import enIssues from "../locales/en/issues.json";
+import enAgents from "../locales/en/agents.json";
 import { AgentCreatePanel } from "./quick-create-issue";
 
 const TEST_RESOURCES = {
-  en: { common: enCommon, modals: enModals, editor: enEditor, projects: enProjects, issues: enIssues },
+  en: { common: enCommon, modals: enModals, editor: enEditor, projects: enProjects, issues: enIssues, agents: enAgents },
 };
 
 function renderPanel(props: React.ComponentProps<typeof AgentCreatePanel>) {
@@ -1015,6 +1022,95 @@ describe("AgentCreatePanel", () => {
       });
     });
     expect(mockRecordSuccessfulActor).toHaveBeenCalledWith({ type: "squad", id: "squad-1" }, mockPreferenceScope);
+  });
+
+  // An Observer (built-in Architect, reviewers, analysts) cannot run the
+  // `multica issue create` this flow hands it. Picker gating and seeding live
+  // here; the level rule itself is pinned in core/agents/autonomy.test.ts.
+  describe("creators that cannot create issues", () => {
+    const architect = { id: "agent-architect", name: "Architect", archived_at: null, runtime_id: "runtime-1", autonomy_level: "observer" };
+
+    it("lists them disabled with the reason and never seeds one from history", () => {
+      mockAgentsData.list = [architect, ...mockAgentsData.list];
+      mockSquadsData.list = [{ id: "squad-review", name: "Review Squad", leader_id: "agent-architect", archived_at: null }];
+      mockQuickCreateStore.lastActorType = "agent";
+      mockQuickCreateStore.lastActorId = "agent-architect";
+
+      renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn() });
+
+      const row = screen.getByRole("button", { name: "Architect" });
+      expect(row).toBeDisabled();
+      expect(row.dataset.reason).toMatch(/Observer, so it cannot create issues/);
+      // The squad's leader is the one who would run the create.
+      expect(screen.getByRole("button", { name: "Review Squad" })).toBeDisabled();
+      // The last accepted creator is skipped instead of reopening the dead end.
+      expect(screen.getByRole("button", { name: "Bohan" })).toHaveAttribute("data-selected", "true");
+    });
+
+    it("explains an explicitly requested one and hands off to manual creation assigned to it", async () => {
+      const user = userEvent.setup();
+      const onSwitchMode = vi.fn();
+      mockAgentsData.list = [architect, ...mockAgentsData.list];
+      // A stale manual assignee must not survive a button that names Architect.
+      mockIssueDraftStore.draft.manual.assigneeType = "member";
+      mockIssueDraftStore.draft.manual.assigneeId = "user-1";
+
+      renderPanel({ onClose: vi.fn(), onSwitchMode, isExpanded: false, setIsExpanded: vi.fn(), data: { agent_id: "agent-architect" } });
+
+      expect(screen.getByText("Architect cannot create this issue")).toBeInTheDocument();
+      expect(screen.getByText(/needs autonomy level Contributor or above\. Architect is Observer/)).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /^Create$/i })).toBeDisabled();
+
+      await user.click(screen.getByRole("button", { name: "Create manually and assign to Architect" }));
+      expect(mockSetManual).toHaveBeenCalledWith({ assigneeType: "agent", assigneeId: "agent-architect" });
+      expect(onSwitchMode).toHaveBeenCalledTimes(1);
+      expect(mockQuickCreateIssue).not.toHaveBeenCalled();
+    });
+
+    // The disabled button does not cover the keyboard path.
+    it("does not send through the send shortcut either", () => {
+      mockAgentsData.list = [architect, ...mockAgentsData.list];
+      renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn(), data: { agent_id: "agent-architect" } });
+
+      fireEvent.keyDown(screen.getByRole("textbox", { name: "Issue prompt" }), { key: "Enter", metaKey: true });
+
+      expect(mockQuickCreateIssue).not.toHaveBeenCalled();
+    });
+
+    it("explains the server refusal when the level changed after the list loaded", async () => {
+      const user = userEvent.setup();
+      mockQuickCreateIssue.mockRejectedValueOnce(
+        new ApiError("autonomy refused", 422, "Unprocessable Entity", {
+          code: "agent_autonomy_insufficient", autonomy_level: "observer", required_autonomy: "contributor",
+        }),
+      );
+
+      renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn() });
+      await user.click(screen.getByRole("button", { name: /^Create$/i }));
+
+      expect(await screen.findByRole("alert")).toHaveTextContent(
+        "has autonomy level Observer, so it cannot create issues; Create with agent needs Contributor or above.",
+      );
+      // The refreshed list is what disables the creator and shows the notice.
+      expect(mockRefetchAgents).toHaveBeenCalledTimes(1);
+      expect(mockRecordSuccessfulActor).not.toHaveBeenCalled();
+    });
+
+    it.each([
+      ["a non-string level", { autonomy_level: 42 }],
+      ["no level at all", {}],
+    ])("falls back to the server sentence for %s", async (_label, fields) => {
+      const user = userEvent.setup();
+      const sentence = "The agent that would create this issue has autonomy level observer.";
+      mockQuickCreateIssue.mockRejectedValueOnce(
+        new ApiError(sentence, 422, "Unprocessable Entity", { code: "agent_autonomy_insufficient", ...fields }),
+      );
+
+      renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn() });
+      await user.click(screen.getByRole("button", { name: /^Create$/i }));
+
+      expect(await screen.findByRole("alert")).toHaveTextContent(sentence);
+    });
   });
 
   // Squads whose leader agent isn't visible (archived, private, etc.) must

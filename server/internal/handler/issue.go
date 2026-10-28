@@ -2714,6 +2714,11 @@ func (h *Handler) QuickCreateIssue(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusNotFound, "agent not found")
 		return
 	}
+	// Checked before readiness: a runtime can come back online, a level cannot,
+	// so this is the refusal worth reporting first.
+	if writeQuickCreateAutonomyError(w, service.CheckQuickCreateAutonomy(agent.AutonomyLevel)) {
+		return
+	}
 	// Quick-create needs the agent to run NOW, so any non-ready verdict refuses
 	// — but with the verdict's own code, so "CLI cannot run" no longer arrives
 	// as "runtime is offline" and sends the user to reconnect a machine that is
@@ -2802,6 +2807,9 @@ func (h *Handler) QuickCreateIssue(w http.ResponseWriter, r *http.Request) {
 		if writeIssueLimitReached(w, err) {
 			return
 		}
+		if writeQuickCreateAutonomyError(w, err) {
+			return
+		}
 		slog.Warn("quick-create enqueue failed", append(logger.RequestAttrs(r), "error", err)...)
 		writeError(w, http.StatusInternalServerError, "failed to enqueue quick-create task")
 		return
@@ -2824,6 +2832,34 @@ func writeAgentUnavailable(w http.ResponseWriter, reason string, reasonCode disp
 		"reason":      reason,
 		"reason_code": reasonCode,
 	})
+}
+
+// writeQuickCreateAutonomyError answers a quick-create whose executing agent
+// cannot create issues, and reports whether err was that refusal. 422 with a
+// stable code, like agent_unavailable: the request is well-formed and the user
+// is allowed to make it; the chosen agent is the wrong one for this flow.
+//
+//	422 {
+//	  "code":              "agent_autonomy_insufficient",
+//	  "autonomy_level":    "observer",
+//	  "required_autonomy": "contributor",
+//	  "error":             "<sentence for clients that predate the code>"
+//	}
+func writeQuickCreateAutonomyError(w http.ResponseWriter, err error) bool {
+	var autonomyErr *service.QuickCreateAutonomyError
+	if !errors.As(err, &autonomyErr) {
+		return false
+	}
+	required := string(service.QuickCreateMinAutonomy)
+	writeJSON(w, http.StatusUnprocessableEntity, map[string]any{
+		"code":              "agent_autonomy_insufficient",
+		"autonomy_level":    autonomyErr.Level,
+		"required_autonomy": required,
+		"error": "The agent that would create this issue has autonomy level " + autonomyErr.Level +
+			": it can read, analyse and comment, but cannot create issues. Create the issue manually and assign it to this agent, or pick an agent at " +
+			required + " or above.",
+	})
+	return true
 }
 
 // isRuntimeOnline returns true when the given runtime is currently

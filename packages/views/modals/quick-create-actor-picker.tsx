@@ -39,6 +39,10 @@ export type QuickCreateActorPickerProps = {
   onOpenChange?: (open: boolean) => void;
   side?: "top" | "bottom";
   align?: "start" | "center" | "end";
+  /** Creator mode: actors that stay listed but cannot be picked, keyed by
+   *  `type:id`, with the reason shown under the row. Chat and assignment carry
+   *  their own map. */
+  disabledReasons?: ReadonlyMap<string, string>;
   /** Chat selects individual agents; squads only describe their leadership. */
   chat?: {
     hint: string;
@@ -67,6 +71,7 @@ export function QuickCreateActorPicker({
   favoriteActors, recentActors, preferencesReady, onToggleFavorite, onPick,
   agentState = READY, squadState = READY, defaultActor = null, onSetDefault, projectActors = EMPTY_REFS, projectState,
   trigger, triggerRender, open: controlledOpen, onOpenChange, assignment, chat, side = "bottom", align = "start",
+  disabledReasons: creatorDisabledReasons,
 }: QuickCreateActorPickerProps) {
   const { t } = useT("modals");
   const { t: tIssues } = useT("issues");
@@ -150,7 +155,10 @@ export function QuickCreateActorPicker({
       setQuery(""); setView("home"); setTypeFilter("all"); setLimit(ACTOR_PAGE_SIZE);
     }
   };
+  const disabledReasons = (chat ?? assignment)?.disabledReasons ?? creatorDisabledReasons;
   const selected = actor ? catalog.find((item) => actorKey(item) === actorKey(actor)) : undefined;
+  // A creator that cannot create is not a default worth saving.
+  const selectedUsable = !!selected && !disabledReasons?.has(actorKey(selected));
   const display = selected ?? (actor?.type === "squad" ? selectedSquad : selectedAgent);
   const agentOnly = typeFilter === "agent" || typeFilter === "mika";
   const memberState = assignment?.memberState ?? READY;
@@ -164,7 +172,7 @@ export function QuickCreateActorPicker({
     const pinned = favoriteKeys.has(key);
     const isSelected = actor !== null && actorKey(actor) === key;
     const ref = { type: item.type, id: item.id };
-    const disabledReason = (chat ?? assignment)?.disabledReasons.get(key);
+    const disabledReason = disabledReasons?.get(key);
     return <div key={key} data-actor-key={key} ref={(node) => {
       if (node) rows.current.set(key, node); else rows.current.delete(key);
     }} className="flex min-w-0 items-center gap-0.5 [&>button:first-child]:min-w-0">
@@ -187,7 +195,9 @@ export function QuickCreateActorPicker({
             {t(($) => $.create_issue.actor_picker.leads_squads, { names: item.leadsSquads.join(", ") })}
           </span>}
           {isSelected && <span className="sr-only">{t(($) => $.create_issue.actor_picker.selected)}</span>}
-          {chatMode && disabledReason && <span className="text-caption text-muted-foreground">{disabledReason}</span>}
+          {/* Inline, not only the tooltip: a disabled button gets no hover in
+              some browsers, and this reason is what tells the user what to do. */}
+          {!assignment && disabledReason && <span className="text-caption text-muted-foreground">{disabledReason}</span>}
         </span>
         {item.type === "agent" && assignment?.privateAgentIds.has(item.id) && <Lock aria-hidden className="size-3 shrink-0 text-muted-foreground" />}
       </PickerItem>
@@ -264,7 +274,7 @@ export function QuickCreateActorPicker({
         {defaultActor && defaultKnown && <span className="w-full truncate px-2 text-caption text-muted-foreground">{defaultItem
           ? t(($) => $.create_issue.actor_picker.default_label, { name: defaultItem.name })
           : t(($) => $.create_issue.actor_picker.default_unavailable)}</span>}
-        <button type="button" className={ACTION_CLASS} disabled={!preferencesReady || (!isCurrentDefault && !selected)}
+        <button type="button" className={ACTION_CLASS} disabled={!preferencesReady || (!isCurrentDefault && !selectedUsable)}
           onClick={() => { searchRef.current?.focus(); onSetDefault(isCurrentDefault ? null : actor); }}>
           {isCurrentDefault ? t(($) => $.create_issue.actor_picker.clear_default) : t(($) => $.create_issue.actor_picker.set_default)}
         </button>

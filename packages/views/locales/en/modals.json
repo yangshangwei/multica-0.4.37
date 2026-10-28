@@ -327,7 +327,14 @@
       "error_daemon_version": "This agent's daemon CLI ({{current}}) is below the required {{min}}. Upgrade the daemon to use Create with agent.",
       "error_unknown": "Failed to submit. Try again.",
       "sub_issue_of": "Sub-issue of {{identifier}}",
-      "prompt_label": "Task description"
+      "prompt_label": "Task description",
+      "autonomy_blocked_title": "{{name}} cannot create this issue",
+      "autonomy_blocked_reason_agent": "Create with agent asks the agent to file the issue itself, which needs autonomy level {{required}} or above. {{name}} is {{level}}: it can read, analyse and comment, but cannot create issues or change status or assignee, so this request would fail.",
+      "autonomy_blocked_reason_squad": "Create with agent asks the squad leader to file the issue itself, which needs autonomy level {{required}} or above. The leader of {{name}} is {{level}}: it can read, analyse and comment, but cannot create issues or change status or assignee, so this request would fail.",
+      "autonomy_blocked_next": "Create the issue manually and assign it to {{name}}: it will pick the issue up and reply with its analysis in a comment. To keep using Create with agent, pick an agent at {{required}} or above.",
+      "autonomy_blocked_action": "Create manually and assign to {{name}}",
+      "autonomy_blocked_tooltip": "The selected creator cannot create issues. Create manually instead.",
+      "error_autonomy": "The agent that would create this issue (a squad's leader, for a squad) has autonomy level {{level}}, so it cannot create issues; Create with agent needs {{required}} or above. Create the issue manually and assign it, or pick another creator."
     },
     "actor_picker": {
       "mika": "小阿孚",
@@ -378,7 +385,9 @@
       "project_failed": "Could not load project squads.",
       "retry_project": "Retry project",
       "creator_hint": "Assigned to your selection by default. You can name someone else in the request.",
-      "no_project_matches": "No project squads match this filter."
+      "no_project_matches": "No project squads match this filter.",
+      "disabled_autonomy_agent": "Autonomy level is {{level}}, so it cannot create issues. Create one manually and assign it to this agent.",
+      "disabled_autonomy_squad": "The leader's autonomy level is {{level}}, so it cannot create issues. Create one manually and assign it to this squad."
     },
     "creator_recommendations": {
       "choose": "Suggest an agent",

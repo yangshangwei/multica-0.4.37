@@ -67,7 +67,7 @@ import { ClearablePillButton, PillButton } from "../common/pill-button";
 import { ProjectPicker } from "../projects/components/project-picker";
 import { DueDatePicker, PriorityIcon, PriorityPicker } from "../issues/components";
 import { canAssignAgent } from "../issues/components/pickers/assignee-picker";
-import { isAgentRuntimeBound } from "@multica/core/agents";
+import { canAgentCreateIssues, isAgentRuntimeBound, QUICK_CREATE_MIN_AUTONOMY } from "@multica/core/agents";
 import { useAuthStore } from "@multica/core/auth";
 import { memberListOptions } from "@multica/core/workspace/queries";
 import {
@@ -82,7 +82,7 @@ import { useIssueCreateUploads } from "./use-issue-create-uploads";
 import { FileUploadButton } from "@multica/ui/components/common/file-upload-button";
 import { useT } from "../i18n";
 import { QuickCreateActorPicker } from "./quick-create-actor-picker";
-import { buildActorCatalog } from "./quick-create-actor-picker-model";
+import { actorKey, buildActorCatalog } from "./quick-create-actor-picker-model";
 import { CreatorRecommendations } from "./creator-recommendations";
 import { SourceContextPreviewCard, useSourceContextFailureMessage } from "./source-context-preview";
 import { useIssueLimitUpgradePrompt } from "./use-issue-limit-upgrade-prompt";
@@ -124,6 +124,7 @@ export function AgentCreatePanel({
   const { t } = useT("modals");
   const { t: tIssues } = useT("issues");
   const { t: tProjects } = useT("projects");
+  const { t: tAgents } = useT("agents");
   const promptLabelId = useId();
   const sendShortcut = useShortcut("send");
   const workspaceName = useCurrentWorkspace()?.name;
@@ -185,6 +186,40 @@ export function AgentCreatePanel({
       ),
     [squads, visibleAgentIds],
   );
+
+  // Create-with-agent runs one `multica issue create` as the chosen agent (the
+  // leader, for a squad), and the server refuses it below Contributor. Those
+  // actors stay listed so people recognise them, but disabled with the reason;
+  // the server answers agent_autonomy_insufficient if one is sent anyway.
+  const autonomyLabel = useCallback((level: string) => {
+    switch (level) {
+      case "observer":
+      case "contributor":
+      case "coordinator":
+      case "operator":
+        return tAgents(($) => $.role_templates.autonomy[level]);
+      default:
+        return level;
+    }
+  }, [tAgents]);
+  const blockedLevels = useMemo(() => {
+    const levels = new Map<string, string>();
+    const agentLevels = new Map(visibleAgents.map((a) => [a.id, a.autonomy_level ?? ""]));
+    for (const a of visibleAgents) {
+      if (!canAgentCreateIssues(a.autonomy_level)) levels.set(actorKey({ type: "agent", id: a.id }), a.autonomy_level ?? "");
+    }
+    for (const s of visibleSquads) {
+      const level = agentLevels.get(s.leader_id);
+      if (level !== undefined && !canAgentCreateIssues(level)) levels.set(actorKey({ type: "squad", id: s.id }), level);
+    }
+    return levels;
+  }, [visibleAgents, visibleSquads]);
+  const creatorDisabledReasons = useMemo(() => new Map([...blockedLevels].map(([key, level]) => [key,
+    key.startsWith("squad:")
+      ? t(($) => $.create_issue.actor_picker.disabled_autonomy_squad, { level: autonomyLabel(level) })
+      : t(($) => $.create_issue.actor_picker.disabled_autonomy_agent, { level: autonomyLabel(level) }),
+  ])), [blockedLevels, t, autonomyLabel]);
+  const canCreateAs = useCallback((ref: QuickCreateActorRef) => !blockedLevels.has(actorKey(ref)), [blockedLevels]);
 
   const preferencesReady = useQuickCreateStore((s) => isQuickCreateStoreReady(s, wsId, userId));
   const resetGeneration = useQuickCreateStore((s) => s.resetGeneration);
@@ -252,9 +287,10 @@ export function AgentCreatePanel({
       agents: visibleAgents, squads: visibleSquads, preferencesReady,
       agentsKnown: agentsQuery.data !== undefined && membersQuery.data !== undefined,
       squadsKnown: squadsQuery.data !== undefined,
+      canCreate: canCreateAs,
     });
   }, [data?.agent_id, data?.squad_id, draft.agent.actorType, draft.agent.actorId, defaultActor, lastActorType, lastActorId,
-    visibleAgents, visibleSquads, preferencesReady, agentsQuery.data, membersQuery.data, squadsQuery.data]);
+    visibleAgents, visibleSquads, preferencesReady, agentsQuery.data, membersQuery.data, squadsQuery.data, canCreateAs]);
 
   const [actor, setActor] = useState<QuickCreateActorRef | null>(() => seedActor());
 
@@ -296,7 +332,16 @@ export function AgentCreatePanel({
     const ids = getProjectExecutionSquads(project).flatMap((config) => config.state === "configured" && config.squad_id && available.has(config.squad_id) ? [config.squad_id] : []);
     return [...new Set(ids)].map((id) => ({type:"squad",id}));
   }, [projects, projectId, visibleSquads]);
-  const recommendationActors = useMemo(() => buildActorCatalog(visibleAgents, visibleSquads), [visibleAgents, visibleSquads]);
+  // Recommending a creator the picker refuses would be a dead end.
+  const recommendationActors = useMemo(
+    () => buildActorCatalog(visibleAgents, visibleSquads).filter((entry) => canCreateAs(entry)),
+    [visibleAgents, visibleSquads, canCreateAs],
+  );
+  // The picker refuses these, but a caller (an agent's "Assign" button) or an
+  // older draft can still land on one. Say why and offer the manual path rather
+  // than silently swapping the creator.
+  const blockedLevel = actor ? blockedLevels.get(actorKey(actor)) : undefined;
+  const autonomyBlocked = blockedLevel !== undefined;
   const [priority, setPriority] = useState<IssuePriority>(
     (data?.priority as IssuePriority | undefined) ?? draft.shared.priority,
   );
@@ -449,7 +494,7 @@ export function AgentCreatePanel({
     onSubmit: async (md): Promise<boolean> => {
       // The button already disables on !actor / versionBlocked, but the
       // ⌘+Enter path bypasses it — re-guard here and keep the draft in place.
-      if (!actor || versionBlocked || (anchorCommentId && !sourcePreview)) return false;
+      if (!actor || versionBlocked || autonomyBlocked || (anchorCommentId && !sourcePreview)) return false;
       // Flush the prompt editor's pending debounce before snapshotting — see
       // ManualCreatePanel.
       const pendingPrompt = editorRef.current?.flushPendingUpdate?.();
@@ -511,6 +556,8 @@ export function AgentCreatePanel({
             reason?: string;
             current_version?: string;
             min_version?: string;
+            autonomy_level?: unknown;
+            required_autonomy?: unknown;
           };
           if (body.code === "issue_limit_reached") {
             showIssueLimitUpgradePrompt();
@@ -518,6 +565,20 @@ export function AgentCreatePanel({
           }
           if (body.code === "agent_unavailable") {
             setError(body.reason || t(($) => $.create_issue.agent.error_agent_unavailable_fallback));
+            return false;
+          }
+          if (body.code === "agent_autonomy_insufficient") {
+            // Race fallback for a level that changed after the list loaded.
+            // Refetch so the picker disables the creator and the notice offers
+            // the manual path; otherwise the same submit is refused again.
+            // Without a level to name, the server's own sentence still says
+            // what to do.
+            void agentsQuery.refetch();
+            const level = typeof body.autonomy_level === "string" ? body.autonomy_level : "";
+            const required = typeof body.required_autonomy === "string" ? body.required_autonomy : QUICK_CREATE_MIN_AUTONOMY;
+            setError(level
+              ? t(($) => $.create_issue.agent.error_autonomy, { level: autonomyLabel(level), required: autonomyLabel(required) })
+              : e.message || t(($) => $.create_issue.agent.error_unknown));
             return false;
           }
           if (body.code === "daemon_version_unsupported") {
@@ -610,7 +671,9 @@ export function AgentCreatePanel({
   // when the manual slot is still empty: seed the description from the prompt
   // and the assignee from the picked actor. The parent-issue context is not
   // persisted (a per-invocation intent) so it rides the carry channel.
-  const switchToManual = () => {
+  // `assignTo` comes from the autonomy notice, whose button promises that
+  // assignee, so it replaces one left in the manual draft.
+  const switchToManual = (assignTo?: QuickCreateActorRef) => {
     // The prompt is copied into the manual description on assist-init; mid-upload
     // that body has already lost the pending image (see switchToAgent).
     if (gate.isBlocked()) return;
@@ -622,7 +685,9 @@ export function AgentCreatePanel({
       const md = editorRef.current?.getMarkdown() ?? "";
       if (md) setManual({ description: md });
     }
-    if (!draft.manual.assigneeId && actor) {
+    if (assignTo) {
+      setManual({ assigneeType: assignTo.type, assigneeId: assignTo.id });
+    } else if (!draft.manual.assigneeId && actor) {
       setManual({ assigneeType: actor.type, assigneeId: actor.id });
     }
     setLastMode("manual");
@@ -731,12 +796,32 @@ export function AgentCreatePanel({
                 onRetry: () => { void squadsQuery.refetch(); },
               }}
               onPick={pickActor}
+              disabledReasons={creatorDisabledReasons}
             />
           </CreatorRecommendations>
           <p className="mt-1 text-caption text-muted-foreground">
             {t(($) => $.create_issue.actor_picker.creator_hint)}
           </p>
         </div>
+
+        {actor && autonomyBlocked && (() => {
+          const name = (actor.type === "squad" ? selectedSquad?.name : selectedAgent?.name) ?? "";
+          const values = { name, level: autonomyLabel(blockedLevel ?? ""), required: autonomyLabel(QUICK_CREATE_MIN_AUTONOMY) };
+          return (
+            <div role="status" className="mx-5 mb-2 shrink-0 space-y-1.5 rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-caption text-warning-foreground">
+              <p className="font-medium wrap-anywhere">{t(($) => $.create_issue.agent.autonomy_blocked_title, values)}</p>
+              <p className="wrap-anywhere">{actor.type === "squad"
+                ? t(($) => $.create_issue.agent.autonomy_blocked_reason_squad, values)
+                : t(($) => $.create_issue.agent.autonomy_blocked_reason_agent, values)}</p>
+              <p className="wrap-anywhere">{t(($) => $.create_issue.agent.autonomy_blocked_next, values)}</p>
+              <Button type="button" size="sm" variant="outline" className="max-w-full max-sm:min-h-11 pointer-coarse:min-h-11"
+                disabled={gate.uploading} onClick={() => switchToManual(actor)}>
+                <PencilLine aria-hidden className="size-3.5" />
+                <span className="truncate">{t(($) => $.create_issue.agent.autonomy_blocked_action, values)}</span>
+              </Button>
+            </div>
+          );
+        })()}
 
         {selectedAgent && versionBlocked && (
           <div role="status" className="mx-5 mb-2 shrink-0 rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-caption text-warning-foreground">
@@ -981,7 +1066,7 @@ export function AgentCreatePanel({
           </div>
           <button
             type="button"
-            onClick={switchToManual}
+            onClick={() => switchToManual()}
             disabled={gate.uploading}
             aria-disabled={gate.uploading || undefined}
             aria-busy={gate.uploading || undefined}
@@ -1002,14 +1087,16 @@ export function AgentCreatePanel({
           <Button
             size="sm"
             onClick={submit}
-            disabled={!hasContent || !actor || submitting || versionBlocked || gate.uploading || (!!anchorCommentId && !sourcePreview)}
+            disabled={!hasContent || !actor || submitting || versionBlocked || autonomyBlocked || gate.uploading || (!!anchorCommentId && !sourcePreview)}
             aria-disabled={gate.uploading || undefined}
             // Sending is a busy state too, not just uploading.
             aria-busy={gate.uploading || submitting || undefined}
             title={
-              versionBlocked
-                ? t(($) => $.create_issue.agent.version_blocked_tooltip, { min: versionCheck.min })
-                : undefined
+              autonomyBlocked
+                ? t(($) => $.create_issue.agent.autonomy_blocked_tooltip)
+                : versionBlocked
+                  ? t(($) => $.create_issue.agent.version_blocked_tooltip, { min: versionCheck.min })
+                  : undefined
             }
             className={cn(
               "justify-self-end min-w-28 max-sm:min-h-11 pointer-coarse:min-h-11",

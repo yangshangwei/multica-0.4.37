@@ -90,6 +90,27 @@ describe("QuickCreateActorPicker", () => {
     expect(onPick).toHaveBeenCalledExactlyOnceWith({ type: "agent", id: "d" });
   });
 
+  // Creator mode: an agent that cannot create issues stays visible, greyed out,
+  // with the reason readable without hover (a disabled button gets none).
+  it("lists a creator that cannot create issues as disabled with an inline reason", async () => {
+    const user = userEvent.setup();
+    const onPick = vi.fn();
+    const onSetDefault = vi.fn();
+    const reason = "Autonomy level is Observer, so it cannot create issues.";
+    render(<Harness actor={b} onPick={onPick} onSetDefault={onSetDefault} defaultActor={null}
+      disabledReasons={new Map([["agent:b", reason]])} />);
+    await openPicker(user);
+    expect(screen.getByText(reason)).toBeInTheDocument();
+    const row = screen.getByRole("button", { name: /^Bob Agent/ });
+    expect(row).toBeDisabled();
+    await user.click(row);
+    expect(onPick).not.toHaveBeenCalled();
+    expect(screen.getByRole("button", { name: "Pin Bob to favorites" })).toBeDisabled();
+    // Saving it as the default would only re-seed the same dead end.
+    expect(screen.getByRole("button", { name: "Set current as default" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /^Ada Agent/ })).not.toBeDisabled();
+  });
+
   it("returns from member browsing to actor shortcuts", async () => {
     const user = userEvent.setup();
     render(<Harness favoriteActors={[a]} assignment={{

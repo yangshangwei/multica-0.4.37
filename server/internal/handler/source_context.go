@@ -774,6 +774,11 @@ func (h *Handler) prepareAgentCommentSubIssue(w http.ResponseWriter, r *http.Req
 	if err != nil {
 		return nil, sourceContextBadRequest("agent not found")
 	}
+	// Before the source context is captured: that copy is the expensive part,
+	// and an agent that cannot create issues makes it wasted work.
+	if writeQuickCreateAutonomyError(w, service.CheckQuickCreateAutonomy(agent.AutonomyLevel)) {
+		return nil, errSourceContextResponseWritten
+	}
 	verdict, err := service.AgentReadiness(r.Context(), h.runtimeLookup(obsmetrics.RuntimeLookupSourceSourceContext), agent)
 	if err != nil {
 		return nil, err
@@ -858,6 +863,9 @@ func (h *Handler) writeSourceContextError(w http.ResponseWriter, err error, limi
 		return
 	}
 	if writeIssueLimitReached(w, err) {
+		return
+	}
+	if writeQuickCreateAutonomyError(w, err) {
 		return
 	}
 	status := http.StatusInternalServerError

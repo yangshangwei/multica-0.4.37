@@ -784,11 +784,15 @@ export function InboxPage() {
                     showIssueLimitUpgradePrompt();
                     return;
                   }
+                  const code = error instanceof ApiError ? errorCode(error) : undefined;
+                  // The agent's level is why the first run failed, so a retry
+                  // fails the same way; the generic copy would invite another.
                   toast.error(
-                    error instanceof ApiError &&
-                      errorCode(error) === "source_context_retry_unavailable"
-                      ? t(($) => $.errors.source_context_retry_unavailable)
-                      : t(($) => $.errors.source_context_retry_failed),
+                    code === "agent_autonomy_insufficient"
+                      ? t(($) => $.errors.source_context_retry_autonomy)
+                      : code === "source_context_retry_unavailable"
+                        ? t(($) => $.errors.source_context_retry_unavailable)
+                        : t(($) => $.errors.source_context_retry_failed),
                   );
                 }
               }}

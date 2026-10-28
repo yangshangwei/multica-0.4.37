@@ -1589,6 +1589,31 @@ type QuickCreateContext struct {
 // QuickCreateContextType marks a task as a quick-create job.
 const QuickCreateContextType = "quick_create"
 
+// QuickCreateMinAutonomy is the level a quick-create run needs. The run's only
+// job is one `multica issue create`, and CreateIssue refuses an agent below
+// Contributor (handler/agent_autonomy.go), so queueing it for a lower level only
+// moves the refusal into an inbox failure a turn later.
+const QuickCreateMinAutonomy = AutonomyContributor
+
+// QuickCreateAutonomyError reports that the agent which would run a quick-create
+// cannot create issues. For a squad pick that agent is the squad leader.
+type QuickCreateAutonomyError struct {
+	Level string
+}
+
+func (e *QuickCreateAutonomyError) Error() string {
+	return "agent autonomy level " + e.Level + " cannot create issues; quick-create requires " + string(QuickCreateMinAutonomy)
+}
+
+// CheckQuickCreateAutonomy refuses a quick-create for an agent whose declared
+// level cannot create issues. An undeclared level passes, as everywhere else.
+func CheckQuickCreateAutonomy(level string) error {
+	if AutonomyAtLeast(level, QuickCreateMinAutonomy) {
+		return nil
+	}
+	return &QuickCreateAutonomyError{Level: level}
+}
+
 // EnqueueQuickCreateTask creates a queued task that has no issue / chat /
 // autopilot link — the user's natural-language prompt is stored in the
 // task's context JSONB and the agent is expected to translate it into a
@@ -1637,6 +1662,9 @@ func (s *TaskService) enqueueQuickCreateTask(ctx context.Context, workspaceID, r
 	}
 	if !agent.RuntimeID.Valid {
 		return db.AgentTaskQueue{}, fmt.Errorf("agent has no runtime")
+	}
+	if err := CheckQuickCreateAutonomy(agent.AutonomyLevel); err != nil {
+		return db.AgentTaskQueue{}, err
 	}
 
 	payload := QuickCreateContext{
@@ -1798,6 +1826,9 @@ func (s *TaskService) RetrySourceContextQuickCreate(ctx context.Context, workspa
 	}
 	if canInvoke != nil && !canInvoke(agent) {
 		return nil, ErrRerunInvokeNotAllowed
+	}
+	if err := CheckQuickCreateAutonomy(agent.AutonomyLevel); err != nil {
+		return nil, err
 	}
 	if err := CheckIssueCreateCapacity(ctx, s.Queries, s.Entitlements, workspaceID); err != nil {
 		return nil, fmt.Errorf("preflight quick-create issue capacity: %w", err)

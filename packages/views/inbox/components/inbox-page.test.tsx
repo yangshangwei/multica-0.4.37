@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { isValidElement } from "react";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, onTestFinished, vi } from "vitest";
 import { toast } from "sonner";
 import { ApiError } from "@multica/core/api";
 import type { InboxItem } from "@multica/core/types";
@@ -193,7 +193,15 @@ vi.mock("./inbox-context-menu", () => ({
   },
 }));
 vi.mock("./inbox-detail-label", () => ({ useTypeLabels: () => ({}) }));
+// Every key renders as "Inbox". A test that needs to know WHICH message was
+// chosen reads the key path back with `keyOf` instead.
 vi.mock("../../i18n", () => ({ useT: () => ({ t: () => "Inbox" }) }));
+const keyOf = (selector: unknown): string => {
+  const path: string[] = [];
+  const proxy: object = new Proxy({}, { get: (_target, key) => { path.push(String(key)); return proxy; } });
+  (selector as (root: object) => unknown)(proxy);
+  return path.join(".");
+};
 
 function item(overrides: Partial<InboxItem> = {}): InboxItem {
   return {
@@ -529,6 +537,35 @@ describe("InboxPage", () => {
     await act(async () => undefined);
     expect(showIssueLimitUpgradePrompt).toHaveBeenCalledTimes(1);
     expect(toast.error).not.toHaveBeenCalled();
+  });
+
+  // An Observer quick-create queued before the pre-enqueue gate fails at
+  // CreateIssue; retrying it is refused for the same reason, and the generic
+  // "could not retry" copy would invite another futile retry.
+  it("explains an autonomy refusal instead of offering another retry", async () => {
+    reset();
+    retrySourceContextMutateAsync.mockRejectedValue(
+      new ApiError("autonomy refused", 422, "Unprocessable Entity", { code: "agent_autonomy_insufficient" }),
+    );
+    listData.active = [
+      item({
+        id: "source-context-autonomy",
+        issue_id: null,
+        type: "quick_create_failed",
+        details: { task_id: "task-1", source_context_id: "context-1", original_prompt: "make a child" },
+      }),
+    ];
+    const t = vi.fn((selector: unknown) => keyOf(selector));
+    const i18n = await import("../../i18n");
+    const useT = vi.spyOn(i18n, "useT").mockReturnValue({ t } as unknown as ReturnType<typeof i18n.useT>);
+    onTestFinished(() => useT.mockRestore());
+
+    render(<InboxPage />);
+    fireEvent.click(screen.getByTestId("row"));
+    fireEvent.click(screen.getByTestId("retry-source-context"));
+
+    await act(async () => undefined);
+    expect(toast.error).toHaveBeenCalledExactlyOnceWith("errors.source_context_retry_autonomy");
   });
 
   it("marks the opened notification read", () => {
