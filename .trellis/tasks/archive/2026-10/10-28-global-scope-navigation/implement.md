@@ -10,7 +10,7 @@
 - [x] Integrate shared interfaces; run focused regression suites, relevant package lint/typechecks and static diff/import review.
 - [x] Verify real rendered roundtrip and fixed position in Web and Electron when available, with screenshots and runtime provenance. Record exact gaps instead of treating mocks as native proof.
 - [x] Trellis check agent reviews complete task diff; fix substantiated findings and rerun affected checks.
-- [ ] Update navigation specs and task evidence, commit only this task's files with Lore trailers, archive only when acceptance is complete.
+- [x] Update navigation specs and task evidence, commit only this task's files with Lore trailers, archive only when acceptance is complete.
 
 ## Ownership
 
@@ -35,4 +35,4 @@ Use package-local `pnpm --filter <package> exec vitest run <files>` for focused 
 
 ## Evidence
 
-Source and actual-client verification completed; see [verification.md](verification.md). Commit and archive follow the verified code state.
+Source and actual-client verification completed; see [verification.md](verification.md). Implementation committed as cad3fa410; task ready for archive.
