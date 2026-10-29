@@ -167,7 +167,8 @@ test("diagnostician API creation preserves workspace skill and agent copies", as
     template_key: "diagnostician",
     template_version: 1,
     autonomy_level: "contributor",
-    max_concurrent_tasks: 1,
+    // Built-in templates start at agentconfig.DefaultMaxConcurrentTasks (5701a7695).
+    max_concurrent_tasks: 6,
   });
   expect(first.skills?.map((skill) => skill.name)).toEqual(["multica-debugging"]);
 

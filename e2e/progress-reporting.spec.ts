@@ -242,7 +242,7 @@ test("publishes one built-in reporter and adjacent daily and weekly templates", 
   expect.soft(weeklyIndex).toBe(dailyIndex + 1);
 
   const role = requiredTemplate(roles, ROLE_KEY);
-  expect(role).toMatchObject({ title: ROLE_NAME, autonomy_level: "contributor", max_concurrent_tasks: 1, skill_names: ["multica-progress-report"] });
+  expect(role).toMatchObject({ title: ROLE_NAME, autonomy_level: "contributor", max_concurrent_tasks: 6, skill_names: ["multica-progress-report"] });
   expect(role.instructions).toBe((await readFile("server/internal/service/builtin_agent_templates/progress-reporter/INSTRUCTIONS.md", "utf8")).replace(/\n+$/, ""));
   const daily = requiredTemplate(templates, DAILY_KEY);
   const weekly = requiredTemplate(templates, WEEKLY_KEY);
@@ -322,7 +322,7 @@ test("creates the reporter from the Chinese catalog and reopens its ordinary age
   const reporter = await api.requestJSON<Reporter>(`/api/agents/${created.id}`);
   expect(reporter).toMatchObject({
     name: ROLE_NAME, runtime_id: runtime.id, template_key: ROLE_KEY, template_version: role.version,
-    instructions: role.instructions, autonomy_level: "contributor", max_concurrent_tasks: 1,
+    instructions: role.instructions, autonomy_level: "contributor", max_concurrent_tasks: 6,
   });
   expect(reporter.skills).toHaveLength(1);
   expect(reporter.skills[0]).toMatchObject({ name: "multica-progress-report", enabled: true });
