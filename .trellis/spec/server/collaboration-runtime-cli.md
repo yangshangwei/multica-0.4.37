@@ -33,7 +33,10 @@ refuse. Runtime commands use only the run-scoped business endpoints; they never
 borrow the resource owner's user/daemon token or workspace actor directory.
 
 Comment writes accept content or stdin and an optional parent UUID. Activity
-accepts action/no_action/failed and a reason. Filters, attachments, comment
+accepts action/no_action/failed and a reason. Content and reason are limited to
+64 KiB of decoded text by the service; because the CLI's `json.Marshal` writes
+`<`, `>` and `&` as six bytes, both routes read up to six times that limit plus
+a 64 KiB envelope, like shared-context updates. Filters, attachments, comment
 content-file, profile/server/workspace overrides and other operations are
 unsupported. Reads return the authorized run context and its newest 200
 comments. Every response must match the admitted run/issue.

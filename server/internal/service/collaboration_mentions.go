@@ -115,8 +115,11 @@ func (s *CollaborationService) MentionTargets(ctx context.Context, issueID pgtyp
 	return out, err
 }
 
+// CollaborationCommentMaxBytes bounds a comment's decoded content.
+const CollaborationCommentMaxBytes = 64 << 10
+
 func validateCollaborationCommentInput(p CollaborationCommentInput) error {
-	if (strings.TrimSpace(util.SanitizeTextForPostgres(p.Content)) == "" && len(p.AttachmentIDs) == 0) || len(p.Content) > 64<<10 || len(p.SuppressedTargetIDs) > 256 {
+	if (strings.TrimSpace(util.SanitizeTextForPostgres(p.Content)) == "" && len(p.AttachmentIDs) == 0) || len(p.Content) > CollaborationCommentMaxBytes || len(p.SuppressedTargetIDs) > 256 {
 		return collaborationError(http.StatusBadRequest, "invalid_comment_request")
 	}
 	if err := validateCollaborationAttachmentIDs(p.AttachmentIDs); err != nil {
