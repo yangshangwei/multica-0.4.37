@@ -22,6 +22,17 @@ const comment = parseCollaborationComment({ id: commentId, issue_id: actor, auth
 afterEach(() => { client.clear(); localStorage.clear(); vi.unstubAllGlobals(); });
 
 // Permission and original-key/version matrices live in core/comment-actions.test.ts.
+it("moves focus into the delete confirmation and back to Edit when it is dismissed", async () => {
+  setApiInstance(new ApiClient("https://comments.example"));
+  vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ issue_id: actor, attachments: [] }))));
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentList scope={collaborationScope(actor)} issue={issue} comments={[comment]} onReply={vi.fn()} /></QueryClientProvider>);
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Delete comment" }));
+  await waitFor(() => expect(screen.getByRole("form", { name: "Delete comment" })).toHaveFocus());
+  await user.click(screen.getByRole("button", { name: "Close" }));
+  await waitFor(() => expect(screen.getByRole("button", { name: "Edit comment" })).toHaveFocus());
+});
+
 it("keeps the author's edit after a conflict and requires an explicit new baseline", async () => {
   setApiInstance(new ApiClient("https://comments.example"));
   const scope = collaborationScope(actor);
@@ -72,6 +83,7 @@ it("resolves a thread and removes only the viewer's reaction through dedicated a
   renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentList scope={scope} issue={issue} comments={[comment]} onReply={vi.fn()} /></QueryClientProvider>);
   await userEvent.click(screen.getByRole("button", { name: "Resolve thread" }));
   expect(await screen.findByText("Discussion updated.")).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Remove your 👍 reaction" })).toHaveAccessibleDescription("2");
   await userEvent.click(screen.getByRole("button", { name: "Remove your 👍 reaction" }));
   expect(fetch.mock.calls.map(([url]) => url)).toEqual([expect.stringContaining(`/comments/${commentId}/resolve`), expect.stringContaining(`/comments/${commentId}/reactions/${encodeURIComponent("👍")}`)]);
   expect(fetch.mock.calls.map(([, init]) => init.method)).toEqual(["POST", "DELETE"]);

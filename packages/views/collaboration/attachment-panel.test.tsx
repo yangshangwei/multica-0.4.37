@@ -33,3 +33,14 @@ it("closes a private preview and revokes its object URL when issue access is cle
   expect(revoke).toHaveBeenCalledWith("blob:private-preview");
   expect(screen.queryByRole("button", { name: "Download private.png" })).toBeNull();
 });
+
+// Chromium will not run its PDF viewer inside the sandboxed preview frame.
+it("offers PDFs for download only", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const scope = collaborationScope(actor);
+  vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ issue_id: actor, attachments: [{ ...metadata, name: "brief.pdf", content_type: "application/pdf" }] }))));
+  const issue = parseCollaborationIssue({ ...collaborationIssueFixture, capabilities: { ...collaborationIssueFixture.capabilities, comment: false } })!;
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationAttachmentPanel scope={scope} issue={issue} /></QueryClientProvider>);
+  expect(await screen.findByRole("button", { name: "Download brief.pdf" })).toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Preview brief.pdf" })).toBeNull();
+});
