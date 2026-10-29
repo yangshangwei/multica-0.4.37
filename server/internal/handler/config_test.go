@@ -151,6 +151,60 @@ func TestGetConfigPlatformInstallCommands(t *testing.T) {
 	}
 }
 
+func TestGetConfigDesktopDownloadURL(t *testing.T) {
+	cases := []struct {
+		name string
+		env  string
+		want string
+	}{
+		{name: "unset", env: "", want: ""},
+		{name: "blank", env: "   ", want: ""},
+		{name: "intranet http", env: " http://10.10.10.20:18080/desktop/ ", want: "http://10.10.10.20:18080/desktop/"},
+		{name: "https with path", env: "https://downloads.internal/desktop/", want: "https://downloads.internal/desktop/"},
+		{name: "script scheme", env: "javascript:alert(1)", want: ""},
+		{name: "relative path", env: "/desktop/", want: ""},
+		{name: "missing host", env: "http:///desktop/", want: ""},
+		{name: "credentials", env: "http://admin:secret@10.10.10.20:18080/desktop/", want: ""},
+		{name: "ipv6 literal", env: "http://[::1]:18080/desktop/", want: "http://[::1]:18080/desktop/"},
+		{name: "underscore host", env: "http://dl_srv:18080/desktop/", want: "http://dl_srv:18080/desktop/"},
+		{name: "max port", env: "http://dl.internal:65535/desktop/", want: "http://dl.internal:65535/desktop/"},
+		// Go's URL parser keeps these; the web client's URL parser rejects
+		// them, so the server must drop them too and warn at startup.
+		{name: "ipv4 octet out of range", env: "http://10.10.10.256:18080/desktop/", want: ""},
+		{name: "ipv4 too many parts", env: "http://1.2.3.4.5/desktop/", want: ""},
+		{name: "short ipv4", env: "http://10.1/desktop/", want: ""},
+		{name: "hex ipv4 label", env: "http://dl.0x1/desktop/", want: ""},
+		{name: "port out of range", env: "http://dl.internal:180800/desktop/", want: ""},
+		{name: "forbidden host character", env: "http://dl<srv/desktop/", want: ""},
+		{name: "non-breaking space in host", env: "http://dl\u00a0srv/desktop/", want: ""},
+		{name: "idn host", env: "http://下载.内网/desktop/", want: ""},
+		{name: "punycode host", env: "http://xn--fiqs8s/desktop/", want: ""},
+		{name: "empty label", env: "http://dl..internal/desktop/", want: ""},
+		{name: "ipv6 zone", env: "http://[fe80::1%25en0]/desktop/", want: ""},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Setenv("MULTICA_DESKTOP_DOWNLOAD_URL", tc.env)
+			var cfg map[string]json.RawMessage
+			testutil.Call(t, testHandler.GetConfig, httptest.NewRequest(http.MethodGet, "/api/config", nil)).Want(http.StatusOK).JSON(&cfg)
+			raw, present := cfg["desktop_download_url"]
+			if tc.want == "" {
+				if present {
+					t.Fatalf("desktop_download_url must be omitted for %q, got %s", tc.env, raw)
+				}
+				return
+			}
+			var got string
+			if err := json.Unmarshal(raw, &got); err != nil {
+				t.Fatalf("decode desktop_download_url: %v", err)
+			}
+			if got != tc.want {
+				t.Fatalf("desktop_download_url: got %q, want %q", got, tc.want)
+			}
+		})
+	}
+}
+
 func TestGetConfigPreservesServerURLWithoutAppURL(t *testing.T) {
 	t.Setenv("MULTICA_DAEMON_SERVER_URL", " https://api.internal.example/ ")
 	t.Setenv("MULTICA_PUBLIC_URL", "")

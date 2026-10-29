@@ -42,6 +42,7 @@ require_rendered_value "$default_config" 'MULTICA_CLI_INSTALL_COMMAND: ""'
 require_rendered_value "$default_config" 'MULTICA_CLI_INSTALL_COMMAND_WINDOWS: ""'
 require_rendered_value "$default_config" 'MULTICA_CLI_INSTALL_COMMAND_MACOS: ""'
 require_rendered_value "$default_config" 'MULTICA_CLI_INSTALL_COMMAND_LINUX: ""'
+require_rendered_value "$default_config" 'MULTICA_DESKTOP_DOWNLOAD_URL: ""'
 # A chart install must not put every device into a workspace nobody chose: with
 # no slug, device auth establishes the identity and the client runs onboarding,
 # where the member names their own workspace (ART-7). The old default shipped
@@ -94,6 +95,13 @@ require_rendered_value "$install_config" 'MULTICA_CLI_INSTALL_COMMAND: "legacy i
 require_rendered_value "$install_config" 'MULTICA_CLI_INSTALL_COMMAND_WINDOWS: "windows installer"'
 require_rendered_value "$install_config" 'MULTICA_CLI_INSTALL_COMMAND_MACOS: "macos installer"'
 require_rendered_value "$install_config" 'MULTICA_CLI_INSTALL_COMMAND_LINUX: "linux installer"'
+
+download_config="$(
+  helm template multica "$CHART_DIR" \
+    --show-only templates/configmap.yaml \
+    --set-string backend.config.desktopDownloadUrl=http://10.10.10.20:18080/desktop/
+)"
+require_rendered_value "$download_config" 'MULTICA_DESKTOP_DOWNLOAD_URL: "http://10.10.10.20:18080/desktop/"'
 
 # The opt-in direction: an operator whose intranet really is one shared space
 # names the slug, and that name has to reach the backend for any device to join

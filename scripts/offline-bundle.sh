@@ -324,6 +324,10 @@ and \`MULTICA_CLI_INSTALL_COMMAND_LINUX\` to complete, non-secret commands.
 older clients. Any custom source disables public downloads for missing systems.
 The commands are public through \`/api/config\`; do not include credentials.
 
+To show "Download Desktop" links in Web, set \`MULTICA_DESKTOP_DOWNLOAD_URL\` to
+the desktop download service page, e.g. \`http://<download-host>:18080/desktop/\`.
+Web has no download page of its own; empty hides every download link.
+
 Start it:
 
 \`\`\`bash

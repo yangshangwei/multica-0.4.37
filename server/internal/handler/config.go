@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"net"
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -54,6 +56,11 @@ type AppConfig struct {
 	// CliInstallCommands contains public, operator-supplied commands for each
 	// target OS. Never populate these commands with credentials or user data.
 	CliInstallCommands map[string]string `json:"cli_install_commands,omitempty"`
+	// DesktopDownloadURL is the operator's desktop download page, typically
+	// the standalone desktop-updates service at `/desktop/`. Web entry points
+	// link there and hide themselves when it is omitted, so an unconfigured
+	// deployment never shows a download link that leads nowhere.
+	DesktopDownloadURL string `json:"desktop_download_url,omitempty"`
 
 	// MessagingIntegrationsEnabled is the deployment policy for external
 	// messaging providers. Emit this field even when false so clients can
@@ -152,6 +159,7 @@ func (h *Handler) GetConfig(w http.ResponseWriter, r *http.Request) {
 			config.CliInstallCommands[platform] = command
 		}
 	}
+	config.DesktopDownloadURL = DesktopDownloadURLFromEnv()
 	config.MessagingIntegrationsEnabled = !h.cfg.MessagingIntegrationsDisabled
 	config.VCSIntegrationAvailable = h.cfg.VCSIntegrationEnabled
 	config.AuthMode = "legacy"
@@ -218,6 +226,74 @@ func resolveFrontendAppURL() string {
 		appURL = normalizePublicURL(os.Getenv("FRONTEND_ORIGIN"))
 	}
 	return appURL
+}
+
+// DesktopDownloadURLFromEnv returns MULTICA_DESKTOP_DOWNLOAD_URL when it is an
+// absolute http(s) URL without credentials whose host browsers parse the same
+// way, and "" otherwise. The value is rendered as a link for anonymous
+// visitors, so anything else is dropped rather than passed through; the
+// server warns about that once at startup.
+func DesktopDownloadURLFromEnv() string {
+	raw := strings.TrimSpace(os.Getenv("MULTICA_DESKTOP_DOWNLOAD_URL"))
+	if raw == "" {
+		return ""
+	}
+	u, err := url.Parse(raw)
+	if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.User != nil || !isBrowserSafeHost(u.Hostname()) {
+		return ""
+	}
+	if port := u.Port(); port != "" {
+		if n, err := strconv.Atoi(port); err != nil || n > 65535 {
+			return ""
+		}
+	}
+	return raw
+}
+
+// isBrowserSafeHost accepts an IP literal or an ASCII host name. Go's URL
+// parser is looser than the browser's: it keeps hosts such as 10.10.10.256,
+// 1.2.3.4.5 or ho<st that the web client's URL parsing rejects, which would
+// hide the link with no server-side warning. A name whose last label is
+// numeric is one browsers reinterpret as IPv4, so it must be a valid
+// dotted-quad. IDN hosts are not supported.
+func isBrowserSafeHost(host string) bool {
+	if host == "" {
+		return false
+	}
+	if strings.Contains(host, ":") {
+		return net.ParseIP(host) != nil
+	}
+	labels := strings.Split(strings.TrimSuffix(host, "."), ".")
+	for _, label := range labels {
+		if label == "" || strings.HasPrefix(strings.ToLower(label), "xn--") {
+			return false
+		}
+		for _, r := range label {
+			if !(r >= 'a' && r <= 'z' || r >= 'A' && r <= 'Z' || r >= '0' && r <= '9' || r == '-' || r == '_') {
+				return false
+			}
+		}
+	}
+	if labelIsNumber(labels[len(labels)-1]) {
+		ip := net.ParseIP(host)
+		return ip != nil && ip.To4() != nil
+	}
+	return true
+}
+
+// labelIsNumber mirrors the URL Standard's "ends in a number" test for one
+// label: all decimal digits, or 0x followed by hex digits.
+func labelIsNumber(label string) bool {
+	digits, hex := strings.ToLower(label), false
+	if strings.HasPrefix(digits, "0x") {
+		digits, hex = digits[2:], true
+	}
+	for _, r := range digits {
+		if !(r >= '0' && r <= '9' || hex && r >= 'a' && r <= 'f') {
+			return false
+		}
+	}
+	return hex || digits != ""
 }
 
 func normalizePublicURL(raw string) string {

@@ -771,6 +771,9 @@ export interface AppConfigResponse {
   cli_install_command?: string;
   /** Explicit platform commands take priority over the legacy Unix command. */
   cli_install_commands?: CliInstallCommands;
+  /** Operator's desktop download page. Absent, empty, or not an absolute
+   * http(s) URL means no download entry point is shown. */
+  desktop_download_url?: string;
   workspace_creation_disabled?: boolean;
   /** Whether this deployment offers the self-hosted Git provider integration
    * (self-host only; off on the managed cloud). Absent/false hides the whole
@@ -971,6 +974,21 @@ const CliInstallCommandsSchema = z.object({
   linux: OptionalStringSchema,
 }).catch({});
 
+// Rendered as a link for anonymous visitors, so only an absolute http(s) URL
+// without credentials survives. `new URL("javascript:...")` parses, so the
+// scheme is checked explicitly; anything else reads as "not configured".
+const DesktopDownloadURLSchema = z.preprocess((value) => {
+  if (typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  try {
+    const url = new URL(trimmed);
+    const httpScheme = url.protocol === "http:" || url.protocol === "https:";
+    return httpScheme && url.hostname && !url.username && !url.password ? trimmed : undefined;
+  } catch {
+    return undefined;
+  }
+}, z.string().optional());
+
 const BooleanWithDefaultSchema = (fallback: boolean) =>
   z.preprocess(
     (value) => (typeof value === "boolean" ? value : undefined),
@@ -1004,6 +1022,7 @@ export const AppConfigSchema = z.object({
   daemon_app_url: OptionalStringSchema,
   cli_install_command: OptionalStringSchema,
   cli_install_commands: CliInstallCommandsSchema,
+  desktop_download_url: DesktopDownloadURLSchema,
   workspace_creation_disabled: BooleanWithDefaultSchema(false).optional(),
   vcs_integration_available: BooleanWithDefaultSchema(false).optional(),
   // Omission means an older server; malformed supplied values fail closed.
@@ -1025,6 +1044,7 @@ export const EMPTY_APP_CONFIG: AppConfigResponse = {
   daemon_app_url: "",
   cli_install_command: "",
   cli_install_commands: {},
+  desktop_download_url: "",
   workspace_creation_disabled: false,
   vcs_integration_available: false,
   messaging_integrations_enabled: false,

@@ -43,6 +43,7 @@ sed 's/^FRONTEND_PORT=.*/FRONTEND_PORT=3100/' .env.example >"$tmp_env"
 printf '\nBACKEND_PORT=9100\nSMTP_FROM_EMAIL=multica@example.com\n' >>"$tmp_env"
 printf 'MULTICA_LLM_API_KEY=llm-key-from-env\nMULTICA_LLM_BASE_URL=http://gateway.example/v1\nMULTICA_LLM_DEFAULT_MODEL=model-from-env\nMULTICA_LLM_MAX_RETRIES=3\n' >>"$tmp_env"
 printf 'MULTICA_DEVICE_AUTH_ENABLED=true\nMULTICA_DEVICE_AUTH_WORKSPACE=lab\nMULTICA_DEVICE_AUTH_WORKSPACE_NAME=Lab-Intranet\nMULTICA_DEVICE_AUTH_ROLE=admin\n' >>"$tmp_env"
+printf 'MULTICA_DESKTOP_DOWNLOAD_URL=http://10.10.10.20:18080/desktop/\n' >>"$tmp_env"
 
 config="$(
   docker compose \
@@ -59,6 +60,7 @@ require_config "$config" 'MULTICA_APP_URL: http://localhost:3100'
 require_config "$config" 'SMTP_FROM_EMAIL: multica@example.com'
 require_config "$config" 'MULTICA_DATABASE_STARTUP_TIMEOUT: 3m'
 require_config "$config" 'MULTICA_DATABASE_CONNECT_TIMEOUT: 5s'
+require_config "$config" 'MULTICA_DESKTOP_DOWNLOAD_URL: http://10.10.10.20:18080/desktop/'
 
 # All install variables must cross Compose's backend allowlist, including the
 # legacy Unix source. Complete command preservation is covered in

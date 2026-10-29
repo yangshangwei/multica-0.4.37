@@ -18,6 +18,9 @@ interface ConfigState {
   // CLI from an internal artifact source, retained for Unix compatibility.
   cliInstallCommand: string;
   cliInstallCommands: CliInstallCommands;
+  // Operator's desktop download page. Empty hides every download entry point
+  // so an unconfigured deployment never links to a page that does not exist.
+  desktopDownloadUrl: string;
   // Self-host gate (#3433): when true, every "Create workspace" affordance
   // must be hidden. Defaults to false so unknown / older servers behave like
   // the managed-cloud case.
@@ -78,6 +81,7 @@ interface ConfigState {
   }) => void;
   setFeatureFlags: (flags?: Record<string, boolean>) => void;
   setServerVersion: (version?: string) => void;
+  setDesktopDownloadUrl: (url?: string) => void;
   setLocalWorktreeSupported: (supported?: boolean) => void;
   setAgentConversationStartersSupported: (supported?: boolean) => void;
 }
@@ -91,6 +95,7 @@ export const configStore = createStore<ConfigState>((set) => ({
   daemonAppUrl: "",
   cliInstallCommand: "",
   cliInstallCommands: {},
+  desktopDownloadUrl: "",
   workspaceCreationDisabled: false,
   vcsIntegrationAvailable: false,
   messagingIntegrationsEnabled: false,
@@ -135,6 +140,7 @@ export const configStore = createStore<ConfigState>((set) => ({
   }) => set({ daemonServerUrl, daemonAppUrl, cliInstallCommand, cliInstallCommands }),
   setFeatureFlags: (flags = {}) => set({ featureFlags: { ...flags } }),
   setServerVersion: (version = "") => set({ serverVersion: version }),
+  setDesktopDownloadUrl: (url = "") => set({ desktopDownloadUrl: url }),
   setLocalWorktreeSupported: (supported = false) =>
     set({ localWorktreeSupported: supported === true }),
   setAgentConversationStartersSupported: (supported = false) =>

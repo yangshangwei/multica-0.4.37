@@ -354,6 +354,9 @@ func main() {
 			slog.Warn("MULTICA_DEV_VERIFICATION_CODE is enabled. Use it only for local development or private test instances.")
 		}
 	}
+	if strings.TrimSpace(os.Getenv("MULTICA_DESKTOP_DOWNLOAD_URL")) != "" && handler.DesktopDownloadURLFromEnv() == "" {
+		slog.Warn("invalid env var, ignored: desktop download links stay hidden until it is an absolute http(s) URL without credentials", "name", "MULTICA_DESKTOP_DOWNLOAD_URL")
+	}
 
 	port := os.Getenv("PORT")
 	if port == "" {

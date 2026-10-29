@@ -135,6 +135,9 @@ backend:
       windows: ""
       macos: ""
       linux: ""
+    # Public desktop download page, e.g. the desktop-updates service's
+    # http://<host>:18080/desktop/. Empty hides the download links in Web.
+    desktopDownloadUrl: ""
     frontendOrigin: http://multica.dev.lan
     corsAllowedOrigins: ""
     cookieDomain: ""
