@@ -2,10 +2,10 @@ import type { QueryClient } from "@tanstack/react-query";
 import type { StorageAdapter } from "../types/storage";
 import { ApiError, getApi } from "../api";
 import { CollaborationActionSchema, collaborationWriteContext, parseCollaborationActionDraft, recoverCollaborationAction, sendCollaborationAction, type CollaborationAction } from "./action";
-import { collaborationIssueAccessDenied, collaborationKeys, CollaborationUnavailableError, isCollaborationDenied, isCollaborationScopeCurrent, protectCollaborationRead, type CollaborationScope } from "./access";
+import { collaborationAccessEpoch, collaborationIssueAccessDenied, collaborationKeys, CollaborationUnavailableError, isCollaborationDenied, isCollaborationScopeCurrent, protectCollaborationRead, type CollaborationScope } from "./access";
 import { clearCollaborationDrafts, removeCollaborationDraft, saveCollaborationDraft, type CollaborationDraft } from "./draft";
 import { parseCollaborationOperation, type CollaborationIssue } from "./schema";
-import { invalidateCollaborationSourceViews } from "./invalidation";
+import { invalidateCollaborationSourceViews, waitForCollaborationIssueRefresh } from "./invalidation";
 
 type Intent<T = CollaborationAction> = T extends CollaborationAction ? Omit<T, keyof ReturnType<typeof collaborationWriteContext>> : never;
 export type CollaborationActionIntent = Intent;
@@ -23,6 +23,7 @@ export async function executeCollaborationAction(client: QueryClient, scope: Col
   const draft: CollaborationDraft = { ...source, scope: { ...source.scope }, payload: action };
   if (draft.scope.server !== scope.server || draft.scope.userId.toLowerCase() !== scope.userId.toLowerCase()) throw new CollaborationUnavailableError();
   const denied = collaborationIssueAccessDenied(client, scope, draft.scope.issueId);
+  const epoch = collaborationAccessEpoch(client, scope, draft.scope.issueId);
   try {
     const result = await protectCollaborationRead(client, scope, recovery && denied ? null : draft.scope.issueId, async () => {
       if (!denied) saveCollaborationDraft(draft, storage);
@@ -39,7 +40,17 @@ export async function executeCollaborationAction(client: QueryClient, scope: Col
     });
     removeCollaborationDraft(draft, storage);
     invalidateCollaborationSourceViews(client, scope, draft.scope.issueId);
-    if (!denied) void client.invalidateQueries({ queryKey: collaborationKeys.scope(scope) });
+    if (!denied) {
+      // The scope invalidation starts all active account reads, including the
+      // issue query. Wait only for that issue read before returning so the next
+      // action captures the versions committed by this write. Calling a second
+      // issue invalidation here would cancel/restart the same request twice.
+      void client.invalidateQueries({ queryKey: collaborationKeys.scope(scope) });
+      await waitForCollaborationIssueRefresh(client, scope, draft.scope.issueId);
+      if (!isCollaborationScopeCurrent(scope) || collaborationAccessEpoch(client, scope, draft.scope.issueId) !== epoch) {
+        throw new DOMException("Collaboration access changed", "AbortError");
+      }
+    }
     return result;
   } catch (error) {
     if (isCollaborationDenied(error)) clearCollaborationDrafts(storage, draft.scope);
