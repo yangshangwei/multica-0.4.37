@@ -1,4 +1,4 @@
-import { invalidateCollaborationSourceViews } from "./invalidation";
+import { invalidateCollaborationSourceViews, refreshCollaborationIssue } from "./invalidation";
 import { z } from "zod";
 import { queryOptions, type QueryClient } from "@tanstack/react-query";
 import { getApi } from "../api";
@@ -106,9 +106,11 @@ export async function executeCollaborationResource(client: QueryClient, scope: C
     });
     if (!isCollaborationScopeCurrent(scope) || collaborationAccessEpoch(client, scope, draft.scope.issueId) !== epoch) throw new DOMException("Collaboration access changed", "AbortError");
     removeCollaborationDraft(draft, options?.storage);
+    // Settle after the re-read: the next action captures its versions from it.
     if (!denied) {
       invalidateCollaborationSourceViews(client, scope, draft.scope.issueId);
-      void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, draft.scope.issueId) });
+      await refreshCollaborationIssue(client, scope, draft.scope.issueId);
+      if (!isCollaborationScopeCurrent(scope) || collaborationAccessEpoch(client, scope, draft.scope.issueId) !== epoch) throw new DOMException("Collaboration access changed", "AbortError");
     }
     return result;
   } catch (error) {

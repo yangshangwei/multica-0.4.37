@@ -1,10 +1,11 @@
 // @vitest-environment node
 import { afterEach, expect, it, vi } from "vitest";
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient, QueryObserver } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "../api";
 import { setSchemaLogger } from "../api/schema";
 import { noopLogger } from "../logger";
 import { collaborationIssueAccessDenied, collaborationKeys, collaborationScope, clearCollaborationAccess } from "./access";
+import { collaborationIssueOptions } from "./queries";
 import { parseCollaborationIssue } from "./schema";
 import { collaborationExecutionIssueFixture, collaborationControlRequestId as requestId } from "./test-fixtures";
 import { readCollaborationDrafts, saveCollaborationDraft } from "./draft";
@@ -77,6 +78,25 @@ it("persists before POST and retires only its matching receipt without projectin
   expect(readCollaborationDrafts(draft.scope)).toEqual([]);
   expect(client.getQueryData(key)).toEqual(issue);
   expect(client.getQueryState(key)?.isInvalidated).toBe(true);
+});
+
+it("settles only after the mounted issue re-read so the next action observes fresh versions", async () => {
+  const { client, scope, issue, draft, receipt } = setup();
+  let reread!: (value: Response) => void;
+  const fetch = vi.fn().mockResolvedValueOnce(json(issue)).mockResolvedValueOnce(json(receipt))
+    .mockReturnValueOnce(new Promise<Response>((resolve) => { reread = resolve; }));
+  vi.stubGlobal("fetch", fetch);
+  const options = { ...collaborationIssueOptions(client, scope, issue.id), refetchInterval: false as const };
+  const unsubscribe = new QueryObserver(client, options).subscribe(() => {});
+  try {
+    await expect.poll(() => client.getQueryData(options.queryKey)).toEqual(issue);
+    let settled = false;
+    const pending = executeCollaborationCommandCancel(client, scope, draft).then((value) => { settled = true; return value; });
+    await expect.poll(() => fetch.mock.calls.length).toBe(3);
+    expect(settled).toBe(false);
+    reread(json(issue));
+    await expect(pending).resolves.toEqual(receipt);
+  } finally { unsubscribe(); }
 });
 
 it("keeps the original key across unknown writes and missing GET receipts without reposting", async () => {

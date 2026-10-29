@@ -1,9 +1,10 @@
 // @vitest-environment node
 import { afterEach, expect, it, vi } from "vitest";
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient, QueryObserver } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "../api";
 import { defaultStorage } from "../platform/storage";
 import { collaborationKeys, collaborationScope, clearCollaborationAccess, protectCollaborationRead } from "./access";
+import { collaborationIssueOptions } from "./queries";
 import { parseCollaborationIssue } from "./schema";
 import { parseCollaborationActionDraft } from "./action";
 import { parseCollaborationControlDraft } from "./control";
@@ -129,6 +130,25 @@ it("retains unresolved intents across reload and GET-only recovery until an orig
   expect(readCollaborationDrafts(draft.scope)).toEqual([]);
   expect(fetchMock.mock.calls.map(([, init]) => init.method ?? "GET")).toEqual(["POST", "GET", "GET", "GET", "GET"]);
   expect(fetchMock.mock.calls.slice(1).every(([url]) => url.endsWith(`/switch/operations/${requestId}`))).toBe(true);
+});
+
+it("settles only after the mounted issue re-read so the next action observes fresh versions", async () => {
+  const { client, scope, issue, draft } = setup();
+  let reread!: (value: Response) => void;
+  const fetchMock = vi.fn().mockResolvedValueOnce(json(issue)).mockResolvedValueOnce(json(receipt))
+    .mockReturnValueOnce(new Promise<Response>((resolve) => { reread = resolve; }));
+  vi.stubGlobal("fetch", fetchMock);
+  const options = { ...collaborationIssueOptions(client, scope, issue.id), refetchInterval: false as const };
+  const unsubscribe = new QueryObserver(client, options).subscribe(() => {});
+  try {
+    await expect.poll(() => client.getQueryData(options.queryKey)).toEqual(issue);
+    let settled = false;
+    const pending = sendCollaborationSwitch(client, scope, draft).then((value) => { settled = true; return value; });
+    await expect.poll(() => fetchMock.mock.calls.length).toBe(3);
+    expect(settled).toBe(false);
+    reread(json(issue));
+    await expect(pending).resolves.toEqual(receipt);
+  } finally { unsubscribe(); }
 });
 
 it("rejects rewritten requests, other domains and unsafe persistence before any network call", async () => {

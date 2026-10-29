@@ -1,9 +1,10 @@
 // @vitest-environment node
 import { afterEach, expect, it, vi } from "vitest";
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient, QueryObserver } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "../api";
 import { defaultStorage } from "../platform/storage";
 import { collaborationKeys, collaborationScope, clearCollaborationAccess, protectCollaborationRead } from "./access";
+import { collaborationIssueOptions } from "./queries";
 import { parseCollaborationIssue } from "./schema";
 import { parseCollaborationActionDraft } from "./action";
 import { readCollaborationDrafts, saveCollaborationDraft } from "./draft";
@@ -77,6 +78,78 @@ it("persists the immutable original intent before transport and updates state on
   expect(readCollaborationDrafts(draft.scope)).toEqual([]);
   expect(client.getQueryData(queryKey)).toEqual(issue);
   expect(client.getQueryState(queryKey)?.isInvalidated).toBe(true);
+});
+
+it("settles only after the mounted issue re-read so the next control observes the advanced version", async () => {
+  const { client, scope, issue, draft } = setup();
+  const advanced = structuredClone(issue);
+  advanced.session = { ...advanced.session, queue_state: "active", control_version: "9007199254740996" };
+  advanced.execution!.control = { ...advanced.execution!.control, queue_state: "active", control_version: "9007199254740996" };
+  let reread!: (value: Response) => void;
+  const fetchMock = vi.fn()
+    .mockResolvedValueOnce(json(issue))
+    .mockResolvedValueOnce(json(receipt))
+    .mockReturnValueOnce(new Promise<Response>((resolve) => { reread = resolve; }));
+  vi.stubGlobal("fetch", fetchMock);
+  const options = { ...collaborationIssueOptions(client, scope, issue.id), refetchInterval: false as const };
+  const unsubscribe = new QueryObserver(client, options).subscribe(() => {});
+  try {
+    await expect.poll(() => client.getQueryData(options.queryKey)).toEqual(issue);
+    let settled = false;
+    const pending = sendCollaborationControl(client, scope, draft).then((value) => { settled = true; return value; });
+    await expect.poll(() => fetchMock.mock.calls.length).toBe(3);
+    expect(settled).toBe(false);
+    reread(json(advanced));
+    await expect(pending).resolves.toEqual(receipt);
+    const next = prepareCollaborationControl(scope, client.getQueryData(options.queryKey)!, requestId, "stop", { scope: "issue" });
+    expect(parseCollaborationControlDraft(next)).toMatchObject({ expected_control_version: "9007199254740996" });
+  } finally { unsubscribe(); }
+});
+
+it("keeps waiting for the fresh read when realtime invalidations restart it more than once", async () => {
+  const { client, scope, issue, draft } = setup();
+  const advanced = structuredClone(issue);
+  advanced.session = { ...advanced.session, queue_state: "active", control_version: "9007199254740996" };
+  advanced.execution!.control = { ...advanced.execution!.control, queue_state: "active", control_version: "9007199254740996" };
+  const rereads: ((value: Response) => void)[] = [];
+  const fetchMock = vi.fn().mockResolvedValueOnce(json(issue)).mockResolvedValueOnce(json(receipt))
+    .mockImplementation(() => new Promise<Response>((resolve) => { rereads.push(resolve); }));
+  vi.stubGlobal("fetch", fetchMock);
+  const options = { ...collaborationIssueOptions(client, scope, issue.id), refetchInterval: false as const };
+  const unsubscribe = new QueryObserver(client, options).subscribe(() => {});
+  try {
+    await expect.poll(() => client.getQueryData(options.queryKey)).toEqual(issue);
+    let settled = false;
+    const pending = sendCollaborationControl(client, scope, draft).then((value) => { settled = true; return value; });
+    await expect.poll(() => rereads.length).toBe(1);
+    // Two collaboration:changed ticks each restart the in-flight re-read.
+    void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, issue.id) });
+    await expect.poll(() => rereads.length).toBe(2);
+    void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, issue.id) });
+    await expect.poll(() => rereads.length).toBe(3);
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    expect(settled).toBe(false);
+    rereads[2]!(json(advanced));
+    await expect(pending).resolves.toEqual(receipt);
+    expect(client.getQueryData(options.queryKey)).toEqual(advanced);
+  } finally { unsubscribe(); }
+});
+
+it("does not hand back a receipt when access is lost while the fresh read is pending", async () => {
+  const { client, scope, issue, draft } = setup();
+  const fetchMock = vi.fn().mockResolvedValueOnce(json(issue)).mockResolvedValueOnce(json(receipt))
+    .mockReturnValueOnce(new Promise<Response>(() => {}));
+  vi.stubGlobal("fetch", fetchMock);
+  const options = { ...collaborationIssueOptions(client, scope, issue.id), refetchInterval: false as const };
+  const unsubscribe = new QueryObserver(client, options).subscribe(() => {});
+  try {
+    await expect.poll(() => client.getQueryData(options.queryKey)).toEqual(issue);
+    const pending = expect(sendCollaborationControl(client, scope, draft)).rejects.toMatchObject({ name: "AbortError" });
+    await expect.poll(() => fetchMock.mock.calls.length).toBe(3);
+    clearCollaborationAccess(client, scope, issue.id);
+    await pending;
+    expect(readCollaborationDrafts(draft.scope)).toEqual([]);
+  } finally { unsubscribe(); }
 });
 
 it("retains unknown requests and recovers their original refusal using GET alone", async () => {

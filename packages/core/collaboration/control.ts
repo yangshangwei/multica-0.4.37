@@ -1,4 +1,4 @@
-import { invalidateCollaborationSourceViews } from "./invalidation";
+import { invalidateCollaborationSourceViews, refreshCollaborationIssue } from "./invalidation";
 import { z } from "zod";
 import type { QueryClient } from "@tanstack/react-query";
 import { getApi } from "../api";
@@ -6,7 +6,7 @@ import type { StorageAdapter } from "../types/storage";
 import type { CollaborationIssue } from "./schema";
 import { CollaborationControlInputSchema, type CollaborationControlInput } from "./control-schema";
 import { collaborationExecutionViewInput } from "./execution-schema";
-import { collaborationAccessEpoch, collaborationKeys, CollaborationUnavailableError, isCollaborationDenied, isCollaborationScopeCurrent, protectCollaborationRead, type CollaborationScope } from "./access";
+import { collaborationAccessEpoch, CollaborationUnavailableError, isCollaborationDenied, isCollaborationScopeCurrent, protectCollaborationRead, type CollaborationScope } from "./access";
 import { clearCollaborationDrafts, removeCollaborationDraft, saveCollaborationDraft, type CollaborationDraft } from "./draft";
 
 const payloadSchema = z.strictObject({ domain: z.literal("execution_control"), requestId: z.uuid(), input: CollaborationControlInputSchema });
@@ -66,9 +66,13 @@ async function controlRequest(client: QueryClient, scope: CollaborationScope, so
     }
     removeCollaborationDraft(draft, options?.storage);
     // The receipt is historical; re-read state rather than projecting it into
-    // the live channel/hold cache, especially after operation recovery.
+    // the live channel/hold cache, especially after operation recovery. Settle
+    // only after that read: the next control captures its versions from it.
     invalidateCollaborationSourceViews(client, scope, draft.scope.issueId);
-    void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, draft.scope.issueId) });
+    await refreshCollaborationIssue(client, scope, draft.scope.issueId);
+    if (!isCollaborationScopeCurrent(scope) || collaborationAccessEpoch(client, scope, draft.scope.issueId) !== epoch) {
+      throw new DOMException("Collaboration access changed", "AbortError");
+    }
     return result;
   } catch (error) {
     if (isCollaborationDenied(error)) clearCollaborationDrafts(options?.storage, draft.scope);

@@ -1,8 +1,9 @@
-import { invalidateCollaborationSourceViews } from "./invalidation";
+import { invalidateCollaborationSourceViews, refreshCollaborationIssue } from "./invalidation";
 import { z } from "zod";
 import type { QueryClient } from "@tanstack/react-query";
 import { getApi } from "../api";
-import { collaborationIssueAccessDenied, collaborationKeys, CollaborationUnavailableError, isCollaborationDenied, protectCollaborationRead, type CollaborationScope } from "./access";
+import { collaborationAccessEpoch, collaborationIssueAccessDenied, CollaborationUnavailableError, isCollaborationDenied, isCollaborationScopeCurrent,
+  protectCollaborationRead, type CollaborationScope } from "./access";
 import { clearCollaborationDrafts, removeCollaborationDraft, saveCollaborationDraft, type CollaborationDraft } from "./draft";
 import type { CollaborationIssue } from "./schema";
 import { CollaborationCommandCancelInputSchema } from "./command-schema";
@@ -27,6 +28,7 @@ export async function executeCollaborationCommandCancel(client: QueryClient, sco
   const data = parseCollaborationCommandCancelDraft(source);
   const draft = { ...source, scope: { ...source.scope }, payload: data };
   if (draft.scope.server !== scope.server || draft.scope.userId !== scope.userId) throw new CollaborationUnavailableError();
+  const epoch = collaborationAccessEpoch(client, scope, draft.scope.issueId);
   const denied = collaborationIssueAccessDenied(client, scope, draft.scope.issueId);
   try {
     const receipt = await protectCollaborationRead(client, scope, recovery && denied ? null : draft.scope.issueId, async () => {
@@ -38,9 +40,13 @@ export async function executeCollaborationCommandCancel(client: QueryClient, sco
       return result;
     });
     removeCollaborationDraft(draft);
+    // Settle after the re-read: the next action captures its versions from it.
     if (!denied) {
       invalidateCollaborationSourceViews(client, scope, draft.scope.issueId);
-      void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, draft.scope.issueId) });
+      await refreshCollaborationIssue(client, scope, draft.scope.issueId);
+      if (!isCollaborationScopeCurrent(scope) || collaborationAccessEpoch(client, scope, draft.scope.issueId) !== epoch) {
+        throw new DOMException("Collaboration access changed", "AbortError");
+      }
     }
     return receipt;
   } catch (error) { if (isCollaborationDenied(error)) clearCollaborationDrafts(undefined, draft.scope); throw error; }
