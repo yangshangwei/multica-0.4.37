@@ -131,6 +131,8 @@
 
 ### 7. 精确账号查找
 
+> 2026-10-29：本节"禁止分页目录及默认列出最近账号"已被 [discussion §67](../discussion.md) 取代，现行设计见 [continuation-recipient-picker-2026-10-29.md](../continuation-recipient-picker-2026-10-29.md)。精确查找本身保留。
+
 新增专用 resolve 操作，可限定在有邀请／转交权的本单操作中；新建流程则先验证创建者的来源空间权限。请求显式区分 `username`、`email`、`user_id`，只做单值相等查询，禁止空值、名称片段、通配符、分页目录及“默认列出最近账号”。返回必要的 ID／显示名／头像供确认，不返回账号目录、工作空间关系或密码字段。
 
 - username 来自 `user_password_credential`；复用 `auth.NormalizeUsername` 的 trim、小写及 3–32 ASCII 校验：`server/internal/auth/password.go:22`；精确查询 `server/pkg/db/queries/password.sql:4`，唯一索引 `server/migrations/464_password_username_unique.up.sql:1`。
