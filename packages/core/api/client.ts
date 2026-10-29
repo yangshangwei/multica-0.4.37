@@ -16,9 +16,9 @@ import { COLLABORATION_ATTACHMENT_MAX_BYTES, CollaborationAttachmentUploadInputS
 import { CollaborationCommandCancelInputSchema, parseCollaborationCommandCancelReceipt, matchesCollaborationCommandCancelReceipt, type CollaborationCommandCancelInput } from "../collaboration/command-schema";
 import { PersonalAccessTokenListSchema, CreatePersonalAccessTokenResponseSchema } from "./personal-access-token-schemas";
 import {
-  parseCollaborationIssue, parseCollaborationOperation, parseCollaborationWorkbench, parseCollaborationStatusOptions, parseCollaborationRecipient, parseCollaborationFieldOptions,
+  parseCollaborationIssue, parseCollaborationOperation, parseCollaborationWorkbench, parseCollaborationStatusOptions, parseCollaborationRecipient, parseCollaborationRecipientSearch, parseCollaborationFieldOptions,
   type CollaborationWriteInput, type CollaborationParticipantInput, type CollaborationHandoffInput,
-  type CollaborationInformationReturnInput, type CollaborationAcceptanceInput, type CollaborationEditInput, type CollaborationIterationInput, type CollaborationRecipientInput,
+  type CollaborationInformationReturnInput, type CollaborationAcceptanceInput, type CollaborationEditInput, type CollaborationIterationInput, type CollaborationRecipientInput, type CollaborationRecipientSearchInput,
   type CollaborationStatusAction, type CollaborationLifecycleAction, type CollaborationStatusInput, type CollaborationLifecycleInput,
 } from "../collaboration/schema";
 import {
@@ -1134,6 +1134,36 @@ export class ApiClient {
       ? result.issue_id !== null && sameResourceIdentity(result.issue_id, issueId)
       : sourceWorkspaceId !== undefined && result.issue_id === null && sameResourceIdentity(result.source_workspace_id, sourceWorkspaceId);
     return matchesScope ? result : null;
+  }
+
+  async searchCollaborationRecipients(input: CollaborationRecipientSearchInput, options?: { signal?: AbortSignal }) {
+    const { issueId, sourceWorkspaceId, cursor } = input;
+    const q = (input.q ?? "").trim();
+    const limit = input.limit ?? 30;
+    const membersOnly = input.membersOnly === true;
+    if (!((typeof issueId === "string" && sourceWorkspaceId === undefined) ||
+      (typeof sourceWorkspaceId === "string" && issueId === undefined))) {
+      throw new TypeError("Recipient search requires exactly one context");
+    }
+    if (!Number.isInteger(limit) || limit < 1 || limit > 50 || (cursor !== undefined && (typeof cursor !== "string" || cursor === ""))) {
+      throw new TypeError("Invalid collaboration recipient search");
+    }
+    // An older server has no search route; only a structured not_found is access loss.
+    const result = parseCollaborationRecipientSearch(await this.fetchCollaborationOptionalHistory("/api/collaboration/recipients/search", {
+      method: "POST",
+      signal: options?.signal,
+      body: JSON.stringify({ issue_id: issueId, source_workspace_id: sourceWorkspaceId, q, cursor, limit, members_only: membersOnly }),
+    }));
+    if (!result) return null;
+    const matchesScope = issueId !== undefined
+      ? result.issue_id !== null && sameResourceIdentity(result.issue_id, issueId)
+      : sourceWorkspaceId !== undefined && result.issue_id === null && sameResourceIdentity(result.source_workspace_id, sourceWorkspaceId);
+    if (!matchesScope || result.recipients.length > limit || (cursor !== undefined && result.next_cursor === cursor)) return null;
+    if (!membersOnly) return q === "" && cursor === undefined ? result : { ...result, recent: [] };
+    // Members-only lists never offer an external or undisclosed account.
+    const member = (account: { external: boolean | null }) => account.external === false;
+    return { ...result, recent: q === "" && cursor === undefined ? result.recent.filter(member) : [], recipients: result.recipients.filter(member),
+      next_cursor: result.source_member ? result.next_cursor : null };
   }
 
   async getCollaborationWorkbench(params: { view?: "current" | "participating"; cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {

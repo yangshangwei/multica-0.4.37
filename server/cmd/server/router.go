@@ -458,6 +458,11 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		ServerVersion:                 normalizeServerVersion(version),
 		ChangelogFile:                 strings.TrimSpace(os.Getenv("CHANGELOG_FILE")),
 		CollaborationMemoryMaxBytes:   service.EffectiveCollaborationMemoryMaxBytes(opts.CollaborationMemoryMaxBytes),
+		CollaborationDirectoryEnabled: os.Getenv("MULTICA_COLLABORATION_DIRECTORY_ENABLED") != "false",
+	}
+	if signupConfig.CollaborationDirectoryEnabled && signupConfig.AllowSignup {
+		slog.Warn("collaboration recipient directory is on while self-service signup is allowed: any self-registered account can list the names and avatars of every available account",
+			"fix", "set MULTICA_COLLABORATION_DIRECTORY_ENABLED=false or ALLOW_SIGNUP=false")
 	}
 	h := handler.New(queries, pool, hub, bus, emailSvc, store, cfSigner, analyticsClient, signupConfig, daemonHub)
 	mode, registrationPolicy := "classic", "disabled"
@@ -1665,6 +1670,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Get("/api/collaboration/creations/{requestId}", h.GetCollaborationCreation)
 		r.Get("/api/collaboration/creations/{requestId}/result", h.GetCollaborationCreationResult)
 		r.Post("/api/collaboration/recipients/resolve", h.ResolveCollaborationRecipient)
+		r.Post("/api/collaboration/recipients/search", h.SearchCollaborationRecipients)
 		r.Post("/api/collaboration/issues/{id}/participants", h.InviteCollaborationParticipant)
 		r.Post("/api/collaboration/issues/{id}/handoffs", h.TransferCollaborationIssue)
 		r.Post("/api/collaboration/issues/{id}/information-returns", h.ReturnCollaborationInformation)

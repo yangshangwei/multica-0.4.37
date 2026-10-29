@@ -43,6 +43,57 @@ export type CollaborationRecipientInput = {
   | { sourceWorkspaceId: string; issueId?: never }
 );
 
+/** A picker row. `external` is null when the caller may not learn source membership. */
+// Keep this projection stricter than the historical account summary: a search
+// row is a new, server-controlled contract, so malformed display fields are
+// dropped rather than silently turned into an invented placeholder.
+export const CollaborationRecipientAccountSchema = z.object({
+  user_id: z.string().uuid(),
+  name: z.string(),
+  avatar_url: z.string(),
+  external: z.boolean().nullable(),
+});
+export type CollaborationRecipientAccount = z.infer<typeof CollaborationRecipientAccountSchema>;
+
+// One malformed account is dropped instead of emptying the list; a missing or
+// non-array list still makes the whole page unavailable.
+const recipientAccounts = z.array(z.unknown()).transform((items) => items.flatMap((item) => {
+  const parsed = CollaborationRecipientAccountSchema.safeParse(item);
+  return parsed.success ? [parsed.data] : [];
+}));
+
+export const CollaborationRecipientSearchSchema = z.object({
+  issue_id: z.string().uuid().nullable(),
+  source_workspace_id: z.string().uuid(),
+  // An unknown scope gets the narrower related-only explanation.
+  scope: z.enum(["directory", "related"]).catch("related"),
+  source_member: z.boolean(),
+  recent: recipientAccounts,
+  recipients: recipientAccounts,
+  next_cursor: z.string().min(1).nullable(),
+}).transform((page): typeof page => {
+  if (page.source_member) {
+    // A source member must receive a boolean membership projection. Drop a
+    // malformed null row instead of rendering an account with ambiguous scope.
+    return { ...page, recent: page.recent.filter((account) => account.external !== null), recipients: page.recipients.filter((account) => account.external !== null) };
+  }
+  // Membership is disclosed only to source members, whatever the server sent.
+  return { ...page, recent: page.recent.map((account) => ({ ...account, external: null })), recipients: page.recipients.map((account) => ({ ...account, external: null })) };
+});
+
+export type CollaborationRecipientSearch = z.infer<typeof CollaborationRecipientSearchSchema>;
+
+/** Lists picker candidates by name; exact identifiers still go through resolution. */
+export type CollaborationRecipientSearchInput = {
+  q?: string;
+  cursor?: string;
+  limit?: number;
+  membersOnly?: boolean;
+} & (
+  | { issueId: string; sourceWorkspaceId?: never }
+  | { sourceWorkspaceId: string; issueId?: never }
+);
+
 const labelSummary = z.object({
   id: z.string().uuid(),
   name: z.string(),
@@ -397,6 +448,13 @@ export function parseCollaborationStatusOptions(data: unknown): CollaborationSta
 export function parseCollaborationRecipient(data: unknown): CollaborationRecipient | null {
   return parseWithFallback<CollaborationRecipient | null>(data, CollaborationRecipientSchema, null, {
     endpoint: "collaboration recipient resolution",
+    redact: true,
+  });
+}
+
+export function parseCollaborationRecipientSearch(data: unknown): CollaborationRecipientSearch | null {
+  return parseWithFallback<CollaborationRecipientSearch | null>(data, CollaborationRecipientSearchSchema, null, {
+    endpoint: "collaboration recipient search",
     redact: true,
   });
 }

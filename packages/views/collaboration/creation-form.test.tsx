@@ -23,6 +23,15 @@ const clients: QueryClient[] = [];
 afterEach(() => { clients.splice(0).forEach((client) => client.clear()); localStorage.clear(); vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 const json = (data: unknown) => new Response(JSON.stringify(data));
 
+async function chooseExactRecipient(user: ReturnType<typeof userEvent.setup>, value: string) {
+  await user.click(screen.getByRole("button", { name: "Recipient" }));
+  await user.type(screen.getByPlaceholderText("Search recipients"), "recipient");
+  await user.click(await screen.findByRole("button", { name: "Find by full username, email, or account ID" }));
+  await user.type(screen.getByLabelText("Find by full username, email, or account ID"), value);
+  await user.click(screen.getByRole("button", { name: "Find account" }));
+  await user.click(await screen.findByRole("button", { name: "Use this account" }));
+}
+
 function mount(onCreated = vi.fn()) {
   setApiInstance(new ApiClient("https://server.example"));
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -38,6 +47,7 @@ it("restores the form and private file after lost responses, then opens the reco
   const fetch = vi.fn(async (input: string, init: RequestInit) => {
     const url = new URL(input);
     if (url.pathname.endsWith("creation-options")) return json({ ...options, source: url.searchParams.has("source_workspace_id") ? sourceChoice : null });
+    if (url.pathname.endsWith("recipients/search")) return json({ issue_id: null, source_workspace_id: source, scope: "directory", source_member: true, recent: [], recipients: [], next_cursor: null });
     if (url.pathname.endsWith("recipients/resolve")) return json({ issue_id: null, source_workspace_id: source,
       recipient: { user_id: other, name: "External recipient", avatar_url: "", external: true } });
     if (url.pathname.endsWith("attachments/drafts")) {
@@ -63,10 +73,7 @@ it("restores the form and private file after lost responses, then opens the reco
   let view = mount(onCreated);
   await user.type(await screen.findByLabelText("Title"), "Keep this title");
   await user.type(screen.getByLabelText("Description"), "Keep this body");
-  await user.type(screen.getByLabelText("Full username, email, or account ID"), "recipient@example.invalid");
-  expect(screen.getByRole("button", { name: "Create collaboration issue" })).toBeDisabled();
-  await user.click(screen.getByRole("button", { name: "Find account" }));
-  await user.click(await screen.findByRole("button", { name: "Use this account" }));
+  await chooseExactRecipient(user, "recipient@example.invalid");
   const file = new File(["hello"], "notes.txt", { type: "text/plain" });
   Object.defineProperty(file, "arrayBuffer", { value: async () => new TextEncoder().encode("hello").buffer });
   await user.upload(screen.getByLabelText("Attach files"), file);
@@ -116,6 +123,7 @@ it("keeps a durably rejected form through reload and sends identical input only 
   vi.stubGlobal("fetch", vi.fn(async (input: string, init: RequestInit) => {
     const url = new URL(input);
     if (url.pathname.endsWith("creation-options")) return json({ ...options, source: url.searchParams.has("source_workspace_id") ? sourceChoice : null });
+    if (url.pathname.endsWith("recipients/search")) return json({ issue_id: null, source_workspace_id: source, scope: "directory", source_member: true, recent: [], recipients: [], next_cursor: null });
     if (url.pathname.endsWith("recipients/resolve")) return json({ issue_id: null, source_workspace_id: source,
       recipient: { user_id: other, name: "Unavailable recipient", avatar_url: "", external: true } });
     if (url.pathname.endsWith("/result")) return json({ request_id: keys[0], source_workspace_id: source, actor_user_id: actor, outcome: "rejected", code: "account_unavailable" });
@@ -132,9 +140,7 @@ it("keeps a durably rejected form through reload and sends identical input only 
   const onCreated = vi.fn();
   const view = mount(onCreated);
   await user.type(await screen.findByLabelText("Title"), "Keep the rejected title");
-  await user.type(screen.getByLabelText("Full username, email, or account ID"), "unavailable@example.invalid");
-  await user.click(screen.getByRole("button", { name: "Find account" }));
-  await user.click(await screen.findByRole("button", { name: "Use this account" }));
+  await chooseExactRecipient(user, "unavailable@example.invalid");
   await user.click(screen.getByRole("button", { name: "Create collaboration issue" }));
   const rejectedMessage = "The issue was not created. Your draft and files are preserved; you can submit again.";
   await screen.findByText(rejectedMessage);

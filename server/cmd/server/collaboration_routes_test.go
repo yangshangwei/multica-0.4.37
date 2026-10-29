@@ -196,6 +196,7 @@ func TestCollaborationRoutesDenyLegacyAgentContext(t *testing.T) {
 					call(t, credential.token, http.MethodPost, "/api/collaboration/recipients/resolve", "", map[string]any{
 						"kind": "user_id", "value": invited, "issue_id": issue,
 					}, true).Want(http.StatusForbidden)
+					call(t, credential.token, http.MethodPost, "/api/collaboration/recipients/search", "", map[string]any{"issue_id": issue}, true).Want(http.StatusForbidden)
 					call(t, credential.token, http.MethodGet, "/api/me/workbench", "", nil, true).Want(http.StatusForbidden)
 					call(t, credential.token, http.MethodGet, base+"/operations/"+key, "", nil, true).Want(http.StatusNotFound)
 					call(t, credential.token, http.MethodPost, base+"/participants", uuid.NewString(), body("2", denied), true).Want(http.StatusForbidden)

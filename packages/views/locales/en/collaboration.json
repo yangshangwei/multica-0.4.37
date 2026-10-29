@@ -133,7 +133,6 @@
     "archived": "Archived",
     "clear": "Clear",
     "removeAccount": "Remove {{name}}",
-    "exactAccount": "Exact source member account",
     "sourceAccountOnly": "Choose an account that belongs to the source workspace.",
     "unavailableSelection": "Unavailable selection: {{value}}",
     "project": "Project",
@@ -215,9 +214,7 @@
     "reopen": "Reopen issue",
     "leave": "Leave issue",
     "edit": "Edit issue",
-    "recipient": "Exact recipient",
-    "recipientHint": "Enter a username, email or account UUID.",
-    "resolve": "Find account",
+    "recipient": "Recipient",
     "confirmRecipient": "Selected account: {{name}}",
     "note": "Note",
     "confirm": "Confirm",
@@ -522,10 +519,7 @@
     "self": "Assign to me",
     "assignedSelf": "Assigned to you",
     "assignedTo": "Assigned to {{name}}",
-    "lookupLabel": "Full username, email, or account ID",
-    "lookup": "Find account",
     "useRecipient": "Use this account",
-    "confirmRecipient": "Confirm this recipient or choose yourself before creating the issue.",
     "submit": "Create collaboration issue",
     "submitting": "Creating issue...",
     "unknown": "The creation result is not confirmed. Your original request is saved.",
@@ -623,6 +617,27 @@
       "configuration_changed": "The resource configuration changed.",
       "cancelled": "Preparation was cancelled.",
       "preparation_unavailable": "Preparation could not be completed."
+    }
+  },
+  "recipientPicker": {
+    "choose": "Choose a recipient",
+    "search": "Search recipients",
+    "exactLookup": "Find by full username, email, or account ID",
+    "exactPlaceholder": "Username, email, or account ID",
+    "findExact": "Find account",
+    "external": "External",
+    "loading": "Loading accounts...",
+    "loadingMore": "Loading more accounts...",
+    "loadMore": "Load more",
+    "empty": "No available accounts found.",
+    "relatedHint": "Showing people who share a workspace or collaboration issue with you. Use exact lookup for someone else.",
+    "membersOnlyHint": "Only members of the source workspace can be selected here.",
+    "selectedCount": "{{count}} accounts selected",
+    "sections": {
+      "self": "You",
+      "selected": "Selected",
+      "recent": "Recent collaboration",
+      "all": "All accounts"
     }
   },
   "memory": {

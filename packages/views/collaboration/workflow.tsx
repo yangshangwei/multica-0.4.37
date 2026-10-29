@@ -1,7 +1,7 @@
 import { useId, useRef, useState } from "react";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { collaborationFieldOptions, collaborationPropertyValueMatchesDefinition, collaborationKeys, collaborationRecipientOptions, executeCollaborationAction, parseCollaborationActionDraft, prepareCollaborationAction, useCollaborationPendingDrafts, useCollaborationStatusOptions,
-  type CollaborationAction, type CollaborationActionIntent, type CollaborationDraft, type CollaborationIssue, type CollaborationScope, type CollaborationStatusAction } from "@multica/core/collaboration";
+import { collaborationFieldOptions, collaborationPropertyValueMatchesDefinition, collaborationKeys, executeCollaborationAction, parseCollaborationActionDraft, prepareCollaborationAction, useCollaborationPendingDrafts, useCollaborationStatusOptions,
+  type CollaborationAction, type CollaborationActionIntent, type CollaborationDraft, type CollaborationIssue, type CollaborationRecipientAccount, type CollaborationScope, type CollaborationStatusAction } from "@multica/core/collaboration";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
 import { Checkbox } from "@multica/ui/components/ui/checkbox";
@@ -9,6 +9,7 @@ import { Textarea } from "@multica/ui/components/ui/textarea";
 import { useT } from "../i18n";
 import { useCollaborationLabels } from "./labels";
 import { CollaborationQueryState } from "./query-state";
+import { CollaborationAccountPicker } from "./account-picker";
 import { CollaborationParticipants } from "./participants";
 import type { IssuePropertyValue } from "@multica/core/types";
 import { recoverFocus } from "./focus";
@@ -89,8 +90,7 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
   const restoredEdit = restoredAction?.action === "edit" ? restoredAction : null;
   const restoredStructure = restoredAction?.action === "edit_source_structure" ? restoredAction : null;
   const restoredIteration = restoredAction?.action === "change_iteration" ? restoredAction : null;
-  const [lookup, setLookup] = useState("");
-  const [lookupRequest, setLookupRequest] = useState("");
+  const [recipient, setRecipient] = useState<CollaborationRecipientAccount | null>(null);
   const [note, setNote] = useState("");
   const [status, setStatus] = useState(initialStatus ?? "");
   const [title, setTitle] = useState(restoredEdit?.title ?? issue.title);
@@ -123,8 +123,6 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
   const needsRecipient = action === "invite" || action === "transfer" || action === "request_information";
   const needsStatus = ["change_status", "complete", "cancel", "reopen", "request_information", "return_information", "submit_acceptance"].includes(action);
   const options = useCollaborationStatusOptions(scope, issue.id, (needsStatus ? action : "change_status") as CollaborationStatusAction, needsStatus);
-  const resolve = useQuery(collaborationRecipientOptions(client, scope, issue.id, lookupRequest));
-  const recipient = resolve.isSuccess && !resolve.isFetching ? resolve.data : null;
   const chosenStatus = status || options.data?.default_status || "";
   const editReady = action !== "edit" || (title.trim() !== "" && ["none", "low", "medium", "high", "urgent"].includes(priority) && baseline.start_date !== undefined && baseline.due_date !== undefined && !invalidProperties && !invalidLabels);
   const sourceReady = !needsSource || sourceOptions !== undefined && !fields.isFetching && !fields.isPlaceholderData && (sourceSelection.stage === null || Number.isInteger(sourceSelection.stage) && sourceSelection.stage >= 1 && sourceSelection.stage <= 2147483647);
@@ -133,9 +131,9 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
   const ready = !locked && (!needsRecipient || recipient !== null) && (!needsStatus || (options.isSuccess && !options.isFetching && options.data.options.some((item) => item.key === chosenStatus))) && editReady && sourceReady && iterationReady;
   function intent(): CollaborationActionIntent {
     switch (action) {
-      case "invite": return { action, targetUserId: recipient!.recipient.user_id };
-      case "transfer": return { action, targetUserId: recipient!.recipient.user_id, note };
-      case "request_information": return { action, targetUserId: recipient!.recipient.user_id, note, expectedStatus: chosenStatus, statusOptionsVersion: options.data!.status_options_version };
+      case "invite": return { action, targetUserId: recipient!.user_id };
+      case "transfer": return { action, targetUserId: recipient!.user_id, note };
+      case "request_information": return { action, targetUserId: recipient!.user_id, note, expectedStatus: chosenStatus, statusOptionsVersion: options.data!.status_options_version };
       case "return_information": return { action, informationRequestId: baseline.current_information_request!.id, note, expectedStatus: chosenStatus, statusOptionsVersion: options.data!.status_options_version };
       case "submit_acceptance": return { action, note, expectedStatus: chosenStatus, statusOptionsVersion: options.data!.status_options_version };
       case "change_status": case "complete": case "cancel": case "reopen": return { action, status: chosenStatus, statusOptionsVersion: options.data!.status_options_version };
@@ -149,11 +147,10 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
   return <form onSubmit={(event) => { if (event.target !== event.currentTarget) return; event.preventDefault(); if (ready) void submit(intent(), baseline); }} className="min-w-0 space-y-4 rounded-lg border border-border p-4">
     <h3 className="text-body font-semibold">{labels.action(action)}</h3>
     <fieldset disabled={locked} className="min-w-0 space-y-4">
-      {needsRecipient && <div className="space-y-2"><label htmlFor={`${fieldId}-recipient`} className="text-body">{t(($) => $.workflow.recipient)}</label>
-        <Input id={`${fieldId}-recipient`} value={lookup} placeholder={t(($) => $.workflow.recipientHint)} onChange={(event) => { setLookup(event.target.value); setLookupRequest(""); }} className="pointer-coarse:min-h-11" />
-        <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={resolve.isFetching || !lookup.trim()} onClick={() => { if (lookupRequest === lookup.trim()) void resolve.refetch(); else setLookupRequest(lookup.trim()); }}>{t(($) => $.workflow.resolve)}</Button>
-        {recipient && <p role="status" className="text-body [overflow-wrap:anywhere]">{t(($) => $.workflow.confirmRecipient, { name: recipient.recipient.name })}</p>}
-        {resolve.error && <CollaborationQueryState error={resolve.error} />}
+      {needsRecipient && <div className="space-y-2"><label className="text-body">{t(($) => $.workflow.recipient)}</label>
+        <CollaborationAccountPicker scope={scope} context={{ kind: "issue", issueId: issue.id }} selected={recipient} label={t(($) => $.workflow.recipient)} disabled={locked}
+          onSelect={setRecipient} />
+        {recipient && <p role="status" className="text-body [overflow-wrap:anywhere]">{t(($) => $.workflow.confirmRecipient, { name: recipient.name })}</p>}
       </div>}
       {needsStatus && <div className="space-y-2"><label htmlFor={`${fieldId}-status`} className="text-body">{t(($) => $.detail.status)}</label><select id={`${fieldId}-status`} value={chosenStatus} onChange={(event) => setStatus(event.target.value)} className="block min-h-11 max-w-full rounded-md border border-input bg-background px-3 text-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
         {chosenStatus && options.data && !options.data.options.some((item) => item.key === chosenStatus) && <option value={chosenStatus}>{t(($) => $.fields.unavailableSelection, { value: chosenStatus })}</option>}
