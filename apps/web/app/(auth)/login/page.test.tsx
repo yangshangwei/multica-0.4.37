@@ -1,7 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { I18nProvider } from "@multica/core/i18n/react";
+import { configStore } from "@multica/core/config";
 import enCommon from "@multica/views/locales/en/common.json";
 import enAuth from "@multica/views/locales/en/auth.json";
 import enSettings from "@multica/views/locales/en/settings.json";
@@ -141,6 +142,29 @@ describe("LoginPage", () => {
         value: originalLocation,
       });
     }
+  });
+
+  // The download page lives in the standalone desktop-updates service, so the
+  // link must come from /api/config and disappear when nothing is configured.
+  describe("desktop download link", () => {
+    afterEach(() => configStore.setState(configStore.getInitialState()));
+
+    it("links to the configured download page in a new tab", () => {
+      configStore.getState().setDesktopDownloadUrl("http://10.10.10.20:18080/desktop/");
+      render(<LoginPage />, { wrapper: createWrapper() });
+
+      const link = screen.getByRole("link", { name: "Download" });
+      expect(link).toHaveAttribute("href", "http://10.10.10.20:18080/desktop/");
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(screen.getByText(/prefer the desktop app/i)).toBeInTheDocument();
+    });
+
+    it("omits the prompt when no download page is configured", () => {
+      render(<LoginPage />, { wrapper: createWrapper() });
+
+      expect(screen.queryByRole("link", { name: "Download" })).not.toBeInTheDocument();
+      expect(screen.queryByText(/prefer the desktop app/i)).not.toBeInTheDocument();
+    });
   });
 
   // Regression: #5009 — the "already authenticated on arrival" effect used to

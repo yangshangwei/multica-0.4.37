@@ -26,6 +26,7 @@
     "headline_emphasis": "one workspace.",
     "lede": "Assign them work like you'd assign a colleague — they pick it up, update status, and comment when done.",
     "lede_web": "Desktop bundles the runtime — nothing to install. Continue on web to connect your own CLI.",
+    "lede_web_no_desktop": "Continue on web and connect this computer from the terminal.",
     "lede_desktop": "Connect a runtime and create your first project. 小阿孚 is available when you need help.",
     "download_desktop": "Download Desktop",
     "continue_on_web": "Continue on web",
@@ -133,19 +134,6 @@
     "intro": "You'll need an agent runtime on this computer (Claude Code, Codex, Cursor, …) for it to run your agent. Also works on servers and remote dev boxes.",
     "step1_label": "Install the Multica CLI",
     "step2_label": "Start the daemon"
-  },
-  "cloud_waitlist": {
-    "intro_main": "Cloud runtimes aren't live yet. Leave your email and we'll reach out when they are.",
-    "intro_warning": "Heads-up: agents can't execute tasks without a runtime — if you hit Skip now, nothing will run until you come back and install one.",
-    "email_label": "Email",
-    "email_placeholder": "you@work.com",
-    "reason_label": "Why cloud?",
-    "optional": "Optional",
-    "reason_placeholder": "e.g. we want agents running 24/7, or my team works across different devices.",
-    "join": "Join waitlist",
-    "on_list": "You're on the list",
-    "success_toast": "You're on the list. We'll email when cloud runtimes are live.",
-    "failed_toast": "Failed to join waitlist"
   },
   "welcome_after_onboarding": {
     "skip": {
@@ -261,7 +249,8 @@
     "stage_slow_suffix": " for errors.",
     "stage_stalled_prefix": "Nothing coming through yet. If you're not comfortable with the terminal, ",
     "stage_stalled_term": "Desktop",
-    "stage_stalled_suffix": " is the smoother path — one click and this computer is connected. Close this dialog and pick Desktop, or hit Skip to continue."
+    "stage_stalled_suffix": " is the smoother path — one click and this computer is connected. Close this dialog and pick Desktop, or hit Skip to continue.",
+    "stage_stalled_no_desktop": "Nothing coming through yet. Check the terminal for errors and run the commands again, or hit Skip to continue."
   },
   "errors": {
     "skip_failed": "Failed to finish onboarding",

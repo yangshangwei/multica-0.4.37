@@ -4,6 +4,7 @@ import Link from "next/link";
 import { MulticaIcon } from "@multica/ui/components/common/multica-icon";
 import { cn } from "@multica/ui/lib/utils";
 import { useAuthStore } from "@multica/core/auth";
+import { useConfigStore } from "@multica/core/config";
 import {
   XMark,
   GitHubMark,
@@ -18,8 +19,17 @@ import { useDashboardCtaHref } from "../utils/use-dashboard-cta";
 export function LandingFooter() {
   const { t, locale, setLocale } = useLocale();
   const user = useAuthStore((s) => s.user);
+  const downloadUrl = useConfigStore((s) => s.desktopDownloadUrl);
   const ctaHref = useDashboardCtaHref();
-  const groups = Object.values(t.footer.groups);
+  // The download page belongs to the operator's desktop-updates service, so
+  // the Product column only lists it when the deployment has configured one.
+  const { product, ...otherGroups } = t.footer.groups;
+  const groups = [
+    downloadUrl
+      ? { ...product, links: [...product.links, { label: t.footer.download, href: downloadUrl }] }
+      : product,
+    ...Object.values(otherGroups),
+  ];
 
   return (
     <footer className="bg-[#0a0d12] text-white">

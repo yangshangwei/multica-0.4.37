@@ -9,8 +9,7 @@ import { useEffect, useState } from "react";
  * {@link LandingHeader}, which renders on every marketing page, so a single
  * client fetch covers them all without threading a server value through eight
  * render sites. Each visitor calls the GitHub API from their own IP, which
- * sidesteps the shared-outbound-IP rate limit that the server-side
- * `github-release.ts` fetcher has to work around with a PAT.
+ * sidesteps the 60-requests/hour limit a shared server outbound IP would hit.
  *
  * The result is memoized at module scope (plus an in-flight promise) so
  * client-side navigation between landing pages reuses the first fetch instead
