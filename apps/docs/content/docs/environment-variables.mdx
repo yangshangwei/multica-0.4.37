@@ -99,6 +99,21 @@ The server displays them without executing them. After editing Compose `.env`,
 recreate the backend. Helm uses `backend.config.cliInstallCommands.windows`,
 `.macos`, `.linux` and `backend.config.cliInstallCommand`.
 
+### Desktop download page
+
+| Variable | Default | Description |
+|---|---|---|
+| `MULTICA_DESKTOP_DOWNLOAD_URL` | empty | Desktop download page linked from the Web login page, onboarding and landing page |
+
+Point it at the page users install Desktop from, normally the standalone
+desktop download service (`http://<download-host>:18080/desktop/`). It must be
+an absolute `http` or `https` URL whose host is an IP address or an ASCII host
+name (internationalized domain names are not supported), with a port no higher
+than 65535 and no username or password. The server logs a startup warning for
+any other value and treats it as empty. When empty,
+every Web download link is hidden. The value is public through `/api/config`
+as `desktop_download_url`. Helm uses `backend.config.desktopDownloadUrl`.
+
 When the frontend and API run on different hosts and the browser talks to the API domain directly, you must set `COOKIE_DOMAIN` — otherwise the browser cannot read the CSRF cookie: every write request returns `403 CSRF validation failed` while reads work fine. Use the narrowest parent domain that covers both hosts (`.agent.example.com` over `.example.com`). It spreads the sign-in session cookie to every host under that domain, which is only acceptable when all of those hosts are operated by the same trusted party. After changing it, clear the old cookies on both hosts and sign in again. If you follow the same-origin recipe in the [self-host quickstart](/self-host-quickstart#3-choose-how-to-access) (the browser only visits the app domain), keep it empty. Do not use an IP address — browsers ignore cookies whose Domain is an IP.
 
 <Callout type="warning">

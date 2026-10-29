@@ -92,6 +92,14 @@ MULTICA_PUBLIC_URL=https://api.multica.example.com
 
 “添加电脑”优先使用显式系统命令。只要配置了任一自定义来源，未配置的系统就显示安装说明，不会回退到公网下载；四项均为空时才使用公开安装脚本。这些值由无需认证的 `/api/config` 以 `cli_install_commands` 和 `cli_install_command` 返回，不能包含凭据。服务端只展示命令，不会执行。修改 Compose 的 `.env` 后重建后端。Helm 对应 `backend.config.cliInstallCommands.windows`、`.macos`、`.linux` 和旧 `backend.config.cliInstallCommand`。
 
+### 桌面端下载页
+
+| 变量 | 默认值 | 说明 |
+|---|---|---|
+| `MULTICA_DESKTOP_DOWNLOAD_URL` | 空 | Web 登录页、新手引导和首页的"下载桌面端"入口指向的页面 |
+
+填写用户安装 Desktop 的页面，通常是独立桌面下载服务的 `http://<下载服务器>:18080/desktop/`。必须是 `http` 或 `https` 绝对地址，主机为 IP 地址或 ASCII 主机名（不支持中文等国际化域名），端口不超过 65535，不能包含用户名或密码；其他值会在后端启动日志中警告，并按未配置处理。留空时 Web 端隐藏所有下载入口。该值由 `/api/config` 以 `desktop_download_url` 公开返回。Helm 对应 `backend.config.desktopDownloadUrl`。
+
 前端和 API 使用不同 host、且浏览器直接访问 API 域时，必须设置 `COOKIE_DOMAIN`，否则浏览器读不到 CSRF cookie——所有写请求返回 `403 CSRF validation failed`，而读请求一切正常。取值用能同时覆盖两个 host 的最窄父域（`.agent.example.com` 优于 `.example.com`）。它会把登录会话 cookie 扩散到该域下的所有 host，只有这些 host 都由同一可信主体运维时才可用。修改后需要在两个 host 上清除旧 cookie 并重新登录。若采用[自托管快速上手](/self-host-quickstart#3-选择访问方式)的同源配方（浏览器只访问 app 域），保持为空即可。不要填写 IP 地址，浏览器会忽略带 IP Domain 的 cookie。
 
 <Callout type="warning">

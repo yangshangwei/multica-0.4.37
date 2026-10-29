@@ -27,6 +27,14 @@ accept ordered, repeated overlays. Relative paths resolve from `DIR`.
   system when any internal source exists. Keep the source and embedded docs in
   sync; the full contract lives in
   [Add a computer](../views/frontend/connect-remote-computer.md).
+- `MULTICA_DESKTOP_DOWNLOAD_URL` is the only source of Web's desktop download
+  links (login, onboarding, landing). Forward it through Compose and Helm; it
+  is public via `/api/config` and must be an absolute http(s) URL without
+  credentials, otherwise every link is hidden. The server check (IP literal or
+  ASCII host, numeric last label must be valid IPv4, port <= 65535) must stay
+  a subset of what the web client's `new URL` accepts, so anything the server
+  emits is rendered and anything it drops is warned about at startup. Web has
+  no `/download` page.
 - Compose defaults match backend semantics: `FF_PROJECTS_P1=true`, platform
   administration and managed installations off. Iterations have no deployment
   gate; workspace owners/admins manage their setting. Missing settings default

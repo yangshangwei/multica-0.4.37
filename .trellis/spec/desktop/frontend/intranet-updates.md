@@ -122,9 +122,9 @@ acceptance checks real GUI registration cleanup plus a foreign-handler fixture.
 ### 1. Scope / Trigger
 
 Use this contract when changing the Nginx download page, its deployment kit,
-or the collect/publish output consumed by first-time installers. The existing
-Next.js `/download` remains a presentation reference; its GitHub fetch and
-all-platform completeness policy do not select an intranet Windows release.
+or the collect/publish output consumed by first-time installers. This page is
+the only desktop download page: Web has no `/download` route and links here
+through `MULTICA_DESKTOP_DOWNLOAD_URL` (see `server/offline-delivery.md`).
 
 ### 2. Signatures
 
