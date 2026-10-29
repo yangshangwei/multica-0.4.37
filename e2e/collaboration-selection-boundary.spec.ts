@@ -48,6 +48,9 @@ test("AC87 Web and actual Electron hide subtask creation for shared body/comment
     expect(await fixture.client.requestJSON(`/api/collaboration/issues/${fixture.issue.id}`)).toEqual(initial);
 
     await page.goto(new URL(fixture.ordinaryPath, webUrl).href);
+    // IssueDetailRoute replaces the UUID segment with the identifier, which
+    // remounts the page; select only on the stable canonical route.
+    await expect(page).toHaveURL(new RegExp(`/issues/${fixture.ordinary.identifier}$`));
     evidence.web_ordinary = await inspectOrdinarySelection(page, fixture);
     expect(webRequests.requests).toEqual([{ method: "GET", path: `/api/comments/${fixture.ordinaryCommentId}/sub-issue-preview` }]);
     const windowPending = native.app.waitForEvent("window");
