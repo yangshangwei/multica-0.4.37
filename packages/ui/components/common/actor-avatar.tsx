@@ -10,6 +10,8 @@ import {
 import {
   AVATAR_ICON_COMPONENTS,
   AVATAR_ICON_TONE,
+  BUILTIN_FU_AVATAR_GLYPH,
+  isBuiltinFuAvatar,
   resolveAvatarIcon,
 } from "@multica/ui/lib/avatar-icon";
 import { MulticaIcon } from "./multica-icon";
@@ -37,10 +39,7 @@ function ActorAvatar({
 }: ActorAvatarProps) {
   const [imgError, setImgError] = useState(false);
   const px = AVATAR_SIZE_PX[size];
-  const isFuAvatar = isAgent && (
-    avatarUrl === "emoji:🦄" ||
-    /^(?:https?:\/\/[^/]+)?\/api\/avatars\/builtin\/afu-seal-v1\.png$/.test(avatarUrl ?? "")
-  );
+  const isFuAvatar = isAgent && isBuiltinFuAvatar(avatarUrl);
   const iconName = resolveAvatarIcon(avatarUrl)
     ?? ((!avatarUrl || imgError) && !isSystem ? (isAgent ? "bot" : isSquad ? "users" : null) : null);
   const Icon = iconName ? AVATAR_ICON_COMPONENTS[iconName] : null;
@@ -69,7 +68,7 @@ function ActorAvatar({
       style={{ width: px, height: px, fontSize: px * 0.45 }}
     >
       {isFuAvatar ? (
-        <span role="img" aria-label={name}>孚</span>
+        <span role="img" aria-label={name}>{BUILTIN_FU_AVATAR_GLYPH}</span>
       ) : Icon ? (
         <Icon
           role="img"

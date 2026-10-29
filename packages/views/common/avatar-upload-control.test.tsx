@@ -251,6 +251,25 @@ describe("AvatarUploadControl", () => {
     await waitFor(() => expect(toastError).toHaveBeenCalledWith("network down"));
   });
 
+  // Agent settings showed the red seal PNG while every ActorAvatar showed the
+  // green Fu; the editor has to match. Accepted values: avatar-icon.test.tsx.
+  it("shows the built-in Fu avatar like ActorAvatar does", () => {
+    renderWithI18n(
+      <AvatarUploadControl
+        variant="agent"
+        value="/api/avatars/builtin/afu-seal-v1.png"
+        name="小阿孚"
+        onUploaded={vi.fn()}
+        onIconSelected={vi.fn()}
+      />,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Change avatar" });
+    expect(trigger).toHaveTextContent("孚");
+    expect(trigger).toHaveClass("bg-skill-quality/12", "text-skill-quality");
+    expect(trigger.querySelector("img, svg.lucide-bot")).toBeNull();
+  });
+
   it("cannot be opened when the caller lacks edit permission", () => {
     renderWithI18n(
       <AvatarUploadControl
