@@ -254,6 +254,8 @@ async function configureManagedSession(token: string, userId: string, daemonToke
     session?.startHeartbeat();
   } catch (error) {
     if (generation === managedGeneration && attempt === connectionAttempt && targetApiBaseUrl === target) {
+      // The diagnostic keeps only a code, so keep the cause for whoever has to trace it.
+      console.error("[daemon] managed installation setup failed:", error);
       managedSetupError = daemonDiagnostic(error, "registration");
       publishConnectionDiagnostic(managedSetupError);
     }
