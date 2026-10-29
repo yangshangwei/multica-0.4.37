@@ -32,7 +32,7 @@ import {
   CollaborationSwitchInputSchema, collaborationSwitchRequest, matchesCollaborationSwitchReceipt,
   parseCollaborationSwitchReceipt, parseCollaborationSwitchProposal, parseCollaborationSwitchProposals, type CollaborationSwitchInput,
 } from "../collaboration/switch-schema";
-import { withRequestDeadline, type ApiRequestOptions } from "./request-lifecycle";
+import { RECOVERY_REQUEST_TIMEOUT_MS, withRequestDeadline, type ApiRequestOptions } from "./request-lifecycle";
 import { CollaborationResourceInputSchema, collaborationResourceRequest, matchesCollaborationResourceReceipt,
   parseCollaborationResources, parseCollaborationResourceOptions, parseCollaborationResourceIdentity, parseCollaborationResourceReceipt,
   type CollaborationResourceInput } from "../collaboration/resource-schema";
@@ -972,8 +972,12 @@ export class ApiClient {
     }
   }
 
-  async getCollaborationIssue(id: string, options?: { signal?: AbortSignal }) {
-    const raw = await this.fetchCollaboration(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}`), { signal: options?.signal });
+  async getCollaborationIssue(id: string, options?: ApiRequestOptions) {
+    const raw = await withRequestDeadline(
+      { ...options, timeoutMs: options?.timeoutMs ?? RECOVERY_REQUEST_TIMEOUT_MS },
+      this.endpointController.signal,
+      (signal) => this.fetchCollaboration(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}`), { signal }),
+    );
     const issue = parseCollaborationIssue(raw);
     return issue && sameResourceIdentity(issue.id, id) ? issue : null;
   }

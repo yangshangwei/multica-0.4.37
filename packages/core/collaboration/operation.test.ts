@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { afterEach, expect, it, vi } from "vitest";
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient, QueryObserver } from "@tanstack/react-query";
 import { ApiClient, ApiError, setApiInstance } from "../api";
 import { collaborationKeys, collaborationScope, clearCollaborationAccess } from "./access";
 import { parseCollaborationIssue } from "./schema";
@@ -16,6 +16,11 @@ const storage = { keys: () => [...stored.keys()], getItem: (key: string) => stor
 const client = new QueryClient();
 const key = "00000000-0000-4000-8000-000000000003";
 const json = (value: unknown, status = 200) => new Response(JSON.stringify(value), { status });
+function deferred<T>() {
+  let resolve!: (value: T) => void;
+  const promise = new Promise<T>((done) => { resolve = done; });
+  return { promise, resolve };
+}
 afterEach(() => { client.clear(); stored.clear(); vi.unstubAllGlobals(); });
 function setup() {
   setApiInstance(new ApiClient("https://server.example"));
@@ -36,6 +41,53 @@ it("persists the captured human intent before transport and waits for a receipt 
   await expect(executeCollaborationAction(client, scope, draft, false, storage)).resolves.toMatchObject({ code: "transferred" });
   expect(readCollaborationDrafts(draft.scope, storage)).toEqual([]);
   expect(client.getQueryState(collaborationKeys.issue(scope, issue.id))?.isInvalidated).toBe(true);
+});
+
+it("waits for the active issue query to refresh before resolving a successful action", async () => {
+  const { scope, issue, draft } = setup();
+  const queryKey = collaborationKeys.issue(scope, issue.id);
+  const refreshed = deferred<typeof issue>();
+  const observer = new QueryObserver(client, {
+    queryKey,
+    queryFn: () => refreshed.promise,
+    enabled: true,
+    refetchOnMount: false,
+    retry: false,
+  });
+  client.setQueryData(queryKey, issue);
+  const unsubscribe = observer.subscribe(() => undefined);
+  const fetch = vi.fn().mockResolvedValueOnce(json({ code: "transferred", collaboration_revision: "9007199254740994" }));
+  vi.stubGlobal("fetch", fetch);
+  let settled = false;
+  const result = executeCollaborationAction(client, scope, draft, false, storage).finally(() => { settled = true; });
+  await vi.waitFor(() => expect(client.getQueryState(queryKey)?.fetchStatus).toBe("fetching"));
+  expect(settled).toBe(false);
+  refreshed.resolve({ ...issue, collaboration_revision: "9007199254740994" });
+  await expect(result).resolves.toMatchObject({ code: "transferred" });
+  expect(settled).toBe(true);
+  unsubscribe();
+});
+
+it("rejects a successful action if access changes during the issue refresh", async () => {
+  const { scope, issue, draft } = setup();
+  const queryKey = collaborationKeys.issue(scope, issue.id);
+  const refreshed = deferred<typeof issue>();
+  const observer = new QueryObserver(client, {
+    queryKey,
+    queryFn: () => refreshed.promise,
+    enabled: true,
+    refetchOnMount: false,
+    retry: false,
+  });
+  client.setQueryData(queryKey, issue);
+  const unsubscribe = observer.subscribe(() => undefined);
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce(json({ code: "transferred", collaboration_revision: "9007199254740994" })));
+  const result = executeCollaborationAction(client, scope, draft, false, storage);
+  await vi.waitFor(() => expect(client.getQueryState(queryKey)?.fetchStatus).toBe("fetching"));
+  clearCollaborationAccess(client, scope, issue.id);
+  refreshed.resolve(issue);
+  await expect(result).rejects.toMatchObject({ name: "AbortError" });
+  unsubscribe();
 });
 
 it("keeps an unknown operation across recovery with the original key and payload", async () => {

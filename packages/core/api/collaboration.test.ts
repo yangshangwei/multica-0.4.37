@@ -4,6 +4,7 @@ import { ApiClient } from "./client";
 import { setCurrentWorkspace } from "../platform/workspace-storage";
 import { collaborationExecutionIssueFixture, collaborationIssueFixture } from "../collaboration/test-fixtures";
 import { noopLogger } from "../logger";
+import { RECOVERY_REQUEST_TIMEOUT_MS } from "./request-lifecycle";
 
 const reads = [
   { name: "issue", read: (client: ApiClient) => client.getCollaborationIssue(collaborationIssueFixture.id), data: collaborationExecutionIssueFixture },
@@ -190,4 +191,25 @@ it("does not accept a creation result from a different source workspace", async 
   }))));
   const client = new ApiClient("https://api.example.test");
   await expect(client.getCollaborationCreation(collaborationIssueFixture.source_workspace.id, "original-request")).resolves.toBeNull();
+});
+
+it("times out a collaboration issue read that never completes", async () => {
+  vi.useFakeTimers();
+  try {
+    let requestSignal!: AbortSignal;
+    vi.stubGlobal("fetch", vi.fn().mockImplementation((_url: string, init: RequestInit) => {
+      requestSignal = init.signal!;
+      return new Promise<Response>((_resolve, reject) => {
+        init.signal!.addEventListener("abort", () => reject(init.signal!.reason), { once: true });
+      });
+    }));
+    const client = new ApiClient("https://api.example.test");
+    const result = client.getCollaborationIssue(collaborationIssueFixture.id);
+    const timedOut = expect(result).rejects.toMatchObject({ name: "TimeoutError" });
+    await vi.advanceTimersByTimeAsync(RECOVERY_REQUEST_TIMEOUT_MS);
+    await timedOut;
+    expect(requestSignal.aborted).toBe(true);
+  } finally {
+    vi.useRealTimers();
+  }
 });

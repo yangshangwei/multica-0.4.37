@@ -28,6 +28,16 @@ drafts contain client intent and original observations, never a second server
 state store. Current and participating lists remain separate; transferring work
 does not remove the participant's detail or notification-independent entry.
 
+Issue detail reads use the shared recovery request deadline (10 seconds) while
+retaining the caller's cancellation signal. This bounds polling, focus and
+reconnect reads that have no realtime event to restart them; a timeout remains
+the normal query error so the existing retry affordance can recover the panel.
+After a successful human action, invalidate the account scope once and await
+only the issue query's current (or realtime-restarted) read before resolving the
+action. Participant removal follows this same operation path. Do not issue a
+second issue invalidation for that wait, and fence the result against the
+current collaboration scope and access epoch before returning it.
+
 Pre-issue creation drafts bind Server, viewer, source workspace, draft UUID and
 the exact original request/payload. A source workspace UUID is never an issue
 UUID. Save intent before transport; preserve source-specific input and uploaded
