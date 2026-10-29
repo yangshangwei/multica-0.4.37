@@ -1,0 +1,45 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: API Token"': 设置目录 API Token
+- tabpanel "API Token":
+  - banner:
+    - heading "API Token" [level=2]
+  - paragraph: 个人访问 token 让 CLI 和外部集成可以代表你的账号进行身份验证。可通过 multica login --token 使用，或在调用 API 时作为 Bearer token 发送。 Token 拥有你账号的完整访问权限，请像密码一样妥善保管。
+  - textbox "Token 名称（例如：我的 CLI）"
+  - combobox "API Token": 90 天
+  - button "创建" [disabled]
+  - text: Multica Desktop mul_583bb953... · 创建于 2026/10/13 · 从未使用
+  - button "吊销 Multica Desktop"
+  - text: Multica Desktop mul_999695b0... · 创建于 2026/10/12 · 从未使用
+  - button "吊销 Multica Desktop"
+  - text: Multica Desktop mul_662f4ad3... · 创建于 2026/10/8 · 从未使用
+  - button "吊销 Multica Desktop"
+  - text: Multica Desktop mul_a51d994a... · 创建于 2026/10/8 · 从未使用
+  - button "吊销 Multica Desktop"
+  - text: Multica Desktop mul_0eeb983a... · 创建于 2026/10/8 · 从未使用
+  - button "吊销 Multica Desktop"
+  - text: Multica Desktop mul_8a0eea70... · 创建于 2026/10/8 · 从未使用
+  - button "吊销 Multica Desktop"
+  - text: Multica Desktop mul_b0bd3ddd... · 创建于 2026/10/8 · 从未使用
+  - button "吊销 Multica Desktop"
+  - text: Multica Desktop mul_1bd65a32... · 创建于 2026/10/8 · 从未使用
+  - button "吊销 Multica Desktop"
+  - text: Multica Desktop mul_dce53500... · 创建于 2026/10/8 · 从未使用
+  - button "吊销 Multica Desktop"
+  - text: Multica Desktop mul_0cb40590... · 创建于 2026/10/8 · 从未使用
+  - button "吊销 Multica Desktop"
+  - text: Multica Desktop mul_09b05806... · 创建于 2026/10/8 · 从未使用
+  - button "吊销 Multica Desktop"
+  - text: Multica Desktop mul_f4d20c7b... · 创建于 2026/10/6 · 从未使用
+  - button "吊销 Multica Desktop"
+- button "问 Multica"
+- region "Notifications alt+T"

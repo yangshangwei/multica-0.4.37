@@ -1,0 +1,57 @@
+{
+  "filters": [
+    {
+      "name": "仓库维护 4",
+      "count": 4,
+      "pressed": "true"
+    },
+    {
+      "name": "评审协作 4",
+      "count": 4,
+      "pressed": "true"
+    },
+    {
+      "name": "进展汇报 2",
+      "count": 2,
+      "pressed": "true"
+    },
+    {
+      "name": "全部 10",
+      "count": 10,
+      "pressed": "true"
+    }
+  ],
+  "cardFocus": {
+    "tag": "BUTTON",
+    "name": "工作日仓库巡检\n每个工作日检查依赖风险、测试失败和滞留变更，仅在发现实质问题时创建或补充任务。\n推荐起点\n09:00 · 周一至周五\n按需跟进\n查看模板",
+    "focusVisible": true,
+    "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px 2px, oklch(0.705 0.015 286.067) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+  },
+  "configureFocus": {
+    "tag": "BODY",
+    "name": "切换左侧边栏\n桌\n桌面手测 10-08（保留数据）\n搜索...\nCtrl\nK\n新建任务\nC\n收件箱\n我的任务\n聊天\n工作\n任务\n项目\n迭代\n分拣台\n3\nAI 团队\n智能体\nAI小队\n自动化\n资源与连接\n技能库\nMCP\n运行时\n统计\n设置\n自动化\nDQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时\n新建自动化\n\n检查并配置\n\n工作日仓库巡检\n模板 v1\n\n每个工作日检查依赖风险、测试失败",
+    "aria": null,
+    "headings": [
+      "新建自动化"
+    ]
+  },
+  "configureNextFocus": {
+    "tag": "BUTTON",
+    "name": "",
+    "aria": "返回"
+  },
+  "enableDisabled": true,
+  "returnFocus": {
+    "tag": "BODY",
+    "aria": null,
+    "name": "切换左侧边栏\n桌\n桌面手测 10-08（保留数据）\n搜索...\nCtrl\nK\n新建任务\nC\n收件箱\n我的任务\n聊天\n工作\n任务\n项目\n迭代\n分拣台\n3\nAI 团队\n智能体\nAI小队\n自动化\n资源与连接"
+  },
+  "beforeReturn": {
+    "scroll": 0,
+    "pressed": "仓库维护 4"
+  },
+  "afterReturn": {
+    "scroll": 0,
+    "pressed": "仓库维护 4"
+  }
+}

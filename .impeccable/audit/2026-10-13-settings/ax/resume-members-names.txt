@@ -1,0 +1,128 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- list:
+  - listitem:
+    - button "桌 桌面手测 10-08（保留数据）"
+- list:
+  - listitem:
+    - button "搜索..."
+  - listitem:
+    - button "新建任务"
+- list:
+  - listitem:
+    - link "收件箱":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/inbox
+  - listitem:
+    - link "我的任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/my-issues
+  - listitem:
+    - link "聊天":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/chat
+- text: 工作
+- list:
+  - listitem:
+    - link "任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/issues
+  - listitem:
+    - link "项目":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/projects
+  - listitem:
+    - link "迭代":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/iterations
+  - listitem:
+    - link "分拣台 3":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/triage
+- text: AI 团队
+- list:
+  - listitem:
+    - link "智能体":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/agents
+  - listitem:
+    - link "AI小队":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/squads
+  - listitem:
+    - link "自动化":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots
+- text: 资源与连接
+- list:
+  - listitem:
+    - link "技能库":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/skills
+  - listitem:
+    - link "MCP":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp
+  - listitem:
+    - link "运行时":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes
+- list:
+  - listitem:
+    - link "统计":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/usage
+  - listitem:
+    - link "设置":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/settings
+- button "帮助"
+- button "切换左侧边栏"
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- tablist "设置":
+  - group "个人设置":
+    - heading "个人设置" [level=2]
+    - tab "个人资料"
+    - tab "偏好设置"
+    - tab "通知"
+    - tab "快捷键"
+    - tab "API Token"
+  - group "工作空间管理":
+    - heading "工作空间管理" [level=2]
+    - tab "常规"
+    - tab "成员" [selected]
+    - tab "标签"
+    - tab "分拣台"
+    - tab "迭代"
+  - group "任务配置":
+    - heading "任务配置" [level=2]
+    - tab "任务状态"
+    - tab "属性"
+    - tab "快捷操作"
+  - group "连接与扩展":
+    - heading "连接与扩展" [level=2]
+    - tab "代码仓库"
+    - tab "集成"
+    - tab "MCP"
+  - group "桌面应用":
+    - heading "桌面应用" [level=2]
+    - tab "守护进程"
+    - tab "服务器连接"
+    - tab "更新"
+    - tab "行为"
+- tabpanel "成员":
+  - banner:
+    - heading "成员" [level=2]
+  - heading "成员（2）" [level=3]
+  - heading "邀请成员" [level=3]
+  - textbox "user@company.com"
+  - combobox: 成员
+  - button "邀请" [disabled]
+  - link "杨"
+  - text: 杨尚伟 11052 所有者
+  - link "桌"
+  - text: 桌面验收普通成员 desktop_qa_member_20261008
+  - button "桌面验收普通成员 的成员操作"
+  - text: 成员
+  - heading "分享链接" [level=3]
+  - heading "创建分享链接" [level=3]
+  - text: 角色：
+  - combobox: 成员
+  - text: 有效期：
+  - combobox: 7 天
+  - button "生成"
+- button "问 Multica"
+- region "Notifications alt+T"

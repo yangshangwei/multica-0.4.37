@@ -1,0 +1,35 @@
+{
+  "checked_at": "2026-10-17T01:10:15.136127+00:00",
+  "api_health": {
+    "status": "ok",
+    "pid": 80970,
+    "commit": "5049e0f6a",
+    "started_at": "2026-10-17T01:06:03Z"
+  },
+  "auth_mode": "password",
+  "platform_admin_available": true,
+  "production_web": {
+    "component": "web",
+    "mode": "production",
+    "build_id": "mo_qB94b7-h4UgwnwCwSi",
+    "command": "pnpm --filter @multica/web exec next start --port 13081",
+    "source_id": "58bdf76f5dc7635553dde49c81579ab7a0f8bae7f56bf3bfa87a1197ec9a932d",
+    "configuration_id": "62d186bc48cfdd4333746daf8ce4ce979fefdc0600ccd051f967cb02a70c4037",
+    "commit": "5049e0f6a",
+    "launcher_pid": 81879,
+    "started_at": "2026-10-17T01:07:18Z",
+    "listener_pid": 81905
+  },
+  "desktop": {
+    "build_command": "make env-exec ARGS=\"-- pnpm --filter @multica/desktop exec electron-vite build\"",
+    "renderer_index_sha256": "479e65afc0bdc6305c85e216bb5fd37b8c5fa35facbcfa82daa3d3b9e0cf9b13",
+    "preload_sha256": "6205191e1e784af46bb48d5e9e6bba0cda31993e0d1a3abffd368815aecfe5b7",
+    "electron_executable": "/Volumes/artisan/code/2026/multica-capability-market-qa/apps/desktop/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+    "native_fixture": "e2e/fixtures/changelog-electron.cjs",
+    "isolated_services": [
+      "daemon",
+      "updater",
+      "external network"
+    ]
+  }
+}

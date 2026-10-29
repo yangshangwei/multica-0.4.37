@@ -1,0 +1,475 @@
+{
+  "verified_at": "2026-10-17T01:24:59.325888+00:00",
+  "result": "passed",
+  "unique_tests": 25,
+  "spec_files": 10,
+  "unique_final_statuses": {
+    "passed": 25,
+    "failed": 0,
+    "skipped": 0
+  },
+  "executed_tests": 41,
+  "executions": [
+    {
+      "report": "web-legacy-initial.json",
+      "stats": {
+        "startTime": "2026-10-17T00:59:06.567Z",
+        "duration": 247251.424,
+        "expected": 18,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "agent-mcp.spec.ts",
+          "title": "creator sees the MCP Apps tab and toggling a toolkit writes the allowlist",
+          "status": "passed"
+        },
+        {
+          "file": "agent-mcp.spec.ts",
+          "title": "a non-creator viewer does not see the MCP Apps tab",
+          "status": "passed"
+        },
+        {
+          "file": "capability-market.spec.ts",
+          "title": "capability market restores type and draft through history while resource management stays separate",
+          "status": "passed"
+        },
+        {
+          "file": "capability-market.spec.ts",
+          "title": "capability market isolates workspace resources, preferences and transient drafts",
+          "status": "timedOut"
+        },
+        {
+          "file": "localized-template-defaults.spec.ts",
+          "title": "role picker defaults and omitted-name API creation follow Chinese and English locales",
+          "status": "passed"
+        },
+        {
+          "file": "localized-template-defaults.spec.ts",
+          "title": "diagnostician API creation preserves workspace skill and agent copies",
+          "status": "passed"
+        },
+        {
+          "file": "localized-template-defaults.spec.ts",
+          "title": "specialist skills localize, search and open their official copies without rewriting stored content",
+          "status": "passed"
+        },
+        {
+          "file": "localized-template-defaults.spec.ts",
+          "title": "Chinese squad staffing creates localized roles and English restaffing preserves customized agents",
+          "status": "passed"
+        },
+        {
+          "file": "localized-template-defaults.spec.ts",
+          "title": "a localized name collision leaves no partial squad and does not block English role names",
+          "status": "passed"
+        },
+        {
+          "file": "mcp-market.spec.ts",
+          "title": "deployment MCP files appear live and saved snapshots survive updates and withdrawal",
+          "status": "passed"
+        },
+        {
+          "file": "mcp-market.spec.ts",
+          "title": "uses the collection canvas and adapts template columns to the available width",
+          "status": "passed"
+        },
+        {
+          "file": "mcp-market.spec.ts",
+          "title": "creates and explicitly assigns all sixteen recipes, preserves source after rename, and reuses an instance from an agent",
+          "status": "passed"
+        },
+        {
+          "file": "mcp-market.spec.ts",
+          "title": "retries a failed assignment without recreating the saved MCP or repeating successful grants",
+          "status": "passed"
+        },
+        {
+          "file": "mcp-market.spec.ts",
+          "title": "a member can discover templates and reuse a workspace instance for their agent without creating one",
+          "status": "passed"
+        },
+        {
+          "file": "missing-user-session.spec.ts",
+          "title": "an obsolete session returns to sign-in and can open the MCP market after a fresh login",
+          "status": "passed"
+        },
+        {
+          "file": "skill-market.spec.ts",
+          "title": "discovers deployment templates and creates a workspace copy while keeping market context",
+          "status": "passed"
+        },
+        {
+          "file": "skill-template-creation.spec.ts",
+          "title": "creates an edited independent skill after previewing and cancelling without writes",
+          "status": "failed"
+        },
+        {
+          "file": "workspace-defaults.spec.ts",
+          "title": "saves multiple squads, supports select-all and clear, and keeps creation usable on narrow screens",
+          "status": "passed"
+        },
+        {
+          "file": "workspace-defaults.spec.ts",
+          "title": "keeps built-in resources available on request and retains a project without a runtime",
+          "status": "passed"
+        },
+        {
+          "file": "workspace-defaults.spec.ts",
+          "title": "prepares a squad, dispatches an issue and enables an automation only on submission",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "report": "web-isolation-recovery.json",
+      "stats": {
+        "startTime": "2026-10-17T01:03:53.736Z",
+        "duration": 84965.52600000001,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "capability-market.spec.ts",
+          "title": "capability market restores type and draft through history while resource management stays separate",
+          "status": "passed"
+        },
+        {
+          "file": "capability-market.spec.ts",
+          "title": "capability market isolates workspace resources, preferences and transient drafts",
+          "status": "passed"
+        },
+        {
+          "file": "capability-market.spec.ts",
+          "title": "capability market separates catalog failures and polls only the active type",
+          "status": "passed"
+        },
+        {
+          "file": "skill-template-creation.spec.ts",
+          "title": "creates an edited independent skill after previewing and cancelling without writes",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "report": "password-web-final.json",
+      "stats": {
+        "startTime": "2026-10-17T01:10:14.614Z",
+        "duration": 70805.80399999999,
+        "expected": 8,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "admin-resource-publishing.spec.ts",
+          "title": "first resource page screenshot",
+          "status": "passed"
+        },
+        {
+          "file": "admin-resource-publishing.spec.ts",
+          "title": "localized responsive states and deployment-disabled feedback",
+          "status": "passed"
+        },
+        {
+          "file": "admin-resource-publishing.spec.ts",
+          "title": "real uploads reach Web and native markets; revisions, recovery and withdrawal preserve copies",
+          "status": "passed"
+        },
+        {
+          "file": "mcp-market.spec.ts",
+          "title": "deployment MCP files appear live and saved snapshots survive updates and withdrawal",
+          "status": "passed"
+        },
+        {
+          "file": "mcp-market.spec.ts",
+          "title": "uses the collection canvas and adapts template columns to the available width",
+          "status": "passed"
+        },
+        {
+          "file": "mcp-market.spec.ts",
+          "title": "creates and explicitly assigns all sixteen recipes, preserves source after rename, and reuses an instance from an agent",
+          "status": "passed"
+        },
+        {
+          "file": "mcp-market.spec.ts",
+          "title": "retries a failed assignment without recreating the saved MCP or repeating successful grants",
+          "status": "passed"
+        },
+        {
+          "file": "mcp-market.spec.ts",
+          "title": "a member can discover templates and reuse a workspace instance for their agent without creating one",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "report": "native-attempt-1.json",
+      "stats": {
+        "startTime": "2026-10-17T01:06:53.125Z",
+        "duration": 12319.384999999998,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "mcp-desktop.spec.ts",
+          "title": "native desktop MCP preserves collection, settings and agent discovery flows",
+          "status": "failed"
+        }
+      ]
+    },
+    {
+      "report": "native-attempt-2.json",
+      "stats": {
+        "startTime": "2026-10-17T01:08:40.087Z",
+        "duration": 8392.903,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "mcp-desktop.spec.ts",
+          "title": "native desktop MCP preserves collection, settings and agent discovery flows",
+          "status": "failed"
+        }
+      ]
+    },
+    {
+      "report": "native-attempt-3.json",
+      "stats": {
+        "startTime": "2026-10-17T01:09:34.035Z",
+        "duration": 4580.598999999999,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "mcp-desktop.spec.ts",
+          "title": "native desktop MCP preserves collection, settings and agent discovery flows",
+          "status": "failed"
+        }
+      ]
+    },
+    {
+      "report": "native-attempt-4.json",
+      "stats": {
+        "startTime": "2026-10-17T01:10:42.417Z",
+        "duration": 7640.371,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "mcp-desktop.spec.ts",
+          "title": "native desktop MCP preserves collection, settings and agent discovery flows",
+          "status": "failed"
+        }
+      ]
+    },
+    {
+      "report": "native-attempt-5.json",
+      "stats": {
+        "startTime": "2026-10-17T01:12:13.604Z",
+        "duration": 4646.343,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "mcp-desktop.spec.ts",
+          "title": "native desktop MCP preserves collection, settings and agent discovery flows",
+          "status": "failed"
+        }
+      ]
+    },
+    {
+      "report": "native-attempt-6.json",
+      "stats": {
+        "startTime": "2026-10-17T01:14:50.815Z",
+        "duration": 22043.656,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "mcp-desktop.spec.ts",
+          "title": "native desktop MCP preserves collection, settings and agent discovery flows",
+          "status": "failed"
+        }
+      ]
+    },
+    {
+      "report": "native-attempt-7.json",
+      "stats": {
+        "startTime": "2026-10-17T01:16:59.439Z",
+        "duration": 21708.004,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "mcp-desktop.spec.ts",
+          "title": "native desktop MCP preserves collection, settings and agent discovery flows",
+          "status": "failed"
+        }
+      ]
+    },
+    {
+      "report": "native-final.json",
+      "stats": {
+        "startTime": "2026-10-17T01:18:25.419Z",
+        "duration": 49648.891,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "mcp-desktop.spec.ts",
+          "title": "native desktop MCP preserves collection, settings and agent discovery flows",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "report": "web-deployment-fixture-final.json",
+      "stats": {
+        "startTime": "2026-10-17T01:19:33.707Z",
+        "duration": 34035.890999999996,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "mcp-market.spec.ts",
+          "title": "deployment MCP files appear live and saved snapshots survive updates and withdrawal",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "checked_at": "2026-10-17T01:10:15.136127+00:00",
+    "api_health": {
+      "status": "ok",
+      "pid": 80970,
+      "commit": "5049e0f6a",
+      "started_at": "2026-10-17T01:06:03Z"
+    },
+    "auth_mode": "password",
+    "platform_admin_available": true,
+    "production_web": {
+      "component": "web",
+      "mode": "production",
+      "build_id": "mo_qB94b7-h4UgwnwCwSi",
+      "command": "pnpm --filter @multica/web exec next start --port 13081",
+      "source_id": "58bdf76f5dc7635553dde49c81579ab7a0f8bae7f56bf3bfa87a1197ec9a932d",
+      "configuration_id": "62d186bc48cfdd4333746daf8ce4ce979fefdc0600ccd051f967cb02a70c4037",
+      "commit": "5049e0f6a",
+      "launcher_pid": 81879,
+      "started_at": "2026-10-17T01:07:18Z",
+      "listener_pid": 81905
+    },
+    "desktop": {
+      "build_command": "make env-exec ARGS=\"-- pnpm --filter @multica/desktop exec electron-vite build\"",
+      "renderer_index_sha256": "479e65afc0bdc6305c85e216bb5fd37b8c5fa35facbcfa82daa3d3b9e0cf9b13",
+      "preload_sha256": "6205191e1e784af46bb48d5e9e6bba0cda31993e0d1a3abffd368815aecfe5b7",
+      "electron_executable": "/Volumes/artisan/code/2026/multica-capability-market-qa/apps/desktop/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+      "native_fixture": "e2e/fixtures/changelog-electron.cjs",
+      "isolated_services": [
+        "daemon",
+        "updater",
+        "external network"
+      ]
+    }
+  },
+  "qa_match": {
+    "files": 76,
+    "differences": []
+  },
+  "validation": {
+    "task_e2e_types": "pass",
+    "task_e2e_lint": "pass; existing ESLint base plus E2E fixture globals/dev-dependency/empty-parameter rules",
+    "visual": "EN/ZH Web360/375 and real native inspected; visual-verdict94/pass"
+  },
+  "cleanup": {
+    "native_accounts_remaining": 0,
+    "owned_feature_workspaces_remaining": [],
+    "live_template_directory_entries": [],
+    "managed_resources": {
+      "skill": [
+        {
+          "key": "qa-skill-e7b351d9",
+          "state": "withdrawn"
+        }
+      ],
+      "mcp": [
+        {
+          "key": "qa-mcp-e7b351d9",
+          "state": "withdrawn"
+        }
+      ]
+    },
+    "retained_task_administrator": true,
+    "retained_task_database": true,
+    "retained_task_profile": true,
+    "retained_qa_worktree": "/Volumes/artisan/code/2026/multica-capability-market-qa",
+    "timeout_workspaces_deleted": [
+      "market-first-888347da-d10",
+      "market-second-888347da-d10"
+    ],
+    "cleanup_method": "Authenticated real workspace deletion API; task-only legacy API restart",
+    "services": {
+      "api": {
+        "state": "stopped",
+        "address": "http://localhost:18161",
+        "detail": ""
+      },
+      "web": {
+        "state": "stopped",
+        "address": "http://localhost:13081",
+        "detail": ""
+      },
+      "daemon": {
+        "state": "stopped",
+        "address": "dev-check-20261016144743-87744",
+        "detail": "not built"
+      },
+      "desktop": {
+        "state": "stopped",
+        "address": "http://localhost:5255",
+        "detail": ""
+      }
+    }
+  },
+  "limits": [
+    "Real Electron renderer/preload/router and real API were used; daemon/updater/external network intentionally isolated by existing native fixture.",
+    "No real third-party MCP connection or installed agent execution was attempted.",
+    "The full legacy Web run used the initial build; final focus source fix was then validated by final MCP Web/native/admin journeys; unchanged Skill and route cases were not repeated wholesale.",
+    "Agent MCP Apps creator-only tests use existing route fixtures for third-party integration; authentication remains real."
+  ]
+}

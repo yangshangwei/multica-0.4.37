@@ -1,0 +1,21 @@
+- tabpanel "成员":
+  - banner:
+    - heading "成员" [level=2]
+  - heading "成员（2）" [level=3]
+  - heading "邀请成员" [level=3]
+  - textbox "user@company.com"
+  - combobox: 成员
+  - button "邀请" [disabled]
+  - link "杨"
+  - text: 杨尚伟 11052 所有者
+  - link "桌"
+  - text: 桌面验收普通成员 desktop_qa_member_20261008
+  - button
+  - text: 成员
+  - heading "分享链接" [level=3]
+  - heading "创建分享链接" [level=3]
+  - text: 角色：
+  - combobox: 成员
+  - text: 有效期：
+  - combobox: 7 天
+  - button "生成"

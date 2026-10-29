@@ -1,0 +1,1521 @@
+{
+  "recordedAt": "2026-10-14T02:42:08.943Z",
+  "fixture": "In-memory fetch Response(500), real ApiClient and Query observers",
+  "reads": [
+    {
+      "time": 94177.5,
+      "status": 500
+    },
+    {
+      "time": 95189.89999999851,
+      "status": 500
+    },
+    {
+      "time": 95200.39999999851,
+      "status": 500
+    },
+    {
+      "time": 96206.89999999851,
+      "status": 500
+    },
+    {
+      "time": 96216.89999999851,
+      "status": 500
+    },
+    {
+      "time": 97224.79999999702,
+      "status": 500
+    },
+    {
+      "time": 97233.5,
+      "status": 500
+    },
+    {
+      "time": 98241.60000000149,
+      "status": 500
+    },
+    {
+      "time": 98250.39999999851,
+      "status": 500
+    },
+    {
+      "time": 99255.69999999553,
+      "status": 500
+    },
+    {
+      "time": 99263.89999999851,
+      "status": 500
+    }
+  ],
+  "trace": [
+    {
+      "time": 94163.79999999702,
+      "type": "added",
+      "status": "pending",
+      "fetch": "idle",
+      "observers": 0
+    },
+    {
+      "time": 94163.89999999851,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "idle",
+      "observers": 0
+    },
+    {
+      "time": 94164.5,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "idle",
+      "observers": 0
+    },
+    {
+      "time": 94165.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "idle",
+      "observers": 0
+    },
+    {
+      "time": 94176.60000000149,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "idle",
+      "observers": 1
+    },
+    {
+      "time": 94176.60000000149,
+      "type": "updated",
+      "action": "fetch",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 1
+    },
+    {
+      "time": 94177.60000000149,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 2
+    },
+    {
+      "time": 94177.60000000149,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 94187.89999999851,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 94187.89999999851,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 94187.89999999851,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 94187.89999999851,
+      "type": "updated",
+      "action": "failed",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 95190.19999999553,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 95190.19999999553,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 95190.19999999553,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 95190.19999999553,
+      "type": "updated",
+      "action": "error",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 95191.19999999553,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 95192.39999999851,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 95193.10000000149,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 95193.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 95194.5,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 95195.10000000149,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 95195.69999999553,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 95199.60000000149,
+      "type": "observerAdded",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 4
+    },
+    {
+      "time": 95199.69999999553,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 95199.69999999553,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 95199.69999999553,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 95199.69999999553,
+      "type": "updated",
+      "action": "fetch",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 95200.39999999851,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 5
+    },
+    {
+      "time": 95200.5,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 6
+    },
+    {
+      "time": 95200.5,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 7
+    },
+    {
+      "time": 95200.60000000149,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 8
+    },
+    {
+      "time": 95200.60000000149,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 9
+    },
+    {
+      "time": 95200.69999999553,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 95200.69999999553,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 95200.79999999702,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 95200.79999999702,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 95203.10000000149,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 9
+    },
+    {
+      "time": 95203.19999999553,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 8
+    },
+    {
+      "time": 95203.29999999702,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 7
+    },
+    {
+      "time": 95203.5,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 6
+    },
+    {
+      "time": 95203.60000000149,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 5
+    },
+    {
+      "time": 95203.69999999553,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 95203.69999999553,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 95203.89999999851,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 95204,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 95204,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 95204.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 95204.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 95204.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 95204.79999999702,
+      "type": "updated",
+      "action": "failed",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 96207,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 96207,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 96207,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 96207,
+      "type": "updated",
+      "action": "error",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 96207.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 96208.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 96209.60000000149,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 96210.19999999553,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 96210.89999999851,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 96211.5,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 96212,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 96216.19999999553,
+      "type": "observerAdded",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 4
+    },
+    {
+      "time": 96216.19999999553,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 96216.19999999553,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 96216.19999999553,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 96216.19999999553,
+      "type": "updated",
+      "action": "fetch",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 96217,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 5
+    },
+    {
+      "time": 96217,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 6
+    },
+    {
+      "time": 96217.10000000149,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 7
+    },
+    {
+      "time": 96217.19999999553,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 8
+    },
+    {
+      "time": 96217.19999999553,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 9
+    },
+    {
+      "time": 96217.19999999553,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 96217.19999999553,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 96217.29999999702,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 96217.29999999702,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 96220,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 9
+    },
+    {
+      "time": 96220.10000000149,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 8
+    },
+    {
+      "time": 96220.19999999553,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 7
+    },
+    {
+      "time": 96220.29999999702,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 6
+    },
+    {
+      "time": 96220.39999999851,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 5
+    },
+    {
+      "time": 96220.39999999851,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 96220.60000000149,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 96220.69999999553,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 96220.79999999702,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 96220.79999999702,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 96221.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 96221.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 96221.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 96221.79999999702,
+      "type": "updated",
+      "action": "failed",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 97225,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 97225,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 97225,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 97225,
+      "type": "updated",
+      "action": "error",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 97225.69999999553,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 97226.69999999553,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 97227.39999999851,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 97228,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 97228.60000000149,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 97229.10000000149,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 97229.69999999553,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 97232.79999999702,
+      "type": "observerAdded",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 4
+    },
+    {
+      "time": 97232.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 97232.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 97232.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 97232.79999999702,
+      "type": "updated",
+      "action": "fetch",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 97233.5,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 5
+    },
+    {
+      "time": 97233.60000000149,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 6
+    },
+    {
+      "time": 97233.60000000149,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 7
+    },
+    {
+      "time": 97233.69999999553,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 8
+    },
+    {
+      "time": 97233.69999999553,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 9
+    },
+    {
+      "time": 97233.79999999702,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 97233.89999999851,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 97233.89999999851,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 97233.89999999851,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 97237.69999999553,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 9
+    },
+    {
+      "time": 97237.79999999702,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 8
+    },
+    {
+      "time": 97238,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 7
+    },
+    {
+      "time": 97238,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 6
+    },
+    {
+      "time": 97238.10000000149,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 5
+    },
+    {
+      "time": 97238.19999999553,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 97238.29999999702,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 97238.5,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 97238.5,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 97238.5,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 97239.60000000149,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 97239.60000000149,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 97239.60000000149,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 97239.60000000149,
+      "type": "updated",
+      "action": "failed",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 98241.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 98241.89999999851,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 98241.89999999851,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 98241.89999999851,
+      "type": "updated",
+      "action": "error",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 98242.69999999553,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 98243.69999999553,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 98244.5,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 98245,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 98245.5,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 98246.10000000149,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 98246.69999999553,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 98249.69999999553,
+      "type": "observerAdded",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 4
+    },
+    {
+      "time": 98249.69999999553,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 98249.69999999553,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 98249.69999999553,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 98249.69999999553,
+      "type": "updated",
+      "action": "fetch",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 98250.39999999851,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 5
+    },
+    {
+      "time": 98250.5,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 6
+    },
+    {
+      "time": 98250.5,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 7
+    },
+    {
+      "time": 98250.60000000149,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 8
+    },
+    {
+      "time": 98250.60000000149,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 9
+    },
+    {
+      "time": 98250.60000000149,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 98250.69999999553,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 98250.69999999553,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 98250.69999999553,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 98253.10000000149,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 9
+    },
+    {
+      "time": 98253.19999999553,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 8
+    },
+    {
+      "time": 98253.29999999702,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 7
+    },
+    {
+      "time": 98253.39999999851,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 6
+    },
+    {
+      "time": 98253.5,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 5
+    },
+    {
+      "time": 98253.60000000149,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 98253.69999999553,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 98253.89999999851,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 98253.89999999851,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 98253.89999999851,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 98254.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 98254.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 98254.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 98254.79999999702,
+      "type": "updated",
+      "action": "failed",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 99255.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 99255.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 99255.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 99255.79999999702,
+      "type": "updated",
+      "action": "error",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 99256.5,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 99257.29999999702,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 99258,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 99258.69999999553,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 99259.19999999553,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 99259.79999999702,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 99260.19999999553,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 3
+    },
+    {
+      "time": 99263.19999999553,
+      "type": "observerAdded",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 4
+    },
+    {
+      "time": 99263.19999999553,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 99263.19999999553,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 99263.19999999553,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 99263.19999999553,
+      "type": "updated",
+      "action": "fetch",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 99263.89999999851,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 5
+    },
+    {
+      "time": 99264,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 6
+    },
+    {
+      "time": 99264,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 7
+    },
+    {
+      "time": 99264.10000000149,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 8
+    },
+    {
+      "time": 99264.10000000149,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 9
+    },
+    {
+      "time": 99264.10000000149,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 99264.10000000149,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 99264.19999999553,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 99264.19999999553,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 10
+    },
+    {
+      "time": 99266.60000000149,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 9
+    },
+    {
+      "time": 99266.69999999553,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 8
+    },
+    {
+      "time": 99266.79999999702,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 7
+    },
+    {
+      "time": 99266.89999999851,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 6
+    },
+    {
+      "time": 99267,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 5
+    },
+    {
+      "time": 99267.10000000149,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 4
+    },
+    {
+      "time": 99267.19999999553,
+      "type": "observerRemoved",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 99267.29999999702,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 99267.39999999851,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 99267.39999999851,
+      "type": "observerOptionsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 99268.29999999702,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 99268.29999999702,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 99268.29999999702,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    },
+    {
+      "time": 99268.29999999702,
+      "type": "updated",
+      "action": "failed",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 3
+    }
+  ],
+  "panel": "任务状态\n\n定义任务流转的工作流。每个状态的行为由它所属的分类决定。\n\n正在加载状态…",
+  "confirmed": true,
+  "intervalMs": 5086.39999999851
+}

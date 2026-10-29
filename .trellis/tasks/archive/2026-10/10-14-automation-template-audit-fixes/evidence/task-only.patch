@@ -1,0 +1,848 @@
+diff --git a/apps/desktop/src/renderer/src/platform/tab-coordinator.test.ts b/apps/desktop/src/renderer/src/platform/tab-coordinator.test.ts
+index 416be546e..2c8abe3bb 100755
+--- a/apps/desktop/src/renderer/src/platform/tab-coordinator.test.ts
++++ b/apps/desktop/src/renderer/src/platform/tab-coordinator.test.ts
+@@ -7,7 +7,7 @@ import {
+ } from "./tab-coordinator";
+ import { getActiveTab, useTabStore } from "@/stores/tab-store";
+ 
+-describe("tab-coordinator external scroll sources", () => {
++describe("tab-coordinator restoration", () => {
+   beforeEach(() => {
+     __resetTabCoordinatorForTests();
+     useTabStore.getState().reset();
+@@ -19,6 +19,34 @@ describe("tab-coordinator external scroll sources", () => {
+     return useTabStore.getState().openTab(path, title, { activate: true });
+   }
+ 
++  it.each([false, true])("clears the explicit origin only in the owning tab (inactive: %s)", (inactive) => {
++    const origin = "/acme/autopilots";
++    const current = "/acme/autopilots/new/template";
++    const tabId = seedActiveTab(current, "Create automation");
++    const adapter = createScrollRestorationAdapter(tabId);
++    useTabStore.getState().commitViewState(tabId, origin, "pending-focus", "source-card");
++    useTabStore.getState().commitViewState(tabId, origin, "template-group", "maintenance");
++    adapter.setViewState?.("pending-focus", "current-card");
++    expect(adapter.getViewState?.("pending-focus")).toBe("current-card");
++
++    const otherId = seedActiveTab("/acme/issues", "Issues");
++    useTabStore.getState().commitViewState(otherId, origin, "pending-focus", "other-tab-card");
++    if (inactive) {
++      adapter.setViewState?.("pending-focus", "ignored");
++      expect(adapter.getViewState?.("pending-focus")).toBeUndefined();
++    } else {
++      useTabStore.getState().setActiveTab(tabId);
++    }
++    adapter.setViewState?.("pending-focus", undefined, origin);
++
++    const tabs = useTabStore.getState().byWorkspace.acme.tabs;
++    const ownerView = tabs.find((tab) => tab.id === tabId)!.memento.view;
++    expect(ownerView[`${origin}::pending-focus`]).toBeUndefined();
++    expect(ownerView[`${origin}::template-group`]).toBe("maintenance");
++    expect(ownerView[`${current}::pending-focus`]).toBe("current-card");
++    expect(tabs.find((tab) => tab.id === otherId)!.memento.view[`${origin}::pending-focus`]).toBe("other-tab-card");
++  });
++
+   it("captures external sources registered by the outgoing tab alongside DOM scroll roots", () => {
+     const tabId = seedActiveTab("/acme/attachments/abc/preview", "Report");
+     const adapter = createScrollRestorationAdapter(tabId);
+diff --git a/apps/desktop/src/renderer/src/platform/tab-coordinator.ts b/apps/desktop/src/renderer/src/platform/tab-coordinator.ts
+index 7df5b666f..878a0063c 100755
+--- a/apps/desktop/src/renderer/src/platform/tab-coordinator.ts
++++ b/apps/desktop/src/renderer/src/platform/tab-coordinator.ts
+@@ -145,8 +145,8 @@ export function createScrollRestorationAdapter(
+       const active = getActiveTab(useTabStore.getState());
+       return active?.memento.view[scrollMementoKey(routeKey, entryKey)];
+     },
+-    setViewState(entryKey, value) {
+-      const routeKey = activeRouteKey();
++    setViewState(entryKey, value, routePathname) {
++      const routeKey = routePathname ?? activeRouteKey();
+       if (routeKey === null) return;
+       useTabStore.getState().commitViewState(tabId, routeKey, entryKey, value);
+     },
+diff --git a/apps/web/platform/scroll-restoration.test.tsx b/apps/web/platform/scroll-restoration.test.tsx
+index 861227691..f80e01c84 100755
+--- a/apps/web/platform/scroll-restoration.test.tsx
++++ b/apps/web/platform/scroll-restoration.test.tsx
+@@ -24,6 +24,40 @@ function scrollContainer(el: HTMLElement, top: number) {
+ }
+ 
+ describe("WebScrollRestorationProvider", () => {
++  it("clears only the named origin entry while preserving current-route writes", () => {
++    const origin = "/acme/autopilots";
++    function ViewStateProbe({ focusKey }: { focusKey: string }) {
++      const focus = useRestoredViewState("pending-focus");
++      const group = useRestoredViewState("template-group");
++      const write = useViewStateWriter();
++      return <>
++        <output data-testid="focus">{focus ?? "none"}</output>
++        <output data-testid="group">{group ?? "none"}</output>
++        <button onClick={() => {
++          write("pending-focus", focusKey);
++          write("template-group", "maintenance");
++        }}>Save current route</button>
++        <button onClick={() => write("pending-focus", undefined, origin)}>Clear origin focus</button>
++      </>;
++    }
++    const page = (focusKey: string) => <WebScrollRestorationProvider><ViewStateProbe focusKey={focusKey} /></WebScrollRestorationProvider>;
++    route.pathname = origin;
++    const view = render(page("source-card"));
++    fireEvent.click(screen.getByRole("button", { name: "Save current route" }));
++
++    route.pathname = "/acme/autopilots/new/template";
++    view.rerender(page("current-card"));
++    fireEvent.click(screen.getByRole("button", { name: "Save current route" }));
++    fireEvent.click(screen.getByRole("button", { name: "Clear origin focus" }));
++    view.rerender(page("current-card"));
++    expect(screen.getByTestId("focus")).toHaveTextContent("current-card");
++
++    route.pathname = origin;
++    view.rerender(page("source-card"));
++    expect(screen.getByTestId("focus")).toHaveTextContent("none");
++    expect(screen.getByTestId("group")).toHaveTextContent("maintenance");
++  });
++
+   it("reads the rendered route's view state before browser history commits", () => {
+     function ViewStateProbe() {
+       const value = useRestoredViewState("template-group");
+diff --git a/apps/web/platform/scroll-restoration.tsx b/apps/web/platform/scroll-restoration.tsx
+index 8642f0035..40c4e6939 100755
+--- a/apps/web/platform/scroll-restoration.tsx
++++ b/apps/web/platform/scroll-restoration.tsx
+@@ -107,8 +107,8 @@ export function WebScrollRestorationProvider({
+           mementoKey(pathname, entryKey),
+         );
+       },
+-      setViewState(entryKey, value) {
+-        const key = mementoKey(pathname, entryKey);
++      setViewState(entryKey, value, routePathname) {
++        const key = mementoKey(routePathname ?? pathname, entryKey);
+         if (value === undefined) savedViewState.delete(key);
+         else savedViewState.set(key, value);
+       },
+diff --git a/packages/views/autopilots/components/autopilot-template-catalog.test.tsx b/packages/views/autopilots/components/autopilot-template-catalog.test.tsx
+index a956faabb..7593509fd 100644
+--- a/packages/views/autopilots/components/autopilot-template-catalog.test.tsx
++++ b/packages/views/autopilots/components/autopilot-template-catalog.test.tsx
+@@ -1,6 +1,6 @@
+ import { screen, waitFor } from "@testing-library/react";
+ import userEvent from "@testing-library/user-event";
+-import { describe, expect, it, vi } from "vitest";
++import { afterEach, describe, expect, it, vi } from "vitest";
+ import type { AutopilotTemplate } from "@multica/core/types";
+ import { ScrollRestorationProvider } from "../../platform/scroll-restoration";
+ import { renderWithI18n } from "../../test/i18n";
+@@ -12,36 +12,132 @@ const templates: AutopilotTemplate[] = [{
+   execution_mode: "run_only", avatar_emoji: "", prompt: "Check the repository.",
+ }];
+ 
++function createGallery() {
++  const onPick = vi.fn();
++  const viewState = new Map<string, string>();
++  const adapter = {
++    // Desktop clears plain scroll entries when leaving the configure step.
++    get: () => undefined,
++    getViewState: (key: string) => viewState.get(key),
++    setViewState: (key: string, value: string | undefined) => {
++      if (value === undefined) viewState.delete(key);
++      else viewState.set(key, value);
++    },
++  };
++  function Page({ loading = false, items = templates }: { loading?: boolean; items?: AutopilotTemplate[] }) {
++    return <ScrollRestorationProvider adapter={adapter}>
++      <AutopilotTemplateCatalog
++        templates={loading ? [] : items}
++        loading={loading}
++        failed={false}
++        onRetry={() => {}}
++        onPick={onPick}
++        onStartBlank={() => {}}
++      />
++    </ScrollRestorationProvider>;
++  }
++  return { Page, onPick, viewState };
++}
++
++afterEach(() => vi.restoreAllMocks());
++
+ describe("template gallery navigation restoration", () => {
+-  it("captures the browsed offset and restores native-back state after data loads", async () => {
+-    const onPick = vi.fn();
+-    const viewState = new Map<string, string>();
+-    const adapter = {
+-      // Desktop clears plain scroll entries when leaving the configure step.
+-      get: () => undefined,
+-      getViewState: (key: string) => viewState.get(key),
+-      setViewState: (key: string, value: string | undefined) => {
+-        if (value === undefined) viewState.delete(key);
+-        else viewState.set(key, value);
+-      },
+-    };
+-    function Page({ loading = false }: { loading?: boolean }) {
+-      return <ScrollRestorationProvider adapter={adapter}>
+-        <AutopilotTemplateCatalog templates={loading ? [] : templates} loading={loading} failed={false} onRetry={() => {}} onPick={onPick} />
+-      </ScrollRestorationProvider>;
+-    }
++  it.each([
++    { filter: "Repository maintenance 1", scrollTop: 320 },
++    { filter: "All 1", scrollTop: 0 },
++  ])("restores $filter, scroll $scrollTop and card focus after delayed data", async ({ filter, scrollTop }) => {
++    const { Page, onPick, viewState } = createGallery();
++    viewState.set("autopilot-template-group", "maintenance");
++    viewState.set("autopilot-template-scroll", "320");
+     const first = renderWithI18n(<Page />);
+-    await userEvent.setup().click(screen.getByRole("button", { name: "Repository maintenance 1" }));
++    const user = userEvent.setup();
++    await user.click(screen.getByRole("button", { name: filter }));
+     const gallery = screen.getByRole("region", { name: "Start from a template" });
+     expect(gallery).toHaveAttribute("data-tab-scroll-root", "autopilot-templates");
+-    gallery.scrollTop = 320;
+-    await userEvent.setup().click(screen.getByRole("button", { name: /Workday repo audit/ }));
++    gallery.scrollTop = scrollTop;
++    screen.getByRole("button", { name: /Workday repo audit/ }).focus();
++    await user.keyboard("{Enter}");
+     expect(onPick).toHaveBeenCalledWith("workday-repo-audit");
+     first.unmount();
+ 
+     const second = renderWithI18n(<Page loading />);
++    expect(document.body).toHaveFocus();
++    const focus = vi.spyOn(HTMLElement.prototype, "focus");
+     second.rerender(<Page />);
+-    await waitFor(() => expect(screen.getByRole("region").scrollTop).toBe(320));
+-    expect(screen.getByRole("button", { name: "Repository maintenance 1" })).toHaveAttribute("aria-pressed", "true");
++    await waitFor(() => expect(screen.getByRole("button", { name: /Workday repo audit/ })).toHaveFocus());
++    expect(screen.getByRole("region").scrollTop).toBe(scrollTop);
++    expect(screen.getByRole("button", { name: filter })).toHaveAttribute("aria-pressed", "true");
++    expect(focus).toHaveBeenCalledWith({ preventScroll: true });
++  });
++
++  it.each([
++    { key: "hourly-queue-check", filter: "Repository maintenance 1" },
++    { key: "daily-change-review", filter: "All 1" },
++  ])("returns to $filter when the selected template is no longer available", async ({ key, filter }) => {
++    const { Page } = createGallery();
++    const first = renderWithI18n(<Page />);
++    const user = userEvent.setup();
++    await user.click(screen.getByRole("button", { name: "Repository maintenance 1" }));
++    await user.click(screen.getByRole("button", { name: /Workday repo audit/ }));
++    first.unmount();
++
++    renderWithI18n(<Page items={[{ ...templates[0]!, key, title: "Replacement template" }]} />);
++    expect(screen.getByRole("button", { name: filter })).toHaveFocus();
++    expect(screen.getByRole("button", { name: filter })).toHaveAttribute("aria-pressed", "true");
++  });
++
++  it.each([false, true])("keeps a newer focus owner while data loads (dialog: %s)", async (inDialog) => {
++    const { Page } = createGallery();
++    const first = renderWithI18n(<Page />);
++    await userEvent.setup().click(screen.getByRole("button", { name: /Workday repo audit/ }));
++    first.unmount();
++
++    const page = (loading: boolean) => <>
++      <Page loading={loading} />
++      <div role={inDialog ? "dialog" : undefined} aria-label={inDialog ? "Custom automation" : undefined}>
++        <button type="button">Another action</button>
++      </div>
++    </>;
++    const second = renderWithI18n(page(true));
++    const otherAction = screen.getByRole("button", { name: "Another action" });
++    await userEvent.setup().click(otherAction);
++    second.rerender(page(false));
++    expect(otherAction).toHaveFocus();
++
++    second.unmount();
++    renderWithI18n(<Page />);
++    expect(document.body).toHaveFocus();
++  });
++
++  it("returns to blank creation when the registry is empty and consumes that handoff", async () => {
++    const { Page } = createGallery();
++    const first = renderWithI18n(<Page />);
++    await userEvent.setup().click(screen.getByRole("button", { name: /Workday repo audit/ }));
++    first.unmount();
++
++    const second = renderWithI18n(<Page items={[]} />);
++    expect(screen.getByRole("button", { name: "Start from scratch" })).toHaveFocus();
++
++    second.unmount();
++    renderWithI18n(<Page items={[]} />);
++    expect(document.body).toHaveFocus();
++  });
++
++  it("consumes return focus so refetches and later visits cannot reclaim it", async () => {
++    const { Page } = createGallery();
++    const first = renderWithI18n(<Page />);
++    await userEvent.setup().click(screen.getByRole("button", { name: /Workday repo audit/ }));
++    first.unmount();
++
++    const second = renderWithI18n(<Page />);
++    expect(screen.getByRole("button", { name: /Workday repo audit/ })).toHaveFocus();
++    const blankAction = screen.getByRole("button", { name: "Start from scratch" });
++    await userEvent.setup().click(blankAction);
++    second.rerender(<Page items={[...templates]} />);
++    expect(blankAction).toHaveFocus();
++
++    second.unmount();
++    renderWithI18n(<Page />);
++    expect(document.body).toHaveFocus();
+   });
+ });
+diff --git a/packages/views/autopilots/components/autopilot-template-catalog.tsx b/packages/views/autopilots/components/autopilot-template-catalog.tsx
+index 9178ebd13..1274617d1 100644
+--- a/packages/views/autopilots/components/autopilot-template-catalog.tsx
++++ b/packages/views/autopilots/components/autopilot-template-catalog.tsx
+@@ -35,6 +35,8 @@ import { useDescribeSchedule } from "./schedule-editor/describe";
+ const GROUPS = ["all", "maintenance", "collaboration", "reporting"] as const;
+ type TemplateGroup = (typeof GROUPS)[number];
+ 
++const CATALOG_FOCUS = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background";
++
+ // Reuse the skill library's category palette and light/dark theme tokens.
+ const GROUP_ICON_TONES: Record<TemplateGroup, string> = {
+   all: "bg-skill-other/12 text-skill-other",
+@@ -84,9 +86,13 @@ export function AutopilotTemplateCatalog({
+   const describe = useDescribeSchedule();
+   const restoredGroup = useRestoredViewState("autopilot-template-group");
+   const restoredScrollTop = useRestoredViewState("autopilot-template-scroll");
++  const pendingTemplateKey = useRestoredViewState("autopilot-template-focus");
+   const writeViewState = useViewStateWriter();
+   const restoreScroll = useRestoredScrollRef("autopilot-templates");
+   const scrollElement = useRef<HTMLElement | null>(null);
++  const templateButtons = useRef(new Map<string, HTMLButtonElement>());
++  const selectedFilter = useRef<HTMLButtonElement | null>(null);
++  const blankButton = useRef<HTMLButtonElement | null>(null);
+   const didRestore = useRef(false);
+   const attachScroll = useCallback((element: HTMLElement | null) => {
+     scrollElement.current = element;
+@@ -96,7 +102,16 @@ export function AutopilotTemplateCatalog({
+     const savedTop = restoredScrollTop === undefined ? undefined : Number(restoredScrollTop);
+     if (savedTop !== undefined && Number.isFinite(savedTop) && savedTop >= 0) element.scrollTop = savedTop;
+     else restoreScroll(element);
+-  }, [loading, failed, restoredScrollTop, restoreScroll]);
++
++    if (!pendingTemplateKey) return;
++    // Consume the handoff even if a dialog or another control now owns focus.
++    // Refetches and later visits must not revive this return target.
++    writeViewState("autopilot-template-focus", undefined);
++    const doc = element.ownerDocument;
++    if (doc.activeElement && doc.activeElement !== doc.body) return;
++    const target = templateButtons.current.get(pendingTemplateKey) ?? selectedFilter.current ?? blankButton.current;
++    target?.focus({ preventScroll: true });
++  }, [loading, failed, restoredScrollTop, restoreScroll, pendingTemplateKey, writeViewState]);
+   const [selectedGroup, setSelectedGroup] = useState(
+     () => GROUPS.find((group) => group === restoredGroup) ?? "all",
+   );
+@@ -120,7 +135,7 @@ export function AutopilotTemplateCatalog({
+     <section ref={attachScroll} data-tab-scroll-root="autopilot-templates" aria-labelledby={headingId} aria-busy={loading} className="min-h-0 flex-1 overflow-y-auto @container">
+       <div className="mx-auto w-full max-w-[70rem] px-4 py-8 @sm:px-8">
+         <div className="flex flex-wrap items-start justify-between gap-4">
+-          <div>
++          <div className="min-w-0 max-w-[70ch]">
+             <h2 id={headingId} className="text-display-sm font-semibold tracking-tight">
+               {t(($) => $.template_picker.title)}
+             </h2>
+@@ -129,7 +144,7 @@ export function AutopilotTemplateCatalog({
+             </p>
+           </div>
+           {onStartBlank && (
+-            <Button type="button" variant="outline" onClick={onStartBlank} className="min-h-11 @sm:min-h-9">
++            <Button ref={blankButton} type="button" variant="outline" onClick={onStartBlank} className={cn("min-h-11 @lg:pointer-fine:min-h-9", CATALOG_FOCUS)}>
+               <Plus className="size-3.5" aria-hidden="true" />
+               {t(($) => $.page.start_blank)}
+             </Button>
+@@ -139,7 +154,7 @@ export function AutopilotTemplateCatalog({
+         {failed ? (
+           <div role="alert" className="mt-8 flex flex-wrap items-center gap-3 text-body text-muted-foreground">
+             <p>{t(($) => $.template_picker.load_failed)}</p>
+-            <Button type="button" variant="outline" onClick={onRetry}>
++            <Button type="button" variant="outline" onClick={onRetry} className={CATALOG_FOCUS}>
+               {t(($) => $.page.retry)}
+             </Button>
+           </div>
+@@ -158,6 +173,7 @@ export function AutopilotTemplateCatalog({
+                   key={key}
+                   type="button"
+                   variant="ghost"
++                  ref={group === key ? selectedFilter : undefined}
+                   aria-label={`${t(($) => $.catalog.groups[key])} ${counts[key]}`}
+                   aria-pressed={group === key}
+                   onClick={() => {
+@@ -165,7 +181,8 @@ export function AutopilotTemplateCatalog({
+                     writeViewState("autopilot-template-group", key);
+                   }}
+                   className={cn(
+-                    "min-h-11 gap-2 px-3 @sm:min-h-9",
++                    "min-h-11 gap-2 px-3 @sm:pointer-fine:min-h-9",
++                    CATALOG_FOCUS,
+                     group === key
+                       ? "bg-surface-selected font-semibold text-foreground hover:bg-surface-selected"
+                       : "font-normal text-muted-foreground",
+@@ -191,17 +208,22 @@ export function AutopilotTemplateCatalog({
+                   <li key={template.key} className="flex min-w-0">
+                     <button
+                       type="button"
++                      ref={(element) => {
++                        if (element) templateButtons.current.set(template.key, element);
++                        else templateButtons.current.delete(template.key);
++                      }}
+                       onClick={() => {
+                         // The configure step shares this pathname. Desktop's
+                         // plain-scroll capture is replaced when that step leaves,
+                         // so keep the gallery position in the view-state channel.
+                         writeViewState("autopilot-template-group", group);
+                         writeViewState("autopilot-template-scroll", String(scrollElement.current?.scrollTop ?? 0));
++                        writeViewState("autopilot-template-focus", template.key);
+                         onPick(template.key);
+                       }}
+-                      className="flex w-full min-w-0 flex-col rounded-lg border border-surface-border bg-surface p-5 text-left transition-colors hover:border-muted-foreground hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transition-none"
++                      className={cn("flex w-full min-w-0 flex-col rounded-lg border border-surface-border bg-surface p-5 text-left transition-colors hover:border-muted-foreground hover:bg-surface-hover motion-reduce:transition-none", CATALOG_FOCUS)}
+                     >
+-                      <span className="flex items-center gap-3 text-title-sm font-semibold">
++                      <span className="flex items-center gap-3">
+                         <span
+                           aria-hidden="true"
+                           className={cn(
+@@ -211,13 +233,15 @@ export function AutopilotTemplateCatalog({
+                         >
+                           <Icon className="size-5" />
+                         </span>
+-                        <span className="min-w-0 break-words">{template.title}</span>
++                        <span className="min-w-0 break-words">
++                          <span className="block text-title-sm font-semibold">{template.title}</span>
++                          {template.key === "workday-repo-audit" && (
++                            <span className="mt-0.5 block text-caption font-medium text-foreground">{t(($) => $.catalog.recommended)}</span>
++                          )}
++                        </span>
+                       </span>
+                       <span className="mt-3 line-clamp-2 text-body text-muted-foreground">{template.description}</span>
+                       <span className="mt-auto flex w-full flex-col gap-3 pt-4">
+-                        {template.key === "workday-repo-audit" && (
+-                          <span className="text-caption text-muted-foreground">{t(($) => $.catalog.recommended)}</span>
+-                        )}
+                         <span className="flex items-start gap-1.5 text-caption text-muted-foreground">
+                           <Clock className="mt-0.5 size-3 shrink-0" aria-hidden="true" />
+                           <span className="min-w-0 break-words">{describe(parseCron(template.cron_expression, browserTimezone())) ?? template.cron_expression}</span>
+@@ -235,7 +259,6 @@ export function AutopilotTemplateCatalog({
+                 );
+               })}
+             </ul>
+-            <p className="mt-6 text-caption text-muted-foreground">{t(($) => $.catalog.hint)}</p>
+           </>
+         )}
+       </div>
+diff --git a/packages/views/autopilots/components/autopilots-page.test.tsx b/packages/views/autopilots/components/autopilots-page.test.tsx
+index 5a830f409..6d574f0a4 100644
+--- a/packages/views/autopilots/components/autopilots-page.test.tsx
++++ b/packages/views/autopilots/components/autopilots-page.test.tsx
+@@ -1,5 +1,5 @@
+ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+-import { screen } from "@testing-library/react";
++import { screen, within } from "@testing-library/react";
+ import userEvent from "@testing-library/user-event";
+ import { beforeEach, describe, expect, it, vi } from "vitest";
+ import { renderWithI18n } from "../../test/i18n";
+@@ -46,7 +46,9 @@ describe("automation catalog entry", () => {
+     expect(push).toHaveBeenCalledWith("/acme/autopilots/new/template?template=daily-change-review&return_to=autopilots");
+     expect(screen.queryByText("No autopilots yet")).not.toBeInTheDocument();
+     expect(screen.queryByRole("button", { name: "Browse templates" })).not.toBeInTheDocument();
+-    await userEvent.setup().click(screen.getByRole("button", { name: "Start from scratch" }));
++    const gallery = screen.getByRole("region", { name: "Start from a template" });
++    expect(screen.getAllByRole("button", { name: "Start from scratch" })).toHaveLength(1);
++    await userEvent.setup().click(within(gallery).getByRole("button", { name: "Start from scratch" }));
+     expect(screen.getByRole("dialog")).toHaveTextContent("Custom automation");
+   });
+ 
+diff --git a/packages/views/autopilots/components/autopilots-page.tsx b/packages/views/autopilots/components/autopilots-page.tsx
+index 90b8a9a95..5fe6c1c5d 100755
+--- a/packages/views/autopilots/components/autopilots-page.tsx
++++ b/packages/views/autopilots/components/autopilots-page.tsx
+@@ -671,10 +671,10 @@ export function AutopilotsPage() {
+         title={t(($) => $.page.title)}
+         count={totalCount}
+         actions={
+-          <CollectionPageHeaderAction
++          !showEmpty && <CollectionPageHeaderAction
+             icon={Plus}
+-            label={showEmpty ? t(($) => $.page.start_blank) : t(($) => $.page.new_autopilot)}
+-            onClick={() => showEmpty ? setCreateOpen(true) : navigation.push(wsPaths.newAutopilotTemplate())}
++            label={t(($) => $.page.new_autopilot)}
++            onClick={() => navigation.push(wsPaths.newAutopilotTemplate())}
+           />
+         }
+       />
+@@ -703,7 +703,7 @@ export function AutopilotsPage() {
+           <LoadingSkeleton />
+         </div>
+       ) : showEmpty ? (
+-        <EmptyAutopilots />
++        <EmptyAutopilots onStartBlank={() => setCreateOpen(true)} />
+       ) : (
+         <>
+           <AutopilotListToolbar
+@@ -832,7 +832,7 @@ export function AutopilotsPage() {
+   );
+ }
+ 
+-function EmptyAutopilots() {
++function EmptyAutopilots({ onStartBlank }: { onStartBlank: () => void }) {
+   const paths = useWorkspacePaths();
+   const navigation = useNavigation();
+   const { data: templates = [], isLoading, isError, refetch } = useAutopilotTemplates();
+@@ -842,6 +842,7 @@ function EmptyAutopilots() {
+       loading={isLoading}
+       failed={isError}
+       onRetry={() => void refetch()}
++      onStartBlank={onStartBlank}
+       onPick={(key) => navigation.push(autopilotTemplateHref(
+         paths.newAutopilotTemplate(), { initialReturnTo: "autopilots" }, key,
+       ))}
+diff --git a/packages/views/autopilots/components/template-create-autopilot-page.test.tsx b/packages/views/autopilots/components/template-create-autopilot-page.test.tsx
+index 83bfdccd3..3251b3bda 100644
+--- a/packages/views/autopilots/components/template-create-autopilot-page.test.tsx
++++ b/packages/views/autopilots/components/template-create-autopilot-page.test.tsx
+@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+ import { toast } from "sonner";
+ import { EMPTY_CREATE_AUTOPILOT_FROM_TEMPLATE_RESPONSE } from "@multica/core/api/schemas";
+ import type { AutopilotTemplate } from "@multica/core/types";
++import { ScrollRestorationProvider } from "../../platform/scroll-restoration";
+ import { renderWithI18n } from "../../test/i18n";
+ import enAutopilots from "../../locales/en/autopilots.json";
+ 
+@@ -24,6 +25,7 @@ const mockListSquads = vi.hoisted(() => vi.fn());
+ const mockListProjects = vi.hoisted(() => vi.fn());
+ const mockListMembers = vi.hoisted(() => vi.fn());
+ const searchParams = vi.hoisted(() => ({ value: new URLSearchParams() }));
++const route = vi.hoisted(() => ({ pathname: "/acme/autopilots/new/template" }));
+ 
+ vi.mock("@multica/core/hooks", () => ({ useWorkspaceId: () => "ws-test" }));
+ 
+@@ -51,6 +53,7 @@ vi.mock("../../navigation", () => ({
+   useNavigation: () => ({
+     push: mockPush,
+     replace: mockReplace,
++    pathname: route.pathname,
+     searchParams: searchParams.value,
+   }),
+   useBackOrReplace: () => vi.fn(),
+@@ -141,6 +144,7 @@ vi.mock("./pickers/timezone-picker", () => ({
+ }));
+ 
+ import { TemplateCreateAutopilotPage, TemplateCreateAutopilotRoute } from "./template-create-autopilot-page";
++import { AutopilotTemplateCatalog } from "./autopilot-template-catalog";
+ 
+ const TEMPLATES: AutopilotTemplate[] = [
+   {
+@@ -193,11 +197,29 @@ const TEMPLATES: AutopilotTemplate[] = [
+   },
+ ];
+ 
+-function renderPage(props: ComponentProps<typeof TemplateCreateAutopilotPage> = {}, fromRoute = false) {
++function renderPage(
++  props: ComponentProps<typeof TemplateCreateAutopilotPage> = {},
++  fromRoute = false,
++  viewState = new Map<string, string>(),
++) {
+   const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
++  const adapter = {
++    get: () => undefined,
++    getViewState: (key: string) => viewState.get(`${route.pathname}::${key}`),
++    setViewState: (key: string, value: string | undefined, pathname = route.pathname) => {
++      const scopedKey = `${pathname}::${key}`;
++      if (value === undefined) viewState.delete(scopedKey);
++      else viewState.set(scopedKey, value);
++    },
++  };
+   const page = (nextProps: ComponentProps<typeof TemplateCreateAutopilotPage>) => (
+     <QueryClientProvider client={qc}>
+-      {fromRoute ? <TemplateCreateAutopilotRoute /> : <TemplateCreateAutopilotPage {...nextProps} />}
++      <ScrollRestorationProvider adapter={adapter}>
++        {route.pathname === "/acme/autopilots" ? (
++          // Empty-list navigation wiring is covered by autopilots-page.test.tsx.
++          <AutopilotTemplateCatalog templates={TEMPLATES} loading={false} failed={false} onRetry={() => {}} onPick={() => {}} />
++        ) : fromRoute ? <TemplateCreateAutopilotRoute /> : <TemplateCreateAutopilotPage {...nextProps} />}
++      </ScrollRestorationProvider>
+     </QueryClientProvider>
+   );
+   const result = renderWithI18n(page(props));
+@@ -219,6 +241,7 @@ const PROJECTS = [{ id: "project-1", workspace_id: "ws-test", title: "Fleet", ic
+ beforeEach(() => {
+   vi.clearAllMocks();
+   searchParams.value = new URLSearchParams();
++  route.pathname = "/acme/autopilots/new/template";
+   mockListTemplates.mockResolvedValue(TEMPLATES);
+   mockListAgents.mockResolvedValue(AGENTS);
+   mockListSquads.mockResolvedValue(SQUADS);
+@@ -263,6 +286,89 @@ describe("autopilot template picker", () => {
+     expect(mockReplace).toHaveBeenCalledWith("/acme/autopilots");
+   });
+ 
++  it.each(["in-flow", "native"] as const)("restores the originating card after %s Back while the shell Back button is focused", async (backType) => {
++    const { rerenderPage } = renderPage({}, true);
++    const user = userEvent.setup();
++    await user.click(await screen.findByRole("button", { name: "Repository maintenance 2" }));
++    screen.getByRole("region", { name: "Start from a template" }).scrollTop = 168;
++    screen.getByRole("button", { name: /Workday repo audit/ }).focus();
++    await user.keyboard("{Enter}");
++    expect(mockPush).toHaveBeenCalledWith("/acme/autopilots/new/template?template=workday-repo-audit");
++
++    searchParams.value = new URLSearchParams("template=workday-repo-audit");
++    rerenderPage({});
++    await screen.findByText(TEMPLATES[0]!.description);
++    const back = screen.getByRole("button", { name: "Go back" });
++    back.focus();
++    if (backType === "in-flow") {
++      await user.keyboard("{Enter}");
++      expect(mockReplace).toHaveBeenCalledWith("/acme/autopilots/new/template");
++    } else {
++      // Native Back changes the route without invoking the shell's handler.
++      expect(mockReplace).not.toHaveBeenCalled();
++    }
++    expect(back).toHaveFocus();
++
++    searchParams.value = new URLSearchParams();
++    rerenderPage({});
++    await waitFor(() => expect(screen.getByRole("button", { name: /Workday repo audit/ })).toHaveFocus());
++    expect(screen.getByRole("region", { name: "Start from a template" }).scrollTop).toBe(168);
++    expect(screen.getByRole("button", { name: "Repository maintenance 2" })).toHaveAttribute("aria-pressed", "true");
++  });
++
++  it.each([
++    ["picker", "success"], ["empty-list", "success"],
++    ["picker", "rejected"], ["empty-list", "rejected"],
++    ["picker", "unreadable"], ["empty-list", "unreadable"],
++  ] as const)("keeps return focus only while creation is unconfirmed (%s origin, %s)", async (origin, outcome) => {
++    if (outcome === "success") {
++      mockCreateFromTemplate.mockResolvedValueOnce({ autopilot: { id: "ap-1" }, trigger: { id: "tr-1" } });
++    } else if (outcome === "rejected") {
++      mockCreateFromTemplate.mockRejectedValueOnce(new Error("Unable to create automation"));
++    } else {
++      mockCreateFromTemplate.mockResolvedValueOnce(EMPTY_CREATE_AUTOPILOT_FROM_TEMPLATE_RESPONSE);
++    }
++    const defaults: ComponentProps<typeof TemplateCreateAutopilotPage> = {
++      initialAssigneeType: "agent",
++      initialAssigneeId: "agent-1",
++      initialReturnTo: origin === "empty-list" ? "autopilots" : undefined,
++    };
++    const originPath = origin === "empty-list" ? "/acme/autopilots" : "/acme/autopilots/new/template";
++    route.pathname = originPath;
++    const viewState = new Map<string, string>();
++    const first = renderPage(defaults, false, viewState);
++    const user = userEvent.setup();
++    await user.click(await screen.findByRole("button", { name: "Repository maintenance 2" }));
++    screen.getByRole("region", { name: "Start from a template" }).scrollTop = 168;
++    await user.click(screen.getByRole("button", { name: /Workday repo audit/ }));
++    route.pathname = "/acme/autopilots/new/template";
++    searchParams.value = new URLSearchParams("template=workday-repo-audit");
++    first.rerenderPage(defaults);
++    const enable = await screen.findByRole("button", { name: enAutopilots.template_picker.enable });
++    await waitFor(() => expect(enable).toBeEnabled());
++    mockPush.mockClear();
++    await user.click(enable);
++
++    if (outcome === "success") {
++      await waitFor(() => expect(mockPush).toHaveBeenCalledWith("/acme/autopilots/ap-1"));
++      first.unmount();
++      searchParams.value = new URLSearchParams();
++      route.pathname = originPath;
++      renderPage(defaults, false, viewState);
++      await screen.findByRole("button", { name: /Workday repo audit/ });
++      expect(document.body).toHaveFocus();
++    } else {
++      expect(mockPush).not.toHaveBeenCalled();
++      expect(toast.success).not.toHaveBeenCalled();
++      searchParams.value = new URLSearchParams();
++      route.pathname = originPath;
++      first.rerenderPage(defaults);
++      expect(await screen.findByRole("button", { name: /Workday repo audit/ })).toHaveFocus();
++    }
++    expect(screen.getByRole("region", { name: "Start from a template" }).scrollTop).toBe(168);
++    expect(screen.getByRole("button", { name: "Repository maintenance 2" })).toHaveAttribute("aria-pressed", "true");
++  });
++
+   it("retries a failed template load without losing the blank creation entry", async () => {
+     mockListTemplates.mockRejectedValueOnce(new Error("offline"));
+     renderPage();
+diff --git a/packages/views/autopilots/components/template-create-autopilot-page.tsx b/packages/views/autopilots/components/template-create-autopilot-page.tsx
+index 6eb6fc23c..75fc05074 100644
+--- a/packages/views/autopilots/components/template-create-autopilot-page.tsx
++++ b/packages/views/autopilots/components/template-create-autopilot-page.tsx
+@@ -39,6 +39,7 @@ import { ActorAvatar } from "../../common/actor-avatar";
+ import { browserTimezone, timezoneOptions } from "../../common/timezone-select";
+ import { useT, useLocale } from "../../i18n";
+ import { useBackOrReplace, useNavigation } from "../../navigation";
++import { useViewStateWriter } from "../../platform/scroll-restoration";
+ import { ProjectIcon } from "../../projects/components/project-icon";
+ import { ProjectPicker } from "../../projects/components/project-picker";
+ import { templateLanguageFor } from "../../agents/create/use-role-templates";
+@@ -108,6 +109,7 @@ export function TemplateCreateAutopilotPage(defaults: AutopilotTemplateDefaults)
+ 
+   return (
+     <AutopilotCreateShell
++      key={template ? "configure" : "picker"}
+       step={
+         template
+           ? t(($) => $.template_picker.step_configure)
+@@ -279,6 +281,7 @@ function TemplateConfigureStep({
+   const paths = useWorkspacePaths();
+   const navigation = useNavigation();
+   const describe = useDescribeSchedule();
++  const writeViewState = useViewStateWriter();
+ 
+   const [defaults] = useState(() => ({
+     projectId: initialDefaults.initialProjectId,
+@@ -400,6 +403,13 @@ function TemplateConfigureStep({
+         setUnreadableResponse(true);
+         return;
+       }
++      writeViewState(
++        "autopilot-template-focus",
++        undefined,
++        initialDefaults.initialReturnTo === "autopilots"
++          ? paths.autopilots()
++          : paths.newAutopilotTemplate(),
++      );
+       toast.success(t(($) => $.dialog.toast_created));
+       navigation.push(paths.autopilotDetail(created.autopilot.id));
+     } catch {
+diff --git a/packages/views/locales/en/autopilots.json b/packages/views/locales/en/autopilots.json
+index c37391194..fdae039b2 100755
+--- a/packages/views/locales/en/autopilots.json
++++ b/packages/views/locales/en/autopilots.json
+@@ -44,7 +44,7 @@
+   "template_picker": {
+     "eyebrow": "Autopilot creation",
+     "title": "Start from a template",
+-    "description": "Choose a scenario, then review the assignee and schedule.",
++    "description": "Next, choose an agent or squad and a timezone. Default schedules and instructions can be edited after creation.",
+     "step_pick": "Pick a template",
+     "step_configure": "Review and configure",
+     "back": "Go back",
+@@ -474,9 +474,8 @@
+     },
+     "recommended": "Recommended starting point",
+     "view_template": "View template",
+-    "follow_up": "Follow up as needed",
+-    "creates_task": "Creates a task each run",
+-    "hint": "Templates can be edited after creation. Choose an agent or squad before enabling.",
++    "follow_up": "Creates or updates issues as needed",
++    "creates_task": "Creates an issue each run",
+     "default_schedule_note": "Editable after creation"
+   },
+   "project_section": {
+diff --git a/packages/views/locales/zh-Hans/autopilots.json b/packages/views/locales/zh-Hans/autopilots.json
+index c0bb3a086..9dc206ce8 100755
+--- a/packages/views/locales/zh-Hans/autopilots.json
++++ b/packages/views/locales/zh-Hans/autopilots.json
+@@ -44,7 +44,7 @@
+   "template_picker": {
+     "eyebrow": "创建自动化",
+     "title": "从模板开始",
+-    "description": "选择一个场景，再确认执行者与运行计划。",
++    "description": "下一步选择智能体或AI小队，并设置时区。默认计划和指令可在创建后修改。",
+     "step_pick": "选择模板",
+     "step_configure": "检查并配置",
+     "back": "返回",
+@@ -471,9 +471,8 @@
+     },
+     "recommended": "推荐起点",
+     "view_template": "查看模板",
+-    "follow_up": "按需跟进",
+-    "creates_task": "每次创建任务",
+-    "hint": "所有模板均可在创建后修改。运行前需指定智能体或AI小队。",
++    "follow_up": "按需创建或补充任务",
++    "creates_task": "每次运行创建任务",
+     "default_schedule_note": "创建后可修改"
+   },
+   "project_section": {
+diff --git a/packages/views/platform/scroll-restoration.test.tsx b/packages/views/platform/scroll-restoration.test.tsx
+index 524bb689d..372e15458 100755
+--- a/packages/views/platform/scroll-restoration.test.tsx
++++ b/packages/views/platform/scroll-restoration.test.tsx
+@@ -1,10 +1,11 @@
+-import { describe, expect, it } from "vitest";
++import { describe, expect, it, vi } from "vitest";
+ import { renderHook } from "@testing-library/react";
+ import {
+   ScrollRestorationProvider,
+   useRestoredScrollEntry,
+   useRestoredScrollOffset,
+   useScrollRestorationAdapter,
++  useViewStateWriter,
+   type ScrollRestorationAdapter,
+ } from "./scroll-restoration";
+ 
+@@ -13,6 +14,32 @@ function makeAdapter(get: ScrollRestorationAdapter["get"]): ScrollRestorationAda
+ }
+ 
+ describe("scroll-restoration public surface", () => {
++  it("forwards an explicit origin pathname when clearing view state", () => {
++    const setViewState = vi.fn();
++    const adapter = { get: () => undefined, setViewState };
++    const { result } = renderHook(() => useViewStateWriter(), {
++      wrapper: ({ children }) => (
++        <ScrollRestorationProvider adapter={adapter}>
++          {children}
++        </ScrollRestorationProvider>
++      ),
++    });
++    result.current("pending-focus", undefined, "/acme/autopilots");
++    expect(setViewState).toHaveBeenCalledWith("pending-focus", undefined, "/acme/autopilots");
++  });
++
++  it("ignores targeted writes when a provider only supports scroll", () => {
++    const adapter = makeAdapter(() => undefined);
++    const { result } = renderHook(() => useViewStateWriter(), {
++      wrapper: ({ children }) => (
++        <ScrollRestorationProvider adapter={adapter}>
++          {children}
++        </ScrollRestorationProvider>
++      ),
++    });
++    expect(() => result.current("pending-focus", undefined, "/acme/autopilots")).not.toThrow();
++  });
++
+   it("useScrollRestorationAdapter returns null without a provider", () => {
+     const { result } = renderHook(() => useScrollRestorationAdapter());
+     expect(result.current).toBeNull();
+diff --git a/packages/views/platform/scroll-restoration.tsx b/packages/views/platform/scroll-restoration.tsx
+index b8edb85a0..73e29af21 100755
+--- a/packages/views/platform/scroll-restoration.tsx
++++ b/packages/views/platform/scroll-restoration.tsx
+@@ -82,8 +82,11 @@ export interface ScrollRestorationAdapter {
+    * implementation as "nothing stored / write ignored".
+    */
+   getViewState?(entryKey: string): string | undefined;
+-  /** Write (string) or clear (undefined) an entry for the current route. */
+-  setViewState?(entryKey: string, value: string | undefined): void;
++  /**
++   * Write (string) or clear (undefined) an entry for the current route, or an
++   * explicit pathname within this adapter's tab. Omit query strings and hashes.
++   */
++  setViewState?(entryKey: string, value: string | undefined, routePathname?: string): void;
+ }
+ 
+ const ScrollRestorationContext = createContext<ScrollRestorationAdapter | null>(
+@@ -167,17 +170,18 @@ export function useRestoredViewState(entryKey: string): string | undefined {
+ 
+ /**
+  * Imperative writer for view-state entries: call it when the restorable
+- * state changes (pass undefined to clear). No-op without a provider or on
+- * adapters that only track scroll.
++ * state changes (pass undefined to clear). An optional pathname targets another
++ * route within the same tab. No-op without a provider or on scroll-only adapters.
+  */
+ export function useViewStateWriter(): (
+   entryKey: string,
+   value: string | undefined,
++  routePathname?: string,
+ ) => void {
+   const adapter = useContext(ScrollRestorationContext);
+   return useCallback(
+-    (entryKey: string, value: string | undefined) => {
+-      adapter?.setViewState?.(entryKey, value);
++    (entryKey: string, value: string | undefined, routePathname?: string) => {
++      adapter?.setViewState?.(entryKey, value, routePathname);
+     },
+     [adapter],
+   );

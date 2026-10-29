@@ -1,5 +1,9 @@
 # 需求：平台管理后台
 
+Archived on 2026-10-17 at the user's explicit request, together with all seven
+child tasks. See the [archive note](archive-note-2026-10-17.md). Status and
+verification statements below describe the historical execution state.
+
 状态：规划稿；本轮交付设计与任务分解，不实施业务代码。日期：2026-10-01。
 
 ## 目标与用户价值

@@ -1,0 +1,5148 @@
+{
+  "recordedAt": "2026-10-14T02:28:11.504Z",
+  "environment": "Isolated Electron renderer; Chinese settings; native window sizing and zoom",
+  "limitations": [
+    "Synthetic in-memory Quick Action data proves rendering, not API parsing.",
+    "Focus and center hit tests do not establish physical-device touch behavior.",
+    "Shortcut bindings are inspected without recording or changing them."
+  ],
+  "cases": [
+    {
+      "id": "property-dialog-geometry",
+      "status": "captured",
+      "startedAt": "2026-10-14T02:28:11.504Z",
+      "observations": [
+        {
+          "variant": {
+            "name": "900x700-100pct",
+            "width": 900,
+            "height": 700,
+            "zoom": 1
+          },
+          "optionCount": 12,
+          "beforeFocus": {
+            "viewport": {
+              "width": 900,
+              "height": 700,
+              "devicePixelRatio": 1
+            },
+            "root": {
+              "bounds": {
+                "x": 194,
+                "y": -95.5,
+                "width": 512,
+                "height": 891,
+                "top": -95.5,
+                "right": 706,
+                "bottom": 795.5,
+                "left": 194
+              },
+              "maxHeight": "none",
+              "overflowX": "visible",
+              "overflowY": "visible",
+              "clientHeight": 891,
+              "scrollHeight": 891
+            },
+            "controls": [
+              {
+                "id": "base-ui-_r_1vt_",
+                "role": "button",
+                "name": "选择图标",
+                "value": "",
+                "bounds": {
+                  "x": 210,
+                  "y": 10.5,
+                  "width": 68,
+                  "height": 32,
+                  "top": 10.5,
+                  "right": 278,
+                  "bottom": 42.5,
+                  "left": 210
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "property-name",
+                "role": "input",
+                "name": "名称",
+                "value": "审计草稿，不保存",
+                "bounds": {
+                  "x": 290,
+                  "y": 10.5,
+                  "width": 228,
+                  "height": 32,
+                  "top": 10.5,
+                  "right": 518,
+                  "bottom": 42.5,
+                  "left": 290
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_1vv_",
+                "role": "combobox",
+                "name": "单选▼",
+                "value": "",
+                "bounds": {
+                  "x": 530,
+                  "y": 10.5,
+                  "width": 70,
+                  "height": 32,
+                  "top": 10.5,
+                  "right": 600,
+                  "bottom": 42.5,
+                  "left": 530
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_1vv_-hidden-input",
+                "role": "input",
+                "name": "",
+                "value": "select",
+                "bounds": {
+                  "x": 193,
+                  "y": -96.5,
+                  "width": 1,
+                  "height": 1,
+                  "top": -96.5,
+                  "right": 194,
+                  "bottom": -95.5,
+                  "left": 193
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 700,
+                    "clientHeight": 700,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 900,
+                      "height": 700,
+                      "top": 0,
+                      "right": 900,
+                      "bottom": 700,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "property-description",
+                "role": "textarea",
+                "name": "描述",
+                "value": "",
+                "bounds": {
+                  "x": 210,
+                  "y": 92.5,
+                  "width": 480,
+                  "height": 64,
+                  "top": 92.5,
+                  "right": 690,
+                  "bottom": 156.5,
+                  "left": 210
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_204_",
+                "role": "button",
+                "name": "#3b82f6",
+                "value": "",
+                "bounds": {
+                  "x": 234,
+                  "y": 202.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 202.5,
+                  "right": 258,
+                  "bottom": 226.5,
+                  "left": 234
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_205_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 01",
+                "bounds": {
+                  "x": 266,
+                  "y": 198.5,
+                  "width": 388,
+                  "height": 32,
+                  "top": 198.5,
+                  "right": 654,
+                  "bottom": 230.5,
+                  "left": 266
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 662,
+                  "y": 200.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 200.5,
+                  "right": 690,
+                  "bottom": 228.5,
+                  "left": 662
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_208_",
+                "role": "button",
+                "name": "#ef4444",
+                "value": "",
+                "bounds": {
+                  "x": 234,
+                  "y": 242.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 242.5,
+                  "right": 258,
+                  "bottom": 266.5,
+                  "left": 234
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_209_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 02",
+                "bounds": {
+                  "x": 266,
+                  "y": 238.5,
+                  "width": 388,
+                  "height": 32,
+                  "top": 238.5,
+                  "right": 654,
+                  "bottom": 270.5,
+                  "left": 266
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 662,
+                  "y": 240.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 240.5,
+                  "right": 690,
+                  "bottom": 268.5,
+                  "left": 662
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20c_",
+                "role": "button",
+                "name": "#f97316",
+                "value": "",
+                "bounds": {
+                  "x": 234,
+                  "y": 282.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 282.5,
+                  "right": 258,
+                  "bottom": 306.5,
+                  "left": 234
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20d_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 03",
+                "bounds": {
+                  "x": 266,
+                  "y": 278.5,
+                  "width": 388,
+                  "height": 32,
+                  "top": 278.5,
+                  "right": 654,
+                  "bottom": 310.5,
+                  "left": 266
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 662,
+                  "y": 280.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 280.5,
+                  "right": 690,
+                  "bottom": 308.5,
+                  "left": 662
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20g_",
+                "role": "button",
+                "name": "#eab308",
+                "value": "",
+                "bounds": {
+                  "x": 234,
+                  "y": 322.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 322.5,
+                  "right": 258,
+                  "bottom": 346.5,
+                  "left": 234
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20h_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 04",
+                "bounds": {
+                  "x": 266,
+                  "y": 318.5,
+                  "width": 388,
+                  "height": 32,
+                  "top": 318.5,
+                  "right": 654,
+                  "bottom": 350.5,
+                  "left": 266
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 662,
+                  "y": 320.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 320.5,
+                  "right": 690,
+                  "bottom": 348.5,
+                  "left": 662
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20k_",
+                "role": "button",
+                "name": "#22c55e",
+                "value": "",
+                "bounds": {
+                  "x": 234,
+                  "y": 362.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 362.5,
+                  "right": 258,
+                  "bottom": 386.5,
+                  "left": 234
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20l_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 05",
+                "bounds": {
+                  "x": 266,
+                  "y": 358.5,
+                  "width": 388,
+                  "height": 32,
+                  "top": 358.5,
+                  "right": 654,
+                  "bottom": 390.5,
+                  "left": 266
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 662,
+                  "y": 360.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 360.5,
+                  "right": 690,
+                  "bottom": 388.5,
+                  "left": 662
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20o_",
+                "role": "button",
+                "name": "#14b8a6",
+                "value": "",
+                "bounds": {
+                  "x": 234,
+                  "y": 402.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 402.5,
+                  "right": 258,
+                  "bottom": 426.5,
+                  "left": 234
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20p_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 06",
+                "bounds": {
+                  "x": 266,
+                  "y": 398.5,
+                  "width": 388,
+                  "height": 32,
+                  "top": 398.5,
+                  "right": 654,
+                  "bottom": 430.5,
+                  "left": 266
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 662,
+                  "y": 400.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 400.5,
+                  "right": 690,
+                  "bottom": 428.5,
+                  "left": 662
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20s_",
+                "role": "button",
+                "name": "#3b82f6",
+                "value": "",
+                "bounds": {
+                  "x": 234,
+                  "y": 442.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 442.5,
+                  "right": 258,
+                  "bottom": 466.5,
+                  "left": 234
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20t_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 07",
+                "bounds": {
+                  "x": 266,
+                  "y": 438.5,
+                  "width": 388,
+                  "height": 32,
+                  "top": 438.5,
+                  "right": 654,
+                  "bottom": 470.5,
+                  "left": 266
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 662,
+                  "y": 440.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 440.5,
+                  "right": 690,
+                  "bottom": 468.5,
+                  "left": 662
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_210_",
+                "role": "button",
+                "name": "#6366f1",
+                "value": "",
+                "bounds": {
+                  "x": 234,
+                  "y": 482.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 482.5,
+                  "right": 258,
+                  "bottom": 506.5,
+                  "left": 234
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_211_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 08",
+                "bounds": {
+                  "x": 266,
+                  "y": 478.5,
+                  "width": 388,
+                  "height": 32,
+                  "top": 478.5,
+                  "right": 654,
+                  "bottom": 510.5,
+                  "left": 266
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 662,
+                  "y": 480.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 480.5,
+                  "right": 690,
+                  "bottom": 508.5,
+                  "left": 662
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_214_",
+                "role": "button",
+                "name": "#a855f7",
+                "value": "",
+                "bounds": {
+                  "x": 234,
+                  "y": 522.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 522.5,
+                  "right": 258,
+                  "bottom": 546.5,
+                  "left": 234
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_215_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 09",
+                "bounds": {
+                  "x": 266,
+                  "y": 518.5,
+                  "width": 388,
+                  "height": 32,
+                  "top": 518.5,
+                  "right": 654,
+                  "bottom": 550.5,
+                  "left": 266
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 662,
+                  "y": 520.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 520.5,
+                  "right": 690,
+                  "bottom": 548.5,
+                  "left": 662
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_218_",
+                "role": "button",
+                "name": "#ec4899",
+                "value": "",
+                "bounds": {
+                  "x": 234,
+                  "y": 562.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 562.5,
+                  "right": 258,
+                  "bottom": 586.5,
+                  "left": 234
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_219_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 10",
+                "bounds": {
+                  "x": 266,
+                  "y": 558.5,
+                  "width": 388,
+                  "height": 32,
+                  "top": 558.5,
+                  "right": 654,
+                  "bottom": 590.5,
+                  "left": 266
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 662,
+                  "y": 560.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 560.5,
+                  "right": 690,
+                  "bottom": 588.5,
+                  "left": 662
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_21c_",
+                "role": "button",
+                "name": "#6b7280",
+                "value": "",
+                "bounds": {
+                  "x": 234,
+                  "y": 602.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 602.5,
+                  "right": 258,
+                  "bottom": 626.5,
+                  "left": 234
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_21d_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 11",
+                "bounds": {
+                  "x": 266,
+                  "y": 598.5,
+                  "width": 388,
+                  "height": 32,
+                  "top": 598.5,
+                  "right": 654,
+                  "bottom": 630.5,
+                  "left": 266
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 662,
+                  "y": 600.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 600.5,
+                  "right": 690,
+                  "bottom": 628.5,
+                  "left": 662
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_21g_",
+                "role": "button",
+                "name": "#ef4444",
+                "value": "",
+                "bounds": {
+                  "x": 234,
+                  "y": 642.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 642.5,
+                  "right": 258,
+                  "bottom": 666.5,
+                  "left": 234
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_21h_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 12",
+                "bounds": {
+                  "x": 266,
+                  "y": 638.5,
+                  "width": 388,
+                  "height": 32,
+                  "top": 638.5,
+                  "right": 654,
+                  "bottom": 670.5,
+                  "left": 266
+                },
+                "disabled": false,
+                "focused": true,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 662,
+                  "y": 640.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 640.5,
+                  "right": 690,
+                  "bottom": 668.5,
+                  "left": 662
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "添加选项",
+                "value": "",
+                "bounds": {
+                  "x": 210,
+                  "y": 678.5,
+                  "width": 96,
+                  "height": 28,
+                  "top": 678.5,
+                  "right": 306,
+                  "bottom": 706.5,
+                  "left": 210
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": true,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 700,
+                    "clientHeight": 700,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 900,
+                      "height": 700,
+                      "top": 0,
+                      "right": 900,
+                      "bottom": 700,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "取消",
+                "value": "",
+                "bounds": {
+                  "x": 554,
+                  "y": 747.5,
+                  "width": 50,
+                  "height": 32,
+                  "top": 747.5,
+                  "right": 604,
+                  "bottom": 779.5,
+                  "left": 554
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 700,
+                    "clientHeight": 700,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 900,
+                      "height": 700,
+                      "top": 0,
+                      "right": 900,
+                      "bottom": 700,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "保存属性",
+                "value": "",
+                "bounds": {
+                  "x": 612,
+                  "y": 747.5,
+                  "width": 78,
+                  "height": 32,
+                  "top": 747.5,
+                  "right": 690,
+                  "bottom": 779.5,
+                  "left": 612
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 700,
+                    "clientHeight": 700,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 900,
+                      "height": 700,
+                      "top": 0,
+                      "right": 900,
+                      "bottom": 700,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "Close",
+                "value": "",
+                "bounds": {
+                  "x": 670,
+                  "y": -87.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": -87.5,
+                  "right": 698,
+                  "bottom": -59.5,
+                  "left": 670
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 700,
+                    "clientHeight": 700,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 900,
+                      "height": 700,
+                      "top": 0,
+                      "right": 900,
+                      "bottom": 700,
+                      "left": 0
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "focusProbes": [
+            {
+              "name": "property-name",
+              "focusedControl": {
+                "id": "property-name",
+                "role": "input",
+                "name": "名称",
+                "value": "审计草稿，不保存",
+                "bounds": {
+                  "x": 290,
+                  "y": 10.5,
+                  "width": 228,
+                  "height": 32,
+                  "top": 10.5,
+                  "right": 518,
+                  "bottom": 42.5,
+                  "left": 290
+                },
+                "disabled": false,
+                "focused": true,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              "dialogBounds": {
+                "x": 194,
+                "y": -95.5,
+                "width": 512,
+                "height": 891,
+                "top": -95.5,
+                "right": 706,
+                "bottom": 795.5,
+                "left": 194
+              }
+            },
+            {
+              "name": "last-option",
+              "focusedControl": {
+                "id": "base-ui-_r_21h_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 12",
+                "bounds": {
+                  "x": 266,
+                  "y": 638.5,
+                  "width": 388,
+                  "height": 32,
+                  "top": 638.5,
+                  "right": 654,
+                  "bottom": 670.5,
+                  "left": 266
+                },
+                "disabled": false,
+                "focused": true,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              "dialogBounds": {
+                "x": 194,
+                "y": -95.5,
+                "width": 512,
+                "height": 891,
+                "top": -95.5,
+                "right": 706,
+                "bottom": 795.5,
+                "left": 194
+              }
+            },
+            {
+              "name": "save-without-activation",
+              "focusedControl": {
+                "id": "",
+                "role": "button",
+                "name": "保存属性",
+                "value": "",
+                "bounds": {
+                  "x": 612,
+                  "y": 747.5,
+                  "width": 78,
+                  "height": 32,
+                  "top": 747.5,
+                  "right": 690,
+                  "bottom": 779.5,
+                  "left": 612
+                },
+                "disabled": false,
+                "focused": true,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 700,
+                    "clientHeight": 700,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 900,
+                      "height": 700,
+                      "top": 0,
+                      "right": 900,
+                      "bottom": 700,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              "dialogBounds": {
+                "x": 194,
+                "y": -95.5,
+                "width": 512,
+                "height": 891,
+                "top": -95.5,
+                "right": 706,
+                "bottom": 795.5,
+                "left": 194
+              }
+            }
+          ]
+        },
+        {
+          "variant": {
+            "name": "900x1000-200pct",
+            "width": 900,
+            "height": 1000,
+            "zoom": 2
+          },
+          "optionCount": 12,
+          "beforeFocus": {
+            "viewport": {
+              "width": 450,
+              "height": 500,
+              "devicePixelRatio": 2
+            },
+            "root": {
+              "bounds": {
+                "x": 16,
+                "y": -215.5,
+                "width": 418,
+                "height": 931,
+                "top": -215.5,
+                "right": 434,
+                "bottom": 715.5,
+                "left": 16
+              },
+              "maxHeight": "none",
+              "overflowX": "visible",
+              "overflowY": "visible",
+              "clientHeight": 931,
+              "scrollHeight": 931
+            },
+            "controls": [
+              {
+                "id": "base-ui-_r_1vt_",
+                "role": "button",
+                "name": "选择图标",
+                "value": "",
+                "bounds": {
+                  "x": 32,
+                  "y": -109.5,
+                  "width": 68,
+                  "height": 32,
+                  "top": -109.5,
+                  "right": 100,
+                  "bottom": -77.5,
+                  "left": 32
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "property-name",
+                "role": "input",
+                "name": "名称",
+                "value": "审计草稿，不保存",
+                "bounds": {
+                  "x": 112,
+                  "y": -109.5,
+                  "width": 134,
+                  "height": 32,
+                  "top": -109.5,
+                  "right": 246,
+                  "bottom": -77.5,
+                  "left": 112
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "base-ui-_r_1vv_",
+                "role": "combobox",
+                "name": "单选▼",
+                "value": "",
+                "bounds": {
+                  "x": 258,
+                  "y": -109.5,
+                  "width": 70,
+                  "height": 32,
+                  "top": -109.5,
+                  "right": 328,
+                  "bottom": -77.5,
+                  "left": 258
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "base-ui-_r_1vv_-hidden-input",
+                "role": "input",
+                "name": "",
+                "value": "select",
+                "bounds": {
+                  "x": 15,
+                  "y": -216.5,
+                  "width": 1,
+                  "height": 1,
+                  "top": -216.5,
+                  "right": 16,
+                  "bottom": -215.5,
+                  "left": 15
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "property-description",
+                "role": "textarea",
+                "name": "描述",
+                "value": "",
+                "bounds": {
+                  "x": 32,
+                  "y": -27.5,
+                  "width": 386,
+                  "height": 64,
+                  "top": -27.5,
+                  "right": 418,
+                  "bottom": 36.5,
+                  "left": 32
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": true,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "base-ui-_r_204_",
+                "role": "button",
+                "name": "#3b82f6",
+                "value": "",
+                "bounds": {
+                  "x": 56,
+                  "y": 82.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 82.5,
+                  "right": 80,
+                  "bottom": 106.5,
+                  "left": 56
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_205_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 01",
+                "bounds": {
+                  "x": 88,
+                  "y": 78.5,
+                  "width": 294,
+                  "height": 32,
+                  "top": 78.5,
+                  "right": 382,
+                  "bottom": 110.5,
+                  "left": 88
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 390,
+                  "y": 80.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 80.5,
+                  "right": 418,
+                  "bottom": 108.5,
+                  "left": 390
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_208_",
+                "role": "button",
+                "name": "#ef4444",
+                "value": "",
+                "bounds": {
+                  "x": 56,
+                  "y": 122.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 122.5,
+                  "right": 80,
+                  "bottom": 146.5,
+                  "left": 56
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_209_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 02",
+                "bounds": {
+                  "x": 88,
+                  "y": 118.5,
+                  "width": 294,
+                  "height": 32,
+                  "top": 118.5,
+                  "right": 382,
+                  "bottom": 150.5,
+                  "left": 88
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 390,
+                  "y": 120.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 120.5,
+                  "right": 418,
+                  "bottom": 148.5,
+                  "left": 390
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20c_",
+                "role": "button",
+                "name": "#f97316",
+                "value": "",
+                "bounds": {
+                  "x": 56,
+                  "y": 162.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 162.5,
+                  "right": 80,
+                  "bottom": 186.5,
+                  "left": 56
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20d_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 03",
+                "bounds": {
+                  "x": 88,
+                  "y": 158.5,
+                  "width": 294,
+                  "height": 32,
+                  "top": 158.5,
+                  "right": 382,
+                  "bottom": 190.5,
+                  "left": 88
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 390,
+                  "y": 160.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 160.5,
+                  "right": 418,
+                  "bottom": 188.5,
+                  "left": 390
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20g_",
+                "role": "button",
+                "name": "#eab308",
+                "value": "",
+                "bounds": {
+                  "x": 56,
+                  "y": 202.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 202.5,
+                  "right": 80,
+                  "bottom": 226.5,
+                  "left": 56
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20h_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 04",
+                "bounds": {
+                  "x": 88,
+                  "y": 198.5,
+                  "width": 294,
+                  "height": 32,
+                  "top": 198.5,
+                  "right": 382,
+                  "bottom": 230.5,
+                  "left": 88
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 390,
+                  "y": 200.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 200.5,
+                  "right": 418,
+                  "bottom": 228.5,
+                  "left": 390
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20k_",
+                "role": "button",
+                "name": "#22c55e",
+                "value": "",
+                "bounds": {
+                  "x": 56,
+                  "y": 242.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 242.5,
+                  "right": 80,
+                  "bottom": 266.5,
+                  "left": 56
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20l_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 05",
+                "bounds": {
+                  "x": 88,
+                  "y": 238.5,
+                  "width": 294,
+                  "height": 32,
+                  "top": 238.5,
+                  "right": 382,
+                  "bottom": 270.5,
+                  "left": 88
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 390,
+                  "y": 240.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 240.5,
+                  "right": 418,
+                  "bottom": 268.5,
+                  "left": 390
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20o_",
+                "role": "button",
+                "name": "#14b8a6",
+                "value": "",
+                "bounds": {
+                  "x": 56,
+                  "y": 282.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 282.5,
+                  "right": 80,
+                  "bottom": 306.5,
+                  "left": 56
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20p_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 06",
+                "bounds": {
+                  "x": 88,
+                  "y": 278.5,
+                  "width": 294,
+                  "height": 32,
+                  "top": 278.5,
+                  "right": 382,
+                  "bottom": 310.5,
+                  "left": 88
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 390,
+                  "y": 280.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 280.5,
+                  "right": 418,
+                  "bottom": 308.5,
+                  "left": 390
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20s_",
+                "role": "button",
+                "name": "#3b82f6",
+                "value": "",
+                "bounds": {
+                  "x": 56,
+                  "y": 322.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 322.5,
+                  "right": 80,
+                  "bottom": 346.5,
+                  "left": 56
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_20t_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 07",
+                "bounds": {
+                  "x": 88,
+                  "y": 318.5,
+                  "width": 294,
+                  "height": 32,
+                  "top": 318.5,
+                  "right": 382,
+                  "bottom": 350.5,
+                  "left": 88
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 390,
+                  "y": 320.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 320.5,
+                  "right": 418,
+                  "bottom": 348.5,
+                  "left": 390
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_210_",
+                "role": "button",
+                "name": "#6366f1",
+                "value": "",
+                "bounds": {
+                  "x": 56,
+                  "y": 362.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 362.5,
+                  "right": 80,
+                  "bottom": 386.5,
+                  "left": 56
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_211_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 08",
+                "bounds": {
+                  "x": 88,
+                  "y": 358.5,
+                  "width": 294,
+                  "height": 32,
+                  "top": 358.5,
+                  "right": 382,
+                  "bottom": 390.5,
+                  "left": 88
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 390,
+                  "y": 360.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 360.5,
+                  "right": 418,
+                  "bottom": 388.5,
+                  "left": 390
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_214_",
+                "role": "button",
+                "name": "#a855f7",
+                "value": "",
+                "bounds": {
+                  "x": 56,
+                  "y": 402.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 402.5,
+                  "right": 80,
+                  "bottom": 426.5,
+                  "left": 56
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_215_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 09",
+                "bounds": {
+                  "x": 88,
+                  "y": 398.5,
+                  "width": 294,
+                  "height": 32,
+                  "top": 398.5,
+                  "right": 382,
+                  "bottom": 430.5,
+                  "left": 88
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 390,
+                  "y": 400.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 400.5,
+                  "right": 418,
+                  "bottom": 428.5,
+                  "left": 390
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_218_",
+                "role": "button",
+                "name": "#ec4899",
+                "value": "",
+                "bounds": {
+                  "x": 56,
+                  "y": 442.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 442.5,
+                  "right": 80,
+                  "bottom": 466.5,
+                  "left": 56
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_219_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 10",
+                "bounds": {
+                  "x": 88,
+                  "y": 438.5,
+                  "width": 294,
+                  "height": 32,
+                  "top": 438.5,
+                  "right": 382,
+                  "bottom": 470.5,
+                  "left": 88
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 390,
+                  "y": 440.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 440.5,
+                  "right": 418,
+                  "bottom": 468.5,
+                  "left": 390
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": true,
+                "centerHitsControl": true,
+                "clippedBy": []
+              },
+              {
+                "id": "base-ui-_r_21c_",
+                "role": "button",
+                "name": "#6b7280",
+                "value": "",
+                "bounds": {
+                  "x": 56,
+                  "y": 482.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 482.5,
+                  "right": 80,
+                  "bottom": 506.5,
+                  "left": 56
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": true,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "base-ui-_r_21d_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 11",
+                "bounds": {
+                  "x": 88,
+                  "y": 478.5,
+                  "width": 294,
+                  "height": 32,
+                  "top": 478.5,
+                  "right": 382,
+                  "bottom": 510.5,
+                  "left": 88
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": true,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 390,
+                  "y": 480.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 480.5,
+                  "right": 418,
+                  "bottom": 508.5,
+                  "left": 390
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": true,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "base-ui-_r_21g_",
+                "role": "button",
+                "name": "#ef4444",
+                "value": "",
+                "bounds": {
+                  "x": 56,
+                  "y": 522.5,
+                  "width": 24,
+                  "height": 24,
+                  "top": 522.5,
+                  "right": 80,
+                  "bottom": 546.5,
+                  "left": 56
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "base-ui-_r_21h_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 12",
+                "bounds": {
+                  "x": 88,
+                  "y": 518.5,
+                  "width": 294,
+                  "height": 32,
+                  "top": 518.5,
+                  "right": 382,
+                  "bottom": 550.5,
+                  "left": 88
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "移除选项",
+                "value": "",
+                "bounds": {
+                  "x": 390,
+                  "y": 520.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": 520.5,
+                  "right": 418,
+                  "bottom": 548.5,
+                  "left": 390
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "添加选项",
+                "value": "",
+                "bounds": {
+                  "x": 32,
+                  "y": 558.5,
+                  "width": 96,
+                  "height": 28,
+                  "top": 558.5,
+                  "right": 128,
+                  "bottom": 586.5,
+                  "left": 32
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "取消",
+                "value": "",
+                "bounds": {
+                  "x": 32,
+                  "y": 667.5,
+                  "width": 386,
+                  "height": 32,
+                  "top": 667.5,
+                  "right": 418,
+                  "bottom": 699.5,
+                  "left": 32
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "保存属性",
+                "value": "",
+                "bounds": {
+                  "x": 32,
+                  "y": 627.5,
+                  "width": 386,
+                  "height": 32,
+                  "top": 627.5,
+                  "right": 418,
+                  "bottom": 659.5,
+                  "left": 32
+                },
+                "disabled": false,
+                "focused": true,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "",
+                "role": "button",
+                "name": "Close",
+                "value": "",
+                "bounds": {
+                  "x": 398,
+                  "y": -207.5,
+                  "width": 28,
+                  "height": 28,
+                  "top": -207.5,
+                  "right": 426,
+                  "bottom": -179.5,
+                  "left": 398
+                },
+                "disabled": false,
+                "focused": false,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "focusProbes": [
+            {
+              "name": "property-name",
+              "focusedControl": {
+                "id": "property-name",
+                "role": "input",
+                "name": "名称",
+                "value": "审计草稿，不保存",
+                "bounds": {
+                  "x": 112,
+                  "y": -109.5,
+                  "width": 134,
+                  "height": 32,
+                  "top": -109.5,
+                  "right": 246,
+                  "bottom": -77.5,
+                  "left": 112
+                },
+                "disabled": false,
+                "focused": true,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              "dialogBounds": {
+                "x": 16,
+                "y": -215.5,
+                "width": 418,
+                "height": 931,
+                "top": -215.5,
+                "right": 434,
+                "bottom": 715.5,
+                "left": 16
+              }
+            },
+            {
+              "name": "last-option",
+              "focusedControl": {
+                "id": "base-ui-_r_21h_",
+                "role": "input",
+                "name": "选项名称",
+                "value": "审计选项 12",
+                "bounds": {
+                  "x": 88,
+                  "y": 518.5,
+                  "width": 294,
+                  "height": 32,
+                  "top": 518.5,
+                  "right": 382,
+                  "bottom": 550.5,
+                  "left": 88
+                },
+                "disabled": false,
+                "focused": true,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              "dialogBounds": {
+                "x": 16,
+                "y": -215.5,
+                "width": 418,
+                "height": 931,
+                "top": -215.5,
+                "right": 434,
+                "bottom": 715.5,
+                "left": 16
+              }
+            },
+            {
+              "name": "save-without-activation",
+              "focusedControl": {
+                "id": "",
+                "role": "button",
+                "name": "保存属性",
+                "value": "",
+                "bounds": {
+                  "x": 32,
+                  "y": 627.5,
+                  "width": 386,
+                  "height": 32,
+                  "top": 627.5,
+                  "right": 418,
+                  "bottom": 659.5,
+                  "left": 32
+                },
+                "disabled": false,
+                "focused": true,
+                "fullyInViewport": false,
+                "centerHitsControl": false,
+                "clippedBy": [
+                  {
+                    "tag": "BODY",
+                    "className": "h-full overflow-hidden antialiased font-sans",
+                    "overflowX": "hidden",
+                    "overflowY": "hidden",
+                    "scrollHeight": 500,
+                    "clientHeight": 500,
+                    "bounds": {
+                      "x": 0,
+                      "y": 0,
+                      "width": 450,
+                      "height": 500,
+                      "top": 0,
+                      "right": 450,
+                      "bottom": 500,
+                      "left": 0
+                    }
+                  }
+                ]
+              },
+              "dialogBounds": {
+                "x": 16,
+                "y": -215.5,
+                "width": 418,
+                "height": 931,
+                "top": -215.5,
+                "right": 434,
+                "bottom": 715.5,
+                "left": 16
+              }
+            }
+          ]
+        }
+      ],
+      "artifacts": [
+        {
+          "screenshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/screenshots/configuration-properties-900x700-100pct.png",
+          "ax": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-properties-900x700-100pct.json",
+          "ariaSnapshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-properties-900x700-100pct.txt"
+        },
+        {
+          "screenshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/screenshots/configuration-properties-900x700-100pct-after-focus.png",
+          "ax": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-properties-900x700-100pct-after-focus.json",
+          "ariaSnapshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-properties-900x700-100pct-after-focus.txt"
+        },
+        {
+          "screenshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/screenshots/configuration-properties-900x1000-200pct.png",
+          "ax": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-properties-900x1000-200pct.json",
+          "ariaSnapshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-properties-900x1000-200pct.txt"
+        },
+        {
+          "screenshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/screenshots/configuration-properties-900x1000-200pct-after-focus.png",
+          "ax": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-properties-900x1000-200pct-after-focus.json",
+          "ariaSnapshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-properties-900x1000-200pct-after-focus.txt"
+        }
+      ],
+      "limitations": [
+        "The 12-option draft is prepared using local Add option clicks, including DOM clicks when that control moves outside the viewport. This setup does not claim the add gesture is reachable."
+      ],
+      "cleanup": [
+        {
+          "name": "owned-dialog",
+          "restored": true
+        },
+        {
+          "name": "viewport",
+          "restored": true,
+          "evidence": {
+            "width": 1440,
+            "height": 1000,
+            "zoom": 1
+          }
+        },
+        {
+          "name": "settings-tab",
+          "restored": true
+        },
+        {
+          "name": "theme",
+          "restored": true
+        }
+      ],
+      "finishedAt": "2026-10-14T02:28:15.241Z"
+    },
+    {
+      "id": "configuration-accessible-names",
+      "status": "captured",
+      "startedAt": "2026-10-14T02:28:15.242Z",
+      "observations": [
+        {
+          "section": "shortcuts-current-values",
+          "recorders": [
+            {
+              "name": "修改\"打开搜索\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "CtrlK",
+              "keyTitles": [
+                "Ctrl",
+                "K"
+              ],
+              "keycapsHidden": "true"
+            },
+            {
+              "name": "修改\"新建任务\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "C",
+              "keyTitles": [
+                "C"
+              ],
+              "keycapsHidden": "true"
+            },
+            {
+              "name": "修改\"显示或隐藏左侧边栏\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "CtrlB",
+              "keyTitles": [
+                "Ctrl",
+                "B"
+              ],
+              "keycapsHidden": "true"
+            },
+            {
+              "name": "修改\"显示或隐藏右侧边栏\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "Ctrl/",
+              "keyTitles": [
+                "Ctrl",
+                "/"
+              ],
+              "keycapsHidden": "true"
+            },
+            {
+              "name": "修改\"显示或隐藏聊天窗\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "CtrlJ",
+              "keyTitles": [
+                "Ctrl",
+                "J"
+              ],
+              "keycapsHidden": "true"
+            },
+            {
+              "name": "修改\"在任务中查找\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "CtrlF",
+              "keyTitles": [
+                "Ctrl",
+                "F"
+              ],
+              "keycapsHidden": "true"
+            },
+            {
+              "name": "修改\"打开讨论导航\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "CtrlO",
+              "keyTitles": [
+                "Ctrl",
+                "Shift",
+                "O"
+              ],
+              "keycapsHidden": "true"
+            },
+            {
+              "name": "修改\"归档通知\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "E",
+              "keyTitles": [
+                "E"
+              ],
+              "keycapsHidden": "true"
+            },
+            {
+              "name": "修改\"发送\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "Ctrl",
+              "keyTitles": [
+                "Ctrl",
+                "Enter"
+              ],
+              "keycapsHidden": "true"
+            },
+            {
+              "name": "修改\"后退\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "Ctrl[",
+              "keyTitles": [
+                "Ctrl",
+                "["
+              ],
+              "keycapsHidden": "true"
+            },
+            {
+              "name": "修改\"前进\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "Ctrl]",
+              "keyTitles": [
+                "Ctrl",
+                "]"
+              ],
+              "keycapsHidden": "true"
+            },
+            {
+              "name": "修改\"前往收件箱\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "未设置",
+              "keyTitles": [],
+              "keycapsHidden": null
+            },
+            {
+              "name": "修改\"前往聊天\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "未设置",
+              "keyTitles": [],
+              "keycapsHidden": null
+            },
+            {
+              "name": "修改\"前往我的任务\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "未设置",
+              "keyTitles": [],
+              "keycapsHidden": null
+            },
+            {
+              "name": "修改\"前往任务\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "未设置",
+              "keyTitles": [],
+              "keycapsHidden": null
+            },
+            {
+              "name": "修改\"前往项目\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "未设置",
+              "keyTitles": [],
+              "keycapsHidden": null
+            },
+            {
+              "name": "修改\"前往自动化\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "未设置",
+              "keyTitles": [],
+              "keycapsHidden": null
+            },
+            {
+              "name": "修改\"前往智能体\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "未设置",
+              "keyTitles": [],
+              "keycapsHidden": null
+            },
+            {
+              "name": "修改\"前往AI小队\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "未设置",
+              "keyTitles": [],
+              "keycapsHidden": null
+            },
+            {
+              "name": "修改\"前往用量\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "未设置",
+              "keyTitles": [],
+              "keycapsHidden": null
+            },
+            {
+              "name": "修改\"前往运行时\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "未设置",
+              "keyTitles": [],
+              "keycapsHidden": null
+            },
+            {
+              "name": "修改\"前往 Skills\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "未设置",
+              "keyTitles": [],
+              "keycapsHidden": null
+            },
+            {
+              "name": "修改\"前往设置\"的快捷键",
+              "descriptionId": null,
+              "pressed": "false",
+              "visibleText": "未设置",
+              "keyTitles": [],
+              "keycapsHidden": null
+            }
+          ],
+          "ax": [
+            {
+              "nodeId": "18698",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"打开搜索\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"打开搜索\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"打开搜索\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "18701",
+              "childIds": [],
+              "backendDOMNodeId": 18698
+            },
+            {
+              "nodeId": "18715",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"新建任务\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"新建任务\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"新建任务\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "18718",
+              "childIds": [],
+              "backendDOMNodeId": 18715
+            },
+            {
+              "nodeId": "18733",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"显示或隐藏左侧边栏\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"显示或隐藏左侧边栏\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"显示或隐藏左侧边栏\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "18736",
+              "childIds": [],
+              "backendDOMNodeId": 18733
+            },
+            {
+              "nodeId": "18751",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"显示或隐藏右侧边栏\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"显示或隐藏右侧边栏\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"显示或隐藏右侧边栏\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "18754",
+              "childIds": [],
+              "backendDOMNodeId": 18751
+            },
+            {
+              "nodeId": "18769",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"显示或隐藏聊天窗\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"显示或隐藏聊天窗\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"显示或隐藏聊天窗\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "18772",
+              "childIds": [],
+              "backendDOMNodeId": 18769
+            },
+            {
+              "nodeId": "18787",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"在任务中查找\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"在任务中查找\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"在任务中查找\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "18790",
+              "childIds": [],
+              "backendDOMNodeId": 18787
+            },
+            {
+              "nodeId": "18808",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"打开讨论导航\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"打开讨论导航\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"打开讨论导航\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "18811",
+              "childIds": [],
+              "backendDOMNodeId": 18808
+            },
+            {
+              "nodeId": "18825",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"归档通知\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"归档通知\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"归档通知\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "18828",
+              "childIds": [],
+              "backendDOMNodeId": 18825
+            },
+            {
+              "nodeId": "18846",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"发送\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"发送\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"发送\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "18849",
+              "childIds": [],
+              "backendDOMNodeId": 18846
+            },
+            {
+              "nodeId": "18878",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"后退\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"后退\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"后退\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "18881",
+              "childIds": [],
+              "backendDOMNodeId": 18878
+            },
+            {
+              "nodeId": "18896",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"前进\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"前进\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"前进\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "18899",
+              "childIds": [],
+              "backendDOMNodeId": 18896
+            },
+            {
+              "nodeId": "18912",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"前往收件箱\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"前往收件箱\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"前往收件箱\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "value": {
+                      "type": "computedString",
+                      "value": "未设置"
+                    },
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "18915",
+              "childIds": [
+                "18905"
+              ],
+              "backendDOMNodeId": 18912
+            },
+            {
+              "nodeId": "18928",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"前往聊天\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"前往聊天\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"前往聊天\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "value": {
+                      "type": "computedString",
+                      "value": "未设置"
+                    },
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "18931",
+              "childIds": [
+                "18921"
+              ],
+              "backendDOMNodeId": 18928
+            },
+            {
+              "nodeId": "18944",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"前往我的任务\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"前往我的任务\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"前往我的任务\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "value": {
+                      "type": "computedString",
+                      "value": "未设置"
+                    },
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "18947",
+              "childIds": [
+                "18937"
+              ],
+              "backendDOMNodeId": 18944
+            },
+            {
+              "nodeId": "18960",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"前往任务\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"前往任务\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"前往任务\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "value": {
+                      "type": "computedString",
+                      "value": "未设置"
+                    },
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "18963",
+              "childIds": [
+                "18953"
+              ],
+              "backendDOMNodeId": 18960
+            },
+            {
+              "nodeId": "18976",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"前往项目\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"前往项目\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"前往项目\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "value": {
+                      "type": "computedString",
+                      "value": "未设置"
+                    },
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "18979",
+              "childIds": [
+                "18969"
+              ],
+              "backendDOMNodeId": 18976
+            },
+            {
+              "nodeId": "18992",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"前往自动化\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"前往自动化\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"前往自动化\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "value": {
+                      "type": "computedString",
+                      "value": "未设置"
+                    },
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "18995",
+              "childIds": [
+                "18985"
+              ],
+              "backendDOMNodeId": 18992
+            },
+            {
+              "nodeId": "19008",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"前往智能体\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"前往智能体\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"前往智能体\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "value": {
+                      "type": "computedString",
+                      "value": "未设置"
+                    },
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "19011",
+              "childIds": [
+                "19001"
+              ],
+              "backendDOMNodeId": 19008
+            },
+            {
+              "nodeId": "19024",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"前往AI小队\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"前往AI小队\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"前往AI小队\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "value": {
+                      "type": "computedString",
+                      "value": "未设置"
+                    },
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "19027",
+              "childIds": [
+                "19017"
+              ],
+              "backendDOMNodeId": 19024
+            },
+            {
+              "nodeId": "19040",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"前往用量\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"前往用量\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"前往用量\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "value": {
+                      "type": "computedString",
+                      "value": "未设置"
+                    },
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "19043",
+              "childIds": [
+                "19033"
+              ],
+              "backendDOMNodeId": 19040
+            },
+            {
+              "nodeId": "19056",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"前往运行时\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"前往运行时\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"前往运行时\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "value": {
+                      "type": "computedString",
+                      "value": "未设置"
+                    },
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "19059",
+              "childIds": [
+                "19049"
+              ],
+              "backendDOMNodeId": 19056
+            },
+            {
+              "nodeId": "19072",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"前往 Skills\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"前往 Skills\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"前往 Skills\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "value": {
+                      "type": "computedString",
+                      "value": "未设置"
+                    },
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "19075",
+              "childIds": [
+                "19065"
+              ],
+              "backendDOMNodeId": 19072
+            },
+            {
+              "nodeId": "19088",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "button"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 175
+              },
+              "name": {
+                "type": "computedString",
+                "value": "修改\"前往设置\"的快捷键",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "value": {
+                      "type": "computedString",
+                      "value": "修改\"前往设置\"的快捷键"
+                    },
+                    "attribute": "aria-label",
+                    "attributeValue": {
+                      "type": "string",
+                      "value": "修改\"前往设置\"的快捷键"
+                    }
+                  },
+                  {
+                    "type": "relatedElement",
+                    "superseded": true,
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "contents",
+                    "value": {
+                      "type": "computedString",
+                      "value": "未设置"
+                    },
+                    "superseded": true
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title",
+                    "superseded": true
+                  }
+                ]
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "pressed",
+                  "value": {
+                    "type": "tristate",
+                    "value": "false"
+                  }
+                }
+              ],
+              "parentId": "19091",
+              "childIds": [
+                "19081"
+              ],
+              "backendDOMNodeId": 19088
+            }
+          ]
+        },
+        {
+          "section": "property-type",
+          "expectedPurpose": "类型",
+          "controls": [
+            {
+              "id": "base-ui-_r_23e_",
+              "text": "单选▼",
+              "ariaLabel": null,
+              "ariaLabelledBy": null,
+              "associatedLabels": []
+            }
+          ],
+          "ax": [
+            {
+              "nodeId": "19425",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "combobox"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 21
+              },
+              "name": {
+                "type": "computedString",
+                "value": "",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "aria-label"
+                  },
+                  {
+                    "type": "relatedElement",
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title"
+                  }
+                ]
+              },
+              "value": {
+                "type": "string",
+                "value": "单选"
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "hasPopup",
+                  "value": {
+                    "type": "token",
+                    "value": "listbox"
+                  }
+                },
+                {
+                  "name": "required",
+                  "value": {
+                    "type": "boolean",
+                    "value": false
+                  }
+                },
+                {
+                  "name": "expanded",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": false
+                  }
+                }
+              ],
+              "parentId": "19429",
+              "childIds": [
+                "19421"
+              ],
+              "backendDOMNodeId": 19425
+            }
+          ]
+        },
+        {
+          "section": "status-category",
+          "expectedPurpose": "分类",
+          "controls": [
+            {
+              "id": "base-ui-_r_24e_",
+              "text": "待规划▼",
+              "ariaLabel": null,
+              "ariaLabelledBy": null,
+              "associatedLabels": []
+            }
+          ],
+          "ax": [
+            {
+              "nodeId": "19734",
+              "ignored": false,
+              "role": {
+                "type": "role",
+                "value": "combobox"
+              },
+              "chromeRole": {
+                "type": "internalRole",
+                "value": 21
+              },
+              "name": {
+                "type": "computedString",
+                "value": "",
+                "sources": [
+                  {
+                    "type": "relatedElement",
+                    "attribute": "aria-labelledby"
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "aria-label"
+                  },
+                  {
+                    "type": "relatedElement",
+                    "nativeSource": "label"
+                  },
+                  {
+                    "type": "attribute",
+                    "attribute": "title"
+                  }
+                ]
+              },
+              "value": {
+                "type": "string",
+                "value": "待规划"
+              },
+              "properties": [
+                {
+                  "name": "invalid",
+                  "value": {
+                    "type": "token",
+                    "value": "false"
+                  }
+                },
+                {
+                  "name": "focusable",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": true
+                  }
+                },
+                {
+                  "name": "hasPopup",
+                  "value": {
+                    "type": "token",
+                    "value": "listbox"
+                  }
+                },
+                {
+                  "name": "required",
+                  "value": {
+                    "type": "boolean",
+                    "value": false
+                  }
+                },
+                {
+                  "name": "expanded",
+                  "value": {
+                    "type": "booleanOrUndefined",
+                    "value": false
+                  }
+                }
+              ],
+              "parentId": "19746",
+              "childIds": [
+                "19730"
+              ],
+              "backendDOMNodeId": 19734
+            }
+          ]
+        }
+      ],
+      "artifacts": [
+        {
+          "screenshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/screenshots/configuration-shortcut-values.png",
+          "ax": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-shortcut-values.json",
+          "ariaSnapshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-shortcut-values.txt"
+        },
+        {
+          "screenshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/screenshots/configuration-property-type.png",
+          "ax": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-property-type.json",
+          "ariaSnapshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-property-type.txt"
+        },
+        {
+          "screenshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/screenshots/configuration-status-category.png",
+          "ax": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-status-category.json",
+          "ariaSnapshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-status-category.txt"
+        }
+      ],
+      "limitations": [],
+      "cleanup": [
+        {
+          "name": "owned-dialog",
+          "restored": true
+        },
+        {
+          "name": "owned-dialog",
+          "restored": true
+        },
+        {
+          "name": "viewport",
+          "restored": true,
+          "evidence": {
+            "width": 1440,
+            "height": 1000,
+            "zoom": 1
+          }
+        },
+        {
+          "name": "settings-tab",
+          "restored": true
+        },
+        {
+          "name": "theme",
+          "restored": true
+        }
+      ],
+      "finishedAt": "2026-10-14T02:28:18.754Z"
+    },
+    {
+      "id": "quick-action-warning-contrast",
+      "status": "captured",
+      "startedAt": "2026-10-14T02:28:18.757Z",
+      "observations": [
+        {
+          "theme": "light",
+          "computed": [
+            {
+              "text": "审计私有目标 · 私有",
+              "color": "oklch(0.75 0.16 85)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "fontSize": "14px",
+              "opacity": "1",
+              "className": "inline-flex items-center gap-1 text-warning"
+            },
+            {
+              "text": "从未使用",
+              "color": "oklch(0.75 0.16 85)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "fontSize": "14px",
+              "opacity": "1",
+              "className": "text-caption tabular-nums md:text-body text-warning"
+            }
+          ],
+          "measurements": [
+            {
+              "text": "审计私有目标 · 私有",
+              "class": "inline-flex items-center gap-1 text-warning",
+              "color": "oklch(0.75 0.16 85)",
+              "background": [
+                255,
+                255,
+                255,
+                1
+              ],
+              "fontSize": 14,
+              "ratio": 2.25,
+              "floor": 4.5
+            },
+            {
+              "text": "从未使用",
+              "class": "text-caption tabular-nums md:text-body text-warning",
+              "color": "oklch(0.75 0.16 85)",
+              "background": [
+                255,
+                255,
+                255,
+                1
+              ],
+              "fontSize": 14,
+              "ratio": 2.25,
+              "floor": 4.5
+            }
+          ],
+          "failures": [
+            {
+              "text": "审计私有目标 · 私有",
+              "class": "inline-flex items-center gap-1 text-warning",
+              "color": "oklch(0.75 0.16 85)",
+              "background": [
+                255,
+                255,
+                255,
+                1
+              ],
+              "fontSize": 14,
+              "ratio": 2.25,
+              "floor": 4.5
+            },
+            {
+              "text": "从未使用",
+              "class": "text-caption tabular-nums md:text-body text-warning",
+              "color": "oklch(0.75 0.16 85)",
+              "background": [
+                255,
+                255,
+                255,
+                1
+              ],
+              "fontSize": 14,
+              "ratio": 2.25,
+              "floor": 4.5
+            }
+          ],
+          "scannerPath": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-11-desktop-core/scripts/contrast.mjs"
+        },
+        {
+          "theme": "dark",
+          "computed": [
+            {
+              "text": "审计私有目标 · 私有",
+              "color": "oklch(0.7 0.16 85)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "fontSize": "14px",
+              "opacity": "1",
+              "className": "inline-flex items-center gap-1 text-warning"
+            },
+            {
+              "text": "从未使用",
+              "color": "oklch(0.7 0.16 85)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "fontSize": "14px",
+              "opacity": "1",
+              "className": "text-caption tabular-nums md:text-body text-warning"
+            }
+          ],
+          "measurements": [
+            {
+              "text": "审计私有目标 · 私有",
+              "class": "inline-flex items-center gap-1 text-warning",
+              "color": "oklch(0.7 0.16 85)",
+              "background": [
+                24,
+                24,
+                27,
+                1
+              ],
+              "fontSize": 14,
+              "ratio": 6.56,
+              "floor": 4.5
+            },
+            {
+              "text": "从未使用",
+              "class": "text-caption tabular-nums md:text-body text-warning",
+              "color": "oklch(0.7 0.16 85)",
+              "background": [
+                24,
+                24,
+                27,
+                1
+              ],
+              "fontSize": 14,
+              "ratio": 6.56,
+              "floor": 4.5
+            }
+          ],
+          "failures": [],
+          "scannerPath": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-11-desktop-core/scripts/contrast.mjs"
+        }
+      ],
+      "artifacts": [
+        {
+          "screenshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/screenshots/configuration-quick-action-warning-light.png",
+          "ax": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-quick-action-warning-light.json",
+          "ariaSnapshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-quick-action-warning-light.txt"
+        },
+        {
+          "screenshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/screenshots/configuration-quick-action-warning-dark.png",
+          "ax": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-quick-action-warning-dark.json",
+          "ariaSnapshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/configuration-quick-action-warning-dark.txt"
+        }
+      ],
+      "limitations": [],
+      "cleanup": [
+        {
+          "name": "query-cache",
+          "restored": true,
+          "evidence": {
+            "queryKey": [
+              "quick-actions",
+              "453472dd-e6b9-43ca-a4d5-f0ab58d9c44a",
+              "list",
+              true
+            ],
+            "originalStatus": "success",
+            "dataIdentityRestored": true
+          }
+        },
+        {
+          "name": "viewport",
+          "restored": true,
+          "evidence": {
+            "width": 1440,
+            "height": 1000,
+            "zoom": 1
+          }
+        },
+        {
+          "name": "settings-tab",
+          "restored": true
+        },
+        {
+          "name": "theme",
+          "restored": true
+        }
+      ],
+      "fixture": {
+        "queryKey": [
+          "quick-actions",
+          "453472dd-e6b9-43ca-a4d5-f0ab58d9c44a",
+          "list",
+          true
+        ],
+        "fixture": {
+          "id": "configuration-1791944899702",
+          "workspace_id": "453472dd-e6b9-43ca-a4d5-f0ab58d9c44a",
+          "name": "审计：长期未使用",
+          "description": "Temporary renderer-only contrast fixture",
+          "assignee_type": "agent",
+          "assignee_id": "configuration-1791944899702-agent",
+          "prompt": "Local audit fixture; never execute.",
+          "visibility": "public",
+          "status": "active",
+          "last_used_at": null,
+          "use_count": 0,
+          "created_by_id": "",
+          "created_at": "2026-06-16T02:28:19.704Z",
+          "updated_at": "2026-06-16T02:28:19.704Z",
+          "target_name": "审计私有目标",
+          "target_public": false,
+          "target_missing": false
+        }
+      },
+      "finishedAt": "2026-10-14T02:28:20.882Z"
+    }
+  ],
+  "finishedAt": "2026-10-14T02:28:20.885Z"
+}

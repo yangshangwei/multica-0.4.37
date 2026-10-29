@@ -1,0 +1,35 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: 通知"': 设置目录 通知
+- tabpanel "通知":
+  - banner:
+    - heading "通知" [level=2]
+  - heading "收件箱通知" [level=3]
+  - paragraph: 控制哪些事件会产生收件箱通知。被静默的事件类型仍然存在——可以直接到任务页面查看。
+  - text: 分配 你被分配或取消分配某个任务时
+  - switch "分配" [checked]
+  - text: 状态变更 你订阅的任务状态变化时（例如 todo、in_progress、done）
+  - switch "状态变更" [checked]
+  - text: 评论 你订阅的任务有新评论时
+  - switch "评论" [checked]
+  - text: 提及 有人 @ 你时，包括 @all 和 @squad
+  - switch "提及" [checked]
+  - text: 优先级与截止日期 你订阅的任务优先级或截止日期变更时
+  - switch "优先级与截止日期" [checked]
+  - text: 智能体活动 智能体 task 完成或失败时
+  - switch "智能体活动" [checked]
+  - heading "系统通知" [level=3]
+  - paragraph: 控制 Multica 在后台时是否显示操作系统的原生通知横幅。
+  - text: 显示系统通知 App 未获得焦点时，新的收件箱条目通过操作系统弹出通知横幅。
+  - switch "显示系统通知" [checked]
+- button "问 Multica"
+- region "Notifications alt+T"

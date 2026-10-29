@@ -1,0 +1,12 @@
+{
+  "score": 97,
+  "verdict": "pass",
+  "category_match": true,
+  "differences": [
+    "Label foregrounds now meet measured AA contrast while retaining their fills.",
+    "Focus rings, named drawers and retry notices follow the existing component system.",
+    "Inbox virtual selection and status reorder controls preserve the existing page layout."
+  ],
+  "suggestions": [],
+  "reasoning": "Desktop captures preserve the incumbent hierarchy and spacing. All targeted native checks pass; remaining limitations concern untested platforms and backend transport availability."
+}

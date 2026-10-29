@@ -38,7 +38,7 @@
     ".trellis/tasks/09-30-intranet-password-registration/research/password-acceptance.md",
     ".trellis/tasks/09-30-intranet-password-registration/research/e2e-regressions.md"
   ],
-  "notes": "Development and local acceptance completed on feat/intranet-password-registration (8d01dd606). Ready for integration; target deployment and released-client acceptance remain pending. See verification.md for exact checks and known knip findings.",
+  "notes": "Development and local acceptance completed on feat/intranet-password-registration (8d01dd606). Ready for integration; target deployment and released-client acceptance remain pending. See verification.md for exact checks and known knip findings. 2026-10-17: archived at the user's explicit request. Existing verification outcomes and outstanding integration, deployment and external acceptance remain unchanged; see meta.archive.note.",
   "meta": {
     "planning_deliverables": "prd, ux-design, design, architecture, migration-rollout, implement, test-spec, research",
     "implementation_started": true,
@@ -58,6 +58,12 @@
       "make_check_exit": 2,
       "test_only_followup_exit": 0,
       "report": ".trellis/tasks/09-30-intranet-password-registration/verification.md"
+    },
+    "archive": {
+      "date": "2026-10-17",
+      "reason": "user_requested",
+      "verification_scope": "task_records_only",
+      "note": ".trellis/tasks/archive/2026-10/09-30-intranet-password-registration/archive-note-2026-10-17.md"
     }
   }
 }

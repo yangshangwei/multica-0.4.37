@@ -27,7 +27,7 @@
     ".trellis/tasks/10-01-platform-admin-controls/implement.jsonl",
     ".trellis/tasks/10-01-platform-admin-controls/check.jsonl"
   ],
-  "notes": "",
+  "notes": " 2026-10-17: archived at the user's explicit request. Existing verification outcomes and outstanding integration, deployment and external acceptance remain unchanged; see meta.archive.note.",
   "meta": {
     "slice": "S04",
     "depends_on": "S01,S02,S03",
@@ -40,6 +40,12 @@
     "parent_acceptance": "AC07、AC08",
     "planning_only": false,
     "upstream_verified_commit": "a38158def",
-    "verification_document": ".trellis/tasks/10-01-platform-admin-controls/verification.md"
+    "verification_document": ".trellis/tasks/10-01-platform-admin-controls/verification.md",
+    "archive": {
+      "date": "2026-10-17",
+      "reason": "user_requested",
+      "verification_scope": "task_records_only",
+      "note": ".trellis/tasks/archive/2026-10/10-01-platform-admin-console/archive-note-2026-10-17.md"
+    }
   }
 }

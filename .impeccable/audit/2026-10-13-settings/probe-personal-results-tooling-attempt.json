@@ -1,0 +1,60 @@
+{
+  "recordedAt": "2026-10-14T02:24:08.445Z",
+  "environment": "Isolated Electron renderer; all writes used below are memory-only API mocks.",
+  "cases": [
+    {
+      "id": "avatar-failure",
+      "sources": [
+        "packages/views/settings/components/account-tab.tsx:126",
+        "packages/views/common/avatar-upload-control.tsx:186"
+      ],
+      "status": "probe_failed",
+      "findingReproduced": null,
+      "error": "page.evaluate: Error: Loaded core API module not found\n    at eval (eval at evaluate (:290:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at mockWrites (<anonymous>:12:14)\n    at eval (<anonymous>:120:9)\n    at async runCase (<anonymous>:87:5)\n    at async eval (<anonymous>:115:1)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/scripts/resume-run.mjs:65:3",
+      "mockAtFailure": null,
+      "evidence": [
+        {
+          "screenshot": "screenshots/resume-personal-avatar-failure-probe-error.png",
+          "ax": "ax/resume-personal-avatar-failure-probe-error.txt"
+        }
+      ],
+      "mocksRestored": true
+    },
+    {
+      "id": "empty-name",
+      "sources": [
+        "packages/views/settings/components/account-tab.tsx:90",
+        "packages/views/settings/components/use-auto-save.ts:114"
+      ],
+      "status": "probe_failed",
+      "findingReproduced": null,
+      "error": "page.evaluate: Error: Loaded core API module not found\n    at eval (eval at evaluate (:290:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at mockWrites (<anonymous>:12:14)\n    at eval (<anonymous>:154:9)\n    at async runCase (<anonymous>:87:5)\n    at async eval (<anonymous>:138:1)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/scripts/resume-run.mjs:65:3",
+      "mockAtFailure": null,
+      "evidence": [
+        {
+          "screenshot": "screenshots/resume-personal-empty-name-probe-error.png",
+          "ax": "ax/resume-personal-empty-name-probe-error.txt"
+        }
+      ],
+      "mocksRestored": true
+    },
+    {
+      "id": "invite-repeat-enter",
+      "sources": [
+        "packages/views/settings/components/members-tab.tsx:434",
+        "packages/views/settings/components/members-tab.tsx:812"
+      ],
+      "status": "probe_failed",
+      "findingReproduced": null,
+      "error": "page.evaluate: Error: Loaded core API module not found\n    at eval (eval at evaluate (:290:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at mockWrites (<anonymous>:12:14)\n    at eval (<anonymous>:205:9)\n    at async runCase (<anonymous>:87:5)\n    at async eval (<anonymous>:192:1)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/scripts/resume-run.mjs:65:3",
+      "mockAtFailure": null,
+      "evidence": [
+        {
+          "screenshot": "screenshots/resume-personal-invite-repeat-enter-probe-error.png",
+          "ax": "ax/resume-personal-invite-repeat-enter-probe-error.txt"
+        }
+      ],
+      "mocksRestored": true
+    }
+  ]
+}

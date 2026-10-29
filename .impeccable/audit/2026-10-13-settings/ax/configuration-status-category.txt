@@ -1,0 +1,31 @@
+- banner:
+  - status
+- tabpanel "任务状态":
+  - status
+  - status
+  - status
+  - status
+  - status
+  - status
+  - status
+  - status
+- region "Notifications alt+T"
+- dialog "新建状态":
+  - heading "新建状态" [level=2]
+  - paragraph: 该状态的行为与「待规划」完全一致。
+  - text: 名称
+  - textbox "名称":
+    - /placeholder: 例如：Code Review
+  - text: 分类
+  - combobox:
+    - img
+    - text: 待规划
+  - paragraph: 搁置。把任务移到这里不会启动智能体。
+  - text: 描述
+  - textbox "描述":
+    - /placeholder: 这个状态对团队意味着什么
+  - text: 颜色
+  - button "颜色": "#3b82f6"
+  - button "取消"
+  - button "保存" [disabled]
+  - button "Close"

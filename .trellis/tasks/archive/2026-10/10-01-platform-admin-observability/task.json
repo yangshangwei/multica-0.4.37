@@ -27,7 +27,7 @@
     ".trellis/tasks/10-01-platform-admin-observability/implement.jsonl",
     ".trellis/tasks/10-01-platform-admin-observability/check.jsonl"
   ],
-  "notes": "S06 backend/UI/review and final production E2E 2/2 passed; see verification.md. S07 rollout/native/capacity remains outstanding.",
+  "notes": "S06 backend/UI/review and final production E2E 2/2 passed; see verification.md. S07 rollout/native/capacity remains outstanding. 2026-10-17: archived at the user's explicit request. Existing verification outcomes and outstanding integration, deployment and external acceptance remain unchanged; see meta.archive.note.",
   "meta": {
     "slice": "S06",
     "depends_on": "S02,S03,S04",
@@ -39,6 +39,12 @@
     ],
     "parent_acceptance": "AC09、AC10",
     "planning_only": false,
-    "upstream_verified_commit": "8ba975947"
+    "upstream_verified_commit": "8ba975947",
+    "archive": {
+      "date": "2026-10-17",
+      "reason": "user_requested",
+      "verification_scope": "task_records_only",
+      "note": ".trellis/tasks/archive/2026-10/10-01-platform-admin-console/archive-note-2026-10-17.md"
+    }
   }
 }

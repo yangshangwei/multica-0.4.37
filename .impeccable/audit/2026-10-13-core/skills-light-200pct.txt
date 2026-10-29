@@ -1,0 +1,25 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "技能库"
+  - status
+  - button "New tab"
+- banner:
+  - heading "Skills" [level=1]
+  - button "新建 skill"
+- tablist "技能库视图":
+  - tab "工作空间 skills": 工作空间 skills 9
+  - tab "skill 市场" [selected]: skill 市场 15
+- tabpanel "skill 市场":
+  - textbox "搜索模板":
+    - /placeholder: 搜索模板...
+  - tablist "模板来源":
+    - tab "全部": 全部 15
+    - tab "部署提供" [selected]: 部署提供 0
+    - tab "平台内置": 平台内置 15
+  - status: 正在刷新模板...
+  - paragraph: 本部署暂未提供共享模板。
+  - button "浏览平台模板"
+- button "问 Multica"
+- region "Notifications alt+T"

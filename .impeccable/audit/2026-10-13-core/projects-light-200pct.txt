@@ -1,0 +1,94 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "项目"
+  - status
+  - button "New tab"
+- banner:
+  - heading "项目" [level=1]
+  - text: "7"
+  - button "新建项目"
+- textbox "搜索项目..."
+- button "筛选"
+- button "显示：创建时间"
+- button "视图：表格"
+- table:
+  - row "选择当前列表中的所有项目 名称 状态":
+    - checkbox "选择当前列表中的所有项目"
+    - columnheader "名称":
+      - button "名称"
+    - columnheader "状态":
+      - button "状态"
+  - row "选择 桌面场景 · 平台体验 桌面场景 · 平台体验 计划中 项目操作":
+    - cell "选择 桌面场景 · 平台体验":
+      - checkbox "选择 桌面场景 · 平台体验"
+    - cell "桌面场景 · 平台体验":
+      - link "桌面场景 · 平台体验":
+        - /url: http://localhost:18572/desktop-qa-1008-1743/projects/932472b5-11b2-5884-9f59-a8adbcd39a07
+    - cell "计划中":
+      - button "计划中"
+    - cell "项目操作":
+      - button "项目操作"
+  - row "选择 桌面场景 · 身份认证 桌面场景 · 身份认证 已完成 项目操作":
+    - cell "选择 桌面场景 · 身份认证":
+      - checkbox "选择 桌面场景 · 身份认证"
+    - cell "桌面场景 · 身份认证":
+      - link "桌面场景 · 身份认证":
+        - /url: http://localhost:18572/desktop-qa-1008-1743/projects/f92c1432-a8c5-5367-97b4-aa472ef12b06
+    - cell "已完成":
+      - button "已完成"
+    - cell "项目操作":
+      - button "项目操作"
+  - row "选择 桌面场景 · 旧方案归档 桌面场景 · 旧方案归档 已取消 项目操作":
+    - cell "选择 桌面场景 · 旧方案归档":
+      - checkbox "选择 桌面场景 · 旧方案归档"
+    - cell "桌面场景 · 旧方案归档":
+      - link "桌面场景 · 旧方案归档":
+        - /url: http://localhost:18572/desktop-qa-1008-1743/projects/6b1a97eb-caa3-550b-8530-e9d05b729b28
+    - cell "已取消":
+      - button "已取消"
+    - cell "项目操作":
+      - button "项目操作"
+  - row "选择 桌面场景 · 客户交付 桌面场景 · 客户交付 进行中 项目操作":
+    - cell "选择 桌面场景 · 客户交付":
+      - checkbox "选择 桌面场景 · 客户交付"
+    - cell "桌面场景 · 客户交付":
+      - link "桌面场景 · 客户交付":
+        - /url: http://localhost:18572/desktop-qa-1008-1743/projects/774637a1-5e49-5373-96a4-c6f0c2f5c6c0
+    - cell "进行中":
+      - button "进行中"
+    - cell "项目操作":
+      - button "项目操作"
+  - row "选择 桌面场景 · 数据迁移 桌面场景 · 数据迁移 已暂停 项目操作":
+    - cell "选择 桌面场景 · 数据迁移":
+      - checkbox "选择 桌面场景 · 数据迁移"
+    - cell "桌面场景 · 数据迁移":
+      - link "桌面场景 · 数据迁移":
+        - /url: http://localhost:18572/desktop-qa-1008-1743/projects/ed2b68c7-b6af-528e-a724-39cd64e5ada9
+    - cell "已暂停":
+      - button "已暂停"
+    - cell "项目操作":
+      - button "项目操作"
+  - row "选择 test test 进行中 项目操作":
+    - cell "选择 test":
+      - checkbox "选择 test"
+    - cell "test":
+      - link "test":
+        - /url: http://localhost:18572/desktop-qa-1008-1743/projects/b20ddb80-a706-4519-af91-46f047d4fe55
+    - cell "进行中":
+      - button "进行中"
+    - cell "项目操作":
+      - button "项目操作"
+  - row "选择 手测-发布闭环 手测-发布闭环 已完成 项目操作":
+    - cell "选择 手测-发布闭环":
+      - checkbox "选择 手测-发布闭环"
+    - cell "手测-发布闭环":
+      - link "手测-发布闭环":
+        - /url: http://localhost:18572/desktop-qa-1008-1743/projects/81515af5-42d6-444d-b962-30d26fb3e944
+    - cell "已完成":
+      - button "已完成"
+    - cell "项目操作":
+      - button "项目操作"
+- button "问 Multica"
+- region "Notifications alt+T"

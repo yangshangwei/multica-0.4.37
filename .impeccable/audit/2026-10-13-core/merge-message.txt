@@ -1,0 +1,12 @@
+chore(merge): land verified desktop workflow repairs
+
+Merge the isolated audit remediation into main after checking the clean-main
+tree. The development branch retains its unrelated collaboration and release
+work; this merge contains only the audited fixes and maintenance contracts.
+
+Constraint: Keep unrelated working-branch history out of main
+Confidence: high
+Scope-risk: moderate
+Tested: 307 tests in 20 files on clean main; views/core/desktop type checks; scoped ESLint; diff whitespace
+Not-tested: Windows/Linux, real screen readers, production performance and backend writes
+Related: bb2d9f481e466bced1c39371230d658ce6c41060

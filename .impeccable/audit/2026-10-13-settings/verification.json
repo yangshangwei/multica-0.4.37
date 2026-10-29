@@ -1,0 +1,492 @@
+{
+  "recorded_at": "2026-10-14T02:50:57.285926+00:00",
+  "status": "audit_complete",
+  "remediation_status": "not_started",
+  "task_creation": "declined_by_user; existing audit directory reused",
+  "git_head": "bb2d9f481e466bced1c39371230d658ce6c41060",
+  "working_tree_note": "Other concurrent changes exist, including core/api/client.ts. This audit did not modify application source.",
+  "application_source_files_changed_by_audit": [],
+  "ui_scope_unchanged_from_head": true,
+  "health_score": {
+    "accessibility": 2,
+    "performance": 2,
+    "theming": 3,
+    "responsive": 2,
+    "implementation_integrity": 1,
+    "total": 10,
+    "maximum": 20
+  },
+  "findings": [
+    {
+      "id": "F01",
+      "severity": "P1",
+      "verification": "runtime",
+      "title": "状态目录读取失败触发请求循环"
+    },
+    {
+      "id": "F02",
+      "severity": "P1",
+      "verification": "runtime",
+      "title": "读取失败伪装为空目录或权限不足"
+    },
+    {
+      "id": "F03",
+      "severity": "P1",
+      "verification": "runtime",
+      "title": "900px 目录操作被裁切"
+    },
+    {
+      "id": "F04",
+      "severity": "P1",
+      "verification": "runtime",
+      "title": "长属性弹窗超出视口"
+    },
+    {
+      "id": "F05",
+      "severity": "P1",
+      "verification": "runtime",
+      "title": "八个控件没有可访问名称"
+    },
+    {
+      "id": "F06",
+      "severity": "P1",
+      "verification": "runtime",
+      "title": "11 项已绑定快捷键的键帽值不进入 AX"
+    },
+    {
+      "id": "F07",
+      "severity": "P1",
+      "verification": "runtime",
+      "title": "浅色状态文字对比度不足"
+    },
+    {
+      "id": "F08",
+      "severity": "P2",
+      "verification": "runtime",
+      "title": "刷新失败卸载现有编辑控件"
+    },
+    {
+      "id": "F09",
+      "severity": "P2",
+      "verification": "runtime",
+      "title": "头像保存失败仍显示成功"
+    },
+    {
+      "id": "F10",
+      "severity": "P2",
+      "verification": "runtime",
+      "title": "空名称静默停止整组保存"
+    },
+    {
+      "id": "F11",
+      "severity": "P2",
+      "verification": "runtime",
+      "title": "pending 时重复提交入口"
+    },
+    {
+      "id": "F12",
+      "severity": "P2",
+      "verification": "runtime",
+      "title": "令牌未保存确认被关闭路径绕过"
+    },
+    {
+      "id": "F13",
+      "severity": "P2",
+      "verification": "runtime",
+      "title": "GitHub 保存期间忽略其他设置"
+    },
+    {
+      "id": "F14",
+      "severity": "P2",
+      "verification": "source_only",
+      "title": "删除仓库行先于服务器确认"
+    },
+    {
+      "id": "F15",
+      "severity": "P2",
+      "verification": "source_only",
+      "title": "个人时区乱序响应竞争"
+    },
+    {
+      "id": "F16",
+      "severity": "P2",
+      "verification": "runtime",
+      "title": "PAT 响应未校验导致设置路由错误"
+    },
+    {
+      "id": "F17",
+      "severity": "P1",
+      "verification": "runtime",
+      "title": "更新结果无状态播报"
+    }
+  ],
+  "counts": {
+    "current_scope": 17,
+    "P0": 0,
+    "P1": 8,
+    "P2": 9,
+    "P3": 0,
+    "runtime_groups": 15,
+    "source_only_groups": 2
+  },
+  "gated_static_appendix": [
+    {
+      "id": "E01",
+      "severity": "P1",
+      "title": "插件卸载和包删除缺少确认",
+      "included_in_current_score": false
+    }
+  ],
+  "coverage": {
+    "visible_settings_tabs": 20,
+    "inherited_light_wide": 20,
+    "inherited_dark_wide": 20,
+    "resumed_native_200pct_tabs": [
+      "behavior",
+      "daemon",
+      "integrations",
+      "issue-statuses",
+      "iterations",
+      "labels",
+      "mcp",
+      "members",
+      "notifications",
+      "preferences",
+      "profile",
+      "properties",
+      "quick-actions",
+      "repositories",
+      "server",
+      "shortcuts",
+      "tokens",
+      "triage",
+      "updates",
+      "workspace"
+    ],
+    "native_200pct_css_viewport": [
+      450,
+      500
+    ],
+    "additional_900px_cases": 8,
+    "png_artifacts": 106
+  },
+  "runtime": {
+    "recordedAt": "2026-10-14T02:48:25.961Z",
+    "electron": "39.8.7",
+    "platform": "macOS; Windows settings visibility simulated by harness",
+    "api": "http://localhost:18572",
+    "renderer": "http://localhost:5666",
+    "nativeBounds": {
+      "x": 304,
+      "y": 12,
+      "width": 1440,
+      "height": 1000
+    },
+    "zoom": 1,
+    "daemonStarts": 0,
+    "externalLinksOpened": 0,
+    "updateInstallCalls": 0,
+    "width": 1440,
+    "height": 1000,
+    "title": "设置",
+    "apiMocksPresent": []
+  },
+  "evidence": [
+    "resume-baseline.json",
+    "probe-final-evidence-results.json",
+    "probe-status-loop-response500.json",
+    "probe-query-recovery-results.json",
+    "probe-configuration-results.json",
+    "probe-personal-results.json",
+    "probe-integrations-results.json",
+    "probe-integrations-github-results.json",
+    "probe-token-schema-results.json",
+    "detector-2026-10-14.json",
+    "audit-script-validation.json",
+    "runtime-final-state.json"
+  ],
+  "transport_qualification": "CDP fulfill exposed status 0 on the attempted 200/null response. Earlier HTTP-error probes are accepted as read-failure evidence only. Status loop and malformed token boundary were separately exercised using real browser Response(500) and Response(200) fixtures through the real ApiClient.",
+  "checks": {
+    "mechanical_detector": [],
+    "syntax_scripts_checked": 15,
+    "broken_report_links": [],
+    "unit_lint_typecheck": "not run; no application changes"
+  },
+  "cleanup": {
+    "owned_electron_closed": true,
+    "temporary_profile_removed": true,
+    "control_ports_closed": {
+      "9367": true,
+      "9368": true
+    },
+    "confirmation": "resume-boot.mjs exited 0 and reported temporary profile removal; port checks verified closure",
+    "existing_api_renderer_services": "left running"
+  },
+  "source_fingerprints": [
+    {
+      "path": "apps/desktop/src/renderer/src/components/daemon-settings-tab.tsx",
+      "sha256": "b500dee682d7f759fefda3e235f319f26e587ac93ed427755c8f6425e175aee6"
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/components/desktop-behavior-settings-tab.tsx",
+      "sha256": "d8c3fae5d4b2de401f0755436f0d54e5c12d200d4dd2aef2c9106659d50700fa"
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/components/desktop-settings-route.tsx",
+      "sha256": "8019fbc971bc1870e4c43628b83d6bd40b3e759543b90808537b9a633dafa2c2"
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/components/runtime-config-settings-tab.tsx",
+      "sha256": "19276a1b7a48a170e2988d9b9a02a59962d0163d9c9bee46c8da75587b8312be"
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/components/updates-settings-tab.tsx",
+      "sha256": "111b9e43f7feeee68fdd4fdaa39d1dc8dc9c87b47790ae6f8c849c2c2181146d"
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/pages/endpoint-setup.tsx",
+      "sha256": "c3b9889126fd4180ebb3d87a5845f6a366985f9344b4490b5a6c58aba4532622"
+    },
+    {
+      "path": "packages/core/api/client.ts",
+      "sha256": "fabcc1afab85ac682eca0dd18a77284d02c6f39e6e4c6bd68b4a5d1d766ced22"
+    },
+    {
+      "path": "packages/core/api/index.ts",
+      "sha256": "1ce451caa0e7a87d5171f9722a43664658e737661887dfb31e8ae32687482b61"
+    },
+    {
+      "path": "packages/core/issue-statuses/hooks.ts",
+      "sha256": "6a46a26af0f7d647b8c2a95188c01e6d79d77dce89f29af8766ca891b13856ae"
+    },
+    {
+      "path": "packages/core/issue-statuses/queries.ts",
+      "sha256": "759663c1eed0bf0a5c7b041679e3fa29b5ef467b34d5facbbdf8aa464004df35"
+    },
+    {
+      "path": "packages/ui/components/ui/dialog.tsx",
+      "sha256": "35a8ac18ba129e7d90fe11e74fa2dfb5dc483d28424f39592e660884b99973cf"
+    },
+    {
+      "path": "packages/ui/components/ui/select.tsx",
+      "sha256": "382ad5f2f311fcfc9a43042238fbc5c8e3c56ca90a24b9bbaedca99924548696"
+    },
+    {
+      "path": "packages/ui/components/ui/switch.tsx",
+      "sha256": "6446f78695601990e223ea6361ec16e380482e2bf0b6d025be7deafa1ed75612"
+    },
+    {
+      "path": "packages/ui/components/ui/tabs.tsx",
+      "sha256": "2b22cc14a1129b80fd87758794ffa2e49a104f540a004fd755bf625cf4fcfef6"
+    },
+    {
+      "path": "packages/ui/styles/tokens.css",
+      "sha256": "0ac7c9603d5bd945f26a46ebe6d3ea42594a45acadf8e88a9300898ce968dc3c"
+    },
+    {
+      "path": "packages/views/common/avatar-upload-control.tsx",
+      "sha256": "1cbf8fba1bf7d6275d7240d6f4260c650e1a2318262817ef1454571fefd348c9"
+    },
+    {
+      "path": "packages/views/common/shortcut-keycaps.tsx",
+      "sha256": "0b786d4fb32b9262c6517757b4fdac26dac1be40450a0f6749f31dae098d2c36"
+    },
+    {
+      "path": "packages/views/issues/utils/status-label.ts",
+      "sha256": "4c42014d7ca0ed3cf0478f8f29eec9a1c5e801e64b75b793c952a1d830a4c55b"
+    },
+    {
+      "path": "packages/views/iterations/iteration-settings-tab.tsx",
+      "sha256": "3991173f771a0b9c1fa9be233167ae1f55cb774a9186c95d7bffa1948fb574b1"
+    },
+    {
+      "path": "packages/views/settings/components/account-tab.tsx",
+      "sha256": "b843f538109faa85f0710fa911b83b960445038168763e73c3f2553c571433de"
+    },
+    {
+      "path": "packages/views/settings/components/billing-format.ts",
+      "sha256": "da19e92a45e5dd80b884fac4751a45f5e4b49363490ff68eae598ec2c8c54315"
+    },
+    {
+      "path": "packages/views/settings/components/billing-state.ts",
+      "sha256": "564dbaea5b505b57d3441cd978b0855bba13254805146a11eb609b6124f06abb"
+    },
+    {
+      "path": "packages/views/settings/components/billing-tab.tsx",
+      "sha256": "f5f2cdfa5c0ebc6953b79155946c8697503a4a7b91774f83b02f5d9b9fd0450c"
+    },
+    {
+      "path": "packages/views/settings/components/browser-notification-setting.tsx",
+      "sha256": "7370b68742ca23b3527d1390893a87f2f2cd9bfb003e16ae638f9372420c9486"
+    },
+    {
+      "path": "packages/views/settings/components/composio-tab.tsx",
+      "sha256": "6ec29b4974b3605ee6220a51bfac8fca6f5fd2937c71d2847b69ae6ff65188af"
+    },
+    {
+      "path": "packages/views/settings/components/delete-workspace-dialog.tsx",
+      "sha256": "f49647ed7709edb2041ec3e41b12ca7217d85a9ff6244d3671e6ff2400834f16"
+    },
+    {
+      "path": "packages/views/settings/components/dingtalk-mark.tsx",
+      "sha256": "a6ae1f11d013f6ed004fb2a92b332b7367da2bf4fa8403356a4d182be68f0250"
+    },
+    {
+      "path": "packages/views/settings/components/dingtalk-tab.tsx",
+      "sha256": "e16a5c8e8c4eb59d8cbd494cb6ea6f8efe96b233faa7584d7798b05efb950475"
+    },
+    {
+      "path": "packages/views/settings/components/github-mark.tsx",
+      "sha256": "75655c0dd2fa48a588ebceef101243b8154dd854a45b486dfba742696169649a"
+    },
+    {
+      "path": "packages/views/settings/components/github-tab.tsx",
+      "sha256": "afb11fa94a58fef763f348496eff2d5b55f762d1333214a1bc931f1f5aa81d88"
+    },
+    {
+      "path": "packages/views/settings/components/index.ts",
+      "sha256": "8d8a05d970ad66019954ddff3748d172ee5a00e455f78e233e93097f60f753ca"
+    },
+    {
+      "path": "packages/views/settings/components/integration-channel-icon.tsx",
+      "sha256": "448eeb24e997e0c8641d73456ef2f9182827a29de3c6084893e4cee95c390eaa"
+    },
+    {
+      "path": "packages/views/settings/components/integrations-tab.tsx",
+      "sha256": "4d647247ca82710567327f8c1da21c45a50981d26df5cc483fd4b31f3b1705fb"
+    },
+    {
+      "path": "packages/views/settings/components/issue-statuses-tab.tsx",
+      "sha256": "3732dc72253a3f7ba9b56c23551864d2800c77b1ec73b21337e1e4d33ccb424e"
+    },
+    {
+      "path": "packages/views/settings/components/keyboard-shortcuts-tab.tsx",
+      "sha256": "505e7a9af70d6942f69ff49b2c24532b35006dcba845e84ebef07c91aaf1055f"
+    },
+    {
+      "path": "packages/views/settings/components/labels-tab.tsx",
+      "sha256": "1fccca7c3239bfa4253b2d8deaa32429893896b3ba0df6221886930425067a88"
+    },
+    {
+      "path": "packages/views/settings/components/lark-mark.tsx",
+      "sha256": "3d8c8e8c8ecaaa9c35c90292e89b3ffd97f78208d5bb2c4661a07572335bbd00"
+    },
+    {
+      "path": "packages/views/settings/components/lark-tab.tsx",
+      "sha256": "8e3f12098f11279805218661341e42e62aea0bb9d91e7bee4c95949fd50d5baa"
+    },
+    {
+      "path": "packages/views/settings/components/mcp-tab.tsx",
+      "sha256": "fb7e89b7a3b81ced0b66e8419166c83347668164ca36c2ddfb40c6a53252bc62"
+    },
+    {
+      "path": "packages/views/settings/components/members-tab.tsx",
+      "sha256": "10418cea5f0abc529deefaa9c6ad0ffdeda3adbb105bcfca8524579e184ac116"
+    },
+    {
+      "path": "packages/views/settings/components/notifications-tab.tsx",
+      "sha256": "cfb5e04916dc471de19acb3b7ede676069b39a7b9ebd8c809309d74aa095a17b"
+    },
+    {
+      "path": "packages/views/settings/components/plugins-tab.tsx",
+      "sha256": "5a5803d6ebb1fce560e5428ca0971a7eef4fd2c8e6e5f536adf2584bd319f34b"
+    },
+    {
+      "path": "packages/views/settings/components/preferences-tab.tsx",
+      "sha256": "892f98565907ed3a091c3aadbd6b03d5270eaa245e8e9b0b18756f1b0f7f1027"
+    },
+    {
+      "path": "packages/views/settings/components/properties-tab.tsx",
+      "sha256": "50c421508c9aa45b9b54985e81c5ee46e1705c9b04e8d419d79f1d39d033b774"
+    },
+    {
+      "path": "packages/views/settings/components/quick-actions-tab.tsx",
+      "sha256": "b3a2e6eeb45c2dcd7bf9a8c9417dac4b87ec419325f10797a75b3a67aba460af"
+    },
+    {
+      "path": "packages/views/settings/components/repositories-tab.tsx",
+      "sha256": "b50ca6cae9c2c5cfbcfe0f0427e0b3ea0d53ab1cd5b7df350931aaa82b08172e"
+    },
+    {
+      "path": "packages/views/settings/components/seat-invite-purchase.ts",
+      "sha256": "d091510e85ed3a2cd31bacd2959b57845c16d88a391dc22161ae5e188ca5a816"
+    },
+    {
+      "path": "packages/views/settings/components/settings-integration-navigation.ts",
+      "sha256": "09a527a618a000a6c15a732269dd5ca3dfb9ceb06c95389eaa884a07e8f3ef2b"
+    },
+    {
+      "path": "packages/views/settings/components/settings-layout.tsx",
+      "sha256": "c3940018af287969dcddee168c7102e18c6e5e27a5eac259d284095a94116cfd"
+    },
+    {
+      "path": "packages/views/settings/components/settings-nav.ts",
+      "sha256": "b0354974c4e487ba59e82620012545c3ea512318809cad43a83e89a20aee3542"
+    },
+    {
+      "path": "packages/views/settings/components/settings-page.tsx",
+      "sha256": "03e79a264657439cb642daf35820166b91f58986232fd4128a461426731b69dc"
+    },
+    {
+      "path": "packages/views/settings/components/slack-mark.tsx",
+      "sha256": "e2145c66d8d1be0711f354b143509d38d6297ba0d70121d370c9edac0f282c7a"
+    },
+    {
+      "path": "packages/views/settings/components/slack-tab.tsx",
+      "sha256": "ac46fce7486bc2644d3315783184335f0801f0bb733fb910e03a36271d9b00ec"
+    },
+    {
+      "path": "packages/views/settings/components/telegram-mark.tsx",
+      "sha256": "1d4b575550bf108d69c067486b3c0dd1c7f32334bcfed45a44610c5fe8a4ad3f"
+    },
+    {
+      "path": "packages/views/settings/components/telegram-tab.tsx",
+      "sha256": "6470a36200b406ee5d0f0c01bfde1598323a80433a478c2c682146f39449414d"
+    },
+    {
+      "path": "packages/views/settings/components/tokens-tab.tsx",
+      "sha256": "cbf3dcd7f52d41565edce0a7bea0636f1c0c95ed802edb5af119dc21583fe87a"
+    },
+    {
+      "path": "packages/views/settings/components/use-auto-save.ts",
+      "sha256": "cd1c43bee593626645540b7cc4dbbe2f869f07c7146a58a521d2ad1cfee62d2d"
+    },
+    {
+      "path": "packages/views/settings/components/vcs-tab.tsx",
+      "sha256": "40215fe93ffcaf108939887d2d0628c8f45528064efcb8d5c244e5e1a73cdbd3"
+    },
+    {
+      "path": "packages/views/settings/components/wecom-mark.tsx",
+      "sha256": "4e24c460dea60b0d1a75a74239d7461043e4c286c46d97aa9c412eae44e40c9d"
+    },
+    {
+      "path": "packages/views/settings/components/wecom-tab.tsx",
+      "sha256": "5cb87af6fe7200c762702207793e78ca8c8651553f24867c7a8fa9e7c4df1a47"
+    },
+    {
+      "path": "packages/views/settings/components/workspace-planning-timezone.tsx",
+      "sha256": "54990179bf32f41284db4088eea5d38f49b140814ebc57811e5bbc7568f3eb5e"
+    },
+    {
+      "path": "packages/views/settings/components/workspace-tab.tsx",
+      "sha256": "ece2ea2b752ebece037a4522e9a45566fe2f9de2124a3bb95e28f98edb84f2e4"
+    },
+    {
+      "path": "packages/views/triage/triage-settings-tab.tsx",
+      "sha256": "5b09ffa1618a1d7170f5a763d79662889b6ee71b6fb62548ab54055b0f44e6a6"
+    }
+  ],
+  "limitations": [
+    "macOS Electron only; Windows/Linux settings branch simulated",
+    "No VoiceOver/NVDA listening, physical touch, 320px device or full language matrix",
+    "No production build performance or real write/billing/plugin lifecycle acceptance",
+    "Runtime fixtures prove UI/client behavior, not backend outage or persistence"
+  ],
+  "independent_review": {
+    "status": "passed_after_correction",
+    "correction": "Narrowed F06 to 11 assigned bindings; 12 unassigned StaticText nodes remain exposed. Total 23 recorder button names omit values.",
+    "reviewer": "Native Codex audit_task_configuration subagent",
+    "reviewed_at": "2026-10-14T02:51:42.394104+00:00"
+  },
+  "report_sha256": "ab2804b09b72d1abe58ca92e9ad3a463a56fab6812c2c1d3f4fd95c2685208ab"
+}

@@ -1,0 +1,464 @@
+[
+  {
+    "name": "profile-dark-wide",
+    "label": "个人资料",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:个人资料",
+      "H3:个人信息"
+    ],
+    "text": "个人资料\n个人信息\n头像\n点击上传头像\n杨\n姓名\n关于你\n会随 task 一起发送给为你工作的智能体——角色、技术栈、偏好，任何你会在第一天告诉新同事的内容。\n0/2000",
+    "contrastChecked": 60,
+    "contrastFailures": [],
+    "unnamed": [],
+    "unnamedHtml": []
+  },
+  {
+    "name": "preferences-dark-wide",
+    "label": "偏好设置",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:偏好设置",
+      "H3:常规",
+      "H3:通过智能体创建",
+      "H3:手动创建",
+      "H3:悬浮窗"
+    ],
+    "text": "偏好设置\n常规\n主题\n跟随系统\n语言\n中文\n查看时区\n用于仪表盘、图表和\"今天\"标签。这是个人偏好，在你的所有工作空间中通用。\nAsia/Shanghai（浏览器）\n固定评论栏\n滚动任务页面时，评论栏始终固定在底部。\n通过智能体创建\n\n快速创建工具栏中显示的字段。\n\n项目\n优先级\n截止日期\n手动创建\n\n手动创建工具栏中显示的字段。\n\n状态\n优先级\n负责人\n标签\n项目\n截止日期\n开始日期\n悬浮窗\n悬浮聊天窗\n在每个页面右下角显示悬浮聊天按钮，默认开启。关闭后，仍可在聊天页面使用聊天。",
+    "contrastChecked": 72,
+    "contrastFailures": [],
+    "unnamed": [],
+    "unnamedHtml": []
+  },
+  {
+    "name": "notifications-dark-wide",
+    "label": "通知",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:通知",
+      "H3:收件箱通知",
+      "H3:系统通知"
+    ],
+    "text": "通知\n收件箱通知\n\n控制哪些事件会产生收件箱通知。被静默的事件类型仍然存在——可以直接到任务页面查看。\n\n分配\n你被分配或取消分配某个任务时\n状态变更\n你订阅的任务状态变化时（例如 todo、in_progress、done）\n评论\n你订阅的任务有新评论时\n提及\n有人 @ 你时，包括 @all 和 @squad\n优先级与截止日期\n你订阅的任务优先级或截止日期变更时\n智能体活动\n智能体 task 完成或失败时\n系统通知\n\n控制 Multica 在后台时是否显示操作系统的原生通知横幅。\n\n显示系统通知\nApp 未获得焦点时，新的收件箱条目通过操作系统弹出通知横幅。",
+    "contrastChecked": 70,
+    "contrastFailures": [],
+    "unnamed": [],
+    "unnamedHtml": []
+  },
+  {
+    "name": "shortcuts-dark-wide",
+    "label": "快捷键",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:快捷键",
+      "H3:常规",
+      "H3:导航",
+      "H3:固定的系统快捷键"
+    ],
+    "text": "快捷键\n\n自定义当前设备上的产品操作。点击一个快捷键，然后按下新的组合键。\n\n恢复默认设置\n常规\n打开搜索\n随时搜索内容或运行命令。\nCtrl\nK\n新建任务\n打开你常用的任务创建流程。\nC\n显示或隐藏左侧边栏\n切换左侧边栏的显示状态。\nCtrl\nB\n显示或隐藏右侧边栏\n当前页面有右侧边栏时，切换其显示状态。\nCtrl\n/\n显示或隐藏聊天窗\n打开或关闭悬浮聊天窗，打开时自动聚焦输入框。\nCtrl\nJ\n在任务中查找\n搜索当前打开的任务详情。\nCtrl\nF\n打开讨论导航\n列出、搜索并跳转当前任务的评论讨论。\nCtrl\nO\n归档通知\n归档当前打开的收件箱通知；在归档列表中则取消归档。\nE\n发送\n发送聊天消息、评论、回复、反馈和提示词，并在创建弹窗中创建任务。\nCtrl\n导航\n后退\n像浏览器一样在历史记录中后退。\nCtrl\n[\n前进\n像浏览器一样在历史记录中前进。\nCtrl\n]\n前往收件箱\n打开工作",
+    "contrastChecked": 73,
+    "contrastFailures": [],
+    "unnamed": [],
+    "unnamedHtml": []
+  },
+  {
+    "name": "tokens-dark-wide",
+    "label": "API Token",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:API Token"
+    ],
+    "text": "API Token\n\n个人访问 token 让 CLI 和外部集成可以代表你的账号进行身份验证。可通过 multica login --token 使用，或在调用 API 时作为 Bearer token 发送。\nToken 拥有你账号的完整访问权限，请像密码一样妥善保管。\n\n90 天\n创建\nMultica Desktop\nmul_583bb953... · 创建于 2026/10/13 · 从未使用\nMultica Desktop\nmul_999695b0... · 创建于 2026/10/12 · 从未使用\nMultica Desktop\nmul_662f4ad3... · 创建于 2026/10/8 · 从未使用\nMultica Desktop\nmul_a51d994a... · 创建于 2026/10/8 · 从未使用\nMultica Desktop\nmul_0eeb983a...",
+    "contrastChecked": 72,
+    "contrastFailures": [],
+    "unnamed": [],
+    "unnamedHtml": []
+  },
+  {
+    "name": "workspace-dark-wide",
+    "label": "常规",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:常规",
+      "H3:工作空间信息",
+      "H3:规划设置",
+      "H3:危险操作"
+    ],
+    "text": "常规\n工作空间信息\n工作空间标志\n点击图标上传新图片\n桌\n名称\n描述\n上下文\nSlug\n任务前缀\n用于任务编号，例如 DQA-123。\n规划设置\n规划时区\n用于项目日期计算和新建迭代。已有迭代保留原时区。\nAsia/Shanghai\n恢复默认\n危险操作\n离开工作空间\n你是唯一的所有者。请先把另一位成员升级为所有者，或者删除工作空间。\n离开工作空间\n删除工作空间\n永久删除该工作空间及其所有数据。\n删除工作空间",
+    "contrastChecked": 73,
+    "contrastFailures": [],
+    "unnamed": [],
+    "unnamedHtml": []
+  },
+  {
+    "name": "members-dark-wide",
+    "label": "成员",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:成员",
+      "H3:成员（2）",
+      "H3:邀请成员",
+      "H3:分享链接",
+      "H3:创建分享链接"
+    ],
+    "text": "成员\n成员（2）\n邀请成员\n成员\n邀请\n杨\n杨尚伟\n11052\n所有者\n桌\n桌面验收普通成员\ndesktop_qa_member_20261008\n成员\n分享链接\n创建分享链接\n角色：\n成员\n有效期：\n7 天\n生成",
+    "contrastChecked": 70,
+    "contrastFailures": [],
+    "unnamed": [
+      "combobox",
+      "combobox",
+      "combobox"
+    ],
+    "unnamedHtml": [
+      "<button type=\"button\" tabindex=\"0\" id=\"base-ui-_r_f7_\" role=\"combobox\" aria-expanded=\"false\" aria-haspopup=\"listbox\" data-slot=\"select-trigger\" data-size=\"sm\" class=\"flex w-fit items-center justify-between gap-1.5 rounded-lg border border-input bg-transparent ",
+      "<button type=\"button\" tabindex=\"0\" id=\"base-ui-_r_fg_\" role=\"combobox\" aria-expanded=\"false\" aria-haspopup=\"listbox\" data-slot=\"select-trigger\" data-size=\"sm\" class=\"flex w-fit items-center justify-between gap-1.5 rounded-lg border border-input bg-transparent ",
+      "<button type=\"button\" tabindex=\"0\" id=\"base-ui-_r_fj_\" role=\"combobox\" aria-expanded=\"false\" aria-haspopup=\"listbox\" data-slot=\"select-trigger\" data-size=\"sm\" class=\"flex w-fit items-center justify-between gap-1.5 rounded-lg border border-input bg-transparent "
+    ]
+  },
+  {
+    "name": "labels-dark-wide",
+    "label": "标签",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:标签"
+    ],
+    "text": "标签\n\n分别管理工作空间中用于整理任务和 skill 的标签。两类标签相互独立。\n\n任务\n4\nSkill\n新建标签\n名称\n描述\n使用数量\n更新时间\n桌面场景 · 功能\n\n手测分类与筛选 <!-- fixture:multica.rich-desktop.v1 -->\n\n已使用 11 次\n2026/10/12\n桌面场景 · 待验证\n\n手测分类与筛选 <!-- fixture:multica.rich-desktop.v1 -->\n\n已使用 10 次\n2026/10/12\n桌面场景 · 缺陷\n\n手测分类与筛选 <!-- fixture:multica.rich-desktop.v1 -->\n\n已使用 11 次\n2026/10/12\n桌面场景 · 边界场景\n\n手测分类与筛选 <!-- fixture:multica.rich-desktop.v1 -->\n\n已使用 20 次\n2026/10/12",
+    "contrastChecked": 77,
+    "contrastFailures": [],
+    "unnamed": [],
+    "unnamedHtml": []
+  },
+  {
+    "name": "triage-dark-wide",
+    "label": "分拣台",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:分拣台设置",
+      "H3:分拣责任"
+    ],
+    "text": "分拣台设置\n\n审核主动投递的任务，通过后再纳入正式工作。普通创建任务保持原有流程。\n\n支持手动投递和 CSV 文件。\n\n启用分拣台\n\n仍有 3 条未决任务（包含稍后处理），处理完成后才能关闭分拣台。前往分拣台审核\n\n接受后的状态\n待办\n接受时必须指定优先级\n分拣责任\n\n仅对新投递任务生效。分拣责任人与任务执行负责人相互独立。\n\n分拣责任\n不指定\n保存设置",
+    "contrastChecked": 64,
+    "contrastFailures": [],
+    "unnamed": [],
+    "unnamedHtml": []
+  },
+  {
+    "name": "iterations-dark-wide",
+    "label": "迭代",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:迭代设置"
+    ],
+    "text": "迭代设置\n\n按周期安排任务，跟踪范围变化，并在结束时处理未完成的工作。\n\n启用迭代\n启用后不会自动创建周期、安排任务或启动执行。\n迭代已启用。\n1 个进行中 · 3 个计划中\n管理迭代\n周期管理方式\n成员手动开始和结束迭代，同时最多有一个进行中的迭代。\n手动\n\n新建迭代使用工作空间时区：Asia/Shanghai\n\n前往修改\n\n开始、结束或关闭迭代不会启动或停止执行，历史记录会保留。",
+    "contrastChecked": 64,
+    "contrastFailures": [],
+    "unnamed": [],
+    "unnamedHtml": []
+  },
+  {
+    "name": "issue-statuses-dark-wide",
+    "label": "任务状态",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:任务状态"
+    ],
+    "text": "任务状态\n\n定义任务流转的工作流。每个状态的行为由它所属的分类决定。\n\n待规划\n\n待规划\n\n搁置。把任务移到这里不会启动智能体。\n\n待办\n\n待办\n\n排队中。把任务移到这里会启动指派的智能体。\n\n进行中\n\n进行中\n\n正在进行。\n\n审核中\n\n审核中\n\n已交付，等待人工审核。会结束自动化运行。\n\n已完成\n\n已完成\n\n已完成。\n\n已阻塞\n\n已阻塞\n\n被外部依赖阻塞。\n\n已取消\n\n已取消\n\n决定不做。",
+    "contrastChecked": 74,
+    "contrastFailures": [],
+    "unnamed": [],
+    "unnamedHtml": []
+  },
+  {
+    "name": "properties-dark-wide",
+    "label": "属性",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:属性"
+    ],
+    "text": "属性\n\n为该工作空间的任务定义类型化的自定义属性。属性值设置在每个任务上，智能体可读写。\n\n显示已归档\n0/20 个启用中属性\n新建属性\n名称\n类型\n选项\n使用数量\n更新时间\n\n还没有属性\n\n创建 Severity、Environment 这类类型化字段——智能体可带校验地读写它们。",
+    "contrastChecked": 63,
+    "contrastFailures": [],
+    "unnamed": [],
+    "unnamedHtml": []
+  },
+  {
+    "name": "quick-actions-dark-wide",
+    "label": "快捷操作",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:快捷操作"
+    ],
+    "text": "快捷操作\n\n预先配置好执行的智能体和提示词，之后在任意任务侧边栏一键触发。\n\n新建快捷操作\n名称\n执行者\n可见范围\n使用\n更新时间\n桌面场景 · 检查验收条件\n桌面场景 · 回归助手 · 私有\n仅自己\n从未使用\n2026/10/12",
+    "contrastChecked": 64,
+    "contrastFailures": [],
+    "unnamed": [],
+    "unnamedHtml": []
+  },
+  {
+    "name": "repositories-dark-wide",
+    "label": "代码仓库",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:代码仓库"
+    ],
+    "text": "代码仓库\n\n与该工作空间关联的 Git 仓库。智能体会从这里 clone 代码并完成工作。\n\n暂无仓库。\n添加仓库\n连接 GitLab",
+    "contrastChecked": 56,
+    "contrastFailures": [],
+    "unnamed": [],
+    "unnamedHtml": []
+  },
+  {
+    "name": "integrations-dark-wide",
+    "label": "集成",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:集成",
+      "H3:代码托管",
+      "H3:任务管理",
+      "H3:沟通与协作"
+    ],
+    "text": "集成\n\n连接团队使用的工具，让任务、代码与沟通协同工作。\n\n代码托管\n\n连接代码平台，将 Pull Request 与任务关联。\n\nGitHub\n未配置\n关联 Pull Request，自动更新任务状态。\n自托管 Git\n未配置\n连接 GitLab、Gitea 或 Forgejo 实例。\n任务管理\n\n后续优先接入方向，具体支持范围与时间待确定。\n\nONES\n待规划\n需求、缺陷与任务的同步。\nPlane\n待规划\n任务与项目进度的同步。\nKaneo\n待规划\n任务与看板的同步。\n沟通与协作\n\n连接团队使用的沟通工具。\n\n孚信\n待规划\n团队沟通与协作。",
+    "contrastChecked": 77,
+    "contrastFailures": [],
+    "unnamed": [],
+    "unnamedHtml": []
+  },
+  {
+    "name": "mcp-dark-wide",
+    "label": "MCP",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:MCP",
+      "H3:共享 MCP Server"
+    ],
+    "text": "MCP\n\n选择模板，保存共享配置，再选择可以使用它的智能体。\n\n共享配置\n5\nMCP 市场\n16\n自定义添加\n共享 MCP Server\n\n为保护敏感信息，配置保存后不会再次显示。需要调整时，请填写一份完整的新配置；只修改名称不会影响当前配置和智能体分配。\n\nchrome-devtools\n\nSTDIO\n\n平台内置 · 模板：chrome-devtools\n分配\nchrome-devtools-2\n\nSTDIO\n\n平台内置 · 模板：chrome-devtools\n分配\nchrome-devtools-3\n\nSTDIO\n\n平台内置 · 模板：chrome-devtools\n分配\nchrome-devtools-4\n\nSTDIO\n\n平台内置 · 模板：chrome-devtools\n分配\nchrome-devtools-5\n\nSTDIO\n\n平台内置 · 模板：chrome-devtools\n",
+    "contrastChecked": 80,
+    "contrastFailures": [],
+    "unnamed": [],
+    "unnamedHtml": []
+  },
+  {
+    "name": "daemon-dark-wide",
+    "label": "守护进程",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:守护进程",
+      "H3:诊断信息"
+    ],
+    "text": "守护进程\n\n设置本地智能体守护进程如何随桌面应用启动和停止。\n\n登录后自动启动\n登录后自动启动守护进程。桌面应用运行期间，会持续监控并维护自动或手动启动的守护进程。\n退出应用时自动停止\n退出桌面应用时停止守护进程。关闭此选项后，守护进程会继续在后台运行。\n重新连接此设备\n使用当前账号刷新本地守护进程的登录凭证并重新连接。只有桌面应用的登录也已失效时，才需要再次登录账号。\n重新连接此设备\nCLI 状态\n已安装 multica CLI，可通过 PATH 环境变量找到并调用。\n诊断信息\n\n查看守护进程的标识和连接信息，便于反馈问题或排查运行时未显示的原因。\n\n运行状态\n已停止\n已运行时长\n—\n进程 ID（PID）\n—\n守护进程 ID\n—\n配置档案\n默认（default）\n服务器地址\n—\n设备名称\n—\n工作空间数量\n—",
+    "contrastChecked": 80,
+    "contrastFailures": [],
+    "unnamed": [
+      "switch",
+      "switch"
+    ],
+    "unnamedHtml": [
+      "<span role=\"switch\" tabindex=\"0\" id=\"base-ui-_r_kc_\" aria-checked=\"false\" data-slot=\"switch\" data-size=\"default\" class=\"peer group/switch relative inline-flex shrink-0 items-center rounded-full border border-transparent transition-all outline-none after:absolu",
+      "<span data-unchecked=\"\" role=\"switch\" tabindex=\"0\" id=\"base-ui-_r_kf_\" aria-checked=\"false\" data-slot=\"switch\" data-size=\"default\" class=\"peer group/switch relative inline-flex shrink-0 items-center rounded-full border border-transparent transition-all outline"
+    ]
+  },
+  {
+    "name": "server-dark-wide",
+    "label": "服务器连接",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:服务器连接",
+      "H1:连接到 Multica 服务器"
+    ],
+    "text": "服务器连接\n\n配置此桌面端使用的私有化 Multica 后端。保存后会重启连接。\n\n连接到 Multica 服务器\n\n请输入私有化 Multica 部署的后端地址。\n\n后端地址\n测试连接\n保存并继续",
+    "contrastChecked": 58,
+    "contrastFailures": [],
+    "unnamed": [],
+    "unnamedHtml": []
+  },
+  {
+    "name": "updates-dark-wide",
+    "label": "更新",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:更新"
+    ],
+    "text": "更新\n\n控制后台自动更新，或手动检查新版本。\n\n当前版本\nv0.6.6-audit\n后台自动更新\n开启后，桌面端会在启动后和每小时检查更新，并在后台下载可用版本。\n检查更新\n\n无论是否开启自动更新，都立即检查新版本。可用的更新会在后台下载，就绪时弹出重启提示。\n\n立即检查",
+    "contrastChecked": 60,
+    "contrastFailures": [],
+    "unnamed": [],
+    "unnamedHtml": []
+  },
+  {
+    "name": "behavior-dark-wide",
+    "label": "行为",
+    "width": 1440,
+    "docScroll": 1440,
+    "overflow": [],
+    "scrollers": [],
+    "headings": [
+      "H2:关闭 Multica 时"
+    ],
+    "text": "关闭 Multica 时\n\n选择关闭主窗口时的行为。\n\n每次询问",
+    "contrastChecked": 54,
+    "contrastFailures": [],
+    "unnamed": [
+      "combobox"
+    ],
+    "unnamedHtml": [
+      "<button type=\"button\" tabindex=\"0\" id=\"base-ui-_r_km_\" role=\"combobox\" aria-expanded=\"false\" aria-haspopup=\"listbox\" data-slot=\"select-trigger\" data-size=\"sm\" class=\"flex items-center justify-between gap-1.5 rounded-lg border border-input bg-transparent py-2 p"
+    ]
+  },
+  {
+    "name": "profile-light-200pct",
+    "label": "个人资料",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '个人资料', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "preferences-light-200pct",
+    "label": "偏好设置",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '偏好设置', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "notifications-light-200pct",
+    "label": "通知",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '通知', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "shortcuts-light-200pct",
+    "label": "快捷键",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '快捷键', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "tokens-light-200pct",
+    "label": "API Token",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: 'API Token', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "workspace-light-200pct",
+    "label": "常规",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '常规', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "members-light-200pct",
+    "label": "成员",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '成员', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "labels-light-200pct",
+    "label": "标签",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '标签', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "triage-light-200pct",
+    "label": "分拣台",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '分拣台', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "iterations-light-200pct",
+    "label": "迭代",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '迭代', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "issue-statuses-light-200pct",
+    "label": "任务状态",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '任务状态', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "properties-light-200pct",
+    "label": "属性",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '属性', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "quick-actions-light-200pct",
+    "label": "快捷操作",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '快捷操作', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "repositories-light-200pct",
+    "label": "代码仓库",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '代码仓库', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "integrations-light-200pct",
+    "label": "集成",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '集成', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "mcp-light-200pct",
+    "label": "MCP",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: 'MCP', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "daemon-light-200pct",
+    "label": "守护进程",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '守护进程', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "server-light-200pct",
+    "label": "服务器连接",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '服务器连接', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "updates-light-200pct",
+    "label": "更新",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '更新', exact: true })\u001b[22m\n"
+  },
+  {
+    "name": "behavior-light-200pct",
+    "label": "行为",
+    "error": "locator.click: Timeout 9000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '行为', exact: true })\u001b[22m\n"
+  }
+]

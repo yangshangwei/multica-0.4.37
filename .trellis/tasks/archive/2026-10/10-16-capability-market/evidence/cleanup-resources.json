@@ -1,0 +1,50 @@
+{
+  "native_accounts_remaining": 0,
+  "owned_feature_workspaces_remaining": [],
+  "live_template_directory_entries": [],
+  "managed_resources": {
+    "skill": [
+      {
+        "key": "qa-skill-e7b351d9",
+        "state": "withdrawn"
+      }
+    ],
+    "mcp": [
+      {
+        "key": "qa-mcp-e7b351d9",
+        "state": "withdrawn"
+      }
+    ]
+  },
+  "retained_task_administrator": true,
+  "retained_task_database": true,
+  "retained_task_profile": true,
+  "retained_qa_worktree": "/Volumes/artisan/code/2026/multica-capability-market-qa",
+  "timeout_workspaces_deleted": [
+    "market-first-888347da-d10",
+    "market-second-888347da-d10"
+  ],
+  "cleanup_method": "Authenticated real workspace deletion API; task-only legacy API restart",
+  "services": {
+    "api": {
+      "state": "stopped",
+      "address": "http://localhost:18161",
+      "detail": ""
+    },
+    "web": {
+      "state": "stopped",
+      "address": "http://localhost:13081",
+      "detail": ""
+    },
+    "daemon": {
+      "state": "stopped",
+      "address": "dev-check-20261016144743-87744",
+      "detail": "not built"
+    },
+    "desktop": {
+      "state": "stopped",
+      "address": "http://localhost:5255",
+      "detail": ""
+    }
+  }
+}

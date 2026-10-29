@@ -1,0 +1,120 @@
+{
+  "recordedAt": "2026-10-14T02:30:00.626Z",
+  "cases": [
+    {
+      "name": "token-unconfirmed-dismissal",
+      "status": "finding",
+      "evidence": [
+        {
+          "screenshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/screenshots/probe-integrations-token-unconfirmed.png",
+          "ax": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/probe-integrations-token-unconfirmed.txt"
+        },
+        {
+          "screenshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/screenshots/probe-integrations-token-after-escape.png",
+          "ax": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/probe-integrations-token-after-escape.txt"
+        },
+        {
+          "screenshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/screenshots/probe-integrations-token-after-close-button.png",
+          "ax": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/probe-integrations-token-after-close-button.txt"
+        }
+      ],
+      "dismissals": [
+        {
+          "method": "escape",
+          "available": true,
+          "storedConfirmed": false,
+          "doneDisabled": true,
+          "dismissed": true
+        },
+        {
+          "method": "close-button",
+          "available": true,
+          "storedConfirmed": false,
+          "doneDisabled": true,
+          "dismissed": true
+        }
+      ],
+      "fakeTokensCreated": 2,
+      "cleanupErrors": []
+    },
+    {
+      "name": "github-second-toggle-during-save",
+      "status": "probe-error",
+      "evidence": [],
+      "error": "expect(locator).toHaveAttribute(expected) failed\n\nLocator:  locator('#github-pr-sidebar')\nExpected: \"true\"\nReceived: \"\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"to.have.attribute.value\" with timeout 5000ms\n  - waiting for locator('#github-pr-sidebar')\n    9 × locator resolved to <input checked tabindex=\"-1\" type=\"checkbox\" aria-hidden=\"true\" id=\"github-pr-sidebar\"/>\n      - unexpected value \"null\"\n",
+      "cleanupErrors": []
+    },
+    {
+      "name": "integration-connected-badge-contrast",
+      "status": "finding",
+      "evidence": [
+        {
+          "screenshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/screenshots/probe-integrations-connected-light.png",
+          "ax": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/probe-integrations-connected-light.txt"
+        },
+        {
+          "screenshot": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/screenshots/probe-integrations-connected-dark.png",
+          "ax": "/Volumes/artisan/code/2026/multica-0.4.37/.impeccable/audit/2026-10-13-settings/ax/probe-integrations-connected-dark.txt"
+        }
+      ],
+      "themes": [
+        {
+          "theme": "light",
+          "measurements": [
+            {
+              "text": "已连接",
+              "class": "rounded px-1.5 py-0.5 text-micro font-medium bg-success/10 text-success",
+              "color": "oklch(0.55 0.16 145)",
+              "background": [
+                231.95686274509805,
+                242.9686274509804,
+                233.99607843137255,
+                1
+              ],
+              "fontSize": 11,
+              "ratio": 4,
+              "floor": 4.5
+            }
+          ],
+          "failures": [
+            {
+              "text": "已连接",
+              "class": "rounded px-1.5 py-0.5 text-micro font-medium bg-success/10 text-success",
+              "color": "oklch(0.55 0.16 145)",
+              "background": [
+                231.95686274509805,
+                242.9686274509804,
+                233.99607843137255,
+                1
+              ],
+              "fontSize": 11,
+              "ratio": 4,
+              "floor": 4.5
+            }
+          ]
+        },
+        {
+          "theme": "dark",
+          "measurements": [
+            {
+              "text": "已连接",
+              "class": "rounded px-1.5 py-0.5 text-micro font-medium bg-success/10 text-success",
+              "color": "oklch(0.65 0.15 145)",
+              "background": [
+                29.50588235294118,
+                38.58039215686274,
+                32.2,
+                1
+              ],
+              "fontSize": 11,
+              "ratio": 5.05,
+              "floor": 4.5
+            }
+          ],
+          "failures": []
+        }
+      ],
+      "cleanupErrors": []
+    }
+  ]
+}

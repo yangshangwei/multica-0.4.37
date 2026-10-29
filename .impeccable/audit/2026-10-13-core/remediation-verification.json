@@ -1,0 +1,25 @@
+{
+  "scope": "F01-F09 desktop core remediation",
+  "taskCreated": false,
+  "committed": false,
+  "tests": {
+    "files": 20,
+    "uniquePassed": 307
+  },
+  "typecheck": {
+    "views": "passed",
+    "core": "passed",
+    "desktopNode": "passed",
+    "desktopRenderer": "passed"
+  },
+  "lint": {
+    "newErrors": 0,
+    "newWarnings": 0,
+    "existingWarnings": 6
+  },
+  "nativeChecks": 10,
+  "nativePassed": 10,
+  "detectorFindings": 0,
+  "missingReportLinks": [],
+  "upstreamLimitation": "Gantt backend returned 503; final successful recovery validated with isolated API fixture."
+}

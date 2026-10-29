@@ -1,0 +1,24 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: 属性"': 设置目录 属性
+- tabpanel "属性":
+  - banner:
+    - heading "属性" [level=2]
+    - paragraph: 为该工作空间的任务定义类型化的自定义属性。属性值设置在每个任务上，智能体可读写。
+  - textbox "按名称筛选..."
+  - switch "显示已归档"
+  - text: 显示已归档 0/20 个启用中属性
+  - button "新建属性"
+  - paragraph: 还没有属性
+  - paragraph: 创建 Severity、Environment 这类类型化字段——智能体可带校验地读写它们。
+- button "问 Multica"
+- region "Notifications alt+T"

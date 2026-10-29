@@ -1,0 +1,29 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: 迭代"': 设置目录 迭代
+- tabpanel "迭代":
+  - banner:
+    - heading "迭代设置" [level=2]
+    - paragraph: 按周期安排任务，跟踪范围变化，并在结束时处理未完成的工作。
+  - text: 启用迭代 启用后不会自动创建周期、安排任务或启动执行。
+  - switch "启用迭代" [checked]
+  - status: 迭代已启用。
+  - text: 1 个进行中 · 3 个计划中
+  - link "管理迭代":
+    - /url: http://localhost:18572/desktop-qa-1008-1743/iterations
+  - text: 周期管理方式 成员手动开始和结束迭代，同时最多有一个进行中的迭代。 手动
+  - paragraph: 新建迭代使用工作空间时区：Asia/Shanghai
+  - link "前往修改":
+    - /url: http://localhost:18572/desktop-qa-1008-1743/settings?tab=workspace
+  - paragraph: 开始、结束或关闭迭代不会启动或停止执行，历史记录会保留。
+- button "问 Multica"
+- region "Notifications alt+T"

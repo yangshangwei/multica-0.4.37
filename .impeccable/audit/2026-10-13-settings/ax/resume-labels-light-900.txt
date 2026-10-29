@@ -1,0 +1,68 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- tablist "设置":
+  - group "个人设置":
+    - heading "个人设置" [level=2]
+    - tab "个人资料"
+    - tab "偏好设置"
+    - tab "通知"
+    - tab "快捷键"
+    - tab "API Token"
+  - group "工作空间管理":
+    - heading "工作空间管理" [level=2]
+    - tab "常规"
+    - tab "成员"
+    - tab "标签" [selected]
+    - tab "分拣台"
+    - tab "迭代"
+  - group "任务配置":
+    - heading "任务配置" [level=2]
+    - tab "任务状态"
+    - tab "属性"
+    - tab "快捷操作"
+  - group "连接与扩展":
+    - heading "连接与扩展" [level=2]
+    - tab "代码仓库"
+    - tab "集成"
+    - tab "MCP"
+  - group "桌面应用":
+    - heading "桌面应用" [level=2]
+    - tab "守护进程"
+    - tab "服务器连接"
+    - tab "更新"
+    - tab "行为"
+- tabpanel "标签":
+  - banner:
+    - heading "标签" [level=2]
+    - paragraph: 分别管理工作空间中用于整理任务和 skill 的标签。两类标签相互独立。
+  - button "任务 4"
+  - button "Skill"
+  - textbox "按名称或描述筛选..."
+  - button "新建标签"
+  - text: 名称 描述 使用数量 更新时间 桌面场景 · 功能
+  - paragraph: 手测分类与筛选 <!-- fixture:multica.rich-desktop.v1 -->
+  - text: 已使用 11 次 2026/10/12
+  - button "桌面场景 · 功能 的操作"
+  - text: 桌面场景 · 待验证
+  - paragraph: 手测分类与筛选 <!-- fixture:multica.rich-desktop.v1 -->
+  - text: 已使用 10 次 2026/10/12
+  - button "桌面场景 · 待验证 的操作"
+  - text: 桌面场景 · 缺陷
+  - paragraph: 手测分类与筛选 <!-- fixture:multica.rich-desktop.v1 -->
+  - text: 已使用 11 次 2026/10/12
+  - button "桌面场景 · 缺陷 的操作"
+  - text: 桌面场景 · 边界场景
+  - paragraph: 手测分类与筛选 <!-- fixture:multica.rich-desktop.v1 -->
+  - text: 已使用 20 次 2026/10/12
+  - button "桌面场景 · 边界场景 的操作"
+- button "问 Multica"
+- region "Notifications alt+T"

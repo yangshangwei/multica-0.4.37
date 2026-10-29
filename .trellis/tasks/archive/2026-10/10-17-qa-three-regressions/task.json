@@ -1,0 +1,46 @@
+{
+  "id": "qa-three-regressions",
+  "name": "qa-three-regressions",
+  "title": "修复注册、窄屏推荐和收件箱回归失败",
+  "description": "复现并修复 QA-01 注册首次点击丢失、QA-02 375px 推荐挤压描述、QA-03 收件箱旧定位器，复跑六项失败及相关回归。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-17",
+  "completedAt": "2026-10-17",
+  "branch": "fix/qa-three-regressions",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "52a451bad73d4f52fcd989db86452aab52fb1c78",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "packages/views/auth/password-form.tsx",
+    "packages/views/auth/password-form.test.tsx",
+    "packages/views/modals/creator-recommendations.tsx",
+    "e2e/core-business-journeys.spec.ts",
+    "e2e/upstream-selected-fixes.spec.ts",
+    "e2e/quick-create-actor-picker-phase2.spec.ts"
+  ],
+  "notes": "",
+  "meta": {
+    "verification": {
+      "original_regressions_passed": 6,
+      "unique_e2e_passed": 28,
+      "views_tests_passed": 6907,
+      "static_tasks_passed": 15,
+      "visual_score": 97
+    },
+    "work_commits": [
+      "44e67538447d3fe45f1838d1e39bf62a9977c99b",
+      "1a47a28d56bdb9e49445c44bf9373e881df402b9",
+      "52a451bad73d4f52fcd989db86452aab52fb1c78"
+    ]
+  }
+}

@@ -1985,3 +1985,25 @@ Completed and independently reviewed the triage creation form: accessible candid
 ### Status
 
 [OK] **Completed**
+
+
+## Session 64: Recovery-only main integration verification
+<!-- trellis-session: v=2 fp=4d739b235b15aa79 -->
+
+**Date**: 2026-10-12
+**Task**: Recovery-only main integration verification
+**Branch**: `codex/desktop-connection-recovery-main`
+
+### Summary
+
+Prepared an isolated recovery-only branch on latest main, preserving the unrelated MCP work on its original branch. Independent review confirmed byte-identical runtime/test trees. Fresh 2030 related tests, affected lint/typechecks/build and six native Electron groups passed. Local knip baseline reports are identical on unmodified main; remote CI remains the merge gate.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `f14da8a30` | fix(desktop): keep recovery usable while the server is unavailable |
+
+### Status
+
+[OK] **Completed**

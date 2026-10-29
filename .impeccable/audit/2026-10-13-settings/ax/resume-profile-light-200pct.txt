@@ -1,0 +1,26 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: 个人资料"': 设置目录 个人资料
+- tabpanel "个人资料":
+  - banner:
+    - heading "个人资料" [level=2]
+  - heading "个人信息" [level=3]
+  - text: 头像 点击上传头像
+  - button "更换头像": 杨
+  - text: 姓名
+  - textbox "姓名": 杨尚伟
+  - text: 关于你 会随 task 一起发送给为你工作的智能体——角色、技术栈、偏好，任何你会在第一天告诉新同事的内容。
+  - textbox "关于你":
+    - /placeholder: 例如：后端工程师（Go + Postgres）。喜欢简洁的 PR，改动同时附上测试。
+  - text: 0/2000
+- button "问 Multica"
+- region "Notifications alt+T"

@@ -1,0 +1,91 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- list:
+  - listitem:
+    - button "桌 桌面手测 10-08（保留数据）"
+- list:
+  - listitem:
+    - button "搜索..."
+  - listitem:
+    - button "新建任务"
+- list:
+  - listitem:
+    - link "收件箱 1":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/inbox
+  - listitem:
+    - link "我的任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/my-issues
+  - listitem:
+    - link "聊天":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/chat
+- text: 工作
+- list:
+  - listitem:
+    - link "任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/issues
+  - listitem:
+    - link "项目":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/projects
+  - listitem:
+    - link "迭代":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/iterations
+  - listitem:
+    - link "分拣台 2":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/triage
+- text: AI 团队
+- list:
+  - listitem:
+    - link "智能体":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/agents
+  - listitem:
+    - link "AI小队":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/squads
+  - listitem:
+    - link "自动化":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots
+- text: 资源与连接
+- list:
+  - listitem:
+    - link "技能库":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/skills
+  - listitem:
+    - link "MCP":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp
+  - listitem:
+    - link "运行时":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes
+- list:
+  - listitem:
+    - link "统计":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/usage
+  - listitem:
+    - link "设置":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/settings
+- button "帮助"
+- button "切换左侧边栏"
+- banner:
+  - button "技能库"
+  - status
+  - button "New tab"
+- banner:
+  - heading "Skills" [level=1]
+  - paragraph:
+    - text: 工作空间里任何智能体都能使用的指令。
+    - link "了解更多 →":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/docs/skills
+  - button "新建 skill"
+- tablist "技能库视图":
+  - tab "工作空间 skills": 工作空间 skills 9
+  - tab "skill 市场" [selected]: skill 市场 15
+- tabpanel "skill 市场":
+  - textbox "搜索模板":
+    - /placeholder: 搜索模板...
+  - tablist "模板来源":
+    - tab "全部": 全部 15
+    - tab "部署提供" [selected]: 部署提供 0
+    - tab "平台内置": 平台内置 15
+  - paragraph: 本部署暂未提供共享模板。
+  - button "浏览平台模板"
+- button "问 Multica"
+- region "Notifications alt+T"

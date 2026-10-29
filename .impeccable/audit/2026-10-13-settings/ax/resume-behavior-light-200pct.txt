@@ -1,0 +1,19 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: 行为"': 设置目录 行为
+- tabpanel "行为":
+  - banner:
+    - heading "关闭 Multica 时" [level=2]
+    - paragraph: 选择关闭主窗口时的行为。
+  - combobox: 每次询问
+- button "问 Multica"
+- region "Notifications alt+T"

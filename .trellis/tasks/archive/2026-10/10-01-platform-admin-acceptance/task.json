@@ -41,7 +41,7 @@
     ".trellis/tasks/10-01-platform-admin-acceptance/evidence/update-feed-rehearsal.json",
     ".trellis/tasks/10-01-platform-admin-acceptance/evidence/windows-business-summary.json"
   ],
-  "notes": "Local connection and capacity fixes verified: fresh per-frame authority with 46-to-19 queries, correct scoped RPC cleanup, no extra native disconnections or ACK timeouts, paging P95 at most 289.3 ms and reconnect task starts 39.4–39.6 s. External distribution/reference/production acceptance remains open. Windows CI 36996436086 passed unsigned x64 candidate lifecycle and native managed tests; see windows-acceptance.md. S07 remains in progress. Installed Windows business, candidate retained session/identity/history/queued task, protocol ownership cleanup and full-download installed update passed in run37016263509. See windows-business-release.md for remaining external gates and one preserved unrooted lock-test barrier failure.",
+  "notes": "Local connection and capacity fixes verified: fresh per-frame authority with 46-to-19 queries, correct scoped RPC cleanup, no extra native disconnections or ACK timeouts, paging P95 at most 289.3 ms and reconnect task starts 39.4–39.6 s. External distribution/reference/production acceptance remains open. Windows CI 36996436086 passed unsigned x64 candidate lifecycle and native managed tests; see windows-acceptance.md. S07 remains in progress. Installed Windows business, candidate retained session/identity/history/queued task, protocol ownership cleanup and full-download installed update passed in run37016263509. See windows-business-release.md for remaining external gates and one preserved unrooted lock-test barrier failure. 2026-10-17: archived at the user's explicit request. Existing verification outcomes and outstanding integration, deployment and external acceptance remain unchanged; see meta.archive.note.",
   "meta": {
     "slice": "S07",
     "depends_on": "S01,S02,S03,S04,S05,S06",
@@ -69,6 +69,12 @@
     "connection_followup_report": ".trellis/tasks/10-01-platform-admin-acceptance/connection-followup.md",
     "windows_acceptance_report": ".trellis/tasks/10-01-platform-admin-acceptance/windows-acceptance.md",
     "windows_business_report": ".trellis/tasks/10-01-platform-admin-acceptance/windows-business-release.md",
-    "windows_business_ci_run": "https://github.com/yangshangwei/multica-0.4.37/actions/runs/37016263509"
+    "windows_business_ci_run": "https://github.com/yangshangwei/multica-0.4.37/actions/runs/37016263509",
+    "archive": {
+      "date": "2026-10-17",
+      "reason": "user_requested",
+      "verification_scope": "task_records_only",
+      "note": ".trellis/tasks/archive/2026-10/10-01-platform-admin-console/archive-note-2026-10-17.md"
+    }
   }
 }

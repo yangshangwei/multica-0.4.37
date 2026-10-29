@@ -1,5 +1,9 @@
 # Local verification — desktop close behavior
 
+Archived on 2026-10-17 at the user's request, together with the parent task.
+The report below records the 2026-09-30 outcome; its `in_progress` references
+describe that historical state. Native acceptance remains deferred and unverified.
+
 Date: 2026-09-30. Outcome: **local verification passed; native acceptance pending**.
 The user explicitly confirmed that no target machines are available and requested
 completion of local verification first. The parent and native verification task

@@ -1,0 +1,28 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - 'button "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"':
+    - img
+    - text: "DQA-21: 桌面场景 · 等待测试设备恢复后验证离线运行时"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: 守护进程"': 设置目录 守护进程
+- tabpanel "守护进程":
+  - banner:
+    - heading "守护进程" [level=2]
+    - paragraph: 设置本地智能体守护进程如何随桌面应用启动和停止。
+  - text: 登录后自动启动 登录后自动启动守护进程。桌面应用运行期间，会持续监控并维护自动或手动启动的守护进程。
+  - switch
+  - text: 退出应用时自动停止 退出桌面应用时停止守护进程。关闭此选项后，守护进程会继续在后台运行。
+  - switch
+  - text: 重新连接此设备 使用当前账号刷新本地守护进程的登录凭证并重新连接。只有桌面应用的登录也已失效时，才需要再次登录账号。
+  - button "重新连接此设备"
+  - text: CLI 状态 已安装 multica CLI，可通过 PATH 环境变量找到并调用。
+  - heading "诊断信息" [level=3]
+  - paragraph: 查看守护进程的标识和连接信息，便于反馈问题或排查运行时未显示的原因。
+  - text: 运行状态 已停止 已运行时长 — 进程 ID（PID） — 守护进程 ID — 配置档案 默认（default） 服务器地址 — 设备名称 — 工作空间数量 —
+- button "问 Multica"
+- region "Notifications alt+T"

@@ -1,0 +1,10 @@
+{
+  "drawers": [
+    {
+      "label": null,
+      "labelledby": null,
+      "role": "dialog"
+    }
+  ],
+  "snapshot": "- dialog:\n  - button \"更换图标\"\n  - textbox \"项目标题\":\n    - paragraph: 桌面场景 · 平台体验\n  - button \"属性\"\n  - text: 状态\n  - button \"计划中\"\n  - text: 优先级\n  - button \"高\":\n    - img\n    - text: 高\n  - text: 负责人\n  - button \"杨 杨尚伟\":\n    - link \"杨\"\n    - text: 杨尚伟\n  - text: 开始日期\n  - button \"Oct 19\"\n  - text: 截止日期\n  - button \"Nov 2\"\n  - button \"范围闭合\"\n  - text: 0/10\n  - button \"描述\"\n  - textbox:\n    - heading \"目标\" [level=2]\n    - paragraph: 规划搜索、通知和快捷操作，确认下一阶段可交付范围。\n    - heading \"验收范围\" [level=2]\n    - list:\n      - listitem:\n        - paragraph: 列表、详情和状态筛选显示一致\n      - listitem:\n        - paragraph: 负责人、日期和任务关联可追溯\n      - listitem:\n        - paragraph: 更改后刷新保持一致\n    - paragraph\n  - button \"目标模板\"\n  - paragraph: 会作为项目上下文提供给智能体，应用于该项目下的每个 task。\n  - button \"资源\"\n  - paragraph: 还没有关联资源。\n  - button \"添加资源\"\n  - button \"添加本地目录\" [disabled]\n  - paragraph: 启动本地守护进程后才能添加本机目录。\n  - button \"自动化\" [expanded]\n  - paragraph: 此项目还没有自动化。\n  - link \"添加自动化\":\n    - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots/new/template?project_id=932472b5-11b2-5884-9f59-a8adbcd39a07"
+}

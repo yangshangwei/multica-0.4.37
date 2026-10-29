@@ -1,0 +1,118 @@
+{
+  "base": "5049e0f6a4ba5801876c7e821418a23e59262c4c",
+  "units": {
+    "files": 945,
+    "tests": 11406,
+    "failures": 0,
+    "packages": [
+      {
+        "package": "core",
+        "files": 243,
+        "tests": 3057,
+        "failures": 0
+      },
+      {
+        "package": "docs",
+        "files": 9,
+        "tests": 62,
+        "failures": 0
+      },
+      {
+        "package": "views",
+        "files": 563,
+        "tests": 6907,
+        "failures": 0
+      },
+      {
+        "package": "web",
+        "files": 36,
+        "tests": 283,
+        "failures": 0
+      },
+      {
+        "package": "desktop",
+        "files": 94,
+        "tests": 1097,
+        "failures": 0
+      }
+    ],
+    "execution_note": "All non-mobile unit suites executed fresh. Initial root run passed Core/Docs and found two stale provider-recovery mocks in Views. Fixed mock, then reran the complete Views package; separately executed Web/Desktop after Turbo stopped. Focused MCP/provider reruns overlap these totals and are not added.",
+    "runs": [
+      {
+        "command": "pnpm test --force --concurrency=1 -- --maxWorkers=2",
+        "exit_code": 1,
+        "log": "unit.log",
+        "note": "Core/Docs green; Views 6905/6907 passed before consumer mock fix."
+      },
+      {
+        "command": "pnpm --filter @multica/views test --maxWorkers=2",
+        "exit_code": 0,
+        "log": "views-final.log"
+      },
+      {
+        "command": "pnpm exec turbo run test --filter=@multica/web --filter=@multica/desktop --force --concurrency=1 -- --maxWorkers=2",
+        "exit_code": 0,
+        "log": "platform-unit.log"
+      }
+    ]
+  },
+  "lint": {
+    "command": "pnpm lint --force",
+    "exit_code": 0,
+    "tasks": 6,
+    "cached": 0,
+    "existing_warnings": 31,
+    "log": "review/lint-final.log"
+  },
+  "typecheck": {
+    "command": "pnpm typecheck --force",
+    "exit_code": 0,
+    "tasks": 9,
+    "cached": 0,
+    "log": "review/typecheck-final.log",
+    "after_test_fixture_edit": "Narrow ESLint and Views typecheck also passed."
+  },
+  "docs_bundle": {
+    "pageCount": 39,
+    "assetCount": 58,
+    "changed": [],
+    "matches": true
+  },
+  "go_docs": {
+    "command": "go test -count=1 ./internal/docs/...",
+    "exit_code": 0,
+    "packages": 1
+  },
+  "ui_exports": {
+    "command": "node scripts/check-ui-wildcard-exports.mjs",
+    "exit_code": 0,
+    "files": 62
+  },
+  "knip": {
+    "baseline": "5049e0f6a4ba5801876c7e821418a23e59262c4c",
+    "baseline_count": 13,
+    "final_count": 13,
+    "introduced": [],
+    "resolved": [],
+    "same_findings": true,
+    "method": "Fresh git archive HEAD snapshot and installed workspace dependencies, original knip config; overlay final task source including contextual focus and consumer test fixes.",
+    "knip_exit_code": 1
+  },
+  "raw_logs": ".omx/artifacts/capability-market-final/",
+  "docs_build": {
+    "command": "pnpm --filter @multica/docs build",
+    "exit_code": 0,
+    "log": "docs-build.log"
+  },
+  "e2e_static": {
+    "typecheck": {
+      "exit_code": 0,
+      "log": "acceptance/e2e-typecheck.log"
+    },
+    "lint": {
+      "exit_code": 0,
+      "log": "acceptance/e2e-eslint-task.log",
+      "note": "Existing repository base ESLint config applied through temporary task config; no ignored task E2E files."
+    }
+  }
+}

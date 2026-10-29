@@ -19,8 +19,8 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-2.md` | ~1233 | Active |
-| `journal-1.md` | ~1987 | Archived |
+| `journal-2.md` | ~1541 | Active |
+| `journal-1.md` | ~2009 | Archived |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -53,6 +53,15 @@
 | 86 | 2026-10-18 | Target holds and M04 control recovery verified | `a389ef8596791cb8639ce21b27f64868cf93d715`, `dcbb584a019b38f0646887b26fe47a565737619c` | `codex/cross-workspace-collaboration` |
 | 85 | 2026-10-18 | M09 单智能体闭环与最终评审续作 | `188a7f4a5b0dc0e08873389c6261be0a55f012f9`, `6794f4e3680526d0105df9d58fa93edc4f937603`, `3737af87db8c4d7e364e870c32354a772a1a4939` | `codex/cross-workspace-collaboration` |
 | 84 | 2026-10-17 | 跨账号协作新版需求核对与多目标基础验证 | `e6bc3759e`, `f5259e245`, `96331dd66` | `codex/cross-workspace-collaboration` |
+| 83 | 2026-10-17 | Archive password registration and platform administration | - | `main` |
+| 82 | 2026-10-17 | Archive the complete I1 manual-period task tree | - | `main` |
+| 81 | 2026-10-17 | Reconcile administrator initialization archive | - | `main` |
+| 80 | 2026-10-17 | Archive desktop close behavior at user request | - | `main` |
+| 79 | 2026-10-17 | Actionable desktop daemon diagnostics | `a5c3c1da6` | `codex/daemon-reconnect-diagnostics` |
+| 78 | 2026-10-17 | 修复注册、窄屏推荐和收件箱三类回归 | `44e67538447d3fe45f1838d1e39bf62a9977c99b`, `1a47a28d56bdb9e49445c44bf9373e881df402b9`, `52a451bad73d4f52fcd989db86452aab52fb1c78` | `fix/qa-three-regressions` |
+| 77 | 2026-10-17 | 能力市场整合：完成 Web/Desktop 验收与归档 | `581ba2ba5`, `96943ea64` | `feat/capability-market` |
+| 76 | 2026-10-16 | main 全量端到端测试：328项执行与失败分类 | - | `main` |
+| 75 | 2026-10-16 | 独立功能分批合入本地 main | `52cdbb8bf`, `4edaae527`, `bddc9ef24`, `f7352d91e`, `79d2bc483`, `11865f7a0` | `main` |
 | 74 | 2026-10-15 | Complete automation template native acceptance | `c98c14ad4beb43a613237288e617af7405e81306` | `codex/cross-workspace-collaboration` |
 | 73 | 2026-10-15 | Archive runtime-offline investigation at user request | - | `codex/cross-workspace-collaboration` |
 | 72 | 2026-10-14 | Commit completed collaboration and automation slices | `57f6163f454af6d17f3f4bb352b71b06fa4c8f25`, `c29e05c8f63864e13b037a643b35a20180cbfef1`, `e5fe7b909c6d3987fed1a06d033edb5dd17bd3e8`, `5d6966b4baa1480a9b251558f79da4785a0f3a1f`, `14642c42ff763384ae49191916385a3390a6deec` | `codex/cross-workspace-collaboration` |
@@ -63,6 +72,7 @@
 | 67 | 2026-10-13 | 内网静态下载页与首次安装指导 | `35cc68ca2` | `codex/cross-workspace-collaboration` |
 | 66 | 2026-10-12 | MCP agent category filters | `6642de425` | `codex/cross-workspace-collaboration` |
 | 65 | 2026-10-12 | 丰富当前后端与桌面业务测试数据 | `ede5ae202` | `codex/cross-workspace-collaboration` |
+| 64 | 2026-10-12 | Recovery-only main integration verification | `f14da8a30` | `codex/desktop-connection-recovery-main` |
 | 63 | 2026-10-12 | Desktop connection recovery and native acceptance | `0c6afec4c` | `codex/cross-workspace-collaboration` |
 | 62 | 2026-10-12 | MCP 智能体选择页优化 | `d57117dc1` | `codex/cross-workspace-collaboration` |
 | 60 | 2026-10-11 | Complete pending-task creation accessibility | `574dff832` | `codex/projects-p1` |

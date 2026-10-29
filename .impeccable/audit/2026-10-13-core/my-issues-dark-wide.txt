@@ -1,0 +1,330 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- list:
+  - listitem:
+    - button "桌 桌面手测 10-08（保留数据）"
+- list:
+  - listitem:
+    - button "搜索..."
+  - listitem:
+    - button "新建任务"
+- list:
+  - listitem:
+    - link "收件箱 1":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/inbox
+  - listitem:
+    - link "我的任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/my-issues
+  - listitem:
+    - link "聊天":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/chat
+- text: 工作
+- list:
+  - listitem:
+    - link "任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/issues
+  - listitem:
+    - link "项目":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/projects
+  - listitem:
+    - link "迭代":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/iterations
+  - listitem:
+    - link "分拣台 2":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/triage
+- text: AI 团队
+- list:
+  - listitem:
+    - link "智能体":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/agents
+  - listitem:
+    - link "AI小队":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/squads
+  - listitem:
+    - link "自动化":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots
+- text: 资源与连接
+- list:
+  - listitem:
+    - link "技能库":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/skills
+  - listitem:
+    - link "MCP":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp
+  - listitem:
+    - link "运行时":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes
+- list:
+  - listitem:
+    - link "统计":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/usage
+  - listitem:
+    - link "设置":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/settings
+- button "帮助"
+- button "切换左侧边栏"
+- banner:
+  - button "我的任务"
+  - status
+  - button "New tab"
+- banner:
+  - heading "我的任务" [level=1]
+- button "全部"
+- button "已分配"
+- button "我创建的"
+- button "我的智能体和AI小队"
+- status
+- button "视图"
+- button "0 个智能体工作中"
+- button "筛选"
+- button "显示"
+- button "看板"
+- img
+- text: 待规划 3
+- button
+- button
+- link "紧急 DQA-16 桌面场景 · 补齐桌面端断网后的提示与恢复说明 业务背景 补齐桌面端断网后的提示与恢复说明。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 --> 桌面场景 · 客户交付 桌面场景 · 缺陷 桌面场景 · 边界场景 杨 杨尚伟 更新于 21 小时前":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/4bc4ee1b-00b2-5756-bd5a-e0ba25983d79
+  - button "紧急":
+    - img
+  - paragraph: DQA-16
+  - paragraph: 桌面场景 · 补齐桌面端断网后的提示与恢复说明
+  - paragraph: 业务背景 补齐桌面端断网后的提示与恢复说明。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 -->
+  - text: 桌面场景 · 客户交付 桌面场景 · 缺陷 桌面场景 · 边界场景
+  - button "杨 杨尚伟"
+  - text: 更新于 21 小时前
+- button "上移 DQA-16" [disabled]
+- button "下移 DQA-16"
+- link "高 DQA-32 桌面场景 · 设计空项目中的下一步引导 业务背景 设计空项目中的下一步引导。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 --> 桌面场景 · 平台体验 桌面场景 · 缺陷 杨 Oct 6 Oct 9":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/d15d0f88-9970-5d84-9b4a-8ad9cceb331a
+  - button "高":
+    - img
+  - paragraph: DQA-32
+  - paragraph: 桌面场景 · 设计空项目中的下一步引导
+  - paragraph: 业务背景 设计空项目中的下一步引导。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 -->
+  - text: 桌面场景 · 平台体验 桌面场景 · 缺陷
+  - button "杨"
+  - button "Oct 6"
+  - button "Oct 9"
+- button "上移 DQA-32"
+- button "下移 DQA-32"
+- link "紧急 DQA-36 桌面场景 · 评估标签筛选的组合方式 业务背景 评估标签筛选的组合方式。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 --> 桌面场景 · 平台体验 桌面场景 · 缺陷 杨 Oct 12 Oct 9":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/6852c883-e28c-50ec-b69a-c78c60fe4ae4
+  - button "紧急":
+    - img
+  - paragraph: DQA-36
+  - paragraph: 桌面场景 · 评估标签筛选的组合方式
+  - paragraph: 业务背景 评估标签筛选的组合方式。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 -->
+  - text: 桌面场景 · 平台体验 桌面场景 · 缺陷
+  - button "杨"
+  - button "Oct 12"
+  - button "Oct 9"
+- button "上移 DQA-36"
+- button "下移 DQA-36" [disabled]
+- img
+- text: 待办 6
+- button
+- button
+- link "无优先级 DQA-15 他天天 头条 杨 杨尚伟 更新于 2 天前":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/01a1266f-5e70-7e29-a540-bb45cea9ffb1
+  - button "无优先级":
+    - img
+  - paragraph: DQA-15
+  - paragraph: 他天天
+  - paragraph: 头条
+  - button "杨 杨尚伟"
+  - text: 更新于 2 天前
+- button "上移 DQA-15" [disabled]
+- button "下移 DQA-15"
+- link "无优先级 DQA-14 头条 头条 杨 杨尚伟 更新于 2 天前":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/01a1266f-12fe-7e82-9952-a15769459ee1
+  - button "无优先级":
+    - img
+  - paragraph: DQA-14
+  - paragraph: 头条
+  - paragraph: 头条
+  - button "杨 杨尚伟"
+  - text: 更新于 2 天前
+- button "上移 DQA-14"
+- button "下移 DQA-14"
+- link "无优先级 DQA-11 有意义 哟哟哟哟哟哟哟 杨 杨尚伟 更新于 4 天前":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/01a11bfe-2b1d-73b9-8114-072e057fd348
+  - button "无优先级":
+    - img
+  - paragraph: DQA-11
+  - paragraph: 有意义
+  - paragraph: 哟哟哟哟哟哟哟
+  - button "杨 杨尚伟"
+  - text: 更新于 4 天前
+- button "上移 DQA-11"
+- button "下移 DQA-11"
+- link "高 DQA-2 手测-A 登录提示优化（结束后改名） 手测-发布闭环 杨 杨尚伟 更新于 2 天前":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/01a11b01-aeea-74ba-a443-e35c6988643e
+  - button "高":
+    - img
+  - paragraph: DQA-2
+  - paragraph: 手测-A 登录提示优化（结束后改名）
+  - text: 手测-发布闭环
+  - button "杨 杨尚伟"
+  - text: 更新于 2 天前
+- button "上移 DQA-2"
+- button "下移 DQA-2"
+- link "低 DQA-24 桌面场景 · 处理逾期任务的日期筛选与排序 业务背景 处理逾期任务的日期筛选与排序。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 --> 桌面场景 · 客户交付 桌面场景 · 缺陷 杨 Oct 4 Oct 9":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/3ddb33f6-03b7-54b3-86ca-37622ca917d5
+  - button "低":
+    - img
+  - paragraph: DQA-24
+  - paragraph: 桌面场景 · 处理逾期任务的日期筛选与排序
+  - paragraph: 业务背景 处理逾期任务的日期筛选与排序。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 -->
+  - text: 桌面场景 · 客户交付 桌面场景 · 缺陷
+  - button "杨"
+  - button "Oct 4"
+  - button "Oct 9"
+- button "上移 DQA-24"
+- button "下移 DQA-24"
+- link "低 DQA-44 桌面场景 · 验证历史标签与项目关联 业务背景 验证历史标签与项目关联。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 --> 桌面场景 · 数据迁移 桌面场景 · 缺陷 杨 Oct 4 Oct 9":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/a42db83e-9dc8-5ca0-9d5e-1d78e9354986
+  - button "低":
+    - img
+  - paragraph: DQA-44
+  - paragraph: 桌面场景 · 验证历史标签与项目关联
+  - paragraph: 业务背景 验证历史标签与项目关联。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 -->
+  - text: 桌面场景 · 数据迁移 桌面场景 · 缺陷
+  - button "杨"
+  - button "Oct 4"
+  - button "Oct 9"
+- button "上移 DQA-44"
+- button "下移 DQA-44" [disabled]
+- img
+- text: 进行中 1
+- button
+- button
+- 'link "高 DQA-1 连接运行时，开始使用小阿孚 欢迎来到 Multica。 智能体需要先连上运行时才能执行工作。运行时还没准备好时,你也可以先把 Multica 当作轻量项目管理工具体验起来。 先体验项目管理功能 运行时安装前,你可以先做这些事: 1. 为当前工作创建一个项目。 2. 新建几个任务,并在 backlog、todo、inprogress、done 之间流转。 3. 给任务加优先级、标签、评论和订阅。 4. 用收件箱追踪分配给你的事项和 @mention。 这样你先熟悉项目管理层。连上运行时后,智能体会直接在这些任务上开始工作。 安装第一个 Agent 运行时 完整文档:/docs/install-agent-runtime… 杨 杨尚伟 更新于 5 天前"':
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/01a11af7-b122-7d4e-b3b2-04a7bf2526c8
+  - button "高":
+    - img
+  - paragraph: DQA-1
+  - paragraph: 连接运行时，开始使用小阿孚
+  - paragraph: "欢迎来到 Multica。 智能体需要先连上运行时才能执行工作。运行时还没准备好时,你也可以先把 Multica 当作轻量项目管理工具体验起来。 先体验项目管理功能 运行时安装前,你可以先做这些事: 1. 为当前工作创建一个项目。 2. 新建几个任务,并在 backlog、todo、inprogress、done 之间流转。 3. 给任务加优先级、标签、评论和订阅。 4. 用收件箱追踪分配给你的事项和 @mention。 这样你先熟悉项目管理层。连上运行时后,智能体会直接在这些任务上开始工作。 安装第一个 Agent 运行时 完整文档:/docs/install-agent-runtime…"
+  - button "杨 杨尚伟"
+  - text: 更新于 5 天前
+- button "上移 DQA-1" [disabled]
+- button "下移 DQA-1" [disabled]
+- img
+- text: 审核中 1
+- button
+- button
+- link "无优先级 DQA-9 手测-D 待验收的帮助文档（并发修改） 通过项目普通任务流程创建，用于验证正式准入与迭代原始承诺。 手测-发布闭环 杨 Oct 8":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/01a11b0b-abe3-78c6-af2f-391242271b58
+  - button "无优先级":
+    - img
+  - paragraph: DQA-9
+  - paragraph: 手测-D 待验收的帮助文档（并发修改）
+  - paragraph: 通过项目普通任务流程创建，用于验证正式准入与迭代原始承诺。
+  - text: 手测-发布闭环
+  - button "杨"
+  - button "Oct 8"
+- button "上移 DQA-9" [disabled]
+- button "下移 DQA-9" [disabled]
+- img
+- text: 已完成 3
+- button
+- button
+- link "高 DQA-3 手测-E 临时插入任务 手测-发布闭环 杨 杨尚伟 更新于 5 天前":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/01a11b01-b199-762a-9b59-0aa867c3a645
+  - button "高":
+    - img
+  - paragraph: DQA-3
+  - paragraph: 手测-E 临时插入任务
+  - text: 手测-发布闭环
+  - button "杨 杨尚伟"
+  - text: 更新于 5 天前
+- button "上移 DQA-3" [disabled]
+- button "下移 DQA-3"
+- link "中 DQA-48 桌面场景 · 验证拥有者与成员的权限差异 业务背景 验证拥有者与成员的权限差异。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 --> 桌面场景 · 身份认证 桌面场景 · 缺陷 杨 Oct 10 Oct 9":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/e0ae4a55-947c-5d9a-a936-780ecd75b583
+  - button "中":
+    - img
+  - paragraph: DQA-48
+  - paragraph: 桌面场景 · 验证拥有者与成员的权限差异
+  - paragraph: 业务背景 验证拥有者与成员的权限差异。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 -->
+  - text: 桌面场景 · 身份认证 桌面场景 · 缺陷
+  - button "杨"
+  - button "Oct 10"
+  - button "Oct 9"
+- button "上移 DQA-48"
+- button "下移 DQA-48"
+- link "高 DQA-52 桌面场景 · 完成通知收件人的隔离检查 业务背景 完成通知收件人的隔离检查。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 --> 桌面场景 · 身份认证 桌面场景 · 缺陷 桌面场景 · 边界场景 杨 杨尚伟 更新于 2 天前":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/5b421db0-89be-567b-99bb-0e6ea47e2e1f
+  - button "高":
+    - img
+  - paragraph: DQA-52
+  - paragraph: 桌面场景 · 完成通知收件人的隔离检查
+  - paragraph: 业务背景 完成通知收件人的隔离检查。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 -->
+  - text: 桌面场景 · 身份认证 桌面场景 · 缺陷 桌面场景 · 边界场景
+  - button "杨 杨尚伟"
+  - text: 更新于 2 天前
+- button "上移 DQA-52"
+- button "下移 DQA-52" [disabled]
+- img
+- text: 已阻塞 2
+- button
+- button
+- link "中 DQA-28 桌面场景 · 等待接口契约确认后接入项目风险提示 业务背景 等待接口契约确认后接入项目风险提示。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 --> 桌面场景 · 客户交付 桌面场景 · 缺陷 桌面场景 · 边界场景 杨 杨尚伟 更新于 1 天前":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/29226f8d-1b46-50d7-bfe7-f7441312ffed
+  - button "中":
+    - img
+  - paragraph: DQA-28
+  - paragraph: 桌面场景 · 等待接口契约确认后接入项目风险提示
+  - paragraph: 业务背景 等待接口契约确认后接入项目风险提示。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 -->
+  - text: 桌面场景 · 客户交付 桌面场景 · 缺陷 桌面场景 · 边界场景
+  - button "杨 杨尚伟"
+  - text: 更新于 1 天前
+- button "上移 DQA-28" [disabled]
+- button "下移 DQA-28"
+- link "无优先级 DQA-40 桌面场景 · 等待迁移字段的上游确认 业务背景 等待迁移字段的上游确认。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 --> 桌面场景 · 数据迁移 桌面场景 · 缺陷 桌面场景 · 边界场景 杨 杨尚伟 更新于 1 天前":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/fe3d6063-f4c7-5a83-a928-d8445ee69300
+  - button "无优先级":
+    - img
+  - paragraph: DQA-40
+  - paragraph: 桌面场景 · 等待迁移字段的上游确认
+  - paragraph: 业务背景 等待迁移字段的上游确认。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 -->
+  - text: 桌面场景 · 数据迁移 桌面场景 · 缺陷 桌面场景 · 边界场景
+  - button "杨 杨尚伟"
+  - text: 更新于 1 天前
+- button "上移 DQA-40"
+- button "下移 DQA-40" [disabled]
+- img
+- text: 已取消 2
+- button
+- button
+- link "无优先级 DQA-7 手测-B 取消的兼容工作 通过项目普通任务流程创建，用于验证正式准入与迭代原始承诺。 手测-发布闭环 杨 杨尚伟 更新于 5 天前":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/01a11b0a-04b0-73ff-8adf-ceb242f46fcc
+  - button "无优先级":
+    - img
+  - paragraph: DQA-7
+  - paragraph: 手测-B 取消的兼容工作
+  - paragraph: 通过项目普通任务流程创建，用于验证正式准入与迭代原始承诺。
+  - text: 手测-发布闭环
+  - button "杨 杨尚伟"
+  - text: 更新于 5 天前
+- button "上移 DQA-7" [disabled]
+- button "下移 DQA-7"
+- link "紧急 DQA-56 桌面场景 · 撤销旧方案中的自动执行入口 业务背景 撤销旧方案中的自动执行入口。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 --> 桌面场景 · 旧方案归档 桌面场景 · 缺陷 杨 Oct 12 Oct 9":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/issues/503a318d-ff3e-508e-bdfa-7c79abcc33a3
+  - button "紧急":
+    - img
+  - paragraph: DQA-56
+  - paragraph: 桌面场景 · 撤销旧方案中的自动执行入口
+  - paragraph: 业务背景 撤销旧方案中的自动执行入口。此任务用于验证真实数据在桌面列表、详情和协作入口中的显示。 验收步骤 1. 查看任务状态、优先级、负责人和关联项目 2. 切换列表、看板与分组，确认数据一致 3. 打开详情，检查评论、订阅与相关任务 4. 刷新窗口，确认编辑结果仍在 边界条件 覆盖未分配任务、空日期、逾期日期和长文本；检查中文与 English 混排。 手测可直接编辑这些任务。重复执行数据脚本会保留已保存的编辑。 <!-- fixture:multica.rich-desktop.v1 -->
+  - text: 桌面场景 · 旧方案归档 桌面场景 · 缺陷
+  - button "杨"
+  - button "Oct 12"
+  - button "Oct 9"
+- button "上移 DQA-56"
+- button "下移 DQA-56" [disabled]
+- status
+- status
+- button "问 Multica"
+- region "Notifications alt+T"
