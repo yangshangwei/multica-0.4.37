@@ -8,6 +8,10 @@
 
 同日补了两个原生 host 规格，在基于 `5701a7695` 的任务 worktree 中验证后提交为 `91004d47a`（修复与回归测试）和 `f8993a684`（E2E）。`collaboration-host-squad.spec.ts` 覆盖 AC92/AC94，3/3 通过。`collaboration-host-switch.spec.ts` 覆盖 AC39 的拒绝条件与 switch_hold，均通过；但切换后的显式恢复被一个产品缺陷挡住：新通道的 group generation 从 0 开始计数，与唯一索引 `idx_collaboration_group_generation(target_id, generation)` 冲突，新 runtime 拉取运行列表一直返回 503，当日已在同一 worktree 修复：新组 generation 取通道计数与该目标历史最大值中的较大者加一，通道计数随之取这个值；回归测试 `TestCollaborationSwitchToFreshChannelStartsANewTargetGeneration` 修复前报 23505，修复后通过。切换规格随后 2/2 通过，AC40–AC42 有了 E2E 证据。之后是合入 main 和经授权的 AC43 真实账号验收。完整待办见 `task.json` 的 `meta.next_steps` 与 `meta.status_refresh_2026_10_27`。
 
+2026-10-29 门禁默认值更正：迁移 744（`f0ad59ea6`）把“新建协作任务”（`creation_enabled`）改为默认开启。新安装直接开启；已有安装升级时，只要没有成功的新建开关设置记录（`collaboration_creation_opened` / `collaboration_creation_closed`）也会打开，管理员成功设置过的保留原值。AI 执行（`enabled`）、host 准入（`host_execution_enabled`）、执行 epoch 和冻结状态不变，仍默认关闭。因此本文件和其他记录里“创建/执行门禁默认关闭”“创建入口保持关闭”的说法，从这个提交起只对执行成立；带日期的历史段落记录的是当时的状态，不改写。
+
+这与 `design.md` D11 第 1 条和 `implement.md` P8“确认没有旧 writer 后才开放创建”的上线约束不一致：`migrate up` 现在直接开启创建，而 v0.6.7 及更早版本没有协作迁移，也没有可保留的关闭记录，所以从这些版本升级都会开启。`docs/offline-upgrade.zh-CN.md` 已于同日补上协作开关、迁移 744 和多实例不能新旧混跑的说明（8.3 节）。该提交尚未进入任何发布 tag。混合或滚动部署是否接受这个顺序，尚未决定，见 `task.json` 的 `meta.status_refresh_2026_10_29`。
+
 ## 已验证：2026-10-20 触发预览与父任务唤醒
 
 本轮已补齐有效输入的合批/后续批次/小队续作预览，以及协作子任务完成/取消后按阶段唤醒普通 agent/小队父任务。独立复核修复共享草稿变化后沿用旧预览的问题。934 项相关 TypeScript 测试、104 个 Go race 顶层用例、类型/lint/vet、5 个生产 Web 场景与视觉检查通过，范围及失败经过见[本轮验证](verification-preview-wakeup-2026-10-20.md)。

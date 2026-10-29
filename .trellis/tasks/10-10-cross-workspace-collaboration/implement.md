@@ -235,7 +235,7 @@ P1 后 P2/P3/P4 可独立研究和实现，但共享服务、router 和 migratio
 - [ ] 故障注入：丢响应/重复事件、Server/daemon 重启、旧 provider 未结、owner 禁用/解绑/删除、未结凭据与日志不完整。
 - [ ] 旧 Web/Desktop/Mobile/CLI/daemon 请求对协作数据无法绕过；普通任务原行为回归。未支持 Server/运行时显示不支持，禁止普通执行或公开下载 fallback。
 - [ ] 更新受影响 CLI 行为、`server/internal/service/builtin_skills/` 的 SKILL.md 与 source maps，以及必要用户说明。提交 Lore 决策记录，不纳入他人改动。
-- [ ] 验证相对 main 的加法迁移/功能关闭/兼容回退（M10 删除执行后不可回退）：开关关不丢读取与停止收敛；部署无旧 writer 后才能开创建，不能带活数据回退旧二进制或删表。
+- [ ] 验证相对 main 的加法迁移/功能关闭/兼容回退（M10 删除执行后不可回退）：开关关不丢读取与停止收敛；部署无旧 writer 后才能开创建，不能带活数据回退旧二进制或删表。（2026-10-29：迁移 744 让 `migrate up` 默认开启创建，“无旧 writer 后才开”需重新确认，见 `progress.md` 当前小节。）
 - [ ] 留存 capability 矩阵、数据库竞争、原生进程树、双端 E2E 和权限负例的证据，独立 review 无未解决严重发现后才建议启用。
 
 ## 验收归属
