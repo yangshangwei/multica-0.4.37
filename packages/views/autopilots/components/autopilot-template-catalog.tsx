@@ -22,6 +22,7 @@ import type { AutopilotTemplate } from "@multica/core/types";
 import { Button } from "@multica/ui/components/ui/button";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { cn } from "@multica/ui/lib/utils";
+import { IconTile } from "../../common/icon-tile";
 import { browserTimezone } from "../../common/timezone-select";
 import { useT } from "../../i18n";
 import {
@@ -36,6 +37,9 @@ const GROUPS = ["all", "maintenance", "collaboration", "reporting"] as const;
 type TemplateGroup = (typeof GROUPS)[number];
 
 const CATALOG_FOCUS = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+
+// Same column rhythm as the capability market's skill catalog.
+const GRID_CLASS = "grid grid-cols-1 gap-3 @2xl:grid-cols-2 @5xl:grid-cols-3 @7xl:grid-cols-4";
 
 // Reuse the skill library's category palette and light/dark theme tokens.
 const GROUP_ICON_TONES: Record<TemplateGroup, string> = {
@@ -133,7 +137,7 @@ export function AutopilotTemplateCatalog({
 
   return (
     <section ref={attachScroll} data-tab-scroll-root="autopilot-templates" aria-labelledby={headingId} aria-busy={loading} className="min-h-0 flex-1 overflow-y-auto @container">
-      <div className="mx-auto w-full max-w-[70rem] px-4 py-8 @sm:px-8">
+      <div className="px-4 py-8 @sm:px-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0 max-w-[70ch]">
             <h2 id={headingId} className="text-display-sm font-semibold tracking-tight">
@@ -159,20 +163,21 @@ export function AutopilotTemplateCatalog({
             </Button>
           </div>
         ) : loading ? (
-          <div role="status" className="mt-8 grid gap-4 @xl:grid-cols-2 @4xl:grid-cols-3">
+          <div role="status" className={cn("mt-8", GRID_CLASS)}>
             <span className="sr-only">{commonT(($) => $.loading)}</span>
-            {[0, 1, 2, 3].map((key) => <Skeleton key={key} className="h-48 rounded-lg" />)}
+            {[0, 1, 2, 3].map((key) => <Skeleton key={key} className="h-52 rounded-lg" />)}
           </div>
         ) : templates.length === 0 ? (
           <p className="mt-8 text-body text-muted-foreground">{t(($) => $.template_picker.empty)}</p>
         ) : (
           <>
-            <div role="group" aria-label={t(($) => $.catalog.filter_label)} className="mb-5 mt-6 flex flex-wrap gap-1">
+            <div role="group" aria-label={t(($) => $.catalog.filter_label)} className="mb-5 mt-6 flex flex-wrap gap-1.5">
               {GROUPS.filter((key) => key === "all" || counts[key] > 0).map((key) => (
                 <Button
                   key={key}
                   type="button"
-                  variant="ghost"
+                  size="sm"
+                  variant={group === key ? "secondary" : "ghost"}
                   ref={group === key ? selectedFilter : undefined}
                   aria-label={`${t(($) => $.catalog.groups[key])} ${counts[key]}`}
                   aria-pressed={group === key}
@@ -180,12 +185,12 @@ export function AutopilotTemplateCatalog({
                     setSelectedGroup(key);
                     writeViewState("autopilot-template-group", key);
                   }}
+                  // The market's chip size, kept a full touch target on coarse
+                  // pointers and narrow containers.
                   className={cn(
-                    "min-h-11 gap-2 px-3 @sm:pointer-fine:min-h-9",
+                    "min-h-11 @sm:pointer-fine:min-h-7",
                     CATALOG_FOCUS,
-                    group === key
-                      ? "bg-surface-selected font-semibold text-foreground hover:bg-surface-selected"
-                      : "font-normal text-muted-foreground",
+                    group === key ? "font-semibold" : "font-normal text-muted-foreground",
                   )}
                 >
                   <span>{t(($) => $.catalog.groups[key])}</span>
@@ -193,10 +198,13 @@ export function AutopilotTemplateCatalog({
                 </Button>
               ))}
             </div>
-            <ul className="grid gap-4 @xl:grid-cols-2 @4xl:grid-cols-3">
-              {visibleTemplates.map((template) => {
+            <ul className={GRID_CLASS}>
+              {visibleTemplates.map((template, index) => {
                 const presentation = PRESENTATION[template.key];
-                const Icon = presentation?.icon ?? Zap;
+                // The schema defaults a missing title to "", like the MCP market.
+                const title = template.title || template.key;
+                const recommended = template.key === "workday-repo-audit";
+                const cardId = `${headingId}-card-${index}`;
                 const output = template.execution_mode === "create_issue"
                   ? t(($) => $.catalog.creates_task)
                   : template.execution_mode === "run_only"
@@ -208,6 +216,15 @@ export function AutopilotTemplateCatalog({
                   <li key={template.key} className="flex min-w-0">
                     <button
                       type="button"
+                      // A short name like the market cards; the card's facts
+                      // stay available as its description.
+                      aria-label={t(($) => $.catalog.view_label, { name: title })}
+                      aria-describedby={[
+                        recommended ? `${cardId}-recommended` : null,
+                        `${cardId}-description`,
+                        `${cardId}-schedule`,
+                        output ? `${cardId}-output` : null,
+                      ].filter(Boolean).join(" ")}
                       ref={(element) => {
                         if (element) templateButtons.current.set(template.key, element);
                         else templateButtons.current.delete(template.key);
@@ -221,38 +238,33 @@ export function AutopilotTemplateCatalog({
                         writeViewState("autopilot-template-focus", template.key);
                         onPick(template.key);
                       }}
-                      className={cn("flex w-full min-w-0 flex-col rounded-lg border border-surface-border bg-surface p-5 text-left transition-colors hover:border-muted-foreground hover:bg-surface-hover motion-reduce:transition-none", CATALOG_FOCUS)}
+                      className={cn("flex w-full min-w-0 flex-col gap-3 rounded-lg border bg-card p-4 text-left transition-colors hover:bg-accent/40 motion-reduce:transition-none", CATALOG_FOCUS)}
                     >
-                      <span className="flex items-center gap-3">
-                        <span
-                          aria-hidden="true"
-                          className={cn(
-                            "inline-flex size-10 shrink-0 items-center justify-center rounded-lg",
-                            GROUP_ICON_TONES[presentation?.group ?? "all"],
-                          )}
-                        >
-                          <Icon className="size-5" />
-                        </span>
+                      <span className="flex min-w-0 items-center gap-3">
+                        <IconTile
+                          icon={presentation?.icon ?? Zap}
+                          tone={GROUP_ICON_TONES[presentation?.group ?? "all"]}
+                        />
                         <span className="min-w-0 break-words">
-                          <span className="block text-title-sm font-semibold">{template.title}</span>
-                          {template.key === "workday-repo-audit" && (
-                            <span className="mt-0.5 block text-caption font-medium text-foreground">{t(($) => $.catalog.recommended)}</span>
+                          <span className="block text-title-sm font-medium">{title}</span>
+                          {recommended && (
+                            <span id={`${cardId}-recommended`} className="mt-0.5 block text-caption font-medium text-foreground">{t(($) => $.catalog.recommended)}</span>
                           )}
                         </span>
                       </span>
-                      <span className="mt-3 line-clamp-2 text-body text-muted-foreground">{template.description}</span>
-                      <span className="mt-auto flex w-full flex-col gap-3 pt-4">
-                        <span className="flex items-start gap-1.5 text-caption text-muted-foreground">
+                      <span id={`${cardId}-description`} className="line-clamp-2 min-h-[2lh] break-words text-body text-muted-foreground" title={template.description}>
+                        {template.description}
+                      </span>
+                      <span className="flex flex-col gap-1.5 text-caption text-muted-foreground">
+                        <span className="flex items-start gap-1.5">
                           <Clock className="mt-0.5 size-3 shrink-0" aria-hidden="true" />
-                          <span className="min-w-0 break-words">{describe(parseCron(template.cron_expression, browserTimezone())) ?? template.cron_expression}</span>
+                          <span id={`${cardId}-schedule`} className="min-w-0 break-words">{describe(parseCron(template.cron_expression, browserTimezone())) ?? template.cron_expression}</span>
                         </span>
-                        <span className="flex flex-wrap items-center justify-between gap-2 text-caption">
-                          {output && <span className="text-muted-foreground">{output}</span>}
-                          <span className="ml-auto flex items-center gap-1 font-medium">
-                            {t(($) => $.catalog.view_template)}
-                            <ArrowRight className="size-3.5" aria-hidden="true" />
-                          </span>
-                        </span>
+                        {output && <span id={`${cardId}-output`}>{output}</span>}
+                      </span>
+                      <span className="mt-auto flex items-center gap-1.5 pt-1 text-body font-medium">
+                        {t(($) => $.catalog.view_template)}
+                        <ArrowRight className="size-3.5" aria-hidden="true" />
                       </span>
                     </button>
                   </li>

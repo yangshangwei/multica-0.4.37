@@ -41,6 +41,26 @@ function createGallery() {
 
 afterEach(() => vi.restoreAllMocks());
 
+describe("template card", () => {
+  it("names the card by its template and keeps its facts as the description", () => {
+    const { Page } = createGallery();
+    renderWithI18n(<Page />);
+    const card = screen.getByRole("button", { name: "View template: Workday repo audit" });
+    // Each fact is its own reference, so schedule and outcome never run together.
+    expect(card).toHaveAccessibleDescription(
+      /^Recommended starting point Check the repository\. At 09:00.*Mon–Fri Creates or updates issues as needed$/,
+    );
+  });
+
+  it("falls back to the key and drops facts a card does not render", () => {
+    const { Page } = createGallery();
+    renderWithI18n(<Page items={[{ ...templates[0]!, key: "future-template", title: "", execution_mode: "future_mode" }]} />);
+    const card = screen.getByRole("button", { name: "View template: future-template" });
+    expect(card).toHaveTextContent("future-template");
+    expect(card).toHaveAccessibleDescription(/^Check the repository\. At 09:00.*Mon–Fri$/);
+  });
+});
+
 describe("template gallery navigation restoration", () => {
   it.each([
     { filter: "Repository maintenance 1", scrollTop: 320 },
