@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useScopeHistoryStore } from "@multica/core/navigation";
@@ -99,6 +100,31 @@ describe("WebScopeShell", () => {
     view.rerender(page());
     await act(async () => finish({ data: [{ slug: "first" }] }));
     expect(state.resume).not.toHaveBeenCalled();
+  });
+
+  // Regression: the shell returned bare children until the viewer resolved and
+  // then wrapped them, so React remounted the whole page right after its first
+  // paint. A deep-linked chat lost `?session=` and an issue editor detached
+  // under the user's selection.
+  it("keeps the page mounted while the viewer and scope resolve", () => {
+    const mounts = vi.fn();
+    const Page = () => {
+      useEffect(() => { mounts(); }, []);
+      return <main>Content</main>;
+    };
+    const shell = () => <WebScopeShell><Page /></WebScopeShell>;
+    state.owner = null;
+    location("/second/issues/00000000-0000-4000-8000-000000000001");
+    const view = render(shell());
+    const content = screen.getByText("Content");
+    state.owner = "server:viewer";
+    view.rerender(shell());
+    expect(screen.getByRole("navigation", { name: "Application navigation" })).toBeInTheDocument();
+    location("/workspaces/new");
+    view.rerender(shell());
+    expect(screen.queryByRole("navigation")).toBeNull();
+    expect(mounts).toHaveBeenCalledTimes(1);
+    expect(screen.getByText("Content")).toBe(content);
   });
 
   it("does not show application chrome during authentication or one-shot flows", () => {
