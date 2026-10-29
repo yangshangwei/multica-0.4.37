@@ -4,7 +4,7 @@ import { collaborationCreationRecipientOptions, collaborationRecipientOptions, t
 import { MAX_ISSUE_PROPERTY_ACTOR_VALUES, actorRefValuesFromValue, parseActorRef, type IssuePropertyValue } from "@multica/core/types";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
-import { CustomPropertyValueInput } from "../issues/components/pickers/custom-property-picker";
+import { CustomPropertyValueDisplay, CustomPropertyValueInput } from "../issues/components/pickers/custom-property-picker";
 import { PropertyPicker, PickerItem } from "../issues/components/pickers/property-picker";
 import { useT } from "../i18n";
 import { CollaborationQueryState } from "./query-state";
@@ -48,6 +48,7 @@ function PropertyInput({ scope, issueId, sourceId, definition, value, onChange, 
 }) {
   const { t } = useT("collaboration");
   const labelId = useId();
+  const valueId = useId();
   const [open, setOpen] = useState(false);
   const actor = definition.type === "actor" || definition.type === "multi_actor";
   return <div className="min-w-0 space-y-2">
@@ -55,7 +56,8 @@ function PropertyInput({ scope, issueId, sourceId, definition, value, onChange, 
     {actor ? <CollaborationActorPropertyInput scope={scope} issueId={issueId} sourceId={sourceId} labelId={labelId} multiple={definition.type === "multi_actor"}
       value={value} onChange={onChange} disabled={disabled} archived={definition.archived} />
       : <CustomPropertyValueInput property={definition} value={value} onChange={onChange} open={!disabled && open} onOpenChange={setOpen}
-        triggerRender={<Button type="button" variant="outline" aria-labelledby={labelId} disabled={disabled} className="h-auto min-h-11 max-w-full whitespace-normal text-left [overflow-wrap:anywhere]" />} />}
+        trigger={<span id={valueId}><CustomPropertyValueDisplay property={definition} value={value} /></span>}
+        triggerRender={<Button type="button" variant="outline" aria-labelledby={`${labelId} ${valueId}`} disabled={disabled} className="h-auto min-h-11 max-w-full whitespace-normal text-left [overflow-wrap:anywhere]" />} />}
   </div>;
 }
 
@@ -74,15 +76,15 @@ function CollaborationActorPropertyInput({ scope, issueId, sourceId, labelId, mu
   const eligible = found && found.external === false;
   return <div className="min-w-0 space-y-2" role="group" aria-labelledby={labelId}>
     {selected.map((reference) => <div key={reference} className="flex min-w-0 items-center gap-2"><span className="min-w-0 text-caption [overflow-wrap:anywhere]">{found && found.user_id === parseActorRef(reference)?.id ? found.name : parseActorRef(reference)?.id ?? reference}</span>
-      <Button type="button" size="sm" variant="ghost" disabled={disabled} aria-label={t(($) => $.fields.removeAccount, { name: parseActorRef(reference)?.id ?? reference })}
+      <Button type="button" size="sm" variant="ghost" disabled={disabled} className="pointer-coarse:min-h-11" aria-label={t(($) => $.fields.removeAccount, { name: parseActorRef(reference)?.id ?? reference })}
         onClick={() => { const next = selected.filter((item) => item !== reference); onChange(next.length ? multiple ? next : next[0] : undefined); }}>{t(($) => $.fields.clear)}</Button></div>)}
     {!archived && <>
-      <Input aria-label={t(($) => $.fields.exactAccount)} value={text} disabled={disabled} placeholder={t(($) => $.workflow.recipientHint)}
+      <Input aria-label={t(($) => $.fields.exactAccount)} className="pointer-coarse:min-h-11" value={text} disabled={disabled} placeholder={t(($) => $.workflow.recipientHint)}
         onChange={(event) => { setText(event.target.value); setQuery(""); }} />
-      <Button type="button" variant="outline" disabled={disabled || !text.trim() || lookup.isFetching} onClick={() => { setQuery(text.trim()); if (query === text.trim()) void lookup.refetch(); }}>{t(($) => $.workflow.resolve)}</Button>
+      <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={disabled || !text.trim() || lookup.isFetching} onClick={() => { setQuery(text.trim()); if (query === text.trim()) void lookup.refetch(); }}>{t(($) => $.workflow.resolve)}</Button>
       {lookup.error && <CollaborationQueryState error={lookup.error} retry={() => void lookup.refetch()} />}
       {found && <div className="space-y-2"><p role="status" className="text-body [overflow-wrap:anywhere]">{found.name}</p>
-        {eligible ? <Button type="button" variant="outline" disabled={disabled || multiple && selected.length >= MAX_ISSUE_PROPERTY_ACTOR_VALUES}
+        {eligible ? <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={disabled || multiple && selected.length >= MAX_ISSUE_PROPERTY_ACTOR_VALUES}
           onClick={() => { if (!found || found.external) return; const reference = `member:${found.user_id}`; onChange(multiple ? selected.includes(reference) ? selected : [...selected, reference] : reference); }}>{t(($) => $.creation.useRecipient)}</Button>
           : <p className="text-caption text-muted-foreground">{t(($) => $.fields.sourceAccountOnly)}</p>}
       </div>}

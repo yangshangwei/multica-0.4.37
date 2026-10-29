@@ -30,7 +30,7 @@ export function CollaborationSwitchPanel({ scope, issue, targetId, locked, submi
   const close = () => setSelection(null);
   if (!target) return null;
   return <div className="min-w-0 space-y-3">
-    <Button variant="ghost" size="sm" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]" aria-expanded={open} aria-controls={contentId} onClick={() => setOpen(!open)}>{t(($) => $.execution.switch)}</Button>
+    <Button variant="ghost" size="sm" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]" aria-expanded={open} aria-controls={open ? contentId : undefined} onClick={() => setOpen(!open)}>{t(($) => $.execution.switch)}</Button>
     {open && <div id={contentId} className="min-w-0 space-y-4">
       {query.isPending && <p role="status">{t(($) => $.page.loading)}</p>}
       {query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}

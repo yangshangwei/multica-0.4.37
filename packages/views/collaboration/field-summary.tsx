@@ -16,7 +16,7 @@ export function CollaborationFieldSummary({ issue }: { issue: CollaborationIssue
       {issue.labels !== undefined && <div><dt>{t(($) => $.fields.labels)}</dt><dd>{issue.labels.map((label) => label.name).join(", ") || t(($) => $.fields.none)}</dd></div>}
       {(issue.property_definitions ?? []).map((definition) => <div key={definition.id}><dt>{definition.name}{definition.archived ? ` · ${t(($) => $.fields.archived)}` : ""}</dt><dd>
         {definition.type === "actor" || definition.type === "multi_actor"
-          ? actorRefValuesFromValue(issue.properties?.[definition.id]).map((value) => parseActorRef(value)?.id ?? value).join(", ")
+          ? actorRefValuesFromValue(issue.properties?.[definition.id]).map((value) => parseActorRef(value)?.id ?? value).join(", ") || t(($) => $.fields.none)
           : <CustomPropertyValueDisplay property={definition} value={issue.properties?.[definition.id]} />}
       </dd></div>)}
       {structure && <>

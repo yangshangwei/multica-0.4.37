@@ -20,7 +20,7 @@ export function CollaborationActivity({ scope, destination }: { scope: Collabora
     <ol className="space-y-6">{items.map((item) => <li key={item.id} className="min-w-0 space-y-3">
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-caption text-muted-foreground">
         <span className="font-medium text-foreground">{t(($) => $.activity.kinds[item.kind])}</span>
-        <span>{item.actor?.name ?? t(($) => $.detail.unknownAuthor)}</span>
+        <span className="min-w-0 [overflow-wrap:anywhere]">{item.actor?.name ?? t(($) => $.detail.unknownAuthor)}</span>
         <time dateTime={item.created_at}>{new Date(item.created_at).toLocaleString()}</time>
       </div>
       {!item.details_available && <p className="text-caption text-muted-foreground">{t(($) => $.activity.detailsUnavailable)}</p>}
@@ -41,6 +41,6 @@ export function CollaborationActivity({ scope, destination }: { scope: Collabora
         </dd>
       </div>)}</dl>
     </li>)}</ol>
-    {query.hasNextPage && <Button variant="outline" disabled={query.isFetchingNextPage} onClick={() => void query.fetchNextPage()}>{t(($) => $.page.more)}</Button>}
+    {query.hasNextPage && <Button variant="outline" className="pointer-coarse:min-h-11" disabled={query.isFetchingNextPage} onClick={() => void query.fetchNextPage()}>{t(($) => $.page.more)}</Button>}
   </section>;
 }

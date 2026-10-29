@@ -62,7 +62,7 @@ export function AdminCollaborationForm({ scope, snapshot, action, current, refre
           {options?.options.map(option => <option key={option.key} value={option.key}>{option.name || option.key}</option>)}
         </select>
       </div>
-      {needsSuccessor && <fieldset ref={successorRef} tabIndex={-1} aria-describedby={`${id}-successor-hint`} aria-invalid={invalid === "successor" || undefined}
+      {needsSuccessor && <fieldset ref={successorRef} tabIndex={-1} aria-describedby={invalid === "successor" ? `${id}-successor-hint ${id}-successor-error` : `${id}-successor-hint`} aria-invalid={invalid === "successor" || undefined}
         className="min-w-0 space-y-3 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring">
         <legend className="mb-1 text-body font-medium">{t($ => $.collaboration.successor)}</legend>
         <p id={`${id}-successor-hint`} className="max-w-prose text-caption text-muted-foreground">{t($ => $.collaboration.successorHint)}</p>
@@ -77,7 +77,7 @@ export function AdminCollaborationForm({ scope, snapshot, action, current, refre
             </label>)}
           </div>}
         {expired && <p role="status" className="text-body">{t($ => $.collaboration.successorExpired)}</p>}
-        {invalid === "successor" && <p role="alert" className="text-body">{t($ => $.collaboration.successorRequired)}</p>}
+        {invalid === "successor" && <p id={`${id}-successor-error`} role="alert" className="text-body">{t($ => $.collaboration.successorRequired)}</p>}
         <div className="flex flex-wrap gap-2">
           <Button type="button" variant="outline" className="h-auto min-h-11 whitespace-normal" disabled={disabled || candidates.isFetching} onClick={() => { void candidates.refetch(); }}>{t($ => $.collaboration.candidatesRefresh)}</Button>
           {candidates.hasNextPage && !candidates.isError && <Button type="button" variant="outline" className="h-auto min-h-11 whitespace-normal" disabled={disabled || candidates.isFetching} onClick={() => { void candidates.fetchNextPage(); }}>{t($ => $.collaboration.candidatesMore)}</Button>}

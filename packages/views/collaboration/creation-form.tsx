@@ -57,7 +57,7 @@ export function CollaborationCreationPanel({ scope, sourceWorkspaceId, onCreated
     {sources.error && <CollaborationQueryState error={sources.error} retry={() => void sources.refetch()} />}
     {draftError && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
     {recoveries.map((draft) => <div key={draft.requestId} className="space-y-2"><p className="text-caption text-muted-foreground">{t(($) => $.creation.recoveryOnly)}</p>
-      <Button type="button" variant="outline" disabled={recovery.isPending} onClick={() => recovery.mutate(draft)}>{t(($) => $.creation.recover)}</Button></div>)}
+      <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={recovery.isPending} onClick={() => recovery.mutate(draft)}>{t(($) => $.creation.recover)}</Button></div>)}
     {recovery.error && <CollaborationQueryState error={recovery.error} />}
     {sources.data && <>
       <div className="space-y-2"><label htmlFor={selectId} className="block text-body font-medium">{t(($) => $.creation.source)}</label>
@@ -118,6 +118,8 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
     Object.entries(properties).every(([id, value]) => fields.properties.some((definition) => definition.id === id && collaborationPropertyValueMatchesDefinition(value, definition))) &&
     (!initial.current_iteration_id || fields.source_options.iterations_enabled && fields.source_options.iterations.some((item) => item.id === initial.current_iteration_id)));
   const iterationChanged = initial.current_iteration_id && fields?.source_options.iterations.some((item) => item.id === initial.current_iteration_id && item.revision !== initial.expected_iteration_revision);
+  const initialSection = useRef<HTMLDetailsElement>(null);
+  useEffect(() => { if (!initialValid && initialSection.current) initialSection.current.open = true; }, [initialValid, fields]);
   return <form className="min-w-0 space-y-5" onSubmit={(event) => {
     if (event.target !== event.currentTarget) return;
     event.preventDefault(); if (!editable || !form.title.trim() || recipientUnconfirmed || !initialValid) return;
@@ -131,16 +133,16 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
     </div>
     <fieldset className="min-w-0 space-y-3"><legend className="mb-2 text-body font-medium">{t(($) => $.creation.recipient)}</legend>
       <div className="flex flex-wrap items-center gap-3"><p role="status" className="text-body [overflow-wrap:anywhere]">{form.recipient ? t(($) => $.creation.assignedTo, { name: form.recipient.name }) : t(($) => $.creation.assignedSelf)}</p>
-        <Button type="button" variant="outline" disabled={!editable} onClick={() => { draft.update({ recipient: null, recipientQuery: "" }); setLookup(""); }}>{t(($) => $.creation.self)}</Button></div>
+        <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={!editable} onClick={() => { draft.update({ recipient: null, recipientQuery: "" }); setLookup(""); }}>{t(($) => $.creation.self)}</Button></div>
       <label htmlFor={`${id}-recipient`} className="block text-caption font-medium">{t(($) => $.creation.lookupLabel)}</label>
       <div className="flex flex-wrap gap-2"><Input id={`${id}-recipient`} value={form.recipientQuery} disabled={!editable} className="min-h-11 min-w-0 flex-1" onChange={(event) => { draft.update({ recipientQuery: event.target.value, recipient: null }); setLookup(""); }} />
-        <Button type="button" variant="outline" disabled={!editable || !form.recipientQuery.trim() || recipient.isFetching} onClick={() => { setLookup(form.recipientQuery.trim()); if (lookup === form.recipientQuery.trim()) void recipient.refetch(); }}>{t(($) => $.creation.lookup)}</Button></div>
+        <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={!editable || !form.recipientQuery.trim() || recipient.isFetching} onClick={() => { setLookup(form.recipientQuery.trim()); if (lookup === form.recipientQuery.trim()) void recipient.refetch(); }}>{t(($) => $.creation.lookup)}</Button></div>
       {recipient.error && lookup && <CollaborationQueryState error={recipient.error} retry={() => void recipient.refetch()} />}
       {recipient.data && lookup === form.recipientQuery.trim() && <div className="flex flex-wrap items-center gap-3 text-body [overflow-wrap:anywhere]"><span>{recipient.data.recipient.name}</span>
-        <Button type="button" variant="outline" disabled={!editable} onClick={() => draft.update({ recipient: recipient.data!.recipient })}>{t(($) => $.creation.useRecipient)}</Button></div>}
+        <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={!editable} onClick={() => draft.update({ recipient: recipient.data!.recipient })}>{t(($) => $.creation.useRecipient)}</Button></div>}
       {recipientUnconfirmed && <p className="text-caption text-muted-foreground">{t(($) => $.creation.confirmRecipient)}</p>}
     </fieldset>
-    {fields && <details className="min-w-0 space-y-4"><summary className="cursor-pointer py-2 text-body font-medium">{t(($) => $.fields.initial)}</summary>
+    {fields && <details ref={initialSection} className="min-w-0 space-y-4"><summary className="cursor-pointer py-2 text-body font-medium pointer-coarse:min-h-11">{t(($) => $.fields.initial)}</summary>
       <fieldset disabled={!editable} className="min-w-0 space-y-5">
         <div className="grid min-w-0 gap-4 sm:grid-cols-2">
           <div className="space-y-2"><label htmlFor={`${id}-status`} className="text-body">{t(($) => $.detail.status)}</label>
@@ -154,34 +156,35 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
               {(["none", "low", "medium", "high", "urgent"] as const).map((value) => <option key={value} value={value}>{t(($) => $.priorities[value])}</option>)}
             </select>
           </div>
-          <div className="space-y-2"><label htmlFor={`${id}-start`} className="text-body">{t(($) => $.workflow.startDate)}</label><Input id={`${id}-start`} type="date" value={initial.start_date ?? ""} onChange={(event) => updateFields({ start_date: event.target.value || null })} /></div>
-          <div className="space-y-2"><label htmlFor={`${id}-due`} className="text-body">{t(($) => $.workflow.dueDate)}</label><Input id={`${id}-due`} type="date" value={initial.due_date ?? ""} onChange={(event) => updateFields({ due_date: event.target.value || null })} /></div>
+          <div className="space-y-2"><label htmlFor={`${id}-start`} className="text-body">{t(($) => $.workflow.startDate)}</label><Input id={`${id}-start`} type="date" value={initial.start_date ?? ""} onChange={(event) => updateFields({ start_date: event.target.value || null })} className="pointer-coarse:min-h-11" /></div>
+          <div className="space-y-2"><label htmlFor={`${id}-due`} className="text-body">{t(($) => $.workflow.dueDate)}</label><Input id={`${id}-due`} type="date" value={initial.due_date ?? ""} onChange={(event) => updateFields({ due_date: event.target.value || null })} className="pointer-coarse:min-h-11" /></div>
         </div>
         <CollaborationLabelInput labels={fields.labels} selectedIds={initial.label_ids ?? []} onChange={(label_ids) => updateFields({ label_ids })} disabled={!editable} />
         <CollaborationPropertyInputs scope={scope} sourceId={sourceId} definitions={fields.properties} values={properties} disabled={!editable}
           onChange={updateProperty} />
         {Object.keys(properties).filter((propertyId) => !fields.properties.some((definition) => definition.id === propertyId)).map((propertyId) => <div key={propertyId} className="flex min-w-0 flex-wrap items-center gap-2">
           <p className="text-caption [overflow-wrap:anywhere]">{t(($) => $.fields.unavailableSelection, { value: propertyId })}</p>
-          <Button type="button" variant="outline" disabled={!editable} onClick={() => updateProperty(propertyId, undefined)}>{t(($) => $.fields.clear)}</Button>
+          <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={!editable} onClick={() => updateProperty(propertyId, undefined)}>{t(($) => $.fields.clear)}</Button>
         </div>)}
         <CollaborationSourceInputs options={fields.source_options} value={{ projectId: initial.project_id ?? null, parentIssueId: initial.parent_issue_id ?? null, stage: initial.stage ?? null }}
           onChange={(value) => updateFields({ project_id: value.projectId, parent_issue_id: value.parentIssueId, stage: value.stage })} parentSearch={parentSearch} onParentSearch={onParentSearch} disabled={!editable} />
         {initial.parent_issue_id && !initial.project_id && <p className="text-caption text-muted-foreground">{t(($) => $.fields.parentProjectHint)}</p>}
         <CollaborationIterationInput options={fields.source_options} selectedId={initial.current_iteration_id ?? null} disabled={!editable || optionsPending} allowClearWhenDisabled
           onChange={(iterationId) => updateFields({ current_iteration_id: iterationId, expected_iteration_revision: fields.source_options.iterations.find((period) => period.id === iterationId)?.revision })} />
-        {iterationChanged && <div className="space-y-2"><p role="status" className="text-caption">{t(($) => $.fields.changed)}</p><Button type="button" variant="outline" disabled={!editable || optionsPending}
+        {iterationChanged && <div className="space-y-2"><p role="status" className="text-caption">{t(($) => $.fields.changed)}</p><Button type="button" variant="outline" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11" disabled={!editable || optionsPending}
           onClick={() => updateFields({ expected_iteration_revision: fields.source_options.iterations.find((period) => period.id === initial.current_iteration_id)?.revision })}>{t(($) => $.fields.useCurrentVersion)}</Button></div>}
       </fieldset>
     </details>}
-    {!initialValid && <p role="alert" className="text-body">{t(($) => $.fields.invalidSelection)}</p>}
+    {!initialValid && <div className="space-y-2"><p role="alert" className="text-body">{t(($) => $.fields.invalidSelection)}</p>
+      {!fields && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={!editable} onClick={() => draft.update({ initialFields: {} })}>{t(($) => $.fields.clearInitial)}</Button>}</div>}
     <CollaborationAttachmentPicker scope={scope} form={form} update={draft.update} uploads={draft.uploads} disabled={create.isPending || draft.creations.length > 0 || Boolean(draft.error) || !options.creation_enabled} onBusyChange={setUploading} />
     {Boolean(draft.error) && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
     {create.error instanceof CollaborationCreationRejectedError && <p role="status" className="text-body text-muted-foreground">{t(($) => $.creation.rejected)}</p>}
     {create.error && !(create.error instanceof CollaborationCreationRejectedError) && <p role="alert" className="text-body text-muted-foreground">{t(($) => $.creation.error)}</p>}
     {create.isPending && <p role="status">{t(($) => $.creation.submitting)}</p>}
     {draft.creations.map((value) => <div key={value.requestId} className="space-y-3"><p role="status" className="text-body text-muted-foreground">{t(($) => $.creation.unknown)}</p>
-      <div className="flex flex-wrap gap-2"><Button type="button" variant="outline" disabled={create.isPending} onClick={() => create.mutate({ value, recovery: true })}>{t(($) => $.creation.recover)}</Button>
-        <Button type="button" variant="outline" disabled={create.isPending || !options.creation_enabled} onClick={() => create.mutate({ value, recovery: false })}>{t(($) => $.creation.retry)}</Button></div>
+      <div className="flex flex-wrap gap-2"><Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={create.isPending} onClick={() => create.mutate({ value, recovery: true })}>{t(($) => $.creation.recover)}</Button>
+        <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={create.isPending || !options.creation_enabled} onClick={() => create.mutate({ value, recovery: false })}>{t(($) => $.creation.retry)}</Button></div>
     </div>)}
     <div className="flex flex-wrap items-center justify-between gap-3"><p className="text-caption text-muted-foreground">{t(($) => $.creation.saved)}</p>
       <Button type="submit" disabled={!editable || !form.title.trim() || recipientUnconfirmed || !initialValid} className="pointer-coarse:min-h-11">{t(($) => $.creation.submit)}</Button></div>

@@ -169,7 +169,7 @@ function RecordedEntry({ item, scope, issueId }: { item: CollaborationRunRecordI
   }
   return <li className="min-w-0 space-y-2" data-record-id={item.id}>
     <div className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-1 text-caption [overflow-wrap:anywhere]">
-      <h6 className="font-semibold">{title()}</h6>
+      <h5 className="font-semibold">{title()}</h5>
       {item.kind === "result" && <span className="text-muted-foreground">{labels.execution(item.outcome === "success" ? "succeeded" : "failed")}</span>}
       {item.kind === "squad_activity" && <span className="text-muted-foreground">{t(($) => $.records.squadOutcomes[item.outcome])}</span>}
       {(item.kind === "tool_call" || item.kind === "tool_result") && <span className="text-muted-foreground">{t(($) => $.records.callId, { id: item.call_id })}</span>}

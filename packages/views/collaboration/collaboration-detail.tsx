@@ -68,7 +68,7 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
     {query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}
     <header className="space-y-4">
       <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
-        <h2 className="min-w-0 flex-1 text-heading font-semibold [overflow-wrap:anywhere]">{issue.title}</h2>
+        <h2 className="min-w-0 flex-1 text-display-sm font-semibold [overflow-wrap:anywhere]">{issue.title}</h2>
         <Button variant="ghost" size="sm" className="pointer-coarse:min-h-11" onClick={() => {
           void copyText(navigation.getShareableUrl(accountPath({ ...destination, view: "participating" }))).then((copied) => {
             if (copied) toast.success(tIssues(($) => $.detail.link_copied));

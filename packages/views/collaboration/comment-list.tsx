@@ -15,6 +15,7 @@ import { CollaborationCommentHistory } from "./comment-history";
 import { CollaborationCommentAttachments } from "./attachment-panel";
 import { CollaborationDiscussionActions } from "./discussion-actions";
 import { CollaborationQueryState } from "./query-state";
+import { recoverFocus } from "./focus";
 
 type CommentProps = { scope: CollaborationScope; issue: CollaborationIssue; comment: CollaborationComment; onReply: (comment: CollaborationComment) => void };
 type Editor = { action: "edit" | "delete"; revision: string; content: string; attachmentIds: string[] };
@@ -60,9 +61,17 @@ function CommentCard({ scope, issue, comment, onReply }: CommentProps) {
       attachmentIds: saved.action === "edit" ? saved.input.attachment_ids ?? comment.attachment_ids : comment.attachment_ids };
   });
   const submitting = useRef(false);
+  const item = useRef<HTMLLIElement>(null);
+  const editButton = useRef<HTMLButtonElement>(null);
+  const editorForm = useRef<HTMLFormElement>(null);
+  const returnFocus = () => recoverFocus(() => editButton.current, () => item.current);
   const send = useMutation({ mutationKey: [...collaborationKeys.issue(scope, issue.id), "comment-change"], retry: false, networkMode: "always",
     mutationFn: ({ draft, recovery }: { draft: CollaborationDraft; recovery: boolean }) => executeCollaborationCommentChange(client, scope, draft, recovery),
-    onSuccess: (receipt) => { if (receipt.status < 300) setEditor(null); } });
+    onSuccess: (receipt, { draft }) => {
+      if (receipt.status >= 300) return;
+      setEditor(null);
+      if (parseCollaborationCommentChangeDraft(draft).action === "delete") recoverFocus(() => item.current); else returnFocus();
+    } });
   const canEdit = issue.capabilities.comment === true && comment.can_edit === true && comment.author_type === "member" && comment.type === "comment" && comment.author?.user_id === scope.userId && comment.deleted_at === null;
   const locked = send.isPending || pending.length > 0 || drafts.error;
   const tooLong = editor?.action === "edit" && !collaborationCommentWithinByteLimit(editor.content);
@@ -70,6 +79,7 @@ function CommentCard({ scope, issue, comment, onReply }: CommentProps) {
   const author = comment.author?.name ?? (comment.author_type === "agent" ? t(($) => $.execution.agent) : t(($) => $.detail.unknownAuthor));
   function begin(action: Editor["action"]) {
     setEditor({ action, revision: comment.comment_revision, content: comment.content, attachmentIds: [...comment.attachment_ids] }); send.reset();
+    recoverFocus(() => editorForm.current);
   }
   function submit() {
     if (!editor || !canEdit || locked || stale || tooLong || submitting.current) return;
@@ -78,7 +88,7 @@ function CommentCard({ scope, issue, comment, onReply }: CommentProps) {
     submitting.current = true;
     void send.mutateAsync({ draft, recovery: false }).catch(() => {}).finally(() => { submitting.current = false; });
   }
-  return <li id={`comment-${comment.id}`} tabIndex={-1} className="min-w-0 space-y-3 rounded-md py-2 target:bg-accent">
+  return <li ref={item} id={`comment-${comment.id}`} tabIndex={-1} className="min-w-0 space-y-3 rounded-md py-2 outline-none focus-visible:ring-2 focus-visible:ring-ring target:bg-accent">
     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
       <Avatar className="size-6"><AvatarImage src={comment.author?.avatar_url || undefined} alt="" /><AvatarFallback>{author.slice(0, 1)}</AvatarFallback></Avatar>
       <span className="font-medium text-foreground [overflow-wrap:anywhere]">{author}</span>
@@ -91,10 +101,10 @@ function CommentCard({ scope, issue, comment, onReply }: CommentProps) {
     {comment.deleted_at === null && <CollaborationCommentAttachments scope={scope} issueId={issue.id} attachmentIds={comment.attachment_ids} />}
     <div className="flex flex-wrap gap-2">
       {issue.capabilities.comment === true && <Button type="button" variant="ghost" size="sm" className="pointer-coarse:min-h-11" disabled={drafts.comments.length > 0 || drafts.error} onClick={() => onReply(comment)}>{t(($) => $.commentActions.reply)}</Button>}
-      {canEdit && !editor && <><Button type="button" variant="ghost" size="sm" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => begin("edit")}>{t(($) => $.commentActions.edit)}</Button>
+      {canEdit && !editor && <><Button ref={editButton} type="button" variant="ghost" size="sm" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => begin("edit")}>{t(($) => $.commentActions.edit)}</Button>
         <Button type="button" variant="ghost" size="sm" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => begin("delete")}>{t(($) => $.commentActions.delete)}</Button></>}
     </div>
-    {editor && <form aria-label={editor.action === "edit" ? t(($) => $.commentActions.edit) : t(($) => $.commentActions.delete)} className="space-y-3 rounded-md border border-border p-4" onSubmit={(event) => { event.preventDefault(); submit(); }}>
+    {editor && <form ref={editorForm} tabIndex={-1} aria-label={editor.action === "edit" ? t(($) => $.commentActions.edit) : t(($) => $.commentActions.delete)} className="space-y-3 rounded-md border border-border p-4 outline-none focus-visible:ring-2 focus-visible:ring-ring" onSubmit={(event) => { event.preventDefault(); submit(); }}>
       {editor.action === "edit" ? <>
         <label htmlFor={fieldId} className="block text-body font-medium">{t(($) => $.commentActions.editText)}</label>
         <Textarea id={fieldId} autoFocus value={editor.content} disabled={locked || !canEdit} aria-invalid={tooLong} aria-describedby={tooLong ? `${fieldId}-limit` : undefined} onChange={(event) => setEditor({ ...editor, content: event.target.value })} className="min-h-28" />
@@ -103,16 +113,16 @@ function CommentCard({ scope, issue, comment, onReply }: CommentProps) {
         <CommentAttachmentSelection scope={scope} issue={issue} selected={editor.attachmentIds} disabled={locked || !canEdit} onChange={(attachmentIds) => setEditor({ ...editor, attachmentIds })} />
       </> : <p className="text-body">{t(($) => $.commentActions.deleteHint)}</p>}
       {stale && <div className="space-y-2"><p role="alert" className="text-body">{t(($) => $.commentActions.conflict)}</p>
-        <Button type="button" variant="outline" disabled={locked || !canEdit} onClick={() => { setEditor({ ...editor, revision: comment.comment_revision }); send.reset(); }}>{t(($) => $.commentActions.useLatest)}</Button></div>}
+        <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={locked || !canEdit} onClick={() => { setEditor({ ...editor, revision: comment.comment_revision }); send.reset(); }}>{t(($) => $.commentActions.useLatest)}</Button></div>}
       <div className="flex flex-wrap gap-2"><Button type="submit" variant={editor.action === "delete" ? "destructive" : "default"} disabled={locked || stale || tooLong || !canEdit || (editor.action === "edit" && !editor.content.trim() && editor.attachmentIds.length === 0)} className="pointer-coarse:min-h-11">{editor.action === "edit" ? t(($) => $.commentActions.save) : t(($) => $.commentActions.confirmDelete)}</Button>
-        <Button type="button" variant="outline" disabled={locked} className="pointer-coarse:min-h-11" onClick={() => { setEditor(null); send.reset(); }}>{t(($) => $.workflow.dismiss)}</Button></div>
+        <Button type="button" variant="outline" disabled={locked} className="pointer-coarse:min-h-11" onClick={() => { setEditor(null); send.reset(); returnFocus(); }}>{t(($) => $.workflow.dismiss)}</Button></div>
     </form>}
     {send.isPending && <p role="status" className="text-caption">{t(($) => $.workflow.pending)}</p>}
     {send.error && <CollaborationQueryState error={send.error} />}
     {send.data && send.data.status < 300 && <p role="status" className="text-caption">{t(($) => $.commentActions.saved)}</p>}
     {pending.map((draft) => <div key={draft.requestId} className="space-y-2"><p role="status" className="text-caption">{t(($) => $.workflow.unknown)}</p>
-      <div className="flex flex-wrap gap-2"><Button type="button" variant="outline" disabled={send.isPending || drafts.error} onClick={() => send.mutate({ draft, recovery: true })}>{t(($) => $.workflow.recover)}</Button>
-        <Button type="button" variant="outline" disabled={send.isPending || drafts.error} onClick={() => send.mutate({ draft, recovery: false })}>{t(($) => $.workflow.retryOriginal)}</Button></div>
+      <div className="flex flex-wrap gap-2"><Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={send.isPending || drafts.error} onClick={() => send.mutate({ draft, recovery: true })}>{t(($) => $.workflow.recover)}</Button>
+        <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={send.isPending || drafts.error} onClick={() => send.mutate({ draft, recovery: false })}>{t(($) => $.workflow.retryOriginal)}</Button></div>
     </div>)}
     <CollaborationDiscussionActions scope={scope} issue={issue} comment={comment} />
     <CollaborationCommentHistory scope={scope} issueId={issue.id} commentId={comment.id} />

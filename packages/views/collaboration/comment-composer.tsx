@@ -11,6 +11,7 @@ import { useT } from "../i18n";
 import { useCollaborationLabels } from "./labels";
 import { CollaborationQueryState } from "./query-state";
 import { CollaborationAttachmentPicker } from "./attachment-picker";
+import { recoverFocus } from "./focus";
 
 export function CollaborationCommentComposer({ scope, issue, replyTo = null, onCancelReply, onSent }: {
   scope: CollaborationScope; issue: CollaborationIssue; replyTo?: CollaborationComment | null; onCancelReply?: () => void; onSent?: () => void;
@@ -66,7 +67,7 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
   }}>
     <label htmlFor={fieldId} className="block text-body font-medium">{t(($) => $.composer.label)}</label>
     {parentId && <div className="flex flex-wrap items-center gap-3 text-caption text-muted-foreground"><span>{t(($) => $.commentActions.replyingTo, { name: parentComment?.author?.name ?? (parentComment?.author_type === "agent" ? t(($) => $.execution.agent) : t(($) => $.detail.unknownAuthor)) })}</span>
-      <Button type="button" variant="ghost" size="sm" disabled={locked} className="pointer-coarse:min-h-11" onClick={() => { delivery.update({ parentCommentId: null }); inspect.reset(); onCancelReply?.(); }}>{t(($) => $.commentActions.cancelReply)}</Button></div>}
+      <Button type="button" variant="ghost" size="sm" disabled={locked} className="pointer-coarse:min-h-11" onClick={() => { delivery.update({ parentCommentId: null }); inspect.reset(); onCancelReply?.(); recoverFocus(() => textarea.current); }}>{t(($) => $.commentActions.cancelReply)}</Button></div>}
     {parent.error && <CollaborationQueryState error={parent.error} retry={() => void parent.refetch()} />}
     <Textarea ref={textarea} id={fieldId} placeholder={t(($) => $.composer.placeholder)} value={content} disabled={locked} onChange={(event) => change(event.target.value)} className="min-h-28" />
     {mentions.data && <div className="min-w-0 space-y-3" role="group" aria-label={t(($) => $.composer.mentions)}>
@@ -111,7 +112,7 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
     {drafts.error && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
     {(inspect.isPending || send.isPending) && <p role="status">{t(($) => $.workflow.pending)}</p>}
     {send.data && <div role="status" className="space-y-2"><p>{send.data.status < 300 ? t(($) => $.composer.sent) : t(($) => $.workflow.refused)}</p>{send.data.targets.map((target) => <p key={`${target.kind}:${target.resource_id}`} className="text-caption [overflow-wrap:anywhere]">{targetName(target)} · {target.state === "waiting" ? target.code === "command_joined_squad" ? t(($) => $.composer.joined) : labels.reason(target.waiting_reason ?? target.hold_reason ?? "waiting") : target.state === "suppressed" ? t(($) => $.composer.suppressed) : labels.reason(target.code)}</p>)}</div>}
-    {!send.isPending && drafts.comments.map((draft) => <div key={draft.requestId} className="space-y-2"><p role="status">{t(($) => $.workflow.unknown)}</p><div className="flex flex-wrap gap-2"><Button type="button" variant="outline" disabled={drafts.error} onClick={() => send.mutate({ draft, recovery: true })}>{t(($) => $.workflow.recover)}</Button><Button type="button" variant="outline" disabled={drafts.error} onClick={() => send.mutate({ draft, recovery: false })}>{t(($) => $.workflow.retryOriginal)}</Button></div></div>)}
+    {!send.isPending && drafts.comments.map((draft) => <div key={draft.requestId} className="space-y-2"><p role="status">{t(($) => $.workflow.unknown)}</p><div className="flex flex-wrap gap-2"><Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={drafts.error} onClick={() => send.mutate({ draft, recovery: true })}>{t(($) => $.workflow.recover)}</Button><Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={drafts.error} onClick={() => send.mutate({ draft, recovery: false })}>{t(($) => $.workflow.retryOriginal)}</Button></div></div>)}
   </form>;
 }
 

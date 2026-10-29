@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationAttachmentsOptions, collaborationKeys, executeCollaborationAttachmentDelivery,
   loadCollaborationAttachmentDownload, loadCollaborationAttachmentPreview, prepareCollaborationAttachmentDelivery,
@@ -20,6 +20,10 @@ async function downloadNativeFile(url: string) {
   document.body.appendChild(anchor); anchor.click(); anchor.remove();
 }
 
+// Chromium refuses to run its PDF viewer in a sandboxed frame, and these files come from
+// other accounts, so PDFs are downloaded rather than embedded without a sandbox.
+const previewable = (file: CollaborationAttachment) => { const kind = getPreviewKind(file.content_type, file.name); return kind !== null && kind !== "pdf"; };
+
 export function CollaborationAttachmentList({ scope, issueId, files }: { scope: CollaborationScope; issueId: string; files: CollaborationAttachment[] }) {
   const { t } = useT("collaboration");
   const client = useQueryClient();
@@ -32,7 +36,7 @@ export function CollaborationAttachmentList({ scope, issueId, files }: { scope: 
   return <>
     <ul className="space-y-3">{files.map((file) => <li key={file.id} className="flex min-w-0 flex-wrap items-center justify-between gap-3 rounded-md border border-border p-3">
       <div className="min-w-0 flex-1 [overflow-wrap:anywhere]"><p className="text-body font-medium">{file.name}</p><p className="text-caption text-muted-foreground">{t(($) => $.attachments.size, { size: file.size_bytes.toLocaleString() })}</p></div>
-      <div className="flex flex-wrap gap-2">{getPreviewKind(file.content_type, file.name) && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" aria-label={t(($) => $.attachments.preview, { name: file.name })} onClick={() => setPreview(file)}>{t(($) => $.attachments.previewAction)}</Button>}
+      <div className="flex flex-wrap gap-2">{previewable(file) && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" aria-label={t(($) => $.attachments.preview, { name: file.name })} onClick={() => setPreview(file)}>{t(($) => $.attachments.previewAction)}</Button>}
         <Button type="button" variant="outline" className="pointer-coarse:min-h-11" aria-label={t(($) => $.attachments.download, { name: file.name })} disabled={download.isPending} onClick={() => download.mutate(file)}>{t(($) => $.attachments.downloadAction)}</Button></div>
     </li>)}</ul>
     {download.error && <CollaborationAttachmentFailure error={download.error} />}
@@ -74,7 +78,6 @@ function AttachmentPreview({ scope, issueId, file }: { scope: CollaborationScope
     case "markdown": return <div className="min-h-0 overflow-auto"><RichContent content={content} resourcePolicy="restricted" /></div>;
     case "text": return <pre className="min-h-0 max-w-full overflow-auto whitespace-pre-wrap rounded-md bg-muted p-4 text-body [overflow-wrap:anywhere]">{content}</pre>;
     case "image": return objectUrl ? <img src={objectUrl} alt={file.name} className="max-h-[65dvh] max-w-full object-contain" /> : null;
-    case "pdf": return objectUrl ? <iframe src={objectUrl} title={file.name} sandbox="" referrerPolicy="no-referrer" className="h-[65dvh] w-full" /> : null;
     case "audio": return objectUrl ? <audio controls src={objectUrl} aria-label={file.name} className="w-full" /> : null;
     case "video": return objectUrl ? <video controls src={objectUrl} aria-label={file.name} className="max-h-[65dvh] max-w-full" /> : null;
     default: return <p>{t(($) => $.attachments.previewUnavailable)}</p>;
@@ -105,15 +108,19 @@ function AttachmentDeliveryForm({ scope, issue }: { scope: CollaborationScope; i
     mutationFn: ({ value, recovery }: { value: CollaborationDeliveryRequest; recovery: boolean }) => executeCollaborationAttachmentDelivery(client, scope, value, recovery),
     onSuccess: () => { draft.reset(); } });
   const locked = send.isPending || uploading || draft.uploads.length > 0 || draft.deliveries.length > 0 || Boolean(draft.error);
-  return <details className="space-y-4"><summary className="cursor-pointer py-2 text-body font-medium">{t(($) => $.attachments.add)}</summary>
+  // Unfinished uploads, deliveries and storage errors must not hide in a collapsed section.
+  const attention = draft.uploads.length > 0 || draft.deliveries.length > 0 || Boolean(draft.error) || send.isError;
+  const disclosure = useRef<HTMLDetailsElement>(null);
+  useEffect(() => { if (attention && disclosure.current) disclosure.current.open = true; }, [attention]);
+  return <details ref={disclosure} className="space-y-4"><summary className="cursor-pointer py-2 text-body font-medium pointer-coarse:min-h-11">{t(($) => $.attachments.add)}</summary>
     <CollaborationAttachmentPicker scope={scope} form={draft.form} update={draft.update} uploads={draft.uploads} onBusyChange={setUploading} disabled={send.isPending || draft.deliveries.length > 0 || Boolean(draft.error)} />
-    <Button type="button" disabled={locked || draft.form.selectedAttachmentIds.length === 0} onClick={() => send.mutate({ value: prepareCollaborationAttachmentDelivery(draft.form, crypto.randomUUID()), recovery: false })}>{t(($) => $.attachments.deliver)}</Button>
+    <Button type="button" className="pointer-coarse:min-h-11" disabled={locked || draft.form.selectedAttachmentIds.length === 0} onClick={() => send.mutate({ value: prepareCollaborationAttachmentDelivery(draft.form, crypto.randomUUID()), recovery: false })}>{t(($) => $.attachments.deliver)}</Button>
     {send.isPending && <p role="status">{t(($) => $.attachments.delivering)}</p>}
     {send.error && <CollaborationAttachmentFailure error={send.error} />}
     {Boolean(draft.error) && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
     {draft.deliveries.map((value) => <div key={value.requestId} className="space-y-2"><p role="status">{t(($) => $.attachments.deliveryUnknown)}</p>
-      <div className="flex flex-wrap gap-2"><Button type="button" variant="outline" disabled={send.isPending} onClick={() => send.mutate({ value, recovery: true })}>{t(($) => $.attachments.recoverDelivery)}</Button>
-        <Button type="button" variant="outline" disabled={send.isPending} onClick={() => send.mutate({ value, recovery: false })}>{t(($) => $.attachments.retryDelivery)}</Button></div></div>)}
+      <div className="flex flex-wrap gap-2"><Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={send.isPending} onClick={() => send.mutate({ value, recovery: true })}>{t(($) => $.attachments.recoverDelivery)}</Button>
+        <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={send.isPending} onClick={() => send.mutate({ value, recovery: false })}>{t(($) => $.attachments.retryDelivery)}</Button></div></div>)}
   </details>;
 }
 

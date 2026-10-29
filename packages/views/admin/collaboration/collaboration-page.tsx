@@ -26,7 +26,7 @@ export function AdminCollaborationPage({ issueId, hrefForIssue }: { issueId?: st
   const access = useAdminAccess();
   if (access.status === "loading" || access.status === "signed_out") return <p role="status" className="text-body text-muted-foreground">{t($ => $.state.loading)}</p>;
   if (access.status !== "ready" || !access.identity || access.identity.role !== "super_admin") {
-    return <section role="alert" className="min-w-0 space-y-4">
+    return <section className="min-w-0 space-y-4">
       <h1 className="text-title font-semibold">{t($ => $.collaboration.title)}</h1>
       <p className="max-w-prose text-body text-muted-foreground">{access.status === "unavailable" ? t($ => $.state.unavailable_description)
         : access.status === "unsupported" ? t($ => $.state.unsupported_description) : t($ => $.collaboration.accessRequired)}</p>

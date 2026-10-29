@@ -11,6 +11,7 @@ import { useCollaborationLabels } from "./labels";
 import { CollaborationQueryState } from "./query-state";
 import { CollaborationParticipants } from "./participants";
 import type { IssuePropertyValue } from "@multica/core/types";
+import { recoverFocus } from "./focus";
 import { CollaborationIterationInput, CollaborationLabelInput, CollaborationPropertyInputs, CollaborationSourceInputs, type CollaborationSourceSelection } from "./field-inputs";
 
 type ActionName = CollaborationAction["action"];
@@ -23,11 +24,14 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
   const [selected, setSelected] = useState<ActionName | null>(initialAction ?? null);
   const [restored, setRestored] = useState<CollaborationAction | null>(null);
   const submitting = useRef(false);
+  const trigger = useRef<HTMLButtonElement | null>(null);
+  const section = useRef<HTMLElement>(null);
+  const dismiss = () => { setSelected(null); recoverFocus(() => trigger.current, () => section.current); };
   const drafts = useCollaborationPendingDrafts({ ...scope, issueId: issue.id });
   const apply = useMutation({ mutationKey: [...collaborationKeys.issue(scope, issue.id), "human-action"], retry: false, networkMode: "always",
     mutationFn: ({ draft, recovery }: { draft: CollaborationDraft; recovery: boolean }) => executeCollaborationAction(client, scope, draft, recovery),
     onSuccess: (result, { draft, recovery }) => {
-      if (successful.has(result.code) && (result.status === undefined || result.status < 400)) { setSelected(null); return; }
+      if (successful.has(result.code) && (result.status === undefined || result.status < 400)) { dismiss(); return; }
       if (recovery) {
         const original = parseCollaborationActionDraft(draft);
         if (original.action === "edit" || original.action === "edit_source_structure" || original.action === "change_iteration") {
@@ -42,9 +46,9 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
     ["edit_source_structure", issue.capabilities.edit_source_structure && issue.source_structure !== undefined],
     ["change_iteration", issue.capabilities.edit_source_structure && issue.source_structure !== undefined]];
   const locked = apply.isPending || drafts.actions.length > 0 || drafts.error;
-  return <section aria-label={t(($) => $.workflow.title)} className="space-y-4">
+  return <section ref={section} tabIndex={-1} aria-label={t(($) => $.workflow.title)} className="space-y-4 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring">
     <div className="flex flex-wrap gap-2">{actions.filter(([, available]) => available === true && issue.write_context).map(([action]) =>
-      <Button key={action} variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => { apply.reset(); setRestored(null); setSelected(action); }}>{labels.action(action)}</Button>)}</div>
+      <Button key={action} variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={(event) => { trigger.current = event.currentTarget; apply.reset(); setRestored(null); setSelected(action); }}>{labels.action(action)}</Button>)}</div>
     <CollaborationParticipants key={issue.id} scope={scope} issue={issue} locked={locked} submit={async (draft) => {
       if (submitting.current) return;
       submitting.current = true;
@@ -57,13 +61,13 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
     {apply.data && <p role="status" className="text-body">{successful.has(apply.data.code) && (apply.data.status === undefined || apply.data.status < 400) ? t(($) => $.workflow.success) : t(($) => $.workflow.refused)}</p>}
     {!apply.isPending && drafts.actions.length > 0 && <div className="space-y-3"><p role="status" className="text-body">{t(($) => $.workflow.unknown)}</p>{drafts.actions.map((draft) =>
       <Button key={draft.requestId} variant="outline" disabled={apply.isPending} className="pointer-coarse:min-h-11" onClick={() => apply.mutate({ draft, recovery: true })}>{t(($) => $.workflow.recover)}</Button>)}</div>}
-    {selected && issue.write_context && actions.some(([action, available]) => action === selected && available === true) && <WorkflowForm key={`${selected}:${restored?.requestId ?? "new"}`} scope={scope} issue={issue} action={selected} restoredAction={restored?.action === selected ? restored : undefined} initialStatus={selected === "change_status" ? initialStatus : undefined} locked={locked} close={() => setSelected(null)} submit={async (intent, baseline) => {
+    {selected && issue.write_context && actions.some(([action, available]) => action === selected && available === true) && <WorkflowForm key={`${selected}:${restored?.requestId ?? "new"}`} scope={scope} issue={issue} action={selected} restoredAction={restored?.action === selected ? restored : undefined} initialStatus={selected === "change_status" ? initialStatus : undefined} locked={locked} close={dismiss} submit={async (intent, baseline) => {
       if (submitting.current) return;
       submitting.current = true;
       try {
         const draft = prepareCollaborationAction(scope, baseline, crypto.randomUUID(), intent);
         const result = await apply.mutateAsync({ draft, recovery: false });
-        if (successful.has(result.code) && (result.status === undefined || result.status < 400)) setSelected(null);
+        if (successful.has(result.code) && (result.status === undefined || result.status < 400)) dismiss();
       } catch { /* The original saved intent is the recovery boundary. */ }
       finally { submitting.current = false; }
     }} />}
@@ -151,15 +155,15 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
         {recipient && <p role="status" className="text-body [overflow-wrap:anywhere]">{t(($) => $.workflow.confirmRecipient, { name: recipient.recipient.name })}</p>}
         {resolve.error && <CollaborationQueryState error={resolve.error} />}
       </div>}
-      {needsStatus && <div className="space-y-2"><label htmlFor={`${fieldId}-status`} className="text-body">{t(($) => $.detail.status)}</label><select id={`${fieldId}-status`} value={chosenStatus} onChange={(event) => setStatus(event.target.value)} className="block min-h-11 max-w-full rounded-md border border-input bg-background px-3 text-body focus-visible:ring-2 focus-visible:ring-ring">
+      {needsStatus && <div className="space-y-2"><label htmlFor={`${fieldId}-status`} className="text-body">{t(($) => $.detail.status)}</label><select id={`${fieldId}-status`} value={chosenStatus} onChange={(event) => setStatus(event.target.value)} className="block min-h-11 max-w-full rounded-md border border-input bg-background px-3 text-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
         {chosenStatus && options.data && !options.data.options.some((item) => item.key === chosenStatus) && <option value={chosenStatus}>{t(($) => $.fields.unavailableSelection, { value: chosenStatus })}</option>}
         {(options.data?.options ?? []).map((option) => <option key={option.key} value={option.key}>{option.name}</option>)}</select>{options.error && <CollaborationQueryState error={options.error} />}</div>}
       {["transfer", "request_information", "return_information", "submit_acceptance"].includes(action) && <div className="space-y-2"><label htmlFor={`${fieldId}-note`} className="text-body">{t(($) => $.workflow.note)}</label><Textarea id={`${fieldId}-note`} value={note} onChange={(event) => setNote(event.target.value)} /></div>}
       {action === "edit" && <>
-        <div className="space-y-2"><label htmlFor={`${fieldId}-title`}>{t(($) => $.workflow.titleLabel)}</label><Input id={`${fieldId}-title`} value={title} onChange={(event) => setTitle(event.target.value)} /></div>
-        <div className="space-y-2"><label htmlFor={`${fieldId}-body`}>{t(($) => $.workflow.descriptionLabel)}</label><Textarea id={`${fieldId}-body`} value={description} onChange={(event) => setDescription(event.target.value)} /></div>
-        <div className="flex flex-wrap gap-4"><div className="space-y-2"><label htmlFor={`${fieldId}-start`}>{t(($) => $.workflow.startDate)}</label><Input type="date" id={`${fieldId}-start`} value={startDate} onChange={(event) => setStartDate(event.target.value)} /></div><div className="space-y-2"><label htmlFor={`${fieldId}-due`}>{t(($) => $.workflow.dueDate)}</label><Input type="date" id={`${fieldId}-due`} value={dueDate} onChange={(event) => setDueDate(event.target.value)} /></div></div>
-        <div className="space-y-2"><label htmlFor={`${fieldId}-priority`}>{t(($) => $.workflow.priority)}</label><select id={`${fieldId}-priority`} value={priority} onChange={(event) => setPriority(event.target.value)} className="block min-h-11 rounded-md border border-input bg-background px-3">
+        <div className="space-y-2"><label htmlFor={`${fieldId}-title`} className="text-body">{t(($) => $.workflow.titleLabel)}</label><Input id={`${fieldId}-title`} value={title} onChange={(event) => setTitle(event.target.value)} className="pointer-coarse:min-h-11" /></div>
+        <div className="space-y-2"><label htmlFor={`${fieldId}-body`} className="text-body">{t(($) => $.workflow.descriptionLabel)}</label><Textarea id={`${fieldId}-body`} value={description} onChange={(event) => setDescription(event.target.value)} /></div>
+        <div className="flex flex-wrap gap-4"><div className="space-y-2"><label htmlFor={`${fieldId}-start`} className="text-body">{t(($) => $.workflow.startDate)}</label><Input type="date" id={`${fieldId}-start`} value={startDate} onChange={(event) => setStartDate(event.target.value)} className="pointer-coarse:min-h-11" /></div><div className="space-y-2"><label htmlFor={`${fieldId}-due`} className="text-body">{t(($) => $.workflow.dueDate)}</label><Input type="date" id={`${fieldId}-due`} value={dueDate} onChange={(event) => setDueDate(event.target.value)} className="pointer-coarse:min-h-11" /></div></div>
+        <div className="space-y-2"><label htmlFor={`${fieldId}-priority`} className="text-body">{t(($) => $.workflow.priority)}</label><select id={`${fieldId}-priority`} value={priority} onChange={(event) => setPriority(event.target.value)} className="block min-h-11 max-w-full rounded-md border border-input bg-background px-3 text-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
           {(["none", "low", "medium", "high", "urgent"] as const).map((value) => <option key={value} value={value}>{t(($) => $.priorities[value])}</option>)}
         </select></div>
         {fields.data && labelIds !== undefined && <>
@@ -182,7 +186,7 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
       {needsSource && !fields.isPending && !fields.error && !sourceOptions && <p role="status">{t(($) => $.fields.optionsUnavailable)}</p>}
     </fieldset>
     {staleBaseline && <div className="space-y-2"><p role="status" className="text-body">{t(($) => $.fields.changed)}</p>
-      <Button type="button" variant="outline" disabled={locked} onClick={() => { setBaseline(issue); if (iterationId) setIterationRevision(sourceOptions?.iterations.find((item) => item.id === iterationId)?.revision); }}>{t(($) => $.fields.useCurrentVersion)}</Button></div>}
+      <Button type="button" variant="outline" disabled={locked} className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11" onClick={() => { setBaseline(issue); if (iterationId) setIterationRevision(sourceOptions?.iterations.find((item) => item.id === iterationId)?.revision); }}>{t(($) => $.fields.useCurrentVersion)}</Button></div>}
     <div className="flex flex-wrap gap-2"><Button disabled={!ready || (action === "return_information" && !issue.current_information_request)} type="submit" className="pointer-coarse:min-h-11">{t(($) => $.workflow.confirm)}</Button><Button disabled={locked} type="button" variant="ghost" onClick={close} className="pointer-coarse:min-h-11">{t(($) => $.workflow.dismiss)}</Button></div>
   </form>;
 }

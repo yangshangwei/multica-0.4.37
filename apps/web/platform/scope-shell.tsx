@@ -44,15 +44,15 @@ export function WebScopeShell({ children }: { children: ReactNode }) {
   // or scope resolves would remount the whole page when the wrapper appears.
   const chrome = owner !== null && scope !== undefined;
   return <div className={chrome ? "flex h-svh min-h-0 flex-col overflow-hidden bg-app-shell [&_[data-slot=sidebar-container]]:top-12 [&_[data-slot=sidebar-container]]:h-[calc(100svh-3rem)]" : "contents"}>
-    {chrome && <header className="z-20 flex h-12 shrink-0 items-center px-3">
-      <GlobalScopeNavigation activeScope={scope} onWorkspace={() => void openWorkspace()} onCollaboration={() => {
+    {chrome && <header className="z-20 flex min-h-12 shrink-0 items-center px-3">
+      <GlobalScopeNavigation className="flex-wrap" activeScope={scope} onWorkspace={() => void openWorkspace()} onCollaboration={() => {
         if (!owner || scope === "account") return;
         request.current += 1;
         const destination = resolveScopePath(useScopeHistoryStore.getState(), owner, "account");
         if (destination) resume(destination);
       }}>
-        {scope === "account" && list.unavailable && <Button variant="ghost" size="sm" disabled={list.isFetching} onClick={() => void list.refetch()}>{collaboration(($) => $.page.refresh)}</Button>}
-        {scope === "account" && list.ready && list.workspaces.length === 0 && <Button variant="ghost" size="sm" onClick={() => navigation.push("/workspaces/new")}>{t(($) => $.sidebar.create_workspace)}</Button>}
+        {scope === "account" && list.unavailable && <Button variant="ghost" size="sm" className="pointer-coarse:min-h-11" disabled={list.isFetching} onClick={() => void list.refetch()}>{collaboration(($) => $.page.refresh)}</Button>}
+        {scope === "account" && list.ready && list.workspaces.length === 0 && <Button variant="ghost" size="sm" className="pointer-coarse:min-h-11" onClick={() => navigation.push("/workspaces/new")}>{t(($) => $.sidebar.create_workspace)}</Button>}
       </GlobalScopeNavigation>
     </header>}
     <div className={chrome ? "min-h-0 flex-1" : "contents"}>{children}</div>

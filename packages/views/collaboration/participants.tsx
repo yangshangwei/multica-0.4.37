@@ -17,7 +17,7 @@ export function CollaborationParticipants({ scope, issue, locked, submit }: { sc
   const canRemove = issue.capabilities.remove_participants === true && issue.write_context != null && issue.creator.user_id === scope.userId;
   const current = query.data?.collaboration_revision === issue.collaboration_revision;
   return <div className="space-y-3">
-    <Button variant="ghost" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]" aria-expanded={open} aria-controls={contentId} onClick={() => setOpen(!open)}>{t(($) => $.participants.title)}</Button>
+    <Button variant="ghost" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]" aria-expanded={open} aria-controls={open ? contentId : undefined} onClick={() => setOpen(!open)}>{t(($) => $.participants.title)}</Button>
     {open && <div id={contentId} className="space-y-3">
       {query.isPending && <p role="status">{t(($) => $.page.loading)}</p>}
       {query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}

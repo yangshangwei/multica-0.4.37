@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import {
   AdminCollaborationMemoryRejectedError, AdminControlDraftError,
   captureAdminCollaborationMemoryPurge, dismissAdminCollaborationMemoryReceipt, isAdminCollaborationMemoryReasonValid,
@@ -11,6 +11,7 @@ import {
 import { Button } from "@multica/ui/components/ui/button";
 import { Textarea } from "@multica/ui/components/ui/textarea";
 import { useT } from "../../i18n";
+import { recoverFocus } from "../../collaboration/focus";
 
 interface ControlsProps { scope: AdminScope; issueId: string; detail: AdminCollaborationDetail | null; refreshing: boolean }
 
@@ -30,6 +31,7 @@ function MemoryControls({ scope, issueId, detail, refreshing }: ControlsProps) {
   const [feedback, setFeedback] = useState<string | null>(null);
   const submitting = useRef(false);
   const panel = useRef<HTMLElement>(null);
+  const feedbackId = useId();
   const input = sent ?? saved.draft?.input ?? null;
   const lookup = useAdminCollaborationMemoryOperation(scope, input, !sent && !!saved.draft);
   const receipt = !lookup.isError ? lookup.data ?? purge.data : undefined;
@@ -41,6 +43,7 @@ function MemoryControls({ scope, issueId, detail, refreshing }: ControlsProps) {
   const canPurge = detail?.creator.disabled === true && detail.issueId === issueId && detail.scope === scope.organizationId;
   const busy = purge.isPending || lookup.isFetching;
   const locked = busy || refreshing || versions.isFetching || saved.error || input !== null;
+  const reasonError = feedback !== null && feedback === t(($) => $.collaboration.memory.reasonInvalid);
   const selectedItem = selected ? items.find(item => item.version === selected && !item.purged && item.version !== currentVersion) : null;
 
   function close() {
@@ -50,6 +53,7 @@ function MemoryControls({ scope, issueId, detail, refreshing }: ControlsProps) {
   async function submit(value: AdminCollaborationMemoryInput) {
     if (busy || submitting.current) return;
     submitting.current = true; setSent(value); setFeedback(null);
+    recoverFocus(() => panel.current);
     try { await purge.mutateAsync(value); }
     catch (error) {
       if (error instanceof AdminCollaborationMemoryRejectedError) { setRejected(true); setFeedback(t(($) => $.collaboration.memory.rejected)); }
@@ -78,7 +82,7 @@ function MemoryControls({ scope, issueId, detail, refreshing }: ControlsProps) {
     {detail && versions.hasNextPage && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={busy || versions.isFetching} onClick={() => void versions.fetchNextPage()}>{t(($) => $.collaboration.memory.more)}</Button>}
     {canPurge && selectedItem && !input && <form className="space-y-3 rounded-md border border-destructive/40 p-3" onSubmit={event => { event.preventDefault(); confirm(); }}>
       <h3 className="text-body font-medium">{t(($) => $.collaboration.memory.confirmTitle, { version: selectedItem.version })}</h3><p className="text-caption text-muted-foreground">{t(($) => $.collaboration.memory.confirmNotice)}</p>
-      <Textarea aria-label={t(($) => $.collaboration.memory.reason)} value={reason} disabled={locked} onChange={event => { setReason(event.target.value); setFeedback(null); }} className="min-h-20" />
+      <Textarea aria-label={t(($) => $.collaboration.memory.reason)} aria-invalid={reasonError || undefined} aria-describedby={reasonError ? feedbackId : undefined} value={reason} disabled={locked} onChange={event => { setReason(event.target.value); setFeedback(null); }} className="min-h-20" />
       <div className="flex flex-wrap gap-2"><Button type="submit" variant="destructive" className="pointer-coarse:min-h-11" disabled={locked || reason.trim() === ""}>{t(($) => $.collaboration.memory.confirm)}</Button><Button type="button" variant="ghost" className="pointer-coarse:min-h-11" disabled={busy} onClick={close}>{t(($) => $.collaboration.memory.cancel)}</Button></div>
     </form>}
     {input && <div className="space-y-3">
@@ -88,12 +92,12 @@ function MemoryControls({ scope, issueId, detail, refreshing }: ControlsProps) {
       <div className="flex flex-wrap gap-2">{receipt ? <Button type="button" variant="ghost" className="pointer-coarse:min-h-11" onClick={() => {
         try { dismissAdminCollaborationMemoryReceipt(scope, input, receipt); close(); }
         catch { setFeedback(t(($) => $.operations.storageFailed)); }
-      }}>{t(($) => $.collaboration.memory.dismiss)}</Button> : rejected ? <Button type="button" variant="ghost" onClick={close}>{t(($) => $.collaboration.close)}</Button> : <>
+      }}>{t(($) => $.collaboration.memory.dismiss)}</Button> : rejected ? <Button type="button" variant="ghost" className="pointer-coarse:min-h-11" onClick={close}>{t(($) => $.collaboration.close)}</Button> : <>
         <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={busy} onClick={() => { setFeedback(null); void lookup.refetch(); }}>{t(($) => $.collaboration.memory.check)}</Button>
         <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={busy} onClick={() => void submit(input)}>{t(($) => $.collaboration.memory.retryOriginal)}</Button>
       </>}</div>
     </div>}
-    {feedback && <p role="alert" className="text-body">{feedback}</p>}
+    {feedback && <p id={feedbackId} role="alert" className="text-body">{feedback}</p>}
   </section>;
 }
 

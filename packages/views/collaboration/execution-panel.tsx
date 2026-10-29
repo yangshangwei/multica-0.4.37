@@ -11,6 +11,7 @@ import { CollaborationResourcePanel } from "./resource-panel";
 import { CollaborationSwitchPanel } from "./switch-panel";
 import { CollaborationRunDisclosure } from "./run-records";
 import { CollaborationCommandHistory } from "./command-history";
+import { recoverFocus } from "./focus";
 
 // A Resume counts a lane by its result. A grant withdrawal stops a run without
 // pausing its lane, so a lane still behind its stop barrier can be active.
@@ -22,6 +23,7 @@ export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { s
   const client = useQueryClient();
   const pending = useCollaborationPendingDrafts({ ...scope, issueId: issue.id });
   const submitting = useRef(false);
+  const panel = useRef<HTMLElement>(null);
   const control = useMutation({ mutationKey: [...collaborationKeys.issue(scope, issue.id), "execution-control"], retry: false, networkMode: "always", mutationFn: async ({ draft, recover }: { draft: CollaborationDraft; recover: boolean }) => {
     try { parseCollaborationControlDraft(draft); } catch {
       try { parseCollaborationCommandCancelDraft(draft); } catch {
@@ -55,11 +57,16 @@ export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { s
     catch { return undefined; }
     finally { submitting.current = false; }
   }
+  // Recover and Retry unmount while their request runs and when its draft clears.
+  function recoverDraft(draft: CollaborationDraft, recover?: boolean) {
+    recoverFocus(() => panel.current);
+    void submit(draft, recover).then(() => recoverFocus(() => panel.current));
+  }
   function act(action: "stop" | "resume", targetId?: string) {
     const draft = prepareCollaborationControl(scope, issue, crypto.randomUUID(), action, targetId ? { scope: "target", targetId } : { scope: "issue" });
     submit(draft);
   }
-  return <section aria-label={t(($) => $.execution.title)} className="min-w-0 space-y-4">
+  return <section ref={panel} tabIndex={-1} aria-label={t(($) => $.execution.title)} className="min-w-0 space-y-4 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring">
     <h3 className="text-body font-semibold">{t(($) => $.execution.title)}</h3>
     {execution?.protocol_version !== 6
       ? <p className="text-caption text-muted-foreground">{t(($) => $.execution.unavailable)}</p>
@@ -67,7 +74,7 @@ export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { s
     <p className="text-caption text-muted-foreground">{t(($) => $.execution.stopScope)}</p>
     {hasHostRuns && <p className="text-caption text-muted-foreground">{t(($) => $.host.stopScope)}</p>}
     <p className="text-body">{labels.execution(issue.session.queue_state)}</p>
-    {canControl && execution && <div className="flex flex-wrap gap-2"><Button variant="outline" disabled={locked} onClick={() => act("stop")}>{t(($) => $.execution.stopAll)}</Button><Button variant="outline" disabled={locked || issue.session.queue_state === "closed"} onClick={() => act("resume")}>{t(($) => $.execution.resumeAll)}</Button></div>}
+    {canControl && execution && <div className="flex flex-wrap gap-2"><Button variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => act("stop")}>{t(($) => $.execution.stopAll)}</Button><Button variant="outline" className="pointer-coarse:min-h-11" disabled={locked || issue.session.queue_state === "closed"} onClick={() => act("resume")}>{t(($) => $.execution.resumeAll)}</Button></div>}
     {pending.error && <p role="alert" className="text-body">{t(($) => $.workflow.storageError)}</p>}
     {control.error && <CollaborationQueryState error={control.error} />}
     {control.isPending && <p role="status">{t(($) => $.workflow.pending)}</p>}
@@ -81,7 +88,7 @@ export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { s
     {control.data?.action === "cancel_command" && <p role="status" className="text-body">{control.data.code === "command_cancelled" ? t(($) => $.execution.cancelledInput) : labels.reason(control.data.code)}</p>}
     {control.data && ["register_target", "consent_resource", "revoke_grant", "offer_resource", "adopt_resource_offer", "withdraw_resource_offer", "propose_target_switch", "consent_target_switch", "revoke_target_switch_consent", "commit_target_switch"].includes(control.data.action) && <p role="status" className="text-body">{labels.reason(control.data.code)}</p>}
     {control.data && "redacted" in control.data && control.data.redacted === true && <p role="status">{t(($) => $.execution.redacted)}</p>}
-    {!control.isPending && pending.execution.map((draft) => <div key={draft.requestId} className="space-y-2"><p role="status" className="text-body">{t(($) => $.workflow.unknown)}</p><div className="flex flex-wrap gap-2"><Button variant="outline" disabled={pending.error} onClick={() => submit(draft, true)}>{t(($) => $.workflow.recover)}</Button><Button variant="outline" disabled={pending.error || !canControl} onClick={() => submit(draft)}>{t(($) => $.workflow.retryOriginal)}</Button></div></div>)}
+    {!control.isPending && pending.execution.map((draft) => <div key={draft.requestId} className="space-y-2"><p role="status" className="text-body">{t(($) => $.workflow.unknown)}</p><div className="flex flex-wrap gap-2"><Button variant="outline" className="pointer-coarse:min-h-11" disabled={pending.error} onClick={() => recoverDraft(draft, true)}>{t(($) => $.workflow.recover)}</Button><Button variant="outline" className="pointer-coarse:min-h-11" disabled={pending.error || !canControl} onClick={() => recoverDraft(draft)}>{t(($) => $.workflow.retryOriginal)}</Button></div></div>)}
     {canControl && execution && <CollaborationResourcePanel key={issue.id} scope={scope} issue={issue} locked={locked} submit={submit} />}
     {execution?.channels.map((lane, index) => {
       const targets = execution.targets.filter((target) => target.channel_id === lane.id);
@@ -92,7 +99,7 @@ export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { s
         <ul className="space-y-4">{targets.map((target) => <li key={target.id} className="min-w-0 space-y-2">
           <div className="flex flex-wrap items-baseline gap-2"><span className="text-body font-medium">{target.kind === "squad" ? t(($) => $.execution.squad) : t(($) => $.execution.agent)}</span><span className="break-all text-caption text-muted-foreground">{target.resource_id}</span></div>
           <p className="text-caption">{target.revoked_at !== null ? t(($) => $.execution.revoked) : target.hold_reason ? labels.execution(target.hold_reason) : t(($) => $.execution.released)}</p>
-          {canControl && <div className="flex gap-2"><Button size="sm" variant="outline" disabled={locked} onClick={() => act("stop", target.id)}>{t(($) => $.execution.stop)}</Button><Button size="sm" variant="outline" disabled={locked || target.revoked_at !== null || issue.session.queue_state === "closed"} onClick={() => act("resume", target.id)}>{t(($) => $.execution.resume)}</Button></div>}
+          {canControl && <div className="flex flex-wrap gap-2"><Button size="sm" variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => act("stop", target.id)}>{t(($) => $.execution.stop)}</Button><Button size="sm" variant="outline" className="pointer-coarse:min-h-11" disabled={locked || target.revoked_at !== null || issue.session.queue_state === "closed"} onClick={() => act("resume", target.id)}>{t(($) => $.execution.resume)}</Button></div>}
           {canControl && <CollaborationSwitchPanel scope={scope} issue={issue} targetId={target.id} locked={locked} submit={submit} />}
         </li>)}</ul>
         <ol className="space-y-4">{groups.map((group) => <li key={group.id} className="min-w-0 space-y-2">
@@ -104,12 +111,12 @@ export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { s
           <p>{t(($) => $.execution.input, { sequence: command.sequence })} · {command.group_id !== null ? t(($) => $.composer.joined) : t(($) => $.execution.waiting)}</p>
           <p className="[overflow-wrap:anywhere]">{targetName(command.target_id)}</p>
           <p className="[overflow-wrap:anywhere]">{t(($) => $.execution.author)}: {command.author_user_id === scope.userId ? t(($) => $.execution.you) : command.author_user_id}</p>
-          {canControl && [command.author_user_id, issue.creator.user_id, issue.handler.user_id].includes(scope.userId) && <Button size="sm" variant="outline" disabled={locked} onClick={() => submit(prepareCollaborationCommandCancel(scope, issue, crypto.randomUUID(), command.id))}>{t(($) => $.execution.cancelInput, { sequence: command.sequence })}</Button>}
+          {canControl && [command.author_user_id, issue.creator.user_id, issue.handler.user_id].includes(scope.userId) && <Button size="sm" variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => submit(prepareCollaborationCommandCancel(scope, issue, crypto.randomUUID(), command.id))}>{t(($) => $.execution.cancelInput, { sequence: command.sequence })}</Button>}
         </li>)}</ul>
       </div>;
     })}
     {execution?.targets.filter((target) => target.channel_id === null).map((target) => <p key={target.id} className="text-caption">{target.hold_reason ? labels.execution(target.hold_reason) : t(($) => $.execution.released)}</p>)}
-    {selectedRunId && execution && !execution.runs.some((run) => run.id === selectedRunId) && <p role="alert" className="text-body text-muted-foreground">{t(($) => $.records.unavailable)}</p>}
+    {selectedRunId && execution && !execution.runs.some((run) => run.id === selectedRunId) && <p className="text-body text-muted-foreground">{t(($) => $.records.unavailable)}</p>}
     <CollaborationCommandHistory key={`${scope.apiScope}:${scope.userId}:${issue.id}`} scope={scope} issueId={issue.id} />
   </section>;
 }

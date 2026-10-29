@@ -7,6 +7,7 @@ import { Button } from "@multica/ui/components/ui/button";
 import { useT } from "../i18n";
 import { useCollaborationLabels } from "./labels";
 import { CollaborationQueryState } from "./query-state";
+import { useOpenedForm } from "./focus";
 
 export type CollaborationExecutionSubmit = (draft: CollaborationDraft, recover?: boolean) => Promise<{ status: number; code: string } | undefined>;
 
@@ -40,6 +41,7 @@ export function CollaborationResourceCandidateForm({ scope, issueId, title, conf
   const client = useQueryClient();
   const fieldId = useId();
   const [workspaceId, setWorkspaceId] = useState("");
+  const formRef = useOpenedForm<HTMLFormElement>();
   const [selection, setSelection] = useState<CollaborationResourceOption | null>(null);
   const [refused, setRefused] = useState(false);
   const workspaces = useQuery(collaborationResourceWorkspacesOptions(client, scope));
@@ -52,7 +54,7 @@ export function CollaborationResourceCandidateForm({ scope, issueId, title, conf
   const sameSelection = selection !== null && current !== undefined &&
     JSON.stringify(collaborationResourceRoster(current)) === JSON.stringify(collaborationResourceRoster(selection));
   const ready = !locked && !refused && sameSelection && selection.available === true && current?.available === true && !candidates.isFetching;
-  return <form aria-label={title} className="min-w-0 space-y-4 py-3" onSubmit={(event) => {
+  return <form ref={formRef} tabIndex={-1} aria-label={title} className="min-w-0 space-y-4 rounded-md py-3 outline-none focus-visible:ring-2 focus-visible:ring-ring" onSubmit={(event) => {
     event.preventDefault();
     if (ready && selection) void submit(selection, workspaceId).then((result) => { if (result && result.status >= 400) setRefused(true); });
   }}>
@@ -79,7 +81,7 @@ export function CollaborationResourceCandidateForm({ scope, issueId, title, conf
       </div>}
       {selection && (!sameSelection || refused) && <div className="space-y-2">
         <p role="status" className="text-body">{t(($) => $.execution.staleRequest)}</p>
-        <Button type="button" variant="outline" disabled={candidates.isFetching} onClick={() => { setSelection(null); setRefused(false); refreshBaseline?.(); void workspaces.refetch(); void candidates.refetch(); }}>{t(($) => $.page.refresh)}</Button>
+        <Button type="button" variant="outline" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]" disabled={candidates.isFetching} onClick={() => { setSelection(null); setRefused(false); refreshBaseline?.(); void workspaces.refetch(); void candidates.refetch(); }}>{t(($) => $.page.refresh)}</Button>
       </div>}
       {sameSelection && selection && <div className="space-y-3">
         {selection.available !== true && <p role="status" className="text-body">{labels.reason(selection.reason)}</p>}
@@ -104,6 +106,8 @@ export function CollaborationResourceConsentForm({ scope, issueId, targetId, age
   const labels = useCollaborationLabels();
   const client = useQueryClient();
   const [error, setError] = useState<unknown>(null);
+  const headingId = useId();
+  const formRef = useOpenedForm<HTMLFormElement>();
   const identity = useQuery(collaborationResourceIdentityOptions(client, scope, issueId, targetId, agentId, proposalId));
   const host = resource?.execution_mode === "host_process_supervision_v1";
   const modeKnown = executionViewVersion !== 6 || resource?.execution_mode !== undefined;
@@ -111,12 +115,12 @@ export function CollaborationResourceConsentForm({ scope, issueId, targetId, age
     (!host || resource.agent_owner_user_id !== undefined && resource.runtime != null && resource.owner != null &&
       (resource.provider ?? resource.runtime.provider) !== "" && resource.account_source === "runtime_configuration");
   const ready = !locked && !disabled && summaryReady && identity.isSuccess && !identity.isFetching && identity.data.identity !== null;
-  return <form className="min-w-0 space-y-3 py-3" onSubmit={(event) => {
+  return <form ref={formRef} tabIndex={-1} aria-labelledby={headingId} className="min-w-0 space-y-3 rounded-md py-3 outline-none focus-visible:ring-2 focus-visible:ring-ring" onSubmit={(event) => {
     event.preventDefault();
     if (!ready || !identity.data) return;
     try { const draft = prepare(identity.data); void submit(draft).then(close); } catch (failure) { setError(failure); }
   }}>
-    <h5 className="text-body font-semibold [overflow-wrap:anywhere]">{host || !modeKnown ? t(($) => $.host.authorizeTitle) : t(($) => $.resources.authorize, { name })}</h5>
+    <h5 id={headingId} className="text-body font-semibold [overflow-wrap:anywhere]">{host || !modeKnown ? t(($) => $.host.authorizeTitle) : t(($) => $.resources.authorize, { name })}</h5>
     {(host || !modeKnown) && <p className="text-body [overflow-wrap:anywhere]">{name} · {agentId}</p>}
     {resource && <CollaborationResourceSummary resource={resource} />}
     {modeKnown && <p className="text-caption text-muted-foreground">{host ? t(($) => $.host.authorizeBody) : t(($) => $.resources.consentPurpose)}</p>}
@@ -140,7 +144,8 @@ export function CollaborationResourceConfirmation({ title, effect, confirmLabel,
   submit: CollaborationExecutionSubmit; close: () => void; children?: ReactNode;
 }) {
   const { t } = useT("collaboration");
-  return <form aria-label={title} className="min-w-0 space-y-3 py-3" onSubmit={(event) => {
+  const formRef = useOpenedForm<HTMLFormElement>();
+  return <form ref={formRef} tabIndex={-1} aria-label={title} className="min-w-0 space-y-3 rounded-md py-3 outline-none focus-visible:ring-2 focus-visible:ring-ring" onSubmit={(event) => {
     event.preventDefault();
     if (!locked && !disabled) void submit(draft).then((result) => { if (!preserveOnRefusal || !result || result.status < 400) close(); });
   }}>

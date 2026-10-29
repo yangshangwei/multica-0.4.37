@@ -83,7 +83,7 @@ function WorkbenchBody({ scope, destination }: { scope: ReturnType<typeof useCol
         <Input aria-label={t(($) => $.page.search)} placeholder={t(($) => $.page.search)} value={search} onChange={(event) => { setSearch(event.target.value); writeView("account-search", event.target.value); }} className="pointer-coarse:min-h-11" />
         <div className="flex flex-wrap items-center justify-between gap-2 text-caption text-muted-foreground">
           <span className="tabular-nums">{t(($) => $.page.count, { count: list.data?.pages[0]?.total ?? 0 })}</span>
-          <select aria-label={t(($) => $.page.sort)} value={sort} onChange={(event) => { setSort(event.target.value); writeView("account-sort", event.target.value); }} className="min-h-8 max-w-full rounded-md bg-background px-2 text-foreground focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11">
+          <select aria-label={t(($) => $.page.sort)} value={sort} onChange={(event) => { setSort(event.target.value); writeView("account-sort", event.target.value); }} className="min-h-8 max-w-full rounded-md border border-input bg-background px-2 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11">
             <option value="updated">{t(($) => $.page.updated)}</option><option value="title">{t(($) => $.page.titleSort)}</option>
           </select>
         </div>
@@ -107,7 +107,7 @@ function WorkbenchBody({ scope, destination }: { scope: ReturnType<typeof useCol
     <section ref={restoreDetail} data-tab-scroll-root="account-detail" aria-label={t(($) => $.detail.title)} className={`${destination.issueId ? "flex" : "hidden md:flex"} min-h-0 min-w-0 flex-col overflow-y-auto px-4 pb-10 md:px-8`}>
       {destination.issueId ? <>
         <AppLink className="mb-4 inline-flex min-h-11 items-center self-start text-body text-muted-foreground hover:text-foreground md:hidden" href={accountPath({ view: destination.view })}>{t(($) => $.page.back)}</AppLink>
-        {selectedOutside && <div role="status" className="mb-6 space-y-2 text-caption text-muted-foreground"><p>{t(($) => $.page.filteredOut)}</p>{destination.view === "current" && <AppLink className="underline underline-offset-4" href={accountPath({ ...destination, view: "participating" })}>{t(($) => $.page.openParticipating)}</AppLink>}</div>}
+        {selectedOutside && <div className="mb-6 space-y-2 text-caption text-muted-foreground"><p role="status">{t(($) => $.page.filteredOut)}</p>{destination.view === "current" && <AppLink className="underline underline-offset-4" href={accountPath({ ...destination, view: "participating" })}>{t(($) => $.page.openParticipating)}</AppLink>}</div>}
         <CollaborationDetail key={`${scope.apiScope}:${scope.userId}:${destination.issueId}`} scope={scope} destination={destination} />
       </> : <p className="m-auto max-w-prose py-16 text-body text-muted-foreground">{t(($) => $.page.select)}</p>}
     </section>

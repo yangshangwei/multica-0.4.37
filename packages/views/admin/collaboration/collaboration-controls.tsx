@@ -8,6 +8,7 @@ import { Button } from "@multica/ui/components/ui/button";
 import { useT } from "../../i18n";
 import { AdminCollaborationForm } from "./collaboration-form";
 import { AdminCollaborationReceipt } from "./collaboration-receipt";
+import { recoverFocus } from "../../collaboration/focus";
 
 export function AdminCollaborationControls({ scope, issueId, detail, refreshing }: {
   scope: AdminScope; issueId: string; detail: AdminCollaborationDetail | null; refreshing: boolean;
@@ -37,6 +38,8 @@ export function AdminCollaborationControls({ scope, issueId, detail, refreshing 
     if (busy || submitting.current) return;
     submitting.current = true;
     setSent(value); setFeedback("");
+    // Sending hides the form that held focus; the receipt replaces it in this panel.
+    recoverFocus(() => panel.current);
     try { await mutation.mutateAsync(value); }
     catch (error) {
       if (error instanceof AdminCollaborationRejectedError) { setRejected(true); setFeedback(t($ => $.collaboration.rejected)); }

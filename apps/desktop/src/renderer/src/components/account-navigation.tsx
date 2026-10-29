@@ -15,7 +15,7 @@ export function DesktopAccountNavigation({ onRetry }: { onRetry: () => void }) {
   const nav = useNavigation();
   const activeScope = useTabStore((state) => state.activeScope);
   return <div data-slot="global-scope-bar" className="flex h-12 min-w-0 shrink-0 items-center bg-app-shell pr-3 pl-20" style={{ WebkitAppRegion: "drag" } as React.CSSProperties}>
-    <div className="min-w-0 flex-1" style={{ WebkitAppRegion: "no-drag" } as React.CSSProperties}>
+    <div className="min-w-0" style={{ WebkitAppRegion: "no-drag" } as React.CSSProperties}>
       <GlobalScopeNavigation
         activeScope={activeScope}
         onWorkspace={() => {

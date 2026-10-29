@@ -50,7 +50,7 @@ it("restores selected labels and false property input after a lost response and 
   await user.click(await screen.findByRole("button", { name: "Labels" }));
   await user.click(screen.getByRole("button", { name: "Needs review" }));
   await user.keyboard("{Escape}");
-  await user.click(screen.getByRole("button", { name: "Reviewed" }));
+  await user.click(screen.getByRole("button", { name: "Reviewed Empty" }));
   await user.click(screen.getByRole("button", { name: "No" }));
   rerender(ui({ ...issue, collaboration_revision: "9007199254740994" }));
   await user.click(screen.getByRole("button", { name: "Confirm" }));
@@ -62,7 +62,7 @@ it("restores selected labels and false property input after a lost response and 
   const request = fetch.mock.calls.find(([, init]) => init?.method === "PATCH")?.[1];
   expect(JSON.parse(String(request?.body))).toMatchObject({ label_ids: [labelId], properties: { [propertyId]: false }, expected_collaboration_revision: issue.collaboration_revision });
   expect(screen.getByRole("button", { name: "Labels" })).toHaveTextContent("Needs review");
-  expect(screen.getByRole("button", { name: "Reviewed" })).toHaveTextContent("No");
+  expect(screen.getByRole("button", { name: "Reviewed No" })).toBeInTheDocument();
   await user.click(screen.getByRole("button", { name: "Keep input and use current version" }));
   expect(fetch.mock.calls.filter(([, init]) => init?.method === "PATCH")).toHaveLength(1);
 });
@@ -175,7 +175,7 @@ it("keeps a property draft during option refresh and does not submit the outer f
   vi.stubGlobal("fetch", fetch);
   renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={scope} issue={issue} initialAction="edit" /></QueryClientProvider>);
   const user = userEvent.setup();
-  await user.click(await screen.findByRole("button", { name: "Notes" }));
+  await user.click(await screen.findByRole("button", { name: "Notes Empty" }));
   await user.type(screen.getByPlaceholderText(/Enter value/), "Keep this property draft");
   let refreshing!: Promise<void>;
   await act(async () => { refreshing = client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, id) }); });
@@ -183,6 +183,6 @@ it("keeps a property draft during option refresh and does not submit the outer f
   expect(screen.getByPlaceholderText(/Enter value/)).toHaveValue("Keep this property draft");
   await act(async () => { finish(json(textOptions)); await refreshing; });
   await user.type(screen.getByPlaceholderText(/Enter value/), "{Enter}");
-  expect(screen.getByRole("button", { name: "Notes" })).toHaveTextContent("Keep this property draft");
+  expect(screen.getByRole("button", { name: "Notes Keep this property draft" })).toBeInTheDocument();
   expect(fetch.mock.calls.every(([, init]) => init?.method !== "PATCH")).toBe(true);
 });

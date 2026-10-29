@@ -7,6 +7,7 @@ import { Input } from "@multica/ui/components/ui/input";
 import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import { useT } from "../i18n";
 import { CollaborationQueryState } from "./query-state";
+import { recoverFocus } from "./focus";
 
 export function CollaborationAttachmentFailure({ error }: { error: unknown }) {
   const { t } = useT("collaboration");
@@ -56,6 +57,8 @@ export function CollaborationAttachmentPicker({ scope, form, update, uploads, di
       }
     },
     onSuccess: () => { onChange?.(); },
+    // Cancel and the recovery buttons disappear when the attempt ends.
+    onSettled: () => { recoverFocus(() => document.getElementById(inputId)); },
   });
   useEffect(() => { onBusyChange?.(upload.isPending); return () => { onBusyChange?.(false); }; }, [onBusyChange, upload.isPending]);
   useEffect(() => { const files = originals.current; return () => { controller.current?.abort(); files.clear(); }; }, []);
@@ -76,8 +79,8 @@ export function CollaborationAttachmentPicker({ scope, form, update, uploads, di
     </li>)}</ul>}
     {uploads.map((draft) => <div key={draft.requestId} className="min-w-0 space-y-2 text-caption">
       <p role="status" className="[overflow-wrap:anywhere]">{t(($) => $.attachments.unknown, { name: draft.file.name })}</p>
-      <div className="flex flex-wrap gap-2"><Button type="button" variant="outline" disabled={locked} onClick={() => upload.mutate({ draft })}>{t(($) => $.attachments.recover)}</Button>
-        {originals.current.has(draft.requestId) && <Button type="button" variant="outline" disabled={locked} onClick={() => upload.mutate({ draft, file: originals.current.get(draft.requestId) })}>{t(($) => $.attachments.retry)}</Button>}</div>
+      <div className="flex flex-wrap gap-2"><Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => upload.mutate({ draft })}>{t(($) => $.attachments.recover)}</Button>
+        {originals.current.has(draft.requestId) && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => upload.mutate({ draft, file: originals.current.get(draft.requestId) })}>{t(($) => $.attachments.retry)}</Button>}</div>
       {!originals.current.has(draft.requestId) && <label className="block space-y-2">{t(($) => $.attachments.reselect)}
         <Input type="file" disabled={locked} aria-label={t(($) => $.attachments.reselect)} className="h-auto min-h-11 py-2 text-caption" onChange={(event) => {
           const file = event.target.files?.[0]; event.target.value = ""; if (file) { originals.current.set(draft.requestId, file); upload.mutate({ draft, file }); }
@@ -85,7 +88,7 @@ export function CollaborationAttachmentPicker({ scope, form, update, uploads, di
       </label>}
     </div>)}
     {upload.isPending && <div className="flex flex-wrap items-center gap-3"><p role="status" className="text-caption text-muted-foreground">{t(($) => $.attachments.uploading)}</p>
-      <Button type="button" variant="outline" onClick={() => controller.current?.abort()}>{t(($) => $.attachments.cancelUpload)}</Button></div>}
+      <Button type="button" variant="outline" className="pointer-coarse:min-h-11" onClick={() => controller.current?.abort()}>{t(($) => $.attachments.cancelUpload)}</Button></div>}
     {upload.error?.name === "AbortError" ? <p role="status" className="text-caption text-muted-foreground">{t(($) => $.attachments.uploadCancelled)}</p>
       : upload.error && <CollaborationAttachmentFailure error={upload.error} />}
   </fieldset>;

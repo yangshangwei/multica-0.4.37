@@ -7,6 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger, PopoverTitle } from "@multica/
 import { AppLink, resolveClickIntent } from "../navigation";
 import { useT } from "../i18n";
 import { CollaborationQueryState } from "./query-state";
+import { recoverFocus } from "./focus";
 
 export function CollaborationNotifications({ scope, view }: { scope: CollaborationScope; view: AccountView }) {
   const { t } = useT("collaboration");
@@ -15,6 +16,10 @@ export function CollaborationNotifications({ scope, view }: { scope: Collaborati
   const navigating = useRef(false);
   const query = useInfiniteQuery({ ...collaborationNotificationsOptions(client, scope), enabled: scope.userId !== "" });
   const update = useUpdateCollaborationNotification(scope);
+  const list = useRef<HTMLUListElement>(null);
+  // Mark read and Archive remove their own button or row once the list refetches.
+  const change = (id: string, action: "read" | "archive") => void update.mutateAsync({ id, action }).catch(() => undefined)
+    .then(() => query.refetch({ cancelRefetch: false })).then(() => recoverFocus(() => list.current));
   const items = [...new Map((query.data?.pages.flatMap((page) => page.items) ?? []).map((item) => [item.id, item])).values()];
   const notificationLabel = (kind: string) => {
     switch (kind) {
@@ -38,14 +43,14 @@ export function CollaborationNotifications({ scope, view }: { scope: Collaborati
       {query.isPending && <p role="status">{t(($) => $.page.loading)}</p>}
       {(query.error || update.error) && <CollaborationQueryState error={query.error ?? update.error} retry={() => void query.refetch()} />}
       {query.isSuccess && items.length === 0 && <p className="py-6 text-body text-muted-foreground">{t(($) => $.page.emptyNotifications)}</p>}
-      <ul className="space-y-4">{items.map((item) => <li key={item.id} className="space-y-2 [overflow-wrap:anywhere]">
+      <ul ref={list} tabIndex={-1} className="space-y-4 outline-none">{items.map((item) => <li key={item.id} className="space-y-2 [overflow-wrap:anywhere]">
         {item.kind === "removed" ? <p className="text-body text-muted-foreground">{notificationLabel(item.kind)}</p> : item.can_open === true ? <>
           <AppLink href={accountPath({ view: item.run_id ? "participating" : view, issueId: item.issue_id, runId: item.run_id, commentId: item.source_kind === "comment" ? item.source_id : null, anchor: item.source_kind === "body" ? "description" : undefined })}
-            className="block text-body font-medium underline-offset-4 hover:underline" onClick={(event) => { navigating.current = resolveClickIntent(event) === "push" && !event.shiftKey; setOpen(false); }}>{item.issue_title}</AppLink>
+            className="block text-body font-medium underline-offset-4 hover:underline pointer-coarse:py-3" onClick={(event) => { navigating.current = resolveClickIntent(event) === "push" && !event.shiftKey; setOpen(false); }}>{item.issue_title}</AppLink>
           <p className="text-caption text-muted-foreground">{item.is_mention ? t(($) => $.notifications.mention) : notificationLabel(item.kind)}</p>
         </> : <p className="text-body text-muted-foreground">{t(($) => $.page.notificationUnavailable)}</p>}
-        <div className="flex flex-wrap gap-2">{item.read_at === null && <Button size="sm" variant="outline" disabled={update.isPending} className="pointer-coarse:min-h-11" onClick={() => update.mutate({ id: item.id, action: "read" })}>{t(($) => $.page.read)}</Button>}
-          <Button size="sm" variant="ghost" disabled={update.isPending} className="pointer-coarse:min-h-11" onClick={() => update.mutate({ id: item.id, action: "archive" })}>{t(($) => $.page.archive)}</Button>
+        <div className="flex flex-wrap gap-2">{item.read_at === null && <Button size="sm" variant="outline" disabled={update.isPending} className="pointer-coarse:min-h-11" onClick={() => change(item.id, "read")}>{t(($) => $.page.read)}</Button>}
+          <Button size="sm" variant="ghost" disabled={update.isPending} className="pointer-coarse:min-h-11" onClick={() => change(item.id, "archive")}>{t(($) => $.page.archive)}</Button>
         </div>
       </li>)}</ul>
       {query.hasNextPage && <Button variant="ghost" disabled={query.isFetchingNextPage} className="mt-4 pointer-coarse:min-h-11" onClick={() => void query.fetchNextPage()}>{t(($) => $.page.more)}</Button>}

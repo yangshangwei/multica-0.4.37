@@ -22,6 +22,7 @@ import { AppLink } from "../navigation";
 import { RichContent } from "../rich-content";
 import { useLocale, useT } from "../i18n";
 import { CollaborationQueryState } from "./query-state";
+import { recoverFocus } from "./focus";
 
 interface PanelProps { scope: CollaborationScope; issue: CollaborationIssue; destination?: AccountDestination; isScopeResume?: boolean; navigationKey?: number }
 interface Editor { baseVersion: string; content: string }
@@ -52,6 +53,8 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
   const client = useQueryClient();
   const fieldId = useId();
   const root = useRef<HTMLElement>(null);
+  const editButton = useRef<HTMLButtonElement>(null);
+  const editorField = useRef<HTMLTextAreaElement>(null);
   const submitting = useRef(false);
   const memoryQuery = useQuery({ ...collaborationMemoryOptions(client, scope, issue.id), enabled: issue.capabilities.read === true });
   const drafts = useCollaborationPendingDrafts({ ...scope, issueId: issue.id });
@@ -72,7 +75,7 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
     onSuccess: (receipt, { draft }) => {
       if (collaborationIssueAccessDenied(client, scope, issue.id)) return;
       const payload = parseCollaborationMemoryDraft(draft);
-      if (receipt.status < 400) { setEditor(null); setConfirmation(null); setReason(""); }
+      if (receipt.status < 400) { setEditor(null); setConfirmation(null); setReason(""); recoverFocus(() => editButton.current, () => root.current); }
       else if (payload.action === "memory_update") setEditor({ baseVersion: payload.input.expected_version, content: payload.input.content });
       setFeedback(receiptMessage(receipt));
     },
@@ -90,6 +93,8 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
   const staleRestore = confirmation?.action === "restore" && (confirmation.snapshot.version !== memoryVersion || send.data?.code === "stale_memory_version");
   const bytes = editor ? collaborationTextByteLength(editor.content) : memory?.bytes ?? 0;
   const overLimit = !!memory && bytes > memory.max_bytes;
+  const feedbackRole = send.data && send.data.status < 400 ? "status" : "alert";
+  const reasonInvalid = reason !== "" && !collaborationMemoryReasonValid(reason);
 
   function receiptMessage(receipt: CollaborationMemoryReceipt): string {
     switch (receipt.code) {
@@ -113,6 +118,7 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
       setFeedback(null); submitting.current = true;
       void send.mutateAsync({ draft, recovery: false }).catch(() => {}).finally(() => { submitting.current = false; });
     } catch (error) {
+      send.reset();
       setFeedback(error instanceof CollaborationMemoryTooLargeError ? t(($) => $.memory.tooLong, { max: error.maxBytes }) : t(($) => $.memory.invalidContent));
     }
   }
@@ -141,22 +147,22 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
     {memoryQuery.isError && <CollaborationQueryState error={memoryQuery.error} retry={() => void memoryQuery.refetch()} />}
     <div className="flex min-w-0 flex-wrap items-center justify-between gap-3">
       <p className="text-caption text-muted-foreground">{t(($) => $.memory.versionLabel, { version: memory.version })} · {t(($) => $.memory.bytes, { used: bytes, max: memory.max_bytes })}</p>
-      {canEdit && !editor && drafts.memory.length === 0 && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => { send.reset(); setFeedback(null); setEditor({ baseVersion: memory.version, content: memory.content }); }}>{t(($) => $.memory.edit)}</Button>}
+      {canEdit && !editor && drafts.memory.length === 0 && <Button ref={editButton} type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => { send.reset(); setFeedback(null); setEditor({ baseVersion: memory.version, content: memory.content }); recoverFocus(() => editorField.current); }}>{t(($) => $.memory.edit)}</Button>}
     </div>
-    {memory.bytes > memory.max_bytes && <p role="alert" className="text-caption text-destructive">{t(($) => $.memory.overLimit)}</p>}
+    {memory.bytes > memory.max_bytes && <p className="text-caption text-destructive">{t(($) => $.memory.overLimit)}</p>}
     {editor ? <form aria-label={t(($) => $.memory.edit)} className="space-y-3" onSubmit={event => {
       event.preventDefault(); if (canEdit && !stale && !overLimit) submit({ action: "update", baseVersion: editor.baseVersion, content: editor.content });
     }}>
-      <Textarea id={fieldId} aria-label={t(($) => $.memory.editLabel)} aria-describedby={`${fieldId}-hint`} value={editor.content} disabled={locked || !canEdit} onChange={event => setEditor({ ...editor, content: event.target.value })} className="min-h-48 font-mono text-body" />
+      <Textarea ref={editorField} id={fieldId} aria-label={t(($) => $.memory.editLabel)} aria-invalid={overLimit || undefined} aria-describedby={overLimit ? `${fieldId}-hint ${fieldId}-limit` : `${fieldId}-hint`} value={editor.content} disabled={locked || !canEdit} onChange={event => setEditor({ ...editor, content: event.target.value })} className="min-h-48 font-mono text-body" />
       <p id={`${fieldId}-hint`} className="text-caption text-muted-foreground">{t(($) => $.memory.editHint)}</p>
-      {overLimit && <p role="alert" className="text-caption text-destructive">{t(($) => $.memory.tooLong, { max: memory.max_bytes })}</p>}
+      {overLimit && <p id={`${fieldId}-limit`} role="alert" className="text-caption text-destructive">{t(($) => $.memory.tooLong, { max: memory.max_bytes })}</p>}
       {stale && <div className="space-y-3"><p role="alert" className="text-body">{t(($) => $.memory.conflict)}</p>
         <div className="max-h-64 overflow-auto rounded-md bg-muted/30 p-3"><p className="mb-2 text-caption font-medium">{t(($) => $.memory.current)} · {t(($) => $.memory.versionLabel, { version: memory.version })}</p><RichContent content={memory.content} resourcePolicy="restricted" /></div>
-        <Button type="button" variant="outline" disabled={locked || !canEdit || memoryQuery.isFetching || (send.data?.code === "stale_memory_version" && memory.version === editor.baseVersion)} onClick={() => { setEditor({ ...editor, baseVersion: memory.version }); setFeedback(null); send.reset(); }}>{t(($) => $.memory.useCurrent)}</Button>
+        <Button type="button" variant="outline" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11" disabled={locked || !canEdit || memoryQuery.isFetching || (send.data?.code === "stale_memory_version" && memory.version === editor.baseVersion)} onClick={() => { setEditor({ ...editor, baseVersion: memory.version }); setFeedback(null); send.reset(); }}>{t(($) => $.memory.useCurrent)}</Button>
       </div>}
-      <div className="flex flex-wrap gap-2"><Button type="submit" className="pointer-coarse:min-h-11" disabled={locked || stale || overLimit || !canEdit}>{t(($) => $.memory.save)}</Button><Button type="button" variant="ghost" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => { setEditor(null); setFeedback(null); send.reset(); }}>{t(($) => $.memory.cancel)}</Button></div>
+      <div className="flex flex-wrap gap-2"><Button type="submit" className="pointer-coarse:min-h-11" disabled={locked || stale || overLimit || !canEdit}>{t(($) => $.memory.save)}</Button><Button type="button" variant="ghost" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => { setEditor(null); setFeedback(null); send.reset(); recoverFocus(() => editButton.current, () => root.current); }}>{t(($) => $.memory.cancel)}</Button></div>
     </form> : <>
-      {memory.content ? <div className="space-y-2"><div id={`${fieldId}-content`} className={`min-w-0 overflow-auto rounded-md bg-muted/30 p-3 ${expanded ? "" : "max-h-64"}`}><RichContent content={memory.content} resourcePolicy="restricted" /></div><Button type="button" variant="ghost" size="sm" aria-expanded={expanded} aria-controls={`${fieldId}-content`} onClick={() => setExpanded(!expanded)}>{expanded ? t(($) => $.memory.collapse) : t(($) => $.memory.expand)}</Button></div> : <p className="text-body text-muted-foreground">{t(($) => $.memory.empty)}</p>}
+      {memory.content ? <div className="space-y-2"><div id={`${fieldId}-content`} className={`min-w-0 overflow-auto rounded-md bg-muted/30 p-3 ${expanded ? "" : "max-h-64"}`}><RichContent content={memory.content} resourcePolicy="restricted" /></div><Button type="button" variant="ghost" size="sm" className="pointer-coarse:min-h-11" aria-expanded={expanded} aria-controls={`${fieldId}-content`} onClick={() => setExpanded(!expanded)}>{expanded ? t(($) => $.memory.collapse) : t(($) => $.memory.expand)}</Button></div> : <p className="text-body text-muted-foreground">{t(($) => $.memory.empty)}</p>}
       <MemoryAttribution author={memory.author} createdAt={memory.created_at} issueId={issue.id} />
       {memory.restored_from_version !== null && <p className="text-caption text-muted-foreground">{t(($) => $.memory.restoredFrom, { version: memory.restored_from_version })}</p>}
       {pendingUpdate?.action === "memory_update" && <Textarea aria-label={t(($) => $.memory.editLabel)} value={pendingUpdate.input.content} readOnly className="min-h-32 font-mono" />}
@@ -164,10 +170,10 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
     {closed && <p className="text-caption text-muted-foreground">{t(($) => $.memory.closed)}</p>}
     {drafts.error && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
     {send.isPending && <p role="status">{t(($) => $.workflow.pending)}</p>}
-    {feedback && !(stale && feedback === t(($) => $.memory.conflict)) && <p role={send.data && send.data.status >= 400 ? "alert" : "status"} className="text-body">{feedback}</p>}
+    {feedback && !(stale && feedback === t(($) => $.memory.conflict)) && <p key={feedbackRole} role={feedbackRole} className="text-body">{feedback}</p>}
     {drafts.memory.map(draft => { const payload = parseCollaborationMemoryDraft(draft); return <div key={draft.requestId} className="space-y-2">
       <p role="status">{payload.action === "memory_update" ? t(($) => $.memory.pendingUpdate) : payload.action === "memory_restore" ? t(($) => $.memory.pendingRestore, { version: payload.version }) : t(($) => $.memory.pendingPurge, { version: payload.version })}</p>
-      <div className="flex flex-wrap gap-2"><Button type="button" variant="outline" disabled={send.isPending || drafts.error} onClick={() => send.mutate({ draft, recovery: true })}>{t(($) => $.workflow.recover)}</Button><Button type="button" variant="outline" disabled={send.isPending || drafts.error} onClick={() => send.mutate({ draft, recovery: false })}>{t(($) => $.workflow.retryOriginal)}</Button></div>
+      <div className="flex flex-wrap gap-2"><Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={send.isPending || drafts.error} onClick={() => send.mutate({ draft, recovery: true })}>{t(($) => $.workflow.recover)}</Button><Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={send.isPending || drafts.error} onClick={() => send.mutate({ draft, recovery: false })}>{t(($) => $.workflow.retryOriginal)}</Button></div>
     </div>; })}
     <Collapsible open={historyOpen} onOpenChange={setHistoryOpen} className="space-y-3 border-t border-border pt-4">
       <CollapsibleTrigger render={<Button type="button" variant="ghost" className="pointer-coarse:min-h-11" />}>{t(($) => $.memory.history)}</CollapsibleTrigger>
@@ -176,7 +182,7 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
         {historyQuery.isError && <CollaborationQueryState error={historyQuery.error} retry={() => void historyQuery.refetch()} />}
         {historyQuery.isSuccess && historyItems.length === 0 && <p className="text-caption text-muted-foreground">{t(($) => $.memory.historyEmpty)}</p>}
         <ul className="space-y-2">{historyItems.map(item => <MemoryHistoryRow key={item.version} item={item} issueId={issue.id} currentVersion={memory.version} canEdit={canEdit} canPurge={memory.can_purge} disabled={locked} onView={() => setSelectedVersion(item.version)} onRestore={() => openConfirmation("restore", item.version)} onPurge={() => openConfirmation("purge", item.version)} />)}</ul>
-        {historyQuery.hasNextPage && <Button type="button" variant="outline" disabled={historyQuery.isFetchingNextPage} onClick={() => void historyQuery.fetchNextPage()}>{t(($) => $.memory.historyMore)}</Button>}
+        {historyQuery.hasNextPage && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={historyQuery.isFetchingNextPage} onClick={() => void historyQuery.fetchNextPage()}>{t(($) => $.memory.historyMore)}</Button>}
       </CollapsibleContent>
     </Collapsible>
     <Dialog open={selectedVersion !== null} onOpenChange={open => { if (!open) setSelectedVersion(null); }}>
@@ -186,16 +192,16 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
         {selectedQuery.isPending && <p role="status">{t(($) => $.memory.loading)}</p>}
         {selectedQuery.isError && <CollaborationQueryState error={selectedQuery.error} retry={() => void selectedQuery.refetch()} />}
         {selected && <><p className="text-caption text-muted-foreground">{t(($) => $.memory.bytes, { used: selected.bytes, max: selected.max_bytes })}</p>{selected.content !== null && <RichContent content={selected.content} resourcePolicy="restricted" />}<MemoryAttribution author={selected.author} createdAt={selected.created_at} issueId={issue.id} />
-          <div className="flex flex-wrap gap-2">{canEdit && selected.version !== memory.version && !selected.purged && <Button type="button" variant="outline" disabled={locked} onClick={() => openConfirmation("restore", selected.version)}>{t(($) => $.memory.restore, { version: selected.version })}</Button>}{memory.can_purge && selected.version !== memory.version && !selected.purged && <Button type="button" variant="outline" disabled={locked} onClick={() => openConfirmation("purge", selected.version)}>{t(($) => $.memory.purge, { version: selected.version })}</Button>}</div>
+          <div className="flex flex-wrap gap-2">{canEdit && selected.version !== memory.version && !selected.purged && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => openConfirmation("restore", selected.version)}>{t(($) => $.memory.restore, { version: selected.version })}</Button>}{memory.can_purge && selected.version !== memory.version && !selected.purged && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => openConfirmation("purge", selected.version)}>{t(($) => $.memory.purge, { version: selected.version })}</Button>}</div>
         </>}
       </DialogContent>
     </Dialog>
     <AlertDialog open={confirmation !== null} onOpenChange={open => { if (!open && !send.isPending) { setConfirmation(null); setFeedback(null); } }}>
       <AlertDialogContent finalFocus={() => root.current}>
         <AlertDialogHeader><AlertDialogTitle>{confirmation?.action === "restore" ? t(($) => $.memory.restoreTitle, { version: confirmation.version }) : t(($) => $.memory.purgeTitle, { version: confirmation?.version ?? "" })}</AlertDialogTitle><AlertDialogDescription>{confirmation?.action === "restore" ? t(($) => $.memory.restoreBody, { version: confirmation.version }) : t(($) => $.memory.purgeBody)}</AlertDialogDescription></AlertDialogHeader>
-        {confirmation?.action === "purge" && <><Textarea aria-label={t(($) => $.memory.purgeReason)} value={reason} onChange={event => setReason(event.target.value)} disabled={locked} className="min-h-20" />{reason !== "" && !collaborationMemoryReasonValid(reason) && <p role="alert" className="text-caption text-destructive">{t(($) => $.memory.purgeReasonRequired)}</p>}</>}
+        {confirmation?.action === "purge" && <><Textarea aria-label={t(($) => $.memory.purgeReason)} aria-invalid={reasonInvalid || undefined} aria-describedby={reasonInvalid ? `${fieldId}-reason` : undefined} value={reason} onChange={event => setReason(event.target.value)} disabled={locked} className="min-h-20" />{reasonInvalid && <p id={`${fieldId}-reason`} role="alert" className="text-caption text-destructive">{t(($) => $.memory.purgeReasonRequired)}</p>}</>}
         {feedback && <p role="alert">{feedback}</p>}
-        {staleRestore && <div className="space-y-2"><p className="text-body">{t(($) => $.memory.conflict)}</p><Button type="button" variant="outline" disabled={locked || !canEdit || memoryQuery.isFetching} onClick={() => { if (confirmation) setConfirmation({ ...confirmation, snapshot: memory }); send.reset(); setFeedback(null); }}>{t(($) => $.memory.useCurrent)}</Button></div>}
+        {staleRestore && <div className="space-y-2"><p className="text-body">{t(($) => $.memory.conflict)}</p><Button type="button" variant="outline" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11" disabled={locked || !canEdit || memoryQuery.isFetching} onClick={() => { if (confirmation) setConfirmation({ ...confirmation, snapshot: memory }); send.reset(); setFeedback(null); }}>{t(($) => $.memory.useCurrent)}</Button></div>}
         <AlertDialogFooter><AlertDialogCancel disabled={locked}>{t(($) => $.memory.cancel)}</AlertDialogCancel><AlertDialogAction variant={confirmation?.action === "purge" ? "destructive" : "default"} disabled={locked || (confirmation?.action === "restore" ? !canEdit || staleRestore : !memory.can_purge || confirmation?.version === memory.version || !collaborationMemoryReasonValid(reason))} onClick={() => {
           if (!confirmation) return;
           submit(confirmation.action === "restore" ? { action: "restore", version: confirmation.version } : { action: "purge", version: confirmation.version, reason }, confirmation.snapshot);

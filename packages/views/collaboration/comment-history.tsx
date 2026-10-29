@@ -14,13 +14,13 @@ export function CollaborationCommentHistory({ scope, issueId, commentId }: { sco
   const client = useQueryClient();
   const query = useQuery({ ...collaborationCommentHistoryOptions(client, scope, issueId, commentId), enabled: open });
   return <div className="min-w-0 space-y-3">
-    <Button variant="ghost" size="sm" aria-expanded={open} aria-controls={region} onClick={() => setOpen(!open)}>{t(($) => $.detail.commentHistory)}</Button>
+    <Button variant="ghost" size="sm" className="pointer-coarse:min-h-11" aria-expanded={open} aria-controls={open ? region : undefined} onClick={() => setOpen(!open)}>{t(($) => $.detail.commentHistory)}</Button>
     {open && <div id={region} className="min-w-0 space-y-4 rounded-md border border-border p-4">
       {query.isPending && <p role="status" className="text-caption">{t(($) => $.page.loading)}</p>}
       {query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}
       {query.isSuccess && query.data.items.length === 0 && <p className="text-caption text-muted-foreground">{t(($) => $.activity.empty)}</p>}
       {query.data?.items.map((item) => <div key={item.event_id} className="min-w-0 space-y-3">
-        <p className="text-caption text-muted-foreground">{item.actor?.name ?? t(($) => $.detail.unknownAuthor)} · <time dateTime={item.created_at}>{new Date(item.created_at).toLocaleString()}</time></p>
+        <p className="text-caption text-muted-foreground [overflow-wrap:anywhere]">{item.actor?.name ?? t(($) => $.detail.unknownAuthor)} · <time dateTime={item.created_at}>{new Date(item.created_at).toLocaleString()}</time></p>
         {item.before !== null && <div className="space-y-1"><p className="text-caption text-muted-foreground">{t(($) => $.activity.before)}</p><RichContent resourcePolicy="restricted" content={item.before} /><CollaborationCommentAttachments scope={scope} issueId={issueId} attachmentIds={item.before_attachment_ids ?? []} /></div>}
         <div className="space-y-1"><p className="text-caption text-muted-foreground">{t(($) => $.activity.after)}</p>{item.kind === "comment_deleted" ? <p className="text-body">{t(($) => $.detail.deleted)}</p> : <RichContent resourcePolicy="restricted" content={item.after} />}<CollaborationCommentAttachments scope={scope} issueId={issueId} attachmentIds={item.after_attachment_ids ?? []} /></div>
       </div>)}

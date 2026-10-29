@@ -16,7 +16,7 @@ export function CollaborationCommandHistory({ scope, issueId }: { scope: Collabo
   const [open, setOpen] = useState(false);
   const region = useId();
   return <div className="min-w-0 space-y-4">
-    <h4><Button type="button" variant="outline" className="pointer-coarse:min-h-11" aria-expanded={open} aria-controls={region}
+    <h4><Button type="button" variant="outline" className="pointer-coarse:min-h-11" aria-expanded={open} aria-controls={open ? region : undefined}
       onClick={() => setOpen(!open)}>{t(($) => $.commandHistory.title)}</Button></h4>
     {open && <section id={region} aria-label={t(($) => $.commandHistory.title)} className="min-w-0 space-y-5 border-l-2 border-border pl-3 sm:pl-4">
       <CommandHistoryRecords key={`${scope.apiScope}:${scope.userId}:${issueId}`} scope={scope} issueId={issueId} />

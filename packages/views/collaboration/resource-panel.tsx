@@ -44,7 +44,7 @@ export function CollaborationResourcePanel({ scope, issue, locked, submit }: { s
     void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, issue.id) });
   };
   return <div className="min-w-0 space-y-4">
-    <Button variant="outline" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]" aria-expanded={open} aria-controls={contentId} onClick={() => {
+    <Button variant="outline" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]" aria-expanded={open} aria-controls={open ? contentId : undefined} onClick={() => {
       setOpen(!open);
       if (!open) void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, issue.id), exact: true });
     }}>{t(($) => $.resources.manage)}</Button>

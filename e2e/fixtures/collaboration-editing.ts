@@ -86,7 +86,9 @@ async function toggleLabel(page: Page, container: Locator, name: string) {
 }
 
 async function setTextProperty(page: Page, container: Locator, name: string, value: string) {
-  await container.getByRole("button", { name, exact: true }).click();
+  // The trigger is named by the property followed by its current value.
+  const prefix = new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s`);
+  await container.getByRole("button", { name: prefix }).click();
   const input = page.getByPlaceholder("Enter value…", { exact: true });
   await input.fill(value);
   await input.press("Enter");
