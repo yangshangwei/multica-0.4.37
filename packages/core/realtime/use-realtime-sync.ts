@@ -529,6 +529,31 @@ export function applyWorkspaceUpdatedToCache(
 }
 
 /**
+ * member:added reaches the joiner and every existing member. The joiner needs
+ * its workspace list; everyone else needs that workspace's members and share
+ * links, whose use counts only change server-side (staleTime is Infinity).
+ * Returns whether the event is about this user, so the caller can toast.
+ */
+export function applyMemberAddedToCache(
+  qc: QueryClient,
+  payload: MemberAddedPayload,
+  myUserId: string | undefined,
+): boolean {
+  if (payload.member?.user_id === myUserId) {
+    qc.invalidateQueries({ queryKey: workspaceKeys.list() });
+    qc.invalidateQueries({ queryKey: workspaceKeys.myInvitations() });
+    return true;
+  }
+  // The server puts the workspace on the member, not at the payload's top level.
+  const wsId = payload.member?.workspace_id || payload.workspace_id;
+  if (wsId) {
+    qc.invalidateQueries({ queryKey: workspaceKeys.members(wsId) });
+    qc.invalidateQueries({ queryKey: workspaceKeys.shareLinks(wsId) });
+  }
+  return false;
+}
+
+/**
  * Resolves the slug of the workspace an inbox item originated from, via the
  * cached workspace list (fetched once when the cache is cold).
  *
@@ -1342,13 +1367,10 @@ export function useRealtimeSync(
     });
 
     const unsubMemberAdded = ws.on("member:added", (p) => {
-      const { member, workspace_name } = p as MemberAddedPayload;
-      const myUserId = authStore.getState().user?.id;
-      if (member.user_id === myUserId) {
-        qc.invalidateQueries({ queryKey: workspaceKeys.list() });
-        qc.invalidateQueries({ queryKey: workspaceKeys.myInvitations() });
+      const payload = p as MemberAddedPayload;
+      if (applyMemberAddedToCache(qc, payload, authStore.getState().user?.id)) {
         onToast?.(
-          `You joined ${workspace_name ?? "a workspace"}`,
+          `You joined ${payload.workspace_name ?? "a workspace"}`,
           "info",
         );
       }

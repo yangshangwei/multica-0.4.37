@@ -19,6 +19,7 @@ import type {
   ChatMessagesPage,
   ChatSession,
   InboxItem,
+  MemberAddedPayload,
   Workspace,
 } from "../types";
 import {
@@ -27,6 +28,7 @@ import {
   applyChatMessageToCache,
   applyChatQuickActionsToCache,
   applyChatSessionUpdatedToCache,
+  applyMemberAddedToCache,
   applyWorkspaceUpdatedToCache,
   handleInboxNew,
   invalidateChatMessageQueries,
@@ -659,6 +661,49 @@ describe("applyWorkspaceUpdatedToCache", () => {
   });
 });
 
+
+describe("applyMemberAddedToCache", () => {
+  const wsId = "ws-1";
+  // Shape the server sends (share_link.go, invitation.go): the workspace id is
+  // only on the member; there is no top-level workspace_id.
+  const payload = (userId: string) => ({
+    workspace_name: "Test",
+    member: { user_id: userId, workspace_id: wsId },
+  }) as unknown as MemberAddedPayload;
+
+  // Regression: an owner watching settings saw "已用 0 / ∞ 次" after a share-link
+  // join while the server already counted 1 — staleTime is Infinity, so the
+  // share-link list never refetched on its own.
+  it("refreshes the workspace's members and share links when someone else joins", () => {
+    const qc = createQueryClient();
+    const invalidate = vi.spyOn(qc, "invalidateQueries");
+
+    expect(applyMemberAddedToCache(qc, payload("other-user"), "me")).toBe(false);
+
+    expect(invalidate).toHaveBeenCalledWith({ queryKey: workspaceKeys.members(wsId) });
+    expect(invalidate).toHaveBeenCalledWith({ queryKey: workspaceKeys.shareLinks(wsId) });
+    expect(invalidate).not.toHaveBeenCalledWith({ queryKey: workspaceKeys.list() });
+  });
+
+  it("refreshes the joiner's own workspace list and invitations", () => {
+    const qc = createQueryClient();
+    const invalidate = vi.spyOn(qc, "invalidateQueries");
+
+    expect(applyMemberAddedToCache(qc, payload("me"), "me")).toBe(true);
+
+    expect(invalidate).toHaveBeenCalledWith({ queryKey: workspaceKeys.list() });
+    expect(invalidate).toHaveBeenCalledWith({ queryKey: workspaceKeys.myInvitations() });
+  });
+
+  it("ignores a payload without a workspace id for the share-link refresh", () => {
+    const qc = createQueryClient();
+    const invalidate = vi.spyOn(qc, "invalidateQueries");
+
+    applyMemberAddedToCache(qc, { member: { user_id: "other-user" } } as unknown as MemberAddedPayload, "me");
+
+    expect(invalidate).not.toHaveBeenCalled();
+  });
+});
 
 describe("applyChatDoneToCache paged messages", () => {
   it("patches page zero and skips older pages without duplicating replayed events", () => {
