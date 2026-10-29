@@ -24,12 +24,16 @@ claim, replace a nonce or invent a new attempt after a lost response.
 
 Attachment selection is one rule for promotion, claim freeze and never-launched
 refusal settlement. The manifest holds every delivered file that the prepared
-inputs reference. The remaining capacity up to 32 goes to the issue's other
-delivered files, newest first (`delivered_at DESC`, then `id`). An issue's
-delivered files are permanent and can outnumber the bound, so only a referenced
-set above 32 refuses with `runtime_preparation_limits`; a referenced file that
-is no longer delivered refuses with `runtime_preparation_unavailable`. A claimed
-run keeps its frozen selection, and later deliveries never widen it.
+inputs reference. Remaining capacity is evaluated separately for each selected
+runtime: file count, per-file bytes, total input bytes and workspace space after
+any Git reservation. Optional issue history is considered newest first
+(`delivered_at DESC`, then `id`) and may be omitted when it does not fit. An
+issue's delivered files are permanent and can outnumber the bound, so only a
+referenced set above the platform or selected runtime limit refuses with
+`runtime_preparation_limits`; a referenced file that is no longer delivered
+refuses with `runtime_preparation_unavailable`. A claimed run keeps its frozen
+selection, and later deliveries never widen it. Optional history must never
+make a text-only input wait; referenced files remain all-or-nothing.
 
 The initial prepared adapters are `static_json_v1` and
 `claude_stream_json_v1`. Nonempty unsupported agent overrides, MCP/Composio,

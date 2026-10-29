@@ -9,7 +9,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-const ownerReconsentMigration = "745_collaboration_owner_reconsent"
+const ownerReconsentMigration = "746_collaboration_owner_reconsent"
 
 // Only the columns the epoch writer reads. The trigger is the one migration 660
 // installs on the real table.
