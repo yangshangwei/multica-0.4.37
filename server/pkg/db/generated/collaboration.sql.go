@@ -1067,7 +1067,7 @@ func (q *Queries) LockCollaborationSourceMember(ctx context.Context, arg LockCol
 }
 
 const lockCollaborationUsers = `-- name: LockCollaborationUsers :many
-SELECT id, name, email, avatar_url, created_at, updated_at, onboarded_at, onboarding_questionnaire, cloud_waitlist_email, cloud_waitlist_reason, starter_content_state, language, profile_description, timezone, disabled_at, disabled_reason, legacy_password_sessions_revoked_at FROM "user" WHERE id = ANY($1::uuid[]) ORDER BY id FOR UPDATE
+SELECT id, name, email, avatar_url, created_at, updated_at, onboarded_at, onboarding_questionnaire, starter_content_state, language, profile_description, timezone, disabled_at, disabled_reason, legacy_password_sessions_revoked_at FROM "user" WHERE id = ANY($1::uuid[]) ORDER BY id FOR UPDATE
 `
 
 func (q *Queries) LockCollaborationUsers(ctx context.Context, userIds []pgtype.UUID) ([]User, error) {
@@ -1088,8 +1088,6 @@ func (q *Queries) LockCollaborationUsers(ctx context.Context, userIds []pgtype.U
 			&i.UpdatedAt,
 			&i.OnboardedAt,
 			&i.OnboardingQuestionnaire,
-			&i.CloudWaitlistEmail,
-			&i.CloudWaitlistReason,
 			&i.StarterContentState,
 			&i.Language,
 			&i.ProfileDescription,

@@ -6,11 +6,7 @@ export type {
   Role,
   UseCase,
 } from "./types";
-export {
-  saveQuestionnaire,
-  completeOnboarding,
-  joinCloudWaitlist,
-} from "./store";
+export { saveQuestionnaire, completeOnboarding } from "./store";
 export { ONBOARDING_STEP_ORDER } from "./step-order";
 export {
   bootstrapMika,

@@ -595,7 +595,6 @@ func (h *Handler) AcceptInvitation(w http.ResponseWriter, r *http.Request) {
 			wsID,
 			analytics.OnboardingPathInviteAccept,
 			onboardedAt,
-			onboardedUser.CloudWaitlistEmail.Valid,
 		))
 	}
 

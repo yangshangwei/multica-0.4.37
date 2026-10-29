@@ -235,7 +235,7 @@ func (q *Queries) GetCollaborationWorkflowUserIDs(ctx context.Context, arg GetCo
 }
 
 const listCollaborationNotificationRecipients = `-- name: ListCollaborationNotificationRecipients :many
-SELECT u.id, u.name, u.email, u.avatar_url, u.created_at, u.updated_at, u.onboarded_at, u.onboarding_questionnaire, u.cloud_waitlist_email, u.cloud_waitlist_reason, u.starter_content_state, u.language, u.profile_description, u.timezone, u.disabled_at, u.disabled_reason, u.legacy_password_sessions_revoked_at FROM issue_participant p JOIN "user" u ON u.id = p.user_id
+SELECT u.id, u.name, u.email, u.avatar_url, u.created_at, u.updated_at, u.onboarded_at, u.onboarding_questionnaire, u.starter_content_state, u.language, u.profile_description, u.timezone, u.disabled_at, u.disabled_reason, u.legacy_password_sessions_revoked_at FROM issue_participant p JOIN "user" u ON u.id = p.user_id
 WHERE p.issue_id = $1 AND p.revoked_at IS NULL AND u.disabled_at IS NULL
 ORDER BY u.id
 `
@@ -258,8 +258,6 @@ func (q *Queries) ListCollaborationNotificationRecipients(ctx context.Context, i
 			&i.UpdatedAt,
 			&i.OnboardedAt,
 			&i.OnboardingQuestionnaire,
-			&i.CloudWaitlistEmail,
-			&i.CloudWaitlistReason,
 			&i.StarterContentState,
 			&i.Language,
 			&i.ProfileDescription,
