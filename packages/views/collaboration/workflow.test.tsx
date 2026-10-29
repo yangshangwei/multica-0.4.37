@@ -8,6 +8,8 @@ import { renderWithI18n } from "../test/i18n";
 import { CollaborationWorkflow } from "./workflow";
 import { afterEach } from "vitest";
 
+vi.mock("../rich-content", () => ({ RichContent: ({ content }: { content: string }) => <p>{content}</p> }));
+
 const id = "00000000-0000-4000-8000-000000000001";
 const recipientId = "00000000-0000-4000-8000-000000000002";
 vi.mock("@multica/core/auth", () => ({ useAuthStore: { getState: () => ({ user: { id: "00000000-0000-4000-8000-000000000001" } }) } }));
@@ -121,4 +123,39 @@ it("removes the selected participant only after confirmation with the captured r
   const call = fetch.mock.calls.find(([url]) => url.endsWith(`/participants/${recipientId}/remove`));
   expect(JSON.parse(call?.[1]?.body)).toMatchObject({ expected_collaboration_revision: "9007199254740993" });
   expect(await screen.findByText(/The server did not apply this action/)).toBeInTheDocument();
+});
+
+// The person returning information answers the open request, so the return
+// form shows that request's note and requester, and says when the saved status
+// is gone and the issue falls back to another one.
+function askedIssue(request: { note: string; return_status: string; return_status_fallback: boolean }) {
+  const requester = { ...account, user_id: recipientId, name: "Requester" };
+  return parseCollaborationIssue({ id, title: "Needs input", description: "Body", status: "blocked", status_category: "blocked", priority: "none", source_workspace: { id, name: "Source", identifier: "SRC-1" }, creator: requester, handler: account,
+    collaboration_revision: "9007199254740993", lifecycle_epoch: "1", write_context: { participant_epoch: "2", account_epoch: "3" }, session: { id, queue_state: "paused", control_version: "1" },
+    capabilities: { ...caps, return_information: true },
+    current_information_request: { id: "00000000-0000-4000-8000-000000000009", requester, recipient: account, created_at: "2026-10-29T00:00:00Z", ...request } })!;
+}
+
+async function openReturnForm(issue: ReturnType<typeof askedIssue>) {
+  setApiInstance(new ApiClient("https://server.example"));
+  vi.stubGlobal("fetch", vi.fn().mockImplementation(async () => new Response(JSON.stringify({ action: "return_information", status_options_version: "a".repeat(64), default_status: "in_progress",
+    options: [{ key: "in_progress", name: "In progress", category: "in_progress" }] }))));
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={issue} /></QueryClientProvider>);
+  await userEvent.setup().click(screen.getByRole("button", { name: "Return information" }));
+}
+
+it("shows the open information request to the person returning it", async () => {
+  const asked = askedIssue({ note: "Which database version did you test against?", return_status: "in_progress", return_status_fallback: false });
+  expect(asked.current_information_request?.note).toBe("Which database version did you test against?");
+  await openReturnForm(asked);
+  expect(await screen.findByText(/Which database version did you test against\?/)).toBeInTheDocument();
+  expect(screen.getByText("Requested by Requester")).toBeInTheDocument();
+  expect(screen.getByLabelText("Note")).toHaveAccessibleDescription(/Which database version did you test against\?/);
+  expect(screen.queryByText(/no longer available/)).toBeNull();
+});
+
+it("says where the issue returns when the request's saved status is gone", async () => {
+  await openReturnForm(askedIssue({ note: "", return_status: "in_progress", return_status_fallback: true }));
+  expect(await screen.findByText("The status saved with this request is no longer available, so the issue returns to In progress.")).toBeInTheDocument();
+  expect(screen.getByText("The request has no note.")).toBeInTheDocument();
 });
