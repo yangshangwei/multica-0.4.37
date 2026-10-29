@@ -417,6 +417,8 @@ import {
   IssueTableRowsResponseSchema,
   ListAutopilotsResponseSchema,
   EMPTY_LIST_AUTOPILOTS_RESPONSE,
+  AutopilotSchema,
+  EMPTY_AUTOPILOT,
   AutopilotRunSchema,
   AutopilotQuotaUsageSchema,
   AutopilotTemplateListResponseSchema,
@@ -6209,9 +6211,12 @@ export class ApiClient {
   }
 
   async createAutopilot(data: CreateAutopilotRequest): Promise<Autopilot> {
-    return this.fetch("/api/autopilots", {
+    const raw = await this.fetch<unknown>("/api/autopilots", {
       method: "POST",
       body: JSON.stringify(data),
+    });
+    return parseWithFallback(raw, AutopilotSchema, EMPTY_AUTOPILOT, {
+      endpoint: "POST /api/autopilots",
     });
   }
 

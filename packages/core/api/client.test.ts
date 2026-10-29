@@ -3,7 +3,7 @@ import { createAuthStore } from "../auth";
 import { configStore } from "../config";
 import type { StorageAdapter, User } from "../types";
 import { ApiClient, ApiError, CHAT_DRAFT_RESTORE_CAPABILITY, clientErrorMessage } from "./client";
-import { EMPTY_PLUGIN_PACKAGE_LIST, EMPTY_PLUGIN_PREVIEW, EMPTY_PLUGIN_SURFACE_LAUNCH } from "./schemas";
+import { EMPTY_AUTOPILOT, EMPTY_PLUGIN_PACKAGE_LIST, EMPTY_PLUGIN_PREVIEW, EMPTY_PLUGIN_SURFACE_LAUNCH } from "./schemas";
 
 afterEach(() => {
   configStore.getState().setAgentConversationStartersSupported(false);
@@ -1184,6 +1184,59 @@ describe("ApiClient", () => {
       },
     ]);
   });
+
+  it("sends a requested create status and reads the stored one back", async () => {
+    const created = {
+      id: "ap-2",
+      workspace_id: "ws-1",
+      title: "Set up before running",
+      assignee_id: "agent-1",
+      status: "paused",
+      execution_mode: "run_only",
+      created_by_type: "member",
+      created_by_id: "user-1",
+      created_at: "2026-10-29T00:00:00Z",
+      updated_at: "2026-10-29T00:00:00Z",
+    };
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify(created), {
+        status: 201,
+        headers: { "Content-Type": "application/json" },
+      }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    const autopilot = await new ApiClient("https://api.example.test").createAutopilot({
+      title: "Set up before running",
+      assignee_id: "agent-1",
+      execution_mode: "run_only",
+      status: "paused",
+    });
+
+    expect(JSON.parse(fetchMock.mock.calls[0]?.[1]?.body as string)).toMatchObject({ status: "paused" });
+    expect(autopilot).toMatchObject({ id: "ap-2", status: "paused", assignee_type: "agent" });
+  });
+
+  it.each([null, "nope", {}, { id: 7, status: "paused" }])(
+    "falls back to an empty, paused autopilot when the create response is %j",
+    async (payload) => {
+      vi.stubGlobal(
+        "fetch",
+        vi.fn().mockResolvedValue(
+          new Response(JSON.stringify(payload), {
+            status: 201,
+            headers: { "Content-Type": "application/json" },
+          }),
+        ),
+      );
+
+      await expect(new ApiClient("https://api.example.test").createAutopilot({
+        title: "Daily triage",
+        assignee_id: "agent-1",
+        execution_mode: "create_issue",
+      })).resolves.toEqual(EMPTY_AUTOPILOT);
+    },
+  );
 
   it("emits X-Client-* headers when identity is configured", async () => {
     const fetchMock = vi.fn().mockResolvedValue(
