@@ -6,7 +6,9 @@ import (
 	"errors"
 	"net/http"
 	"reflect"
+	"slices"
 	"strconv"
+	"strings"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -15,13 +17,34 @@ import (
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
+// The manifest holds every file the prepared inputs reference. Remaining
+// capacity up to the manifest bound goes to the issue's most recently delivered
+// other files, so a long delivery history never blocks later input. Only a
+// referenced set larger than the bound refuses. Every caller uses this one
+// selection rule; a claimed run keeps the manifest it froze at first claim.
 func (s *CollaborationService) preparationAttachments(ctx context.Context, q *db.Queries, issue, workspace pgtype.UUID, inputs []protocol.CollaborationRunInput) ([]protocol.CollaborationPreparationAttachment, error) {
-	rows, err := q.ListCollaborationPreparationAttachments(ctx, issue)
+	referenced := make([]pgtype.UUID, 0)
+	wanted := map[string]bool{}
+	for _, input := range inputs {
+		for _, id := range input.AttachmentIDs {
+			if wanted[id] {
+				continue
+			}
+			parsed, err := util.ParseUUID(id)
+			if err != nil {
+				return nil, collaborationError(http.StatusConflict, "runtime_preparation_unavailable")
+			}
+			wanted[id] = true
+			referenced = append(referenced, parsed)
+		}
+	}
+	if len(referenced) > collaborationMaxSelectedAttachments {
+		return nil, collaborationError(http.StatusConflict, "runtime_preparation_limits")
+	}
+	rows, err := q.ListCollaborationPreparationAttachments(ctx, db.ListCollaborationPreparationAttachmentsParams{
+		IssueID: issue, ReferencedIds: referenced, RowLimit: collaborationMaxSelectedAttachments})
 	if err != nil {
 		return nil, err
-	}
-	if len(rows) > collaborationMaxSelectedAttachments {
-		return nil, collaborationError(http.StatusConflict, "runtime_preparation_limits")
 	}
 	files := make([]protocol.CollaborationPreparationAttachment, 0, len(rows))
 	seen := make(map[string]bool, len(rows))
@@ -37,13 +60,14 @@ func (s *CollaborationService) preparationAttachments(ctx context.Context, q *db
 			ContentType: row.ContentType, SizeBytes: row.SizeBytes, Destination: protocol.CollaborationPreparationAttachmentDestination(id, version)})
 		seen[id] = true
 	}
-	for _, input := range inputs {
-		for _, id := range input.AttachmentIDs {
-			if !seen[id] {
-				return nil, collaborationError(http.StatusConflict, "runtime_preparation_unavailable")
-			}
+	for id := range wanted {
+		if !seen[id] {
+			return nil, collaborationError(http.StatusConflict, "runtime_preparation_unavailable")
 		}
 	}
+	// The selection order puts referenced files first; the manifest keeps
+	// its stable attachment-ID order.
+	slices.SortFunc(files, func(a, b protocol.CollaborationPreparationAttachment) int { return strings.Compare(a.ID, b.ID) })
 	return files, nil
 }
 
@@ -239,8 +263,16 @@ func (s *CollaborationService) settleUnclaimedPreparationRefusal(ctx context.Con
 	if denied.Code == "runtime_preparation_unsupported" && runtime.CollaborationCapabilities != nil {
 		return false, nil
 	}
-	files, err := r.q.ListCollaborationPreparationAttachments(ctx, r.access.Issue.ID)
-	if err != nil || len(files) == 0 {
+	// The same selection the claim used decides whether this run needs file
+	// preparation. A referenced set beyond the manifest bound needs it too.
+	inputs, err := collaborationRunInputs(r.inputs)
+	if err != nil {
+		return false, err
+	}
+	files, err := s.preparationAttachments(ctx, r.q, r.access.Issue.ID, r.access.Issue.WorkspaceID, inputs)
+	var limits *CollaborationError
+	overLimit := errors.As(err, &limits) && limits.Code == "runtime_preparation_limits"
+	if !overLimit && (err != nil || len(files) == 0) {
 		return false, err
 	}
 	runs, err := r.q.LockCollaborationGroupRuns(ctx, r.group.ID)

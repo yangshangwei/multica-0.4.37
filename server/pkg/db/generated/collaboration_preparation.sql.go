@@ -108,13 +108,22 @@ func (q *Queries) FreezeCollaborationPreparedRunPrompt(ctx context.Context, arg 
 
 const listCollaborationPreparationAttachments = `-- name: ListCollaborationPreparationAttachments :many
 SELECT id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at FROM collaboration_attachment
-WHERE issue_id = $1 AND delivered_at IS NOT NULL AND discarded_at IS NULL
-ORDER BY id LIMIT 33
+WHERE issue_id = $1::uuid AND delivered_at IS NOT NULL AND discarded_at IS NULL
+ORDER BY (id = ANY($2::uuid[])) DESC, delivered_at DESC, id
+LIMIT $3::int
 `
 
-// One beyond the manifest bound distinguishes overflow from a complete list.
-func (q *Queries) ListCollaborationPreparationAttachments(ctx context.Context, issueID pgtype.UUID) ([]CollaborationAttachment, error) {
-	rows, err := q.db.Query(ctx, listCollaborationPreparationAttachments, issueID)
+type ListCollaborationPreparationAttachmentsParams struct {
+	IssueID       pgtype.UUID   `json:"issue_id"`
+	ReferencedIds []pgtype.UUID `json:"referenced_ids"`
+	RowLimit      int32         `json:"row_limit"`
+}
+
+// Files the prepared inputs reference come first, then the newest other
+// deliveries. Issue history therefore never displaces a referenced file, and
+// a referenced file absent from this list is no longer delivered.
+func (q *Queries) ListCollaborationPreparationAttachments(ctx context.Context, arg ListCollaborationPreparationAttachmentsParams) ([]CollaborationAttachment, error) {
+	rows, err := q.db.Query(ctx, listCollaborationPreparationAttachments, arg.IssueID, arg.ReferencedIds, arg.RowLimit)
 	if err != nil {
 		return nil, err
 	}

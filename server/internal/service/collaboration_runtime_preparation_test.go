@@ -587,3 +587,95 @@ func TestCollaborationRuntimePreparationLateDeliverySettlementCommitBoundary(t *
 		})
 	}
 }
+
+// Each comment may deliver up to 32 files and delivered files are permanent,
+// so an issue's file history can outgrow the manifest bound. Later input must
+// still run, with the newest deliveries filling the manifest.
+func TestCollaborationRuntimePreparationIssueFileHistoryBeyondManifestLimitStillRuns(t *testing.T) {
+	f := preparedRuntimeFixture(t)
+	files := make([]CollaborationAttachmentView, 0, collaborationMaxSelectedAttachments+1)
+	for i := 0; i <= collaborationMaxSelectedAttachments; i++ {
+		files = append(files, preparationDeliveredFile(t, f))
+	}
+	if got := f.fx.Count(t, `SELECT count(*) FROM collaboration_attachment WHERE issue_id=$1 AND delivered_at IS NOT NULL AND discarded_at IS NULL`, f.issue.Issue.ID); got != collaborationMaxSelectedAttachments+1 {
+		t.Fatalf("fixture delivered %d files, want %d", got, collaborationMaxSelectedAttachments+1)
+	}
+	f.submitManaged(t, f.creator, "text-only input after a long file history")
+	f.resumeManaged(t)
+	list, err := f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID)
+	if err != nil || len(list.RunIDs) != 1 {
+		target := queueTarget(t, f.collaborationQueueFixture, f.targetID)
+		t.Logf("command states: waiting=%d in_flight=%d; target queue=%s hold=%q",
+			f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE target_id=$1 AND state='waiting'`, f.targetID),
+			f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE target_id=$1 AND state='in_flight'`, f.targetID),
+			target.QueueState, target.HoldReason.String)
+		t.Fatalf("a text-only input could not run because earlier comments delivered more than %d files: %+v %v", collaborationMaxSelectedAttachments, list, err)
+	}
+	_, claim := claimPreparedCandidate(t, f, util.MustParseUUID(list.RunIDs[0]))
+	manifest := preparationManifestIDs(claim.Preparation)
+	if len(manifest) != collaborationMaxSelectedAttachments || !manifest[util.UUIDToString(files[len(files)-1].ID)] || manifest[util.UUIDToString(files[0].ID)] {
+		t.Fatalf("manifest did not keep the %d newest deliveries: %d entries", collaborationMaxSelectedAttachments, len(manifest))
+	}
+}
+
+// An input's own files are never displaced by newer issue deliveries; only a
+// referenced set larger than the manifest bound refuses.
+func TestCollaborationRuntimePreparationReferencedFileOutranksNewerIssueFiles(t *testing.T) {
+	f := preparedRuntimeFixture(t)
+	files := make([]CollaborationAttachmentView, 0, collaborationMaxSelectedAttachments+1)
+	for i := 0; i <= collaborationMaxSelectedAttachments; i++ {
+		files = append(files, preparationDeliveredFile(t, f))
+	}
+	oldest, newest := files[0], files[len(files)-1]
+	target := queueTarget(t, f.collaborationQueueFixture, f.targetID)
+	if _, err := f.svc.SubmitCommand(f.ctx, CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), TargetID: f.targetID,
+		InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: target.TargetEpoch, ExpectedConfigVersion: target.ConfigVersion,
+		Content: "review the first file again", AttachmentIDs: []pgtype.UUID{oldest.ID}}); err != nil {
+		t.Fatal(err)
+	}
+	f.resumeManaged(t)
+	list, err := f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID)
+	if err != nil || len(list.RunIDs) != 1 {
+		t.Fatalf("input referencing an old file did not promote: %+v %v", list, err)
+	}
+	runID := util.MustParseUUID(list.RunIDs[0])
+	_, claim := claimPreparedCandidate(t, f, runID)
+	manifest := preparationManifestIDs(claim.Preparation)
+	if len(manifest) != collaborationMaxSelectedAttachments || !manifest[util.UUIDToString(oldest.ID)] || !manifest[util.UUIDToString(newest.ID)] ||
+		manifest[util.UUIDToString(files[1].ID)] {
+		t.Fatalf("manifest did not hold the referenced file plus the newest deliveries: %d entries", len(manifest))
+	}
+	_, permit := permitPreparedClaim(t, f, runID, claim)
+	if _, err = f.svc.RuntimeAttachment(context.Background(), runID, oldest.ID, oldest.Version, permit.BusinessToken); err != nil {
+		t.Fatalf("run could not read the file its input referenced: %v", err)
+	}
+	if _, err = f.svc.RuntimeAttachment(context.Background(), runID, files[1].ID, files[1].Version, permit.BusinessToken); !collaborationErrorCode(err, "attachment_not_found") {
+		t.Fatalf("run read an issue file outside its frozen manifest: %v", err)
+	}
+	referenced := make([]string, 0, len(files))
+	for _, file := range files {
+		referenced = append(referenced, util.UUIDToString(file.ID))
+	}
+	over := []protocol.CollaborationRunInput{{AttachmentIDs: referenced}}
+	if _, err = f.svc.preparationAttachments(f.ctx, f.svc.Queries, f.issue.Issue.ID, f.issue.Issue.WorkspaceID, over); !collaborationErrorCode(err, "runtime_preparation_limits") {
+		t.Fatalf("a referenced set beyond the manifest bound did not refuse: %v", err)
+	}
+	within := []protocol.CollaborationRunInput{{AttachmentIDs: referenced[:collaborationMaxSelectedAttachments]}}
+	selected, err := f.svc.preparationAttachments(f.ctx, f.svc.Queries, f.issue.Issue.ID, f.issue.Issue.WorkspaceID, within)
+	if err != nil || len(selected) != collaborationMaxSelectedAttachments {
+		t.Fatalf("a full referenced set did not fill the manifest: %d %v", len(selected), err)
+	}
+	for _, file := range selected {
+		if file.ID == util.UUIDToString(newest.ID) {
+			t.Fatal("a newer unreferenced delivery displaced a referenced file")
+		}
+	}
+}
+
+func preparationManifestIDs(p *protocol.CollaborationPreparation) map[string]bool {
+	ids := make(map[string]bool, len(p.Attachments))
+	for _, file := range p.Attachments {
+		ids[file.ID] = true
+	}
+	return ids
+}

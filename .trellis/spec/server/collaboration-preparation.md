@@ -22,6 +22,15 @@ commit, provider adapter and limits. Invocation instructions/model/thinking
 come from the locked agent. Never re-read live configuration to rebuild an old
 claim, replace a nonce or invent a new attempt after a lost response.
 
+Attachment selection is one rule for promotion, claim freeze and never-launched
+refusal settlement. The manifest holds every delivered file that the prepared
+inputs reference. The remaining capacity up to 32 goes to the issue's other
+delivered files, newest first (`delivered_at DESC`, then `id`). An issue's
+delivered files are permanent and can outnumber the bound, so only a referenced
+set above 32 refuses with `runtime_preparation_limits`; a referenced file that
+is no longer delivered refuses with `runtime_preparation_unavailable`. A claimed
+run keeps its frozen selection, and later deliveries never widen it.
+
 The initial prepared adapters are `static_json_v1` and
 `claude_stream_json_v1`. Nonempty unsupported agent overrides, MCP/Composio,
 skills, service tier, autonomy or squad instructions refuse rather than being
