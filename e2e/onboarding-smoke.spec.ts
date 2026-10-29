@@ -4,8 +4,8 @@ import { waitForPageText } from "./helpers";
 
 // Smoke test for the onboarding flow: welcome → About you (role +
 // use case on ONE screen) → workspace → runtime → Projects. The source question
-// is intentionally absent — it moved to the workspace source-backfill
-// prompt (MUL-5159). Captures screenshots for review. Uses a unique
+// is intentionally absent — this build does not ask it anywhere. Captures
+// screenshots for review. Uses a unique
 // email per run so the user is always a fresh, un-onboarded user
 // landing on /onboarding.
 

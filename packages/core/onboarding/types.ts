@@ -66,16 +66,14 @@ export type UseCase =
  * Multica for several jobs at once); `source` and `role` are single-
  * select — for `source` we capture the primary acquisition channel
  * for clean self-reported-attribution math (the array shape is
- * preserved for back-compat with v2 multi-select rows; the client
- * now always commits a one-element array), and `role` stays single
- * because downstream personalization wants a primary identity.
+ * preserved for back-compat with v2 multi-select rows), and `role`
+ * stays single because downstream personalization wants a primary
+ * identity.
  *
  * `role` / `use_case` are collected in-flow on the About-you step;
- * `source` is no longer asked during onboarding — it is collected
- * after the user has seen agents complete work, via the workspace
- * source-backfill prompt (see `needs-backfill.ts`). The slots stay in
- * this one shape because they share the same JSONB column and PATCH
- * endpoint.
+ * `source` is not asked anywhere in this build. Its slots stay in this
+ * one shape because they share the same JSONB column and PATCH
+ * endpoint, and existing rows still carry them.
  *
  * `*_skipped: true` distinguishes an explicit Skip / decline from a
  * slot the user never reached. Both states are "unknown" for
