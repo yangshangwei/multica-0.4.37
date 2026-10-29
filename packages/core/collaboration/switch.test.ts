@@ -151,6 +151,23 @@ it("settles only after the mounted issue re-read so the next action observes fre
   } finally { unsubscribe(); }
 });
 
+it("does not hand back a receipt when access is lost while the fresh read is pending", async () => {
+  const { client, scope, issue, draft } = setup();
+  const fetchMock = vi.fn().mockResolvedValueOnce(json(issue)).mockResolvedValueOnce(json(receipt))
+    .mockReturnValueOnce(new Promise<Response>(() => {}));
+  vi.stubGlobal("fetch", fetchMock);
+  const options = { ...collaborationIssueOptions(client, scope, issue.id), refetchInterval: false as const };
+  const unsubscribe = new QueryObserver(client, options).subscribe(() => {});
+  try {
+    await expect.poll(() => client.getQueryData(options.queryKey)).toEqual(issue);
+    const pending = expect(sendCollaborationSwitch(client, scope, draft)).rejects.toMatchObject({ name: "AbortError" });
+    await expect.poll(() => fetchMock.mock.calls.length).toBe(3);
+    clearCollaborationAccess(client, scope, issue.id);
+    await pending;
+    expect(readCollaborationDrafts(draft.scope)).toEqual([]);
+  } finally { unsubscribe(); }
+});
+
 it("rejects rewritten requests, other domains and unsafe persistence before any network call", async () => {
   const { client, scope, draft } = setup();
   const fetchMock = vi.fn();

@@ -84,6 +84,25 @@ it("settles a consent only after the mounted issue re-read so the next action ob
   } finally { unsubscribe(); }
 });
 
+it("does not hand back a consent receipt when access is lost while the fresh read is pending", async () => {
+  const { scope, issue, draft } = setup();
+  // Its own client: the shared one keeps per-client access state across tests.
+  const local = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  const fetch = vi.fn().mockResolvedValueOnce(json(resourceIssue)).mockResolvedValueOnce(json(resourceReceiptFixture, 201))
+    .mockReturnValueOnce(new Promise<Response>(() => {}));
+  vi.stubGlobal("fetch", fetch);
+  const options = { ...collaborationIssueOptions(local, scope, issue.id), refetchInterval: false as const };
+  const unsubscribe = new QueryObserver(local, options).subscribe(() => {});
+  try {
+    await expect.poll(() => local.getQueryData(options.queryKey)).toEqual(issue);
+    const pending = expect(executeCollaborationResource(local, scope, draft, false, { storage })).rejects.toMatchObject({ name: "AbortError" });
+    await expect.poll(() => fetch.mock.calls.length).toBe(3);
+    clearCollaborationAccess(local, scope, issue.id);
+    await pending;
+    expect(readCollaborationDrafts(draft.scope, storage)).toEqual([]);
+  } finally { unsubscribe(); local.clear(); }
+});
+
 it("keeps optional workspace candidate denial local while an issue denial clears protected data", async () => {
   const { scope, issue } = setup();
   const queryKey = collaborationKeys.issue(scope, issue.id);

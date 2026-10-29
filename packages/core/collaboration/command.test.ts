@@ -99,6 +99,23 @@ it("settles only after the mounted issue re-read so the next action observes fre
   } finally { unsubscribe(); }
 });
 
+it("does not hand back a receipt when access is lost while the fresh read is pending", async () => {
+  const { client, scope, issue, draft, receipt } = setup();
+  const fetch = vi.fn().mockResolvedValueOnce(json(issue)).mockResolvedValueOnce(json(receipt))
+    .mockReturnValueOnce(new Promise<Response>(() => {}));
+  vi.stubGlobal("fetch", fetch);
+  const options = { ...collaborationIssueOptions(client, scope, issue.id), refetchInterval: false as const };
+  const unsubscribe = new QueryObserver(client, options).subscribe(() => {});
+  try {
+    await expect.poll(() => client.getQueryData(options.queryKey)).toEqual(issue);
+    const pending = expect(executeCollaborationCommandCancel(client, scope, draft)).rejects.toMatchObject({ name: "AbortError" });
+    await expect.poll(() => fetch.mock.calls.length).toBe(3);
+    clearCollaborationAccess(client, scope, issue.id);
+    await pending;
+    expect(readCollaborationDrafts(draft.scope)).toEqual([]);
+  } finally { unsubscribe(); }
+});
+
 it("keeps the original key across unknown writes and missing GET receipts without reposting", async () => {
   const { client, scope, draft, receipt } = setup();
   const refusal = { ...receipt, status: 409, code: "command_not_waiting" };
