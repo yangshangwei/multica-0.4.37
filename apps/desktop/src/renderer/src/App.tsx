@@ -26,6 +26,7 @@ import { IssueWindow } from "./components/issue-window";
 import { useTabStore, getActiveGroup } from "./stores/tab-store";
 import { useWindowOverlayStore } from "./stores/window-overlay-store";
 import { accountBootstrapDestination } from "./platform/account-bootstrap";
+import { applyWorkspaceScopeAction, nextWorkspaceScope, type WorkspaceScope } from "./platform/workspace-daemon-scope";
 import { useOpenSettingsShortcut } from "./hooks/use-open-settings-shortcut";
 import { useDaemonIPCBridge } from "./platform/daemon-ipc-bridge";
 import { syncDaemonOnLogin } from "./platform/daemon-login-sync";
@@ -226,13 +227,6 @@ export function AppContent({ onServerEditorOpenChange }: { onServerEditorOpenCha
     })();
   }, [user, restricted, runtimeConfig]);
 
-  // When a user who started the session with zero workspaces creates their
-  // first one, restart the daemon so it picks up the new workspace
-  // immediately (otherwise workspaceSyncLoop's next 30s tick would be the
-  // earliest pickup point). Specifically scoped to "started empty" because
-  // account switches (user A logout → user B login) should not trigger a
-  // daemon restart here — daemon-manager already restarts on user change
-  // via syncToken.
   const workspaceListEnabled = !!user && !restricted && !bootstrapping && authStatus === "authenticated";
   const workspaceList = useWorkspaceList({ enabled: workspaceListEnabled });
   const {
@@ -351,28 +345,22 @@ export function AppContent({ onServerEditorOpenChange }: { onServerEditorOpenCha
     }
   }, [workspaces, workspaceListReady, ownerReady, restricted]);
 
-  // null = undecided (pre-login or list hasn't settled yet)
-  // true  = session started with zero workspaces; next transition to >=1 triggers restart
-  // false = session started with >=1 workspace, OR we've already restarted; skip
-  const sessionStartedEmptyRef = useRef<boolean | null>(null);
+  // Bind the managed daemon to every workspace this account gains during the
+  // session (created, joined or shared); see platform/workspace-daemon-scope.
+  const workspaceScopeRef = useRef<WorkspaceScope | null>(null);
+  const workspaceIdsKey = workspaces.map((w) => w.id).join(",");
   useEffect(() => {
-    if (!user) {
-      sessionStartedEmptyRef.current = null;
-      return;
-    }
-    if (!workspaceListReady) return;
-    if (sessionStartedEmptyRef.current === null) {
-      sessionStartedEmptyRef.current = wsCount === 0;
-      return;
-    }
-    if (sessionStartedEmptyRef.current && wsCount >= 1) {
-      void (async () => {
-        const result = await window.daemonAPI.refreshManagedWorkspaces?.();
-        if (!result?.managed) await window.daemonAPI.restart();
-      })();
-      sessionStartedEmptyRef.current = false;
-    }
-  }, [user, workspaceListReady, wsCount]);
+    const { scope, action } = nextWorkspaceScope(workspaceScopeRef.current, {
+      userId: user?.id ?? null,
+      listReady: workspaceListReady,
+      workspaceIds: workspaceIdsKey ? workspaceIdsKey.split(",") : [],
+    });
+    workspaceScopeRef.current = scope;
+    if (action === "none") return;
+    applyWorkspaceScopeAction(window.daemonAPI, action).catch((err) => {
+      console.warn("[daemon] workspace binding refresh failed:", err);
+    });
+  }, [user?.id, workspaceListReady, workspaceIdsKey]);
 
   return (
     <DesktopConnectionRecoveryBoundary
