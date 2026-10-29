@@ -392,10 +392,16 @@ type recipientProbeDB struct {
 	lookups      int
 	failQuery    string
 	beforeLookup func()
+	// lookup names the account query to count; empty means the exact lookup.
+	lookup string
 }
 
 func (p *recipientProbeDB) Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error) {
-	if strings.Contains(sql, "-- name: FindCollaborationRecipients ") {
+	lookup := p.lookup
+	if lookup == "" {
+		lookup = "FindCollaborationRecipients"
+	}
+	if strings.Contains(sql, "-- name: "+lookup+" ") {
 		p.lookups++
 		if p.beforeLookup != nil {
 			p.beforeLookup()

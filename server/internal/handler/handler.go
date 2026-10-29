@@ -208,6 +208,12 @@ type Config struct {
 	// MULTICA_COLLABORATION_MEMORY_MAX_BYTES shared-context limit. cmd/server
 	// fails the boot on an out-of-range value; zero means the default.
 	CollaborationMemoryMaxBytes int
+	// CollaborationDirectoryEnabled lets the recipient picker list every
+	// available account on this server. False lists only accounts that share a
+	// workspace or a collaboration issue with the caller; exact lookup still
+	// finds anyone. cmd/server reads MULTICA_COLLABORATION_DIRECTORY_ENABLED
+	// (default true); the zero value is the narrower listing.
+	CollaborationDirectoryEnabled bool
 }
 
 type cloudRuntimeProxy interface {

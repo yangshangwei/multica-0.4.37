@@ -101,3 +101,173 @@ func (q *Queries) GetCollaborationRecipientSource(ctx context.Context, arg GetCo
 	err := row.Scan(&id)
 	return id, err
 }
+
+const listRecentCollaborationRecipients = `-- name: ListRecentCollaborationRecipients :many
+SELECT u.id AS user_id, u.name, u.avatar_url,
+       NOT EXISTS (SELECT 1 FROM member m
+                   WHERE m.workspace_id = $1::uuid AND m.user_id = u.id) AS external
+FROM issue_participant mine
+JOIN issue_participant theirs ON theirs.issue_id = mine.issue_id
+JOIN "user" u ON u.id = theirs.user_id
+LEFT JOIN user_password_credential c ON c.user_id = u.id
+WHERE mine.user_id = $2::uuid AND u.id <> $2::uuid
+  AND theirs.joined_at <= COALESCE(mine.revoked_at, now())
+  AND u.disabled_at IS NULL AND NOT COALESCE(c.must_change_password, false)
+  AND (NOT $3::boolean OR c.user_id IS NOT NULL)
+  AND u.id::text <> ALL($4::text[])
+  AND COALESCE(lower(btrim(u.email, $5::text)), '') <> ALL($6::text[])
+  AND (NOT $7::boolean
+       OR EXISTS (SELECT 1 FROM member m
+                  WHERE m.workspace_id = $1::uuid AND m.user_id = u.id))
+GROUP BY u.id
+ORDER BY max(greatest(mine.joined_at, theirs.joined_at)) DESC, u.id
+LIMIT $8::int
+`
+
+type ListRecentCollaborationRecipientsParams struct {
+	SourceWorkspaceID             pgtype.UUID `json:"source_workspace_id"`
+	ActorID                       pgtype.UUID `json:"actor_id"`
+	RequirePasswordCredential     bool        `json:"require_password_credential"`
+	TemporarilyDisabledUserIds    []string    `json:"temporarily_disabled_user_ids"`
+	TrimChars                     string      `json:"trim_chars"`
+	TemporarilyDisabledUserEmails []string    `json:"temporarily_disabled_user_emails"`
+	MembersOnly                   bool        `json:"members_only"`
+	RecentLimit                   int32       `json:"recent_limit"`
+}
+
+type ListRecentCollaborationRecipientsRow struct {
+	UserID    pgtype.UUID `json:"user_id"`
+	Name      string      `json:"name"`
+	AvatarUrl pgtype.Text `json:"avatar_url"`
+	External  bool        `json:"external"`
+}
+
+// People who shared a collaboration issue with the actor while the actor was
+// still on it. Someone who joined after the actor left was never seen there.
+func (q *Queries) ListRecentCollaborationRecipients(ctx context.Context, arg ListRecentCollaborationRecipientsParams) ([]ListRecentCollaborationRecipientsRow, error) {
+	rows, err := q.db.Query(ctx, listRecentCollaborationRecipients,
+		arg.SourceWorkspaceID,
+		arg.ActorID,
+		arg.RequirePasswordCredential,
+		arg.TemporarilyDisabledUserIds,
+		arg.TrimChars,
+		arg.TemporarilyDisabledUserEmails,
+		arg.MembersOnly,
+		arg.RecentLimit,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListRecentCollaborationRecipientsRow{}
+	for rows.Next() {
+		var i ListRecentCollaborationRecipientsRow
+		if err := rows.Scan(
+			&i.UserID,
+			&i.Name,
+			&i.AvatarUrl,
+			&i.External,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const searchCollaborationRecipients = `-- name: SearchCollaborationRecipients :many
+SELECT u.id AS user_id, u.name, u.avatar_url, lower(u.name)::text AS sort_name,
+       NOT EXISTS (SELECT 1 FROM member m
+                   WHERE m.workspace_id = $1::uuid AND m.user_id = u.id) AS external
+FROM "user" u
+LEFT JOIN user_password_credential c ON c.user_id = u.id
+WHERE u.id <> $2::uuid
+  AND u.disabled_at IS NULL AND NOT COALESCE(c.must_change_password, false)
+  AND (NOT $3::boolean OR c.user_id IS NOT NULL)
+  AND u.id::text <> ALL($4::text[])
+  -- A NULL email must not turn the comparison into NULL and drop the row.
+  AND COALESCE(lower(btrim(u.email, $5::text)), '') <> ALL($6::text[])
+  AND ($7::boolean
+       OR EXISTS (SELECT 1 FROM member mine JOIN member theirs ON theirs.workspace_id = mine.workspace_id
+                  WHERE mine.user_id = $2::uuid AND theirs.user_id = u.id)
+       OR EXISTS (SELECT 1 FROM issue_participant mine JOIN issue_participant theirs ON theirs.issue_id = mine.issue_id
+                  WHERE mine.user_id = $2::uuid AND theirs.user_id = u.id
+                    AND theirs.joined_at <= COALESCE(mine.revoked_at, now())))
+  AND (NOT $8::boolean
+       OR EXISTS (SELECT 1 FROM member m
+                  WHERE m.workspace_id = $1::uuid AND m.user_id = u.id))
+  -- Names only. Email, username and ID stay with the exact lookup.
+  AND lower(u.name) LIKE '%' || lower($9::text) || '%' ESCAPE '\'
+  AND ($10::uuid IS NULL
+       OR (lower(u.name), u.id) > ($11::text, $10::uuid))
+ORDER BY lower(u.name), u.id
+LIMIT $12::int
+`
+
+type SearchCollaborationRecipientsParams struct {
+	SourceWorkspaceID             pgtype.UUID `json:"source_workspace_id"`
+	ActorID                       pgtype.UUID `json:"actor_id"`
+	RequirePasswordCredential     bool        `json:"require_password_credential"`
+	TemporarilyDisabledUserIds    []string    `json:"temporarily_disabled_user_ids"`
+	TrimChars                     string      `json:"trim_chars"`
+	TemporarilyDisabledUserEmails []string    `json:"temporarily_disabled_user_emails"`
+	Directory                     bool        `json:"directory"`
+	MembersOnly                   bool        `json:"members_only"`
+	NamePattern                   string      `json:"name_pattern"`
+	AfterID                       pgtype.UUID `json:"after_id"`
+	AfterName                     string      `json:"after_name"`
+	PageLimit                     int32       `json:"page_limit"`
+}
+
+type SearchCollaborationRecipientsRow struct {
+	UserID    pgtype.UUID `json:"user_id"`
+	Name      string      `json:"name"`
+	AvatarUrl pgtype.Text `json:"avatar_url"`
+	SortName  string      `json:"sort_name"`
+	External  bool        `json:"external"`
+}
+
+// A picker page, not authority: invitation, transfer and fields recheck the
+// chosen account. Every availability rule, including the emergency denylist,
+// applies before LIMIT so keyset pages are never short and never skip rows.
+func (q *Queries) SearchCollaborationRecipients(ctx context.Context, arg SearchCollaborationRecipientsParams) ([]SearchCollaborationRecipientsRow, error) {
+	rows, err := q.db.Query(ctx, searchCollaborationRecipients,
+		arg.SourceWorkspaceID,
+		arg.ActorID,
+		arg.RequirePasswordCredential,
+		arg.TemporarilyDisabledUserIds,
+		arg.TrimChars,
+		arg.TemporarilyDisabledUserEmails,
+		arg.Directory,
+		arg.MembersOnly,
+		arg.NamePattern,
+		arg.AfterID,
+		arg.AfterName,
+		arg.PageLimit,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []SearchCollaborationRecipientsRow{}
+	for rows.Next() {
+		var i SearchCollaborationRecipientsRow
+		if err := rows.Scan(
+			&i.UserID,
+			&i.Name,
+			&i.AvatarUrl,
+			&i.SortName,
+			&i.External,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}

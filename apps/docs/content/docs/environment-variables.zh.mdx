@@ -131,9 +131,12 @@ MULTICA_PUBLIC_URL=https://api.multica.example.com
 | `ALLOWED_EMAILS` | 空 | 允许注册的完整邮箱，逗号分隔 |
 | `ALLOWED_EMAIL_DOMAINS` | 空 | 允许注册的邮箱域名，逗号分隔 |
 | `DISABLE_WORKSPACE_CREATION` | `false` | 禁止所有用户新建工作空间；没有 owner/admin 例外 |
+| `MULTICA_COLLABORATION_DIRECTORY_ENABLED` | `true` | 协作接收人选择器列出本 Server 的全部可用账号；只有设为 `false` 时改为只列出与本人共享工作空间或共同参与过协作单的人，其他人仍可按完整用户名、邮箱或账号 ID 精确查找。开启且 `ALLOW_SIGNUP` 不为 `false` 时，API 启动会打印警告 |
 | `MULTICA_DEV_VERIFICATION_CODE` | 空 | 非 production 环境使用的固定 6 位测试验证码 |
 
 白名单的准确判断顺序见[登录与注册](/auth-setup#注册范围控制)。
+
+接收人选择器只显示账号的姓名、头像和是否为外部账号，不显示邮箱、用户名或所在工作空间。允许自助注册时，任何注册的人都能浏览这份列表；不希望公开时，关闭其中一项。修改后重启 API。
 
 ## 附件存储
 

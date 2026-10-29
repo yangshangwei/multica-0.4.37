@@ -68,6 +68,8 @@ R42 接线约定（2026-10-14）：PATCH 的 `priority`、`label_ids`、`propert
 
 每条 command 保持 `originator_user_id=accountable_user_id=command.author_user_id`；合并批次的 run 记录全部作者，engine task 的 originator 取批次首条 command 作者，仅作展示/用量归属，授权以业务 token 为准；另记不可变 creator、当前 handler、资源 owner 和供应商账号来源，不能为了通过私有 agent 校验将作者改成 owner。用量归属描述执行资源账号，不引入跨人自动结算或凭据共享。
 
+2026-10-29 起接收人改用选择器，列表、搜索、最近协作和部署开关见 [continuation-recipient-picker-2026-10-29.md](continuation-recipient-picker-2026-10-29.md)；下面的精确查找作为选择器中的"精确查找"一行保留。
+
 精确查找使用 `kind=username|email|user_id` 加完整值及本单/合法创建上下文。复用账号归一化、UUID parser 和限流，最多返回一个供确认的账号摘要。无空值目录、姓名模糊查询或跨 Server 查找；查找没有写副作用，确认邀请/转交时重新校验。历史邮箱归一化若出现多匹配则拒绝歧义，不任选账号。
 
 R46 在邀请/派单事务内重验当前 R12 角色和目标有效性，写参与关系、历史/outbox；派单另写 handler/待办。仅邀请只进入参与列表，离线或通知未投递不延迟生效；无需接收方的接受路由或待接受状态。服务端提交前不得乐观转出责任，幂等重放不重复加入/交接；原有资源 grant 不因新成员加入而切换，也不自动取得新成员的私人资源。
@@ -185,6 +187,7 @@ session 的 `queue_state=active|paused|closed` 是整单控制。执行通道（
 | `PUT .../iteration` | R50 仅迭代归属：expected_revision，切换/移出带 iteration_reason，不混入其他字段 |
 | `GET /api/collaboration/creations/{requestId}?source_workspace_id=...` | 仅真实 creator 查询创建幂等结果，无需预先知道 issue UUID |
 | `POST /api/collaboration/recipients/resolve` | 精确账号查找，无写入 |
+| `POST /api/collaboration/recipients/search` | 接收人选择器的分页列表、姓名搜索与最近协作，无写入 |
 | `GET /api/collaboration/issues/{uuid}/field-options` | R42：当前发起人/处理人的本单编辑选项；返回本单/来源 ID、协作版本、issue 标签和有效字段定义，不返回账号目录、使用统计或配置管理数据 |
 | `GET /api/collaboration/issues/{uuid}` 及 timeline/runs/messages | 最小来源摘要、角色/能力/版本、整单控制、targets/队列/执行组及历史；R49–R51 引用按来源权限裁剪 |
 | `GET .../mention-targets` | 本单人员及完整有效授权的 typed AI targets，附控制/等待能力，不读其他资源目录 |

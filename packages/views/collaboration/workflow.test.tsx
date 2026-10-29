@@ -18,19 +18,31 @@ const caps = { reference: true, read: true, comment: true, control_ai: true, sub
 const issue = parseCollaborationIssue({ id, title: "Transfer me", description: "Body", status: "todo", status_category: "todo", priority: "none", source_workspace: { id, name: "Source", identifier: "SRC-1" }, creator: account, handler: account,
   collaboration_revision: "9007199254740993", lifecycle_epoch: "1", write_context: { participant_epoch: "2", account_epoch: "3" }, session: { id, queue_state: "paused", control_version: "1" }, capabilities: caps })!;
 
+async function chooseExactRecipient(user: ReturnType<typeof userEvent.setup>, value: string) {
+  await user.click(screen.getByRole("button", { name: "Recipient" }));
+  await user.type(screen.getByPlaceholderText("Search recipients"), "recipient");
+  await user.click(await screen.findByRole("button", { name: "Find by full username, email, or account ID" }));
+  await user.type(screen.getByLabelText("Find by full username, email, or account ID"), value);
+  await user.click(screen.getByRole("button", { name: "Find account" }));
+  await user.click(await screen.findByRole("button", { name: "Use this account" }));
+}
+
 it("resolves one exact recipient, preserves an unknown transfer, and recovers its original receipt", async () => {
   setApiInstance(new ApiClient("https://server.example"));
   const scope = collaborationScope(id);
-  const fetch = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify({ issue_id: id, source_workspace_id: id, recipient: { ...account, user_id: recipientId, name: "New handler" } })))
-    .mockRejectedValueOnce(new TypeError("Connection lost"))
-    .mockResolvedValueOnce(new Response(JSON.stringify({ code: "transferred", collaboration_revision: "9007199254740994", status: 200 })));
+  const fetch = vi.fn<(input: string, init?: RequestInit) => Promise<Response>>(async (input) => {
+    if (input.includes("/recipients/search")) return new Response(JSON.stringify({ issue_id: id, source_workspace_id: id, scope: "directory", source_member: true, recent: [], recipients: [], next_cursor: null }));
+    if (input.includes("/recipients/resolve")) return new Response(JSON.stringify({ issue_id: id, source_workspace_id: id, recipient: { ...account, user_id: recipientId, name: "New handler" } }));
+    if (input.endsWith("/handoffs")) throw new TypeError("Connection lost");
+    if (input.includes("/operations/")) return new Response(JSON.stringify({ code: "transferred", collaboration_revision: "9007199254740994", status: 200 }));
+    throw new Error(`Unexpected request ${input}`);
+  });
   vi.stubGlobal("fetch", fetch);
   renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={scope} issue={issue} /></QueryClientProvider>);
   const user = userEvent.setup();
   await user.click(screen.getByRole("button", { name: "Transfer" }));
   expect(screen.getByRole("button", { name: "Confirm" })).toBeDisabled();
-  await user.type(screen.getByLabelText("Exact recipient"), "new-handler");
-  await user.click(screen.getByRole("button", { name: "Find account" }));
+  await chooseExactRecipient(user, "new-handler");
   expect(await screen.findByText("Selected account: New handler")).toBeInTheDocument();
   await user.type(screen.getByLabelText("Note"), "Keep original note");
   await user.click(screen.getByRole("button", { name: "Confirm" }));
@@ -39,8 +51,9 @@ it("resolves one exact recipient, preserves an unknown transfer, and recovers it
   expect(draft?.payload).toMatchObject({ targetUserId: recipientId, note: "Keep original note", expectedCollaborationRevision: "9007199254740993" });
   await user.click(screen.getByRole("button", { name: "Check original result" }));
   await waitFor(() => expect(readCollaborationDrafts({ ...scope, issueId: id })).toEqual([]));
-  expect(fetch.mock.calls[2]?.[0]).toContain(`/operations/${draft!.requestId}`);
-  expect(fetch.mock.calls[2]?.[1].method ?? "GET").toBe("GET");
+  const recoveryCall = fetch.mock.calls.find(([input]) => input.includes(`/operations/${draft!.requestId}`));
+  expect(recoveryCall?.[0]).toContain(`/operations/${draft!.requestId}`);
+  expect(recoveryCall?.[1]?.method ?? "GET").toBe("GET");
   expect(screen.getByText("Action confirmed.")).toBeInTheDocument();
 });
 
@@ -48,14 +61,20 @@ it("discards an in-flight exact lookup after the recipient text changes", async 
   setApiInstance(new ApiClient("https://server.example"));
   const scope = collaborationScope(id);
   let finish!: (response: Response) => void;
-  vi.stubGlobal("fetch", vi.fn().mockImplementation(() => new Promise<Response>((resolve) => { finish = resolve; })));
+  vi.stubGlobal("fetch", vi.fn().mockImplementation((input: string) => input.includes("/recipients/search")
+    ? Promise.resolve(new Response(JSON.stringify({ issue_id: id, source_workspace_id: id, scope: "directory", source_member: true, recent: [], recipients: [], next_cursor: null })))
+    : new Promise<Response>((resolve) => { finish = resolve; })));
   renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={scope} issue={issue} /></QueryClientProvider>);
   const user = userEvent.setup();
   await user.click(screen.getByRole("button", { name: "Transfer" }));
-  await user.type(screen.getByLabelText("Exact recipient"), "previous-account");
+  await user.click(screen.getByRole("button", { name: "Recipient" }));
+  await user.type(screen.getByPlaceholderText("Search recipients"), "recipient");
+  await user.click(await screen.findByRole("button", { name: "Find by full username, email, or account ID" }));
+  const exact = screen.getByLabelText("Find by full username, email, or account ID");
+  await user.type(exact, "previous-account");
   await user.click(screen.getByRole("button", { name: "Find account" }));
-  await user.clear(screen.getByLabelText("Exact recipient"));
-  await user.type(screen.getByLabelText("Exact recipient"), "new-account");
+  await user.clear(exact);
+  await user.type(exact, "new-account");
   await act(async () => finish(new Response(JSON.stringify({ issue_id: id, source_workspace_id: id, recipient: { ...account, user_id: recipientId, name: "Previous account" } }))));
   expect(screen.queryByText("Selected account: Previous account")).toBeNull();
   expect(screen.getByRole("button", { name: "Confirm" })).toBeDisabled();
