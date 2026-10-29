@@ -114,7 +114,7 @@ describe("project health presentation", () => {
     const section = await healthSection();
     const warnings = [
       "The project is past its due date.",
-      "The project lead is unavailable. Choose a current member or agent in Properties.",
+      "The project lead is missing or unavailable. Choose a current member or agent in Properties.",
       "No progress has been published for seven planning days.",
       "This ended project still has open issues.",
       "Some assigned execution environments are unavailable. Review the project resources and squads.",
@@ -127,7 +127,7 @@ describe("project health presentation", () => {
       expect(within(section).getByText(warning)).toBeVisible();
     }
     expect(within(section).queryByText("The project is overdue.")).not.toBeInTheDocument();
-    expect(within(section).queryByText("The project lead is unavailable.")).not.toBeInTheDocument();
+    expect(within(section).queryByText("The project lead is missing or unavailable.")).not.toBeInTheDocument();
     expect(within(section).queryByText("An assigned execution environment is unavailable.")).not.toBeInTheDocument();
   });
 
