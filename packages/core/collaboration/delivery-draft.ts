@@ -15,7 +15,9 @@ const scopeSchema = z.strictObject({ server: z.string(), userId: uuid, context: 
 const base = { scope: scopeSchema, draftId: uuid, createdAt: z.number().int().nonnegative() };
 export const CollaborationDeliveryFormSchema = z.strictObject({
   ...base, kind: z.literal("form"), purpose: z.enum(["creation", "comment", "attachment"]),
-  title: z.string().max(1000), content: z.string().max(1_000_000), recipientQuery: z.string().max(1000),
+  title: z.string().max(1000), content: z.string().max(1_000_000),
+  // Unused since the shared recipient picker; kept so saved strict drafts still parse. New forms write "".
+  recipientQuery: z.string().max(1000),
   recipient: CollaborationAccountSummarySchema.nullable(), selectedAttachmentIds: collaborationAttachmentIds,
   parentCommentId: uuid.nullable().optional(),
   // A mutable form retains an unfinished numeric value; immutable requests

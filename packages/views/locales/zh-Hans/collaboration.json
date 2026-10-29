@@ -133,7 +133,6 @@
     "archived": "已归档",
     "clear": "清空",
     "removeAccount": "移除 {{name}}",
-    "exactAccount": "精确查找来源成员账号",
     "sourceAccountOnly": "请选择来源工作空间的成员账号。",
     "unavailableSelection": "选项已不可用：{{value}}",
     "project": "项目",
@@ -215,9 +214,7 @@
     "reopen": "重新打开",
     "leave": "退出任务",
     "edit": "编辑任务",
-    "recipient": "精确接收人",
-    "recipientHint": "输入用户名、邮箱或账号 UUID。",
-    "resolve": "查找账号",
+    "recipient": "接收人",
     "confirmRecipient": "已选账号：{{name}}",
     "note": "说明",
     "confirm": "确认",
@@ -522,10 +519,7 @@
     "self": "分配给自己",
     "assignedSelf": "已选择自己",
     "assignedTo": "已选择 {{name}}",
-    "lookupLabel": "完整用户名、邮箱或账号 ID",
-    "lookup": "查找账号",
     "useRecipient": "选择此账号",
-    "confirmRecipient": "请确认接收人，或选择分配给自己后再创建任务。",
     "submit": "创建协作任务",
     "submitting": "正在创建任务...",
     "unknown": "创建结果尚未确认，原始请求已保存。",
@@ -622,6 +616,27 @@
       "configuration_changed": "资源配置已变更。",
       "cancelled": "准备已取消。",
       "preparation_unavailable": "无法完成准备。"
+    }
+  },
+  "recipientPicker": {
+    "choose": "选择接收人",
+    "search": "搜索接收人",
+    "exactLookup": "按完整用户名、邮箱或账号 ID 查找",
+    "exactPlaceholder": "用户名、邮箱或账号 ID",
+    "findExact": "查找账号",
+    "external": "外部",
+    "loading": "正在加载账号…",
+    "loadingMore": "正在加载更多账号…",
+    "loadMore": "加载更多",
+    "empty": "没有找到可用账号。",
+    "relatedHint": "这里只显示与你共享工作空间或共同参与过协作任务的人；其他人请使用精确查找。",
+    "membersOnlyHint": "这里只能选择来源工作空间的成员。",
+    "selectedCount": "已选择 {{count}} 个账号",
+    "sections": {
+      "self": "自己",
+      "selected": "已选",
+      "recent": "最近协作",
+      "all": "全部账号"
     }
   },
   "memory": {

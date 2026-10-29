@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { collaborationCreationOptions, collaborationCreationRecipientOptions, collaborationDeliveryKey, collaborationDeliveryRevision,
+import { collaborationCreationOptions, collaborationDeliveryKey, collaborationDeliveryRevision,
   CollaborationCreationRejectedError,
   CollaborationCreationFieldsSchema, collaborationPropertyValueMatchesDefinition,
   executeCollaborationCreation, isCollaborationScopeCurrent, prepareCollaborationCreation, readCollaborationDeliveryRecords,
@@ -15,6 +15,7 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 import { useNavigation } from "../navigation";
 import { useT } from "../i18n";
 import { CollaborationQueryState } from "./query-state";
+import { CollaborationAccountPicker } from "./account-picker";
 import { CollaborationAttachmentPicker } from "./attachment-picker";
 import { CollaborationIterationInput, CollaborationLabelInput, CollaborationPropertyInputs, CollaborationSourceInputs, collaborationSelectClass } from "./field-inputs";
 import { useCollaborationLabels } from "./labels";
@@ -91,17 +92,14 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
   const context = { kind: "creation" as const, sourceWorkspaceId: sourceId };
   const draft = useCollaborationDeliveryForm({ server: scope.server, userId: scope.userId, context }, "creation");
   const { form } = draft;
-  const [lookup, setLookup] = useState("");
   const [uploading, setUploading] = useState(false);
   const active = useRef(true);
   useEffect(() => { active.current = true; return () => { active.current = false; }; }, []);
-  const recipient = useQuery({ ...collaborationCreationRecipientOptions(client, scope, sourceId, lookup), enabled: lookup !== "" && lookup === form.recipientQuery.trim() && options.creation_enabled });
   const create = useMutation({ mutationKey: [...collaborationDeliveryKey(scope, context), "create"], retry: false, networkMode: "always",
     mutationFn: ({ value, recovery }: { value: CollaborationCreationDraft; recovery: boolean }) => executeCollaborationCreation(client, scope, value, recovery),
     onSuccess: (issue) => { if (active.current && isCollaborationScopeCurrent(scope)) onCreated(issue); } });
   const locked = create.isPending || draft.creations.length > 0 || Boolean(draft.error) || uploading || draft.uploads.length > 0;
   const editable = !locked && options.creation_enabled;
-  const recipientUnconfirmed = form.recipientQuery.trim() !== "" && form.recipient === null;
   const initial = form.initialFields ?? {};
   const fields = options.fields;
   const updateFields = (value: Partial<CollaborationCreationFields>) => draft.update({ initialFields: { ...initial, ...value } });
@@ -122,7 +120,7 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
   useEffect(() => { if (!initialValid && initialSection.current) initialSection.current.open = true; }, [initialValid, fields]);
   return <form className="min-w-0 space-y-5" onSubmit={(event) => {
     if (event.target !== event.currentTarget) return;
-    event.preventDefault(); if (!editable || !form.title.trim() || recipientUnconfirmed || !initialValid) return;
+    event.preventDefault(); if (!editable || !form.title.trim() || !initialValid) return;
     create.mutate({ value: prepareCollaborationCreation(form, crypto.randomUUID()), recovery: false });
   }}>
     <div className="space-y-2"><label htmlFor={`${id}-title`} className="block text-body font-medium">{t(($) => $.creation.titleLabel)}</label>
@@ -132,15 +130,9 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
       <Textarea id={`${id}-description`} value={form.content} maxLength={1_000_000} disabled={!editable} onChange={(event) => draft.update({ content: event.target.value })} className="min-h-28" />
     </div>
     <fieldset className="min-w-0 space-y-3"><legend className="mb-2 text-body font-medium">{t(($) => $.creation.recipient)}</legend>
-      <div className="flex flex-wrap items-center gap-3"><p role="status" className="text-body [overflow-wrap:anywhere]">{form.recipient ? t(($) => $.creation.assignedTo, { name: form.recipient.name }) : t(($) => $.creation.assignedSelf)}</p>
-        <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={!editable} onClick={() => { draft.update({ recipient: null, recipientQuery: "" }); setLookup(""); }}>{t(($) => $.creation.self)}</Button></div>
-      <label htmlFor={`${id}-recipient`} className="block text-caption font-medium">{t(($) => $.creation.lookupLabel)}</label>
-      <div className="flex flex-wrap gap-2"><Input id={`${id}-recipient`} value={form.recipientQuery} disabled={!editable} className="min-h-11 min-w-0 flex-1" onChange={(event) => { draft.update({ recipientQuery: event.target.value, recipient: null }); setLookup(""); }} />
-        <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={!editable || !form.recipientQuery.trim() || recipient.isFetching} onClick={() => { setLookup(form.recipientQuery.trim()); if (lookup === form.recipientQuery.trim()) void recipient.refetch(); }}>{t(($) => $.creation.lookup)}</Button></div>
-      {recipient.error && lookup && <CollaborationQueryState error={recipient.error} retry={() => void recipient.refetch()} />}
-      {recipient.data && lookup === form.recipientQuery.trim() && <div className="flex flex-wrap items-center gap-3 text-body [overflow-wrap:anywhere]"><span>{recipient.data.recipient.name}</span>
-        <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={!editable} onClick={() => draft.update({ recipient: recipient.data!.recipient })}>{t(($) => $.creation.useRecipient)}</Button></div>}
-      {recipientUnconfirmed && <p className="text-caption text-muted-foreground">{t(($) => $.creation.confirmRecipient)}</p>}
+      <div className="flex flex-wrap items-center gap-3"><p role="status" className="text-body [overflow-wrap:anywhere]">{form.recipient ? t(($) => $.creation.assignedTo, { name: form.recipient.name }) : t(($) => $.creation.assignedSelf)}</p></div>
+      <CollaborationAccountPicker scope={scope} context={context} selected={form.recipient} allowSelf selfName={t(($) => $.creation.self)} label={t(($) => $.creation.recipient)} disabled={!editable}
+        onSelect={(account) => draft.update({ recipient: account ? { ...account, external: account.external === true } : null, recipientQuery: "" })} />
     </fieldset>
     {fields && <details ref={initialSection} className="min-w-0 space-y-4"><summary className="cursor-pointer py-2 text-body font-medium pointer-coarse:min-h-11">{t(($) => $.fields.initial)}</summary>
       <fieldset disabled={!editable} className="min-w-0 space-y-5">
@@ -187,6 +179,6 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
         <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={create.isPending || !options.creation_enabled} onClick={() => create.mutate({ value, recovery: false })}>{t(($) => $.creation.retry)}</Button></div>
     </div>)}
     <div className="flex flex-wrap items-center justify-between gap-3"><p className="text-caption text-muted-foreground">{t(($) => $.creation.saved)}</p>
-      <Button type="submit" disabled={!editable || !form.title.trim() || recipientUnconfirmed || !initialValid} className="pointer-coarse:min-h-11">{t(($) => $.creation.submit)}</Button></div>
+      <Button type="submit" disabled={!editable || !form.title.trim() || !initialValid} className="pointer-coarse:min-h-11">{t(($) => $.creation.submit)}</Button></div>
   </form>;
 }

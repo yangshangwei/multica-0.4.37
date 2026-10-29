@@ -133,6 +133,9 @@ services:
       ALLOWED_EMAILS: ${ALLOWED_EMAILS:-}
       ALLOWED_EMAIL_DOMAINS: ${ALLOWED_EMAIL_DOMAINS:-}
       DISABLE_WORKSPACE_CREATION: ${DISABLE_WORKSPACE_CREATION:-}
+      # Recipient picker lists every available account by default; "false"
+      # lists only people sharing a workspace or collaboration issue.
+      MULTICA_COLLABORATION_DIRECTORY_ENABLED: ${MULTICA_COLLABORATION_DIRECTORY_ENABLED:-}
       # Intranet device auth. With this true, any client that can reach this
       # port mints its own identity and needs no login; each first launch then
       # names its own workspace unless MULTICA_DEVICE_AUTH_WORKSPACE names one

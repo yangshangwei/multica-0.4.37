@@ -1,13 +1,12 @@
 import { useId, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { collaborationCreationRecipientOptions, collaborationRecipientOptions, type CollaborationLabel, type CollaborationPropertyDefinition, type CollaborationScope, type CollaborationSourceOptions, type CollaborationSourceStructure } from "@multica/core/collaboration";
+import { type CollaborationLabel, type CollaborationPropertyDefinition, type CollaborationRecipientAccount, type CollaborationScope, type CollaborationSourceOptions, type CollaborationSourceStructure } from "@multica/core/collaboration";
 import { MAX_ISSUE_PROPERTY_ACTOR_VALUES, actorRefValuesFromValue, parseActorRef, type IssuePropertyValue } from "@multica/core/types";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
 import { CustomPropertyValueDisplay, CustomPropertyValueInput } from "../issues/components/pickers/custom-property-picker";
 import { PropertyPicker, PickerItem } from "../issues/components/pickers/property-picker";
 import { useT } from "../i18n";
-import { CollaborationQueryState } from "./query-state";
+import { CollaborationAccountPicker } from "./account-picker";
 
 export const collaborationSelectClass = "block min-h-11 w-full min-w-0 rounded-md border border-input bg-background px-3 text-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
@@ -53,7 +52,7 @@ function PropertyInput({ scope, issueId, sourceId, definition, value, onChange, 
   const actor = definition.type === "actor" || definition.type === "multi_actor";
   return <div className="min-w-0 space-y-2">
     <p id={labelId} className="text-body">{definition.name}{definition.archived ? ` · ${t(($) => $.fields.archived)}` : ""}</p>
-    {actor ? <CollaborationActorPropertyInput scope={scope} issueId={issueId} sourceId={sourceId} labelId={labelId} multiple={definition.type === "multi_actor"}
+    {actor ? <CollaborationActorPropertyInput scope={scope} issueId={issueId} sourceId={sourceId} labelId={labelId} pickerLabel={definition.name} multiple={definition.type === "multi_actor"}
       value={value} onChange={onChange} disabled={disabled} archived={definition.archived} />
       : <CustomPropertyValueInput property={definition} value={value} onChange={onChange} open={!disabled && open} onOpenChange={setOpen}
         trigger={<span id={valueId}><CustomPropertyValueDisplay property={definition} value={value} /></span>}
@@ -61,34 +60,30 @@ function PropertyInput({ scope, issueId, sourceId, definition, value, onChange, 
   </div>;
 }
 
-function CollaborationActorPropertyInput({ scope, issueId, sourceId, labelId, multiple, value, onChange, disabled, archived }: {
-  scope: CollaborationScope; issueId?: string; sourceId: string; labelId: string; multiple: boolean; value: IssuePropertyValue | undefined;
+function CollaborationActorPropertyInput({ scope, issueId, sourceId, labelId, pickerLabel, multiple, value, onChange, disabled, archived }: {
+  scope: CollaborationScope; issueId?: string; sourceId: string; labelId: string; pickerLabel: string; multiple: boolean; value: IssuePropertyValue | undefined;
   onChange: (value: IssuePropertyValue | undefined) => void; disabled: boolean; archived: boolean;
 }) {
   const { t } = useT("collaboration");
-  const client = useQueryClient();
-  const [text, setText] = useState("");
-  const [query, setQuery] = useState("");
-  const options = issueId ? collaborationRecipientOptions(client, scope, issueId, query) : collaborationCreationRecipientOptions(client, scope, sourceId, query);
-  const lookup = useQuery({ ...options, enabled: !disabled && !archived && query !== "" && query === text.trim() });
   const selected = actorRefValuesFromValue(value);
-  const found = query === text.trim() && !lookup.isFetching ? lookup.data?.recipient : null;
-  const eligible = found && found.external === false;
+  const [accountNames, setAccountNames] = useState<Record<string, string>>({});
+  const selectedAccounts: CollaborationRecipientAccount[] = selected.flatMap((reference) => {
+    const parsed = parseActorRef(reference);
+    return parsed ? [{ user_id: parsed.id, name: accountNames[parsed.id] ?? parsed.id, avatar_url: "", external: false }] : [];
+  });
+  const context = issueId ? { kind: "issue" as const, issueId } : { kind: "creation" as const, sourceWorkspaceId: sourceId };
   return <div className="min-w-0 space-y-2" role="group" aria-labelledby={labelId}>
-    {selected.map((reference) => <div key={reference} className="flex min-w-0 items-center gap-2"><span className="min-w-0 text-caption [overflow-wrap:anywhere]">{found && found.user_id === parseActorRef(reference)?.id ? found.name : parseActorRef(reference)?.id ?? reference}</span>
+    {selected.map((reference) => <div key={reference} className="flex min-w-0 items-center gap-2"><span className="min-w-0 text-caption [overflow-wrap:anywhere]">{accountNames[parseActorRef(reference)?.id ?? ""] ?? parseActorRef(reference)?.id ?? reference}</span>
       <Button type="button" size="sm" variant="ghost" disabled={disabled} className="pointer-coarse:min-h-11" aria-label={t(($) => $.fields.removeAccount, { name: parseActorRef(reference)?.id ?? reference })}
         onClick={() => { const next = selected.filter((item) => item !== reference); onChange(next.length ? multiple ? next : next[0] : undefined); }}>{t(($) => $.fields.clear)}</Button></div>)}
-    {!archived && <>
-      <Input aria-label={t(($) => $.fields.exactAccount)} className="pointer-coarse:min-h-11" value={text} disabled={disabled} placeholder={t(($) => $.workflow.recipientHint)}
-        onChange={(event) => { setText(event.target.value); setQuery(""); }} />
-      <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={disabled || !text.trim() || lookup.isFetching} onClick={() => { setQuery(text.trim()); if (query === text.trim()) void lookup.refetch(); }}>{t(($) => $.workflow.resolve)}</Button>
-      {lookup.error && <CollaborationQueryState error={lookup.error} retry={() => void lookup.refetch()} />}
-      {found && <div className="space-y-2"><p role="status" className="text-body [overflow-wrap:anywhere]">{found.name}</p>
-        {eligible ? <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={disabled || multiple && selected.length >= MAX_ISSUE_PROPERTY_ACTOR_VALUES}
-          onClick={() => { if (!found || found.external) return; const reference = `member:${found.user_id}`; onChange(multiple ? selected.includes(reference) ? selected : [...selected, reference] : reference); }}>{t(($) => $.creation.useRecipient)}</Button>
-          : <p className="text-caption text-muted-foreground">{t(($) => $.fields.sourceAccountOnly)}</p>}
-      </div>}
-    </>}
+    {!archived && <CollaborationAccountPicker scope={scope} context={context} selected={multiple ? selectedAccounts : selectedAccounts[0] ?? null}
+      label={pickerLabel} membersOnly multiple={multiple} maxSelected={MAX_ISSUE_PROPERTY_ACTOR_VALUES} disabled={disabled}
+      onSelect={(account) => {
+        if (!account || account.external !== false) return;
+        setAccountNames((current) => ({ ...current, [account.user_id]: account.name }));
+        const reference = `member:${account.user_id}`;
+        onChange(multiple ? selected.includes(reference) ? selected : [...selected, reference] : reference);
+      }} />}
   </div>;
 }
 

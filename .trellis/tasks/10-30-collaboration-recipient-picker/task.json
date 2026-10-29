@@ -1,0 +1,30 @@
+{
+  "id": "collaboration-recipient-picker",
+  "name": "collaboration-recipient-picker",
+  "title": "协作接收人选择器",
+  "description": "将协作任务的接收人从完整标识查询升级为支持分页、姓名搜索、最近协作和精确兜底的统一选择器，并接入三个入口",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": "server recipient search API and authorization; core recipient query contracts; shared Web/Desktop picker; creation/workflow/field integration; localized copy; E2E and accessibility verification",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-30",
+  "completedAt": null,
+  "branch": "claude/collab-recipient-picker",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "10-10-cross-workspace-collaboration",
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "implementation_status": "verified",
+    "verification": "verification.md",
+    "full_service_race_timeout": "TestCollaborationSharedSkillWritersInvalidateEnabledDependents"
+  }
+}

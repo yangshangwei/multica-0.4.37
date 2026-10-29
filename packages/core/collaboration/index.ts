@@ -2,6 +2,12 @@ export { CollaborationIssueSchema, CollaborationWorkbenchSchema, CollaborationOp
 export type { CollaborationIssue, CollaborationWorkbench, CollaborationOperation, CollaborationWriteInput, CollaborationParticipantInput, CollaborationHandoffInput, CollaborationHandoffPurpose, CollaborationDirectedStatusInput, CollaborationInformationReturnInput, CollaborationAcceptanceInput, CollaborationEditInput, CollaborationStatusAction, CollaborationLifecycleAction, CollaborationStatusOptions, CollaborationStatusInput, CollaborationLifecycleInput } from "./schema";
 export { CollaborationRecipientSchema, parseCollaborationRecipient } from "./schema";
 export type { CollaborationRecipient, CollaborationRecipientInput } from "./schema";
+export { CollaborationRecipientAccountSchema, CollaborationRecipientSearchSchema, parseCollaborationRecipientSearch } from "./schema";
+export type { CollaborationRecipientAccount, CollaborationRecipientSearch, CollaborationRecipientSearchInput } from "./schema";
+export { collaborationRecipientSearchOptions } from "./recipient-search";
+export type { CollaborationRecipientSearchContext } from "./recipient-search";
+export { collaborationRecipientSections } from "./recipient-sections";
+export type { CollaborationRecipientSection, CollaborationRecipientSectionKey } from "./recipient-sections";
 export { CollaborationFieldOptionsSchema, parseCollaborationFieldOptions } from "./schema";
 export type { CollaborationFieldOptions, CollaborationLabel, CollaborationPropertyDefinition } from "./schema";
 export type { CollaborationSourceOptions, CollaborationSourceStructure, CollaborationIterationInput } from "./schema";

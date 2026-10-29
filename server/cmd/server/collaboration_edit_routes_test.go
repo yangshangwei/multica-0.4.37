@@ -72,6 +72,13 @@ func TestCollaborationEditRouteRetainsStatusWireAndExternalAuthority(t *testing.
 	if resolved["issue_id"] != issue || resolved["source_workspace_id"] != source || resolved["recipient"].(map[string]any)["user_id"] != testUserID {
 		t.Fatalf("exact recipient resolution lost its account context: %v", resolved)
 	}
+	// The external handler is not a source member: the picker hides membership.
+	listed := call(http.MethodPost, "/api/collaboration/recipients/search", "", map[string]any{"issue_id": issue}).Want(http.StatusOK).Map()
+	recent, _ := listed["recent"].([]any)
+	if listed["issue_id"] != issue || listed["source_workspace_id"] != source || listed["source_member"] != false || len(recent) != 1 ||
+		recent[0].(map[string]any)["user_id"] != testUserID || recent[0].(map[string]any)["external"] != nil {
+		t.Fatalf("recipient search lost its context or exposed source membership: %v", listed)
+	}
 	edit := input()
 	edit["title"], edit["description"] = "Edited by external handler", "Revised body"
 	edit["start_date"], edit["due_date"] = "2026-10-14T00:00:00Z", "2026-10-31"

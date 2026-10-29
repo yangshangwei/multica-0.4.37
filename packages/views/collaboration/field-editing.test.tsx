@@ -148,23 +148,28 @@ it("allows clearing obsolete initial choices when the source changes", async () 
   expect(screen.getByRole("button", { name: "Create collaboration issue" })).toBeEnabled();
 });
 
-it("uses an exact confirmed source account for actor fields without fetching a member directory", async () => {
+it("uses an exact confirmed source account for a members-only actor field", async () => {
   const { scope, client } = context();
-  const fetch = vi.fn<(input: string, init?: RequestInit) => Promise<Response>>(async () => json({ issue_id: id, source_workspace_id: id, recipient: { user_id: parentId, name: "Source reviewer", avatar_url: "", external: false } }));
+  const fetch = vi.fn<(input: string, init?: RequestInit) => Promise<Response>>(async (input) => input.includes("/recipients/search")
+    ? json({ issue_id: id, source_workspace_id: id, scope: "directory", source_member: true, recent: [], recipients: [], next_cursor: null })
+    : json({ issue_id: id, source_workspace_id: id, recipient: { user_id: parentId, name: "Source reviewer", avatar_url: "", external: false } }));
   vi.stubGlobal("fetch", fetch);
   const onChange = vi.fn();
   renderWithI18n(<QueryClientProvider client={client}><CollaborationPropertyInputs scope={scope} issueId={id} sourceId={id} disabled={false} values={{}}
     definitions={[{ id: propertyId, name: "Reviewer", type: "actor", archived: false, config: {}, icon: "" }]} onChange={onChange} /></QueryClientProvider>);
   expect(fetch).not.toHaveBeenCalled();
   const user = userEvent.setup();
-  await user.type(screen.getByLabelText("Exact source member account"), "reviewer@example.test");
+  await user.click(screen.getByRole("button", { name: "Reviewer" }));
+  await user.type(screen.getByPlaceholderText("Search recipients"), "reviewer");
+  await user.click(await screen.findByRole("button", { name: "Find by full username, email, or account ID" }));
+  await user.type(screen.getByLabelText("Find by full username, email, or account ID"), "reviewer@example.test");
   await user.click(screen.getByRole("button", { name: "Find account" }));
   await screen.findByText("Source reviewer");
   expect(onChange).not.toHaveBeenCalled();
   await user.click(screen.getByRole("button", { name: "Use this account" }));
   expect(onChange).toHaveBeenCalledWith(propertyId, `member:${parentId}`);
-  expect(fetch).toHaveBeenCalledOnce();
-  expect(fetch.mock.calls[0]?.[0]).toContain("/collaboration/recipients/resolve");
+  const exactCalls = fetch.mock.calls.filter(([input]) => input.includes("/collaboration/recipients/resolve"));
+  expect(exactCalls).toHaveLength(1);
 });
 
 it("keeps a property draft during option refresh and does not submit the outer form on property Enter", async () => {
