@@ -441,7 +441,7 @@ func (q *Queries) TryLockCollaborationResourceRuns(ctx context.Context, sessionI
 }
 
 const tryLockCollaborationResourceTargets = `-- name: TryLockCollaborationResourceTargets :many
-SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version FROM collaboration_target WHERE session_id = $1 ORDER BY id FOR UPDATE NOWAIT
+SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint FROM collaboration_target WHERE session_id = $1 ORDER BY id FOR UPDATE NOWAIT
 `
 
 func (q *Queries) TryLockCollaborationResourceTargets(ctx context.Context, sessionID pgtype.UUID) ([]CollaborationTarget, error) {
@@ -472,6 +472,7 @@ func (q *Queries) TryLockCollaborationResourceTargets(ctx context.Context, sessi
 			&i.ChannelID,
 			&i.HoldReason,
 			&i.HoldVersion,
+			&i.ConfigurationBoundaryFingerprint,
 		); err != nil {
 			return nil, err
 		}

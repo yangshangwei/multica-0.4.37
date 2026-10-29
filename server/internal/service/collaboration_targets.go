@@ -125,7 +125,8 @@ func (t *collaborationQueueTx) registerTarget(ctx context.Context, p Collaborati
 		return CollaborationQueueReceipt{}, err
 	}
 	target, err := t.q.CreateConsentedCollaborationTarget(ctx, db.CreateConsentedCollaborationTargetParams{SessionID: t.session.ID,
-		Kind: string(p.Kind), ResourceID: p.ResourceID, Roster: roster, ConfigurationFingerprint: pgtype.Text{String: configuration.Fingerprint, Valid: true}})
+		Kind: string(p.Kind), ResourceID: p.ResourceID, Roster: roster, ConfigurationFingerprint: pgtype.Text{String: configuration.Fingerprint, Valid: true},
+		ConfigurationBoundaryFingerprint: pgtype.Text{String: configuration.Boundary, Valid: true}})
 	if err != nil {
 		return CollaborationQueueReceipt{}, err
 	}

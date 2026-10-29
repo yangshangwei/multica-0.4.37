@@ -156,8 +156,9 @@ type Agent struct {
 	TemplateVersion       int32       `json:"template_version"`
 	AutonomyLevel         string      `json:"autonomy_level"`
 	// User-defined directory category. Empty means uncategorized; independent of role-template provenance and autonomy.
-	Category                 string `json:"category"`
-	CollaborationConfigEpoch int64  `json:"collaboration_config_epoch"`
+	Category                   string      `json:"category"`
+	CollaborationConfigEpoch   int64       `json:"collaboration_config_epoch"`
+	CollaborationBoundaryEpoch pgtype.Int8 `json:"collaboration_boundary_epoch"`
 }
 
 type AgentApprovalRequest struct {
@@ -1130,24 +1131,25 @@ type CollaborationSwitchProposal struct {
 }
 
 type CollaborationTarget struct {
-	ID                       pgtype.UUID        `json:"id"`
-	SessionID                pgtype.UUID        `json:"session_id"`
-	Kind                     string             `json:"kind"`
-	ResourceID               pgtype.UUID        `json:"resource_id"`
-	TargetEpoch              int64              `json:"target_epoch"`
-	ConfigVersion            int64              `json:"config_version"`
-	Roster                   []byte             `json:"roster"`
-	QueueState               string             `json:"queue_state"`
-	ControlVersion           int64              `json:"control_version"`
-	GroupGeneration          int64              `json:"group_generation"`
-	ActiveGroupID            pgtype.UUID        `json:"active_group_id"`
-	PauseReason              string             `json:"pause_reason"`
-	RevokedAt                pgtype.Timestamptz `json:"revoked_at"`
-	CreatedAt                pgtype.Timestamptz `json:"created_at"`
-	ConfigurationFingerprint pgtype.Text        `json:"configuration_fingerprint"`
-	ChannelID                pgtype.UUID        `json:"channel_id"`
-	HoldReason               pgtype.Text        `json:"hold_reason"`
-	HoldVersion              int64              `json:"hold_version"`
+	ID                               pgtype.UUID        `json:"id"`
+	SessionID                        pgtype.UUID        `json:"session_id"`
+	Kind                             string             `json:"kind"`
+	ResourceID                       pgtype.UUID        `json:"resource_id"`
+	TargetEpoch                      int64              `json:"target_epoch"`
+	ConfigVersion                    int64              `json:"config_version"`
+	Roster                           []byte             `json:"roster"`
+	QueueState                       string             `json:"queue_state"`
+	ControlVersion                   int64              `json:"control_version"`
+	GroupGeneration                  int64              `json:"group_generation"`
+	ActiveGroupID                    pgtype.UUID        `json:"active_group_id"`
+	PauseReason                      string             `json:"pause_reason"`
+	RevokedAt                        pgtype.Timestamptz `json:"revoked_at"`
+	CreatedAt                        pgtype.Timestamptz `json:"created_at"`
+	ConfigurationFingerprint         pgtype.Text        `json:"configuration_fingerprint"`
+	ChannelID                        pgtype.UUID        `json:"channel_id"`
+	HoldReason                       pgtype.Text        `json:"hold_reason"`
+	HoldVersion                      int64              `json:"hold_version"`
+	ConfigurationBoundaryFingerprint pgtype.Text        `json:"configuration_boundary_fingerprint"`
 }
 
 type CollaborationTermination struct {

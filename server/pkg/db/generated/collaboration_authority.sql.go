@@ -89,16 +89,17 @@ func (q *Queries) CreateCollaborationResourceConsent(ctx context.Context, arg Cr
 }
 
 const createConsentedCollaborationTarget = `-- name: CreateConsentedCollaborationTarget :one
-INSERT INTO collaboration_target (session_id, kind, resource_id, roster, configuration_fingerprint)
-VALUES ($1, $2, $3, $4, $5) RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
+INSERT INTO collaboration_target (session_id, kind, resource_id, roster, configuration_fingerprint, configuration_boundary_fingerprint)
+VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint
 `
 
 type CreateConsentedCollaborationTargetParams struct {
-	SessionID                pgtype.UUID `json:"session_id"`
-	Kind                     string      `json:"kind"`
-	ResourceID               pgtype.UUID `json:"resource_id"`
-	Roster                   []byte      `json:"roster"`
-	ConfigurationFingerprint pgtype.Text `json:"configuration_fingerprint"`
+	SessionID                        pgtype.UUID `json:"session_id"`
+	Kind                             string      `json:"kind"`
+	ResourceID                       pgtype.UUID `json:"resource_id"`
+	Roster                           []byte      `json:"roster"`
+	ConfigurationFingerprint         pgtype.Text `json:"configuration_fingerprint"`
+	ConfigurationBoundaryFingerprint pgtype.Text `json:"configuration_boundary_fingerprint"`
 }
 
 func (q *Queries) CreateConsentedCollaborationTarget(ctx context.Context, arg CreateConsentedCollaborationTargetParams) (CollaborationTarget, error) {
@@ -108,6 +109,7 @@ func (q *Queries) CreateConsentedCollaborationTarget(ctx context.Context, arg Cr
 		arg.ResourceID,
 		arg.Roster,
 		arg.ConfigurationFingerprint,
+		arg.ConfigurationBoundaryFingerprint,
 	)
 	var i CollaborationTarget
 	err := row.Scan(
@@ -129,6 +131,7 @@ func (q *Queries) CreateConsentedCollaborationTarget(ctx context.Context, arg Cr
 		&i.ChannelID,
 		&i.HoldReason,
 		&i.HoldVersion,
+		&i.ConfigurationBoundaryFingerprint,
 	)
 	return i, err
 }
@@ -252,23 +255,26 @@ func (q *Queries) LockCollaborationSessionCommands(ctx context.Context, sessionI
 const reconfigureCollaborationTarget = `-- name: ReconfigureCollaborationTarget :one
 UPDATE collaboration_target SET roster = $1::jsonb,
     configuration_fingerprint = $2::text,
+    configuration_boundary_fingerprint = $3::text,
     config_version = config_version + 1, target_epoch = target_epoch + 1,
     hold_reason = 'switch_hold', hold_version = hold_version + 1, revoked_at = NULL
-WHERE id = $3::uuid AND session_id = $4::uuid
-RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
+WHERE id = $4::uuid AND session_id = $5::uuid
+RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint
 `
 
 type ReconfigureCollaborationTargetParams struct {
-	Roster                   []byte      `json:"roster"`
-	ConfigurationFingerprint string      `json:"configuration_fingerprint"`
-	TargetID                 pgtype.UUID `json:"target_id"`
-	SessionID                pgtype.UUID `json:"session_id"`
+	Roster                           []byte      `json:"roster"`
+	ConfigurationFingerprint         string      `json:"configuration_fingerprint"`
+	ConfigurationBoundaryFingerprint string      `json:"configuration_boundary_fingerprint"`
+	TargetID                         pgtype.UUID `json:"target_id"`
+	SessionID                        pgtype.UUID `json:"session_id"`
 }
 
 func (q *Queries) ReconfigureCollaborationTarget(ctx context.Context, arg ReconfigureCollaborationTargetParams) (CollaborationTarget, error) {
 	row := q.db.QueryRow(ctx, reconfigureCollaborationTarget,
 		arg.Roster,
 		arg.ConfigurationFingerprint,
+		arg.ConfigurationBoundaryFingerprint,
 		arg.TargetID,
 		arg.SessionID,
 	)
@@ -292,6 +298,61 @@ func (q *Queries) ReconfigureCollaborationTarget(ctx context.Context, arg Reconf
 		&i.ChannelID,
 		&i.HoldReason,
 		&i.HoldVersion,
+		&i.ConfigurationBoundaryFingerprint,
+	)
+	return i, err
+}
+
+const refreshCollaborationTargetConfiguration = `-- name: RefreshCollaborationTargetConfiguration :one
+UPDATE collaboration_target SET configuration_fingerprint = $1::text,
+    config_version = config_version + 1
+WHERE id = $2::uuid AND session_id = $3::uuid
+    AND config_version = $4::bigint
+    AND configuration_boundary_fingerprint = $5::text
+    AND revoked_at IS NULL
+RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint
+`
+
+type RefreshCollaborationTargetConfigurationParams struct {
+	ConfigurationFingerprint         string      `json:"configuration_fingerprint"`
+	TargetID                         pgtype.UUID `json:"target_id"`
+	SessionID                        pgtype.UUID `json:"session_id"`
+	ExpectedConfigVersion            int64       `json:"expected_config_version"`
+	ConfigurationBoundaryFingerprint string      `json:"configuration_boundary_fingerprint"`
+}
+
+// Owner re-consent of a configuration inside the recorded boundary. The roster,
+// target epoch and boundary stay; the new configuration version separates the
+// old configuration's grants, groups and provider sessions from the new one.
+func (q *Queries) RefreshCollaborationTargetConfiguration(ctx context.Context, arg RefreshCollaborationTargetConfigurationParams) (CollaborationTarget, error) {
+	row := q.db.QueryRow(ctx, refreshCollaborationTargetConfiguration,
+		arg.ConfigurationFingerprint,
+		arg.TargetID,
+		arg.SessionID,
+		arg.ExpectedConfigVersion,
+		arg.ConfigurationBoundaryFingerprint,
+	)
+	var i CollaborationTarget
+	err := row.Scan(
+		&i.ID,
+		&i.SessionID,
+		&i.Kind,
+		&i.ResourceID,
+		&i.TargetEpoch,
+		&i.ConfigVersion,
+		&i.Roster,
+		&i.QueueState,
+		&i.ControlVersion,
+		&i.GroupGeneration,
+		&i.ActiveGroupID,
+		&i.PauseReason,
+		&i.RevokedAt,
+		&i.CreatedAt,
+		&i.ConfigurationFingerprint,
+		&i.ChannelID,
+		&i.HoldReason,
+		&i.HoldVersion,
+		&i.ConfigurationBoundaryFingerprint,
 	)
 	return i, err
 }
@@ -312,7 +373,7 @@ func (q *Queries) RevokeCollaborationTargetConsents(ctx context.Context, arg Rev
 }
 
 const tryLockCollaborationAuthorityAgents = `-- name: TryLockCollaborationAuthorityAgents :many
-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent WHERE id = ANY($1::uuid[]) ORDER BY id FOR SHARE NOWAIT
+SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent WHERE id = ANY($1::uuid[]) ORDER BY id FOR SHARE NOWAIT
 `
 
 func (q *Queries) TryLockCollaborationAuthorityAgents(ctx context.Context, ids []pgtype.UUID) ([]Agent, error) {
@@ -359,6 +420,7 @@ func (q *Queries) TryLockCollaborationAuthorityAgents(ctx context.Context, ids [
 			&i.AutonomyLevel,
 			&i.Category,
 			&i.CollaborationConfigEpoch,
+			&i.CollaborationBoundaryEpoch,
 		); err != nil {
 			return nil, err
 		}

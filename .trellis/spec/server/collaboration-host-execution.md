@@ -71,7 +71,7 @@ Fingerprint the managed invocation, account-source identity and declared tool pe
 
 Stable session identity includes collaboration, deployment, resource owner, agent, issue session, channel, provider runtime, role and session generation. Member execution adds group/member identity. Per-run temporary identity adds run/launch.
 
-Never resolve session pointers by display name or most-recent session. Runtime/provider/account identity or incompatible role/config changes create a new session generation. Human handoff alone does not.
+Never resolve session pointers by display name or most-recent session. Runtime/provider/account identity or incompatible role/config changes create a new session generation. Owner re-consent of an instructions/model/thinking edit advances `config_version`, so it also starts a new generation. Human handoff alone does not.
 
 An unverifiable or rejected session pointer may lead to an explicitly recorded fresh session using authorized issue context; it cannot silently attach to private chat or a normal issue session.
 

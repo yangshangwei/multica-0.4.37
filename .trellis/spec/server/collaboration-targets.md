@@ -110,7 +110,9 @@ NULL means released; the only held values are `initial`, `grant_required`,
 `config_invalid` and `switch_hold`. Registration starts held even when an alias
 joins an active channel. New consent, reconsent, configuration changes and hold
 transitions advance the target's hold version independently of channel control.
-An exact idempotent replay never advances it. Reconsent does not release hold.
+An exact idempotent replay never advances it. Reconsent does not release hold;
+owner re-consent of a refreshed configuration sets `config_invalid`, and only an
+explicit Resume releases it.
 Retained active intent and all group/run/proof identities survive upgrade.
 
 ### Authorization and execution identity
@@ -274,6 +276,44 @@ must preserve a freshly reconfigured valid target and new grants. Shared skill
 content updates now feed agent epochs through migration 709; the remaining
 provider configuration matrix needs separate evidence before enabling it.
 
+### Owner re-consent inside the configuration boundary (PRD R13)
+
+Instructions, model and thinking level cannot widen execution mode or managed
+tool permissions. Migration 745 adds nullable `agent.collaboration_boundary_epoch`
+and `collaboration_target.configuration_boundary_fingerprint`. The resource epoch
+trigger advances the boundary epoch (NULL counts as 0) when any other agent
+column of the 704 row changes, and when a child writer requests an explicit
+config advance: invocation targets, skill bindings, skill content/files and
+plugin releases. Direct boundary assignment is refused with `23514`.
+
+`collaborationConfigurationSnapshot` returns `Boundary` beside `Fingerprint`:
+a domain-tagged digest of the same snapshot with each agent's boundary epoch
+replacing its config epoch. It keeps the squad epoch and creation time, agent
+membership, runtime epochs and creation times, workspace membership and the
+invocation targets of every roster resource. Squad and runtime changes are
+therefore Switch-only. The main fingerprint JSON is unchanged, so existing stored
+fingerprints stay valid. Registration and `CommitTargetSwitch` store the
+boundary. A target with a NULL boundary, including every target registered
+before 745, stays Switch-only.
+
+`ConsentTargetResource` refreshes a target whose stored fingerprint is stale
+when the stored boundary equals the current one. The check runs in the consent
+transaction after the target-grant, resource and identity locks and the owner
+identity check; every refusal leaves state unchanged. The refresh revokes all
+of the target's unrevoked grants (`configuration_changed`) and advances
+`config_version` while `target_epoch`, roster and boundary stay the same. It then
+records the caller's grant at the new version and sets `config_invalid` with a
+new hold version. Every other roster owner confirms again. Waiting commands
+carry no configuration version and keep their position. A client that still
+sends the old version gets `stale_target`. The new version also gives the next
+host run a new session generation (`config_version:resource_epoch`), so the
+provider session starts fresh. Old-version groups stay distinguishable: a late
+configuration intent stops them and keeps the refreshed grant. An exact replay
+returns the stored receipt; a repeated current consent returns the existing
+grant with 200. The resources view offers `can_consent` for such targets, and
+the identity reader returns the owner's identity for them. `Authorized` and
+`Consented` still require the current fingerprint.
+
 Invocation-target writers also take the parent agent's `NOWAIT` fence. Tests
 must not assume they can insert or replace child grants after a parent commit
 while another authorization still holds that parent. Synchronize revocation at
@@ -347,6 +387,9 @@ instead of optimistically projecting its old controls or holds into Query.
 | Root nonlaunch but a descendant may have launched | Retain consumed input and group barrier |
 | Resource configuration changed and process restarted | Durable intent resumes from its committed source cursor |
 | Display rename or unchanged invoke/skill-enabled echo | Original authorization and epoch remain unchanged |
+| Instructions/model/thinking edit, owner re-consents | New config version, all old grants revoked, `config_invalid` kept until Resume |
+| Widening agent column, child config advance, runtime or squad change | Consent refuses `target_configuration_changed` unchanged; Switch restores |
+| Target without a recorded boundary | Switch-only, consent refuses unchanged |
 
 ## 5. Good / Base / Bad Cases
 
@@ -397,6 +440,12 @@ instead of optimistically projecting its old controls or holds into Query.
 - `collaboration_execution_history_test.go` and core `execution-fifo-switch.test.ts`:
   repeated promotion, switched settled squads, cancelled tombstones, complete
   nonlaunch proof and rejection of a member masquerading as the consuming root.
+- `collaboration_reconsent_test.go`: instructions/model/thinking and reverted
+  edits recovered by owner re-consent behind `config_invalid`, waiting input kept,
+  Resume then claims the new invocation; widening, skill-binding and runtime edits
+  refused and restored by Switch; squad member edits need every owner again;
+  NULL boundary stays Switch-only; consent before the consumer still stops the
+  old group; the boundary epoch advances only through its writer.
 - Config invalidation service/handler/migration tests: actual configuration,
   membership and skill writers; no-op preservation; gate-independent consumption;
   newer valid consent; restart/fairness; rollback and source-lock contention.

@@ -276,7 +276,7 @@ func (q *Queries) ClaimCollaborationRuntimeRun(ctx context.Context, arg ClaimCol
 }
 
 const clearCollaborationChannelTargetGroups = `-- name: ClearCollaborationChannelTargetGroups :many
-UPDATE collaboration_target SET active_group_id=NULL WHERE channel_id=$1 AND active_group_id=$2 RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
+UPDATE collaboration_target SET active_group_id=NULL WHERE channel_id=$1 AND active_group_id=$2 RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint
 `
 
 type ClearCollaborationChannelTargetGroupsParams struct {
@@ -312,6 +312,7 @@ func (q *Queries) ClearCollaborationChannelTargetGroups(ctx context.Context, arg
 			&i.ChannelID,
 			&i.HoldReason,
 			&i.HoldVersion,
+			&i.ConfigurationBoundaryFingerprint,
 		); err != nil {
 			return nil, err
 		}

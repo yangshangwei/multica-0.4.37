@@ -398,7 +398,10 @@ func (s *CollaborationService) CommitTargetSwitch(ctx context.Context, p Collabo
 		if err = t.q.RevokeCollaborationTargetConsents(ctx, db.RevokeCollaborationTargetConsentsParams{TargetID: target.ID, Reason: "configuration_switched"}); err != nil {
 			return CollaborationQueueReceipt{}, err
 		}
-		target, err = t.q.ReconfigureCollaborationTarget(ctx, db.ReconfigureCollaborationTargetParams{TargetID: target.ID, SessionID: t.session.ID, Roster: proposal.Roster, ConfigurationFingerprint: proposal.ConfigurationFingerprint})
+		// The proposal fingerprint equals this snapshot, so its boundary belongs to
+		// the committed configuration and later in-boundary edits are re-consentable.
+		target, err = t.q.ReconfigureCollaborationTarget(ctx, db.ReconfigureCollaborationTargetParams{TargetID: target.ID, SessionID: t.session.ID, Roster: proposal.Roster,
+			ConfigurationFingerprint: proposal.ConfigurationFingerprint, ConfigurationBoundaryFingerprint: configuration.Boundary})
 		if err != nil {
 			return CollaborationQueueReceipt{}, err
 		}
