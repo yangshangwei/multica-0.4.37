@@ -265,7 +265,8 @@ export interface MemberUpdatedPayload {
 
 export interface MemberAddedPayload {
   member: MemberWithUser;
-  workspace_id: string;
+  // Not sent by the server today; the workspace id lives on `member`.
+  workspace_id?: string;
   workspace_name?: string;
 }
 
