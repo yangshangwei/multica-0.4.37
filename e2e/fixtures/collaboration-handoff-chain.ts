@@ -59,6 +59,13 @@ export async function directedFormThroughUI(page: Page, issueId: string, action:
   const select = form.getByLabel("Status", { exact: true });
   await expect(select.locator("option")).toHaveCount(1);
   await select.selectOption(options.default_status);
+  await expect(select).toHaveValue(options.default_status);
+  if (action === "return_information") {
+    const request = baseline.current_information_request;
+    if (!request) throw new Error("Return information needs the current open request");
+    await expect(form.getByText(`Requested by ${request.requester.name}`, { exact: true })).toBeVisible();
+    if (request.note.trim() !== "") await expect(form.getByText(request.note, { exact: true })).toBeVisible();
+  }
   await form.getByLabel("Note", { exact: true }).fill(note);
   const endpoint = `/api/collaboration/issues/${issueId}/${action === "request_information" ? "handoffs" : action === "return_information" ? "information-returns" : "acceptance-submissions"}`;
   const pending = page.waitForResponse((response) => new URL(response.url()).pathname === endpoint && response.request().method() === "POST");

@@ -150,6 +150,7 @@ it("shows the open information request to the person returning it", async () => 
   await openReturnForm(asked);
   expect(await screen.findByText(/Which database version did you test against\?/)).toBeInTheDocument();
   expect(screen.getByText("Requested by Requester")).toBeInTheDocument();
+  expect(screen.getByLabelText("Status")).toHaveValue("in_progress");
   expect(screen.getByLabelText("Note")).toHaveAccessibleDescription(/Which database version did you test against\?/);
   expect(screen.queryByText(/no longer available/)).toBeNull();
 });
