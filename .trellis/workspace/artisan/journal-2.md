@@ -928,3 +928,306 @@ Continued the existing task without replanning;96/97 exact clauses now pass with
 ### Status
 
 [OK] **Completed**
+
+
+## Session 98: 运行控制与 Linux 安装版流程验收
+<!-- trellis-session: v=2 fp=6cd626db4f33a507 -->
+
+**Date**: 2026-10-26
+**Task**: 运行控制与 Linux 安装版流程验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+沿用现有任务和记录；认证31/31、协作58/58（原30保留来源，本轮28在1bfd169dc通过）。保留Docker挂载失败与复验、源码和包哈希证据；测试准入关闭、服务停止、数据保留，父任务继续跟踪其他平台和真实账号门禁。
+
+### Main Changes
+
+- 更新验收报告、版本化机器证据、任务进度与密码/Docker前置规范；修复仅在隔离验收环境。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `70914d6d8651697a04d668a9724bd2c4e900af22` | docs(collaboration): Keep verified runtime acceptance tied to its source |
+
+### Testing
+
+- [OK] 独立核对31认证和58协作原始身份；当前28项实际通过、无最终跳过，包哈希、准入关闭与服务清理通过。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 继续原任务的 Windows/其他平台安装交付和真实 Provider 账号/额度验收；默认准入保持关闭。
+
+
+## Session 99: 复核协作进度并验收 Debian 安装版 Main
+<!-- trellis-session: v=2 fp=6f64a8f32362f774 -->
+
+**Date**: 2026-10-26
+**Task**: 复核协作进度并验收 Debian 安装版 Main
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+沿用原任务复核认证31/31和协作58/58，完成Linux arm64真实.deb安装及完整Main控制和目录回归；保留初始失败和平台门禁。
+
+### Main Changes
+
+- 复用既有控制旅程增加固定哈希的.deb模式，校验真实dpkg/桌面入口/CLI分离并修复失败证据与清理。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `4d9f47928` | test(collaboration): require installation before accepting packaged controls |
+| `0db7e7713` | docs(collaboration): preserve installed acceptance and remaining platform gates |
+
+### Testing
+
+- [OK] 89个原始身份与51项哈希复核通过；离线安装通过；最终.deb 30.418s、目录26.853s各1项通过，零重试/跳过；lint/严格tsc/语法/差异检查通过。
+- [OK] 隔离门禁epoch7全关闭；19180/14100/6274端口关闭，无运行的自有Main/预检容器。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 继续原生Windows、macOS安装及独立授权的真实Provider账号验收；保持生产新准入关闭。
+
+
+## Session 100: 守护进程重连诊断验收与归档
+<!-- trellis-session: v=2 fp=95f30cf34e5caeb3 -->
+
+**Date**: 2026-10-26
+**Task**: 守护进程重连诊断验收与归档
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+用户确认验证通过并要求归档。补充验收确认和实现提交，将守护进程重连诊断任务标记完成并归档至 2026-10。
+
+### Main Changes
+
+- 归档 15 个任务文件，补充用户验收记录、完成日期及实现提交关联。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `0a567894a` | fix(desktop): make daemon failures diagnosable without weakening identity checks |
+| `dc60bfc87` | feat(desktop): reveal the selected CLI location for troubleshooting |
+
+### Testing
+
+- [OK] 归档元数据、文件完整性、JSON/JSONL 和差异空白检查通过；本次未重跑产品测试。
+
+### Status
+
+[OK] **Completed**
+
+
+## Session 101: 安全修复小队阶段一：原 runtime 恢复与模型阻塞证据
+<!-- trellis-session: v=2 fp=1fb4258448e58e16 -->
+
+**Date**: 2026-10-27
+**Task**: 安全修复小队阶段一：原 runtime 恢复与模型阻塞证据
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+按已批准的恢复旧 runtime 路径验证原身份连接；保留8个角色自治与私有Access，准备4个合成案例。真实模型调用受匿名额度限制，阶段一未验收、阶段二未启动；试点容器已停止且临时认证已清理。
+
+### Main Changes
+
+- 新增任务内合成实验室、隔离runtime来源、真实失败任务/评论/activity和续跑记录；复用原角色，不改产品模板。
+- 补充模板来源恢复规范，区分普通copy、from-template、工作区复用、运行时连通与真实角色执行。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `50a7bf50f` | test(security): preserve role authority while making the pilot reproducible |
+
+### Testing
+
+- [OK] 服务端角色/小队注册表窄测通过；独立trellis-check和43个任务文件静态校验通过。
+- [OK] 合成基线6项：4通过、2个预期失败；尚无修复后独立QA或成功角色路由。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 指定可用的OpenCode provider/model配置并验证网络目的地约束后，恢复隔离原daemon并重跑POLA-3。
+- 依次分配POLA-4/5/6，保留实现/QA分离和真实证据；阶段一通过后另行启动内置固化。
+
+
+## Session 102: 安全修复试点重试：真实修复、独立审查与精确派活
+<!-- trellis-session: v=2 fp=bdf62e5d72819e52 -->
+
+**Date**: 2026-10-27
+**Task**: 安全修复试点重试：真实修复、独立审查与精确派活
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+匿名nemotron模型恢复后完成四个父案例和八个独立成员子任务，合成补丁六项测试通过并可移植回放。试点指令使用精确mention后已证明真实leader委派；最后成员遇到免费额度限制被取消，完整返回收口未证明，阶段一保持未验收、阶段二未启动。
+
+### Main Changes
+
+- 保存真实task/comment/activity、三文件实验室diff、portable replay、当前briefing投影及最终清理；复用原8个私有角色，未改产品代码或模板。
+- 修正仅试运行小队的派活指令，记录普通thread reply与真正squad leader回合的差异；保留leader直接实现、代写及报告失实证据。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `87939bbe0` | test(security): distinguish real pilot repairs from incomplete squad routing |
+
+### Testing
+
+- [OK] 六项合成测试通过；原始失败基线回放4通过2失败，应用实际三文件补丁后6通过；测试/vendor/供应链文件不变。
+- [OK] 现有ParseMentions/HasMentionAll Go窄测通过；独立trellis-check、65个任务文件静态核对通过；完整产品suite未运行。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 额度可用后补齐真实delegated成员返回、leader收口及正确activity；执行诊断/实现角色本人交接，更正证据误述，完成网络目的地验证。
+- 保持任务in_progress与阶段二准入关闭；容器已停止、临时认证已删除，全部原namespace无待执行任务。
+
+
+## Session 103: 完整 E2E 验证：408 现有用例与 3 个补充场景全部通过
+<!-- trellis-session: v=2 fp=487ba1f08dfe260b -->
+
+**Date**: 2026-10-27
+**Task**: 完整 E2E 验证：408 现有用例与 3 个补充场景全部通过
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+验证 a8e374bb9 应用源码，408/408 现有 E2E 和 3/3 补充场景通过；12,804 TS 测试、73 Go 包 race/vet、lint/typecheck 通过。补齐两个 Electron home mock，修复原 18 条单测失败。全部本次测试服务已停止、门禁已关闭，报告和用例矩阵已归档。
+
+### Main Changes
+
+- 复用测试临时目录补齐 app.getPath，保持全部原有断言及产品代码。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `22de67f6f` | test(desktop): preserve verification after the home boundary change |
+
+### Testing
+
+- [OK] E2E 408 + 3；TypeScript 12804；Go race/vet 73 包；所有测试端口关闭。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 本任务完成；真实供应商账号、原生 Windows 与正式发布验收不在本次范围。
+
+
+## Session 104: 安全小队的无模型脚本验证
+<!-- trellis-session: v=2 fp=75d91ba9a760eb57 -->
+
+**Date**: 2026-10-27
+**Task**: 安全小队的无模型脚本验证
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+按用户要求停止真实运行时，完成四例脚本模拟和实际产品交接验证；父任务保留进行中。
+
+### Main Changes
+
+- 新增任务内模拟 provider、API-only 隔离配置和持久化证据校验器，复用现有队列、角色权限与合成补丁。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `18b176612` | test(security): verify squad handoffs without requiring a live model |
+
+### Testing
+
+- [OK] 24 项后端契约零跳过；14 项模拟工具测试通过；12 个证据破坏样例均被拒绝；四例共 29 次成功任务，2 次早期失败已恢复并保留。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 原真实模型验收与阶段二仍未通过；模拟不证明模型判断和指令遵守，不从本轮记录恢复真实模型调用。
+
+
+## Session 105: 内置安全修复小队第二阶段交付
+<!-- trellis-session: v=2 fp=ef065174deda298e -->
+
+**Date**: 2026-10-27
+**Task**: 内置安全修复小队第二阶段交付
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+按用户新授权基于模拟和产品契约完成内置安全修复小队；保留真实模型未验证的事实，任务已归档。
+
+### Main Changes
+
+- 新增专用未列出 Coordinator leader 和第九个内置小队，复用七个角色；同步目录、双语文档、嵌入包及权限/归属回归。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `476eaee40` | feat(squads): coordinate security repairs through a reusable template |
+
+### Testing
+
+- [OK] 15 项静态任务、12807 项 TS 测试、Go race/vet 通过；32 个相关生产 Web E2E 已覆盖（30 首轮通过、两项按配置状态契约修正后通过）；独立复核无阻塞。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 本任务已完成。真实模型判断与指令遵守未验证；如需后续实测，仍须遵守用户对真实运行时调用的最新授权。
+
+
+## Session 106: 固定全局切换与位置恢复
+<!-- trellis-session: v=2 fp=7c4b663682b179e3 -->
+
+**Date**: 2026-10-28
+**Task**: 固定全局切换与位置恢复
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成 Web 与桌面固定全局导航，复用位置恢复，区分显式锚点；两端真实往返及原有桌面账号恢复测试通过。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `cad3fa410` | feat(navigation): preserve place when switching application scopes |
+
+### Testing
+
+- [OK] 四包 lint/typecheck；桌面1245测试；Web/Electron往返2项与原有桌面3项验收通过
+
+### Status
+
+[OK] **Completed**
