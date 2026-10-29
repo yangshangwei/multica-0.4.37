@@ -37,7 +37,7 @@ function AdminCollaborationGateSection() {
   return <section aria-labelledby="collaboration-gate-title" className="space-y-5 border-t border-surface-border pt-6">
     <div className="space-y-1.5"><h2 id="collaboration-gate-title" className="text-body-lg font-semibold">{t($ => $.settings.gate.title)}</h2><p className="max-w-prose text-caption text-muted-foreground">{t($ => $.settings.gate.hint)}</p></div>
     {!gate ? query.isError
-      ? <div role="alert" className="space-y-3"><p className="text-body">{t($ => $.settings.gate.error)}</p><Button variant="outline" onClick={() => void query.refetch()}>{t($ => $.observability.refresh)}</Button></div>
+      ? <div className="space-y-3"><p role="alert" className="text-body">{t($ => $.settings.gate.error)}</p><Button variant="outline" onClick={() => void query.refetch()}>{t($ => $.observability.refresh)}</Button></div>
       : <p role="status" className="text-body text-muted-foreground">{t($ => $.settings.gate.loading)}</p>
       : <>
         <MetricRows layout="settings" rows={[

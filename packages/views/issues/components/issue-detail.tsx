@@ -694,6 +694,7 @@ function SubIssueRow({
   // Category, not key: a custom status in the done/cancelled categories is
   // finished work and has to strike through like any other. (MUL-6243)
   const isDone = issueBehavesAsAny(child, ["done", "cancelled"]);
+  const statusName = useStatusLabel(useWorkspaceId());
   const labels = rowProps.labels ? (child.labels ?? []) : [];
   const customPropsWithValue = customProperties.filter(
     (p) => child.properties?.[p.id] !== undefined,
@@ -766,7 +767,7 @@ function SubIssueRow({
             )}
           />
         </div>
-        {child.collaboration ? <StatusIcon status={child.status} category={issueStatusCategory(child) ?? undefined} className="h-[15px] w-[15px] shrink-0" /> : <StatusPicker
+        {child.collaboration ? <span role="img" aria-label={statusName(child.status)} className="inline-flex shrink-0"><StatusIcon status={child.status} category={issueStatusCategory(child) ?? undefined} className="h-[15px] w-[15px] shrink-0" /></span> : <StatusPicker
           status={child.status}
           onUpdate={handleUpdate}
           align="start"

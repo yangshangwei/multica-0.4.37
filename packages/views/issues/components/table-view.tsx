@@ -1136,12 +1136,12 @@ function IssueTableBodyCell({
     else if (key === "priority") content = <span className="inline-flex items-center gap-1.5"><PriorityIcon priority={issue.priority} />{t(($) => $.priority[issue.priority])}</span>;
     else if (key === "start_date" || key === "due_date") content = issue[key] ?? t(($) => $.table.empty_value);
     else if (key === "project") content = (issue.project_id ? meta.projectMap.get(issue.project_id)?.title ?? issue.project_id : null) ?? t(($) => $.table.empty_value);
-    else if (key === "labels") content = <span className="inline-flex min-w-0 gap-1 overflow-hidden">{(issue.labels ?? []).map((label) => <LabelChip key={label.id} label={label} />)}</span>;
-    if (content !== null) return key === "creator" ? content : <button type="button" className="flex min-w-0 max-w-full items-center truncate rounded px-1 py-0.5 text-left hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring"
-      aria-label={meta.columnLabel(key)} onClick={(event) => { event.stopPropagation();
+    else if (key === "labels") content = issue.labels?.length ? <span className="flex min-w-0 gap-1 overflow-hidden">{issue.labels.map((label) => <LabelChip key={label.id} label={label} />)}</span> : t(($) => $.table.empty_value);
+    if (content !== null) return key === "creator" ? content : <button type="button" className="flex min-w-0 max-w-full items-center rounded px-1 py-0.5 text-left hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring"
+      onClick={(event) => { event.stopPropagation();
         if (meta.openCollaboration) meta.openCollaboration({ issueId: issue.id, action: key === "assignee" ? "transfer" : key === "status" ? "change_status" : "edit", status: key === "status" ? issue.status : undefined });
         else meta.openIssue(issue);
-      }}>{content}</button>;
+      }}><span className="sr-only">{meta.columnLabel(key)}: </span><span className={typeof content === "string" ? "min-w-0 truncate" : "flex min-w-0 overflow-hidden"}>{content}</span></button>;
   }
   if (propertyId) {
     const property = meta.propertyById.get(propertyId);
