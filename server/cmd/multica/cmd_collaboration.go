@@ -88,7 +88,9 @@ func runCollaborationCLI(cmd *cobra.Command, args []string, operation string) (b
 		if !present || strings.TrimSpace(content) == "" {
 			return true, errors.New("--content or --content-stdin is required")
 		}
-		if err := guardLocalPathLinks(content, "comment body", "Files are unavailable in this collaboration runtime."); err != nil {
+		// A collaboration run carries no MULTICA_AGENT_ID/TASK_ID, so the gated
+		// guardLocalPathLinks would skip every runtime comment.
+		if err := rejectLocalPathLinks(content, "comment body", "Files are unavailable in this collaboration runtime."); err != nil {
 			return true, err
 		}
 		payload := map[string]any{"comment_id": requestID, "content": content}
