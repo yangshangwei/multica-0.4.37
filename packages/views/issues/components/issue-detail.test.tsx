@@ -2396,6 +2396,8 @@ describe("IssueDetail (shared)", () => {
       expect(link).toHaveAttribute("href", `/account?view=participating&issue=${id}`);
       const row = screen.getByRole("checkbox", { name: /Select TES-9/ }).closest<HTMLElement>(".group\\/row")!;
       expect(within(row).getByText(/External handler/)).toBeInTheDocument();
+      // The read-only status icon still names the status the picker would show.
+      expect(within(row).getByRole("img", { name: "In Progress" })).toBeInTheDocument();
       expect(within(row).queryByRole("button")).not.toBeInTheDocument();
       expect(mockApiObj.updateIssue).not.toHaveBeenCalled();
     });

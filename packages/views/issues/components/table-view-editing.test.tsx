@@ -508,6 +508,29 @@ describe("TableView cell editors under data refresh", () => {
     );
   });
 
+  // Shared rows are read-only cells that open the collaboration action; they
+  // must still announce the value a sighted user sees, not just the column.
+  it("names a collaboration row's cells by column and visible value", async () => {
+    const account = { user_id: "user-1", name: "Outside", avatar_url: "", external: true };
+    serverIssues = [{ ...makeIssue("s", "Shared task", "todo"), assignee_type: "member", assignee_id: "user-1",
+      collaboration: { creator: account, handler: account, has_external_collaborators: true } }];
+
+    renderWithI18n(
+      <QueryClientProvider client={queryClient}>
+        <Harness
+          childProgressMap={new Map()}
+          surfaceKey={`test-collaboration-cells-${Math.floor(Math.random() * 1e9)}`}
+        />
+      </QueryClientProvider>,
+    );
+
+    // jsdom ignores CSS, so it drops the space Chrome inserts between flex items.
+    const row = (await screen.findByText("MUL-s")).closest("tr")!;
+    expect(within(row).getByRole("button", { name: /^Status:\s*Todo$/ })).toBeInTheDocument();
+    expect(within(row).getByRole("button", { name: /^Assignee:\s*Outside/ })).toBeInTheDocument();
+    expect(within(row).getByRole("button", { name: /^Labels:\s*Empty$/ })).toBeInTheDocument();
+  });
+
   it("without a tab adapter (web), plain click pushes and a modifier click opens a browser tab", async () => {
     const user = userEvent.setup({ delay: null, pointerEventsCheck: 0 });
     const windowOpen = vi.fn();
