@@ -7,10 +7,10 @@
   <meta name="description" content="下载 Multica Windows 客户端，按指引连接业务服务器、注册或登录并进入工作空间。">
   <title>下载与安装 · Multica</title>
   <style>
-    /* Standalone subset of the existing Web landing download page:
-       hero.tsx, all-platforms.tsx, shared.tsx and packages/ui/styles/tokens.css.
-       Keep the dark hero, serif display and light platform rows in sync with
-       that visual baseline. Local font stacks avoid a font/CDN dependency. */
+    /* Standalone page; its design started from the retired Web /download page.
+       Keep the dark hero, serif display and light platform rows consistent with
+       apps/web/features/landing/components/shared.tsx and
+       packages/ui/styles/tokens.css. Local font stacks avoid a font/CDN dependency. */
     :root {
       --page: #fff;
       --ink: #0a0d12;
@@ -129,7 +129,7 @@
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
-  <!-- OS shapes reused from apps/web/features/landing/components/download/os-icons.tsx. -->
+  <!-- OS icons are inline SVG symbols, so the page loads no icon or font files. -->
   <svg width="0" height="0" aria-hidden="true" style="position:absolute">
     <defs>
       <symbol id="os-windows" viewBox="0 0 24 24"><path fill="currentColor" d="M3 5.5 10.5 4.5v6.75H3V5.5Zm0 7.25h7.5v6.75L3 18.5v-5.75Zm8.75-8.4L21 3v9H11.75V4.35ZM11.75 12h9.25v9L11.75 19.65V12Z"/></symbol>
