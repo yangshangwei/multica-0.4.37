@@ -346,6 +346,19 @@ describe("ChatPage responsive layout", () => {
     expect(screen.queryByText(SELECT_PROMPT)).not.toBeInTheDocument();
   });
 
+  // Regression: the store's first read happens before the workspace slug is
+  // known, so its in-memory session can equal `?session=` while the
+  // workspace-scoped slot is empty. Skipping the write let the workspace
+  // rehydration (packages/core/chat/store.ts) reset the thread and strip the
+  // deep link. The URL must be written through to the store unconditionally.
+  it("writes a deep-linked session through even when the store already holds it", () => {
+    storeRef.current = { activeSessionId: "session-1" };
+    const { replace } = renderPage("session=session-1");
+    expect(mockSetActiveSession).toHaveBeenCalledWith("session-1");
+    expect(replace).not.toHaveBeenCalled();
+    expect(screen.getByText("chat-input")).toBeInTheDocument();
+  });
+
   it("gives the open conversation the whole folded inner screen", () => {
     // Opening a thread replaces the list, so the way back has to travel with
     // the conversation — same trip the phone layout already had.

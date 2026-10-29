@@ -100,8 +100,12 @@ export function ChatPage() {
   // pass and is idempotent under StrictMode's double-invoke.
 
   // URL → store: deep link, refresh, notification click, back/forward.
+  // A linked session is written through even when the store already holds it:
+  // the store's first read can precede the workspace slug, so an in-memory
+  // match does not prove the workspace-scoped slot has it, and the workspace
+  // rehydration would otherwise reset the thread from that empty slot.
   useEffect(() => {
-    if (urlSession !== useChatStore.getState().activeSessionId) {
+    if (urlSession || urlSession !== useChatStore.getState().activeSessionId) {
       c.setActiveSession(urlSession);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- react to URL only
