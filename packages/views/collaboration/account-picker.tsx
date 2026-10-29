@@ -78,6 +78,7 @@ export function CollaborationAccountPicker({
   const self = allowSelf ? selfAccount(scope, selfName ?? t(($) => $.creation.self)) : null;
   const selectedIds = useMemo(() => new Set(selectedAccounts.map(accountIdentity)), [selectedAccounts]);
   const selfSelected = allowSelf && selected === null;
+  const isOpen = open && !disabled;
 
   useEffect(() => {
     const timer = window.setTimeout(() => setQuery(input.trim()), 250);
@@ -86,13 +87,13 @@ export function CollaborationAccountPicker({
 
   const search = useInfiniteQuery({
     ...collaborationRecipientSearchOptions(client, scope, context, query, membersOnly),
-    enabled: open && scope.userId !== "",
+    enabled: isOpen && scope.userId !== "",
     placeholderData: keepPreviousData,
   });
   const exactOptions = context.kind === "issue"
     ? collaborationRecipientOptions(client, scope, context.issueId, exactRequest)
     : collaborationCreationRecipientOptions(client, scope, context.sourceWorkspaceId, exactRequest);
-  const exact = useQuery({ ...exactOptions, enabled: open && exactOpen && exactRequest !== "" && exactRequest === exactText.trim() });
+  const exact = useQuery({ ...exactOptions, enabled: isOpen && exactOpen && exactRequest !== "" && exactRequest === exactText.trim() });
   const pages = search.data?.pages ?? [];
   const firstPage = pages[0];
   const recent = firstPage?.recent ?? [];
@@ -108,7 +109,7 @@ export function CollaborationAccountPicker({
   const canSelectMore = maxSelected === undefined || selectedAccounts.length < maxSelected;
 
   const pick = (account: CollaborationRecipientAccount) => {
-    if (membersOnly && account.external !== false) return;
+    if (disabled || membersOnly && account.external !== false) return;
     if (allowSelf && accountIdentity(account) === accountIdentity(self!)) {
       onSelect(null);
     } else {
@@ -122,7 +123,7 @@ export function CollaborationAccountPicker({
     const isSelf = allowSelf && id === accountIdentity(self!);
     const isSelected = isSelf ? selfSelected : selectedIds.has(id);
     const unavailable = membersOnly && account.external !== false;
-    const blocked = unavailable || multiple && !isSelected && !canSelectMore;
+    const blocked = disabled || unavailable || multiple && !isSelected && !canSelectMore;
     return <div key={id} data-recipient-row>
       <PickerItem selected={isSelected} disabled={blocked} onClick={() => pick(account)}>
         <ActorAvatar name={account.name} initials={initials(account.name)} avatarUrl={account.avatar_url} size="sm" />
@@ -166,7 +167,7 @@ export function CollaborationAccountPicker({
   </div>;
 
   return <div data-recipient-picker className="min-w-0">
-    <PropertyPicker open={open} onOpenChange={(next) => { setOpen(next); if (!next) { setExactOpen(false); setExactText(""); setExactRequest(""); } }}
+    <PropertyPicker open={isOpen} onOpenChange={(next) => { setOpen(next); if (!next) { setExactOpen(false); setExactText(""); setExactRequest(""); } }}
       width="w-96 max-w-[calc(100vw-24px)]" align="start" searchable searchPlaceholder={t(($) => $.recipientPicker.search)}
       navigationResetKey={navigationResetKey} onSearchChange={setInput}
       triggerAriaLabel={label} triggerRender={<button type="button" aria-label={label} disabled={disabled} className="flex min-h-11 w-full min-w-0 items-center gap-2 rounded-md border border-input bg-background px-3 text-left text-body hover:bg-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" />} trigger={<span className="flex min-w-0 items-center gap-2">
@@ -184,7 +185,10 @@ export function CollaborationAccountPicker({
       {isRelated && <p role="note" className="px-2 py-2 text-caption text-muted-foreground">{t(($) => $.recipientPicker.relatedHint)}</p>}
       {membersOnly && sourceMember === false && <p role="note" className="px-2 py-2 text-caption text-muted-foreground">{t(($) => $.recipientPicker.membersOnlyHint)}</p>}
       {search.isPending && !search.data && <p role="status" className="px-2 py-3 text-caption text-muted-foreground"><LoaderCircle aria-hidden className="mr-1 inline size-3.5 animate-spin" />{t(($) => $.recipientPicker.loading)}</p>}
-      {search.isError && !search.data && <CollaborationQueryState error={search.error} retry={() => void search.refetch()} />}
+      {search.isError && <CollaborationQueryState error={search.error} retry={() => {
+        if (search.isFetchNextPageError) void search.fetchNextPage();
+        else void search.refetch();
+      }} />}
       {!search.isPending && !search.isError && allAccounts.length === 0 && <p className="px-2 py-3 text-center text-caption text-muted-foreground">{t(($) => $.recipientPicker.empty)}</p>}
       {list}
     </PropertyPicker>

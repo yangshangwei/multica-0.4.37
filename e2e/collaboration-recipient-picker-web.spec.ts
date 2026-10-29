@@ -61,16 +61,18 @@ test("Web recipient picker exposes self/recent/search results and preserves the 
   const trigger = control.locator('button[aria-label="Recipient"]');
   await expect(trigger).toBeVisible();
 
-  // The creation picker must expose the caller's own account before any
+  // The creation picker exposes the localized self shortcut before any
   // network-backed result is chosen.
   const emptySearch = page.waitForResponse((response) => {
     const url = new URL(response.url());
     return url.pathname === "/api/collaboration/recipients/search" && response.request().method() === "POST";
   });
   await trigger.click();
-  const list = control.getByRole("listbox");
+  // PopoverContent portals outside the trigger's container.
+  const list = page.getByRole("listbox", { name: "Recipient", exact: true });
+  const popup = page.locator('[data-slot="popover-content"]').filter({ has: list });
   await expect(list).toBeVisible();
-  await expect(list.locator("[data-recipient-row]").filter({ hasText: sourceName })).toBeVisible();
+  await expect(list.locator("[data-recipient-row]").filter({ hasText: "Assign to me" })).toBeVisible();
 
   const firstResponse = await emptySearch;
   expect(firstResponse.status()).toBe(200);
@@ -86,7 +88,7 @@ test("Web recipient picker exposes self/recent/search results and preserves the 
   }
   await expect(list.locator("[data-recipient-row]").filter({ hasText: recentName })).toBeVisible();
 
-  const search = control.getByRole("textbox", { name: /search recipients/i });
+  const search = popup.getByRole("textbox", { name: "Filter options", exact: true });
   await expect(search).toBeVisible();
   const searched = page.waitForResponse((response) => {
     const request = response.request();
@@ -98,20 +100,22 @@ test("Web recipient picker exposes self/recent/search results and preserves the 
   const searchedResponse = await searched;
   expect(searchedResponse.status()).toBe(200);
   await expect(list.locator("[data-recipient-row]").filter({ hasText: recentName })).toHaveCount(1);
-  await expect(control.getByRole("button", { name: /exact lookup|full username|email|account id/i })).toBeVisible();
+  await expect(popup.getByRole("button", { name: "Find by full username, email, or account ID", exact: true })).toBeVisible();
 
   // Escape closes the picker while keeping the creation dialog mounted.
   await search.press("Escape");
   await expect(list).toBeHidden();
   await expect(dialog).toBeVisible();
 
-  // A coarse-pointer viewport keeps the picker inside the dialog and leaves
-  // the submit action reachable on the narrow layout.
+  // A narrow viewport keeps the portalled picker within the screen and leaves
+  // the submit action reachable.
   await page.setViewportSize({ width: 375, height: 812 });
   await trigger.click();
   await expect(list).toBeVisible();
-  const box = await control.boundingBox();
+  const box = await popup.boundingBox();
   expect(box).not.toBeNull();
+  expect(box!.x).toBeGreaterThanOrEqual(0);
+  expect(box!.x + box!.width).toBeLessThanOrEqual(375);
   expect(box!.width).toBeLessThanOrEqual(375);
   await expect(dialog.getByRole("button", { name: "Create collaboration issue", exact: true })).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath("recipient-picker-narrow.png"), animations: "disabled" });

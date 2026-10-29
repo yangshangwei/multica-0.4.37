@@ -351,7 +351,8 @@ values, revision and these field projections use one repeatable-read snapshot.
 Core treats missing newer fields as unknown, not empty/clear instructions, and
 rejects malformed present definitions or values instead of defaulting them away.
 
-Recipient input is `{kind, value, issue_id? , source_workspace_id?}` with kind
+The exact `POST /api/collaboration/recipients/resolve` input is
+`{kind, value, issue_id? , source_workspace_id?}` with kind
 `username|email|user_id`. Exactly one context field must be present with a UUID;
 explicit null, duplicate keys and unknown fields are invalid. Username/email
 normalization follows authentication, including historical whitespace. Query
@@ -370,6 +371,30 @@ Limiter/backend failures return unavailable; throttling includes `Retry-After`.
 Core uses the private collaboration transport and validates the requested
 context, plus the exact target UUID for user-ID searches. Confirmation remains
 a read: subsequent mutation must revalidate its target under its own locks.
+
+`POST /api/collaboration/recipients/search` is a separate human-only, no-store
+discovery read. It shares strict JSON/context validation and the resolver's
+pre/post-query context authority checks. Trimmed `q` is a valid UTF-8 name
+substring of at most 64 characters, with no NUL; `%`, `_` and backslash match
+literally. Email, username and account ID remain exact-lookup inputs. Pages use
+opaque `(lower(name), user_id)` keyset cursors and limits 1–50 (default 30).
+Only the first empty-query page includes up to five recent collaborators.
+
+`MULTICA_COLLABORATION_DIRECTORY_ENABLED` defaults on; only literal `false`
+restricts discovery to accounts sharing a workspace or past collaboration with
+the caller. Open self-service signup with directory discovery emits a startup
+warning. SQL filters disabled, password-restricted, missing required credentials
+and emergency-denied accounts before `LIMIT`, and excludes the caller.
+
+Search returns `{issue_id, source_workspace_id, scope, source_member, recent,
+recipients, next_cursor}`. Account rows contain only
+`user_id/name/avatar_url/external`. `external` is null unless the caller is a
+source member before and after the read; source membership loss cannot retain
+the previous membership projection. `members_only` returns an empty 200 page
+for a non-source-member with otherwise valid issue authority, including loss
+of that membership during the query. Search has separate hashed actor/IP
+budgets (120/300 per minute), fails closed on limiter/backend errors, and never
+creates participation or grants. Later writes retain their own target checks.
 
 The shared stopRun helper distinguishes a cancellation intent from its final
 disposition: only proven never-launched work can be cancelled; any possibly live

@@ -137,6 +137,24 @@ hold and control versions for server validation. Submission/creation rollout
 remains independent. Exact-recipient lookups and edit forms reject stale responses
 or baselines without silently replacing user intent.
 
+Recipient search uses `collaborationRecipientSearchOptions` below the current
+Server/viewer issue key or creation-delivery key, then `recipient-search`, the
+trimmed query and `membersOnly`. Infinite pages forward `AbortSignal`, use the
+matching issue/delivery access guard, remain fresh for 30 seconds and disable
+automatic retries. Cancelled, obsolete-session or lost-authority reads cannot
+publish candidates into the current scope.
+
+`searchCollaborationRecipients` validates the response context, page size and
+cursor progress. A malformed page is unavailable; malformed individual accounts
+are dropped. Unknown scopes use the narrower related-only explanation. A
+non-source-member response always masks `external` as null, and members-only
+results retain only `external === false`. An older server's missing search
+route is unavailable discovery, not proof of issue access loss; exact lookup
+remains available. `collaborationRecipientSections` owns case-insensitive-ID
+deduplication in self, selected, recent, all order. Keep the unused
+`recipientQuery` field in strict delivery-draft schemas so saved drafts still
+parse; new forms write an empty string.
+
 ## 4. Validation & Error Matrix
 
 | Condition | Result |

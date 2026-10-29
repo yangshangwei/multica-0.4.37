@@ -1,5 +1,5 @@
 import { afterEach, expect, it, vi } from "vitest";
-import { screen } from "@testing-library/react";
+import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "@multica/core/api";
@@ -14,6 +14,7 @@ const recentId = "00000000-0000-4000-8000-000000000002";
 const directoryId = "00000000-0000-4000-8000-000000000003";
 const exactId = "00000000-0000-4000-8000-000000000004";
 const source = "00000000-0000-4000-8000-000000000005";
+const clients: QueryClient[] = [];
 const page = (sourceMember = true) => ({
   issue_id: null,
   source_workspace_id: source,
@@ -25,6 +26,7 @@ const page = (sourceMember = true) => ({
 });
 
 afterEach(() => {
+  clients.splice(0).forEach((client) => client.clear());
   localStorage.clear();
   vi.unstubAllGlobals();
   vi.restoreAllMocks();
@@ -34,11 +36,13 @@ function mount(fetch: typeof globalThis.fetch, options: { allowSelf?: boolean; m
   setApiInstance(new ApiClient("https://server.example"));
   vi.stubGlobal("fetch", fetch);
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  const view = renderWithI18n(<QueryClientProvider client={client}>
+  clients.push(client);
+  const ui = (disabled = false) => <QueryClientProvider client={client}>
     <CollaborationAccountPicker scope={collaborationScope(actor)} context={{ kind: "creation", sourceWorkspaceId: source }}
-      selected={null} allowSelf={options.allowSelf} membersOnly={options.membersOnly} label="Recipient" onSelect={options.onSelect ?? vi.fn()} />
-  </QueryClientProvider>);
-  return { ...view, client };
+      selected={null} allowSelf={options.allowSelf} membersOnly={options.membersOnly} label="Recipient" disabled={disabled} onSelect={options.onSelect ?? vi.fn()} />
+  </QueryClientProvider>;
+  const view = renderWithI18n(ui());
+  return { ...view, client, setDisabled: (disabled: boolean) => view.rerender(ui(disabled)) };
 }
 
 it("browses sections, uses exact lookup, and closes with Escape without leaving the trigger", async () => {
@@ -90,4 +94,75 @@ it("keeps a members-only picker from selecting an undisclosed external account",
   await screen.findByText("Only members of the source workspace can be selected here.");
   expect(screen.queryByRole("button", { name: /Directory account/ })).toBeNull();
   expect(onSelect).not.toHaveBeenCalled();
+});
+
+it("closes an already-open picker when its parent disables selection", async () => {
+  const fetch = vi.fn(async () => new Response(JSON.stringify(page())));
+  const onSelect = vi.fn();
+  const { setDisabled, client } = mount(fetch, { onSelect });
+  const user = userEvent.setup();
+  const trigger = screen.getByRole("button", { name: "Recipient" });
+  await user.click(trigger);
+  await screen.findByText("Directory account");
+
+  setDisabled(true);
+
+  expect(trigger).toBeDisabled();
+  await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
+  await act(() => client.invalidateQueries());
+  await user.click(trigger);
+  expect(screen.queryByRole("listbox")).toBeNull();
+  expect(onSelect).not.toHaveBeenCalled();
+  expect(fetch).toHaveBeenCalledTimes(1);
+});
+
+it("retains cached rows and retries the failed next page from its original cursor", async () => {
+  const cursors: Array<string | null> = [];
+  let nextAttempts = 0;
+  const fetch = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+    const body = JSON.parse(String(init?.body));
+    cursors.push(body.cursor ?? null);
+    if (body.cursor === "page-two") {
+      nextAttempts += 1;
+      if (nextAttempts === 1) return new Response(JSON.stringify({ error: "Unavailable" }), { status: 503 });
+      return new Response(JSON.stringify({ ...page(), recent: [], recipients: [{ user_id: exactId, name: "Next page account", avatar_url: "", external: false }] }));
+    }
+    return new Response(JSON.stringify({ ...page(), next_cursor: "page-two" }));
+  });
+  mount(fetch);
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Recipient" }));
+  await screen.findByText("Directory account");
+  await user.click(screen.getByRole("button", { name: "Load more" }));
+
+  const error = await screen.findByRole("alert");
+  expect(screen.getByText("Directory account")).toBeVisible();
+  await user.click(within(error).getByRole("button", { name: "Refresh" }));
+
+  await screen.findByText("Next page account");
+  expect(screen.getByText("Directory account")).toBeVisible();
+  expect(screen.queryByRole("alert")).toBeNull();
+  expect(cursors).toEqual([null, "page-two", "page-two"]);
+});
+
+it("keeps cached rows visible while exposing and retrying a failed background refresh", async () => {
+  let attempts = 0;
+  const fetch = vi.fn(async () => {
+    attempts += 1;
+    if (attempts === 2) return new Response(JSON.stringify({ error: "Unavailable" }), { status: 503 });
+    return new Response(JSON.stringify(attempts === 1 ? page() : { ...page(), recipients: [{ ...page().recipients[0], name: "Refreshed directory account" }] }));
+  });
+  const { client } = mount(fetch);
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Recipient" }));
+  await screen.findByText("Directory account");
+
+  await act(() => client.invalidateQueries());
+
+  const error = await screen.findByRole("alert");
+  expect(screen.getByText("Directory account")).toBeVisible();
+  await user.click(within(error).getByRole("button", { name: "Refresh" }));
+  await screen.findByText("Refreshed directory account");
+  expect(screen.queryByRole("alert")).toBeNull();
+  expect(fetch).toHaveBeenCalledTimes(3);
 });
