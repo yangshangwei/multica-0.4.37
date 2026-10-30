@@ -184,8 +184,15 @@ func (s *CollaborationService) checkPreparationPromotion(ctx context.Context, t 
 			if t.gate.HostExecutionEnabled && (saved == nil || saved.Capabilities.Containment != protocol.CollaborationContainmentHostProcessSupervision) {
 				return collaborationError(http.StatusConflict, "execution_mode_unsupported")
 			}
-			if !hasPreparationAttachmentReferences(inputs) && saved == nil {
-				continue
+			if saved == nil {
+				legacyFiles, err := s.preparationAttachments(ctx, t.q, t.access.Issue.ID, t.access.Issue.WorkspaceID, inputs)
+				if err != nil {
+					return err
+				}
+				if len(legacyFiles) == 0 {
+					continue
+				}
+				return collaborationError(http.StatusConflict, "runtime_preparation_unsupported")
 			}
 			if saved != nil && saved.Capabilities.Host != nil && !t.gate.HostExecutionEnabled {
 				return collaborationError(http.StatusConflict, "execution_mode_unsupported")
@@ -241,7 +248,11 @@ func (s *CollaborationService) preparationForClaim(ctx context.Context, r *colla
 		if saved != nil && saved.Capabilities.Host != nil {
 			return nil, collaborationError(http.StatusConflict, "execution_mode_unsupported")
 		}
-		if hasPreparationAttachmentReferences(inputs) || saved != nil && saved.Capabilities.Git != nil {
+		files, err := s.preparationAttachments(ctx, r.q, r.access.Issue.ID, r.access.Issue.WorkspaceID, inputs)
+		if err != nil {
+			return nil, err
+		}
+		if len(files) > 0 || saved != nil && saved.Capabilities.Git != nil {
 			return nil, collaborationError(http.StatusConflict, "runtime_preparation_unsupported")
 		}
 		if saved != nil && r.run.PromptSnapshot == nil {
