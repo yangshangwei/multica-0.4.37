@@ -97,6 +97,9 @@ func (s *CollaborationService) Resources(ctx context.Context, issueID pgtype.UUI
 				return err
 			}
 			configurationCurrent := code == "" && target.ConfigurationFingerprint.Valid && configuration.Fingerprint == target.ConfigurationFingerprint.String && !target.RevokedAt.Valid
+			// An edit inside the recorded boundary is offered to the resource owner
+			// again; ConsentTargetResource repeats the same check under locks.
+			consentable := configurationCurrent || code == "" && collaborationBoundaryRetained(target, configuration)
 			host, err := collaborationScopeUsesHost(ctx, q, access.SessionID, targets, map[pgtype.UUID]bool{target.ID: true})
 			if err != nil {
 				return err
@@ -139,7 +142,7 @@ func (s *CollaborationService) Resources(ctx context.Context, issueID pgtype.UUI
 						view.GrantID, view.GrantEpoch, view.CanRevoke = util.UUIDToPtr(grant.ID), &epoch, true
 					}
 				}
-				view.CanConsent = !legacyHost && owned && configurationCurrent && access.Capabilities.SubmitCommand && !view.Consented && !view.CanRevoke
+				view.CanConsent = !legacyHost && owned && consentable && access.Capabilities.SubmitCommand && !view.Consented && !view.CanRevoke
 				item.Resources = append(item.Resources, view)
 			}
 			out.Targets = append(out.Targets, item)
@@ -299,7 +302,8 @@ func (s *CollaborationService) ResourceIdentity(ctx context.Context, issueID, ta
 		if err != nil {
 			return err
 		}
-		if stale || code != "" || configuration.Fingerprint != fingerprint {
+		retained := !proposalID.Valid && code == "" && collaborationBoundaryRetained(target, configuration)
+		if stale || code != "" || configuration.Fingerprint != fingerprint && !retained {
 			out.Reason = "target_configuration_changed"
 			return nil
 		}

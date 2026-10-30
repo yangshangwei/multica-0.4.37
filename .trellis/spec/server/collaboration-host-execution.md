@@ -71,11 +71,13 @@ Fingerprint the managed invocation, account-source identity and declared tool pe
 
 Stable session identity includes collaboration, deployment, resource owner, agent, issue session, channel, provider runtime, role and session generation. Member execution adds group/member identity. Per-run temporary identity adds run/launch.
 
-Never resolve session pointers by display name or most-recent session. Runtime/provider/account identity or incompatible role/config changes create a new session generation. Human handoff alone does not.
+Never resolve session pointers by display name or most-recent session. Runtime/provider/account identity or incompatible role/config changes create a new session generation. Owner re-consent of an instructions/model/thinking edit advances `config_version`, so it also starts a new generation. Human handoff alone does not.
 
 An unverifiable or rejected session pointer may lead to an explicitly recorded fresh session using authorized issue context; it cannot silently attach to private chat or a normal issue session.
 
 Server-origin input authors are retained individually across batching. Agent owner, runtime/resource owner, initiating human and parent execution are distinct. A daemon identity authenticates delivery; it does not replace the human author. Provider text cannot mint or change those identities.
+
+The host prompt JSON carries `issue_id` first (fixtures locate it by that key), then `agent_id`, `agent_owner_user_id`, `resource_owner_user_id`, `role`, `step_key`, `parent_run_id`, `inputs`, `attachments` and the optional `git` and `memory`. A `member` run receives its group's root human inputs, so its prompt text also says that its task is the leader's delegation, shown as `dispatch_comment` in `multica issue get`, not the whole original request.
 
 Only one managed execution may own a stable session/work-directory identity at a time. Reuse scheduling/environment locks and persist that ownership with the launch ledger; an OS lock released by a daemon crash does not settle an unknown logical owner. Two otherwise valid runs sharing a member/session identity must serialize. Do not hold a scarce machine slot while waiting in a way that prevents the current owner from finishing. Release ownership only after reliable managed termination.
 

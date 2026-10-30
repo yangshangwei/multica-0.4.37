@@ -26,7 +26,7 @@ const bindCollaborationTargetChannel = `-- name: BindCollaborationTargetChannel 
 UPDATE collaboration_target t SET channel_id=ch.id,queue_state=ch.queue_state,pause_reason=ch.pause_reason,
     control_version=ch.control_version,group_generation=ch.group_generation,active_group_id=ch.active_group_id
 FROM collaboration_channel ch WHERE ch.id=$1::uuid AND ch.session_id=$2::uuid
-    AND t.id=$3::uuid AND t.session_id=ch.session_id RETURNING t.id, t.session_id, t.kind, t.resource_id, t.target_epoch, t.config_version, t.roster, t.queue_state, t.control_version, t.group_generation, t.active_group_id, t.pause_reason, t.revoked_at, t.created_at, t.configuration_fingerprint, t.channel_id, t.hold_reason, t.hold_version
+    AND t.id=$3::uuid AND t.session_id=ch.session_id RETURNING t.id, t.session_id, t.kind, t.resource_id, t.target_epoch, t.config_version, t.roster, t.queue_state, t.control_version, t.group_generation, t.active_group_id, t.pause_reason, t.revoked_at, t.created_at, t.configuration_fingerprint, t.channel_id, t.hold_reason, t.hold_version, t.configuration_boundary_fingerprint
 `
 
 type BindCollaborationTargetChannelParams struct {
@@ -57,6 +57,7 @@ func (q *Queries) BindCollaborationTargetChannel(ctx context.Context, arg BindCo
 		&i.ChannelID,
 		&i.HoldReason,
 		&i.HoldVersion,
+		&i.ConfigurationBoundaryFingerprint,
 	)
 	return i, err
 }
@@ -629,7 +630,7 @@ func (q *Queries) LockCollaborationWaitingBatches(ctx context.Context, channelID
 const mirrorCollaborationChannelControl = `-- name: MirrorCollaborationChannelControl :many
 UPDATE collaboration_target t SET queue_state=ch.queue_state,pause_reason=ch.pause_reason,
     control_version=ch.control_version,group_generation=ch.group_generation,active_group_id=ch.active_group_id
-FROM collaboration_channel ch WHERE ch.id=$1 AND t.channel_id=ch.id RETURNING t.id, t.session_id, t.kind, t.resource_id, t.target_epoch, t.config_version, t.roster, t.queue_state, t.control_version, t.group_generation, t.active_group_id, t.pause_reason, t.revoked_at, t.created_at, t.configuration_fingerprint, t.channel_id, t.hold_reason, t.hold_version
+FROM collaboration_channel ch WHERE ch.id=$1 AND t.channel_id=ch.id RETURNING t.id, t.session_id, t.kind, t.resource_id, t.target_epoch, t.config_version, t.roster, t.queue_state, t.control_version, t.group_generation, t.active_group_id, t.pause_reason, t.revoked_at, t.created_at, t.configuration_fingerprint, t.channel_id, t.hold_reason, t.hold_version, t.configuration_boundary_fingerprint
 `
 
 func (q *Queries) MirrorCollaborationChannelControl(ctx context.Context, id pgtype.UUID) ([]CollaborationTarget, error) {
@@ -660,6 +661,7 @@ func (q *Queries) MirrorCollaborationChannelControl(ctx context.Context, id pgty
 			&i.ChannelID,
 			&i.HoldReason,
 			&i.HoldVersion,
+			&i.ConfigurationBoundaryFingerprint,
 		); err != nil {
 			return nil, err
 		}

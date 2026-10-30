@@ -364,11 +364,15 @@ func (r *collaborationRuntimeState) queueContinuation(ctx context.Context, paren
 	return pgtype.UUID{}, invalidCollaborationLedger("squad has no frozen leader")
 }
 
+// CollaborationSquadActivityReasonMaxBytes bounds a squad activity reason's
+// decoded text.
+const CollaborationSquadActivityReasonMaxBytes = 64 << 10
+
 // Existing squad activity is business evidence, independent of supervisor proof.
 // action/no_action finish this turn successfully; failed records failure. The
 // final leader turn decides the group, while member failure only wakes it.
 func (s *CollaborationService) RuntimeSquadActivity(ctx context.Context, runID pgtype.UUID, token, eventID, outcome, reason string) error {
-	if len(eventID) == 0 || len(eventID) > 128 || len(reason) > 64<<10 || (outcome != "action" && outcome != "no_action" && outcome != "failed") {
+	if len(eventID) == 0 || len(eventID) > 128 || len(reason) > CollaborationSquadActivityReasonMaxBytes || (outcome != "action" && outcome != "no_action" && outcome != "failed") {
 		return collaborationError(http.StatusBadRequest, "invalid_squad_activity")
 	}
 	_, err := collaborationRuntimeMutation(ctx, s, func(tx pgx.Tx) (bool, error) {

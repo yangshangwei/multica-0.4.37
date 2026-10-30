@@ -52,7 +52,7 @@ func (q *Queries) CancelCollaborationGroupDelegations(ctx context.Context, arg C
 const clearCollaborationActiveGroup = `-- name: ClearCollaborationActiveGroup :one
 UPDATE collaboration_target SET active_group_id = NULL
 WHERE id = $1::uuid AND active_group_id = $2::uuid
-RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
+RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint
 `
 
 type ClearCollaborationActiveGroupParams struct {
@@ -82,6 +82,7 @@ func (q *Queries) ClearCollaborationActiveGroup(ctx context.Context, arg ClearCo
 		&i.ChannelID,
 		&i.HoldReason,
 		&i.HoldVersion,
+		&i.ConfigurationBoundaryFingerprint,
 	)
 	return i, err
 }
@@ -108,7 +109,7 @@ func (q *Queries) CollaborationGrantOwnerCurrent(ctx context.Context, id pgtype.
 
 const createCollaborationTarget = `-- name: CreateCollaborationTarget :one
 INSERT INTO collaboration_target (session_id, kind, resource_id, roster)
-VALUES ($1, $2, $3, $4) RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
+VALUES ($1, $2, $3, $4) RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint
 `
 
 type CreateCollaborationTargetParams struct {
@@ -145,6 +146,7 @@ func (q *Queries) CreateCollaborationTarget(ctx context.Context, arg CreateColla
 		&i.ChannelID,
 		&i.HoldReason,
 		&i.HoldVersion,
+		&i.ConfigurationBoundaryFingerprint,
 	)
 	return i, err
 }
@@ -398,7 +400,7 @@ func (q *Queries) ListCollaborationRuns(ctx context.Context, sessionID pgtype.UU
 }
 
 const listCollaborationTargets = `-- name: ListCollaborationTargets :many
-SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version FROM collaboration_target WHERE session_id = $1 ORDER BY id
+SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint FROM collaboration_target WHERE session_id = $1 ORDER BY id
 `
 
 func (q *Queries) ListCollaborationTargets(ctx context.Context, sessionID pgtype.UUID) ([]CollaborationTarget, error) {
@@ -429,6 +431,7 @@ func (q *Queries) ListCollaborationTargets(ctx context.Context, sessionID pgtype
 			&i.ChannelID,
 			&i.HoldReason,
 			&i.HoldVersion,
+			&i.ConfigurationBoundaryFingerprint,
 		); err != nil {
 			return nil, err
 		}
@@ -595,7 +598,7 @@ func (q *Queries) LockCollaborationTargetGrants(ctx context.Context, targetID pg
 }
 
 const lockCollaborationTargets = `-- name: LockCollaborationTargets :many
-SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version FROM collaboration_target WHERE session_id = $1 ORDER BY id FOR UPDATE
+SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint FROM collaboration_target WHERE session_id = $1 ORDER BY id FOR UPDATE
 `
 
 // The permanent source/session/channel locks serialize target membership and
@@ -628,6 +631,7 @@ func (q *Queries) LockCollaborationTargets(ctx context.Context, sessionID pgtype
 			&i.ChannelID,
 			&i.HoldReason,
 			&i.HoldVersion,
+			&i.ConfigurationBoundaryFingerprint,
 		); err != nil {
 			return nil, err
 		}
@@ -760,7 +764,7 @@ const pauseCollaborationTarget = `-- name: PauseCollaborationTarget :one
 UPDATE collaboration_target SET queue_state = 'paused', pause_reason = $1::text,
     control_version = control_version + 1
 WHERE session_id = $2::uuid AND id = $3::uuid
-RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
+RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint
 `
 
 type PauseCollaborationTargetParams struct {
@@ -791,6 +795,7 @@ func (q *Queries) PauseCollaborationTarget(ctx context.Context, arg PauseCollabo
 		&i.ChannelID,
 		&i.HoldReason,
 		&i.HoldVersion,
+		&i.ConfigurationBoundaryFingerprint,
 	)
 	return i, err
 }
@@ -885,7 +890,7 @@ SET hold_reason = $1::text,
         WHEN hold_reason IS DISTINCT FROM $1::text OR $2::boolean THEN 1
         ELSE 0 END
 WHERE session_id = $3::uuid AND id = $4::uuid
-RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
+RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint
 `
 
 type SetCollaborationTargetHoldParams struct {
@@ -924,6 +929,7 @@ func (q *Queries) SetCollaborationTargetHold(ctx context.Context, arg SetCollabo
 		&i.ChannelID,
 		&i.HoldReason,
 		&i.HoldVersion,
+		&i.ConfigurationBoundaryFingerprint,
 	)
 	return i, err
 }

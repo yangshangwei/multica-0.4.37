@@ -82,7 +82,10 @@ the creator. Being visible in the management list grants no execution authority.
 Skill name, description, body, supporting-file path/content, origin/release
 configuration, binding enablement and plugin version changes affect execution.
 Their writer transaction advances every enabled bound agent's config epoch and
-persists invalidation. The existing consumer holds exact affected targets and
+persists invalidation. Since migration 745 that explicit advance also widens the
+agent's boundary epoch, so these changes stay Switch-only; owner re-consent
+recovers only instructions, model and thinking level edits
+([targets contract](collaboration-targets.md)). The existing consumer holds exact affected targets and
 stops dependent groups without pausing lanes. Original proof identities survive.
 Disabled bindings are unaffected by content changes. Pure `config.presentation`
 and exact repeated writes preserve consent; unknown config fields are fenced.

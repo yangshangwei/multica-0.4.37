@@ -84,7 +84,7 @@ func (s *CollaborationService) ReconfigureTarget(ctx context.Context, p Collabor
 		if err = t.q.RevokeCollaborationTargetConsents(ctx, db.RevokeCollaborationTargetConsentsParams{TargetID: target.ID, Reason: "configuration_changed"}); err != nil {
 			return CollaborationQueueReceipt{}, err
 		}
-		target, err = t.q.ReconfigureCollaborationTarget(ctx, db.ReconfigureCollaborationTargetParams{TargetID: target.ID, SessionID: t.session.ID, Roster: encoded, ConfigurationFingerprint: configuration.Fingerprint})
+		target, err = t.q.ReconfigureCollaborationTarget(ctx, db.ReconfigureCollaborationTargetParams{TargetID: target.ID, SessionID: t.session.ID, Roster: encoded, ConfigurationFingerprint: configuration.Fingerprint, ConfigurationBoundaryFingerprint: configuration.Boundary})
 		if err != nil {
 			return CollaborationQueueReceipt{}, err
 		}

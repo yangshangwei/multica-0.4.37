@@ -7,6 +7,7 @@ import { Input } from "@multica/ui/components/ui/input";
 import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import { Textarea } from "@multica/ui/components/ui/textarea";
 import { useT } from "../i18n";
+import { RichContent } from "../rich-content";
 import { useCollaborationLabels } from "./labels";
 import { CollaborationQueryState } from "./query-state";
 import { CollaborationAccountPicker } from "./account-picker";
@@ -126,6 +127,7 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
   const chosenStatus = status || options.data?.default_status || "";
   const editReady = action !== "edit" || (title.trim() !== "" && ["none", "low", "medium", "high", "urgent"].includes(priority) && baseline.start_date !== undefined && baseline.due_date !== undefined && !invalidProperties && !invalidLabels);
   const sourceReady = !needsSource || sourceOptions !== undefined && !fields.isFetching && !fields.isPlaceholderData && (sourceSelection.stage === null || Number.isInteger(sourceSelection.stage) && sourceSelection.stage >= 1 && sourceSelection.stage <= 2147483647);
+  const informationRequest = action === "return_information" ? baseline.current_information_request : null;
   const needsCompletedConfirmation = baseline.status_category === "done" && iterationId !== null && iterationId !== baseline.source_structure?.iteration?.id;
   const iterationReady = action !== "change_iteration" || sourceOptions?.iterations_enabled === true && (!iterationId || iterationRevision !== undefined && sourceOptions.iterations.some((item) => item.id === iterationId)) && (!baseline.source_structure?.iteration || baseline.source_structure.iteration.id === iterationId || iterationReason.trim() !== "") && (!needsCompletedConfirmation || allowCompleted);
   const ready = !locked && (!needsRecipient || recipient !== null) && (!needsStatus || (options.isSuccess && !options.isFetching && options.data.options.some((item) => item.key === chosenStatus))) && editReady && sourceReady && iterationReady;
@@ -147,6 +149,12 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
   return <form onSubmit={(event) => { if (event.target !== event.currentTarget) return; event.preventDefault(); if (ready) void submit(intent(), baseline); }} className="min-w-0 space-y-4 rounded-lg border border-border p-4">
     <h3 className="text-body font-semibold">{labels.action(action)}</h3>
     <fieldset disabled={locked} className="min-w-0 space-y-4">
+      {informationRequest && <div id={`${fieldId}-request`} className="min-w-0 space-y-2 rounded-md bg-muted/30 p-3 [overflow-wrap:anywhere]">
+        <p className="text-caption text-muted-foreground">{t(($) => $.workflow.requestedBy, { name: informationRequest.requester.name })}</p>
+        {informationRequest.note.trim() ? <RichContent resourcePolicy="restricted" content={informationRequest.note} /> : <p className="text-body text-muted-foreground">{t(($) => $.workflow.requestNoNote)}</p>}
+        {informationRequest.return_status_fallback === true && informationRequest.return_status && <p className="text-caption text-muted-foreground">{t(($) => $.workflow.returnStatusFallback,
+          { status: options.data?.options.find((item) => item.key === informationRequest.return_status)?.name ?? informationRequest.return_status })}</p>}
+      </div>}
       {needsRecipient && <div className="space-y-2"><label className="text-body">{t(($) => $.workflow.recipient)}</label>
         <CollaborationAccountPicker scope={scope} context={{ kind: "issue", issueId: issue.id }} selected={recipient} label={t(($) => $.workflow.recipient)} disabled={locked}
           onSelect={setRecipient} />
@@ -155,7 +163,7 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
       {needsStatus && <div className="space-y-2"><label htmlFor={`${fieldId}-status`} className="text-body">{t(($) => $.detail.status)}</label><select id={`${fieldId}-status`} value={chosenStatus} onChange={(event) => setStatus(event.target.value)} className="block min-h-11 max-w-full rounded-md border border-input bg-background px-3 text-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
         {chosenStatus && options.data && !options.data.options.some((item) => item.key === chosenStatus) && <option value={chosenStatus}>{t(($) => $.fields.unavailableSelection, { value: chosenStatus })}</option>}
         {(options.data?.options ?? []).map((option) => <option key={option.key} value={option.key}>{option.name}</option>)}</select>{options.error && <CollaborationQueryState error={options.error} />}</div>}
-      {["transfer", "request_information", "return_information", "submit_acceptance"].includes(action) && <div className="space-y-2"><label htmlFor={`${fieldId}-note`} className="text-body">{t(($) => $.workflow.note)}</label><Textarea id={`${fieldId}-note`} value={note} onChange={(event) => setNote(event.target.value)} /></div>}
+      {["transfer", "request_information", "return_information", "submit_acceptance"].includes(action) && <div className="space-y-2"><label htmlFor={`${fieldId}-note`} className="text-body">{t(($) => $.workflow.note)}</label><Textarea id={`${fieldId}-note`} aria-describedby={informationRequest ? `${fieldId}-request` : undefined} value={note} onChange={(event) => setNote(event.target.value)} /></div>}
       {action === "edit" && <>
         <div className="space-y-2"><label htmlFor={`${fieldId}-title`} className="text-body">{t(($) => $.workflow.titleLabel)}</label><Input id={`${fieldId}-title`} value={title} onChange={(event) => setTitle(event.target.value)} className="pointer-coarse:min-h-11" /></div>
         <div className="space-y-2"><label htmlFor={`${fieldId}-body`} className="text-body">{t(($) => $.workflow.descriptionLabel)}</label><Textarea id={`${fieldId}-body`} value={description} onChange={(event) => setDescription(event.target.value)} /></div>

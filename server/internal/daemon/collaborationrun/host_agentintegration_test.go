@@ -209,7 +209,9 @@ func authorizeHostAccountSmokeRequest(fixture *hostRunFixture, r *http.Request) 
 		return err == nil && parsed.String() == id && token == "Bearer "+fixture.claim.TerminationToken
 	}
 	if r.Method != http.MethodGet || suffix != "/context" && suffix != "/preparation" {
-		if r.Method != http.MethodPost || suffix != "/outcome" && suffix != "/preparation/observations" {
+		// runHost reads the shared-context base with the business token
+		// before every Provider launch.
+		if r.Method != http.MethodPost || suffix != "/outcome" && suffix != "/preparation/observations" && suffix != "/memory/base" {
 			return false
 		}
 	}

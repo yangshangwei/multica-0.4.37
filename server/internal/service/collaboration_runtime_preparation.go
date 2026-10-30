@@ -6,7 +6,9 @@ import (
 	"errors"
 	"net/http"
 	"reflect"
+	"slices"
 	"strconv"
+	"strings"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -15,16 +17,54 @@ import (
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
+// The manifest holds every file the prepared inputs reference. Remaining
+// capacity up to the manifest bound goes to the issue's most recently delivered
+// other files, so a long delivery history never blocks later input. Only a
+// referenced set larger than the bound refuses. Every caller uses this one
+// selection rule; a claimed run keeps the manifest it froze at first claim.
 func (s *CollaborationService) preparationAttachments(ctx context.Context, q *db.Queries, issue, workspace pgtype.UUID, inputs []protocol.CollaborationRunInput) ([]protocol.CollaborationPreparationAttachment, error) {
-	rows, err := q.ListCollaborationPreparationAttachments(ctx, issue)
+	return s.preparationAttachmentsForLimits(ctx, q, issue, workspace, inputs, nil)
+}
+
+func hasPreparationAttachmentReferences(inputs []protocol.CollaborationRunInput) bool {
+	for _, input := range inputs {
+		if len(input.AttachmentIDs) > 0 {
+			return true
+		}
+	}
+	return false
+}
+
+// preparationAttachmentsForLimits keeps every referenced attachment and uses
+// any remaining machine budget only for optional issue history. A delivery
+// outside the current runtime's limits must never prevent a text-only input
+// from running, while a referenced delivery remains an all-or-nothing input
+// requirement.
+func (s *CollaborationService) preparationAttachmentsForLimits(ctx context.Context, q *db.Queries, issue, workspace pgtype.UUID, inputs []protocol.CollaborationRunInput, caps *protocol.CollaborationRuntimeCapabilities) ([]protocol.CollaborationPreparationAttachment, error) {
+	referenced := make([]pgtype.UUID, 0)
+	wanted := map[string]bool{}
+	for _, input := range inputs {
+		for _, id := range input.AttachmentIDs {
+			if wanted[id] {
+				continue
+			}
+			parsed, err := util.ParseUUID(id)
+			if err != nil {
+				return nil, collaborationError(http.StatusConflict, "runtime_preparation_unavailable")
+			}
+			wanted[id] = true
+			referenced = append(referenced, parsed)
+		}
+	}
+	if len(referenced) > collaborationMaxSelectedAttachments || caps != nil && len(referenced) > caps.Limits.FileCount {
+		return nil, collaborationError(http.StatusConflict, "runtime_preparation_limits")
+	}
+	rows, err := q.ListCollaborationPreparationAttachments(ctx, db.ListCollaborationPreparationAttachmentsParams{
+		IssueID: issue, ReferencedIds: referenced, RowLimit: collaborationMaxSelectedAttachments})
 	if err != nil {
 		return nil, err
 	}
-	if len(rows) > collaborationMaxSelectedAttachments {
-		return nil, collaborationError(http.StatusConflict, "runtime_preparation_limits")
-	}
 	files := make([]protocol.CollaborationPreparationAttachment, 0, len(rows))
-	seen := make(map[string]bool, len(rows))
 	for _, row := range rows {
 		if row.IssueID != issue || row.SourceWorkspaceID != workspace || !row.DeliveredAt.Valid || row.DiscardedAt.Valid {
 			return nil, collaborationError(http.StatusServiceUnavailable, "runtime_preparation_unavailable")
@@ -33,17 +73,56 @@ func (s *CollaborationService) preparationAttachments(ctx context.Context, q *db
 			return nil, err
 		}
 		id, version := util.UUIDToString(row.ID), strconv.FormatInt(row.Version, 10)
-		files = append(files, protocol.CollaborationPreparationAttachment{ID: id, Version: version, Name: row.Name,
-			ContentType: row.ContentType, SizeBytes: row.SizeBytes, Destination: protocol.CollaborationPreparationAttachmentDestination(id, version)})
-		seen[id] = true
+		file := protocol.CollaborationPreparationAttachment{ID: id, Version: version, Name: row.Name,
+			ContentType: row.ContentType, SizeBytes: row.SizeBytes, Destination: protocol.CollaborationPreparationAttachmentDestination(id, version)}
+		files = append(files, file)
 	}
-	for _, input := range inputs {
-		for _, id := range input.AttachmentIDs {
-			if !seen[id] {
-				return nil, collaborationError(http.StatusConflict, "runtime_preparation_unavailable")
+	return selectPreparationAttachments(files, wanted, caps)
+}
+
+func selectPreparationAttachments(candidates []protocol.CollaborationPreparationAttachment, wanted map[string]bool, caps *protocol.CollaborationRuntimeCapabilities) ([]protocol.CollaborationPreparationAttachment, error) {
+	if caps != nil && len(wanted) > caps.Limits.FileCount {
+		return nil, collaborationError(http.StatusConflict, "runtime_preparation_limits")
+	}
+	files := make([]protocol.CollaborationPreparationAttachment, 0, len(candidates))
+	seen := make(map[string]bool, len(wanted))
+	total := int64(0)
+	for _, file := range candidates {
+		isReferenced := wanted[file.ID]
+		if caps == nil || isReferenced {
+			if caps != nil && (file.SizeBytes > caps.Limits.PerFileBytes || total+file.SizeBytes > caps.Limits.TotalInputBytes ||
+				caps.Git != nil && total+file.SizeBytes+caps.Limits.GitExpandedBytes > caps.Limits.WorkspaceBytes) {
+				if isReferenced {
+					return nil, collaborationError(http.StatusConflict, "runtime_preparation_limits")
+				}
+				continue
 			}
+			files = append(files, file)
+			total += file.SizeBytes
+			if isReferenced {
+				seen[file.ID] = true
+			}
+			continue
+		}
+		// Optional history is best-effort. It may be skipped when the
+		// current runtime cannot fit it, but it must never displace an
+		// already referenced file.
+		if len(files) >= caps.Limits.FileCount || file.SizeBytes > caps.Limits.PerFileBytes ||
+			total+file.SizeBytes > caps.Limits.TotalInputBytes ||
+			caps.Git != nil && total+file.SizeBytes+caps.Limits.GitExpandedBytes > caps.Limits.WorkspaceBytes {
+			continue
+		}
+		files = append(files, file)
+		total += file.SizeBytes
+	}
+	for id := range wanted {
+		if !seen[id] {
+			return nil, collaborationError(http.StatusConflict, "runtime_preparation_unavailable")
 		}
 	}
+	// The selection order puts referenced files first; the manifest keeps
+	// its stable attachment-ID order.
+	slices.SortFunc(files, func(a, b protocol.CollaborationPreparationAttachment) int { return strings.Compare(a.ID, b.ID) })
 	return files, nil
 }
 
@@ -69,10 +148,6 @@ func preparationWithinLimits(files []protocol.CollaborationPreparationAttachment
 // Each member needs its own capability; a leader cannot lend file authority.
 func (s *CollaborationService) checkPreparationPromotion(ctx context.Context, t *collaborationQueueTx, selection collaborationInputSelection) error {
 	inputs, err := collaborationRunInputs(selection.inputs)
-	if err != nil {
-		return err
-	}
-	files, err := s.preparationAttachments(ctx, t.q, t.access.Issue.ID, t.access.Issue.WorkspaceID, inputs)
 	if err != nil {
 		return err
 	}
@@ -109,8 +184,15 @@ func (s *CollaborationService) checkPreparationPromotion(ctx context.Context, t 
 			if t.gate.HostExecutionEnabled && (saved == nil || saved.Capabilities.Containment != protocol.CollaborationContainmentHostProcessSupervision) {
 				return collaborationError(http.StatusConflict, "execution_mode_unsupported")
 			}
-			if len(files) == 0 && saved == nil {
-				continue
+			if saved == nil {
+				legacyFiles, err := s.preparationAttachments(ctx, t.q, t.access.Issue.ID, t.access.Issue.WorkspaceID, inputs)
+				if err != nil {
+					return err
+				}
+				if len(legacyFiles) == 0 {
+					continue
+				}
+				return collaborationError(http.StatusConflict, "runtime_preparation_unsupported")
 			}
 			if saved != nil && saved.Capabilities.Host != nil && !t.gate.HostExecutionEnabled {
 				return collaborationError(http.StatusConflict, "execution_mode_unsupported")
@@ -124,7 +206,11 @@ func (s *CollaborationService) checkPreparationPromotion(ctx context.Context, t 
 			if err != nil {
 				return err
 			}
-			if err = preparationWithinLimits(files, saved.Capabilities); err != nil {
+			filesForRuntime, err := s.preparationAttachmentsForLimits(ctx, t.q, t.access.Issue.ID, t.access.Issue.WorkspaceID, inputs, &saved.Capabilities)
+			if err != nil {
+				return err
+			}
+			if err = preparationWithinLimits(filesForRuntime, saved.Capabilities); err != nil {
 				return err
 			}
 			if err = checkPreparationSquadInstructions(ctx, t.q, target); err != nil {
@@ -155,16 +241,16 @@ func (s *CollaborationService) preparationForClaim(ctx context.Context, r *colla
 		if err != nil {
 			return nil, err
 		}
-		files, err := s.preparationAttachments(ctx, r.q, r.access.Issue.ID, r.access.Issue.WorkspaceID, inputs)
-		if err != nil {
-			return nil, err
-		}
 		saved, err := collaborationRegisteredCapabilities(runtime)
 		if err != nil {
 			return nil, err
 		}
 		if saved != nil && saved.Capabilities.Host != nil {
 			return nil, collaborationError(http.StatusConflict, "execution_mode_unsupported")
+		}
+		files, err := s.preparationAttachments(ctx, r.q, r.access.Issue.ID, r.access.Issue.WorkspaceID, inputs)
+		if err != nil {
+			return nil, err
 		}
 		if len(files) > 0 || saved != nil && saved.Capabilities.Git != nil {
 			return nil, collaborationError(http.StatusConflict, "runtime_preparation_unsupported")
@@ -208,7 +294,7 @@ func (s *CollaborationService) preparationForClaim(ctx context.Context, r *colla
 		if err != nil {
 			return nil, err
 		}
-		files, err := s.preparationAttachments(ctx, r.q, r.access.Issue.ID, r.access.Issue.WorkspaceID, inputs)
+		files, err := s.preparationAttachmentsForLimits(ctx, r.q, r.access.Issue.ID, r.access.Issue.WorkspaceID, inputs, &saved.Capabilities)
 		if err != nil {
 			return nil, err
 		}
@@ -234,13 +320,29 @@ func (s *CollaborationService) settleUnclaimedPreparationRefusal(ctx context.Con
 	if err != nil {
 		return false, err
 	}
+	registered, err := collaborationRegisteredCapabilities(runtime)
+	if err != nil {
+		return false, err
+	}
 	// An old request against a capable runtime is not evidence that the work
 	// cannot run. Its actual capable client must retain the same candidate.
 	if denied.Code == "runtime_preparation_unsupported" && runtime.CollaborationCapabilities != nil {
 		return false, nil
 	}
-	files, err := r.q.ListCollaborationPreparationAttachments(ctx, r.access.Issue.ID)
-	if err != nil || len(files) == 0 {
+	// The same selection the claim used decides whether this run needs file
+	// preparation. A referenced set beyond the manifest bound needs it too.
+	inputs, err := collaborationRunInputs(r.inputs)
+	if err != nil {
+		return false, err
+	}
+	var caps *protocol.CollaborationRuntimeCapabilities
+	if registered != nil {
+		caps = &registered.Capabilities
+	}
+	files, err := s.preparationAttachmentsForLimits(ctx, r.q, r.access.Issue.ID, r.access.Issue.WorkspaceID, inputs, caps)
+	var limits *CollaborationError
+	overLimit := errors.As(err, &limits) && limits.Code == "runtime_preparation_limits"
+	if !overLimit && (err != nil || len(files) == 0) {
 		return false, err
 	}
 	runs, err := r.q.LockCollaborationGroupRuns(ctx, r.group.ID)
@@ -323,7 +425,7 @@ func (s *CollaborationService) settleUnclaimedPreparationRefusal(ctx context.Con
 }
 
 func (s *CollaborationService) freezePreparedPrompt(ctx context.Context, r *collaborationRuntimeState, inputs []protocol.CollaborationRunInput, encoded []byte, registration *protocol.CollaborationRuntimeCapabilityRegistration) error {
-	files, err := s.preparationAttachments(ctx, r.q, r.access.Issue.ID, r.access.Issue.WorkspaceID, inputs)
+	files, err := s.preparationAttachmentsForLimits(ctx, r.q, r.access.Issue.ID, r.access.Issue.WorkspaceID, inputs, &registration.Capabilities)
 	if err != nil {
 		return err
 	}

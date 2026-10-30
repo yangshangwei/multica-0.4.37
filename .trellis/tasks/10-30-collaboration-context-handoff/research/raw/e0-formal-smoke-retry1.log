@@ -1,0 +1,8 @@
+=== RUN   TestHostProviderAccountSmoke
+    host_agentintegration_test.go:79: provider=claude version=2.1.312 os=darwin arch=arm64
+    host_agentintegration_test.go:153: the real Provider did not read the test-owned issue through the current Multica CLI
+--- FAIL: TestHostProviderAccountSmoke (123.11s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	123.511s
+FAIL
+exit_code=1

@@ -11,10 +11,13 @@ WHERE id = sqlc.arg(run_id)::uuid AND prompt_snapshot IS NULL AND preparation_sn
 RETURNING *;
 
 -- name: ListCollaborationPreparationAttachments :many
--- One beyond the manifest bound distinguishes overflow from a complete list.
+-- Files the prepared inputs reference come first, then the newest other
+-- deliveries. Issue history therefore never displaces a referenced file, and
+-- a referenced file absent from this list is no longer delivered.
 SELECT * FROM collaboration_attachment
-WHERE issue_id = $1 AND delivered_at IS NOT NULL AND discarded_at IS NULL
-ORDER BY id LIMIT 33;
+WHERE issue_id = sqlc.arg(issue_id)::uuid AND delivered_at IS NOT NULL AND discarded_at IS NULL
+ORDER BY (id = ANY(sqlc.arg(referenced_ids)::uuid[])) DESC, delivered_at DESC, id
+LIMIT sqlc.arg(row_limit)::int;
 
 -- name: CollaborationRunHasPreparationStartEvidence :one
 -- An unknown/issued claim or attempt belongs to the original recovery path.

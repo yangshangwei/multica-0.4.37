@@ -251,3 +251,21 @@ func TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice
 		})
 	}
 }
+
+// A collaboration run carries no MULTICA_AGENT_ID/TASK_ID, yet every
+// participant reads its comments, so comment add refuses a runtime-local link
+// before any HTTP request, like collaboration memory update.
+func TestCollaborationCLICommentAddRejectsLocalPathLinksBeforeHTTP(t *testing.T) {
+	requests := 0
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { requests++; w.WriteHeader(500) }))
+	defer server.Close()
+	id := collaborationCLIEnvironment(t, server.URL)
+	cmd := newIssueCommentAddTestCmd()
+	cmd.Flags().String("request-id", "", "")
+	_ = cmd.Flags().Set("content", "See [log](file:///Users/fixture/run.log)")
+	_ = cmd.Flags().Set("request-id", uuid.NewString())
+	err := runIssueCommentAdd(cmd, []string{id.IssueID})
+	if requests != 0 || err == nil || !strings.Contains(err.Error(), "runtime-local path(s), which no reader can open") {
+		t.Fatalf("a runtime-local link in a collaboration comment reached HTTP: requests=%d err=%v", requests, err)
+	}
+}

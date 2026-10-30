@@ -6,6 +6,35 @@ import (
 	"github.com/multica-ai/multica/server/internal/service"
 )
 
+// collaborationRuntimeTextReadLimit bounds a runtime request body that carries
+// up to maxBytes of decoded text. JSON escaping can expand each text byte to
+// six bytes (the CLI's json.Marshal writes <, > and & as \u003c and friends),
+// plus a fixed envelope for the identity fields. The service enforces the
+// decoded limit.
+func collaborationRuntimeTextReadLimit(maxBytes int) int64 {
+	return 6*int64(maxBytes) + 64<<10
+}
+
+type collaborationRuntimeCommentBody struct {
+	CommentID string  `json:"comment_id"`
+	ParentID  *string `json:"parent_id"`
+	Content   string  `json:"content"`
+}
+
+func decodeCollaborationRuntimeCommentBody(w http.ResponseWriter, r *http.Request, body *collaborationRuntimeCommentBody) bool {
+	return decodeCollaborationRuntimeBodyLimit(w, r, body, collaborationRuntimeTextReadLimit(service.CollaborationCommentMaxBytes))
+}
+
+type collaborationRuntimeSquadActivityBody struct {
+	EventID string `json:"event_id"`
+	Outcome string `json:"outcome"`
+	Reason  string `json:"reason"`
+}
+
+func decodeCollaborationRuntimeSquadActivityBody(w http.ResponseWriter, r *http.Request, body *collaborationRuntimeSquadActivityBody) bool {
+	return decodeCollaborationRuntimeBodyLimit(w, r, body, collaborationRuntimeTextReadLimit(service.CollaborationSquadActivityReasonMaxBytes))
+}
+
 func (h *Handler) GetCollaborationRuntimeContext(w http.ResponseWriter, r *http.Request) {
 	token, ok := collaborationNarrowBearer(w, r, service.CollaborationBusinessTokenPrefix)
 	if !ok {
@@ -29,12 +58,8 @@ func (h *Handler) CreateCollaborationRuntimeComment(w http.ResponseWriter, r *ht
 	if !ok {
 		return
 	}
-	var body struct {
-		CommentID string  `json:"comment_id"`
-		ParentID  *string `json:"parent_id"`
-		Content   string  `json:"content"`
-	}
-	if !decodeCollaborationRuntimeBody(w, r, &body) {
+	var body collaborationRuntimeCommentBody
+	if !decodeCollaborationRuntimeCommentBody(w, r, &body) {
 		return
 	}
 	run, ok := collaborationRuntimeRunID(w, r, nil)
@@ -66,12 +91,8 @@ func (h *Handler) RecordCollaborationRuntimeSquadActivity(w http.ResponseWriter,
 	if !ok {
 		return
 	}
-	var body struct {
-		EventID string `json:"event_id"`
-		Outcome string `json:"outcome"`
-		Reason  string `json:"reason"`
-	}
-	if !decodeCollaborationRuntimeBody(w, r, &body) {
+	var body collaborationRuntimeSquadActivityBody
+	if !decodeCollaborationRuntimeSquadActivityBody(w, r, &body) {
 		return
 	}
 	run, ok := collaborationRuntimeRunID(w, r, nil)

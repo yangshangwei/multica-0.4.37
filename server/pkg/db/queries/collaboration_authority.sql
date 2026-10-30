@@ -7,15 +7,28 @@ SELECT * FROM collaboration_grant WHERE target_id = $1 ORDER BY id;
 SELECT * FROM collaboration_runtime_enrollment WHERE id = $1;
 
 -- name: CreateConsentedCollaborationTarget :one
-INSERT INTO collaboration_target (session_id, kind, resource_id, roster, configuration_fingerprint)
-VALUES ($1, $2, $3, $4, $5) RETURNING *;
+INSERT INTO collaboration_target (session_id, kind, resource_id, roster, configuration_fingerprint, configuration_boundary_fingerprint)
+VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
 
 -- name: ReconfigureCollaborationTarget :one
 UPDATE collaboration_target SET roster = sqlc.arg(roster)::jsonb,
     configuration_fingerprint = sqlc.arg(configuration_fingerprint)::text,
+    configuration_boundary_fingerprint = sqlc.arg(configuration_boundary_fingerprint)::text,
     config_version = config_version + 1, target_epoch = target_epoch + 1,
     hold_reason = 'switch_hold', hold_version = hold_version + 1, revoked_at = NULL
 WHERE id = sqlc.arg(target_id)::uuid AND session_id = sqlc.arg(session_id)::uuid
+RETURNING *;
+
+-- Owner re-consent of a configuration inside the recorded boundary. The roster,
+-- target epoch and boundary stay; the new configuration version separates the
+-- old configuration's grants, groups and provider sessions from the new one.
+-- name: RefreshCollaborationTargetConfiguration :one
+UPDATE collaboration_target SET configuration_fingerprint = sqlc.arg(configuration_fingerprint)::text,
+    config_version = config_version + 1
+WHERE id = sqlc.arg(target_id)::uuid AND session_id = sqlc.arg(session_id)::uuid
+    AND config_version = sqlc.arg(expected_config_version)::bigint
+    AND configuration_boundary_fingerprint = sqlc.arg(configuration_boundary_fingerprint)::text
+    AND revoked_at IS NULL
 RETURNING *;
 
 -- name: CreateCollaborationResourceConsent :one

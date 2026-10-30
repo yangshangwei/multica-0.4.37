@@ -60,13 +60,23 @@ type collaborationResourceSnapshot struct {
 	RuntimeCreated pgtype.Timestamptz           `json:"runtime_created"`
 	MembershipID   pgtype.UUID                  `json:"membership_id"`
 	Invocation     []db.AgentInvocationTarget   `json:"invocation"`
+	// boundaryEpoch replaces AgentEpoch in the boundary digest only; leaving it
+	// out of JSON keeps every stored main fingerprint valid.
+	boundaryEpoch int64
 }
 
 type collaborationConfiguration struct {
 	Fingerprint string
-	Name        string
-	Offline     bool
+	// Boundary changes with everything Fingerprint covers except instructions,
+	// model and thinking level, which cannot widen execution mode or tools.
+	Boundary string
+	Name     string
+	Offline  bool
 }
+
+// collaborationBoundaryDomain keeps a boundary digest from ever equalling a
+// main fingerprint of the same snapshot.
+const collaborationBoundaryDomain = "multica.collaboration.configuration_boundary.v1\n"
 
 func collaborationResourceUUIDs(resource collaboration.TargetResource) (agent, runtime, owner, workspace pgtype.UUID, err error) {
 	values := []struct {
@@ -187,7 +197,8 @@ func collaborationConfigurationSnapshot(ctx context.Context, q *db.Queries, kind
 		sort.Slice(invocation, func(i, j int) bool { return util.UUIDToString(invocation[i].ID) < util.UUIDToString(invocation[j].ID) })
 		snapshot.Resources = append(snapshot.Resources, collaborationResourceSnapshot{Resource: resource,
 			AgentEpoch: agent.CollaborationConfigEpoch, RuntimeEpoch: runtime.CollaborationConfigEpoch,
-			AgentCreated: agent.CreatedAt, RuntimeCreated: runtime.CreatedAt, MembershipID: member.ID, Invocation: invocation})
+			AgentCreated: agent.CreatedAt, RuntimeCreated: runtime.CreatedAt, MembershipID: member.ID, Invocation: invocation,
+			boundaryEpoch: agent.CollaborationBoundaryEpoch.Int64})
 		result.Offline = result.Offline || runtime.Status != "online"
 		if kind == collaboration.TargetAgent {
 			result.Name = agent.Name
@@ -202,7 +213,30 @@ func collaborationConfigurationSnapshot(ctx context.Context, q *db.Queries, kind
 	}
 	digest := sha256.Sum256(encoded)
 	result.Fingerprint = hex.EncodeToString(digest[:])
+	// The boundary keeps the squad epoch, membership, runtime epochs and every
+	// roster resource's invocation targets; only the agent epoch is replaced.
+	boundary := snapshot
+	boundary.Resources = make([]collaborationResourceSnapshot, len(snapshot.Resources))
+	for i, resource := range snapshot.Resources {
+		resource.AgentEpoch = resource.boundaryEpoch
+		boundary.Resources[i] = resource
+	}
+	encoded, err = json.Marshal(boundary)
+	if err != nil {
+		return result, "", err
+	}
+	digest = sha256.Sum256(append([]byte(collaborationBoundaryDomain), encoded...))
+	result.Boundary = hex.EncodeToString(digest[:])
 	return result, "", nil
+}
+
+// collaborationBoundaryRetained reports whether a stale target configuration
+// differs from its stored one only in instructions, model or thinking level.
+// Targets without a recorded boundary stay Switch-only.
+func collaborationBoundaryRetained(target db.CollaborationTarget, configuration collaborationConfiguration) bool {
+	return !target.RevokedAt.Valid && target.ConfigurationFingerprint.Valid && target.ConfigurationBoundaryFingerprint.Valid &&
+		configuration.Fingerprint != target.ConfigurationFingerprint.String &&
+		configuration.Boundary == target.ConfigurationBoundaryFingerprint.String
 }
 
 func validCollaborationResourceIdentity(identity CollaborationResourceIdentity) bool {
@@ -540,7 +574,8 @@ func (s *CollaborationService) ConsentTargetResource(ctx context.Context, p Coll
 		if code != "" {
 			return deny(code, http.StatusConflict)
 		}
-		if !target.ConfigurationFingerprint.Valid || target.ConfigurationFingerprint.String != configuration.Fingerprint {
+		refresh := collaborationBoundaryRetained(target, configuration)
+		if !refresh && (!target.ConfigurationFingerprint.Valid || target.ConfigurationFingerprint.String != configuration.Fingerprint) {
 			return deny("target_configuration_changed", http.StatusConflict)
 		}
 		current, err := collaborationIdentityCurrent(ctx, t.q, selected, p.Identity)
@@ -549,6 +584,24 @@ func (s *CollaborationService) ConsentTargetResource(ctx context.Context, p Coll
 		}
 		if !current {
 			return deny("runtime_registration_required", http.StatusConflict)
+		}
+		if refresh {
+			// The owner re-confirms an edit inside the recorded boundary. Every
+			// refusal above left state unchanged. The new configuration version
+			// retires the old configuration's grants of every roster resource, so
+			// each owner confirms again and old groups stay distinguishable for
+			// the configuration consumer. Waiting inputs keep their position.
+			if err = t.q.RevokeCollaborationTargetConsents(ctx, db.RevokeCollaborationTargetConsentsParams{TargetID: target.ID, Reason: "configuration_changed"}); err != nil {
+				return CollaborationQueueReceipt{}, err
+			}
+			target, err = t.q.RefreshCollaborationTargetConfiguration(ctx, db.RefreshCollaborationTargetConfigurationParams{
+				TargetID: target.ID, SessionID: t.session.ID, ExpectedConfigVersion: target.ConfigVersion,
+				ConfigurationFingerprint: configuration.Fingerprint, ConfigurationBoundaryFingerprint: configuration.Boundary})
+			if err != nil {
+				return CollaborationQueueReceipt{}, err
+			}
+			t.replaceTarget(target)
+			grants = nil
 		}
 		for _, prior := range grants {
 			if prior.RevokedAt.Valid || prior.ConfigVersion.Int64 != target.ConfigVersion || !collaborationResourceMatchesGrant(selected, prior) {
@@ -577,7 +630,11 @@ func (s *CollaborationService) ConsentTargetResource(ctx context.Context, p Coll
 			return CollaborationQueueReceipt{}, err
 		}
 		hold := collaboration.TargetHoldReason(target.HoldReason.String)
-		if !target.HoldReason.Valid {
+		switch {
+		case refresh:
+			// A refreshed configuration is still a changed one; only Resume releases it.
+			hold = collaboration.HoldConfigInvalid
+		case !target.HoldReason.Valid:
 			hold = collaboration.HoldGrantRequired
 		}
 		target, err = t.setTargetHold(ctx, target, hold, true)
