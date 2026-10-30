@@ -1,0 +1,8 @@
+Formal E0 diagnosis (sanitized)
+
+Provider: Claude Code 2.1.312, darwin/arm64.
+Attempts: e0-formal-smoke-final.log and e0-formal-smoke-retry1.log.
+Both runs spent about 123 seconds and ended at host_agentintegration_test.go:153 because contextReads remained zero.
+Local Claude session records under ~/.claude/projects for the two test-owned temp workspaces show repeated upstream API error 502 (retry attempts 1 through 9), with totalCostUSD=0, no assistant/tool call, and no provider outcome. No bearer token or full provider transcript is copied here.
+Classification: environment/upstream failure; not a product/model behavior result. E1-E6 remain gated on a successful formal E0.
+Third attempt retry2 also ended after ~123.8s. The corresponding Claude session showed repeated upstream API 502 through retry 9, totalCostUSD=0, and no tool call. The E0 gate remains blocked by the provider upstream.
