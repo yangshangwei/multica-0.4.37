@@ -23,3 +23,11 @@
 | 权限边界 | runtime token 与人类权限分离；评论作者可能只有 Comment 无 SubmitCommand，却进入窗口；prompt 目前无可信度标签 | 安全/设计缺口 | access.go:88-95；host_runner.go:515；claude.go:740 | 把权限标记作为数据，固定“只执行受权输入”的系统边界 |
 | workspace/project 现有承载 | 普通任务已有 Workspace Context/Project Context 注入和 owner/admin 路由；项目更新有 revision/transaction；source context 明确拒绝协作 capture | 复用边界 | runtime_config_sections.go:184-198,414-444；router.go:1890-1892,2298-2304；source_context.go:63,274-280 | 知识候选单独建模，不直接让协作单写生效上下文 |
 | 技能层 | skill 内容影响执行面，现有 invalidation/owner consent 机制；直接自动沉淀会扩大执行权限和传播范围 | 后续候选 | .trellis/spec/server/collaboration-switch-and-skills.md；旧 memory PRD C15/C22 | 首轮只论证，需单独授权、review、版本/撤回方案 |
+
+
+## 2026-10-30 首轮实现更新
+
+- A1、B1、B2、C3 已完成最小收尾；详见子任务 verification-2026-10-30.md。
+- Final closure HEAD: 5491d1b22，包含 85b98c3bb、8 个修复、迁移重编号、runtime budget selector、B2/C3 UI/test changes。
+- Fresh/reapply migration、sqlc、Go vet/build、DB service/handler collaboration、pnpm lint/typecheck/test 已有原始日志。
+- E0–E6 仍是下一门槛；实验框架硬化进行中，真实模型尚未调用。
