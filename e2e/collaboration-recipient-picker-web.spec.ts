@@ -2,7 +2,10 @@ import { randomUUID } from "node:crypto";
 import { test, expect, type Page } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
 
-const apiUrl = process.env.COLLABORATION_E2E_API_URL;
+// The isolated check environment already pins NEXT_PUBLIC_API_URL to the
+// started API. Keep the dedicated override for ad-hoc runs, but don't make a
+// correctly configured production check skip the acceptance silently.
+const apiUrl = process.env.COLLABORATION_E2E_API_URL ?? process.env.NEXT_PUBLIC_API_URL;
 
 async function authenticate(page: Page, token: string) {
   await page.addInitScript((value) => {
@@ -68,9 +71,12 @@ test("Web recipient picker exposes self/recent/search results and preserves the 
     return url.pathname === "/api/collaboration/recipients/search" && response.request().method() === "POST";
   });
   await trigger.click();
-  const list = control.getByRole("listbox");
+  // PropertyPicker portals its content to the dialog layer, outside the
+  // trigger wrapper. Locate the live popup at page level, then scope rows to
+  // that popup instead of assuming it remains under data-recipient-picker.
+  const list = page.getByRole("listbox", { name: "Recipient" });
   await expect(list).toBeVisible();
-  await expect(list.locator("[data-recipient-row]").filter({ hasText: sourceName })).toBeVisible();
+  await expect(list.locator("[data-recipient-row]").filter({ hasText: "Assign to me" })).toBeVisible();
 
   const firstResponse = await emptySearch;
   expect(firstResponse.status()).toBe(200);
@@ -86,7 +92,7 @@ test("Web recipient picker exposes self/recent/search results and preserves the 
   }
   await expect(list.locator("[data-recipient-row]").filter({ hasText: recentName })).toBeVisible();
 
-  const search = control.getByRole("textbox", { name: /search recipients/i });
+  const search = page.getByRole("textbox", { name: "Filter options" });
   await expect(search).toBeVisible();
   const searched = page.waitForResponse((response) => {
     const request = response.request();
@@ -98,7 +104,7 @@ test("Web recipient picker exposes self/recent/search results and preserves the 
   const searchedResponse = await searched;
   expect(searchedResponse.status()).toBe(200);
   await expect(list.locator("[data-recipient-row]").filter({ hasText: recentName })).toHaveCount(1);
-  await expect(control.getByRole("button", { name: /exact lookup|full username|email|account id/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: /exact lookup|full username|email|account id/i })).toBeVisible();
 
   // Escape closes the picker while keeping the creation dialog mounted.
   await search.press("Escape");
