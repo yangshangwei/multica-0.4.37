@@ -31,3 +31,4 @@
 - Final closure HEAD: 5491d1b22，包含 85b98c3bb、8 个修复、迁移重编号、runtime budget selector、B2/C3 UI/test changes。
 - Fresh/reapply migration、sqlc、Go vet/build、DB service/handler collaboration、pnpm lint/typecheck/test 已有原始日志。
 - E0–E6 仍是下一门槛；实验框架硬化进行中，真实模型尚未调用。
+\n- 2026-10-30 E0 正式 smoke 两次真实运行均到达 Provider 版本探测和 123s 执行阶段，但没有收到 CLI context read；E1–E6 按门槛暂停。原始日志见 raw/e0-formal-smoke-final.log 与 raw/e0-formal-smoke-retry1.log。\n
