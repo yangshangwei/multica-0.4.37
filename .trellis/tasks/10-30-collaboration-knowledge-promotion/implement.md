@@ -4,7 +4,7 @@
 - Scope: internal；K1–K5 已审阅，本次 F1–F4 合同修订已通过主会话独立复核；产品实现、测试和数据库操作尚未执行。
 - Date: 2026-10-31
 - Revision: 2026-11-01；保留既定权限与 K1–K5，落实 F1–F4 及 G0/G1 确定性证据。
-- Status: **正式计划已补齐，候选实现未开始**。G0/G1 已按提交证据冻结；本次 F1–F4 已通过主会话独立复核，G3 待分配。G2 是消费/会话代码的启用前验收，不是阻止开始实施的循环前置条件。
+- Status: **正式计划已补齐，首批 schema/protocol/纯策略和 Core 实施进行中**。G0/G1 已按提交证据冻结；本次 F1–F4 已通过主会话独立复核，G3 首批所有权已分配。G2 是消费/会话代码的启用前验收，不是阻止开始实施的循环前置条件。
 
 ## 0. 入口与分工
 
@@ -12,8 +12,9 @@
 - [x] K1–K5 及外部处理人提案边界已通过独立设计复核，PRD 已补齐可观察 AC；本次 F1–F4 代码证据、正式合同与测试名已写入，不声称本次独立复核通过。
 - [x] 主会话独立复核 `research/contract-revision-2026-11-01.md` 与 F1–F4：父行 KEY SHARE、独立修订行、source-only intent/无反向锁 fanout、有限缓存可见期、共享 request UUID 命名空间。
 - [x] 主会话确认 existing knowledge task 的 planning artifacts/context manifests 齐备；沿用既有范围/权限授权，不新建重复任务。
-- [ ] 准备独立 worktree 与专用测试 DB；记录版本/命令/数据库标识，禁止真实 Provider 自动混进默认测试。
-- [ ] 指定唯一 migration/sqlc owner。普通 daemon.go、handler/daemon.go、router.go、protocol 与 core API client 修改须顺序交接，不能多个 agent 同时写。
+- [x] 独立 worktree `/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101` 基于 `765ab186a` 建立，branch `codex/collaboration-knowledge-promotion-20261101`；实际实现仍须分批验证。
+- [x] Owner A 已建立专用 DB `multica_knowledge_20261101_b3c35f9c`；私有环境文件只存本机，默认测试禁止真实 Provider。所有权见 `research/execution-ownership-2026-11-01.json`。
+- [x] 首批 `knowledge_schema` 为唯一 migration/sqlc/protocol/纯策略 owner；不启动 handler/router/daemon/core 修改。后续共享文件逐项交接，不能多个 agent 同时写。
 
 建议分批所有权：A = schema/service/SQL；B = HTTP/core/views；C = ordinary/collaboration 消费与启动；D = 独立检查。A 的纯 protocol/helper 测试与 B 的 schema 测试可并行；共享 DB service/handler 全套顺序运行；C 等 A 的 typed resolver 和 runtime handoff 完成后再接入。
 

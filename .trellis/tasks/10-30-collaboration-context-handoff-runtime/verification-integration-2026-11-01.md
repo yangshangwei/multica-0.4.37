@@ -2,7 +2,7 @@
 
 代码已合入协作开发分支：`0e1ee8e1e`。固定输入快照、独立启动注入补丁和晚到的并行改动均已核对、归档并整合；主工作区与隔离集成目录的 116 个交付文件逐字节一致。
 
-**本轮实现、确定性验证及 Web/原生 Desktop 验收已完成；真实模型及更广平台验收保持独立，未由本报告替代。** 本任务暂保留 `in_progress`，不把代码检查通过等同于全部模型行为验收通过。
+**本轮实现、已列确定性门禁及 Web/原生 Desktop 验收已完成；台账审计发现的补充矩阵已完成，见文末，真实模型及更广平台验收仍独立。** 本任务暂保留 `in_progress`，不把代码检查通过等同于全部模型行为验收通过。
 
 ## 已交付
 
@@ -49,6 +49,10 @@ Go service 与 handler 使用专属新数据库顺序运行，未与浏览器共
 
 源码、原始失败、命令、数据库标识、版本、源码 hash 和组件运行信息均保存于 `research/integration-verification/`。初始与晚到主工作区备份、逐文件应用核对位于 `research/integration-coordination-2026-10-31/`。没有覆盖未知并行工作、推送远端或发布生产版本。
 
-原模型系列仍停在 E2a trial 1 无效后：下一次 E2a trial 2，剩余上限 23 次。已从原日志确认 429 为 `gateway_concurrency_limit`；这不证明当前上游已恢复。新的 runtime 模型验收必须记录自己的源码与实际覆盖路径。Windows、安装包组合和多账号额度溯源仍属于关联交付矩阵，不能由本轮 macOS Electron/fake-provider 结果推导通过。
+原模型系列在本报告交付后独立续跑了 E2a trial 2，约 196 秒后返回上游 502，未读取场景上下文，仍无有效 E2a 样本；详见修复闭环子任务 `verification-e2a-trial2-2026-11-01.md`。下一次 E2a trial 3，剩余上限 22 次。原 trial 1 的 429 为 `gateway_concurrency_limit`；本轮仍不能确认上游恢复。新的 runtime 模型验收必须记录自己的源码与实际覆盖路径。Windows、安装包组合和多账号额度溯源仍属于关联交付矩阵，不能由本轮 macOS Electron/fake-provider 结果推导通过。
 
-知识候选的正式设计、实施计划和上下文清单已经整理，K1–K5 设计复核通过；补充的热点行锁与目标失效通知审查仍需合入合同。候选产品代码尚未实施，保持后续执行门。
+知识候选正式设计、实施计划及上下文清单已完成，K1–K5 和补充 F1–F4 工程合同均已独立复核。独立工作区已进入首批 schema/protocol/纯策略实施；候选功能和实际注入尚未验收，G2 通过前保持未启用。
+
+## 后续台账复核
+
+逐项核对原实施清单后，补齐了先前未实际覆盖的矩阵，均无生产代码变更。`0bbc6a77a` 记录 checkpoint 与 Stop/撤权/作者退出的六种提交顺序、双成员及 claim 前后唤醒来源，normal/race 与独立复核通过；证据为 `research/integration-verification/acceptance-matrix-addendum/`。`84c4c2b3d` 记录小队四类异构预算、memory 冲突后的显式双事实合并，以及新私有 handler 凭据拒绝/正向对照，共57个叶子场景通过；service race、handler、vet/gofmt 与独立复核通过，证据为 `research/integration-verification/remaining-acceptance-addendum/`。原始失败、复验、代码与证据哈希全部保留，不重复相加容器测试或冒称真实 Provider/整个生产 router 验收。

@@ -1,6 +1,6 @@
 # 实施与验收计划
 
-状态：方案已批准、前置门槛已核验，进入实施。主会话负责范围、集成、规格和提交；Trellis implement/check 子代理负责有明确文件边界的实现与复核。
+状态：实现已提交，现有全套门禁、生产 Web/原生 macOS Desktop 和独立审查通过；台账审计发现的精确矩阵已补齐，独立模型验收仍待完成。主会话负责范围、集成、规格和提交；Trellis implement/check 子代理负责有明确文件边界的实现与复核。
 
 ## 2026-11-01 集成验收更新
 
@@ -8,10 +8,10 @@
 - [x] 协议/兼容读者、checkpoint/seal/recovery、评论 recall/CLI、handoff/source/wakeup/实际启动、共享 Web/Desktop 与指导完成。
 - [x] 全量 Go 协作、TS、lint/typecheck、vet/build/sqlc、独立审查和六项实际 Web/Electron 用例通过；一项已有 CLI skip 单列保留。
 - [x] 原始失败和复验记录、源码/组件/数据环境证据已保存；详见 `verification-integration-2026-11-01.md`。
-- [ ] 真实模型验收仍单列；原系列继续 E2a trial 2，剩余23次，新的 runtime 证据另记来源。
+- [ ] 真实模型验收仍单列；原系列下一次 E2a trial 3，剩余22次，新的 runtime 证据另记来源。
 - [ ] 父任务整体验收与知识候选实现尚未完成，不据上述确定性通过归档整个任务。
 
-下方为原分工清单，已实现项的当前验收以本节和验证报告为准；普通评论的50条是独立 recall 默认页大小，不是启动快照预载保证。
+下方逐项清单已按最终集成证据核对：已交付实现与已运行测试标为完成，未具备对应证据的扩展矩阵继续保留。普通评论的50条是独立 recall 默认页大小，不是启动快照预载保证。
 
 ## 0. 实施入口
 
@@ -26,10 +26,10 @@
 
 Owner：一个 implement 代理，独占 `server/pkg/protocol`、相关 records SQL/生成文件和对应 service records helper。
 
-- [ ] 写失败测试：typed checkpoint/seal/snapshot/page 的 malformed、错 identity、unknown version、offset/byte/count；新增内部事件穿插后旧 records 可读。
-- [ ] 定义新协议与版本协商，保持旧 identity/consent digest 和 v1 outcome。
-- [ ] 先实现 records 的新旧投影、稳定 stream/ordinal 去重和 through_seq 分页；验证最终 outcome 晚到不重复。
-- [ ] 需要 SQL 时由该 owner 单独执行 `make sqlc`；生成文件禁止多个代理同时写。
+- [x] 写失败测试：typed checkpoint/seal/snapshot/page 的 malformed、错 identity、unknown version、offset/byte/count；新增内部事件穿插后旧 records 可读。
+- [x] 定义新协议与版本协商，保持旧 identity/consent digest 和 v1 outcome。
+- [x] 先实现 records 的新旧投影、稳定 stream/ordinal 去重和 through_seq 分页；验证最终 outcome 晚到不重复。
+- [x] 需要 SQL 时由该 owner 单独执行 `make sqlc`；生成文件禁止多个代理同时写。
 
 回退点：只有兼容读者，没有新生产者；原功能应保持不变。
 
@@ -37,17 +37,18 @@ Owner：一个 implement 代理，独占 `server/pkg/protocol`、相关 records 
 
 Lane A：checkpoint，独占新的 checkpoint service/handler/client helper；协议/公共 router 修改交由主会话协调。
 
-- [ ] DB 回归：Stop/撤权/作者退出前后两种锁序、同请求 ACK、改写冲突、错 attempt、recording 总预算、封口不得含正文。
-- [ ] 实现 append-only chunk、原 key/hash ACK、单调缺失元数据；保留全部 proof/capacity 行为。
-- [ ] daemon 有界 sender、timer/backpressure、ledger 原请求恢复；默认测试只用 fake executable。
-- [ ] 验证停止时上传挂起不妨碍 lifecycle Stop；不可恢复丢块封住 stream，不跨缺口推进 retained_through；ACK 丢失/旧 seal 不降低服务端已提交水位；最终拼接和 restart 不重复、不伪装完整。
+- [x] DB 回归：已有 Stop 后同请求 ACK、改写/新正文拒绝、错 attempt、recording 总预算和无正文封口；见 final-backend-round2 与 late-reconciliation。
+- [x] 补齐 checkpoint 与 Stop/撤权/作者退出两种事务提交顺序的具名矩阵，normal/race 六子例通过，见 acceptance-matrix-addendum，提交 `0bbc6a77a`。
+- [x] 实现 append-only chunk、原 key/hash ACK、单调缺失元数据；保留全部 proof/capacity 行为。
+- [x] daemon 有界 sender、timer/backpressure、ledger 原请求恢复；默认测试只用 fake executable。
+- [x] 验证停止时上传挂起不妨碍 lifecycle Stop；不可恢复丢块封住 stream，不跨缺口推进 retained_through；ACK 丢失/旧 seal 不降低服务端已提交水位；最终拼接和 restart 不重复、不伪装完整。
 
 Lane B：comments，独占 `collaboration_comments*`、新的 runtime recall helper、`internal/cli`/`cmd_collaboration` 评论读取路径。
 
-- [ ] 纯/DB 测试：稳定游标、200+ 条、同时间戳、中文/emoji/JSON escape、总数过滤、预算包括 metadata。
-- [ ] 实现列表预算和超长占位、revision 绑定全文分块；测试占位后前进、全文重组、编辑 stale、删除/撤权即时生效。
-- [ ] 作者当前能力与历史 admission 分开；普通评论永远 data_only。
-- [ ] CLI legacy 数组、新分页 envelope、flag allowlist 和内容读取操作；错 issue/凭据覆盖先于 HTTP 拒绝。
+- [x] 纯/DB 测试：稳定游标、200+ 条、同时间戳、中文/emoji/JSON escape、总数过滤、预算包括 metadata。
+- [x] 实现列表预算和超长占位、revision 绑定全文分块；测试占位后前进、全文重组、编辑 stale、删除/撤权即时生效。
+- [x] 作者当前能力与历史 admission 分开；普通评论永远 data_only。
+- [x] CLI legacy 数组、新分页 envelope、flag allowlist 和内容读取操作；错 issue/凭据覆盖先于 HTTP 拒绝。
 
 并行规则：独立测试可并行；修改同一 service/router/protocol/SQL 生成输出需交接。service 与 handler 的共享 DB 全套测试串行，不能仅因使用不同 workspace 就并发。
 
@@ -55,11 +56,13 @@ Lane B：comments，独占 `collaboration_comments*`、新的 runtime recall hel
 
 依赖：1；接入 2 的 checkpoint/recall 契约。Owner：handoff implement 代理，独占 `collaboration_squad*` 的 handoff/wakeup 改动和新 DTO helper；host_runner 与 Lane A 顺序交接。
 
-- [ ] DB 测试：不可变 delegation 正文与 hash、完整 readers、leader_turn 顺序、多个 proof/comment/join 合并及 claim 后原因归下一轮。
-- [ ] 实现有界 handoff、runtime results/evidence/cause 召回、typed prior result 和缺失语义。
-- [ ] 实现逻辑 prompt snapshot 与 live refresh；测试重取稳定、memory purge 不经快照泄露、普通评论 revision 变化且旧版不可还原时拒绝 launch，新增 256 KiB 预算不拒绝接近旧 2 MiB/1024 条上限的合法输入。
-- [ ] Execute 前冻结/构造实际输入；BeforeLaunch authorize 后绑定 snapshot/hash 与实际 attempt，复查来源后才允许进程启动。测试 Git preparation、provider 内部 retry、外层 fresh fallback 和绑定失败，不能提前假定 launch nonce。
-- [ ] fake-provider fixture 断言完整用户材料/派活/结果及 trust boundary；拒绝或错身份在启动前失败。
+- [x] DB 测试：不可变 delegation 正文与 hash、完整 readers、leader_turn 顺序，已有一个成员、两条评论和 failure proof 的合并来源测试。
+- [x] 补齐两个成员、joined input 与 claim 后晚到原因归下一轮的组合，normal/race 通过，见 acceptance-matrix-addendum，提交 `0bbc6a77a`。
+- [x] 小队不同 runtime 附件限额和 memory 冲突后 refresh/merge 双事实保留通过，见 remaining-acceptance-addendum，提交 `84c4c2b3d`。
+- [x] 实现有界 handoff、runtime results/evidence/cause 召回、typed prior result 和缺失语义。
+- [x] 实现逻辑 prompt snapshot 与 live refresh；启动快照冻结已受理 inputs/delegation、memory 和 handoff/result 来源，重取稳定且 purge 不经快照泄露。普通评论走实时授权、revision-bound recall，编辑后拒绝旧 revision 全文拼接，不承诺评论预载或其变化阻止无关启动。256 KiB 材料与 2 MiB wire 分开校验，合法原输入/派活不被误裁。
+- [x] Execute 前冻结/构造实际输入；BeforeLaunch authorize 后绑定 snapshot/hash 与实际 attempt，复查来源后才允许进程启动。测试 Git preparation、provider 内部 retry、外层 fresh fallback 和绑定失败，不能提前假定 launch nonce。
+- [x] fake-provider fixture 断言完整用户材料/派活/结果及 trust boundary；拒绝或错身份在启动前失败。
 
 回退点：停止新能力启动，保留 reader；不得删除审计事件或改旧 consent。
 
@@ -67,16 +70,16 @@ Lane B：comments，独占 `collaboration_comments*`、新的 runtime recall hel
 
 Owner：frontend implement 代理；范围 `packages/core/collaboration`、必要 API client 方法、`packages/views/collaboration`、en/zh-Hans 文案。不复制共享逻辑到 apps。
 
-- [ ] 核对人类授权投影与 runtime 投影，UI 不调用 business-token 接口。
-- [ ] schema + malformed-response tests；预算进入 query identity；旧字段缺失显示 unknown。
-- [ ] 列表加载范围、作者来源、占位恢复/编辑保护、run 缺失范围和交接引用；用现有布局/组件。
-- [ ] 共享组件仅测展示/交互和关键回归，不重复纯 helper/服务权限矩阵。
-- [ ] 同步 `multica-working-on-issues/SKILL.md`、`references/collaboration-workflow.md`、`references/working-on-issues-source-map.md`。
-- [ ] 视觉迭代按仓库 visual-verdict 要求保存结果；生产 Web 与原生 Desktop 分别验证入口，不互相代替。
+- [x] 核对人类授权投影与 runtime 投影，UI 不调用 business-token 接口。
+- [x] schema + malformed-response tests；预算进入 query identity；旧字段缺失显示 unknown。
+- [x] 列表加载范围、作者来源、占位恢复/编辑保护、run 缺失范围和交接引用；用现有布局/组件。
+- [x] 共享组件仅测展示/交互和关键回归，不重复纯 helper/服务权限矩阵。
+- [x] 同步 `multica-working-on-issues/SKILL.md`、`references/collaboration-workflow.md`、`references/working-on-issues-source-map.md`。
+- [x] 视觉迭代按仓库 visual-verdict 要求保存结果；生产 Web 与原生 Desktop 分别验证入口，不互相代替。
 
 ## 5. 集成质量门与证据（AC1–AC10）
 
-先运行新增套件，再扩大。下面是待执行命令，不是已通过记录：
+先运行新增套件，再扩大。下面是已执行门禁的命令索引；准确参数、测试名/计数、环境与退出码以 final-backend-round2、final-frontend 及验证报告为准：
 
 ```bash
 go -C server test ./pkg/protocol ./internal/cli ./cmd/multica ./internal/daemon/collaborationrun -count=1
@@ -89,12 +92,13 @@ pnpm typecheck
 pnpm test
 ```
 
-- [ ] SQL 变更执行 `make sqlc` 并核对生成差异；若有 migration，验证唯一前缀和 fresh/upgrade/reapply，保留原历史。
-- [ ] 相关 e2e 使用 production Web（build/start），按 `.trellis/spec/web/frontend/e2e-run-environment.md`；测试用例文件在实施时从现有协作 e2e 中确定并写入证据清单。
-- [ ] 每条证据记录 source HEAD/dirty diff、准确命令、DB/平台、测试名、退出码、通过/失败/跳过，日志落本任务 `research/verification/`。确认 DB tests 实际运行，无静默 skip。
-- [ ] 独立 trellis-check 审阅完整 diff、权限/去重/读者/分页/兼容；问题修复后仅重跑受影响检查。
-- [ ] 真实 E0/E5/E6 沿用独立实验框架和正式 gate，串行运行；环境失败保存原结果，不扩大重试或替换正式 smoke。
-- [ ] 主会话更新受影响 spec、验收映射与任务状态。提交遵守 Conventional intent line + Lore trailers；只提交本任务文件，不携带外部工作。
+- [x] SQL 变更执行 pinned sqlc 1.31.1 并核对生成差异。本 runtime 没有新增 migration；前置 746 的 fresh/upgrade/down/up/reapply 保留原始验收版本，不声称新跑。
+- [x] 相关 e2e 使用 production Web（build/start），按 `.trellis/spec/web/frontend/e2e-run-environment.md`；测试用例文件在实施时从现有协作 e2e 中确定并写入证据清单。
+- [x] 每条证据记录 source HEAD/dirty diff、准确命令、DB/平台、测试名、退出码、通过/失败/跳过，日志落本任务 `research/verification/`。确认 DB tests 实际运行，无静默 skip。
+- [x] 独立 trellis-check 审阅完整 diff、权限/去重/读者/分页/兼容；问题修复后仅重跑受影响检查。
+- [ ] 新 runtime 的正式 E0/E5/E6 另行绑定产品版本、框架和预算；旧系列下一入口为 E2a trial 3/22 次，不挪用。环境首个不完整结果停止，不扩大重试。
+- [x] 新私有 handoff/checkpoint/recall/content 等入口的 task/plugin/IM 凭据矩阵通过：40 个拒绝、7 个业务正向对照和撤权后 metadata-only termination；见 `84c4c2b3d`。实际 handlers 使用匹配的本地 Chi 路由，不声称整个 cmd/server router 新跑。
+- [x] 主会话更新受影响 spec、验收映射与任务状态。提交遵守 Conventional intent line + Lore trailers；只提交本任务文件，不携带外部工作。
 
 ## 6. 完成与回退条件
 
@@ -111,5 +115,7 @@ AC1–AC10 都有实际证据才可标完成；缺少真实平台/模型结果�
 - [x] 总重放预算、旧 seal ACK 丢失、后续单调水位更新和畸形/缺字段 ACK 回归。
 - [x] 修复执行面板测试的独立查询响应串用；本轮 10 文件增量按哈希合回工作区。
 - [x] 全量 TS、Go 相关四包（1 个既有明确跳过）、38 个 race 通过事件、专用 DB 8+11 个通过事件，以及最终 lint/typecheck/vet/build。
-- [ ] 独立终审：代理限流及模型路由不可用；保留未通过，不以主会话手工检查替代。
-- [ ] 完整任务锁序/权限矩阵、启动注入整合、生产 Web/原生 Desktop 与真实模型最终验收。
+- [x] 后续独立终审已完成，先前限流记录保留为历史；当前结论见 `research/integration-verification/final-review.md` 与最终集成报告。
+- [x] 后续启动注入整合、生产 Web 与原生 macOS Desktop 六项实际用例通过。
+- [x] 精确锁序、来源组合、小队预算、冲突合并及凭据补验完成，提交 `0bbc6a77a`、`84c4c2b3d`；每项证据保留实际测试层和范围。
+- [ ] 真实模型最终验收仍单列，不能由上述历史增量或补验代替。

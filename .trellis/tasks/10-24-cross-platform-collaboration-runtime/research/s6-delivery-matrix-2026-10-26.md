@@ -4,7 +4,7 @@
 
 | 组合 | OS / arch | Provider / 版本 | 模式 | 当前结论 | 证据 |
 | --- | --- | --- | --- | --- | --- |
-| A | macOS 26.2 arm64 | Claude Code 2.1.310 | `host_process_supervision_v1`, local | **真实 Provider smoke 通过**；真实安装版完整控制流程仍待夹具修复后重跑 | `server/internal/daemon/collaborationrun/host_agentintegration_test.go`; `claude-host-smoke.log` |
+| A | macOS 26.2 arm64 | Claude Code 2.1.310 | `host_process_supervision_v1`, local | **真实 Provider smoke 通过**；fixture 安装版控制已由组合 F 补验，真实 Provider/account 安装闭环仍待验收 | `server/internal/daemon/collaborationrun/host_agentintegration_test.go`; `claude-host-smoke.log` |
 | B | macOS arm64 | test-owned Claude-protocol fixture `fixture-1` | `host_process_supervision_v1`, local | 原生生命周期、会话、停止、断网、重启 focused tests 通过 | `lifecycle-fixture.jsonl`; `verification.md` |
 | C | Linux Debian 12 arm64 | bundled CLI / test-owned fixture | packaged `.deb`, host mode | **安装版完整 Main 控制通过**；真实 Provider 账号未使用 | `research/deb-install-acceptance-2026-10-26.json` |
 | D | Linux arm64 directory package | bundled CLI / test-owned fixture | packaged directory, host mode | **通过**，作为 `.deb` 回归基线 | `research/deb-install-acceptance-2026-10-26.json` |

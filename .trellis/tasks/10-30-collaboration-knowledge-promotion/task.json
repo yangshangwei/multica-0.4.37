@@ -3,7 +3,7 @@
   "name": "collaboration-knowledge-promotion",
   "title": "知识候选逐层沉淀",
   "description": "设计并实施协作结论到经人确认的项目或空间知识候选链路，技能层暂不自动沉淀",
-  "status": "planning",
+  "status": "in_progress",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -12,9 +12,9 @@
   "assignee": "artisan",
   "createdAt": "2026-10-30",
   "completedAt": null,
-  "branch": null,
+  "branch": "codex/collaboration-knowledge-promotion-20261101",
   "base_branch": "codex/cross-workspace-collaboration",
-  "worktree_path": null,
+  "worktree_path": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
   "commit": null,
   "pr_url": null,
   "subtasks": [],
@@ -40,6 +40,13 @@
     "G3": "pending_owner_migration_worktree_test_database_assignment",
     "product_implementation": "not_started",
     "real_model_acceptance": "open_separate_runtime_scope; upstream_502_window_closed_no_provider_calls",
-    "main_contract_review": "research/main-contract-review-2026-11-01.json"
+    "main_contract_review": "research/main-contract-review-2026-11-01.json",
+    "execution_stage": "A_schema_protocol_pure_policy",
+    "migration_sqlc_owner": "knowledge_schema",
+    "implementation_base": "765ab186a",
+    "execution_authorization": "existing approved parent scope; user six-step execution; no repeat approval",
+    "production_enablement": "disabled_until_G2_and_full_acceptance",
+    "implementation_database": "multica_knowledge_20261101_b3c35f9c",
+    "execution_ownership": "research/execution-ownership-2026-11-01.json"
   }
 }

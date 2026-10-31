@@ -1,0 +1,31 @@
+# 父任务当前验收矩阵
+
+父任务保持 `in_progress`。runtime 产品 `0e1ee8e1e`、原集成证据 `2b861347e`、补充测试 `0bbc6a77a`/`84c4c2b3d`、最新原实验 `785b331e8` 分别绑定其验证范围。
+
+| 验收项 | 当前结果 | 尚需完成/边界 |
+| --- | --- | --- |
+| AC0 交付提交链与已列全栈门禁 | 已通过（列明范围） | runtime 没有新增迁移，746 演练属于原修复版本；额外遗漏矩阵另列 |
+| AC1 附件预算与小队异构 runtime | 确定性通过 | 四类实际成员 runtime 限额的可选选择/必需超限拒绝均通过；无真实 Provider 调用 |
+| AC2 正式 E0 | 原基线通过／新 runtime 未运行 | 原产品 4c833e737 正式 E0 已过；新 runtime 尚未运行，不能继承 |
+| AC3 原预登记 E1–E6 | 上游阻塞 | E1 1 有效/2 无效，E2a 0 有效/2 无效；下一 E2a trial3，剩余22次；后续未运行 |
+| AC4 中断与撤权后的记录保留 | 确定性通过／真实模型待验收 | Stop/撤权/作者退出两种提交顺序已补齐并通过 race；真实 Provider 中断摄取未由 seeded UI 或服务 fixture 代替 |
+| AC5 成员/队长/并行 memory 交接 | 确定性通过／真实模型待验收 | 双成员与 claim 前后来源、memory 冲突后的 refresh/new-intent merge 及双事实/作者版本保留均通过；模型理解和真实隔离接力仍单列 |
+| AC6 有界评论召回与 revision | 确定性通过 | 模型读取/理解仍属独立实验；普通评论是 live recall，不是启动预载 |
+| AC7 非指令数据与凭据边界 | 确定性通过／真实模型待验收 | 八个新私有 handler 的40个凭据拒绝、7个正向对照及撤权后终止元数据通过；真实双账号 E5 未运行 |
+| AC8 经人确认的知识沉淀 | 实施中 | K1–K5/F1–F4 合同已独立复核；隔离分支实施 schema/protocol/纯策略与 core API/cache，尚无产品启用或完整验收 |
+| AC9 可追溯证据与缺失范围 | 部分完成 | 当前源码、全套与补充测试追溯已建立；原/新模型、知识产品和关联平台验收仍未完成 |
+
+原始证据路径见 [机器可读矩阵](acceptance-2026-11-01.json)。runtime 已列 Go/TS/静态/浏览器门禁及审计补充矩阵全部通过；保留原始失败和复验，不把容器测试重复累计。
+
+| 关联交付 | 当前边界 |
+| --- | --- |
+| production Web + native macOS Electron | 六项用例通过；不等于安装版或真实模型验收 |
+| macOS arm64 .app/ZIP/DMG | 旧源 61ff581d 本地 ad-hoc 构建；非0e1ee8e1e，无真实安装账号/公证发布证明 |
+| Debian12 arm64 .deb | dpkg离线安装和控制macOS fixture通过；Linux真实Provider、原地升级、自动更新未证实 |
+| Linux arm64 runtime | 真实Provider账号和完整安装组合未证实 |
+| Linux amd64/macOS amd64 | 前者交叉编译，后者原生待执行；不能代替原生/安装/账号证据 |
+| Windows amd64/arm64 | 只有交叉编译和本地验证快照；原生ACL/Job/fault/lifecycle、安装、Provider账号、CI仍缺 |
+| 多账号/额度 AC43 | 需至少两个执行环境及不同Provider账号，涵盖多目标/小队/普通转交/实际usage与授权来源 |
+| 发布/升级 | 未推送/部署/发布；creation迁移744已默认开，AI execution/host准入仍默认关；混合writer滚动升级另需核对 |
+
+当前推进知识实施；上游恢复后在独立窗口从原 E2a trial 3/22 次续作。新 runtime 模型记录另行登记。Windows、安装组合、多账号额度和发布验收分别保留。

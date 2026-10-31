@@ -1,0 +1,191 @@
+{
+  "updated_at": "2026-10-31T19:51:13.849529+00:00",
+  "scope": "Parent AC0-AC9 and linked release matrix",
+  "parent_complete": false,
+  "product_commit": "0e1ee8e1e",
+  "integration_evidence_commit": "2b861347e",
+  "latest_experiment_commit": "785b331e8",
+  "items": [
+    {
+      "id": "AC0",
+      "requirement": "交付提交链与已列全栈门禁",
+      "status": "passed_scope",
+      "evidence": [
+        "../10-30-collaboration-fix-closure/verification-2026-10-31.md",
+        "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md"
+      ],
+      "gaps": [
+        "runtime 没有新增迁移，746 演练属于原修复版本；额外遗漏矩阵另列"
+      ]
+    },
+    {
+      "id": "AC1",
+      "requirement": "附件预算与小队异构 runtime",
+      "status": "passed_deterministic",
+      "evidence": [
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-backend-round2/service-summary.json",
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/remaining-acceptance-addendum/summary.md"
+      ],
+      "gaps": [
+        "四类实际成员 runtime 限额的可选选择/必需超限拒绝均通过；无真实 Provider 调用"
+      ]
+    },
+    {
+      "id": "AC2",
+      "requirement": "正式 E0",
+      "status": "original_passed_new_runtime_unrun",
+      "evidence": [
+        "../10-30-collaboration-fix-closure/verification-2026-10-31.md"
+      ],
+      "gaps": [
+        "原产品 4c833e737 正式 E0 已过；新 runtime 尚未运行，不能继承"
+      ]
+    },
+    {
+      "id": "AC3",
+      "requirement": "原预登记 E1–E6",
+      "status": "environment_blocked",
+      "evidence": [
+        "../10-30-collaboration-fix-closure/verification-e2a-trial2-2026-11-01.md"
+      ],
+      "gaps": [
+        "E1 1 有效/2 无效，E2a 0 有效/2 无效；下一 E2a trial3，剩余22次；后续未运行"
+      ]
+    },
+    {
+      "id": "AC4",
+      "requirement": "中断与撤权后的记录保留",
+      "status": "passed_deterministic_model_unrun",
+      "evidence": [
+        "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/late-reconciliation/README.md",
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/acceptance-matrix-addendum/summary.md"
+      ],
+      "gaps": [
+        "Stop/撤权/作者退出两种提交顺序已补齐并通过 race；真实 Provider 中断摄取未由 seeded UI 或服务 fixture 代替"
+      ]
+    },
+    {
+      "id": "AC5",
+      "requirement": "成员/队长/并行 memory 交接",
+      "status": "passed_deterministic_model_unrun",
+      "evidence": [
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-backend-round2/service-summary.json",
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/acceptance-matrix-addendum/summary.md",
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/remaining-acceptance-addendum/summary.md"
+      ],
+      "gaps": [
+        "双成员与 claim 前后来源、memory 冲突后的 refresh/new-intent merge 及双事实/作者版本保留均通过；模型理解和真实隔离接力仍单列"
+      ]
+    },
+    {
+      "id": "AC6",
+      "requirement": "有界评论召回与 revision",
+      "status": "passed_deterministic",
+      "evidence": [
+        "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/summary-final.json"
+      ],
+      "gaps": [
+        "模型读取/理解仍属独立实验；普通评论是 live recall，不是启动预载"
+      ]
+    },
+    {
+      "id": "AC7",
+      "requirement": "非指令数据与凭据边界",
+      "status": "passed_deterministic_model_unrun",
+      "evidence": [
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-backend-round2/handler-summary.json",
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/remaining-acceptance-addendum/summary.md"
+      ],
+      "gaps": [
+        "八个新私有 handler 的40个凭据拒绝、7个正向对照及撤权后终止元数据通过；真实双账号 E5 未运行"
+      ]
+    },
+    {
+      "id": "AC8",
+      "requirement": "经人确认的知识沉淀",
+      "status": "implementation_in_progress",
+      "evidence": [
+        "../10-30-collaboration-knowledge-promotion/prd.md",
+        "../10-30-collaboration-knowledge-promotion/design.md",
+        "../10-30-collaboration-knowledge-promotion/implement.md"
+      ],
+      "gaps": [
+        "K1–K5/F1–F4 合同已独立复核；隔离分支实施 schema/protocol/纯策略与 core API/cache，尚无产品启用或完整验收"
+      ]
+    },
+    {
+      "id": "AC9",
+      "requirement": "可追溯证据与缺失范围",
+      "status": "partial",
+      "evidence": [
+        "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/remaining-acceptance-addendum/summary.md"
+      ],
+      "gaps": [
+        "当前源码、全套与补充测试追溯已建立；原/新模型、知识产品和关联平台验收仍未完成"
+      ]
+    }
+  ],
+  "related_release_matrix": [
+    {
+      "scope": "production Web + native macOS Electron",
+      "state": "passed_current_fixture_scope",
+      "evidence": "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/summary-final.json",
+      "gap": "六项用例通过；不等于安装版或真实模型验收"
+    },
+    {
+      "scope": "macOS arm64 .app/ZIP/DMG",
+      "state": "passed_old_fixture_scope",
+      "evidence": "../10-24-cross-platform-collaboration-runtime/research/macos-packaged-acceptance-2026-10-27.json",
+      "gap": "旧源 61ff581d 本地 ad-hoc 构建；非0e1ee8e1e，无真实安装账号/公证发布证明"
+    },
+    {
+      "scope": "Debian12 arm64 .deb",
+      "state": "passed_old_fixture_scope",
+      "evidence": "../10-24-cross-platform-collaboration-runtime/research/deb-install-acceptance-2026-10-26.json",
+      "gap": "dpkg离线安装和控制macOS fixture通过；Linux真实Provider、原地升级、自动更新未证实"
+    },
+    {
+      "scope": "Linux arm64 runtime",
+      "state": "passed_native_fixture_scope",
+      "evidence": "../10-24-cross-platform-collaboration-runtime/verification.md",
+      "gap": "真实Provider账号和完整安装组合未证实"
+    },
+    {
+      "scope": "Linux amd64/macOS amd64",
+      "state": "incomplete",
+      "evidence": "../10-24-cross-platform-collaboration-runtime/verification.md",
+      "gap": "前者交叉编译，后者原生待执行；不能代替原生/安装/账号证据"
+    },
+    {
+      "scope": "Windows amd64/arm64",
+      "state": "native_unverified",
+      "evidence": "../10-24-cross-platform-collaboration-runtime/verification.md",
+      "gap": "只有交叉编译和本地验证快照；原生ACL/Job/fault/lifecycle、安装、Provider账号、CI仍缺"
+    },
+    {
+      "scope": "多账号/额度 AC43",
+      "state": "not_verified",
+      "evidence": "../10-10-cross-workspace-collaboration/task.json",
+      "gap": "需至少两个执行环境及不同Provider账号，涵盖多目标/小队/普通转交/实际usage与授权来源"
+    },
+    {
+      "scope": "发布/升级",
+      "state": "not_released",
+      "evidence": "../10-24-cross-platform-collaboration-runtime/verification.md",
+      "gap": "未推送/部署/发布；creation迁移744已默认开，AI execution/host准入仍默认关；混合writer滚动升级另需核对"
+    }
+  ],
+  "original_experiment_next": {
+    "scenario": "E2a_window_fact_newest",
+    "trial": 3,
+    "remaining_provider_call_cap": 22
+  },
+  "new_runtime_models": "unrun; separate source/framework/budget registration required",
+  "runtime_test_addendum_commits": [
+    "0bbc6a77a",
+    "84c4c2b3d"
+  ]
+}
