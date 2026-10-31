@@ -1,0 +1,70 @@
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/invalid_first_batch
+    host_checkpoint_gap_test.go:160: staged 1 chunks, want 0: queued messages were rebased after a rejected batch
+    host_checkpoint_gap_test.go:178: final outcome hid the recording gap or reintroduced its missing suffix
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=0 body="original-ordinal-16"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=1 body="original-ordinal-17"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=2 body="original-ordinal-18"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=3 body="original-ordinal-19"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=4 body="original-ordinal-20"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=5 body="original-ordinal-21"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=6 body="original-ordinal-22"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=7 body="original-ordinal-23"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=8 body="original-ordinal-24"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=9 body="original-ordinal-25"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=10 body="original-ordinal-26"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=11 body="original-ordinal-27"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=12 body="original-ordinal-28"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=13 body="original-ordinal-29"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=14 body="original-ordinal-30"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=15 body="original-ordinal-31"
+    host_checkpoint_gap_test.go:194: wrong recovered prefix/proof/seal counts: through=16 proofs=1 seals=1
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/accepted_prefix_invalid_middle
+    host_checkpoint_gap_test.go:160: staged 2 chunks, want 1: queued messages were rebased after a rejected batch
+    host_checkpoint_gap_test.go:178: final outcome hid the recording gap or reintroduced its missing suffix
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=16 body="original-ordinal-32"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=17 body="original-ordinal-33"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=18 body="original-ordinal-34"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=19 body="original-ordinal-35"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=20 body="original-ordinal-36"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=21 body="original-ordinal-37"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=22 body="original-ordinal-38"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=23 body="original-ordinal-39"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=24 body="original-ordinal-40"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=25 body="original-ordinal-41"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=26 body="original-ordinal-42"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=27 body="original-ordinal-43"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=28 body="original-ordinal-44"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=29 body="original-ordinal-45"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=30 body="original-ordinal-46"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=31 body="original-ordinal-47"
+    host_checkpoint_gap_test.go:194: wrong recovered prefix/proof/seal counts: through=32 proofs=1 seals=1
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_invalid_middle
+    host_checkpoint_gap_test.go:160: staged 2 chunks, want 1: queued messages were rebased after a rejected batch
+    host_checkpoint_gap_test.go:178: final outcome hid the recording gap or reintroduced its missing suffix
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=16 body="original-ordinal-32"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=17 body="original-ordinal-33"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=18 body="original-ordinal-34"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=19 body="original-ordinal-35"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=20 body="original-ordinal-36"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=21 body="original-ordinal-37"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=22 body="original-ordinal-38"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=23 body="original-ordinal-39"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=24 body="original-ordinal-40"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=25 body="original-ordinal-41"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=26 body="original-ordinal-42"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=27 body="original-ordinal-43"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=28 body="original-ordinal-44"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=29 body="original-ordinal-45"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=30 body="original-ordinal-46"
+    host_checkpoint_gap_test.go:186: uploaded rebased/post-gap message: offset=31 body="original-ordinal-47"
+    host_checkpoint_gap_test.go:194: wrong recovered prefix/proof/seal counts: through=32 proofs=1 seals=1
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_valid_suffix
+--- FAIL: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages (0.73s)
+    --- FAIL: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/invalid_first_batch (0.16s)
+    --- FAIL: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/accepted_prefix_invalid_middle (0.18s)
+    --- FAIL: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_invalid_middle (0.18s)
+    --- PASS: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_valid_suffix (0.21s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	1.355s
+FAIL

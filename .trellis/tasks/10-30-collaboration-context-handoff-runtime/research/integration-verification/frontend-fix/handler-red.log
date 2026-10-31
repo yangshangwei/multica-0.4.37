@@ -1,0 +1,203 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-runtime-integration-20261031/packages/views
+
+ ❯ collaboration/run-handoff.test.tsx (3 tests | 2 failed) 27ms
+   × shows current handoff source evidence and explicit unknown reasons without claiming a delivered answer 22ms
+   × does not label a historical handler with another current account's name 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  collaboration/run-handoff.test.tsx > shows current handoff source evidence and explicit unknown reasons without claiming a delivered answer
+TestingLibraryElementError: Unable to find an element with the text: Current issue handler. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"Handoff context"[39m
+      [33mclass[39m=[32m"min-w-0 space-y-3"[39m
+    [36m>[39m
+      [36m<h4[39m
+        [33mclass[39m=[32m"text-body font-medium"[39m
+      [36m>[39m
+        [0mHandoff context[0m
+      [36m</h4>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"text-caption text-muted-foreground"[39m
+      [36m>[39m
+        [0mCurrent source context.[0m
+      [36m</p>[39m
+      [36m<dl[39m
+        [33mclass[39m=[32m"grid min-w-0 gap-x-6 gap-y-3 text-body sm:grid-cols-2 [&_dt]:text-caption [&_dt]:text-muted-foreground [&_dd]:mt-1 [&_dd]:[overflow-wrap:anywhere]"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<dt>[39m
+            [0mHandler[0m
+          [36m</dt>[39m
+          [36m<dd>[39m
+            [0m00000000-0000-4000-8000-000000000001[0m
+          [36m</dd>[39m
+        [36m</div>[39m
+        [36m<div>[39m
+          [36m<dt>[39m
+            [0mRun role[0m
+          [36m</dt>[39m
+          [36m<dd>[39m
+            [0mMember[0m
+          [36m</dd>[39m
+        [36m</div>[39m
+        [36m<div>[39m
+          [36m<dt>[39m
+            [0mPrior results[0m
+          [36m</dt>[39m
+          [36m<dd>[39m
+            [0m0 of 0[0m
+          [36m</dd>[39m
+        [36m</div>[39m
+        [36m<div>[39m
+          [36m<dt>[39m
+            [0mContinuation reasons[0m
+          [36m</dt>[39m
+          [36m<dd>[39m
+            [0mEarlier reasons were not recorded.[0m
+          [36m</dd>[39m
+        [36m</div>[39m
+      [36m</dl>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"text-caption [overflow-wrap:anywhere]"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"/account?view=participating&issue=00000000-0000-4000-8000-000000000001#run-00000000-0000-4000-8000-000000000002"[39m
+        [36m>[39m
+          [0m00000000-0000-4000-8000-000000000002[0m
+        [36m</a>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"ml-2 text-muted-foreground"[39m
+        [36m>[39m
+          [0mNo result recorded[0m
+        [36m</span>[39m
+      [36m</p>[39m
+      [36m<ol[39m
+        [33mclass[39m=[32m"space-y-4"[39m
+      [36m>[39m
+        [36m<li[39m
+          [33mclass[39m=[32m"min-w-0 space-y-2"[39m
+        [36m>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"text-caption text-muted-foreground"[39m
+          [36m>[39m
+            [0mAdmitted assignment[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mReview the retained evidence[0m
+          [36m</p>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"/account?view=participating&issue=00000000-0000-4000-8000-000000000001#run-00000000-0000-4000-8000-000000000002"[39m
+          [36m>[39m
+            [0mOpen source run[0m
+          [36m</a>[39m
+        [36m</li>[39m
+      [36m</ol>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ collaboration/run-handoff.test.tsx:22:17
+     20|   renderWithI18n(<QueryClientProvider client={client}><CollaborationRu…
+     21|     handler={{ user_id: id, name: "Current issue handler", avatar_url:…
+     22|   expect(screen.getByText("Current issue handler")).toBeInTheDocument(…
+       |                 ^
+     23|   expect(screen.getByText(id)).toBeInTheDocument();
+     24|   expect(screen.getByText("Current source context.")).toBeInTheDocumen…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  collaboration/run-handoff.test.tsx > does not label a historical handler with another current account's name
+TestingLibraryElementError: Unable to find an element with the text: Unknown author. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"Handoff context"[39m
+      [33mclass[39m=[32m"min-w-0 space-y-3"[39m
+    [36m>[39m
+      [36m<h4[39m
+        [33mclass[39m=[32m"text-body font-medium"[39m
+      [36m>[39m
+        [0mHandoff context[0m
+      [36m</h4>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"text-caption text-muted-foreground"[39m
+      [36m>[39m
+        [0mPrepared context snapshot.[0m
+      [36m</p>[39m
+      [36m<dl[39m
+        [33mclass[39m=[32m"grid min-w-0 gap-x-6 gap-y-3 text-body sm:grid-cols-2 [&_dt]:text-caption [&_dt]:text-muted-foreground [&_dd]:mt-1 [&_dd]:[overflow-wrap:anywhere]"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<dt>[39m
+            [0mHandler[0m
+          [36m</dt>[39m
+          [36m<dd>[39m
+            [0m00000000-0000-4000-8000-000000000001[0m
+          [36m</dd>[39m
+        [36m</div>[39m
+        [36m<div>[39m
+          [36m<dt>[39m
+            [0mRun role[0m
+          [36m</dt>[39m
+          [36m<dd>[39m
+            [0mAgent[0m
+          [36m</dd>[39m
+        [36m</div>[39m
+        [36m<div>[39m
+          [36m<dt>[39m
+            [0mPrior results[0m
+          [36m</dt>[39m
+          [36m<dd>[39m
+            [0m0 of 0[0m
+          [36m</dd>[39m
+        [36m</div>[39m
+        [36m<div>[39m
+          [36m<dt>[39m
+            [0mContinuation reasons[0m
+          [36m</dt>[39m
+          [36m<dd>[39m
+            [0mEarlier reasons were not recorded.[0m
+          [36m</dd>[39m
+        [36m</div>[39m
+      [36m</dl>[39m
+      [36m<ol[39m
+        [33mclass[39m=[32m"space-y-4"[39m
+      [36m/>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ collaboration/run-handoff.test.tsx:40:17
+     38|     handler={{ user_id: run, name: "Another handler", avatar_url: "", …
+     39|   expect(screen.queryByText("Another handler")).not.toBeInTheDocument(…
+     40|   expect(screen.getByText("Unknown author")).toBeInTheDocument();
+       |                 ^
+     41|   expect(screen.getByText(id)).toBeInTheDocument();
+     42|   client.clear();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  00:52:33
+   Duration  1.09s (transform 471ms, setup 34ms, import 731ms, tests 27ms, environment 241ms)
+
+undefined
+/Volumes/artisan/code/2026/mc-runtime-integration-20261031/packages/views:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run collaboration/run-handoff.test.tsx

@@ -1,0 +1,26 @@
+{
+  "command": [
+    "pnpm",
+    "-C",
+    "packages/core",
+    "exec",
+    "eslint",
+    "api/client.ts",
+    "api/collaboration-content.test.ts",
+    "collaboration/content-queries.ts",
+    "collaboration/content-schema.test.ts",
+    "collaboration/content-schema.ts",
+    "collaboration/index.ts",
+    "collaboration/run-records-schema.test.ts",
+    "collaboration/run-records-schema.ts",
+    "collaboration/comment-recall-queries.test.ts",
+    "collaboration/run-handoff-queries.ts",
+    "collaboration/run-handoff-schema.test.ts",
+    "collaboration/run-handoff-schema.ts"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+  "started_at": "2026-10-31T14:47:30.990754+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 5.289,
+  "finished_at": "2026-10-31T14:47:36.280142+00:00"
+}

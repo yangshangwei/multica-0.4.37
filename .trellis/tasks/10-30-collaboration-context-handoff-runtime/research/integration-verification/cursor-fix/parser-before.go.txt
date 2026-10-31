@@ -1,0 +1,26 @@
+func parseHandoffCursor(raw, runID string) (collaborationHandoffCursor, error) {
+	c := collaborationHandoffCursor{RunID: runID}
+	if raw == "" {
+		return c, nil
+	}
+	if len(raw) > 1024 {
+		return c, collaborationError(http.StatusBadRequest, "invalid_handoff_cursor")
+	}
+	b, e := base64.RawURLEncoding.DecodeString(raw)
+	if e != nil || json.Unmarshal(b, &c) != nil || c.RunID != runID || c.Offset < 0 {
+		return c, collaborationError(http.StatusBadRequest, "invalid_handoff_cursor")
+	}
+	switch c.Kind {
+	case "inputs", "results", "causes", "readers":
+	default:
+		return c, collaborationError(http.StatusBadRequest, "invalid_handoff_cursor")
+	}
+	for _, id := range []string{c.AfterID, c.CommandID} {
+		if id != "" {
+			if _, err := util.ParseUUID(id); err != nil {
+				return c, collaborationError(http.StatusBadRequest, "invalid_handoff_cursor")
+			}
+		}
+	}
+	return c, nil
+}

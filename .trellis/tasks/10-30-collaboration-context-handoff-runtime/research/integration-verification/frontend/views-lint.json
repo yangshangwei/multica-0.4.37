@@ -1,0 +1,21 @@
+{
+  "command": [
+    "pnpm",
+    "-C",
+    "packages/views",
+    "exec",
+    "eslint",
+    "collaboration/collaboration-detail.tsx",
+    "collaboration/comment-list.test.tsx",
+    "collaboration/comment-list.tsx",
+    "collaboration/run-records.tsx",
+    "collaboration/workflow.tsx",
+    "collaboration/run-handoff.test.tsx",
+    "collaboration/run-handoff.tsx"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+  "started_at": "2026-10-31T14:47:30.984309+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 4.684,
+  "finished_at": "2026-10-31T14:47:35.668199+00:00"
+}

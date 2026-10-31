@@ -1,0 +1,22 @@
+{
+  "started_at": "2026-10-31T18:24:36.412044+00:00",
+  "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+  "command": [
+    "make",
+    "env-exec",
+    "ARGS=-- pnpm exec playwright test e2e/collaboration-runtime-handoff-web.spec.ts --workers=1 --retries=0 --reporter=line,json --output=/Volumes/artisan/code/2026/mc-runtime-integration-20261031/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/navigation-detail-artifacts"
+  ],
+  "candidate_source_id": "6b8edfebf3b98773bd4633c81aafe2429e3dfd3b2d0b4130b13ddbc334d70263",
+  "web_build_id": "TljxpQIug-RaXXf7Xcu_D",
+  "application_fingerprint_before": "53c2718aeb744a0c37a03de5a7c989ae2ff30ef98cd45d3b6d7f16ae1bb3568a",
+  "previous_web_spec_sha256": "d97d72c28e96d4f1157a16ba0f1a45fd32856e9acf33aafa58994425708fbeee",
+  "diagnostic_web_spec_sha256": "f1bf8fa49fe2cb3423e7af0945d7eda64e00b6aebca24e2d1ead659fdc966034",
+  "change_scope": "Web E2E diagnostic attachments only; original soft assertion retained",
+  "workers": 1,
+  "retries": 0,
+  "finished_at": "2026-10-31T18:24:45.503545+00:00",
+  "elapsed_seconds": 9.048,
+  "exit_code": 2,
+  "application_fingerprint_after": "53c2718aeb744a0c37a03de5a7c989ae2ff30ef98cd45d3b6d7f16ae1bb3568a",
+  "web_spec_sha256_after": "f1bf8fa49fe2cb3423e7af0945d7eda64e00b6aebca24e2d1ead659fdc966034"
+}

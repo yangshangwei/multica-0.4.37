@@ -1,0 +1,83 @@
+=== RUN   TestCollaborationRecallCursorRequiresExactFields
+--- PASS: TestCollaborationRecallCursorRequiresExactFields (0.00s)
+=== RUN   TestCollaborationRecallDecoderRequiresMetadataAndDataOnlyTrust
+--- PASS: TestCollaborationRecallDecoderRequiresMetadataAndDataOnlyTrust (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/pkg/protocol	0.554s
+testing: warning: no tests to run
+PASS
+ok  	github.com/multica-ai/multica/server/internal/cli	0.800s [no tests to run]
+=== RUN   TestCollaborationCLIRecallExplicitEnvelopeAndMalformedResponse
+=== RUN   TestCollaborationCLIRecallExplicitEnvelopeAndMalformedResponse/valid
+=== RUN   TestCollaborationCLIRecallExplicitEnvelopeAndMalformedResponse/malformed
+--- PASS: TestCollaborationCLIRecallExplicitEnvelopeAndMalformedResponse (0.01s)
+    --- PASS: TestCollaborationCLIRecallExplicitEnvelopeAndMalformedResponse/valid (0.00s)
+    --- PASS: TestCollaborationCLIRecallExplicitEnvelopeAndMalformedResponse/malformed (0.00s)
+=== RUN   TestCollaborationCLIRecallGuardsBeforeHTTP
+=== RUN   TestCollaborationCLIRecallGuardsBeforeHTTP/other_issue
+=== RUN   TestCollaborationCLIRecallGuardsBeforeHTTP/override
+=== RUN   TestCollaborationCLIRecallGuardsBeforeHTTP/filter
+=== RUN   TestCollaborationCLIRecallGuardsBeforeHTTP/limit
+=== RUN   TestCollaborationCLIRecallGuardsBeforeHTTP/cursor
+=== RUN   TestCollaborationCLIRecallGuardsBeforeHTTP/content_revision
+--- PASS: TestCollaborationCLIRecallGuardsBeforeHTTP (0.00s)
+    --- PASS: TestCollaborationCLIRecallGuardsBeforeHTTP/other_issue (0.00s)
+    --- PASS: TestCollaborationCLIRecallGuardsBeforeHTTP/override (0.00s)
+    --- PASS: TestCollaborationCLIRecallGuardsBeforeHTTP/filter (0.00s)
+    --- PASS: TestCollaborationCLIRecallGuardsBeforeHTTP/limit (0.00s)
+    --- PASS: TestCollaborationCLIRecallGuardsBeforeHTTP/cursor (0.00s)
+    --- PASS: TestCollaborationCLIRecallGuardsBeforeHTTP/content_revision (0.00s)
+=== RUN   TestCollaborationCLIRecallContentOperation
+--- PASS: TestCollaborationCLIRecallContentOperation (0.00s)
+=== RUN   TestCollaborationRecallCursorRejectsMissingAndDuplicateFields
+--- PASS: TestCollaborationRecallCursorRejectsMissingAndDuplicateFields (0.00s)
+=== RUN   TestCollaborationCLIRejectsOrdinaryClientFallback
+--- PASS: TestCollaborationCLIRejectsOrdinaryClientFallback (0.00s)
+=== RUN   TestCollaborationCLIIssueGetUsesOnlyItsRunContext
+--- PASS: TestCollaborationCLIIssueGetUsesOnlyItsRunContext (0.00s)
+=== RUN   TestCollaborationCLICommentListDoesNotLoadWorkspaceActors
+=== RUN   TestCollaborationCLICommentListDoesNotLoadWorkspaceActors/json
+=== RUN   TestCollaborationCLICommentListDoesNotLoadWorkspaceActors/table
+--- PASS: TestCollaborationCLICommentListDoesNotLoadWorkspaceActors (0.00s)
+    --- PASS: TestCollaborationCLICommentListDoesNotLoadWorkspaceActors/json (0.00s)
+    --- PASS: TestCollaborationCLICommentListDoesNotLoadWorkspaceActors/table (0.00s)
+=== RUN   TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP
+=== RUN   TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/other_issue
+=== RUN   TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/attachment
+=== RUN   TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/content_file
+=== RUN   TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/missing_request
+--- PASS: TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP (0.00s)
+    --- PASS: TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/other_issue (0.00s)
+    --- PASS: TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/attachment (0.00s)
+    --- PASS: TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/content_file (0.00s)
+    --- PASS: TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/missing_request (0.00s)
+=== RUN   TestCollaborationCLIWholeCommandGuard
+=== RUN   TestCollaborationCLIWholeCommandGuard/config_show
+=== RUN   TestCollaborationCLIWholeCommandGuard/auth_status
+=== RUN   TestCollaborationCLIWholeCommandGuard/workspace_list
+=== RUN   TestCollaborationCLIWholeCommandGuard/issue_update
+=== RUN   TestCollaborationCLIWholeCommandGuard/daemon_start
+--- PASS: TestCollaborationCLIWholeCommandGuard (0.00s)
+    --- PASS: TestCollaborationCLIWholeCommandGuard/config_show (0.00s)
+    --- PASS: TestCollaborationCLIWholeCommandGuard/auth_status (0.00s)
+    --- PASS: TestCollaborationCLIWholeCommandGuard/workspace_list (0.00s)
+    --- PASS: TestCollaborationCLIWholeCommandGuard/issue_update (0.00s)
+    --- PASS: TestCollaborationCLIWholeCommandGuard/daemon_start (0.00s)
+=== RUN   TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity
+=== RUN   TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity/comment
+=== RUN   TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity/activity
+--- PASS: TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity (0.00s)
+    --- PASS: TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity/comment (0.00s)
+    --- PASS: TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity/activity (0.00s)
+=== RUN   TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice
+=== RUN   TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/other_run
+=== RUN   TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/401
+=== RUN   TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/403
+--- PASS: TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice (0.00s)
+    --- PASS: TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/other_run (0.00s)
+    --- PASS: TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/401 (0.00s)
+    --- PASS: TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/403 (0.00s)
+=== RUN   TestCollaborationCLICommentAddRejectsLocalPathLinksBeforeHTTP
+--- PASS: TestCollaborationCLICommentAddRejectsLocalPathLinksBeforeHTTP (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/cmd/multica	0.601s

@@ -3,7 +3,7 @@
   "name": "collaboration-context-handoff-runtime",
   "title": "可靠上下文交接与召回",
   "description": "依据收尾证据改善停止撤权保留、成员与队长接力、评论召回和权限边界",
-  "status": "planning",
+  "status": "in_progress",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -12,7 +12,7 @@
   "assignee": "artisan",
   "createdAt": "2026-10-30",
   "completedAt": null,
-  "branch": null,
+  "branch": "codex/cross-workspace-collaboration",
   "base_branch": "main",
   "worktree_path": null,
   "commit": null,
@@ -21,6 +21,16 @@
   "children": [],
   "parent": "10-30-collaboration-context-handoff",
   "relatedFiles": [],
-  "notes": "",
-  "meta": {}
+  "notes": "2026-11-01：两类关键失败路径已补齐并按哈希合回工作区；全量 TS 12949、Go 1640（1 个既有跳过）、race 38、专用 DB 8+11 通过事件，lint/typecheck/vet/build 通过。独立终审受模型限流/路由不可用影响未完成；完整平台/真实模型验收仍待收口。证据：research/verification/2026-11-01-recording-recovery/summary.md。",
+  "meta": {
+    "planning_progress": "reviewed_2026-10-31",
+    "research_head": "4c833e737efb6c997e5cb56c74c43e9237c91956",
+    "latest_verification": "research/verification/2026-11-01-recording-recovery/summary.md",
+    "integration_commit": "0e1ee8e1e",
+    "integration_worktree": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+    "deterministic_acceptance": "passed_2026_11_01",
+    "platform_acceptance": "production_web_and_native_macos_electron_6_of_6",
+    "verification_report": "verification-integration-2026-11-01.md",
+    "real_model_acceptance": "pending_separate_source_bound_runs"
+  }
 }

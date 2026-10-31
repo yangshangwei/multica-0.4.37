@@ -1,8 +1,19 @@
 # 协作上下文交接、召回与沉淀实施计划
 
-> 用户已确认本计划和权限边界（会话依据见 prd.md）。当前执行子任务 10-30-collaboration-fix-closure；后续子任务必须等待首轮验收门槛。
+> 用户已确认本计划、权限边界及六步推进顺序（见 prd.md）。首轮确定性与 E0 门槛已经核验，当前执行 runtime 集成；模型行为结论保留未完成状态。
 
-2026-10-31 续作以修复闭环子任务的最新清单和证据为准。下述 745 迁移、8 个修复集成等步骤保留原始顺序，已完成项不要重复实施；可靠交接的细化合同见 `../10-30-collaboration-context-handoff-runtime/{design,implement}.md`。
+2026-10-31 续作以各子任务的最新清单和证据为准。下述 745 迁移、8 个修复集成等步骤保留原始顺序，已完成项不要重复实施；可靠交接的细化合同见 `../10-30-collaboration-context-handoff-runtime/{design,implement}.md`。
+
+## 当前六步推进账本
+
+1. 已记录 `e3620721e` 上的 runtime WIP 快照、各文件 hash 和负责人；隔离集成目录为 `/Volumes/artisan/code/2026/mc-runtime-integration-20261031`。快照是未验收输入，不能标为已交付。
+2. runtime 主流程和启动注入流程分别完成有边界的交接，由本会话增量集成；路由、客户端、协议、实际启动输入、human API/query/view 和共享文件冲突逐项核对。
+3. 先完成缺失的协议、checkpoint、recall、handoff 和 UI 定向测试，再运行 sqlc、Go build/vet、lint/typecheck/test、独立复核和生产 Web/原生 Desktop。service/handler 全套在同一测试 DB 上串行，浏览器 DB 与 Go DB 分离。
+4. 真实模型在编码工作停止且上游恢复后独立串行运行。原实验继续 E2a trial 2、剩余 23 次；新 runtime 的真实证据单独绑定新源码和登记，不能挪用旧实验结论或预算。
+5. 交接来源/版本/授权契约稳定后完成知识候选设计及实施：人工确认、纠错、过期、撤回和后续注入过滤。当前可做只读前置研究，暂不启动候选写入代码。
+6. 按父任务 AC0–AC9 审核证据并完成任务状态。Windows、安装包与多账号额度溯源属于关联交付矩阵；未具备证据时保留明确缺口，不默认发布。
+
+当前各 lane 的来源、快照、交接与验证保存在 runtime 子任务 `research/integration-coordination-2026-10-31/`，外部运行中的文件不得整文件覆盖。
 
 ## 执行顺序和依赖
 

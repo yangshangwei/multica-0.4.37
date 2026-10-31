@@ -1,0 +1,12 @@
+=== RUN   TestHostRecordingRecoveryRestartReplaysOnlyOriginalRequests
+    host_recording_recovery_test.go:214: restart did not replay exactly one original checkpoint: 0
+--- FAIL: TestHostRecordingRecoveryRestartReplaysOnlyOriginalRequests (0.25s)
+=== RUN   TestHostRecordingRecoveryBlockedUploadCannotPreventStopAndProof
+    host_recording_recovery_test.go:311: blocked recording did not retain its metadata-only seal for recovery
+--- FAIL: TestHostRecordingRecoveryBlockedUploadCannotPreventStopAndProof (5.20s)
+=== RUN   TestHostRecordingRecoveryPendingProofHasPriority
+    host_recording_recovery_test.go:343: pending proof was not followed by original recording recovery: [/api/collaboration/runtime/runs/00000000-0000-4000-8000-000000000009/proof]
+--- FAIL: TestHostRecordingRecoveryPendingProofHasPriority (0.19s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	6.107s
+FAIL

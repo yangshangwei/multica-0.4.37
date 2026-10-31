@@ -1,0 +1,13 @@
+--- integration/.trellis/spec/server/index.md
++++ late-main/.trellis/spec/server/index.md
+@@ -17,9 +17,8 @@
+ | [Collaboration targets](./collaboration-targets.md) | Channel FIFO, input history, holds, configuration invalidation, proof flow and v5 reads | Direct/squad service foundation; full product pending |
+ | [Collaboration squads](./collaboration-squads.md) | Frozen grants, M08/M11 readers, nonlaunch return and durable leader order | Static Linux CLI/daemon chain verified; full product pending |
+ | [Collaboration runtime CLI](./collaboration-runtime-cli.md) | Narrow existing commands, shared-context show/update, original write IDs, contained CLI and actual daemon capacity | Static Linux chain verified; general provider/product gates remain |
+-| [Collaboration runtime recovery](./collaboration-runtime-recovery.md) | Persistent fair scans, actual candidate consumption, deletion fences and bounded original-proof recovery | Recovery increment verified; full product pending |
++| [Collaboration runtime recovery](./collaboration-runtime-recovery.md) | Persistent fair scans, deletion fences, original-proof priority and bounded original checkpoint/seal recovery | Recovery increments verified; full product pending |
+ | [Collaboration host execution](./collaboration-host-execution.md) | Ordinary Provider execution, shared-context injection/base freeze, per-launch lifecycle/receipts, limited cleanup, authority and v6 compatibility | Implemented behind default-closed host admission; native/account matrix in progress |
+-| [Collaboration startup handoff](./collaboration-startup-handoff.md) | Stable startup snapshots, exact application input binding and daemon-side failure handling | Negotiated daemon contract; model behavior remains separately verified |
+ | [Collaboration context experiments](./collaboration-context-experiments.md) | Gated real-model scenarios, durable private evidence, source/model provenance and behavior scoring | Test-only harness; model results remain sample-scoped |
+ | [Collaboration preparation](./collaboration-preparation.md) | Frozen invocation/files, explicit bundles/Git, contained adapters and private preparation summaries | Linux synthetic execution verified; provider/version rollout evidence separate |
+ | [Collaboration administration](./collaboration-administration.md) | Disabled-creator lifecycle, atomic successor, scoped reads and exact original-key recovery | Limited shared Web/Desktop workflow; full acceptance tracked separately |

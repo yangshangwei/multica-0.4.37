@@ -257,3 +257,9 @@ Cursor loops or conflicting immutable records refuse the page; identical
 overlap and a consistent full refresh remain valid. Missing telemetry is null,
 not zero. Result links preserve the old notification source shape and add an
 optional `run_id`; current denial removes that anchor.
+
+`views/collaboration/execution-panel.test.tsx` routes mock responses by endpoint
+so handoff requests cannot consume the ordered records-pagination queue. Keep
+the actual handoff child/query boundary exercised; its dedicated suite owns the
+full matrix. Adding an independent query must not turn a later-page denial into
+an earlier, unrelated response.

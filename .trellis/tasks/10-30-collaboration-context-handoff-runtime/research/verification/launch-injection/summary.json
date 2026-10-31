@@ -1,0 +1,100 @@
+{
+  "daemon-suite": {
+    "command": [
+      "go",
+      "test",
+      "./internal/daemon/collaborationrun",
+      "-count=1",
+      "-timeout=10m",
+      "-v"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-handoff-launch-20261031/server",
+    "started_at": "2026-10-31T14:51:25.699284+00:00",
+    "elapsed_seconds": 18.741,
+    "exit_code": 0,
+    "top_level_passes": 78,
+    "subtest_passes": 175,
+    "skips": []
+  },
+  "tagged-launch": {
+    "command": [
+      "go",
+      "test",
+      "-tags=agentintegration",
+      "./internal/daemon/collaborationrun",
+      "-run",
+      "^(TestHostHandoffLaunch|TestHostProviderAccountSmokeAuthorizes)",
+      "-count=1",
+      "-v"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-handoff-launch-20261031/server",
+    "started_at": "2026-10-31T14:51:44.441165+00:00",
+    "elapsed_seconds": 11.14,
+    "exit_code": 0,
+    "top_level_passes": 16,
+    "subtest_passes": 39,
+    "skips": []
+  },
+  "launch-race": {
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "./internal/daemon/collaborationrun",
+      "-run",
+      "^TestHostHandoffLaunch",
+      "-count=1",
+      "-timeout=5m"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-handoff-launch-20261031/server",
+    "started_at": "2026-10-31T14:51:55.585310+00:00",
+    "elapsed_seconds": 27.759,
+    "exit_code": 0,
+    "top_level_passes": null,
+    "subtest_passes": null,
+    "skips": null,
+    "test_names_enumerated": false
+  },
+  "tagged-vet": {
+    "command": [
+      "go",
+      "vet",
+      "-tags=agentintegration",
+      "./internal/daemon/collaborationrun"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-handoff-launch-20261031/server",
+    "started_at": "2026-10-31T14:52:23.344580+00:00",
+    "elapsed_seconds": 0.262,
+    "exit_code": 0,
+    "top_level_passes": null,
+    "subtest_passes": null,
+    "skips": null,
+    "test_names_enumerated": false
+  },
+  "owned_files": [
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff.go",
+      "sha256": "b742493bedbf9f8f2da7360c094289b61c413c38ee43e66863860a50ecc36ebe"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_runner.go",
+      "sha256": "565d518d352199050f110e847f89558d1980b94ddc67d0c6db5a33eff6e6afa2"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_agentintegration_test.go",
+      "sha256": "cf3e07252dd44fef36f5d151891e27cda2440f52aca282baee1e876270c142cc"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_agentintegration_authorizer_test.go",
+      "sha256": "43cfadd19330a96310c7f6d4990d4183798e3e82017c24af6f30537b4284eecc"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff_launch_test.go",
+      "sha256": "16d9f62c8515de5468240bc85e8ddeddb0b186f3f99b62b1d23c2617f66b3336"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff_codex_launch_test.go",
+      "sha256": "1684ca013c6e1739efada2161851f0679c94ce88a031303f2740ae0c70e00a5c"
+    }
+  ]
+}

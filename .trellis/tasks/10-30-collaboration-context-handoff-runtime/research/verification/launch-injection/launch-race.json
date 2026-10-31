@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestHostHandoffLaunch",
+    "-count=1",
+    "-timeout=5m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-handoff-launch-20261031/server",
+  "started_at": "2026-10-31T14:51:55.585310+00:00",
+  "elapsed_seconds": 27.759,
+  "exit_code": 0
+}

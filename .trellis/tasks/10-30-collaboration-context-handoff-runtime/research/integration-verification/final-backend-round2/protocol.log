@@ -1,0 +1,598 @@
+=== RUN   TestCollaborationCheckpointBoundsAndKinds
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/body
+--- PASS: TestCollaborationCheckpointBoundsAndKinds/body (0.00s)
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/aggregate
+--- PASS: TestCollaborationCheckpointBoundsAndKinds/aggregate (0.00s)
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/tool_shape
+--- PASS: TestCollaborationCheckpointBoundsAndKinds/tool_shape (0.00s)
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/version
+--- PASS: TestCollaborationCheckpointBoundsAndKinds/version (0.00s)
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/stream
+--- PASS: TestCollaborationCheckpointBoundsAndKinds/stream (0.00s)
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/sequence
+--- PASS: TestCollaborationCheckpointBoundsAndKinds/sequence (0.00s)
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/offset
+--- PASS: TestCollaborationCheckpointBoundsAndKinds/offset (0.00s)
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/empty
+--- PASS: TestCollaborationCheckpointBoundsAndKinds/empty (0.00s)
+--- PASS: TestCollaborationCheckpointBoundsAndKinds (0.00s)
+=== RUN   TestCollaborationCheckpointRecordVersionCompatibility
+--- PASS: TestCollaborationCheckpointRecordVersionCompatibility (0.00s)
+=== RUN   TestCollaborationRecordingSealHasOnlyBoundedMetadata
+--- PASS: TestCollaborationRecordingSealHasOnlyBoundedMetadata (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/run_changes
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/run_changes (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/past_limit
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/past_limit (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/same_key
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/same_key (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/gap
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/gap (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/ack_decreases
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/ack_decreases (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/observed_becomes_unknown
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/observed_becomes_unknown (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/observed_decreases
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/observed_decreases (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/reason_changes
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/reason_changes (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/stream_changes
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/stream_changes (0.00s)
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//protocol_version/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//protocol_version/missing (0.01s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//protocol_version/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//protocol_version/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//issue_id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//issue_id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//issue_id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//issue_id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//run_id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//run_id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//run_id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//run_id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//mode/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//mode/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//mode/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//mode/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//event_seq/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//event_seq/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//event_seq/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//event_seq/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//authority/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//authority/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//authority/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//authority/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//assignment/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//assignment/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//assignment/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//assignment/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//memory/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//memory/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//memory/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//memory/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//inputs/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//inputs/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//inputs/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//inputs/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//results/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//results/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//results/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//results/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//wakeup_causes/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//wakeup_causes/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//wakeup_causes/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//wakeup_causes/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//sources/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//sources/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//sources/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//sources/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//missing/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//missing/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields//missing/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields//missing/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/assignment/role/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/assignment/role/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/assignment/role/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/assignment/role/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/assignment/step_key/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/assignment/step_key/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/assignment/step_key/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/assignment/step_key/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/handoff/id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/handoff/id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/handoff/id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/handoff/id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/handoff/author_id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/handoff/author_id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/handoff/author_id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/handoff/author_id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/handoff/from_id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/handoff/from_id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/handoff/from_id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/handoff/from_id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/handoff/to_id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/handoff/to_id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/handoff/to_id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/handoff/to_id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/handoff/purpose/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/handoff/purpose/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/handoff/purpose/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/handoff/purpose/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/handoff/event_seq/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/handoff/event_seq/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/handoff/event_seq/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/handoff/event_seq/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/handoff/source_id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/handoff/source_id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/handoff/source_id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/handoff/source_id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/information_request/id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/information_request/id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/information_request/id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/information_request/id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/information_request/author_id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/information_request/author_id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/information_request/author_id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/information_request/author_id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/information_request/from_id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/information_request/from_id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/information_request/from_id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/information_request/from_id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/information_request/to_id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/information_request/to_id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/information_request/to_id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/information_request/to_id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/information_request/purpose/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/information_request/purpose/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/information_request/purpose/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/information_request/purpose/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/information_request/event_seq/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/information_request/event_seq/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/information_request/event_seq/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/information_request/event_seq/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/information_request/source_id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/information_request/source_id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/information_request/source_id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/information_request/source_id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/memory/version/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/memory/version/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/memory/version/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/memory/version/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/memory/availability/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/memory/availability/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/memory/availability/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/memory/availability/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results/total/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results/total/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results/total/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results/total/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results/returned/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results/returned/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results/returned/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results/returned/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results/truncated/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results/truncated/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results/truncated/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results/truncated/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results/items/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results/items/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results/items/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results/items/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/run_id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/run_id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/run_id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/run_id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/role/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/role/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/role/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/role/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/step_key/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/step_key/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/step_key/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/step_key/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/progress/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/progress/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/progress/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/progress/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/proof_state/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/proof_state/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/proof_state/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/proof_state/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/recording_incomplete/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/recording_incomplete/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/recording_incomplete/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/recording_incomplete/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/result_state/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/result_state/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/result_state/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/result_state/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/final_answer_state/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/final_answer_state/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/final_answer_state/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/results.items.0/final_answer_state/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/total/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/total/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/total/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/total/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/returned/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/returned/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/returned/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/returned/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/truncated/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/truncated/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/truncated/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/truncated/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/items/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/items/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/items/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/items/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/completeness/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/completeness/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/completeness/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes/completeness/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/authority/status/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/authority/status/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/authority/status/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/authority/status/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs/total/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs/total/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs/total/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs/total/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs/returned/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs/returned/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs/returned/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs/returned/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs/truncated/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs/truncated/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs/truncated/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs/truncated/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs/items/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs/items/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs/items/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs/items/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/command_id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/command_id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/command_id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/command_id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/author_id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/author_id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/author_id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/author_id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/state/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/state/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/state/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/state/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/reader_run_ids/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/reader_run_ids/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/reader_run_ids/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/reader_run_ids/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/readers_truncated/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/readers_truncated/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/readers_truncated/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/inputs.items.0/readers_truncated/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/source_kind/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/source_kind/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/source_kind/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/source_kind/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/source_id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/source_id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/source_id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/source_id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/source_run_id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/source_run_id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/source_run_id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/source_run_id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/sequence/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/sequence/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/sequence/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/wakeup_causes.items.0/sequence/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/kind/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/kind/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/kind/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/kind/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/id/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/id/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/id/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/id/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/sha256/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/sha256/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/sha256/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/sha256/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/content/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/content/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/content/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/content/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/truncated/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/truncated/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/truncated/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/truncated/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/availability/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/availability/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/availability/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/availability/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/trust/missing
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/trust/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/trust/null
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields/sources.0/trust/null (0.00s)
+--- PASS: TestCollaborationHandoffWireRequiresDeclaredFields (0.32s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/inputs/total/missing
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/inputs/total/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/inputs/total/null
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/inputs/total/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/inputs/returned/missing
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/inputs/returned/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/inputs/returned/null
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/inputs/returned/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/inputs/truncated/missing
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/inputs/truncated/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/inputs/truncated/null
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/inputs/truncated/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/results/total/missing
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/results/total/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/results/total/null
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/results/total/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/results/returned/missing
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/results/returned/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/results/returned/null
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/results/returned/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/results/truncated/missing
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/results/truncated/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/results/truncated/null
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/results/truncated/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/wakeup_causes/total/missing
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/wakeup_causes/total/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/wakeup_causes/total/null
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/wakeup_causes/total/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/wakeup_causes/returned/missing
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/wakeup_causes/returned/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/wakeup_causes/returned/null
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/wakeup_causes/returned/null (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/wakeup_causes/truncated/missing
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/wakeup_causes/truncated/missing (0.00s)
+=== RUN   TestCollaborationHandoffWireRequiresEmptyPageFacts/wakeup_causes/truncated/null
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts/wakeup_causes/truncated/null (0.00s)
+--- PASS: TestCollaborationHandoffWireRequiresEmptyPageFacts (0.01s)
+=== RUN   TestCollaborationHandoffWirePreservesZeroFalseAndOptionalFields
+=== RUN   TestCollaborationHandoffWirePreservesZeroFalseAndOptionalFields/populated
+--- PASS: TestCollaborationHandoffWirePreservesZeroFalseAndOptionalFields/populated (0.00s)
+=== RUN   TestCollaborationHandoffWirePreservesZeroFalseAndOptionalFields/empty
+--- PASS: TestCollaborationHandoffWirePreservesZeroFalseAndOptionalFields/empty (0.00s)
+=== RUN   TestCollaborationHandoffWirePreservesZeroFalseAndOptionalFields/handoff
+--- PASS: TestCollaborationHandoffWirePreservesZeroFalseAndOptionalFields/handoff (0.00s)
+=== RUN   TestCollaborationHandoffWirePreservesZeroFalseAndOptionalFields/information_request
+--- PASS: TestCollaborationHandoffWirePreservesZeroFalseAndOptionalFields/information_request (0.00s)
+--- PASS: TestCollaborationHandoffWirePreservesZeroFalseAndOptionalFields (0.01s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/source_case_override
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/source_case_override (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/source_mixed_case
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/source_mixed_case (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/source_duplicate
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/source_duplicate (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/source_escaped_duplicate
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/source_escaped_duplicate (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/source_escaped_case
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/source_escaped_case (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/source_optional_alias
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/source_optional_alias (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/snapshot_optional_alias
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/snapshot_optional_alias (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/recording_optional_override
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/recording_optional_override (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/authority_optional_alias
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/authority_optional_alias (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/assignment_optional_alias
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/assignment_optional_alias (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/embedded_page_total
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/embedded_page_total (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/embedded_page_returned
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/embedded_page_returned (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/embedded_page_truncated
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/embedded_page_truncated (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/input_readers
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/input_readers (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/result_completeness
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/result_completeness (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/result_optional_alias
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/result_optional_alias (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/retention_sealed
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/retention_sealed (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsFieldAliases/retention_observed
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases/retention_observed (0.00s)
+--- PASS: TestCollaborationHandoffWireRejectsFieldAliases (0.02s)
+=== RUN   TestCollaborationHostObjectChecksTypedChildrenWithoutChangingContentMaps
+--- PASS: TestCollaborationHostObjectChecksTypedChildrenWithoutChangingContentMaps (0.00s)
+=== RUN   TestCollaborationHandoffWirePreservesEscapedCanonicalNamesAndLiteralText
+--- PASS: TestCollaborationHandoffWirePreservesEscapedCanonicalNamesAndLiteralText (0.00s)
+=== RUN   TestCollaborationHandoffPreservesEscapedAdmittedAssignment
+--- PASS: TestCollaborationHandoffPreservesEscapedAdmittedAssignment (0.32s)
+=== RUN   TestCollaborationHandoffRejectsOversizedRawJSON
+--- PASS: TestCollaborationHandoffRejectsOversizedRawJSON (0.02s)
+=== RUN   TestCollaborationHandoffMaterialBudgetIncludesMetadata
+--- PASS: TestCollaborationHandoffMaterialBudgetIncludesMetadata (0.09s)
+=== RUN   TestCollaborationHandoffRejectsFalseCompletenessAndUnknownVersion
+--- PASS: TestCollaborationHandoffRejectsFalseCompletenessAndUnknownVersion (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsUnrecognizedAuthority
+--- PASS: TestCollaborationHandoffWireRejectsUnrecognizedAuthority (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/missing_observer
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/missing_observer (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/duplicate_scope
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/duplicate_scope (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/missing_version
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/missing_version (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/legacy_preparation
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/legacy_preparation (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/legacy_mode
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/legacy_mode (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/remote_unobserved
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/remote_unobserved (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/unknown_provider
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/unknown_provider (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/unknown_scope
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/unknown_scope (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/private_account_path
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/private_account_path (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/unbound_config
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/unbound_config (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/legacy_version
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/legacy_version (0.00s)
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/different_launch
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/different_launch (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/business_success
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/business_success (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/EOF
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/EOF (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/timer
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/timer (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/never_started_with_exit
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/never_started_with_exit (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/legacy_version
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/legacy_version (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/legacy_mode
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/legacy_mode (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/cleanup_not_attempted
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/cleanup_not_attempted (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/all_process_claim
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/all_process_claim (0.00s)
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup (0.00s)
+=== RUN   TestCollaborationHostProofSealsEveryLaunch
+=== RUN   TestCollaborationHostProofSealsEveryLaunch/legacy_strong_proof
+--- PASS: TestCollaborationHostProofSealsEveryLaunch/legacy_strong_proof (0.00s)
+=== RUN   TestCollaborationHostProofSealsEveryLaunch/missing_launch
+--- PASS: TestCollaborationHostProofSealsEveryLaunch/missing_launch (0.00s)
+=== RUN   TestCollaborationHostProofSealsEveryLaunch/unsealed_launch
+--- PASS: TestCollaborationHostProofSealsEveryLaunch/unsealed_launch (0.00s)
+=== RUN   TestCollaborationHostProofSealsEveryLaunch/different_final_nonce
+--- PASS: TestCollaborationHostProofSealsEveryLaunch/different_final_nonce (0.00s)
+=== RUN   TestCollaborationHostProofSealsEveryLaunch/false_cleanup
+--- PASS: TestCollaborationHostProofSealsEveryLaunch/false_cleanup (0.00s)
+--- PASS: TestCollaborationHostProofSealsEveryLaunch (0.00s)
+=== RUN   TestCollaborationLegacyRuntimeWireRemainsUnchanged
+--- PASS: TestCollaborationLegacyRuntimeWireRemainsUnchanged (0.00s)
+=== RUN   TestCollaborationHostCleanupRequiresCompleteStrictFacts
+--- PASS: TestCollaborationHostCleanupRequiresCompleteStrictFacts (0.00s)
+=== RUN   TestCollaborationHostPreparationObservationVersions
+=== RUN   TestCollaborationHostPreparationObservationVersions/legacy_version_with_host_mode
+--- PASS: TestCollaborationHostPreparationObservationVersions/legacy_version_with_host_mode (0.00s)
+=== RUN   TestCollaborationHostPreparationObservationVersions/host_version_with_legacy_mode
+--- PASS: TestCollaborationHostPreparationObservationVersions/host_version_with_legacy_mode (0.00s)
+=== RUN   TestCollaborationHostPreparationObservationVersions/unknown_version
+--- PASS: TestCollaborationHostPreparationObservationVersions/unknown_version (0.00s)
+=== RUN   TestCollaborationHostPreparationObservationVersions/excess_attempts
+--- PASS: TestCollaborationHostPreparationObservationVersions/excess_attempts (0.00s)
+=== RUN   TestCollaborationHostPreparationObservationVersions/ambiguous_sequence
+--- PASS: TestCollaborationHostPreparationObservationVersions/ambiguous_sequence (0.00s)
+--- PASS: TestCollaborationHostPreparationObservationVersions (0.00s)
+=== RUN   TestCollaborationPreparationInvocationRequiresExplicitSafeFields
+--- PASS: TestCollaborationPreparationInvocationRequiresExplicitSafeFields (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/input_too_large
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/input_too_large (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/resume
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/resume (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/fallback
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/fallback (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/missing_input_file
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/missing_input_file (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/secret_account_path
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/secret_account_path (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/unknown_adapter
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/unknown_adapter (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/mutable_git
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/mutable_git (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/other_run
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/other_run (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/other_prompt
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/other_prompt (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/path_traversal
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/path_traversal (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/duplicate_file
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/duplicate_file (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/rounded_version
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/rounded_version (0.00s)
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt (0.00s)
+=== RUN   TestCollaborationPreparationObservationHasNoOutcomeOrProofAuthority
+--- PASS: TestCollaborationPreparationObservationHasNoOutcomeOrProofAuthority (0.00s)
+=== RUN   TestCollaborationRecallCursorRequiresExactFields
+--- PASS: TestCollaborationRecallCursorRequiresExactFields (0.00s)
+=== RUN   TestCollaborationRecallDecoderRequiresMetadataAndDataOnlyTrust
+--- PASS: TestCollaborationRecallDecoderRequiresMetadataAndDataOnlyTrust (0.00s)
+=== RUN   TestCollaborationOutcomePreservesTypedRecording
+--- PASS: TestCollaborationOutcomePreservesTypedRecording (0.00s)
+=== RUN   TestCollaborationRecordingRejectsMalformedAndOversizedTelemetry
+--- PASS: TestCollaborationRecordingRejectsMalformedAndOversizedTelemetry (0.01s)
+=== RUN   TestCollaborationRecordingRetentionWireRequiresFacts
+=== RUN   TestCollaborationRecordingRetentionWireRequiresFacts/version/missing
+--- PASS: TestCollaborationRecordingRetentionWireRequiresFacts/version/missing (0.00s)
+=== RUN   TestCollaborationRecordingRetentionWireRequiresFacts/version/null
+--- PASS: TestCollaborationRecordingRetentionWireRequiresFacts/version/null (0.00s)
+=== RUN   TestCollaborationRecordingRetentionWireRequiresFacts/stream_id/missing
+--- PASS: TestCollaborationRecordingRetentionWireRequiresFacts/stream_id/missing (0.00s)
+=== RUN   TestCollaborationRecordingRetentionWireRequiresFacts/stream_id/null
+--- PASS: TestCollaborationRecordingRetentionWireRequiresFacts/stream_id/null (0.00s)
+=== RUN   TestCollaborationRecordingRetentionWireRequiresFacts/retained_through/missing
+--- PASS: TestCollaborationRecordingRetentionWireRequiresFacts/retained_through/missing (0.00s)
+=== RUN   TestCollaborationRecordingRetentionWireRequiresFacts/retained_through/null
+--- PASS: TestCollaborationRecordingRetentionWireRequiresFacts/retained_through/null (0.00s)
+=== RUN   TestCollaborationRecordingRetentionWireRequiresFacts/observed_through/missing
+--- PASS: TestCollaborationRecordingRetentionWireRequiresFacts/observed_through/missing (0.00s)
+=== RUN   TestCollaborationRecordingRetentionWireRequiresFacts/sealed/missing
+--- PASS: TestCollaborationRecordingRetentionWireRequiresFacts/sealed/missing (0.00s)
+=== RUN   TestCollaborationRecordingRetentionWireRequiresFacts/sealed/null
+--- PASS: TestCollaborationRecordingRetentionWireRequiresFacts/sealed/null (0.00s)
+=== RUN   TestCollaborationRecordingRetentionWireRequiresFacts/reason/missing
+--- PASS: TestCollaborationRecordingRetentionWireRequiresFacts/reason/missing (0.00s)
+=== RUN   TestCollaborationRecordingRetentionWireRequiresFacts/reason/null
+--- PASS: TestCollaborationRecordingRetentionWireRequiresFacts/reason/null (0.00s)
+--- PASS: TestCollaborationRecordingRetentionWireRequiresFacts (0.01s)
+=== RUN   TestCollaborationHandoffRejectsMalformedRetention
+=== RUN   TestCollaborationHandoffRejectsMalformedRetention/version
+--- PASS: TestCollaborationHandoffRejectsMalformedRetention/version (0.00s)
+=== RUN   TestCollaborationHandoffRejectsMalformedRetention/stream
+--- PASS: TestCollaborationHandoffRejectsMalformedRetention/stream (0.00s)
+=== RUN   TestCollaborationHandoffRejectsMalformedRetention/retained_negative
+--- PASS: TestCollaborationHandoffRejectsMalformedRetention/retained_negative (0.00s)
+=== RUN   TestCollaborationHandoffRejectsMalformedRetention/observed_overflow
+--- PASS: TestCollaborationHandoffRejectsMalformedRetention/observed_overflow (0.00s)
+=== RUN   TestCollaborationHandoffRejectsMalformedRetention/observed_before_retained
+--- PASS: TestCollaborationHandoffRejectsMalformedRetention/observed_before_retained (0.00s)
+=== RUN   TestCollaborationHandoffRejectsMalformedRetention/completed_unknown_tail
+--- PASS: TestCollaborationHandoffRejectsMalformedRetention/completed_unknown_tail (0.00s)
+=== RUN   TestCollaborationHandoffRejectsMalformedRetention/retained_overflow
+--- PASS: TestCollaborationHandoffRejectsMalformedRetention/retained_overflow (0.00s)
+=== RUN   TestCollaborationHandoffRejectsMalformedRetention/observed_negative
+--- PASS: TestCollaborationHandoffRejectsMalformedRetention/observed_negative (0.00s)
+=== RUN   TestCollaborationHandoffRejectsMalformedRetention/arbitrary_reason
+--- PASS: TestCollaborationHandoffRejectsMalformedRetention/arbitrary_reason (0.00s)
+=== RUN   TestCollaborationHandoffRejectsMalformedRetention/unsealed_known_tail
+--- PASS: TestCollaborationHandoffRejectsMalformedRetention/unsealed_known_tail (0.00s)
+=== RUN   TestCollaborationHandoffRejectsMalformedRetention/unsealed_terminal_reason
+--- PASS: TestCollaborationHandoffRejectsMalformedRetention/unsealed_terminal_reason (0.00s)
+--- PASS: TestCollaborationHandoffRejectsMalformedRetention (0.01s)
+=== RUN   TestCollaborationRecordingRetentionPreservesKnownAndUnknownBounds
+=== RUN   TestCollaborationRecordingRetentionPreservesKnownAndUnknownBounds/completed
+--- PASS: TestCollaborationRecordingRetentionPreservesKnownAndUnknownBounds/completed (0.00s)
+=== RUN   TestCollaborationRecordingRetentionPreservesKnownAndUnknownBounds/stopped
+--- PASS: TestCollaborationRecordingRetentionPreservesKnownAndUnknownBounds/stopped (0.00s)
+=== RUN   TestCollaborationRecordingRetentionPreservesKnownAndUnknownBounds/authority_lost
+--- PASS: TestCollaborationRecordingRetentionPreservesKnownAndUnknownBounds/authority_lost (0.00s)
+=== RUN   TestCollaborationRecordingRetentionPreservesKnownAndUnknownBounds/transport_error
+--- PASS: TestCollaborationRecordingRetentionPreservesKnownAndUnknownBounds/transport_error (0.00s)
+=== RUN   TestCollaborationRecordingRetentionPreservesKnownAndUnknownBounds/recording_limit
+--- PASS: TestCollaborationRecordingRetentionPreservesKnownAndUnknownBounds/recording_limit (0.00s)
+=== RUN   TestCollaborationRecordingRetentionPreservesKnownAndUnknownBounds/incomplete
+--- PASS: TestCollaborationRecordingRetentionPreservesKnownAndUnknownBounds/incomplete (0.00s)
+--- PASS: TestCollaborationRecordingRetentionPreservesKnownAndUnknownBounds (0.02s)
+PASS
+ok  	github.com/multica-ai/multica/server/pkg/protocol	2.399s

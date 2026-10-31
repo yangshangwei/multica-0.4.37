@@ -1,0 +1,55 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+> @multica/core@0.0.0 test /Volumes/artisan/code/2026/multica-0.4.37/packages/core
+> vitest run collaboration/run-records-queries.test.ts
+
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/multica-0.4.37/packages/core
+
+ ❯ collaboration/run-records-queries.test.ts (27 tests | 7 failed) 39ms
+     × refuses 'changed stream' inside one recording page chain without replacing the lawful prefix 3ms
+     × refuses 'advanced retained prefix' inside one recording page chain without replacing the lawful prefix 1ms
+     × refuses 'changed observed range' inside one recording page chain without replacing the lawful prefix 1ms
+     × refuses 'new seal' inside one recording page chain without replacing the lawful prefix 1ms
+     × refuses 'changed reason' inside one recording page chain without replacing the lawful prefix 1ms
+     × refuses 'missing retention' inside one recording page chain without replacing the lawful prefix 1ms
+     × refuses 'introduced retention' inside one recording page chain without replacing the lawful prefix 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  collaboration/run-records-queries.test.ts > protected recorded-run paging > refuses 'changed stream' inside one recording page chain without replacing the lawful prefix
+ FAIL  collaboration/run-records-queries.test.ts > protected recorded-run paging > refuses 'advanced retained prefix' inside one recording page chain without replacing the lawful prefix
+ FAIL  collaboration/run-records-queries.test.ts > protected recorded-run paging > refuses 'changed observed range' inside one recording page chain without replacing the lawful prefix
+ FAIL  collaboration/run-records-queries.test.ts > protected recorded-run paging > refuses 'new seal' inside one recording page chain without replacing the lawful prefix
+ FAIL  collaboration/run-records-queries.test.ts > protected recorded-run paging > refuses 'changed reason' inside one recording page chain without replacing the lawful prefix
+ FAIL  collaboration/run-records-queries.test.ts > protected recorded-run paging > refuses 'missing retention' inside one recording page chain without replacing the lawful prefix
+ FAIL  collaboration/run-records-queries.test.ts > protected recorded-run paging > refuses 'introduced retention' inside one recording page chain without replacing the lawful prefix
+AssertionError: expected null to match object { Object (name) }
+
+- Expected:
+{
+  "name": "CollaborationUnavailableError",
+}
+
++ Received:
+null
+
+ ❯ collaboration/run-records-queries.test.ts:232:47
+    230|     cleanups.push(observer.subscribe(() => {}));
+    231|     await observer.fetchNextPage();
+    232|     expect(observer.getCurrentResult().error).toMatchObject({ name: "C…
+       |                                               ^
+    233|     expect(observer.getCurrentResult().data?.pages).toEqual([first]);
+    234|     expect(f.client.getQueryData(f.issueKey)).toEqual(collaborationIss…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 20 passed (27)
+   Start at  22:58:56
+   Duration  592ms (transform 316ms, setup 0ms, import 483ms, tests 39ms, environment 0ms)
+
+/Volumes/artisan/code/2026/multica-0.4.37/packages/core:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @multica/core@0.0.0 test: `vitest run collaboration/run-records-queries.test.ts`
+Exit status 1

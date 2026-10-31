@@ -1,0 +1,19 @@
+=== RUN   TestHostHandoffCheckpointBlockedRecordingCannotHoldProof
+--- PASS: TestHostHandoffCheckpointBlockedRecordingCannotHoldProof (1.24s)
+=== RUN   TestHostHandoffCheckpointRestartRecoversWithoutExecution
+    host_handoff_checkpoint_lifecycle_test.go:228: new Runner did not replay the pending original checkpoint
+--- FAIL: TestHostHandoffCheckpointRestartRecoversWithoutExecution (0.25s)
+=== RUN   TestHostHandoffCheckpointFailureCleanup
+=== RUN   TestHostHandoffCheckpointFailureCleanup/snapshot_refused
+=== RUN   TestHostHandoffCheckpointFailureCleanup/binding_refused
+    host_handoff_checkpoint_test.go:149: recording stream was not sealed after handoff failure: recording=&{StreamID:1ea6b65d-4f03-4761-8a01-23a690429bd4 Chunks:[] Closed:false Reason: Seal:<nil> SealAccepted:false} seal_requests=0
+=== RUN   TestHostHandoffCheckpointFailureCleanup/fallback_snapshot_drift
+    host_handoff_checkpoint_test.go:149: recording stream was not sealed after handoff failure: recording=&{StreamID:a2727568-a2ec-43b2-bfbf-960c567a9210 Chunks:[{Sequence:1 Offset:0 Count:1 BodyBytes:205 Payload:0x2a43e0d48120 BusinessToken:mcb_1111111111111111111111111111111111111111111111111111111111111111 Accepted:false Rejected:false}] Closed:false Reason: Seal:<nil> SealAccepted:false} seal_requests=0
+    host_handoff_checkpoint_test.go:153: lost checkpoint ACK was not recovered with the original payload: requests=1
+--- FAIL: TestHostHandoffCheckpointFailureCleanup (0.54s)
+    --- PASS: TestHostHandoffCheckpointFailureCleanup/snapshot_refused (0.16s)
+    --- FAIL: TestHostHandoffCheckpointFailureCleanup/binding_refused (0.15s)
+    --- FAIL: TestHostHandoffCheckpointFailureCleanup/fallback_snapshot_drift (0.23s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	2.626s
+FAIL

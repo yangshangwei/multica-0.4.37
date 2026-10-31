@@ -1,0 +1,140 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-runtime-handoff-web.spec.ts",
+      "file": "collaboration-runtime-handoff-web.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1052,
+                  "error": {
+                    "message": "Error: POST /api/collaboration/issues/01a1927c-73b7-7c06-abef-ceb2c16097e2/comments failed: 413",
+                    "stack": "Error: POST /api/collaboration/issues/01a1927c-73b7-7c06-abef-ceb2c16097e2/comments failed: 413\n    at TestApiClient.requestJSON (/Volumes/artisan/code/2026/mc-runtime-integration-20261031/e2e/fixtures.ts:405:29)\n    at postComment (/Volumes/artisan/code/2026/mc-runtime-integration-20261031/e2e/fixtures/collaboration-runtime-handoff.ts:32:21)\n    at seedRuntimeHandoff (/Volumes/artisan/code/2026/mc-runtime-integration-20261031/e2e/fixtures/collaboration-runtime-handoff.ts:46:25)\n    at /Volumes/artisan/code/2026/mc-runtime-integration-20261031/e2e/collaboration-runtime-handoff-web.spec.ts:8:19",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/e2e/fixtures.ts",
+                      "column": 29,
+                      "line": 405
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures.ts:405\n\n  403 |       body: options.body === undefined ? undefined : JSON.stringify(options.body),\n  404 |     });\n> 405 |     if (!response.ok) throw new Error(`${options.method ?? \"GET\"} ${path} failed: ${response.status}`);\n      |                             ^\n  406 |     return response.json() as Promise<T>;\n  407 |   }\n  408 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/e2e/fixtures.ts",
+                        "column": 29,
+                        "line": 405
+                      },
+                      "message": "Error: POST /api/collaboration/issues/01a1927c-73b7-7c06-abef-ceb2c16097e2/comments failed: 413\n\n   at fixtures.ts:405\n\n  403 |       body: options.body === undefined ? undefined : JSON.stringify(options.body),\n  404 |     });\n> 405 |     if (!response.ok) throw new Error(`${options.method ?? \"GET\"} ${path} failed: ${response.status}`);\n      |                             ^\n  406 |     return response.json() as Promise<T>;\n  407 |   }\n  408 |\n    at TestApiClient.requestJSON (/Volumes/artisan/code/2026/mc-runtime-integration-20261031/e2e/fixtures.ts:405:29)\n    at postComment (/Volumes/artisan/code/2026/mc-runtime-integration-20261031/e2e/fixtures/collaboration-runtime-handoff.ts:32:21)\n    at seedRuntimeHandoff (/Volumes/artisan/code/2026/mc-runtime-integration-20261031/e2e/fixtures/collaboration-runtime-handoff.ts:46:25)\n    at /Volumes/artisan/code/2026/mc-runtime-integration-20261031/e2e/collaboration-runtime-handoff-web.spec.ts:8:19"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-31T15:03:10.879Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/test-results/collaboration-runtime-hand-5a631-es-private-reads-on-removal-chromium/test-failed-1.png"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/e2e/fixtures.ts",
+                    "column": 29,
+                    "line": 405
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "535c4a178b0047bfeb34-1c0f20d2a0aa38b9bb87",
+          "file": "collaboration-runtime-handoff-web.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-31T15:03:10.395Z",
+    "duration": 2364.4590000000003,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

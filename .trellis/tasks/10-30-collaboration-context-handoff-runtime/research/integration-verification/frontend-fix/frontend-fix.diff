@@ -1,0 +1,347 @@
+diff --git a/apps/web/platform/navigation.test.tsx b/apps/web/platform/navigation.test.tsx
+index a2bdc277a..3b483a949 100755
+--- a/apps/web/platform/navigation.test.tsx
++++ b/apps/web/platform/navigation.test.tsx
+@@ -7,7 +7,7 @@
+  * answer it with a router push, or those links silently do nothing.
+  */
+ import { describe, expect, it, vi, afterEach, beforeEach } from "vitest";
+-import { act, render } from "@testing-library/react";
++import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+ 
+ const router = vi.hoisted(() => ({
+   push: vi.fn(),
+@@ -24,7 +24,7 @@ vi.mock("next/navigation", () => ({
+ }));
+ 
+ import { WebNavigationProvider, useWebScopeResume } from "./navigation";
+-import { useNavigation, type NavigationAdapter } from "@multica/views/navigation";
++import { AppLink, currentPath, useNavigation, type NavigationAdapter } from "@multica/views/navigation";
+ 
+ function navigate(path: string) {
+   window.dispatchEvent(
+@@ -48,10 +48,78 @@ function renderAdapter(): () => NavigationAdapter {
+ 
+ beforeEach(() => {
+   router.push.mockReset();
++  router.replace.mockReset();
+   route.pathname = "/acme/issues";
+   route.query = "";
+ });
+ 
++describe("Web account fragment navigation", () => {
++  const base = "/account?view=participating&issue=00000000-0000-4000-8000-000000000001";
++  const first = `${base}#run-00000000-0000-4000-8000-000000000002`;
++  const next = `${base}#run-00000000-0000-4000-8000-000000000003`;
++  afterEach(() => { vi.restoreAllMocks(); window.history.replaceState(null, "", "/"); });
++
++  function setup() {
++    window.history.replaceState(null, "", first);
++    route.pathname = "/account";
++    route.query = base.split("?")[1]!;
++    let adapter!: NavigationAdapter;
++    function Probe() {
++      adapter = useNavigation();
++      return <><AppLink href={next}>Open source run</AppLink><output>{currentPath(adapter)}</output></>;
++    }
++    render(<WebNavigationProvider><Probe /></WebNavigationProvider>);
++    return () => adapter;
++  }
++
++  it("opens a real source AppLink with one fragment and restores anchors on Back/Forward", async () => {
++    const adapter = setup();
++    const originalKey = adapter().navigationKey;
++    const push = vi.spyOn(window.history, "pushState");
++    // Next 16.2.6 seeds its route cache with the initial hash and appends the
++    // next hash. The platform must use the supported History API for this swap.
++    fireEvent.click(screen.getByRole("link", { name: "Open source run" }));
++    expect(push).toHaveBeenCalledExactlyOnceWith(null, "", next);
++    expect(router.push).not.toHaveBeenCalled();
++    expect(screen.getByRole("status")).toHaveTextContent(next);
++    expect(adapter().navigationKey).not.toBe(originalKey);
++    expect(adapter().isScopeResume).toBe(false);
++    const nextKey = adapter().navigationKey;
++    fireEvent.click(screen.getByRole("link", { name: "Open source run" }));
++    expect(push).toHaveBeenCalledTimes(1);
++    expect(adapter().navigationKey).not.toBe(nextKey);
++    act(() => window.history.back());
++    await waitFor(() => expect(currentPath(adapter())).toBe(first));
++    act(() => window.history.forward());
++    await waitFor(() => expect(currentPath(adapter())).toBe(next));
++  });
++
++  it("replaces or removes a fragment without adding history, retaining the selected issue and view", () => {
++    const adapter = setup();
++    const replace = vi.spyOn(window.history, "replaceState");
++    const push = vi.spyOn(window.history, "pushState");
++    act(() => adapter().replace(next));
++    expect(replace).toHaveBeenLastCalledWith(null, "", next);
++    expect(currentPath(adapter())).toBe(next);
++    act(() => adapter().replace(base));
++    expect(replace).toHaveBeenLastCalledWith(null, "", base);
++    expect(currentPath(adapter())).toBe(base);
++    expect(push).not.toHaveBeenCalled();
++    expect(router.replace).not.toHaveBeenCalled();
++  });
++
++  it("keeps path/query changes and another origin on the normal router path", () => {
++    const adapter = setup();
++    const push = vi.spyOn(window.history, "pushState");
++    for (const destination of ["/account?view=current", "/acme/issues#description", `https://other.example${next}`]) {
++      act(() => adapter().push(destination));
++      expect(router.push).toHaveBeenLastCalledWith(destination);
++    }
++    expect(push).not.toHaveBeenCalled();
++    expect(currentPath(adapter())).toBe(first);
++  });
++});
++
+ describe("Web scope resume intent", () => {
+   it("retains the outgoing focus intent until the resumed destination renders", () => {
+     route.pathname = "/account";
+diff --git a/apps/web/platform/navigation.tsx b/apps/web/platform/navigation.tsx
+index c79055f6f..69a81567e 100755
+--- a/apps/web/platform/navigation.tsx
++++ b/apps/web/platform/navigation.tsx
+@@ -75,27 +75,43 @@ function NavigationProviderInner({
+   const router = useRouter();
+   const pathname = usePathname();
+   const searchParams = useSearchParams();
++  const query = searchParams.toString();
++  const route = pathname + (query ? `?${query}` : "");
+   const [intent, setIntent] = useState({ path: "", resume: false, key: 0 });
++  const navigateFragment = useCallback((path: string, method: "pushState" | "replaceState") => {
++    const current = new URL(window.location.href);
++    const target = new URL(path, current);
++    if (target.origin !== current.origin || target.pathname + target.search !== route ||
++      current.pathname + current.search !== route || (!target.hash && !current.hash)) return null;
++    // Next 16.2.6's seeded segment cache retains the initial fragment and
++    // appends the next one. Its supported History API keeps same-route hash
++    // changes out of that cache, while preserving Back/Forward and route state.
++    // The intent update also lets the hash store observe this history write.
++    const destination = target.pathname + target.search + target.hash;
++    if (target.href !== current.href) window.history[method](null, "", destination);
++    return destination;
++  }, [route]);
+   const push = useCallback((path: string) => {
+-    setIntent((previous) => ({ path, resume: false, key: previous.key + 1 }));
+-    router.push(path);
+-  }, [router]);
++    const fragment = navigateFragment(path, "pushState");
++    setIntent((previous) => ({ path: fragment ?? path, resume: false, key: previous.key + 1 }));
++    if (fragment === null) router.push(path);
++  }, [router, navigateFragment]);
+   const replace = useCallback((path: string) => {
+-    setIntent((previous) => ({ path, resume: false, key: previous.key + 1 }));
+-    router.replace(path);
+-  }, [router]);
++    const fragment = navigateFragment(path, "replaceState");
++    setIntent((previous) => ({ path: fragment ?? path, resume: false, key: previous.key + 1 }));
++    if (fragment === null) router.replace(path);
++  }, [router, navigateFragment]);
+   const resume = useCallback((path: string) => {
+-    setIntent((previous) => ({ path, resume: true, key: previous.key + 1 }));
+-    router.push(path, { scroll: false });
+-  }, [router]);
++    const fragment = navigateFragment(path, "pushState");
++    setIntent((previous) => ({ path: fragment ?? path, resume: true, key: previous.key + 1 }));
++    if (fragment === null) router.push(path, { scroll: false });
++  }, [router, navigateFragment]);
+   const hash = useSyncExternalStore(
+     subscribeToHash,
+     () => window.location.hash,
+     () => "",
+   );
+   useInternalLinkHandler(push);
+-  const query = searchParams.toString();
+-  const route = pathname + (query ? `?${query}` : "");
+   const location = route + hash;
+   const targetsRenderedRoute = intent.path.split("#")[0] === route;
+   const [committedIntent, setCommittedIntent] = useState({ location, resume: false, key: 0 });
+diff --git a/packages/core/api/client.ts b/packages/core/api/client.ts
+index 38e61ec15..bf9ce3363 100755
+--- a/packages/core/api/client.ts
++++ b/packages/core/api/client.ts
+@@ -2,6 +2,7 @@ import { parseIteration, IterationCapabilitiesSchema, IterationSettingsSchema, I
+ import { z } from "zod";
+ import { parseCollaborationActivity } from "../collaboration/activity-schema";
+ import { parseCollaborationRunRecords } from "../collaboration/run-records-schema";
++import { COLLABORATION_HANDOFF_MAX_JSON_BYTES, parseCollaborationRunHandoff } from "../collaboration/run-handoff-schema";
+ import { parseCollaborationMemory, parseCollaborationMemoryReceipt, parseCollaborationMemoryVersion, parseCollaborationMemoryVersions,
+   type CollaborationMemoryActionName, type CollaborationMemoryReceipt } from "../collaboration/memory-schema";
+ import { positiveVersion } from "../collaboration/version";
+@@ -935,12 +936,17 @@ export class ApiClient {
+     }
+   }
+ 
+-  private async fetchCollaboration(path: string, options?: RequestInit, expectedStatus?: number): Promise<unknown> {
++  private async fetchCollaboration(path: string, options?: RequestInit, expectedStatus?: number, maxJSONBytes?: number): Promise<unknown> {
+     const scope = this.getSessionScope();
+     const authEpoch = this.authEpoch;
+     try {
+       let data: unknown;
+-      if (expectedStatus === undefined) data = await this.fetchCollaborationVersionedRead(path, options, (candidate) => this.fetch<unknown>(candidate, options));
++      if (maxJSONBytes !== undefined) data = await this.fetchCollaborationVersionedRead(path, options, async (candidate) => {
++        const response = await this.fetchRaw(candidate, { ...options, extraHeaders: { "Content-Type": "application/json" } });
++        const bytes = await response.arrayBuffer();
++        return bytes.byteLength <= maxJSONBytes ? JSON.parse(new TextDecoder().decode(bytes)) : undefined;
++      });
++      else if (expectedStatus === undefined) data = await this.fetchCollaborationVersionedRead(path, options, (candidate) => this.fetch<unknown>(candidate, options));
+       else {
+         const response = await this.fetchRaw(path, { ...options, extraHeaders: { "Content-Type": "application/json" } });
+         data = response.status === expectedStatus ? await response.json() : undefined;
+@@ -962,8 +968,8 @@ export class ApiClient {
+     }
+   }
+ 
+-  private async fetchCollaborationOptionalHistory(path: string, options?: RequestInit): Promise<unknown> {
+-    try { return await this.fetchCollaboration(path, options); }
++  private async fetchCollaborationOptionalHistory(path: string, options?: RequestInit, maxJSONBytes?: number): Promise<unknown> {
++    try { return await this.fetchCollaboration(path, options, undefined, maxJSONBytes); }
+     catch (error) {
+       // Older servers may have no history route. Only the object's structured
+       // not_found response establishes access loss; an absent route is unavailable.
+@@ -1180,11 +1186,13 @@ export class ApiClient {
+     return parseCollaborationWorkbench(raw);
+   }
+ 
+-  async getCollaborationComments(id: string, params: { cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {
++  async getCollaborationComments(id: string, params: { cursor?: string; limit?: number; maxBytes?: number } = {}, options?: { signal?: AbortSignal }) {
+     const query = new URLSearchParams({ limit: String(params.limit ?? 100) });
+     if (params.cursor) query.set("cursor", params.cursor);
++    if (params.maxBytes !== undefined) query.set("max_bytes", String(params.maxBytes));
+     const result = parseCollaborationComments(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/comments?${query}`, { signal: options?.signal }));
+-    return result && sameResourceIdentity(result.issue_id, id) ? result : null;
++    return result && sameResourceIdentity(result.issue_id, id) && (result.protocol_version === undefined ||
++      result.max_bytes === params.maxBytes && result.returned! <= (params.limit ?? 100) && result.next_cursor !== params.cursor) ? result : null;
+   }
+ 
+   async getCollaborationActivity(id: string, params: { cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {
+@@ -1210,6 +1218,16 @@ export class ApiClient {
+       result.items.length <= limit && result.next_cursor !== params.cursor ? result : null;
+   }
+ 
++  async getCollaborationRunHandoff(id: string, runId: string, options?: { signal?: AbortSignal }) {
++    if (![id, runId].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid collaboration handoff query");
++    const result = parseCollaborationRunHandoff(await this.fetchCollaborationOptionalHistory(
++      collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/runs/${encodeURIComponent(runId)}/handoff`),
++      { signal: options?.signal, cache: "no-store" },
++      COLLABORATION_HANDOFF_MAX_JSON_BYTES,
++    ));
++    return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.run_id, runId) ? result : null;
++  }
++
+   async getCollaborationCommandHistory(id: string, params: { cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {
+     const limit = params.limit ?? 50;
+     if (!z.uuid().safeParse(id).success || !Number.isInteger(limit) || limit < 1 || limit > 100 ||
+diff --git a/packages/views/collaboration/execution-panel.test.tsx b/packages/views/collaboration/execution-panel.test.tsx
+index fb047b6a8..69bd9a09b 100644
+--- a/packages/views/collaboration/execution-panel.test.tsx
++++ b/packages/views/collaboration/execution-panel.test.tsx
+@@ -61,6 +61,27 @@ function recordedPage() {
+   };
+ }
+ 
++function stubRecordedReads(...responses: Response[]) {
++  const records = vi.fn((_url: string) => Promise.resolve(responses.shift()!));
++  const fetch = vi.fn((url: string) => {
++    const path = new URL(url).pathname;
++    if (path.endsWith("/records")) return records(url);
++    // Handoff has an independent response queue; its boundary/error matrix is
++    // covered in core/run-handoff-queries and the handoff component suite.
++    if (path.endsWith("/handoff")) {
++      const empty = { total: 0, returned: 0, truncated: false, items: [] };
++      return Promise.resolve(new Response(JSON.stringify({ protocol_version: 1, issue_id: id, run_id: path.split("/").at(-2), mode: "live", event_seq: "1",
++        authority: { status: "in_progress", handler_id: id }, assignment: { role: "agent", step_key: "agent" }, handoff: null, information_request: null,
++        memory: { version: "0", availability: "absent" }, inputs: empty, results: empty,
++        wakeup_causes: { ...empty, completeness: "unknown" }, sources: [], missing: [] })));
++    }
++    if (path === `/api/collaboration/issues/${id}`) return Promise.resolve(new Response(JSON.stringify(collaborationExecutionIssueFixture)));
++    throw new Error(`Unexpected read: ${path}`);
++  });
++  vi.stubGlobal("fetch", fetch);
++  return { fetch, records };
++}
++
+ // Core owns record parsing, access epochs and page-cursor matrices. These tests
+ // exercise lazy disclosure, exact displayed telemetry and user-driven recovery.
+ it("opens recorded content lazily, retains the group context and retries the next page without losing the first", async () => {
+@@ -70,10 +91,8 @@ it("opens recorded content lazily, retains the group context and retries the nex
+     { id: "activity:one", kind: "squad_activity", outcome: "no_action", body: "Recorded squad activity" },
+     { id: "result:one", kind: "result", outcome: "success", body: "Recorded final result" },
+   ] };
+-  const fetch = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify(first)))
+-    .mockResolvedValueOnce(new Response(JSON.stringify({ error: "temporarily unavailable" }), { status: 503 }))
+-    .mockResolvedValueOnce(new Response(JSON.stringify(second)));
+-  vi.stubGlobal("fetch", fetch);
++  const { fetch, records: recordRequests } = stubRecordedReads(new Response(JSON.stringify(first)),
++    new Response(JSON.stringify({ error: "temporarily unavailable" }), { status: 503 }), new Response(JSON.stringify(second)));
+   mount();
+   expect(fetch).not.toHaveBeenCalled();
+   await userEvent.click(screen.getByRole("button", { name: `View records for ${first.run.id}` }));
+@@ -94,8 +113,8 @@ it("opens recorded content lazily, retains the group context and retries the nex
+   expect(within(records).getAllByText("Frozen question")).toHaveLength(1);
+   expect(within(records).queryByRole("button", { name: "Load more records" })).not.toBeInTheDocument();
+   expect(within(records).getByRole("link", { name: "Open comment" })).toHaveAttribute("href", `/account?view=participating&issue=${id}#comment-${id}`);
+-  expect(fetch.mock.calls[1]?.[0]).toContain("cursor=records-page-two");
+-  expect(fetch.mock.calls[2]?.[0]).toContain("cursor=records-page-two");
++  expect(recordRequests.mock.calls[1]?.[0]).toContain("cursor=records-page-two");
++  expect(recordRequests.mock.calls[2]?.[0]).toContain("cursor=records-page-two");
+ });
+ 
+ it("opens a linked run with a legacy result while showing missing input, recording and usage explicitly", async () => {
+@@ -115,8 +134,8 @@ it("opens a linked run with a legacy result while showing missing input, recordi
+ 
+ it("removes the open transcript when a later page confirms access loss", async () => {
+   const page = recordedPage();
+-  vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce(new Response(JSON.stringify(page)))
+-    .mockResolvedValueOnce(new Response(JSON.stringify({ code: "not_found", error: "Not found" }), { status: 404 })));
++  stubRecordedReads(new Response(JSON.stringify(page)),
++    new Response(JSON.stringify({ code: "not_found", error: "Not found" }), { status: 404 }));
+   mount(page.run.id);
+   expect(await screen.findByText("Frozen question")).toBeInTheDocument();
+   await userEvent.click(screen.getByRole("button", { name: "Load more records" }));
+diff --git a/packages/views/collaboration/run-records.tsx b/packages/views/collaboration/run-records.tsx
+index 5999ec59e..5d5bb6991 100644
+--- a/packages/views/collaboration/run-records.tsx
++++ b/packages/views/collaboration/run-records.tsx
+@@ -14,6 +14,7 @@ import { CollaborationCommentAttachments } from "./attachment-panel";
+ import { useCollaborationLabels } from "./labels";
+ import { CollaborationQueryState } from "./query-state";
+ import { CollaborationPreparationSummary } from "./preparation-summary";
++import { CollaborationRunHandoff } from "./run-handoff";
+ 
+ export function CollaborationRunDisclosure({ scope, issue, run, group, selectedRunId }: {
+   scope: CollaborationScope; issue: CollaborationIssue; run: CollaborationExecutionRun;
+@@ -54,11 +55,13 @@ export function CollaborationRunDisclosure({ scope, issue, run, group, selectedR
+       </Button>
+     </div>
+     {run.execution_mode === "host_process_supervision_v1" && <p className="text-caption text-muted-foreground"><RunCleanup run={run} /></p>}
+-    {open && <RunRecords key={`${scope.apiScope}:${scope.userId}:${issueId}:${run.id}`} scope={scope} issueId={issueId} runId={run.id} group={group} />}
++    {open && <RunRecords key={`${scope.apiScope}:${scope.userId}:${issueId}:${run.id}`} scope={scope} issueId={issueId} runId={run.id} group={group} handler={issue.handler} />}
+   </li>;
+ }
+ 
+-function RunRecords({ scope, issueId, runId, group }: { scope: CollaborationScope; issueId: string; runId: string; group: CollaborationExecutionGroup }) {
++function RunRecords({ scope, issueId, runId, group, handler }: {
++  scope: CollaborationScope; issueId: string; runId: string; group: CollaborationExecutionGroup; handler: CollaborationIssue["handler"];
++}) {
+   const { t } = useT("collaboration");
+   const labels = useCollaborationLabels();
+   const client = useQueryClient();
+@@ -87,9 +90,15 @@ function RunRecords({ scope, issueId, runId, group }: { scope: CollaborationScop
+       </dl>
+       {run.launch_count !== undefined && <p className="text-caption text-muted-foreground">{t(($) => $.host.launches, { launches: run.launch_count })}</p>}
+       {!page.recording.inputs_recorded && <p className="text-caption text-muted-foreground">{t(($) => $.records.inputsMissing)}</p>}
++      <p className="text-caption text-muted-foreground">{page.recording.retention
++        ? page.recording.retention.observed_through === null
++          ? t(($) => $.recall.retainedUnknown, { retained: page.recording.retention.retained_through })
++          : t(($) => $.recall.retainedKnown, { retained: page.recording.retention.retained_through, observed: page.recording.retention.observed_through })
++        : t(($) => $.recall.retentionUnavailable)}</p>
+       <AppLink href={accountPath({ view: "participating", issueId, runId })} className="inline-flex min-h-11 items-center text-caption underline underline-offset-4">{t(($) => $.records.permalink)}</AppLink>
+       <RecordedResource page={page} groupId={group.id} />
+       <CollaborationPreparationSummary preparation={page.preparation} />
++      <CollaborationRunHandoff scope={scope} issueId={issueId} runId={runId} handler={handler} />
+       <RecordedUsage usage={page.usage} />
+       {items.length === 0 && <p className="text-body text-muted-foreground">{t(($) => $.records.empty)}</p>}
+       <ol className="space-y-6">{items.map((item) => <RecordedEntry key={item.id} item={item} scope={scope} issueId={issueId} />)}</ol>

@@ -1,0 +1,71 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+> multica@0.2.0 typecheck /Volumes/artisan/code/2026/mc-runtime-recording-recovery-20261101
+> turbo typecheck --filter=!@multica/mobile
+
+• turbo 2.9.5
+
+   • Packages in scope: @multica/core, @multica/desktop, @multica/docs, @multica/eslint-config, @multica/plugin-sdk, @multica/tsconfig, @multica/ui, @multica/views, @multica/web
+   • Running typecheck in 9 packages
+   • Remote caching disabled, using shared worktree cache
+
+@multica/web:mdx: cache hit, replaying logs 18fccae07e8160d1
+@multica/web:mdx: 
+@multica/web:mdx: > @multica/web@0.4.40 mdx /Volumes/artisan/code/2026/multica-0.4.37/apps/web
+@multica/web:mdx: > fumadocs-mdx
+@multica/web:mdx: 
+@multica/web:mdx: [MDX] types generated
+@multica/core:typecheck: cache hit, replaying logs 2e0ed78587a14b35
+@multica/core:typecheck: 
+@multica/core:typecheck: > @multica/core@0.0.0 typecheck /Volumes/artisan/code/2026/mc-runtime-recording-recovery-20261101/packages/core
+@multica/docs:mdx: cache hit, replaying logs 54077e929f36adb0
+@multica/core:typecheck: > tsc --noEmit
+@multica/core:typecheck: 
+@multica/docs:mdx: 
+@multica/docs:mdx: > @multica/docs@0.2.0 mdx /Volumes/artisan/code/2026/multica-0.4.37/apps/docs
+@multica/docs:mdx: > fumadocs-mdx
+@multica/docs:mdx: 
+@multica/docs:mdx: [MDX] types generated
+@multica/plugin-sdk:typecheck: cache hit, replaying logs e1c4c06fe757cff9
+@multica/plugin-sdk:typecheck: 
+@multica/plugin-sdk:typecheck: > @multica/plugin-sdk@0.1.0 typecheck /Volumes/artisan/code/2026/multica-0.4.37/packages/plugin-sdk
+@multica/plugin-sdk:typecheck: > tsc --noEmit
+@multica/plugin-sdk:typecheck: 
+@multica/ui:typecheck: cache hit, replaying logs 7e45b187510daf23
+@multica/ui:typecheck: 
+@multica/ui:typecheck: > @multica/ui@0.0.0 typecheck /Volumes/artisan/code/2026/multica-0.4.37/packages/ui
+@multica/ui:typecheck: > tsc --noEmit
+@multica/ui:typecheck: 
+@multica/views:typecheck: cache miss, executing 21425b753d776f5f
+@multica/docs:typecheck: cache hit, replaying logs 6c77a913661ceb1d
+@multica/docs:typecheck: 
+@multica/docs:typecheck: > @multica/docs@0.2.0 typecheck /Volumes/artisan/code/2026/multica-0.4.37/apps/docs
+@multica/docs:typecheck: > tsc --noEmit
+@multica/docs:typecheck: 
+@multica/views:typecheck: 
+@multica/views:typecheck: > @multica/views@0.0.0 typecheck /Volumes/artisan/code/2026/mc-runtime-recording-recovery-20261101/packages/views
+@multica/views:typecheck: > tsc --noEmit
+@multica/views:typecheck: 
+@multica/web:typecheck: cache miss, executing 723b1204cfff3005
+@multica/desktop:typecheck: cache miss, executing c8978245b14578bf
+@multica/web:typecheck: 
+@multica/web:typecheck: > @multica/web@0.4.40 typecheck /Volumes/artisan/code/2026/mc-runtime-recording-recovery-20261101/apps/web
+@multica/web:typecheck: > tsc --noEmit
+@multica/web:typecheck: 
+@multica/desktop:typecheck: 
+@multica/desktop:typecheck: > @multica/desktop@0.1.0 typecheck /Volumes/artisan/code/2026/mc-runtime-recording-recovery-20261101/apps/desktop
+@multica/desktop:typecheck: > pnpm run typecheck:node && pnpm run typecheck:web
+@multica/desktop:typecheck: 
+@multica/desktop:typecheck: 
+@multica/desktop:typecheck: > @multica/desktop@0.1.0 typecheck:node /Volumes/artisan/code/2026/mc-runtime-recording-recovery-20261101/apps/desktop
+@multica/desktop:typecheck: > tsc --noEmit -p tsconfig.node.json --composite false
+@multica/desktop:typecheck: 
+@multica/desktop:typecheck: 
+@multica/desktop:typecheck: > @multica/desktop@0.1.0 typecheck:web /Volumes/artisan/code/2026/mc-runtime-recording-recovery-20261101/apps/desktop
+@multica/desktop:typecheck: > tsc --noEmit -p tsconfig.web.json --composite false
+@multica/desktop:typecheck: 
+
+ Tasks:    9 successful, 9 total
+Cached:    6 cached, 9 total
+  Time:    1m0.238s 
+

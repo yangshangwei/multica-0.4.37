@@ -1,0 +1,150 @@
+{
+  "source_head": "4d0d1a76ddcbbf2ab985550d694a38263aaff25f",
+  "files": [
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/implement.md",
+      "sha256": "164da3377ddc4d972a49ccd0199463d1dd91d7a7e6802bebff7b05edcee38a06",
+      "ownership": "borrowed_parallel_lane"
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/prd.md",
+      "sha256": "1044942c468d8ba6cc13088b65452bafd5fc57390603d311b35cb6d8d59e5145",
+      "ownership": "borrowed_parallel_lane"
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/task.json",
+      "sha256": "58e6a198f03336d1b3bccd0e3d75cc644a64ee245c8264d9fd25c6af8fc9e085",
+      "ownership": "borrowed_parallel_lane"
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/implement.jsonl",
+      "sha256": "a5e50fdc9dc4da42a8cefe98f7b643250ebfad9bb55bcf5ace89a3073db22cf1",
+      "ownership": "borrowed_parallel_lane"
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/check.jsonl",
+      "sha256": "c638f66af4f152831a5dcfd0f0cf434043f1dd4f14025cb3fe41a67160fb7c97",
+      "ownership": "borrowed_parallel_lane"
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/design.md",
+      "sha256": "a3cacc0e38b8e57fbd3d157d087d129ccfd1c4e3c25cf5d8237a95a11684cb38",
+      "ownership": "borrowed_parallel_lane"
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/entry-verification.md",
+      "sha256": "fb0bc4c2256cdbf20f68c13d005533cf4a3d3eb2f21d09cc9741e8d267346656",
+      "ownership": "borrowed_parallel_lane"
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/plan-review.md",
+      "sha256": "dd55a88863e67db592e32060102d7f8c22460059c93462aa2b9b9d3166bc68fa",
+      "ownership": "borrowed_parallel_lane"
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/recall.md",
+      "sha256": "feccdd5b1905dd19477a0a629bbde2dfe9a46e8d097adc408a9836ed9adb5195",
+      "ownership": "borrowed_parallel_lane"
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/checkpoints.md",
+      "sha256": "0a38c181fba8595433ca047b04eff866691e8efb378c55f7fda082ab6fdb80f9",
+      "ownership": "borrowed_parallel_lane"
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/handoff.md",
+      "sha256": "f564ad9440780d9d806483983b3b4701ac3e84049bd86dfbeff7f5b408a843ee",
+      "ownership": "borrowed_parallel_lane"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/client.go",
+      "sha256": "b2228ebcd180c4b8bfa51a744c2aa7793fe23ad7cd567cfd670900e17f3fd6ea",
+      "ownership": "borrowed_parallel_lane",
+      "git_blob": "61d38bdc6ffced1a77ff2cd62700bf67c461d20e"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/client_host.go",
+      "sha256": "43f3bc3383917b772f3ec4df3160491c9ec8078ffaa164aeb1f7391ffdd24f7b",
+      "ownership": "borrowed_parallel_lane",
+      "git_blob": "3544345344de3182729b04019d7c598741a2d7c1"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration.go",
+      "sha256": "b5f274a62d0891024eaca29cc871ef2b4ca6a548de66981d9d55e47c6ae5d8c8",
+      "ownership": "borrowed_parallel_lane",
+      "git_blob": "d75089f82399219161faf64c99a006ff48990d8d"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_record.go",
+      "sha256": "0c2acdd407516d3200e16ce54eeaa00995baef945af107226146b53388538d7e",
+      "ownership": "borrowed_parallel_lane",
+      "git_blob": "ae5674d64864874e586e79b615c6f3b98bdcbcf7"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_checkpoint.go",
+      "sha256": "bd1d0a8c80b057fb1dc33ff84511ae164f00da4ad302813b5cac2d409adc83eb",
+      "ownership": "borrowed_parallel_lane",
+      "git_blob": "60e9efc6522a9eae1333e0b9046bb993f139408f"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_checkpoint_test.go",
+      "sha256": "f729fe36a0bb3a2ce300f94721d81e507b3f759c4381a0dbe03f5d6f1bbc645d",
+      "ownership": "borrowed_parallel_lane",
+      "git_blob": "642fedbd8c3d9de02f5e6957b8eda10ccb999d17"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_handoff.go",
+      "sha256": "49deb3e768e76383bf8b5609308fd4054e0f0855b66fbb85588714d355dcb326",
+      "ownership": "borrowed_parallel_lane",
+      "git_blob": "b839aad1ccbb81a06bf6afd47532cc21ed654091"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_handoff_test.go",
+      "sha256": "dfced80cf29a3684c049aa46cc78d3847c9489a3c40dd6e45621cd461e3b1b36",
+      "ownership": "borrowed_parallel_lane",
+      "git_blob": "071b8b82244e9ca3acbba85647018b16c5cf5c51"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_ledger.go",
+      "sha256": "ab3b8379622d9c80080080136c79e540e237b456bf2a454bcf6673cd003ea9fe",
+      "ownership": "borrowed_parallel_lane",
+      "git_blob": "8ed815293c93144bd0abf72fa077cf8e68b25396"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_recording.go",
+      "sha256": "176f066148acc7662d951556a7436ddfd15278a55d91ab33ce0d800fda322a86",
+      "ownership": "borrowed_parallel_lane",
+      "git_blob": "be94bbb81c2be67393d46f7db5d7b85d1ff4760b"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_runner.go",
+      "sha256": "78f3dd65e3bb7837652c9968b028c9bb492e1023dc61e434f8315e57b6dec66e",
+      "ownership": "borrowed_parallel_lane",
+      "git_blob": "7efbe861901a62e839d2f8a1208c8486060c5342"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_checkpoint_ledger.go",
+      "sha256": "e3db1ac44dde190fae20abdd208e9dafdd648f80a540b5e069a71d21338c39cf",
+      "ownership": "borrowed_parallel_lane",
+      "git_blob": "130170331cd07e7398b5bb3b4bcf400352b57fb0"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_checkpoints.go",
+      "sha256": "f131d25ccf459f6ecd51546a3701027b93ef4727226f5319f8fd12d0a665a996",
+      "ownership": "borrowed_parallel_lane",
+      "git_blob": "ea9943facb3da436f2b41c9f865006a19ab3bb64"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff.go",
+      "sha256": "62a9f2c0ac15ced88b0274e17a3f27753caf5a92d89b7bfbeeb3053aadbbf811",
+      "ownership": "borrowed_parallel_lane",
+      "git_blob": "9de708756f863a2cbddbe9881e62e3dd64d8687a"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_recall.go",
+      "sha256": "1260152541fb00abb28dd1eb2f6db6fb145155b66b5dfa84243b07c61c81c3cd",
+      "ownership": "borrowed_parallel_lane",
+      "git_blob": "c089a4f28d71b2fafe8c4aabc837b16b22e0882c"
+    }
+  ]
+}

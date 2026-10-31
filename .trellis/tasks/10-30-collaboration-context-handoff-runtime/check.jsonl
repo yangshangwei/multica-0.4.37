@@ -1,0 +1,11 @@
+{"file":"CLAUDE.md","reason":"Verify package boundaries, API compatibility, migration rules and canonical tests"}
+{"file":".trellis/spec/server/security-boundaries.md","reason":"No authority expansion through provenance, replay, content references or termination metadata"}
+{"file":".trellis/spec/server/collaboration-host-execution.md","reason":"Verify launch identity, original proof recovery and memory purge semantics"}
+{"file":".trellis/spec/server/collaboration-squads.md","reason":"Complete readers and lossless coalescing without changing nonlaunch/capacity rules"}
+{"file":".trellis/spec/server/collaboration-records.md","reason":"Internal events cannot break installed record readers or stable pagination"}
+{"file":".trellis/spec/server/collaboration-runtime-cli.md","reason":"CLI allowlist, same-key retry and no ambient credentials"}
+{"file":".trellis/spec/core/frontend/collaboration-workbench.md","reason":"Strict response schemas, human read authority and shared UI ownership"}
+{"file":".trellis/spec/web/frontend/e2e-run-environment.md","reason":"Production Web verification, exact launch/HEAD evidence and separate Desktop acceptance"}
+{"file":".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/checkpoints.md","reason":"Authority-loss races, content-free ACK/seal, bounds and prefix/suffix deduplication"}
+{"file":".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/handoff.md","reason":"Immutable dispatch source, no fabricated final answer, actual launch injection and purge safety"}
+{"file":".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/recall.md","reason":"No cursor loops or lost long-comment text, author capability versus historical admission"}

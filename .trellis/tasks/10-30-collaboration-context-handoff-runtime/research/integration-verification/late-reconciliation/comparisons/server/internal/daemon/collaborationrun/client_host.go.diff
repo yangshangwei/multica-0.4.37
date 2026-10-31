@@ -1,0 +1,40 @@
+--- integration/server/internal/daemon/collaborationrun/client_host.go
++++ late-main/server/internal/daemon/collaborationrun/client_host.go
+@@ -2,6 +2,7 @@
+ 
+ import (
+ 	"context"
++	"encoding/json"
+ 	"net/http"
+ 	"strconv"
+ 
+@@ -56,10 +57,27 @@
+ 	if protocol.ValidateCollaborationRecordingSeal(in) != nil {
+ 		return out, ErrProtocol
+ 	}
+-	if err := c.request(ctx, http.MethodPost, runPath(in.Identity.RunID, "recording/seal"), token, in, &out); err != nil {
++	// Preserve the shared DTO while distinguishing missing bounds from valid zero/null.
++	var raw struct {
++		protocol.CollaborationRecordingRetention
++		RetainedThrough *int            `json:"retained_through"`
++		ObservedThrough json.RawMessage `json:"observed_through"`
++	}
++	if err := c.request(ctx, http.MethodPost, runPath(in.Identity.RunID, "recording/seal"), token, in, &raw); err != nil {
+ 		return out, err
+ 	}
+-	if out.Version != 1 || out.StreamID != in.StreamID || !out.Sealed || out.RetainedThrough < 0 || out.RetainedThrough > protocol.CollaborationRecordItemLimit || out.Reason != in.Reason {
++	if raw.RetainedThrough == nil || len(raw.ObservedThrough) == 0 {
++		return out, ErrProtocol
++	}
++	out = raw.CollaborationRecordingRetention
++	out.RetainedThrough = *raw.RetainedThrough
++	if err := json.Unmarshal(raw.ObservedThrough, &out.ObservedThrough); err != nil {
++		return protocol.CollaborationRecordingRetention{}, ErrProtocol
++	}
++	retention := in
++	retention.AcknowledgedThrough = out.RetainedThrough
++	retention.ObservedThrough = out.ObservedThrough
++	if out.Version != 1 || out.StreamID != in.StreamID || !out.Sealed || out.Reason != in.Reason || protocol.ValidateCollaborationRecordingSeal(retention) != nil {
+ 		return protocol.CollaborationRecordingRetention{}, ErrProtocol
+ 	}
+ 	return out, nil

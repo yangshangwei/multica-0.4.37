@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "test",
+    "./internal/service",
+    "-run",
+    "^TestCollaborationHandoffCursor",
+    "-count=1",
+    "-v"
+  ],
+  "exit_code": 1,
+  "elapsed_seconds": 9.082,
+  "source_before_sha256": "b0e6eed3f4a3ce337aea311dab8b2edcfbfc4487b84dc9847bc744d30ce01d22",
+  "test_sha256": "cfb04eb947049a40cfc757331a7d43cfdc3dae739779cc1fd470c1aec9caf394",
+  "expected_red": true,
+  "database_configured": false
+}

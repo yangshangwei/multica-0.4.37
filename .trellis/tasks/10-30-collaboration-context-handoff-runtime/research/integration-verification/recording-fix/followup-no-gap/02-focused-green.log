@@ -1,0 +1,30 @@
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/invalid_first_batch
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/accepted_prefix_invalid_middle
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_invalid_middle
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_valid_suffix
+--- PASS: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages (0.64s)
+    --- PASS: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/invalid_first_batch (0.13s)
+    --- PASS: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/accepted_prefix_invalid_middle (0.16s)
+    --- PASS: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_invalid_middle (0.16s)
+    --- PASS: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_valid_suffix (0.19s)
+=== RUN   TestHostCheckpointsKeepOriginalPayloadAcrossLostACK
+--- PASS: TestHostCheckpointsKeepOriginalPayloadAcrossLostACK (0.10s)
+=== RUN   TestHostCheckpointBackpressureDoesNotBlockMessageDrain
+--- PASS: TestHostCheckpointBackpressureDoesNotBlockMessageDrain (0.10s)
+=== RUN   TestHostCheckpointLedgerFitsMaximumEscapedRecordingAndClaim
+--- PASS: TestHostCheckpointLedgerFitsMaximumEscapedRecordingAndClaim (0.24s)
+=== RUN   TestHostHandoffCheckpointBlockedRecordingCannotHoldProof
+--- PASS: TestHostHandoffCheckpointBlockedRecordingCannotHoldProof (2.24s)
+=== RUN   TestHostHandoffCheckpointRestartRecoversWithoutExecution
+--- PASS: TestHostHandoffCheckpointRestartRecoversWithoutExecution (0.29s)
+=== RUN   TestHostHandoffCheckpointFailureCleanup
+=== RUN   TestHostHandoffCheckpointFailureCleanup/snapshot_refused
+=== RUN   TestHostHandoffCheckpointFailureCleanup/binding_refused
+=== RUN   TestHostHandoffCheckpointFailureCleanup/fallback_snapshot_drift
+--- PASS: TestHostHandoffCheckpointFailureCleanup (0.63s)
+    --- PASS: TestHostHandoffCheckpointFailureCleanup/snapshot_refused (0.16s)
+    --- PASS: TestHostHandoffCheckpointFailureCleanup/binding_refused (0.18s)
+    --- PASS: TestHostHandoffCheckpointFailureCleanup/fallback_snapshot_drift (0.30s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	4.780s

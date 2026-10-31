@@ -1,0 +1,38 @@
+{
+  "analyzed_at": "2026-10-31T15:39:56.281683+00:00",
+  "prior_diagnosis": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-e2-resume-2026-10-31/E2a_window_fact_newest-baseline/provider-diagnosis.json",
+  "provider_snapshot_sha256": "7b72f7e29c9fb24dcec0045ac322fe8d0d82e4f7d8e86df30dd384db7fac4368",
+  "observed_errors": [
+    {
+      "at": "2026-10-31T13:59:50.157Z",
+      "status": 429,
+      "code": "gateway_concurrency_limit",
+      "type": "rate_limit_error",
+      "message": "Concurrency limit exceeded for account, please retry later"
+    },
+    {
+      "at": "2026-10-31T14:00:22.106Z",
+      "status": 429,
+      "code": "gateway_concurrency_limit",
+      "type": "rate_limit_error",
+      "message": "Concurrency limit exceeded for account, please retry later"
+    },
+    {
+      "at": "2026-10-31T14:02:12.751Z",
+      "status": 429,
+      "code": "gateway_concurrency_limit",
+      "type": "rate_limit_error",
+      "message": "Concurrency limit exceeded for account, please retry later"
+    },
+    {
+      "at": "2026-10-31T14:03:24.304Z",
+      "status": 429,
+      "code": "gateway_concurrency_limit",
+      "type": "rate_limit_error",
+      "message": "Concurrency limit exceeded for account, please retry later"
+    }
+  ],
+  "classification": "provider_gateway_account_concurrency_limit",
+  "limits": "This identifies the observed E2a errors; it does not prove current recovery or identify other users/processes sharing the account. No extra provider request was made.",
+  "next_action": "Finish coding/review activity, then schedule one serial experiment window under original source/model/slot/stop rules; do not kill unrelated processes or change account settings."
+}

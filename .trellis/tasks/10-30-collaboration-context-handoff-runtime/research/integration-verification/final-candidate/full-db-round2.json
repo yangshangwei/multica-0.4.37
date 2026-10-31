@@ -1,0 +1,15 @@
+{
+  "database": "multica_runtime_final2_858f011e",
+  "host": "localhost",
+  "port": 5432,
+  "env_file": "/tmp/multica_runtime_final2_858f011e.env",
+  "purpose": "Final backend gate round2, exclusive, service then handler",
+  "command": [
+    "go",
+    "run",
+    "./cmd/migrate",
+    "up"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 2.664
+}

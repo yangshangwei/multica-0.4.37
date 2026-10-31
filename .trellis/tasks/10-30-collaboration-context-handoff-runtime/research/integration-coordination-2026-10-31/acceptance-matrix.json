@@ -1,0 +1,74 @@
+{
+  "updated_at": "2026-10-31T15:26:25.563898+00:00",
+  "scope": "runtime child AC1-AC10",
+  "source": "initial e3620721e snapshot plus integrated launch-owned delta; main runtime fixes not yet imported",
+  "acceptance_complete": false,
+  "items": [
+    {
+      "id": "AC1",
+      "requirement": "Stop/revocation/exit retention and late-body refusal",
+      "status": "partial",
+      "evidence_or_gap": "Targeted service/handler checks pass; full race/authority matrix and telemetry-independent proof pending."
+    },
+    {
+      "id": "AC2",
+      "requirement": "Idempotency, budgets, checkpoint/outcome merge and missing tails",
+      "status": "blocked_by_reproduced_defect",
+      "evidence_or_gap": "Combined bind/fallback path omits recovery/seal; monotonic seal update and cross-page retention consistency pending owner fixes."
+    },
+    {
+      "id": "AC3",
+      "requirement": "Actual startup input includes versioned handoff and provenance",
+      "status": "initial_checks_passed",
+      "evidence_or_gap": "Owned launch patch integrated; tagged launch16/55 and race14/44 pass; final full snapshot verification pending."
+    },
+    {
+      "id": "AC4",
+      "requirement": "Stable snapshots, refresh separation and purge-safe replay",
+      "status": "under_independent_review",
+      "evidence_or_gap": "Source audit found runtime EventSequence/InformationRequestID mapping omission and permissive missing-run cursor; purge/revision authority audit continuing."
+    },
+    {
+      "id": "AC5",
+      "requirement": "Merged member/comment/input wakes preserve readers and causes",
+      "status": "implemented_not_fully_verified",
+      "evidence_or_gap": "Implementation present; final source handoff and full squad concurrency regressions pending."
+    },
+    {
+      "id": "AC6",
+      "requirement": "Bounded comment recall including long UTF-8 content",
+      "status": "initial_checks_passed",
+      "evidence_or_gap": "3 named service cases and initial Web 55-comment/3-page/fulltext recovery pass; final rebuilt source verification pending."
+    },
+    {
+      "id": "AC7",
+      "requirement": "Untrusted content and credential authority remain bounded",
+      "status": "partial",
+      "evidence_or_gap": "Purpose-boundary/negative handlers have initial evidence; source audit and real E5 remain separate gates."
+    },
+    {
+      "id": "AC8",
+      "requirement": "Old clients and malformed new responses remain safe",
+      "status": "blocked_by_reproduced_defect",
+      "evidence_or_gap": "Protocol/core initial suites pass; missing cross-page retention invariant reproduced and routed to owner."
+    },
+    {
+      "id": "AC9",
+      "requirement": "Shared Web and native Desktop display and recover correctly",
+      "status": "blocked_by_reproduced_defect",
+      "evidence_or_gap": "Native initial1PASS; Web source-run link drops issue/run into view=current. Other handoff/retention/recall/removal assertions passed."
+    },
+    {
+      "id": "AC10",
+      "requirement": "Final reproducible evidence and full-scope check",
+      "status": "in_progress",
+      "evidence_or_gap": "Snapshot/archive, patch hashes, test metadata and isolated environments recorded; final source release/full tests/rebuild/commit pending."
+    }
+  ],
+  "real_experiments": {
+    "original_next": "E2a trial2",
+    "remaining_calls": 23,
+    "new_runtime_evidence": "Separate registration required; prior E0/E1/E2 results do not validate new code"
+  },
+  "knowledge": "Planning drafts only until source/authority contracts stable"
+}

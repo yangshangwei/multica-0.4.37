@@ -1,0 +1,454 @@
+--- a/.trellis/spec/server/collaboration-runtime-recovery.md
++++ b/.trellis/spec/server/collaboration-runtime-recovery.md
+@@ -5,7 +5,7 @@
+ ## 1. Scope / Trigger
+ 
+ Apply when changing runtime polling, candidate pagination, retained proof
+-recovery, runtime deletion, or their transaction boundaries. Listing work must
++recovery, host recording recovery, runtime deletion, or their transaction boundaries. Listing work must
+ give an eligible successor an actual attempt when an earlier object keeps
+ failing. Scanning does not establish permission, capacity, or a successful run.
+ 
+@@ -22,6 +22,10 @@
+ - `Ledger.BeginProofRecovery()`, `ProofRecovery.Next()` and `Close()` coordinate
+   a bounded round through `.collaboration-proof-recovery.cursor` and `.lock`
+   in the shared installation ledger directory.
++- Host ledger version 2 retains original checkpoint payloads/tokens and a
++  metadata-only recording seal. `Runner.recoverHost` calls `recoverHostRecording`
++  and `sealHostRecording`; their POSTs use the original business and termination
++  credentials respectively, never the daemon's management credential.
+ 
+ ## 3. Contracts
+ 
+@@ -72,6 +76,45 @@
+ delete statement, under the runtime fence. Retained business runs, reservations
+ and termination evidence keep their existing lifetime.
+ 
++For host version 2, a previously persisted `phaseProof` receives proof-ACK
++priority before telemetry. `phaseAcknowledged` may still retain checkpoint,
++outcome or seal recovery, but must never Claim, Permit, refresh handoff input,
++start a Provider, or submit the acknowledged proof again. Original Stop and
++launch-termination observations remain independent of recording success.
++
++Checkpoint replay and seal delivery share one total telemetry budget of at most
++one second, shortened to a quarter of the caller's remaining deadline. The
++outcome has its own at-most-ten-second budget, shortened to half the remaining
++caller deadline, so stalled recording cannot consume the outcome/proof window.
++The metadata-only seal is staged after the original Stop/termination/proof path,
++even when the exhausted telemetry budget leaves delivery pending. Never renew
++the telemetry budget for each checkpoint or seal retry. A failed report retains
++its original pending payload and cannot prevent the original proof attempt.
++
++An uncertain seal is replayed with identical identity, attempt, nonce, sequence,
++reason and bounds. After its ACK, a newly learned checkpoint watermark may
++require a same-reason sequence+1. Stage that advance only once every chunk has
++resolved, so successive bounded passes do not exhaust the 32-seal limit. The
++shared `ValidateCollaborationRecordingSealAdvance` enforces monotonic metadata;
++the new sequence may be delivered in the same pass if its budget remains.
++Never mutate an uncertain seal to reflect a newer ACK. The service derives
++retained content from committed events, independently of the sender's count.
++A persisted `Drained` marker is required to know the final observed bound;
++restarting with only a staged prefix leaves the tail unknown.
++
++`Client.RecordingSeal` decodes through the shared
++`CollaborationRecordingRetention.UnmarshalJSON` and its retention validator,
++then checks the response stream, reason and sealed state against the request.
++Both retention-bound fields must be present: `retained_through` is a bounded
++integer and `observed_through` is a bounded integer or explicit null. Missing
++fields, null retained counts, negative/out-of-range counts and observed counts
++below retained counts are `ErrProtocol` and cannot clear pending recovery.
++Do not embed the custom-unmarshaled DTO in a second raw-field wrapper: Go can
++promote its decoder and bypass the wrapper's fields. A `completed` sender
++observation requires a known observed bound but does not prove every observed
++message was retained; a known missing tail remains a valid, incomplete fact.
++Later facts may increase returned bounds on an identical old-seal ACK.
++
+ ## 4. Validation & Error Matrix
+ 
+ | Condition | Required result |
+@@ -84,11 +127,18 @@
+ | First eight proofs fail or have peer-held run locks | Later proof still gets a turn after restart |
+ | Corrupt ledger/cursor or failed cursor persistence | Fail closed; preserve capacity and launch barriers |
+ | Proof ACK arrives after Stop | Settle original run only; explicit Resume remains required |
++| Recording upload remains unavailable or blocked | Bound reports, retain pending telemetry and complete original Stop/proof independently |
++| Fresh host Runner opens an acknowledged but telemetry-pending ledger | Replay original requests only; no new Claim, Permit, Provider or proof |
++| Seal ACK is lost while a checkpoint ACK becomes known | Confirm the identical old seal before staging a same-reason monotonic advance |
++| Missing or invalid retention bounds in a supported seal response | ErrProtocol; keep the original seal pending and accepted proof unchanged |
+ 
+ ## 5. Good / Base / Bad Cases
+ 
+ - Good: seventeen persistent Claim refusals are followed by a real eighteenth
+   Claim/Permit, with reconstructed pollers between each one-item response.
++- Good: blocked recording HTTP remains unreleased while a test-owned Provider
++  process stops and its original proof is acknowledged; a fresh Runner later
++  confirms the original retained requests without starting another process.
+ - Base: old clients keep consuming the original `run_ids` response; no metadata
+   negotiation or ordinary-task fallback is necessary.
+ - Bad: proving that all IDs eventually appear in pages while never checking
+@@ -115,6 +165,18 @@
+ - `collaboration_recovery_test.go` / `collaborationrun/recovery_test.go`: nine
+   proofs, real cross-process locks, lost ACK, shared deadline, all pre-burn
+   phases, malformed files and unchanged authoritative identities/barriers.
++- `host_recording_recovery_test.go`: explicit Stop/proof before blocked-upload
++  release, bounded whole-backlog recovery and pending-proof priority, original
++  seal ACK before monotonic advancement, unknown unflushed tails, and malformed
++  receipts preserving the pending seal and accepted proof across a new Runner.
++- `host_handoff_checkpoint_lifecycle_test.go`: fresh on-disk Runner recovery
++  with unchanged checkpoint/attempt identity and no Claim, snapshot or start;
++  combined handoff/recording failure cannot block original termination proof.
++- `client_recording_ack_test.go`: HTTP receipt decoding and request binding,
++  zero/unknown/missing-tail facts and later original-seal ACK bounds. The full
++  retention matrix belongs to `collaboration_recording_retention_test.go` in
++  `pkg/protocol`. HTTP fakes do not establish real-provider or full-daemon-crash
++  acceptance.
+ 
+ ## 7. Wrong vs Correct
+ 
+@@ -124,3 +186,9 @@
+ Correct: persist one candidate opportunity per dispatch and keep one caller-bound
+ deadline through the complete bounded proof round. Preserve every unconfirmed
+ execution until its original termination protocol supplies proof.
++
++Wrong: wait for every recording chunk before proof, or rewrite an uncertain
++seal after learning another ACK.
++
++Correct: retain exact requests under one bounded telemetry budget, preserve
++proof priority, then advance acknowledged seal metadata after the original ACK.
+--- a/.trellis/spec/server/index.md
++++ b/.trellis/spec/server/index.md
+@@ -17,7 +17,7 @@
+ | [Collaboration targets](./collaboration-targets.md) | Channel FIFO, input history, holds, configuration invalidation, proof flow and v5 reads | Direct/squad service foundation; full product pending |
+ | [Collaboration squads](./collaboration-squads.md) | Frozen grants, M08/M11 readers, nonlaunch return and durable leader order | Static Linux CLI/daemon chain verified; full product pending |
+ | [Collaboration runtime CLI](./collaboration-runtime-cli.md) | Narrow existing commands, shared-context show/update, original write IDs, contained CLI and actual daemon capacity | Static Linux chain verified; general provider/product gates remain |
+-| [Collaboration runtime recovery](./collaboration-runtime-recovery.md) | Persistent fair scans, actual candidate consumption, deletion fences and bounded original-proof recovery | Recovery increment verified; full product pending |
++| [Collaboration runtime recovery](./collaboration-runtime-recovery.md) | Persistent fair scans, actual candidate consumption, deletion fences, original-proof priority and bounded checkpoint/seal recovery | Recovery increments verified; full product pending |
+ | [Collaboration host execution](./collaboration-host-execution.md) | Ordinary Provider execution, shared-context injection/base freeze, per-launch lifecycle/receipts, limited cleanup, authority and v6 compatibility | Implemented behind default-closed host admission; native/account matrix in progress |
+ | [Collaboration startup handoff](./collaboration-startup-handoff.md) | Stable startup snapshots, exact application input binding and daemon-side failure handling | Negotiated daemon contract; model behavior remains separately verified |
+ | [Collaboration context experiments](./collaboration-context-experiments.md) | Gated real-model scenarios, durable private evidence, source/model provenance and behavior scoring | Test-only harness; model results remain sample-scoped |
+--- a/server/internal/daemon/collaborationrun/client_recording_ack_test.go
++++ b/server/internal/daemon/collaborationrun/client_recording_ack_test.go
+@@ -0,0 +1,112 @@
++package collaborationrun
++
++import (
++	"context"
++	"encoding/json"
++	"errors"
++	"net/http"
++	"net/http/httptest"
++	"reflect"
++	"strconv"
++	"testing"
++
++	"github.com/google/uuid"
++	"github.com/multica-ai/multica/server/pkg/protocol"
++)
++
++func TestClientCheckpointACKMatchesOriginalRequestBound(t *testing.T) {
++	checkpoint := protocol.CollaborationRecordingCheckpoint{Version: 1, Identity: testIdentity(), AttemptSeq: "1",
++		AttemptNonce: uuid.NewString(), StreamID: uuid.NewString(), Sequence: 1,
++		Messages: []protocol.CollaborationRecordedMessage{{Kind: "message", Role: "assistant", Body: "original"}}}
++	for _, through := range []int{0, 1, 2} {
++		t.Run(strconv.Itoa(through), func(t *testing.T) {
++			want := protocol.CollaborationCheckpointReceipt{Version: 1, Identity: checkpoint.Identity, StreamID: checkpoint.StreamID,
++				Sequence: checkpoint.Sequence, RetainedThrough: through, Accepted: true}
++			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
++				_ = json.NewEncoder(w).Encode(want)
++			}))
++			defer server.Close()
++			client, err := NewClient(server.URL, "", nil)
++			if err != nil {
++				t.Fatal(err)
++			}
++			out, err := client.Checkpoint(context.Background(), checkpoint, "original-business-token")
++			if through == 1 {
++				if err != nil || out != want {
++					t.Fatalf("original checkpoint ACK rejected: out=%+v err=%v", out, err)
++				}
++			} else if !errors.Is(err, ErrProtocol) || out != (protocol.CollaborationCheckpointReceipt{}) {
++				t.Fatalf("receipt did not match the original checkpoint: out=%+v err=%v", out, err)
++			}
++		})
++	}
++}
++
++// The exhaustive retention field/count matrix belongs to
++// pkg/protocol/collaboration_recording_retention_test.go. These cases exercise
++// the HTTP decoder and the additional request/response binding in the client.
++func TestClientRecordingSealRejectsInvalidACK(t *testing.T) {
++	seal := protocol.CollaborationRecordingSeal{Version: 1, Sequence: 1, Identity: testIdentity(), AttemptSeq: "1",
++		AttemptNonce: uuid.NewString(), StreamID: uuid.NewString(), Reason: "incomplete"}
++	for name, mutate := range map[string]func(map[string]any){
++		"negative observed": func(v map[string]any) { v["observed_through"] = -1 },
++		"missing observed":  func(v map[string]any) { delete(v, "observed_through") },
++		"null retained":     func(v map[string]any) { v["retained_through"] = nil },
++		"other stream":      func(v map[string]any) { v["stream_id"] = uuid.NewString() },
++		"other reason":      func(v map[string]any) { v["reason"] = "stopped" },
++		"unsealed":          func(v map[string]any) { v["sealed"], v["reason"] = false, "incomplete" },
++	} {
++		t.Run(name, func(t *testing.T) {
++			body := map[string]any{"version": 1, "stream_id": seal.StreamID, "sealed": true, "reason": seal.Reason,
++				"retained_through": 0, "observed_through": nil}
++			mutate(body)
++			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
++				_ = json.NewEncoder(w).Encode(body)
++			}))
++			defer server.Close()
++			client, err := NewClient(server.URL, "", nil)
++			if err != nil {
++				t.Fatal(err)
++			}
++			out, err := client.RecordingSeal(context.Background(), seal, "original-termination-token")
++			if !errors.Is(err, ErrProtocol) || !reflect.DeepEqual(out, protocol.CollaborationRecordingRetention{}) {
++				t.Fatalf("invalid seal response became an ACK: out=%+v err=%v", out, err)
++			}
++		})
++	}
++}
++
++func TestClientRecordingSealAcceptsTruthfulRetention(t *testing.T) {
++	bound := func(n int) *int { return &n }
++	for _, tc := range []struct {
++		name      string
++		reason    string
++		retained  int
++		observed  *int
++		requested *int
++	}{
++		{name: "empty complete recording", reason: "completed", observed: bound(0), requested: bound(0)},
++		{name: "completed observation with missing retained tail", reason: "completed", retained: 1, observed: bound(2), requested: bound(2)},
++		{name: "old completed seal ACK retains later known prefix", reason: "completed", retained: 2, observed: bound(2), requested: bound(1)},
++		{name: "stopped unknown tail", reason: "stopped", retained: 1},
++	} {
++		t.Run(tc.name, func(t *testing.T) {
++			seal := protocol.CollaborationRecordingSeal{Version: 1, Sequence: 1, Identity: testIdentity(), AttemptSeq: "1",
++				AttemptNonce: uuid.NewString(), StreamID: uuid.NewString(), ObservedThrough: tc.requested, Reason: tc.reason}
++			want := protocol.CollaborationRecordingRetention{Version: 1, StreamID: seal.StreamID, Sealed: true, Reason: tc.reason,
++				RetainedThrough: tc.retained, ObservedThrough: tc.observed}
++			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
++				_ = json.NewEncoder(w).Encode(want)
++			}))
++			defer server.Close()
++			client, err := NewClient(server.URL, "", nil)
++			if err != nil {
++				t.Fatal(err)
++			}
++			out, err := client.RecordingSeal(context.Background(), seal, "original-termination-token")
++			if err != nil || !reflect.DeepEqual(out, want) {
++				t.Fatalf("truthful seal receipt rejected: out=%+v want=%+v err=%v", out, want, err)
++			}
++		})
++	}
++}
+--- a/server/internal/daemon/collaborationrun/host_recording_recovery_test.go
++++ b/server/internal/daemon/collaborationrun/host_recording_recovery_test.go
+@@ -229,3 +229,209 @@
+ 		t.Fatal("cancelled recovery discarded an unresolved original checkpoint")
+ 	}
+ }
++
++func TestHostRecordingRecoveryBlockedUploadCannotPreventStopAndProof(t *testing.T) {
++	f := newHostRunFixture(t, "wait")
++	f.claim.RecordingVersion = protocol.CollaborationCheckpointVersion
++	key, err := hostSessionKey(f.claim)
++	if err != nil {
++		t.Fatal(err)
++	}
++	session, err := f.runner.Ledger.lockHostSession(key, f.claim.Identity.RunID)
++	if err != nil {
++		t.Fatal(err)
++	}
++	if err := session.save("", true); err != nil {
++		t.Fatal(err)
++	}
++	if err := session.Close(); err != nil {
++		t.Fatal(err)
++	}
++
++	started, terminated, proved, release := make(chan struct{}), make(chan struct{}), make(chan struct{}), make(chan struct{})
++	var startOnce, endOnce, proofOnce sync.Once
++	original := f.server.Config.Handler
++	f.server.Config.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
++		if strings.HasSuffix(r.URL.Path, "/checkpoints") || strings.HasSuffix(r.URL.Path, "/recording/seal") {
++			startOnce.Do(func() { close(started) })
++			<-release
++			w.WriteHeader(http.StatusServiceUnavailable)
++			return
++		}
++		original.ServeHTTP(w, r)
++		if strings.HasSuffix(r.URL.Path, "/termination") {
++			endOnce.Do(func() { close(terminated) })
++		}
++		if strings.HasSuffix(r.URL.Path, "/proof") {
++			proofOnce.Do(func() { close(proved) })
++		}
++	})
++	// Unlike the combined result fixture, this provider is still running when
++	// its continuity message starts uploading and the user requests Stop.
++	ctx, cancel := context.WithTimeout(t.Context(), 12*time.Second)
++	done := make(chan error, 1)
++	exited := make(chan struct{})
++	go func() {
++		defer close(exited)
++		done <- f.runner.Run(ctx, f.claim.Identity.RunID, f.request)
++	}()
++	t.Cleanup(func() {
++		cancel()
++		close(release)
++		select {
++		case <-exited:
++		case <-time.After(3 * time.Second):
++			t.Error("Runner did not exit during bounded fixture teardown")
++		}
++	})
++	f.waitForStart(t)
++	select {
++	case <-started:
++	case <-time.After(6 * time.Second):
++		t.Fatal("recording upload did not begin while the provider waited")
++	}
++	select {
++	case err := <-done:
++		t.Fatalf("fixture ended before an explicit Stop: %v", err)
++	default:
++	}
++	f.mu.Lock()
++	f.stop = true
++	f.mu.Unlock()
++	select {
++	case <-terminated:
++	case <-time.After(2 * time.Second):
++		t.Fatal("blocked upload prevented managed provider termination")
++	}
++	select {
++	case <-proved:
++	case <-time.After(3 * time.Second):
++		t.Fatal("blocked upload prevented the original proof before release")
++	}
++	select {
++	case err := <-done:
++		if errors.Is(err, ErrProofPending) || errors.Is(err, ErrUnconfirmed) {
++			t.Fatalf("recording failure became unconfirmed termination: %v", err)
++		}
++	case <-time.After(3 * time.Second):
++		t.Fatal("recording recovery prevented bounded return after proof")
++	}
++	local, err := f.runner.Ledger.Lock(f.request.DeploymentID, f.request.InstallationID, f.claim.Identity.RunID)
++	if err != nil {
++		t.Fatal(err)
++	}
++	defer local.Close()
++	if local.record.Phase != phaseAcknowledged || !local.record.Host.Stopped || local.record.Host.Recording.Seal == nil || !hostRecordingPending(local.record.Host) {
++		t.Fatal("blocked recording lost the accepted Stop/proof or pending metadata seal")
++	}
++	if local.record.Proof.State != "host_exit_observed" || len(f.starts(t)) != 1 {
++		t.Fatal("Stop did not retain the original managed launch termination")
++	}
++}
++
++func TestHostRecordingRecoveryMalformedSealACKKeepsOriginalPending(t *testing.T) {
++	ledger, local := retainedHostRecordingFixture(t, 1)
++	defer local.Close()
++	runID, identity, proof := local.runID, local.record.Identity, *local.record.Proof
++	var mu sync.Mutex
++	var requests []string
++	var seals []protocol.CollaborationRecordingSeal
++	mode := "lost_ack"
++	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
++		mu.Lock()
++		defer mu.Unlock()
++		requests = append(requests, r.URL.Path)
++		switch r.URL.Path {
++		case runPath(runID, "proof"):
++			_ = json.NewEncoder(w).Encode(protocol.CollaborationRunProofReceipt{ProtocolVersion: 3, Identity: identity, ReceiptID: proof.ReceiptID, Accepted: true})
++		case runPath(runID, "checkpoints"):
++			var p protocol.CollaborationRecordingCheckpoint
++			if err := json.NewDecoder(r.Body).Decode(&p); err != nil {
++				t.Error(err)
++				return
++			}
++			_ = json.NewEncoder(w).Encode(protocol.CollaborationCheckpointReceipt{Version: 1, Identity: identity, StreamID: p.StreamID, Sequence: p.Sequence, RetainedThrough: 1, Accepted: true})
++		case runPath(runID, "recording/seal"):
++			var seal protocol.CollaborationRecordingSeal
++			if err := json.NewDecoder(r.Body).Decode(&seal); err != nil {
++				t.Error(err)
++				return
++			}
++			seals = append(seals, seal)
++			if mode == "lost_ack" {
++				w.WriteHeader(http.StatusServiceUnavailable)
++				return
++			}
++			observed := seal.ObservedThrough
++			if mode == "malformed" {
++				negative := -1
++				observed = &negative
++			}
++			_ = json.NewEncoder(w).Encode(protocol.CollaborationRecordingRetention{Version: 1, StreamID: seal.StreamID,
++				RetainedThrough: 1, ObservedThrough: observed, Sealed: true, Reason: seal.Reason})
++		default:
++			t.Errorf("recording recovery invoked another operation: %s", r.URL.Path)
++			w.WriteHeader(http.StatusForbidden)
++		}
++	}))
++	defer server.Close()
++	client, err := NewClient(server.URL, "", nil)
++	if err != nil {
++		t.Fatal(err)
++	}
++	if err := (&Runner{Ledger: ledger, Client: client}).recoverHost(t.Context(), local); err == nil || local.record.Phase != phaseAcknowledged || local.record.Host.Recording.SealAccepted {
++		t.Fatalf("fixture did not retain an uncertain seal after proof ACK: %v", err)
++	}
++	original := *local.record.Host.Recording.Seal
++	if err := local.Close(); err != nil {
++		t.Fatal(err)
++	}
++	mu.Lock()
++	mode, requests = "malformed", nil
++	mu.Unlock()
++	reopened, err := OpenLedger(ledger.dir)
++	if err != nil {
++		t.Fatal(err)
++	}
++	restarted := &Runner{Ledger: reopened, Client: client}
++	request := protocol.CollaborationRunClaimRequest{DeploymentID: identity.DeploymentID, InstallationID: identity.InstallationID}
++	if err := restarted.Run(t.Context(), runID, request); !errors.Is(err, ErrProtocol) {
++		t.Fatalf("malformed seal response was not refused: %v", err)
++	}
++	local, err = reopened.Lock(identity.DeploymentID, identity.InstallationID, runID)
++	if err != nil {
++		t.Fatal(err)
++	}
++	defer local.Close()
++	recording := local.record.Host.Recording
++	if local.record.Phase != phaseAcknowledged || recording.SealAccepted || !hostRecordingPending(local.record.Host) || !reflect.DeepEqual(*recording.Seal, original) || !reflect.DeepEqual(*local.record.Proof, proof) {
++		t.Fatal("malformed ACK changed the accepted proof or original pending seal")
++	}
++	if err := local.Close(); err != nil {
++		t.Fatal(err)
++	}
++	mu.Lock()
++	mode = "available"
++	mu.Unlock()
++	if err := restarted.Run(t.Context(), runID, request); err != nil {
++		t.Fatal(err)
++	}
++	if err := restarted.Run(t.Context(), runID, request); err != nil {
++		t.Fatal(err)
++	}
++	mu.Lock()
++	defer mu.Unlock()
++	if len(requests) != 2 || len(seals) != 3 {
++		t.Fatalf("recovery repeated an acknowledged operation: requests=%v seals=%d", requests, len(seals))
++	}
++	for _, path := range requests {
++		if path != runPath(runID, "recording/seal") {
++			t.Fatalf("restart performed a nonrecording operation: %s", path)
++		}
++	}
++	for _, seal := range seals {
++		if !reflect.DeepEqual(seal, original) {
++			t.Fatal("seal recovery changed its original identity, key or payload")
++		}
++	}
++}

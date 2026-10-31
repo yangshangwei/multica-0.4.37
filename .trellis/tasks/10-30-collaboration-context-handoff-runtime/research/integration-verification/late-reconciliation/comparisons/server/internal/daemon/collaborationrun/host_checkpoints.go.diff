@@ -1,0 +1,237 @@
+--- integration/server/internal/daemon/collaborationrun/host_checkpoints.go
++++ late-main/server/internal/daemon/collaborationrun/host_checkpoints.go
+@@ -15,7 +15,6 @@
+ // A single sender owns bounded batching; provider drains never wait on HTTP.
+ type hostCheckpointSender struct {
+ 	supervisor *hostSupervisor
+-	record     *hostRecording
+ 	ctx        context.Context
+ 	messages   chan protocol.CollaborationRecordedMessage
+ 	done       chan struct{}
+@@ -38,7 +37,7 @@
+ 	if err != nil {
+ 		return nil, err
+ 	}
+-	sender := &hostCheckpointSender{supervisor: s, record: record, ctx: ctx, messages: make(chan protocol.CollaborationRecordedMessage, 32), done: make(chan struct{})}
++	sender := &hostCheckpointSender{supervisor: s, ctx: ctx, messages: make(chan protocol.CollaborationRecordedMessage, 32), done: make(chan struct{})}
+ 	record.checkpoints = sender
+ 	record.streamID = stream
+ 	go sender.run()
+@@ -67,20 +66,6 @@
+ 	}
+ 	s.once.Do(func() { close(s.messages) })
+ 	<-s.done
+-	// Only the caller that finished draining Provider output knows the tail.
+-	// A restarted daemon cannot infer that fact from the last stored chunk.
+-	reason := ""
+-	if s.closed.Load() {
+-		reason = "recording_limit"
+-	} else if s.record.partial {
+-		reason = "incomplete"
+-	}
+-	s.supervisor.mu.Lock()
+-	err := s.supervisor.local.finishHostRecording(reason)
+-	s.supervisor.mu.Unlock()
+-	if err != nil {
+-		s.failed.Store(true)
+-	}
+ }
+ 
+ func (s *hostCheckpointSender) acknowledged() int {
+@@ -98,11 +83,8 @@
+ 	defer timer.Stop()
+ 	batch := []protocol.CollaborationRecordedMessage{}
+ 	bytes := 0
+-	// A local staging failure loses this batch. Later queued messages cannot
+-	// reuse its offsets; HTTP uncertainty still has a durable original payload.
+-	stagingFailed := false
+ 	flush := func() {
+-		if stagingFailed || len(batch) == 0 {
++		if len(batch) == 0 {
+ 			return
+ 		}
+ 		supervisor := s.supervisor
+@@ -117,7 +99,6 @@
+ 		launch, found := lastAuthorizedRecordingLaunch(local.record.Host)
+ 		if !found {
+ 			supervisor.mu.Unlock()
+-			stagingFailed = true
+ 			s.failed.Store(true)
+ 			s.closed.Store(true)
+ 			batch = nil
+@@ -131,7 +112,6 @@
+ 		batch = []protocol.CollaborationRecordedMessage{}
+ 		bytes = 0
+ 		if err != nil {
+-			stagingFailed = true
+ 			s.failed.Store(true)
+ 			s.closed.Store(true)
+ 			return
+@@ -159,13 +139,15 @@
+ 		case m, ok := <-s.messages:
+ 			if !ok {
+ 				flush()
++				if s.closed.Load() {
++					s.supervisor.mu.Lock()
++					_ = s.supervisor.local.closeHostRecording("recording_limit")
++					s.supervisor.mu.Unlock()
++				}
+ 				return
+ 			}
+ 			if len(batch) > 0 && (len(batch) >= protocol.CollaborationCheckpointMessageLimit || bytes+len(m.Body) > protocol.CollaborationCheckpointBodyLimit) {
+ 				flush()
+-			}
+-			if stagingFailed {
+-				continue
+ 			}
+ 			batch = append(batch, m)
+ 			bytes += len(m.Body)
+@@ -181,16 +163,6 @@
+ func recordingDefinitiveRejection(err error) bool {
+ 	var refusal *HTTPError
+ 	return errors.As(err, &refusal) && refusal.Status >= 400 && refusal.Status < 500 && refusal.Status != http.StatusRequestTimeout && refusal.Status != http.StatusTooManyRequests
+-}
+-
+-func hostRecordingRecoveryContext(ctx context.Context) (context.Context, context.CancelFunc) {
+-	timeout := time.Second
+-	if deadline, bounded := ctx.Deadline(); bounded {
+-		// Leave room for outcome and the independent final proof. This is one
+-		// budget shared by all chunks and seal retries, never one per request.
+-		timeout = min(timeout, time.Until(deadline)/4)
+-	}
+-	return context.WithTimeout(ctx, timeout)
+ }
+ 
+ // Pending bodies keep their original issued token/key. A failed recording
+@@ -199,7 +171,7 @@
+ 	if local.record.Host.Recording == nil {
+ 		return nil
+ 	}
+-	ctx, cancel := context.WithTimeout(ctx, time.Second)
++	ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
+ 	defer cancel()
+ 	rejected := false
+ 	for i := 0; i < len(local.record.Host.Recording.Chunks); i++ {
+@@ -211,16 +183,15 @@
+ 		if c.Accepted {
+ 			continue
+ 		}
+-		if err := ctx.Err(); err != nil {
+-			return err
+-		}
+ 		if rejected {
+ 			if err := local.acknowledgeHostCheckpoint(c.Sequence, true); err != nil {
+ 				return err
+ 			}
+ 			continue
+ 		}
+-		_, err := r.Client.Checkpoint(ctx, *c.Payload, c.BusinessToken)
++		requestCtx, cancel := context.WithTimeout(ctx, time.Second)
++		_, err := r.Client.Checkpoint(requestCtx, *c.Payload, c.BusinessToken)
++		cancel()
+ 		if err != nil && !recordingDefinitiveRejection(err) {
+ 			return err
+ 		}
+@@ -238,6 +209,27 @@
+ 	rec := local.record.Host.Recording
+ 	if rec == nil {
+ 		return nil
++	}
++	if rec.SealAccepted {
++		if !hostRecordingSealAdvancePending(rec) {
++			return nil
++		}
++		next, err := local.recordingNext()
++		if err != nil {
++			return err
++		}
++		seal := *rec.Seal
++		if seal.Sequence >= protocol.CollaborationRecordingSealLimit {
++			return ErrUnconfirmed
++		}
++		seal.Sequence++
++		seal.AcknowledgedThrough = hostRecordingAcknowledged(rec)
++		next.Host.Recording.Seal = &seal
++		next.Host.Recording.SealAccepted = false
++		if err := local.persistHostRecording(next); err != nil {
++			return err
++		}
++		rec = local.record.Host.Recording
+ 	}
+ 	if rec.Seal == nil {
+ 		next, err := local.recordingNext()
+@@ -262,10 +254,8 @@
+ 			}
+ 		}
+ 		var count *int
+-		if rec.Drained && !rec.Closed {
++		if !rec.Closed {
+ 			count = &observed
+-		} else if reason == "completed" {
+-			reason = "incomplete"
+ 		}
+ 		launch, found := lastAuthorizedRecordingLaunch(next.Host)
+ 		if !found {
+@@ -280,50 +270,18 @@
+ 			return err
+ 		}
+ 	}
+-	ctx, cancel := context.WithTimeout(ctx, time.Second)
+-	defer cancel()
+-	for {
+-		rec = local.record.Host.Recording
+-		if rec.SealAccepted {
+-			through := hostRecordingAcknowledged(rec)
+-			// Coalesce receipt progress into one final update. Incrementing for
+-			// every recovered chunk could exhaust the bounded seal sequence.
+-			if hostRecordingChunksPending(rec) || rec.Seal.AcknowledgedThrough == through {
+-				return nil
+-			}
+-			next, err := local.recordingNext()
+-			if err != nil {
+-				return err
+-			}
+-			seal := *rec.Seal
+-			seal.Sequence++
+-			seal.AcknowledgedThrough = through
+-			if protocol.ValidateCollaborationRecordingSealAdvance(rec.Seal, seal) != nil {
+-				return ErrUnconfirmed
+-			}
+-			next.Host.Recording.Seal, next.Host.Recording.SealAccepted = &seal, false
+-			if err := local.persistHostRecording(next); err != nil {
+-				return err
+-			}
+-		}
+-		if err := ctx.Err(); err != nil {
+-			return err
+-		}
+-		// An unacknowledged seal always replays its persisted identity and
+-		// payload before a new sequence can describe later receipt progress.
+-		_, err := r.Client.RecordingSeal(ctx, *local.record.Host.Recording.Seal, local.record.TerminationToken)
+-		if err != nil {
+-			return err
+-		}
+-		next, err := local.recordingNext()
+-		if err != nil {
+-			return err
+-		}
+-		next.Host.Recording.SealAccepted = true
+-		if err := local.persistHostRecording(next); err != nil {
+-			return err
+-		}
+-	}
++	requestCtx, cancel := context.WithTimeout(ctx, time.Second)
++	_, err := r.Client.RecordingSeal(requestCtx, *local.record.Host.Recording.Seal, local.record.TerminationToken)
++	cancel()
++	if err != nil {
++		return err
++	}
++	next, err := local.recordingNext()
++	if err != nil {
++		return err
++	}
++	next.Host.Recording.SealAccepted = true
++	return local.persistHostRecording(next)
+ }
+ 
+ func lastAuthorizedRecordingLaunch(h *hostLedgerRecord) (hostLaunchRecord, bool) {

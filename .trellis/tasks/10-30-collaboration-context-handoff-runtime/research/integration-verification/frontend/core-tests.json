@@ -1,0 +1,25 @@
+{
+  "command": [
+    "pnpm",
+    "-C",
+    "packages/core",
+    "exec",
+    "vitest",
+    "run",
+    "api/collaboration-content.test.ts",
+    "collaboration/content-schema.test.ts",
+    "collaboration/run-records-schema.test.ts",
+    "collaboration/comment-recall-queries.test.ts",
+    "collaboration/run-handoff-schema.test.ts",
+    "collaboration/run-records-queries.test.ts",
+    "collaboration/comment-actions.test.ts",
+    "--maxWorkers=2",
+    "--reporter=json",
+    "--outputFile=../../.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-verification/frontend/core-tests-results.json"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+  "started_at": "2026-10-31T14:47:30.990371+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 6.128,
+  "finished_at": "2026-10-31T14:47:37.118619+00:00"
+}

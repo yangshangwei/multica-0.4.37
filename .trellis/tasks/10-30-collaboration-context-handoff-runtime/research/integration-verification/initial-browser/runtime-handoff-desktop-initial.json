@@ -1,0 +1,121 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/.omx/runtime-dev/runtime-handoff-desktop-initial-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-runtime-handoff-desktop.spec.ts",
+      "file": "collaboration-runtime-handoff-desktop.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5023,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-31T15:07:02.662Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "desktop-runtime-handoff",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/.omx/runtime-dev/runtime-handoff-desktop-initial-artifacts/collaboration-runtime-hand-40605-s-an-unknown-recording-tail-chromium/attachments/desktop-runtime-handoff-b4d95f88b3b4dfc83a5f235d82983597e7a30f9f.png"
+                    },
+                    {
+                      "name": "runtime-handoff-native-evidence",
+                      "contentType": "application/json",
+                      "body": "ewogICJpc3N1ZV9pZCI6ICIwMWExOTI3Zi1mOTU4LTc5NGUtOWNjYy00NzE3MTgyZGIwMWEiLAogICJydW5faWQiOiAiZDhkNjRkNTQtY2UyMy00NzdiLTg0MWItY2ExMjVlZDNjYmQ5IiwKICAicGxhdGZvcm0iOiAiZGFyd2luIiwKICAicmVuZGVyZXIiOiAiaHR0cDovL2xvY2FsaG9zdDo2Mjc0IiwKICAic291cmNlcyI6IFsKICAgIHsKICAgICAgImZpbGUiOiAiZTJlL2ZpeHR1cmVzL2NvbGxhYm9yYXRpb24tYWNjb3VudC1lbGVjdHJvbi5tanMiLAogICAgICAic2hhMjU2IjogImY5MDIxYWIwNzYzNWYyZjQ4ZDBmOTA2MTNmY2QzYzg1NThjYjcyNjJiM2JkZDJhY2E5OGVkYjMxNjU0NDc1ZDIiCiAgICB9LAogICAgewogICAgICAiZmlsZSI6ICJhcHBzL2Rlc2t0b3Avb3V0L3ByZWxvYWQvaW5kZXguanMiLAogICAgICAic2hhMjU2IjogIjY4YTkwMzZlMjAxYTQ2MmZmZDEwYTFhNDg5MGUwNTJhMGI2YjM0MmMwYjc0ZDZkOGFjNDg5ZDlmNWQ4ZTc4ZTUiCiAgICB9LAogICAgewogICAgICAiZmlsZSI6ICJhcHBzL2Rlc2t0b3Avb3V0L3JlbmRlcmVyL2luZGV4Lmh0bWwiLAogICAgICAic2hhMjU2IjogImQwNGJlMGE1MzNmMTZiMDgxOWM2Yjg2YzJhNGUzNzA4MTI2ODM2ZTQ4NmEzMjZmNDQ1ZjYwNDE5ZTFiY2FhYWIiCiAgICB9CiAgXSwKICAiaGFuZG9mZiI6IHsKICAgICJwcm90b2NvbF92ZXJzaW9uIjogMSwKICAgICJpc3N1ZV9pZCI6ICIwMWExOTI3Zi1mOTU4LTc5NGUtOWNjYy00NzE3MTgyZGIwMWEiLAogICAgInJ1bl9pZCI6ICJkOGQ2NGQ1NC1jZTIzLTQ3N2ItODQxYi1jYTEyNWVkM2NiZDkiLAogICAgIm1vZGUiOiAibGl2ZSIsCiAgICAiZXZlbnRfc2VxIjogIjMiLAogICAgImF1dGhvcml0eSI6IHsKICAgICAgInN0YXR1cyI6ICJ0b2RvIiwKICAgICAgImhhbmRsZXJfaWQiOiAiNzE3MDcwY2UtOTk1Mi00ZDU2LThjNTEtOTQ5OGMyNDAyZmIyIiwKICAgICAgImNyZWF0b3JfaWQiOiAiMGRiYjIwYzUtNDVkZC00MzRlLWJlYmYtNWUzOTdiNGM0NzlmIgogICAgfSwKICAgICJhc3NpZ25tZW50IjogewogICAgICAicm9sZSI6ICJjb250aW51YXRpb24iLAogICAgICAic3RlcF9rZXkiOiAiY29udGludWF0aW9uIiwKICAgICAgInBhcmVudF9ydW5faWQiOiAiYzhmMGExOWItNTY0Ny00MDllLWI4OGUtMTk5NDc3NWRmOGYyIgogICAgfSwKICAgICJoYW5kb2ZmIjogewogICAgICAiaWQiOiAiNjg1YzFhYzItMWM0Yi00MmJmLWI5ZjMtZDE3M2JjZTljMjVhIiwKICAgICAgImF1dGhvcl9pZCI6ICIwZGJiMjBjNS00NWRkLTQzNGUtYmViZi01ZTM5N2I0YzQ3OWYiLAogICAgICAiZnJvbV9pZCI6ICIwZGJiMjBjNS00NWRkLTQzNGUtYmViZi01ZTM5N2I0YzQ3OWYiLAogICAgICAidG9faWQiOiAiNzE3MDcwY2UtOTk1Mi00ZDU2LThjNTEtOTQ5OGMyNDAyZmIyIiwKICAgICAgInB1cnBvc2UiOiAidHJhbnNmZXIiLAogICAgICAiZXZlbnRfc2VxIjogIjIiLAogICAgICAic291cmNlX2lkIjogIjY4NWMxYWMyLTFjNGItNDJiZi1iOWYzLWQxNzNiY2U5YzI1YSIKICAgIH0sCiAgICAiaW5mb3JtYXRpb25fcmVxdWVzdCI6IG51bGwsCiAgICAibWVtb3J5IjogewogICAgICAidmVyc2lvbiI6ICIwIiwKICAgICAgImF2YWlsYWJpbGl0eSI6ICJhYnNlbnQiCiAgICB9LAogICAgImlucHV0cyI6IHsKICAgICAgInRvdGFsIjogMSwKICAgICAgInJldHVybmVkIjogMSwKICAgICAgInRydW5jYXRlZCI6IGZhbHNlLAogICAgICAiaXRlbXMiOiBbCiAgICAgICAgewogICAgICAgICAgImNvbW1hbmRfaWQiOiAiOWNhNDQ0MGEtODQyMi00NGQyLWExMDAtMjY5ZjEwZGQ0YTc3IiwKICAgICAgICAgICJhdXRob3JfaWQiOiAiMGRiYjIwYzUtNDVkZC00MzRlLWJlYmYtNWUzOTdiNGM0NzlmIiwKICAgICAgICAgICJzdGF0ZSI6ICJmYWlsZWQiLAogICAgICAgICAgInJlYWRlcl9ydW5faWRzIjogWwogICAgICAgICAgICAiYzhmMGExOWItNTY0Ny00MDllLWI4OGUtMTk5NDc3NWRmOGYyIiwKICAgICAgICAgICAgImQ4ZDY0ZDU0LWNlMjMtNDc3Yi04NDFiLWNhMTI1ZWQzY2JkOSIKICAgICAgICAgIF0sCiAgICAgICAgICAicmVhZGVyc190cnVuY2F0ZWQiOiBmYWxzZQogICAgICAgIH0KICAgICAgXQogICAgfSwKICAgICJyZXN1bHRzIjogewogICAgICAidG90YWwiOiAyLAogICAgICAicmV0dXJuZWQiOiAyLAogICAgICAidHJ1bmNhdGVkIjogZmFsc2UsCiAgICAgICJpdGVtcyI6IFsKICAgICAgICB7CiAgICAgICAgICAicnVuX2lkIjogImQ4ZDY0ZDU0LWNlMjMtNDc3Yi04NDFiLWNhMTI1ZWQzY2JkOSIsCiAgICAgICAgICAicGFyZW50X3J1bl9pZCI6ICJjOGYwYTE5Yi01NjQ3LTQwOWUtYjg4ZS0xOTk0Nzc1ZGY4ZjIiLAogICAgICAgICAgInJvbGUiOiAiY29udGludWF0aW9uIiwKICAgICAgICAgICJzdGVwX2tleSI6ICJjb250aW51YXRpb24iLAogICAgICAgICAgImxlYWRlcl90dXJuIjogIjIiLAogICAgICAgICAgInByb2dyZXNzIjogInNldHRsZWQiLAogICAgICAgICAgIm91dGNvbWUiOiAiZmFpbHVyZSIsCiAgICAgICAgICAicHJvb2Zfc3RhdGUiOiAiZXhpdGVkX3Byb3ZlbiIsCiAgICAgICAgICAicmVjb3JkaW5nX2luY29tcGxldGUiOiB0cnVlLAogICAgICAgICAgInJlc3VsdF9zdGF0ZSI6ICJhYnNlbnQiLAogICAgICAgICAgImZpbmFsX2Fuc3dlcl9zdGF0ZSI6ICJhYnNlbnQiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAicnVuX2lkIjogImM4ZjBhMTliLTU2NDctNDA5ZS1iODhlLTE5OTQ3NzVkZjhmMiIsCiAgICAgICAgICAicm9sZSI6ICJsZWFkZXIiLAogICAgICAgICAgInN0ZXBfa2V5IjogImxlYWRlciIsCiAgICAgICAgICAibGVhZGVyX3R1cm4iOiAiMSIsCiAgICAgICAgICAicHJvZ3Jlc3MiOiAic2V0dGxlZCIsCiAgICAgICAgICAib3V0Y29tZSI6ICJmYWlsdXJlIiwKICAgICAgICAgICJwcm9vZl9zdGF0ZSI6ICJleGl0ZWRfcHJvdmVuIiwKICAgICAgICAgICJyZWNvcmRpbmdfaW5jb21wbGV0ZSI6IGZhbHNlLAogICAgICAgICAgInJlc3VsdF9zdGF0ZSI6ICJwcmVzZW50IiwKICAgICAgICAgICJmaW5hbF9hbnN3ZXJfc3RhdGUiOiAidW5rbm93biIsCiAgICAgICAgICAic291cmNlX2lkIjogIjQ2YjZhMmU1LTBhNTUtNDk3OS1iM2Y2LTRiYWUzMmQyNTI0ZiIsCiAgICAgICAgICAic291cmNlX2tpbmQiOiAicHJvdmlkZXJfcmVzdWx0IgogICAgICAgIH0KICAgICAgXQogICAgfSwKICAgICJ3YWtldXBfY2F1c2VzIjogewogICAgICAidG90YWwiOiAwLAogICAgICAicmV0dXJuZWQiOiAwLAogICAgICAidHJ1bmNhdGVkIjogZmFsc2UsCiAgICAgICJpdGVtcyI6IFtdLAogICAgICAiY29tcGxldGVuZXNzIjogInVua25vd24iCiAgICB9LAogICAgInNvdXJjZXMiOiBbCiAgICAgIHsKICAgICAgICAia2luZCI6ICJoYW5kb2ZmIiwKICAgICAgICAiaWQiOiAiNjg1YzFhYzItMWM0Yi00MmJmLWI5ZjMtZDE3M2JjZTljMjVhIiwKICAgICAgICAic2hhMjU2IjogIjUzMTNjZTg0NDIyMDA5OWYwYzVkZTBmNWZlMzFlZmVlMTgxYjlhYWUyZjM4ZjhlMWZiODBlOTUxYmY1N2Q4OWUiLAogICAgICAgICJjb250ZW50IjogIkNvbnRpbnVlIGZyb20gdGhlIHJldGFpbmVkIGRhdGFiYXNlIGRlY2lzaW9uOyB2ZXJpZnkgdGhlIG1pZ3JhdGlvbiBiZWZvcmUgcm9sbG91dC4iLAogICAgICAgICJ0cnVuY2F0ZWQiOiBmYWxzZSwKICAgICAgICAiYXZhaWxhYmlsaXR5IjogImF2YWlsYWJsZSIsCiAgICAgICAgInRydXN0IjogImRhdGFfb25seSIKICAgICAgfSwKICAgICAgewogICAgICAgICJraW5kIjogInByb3ZpZGVyX3Jlc3VsdCIsCiAgICAgICAgImlkIjogIjQ2YjZhMmU1LTBhNTUtNDk3OS1iM2Y2LTRiYWUzMmQyNTI0ZiIsCiAgICAgICAgInJ1bl9pZCI6ICJjOGYwYTE5Yi01NjQ3LTQwOWUtYjg4ZS0xOTk0Nzc1ZGY4ZjIiLAogICAgICAgICJ2ZXJzaW9uIjogIjEiLAogICAgICAgICJzaGEyNTYiOiAiOTYwZTMwNWRkYTU5NjU4Mzk5YWY0NzA4NDkzMzUzZWJhYzM2NTcwNDhkMTBkMjcwOTYxNDY2ZGVlOGE4NzQzNiIsCiAgICAgICAgImNvbnRlbnQiOiAiRWFybGllciBwcm92aWRlciByZXN1bHQ6IHVzZSBQb3N0Z3JlU1FMIGFkdmlzb3J5IGxvY2tzOyBSZWRpcyB3YXMgcmVqZWN0ZWQgYmVjYXVzZSBpdHMgc3RhdGUgaXMgbm90IGR1cmFibGUuIiwKICAgICAgICAidHJ1bmNhdGVkIjogZmFsc2UsCiAgICAgICAgImF2YWlsYWJpbGl0eSI6ICJhdmFpbGFibGUiLAogICAgICAgICJ0cnVzdCI6ICJkYXRhX29ubHkiCiAgICAgIH0KICAgIF0sCiAgICAibWlzc2luZyI6IFtdCiAgfSwKICAicmVjb3JkaW5nIjogewogICAgInN0YXR1cyI6ICJwYXJ0aWFsIiwKICAgICJpbnB1dHNfcmVjb3JkZWQiOiB0cnVlLAogICAgInJldGVudGlvbiI6IHsKICAgICAgInZlcnNpb24iOiAxLAogICAgICAic3RyZWFtX2lkIjogIjJhNTYxMzliLThiY2YtNDQ3MC1iNzhjLTlhZDIxYmEwY2NjNCIsCiAgICAgICJyZXRhaW5lZF90aHJvdWdoIjogMiwKICAgICAgIm9ic2VydmVkX3Rocm91Z2giOiBudWxsLAogICAgICAic2VhbGVkIjogdHJ1ZSwKICAgICAgInJlYXNvbiI6ICJzdG9wcGVkIgogICAgfQogIH0sCiAgIm5hdGl2ZSI6IHsKICAgICJkYWVtb25TdGFydHMiOiAwLAogICAgIm5hdGl2ZUlzc3VlUmVxdWVzdHMiOiBbXSwKICAgICJhdXRoU2Vzc2lvbnMiOiBbCiAgICAgICI3MTcwNzBjZS05OTUyLTRkNTYtOGM1MS05NDk4YzI0MDJmYjIiCiAgICBdLAogICAgImV4dGVybmFsTGlua3MiOiBbXQogIH0sCiAgImhpc3Rvcnlfb3JpZ2luIjogInNlZWRlZCByZXRhaW5lZCBldmVudHM7IGluZ2VzdGlvbiB2ZXJpZmllZCBzZXBhcmF0ZWx5IGluIEdvIiwKICAicHJvdmlkZXJfYWNjb3VudF9hY2Nlc3MiOiBmYWxzZQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5218ae82d47952dd2ef5-24ac0b7b816e413d94af",
+          "file": "collaboration-runtime-handoff-desktop.spec.ts",
+          "line": 14,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-31T15:07:02.212Z",
+    "duration": 5499.733,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

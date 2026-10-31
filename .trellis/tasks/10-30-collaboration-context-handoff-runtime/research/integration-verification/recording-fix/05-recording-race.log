@@ -1,0 +1,68 @@
+=== RUN   TestHostCheckpointsKeepOriginalPayloadAcrossLostACK
+--- PASS: TestHostCheckpointsKeepOriginalPayloadAcrossLostACK (0.12s)
+=== RUN   TestHostCheckpointBackpressureDoesNotBlockMessageDrain
+--- PASS: TestHostCheckpointBackpressureDoesNotBlockMessageDrain (0.09s)
+=== RUN   TestHostCheckpointLedgerFitsMaximumEscapedRecordingAndClaim
+--- PASS: TestHostCheckpointLedgerFitsMaximumEscapedRecordingAndClaim (0.82s)
+=== RUN   TestHostHandoffCheckpointBlockedRecordingCannotHoldProof
+--- PASS: TestHostHandoffCheckpointBlockedRecordingCannotHoldProof (3.37s)
+=== RUN   TestHostHandoffCheckpointRestartRecoversWithoutExecution
+--- PASS: TestHostHandoffCheckpointRestartRecoversWithoutExecution (1.41s)
+=== RUN   TestHostHandoffCheckpointFailureCleanup
+=== RUN   TestHostHandoffCheckpointFailureCleanup/snapshot_refused
+=== RUN   TestHostHandoffCheckpointFailureCleanup/binding_refused
+=== RUN   TestHostHandoffCheckpointFailureCleanup/fallback_snapshot_drift
+--- PASS: TestHostHandoffCheckpointFailureCleanup (0.76s)
+    --- PASS: TestHostHandoffCheckpointFailureCleanup/snapshot_refused (0.21s)
+    --- PASS: TestHostHandoffCheckpointFailureCleanup/binding_refused (0.24s)
+    --- PASS: TestHostHandoffCheckpointFailureCleanup/fallback_snapshot_drift (0.31s)
+=== RUN   TestHostLedgerRetryNeedsAcceptedPriorWaitAndStopSealsEveryAttempt
+--- PASS: TestHostLedgerRetryNeedsAcceptedPriorWaitAndStopSealsEveryAttempt (0.16s)
+=== RUN   TestHostLedgerUnissuedPermitTombstoneDoesNotInventAnAuthorizedLaunch
+--- PASS: TestHostLedgerUnissuedPermitTombstoneDoesNotInventAnAuthorizedLaunch (0.08s)
+=== RUN   TestHostLedgerRetainsUnknownLaunchWithoutReinterpretingLinuxProof
+--- PASS: TestHostLedgerRetainsUnknownLaunchWithoutReinterpretingLinuxProof (0.02s)
+=== RUN   TestHostRecordingRecoverySharesBacklogDeadlineAndPrioritizesProof
+--- PASS: TestHostRecordingRecoverySharesBacklogDeadlineAndPrioritizesProof (1.56s)
+=== RUN   TestHostRecordingSealReplaysBeforeAdvancingAcknowledgement
+--- PASS: TestHostRecordingSealReplaysBeforeAdvancingAcknowledgement (0.14s)
+=== RUN   TestHostRecordingRecoveredUnflushedTailRemainsUnknown
+--- PASS: TestHostRecordingRecoveredUnflushedTailRemainsUnknown (0.13s)
+=== RUN   TestHostRecordingLedgerRejectsSealWithUnissuedNonce
+--- PASS: TestHostRecordingLedgerRejectsSealWithUnissuedNonce (0.09s)
+=== RUN   TestHostRecordingRecoveryCancelledBacklogKeepsUnresolvedPayloads
+--- PASS: TestHostRecordingRecoveryCancelledBacklogKeepsUnresolvedPayloads (0.11s)
+=== RUN   TestHostRecordingRedactsCollaborationCapabilities
+--- PASS: TestHostRecordingRedactsCollaborationCapabilities (0.01s)
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/missing_author_epoch
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/different_agent_owner
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/missing_preparation
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/missing_context
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/different_session
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/different_capability
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/different_configuration
+--- PASS: TestHostLedgerRejectsCorruptRetainedClaim (0.25s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/missing_author_epoch (0.03s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/different_agent_owner (0.04s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/missing_preparation (0.03s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/missing_context (0.03s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/different_session (0.04s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/different_capability (0.04s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/different_configuration (0.03s)
+=== RUN   TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement
+=== RUN   TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement/missing_outcome_remains_incomplete
+=== RUN   TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement/recorded_outcome_recovers_acknowledgement
+--- PASS: TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement (2.52s)
+    --- PASS: TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement/missing_outcome_remains_incomplete (1.28s)
+    --- PASS: TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement/recorded_outcome_recovers_acknowledgement (1.24s)
+=== RUN   TestHostRunnerPendingProofHasPriorityOverBlockedOutcome
+--- PASS: TestHostRunnerPendingProofHasPriorityOverBlockedOutcome (1.40s)
+=== RUN   TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun
+=== RUN   TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun/late_start_observation
+=== RUN   TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun/late_terminal_observation
+--- PASS: TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun (0.51s)
+    --- PASS: TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun/late_start_observation (0.33s)
+    --- PASS: TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun/late_terminal_observation (0.18s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	15.054s

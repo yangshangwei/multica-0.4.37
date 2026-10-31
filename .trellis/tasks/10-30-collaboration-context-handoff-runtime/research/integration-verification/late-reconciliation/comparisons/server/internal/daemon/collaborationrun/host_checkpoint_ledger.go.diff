@@ -1,0 +1,113 @@
+--- integration/server/internal/daemon/collaborationrun/host_checkpoint_ledger.go
++++ late-main/server/internal/daemon/collaborationrun/host_checkpoint_ledger.go
+@@ -22,7 +22,6 @@
+ 	StreamID     string                               `json:"stream_id"`
+ 	Chunks       []hostCheckpointRecord               `json:"chunks"`
+ 	Closed       bool                                 `json:"closed,omitempty"`
+-	Drained      bool                                 `json:"drained,omitempty"`
+ 	Reason       string                               `json:"reason,omitempty"`
+ 	Seal         *protocol.CollaborationRecordingSeal `json:"seal,omitempty"`
+ 	SealAccepted bool                                 `json:"seal_accepted,omitempty"`
+@@ -70,18 +69,8 @@
+ 	if recording.SealAccepted && recording.Seal == nil {
+ 		return ErrUnconfirmed
+ 	}
+-	if seal := recording.Seal; seal != nil {
+-		if protocol.ValidateCollaborationRecordingSeal(*seal) != nil || seal.Identity != r.Identity || seal.StreamID != recording.StreamID || seal.AcknowledgedThrough > hostRecordingAcknowledged(recording) {
+-			return ErrUnconfirmed
+-		}
+-		attempt, _ := strconv.Atoi(seal.AttemptSeq)
+-		if attempt < 1 || attempt > len(r.Host.Launches) {
+-			return ErrUnconfirmed
+-		}
+-		launch := r.Host.Launches[attempt-1]
+-		if launch.AttemptNonce != seal.AttemptNonce || launch.Authorized == nil || !*launch.Authorized {
+-			return ErrUnconfirmed
+-		}
++	if recording.Seal != nil && (protocol.ValidateCollaborationRecordingSeal(*recording.Seal) != nil || recording.Seal.Identity != r.Identity || recording.Seal.StreamID != recording.StreamID) {
++		return ErrUnconfirmed
+ 	}
+ 	return nil
+ }
+@@ -108,16 +97,26 @@
+ 	if !h.Recording.SealAccepted {
+ 		return true
+ 	}
+-	return hostRecordingChunksPending(h.Recording) || h.Recording.Seal.AcknowledgedThrough < hostRecordingAcknowledged(h.Recording)
+-}
+-
+-func hostRecordingChunksPending(recording *hostRecordingLedger) bool {
++	for _, c := range h.Recording.Chunks {
++		if !c.Accepted && !c.Rejected {
++			return true
++		}
++	}
++	return hostRecordingSealAdvancePending(h.Recording)
++}
++
++func hostRecordingSealAdvancePending(recording *hostRecordingLedger) bool {
++	if recording == nil || recording.Seal == nil || !recording.SealAccepted {
++		return false
++	}
++	// Advance once the whole prefix is resolved, rather than consuming a seal
++	// revision on every bounded recovery pass that learns another chunk ACK.
+ 	for _, c := range recording.Chunks {
+ 		if !c.Accepted && !c.Rejected {
+-			return true
+-		}
+-	}
+-	return false
++			return false
++		}
++	}
++	return recording.Seal.AcknowledgedThrough < hostRecordingAcknowledged(recording)
+ }
+ 
+ func hostRecordingAcknowledged(h *hostRecordingLedger) int {
+@@ -152,7 +151,7 @@
+ 		return err
+ 	}
+ 	recording := next.Host.Recording
+-	if recording == nil || recording.Drained || recording.Seal != nil || protocol.ValidateCollaborationRecordingCheckpoint(p) != nil || p.Identity != next.Identity || p.StreamID != recording.StreamID || p.Sequence != len(recording.Chunks)+1 {
++	if recording == nil || recording.Seal != nil || protocol.ValidateCollaborationRecordingCheckpoint(p) != nil || p.Identity != next.Identity || p.StreamID != recording.StreamID || p.Sequence != len(recording.Chunks)+1 {
+ 		return ErrUnconfirmed
+ 	}
+ 	offset := 0
+@@ -181,12 +180,6 @@
+ 		return ErrUnconfirmed
+ 	}
+ 	c := &rec.Chunks[sequence-1]
+-	if c.Accepted || c.Rejected {
+-		if c.Rejected == rejected {
+-			return nil
+-		}
+-		return ErrUnconfirmed
+-	}
+ 	c.Accepted, c.Rejected, c.Payload, c.BusinessToken = !rejected, rejected, nil, ""
+ 	if rejected {
+ 		rec.Closed = true
+@@ -195,7 +188,7 @@
+ 	return r.persistHostRecording(next)
+ }
+ 
+-func (r *RunLedger) finishHostRecording(reason string) error {
++func (r *RunLedger) closeHostRecording(reason string) error {
+ 	next, err := r.recordingNext()
+ 	if err != nil {
+ 		return err
+@@ -203,12 +196,9 @@
+ 	if next.Host.Recording == nil {
+ 		return nil
+ 	}
+-	next.Host.Recording.Drained = true
+-	if reason != "" {
+-		next.Host.Recording.Closed = true
+-		if next.Host.Recording.Reason == "" {
+-			next.Host.Recording.Reason = reason
+-		}
++	next.Host.Recording.Closed = true
++	if next.Host.Recording.Reason == "" {
++		next.Host.Recording.Reason = reason
+ 	}
+ 	return r.persistHostRecording(next)
+ }

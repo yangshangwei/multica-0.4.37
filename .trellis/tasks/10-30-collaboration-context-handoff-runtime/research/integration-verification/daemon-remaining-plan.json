@@ -1,0 +1,52 @@
+{
+  "list_command": [
+    "go",
+    "test",
+    "./internal/daemon/collaborationrun",
+    "-list",
+    "^Test(Host(Checkpoints|Checkpoint|Recording|Ledger|Runner|Supervisor)|Client)"
+  ],
+  "list_exit_code": 0,
+  "previously_passed_top_level": [
+    "TestClientBusinessOutcomesUseWireValues",
+    "TestClientHostContextExtensionsAreExplicitAndVersioned",
+    "TestClientMissingStopIntentIsNotPermissionToContinue",
+    "TestClientNamespaceCannotAcquireHostContextExtensions",
+    "TestClientNeverForwardsTokensAcrossRedirects",
+    "TestClientPreparationAttachmentUsesExactVersionAndBounds",
+    "TestClientPreparationCapabilitiesRecoverOnlyExactCurrentRegistration",
+    "TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot",
+    "TestClientPreservesAllInputAuthorsAndNarrowCredentials",
+    "TestClientRejectsBadSecondAuthorAndDuplicateIdentityField",
+    "TestHostCheckpointsKeepOriginalPayloadAcrossLostACK"
+  ],
+  "blocked_fixture_tests": [
+    "TestHostCheckpointBackpressureDoesNotBlockMessageDrain"
+  ],
+  "remaining_tests": [
+    "TestHostCheckpointLedgerFitsMaximumEscapedRecordingAndClaim",
+    "TestHostLedgerRetryNeedsAcceptedPriorWaitAndStopSealsEveryAttempt",
+    "TestHostLedgerUnissuedPermitTombstoneDoesNotInventAnAuthorizedLaunch",
+    "TestHostLedgerRetainsUnknownLaunchWithoutReinterpretingLinuxProof",
+    "TestHostRunnerInjectsSharedContextOnlyIntoThePrompt",
+    "TestHostRunnerRunsWithoutSharedContextWhenTheRunIsUnsupported",
+    "TestHostRunnerSharedContextFailureLeavesTheProviderUnlaunched",
+    "TestHostRunnerFreshRetryRereadsTheSharedContextBase",
+    "TestHostRunnerFreshRetryWithoutSharedContextNeverStarts",
+    "TestClientRejectsMalformedSharedContextBase",
+    "TestHostRunnerOpenCodeEmptyExitDoesNotInventBusinessOutcome",
+    "TestHostRunnerUsesSelectedCLIUnderCanonicalCommandName",
+    "TestHostRecordingRedactsCollaborationCapabilities",
+    "TestHostLedgerRejectsCorruptRetainedClaim",
+    "TestHostRunnerPreparationFactsDoNotGateTermination",
+    "TestClientInterruptedStopResponseIsTransportUncertainty",
+    "TestHostRunnerInterruptedStopResponseKeepsExistingExecution",
+    "TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement",
+    "TestHostRunnerPendingProofHasPriorityOverBlockedOutcome",
+    "TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun",
+    "TestHostRunnerReusesOrdinaryProviderAndOriginalPermitAndProof",
+    "TestHostRunnerEOFDoesNotEndExecutionBeforeRealWait",
+    "TestHostRunnerOfflineKeepsRunningAndOnlyReplaysReceipts",
+    "TestHostRunnerFreshRetryGetsNewTokenAndStopForbidsFallback"
+  ]
+}

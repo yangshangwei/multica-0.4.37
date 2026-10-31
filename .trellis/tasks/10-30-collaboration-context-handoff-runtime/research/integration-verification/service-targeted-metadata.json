@@ -1,0 +1,34 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "./internal/service",
+    "-run",
+    "^TestCollaboration(Checkpoint|Handoff|Recall)",
+    "-count=1",
+    "-timeout=3m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/server",
+  "environment_file": "/tmp/multica_runtime_integrate_20261031_f2478725.env",
+  "database": "multica_runtime_integrate_20261031_f2478725",
+  "started_at": "2026-10-31T14:49:55.736513+00:00",
+  "execution": "sequential task-exclusive database; no provider calls",
+  "source_provenance": "non-db-source.json",
+  "exit_code": 0,
+  "elapsed_seconds": 11.211,
+  "finished_at": "2026-10-31T14:50:06.947667+00:00",
+  "passed_tests": [
+    "TestCollaborationCheckpointStopKeepsOriginalPrefixAndContentFreeACK",
+    "TestCollaborationCheckpointOutcomeOverlapAndInternalEventsStayReadable",
+    "TestCollaborationRecallBudgetCountsEscapingEnvelopeAndAdvances",
+    "TestCollaborationRecallChunksReassembleUTF8AndRejectCrossBinding",
+    "TestCollaborationRecallRuntimePagesFulltextAndCurrentAuthority",
+    "TestCollaborationHandoffFrozenAssignmentAndSnapshot",
+    "TestCollaborationHandoffPreservesEveryMergedWakeCause"
+  ],
+  "failed_tests": [],
+  "skipped_tests": [],
+  "unfinished_tests": [],
+  "passed_top_level_tests": 7
+}

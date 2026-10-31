@@ -1,13 +1,90 @@
 # 可靠上下文交接与召回
 
-## Goal
-把停止/撤权保留、成员/队长接力、评论分页和权限可信度从模型自觉提升为服务端可审计的结构化输入。
+状态：in_progress；用户于本会话明确批准方案并要求核验前置门槛后实施。入口证据见 `research/entry-verification.md`；本文不表示功能已经通过验收。
 
-## In scope
-bounded checkpoints、versioned handoff envelope、reader/result/wakeup provenance、comment cursor/byte budget/truncation、prompt trust boundary、Web/Desktop evidence。
+## Goal
+
+让获授权的接手人和智能体在停止、撤权、作者退出、换机器或小队接力后，仍能查清当前处理人、原始请求、已保存的发现与结果、下一步和来源；明确区分已保留、未上传、已清除和未验证的信息。
+
+归属：父任务 `10-30-collaboration-context-handoff` 的 R1–R4、AC4–AC7、AC9。本任务不承接知识候选确认权限的产品决策。
+
+## Background
+
+研究基线：`4c833e737efb6c997e5cb56c74c43e9237c91956`。研究记录见 `research/handoff.md`、`research/checkpoints.md`、`research/recall.md`。
+
+| 已确认事实 | 本任务的行为缺口 |
+| --- | --- |
+| `host_recording.go` 将脱敏过程保存在内存，随最终 outcome 一次上报 | 停止或撤权前尚未持久化的发现可能丢失 |
+| `RuntimeContext` 有冻结 inputs、roster、最新 200 条 comments，host 不自动读取 | 仅扩展 API 不能保证模型收到交接材料 |
+| 成员派活读取当前评论，原始正文另存于不可变 run event | 编辑评论不能改写已经受理的任务 |
+| reader 集合已有统一算法；合并唤醒只保存最后一个 parent | 需要补齐所有触发来源，保持既有 reader 语义 |
+| 人类评论已有时间/ID 分页，运行时仍固定 200 条 | 补齐运行时分页、预算和截断声明 |
+| outcome.body 可能来自 provider 错误消息 | 不能把历史结果一律标成模型最终答复 |
+| 未知内部 run event 会使现有 RunRecords 读取失败 | 新审计事件必须兼容旧记录分页 |
+
+前置修复及补充证据已合入 `5accf9023`。2026-10-31 报告确认迁移、生产 Web/原生 Desktop 和正式 E0 通过，产品源码基线为 `4c833e737`；79 份证据文件的哈希已复核。E1 因上游 429/503 超时，没有有效行为样本，E1–E6 保留未完成。父任务允许在明确记录环境阻塞且不宣称模型通过的前提下继续 runtime 增量；原始证据不属于本任务写入范围。
+
+## Requirements
+
+### R1 — 授权期间保留，失权后只封口
+
+- 运行期间有界、脱敏、幂等地保存过程片段，保留 run、attempt、消息顺序和原作者。
+- 停止、撤权、作者退出后，既有片段仍由协作任务读取权限保护；禁止新增正文、附件、发现、结果和 memory。
+- 终止凭据仅可提交窄的终止事实和不含正文的记录完整性元数据，不扩展业务权限。
+- 原请求重放不重复写入；失权后只能确认相同请求已接收，不能读取正文或改写历史。
+- 接手方可见最后确认保存的位置和缺失/裁剪原因；无法确定的尾部范围标为未知。
+- 服务端 memory 清除、运行记录、daemon ledger 和 provider 本机文件分别说明，首轮不扩大清除范围。
+
+### R2 — 实际启动输入包含版本化交接包
+
+- 每次真实启动前，由守护进程获取、验证并注入服务端交接包，保存输入来源、版本与启动身份。
+- 包含当前状态/处理人、原始请求/作者、转交说明/信息请求、派活原文、memory 版本引用、前序结果、成员角色/步骤/父 run、读者集合和唤醒原因。
+- 冻结启动快照与实时刷新分开；后来事实不能被标成先前已交付的输入。
+- 发现、决定、理由、被否决方案、下一步和验证证据引用已有原文；服务端不猜测生成。引用可追到 input/comment/handoff/memory version/run event/proof。
+- 区分模型最终答复、普通 provider 结果、活动原因、错误、没有答复和无法读取；未验证事实保持未验证。
+- 已清除来源不能因交接快照中的重复正文重新暴露。
+
+### R3 — 接力保留原任务与全部来源
+
+- 成员仅执行其冻结角色、步骤和受理时的派活正文；评论后续编辑不改变既有任务。
+- 多个回复、成员完成和加入输入仍最多合并为一个待启动队长续作，同时保留所有触发来源。
+- 已 claim 的续作不获得后到输入的执行权，后到原因进入下一轮。
+- “属于冻结 prompt”不代表“模型已理解/完成”；复用完整 reader 集合及既有 nonlaunch/proof 规则。
+- 换智能体/provider/机器不依赖私人 session、工作目录或原机器文件。
+
+### R4 — 有限输入，完整可召回
+
+- 评论支持稳定游标、条数限制和 UTF-8 字节预算；返回 total、returned、bytes、truncated、下一游标和裁剪原因。
+- 同时间戳、并发新增、超长单条和删除不能导致卡住游标或永久跳过仍获授权的原文。
+- 作者显示身份、本任务中的当前角色和可提交指令状态来自服务端；当前能力与历史受理来源分别表达。
+- 普通评论、memory、转交说明和结果文本是材料；只有服务端受理的 input/delegation 驱动执行，文本和身份标签不能扩权。
+
+### R5 — 兼容与可见证据
+
+- Web/Desktop 复用 core/views，在既有页面和运行记录入口显示交接来源、记录缺失、评论未加载范围。
+- 人类读取使用人类权限，UI 不持有或借用运行时 business capability。
+- 旧客户端保持字段、record item kind 和分页方式；新增版本化响应严格校验，缺失/未知/畸形字段不赋予权限。
+- 旧记录无 checkpoint 或完整唤醒来源时标记未记录/不完整，不回填虚构历史。
+
+## Acceptance criteria
+
+| ID | 可观察结果 | 主要证据 |
+| --- | --- | --- |
+| AC1 | 停止/撤权/退出与 checkpoint 两种提交顺序都正确；既有内容保留，晚到正文拒收，封口无正文 | Go DB 竞态/权限矩阵 |
+| AC2 | 重放不重复、改写拒收、各预算有效；最终 outcome 与 checkpoint 不重复展示；缺失尾部可见 | 协议/service/records/daemon tests |
+| AC3 | 实际 fake-provider stdin 含处理人、意图、派活、memory 版本、前序/成员结果及来源；可据原文复述决定/理由/下一步 | 启动集成 tests；真实模型理解单列 |
+| AC4 | 快照重取稳定，刷新不改变历史；已清除来源不经快照泄露 | DB/service/daemon tests |
+| AC5 | 两个成员完成、回复、joined input 合并一轮且来源齐全；后到原因进入下一轮；reader 不丢失 | squad DB tests |
+| AC6 | 超过 200 条、同时间戳、长中文、单条超预算均能继续召回；截断显式且无死循环 | 评论 service/handler/CLI tests |
+| AC7 | 注入性评论不改变权限；普通 task/plugin/IM/termination token 不能读取私有交接正文 | 负向权限/prompt tests；真实 E5 单列 |
+| AC8 | 旧响应可读，错误新响应安全降级；内部事件不破坏 records；最终答复缺失不伪造 | 协议/schema malformed tests |
+| AC9 | Web 和原生 Desktop 接收方可见转交说明、来源、记录缺失与加载范围 | 共享组件 + 分平台 e2e |
+| AC10 | 证据含 HEAD、命令、环境、实际测试名、退出码；未运行和环境故障不计通过 | 实施验收清单 |
 
 ## Out of scope
-自动知识库、服务端总结模型、技能层写入、跨 Server 和 Mobile。
 
-## Acceptance
-接手 Agent 可从 envelope 复述当前 handler、意图、决定/理由、member results、next step 和证据；权限失效后的缺失范围可见；分页截断显式；非 SubmitCommand 评论不驱动执行；旧客户端兼容。
+不新增通用知识库、服务端模型总结、自动知识沉淀或 skill 写入；不修改知识候选审批权限；不扩展跨 Server/Mobile；不改变停止/Resume、资源同意、工作空间权限、proof/capacity 规则；不新增依赖；不清理其他任务文件或运行环境。
+
+## Implementation entry
+
+本轮没有新增待选择的知识权限规则。复杂规划需审阅后进入实施，前置交付证据仍需核验。确定性测试不能证明模型理解或替代 E5/E6；证据缺失时不得宣称完整产品验收通过。

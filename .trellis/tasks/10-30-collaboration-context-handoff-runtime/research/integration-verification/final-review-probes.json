@@ -1,0 +1,45 @@
+{
+  "checkpoint_gap": {
+    "at": "2026-10-31T17:26:53.925676+00:00",
+    "head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+    "source_tree_sha256": "e18295d0c892811870fb2f8d42572751288e26061f311ec157942553e4b6736b",
+    "command": [
+      "go",
+      "test",
+      "-overlay",
+      "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-final-review-gap-xmiosvbq/overlay.json",
+      "./internal/daemon/collaborationrun",
+      "-run",
+      "^TestFinalReviewInvalidChunkMustNotRebaseSuffix$",
+      "-count=1",
+      "-timeout",
+      "30s",
+      "-v"
+    ],
+    "probe_source": "package collaborationrun\nimport(\"fmt\";\"strings\";\"testing\";\"github.com/multica-ai/multica/server/pkg/agent\";\"github.com/multica-ai/multica/server/pkg/protocol\")\nfunc TestFinalReviewInvalidChunkMustNotRebaseSuffix(t *testing.T){\n ledger:=newHostTestLedger(t);local:=registerHostTestRun(t,ledger);defer local.Close();hostTestPermit(t,local)\n supervisor:=&hostSupervisor{runner:&Runner{},local:local};record:=&hostRecording{}\n sender,err:=startHostCheckpoints(t.Context(),supervisor,record,1);if err!=nil{t.Fatal(err)}\n supervisor.mu.Lock()\n record.message(agent.Message{Type:agent.MessageToolUse,CallID:\"call\",Tool:strings.Repeat(\"n\",129),Input:map[string]any{}},&HostActivity{})\n for i:=1;i<32;i++{record.add(protocol.CollaborationRecordedMessage{Kind:\"message\",Role:\"assistant\",Body:fmt.Sprintf(\"original-ordinal-%d\",i)})}\n supervisor.mu.Unlock();sender.finish()\n rec:=local.record.Host.Recording\n for _,c:=range rec.Chunks{t.Logf(\"retained chunk seq=%d offset=%d count=%d first=%s\",c.Sequence,c.Offset,c.Count,c.Payload.Messages[0].Body)}\n if len(rec.Chunks)>0{t.Fatal(\"later queued messages were staged after an irrecoverable first chunk rejection\")}\n}",
+    "exit_code": 1,
+    "stdout": "=== RUN   TestFinalReviewInvalidChunkMustNotRebaseSuffix\n    zz_finalreview_gap_test.go:12: retained chunk seq=1 offset=0 count=16 first=original-ordinal-16\n    zz_finalreview_gap_test.go:13: later queued messages were staged after an irrecoverable first chunk rejection\n--- FAIL: TestFinalReviewInvalidChunkMustNotRebaseSuffix (0.06s)\nFAIL\nFAIL\tgithub.com/multica-ai/multica/server/internal/daemon/collaborationrun\t0.421s\nFAIL\n",
+    "stderr": "",
+    "execution_scope": "Temporary Go overlay; existing test-only ledger/permit fixtures; no database, Provider or product source edit."
+  },
+  "handoff_decoder": {
+    "at": "2026-10-31T17:29:15.755069+00:00",
+    "command": [
+      "go",
+      "run",
+      "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-final-review-protocol-c9787f2s/probe.go"
+    ],
+    "probe_source": "package main\nimport(\"encoding/json\";\"fmt\";\"strings\"; p \"github.com/multica-ai/multica/server/pkg/protocol\")\nfunc main(){\nv:=p.CollaborationHandoffEnvelope{ProtocolVersion:1,IssueID:\"11111111-1111-4111-8111-111111111111\",RunID:\"22222222-2222-4222-8222-222222222222\",SnapshotID:\"33333333-3333-4333-8333-333333333333\",Mode:\"snapshot\",EventSequence:\"0\",Authority:p.CollaborationHandoffAuthority{Status:\"todo\"},Assignment:p.CollaborationHandoffAssignment{Role:\"member\",StepKey:\"dispatch-1\",ParentRunID:\"55555555-5555-4555-8555-555555555555\",DelegationID:\"66666666-6666-4666-8666-666666666666\",SourceID:\"44444444-4444-4444-8444-444444444444\"},Memory:p.CollaborationHandoffMemory{Version:\"0\",Availability:\"absent\"},Inputs:p.CollaborationHandoffInputs{Items:[]p.CollaborationHandoffInput{}},Results:p.CollaborationHandoffResults{Items:[]p.CollaborationHandoffResult{}},WakeupCauses:p.CollaborationHandoffCauses{Items:[]p.CollaborationHandoffCause{},Completeness:\"unknown\"},Sources:[]p.CollaborationHandoffSource{{Kind:\"delegation\",ID:\"44444444-4444-4444-8444-444444444444\",RunID:\"55555555-5555-4555-8555-555555555555\",Version:\"1\",SHA256:p.CollaborationHandoffHash(\"original complete assignment\"),Content:\"only a prefix\",Truncated:true,Availability:\"available\",Trust:\"admitted_assignment\"}},Missing:[]string{}}\nb,_:=json.Marshal(v)\nfor _,tt:=range []struct{name,raw string}{{\"valid_truncated\",string(b)},{\"source_truncated_omitted\",strings.Replace(string(b),`,\"truncated\":true,\"availability\"`,`,\"availability\"`,1)},{\"source_truncated_null\",strings.Replace(string(b),`,\"truncated\":true,\"availability\"`,`,\"truncated\":null,\"availability\"`,1)},{\"page_total_returned_truncated_omitted\",strings.Replace(string(b),`\"total\":0,\"returned\":0,\"truncated\":false,`,\"\",1)},{\"invalid_recording\",strings.TrimSuffix(string(b),\"}\")+`,\"recording\":{\"version\":999,\"stream_id\":\"not-a-uuid\",\"retained_through\":-1,\"observed_through\":-5,\"sealed\":true,\"reason\":\"anything\"}}`}}{\nvar out p.CollaborationHandoffEnvelope\nerr:=json.Unmarshal([]byte(tt.raw),&out)\nfmt.Printf(\"%s accepted=%t source_truncated=%t error=%v\\n\",tt.name,err==nil,len(out.Sources)>0&&out.Sources[0].Truncated,err)\n}\n}",
+    "exit_code": 0,
+    "stdout": "valid_truncated accepted=true source_truncated=true error=<nil>\nsource_truncated_omitted accepted=true source_truncated=false error=<nil>\nsource_truncated_null accepted=true source_truncated=false error=<nil>\npage_total_returned_truncated_omitted accepted=true source_truncated=true error=<nil>\ninvalid_recording accepted=true source_truncated=true error=<nil>\n",
+    "stderr": "",
+    "execution_scope": "Temporary standalone production protocol import; no DB, Provider or source edit."
+  },
+  "source_verification": {
+    "at": "2026-10-31T17:29:17.015342+00:00",
+    "head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+    "source_tree_sha256": "e18295d0c892811870fb2f8d42572751288e26061f311ec157942553e4b6736b",
+    "file_count": 7969,
+    "differences": []
+  }
+}

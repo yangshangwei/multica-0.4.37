@@ -1,0 +1,11 @@
+=== RUN   TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback
+=== RUN   TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback/resume_rejected
+    host_handoff_codex_launch_test.go:158: launch 1 bound hash differs from actual Codex turn/start input
+=== RUN   TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback/catalog_retry
+    host_handoff_codex_launch_test.go:158: launch 2 bound hash differs from actual Codex turn/start input
+--- FAIL: TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback (0.99s)
+    --- FAIL: TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback/resume_rejected (0.18s)
+    --- FAIL: TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback/catalog_retry (0.80s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	1.448s
+FAIL

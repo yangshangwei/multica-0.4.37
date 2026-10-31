@@ -1,0 +1,17 @@
+{
+  "created_at": "2026-10-31T14:47:59.074717+00:00",
+  "database": "multica_runtime_integrate_20261031_f2478725",
+  "host": "localhost",
+  "port": 5432,
+  "env_file": "/tmp/multica_runtime_integrate_20261031_f2478725.env",
+  "owner": "runtime integration coordinator 01a1920d",
+  "purpose": "Go tests only; service and handler suites serial; never served by API",
+  "migration_command": [
+    "go",
+    "run",
+    "./cmd/migrate",
+    "up"
+  ],
+  "migration_exit_code": 0,
+  "migration_elapsed_seconds": 3.56
+}

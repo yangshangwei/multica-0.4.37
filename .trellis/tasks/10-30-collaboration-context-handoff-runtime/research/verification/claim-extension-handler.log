@@ -1,0 +1,14 @@
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/10/31 22:57:15 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+=== RUN   TestCollaborationClaimRejectsInvalidExtensionBeforeMutation
+=== RUN   TestCollaborationClaimRejectsInvalidExtensionBeforeMutation/handoff_version=2
+=== RUN   TestCollaborationClaimRejectsInvalidExtensionBeforeMutation/recording_version=0
+=== RUN   TestCollaborationClaimRejectsInvalidExtensionBeforeMutation/handoff_version=1&handoff_version=1
+=== RUN   TestCollaborationClaimRejectsInvalidExtensionBeforeMutation/recording_version=1
+--- PASS: TestCollaborationClaimRejectsInvalidExtensionBeforeMutation (0.00s)
+    --- PASS: TestCollaborationClaimRejectsInvalidExtensionBeforeMutation/handoff_version=2 (0.00s)
+    --- PASS: TestCollaborationClaimRejectsInvalidExtensionBeforeMutation/recording_version=0 (0.00s)
+    --- PASS: TestCollaborationClaimRejectsInvalidExtensionBeforeMutation/handoff_version=1&handoff_version=1 (0.00s)
+    --- PASS: TestCollaborationClaimRejectsInvalidExtensionBeforeMutation/recording_version=1 (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/handler	1.227s

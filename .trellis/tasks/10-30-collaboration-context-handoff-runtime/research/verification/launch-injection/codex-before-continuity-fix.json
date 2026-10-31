@@ -1,0 +1,17 @@
+{
+  "purpose": "Counterfactual regression: only negotiated adapter notice suppression removed",
+  "command": [
+    "go",
+    "test",
+    "-overlay=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-launch-counterfactual-6puzfkgb/overlay.json",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestHostHandoffLaunchCodex",
+    "-count=1",
+    "-v"
+  ],
+  "exit_code": 1,
+  "elapsed_seconds": 2.758837584000503,
+  "replacement_sha256": "1cfa52ec6315a11dc76afb80135a3590d33dcf9292c9972a13a41a1edb251781",
+  "actual_source_sha256": "565d518d352199050f110e847f89558d1980b94ddc67d0c6db5a33eff6e6afa2"
+}

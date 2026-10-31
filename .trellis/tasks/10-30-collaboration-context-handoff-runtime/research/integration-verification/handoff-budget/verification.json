@@ -1,0 +1,77 @@
+{
+  "commands": [
+    {
+      "name": "focused-tests",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon/collaborationrun",
+        "-run",
+        "^(TestHostHandoffBudget.*|TestHostHandoffLaunchKeepsMaximumAdmittedInputsBeyondMetadataPage)$",
+        "-count=1",
+        "-timeout=3m",
+        "-v"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+      "started_utc": "2026-10-31T16:41:46.641205+00:00",
+      "finished_utc": "2026-10-31T16:41:49.866528+00:00",
+      "exit_code": 0,
+      "pass": true,
+      "db": "none",
+      "provider": "test-created Go executable only"
+    },
+    {
+      "name": "vet",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "./internal/daemon/collaborationrun"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+      "started_utc": "2026-10-31T16:41:49.866601+00:00",
+      "finished_utc": "2026-10-31T16:41:50.042461+00:00",
+      "exit_code": 0,
+      "pass": true,
+      "db": "none",
+      "provider": "test-created Go executable only"
+    },
+    {
+      "name": "build",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "build",
+        "./internal/daemon/collaborationrun"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+      "started_utc": "2026-10-31T16:41:50.042522+00:00",
+      "finished_utc": "2026-10-31T16:41:50.258741+00:00",
+      "exit_code": 0,
+      "pass": true,
+      "db": "none",
+      "provider": "test-created Go executable only"
+    },
+    {
+      "name": "format",
+      "command": [
+        "gofmt",
+        "-l",
+        "server/internal/daemon/collaborationrun/host_handoff_budget_test.go"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+      "started_utc": "2026-10-31T16:41:50.258787+00:00",
+      "finished_utc": "2026-10-31T16:41:50.262356+00:00",
+      "exit_code": 0,
+      "pass": true,
+      "db": "none",
+      "provider": "test-created Go executable only"
+    }
+  ],
+  "server_source_changed_during_checks": [],
+  "source_head": "e3620721efacb820b89709c8db9d326d9cf2b00b"
+}

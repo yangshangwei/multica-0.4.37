@@ -1,0 +1,32 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+◇ injected env (113) from .env.worktree // tip: ⌘ suppress logs { quiet: true }
+
+Running 1 test using 1 worker
+
+(node:29570) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:29570) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+◇ injected env (0) from .env.worktree // tip: ⌘ override existing { override: true }
+  ✘  1 .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-verification/frontend-fix/navigation-diagnosis.spec.ts:4:1 › diagnose source navigation against initial production snapshot (3.4s)
+
+
+  1) .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-verification/frontend-fix/navigation-diagnosis.spec.ts:4:1 › diagnose source navigation against initial production snapshot 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m"http://localhost:13000/account?view=[7mparticipating&issue=01a192db-29d2-70cb-a403-4a2389261c35#run-0cbb6269-68d8-4e5f-a0e6-913ae68bad70[27m"[39m
+    Received: [31m"http://localhost:13000/account?view=[7mcurrent[27m"[39m
+
+      21 |  const result = await page.evaluate(() => ({ url: location.href, events: Reflect.get(window, "navigationDiagnosis") }));
+      22 |  writeFileSync(new URL("./navigation-initial-events.json", import.meta.url), JSON.stringify(result, null, 2));
+    > 23 |  expect(result.url).toBe(`http://localhost:13000${fixture.accountPath}#run-${fixture.priorRunId}`);
+         |                     ^
+      24 | });
+      25 |
+        at /Volumes/artisan/code/2026/mc-runtime-integration-20261031/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-verification/frontend-fix/navigation-diagnosis.spec.ts:23:21
+
+    Error Context: test-results/navigation-diagnosis-diagn-96388-initial-production-snapshot/error-context.md
+
+  1 failed
+    .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-verification/frontend-fix/navigation-diagnosis.spec.ts:4:1 › diagnose source navigation against initial production snapshot 

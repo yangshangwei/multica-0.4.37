@@ -1,0 +1,5 @@
+# Preserve verification bytes and keep raw journals out of source diffs.
+*.log -text -diff
+*.jsonl -text -diff
+*.diff -text -diff
+*.patch -text -diff

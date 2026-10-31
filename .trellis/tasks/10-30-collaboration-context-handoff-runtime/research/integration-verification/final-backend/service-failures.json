@@ -1,0 +1,14 @@
+[
+  {
+    "test": "TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence",
+    "output": "=== RUN   TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence\n    collaboration_records_test.go:186: unknown stored payload became a complete recording or escaped redaction\n--- FAIL: TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence (0.49s)\n"
+  },
+  {
+    "test": "TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot",
+    "output": "=== RUN   TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot\n2026/11/01 01:29:35 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotSta1960605220/001 baseURL=\"\"\n    collaboration_runtime_preparation_derived_test.go:51: unclaimed derived preparation kept the pending-derived fence forever: healthy=false refused=map[continuation:true member:true]\n--- FAIL: TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot (1.06s)\n"
+  },
+  {
+    "test": "TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork",
+    "output": "=== RUN   TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork\n2026/11/01 01:29:40 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesO1570638034/001 baseURL=\"\"\n    collaboration_runtime_preparation_derived_test.go:238: an unread pre-claim continuation stranded the reserved unsupported root\n--- FAIL: TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork (0.91s)\n"
+  }
+]

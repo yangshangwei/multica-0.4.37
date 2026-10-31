@@ -1,0 +1,9 @@
+{
+  "recorded_at": "2026-10-31T17:22:49.278787+00:00",
+  "issue": "The initial inventory scanner counted TestMain as a test in unfiltered packages. TestMain runs the test entry point but is not an emitted named test.",
+  "affected_suites": {
+    "cmd-multica": "server/cmd/multica/cmd_auth_test.go",
+    "daemon-collaborationrun": "server/internal/daemon/collaborationrun/controller_test.go"
+  },
+  "resolution": "Exclude TestMain from expected named tests when finalizing evidence; raw test execution and results stay unchanged. The source scanner has been corrected; the already-running process still has its initial inventory in memory."
+}

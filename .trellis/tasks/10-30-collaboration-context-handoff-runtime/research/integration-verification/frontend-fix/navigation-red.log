@@ -1,0 +1,57 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-runtime-integration-20261031/apps/web
+
+ ❯ platform/navigation.test.tsx (15 tests | 2 failed) 75ms
+     × opens a real source AppLink with one fragment and restores the previous anchor on Back 60ms
+     × replaces or removes a fragment without adding history, retaining the selected issue and view 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  platform/navigation.test.tsx > Web account fragment navigation > opens a real source AppLink with one fragment and restores the previous anchor on Back
+AssertionError: expected "pushState" to be called once with arguments: [ null, '', …(1) ]
+
+Number of calls: 0
+
+ ❯ platform/navigation.test.tsx:82:18
+     80|     // next hash. The platform must use the supported History API for …
+     81|     fireEvent.click(screen.getByRole("link", { name: "Open source run"…
+     82|     expect(push).toHaveBeenCalledExactlyOnceWith(null, "", next);
+       |                  ^
+     83|     expect(router.push).not.toHaveBeenCalled();
+     84|     expect(screen.getByRole("status")).toHaveTextContent(next);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  platform/navigation.test.tsx > Web account fragment navigation > replaces or removes a fragment without adding history, retaining the selected issue and view
+AssertionError: expected last "replaceState" call to have been called with [ null, '', …(1) ]
+
+- Expected:
+[
+  null,
+  "",
+  "/account?view=participating&issue=00000000-0000-4000-8000-000000000001#run-00000000-0000-4000-8000-000000000003",
+]
+
++ Received:
+undefined
+
+ ❯ platform/navigation.test.tsx:103:21
+    101|     const push = vi.spyOn(window.history, "pushState");
+    102|     act(() => adapter().replace(next));
+    103|     expect(replace).toHaveBeenLastCalledWith(null, "", next);
+       |                     ^
+    104|     expect(currentPath(adapter())).toBe(next);
+    105|     act(() => adapter().replace(base));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 13 passed (15)
+   Start at  00:52:15
+   Duration  981ms (transform 48ms, setup 85ms, import 153ms, tests 75ms, environment 601ms)
+
+undefined
+/Volumes/artisan/code/2026/mc-runtime-integration-20261031/apps/web:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run platform/navigation.test.tsx

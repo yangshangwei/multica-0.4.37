@@ -1,0 +1,48 @@
+{
+  "checks": [
+    {
+      "name": "format",
+      "command": [
+        "gofmt",
+        "-l",
+        "server/internal/daemon/collaborationrun/host_handoff_checkpoint_test.go",
+        "server/internal/daemon/collaborationrun/host_checkpoints_test.go"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+      "exit_code": 0,
+      "elapsed_seconds": 0.004,
+      "pass": true
+    },
+    {
+      "name": "vet-after-combination",
+      "command": [
+        "go",
+        "vet",
+        "-tags=agentintegration",
+        "./internal/daemon/collaborationrun"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/server",
+      "exit_code": 0,
+      "elapsed_seconds": 0.179,
+      "pass": true
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "server/internal/daemon/collaborationrun"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+      "exit_code": 0,
+      "elapsed_seconds": 0.008,
+      "pass": true
+    }
+  ],
+  "files": {
+    "server/internal/daemon/collaborationrun/host_handoff_checkpoint_test.go": "717c992a0e4b11ba5e6d3c2d9b667e663e325070043bd150bdd0096714b88455",
+    "server/internal/daemon/collaborationrun/host_checkpoints_test.go": "9d948ef3194f519b2354c6bd6bee2d972003e9ff70b98cb91af7ac543a00f886"
+  }
+}

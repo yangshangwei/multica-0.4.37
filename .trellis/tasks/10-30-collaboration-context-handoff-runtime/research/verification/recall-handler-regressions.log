@@ -1,0 +1,21 @@
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/10/31 22:49:46 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+=== RUN   TestCollaborationCommentAttachmentDisplayRemovalKeepsDeliveredFile
+2026/10/31 22:49:46 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationCommentAttachmentDisplayRemovalKeepsDeliveredFi537295621/001 baseURL=""
+--- PASS: TestCollaborationCommentAttachmentDisplayRemovalKeepsDeliveredFile (0.10s)
+=== RUN   TestCollaborationCommentUTF8LimitIncludesJSONEnvelopeAndOriginalRecovery
+--- PASS: TestCollaborationCommentUTF8LimitIncludesJSONEnvelopeAndOriginalRecovery (0.03s)
+=== RUN   TestCollaborationRecallHTTPRejectsAmbientCredentials
+--- PASS: TestCollaborationRecallHTTPRejectsAmbientCredentials (0.00s)
+=== RUN   TestCollaborationRecallHTTPBudgetAndLegacyFullComment
+--- PASS: TestCollaborationRecallHTTPBudgetAndLegacyFullComment (0.02s)
+=== RUN   TestCollaborationCommentHTTPKeepsAuthorControlHistoryAndPrivateProjection
+--- PASS: TestCollaborationCommentHTTPKeepsAuthorControlHistoryAndPrivateProjection (0.04s)
+=== RUN   TestCollaborationCommentHTTPRejectsForeignCommentsAndMalformedVersions
+--- PASS: TestCollaborationCommentHTTPRejectsForeignCommentsAndMalformedVersions (0.01s)
+=== RUN   TestCollaborationCommentHTTPPaginationHasStableChronologicalPages
+--- PASS: TestCollaborationCommentHTTPPaginationHasStableChronologicalPages (0.02s)
+=== RUN   TestCollaborationCommentHTTPCreateKeepsOneCommentAndLocatedNotification
+--- PASS: TestCollaborationCommentHTTPCreateKeepsOneCommentAndLocatedNotification (0.03s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/handler	1.256s

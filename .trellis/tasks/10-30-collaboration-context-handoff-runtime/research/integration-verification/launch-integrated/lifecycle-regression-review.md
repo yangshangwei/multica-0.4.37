@@ -1,0 +1,10 @@
+# Checkpoint lifecycle regression handoff
+
+Only `host_handoff_checkpoint_lifecycle_test.go` was added. The frozen `717c992...` combined test and all production files were left untouched. This fixture reuses the existing real Runner/test-executable launch setup and adds only narrow checkpoint/seal transport controls.
+
+- **PASS, with race:** `TestHostHandoffCheckpointBlockedRecordingCannotHoldProof`. Recording HTTP handlers remain explicitly blocked until test cleanup; original termination and durable proof ACK complete before that release. Cleanup cancels and explicitly releases handlers before `httptest.Server.Close`, with a bounded Runner exit wait. Termination identity/attempt/nonce are checked against the actual issued permit.
+- **RED:** `TestHostHandoffCheckpointRestartRecoversWithoutExecution`. The first run retains a pending original checkpoint after HTTP 503 while still acknowledging its proof. The test closes and reopens the ledger and constructs a new Runner without any executor. Current code returns without replaying the checkpoint (line 228). The test also requires unchanged claim/snapshot/provider counts, exact original replay identity/key/payload, issued-permit identity on seals/termination, and persisted checkpoint/seal ACKs when recovery is implemented.
+
+The two-test race command exited 1 in 6.221 seconds, with one pass, one failure and zero skips. No race warning, DB access or real Provider call occurred. Exact command/output: `lifecycle-regression-metadata.json` and `lifecycle-regression.log`. New test SHA-256: `bdcfd02210d871918a3e16537b6605bbca9c93381b9067effe40a466857830c9`. Gofmt and tagged vet pass; hashes are saved in `lifecycle-regression-static.json`.
+
+Action: wire the recording receipt/seal recovery into the runtime owner's restart path while retaining proof priority during unavailable recording. Then rerun these tests and the frozen combined failure regression. The restarted recovery test's later seal assertions remain unexecuted until the missing replay is fixed; their presence is not a passing acceptance claim.

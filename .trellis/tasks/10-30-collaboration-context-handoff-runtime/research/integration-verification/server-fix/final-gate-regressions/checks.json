@@ -1,0 +1,1417 @@
+[
+  {
+    "command": "go -C server test ./internal/service -run '^TestCollaboration(RuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot|RuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork|RunRecordsCurrentAuthorityAndLegacyAbsence)$' -count=1 -timeout=10m -json",
+    "log": "reproduce.jsonl",
+    "exit_code": 1,
+    "started": "2026-11-01T01:41:12.881023+08:00",
+    "ended": "2026-11-01T01:41:15.89537+08:00",
+    "package_result": "fail",
+    "counts": {
+      "pass": 0,
+      "fail": 3,
+      "skip": 0
+    },
+    "tests": [
+      {
+        "name": "TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence",
+        "action": "fail",
+        "elapsed": 0.49
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot",
+        "action": "fail",
+        "elapsed": 0.93
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork",
+        "action": "fail",
+        "elapsed": 0.79
+      }
+    ]
+  },
+  {
+    "command": "go -C server test ./internal/service -run '^TestCollaboration(RuntimePreparation(Derived|JoinBeforeFirstClaim|WakeMetadata)|RunRecords)' -count=1 -timeout=10m -json",
+    "log": "focused-green.jsonl",
+    "exit_code": 0,
+    "started": "2026-11-01T01:43:52.612475+08:00",
+    "ended": "2026-11-01T01:44:03.706973+08:00",
+    "package_result": "pass",
+    "counts": {
+      "pass": 23,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests": [
+      {
+        "name": "TestCollaborationRunRecordsPagingFrozenInputsAndRetention",
+        "action": "pass",
+        "elapsed": 0.6
+      },
+      {
+        "name": "TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence",
+        "action": "pass",
+        "elapsed": 0.41
+      },
+      {
+        "name": "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/outcome",
+        "action": "pass",
+        "elapsed": 0.33
+      },
+      {
+        "name": "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/record_checkpoint",
+        "action": "pass",
+        "elapsed": 0.33
+      },
+      {
+        "name": "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/comment",
+        "action": "pass",
+        "elapsed": 0.35
+      },
+      {
+        "name": "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/squad_activity",
+        "action": "pass",
+        "elapsed": 0.34
+      },
+      {
+        "name": "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected",
+        "action": "pass",
+        "elapsed": 1.36
+      },
+      {
+        "name": "TestCollaborationRunRecordsUnclaimedInputsAreNotInvented",
+        "action": "pass",
+        "elapsed": 0.3
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot",
+        "action": "pass",
+        "elapsed": 0.85
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationDerivedRefusalPreservesLiveSibling",
+        "action": "pass",
+        "elapsed": 0.68
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationDerivedRefusalPreservesIssuedClaim/false",
+        "action": "pass",
+        "elapsed": 0.58
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationDerivedRefusalPreservesIssuedClaim/true",
+        "action": "pass",
+        "elapsed": 0.61
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationDerivedRefusalPreservesIssuedClaim",
+        "action": "pass",
+        "elapsed": 1.19
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationDerivedRefusalRollsBackRequiredWrites",
+        "action": "pass",
+        "elapsed": 0.56
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationDerivedEvidenceReadFailureDoesNotSettle",
+        "action": "pass",
+        "elapsed": 0.56
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationDerivedOldRequestPreservesCapableCandidate",
+        "action": "pass",
+        "elapsed": 0.65
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork",
+        "action": "pass",
+        "elapsed": 0.77
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationWakeMetadataKeepsOtherEvidenceBarriers/unknown_private",
+        "action": "pass",
+        "elapsed": 0.48
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationWakeMetadataKeepsOtherEvidenceBarriers/outcome",
+        "action": "pass",
+        "elapsed": 0.51
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationWakeMetadataKeepsOtherEvidenceBarriers/comment",
+        "action": "pass",
+        "elapsed": 0.5
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationWakeMetadataKeepsOtherEvidenceBarriers/record_checkpoint",
+        "action": "pass",
+        "elapsed": 0.49
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationWakeMetadataKeepsOtherEvidenceBarriers/handoff_binding",
+        "action": "pass",
+        "elapsed": 0.49
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationWakeMetadataKeepsOtherEvidenceBarriers",
+        "action": "pass",
+        "elapsed": 2.47
+      }
+    ]
+  },
+  {
+    "command": "go -C server test ./internal/service -run '^TestCollaboration.*(Preparation|Squad|Handoff|RunRecords|Checkpoint|RecordingSeal|RuntimeScan)' -count=1 -timeout=20m -json",
+    "log": "service-affected.jsonl",
+    "exit_code": 0,
+    "started": "2026-11-01T01:44:42.630911+08:00",
+    "ended": "2026-11-01T01:45:55.820563+08:00",
+    "package_result": "pass",
+    "counts": {
+      "pass": 236,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests": [
+      {
+        "name": "TestCollaborationActivityRetainsExactHandoffAndEditHistory",
+        "action": "pass",
+        "elapsed": 0.42
+      },
+      {
+        "name": "TestCollaborationConsentUsesCompleteSquadRoster",
+        "action": "pass",
+        "elapsed": 0.39
+      },
+      {
+        "name": "TestCollaborationBatchCoalescesDirectAgentAndOneSquad",
+        "action": "pass",
+        "elapsed": 0.67
+      },
+      {
+        "name": "TestCollaborationRecordingSealRetainsMaximumCheckpointHistory",
+        "action": "pass",
+        "elapsed": 7.43
+      },
+      {
+        "name": "TestCollaborationCheckpointStopKeepsOriginalPrefixAndContentFreeACK",
+        "action": "pass",
+        "elapsed": 0.48
+      },
+      {
+        "name": "TestCollaborationCheckpointOutcomeOverlapAndInternalEventsStayReadable",
+        "action": "pass",
+        "elapsed": 0.46
+      },
+      {
+        "name": "TestCollaborationSquadConfigurationHoldsOnlyItsAlias/leader",
+        "action": "pass",
+        "elapsed": 0.48
+      },
+      {
+        "name": "TestCollaborationSquadConfigurationHoldsOnlyItsAlias/add_member",
+        "action": "pass",
+        "elapsed": 0.49
+      },
+      {
+        "name": "TestCollaborationSquadConfigurationHoldsOnlyItsAlias/remove_member",
+        "action": "pass",
+        "elapsed": 0.54
+      },
+      {
+        "name": "TestCollaborationSquadConfigurationHoldsOnlyItsAlias/member_role",
+        "action": "pass",
+        "elapsed": 0.52
+      },
+      {
+        "name": "TestCollaborationSquadConfigurationHoldsOnlyItsAlias",
+        "action": "pass",
+        "elapsed": 2.03
+      },
+      {
+        "name": "TestCollaborationExecutionViewMixedBatchKeepsEffectiveSquad",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationFIFOStopsAtSecondEligibleSquad/second_squad_is_boundary",
+        "action": "pass",
+        "elapsed": 0.27
+      },
+      {
+        "name": "TestCollaborationFIFOStopsAtSecondEligibleSquad/held_squad_does_not_truncate",
+        "action": "pass",
+        "elapsed": 0.29
+      },
+      {
+        "name": "TestCollaborationFIFOStopsAtSecondEligibleSquad/invalid_squad_does_not_truncate",
+        "action": "pass",
+        "elapsed": 0.26
+      },
+      {
+        "name": "TestCollaborationFIFOStopsAtSecondEligibleSquad",
+        "action": "pass",
+        "elapsed": 0.82
+      },
+      {
+        "name": "TestCollaborationHandoffCursorEmptyStartsAtRequestedRun",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRoundTripsEmittedKinds/inputs",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRoundTripsEmittedKinds/results",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRoundTripsEmittedKinds/causes",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRoundTripsEmittedKinds/readers",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRoundTripsEmittedKinds/whitespace_at_encoded_limit",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRoundTripsEmittedKinds",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/omitted_run_id",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/null_run_id",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/empty_run_id",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/wrong_run_id",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/duplicate_same_run_id",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/duplicate_replaced_run_id",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/duplicate_escaped_run_id",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/duplicate_kind",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/duplicate_offset",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/unknown_field",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/case_variant_run_id",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/case_variant_duplicate",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/missing_kind",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/unknown_kind",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/negative_offset",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/fractional_offset",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/bad_after_id",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/bad_command_id",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/bad_before_at",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/null_document",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/array_document",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/trailing_document",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/trailing_garbage",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/truncated_document",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/invalid_base64",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings/encoded_limit_exceeded",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffCursorRejectsMalformedBindings",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/request_information/name",
+        "action": "pass",
+        "elapsed": 0.17
+      },
+      {
+        "name": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/request_information/updated_at",
+        "action": "pass",
+        "elapsed": 0.17
+      },
+      {
+        "name": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/request_information/category",
+        "action": "pass",
+        "elapsed": 0.17
+      },
+      {
+        "name": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/return_information/name",
+        "action": "pass",
+        "elapsed": 0.18
+      },
+      {
+        "name": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/return_information/updated_at",
+        "action": "pass",
+        "elapsed": 0.19
+      },
+      {
+        "name": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/return_information/category",
+        "action": "pass",
+        "elapsed": 0.2
+      },
+      {
+        "name": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/submit_acceptance/name",
+        "action": "pass",
+        "elapsed": 0.19
+      },
+      {
+        "name": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/submit_acceptance/updated_at",
+        "action": "pass",
+        "elapsed": 0.17
+      },
+      {
+        "name": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/submit_acceptance/category",
+        "action": "pass",
+        "elapsed": 0.16
+      },
+      {
+        "name": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget",
+        "action": "pass",
+        "elapsed": 1.61
+      },
+      {
+        "name": "TestCollaborationDirectedHandoffsRequireStatusConfirmation/request_information",
+        "action": "pass",
+        "elapsed": 0.16
+      },
+      {
+        "name": "TestCollaborationDirectedHandoffsRequireStatusConfirmation/return_information",
+        "action": "pass",
+        "elapsed": 0.17
+      },
+      {
+        "name": "TestCollaborationDirectedHandoffsRequireStatusConfirmation/submit_acceptance",
+        "action": "pass",
+        "elapsed": 0.16
+      },
+      {
+        "name": "TestCollaborationDirectedHandoffsRequireStatusConfirmation",
+        "action": "pass",
+        "elapsed": 0.49
+      },
+      {
+        "name": "TestCollaborationHostCutoverDrainsAlreadyClaimedNamespaceSquad",
+        "action": "pass",
+        "elapsed": 0.83
+      },
+      {
+        "name": "TestCollaborationHostIntegrationPreparationHistoryUsesEachLaunch",
+        "action": "pass",
+        "elapsed": 0.46
+      },
+      {
+        "name": "TestCollaborationHostSquadCapacityOneKeepsEachRunIdentity",
+        "action": "pass",
+        "elapsed": 0.86
+      },
+      {
+        "name": "TestCollaborationCommentPreviewGroupsTypedTargetsAndSplitsSecondSquad",
+        "action": "pass",
+        "elapsed": 0.3
+      },
+      {
+        "name": "TestCollaborationCommentPreviewDescribesSquadContinuationWithoutJoining",
+        "action": "pass",
+        "elapsed": 0.61
+      },
+      {
+        "name": "TestCollaborationOwnerDepartureRetractsMultipleTargetsAndSquadMember",
+        "action": "pass",
+        "elapsed": 1.51
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsFrozenSummary",
+        "action": "pass",
+        "elapsed": 0.35
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsWatermarkAndBoundedStages",
+        "action": "pass",
+        "elapsed": 0.79
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsManifestCorrelation/other_epoch",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsManifestCorrelation/other_issue",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsManifestCorrelation/other_runtime",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsManifestCorrelation/other_agent",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsManifestCorrelation/other_owner",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsManifestCorrelation/other_workspace",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsManifestCorrelation/other_input",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsManifestCorrelation/other_run",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsManifestCorrelation/other_group",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsManifestCorrelation",
+        "action": "pass",
+        "elapsed": 0.33
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsRetainedAfterCleanup",
+        "action": "pass",
+        "elapsed": 0.49
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsRejectUnrelatedObservations/other_run",
+        "action": "pass",
+        "elapsed": 0.01
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsRejectUnrelatedObservations/other_group",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsRejectUnrelatedObservations/other_event",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsRejectUnrelatedObservations/private_reason",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsRejectUnrelatedObservations/other_issue",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsRejectUnrelatedObservations/other_attempt",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsRejectUnrelatedObservations/other_manifest",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsRejectUnrelatedObservations/unknown_stage",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsRejectUnrelatedObservations/absent_Git",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsRejectUnrelatedObservations",
+        "action": "pass",
+        "elapsed": 0.43
+      },
+      {
+        "name": "TestCollaborationPreparationRecordsCurrentAccessAndLegacy",
+        "action": "pass",
+        "elapsed": 0.74
+      },
+      {
+        "name": "TestCollaborationPublicSquadSwitchWaitsBehindBusyDestinationAndFreshResume",
+        "action": "pass",
+        "elapsed": 1.15
+      },
+      {
+        "name": "TestCollaborationConfigurationReconsentRecoversSquadMemberInstructions",
+        "action": "pass",
+        "elapsed": 0.39
+      },
+      {
+        "name": "TestCollaborationRunRecordsPagingFrozenInputsAndRetention",
+        "action": "pass",
+        "elapsed": 0.5
+      },
+      {
+        "name": "TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence",
+        "action": "pass",
+        "elapsed": 0.42
+      },
+      {
+        "name": "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/outcome",
+        "action": "pass",
+        "elapsed": 0.34
+      },
+      {
+        "name": "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/record_checkpoint",
+        "action": "pass",
+        "elapsed": 0.34
+      },
+      {
+        "name": "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/comment",
+        "action": "pass",
+        "elapsed": 0.33
+      },
+      {
+        "name": "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/squad_activity",
+        "action": "pass",
+        "elapsed": 0.33
+      },
+      {
+        "name": "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected",
+        "action": "pass",
+        "elapsed": 1.34
+      },
+      {
+        "name": "TestCollaborationRunRecordsUnclaimedInputsAreNotInvented",
+        "action": "pass",
+        "elapsed": 0.3
+      },
+      {
+        "name": "TestCollaborationResourceOfferSquadStillRequiresEveryOwnerConsent",
+        "action": "pass",
+        "elapsed": 0.26
+      },
+      {
+        "name": "TestCollaborationResourceOfferHidesIncompleteSquadAndRetainsOriginalRoster",
+        "action": "pass",
+        "elapsed": 0.21
+      },
+      {
+        "name": "TestCollaborationSquadRecordingAndOneFinalLeaderNotification",
+        "action": "pass",
+        "elapsed": 1.13
+      },
+      {
+        "name": "TestCollaborationHandoffSnapshotPreservesMaximumAssignment/html",
+        "action": "pass",
+        "elapsed": 0.75
+      },
+      {
+        "name": "TestCollaborationHandoffSnapshotPreservesMaximumAssignment/ampersand",
+        "action": "pass",
+        "elapsed": 0.72
+      },
+      {
+        "name": "TestCollaborationHandoffSnapshotPreservesMaximumAssignment/control",
+        "action": "pass",
+        "elapsed": 0.74
+      },
+      {
+        "name": "TestCollaborationHandoffSnapshotPreservesMaximumAssignment/multibyte",
+        "action": "pass",
+        "elapsed": 0.71
+      },
+      {
+        "name": "TestCollaborationHandoffSnapshotPreservesMaximumAssignment",
+        "action": "pass",
+        "elapsed": 2.92
+      },
+      {
+        "name": "TestCollaborationHandoffBudgetKeepsAssignmentAndSourceReferences",
+        "action": "pass",
+        "elapsed": 0.2
+      },
+      {
+        "name": "TestCollaborationRuntimeHandoffTracksActiveInformationRequest",
+        "action": "pass",
+        "elapsed": 0.64
+      },
+      {
+        "name": "TestCollaborationRuntimeHandoffSourceRejectsFalseAttribution",
+        "action": "pass",
+        "elapsed": 0.49
+      },
+      {
+        "name": "TestCollaborationHandoffFrozenAssignmentAndSnapshot",
+        "action": "pass",
+        "elapsed": 0.8
+      },
+      {
+        "name": "TestCollaborationHandoffPreservesEveryMergedWakeCause",
+        "action": "pass",
+        "elapsed": 0.81
+      },
+      {
+        "name": "TestCollaborationHandoffSnapshotCannotResurrectPurgedMemory",
+        "action": "pass",
+        "elapsed": 0.49
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationInvocationFreezesLockedAgent",
+        "action": "pass",
+        "elapsed": 0.39
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationUnsupportedInvocationDoesNotReserve/mcp",
+        "action": "pass",
+        "elapsed": 0.31
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationUnsupportedInvocationDoesNotReserve/connected_apps",
+        "action": "pass",
+        "elapsed": 0.31
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationUnsupportedInvocationDoesNotReserve/service_tier",
+        "action": "pass",
+        "elapsed": 0.31
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationUnsupportedInvocationDoesNotReserve/runtime_configuration",
+        "action": "pass",
+        "elapsed": 0.32
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationUnsupportedInvocationDoesNotReserve/skill_exclusions",
+        "action": "pass",
+        "elapsed": 0.32
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationUnsupportedInvocationDoesNotReserve/invocation",
+        "action": "pass",
+        "elapsed": 0.44
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationUnsupportedInvocationDoesNotReserve/custom_environment",
+        "action": "pass",
+        "elapsed": 0.5
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationUnsupportedInvocationDoesNotReserve/custom_arguments",
+        "action": "pass",
+        "elapsed": 0.33
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationUnsupportedInvocationDoesNotReserve/autonomy",
+        "action": "pass",
+        "elapsed": 0.3
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationUnsupportedInvocationDoesNotReserve",
+        "action": "pass",
+        "elapsed": 3.13
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationEnabledSkillsRefuseButEmptySettingsRemainSupported",
+        "action": "pass",
+        "elapsed": 0.32
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRegistrationEpochAndMetadataIsolation",
+        "action": "pass",
+        "elapsed": 0.23
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRegistrationAuthorityAndCompleteSummary/stale_config",
+        "action": "pass",
+        "elapsed": 0.01
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRegistrationAuthorityAndCompleteSummary/partial_summary",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRegistrationAuthorityAndCompleteSummary/other_installation",
+        "action": "pass",
+        "elapsed": 0.01
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRegistrationAuthorityAndCompleteSummary/other_binding",
+        "action": "pass",
+        "elapsed": 0.01
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRegistrationAuthorityAndCompleteSummary/other_binding_epoch",
+        "action": "pass",
+        "elapsed": 0.01
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRegistrationAuthorityAndCompleteSummary/other_provider",
+        "action": "pass",
+        "elapsed": 0.01
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRegistrationAuthorityAndCompleteSummary/unsupported_architecture",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRegistrationAuthorityAndCompleteSummary/unsupported_OS",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRegistrationAuthorityAndCompleteSummary/anonymous",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRegistrationAuthorityAndCompleteSummary/human_owner",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRegistrationAuthorityAndCompleteSummary/ordinary_task",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRegistrationAuthorityAndCompleteSummary/stale_account",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRegistrationAuthorityAndCompleteSummary",
+        "action": "pass",
+        "elapsed": 0.21
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRegistrationUnknownCommit/false",
+        "action": "pass",
+        "elapsed": 0.21
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRegistrationUnknownCommit/true",
+        "action": "pass",
+        "elapsed": 0.21
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRegistrationUnknownCommit",
+        "action": "pass",
+        "elapsed": 0.41
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot",
+        "action": "pass",
+        "elapsed": 0.86
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationDerivedRefusalPreservesLiveSibling",
+        "action": "pass",
+        "elapsed": 0.69
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationDerivedRefusalPreservesIssuedClaim/false",
+        "action": "pass",
+        "elapsed": 0.58
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationDerivedRefusalPreservesIssuedClaim/true",
+        "action": "pass",
+        "elapsed": 0.63
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationDerivedRefusalPreservesIssuedClaim",
+        "action": "pass",
+        "elapsed": 1.21
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationDerivedRefusalRollsBackRequiredWrites",
+        "action": "pass",
+        "elapsed": 0.59
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationDerivedEvidenceReadFailureDoesNotSettle",
+        "action": "pass",
+        "elapsed": 0.58
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationDerivedOldRequestPreservesCapableCandidate",
+        "action": "pass",
+        "elapsed": 0.67
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork",
+        "action": "pass",
+        "elapsed": 0.83
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationWakeMetadataKeepsOtherEvidenceBarriers/unknown_private",
+        "action": "pass",
+        "elapsed": 0.48
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationWakeMetadataKeepsOtherEvidenceBarriers/outcome",
+        "action": "pass",
+        "elapsed": 0.52
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationWakeMetadataKeepsOtherEvidenceBarriers/comment",
+        "action": "pass",
+        "elapsed": 0.48
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationWakeMetadataKeepsOtherEvidenceBarriers/record_checkpoint",
+        "action": "pass",
+        "elapsed": 0.49
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationWakeMetadataKeepsOtherEvidenceBarriers/handoff_binding",
+        "action": "pass",
+        "elapsed": 0.51
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationWakeMetadataKeepsOtherEvidenceBarriers",
+        "action": "pass",
+        "elapsed": 2.48
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationLegacyRejectsFilesWithoutClaiming",
+        "action": "pass",
+        "elapsed": 0.36
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationLegacyNoFileWireStaysUnchanged",
+        "action": "pass",
+        "elapsed": 0.32
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationUnsupportedFilesDoNotReserve",
+        "action": "pass",
+        "elapsed": 0.28
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationFreezesActualInputsAndDeliveredVersions",
+        "action": "pass",
+        "elapsed": 0.51
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationScopeAndRevocation/anonymous",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationScopeAndRevocation/termination",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationScopeAndRevocation/human",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationScopeAndRevocation/task",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationScopeAndRevocation/other_business",
+        "action": "pass",
+        "elapsed": 0.01
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationScopeAndRevocation",
+        "action": "pass",
+        "elapsed": 0.52
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof/changed_same_event",
+        "action": "pass",
+        "elapsed": 0.02
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof/different_attempt",
+        "action": "pass",
+        "elapsed": 0.02
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof/different_manifest",
+        "action": "pass",
+        "elapsed": 0.02
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof/different_issue",
+        "action": "pass",
+        "elapsed": 0.02
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof",
+        "action": "pass",
+        "elapsed": 0.58
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness/bytes",
+        "action": "pass",
+        "elapsed": 0.01
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness/claim",
+        "action": "pass",
+        "elapsed": 0.02
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness/permit",
+        "action": "pass",
+        "elapsed": 0.02
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness/manifest",
+        "action": "pass",
+        "elapsed": 0.01
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness",
+        "action": "pass",
+        "elapsed": 0.49
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationCannotUpgradePreviouslyClaimedRun",
+        "action": "pass",
+        "elapsed": 0.42
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationUnsupportedFilesLeaveHealthyNamespaceAvailable",
+        "action": "pass",
+        "elapsed": 0.43
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationObservationKeepsInstalledRecordsReadable",
+        "action": "pass",
+        "elapsed": 0.43
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationRejectsAnotherLiveRunAndIssueFile",
+        "action": "pass",
+        "elapsed": 0.88
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationFreezesAdmittedCommit",
+        "action": "pass",
+        "elapsed": 0.39
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationLateDeliveryReturnsNeverClaimedInput",
+        "action": "pass",
+        "elapsed": 0.41
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationLateDeliveryPreservesIssuedClaim/false",
+        "action": "pass",
+        "elapsed": 0.36
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationLateDeliveryPreservesIssuedClaim/true",
+        "action": "pass",
+        "elapsed": 0.41
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationLateDeliveryPreservesIssuedClaim",
+        "action": "pass",
+        "elapsed": 0.77
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationLateDeliverySettlementCommitBoundary/false",
+        "action": "pass",
+        "elapsed": 0.4
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationLateDeliverySettlementCommitBoundary/true",
+        "action": "pass",
+        "elapsed": 0.35
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationLateDeliverySettlementCommitBoundary",
+        "action": "pass",
+        "elapsed": 0.76
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationIssueFileHistoryBeyondManifestLimitStillRuns",
+        "action": "pass",
+        "elapsed": 0.69
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationReferencedFileOutranksNewerIssueFiles",
+        "action": "pass",
+        "elapsed": 0.86
+      },
+      {
+        "name": "TestCollaborationRuntimeScanSerializesWithDeletion/runtime/scan_first",
+        "action": "pass",
+        "elapsed": 0.31
+      },
+      {
+        "name": "TestCollaborationRuntimeScanSerializesWithDeletion/runtime/delete_first",
+        "action": "pass",
+        "elapsed": 0.31
+      },
+      {
+        "name": "TestCollaborationRuntimeScanSerializesWithDeletion/workspace/scan_first",
+        "action": "pass",
+        "elapsed": 0.32
+      },
+      {
+        "name": "TestCollaborationRuntimeScanSerializesWithDeletion/workspace/delete_first",
+        "action": "pass",
+        "elapsed": 0.31
+      },
+      {
+        "name": "TestCollaborationRuntimeScanSerializesWithDeletion",
+        "action": "pass",
+        "elapsed": 1.25
+      },
+      {
+        "name": "TestCollaborationRuntimeScanReauthorizesAfterRuntimeFence",
+        "action": "pass",
+        "elapsed": 0.27
+      },
+      {
+        "name": "TestCollaborationRuntimeScanIsolatesObjectFailure/ledger",
+        "action": "pass",
+        "elapsed": 0.43
+      },
+      {
+        "name": "TestCollaborationRuntimeScanIsolatesObjectFailure/retry_exhausted",
+        "action": "pass",
+        "elapsed": 0.43
+      },
+      {
+        "name": "TestCollaborationRuntimeScanIsolatesObjectFailure",
+        "action": "pass",
+        "elapsed": 0.86
+      },
+      {
+        "name": "TestCollaborationRuntimeScanPropagatesGlobalFailure/daemon_identity",
+        "action": "pass",
+        "elapsed": 0.39
+      },
+      {
+        "name": "TestCollaborationRuntimeScanPropagatesGlobalFailure/database",
+        "action": "pass",
+        "elapsed": 0.38
+      },
+      {
+        "name": "TestCollaborationRuntimeScanPropagatesGlobalFailure/context",
+        "action": "pass",
+        "elapsed": 0.41
+      },
+      {
+        "name": "TestCollaborationRuntimeScanPropagatesGlobalFailure",
+        "action": "pass",
+        "elapsed": 1.19
+      },
+      {
+        "name": "TestCollaborationRuntimeScanUnknownCommitPreservesOriginalRun",
+        "action": "pass",
+        "elapsed": 0.32
+      },
+      {
+        "name": "TestCollaborationRuntimeScanCursorCleanup/runtime",
+        "action": "pass",
+        "elapsed": 0.22
+      },
+      {
+        "name": "TestCollaborationRuntimeScanCursorCleanup/workspace",
+        "action": "pass",
+        "elapsed": 0.23
+      },
+      {
+        "name": "TestCollaborationRuntimeScanCursorCleanup",
+        "action": "pass",
+        "elapsed": 0.45
+      },
+      {
+        "name": "TestCollaborationSquadNonlaunchCannotReturnInputReadByLaterRun",
+        "action": "pass",
+        "elapsed": 1.02
+      },
+      {
+        "name": "TestCollaborationSquadNonlaunchReturnsInputBeforeOtherMembersFinish",
+        "action": "pass",
+        "elapsed": 0.68
+      },
+      {
+        "name": "TestCollaborationSquadContinuationContextKeepsLatestMemberReply",
+        "action": "pass",
+        "elapsed": 0.93
+      },
+      {
+        "name": "TestCollaborationSquadFinalLeaderFollowsSerializedTurnOrder",
+        "action": "pass",
+        "elapsed": 1.1
+      },
+      {
+        "name": "TestCollaborationSquadCommentCapacityOneLeaderMemberContinuation",
+        "action": "pass",
+        "elapsed": 0.89
+      },
+      {
+        "name": "TestCollaborationSquadRuntimeCommentAuthorityAndMentionBoundary",
+        "action": "pass",
+        "elapsed": 0.51
+      },
+      {
+        "name": "TestCollaborationSquadHumanJoinClaimAndUnreadCancellation",
+        "action": "pass",
+        "elapsed": 0.92
+      },
+      {
+        "name": "TestCollaborationSquadUnreadAuthorDepartureDoesNotStopOtherWork/unread",
+        "action": "pass",
+        "elapsed": 0.56
+      },
+      {
+        "name": "TestCollaborationSquadUnreadAuthorDepartureDoesNotStopOtherWork/consumed",
+        "action": "pass",
+        "elapsed": 0.86
+      },
+      {
+        "name": "TestCollaborationSquadUnreadAuthorDepartureDoesNotStopOtherWork",
+        "action": "pass",
+        "elapsed": 1.41
+      },
+      {
+        "name": "TestCollaborationSquadUnreadGrantRevocationDetachesOnlyAlias",
+        "action": "pass",
+        "elapsed": 0.55
+      },
+      {
+        "name": "TestCollaborationSquadStopReturnsUnreadJoinWithoutRestartingIt",
+        "action": "pass",
+        "elapsed": 0.57
+      },
+      {
+        "name": "TestCollaborationSquadActivityAndProofRemainSeparate",
+        "action": "pass",
+        "elapsed": 0.59
+      },
+      {
+        "name": "TestCollaborationSquadMissingOutcomeProofSettlesAsIncomplete",
+        "action": "pass",
+        "elapsed": 0.5
+      },
+      {
+        "name": "TestCollaborationSquadHumanCommentQueuesAndJoinsWithTypedReceipt",
+        "action": "pass",
+        "elapsed": 0.64
+      },
+      {
+        "name": "TestCollaborationSquadContinuationNonlaunchReturnsOnlyItsInput",
+        "action": "pass",
+        "elapsed": 0.69
+      },
+      {
+        "name": "TestCollaborationSquadInputRechecksEveryResourceConsent/complete_offline_roster",
+        "action": "pass",
+        "elapsed": 0.2
+      },
+      {
+        "name": "TestCollaborationSquadInputRechecksEveryResourceConsent/missing_member_consent",
+        "action": "pass",
+        "elapsed": 0.2
+      },
+      {
+        "name": "TestCollaborationSquadInputRechecksEveryResourceConsent/member_owner_epoch_changed",
+        "action": "pass",
+        "elapsed": 0.2
+      },
+      {
+        "name": "TestCollaborationSquadInputRechecksEveryResourceConsent/member_runtime_owner_changed",
+        "action": "pass",
+        "elapsed": 0.21
+      },
+      {
+        "name": "TestCollaborationSquadInputRechecksEveryResourceConsent/member_enrollment_revoked",
+        "action": "pass",
+        "elapsed": 0.21
+      },
+      {
+        "name": "TestCollaborationSquadInputRechecksEveryResourceConsent/squad_leader_changed",
+        "action": "pass",
+        "elapsed": 0.2
+      },
+      {
+        "name": "TestCollaborationSquadInputRechecksEveryResourceConsent",
+        "action": "pass",
+        "elapsed": 1.21
+      }
+    ]
+  },
+  {
+    "command": "go -C server test ./internal/handler -run '^TestCollaboration(RuntimePreparationHTTP|RuntimeRecordingHTTP|RuntimeNarrowHandlers|RecordingSeal|HandoffHTTP)' -count=1 -timeout=10m -json",
+    "log": "handler-affected.jsonl",
+    "exit_code": 0,
+    "started": "2026-11-01T01:46:18.624807+08:00",
+    "ended": "2026-11-01T01:46:20.119671+08:00",
+    "package_result": "pass",
+    "counts": {
+      "pass": 6,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests": [
+      {
+        "name": "TestCollaborationRecordingSealRejectsBodyAndWrongCredential",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffHTTPUsesDeclaredWireBudget",
+        "action": "pass",
+        "elapsed": 0.01
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationHTTPRejectsCredentialFallbacks",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRuntimePreparationHTTPUsesStorageAndRechecksAfterIO",
+        "action": "pass",
+        "elapsed": 0.43
+      },
+      {
+        "name": "TestCollaborationRuntimeRecordingHTTPRejectsMalformedPrivateTelemetry",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRuntimeNarrowHandlersNeverFallBackToOtherPurposes",
+        "action": "pass",
+        "elapsed": 0
+      }
+    ]
+  },
+  {
+    "command": "make sqlc",
+    "log": "sqlc.log",
+    "exit_code": 0,
+    "version": "v1.31.1"
+  },
+  {
+    "command": "go -C server vet ./internal/service ./internal/handler",
+    "log": "vet.log",
+    "exit_code": 0
+  },
+  {
+    "command": "gofmt -l <owned Go tests>; git diff --check -- <four owned files>",
+    "exit_code": 0
+  }
+]

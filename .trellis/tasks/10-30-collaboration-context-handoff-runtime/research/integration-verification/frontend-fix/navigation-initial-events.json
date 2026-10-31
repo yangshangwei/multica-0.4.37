@@ -1,0 +1,29 @@
+{
+  "url": "http://localhost:13000/account?view=current",
+  "events": [
+    {
+      "method": "replaceState",
+      "url": "/account?view=participating&issue=01a192db-29d2-70cb-a403-4a2389261c35#run-db9fa326-1f58-4d4b-8ff9-f0ee8f3eeed1",
+      "before": "http://localhost:13000/account?view=participating&issue=01a192db-29d2-70cb-a403-4a2389261c35#run-db9fa326-1f58-4d4b-8ff9-f0ee8f3eeed1",
+      "stack": "Error\n    at history.<computed> [as replaceState] (<anonymous>:14:18)\n    at http://localhost:13000/_next/static/chunks/54610-10e3b714124b22e6.js:1:189224\n    at ik (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)\n    at uu (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108588)\n    at uo (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108423)\n    at uu (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108549)\n    at uo (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108423)\n    at uu (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108627)\n    at uo (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108423)\n    at uu (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108549)"
+    },
+    {
+      "method": "pushState",
+      "url": "/account?view=participating&issue=01a192db-29d2-70cb-a403-4a2389261c35#run-db9fa326-1f58-4d4b-8ff9-f0ee8f3eeed1#run-0cbb6269-68d8-4e5f-a0e6-913ae68bad70",
+      "before": "http://localhost:13000/account?view=participating&issue=01a192db-29d2-70cb-a403-4a2389261c35#run-db9fa326-1f58-4d4b-8ff9-f0ee8f3eeed1",
+      "stack": "Error\n    at history.<computed> (<anonymous>:14:18)\n    at window.history.pushState (http://localhost:13000/_next/static/chunks/54610-10e3b714124b22e6.js:1:191624)\n    at http://localhost:13000/_next/static/chunks/54610-10e3b714124b22e6.js:1:189190\n    at ik (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)\n    at uu (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108588)\n    at uo (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108423)\n    at uu (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108549)\n    at uo (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108423)\n    at uu (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108627)\n    at uo (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108423)"
+    },
+    {
+      "method": "replaceState",
+      "url": "/account?view=current",
+      "before": "http://localhost:13000/account?view=participating&issue=01a192db-29d2-70cb-a403-4a2389261c35#run-db9fa326-1f58-4d4b-8ff9-f0ee8f3eeed1#run-0cbb6269-68d8-4e5f-a0e6-913ae68bad70",
+      "stack": "Error\n    at history.<computed> (<anonymous>:14:18)\n    at window.history.replaceState (http://localhost:13000/_next/static/chunks/54610-10e3b714124b22e6.js:1:191718)\n    at http://localhost:13000/_next/static/chunks/54610-10e3b714124b22e6.js:1:189224\n    at ik (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)\n    at uu (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108588)\n    at uo (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108423)\n    at uu (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108549)\n    at uo (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108423)\n    at uu (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108627)\n    at uo (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108423)"
+    },
+    {
+      "method": "replaceState",
+      "url": "/account?view=current",
+      "before": "http://localhost:13000/account?view=current",
+      "stack": "Error\n    at history.<computed> (<anonymous>:14:18)\n    at window.history.replaceState (http://localhost:13000/_next/static/chunks/54610-10e3b714124b22e6.js:1:191718)\n    at http://localhost:13000/_next/static/chunks/54610-10e3b714124b22e6.js:1:189224\n    at ik (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)\n    at uu (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108588)\n    at uo (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108423)\n    at uu (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108549)\n    at uo (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108423)\n    at uu (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108627)\n    at uo (http://localhost:13000/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:108423)"
+    }
+  ]
+}

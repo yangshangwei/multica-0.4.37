@@ -1,0 +1,69 @@
+{
+  "source_head": "4d0d1a76ddcbbf2ab985550d694a38263aaff25f",
+  "worktree": "/Volumes/artisan/code/2026/mc-handoff-launch-20261031",
+  "patch_sha256": "40772c20f0848e48e96c4eb2e340c1d3ed5441ad1849177c29d933c8d7ea8927",
+  "patch_applies_to_saved_baseline": true,
+  "files": [
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff.go",
+      "after_sha256": "b742493bedbf9f8f2da7360c094289b61c413c38ee43e66863860a50ecc36ebe",
+      "after_blob": "93c818cfda6857c1d5a1a7e065d9aa2f48ec322c",
+      "base_kind": "borrowed_parallel_lane",
+      "base_blob": "9de708756f863a2cbddbe9881e62e3dd64d8687a",
+      "before_sha256": "62a9f2c0ac15ced88b0274e17a3f27753caf5a92d89b7bfbeeb3053aadbbf811"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_runner.go",
+      "after_sha256": "565d518d352199050f110e847f89558d1980b94ddc67d0c6db5a33eff6e6afa2",
+      "after_blob": "ee183dd2e97350ec85198ba583edef0792e6a8ae",
+      "base_kind": "borrowed_parallel_lane",
+      "base_blob": "7efbe861901a62e839d2f8a1208c8486060c5342",
+      "before_sha256": "78f3dd65e3bb7837652c9968b028c9bb492e1023dc61e434f8315e57b6dec66e"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_agentintegration_test.go",
+      "after_sha256": "cf3e07252dd44fef36f5d151891e27cda2440f52aca282baee1e876270c142cc",
+      "after_blob": "34e109f553ae2803ae90d479f67b0dab6e4da71f",
+      "base_kind": "head",
+      "base_blob": "ae0c73838a83b0c103289f6b986fe6418aa72ef5",
+      "before_sha256": "5545ed436e131e5c09f5cd5e0c69dfdc886936e16eca87cf5ebaa925ab36f473"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_agentintegration_authorizer_test.go",
+      "after_sha256": "43cfadd19330a96310c7f6d4990d4183798e3e82017c24af6f30537b4284eecc",
+      "after_blob": "4debfa3fe35cbca2d48b2f271857aace0b8d25f4",
+      "base_kind": "head",
+      "base_blob": "be673557370120aa5944fc6de6e1b84376a3d10b",
+      "before_sha256": "f158ceaee24a874dbb36e50d00db8933481eb0aa7c8fe967c24b2f44dbf8cb3e"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff_launch_test.go",
+      "after_sha256": "16d9f62c8515de5468240bc85e8ddeddb0b186f3f99b62b1d23c2617f66b3336",
+      "after_blob": "002d9e14a11f3e8efbe2dd486dd14fb7b373206a",
+      "base_kind": "new",
+      "base_blob": null
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff_codex_launch_test.go",
+      "after_sha256": "1684ca013c6e1739efada2161851f0679c94ce88a031303f2740ae0c70e00a5c",
+      "after_blob": "0407fa1631c34dbfe06375d30c476459145acf08",
+      "base_kind": "new",
+      "base_blob": null
+    },
+    {
+      "path": ".trellis/spec/server/index.md",
+      "after_sha256": "248802ba5e3f206e427f6ed46310ccc298fcbbe1667e2b6c9ed2b6f393e39703",
+      "after_blob": "9c57b14985ff99b0e02f784452554be17466a1e2",
+      "base_kind": "head",
+      "base_blob": "54172d93a9f555c337dedf1a394d131e6b90b16b",
+      "before_sha256": "b2e4ed2c85c26df80cd565dc5e11fd8bcdd9c9958e11bd69fe25c272954cdd91"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-startup-handoff.md",
+      "after_sha256": "3b64e875f2e7f3ccfd8db577ed41a1a556372a4d376c8e52053d402dd6dfd04e",
+      "after_blob": "7cb2e9f18b1586d362e0171daa8f80344bd5bb55",
+      "base_kind": "new",
+      "base_blob": null
+    }
+  ]
+}

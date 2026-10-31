@@ -1,0 +1,6 @@
+=== RUN   TestHostRecordingRecoveryCancelledBacklogKeepsUnresolvedPayloads
+    host_recording_recovery_test.go:226: cancelled recovery kept processing the rejected backlog: <nil>
+--- FAIL: TestHostRecordingRecoveryCancelledBacklogKeepsUnresolvedPayloads (0.14s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	0.607s
+FAIL

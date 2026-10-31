@@ -1,0 +1,14 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+> @multica/views@0.0.0 test /Volumes/artisan/code/2026/multica-0.4.37/packages/views
+> vitest run collaboration/comment-list.test.tsx collaboration/collaboration-detail.test.tsx collaboration/run-memory-records.test.tsx collaboration/run-handoff.test.tsx
+
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/multica-0.4.37/packages/views
+
+
+ Test Files  4 passed (4)
+      Tests  18 passed (18)
+   Start at  22:49:32
+   Duration  6.19s (transform 4.92s, setup 302ms, import 9.48s, tests 1.70s, environment 6.05s)
+

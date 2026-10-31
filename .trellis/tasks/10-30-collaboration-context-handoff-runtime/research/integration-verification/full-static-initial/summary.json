@@ -1,0 +1,73 @@
+{
+  "reviewed_at": "2026-10-31T15:27:03.639213+00:00",
+  "worktree": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+  "source_head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+  "source_scope_file_count": 3586,
+  "source_sha256_before": "011d8b2a5051ab77cd74df80a47551e7d4c9d8f2681117b9bc7f05b46f2079a3",
+  "source_sha256_after": "011d8b2a5051ab77cd74df80a47551e7d4c9d8f2681117b9bc7f05b46f2079a3",
+  "source_unchanged_during_checks": true,
+  "changed_files": [],
+  "source_edits": false,
+  "scope": "Initial full-repository static verification only; no full TS tests, DB or Provider calls.",
+  "checks": {
+    "lint": {
+      "command": [
+        "pnpm",
+        "lint"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+      "source_head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+      "source_sha256": "011d8b2a5051ab77cd74df80a47551e7d4c9d8f2681117b9bc7f05b46f2079a3",
+      "started_at": "2026-10-31T15:24:06.819087+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 13.858,
+      "finished_at": "2026-10-31T15:24:20.676886+00:00",
+      "turbo_successful": 6,
+      "turbo_total": 6,
+      "turbo_cached": 3,
+      "warning_summaries": [
+        "@multica/desktop:lint: \u2716 1 problem (0 errors, 1 warning)",
+        "@multica/ui:lint: \u2716 3 problems (0 errors, 3 warnings)",
+        "@multica/views:lint: \u2716 27 problems (0 errors, 27 warnings)"
+      ],
+      "tasks_executed": 3,
+      "cache_events": [
+        "@multica/core:lint: cache miss, executing ac05ee5e83859b86",
+        "@multica/views:lint: cache miss, executing ac26ff5635baf314",
+        "@multica/web:lint: cache miss, executing 33a48009caac2411",
+        "@multica/desktop:lint: cache hit, replaying logs 9466636723fc64e3",
+        "@multica/ui:lint: cache hit, replaying logs 5680410bcf5d3d58",
+        "@multica/plugin-sdk:lint: cache hit, replaying logs 14bdd13970e1c31f"
+      ]
+    },
+    "typecheck": {
+      "command": [
+        "pnpm",
+        "typecheck"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+      "source_head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+      "source_sha256": "011d8b2a5051ab77cd74df80a47551e7d4c9d8f2681117b9bc7f05b46f2079a3",
+      "started_at": "2026-10-31T15:24:20.677222+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 72.034,
+      "finished_at": "2026-10-31T15:25:32.711216+00:00",
+      "turbo_successful": 9,
+      "turbo_total": 9,
+      "turbo_cached": 5,
+      "warning_summaries": [],
+      "tasks_executed": 4,
+      "cache_events": [
+        "@multica/core:typecheck: cache miss, executing ff32bb1d106fe02a",
+        "@multica/ui:typecheck: cache hit, replaying logs 7e45b187510daf23",
+        "@multica/plugin-sdk:typecheck: cache hit, replaying logs e1c4c06fe757cff9",
+        "@multica/web:mdx: cache hit, replaying logs a48367d1b9512be1",
+        "@multica/docs:mdx: cache hit, replaying logs 54077e929f36adb0",
+        "@multica/docs:typecheck: cache hit, replaying logs 6c77a913661ceb1d",
+        "@multica/views:typecheck: cache miss, executing a31e2d99a9bba7c2",
+        "@multica/web:typecheck: cache miss, executing b2ed7092c341e0bf",
+        "@multica/desktop:typecheck: cache miss, executing 7412162b80bf96f1"
+      ]
+    }
+  }
+}

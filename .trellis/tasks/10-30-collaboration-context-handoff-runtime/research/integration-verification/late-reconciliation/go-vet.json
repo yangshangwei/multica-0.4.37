@@ -1,0 +1,21 @@
+{
+  "label": "go-vet",
+  "started_at": "2026-10-31T18:51:07.336641+00:00",
+  "duration_seconds": 0.19088874999943073,
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "vet",
+    "./pkg/protocol",
+    "./internal/daemon/collaborationrun"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+  "head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+  "tracked_diff_sha256": "d2775f327776238e14f6ed4988516e9b0bc21d7878cf7cff832f271a41179b9a",
+  "source_inventory": "go-vet.source.json",
+  "platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+  "database": "not used; HTTP fakes only",
+  "real_provider": false,
+  "exit_code": 0
+}

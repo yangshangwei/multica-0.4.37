@@ -1,0 +1,120 @@
+{
+  "created_at": "2026-10-31T18:30:02.731817+00:00",
+  "candidate_source_id": "6b8edfebf3b98773bd4633c81aafe2429e3dfd3b2d0b4130b13ddbc334d70263",
+  "web_build_id": "TljxpQIug-RaXXf7Xcu_D",
+  "unique_tests": 6,
+  "passed": 6,
+  "failed": 0,
+  "skipped": 0,
+  "retries": 0,
+  "runner_errors": 0,
+  "reports": [
+    {
+      "report": "runtime-handoff-final.json",
+      "metadata": "runtime-handoff-final-metadata.json",
+      "stats": {
+        "startTime": "2026-10-31T18:29:01.363Z",
+        "duration": 6679.071000000001,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "collaboration-runtime-handoff-desktop.spec.ts",
+          "title": "Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 2207,
+              "error_count": 0
+            }
+          ]
+        },
+        {
+          "file": "collaboration-runtime-handoff-web.spec.ts",
+          "title": "Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 3151,
+              "error_count": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "report": "handoff-regressions.json",
+      "metadata": "handoff-regressions-metadata.json",
+      "stats": {
+        "startTime": "2026-10-31T18:20:03.252Z",
+        "duration": 35415.19,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "collaboration-handoff-chain-desktop.spec.ts",
+          "title": "Electron information return shows the original requester and note before restoring responsibility",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 6163,
+              "error_count": 0
+            }
+          ]
+        },
+        {
+          "file": "collaboration-handoff-chain-web.spec.ts",
+          "title": "Web directed handoff chain moves current todos with responsibility and only the creator completes",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 9182,
+              "error_count": 0
+            }
+          ]
+        },
+        {
+          "file": "collaboration-offline-handoff.spec.ts",
+          "title": "Web offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 7585,
+              "error_count": 0
+            }
+          ]
+        },
+        {
+          "file": "collaboration-offline-handoff.spec.ts",
+          "title": "Electron offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 10502,
+              "error_count": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "preserved_prior_reports": [
+    "runtime-handoff.json",
+    "navigation-detail.json",
+    "summary-candidate3.json"
+  ],
+  "prior_failure_resolution": "Candidate3 product navigation and records succeeded; the Web E2E used obsolete retention hint text. The final test updates only that text and strengthens URL, disclosure, HTTP200 and exact issue/run/recording status assertions.",
+  "history_scope": "Test-owned password actors and real human HTTP/UI reads; retained run/checkpoint history is seeded. Ingestion/lifecycle is verified separately in Go. No real provider access."
+}
