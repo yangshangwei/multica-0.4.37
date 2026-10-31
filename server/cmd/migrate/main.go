@@ -120,6 +120,19 @@ var commentContentBigramIndex = usableIndexRequirement{
 // they are still pending: a fresh self-hosted install, which is exactly where an
 // interrupted build would otherwise leave a permanently unusable index.
 var concurrentIndexCleanups = map[string]string{
+	"748_collaboration_knowledge_candidate_id":                  "collaboration_knowledge_candidate_id_idx",
+	"749_collaboration_knowledge_lineage_version":               "collaboration_knowledge_lineage_version_idx",
+	"750_collaboration_knowledge_approved_lineage":              "collaboration_knowledge_approved_lineage_idx",
+	"751_collaboration_knowledge_source_page":                   "collaboration_knowledge_source_page_idx",
+	"752_collaboration_knowledge_source_workspace":              "collaboration_knowledge_source_workspace_idx",
+	"753_collaboration_knowledge_source_issue":                  "collaboration_knowledge_source_issue_idx",
+	"754_collaboration_knowledge_published_target":              "collaboration_knowledge_published_target_idx",
+	"755_collaboration_knowledge_target_identity":               "collaboration_knowledge_target_identity_idx",
+	"756_collaboration_knowledge_invalidation_id":               "collaboration_knowledge_invalidation_id_idx",
+	"757_collaboration_knowledge_scan_cause":                    "collaboration_knowledge_scan_cause_idx",
+	"758_collaboration_knowledge_hint_cause":                    "collaboration_knowledge_hint_cause_idx",
+	"759_collaboration_knowledge_scan_pending":                  "collaboration_knowledge_scan_pending_idx",
+	"760_collaboration_knowledge_hint_pending":                  "collaboration_knowledge_hint_pending_idx",
 	"572_issue_handoff_id":                                      "issue_handoff_id_idx",
 	"573_collaboration_session_id":                              "collaboration_session_id_idx",
 	"574_collaboration_grant_id":                                "collaboration_grant_id_idx",
