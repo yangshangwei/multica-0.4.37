@@ -21,10 +21,25 @@
   "children": [],
   "parent": "10-30-collaboration-context-handoff",
   "relatedFiles": [],
-  "notes": "",
+  "notes": "2026-11-01：正式 PRD/design/implement 与上下文清单补齐 F1–F4；保留 K1–K5、人工确认和来源不扩权。G0/G1 按 0e1ee8e1e 产品及 2b861347e 确定性证据冻结。本次修订待主会话复核；G2 为实现启用验收，G3 为执行准备。未写产品代码、未运行产品测试或 Provider。",
   "meta": {
     "permission_decision": "approved",
     "approval_session": "01a18a36-e482-7840-9900-3ff8174b4ce7",
-    "depends_on": "10-30-collaboration-context-handoff-runtime"
+    "depends_on": "10-30-collaboration-context-handoff-runtime",
+    "planning_review": "K1_K5_and_F1_F4_passed_for_implementation",
+    "planning_artifacts": "formal_prd_design_implementation_and_context_complete_pending_revision_review",
+    "execution_gate": "main_contract_recheck_and_G3_owner_environment_setup; G2_blocks_enablement_not_implementation",
+    "design_review": "../10-30-collaboration-context-handoff-runtime/research/knowledge-plan-review-2026-10-31.md",
+    "late_review": "research/draft-code-seam-review-2026-11-01.md",
+    "contract_revision": "research/contract-revision-2026-11-01.md",
+    "runtime_product_commit": "0e1ee8e1e957b46a5bbd5d91a84772d69dd4d64b",
+    "runtime_evidence_commit": "2b861347e62573ca765157ebf14629712793e7df",
+    "G0": "frozen_deterministic_source_version_purge_availability",
+    "G1": "frozen_deterministic_handoff_and_application_input_binding",
+    "G2": "implementation_enablement_gate_not_start_blocker",
+    "G3": "pending_owner_migration_worktree_test_database_assignment",
+    "product_implementation": "not_started",
+    "real_model_acceptance": "open_separate_runtime_scope; upstream_502_window_closed_no_provider_calls",
+    "main_contract_review": "research/main-contract-review-2026-11-01.json"
   }
 }
