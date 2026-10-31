@@ -1615,3 +1615,37 @@ Archived password registration and the complete platform administration task tre
 ### Next Steps
 
 - 环境恢复后从 E2a trial 1 继续；剩余上限 24 次 Provider 调用。不得补跑或替换 E1 已消耗的三个槽位。
+
+
+## Session 109: 保留 E2a 限流超时和关键日期暴露证据
+<!-- trellis-session: v=2 fp=c324594d0ef29205 -->
+
+**Date**: 2026-10-31
+**Task**: 保留 E2a 限流超时和关键日期暴露证据
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+从 E2a trial 1 继续；最新日期已出现在工具输出，但四次上游 429 后五分钟超时，没有最终答案，不能评分。后续全部停止，任务保持进行中。
+
+### Main Changes
+
+- 新增本轮原始记录、Provider 诊断、语义裁决和 11 文件 hash；更新任务报告与父任务证据映射。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `54d6ecb02` | docs(collaboration): retain the incomplete E2a attempt without scoring a timeout |
+
+### Testing
+
+- [OK] 独立核对 3017 个 HTTP 请求响应配对、单次 permit/termination/proof、proof_acknowledged、Provider 状态及框架来源。
+
+### Status
+
+**In progress** — 会话已记录；本轮无有效行为样本，后续等待上游恢复。
+
+### Next Steps
+
+- 环境恢复后从 E2a trial 2 接续，剩余最多 23 次 Provider 调用；不重跑已消耗槽位。
