@@ -3,11 +3,34 @@
 ## Goal
 把停止/撤权保留、成员/队长接力、评论分页和权限可信度从模型自觉提升为服务端可审计的结构化输入。
 
-## In scope
-bounded checkpoints、versioned handoff envelope、reader/result/wakeup provenance、comment cursor/byte budget/truncation、prompt trust boundary、Web/Desktop evidence。
+## Requirements
+
+- R1：每次接手可取得服务端按当前权限过滤的交接包，包含当前处理人、转交者/目标/说明/时间、原始输入出处、基线/最新 memory 指针、前序 run 结果与 final answer 可用性。无法确认的事实显式标为缺失。
+- R2：支持交接协议的 run 在启动前冻结有界快照；同一 run 重试复用该快照，后续刷新与启动快照明确区分。成员不靠主动调用工具才能拿到本步骤派活正文。
+- R3：合并为一个队长续作时保留所有成员完成、评论和新输入触发来源；输入 reader 集合只表示可能已进入 prompt，不表示模型已理解或完成。
+- R4：停止、撤权、移除作者前已被授权接收的脱敏 checkpoint 保留；权限失效后拒绝新业务正文，终止证明通道保持仅元数据。缺失片段和未上传的本地内容显式标识。
+- R5：runtime/CLI 评论支持稳定分页、字节预算、总数/截断和作者权限元数据。人类评论已有分页，复用其可用机制；不把普通评论或 memory 文本提升为执行权限。
+- R6：Web/Desktop 共享界面可追到转交、输入、版本、记录覆盖和缺失原因。新增响应通过严格 schema；旧客户端仍能读旧字段和旧记录项。
 
 ## Out of scope
 自动知识库、服务端总结模型、技能层写入、跨 Server 和 Mobile。
 
+不从自然语言自动生成“已确认决定”或“已验证”标签；不把私人 provider session、工作目录或 daemon ledger 当唯一权威；不扩大普通 Comment 权。
+
 ## Acceptance
-接手 Agent 可从 envelope 复述当前 handler、意图、决定/理由、member results、next step 和证据；权限失效后的缺失范围可见；分页截断显式；非 SubmitCommand 评论不驱动执行；旧客户端兼容。
+
+| ID | 可观察结果 |
+| --- | --- |
+| H-AC1 | 不同账号/机器的接收者可从交接包定位 handler、转交说明和作者、输入原始快照、member result/final answer 及 memory 版本；缺失与未结构化内容不被伪造。 |
+| H-AC2 | 假 Provider 首个 prompt 含准确 role/step/parent 和派活正文/出处；并发修改评论、memory 或结果后，同一已冻结 run 的重试输入不漂移；支持读取失败时不启动。 |
+| H-AC3 | 两个成员完成和一个新输入并发到达，最多准备一个续作且保留三种来源；重复通知不重复计数；claim 后来源归下一轮。 |
+| H-AC4 | checkpoint 重试幂等，冲突/乱序/超限被拒；Stop/revoke/remove-author 后已接收片段可读，新的正文写入被拒，proof 仍可收敛；最终 outcome 与 checkpoint 不重复展示。 |
+| H-AC5 | 201+ 条评论、相同时间戳、并发新增/删除和 UTF-8/JSON 转义场景下，新旧事实均可分页到达；预算不足返回明确可恢复错误，不循环返回同一游标。 |
+| H-AC6 | 作者显示权限与原始指令受理事实分开；有 SubmitCommand 权的作者所写普通评论也不能自动变成指令；跨 run/issue/token 的读取失败。 |
+| H-AC7 | Web/Desktop 同一交接链可查看来源与缺失提示；未知/畸形响应不能赋权；新增内部事件不使旧 run-record 页面失败；权限失效清除私有缓存。 |
+
+## Dependencies and evidence
+
+- 首轮交付闭环达到父任务合入门槛后才开始本子任务产品实现。E0–E6 的行为结论与确定性契约验证分开；存在环境阻塞时保留原始记录，不把未运行项记为通过。
+- 用户已批准父任务计划及知识权限，见父任务 PRD 的会话依据。该决定不需要在本子任务重新确认。
+- 2026-10-31 当前代码研究见 `research/current-code.md`。技术设计和执行顺序分别在 `design.md`、`implement.md`，本文不表示功能已实现。
