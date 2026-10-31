@@ -1,0 +1,119 @@
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/11/01 03:43:38 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+=== RUN   TestCollaborationRuntimeCredentialMatrix
+2026/11/01 03:43:38 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationRuntimeCredentialMatrix1761139337/001 baseURL=""
+=== RUN   TestCollaborationRuntimeCredentialMatrix/handoff
+=== RUN   TestCollaborationRuntimeCredentialMatrix/handoff/task
+--- PASS: TestCollaborationRuntimeCredentialMatrix/handoff/task (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/handoff/plugin_installation
+--- PASS: TestCollaborationRuntimeCredentialMatrix/handoff/plugin_installation (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/handoff/plugin_callback
+--- PASS: TestCollaborationRuntimeCredentialMatrix/handoff/plugin_callback (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/handoff/im_binding
+--- PASS: TestCollaborationRuntimeCredentialMatrix/handoff/im_binding (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/handoff/wrong_purpose
+--- PASS: TestCollaborationRuntimeCredentialMatrix/handoff/wrong_purpose (0.00s)
+--- PASS: TestCollaborationRuntimeCredentialMatrix/handoff (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/snapshot
+=== RUN   TestCollaborationRuntimeCredentialMatrix/snapshot/task
+--- PASS: TestCollaborationRuntimeCredentialMatrix/snapshot/task (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/snapshot/plugin_installation
+--- PASS: TestCollaborationRuntimeCredentialMatrix/snapshot/plugin_installation (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/snapshot/plugin_callback
+--- PASS: TestCollaborationRuntimeCredentialMatrix/snapshot/plugin_callback (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/snapshot/im_binding
+--- PASS: TestCollaborationRuntimeCredentialMatrix/snapshot/im_binding (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/snapshot/wrong_purpose
+--- PASS: TestCollaborationRuntimeCredentialMatrix/snapshot/wrong_purpose (0.00s)
+--- PASS: TestCollaborationRuntimeCredentialMatrix/snapshot (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/bind
+=== RUN   TestCollaborationRuntimeCredentialMatrix/bind/task
+--- PASS: TestCollaborationRuntimeCredentialMatrix/bind/task (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/bind/plugin_installation
+--- PASS: TestCollaborationRuntimeCredentialMatrix/bind/plugin_installation (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/bind/plugin_callback
+--- PASS: TestCollaborationRuntimeCredentialMatrix/bind/plugin_callback (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/bind/im_binding
+--- PASS: TestCollaborationRuntimeCredentialMatrix/bind/im_binding (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/bind/wrong_purpose
+--- PASS: TestCollaborationRuntimeCredentialMatrix/bind/wrong_purpose (0.00s)
+--- PASS: TestCollaborationRuntimeCredentialMatrix/bind (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/source
+=== RUN   TestCollaborationRuntimeCredentialMatrix/source/task
+--- PASS: TestCollaborationRuntimeCredentialMatrix/source/task (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/source/plugin_installation
+--- PASS: TestCollaborationRuntimeCredentialMatrix/source/plugin_installation (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/source/plugin_callback
+--- PASS: TestCollaborationRuntimeCredentialMatrix/source/plugin_callback (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/source/im_binding
+--- PASS: TestCollaborationRuntimeCredentialMatrix/source/im_binding (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/source/wrong_purpose
+--- PASS: TestCollaborationRuntimeCredentialMatrix/source/wrong_purpose (0.00s)
+--- PASS: TestCollaborationRuntimeCredentialMatrix/source (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/checkpoint
+=== RUN   TestCollaborationRuntimeCredentialMatrix/checkpoint/task
+--- PASS: TestCollaborationRuntimeCredentialMatrix/checkpoint/task (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/checkpoint/plugin_installation
+--- PASS: TestCollaborationRuntimeCredentialMatrix/checkpoint/plugin_installation (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/checkpoint/plugin_callback
+--- PASS: TestCollaborationRuntimeCredentialMatrix/checkpoint/plugin_callback (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/checkpoint/im_binding
+--- PASS: TestCollaborationRuntimeCredentialMatrix/checkpoint/im_binding (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/checkpoint/wrong_purpose
+--- PASS: TestCollaborationRuntimeCredentialMatrix/checkpoint/wrong_purpose (0.00s)
+--- PASS: TestCollaborationRuntimeCredentialMatrix/checkpoint (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/recall
+=== RUN   TestCollaborationRuntimeCredentialMatrix/recall/task
+--- PASS: TestCollaborationRuntimeCredentialMatrix/recall/task (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/recall/plugin_installation
+--- PASS: TestCollaborationRuntimeCredentialMatrix/recall/plugin_installation (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/recall/plugin_callback
+--- PASS: TestCollaborationRuntimeCredentialMatrix/recall/plugin_callback (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/recall/im_binding
+--- PASS: TestCollaborationRuntimeCredentialMatrix/recall/im_binding (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/recall/wrong_purpose
+--- PASS: TestCollaborationRuntimeCredentialMatrix/recall/wrong_purpose (0.00s)
+--- PASS: TestCollaborationRuntimeCredentialMatrix/recall (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/content
+=== RUN   TestCollaborationRuntimeCredentialMatrix/content/task
+--- PASS: TestCollaborationRuntimeCredentialMatrix/content/task (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/content/plugin_installation
+--- PASS: TestCollaborationRuntimeCredentialMatrix/content/plugin_installation (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/content/plugin_callback
+--- PASS: TestCollaborationRuntimeCredentialMatrix/content/plugin_callback (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/content/im_binding
+--- PASS: TestCollaborationRuntimeCredentialMatrix/content/im_binding (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/content/wrong_purpose
+--- PASS: TestCollaborationRuntimeCredentialMatrix/content/wrong_purpose (0.00s)
+--- PASS: TestCollaborationRuntimeCredentialMatrix/content (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/seal
+=== RUN   TestCollaborationRuntimeCredentialMatrix/seal/task
+--- PASS: TestCollaborationRuntimeCredentialMatrix/seal/task (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/seal/plugin_installation
+--- PASS: TestCollaborationRuntimeCredentialMatrix/seal/plugin_installation (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/seal/plugin_callback
+--- PASS: TestCollaborationRuntimeCredentialMatrix/seal/plugin_callback (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/seal/im_binding
+--- PASS: TestCollaborationRuntimeCredentialMatrix/seal/im_binding (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/seal/wrong_purpose
+--- PASS: TestCollaborationRuntimeCredentialMatrix/seal/wrong_purpose (0.00s)
+--- PASS: TestCollaborationRuntimeCredentialMatrix/seal (0.00s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/business_control_handoff
+--- PASS: TestCollaborationRuntimeCredentialMatrix/business_control_handoff (0.03s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/business_control_snapshot
+--- PASS: TestCollaborationRuntimeCredentialMatrix/business_control_snapshot (0.02s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/business_control_bind
+--- PASS: TestCollaborationRuntimeCredentialMatrix/business_control_bind (0.02s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/business_control_source
+--- PASS: TestCollaborationRuntimeCredentialMatrix/business_control_source (0.02s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/business_control_checkpoint
+--- PASS: TestCollaborationRuntimeCredentialMatrix/business_control_checkpoint (0.02s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/business_control_recall
+--- PASS: TestCollaborationRuntimeCredentialMatrix/business_control_recall (0.02s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/business_control_content
+--- PASS: TestCollaborationRuntimeCredentialMatrix/business_control_content (0.02s)
+=== RUN   TestCollaborationRuntimeCredentialMatrix/termination_metadata_after_revocation
+--- PASS: TestCollaborationRuntimeCredentialMatrix/termination_metadata_after_revocation (0.02s)
+--- PASS: TestCollaborationRuntimeCredentialMatrix (0.75s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/handler	1.719s
