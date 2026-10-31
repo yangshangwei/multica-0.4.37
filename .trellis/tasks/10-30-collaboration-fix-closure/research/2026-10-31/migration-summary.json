@@ -1,0 +1,97 @@
+{
+  "source_head": "4c833e737efb6c997e5cb56c74c43e9237c91956",
+  "started_at": "2026-10-31T11:50:47.985146+00:00",
+  "database_host": "localhost",
+  "database_port": 5432,
+  "upgrade_database": "multica_closure_20261031_b953445095",
+  "fresh_database": "multica_closure_20261031_b953445095_fresh",
+  "checks": [
+    {
+      "name": "build-migration-runner",
+      "exit_code": 0,
+      "log": "build-migration-runner.log"
+    },
+    {
+      "name": "migration-prefix-lint",
+      "exit_code": 0,
+      "log": "migration-prefix-lint.log"
+    },
+    {
+      "name": "database-create",
+      "exit_code": 0,
+      "log": "database-create.log"
+    },
+    {
+      "name": "database-identity",
+      "exit_code": 0,
+      "log": "database-identity.log"
+    },
+    {
+      "name": "baseline-through-745",
+      "exit_code": 0,
+      "log": "baseline-through-745.log"
+    },
+    {
+      "name": "baseline-inspection",
+      "exit_code": 0,
+      "log": "baseline-inspection.log"
+    },
+    {
+      "name": "fresh-through-746",
+      "exit_code": 0,
+      "log": "fresh-through-746.log"
+    },
+    {
+      "name": "migration-prefix-lint-complete",
+      "exit_code": 0,
+      "log": "migration-prefix-lint-complete.log"
+    },
+    {
+      "name": "seed-745-history",
+      "exit_code": 0,
+      "log": "seed-745-history.log"
+    },
+    {
+      "name": "upgrade-745-to-746",
+      "exit_code": 0,
+      "log": "upgrade-745-to-746.log"
+    },
+    {
+      "name": "assert-upgrade-and-epoch-contract",
+      "exit_code": 0,
+      "log": "assert-upgrade-and-epoch-contract.log"
+    },
+    {
+      "name": "down-746-only",
+      "exit_code": 0,
+      "log": "down-746-only.log"
+    },
+    {
+      "name": "assert-down-retains-history",
+      "exit_code": 0,
+      "log": "assert-down-retains-history.log"
+    },
+    {
+      "name": "up-after-rollback",
+      "exit_code": 0,
+      "log": "up-after-rollback.log"
+    },
+    {
+      "name": "assert-up-after-rollback",
+      "exit_code": 0,
+      "log": "assert-up-after-rollback.log"
+    },
+    {
+      "name": "reapply-746",
+      "exit_code": 0,
+      "log": "reapply-746.log"
+    },
+    {
+      "name": "assert-reapply-noop",
+      "exit_code": 0,
+      "log": "assert-reapply-noop.log"
+    }
+  ],
+  "completed_at": "2026-10-31T11:53:07.171973+00:00",
+  "result": "passed"
+}

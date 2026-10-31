@@ -1,0 +1,131 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-context-resume-20261031/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-context-resume-20261031/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/closure-evidence-20261031/playwright-native-diagnosis",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-context-resume-20261031/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-offline-handoff.spec.ts",
+      "file": "collaboration-offline-handoff.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Electron offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 15114,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-slot=\"popover-content\"]').filter({ has: getByText('Notifications', { exact: true }) }).getByText('You were removed from this collaboration issue.', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-slot=\"popover-content\"]').filter({ has: getByText('Notifications', { exact: true }) }).getByText('You were removed from this collaboration issue.', { exact: true })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-slot=\"popover-content\"]').filter({ has: getByText('Notifications', { exact: true }) }).getByText('You were removed from this collaboration issue.', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-slot=\"popover-content\"]').filter({ has: getByText('Notifications', { exact: true }) }).getByText('You were removed from this collaboration issue.', { exact: true })\u001b[22m\n\n    at exerciseOfflineHandoff (/Volumes/artisan/code/2026/mc-context-resume-20261031/e2e/fixtures/collaboration-offline-handoff.ts:288:107)\n    at /Volumes/artisan/code/2026/mc-context-resume-20261031/e2e/collaboration-offline-handoff.spec.ts:53:24",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/mc-context-resume-20261031/e2e/fixtures/collaboration-offline-handoff.ts",
+                      "column": 107,
+                      "line": 288
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures/collaboration-offline-handoff.ts:288\n\n  286 |   await expect(fresh.page.getByRole(\"region\", { name: \"Collaboration issues\", exact: true }).getByText(\"0 issues\", { exact: true })).toBeVisible();\n  287 |   const deniedPopup = await popupFor(fresh.page);\n> 288 |   await expect(deniedPopup.getByText(\"You were removed from this collaboration issue.\", { exact: true })).toBeVisible();\n      |                                                                                                           ^\n  289 |   await expect(deniedPopup.getByRole(\"link\", { name: fixture.title, exact: true })).toHaveCount(0);\n  290 |   await fresh.page.getByRole(\"button\", { name: /^Notifications/ }).click();\n  291 |   await fresh.navigate(new URL(archived.old_href, fixture.apiUrl).pathname + new URL(archived.old_href, fixture.apiUrl).search);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/mc-context-resume-20261031/e2e/fixtures/collaboration-offline-handoff.ts",
+                        "column": 107,
+                        "line": 288
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-slot=\"popover-content\"]').filter({ has: getByText('Notifications', { exact: true }) }).getByText('You were removed from this collaboration issue.', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-slot=\"popover-content\"]').filter({ has: getByText('Notifications', { exact: true }) }).getByText('You were removed from this collaboration issue.', { exact: true })\u001b[22m\n\n\n   at fixtures/collaboration-offline-handoff.ts:288\n\n  286 |   await expect(fresh.page.getByRole(\"region\", { name: \"Collaboration issues\", exact: true }).getByText(\"0 issues\", { exact: true })).toBeVisible();\n  287 |   const deniedPopup = await popupFor(fresh.page);\n> 288 |   await expect(deniedPopup.getByText(\"You were removed from this collaboration issue.\", { exact: true })).toBeVisible();\n      |                                                                                                           ^\n  289 |   await expect(deniedPopup.getByRole(\"link\", { name: fixture.title, exact: true })).toHaveCount(0);\n  290 |   await fresh.page.getByRole(\"button\", { name: /^Notifications/ }).click();\n  291 |   await fresh.navigate(new URL(archived.old_href, fixture.apiUrl).pathname + new URL(archived.old_href, fixture.apiUrl).search);\n    at exerciseOfflineHandoff (/Volumes/artisan/code/2026/mc-context-resume-20261031/e2e/fixtures/collaboration-offline-handoff.ts:288:107)\n    at /Volumes/artisan/code/2026/mc-context-resume-20261031/e2e/collaboration-offline-handoff.spec.ts:53:24"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-31T12:04:47.608Z",
+                  "annotations": [],
+                  "attachments": [],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/mc-context-resume-20261031/e2e/fixtures/collaboration-offline-handoff.ts",
+                    "column": 107,
+                    "line": 288
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "b53c6fa0121e7a26b406-a8bc0f7668ca407e964f",
+          "file": "collaboration-offline-handoff.spec.ts",
+          "line": 12,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-31T12:04:47.118Z",
+    "duration": 16267.489000000001,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

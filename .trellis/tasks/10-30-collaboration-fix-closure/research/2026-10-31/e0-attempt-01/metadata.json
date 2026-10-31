@@ -1,0 +1,49 @@
+{
+  "source_commit": "4c833e737efb6c997e5cb56c74c43e9237c91956",
+  "command": [
+    "go",
+    "test",
+    "-tags=agentintegration",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestHostProviderAccountSmoke$",
+    "-count=1",
+    "-v",
+    "-timeout=4m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "provider": "claude",
+  "executable": "/Users/artisan/.local/bin/claude",
+  "test_sha256": "5545ed436e131e5c09f5cd5e0c69dfdc886936e16eca87cf5ebaa925ab36f473",
+  "started_at": "2026-10-31T11:53:20.764546+00:00",
+  "authorization": "Existing user approval recovered from session 01a18a36-e482-7840-9900-3ff8174b4ce7 turn 0 and 14; one resume attempt",
+  "go_version": "go version go1.27.0 darwin/arm64",
+  "exit_code": 0,
+  "elapsed_seconds": 35.631,
+  "finished_at": "2026-10-31T11:53:56.400998+00:00",
+  "provider_session_observations": [
+    {
+      "test_session_file": "/Users/artisan/.claude/projects/-private-var-folders-3n-gbt3p39s5pdc4l55js62gxnm0000gn-T-TestHostProviderAccountSmoke1229945241-003-workspaces-b991a4c3f61b5fafcf9b402820ce0533154a2022dfb44e7a1288c1067f1b9777-work/f0807f4e-f860-4677-a675-8ca11bbaadd5.jsonl",
+      "message_type_counts": {
+        "queue-operation": 2,
+        "user": 2,
+        "attachment": 12,
+        "atis-latch": 3,
+        "api-request-shape": 1,
+        "api-request-blob": 2,
+        "api-request": 4,
+        "last-prompt": 3,
+        "tools-used": 1,
+        "assistant": 3,
+        "system": 2,
+        "cost-state": 1
+      },
+      "observed_models": [
+        "claude-opus-5-5"
+      ]
+    }
+  ],
+  "observed_models": [
+    "claude-opus-5-5"
+  ]
+}

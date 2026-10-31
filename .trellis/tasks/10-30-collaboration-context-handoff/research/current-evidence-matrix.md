@@ -1,5 +1,16 @@
 # 当前进度证据核对表
 
+## 最新续作结论（2026-10-31）
+
+产品基线已推进至 `4c833e737`，原表为 2026-10-30 审计快照，不应再据其判断待修项。最新问题映射、命令和限制见 [首轮续作验证](../../10-30-collaboration-fix-closure/verification-2026-10-31.md)。
+
+- 迁移 fresh/745→746/down/up/reapply、sqlc、lint/typecheck、当前 recipient Go 回归、12,930 TS tests、2 Web + 2 原生 Electron 交接均通过。
+- 正式 E0 本次真实通过；此前 502 不是当前 gate 状态。
+- 框架提交 `b748535f0` 补齐持久化/完整入口验证。E1 实际读取 context 和 memory 后遇到 6×429、1×503，5 分钟超时；后续轮次自动停止，E1–E6 无有效行为结论。
+- 父计划和知识权限已找到用户明确批准的原始会话，记录见父任务 PRD。后续产品功能仍未实现，不能用本轮验证代替 handoff/checkpoint/knowledge 验收。
+
+## 原始审计快照（2026-10-30）
+
 固定审计对象：/Volumes/artisan/code/2026/mc-collab-integ，HEAD 4b0cbfde7a2a03142e70ceb91294ec8d8f1ff074。集成 worktree 只有未跟踪的 .integ-check.sh；主工作区的 52 项未提交改动未被复制、重置或覆盖。原始材料快照、SHA-256 和来源时间见 research/raw/source-manifest.json。
 
 | 项目 | 当前结论 | 分类 | 证据 | 还缺什么 |

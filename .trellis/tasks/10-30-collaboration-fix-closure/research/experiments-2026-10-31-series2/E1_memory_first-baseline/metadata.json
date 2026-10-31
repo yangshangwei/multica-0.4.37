@@ -1,0 +1,34 @@
+{
+  "scenario": "E1_memory_first",
+  "arm": "baseline",
+  "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+  "product_after_commit": "4c833e737efb6c997e5cb56c74c43e9237c91956",
+  "framework_commit": "b748535f0",
+  "command": [
+    "go",
+    "test",
+    "-tags=agentintegration",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestHostContextExperiment$",
+    "-count=1",
+    "-v",
+    "-timeout=45m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-context-baseline-20261031/server",
+  "requested_model": "claude-opus-5-5",
+  "provider": "claude",
+  "framework_files": {
+    "host_context_experiment_evidence_test.go": "6ad5f77069a5a6477e81763a9a8578ba3ff5838b0abeb947c01169bc68eb2b2f",
+    "host_context_experiment_fixture_test.go": "049aedf8fdff1623bf120c324341113edf031df813904cbb6199efa3c35e39ba",
+    "host_context_experiment_test.go": "44f58357e4ae71cf99d2fc5d8f9af9ca56ba4fd0d880faec19f96a522217bae9"
+  },
+  "started_at": "2026-10-31T12:34:59.699164+00:00",
+  "exit_code": 1,
+  "elapsed_seconds": 307.856,
+  "finished_at": "2026-10-31T12:40:07.556311+00:00",
+  "terminal_count": 1,
+  "verdicts": [
+    "provider_failure_unclassified"
+  ]
+}
