@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ "$1" = "--version" ]; then
+  printf "%s\n" "2.1.316 (Claude Code)"
+  exit 0
+fi
+COLLAB_CONTEXT_TEST_PROVIDER=success exec /var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/experiment-resume-entrypoint-lu0rakq9/context.test "$@"

@@ -24,15 +24,20 @@
   "notes": "",
   "meta": {
     "e0_status": "passed_2026_10_31",
-    "experiments_remaining": "E1_trial_2_3_and_E2_E6_unrun_after_invalid_attempt",
+    "experiments_remaining": "E2_E6_unrun_after_E1_trial3_environment_failure",
     "resume_source_commit": "4c833e737efb6c997e5cb56c74c43e9237c91956",
     "e0_source_commit": "4c833e737efb6c997e5cb56c74c43e9237c91956",
     "e0_provider_cli": "claude 2.1.316",
     "e0_observed_model": "claude-opus-5-5",
-    "e1_status": "environment_provider_429_503_timeout",
+    "e1_status": "1_valid_fact_correct_no_memory_write_2_invalid_provider_attempts",
     "deterministic_verification": "passed_2026_10_31",
-    "experiment_framework_commit": "b748535f0",
-    "experiment_framework_sha256": "d5a682bac34e01ab5293fb372bae7d259413f420f151a85c231421146d7633db",
-    "acceptance": "deterministic_and_formal_E0_passed_real_behavior_incomplete"
+    "experiment_framework_commit": "9673ab3bf",
+    "experiment_framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+    "acceptance": "deterministic_and_E0_passed_E1_partial_E2_E6_unrun",
+    "e1_trial3_status": "environment_provider_429_timeout",
+    "experiment_next_scenario": "E2a_window_fact_newest",
+    "experiment_next_start_trial": 1,
+    "experiment_remaining_provider_call_cap": 24,
+    "latest_verification": "verification-resume-2026-10-31.md"
   }
 }
