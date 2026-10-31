@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-2.md`
-- **Total Sessions**: 107
+- **Total Sessions**: 108
 - **Last Active**: 2026-10-31
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-2.md` | ~1580 | Active |
+| `journal-2.md` | ~1617 | Active |
 | `journal-1.md` | ~2037 | Archived |
 <!-- @@@/auto:active-documents -->
 
@@ -30,6 +30,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 108 | 2026-10-31 | 保留 E1 部分结果并防止续跑重放旧样本 | `9673ab3bf`, `ac011aff7` | `codex/collaboration-context-resume-20261031` |
 | 107 | 2026-10-31 | 推进协作交付闭环并保留真实实验阻塞证据 | `0755e7d34`, `48a7101eb`, `4482ff2ce`, `47e1c0eda` | `codex/collaboration-context-resume-20261031` |
 | 106 | 2026-10-28 | 固定全局切换与位置恢复 | `cad3fa410` | `codex/cross-workspace-collaboration` |
 | 105 | 2026-10-27 | 内置安全修复小队第二阶段交付 | `476eaee40` | `codex/cross-workspace-collaboration` |

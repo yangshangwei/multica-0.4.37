@@ -1578,3 +1578,40 @@ Archived password registration and the complete platform administration task tre
 ### Next Steps
 
 - 环境恢复后续作预登记实验，保留无效样本；可靠交接与知识沉淀产品功能仍未完成。
+
+
+## Session 108: 保留 E1 部分结果并防止续跑重放旧样本
+<!-- trellis-session: v=2 fp=cc68f5e509eb40f9 -->
+
+**Date**: 2026-10-31
+**Task**: 保留 E1 部分结果并防止续跑重放旧样本
+**Branch**: `codex/collaboration-context-resume-20261031`
+
+### Summary
+
+修复实验起始轮次校验并保留原编号；真实 E1 第 2 轮事实回答正确但未回写，第 3 轮六次 429 后超时。E1 累计一个有效样本、两次无效尝试；E2–E6 未运行，任务保持进行中。
+
+### Main Changes
+
+- 两个 tagged 测试文件和实验规范增加受校验的续跑起点，默认轮次与剩余轮次均经完整假 Provider 入口验证。
+- 持久化原始 prompt/HTTP/lifecycle、Provider 诊断、逐项裁决、任务状态及 37 文件 hash，保留旧 E1 第 1 轮证据。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `9673ab3bf` | test(collaboration): avoid replaying consumed experiment trials |
+| `ac011aff7` | docs(collaboration): preserve partial E1 results without replacing failed samples |
+
+### Testing
+
+- [OK] 两条源码 arm 的假 Provider 套件、tagged 编译/vet、gofmt、独立代码及证据复核通过。
+- [OK] E1 trial 2 有效但 memory PUT 为 0；trial 3 429 后五分钟超时，后续未调用。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 环境恢复后从 E2a trial 1 继续；剩余上限 24 次 Provider 调用。不得补跑或替换 E1 已消耗的三个槽位。
