@@ -1539,3 +1539,42 @@ Archived password registration and the complete platform administration task tre
 ### Next Steps
 
 - Target deployment and released-client acceptance, trusted signing, reference-hardware and production recovery gates remain documented in the archives; archival performs no deployment.
+
+
+## Session 107: 推进协作交付闭环并保留真实实验阻塞证据
+<!-- trellis-session: v=2 fp=d998a5128a5371bf -->
+
+**Date**: 2026-10-31
+**Task**: 推进协作交付闭环并保留真实实验阻塞证据
+**Branch**: `codex/collaboration-context-resume-20261031`
+
+### Summary
+
+确定性验收与正式 E0 通过；E1 在读取 context/memory 后遇到 429/503 并超时，按预登记停止后续实验。任务保留 in_progress。
+
+### Main Changes
+
+- 补齐实验框架持久化、脱敏、完整入口回归及每轮独立身份；共用接收人选择 helper，补原生信息返回验收。
+- 恢复已批准的知识权限；更新父任务和闭环证据。主工作区另一流程的 runtime 规划按 hash 保持原样，补充设计保存在独立 worktree。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `0755e7d34` | test(collaboration): preserve evidence before trusting context experiments |
+| `48a7101eb` | test(collaboration): verify recipients can complete desktop handoffs |
+| `4482ff2ce` | docs(collaboration): keep handoff progress tied to verified evidence |
+| `47e1c0eda` | test(collaboration): preserve raw verification evidence across checkouts |
+
+### Testing
+
+- [OK] 迁移矩阵、118 sqlc outputs、lint/typecheck、12930 TS tests、41 recipient Go tests plus165 subtests、2 Web plus2 Electron 通过。
+- [OK] 正式 E0 通过；E1 有效样本为0，Provider 6次429及1次503后5分钟超时；完整原始证据和hash已保留。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 环境恢复后续作预登记实验，保留无效样本；可靠交接与知识沉淀产品功能仍未完成。
