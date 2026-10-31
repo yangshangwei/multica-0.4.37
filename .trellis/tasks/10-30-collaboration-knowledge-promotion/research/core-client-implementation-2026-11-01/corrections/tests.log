@@ -1,0 +1,51 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/packages/core
+
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > accepts a content-free rejection grant for unavailable pending material without granting approval or text 6ms
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > requires explicit detail history completeness and preserves true/false without inferred defaults 1ms
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > bounds detail history at 50 while source pages retain multiple versions of the same lineage 4ms
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > distinguishes an older unsupported response from malformed claimed support without logging private material 1ms
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > retains exact bigint revisions and human projections for all endpoints 1ms
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > keeps missing capabilities unknown and rejects truthy non-booleans 1ms
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > allows only content-free restricted control rows and source-unavailable audit rows 7ms
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > rejects cross-source, cross-target, duplicate or body-bearing list projections 0ms
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > requires exact reviewed fields for approval and state revision plus explanation for narrowing decisions 1ms
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > enforces UTF-8 byte budgets, required evidence anchors and strict proposal fields 2ms
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > permits only three content-free target hint fields and content-free operation receipts 1ms
+ ✓ api/collaboration-knowledge.test.ts > routes every human read with the source-independent scope and exact pagination 22ms
+ ✓ api/collaboration-knowledge.test.ts > serializes all writes with the preselected candidate/request and exact revision unchanged 3ms
+ ✓ api/collaboration-knowledge.test.ts > does not misclassify structured access loss or malformed claimed support as an older route 2ms
+ ✓ api/collaboration-knowledge.test.ts > rejects mismatched identities, cyclic pages, over-limit pages and foreign operation results 5ms
+ ✓ api/collaboration-knowledge.test.ts > fails malformed write intent before transport and preserves HTTP conflicts for explicit reread 1ms
+ ✓ api/collaboration-knowledge.test.ts > rejects in-progress recovery, malformed JSON and an approval of a different observed version 1ms
+ ✓ api/collaboration-knowledge.test.ts > does not confirm contradictory HTTP status and sealed receipt outcomes 1ms
+ ✓ api/collaboration-knowledge.test.ts > redacts project knowledge request/error logs at HTTP 404 without losing workspace headers 1ms
+ ✓ api/collaboration-knowledge.test.ts > redacts project knowledge request/error logs at HTTP 500 without losing workspace headers 1ms
+ ✓ api/collaboration-knowledge.test.ts > redacts workspace knowledge request/error logs at HTTP 404 without losing workspace headers 1ms
+ ✓ api/collaboration-knowledge.test.ts > redacts workspace knowledge request/error logs at HTTP 500 without losing workspace headers 1ms
+ ✓ collaboration/knowledge-actions.test.ts > allocates a new request UUID per intent and preselects the recoverable candidate before create 4ms
+ ✓ collaboration/knowledge-actions.test.ts > can reject an unavailable pending candidate expiring at null using only its exact state revision 2ms
+ ✓ collaboration/knowledge-actions.test.ts > can reject an unavailable pending candidate expiring at 2020-01-01T00:00:00Z using only its exact state revision 1ms
+ ✓ collaboration/knowledge-actions.test.ts > does not infer rejection rights from unavailable or restricted rows and keeps expired approval denied 0ms
+ ✓ collaboration/knowledge-actions.test.ts > pins exact reviewed content/state revisions and refuses inferred or unavailable approval authority 1ms
+ ✓ collaboration/knowledge-actions.test.ts > retains the same immutable request after uncertain transport and never optimistically approves 1ms
+ ✓ collaboration/knowledge-actions.test.ts > recovers a content-free original receipt with candidate/request only after losing source access and target role 0ms
+ ✓ collaboration/knowledge-actions.test.ts > keeps unknown/mismatched receipts uncertain and clears private projections for explicit conflict reread 0ms
+ ✓ collaboration/knowledge-actions.test.ts > recovers the same original actor/key after a fresh login while fencing the old live request scope 1ms
+ ✓ collaboration/knowledge-actions.test.ts > saves only recovery identity before a lost create response and refuses transport if preservation fails 1ms
+ ✓ collaboration/knowledge-cache.test.ts > doesNotRestoreUnavailableKnowledgeFromLateResponse 12ms
+ ✓ collaboration/knowledge-cache.test.ts > erases all source/target/detail pages before refetch while preserving content-free recovery and other viewers 6ms
+ ✓ collaboration/knowledge-cache.test.ts > clears prior body at a failed refresh and never restores it on cancellation rollback 1ms
+ ✓ collaboration/knowledge-cache.test.ts > expires at the earlier candidate expiry even while no hint or successful refresh arrives 1ms
+ ✓ collaboration/knowledge-cache.test.ts > cannot restore a private pre-refresh snapshot when the caller cancels with Query's default rollback 1ms
+ ✓ collaboration/knowledge-cache.test.ts > rejects requests older than 30 seconds and fences viewer replacement 1ms
+ ✓ collaboration/knowledge-cache.test.ts > keeps paged reads on the first authorization deadline and refuses page requests without their boundary 1ms
+ ✓ collaboration/knowledge-cache.test.ts > uses one focus/offline responder and disposes it only after the last consumer 0ms
+
+ Test Files  4 passed (4)
+      Tests  40 passed (40)
+   Start at  04:15:44
+   Duration  1.01s (transform 1.56s, setup 0ms, import 2.60s, tests 100ms, environment 0ms)
+
+JSON report written to /Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/core-client-implementation-2026-11-01/corrections/vitest.json

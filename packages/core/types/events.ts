@@ -17,6 +17,7 @@ export type WSEventType =
   | "collaboration:access_changed"
   | "collaboration:source_access_changed"
   | "collaboration:workbench_changed"
+  | "collaboration:knowledge_changed"
   | "iteration:updated"
   | "triage:updated"
   | "issue:created"

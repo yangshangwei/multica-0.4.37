@@ -1,0 +1,164 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/packages/core
+
+ × collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > accepts a content-free rejection grant for unavailable pending material without granting approval or text 13ms
+   → Knowledge response does not match its declared protocol
+ × collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > requires explicit detail history completeness and preserves true/false without inferred defaults 5ms
+   → expected { protocol_version: 1, …(5) } to have property "history_truncated" with value true
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > distinguishes an older unsupported response from malformed claimed support without logging private material 1ms
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > retains exact bigint revisions and human projections for all endpoints 2ms
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > keeps missing capabilities unknown and rejects truthy non-booleans 1ms
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > allows only content-free restricted control rows and source-unavailable audit rows 3ms
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > rejects cross-source, cross-target, duplicate or body-bearing list projections 0ms
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > requires exact reviewed fields for approval and state revision plus explanation for narrowing decisions 0ms
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > enforces UTF-8 byte budgets, required evidence anchors and strict proposal fields 5ms
+ ✓ collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > permits only three content-free target hint fields and content-free operation receipts 2ms
+ ✓ api/collaboration-knowledge.test.ts > routes every human read with the source-independent scope and exact pagination 16ms
+ ✓ api/collaboration-knowledge.test.ts > serializes all writes with the preselected candidate/request and exact revision unchanged 2ms
+ ✓ api/collaboration-knowledge.test.ts > does not misclassify structured access loss or malformed claimed support as an older route 2ms
+ ✓ api/collaboration-knowledge.test.ts > rejects mismatched identities, cyclic pages, over-limit pages and foreign operation results 2ms
+ ✓ api/collaboration-knowledge.test.ts > fails malformed write intent before transport and preserves HTTP conflicts for explicit reread 1ms
+ ✓ api/collaboration-knowledge.test.ts > rejects in-progress recovery, malformed JSON and an approval of a different observed version 1ms
+ ✓ api/collaboration-knowledge.test.ts > does not confirm contradictory HTTP status and sealed receipt outcomes 3ms
+ × api/collaboration-knowledge.test.ts > redacts project knowledge request/error logs at HTTP 404 without losing workspace headers 4ms
+   → expected '[["→ GET /api/projects/00000000-0000-…' not to contain 'PRIVATE_CURSOR_SENTINEL'
+ × api/collaboration-knowledge.test.ts > redacts project knowledge request/error logs at HTTP 500 without losing workspace headers 2ms
+   → expected '[["→ GET /api/projects/00000000-0000-…' not to contain 'PRIVATE_CURSOR_SENTINEL'
+ × api/collaboration-knowledge.test.ts > redacts workspace knowledge request/error logs at HTTP 404 without losing workspace headers 1ms
+   → expected '[["→ GET /api/workspaces/00000000-000…' not to contain 'PRIVATE_CURSOR_SENTINEL'
+ × api/collaboration-knowledge.test.ts > redacts workspace knowledge request/error logs at HTTP 500 without losing workspace headers 1ms
+   → expected '[["→ GET /api/workspaces/00000000-000…' not to contain 'PRIVATE_CURSOR_SENTINEL'
+ ✓ collaboration/knowledge-actions.test.ts > allocates a new request UUID per intent and preselects the recoverable candidate before create 3ms
+ × collaboration/knowledge-actions.test.ts > can reject an unavailable pending candidate expiring at null using only its exact state revision 2ms
+   → Collaboration response is unavailable
+ × collaboration/knowledge-actions.test.ts > can reject an unavailable pending candidate expiring at 2020-01-01T00:00:00Z using only its exact state revision 0ms
+   → Collaboration response is unavailable
+ ✓ collaboration/knowledge-actions.test.ts > does not infer rejection rights from unavailable or restricted rows and keeps expired approval denied 1ms
+ ✓ collaboration/knowledge-actions.test.ts > pins exact reviewed content/state revisions and refuses inferred or unavailable approval authority 1ms
+ ✓ collaboration/knowledge-actions.test.ts > retains the same immutable request after uncertain transport and never optimistically approves 2ms
+ ✓ collaboration/knowledge-actions.test.ts > recovers a content-free original receipt with candidate/request only after losing source access and target role 1ms
+ ✓ collaboration/knowledge-actions.test.ts > keeps unknown/mismatched receipts uncertain and clears private projections for explicit conflict reread 1ms
+ ✓ collaboration/knowledge-actions.test.ts > recovers the same original actor/key after a fresh login while fencing the old live request scope 0ms
+ ✓ collaboration/knowledge-actions.test.ts > saves only recovery identity before a lost create response and refuses transport if preservation fails 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  api/collaboration-knowledge.test.ts > redacts project knowledge request/error logs at HTTP 404 without losing workspace headers
+AssertionError: expected '[["→ GET /api/projects/00000000-0000-…' not to contain 'PRIVATE_CURSOR_SENTINEL'
+
+Expected: "PRIVATE_CURSOR_SENTINEL"
+Received: "[["→ GET /api/projects/00000000-0000-4000-8000-000000000006/knowledge?limit=20&cursor=PRIVATE_CURSOR_SENTINEL",{"rid":"063443aa"}],["← 404 /api/projects/00000000-0000-4000-8000-000000000006/knowledge?limit=20&cursor=PRIVATE_CURSOR_SENTINEL",{"rid":"063443aa","duration":"0ms","error":"PRIVATE_ERROR_SENTINEL"}]]"
+
+ ❯ api/collaboration-knowledge.test.ts:111:39
+    109|   await expect(client.getCollaborationKnowledgeTarget(target, { cursor…
+    110|   const entries = [...logger.debug.mock.calls, ...logger.info.mock.cal…
+    111|   expect(JSON.stringify(entries)).not.toContain("PRIVATE_CURSOR_SENTIN…
+       |                                       ^
+    112|   expect(JSON.stringify(entries)).not.toContain("PRIVATE_ERROR_SENTINE…
+    113|   expect(logger.info.mock.calls[0]?.[0]).toContain(`/knowledge`);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  api/collaboration-knowledge.test.ts > redacts project knowledge request/error logs at HTTP 500 without losing workspace headers
+AssertionError: expected '[["→ GET /api/projects/00000000-0000-…' not to contain 'PRIVATE_CURSOR_SENTINEL'
+
+Expected: "PRIVATE_CURSOR_SENTINEL"
+Received: "[["→ GET /api/projects/00000000-0000-4000-8000-000000000006/knowledge?limit=20&cursor=PRIVATE_CURSOR_SENTINEL",{"rid":"f72230a7"}],["← 500 /api/projects/00000000-0000-4000-8000-000000000006/knowledge?limit=20&cursor=PRIVATE_CURSOR_SENTINEL",{"rid":"f72230a7","duration":"0ms","error":"PRIVATE_ERROR_SENTINEL"}]]"
+
+ ❯ api/collaboration-knowledge.test.ts:111:39
+    109|   await expect(client.getCollaborationKnowledgeTarget(target, { cursor…
+    110|   const entries = [...logger.debug.mock.calls, ...logger.info.mock.cal…
+    111|   expect(JSON.stringify(entries)).not.toContain("PRIVATE_CURSOR_SENTIN…
+       |                                       ^
+    112|   expect(JSON.stringify(entries)).not.toContain("PRIVATE_ERROR_SENTINE…
+    113|   expect(logger.info.mock.calls[0]?.[0]).toContain(`/knowledge`);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  api/collaboration-knowledge.test.ts > redacts workspace knowledge request/error logs at HTTP 404 without losing workspace headers
+AssertionError: expected '[["→ GET /api/workspaces/00000000-000…' not to contain 'PRIVATE_CURSOR_SENTINEL'
+
+Expected: "PRIVATE_CURSOR_SENTINEL"
+Received: "[["→ GET /api/workspaces/00000000-0000-4000-8000-000000000005/knowledge?limit=20&cursor=PRIVATE_CURSOR_SENTINEL",{"rid":"c7240744"}],["← 404 /api/workspaces/00000000-0000-4000-8000-000000000005/knowledge?limit=20&cursor=PRIVATE_CURSOR_SENTINEL",{"rid":"c7240744","duration":"0ms","error":"PRIVATE_ERROR_SENTINEL"}]]"
+
+ ❯ api/collaboration-knowledge.test.ts:111:39
+    109|   await expect(client.getCollaborationKnowledgeTarget(target, { cursor…
+    110|   const entries = [...logger.debug.mock.calls, ...logger.info.mock.cal…
+    111|   expect(JSON.stringify(entries)).not.toContain("PRIVATE_CURSOR_SENTIN…
+       |                                       ^
+    112|   expect(JSON.stringify(entries)).not.toContain("PRIVATE_ERROR_SENTINE…
+    113|   expect(logger.info.mock.calls[0]?.[0]).toContain(`/knowledge`);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  api/collaboration-knowledge.test.ts > redacts workspace knowledge request/error logs at HTTP 500 without losing workspace headers
+AssertionError: expected '[["→ GET /api/workspaces/00000000-000…' not to contain 'PRIVATE_CURSOR_SENTINEL'
+
+Expected: "PRIVATE_CURSOR_SENTINEL"
+Received: "[["→ GET /api/workspaces/00000000-0000-4000-8000-000000000005/knowledge?limit=20&cursor=PRIVATE_CURSOR_SENTINEL",{"rid":"5de89661"}],["← 500 /api/workspaces/00000000-0000-4000-8000-000000000005/knowledge?limit=20&cursor=PRIVATE_CURSOR_SENTINEL",{"rid":"5de89661","duration":"0ms","error":"PRIVATE_ERROR_SENTINEL"}]]"
+
+ ❯ api/collaboration-knowledge.test.ts:111:39
+    109|   await expect(client.getCollaborationKnowledgeTarget(target, { cursor…
+    110|   const entries = [...logger.debug.mock.calls, ...logger.info.mock.cal…
+    111|   expect(JSON.stringify(entries)).not.toContain("PRIVATE_CURSOR_SENTIN…
+       |                                       ^
+    112|   expect(JSON.stringify(entries)).not.toContain("PRIVATE_ERROR_SENTINE…
+    113|   expect(logger.info.mock.calls[0]?.[0]).toContain(`/knowledge`);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  collaboration/knowledge-actions.test.ts > can reject an unavailable pending candidate expiring at null using only its exact state revision
+ FAIL  collaboration/knowledge-actions.test.ts > can reject an unavailable pending candidate expiring at 2020-01-01T00:00:00Z using only its exact state revision
+CollaborationUnavailableError: Collaboration response is unavailable
+ ❯ Module.prepareKnowledgeDecision collaboration/knowledge-actions.ts:42:136
+     40|       break;
+     41|     case "reject":
+     42|       if (candidate.availability !== "available" || candidate.capabili…
+       |                                                                                                                                        ^
+     43|       input = CollaborationKnowledgeDecisionRequestSchema.parse({ ...b…
+     44|       break;
+ ❯ collaboration/knowledge-actions.test.ts:39:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > accepts a content-free rejection grant for unavailable pending material without granting approval or text
+CollaborationKnowledgeProtocolError: Knowledge response does not match its declared protocol
+ ❯ parse collaboration/knowledge-schema.ts:170:30
+    168|   if (data === undefined || data === null || typeof data === "object" …
+    169|   const result = parseWithFallback<T | null>(data, schema, null, { end…
+    170|   if (result === null) throw new CollaborationKnowledgeProtocolError();
+       |                              ^
+    171|   return result;
+    172| }
+ ❯ parseCollaborationKnowledgeDetail collaboration/knowledge-schema.ts:174:69
+ ❯ collaboration/knowledge-schema.test.ts:15:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  collaboration/knowledge-schema.test.ts > knowledge protocol boundaries > requires explicit detail history completeness and preserves true/false without inferred defaults
+AssertionError: expected { protocol_version: 1, …(5) } to have property "history_truncated" with value true
+
+- Expected:
+true
+
++ Received:
+undefined
+
+ ❯ collaboration/knowledge-schema.test.ts:28:99
+     26|   it("requires explicit detail history completeness and preserves true…
+     27|     for (const history_truncated of [true, false]) {
+     28|       expect(parseCollaborationKnowledgeDetail({ ...knowledgeDetailFix…
+       |                                                                                                   ^
+     29|     }
+     30|     for (const history_truncated of [undefined, null, "false", 0]) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  8 failed | 23 passed (31)
+   Start at  04:13:50
+   Duration  1.05s (transform 1.36s, setup 0ms, import 1.93s, tests 80ms, environment 0ms)
+
+JSON report written to /Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/core-client-implementation-2026-11-01/corrections/red-vitest.json

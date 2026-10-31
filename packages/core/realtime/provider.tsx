@@ -27,6 +27,7 @@ interface WSContextValue {
   subscribe: (event: WSEventType, handler: EventHandler) => () => void;
   onReconnect: (callback: () => void) => () => void;
   onAuthenticated: (callback: () => void) => () => void;
+  onDisconnected: (callback: () => void) => () => void;
   subscribeScope: (scope: "account" | "issue", id: string) => () => void;
   revalidateScope: (scope: "account" | "issue", id: string) => void;
 }
@@ -147,11 +148,12 @@ export function WSProvider({
   );
 
   const onAuthenticatedCb = useCallback((callback: () => void) => wsClient?.onAuthenticated(callback) ?? (() => {}), [wsClient]);
+  const onDisconnectedCb = useCallback((callback: () => void) => wsClient?.onDisconnected(callback) ?? (() => {}), [wsClient]);
   const subscribeScope = useCallback((scope: "account" | "issue", id: string) => wsClient?.subscribeScope(scope, id) ?? (() => {}), [wsClient]);
   const revalidateScope = useCallback((scope: "account" | "issue", id: string) => { wsClient?.revalidateScope(scope, id); }, [wsClient]);
 
   return (
-    <WSContext.Provider value={{ subscribe, onReconnect: onReconnectCb, onAuthenticated: onAuthenticatedCb, subscribeScope, revalidateScope }}>
+    <WSContext.Provider value={{ subscribe, onReconnect: onReconnectCb, onAuthenticated: onAuthenticatedCb, onDisconnected: onDisconnectedCb, subscribeScope, revalidateScope }}>
       {children}
     </WSContext.Provider>
   );

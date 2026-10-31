@@ -103,3 +103,15 @@ it("does not log malformed protected frames", () => {
   expect(JSON.stringify(logger.warn.mock.calls)).not.toContain("PRIVATE_COLLABORATION_BODY");
   expect(JSON.stringify(logger.debug.mock.calls)).not.toContain("PRIVATE_COLLABORATION_BODY");
 });
+
+it("notifies disconnect subscribers for the current socket and teardown, while ignoring an old close callback", () => {
+  vi.useFakeTimers();
+  const client = setup(); const disconnected = vi.fn(); const removed = vi.fn();
+  client.onDisconnected(disconnected); const dispose = client.onDisconnected(removed); dispose();
+  client.connect(); const oldClose = Socket.sockets[0]!.onclose!;
+  oldClose(); expect(disconnected).toHaveBeenCalledTimes(1); expect(removed).not.toHaveBeenCalled();
+  vi.advanceTimersByTime(1200);
+  oldClose(); expect(disconnected).toHaveBeenCalledTimes(1);
+  client.disconnect(); expect(disconnected).toHaveBeenCalledTimes(2);
+  client.disconnect(); expect(disconnected).toHaveBeenCalledTimes(2);
+});

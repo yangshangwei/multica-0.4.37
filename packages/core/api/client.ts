@@ -3,6 +3,13 @@ import { z } from "zod";
 import { parseCollaborationActivity } from "../collaboration/activity-schema";
 import { parseCollaborationRunRecords } from "../collaboration/run-records-schema";
 import { COLLABORATION_HANDOFF_MAX_JSON_BYTES, parseCollaborationRunHandoff } from "../collaboration/run-handoff-schema";
+import {
+  CollaborationKnowledgeApproveRequestSchema, CollaborationKnowledgeDecisionRequestSchema, CollaborationKnowledgeProposalSchema,
+  CollaborationKnowledgeProtocolError, CollaborationKnowledgeTargetSchema, knowledgePageQuery, knowledgeTargetsEqual, knowledgeReceiptRefusalStatus,
+  parseCollaborationKnowledgeCandidates, parseCollaborationKnowledgeDetail, parseCollaborationKnowledgeReceipt, parseCollaborationKnowledgeTargetList,
+  type CollaborationKnowledgeApproveRequest, type CollaborationKnowledgeDecisionRequest, type CollaborationKnowledgePageParams,
+  type CollaborationKnowledgeProposal, type CollaborationKnowledgeReceipt, type CollaborationKnowledgeTarget,
+} from "../collaboration/knowledge-schema";
 import { parseCollaborationMemory, parseCollaborationMemoryReceipt, parseCollaborationMemoryVersion, parseCollaborationMemoryVersions,
   type CollaborationMemoryActionName, type CollaborationMemoryReceipt } from "../collaboration/memory-schema";
 import { positiveVersion } from "../collaboration/version";
@@ -1342,6 +1349,117 @@ export class ApiClient {
     }
   }
 
+  /** Knowledge uses optional routes, but a structured denial is never unsupported. */
+  private async fetchCollaborationKnowledge(path: string, options: RequestInit = {}, recovery = false): Promise<unknown> {
+    const session = this.getSessionScope(), authEpoch = this.authEpoch;
+    return withRequestDeadline({ signal: options.signal ?? undefined, timeoutMs: RECOVERY_REQUEST_TIMEOUT_MS }, this.endpointController.signal, async (signal) => {
+      try {
+        const response = await this.fetchRaw(path, { ...options, signal, cache: "no-store", extraHeaders: { "Content-Type": "application/json" } });
+        const raw: unknown = await response.json();
+        if (session !== this.getSessionScope() || authEpoch !== this.authEpoch) throw new DOMException("Knowledge request superseded", "AbortError");
+        signal.throwIfAborted();
+        if (response.status !== 200 && !(options.method === "POST" && path.endsWith("/knowledge-candidates") && response.status === 201)) throw new CollaborationKnowledgeProtocolError();
+        return raw;
+      }
+      catch (error) {
+        if (session !== this.getSessionScope() || authEpoch !== this.authEpoch) throw new DOMException("Knowledge request superseded", "AbortError");
+        signal.throwIfAborted();
+        if (error instanceof SyntaxError) throw new CollaborationKnowledgeProtocolError();
+        if (error instanceof ApiError && error.status === 404) {
+          if (recovery && z.object({ code: z.literal("operation_not_found") }).safeParse(error.body).success) return undefined;
+          if (!z.object({ code: z.string() }).safeParse(error.body).success) return undefined;
+        }
+        throw error;
+      }
+    });
+  }
+
+  async getCollaborationKnowledgeCandidates(issueId: string, params: CollaborationKnowledgePageParams = {}, options?: { signal?: AbortSignal }) {
+    const id = z.uuid().parse(issueId).toLowerCase();
+    const result = parseCollaborationKnowledgeCandidates(await this.fetchCollaborationKnowledge(
+      `/api/collaboration/issues/${encodeURIComponent(id)}/knowledge-candidates?${knowledgePageQuery(params)}`, options));
+    if (result && (result.issue_id !== id || result.items.length > (params.limit ?? 20) ||
+      result.next_cursor !== null && (result.next_cursor === params.cursor || result.items.length === 0))) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  async getCollaborationKnowledgeCandidate(candidateId: string, options?: { signal?: AbortSignal }) {
+    const id = z.uuid().parse(candidateId).toLowerCase();
+    const result = parseCollaborationKnowledgeDetail(await this.fetchCollaborationKnowledge(`/api/collaboration/knowledge-candidates/${id}`, options));
+    if (result && result.candidate.candidate_id !== id) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  async getCollaborationKnowledgeTarget(target: CollaborationKnowledgeTarget, params: CollaborationKnowledgePageParams = {}, options?: { signal?: AbortSignal }) {
+    const input = CollaborationKnowledgeTargetSchema.parse(target);
+    const path = input.kind === "project" ? `/api/projects/${input.project_id}/knowledge` : `/api/workspaces/${input.workspace_id}/knowledge`;
+    const result = parseCollaborationKnowledgeTargetList(await this.fetchCollaborationKnowledge(`${path}?${knowledgePageQuery(params)}`,
+      workspaceRequestInit({ workspaceId: input.workspace_id, signal: options?.signal })));
+    if (result && (!knowledgeTargetsEqual(result.target, input) || result.items.length > (params.limit ?? 20) ||
+      result.next_cursor !== null && (result.next_cursor === params.cursor || result.items.length === 0))) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  async proposeCollaborationKnowledge(issueId: string, request: CollaborationKnowledgeProposal, options?: { signal?: AbortSignal }) {
+    const id = z.uuid().parse(issueId).toLowerCase();
+    const input = CollaborationKnowledgeProposalSchema.parse(request);
+    if (!input.sources.every((source) => source.issue_id === id)) throw new TypeError("Knowledge sources must belong to the source issue");
+    return this.writeCollaborationKnowledge(`/api/collaboration/issues/${id}/knowledge-candidates`, input.candidate_id, "propose", input, options);
+  }
+
+  async approveCollaborationKnowledge(candidateId: string, request: CollaborationKnowledgeApproveRequest, options?: { signal?: AbortSignal }) {
+    return this.decideCollaborationKnowledge(candidateId, "approve", CollaborationKnowledgeApproveRequestSchema.parse(request), options);
+  }
+
+  async rejectCollaborationKnowledge(candidateId: string, request: CollaborationKnowledgeDecisionRequest, options?: { signal?: AbortSignal }) {
+    return this.decideCollaborationKnowledge(candidateId, "reject", CollaborationKnowledgeDecisionRequestSchema.parse(request), options);
+  }
+
+  async withdrawCollaborationKnowledge(candidateId: string, request: CollaborationKnowledgeDecisionRequest, options?: { signal?: AbortSignal }) {
+    return this.decideCollaborationKnowledge(candidateId, "withdraw", CollaborationKnowledgeDecisionRequestSchema.parse(request), options);
+  }
+
+  /** Candidate-only recovery is deliberately independent of current source/target membership. */
+  async getCollaborationKnowledgeOperation(candidateId: string, requestId: string, options?: { signal?: AbortSignal }) {
+    const id = z.uuid().parse(candidateId).toLowerCase();
+    const key = z.uuid().parse(requestId).toLowerCase();
+    const result = parseCollaborationKnowledgeReceipt(await this.fetchCollaborationKnowledge(
+      `/api/collaboration/knowledge-candidates/${id}/operations/${key}`, options, true));
+    if (result && (result.candidate_id !== id || result.request_id !== key)) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  private decideCollaborationKnowledge(candidateId: string, action: "approve" | "reject" | "withdraw",
+    input: CollaborationKnowledgeApproveRequest | CollaborationKnowledgeDecisionRequest, options?: { signal?: AbortSignal }) {
+    const id = z.uuid().parse(candidateId).toLowerCase();
+    return this.writeCollaborationKnowledge(`/api/collaboration/knowledge-candidates/${id}/${action}`, id, action, input, options);
+  }
+
+  private async writeCollaborationKnowledge(path: string, candidateId: string, action: CollaborationKnowledgeReceipt["action"],
+    input: CollaborationKnowledgeProposal | CollaborationKnowledgeApproveRequest | CollaborationKnowledgeDecisionRequest,
+    options?: { signal?: AbortSignal }): Promise<CollaborationKnowledgeReceipt | null> {
+    let result: CollaborationKnowledgeReceipt | null;
+    let refusalStatus: number | undefined;
+    try {
+      result = parseCollaborationKnowledgeReceipt(await this.fetchCollaborationKnowledge(path, {
+        method: "POST", body: JSON.stringify(input), headers: { "Idempotency-Key": input.request_id }, signal: options?.signal,
+      }));
+    } catch (error) {
+      if (!(error instanceof ApiError) || error.status < 400 || error.status >= 500 ||
+        !z.object({ protocol_version: z.literal(1), candidate_id: z.string() }).safeParse(error.body).success) throw error;
+      result = parseCollaborationKnowledgeReceipt(error.body);
+      refusalStatus = error.status;
+    }
+    if (result && (result.candidate_id !== candidateId || result.request_id !== input.request_id || result.action !== action)) throw new CollaborationKnowledgeProtocolError();
+    if (result && knowledgeReceiptRefusalStatus(result.code) !== refusalStatus) throw new CollaborationKnowledgeProtocolError();
+    if (result?.code === `knowledge_${action === "propose" ? "proposed" : action === "approve" ? "approved" : action === "reject" ? "rejected" : "withdrawn"}`) {
+      if ("expected_state_revision" in input && result.state_revision !== String(BigInt(input.expected_state_revision) + 1n)) throw new CollaborationKnowledgeProtocolError();
+      if (action === "approve" && "expected_version" in input && (result.version !== input.expected_version ||
+        result.target_knowledge_revision === undefined || result.target_knowledge_revision === "0")) throw new CollaborationKnowledgeProtocolError();
+    }
+    return result;
+  }
+
   // Shared context ("memory") reads use the optional-route path: an older server
   // without the route is unavailable, and only a structured denial clears access.
   async getCollaborationMemory(id: string, options?: { signal?: AbortSignal }) {
@@ -2123,7 +2241,10 @@ export class ApiClient {
     const method = init?.method ?? "GET";
     const collaborationRequest = path.startsWith("/api/collaboration/") || /^\/api\/me\/(?:workbench|collaboration-notifications)(?:[/?]|$)/.test(path);
     const sourceIssueRequest = /^\/api\/issues(?:[/?]|$)/.test(path);
-    const logPath = collaborationRequest || sourceIssueRequest ? path.split("?", 1)[0] : path;
+    // Target knowledge stays workspace-scoped for headers, but its cursor and
+    // server error text need the same private logging boundary as source reads.
+    const targetKnowledgeRequest = /^\/api\/(?:projects|workspaces)\/[^/?]+\/knowledge(?:[/?]|$)/.test(path);
+    const logPath = collaborationRequest || sourceIssueRequest || targetKnowledgeRequest ? path.split("?", 1)[0] : path;
 
     // Captured where the headers are built: this is the credential the
     // request speaks for, and the 401 handler below compares it against the
@@ -2182,7 +2303,7 @@ export class ApiClient {
       // Session rejection has a recovery path; console.error would open the
       // development error overlay while the application returns to sign-in.
       const logLevel = status === 401 || status === 404 ? "warn" : "error";
-      this.logger[logLevel](`← ${status} ${logPath}`, { rid, duration: `${Date.now() - start}ms`, error: collaborationRequest ? "Collaboration request failed" : sourceIssueRequest ? "Issue request failed" : path.startsWith("/api/admin/resources") ? "Resource request failed" : message });
+      this.logger[logLevel](`← ${status} ${logPath}`, { rid, duration: `${Date.now() - start}ms`, error: collaborationRequest ? "Collaboration request failed" : sourceIssueRequest ? "Issue request failed" : targetKnowledgeRequest ? "Knowledge request failed" : path.startsWith("/api/admin/resources") ? "Resource request failed" : message });
       throw new ApiError(
         message,
         status,

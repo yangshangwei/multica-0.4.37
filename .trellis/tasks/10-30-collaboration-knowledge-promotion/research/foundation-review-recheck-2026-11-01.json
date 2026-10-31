@@ -1,0 +1,47 @@
+{
+  "reviewed_at": "2026-10-31T20:22:40.554400+00:00",
+  "reviewer": "main independently of B implementer",
+  "result": "passed_B1_corrected_scope",
+  "original_review": "foundation-review-2026-11-01.md",
+  "closed_findings": {
+    "KF-01": "Separate targetKnowledgeRequest privacy classification removes cursor/error data from logs without stripping explicit workspace headers; red-green sentinel tests retained",
+    "KF-02": "source_unavailable pending may reject only on server grant and source-visible variant; restricted/no-grant and unavailable approve still refused"
+  },
+  "additional_alignment": "history_truncated required; max50 detail history; source pages retain all versions; unsealed pre-create errors never synthesize receipt",
+  "final_source_hashes": {
+    "packages/core/api/client.ts": "b9f5c78eb9749d44924f3dc7dadc718864e2d0369f64fe6ecd3ef8b94bb3fca6",
+    "packages/core/api/collaboration-knowledge.test.ts": "50132debe9fb2d376205e868a3bbb756906b9a74490015dc34286677001c9643",
+    "packages/core/api/ws-client-account.test.ts": "c1b6afe8e46ee773cafcc12944108166dd6a21641d56a2540270ab55cbb2c02b",
+    "packages/core/api/ws-client.ts": "93004628a0444e721fbea3ea0fd40f988b1075381b065a703b5d41373d538f88",
+    "packages/core/collaboration/index.ts": "d80404aec2783c42e1214184d676b219aa81e9526b3ebf02a94ebf1c25164770",
+    "packages/core/collaboration/knowledge-actions.test.ts": "8b181011fd32886ee4727dd841949be335687a59cd5bcb32bf4b710b6f28ca21",
+    "packages/core/collaboration/knowledge-actions.ts": "8de2d225e36bb283cc873c99a0714e1267f499fc867d82c8194b7dff331815d0",
+    "packages/core/collaboration/knowledge-cache.test.ts": "5e5c18098ffa90397b84dceb8848129ee0b06b1fd1ea8f7f552d6a9b03243b1e",
+    "packages/core/collaboration/knowledge-cache.ts": "2eeeb421a7cbffeccfbfa54b5773f6b2c6316064b68fba407a1915529f75263b",
+    "packages/core/collaboration/knowledge-lease.test.ts": "6d1eeecb81306404fb6e9a2181b0a477cd11fa84fd331fef7b14213595d754c5",
+    "packages/core/collaboration/knowledge-lease.ts": "67a78d8880e120b52c253707b4fd7953be7b9d1d1127625d337eff50cec51730",
+    "packages/core/collaboration/knowledge-queries.ts": "b5321d90922fcbb28ae8330837fd16c89b364f49f8f2ac0625f1d9b0c2f2cafb",
+    "packages/core/collaboration/knowledge-recovery.ts": "3e72734a3859f58dc97e5591c61f836a6f01d4ae1875c9c0bfa124e6df204a0f",
+    "packages/core/collaboration/knowledge-schema.test.ts": "248095f7330160f99f810a5b1e359138bf2bc89cbc3b14387d7f0a1fb00ed672",
+    "packages/core/collaboration/knowledge-schema.ts": "25f490ca8ddd78d60a1ae88e52a27ed0849fbacb4b6bc9af47be6e123dd514f8",
+    "packages/core/collaboration/knowledge-test-fixtures.ts": "6ac3425dedbb4e2f5e64b80a2c2a2973649eec7c490df09a9aa2e9309dfb7d0c",
+    "packages/core/collaboration/realtime-schema.ts": "2af671090f6c6d581293c5ac4bea3ec7b77e6bcaf88cff265afeebb832d13230",
+    "packages/core/realtime/collaboration.ts": "5787f6335af600bf186228e4f27ad166bc76051f1368086452508cbbe148c2f8",
+    "packages/core/realtime/knowledge-provider.test.tsx": "bded5fd4633af5efc4359ef02148a91075b9a5da758839a2c32c15b2e7e92439",
+    "packages/core/realtime/knowledge.test.ts": "f99103ff548557d00438c8fb07b1baa344ad214d41be2dce3503f6043a7bf762",
+    "packages/core/realtime/knowledge.ts": "3c7aa03a37779ccea1e4a725d25175f90b4a5d8fd3d6e5f13779515b3ac133c8",
+    "packages/core/realtime/provider.tsx": "044a9d9331c98542af98798059955fc7978d61f8f45a5608ebc1cb5e36b24731",
+    "packages/core/types/events.ts": "3af94c11a5f172db3f31d479b05458463cc913008280e7cc019539f188b00c3b"
+  },
+  "changed_files_from_reviewed_baseline": [
+    "packages/core/api/client.ts",
+    "packages/core/api/collaboration-knowledge.test.ts",
+    "packages/core/collaboration/knowledge-actions.test.ts",
+    "packages/core/collaboration/knowledge-actions.ts",
+    "packages/core/collaboration/knowledge-schema.test.ts",
+    "packages/core/collaboration/knowledge-schema.ts",
+    "packages/core/collaboration/knowledge-test-fixtures.ts"
+  ],
+  "verification": "207-test baseline plus40 affected final tests; core typecheck/scoped lint pass; final23 source hashes checked",
+  "limits": "Human HTTP producer, views, runtime G2 and platform acceptance remain later batches"
+}
