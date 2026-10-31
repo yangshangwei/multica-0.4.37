@@ -1,0 +1,1 @@
+Initial inventory verifier rejected exit 1 from git diff --no-index --check /dev/null <new test file>, despite empty stdout/stderr. Git no-index implies diff exit status 1 for an added file. The verifier was corrected to accept 0/1 only with empty stdout and stderr. No Go test failed; no source edit was made.
