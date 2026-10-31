@@ -41,11 +41,12 @@ const (
 )
 
 func TestMain(m *testing.M) {
-	ctx := context.Background()
-	dbURL := os.Getenv("DATABASE_URL")
+	dbURL := strings.TrimSpace(os.Getenv("DATABASE_URL"))
 	if dbURL == "" {
-		dbURL = "postgres://multica:multica@localhost:5432/multica?sslmode=disable"
+		fmt.Fprintln(os.Stderr, "router integration tests require an explicit DATABASE_URL for an isolated test database; use go build or go test -c for compile-only checks")
+		os.Exit(2)
 	}
+	ctx := context.Background()
 
 	pool, err := pgxpool.New(ctx, dbURL)
 	if err != nil {

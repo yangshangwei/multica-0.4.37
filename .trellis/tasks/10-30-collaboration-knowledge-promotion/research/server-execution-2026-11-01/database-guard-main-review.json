@@ -1,0 +1,20 @@
+{
+  "reviewed_at": "2026-10-31T21:35:13.956008+00:00",
+  "result": "passed_guard_only",
+  "source_hashes": {
+    "server/internal/handler/handler_test.go": "66b4ea1c269b4e431a0118cfe88eb14fc707979a2aab70a626d07167e02ae12b",
+    "server/internal/handler/database_guard_test.go": "6e6f120577bd331cbfadb689e36c308179f6ab352fed16753d0cc5f8af87801e",
+    "server/cmd/server/integration_test.go": "1b64e72652bdf5a629fc282b188391dfc781f812c899b472846f1c831c0b62f9",
+    "server/cmd/server/database_guard_test.go": "fdd82962cecfda74f5b9e3e4e0cdce134da6dba429346bb56481c123da38a3bc"
+  },
+  "main_review": [
+    "Both guards run before pool, fixture and router creation, reject absent/whitespace with exit2, implicit URL removed",
+    "Subprocess checks have timeout, nonexistent socket and forced read-only PGOPTIONS; config-only pgx proof has no network",
+    "Parent tests used dedicated C2 DB; unsafe historical path was not rerun",
+    "No knowledge feature dependencies in the four Go files; safe to cherry-pick to main"
+  ],
+  "limits": [
+    "Historical incidental effects are documented separately and not proved absent by these tests",
+    "Explicit DATABASE_URL must still be verified task-owned; a selector is not a compile-only mode"
+  ]
+}
