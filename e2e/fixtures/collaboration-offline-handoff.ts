@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { expect, type Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 import type { CollaborationIssue, CollaborationWorkbench, CollaborationOperation } from "@multica/core/collaboration";
 import { TestApiClient } from "../fixtures";
 
@@ -104,14 +104,26 @@ function assertExecutionAndBusiness(before: CollaborationIssue, after: Collabora
   expect(after.execution?.commands ?? []).toEqual([]);
 }
 
+export async function selectHandoffRecipient(page: Page, form: Locator, recipient: { id: string; name: string }) {
+  await form.getByRole("button", { name: "Recipient", exact: true }).click();
+  const list = page.getByRole("listbox", { name: "Recipient", exact: true });
+  const popup = page.locator('[data-slot="popover-content"]').filter({ has: list });
+  await popup.getByRole("textbox", { name: "Filter options", exact: true }).fill(recipient.id);
+  const lookupLabel = "Find by full username, email, or account ID";
+  await popup.getByRole("button", { name: lookupLabel, exact: true }).click();
+  await popup.getByLabel(lookupLabel, { exact: true }).fill(recipient.id);
+  await popup.getByRole("button", { name: "Find account", exact: true }).click();
+  await expect(popup.getByText(recipient.name, { exact: true })).toBeVisible();
+  await popup.getByRole("button", { name: "Use this account", exact: true }).click();
+  await expect(form.getByText(`Selected account: ${recipient.name}`, { exact: true })).toBeVisible();
+}
+
 export async function uiWorkflow(session: HandoffSession, fixture: OfflineHandoffFixture, actor: HandoffActor,
   action: "invite" | "transfer", target: HandoffActor, note = "") {
   const page = session.page;
   await page.getByRole("button", { name: action === "invite" ? "Add participant" : "Transfer", exact: true }).click();
   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: action === "invite" ? "Add participant" : "Transfer", exact: true }) });
-  await form.getByLabel("Exact recipient", { exact: true }).fill(target.id);
-  await form.getByRole("button", { name: "Find account", exact: true }).click();
-  await expect(form.getByText(`Selected account: ${target.name}`, { exact: true })).toBeVisible();
+  await selectHandoffRecipient(page, form, target);
   if (action === "transfer") await form.getByLabel("Note", { exact: true }).fill(note);
   const path = `${issuePath(fixture)}/${action === "invite" ? "participants" : "handoffs"}`;
   const pending = page.waitForResponse((response) => new URL(response.url()).pathname === path && response.request().method() === "POST");

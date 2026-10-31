@@ -1,5 +1,6 @@
 import { expect, type Frame, type Page, type Request } from "@playwright/test";
 import type { CollaborationIssue, CollaborationOperation, CollaborationStatusOptions } from "@multica/core/collaboration";
+import { selectHandoffRecipient } from "./collaboration-offline-handoff";
 
 export type DirectedAction = "request_information" | "return_information" | "submit_acceptance";
 
@@ -52,9 +53,7 @@ export async function directedFormThroughUI(page: Page, issueId: string, action:
   expect(options.options).toHaveLength(1);
   if (action === "request_information") {
     if (!recipient) throw new Error("Request information needs the exact participant recipient");
-    await form.getByLabel("Exact recipient", { exact: true }).fill(recipient.id);
-    await form.getByRole("button", { name: "Find account", exact: true }).click();
-    await expect(form.getByText(`Selected account: ${recipient.name}`, { exact: true })).toBeVisible();
+    await selectHandoffRecipient(page, form, recipient);
   }
   const select = form.getByLabel("Status", { exact: true });
   await expect(select.locator("option")).toHaveCount(1);
