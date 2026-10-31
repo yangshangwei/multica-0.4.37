@@ -1,0 +1,16 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/packages/core
+
+ ✓ collaboration/knowledge-sources.test.ts > hashes the selected historical memory version exactly when latest has advanced 7ms
+ ✓ collaboration/knowledge-sources.test.ts > uses retained comment revision text, while a tombstone blocks every old revision 4ms
+ ✓ collaboration/knowledge-sources.test.ts > finds the exact run-record identity across pages without depending on memory 6ms
+ ✓ collaboration/knowledge-sources.test.ts > refuses purged versions, foreign issue references and late reads after access loss 1817ms
+ ✓ collaboration/knowledge-sources.test.ts > bounds stalled source discovery with the existing deadline and does not impose a page-count cutoff 9ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  05:53:59
+   Duration  3.68s (transform 1.14s, setup 0ms, import 1.68s, tests 1.84s, environment 0ms)
+
+JSON report written to /Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-implementation-2026-11-01/core-vitest.json

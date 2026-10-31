@@ -73,6 +73,8 @@ export * from "./memory-schema";
 export * from "./knowledge-schema";
 export * from "./knowledge-queries";
 export * from "./knowledge-actions";
+export { buildKnowledgeSources, knowledgeSourceSelectionKey } from "./knowledge-sources";
+export type { KnowledgeSourceSelection } from "./knowledge-sources";
 export { readPendingKnowledgeOperations, KnowledgeRecoveryStorageError } from "./knowledge-recovery";
 export { expireKnowledgeProjections } from "./knowledge-cache";
 export type { AuthorizedKnowledgeProjection } from "./knowledge-cache";

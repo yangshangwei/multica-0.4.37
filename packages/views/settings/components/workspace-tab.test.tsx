@@ -5,6 +5,7 @@ import userEvent from "@testing-library/user-event";
 import { I18nProvider } from "@multica/core/i18n/react";
 import enCommon from "../../locales/en/common.json";
 import enSettings from "../../locales/en/settings.json";
+vi.mock("../../collaboration/knowledge-panel", () => ({ ManagedKnowledgePanel: ({ workspaceId }: { workspaceId: string }) => <div data-testid="knowledge-target-mount" data-workspace={workspaceId} /> }));
 
 const mockUpdateWorkspace = vi.hoisted(() => vi.fn());
 const mockInvalidateQueries = vi.hoisted(() => vi.fn());
@@ -141,6 +142,7 @@ describe("WorkspaceTab — automatic updates", () => {
     const input = screen.getByPlaceholderText("TES") as HTMLInputElement;
     expect(input.value).toBe("TES");
     expect(screen.getByTestId("workspace-planning")).toHaveAttribute("data-workspace", "workspace-1");
+    expect(screen.getByTestId("knowledge-target-mount")).toHaveAttribute("data-workspace", "workspace-1");
     expect(screen.getByTestId("workspace-planning")).toHaveAttribute("data-editable", "true");
     expect(screen.queryByRole("button", { name: /^Save$/ })).toBeNull();
   });

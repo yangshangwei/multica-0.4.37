@@ -11,18 +11,21 @@ const identitySchema = z.strictObject({
 const scopePrefix = (scope: KnowledgeOperationIdentity["scope"]) => `${prefix}${encodeURIComponent(JSON.stringify([scope.server, scope.userId]))}:`;
 const keyFor = (identity: KnowledgeOperationIdentity) => `${scopePrefix(identity.scope)}${identity.requestId}`;
 export class KnowledgeRecoveryStorageError extends Error {
-  constructor() { super("The original knowledge request could not be preserved"); this.name = "KnowledgeRecoveryStorageError"; }
+  constructor(readonly previouslyStored?: boolean) { super("The original knowledge request could not be preserved"); this.name = "KnowledgeRecoveryStorageError"; }
 }
 
 /** Persist only client-generated recovery identity. No source ID, body, summary, refs or server receipt enters storage. */
-export function saveKnowledgeOperationIdentity(identity: KnowledgeOperationIdentity, storage: StorageAdapter = defaultStorage): void {
+export function saveKnowledgeOperationIdentity(identity: KnowledgeOperationIdentity, storage: StorageAdapter = defaultStorage): boolean {
+  let previouslyStored: boolean | undefined;
   try {
     const record = identitySchema.parse({ scope: identity.scope, candidateId: identity.candidateId, requestId: identity.requestId, action: identity.action });
     const encoded = JSON.stringify(record), key = keyFor(record), previous = storage.getItem(key);
+    previouslyStored = previous !== null;
     if (!storage.keys || previous !== null && previous !== encoded) throw new KnowledgeRecoveryStorageError();
     storage.setItem(key, encoded);
     if (storage.getItem(key) !== encoded) throw new KnowledgeRecoveryStorageError();
-  } catch { throw new KnowledgeRecoveryStorageError(); }
+    return previouslyStored;
+  } catch { throw new KnowledgeRecoveryStorageError(previouslyStored); }
 }
 
 /** Recovery reads survive source/target role loss and a fresh login by the same original actor. */

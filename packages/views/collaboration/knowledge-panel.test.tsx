@@ -1,0 +1,302 @@
+// Core owns wire/lease matrices; this suite tests shared controls and their real query/action wiring.
+import { webcrypto } from "node:crypto";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { act, cleanup, fireEvent, screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ApiClient, ApiError, setApiInstance } from "@multica/core/api";
+import { collaborationKnowledgeKeys, collaborationScope, parseCollaborationComment, parseCollaborationComments, parseCollaborationIssue,
+  parseCollaborationKnowledgeCandidates, parseCollaborationKnowledgeDetail, parseCollaborationKnowledgeTargetList, CollaborationExecutionSchema, parseCollaborationRunRecords, readPendingKnowledgeOperations,
+  type CollaborationKnowledgeCandidate, type CollaborationKnowledgeReceipt, type CollaborationScope } from "@multica/core/collaboration";
+import { collaborationIssueFixture, collaborationExecutionFixture, knowledgeCandidateFixture, knowledgeUnavailableCandidateFixture } from "@multica/core/collaboration/test-fixtures";
+import { renderWithI18n } from "../test/i18n";
+import { CollaborationKnowledgePanel, ManagedKnowledgePanel } from "./knowledge-panel";
+
+const auth = vi.hoisted(() => ({ userId: "00000000-0000-4000-8000-000000000001" }));
+vi.mock("@multica/core/auth", () => ({ useAuthStore: Object.assign((selector: (state: unknown) => unknown) => selector({ user: { id: auth.userId }, status: "authenticated" }),
+  { getState: () => ({ user: { id: auth.userId }, status: "authenticated" }) }) }));
+vi.mock("../rich-content", () => ({ RichContent: ({ content }: { content: string }) => <p>{content}</p> }));
+vi.mock("../navigation", () => ({ AppLink: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} /> }));
+
+const baseIssue = parseCollaborationIssue(collaborationIssueFixture)!;
+const projectId = "00000000-0000-4000-8000-000000000099";
+const issue = { ...baseIssue, source_structure: { issue_revision: "1", project: { id: projectId, name: "Lawful current project" }, parent_issue: null, iteration: null, stage: null } };
+const commentId = "00000000-0000-4000-8000-000000000098";
+let api: ApiClient, client: QueryClient, scope: CollaborationScope;
+let candidate: CollaborationKnowledgeCandidate;
+let historyTruncated = false;
+const lease = () => { const start = Date.now(); return { protocol_version: 1, projection_checked_at: new Date(start).toISOString(), valid_until: new Date(start + 30_000).toISOString(), next_expiry_at: null }; };
+const summary = () => candidate.availability === "available" ? Object.fromEntries(Object.entries(candidate).filter(([key]) => key !== "content")) : candidate;
+const sourcePage = () => parseCollaborationKnowledgeCandidates({ ...lease(), issue_id: issue.id, items: [summary()], next_cursor: null, capabilities: { can_propose: true } });
+const detail = () => parseCollaborationKnowledgeDetail({ ...lease(), candidate, history: [], history_truncated: historyTruncated });
+
+beforeEach(() => {
+  localStorage.clear(); auth.userId = issue.handler.user_id; historyTruncated = false;
+  Object.defineProperty(globalThis.crypto, "subtle", { configurable: true, value: webcrypto.subtle });
+  api = new ApiClient("https://knowledge-ui.example"); setApiInstance(api); scope = collaborationScope(auth.userId);
+  client = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
+  candidate = { ...knowledgeCandidateFixture, source_issue_id: issue.id, source_workspace_id: issue.source_workspace.id,
+    target: { kind: "workspace", workspace_id: issue.source_workspace.id }, sources: [{ kind: "memory", issue_id: issue.id, version: "7", sha256: "a".repeat(64) }] };
+  vi.spyOn(api, "getCollaborationKnowledgeCandidates").mockImplementation(async () => sourcePage());
+  vi.spyOn(api, "getCollaborationKnowledgeCandidate").mockImplementation(async () => detail());
+  vi.spyOn(api, "getCollaborationKnowledgeTarget").mockImplementation(async (target) => parseCollaborationKnowledgeTargetList({ ...lease(), target, knowledge_revision: "1", items: [summary()], next_cursor: null }));
+  vi.spyOn(api, "getCollaborationKnowledgeOperation").mockResolvedValue(null);
+  vi.spyOn(api, "getCollaborationMemory").mockResolvedValue(null);
+  vi.spyOn(api, "getCollaborationMemoryVersions").mockResolvedValue(null);
+  const comment = parseCollaborationComment({ id: commentId, issue_id: issue.id, author_type: "member", author: issue.handler, content: "A readable comment source", type: "comment",
+    parent_id: null, comment_revision: "3", attachment_ids: [], created_at: "2026-11-01T00:00:00Z", updated_at: "2026-11-01T00:00:00Z", deleted_at: null,
+    resolved_at: null, resolved_by: null, can_edit: false, can_resolve: false, reactions: [] })!;
+  vi.spyOn(api, "getCollaborationComments").mockResolvedValue(parseCollaborationComments({ issue_id: issue.id, items: [comment], next_cursor: null }));
+  vi.spyOn(api, "getCollaborationComment").mockResolvedValue(comment);
+});
+afterEach(() => { cleanup(); client.clear(); localStorage.clear(); vi.restoreAllMocks(); });
+function mount(target = false, currentIssue = issue) {
+  return renderWithI18n(<QueryClientProvider client={client}>{target
+    ? <ManagedKnowledgePanel workspaceId={issue.source_workspace.id} />
+    : <CollaborationKnowledgePanel scope={scope} issue={{ ...currentIssue, handler: { ...currentIssue.handler, external: true } }} />}</QueryClientProvider>);
+}
+async function openReview() {
+  await userEvent.click(await screen.findByRole("button", { name: /PRIVATE SUMMARY/ }));
+  await screen.findByText("PRIVATE BODY");
+}
+function receipt(requestId: string, action: CollaborationKnowledgeReceipt["action"]): CollaborationKnowledgeReceipt {
+  return { protocol_version: 1, request_id: requestId, candidate_id: candidate.candidate_id, version: candidate.availability === "restricted" ? "1" : candidate.version,
+    state_revision: "2", action, code: `knowledge_${action === "approve" ? "approved" : action === "reject" ? "rejected" : action === "withdraw" ? "withdrawn" : "proposed"}`,
+    state: action === "approve" ? "approved" : action === "reject" ? "rejected" : action === "withdraw" ? "withdrawn" : "pending", target_knowledge_revision: "1" };
+}
+
+it("requires keyboard confirmation of the displayed version and awaits the exact approval receipt", async () => {
+  let finish!: (value: CollaborationKnowledgeReceipt) => void;
+  const send = vi.spyOn(api, "approveCollaborationKnowledge").mockImplementation(() => new Promise((resolve) => { finish = resolve; }));
+  mount(); await openReview();
+  const button = screen.getByRole("button", { name: "Approve exact version" }); expect(button).toBeDisabled();
+  expect(screen.getByRole("link", { name: /Shared context.*Version 7/ })).toHaveAttribute("href", expect.stringContaining("#memory-v7"));
+  screen.getByRole("checkbox", { name: /I reviewed this exact version/ }).focus(); await userEvent.keyboard(" ");
+  expect(button).toBeEnabled(); await userEvent.click(button);
+  await waitFor(() => expect(send).toHaveBeenCalledOnce()); expect(screen.queryByText("Decision recorded.")).not.toBeInTheDocument();
+  const input = send.mock.calls[0]![1];
+  expect(input).toMatchObject({ expected_state_revision: "1", expected_version: "9007199254740993", expected_content_sha256: "b".repeat(64) });
+  await act(async () => { finish(receipt(input.request_id, "approve")); });
+  await screen.findByText("Decision recorded.");
+});
+
+it("resets review confirmation for a changed identity and removes body on source unavailability", async () => {
+  mount(); await openReview(); await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
+  expect(screen.getByRole("button", { name: "Approve exact version" })).toBeEnabled();
+  candidate = { ...candidate, state_revision: "2" };
+  await act(async () => { await client.invalidateQueries({ queryKey: collaborationKnowledgeKeys.candidate(scope, candidate.candidate_id) }); });
+  await waitFor(() => expect(screen.getByRole("button", { name: "Approve exact version" })).toBeDisabled());
+  candidate = { ...knowledgeUnavailableCandidateFixture, source_issue_id: issue.id, source_workspace_id: issue.source_workspace.id, target: { kind: "workspace", workspace_id: issue.source_workspace.id } };
+  await act(async () => { await client.invalidateQueries({ queryKey: collaborationKnowledgeKeys.candidate(scope, candidate.candidate_id) }); });
+  await screen.findByText("Source material is unavailable. Its text and references are hidden.");
+  expect(screen.queryByText("PRIVATE BODY")).not.toBeInTheDocument(); expect(screen.queryByRole("button", { name: "Approve exact version" })).not.toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Reject candidate" })).toBeDisabled();
+  await userEvent.type(screen.getByRole("textbox", { name: "Decision reason" }), "The required source was removed");
+  expect(screen.getByRole("button", { name: "Reject candidate" })).toBeEnabled();
+});
+
+it("recovers a lost result after remount with the original key and no second POST", async () => {
+  const send = vi.spyOn(api, "approveCollaborationKnowledge").mockRejectedValue(new TypeError("Lost response"));
+  const mounted = mount(); await openReview(); await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
+  await userEvent.click(screen.getByRole("button", { name: "Approve exact version" }));
+  await screen.findByRole("button", { name: "Retry same request" }); const key = send.mock.calls[0]![1].request_id;
+  mounted.unmount(); mount();
+  expect(screen.queryByRole("button", { name: "Retry same request" })).not.toBeInTheDocument();
+  vi.mocked(api.getCollaborationKnowledgeOperation).mockResolvedValue(receipt(key, "approve"));
+  await userEvent.click(await screen.findByRole("button", { name: "Check original result" }));
+  await screen.findByText("Decision recorded.");
+  expect(api.getCollaborationKnowledgeOperation).toHaveBeenCalledWith(candidate.candidate_id, key); expect(send).toHaveBeenCalledOnce();
+  expect(readPendingKnowledgeOperations(scope)).toEqual([]);
+});
+
+async function fillProposal() {
+  fireEvent.change(screen.getByRole("textbox", { name: "Summary" }), { target: { value: "Human conclusion" } });
+  fireEvent.change(screen.getByRole("textbox", { name: "Conclusion (Markdown)" }), { target: { value: "A new explicitly written conclusion" } });
+  await userEvent.click(screen.getByRole("combobox", { name: "Sources" }));
+  await userEvent.click(await screen.findByRole("option", { name: "Comment" }));
+  await userEvent.click(await screen.findByRole("checkbox", { name: /Comment.*Version 3/ }));
+}
+
+it("lets an external handler propose from comments to the lawful current project without a private catalog", async () => {
+  const workspaces = vi.spyOn(api, "listWorkspaces"); const projects = vi.spyOn(api, "listProjects");
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockImplementation(async (_issue, input) => ({ ...receipt(input.request_id, "propose"), candidate_id: input.candidate_id }));
+  mount(); await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" })); await fillProposal();
+  await userEvent.click(screen.getByRole("combobox", { name: "Destination" }));
+  await userEvent.click(screen.getByRole("option", { name: "Source project: Lawful current project" }));
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+  await waitFor(() => expect(send).toHaveBeenCalledOnce());
+  const input = send.mock.calls[0]![1];
+  expect(input.target).toEqual({ kind: "project", workspace_id: issue.source_workspace.id, project_id: projectId });
+  expect(input.sources).toEqual([expect.objectContaining({ kind: "comment", comment_id: commentId, version: "3", sha256: expect.stringMatching(/^[a-f0-9]{64}$/) })]);
+  expect(input.evidence).toEqual([]); expect(workspaces).not.toHaveBeenCalled(); expect(projects).not.toHaveBeenCalled();
+});
+
+it.each(["Propose correction", "Propose workspace version"])("%s creates a new immutable proposal without copying old body into the form", async (action) => {
+  candidate = { ...knowledgeCandidateFixture, state: "approved", source_issue_id: issue.id, source_workspace_id: issue.source_workspace.id,
+    target: { kind: "project", workspace_id: issue.source_workspace.id, project_id: projectId }, sources: [{ kind: "memory", issue_id: issue.id, version: "7", sha256: "a".repeat(64) }] };
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockImplementation(async (_issue, input) => ({ ...receipt(input.request_id, "propose"), candidate_id: input.candidate_id }));
+  mount(); await openReview(); await userEvent.click(screen.getByRole("button", { name: action }));
+  expect(screen.getByRole("textbox", { name: "Conclusion (Markdown)" })).toHaveValue(""); await fillProposal();
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+  await waitFor(() => expect(send).toHaveBeenCalledOnce()); const input = send.mock.calls[0]![1];
+  expect(input.candidate_id).not.toBe(candidate.candidate_id);
+  expect(input.supersedes_candidate_id).toBe(action === "Propose correction" ? candidate.candidate_id : null);
+  expect(input.derived_from_candidate_id).toBe(action === "Propose workspace version" ? candidate.candidate_id : null);
+  expect(input.target.kind).toBe(action === "Propose workspace version" ? "workspace" : "project");
+});
+
+it("allows only content-free target withdrawal and shows a known refusal as a refusal", async () => {
+  candidate = { candidate_id: knowledgeCandidateFixture.candidate_id, availability: "restricted", state: "approved", state_revision: "2", capabilities: { can_withdraw: true } };
+  const send = vi.spyOn(api, "withdrawCollaborationKnowledge").mockImplementation(async (_id, input) => ({ ...receipt(input.request_id, "withdraw"), code: "knowledge_revision_conflict", state: "approved" }));
+  mount(true); await userEvent.click(await screen.findByRole("button", { name: /Restricted contribution/ }));
+  await screen.findByRole("textbox", { name: "Decision reason" });
+  expect(screen.queryByRole("button", { name: "Reject candidate" })).not.toBeInTheDocument(); expect(screen.queryByText("PRIVATE BODY")).not.toBeInTheDocument();
+  expect(screen.queryByRole("link", { name: "Open source collaboration" })).not.toBeInTheDocument();
+  await userEvent.type(screen.getByRole("textbox", { name: "Decision reason" }), "Stop using this contribution");
+  await userEvent.click(screen.getByRole("button", { name: "Withdraw contribution" }));
+  await screen.findByText(/The request was refused/); expect(screen.queryByText("Decision recorded.")).not.toBeInTheDocument();
+  expect(send.mock.calls[0]![1]).not.toHaveProperty("expected_content_sha256"); expect(api.getCollaborationKnowledgeCandidates).not.toHaveBeenCalled();
+});
+
+it("keeps unsupported knowledge separate from the surrounding collaboration and reports truncated history", async () => {
+  vi.mocked(api.getCollaborationKnowledgeCandidates).mockResolvedValueOnce(null);
+  mount(); await screen.findByText("Knowledge is unavailable on this server. Existing context is unchanged.");
+  expect(screen.getByRole("heading", { name: "Knowledge candidates" })).toBeInTheDocument(); expect(screen.queryByText(/No candidates yet/)).not.toBeInTheDocument();
+  historyTruncated = true; await userEvent.click(screen.getByRole("button", { name: "Refresh" })); await openReview();
+  await userEvent.click(screen.getByText("Version history"));
+  expect(screen.getByText(/Only 50 versions are shown/)).toBeInTheDocument();
+});
+
+it("picks an actual recorded run as a source without memory or a raw JSON form", async () => {
+  const execution = CollaborationExecutionSchema.parse(collaborationExecutionFixture); const run = execution.runs[1]!;
+  const recordId = `event:${commentId}:message-0`;
+  const records = parseCollaborationRunRecords({ protocol_version: 1, issue_id: issue.id, run,
+    resource: { agent_id: run.agent_id, runtime_id: projectId, resource_owner_user_id: auth.userId, execution_workspace_id: issue.source_workspace.id, grant_id: commentId,
+      provider: "recorded-provider", model: "recorded-model", account_source: "runtime_configuration" },
+    recording: { status: "complete", inputs_recorded: true }, usage: null,
+    items: [{ id: recordId, kind: "message", role: "assistant", body: "Observed test output" }], next_cursor: null });
+  vi.spyOn(api, "getCollaborationRunRecords").mockResolvedValue(records);
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockImplementation(async (_issue, input) => ({ ...receipt(input.request_id, "propose"), candidate_id: input.candidate_id }));
+  mount(false, { ...issue, execution }); await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" }));
+  fireEvent.change(screen.getByRole("textbox", { name: "Summary" }), { target: { value: "Run finding" } });
+  fireEvent.change(screen.getByRole("textbox", { name: "Conclusion (Markdown)" }), { target: { value: "A conclusion based on this run" } });
+  await userEvent.click(screen.getByRole("combobox", { name: "Sources" })); await userEvent.click(await screen.findByRole("option", { name: "Run record" }));
+  await userEvent.click(screen.getByRole("combobox", { name: "Choose a recorded run" }));
+  await userEvent.click(await screen.findByRole("option", { name: new RegExp(run.id.slice(-8)) }));
+  await userEvent.click(await screen.findByRole("checkbox", { name: /Observed test output/ }));
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+  await waitFor(() => expect(send).toHaveBeenCalledOnce());
+  expect(send.mock.calls[0]![1].sources).toEqual([expect.objectContaining({ kind: "run_record", run_id: run.id, record_id: recordId })]);
+});
+
+it("pages all candidate versions with the original page authorization boundary", async () => {
+  const boundary = lease();
+  vi.mocked(api.getCollaborationKnowledgeCandidates).mockImplementation(async (_issueId, params) => parseCollaborationKnowledgeCandidates({
+    ...boundary, issue_id: issue.id, capabilities: { can_propose: true }, next_cursor: params?.cursor ? null : "older",
+    items: [{ ...summary(), summary: params?.cursor ? "Older candidate version" : "Latest candidate version", version: params?.cursor ? "1" : "2" }],
+  }));
+  mount(); await screen.findByRole("button", { name: /Latest candidate version/ });
+  await userEvent.click(screen.getByRole("button", { name: "Next page" }));
+  await screen.findByRole("button", { name: /Older candidate version/ });
+  expect(api.getCollaborationKnowledgeCandidates).toHaveBeenLastCalledWith(issue.id, expect.objectContaining({ cursor: "older" }), expect.anything());
+  await userEvent.click(screen.getByRole("button", { name: "Back to latest" }));
+  await screen.findByRole("button", { name: /Latest candidate version/ });
+});
+
+it("keeps a selected source project pinned and requires a new selection if the relationship changes", async () => {
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockImplementation(async (_issue, input) => ({ ...receipt(input.request_id, "propose"), candidate_id: input.candidate_id }));
+  const view = (current: typeof issue) => <QueryClientProvider client={client}><CollaborationKnowledgePanel scope={scope} issue={current} /></QueryClientProvider>;
+  const mounted = renderWithI18n(view(issue));
+  await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" })); await fillProposal();
+  await userEvent.click(screen.getByRole("combobox", { name: "Destination" }));
+  await userEvent.click(await screen.findByRole("option", { name: "Source project: Lawful current project" }));
+  const nextProject = { id: "00000000-0000-4000-8000-000000000097", name: "Changed project" };
+  mounted.rerender(view({ ...issue, source_structure: { ...issue.source_structure, project: nextProject } }));
+  await screen.findByText("The selected source project changed. Choose the destination again.");
+  expect(screen.getByRole("textbox", { name: "Summary" })).toHaveValue("Human conclusion");
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" })); expect(send).not.toHaveBeenCalled();
+  await userEvent.click(screen.getByRole("combobox", { name: "Destination" }));
+  await userEvent.click(await screen.findByRole("option", { name: "Source project: Changed project" }));
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+  await waitFor(() => expect(send).toHaveBeenCalledOnce());
+  expect(send.mock.calls[0]![1].target).toMatchObject({ kind: "project", project_id: nextProject.id });
+});
+
+it("unlocks a definitively rejected first proposal for editing and a new explicit request", async () => {
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockRejectedValueOnce(new ApiError("invalid", 400, "Bad Request", { code: "invalid_knowledge_request", error: "invalid" }))
+    .mockImplementation(async (_issue, input) => ({ ...receipt(input.request_id, "propose"), candidate_id: input.candidate_id }));
+  mount(); await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" })); await fillProposal();
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+  await waitFor(() => expect(screen.getByRole("textbox", { name: "Summary" })).toBeEnabled());
+  expect(screen.getByRole("button", { name: "Cancel" })).toBeEnabled();
+  expect(readPendingKnowledgeOperations(scope)).toEqual([]);
+  const first = send.mock.calls[0]![1];
+  fireEvent.change(screen.getByRole("textbox", { name: "Summary" }), { target: { value: "Explicit correction" } });
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+  await waitFor(() => expect(send).toHaveBeenCalledTimes(2));
+  expect(send.mock.calls[1]![1].request_id).not.toBe(first.request_id); expect(send.mock.calls[1]![1].candidate_id).not.toBe(first.candidate_id);
+});
+
+it("keeps a prior lost proposal locked to its original identity after a later rejection and not-found recovery", async () => {
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockRejectedValueOnce(new TypeError("Lost response"))
+    .mockRejectedValue(new ApiError("invalid", 400, "Bad Request", { code: "invalid_knowledge_request", error: "invalid" }));
+  mount(); await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" })); await fillProposal();
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+  await userEvent.click(await screen.findByRole("button", { name: "Retry same request" }));
+  await waitFor(() => expect(send).toHaveBeenCalledTimes(2));
+  await userEvent.click(screen.getByRole("button", { name: "Check original result" }));
+  await screen.findByText(/No confirmed result yet/);
+  expect(screen.getByRole("textbox", { name: "Summary" })).toBeDisabled(); expect(send.mock.calls[0]).toEqual(send.mock.calls[1]);
+  expect(readPendingKnowledgeOperations(scope)[0]?.requestId).toBe(send.mock.calls[0]![1].request_id);
+});
+
+it("shows known success when receipt cleanup fails instead of calling the write uncertain", async () => {
+  const send = vi.spyOn(api, "approveCollaborationKnowledge").mockImplementation(async (_id, input) => receipt(input.request_id, "approve"));
+  const remove = vi.spyOn(Storage.prototype, "removeItem").mockImplementation(() => { throw new Error("cleanup failed"); });
+  try {
+    mount(); await openReview(); await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
+    await userEvent.click(screen.getByRole("button", { name: "Approve exact version" }));
+    await screen.findByText("Decision recorded.");
+    expect(screen.queryByRole("button", { name: "Retry same request" })).not.toBeInTheDocument();
+    expect(screen.queryByText("Unresolved knowledge request")).not.toBeInTheDocument(); expect(send).toHaveBeenCalledOnce();
+  } finally { remove.mockRestore(); }
+});
+
+it("unlocks the human draft after storage fails before POST", async () => {
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge");
+  mount(); await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" })); await fillProposal();
+  const save = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => { throw new Error("storage full"); });
+  try {
+    await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+    await screen.findByText("The original request could not be saved. Check local storage and try again.");
+    expect(send).not.toHaveBeenCalled(); expect(screen.getByRole("textbox", { name: "Summary" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Cancel" })).toBeEnabled(); expect(screen.queryByText("Unresolved knowledge request")).not.toBeInTheDocument();
+  } finally { save.mockRestore(); }
+});
+
+it("does not repeat approval actor/time as an identical latest decision", async () => {
+  if (candidate.availability !== "available") throw new Error("Expected available fixture");
+  const approver = "00000000-0000-4000-8000-000000000072", at = "2026-11-01T01:00:00Z";
+  candidate = { ...candidate, state: "approved", approved_by_user_id: approver, approved_at: at, decision: { actor_user_id: approver, at, reason: null } };
+  mount(); await openReview(); const review = screen.getByRole("region", { name: "Review candidate" });
+  expect(within(review).getAllByText(approver)).toHaveLength(1); expect(within(review).getByText("Approved by")).toBeInTheDocument();
+  expect(within(review).queryByText("Latest decision by")).not.toBeInTheDocument(); expect(within(review).queryByText("Latest decision at")).not.toBeInTheDocument();
+});
+
+it("renders supplied proposer, approval and latest decision facts without a directory lookup", async () => {
+  const proposer = "00000000-0000-4000-8000-000000000071", approver = "00000000-0000-4000-8000-000000000072", decider = "00000000-0000-4000-8000-000000000073";
+  if (candidate.availability !== "available") throw new Error("Expected available fixture");
+  candidate = { ...candidate, proposed_by_user_id: proposer, state: "withdrawn", approved_by_user_id: approver,
+    approved_at: "2026-11-01T01:00:00Z", decision: { actor_user_id: decider, at: "2026-11-01T02:00:00Z", reason: "Withdrawn after the later review" } };
+  const members = vi.spyOn(api, "listMembers");
+  mount(); await openReview(); const review = screen.getByRole("region", { name: "Review candidate" });
+  expect(within(review).getByText(proposer)).toBeInTheDocument(); expect(within(review).getByText(approver)).toBeInTheDocument(); expect(within(review).getByText(decider)).toBeInTheDocument();
+  expect(within(review).getByText("Approved by")).toBeInTheDocument(); expect(within(review).getByText("Latest decision by")).toBeInTheDocument();
+  expect(within(review).getByText("Withdrawn after the later review")).toBeInTheDocument(); expect(members).not.toHaveBeenCalled();
+  candidate = { ...knowledgeUnavailableCandidateFixture, source_issue_id: issue.id, source_workspace_id: issue.source_workspace.id,
+    target: { kind: "workspace", workspace_id: issue.source_workspace.id }, approved_by_user_id: approver, approved_at: "2026-11-01T01:00:00Z",
+    state: "withdrawn", decision: { actor_user_id: decider, at: "2026-11-01T02:00:00Z" } };
+  await act(async () => { await client.invalidateQueries({ queryKey: collaborationKnowledgeKeys.candidate(scope, candidate.candidate_id) }); });
+  await screen.findByText("Source material is unavailable. Its text and references are hidden.");
+  expect(within(review).queryByText("Withdrawn after the later review")).not.toBeInTheDocument(); expect(within(review).getByText(decider)).toBeInTheDocument();
+});

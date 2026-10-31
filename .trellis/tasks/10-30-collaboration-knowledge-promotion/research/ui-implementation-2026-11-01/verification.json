@@ -1,0 +1,156 @@
+{
+  "recorded_at_utc": "2026-10-31T21:56:14.299187+00:00",
+  "worktree": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+  "head": "bbbfc731ddf9a77d3266d4fc5561e2d89a24b258",
+  "branch": "codex/collaboration-knowledge-promotion-20261101",
+  "platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+  "scope": "B2 shared views and existing-reader source builder; no Go, router, provider, dependencies, commits, database tests or browser/model calls",
+  "files": [
+    "packages/core/collaboration/index.ts",
+    "packages/core/collaboration/knowledge-sources.test.ts",
+    "packages/core/collaboration/knowledge-sources.ts",
+    "packages/core/collaboration/test-fixtures.ts",
+    "packages/views/collaboration/collaboration-detail.test.tsx",
+    "packages/views/collaboration/collaboration-detail.tsx",
+    "packages/views/collaboration/knowledge-controls.tsx",
+    "packages/views/collaboration/knowledge-panel.test.tsx",
+    "packages/views/collaboration/knowledge-panel.tsx",
+    "packages/views/collaboration/knowledge-proposal.tsx",
+    "packages/views/collaboration/knowledge-review.tsx",
+    "packages/views/collaboration/knowledge-source-picker.tsx",
+    "packages/views/locales/en/collaboration.json",
+    "packages/views/locales/zh-Hans/collaboration.json",
+    "packages/views/projects/components/project-detail.test.tsx",
+    "packages/views/projects/components/project-detail.tsx",
+    "packages/views/settings/components/workspace-tab.recovery.test.tsx",
+    "packages/views/settings/components/workspace-tab.test.tsx",
+    "packages/views/settings/components/workspace-tab.tsx"
+  ],
+  "tests": {
+    "core": {
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "suites": 1
+    },
+    "views": {
+      "passed": 122,
+      "failed": 0,
+      "skipped": 0,
+      "suites": 6
+    }
+  },
+  "commands": {
+    "core-tests": {
+      "argv": [
+        "pnpm",
+        "--dir",
+        "packages/core",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/knowledge-sources.test.ts",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile.json=/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-implementation-2026-11-01/core-vitest.json"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+      "exit_code": 0,
+      "duration_seconds": 4.564
+    },
+    "views-tests": {
+      "argv": [
+        "pnpm",
+        "--dir",
+        "packages/views",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/knowledge-panel.test.tsx",
+        "collaboration/collaboration-detail.test.tsx",
+        "projects/components/project-detail.test.tsx",
+        "settings/components/workspace-tab.test.tsx",
+        "settings/components/workspace-tab.recovery.test.tsx",
+        "locales/parity.test.ts",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile.json=/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-implementation-2026-11-01/views-vitest.json"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+      "exit_code": 0,
+      "duration_seconds": 9.806
+    },
+    "core-typecheck": {
+      "argv": [
+        "pnpm",
+        "--dir",
+        "packages/core",
+        "typecheck"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+      "exit_code": 0,
+      "duration_seconds": 11.601
+    },
+    "views-typecheck": {
+      "argv": [
+        "pnpm",
+        "--dir",
+        "packages/views",
+        "typecheck"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+      "exit_code": 0,
+      "duration_seconds": 36.681
+    },
+    "core-lint": {
+      "argv": [
+        "pnpm",
+        "--dir",
+        "packages/core",
+        "exec",
+        "eslint",
+        "collaboration/knowledge-sources.ts",
+        "collaboration/knowledge-sources.test.ts",
+        "collaboration/index.ts",
+        "collaboration/test-fixtures.ts"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+      "exit_code": 0,
+      "duration_seconds": 2.398
+    },
+    "views-lint": {
+      "argv": [
+        "pnpm",
+        "--dir",
+        "packages/views",
+        "exec",
+        "eslint",
+        "collaboration/knowledge-controls.tsx",
+        "collaboration/knowledge-panel.tsx",
+        "collaboration/knowledge-panel.test.tsx",
+        "collaboration/knowledge-proposal.tsx",
+        "collaboration/knowledge-review.tsx",
+        "collaboration/knowledge-source-picker.tsx",
+        "collaboration/collaboration-detail.tsx",
+        "collaboration/collaboration-detail.test.tsx",
+        "projects/components/project-detail.tsx",
+        "projects/components/project-detail.test.tsx",
+        "settings/components/workspace-tab.tsx",
+        "settings/components/workspace-tab.test.tsx",
+        "settings/components/workspace-tab.recovery.test.tsx"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+      "exit_code": 0,
+      "duration_seconds": 3.258
+    }
+  },
+  "diff_check_exit_code": 0,
+  "warnings": [
+    "Two unchanged project-detail react-hooks dependency warnings (existing effect/callback).",
+    "Existing project deletion test emits NavigationProvider act warnings."
+  ],
+  "not_verified": [
+    "Production Web/native Desktop real HTTP flows, visual detector and independent screenshot review (main owns).",
+    "G2 runtime injection, exact-session exposure and real model behavior."
+  ]
+}

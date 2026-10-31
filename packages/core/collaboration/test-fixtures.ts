@@ -138,3 +138,4 @@ export const collaborationFieldOptionsFixture = {
   }],
 };
 export { collaborationCommandHistoryFixture, collaborationUnknownCancellationFixture } from "./command-history-test-fixtures";
+export { knowledgeCandidateFixture, knowledgeUnavailableCandidateFixture } from "./knowledge-test-fixtures";

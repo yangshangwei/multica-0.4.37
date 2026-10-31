@@ -8,6 +8,7 @@ import { collaborationKnowledgeKeys } from "./knowledge-queries";
 import { knowledgeCandidateFixture, knowledgeCandidatesFixture, knowledgeIds, knowledgeProposalFixture, knowledgeReceiptFixture, knowledgeUnavailableCandidateFixture } from "./knowledge-test-fixtures";
 import { expireKnowledgeProjections } from "./knowledge-cache";
 import { readPendingKnowledgeOperations } from "./knowledge-recovery";
+import type { StorageAdapter } from "../types/storage";
 
 vi.mock("../auth", () => ({ useAuthStore: { getState: () => ({ user: { id: "00000000-0000-4000-8000-000000000001" } }) } }));
 const saved = vi.hoisted(() => new Map<string, string>());
@@ -124,4 +125,65 @@ it("saves only recovery identity before a lost create response and refuses trans
   expect(readPendingKnowledgeOperations({ ...f.scope, userId: knowledgeIds.project })).toEqual([]);
   await expect(executeKnowledgeIntent(f.client, f.scope, intent, { getItem: () => null, setItem: () => {}, removeItem: () => {} })).rejects.toThrow(/preserved/);
   expect(send).toHaveBeenCalledTimes(1);
+});
+
+const unsealedRejection = () => new ApiError("invalid_knowledge_request", 400, "Bad Request", { code: "invalid_knowledge_request", error: "invalid_knowledge_request" });
+function testStorage(): StorageAdapter {
+  const entries = new Map<string, string>();
+  return { keys: () => [...entries.keys()], getItem: (key) => entries.get(key) ?? null, setItem: (key, value) => { entries.set(key, value); }, removeItem: (key) => { entries.delete(key); } };
+}
+
+it("retires only a first definitively unused proposal identity so a new explicit intent can be created", async () => {
+  const f = setup(); const intent = prepareKnowledgeProposal(f.scope, knowledgeCandidatesFixture, knowledgeProposalFixture);
+  vi.spyOn(f.api, "proposeCollaborationKnowledge").mockRejectedValue(unsealedRejection());
+  await expect(executeKnowledgeIntent(f.client, f.scope, intent)).rejects.toMatchObject({ name: "KnowledgeUnusedIntentError", reason: "rejected" });
+  expect(readPendingKnowledgeOperations(f.scope)).toEqual([]);
+  const next = prepareKnowledgeProposal(f.scope, knowledgeCandidatesFixture, { ...knowledgeProposalFixture, content: "Explicit corrected proposal" });
+  expect(next.requestId).not.toBe(intent.requestId); expect(next.candidateId).not.toBe(intent.candidateId);
+});
+
+it("retains an earlier ambiguous request through later unsealed rejection, missing recovery and storage changes", async () => {
+  const f = setup(); const intent = prepareKnowledgeProposal(f.scope, knowledgeCandidatesFixture, knowledgeProposalFixture);
+  const send = vi.spyOn(f.api, "proposeCollaborationKnowledge").mockRejectedValueOnce(new TypeError("Lost response")).mockRejectedValue(unsealedRejection());
+  vi.spyOn(f.api, "getCollaborationKnowledgeOperation").mockResolvedValue(null);
+  await expect(executeKnowledgeIntent(f.client, f.scope, intent)).rejects.toThrow("Lost response");
+  await expect(executeKnowledgeIntent(f.client, f.scope, intent)).rejects.toMatchObject({ status: 400 });
+  await expect(recoverKnowledgeOperation(f.client, f.scope, intent)).rejects.toThrow(/unavailable/);
+  expect(readPendingKnowledgeOperations(f.scope)[0]?.requestId).toBe(intent.requestId);
+  const reloadedClient = new QueryClient();
+  try { await expect(executeKnowledgeIntent(reloadedClient, f.scope, intent)).rejects.toMatchObject({ status: 400 }); }
+  finally { reloadedClient.clear(); }
+  // A fresh storage adapter does not erase dispatch evidence in the live client.
+  await expect(executeKnowledgeIntent(f.client, f.scope, intent, testStorage())).rejects.toMatchObject({ status: 400 });
+  expect(send.mock.calls[0]).toEqual(send.mock.calls[1]); expect(send.mock.calls[1]).toEqual(send.mock.calls[2]); expect(send.mock.calls[2]).toEqual(send.mock.calls[3]);
+});
+
+it("does not discard an overlapping attempt when the first call receives an unsealed rejection", async () => {
+  const f = setup(); const intent = prepareKnowledgeProposal(f.scope, knowledgeCandidatesFixture, knowledgeProposalFixture);
+  let rejectFirst!: (error: unknown) => void;
+  let finishSecond!: (value: typeof knowledgeReceiptFixture | null) => void;
+  vi.spyOn(f.api, "proposeCollaborationKnowledge").mockImplementationOnce(() => new Promise((_resolve, reject) => { rejectFirst = reject; }))
+    .mockImplementationOnce(() => new Promise((resolve) => { finishSecond = resolve; }));
+  const first = executeKnowledgeIntent(f.client, f.scope, intent).catch((error: unknown) => error);
+  const second = executeKnowledgeIntent(f.client, f.scope, intent);
+  rejectFirst(unsealedRejection());
+  expect(await first).toMatchObject({ status: 400 }); expect(readPendingKnowledgeOperations(f.scope)[0]?.requestId).toBe(intent.requestId);
+  finishSecond({ ...knowledgeReceiptFixture, candidate_id: intent.candidateId, request_id: intent.requestId, action: "propose", code: "knowledge_proposed", state: "pending" });
+  await expect(second).resolves.toMatchObject({ code: "knowledge_proposed" });
+});
+
+it("distinguishes failed preservation before POST from failed cleanup after a known receipt", async () => {
+  const f = setup(); const intent = prepareKnowledgeProposal(f.scope, knowledgeCandidatesFixture, knowledgeProposalFixture);
+  const send = vi.spyOn(f.api, "proposeCollaborationKnowledge");
+  const storage = testStorage(); vi.spyOn(storage, "setItem").mockImplementation(() => { throw new Error("storage full"); });
+  await expect(executeKnowledgeIntent(f.client, f.scope, intent, storage)).rejects.toMatchObject({ name: "KnowledgeUnusedIntentError", reason: "storage" });
+  expect(send).not.toHaveBeenCalled(); expect(readPendingKnowledgeOperations(f.scope, storage)).toEqual([]);
+  const after = testStorage(); vi.spyOn(after, "removeItem").mockImplementation(() => { throw new Error("cleanup failed"); });
+  const receipt = { ...knowledgeReceiptFixture, candidate_id: intent.candidateId, request_id: intent.requestId, action: "propose" as const, code: "knowledge_proposed", state: "pending" as const };
+  send.mockResolvedValue(receipt);
+  await expect(executeKnowledgeIntent(f.client, f.scope, intent, after)).rejects.toMatchObject({ name: "KnowledgeReceiptCleanupError", receipt });
+  expect(send).toHaveBeenCalledOnce(); expect(readPendingKnowledgeOperations(f.scope, after)[0]?.requestId).toBe(intent.requestId);
+  vi.spyOn(f.api, "getCollaborationKnowledgeOperation").mockResolvedValue(receipt);
+  await expect(recoverKnowledgeOperation(f.client, f.scope, intent, after)).rejects.toMatchObject({ name: "KnowledgeReceiptCleanupError", receipt });
+  expect(send).toHaveBeenCalledOnce();
 });
