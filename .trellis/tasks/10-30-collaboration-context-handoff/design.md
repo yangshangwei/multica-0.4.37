@@ -1,6 +1,12 @@
 # 技术设计：协作上下文交接、召回与逐层沉淀
 
-> 仅规划，不表示代码已实现。执行前必须先完成 prd.md 的待确认权限边界。
+> 设计已获用户确认；设计本身不表示代码已实现。当前进展与验证以子任务记录为准，权限决定见 prd.md。
+
+## 2026-10-31 代码核对后的细化
+
+第二阶段以 `../10-30-collaboration-context-handoff-runtime/design.md` 为可执行合同。下文早期示例只表达目标：handoff 用真实 handoff/event ID 与序号；reader IDs 不代表已处理；人类评论已有分页；新增 run event 必须同步旧 records reader；决定/理由尚未结构化时只暴露来源与缺失事实，不伪造确认状态。
+
+第三阶段需注意：当前 Project Context 来自项目 description/resources，Workspace Context 来自 `workspace.context`；并不存在可直接调用的统一“项目/空间知识版本”服务。项目已有 revision/CAS，workspace 当前直接更新 context。候选确认必须补足自己的审计/并发和注入过滤合同，不能简单追加正文后宣称撤回/过期已生效。确认权限已由用户决定，技术缺口不再变成重复权限询问。
 
 ## 1. 设计原则和边界
 
@@ -123,12 +129,12 @@ Candidate is an issue-scoped record with:
 - state draft -> proposed -> confirmed -> superseded|retracted|expired;
 - current version, supersedes, correction/retraction reason and timestamps.
 
-Candidate creation is human initiated or explicitly requested by an authorized Agent but never makes target context effective. The recommended authority (pending user confirmation) is:
+Candidate creation is human initiated or explicitly requested by an authorized Agent but never makes target context effective. The user-confirmed authority is:
 
 - proposer: issue initiator or current handler;
 - project confirmation: project lead/admin under existing project permission;
 - workspace confirmation: workspace owner/admin;
-- source-space members without target authority: read/propose only;
+- source-space members without target authority: authorized source reads only; proposing still requires initiator/current-handler authority;
 - skill target: rejected in this phase.
 
 On confirmation, call the target's existing revisioned write path and store candidate ID/version in the target revision. A correction creates a new candidate/target revision; retraction marks the source and removes it from future injection while retaining audit metadata. Expiry is explicit (expires_at or review-by date); expired knowledge stays reviewable but is not injected. Source permission loss or source deletion causes source_unavailable and blocks future use pending reconfirmation.

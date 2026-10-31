@@ -1,0 +1,61 @@
+{
+  "run_id": "12f7f898-b819-43cf-848e-b26fae635e55",
+  "scenario": "E1_memory_first",
+  "trial": "1",
+  "host_outcome": "failure",
+  "host_failure": "claude timed out after 5m0s",
+  "context_reads": 1,
+  "memory_reads": 1,
+  "observations": [
+    {
+      "test_owned_session_file": "/Users/artisan/.claude/projects/-private-var-folders-3n-gbt3p39s5pdc4l55js62gxnm0000gn-T-TestHostContextExperimentE1-memory-first1281326756-002-workspaces-c4244ea5d9d09022cf19aae0d7f7deb9c0124aa6d7d7a0bb1ae44e28f401d04d-work/ac461b63-fd68-4910-a4a1-fa70fc8ced0e.jsonl",
+      "observed_models": [
+        "claude-opus-5-5"
+      ],
+      "api_errors": [
+        {
+          "at": "2026-10-31T12:36:54.143Z",
+          "retry_attempt": 1,
+          "status": 429
+        },
+        {
+          "at": "2026-10-31T12:37:24.978Z",
+          "retry_attempt": 2,
+          "status": 429
+        },
+        {
+          "at": "2026-10-31T12:37:56.382Z",
+          "retry_attempt": 3,
+          "status": 429
+        },
+        {
+          "at": "2026-10-31T12:37:59.094Z",
+          "retry_attempt": 4,
+          "status": 503
+        },
+        {
+          "at": "2026-10-31T12:38:33.412Z",
+          "retry_attempt": 5,
+          "status": 429
+        },
+        {
+          "at": "2026-10-31T12:39:13.263Z",
+          "retry_attempt": 6,
+          "status": 429
+        },
+        {
+          "at": "2026-10-31T12:40:02.820Z",
+          "retry_attempt": 7,
+          "status": 429
+        }
+      ],
+      "source_sha256": "1d3ef4f4f1a468f318a9732cd9338e3ef60a754b21511c8a942e32b1495e30fa",
+      "source_bytes": 223710
+    }
+  ],
+  "classification": "environment_provider_rate_limit_and_unavailable",
+  "valid_behavior_sample": false,
+  "later_trials_run": false,
+  "basis": "Test-owned provider API errors: six HTTP 429 and one HTTP 503 after successful context and memory reads; host timed out after five minutes.",
+  "captured_at": "2026-10-31T12:49:20.936914+00:00"
+}

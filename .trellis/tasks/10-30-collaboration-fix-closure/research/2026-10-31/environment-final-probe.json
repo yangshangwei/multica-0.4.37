@@ -1,0 +1,39 @@
+{
+  "recorded_at": "2026-10-31T12:28:57.539094+00:00",
+  "node": "v22.23.2",
+  "go": "go version go1.27.0 darwin/arm64",
+  "pnpm": "10.28.2",
+  "electron": "39.8.7",
+  "health": {
+    "status": "ok",
+    "pid": 50899,
+    "commit": "4c833e737",
+    "started_at": "2026-10-31T12:09:23Z"
+  },
+  "api_configuration": {
+    "managed_installation_supported": false,
+    "platform_admin_available": false,
+    "auth_mode": "password",
+    "password_auth_available": true,
+    "password_signup_available": true,
+    "account_binding_available": false,
+    "cdn_domain": "localhost",
+    "allow_signup": true,
+    "daemon_server_url": "http://localhost:18991",
+    "daemon_app_url": "http://localhost:13911",
+    "messaging_integrations_enabled": false,
+    "posthog_key": "",
+    "posthog_host": "",
+    "analytics_environment": "dev",
+    "feature_flags": {
+      "agents_agent_builder": true,
+      "agents_skill_toggles": true,
+      "billing_workspace_subscriptions": false,
+      "composio_mcp_apps": false,
+      "plugins_v1": false,
+      "settings_resource_labels": true
+    },
+    "local_worktree_supported": true,
+    "agent_conversation_starters_supported": true
+  }
+}
