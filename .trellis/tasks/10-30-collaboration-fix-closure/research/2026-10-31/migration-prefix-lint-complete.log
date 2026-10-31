@@ -1,0 +1,11 @@
+{"source_head": "4c833e737efb6c997e5cb56c74c43e9237c91956", "started_at": "2026-10-31T11:53:05.249322+00:00", "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server", "command": ["go", "test", "./internal/migrations", "-run", "Test(MigrationFiles|MigrationNumeric|NewMigrationPrefixes)", "-count=1", "-v"], "database": "postgres"}
+=== RUN   TestMigrationFilesHaveMatchingDirections
+--- PASS: TestMigrationFilesHaveMatchingDirections (0.00s)
+=== RUN   TestMigrationNumericPrefixesStayUniqueAfterLegacySet
+--- PASS: TestMigrationNumericPrefixesStayUniqueAfterLegacySet (0.00s)
+=== RUN   TestNewMigrationPrefixesStartAfterLegacyRange
+--- PASS: TestNewMigrationPrefixesStartAfterLegacyRange (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/migrations	0.229s
+
+exit_code=0

@@ -1,0 +1,6 @@
+{"source_head": "4c833e737efb6c997e5cb56c74c43e9237c91956", "command": ["go", "test", "./internal/migrations", "-run", "TestCollaborationOwnerReconsentMigrationSeparatesBoundaryEpoch", "-count=1", "-v"], "database": "multica_closure_20261031_b953445095", "started_at": "2026-10-31T11:56:55.200471+00:00"}
+=== RUN   TestCollaborationOwnerReconsentMigrationSeparatesBoundaryEpoch
+--- PASS: TestCollaborationOwnerReconsentMigrationSeparatesBoundaryEpoch (0.21s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/migrations	0.813s
+exit_code=0
