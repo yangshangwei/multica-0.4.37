@@ -1,0 +1,72 @@
+{
+  "registered_at": "2026-10-31T13:57:02.014534+00:00",
+  "authorization": "User explicitly requested continuation after the prior E1 stop. Existing account/quota authorization and formal E0 pass persist.",
+  "first_scenario": "E2a_window_fact_newest",
+  "ordered_plan": [
+    {
+      "scenario": "E2a_window_fact_newest",
+      "arm": "baseline",
+      "start_trial": 1
+    },
+    {
+      "scenario": "E2b_window_fact_oldest",
+      "arm": "baseline",
+      "start_trial": 1
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "baseline",
+      "start_trial": 1
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "after",
+      "start_trial": 1
+    },
+    {
+      "scenario": "E4_stale_merge",
+      "arm": "baseline",
+      "start_trial": 1
+    },
+    {
+      "scenario": "E5_injection",
+      "arm": "baseline",
+      "start_trial": 1
+    },
+    {
+      "scenario": "E6_relay",
+      "arm": "baseline",
+      "start_trial": 1
+    }
+  ],
+  "remaining_provider_call_cap": 24,
+  "trials": 3,
+  "provider": "claude",
+  "executable": "/Users/artisan/.local/bin/claude",
+  "requested_model": "claude-opus-5-5",
+  "requested_thinking_level": "provider_default",
+  "requested_service_tier": "provider_default",
+  "provider_timeout": "Unchanged five-minute Provider timeout",
+  "framework_delivery_commit": "9673ab3bf",
+  "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+  "prior_e1_summary": {
+    "valid_samples": 1,
+    "invalid_attempts": 2,
+    "consumed_slots": [
+      1,
+      2,
+      3
+    ],
+    "facts_correct_valid_samples": 1,
+    "memory_writes_valid_samples": 0
+  },
+  "prior_e1_evidence": "../experiments-resume-2026-10-31/E1_memory_first-baseline/semantic-verdicts.json",
+  "e0": "Formal TestHostProviderAccountSmoke passed on product source 4c833e737; unchanged product/model/CLI conditions, do not repeat.",
+  "stop_rule": "At first incomplete runtime/environment/harness outcome stop all subsequent trials/scenarios. No replacement samples, ad-hoc health calls, model substitution, timeout extension or trial-count expansion. E5 canary failure blocks further calls and requires review. Valid behavior failures remain evidence and do not silently become environment failures.",
+  "source_arms": {
+    "baseline": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+    "after": "835e7b046c6841e0945a59326bc4ddcbae4a0df7",
+    "after_product": "4c833e737efb6c997e5cb56c74c43e9237c91956"
+  },
+  "main_worktree_concurrent_changes": "Unrelated runtime implementation is in progress; all provider experiments use the isolated baseline/after worktrees."
+}

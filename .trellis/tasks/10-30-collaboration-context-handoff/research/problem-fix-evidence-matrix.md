@@ -1,6 +1,6 @@
 # 首轮问题→修复→证据→限制映射（规划模板）
 
-此表保留原规划快照。2026-10-31 的确定性验收见 [首次续作记录](../../10-30-collaboration-fix-closure/verification-2026-10-31.md)，最新行为证据见 [第二次续作记录](../../10-30-collaboration-fix-closure/verification-resume-2026-10-31.md)：正式 E0 已通过；E1 第 2 轮事实正确但未回写，第 3 轮 429 超时；E2–E6 未运行。
+此表保留原规划快照。2026-10-31 的确定性验收见 [首次续作记录](../../10-30-collaboration-fix-closure/verification-2026-10-31.md)，最新行为证据见 [E2a 续作记录](../../10-30-collaboration-fix-closure/verification-e2-resume-2026-10-31.md)：正式 E0 已通过；E1 有效样本事实正确但未回写；E2a 第 1 轮 429 后超时，后续未运行。下一次从 E2a 第 2 轮继续。
 
 | 问题 | 修复提交/计划改动 | 验证证据位置 | 剩余限制 |
 | --- | --- | --- | --- |

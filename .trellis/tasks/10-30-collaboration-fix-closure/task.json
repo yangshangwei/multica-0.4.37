@@ -24,7 +24,7 @@
   "notes": "",
   "meta": {
     "e0_status": "passed_2026_10_31",
-    "experiments_remaining": "E2_E6_unrun_after_E1_trial3_environment_failure",
+    "experiments_remaining": "E2a_trials_2_3_and_E2b_E6_unrun_after_E2a_trial1_environment_failure",
     "resume_source_commit": "4c833e737efb6c997e5cb56c74c43e9237c91956",
     "e0_source_commit": "4c833e737efb6c997e5cb56c74c43e9237c91956",
     "e0_provider_cli": "claude 2.1.316",
@@ -33,11 +33,12 @@
     "deterministic_verification": "passed_2026_10_31",
     "experiment_framework_commit": "9673ab3bf",
     "experiment_framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
-    "acceptance": "deterministic_and_E0_passed_E1_partial_E2_E6_unrun",
+    "acceptance": "deterministic_and_E0_passed_E1_partial_E2a_environment_blocked_later_unrun",
     "e1_trial3_status": "environment_provider_429_timeout",
     "experiment_next_scenario": "E2a_window_fact_newest",
-    "experiment_next_start_trial": 1,
-    "experiment_remaining_provider_call_cap": 24,
-    "latest_verification": "verification-resume-2026-10-31.md"
+    "experiment_next_start_trial": 2,
+    "experiment_remaining_provider_call_cap": 23,
+    "latest_verification": "verification-e2-resume-2026-10-31.md",
+    "e2a_status": "0_valid_1_invalid_provider_rate_limit_timeout"
   }
 }

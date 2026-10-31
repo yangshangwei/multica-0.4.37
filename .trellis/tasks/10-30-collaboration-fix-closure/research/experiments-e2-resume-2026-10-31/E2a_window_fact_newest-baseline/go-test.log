@@ -1,0 +1,9 @@
+=== RUN   TestHostContextExperiment
+=== RUN   TestHostContextExperiment/E2a_window_fact_newest
+    host_context_experiment_test.go:180: E2a_window_fact_newest trial 1: outcome=failure verdict=provider_failure_unclassified context_reads=1 puts=0 301s
+    host_context_experiment_test.go:182: incomplete experiment; later trials stopped: provider_failure_unclassified
+--- FAIL: TestHostContextExperiment (304.11s)
+    --- FAIL: TestHostContextExperiment/E2a_window_fact_newest (301.05s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	304.710s
+FAIL
