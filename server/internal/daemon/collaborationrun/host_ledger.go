@@ -26,6 +26,7 @@ type hostLaunchRecord struct {
 }
 
 type hostLedgerRecord struct {
+	Recording           *hostRecordingLedger                    `json:"recording,omitempty"`
 	SessionKey          string                                  `json:"session_key"`
 	CapabilityDigest    string                                  `json:"capability_digest"`
 	ConfigurationDigest string                                  `json:"configuration_digest"`
@@ -141,7 +142,7 @@ func validateHostLedgerRecord(r ledgerRecord) error {
 	if h.OutcomeRecorded && h.OutcomeRejected || h.Outcome == nil && (h.OutcomeRecorded || h.OutcomeRejected) {
 		return ErrUnconfirmed
 	}
-	return nil
+	return validateHostRecordingLedger(r)
 }
 
 func hostOutcomePending(h *hostLedgerRecord) bool {

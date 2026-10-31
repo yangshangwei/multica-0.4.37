@@ -22,6 +22,14 @@ separate work.
 - Runtime outcome keeps `{outcome, body}` and adds optional `record: {version: 1,
   completeness: "complete" | "partial", messages, usage?}`. The supported static
   runner, narrow HTTP capability and retained event use the same validation.
+- Negotiated host recording adds `POST .../runtime/runs/{runId}/checkpoints`
+  and `POST .../runtime/runs/{runId}/recording/seal`. Checkpoints carry version,
+  full run identity, issued attempt/nonce, stream ID, sequence, message offset
+  and typed messages. Seals carry only identity/attempt/stream, sequence,
+  nullable observed bound, acknowledged count and an allowlisted reason.
+- Record version 2 adds `stream_id` and `message_offset` for checkpoint/outcome
+  deduplication. Public record item kinds remain compatible; optional retention
+  describes stream, retained/observed bounds and seal status.
 - Migration 729 adds nullable `collaboration_notification.run_id`. Public result
   notifications retain `source_kind: "issue", source_id: null` and add optional
   `run_id`; old installed clients can still open the issue.
@@ -137,6 +145,11 @@ consistent refreshed snapshots. Keep the read under the existing account/access
 epoch guard, including error paths, and clear all private pages on real denial.
 Validation errors remain generic and redacted.
 
+The fixed `through_seq` page chain must also agree on recording-retention
+identity/metadata. Individually valid pages from different streams cannot be
+combined while showing only the last page's retention. Keep coherent full
+refresh and legacy pages valid; cover the chain at the Core helper layer.
+
 Counters are nullable nonnegative signed-int64 decimal strings. USD cost is
 recorded decimal text (1–19 integer digits, up to 10 fractional digits); do not
 round through JavaScript Number or infer missing totals/costs. Missing telemetry
@@ -150,6 +163,24 @@ most 2 MiB. Unknown/duplicate fields and cross-kind tool fields refuse ingestion
 Recorded stdout and a prior squad activity may agree once; they cannot overwrite
 an earlier or conflicting outcome. Invalid/missing recording or denied upload
 must not prevent a legitimate content-free sealed proof.
+
+Negotiated checkpoints are append-only source events (`record_checkpoint`):
+at most 16 messages/64 KiB decoded bodies per chunk, 256 chunks, and the run's
+256-message/512 KiB decoded recording budget across retries. Stored ordinals
+remain continuous; an unrecoverable gap cannot be disguised by later offsets.
+Validate current business authority under the same source locks as Stop/revoke
+before new content. Exact committed original-key replay is content-free; a
+termination capability never becomes a checkpoint/body writer.
+
+Recording seals use immutable sequence keys 1–32. Exact old-key replay remains
+valid, changed payload under that key conflicts, and a new sequence must pass
+`ValidateCollaborationRecordingSealAdvance`: same run identity/stream/reason,
+next sequence exactly +1, nondecreasing ACK and known observed bounds, and no
+known-to-unknown regression. The service authenticates the issued attempt/nonce
+separately. Compute retained coverage from committed checkpoints, never from a
+sender's ACK claim. The bounded event query includes up to 256 checkpoints,
+32 seals, one outcome and one overflow sentinel (290 rows); do not silently
+truncate valid history or count private internal metadata as display records.
 
 ### Results and navigation
 
@@ -185,6 +216,9 @@ labels; removed notifications remain content-free and unknown kinds stay generic
 | Authorized issue with a wrong run | 404 `run_not_found`; preserve valid parent state |
 | Missing/mismatched cursor field | 400 `invalid_records_query` |
 | Paging cycle/conflicting record copy | Reject assembled pages before cache write |
+| Same page chain mixes retention streams or frozen metadata | Reject before cache write; coherent refresh remains valid |
+| Checkpoint gap, changed replay or run budget excess | Reject without replacing prior source history |
+| Seal adds body/unknown fields or regresses known metadata | Reject; original proof still follows its independent contract |
 | Old/partial telemetry | Nullable counters; partial coverage when incomplete is persisted |
 | Outcome without proof | No terminal group result notification |
 | Stop with a live descendant | No confirmed-stop notification |
@@ -218,6 +252,12 @@ Isolated component tests must include NavigationProvider when rendering run
 disclosures. Web/native tests own real routing, clipboard, issue-scope hints,
 cross-account notification/paging, revocation and narrow/200% layout. Seeded
 record-read journeys do not prove runtime ingestion; keep that evidence separate.
+
+New checkpoint/seal tests must include original ACK replay, both Stop/revoke
+orders, maximum checkpoint/seal history, unknown crash tails, and final outcome
+overlap. Combined actual-host tests must prove termination/proof completion
+while recording HTTP remains blocked, then reopen the ledger with a new Runner
+and replay only original pending requests without claim or process creation.
 
 ## 7. Wrong vs Correct
 

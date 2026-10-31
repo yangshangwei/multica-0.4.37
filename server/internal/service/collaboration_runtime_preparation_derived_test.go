@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"reflect"
 	"strconv"
@@ -10,6 +11,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/collaboration"
+	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
@@ -24,6 +26,7 @@ func TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyR
 	healthy := preparationIndependentIssue(t, f)
 	claimedHealthy := false
 	refused := map[string]bool{}
+	refusalCount := 0
 	for range 4 {
 		list, err := f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID)
 		if err != nil || len(list.RunIDs) != 1 {
@@ -46,9 +49,14 @@ func TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyR
 			t.Fatalf("unexpected candidate/refusal while recovering preparation: %s %v", run.StepKind.String, err)
 		}
 		refused[run.StepKind.String] = true
+		refusalCount++
 	}
 	if !claimedHealthy || !refused["member"] || !refused["continuation"] {
 		t.Fatalf("unclaimed derived preparation kept the pending-derived fence forever: healthy=%v refused=%v", claimedHealthy, refused)
+	}
+	if refusalCount != 2 || f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE group_id=$1 AND step_kind='continuation'`, parentBefore.GroupID) != 1 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_run_event e JOIN collaboration_run r ON r.id=e.run_id WHERE r.group_id=$1 AND e.kind='wakeup_assigned' AND e.payload->>'source_kind'='proof' AND e.payload->>'source_run_id'=$2`, parentBefore.GroupID, util.UUIDToString(members[0])) != 1 {
+		t.Fatal("preparation convergence duplicated a continuation/refusal or lost its retained proof cause")
 	}
 	pending, err := f.svc.Queries.HasCollaborationRuntimePendingDerivedRun(f.ctx, db.HasCollaborationRuntimePendingDerivedRunParams{RuntimeID: f.runtime.ID, BindingID: f.binding.ID})
 	if err != nil || pending {
@@ -217,6 +225,13 @@ func TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaime
 	if joined.Code != "command_joined_squad" {
 		t.Fatal("fixture did not queue an unread M11 continuation")
 	}
+	continuation, err := f.svc.Queries.GetCollaborationQueuedContinuation(f.ctx, before.GroupID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_run_event WHERE run_id=$1 AND kind='wakeup_assigned' AND payload->>'source_id'=$2`, continuation.ID, util.UUIDToString(joined.CommandID)) != 1 {
+		t.Fatal("joined input did not retain its pre-claim wake cause")
+	}
 	preparationDeliveredFile(t, f)
 	healthy := preparationIndependentIssue(t, f)
 	claimedHealthy := false
@@ -237,6 +252,10 @@ func TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaime
 	if !claimedHealthy {
 		t.Fatal("an unread pre-claim continuation stranded the reserved unsupported root")
 	}
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_run_event WHERE run_id=$1 AND kind='wakeup_assigned' AND payload->>'source_id'=$2`, continuation.ID, util.UUIDToString(joined.CommandID)) != 1 ||
+		f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE group_id=$1 AND step_kind='continuation'`, before.GroupID) != 1 {
+		t.Fatal("nonlaunch reconciliation erased its wake cause or created another continuation")
+	}
 	after, err := f.svc.Queries.GetCollaborationRuntimeRun(f.ctx, root)
 	if err != nil || after.ProofState != "never_launched_proven" || after.AuthorizedAttemptSeq != 0 || after.BusinessOutcome.Valid ||
 		after.LaunchNonce != before.LaunchNonce || after.Fence != before.Fence || after.ClaimGeneration != before.ClaimGeneration {
@@ -249,5 +268,46 @@ func TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaime
 		if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='waiting' AND group_id IS NULL AND seq=$2`, input.id, input.seq) != 1 {
 			t.Fatal("root/unread input was lost, reordered or falsely executed")
 		}
+	}
+}
+
+func TestCollaborationRuntimePreparationWakeMetadataKeepsOtherEvidenceBarriers(t *testing.T) {
+	for _, kind := range []string{"unknown_private", "outcome", "comment", "record_checkpoint", "handoff_binding"} {
+		t.Run(kind, func(t *testing.T) {
+			f, _ := newManagedSquadFixture(t)
+			f.submitManaged(t, f.creator, "unclaimed root")
+			f.resumeManaged(t)
+			list, err := f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID)
+			if err != nil || len(list.RunIDs) != 1 {
+				t.Fatalf("reserved root: %+v: %v", list, err)
+			}
+			root := util.MustParseUUID(list.RunIDs[0])
+			run, err := f.svc.Queries.GetCollaborationRuntimeRun(f.ctx, root)
+			if err != nil {
+				t.Fatal(err)
+			}
+			f.submitManaged(t, f.handler, "unread join")
+			continuation, err := f.svc.Queries.GetCollaborationQueuedContinuation(f.ctx, run.GroupID)
+			if err != nil {
+				t.Fatal(err)
+			}
+			evidence, err := f.svc.Queries.CollaborationRunHasPreparationStartEvidence(f.ctx, continuation.ID)
+			if err != nil || evidence {
+				t.Fatalf("server-only pre-claim wake metadata became launch evidence: %v", err)
+			}
+			f.fx.Insert(t, "collaboration_run_event", testutil.Cols{"issue_id": f.issue.Issue.ID, "run_id": continuation.ID, "producer_event_id": "uncertain-execution", "seq": 99, "kind": kind, "payload": json.RawMessage(`{"private":"unknown execution evidence"}`)})
+			evidence, err = f.svc.Queries.CollaborationRunHasPreparationStartEvidence(f.ctx, continuation.ID)
+			if err != nil || !evidence {
+				t.Fatalf("non-wakeup event lost its conservative execution barrier: %v", err)
+			}
+			preparationDeliveredFile(t, f)
+			before := controlStateSnapshot(t, f.collaborationQueueFixture)
+			if _, err := f.svc.ClaimRuntimeRun(f.daemonCtx, root, f.managedClaimRequest()); !collaborationErrorCode(err, "runtime_preparation_unsupported") {
+				t.Fatalf("unexpected claim result: %v", err)
+			}
+			if after := controlStateSnapshot(t, f.collaborationQueueFixture); before != after {
+				t.Fatal("unknown/display evidence permitted nonlaunch settlement")
+			}
+		})
 	}
 }

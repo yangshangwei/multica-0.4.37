@@ -98,8 +98,9 @@ type CollaborationRunRecordItem struct {
 }
 
 type CollaborationRunRecording struct {
-	Status         string `json:"status"`
-	InputsRecorded bool   `json:"inputs_recorded"`
+	Status         string                                    `json:"status"`
+	InputsRecorded bool                                      `json:"inputs_recorded"`
+	Retention      *protocol.CollaborationRecordingRetention `json:"retention,omitempty"`
 }
 
 type CollaborationRunRecordsPage struct {
@@ -259,6 +260,14 @@ func (s *CollaborationService) RunRecords(ctx context.Context, issueID, runID pg
 		if err != nil {
 			return err
 		}
+		recording, err := readCollaborationRecording(ctx, q, issueID, runID, through)
+		if err != nil {
+			return err
+		}
+		out.Recording.Retention = recording.retention()
+		if out.Recording.Retention != nil {
+			out.Recording.Status = "partial"
+		}
 		metadata, err := q.GetCollaborationRunRecordMetadata(ctx, db.GetCollaborationRunRecordMetadataParams{IssueID: issueID, RunID: runID})
 		if err != nil {
 			return err
@@ -299,6 +308,9 @@ func (s *CollaborationService) RunRecords(ctx context.Context, issueID, runID pg
 					}
 				}
 			}
+		}
+		if recording.seal != nil && (recording.seal.Reason != "completed" || recording.seal.ObservedThrough == nil || *recording.seal.ObservedThrough > len(recording.messages)) {
+			out.Recording.Status = "partial"
 		}
 		pageBytes := 0
 		appendItem := func(item CollaborationRunRecordItem) bool {
@@ -363,7 +375,7 @@ func (s *CollaborationService) RunRecords(ctx context.Context, issueID, runID pg
 				return invalidQuery
 			}
 			cursor.EventSeq = strconv.FormatInt(event.Seq, 10)
-			items, err := collaborationRecordEventItems(event)
+			items, err := collaborationRecordEventItemsWithPrefix(event, recording.checkpointThrough)
 			if err != nil {
 				return err
 			}
@@ -389,6 +401,10 @@ func (s *CollaborationService) RunRecords(ctx context.Context, issueID, runID pg
 }
 
 func collaborationRecordEventItems(event db.CollaborationRunEvent) ([]CollaborationRunRecordItem, error) {
+	return collaborationRecordEventItemsWithPrefix(event, 0)
+}
+
+func collaborationRecordEventItemsWithPrefix(event db.CollaborationRunEvent, checkpointThrough int) ([]CollaborationRunRecordItem, error) {
 	items := []CollaborationRunRecordItem{}
 	invalid := invalidCollaborationLedger("run event record invalid")
 	switch event.Kind {
@@ -398,11 +414,27 @@ func collaborationRecordEventItems(event db.CollaborationRunEvent) ([]Collaborat
 			return nil, invalid
 		}
 		if saved.Record != nil {
-			for _, message := range saved.Record.Messages {
-				items = append(items, CollaborationRunRecordItem{Kind: message.Kind, Body: message.Body, Role: message.Role, CallID: message.CallID, Name: message.Name, IsError: message.IsError})
+			for offset, message := range saved.Record.Messages {
+				id := ""
+				if saved.Record.Version == 2 {
+					ordinal := saved.Record.MessageOffset + offset
+					if ordinal < checkpointThrough {
+						continue
+					}
+					id = fmt.Sprintf("record:%s:%d", saved.Record.StreamID, ordinal)
+				}
+				items = append(items, CollaborationRunRecordItem{ID: id, Kind: message.Kind, Body: message.Body, Role: message.Role, CallID: message.CallID, Name: message.Name, IsError: message.IsError})
 			}
 		}
 		items = append(items, CollaborationRunRecordItem{Kind: "result", Outcome: saved.Outcome, Body: saved.Body})
+	case "record_checkpoint":
+		var saved protocol.CollaborationRecordingCheckpoint
+		if decodeCollaborationPreparationJSON(event.Payload, &saved) != nil || protocol.ValidateCollaborationRecordingCheckpoint(saved) != nil || saved.Identity.RunID != util.UUIDToString(event.RunID) || saved.Identity.IssueID != util.UUIDToString(event.IssueID) {
+			return nil, invalid
+		}
+		for offset, message := range saved.Messages {
+			items = append(items, CollaborationRunRecordItem{ID: fmt.Sprintf("record:%s:%d", saved.StreamID, saved.MessageOffset+offset), Kind: message.Kind, Body: message.Body, Role: message.Role, CallID: message.CallID, Name: message.Name, IsError: message.IsError})
+		}
 	case "comment":
 		var saved struct {
 			Input struct {
@@ -427,7 +459,9 @@ func collaborationRecordEventItems(event db.CollaborationRunEvent) ([]Collaborat
 		return nil, invalid
 	}
 	for i := range items {
-		items[i].ID = fmt.Sprintf("event:%s:%d", util.UUIDToString(event.ID), i)
+		if items[i].ID == "" {
+			items[i].ID = fmt.Sprintf("event:%s:%d", util.UUIDToString(event.ID), i)
+		}
 	}
 	return items, nil
 }

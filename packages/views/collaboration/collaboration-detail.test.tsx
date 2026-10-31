@@ -9,7 +9,7 @@ import { ApiClient, setApiInstance } from "@multica/core/api";
 import { renderWithI18n } from "../test/i18n";
 import { CollaborationDetail } from "./collaboration-detail";
 
-const state = vi.hoisted(() => ({ comments: [] as { id: string; created_at: string }[], pending: true, children: undefined as CollaborationIssue["ordinary_children"] }));
+const state = vi.hoisted(() => ({ comments: [] as { id: string; created_at: string }[], total: undefined as number | undefined, pending: true, children: undefined as CollaborationIssue["ordinary_children"] }));
 const navigation = vi.hoisted(() => ({ push: vi.fn(), prefetch: vi.fn(), isScopeResume: false, navigationKey: 0, getShareableUrl: (path: string) => `https://detail.example${path}` }));
 const restoreScroll = vi.hoisted(() => vi.fn());
 const client = new QueryClient();
@@ -19,7 +19,7 @@ vi.mock("../navigation/context", () => ({ useNavigation: () => navigation }));
 vi.mock("@tanstack/react-query", async (original) => ({ ...await original<typeof import("@tanstack/react-query")>(),
   useQueryClient: () => client,
   useQuery: () => ({ data: undefined }),
-  useInfiniteQuery: () => ({ data: { pages: [{ items: state.comments }] }, isPending: state.pending, isSuccess: !state.pending }),
+  useInfiniteQuery: () => ({ data: { pages: [{ items: state.comments, total: state.total }] }, isPending: state.pending, isSuccess: !state.pending }),
 }));
 vi.mock("../platform", () => ({ useRestoredScrollRef: () => restoreScroll }));
 vi.mock("../rich-content", () => ({ RichContent: () => null }));
@@ -39,7 +39,20 @@ vi.mock("./comment-composer", () => ({ CollaborationCommentComposer: function Co
   const [value, setValue] = useState("");
   return <form data-testid="comment-composer"><textarea aria-label="Composer draft" value={value} onChange={(event) => setValue(event.target.value)} /></form>;
 } }));
-afterEach(() => { client.clear(); state.comments = []; state.pending = true; state.children = undefined; navigation.push.mockClear(); navigation.prefetch.mockClear(); navigation.isScopeResume = false; navigation.navigationKey = 0; restoreScroll.mockReset(); vi.restoreAllMocks(); });
+afterEach(() => { client.clear(); state.comments = []; state.total = undefined; state.pending = true; state.children = undefined; navigation.push.mockClear(); navigation.prefetch.mockClear(); navigation.isScopeResume = false; navigation.navigationKey = 0; restoreScroll.mockReset(); vi.restoreAllMocks(); });
+
+it("shows the loaded range and keeps an older server's unknown total explicit", () => {
+  setApiInstance(new ApiClient("https://detail.example"));
+  state.pending = false;
+  state.total = 5;
+  state.comments = [{ id: "00000000-0000-4000-8000-000000000009", created_at: "2026-10-31T00:00:00Z" }];
+  const view = () => <CollaborationDetail scope={collaborationScope(issue.creator.user_id)} destination={{ view: "participating", issueId: issue.id, commentId: null }} />;
+  const mounted = renderWithI18n(view());
+  expect(screen.getByText("Loaded 1 of 5 comments")).toBeInTheDocument();
+  state.total = undefined;
+  mounted.rerender(view());
+  expect(screen.getByText("Comment count is unavailable on this server.")).toBeInTheDocument();
+});
 
 it("restores an anchored detail on scope resume and refocuses repeated explicit opens", () => {
   setApiInstance(new ApiClient("https://detail.example"));

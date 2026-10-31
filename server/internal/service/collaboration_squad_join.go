@@ -109,10 +109,14 @@ func (t *collaborationQueueTx) tryJoinSquad(ctx context.Context, command db.Coll
 	if err = t.freezeGroupDependencies(ctx, group.ID, []db.CollaborationCommand{command}); err != nil {
 		return false, err
 	}
-	if _, err = r.queueContinuation(ctx, parent.ID); err != nil {
+	continuation, err := r.queueContinuation(ctx, parent.ID)
+	if err != nil {
 		return false, err
 	}
 	if _, err = t.q.JoinCollaborationUnreadInput(ctx, db.JoinCollaborationUnreadInputParams{GroupID: group.ID, BatchID: group.BatchID, CommandID: command.ID}); err != nil {
+		return false, err
+	}
+	if err = r.recordAssignedWakeCause(ctx, continuation, "input", command.ID); err != nil {
 		return false, err
 	}
 	return true, t.q.CloseEmptyCollaborationBatches(ctx, t.session.ID)

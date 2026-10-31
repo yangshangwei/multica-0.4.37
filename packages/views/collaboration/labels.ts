@@ -3,6 +3,16 @@ import { useT } from "../i18n";
 export function useCollaborationLabels() {
   const { t } = useT("collaboration");
   return {
+    commentAuthorRole: (role: string) => {
+      switch (role) {
+        case "creator": return t(($) => $.detail.creator);
+        case "handler": return t(($) => $.detail.handler);
+        case "participant": return t(($) => $.recall.participant);
+        case "source_member": return t(($) => $.recall.sourceMember);
+        case "agent": return t(($) => $.execution.agent);
+        default: return t(($) => $.recall.roleUnknown);
+      }
+    },
     proof: (state: string, mode?: string, disposition?: string | null) => {
       switch (state) {
         case "unknown": return mode === "host_process_supervision_v1" ? t(($) => $.host.unknown) : t(($) => $.execution.proofPending);

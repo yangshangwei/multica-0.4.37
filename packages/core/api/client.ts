@@ -2,6 +2,7 @@ import { parseIteration, IterationCapabilitiesSchema, IterationSettingsSchema, I
 import { z } from "zod";
 import { parseCollaborationActivity } from "../collaboration/activity-schema";
 import { parseCollaborationRunRecords } from "../collaboration/run-records-schema";
+import { COLLABORATION_HANDOFF_MAX_JSON_BYTES, parseCollaborationRunHandoff } from "../collaboration/run-handoff-schema";
 import { parseCollaborationMemory, parseCollaborationMemoryReceipt, parseCollaborationMemoryVersion, parseCollaborationMemoryVersions,
   type CollaborationMemoryActionName, type CollaborationMemoryReceipt } from "../collaboration/memory-schema";
 import { positiveVersion } from "../collaboration/version";
@@ -935,12 +936,17 @@ export class ApiClient {
     }
   }
 
-  private async fetchCollaboration(path: string, options?: RequestInit, expectedStatus?: number): Promise<unknown> {
+  private async fetchCollaboration(path: string, options?: RequestInit, expectedStatus?: number, maxJSONBytes?: number): Promise<unknown> {
     const scope = this.getSessionScope();
     const authEpoch = this.authEpoch;
     try {
       let data: unknown;
-      if (expectedStatus === undefined) data = await this.fetchCollaborationVersionedRead(path, options, (candidate) => this.fetch<unknown>(candidate, options));
+      if (maxJSONBytes !== undefined) data = await this.fetchCollaborationVersionedRead(path, options, async (candidate) => {
+        const response = await this.fetchRaw(candidate, { ...options, extraHeaders: { "Content-Type": "application/json" } });
+        const bytes = await response.arrayBuffer();
+        return bytes.byteLength <= maxJSONBytes ? JSON.parse(new TextDecoder().decode(bytes)) : undefined;
+      });
+      else if (expectedStatus === undefined) data = await this.fetchCollaborationVersionedRead(path, options, (candidate) => this.fetch<unknown>(candidate, options));
       else {
         const response = await this.fetchRaw(path, { ...options, extraHeaders: { "Content-Type": "application/json" } });
         data = response.status === expectedStatus ? await response.json() : undefined;
@@ -962,8 +968,8 @@ export class ApiClient {
     }
   }
 
-  private async fetchCollaborationOptionalHistory(path: string, options?: RequestInit): Promise<unknown> {
-    try { return await this.fetchCollaboration(path, options); }
+  private async fetchCollaborationOptionalHistory(path: string, options?: RequestInit, maxJSONBytes?: number): Promise<unknown> {
+    try { return await this.fetchCollaboration(path, options, undefined, maxJSONBytes); }
     catch (error) {
       // Older servers may have no history route. Only the object's structured
       // not_found response establishes access loss; an absent route is unavailable.
@@ -1180,11 +1186,13 @@ export class ApiClient {
     return parseCollaborationWorkbench(raw);
   }
 
-  async getCollaborationComments(id: string, params: { cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {
+  async getCollaborationComments(id: string, params: { cursor?: string; limit?: number; maxBytes?: number } = {}, options?: { signal?: AbortSignal }) {
     const query = new URLSearchParams({ limit: String(params.limit ?? 100) });
     if (params.cursor) query.set("cursor", params.cursor);
+    if (params.maxBytes !== undefined) query.set("max_bytes", String(params.maxBytes));
     const result = parseCollaborationComments(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/comments?${query}`, { signal: options?.signal }));
-    return result && sameResourceIdentity(result.issue_id, id) ? result : null;
+    return result && sameResourceIdentity(result.issue_id, id) && (result.protocol_version === undefined ||
+      result.max_bytes === params.maxBytes && result.returned! <= (params.limit ?? 100) && result.next_cursor !== params.cursor) ? result : null;
   }
 
   async getCollaborationActivity(id: string, params: { cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {
@@ -1208,6 +1216,16 @@ export class ApiClient {
     ));
     return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.run.id, runId) &&
       result.items.length <= limit && result.next_cursor !== params.cursor ? result : null;
+  }
+
+  async getCollaborationRunHandoff(id: string, runId: string, options?: { signal?: AbortSignal }) {
+    if (![id, runId].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid collaboration handoff query");
+    const result = parseCollaborationRunHandoff(await this.fetchCollaborationOptionalHistory(
+      collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/runs/${encodeURIComponent(runId)}/handoff`),
+      { signal: options?.signal, cache: "no-store" },
+      COLLABORATION_HANDOFF_MAX_JSON_BYTES,
+    ));
+    return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.run_id, runId) ? result : null;
   }
 
   async getCollaborationCommandHistory(id: string, params: { cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {

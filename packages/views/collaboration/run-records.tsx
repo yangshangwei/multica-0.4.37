@@ -14,6 +14,7 @@ import { CollaborationCommentAttachments } from "./attachment-panel";
 import { useCollaborationLabels } from "./labels";
 import { CollaborationQueryState } from "./query-state";
 import { CollaborationPreparationSummary } from "./preparation-summary";
+import { CollaborationRunHandoff } from "./run-handoff";
 
 export function CollaborationRunDisclosure({ scope, issue, run, group, selectedRunId }: {
   scope: CollaborationScope; issue: CollaborationIssue; run: CollaborationExecutionRun;
@@ -54,11 +55,13 @@ export function CollaborationRunDisclosure({ scope, issue, run, group, selectedR
       </Button>
     </div>
     {run.execution_mode === "host_process_supervision_v1" && <p className="text-caption text-muted-foreground"><RunCleanup run={run} /></p>}
-    {open && <RunRecords key={`${scope.apiScope}:${scope.userId}:${issueId}:${run.id}`} scope={scope} issueId={issueId} runId={run.id} group={group} />}
+    {open && <RunRecords key={`${scope.apiScope}:${scope.userId}:${issueId}:${run.id}`} scope={scope} issueId={issueId} runId={run.id} group={group} handler={issue.handler} />}
   </li>;
 }
 
-function RunRecords({ scope, issueId, runId, group }: { scope: CollaborationScope; issueId: string; runId: string; group: CollaborationExecutionGroup }) {
+function RunRecords({ scope, issueId, runId, group, handler }: {
+  scope: CollaborationScope; issueId: string; runId: string; group: CollaborationExecutionGroup; handler: CollaborationIssue["handler"];
+}) {
   const { t } = useT("collaboration");
   const labels = useCollaborationLabels();
   const client = useQueryClient();
@@ -87,9 +90,15 @@ function RunRecords({ scope, issueId, runId, group }: { scope: CollaborationScop
       </dl>
       {run.launch_count !== undefined && <p className="text-caption text-muted-foreground">{t(($) => $.host.launches, { launches: run.launch_count })}</p>}
       {!page.recording.inputs_recorded && <p className="text-caption text-muted-foreground">{t(($) => $.records.inputsMissing)}</p>}
+      <p className="text-caption text-muted-foreground">{page.recording.retention
+        ? page.recording.retention.observed_through === null
+          ? t(($) => $.recall.retainedUnknown, { retained: page.recording.retention.retained_through })
+          : t(($) => $.recall.retainedKnown, { retained: page.recording.retention.retained_through, observed: page.recording.retention.observed_through })
+        : t(($) => $.recall.retentionUnavailable)}</p>
       <AppLink href={accountPath({ view: "participating", issueId, runId })} className="inline-flex min-h-11 items-center text-caption underline underline-offset-4">{t(($) => $.records.permalink)}</AppLink>
       <RecordedResource page={page} groupId={group.id} />
       <CollaborationPreparationSummary preparation={page.preparation} />
+      <CollaborationRunHandoff scope={scope} issueId={issueId} runId={runId} handler={handler} />
       <RecordedUsage usage={page.usage} />
       {items.length === 0 && <p className="text-body text-muted-foreground">{t(($) => $.records.empty)}</p>}
       <ol className="space-y-6">{items.map((item) => <RecordedEntry key={item.id} item={item} scope={scope} issueId={issueId} />)}</ol>

@@ -61,6 +61,27 @@ function recordedPage() {
   };
 }
 
+function stubRecordedReads(...responses: Response[]) {
+  const records = vi.fn((_url: string) => Promise.resolve(responses.shift()!));
+  const fetch = vi.fn((url: string) => {
+    const path = new URL(url).pathname;
+    if (path.endsWith("/records")) return records(url);
+    // Handoff has an independent response queue; its boundary/error matrix is
+    // covered in core/run-handoff-queries and the handoff component suite.
+    if (path.endsWith("/handoff")) {
+      const empty = { total: 0, returned: 0, truncated: false, items: [] };
+      return Promise.resolve(new Response(JSON.stringify({ protocol_version: 1, issue_id: id, run_id: path.split("/").at(-2), mode: "live", event_seq: "1",
+        authority: { status: "in_progress", handler_id: id }, assignment: { role: "agent", step_key: "agent" }, handoff: null, information_request: null,
+        memory: { version: "0", availability: "absent" }, inputs: empty, results: empty,
+        wakeup_causes: { ...empty, completeness: "unknown" }, sources: [], missing: [] })));
+    }
+    if (path === `/api/collaboration/issues/${id}`) return Promise.resolve(new Response(JSON.stringify(collaborationExecutionIssueFixture)));
+    throw new Error(`Unexpected read: ${path}`);
+  });
+  vi.stubGlobal("fetch", fetch);
+  return { fetch, records };
+}
+
 // Core owns record parsing, access epochs and page-cursor matrices. These tests
 // exercise lazy disclosure, exact displayed telemetry and user-driven recovery.
 it("opens recorded content lazily, retains the group context and retries the next page without losing the first", async () => {
@@ -70,10 +91,8 @@ it("opens recorded content lazily, retains the group context and retries the nex
     { id: "activity:one", kind: "squad_activity", outcome: "no_action", body: "Recorded squad activity" },
     { id: "result:one", kind: "result", outcome: "success", body: "Recorded final result" },
   ] };
-  const fetch = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify(first)))
-    .mockResolvedValueOnce(new Response(JSON.stringify({ error: "temporarily unavailable" }), { status: 503 }))
-    .mockResolvedValueOnce(new Response(JSON.stringify(second)));
-  vi.stubGlobal("fetch", fetch);
+  const { fetch, records: recordRequests } = stubRecordedReads(new Response(JSON.stringify(first)),
+    new Response(JSON.stringify({ error: "temporarily unavailable" }), { status: 503 }), new Response(JSON.stringify(second)));
   mount();
   expect(fetch).not.toHaveBeenCalled();
   await userEvent.click(screen.getByRole("button", { name: `View records for ${first.run.id}` }));
@@ -94,8 +113,8 @@ it("opens recorded content lazily, retains the group context and retries the nex
   expect(within(records).getAllByText("Frozen question")).toHaveLength(1);
   expect(within(records).queryByRole("button", { name: "Load more records" })).not.toBeInTheDocument();
   expect(within(records).getByRole("link", { name: "Open comment" })).toHaveAttribute("href", `/account?view=participating&issue=${id}#comment-${id}`);
-  expect(fetch.mock.calls[1]?.[0]).toContain("cursor=records-page-two");
-  expect(fetch.mock.calls[2]?.[0]).toContain("cursor=records-page-two");
+  expect(recordRequests.mock.calls[1]?.[0]).toContain("cursor=records-page-two");
+  expect(recordRequests.mock.calls[2]?.[0]).toContain("cursor=records-page-two");
 });
 
 it("opens a linked run with a legacy result while showing missing input, recording and usage explicitly", async () => {
@@ -115,8 +134,8 @@ it("opens a linked run with a legacy result while showing missing input, recordi
 
 it("removes the open transcript when a later page confirms access loss", async () => {
   const page = recordedPage();
-  vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce(new Response(JSON.stringify(page)))
-    .mockResolvedValueOnce(new Response(JSON.stringify({ code: "not_found", error: "Not found" }), { status: 404 })));
+  stubRecordedReads(new Response(JSON.stringify(page)),
+    new Response(JSON.stringify({ code: "not_found", error: "Not found" }), { status: 404 }));
   mount(page.run.id);
   expect(await screen.findByText("Frozen question")).toBeInTheDocument();
   await userEvent.click(screen.getByRole("button", { name: "Load more records" }));

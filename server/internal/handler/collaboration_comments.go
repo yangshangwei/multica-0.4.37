@@ -73,6 +73,20 @@ func (h *Handler) ListCollaborationComments(w http.ResponseWriter, r *http.Reque
 	if !ok {
 		return
 	}
+	if r.URL.Query().Has("max_bytes") {
+		query, ok := collaborationCommentsRecallQuery(w, r)
+		if !ok {
+			return
+		}
+		svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+		page, err := svc.RecallComments(r.Context(), id, query)
+		if err != nil {
+			writeCollaborationError(w, err)
+			return
+		}
+		writeJSON(w, http.StatusOK, page)
+		return
+	}
 	limit, before, beforeID, ok := collaborationContentPagination(w, r, 100)
 	if !ok {
 		return

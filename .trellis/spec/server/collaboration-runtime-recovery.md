@@ -5,7 +5,7 @@
 ## 1. Scope / Trigger
 
 Apply when changing runtime polling, candidate pagination, retained proof
-recovery, runtime deletion, or their transaction boundaries. Listing work must
+recovery, host recording recovery, runtime deletion, or their transaction boundaries. Listing work must
 give an eligible successor an actual attempt when an earlier object keeps
 failing. Scanning does not establish permission, capacity, or a successful run.
 
@@ -22,6 +22,10 @@ failing. Scanning does not establish permission, capacity, or a successful run.
 - `Ledger.BeginProofRecovery()`, `ProofRecovery.Next()` and `Close()` coordinate
   a bounded round through `.collaboration-proof-recovery.cursor` and `.lock`
   in the shared installation ledger directory.
+- Host ledger version 2 retains original checkpoint payloads/tokens and a
+  metadata-only recording seal. `Runner.recoverHost` calls `recoverHostRecording`
+  and `sealHostRecording`; their POSTs use the original business and termination
+  credentials respectively, never the daemon's management credential.
 
 ## 3. Contracts
 
@@ -72,6 +76,45 @@ Runtime/workspace deletion removes matching scan rows in the existing atomic
 delete statement, under the runtime fence. Retained business runs, reservations
 and termination evidence keep their existing lifetime.
 
+For host version 2, a previously persisted `phaseProof` receives proof-ACK
+priority before telemetry. `phaseAcknowledged` may still retain checkpoint,
+outcome or seal recovery, but must never Claim, Permit, refresh handoff input,
+start a Provider, or submit the acknowledged proof again. Original Stop and
+launch-termination observations remain independent of recording success.
+
+Checkpoint replay and seal delivery share one total telemetry budget of at most
+one second, shortened to a quarter of the caller's remaining deadline. The
+outcome has its own at-most-ten-second budget, shortened to half the remaining
+caller deadline, so stalled recording cannot consume the outcome/proof window.
+The metadata-only seal is staged after the original Stop/termination/proof path,
+even when the exhausted telemetry budget leaves delivery pending. Never renew
+the telemetry budget for each checkpoint or seal retry. A failed report retains
+its original pending payload and cannot prevent the original proof attempt.
+
+An uncertain seal is replayed with identical identity, attempt, nonce, sequence,
+reason and bounds. After its ACK, a newly learned checkpoint watermark may
+require a same-reason sequence+1. Stage that advance only once every chunk has
+resolved, so successive bounded passes do not exhaust the 32-seal limit. The
+shared `ValidateCollaborationRecordingSealAdvance` enforces monotonic metadata;
+the new sequence may be delivered in the same pass if its budget remains.
+Never mutate an uncertain seal to reflect a newer ACK. The service derives
+retained content from committed events, independently of the sender's count.
+A persisted `Drained` marker is required to know the final observed bound;
+restarting with only a staged prefix leaves the tail unknown.
+
+`Client.RecordingSeal` decodes through the shared
+`CollaborationRecordingRetention.UnmarshalJSON` and its retention validator,
+then checks the response stream, reason and sealed state against the request.
+Both retention-bound fields must be present: `retained_through` is a bounded
+integer and `observed_through` is a bounded integer or explicit null. Missing
+fields, null retained counts, negative/out-of-range counts and observed counts
+below retained counts are `ErrProtocol` and cannot clear pending recovery.
+Do not embed the custom-unmarshaled DTO in a second raw-field wrapper: Go can
+promote its decoder and bypass the wrapper's fields. A `completed` sender
+observation requires a known observed bound but does not prove every observed
+message was retained; a known missing tail remains a valid, incomplete fact.
+Later facts may increase returned bounds on an identical old-seal ACK.
+
 ## 4. Validation & Error Matrix
 
 | Condition | Required result |
@@ -84,11 +127,18 @@ and termination evidence keep their existing lifetime.
 | First eight proofs fail or have peer-held run locks | Later proof still gets a turn after restart |
 | Corrupt ledger/cursor or failed cursor persistence | Fail closed; preserve capacity and launch barriers |
 | Proof ACK arrives after Stop | Settle original run only; explicit Resume remains required |
+| Recording upload remains unavailable or blocked | Bound reports, retain pending telemetry and complete original Stop/proof independently |
+| Fresh host Runner opens an acknowledged but telemetry-pending ledger | Replay original requests only; no new Claim, Permit, Provider or proof |
+| Seal ACK is lost while a checkpoint ACK becomes known | Confirm the identical old seal before staging a same-reason monotonic advance |
+| Missing or invalid retention bounds in a supported seal response | ErrProtocol; keep the original seal pending and accepted proof unchanged |
 
 ## 5. Good / Base / Bad Cases
 
 - Good: seventeen persistent Claim refusals are followed by a real eighteenth
   Claim/Permit, with reconstructed pollers between each one-item response.
+- Good: blocked recording HTTP remains unreleased while a test-owned Provider
+  process stops and its original proof is acknowledged; a fresh Runner later
+  confirms the original retained requests without starting another process.
 - Base: old clients keep consuming the original `run_ids` response; no metadata
   negotiation or ordinary-task fallback is necessary.
 - Bad: proving that all IDs eventually appear in pages while never checking
@@ -115,6 +165,18 @@ and termination evidence keep their existing lifetime.
 - `collaboration_recovery_test.go` / `collaborationrun/recovery_test.go`: nine
   proofs, real cross-process locks, lost ACK, shared deadline, all pre-burn
   phases, malformed files and unchanged authoritative identities/barriers.
+- `host_recording_recovery_test.go`: explicit Stop/proof before blocked-upload
+  release, bounded whole-backlog recovery and pending-proof priority, original
+  seal ACK before monotonic advancement, unknown unflushed tails, and malformed
+  receipts preserving the pending seal and accepted proof across a new Runner.
+- `host_handoff_checkpoint_lifecycle_test.go`: fresh on-disk Runner recovery
+  with unchanged checkpoint/attempt identity and no Claim, snapshot or start;
+  combined handoff/recording failure cannot block original termination proof.
+- `client_recording_ack_test.go`: HTTP receipt decoding and request binding,
+  zero/unknown/missing-tail facts and later original-seal ACK bounds. The full
+  retention matrix belongs to `collaboration_recording_retention_test.go` in
+  `pkg/protocol`. HTTP fakes do not establish real-provider or full-daemon-crash
+  acceptance.
 
 ## 7. Wrong vs Correct
 
@@ -124,3 +186,9 @@ only the first, or each retained proof creates its own detached timeout.
 Correct: persist one candidate opportunity per dispatch and keep one caller-bound
 deadline through the complete bounded proof round. Preserve every unconfirmed
 execution until its original termination protocol supplies proof.
+
+Wrong: wait for every recording chunk before proof, or rewrite an uncertain
+seal after learning another ACK.
+
+Correct: retain exact requests under one bounded telemetry budget, preserve
+proof priority, then advance acknowledged seal metadata after the original ACK.

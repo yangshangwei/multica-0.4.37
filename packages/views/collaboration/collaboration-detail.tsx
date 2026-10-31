@@ -99,6 +99,9 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
       {comments.error && <CollaborationQueryState error={comments.error} retry={() => void comments.refetch()} />}
       {linkedComment.error && <CollaborationQueryState error={linkedComment.error} retry={() => void linkedComment.refetch()} />}
       {comments.isSuccess && rows.length === 0 && <p className="text-body text-muted-foreground">{t(($) => $.detail.noComments)}</p>}
+      {comments.isSuccess && <p className="text-caption text-muted-foreground">{comments.data?.pages[0]?.total !== undefined
+        ? t(($) => $.recall.loaded, { loaded: new Set(comments.data.pages.flatMap((page) => page.items.map((item) => item.id))).size, total: comments.data.pages[0].total })
+        : t(($) => $.recall.coverageUnknown)}</p>}
       <CollaborationCommentList key={`comments:${issueId}`} scope={scope} issue={issue} comments={rows} onReply={setReplyTo} />
       {comments.hasNextPage && <Button variant="outline" className="pointer-coarse:min-h-11" disabled={comments.isFetchingNextPage} onClick={() => void comments.fetchNextPage()}>{t(($) => $.page.more)}</Button>}
       <CollaborationCommentComposer key={`composer:${issueId}`} scope={scope} issue={issue} replyTo={replyTo?.issue_id === issueId ? replyTo : null} onCancelReply={() => setReplyTo(null)} onSent={() => setReplyTo(null)} />

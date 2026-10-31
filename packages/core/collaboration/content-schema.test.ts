@@ -81,6 +81,24 @@ describe("trigger preview grouping", () => {
 });
 
 describe("private collaboration content boundaries", () => {
+  it("keeps legacy completeness unknown and validates budgeted placeholders without inventing admission", () => {
+    const legacy = { issue_id: id(3), items: [comment], next_cursor: null };
+    expect(parseCollaborationComments(legacy)?.total).toBeUndefined();
+    expect(parseCollaborationComments(legacy)?.items[0]?.author_authority).toBeUndefined();
+    const item = { ...comment, content: "", can_edit: false, trust: "data_only", content_state: "omitted", content_bytes: 9000,
+      author_authority: { role: "creator", can_submit_command: true, evaluated_at: timestamp },
+      content_ref: `/api/collaboration/issues/${id(3)}/comments/${id(2)}`, omission_reason: "byte_budget" };
+    const page = { ...legacy, protocol_version: 1, items: [item], total: 5, returned: 1, bytes: 1200, max_bytes: 4096, truncated: true, truncation_reasons: ["byte_budget"] };
+    expect(parseCollaborationComments(page)?.items[0]).toMatchObject({ trust: "data_only", author_authority: { can_submit_command: true } });
+    for (const patch of [{ total: undefined }, { returned: 0 }, { bytes: 4097 }, { max_bytes: undefined }, { truncated: false }, { protocol_version: 2 }]) {
+      expect(parseCollaborationComments({ ...page, ...patch })).toBeNull();
+    }
+    for (const patch of [{ can_edit: true }, { content: "clipped" }, { content_ref: "/another/issue" }, { trust: "instruction" },
+      { author_authority: { role: "creator", evaluated_at: timestamp } }]) {
+      expect(parseCollaborationComments({ ...page, items: [{ ...item, ...patch }] })).toBeNull();
+    }
+    expect(parseCollaborationComments({ ...legacy, items: [item] })).toBeNull();
+  });
   it("retains exact versions, checks each comment belongs to the envelope, and rejects missing capabilities", () => {
     const page = { issue_id: id(3), items: [comment], next_cursor: null };
     expect(parseCollaborationComments(page)?.items[0]?.comment_revision).toBe("9007199254740993");

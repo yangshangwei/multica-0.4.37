@@ -77,7 +77,7 @@ An unverifiable or rejected session pointer may lead to an explicitly recorded f
 
 Server-origin input authors are retained individually across batching. Agent owner, runtime/resource owner, initiating human and parent execution are distinct. A daemon identity authenticates delivery; it does not replace the human author. Provider text cannot mint or change those identities.
 
-The host prompt JSON carries `issue_id` first (fixtures locate it by that key), then `agent_id`, `agent_owner_user_id`, `resource_owner_user_id`, `role`, `step_key`, `parent_run_id`, `inputs`, `attachments` and the optional `git` and `memory`. A `member` run receives its group's root human inputs, so its prompt text also says that its task is the leader's delegation, shown as `dispatch_comment` in `multica issue get`, not the whole original request.
+The host prompt JSON carries `issue_id` first (fixtures locate it by that key), then `agent_id`, `agent_owner_user_id`, `resource_owner_user_id`, `role`, `step_key`, `parent_run_id`, `inputs`, `attachments` and the optional `git` and `memory`. Legacy member guidance can locate delegation as `dispatch_comment` through the CLI. Negotiated handoff additionally supplies the complete admitted delegation and versioned source material in actual startup input; it cannot depend on a discretionary comment read. See [startup handoff](./collaboration-startup-handoff.md) for its freeze/binding and material/wire limits.
 
 Only one managed execution may own a stable session/work-directory identity at a time. Reuse scheduling/environment locks and persist that ownership with the launch ledger; an OS lock released by a daemon crash does not settle an unknown logical owner. Two otherwise valid runs sharing a member/session identity must serialize. Do not hold a scarce machine slot while waiting in a way that prevents the current owner from finishing. Release ownership only after reliable managed termination.
 
@@ -92,6 +92,36 @@ Host claims (protocol 3 only) set `memory_version=1`. It is a claim-only declara
 After the launch permit and session wait, the runner calls `POST .../runs/{runId}/memory/base` with the business capability. The server freezes `memory_base_version` on the first call (`RuntimeMemoryBase`); later calls return that version (a purged base is replaced by the current version). The fresh-session retry calls it again and injects what it returns. The injected base reaches the Provider only as the prompt's `memory` field `{version, content}`. It is not written to the brief file, the local ledger or audit fields, and the prompt is not part of the run recording; the brief carries only fixed guidance and the `memory show`/`update` commands. Text an agent later reads with `memory show` is a tool result and is recorded like any other, redacted and bounded. `409 memory_unsupported` runs without `memory` and without the brief guidance. Any other final failure, including exhausted transport/5xx/408/429 retries, leaves the Provider unlaunched and settles the authorized launch as `not_started`; a fresh-session retry that cannot re-read its base never starts the fallback.
 
 Runtime `GET`/`PUT .../memory` use the runtime comment gate plus `memory_mode=supported`. AI writes are redacted with `redact.Text` before the byte limit, the `(run_id, request_id)` replay comparison and storage.
+
+The memory reanchor/fresh-retry behavior above remains the legacy path. With
+`handoff_version=1`, re-reading a purged or changed memory base must not silently
+remint the run's handoff snapshot: the original source/memory identity must
+match, or startup/fallback is refused with its original cleanup proof.
+
+### Negotiated checkpoint recovery
+
+Host claim may request `recording_version=1`; absent support retains the legacy
+outcome-only path. The recording stream and offsets are run-wide across
+Provider retries. The sender is bounded and asynchronous; it does not hold up
+the Provider message drain on HTTP. Persist the exact original checkpoint and
+seal request before uncertain transport, including its issued identity and
+nonce. Never regenerate a request key or body to repair a lost ACK.
+
+`recoverHost` must call the recording replay/seal helpers through normal and
+restart recovery, not only from isolated helper tests. An already sealed
+`phaseProof` receipt has priority. Otherwise retain original Stop/launch facts,
+share one short total telemetry budget across the entire backlog, and complete
+the original outcome/proof even when telemetry fails or its deadline expires.
+The current budget is at most one second, further bounded by the caller's
+deadline; it is not one second per chunk. Recording settlement cannot grant a
+new claim, snapshot, Provider process, command execution or business authority.
+
+Replay an unacknowledged original recording seal unchanged before producing a
+later monotonic seal. A persisted drain marker is required to know the final
+observed bound; a crash with only a staged prefix retains an unknown tail.
+Pending original data/seal facts survive reopening the ledger. A recording seal
+is content-free completeness metadata, distinct from the run's final proof and
+its reservation/capacity effect. See [recorded runs](./collaboration-records.md).
 
 ### Starts, retries and audit
 

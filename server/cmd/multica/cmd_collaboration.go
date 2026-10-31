@@ -7,13 +7,14 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/multica-ai/multica/server/internal/cli"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
 
 func collaborationCommandAllowed(operation string) bool {
 	switch operation {
-	case "issue get", "issue comment list", "issue comment add", "squad activity",
+	case "issue get", "issue comment list", "issue comment content", "issue comment add", "squad activity",
 		"collaboration memory show", "collaboration memory update":
 		return true
 	default:
@@ -38,6 +39,12 @@ func validateCollaborationCLI(run *cli.CollaborationContext, cmd *cobra.Command,
 		return errors.New("collaboration commands require the admitted issue UUID")
 	}
 	allowed := map[string]bool{"output": true, "debug": true}
+	if operation == "issue comment list" {
+		allowed["cursor"], allowed["limit"], allowed["max-bytes"] = true, true, true
+	}
+	if operation == "issue comment content" {
+		allowed["cursor"], allowed["revision"], allowed["max-bytes"] = true, true, true
+	}
 	if operation == "issue comment add" {
 		allowed["content"], allowed["content-stdin"], allowed["parent"], allowed["request-id"] = true, true, true, true
 	}
@@ -112,6 +119,34 @@ func runCollaborationCLI(cmd *cobra.Command, args []string, operation string) (b
 	ctx, cancel := cli.APIContext(cmd.Context())
 	defer cancel()
 	client := run.Client()
+	if operation == "issue comment content" {
+		if len(args) != 2 {
+			return true, errors.New("comment content requires the issue UUID and comment UUID")
+		}
+		revision, _ := cmd.Flags().GetString("revision")
+		cursor, _ := cmd.Flags().GetString("cursor")
+		maxBytes, _ := cmd.Flags().GetInt("max-bytes")
+		page, err := run.ReadCommentContent(ctx, client, args[1], revision, cursor, maxBytes)
+		if err != nil {
+			return true, err
+		}
+		return true, cli.PrintJSON(cmd.OutOrStdout(), page)
+	}
+	if operation == "issue comment list" && (cmd.Flags().Changed("cursor") || cmd.Flags().Changed("limit") || cmd.Flags().Changed("max-bytes")) {
+		limit, maxBytes := protocol.CollaborationRecallDefaultLimit, protocol.CollaborationRecallDefaultBytes
+		if cmd.Flags().Changed("limit") {
+			limit, _ = cmd.Flags().GetInt("limit")
+		}
+		if cmd.Flags().Changed("max-bytes") {
+			maxBytes, _ = cmd.Flags().GetInt("max-bytes")
+		}
+		cursor, _ := cmd.Flags().GetString("cursor")
+		page, err := run.ReadComments(ctx, client, limit, maxBytes, cursor)
+		if err != nil {
+			return true, err
+		}
+		return true, cli.PrintJSON(cmd.OutOrStdout(), page)
+	}
 	view, err := run.Read(ctx, client)
 	if err != nil {
 		return true, err

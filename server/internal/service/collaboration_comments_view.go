@@ -13,6 +13,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/collaboration"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 type CollaborationCommentsQuery struct {
@@ -28,6 +29,7 @@ type CollaborationCommentReaction struct {
 }
 
 type CollaborationCommentView struct {
+	protocol.CollaborationCommentContent
 	ID              pgtype.UUID                    `json:"id"`
 	IssueID         pgtype.UUID                    `json:"issue_id"`
 	AuthorType      string                         `json:"author_type"`
@@ -130,6 +132,10 @@ func collaborationCommentViews(ctx context.Context, q *db.Queries, access Collab
 	if err != nil {
 		return nil, err
 	}
+	authorities, err := collaborationCommentAuthorities(ctx, q, access, rows)
+	if err != nil {
+		return nil, err
+	}
 	attachmentRows, err := q.ListCollaborationCommentAttachmentReferences(ctx, db.ListCollaborationCommentAttachmentReferencesParams{IssueID: access.Issue.ID, CommentIds: ids})
 	if err != nil {
 		return nil, err
@@ -157,7 +163,7 @@ func collaborationCommentViews(ctx context.Context, q *db.Queries, access Collab
 	}
 	out := make([]CollaborationCommentView, 0, len(rows))
 	for _, row := range rows {
-		item := CollaborationCommentView{ID: row.ID, IssueID: row.IssueID, AuthorType: row.AuthorType, Content: row.Content,
+		item := CollaborationCommentView{CollaborationCommentContent: collaborationCommentContent(row, authorities), ID: row.ID, IssueID: row.IssueID, AuthorType: row.AuthorType, Content: row.Content,
 			Type: row.Type, ParentID: row.ParentID, CommentRevision: row.Revision, CreatedAt: row.CreatedAt.Time, UpdatedAt: row.UpdatedAt.Time,
 			DeletedAt: collaborationContentTime(row.DeletedAt), ResolvedAt: collaborationContentTime(row.ResolvedAt),
 			CanEdit:    access.Capabilities.Comment && row.AuthorType == "member" && row.AuthorID == viewer && row.Type == "comment" && !row.DeletedAt.Valid,

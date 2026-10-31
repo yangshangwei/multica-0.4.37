@@ -16,8 +16,10 @@ import { CollaborationCommentAttachments } from "./attachment-panel";
 import { CollaborationDiscussionActions } from "./discussion-actions";
 import { CollaborationQueryState } from "./query-state";
 import { recoverFocus } from "./focus";
+import { useCollaborationLabels } from "./labels";
 
-type CommentProps = { scope: CollaborationScope; issue: CollaborationIssue; comment: CollaborationComment; onReply: (comment: CollaborationComment) => void };
+type CommentProps = { scope: CollaborationScope; issue: CollaborationIssue; comment: CollaborationComment; onReply: (comment: CollaborationComment) => void;
+  onLoadContent?: () => void; contentLoading?: boolean; contentError?: unknown; contentStale?: boolean };
 type Editor = { action: "edit" | "delete"; revision: string; content: string; attachmentIds: string[] };
 
 export function CollaborationCommentList({ scope, issue, comments, onReply }: Omit<CommentProps, "comment"> & { comments: CollaborationComment[] }) {
@@ -40,15 +42,27 @@ export function CollaborationCommentList({ scope, issue, comments, onReply }: Om
 function CommentItem({ scope, issue, commentId, comment, onReply }: Omit<CommentProps, "comment"> & { commentId: string; comment?: CollaborationComment }) {
   const { t } = useT("collaboration");
   const client = useQueryClient();
-  const query = useQuery({ ...collaborationCommentOptions(client, scope, issue.id, commentId), enabled: comment === undefined });
-  const current = comment ?? query.data;
-  if (current) return <CommentCard scope={scope} issue={issue} comment={current} onReply={onReply} />;
+  const [requestedRevision, setRequestedRevision] = useState<string | null>(null);
+  const omitted = comment?.content_state === "omitted";
+  const query = useQuery({ ...collaborationCommentOptions(client, scope, issue.id, commentId),
+    enabled: comment === undefined || omitted && requestedRevision === comment.comment_revision });
+  const restored = omitted && requestedRevision === comment.comment_revision && query.data?.comment_revision === comment.comment_revision && query.data.content_state !== "omitted";
+  const current = restored ? query.data : comment ?? query.data;
+  if (current) return <CommentCard scope={scope} issue={issue} comment={current} onReply={onReply}
+    contentLoading={query.isFetching} contentError={requestedRevision ? query.error : undefined}
+    contentStale={omitted && requestedRevision === comment.comment_revision && !!query.data && query.data.comment_revision !== comment.comment_revision}
+    onLoadContent={() => {
+      setRequestedRevision(comment?.comment_revision ?? null);
+      void query.refetch();
+      if (query.data && query.data.comment_revision !== comment?.comment_revision) void client.invalidateQueries({ queryKey: [...collaborationKeys.issue(scope, issue.id), "comments"] });
+    }} />;
   if (query.isPending) return <li><p role="status" className="text-caption">{t(($) => $.page.loading)}</p></li>;
   return <li><CollaborationQueryState error={query.error} retry={() => void query.refetch()} /></li>;
 }
 
-function CommentCard({ scope, issue, comment, onReply }: CommentProps) {
+function CommentCard({ scope, issue, comment, onReply, onLoadContent, contentLoading, contentError, contentStale }: CommentProps) {
   const { t } = useT("collaboration");
+  const labels = useCollaborationLabels();
   const client = useQueryClient();
   const fieldId = useId();
   const drafts = useCollaborationPendingDrafts({ ...scope, issueId: issue.id });
@@ -72,7 +86,8 @@ function CommentCard({ scope, issue, comment, onReply }: CommentProps) {
       setEditor(null);
       if (parseCollaborationCommentChangeDraft(draft).action === "delete") recoverFocus(() => item.current); else returnFocus();
     } });
-  const canEdit = issue.capabilities.comment === true && comment.can_edit === true && comment.author_type === "member" && comment.type === "comment" && comment.author?.user_id === scope.userId && comment.deleted_at === null;
+  const omitted = comment.content_state === "omitted";
+  const canEdit = !omitted && issue.capabilities.comment === true && comment.can_edit === true && comment.author_type === "member" && comment.type === "comment" && comment.author?.user_id === scope.userId && comment.deleted_at === null;
   const locked = send.isPending || pending.length > 0 || drafts.error;
   const tooLong = editor?.action === "edit" && !collaborationCommentWithinByteLimit(editor.content);
   const stale = editor !== null && (editor.revision !== comment.comment_revision || (send.data !== undefined && send.data.status >= 400 && send.data.code !== "invalid_comment_request"));
@@ -93,12 +108,20 @@ function CommentCard({ scope, issue, comment, onReply }: CommentProps) {
       <Avatar className="size-6"><AvatarImage src={comment.author?.avatar_url || undefined} alt="" /><AvatarFallback>{author.slice(0, 1)}</AvatarFallback></Avatar>
       <span className="font-medium text-foreground [overflow-wrap:anywhere]">{author}</span>
       {comment.author?.external === true && <span>{t(($) => $.detail.external)}</span>}
+      {comment.author_authority && <span>{labels.commentAuthorRole(comment.author_authority.role)}</span>}
+      <span>{comment.author_authority ? comment.author_authority.can_submit_command === true
+        ? t(($) => $.recall.authorCanSubmit) : t(($) => $.recall.authorCannotSubmit) : t(($) => $.recall.authorUnknown)}</span>
       <time dateTime={comment.created_at}>{new Date(comment.created_at).toLocaleString()}</time>
       {comment.resolved_at !== null && <span>{comment.resolved_by ? t(($) => $.commentActions.resolvedBy, { name: comment.resolved_by.name }) : t(($) => $.detail.resolved)}</span>}
     </div>
     {comment.parent_id && <AppLink href={accountPath({ view: "participating", issueId: issue.id, commentId: comment.parent_id })} className="inline-block py-1 text-caption text-muted-foreground underline underline-offset-2 pointer-coarse:min-h-11">{t(($) => $.commentActions.parent)}</AppLink>}
-    {comment.deleted_at !== null ? <p className="text-body text-muted-foreground">{t(($) => $.detail.deleted)}</p> : <RichContent resourcePolicy="restricted" content={comment.content} />}
-    {comment.deleted_at === null && <CollaborationCommentAttachments scope={scope} issueId={issue.id} attachmentIds={comment.attachment_ids} />}
+    {comment.deleted_at !== null ? <p className="text-body text-muted-foreground">{t(($) => $.detail.deleted)}</p> : omitted
+      ? <div className="space-y-2"><p className="text-body text-muted-foreground">{t(($) => $.recall.omitted)}</p>
+        {contentStale && <p role="status" className="text-caption">{t(($) => $.recall.revisionChanged)}</p>}
+        {!!contentError && <CollaborationQueryState error={contentError} />}
+        <Button type="button" variant="outline" disabled={contentLoading} onClick={onLoadContent}>{contentLoading ? t(($) => $.page.loading) : contentStale ? t(($) => $.recall.refresh) : t(($) => $.recall.loadContent)}</Button>
+      </div> : <RichContent resourcePolicy="restricted" content={comment.content} />}
+    {comment.deleted_at === null && !omitted && <CollaborationCommentAttachments scope={scope} issueId={issue.id} attachmentIds={comment.attachment_ids} />}
     <div className="flex flex-wrap gap-2">
       {issue.capabilities.comment === true && <Button type="button" variant="ghost" size="sm" className="pointer-coarse:min-h-11" disabled={drafts.comments.length > 0 || drafts.error} onClick={() => onReply(comment)}>{t(($) => $.commentActions.reply)}</Button>}
       {canEdit && !editor && <><Button ref={editButton} type="button" variant="ghost" size="sm" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => begin("edit")}>{t(($) => $.commentActions.edit)}</Button>

@@ -75,27 +75,43 @@ function NavigationProviderInner({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const query = searchParams.toString();
+  const route = pathname + (query ? `?${query}` : "");
   const [intent, setIntent] = useState({ path: "", resume: false, key: 0 });
+  const navigateFragment = useCallback((path: string, method: "pushState" | "replaceState") => {
+    const current = new URL(window.location.href);
+    const target = new URL(path, current);
+    if (target.origin !== current.origin || target.pathname + target.search !== route ||
+      current.pathname + current.search !== route || (!target.hash && !current.hash)) return null;
+    // Next 16.2.6's seeded segment cache retains the initial fragment and
+    // appends the next one. Its supported History API keeps same-route hash
+    // changes out of that cache, while preserving Back/Forward and route state.
+    // The intent update also lets the hash store observe this history write.
+    const destination = target.pathname + target.search + target.hash;
+    if (target.href !== current.href) window.history[method](null, "", destination);
+    return destination;
+  }, [route]);
   const push = useCallback((path: string) => {
-    setIntent((previous) => ({ path, resume: false, key: previous.key + 1 }));
-    router.push(path);
-  }, [router]);
+    const fragment = navigateFragment(path, "pushState");
+    setIntent((previous) => ({ path: fragment ?? path, resume: false, key: previous.key + 1 }));
+    if (fragment === null) router.push(path);
+  }, [router, navigateFragment]);
   const replace = useCallback((path: string) => {
-    setIntent((previous) => ({ path, resume: false, key: previous.key + 1 }));
-    router.replace(path);
-  }, [router]);
+    const fragment = navigateFragment(path, "replaceState");
+    setIntent((previous) => ({ path: fragment ?? path, resume: false, key: previous.key + 1 }));
+    if (fragment === null) router.replace(path);
+  }, [router, navigateFragment]);
   const resume = useCallback((path: string) => {
-    setIntent((previous) => ({ path, resume: true, key: previous.key + 1 }));
-    router.push(path, { scroll: false });
-  }, [router]);
+    const fragment = navigateFragment(path, "pushState");
+    setIntent((previous) => ({ path: fragment ?? path, resume: true, key: previous.key + 1 }));
+    if (fragment === null) router.push(path, { scroll: false });
+  }, [router, navigateFragment]);
   const hash = useSyncExternalStore(
     subscribeToHash,
     () => window.location.hash,
     () => "",
   );
   useInternalLinkHandler(push);
-  const query = searchParams.toString();
-  const route = pathname + (query ? `?${query}` : "");
   const location = route + hash;
   const targetsRenderedRoute = intent.path.split("#")[0] === route;
   const [committedIntent, setCommittedIntent] = useState({ location, resume: false, key: 0 });

@@ -21,6 +21,32 @@ const comment = parseCollaborationComment({ id: commentId, issue_id: actor, auth
   comment_revision: "9007199254740993", attachment_ids: [], created_at: timestamp, updated_at: timestamp, deleted_at: null, resolved_at: null, resolved_by: null, can_edit: true, can_resolve: true, reactions: [{ emoji: "👍", count: 2, viewer_reacted: true }] })!;
 afterEach(() => { client.clear(); localStorage.clear(); vi.unstubAllGlobals(); });
 
+it("loads a placeholder through the human detail route before exposing editing", async () => {
+  setApiInstance(new ApiClient("https://comments.example"));
+  const fetch = vi.fn(async (url: string) => new Response(JSON.stringify(url.includes("attachments") ? { issue_id: actor, attachments: [] } : comment)));
+  vi.stubGlobal("fetch", fetch);
+  const placeholder = { ...comment, content: "", content_state: "omitted" as const, content_bytes: 10000, can_edit: false };
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentList scope={collaborationScope(actor)} issue={issue} comments={[placeholder]} onReply={vi.fn()} /></QueryClientProvider>);
+  expect(screen.queryByRole("button", { name: "Edit comment" })).toBeNull();
+  expect(fetch).not.toHaveBeenCalled();
+  await userEvent.click(screen.getByRole("button", { name: "Load full text" }));
+  expect(await screen.findByText("Original comment")).toBeInTheDocument();
+  expect(await screen.findByRole("button", { name: "Edit comment" })).toBeInTheDocument();
+  expect(fetch.mock.calls[0]?.[0]).toBe(`https://comments.example/api/collaboration/issues/${actor}/comments/${commentId}`);
+  expect(fetch.mock.calls.every(([url]) => !url.includes("/runtime/"))).toBe(true);
+});
+
+it("does not restore a different revision into a placeholder editor", async () => {
+  setApiInstance(new ApiClient("https://comments.example"));
+  vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ ...comment, comment_revision: "9007199254740994", content: "Changed elsewhere" }))));
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentList scope={collaborationScope(actor)} issue={issue}
+    comments={[{ ...comment, content: "", content_state: "omitted", content_bytes: 10000, can_edit: false }]} onReply={vi.fn()} /></QueryClientProvider>);
+  await userEvent.click(screen.getByRole("button", { name: "Load full text" }));
+  expect(await screen.findByText("This comment changed. Refresh the list before loading its latest text.")).toBeInTheDocument();
+  expect(screen.queryByText("Changed elsewhere")).toBeNull();
+  expect(screen.queryByRole("button", { name: "Edit comment" })).toBeNull();
+});
+
 // Permission and original-key/version matrices live in core/comment-actions.test.ts.
 it("moves focus into the delete confirmation and back to Edit when it is dismissed", async () => {
   setApiInstance(new ApiClient("https://comments.example"));

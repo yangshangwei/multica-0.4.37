@@ -94,7 +94,11 @@ func (c *Client) Claim(ctx context.Context, runID string, in protocol.Collaborat
 		in.PreparationVersion == 0 && in.BundleDigest != "" || in.PreparationVersion != 0 && !validDigest(in.BundleDigest) {
 		return out, ErrProtocol
 	}
-	if err := c.request(ctx, http.MethodPost, runPath(runID, "claim"), c.managedToken, in, &out); err != nil {
+	path := runPath(runID, "claim")
+	if host {
+		path += "?handoff_version=1&recording_version=1"
+	}
+	if err := c.request(ctx, http.MethodPost, path, c.managedToken, in, &out); err != nil {
 		return out, err
 	}
 	return out, validateClaimResponse(out, runID, in)
@@ -103,6 +107,10 @@ func (c *Client) Claim(ctx context.Context, runID string, in protocol.Collaborat
 // Retained claims pass the same validation before they can resume waiting for
 // their session. A private ledger file is not a substitute for input validation.
 func validateClaimResponse(out protocol.CollaborationRunClaimResponse, runID string, in protocol.CollaborationRunClaimRequest) error {
+	if out.HandoffVersion != 0 && out.HandoffVersion != protocol.CollaborationHandoffVersion ||
+		out.RecordingVersion != 0 && out.RecordingVersion != protocol.CollaborationCheckpointVersion {
+		return ErrProtocol
+	}
 	if validateIdentity(out.Identity) != nil || out.Identity.DeploymentID != in.DeploymentID || out.Identity.InstallationID != in.InstallationID || out.Identity.RunID != runID || out.TerminationToken == "" || !validUUID(out.AgentID) || !validUUID(out.ResourceOwnerID) || !validUUID(out.ExecutionWorkspaceID) || len(out.Inputs) == 0 || len(out.Inputs) > 1024 {
 		return ErrProtocol
 	}
@@ -114,7 +122,7 @@ func validateClaimResponse(out protocol.CollaborationRunClaimResponse, runID str
 			out.Preparation.Resource.AgentOwnerUserID != out.HostContext.AgentOwnerUserID {
 			return ErrProtocol
 		}
-	} else if out.ProtocolVersion != 0 || out.Containment != "" || out.HostContext != nil {
+	} else if out.ProtocolVersion != 0 || out.Containment != "" || out.HostContext != nil || out.HandoffVersion != 0 || out.RecordingVersion != 0 {
 		return ErrProtocol
 	}
 	seen := make(map[string]bool)

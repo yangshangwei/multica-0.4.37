@@ -8,6 +8,18 @@ import { collaborationRunRecordsFixture as fixture } from "./run-records-test-fi
 afterEach(() => setSchemaLogger(noopLogger));
 
 describe("source-recorded run pages", () => {
+  it("validates checkpoint stream ordinals and explicit retention without inventing an unknown tail", () => {
+    const stream = "00000000-0000-4000-8000-000000000009";
+    const retention = { version: 1, stream_id: stream, retained_through: 1, observed_through: null, sealed: false, reason: "incomplete" };
+    const page = { ...fixture, recording: { ...fixture.recording, retention }, items: [{ id: `record:${stream}:0`, kind: "message", role: "assistant", body: "checkpoint" }] };
+    expect(collaboration.parseCollaborationRunRecords(page)?.recording.retention).toEqual(retention);
+    for (const patch of [{ version: 2 }, { retained_through: -1 }, { observed_through: 0 }, { observed_through: 1 }, { reason: "unknown" }]) {
+      expect(collaboration.parseCollaborationRunRecords({ ...page, recording: { ...page.recording, retention: { ...retention, ...patch } } })).toBeNull();
+    }
+    for (const id of [`record:${stream}:1`, `record:${stream}:01`, `record:${stream}:256`, "record:invalid:0"]) {
+      expect(collaboration.parseCollaborationRunRecords({ ...page, items: [{ ...page.items[0], id }] })).toBeNull();
+    }
+  });
   it("retains the typed immutable input, process, result and exact recorded usage", () => {
     const parsed = collaboration.parseCollaborationRunRecords(fixture);
     expect(parsed).toEqual(fixture);

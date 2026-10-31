@@ -27,12 +27,15 @@ SELECT (
     EXISTS (SELECT 1 FROM collaboration_termination WHERE run_id = $1::uuid)
     OR EXISTS (SELECT 1 FROM collaboration_attempt WHERE run_id = $1::uuid)
     OR EXISTS (SELECT 1 FROM collaboration_business_capability WHERE run_id = $1::uuid)
-    OR EXISTS (SELECT 1 FROM collaboration_run_event WHERE run_id = $1::uuid)
+    OR EXISTS (SELECT 1 FROM collaboration_run_event
+               WHERE run_id = $1::uuid AND kind <> 'wakeup_assigned')
 )::boolean AS has_evidence
 `
 
 // An unknown/issued claim or attempt belongs to the original recovery path.
 // Never infer nonlaunch merely from the run's current progress label.
+// The server can assign wakeup provenance to a queued, unclaimed continuation.
+// That metadata is not execution evidence; every other event remains a barrier.
 func (q *Queries) CollaborationRunHasPreparationStartEvidence(ctx context.Context, runID pgtype.UUID) (bool, error) {
 	row := q.db.QueryRow(ctx, collaborationRunHasPreparationStartEvidence, runID)
 	var has_evidence bool

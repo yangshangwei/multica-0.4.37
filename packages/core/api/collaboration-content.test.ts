@@ -11,6 +11,17 @@ const response = (value: unknown) => new Response(JSON.stringify(value), { heade
 afterEach(() => { vi.unstubAllGlobals(); setCurrentWorkspace(null, null); });
 
 describe("collaboration content transport", () => {
+  it("sends an explicit budget and rejects a mismatching response while accepting old servers", async () => {
+    const page = { protocol_version: 1, issue_id: issueId, items: [], next_cursor: null, total: 0, returned: 0, bytes: 200, max_bytes: 4096, truncated: false, truncation_reasons: [] };
+    const fetchMock = vi.fn().mockResolvedValueOnce(response(page)).mockResolvedValueOnce(response({ ...page, max_bytes: 8192 }))
+      .mockResolvedValueOnce(response({ issue_id: issueId, items: [], next_cursor: null }));
+    vi.stubGlobal("fetch", fetchMock);
+    const api = new ApiClient("https://server.example");
+    expect(await api.getCollaborationComments(issueId, { limit: 50, maxBytes: 4096 })).toEqual(page);
+    expect(fetchMock.mock.calls[0]?.[0]).toContain("limit=50&max_bytes=4096");
+    expect(await api.getCollaborationComments(issueId, { limit: 50, maxBytes: 4096 })).toBeNull();
+    expect((await api.getCollaborationComments(issueId, { limit: 50, maxBytes: 4096 }))?.total).toBeUndefined();
+  });
   it("omits ambient workspace headers and rejects a valid page for another issue", async () => {
     setCurrentWorkspace("ambient", otherId);
     const fetchMock = vi.fn().mockResolvedValue(response({ issue_id: otherId, items: [], next_cursor: null }));

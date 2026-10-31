@@ -36,3 +36,31 @@ func (c *Client) LaunchTermination(ctx context.Context, in protocol.Collaboratio
 	return protocol.CollaborationLaunchTerminationReceipt{ProtocolVersion: raw.ProtocolVersion, Identity: raw.Identity, LaunchID: raw.LaunchID,
 		EventID: raw.EventID, Accepted: *raw.Accepted, Authorized: *raw.Authorized}, nil
 }
+
+func (c *Client) Checkpoint(ctx context.Context, in protocol.CollaborationRecordingCheckpoint, token string) (protocol.CollaborationCheckpointReceipt, error) {
+	var out protocol.CollaborationCheckpointReceipt
+	if protocol.ValidateCollaborationRecordingCheckpoint(in) != nil {
+		return out, ErrProtocol
+	}
+	if err := c.request(ctx, http.MethodPost, runPath(in.Identity.RunID, "checkpoints"), token, in, &out); err != nil {
+		return out, err
+	}
+	if out.Version != 1 || out.Identity != in.Identity || out.StreamID != in.StreamID || out.Sequence != in.Sequence || !out.Accepted || out.RetainedThrough != in.MessageOffset+len(in.Messages) {
+		return protocol.CollaborationCheckpointReceipt{}, ErrProtocol
+	}
+	return out, nil
+}
+
+func (c *Client) RecordingSeal(ctx context.Context, in protocol.CollaborationRecordingSeal, token string) (protocol.CollaborationRecordingRetention, error) {
+	var out protocol.CollaborationRecordingRetention
+	if protocol.ValidateCollaborationRecordingSeal(in) != nil {
+		return out, ErrProtocol
+	}
+	if err := c.request(ctx, http.MethodPost, runPath(in.Identity.RunID, "recording/seal"), token, in, &out); err != nil {
+		return out, err
+	}
+	if out.Version != 1 || out.StreamID != in.StreamID || !out.Sealed || out.RetainedThrough < 0 || out.RetainedThrough > protocol.CollaborationRecordItemLimit || out.Reason != in.Reason {
+		return protocol.CollaborationRecordingRetention{}, ErrProtocol
+	}
+	return out, nil
+}

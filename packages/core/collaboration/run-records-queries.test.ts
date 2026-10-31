@@ -18,6 +18,10 @@ const cleanups: (() => void)[] = [];
 afterEach(() => { cleanups.splice(0).reverse().forEach((dispose) => dispose()); auth.user.id = actorId; vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 const preparation = { version: 1, attachments: [], git: null, stages: [{ seq: "3", stage: "workspace", state: "prepared" }] };
+const retention: NonNullable<collaboration.CollaborationRunRecords["recording"]["retention"]> = {
+  version: 1, stream_id: "00000000-0000-4000-8000-0000000000aa", retained_through: 1,
+  observed_through: null, sealed: false, reason: "incomplete",
+};
 
 function setup() {
   const api = new ApiClient("https://server.example");
@@ -200,6 +204,61 @@ describe("protected recorded-run paging", () => {
     expect(observer.getCurrentResult().data?.pageParams).toEqual([undefined, "new-two"]);
     clearCollaborationAccess(f.client, f.scope, issueId);
     expect(observer.getCurrentResult().data).toBeUndefined();
+  });
+
+  it.each([
+    { condition: "changed stream", firstRetention: retention, secondRetention: { ...retention, stream_id: otherId } },
+    { condition: "advanced retained prefix", firstRetention: retention, secondRetention: { ...retention, retained_through: 2 } },
+    { condition: "changed observed range", firstRetention: { ...retention, sealed: true, observed_through: 1 }, secondRetention: { ...retention, sealed: true, observed_through: 2 } },
+    { condition: "new seal", firstRetention: retention, secondRetention: { ...retention, sealed: true } },
+    { condition: "changed reason", firstRetention: { ...retention, sealed: true, reason: "stopped" }, secondRetention: { ...retention, sealed: true, reason: "transport_error" } },
+    { condition: "missing retention", firstRetention: retention, secondRetention: undefined },
+    { condition: "introduced retention", firstRetention: undefined, secondRetention: retention },
+  ])("refuses $condition inside one recording page chain without replacing the lawful prefix", async ({ firstRetention, secondRetention }) => {
+    const f = setup();
+    const first = { ...fixture, recording: { status: "partial", inputs_recorded: true, retention: firstRetention },
+      items: [{ id: `record:${firstRetention?.stream_id ?? retention.stream_id}:0`, kind: "message", role: "assistant", body: "Retained message" }], next_cursor: "page-two" };
+    const second = { ...first, recording: { ...first.recording, retention: secondRetention },
+      items: [{ ...first.items[0], id: `record:${secondRetention?.stream_id ?? retention.stream_id}:0` }], next_cursor: null };
+    // Both responses independently satisfy the wire schema; only the assembled
+    // chain can reject their contradictory fixed-watermark recording facts.
+    expect(collaboration.parseCollaborationRunRecords(first)).not.toBeNull();
+    expect(collaboration.parseCollaborationRunRecords(second)).not.toBeNull();
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce(json(first)).mockResolvedValueOnce(json(second)));
+    await f.client.fetchInfiniteQuery(f.options);
+    const observer = new InfiniteQueryObserver(f.client, { ...f.options, enabled: false });
+    cleanups.push(observer.subscribe(() => {}));
+    await observer.fetchNextPage();
+    expect(observer.getCurrentResult().error).toMatchObject({ name: "CollaborationUnavailableError" });
+    expect(observer.getCurrentResult().data?.pages).toEqual([first]);
+    expect(f.client.getQueryData(f.issueKey)).toEqual(collaborationIssueFixture);
+    expect(collaborationIssueAccessDenied(f.client, f.scope, issueId)).toBe(false);
+    clearCollaborationAccess(f.client, f.scope, issueId);
+    expect(observer.getCurrentResult().data).toBeUndefined();
+  });
+
+  it("permits a coherent full refresh to advance recording retention and reveal a known missing tail", async () => {
+    const f = setup();
+    const first = { ...fixture, recording: { status: "partial", inputs_recorded: true, retention },
+      items: fixture.items.slice(0, 1), next_cursor: "old-two" };
+    const message = { id: `record:${retention.stream_id}:0`, kind: "message", role: "assistant", body: "Retained message" };
+    const second = { ...first, items: [message], next_cursor: null };
+    const advanced = { ...retention, retained_through: 2, observed_through: 3, sealed: true, reason: "recording_limit" };
+    const refreshed = { ...first, recording: { ...first.recording, retention: advanced }, items: [...first.items, message], next_cursor: "new-two" };
+    const final = { ...refreshed, items: [{ ...message, id: `record:${retention.stream_id}:1`, body: "Next retained message" }], next_cursor: null };
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce(json(first)).mockResolvedValueOnce(json(second))
+      .mockResolvedValueOnce(json(refreshed)).mockResolvedValueOnce(json(final)));
+    await f.client.fetchInfiniteQuery(f.options);
+    const observer = new InfiniteQueryObserver(f.client, { ...f.options, enabled: false });
+    cleanups.push(observer.subscribe(() => {}));
+    await observer.fetchNextPage();
+    expect(observer.getCurrentResult().error).toBeNull();
+    expect(observer.getCurrentResult().data?.pages).toEqual([first, second]);
+    await observer.refetch();
+    expect(observer.getCurrentResult().error).toBeNull();
+    expect(observer.getCurrentResult().data?.pages).toEqual([refreshed, final]);
+    expect(observer.getCurrentResult().data?.pageParams).toEqual([undefined, "new-two"]);
+    expect(observer.getCurrentResult().data?.pages.at(-1)?.recording.retention).toEqual(advanced);
   });
 
   it("revokes every loaded record page when access is lost during fetch-next-page", async () => {

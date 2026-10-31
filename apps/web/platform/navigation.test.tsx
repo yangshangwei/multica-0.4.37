@@ -7,7 +7,7 @@
  * answer it with a router push, or those links silently do nothing.
  */
 import { describe, expect, it, vi, afterEach, beforeEach } from "vitest";
-import { act, render } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 const router = vi.hoisted(() => ({
   push: vi.fn(),
@@ -24,7 +24,7 @@ vi.mock("next/navigation", () => ({
 }));
 
 import { WebNavigationProvider, useWebScopeResume } from "./navigation";
-import { useNavigation, type NavigationAdapter } from "@multica/views/navigation";
+import { AppLink, currentPath, useNavigation, type NavigationAdapter } from "@multica/views/navigation";
 
 function navigate(path: string) {
   window.dispatchEvent(
@@ -48,8 +48,76 @@ function renderAdapter(): () => NavigationAdapter {
 
 beforeEach(() => {
   router.push.mockReset();
+  router.replace.mockReset();
   route.pathname = "/acme/issues";
   route.query = "";
+});
+
+describe("Web account fragment navigation", () => {
+  const base = "/account?view=participating&issue=00000000-0000-4000-8000-000000000001";
+  const first = `${base}#run-00000000-0000-4000-8000-000000000002`;
+  const next = `${base}#run-00000000-0000-4000-8000-000000000003`;
+  afterEach(() => { vi.restoreAllMocks(); window.history.replaceState(null, "", "/"); });
+
+  function setup() {
+    window.history.replaceState(null, "", first);
+    route.pathname = "/account";
+    route.query = base.split("?")[1]!;
+    let adapter!: NavigationAdapter;
+    function Probe() {
+      adapter = useNavigation();
+      return <><AppLink href={next}>Open source run</AppLink><output>{currentPath(adapter)}</output></>;
+    }
+    render(<WebNavigationProvider><Probe /></WebNavigationProvider>);
+    return () => adapter;
+  }
+
+  it("opens a real source AppLink with one fragment and restores anchors on Back/Forward", async () => {
+    const adapter = setup();
+    const originalKey = adapter().navigationKey;
+    const push = vi.spyOn(window.history, "pushState");
+    // Next 16.2.6 seeds its route cache with the initial hash and appends the
+    // next hash. The platform must use the supported History API for this swap.
+    fireEvent.click(screen.getByRole("link", { name: "Open source run" }));
+    expect(push).toHaveBeenCalledExactlyOnceWith(null, "", next);
+    expect(router.push).not.toHaveBeenCalled();
+    expect(screen.getByRole("status")).toHaveTextContent(next);
+    expect(adapter().navigationKey).not.toBe(originalKey);
+    expect(adapter().isScopeResume).toBe(false);
+    const nextKey = adapter().navigationKey;
+    fireEvent.click(screen.getByRole("link", { name: "Open source run" }));
+    expect(push).toHaveBeenCalledTimes(1);
+    expect(adapter().navigationKey).not.toBe(nextKey);
+    act(() => window.history.back());
+    await waitFor(() => expect(currentPath(adapter())).toBe(first));
+    act(() => window.history.forward());
+    await waitFor(() => expect(currentPath(adapter())).toBe(next));
+  });
+
+  it("replaces or removes a fragment without adding history, retaining the selected issue and view", () => {
+    const adapter = setup();
+    const replace = vi.spyOn(window.history, "replaceState");
+    const push = vi.spyOn(window.history, "pushState");
+    act(() => adapter().replace(next));
+    expect(replace).toHaveBeenLastCalledWith(null, "", next);
+    expect(currentPath(adapter())).toBe(next);
+    act(() => adapter().replace(base));
+    expect(replace).toHaveBeenLastCalledWith(null, "", base);
+    expect(currentPath(adapter())).toBe(base);
+    expect(push).not.toHaveBeenCalled();
+    expect(router.replace).not.toHaveBeenCalled();
+  });
+
+  it("keeps path/query changes and another origin on the normal router path", () => {
+    const adapter = setup();
+    const push = vi.spyOn(window.history, "pushState");
+    for (const destination of ["/account?view=current", "/acme/issues#description", `https://other.example${next}`]) {
+      act(() => adapter().push(destination));
+      expect(router.push).toHaveBeenLastCalledWith(destination);
+    }
+    expect(push).not.toHaveBeenCalled();
+    expect(currentPath(adapter())).toBe(first);
+  });
 });
 
 describe("Web scope resume intent", () => {

@@ -192,11 +192,11 @@ func (s *CollaborationService) RuntimeContext(ctx context.Context, runID pgtype.
 			if d.RunID != runID {
 				continue
 			}
-			c, err := r.q.GetCollaborationComment(ctx, db.GetCollaborationCommentParams{IssueID: r.access.Issue.ID, WorkspaceID: r.access.Issue.WorkspaceID, CommentID: d.SourceCommentID})
+			body, _, err := immutableHandoffDelegation(ctx, r.q, r.access.Issue.ID, d)
 			if err != nil {
 				return out, err
 			}
-			out.DispatchComment = c.Content
+			out.DispatchComment = body
 		}
 		return out, nil
 	})
@@ -283,6 +283,9 @@ func (s *CollaborationService) CreateRuntimeComment(ctx context.Context, runID p
 			return empty, err
 		}
 		if _, err = r.q.CreateCollaborationBusinessEvent(ctx, db.CreateCollaborationBusinessEventParams{IssueID: r.access.Issue.ID, RunID: runID, EventID: eventID, Kind: "comment", Payload: payload}); err != nil {
+			return empty, err
+		}
+		if err = r.recordAssignedWakeCause(ctx, out.ContinuationRunID, "comment", comment.ID); err != nil {
 			return empty, err
 		}
 		seq, err := r.q.AdvanceCollaborationEventSequence(ctx, r.access.Issue.ID)
@@ -430,7 +433,11 @@ func (s *CollaborationService) drainSquadWakeup(ctx context.Context, parent pgty
 		if err = r.currentGroupAdmission(ctx); err != nil {
 			return false, err
 		}
-		if _, err = r.queueContinuation(ctx, parent); err != nil {
+		queued, err := r.queueContinuation(ctx, parent)
+		if err != nil {
+			return false, err
+		}
+		if err = r.assignPendingWakeCauses(ctx, queued); err != nil {
 			return false, err
 		}
 		return true, r.q.ClearCollaborationSquadWakeup(ctx, r.group.ID)

@@ -68,7 +68,8 @@ type RetainedRun struct {
 	RuntimeID   string
 }
 
-const maxLedgerBytes = 4 << 20
+// A near-limit frozen claim and escaped pending checkpoints remain bounded.
+const maxLedgerBytes = 8 << 20
 
 // Retained supplies restart capacity barriers and sealed-proof recovery without
 // exposing credentials. An unreadable record is an error, never an empty queue.
@@ -110,7 +111,7 @@ func (l *Ledger) Retained() ([]RetainedRun, error) {
 		}
 		record = *check.record
 		if record.Version == 2 {
-			if record.Phase != phaseAcknowledged || hostOutcomePending(record.Host) {
+			if record.Phase != phaseAcknowledged || hostOutcomePending(record.Host) || hostRecordingPending(record.Host) {
 				retained = append(retained, retainedHostRun(record))
 			}
 			continue

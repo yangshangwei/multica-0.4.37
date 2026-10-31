@@ -77,11 +77,58 @@ type CollaborationLaunchTerminationReceipt struct {
 // installed peer omits a field. Decode unknown and repeated names strictly.
 func decodeCollaborationHostObject(raw []byte, target any, required ...string) error {
 	invalid := errors.New("invalid collaboration host object")
+	trimmed := bytes.TrimSpace(raw)
+	if len(trimmed) == 0 || trimmed[0] != '{' || checkCollaborationHostJSONFields(raw, reflect.TypeOf(target), required...) != nil {
+		return invalid
+	}
 	decoder := json.NewDecoder(bytes.NewReader(raw))
 	decoder.DisallowUnknownFields()
 	if err := decoder.Decode(target); err != nil || decoder.Decode(new(any)) != io.EOF {
 		return invalid
 	}
+	return nil
+}
+
+// encoding/json accepts case-insensitive struct aliases. Check decoded names
+// against the declared wire fields before they can overwrite canonical facts.
+// Maps/interfaces are application content, not typed protocol objects.
+func checkCollaborationHostJSONFields(raw []byte, typ reflect.Type, required ...string) error {
+	invalid := errors.New("invalid collaboration host object")
+	if typ == nil {
+		return invalid
+	}
+	for typ.Kind() == reflect.Pointer {
+		typ = typ.Elem()
+	}
+	switch typ.Kind() {
+	case reflect.Array, reflect.Slice:
+		element := typ.Elem()
+		for element.Kind() == reflect.Pointer {
+			element = element.Elem()
+		}
+		if element.Kind() != reflect.Struct && element.Kind() != reflect.Array && element.Kind() != reflect.Slice {
+			return nil
+		}
+		var items []json.RawMessage
+		if json.Unmarshal(raw, &items) != nil {
+			return invalid
+		}
+		for _, item := range items {
+			if checkCollaborationHostJSONFields(item, element) != nil {
+				return invalid
+			}
+		}
+		return nil
+	case reflect.Struct:
+		// Let the typed decoder handle nulls and custom scalar types (time.Time).
+		trimmed := bytes.TrimSpace(raw)
+		if len(trimmed) == 0 || trimmed[0] != '{' {
+			return nil
+		}
+	default:
+		return nil
+	}
+	fields := collaborationHostJSONFields(typ)
 	keys := json.NewDecoder(bytes.NewReader(raw))
 	open, err := keys.Token()
 	if err != nil || open != json.Delim('{') {
@@ -91,7 +138,8 @@ func decodeCollaborationHostObject(raw []byte, target any, required ...string) e
 	for keys.More() {
 		key, err := keys.Token()
 		name, ok := key.(string)
-		if err != nil || !ok || seen[name] {
+		field, declared := fields[name]
+		if err != nil || !ok || !declared || seen[name] {
 			return invalid
 		}
 		var value json.RawMessage
@@ -104,6 +152,9 @@ func decodeCollaborationHostObject(raw []byte, target any, required ...string) e
 				return invalid
 			}
 		}
+		if checkCollaborationHostJSONFields(value, field) != nil {
+			return invalid
+		}
 	}
 	for _, field := range required {
 		if !seen[field] {
@@ -111,6 +162,35 @@ func decodeCollaborationHostObject(raw []byte, target any, required ...string) e
 		}
 	}
 	return nil
+}
+
+func collaborationHostJSONFields(typ reflect.Type) map[string]reflect.Type {
+	fields := make(map[string]reflect.Type)
+	for i := 0; i < typ.NumField(); i++ {
+		field := typ.Field(i)
+		name, _, _ := strings.Cut(field.Tag.Get("json"), ",")
+		if name == "-" {
+			continue
+		}
+		embedded := field.Type
+		if embedded.Kind() == reflect.Pointer {
+			embedded = embedded.Elem()
+		}
+		if field.Anonymous && name == "" && embedded.Kind() == reflect.Struct {
+			for name, typ := range collaborationHostJSONFields(embedded) {
+				fields[name] = typ
+			}
+			continue
+		}
+		if !field.IsExported() {
+			continue
+		}
+		if name == "" {
+			name = field.Name
+		}
+		fields[name] = field.Type
+	}
+	return fields
 }
 
 func (c *CollaborationCleanupObservation) UnmarshalJSON(raw []byte) error {

@@ -492,6 +492,7 @@ func init() {
 	issueCmd.AddCommand(issueSearchCmd)
 
 	issueCommentCmd.AddCommand(issueCommentListCmd)
+	issueCommentCmd.AddCommand(issueCommentContentCmd)
 	issueCommentCmd.AddCommand(issueCommentAddCmd)
 	issueCommentCmd.AddCommand(issueCommentUpdateCmd)
 	issueCommentCmd.AddCommand(issueCommentDeleteCmd)
@@ -580,6 +581,9 @@ func init() {
 
 	// issue comment list
 	issueCommentListCmd.Flags().String("output", "table", "Output format: table or json")
+	issueCommentListCmd.Flags().Int("limit", 50, "Collaboration runtime only: page size (1-100); returns a JSON page envelope")
+	issueCommentListCmd.Flags().Int("max-bytes", 65536, "Collaboration runtime only: JSON page byte budget (4096-1048576)")
+	issueCommentListCmd.Flags().String("cursor", "", "Collaboration runtime only: next_cursor from a comment page")
 	issueCommentListCmd.Flags().String("since", "", "Only return comments created after this timestamp (RFC3339)")
 	issueCommentListCmd.Flags().String("thread", "", "Comment UUID — return the thread containing this comment (root + every descendant). May be a root or a reply id.")
 	issueCommentListCmd.Flags().Int("tail", 0, "Only valid with --thread. Cap reply count to the N most recent replies; the thread root is always included (even with --tail 0). Use --before/--before-id to scroll to older replies.")
@@ -1875,6 +1879,9 @@ func floatVal(m map[string]any, key string) float64 {
 func runIssueCommentList(cmd *cobra.Command, args []string) error {
 	if handled, err := runCollaborationCLI(cmd, args, "issue comment list"); handled {
 		return err
+	}
+	if cmd.Flags().Changed("limit") || cmd.Flags().Changed("max-bytes") || cmd.Flags().Changed("cursor") {
+		return errors.New("--limit, --max-bytes and --cursor are available only inside a collaboration run")
 	}
 	client, err := newAPIClient(cmd)
 	if err != nil {

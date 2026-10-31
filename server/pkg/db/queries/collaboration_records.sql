@@ -26,7 +26,7 @@ WHERE issue_id=sqlc.arg(issue_id)::uuid AND run_id=sqlc.arg(run_id)::uuid
   AND seq >= sqlc.arg(after_seq)::bigint AND seq <= sqlc.arg(through_seq)::bigint
   -- Preparation has its own negotiated contract; installed record-item
   -- readers retain their existing discriminated kinds.
-  AND kind NOT IN ('resource_snapshot', 'preparation')
+  AND kind IN ('outcome', 'comment', 'squad_activity', 'record_checkpoint')
 ORDER BY seq LIMIT sqlc.arg(row_limit)::int;
 
 -- name: MarkCollaborationRunRecordingIncomplete :exec
@@ -36,3 +36,11 @@ UPDATE collaboration_run SET recording_incomplete=true WHERE id=$1 AND settled_a
 INSERT INTO collaboration_notification(recipient_user_id,issue_id,event_seq,kind,source_kind,run_id)
 VALUES($1,$2,$3,$4,'issue',$5)
 ON CONFLICT (recipient_user_id,issue_id,event_seq) DO NOTHING;
+
+-- The run-wide chunk budget bounds these rows and their decoded body bytes.
+-- name: ListCollaborationRecordingEvents :many
+SELECT * FROM collaboration_run_event
+WHERE issue_id=sqlc.arg(issue_id)::uuid AND run_id=sqlc.arg(run_id)::uuid
+  AND kind IN ('record_checkpoint','recording_seal','outcome')
+  AND seq <= sqlc.arg(through_seq)::bigint
+ORDER BY seq LIMIT 290;

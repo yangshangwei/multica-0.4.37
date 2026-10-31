@@ -419,6 +419,7 @@ func (s *CollaborationService) PermitRuntimeRun(ctx context.Context, runID pgtyp
 }
 
 func (s *CollaborationService) RecordRuntimeOutcome(ctx context.Context, runID pgtype.UUID, token string, p protocol.CollaborationRunOutcome) error {
+	p = redactCollaborationCheckpointOutcome(p)
 	seq, ok := collaborationRuntimeVersion(p.AttemptSeq, false)
 	if !ok || len(p.EventID) == 0 || len(p.EventID) > 128 || protocol.ValidateCollaborationProviderResult(protocol.CollaborationProviderResult{Outcome: p.Outcome, Body: p.Body, Record: p.Record}) != nil {
 		return collaborationError(http.StatusBadRequest, "invalid_runtime_outcome")
@@ -494,6 +495,9 @@ func (s *CollaborationService) RecordRuntimeOutcome(ctx context.Context, runID p
 					return false, collaborationError(http.StatusConflict, "outcome_already_recorded")
 				}
 			}
+		}
+		if err = validateCollaborationCheckpointOutcome(ctx, q, r.access.Issue.ID, runID, p); err != nil {
+			return false, err
 		}
 		payload, err := json.Marshal(p)
 		if err != nil {
@@ -735,6 +739,9 @@ func completeProvenRuntimeRun(ctx context.Context, r *collaborationRuntimeState)
 			}
 		} else if !r.group.ExpansionSealedAt.Valid {
 			if r.run.StepKind.String == "member" {
+				if err = r.recordPendingWakeCause(ctx, "proof", runID); err != nil {
+					return err
+				}
 				if err = q.ScheduleCollaborationSquadWakeup(ctx, db.ScheduleCollaborationSquadWakeupParams{ID: r.group.ID, WakeParentRunID: runID}); err != nil {
 					return err
 				}

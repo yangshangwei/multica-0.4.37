@@ -168,6 +168,13 @@ func (h *Handler) ClaimCollaborationRuntimeRun(w http.ResponseWriter, r *http.Re
 	if !decodeCollaborationRuntimeBody(w, r, &body) {
 		return
 	}
+	for _, key := range []string{"handoff_version", "recording_version"} {
+		if values, present := r.URL.Query()[key]; present &&
+			(body.ProtocolVersion != protocol.CollaborationHostRuntimeProtocolVersion || len(values) != 1 || values[0] != "1") {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"code": "unsupported_runtime_read_version", "error": "Unsupported collaboration runtime extension"})
+			return
+		}
+	}
 	run, ok := collaborationRuntimeRunID(w, r, nil)
 	if !ok {
 		return
@@ -177,6 +184,14 @@ func (h *Handler) ClaimCollaborationRuntimeRun(w http.ResponseWriter, r *http.Re
 	if err != nil {
 		writeCollaborationError(w, err)
 		return
+	}
+	if body.ProtocolVersion == protocol.CollaborationHostRuntimeProtocolVersion {
+		if r.URL.Query().Get("handoff_version") == "1" {
+			result.HandoffVersion = protocol.CollaborationHandoffVersion
+		}
+		if r.URL.Query().Get("recording_version") == "1" {
+			result.RecordingVersion = protocol.CollaborationCheckpointVersion
+		}
 	}
 	writeJSON(w, http.StatusOK, result)
 }

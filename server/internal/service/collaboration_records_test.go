@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -12,6 +13,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
@@ -37,10 +39,21 @@ func TestCollaborationRunRecordsPagingFrozenInputsAndRetention(t *testing.T) {
 		t.Fatal(err)
 	}
 	f.submitManaged(t, f.handler, "later waiting input must not appear")
+	internalEvent := func(kind string) {
+		t.Helper()
+		_, err := f.svc.Queries.CreateCollaborationBusinessEvent(f.ctx, db.CreateCollaborationBusinessEventParams{IssueID: f.issue.Issue.ID, RunID: runID, EventID: uuid.NewString(), Kind: kind, Payload: json.RawMessage(`{"private":"PRIVATE-INTERNAL"}`)})
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+	for _, kind := range []string{"handoff_snapshot", "handoff_binding", "wakeup_pending", "wakeup_assigned"} {
+		internalEvent(kind)
+	}
 	outcome := recordedOutcome(claim, permit, 65)
 	if err = f.svc.RecordRuntimeOutcome(context.Background(), runID, permit.BusinessToken, outcome); err != nil {
 		t.Fatal(err)
 	}
+	internalEvent("wakeup_assigned")
 	if err = f.svc.RecordRuntimeOutcome(context.Background(), runID, permit.BusinessToken, outcome); err != nil {
 		t.Fatal(err)
 	}
@@ -76,6 +89,7 @@ func TestCollaborationRunRecordsPagingFrozenInputsAndRetention(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	internalEvent("handoff_binding")
 	for page.NextCursor != nil {
 		page, err = f.svc.RunRecords(viewer, f.issue.Issue.ID, runID, CollaborationRunRecordsQuery{Limit: 9, Cursor: *page.NextCursor})
 		if err != nil {
@@ -110,7 +124,7 @@ func TestCollaborationRunRecordsPagingFrozenInputsAndRetention(t *testing.T) {
 		t.Fatal("proof/engine cleanup rewrote immutable recording or erased partial coverage")
 	}
 	encoded, _ := json.Marshal(page)
-	for _, private := range []string{"launch_nonce", "installation_id", "binding_id", "mcb_", "mct_", "PRIVATE-REPLACEMENT", "later waiting input"} {
+	for _, private := range []string{"launch_nonce", "installation_id", "binding_id", "mcb_", "mct_", "PRIVATE-REPLACEMENT", "PRIVATE-INTERNAL", "later waiting input"} {
 		if strings.Contains(string(encoded), private) {
 			t.Fatalf("record projection leaked %s", private)
 		}
@@ -180,10 +194,49 @@ func TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence(t *testing.T) {
 	if err != nil || !page.Recording.InputsRecorded || page.Resource.Provider != nil || page.Resource.AccountSource != nil || len(page.Items) != 2 {
 		t.Fatalf("absent history was reconstructed from current data: %+v %v", page, err)
 	}
-	unknown := f.fx.Insert(t, "collaboration_run_event", testutil.Cols{"issue_id": f.issue.Issue.ID, "run_id": runID, "producer_event_id": "unknown-record", "seq": 99, "kind": "unknown_private", "payload": json.RawMessage(`{"secret":"PRIVATE-UNKNOWN"}`)})
-	_ = unknown
-	if _, err = f.svc.RunRecords(viewer, f.issue.Issue.ID, runID, CollaborationRunRecordsQuery{Limit: 50}); err == nil || strings.Contains(err.Error(), "PRIVATE-UNKNOWN") {
-		t.Fatal("unknown stored payload became a complete recording or escaped redaction")
+	legacyItems := page.Items
+	f.fx.Insert(t, "collaboration_run_event", testutil.Cols{"issue_id": f.issue.Issue.ID, "run_id": runID, "producer_event_id": "unknown-record", "seq": 99, "kind": "unknown_private", "payload": json.RawMessage(`{"secret":"PRIVATE-UNKNOWN"}`)})
+	// The explicit display-event allowlist withholds unrelated metadata. It
+	// must not infer recording completeness or leak a new kind through paging.
+	items := []CollaborationRunRecordItem{}
+	p := CollaborationRunRecordsQuery{Limit: 1}
+	for pages := 0; ; pages++ {
+		if pages >= 3 {
+			t.Fatal("excluded private event prevented paging from advancing")
+		}
+		page, err = f.svc.RunRecords(viewer, f.issue.Issue.ID, runID, p)
+		if err != nil || page.Recording.Status != "not_recorded" || page.Recording.Retention != nil || page.Usage != nil {
+			t.Fatalf("unknown event changed legacy recording coverage: %+v: %v", page.Recording, err)
+		}
+		encoded, err := json.Marshal(page)
+		if err != nil || strings.Contains(string(encoded), "PRIVATE-UNKNOWN") || strings.Contains(string(encoded), "unknown_private") {
+			t.Fatal("unknown stored payload escaped the display allowlist")
+		}
+		items = append(items, page.Items...)
+		if page.NextCursor == nil {
+			break
+		}
+		p.Cursor = *page.NextCursor
+	}
+	if !reflect.DeepEqual(items, legacyItems) {
+		t.Fatal("internal metadata changed, duplicated or removed retained display items")
+	}
+}
+
+func TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected(t *testing.T) {
+	for _, kind := range []string{"outcome", "record_checkpoint", "comment", "squad_activity"} {
+		t.Run(kind, func(t *testing.T) {
+			f := newManagedCollaborationFixture(t)
+			f.submitManaged(t, f.creator, "retained input before malformed display event")
+			f.resumeManaged(t)
+			run, _, _ := f.claimManaged(t)
+			f.fx.Insert(t, "collaboration_run_event", testutil.Cols{"issue_id": f.issue.Issue.ID, "run_id": run, "producer_event_id": "malformed-display", "seq": 99, "kind": kind, "payload": json.RawMessage(`{"private":"PRIVATE-MALFORMED"}`)})
+			page, err := f.svc.RunRecords(f.ctx, f.issue.Issue.ID, run, CollaborationRunRecordsQuery{Limit: 100})
+			encoded, marshalErr := json.Marshal(page)
+			if err == nil || strings.Contains(err.Error(), "PRIVATE-MALFORMED") || marshalErr != nil || strings.Contains(string(encoded), "PRIVATE-MALFORMED") {
+				t.Fatal("malformed display payload was ignored, marked complete or leaked")
+			}
+		})
 	}
 }
 

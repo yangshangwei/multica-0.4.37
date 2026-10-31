@@ -22,11 +22,14 @@ LIMIT sqlc.arg(row_limit)::int;
 -- name: CollaborationRunHasPreparationStartEvidence :one
 -- An unknown/issued claim or attempt belongs to the original recovery path.
 -- Never infer nonlaunch merely from the run's current progress label.
+-- The server can assign wakeup provenance to a queued, unclaimed continuation.
+-- That metadata is not execution evidence; every other event remains a barrier.
 SELECT (
     EXISTS (SELECT 1 FROM collaboration_termination WHERE run_id = sqlc.arg(run_id)::uuid)
     OR EXISTS (SELECT 1 FROM collaboration_attempt WHERE run_id = sqlc.arg(run_id)::uuid)
     OR EXISTS (SELECT 1 FROM collaboration_business_capability WHERE run_id = sqlc.arg(run_id)::uuid)
-    OR EXISTS (SELECT 1 FROM collaboration_run_event WHERE run_id = sqlc.arg(run_id)::uuid)
+    OR EXISTS (SELECT 1 FROM collaboration_run_event
+               WHERE run_id = sqlc.arg(run_id)::uuid AND kind <> 'wakeup_assigned')
 )::boolean AS has_evidence;
 
 -- name: CollaborationAgentHasPreparationSkills :one

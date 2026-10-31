@@ -13,11 +13,13 @@ export function collaborationActivityOptions(client: QueryClient, scope: Collabo
     getNextPageParam: (page) => page.next_cursor ?? undefined,
   });
 }
-export function collaborationCommentsOptions(client: QueryClient, scope: CollaborationScope, issueId: string) {
+export function collaborationCommentsOptions(client: QueryClient, scope: CollaborationScope, issueId: string, budget: { limit?: number; maxBytes?: number } = {}) {
+  const limit = budget.limit ?? 50;
+  const maxBytes = budget.maxBytes ?? 65536;
   return infiniteQueryOptions({
-    queryKey: [...collaborationKeys.issue(scope, issueId), "comments"], ...freshness,
+    queryKey: [...collaborationKeys.issue(scope, issueId), "comments", { limit, maxBytes }], ...freshness,
     initialPageParam: undefined as string | undefined,
-    queryFn: ({ pageParam, signal }) => protectCollaborationRead(client, scope, issueId, () => getApi().getCollaborationComments(issueId, { cursor: pageParam }, { signal })),
+    queryFn: ({ pageParam, signal }) => protectCollaborationRead(client, scope, issueId, () => getApi().getCollaborationComments(issueId, { cursor: pageParam, limit, maxBytes }, { signal })),
     getNextPageParam: (page) => page.next_cursor ?? undefined,
   });
 }

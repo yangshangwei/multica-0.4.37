@@ -72,6 +72,10 @@ type CollaborationRunClaimResponse struct {
 	TerminationToken     string                    `json:"termination_token"`
 	Preparation          *CollaborationPreparation `json:"preparation,omitempty"`
 	HostContext          *CollaborationHostContext `json:"host_context,omitempty"`
+	// Optional read/write extensions are negotiated on the claim URL so old
+	// strict request/response decoders and resource consent digests stay stable.
+	HandoffVersion   int `json:"handoff_version,omitempty"`
+	RecordingVersion int `json:"recording_version,omitempty"`
 }
 
 type CollaborationRunPermitRequest struct {

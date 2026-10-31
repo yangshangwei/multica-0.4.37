@@ -9,6 +9,12 @@ const uuid = z.uuid().transform((value) => value.toLowerCase());
 const recordId = z.string().min(1).max(200);
 const recordedName = z.string().min(1).refine((value) => collaborationTextByteLength(value) <= 128);
 const attachments = z.array(uuid).refine((items) => new Set(items).size === items.length);
+const retention = z.object({
+  version: z.literal(1), stream_id: uuid, retained_through: z.number().int().min(0).max(256),
+  observed_through: z.number().int().min(0).max(256).nullable(), sealed: z.boolean(),
+  reason: z.enum(["completed", "stopped", "authority_lost", "transport_error", "recording_limit", "incomplete"]),
+}).refine((value) => (value.observed_through === null || value.observed_through >= value.retained_through) &&
+  (value.sealed || value.observed_through === null && value.reason === "incomplete"));
 
 export const CollaborationRunRecordItemSchema = z.discriminatedUnion("kind", [
   z.object({ id: recordId, kind: z.literal("input"), command_id: uuid, author_user_id: uuid, body: z.string(), attachment_ids: attachments }),
@@ -66,7 +72,7 @@ export const CollaborationRunRecordsSchema = z.object({
     agent_id: uuid, runtime_id: uuid, resource_owner_user_id: uuid, execution_workspace_id: uuid, grant_id: uuid,
     provider: recordedName.nullable(), model: recordedName.nullable(), account_source: z.literal("runtime_configuration").nullable(),
   }),
-  recording: z.object({ status: z.enum(["not_recorded", "partial", "complete"]), inputs_recorded: z.boolean() }),
+  recording: z.object({ status: z.enum(["not_recorded", "partial", "complete"]), inputs_recorded: z.boolean(), retention: retention.optional() }),
   preparation: preparation.nullable().optional(),
   usage: usage.nullable(), items: z.array(CollaborationRunRecordItemSchema).max(100),
   next_cursor: z.string().min(1).max(1024).nullable(),
@@ -86,6 +92,12 @@ export const CollaborationRunRecordsSchema = z.object({
   let eventsStarted = false;
   const commands = new Set<string>();
   for (const item of items) {
+    if (item.id.startsWith("record:")) {
+      const [, stream, ordinal, extra] = item.id.split(":");
+      if (!["message", "tool_call", "tool_result"].includes(item.kind) || !uuid.safeParse(stream).success ||
+        ordinal === undefined || !/^(0|[1-9]\d{0,2})$/.test(ordinal) || Number(ordinal) >= 256 || extra !== undefined ||
+        recording.retention && (stream !== recording.retention.stream_id || Number(ordinal) >= recording.retention.retained_through)) return false;
+    }
     if (item.kind !== "input") { eventsStarted = true; continue; }
     if (!recording.inputs_recorded || eventsStarted || commands.has(item.command_id)) return false;
     commands.add(item.command_id);

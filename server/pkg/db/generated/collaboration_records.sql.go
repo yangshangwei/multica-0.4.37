@@ -156,6 +156,50 @@ func (q *Queries) GetCollaborationRunRecordSequence(ctx context.Context, arg Get
 	return column_1, err
 }
 
+const listCollaborationRecordingEvents = `-- name: ListCollaborationRecordingEvents :many
+SELECT id, issue_id, run_id, producer_event_id, seq, kind, payload, created_at FROM collaboration_run_event
+WHERE issue_id=$1::uuid AND run_id=$2::uuid
+  AND kind IN ('record_checkpoint','recording_seal','outcome')
+  AND seq <= $3::bigint
+ORDER BY seq LIMIT 290
+`
+
+type ListCollaborationRecordingEventsParams struct {
+	IssueID    pgtype.UUID `json:"issue_id"`
+	RunID      pgtype.UUID `json:"run_id"`
+	ThroughSeq int64       `json:"through_seq"`
+}
+
+// The run-wide chunk budget bounds these rows and their decoded body bytes.
+func (q *Queries) ListCollaborationRecordingEvents(ctx context.Context, arg ListCollaborationRecordingEventsParams) ([]CollaborationRunEvent, error) {
+	rows, err := q.db.Query(ctx, listCollaborationRecordingEvents, arg.IssueID, arg.RunID, arg.ThroughSeq)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []CollaborationRunEvent{}
+	for rows.Next() {
+		var i CollaborationRunEvent
+		if err := rows.Scan(
+			&i.ID,
+			&i.IssueID,
+			&i.RunID,
+			&i.ProducerEventID,
+			&i.Seq,
+			&i.Kind,
+			&i.Payload,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listCollaborationRunPreparationRecords = `-- name: ListCollaborationRunPreparationRecords :many
 SELECT DISTINCT ON (payload->>'stage') id, issue_id, run_id, producer_event_id, seq, kind, payload, created_at FROM collaboration_run_event
 WHERE issue_id=$1::uuid AND run_id=$2::uuid
@@ -206,7 +250,7 @@ WHERE issue_id=$1::uuid AND run_id=$2::uuid
   AND seq >= $3::bigint AND seq <= $4::bigint
   -- Preparation has its own negotiated contract; installed record-item
   -- readers retain their existing discriminated kinds.
-  AND kind NOT IN ('resource_snapshot', 'preparation')
+  AND kind IN ('outcome', 'comment', 'squad_activity', 'record_checkpoint')
 ORDER BY seq LIMIT $5::int
 `
 

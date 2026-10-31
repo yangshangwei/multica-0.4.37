@@ -174,7 +174,7 @@ func (s *CollaborationService) lockCollaborationRuntimeSource(ctx context.Contex
 	if t.session.ID != sessionHint.ID {
 		return nil, invalidCollaborationLedger("runtime session changed")
 	}
-	t.access = CollaborationIssueAccess{Issue: issue, SessionID: t.session.ID, LifecycleEpoch: state.LifecycleEpoch, Revision: state.Revision, QueueState: t.session.QueueState, ControlVersion: t.session.ControlVersion}
+	t.access = CollaborationIssueAccess{Issue: issue, SessionID: t.session.ID, LifecycleEpoch: state.LifecycleEpoch, Revision: state.Revision, QueueState: t.session.QueueState, ControlVersion: t.session.ControlVersion, EventSequence: t.session.EventSeq, InformationRequestID: state.ActiveInformationRequestID}
 	if current {
 		currentIDs, err := q.GetCollaborationWorkflowUserIDs(ctx, idsParam)
 		if err != nil {

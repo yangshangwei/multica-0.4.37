@@ -9,6 +9,7 @@ import (
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -188,7 +189,7 @@ func buildHostAccountSmokeCLI(t *testing.T, ctx context.Context) string {
 }
 
 func authorizeHostAccountSmokeRequest(fixture *hostRunFixture, r *http.Request) bool {
-	if r.URL.RawQuery != "" || r.Header.Get("Cookie") != "" || r.Header.Get("X-Workspace-ID") != "" {
+	if r.Header.Get("Cookie") != "" || r.Header.Get("X-Workspace-ID") != "" {
 		return false
 	}
 	prefix := "/api/collaboration/runtime/runs/" + fixture.claim.Identity.RunID
@@ -196,6 +197,20 @@ func authorizeHostAccountSmokeRequest(fixture *hostRunFixture, r *http.Request) 
 		return false
 	}
 	suffix := strings.TrimPrefix(r.URL.Path, prefix)
+	if r.URL.RawQuery != "" {
+		if r.Method != http.MethodPost || suffix != "/claim" {
+			return false
+		}
+		query, err := url.ParseQuery(r.URL.RawQuery)
+		if err != nil || len(query) == 0 {
+			return false
+		}
+		for key, values := range query {
+			if key != "handoff_version" && key != "recording_version" || len(values) != 1 || values[0] != "1" {
+				return false
+			}
+		}
+	}
 	token := r.Header.Get("Authorization")
 	if r.Method == http.MethodPost && (suffix == "/claim" || suffix == "/permit") {
 		return token == "Bearer mdt_fixture"

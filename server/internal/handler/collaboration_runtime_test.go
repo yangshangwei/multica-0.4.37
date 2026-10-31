@@ -82,6 +82,14 @@ func TestCollaborationRuntimeNarrowHandlersNeverFallBackToOtherPurposes(t *testi
 		{bare.GetCollaborationRuntimeContext, []string{"", "mul_human", "mdt_daemon", service.CollaborationTerminationTokenPrefix + strings.Repeat("a", 64)}},
 		{bare.CreateCollaborationRuntimeComment, []string{"", "mul_human", "mdt_daemon", service.CollaborationTerminationTokenPrefix + strings.Repeat("a", 64)}},
 		{bare.RecordCollaborationRuntimeSquadActivity, []string{"", "mul_human", "mdt_daemon", service.CollaborationTerminationTokenPrefix + strings.Repeat("a", 64)}},
+		{bare.RecordCollaborationRuntimeCheckpoint, []string{"", "mul_human", "mdt_daemon", "mat_task", service.CollaborationTerminationTokenPrefix + strings.Repeat("a", 64)}},
+		{bare.SealCollaborationRuntimeRecording, []string{"", "mul_human", "mdt_daemon", "mat_task", service.CollaborationBusinessTokenPrefix + strings.Repeat("a", 64)}},
+		{bare.GetCollaborationRuntimeHandoff, []string{"", "mul_human", "mdt_daemon", "mat_task", service.CollaborationTerminationTokenPrefix + strings.Repeat("a", 64)}},
+		{bare.CreateCollaborationRuntimeHandoffSnapshot, []string{"", "mul_human", "mdt_daemon", "mat_task", service.CollaborationTerminationTokenPrefix + strings.Repeat("a", 64)}},
+		{bare.BindCollaborationRuntimeHandoff, []string{"", "mul_human", "mdt_daemon", "mat_task", service.CollaborationTerminationTokenPrefix + strings.Repeat("a", 64)}},
+		{bare.GetCollaborationRuntimeHandoffSource, []string{"", "mul_human", "mdt_daemon", "mat_task", service.CollaborationTerminationTokenPrefix + strings.Repeat("a", 64)}},
+		{bare.ListCollaborationRuntimeComments, []string{"", "mul_human", "mdt_daemon", "mat_task", service.CollaborationTerminationTokenPrefix + strings.Repeat("a", 64)}},
+		{bare.GetCollaborationRuntimeCommentContent, []string{"", "mul_human", "mdt_daemon", "mat_task", service.CollaborationTerminationTokenPrefix + strings.Repeat("a", 64)}},
 	} {
 		for _, token := range tc.tokens {
 			r := newRequest(http.MethodPost, "/api/collaboration/runtime/runs/"+uuid.NewString()+"/proof", map[string]any{})

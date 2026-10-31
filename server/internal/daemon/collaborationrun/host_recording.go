@@ -18,6 +18,9 @@ import (
 )
 
 type hostRecording struct {
+	checkpoints  *hostCheckpointSender
+	streamID     string
+	closed       bool
 	messages     []protocol.CollaborationRecordedMessage
 	bytes        int
 	partial      bool
@@ -51,8 +54,15 @@ func (r *hostRecording) text(value string, limit int) string {
 
 func (r *hostRecording) add(message protocol.CollaborationRecordedMessage) {
 	message.Body = r.text(message.Body, protocol.CollaborationRecordTextLimit)
-	if len(r.messages) >= protocol.CollaborationRecordItemLimit || r.bytes+len(message.Body) > 512<<10 {
-		r.partial = true
+	if r.closed || len(r.messages) >= protocol.CollaborationRecordItemLimit || r.bytes+len(message.Body) > protocol.CollaborationRecordingBodyLimit {
+		r.partial, r.closed = true, true
+		if r.checkpoints != nil {
+			r.checkpoints.closed.Store(true)
+		}
+		return
+	}
+	if r.checkpoints != nil && !r.checkpoints.offer(message) {
+		r.partial, r.closed = true, true
 		return
 	}
 	r.bytes += len(message.Body)
@@ -224,12 +234,18 @@ func (r *hostRecording) outcome(identity protocol.CollaborationRunIdentity, seq,
 		r.partial = true
 	}
 	completeness := "complete"
-	if r.partial {
+	if r.partial || r.checkpoints != nil && (r.checkpoints.failed.Load() || r.checkpoints.acknowledged() != len(r.messages)) {
 		completeness = "partial"
 	}
 	out := protocol.CollaborationRunOutcome{ProtocolVersion: protocol.CollaborationHostRuntimeProtocolVersion, Containment: protocol.CollaborationContainmentHostProcessSupervision,
 		Identity: identity, EventID: uuid.NewString(), AttemptSeq: seq, AttemptNonce: nonce, Outcome: kind, Body: body,
 		Record: &protocol.CollaborationRunRecord{Version: 1, Completeness: completeness, Messages: r.messages, Usage: usage}}
+	if r.checkpoints != nil {
+		out.Record.Version = 2
+		out.Record.StreamID = r.streamID
+		out.Record.MessageOffset = r.checkpoints.acknowledged()
+		out.Record.Messages = []protocol.CollaborationRecordedMessage{}
+	}
 	if protocol.ValidateCollaborationProviderResult(protocol.CollaborationProviderResult{Outcome: kind, Body: body, Record: out.Record}) != nil {
 		return protocol.CollaborationRunOutcome{}, false
 	}

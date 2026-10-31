@@ -76,10 +76,12 @@ func (m *CollaborationRecordedMessage) UnmarshalJSON(data []byte) error {
 }
 
 type CollaborationRunRecord struct {
-	Version      int                            `json:"version"`
-	Completeness string                         `json:"completeness"`
-	Messages     []CollaborationRecordedMessage `json:"messages"`
-	Usage        *CollaborationRunUsage         `json:"usage,omitempty"`
+	Version       int                            `json:"version"`
+	StreamID      string                         `json:"stream_id,omitempty"`
+	MessageOffset int                            `json:"message_offset,omitempty"`
+	Completeness  string                         `json:"completeness"`
+	Messages      []CollaborationRecordedMessage `json:"messages"`
+	Usage         *CollaborationRunUsage         `json:"usage,omitempty"`
 }
 
 // CollaborationProviderResult is the supported static executor's stdout wire.
@@ -105,7 +107,7 @@ func ValidateCollaborationRunRecord(record *CollaborationRunRecord) error {
 	if record == nil {
 		return nil
 	}
-	if record.Version != 1 || (record.Completeness != "complete" && record.Completeness != "partial") || record.Messages == nil || len(record.Messages) > CollaborationRecordItemLimit {
+	if (record.Version != 1 && record.Version != 2) || record.Version == 1 && (record.StreamID != "" || record.MessageOffset != 0) || record.Version == 2 && (!preparationUUID(record.StreamID) || record.MessageOffset < 0 || record.MessageOffset+len(record.Messages) > CollaborationRecordItemLimit) || (record.Completeness != "complete" && record.Completeness != "partial") || record.Messages == nil || len(record.Messages) > CollaborationRecordItemLimit {
 		return invalid
 	}
 	for _, message := range record.Messages {

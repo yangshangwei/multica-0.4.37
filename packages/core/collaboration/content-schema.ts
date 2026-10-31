@@ -4,6 +4,7 @@ import { CollaborationAccountSummarySchema } from "./schema";
 import { CollaborationExecutionViewVersionSchema, CollaborationTargetHoldReasonSchema } from "./execution-schema";
 import { positiveVersion } from "./version";
 import { collaborationAttachmentIds } from "./attachment-schema";
+import { collaborationTextByteLength } from "./text-limits";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 const timestamp = z.iso.datetime({ offset: true });
@@ -36,10 +37,33 @@ export const CollaborationCommentSchema = z.object({
   created_at: timestamp, updated_at: timestamp, deleted_at: timestamp.nullable(), resolved_at: timestamp.nullable(),
   resolved_by: CollaborationAccountSummarySchema.nullable(), can_edit: z.boolean(), can_resolve: z.boolean(),
   reactions: z.array(z.object({ emoji: z.string(), count: z.number().int().nonnegative().safe(), viewer_reacted: z.boolean() })),
+  trust: z.literal("data_only").optional(),
+  author_authority: z.object({ role: z.string().min(1), can_submit_command: z.boolean(), evaluated_at: timestamp }).optional(),
+  content_state: z.enum(["complete", "omitted", "deleted"]).optional(),
+  content_bytes: z.number().int().nonnegative().safe().optional(),
+  content_ref: z.string().optional(), omission_reason: z.literal("byte_budget").optional(),
+}).refine((value) => {
+  if (value.content_state === undefined) return value.content_ref === undefined && value.omission_reason === undefined;
+  if (value.trust !== "data_only" || !value.author_authority || value.content_bytes === undefined) return false;
+  if (value.content_state === "omitted") return value.content === "" && value.can_edit === false && value.omission_reason === "byte_budget" &&
+    value.content_ref === `/api/collaboration/issues/${value.issue_id}/comments/${value.id}`;
+  return value.omission_reason === undefined && value.content_bytes === collaborationTextByteLength(value.content) &&
+    (value.content_state !== "deleted" || value.deleted_at !== null && value.content === "");
 });
 export const CollaborationCommentsSchema = z.object({
   issue_id: uuid, items: z.array(CollaborationCommentSchema), next_cursor: z.string().max(512).nullable(),
-}).refine((value) => value.items.every((item) => item.issue_id === value.issue_id) && new Set(value.items.map((item) => item.id)).size === value.items.length);
+  protocol_version: z.literal(1).optional(), total: z.number().int().nonnegative().safe().optional(),
+  returned: z.number().int().min(0).max(100).optional(), bytes: z.number().int().positive().optional(),
+  max_bytes: z.number().int().min(4096).max(1048576).optional(), truncated: z.boolean().optional(),
+  truncation_reasons: z.array(z.enum(["more_comments", "byte_budget"])).optional(),
+}).refine((value) => value.items.every((item) => item.issue_id === value.issue_id) && new Set(value.items.map((item) => item.id)).size === value.items.length)
+  .refine((value) => {
+    if (value.protocol_version === undefined) return value.items.every((item) => item.content_state !== "omitted");
+    return value.total !== undefined && value.total >= value.items.length && value.returned === value.items.length &&
+      value.bytes !== undefined && value.max_bytes !== undefined && value.bytes <= value.max_bytes && value.truncation_reasons !== undefined &&
+      value.truncated === (value.next_cursor !== null || value.items.some((item) => item.content_state === "omitted")) &&
+      (value.next_cursor === null || value.items.length > 0) && value.items.every((item) => item.content_state !== undefined);
+  });
 
 export const CollaborationCommentHistorySchema = z.object({
   issue_id: uuid, comment_id: uuid,
