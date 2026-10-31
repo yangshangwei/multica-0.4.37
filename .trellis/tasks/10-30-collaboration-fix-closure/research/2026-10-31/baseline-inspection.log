@@ -1,0 +1,64 @@
+{"source_head": "4c833e737efb6c997e5cb56c74c43e9237c91956", "started_at": "2026-10-31T11:51:16.306427+00:00", "cwd": "/Volumes/artisan/code/2026/multica-0.4.37", "command": ["/opt/homebrew/opt/libpq/bin/psql", "-X", "-v", "ON_ERROR_STOP=1", "-f", "-"], "database": "multica_closure_20261031_b953445095"}
+             max              | count 
+------------------------------+-------
+ 745_drop_user_cloud_waitlist |   733
+(1 row)
+
+        column_name         |   column_default   | is_nullable 
+----------------------------+--------------------+-------------
+ id                         | gen_random_uuid()  | NO
+ workspace_id               |                    | NO
+ name                       |                    | NO
+ avatar_url                 |                    | YES
+ runtime_mode               |                    | NO
+ runtime_config             | '{}'::jsonb        | NO
+ visibility                 | 'private'::text    | NO
+ status                     | 'offline'::text    | NO
+ max_concurrent_tasks       | 6                  | NO
+ owner_id                   |                    | YES
+ created_at                 | now()              | NO
+ updated_at                 | now()              | NO
+ description                | ''::text           | NO
+ runtime_id                 |                    | YES
+ instructions               | ''::text           | NO
+ archived_at                |                    | YES
+ archived_by                |                    | YES
+ custom_env                 | '{}'::jsonb        | NO
+ custom_args                | '[]'::jsonb        | NO
+ mcp_config                 |                    | YES
+ model                      |                    | YES
+ thinking_level             |                    | YES
+ composio_toolkit_allowlist |                    | YES
+ permission_mode            | 'private'::text    | NO
+ kind                       | 'user'::text       | NO
+ system_key                 |                    | YES
+ disabled_runtime_skills    | '[]'::jsonb        | NO
+ service_tier               |                    | YES
+ conversation_starters      | '[]'::jsonb        | NO
+ template_key               | ''::text           | NO
+ template_version           | 0                  | NO
+ autonomy_level             | ''::text           | NO
+ category                   | ''::text           | NO
+ collaboration_config_epoch | 1                  | NO
+ id                         | gen_random_uuid()  | NO
+ session_id                 |                    | NO
+ kind                       |                    | NO
+ resource_id                |                    | NO
+ target_epoch               | 1                  | NO
+ config_version             | 1                  | NO
+ roster                     |                    | NO
+ queue_state                | 'paused'::text     | NO
+ control_version            | 1                  | NO
+ group_generation           | 0                  | NO
+ active_group_id            |                    | YES
+ pause_reason               | 'new_target'::text | NO
+ revoked_at                 |                    | YES
+ created_at                 | now()              | NO
+ configuration_fingerprint  |                    | YES
+ channel_id                 |                    | YES
+ hold_reason                | 'initial'::text    | YES
+ hold_version               | 1                  | NO
+(52 rows)
+
+
+exit_code=0

@@ -1,0 +1,420 @@
+{"source_head": "4c833e737efb6c997e5cb56c74c43e9237c91956", "command": ["go", "test", "-p", "1", "./internal/service", "./internal/handler", "-run", "Collaboration.*Recipient", "-count=1", "-timeout=15m", "-v"], "database": "multica_closure_20261031_b953445095", "started_at": "2026-10-31T12:24:42.205717+00:00"}
+=== RUN   TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction
+=== RUN   TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/legacy/invite
+=== RUN   TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/legacy/transfer
+=== RUN   TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/legacy/information
+=== RUN   TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/legacy/return
+=== RUN   TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/legacy/acceptance
+=== RUN   TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/password/invite
+=== RUN   TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/password/transfer
+=== RUN   TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/password/information
+=== RUN   TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/password/return
+=== RUN   TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/password/acceptance
+--- PASS: TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction (2.18s)
+    --- PASS: TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/legacy/invite (0.23s)
+    --- PASS: TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/legacy/transfer (0.20s)
+    --- PASS: TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/legacy/information (0.24s)
+    --- PASS: TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/legacy/return (0.18s)
+    --- PASS: TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/legacy/acceptance (0.20s)
+    --- PASS: TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/password/invite (0.22s)
+    --- PASS: TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/password/transfer (0.19s)
+    --- PASS: TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/password/information (0.24s)
+    --- PASS: TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/password/return (0.23s)
+    --- PASS: TestCollaborationRecipientKnownUUIDCannotBypassNewPasswordRestriction/password/acceptance (0.25s)
+=== RUN   TestCollaborationRecipientSetupAccountCannotReceiveKnownUUIDWrites
+=== RUN   TestCollaborationRecipientSetupAccountCannotReceiveKnownUUIDWrites/invite
+=== RUN   TestCollaborationRecipientSetupAccountCannotReceiveKnownUUIDWrites/transfer
+=== RUN   TestCollaborationRecipientSetupAccountCannotReceiveKnownUUIDWrites/information
+--- PASS: TestCollaborationRecipientSetupAccountCannotReceiveKnownUUIDWrites (0.64s)
+    --- PASS: TestCollaborationRecipientSetupAccountCannotReceiveKnownUUIDWrites/invite (0.20s)
+    --- PASS: TestCollaborationRecipientSetupAccountCannotReceiveKnownUUIDWrites/transfer (0.19s)
+    --- PASS: TestCollaborationRecipientSetupAccountCannotReceiveKnownUUIDWrites/information (0.25s)
+=== RUN   TestCollaborationRecipientCreationRejectsRestrictedAndSetupHandlers
+=== RUN   TestCollaborationRecipientCreationRejectsRestrictedAndSetupHandlers/restricted
+=== RUN   TestCollaborationRecipientCreationRejectsRestrictedAndSetupHandlers/setup
+--- PASS: TestCollaborationRecipientCreationRejectsRestrictedAndSetupHandlers (0.25s)
+    --- PASS: TestCollaborationRecipientCreationRejectsRestrictedAndSetupHandlers/restricted (0.13s)
+    --- PASS: TestCollaborationRecipientCreationRejectsRestrictedAndSetupHandlers/setup (0.12s)
+=== RUN   TestCollaborationRecipientEligibleLegacyAndPasswordControls
+=== RUN   TestCollaborationRecipientEligibleLegacyAndPasswordControls/legacy/create
+=== RUN   TestCollaborationRecipientEligibleLegacyAndPasswordControls/legacy/invite
+=== RUN   TestCollaborationRecipientEligibleLegacyAndPasswordControls/legacy/transfer
+=== RUN   TestCollaborationRecipientEligibleLegacyAndPasswordControls/password/create
+=== RUN   TestCollaborationRecipientEligibleLegacyAndPasswordControls/password/invite
+=== RUN   TestCollaborationRecipientEligibleLegacyAndPasswordControls/password/transfer
+--- PASS: TestCollaborationRecipientEligibleLegacyAndPasswordControls (1.47s)
+    --- PASS: TestCollaborationRecipientEligibleLegacyAndPasswordControls/legacy/create (0.19s)
+    --- PASS: TestCollaborationRecipientEligibleLegacyAndPasswordControls/legacy/invite (0.30s)
+    --- PASS: TestCollaborationRecipientEligibleLegacyAndPasswordControls/legacy/transfer (0.26s)
+    --- PASS: TestCollaborationRecipientEligibleLegacyAndPasswordControls/password/create (0.17s)
+    --- PASS: TestCollaborationRecipientEligibleLegacyAndPasswordControls/password/invite (0.25s)
+    --- PASS: TestCollaborationRecipientEligibleLegacyAndPasswordControls/password/transfer (0.29s)
+=== RUN   TestCollaborationRecipientCompletedWritesReplayAfterTargetRestriction
+=== RUN   TestCollaborationRecipientCompletedWritesReplayAfterTargetRestriction/create
+=== RUN   TestCollaborationRecipientCompletedWritesReplayAfterTargetRestriction/invite
+=== RUN   TestCollaborationRecipientCompletedWritesReplayAfterTargetRestriction/transfer
+--- PASS: TestCollaborationRecipientCompletedWritesReplayAfterTargetRestriction (0.73s)
+    --- PASS: TestCollaborationRecipientCompletedWritesReplayAfterTargetRestriction/create (0.21s)
+    --- PASS: TestCollaborationRecipientCompletedWritesReplayAfterTargetRestriction/invite (0.27s)
+    --- PASS: TestCollaborationRecipientCompletedWritesReplayAfterTargetRestriction/transfer (0.25s)
+=== RUN   TestCollaborationRecipientWriterDependencyFailureRollsBackAndKeepsOriginalKey
+=== RUN   TestCollaborationRecipientWriterDependencyFailureRollsBackAndKeepsOriginalKey/create
+=== RUN   TestCollaborationRecipientWriterDependencyFailureRollsBackAndKeepsOriginalKey/invite
+=== RUN   TestCollaborationRecipientWriterDependencyFailureRollsBackAndKeepsOriginalKey/transfer
+--- PASS: TestCollaborationRecipientWriterDependencyFailureRollsBackAndKeepsOriginalKey (0.68s)
+    --- PASS: TestCollaborationRecipientWriterDependencyFailureRollsBackAndKeepsOriginalKey/create (0.22s)
+    --- PASS: TestCollaborationRecipientWriterDependencyFailureRollsBackAndKeepsOriginalKey/invite (0.24s)
+    --- PASS: TestCollaborationRecipientWriterDependencyFailureRollsBackAndKeepsOriginalKey/transfer (0.22s)
+=== RUN   TestCollaborationRecipientEligibilityDoesNotChangeExistingNotificationRecipients
+--- PASS: TestCollaborationRecipientEligibilityDoesNotChangeExistingNotificationRecipients (0.22s)
+=== RUN   TestCollaborationRecipientWritersSerializeWithActualPasswordRecovery
+=== RUN   TestCollaborationRecipientWritersSerializeWithActualPasswordRecovery/create/password_first
+=== RUN   TestCollaborationRecipientWritersSerializeWithActualPasswordRecovery/create/collaboration_first
+=== RUN   TestCollaborationRecipientWritersSerializeWithActualPasswordRecovery/invite/password_first
+=== RUN   TestCollaborationRecipientWritersSerializeWithActualPasswordRecovery/invite/collaboration_first
+=== RUN   TestCollaborationRecipientWritersSerializeWithActualPasswordRecovery/transfer/password_first
+=== RUN   TestCollaborationRecipientWritersSerializeWithActualPasswordRecovery/transfer/collaboration_first
+--- PASS: TestCollaborationRecipientWritersSerializeWithActualPasswordRecovery (2.19s)
+    --- PASS: TestCollaborationRecipientWritersSerializeWithActualPasswordRecovery/create/password_first (0.34s)
+    --- PASS: TestCollaborationRecipientWritersSerializeWithActualPasswordRecovery/create/collaboration_first (0.35s)
+    --- PASS: TestCollaborationRecipientWritersSerializeWithActualPasswordRecovery/invite/password_first (0.34s)
+    --- PASS: TestCollaborationRecipientWritersSerializeWithActualPasswordRecovery/invite/collaboration_first (0.35s)
+    --- PASS: TestCollaborationRecipientWritersSerializeWithActualPasswordRecovery/transfer/password_first (0.44s)
+    --- PASS: TestCollaborationRecipientWritersSerializeWithActualPasswordRecovery/transfer/collaboration_first (0.36s)
+=== RUN   TestCollaborationRecipientSearchExternalNeedsSourceMembership
+--- PASS: TestCollaborationRecipientSearchExternalNeedsSourceMembership (0.23s)
+=== RUN   TestCollaborationRecipientSearchSharesResolveAuthorization
+=== RUN   TestCollaborationRecipientSearchSharesResolveAuthorization/unrelated_issue
+=== RUN   TestCollaborationRecipientSearchSharesResolveAuthorization/ordinary_issue
+=== RUN   TestCollaborationRecipientSearchSharesResolveAuthorization/participant_not_manager
+=== RUN   TestCollaborationRecipientSearchSharesResolveAuthorization/source_nonmember
+=== RUN   TestCollaborationRecipientSearchSharesResolveAuthorization/missing_source
+=== RUN   TestCollaborationRecipientSearchSharesResolveAuthorization/source_gate_closed
+=== RUN   TestCollaborationRecipientSearchSharesResolveAuthorization/issue_ignores_creation_gate
+--- PASS: TestCollaborationRecipientSearchSharesResolveAuthorization (1.55s)
+    --- PASS: TestCollaborationRecipientSearchSharesResolveAuthorization/unrelated_issue (0.19s)
+    --- PASS: TestCollaborationRecipientSearchSharesResolveAuthorization/ordinary_issue (0.20s)
+    --- PASS: TestCollaborationRecipientSearchSharesResolveAuthorization/participant_not_manager (0.31s)
+    --- PASS: TestCollaborationRecipientSearchSharesResolveAuthorization/source_nonmember (0.18s)
+    --- PASS: TestCollaborationRecipientSearchSharesResolveAuthorization/missing_source (0.22s)
+    --- PASS: TestCollaborationRecipientSearchSharesResolveAuthorization/source_gate_closed (0.23s)
+    --- PASS: TestCollaborationRecipientSearchSharesResolveAuthorization/issue_ignores_creation_gate (0.22s)
+=== RUN   TestCollaborationRecipientSearchRechecksAuthorityAfterQuery
+=== RUN   TestCollaborationRecipientSearchRechecksAuthorityAfterQuery/transfer
+=== RUN   TestCollaborationRecipientSearchRechecksAuthorityAfterQuery/removal
+=== RUN   TestCollaborationRecipientSearchRechecksAuthorityAfterQuery/source_departure
+=== RUN   TestCollaborationRecipientSearchRechecksAuthorityAfterQuery/creation_disabled
+=== RUN   TestCollaborationRecipientSearchRechecksAuthorityAfterQuery/manager_left_source
+--- PASS: TestCollaborationRecipientSearchRechecksAuthorityAfterQuery (1.11s)
+    --- PASS: TestCollaborationRecipientSearchRechecksAuthorityAfterQuery/transfer (0.25s)
+    --- PASS: TestCollaborationRecipientSearchRechecksAuthorityAfterQuery/removal (0.25s)
+    --- PASS: TestCollaborationRecipientSearchRechecksAuthorityAfterQuery/source_departure (0.19s)
+    --- PASS: TestCollaborationRecipientSearchRechecksAuthorityAfterQuery/creation_disabled (0.22s)
+    --- PASS: TestCollaborationRecipientSearchRechecksAuthorityAfterQuery/manager_left_source (0.20s)
+=== RUN   TestCollaborationRecipientSearchDependenciesFailClosed
+=== RUN   TestCollaborationRecipientSearchDependenciesFailClosed/GetUser
+=== RUN   TestCollaborationRecipientSearchDependenciesFailClosed/GetCollaborationRecipientSource
+=== RUN   TestCollaborationRecipientSearchDependenciesFailClosed/GetCollaborationGate
+=== RUN   TestCollaborationRecipientSearchDependenciesFailClosed/GetCollaborationAccess
+=== RUN   TestCollaborationRecipientSearchDependenciesFailClosed/ListRecentCollaborationRecipients
+=== RUN   TestCollaborationRecipientSearchDependenciesFailClosed/SearchCollaborationRecipients
+--- PASS: TestCollaborationRecipientSearchDependenciesFailClosed (1.20s)
+    --- PASS: TestCollaborationRecipientSearchDependenciesFailClosed/GetUser (0.20s)
+    --- PASS: TestCollaborationRecipientSearchDependenciesFailClosed/GetCollaborationRecipientSource (0.18s)
+    --- PASS: TestCollaborationRecipientSearchDependenciesFailClosed/GetCollaborationGate (0.22s)
+    --- PASS: TestCollaborationRecipientSearchDependenciesFailClosed/GetCollaborationAccess (0.19s)
+    --- PASS: TestCollaborationRecipientSearchDependenciesFailClosed/ListRecentCollaborationRecipients (0.19s)
+    --- PASS: TestCollaborationRecipientSearchDependenciesFailClosed/SearchCollaborationRecipients (0.22s)
+=== RUN   TestCollaborationRecipientSearchRelatedScopeAndJoinedAfterLeaving
+--- PASS: TestCollaborationRecipientSearchRelatedScopeAndJoinedAfterLeaving (0.24s)
+=== RUN   TestCollaborationRecipientSearchRecentOrderAndLimit
+--- PASS: TestCollaborationRecipientSearchRecentOrderAndLimit (0.28s)
+=== RUN   TestCollaborationRecipientSearchPagingIsStableAcrossSharedNames
+--- PASS: TestCollaborationRecipientSearchPagingIsStableAcrossSharedNames (0.39s)
+=== RUN   TestCollaborationRecipientSearchExcludesUnavailableAccountsBeforePaging
+--- PASS: TestCollaborationRecipientSearchExcludesUnavailableAccountsBeforePaging (0.24s)
+=== RUN   TestCollaborationRecipientSearchMatchesLiteralNameSubstringsOnly
+--- PASS: TestCollaborationRecipientSearchMatchesLiteralNameSubstringsOnly (0.21s)
+=== RUN   TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase
+=== RUN   TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/invalid_utf8
+=== RUN   TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/missing_name
+=== RUN   TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/unknown_key
+=== RUN   TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/negative_limit
+=== RUN   TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/large_limit
+=== RUN   TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/padded_base64
+=== RUN   TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/not_base64
+=== RUN   TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/not_json
+=== RUN   TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/long_query
+=== RUN   TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/nul_cursor_name
+=== RUN   TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/nul_query
+=== RUN   TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/bad_id
+=== RUN   TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/trailing_json
+=== RUN   TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/long_cursor_name
+=== RUN   TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/missing_id
+=== RUN   TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/zero_limit
+--- PASS: TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase (0.00s)
+    --- PASS: TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/invalid_utf8 (0.00s)
+    --- PASS: TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/missing_name (0.00s)
+    --- PASS: TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/unknown_key (0.00s)
+    --- PASS: TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/negative_limit (0.00s)
+    --- PASS: TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/large_limit (0.00s)
+    --- PASS: TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/padded_base64 (0.00s)
+    --- PASS: TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/not_base64 (0.00s)
+    --- PASS: TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/not_json (0.00s)
+    --- PASS: TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/long_query (0.00s)
+    --- PASS: TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/nul_cursor_name (0.00s)
+    --- PASS: TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/nul_query (0.00s)
+    --- PASS: TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/bad_id (0.00s)
+    --- PASS: TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/trailing_json (0.00s)
+    --- PASS: TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/long_cursor_name (0.00s)
+    --- PASS: TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/missing_id (0.00s)
+    --- PASS: TestCollaborationRecipientSearchRejectsInvalidInputBeforeDatabase/zero_limit (0.00s)
+=== RUN   TestCollaborationRecipientExactLookupAndNoWrites
+=== RUN   TestCollaborationRecipientExactLookupAndNoWrites/username/_RECIPIENT_2A8EA1B782D64FD7_
+=== RUN   TestCollaborationRecipientExactLookupAndNoWrites/email/_RECIPIENT_2A8EA1B782D64FD7+TAG@EXAMPLE.TEST__
+=== RUN   TestCollaborationRecipientExactLookupAndNoWrites/user_id/2E91C5AE-B856-4505-93AB-17A5EBF49872
+=== RUN   TestCollaborationRecipientExactLookupAndNoWrites/user_id/2e91c5aeb856450593ab17a5ebf49872
+--- PASS: TestCollaborationRecipientExactLookupAndNoWrites (0.25s)
+    --- PASS: TestCollaborationRecipientExactLookupAndNoWrites/username/_RECIPIENT_2A8EA1B782D64FD7_ (0.01s)
+    --- PASS: TestCollaborationRecipientExactLookupAndNoWrites/email/_RECIPIENT_2A8EA1B782D64FD7+TAG@EXAMPLE.TEST__ (0.00s)
+    --- PASS: TestCollaborationRecipientExactLookupAndNoWrites/user_id/2E91C5AE-B856-4505-93AB-17A5EBF49872 (0.00s)
+    --- PASS: TestCollaborationRecipientExactLookupAndNoWrites/user_id/2e91c5aeb856450593ab17a5ebf49872 (0.00s)
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase//recipient
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/name/Recipient
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/EMAIL/recipient@example.test
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/username/
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/username/__
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/username/ab
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/username/name%
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/username/name*
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/username/Full_Name
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/username/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/email/
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/email/recipient
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/email/recipient@
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/email/@example.test
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/email/Recipient_<recipient@example.test>
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/email/one@example.test,two@example.test
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/user_id/
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/user_id/not-a-uuid
+=== RUN   TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/user_id/MUL-123
+--- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase//recipient (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/name/Recipient (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/EMAIL/recipient@example.test (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/username/ (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/username/__ (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/username/ab (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/username/name% (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/username/name* (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/username/Full_Name (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/username/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/email/ (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/email/recipient (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/email/recipient@ (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/email/@example.test (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/email/Recipient_<recipient@example.test> (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/email/one@example.test,two@example.test (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/user_id/ (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/user_id/not-a-uuid (0.00s)
+    --- PASS: TestCollaborationRecipientRejectsInvalidQueryBeforeDatabase/user_id/MUL-123 (0.00s)
+=== RUN   TestCollaborationRecipientRejectsUntrustedPrincipalBeforeDependencies
+--- PASS: TestCollaborationRecipientRejectsUntrustedPrincipalBeforeDependencies (0.00s)
+=== RUN   TestCollaborationRecipientAmbiguousAndUnavailable
+=== RUN   TestCollaborationRecipientAmbiguousAndUnavailable/username
+=== RUN   TestCollaborationRecipientAmbiguousAndUnavailable/email
+=== RUN   TestCollaborationRecipientAmbiguousAndUnavailable/missing
+=== RUN   TestCollaborationRecipientAmbiguousAndUnavailable/disabled
+=== RUN   TestCollaborationRecipientAmbiguousAndUnavailable/restricted
+=== RUN   TestCollaborationRecipientAmbiguousAndUnavailable/temporary_denial
+--- PASS: TestCollaborationRecipientAmbiguousAndUnavailable (1.28s)
+    --- PASS: TestCollaborationRecipientAmbiguousAndUnavailable/username (0.21s)
+    --- PASS: TestCollaborationRecipientAmbiguousAndUnavailable/email (0.20s)
+    --- PASS: TestCollaborationRecipientAmbiguousAndUnavailable/missing (0.20s)
+    --- PASS: TestCollaborationRecipientAmbiguousAndUnavailable/disabled (0.21s)
+    --- PASS: TestCollaborationRecipientAmbiguousAndUnavailable/restricted (0.21s)
+    --- PASS: TestCollaborationRecipientAmbiguousAndUnavailable/temporary_denial (0.25s)
+=== RUN   TestCollaborationRecipientContextAuthorizationPrecedesLookup
+=== RUN   TestCollaborationRecipientContextAuthorizationPrecedesLookup/unrelated_issue
+=== RUN   TestCollaborationRecipientContextAuthorizationPrecedesLookup/ordinary_issue
+=== RUN   TestCollaborationRecipientContextAuthorizationPrecedesLookup/missing_issue
+=== RUN   TestCollaborationRecipientContextAuthorizationPrecedesLookup/participant_not_manager
+=== RUN   TestCollaborationRecipientContextAuthorizationPrecedesLookup/source_member_not_participant
+=== RUN   TestCollaborationRecipientContextAuthorizationPrecedesLookup/revoked_handler
+=== RUN   TestCollaborationRecipientContextAuthorizationPrecedesLookup/revoked_handler_with_source_membership
+=== RUN   TestCollaborationRecipientContextAuthorizationPrecedesLookup/disabled_manager
+=== RUN   TestCollaborationRecipientContextAuthorizationPrecedesLookup/source_nonmember_gate_open
+=== RUN   TestCollaborationRecipientContextAuthorizationPrecedesLookup/source_nonmember_gate_closed
+=== RUN   TestCollaborationRecipientContextAuthorizationPrecedesLookup/missing_source
+=== RUN   TestCollaborationRecipientContextAuthorizationPrecedesLookup/disabled_creator
+=== RUN   TestCollaborationRecipientContextAuthorizationPrecedesLookup/source_gate_closed
+=== RUN   TestCollaborationRecipientContextAuthorizationPrecedesLookup/ordinary_member_can_create
+=== RUN   TestCollaborationRecipientContextAuthorizationPrecedesLookup/external_handler_ignores_creation_gate
+=== RUN   TestCollaborationRecipientContextAuthorizationPrecedesLookup/departed_creator_remains_manager
+--- PASS: TestCollaborationRecipientContextAuthorizationPrecedesLookup (3.26s)
+    --- PASS: TestCollaborationRecipientContextAuthorizationPrecedesLookup/unrelated_issue (0.20s)
+    --- PASS: TestCollaborationRecipientContextAuthorizationPrecedesLookup/ordinary_issue (0.24s)
+    --- PASS: TestCollaborationRecipientContextAuthorizationPrecedesLookup/missing_issue (0.19s)
+    --- PASS: TestCollaborationRecipientContextAuthorizationPrecedesLookup/participant_not_manager (0.21s)
+    --- PASS: TestCollaborationRecipientContextAuthorizationPrecedesLookup/source_member_not_participant (0.20s)
+    --- PASS: TestCollaborationRecipientContextAuthorizationPrecedesLookup/revoked_handler (0.24s)
+    --- PASS: TestCollaborationRecipientContextAuthorizationPrecedesLookup/revoked_handler_with_source_membership (0.19s)
+    --- PASS: TestCollaborationRecipientContextAuthorizationPrecedesLookup/disabled_manager (0.17s)
+    --- PASS: TestCollaborationRecipientContextAuthorizationPrecedesLookup/source_nonmember_gate_open (0.22s)
+    --- PASS: TestCollaborationRecipientContextAuthorizationPrecedesLookup/source_nonmember_gate_closed (0.18s)
+    --- PASS: TestCollaborationRecipientContextAuthorizationPrecedesLookup/missing_source (0.21s)
+    --- PASS: TestCollaborationRecipientContextAuthorizationPrecedesLookup/disabled_creator (0.22s)
+    --- PASS: TestCollaborationRecipientContextAuthorizationPrecedesLookup/source_gate_closed (0.18s)
+    --- PASS: TestCollaborationRecipientContextAuthorizationPrecedesLookup/ordinary_member_can_create (0.20s)
+    --- PASS: TestCollaborationRecipientContextAuthorizationPrecedesLookup/external_handler_ignores_creation_gate (0.21s)
+    --- PASS: TestCollaborationRecipientContextAuthorizationPrecedesLookup/departed_creator_remains_manager (0.18s)
+=== RUN   TestCollaborationRecipientRechecksAuthorityAfterCandidateLookup
+=== RUN   TestCollaborationRecipientRechecksAuthorityAfterCandidateLookup/transfer
+=== RUN   TestCollaborationRecipientRechecksAuthorityAfterCandidateLookup/removal
+=== RUN   TestCollaborationRecipientRechecksAuthorityAfterCandidateLookup/disable
+=== RUN   TestCollaborationRecipientRechecksAuthorityAfterCandidateLookup/source_departure
+=== RUN   TestCollaborationRecipientRechecksAuthorityAfterCandidateLookup/creation_disabled
+--- PASS: TestCollaborationRecipientRechecksAuthorityAfterCandidateLookup (1.08s)
+    --- PASS: TestCollaborationRecipientRechecksAuthorityAfterCandidateLookup/transfer (0.22s)
+    --- PASS: TestCollaborationRecipientRechecksAuthorityAfterCandidateLookup/removal (0.24s)
+    --- PASS: TestCollaborationRecipientRechecksAuthorityAfterCandidateLookup/disable (0.21s)
+    --- PASS: TestCollaborationRecipientRechecksAuthorityAfterCandidateLookup/source_departure (0.21s)
+    --- PASS: TestCollaborationRecipientRechecksAuthorityAfterCandidateLookup/creation_disabled (0.19s)
+=== RUN   TestCollaborationRecipientPasswordAccountStateIsCurrent
+--- PASS: TestCollaborationRecipientPasswordAccountStateIsCurrent (0.23s)
+=== RUN   TestCollaborationRecipientDependenciesFailClosed
+=== RUN   TestCollaborationRecipientDependenciesFailClosed/GetUser
+=== RUN   TestCollaborationRecipientDependenciesFailClosed/GetCollaborationRecipientSource
+=== RUN   TestCollaborationRecipientDependenciesFailClosed/GetCollaborationGate
+=== RUN   TestCollaborationRecipientDependenciesFailClosed/GetCollaborationAccess
+=== RUN   TestCollaborationRecipientDependenciesFailClosed/FindCollaborationRecipients
+--- PASS: TestCollaborationRecipientDependenciesFailClosed (0.96s)
+    --- PASS: TestCollaborationRecipientDependenciesFailClosed/GetUser (0.18s)
+    --- PASS: TestCollaborationRecipientDependenciesFailClosed/GetCollaborationRecipientSource (0.19s)
+    --- PASS: TestCollaborationRecipientDependenciesFailClosed/GetCollaborationGate (0.20s)
+    --- PASS: TestCollaborationRecipientDependenciesFailClosed/GetCollaborationAccess (0.21s)
+    --- PASS: TestCollaborationRecipientDependenciesFailClosed/FindCollaborationRecipients (0.18s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/service	21.618s
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/10/31 20:25:23 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+=== RUN   TestCollaborationNotificationHTTPRechecksRecipientAndObjectAccess
+--- PASS: TestCollaborationNotificationHTTPRechecksRecipientAndObjectAccess (0.07s)
+=== RUN   TestSearchCollaborationRecipientsStrictBody
+=== RUN   TestSearchCollaborationRecipientsStrictBody/missing_context
+=== RUN   TestSearchCollaborationRecipientsStrictBody/two_contexts
+=== RUN   TestSearchCollaborationRecipientsStrictBody/null_second_context
+=== RUN   TestSearchCollaborationRecipientsStrictBody/malformed_context
+=== RUN   TestSearchCollaborationRecipientsStrictBody/unknown_field
+=== RUN   TestSearchCollaborationRecipientsStrictBody/duplicate_field
+=== RUN   TestSearchCollaborationRecipientsStrictBody/wrong_q_type
+=== RUN   TestSearchCollaborationRecipientsStrictBody/fractional_limit
+=== RUN   TestSearchCollaborationRecipientsStrictBody/string_limit
+=== RUN   TestSearchCollaborationRecipientsStrictBody/zero_limit
+=== RUN   TestSearchCollaborationRecipientsStrictBody/large_limit
+=== RUN   TestSearchCollaborationRecipientsStrictBody/bad_cursor
+=== RUN   TestSearchCollaborationRecipientsStrictBody/cursor_bad_id
+=== RUN   TestSearchCollaborationRecipientsStrictBody/wrong_members_only_type
+=== RUN   TestSearchCollaborationRecipientsStrictBody/long_q
+=== RUN   TestSearchCollaborationRecipientsStrictBody/nul_q
+=== RUN   TestSearchCollaborationRecipientsStrictBody/oversized
+=== RUN   TestSearchCollaborationRecipientsStrictBody/array
+--- PASS: TestSearchCollaborationRecipientsStrictBody (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/missing_context (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/two_contexts (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/null_second_context (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/malformed_context (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/unknown_field (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/duplicate_field (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/wrong_q_type (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/fractional_limit (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/string_limit (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/zero_limit (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/large_limit (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/bad_cursor (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/cursor_bad_id (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/wrong_members_only_type (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/long_q (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/nul_q (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/oversized (0.00s)
+    --- PASS: TestSearchCollaborationRecipientsStrictBody/array (0.00s)
+=== RUN   TestSearchCollaborationRecipientsHumanBackstop
+--- PASS: TestSearchCollaborationRecipientsHumanBackstop (0.00s)
+=== RUN   TestSearchCollaborationRecipientsRateBudgetIsSeparateFromResolve
+--- PASS: TestSearchCollaborationRecipientsRateBudgetIsSeparateFromResolve (0.00s)
+=== RUN   TestSearchCollaborationRecipientsIPBudgetCannotRotateAccounts
+--- PASS: TestSearchCollaborationRecipientsIPBudgetCannotRotateAccounts (0.00s)
+=== RUN   TestSearchCollaborationRecipientsLimiterFailureIsUnavailable
+--- PASS: TestSearchCollaborationRecipientsLimiterFailureIsUnavailable (0.00s)
+=== RUN   TestSearchCollaborationRecipientsExactProjection
+--- PASS: TestSearchCollaborationRecipientsExactProjection (0.04s)
+=== RUN   TestResolveCollaborationRecipientStrictBody
+=== RUN   TestResolveCollaborationRecipientStrictBody/missing_context
+=== RUN   TestResolveCollaborationRecipientStrictBody/null_issue
+=== RUN   TestResolveCollaborationRecipientStrictBody/null_source
+=== RUN   TestResolveCollaborationRecipientStrictBody/both_contexts
+=== RUN   TestResolveCollaborationRecipientStrictBody/second_null_context
+=== RUN   TestResolveCollaborationRecipientStrictBody/first_null_context
+=== RUN   TestResolveCollaborationRecipientStrictBody/empty_context
+=== RUN   TestResolveCollaborationRecipientStrictBody/malformed_context
+=== RUN   TestResolveCollaborationRecipientStrictBody/wrong_context_type
+=== RUN   TestResolveCollaborationRecipientStrictBody/unknown_field
+=== RUN   TestResolveCollaborationRecipientStrictBody/missing_kind
+=== RUN   TestResolveCollaborationRecipientStrictBody/missing_value
+=== RUN   TestResolveCollaborationRecipientStrictBody/null_value
+=== RUN   TestResolveCollaborationRecipientStrictBody/null_kind
+=== RUN   TestResolveCollaborationRecipientStrictBody/wrong_value_type
+=== RUN   TestResolveCollaborationRecipientStrictBody/duplicate_field
+=== RUN   TestResolveCollaborationRecipientStrictBody/duplicate_alias
+=== RUN   TestResolveCollaborationRecipientStrictBody/trailing_json
+=== RUN   TestResolveCollaborationRecipientStrictBody/malformed_json
+=== RUN   TestResolveCollaborationRecipientStrictBody/array
+=== RUN   TestResolveCollaborationRecipientStrictBody/null
+=== RUN   TestResolveCollaborationRecipientStrictBody/oversized
+--- PASS: TestResolveCollaborationRecipientStrictBody (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/missing_context (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/null_issue (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/null_source (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/both_contexts (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/second_null_context (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/first_null_context (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/empty_context (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/malformed_context (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/wrong_context_type (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/unknown_field (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/missing_kind (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/missing_value (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/null_value (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/null_kind (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/wrong_value_type (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/duplicate_field (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/duplicate_alias (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/trailing_json (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/malformed_json (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/array (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/null (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/oversized (0.00s)
+=== RUN   TestResolveCollaborationRecipientHumanBackstop
+--- PASS: TestResolveCollaborationRecipientHumanBackstop (0.00s)
+=== RUN   TestResolveCollaborationRecipientRequiresJSON
+--- PASS: TestResolveCollaborationRecipientRequiresJSON (0.00s)
+=== RUN   TestResolveCollaborationRecipientPrivateProjectionAndContext
+--- PASS: TestResolveCollaborationRecipientPrivateProjectionAndContext (0.01s)
+=== RUN   TestResolveCollaborationRecipientRateBudgetCannotRotateQueryOrHeaders
+--- PASS: TestResolveCollaborationRecipientRateBudgetCannotRotateQueryOrHeaders (0.03s)
+=== RUN   TestResolveCollaborationRecipientIPBudgetCannotRotateAccounts
+--- PASS: TestResolveCollaborationRecipientIPBudgetCannotRotateAccounts (0.00s)
+=== RUN   TestResolveCollaborationRecipientLimiterFailureIsUnavailable
+=== RUN   TestResolveCollaborationRecipientLimiterFailureIsUnavailable/missing_limiter
+=== RUN   TestResolveCollaborationRecipientLimiterFailureIsUnavailable/missing_shared_backend
+=== RUN   TestResolveCollaborationRecipientLimiterFailureIsUnavailable/failed_shared_backend
+--- PASS: TestResolveCollaborationRecipientLimiterFailureIsUnavailable (0.00s)
+    --- PASS: TestResolveCollaborationRecipientLimiterFailureIsUnavailable/missing_limiter (0.00s)
+    --- PASS: TestResolveCollaborationRecipientLimiterFailureIsUnavailable/missing_shared_backend (0.00s)
+    --- PASS: TestResolveCollaborationRecipientLimiterFailureIsUnavailable/failed_shared_backend (0.00s)
+=== RUN   TestResolveCollaborationRecipientDatabaseFailureDoesNotLeakPrivateValues
+--- PASS: TestResolveCollaborationRecipientDatabaseFailureDoesNotLeakPrivateValues (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/handler	1.196s
+exit_code=0
