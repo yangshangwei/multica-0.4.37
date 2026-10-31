@@ -1,0 +1,37 @@
+{
+  "database": "multica_knowledge_c2_20261101_7d95f46f",
+  "parent_env": "/tmp/multica_knowledge_c2_20261101_7d95f46f.env",
+  "old_unsafe_path_rerun": false,
+  "child_safety": "DATABASE_URL absent/blank, replacement PGOPTIONS=-c default_transaction_read_only=on -c statement_timeout=2000, nonexisting PGHOST socket, PGPORT=1, 5-second CommandContext",
+  "pgx_option_proof": "Config-only ParseConfig with an explicit localhost URI preserves options; no connection is opened.",
+  "suites": [
+    {
+      "command": "go test ./internal/handler -run '^TestHandler(TestMainRequiresExplicitDatabase|DatabaseGuardPreservesReadOnlyPGOptions)$' -count=1 -json",
+      "log": "handler-database-guard-final.jsonl",
+      "sha256": "04e3f1b1cda721afa3d89e4287359389144589d0ee93c4a213eb703ae363d854",
+      "exit_code": 0,
+      "counts": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": "go test ./cmd/server -run '^TestRouter(TestMainRequiresExplicitDatabase|DatabaseGuardPreservesReadOnlyPGOptions)$' -count=1 -json",
+      "log": "router-database-guard-final.jsonl",
+      "sha256": "9998e7f8e6ac0cf68ff6c47818b28d65994e7540a1092ca710e36ce1f8953ac6",
+      "exit_code": 0,
+      "counts": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      }
+    }
+  ],
+  "source_hashes": {
+    "server/internal/handler/handler_test.go": "66b4ea1c269b4e431a0118cfe88eb14fc707979a2aab70a626d07167e02ae12b",
+    "server/internal/handler/database_guard_test.go": "6e6f120577bd331cbfadb689e36c308179f6ab352fed16753d0cc5f8af87801e",
+    "server/cmd/server/integration_test.go": "1b64e72652bdf5a629fc282b188391dfc781f812c899b472846f1c831c0b62f9",
+    "server/cmd/server/database_guard_test.go": "fdd82962cecfda74f5b9e3e4e0cdce134da6dba429346bb56481c123da38a3bc"
+  }
+}
