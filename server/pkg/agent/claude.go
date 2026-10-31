@@ -12,6 +12,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"slices"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -40,8 +41,15 @@ type claudeBackend struct {
 }
 
 func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOptions) (*Session, error) {
+	if opts.Knowledge != nil {
+		intent := *opts.Knowledge
+		opts.Knowledge = &intent
+		opts.ExtraArgs = slices.Clone(opts.ExtraArgs)
+		opts.CustomArgs = slices.Clone(opts.CustomArgs)
+		opts.McpConfig = slices.Clone(opts.McpConfig)
+	}
 	var lifecycleErr error
-	ctx, lifecycleErr = withExecutionLifecycle(ctx, opts, b.cfg.provider)
+	ctx, lifecycleErr = withKnowledgeClaudeLifecycle(ctx, b.cfg, opts)
 	if lifecycleErr != nil {
 		return nil, lifecycleErr
 	}
@@ -81,6 +89,7 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 	}()
 
 	cmd := b.cfg.commandAt(execPath).exec(runCtx, args...)
+	knowledgeLaunch := knowledgeCommandLaunch(cmd)
 	hideAgentWindow(cmd)
 	// Take over context cancellation: the default kills the whole group the
 	// instant runCtx is done. We instead drive a graceful group-wide
@@ -182,6 +191,7 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 		assistantEventCount := 0
 		toolUseCount := 0
 		unreadableAssistantCount := 0
+		var nativeSessionErr error
 
 		// On cancellation / timeout, terminate claude (and every MCP server and
 		// tool subprocess it spawned) BEFORE unblocking the scanner. EOF stdin
@@ -217,6 +227,7 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 
 		scanner := newAgentStreamScanner(stdout)
 
+	stream:
 		for scanner.Scan() {
 			line := strings.TrimSpace(scanner.Text())
 			if line == "" {
@@ -244,6 +255,11 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 					sawAsyncLaunch = true
 				}
 			case "system":
+				if knowledgeLaunch != nil {
+					if nativeSessionErr = knowledgeLaunch.observeNativeSession(msg.SessionID, "system"); nativeSessionErr != nil {
+						break stream
+					}
+				}
 				if msg.SessionID != "" {
 					sessionID = msg.SessionID
 				}
@@ -253,10 +269,15 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 				finalResultText = msg.ResultText
 				resultIsError = msg.IsError
 				terminalReasonError = claudeTerminalReasonFailure(msg.TerminalReason, msg.ResultText)
-				sessionID = msg.SessionID
 				if resultUsage := claudeResultUsage(msg, opts.Model); len(resultUsage) > 0 {
 					usage = resultUsage
 				}
+				if knowledgeLaunch != nil {
+					if nativeSessionErr = knowledgeLaunch.observeNativeSession(msg.SessionID, "result"); nativeSessionErr != nil {
+						break stream
+					}
+				}
+				sessionID = msg.SessionID
 				closeStdin()
 			case "log":
 				if msg.Log != nil {
@@ -271,7 +292,7 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 			}
 		}
 		scanErr := scanner.Err()
-		if scanErr != nil {
+		if scanErr != nil || nativeSessionErr != nil {
 			// Scanner stopped consuming stdout. Close the pipe before Wait so a
 			// child still writing a malformed/oversized event cannot deadlock on
 			// the full OS pipe; the scanner error remains the primary failure.
@@ -354,16 +375,37 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 				"emitted_session", sessionID,
 			)
 		}
+		knowledgeReason := ""
+		knowledgeOutput := ""
+		if knowledgeLaunch != nil {
+			// Requested IDs and resolveSessionID's legacy error fallbacks are
+			// not native observations. A missing raw ID remains non-reusable.
+			reportedSessionID = knowledgeLaunch.nativeSessionID
+			knowledgeReason = KnowledgeFailureReason(knowledgeLaunch.lifecycle.Err())
+			if knowledgeReason != "" {
+				// Retain observed work separately from the final-answer channel.
+				// Whether Stop wins a race with natural exit must not decide if
+				// a failed execution publishes text as a completed answer.
+				knowledgeOutput = lastAssistantText
+				if sawResult {
+					knowledgeOutput = finalResultText
+				}
+				finalStatus, finalOutput, finalError = "failed", "", knowledgeReason
+				resumeRejected = false
+			}
+		}
 
 		resCh <- Result{
-			ProcessExited:  cmd.ProcessState != nil,
-			Status:         finalStatus,
-			Output:         finalOutput,
-			Error:          finalError,
-			DurationMs:     duration.Milliseconds(),
-			SessionID:      reportedSessionID,
-			Usage:          usage,
-			ResumeRejected: resumeRejected,
+			ProcessExited:    cmd.ProcessState != nil,
+			Status:           finalStatus,
+			Output:           finalOutput,
+			Error:            finalError,
+			KnowledgeFailure: knowledgeReason,
+			KnowledgeOutput:  knowledgeOutput,
+			DurationMs:       duration.Milliseconds(),
+			SessionID:        reportedSessionID,
+			Usage:            usage,
+			ResumeRejected:   resumeRejected,
 		}
 	}()
 

@@ -1,0 +1,164 @@
+=== RUN   TestOrdinaryKnowledgeLifecyclePreservesTaskCredentials
+--- PASS: TestOrdinaryKnowledgeLifecyclePreservesTaskCredentials (0.01s)
+=== RUN   TestKnowledgeClaudeNativeObservationIsBoundToPhysicalAttempt
+--- PASS: TestKnowledgeClaudeNativeObservationIsBoundToPhysicalAttempt (0.01s)
+=== RUN   TestKnowledgeClaudeResultOnlyObservationPrecedesPointer
+--- PASS: TestKnowledgeClaudeResultOnlyObservationPrecedesPointer (0.01s)
+=== RUN   TestKnowledgeUnknownFreshSessionCannotBePinnedWithoutObservation
+=== RUN   TestKnowledgeUnknownFreshSessionCannotBePinnedWithoutObservation/#00
+=== RUN   TestKnowledgeUnknownFreshSessionCannotBePinnedWithoutObservation/requested-but-never-observed
+--- PASS: TestKnowledgeUnknownFreshSessionCannotBePinnedWithoutObservation (0.01s)
+    --- PASS: TestKnowledgeUnknownFreshSessionCannotBePinnedWithoutObservation/#00 (0.01s)
+    --- PASS: TestKnowledgeUnknownFreshSessionCannotBePinnedWithoutObservation/requested-but-never-observed (0.00s)
+=== RUN   TestKnowledgeChangedNativeSessionDoesNotRelabelHistory
+=== RUN   TestKnowledgeChangedNativeSessionDoesNotRelabelHistory/false
+=== RUN   TestKnowledgeChangedNativeSessionDoesNotRelabelHistory/true
+--- PASS: TestKnowledgeChangedNativeSessionDoesNotRelabelHistory (0.01s)
+    --- PASS: TestKnowledgeChangedNativeSessionDoesNotRelabelHistory/false (0.00s)
+    --- PASS: TestKnowledgeChangedNativeSessionDoesNotRelabelHistory/true (0.00s)
+=== RUN   TestKnowledgeNativeObservationFailureStopsProcessAndSeals
+--- PASS: TestKnowledgeNativeObservationFailureStopsProcessAndSeals (0.00s)
+=== RUN   TestOrdinaryKnowledgeObserverCannotSubstituteEnvironment
+=== RUN   TestOrdinaryKnowledgeObserverCannotSubstituteEnvironment/MULTICA_TOKEN
+=== RUN   TestOrdinaryKnowledgeObserverCannotSubstituteEnvironment/MULTICA_DAEMON_TOKEN
+=== RUN   TestOrdinaryKnowledgeObserverCannotSubstituteEnvironment/ANTHROPIC_API_KEY
+=== RUN   TestOrdinaryKnowledgeObserverCannotSubstituteEnvironment/PATH
+=== RUN   TestOrdinaryKnowledgeObserverCannotSubstituteEnvironment/UNRELATED_NEW_ENTRY
+--- PASS: TestOrdinaryKnowledgeObserverCannotSubstituteEnvironment (0.00s)
+    --- PASS: TestOrdinaryKnowledgeObserverCannotSubstituteEnvironment/MULTICA_TOKEN (0.00s)
+    --- PASS: TestOrdinaryKnowledgeObserverCannotSubstituteEnvironment/MULTICA_DAEMON_TOKEN (0.00s)
+    --- PASS: TestOrdinaryKnowledgeObserverCannotSubstituteEnvironment/ANTHROPIC_API_KEY (0.00s)
+    --- PASS: TestOrdinaryKnowledgeObserverCannotSubstituteEnvironment/PATH (0.00s)
+    --- PASS: TestOrdinaryKnowledgeObserverCannotSubstituteEnvironment/UNRELATED_NEW_ENTRY (0.00s)
+=== RUN   TestCollaborationLifecycleStillRejectsOrdinaryCredentials
+--- PASS: TestCollaborationLifecycleStillRejectsOrdinaryCredentials (0.00s)
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--resume
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--resume
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--resume=other
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--resume=other
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults-r
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom-r
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults-rother
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom-rother
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--continue
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--continue
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults-c
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom-c
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults-cr
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom-cr
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--session
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--session
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--session-id=other
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--session-id=other
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--fork-session
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--fork-session
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--attach
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--attach
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--server
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--server
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--url
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--url
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--cwd
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--cwd
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--cd
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--cd
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults-C/tmp
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom-C/tmp
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--directory
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--directory
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--workdir
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--workdir
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--config-dir
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--config-dir
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaultsremote-control
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/customremote-control
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--unknown-vendor-flag
+=== RUN   TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--unknown-vendor-flag
+--- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection (0.01s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--resume (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--resume (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--resume=other (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--resume=other (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults-r (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom-r (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults-rother (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom-rother (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--continue (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--continue (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults-c (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom-c (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults-cr (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom-cr (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--session (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--session (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--session-id=other (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--session-id=other (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--fork-session (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--fork-session (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--attach (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--attach (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--server (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--server (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--url (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--url (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--cwd (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--cwd (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--cd (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--cd (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults-C/tmp (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom-C/tmp (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--directory (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--directory (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--workdir (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--workdir (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--config-dir (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--config-dir (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaultsremote-control (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/customremote-control (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults-- (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom-- (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/defaults--unknown-vendor-flag (0.00s)
+    --- PASS: TestKnowledgeEffectiveArgsCannotOverrideSessionSelection/custom--unknown-vendor-flag (0.00s)
+=== RUN   TestKnowledgeInvocationFingerprintRejectsDrift
+=== RUN   TestKnowledgeInvocationFingerprintRejectsDrift/model
+=== RUN   TestKnowledgeInvocationFingerprintRejectsDrift/cwd
+=== RUN   TestKnowledgeInvocationFingerprintRejectsDrift/safe-args
+=== RUN   TestKnowledgeInvocationFingerprintRejectsDrift/executable
+=== RUN   TestKnowledgeInvocationFingerprintRejectsDrift/mcp
+=== RUN   TestKnowledgeInvocationFingerprintRejectsDrift/thinking
+=== RUN   TestKnowledgeInvocationFingerprintRejectsDrift/settings
+--- PASS: TestKnowledgeInvocationFingerprintRejectsDrift (0.00s)
+    --- PASS: TestKnowledgeInvocationFingerprintRejectsDrift/model (0.00s)
+    --- PASS: TestKnowledgeInvocationFingerprintRejectsDrift/cwd (0.00s)
+    --- PASS: TestKnowledgeInvocationFingerprintRejectsDrift/safe-args (0.00s)
+    --- PASS: TestKnowledgeInvocationFingerprintRejectsDrift/executable (0.00s)
+    --- PASS: TestKnowledgeInvocationFingerprintRejectsDrift/mcp (0.00s)
+    --- PASS: TestKnowledgeInvocationFingerprintRejectsDrift/thinking (0.00s)
+    --- PASS: TestKnowledgeInvocationFingerprintRejectsDrift/settings (0.00s)
+=== RUN   TestKnowledgeCustomProtocolFamilyIsNotBuiltinSupport
+=== RUN   TestKnowledgeCustomProtocolFamilyIsNotBuiltinSupport/custom
+=== RUN   TestKnowledgeCustomProtocolFamilyIsNotBuiltinSupport/prefix
+=== RUN   TestKnowledgeCustomProtocolFamilyIsNotBuiltinSupport/filtered-prefix
+=== RUN   TestKnowledgeCustomProtocolFamilyIsNotBuiltinSupport/remote
+=== RUN   TestKnowledgeCustomProtocolFamilyIsNotBuiltinSupport/codex
+=== RUN   TestKnowledgeCustomProtocolFamilyIsNotBuiltinSupport/opencode
+--- PASS: TestKnowledgeCustomProtocolFamilyIsNotBuiltinSupport (0.00s)
+    --- PASS: TestKnowledgeCustomProtocolFamilyIsNotBuiltinSupport/custom (0.00s)
+    --- PASS: TestKnowledgeCustomProtocolFamilyIsNotBuiltinSupport/prefix (0.00s)
+    --- PASS: TestKnowledgeCustomProtocolFamilyIsNotBuiltinSupport/filtered-prefix (0.00s)
+    --- PASS: TestKnowledgeCustomProtocolFamilyIsNotBuiltinSupport/remote (0.00s)
+    --- PASS: TestKnowledgeCustomProtocolFamilyIsNotBuiltinSupport/codex (0.00s)
+    --- PASS: TestKnowledgeCustomProtocolFamilyIsNotBuiltinSupport/opencode (0.00s)
+=== RUN   TestKnowledgeAmbiguousLegacyContinueRefused
+--- PASS: TestKnowledgeAmbiguousLegacyContinueRefused (0.00s)
+=== RUN   TestKnowledgeLeafLaunchRefusalDoesNotReplayInput
+=== RUN   TestKnowledgeLeafLaunchRefusalDoesNotReplayInput/1
+=== RUN   TestKnowledgeLeafLaunchRefusalDoesNotReplayInput/2
+--- PASS: TestKnowledgeLeafLaunchRefusalDoesNotReplayInput (0.00s)
+    --- PASS: TestKnowledgeLeafLaunchRefusalDoesNotReplayInput/1 (0.00s)
+    --- PASS: TestKnowledgeLeafLaunchRefusalDoesNotReplayInput/2 (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/pkg/agent	0.681s

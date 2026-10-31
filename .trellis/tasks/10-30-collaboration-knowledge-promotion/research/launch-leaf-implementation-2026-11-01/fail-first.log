@@ -1,0 +1,9 @@
+=== RUN   TestOrdinaryKnowledgeLifecyclePreservesTaskCredentials
+    knowledge_launch_test.go:29: ordinary launch lost an existing task environment entry: MULTICA_TOKEN
+    knowledge_launch_test.go:29: ordinary launch lost an existing task environment entry: MULTICA_TASK_ID
+    knowledge_launch_test.go:29: ordinary launch lost an existing task environment entry: MULTICA_CONTEXT
+    knowledge_launch_test.go:29: ordinary launch lost an existing task environment entry: ORDINARY_PREF
+--- FAIL: TestOrdinaryKnowledgeLifecyclePreservesTaskCredentials (0.01s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/pkg/agent	0.648s
+FAIL
