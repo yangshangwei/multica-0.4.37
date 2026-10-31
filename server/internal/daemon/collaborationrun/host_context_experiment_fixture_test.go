@@ -22,6 +22,12 @@ import (
 // Only a test-created executable (this test binary) can enter this fixture.
 // Real experiment commands never set this environment variable.
 func init() {
+	if path := os.Getenv("COLLAB_CONTEXT_TEST_PROBE"); path != "" && len(os.Args) > 1 && os.Args[1] == "--version" {
+		if err := os.WriteFile(path, []byte("provider probed\n"), 0600); err != nil {
+			os.Exit(39)
+		}
+		os.Exit(38)
+	}
 	if mode := os.Getenv("COLLAB_CONTEXT_TEST_PROVIDER"); mode != "" {
 		code := contextFakeProvider(mode)
 		if code != 0 {
@@ -234,6 +240,55 @@ func TestContextExperimentNeverPassesMissingOrFailedOutcome(t *testing.T) {
 	}
 }
 
+func TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe(t *testing.T) {
+	executable, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	commit := contextSourceCommit(t)
+	for _, test := range []struct {
+		name, trials, start, field string
+	}{
+		{"invalid_total", "two", "", "MULTICA_CONTEXT_EXPERIMENT_TRIALS"},
+		{"changed_total", "4", "", "MULTICA_CONTEXT_EXPERIMENT_TRIALS"},
+		{"empty_start", "3", "", "MULTICA_CONTEXT_EXPERIMENT_START_TRIAL"},
+		{"malformed_start", "3", "two", "MULTICA_CONTEXT_EXPERIMENT_START_TRIAL"},
+		{"zero_start", "3", "0", "MULTICA_CONTEXT_EXPERIMENT_START_TRIAL"},
+		{"negative_start", "3", "-1", "MULTICA_CONTEXT_EXPERIMENT_START_TRIAL"},
+		{"past_end", "3", "4", "MULTICA_CONTEXT_EXPERIMENT_START_TRIAL"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			probe := filepath.Join(t.TempDir(), "probe.txt")
+			for key, value := range map[string]string{
+				"COLLAB_CONTEXT_TEST_PROVIDER":              "",
+				"COLLAB_CONTEXT_TEST_PROBE":                 probe,
+				"MULTICA_RUN_REAL_AGENT_SMOKE":              "1",
+				"MULTICA_HOST_SMOKE_PROVIDER":               "claude",
+				"MULTICA_HOST_SMOKE_EXECUTABLE":             executable,
+				"MULTICA_CONTEXT_EXPERIMENT_OUT":            filepath.Join(t.TempDir(), "records.jsonl"),
+				"MULTICA_CONTEXT_EXPERIMENT_COMMIT":         commit,
+				"MULTICA_CONTEXT_EXPERIMENT_ARM":            "baseline",
+				"MULTICA_CONTEXT_EXPERIMENT_MODEL":          "fixture-model",
+				"MULTICA_CONTEXT_EXPERIMENT_THINKING_LEVEL": "provider_default",
+				"MULTICA_CONTEXT_EXPERIMENT_SERVICE_TIER":   "provider_default",
+				"MULTICA_CONTEXT_EXPERIMENT_SCENARIO":       "E1_memory_first",
+				"MULTICA_CONTEXT_EXPERIMENT_TRIALS":         test.trials,
+				"MULTICA_CONTEXT_EXPERIMENT_START_TRIAL":    test.start,
+			} {
+				t.Setenv(key, value)
+			}
+			cmd := exec.CommandContext(t.Context(), executable, "-test.run=^TestHostContextExperiment$", "-test.v")
+			output, err := cmd.CombinedOutput()
+			if err == nil || !strings.Contains(string(output), test.field) {
+				t.Errorf("invalid trial configuration was not rejected: err=%v output=%s", err, output)
+			}
+			if _, err := os.Stat(probe); !os.IsNotExist(err) {
+				t.Fatal("invalid trial configuration reached the provider version probe")
+			}
+		})
+	}
+}
+
 func TestContextExperimentRequiresSemanticReviewAndRejectsPublicEvidence(t *testing.T) {
 	status, verdict := contextVerdict(contextRecord{Scenario: "E1_memory_first", Outcome: "success", Body: "pg-blue-17"}, nil, true)
 	if status != "finished" || verdict != "manual_review_required" {
@@ -330,10 +385,16 @@ func TestContextExperimentSourceCommitCoversModuleFromPackageDirectory(t *testin
 
 func TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence(t *testing.T) {
 	for _, test := range []struct {
-		name, mode string
-		runs       int
-	}{{"E2a_window_fact_newest", "success", 3}, {"E6_relay", "relay", 6}} {
-		t.Run(test.name, func(t *testing.T) {
+		name, mode, start string
+		runs              int
+	}{
+		{"E2a_window_fact_newest", "success", "", 3},
+		{"E6_relay", "relay", "", 6},
+		{"E1_memory_first", "success", "2", 2},
+		{"E1_memory_first", "success", "3", 1},
+		{"E6_relay", "relay", "2", 4},
+	} {
+		t.Run(test.name+"/start="+test.start, func(t *testing.T) {
 			env, _ := contextFakeEnvironment(t, test.mode)
 			var scenario contextScenario
 			for _, candidate := range contextScenarios() {
@@ -341,7 +402,11 @@ func TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence(t *testing.
 					scenario = candidate
 				}
 			}
-			records, err := env.runSeries(t, t.Context(), scenario, 3)
+			startTrial, trials, err := contextTrialRange(test.start, "3")
+			if err != nil {
+				t.Fatal(err)
+			}
+			records, err := env.runSeries(t, t.Context(), scenario, startTrial, trials)
 			if err != nil {
 				t.Fatalf("full preregistered series failed after %d runs: %v", len(records), err)
 			}
@@ -349,7 +414,14 @@ func TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence(t *testing.
 				t.Fatalf("ran %d provider calls, want %d", len(records), test.runs)
 			}
 			seenIDs, seenFiles := map[string]bool{}, map[string]bool{}
-			for _, record := range records {
+			for index, record := range records {
+				wantTrial := fmt.Sprint(startTrial + index)
+				if test.name == "E6_relay" {
+					wantTrial = fmt.Sprintf("%d/hop%d", startTrial+index/2, index%2+1)
+				}
+				if record.Trial != wantTrial {
+					t.Fatalf("trial was renumbered: got %q, want %q", record.Trial, wantTrial)
+				}
 				if record.Status != "finished" || seenIDs[record.RunID] || seenFiles[record.EvidencePath] {
 					t.Fatal("trial identity or evidence was reused")
 				}
@@ -360,12 +432,47 @@ func TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence(t *testing.
 				}
 			}
 			if test.name == "E6_relay" {
-				for pair := 0; pair < 3; pair++ {
+				for pair := 0; pair < len(records)/2; pair++ {
 					first, second := records[pair*2], records[pair*2+1]
 					if first.MemoryFinal != "relay facts from "+first.RunID || second.MemoryFinal != first.MemoryFinal || !strings.Contains(second.Prompt, first.MemoryFinal) {
 						t.Fatal("relay did not transfer exactly its paired first hop memory")
 					}
 				}
+			}
+		})
+	}
+}
+
+func TestContextExperimentResumedSeriesStopsOnIncompleteTrial(t *testing.T) {
+	for _, name := range []string{"E1_memory_first", "E6_relay"} {
+		t.Run(name, func(t *testing.T) {
+			env, capture := contextFakeEnvironment(t, "failure")
+			records, err := env.runSeries(t, t.Context(), contextScenario{Name: name, Input: "Read the issue."}, 2, 3)
+			wantTrial := "2"
+			if name == "E6_relay" {
+				wantTrial = "2/hop1"
+			}
+			if err == nil || len(records) != 1 || records[0].Trial != wantTrial || records[0].Status != "incomplete" {
+				t.Fatalf("incomplete resume did not stop at its original trial: records=%+v err=%v", records, err)
+			}
+			f, err := os.Open(capture)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer f.Close()
+			decoder := json.NewDecoder(f)
+			var calls int
+			for {
+				var call json.RawMessage
+				if err := decoder.Decode(&call); err == io.EOF {
+					break
+				} else if err != nil {
+					t.Fatal(err)
+				}
+				calls++
+			}
+			if calls != 1 {
+				t.Fatalf("incomplete resume made %d provider calls, want 1", calls)
 			}
 		})
 	}

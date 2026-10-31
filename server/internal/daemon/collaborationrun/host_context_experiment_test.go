@@ -121,6 +121,14 @@ func TestHostContextExperiment(t *testing.T) {
 	if os.Getenv("MULTICA_RUN_REAL_AGENT_SMOKE") != "1" || os.Getenv("MULTICA_CONTEXT_EXPERIMENT_OUT") == "" {
 		t.Skip("real-model context experiments need MULTICA_RUN_REAL_AGENT_SMOKE=1 and MULTICA_CONTEXT_EXPERIMENT_OUT")
 	}
+	start, startConfigured := os.LookupEnv("MULTICA_CONTEXT_EXPERIMENT_START_TRIAL")
+	startTrial, trials, err := contextTrialRange(start, os.Getenv("MULTICA_CONTEXT_EXPERIMENT_TRIALS"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if startConfigured && start == "" {
+		t.Fatal("MULTICA_CONTEXT_EXPERIMENT_START_TRIAL must not be empty; omit it to start at trial 1")
+	}
 	env := contextEnv{provider: os.Getenv("MULTICA_HOST_SMOKE_PROVIDER"), executable: os.Getenv("MULTICA_HOST_SMOKE_EXECUTABLE"),
 		out: os.Getenv("MULTICA_CONTEXT_EXPERIMENT_OUT"), commit: os.Getenv("MULTICA_CONTEXT_EXPERIMENT_COMMIT")}
 	if env.provider != "claude" || !filepath.IsAbs(env.executable) || !filepath.IsAbs(env.out) {
@@ -167,13 +175,9 @@ func TestHostContextExperiment(t *testing.T) {
 	}
 	env.cli = buildHostAccountSmokeCLI(t, ctx)
 	env.cliHash = contextFileHash(t, env.cli)
-	trials, _ := strconv.Atoi(os.Getenv("MULTICA_CONTEXT_EXPERIMENT_TRIALS"))
-	if trials != 3 {
-		t.Fatalf("MULTICA_CONTEXT_EXPERIMENT_TRIALS must be 3 for the preregistered experiment, got %d", trials)
-	}
 	for _, scenario := range scenarios {
 		t.Run(scenario.Name, func(t *testing.T) {
-			records, err := env.runSeries(t, ctx, scenario, trials)
+			records, err := env.runSeries(t, ctx, scenario, startTrial, trials)
 			if err != nil {
 				t.Fatal("incomplete experiment; later trials stopped:", err)
 			}
@@ -186,10 +190,25 @@ func TestHostContextExperiment(t *testing.T) {
 	}
 }
 
-func (env contextEnv) runSeries(t *testing.T, ctx context.Context, scenario contextScenario, trials int) ([]contextRecord, error) {
+func contextTrialRange(start, total string) (int, int, error) {
+	trials, err := strconv.Atoi(total)
+	if err != nil || trials != 3 {
+		return 0, 0, fmt.Errorf("MULTICA_CONTEXT_EXPERIMENT_TRIALS must be 3 for the preregistered experiment, got %q", total)
+	}
+	startTrial := 1
+	if start != "" {
+		startTrial, err = strconv.Atoi(start)
+		if err != nil || startTrial < 1 || startTrial > trials {
+			return 0, 0, fmt.Errorf("MULTICA_CONTEXT_EXPERIMENT_START_TRIAL must be between 1 and %d, got %q", trials, start)
+		}
+	}
+	return startTrial, trials, nil
+}
+
+func (env contextEnv) runSeries(t *testing.T, ctx context.Context, scenario contextScenario, startTrial, trials int) ([]contextRecord, error) {
 	t.Helper()
 	var records []contextRecord
-	for trial := 1; trial <= trials; trial++ {
+	for trial := startTrial; trial <= trials; trial++ {
 		label := strconv.Itoa(trial)
 		if scenario.Name == "E6_relay" {
 			label += "/hop1"
