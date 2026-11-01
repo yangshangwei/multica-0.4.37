@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T06:10:09.134019+00:00",
+  "updated_at": "2026-11-01T16:17:05.722204+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -15,7 +15,7 @@
         "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md"
       ],
       "gaps": [
-        "runtime 没有新增迁移，746 演练属于原修复版本；额外遗漏矩阵另列"
+        "既有质量门仅适用于各自历史源码；本轮审计修复合流后的完整make check、sqlc、迁移、Web/Electron/RK1 fake尚未完成。"
       ]
     },
     {
@@ -37,10 +37,11 @@
       "evidence": [
         "../10-30-collaboration-fix-closure/verification-2026-10-31.md",
         "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/registration.json",
-        "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json"
+        "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json",
+        "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/source-manifest-547760ea8.json"
       ],
       "gaps": [
-        "原产品 4c833e737 正式 E0 已过；RK1 runtime 场景上限 19 次（28c67c674，会话-87记录的用户决定），待产品补丁、源码重新绑定和真实 Provider 框架；K1–K3/E0b 无预算；不能继承旧结论"
+        "RK1 runtime上限25已批、消耗0，含H2b及H6双启动；框架产品af04f6429已提交，normal fake/sim历史通过，旧产品race的真实incomplete均已保留；runnable=false，待runtime/知识修复合入、独立复核、同候选fake及最终源码/CLI/配置绑定。K1–K3/E0b未分配预算。"
       ]
     },
     {
@@ -60,39 +61,43 @@
     {
       "id": "AC4",
       "requirement": "中断与撤权后的记录保留",
-      "status": "passed_deterministic_model_unrun",
+      "status": "audit_repairs_independently_reviewed_pending_merge_and_combined_validation; real_model_unrun",
       "evidence": [
         "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/late-reconciliation/README.md",
-        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/acceptance-matrix-addendum/summary.md"
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/acceptance-matrix-addendum/summary.md",
+        "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md"
       ],
       "gaps": [
-        "Stop/撤权/作者退出两种提交顺序已补齐并通过 race；真实 Provider 中断摄取未由 seeded UI 或服务 fixture 代替"
+        "REC-1–REC-4已在4456cc65a修复；全批7627916c8独立pass-with-notes。尚未合入当前集成；统筹最终service协作套件在独立新库运行，不能把历史或分支回归拼成最终候选通过。真实Provider中断/撤权仍未验。"
       ]
     },
     {
       "id": "AC5",
       "requirement": "成员/队长/并行 memory 交接",
-      "status": "passed_deterministic_model_unrun",
+      "status": "audit_repairs_independently_reviewed_pending_merge_and_combined_validation; real_model_unrun",
       "evidence": [
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-backend-round2/service-summary.json",
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/acceptance-matrix-addendum/summary.md",
-        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/remaining-acceptance-addendum/summary.md"
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/remaining-acceptance-addendum/summary.md",
+        "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md"
       ],
       "gaps": [
-        "双成员与 claim 前后来源、memory 冲突后的 refresh/new-intent merge 及双事实/作者版本保留均通过；模型理解和真实隔离接力仍单列"
+        "ENV-1/ENV-2/ENV-4分道修复分别为1eb0cb33c/5b9f66292/e1e6090eb，独立复核无阻塞；额外snapshot基线字段解析RV1修复58d486656，经统筹16/16复验。待合流联合验证和真实接力。另一个用户授权的端到端会话已在冻结822c15785真实API/Web复现ENV-1，旧冻结失败保留，不能覆盖修复候选结论。"
       ]
     },
     {
       "id": "AC6",
       "requirement": "有界评论召回与 revision",
-      "status": "passed_deterministic",
+      "status": "audit_repairs_independently_reviewed_pending_merge_and_combined_validation; real_model_unrun",
       "evidence": [
         "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
-        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/summary-final.json"
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/summary-final.json",
+        "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md",
+        "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-recall-surface-review/README.md"
       ],
       "gaps": [
-        "模型读取/理解仍属独立实验；普通评论是 live recall，不是启动预载"
+        "作者显示名、召回契约、预览前置游标及16KiB建议预算修复7627916c8；5项召回复核跟进c9b285552；整批独立pass-with-notes。待合流验证。H2实际不测超过32项结果/原因分页，H2b另测大结果来源读取，模型可见性由tool_result取证，尚无真实Provider结果。"
       ]
     },
     {
@@ -120,8 +125,7 @@
         "../10-30-collaboration-knowledge-promotion/verification-integration-2026-11-01.md"
       ],
       "gaps": [
-        "已合入并通过人工权限、版本/纠错/过期/撤回、失效与真实fake输入的确定性验收；真实Provider/生产启用另验，技能层不在本轮范围",
-        "2026-11-01 会话-14 审计记录21项缺陷（高3：开关关闭时白名单外参数终止任务、工作目录不可达后 PriorSessionID 失配、128行历史上限永久拒绝），修复任务 11-01-collaboration-knowledge-audit-fixes 在分支 codex/collaboration-knowledge-fixes-20261101 进行，未合入；本矩阵未独立核实"
+        "知识21项各分道已有修复或测试处置，未整体合流。claim H3/M3提交94e790d2d，托管参数30edf3e36，全service3281含子用例通过/18skip；launch H2边界与L7已补、daemon1714通过/2skip；write L5 ac6546772和L1归因d4bc37a86，完整service在跑；web ed0026525独立pass-with-notes，Core4338全套通过，Views7116通过/1既有日期失败，知识集成已有9c056ad68待合流重验。生产知识开关false，K1–K3/E0b预算未定。"
       ]
     },
     {
@@ -132,10 +136,13 @@
         "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/remaining-acceptance-addendum/summary.md",
         "../10-30-collaboration-knowledge-promotion/verification-integration-2026-11-01.md",
-        "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-joint-review/README.md"
+        "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-joint-review/README.md",
+        "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md",
+        "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-recall-surface-review/README.md"
       ],
       "gaps": [
-        "runtime 与知识最终源码、失败修正、独立审查及执行记录已可追溯；原/新真实模型和关联发布矩阵仍开放"
+        "最终候选源码/框架/CLI/配置/构件尚未绑定；真实模型、原生Windows、安装升级与多账号额度均未验。",
+        "默认库迁移事故已披露：0aedf934e及父default-db-incident-audit-2026-11-01.json；272条账目456–763，迁移前快照缺失，当前schema/账目私有保留。未回退或清理；这不是验收通过证据。"
       ]
     }
   ],
@@ -188,7 +195,7 @@
       "scope": "发布/升级",
       "state": "not_released",
       "evidence": "../10-24-cross-platform-collaboration-runtime/verification.md",
-      "gap": "未推送/部署/发布；creation迁移744已默认开，AI execution/host准入仍默认关；混合writer滚动升级另需核对；offline-upgrade文档仍为V0.6.6/迁移上限570且未列MULTICA_KNOWLEDGE_CONTEXT_ENABLED，HEAD上限760；v0.6.7→候选离线升级演练未运行；v0.6.7 GitHub Release无Windows安装器（v0.6.6有）。“混合writer”按单API实例重启解释为新服务端配旧Desktop/daemon及回退窗口，待确认，见G2/G3",
+      "gap": "未推送/部署/发布；creation迁移744已默认开，AI execution/host准入仍默认关；混合writer滚动升级另需核对；offline-upgrade文档仍为V0.6.6/迁移上限570且未列MULTICA_KNOWLEDGE_CONTEXT_ENABLED，HEAD上限760；v0.6.7→候选离线升级演练未运行；v0.6.7 GitHub Release无Windows安装器（v0.6.6有）。“混合writer”按单API实例重启解释为新服务端配旧Desktop/daemon及回退窗口，待确认，见G2/G3；之前因为一份私有会话记录而禁止推送，这份记录已从所有分支移除；推送本身仍需用户授权（仓库公开）",
       "runbook": "release-gates-runbook-2026-11-01.md"
     }
   ],
@@ -198,7 +205,7 @@
     "trial": 2,
     "remaining_provider_call_cap": 14
   },
-  "new_runtime_models": "RK1 (d2fe54ab0) + runtime addendum (28c67c674): runtime cap 19, knowledge scenarios unbudgeted; product fix pending, binding void, framework not built; unrun",
+  "new_runtime_models": "Approved runtime cap 25 incl H2b and H6 two launches/trial; consumed 0; audit repairs, reviewed framework, joint checks and final source binding pending; K1-K3/E0b unbudgeted",
   "runtime_test_addendum_commits": [
     "0bbc6a77a",
     "84c4c2b3d",
@@ -208,14 +215,34 @@
     "product": "96cedf485",
     "evidence": "93093d2e9",
     "merge": "8cb04e3295474073b4b991bc4883ef3901c14f01",
-    "gate": "passed_deterministic",
+    "gate": "historical_deterministic_passed; post_merge_audit_reopened",
     "enabled": false,
     "audit_fix": {
       "branch": "codex/collaboration-knowledge-fixes-20261101",
       "task": "11-01-collaboration-knowledge-audit-fixes",
       "defects": 21,
       "high": 3,
-      "merged": false
+      "merged": false,
+      "executor": "root native agents and guarded serial takeover; no old workflow resume",
+      "lane_branches": [
+        "codex/kfix-lane-claim-20261101",
+        "codex/kfix-lane-launch-20261101",
+        "codex/kfix-lane-write-20261101",
+        "codex/kfix-lane-web-20261101"
+      ],
+      "committed_as_of_2026_11_01_1822": [
+        "H1",
+        "H2",
+        "L1",
+        "L2",
+        "M4",
+        "M5",
+        "L8"
+      ],
+      "coordinator_review": "web pass-with-notes; claim in progress; launch/write pending",
+      "state_at_resume": "14 of21 committed at resume",
+      "ownership_ledger": "execution-resume-2026-11-01.json",
+      "current_state": "all21 have lane fix or test dispositions; full lane reviews and combined validation pending"
     }
   },
   "release_gates_runbook": {
@@ -230,6 +257,24 @@
       "ac43_environments_accounts_quota_call_cap",
       "installed_real_account_journey_budget",
       "rollback_to_v0.6.7_commitment"
-    ]
+    ],
+    "external_actions_authorized": false
+  },
+  "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
+  "execution_resume": "execution-resume-2026-11-01.json",
+  "runtime_audit_repair": {
+    "branch": "codex/runtime-audit-fixes-27-20261101",
+    "head_at_resume": "1eb0cb33c",
+    "owner": "/root/runtime_fixes",
+    "integration": "not_merged",
+    "gate": "root final service suite running; joint candidate checks pending",
+    "current_tip": "342c9198b",
+    "product": "7627916c8",
+    "rv1": "58d486656",
+    "independent_review": "pass-with-notes; RV1 separately fixed and root-rechecked"
+  },
+  "default_database_incident": {
+    "audit": "default-db-incident-audit-2026-11-01.json",
+    "state": "open; 272 migration ledger rows timestamped 456-763; preincident state unknown; no rollback attempted"
   }
 }

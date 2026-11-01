@@ -172,6 +172,16 @@ func (r *RunLedger) stageHostCheckpoint(p protocol.CollaborationRecordingCheckpo
 }
 
 func (r *RunLedger) acknowledgeHostCheckpoint(sequence int, rejected bool) error {
+	return r.resolveHostCheckpoint(sequence, rejected, "authority_lost")
+}
+
+// rejectHostCheckpoint refuses a chunk and, when it is the first refusal,
+// records the refusal's own reason in the same write.
+func (r *RunLedger) rejectHostCheckpoint(sequence int, refusal error) error {
+	return r.resolveHostCheckpoint(sequence, true, hostSealReason(refusal))
+}
+
+func (r *RunLedger) resolveHostCheckpoint(sequence int, rejected bool, reason string) error {
 	next, err := r.recordingNext()
 	if err != nil {
 		return err
@@ -190,9 +200,61 @@ func (r *RunLedger) acknowledgeHostCheckpoint(sequence int, rejected bool) error
 	c.Accepted, c.Rejected, c.Payload, c.BusinessToken = !rejected, rejected, nil, ""
 	if rejected {
 		rec.Closed = true
-		rec.Reason = "authority_lost"
+		// The first refusal names why the stream closed; refusals cascaded
+		// to later chunks keep it.
+		if rec.Reason == "" {
+			rec.Reason = reason
+		}
 	}
 	return r.persistHostRecording(next)
+}
+
+// rebindSupersededCheckpoint moves a pending chunk that was staged under an
+// earlier attempt to the newest authorized attempt and its capability. It is
+// used only after a refusal that proves the original key was never committed;
+// the stream, sequence, offset and messages stay the same. A chunk already on
+// the newest attempt is not rebound, so each chunk moves at most once per
+// attempt.
+func (r *RunLedger) rebindSupersededCheckpoint(sequence int) (bool, error) {
+	next, err := r.recordingNext()
+	if err != nil {
+		return false, err
+	}
+	rec := next.Host.Recording
+	if rec == nil || sequence < 1 || sequence > len(rec.Chunks) {
+		return false, ErrUnconfirmed
+	}
+	c := &rec.Chunks[sequence-1]
+	launch, found := lastAuthorizedRecordingLaunch(next.Host)
+	if c.Accepted || c.Rejected || c.Payload == nil || !found {
+		return false, nil
+	}
+	current, _ := strconv.Atoi(c.Payload.AttemptSeq)
+	latest, _ := strconv.Atoi(launch.AttemptSeq)
+	if latest <= current {
+		return false, nil
+	}
+	payload := *c.Payload
+	payload.AttemptSeq, payload.AttemptNonce = launch.AttemptSeq, launch.AttemptNonce
+	c.Payload, c.BusinessToken = &payload, next.Host.BusinessToken
+	return true, r.persistHostRecording(next)
+}
+
+// The service retains an accepted v2 outcome's tail on top of its committed
+// prefix, so every pending chunk inside that tail is retained as well.
+func acceptHostChunksCoveredByOutcome(h *hostLedgerRecord) {
+	if h.Recording == nil || h.Outcome == nil {
+		return
+	}
+	recording := *h.Recording
+	recording.Chunks = append([]hostCheckpointRecord{}, recording.Chunks...)
+	for i := range recording.Chunks {
+		c := &recording.Chunks[i]
+		if !c.Accepted && !c.Rejected && hostOutcomeCovers(h.Outcome, *c) {
+			c.Accepted, c.Payload, c.BusinessToken = true, nil, ""
+		}
+	}
+	h.Recording = &recording
 }
 
 func (r *RunLedger) finishHostRecording(reason string) error {

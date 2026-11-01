@@ -1,0 +1,16 @@
+=== RUN   TestCollaborationRecallPrintingKeepsContinuationBeforeLargeText
+=== RUN   TestCollaborationRecallPrintingKeepsContinuationBeforeLargeText/comments
+=== RUN   TestCollaborationRecallPrintingKeepsContinuationBeforeLargeText/comment_content
+=== RUN   TestCollaborationRecallPrintingKeepsContinuationBeforeLargeText/handoff_source
+--- PASS: TestCollaborationRecallPrintingKeepsContinuationBeforeLargeText (0.00s)
+    --- PASS: TestCollaborationRecallPrintingKeepsContinuationBeforeLargeText/comments (0.00s)
+    --- PASS: TestCollaborationRecallPrintingKeepsContinuationBeforeLargeText/comment_content (0.00s)
+    --- PASS: TestCollaborationRecallPrintingKeepsContinuationBeforeLargeText/handoff_source (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/cli	0.429s
+=== RUN   TestHostBriefInjectsRecallGuidanceWithNegotiatedHandoff
+--- PASS: TestHostBriefInjectsRecallGuidanceWithNegotiatedHandoff (0.18s)
+=== RUN   TestHostBriefOmitsRecallGuidanceWithoutNegotiatedHandoff
+--- PASS: TestHostBriefOmitsRecallGuidanceWithoutNegotiatedHandoff (0.17s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	0.804s

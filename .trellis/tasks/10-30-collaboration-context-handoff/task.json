@@ -25,7 +25,7 @@
   ],
   "parent": null,
   "relatedFiles": [],
-  "notes": "2026-11-01：runtime 和知识交付均已整合；确定性质量门、独立审查、已覆盖 Web/macOS Electron 与补充矩阵已通过。当前推进新 runtime 真实验收独立登记；原 E2a trial3/22次保留原账本。父任务仍等待原/新真实模型、Windows/安装组合/多账号额度等验收，未发布。runtime当前进度：../10-30-collaboration-context-handoff-runtime/progress.md。",
+  "notes": "2026-11-01 续作：审计修复、独立复核、合流及最终联合验证尚未闭合；原系列下一 E3 after trial 2，剩余14次，冻结源码不变；RK1 runtime 已批25次（含H2b、H6每轮两次启动），消耗0，框架与源码绑定未就绪；K1-K3/E0b及安装版/AC43另行分账。知识生产默认false。见父任务 execution-resume-2026-11-01.json。",
   "meta": {
     "delivery": "parent-orchestration",
     "planning_scope": "phase1-closure-handoff-promotion",
@@ -35,13 +35,13 @@
     "approval_session": "01a18a36-e482-7840-9900-3ff8174b4ce7",
     "approval_user_turn": 14,
     "active_execution_target": "10-30-collaboration-context-handoff-runtime",
-    "integration_worktree": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+    "integration_worktree": "/Volumes/artisan/code/2026/multica-0.4.37",
     "six_step_execution_approved": true,
-    "latest_model_evidence": "../10-30-collaboration-fix-closure/verification-e2a-trial2-2026-11-01.md",
+    "latest_model_evidence": "../10-30-collaboration-fix-closure/verification-e2a-resume3-2026-11-01.md",
     "runtime_integration_commit": "0e1ee8e1e",
-    "runtime_deterministic_acceptance": "passed",
+    "runtime_deterministic_acceptance": "historical_scope_passed_audit_reopened",
     "knowledge_planning": "K1_K5_F1_F4_approved_complete",
-    "model_acceptance": "original_series_next_E2a_trial3_cap22_after_upstream_502; new_runtime_models_pending",
+    "model_acceptance": "original_E3_after_trial2_cap14; RK1_runtime_cap25_unrun; knowledge_unbudgeted",
     "current_acceptance_matrix": "acceptance-2026-11-01.json",
     "deterministic_addendum": "passed_0bbc6a77a_84c4c2b3d",
     "knowledge_implementation": "integrated; deterministic_acceptance_passed",
@@ -50,7 +50,16 @@
     "knowledge_evidence_commit": "93093d2e9",
     "knowledge_main_merge": "8cb04e3295474073b4b991bc4883ef3901c14f01",
     "parent_acceptance": "open_real_models_and_release_matrix",
-    "progress_phase": "real_model_acceptance_and_parent_closure",
-    "next_action": "register_new_runtime_model_acceptance; original_E2a_trial3_cap22_remains_separate"
+    "progress_phase": "audit_repair_and_framework_fake_validation",
+    "next_action": "finish_audit_repairs_and_independent_reviews_then_serial_local_merges_joint_validation_and_source_rebinding",
+    "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
+    "resume_ledger": "../10-30-collaboration-context-handoff/execution-resume-2026-11-01.json",
+    "original_series_next": "E3 after trial 2; then E4 -> E5 -> E6; remaining cap 14; frozen source",
+    "rk1_runtime_budget": {
+      "approved_cap": 25,
+      "consumed": 0,
+      "includes_H2b": true,
+      "H6_launches_per_trial": 2
+    }
   }
 }

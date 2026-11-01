@@ -159,8 +159,16 @@ func TestHostCheckpointLocalFailureCannotRebaseQueuedMessages(t *testing.T) {
 			if len(rec.Chunks) != tc.wantChunks {
 				t.Errorf("staged %d chunks, want %d: queued messages were rebased after a rejected batch", len(rec.Chunks), tc.wantChunks)
 			}
-			if tc.prefix && tc.loseACK && (len(rec.Chunks) == 0 || rec.Chunks[0].Payload == nil || rec.Chunks[0].Accepted) {
-				t.Fatal("lost prefix receipt discarded its original durable payload")
+			if tc.prefix && tc.loseACK {
+				// The sender may retry the lost receipt during the run. The chunk
+				// is accepted only after an identical replay was confirmed;
+				// otherwise it keeps its original durable payload.
+				mu.Lock()
+				replayed := len(checkpoints) >= 2 && reflect.DeepEqual(checkpoints[0], checkpoints[1])
+				mu.Unlock()
+				if len(rec.Chunks) == 0 || rec.Chunks[0].Accepted && !replayed || !rec.Chunks[0].Accepted && rec.Chunks[0].Payload == nil {
+					t.Fatal("lost prefix receipt discarded its original durable payload")
+				}
 			}
 			if tc.invalid && (!rec.Closed || !sender.failed.Load()) {
 				t.Error("local validation failure did not mark the recording incomplete")

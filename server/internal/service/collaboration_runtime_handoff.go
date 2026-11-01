@@ -117,7 +117,14 @@ func handoffDecimal(n int64) string { return strconv.FormatInt(n, 10) }
 func handoffSource(kind, id, run, version, body string, maxBytes int) protocol.CollaborationHandoffSource {
 	content := redact.Text(body)
 	truncated := len(content) > maxBytes
-	if truncated {
+	if kind == "delegation" {
+		// The admitted delegation stays whole. Its limit applies to the
+		// admitted text; redaction may lengthen it (a short credential line
+		// becomes a longer marker), and the handoff material budget never
+		// trims a delegation.
+		truncated = len(body) > maxBytes
+	}
+	if truncated && len(content) > maxBytes {
 		content = content[:maxBytes]
 		for !utf8.ValidString(content) {
 			content = content[:len(content)-1]
@@ -234,6 +241,11 @@ func buildCollaborationHandoff(ctx context.Context, q *db.Queries, a Collaborati
 			out.Memory.SHA256 = ""
 			out.Missing = append(out.Missing, "memory_purged")
 		}
+	}
+	// A live read describes the latest memory. Name the base this run actually
+	// received beside it; a snapshot's version already is that base.
+	if memoryVersion == nil && run.MemoryMode.String == "supported" && run.MemoryBaseVersion.Valid {
+		out.Memory.BaseVersion = handoffDecimal(run.MemoryBaseVersion.Int64)
 	}
 	if err = projectHandoffInputs(ctx, q, run, c, &out); err != nil {
 		return out, err

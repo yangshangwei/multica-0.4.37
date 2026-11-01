@@ -78,7 +78,12 @@ func TestDecodeCollaborationHandoffSourcePageRejectsMalformedWire(t *testing.T) 
 		"next_offset_gap":        func(o map[string]any) { o["next_offset"] = o["next_offset"].(float64) + 1 },
 		"next_without_truncated": func(o map[string]any) { source(o)["truncated"] = false },
 		"short_final_chunk":      func(o map[string]any) { o["next_offset"] = nil; source(o)["truncated"] = false },
-		"content_past_total":     func(o map[string]any) { o["total_bytes"] = 1 },
+		// Content reaches total_bytes, so only the truncated flag is wrong.
+		"final_chunk_claims_truncated": func(o map[string]any) {
+			source(o)["content"] = handoffSourcePageBody
+			o["next_offset"] = nil
+		},
+		"content_past_total": func(o map[string]any) { o["total_bytes"] = 1 },
 		"empty_chunk_with_next": func(o map[string]any) {
 			source(o)["content"] = ""
 			o["next_offset"] = 0

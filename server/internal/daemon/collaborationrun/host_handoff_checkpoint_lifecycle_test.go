@@ -45,6 +45,14 @@ func newHandoffCheckpointLifecycleFixture(t *testing.T, mode string) *handoffChe
 		seal := r.URL.Path == runPath(h.claim.Identity.RunID, "recording/seal")
 		if !checkpoint && !seal {
 			f.mu.Lock()
+			// An outage covers the outcome as well. Otherwise the outcome's
+			// carried tail retains the chunk and no checkpoint stays pending
+			// for the restart path these tests exercise.
+			if f.mode == "unavailable" && strings.HasSuffix(r.URL.Path, "/outcome") {
+				f.mu.Unlock()
+				w.WriteHeader(http.StatusServiceUnavailable)
+				return
+			}
 			if strings.HasSuffix(r.URL.Path, "/claim") {
 				f.claims++
 			}

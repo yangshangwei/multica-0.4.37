@@ -1,0 +1,8 @@
+import { expect, it } from "vitest";
+import { parseCollaborationRunHandoff } from '/Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101/packages/core/collaboration/run-handoff-schema.ts';
+const id="00000000-0000-4000-8000-000000000001";
+const page={total:0,returned:0,truncated:false,items:[]};
+it("refuses a snapshot carrying the live-only memory base field",()=>{
+ const value={protocol_version:1,issue_id:id,run_id:id,snapshot_id:id,mode:"snapshot",event_seq:"0",authority:{status:"in_progress"},assignment:{role:"agent",step_key:"agent"},handoff:null,information_request:null,memory:{version:"4",sha256:"a".repeat(64),availability:"available",base_version:"3"},inputs:page,results:page,wakeup_causes:{...page,completeness:"unknown"},sources:[],missing:[]};
+ expect(parseCollaborationRunHandoff(value)).toBeNull();
+});
