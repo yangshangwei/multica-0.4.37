@@ -1,0 +1,23 @@
+{
+  "source_sha": "a4e444bdf90c84939189fc2981cdacab50c678de",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "build",
+    "-p",
+    "2",
+    "./internal/service",
+    "./internal/handler",
+    "./cmd/migrate",
+    "./pkg/agent"
+  ],
+  "started_at": "2026-11-01T16:14:07.005841+00:00",
+  "database_env_removed": true,
+  "provider_gate_removed": true,
+  "exit_code": 0,
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

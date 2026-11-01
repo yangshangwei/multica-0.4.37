@@ -417,6 +417,61 @@ func TestKnowledgeEffectiveArgsCannotOverrideSessionSelection(t *testing.T) {
 	}
 }
 
+// TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv owns the selector
+// matrix that the server uses to refuse a v1 claim before ordinary fallback.
+// Admission stays with ValidateKnowledgeSessionArgs; this only decides refusal.
+func TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv(t *testing.T) {
+	selectors := [][]string{
+		{"--continue"}, {"--continue=true"}, {"-c"}, {"-r"}, {"-rabc"}, {"-cr"}, {"-pc"},
+		{"--resume", "abc"}, {"--resume=abc"}, {"--resume-session-at=x"}, {"--session-id=abc"},
+		{"--fork-session"}, {"--from-pr", "12"}, {"'--continue'"}, {`"--resume=x"`},
+		// Values and tokens after "--" are scanned too: there is no arity parsing.
+		{"--", "--continue"}, {"--model", "--continue"},
+		// Claude Code 2.1.316 `claude --help`: options that teleport to, attach
+		// to or hand off a session (cloud, remote control, background, desktop,
+		// self-hosted environment, tmux), plus the reviewers' --attach family.
+		{"--teleport"}, {"--teleport", "abc"}, {"--teleport=abc"},
+		{"--cloud"}, {"--cloud", "session_abc"}, {"--cloud=https://claude.ai/code/session_abc"},
+		{"--remote-control"}, {"--remote-control=nightly"}, {"--remote", "abc"},
+		{"--remote-control-session-name-prefix", "host"},
+		{"--attach"}, {"--attach=abc"}, {"--attach-session", "abc"},
+		{"--bg"}, {"--background"}, {"--desktop"}, {"--environment", "ccpool_abc"},
+		{"--tmux"}, {"--tmux=classic"}, {"'--teleport'"},
+		// A subcommand operand replaces the managed print invocation; attach,
+		// logs, respawn, stop/kill, rm, agents and purge act on stored or
+		// background sessions. remote-control was a subcommand before 2.1.316.
+		{"attach", "abc"}, {"logs", "abc"}, {"respawn"}, {"stop", "abc"}, {"kill", "abc"},
+		{"rm", "abc"}, {"agents"}, {"purge"}, {"remote-control"}, {"mcp", "list"}, {"update"},
+		{"'attach'"},
+		// An option value spelled like a subcommand refuses too (write --debug=mcp).
+		{"--debug", "mcp"},
+		// A bare "--" stops option parsing for later configured arguments.
+		{"--"}, {"'--'"}, {`"--"`}, {"--allowedTools", "Bash", "--"},
+	}
+	for _, args := range selectors {
+		if !KnowledgeSessionSelectorPresent("claude", args) {
+			t.Errorf("session selector %q was not detected", args)
+		}
+	}
+	ordinary := [][]string{
+		{"--allowedTools", "Bash"}, {"--add-dir", "/tmp/x"}, {"--model", "sonnet"}, {"--max-turns", "5"},
+		{"--verbose"}, {"--no-session-persistence"}, {"--disallowedTools", "Write"}, {"--debug"},
+		// Other 2.1.316 options that select no session stay ordinary.
+		{"--debug=mcp"}, {"-w"}, {"--worktree", "feature"}, {"-n", "nightly"}, {"--name=nightly"},
+		{"--ide"}, {"--settings", "/tmp/s.json"}, {"--append-system-prompt", "Be brief"},
+		{"--agent", "reviewer"}, {"--file", "file_abc:doc.txt"}, {"--tools", "Bash,Edit"},
+		{"--fallback-model", "sonnet"}, {"--strict-mcp-config"}, {"--plugin-dir", "/tmp/p"},
+	}
+	for _, args := range ordinary {
+		if KnowledgeSessionSelectorPresent("claude", args) {
+			t.Errorf("ordinary option %q was classified as a session selector", args)
+		}
+	}
+	if KnowledgeSessionSelectorPresent("codex", []string{"--continue"}) {
+		t.Error("the selector rule applies to Claude argv only")
+	}
+}
+
 func TestKnowledgeInvocationFingerprintRejectsDrift(t *testing.T) {
 	for _, change := range []string{"model", "cwd", "safe-args", "executable", "mcp", "thinking", "settings"} {
 		t.Run(change, func(t *testing.T) {

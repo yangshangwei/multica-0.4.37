@@ -11,63 +11,34 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-const listTaskKnowledgeHistory = `-- name: ListTaskKnowledgeHistory :many
-SELECT id, agent_id, runtime_id, issue_id, chat_session_id, session_id,
-       claim_generation, knowledge_context_version, knowledge_delivery
+const getTaskKnowledgeHistoryRows = `-- name: GetTaskKnowledgeHistoryRows :many
+SELECT id, agent_id, runtime_id, knowledge_context_version, knowledge_delivery
 FROM agent_task_queue
-WHERE agent_id = $1::uuid
-  AND (issue_id = $2::uuid OR chat_session_id = $3::uuid
-       OR knowledge_delivery->>'scope_id' = $4::text)
-  AND (session_id = $5::text OR knowledge_context_version IS NOT NULL)
-ORDER BY created_at DESC, id
-LIMIT 129
+WHERE id = ANY($1::uuid[])
 `
 
-type ListTaskKnowledgeHistoryParams struct {
-	AgentID         pgtype.UUID `json:"agent_id"`
-	IssueID         pgtype.UUID `json:"issue_id"`
-	ChatSessionID   pgtype.UUID `json:"chat_session_id"`
-	ScopeID         string      `json:"scope_id"`
-	NativeSessionID string      `json:"native_session_id"`
-}
-
-type ListTaskKnowledgeHistoryRow struct {
+type GetTaskKnowledgeHistoryRowsRow struct {
 	ID                      pgtype.UUID `json:"id"`
 	AgentID                 pgtype.UUID `json:"agent_id"`
 	RuntimeID               pgtype.UUID `json:"runtime_id"`
-	IssueID                 pgtype.UUID `json:"issue_id"`
-	ChatSessionID           pgtype.UUID `json:"chat_session_id"`
-	SessionID               pgtype.Text `json:"session_id"`
-	ClaimGeneration         int64       `json:"claim_generation"`
 	KnowledgeContextVersion pgtype.Int4 `json:"-"`
 	KnowledgeDelivery       []byte      `json:"-"`
 }
 
-// Read immutable consumer history without filtering away old runtime identities.
-// Any malformed negotiated row in the selected scope must fail closed in Go.
-func (q *Queries) ListTaskKnowledgeHistory(ctx context.Context, arg ListTaskKnowledgeHistoryParams) ([]ListTaskKnowledgeHistoryRow, error) {
-	rows, err := q.db.Query(ctx, listTaskKnowledgeHistory,
-		arg.AgentID,
-		arg.IssueID,
-		arg.ChatSessionID,
-		arg.ScopeID,
-		arg.NativeSessionID,
-	)
+// Fetch bounded delivery batches by their complete namespace key set.
+func (q *Queries) GetTaskKnowledgeHistoryRows(ctx context.Context, ids []pgtype.UUID) ([]GetTaskKnowledgeHistoryRowsRow, error) {
+	rows, err := q.db.Query(ctx, getTaskKnowledgeHistoryRows, ids)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []ListTaskKnowledgeHistoryRow{}
+	items := []GetTaskKnowledgeHistoryRowsRow{}
 	for rows.Next() {
-		var i ListTaskKnowledgeHistoryRow
+		var i GetTaskKnowledgeHistoryRowsRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.AgentID,
 			&i.RuntimeID,
-			&i.IssueID,
-			&i.ChatSessionID,
-			&i.SessionID,
-			&i.ClaimGeneration,
 			&i.KnowledgeContextVersion,
 			&i.KnowledgeDelivery,
 		); err != nil {
@@ -81,41 +52,126 @@ func (q *Queries) ListTaskKnowledgeHistory(ctx context.Context, arg ListTaskKnow
 	return items, nil
 }
 
-const listTaskKnowledgeRuntimeHistory = `-- name: ListTaskKnowledgeRuntimeHistory :many
-SELECT task.id, task.agent_id, task.runtime_id,
-       task.knowledge_context_version, task.knowledge_delivery
-FROM agent_task_queue task
-WHERE task.knowledge_context_version IS NOT NULL
-  AND (task.runtime_id = $1::uuid
-    OR task.agent_id IN (SELECT id FROM agent WHERE runtime_id = $1::uuid)
-    OR task.knowledge_delivery @> jsonb_build_object('claims',jsonb_build_array(jsonb_build_object('descriptor',jsonb_build_object('runtime_id',$1::text))))
-    OR task.knowledge_delivery @> jsonb_build_object('claims',jsonb_build_array(jsonb_build_object('daemon_id',$2::text,'descriptor',jsonb_build_object('provider',$3::text))))
-    OR task.knowledge_delivery @> jsonb_build_object('claims',jsonb_build_array(jsonb_build_object('runtime_owner_user_id',$4::text,'descriptor',jsonb_build_object('provider',$3::text)))))
-ORDER BY task.created_at DESC, task.id
-LIMIT 129
+const listTaskKnowledgeHistoryPage = `-- name: ListTaskKnowledgeHistoryPage :many
+SELECT id, agent_id, runtime_id, issue_id, chat_session_id, session_id,
+       claim_generation, knowledge_context_version, knowledge_delivery, created_at
+FROM agent_task_queue
+WHERE agent_id = $1::uuid
+  AND knowledge_context_version IS NOT NULL
+  AND (issue_id = $2::uuid OR chat_session_id = $3::uuid
+       OR knowledge_delivery->>'scope_id' = $4::text)
+  AND (created_at, id) < ($5::timestamptz, $6::uuid)
+ORDER BY created_at DESC, id DESC
+LIMIT $7::int
 `
 
-type ListTaskKnowledgeRuntimeHistoryParams struct {
+type ListTaskKnowledgeHistoryPageParams struct {
+	AgentID         pgtype.UUID        `json:"agent_id"`
+	IssueID         pgtype.UUID        `json:"issue_id"`
+	ChatSessionID   pgtype.UUID        `json:"chat_session_id"`
+	ScopeID         string             `json:"scope_id"`
+	BeforeCreatedAt pgtype.Timestamptz `json:"before_created_at"`
+	BeforeID        pgtype.UUID        `json:"before_id"`
+	PageSize        int32              `json:"page_size"`
+}
+
+type ListTaskKnowledgeHistoryPageRow struct {
+	ID                      pgtype.UUID        `json:"id"`
+	AgentID                 pgtype.UUID        `json:"agent_id"`
+	RuntimeID               pgtype.UUID        `json:"runtime_id"`
+	IssueID                 pgtype.UUID        `json:"issue_id"`
+	ChatSessionID           pgtype.UUID        `json:"chat_session_id"`
+	SessionID               pgtype.Text        `json:"session_id"`
+	ClaimGeneration         int64              `json:"claim_generation"`
+	KnowledgeContextVersion pgtype.Int4        `json:"-"`
+	KnowledgeDelivery       []byte             `json:"-"`
+	CreatedAt               pgtype.Timestamptz `json:"created_at"`
+}
+
+// Read every negotiated row in scope in index-ordered keyset pages.
+// A legacy NULL-version row has NULL delivery by the metadata CHECK, so it
+// cannot carry exposure. Every selected row is decoded fail-closed in Go.
+func (q *Queries) ListTaskKnowledgeHistoryPage(ctx context.Context, arg ListTaskKnowledgeHistoryPageParams) ([]ListTaskKnowledgeHistoryPageRow, error) {
+	rows, err := q.db.Query(ctx, listTaskKnowledgeHistoryPage,
+		arg.AgentID,
+		arg.IssueID,
+		arg.ChatSessionID,
+		arg.ScopeID,
+		arg.BeforeCreatedAt,
+		arg.BeforeID,
+		arg.PageSize,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListTaskKnowledgeHistoryPageRow{}
+	for rows.Next() {
+		var i ListTaskKnowledgeHistoryPageRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.AgentID,
+			&i.RuntimeID,
+			&i.IssueID,
+			&i.ChatSessionID,
+			&i.SessionID,
+			&i.ClaimGeneration,
+			&i.KnowledgeContextVersion,
+			&i.KnowledgeDelivery,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listTaskKnowledgeRuntimeHistoryKeys = `-- name: ListTaskKnowledgeRuntimeHistoryKeys :many
+SELECT history.id, history.created_at
+FROM (
+    SELECT task.id, task.created_at
+    FROM agent_task_queue task
+    WHERE task.knowledge_context_version IS NOT NULL
+      AND task.runtime_id = $1::uuid
+    UNION
+    SELECT task.id, task.created_at
+    FROM agent a JOIN agent_task_queue task ON task.agent_id = a.id
+    WHERE a.runtime_id = $1::uuid
+      AND task.knowledge_context_version IS NOT NULL
+    UNION
+    SELECT task.id, task.created_at
+    FROM agent_task_queue task
+    WHERE task.knowledge_context_version IS NOT NULL
+      AND (task.knowledge_delivery @> jsonb_build_object('claims',jsonb_build_array(jsonb_build_object('descriptor',jsonb_build_object('runtime_id',$1::text))))
+        OR task.knowledge_delivery @> jsonb_build_object('claims',jsonb_build_array(jsonb_build_object('daemon_id',$2::text,'descriptor',jsonb_build_object('provider',$3::text))))
+        OR task.knowledge_delivery @> jsonb_build_object('claims',jsonb_build_array(jsonb_build_object('runtime_owner_user_id',$4::text,'descriptor',jsonb_build_object('provider',$3::text)))))
+) history
+ORDER BY history.created_at DESC, history.id DESC
+`
+
+type ListTaskKnowledgeRuntimeHistoryKeysParams struct {
 	RuntimeID pgtype.UUID `json:"runtime_id"`
 	DaemonID  string      `json:"daemon_id"`
 	Provider  string      `json:"provider"`
 	OwnerID   string      `json:"owner_id"`
 }
 
-type ListTaskKnowledgeRuntimeHistoryRow struct {
-	ID                      pgtype.UUID `json:"id"`
-	AgentID                 pgtype.UUID `json:"agent_id"`
-	RuntimeID               pgtype.UUID `json:"runtime_id"`
-	KnowledgeContextVersion pgtype.Int4 `json:"-"`
-	KnowledgeDelivery       []byte      `json:"-"`
+type ListTaskKnowledgeRuntimeHistoryKeysRow struct {
+	ID        pgtype.UUID        `json:"id"`
+	CreatedAt pgtype.Timestamptz `json:"created_at"`
 }
 
-// A legacy/unsupported invocation cannot prove which history implicit selectors
-// would choose. Include the physical daemon/provider and owner/provider namespace,
-// not just the current task scope or runtime UUID. Immutable snapshots survive
-// runtime deletion/merge and the current-agent arm catches damaged rewritten rows.
-func (q *Queries) ListTaskKnowledgeRuntimeHistory(ctx context.Context, arg ListTaskKnowledgeRuntimeHistoryParams) ([]ListTaskKnowledgeRuntimeHistoryRow, error) {
-	rows, err := q.db.Query(ctx, listTaskKnowledgeRuntimeHistory,
+// A legacy/unsupported invocation cannot prove which implicit native session
+// it would choose. Read the complete namespace keys once, then fetch delivery
+// rows in bounded batches. UNION keeps each arm indexable, including immutable
+// runtime/daemon/owner identities after runtime deletion or merge. Go refuses
+// missing or damaged selected rows and stops at the first private exposure.
+func (q *Queries) ListTaskKnowledgeRuntimeHistoryKeys(ctx context.Context, arg ListTaskKnowledgeRuntimeHistoryKeysParams) ([]ListTaskKnowledgeRuntimeHistoryKeysRow, error) {
+	rows, err := q.db.Query(ctx, listTaskKnowledgeRuntimeHistoryKeys,
 		arg.RuntimeID,
 		arg.DaemonID,
 		arg.Provider,
@@ -125,16 +181,10 @@ func (q *Queries) ListTaskKnowledgeRuntimeHistory(ctx context.Context, arg ListT
 		return nil, err
 	}
 	defer rows.Close()
-	items := []ListTaskKnowledgeRuntimeHistoryRow{}
+	items := []ListTaskKnowledgeRuntimeHistoryKeysRow{}
 	for rows.Next() {
-		var i ListTaskKnowledgeRuntimeHistoryRow
-		if err := rows.Scan(
-			&i.ID,
-			&i.AgentID,
-			&i.RuntimeID,
-			&i.KnowledgeContextVersion,
-			&i.KnowledgeDelivery,
-		); err != nil {
+		var i ListTaskKnowledgeRuntimeHistoryKeysRow
+		if err := rows.Scan(&i.ID, &i.CreatedAt); err != nil {
 			return nil, err
 		}
 		items = append(items, i)

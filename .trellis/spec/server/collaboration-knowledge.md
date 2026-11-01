@@ -23,11 +23,16 @@ strings for versions/revisions. Routes are in
 | `GET .../knowledge-candidates/{candidateId}/operations/{requestId}` | Original actor's content-free receipt; no source ID required |
 | `GET /api/projects/{id}/knowledge` or `/api/workspaces/{id}/knowledge` | Authorized target projection with explicit workspace context |
 
-Migrations 747–760 add retained `collaboration_knowledge_candidate`, independent
+Migrations 747–763 add retained `collaboration_knowledge_candidate`, independent
 `collaboration_knowledge_target`, durable `collaboration_knowledge_invalidation`
-and internal ordinary-task delivery metadata. Each of the 13 indexes has its own
+and internal ordinary-task delivery metadata. Each of the 16 indexes has its own
 concurrent migration; relationships have no database foreign keys. Transaction
 primitives live in [`collaboration_knowledge.sql`](../../../server/pkg/db/queries/collaboration_knowledge.sql).
+
+Migrations 761–763 index only negotiated task history (`knowledge_context_version
+IS NOT NULL`): agent/runtime keyset btrees and a `jsonb_path_ops` GIN over
+retained runtime, daemon and owner claim snapshots. They add no exposure marker,
+backfill or history row cap.
 
 ## 3. Contracts
 

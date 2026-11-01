@@ -1,0 +1,29 @@
+{
+  "source_sha": "a4e444bdf90c84939189fc2981cdacab50c678de",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./pkg/agent",
+    "-parallel=2",
+    "-count=1",
+    "-json",
+    "-run",
+    "^Test(BuildClaudeArgsManaged|KnowledgeSessionSelectorPresent|KnowledgeEffectiveArgsCannotOverrideSessionSelection|KnowledgeInvocationFingerprintRejectsDrift|KnowledgeNoSessionPersistenceFlagHasNoReenableForm)"
+  ],
+  "started_at": "2026-11-01T16:12:41.272507+00:00",
+  "database_env_removed": true,
+  "provider_gate_removed": true,
+  "exit_code": 0,
+  "counts": {
+    "run": 64,
+    "pass": 64,
+    "fail": 0,
+    "skip": 0
+  },
+  "log_sha256": "1f743331f4dc3a6191c43357d33a1ec59c8305f3f1a529fdb4dee4fb9bdf2581"
+}

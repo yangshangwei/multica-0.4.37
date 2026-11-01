@@ -1,0 +1,522 @@
+H1-followup green run: the same tests after the fix
+===================================================
+
+Tree: /Volumes/artisan/code/2026/mc-kfix-lane-claim (branch codex/kfix-lane-claim-20261101), base 4cf4d45a2 (H1).
+Fix:
+  - server/pkg/agent/knowledge_launch.go: KnowledgeSessionSelectorPresent also refuses the long-option
+    prefixes --teleport, --cloud, --remote, --attach, --bg, --background, --desktop, --environment, --tmux;
+    any token that is exactly a Claude Code 2.1.316 subcommand name or alias (plus remote-control from
+    earlier releases); and a bare "--". The lists come from `claude --help` (section 5 below). Admission
+    is unchanged: ValidateKnowledgeSessionArgs remains the only rule for a knowledge launch.
+  - server/internal/service/task_knowledge.go: comment only (step 1 names the wider refusal).
+  - .trellis/spec/server/collaboration-knowledge-execution.md: selector paragraph names the new forms and
+    the malformed custom_args refusal; "known managed session" now means a committed non-empty manifest,
+    and claimed-only / empty-manifest history is stated to disclose nothing (item 4). Matrix gains two rows.
+  - docs/collaboration-knowledge-runtime.md line 69: fresh tasks with unlisted options run without
+    knowledge only when the namespace has no recorded private exposure.
+
+Results:
+  - Behavioral (red before, green now): TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv (pkg/agent),
+    TestKnowledgeSessionSelectorsRefusedWhateverTheGate (service, gate on/off x defaults/custom).
+  - Regression guards (green before and after): TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace,
+    TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate,
+    TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation.
+  - Section 3 shows the guards are not vacuous: go test -overlay copies of task_knowledge.go that ignore
+    recorded runtime exposure, or read malformed custom_args as empty, make the matching guards fail. Under
+    the exposure mutation the claimed-only and prepared-empty cells still pass and only the prepared cell
+    fails, so the item 4 test separates "disclosed nothing" from "committed a private manifest".
+
+Every go test ran with env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0, -count=1 -v.
+Databases: service kfix_claim_svc, handler kfix_claim_handler, cmd/server kfix_claim_cmd (all on
+127.0.0.1:5432, ledger at 760). pkg/agent uses no database. The packages ran one at a time.
+
+### 1. pkg/agent targeted (no database), exit status 0
+$ cd server && env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 go test ./pkg/agent -run 'TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv' -count=1 -v
+git status --short at run time:
+ M .trellis/spec/server/collaboration-knowledge-execution.md
+ M docs/collaboration-knowledge-runtime.md
+ M server/internal/service/task_knowledge.go
+ M server/internal/service/task_knowledge_invocation_test.go
+ M server/pkg/agent/knowledge_launch.go
+ M server/pkg/agent/knowledge_launch_test.go
+?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/H1-followup-red.txt
+=== RUN   TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv
+--- PASS: TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/pkg/agent	0.605s
+
+### 2. internal/service targeted (kfix_claim_svc), exit status 0
+$ cd server && env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 DATABASE_URL=postgres://multica:multica@127.0.0.1:5432/kfix_claim_svc?sslmode=disable go test ./internal/service -run 'TestKnowledgeSessionSelectorsRefusedWhateverTheGate|TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace|TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate|TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation' -count=1 -v
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/defaults
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/custom
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/defaults
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/custom
+--- PASS: TestKnowledgeSessionSelectorsRefusedWhateverTheGate (1.10s)
+    --- PASS: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/defaults (0.37s)
+    --- PASS: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/custom (0.27s)
+    --- PASS: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/defaults (0.24s)
+    --- PASS: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/custom (0.22s)
+=== RUN   TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace
+=== RUN   TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=true/defaults
+2026/11/01 16:17:26 INFO task started task_id=777d8e39-ea4e-4741-9306-5f80336ba519 issue_id=d2780a54-0ed5-40bf-b6a2-d7621e610a51
+2026/11/01 16:17:26 INFO task completed task_id=777d8e39-ea4e-4741-9306-5f80336ba519 issue_id=d2780a54-0ed5-40bf-b6a2-d7621e610a51
+=== RUN   TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=true/custom
+2026/11/01 16:17:27 INFO task started task_id=72d8b473-a1b6-4d4a-a7ba-8bef795cd736 issue_id=df325d89-5ba4-4ffb-8a15-fa4613ff7205
+2026/11/01 16:17:27 INFO task completed task_id=72d8b473-a1b6-4d4a-a7ba-8bef795cd736 issue_id=df325d89-5ba4-4ffb-8a15-fa4613ff7205
+=== RUN   TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=false/defaults
+2026/11/01 16:17:27 INFO task started task_id=852f12f8-342a-49c0-8546-b594ce6d89ec issue_id=39ab7610-06d8-4804-b490-c00ca70cd70d
+2026/11/01 16:17:27 INFO task completed task_id=852f12f8-342a-49c0-8546-b594ce6d89ec issue_id=39ab7610-06d8-4804-b490-c00ca70cd70d
+=== RUN   TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=false/custom
+2026/11/01 16:17:27 INFO task started task_id=26b34167-7e16-4ba4-93df-e7c70cfe0856 issue_id=48932d69-0179-491c-a1b5-238f653315c4
+2026/11/01 16:17:27 INFO task completed task_id=26b34167-7e16-4ba4-93df-e7c70cfe0856 issue_id=48932d69-0179-491c-a1b5-238f653315c4
+--- PASS: TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace (1.14s)
+    --- PASS: TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=true/defaults (0.31s)
+    --- PASS: TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=true/custom (0.28s)
+    --- PASS: TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=false/defaults (0.26s)
+    --- PASS: TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=false/custom (0.30s)
+=== RUN   TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate
+=== RUN   TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate/gate=true
+=== RUN   TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate/gate=false
+--- PASS: TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate (0.40s)
+    --- PASS: TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate/gate=true (0.19s)
+    --- PASS: TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate/gate=false (0.21s)
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/claimed/gate=true
+2026/11/01 16:17:28 INFO task cancelled task_id=24d2f47c-a1d7-4176-8008-5d65ea731435 issue_id=38711814-8622-4207-83af-f79332604437
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/claimed/gate=false
+2026/11/01 16:17:28 INFO task cancelled task_id=c2c7e023-e5a7-434f-b341-75e4b6dbb0b0 issue_id=3b0f0c1e-fb5b-4b5e-8096-a403ce62fc2e
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared_empty/gate=true
+2026/11/01 16:17:28 INFO task cancelled task_id=e022659b-1bc9-42e7-a2ea-dc8824311dab issue_id=9ce4e655-6f96-41c2-8d91-4f3ee4bde28c
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared_empty/gate=false
+2026/11/01 16:17:29 INFO task cancelled task_id=8649165d-d493-4130-883c-f60ed236d96c issue_id=e8af368a-6b0b-4b1a-8972-228782271dd3
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared/gate=true
+2026/11/01 16:17:29 INFO task cancelled task_id=1dfd637d-21c1-4170-8aab-681cae5c3e13 issue_id=7517ea15-371e-4db2-afa8-b90e1aa264ea
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared/gate=false
+2026/11/01 16:17:29 INFO task cancelled task_id=d32b4e66-0927-401b-9823-a20663aa8f41 issue_id=36984eaf-2017-4605-8d63-92fd4bde198d
+--- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation (1.54s)
+    --- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/claimed/gate=true (0.33s)
+    --- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/claimed/gate=false (0.22s)
+    --- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared_empty/gate=true (0.25s)
+    --- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared_empty/gate=false (0.26s)
+    --- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared/gate=true (0.24s)
+    --- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared/gate=false (0.25s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/service	4.990s
+
+### 3. Mutation checks for the regression guards (kfix_claim_svc), go test -overlay, both exit status 1 as intended
+Mutation A, /tmp/h1f-mut/exposure.go: BuildTaskKnowledgeClaim ignores `exposed` from taskKnowledgeRuntimeExposure.
+  diff: -		if exposed {
+        -			return nil, "", knowledgeFailure(409, "knowledge_invocation_unsupported")
+        -		}
+        +		_ = exposed // MUTATION: recorded exposure ignored
+Mutation B, /tmp/h1f-mut/decode.go: a custom_args decode error is read as no custom arguments.
+  diff: -				return nil, "", knowledgeFailure(409, "knowledge_invocation_unsupported")
+        +				custom = nil // MUTATION: malformed custom_args read as empty
+
+$ go test -overlay /tmp/h1f-mut/exposure.json ./internal/service -run 'TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace|TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation' -count=1 -v
+=== RUN   TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace
+=== RUN   TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=true/defaults
+2026/11/01 16:19:31 INFO task started task_id=24669318-b9d1-4cae-9d43-246f75338676 issue_id=07b234af-1112-49ee-8f63-76fd18a67c54
+2026/11/01 16:19:31 INFO task completed task_id=24669318-b9d1-4cae-9d43-246f75338676 issue_id=07b234af-1112-49ee-8f63-76fd18a67c54
+    task_knowledge_invocation_test.go:177: fresh claim in an exposed namespace ran without the history guard: d=false err=<nil>
+=== RUN   TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=true/custom
+2026/11/01 16:19:31 INFO task started task_id=a5ed5858-5d6d-4567-966c-56fb06a94f8f issue_id=83f7968b-5dbe-4149-abba-507ffedd62ca
+2026/11/01 16:19:31 INFO task completed task_id=a5ed5858-5d6d-4567-966c-56fb06a94f8f issue_id=83f7968b-5dbe-4149-abba-507ffedd62ca
+    task_knowledge_invocation_test.go:177: fresh claim in an exposed namespace ran without the history guard: d=false err=<nil>
+=== RUN   TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=false/defaults
+2026/11/01 16:19:31 INFO task started task_id=35123269-7412-494b-8c84-ffe534025b40 issue_id=2a7e39ab-fcad-43c8-9e4f-292634446fb0
+2026/11/01 16:19:32 INFO task completed task_id=35123269-7412-494b-8c84-ffe534025b40 issue_id=2a7e39ab-fcad-43c8-9e4f-292634446fb0
+    task_knowledge_invocation_test.go:177: fresh claim in an exposed namespace ran without the history guard: d=false err=<nil>
+=== RUN   TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=false/custom
+2026/11/01 16:19:32 INFO task started task_id=8abbf107-2d58-47ae-8819-dd80f7371a4a issue_id=383c1f38-73bb-41f4-a1af-1973d54499cd
+2026/11/01 16:19:32 INFO task completed task_id=8abbf107-2d58-47ae-8819-dd80f7371a4a issue_id=383c1f38-73bb-41f4-a1af-1973d54499cd
+    task_knowledge_invocation_test.go:177: fresh claim in an exposed namespace ran without the history guard: d=false err=<nil>
+--- FAIL: TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace (1.20s)
+    --- FAIL: TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=true/defaults (0.39s)
+    --- FAIL: TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=true/custom (0.27s)
+    --- FAIL: TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=false/defaults (0.27s)
+    --- FAIL: TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=false/custom (0.27s)
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/claimed/gate=true
+2026/11/01 16:19:32 INFO task cancelled task_id=53d19871-28f9-4a92-80f6-65c3ec1e6acd issue_id=926ac160-aa66-484c-bd15-98974ecae774
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/claimed/gate=false
+2026/11/01 16:19:32 INFO task cancelled task_id=e0ac7e33-6706-4307-b64c-45d5cfd5c300 issue_id=ff4dcc74-d5da-4f81-bc92-2e5d61eb1ac3
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared_empty/gate=true
+2026/11/01 16:19:33 INFO task cancelled task_id=fb966595-5062-43d5-9004-d211fd8f4ec2 issue_id=9a542e18-656b-4ead-90f0-017d2ebb2c24
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared_empty/gate=false
+2026/11/01 16:19:33 INFO task cancelled task_id=c624a40a-8f3a-4f1f-8729-e0d663912469 issue_id=cbbc413e-4a66-4505-b0ea-03e41dcac6ab
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared/gate=true
+2026/11/01 16:19:33 INFO task cancelled task_id=a2e5706e-6f9f-4104-8dd2-6fa6f02cbbc1 issue_id=b8fa0b8c-c0b4-4d5d-a659-0234cc90943b
+    task_knowledge_invocation_test.go:239: a committed private manifest was resumed by an unsupported invocation: d=false prior="legacy-native" err=<nil>
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared/gate=false
+2026/11/01 16:19:33 INFO task cancelled task_id=3694d173-a804-41cc-b401-f871781c5e73 issue_id=067aec4b-0469-4e77-8a6d-6b4316e73e4c
+    task_knowledge_invocation_test.go:239: a committed private manifest was resumed by an unsupported invocation: d=false prior="legacy-native" err=<nil>
+--- FAIL: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation (1.55s)
+    --- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/claimed/gate=true (0.24s)
+    --- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/claimed/gate=false (0.23s)
+    --- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared_empty/gate=true (0.29s)
+    --- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared_empty/gate=false (0.26s)
+    --- FAIL: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared/gate=true (0.25s)
+    --- FAIL: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared/gate=false (0.28s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/service	3.679s
+FAIL
+
+$ go test -overlay /tmp/h1f-mut/decode.json ./internal/service -run 'TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate' -count=1 -v
+=== RUN   TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate
+=== RUN   TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate/gate=true
+    task_knowledge_invocation_test.go:195: custom_args {"--continue":true} that are not a string array were accepted: d=false err=<nil>
+    task_knowledge_invocation_test.go:195: custom_args "--allowedTools Bash" that are not a string array were accepted: d=false err=<nil>
+    task_knowledge_invocation_test.go:195: custom_args [1,2] that are not a string array were accepted: d=false err=<nil>
+    task_knowledge_invocation_test.go:195: custom_args [["--model","sonnet"]] that are not a string array were accepted: d=false err=<nil>
+    task_knowledge_invocation_test.go:195: custom_args true that are not a string array were accepted: d=false err=<nil>
+    task_knowledge_invocation_test.go:195: custom_args [{"arg":"--verbose"}] that are not a string array were accepted: d=false err=<nil>
+=== RUN   TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate/gate=false
+    task_knowledge_invocation_test.go:195: custom_args {"--continue":true} that are not a string array were accepted: d=false err=<nil>
+    task_knowledge_invocation_test.go:195: custom_args "--allowedTools Bash" that are not a string array were accepted: d=false err=<nil>
+    task_knowledge_invocation_test.go:195: custom_args [1,2] that are not a string array were accepted: d=false err=<nil>
+    task_knowledge_invocation_test.go:195: custom_args [["--model","sonnet"]] that are not a string array were accepted: d=false err=<nil>
+    task_knowledge_invocation_test.go:195: custom_args true that are not a string array were accepted: d=false err=<nil>
+    task_knowledge_invocation_test.go:195: custom_args [{"arg":"--verbose"}] that are not a string array were accepted: d=false err=<nil>
+--- FAIL: TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate (0.50s)
+    --- FAIL: TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate/gate=true (0.28s)
+    --- FAIL: TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate/gate=false (0.22s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/service	1.264s
+FAIL
+
+### 4. Build, vet and broader suites (counts; full logs kept out for size)
+$ cd server && go build ./...                                                  -> exit 0
+$ go vet ./pkg/agent ./internal/service ./internal/handler ./internal/daemon/... ./cmd/server -> exit 0
+$ gofmt -l on the four changed Go files                                        -> no output
+$ go test ./pkg/agent -count=1 -v                                              -> exit 0, ok 233.129s;
+    1219 top-level PASS, 3 top-level SKIP (platform: TestACPManagedTerminalPreservesWindowsUnicodeShellOutput,
+    TestCodexExecuteRetriesAfterSignaledProcessIsReaped, TestPiExecuteAttachesStdinPipe), 0 FAIL
+$ DATABASE_URL=.../kfix_claim_svc go test ./internal/service -run 'Knowledge' -count=1 -v
+    -> exit 0, ok 75.842s; 114 top-level PASS (111 at H1 plus the three new tests), 0 SKIP, 0 FAIL
+$ DATABASE_URL=.../kfix_claim_handler go test ./internal/handler -run 'Knowledge|Claim' -count=1 -v
+    -> exit 0, ok 10.461s; 151 top-level PASS including TestKnowledgeClaimGateOffSafeArgsDispatchesOrdinaryTask,
+    1 SKIP (TestRedisLocalSkillListStore_PopPendingAtomicClaim: REDIS_TEST_URL not set), 0 FAIL
+$ DATABASE_URL=.../kfix_claim_cmd go test ./cmd/server -run 'Knowledge|Claim' -count=1 -v
+    -> exit 0, ok 2.555s; 7 top-level PASS, 1 SKIP
+    (TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry: requires isolated REDIS_TEST_URL), 0 FAIL
+Not run: knowledgeintegration-tagged composites (cmd/server host composite exercises the collaboration
+host policy, which uses ValidateKnowledgeSessionArgs and is unchanged); internal/daemon unit suite.
+
+### 5. Source of the option and subcommand lists: `/Users/artisan/.local/bin/claude --version` and `--help`
+(local help output only, no API call)
+2.1.316 (Claude Code)
+Usage: claude [options] [command] [prompt]
+
+Claude Code - starts an interactive session by default, use -p/--print for
+non-interactive output
+
+Arguments:
+  prompt                                Your prompt
+
+Options:
+  --add-dir <directories...>            Additional directories to allow tool
+                                        access to
+  --agent <agent>                       Agent for the current session. Overrides
+                                        the 'agent' setting.
+  --agents <json-or-file>               JSON object defining custom agents, or
+                                        with --print the path to a file that
+                                        holds one (e.g. '{"reviewer":
+                                        {"description": "Reviews code",
+                                        "prompt": "You are a code reviewer"}}')
+  --allow-dangerously-skip-permissions  Enable bypassing all permission checks
+                                        as an option, without it being enabled
+                                        by default. Recommended only for
+                                        sandboxes with no internet access.
+  --allowedTools, --allowed-tools <tools...>
+      Comma or space-separated list of tool names to allow (e.g. "Bash(git *)
+      Edit")
+  --append-system-prompt <prompt>       Append a system prompt to the default
+                                        system prompt
+  --autocompact <auto|tokens>           Auto-compact window size (auto, or
+                                        100k–1M tokens)
+  --ax-screen-reader                    Render screen-reader friendly output
+                                        (flat text, no decorative borders or
+                                        animations).
+  --bg, --background                    Start the session in the background and
+                                        return immediately. Prints the id that
+                                        `claude attach`, `logs`, `stop` and `rm`
+                                        take; `claude agents` lists them. With
+                                        --resume <session-id>, continues that
+                                        session in the background under the same
+                                        ID, or starts a copy and says so when
+                                        the session is already running
+  --bare                                Minimal mode: skip hooks (those defined
+                                        in settings and by installed plugins;
+                                        features built into Claude Code are
+                                        unaffected), LSP, plugin sync,
+                                        attribution, auto-memory, background
+                                        prefetches, keychain reads, and
+                                        CLAUDE.md auto-discovery. Sets
+                                        CLAUDE_CODE_SIMPLE=1. Anthropic auth is
+                                        strictly ANTHROPIC_API_KEY or
+                                        apiKeyHelper via --settings (OAuth and
+                                        keychain are never read). 3P providers
+                                        (Bedrock/Vertex/Foundry) use their own
+                                        credentials. Skills still resolve via
+                                        /skill-name. Explicitly provide context
+                                        via: --system-prompt[-file],
+                                        --append-system-prompt[-file], --add-dir
+                                        (CLAUDE.md dirs), --mcp-config,
+                                        --settings, --agents, --plugin-dir.
+  --betas <betas...>                    Beta headers to include in API requests
+                                        (API key users only)
+  --brief                               Enable SendUserMessage tool for
+                                        agent-to-user communication
+  --chrome                              Enable Claude in Chrome integration
+  --cloud [description|session_id|url]  Create a cloud session with the given
+                                        description, or attach to an existing
+                                        one by session ID or claude.ai/code URL
+  -c, --continue                        Continue the most recent conversation in
+                                        the current directory
+  --dangerously-skip-permissions        Bypass all permission checks.
+                                        Recommended only for sandboxes with no
+                                        internet access.
+  -d, --debug [filter]                  Enable debug mode with optional category
+                                        filtering (e.g., --debug=hooks,mcp or
+                                        --debug='!hooks,!mcp')
+  --debug-file <path>                   Write debug logs to a specific file path
+                                        (implicitly enables debug mode)
+  --desktop                             Open in the Claude Desktop app instead
+                                        of the terminal (with --continue or
+                                        --resume <id> to pick the session)
+  --disable-slash-commands              Disable all skills and commands
+  --disallowedTools, --disallowed-tools <tools...>
+      Comma or space-separated list of tool names to deny (e.g. "Bash(git *)
+      Edit")
+  --effort <level>                      Effort level for the current session
+                                        (low, medium, high, xhigh, max)
+  --environment <environment_id>        Create a new cloud session that runs on
+                                        the given self-hosted environment
+                                        (ccpool_...).
+  --exclude-dynamic-system-prompt-sections
+      Move per-machine sections (cwd, env info, memory paths, git status) from
+      the system prompt into the first user message. Improves cross-user
+      prompt-cache reuse. Only applies with the default system prompt (ignored
+      with --system-prompt). (default: false)
+  --fallback-model <model>              Enable automatic fallback to specified
+                                        model(s) when the default model is
+                                        overloaded or not available. Accepts a
+                                        comma-separated list to try each in
+                                        order. Re-tries the primary at the start
+                                        of each user turn.
+  --file <specs...>                     File resources to download at startup.
+                                        Format: file_id:relative_path (e.g.,
+                                        --file file_abc:doc.txt
+                                        file_def:img.png)
+  --fork-session                        When resuming, create a new session ID
+                                        instead of reusing the original (use
+                                        with --resume or --continue)
+  --forward-subagent-text               Forward subagent text and thinking
+                                        blocks as assistant/user messages with
+                                        parent_tool_use_id set (only works with
+                                        --print and --output-format=stream-json)
+  --from-pr [value]                     Resume a session linked to a PR by PR
+                                        number/URL, or open interactive picker
+                                        with optional search term
+  -h, --help                            Display help for command
+  --ide                                 Automatically connect to IDE on startup
+                                        if exactly one valid IDE is available
+  --include-hook-events                 Include all hook lifecycle events in the
+                                        output stream (only works with
+                                        --output-format=stream-json)
+  --include-partial-messages            Include partial message chunks as they
+                                        arrive (only works with --print and
+                                        --output-format=stream-json)
+  --input-format <format>               Input format (only works with --print):
+                                        "text" (default), or "stream-json"
+                                        (realtime streaming input) (choices:
+                                        "text", "stream-json")
+  --json-schema <schema>                JSON Schema for structured output
+                                        validation (only works with --print).
+                                        Example:
+                                        {"type":"object","properties":{"name":{"type":"string"}},"required":["name"]}
+  --max-budget-usd <amount>             Maximum dollar amount to spend on API
+                                        calls (only works with --print)
+  --mcp-config <configs...>             Load MCP servers from JSON files or
+                                        strings (space-separated)
+  --model <model>                       Model for the current session. Provide
+                                        an alias for the latest model (e.g.
+                                        'fable', 'opus', or 'sonnet') or a
+                                        model's full name.
+  -n, --name <name>                     Set a display name for this session
+                                        (shown in the prompt box, /resume
+                                        picker, and terminal title)
+  --no-chrome                           Disable Claude in Chrome integration
+  --no-session-persistence              Disable session persistence - sessions
+                                        will not be saved to disk and cannot be
+                                        resumed (only works with --print)
+  --output-format <format>              Output format (only works with --print):
+                                        "text" (default), "json" (single
+                                        result), or "stream-json" (realtime
+                                        streaming) (choices: "text", "json",
+                                        "stream-json")
+  --permission-mode <mode>              Permission mode to use for the session
+                                        (choices: "acceptEdits", "auto",
+                                        "bypassPermissions", "manual",
+                                        "dontAsk", "plan")
+  --permission-prompts <target>         Who answers permission prompts with
+                                        --print: "host" (the SDK host or
+                                        --permission-prompt-tool) or "none"
+                                        (nobody: anything that would prompt is
+                                        denied automatically; the permission
+                                        mode still decides everything else)
+                                        (choices: "host", "none", default:
+                                        "host")
+  --plugin-dir <path>                   Load a plugin from a directory or .zip
+                                        for this session only; a folder of
+                                        plugins loads each child (repeatable:
+                                        --plugin-dir A --plugin-dir B.zip)
+                                        (default: [])
+  --plugin-url <url>                    Fetch a plugin .zip from a URL for this
+                                        session only (repeatable: --plugin-url A
+                                        --plugin-url B) (default: [])
+  -p, --print                           Print response and exit (useful for
+                                        pipes). Note: The workspace trust dialog
+                                        is skipped when Claude is run in
+                                        non-interactive mode (via -p, or when
+                                        stdout is not a TTY, e.g. piped or
+                                        redirected output). Only use this in
+                                        directories you trust. Settings files
+                                        that fail validation are silently
+                                        ignored in this mode (no error dialog is
+                                        shown).
+  --prompt-suggestions [value]          Enable prompt suggestions. In print/SDK
+                                        mode, emits a prompt_suggestion message
+                                        after each turn with a predicted next
+                                        user prompt (choices: "true", "false",
+                                        "1", "0", "yes", "no", "on", "off",
+                                        preset: "true")
+  --remote-control [name]               Start an interactive session with Remote
+                                        Control enabled (optionally named)
+  --remote-control-session-name-prefix <prefix>
+      Prefix for auto-generated Remote Control session names (default: hostname)
+  --replay-user-messages                Re-emit user messages from stdin back on
+                                        stdout for acknowledgment (only works
+                                        with --input-format=stream-json and
+                                        --output-format=stream-json)
+  --restricted                          Restricted mode: removes the built-in
+                                        tools that run commands or code (Bash,
+                                        PowerShell and the other code-running
+                                        tools) and WebFetch unless --tools names
+                                        them, and ignores user, project and
+                                        local settings files (managed settings
+                                        and --settings still apply; add
+                                        --strict-mcp-config to skip MCP servers
+                                        too). Also confines the file tools to
+                                        the working directories (--add-dir
+                                        included), refuses bypassPermissions,
+                                        and lets only a person or the configured
+                                        permission handler approve writes to
+                                        settings, git and tool-configuration
+                                        files.
+  -r, --resume [value]                  Resume a conversation by session ID or
+                                        name, or open interactive picker with
+                                        optional search term
+  --safe-mode                           Start with all customizations
+                                        (CLAUDE.md, skills, installed plugins,
+                                        hooks, MCP servers, custom commands and
+                                        agents, output styles, workflows, custom
+                                        themes, keybindings, and more) disabled
+                                        — useful for troubleshooting a broken
+                                        configuration. Admin-managed (policy)
+                                        settings still apply. Auth, model
+                                        selection, built-in tools and plugins,
+                                        and permissions work normally. Sets
+                                        CLAUDE_CODE_SAFE_MODE=1.
+  --session-id <uuid>                   Use a specific session ID for the
+                                        conversation (must be a valid UUID)
+  --setting-sources <sources>           Comma-separated list of setting sources
+                                        to load (user, project, local).
+  --settings <file-or-json>             Path to a settings JSON file or a JSON
+                                        string to load additional settings from
+  --strict-mcp-config                   Only use MCP servers from --mcp-config,
+                                        ignoring all other MCP configurations
+  --system-prompt <prompt>              System prompt to use for the session
+  --system-prompt-snapshot <on|off>     Record the system prompt once per
+                                        conversation and reuse it verbatim on
+                                        every request and resume. on (the
+                                        default, except under --bare outside
+                                        cloud and background sessions): the
+                                        prompt is rendered on the conversation's
+                                        first request — a --system-prompt or
+                                        --append-system-prompt included — sent,
+                                        and recorded; every later request and
+                                        resume sends the record as-is, even when
+                                        a later launch passes different text,
+                                        until the conversation is compacted.
+                                        off: never record; the prompt is
+                                        rendered fresh every request (for
+                                        iterating on prompt text). (choices:
+                                        "on", "off")
+  --teleport [session]                  Resume a teleport session, optionally
+                                        specify session ID
+  --tmux                                Create a tmux session for the worktree
+                                        (requires --worktree). Uses iTerm2
+                                        native panes when available; use
+                                        --tmux=classic for traditional tmux.
+  --tools <tools...>                    Specify the list of available tools from
+                                        the built-in set. Use "" to disable all
+                                        tools, "default" to use the default set,
+                                        or specify tool names (e.g.
+                                        "Bash,Edit,Read").
+  --verbose                             Override verbose mode setting from
+                                        config
+  -v, --version                         Output the version number
+  -w, --worktree [name]                 Create a new git worktree for this
+                                        session (optionally specify a name)
+
+Commands:
+  agents [options]                      Manage background agents
+  attach <id|name>                      Open a background session in this
+                                        terminal. <id> is the short id that
+                                        `claude --bg` prints and `claude agents`
+                                        lists. Part of the session name works
+                                        too
+  auth                                  Manage authentication
+  auto-mode                             Inspect or reset auto mode configuration
+  doctor                                Check the health of your Claude Code
+                                        installation. Reads settings files in
+                                        the current directory without a trust
+                                        prompt. For a full checkup that can also
+                                        fix issues, run /doctor in a session.
+  gateway [options]                     Run the enterprise auth/telemetry
+                                        gateway
+  import [options] [source]             Import config from another AI coding
+                                        agent into Claude Code
+  install [options] [target]            Install Claude Code native build. Use
+                                        [target] to specify version (stable,
+                                        latest, or specific version)
+  logs <id|name>                        Print a background session's recent
+                                        terminal output
+  mcp                                   Configure and manage MCP servers
+  plugin|plugins                        Manage Claude Code plugins
+  purge [options] [path]                Delete a project's Claude Code data
+                                        (transcripts, tasks, file history, and
+                                        its entry in ~/.claude.json) from this
+                                        computer only
+  respawn [options] [id]                Restart a background session, or all of
+                                        them with --all, so it runs the current
+                                        Claude Code version
+  rm <id>                               Delete a background session, and its
+                                        worktree when that is safe. Works on
+                                        sessions that have already exited
+  setup-token                           Set up a long-lived authentication token
+                                        (requires Claude subscription)
+  stop|kill <id>                        Stop a background session. Its
+                                        conversation is kept: `claude attach
+                                        <id>` opens it again, `claude --resume`
+                                        works once it is stopped
+  ultrareview [options] [target]        Run a cloud-hosted multi-agent code
+                                        review of the current branch (or a PR
+                                        number / base branch) and print the
+                                        findings
+  update|upgrade                        Check for updates and install if
+                                        available; package-manager installs
+                                        update through the package manager

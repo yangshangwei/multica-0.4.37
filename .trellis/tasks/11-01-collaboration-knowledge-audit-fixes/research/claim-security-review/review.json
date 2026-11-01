@@ -1,0 +1,30 @@
+{
+  "reviewer": "root coordinator; H3/M3 implementation authored by /root/knowledge_claim; no H3 product edits in this review",
+  "source_sha": "a4e444bdf90c84939189fc2981cdacab50c678de",
+  "product_commit": "30edf3e36",
+  "verdict": "pass-with-notes",
+  "method": "independent static adversarial boundary and baseline-diff review; replacement after separate security child exhausted gateway429 without a verdict",
+  "product_modified": false,
+  "database_access": false,
+  "provider_calls": 0,
+  "reviewed_at": "2026-11-01T16:35:20.429235+00:00",
+  "files_sha256": {
+    "server/internal/service/task_knowledge.go": "cb566995f0c504bf956c8873f61c0593597923c89f20dc9d6e766124ece2870b",
+    "server/internal/service/task_knowledge_prepare.go": "6799bf6cc6c63aa587e1e815da592eaba0c8cd9807229e01de925bd9edfe116b",
+    "server/internal/service/task.go": "933bf52d6f637c1203650952c9d6be07a69399b54ea883c5dca5f00ce815fa8d",
+    "server/internal/service/managed_runtime.go": "768925aac9df0a05bd21f6d8c33918d7f238a037d3305b2ff0d1460dc1c0a785",
+    "server/pkg/db/queries/task_knowledge.sql": "b81310e58a007854f91bae89309c7afa36ba8ffe87eb8dd1b68146f49a4248c3",
+    "server/pkg/agent/knowledge_launch.go": "585e946c5f6f288daf42b8d6086f323fabecf1b70c04daf75484e01d5f6875ff",
+    "server/pkg/agent/claude.go": "027200a87a76dcb2c2c67a3543bb1591cd169b35609af2e3eeec2a31bd65dec3"
+  },
+  "notes": [
+    "No new trust source or grant is introduced by complete metadata reads. Current keyset uses timestamp plus UUID in the same descending order; runtime selection checks selected row identity and missing/version-lost deliveries fail closed.",
+    "Exact session decisions retain existing native/config/provider/runtime/agent/scope checks and revalidate the accumulated manifest before private preparation. Removing a count-based refusal does not turn unsupported options into positive knowledge admission.",
+    "The runtime key pass can stop at the first exposure because that result refuses unsupported execution; skipping later decode in this branch cannot authorize a process. Corrupt prior metadata and lost selected rows retain terminal refusal.",
+    "Legacy NULL-version rows are excluded only under the existing metadata CHECK that requires absent delivery; negotiated data is not filtered to only previously exposed rows.",
+    "Three concurrent partial indexes contain metadata only; no FK/cascade, policy enlargement, source-content projection or new credential is added. Owner/provider namespace remains intentionally cross-workspace.",
+    "Owned settings precede both filtered option lists; competing settings retain the existing removal rule. A malformed later required-value option can cause ordinary CLI parse failure but cannot consume the already-parsed owned pair. Installed CLI parsing was not tested.",
+    "Complete runtime namespace keys use O(N) metadata memory and may scan a broad negotiated partial index. This is an explicitly accepted cost, not evidence of indexed production-size performance. Existing concurrency/fence semantics were not changed by H3; this review does not claim a new concurrency proof."
+  ],
+  "blocking_findings": []
+}

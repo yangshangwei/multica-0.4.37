@@ -75,20 +75,61 @@ retained-delivery limits before commit. No prefix truncation or base-body copies
 The selected binding is `(provider,runtime,agent,configuration,scope,generation,
 native_session_id)`. Scope generation is a server UUID; claim generation is a
 separate decimal value. Resume unions **every exposure in that exact session**,
-including older, failed/cancelled/reclaimed turns and NULL-native rows. The 129-row
-sentinel detects history beyond the 128-row bound; incomplete/corrupt history is
-refused, never truncated. Valid claimed-only/empty history differs from actual
-private exposure and from legacy NULL metadata.
+including older, failed/cancelled/reclaimed turns and NULL-native rows. History
+has no row cap: read every negotiated row in scope newest-first in 128-row
+keyset pages (`created_at DESC, id DESC`) and decode each fail-closed. Length
+alone never refuses; a corrupt row at any depth is refused, never truncated.
+Legacy NULL-version rows carry no delivery by the metadata CHECK and are not
+read. Valid claimed-only/empty history differs from actual private exposure
+and from legacy NULL metadata.
 
 Before returning any old `PriorSessionID`, unsupported/legacy clients also check
 retained provider history across original/current runtime, current agent binding,
 immutable daemon/provider and owner/provider identity. A scope/profile/owner
 rewrite or a NULL current turn cannot erase older exposure. A known managed
-session is not resumable by an unsupported client. A retained negotiated task or
-any private exposure in that provider namespace refuses unsupported delivery,
-even when the selected pointer is empty. Unsafe explicit selectors are refused;
-base execution requires a complete relevant history proving no private exposure.
+session, meaning one whose history holds a committed preparation with a
+non-empty manifest, is not resumable by an unsupported client, even when no
+process was ever authorized for it. Claimed-only history and a preparation with
+an empty manifest have disclosed nothing private: the claim descriptor is
+source-free, preparation commits its manifest before any contribution leaves the
+server, and launch authorization requires that preparation. An unsupported
+client (gate off, a legacy daemon, or gate on with an option outside the
+negotiation allowlist) therefore resumes such a session as ordinary work when
+the namespace guard also proves no private exposure. A retained negotiated task
+or any private exposure in that provider namespace refuses unsupported delivery,
+even when the selected pointer is empty. Unsafe explicit selectors are refused
+whatever the gate. For a v1 Claude invocation, any daemon-default or agent custom
+argument refuses with `knowledge_invocation_unsupported` when, after the same
+unshell-quoting as launch, it is a `--resume*`, `--continue*`, `--session*`,
+`--fork-session*`, `--from-pr*`, `--teleport*`, `--cloud*`, `--remote*`,
+`--attach*`, `--bg*`, `--background*`, `--desktop*`, `--environment*` or
+`--tmux*` long option; a single-dash cluster containing `c` or `r`; exactly a
+Claude subcommand name such as `attach`, `logs`, `respawn`, `stop`, `kill`, `rm`,
+`agents`, `purge` or `remote-control`; or a bare `--`, which stops option parsing
+for later configured arguments. The lists follow
+`claude --help` for Claude Code 2.1.316 and live in
+[`knowledge_launch.go`](../../../server/pkg/agent/knowledge_launch.go). Agent
+`custom_args` JSON that does not decode to a string array refuses the same way;
+it is never read as no arguments. Option values are scanned too, so a value
+spelled like a subcommand refuses (`--debug mcp`; write `--debug=mcp`), and the
+selector is never stripped. Any other option outside the negotiation allowlist
+only makes the invocation unsupported, and the history guard then chooses base
+execution or refusal. Base execution requires a complete relevant history
+proving no private exposure. The runtime guard collects the complete relevant
+namespace keys in one index-driven UNION pass, then reads delivery rows by ID
+in batches of 128. A selected row that disappears or loses its negotiated
+metadata refuses. Namespace size alone never refuses, and the first actual
+exposure refuses without reading further. This remains O(negotiated rows) per
+claim; no exposure summary or cross-workspace owner rule changes.
 Proven legacy sessions preserve their existing behavior.
+
+When the daemon owns a Claude settings file, `buildClaudeArgs` emits its
+`--settings <managed path>` pair before filtered default/custom options and
+still removes competing configured settings. A dangling required-value option
+must not consume the managed flag or make parsing stop before the policy.
+Malformed options may fail as ordinary CLI configuration; they do not silently
+disable the managed policy. This ordering adds no option allowlist and does not
+broaden knowledge launch admission.
 
 Use one `NewOrdinaryLaunchLifecycle(observer)` per logical input. It preserves
 the already assembled ordinary environment; any callback `Environment` replacement
@@ -108,6 +149,11 @@ transitions may omit it. Completion's failure reroute preserves it.
 First launch refusal is terminal with zero processes. Later refusal retains prior
 usage, messages and termination, then seals the lifecycle. All knowledge failure
 reasons are excluded from automatic fresh fallback, requeue and input replay.
+A transient dependency read while building a claim, before any descriptor is
+finalized, is not a knowledge failure reason. A typed refusal from claim
+finalization, such as the 32-claim bound of one task row or a retained delivery
+that no longer matches, settles the task with that reason like a build-time
+refusal; requeueing it would rebuild the same refused claim on every poll.
 `Result.KnowledgeOutput` retains failure evidence separately from failed final
 `Output`; both it and `KnowledgeFailure` have `json:"-"`. Deduplicate transcript
 evidence and keep private input/Provider stderr out of generic runtime/server logs.
@@ -131,7 +177,9 @@ pointers. Every Claude print invocation includes the official
 A unique cwd alone is not
 native-store isolation. Missing, valued, negated or reenable forms refuse; an old
 CLI rejecting the flag has no flag-removal/base-only fallback. Ordinary resumable
-knowledge intentionally refuses this flag; do not merge the two policies.
+knowledge never negotiates with this flag: a fresh unexposed task takes base
+execution, while a retained negotiated task refuses with
+`knowledge_invocation_unsupported`. Do not merge the two policies.
 
 The preparation UUID is `uuid.NewSHA1(runID, []byte("multica:collaboration-knowledge:v1"))`.
 Original replay reauthorizes the same manifest and frozen handoff. Knowledge
@@ -147,11 +195,13 @@ oracle. No body goes into a supervisor ledger or stable base/CLAUDE file.
 
 | Condition | Required result |
 | --- | --- |
-| Switch false / unsupported safe fresh runtime | No positive private negotiation; retain history guard and ordinary eligible base behavior |
-| Unsupported/unsafe selector could recover managed history | Refuse before native launch; never silently strip the selector |
+| Switch false / unsupported safe fresh runtime (including safe options outside the negotiation allowlist and ordinary `--no-session-persistence`) | No positive private negotiation; retain history guard and ordinary eligible base behavior |
+| Unsupported/unsafe selector could recover managed history, a subcommand or bare `--` would replace the managed argv, or `custom_args` is not a string array | Refuse before native launch; never silently strip the selector |
+| Unsupported invocation resumes a session whose history is claimed-only or prepared with an empty manifest | Ordinary resume when the namespace guard proves no private exposure; nothing private was disclosed |
 | Stale claim, session, preparation, manifest, prompt or invocation | `knowledge_context_changed`; no replacement snapshot or automatic replay |
 | Current consumer/source/credential denied | `knowledge_authorization_denied` |
 | Bound exceeded, corrupt proof, missing/ambiguous observation ACK or dependency failure | Fail closed (`knowledge_unavailable` or the precise typed refusal) |
+| Transient read failure while building a claim, before descriptor finalization | Requeue that exact claim generation with no failure reason; typed refusals and missing rows stay terminal, including a typed refusal from claim finalization |
 | Lock contention exhausts bounded retries | `knowledge_busy`; terminal for the logical input |
 | Missing lifecycle support/mandatory persistence | `knowledge_invocation_unsupported` or collaboration unsupported refusal |
 | Source/gate loss after launch | Preserve started/terminated facts and original cleanup authority; refuse another launch |

@@ -1,0 +1,30 @@
+{
+  "source_sha": "a4e444bdf90c84939189fc2981cdacab50c678de",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./pkg/agent",
+    "-parallel=2",
+    "-run",
+    "^TestBuildClaudeArgsManaged(SettingsSurvivesIncompleteUserOption|SkillSettingsWins)$",
+    "-count=1",
+    "-json"
+  ],
+  "started_at": "2026-11-01T16:31:41.629332+00:00",
+  "database_url_present": false,
+  "provider_calls": 0,
+  "exit_code": 0,
+  "finished_at": "2026-11-01T16:31:43.489547+00:00",
+  "counts": {
+    "run": 9,
+    "pass": 9,
+    "fail": 0,
+    "skip": 0
+  },
+  "log_sha256": "935d671dd81569dc2d637d172b649314d73e9cdcf100d9d2b66bd8d1ca7e64aa"
+}
