@@ -1,0 +1,42 @@
+{
+  "failed_attempt": "mac-arm64-r2.json",
+  "failure": "codesign bundle format is ambiguous on flattened framework distribution",
+  "new_network_access": false,
+  "source_archive_sha256": "86fa117ba10e36149ca33d7c22de2cfc3fb7490ca88b07ce953d2efe1f2a41cd",
+  "extract_command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/.omx/private/local-packaging/deny-network.sb",
+    "/usr/bin/ditto",
+    "-x",
+    "-k",
+    "/Users/artisan/Library/Caches/electron/electron-v39.8.7-darwin-arm64.zip",
+    "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/.omx/private/local-packaging/mac-electron-canonical"
+  ],
+  "extract_exit_code": 0,
+  "canonical_distribution": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/.omx/private/local-packaging/mac-electron-canonical",
+  "critical_symlinks": [
+    {
+      "relative": "Electron.app/Contents/Frameworks/Electron Framework.framework/Electron Framework",
+      "fresh_is_symlink": true,
+      "fresh_target": "Versions/Current/Electron Framework",
+      "parent_original_is_symlink": false,
+      "copied_installed_is_symlink": false
+    },
+    {
+      "relative": "Electron.app/Contents/Frameworks/Electron Framework.framework/Resources",
+      "fresh_is_symlink": true,
+      "fresh_target": "Versions/Current/Resources",
+      "parent_original_is_symlink": false,
+      "copied_installed_is_symlink": false
+    },
+    {
+      "relative": "Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/Current",
+      "fresh_is_symlink": true,
+      "fresh_target": "A",
+      "parent_original_is_symlink": false,
+      "copied_installed_is_symlink": false
+    }
+  ],
+  "next": "use fresh canonical cached extraction only; retain ad-hoc signing, network denial, publishnever and both earlier failed attempts"
+}

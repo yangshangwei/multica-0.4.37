@@ -1,0 +1,58 @@
+{
+  "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/.omx/private/local-packaging/deny-network.sb",
+    "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "apps/desktop/scripts/update-artifacts.mjs",
+    "collect",
+    "--source",
+    "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3",
+    "--destination",
+    "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-collected-r2",
+    "--allow-prerelease"
+  ],
+  "state": "complete",
+  "exit_code": 0,
+  "source": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3",
+  "destination": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-collected-r2",
+  "local_collection_only": true,
+  "publication": false,
+  "network_denied": true,
+  "log_sha256": "e59f7b74407ff8f5571e9bdc751757559b1a64a6d576be9bab806eb6a5b8d315",
+  "at": "2026-11-01T20:21:10.666982+00:00",
+  "first_setup_failure": "mac-offline-collection.json exit71 retained; initial Node path absent, fixed to verified PATH Node22.23.2",
+  "collected_files": [
+    {
+      "name": "latest-mac.yml",
+      "size": 581,
+      "sha256": "addb8b0e3a3d31888bed89db52b02315d9b7c129da55296290f6643a79c59dbf",
+      "source_bytes_equal": true
+    },
+    {
+      "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.dmg",
+      "size": 233408426,
+      "sha256": "bd82fe6ddc6b65fce891f078d64326d91742d951f310b67589eb654bdaceabf6",
+      "source_bytes_equal": true
+    },
+    {
+      "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.dmg.blockmap",
+      "size": 242248,
+      "sha256": "a4fd2024019699c31568daa41b38f1801011c4cad4c3c536a9d39a38ac1bc5c7",
+      "source_bytes_equal": true
+    },
+    {
+      "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.zip",
+      "size": 223524090,
+      "sha256": "b50a00fa6fc44ca612a834aa8fd1c638f91431b87d5b6bb47abbd479433183d9",
+      "source_bytes_equal": true
+    },
+    {
+      "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.zip.blockmap",
+      "size": 234398,
+      "sha256": "8d7c47b036732c679d30288d02cb308d0cca9179207fc754a76ba4878a0be880",
+      "source_bytes_equal": true
+    }
+  ]
+}

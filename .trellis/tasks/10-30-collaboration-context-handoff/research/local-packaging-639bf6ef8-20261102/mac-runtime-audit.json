@@ -1,0 +1,51 @@
+{
+  "app": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app",
+  "signature": "ad-hoc",
+  "notarized": false,
+  "signature_checks": [
+    {
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/.omx/private/local-packaging/deny-network.sb",
+        "/usr/bin/codesign",
+        "--verify",
+        "--deep",
+        "--strict",
+        "--verbose=2",
+        "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app"
+      ],
+      "exit_code": 0,
+      "log_sha256": "4775efce0474d6858af4d7b6d326f1e37fc7d67b1f5f1995545a357b46765c48"
+    },
+    {
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/.omx/private/local-packaging/deny-network.sb",
+        "/usr/bin/codesign",
+        "-dv",
+        "--verbose=4",
+        "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app"
+      ],
+      "exit_code": 0,
+      "log_sha256": "4b28052d44d0c41c3ecd0bc84966e3cdbcdbfa79a9ce571004dc81bbfc20b2ae"
+    }
+  ],
+  "bundled_cli": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Resources/app.asar.unpacked/resources/bin/multica",
+    "sha256": "706b6ac4fcef6fb41493785c0ac70d4ea3b1886efcd817882305eb5ab272a475",
+    "command": [
+      "/usr/bin/sandbox-exec",
+      "-f",
+      "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/.omx/private/local-packaging/deny-network.sb",
+      "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Resources/app.asar.unpacked/resources/bin/multica",
+      "--version"
+    ],
+    "exit_code": 0,
+    "version": "multica 0.6.8-rc.20261102 (commit: 639bf6ef8, built: 2026-11-01T20:13:40Z)\ngo: go1.27.0, os/arch: darwin/arm64",
+    "architecture": "Mach-O 64-bit executable arm64"
+  },
+  "GUI_install_journey": "NOT_RUN",
+  "real_Provider_calls": 0
+}

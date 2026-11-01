@@ -1,0 +1,102 @@
+{
+  "recorded_at": "2026-11-01T20:23:22.168160+00:00",
+  "owner": "/root/local_installer_artifacts",
+  "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+  "worktree": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102",
+  "local_artifact_preparation": "pass",
+  "scope": "local macOSarm64 app/ZIP/DMG and Linuxarm64 directory packaging; not global release/native installation acceptance",
+  "version": "0.6.8-rc.20261102",
+  "mac": {
+    "package_record": "mac-arm64-r3.json",
+    "artifact_record": "mac-artifacts.json",
+    "runtime_record": "mac-runtime-audit.json",
+    "asar_record": "mac-asar-audit.json",
+    "app": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app",
+    "app_tree_sha256": "665f8088e3e3ddc2539ace0e526caa72f373b1a454ad2695498ea60773240880",
+    "archives": [
+      {
+        "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.dmg",
+        "size": 233408426,
+        "sha256": "bd82fe6ddc6b65fce891f078d64326d91742d951f310b67589eb654bdaceabf6",
+        "sha512_hex": "3fb91b754f19e5f5bf4bc792598d47cd59982b120096ded140f4a66635fc95241598f28070cf1aac35bb2be1bc070b91cd2fdacf87af41f622302c5d9e56946c"
+      },
+      {
+        "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.zip",
+        "size": 223524090,
+        "sha256": "b50a00fa6fc44ca612a834aa8fd1c638f91431b87d5b6bb47abbd479433183d9",
+        "sha512_hex": "2560d29d4b8d4260ca25019af4f9e160f6788f682a0e19463e3316510f72992f6afd027819ed1bff0561d2b65f47d06b2bd1a14948695c9f0892edf53a07d369"
+      }
+    ],
+    "signature": "ad-hoc; deep/strict verified",
+    "notarized": false,
+    "ZIP_integrity": true,
+    "DMG_verify_exit_code": 0,
+    "offline_collection": {
+      "record": "mac-offline-collection-r2.json",
+      "directory": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-collected-r2",
+      "files": 5,
+      "all_bytes_equal_to_original": true,
+      "SHA512_references_checked_by_canonical_helper": true
+    },
+    "GUI_install_upgrade_account": "NOT_RUN"
+  },
+  "linux": {
+    "package_record": "linux-arm64-dir.json",
+    "directory": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/linux-arm64-dir/linux-arm64-unpacked",
+    "directory_tree_sha256": "19dcb5af1383834b3c784141d1db3cc1dfe99d2677f78d8cada33a6f89e35970",
+    "artifact_record": "linux-directory-artifacts.json",
+    "asar_record": "linux-asar-audit.json",
+    "native_execution": "NOT_RUN",
+    "deb_rpm": "NOT_BUILT"
+  },
+  "preserved_failed_attempts": [
+    {
+      "record": "mac-package.json",
+      "exit_code": 1,
+      "class": "setup duplicate bool CLI flag; no product change"
+    },
+    {
+      "record": "mac-arm64-r2.json",
+      "exit_code": 1,
+      "class": "flattened Electron framework symlinks in reused installed distribution; canonical cached zip fixed input only"
+    },
+    {
+      "record": "mac-offline-collection.json",
+      "exit_code": 71,
+      "class": "initial Node executable path absent; verified PATH Node used by successful separately numbered collection"
+    }
+  ],
+  "verification": [
+    "canonical cached Electron archive hashes and preserved framework symlinks",
+    "source/product trees unchanged and source_id matches parent639 binding",
+    "mac codesign deep/strict and own bundled CLI --version",
+    "Mac ZIP testzip and safe paths; DMG hdiutilverify",
+    "Mac/Linux ASAR runtime allowlist and no private config/tool/task entries",
+    "Mac/Linux runtime JS/HTML and LICENSE/NOTICE hashes match",
+    "Linux Electron and own CLI static ELF arm64/build metadata; no Linux binary execution",
+    "Mac artifacts preserved after Linux build; separate owned output directories",
+    "canonical local artifact collection verified metadata sizes/SHA512 and exact bytes"
+  ],
+  "network_policy": "all package/build/collection processes run with deny network* sandbox; local execution and network bind denial preflight verified",
+  "new_dependencies": false,
+  "tools_installed": false,
+  "Provider_calls": 0,
+  "database_commands": 0,
+  "containers_started": 0,
+  "external_publication": false,
+  "tracked_source_changes": false,
+  "open_gates": [
+    "Linux deb/rpm packaging requires unavailable tool/cache; no tool download attempted",
+    "Linux/Windows native runtime and install/upgrade evidence",
+    "macOS installed app/upgrade/account journey (root-owned)",
+    "offline server container bundle; required base images not present and pulls unauthorized",
+    "real Provider/model, different-account/AC43 and final global candidate acceptance remain parent-owned"
+  ],
+  "host": {
+    "OS": "26.2",
+    "arch": "arm64",
+    "Node": "v22.23.2",
+    "Go": "go version go1.27.0 darwin/arm64"
+  }
+}

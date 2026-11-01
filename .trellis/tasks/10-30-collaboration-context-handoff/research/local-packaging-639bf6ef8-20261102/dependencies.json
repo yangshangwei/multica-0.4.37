@@ -1,0 +1,24 @@
+{
+  "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/.omx/private/local-packaging/deny-network.sb",
+    "/opt/homebrew/bin/pnpm",
+    "install",
+    "--offline",
+    "--frozen-lockfile",
+    "--ignore-scripts"
+  ],
+  "state": "complete",
+  "started_at": "2026-11-01T20:06:16.466995+00:00",
+  "network_policy": "deny network*",
+  "new_dependencies": false,
+  "lockfile_sha256": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+  "sanitized_key_names": [
+    "AGENT_ROUTER_TOKEN"
+  ],
+  "exit_code": 0,
+  "log_sha256": "e5f665beef9096d1f613c684267a35f26b4cc0c116b98a0936c974bcd471aea0",
+  "finished_at": "2026-11-01T20:06:29.378288+00:00"
+}
