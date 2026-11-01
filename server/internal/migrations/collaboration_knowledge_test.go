@@ -59,7 +59,9 @@ func knowledgeSchema(t *testing.T) (*pgxpool.Pool, *testutil.Fixture) {
 	}
 	t.Cleanup(pool.Close)
 	fx := testutil.New(pool, "", "")
-	fx.Exec(t, `CREATE TABLE agent_task_queue (id uuid NOT NULL DEFAULT gen_random_uuid(), session_id text)`)
+	fx.Exec(t, `CREATE TABLE agent_task_queue (
+		id uuid NOT NULL DEFAULT gen_random_uuid(), session_id text,
+		agent_id uuid, runtime_id uuid, created_at timestamptz NOT NULL DEFAULT now())`)
 	fx.Insert(t, "agent_task_queue", testutil.Cols{"session_id": "legacy-session"})
 	fx.Exec(t, `CREATE TABLE workspace (id uuid NOT NULL, issue_counter bigint DEFAULT 0)`)
 	fx.Exec(t, `CREATE TABLE project (id uuid NOT NULL, workspace_id uuid NOT NULL, lead_id uuid, lead_type text, description text, revision bigint DEFAULT 1)`)
@@ -109,6 +111,11 @@ func TestKnowledgeSchemaFreshReapplyAndEmptyDown(t *testing.T) {
 	}
 	if fx.Count(t, `SELECT count(*) FROM pg_index JOIN pg_class ON pg_class.oid=indexrelid WHERE relnamespace=current_schema()::regnamespace AND NOT indisvalid`) != 0 {
 		t.Fatal("invalid concurrent index")
+	}
+	for _, name := range []string{"collaboration_knowledge_agent_history_idx", "collaboration_knowledge_runtime_history_idx", "collaboration_knowledge_delivery_history_idx"} {
+		if fx.Count(t, `SELECT count(*) FROM pg_indexes WHERE schemaname=current_schema() AND indexname=$1`, name) != 1 {
+			t.Fatalf("knowledge history index %s was not created", name)
+		}
 	}
 	files := knowledgeMigrationFiles(t)
 	for _, path := range files {

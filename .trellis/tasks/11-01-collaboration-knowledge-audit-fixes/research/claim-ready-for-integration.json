@@ -1,0 +1,53 @@
+{
+  "state": "ready_for_serial_knowledge_integration",
+  "head_before_evidence_commit": "bd523787468de74346f2c3fd7ac61301b17f400a",
+  "production_commit": "30edf3e36",
+  "H3_M3_commit": "94e790d2d",
+  "test_only_CT1": "5c3549001",
+  "recorded_at": "2026-11-01T16:47:50.042405+00:00",
+  "reviews": {
+    "correctness": "claim-independent-review/review.json; pass-with-notes",
+    "security": "claim-security-review/review.json; root static pass-with-notes replacing429 child; original H3 implemented by child",
+    "test_validity": "claim-test-review/review.json; pass-with-notes; CT1 fixed and root rechecked"
+  },
+  "checks": {
+    "service": {
+      "pass": 3281,
+      "skip": 18,
+      "fail": 0,
+      "source": "0aedf934e + recorded dirty H3 bytes mapped94e790d2d"
+    },
+    "handler": {
+      "pass": 5271,
+      "skip": 53,
+      "fail": 0,
+      "source": "a4e444bdf"
+    },
+    "migrate": {
+      "pass": 70,
+      "skip": 1,
+      "fail": 0,
+      "source": "a4e444bdf"
+    },
+    "agent": {
+      "pass": 1950,
+      "skip": 4,
+      "fail": 0,
+      "source": "94e790d2d + managed args dirty bytes mapped30edf3e36"
+    },
+    "CT1_root": {
+      "pass": 1,
+      "skip": 0,
+      "fail": 0,
+      "source": "5c3549001"
+    },
+    "CT1_race": {
+      "pass": 4,
+      "skip": 0,
+      "fail": 0
+    }
+  },
+  "scope_rule": "No historical result is renamed as a clean final-candidate run. Test-only CT1 supplements unchanged production evidence; final merged make check remains required.",
+  "real_provider_calls": 0,
+  "default_database_incident": "0aedf934e; preserved, not acceptance evidence"
+}

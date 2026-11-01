@@ -1,0 +1,35 @@
+# M4 green run after the fix (knowledge-review.tsx: decision instance keyed by the last displayed tuple)
+# Command: pnpm --filter @multica/views exec vitest run collaboration/knowledge-panel.test.tsx --reporter=verbose (NO_COLOR=1); exit=0
+# BEHAVIORAL now passes: 'keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision'
+# REGRESSION GUARD still passes: 'resets typed decision input when a held refresh returns a different version'
+# Existing changed-identity test (line 83) unchanged and passing.
+
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-kfix-lane-web/packages/views
+
+ ✓ collaboration/knowledge-panel.test.tsx > requires keyboard confirmation of the displayed version and awaits the exact approval receipt 198ms
+ ✓ collaboration/knowledge-panel.test.tsx > resets review confirmation for a changed identity and removes body on source unavailability 157ms
+ ✓ collaboration/knowledge-panel.test.tsx > keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision 130ms
+ ✓ collaboration/knowledge-panel.test.tsx > resets typed decision input when a held refresh returns a different version 138ms
+ ✓ collaboration/knowledge-panel.test.tsx > recovers a lost result after remount with the original key and no second POST 86ms
+ ✓ collaboration/knowledge-panel.test.tsx > lets an external handler propose from comments to the lawful current project without a private catalog 347ms
+ ✓ collaboration/knowledge-panel.test.tsx > Propose correction creates a new immutable proposal without copying old body into the form 211ms
+ ✓ collaboration/knowledge-panel.test.tsx > Propose workspace version creates a new immutable proposal without copying old body into the form 200ms
+ ✓ collaboration/knowledge-panel.test.tsx > allows only content-free target withdrawal and shows a known refusal as a refusal 92ms
+ ✓ collaboration/knowledge-panel.test.tsx > keeps unsupported knowledge separate from the surrounding collaboration and reports truncated history 44ms
+ ✓ collaboration/knowledge-panel.test.tsx > picks an actual recorded run as a source without memory or a raw JSON form 259ms
+ ✓ collaboration/knowledge-panel.test.tsx > pages all candidate versions with the original page authorization boundary 39ms
+ ✓ collaboration/knowledge-panel.test.tsx > keeps a selected source project pinned and requires a new selection if the relationship changes 369ms
+ ✓ collaboration/knowledge-panel.test.tsx > unlocks a definitively rejected first proposal for editing and a new explicit request 207ms
+ ✓ collaboration/knowledge-panel.test.tsx > keeps a prior lost proposal locked to its original identity after a later rejection and not-found recovery 215ms
+ ✓ collaboration/knowledge-panel.test.tsx > shows known success when receipt cleanup fails instead of calling the write uncertain 53ms
+ ✓ collaboration/knowledge-panel.test.tsx > unlocks the human draft after storage fails before POST 168ms
+ ✓ collaboration/knowledge-panel.test.tsx > does not repeat approval actor/time as an identical latest decision 22ms
+ ✓ collaboration/knowledge-panel.test.tsx > renders supplied proposer, approval and latest decision facts without a directory lookup 29ms
+
+ Test Files  1 passed (1)
+      Tests  19 passed (19)
+   Start at  16:58:10
+   Duration  5.19s (transform 703ms, setup 97ms, import 1.30s, tests 2.96s, environment 727ms)
+

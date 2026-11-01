@@ -1918,6 +1918,9 @@ func (h *Handler) ClaimTasksByRuntime(w http.ResponseWriter, r *http.Request) {
 			ExpiresAt:   pgtype.Timestamptz{Time: time.Now().Add(24 * time.Hour), Valid: true},
 		}, deliveredCommentIDs, commentBackedTask, resp.KnowledgeContext, daemonTokens...)
 		if ferr != nil {
+			if failure := h.settleKnowledgeFinalizeRefusal(r.Context(), &task, ferr); failure != nil {
+				continue
+			}
 			slog.Error("batch claim: finalize task claim failed; requeueing claim",
 				"task_id", uuidToString(task.ID), "error", ferr)
 			if _, rerr := h.TaskService.RequeueTaskAfterClaimFailure(r.Context(), task); rerr != nil {
@@ -2118,6 +2121,42 @@ func (h *Handler) failClaimedTaskBeforeLaunch(
 		}
 	}
 	return &claimBuildFailure{outcome: outcome, status: status, message: claimMessage}
+}
+
+// settleKnowledgeFinalizeRefusal settles a claim whose FinalizeTaskClaim
+// returned a typed knowledge refusal; it returns nil for any other error so
+// the caller keeps its requeue. Inside FinalizeTaskClaim only
+// finalizeTaskKnowledgeClaim returns a *service.CollaborationError, and its
+// refusals are determined by the locked row and current runtime, not by
+// timing: the 32-claim bound, a corrupt or mismatched delivery document, or a
+// changed runtime contract. Claim building never reads the claim count, so a
+// requeue would rebuild the same refused claim on every poll. The transaction
+// rolled back, so the row still carries this claim's fence.
+func (h *Handler) settleKnowledgeFinalizeRefusal(ctx context.Context, task *db.AgentTaskQueue, err error) *claimBuildFailure {
+	var domain *service.CollaborationError
+	if !errors.As(err, &domain) {
+		return nil
+	}
+	slog.Warn("task claim: knowledge finalization refused; settling task",
+		"task_id", uuidToString(task.ID), "code", domain.Code)
+	return h.failClaimedTaskBeforeLaunch(ctx, task, domain.Code, taskfailure.Reason(domain.Code), "error_knowledge_claim", http.StatusConflict, domain.Code)
+}
+
+// knowledgeClaimErrorDisposition classifies a BuildTaskKnowledgeClaim error.
+// A typed knowledge refusal keeps its code and settles the task, as does a row
+// that is truly gone mid-claim. Anything else (a pgconn error, a context
+// deadline or cancellation, a dropped connection) is a transient read before
+// any descriptor was finalized: the caller requeues that exact claim and
+// writes no failure reason, so the next claim reruns the full history guard.
+func knowledgeClaimErrorDisposition(err error) (code string, requeue bool) {
+	var domain *service.CollaborationError
+	if errors.As(err, &domain) {
+		return domain.Code, false
+	}
+	if errors.Is(err, pgx.ErrNoRows) {
+		return "knowledge_unavailable", false
+	}
+	return "", true
 }
 
 func chatSessionResumeFallbackNeeded(priorSessionID, priorWorkDir string) bool {
@@ -3233,10 +3272,19 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 	}
 	claim, prior, knowledgeErr := h.TaskService.BuildTaskKnowledgeClaim(r.Context(), *task, knowledge, resp.PriorSessionID)
 	if knowledgeErr != nil {
-		code := "knowledge_unavailable"
-		var domain *service.CollaborationError
-		if errors.As(knowledgeErr, &domain) {
-			code = domain.Code
+		code, requeue := knowledgeClaimErrorDisposition(knowledgeErr)
+		if requeue {
+			slog.Error("task claim: knowledge history load failed; requeueing claim",
+				"task_id", uuidToString(task.ID), "error", knowledgeErr)
+			if _, requeueErr := h.TaskService.RequeueTaskAfterClaimFailure(r.Context(), *task); requeueErr != nil {
+				slog.Error("task claim: requeue after knowledge history load failure failed; stale reclaim will recover it",
+					"task_id", uuidToString(task.ID), "error", requeueErr)
+			}
+			return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, &claimBuildFailure{
+				outcome: "error_knowledge_claim_load",
+				status:  http.StatusInternalServerError,
+				message: "failed to load task knowledge context",
+			}
 		}
 		return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, h.failClaimedTaskBeforeLaunch(r.Context(), task, code, taskfailure.Reason(code), "error_knowledge_claim", http.StatusConflict, code)
 	}
@@ -3582,6 +3630,11 @@ func (h *Handler) ClaimTaskByRuntime(w http.ResponseWriter, r *http.Request) {
 		ExpiresAt:   pgtype.Timestamptz{Time: time.Now().Add(24 * time.Hour), Valid: true},
 	}, deliveredCommentIDs, commentBackedTask, resp.KnowledgeContext, daemonTokens...)
 	if ferr != nil {
+		if failure := h.settleKnowledgeFinalizeRefusal(r.Context(), task, ferr); failure != nil {
+			outcome = failure.outcome
+			writeError(w, failure.status, failure.message)
+			return
+		}
 		outcome = "error_claim_finalize"
 		slog.Error("task claim: failed to finalize token and comment delivery receipt",
 			"task_id", uuidToString(task.ID), "error", ferr)

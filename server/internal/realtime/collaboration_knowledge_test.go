@@ -123,3 +123,62 @@ func TestKnowledgeOutboundPredicateRejectsPrivateFieldsAndWrongRoom(t *testing.T
 		t.Fatal("ordinary content-free workbench behavior changed")
 	}
 }
+
+// Final-send authorization runs uncached queries with their own 5s bounds. The
+// write budget starts only after every check passed, so a slow but successful
+// check still delivers the hint and keeps the socket.
+func TestKnowledgeSlowFinalSendAuthorizationDoesNotSpendWriteBudget(t *testing.T) {
+	t.Setenv("MULTICA_AUTH_MODE", "legacy")
+	const workspace = "b736820a-476b-4e30-bbbf-e8f046c54562"
+	const project = "ebd2b8d2-fc55-43a3-a939-972a956b83b4"
+	const writeBudget = 200 * time.Millisecond
+	access := &knowledgeScopeAccess{allowed: true}
+	hub := NewHub()
+	hub.SetAuthorizer(access)
+	hub.writeTimeout = writeBudget
+	go hub.Run()
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		HandleWebSocket(hub, &mockMembershipChecker{}, nil, nil, w, r)
+	}))
+	defer server.Close()
+	conn, _, err := websocket.DefaultDialer.Dial("ws"+strings.TrimPrefix(server.URL, "http")+"?workspace_id="+workspace, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer conn.Close()
+	if err = conn.WriteJSON(map[string]any{"type": "auth", "payload": map[string]string{"token": makeTestToken(t)}}); err != nil {
+		t.Fatal(err)
+	}
+	if got := readAccountFrame(t, conn); got.Type != "auth_ack" {
+		t.Fatalf("auth: %+v", got)
+	}
+	if err = conn.WriteJSON(map[string]any{"type": "subscribe", "payload": map[string]string{"scope": "workspace", "id": workspace}}); err != nil {
+		t.Fatal(err)
+	}
+	if got := readAccountFrame(t, conn); got.Type != "subscribe_ack" {
+		t.Fatalf("subscribe: %+v", got)
+	}
+	entered, release := make(chan struct{}), make(chan struct{})
+	access.mu.Lock()
+	access.entered, access.release = entered, release
+	access.mu.Unlock()
+	frame, _ := json.Marshal(map[string]any{"type": protocol.EventCollaborationKnowledgeChanged, "payload": protocol.CollaborationKnowledgeTargetHint{TargetKind: "project", TargetID: project, KnowledgeRevision: "3"}})
+	if err = hub.PublishWithID(ScopeWorkspace, workspace, "", frame, "8e0b7a38-1f5e-4a43-9d0e-5a4f3b0a6c11:target"); err != nil {
+		t.Fatal(err)
+	}
+	select {
+	case <-entered:
+	case <-time.After(3 * time.Second):
+		t.Fatal("queued hint bypassed final-send authorization")
+	}
+	time.Sleep(3 * writeBudget)
+	close(release)
+	got, err := tryReadAccountFrame(conn)
+	if err != nil {
+		t.Fatalf("hint lost behind an authorization slower than the %v write budget: %v", writeBudget, err)
+	}
+	if got.Type != protocol.EventCollaborationKnowledgeChanged || got.Payload["target_id"] != project || got.Payload["knowledge_revision"] != "3" {
+		t.Fatalf("unexpected frame: %+v", got)
+	}
+	expectLiveSocket(t, conn)
+}

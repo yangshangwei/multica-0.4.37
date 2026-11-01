@@ -1,0 +1,76 @@
+# L12 green run after the fix (uncommitted L12 fix on top of 60ca94822)
+#
+# Behavioral tests, now expected to PASS:
+#   core knowledge-actions.test.ts 'dismisses only the exact stored identity, sends nothing and keeps the prior attempt uncertain'
+#   views knowledge-panel.test.tsx 'lets a human remove a stored identity only after a check finds no result, without any request'
+# Regression guard, still expected to PASS:
+#   views knowledge-panel.test.tsx 'recovering a request whose candidate is not in this panel does not open it here'
+#
+$ pnpm --filter @multica/core exec vitest run collaboration/knowledge-actions.test.ts --reporter=verbose
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+[1m[46m RUN [49m[22m [36mv4.1.0 [39m[90m/Volumes/artisan/code/2026/mc-kfix-lane-web/packages/core[39m
+
+ [32m✓[39m collaboration/knowledge-actions.test.ts[2m > [22mallocates a new request UUID per intent and preselects the recoverable candidate before create[32m 4[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-actions.test.ts[2m > [22mcan reject an unavailable pending candidate expiring at null using only its exact state revision[32m 2[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-actions.test.ts[2m > [22mcan reject an unavailable pending candidate expiring at 2020-01-01T00:00:00Z using only its exact state revision[32m 1[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-actions.test.ts[2m > [22mdoes not infer rejection rights from unavailable or restricted rows and keeps expired approval denied[32m 0[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-actions.test.ts[2m > [22mpins exact reviewed content/state revisions and refuses inferred or unavailable approval authority[32m 1[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-actions.test.ts[2m > [22mretains the same immutable request after uncertain transport and never optimistically approves[32m 1[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-actions.test.ts[2m > [22mrecovers a content-free original receipt with candidate/request only after losing source access and target role[32m 0[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-actions.test.ts[2m > [22mkeeps unknown/mismatched receipts uncertain and clears private projections for explicit conflict reread[32m 0[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-actions.test.ts[2m > [22mrecovers the same original actor/key after a fresh login while fencing the old live request scope[32m 1[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-actions.test.ts[2m > [22msaves only recovery identity before a lost create response and refuses transport if preservation fails[32m 1[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-actions.test.ts[2m > [22mretires only a first definitively unused proposal identity so a new explicit intent can be created[32m 1[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-actions.test.ts[2m > [22mretains an earlier ambiguous request through later unsealed rejection, missing recovery and storage changes[32m 1[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-actions.test.ts[2m > [22mdoes not discard an overlapping attempt when the first call receives an unsealed rejection[32m 0[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-actions.test.ts[2m > [22mdismisses only the exact stored identity, sends nothing and keeps the prior attempt uncertain[32m 1[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-actions.test.ts[2m > [22mdistinguishes failed preservation before POST from failed cleanup after a known receipt[32m 1[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m15 passed[39m[22m[90m (15)[39m
+[2m   Start at [22m 19:53:48
+[2m   Duration [22m 864ms[2m (transform 487ms, setup 0ms, import 758ms, tests 16ms, environment 0ms)[22m
+
+exit=0
+
+$ pnpm --filter @multica/views exec vitest run collaboration/knowledge-panel.test.tsx -t 'remove a stored identity|candidate is not in this panel' --reporter=verbose
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+[1m[46m RUN [49m[22m [36mv4.1.0 [39m[90m/Volumes/artisan/code/2026/mc-kfix-lane-web/packages/views[39m
+
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mrequires keyboard confirmation of the displayed version and awaits the exact approval receipt
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mresets review confirmation for a changed identity and removes body on source unavailability
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mkeeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mresets typed decision input when a held refresh returns a different version
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mrecovers a lost result after remount with the original key and no second POST
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mlets an external handler propose from comments to the lawful current project without a private catalog
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mPropose correction creates a new immutable proposal without copying old body into the form
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mPropose workspace version creates a new immutable proposal without copying old body into the form
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mallows only content-free target withdrawal and shows a known refusal as a refusal
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mkeeps unsupported knowledge separate from the surrounding collaboration and reports truncated history
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mpicks an actual recorded run as a source without memory or a raw JSON form
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mpages all candidate versions with the original page authorization boundary
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mkeeps a selected source project pinned and requires a new selection if the relationship changes
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22munlocks a definitively rejected first proposal for editing and a new explicit request
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mkeeps a prior lost proposal locked to its original identity after a later rejection and not-found recovery
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mshows known success when receipt cleanup fails instead of calling the write uncertain
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22munlocks the human draft after storage fails before POST
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22ma review decision leaves an open proposal draft intact and only the panel's own proposal closes it
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mrecovering an older stored proposal keeps a new draft open while it opens the recovered candidate
+ [32m✓[39m collaboration/knowledge-panel.test.tsx[2m > [22mrecovering a request whose candidate is not in this panel does not open it here[32m 238[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-panel.test.tsx[2m > [22mlets a human remove a stored identity only after a check finds no result, without any request[32m 140[2mms[22m[39m
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22msubmit waits for a refreshing source list instead of reporting a changed source
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mreports local validation failure as invalid input, not as an unavailable source
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mfails closed with a proposal-unavailable notice when the refreshed list withdraws the grant
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mattributes over-byte summary, conclusion and evidence to the field instead of a source failure
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mexplains an over-byte decision reason instead of the generic invalid message
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mdoes not repeat approval actor/time as an identical latest decision
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mrenders supplied proposer, approval and latest decision facts without a directory lookup
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m2 passed[39m[22m[2m | [22m[33m26 skipped[39m[90m (28)[39m
+[2m   Start at [22m 19:53:49
+[2m   Duration [22m 3.04s[2m (transform 902ms, setup 107ms, import 1.63s, tests 379ms, environment 856ms)[22m
+
+exit=0

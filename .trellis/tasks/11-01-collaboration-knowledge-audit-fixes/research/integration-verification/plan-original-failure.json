@@ -1,0 +1,32 @@
+{
+  "recorded_at": "2026-11-01T17:23:24.797716+00:00",
+  "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+  "original_database": "kfix_joint_svc_20261102_0110",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/service",
+    "-parallel=2",
+    "-count=1",
+    "-json",
+    "-timeout=40m"
+  ],
+  "source_manifest_sha256": "417b521237fb1ee2035770973a7bc34f57fb41f18ce712a24a712995e92f50b4",
+  "raw_log": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-verification/service-full.jsonl",
+  "raw_log_sha256": "8a4ce2a4e62c3202d29f5c987f8a52fcd7b8649a0559a725f4c5036bbaf9d227",
+  "named_failure": "TestKnowledgeRuntimeHistoryIsIndexDriven",
+  "named_failure_events": 1,
+  "excerpt_sha256": "5430151855112f5a1f67f8d930fb6d41e9ae42d23fd6a2e70e413ed9d347d799",
+  "chosen_index_names_in_failure": [
+    "idx_agent_task_queue_runtime_id",
+    "agent_task_queue_pkey"
+  ],
+  "explanation": "Controlled EXPLAIN used legal existing full indexes; prior requirement that a specific new partial index must be chosen is not a stable eligibility assertion.",
+  "database_access_by_child": false,
+  "new_product_or_test_verification": "pending"
+}

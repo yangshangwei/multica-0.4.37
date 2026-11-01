@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
@@ -52,6 +53,13 @@ func accountTestSocket(t *testing.T, authorizer ScopeAuthorizer) (*Hub, *websock
 	t.Helper()
 	hub := NewHub()
 	hub.SetAuthorizer(authorizer)
+	return hub, accountTestSocketOnHub(t, hub)
+}
+
+// accountTestSocketOnHub lets a test configure the hub before Run and before
+// the client's pumps start.
+func accountTestSocketOnHub(t *testing.T, hub *Hub) *websocket.Conn {
+	t.Helper()
 	go hub.Run()
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		HandleWebSocket(hub, noWorkspaceAccess{t}, nil, nil, w, r)
@@ -71,7 +79,7 @@ func accountTestSocket(t *testing.T, authorizer ScopeAuthorizer) (*Hub, *websock
 	if frame := readAccountFrame(t, conn); frame.Type != "auth_ack" {
 		t.Fatalf("expected authenticated account, got %+v", frame)
 	}
-	return hub, conn
+	return conn
 }
 
 type accountFrame struct {
@@ -81,16 +89,36 @@ type accountFrame struct {
 
 func readAccountFrame(t *testing.T, conn *websocket.Conn) accountFrame {
 	t.Helper()
-	_ = conn.SetReadDeadline(time.Now().Add(3 * time.Second))
-	_, data, err := conn.ReadMessage()
+	frame, err := tryReadAccountFrame(conn)
 	if err != nil {
 		t.Fatal(err)
 	}
+	return frame
+}
+
+func tryReadAccountFrame(conn *websocket.Conn) (accountFrame, error) {
+	_ = conn.SetReadDeadline(time.Now().Add(3 * time.Second))
+	_, data, err := conn.ReadMessage()
+	if err != nil {
+		return accountFrame{}, err
+	}
 	var frame accountFrame
 	if err := json.Unmarshal(data, &frame); err != nil {
-		t.Fatalf("invalid frame: %s: %v", data, err)
+		return accountFrame{}, fmt.Errorf("invalid frame: %s: %w", data, err)
 	}
-	return frame
+	return frame, nil
+}
+
+// expectLiveSocket proves the connection survived: a ping must still be
+// answered after the frame under test.
+func expectLiveSocket(t *testing.T, conn *websocket.Conn) {
+	t.Helper()
+	if err := conn.WriteJSON(map[string]string{"type": "ping"}); err != nil {
+		t.Fatalf("socket closed after the frame: %v", err)
+	}
+	if frame, err := tryReadAccountFrame(conn); err != nil || frame.Type != "pong" {
+		t.Fatalf("socket did not survive the frame: %+v %v", frame, err)
+	}
 }
 
 func subscribeAccountScope(t *testing.T, conn *websocket.Conn, scope, id string) accountFrame {
@@ -184,4 +212,61 @@ func TestAccountWebSocketUnknownFrameDoesNotLogPrivateInput(t *testing.T) {
 	if strings.Contains(captured, "private-attachment-capability-sentinel") {
 		t.Fatal("unknown account frame copied private input into diagnostics")
 	}
+}
+
+// slowIssueAccess delays the next issue authorization by a chosen duration.
+// Account and subscribe checks stay fast.
+type slowIssueAccess struct {
+	collaborationScopeAccess
+	gate  sync.Mutex
+	delay time.Duration
+}
+
+func (a *slowIssueAccess) slowNext(delay time.Duration) {
+	a.gate.Lock()
+	a.delay = delay
+	a.gate.Unlock()
+}
+
+func (a *slowIssueAccess) AuthorizeScope(ctx context.Context, user, workspace, scope, id string) (bool, error) {
+	if scope == ScopeIssue {
+		a.gate.Lock()
+		delay := a.delay
+		a.delay = 0
+		a.gate.Unlock()
+		if delay > 0 {
+			select {
+			case <-time.After(delay):
+			case <-ctx.Done():
+				return false, ctx.Err()
+			}
+		}
+	}
+	return a.collaborationScopeAccess.AuthorizeScope(ctx, user, workspace, scope, id)
+}
+
+// The access hint written from outboundScopeCurrent is a physical write of its
+// own. A revocation check slower than the write budget must not spend it.
+func TestCollaborationSlowRevocationCheckStillSendsAccessHint(t *testing.T) {
+	const writeBudget = 200 * time.Millisecond
+	access := &slowIssueAccess{collaborationScopeAccess: collaborationScopeAccess{allowed: true}}
+	hub := NewHub()
+	hub.SetAuthorizer(access)
+	hub.writeTimeout = writeBudget
+	conn := accountTestSocketOnHub(t, hub)
+	issue := "00000000-0000-4000-8000-000000000001"
+	if f := subscribeAccountScope(t, conn, "issue", issue); f.Type != "subscribe_ack" {
+		t.Fatalf("subscribe failed: %+v", f)
+	}
+	access.revoke()
+	access.slowNext(3 * writeBudget)
+	hub.BroadcastToScope("issue", issue, []byte(`{"type":"collaboration:changed","payload":{"private":"must-not-be-sent"}}`))
+	f, err := tryReadAccountFrame(conn)
+	if err != nil {
+		t.Fatalf("access hint lost behind a revocation check slower than the %v write budget: %v", writeBudget, err)
+	}
+	if f.Type != "collaboration:access_changed" || f.Payload["issue_id"] != issue || len(f.Payload) != 1 {
+		t.Fatalf("revocation must send only a scoped invalidation: %+v", f)
+	}
+	expectLiveSocket(t, conn)
 }

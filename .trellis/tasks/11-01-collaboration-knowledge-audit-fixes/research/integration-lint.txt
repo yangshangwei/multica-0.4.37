@@ -1,0 +1,50 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+Scope: 2 of 11 workspace projects
+packages/core lint$ eslint .
+packages/core lint: Done
+packages/views lint$ eslint .
+packages/views lint: /Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/agents/agents-i18n-parity.test.ts
+packages/views lint:   150:9  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+packages/views lint:   166:9  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+packages/views lint: /Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/agents/components/tabs/mcp-config-tab.tsx
+packages/views lint:   112:9  warning  The 'assignedServers' logical expression could make the dependencies of useMemo Hook (at line 115) change on every render. To fix this, wrap the initialization of 'assignedServers' in its own useMemo() Hook  react-hooks/exhaustive-deps
+packages/views lint:   112:9  warning  The 'assignedServers' logical expression could make the dependencies of useMemo Hook (at line 132) change on every render. To fix this, wrap the initialization of 'assignedServers' in its own useMemo() Hook  react-hooks/exhaustive-deps
+packages/views lint: /Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/attachments/use-html-preview-scroll-restore.ts
+packages/views lint:   211:5  warning  React Hook useCallback has an unnecessary dependency: 'sendRequestSync'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+packages/views lint: /Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/common/single-row-fit.ts
+packages/views lint:   64:3  warning  Unused eslint-disable directive (no problems were reported from 'react-hooks/exhaustive-deps')
+packages/views lint: /Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/editor/zoom-canvas.tsx
+packages/views lint:   161:5  warning  React Hook useCallback has a missing dependency: 'canvas'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+packages/views lint: /Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/issues/components/execution-log-section.tsx
+packages/views lint:   250:5  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+packages/views lint: /Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/issues/components/issue-usage-dialog.tsx
+packages/views lint:    72:5  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+packages/views lint:    85:5  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+packages/views lint:   231:6  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+packages/views lint: /Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/issues/components/swimlane-view.tsx
+packages/views lint:   964:6  warning  React Hook useMemo has a missing dependency: 'categoryOf'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+packages/views lint: /Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/issues/components/table-view.tsx
+packages/views lint:   1848:5  warning  React Hook useCallback has a missing dependency: 'resolveStatusLabel'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+packages/views lint: /Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/issues/surface/use-issue-group-branches.ts
+packages/views lint:   331:6  warning  React Hook useMemo has a missing dependency: 'secondaryIsCategory'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+packages/views lint: /Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/onboarding/onboarding-flow.tsx
+packages/views lint:   235:6  warning  React Hook useCallback has a missing dependency: 't'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+packages/views lint: /Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/projects/components/project-detail.tsx
+packages/views lint:   153:6  warning  React Hook useEffect has a missing dependency: 'project'. Either include it or remove the dependency array          react-hooks/exhaustive-deps
+packages/views lint:   261:5  warning  React Hook useCallback has a missing dependency: 'updateProject'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+packages/views lint: /Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/runtimes/components/charts/activity-heatmap.tsx
+packages/views lint:   204:6  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+packages/views lint: /Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/runtimes/components/usage-section.tsx
+packages/views lint:   373:5  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+packages/views lint:   383:5  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+packages/views lint:   699:5  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+packages/views lint:   703:5  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+packages/views lint: /Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/runtimes/utils.test.ts
+packages/views lint:   1079:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+packages/views lint:   1089:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+packages/views lint:   1101:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+packages/views lint:   1123:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+packages/views lint:   1133:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+packages/views lint: ✖ 27 problems (0 errors, 27 warnings)
+packages/views lint:   0 errors and 8 warnings potentially fixable with the `--fix` option.
+packages/views lint: Done

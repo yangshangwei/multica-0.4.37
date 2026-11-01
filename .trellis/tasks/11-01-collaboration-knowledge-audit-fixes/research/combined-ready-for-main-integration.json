@@ -1,0 +1,180 @@
+{
+  "state": "repairs_and_independent_reviews_ready_for_local_main_merge; final_make_check_not_yet_passed",
+  "product_integration_source": "45efa093c",
+  "later_delta_commits": [
+    "0702d5039 migrationfixture andskillentry",
+    "742abb217 planregressiontestonly"
+  ],
+  "current_head_before_evidence": "742abb21754fae3dfcef26c806a79e757cccf58b",
+  "recorded_at": "2026-11-01T17:33:54.958817+00:00",
+  "reviews": {
+    "combined": "integration-independent-review/review.json pass-with-notes",
+    "migration_fixture": "integration-independent-review/migration-fixture-recheck.json pass",
+    "skill_entry": "integration-independent-review/skill-entry-recheck.json pass",
+    "plan_assertion": "integration-independent-review/plan-recheck.json pass-with-notes; testhashmatches"
+  },
+  "checks": [
+    {
+      "name": "sqlc",
+      "record": "research/integration-verification/sqlc.json",
+      "sha256": "56604ff79ad467a08fdf9659a4ef3903c1ae54dc1bd85c906e8297474f3fd4fe",
+      "exit_code": 0,
+      "counts": null,
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50"
+    },
+    {
+      "name": "build",
+      "record": "research/integration-verification/build.json",
+      "sha256": "7d13f1bae8d0c4dd830c11dc53b897dc6eefe4e000a5b9297964f8537e6eb69b",
+      "exit_code": 0,
+      "counts": null,
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50"
+    },
+    {
+      "name": "vet",
+      "record": "research/integration-verification/vet.json",
+      "sha256": "952d9779610469bdd5912a2a413d65b693c948aaef8eead3fa14479f2570724a",
+      "exit_code": 0,
+      "counts": null,
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50"
+    },
+    {
+      "name": "service-full",
+      "record": "research/integration-verification/service-full.json",
+      "sha256": "417b521237fb1ee2035770973a7bc34f57fb41f18ce712a24a712995e92f50b4",
+      "exit_code": 1,
+      "counts": {
+        "run": 3340,
+        "pass": 3319,
+        "fail": 3,
+        "skip": 18
+      },
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50"
+    },
+    {
+      "name": "handler-full",
+      "record": "research/integration-verification/handler-full.json",
+      "sha256": "29683e98ac223c8e23e6a17079cae4322dd75f5c4871dc705d5b71e588ae7259",
+      "exit_code": 0,
+      "counts": {
+        "run": 5332,
+        "pass": 5279,
+        "fail": 0,
+        "skip": 53
+      },
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50"
+    },
+    {
+      "name": "router-full",
+      "record": "research/integration-verification/router-full.json",
+      "sha256": "21298946c093f58cd463ccedc4ec50c4417a526cfb01d8d0ab986e64671beed3",
+      "exit_code": 0,
+      "counts": {
+        "run": 738,
+        "pass": 731,
+        "fail": 0,
+        "skip": 7
+      },
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50"
+    },
+    {
+      "name": "migrate-full",
+      "record": "research/integration-verification/migrate-full.json",
+      "sha256": "98394fb7657cba2194d45bd6527fcce40c36a8c588d61e5e31987f28d877c263",
+      "exit_code": 0,
+      "counts": {
+        "run": 71,
+        "pass": 70,
+        "fail": 0,
+        "skip": 1
+      },
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50"
+    },
+    {
+      "name": "migrations-full-r2",
+      "record": "research/integration-verification/migrations-full-r2.json",
+      "sha256": "1a99752d6990ae907c3346f26a327dced8c2d7f697e2c3dfe7f3cef756d45a39",
+      "exit_code": 0,
+      "counts": {
+        "run": 536,
+        "pass": 536,
+        "fail": 0,
+        "skip": 0
+      },
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50"
+    },
+    {
+      "name": "realtime-host-full-race",
+      "record": "research/integration-verification/realtime-host-full-race.json",
+      "sha256": "77551bd87381f1bf37b1b2641fe3b5e8c0860fd6df8cad3e8eae517185247d4f",
+      "exit_code": 0,
+      "counts": {
+        "run": 434,
+        "pass": 434,
+        "fail": 0,
+        "skip": 0
+      },
+      "source_sha": "45efa093c"
+    },
+    {
+      "name": "builtin-skill-template-r3",
+      "record": "research/integration-verification/builtin-skill-template-r3.json",
+      "sha256": "59169a46a05600077858a244a26260267dcd5b3eb167bd91932cc06c86ce2962",
+      "exit_code": 0,
+      "counts": {
+        "run": 10,
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "source_sha": "45efa093c"
+    },
+    {
+      "name": "typecheck",
+      "log": "research/integration-typecheck.txt",
+      "sha256": "eb8e50a889d2130f903b1412df3b98ad8050613b4953ad2e9955ee58ffb77adb",
+      "exit_code": 0,
+      "source_sha": "45efa093c"
+    },
+    {
+      "name": "lint",
+      "log": "research/integration-lint.txt",
+      "sha256": "53ca01f892d35e79616f1e8183534243501472447ec1fba862812384699d64a8",
+      "exit_code": 0,
+      "source_sha": "45efa093c"
+    },
+    {
+      "name": "Core",
+      "log": "research/integration-core-tests.txt",
+      "sha256": "59c8e0b3026282d41ed62934e1c4af8626b088424d88e815bddffb3143ac2640",
+      "exit_code": 0,
+      "source_sha": "45efa093c",
+      "pass_including_cases": 4340,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "name": "Views",
+      "log": "research/integration-views-tests.txt",
+      "sha256": "b49f61762a104063805491f67912e6f742461c1624bbe1cc76d3fb3b354eb1fe",
+      "exit_code": 0,
+      "source_sha": "45efa093c",
+      "pass_including_cases": 7118,
+      "fail": 0,
+      "skip": 0
+    }
+  ],
+  "preserved_failures": {
+    "original_service": "exit1:3319 namedpasses18skips3failures; builtinparent/subcase502line andoverstrictplanassertion. NEVER count as fullpass.",
+    "original_migrations": "exit1:523pass13fail; minimallegacyfixture lackedexisting columns requiredbynewindexes.",
+    "dispositions": "All named failures have narrow fixes and independent rechecks. Final complete makecheck on the merged candidate must rerun these packages and actually pass."
+  },
+  "production_knowledge_default": false,
+  "Provider_calls": 0,
+  "remaining": [
+    "final merged candidate full make check with per-package dedicatedDBs",
+    "productionWeb/nativeElectron/gatedknowledgeon/off andcrosschainacceptance",
+    "samefinalsourceRK1fake/race, finalsourceCLIconfigartifactbinding",
+    "realmodel/account/platform/releasegatesremainopen"
+  ]
+}

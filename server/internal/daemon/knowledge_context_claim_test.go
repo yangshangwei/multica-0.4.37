@@ -5,19 +5,27 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"net/http"
 	"os"
+	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/multica-ai/multica/server/internal/daemon/execenv"
 	"github.com/multica-ai/multica/server/pkg/agent"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 func attachKnowledgeClaimWS(t *testing.T, f *knowledgeDaemonFixture, rpc *wsRPCClient) {
 	t.Helper()
-	reply, err := json.Marshal(map[string]any{"tasks": []Task{f.task}})
+	var tasks any = []Task{f.task}
+	if len(f.claimTasks) > 0 {
+		tasks = f.claimTasks
+	}
+	reply, err := json.Marshal(map[string]any{"tasks": tasks})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -297,6 +305,176 @@ func TestKnowledgeActualResumeKeepsExactScopeGeneration(t *testing.T) {
 	}
 }
 
+// unreachableResumeTurn models a follow-up input whose prior workdir is gone (GC
+// or a non-reusable scope) while the server still bound the claim to that
+// session. The daemon's reachability gate then drops the resume.
+func (f *knowledgeDaemonFixture) unreachableResumeTurn(t *testing.T) (TaskResult, string) {
+	t.Helper()
+	firstGeneration := f.task.KnowledgeContext.Session.Generation
+	first := f.run(t)
+	if first.Status != "completed" || first.SessionID != f.native {
+		t.Fatalf("initial input failed: %s %s", first.Status, first.FailureReason)
+	}
+	f.task.ID = uuid.NewString()
+	f.task.PriorSessionID, f.task.PriorWorkDir = first.SessionID, filepath.Join(t.TempDir(), "collected")
+	f.bindClaim("issue", f.task.IssueID)
+	f.task.KnowledgeContext.Session.Generation = firstGeneration
+	f.task.KnowledgeContext.Session.NativeSessionID = first.SessionID
+	f.task.Agent.CustomEnv["FAKE_NATIVE"] = "fresh-after-drop"
+	return first, firstGeneration
+}
+
+func knowledgeCapturedPrompt(t *testing.T, f *knowledgeDaemonFixture) string {
+	t.Helper()
+	input, err := os.ReadFile(f.capture)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var wire struct {
+		Message struct {
+			Content []struct {
+				Text string `json:"text"`
+			} `json:"content"`
+		} `json:"message"`
+	}
+	if err := json.Unmarshal(input, &wire); err != nil || len(wire.Message.Content) != 1 {
+		t.Fatalf("captured stdin is not one final input: %v", err)
+	}
+	return wire.Message.Content[0].Text
+}
+
+func TestKnowledgeUnreachablePriorWorkdirRebindsFreshGeneration(t *testing.T) {
+	f := newKnowledgeDaemonFixture(t)
+	first, firstGeneration := f.unreachableResumeTurn(t)
+	second := f.run(t)
+	if second.Status != "completed" || second.FailureReason != "" || second.SessionID != "fresh-after-drop" {
+		t.Fatalf("unreachable resume did not start a fresh bound session: status=%s reason=%s session=%s", second.Status, second.FailureReason, second.SessionID)
+	}
+	prepares := f.callsFor("prepare")
+	if len(prepares) != 2 {
+		t.Fatalf("prepare count = %d, want 2", len(prepares))
+	}
+	var unflagged map[string]json.RawMessage
+	if err := json.Unmarshal(prepares[0].body, &unflagged); err != nil {
+		t.Fatal(err)
+	}
+	if _, ok := unflagged["resume_unavailable"]; ok {
+		t.Fatal("a reachable or fresh prepare carried resume_unavailable")
+	}
+	var flagged map[string]json.RawMessage
+	if err := json.Unmarshal(prepares[1].body, &flagged); err != nil {
+		t.Fatal(err)
+	}
+	if string(flagged["resume_unavailable"]) != "true" {
+		t.Fatalf("dropped resume did not report resume_unavailable: %s", prepares[1].body)
+	}
+	var stale protocol.TaskKnowledgeSessionBinding
+	if err := json.Unmarshal(flagged["session"], &stale); err != nil {
+		t.Fatal(err)
+	}
+	if stale.Generation != firstGeneration || stale.NativeSessionID != first.SessionID {
+		t.Fatal("flagged prepare did not carry the original claimed binding")
+	}
+	authorizations := f.callsFor("authorize")
+	if len(authorizations) != 2 {
+		t.Fatalf("authorize count = %d, want 2", len(authorizations))
+	}
+	var auth protocol.TaskKnowledgeAuthorizeRequest
+	if err := json.Unmarshal(authorizations[1].body, &auth); err != nil {
+		t.Fatal(err)
+	}
+	if auth.Session.Generation != f.freshGeneration || auth.Session.NativeSessionID != "" || auth.Session.ScopeID != f.task.IssueID {
+		t.Fatal("fresh launch was not authorized under the server-minted binding")
+	}
+	argv, err := os.ReadFile(f.argv)
+	if err != nil {
+		t.Fatal(err)
+	}
+	segments := strings.Split(string(argv), "PHYSICAL_START\n")
+	if len(segments) != 3 || strings.Contains(segments[1], "--resume") {
+		t.Fatalf("second process was not a fresh launch: %q", argv)
+	}
+	prompt := knowledgeCapturedPrompt(t, f)
+	if !strings.Contains(prompt, privateKnowledgeTestBody) {
+		t.Fatal("fresh session did not receive the current approved knowledge")
+	}
+	if !strings.Contains(prompt, execenv.SessionContinuityNoticeIssue) {
+		t.Fatal("fresh session lost the ordinary continuity notice")
+	}
+	observed := false
+	for _, call := range f.callsFor("observations") {
+		var observation protocol.TaskKnowledgeObservation
+		if err := json.Unmarshal(call.body, &observation); err != nil {
+			t.Fatal(err)
+		}
+		if observation.AttemptNonce == auth.AttemptNonce && observation.Kind == "native_session" && observation.NativeSessionID == "fresh-after-drop" {
+			observed = true
+		}
+	}
+	if !observed {
+		t.Fatal("fresh native identity was not observed under its own attempt")
+	}
+}
+
+// The daemon binds only a response that differs from the claim in generation
+// and native ID alone; anything else is refused with zero processes.
+func TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding(t *testing.T) {
+	for _, tc := range []string{"echoed stale binding", "reused claimed generation"} {
+		t.Run(tc, func(t *testing.T) {
+			f := newKnowledgeDaemonFixture(t)
+			_, firstGeneration := f.unreachableResumeTurn(t)
+			if tc == "echoed stale binding" {
+				f.ignoreResumeUnavailable = true
+			} else {
+				f.freshGeneration = firstGeneration
+			}
+			second := f.run(t)
+			if second.Status != "blocked" || second.FailureReason != agent.KnowledgeContextChanged {
+				t.Fatalf("unsafe rebind was not refused: status=%s reason=%s", second.Status, second.FailureReason)
+			}
+			prepares := f.callsFor("prepare")
+			if len(prepares) != 2 {
+				t.Fatalf("prepare count = %d, want 2", len(prepares))
+			}
+			var flagged map[string]json.RawMessage
+			if err := json.Unmarshal(prepares[1].body, &flagged); err != nil {
+				t.Fatal(err)
+			}
+			if string(flagged["resume_unavailable"]) != "true" {
+				t.Fatal("dropped resume did not report resume_unavailable")
+			}
+			if len(f.callsFor("authorize")) != 1 {
+				t.Fatal("refused rebind requested a launch authorization")
+			}
+			argv, _ := os.ReadFile(f.argv)
+			if strings.Count(string(argv), "PHYSICAL_START") != 1 {
+				t.Fatal("refused rebind started a process")
+			}
+		})
+	}
+}
+
+// An upgraded daemon talking to an API that predates resume_unavailable gets
+// the strict decoder's 400 and fails closed with no process for that input.
+func TestKnowledgeUnreachableResumeOnOlderServerFailsClosed(t *testing.T) {
+	f := newKnowledgeDaemonFixture(t)
+	f.unreachableResumeTurn(t)
+	f.mu.Lock()
+	f.refuseAction, f.refuseCode, f.refuseStatus = "prepare", "invalid_knowledge_request", http.StatusBadRequest
+	f.mu.Unlock()
+	second := f.run(t)
+	if second.Status != "blocked" || second.FailureReason != agent.KnowledgeUnavailable {
+		t.Fatalf("older API rejection did not fail closed: status=%s reason=%s", second.Status, second.FailureReason)
+	}
+	if len(f.callsFor("prepare")) != 2 || len(f.callsFor("authorize")) != 1 {
+		t.Fatal("older API rejection was retried or reached launch authorization")
+	}
+	argv, _ := os.ReadFile(f.argv)
+	if strings.Count(string(argv), "PHYSICAL_START") != 1 {
+		t.Fatal("older API rejection started a process")
+	}
+}
+
 func TestKnowledgeChangedNativeIDIsObservedButNeverRelabeled(t *testing.T) {
 	f := newKnowledgeDaemonFixture(t)
 	f.task.Agent.CustomEnv["FAKE_RESULT_NATIVE"] = "unapproved-new-native"
@@ -488,7 +666,228 @@ func TestKnowledgePreparationBudgetIncludesFullEnvelope(t *testing.T) {
 	if err != nil || material <= protocol.CollaborationKnowledgeMaxRuntimeBytes {
 		t.Fatal("fixture full envelope must exceed budget")
 	}
-	if reason := agent.KnowledgeFailureReason(validateKnowledgePreparation(f.task, fingerprint, p)); reason != agent.KnowledgeUnavailable {
+	if reason := agent.KnowledgeFailureReason(validateKnowledgePreparation(f.task, f.task.KnowledgeContext.Session, false, fingerprint, p)); reason != agent.KnowledgeUnavailable {
 		t.Fatal("full private response was not budgeted")
+	}
+}
+
+// knowledgeDescriptorMutations are claim descriptors this daemon cannot decode
+// strictly: a session field from a newer server, a case alias of a declared
+// field, a malformed session identity, and a fence it cannot read back.
+var knowledgeDescriptorMutations = []struct {
+	name        string
+	recoverable bool
+	mutate      func(descriptor, session map[string]any)
+}{
+	{"future_session_field", true, func(_, session map[string]any) { session["future_field"] = "x" }},
+	{"session_case_alias", true, func(_, session map[string]any) { session["Native_Session_ID"] = "x" }},
+	{"malformed_session_generation", true, func(_, session map[string]any) { session["generation"] = "not-a-uuid" }},
+	{"unreadable_fence", false, func(descriptor, session map[string]any) {
+		session["future_field"] = "x"
+		descriptor["claim_generation"] = 2
+	}},
+}
+
+// mutatedKnowledgeTask is task with its knowledge_context descriptor changed by
+// mutate, encoded the way a claim response carries it.
+func mutatedKnowledgeTask(t *testing.T, task Task, mutate func(descriptor, session map[string]any)) json.RawMessage {
+	t.Helper()
+	raw, err := json.Marshal(task)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var generic map[string]any
+	if err := json.Unmarshal(raw, &generic); err != nil {
+		t.Fatal(err)
+	}
+	descriptor := generic["knowledge_context"].(map[string]any)
+	mutate(descriptor, descriptor["session"].(map[string]any))
+	raw, err = json.Marshal(generic)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return raw
+}
+
+// plainSiblingTask is a base task in the same claim, with no knowledge context.
+func plainSiblingTask(f *knowledgeDaemonFixture) Task {
+	plain := f.task
+	plain.ID, plain.KnowledgeContext = uuid.NewString(), nil
+	return plain
+}
+
+func TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask(t *testing.T) {
+	for _, tc := range knowledgeDescriptorMutations {
+		t.Run(tc.name, func(t *testing.T) {
+			f := newKnowledgeDaemonFixture(t)
+			fence := protocol.TaskKnowledgeFence{ClaimGeneration: f.task.KnowledgeContext.ClaimGeneration, DispatchedAt: f.task.KnowledgeContext.DispatchedAt}
+			plain := plainSiblingTask(f)
+			sibling := f.task
+			sibling.ID = uuid.NewString()
+			descriptor := *f.task.KnowledgeContext
+			descriptor.TaskID = sibling.ID
+			sibling.KnowledgeContext = &descriptor
+			body, err := json.Marshal(map[string]any{"tasks": []any{plain, sibling, mutatedKnowledgeTask(t, f.task, tc.mutate)}})
+			if err != nil {
+				t.Fatal(err)
+			}
+			var envelope struct {
+				Tasks []*Task `json:"tasks"`
+			}
+			if err := json.Unmarshal(body, &envelope); err != nil {
+				t.Fatalf("one undecodable descriptor discarded the whole claim: %v", err)
+			}
+			if len(envelope.Tasks) != 3 || !reflect.DeepEqual(*envelope.Tasks[0], plain) || !reflect.DeepEqual(*envelope.Tasks[1], sibling) {
+				t.Fatal("well-formed tasks in the same claim changed")
+			}
+			if taskKnowledgeFence(*envelope.Tasks[0]) != nil || *taskKnowledgeFence(*envelope.Tasks[1]) != fence {
+				t.Fatal("well-formed tasks lost their own knowledge fences")
+			}
+			rejected := envelope.Tasks[2]
+			if rejected.KnowledgeContext != nil || rejected.ID != f.task.ID {
+				t.Fatal("an undecodable descriptor survived as a knowledge context")
+			}
+			got := taskKnowledgeFence(*rejected)
+			if tc.recoverable && (got == nil || *got != fence) || !tc.recoverable && got != nil {
+				t.Fatalf("recovered fence = %+v, want original=%v", got, tc.recoverable)
+			}
+			f.task = *rejected
+			result := f.run(t)
+			if result.Status != "blocked" || result.FailureReason != agent.KnowledgeContextChanged {
+				t.Fatalf("rejected descriptor was not refused: status=%s reason=%s", result.Status, result.FailureReason)
+			}
+			if len(f.callsFor("prepare")) != 0 || len(f.callsFor("authorize")) != 0 {
+				t.Fatal("rejected descriptor requested private knowledge")
+			}
+			if _, err := os.Stat(f.argv); !errors.Is(err, os.ErrNotExist) {
+				t.Fatal("rejected descriptor started a provider process")
+			}
+			if tc.recoverable && (result.KnowledgeFence == nil || *result.KnowledgeFence != fence) || !tc.recoverable && result.KnowledgeFence != nil {
+				t.Fatalf("terminal report fence = %+v", result.KnowledgeFence)
+			}
+			starts := f.callsFor("start")
+			var start struct {
+				Fence *protocol.TaskKnowledgeFence `json:"knowledge_fence"`
+			}
+			if len(starts) != 1 || json.Unmarshal(starts[0].body, &start) != nil {
+				t.Fatal("rejected task did not report its start")
+			}
+			if tc.recoverable && (start.Fence == nil || *start.Fence != fence) || !tc.recoverable && start.Fence != nil {
+				t.Fatalf("start fence = %+v", start.Fence)
+			}
+		})
+	}
+}
+
+func TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor(t *testing.T) {
+	for _, transport := range []string{"http_single", "http_batch", "ws_batch", "http_legacy_fallback", "managed_single", "managed_http", "managed_ws"} {
+		t.Run(transport, func(t *testing.T) {
+			f := newKnowledgeDaemonFixture(t)
+			fence := protocol.TaskKnowledgeFence{ClaimGeneration: f.task.KnowledgeContext.ClaimGeneration, DispatchedAt: f.task.KnowledgeContext.DispatchedAt}
+			plain := plainSiblingTask(f)
+			plainRaw, err := json.Marshal(plain)
+			if err != nil {
+				t.Fatal(err)
+			}
+			f.claimTasks = []json.RawMessage{plainRaw, mutatedKnowledgeTask(t, f.task, knowledgeDescriptorMutations[0].mutate)}
+			var scoped *managedWorkspaceTransport
+			if strings.HasPrefix(transport, "managed") {
+				scoped = installKnowledgeManagedFixture(t, f)
+			}
+			if transport == "ws_batch" {
+				attachKnowledgeClaimWS(t, f, f.d.wsRPC)
+			}
+			if transport == "managed_ws" {
+				attachKnowledgeClaimWS(t, f, scoped.rpc)
+			}
+			var tasks []*Task
+			switch transport {
+			case "http_single", "managed_single":
+				var task *Task
+				task, err = f.d.client.ClaimTask(context.Background(), f.task.RuntimeID)
+				tasks = []*Task{task}
+			case "http_batch", "managed_http":
+				tasks, err = f.d.client.ClaimTasks(context.Background(), "daemon", []string{f.task.RuntimeID}, 2)
+			case "http_legacy_fallback":
+				f.d.batchClaimUnsupported.Store(true)
+				tasks, err = f.d.ClaimTasksWSFirst(context.Background(), "daemon", []string{f.task.RuntimeID}, 2)
+			default:
+				tasks, err = f.d.ClaimTasksWSFirst(context.Background(), "daemon", []string{f.task.RuntimeID}, 2)
+			}
+			if err != nil {
+				t.Fatalf("one undecodable descriptor lost the committed claim: %v", err)
+			}
+			batch := !strings.HasSuffix(transport, "_single") && transport != "http_legacy_fallback"
+			if want := map[bool]int{true: 2, false: 1}[batch]; len(tasks) != want {
+				t.Fatalf("claim returned %d tasks, want %d", len(tasks), want)
+			}
+			if batch && (tasks[0] == nil || !reflect.DeepEqual(*tasks[0], plain) || taskKnowledgeFence(*tasks[0]) != nil) {
+				t.Fatal("the well-formed task was changed or marked rejected")
+			}
+			rejected := tasks[len(tasks)-1]
+			if rejected == nil || rejected.ID != f.task.ID || rejected.KnowledgeContext != nil {
+				t.Fatal("the undecodable descriptor survived as a knowledge context")
+			}
+			if got := taskKnowledgeFence(*rejected); got == nil || *got != fence {
+				t.Fatalf("rejected task lost its original fence: %+v", got)
+			}
+			calls := f.callsFor("claim")
+			if strings.HasSuffix(transport, "_ws") || transport == "ws_batch" {
+				if len(calls) != 1 || calls[0].path != "ws/claim" {
+					t.Fatalf("ws claim fell back to http: %d calls", len(calls))
+				}
+			} else if len(calls) != 1 {
+				t.Fatalf("claim count %d", len(calls))
+			}
+		})
+	}
+}
+
+// A refused started observation still leaves a real process. The daemon counts
+// it for cancellation, the lifecycle kills and waits it, and the terminated
+// observation reports that waited exit, so a user cancel gets process-exit
+// confirmation. No second process is authorized.
+func TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit(t *testing.T) {
+	f := newKnowledgeDaemonFixture(t)
+	f.observationRefusal = "started"
+	f.task.Agent.CustomEnv["FAKE_NATIVE"] = ""
+	execution := &cancellationExecution{}
+	ctx := context.WithValue(context.Background(), cancelExecutionKey{}, execution)
+	result, err := f.d.runTask(ctx, f.task, "claude", 0, f.d.logger)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.FailureReason != agent.KnowledgeContextChanged {
+		t.Fatalf("refused started observation lost its terminal reason: %s", result.FailureReason)
+	}
+	execution.mu.Lock()
+	confirmed := execution.productionRunner && execution.attempts == 1 && execution.exited == 1
+	execution.mu.Unlock()
+	if !confirmed {
+		t.Fatal("cancellation cannot confirm the exit of the process whose started observation was refused")
+	}
+	var started, terminated []protocol.TaskKnowledgeObservation
+	for _, call := range f.callsFor("observations") {
+		var observation protocol.TaskKnowledgeObservation
+		if err := json.Unmarshal(call.body, &observation); err != nil {
+			t.Fatal(err)
+		}
+		switch observation.Kind {
+		case "started":
+			started = append(started, observation)
+		case "terminated":
+			terminated = append(terminated, observation)
+		}
+	}
+	if len(started) == 0 || len(terminated) != 1 {
+		t.Fatalf("started=%d terminated=%d, want the refused start and exactly one termination", len(started), len(terminated))
+	}
+	end := terminated[0]
+	if end.TerminationKind != agent.LaunchManagedEnded || !end.WaitObserved || end.ProcessID != started[0].ProcessID ||
+		end.ProcessInstanceID != started[0].ProcessInstanceID || end.AttemptNonce != started[0].AttemptNonce {
+		t.Fatalf("termination was not the waited exit of the started process: %+v", end)
+	}
+	if len(f.callsFor("authorize")) != 1 {
+		t.Fatal("refused started observation authorized another process")
 	}
 }

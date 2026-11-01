@@ -120,6 +120,9 @@ var commentContentBigramIndex = usableIndexRequirement{
 // they are still pending: a fresh self-hosted install, which is exactly where an
 // interrupted build would otherwise leave a permanently unusable index.
 var concurrentIndexCleanups = map[string]string{
+	"761_collaboration_knowledge_agent_history":                 "collaboration_knowledge_agent_history_idx",
+	"762_collaboration_knowledge_runtime_history":               "collaboration_knowledge_runtime_history_idx",
+	"763_collaboration_knowledge_delivery_history":              "collaboration_knowledge_delivery_history_idx",
 	"748_collaboration_knowledge_candidate_id":                  "collaboration_knowledge_candidate_id_idx",
 	"749_collaboration_knowledge_lineage_version":               "collaboration_knowledge_lineage_version_idx",
 	"750_collaboration_knowledge_approved_lineage":              "collaboration_knowledge_approved_lineage_idx",

@@ -1,0 +1,36 @@
+# L2 red: proposal that violates the expiry CHECK returns 503 instead of 400
+#
+# Code under test: 0cf5f7918 (clock seam + L1 fix, no L2 fix) plus the two new tests in
+# server/internal/service/collaboration_knowledge_authority_test.go (uncommitted).
+# Database: postgres://multica:multica@127.0.0.1:5432/kfix_write_svc (migrated to 760).
+# Command (from server/):
+#   env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 DATABASE_URL=...kfix_write_svc go test ./internal/service \
+#     -run 'TestKnowledgeProposalExpiryCheckViolationIsInvalidRequest|TestKnowledgeProposalOtherCheckViolationsStayUnavailable' -count=1 -v
+# Exit code: 1
+#
+# BEHAVIORAL, fails for the defect's reason:
+# - TestKnowledgeProposalExpiryCheckViolationIsInvalidRequest: the seam makes the application
+#   clock lag PostgreSQL by 1h, so ValidateCollaborationKnowledgeProposalAt accepts an
+#   expires_at one minute before the database clock. The INSERT fills proposed_at with
+#   clock_timestamp(), violates collaboration_knowledge_candidate_check5
+#   (expires_at > proposed_at) with 23514, and that falls through to 503 knowledge_unavailable.
+#
+# REGRESSION GUARD, passes before and after the fix by design:
+# - TestKnowledgeProposalOtherCheckViolationsStayUnavailable: a 23514 from another candidate
+#   CHECK, from a trigger with no constraint name, or with the same constraint name on another
+#   table must stay 503 knowledge_unavailable.
+
+=== RUN   TestKnowledgeProposalExpiryCheckViolationIsInvalidRequest
+    collaboration_knowledge_authority_test.go:200: proposal violating the expiry CHECK: {ProtocolVersion:0 RequestID: Action: Code: CandidateID: Version: StateRevision: State: TargetKnowledgeRevision:<nil>} knowledge_unavailable
+--- FAIL: TestKnowledgeProposalExpiryCheckViolationIsInvalidRequest (0.54s)
+=== RUN   TestKnowledgeProposalOtherCheckViolationsStayUnavailable
+=== RUN   TestKnowledgeProposalOtherCheckViolationsStayUnavailable/other_candidate_CHECK
+=== RUN   TestKnowledgeProposalOtherCheckViolationsStayUnavailable/trigger_without_name
+=== RUN   TestKnowledgeProposalOtherCheckViolationsStayUnavailable/same_name_other_table
+--- PASS: TestKnowledgeProposalOtherCheckViolationsStayUnavailable (0.59s)
+    --- PASS: TestKnowledgeProposalOtherCheckViolationsStayUnavailable/other_candidate_CHECK (0.04s)
+    --- PASS: TestKnowledgeProposalOtherCheckViolationsStayUnavailable/trigger_without_name (0.03s)
+    --- PASS: TestKnowledgeProposalOtherCheckViolationsStayUnavailable/same_name_other_table (0.02s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/service	3.925s
+FAIL

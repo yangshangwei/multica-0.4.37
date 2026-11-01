@@ -1,0 +1,608 @@
+# L9 red run on unfixed code (HEAD a5e8941b7 plus the L9 tests only; no fix applied)
+#
+# Behavioral tests, expected to FAIL for the defect's reason:
+#   core knowledge-schema.test.ts 'exports the UTF-8 byte limits its schemas enforce' (constants not exported: undefined in the toEqual)
+#   views knowledge-panel.test.tsx 'attributes over-byte summary, conclusion and evidence to the field instead of a source failure' (no byte check, no limit alert)
+#   views knowledge-panel.test.tsx 'explains an over-byte decision reason instead of the generic invalid message' (maxLength counts UTF-16 units, no limit alert)
+# Regression guard, expected to PASS (landed with L8 in a5e8941b7):
+#   views knowledge-panel.test.tsx 'reports local validation failure as invalid input, not as an unavailable source' (NUL refused by the schema shows the input message)
+#
+$ pnpm --filter @multica/core exec vitest run collaboration/knowledge-schema.test.ts
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+[1m[46m RUN [49m[22m [36mv4.1.0 [39m[90m/Volumes/artisan/code/2026/mc-kfix-lane-web/packages/core[39m
+
+ [31m❯[39m collaboration/knowledge-schema.test.ts [2m([22m[2m12 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 23[2mms[22m[39m
+[31m     [31m×[31m exports the UTF-8 byte limits its schemas enforce[39m[32m 3[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m collaboration/knowledge-schema.test.ts[2m > [22mknowledge protocol boundaries[2m > [22mexports the UTF-8 byte limits its schemas enforce
+[31m[1mAssertionError[22m: expected [ undefined, undefined, …(2) ] to deeply equal [ 2048, 65536, 2048, 1000 ][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[32m-   2048,[39m
+[32m-   65536,[39m
+[32m-   2048,[39m
+[32m-   1000,[39m
+[31m+   undefined,[39m
+[31m+   undefined,[39m
+[31m+   undefined,[39m
+[31m+   undefined,[39m
+[2m  ][22m
+
+[36m [2m❯[22m collaboration/knowledge-schema.test.ts:[2m116:131[22m[39m
+    [90m114|[39m     const proposal = (change: Partial<typeof knowledgeProposalFixture>…
+    [90m115|[39m     const evidence = (reference: string) => proposal({ evidence: [{ ki…
+    [90m116|[39m     expect([KNOWLEDGE_SUMMARY_MAX_BYTES, KNOWLEDGE_CONTENT_MAX_BYTES, …
+    [90m   |[39m                                                                                                                                   [31m^[39m
+    [90m117|[39m     expect([decision(bytes(KNOWLEDGE_REASON_MAX_BYTES)), decision(byte…
+    [90m118|[39m     expect([proposal({ summary: bytes(KNOWLEDGE_SUMMARY_MAX_BYTES) }),…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m11 passed[39m[22m[90m (12)[39m
+[2m   Start at [22m 19:33:44
+[2m   Duration [22m 236ms[2m (transform 50ms, setup 0ms, import 122ms, tests 23ms, environment 0ms)[22m
+
+undefined
+/Volumes/artisan/code/2026/mc-kfix-lane-web/packages/core:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run collaboration/knowledge-schema.test.ts
+exit=1
+
+$ pnpm --filter @multica/views exec vitest run collaboration/knowledge-panel.test.tsx -t 'over-byte|local validation failure'
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+[1m[46m RUN [49m[22m [36mv4.1.0 [39m[90m/Volumes/artisan/code/2026/mc-kfix-lane-web/packages/views[39m
+
+ [31m❯[39m collaboration/knowledge-panel.test.tsx [2m([22m[2m27 tests[22m[2m | [22m[31m2 failed[39m[2m | [22m[33m24 skipped[39m[2m)[22m[33m 2779[2mms[22m[39m
+[31m   [31m×[31m attributes over-byte summary, conclusion and evidence to the field instead of a source failure[39m[33m 1225[2mms[22m[39m
+[31m   [31m×[31m explains an over-byte decision reason instead of the generic invalid message[39m[33m 1052[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m collaboration/knowledge-panel.test.tsx[2m > [22mattributes over-byte summary, conclusion and evidence to the field instead of a source failure
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element with the text: This is over the 2048-byte limit (2100 bytes). Shorten it before submitting; your text is kept.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m"overflow: hidden;"[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-labelledby[39m=[32m"_r_u_-title"[39m
+      [33mclass[39m=[32m"min-w-0 space-y-5 rounded-md border border-border p-4 sm:p-5 pointer-coarse:[&_button]:min-h-11"[39m
+      [33mid[39m=[32m"knowledge"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex flex-wrap items-start justify-between gap-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-w-0 space-y-2"[39m
+        [36m>[39m
+          [36m<h3[39m
+            [33mclass[39m=[32m"text-body font-semibold"[39m
+            [33mid[39m=[32m"_r_u_-title"[39m
+          [36m>[39m
+            [0mKnowledge candidates[0m
+          [36m</h3>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"max-w-prose text-caption text-muted-foreground"[39m
+          [36m>[39m
+            [0mPropose a reusable conclusion with sources. Human approval controls where it may be used.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<ul[39m
+        [33mclass[39m=[32m"space-y-2"[39m
+      [36m>[39m
+        [36m<li>[39m
+          [36m<button[39m
+            [33maria-pressed[39m=[32m"false"[39m
+            [33mclass[39m=[32m"flex w-full min-w-0 flex-wrap items-start justify-between gap-2 rounded-md px-2 py-2 text-left text-body hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11 "[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"min-w-0 flex-1 [overflow-wrap:anywhere]"[39m
+            [36m>[39m
+              [0mPRIVATE SUMMARY[0m
+              [36m<span[39m
+                [33mclass[39m=[32m"mt-1 block text-caption text-muted-foreground"[39m
+              [36m>[39m
+                [0mVersion 9007199254740993[0m
+              [36m</span>[39m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-caption text-muted-foreground"[39m
+            [36m>[39m
+              [0mPending[0m
+            [36m</span>[39m
+          [36m</button>[39m
+        [36m</li>[39m
+      [36m</ul>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex flex-wrap gap-2"[39m
+      [36m/>[39m
+      [36m<form[39m
+        [33maria-label[39m=[32m"Propose knowledge"[39m
+        [33mclass[39m=[32m"min-w-0 space-y-5"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-2"[39m
+        [36m>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"text-body font-medium"[39m
+            [33mfor[39m=[32m"_r_v_-summary"[39m
+          [36m>[39m
+            [0mSummary[0m
+          [36m</label>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-title-sm transition-colors outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-body file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-body dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40"[39m
+            [33mdata-slot[39m=[32m"input"[39m
+            [33mid[39m=[32m"_r_v_-summary"[39m
+            [33mmaxlength[39m=[32m"2048"[39m
+            [33mrequired[39m=[32m""[39m
+            [33mvalue[39m=[32m"知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知"[39m
+          [36m/>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-2"[39m
+        [36m>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"text-body font-medium"[39m
+            [33mfor[39m=[32m"_r_v_-content"[39m
+          [36m>[39m
+            [0mConclusion (Markdown)[0m
+          [36m</label>[39m
+          [36m<textarea[39m
+            [33mclass[39m=[32m"flex field-sizing-content min-h-16 w-full rounded-lg border border-input bg-transparent px-2.5 py-2 text-title-sm transition-colors outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-body dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40"[39m
+            [33mdata-slot[39m=[32m"textarea"[39m
+            [33mid[39m=[32m"_r_v_-content"[39m
+            [33mrequired[39m=[32m""[39m
+            [33mrows[39m=[32m"7"[39m
+          [36m>[39m
+            [0mA new explicitly written conclusion[0m
+          [36m</textarea>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-2"[39m
+        [36m>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"text-body font-medium"[39m
+          [36m>[39m
+            [0mDestination[0m
+          [36m</p>[39m
+          [36m<button[39m
+            [33maria-expanded[39m=[32m"false"[39m
+            [33maria-haspopup[39m=[32m"listbox"[39m
+            [33maria-label[39m=[32m"Destination"[39m
+            [33mclass[39m=[32m"flex items-center justify-between gap-1.5 rounded-lg border border-input bg-transparent py-2 pr-2 pl-2.5 text-body whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-valu...
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m"overflow: hidden;"[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-labelledby[39m=[32m"_r_u_-title"[39m
+      [33mclass[39m=[32m"min-w-0 space-y-5 rounded-md border border-border p-4 sm:p-5 pointer-coarse:[&_button]:min-h-11"[39m
+      [33mid[39m=[32m"knowledge"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex flex-wrap items-start justify-between gap-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-w-0 space-y-2"[39m
+        [36m>[39m
+          [36m<h3[39m
+            [33mclass[39m=[32m"text-body font-semibold"[39m
+            [33mid[39m=[32m"_r_u_-title"[39m
+          [36m>[39m
+            [0mKnowledge candidates[0m
+          [36m</h3>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"max-w-prose text-caption text-muted-foreground"[39m
+          [36m>[39m
+            [0mPropose a reusable conclusion with sources. Human approval controls where it may be used.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<ul[39m
+        [33mclass[39m=[32m"space-y-2"[39m
+      [36m>[39m
+        [36m<li>[39m
+          [36m<button[39m
+            [33maria-pressed[39m=[32m"false"[39m
+            [33mclass[39m=[32m"flex w-full min-w-0 flex-wrap items-start justify-between gap-2 rounded-md px-2 py-2 text-left text-body hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11 "[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"min-w-0 flex-1 [overflow-wrap:anywhere]"[39m
+            [36m>[39m
+              [0mPRIVATE SUMMARY[0m
+              [36m<span[39m
+                [33mclass[39m=[32m"mt-1 block text-caption text-muted-foreground"[39m
+              [36m>[39m
+                [0mVersion 9007199254740993[0m
+              [36m</span>[39m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-caption text-muted-foreground"[39m
+            [36m>[39m
+              [0mPending[0m
+            [36m</span>[39m
+          [36m</button>[39m
+        [36m</li>[39m
+      [36m</ul>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex flex-wrap gap-2"[39m
+      [36m/>[39m
+      [36m<form[39m
+        [33maria-label[39m=[32m"Propose knowledge"[39m
+        [33mclass[39m=[32m"min-w-0 space-y-5"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-2"[39m
+        [36m>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"text-body font-medium"[39m
+            [33mfor[39m=[32m"_r_v_-summary"[39m
+          [36m>[39m
+            [0mSummary[0m
+          [36m</label>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-title-sm transition-colors outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-body file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-body dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40"[39m
+            [33mdata-slot[39m=[32m"input"[39m
+            [33mid[39m=[32m"_r_v_-summary"[39m
+            [33mmaxlength[39m=[32m"2048"[39m
+            [33mrequired[39m=[32m""[39m
+            [33mvalue[39m=[32m"知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知知"[39m
+          [36m/>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-2"[39m
+        [36m>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"text-body font-medium"[39m
+            [33mfor[39m=[32m"_r_v_-content"[39m
+          [36m>[39m
+            [0mConclusion (Markdown)[0m
+          [36m</label>[39m
+          [36m<textarea[39m
+            [33mclass[39m=[32m"flex field-sizing-content min-h-16 w-full rounded-lg border border-input bg-transparent px-2.5 py-2 text-title-sm transition-colors outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-body dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40"[39m
+            [33mdata-slot[39m=[32m"textarea"[39m
+            [33mid[39m=[32m"_r_v_-content"[39m
+            [33mrequired[39m=[32m""[39m
+            [33mrows[39m=[32m"7"[39m
+          [36m>[39m
+            [0mA new explicitly written conclusion[0m
+          [36m</textarea>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-2"[39m
+        [36m>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"text-body font-medium"[39m
+          [36m>[39m
+            [0mDestination[0m
+          [36m</p>[39m
+          [36m<button[39m
+            [33maria-expanded[39m=[32m"false"[39m
+            [33maria-haspopup[39m=[32m"listbox"[39m
+            [33maria-label[39m=[32m"Destination"[39m
+            [33mclass[39m=[32m"flex items-center justify-between gap-1.5 rounded-lg border border-input bg-transparent py-2 pr-2 pl-2.5 text-body whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-valu...
+[90m [2m❯[22m waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m collaboration/knowledge-panel.test.tsx:[2m432:25[22m[39m
+    [90m430|[39m     [35mconst[39m field [33m=[39m screen[33m.[39m[34mgetByRole[39m([32m"textbox"[39m[33m,[39m { name })[33m;[39m
+    [90m431|[39m     fireEvent[33m.[39m[34mchange[39m(field[33m,[39m { target[33m:[39m { value[33m:[39m [34mutf8[39m(used) } })[33m;[39m
+    [90m432|[39m     expect(await screen.findByText(overLimitText(max, used))).toHaveAt…
+    [90m   |[39m                         [31m^[39m
+    [90m433|[39m     expect(field).toHaveAttribute("aria-invalid", "true"); expect(fiel…
+    [90m434|[39m     expect(field).toHaveValue(utf8(used)); expect(submit).toBeDisabled…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m collaboration/knowledge-panel.test.tsx[2m > [22mexplains an over-byte decision reason instead of the generic invalid message
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element with the text: This is over the 1000-byte limit (1200 bytes). Shorten it before submitting; your text is kept.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m"overflow: hidden;"[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-labelledby[39m=[32m"_r_1s_-title"[39m
+      [33mclass[39m=[32m"min-w-0 space-y-5 rounded-md border border-border p-4 sm:p-5 pointer-coarse:[&_button]:min-h-11"[39m
+      [33mid[39m=[32m"knowledge"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex flex-wrap items-start justify-between gap-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-w-0 space-y-2"[39m
+        [36m>[39m
+          [36m<h3[39m
+            [33mclass[39m=[32m"text-body font-semibold"[39m
+            [33mid[39m=[32m"_r_1s_-title"[39m
+          [36m>[39m
+            [0mKnowledge candidates[0m
+          [36m</h3>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"max-w-prose text-caption text-muted-foreground"[39m
+          [36m>[39m
+            [0mPropose a reusable conclusion with sources. Human approval controls where it may be used.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"group/button inline-flex shrink-0 items-center justify-center rounded-lg border bg-clip-padding text-body font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"[39m
+          [33mdata-slot[39m=[32m"button"[39m
+          [33mtabindex[39m=[32m"0"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mPropose knowledge[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<ul[39m
+        [33mclass[39m=[32m"space-y-2"[39m
+      [36m>[39m
+        [36m<li>[39m
+          [36m<button[39m
+            [33maria-pressed[39m=[32m"true"[39m
+            [33mclass[39m=[32m"flex w-full min-w-0 flex-wrap items-start justify-between gap-2 rounded-md px-2 py-2 text-left text-body hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11 bg-accent font-medium"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"min-w-0 flex-1 [overflow-wrap:anywhere]"[39m
+            [36m>[39m
+              [0mPRIVATE SUMMARY[0m
+              [36m<span[39m
+                [33mclass[39m=[32m"mt-1 block text-caption text-muted-foreground"[39m
+              [36m>[39m
+                [0mVersion 9007199254740993[0m
+              [36m</span>[39m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-caption text-muted-foreground"[39m
+            [36m>[39m
+              [0mPending[0m
+            [36m</span>[39m
+          [36m</button>[39m
+        [36m</li>[39m
+      [36m</ul>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex flex-wrap gap-2"[39m
+      [36m/>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"Review candidate"[39m
+        [33mclass[39m=[32m"min-w-0 space-y-4 border-t border-border pt-5 outline-none focus-visible:ring-2 focus-visible:ring-ring"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex flex-wrap items-center justify-between gap-3"[39m
+        [36m>[39m
+          [36m<h4[39m
+            [33mclass[39m=[32m"text-body font-semibold"[39m
+          [36m>[39m
+            [0mReview candidate[0m
+          [36m</h4>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-label in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"[39m
+            [33mdata-slot[39m=[32m"button"[39m
+            [33mtabindex[39m=[32m"0"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mClose review[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"text-caption text-muted-foreground"[39m
+        [36m>[39m
+          [0mPending[0m
+        [36m</span>[39m
+        [36m<dl[39m
+          [33mclass[39m=[32m"flex flex-wrap gap-x-6 gap-y-3 text-caption [&_dt]:text-muted-foreground [&_dd]:mt-1 [&_dd]:[overflow-wrap:anywhere]"[39m
+        [36m>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0mVersion[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0m9007199254740993[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0mDestination[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0mWorkspace[0m
+              [0m · [0m
+              [0mSource[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0mProposed by[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0mCreator[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0mProposed at[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [36m<time[39m
+                [33mdatetime[39m=[32m"2026-10-31T23:00:00Z"[39m
+              [36m>[39m
+                [0m11/1/2026, 7:00:00 AM[0m
+              [36m</time>[39m
+            [36m</dd>[39m
+          [36m</div>[39m
+          [36m<div>...
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m"overflow: hidden;"[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-labelledby[39m=[32m"_r_1s_-title"[39m
+      [33mclass[39m=[32m"min-w-0 space-y-5 rounded-md border border-border p-4 sm:p-5 pointer-coarse:[&_button]:min-h-11"[39m
+      [33mid[39m=[32m"knowledge"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex flex-wrap items-start justify-between gap-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-w-0 space-y-2"[39m
+        [36m>[39m
+          [36m<h3[39m
+            [33mclass[39m=[32m"text-body font-semibold"[39m
+            [33mid[39m=[32m"_r_1s_-title"[39m
+          [36m>[39m
+            [0mKnowledge candidates[0m
+          [36m</h3>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"max-w-prose text-caption text-muted-foreground"[39m
+          [36m>[39m
+            [0mPropose a reusable conclusion with sources. Human approval controls where it may be used.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"group/button inline-flex shrink-0 items-center justify-center rounded-lg border bg-clip-padding text-body font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"[39m
+          [33mdata-slot[39m=[32m"button"[39m
+          [33mtabindex[39m=[32m"0"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mPropose knowledge[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<ul[39m
+        [33mclass[39m=[32m"space-y-2"[39m
+      [36m>[39m
+        [36m<li>[39m
+          [36m<button[39m
+            [33maria-pressed[39m=[32m"true"[39m
+            [33mclass[39m=[32m"flex w-full min-w-0 flex-wrap items-start justify-between gap-2 rounded-md px-2 py-2 text-left text-body hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11 bg-accent font-medium"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"min-w-0 flex-1 [overflow-wrap:anywhere]"[39m
+            [36m>[39m
+              [0mPRIVATE SUMMARY[0m
+              [36m<span[39m
+                [33mclass[39m=[32m"mt-1 block text-caption text-muted-foreground"[39m
+              [36m>[39m
+                [0mVersion 9007199254740993[0m
+              [36m</span>[39m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-caption text-muted-foreground"[39m
+            [36m>[39m
+              [0mPending[0m
+            [36m</span>[39m
+          [36m</button>[39m
+        [36m</li>[39m
+      [36m</ul>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex flex-wrap gap-2"[39m
+      [36m/>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"Review candidate"[39m
+        [33mclass[39m=[32m"min-w-0 space-y-4 border-t border-border pt-5 outline-none focus-visible:ring-2 focus-visible:ring-ring"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex flex-wrap items-center justify-between gap-3"[39m
+        [36m>[39m
+          [36m<h4[39m
+            [33mclass[39m=[32m"text-body font-semibold"[39m
+          [36m>[39m
+            [0mReview candidate[0m
+          [36m</h4>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-label in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"[39m
+            [33mdata-slot[39m=[32m"button"[39m
+            [33mtabindex[39m=[32m"0"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mClose review[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"text-caption text-muted-foreground"[39m
+        [36m>[39m
+          [0mPending[0m
+        [36m</span>[39m
+        [36m<dl[39m
+          [33mclass[39m=[32m"flex flex-wrap gap-x-6 gap-y-3 text-caption [&_dt]:text-muted-foreground [&_dd]:mt-1 [&_dd]:[overflow-wrap:anywhere]"[39m
+        [36m>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0mVersion[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0m9007199254740993[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0mDestination[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0mWorkspace[0m
+              [0m · [0m
+              [0mSource[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0mProposed by[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [0mCreator[0m
+            [36m</dd>[39m
+          [36m</div>[39m
+          [36m<div>[39m
+            [36m<dt>[39m
+              [0mProposed at[0m
+            [36m</dt>[39m
+            [36m<dd>[39m
+              [36m<time[39m
+                [33mdatetime[39m=[32m"2026-10-31T23:00:00Z"[39m
+              [36m>[39m
+                [0m11/1/2026, 7:00:00 AM[0m
+              [36m</time>[39m
+            [36m</dd>[39m
+          [36m</div>[39m
+          [36m<div>...
+[90m [2m❯[22m waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m collaboration/knowledge-panel.test.tsx:[2m456:23[22m[39m
+    [90m454|[39m   const reason = screen.getByRole("textbox", { name: "Decision reason"…
+    [90m455|[39m   fireEvent[33m.[39m[34mchange[39m(reason[33m,[39m { target[33m:[39m { value[33m:[39m [32m"知"[39m[33m.[39m[34mrepeat[39m([34m400[39m) } })[33m;[39m
+    [90m456|[39m   expect(await screen.findByText(overLimitText(1000, 1200))).toHaveAtt…
+    [90m   |[39m                       [31m^[39m
+    [90m457|[39m   expect(reason).toHaveAttribute("aria-invalid", "true"); expect(reaso…
+    [90m458|[39m   expect(screen.getByRole("button", { name: "Reject candidate" })).toB…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[2m | [22m[33m24 skipped[39m[90m (27)[39m
+[2m   Start at [22m 19:33:45
+[2m   Duration [22m 5.24s[2m (transform 816ms, setup 102ms, import 1.49s, tests 2.78s, environment 792ms)[22m
+
+undefined
+/Volumes/artisan/code/2026/mc-kfix-lane-web/packages/views:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run collaboration/knowledge-panel.test.tsx -t over-byte|local validation failure
+exit=1

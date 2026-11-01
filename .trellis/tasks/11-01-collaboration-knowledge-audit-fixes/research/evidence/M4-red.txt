@@ -1,0 +1,79 @@
+# M4 red run on unfixed code (base 4e3b61500, only the new tests added)
+# Command: pnpm --filter @multica/views exec vitest run collaboration/knowledge-panel.test.tsx --reporter=verbose (NO_COLOR=1); exit=1
+# BEHAVIORAL (must fail for the defect's reason): 'keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision'
+#   fails at toBeChecked(): KnowledgeDecision sits inside the candidate branch, so Core's required refresh erasure unmounts it and the same tuple remounts with reviewed=false.
+# REGRESSION GUARD (may pass): 'resets typed decision input when a held refresh returns a different version' pins the identity reset the fix must keep.
+# Unchanged existing tests also pass here.
+
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-kfix-lane-web/packages/views
+
+ ✓ collaboration/knowledge-panel.test.tsx > requires keyboard confirmation of the displayed version and awaits the exact approval receipt 265ms
+ ✓ collaboration/knowledge-panel.test.tsx > resets review confirmation for a changed identity and removes body on source unavailability 195ms
+ × collaboration/knowledge-panel.test.tsx > keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision 118ms
+   → expect(element).toBeChecked()
+
+Received element is not checked:
+  <span
+  aria-checked="false"
+  aria-labelledby="base-ui-_r_n_"
+  class="peer relative flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-input transition-colors outline-none group-has-disabled/field:opacity-50 after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary data-indeterminate:text-primary-foreground dark:data-indeterminate:bg-primary"
+  data-slot="checkbox"
+  data-unchecked=""
+  id="base-ui-_r_l_"
+  role="checkbox"
+  tabindex="0"
+/>
+ ✓ collaboration/knowledge-panel.test.tsx > resets typed decision input when a held refresh returns a different version 129ms
+ ✓ collaboration/knowledge-panel.test.tsx > recovers a lost result after remount with the original key and no second POST 94ms
+ ✓ collaboration/knowledge-panel.test.tsx > lets an external handler propose from comments to the lawful current project without a private catalog 350ms
+ ✓ collaboration/knowledge-panel.test.tsx > Propose correction creates a new immutable proposal without copying old body into the form 300ms
+ ✓ collaboration/knowledge-panel.test.tsx > Propose workspace version creates a new immutable proposal without copying old body into the form 213ms
+ ✓ collaboration/knowledge-panel.test.tsx > allows only content-free target withdrawal and shows a known refusal as a refusal 116ms
+ ✓ collaboration/knowledge-panel.test.tsx > keeps unsupported knowledge separate from the surrounding collaboration and reports truncated history 47ms
+ ✓ collaboration/knowledge-panel.test.tsx > picks an actual recorded run as a source without memory or a raw JSON form 263ms
+ ✓ collaboration/knowledge-panel.test.tsx > pages all candidate versions with the original page authorization boundary 35ms
+ ✓ collaboration/knowledge-panel.test.tsx > keeps a selected source project pinned and requires a new selection if the relationship changes 362ms
+ ✓ collaboration/knowledge-panel.test.tsx > unlocks a definitively rejected first proposal for editing and a new explicit request 218ms
+ ✓ collaboration/knowledge-panel.test.tsx > keeps a prior lost proposal locked to its original identity after a later rejection and not-found recovery 214ms
+ ✓ collaboration/knowledge-panel.test.tsx > shows known success when receipt cleanup fails instead of calling the write uncertain 53ms
+ ✓ collaboration/knowledge-panel.test.tsx > unlocks the human draft after storage fails before POST 181ms
+ ✓ collaboration/knowledge-panel.test.tsx > does not repeat approval actor/time as an identical latest decision 24ms
+ ✓ collaboration/knowledge-panel.test.tsx > renders supplied proposer, approval and latest decision facts without a directory lookup 29ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  collaboration/knowledge-panel.test.tsx > keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision
+Error: expect(element).toBeChecked()
+
+Received element is not checked:
+  <span
+  aria-checked="false"
+  aria-labelledby="base-ui-_r_n_"
+  class="peer relative flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-input transition-colors outline-none group-has-disabled/field:opacity-50 after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary data-indeterminate:text-primary-foreground dark:data-indeterminate:bg-primary"
+  data-slot="checkbox"
+  data-unchecked=""
+  id="base-ui-_r_l_"
+  role="checkbox"
+  tabindex="0"
+/>
+ ❯ collaboration/knowledge-panel.test.tsx:116:64
+    114|   await userEvent.type(screen.getByRole("textbox", { name: "Decision r…
+    115|   await refreshDetailHeld();
+    116|   expect(screen.getByRole("checkbox", { name: /I reviewed/ })).toBeChe…
+       |                                                                ^
+    117|   expect(screen.getByRole("textbox", { name: "Decision reason" })).toH…
+    118|   expect(screen.getByRole("button", { name: "Approve exact version" })…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 18 passed (19)
+   Start at  16:50:25
+   Duration  5.99s (transform 1.01s, setup 104ms, import 1.76s, tests 3.21s, environment 811ms)
+
+undefined
+/Volumes/artisan/code/2026/mc-kfix-lane-web/packages/views:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run collaboration/knowledge-panel.test.tsx --reporter=verbose

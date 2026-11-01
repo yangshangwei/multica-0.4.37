@@ -1,0 +1,263 @@
+# L12 red run on code without the L12 fix (HEAD 60ca94822, i.e. L9 committed, plus the L12 tests only)
+#
+# Behavioral tests, expected to FAIL for the defect's reason:
+#   core knowledge-actions.test.ts 'dismisses only the exact stored identity, sends nothing and keeps the prior attempt uncertain' (dismissKnowledgeOperation does not exist)
+#   views knowledge-panel.test.tsx 'lets a human remove a stored identity only after a check finds no result, without any request' (no pending-scope caption, no Remove local entry action)
+# Regression guard, expected to PASS (landed with M5 in 2e28c2c98):
+#   views knowledge-panel.test.tsx 'recovering a request whose candidate is not in this panel does not open it here' (a recovered foreign receipt does not open its candidate)
+#
+$ pnpm --filter @multica/core exec vitest run collaboration/knowledge-actions.test.ts -t 'dismisses only the exact stored identity' --reporter=verbose
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+[1m[46m RUN [49m[22m [36mv4.1.0 [39m[90m/Volumes/artisan/code/2026/mc-kfix-lane-web/packages/core[39m
+
+ [2m[90m↓[39m[22m collaboration/knowledge-actions.test.ts[2m > [22mallocates a new request UUID per intent and preselects the recoverable candidate before create
+ [2m[90m↓[39m[22m collaboration/knowledge-actions.test.ts[2m > [22mcan reject an unavailable pending candidate expiring at null using only its exact state revision
+ [2m[90m↓[39m[22m collaboration/knowledge-actions.test.ts[2m > [22mcan reject an unavailable pending candidate expiring at 2020-01-01T00:00:00Z using only its exact state revision
+ [2m[90m↓[39m[22m collaboration/knowledge-actions.test.ts[2m > [22mdoes not infer rejection rights from unavailable or restricted rows and keeps expired approval denied
+ [2m[90m↓[39m[22m collaboration/knowledge-actions.test.ts[2m > [22mpins exact reviewed content/state revisions and refuses inferred or unavailable approval authority
+ [2m[90m↓[39m[22m collaboration/knowledge-actions.test.ts[2m > [22mretains the same immutable request after uncertain transport and never optimistically approves
+ [2m[90m↓[39m[22m collaboration/knowledge-actions.test.ts[2m > [22mrecovers a content-free original receipt with candidate/request only after losing source access and target role
+ [2m[90m↓[39m[22m collaboration/knowledge-actions.test.ts[2m > [22mkeeps unknown/mismatched receipts uncertain and clears private projections for explicit conflict reread
+ [2m[90m↓[39m[22m collaboration/knowledge-actions.test.ts[2m > [22mrecovers the same original actor/key after a fresh login while fencing the old live request scope
+ [2m[90m↓[39m[22m collaboration/knowledge-actions.test.ts[2m > [22msaves only recovery identity before a lost create response and refuses transport if preservation fails
+ [2m[90m↓[39m[22m collaboration/knowledge-actions.test.ts[2m > [22mretires only a first definitively unused proposal identity so a new explicit intent can be created
+ [2m[90m↓[39m[22m collaboration/knowledge-actions.test.ts[2m > [22mretains an earlier ambiguous request through later unsealed rejection, missing recovery and storage changes
+ [2m[90m↓[39m[22m collaboration/knowledge-actions.test.ts[2m > [22mdoes not discard an overlapping attempt when the first call receives an unsealed rejection
+ [31m×[39m collaboration/knowledge-actions.test.ts[2m > [22mdismisses only the exact stored identity, sends nothing and keeps the prior attempt uncertain[32m 7[2mms[22m[39m
+[31m   → expected error to be instance of CollaborationUnavailableError[39m
+ [2m[90m↓[39m[22m collaboration/knowledge-actions.test.ts[2m > [22mdistinguishes failed preservation before POST from failed cleanup after a known receipt
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m collaboration/knowledge-actions.test.ts[2m > [22mdismisses only the exact stored identity, sends nothing and keeps the prior attempt uncertain
+[31m[1mAssertionError[22m: expected error to be instance of CollaborationUnavailableError[39m
+
+[32m- Expected:[39m
+[Function CollaborationUnavailableError]
+
+[31m+ Received:[39m
+TypeError {
+  "message": "__vi_import_3__.dismissKnowledgeOperation is not a function",
+}
+
+[36m [2m❯[22m collaboration/knowledge-actions.test.ts:[2m188:97[22m[39m
+    [90m186|[39m   const key = collaborationKnowledgeKeys.candidate(f.scope, intent.can…
+    [90m187|[39m   // Another viewer or an obsolete live scope cannot remove this viewe…
+    [90m188|[39m   expect(() => dismissKnowledgeOperation({ ...f.scope, userId: knowled…
+    [90m   |[39m                                                                                                 [31m^[39m
+    [90m189|[39m   expect(() => dismissKnowledgeOperation(f.scope, { ...intent, scope: …
+    [90m190|[39m   const failing = testStorage(); vi.spyOn(failing, "removeItem").mockI…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[33m14 skipped[39m[90m (15)[39m
+[2m   Start at [22m 19:46:24
+[2m   Duration [22m 723ms[2m (transform 437ms, setup 0ms, import 643ms, tests 7ms, environment 0ms)[22m
+
+undefined
+/Volumes/artisan/code/2026/mc-kfix-lane-web/packages/core:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run collaboration/knowledge-actions.test.ts -t dismisses only the exact stored identity --reporter=verbose
+exit=1
+
+$ pnpm --filter @multica/views exec vitest run collaboration/knowledge-panel.test.tsx -t 'remove a stored identity|candidate is not in this panel' --reporter=verbose
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+[1m[46m RUN [49m[22m [36mv4.1.0 [39m[90m/Volumes/artisan/code/2026/mc-kfix-lane-web/packages/views[39m
+
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mrequires keyboard confirmation of the displayed version and awaits the exact approval receipt
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mresets review confirmation for a changed identity and removes body on source unavailability
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mkeeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mresets typed decision input when a held refresh returns a different version
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mrecovers a lost result after remount with the original key and no second POST
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mlets an external handler propose from comments to the lawful current project without a private catalog
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mPropose correction creates a new immutable proposal without copying old body into the form
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mPropose workspace version creates a new immutable proposal without copying old body into the form
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mallows only content-free target withdrawal and shows a known refusal as a refusal
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mkeeps unsupported knowledge separate from the surrounding collaboration and reports truncated history
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mpicks an actual recorded run as a source without memory or a raw JSON form
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mpages all candidate versions with the original page authorization boundary
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mkeeps a selected source project pinned and requires a new selection if the relationship changes
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22munlocks a definitively rejected first proposal for editing and a new explicit request
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mkeeps a prior lost proposal locked to its original identity after a later rejection and not-found recovery
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mshows known success when receipt cleanup fails instead of calling the write uncertain
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22munlocks the human draft after storage fails before POST
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22ma review decision leaves an open proposal draft intact and only the panel's own proposal closes it
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mrecovering an older stored proposal keeps a new draft open while it opens the recovered candidate
+ [32m✓[39m collaboration/knowledge-panel.test.tsx[2m > [22mrecovering a request whose candidate is not in this panel does not open it here[32m 229[2mms[22m[39m
+ [31m×[39m collaboration/knowledge-panel.test.tsx[2m > [22mlets a human remove a stored identity only after a check finds no result, without any request[32m 95[2mms[22m[39m
+[31m   → Unable to find an element with the text: Requests started from other collaborations or destinations are listed here too.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div />[31m
+  [36m<div>[31m
+    [36m<section[31m
+      [33maria-labelledby[31m=[32m"_r_b_-title"[31m
+      [33mclass[31m=[32m"min-w-0 space-y-5 rounded-md border border-border p-4 sm:p-5 pointer-coarse:[&_button]:min-h-11"[31m
+      [33mid[31m=[32m"knowledge"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"flex flex-wrap items-start justify-between gap-3"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"min-w-0 space-y-2"[31m
+        [36m>[31m
+          [36m<h3[31m
+            [33mclass[31m=[32m"text-body font-semibold"[31m
+            [33mid[31m=[32m"_r_b_-title"[31m
+          [36m>[31m
+            [0mKnowledge candidates[0m
+          [36m</h3>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"max-w-prose text-caption text-muted-foreground"[31m
+          [36m>[31m
+            [0mPropose a reusable conclusion with sources. Human approval controls where it may be used.[0m
+          [36m</p>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"space-y-3"[31m
+      [36m>[31m
+        [36m<h4[31m
+          [33mclass[31m=[32m"text-body font-medium"[31m
+        [36m>[31m
+          [0mUnresolved knowledge request[0m
+        [36m</h4>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex min-w-0 flex-wrap items-center gap-2"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"text-caption text-muted-foreground [overflow-wrap:anywhere]"[31m
+          [36m>[31m
+            [0mRequest 8727b209-a930-4e25-9c76-0abed21bb7aa[0m
+          [36m</span>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-label in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"[31m
+            [33mdata-slot[31m=[32m"button"[31m
+            [33mtabindex[31m=[32m"0"[31m
+            [33mtype[31m=[32m"button"[31m
+          [36m>[31m
+            [0mCheck original result[0m
+          [36m</button>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"space-y-3"[31m
+      [36m>[31m
+        [36m<p[31m
+          [33mclass[31m=[32m"text-body text-muted-foreground"[31m
+          [33mrole[31m=[32m"status"[31m
+        [36m>[31m
+          [0mLoading knowledge…[0m
+        [36m</p>[31m
+      [36m</div>[31m
+    [36m</section>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22msubmit waits for a refreshing source list instead of reporting a changed source
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mreports local validation failure as invalid input, not as an unavailable source
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mfails closed with a proposal-unavailable notice when the refreshed list withdraws the grant
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mattributes over-byte summary, conclusion and evidence to the field instead of a source failure
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mexplains an over-byte decision reason instead of the generic invalid message
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mdoes not repeat approval actor/time as an identical latest decision
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mrenders supplied proposer, approval and latest decision facts without a directory lookup
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m collaboration/knowledge-panel.test.tsx[2m > [22mlets a human remove a stored identity only after a check finds no result, without any request
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: Requests started from other collaborations or destinations are listed here too.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div />[31m
+  [36m<div>[31m
+    [36m<section[31m
+      [33maria-labelledby[31m=[32m"_r_b_-title"[31m
+      [33mclass[31m=[32m"min-w-0 space-y-5 rounded-md border border-border p-4 sm:p-5 pointer-coarse:[&_button]:min-h-11"[31m
+      [33mid[31m=[32m"knowledge"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"flex flex-wrap items-start justify-between gap-3"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"min-w-0 space-y-2"[31m
+        [36m>[31m
+          [36m<h3[31m
+            [33mclass[31m=[32m"text-body font-semibold"[31m
+            [33mid[31m=[32m"_r_b_-title"[31m
+          [36m>[31m
+            [0mKnowledge candidates[0m
+          [36m</h3>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"max-w-prose text-caption text-muted-foreground"[31m
+          [36m>[31m
+            [0mPropose a reusable conclusion with sources. Human approval controls where it may be used.[0m
+          [36m</p>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"space-y-3"[31m
+      [36m>[31m
+        [36m<h4[31m
+          [33mclass[31m=[32m"text-body font-medium"[31m
+        [36m>[31m
+          [0mUnresolved knowledge request[0m
+        [36m</h4>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex min-w-0 flex-wrap items-center gap-2"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"text-caption text-muted-foreground [overflow-wrap:anywhere]"[31m
+          [36m>[31m
+            [0mRequest 8727b209-a930-4e25-9c76-0abed21bb7aa[0m
+          [36m</span>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-label in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"[31m
+            [33mdata-slot[31m=[32m"button"[31m
+            [33mtabindex[31m=[32m"0"[31m
+            [33mtype[31m=[32m"button"[31m
+          [36m>[31m
+            [0mCheck original result[0m
+          [36m</button>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"space-y-3"[31m
+      [36m>[31m
+        [36m<p[31m
+          [33mclass[31m=[32m"text-body text-muted-foreground"[31m
+          [33mrole[31m=[32m"status"[31m
+        [36m>[31m
+          [0mLoading knowledge…[0m
+        [36m</p>[31m
+      [36m</div>[31m
+    [36m</section>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m collaboration/knowledge-panel.test.tsx:[2m386:17[22m[39m
+    [90m384|[39m   first[33m.[39m[34munmount[39m()[33m;[39m [34mmount[39m()[33m;[39m
+    [90m385|[39m   [35mawait[39m screen[33m.[39m[34mfindByText[39m([32m"Unresolved knowledge request"[39m)[33m;[39m
+    [90m386|[39m   expect(screen.getByText("Requests started from other collaborations …
+    [90m   |[39m                 [31m^[39m
+    [90m387|[39m   [90m// No check has run in this mount yet.[39m
+    [90m388|[39m   expect(screen.queryByRole("button", { name: "Remove local entry" }))…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[2m | [22m[33m26 skipped[39m[90m (28)[39m
+[2m   Start at [22m 19:46:26
+[2m   Duration [22m 2.27s[2m (transform 730ms, setup 67ms, import 1.21s, tests 325ms, environment 605ms)[22m
+
+undefined
+/Volumes/artisan/code/2026/mc-kfix-lane-web/packages/views:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run collaboration/knowledge-panel.test.tsx -t remove a stored identity|candidate is not in this panel --reporter=verbose
+exit=1

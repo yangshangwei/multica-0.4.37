@@ -1,0 +1,171 @@
+Actual PostgreSQL plan for the production namespace-key query. Controlled regression uses enable_seqscan=off; a representative-data default plan is captured separately.
+[
+  {
+    "Plan": {
+      "Async Capable": false,
+      "Node Type": "Sort",
+      "Parallel Aware": false,
+      "Plan Rows": 169,
+      "Plan Width": 24,
+      "Plans": [
+        {
+          "Async Capable": false,
+          "Node Type": "Unique",
+          "Parallel Aware": false,
+          "Parent Relationship": "Outer",
+          "Plan Rows": 169,
+          "Plan Width": 24,
+          "Plans": [
+            {
+              "Async Capable": false,
+              "Node Type": "Sort",
+              "Parallel Aware": false,
+              "Parent Relationship": "Outer",
+              "Plan Rows": 169,
+              "Plan Width": 24,
+              "Plans": [
+                {
+                  "Async Capable": false,
+                  "Node Type": "Append",
+                  "Parallel Aware": false,
+                  "Parent Relationship": "Outer",
+                  "Plan Rows": 169,
+                  "Plan Width": 24,
+                  "Plans": [
+                    {
+                      "Alias": "task",
+                      "Async Capable": false,
+                      "Index Cond": "(runtime_id = 'f7552f91-feb9-4e46-a9e7-5ab2d5da20f1'::uuid)",
+                      "Index Name": "collaboration_knowledge_runtime_history_idx",
+                      "Node Type": "Index Only Scan",
+                      "Parallel Aware": false,
+                      "Parent Relationship": "Member",
+                      "Plan Rows": 1,
+                      "Plan Width": 24,
+                      "Relation Name": "agent_task_queue",
+                      "Scan Direction": "Forward",
+                      "Startup Cost": 0.25,
+                      "Total Cost": 6.02
+                    },
+                    {
+                      "Async Capable": false,
+                      "Hash Cond": "(task_1.agent_id = a.id)",
+                      "Inner Unique": true,
+                      "Join Type": "Inner",
+                      "Node Type": "Hash Join",
+                      "Parallel Aware": false,
+                      "Parent Relationship": "Member",
+                      "Plan Rows": 114,
+                      "Plan Width": 24,
+                      "Plans": [
+                        {
+                          "Alias": "task_1",
+                          "Async Capable": false,
+                          "Node Type": "Bitmap Heap Scan",
+                          "Parallel Aware": false,
+                          "Parent Relationship": "Outer",
+                          "Plan Rows": 1832,
+                          "Plan Width": 40,
+                          "Plans": [
+                            {
+                              "Async Capable": false,
+                              "Index Name": "collaboration_knowledge_runtime_history_idx",
+                              "Node Type": "Bitmap Index Scan",
+                              "Parallel Aware": false,
+                              "Parent Relationship": "Outer",
+                              "Plan Rows": 1832,
+                              "Plan Width": 0,
+                              "Startup Cost": 0,
+                              "Total Cost": 4.25
+                            }
+                          ],
+                          "Recheck Cond": "(knowledge_context_version IS NOT NULL)",
+                          "Relation Name": "agent_task_queue",
+                          "Startup Cost": 4.71,
+                          "Total Cost": 286.03
+                        },
+                        {
+                          "Async Capable": false,
+                          "Node Type": "Hash",
+                          "Parallel Aware": false,
+                          "Parent Relationship": "Inner",
+                          "Plan Rows": 1,
+                          "Plan Width": 16,
+                          "Plans": [
+                            {
+                              "Alias": "a",
+                              "Async Capable": false,
+                              "Index Cond": "(runtime_id = 'f7552f91-feb9-4e46-a9e7-5ab2d5da20f1'::uuid)",
+                              "Index Name": "idx_agent_runtime_id",
+                              "Node Type": "Index Scan",
+                              "Parallel Aware": false,
+                              "Parent Relationship": "Outer",
+                              "Plan Rows": 1,
+                              "Plan Width": 16,
+                              "Relation Name": "agent",
+                              "Scan Direction": "Forward",
+                              "Startup Cost": 0.14,
+                              "Total Cost": 8.15
+                            }
+                          ],
+                          "Startup Cost": 8.15,
+                          "Total Cost": 8.15
+                        }
+                      ],
+                      "Startup Cost": 12.88,
+                      "Total Cost": 300.28
+                    },
+                    {
+                      "Alias": "task_2",
+                      "Async Capable": false,
+                      "Filter": "((knowledge_delivery @> jsonb_build_object('claims', jsonb_build_array(jsonb_build_object('descriptor', jsonb_build_object('runtime_id', 'f7552f91-feb9-4e46-a9e7-5ab2d5da20f1'::text))))) OR (knowledge_delivery @> jsonb_build_object('claims', jsonb_build_array(jsonb_build_object('daemon_id', 'knowledge-929745b8-acbf-414c-86a2-9c593ebe345a'::text, 'descriptor', jsonb_build_object('provider', 'claude'::text))))) OR (knowledge_delivery @> jsonb_build_object('claims', jsonb_build_array(jsonb_build_object('runtime_owner_user_id', '9f45f5b8-bf2d-49d6-a9a2-1f2d25ad89fc'::text, 'descriptor', jsonb_build_object('provider', 'claude'::text))))))",
+                      "Node Type": "Bitmap Heap Scan",
+                      "Parallel Aware": false,
+                      "Parent Relationship": "Member",
+                      "Plan Rows": 54,
+                      "Plan Width": 24,
+                      "Plans": [
+                        {
+                          "Async Capable": false,
+                          "Index Name": "collaboration_knowledge_runtime_history_idx",
+                          "Node Type": "Bitmap Index Scan",
+                          "Parallel Aware": false,
+                          "Parent Relationship": "Outer",
+                          "Plan Rows": 1832,
+                          "Plan Width": 0,
+                          "Startup Cost": 0,
+                          "Total Cost": 4.25
+                        }
+                      ],
+                      "Recheck Cond": "(knowledge_context_version IS NOT NULL)",
+                      "Relation Name": "agent_task_queue",
+                      "Startup Cost": 4.27,
+                      "Total Cost": 354.29
+                    }
+                  ],
+                  "Startup Cost": 0.25,
+                  "Subplans Removed": 0,
+                  "Total Cost": 661.43
+                }
+              ],
+              "Sort Key": [
+                "task.id",
+                "task.created_at"
+              ],
+              "Startup Cost": 667.68,
+              "Total Cost": 668.1
+            }
+          ],
+          "Startup Cost": 667.68,
+          "Total Cost": 668.95
+        }
+      ],
+      "Sort Key": [
+        "task.created_at DESC",
+        "task.id DESC"
+      ],
+      "Startup Cost": 675.2,
+      "Total Cost": 675.62
+    }
+  }
+]

@@ -1,0 +1,5 @@
+# Integrated history-index fixture correction
+
+At45efa093c, full internal/migrations has13 named failures: knowledgeSchema's minimal legacy agent_task_queue contains onlyid/session_id, but its migration glob now correctly includes761–763, whose history indexes needagent_id/runtime_id/created_at. Production schema and fresh task-clone migrations already have these columns; no production migration change is indicated. The failed source/database/log are preserved inintegration-verification/migrations-full.json/jsonl.
+
+Smallest correction: complete that existing test-owned legacy table with those three preexisting production columns and assert all three concurrent history indexes exist in the fresh/reapply contract. Keep the knowledge metadata added by747, source fixture legacy-session row and protected down behavior unchanged. Files: canonicalcollaboration_knowledge_test.go andthisevidence. No schema/production behavior change, dependency or broadened fixture framework. A new task-owned migrations database will run the same complete package; no old failure DB or defaultmultica cleanup. Independent delta review and final same-source checks remain required.

@@ -1,0 +1,42 @@
+{
+  "source_sha": "0702d5039b235adc88dbd3d7d949a1a8f165d247",
+  "database": "kfix_joint_plan_history_20261102_0122",
+  "identity": "kfix_joint_plan_history_20261102_0122|763_collaboration_knowledge_delivery_history",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/service",
+    "-parallel=2",
+    "-count=1",
+    "-json",
+    "-timeout=10m",
+    "-overlay=/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-verification/plan-missing-index-overlay.json",
+    "-run",
+    "^TestKnowledgeRuntimeHistoryIsIndexDriven$"
+  ],
+  "started_at": "2026-11-01T17:31:25.676615+00:00",
+  "state": "complete",
+  "expected_exit_code": 1,
+  "recorded_plan_replay": false,
+  "real_provider_calls": 0,
+  "migration_by_child": false,
+  "exit_code": 1,
+  "finished_at": "2026-11-01T17:31:28.537003+00:00",
+  "actual_matches_expectation": true,
+  "counts": {
+    "run": 1,
+    "pass": 0,
+    "fail": 1,
+    "skip": 0
+  },
+  "failures": [
+    "TestKnowledgeRuntimeHistoryIsIndexDriven",
+    "github.com/multica-ai/multica/server/internal/service"
+  ],
+  "log_sha256": "f253518754f23bbb5e77d50f096892a43873fbdce912d333013f3c57d2973039"
+}

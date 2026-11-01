@@ -1,0 +1,19 @@
+{
+  "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+  "command": [
+    "pnpm",
+    "--filter",
+    "@multica/core",
+    "exec",
+    "vitest",
+    "run",
+    "--maxWorkers=2",
+    "collaboration/knowledge-actions.test.ts",
+    "collaboration/knowledge-lease.test.ts",
+    "collaboration/knowledge-cache.test.ts",
+    "collaboration/run-handoff-schema.test.ts"
+  ],
+  "started_at": "2026-11-01T17:10:13.925485+00:00",
+  "exit_code": 0,
+  "log_sha256": "8ac97bd34e303e0029a1790dd1111f3400b763710c036fd9bc25313e6f75aa12"
+}

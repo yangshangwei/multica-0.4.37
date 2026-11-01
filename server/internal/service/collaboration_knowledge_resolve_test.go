@@ -6,6 +6,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/multica-ai/multica/server/internal/testutil"
@@ -255,6 +256,43 @@ func TestKnowledgeHumanTargetBudgetRefusalRetainsOriginalOutcome(t *testing.T) {
 	request.RequestID = uuid.NewString()
 	if _, err = f.svc.ApproveKnowledge(f.ctx, util.MustParseUUID(second.CandidateID), request); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestKnowledgeApprovalTargetBudgetUsesDatabaseClock(t *testing.T) {
+	f := newCollaborationMemoryFixture(t)
+	p := knowledgeServiceProposal(t, f)
+	p.Content = strings.Repeat("x", 64<<10)
+	expires := knowledgeDBNow(t, f).Add(time.Hour).UTC()
+	p.ExpiresAt = &expires
+	if _, err := f.svc.ProposeKnowledge(f.ctx, f.issue.Issue.ID, p); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := f.svc.ApproveKnowledge(f.ctx, util.MustParseUUID(p.CandidateID), knowledgeApproveRequest(p)); err != nil {
+		t.Fatal(err)
+	}
+	second := p
+	second.CandidateID, second.RequestID, second.ExpiresAt = uuid.NewString(), uuid.NewString(), nil
+	if _, err := f.svc.ProposeKnowledge(f.ctx, f.issue.Issue.ID, second); err != nil {
+		t.Fatal(err)
+	}
+	// The first contribution is still active on PostgreSQL's clock. An ahead
+	// application clock must not hide it from the same approval's budget.
+	f.svc.knowledgeClock = func() time.Time { return expires.Add(time.Hour) }
+	request := knowledgeApproveRequest(second)
+	refused, err := f.svc.ApproveKnowledge(f.ctx, util.MustParseUUID(second.CandidateID), request)
+	if !collaborationErrorCode(err, "knowledge_target_budget_exceeded") || refused.State != "pending" {
+		t.Fatalf("application skew bypassed the database-active target budget: %+v %v", refused, err)
+	}
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_knowledge_candidate WHERE source_issue_id=$1 AND state='approved'`, f.issue.Issue.ID) != 1 {
+		t.Fatal("budget refusal published a second contribution")
+	}
+	f.svc.knowledgeClock = nil
+	replay, err := f.svc.ApproveKnowledge(f.ctx, util.MustParseUUID(second.CandidateID), request)
+	a, _ := json.Marshal(refused)
+	b, _ := json.Marshal(replay)
+	if !collaborationErrorCode(err, "knowledge_target_budget_exceeded") || string(a) != string(b) {
+		t.Fatalf("clock change recomputed the original budget refusal: %+v %v", replay, err)
 	}
 }
 

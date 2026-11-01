@@ -26,6 +26,13 @@ const knowledgeRequestTimeout = 5 * time.Second
 type knowledgeFenceContextKey struct{}
 
 func taskKnowledgeFence(task Task) *protocol.TaskKnowledgeFence {
+	if task.knowledgeRejected {
+		if task.recoveredKnowledgeFence == nil {
+			return nil
+		}
+		fence := *task.recoveredKnowledgeFence
+		return &fence
+	}
 	if task.KnowledgeContext == nil {
 		return nil
 	}
@@ -217,19 +224,29 @@ func (c *Client) postKnowledge(ctx context.Context, taskID, action string, reque
 	return knowledgeRefusal(lastReason)
 }
 
-func validateKnowledgeClaim(task Task, provider, configuration string, opts agent.ExecOptions) error {
+// validateKnowledgeClaim reports dropped=true when this daemon's own
+// reachability gate cleared the claimed native session after the claim. The
+// server then rebinds the claim before first disclosure; any other difference
+// between the claimed session and the post-gate launch options is refused.
+func validateKnowledgeClaim(task Task, provider, configuration string, opts agent.ExecOptions) (bool, error) {
 	d := task.KnowledgeContext
-	if d == nil || d.ProtocolVersion != protocol.TaskKnowledgeVersion || !d.PreparationRequired ||
+	if d == nil {
+		return false, knowledgeRefusal(agent.KnowledgeContextChanged)
+	}
+	dropped := d.Session.NativeSessionID != "" && task.droppedPriorSessionID == d.Session.NativeSessionID &&
+		task.PriorSessionID == "" && opts.ResumeSessionID == ""
+	exact := d.Session.NativeSessionID == opts.ResumeSessionID && d.Session.NativeSessionID == task.PriorSessionID
+	if d.ProtocolVersion != protocol.TaskKnowledgeVersion || !d.PreparationRequired ||
 		d.Provider != provider || d.Mode != "local" || d.TaskID != task.ID || d.RuntimeID != task.RuntimeID ||
 		d.ConfigurationID != configuration || d.Session.Provider != provider || d.Session.RuntimeID != task.RuntimeID ||
 		d.Session.AgentID != task.AgentID || d.Session.ConfigurationID != d.ConfigurationID ||
-		d.Session.NativeSessionID != opts.ResumeSessionID || d.Session.NativeSessionID != task.PriorSessionID ||
+		!(dropped || exact) ||
 		protocol.ValidateTaskKnowledgeSession(d.Session) != nil ||
 		protocol.ValidateTaskKnowledgeRequest(d.ProtocolVersion, task.ID, d.ClaimGeneration, d.DispatchedAt) != nil {
-		return knowledgeRefusal(agent.KnowledgeContextChanged)
+		return false, knowledgeRefusal(agent.KnowledgeContextChanged)
 	}
 	if task.ExecutionFence != nil && (task.ExecutionFence.RuntimeID != d.RuntimeID || task.ExecutionFence.DispatchedAt != d.DispatchedAt) {
-		return knowledgeRefusal(agent.KnowledgeContextChanged)
+		return false, knowledgeRefusal(agent.KnowledgeContextChanged)
 	}
 	kind, id := "issue", task.IssueID
 	switch {
@@ -241,14 +258,29 @@ func validateKnowledgeClaim(task Task, provider, configuration string, opts agen
 		kind, id = "quick_create", task.ID
 	}
 	if d.Session.ScopeKind != kind || d.Session.ScopeID != id {
-		return knowledgeRefusal(agent.KnowledgeContextChanged)
+		return false, knowledgeRefusal(agent.KnowledgeContextChanged)
 	}
-	return nil
+	return dropped, nil
 }
 
-func validateKnowledgePreparation(task Task, fingerprint string, p protocol.TaskKnowledgePrepareResponse) error {
+// knowledgePreparedSession accepts the claimed binding unchanged or, after a
+// reported unreachable resume, a server-minted fresh binding that differs from
+// the claim in generation and native ID alone.
+func knowledgePreparedSession(claimed protocol.TaskKnowledgeSessionBinding, rebind bool, got protocol.TaskKnowledgeSessionBinding) bool {
+	if !rebind {
+		return got == claimed
+	}
+	if _, err := uuid.Parse(got.Generation); err != nil || got.Generation == claimed.Generation || got.NativeSessionID != "" {
+		return false
+	}
+	want := claimed
+	want.Generation, want.NativeSessionID = got.Generation, ""
+	return got == want
+}
+
+func validateKnowledgePreparation(task Task, claimed protocol.TaskKnowledgeSessionBinding, rebind bool, fingerprint string, p protocol.TaskKnowledgePrepareResponse) error {
 	if p.ProtocolVersion != protocol.TaskKnowledgeVersion || p.InvocationFingerprint != fingerprint ||
-		p.Session != task.KnowledgeContext.Session || p.Manifest.ProtocolVersion != protocol.TaskKnowledgeVersion ||
+		!knowledgePreparedSession(claimed, rebind, p.Session) || p.Manifest.ProtocolVersion != protocol.TaskKnowledgeVersion ||
 		p.Manifest.Entries == nil || p.Contributions == nil || p.Targets == nil ||
 		len(p.Manifest.Entries) != len(p.Contributions) || len(p.Targets) > 2 {
 		return knowledgeRefusal(agent.KnowledgeContextChanged)
@@ -293,6 +325,11 @@ func validateKnowledgePreparation(task Task, fingerprint string, p protocol.Task
 // prepareKnowledgePrompt runs only after the ordinary cwd, settings and options
 // exist. It never writes private material to the task or execenv/stable files.
 func (d *Daemon) prepareKnowledgePrompt(ctx context.Context, task Task, provider string, cfg agent.Config, opts *agent.ExecOptions, options []PromptOption) (string, error) {
+	// A descriptor that failed strict decoding never falls back to a base
+	// prompt: the claim negotiated knowledge, so the task is refused unlaunched.
+	if task.knowledgeRejected {
+		return "", knowledgeRefusal(agent.KnowledgeContextChanged)
+	}
 	if task.KnowledgeContext == nil {
 		return BuildPrompt(task, provider, options...), nil
 	}
@@ -303,7 +340,8 @@ func (d *Daemon) prepareKnowledgePrompt(ctx context.Context, task Task, provider
 	entry := d.agents()[provider]
 	entry.Path = cfg.ExecutablePath
 	configuration := d.knowledgeConfigurationID(task.RuntimeID, entry, cfg.CLIVersion)
-	if err := validateKnowledgeClaim(task, provider, configuration, *opts); err != nil {
+	dropped, err := validateKnowledgeClaim(task, provider, configuration, *opts)
+	if err != nil {
 		return "", err
 	}
 	fingerprint, err := agent.KnowledgeInvocationFingerprint(provider, cfg, *opts)
@@ -311,15 +349,21 @@ func (d *Daemon) prepareKnowledgePrompt(ctx context.Context, task Task, provider
 		return "", err
 	}
 	claim := *task.KnowledgeContext
+	// A dropped resume still names the original claimed binding; the server
+	// answers with the fresh binding this input must launch under.
 	request := protocol.TaskKnowledgePrepareRequest{ProtocolVersion: protocol.TaskKnowledgeVersion, RequestID: uuid.NewString(),
-		ClaimGeneration: claim.ClaimGeneration, DispatchedAt: claim.DispatchedAt, Session: claim.Session, InvocationFingerprint: fingerprint}
+		ClaimGeneration: claim.ClaimGeneration, DispatchedAt: claim.DispatchedAt, Session: claim.Session, InvocationFingerprint: fingerprint,
+		ResumeUnavailable: dropped}
 	var prepared protocol.TaskKnowledgePrepareResponse
 	if err := d.client.postKnowledge(ctx, task.ID, "prepare", request, &prepared); err != nil {
 		return "", err
 	}
-	if err := validateKnowledgePreparation(task, fingerprint, prepared); err != nil {
+	if err := validateKnowledgePreparation(task, claim.Session, dropped, fingerprint, prepared); err != nil {
 		return "", err
 	}
+	// Every authorization and observation of this input binds the prepared
+	// session; after a rebind that is a fresh intent with no native ID.
+	claim.Session = prepared.Session
 	if len(prepared.Contributions) > 0 {
 		material, err := json.Marshal(prepared.Contributions)
 		if err != nil {

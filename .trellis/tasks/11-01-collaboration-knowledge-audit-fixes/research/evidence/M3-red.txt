@@ -1,0 +1,72 @@
+source overlay: HEAD 3110295d0 task_knowledge.go and generated SQL
+database: kfix_claim_svc_takeover_20261101
+command: ['/Volumes/artisan/code/2026/mc-kfix-lane-claim/scripts/go-test-with-agent-cli-guard.sh', 'go', 'test', '-overlay', '/Volumes/artisan/code/2026/mc-kfix-lane-claim/.omx/private/claim-history-red-overlay/overlay.json', './internal/service', '-run', '^TestKnowledgeRuntimeHistoryIsIndexDriven$', '-count=1', '-v']
+=== RUN   TestKnowledgeRuntimeHistoryIsIndexDriven
+    task_knowledge_history_growth_test.go:207: runtime namespace scans legacy task history instead of negotiated-row indexes: [
+          {
+            "Plan": {
+              "Node Type": "Limit",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 33.39,
+              "Total Cost": 108.86,
+              "Plan Rows": 4,
+              "Plan Width": 92,
+              "Plans": [
+                {
+                  "Node Type": "Incremental Sort",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Startup Cost": 33.39,
+                  "Total Cost": 108.86,
+                  "Plan Rows": 4,
+                  "Plan Width": 92,
+                  "Sort Key": ["task.created_at DESC", "task.id"],
+                  "Presorted Key": ["task.created_at"],
+                  "Plans": [
+                    {
+                      "Node Type": "Index Scan",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Scan Direction": "Forward",
+                      "Index Name": "admin_task_page_idx",
+                      "Relation Name": "agent_task_queue",
+                      "Alias": "task",
+                      "Startup Cost": 8.28,
+                      "Total Cost": 108.68,
+                      "Plan Rows": 4,
+                      "Plan Width": 92,
+                      "Filter": "((knowledge_context_version IS NOT NULL) AND ((runtime_id = 'b3f01b0f-cfb4-4bd4-acbb-a1f1a03250dc'::uuid) OR (ANY (agent_id = (hashed SubPlan 1).col1)) OR (knowledge_delivery @> jsonb_build_object('claims', jsonb_build_array(jsonb_build_object('descriptor', jsonb_build_object('runtime_id', 'b3f01b0f-cfb4-4bd4-acbb-a1f1a03250dc'::text))))) OR (knowledge_delivery @> jsonb_build_object('claims', jsonb_build_array(jsonb_build_object('daemon_id', 'knowledge-25108a16-31fc-473e-aa75-22cd32b424f7'::text, 'descriptor', jsonb_build_object('provider', 'claude'::text))))) OR (knowledge_delivery @> jsonb_build_object('claims', jsonb_build_array(jsonb_build_object('runtime_owner_user_id', '49640a62-80fb-4fe3-bec4-d43f06c0b8a6'::text, 'descriptor', jsonb_build_object('provider', 'claude'::text)))))))",
+                      "Plans": [
+                        {
+                          "Node Type": "Index Scan",
+                          "Parent Relationship": "SubPlan",
+                          "Subplan Name": "SubPlan 1",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Scan Direction": "Forward",
+                          "Index Name": "idx_agent_runtime_id",
+                          "Relation Name": "agent",
+                          "Alias": "agent",
+                          "Startup Cost": 0.12,
+                          "Total Cost": 8.14,
+                          "Plan Rows": 1,
+                          "Plan Width": 16,
+                          "Index Cond": "(runtime_id = 'b3f01b0f-cfb4-4bd4-acbb-a1f1a03250dc'::uuid)"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+--- FAIL: TestKnowledgeRuntimeHistoryIsIndexDriven (0.30s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/service	1.085s
+FAIL
+
+exit_code: 1

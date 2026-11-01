@@ -1,0 +1,19 @@
+{
+  "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+  "fixture_sha256": "4aaa3b3e1038ed8ee4efe478d09f8450e375916eafab11d1493fa8aa50d6526e",
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-c",
+    "-o",
+    "/dev/null",
+    "./internal/migrations"
+  ],
+  "started_at": "2026-11-01T17:17:02.983300+00:00",
+  "compile_only": true,
+  "database_env_removed": true,
+  "exit_code": 0,
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

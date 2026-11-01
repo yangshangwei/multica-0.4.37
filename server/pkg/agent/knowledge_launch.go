@@ -96,11 +96,77 @@ func KnowledgeLifecycleSupported(provider, mode string, builtinRuntime bool) boo
 	return builtinRuntime && provider == "claude" && (mode == "" || mode == "local")
 }
 
+// claudeSessionSelectorPrefixes are the long options that can make Claude
+// resume, continue, fork or teleport to an existing transcript, or hand the
+// session to a cloud, remote-control, background, desktop, self-hosted
+// environment or tmux host that the daemon does not supervise. The list follows
+// `claude --help` for Claude Code 2.1.316; --remote and --attach cover the
+// spellings reviewers named, and an unclear option is refused rather than
+// guessed at.
+var claudeSessionSelectorPrefixes = []string{
+	"--resume", "--continue", "--session", "--fork-session", "--from-pr",
+	"--teleport", "--cloud", "--remote", "--attach", "--bg", "--background",
+	"--desktop", "--environment", "--tmux",
+}
+
+// claudeSubcommands are the Claude Code 2.1.316 subcommand names and aliases,
+// plus remote-control from earlier releases. A matching operand replaces the
+// managed print invocation, and attach, logs, respawn, stop/kill, rm, agents and
+// purge act on stored or background sessions.
+var claudeSubcommands = map[string]bool{
+	"agents": true, "attach": true, "auth": true, "auto-mode": true, "doctor": true,
+	"gateway": true, "import": true, "install": true, "kill": true, "logs": true,
+	"mcp": true, "plugin": true, "plugins": true, "purge": true, "remote-control": true,
+	"respawn": true, "rm": true, "setup-token": true, "stop": true, "ultrareview": true,
+	"update": true, "upgrade": true,
+}
+
+// KnowledgeSessionSelectorPresent reports whether Claude default/custom
+// arguments contain an explicit session selector, which could reach managed
+// history, or a token that stops the managed argv from governing the process.
+// Each token is unquoted as buildClaudeArgs does before launch, and its name is
+// the part before the first "=". A token counts when it is:
+//   - a long option with one of claudeSessionSelectorPrefixes;
+//   - a single-dash short cluster that contains 'c' or 'r' (-c, -r, -rID, -cr,
+//     -pc);
+//   - exactly a claudeSubcommands name;
+//   - a bare "--", which stops option parsing for later configured arguments.
+//
+// Every token is scanned, including option values: there is no arity parsing,
+// so some harmless values also count (write --debug=mcp, not --debug mcp).
+//
+// This decides refusal before an ordinary fallback only. It admits nothing:
+// ValidateKnowledgeSessionArgs remains the only admission rule for a
+// knowledge launch. Providers other than Claude always report false.
+func KnowledgeSessionSelectorPresent(provider string, args []string) bool {
+	if provider != "claude" {
+		return false
+	}
+	for _, raw := range args {
+		arg := unshellQuoteArg(raw)
+		if arg == "--" || claudeSubcommands[arg] {
+			return true
+		}
+		name, _, _ := strings.Cut(arg, "=")
+		for _, prefix := range claudeSessionSelectorPrefixes {
+			if strings.HasPrefix(name, prefix) {
+				return true
+			}
+		}
+		if len(arg) > 1 && arg[0] == '-' && arg[1] != '-' && strings.ContainsAny(arg[1:], "cr") {
+			return true
+		}
+	}
+	return false
+}
+
 // ValidateKnowledgeSessionArgs validates extra/default arguments when selection
 // must be provably controlled. Do not silently filter a selector from user input.
 // Unknown flags/subcommands are refused: a denylist alone cannot establish the
 // semantics of a new vendor switch. Ordinary legacy execution does not call it.
 // This argument check alone does not certify a custom/remote executable.
+// Refusing a claim that falls back to ordinary execution is decided by
+// KnowledgeSessionSelectorPresent instead.
 func ValidateKnowledgeSessionArgs(provider string, args []string) error {
 	if provider != "claude" || len(args) > 64 {
 		return knowledgeUnsupported()

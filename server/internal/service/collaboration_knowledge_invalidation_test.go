@@ -655,3 +655,139 @@ func TestKnowledgeAdministrativeDisableAppendsBeforeReconciliation(t *testing.T)
 		t.Fatal("admin disable did not fan out before per-issue reconciliation")
 	}
 }
+
+// knowledgeScriptedPublisher accepts or refuses each publish by call order, so
+// the assertions hold whichever pending hint the queue offers first.
+type knowledgeScriptedPublisher struct {
+	stall  map[int]time.Duration
+	fail   map[int]bool
+	events []string
+	frames [][]byte
+}
+
+func (p *knowledgeScriptedPublisher) PublishWithID(_, _, _ string, frame []byte, event string) error {
+	call := len(p.events)
+	p.events = append(p.events, event)
+	p.frames = append(p.frames, append([]byte(nil), frame...))
+	if d := p.stall[call]; d > 0 {
+		time.Sleep(d) // The relay accepted the frame; its acknowledgement outlives the hint budget.
+	}
+	if p.fail[call] {
+		return errors.New("relay unavailable")
+	}
+	return nil
+}
+
+// seedKnowledgeTestHints leaves n pending target hints for this fixture's
+// workspace, one per source cause, each created after the previous one.
+func seedKnowledgeTestHints(t *testing.T, f *collaborationQueueFixture, worker *CollaborationKnowledgeInvalidation, n int) {
+	t.Helper()
+	seedKnowledgeInvalidationCandidate(t, f, true, pgtype.UUID{})
+	for range n {
+		enqueueKnowledgeTestScan(t, f, "source_issue", f.issue.Issue.ID)
+		finishKnowledgeTestScans(t, f, worker)
+	}
+	if got := f.fx.Count(t, `SELECT count(*) FROM collaboration_knowledge_invalidation WHERE kind='target_hint' AND state='pending' AND target_workspace_id=$1`, f.workspace); got != n {
+		t.Fatalf("seeded %d pending hints, want %d", got, n)
+	}
+}
+
+func knowledgeHintIDFromEvent(t *testing.T, event string) string {
+	t.Helper()
+	id, ok := strings.CutSuffix(event, ":target")
+	if !ok {
+		t.Fatalf("unexpected hint event id %q", event)
+	}
+	return id
+}
+
+func TestKnowledgeTimedOutHintDoesNotBlockLaterHints(t *testing.T) {
+	f, worker := newKnowledgeInvalidationFixture(t)
+	seedKnowledgeTestHints(t, f, worker, 2)
+	worker.hintTimeout = 200 * time.Millisecond
+	publisher := &knowledgeScriptedPublisher{stall: map[int]time.Duration{0: 600 * time.Millisecond}}
+	worker.Publisher = publisher
+	delivered, err := worker.DeliverPending(f.ctx, 100)
+	if err == nil {
+		t.Fatal("hint that outlived its delivery budget reported success")
+	}
+	if len(publisher.events) != 2 || delivered != 1 {
+		t.Fatalf("hint behind the timed-out hint was not delivered in the same pass: delivered=%d events=%v err=%v", delivered, publisher.events, err)
+	}
+	stalled, behind := knowledgeHintIDFromEvent(t, publisher.events[0]), knowledgeHintIDFromEvent(t, publisher.events[1])
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_knowledge_invalidation WHERE id=$1 AND state='delivered'`, behind) != 1 {
+		t.Fatal("hint behind the timed-out hint stayed pending")
+	}
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_knowledge_invalidation WHERE id=$1 AND state='pending' AND last_attempted_at IS NOT NULL`, stalled) != 1 {
+		t.Fatal("timed-out hint did not record its attempt, so it keeps the head of the queue")
+	}
+	// The retry republishes the identical event; the Hub and clients dedup by event_id.
+	publisher.stall = nil
+	if _, err = worker.DeliverPending(f.ctx, 100); err != nil {
+		t.Fatal(err)
+	}
+	if len(publisher.events) != 3 || publisher.events[2] != publisher.events[0] || string(publisher.frames[2]) != string(publisher.frames[0]) {
+		t.Fatalf("retry changed the stable hint event or repeated a delivered hint: %v", publisher.events)
+	}
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_knowledge_invalidation WHERE id IN ($1,$2) AND state='delivered'`, stalled, behind) != 2 {
+		t.Fatal("retry did not settle the timed-out hint")
+	}
+}
+
+func TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit(t *testing.T) {
+	t.Run("skips_failed_hint", func(t *testing.T) {
+		f, worker := newKnowledgeInvalidationFixture(t)
+		seedKnowledgeTestHints(t, f, worker, 2)
+		publisher := &knowledgeScriptedPublisher{fail: map[int]bool{0: true}}
+		worker.Publisher = publisher
+		delivered, err := worker.DeliverPending(f.ctx, 100)
+		if err == nil || delivered != 1 || len(publisher.events) != 2 || publisher.events[0] == publisher.events[1] {
+			t.Fatalf("failed hint stopped the pass: delivered=%d events=%v err=%v", delivered, publisher.events, err)
+		}
+		failed := knowledgeHintIDFromEvent(t, publisher.events[0])
+		if f.fx.Count(t, `SELECT count(*) FROM collaboration_knowledge_invalidation WHERE id=$1 AND state='pending' AND last_attempted_at IS NOT NULL`, failed) != 1 {
+			t.Fatal("failed hint did not record its attempt")
+		}
+	})
+	t.Run("each_hint_once_per_pass", func(t *testing.T) {
+		f, worker := newKnowledgeInvalidationFixture(t)
+		seedKnowledgeTestHints(t, f, worker, 2)
+		publisher := &knowledgeScriptedPublisher{fail: map[int]bool{0: true, 1: true, 2: true}}
+		worker.Publisher = publisher
+		delivered, err := worker.DeliverPending(f.ctx, 100)
+		if err == nil || delivered != 0 || len(publisher.events) != 2 || publisher.events[0] == publisher.events[1] {
+			t.Fatalf("failed hints were not each attempted exactly once: delivered=%d events=%v err=%v", delivered, publisher.events, err)
+		}
+	})
+	t.Run("stops_after_three_consecutive_failures", func(t *testing.T) {
+		f, worker := newKnowledgeInvalidationFixture(t)
+		seedKnowledgeTestHints(t, f, worker, 5)
+		// A dead relay fails every hint; the design caps a pass at three in a row.
+		publisher := &knowledgeScriptedPublisher{fail: map[int]bool{0: true, 1: true, 2: true, 3: true, 4: true}}
+		worker.Publisher = publisher
+		delivered, err := worker.DeliverPending(f.ctx, 100)
+		if err == nil || delivered != 0 || len(publisher.events) != 3 {
+			t.Fatalf("dead relay pass: delivered=%d events=%v err=%v", delivered, publisher.events, err)
+		}
+		seen := map[string]bool{}
+		for _, event := range publisher.events {
+			if seen[event] {
+				t.Fatalf("one pass retried the same failed hint: %v", publisher.events)
+			}
+			seen[event] = true
+		}
+		if f.fx.Count(t, `SELECT count(*) FROM collaboration_knowledge_invalidation WHERE target_workspace_id=$1 AND kind='target_hint' AND state='pending' AND last_attempted_at IS NULL`, f.workspace) != 2 {
+			t.Fatal("pass touched hints beyond the consecutive failure limit")
+		}
+	})
+	t.Run("success_resets_the_limit", func(t *testing.T) {
+		f, worker := newKnowledgeInvalidationFixture(t)
+		seedKnowledgeTestHints(t, f, worker, 6)
+		publisher := &knowledgeScriptedPublisher{fail: map[int]bool{0: true, 1: true, 3: true, 4: true, 5: true}}
+		worker.Publisher = publisher
+		delivered, err := worker.DeliverPending(f.ctx, 100)
+		if err == nil || delivered != 1 || len(publisher.events) != 6 {
+			t.Fatalf("limit counted non-consecutive failures: delivered=%d events=%v err=%v", delivered, publisher.events, err)
+		}
+	})
+}

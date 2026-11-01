@@ -1,6 +1,6 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@multica/ui/components/ui/select";
 import { useT } from "../i18n";
-import type { CollaborationKnowledgeCandidateSummary, KnowledgeSourceSelection } from "@multica/core/collaboration";
+import { collaborationTextByteLength, type CollaborationKnowledgeCandidateSummary, type KnowledgeSourceSelection } from "@multica/core/collaboration";
 
 export function KnowledgeSelect({ label, value, items, onChange, disabled = false }: {
   label: string; value: string; items: { value: string; label: string }[]; onChange: (value: string) => void; disabled?: boolean;
@@ -22,4 +22,12 @@ export function KnowledgeSourceLabel({ source }: { source: KnowledgeSourceSelect
   const { t } = useT("collaboration");
   return <span className="[overflow-wrap:anywhere]">{t(($) => $.knowledge[source.kind])} · {source.kind === "run_record" ? source.record_id
     : `${source.kind === "comment" ? `${source.comment_id.slice(0, 8)} · ` : ""}${t(($) => $.knowledge.version, { version: source.version })}`}</span>;
+}
+
+/** Inline UTF-8 byte-limit error, shown only on overflow; the field points at `id` through aria-describedby. */
+export function KnowledgeByteLimit({ id, value, max }: { id: string; value: string; max: number }) {
+  const { t } = useT("collaboration");
+  const used = collaborationTextByteLength(value);
+  if (used <= max) return null;
+  return <p id={id} role="alert" className="text-caption text-destructive">{t(($) => $.knowledge.tooLong, { max, used })}</p>;
 }

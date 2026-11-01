@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { prepareKnowledgeDecision, useCollaborationKnowledgeCandidate, type CollaborationIssue, type CollaborationKnowledgeCandidate,
+import { collaborationTextByteLength, KNOWLEDGE_REASON_MAX_BYTES, prepareKnowledgeDecision, useCollaborationKnowledgeCandidate, type CollaborationIssue, type CollaborationKnowledgeCandidate,
   type CollaborationScope, type KnowledgeIntent } from "@multica/core/collaboration";
 import { accountPath } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
@@ -8,7 +8,7 @@ import { Textarea } from "@multica/ui/components/ui/textarea";
 import { useLocale, useT } from "../i18n";
 import { AppLink } from "../navigation";
 import { RichContent } from "../rich-content";
-import { KnowledgeSourceLabel, KnowledgeState } from "./knowledge-controls";
+import { KnowledgeByteLimit, KnowledgeSourceLabel, KnowledgeState } from "./knowledge-controls";
 import type { KnowledgeProposalMode } from "./knowledge-proposal";
 
 export function KnowledgeReview({ scope, candidateId, issue, canPropose, locked, onSubmit, onProposal, onSelect, onClose }: {
@@ -26,7 +26,10 @@ export function KnowledgeReview({ scope, candidateId, issue, canPropose, locked,
   const decisionRepeatsApproval = candidate?.availability !== "restricted" && candidate?.decision !== null && candidate?.decision !== undefined &&
     candidate.decision.actor_user_id === candidate.approved_by_user_id && candidate.decision.at === candidate.approved_at;
   const identity = candidate ? JSON.stringify([candidate.candidate_id, candidate.state_revision, candidate.availability,
-    candidate.availability === "available" ? candidate.content_sha256 : null, candidate.availability !== "restricted" ? candidate.version : null]) : "unavailable";
+    candidate.availability === "available" ? candidate.content_sha256 : null, candidate.availability !== "restricted" ? candidate.version : null]) : null;
+  // Human input survives lease erasure and an unchanged refetch; a different reviewed tuple starts a fresh decision.
+  const [decisionKey, setDecisionKey] = useState<string | null>(identity);
+  if (identity !== null && identity !== decisionKey) setDecisionKey(identity);
   return <section ref={root} tabIndex={-1} aria-label={t(($) => $.knowledge.review)} className="min-w-0 space-y-4 border-t border-border pt-5 outline-none focus-visible:ring-2 focus-visible:ring-ring">
     <div className="flex flex-wrap items-center justify-between gap-3"><h4 className="text-body font-semibold">{t(($) => $.knowledge.review)}</h4><Button type="button" variant="ghost" size="sm" disabled={locked} onClick={onClose}>{t(($) => $.knowledge.close)}</Button></div>
     {!candidate && <div role={query.error ? "alert" : "status"} className="space-y-2 text-body"><p>{query.error ? t(($) => $.knowledge.loadError) : t(($) => $.knowledge.loading)}</p>
@@ -72,35 +75,41 @@ export function KnowledgeReview({ scope, candidateId, issue, canPropose, locked,
           {candidate.state === "approved" && candidate.target.kind === "project" && <Button type="button" variant="outline" disabled={locked} onClick={() => onProposal({ target: { kind: "workspace", workspace_id: candidate.target.workspace_id }, derivedId: candidate.candidate_id })}>{t(($) => $.knowledge.derive)}</Button>}
         </div>}
       </>}
-      <KnowledgeDecision key={identity} scope={scope} candidate={candidate} locked={locked} onSubmit={onSubmit} />
-      {candidate.availability !== "restricted" && <details className="space-y-3"><summary className="cursor-pointer text-body font-medium">{t(($) => $.knowledge.history)}</summary>
-        <ul className="space-y-2">{query.data?.value.history.map((version) => <li key={version.candidate_id}><Button type="button" variant="ghost" size="sm" onClick={() => onSelect(version.candidate_id)}>{version.availability === "restricted" ? t(($) => $.knowledge.restricted) : t(($) => $.knowledge.version, { version: version.version })} · {t(($) => $.knowledge.states[version.state])}</Button></li>)}</ul>
-        {query.data?.value.history_truncated === true && <p className="text-caption text-muted-foreground">{t(($) => $.knowledge.historyTruncated)}</p>}
-      </details>}
     </>}
+    {decisionKey !== null && <KnowledgeDecision key={decisionKey} scope={scope} candidate={identity === decisionKey ? candidate : undefined} locked={locked} onSubmit={onSubmit} />}
+    {candidate && candidate.availability !== "restricted" && <details className="space-y-3"><summary className="cursor-pointer text-body font-medium">{t(($) => $.knowledge.history)}</summary>
+      <ul className="space-y-2">{query.data?.value.history.map((version) => <li key={version.candidate_id}><Button type="button" variant="ghost" size="sm" onClick={() => onSelect(version.candidate_id)}>{version.availability === "restricted" ? t(($) => $.knowledge.restricted) : t(($) => $.knowledge.version, { version: version.version })} · {t(($) => $.knowledge.states[version.state])}</Button></li>)}</ul>
+      {query.data?.value.history_truncated === true && <p className="text-caption text-muted-foreground">{t(($) => $.knowledge.historyTruncated)}</p>}
+    </details>}
   </section>;
 }
 
-function KnowledgeDecision({ scope, candidate, locked, onSubmit }: { scope: CollaborationScope; candidate: CollaborationKnowledgeCandidate; locked: boolean; onSubmit: (intent: KnowledgeIntent) => Promise<void> }) {
+function KnowledgeDecision({ scope, candidate, locked, onSubmit }: { scope: CollaborationScope; candidate: CollaborationKnowledgeCandidate | undefined; locked: boolean; onSubmit: (intent: KnowledgeIntent) => Promise<void> }) {
   const { t } = useT("collaboration"); const id = useId(); const [reviewed, setReviewed] = useState(false), [reason, setReason] = useState("");
   const [error, setError] = useState(false);
+  // Erased or loading: keep the typed state, but render no control derived from an absent projection.
+  if (!candidate) return null;
   const canApprove = candidate.availability === "available" && candidate.state === "pending" && candidate.capabilities.can_approve === true;
   const canReject = candidate.availability !== "restricted" && candidate.state === "pending" && candidate.capabilities.can_reject === true;
   const canWithdraw = ["pending", "approved"].includes(candidate.state) && candidate.capabilities.can_withdraw === true;
   if (!canApprove && !canReject && !canWithdraw) return null;
-  function submit(action: "approve" | "reject" | "withdraw") {
-    if (locked) return;
+  // UTF-8 bytes, as the schema and server count them. Approval sends no reason, so only reject/withdraw are blocked.
+  const reasonOver = collaborationTextByteLength(reason) > KNOWLEDGE_REASON_MAX_BYTES;
+  const submit = (action: "approve" | "reject" | "withdraw") => {
+    if (locked || action !== "approve" && reasonOver) return;
     try { const intent = prepareKnowledgeDecision(scope, candidate, action, reason); setError(false); void onSubmit(intent); }
     catch { setError(true); }
-  }
+  };
   return <div className="space-y-3">
     {canApprove && <><p className="max-w-prose text-caption text-muted-foreground">{t(($) => $.knowledge.approvalHint)}</p>
       <label className="flex cursor-pointer items-start gap-3 text-body pointer-coarse:min-h-11"><Checkbox checked={reviewed} onCheckedChange={setReviewed} disabled={locked} />{t(($) => $.knowledge.reviewed)}</label>
       <Button type="button" disabled={!reviewed || locked} onClick={() => submit("approve")}>{t(($) => $.knowledge.approve)}</Button></>}
     {(canReject || canWithdraw) && <><label htmlFor={id} className="block text-body font-medium">{t(($) => $.knowledge.reason)}</label>
-      <Textarea id={id} value={reason} onChange={(event) => setReason(event.target.value)} disabled={locked} rows={2} maxLength={1000} />
-      <div className="flex flex-wrap gap-2">{canReject && <Button type="button" variant="outline" disabled={locked || !reason.trim()} onClick={() => submit("reject")}>{t(($) => $.knowledge.reject)}</Button>}
-        {canWithdraw && <Button type="button" variant="outline" disabled={locked || !reason.trim()} onClick={() => submit("withdraw")}>{t(($) => $.knowledge.withdraw)}</Button>}</div></>}
+      <Textarea id={id} value={reason} onChange={(event) => setReason(event.target.value)} disabled={locked} rows={2}
+        aria-invalid={reasonOver || undefined} aria-describedby={reasonOver ? `${id}-limit` : undefined} />
+      <KnowledgeByteLimit id={`${id}-limit`} value={reason} max={KNOWLEDGE_REASON_MAX_BYTES} />
+      <div className="flex flex-wrap gap-2">{canReject && <Button type="button" variant="outline" disabled={locked || reasonOver || !reason.trim()} onClick={() => submit("reject")}>{t(($) => $.knowledge.reject)}</Button>}
+        {canWithdraw && <Button type="button" variant="outline" disabled={locked || reasonOver || !reason.trim()} onClick={() => submit("withdraw")}>{t(($) => $.knowledge.withdraw)}</Button>}</div></>}
     {error && <p role="alert" className="text-body text-destructive">{t(($) => $.knowledge.invalid)}</p>}
   </div>;
 }

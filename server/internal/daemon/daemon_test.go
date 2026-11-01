@@ -1738,6 +1738,14 @@ func TestGateCodexResumeToRolloutPresence(t *testing.T) {
 			if taskCtx.PriorSessionResumeUnavailable != wantUnavailable {
 				t.Fatalf("PriorSessionResumeUnavailable = %v, want %v", taskCtx.PriorSessionResumeUnavailable, wantUnavailable)
 			}
+			// The knowledge path reports only a session this gate itself dropped.
+			wantDropped := ""
+			if wantUnavailable {
+				wantDropped = tt.sessionID
+			}
+			if task.droppedPriorSessionID != wantDropped {
+				t.Fatalf("droppedPriorSessionID = %q, want %q", task.droppedPriorSessionID, wantDropped)
+			}
 		})
 	}
 }
@@ -2073,6 +2081,14 @@ func TestGateResumeToReachableSession(t *testing.T) {
 			wantUnavailable := tt.sessionID != "" && tt.wantSession == ""
 			if taskCtx.PriorSessionResumeUnavailable != wantUnavailable {
 				t.Fatalf("PriorSessionResumeUnavailable = %v, want %v", taskCtx.PriorSessionResumeUnavailable, wantUnavailable)
+			}
+			// The knowledge path reports only a session this gate itself dropped.
+			wantDropped := ""
+			if wantUnavailable {
+				wantDropped = tt.sessionID
+			}
+			if task.droppedPriorSessionID != wantDropped {
+				t.Fatalf("droppedPriorSessionID = %q, want %q", task.droppedPriorSessionID, wantDropped)
 			}
 		})
 	}

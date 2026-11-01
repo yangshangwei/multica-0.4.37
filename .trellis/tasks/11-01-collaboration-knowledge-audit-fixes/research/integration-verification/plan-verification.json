@@ -1,0 +1,152 @@
+{
+  "scope": "Runtime-history index eligibility regression; no production behavior change",
+  "owner": "/root/knowledge_plan_regression",
+  "base_sha": "0702d5039b235adc88dbd3d7d949a1a8f165d247",
+  "recorded_at": "2026-11-01T17:32:38.820044+00:00",
+  "test_file": "server/internal/service/task_knowledge_history_growth_test.go",
+  "test_sha256": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+  "product_sql_sha256": "b81310e58a007854f91bae89309c7afa36ba8ffe87eb8dd1b68146f49a4248c3",
+  "generated_sql_sha256": "5212789d55f677588306bb5de9d185dc175333e2b8699fbd54896c0047d64f17",
+  "database": "kfix_joint_plan_root_20261102_0145",
+  "root_permission": "research/plan-db-permission.md; both exact private root permits",
+  "identity_checked_before_each_run": true,
+  "original_failure": "plan-original-failure.json binds unmodified 45efa093c full-service failure",
+  "results": {
+    "plan-normal.json": {
+      "sha256": "051e0a1dd6e5a00aa540090f2fe4cc08df69b2900acfbd2b707db9da47b7106e",
+      "exit_code": 0,
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "a08f9b36be8312ff3d51f02be416a0d1f0dd4c044cf6bbf70808ff69d73815c6"
+    },
+    "plan-race.json": {
+      "sha256": "722c0a0f3361aa5c1f8e862b309d9c58d30d5db0c2366149660e675981150f8d",
+      "exit_code": 0,
+      "counts": {
+        "run": 9,
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e09467759a6ebd867a6afaab0a4347dd2782fbd0139285d428dbde11b5c0718b"
+    },
+    "plan-missing-index-red.json": {
+      "sha256": "b10aa358469f93b3cb0f419fa2775adb41bede6afea28d6f368b506cec31b7af",
+      "exit_code": 1,
+      "counts": {
+        "run": 1,
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "log_sha256": "38a8541703c9daf5ff212795e9202d0e022204098b269214c3684ad9f93d4e38"
+    }
+  },
+  "negative_control": "Go overlay creates a rollback-only temporary shadow task table with no indexes. The real catalog guard fails at the missing agent history index, without dropping/editing real indexes.",
+  "static_checks": "plan-static-checks.json; service compile-only and vet passed; scoped diff whitespace passed",
+  "normal_plan": "Both fresh and preserved-history clone selected a partial history index in these runs. The old strict assertion therefore did not reproduce the original failure on the clone; that actual pass is explicitly retained. The original full-service existing-index plan is instead replayed only at the EXPLAIN response boundary.",
+  "performance_scope": "Catalog checks establish actual eligible paths and controlled EXPLAIN still forbids Seq Scan. Nothing guarantees optimizer choice, default-planner selectivity or production-scale performance.",
+  "production_changed": false,
+  "spec_changed": false,
+  "spec_reason": "Existing executable index and complete-history contracts are unchanged; only a stronger/catalog-backed test replaces an invalid planner-choice assumption.",
+  "provider_calls": 0,
+  "migration_by_child": false,
+  "remaining": "Coordinator independent delta review and final source-bound full verification",
+  "databases": {
+    "fresh": "kfix_joint_plan_root_20261102_0145",
+    "history_clone": "kfix_joint_plan_history_20261102_0122",
+    "history_source_preserved": "kfix_joint_svc_20261102_0110"
+  },
+  "history_results": {
+    "plan-history-normal.json": {
+      "sha256": "71e9e9c01c9c1c1fcb329a0c59b315f7f085d37dc34c109fbd8f5c7d126b7340",
+      "exit_code": 0,
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e10ffdc17533013f0d433c5de8a12da328bfe8411907d6477e67a635274d9e3c",
+      "recorded_plan_replay": false,
+      "classification": null,
+      "actual_matches_expectation": null
+    },
+    "plan-history-race.json": {
+      "sha256": "4d3a3f152302c0ad82d085516a14a27305a0b281b7248728493a63f58038a38a",
+      "exit_code": 0,
+      "counts": {
+        "run": 9,
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "55351eeea8f8e9bf9231fc4955c37f7b0921b27fa33ec35d2f2cff614d76084e",
+      "recorded_plan_replay": false,
+      "classification": null,
+      "actual_matches_expectation": null
+    },
+    "plan-history-old-assertion-red.json": {
+      "sha256": "5fc2f2ef7c0dfa5ba68af2971a4b558ac228b8c5bf6dca93abdac633e64c23f9",
+      "exit_code": 0,
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "aca18baff2991484e08c743a0ae5d327404b86d791a58d415782f01b23148119",
+      "recorded_plan_replay": false,
+      "classification": "expected old assertion failure was not reproduced on the new history clone; actual one named pass retained",
+      "actual_matches_expectation": false
+    },
+    "plan-history-missing-index-red.json": {
+      "sha256": "014b29bac2c7e76c985e9f2104ade74f97911ca729bc61d0c92ccad8c1a66fa6",
+      "exit_code": 1,
+      "counts": {
+        "run": 1,
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "log_sha256": "f253518754f23bbb5e77d50f096892a43873fbdce912d333013f3c57d2973039",
+      "recorded_plan_replay": false,
+      "classification": null,
+      "actual_matches_expectation": true
+    },
+    "plan-observed-old-assertion-red.json": {
+      "sha256": "1f418b2de0215ccf7004ada7b8954cf571401d1b06258a74d57077e05b132d0c",
+      "exit_code": 1,
+      "counts": {
+        "run": 1,
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "log_sha256": "ac5d084da2bf52f7ebd4858d9dc0c64d55d4dc2e8bdbb0ad6e7f1594e7fc19f3",
+      "recorded_plan_replay": true,
+      "classification": null,
+      "actual_matches_expectation": true
+    },
+    "plan-observed-current-assertion-green.json": {
+      "sha256": "9d67a30265d4a41c27d3257e2c8b0ff1fd1c6cd18f654c1b66ffb31bcc9df692",
+      "exit_code": 0,
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "14b394246d758fb356e811f571ef0bd502c0cb2a5af2aef3f908d68d2be2cb20",
+      "recorded_plan_replay": true,
+      "classification": null,
+      "actual_matches_expectation": true
+    }
+  },
+  "recorded_plan_assertion_control": "Actual retained45efa plan: old assertion one expected failure, current catalog-backed assertion one pass; actual namespace query still executes. This is not a new optimizer choice or performance result.",
+  "production_sql_unchanged_from_base": true
+}

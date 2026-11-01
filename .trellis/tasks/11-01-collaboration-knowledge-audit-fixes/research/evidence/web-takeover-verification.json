@@ -1,0 +1,77 @@
+{
+  "source_base": "a9801fb075df79827a3908bd7c2c23b5d8fc1f26",
+  "verified_at": "2026-11-01T15:53:22.829207+00:00",
+  "checks": [
+    {
+      "name": "L10/L11 red",
+      "exit": 1,
+      "result": "both behavior regressions failed before fix"
+    },
+    {
+      "name": "L10/L11 green",
+      "exit": 0,
+      "pass": 2
+    },
+    {
+      "name": "M5 outside-page red",
+      "exit": 1,
+      "result": "same-source recovery failed before fix"
+    },
+    {
+      "name": "M5/L8 followups",
+      "exit": 0,
+      "pass": 3
+    },
+    {
+      "name": "final panel and locale parity",
+      "exit": 0,
+      "pass": 100,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "name": "Core cache lease actions",
+      "exit": 0,
+      "pass": 29,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "name": "Core/views typecheck",
+      "exit": 0
+    },
+    {
+      "name": "Core/views lint",
+      "exit": 0,
+      "warnings": 27,
+      "errors": 0
+    }
+  ],
+  "files_sha256": {
+    ".trellis/spec/core/frontend/collaboration-knowledge.md": "606d06163c1ed68f420f74379e05bd93e34c581be7991371f9b914e3f2447f13",
+    ".trellis/spec/views/frontend/collaboration-knowledge.md": "82aa61230b3c40a5507160fc3628cbc615453495c12cc1ade3c7fdf8270f7ffd",
+    "packages/core/collaboration/knowledge-queries.ts": "12d090cbc5209fb4ce1d510a9fc2414bd70727e579245cf2ba27707fb9fd41e9",
+    "packages/views/collaboration/knowledge-panel.test.tsx": "2ba69ef2ebbfef204576d4419edcdbf469d7f58a13e94bb80e0c3ac53a5937d8",
+    "packages/views/collaboration/knowledge-panel.tsx": "a715581220c16e2045543e971b2dfc4ffb210b314ecf79f7efc63dd32966cb67",
+    "packages/views/locales/zh-Hans/collaboration.json": "5befb1663662922537ea9aeca611f01146a859254a7a41287e05c7029fae9a21"
+  },
+  "logs_sha256": {
+    "L10-L11-red.txt": "977d11da76a07a30d3ebcaec31379be6c17c268048bb645538e2f74a7be0877d",
+    "L10-L11-green.txt": "e2f71f7c16306d0b63079db1255cb34410bfebe44fe81dbadb5714f8f6109a26",
+    "L10-L13-green.txt": "e05f8171124f687f3d0563aedd449c29f17897386d286dbbfe701ed90d3b1dd9",
+    "M5-page-recovery-red.txt": "7e47876e924be3c7a6dbaaa5fb18d94d1b9cb708f3d9293bf90feed297df9442",
+    "web-panel-final.txt": "f54455c13a33d0c2a3499efe651f4d27b8d54a839a34af4d011ab75ba8086e16",
+    "M5-L8-followup-green-r2.txt": "0bc1ba28786ee1cae781e1528ffe07de8cf964537afd24f0689cfaddb0104750",
+    "web-core-final.txt": "fdb4be3fcdada834d3f70549ab225f16225d799a6b144dbda5e5c18e6288761c",
+    "web-panel-parity-final.txt": "233e975453ee4bc973d9f19de749ddb82fb2175fcaf6464faece6290f86387d3",
+    "web-typecheck-r4.txt": "eb8e50a889d2130f903b1412df3b98ad8050613b4953ad2e9955ee58ffb77adb",
+    "web-lint.txt": "1fc15e485ad8985ba92ad28174bcf181389c497a707c25555423dee18ae31e46"
+  },
+  "real_provider_calls": 0,
+  "database_access": false,
+  "remaining": [
+    "full lane core/views suites",
+    "independent review",
+    "final merged candidate validation"
+  ]
+}

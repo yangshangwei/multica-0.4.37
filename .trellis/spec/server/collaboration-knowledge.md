@@ -23,11 +23,16 @@ strings for versions/revisions. Routes are in
 | `GET .../knowledge-candidates/{candidateId}/operations/{requestId}` | Original actor's content-free receipt; no source ID required |
 | `GET /api/projects/{id}/knowledge` or `/api/workspaces/{id}/knowledge` | Authorized target projection with explicit workspace context |
 
-Migrations 747–760 add retained `collaboration_knowledge_candidate`, independent
+Migrations 747–763 add retained `collaboration_knowledge_candidate`, independent
 `collaboration_knowledge_target`, durable `collaboration_knowledge_invalidation`
-and internal ordinary-task delivery metadata. Each of the 13 indexes has its own
+and internal ordinary-task delivery metadata. Each of the 16 indexes has its own
 concurrent migration; relationships have no database foreign keys. Transaction
 primitives live in [`collaboration_knowledge.sql`](../../../server/pkg/db/queries/collaboration_knowledge.sql).
+
+Migrations 761–763 index only negotiated task history (`knowledge_context_version
+IS NOT NULL`): agent/runtime keyset btrees and a `jsonb_path_ops` GIN over
+retained runtime, daemon and owner claim snapshots. They add no exposure marker,
+backfill or history row cap.
 
 ## 3. Contracts
 
@@ -51,7 +56,17 @@ primitives live in [`collaboration_knowledge.sql`](../../../server/pkg/db/querie
   current source project are lawful destinations. Arbitrary destinations still
   require normal visibility. This does not grant directory access.
 - Approval needs current source Read, available unexpired material, target
-  membership, and a human project lead or workspace owner/admin. Rejection needs
+  membership, and a human project lead or workspace owner/admin. Expiry is
+  decided on the database clock (`clock_timestamp()`), the clock the approval
+  UPDATE uses, before any target-revision or correction write. The same DB
+  timestamp selects active contributions for the complete target budget,
+  including approval of a candidate without its own expiry; application clock
+  skew must not omit still-active rows or count already-expired ones. An expired
+  candidate seals `409 knowledge_expired`. If expiry passes after that check,
+  the attempt rolls back as a retryable conflict only after the database clock
+  confirms expiry. A subsequent retry with remaining budget seals the same409;
+  exhaustion remains503 knowledge_busy, with no partial write. A non-expiry
+  missing UPDATE row retains404 rather than becoming an expiry retry. Rejection needs
   source Read and that target role, but may reduce an unavailable/expired pending
   candidate. Source withdrawal needs source Read plus creator/current handler;
   target confirmers can instead withdraw through a restricted control row.
@@ -102,6 +117,17 @@ do not acquire that lead hotspot. Target initialization saves/restores
 transaction on contention. Counters are independent of parent edits; missing
 counters with published history are corruption, never empty knowledge.
 
+The PAT writer lock (`LockKnowledgePAT`) is `FOR SHARE` without NOWAIT.
+Revocation is a plain `UPDATE ... SET revoked` on a non-key column and takes
+`FOR NO KEY UPDATE`. `FOR SHARE` conflicts with that lock; `FOR KEY SHARE` would
+not, so it cannot be used. The asynchronous `last_used_at` refresh takes the
+same lock as revocation, so no lock mode can wait out one and still block the
+other. The writer instead waits under a saved and restored 250ms
+`lock_timeout`, which is below the default 1s `deadlock_timeout`. If a
+revocation commits during the wait, the recheck fails with `403
+knowledge_permission_denied`. A wait past the bound raises a retryable 55P03 and
+ends in `503 knowledge_busy`.
+
 Ordinary `UpdateProject` metadata edits use `LockProjectForUpdate` (`FOR NO KEY
 UPDATE`), not the execution-squad `FOR UPDATE` lock. This preserves revision
 serialization and conflicts with lead/association `SHARE` readers while allowing
@@ -132,7 +158,13 @@ hint and final-hint retention; schema coverage must classify all three tables.
 
 `CollaborationKnowledgeInvalidation.Run` drains scans/hints every 500ms, at most
 100 each per pass. Relay failure retains the original hint ID; successful sends
-use `<hint-uuid>:target`. The entire public event is:
+use `<hint-uuid>:target`. Each hint has a 5s delivery budget. A failed hint
+records `last_attempted_at`, which moves it behind the other pending hints. When
+only the hint's own budget expired, the record uses a fresh bounded context.
+The failed hint is skipped for the rest of the pass, so it cannot block later
+hints. Three consecutive failures end the pass, and the errors are joined. A
+retry republishes the same event ID, which clients dedupe. The entire public
+event is:
 
 ```json
 {"type":"collaboration:knowledge_changed","payload":{"target_kind":"project","target_id":"11111111-1111-4111-8111-111111111111","knowledge_revision":"2"},"event_id":"22222222-2222-4222-8222-222222222222:target"}
@@ -143,7 +175,12 @@ outer or payload fields. It rechecks current target visibility and the socket's
 **original credential**, including a direct current PAT lookup independent of
 PATCache, or current password-token version. Missing freshness capability drops
 knowledge. Reconnect creates a new credential binding. The existing
-`collaboration:workbench_changed` payload remains empty-only.
+`collaboration:workbench_changed` payload remains empty-only. These checks finish
+before the write pump sets the write deadline, so their own 5s bounds never
+spend the 10s write budget. Every physical write sets its deadline immediately
+before `WriteMessage`. One hint triggers these uncached checks on every
+connection in the workspace room, so the database load grows with room size.
+This is accepted as is.
 
 Reserved sqlc overrides are `*.knowledge_delivery` and
 `*.knowledge_context_version` with `json:"-"`, including CTE-derived task rows.
@@ -155,6 +192,7 @@ credentials, body/summary/refs and cursor/error text stay out of generic logs.
 | Condition | Outcome |
 | --- | --- |
 | Unknown/duplicate/cross-kind fields, malformed UUID/UTF-8/text | `400 invalid_knowledge_request` |
+| New proposal `expires_at` not after `proposed_at`, by the application clock or by the database clock at INSERT (CHECK `collaboration_knowledge_candidate_check5`, matched by table and constraint name) | `400 invalid_knowledge_request`, unsealed; any other `23514` stays `503 knowledge_unavailable` |
 | Body >64KiB, summary >2KiB, metadata >16KiB or request wire limit | `413 knowledge_candidate_too_large` |
 | Missing reviewed revision/version/hash | `428 knowledge_revision_required` |
 | Current role/read/credential denied | `403 knowledge_permission_denied`; no hidden-source projection |
@@ -187,7 +225,9 @@ service `collaboration_knowledge_{authority,concurrency,view,credentials,resolve
 Assert both lock commit orders, exact correction CAS, original-key recovery after
 role loss, base strings unchanged, all projection sentinels removed after purge,
 pending-only silence, crash/replay cursor stability, deleted routing, wildcard
-tags, and final socket denial even when Redis contains stale PAT authority.
+tags, a timed-out hint that does not block later hints
+(`TestKnowledgeTimedOutHintDoesNotBlockLaterHints`), and final socket denial even
+when Redis contains stale PAT authority.
 Execution/static evidence is recorded separately in the
 [task research](../../tasks/10-30-collaboration-knowledge-promotion/research/).
 

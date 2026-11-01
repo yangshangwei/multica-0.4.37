@@ -1,0 +1,33 @@
+{
+  "id": "collaboration-knowledge-audit-fixes",
+  "name": "collaboration-knowledge-audit-fixes",
+  "title": "知识交付审计缺陷修复",
+  "description": "修复 2026-11-01 对知识交付（765ab186a..6aed33aad）审计确认的 21 项缺陷：3 高、5 中、13 低，覆盖任务启动链路、知识写入与实时推送、前端评审与恢复",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-01",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "codex/cross-workspace-collaboration",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "10-30-collaboration-knowledge-promotion",
+  "relatedFiles": [],
+  "notes": "四分道和runtime共同产品45efa093c、后续0702d5039/742abb217已独立复核。具备本地合主集成条件，最终完整makecheck/门控验收尚未通过；原service3失败已处置但原exit1保留。真实Provider0，知识默认false，默认库迁移事故保留并已披露。",
+  "meta": {
+    "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
+    "integration_source": "45efa093c",
+    "next_action": "local_main_merge_then_complete_final_makecheck_and_gated_same_candidate_acceptance",
+    "workflow_resume": "not_resumed_cross_session; native_and_root_takeover",
+    "parent_complete": false,
+    "integration_readiness": "research/combined-ready-for-main-integration.json"
+  }
+}

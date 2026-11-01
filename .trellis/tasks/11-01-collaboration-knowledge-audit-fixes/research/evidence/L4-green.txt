@@ -1,0 +1,103 @@
+# L4 green: a failed or timed-out hint records its attempt and is skipped for the rest of the pass
+#
+# Code under test: the red tree plus the fix:
+#   - server/pkg/db/queries/collaboration_knowledge.sql: LockNextKnowledgeTargetHint takes
+#     excluded_ids (as LockNextKnowledgeScan does); sqlc v1.31.1 regenerated
+#     server/pkg/db/generated/collaboration_knowledge.sql.go (only that query changed).
+#   - server/internal/service/collaboration_knowledge_invalidation.go: deliverNext returns the
+#     locked hint id; on failure the defer records the attempt on a fresh 5s context derived
+#     from the parent when only the hint ctx expired (shutdown still skips it). DeliverPending
+#     excludes a failed hint for the rest of the pass, joins errors, and stops after
+#     knowledgeHintFailureLimit (3) consecutive failures or when no hint could be locked.
+#   - server/internal/migrations/collaboration_knowledge_queries_test.go: the two direct
+#     LockNextKnowledgeTargetHint calls pass an empty exclusion list (signature change only).
+#
+# 1) Targeted, same command and database (kfix_write_svc) as L4-red.txt. Exit code: 0
+=== RUN   TestKnowledgeTargetHintRelayFailureRetainsStableID
+=== RUN   TestKnowledgeTargetHintRelayFailureRetainsStableID/rollback
+=== RUN   TestKnowledgeTargetHintRelayFailureRetainsStableID/lost_ack
+--- PASS: TestKnowledgeTargetHintRelayFailureRetainsStableID (0.45s)
+    --- PASS: TestKnowledgeTargetHintRelayFailureRetainsStableID/rollback (0.26s)
+    --- PASS: TestKnowledgeTargetHintRelayFailureRetainsStableID/lost_ack (0.19s)
+=== RUN   TestKnowledgeTimedOutHintDoesNotBlockLaterHints
+--- PASS: TestKnowledgeTimedOutHintDoesNotBlockLaterHints (0.84s)
+=== RUN   TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit
+=== RUN   TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/skips_failed_hint
+=== RUN   TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/each_hint_once_per_pass
+=== RUN   TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/stops_after_three_consecutive_failures
+=== RUN   TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/success_resets_the_limit
+--- PASS: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit (0.95s)
+    --- PASS: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/skips_failed_hint (0.19s)
+    --- PASS: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/each_hint_once_per_pass (0.22s)
+    --- PASS: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/stops_after_three_consecutive_failures (0.28s)
+    --- PASS: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/success_resets_the_limit (0.25s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/service	3.190s
+
+# 2) Mutations (each restored afterwards), same database:
+# 2a) Record the attempt on the hint ctx again (old defer), loop fix kept. Exit code: 1
+#     B is delivered, but the timed-out hint keeps last_attempted_at NULL.
+    collaboration_knowledge_invalidation_test.go:722: timed-out hint did not record its attempt, so it keeps the head of the queue
+--- FAIL: TestKnowledgeTimedOutHintDoesNotBlockLaterHints (0.97s)
+# 2b) Drop the per-pass exclusion (pass an empty list). Exit code: 1
+#     The same failed hint is retried within one pass.
+    collaboration_knowledge_invalidation_test.go:745: failed hint stopped the pass: delivered=2 events=[6a7eca3c-7578-5582-849c-28391d253a19:target d378bcfc-2661-57fa-b006-2404becd361b:target 6a7eca3c-7578-5582-849c-28391d253a19:target] err=relay unavailable
+    collaboration_knowledge_invalidation_test.go:759: failed hints were not each attempted exactly once: delivered=0 events=[1da34a2d-9bd8-54a6-8368-59521e131fe0:target 679e7539-f5e8-5eaf-a798-c0aad1e9726e:target 1da34a2d-9bd8-54a6-8368-59521e131fe0:target] err=relay unavailable
+--- FAIL: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit (1.02s)
+    --- FAIL: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/skips_failed_hint (0.26s)
+    --- FAIL: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/each_hint_once_per_pass (0.26s)
+    --- PASS: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/stops_after_three_consecutive_failures (0.24s)
+    --- PASS: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/success_resets_the_limit (0.26s)
+# 2c) Drop the consecutive failure limit. Exit code: 1
+#     A dead relay walks all five hints in one pass.
+    collaboration_knowledge_invalidation_test.go:770: dead relay pass: delivered=0 events=[97e40569-7a78-560c-9dde-7a8942cd1bc1:target 7916adc8-c469-5e36-a636-f3377afd91a0:target be2752f7-b529-5641-9576-f716f5404770:target c9e99f09-bec6-589a-b81e-089811a9cd0d:target 5ccec4d7-186c-5be7-8437-1594da7b1cc3:target] err=relay unavailable
+--- FAIL: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit (0.92s)
+    --- PASS: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/skips_failed_hint (0.26s)
+    --- PASS: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/each_hint_once_per_pass (0.20s)
+    --- FAIL: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/stops_after_three_consecutive_failures (0.23s)
+    --- PASS: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/success_resets_the_limit (0.23s)
+
+# 3) go test -race ./internal/service -run Knowledge -count=1 -v on kfix_write_svc.
+#    Exit code: 0. 202 PASS lines (tests + subtests), no FAIL, no DATA RACE.
+ok  	github.com/multica-ai/multica/server/internal/service	89.252s
+
+# 4) Full package on kfix_write_svc (reused across L1-L4 runs): exit 1. Only
+#    TestKnowledgePendingChangesDoNotSignalTarget and TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks
+#    failed, both with "bounded scans never completed" in finishKnowledgeTestScans (ScanPending,
+#    which L4 does not change). The reused database held 1315 retained (undeletable) candidates
+#    and 149 pending scans, more than the fixture's 100x100 scan bound. Environmental; see 5).
+    collaboration_knowledge_invalidation_test.go:113: bounded scans never completed
+--- FAIL: TestKnowledgePendingChangesDoNotSignalTarget (13.51s)
+    collaboration_knowledge_invalidation_test.go:138: bounded scans never completed
+    collaboration_knowledge_invalidation_test.go:180: bounded scans never completed
+--- FAIL: TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks (25.08s)
+
+# 5) Full package on a fresh template clone kfix_write_svc_r3 (760, 0 candidates):
+#    DATABASE_URL=postgres://multica:multica@127.0.0.1:5432/kfix_write_svc_r3?sslmode=disable
+#    env -u GIT_CONFIG_* go test ./internal/service -count=1 -v -timeout 30m \
+#      -skip 'TestKnowledgePATWriteWaitsOutLastUsedUpdate|TestKnowledgePATWriteWaitsForConcurrentRevocation'
+#    (the two skipped tests are the uncommitted L5 tests; their fix is not in this tree)
+#    Exit code: 0. 1373 top-level PASS, 1882 subtest PASS, 18 SKIP (all "REDIS_TEST_URL not set"), 0 FAIL.
+--- PASS: TestKnowledgePendingChangesDoNotSignalTarget (2.58s)
+--- PASS: TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks (0.71s)
+--- PASS: TestKnowledgeTargetHintRelayFailureRetainsStableID (0.36s)
+--- PASS: TestKnowledgeInvalidationRunSchedulesScannerAndDrainer (0.25s)
+--- PASS: TestKnowledgeTimedOutHintDoesNotBlockLaterHints (0.84s)
+--- PASS: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit (0.81s)
+ok  	github.com/multica-ai/multica/server/internal/service	574.807s
+
+# 6) internal/handler -run Knowledge on kfix_write_handler (uses DeliverPending in
+#    collaboration_knowledge_invalidation_test.go): exit 0, 62 PASS lines, no FAIL/SKIP.
+ok  	github.com/multica-ai/multica/server/internal/handler	5.359s
+
+# 7) internal/migrations -run Knowledge on kfix_write_migrate (fresh template clone created for
+#    this lane; each test makes its own schema): exit 0, 8 passed.
+--- PASS: TestKnowledgeQueriesCorrectionCASAndAtomicReplacement (0.54s)
+--- PASS: TestKnowledgeQueriesTargetInitializationIsBoundedAndCannotResurrect (0.81s)
+--- PASS: TestKnowledgeQueriesParentLocksKeepOrdinaryEditsIndependent (0.47s)
+--- PASS: TestKnowledgeQueriesScanAndHintsRetainRoutingAcrossRollback (0.60s)
+--- PASS: TestKnowledgeSchemaFreshReapplyAndEmptyDown (0.68s)
+--- PASS: TestKnowledgeSchemaImmutableVersionsAndSingleApproval (1.13s)
+--- PASS: TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation (1.95s)
+--- PASS: TestKnowledgeSchemaTaskMetadataBoundary (0.40s)
+ok  	github.com/multica-ai/multica/server/internal/migrations	7.326s

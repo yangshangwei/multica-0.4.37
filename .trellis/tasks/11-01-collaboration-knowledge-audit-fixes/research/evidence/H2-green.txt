@@ -1,0 +1,418 @@
+H2 green run (fixed code)
+Base commit: 4e3b61500ed0afbc12cf4c79b1c6aea866778d0e
+Uncommitted files at the time of this run (the H2 fix plus its tests):
+ M .trellis/spec/server/collaboration-knowledge-execution.md
+ M docs/collaboration-knowledge-runtime.md
+ M server/internal/daemon/daemon.go
+ M server/internal/daemon/daemon_test.go
+ M server/internal/daemon/knowledge_context.go
+ M server/internal/daemon/knowledge_context_claim_test.go
+ M server/internal/daemon/knowledge_context_test.go
+ M server/internal/daemon/types.go
+ M server/internal/service/task_knowledge_prepare.go
+ M server/pkg/protocol/task_knowledge.go
+ M server/pkg/protocol/task_knowledge_test.go
+?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/
+?? server/internal/handler/daemon_knowledge_resume_test.go
+?? server/internal/service/task_knowledge_resume_test.go
+
+The same commands as H2-red.txt, plus the two strengthened gate tables
+(TestGateCodexResumeToRolloutPresence, TestGateResumeToReachableSession), which
+assert the new unexported Task field and so could not compile before the fix. All BEHAVIORAL tests listed in
+H2-red.txt now pass; all REGRESSION GUARDS still pass.
+
+Databases: internal/service -> kfix_launch_svc, internal/handler -> kfix_launch_handler (multica-postgres-1, migration 760)
+
+##############################################################################
+# pkg/protocol
+# (cd server && env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 go test ./pkg/protocol -run 'TestTaskKnowledgePrepareRequestCarriesResumeUnavailable|TestTaskKnowledgeRequestRejectsPrivateOrAmbiguousFields' -count=1 -v)
+##############################################################################
+=== RUN   TestTaskKnowledgeRequestRejectsPrivateOrAmbiguousFields
+=== RUN   TestTaskKnowledgeRequestRejectsPrivateOrAmbiguousFields/unknown_private_field
+=== RUN   TestTaskKnowledgeRequestRejectsPrivateOrAmbiguousFields/duplicate_identity
+=== RUN   TestTaskKnowledgeRequestRejectsPrivateOrAmbiguousFields/case_alias
+=== RUN   TestTaskKnowledgeRequestRejectsPrivateOrAmbiguousFields/missing_native_generation
+--- PASS: TestTaskKnowledgeRequestRejectsPrivateOrAmbiguousFields (0.00s)
+    --- PASS: TestTaskKnowledgeRequestRejectsPrivateOrAmbiguousFields/unknown_private_field (0.00s)
+    --- PASS: TestTaskKnowledgeRequestRejectsPrivateOrAmbiguousFields/duplicate_identity (0.00s)
+    --- PASS: TestTaskKnowledgeRequestRejectsPrivateOrAmbiguousFields/case_alias (0.00s)
+    --- PASS: TestTaskKnowledgeRequestRejectsPrivateOrAmbiguousFields/missing_native_generation (0.00s)
+=== RUN   TestTaskKnowledgePrepareRequestCarriesResumeUnavailable
+=== RUN   TestTaskKnowledgePrepareRequestCarriesResumeUnavailable/string
+=== RUN   TestTaskKnowledgePrepareRequestCarriesResumeUnavailable/number
+=== RUN   TestTaskKnowledgePrepareRequestCarriesResumeUnavailable/case_alias
+=== RUN   TestTaskKnowledgePrepareRequestCarriesResumeUnavailable/duplicate
+--- PASS: TestTaskKnowledgePrepareRequestCarriesResumeUnavailable (0.00s)
+    --- PASS: TestTaskKnowledgePrepareRequestCarriesResumeUnavailable/string (0.00s)
+    --- PASS: TestTaskKnowledgePrepareRequestCarriesResumeUnavailable/number (0.00s)
+    --- PASS: TestTaskKnowledgePrepareRequestCarriesResumeUnavailable/case_alias (0.00s)
+    --- PASS: TestTaskKnowledgePrepareRequestCarriesResumeUnavailable/duplicate (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/pkg/protocol	0.473s
+
+##############################################################################
+# internal/daemon
+# (cd server && env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 go test ./internal/daemon -run 'TestKnowledgeUnreachable|TestKnowledgeActualResumeKeepsExactScopeGeneration|TestGateCodexResumeToRolloutPresence|TestGateResumeToReachableSession' -count=1 -v)
+##############################################################################
+=== RUN   TestGateCodexResumeToRolloutPresence
+=== PAUSE TestGateCodexResumeToRolloutPresence
+=== RUN   TestGateResumeToReachableSession
+=== PAUSE TestGateResumeToReachableSession
+=== RUN   TestKnowledgeActualResumeKeepsExactScopeGeneration
+--- PASS: TestKnowledgeActualResumeKeepsExactScopeGeneration (0.16s)
+=== RUN   TestKnowledgeUnreachablePriorWorkdirRebindsFreshGeneration
+--- PASS: TestKnowledgeUnreachablePriorWorkdirRebindsFreshGeneration (0.16s)
+=== RUN   TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding
+=== RUN   TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding/echoed_stale_binding
+=== RUN   TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding/reused_claimed_generation
+--- PASS: TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding (0.31s)
+    --- PASS: TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding/echoed_stale_binding (0.15s)
+    --- PASS: TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding/reused_claimed_generation (0.16s)
+=== RUN   TestKnowledgeUnreachableResumeOnOlderServerFailsClosed
+--- PASS: TestKnowledgeUnreachableResumeOnOlderServerFailsClosed (0.20s)
+=== CONT  TestGateCodexResumeToRolloutPresence
+=== CONT  TestGateResumeToReachableSession
+=== RUN   TestGateResumeToReachableSession/same_workdir_keeps_session
+=== RUN   TestGateCodexResumeToRolloutPresence/rollout_present_keeps_resume
+=== RUN   TestGateCodexResumeToRolloutPresence/rollout_absent_drops_resume
+2026/11/01 17:09:53 WARN dropping prior codex session: rollout not present in task CODEX_HOME; starting a fresh thread session_id=gone-session codex_home=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestGateCodexResumeToRolloutPresence3147033288/001/codex-home
+=== RUN   TestGateCodexResumeToRolloutPresence/non-codex_provider_is_a_no-op
+=== RUN   TestGateCodexResumeToRolloutPresence/empty_codex_home_is_a_no-op
+--- PASS: TestGateCodexResumeToRolloutPresence (0.00s)
+    --- PASS: TestGateCodexResumeToRolloutPresence/rollout_present_keeps_resume (0.00s)
+    --- PASS: TestGateCodexResumeToRolloutPresence/rollout_absent_drops_resume (0.00s)
+    --- PASS: TestGateCodexResumeToRolloutPresence/non-codex_provider_is_a_no-op (0.00s)
+    --- PASS: TestGateCodexResumeToRolloutPresence/empty_codex_home_is_a_no-op (0.00s)
+=== RUN   TestGateResumeToReachableSession/fresh_workdir_drops_session
+2026/11/01 17:09:53 INFO dropping prior session: session store not reachable from this run provider=claude session_id=sess-1 prior_workdir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestGateResumeToReachableSessionfresh_workdir_drops_session2300075967/001/ws/task-a/workdir workdir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestGateResumeToReachableSessionfresh_workdir_drops_session2300075967/001/ws/task-b/workdir session_home_reachable=true
+=== RUN   TestGateResumeToReachableSession/session_without_recorded_workdir_drops_session
+2026/11/01 17:09:53 INFO dropping prior session: session store not reachable from this run provider=claude session_id=sess-1 prior_workdir="" workdir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestGateResumeToReachableSessionsession_without_recorded_workdi540725638/001/ws/task-b/workdir session_home_reachable=true
+=== RUN   TestGateResumeToReachableSession/no_prior_session_is_a_no-op
+=== RUN   TestGateResumeToReachableSession/matching_workdir_but_unreachable_session_store_drops_session
+2026/11/01 17:09:53 INFO dropping prior session: session store not reachable from this run provider=claude session_id=sess-1 prior_workdir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestGateResumeToReachableSessionmatching_workdir_but_unreachabl3642195929/001/repo workdir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestGateResumeToReachableSessionmatching_workdir_but_unreachabl3642195929/001/repo session_home_reachable=false
+--- PASS: TestGateResumeToReachableSession (0.00s)
+    --- PASS: TestGateResumeToReachableSession/same_workdir_keeps_session (0.00s)
+    --- PASS: TestGateResumeToReachableSession/fresh_workdir_drops_session (0.00s)
+    --- PASS: TestGateResumeToReachableSession/session_without_recorded_workdir_drops_session (0.00s)
+    --- PASS: TestGateResumeToReachableSession/no_prior_session_is_a_no-op (0.00s)
+    --- PASS: TestGateResumeToReachableSession/matching_workdir_but_unreachable_session_store_drops_session (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon	1.414s
+
+##############################################################################
+# internal/service
+# (cd server && env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 DATABASE_URL=postgres://multica:multica@127.0.0.1:5432/kfix_launch_svc?sslmode=disable go test ./internal/service -run 'TestKnowledgeUnavailableResume|TestKnowledgeResumeSameSessionUnionsAllTurns|TestKnowledgePreparationMultiTargetReplayKeepsExactOrder' -count=1 -v)
+##############################################################################
+=== RUN   TestKnowledgeResumeSameSessionUnionsAllTurns
+2026/11/01 16:30:08 INFO task started task_id=9a73098c-030a-4c4b-8c8b-3273662ef5e7 issue_id=9fc622de-8e9d-4a8e-959f-a31f6eb523be
+2026/11/01 16:30:08 INFO task completed task_id=9a73098c-030a-4c4b-8c8b-3273662ef5e7 issue_id=9fc622de-8e9d-4a8e-959f-a31f6eb523be
+2026/11/01 16:30:08 INFO task started task_id=b01733a8-4628-4f9f-8073-042815ccebfc issue_id=9fc622de-8e9d-4a8e-959f-a31f6eb523be
+2026/11/01 16:30:08 INFO task completed task_id=b01733a8-4628-4f9f-8073-042815ccebfc issue_id=9fc622de-8e9d-4a8e-959f-a31f6eb523be
+--- PASS: TestKnowledgeResumeSameSessionUnionsAllTurns (0.43s)
+=== RUN   TestKnowledgePreparationMultiTargetReplayKeepsExactOrder
+--- PASS: TestKnowledgePreparationMultiTargetReplayKeepsExactOrder (0.32s)
+=== RUN   TestKnowledgeUnavailableResumeRebindsFreshGeneration
+2026/11/01 16:30:09 INFO task started task_id=62b4b374-6299-42b2-a2b3-3e6b6fb49654 issue_id=08f13307-67d7-428e-91ad-60a09eb197fc
+2026/11/01 16:30:09 INFO task completed task_id=62b4b374-6299-42b2-a2b3-3e6b6fb49654 issue_id=08f13307-67d7-428e-91ad-60a09eb197fc
+2026/11/01 16:30:09 INFO task started task_id=64661480-45d9-41ac-a97b-2705a0a3fb77 issue_id=08f13307-67d7-428e-91ad-60a09eb197fc
+2026/11/01 16:30:09 INFO knowledge unreachable resume rebound to a fresh session task_id=64661480-45d9-41ac-a97b-2705a0a3fb77 old_generation=32c5c2ee-bb52-40c2-b1b2-d51c4bc7918f new_generation=df8e6fa5-199e-47c9-8963-a9c653ed8839
+2026/11/01 16:30:09 INFO task completed task_id=64661480-45d9-41ac-a97b-2705a0a3fb77 issue_id=08f13307-67d7-428e-91ad-60a09eb197fc
+--- PASS: TestKnowledgeUnavailableResumeRebindsFreshGeneration (0.43s)
+=== RUN   TestKnowledgeUnavailableResumeSkipsDroppedSessionRevalidation
+2026/11/01 16:30:09 INFO task started task_id=fae0c6e4-c36a-4d8e-a5d0-6f031ebfcab2 issue_id=79a702c0-b92d-4412-b12a-2f81402d8fec
+2026/11/01 16:30:10 INFO task completed task_id=fae0c6e4-c36a-4d8e-a5d0-6f031ebfcab2 issue_id=79a702c0-b92d-4412-b12a-2f81402d8fec
+2026/11/01 16:30:10 INFO task started task_id=ddbb2461-4277-4440-9b47-cda076b9f793 issue_id=79a702c0-b92d-4412-b12a-2f81402d8fec
+2026/11/01 16:30:10 INFO knowledge unreachable resume rebound to a fresh session task_id=ddbb2461-4277-4440-9b47-cda076b9f793 old_generation=249df115-1120-4029-a472-b5fe1e65c58d new_generation=63105581-f50b-4b3b-8238-3d001a5f4008
+--- PASS: TestKnowledgeUnavailableResumeSkipsDroppedSessionRevalidation (0.38s)
+=== RUN   TestKnowledgeUnavailableResumeRefusesUnsafeRebind
+=== RUN   TestKnowledgeUnavailableResumeRefusesUnsafeRebind/nothing_to_drop
+2026/11/01 16:30:10 INFO task started task_id=54dbbf66-1f40-4c3f-a23d-b80460eff75a issue_id=2fe2c8b1-ea39-40df-9e84-9f9285e0a1c0
+=== RUN   TestKnowledgeUnavailableResumeRefusesUnsafeRebind/already_disclosed
+2026/11/01 16:30:10 INFO task started task_id=d0e00ab3-c78f-447d-bac3-1212fce6c730 issue_id=e3926ce8-914d-44ca-a1ec-497e7d990a34
+2026/11/01 16:30:10 INFO task completed task_id=d0e00ab3-c78f-447d-bac3-1212fce6c730 issue_id=e3926ce8-914d-44ca-a1ec-497e7d990a34
+2026/11/01 16:30:10 INFO task started task_id=c66aedbf-4fd7-44a4-a3b2-664e6cf6eb72 issue_id=e3926ce8-914d-44ca-a1ec-497e7d990a34
+=== RUN   TestKnowledgeUnavailableResumeRefusesUnsafeRebind/altered_binding
+2026/11/01 16:30:10 INFO task started task_id=9d68d675-5d1e-4296-ba28-f3492d83ce3d issue_id=9e14f74c-0665-4c9a-a84e-40b3413b6de6
+2026/11/01 16:30:11 INFO task completed task_id=9d68d675-5d1e-4296-ba28-f3492d83ce3d issue_id=9e14f74c-0665-4c9a-a84e-40b3413b6de6
+2026/11/01 16:30:11 INFO task started task_id=296cae76-b7ef-4daa-8ea0-3b1488e2237e issue_id=9e14f74c-0665-4c9a-a84e-40b3413b6de6
+--- PASS: TestKnowledgeUnavailableResumeRefusesUnsafeRebind (0.99s)
+    --- PASS: TestKnowledgeUnavailableResumeRefusesUnsafeRebind/nothing_to_drop (0.25s)
+    --- PASS: TestKnowledgeUnavailableResumeRefusesUnsafeRebind/already_disclosed (0.36s)
+    --- PASS: TestKnowledgeUnavailableResumeRefusesUnsafeRebind/altered_binding (0.38s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/service	3.165s
+
+##############################################################################
+# internal/handler
+# (cd server && env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 DATABASE_URL=postgres://multica:multica@127.0.0.1:5432/kfix_launch_handler?sslmode=disable go test ./internal/handler -run 'TestKnowledgeUnreachableResumeHTTPRebindsAndBreaksLoop|TestKnowledgeResumeOlderSessionFallbackUsesChosenKey|TestKnowledgeAllFirstPartyClaimSurfaces' -count=1 -v)
+##############################################################################
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/11/01 16:24:14 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+=== RUN   TestKnowledgeUnreachableResumeHTTPRebindsAndBreaksLoop
+=== RUN   TestKnowledgeUnreachableResumeHTTPRebindsAndBreaksLoop/issue
+2026/11/01 16:24:15 INFO task claimed task_id=54efecf5-d5c2-4b1c-957f-fc195f097381 agent_id=ca04e9f6-75f7-4dee-8a98-4da49770d851
+2026/11/01 16:24:15 INFO task claimed by runtime task_id=54efecf5-d5c2-4b1c-957f-fc195f097381 runtime_id=8d1a8172-011d-43eb-a817-e2140b3d3e32 agent_id=ca04e9f6-75f7-4dee-8a98-4da49770d851 prior_session=""
+2026/11/01 16:24:15 INFO task started task_id=54efecf5-d5c2-4b1c-957f-fc195f097381 issue_id=51c62865-c8d5-412c-8108-f0878f380808
+2026/11/01 16:24:15 INFO task started task_id=54efecf5-d5c2-4b1c-957f-fc195f097381 agent_id=ca04e9f6-75f7-4dee-8a98-4da49770d851
+2026/11/01 16:24:15 INFO task completed task_id=54efecf5-d5c2-4b1c-957f-fc195f097381 issue_id=51c62865-c8d5-412c-8108-f0878f380808
+2026/11/01 16:24:15 INFO task completed task_id=54efecf5-d5c2-4b1c-957f-fc195f097381 agent_id=ca04e9f6-75f7-4dee-8a98-4da49770d851
+2026/11/01 16:24:15 INFO task claimed task_id=bf58d150-2ca3-4248-b7d3-3b162aa1da39 agent_id=ca04e9f6-75f7-4dee-8a98-4da49770d851
+2026/11/01 16:24:15 INFO task claimed by runtime task_id=bf58d150-2ca3-4248-b7d3-3b162aa1da39 runtime_id=8d1a8172-011d-43eb-a817-e2140b3d3e32 agent_id=ca04e9f6-75f7-4dee-8a98-4da49770d851 prior_session=stale-native
+2026/11/01 16:24:15 INFO task started task_id=bf58d150-2ca3-4248-b7d3-3b162aa1da39 issue_id=51c62865-c8d5-412c-8108-f0878f380808
+2026/11/01 16:24:15 INFO task started task_id=bf58d150-2ca3-4248-b7d3-3b162aa1da39 agent_id=ca04e9f6-75f7-4dee-8a98-4da49770d851
+2026/11/01 16:24:15 INFO knowledge unreachable resume rebound to a fresh session task_id=bf58d150-2ca3-4248-b7d3-3b162aa1da39 old_generation=d589d9fa-734e-451e-a9d9-131518b8d41f new_generation=b007dfd2-2aea-4814-87ca-3e101771eb83
+2026/11/01 16:24:15 INFO task completed task_id=bf58d150-2ca3-4248-b7d3-3b162aa1da39 issue_id=51c62865-c8d5-412c-8108-f0878f380808
+2026/11/01 16:24:15 INFO task completed task_id=bf58d150-2ca3-4248-b7d3-3b162aa1da39 agent_id=ca04e9f6-75f7-4dee-8a98-4da49770d851
+2026/11/01 16:24:15 INFO task claimed task_id=e2357b36-0971-4f9a-b112-9c8dc66fca9b agent_id=ca04e9f6-75f7-4dee-8a98-4da49770d851
+2026/11/01 16:24:15 INFO task claimed by runtime task_id=e2357b36-0971-4f9a-b112-9c8dc66fca9b runtime_id=8d1a8172-011d-43eb-a817-e2140b3d3e32 agent_id=ca04e9f6-75f7-4dee-8a98-4da49770d851 prior_session=fresh-native
+=== RUN   TestKnowledgeUnreachableResumeHTTPRebindsAndBreaksLoop/chat
+2026/11/01 16:24:15 INFO task claimed task_id=856f56a5-934a-4ec4-b905-7683ab054dd0 agent_id=c2d74f73-9a5f-4692-9f08-012b51162f21
+2026/11/01 16:24:15 INFO task claimed by runtime task_id=856f56a5-934a-4ec4-b905-7683ab054dd0 runtime_id=ef137b0f-789b-4bfc-a90a-c77e22f5a56d agent_id=c2d74f73-9a5f-4692-9f08-012b51162f21 prior_session=""
+2026/11/01 16:24:15 INFO task started task_id=856f56a5-934a-4ec4-b905-7683ab054dd0 issue_id=""
+2026/11/01 16:24:15 INFO task started task_id=856f56a5-934a-4ec4-b905-7683ab054dd0 agent_id=c2d74f73-9a5f-4692-9f08-012b51162f21
+2026/11/01 16:24:15 INFO task completed task_id=856f56a5-934a-4ec4-b905-7683ab054dd0 issue_id=""
+2026/11/01 16:24:15 INFO task completed task_id=856f56a5-934a-4ec4-b905-7683ab054dd0 agent_id=c2d74f73-9a5f-4692-9f08-012b51162f21
+2026/11/01 16:24:15 INFO task claimed task_id=713992de-42f8-4032-afa2-fd69e99f8334 agent_id=c2d74f73-9a5f-4692-9f08-012b51162f21
+2026/11/01 16:24:15 INFO task claimed by runtime task_id=713992de-42f8-4032-afa2-fd69e99f8334 runtime_id=ef137b0f-789b-4bfc-a90a-c77e22f5a56d agent_id=c2d74f73-9a5f-4692-9f08-012b51162f21 prior_session=stale-native
+2026/11/01 16:24:15 INFO task started task_id=713992de-42f8-4032-afa2-fd69e99f8334 issue_id=""
+2026/11/01 16:24:15 INFO task started task_id=713992de-42f8-4032-afa2-fd69e99f8334 agent_id=c2d74f73-9a5f-4692-9f08-012b51162f21
+2026/11/01 16:24:15 INFO knowledge unreachable resume rebound to a fresh session task_id=713992de-42f8-4032-afa2-fd69e99f8334 old_generation=6df86571-5409-4dba-afe4-e1f6692d7c48 new_generation=0c33e6bf-9413-498d-9ef4-22a20594b5c5
+2026/11/01 16:24:15 INFO task completed task_id=713992de-42f8-4032-afa2-fd69e99f8334 issue_id=""
+2026/11/01 16:24:15 INFO task completed task_id=713992de-42f8-4032-afa2-fd69e99f8334 agent_id=c2d74f73-9a5f-4692-9f08-012b51162f21
+2026/11/01 16:24:15 INFO task claimed task_id=c27febdd-de72-4b64-be55-2c1665f4d616 agent_id=c2d74f73-9a5f-4692-9f08-012b51162f21
+2026/11/01 16:24:15 INFO task claimed by runtime task_id=c27febdd-de72-4b64-be55-2c1665f4d616 runtime_id=ef137b0f-789b-4bfc-a90a-c77e22f5a56d agent_id=c2d74f73-9a5f-4692-9f08-012b51162f21 prior_session=fresh-native
+--- PASS: TestKnowledgeUnreachableResumeHTTPRebindsAndBreaksLoop (1.00s)
+    --- PASS: TestKnowledgeUnreachableResumeHTTPRebindsAndBreaksLoop/issue (0.51s)
+    --- PASS: TestKnowledgeUnreachableResumeHTTPRebindsAndBreaksLoop/chat (0.49s)
+=== RUN   TestKnowledgeAllFirstPartyClaimSurfaces
+=== RUN   TestKnowledgeAllFirstPartyClaimSurfaces/issue/single
+2026/11/01 16:24:16 INFO task claimed task_id=3591129f-6d7e-4d52-8732-ee6c1f11e04b agent_id=9ed277a2-d442-4de5-ae0b-6f34d5e58161
+2026/11/01 16:24:16 INFO task claimed by runtime task_id=3591129f-6d7e-4d52-8732-ee6c1f11e04b runtime_id=b05a5283-7191-4fca-a492-be5e08ca9459 agent_id=9ed277a2-d442-4de5-ae0b-6f34d5e58161 prior_session=""
+=== RUN   TestKnowledgeAllFirstPartyClaimSurfaces/issue/batch
+2026/11/01 16:24:16 INFO task claimed task_id=e970cf4a-5990-4350-ba11-9166f4abd3ea agent_id=8ebcf7ab-a544-4929-8847-b0a183164c47
+2026/11/01 16:24:16 INFO tasks claimed by runtime batch runtimes=1 requested_max=1 claimed=1 total_ms=28
+=== RUN   TestKnowledgeAllFirstPartyClaimSurfaces/issue/ws
+2026/11/01 16:24:16 INFO task claimed task_id=7c93e152-74e1-4ff1-9b75-a47eda23e32f agent_id=e231b570-54b3-4860-9146-c6507ebe55ad
+2026/11/01 16:24:16 INFO tasks claimed by runtime batch runtimes=1 requested_max=1 claimed=1 total_ms=25
+=== RUN   TestKnowledgeAllFirstPartyClaimSurfaces/comment/single
+2026/11/01 16:24:16 INFO task claimed task_id=c758cfe8-5195-4c7e-ad17-03adb19936d0 agent_id=49891f21-4b5b-4c23-8d1e-936c127a945d
+2026/11/01 16:24:16 INFO task claimed by runtime task_id=c758cfe8-5195-4c7e-ad17-03adb19936d0 runtime_id=3a9620cf-0907-4329-958f-3ac5b5858b76 agent_id=49891f21-4b5b-4c23-8d1e-936c127a945d prior_session=""
+=== RUN   TestKnowledgeAllFirstPartyClaimSurfaces/comment/batch
+2026/11/01 16:24:16 INFO task claimed task_id=6d7f5e6b-5d33-4f91-ac1a-3cca304e5880 agent_id=774cf5b7-8069-4b6d-9416-0e302ec3e9fb
+2026/11/01 16:24:16 INFO tasks claimed by runtime batch runtimes=1 requested_max=1 claimed=1 total_ms=30
+=== RUN   TestKnowledgeAllFirstPartyClaimSurfaces/comment/ws
+2026/11/01 16:24:16 INFO task claimed task_id=bb0774a6-5393-4317-ab04-dde8c2c2cff7 agent_id=21d900ed-6bfd-4866-b0ad-68f64aa8bd07
+2026/11/01 16:24:16 INFO tasks claimed by runtime batch runtimes=1 requested_max=1 claimed=1 total_ms=28
+=== RUN   TestKnowledgeAllFirstPartyClaimSurfaces/chat/single
+2026/11/01 16:24:16 INFO task claimed task_id=dfa6d90f-c741-4c8f-b21e-eb41fbe29dae agent_id=5e6b7cbe-6608-4c62-a300-260e44d53de0
+2026/11/01 16:24:16 INFO task claimed by runtime task_id=dfa6d90f-c741-4c8f-b21e-eb41fbe29dae runtime_id=8f976fa0-a4f6-43be-ace0-6d954bb2300b agent_id=5e6b7cbe-6608-4c62-a300-260e44d53de0 prior_session=""
+=== RUN   TestKnowledgeAllFirstPartyClaimSurfaces/chat/batch
+2026/11/01 16:24:16 INFO task claimed task_id=047a678d-9838-45a2-91a4-4c3425b3dfa1 agent_id=ce2e5bac-6928-458d-b9c7-e4c4d8e468cf
+2026/11/01 16:24:16 INFO tasks claimed by runtime batch runtimes=1 requested_max=1 claimed=1 total_ms=26
+=== RUN   TestKnowledgeAllFirstPartyClaimSurfaces/chat/ws
+2026/11/01 16:24:16 INFO task claimed task_id=3266d454-b266-41cf-80a6-441505acb28c agent_id=18bcd1aa-294e-4318-96f9-418e041a550f
+2026/11/01 16:24:16 INFO tasks claimed by runtime batch runtimes=1 requested_max=1 claimed=1 total_ms=24
+=== RUN   TestKnowledgeAllFirstPartyClaimSurfaces/quick_create/single
+2026/11/01 16:24:16 INFO task claimed task_id=0499b7e9-9342-45e3-b4d8-9cb0ecc07af7 agent_id=2cff533f-8d7c-4c83-9568-b6b009ebd17d
+2026/11/01 16:24:16 INFO task claimed by runtime task_id=0499b7e9-9342-45e3-b4d8-9cb0ecc07af7 runtime_id=3fb8372b-1e46-4fcd-8db0-3292704347c9 agent_id=2cff533f-8d7c-4c83-9568-b6b009ebd17d prior_session=""
+=== RUN   TestKnowledgeAllFirstPartyClaimSurfaces/quick_create/batch
+2026/11/01 16:24:16 INFO task claimed task_id=c29ee820-3bef-4730-b601-74969b75a19a agent_id=b75aa5d6-4d6e-4b81-b46c-9fb1ff867841
+2026/11/01 16:24:16 INFO tasks claimed by runtime batch runtimes=1 requested_max=1 claimed=1 total_ms=16
+=== RUN   TestKnowledgeAllFirstPartyClaimSurfaces/quick_create/ws
+2026/11/01 16:24:16 INFO task claimed task_id=f4ac37e0-ab3f-4927-a559-661e8e8b01c5 agent_id=48f5ce4f-e685-4f7e-b8f9-844d11550a4f
+2026/11/01 16:24:16 INFO tasks claimed by runtime batch runtimes=1 requested_max=1 claimed=1 total_ms=17
+=== RUN   TestKnowledgeAllFirstPartyClaimSurfaces/autopilot/single
+2026/11/01 16:24:17 INFO task claimed task_id=fc59df35-2d88-412c-858a-30c780df39f9 agent_id=a5b4e01d-47ea-485a-8f1d-fb75dea4a227
+2026/11/01 16:24:17 INFO task claimed by runtime task_id=fc59df35-2d88-412c-858a-30c780df39f9 runtime_id=4fbaa304-ce15-4cc2-a56c-6f4b55356ae2 agent_id=a5b4e01d-47ea-485a-8f1d-fb75dea4a227 prior_session=""
+=== RUN   TestKnowledgeAllFirstPartyClaimSurfaces/autopilot/batch
+2026/11/01 16:24:17 INFO task claimed task_id=fed68ae5-51f4-4cf4-8911-898665f9f4e3 agent_id=924d7820-8b93-4990-94fe-2eba3653d8e4
+2026/11/01 16:24:17 INFO tasks claimed by runtime batch runtimes=1 requested_max=1 claimed=1 total_ms=16
+=== RUN   TestKnowledgeAllFirstPartyClaimSurfaces/autopilot/ws
+2026/11/01 16:24:17 INFO task claimed task_id=17c0e7d6-fe5b-4825-b936-3d785c14df2c agent_id=16d490e2-aaa6-4e7e-a17b-55a35ce09a29
+2026/11/01 16:24:17 INFO tasks claimed by runtime batch runtimes=1 requested_max=1 claimed=1 total_ms=16
+--- PASS: TestKnowledgeAllFirstPartyClaimSurfaces (1.27s)
+    --- PASS: TestKnowledgeAllFirstPartyClaimSurfaces/issue/single (0.12s)
+    --- PASS: TestKnowledgeAllFirstPartyClaimSurfaces/issue/batch (0.09s)
+    --- PASS: TestKnowledgeAllFirstPartyClaimSurfaces/issue/ws (0.09s)
+    --- PASS: TestKnowledgeAllFirstPartyClaimSurfaces/comment/single (0.09s)
+    --- PASS: TestKnowledgeAllFirstPartyClaimSurfaces/comment/batch (0.09s)
+    --- PASS: TestKnowledgeAllFirstPartyClaimSurfaces/comment/ws (0.09s)
+    --- PASS: TestKnowledgeAllFirstPartyClaimSurfaces/chat/single (0.09s)
+    --- PASS: TestKnowledgeAllFirstPartyClaimSurfaces/chat/batch (0.09s)
+    --- PASS: TestKnowledgeAllFirstPartyClaimSurfaces/chat/ws (0.07s)
+    --- PASS: TestKnowledgeAllFirstPartyClaimSurfaces/quick_create/single (0.07s)
+    --- PASS: TestKnowledgeAllFirstPartyClaimSurfaces/quick_create/batch (0.07s)
+    --- PASS: TestKnowledgeAllFirstPartyClaimSurfaces/quick_create/ws (0.07s)
+    --- PASS: TestKnowledgeAllFirstPartyClaimSurfaces/autopilot/single (0.11s)
+    --- PASS: TestKnowledgeAllFirstPartyClaimSurfaces/autopilot/batch (0.06s)
+    --- PASS: TestKnowledgeAllFirstPartyClaimSurfaces/autopilot/ws (0.06s)
+=== RUN   TestKnowledgeResumeOlderSessionFallbackUsesChosenKey
+2026/11/01 16:24:17 INFO task claimed task_id=84194dc6-06ba-4f21-ba3c-df8320112ac3 agent_id=6f852b5c-5dea-4a7c-b780-1333d7825081
+2026/11/01 16:24:17 INFO task claimed by runtime task_id=84194dc6-06ba-4f21-ba3c-df8320112ac3 runtime_id=b169169b-6b63-434b-adf1-81c739ab4747 agent_id=6f852b5c-5dea-4a7c-b780-1333d7825081 prior_session=""
+2026/11/01 16:24:17 INFO task started task_id=84194dc6-06ba-4f21-ba3c-df8320112ac3 issue_id=ff5f1015-a0cf-4f37-acca-23c874434057
+2026/11/01 16:24:17 INFO task started task_id=84194dc6-06ba-4f21-ba3c-df8320112ac3 agent_id=6f852b5c-5dea-4a7c-b780-1333d7825081
+2026/11/01 16:24:17 INFO task completed task_id=84194dc6-06ba-4f21-ba3c-df8320112ac3 issue_id=ff5f1015-a0cf-4f37-acca-23c874434057
+2026/11/01 16:24:17 INFO task completed task_id=84194dc6-06ba-4f21-ba3c-df8320112ac3 agent_id=6f852b5c-5dea-4a7c-b780-1333d7825081
+2026/11/01 16:24:17 INFO task claimed task_id=46eecf87-4b21-4168-8889-674df4e3d1c3 agent_id=6f852b5c-5dea-4a7c-b780-1333d7825081
+2026/11/01 16:24:17 INFO task claimed by runtime task_id=46eecf87-4b21-4168-8889-674df4e3d1c3 runtime_id=b169169b-6b63-434b-adf1-81c739ab4747 agent_id=6f852b5c-5dea-4a7c-b780-1333d7825081 prior_session=""
+--- PASS: TestKnowledgeResumeOlderSessionFallbackUsesChosenKey (0.13s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/handler	3.535s
+
+##############################################################################
+# MUTATION CHECK: each named weakening of the fix, applied through go test -overlay
+# (the worktree files are not changed), must make a new H2 test fail.
+#   M1 replay branch compares the session before the receipt (design's main risk)
+#   M2 transaction locks/revalidates the dropped session's history anyway
+#   M3 daemon launches under the claimed binding instead of the prepared one
+#   M4 daemon accepts a rebind that reuses the claimed generation
+##############################################################################
+
+# M1-replay-session-before-receipt: internal/service (kfix_launch_svc); expected FAIL
+=== RUN   TestKnowledgeUnavailableResumeRebindsFreshGeneration
+2026/11/01 16:27:47 INFO task started task_id=a30feb78-22cf-4bad-b59a-35efc08ab1f1 issue_id=d0fb4cc2-1402-48c0-8b6e-4bb98af4db0e
+2026/11/01 16:27:47 INFO task completed task_id=a30feb78-22cf-4bad-b59a-35efc08ab1f1 issue_id=d0fb4cc2-1402-48c0-8b6e-4bb98af4db0e
+2026/11/01 16:27:47 INFO task started task_id=10c76503-e675-42f0-bb3d-cfca6b82b5f4 issue_id=d0fb4cc2-1402-48c0-8b6e-4bb98af4db0e
+2026/11/01 16:27:47 INFO knowledge unreachable resume rebound to a fresh session task_id=10c76503-e675-42f0-bb3d-cfca6b82b5f4 old_generation=84d801ba-f2f9-43eb-b0c5-9da79f38a8bf new_generation=766d1ba1-f0d0-41ab-af51-2d51639da17c
+    task_knowledge_resume_test.go:97: original flagged receipt did not replay: knowledge_context_changed
+--- FAIL: TestKnowledgeUnavailableResumeRebindsFreshGeneration (0.38s)
+=== RUN   TestKnowledgeUnavailableResumeSkipsDroppedSessionRevalidation
+2026/11/01 16:27:47 INFO task started task_id=e0d90dbb-4734-466c-81c3-67c5efaf06c1 issue_id=398f67ae-f22d-4572-9505-fd98aa8f4f8e
+2026/11/01 16:27:48 INFO task completed task_id=e0d90dbb-4734-466c-81c3-67c5efaf06c1 issue_id=398f67ae-f22d-4572-9505-fd98aa8f4f8e
+2026/11/01 16:27:48 INFO task started task_id=16b2deaf-dc95-4bbb-9fff-ece7f6a71ea9 issue_id=398f67ae-f22d-4572-9505-fd98aa8f4f8e
+2026/11/01 16:27:48 INFO knowledge unreachable resume rebound to a fresh session task_id=16b2deaf-dc95-4bbb-9fff-ece7f6a71ea9 old_generation=73215f12-1dcd-4d23-938b-0f7f22267a59 new_generation=4e6936ca-ac96-47d1-b582-ac402636b0b8
+--- PASS: TestKnowledgeUnavailableResumeSkipsDroppedSessionRevalidation (0.36s)
+=== RUN   TestKnowledgeUnavailableResumeRefusesUnsafeRebind
+=== RUN   TestKnowledgeUnavailableResumeRefusesUnsafeRebind/nothing_to_drop
+2026/11/01 16:27:48 INFO task started task_id=1d407ca7-ed17-4c9e-8ff2-732bf211210f issue_id=7b744612-d36e-4511-893f-4153f4979293
+=== RUN   TestKnowledgeUnavailableResumeRefusesUnsafeRebind/already_disclosed
+2026/11/01 16:27:48 INFO task started task_id=faa23adc-2dd3-4b5c-bd20-924f41ccffe4 issue_id=f88780cc-811e-4148-8ffe-4a03e209fc13
+2026/11/01 16:27:48 INFO task completed task_id=faa23adc-2dd3-4b5c-bd20-924f41ccffe4 issue_id=f88780cc-811e-4148-8ffe-4a03e209fc13
+2026/11/01 16:27:48 INFO task started task_id=96ac683a-29b4-456b-889c-b9fc6706189d issue_id=f88780cc-811e-4148-8ffe-4a03e209fc13
+=== RUN   TestKnowledgeUnavailableResumeRefusesUnsafeRebind/altered_binding
+2026/11/01 16:27:48 INFO task started task_id=bbbaaf8c-f2cc-4909-9c13-c96a897a06f2 issue_id=fbb1b4a2-f69c-4a02-9bf9-14d09534c662
+2026/11/01 16:27:49 INFO task completed task_id=bbbaaf8c-f2cc-4909-9c13-c96a897a06f2 issue_id=fbb1b4a2-f69c-4a02-9bf9-14d09534c662
+2026/11/01 16:27:49 INFO task started task_id=140a5fec-2690-46bc-8256-3103ff2224b0 issue_id=fbb1b4a2-f69c-4a02-9bf9-14d09534c662
+--- PASS: TestKnowledgeUnavailableResumeRefusesUnsafeRebind (1.00s)
+    --- PASS: TestKnowledgeUnavailableResumeRefusesUnsafeRebind/nothing_to_drop (0.25s)
+    --- PASS: TestKnowledgeUnavailableResumeRefusesUnsafeRebind/already_disclosed (0.35s)
+    --- PASS: TestKnowledgeUnavailableResumeRefusesUnsafeRebind/altered_binding (0.39s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/service	2.553s
+FAIL
+
+# M2-gate-session-ignores-rebind: internal/service (kfix_launch_svc); expected FAIL
+=== RUN   TestKnowledgeUnavailableResumeRebindsFreshGeneration
+2026/11/01 16:28:09 INFO task started task_id=ea06d0d4-2d02-42a4-b321-d313fbff5cbf issue_id=1b453993-d9dc-4511-8c35-ee0934866049
+2026/11/01 16:28:09 INFO task completed task_id=ea06d0d4-2d02-42a4-b321-d313fbff5cbf issue_id=1b453993-d9dc-4511-8c35-ee0934866049
+2026/11/01 16:28:09 INFO task started task_id=f40a4b3e-59fd-42f2-bd3f-968f66860615 issue_id=1b453993-d9dc-4511-8c35-ee0934866049
+2026/11/01 16:28:09 INFO knowledge unreachable resume rebound to a fresh session task_id=f40a4b3e-59fd-42f2-bd3f-968f66860615 old_generation=cfab13f5-a801-49b9-9d83-c83e5f53d755 new_generation=c5351dc9-1682-489d-9a05-ee256e16543d
+2026/11/01 16:28:09 INFO task completed task_id=f40a4b3e-59fd-42f2-bd3f-968f66860615 issue_id=1b453993-d9dc-4511-8c35-ee0934866049
+--- PASS: TestKnowledgeUnavailableResumeRebindsFreshGeneration (0.53s)
+=== RUN   TestKnowledgeUnavailableResumeSkipsDroppedSessionRevalidation
+2026/11/01 16:28:10 INFO task started task_id=7861b85a-e9a4-41a3-814f-06a7764eb8b5 issue_id=981020dc-3e7c-4df2-b80b-df1621678773
+2026/11/01 16:28:10 INFO task completed task_id=7861b85a-e9a4-41a3-814f-06a7764eb8b5 issue_id=981020dc-3e7c-4df2-b80b-df1621678773
+2026/11/01 16:28:10 INFO task started task_id=3ed5a7ee-2445-48fb-bd03-04210ac8c048 issue_id=981020dc-3e7c-4df2-b80b-df1621678773
+    task_knowledge_resume_test.go:153: withdrawn stale-only exposure blocked the fresh turn: knowledge_context_changed
+--- FAIL: TestKnowledgeUnavailableResumeSkipsDroppedSessionRevalidation (0.63s)
+=== RUN   TestKnowledgeUnavailableResumeRefusesUnsafeRebind
+=== RUN   TestKnowledgeUnavailableResumeRefusesUnsafeRebind/nothing_to_drop
+2026/11/01 16:28:10 INFO task started task_id=e72c2b31-0192-427b-94f5-cbaa94c89a51 issue_id=549a63d7-1965-4f41-90b1-1380294766d6
+=== RUN   TestKnowledgeUnavailableResumeRefusesUnsafeRebind/already_disclosed
+2026/11/01 16:28:10 INFO task started task_id=bde78957-7deb-4fed-9a6d-3350e4869715 issue_id=bd44323d-9f04-40ab-b489-294749fa0821
+2026/11/01 16:28:10 INFO task completed task_id=bde78957-7deb-4fed-9a6d-3350e4869715 issue_id=bd44323d-9f04-40ab-b489-294749fa0821
+2026/11/01 16:28:10 INFO task started task_id=74900e80-06a3-48ad-9eaf-c2e0dac33fb5 issue_id=bd44323d-9f04-40ab-b489-294749fa0821
+=== RUN   TestKnowledgeUnavailableResumeRefusesUnsafeRebind/altered_binding
+2026/11/01 16:28:11 INFO task started task_id=6c493f6d-4367-414b-b66a-133e83caed3d issue_id=4800e94d-91c3-451c-afce-0c9de250892e
+2026/11/01 16:28:11 INFO task completed task_id=6c493f6d-4367-414b-b66a-133e83caed3d issue_id=4800e94d-91c3-451c-afce-0c9de250892e
+2026/11/01 16:28:11 INFO task started task_id=7b359149-9e8d-4f1f-ac2d-fb8c8c95a5ea issue_id=4800e94d-91c3-451c-afce-0c9de250892e
+--- PASS: TestKnowledgeUnavailableResumeRefusesUnsafeRebind (1.15s)
+    --- PASS: TestKnowledgeUnavailableResumeRefusesUnsafeRebind/nothing_to_drop (0.32s)
+    --- PASS: TestKnowledgeUnavailableResumeRefusesUnsafeRebind/already_disclosed (0.43s)
+    --- PASS: TestKnowledgeUnavailableResumeRefusesUnsafeRebind/altered_binding (0.40s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/service	4.337s
+FAIL
+
+# M3-daemon-keeps-claimed-session: internal/daemon; expected FAIL
+=== RUN   TestKnowledgeUnreachablePriorWorkdirRebindsFreshGeneration
+    knowledge_context_claim_test.go:345: unreachable resume did not start a fresh bound session: status=blocked reason=knowledge_invocation_unsupported session=
+--- FAIL: TestKnowledgeUnreachablePriorWorkdirRebindsFreshGeneration (0.39s)
+=== RUN   TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding
+=== RUN   TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding/echoed_stale_binding
+=== RUN   TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding/reused_claimed_generation
+--- PASS: TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding (0.40s)
+    --- PASS: TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding/echoed_stale_binding (0.21s)
+    --- PASS: TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding/reused_claimed_generation (0.19s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon	1.373s
+FAIL
+
+# M4-daemon-accepts-reused-generation: internal/daemon; expected FAIL
+=== RUN   TestKnowledgeUnreachablePriorWorkdirRebindsFreshGeneration
+--- PASS: TestKnowledgeUnreachablePriorWorkdirRebindsFreshGeneration (0.21s)
+=== RUN   TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding
+=== RUN   TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding/echoed_stale_binding
+=== RUN   TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding/reused_claimed_generation
+    knowledge_context_claim_test.go:427: unsafe rebind was not refused: status=completed reason=
+--- FAIL: TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding (0.35s)
+    --- PASS: TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding/echoed_stale_binding (0.17s)
+    --- FAIL: TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding/reused_claimed_generation (0.17s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon	1.131s
+FAIL
+
+##############################################################################
+# FULL PACKAGE RUNS (summary lines; all with env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0)
+##############################################################################
+
+$ go test ./pkg/protocol ./pkg/agent -count=1 -v
+  top-level PASS=1264 SKIP=3 FAIL=0
+  ok  	github.com/multica-ai/multica/server/pkg/protocol	0.780s
+  ok  	github.com/multica-ai/multica/server/pkg/agent	234.171s
+
+$ go test ./internal/daemon/... -count=1 -v (first full run)
+  top-level PASS=1722 SKIP=2 FAIL=0
+  ok  	github.com/multica-ai/multica/server/internal/daemon	83.361s
+  ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	37.231s
+  ok  	github.com/multica-ai/multica/server/internal/daemon/execenv	62.847s
+  ok  	github.com/multica-ai/multica/server/internal/daemon/processtree	2.167s
+  ok  	github.com/multica-ai/multica/server/internal/daemon/repocache	6.473s
+
+$ go test ./internal/daemon/... -count=1 -v (second full run, after the compat test)
+  top-level PASS=1720 SKIP=2 FAIL=3
+  ok  	github.com/multica-ai/multica/server/internal/daemon	78.765s
+  ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	37.033s
+  ok  	github.com/multica-ai/multica/server/internal/daemon/execenv	61.536s
+  ok  	github.com/multica-ai/multica/server/internal/daemon/processtree	1.993s
+  FAIL	github.com/multica-ai/multica/server/internal/daemon/repocache	4.091s
+
+$ go test ./internal/daemon/repocache -count=1 -v (rerun alone; package does not import any H2 file)
+  top-level PASS=58 SKIP=0 FAIL=0
+  ok  	github.com/multica-ai/multica/server/internal/daemon/repocache	3.382s
+
+$ DATABASE_URL=...kfix_launch_svc go test ./internal/service -count=1 -v -timeout 40m
+  top-level PASS=1370 SKIP=18 FAIL=0
+  ok  	github.com/multica-ai/multica/server/internal/service	673.832s
+
+$ DATABASE_URL=...kfix_launch_handler go test ./internal/handler -count=1 -v -timeout 40m
+  top-level PASS=2812 SKIP=53 FAIL=0
+  ok  	github.com/multica-ai/multica/server/internal/handler	123.486s
+
+$ go test -race ./internal/daemon -run 'TestKnowledge|TestOrdinaryKnowledge|TestGateResumeToReachableSession|TestGateCodexResumeToRolloutPresence'
+  top-level PASS=30 SKIP=0 FAIL=0
+  ok  	github.com/multica-ai/multica/server/internal/daemon	8.668s
+
+$ DATABASE_URL=...kfix_launch_svc go test -race ./internal/service -run 'TestKnowledge' -timeout 30m
+  top-level PASS=102 SKIP=0 FAIL=0
+  ok  	github.com/multica-ai/multica/server/internal/service	98.164s
+
+The second full daemon run failed only in internal/daemon/repocache (TestCreateWorktree,
+TestGetRemoteDefaultBranchUsesBareHeadHintForCustomDefault,
+TestSyncKeepsDistinctCachesForSegmentBoundaryColliders) with "stop process tree:
+operation not permitted" during git subprocess cleanup. The cause was not
+established. repocache does not import internal/daemon, internal/service or
+pkg/protocol (go list -deps), it passed in the first full run, and it passed when
+rerun alone. Every other package passed.
+Service/handler skips are REDIS_TEST_URL not set and one opt-in MULTICA_RUN_I1_P95 test.
+-race: no "WARNING: DATA RACE" in either run.

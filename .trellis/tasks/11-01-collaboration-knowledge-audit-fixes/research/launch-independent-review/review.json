@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-01T16:47:05.484065+00:00",
+  "reviewer": "/root/knowledge_web_review",
+  "verdict": "pass-with-notes",
+  "head": "77df70afc053c7772a0e0f81be70158868e9f24b",
+  "base_sha": "4e3b61500ed0afbc12cf4c79b1c6aea866778d0e",
+  "server_tree": "0189e39eff082d6eaefade996ec090e7510298af",
+  "audits": [
+    "H2",
+    "M2",
+    "L6",
+    "L7",
+    "seven_H2_acceptance_mutants"
+  ],
+  "blocking_product_findings": [],
+  "nonblocking_product_findings": [],
+  "independent_checks": [
+    {
+      "source_sha": "77df70afc053c7772a0e0f81be70158868e9f24b",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./pkg/agent",
+        "./pkg/protocol",
+        "./internal/daemon",
+        "-p",
+        "2",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-run",
+        "^Test(Knowledge(Rebind|PromptRebind|UnreachablePriorWorkdir|UnreachableResumeOnOlderServer|ClaimDescriptorDecodeFailure|BatchClaimSurvivesOne|StartedObservationRefusal|ClaudeStartedCallback)|TaskKnowledgePrepareRequestCarriesResumeUnavailable)"
+      ],
+      "started_at": "2026-11-01T16:46:00.569106+00:00",
+      "database_access": false,
+      "provider_calls": 0,
+      "exit_code": 0,
+      "counts": {
+        "run": 44,
+        "pass": 44,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "d0dcf1d9af3346a667c6209a700d82d364a8e2d141f3cb9f964d42595afe72fe"
+    },
+    {
+      "source_sha": "77df70afc053c7772a0e0f81be70158868e9f24b",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "build",
+        "-p",
+        "2",
+        "./internal/service",
+        "./internal/handler",
+        "./internal/daemon",
+        "./pkg/agent",
+        "./pkg/protocol"
+      ],
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_sha": "77df70afc053c7772a0e0f81be70158868e9f24b",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "-p",
+        "2",
+        "./internal/service",
+        "./internal/handler",
+        "./internal/daemon",
+        "./pkg/agent",
+        "./pkg/protocol"
+      ],
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "author_mutant_verification": [
+    {
+      "name": "claim_drop_provenance",
+      "killed": true,
+      "exit_code": 1,
+      "log_sha256": "37ed8bf5d598902147b47d690615f4086dd68194a667880ccede9017fcf3df31",
+      "log_hash_matches": true
+    },
+    {
+      "name": "claim_task_resume_cleared",
+      "killed": true,
+      "exit_code": 1,
+      "log_sha256": "491beea732c043a2a5a5dec7e1f7a42734bdf24a4ac525a19ee813edfb9e1631",
+      "log_hash_matches": true
+    },
+    {
+      "name": "claim_options_resume_cleared",
+      "killed": true,
+      "exit_code": 1,
+      "log_sha256": "774762159c09f984f007f65b1b99c9fecb144d838ef1e8bba217c028275a7fbb",
+      "log_hash_matches": true
+    },
+    {
+      "name": "preparation_checks_session",
+      "killed": true,
+      "exit_code": 1,
+      "log_sha256": "5d3582254c769ad752b4872041e0952eb18e874d2d7ba7fa7474edbfa585916f",
+      "log_hash_matches": true
+    },
+    {
+      "name": "rebind_generation_changes",
+      "killed": true,
+      "exit_code": 1,
+      "log_sha256": "915a049bc0df02838059a408b21520f5d9d2c0daaf768e46c7763a6b6b46fcf2",
+      "log_hash_matches": true
+    },
+    {
+      "name": "prompt_checks_preparation",
+      "killed": true,
+      "exit_code": 1,
+      "log_sha256": "99b5f88cf4c6f0388e58c3740db7290d7882f7453dcec90a2b071e4b772278ca",
+      "log_hash_matches": true
+    },
+    {
+      "name": "prompt_uses_prepared_identity",
+      "killed": true,
+      "exit_code": 1,
+      "log_sha256": "ab748c658d6e34a5d0ca379d1bab2d87dcd1a083815c2fa2b94b9835a8f6b72f",
+      "log_hash_matches": true
+    }
+  ],
+  "coordinator_db_suite_snapshot": [
+    {
+      "file": "launch-handler-full-root.json",
+      "source_sha": "77df70afc053c7772a0e0f81be70158868e9f24b",
+      "state": "complete",
+      "counts": {
+        "run": 5310,
+        "pass": 5257,
+        "fail": 0,
+        "skip": 53
+      },
+      "exit_code": 0,
+      "log_hash_matches": true
+    },
+    {
+      "file": "launch-service-full-root.json",
+      "source_sha": "77df70afc053c7772a0e0f81be70158868e9f24b",
+      "state": "running",
+      "counts": null,
+      "exit_code": null
+    }
+  ],
+  "database_access": false,
+  "migrations": false,
+  "provider_calls": 0,
+  "product_modified": false,
+  "notes": [
+    "Full service/combined-source completion remains a coordinator gate; running suites are never counted as passed.",
+    "L7 is a demonstrated existing correct lifecycle behavior locked by regression tests, not an invented product fix.",
+    "The1.5-second retry window does not change caller request deadlines, terminal busy semantics or lock ordering; no wait while retaining a transaction."
+  ]
+}

@@ -298,7 +298,7 @@ func TestKnowledgeQueriesScanAndHintsRetainRoutingAcrossRollback(t *testing.T) {
 	}
 	tx = knowledgeTx(t, pool)
 	qt = db.New(tx)
-	retained, err := qt.LockNextKnowledgeTargetHint(ctx)
+	retained, err := qt.LockNextKnowledgeTargetHint(ctx, []pgtype.UUID{})
 	if err != nil || retained.ID != hint.ID {
 		t.Fatalf("stable hint identity: %v", err)
 	}
@@ -309,7 +309,7 @@ func TestKnowledgeQueriesScanAndHintsRetainRoutingAcrossRollback(t *testing.T) {
 		t.Fatal(err)
 	}
 	tx = knowledgeTx(t, pool)
-	retained, err = db.New(tx).LockNextKnowledgeTargetHint(ctx)
+	retained, err = db.New(tx).LockNextKnowledgeTargetHint(ctx, []pgtype.UUID{})
 	if err != nil || retained.ID != hint.ID {
 		t.Fatalf("failed delivery lost stable retry: %v", err)
 	}

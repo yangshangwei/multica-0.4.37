@@ -1,0 +1,168 @@
+{
+ "findings": [
+  "H1 confirmed. At server/internal/service/task_knowledge.go:350-360, BuildTaskKnowledgeClaim refuses any v1 claude invocation whose inv.ExtraArgs or agent custom_args fail validateTaskKnowledgeOrdinaryArgs. That check is the admission allowlist agent.ValidateKnowledgeSessionArgs (pkg/agent/knowledge_launch.go:104-135, five flags, default branch refuses) plus --no-session-persistence. The refusal runs before the gate is consulted at line 366, so it fires with MULTICA_KNOWLEDGE_CONTEXT_ENABLED unset.",
+  "The daemon cannot avoid H1. internal/daemon/knowledge_context.go:93-118 attaches inv, including defaultArgsForProvider (MULTICA_CLAUDE_ARGS) as ExtraArgs, to every claim from an mdt_ credential. It has no view of the server gate.",
+  "What the code already treats as session selectors. buildClaudeArgs (pkg/agent/claude.go:830-845) emits --resume itself, then appends ExtraArgs and CustomArgs through filterCustomArgs. claudeBlockedArgs (claude.go:777-790) holds only -p, --output-format, --input-format, --permission-mode, --mcp-config and --effort, plus --settings when a settings path is managed. So a user selector such as --continue reaches argv after unshellQuoteArg strips one layer of quotes; '--continue' becomes --continue.",
+  "Other selector lists. collaborationrun/host_config.go:61-67 denylists --resume, -r, --continue, --session, --session-id, --fork-session (plus cross-provider --attach/--server/--url/--cwd/-C/--directory/--workdir/--config-dir/--model/-m), any -r* short form, and claude '-c' only as an exact token. It misses clusters such as -pc or -cr, and quoted forms. grok.go:40-51, pi.go:618-630 and qwen.go:37-39 block -r/--resume, -c/--continue, --session-id and --fork-session for their providers. The leaf test TestKnowledgeEffectiveArgsCannotOverrideSessionSelection (pkg/agent/knowledge_launch_test.go:402) lists the forms the allowlist must refuse.",
+  "The leaf contract matches base execution. TestKnowledgeAmbiguousLegacyContinueRefused (knowledge_launch_test.go:476-500) shows that with opts.Knowledge == nil, ordinary execution keeps --continue unstripped. prepareKnowledgePrompt (knowledge_context.go:294-297) returns the plain prompt when task.KnowledgeContext is nil. A nil descriptor from the server is therefore a working ordinary path.",
+  "In the unsupported branch (task_knowledge.go:367-381), the history guard already refuses three cases: a retained negotiated row, any prepared non-empty exposure in the runtime/daemon/owner namespace, and corrupt or >128-row history. What it cannot see is exposure whose task rows were deleted, or a transcript that an explicit selector reaches. That gap is why selector refusal must remain an independent rule.",
+  "M1 confirmed. server/internal/handler/daemon.go:3234-3241 maps every non-*service.CollaborationError from BuildTaskKnowledgeClaim to knowledge_unavailable and calls failClaimedTaskBeforeLaunch, which settles the task as failed. knowledge_unavailable is not in retryableReasons (service/task.go:5267-5274). BuildTaskKnowledgeClaim runs on every claim and always reads ListTaskKnowledgeRuntimeHistory on the unsupported path (codex, legacy, gate off).",
+  "The neighboring transient handling in the same builder requeues immediately with TaskService.RequeueTaskAfterClaimFailure and returns a 500 claimBuildFailure: agent load at daemon.go:2214-2225 and source-context load at daemon.go:3106-3112. Both keep pgx.ErrNoRows terminal (daemon.go:2199-2213; rejectClaimSourceLoad at 1980-2001).",
+  "Requeue is safe for knowledge state. RequeueAgentTaskAfterClaimFailure (pkg/db/queries/agent.sql:946-963) resets only status, dispatched_at, prepare_lease_expires_at and delivered_comment_ids, guarded by a CAS on claim_generation and dispatched_at. knowledge_context_version and knowledge_delivery are untouched, so no recorded exposure is lost or relabeled. BuildTaskKnowledgeClaim discloses nothing and finalizes nothing.",
+  "The batch claim handler (daemon.go:1869-1876) skips any task whose builder returned a failure, so the M1 fix needs no change there."
+ ],
+ "root_cause": "H1: commit 96cedf485 reused the admission allowlist as the refusal rule at claim time. ValidateKnowledgeSessionArgs was written to prove that a knowledge launch is fully controlled, so it refuses everything it does not know. BuildTaskKnowledgeClaim applies it before the gate or support decision, so \"not provably controlled\" became \"refuse the task\" even when no negotiation will happen. The spec reserves refusal for selectors that could recover managed history, and for proven or unprovable exposure.\n\nM1: the claim handler treats every error that is not a CollaborationError as a knowledge-domain refusal. Infrastructure failures (pgx and connection errors, context deadlines) therefore get the same terminal, non-retryable settlement as a genuine fail-closed knowledge decision. This happens on a path that runs for every claim.",
+ "alternatives": [
+  {
+   "name": "H1-A (chosen): replace the step-1 allowlist with a session-selector denylist that ignores the gate",
+   "summary": "Add agent.KnowledgeSessionSelectorPresent(provider, args) in pkg/agent/knowledge_launch.go. Step 1 of BuildTaskKnowledgeClaim refuses a v1 claude invocation only when inv.ExtraArgs or custom_args contain a selector, or when custom_args JSON is malformed. Every other option goes through the existing support decision. The allowlist stays the only admission rule, so an unlisted or no-persistence option means unsupported, and the existing history guard chooses between base execution and refusal.",
+   "pros": "About a 3-line change in task_knowledge.go plus a 20-line pure helper. Fixes the gate-off failure for both daemon defaults and custom_args. Keeps the spec's selector refusal and the history guard intact. Behavior is the same with the gate on or off, so turning the gate on cannot suddenly fail fleets with unlisted options. Existing TestKnowledgeUnsafeV1SelectorsRefuseBeforeOrdinaryFallback keeps passing.",
+   "cons": "A denylist is not vendor-version evidence: a future Claude selector with a new name would pass the v1 fallback, and only the namespace history guard would catch it. The token scan is deliberately coarse, so some harmless values (for example '-x=bar') refuse. Current code refuses those too, so this is no regression. With the gate on, unlisted options silently run without knowledge."
+  },
+  {
+   "name": "H1-B: skip step 1 when the gate is off",
+   "summary": "Wrap the existing allowlist refusal in `if s.KnowledgeContextEnabled`.",
+   "pros": "One-line change; fixes the default deployment.",
+   "cons": "With the gate on, every claude task with any unlisted option such as --allowedTools still fails terminally. That contradicts spec lines 150 and 164 (a safe unsupported backend retains base execution) and turns enabling the gate into a fleet-wide task kill switch. With the gate off, v1 selector refusal disappears entirely, leaving the deleted-history gap open. It also contradicts the task.go:59-61 comment that historical-session safety checks remain active while the gate is disabled."
+  },
+  {
+   "name": "H1-C: delete step 1 and rely on the namespace history guard",
+   "summary": "Remove lines 350-360; unsupported invocations go straight to the retained/exposure guard.",
+   "pros": "Smallest diff.",
+   "cons": "Breaks the spec rules 'Unsafe explicit selectors are refused' (line 89) and 'Refuse before native launch; never silently strip the selector' (line 151). In a clean namespace, --continue or --resume <id> would run as ordinary work and could reach a transcript whose task rows were deleted. TestKnowledgeUnsafeV1SelectorsRefuseBeforeOrdinaryFallback would fail."
+  },
+  {
+   "name": "H1-D: grow the allowlist (--allowedTools, --add-dir, ...)",
+   "summary": "Keep the refusal and admit more options.",
+   "pros": "More configurations could negotiate knowledge.",
+   "cons": "Never complete: every new or unvetted vendor option still kills tasks. It mixes up admission (which needs proven semantics) with the decision to run base execution, and it does not fix the defect class."
+  },
+  {
+   "name": "M1-A (chosen): handler-side split; requeue non-domain errors, keep domain errors and NoRows terminal",
+   "summary": "In daemon.go at the BuildTaskKnowledgeClaim error branch: a *service.CollaborationError keeps its code and stays terminal through failClaimedTaskBeforeLaunch (unchanged). errors.Is(err, pgx.ErrNoRows) stays terminal with its current knowledge_unavailable settlement. Anything else (pgconn errors, context deadline or cancel, connection errors) calls RequeueTaskAfterClaimFailure and returns claimBuildFailure{outcome: \"error_knowledge_claim_load\", status: 500, message: \"failed to load task knowledge context\"}. A small pure helper knowledgeClaimErrorDisposition(err) (code string, requeue bool) holds the classification so it can be tested without a database.",
+   "pros": "Same pattern as the agent-load (2214-2225) and source-context (3106-3112) branches in the same builder. The task returns to the queue at once. Knowledge columns are untouched. Genuine fail-closed refusals stay terminal. The batch path already skips failures.",
+   "cons": "A persistent non-domain error (for example a SQL bug) would requeue and wake on every poll, which is the same exposure the agent-load branch already has. Under a cancelled request context the requeue itself fails, and the stale-dispatch reclaim recovers the task later."
+  },
+  {
+   "name": "M1-B: leave the task dispatched for stale reclaim",
+   "summary": "The rejectClaimSourceLoad/rejectClaimSkillLoad pattern: return a 500 and do not touch the row.",
+   "pros": "The reclaim interval acts as natural backoff against a hot loop.",
+   "cons": "Adds delay up to the stale-dispatch timeout, during which chat shows 'starting'. It differs from the immediate requeue the task brief and the neighboring agent-load branch use. Kept as the fallback if a hot loop shows up."
+  },
+  {
+   "name": "M1-C: typed transient sentinel from the service",
+   "summary": "Wrap transient failures in BuildTaskKnowledgeClaim, taskKnowledgeFacts, taskKnowledgeExposure and RevalidateKnowledgeManifest in a new sentinel, and map only that to requeue.",
+   "pros": "The classification lives where the errors arise.",
+   "cons": "Much larger: every return path in four functions must be audited, and unknown errors still need a default. Not the smallest fix."
+  },
+  {
+   "name": "M1-D: add knowledge_unavailable to retryableReasons",
+   "summary": "Let auto-retry recover the failed task.",
+   "pros": "Small change.",
+   "cons": "Violates spec line 110 (all knowledge failure reasons are excluded from requeue). It would retry genuine fail-closed refusals, and the task is still marked failed first."
+  }
+ ],
+ "chosen": "H1-A plus M1-A.\n\nH1 rule. Selector detection, KnowledgeSessionSelectorPresent(\"claude\", args): scan every token, including values and tokens after \"--\", with no arity parsing. Unquote each token with unshellQuoteArg, exactly as buildClaudeArgs does, then take name = the part before the first \"=\". A token is a selector when either:\n1. name starts with --resume, --continue, --session, --fork-session or --from-pr. This covers --resume=x, --resume x, --resume-session-at, --session-id, --continue=true and '--continue'.\n2. the token is a single-dash short cluster (starts with \"-\", not \"--\") whose characters after the dash include 'c' or 'r'. This covers -c, -r, -rID, -cr and -pc.\n\nThese are the only args treated as able to recover managed history. Everything else is an ordinary option: --allowedTools, --disallowedTools, --add-dir, --model, --max-turns, --max-budget-usd, --verbose, --settings, --append-system-prompt, --debug, and also --no-session-persistence, which disables persistence and selects nothing.\n\nDecision matrix. It applies only to v1 invocations (inv.ProtocolVersion == 1) on a claude runtime, to both inv.ExtraArgs and agent custom_args, and is the same with the gate on or off:\n- Any selector, or custom_args JSON that does not decode: refuse with knowledge_invocation_unsupported before launch. The selector is never stripped. This is the current behavior, kept.\n- Gate off and no selector: unsupported. The existing history guard decides. A retained negotiated row or exposure in the namespace is refused; corrupt or >128-row history gives knowledge_context_changed; otherwise the claim returns a nil descriptor and the chosen pointer unchanged (ordinary base execution). This is where the defect is fixed.\n- Gate on, no selector, all args inside ValidateKnowledgeSessionArgs, and no --no-session-persistence: negotiate as today.\n- Gate on, no selector, any other option (for example --allowedTools) or --no-session-persistence: unsupported, then the same history guard. A fresh unexposed task runs base execution and never negotiates. A retained negotiated task refuses.\n- inv == nil (legacy daemon) or a non-claude runtime: unchanged.\n\nThe leaf check in pkg/agent (KnowledgeInvocationFingerprint) still refuses any non-allowlisted arg whenever opts.Knowledge is set, so an admitted launch stays fully controlled.\n\nM1 rule:\n- *service.CollaborationError: terminal with its code (knowledge_invocation_unsupported, knowledge_context_changed, knowledge_authorization_denied, and any code returned by RevalidateKnowledgeManifest).\n- pgx.ErrNoRows (runtime, agent, chat, issue or autopilot row truly gone mid-claim): terminal, current reason kept.\n- Settlement failure inside failClaimedTaskBeforeLaunch: keeps its existing requeue fallback.\n- Every other error: immediate requeue and a 500. No failure_reason is written.",
+ "rationale": "Why safe-but-unlisted options get base execution and not refusal, with the gate on:\n- Spec line 150: \"Switch false / unsupported safe fresh runtime\" maps to \"No positive private negotiation; retain history guard and ordinary eligible base behavior\".\n- Spec line 164: \"a safe unsupported backend retain base execution\".\n- Spec line 120: \"unsupported options cannot claim it\". Here \"it\" is the initial private support, meaning negotiation, not the task.\n- Spec lines 89-90 reserve refusal for unsafe explicit selectors and for history that does not prove no exposure.\n- The leaf's own doc (knowledge_launch.go:99-103) says ordinary legacy execution does not call the allowlist.\nRefusing instead would make the allowlist a terminal kill switch for every claude agent the moment an operator enables the gate.\n\nWhy selector refusal ignores the gate:\n- task.go:59-61 says historical-session safety checks remain active while the gate is disabled.\n- Spec line 165 lists as bad: \"reuse an exposed session after toggling the gate\".\n- Turning the gate off does not remove transcripts already on disk. The namespace guard cannot see exposure whose task rows were deleted, but an explicit --resume <id> or --continue can still reach it.\n- Keeping this rule unchanged also preserves the existing guard test and the 'never silently strip' rule.\n\nWhy --no-session-persistence falls into the unsupported bucket and not a terminal refusal. Ordinary knowledge needs a persisted native session to bind for later resume, so it must never negotiate with this flag; validateTaskKnowledgeOrdinaryArgs keeps enforcing that. On a fresh unexposed task, base execution discloses nothing, so failing the task protects nothing. It also lets one daemon-wide MULTICA_CLAUDE_ARGS carry the collaboration contract without failing every ordinary claude task. Spec line 134 (\"Ordinary resumable knowledge intentionally refuses this flag; do not merge the two policies\") is still met, because negotiation refuses it and the collaboration policy is untouched.\n\nWhy M1 requeues. The neighboring branches requeue on transient errors. Requeue settles nothing and launches nothing, which is still fail closed. It keeps every knowledge column, so the next claim reruns the full history guard, and a retained negotiated row still refuses unsupported clients. A claim-time read failure before any descriptor is finalized is not one of the knowledge failure reasons that spec line 110 excludes from requeue.",
+ "changes": [
+  {
+   "file": "server/pkg/agent/knowledge_launch.go",
+   "change": "Add `func KnowledgeSessionSelectorPresent(provider string, args []string) bool`. It returns false for providers other than claude. For each raw token: arg := unshellQuoteArg(raw); name, _, _ := strings.Cut(arg, \"=\"); return true if name has any prefix in {\"--resume\", \"--continue\", \"--session\", \"--fork-session\", \"--from-pr\"}, or if len(arg) > 1 && arg[0] == '-' && arg[1] != '-' && strings.ContainsAny(arg[1:], \"cr\"). The doc comment states that it scans values and tokens after \"--\" with no arity parsing, that it decides refusal for fallback, and that ValidateKnowledgeSessionArgs stays the only admission rule. Optionally point the ValidateKnowledgeSessionArgs comment at the new helper."
+  },
+  {
+   "file": "server/internal/service/task_knowledge.go",
+   "change": "In BuildTaskKnowledgeClaim at line 357, replace `validateTaskKnowledgeOrdinaryArgs(\"claude\", inv.ExtraArgs) != nil || validateTaskKnowledgeOrdinaryArgs(\"claude\", custom) != nil` with `agent.KnowledgeSessionSelectorPresent(\"claude\", inv.ExtraArgs) || agent.KnowledgeSessionSelectorPresent(\"claude\", custom)`. Keep the malformed-custom_args refusal (lines 352-355). Add a comment: selectors are refused whatever the gate; other options only make the invocation unsupported. Leave taskKnowledgeInvocationSupported and validateTaskKnowledgeOrdinaryArgs unchanged; they still govern admission and still keep --no-session-persistence out of negotiation."
+  },
+  {
+   "file": "server/internal/handler/daemon.go",
+   "change": "Add `func knowledgeClaimErrorDisposition(err error) (code string, requeue bool)`. It returns (domain.Code, false) when errors.As finds a *service.CollaborationError, (\"knowledge_unavailable\", false) when errors.Is(err, pgx.ErrNoRows), and (\"\", true) otherwise. In the BuildTaskKnowledgeClaim error branch (lines 3234-3241), when requeue is true: slog.Error(\"task claim: knowledge history load failed; requeueing claim\", task_id, error), then call h.TaskService.RequeueTaskAfterClaimFailure(r.Context(), *task), logging a requeue failure as 'stale reclaim will recover it'. Then return &claimBuildFailure{outcome: \"error_knowledge_claim_load\", status: http.StatusInternalServerError, message: \"failed to load task knowledge context\"}. Otherwise keep the existing failClaimedTaskBeforeLaunch call with that code. The batch handler needs no change."
+  }
+ ],
+ "tests": [
+  {
+   "file": "server/pkg/agent/knowledge_launch_test.go",
+   "name": "TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv",
+   "setup_and_assertion": "Table test with no database. Each of these must return true: [\"--continue\"], [\"--continue=true\"], [\"-c\"], [\"-r\"], [\"-rabc\"], [\"-cr\"], [\"-pc\"], [\"--resume\",\"abc\"], [\"--resume=abc\"], [\"--resume-session-at=x\"], [\"--session-id=abc\"], [\"--fork-session\"], [\"--from-pr\",\"12\"], [\"'--continue'\"], [\"\\\"--resume=x\\\"\"], [\"--\",\"--continue\"], [\"--model\",\"--continue\"]. Each of these must return false: [\"--allowedTools\",\"Bash\"], [\"--add-dir\",\"/tmp/x\"], [\"--model\",\"sonnet\"], [\"--max-turns\",\"5\"], [\"--verbose\"], [\"--no-session-persistence\"], [\"--disallowedTools\",\"Write\"], [\"--debug\"]. Also check that KnowledgeSessionSelectorPresent(\"codex\", [\"--continue\"]) is false, because the rule is claude-only.",
+   "why_it_fails_now": "KnowledgeSessionSelectorPresent does not exist, so the pkg/agent test binary does not compile."
+  },
+  {
+   "file": "server/internal/service/task_knowledge_invocation_test.go",
+   "name": "TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim",
+   "setup_and_assertion": "Subtests: defaults (f.inv.ExtraArgs = [\"--add-dir\",\"/tmp/x\"]), custom (f.fx.Exec `UPDATE agent SET custom_args='[\"--allowedTools\",\"Bash\"]'::jsonb WHERE id=$1`, f.task.AgentID), and persistence (f.inv.ExtraArgs = [\"--no-session-persistence\"]). Each starts with f := newTaskKnowledgeFixture(t) and f.tasks.KnowledgeContextEnabled = false; the TaskService is per-fixture, so no cleanup is needed. Call f.tasks.BuildTaskKnowledgeClaim(f.ctx, f.task, &f.inv, \"legacy-native\"). Assert err == nil, d == nil and prior == \"legacy-native\": no negotiation, and the ordinary pointer is preserved.",
+   "why_it_fails_now": "Step 1 at task_knowledge.go:357 runs validateTaskKnowledgeOrdinaryArgs. ValidateKnowledgeSessionArgs refuses --add-dir and --allowedTools in its default branch, and the wrapper refuses --no-session-persistence, so the call returns knowledge_invocation_unsupported."
+  },
+  {
+   "file": "server/internal/service/task_knowledge_invocation_test.go",
+   "name": "TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution",
+   "setup_and_assertion": "f := newTaskKnowledgeFixture(t), leaving the gate on. Subtests: custom_args [\"--allowedTools\",\"Bash\"], and inv.ExtraArgs [\"--add-dir\",\"/tmp/x\"]. Call BuildTaskKnowledgeClaim(f.ctx, f.task, &f.inv, \"\"). Assert err == nil, d == nil and prior == \"\": an unsupported but safe option gets base execution with no descriptor.",
+   "why_it_fails_now": "The same step-1 allowlist refusal returns knowledge_invocation_unsupported before the support decision is reached."
+  },
+  {
+   "file": "server/internal/service/task_knowledge_invocation_test.go",
+   "name": "TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates (replaces TestKnowledgeOrdinaryNoSessionPersistenceRemainsUnsupported)",
+   "setup_and_assertion": "Gate on. Same two subtests as today: defaults ExtraArgs [\"--no-session-persistence\"], and custom_args [\"--no-session-persistence\"]. Assert err == nil and d == nil, meaning reusable history never negotiates with persistence disabled. Then pass the nil descriptor to f.tasks.FinalizeTaskClaim, reload the row, and assert KnowledgeContextVersion.Valid == false.",
+   "why_it_fails_now": "Today the claim returns knowledge_invocation_unsupported from step 1; the existing test asserts that refusal, and this test replaces it."
+  },
+  {
+   "file": "server/internal/service/task_knowledge_invocation_test.go",
+   "name": "TestKnowledgeSessionSelectorsRefusedWhateverTheGate (regression guard)",
+   "setup_and_assertion": "Loop gate over {on, off} and source over {defaults, custom}. Forms: [\"--continue\"], [\"-c\"], [\"-pc\"], [\"--resume\",\"abc\"], [\"--resume=abc\"], [\"-rabc\"], [\"--session-id=abc\"], [\"--fork-session\"], [\"--allowedTools\",\"Bash\",\"--continue\"], [\"'--continue'\"]. Assert collaborationErrorCode(err, \"knowledge_invocation_unsupported\") and d == nil.",
+   "why_it_fails_now": "It does not fail now, and cannot: this behavior is intentionally unchanged, because the current over-broad allowlist already refuses these forms. It exists to stop the fix from overcorrecting into stripping or allowing selectors. The failing-first coverage for the selector rule is TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv."
+  },
+  {
+   "file": "server/internal/service/task_knowledge_invocation_test.go",
+   "name": "TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs (regression guard)",
+   "setup_and_assertion": "f := newTaskKnowledgeFixture(t); f.finalize(t, \"\") with no extra args, so the row is negotiated. Then set custom_args to [\"--allowedTools\",\"Bash\"], reload f.task with GetAgentTask so KnowledgeContextVersion is valid, and call BuildTaskKnowledgeClaim(..., &f.inv, \"\"). Assert knowledge_invocation_unsupported.",
+   "why_it_fails_now": "It does not fail now: step 1 refuses today. After the fix, the same result comes from the retained-negotiation guard at task_knowledge.go:371-373. This pins spec line 122: a changed contract does not inherit an old admission."
+  },
+  {
+   "file": "server/internal/handler/daemon_knowledge_test.go",
+   "name": "TestKnowledgeClaimGateOffSafeArgsDispatchesOrdinaryTask",
+   "setup_and_assertion": "f := newTaskKnowledgeHTTPFixture(t, \"issue\"); testHandler.TaskService.KnowledgeContextEnabled = false (the fixture's Cleanup restores it). dbfx.Exec `UPDATE agent SET custom_args='[\"--allowedTools\",\"Bash\"]'::jsonb WHERE id=$1`, f.agentID. inv := f.inv; inv.ExtraArgs = []string{\"--add-dir\",\"/tmp/x\"}. task := f.claim(t, \"single\", &inv), which asserts a 200. Assert task.KnowledgeContext == nil. Then check with dbfx.QueryRow that status = 'dispatched' and failure_reason IS NULL. This is a single named regression case; the rule's matrix lives in the service suite.",
+   "why_it_fails_now": "BuildTaskKnowledgeClaim returns knowledge_invocation_unsupported, and daemon.go:3241 settles the task as failed and answers 409, so f.claim's .Want(200) fails."
+  },
+  {
+   "file": "server/internal/handler/daemon_knowledge_test.go",
+   "name": "TestKnowledgeClaimTransientHistoryErrorRequeuesTask",
+   "setup_and_assertion": "Subtests: transport in {single, batch}; runtime in {codex, legacy-claude}. Each starts with f := newTaskKnowledgeHTTPFixture(t, \"issue\") and testHandler.TaskService.KnowledgeContextEnabled = false. For codex, dbfx.Exec `UPDATE agent_runtime SET provider='codex' WHERE id=$1`, f.runtimeID. Inject the fault: saved := testHandler.TaskService.Queries; testHandler.TaskService.Queries = db.New(failQueryDBTX{DBTX: testPool, failOn: \"-- name: ListTaskKnowledgeRuntimeHistory\", err: &pgconn.PgError{Code: \"57P01\"}}); t.Cleanup restores it. Swap only the Queries field: copying TaskService would copy its sync.Map and fail go vet's copylocks check. Do not use t.Parallel. Claim with nil knowledge: single expects f.call(t, testHandler.ClaimTaskByRuntime, ...).Want(500) with no \"knowledge_\" in the body; batch expects ClaimTasksByRuntime .Want(200) with zero tasks. Then assert the row has status = 'queued', dispatched_at IS NULL and failure_reason IS NULL. Finally restore Queries, call f.claim(t, \"single\", nil), and assert the same task ID comes back with KnowledgeContext == nil. The legacy-claude subtest is the fallback if the codex fixture needs extra columns.",
+   "why_it_fails_now": "daemon.go:3234-3241 maps the PgError to knowledge_unavailable and calls failClaimedTaskBeforeLaunch. Single answers 409 and the row ends as status 'failed' with failure_reason 'knowledge_unavailable'; batch skips the task, but the row is failed, not queued."
+  },
+  {
+   "file": "server/internal/handler/daemon_knowledge_test.go",
+   "name": "TestKnowledgeClaimErrorDisposition",
+   "setup_and_assertion": "Pure table test of the helper, with no database calls. &service.CollaborationError{Code: \"knowledge_context_changed\"} gives (\"knowledge_context_changed\", false). fmt.Errorf(\"x: %w\", pgx.ErrNoRows) gives (\"knowledge_unavailable\", false). &pgconn.PgError{Code: \"57P01\"}, context.DeadlineExceeded, context.Canceled and errors.New(\"connection reset\") each give requeue == true.",
+   "why_it_fails_now": "knowledgeClaimErrorDisposition does not exist, so the handler test package does not compile."
+  }
+ ],
+ "spec_and_doc_updates": [
+  {
+   "file": ".trellis/spec/server/collaboration-knowledge-execution.md",
+   "change": "Lines 89-90. Replace \"Unsafe explicit selectors are refused;\" with: \"Unsafe explicit selectors are refused whatever the gate. For a v1 Claude invocation, any daemon-default or agent custom argument that, after the same unshell-quoting as launch, is a `--resume*`, `--continue*`, `--session*`, `--fork-session*` or `--from-pr*` long option, or a single-dash cluster containing `c` or `r`, refuses with `knowledge_invocation_unsupported`. Values and tokens after `--` are scanned, and the selector is never stripped. Any other option outside the negotiation allowlist only makes the invocation unsupported, and the history guard below then chooses base execution or refusal.\""
+  },
+  {
+   "file": ".trellis/spec/server/collaboration-knowledge-execution.md",
+   "change": "Line 108-110 paragraph. After \"All knowledge failure reasons are excluded from automatic fresh fallback, requeue and input replay.\" add: \"A transient dependency read while building a claim, before any descriptor is finalized, is not a knowledge failure reason.\""
+  },
+  {
+   "file": ".trellis/spec/server/collaboration-knowledge-execution.md",
+   "change": "Lines 133-134. Replace \"Ordinary resumable knowledge intentionally refuses this flag; do not merge the two policies.\" with: \"Ordinary resumable knowledge never negotiates with this flag: a fresh unexposed task takes base execution, while a retained negotiated task or a leaf launch carrying knowledge intent refuses with `knowledge_invocation_unsupported`. Do not merge the two policies.\""
+  },
+  {
+   "file": ".trellis/spec/server/collaboration-knowledge-execution.md",
+   "change": "Section 4 matrix. Line 150: change the condition to \"Switch false / unsupported safe fresh runtime (including safe options outside the negotiation allowlist and ordinary `--no-session-persistence`)\". After line 154, add the row: \"Transient read failure while building a claim, before descriptor finalization | Requeue that exact claim generation with no failure reason; typed refusals and missing rows stay terminal\"."
+  },
+  {
+   "file": "docs/collaboration-knowledge-runtime.md",
+   "change": "Line 69 (`knowledge_invocation_unsupported` row). Add: \"Options outside the negotiation allowlist, such as `--allowedTools` or `--add-dir`, no longer fail fresh tasks; those tasks run without knowledge. Session selectors such as `--continue` and `--resume` still refuse.\""
+  }
+ ],
+ "migrations": [],
+ "compatibility_and_risks": "Legacy daemons that send no inv are unchanged. v1 daemons on the default deployment (gate off) stop terminally failing claude tasks whose daemon defaults or custom_args contain options the allowlist does not list. Selector configs such as --continue still refuse on v1, as they do today. With the gate on, unlisted options and --no-session-persistence now run base execution without knowledge, where they used to refuse. An operator who expects knowledge in that configuration gets no descriptor and no error, so observability may be worth a follow-up.\n\nThe selector denylist is coarse on purpose. Some harmless values refuse, but HEAD refuses them too, so nothing regresses. A future Claude selector with a new name would pass the gate-off v1 fallback; the namespace history guard and the leaf allowlist still bound it.\n\nM1: a persistent error that is neither a domain error nor NoRows would requeue and wake the runtime on every poll. The agent-load branch already carries the same risk; M1-B (stale reclaim) is the fallback if that matters. When the request context is cancelled, the requeue itself fails and the stale reclaim recovers the task. The requeue SQL leaves knowledge columns intact, so retained negotiation and recorded exposure survive.\n\nTesting: every DB-backed test needs the explicit isolated database (.trellis/spec/server/database-test-isolation.md). newTaskKnowledgeHTTPFixture calls t.Fatal without one, and other handler DB tests skip silently. The handler fault test mutates the shared testHandler.TaskService.Queries, so it must not run in parallel.\n\nThis is a design only. Nothing was built, vetted or run in this pass.",
+ "open_questions": [
+  "Legacy daemons (inv == nil) whose custom_args contain --continue or --resume are not refused by step 1, and the server cannot see their daemon defaults. Closing this would change old-daemon behavior that spec line 91 says to preserve, so it needs an owner decision. It is out of scope for H1.",
+  "Should --no-session-persistence with the gate on take base execution (chosen) or keep a terminal refusal? The refusal reading treats spec line 134 as task-level, and keeping it means a one-line gate-on branch and the original test.",
+  "Should a gate-on claim that falls back to base because of an unlisted option emit a log or metric, so operators can see why knowledge was not delivered?",
+  "pgx.ErrNoRows keeps the knowledge_unavailable reason for unrelated tasks (for example codex). Relabeling it to invalid_task_identity, as the agent-load branch does, would be clearer, but RevalidateKnowledgeManifest might also return NoRows, so it was left unchanged.",
+  "Adjacent and unverified: the FinalizeTaskClaim error branch (daemon.go ~3584-3594) always requeues, including domain refusals from finalizeTaskKnowledgeClaim such as knowledge_context_changed when the 32-claim bound is hit. That could requeue repeatedly instead of failing. It is outside H1/M1 and was not traced end-to-end."
+ ]
+}

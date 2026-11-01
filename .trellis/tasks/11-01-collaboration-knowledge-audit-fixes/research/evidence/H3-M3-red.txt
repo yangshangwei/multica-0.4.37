@@ -1,0 +1,37 @@
+source: 3110295d0eca364937f08c97102ca74f08a7e235
+database: kfix_claim_svc_takeover_20261101
+command: ['/Volumes/artisan/code/2026/mc-kfix-lane-claim/scripts/go-test-with-agent-cli-guard.sh', 'go', 'test', './internal/service', '-run', '^TestKnowledge(ResumeReadsCompleteLongSessionHistory|ResumeDeepExposureStillGoverns|ResumeCorruptRowAnywhereRefuses|RuntimeHistoryReadsCompleteNamespace|RuntimeHistoryIsIndexDriven)$', '-count=1', '-v']
+=== RUN   TestKnowledgeResumeReadsCompleteLongSessionHistory
+2026/11/01 23:11:37 INFO task started task_id=0e154863-6aac-44ef-bd99-bc2f8bbcc2be issue_id=4ff6177c-c692-4e9b-9cc8-99d9adc24339
+2026/11/01 23:11:37 INFO task completed task_id=0e154863-6aac-44ef-bd99-bc2f8bbcc2be issue_id=4ff6177c-c692-4e9b-9cc8-99d9adc24339
+    task_knowledge_history_growth_test.go:55: knowledge_context_changed
+--- FAIL: TestKnowledgeResumeReadsCompleteLongSessionHistory (0.61s)
+=== RUN   TestKnowledgeResumeDeepExposureStillGoverns
+2026/11/01 23:11:38 INFO task started task_id=00748ea2-991e-43aa-a7b4-edb012933b2a issue_id=da11ac85-58c9-425d-92cf-da9295b204e3
+2026/11/01 23:11:38 INFO task completed task_id=00748ea2-991e-43aa-a7b4-edb012933b2a issue_id=da11ac85-58c9-425d-92cf-da9295b204e3
+    task_knowledge_history_growth_test.go:79: withdrawn exposure beyond two pages must retire its native session: "" knowledge_context_changed
+--- FAIL: TestKnowledgeResumeDeepExposureStillGoverns (0.61s)
+=== RUN   TestKnowledgeResumeCorruptRowAnywhereRefuses
+2026/11/01 23:11:38 INFO task started task_id=e0c37b7a-701c-417e-a6f2-0e02ca4853b9 issue_id=5e160476-76f4-4693-b360-1543eb27b561
+2026/11/01 23:11:38 INFO task completed task_id=e0c37b7a-701c-417e-a6f2-0e02ca4853b9 issue_id=5e160476-76f4-4693-b360-1543eb27b561
+    task_knowledge_history_growth_test.go:95: valid deep history control must resume: "" knowledge_context_changed
+--- FAIL: TestKnowledgeResumeCorruptRowAnywhereRefuses (0.55s)
+=== RUN   TestKnowledgeRuntimeHistoryReadsCompleteNamespace
+=== RUN   TestKnowledgeRuntimeHistoryReadsCompleteNamespace/claimed_only_growth
+    task_knowledge_history_growth_test.go:130: claimed-only namespace must remain ordinary: "" knowledge_context_changed
+=== RUN   TestKnowledgeRuntimeHistoryReadsCompleteNamespace/deep_exposure
+2026/11/01 23:11:39 INFO task started task_id=a205d613-cbd4-48a2-8d2c-fbeb943067de issue_id=1731b496-20e3-452b-b6e6-de8ba88ff9d4
+    task_knowledge_history_growth_test.go:125: deep private exposure must refuse unsupported work: knowledge_context_changed
+=== RUN   TestKnowledgeRuntimeHistoryReadsCompleteNamespace/deep_corrupt
+    task_knowledge_history_growth_test.go:130: claimed-only namespace must remain ordinary: "" knowledge_context_changed
+--- FAIL: TestKnowledgeRuntimeHistoryReadsCompleteNamespace (1.63s)
+    --- FAIL: TestKnowledgeRuntimeHistoryReadsCompleteNamespace/claimed_only_growth (0.53s)
+    --- FAIL: TestKnowledgeRuntimeHistoryReadsCompleteNamespace/deep_exposure (0.59s)
+    --- FAIL: TestKnowledgeRuntimeHistoryReadsCompleteNamespace/deep_corrupt (0.51s)
+=== RUN   TestKnowledgeRuntimeHistoryIsIndexDriven
+--- PASS: TestKnowledgeRuntimeHistoryIsIndexDriven (0.24s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/service	4.386s
+FAIL
+
+exit_code: 1

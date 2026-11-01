@@ -1,0 +1,31 @@
+# L1 green: approval that meets expiry seals 409 knowledge_expired
+#
+# Code under test: c930ac847 plus the L1 fix (uncommitted at run time):
+#   - changeKnowledgeCandidate decides expiry with GetKnowledgeDatabaseTime (clock_timestamp())
+#     before AdvanceKnowledgeTarget / SupersedeKnowledgeCandidate;
+#   - ApproveKnowledgeCandidate pgx.ErrNoRows -> retryable 40001, so the outer transaction
+#     rolls back and the retry precheck seals knowledge_expired.
+# Database: postgres://multica:multica@127.0.0.1:5432/kfix_write_svc (migrated to 760).
+# Command (from server/): same as L1-red.txt. Exit code: 0
+#
+# Both tests are BEHAVIORAL (they failed in L1-red.txt) and now pass.
+
+=== RUN   TestKnowledgeApprovalExpiryUsesDatabaseClockNotApplicationClock
+--- PASS: TestKnowledgeApprovalExpiryUsesDatabaseClockNotApplicationClock (1.87s)
+=== RUN   TestKnowledgeCorrectionApprovalExpiringMidTransactionRetriesIntoSealedExpiry
+--- PASS: TestKnowledgeCorrectionApprovalExpiringMidTransactionRetriesIntoSealedExpiry (2.62s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/service	8.187s
+
+# Stability: the same two tests with -count=5: exit 0, 10 PASS, 0 FAIL.
+#
+# Mutation checks (temporary edits, file restored and cmp-verified after each):
+# 1. Retry mapping disabled, database-clock precheck kept:
+#    --- PASS: TestKnowledgeApprovalExpiryUsesDatabaseClockNotApplicationClock (1.83s)
+#        collaboration_knowledge_concurrency_test.go:463: approval expiring between precheck and UPDATE: {ProtocolVersion:0 RequestID: Action: Code: CandidateID: Version: StateRevision: State: TargetKnowledgeRevision:<nil>} knowledge_candidate_not_found
+#    --- FAIL: TestKnowledgeCorrectionApprovalExpiringMidTransactionRetriesIntoSealedExpiry (2.30s)
+# 2. Precheck back on the application clock, retry mapping kept (skew now exhausts the
+#    bounded retry into 503 knowledge_busy instead of 404):
+#        collaboration_knowledge_concurrency_test.go:423: approval after database expiry with a lagging application clock: {ProtocolVersion:0 RequestID: Action: Code: CandidateID: Version: StateRevision: State: TargetKnowledgeRevision:<nil>} knowledge_busy
+#    --- FAIL: TestKnowledgeApprovalExpiryUsesDatabaseClockNotApplicationClock (2.16s)
+#    --- PASS: TestKnowledgeCorrectionApprovalExpiringMidTransactionRetriesIntoSealedExpiry (2.71s)

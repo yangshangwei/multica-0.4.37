@@ -1,0 +1,233 @@
+{
+  "source_sha": "f7b610692f3d412505c9759a166b0a36da3b6e8e",
+  "production_source_sha256": "b01525aaa6ea2a60253e61eaac8ba62ecc34467cb7a6c9cae7733936999725fc",
+  "test_source_sha256": "abb0145bf7fe056c10877385b3a192dfada9dd18aa78b4b401f1130f238f3697",
+  "method": "Go overlays only; no production source edits; expected regression failures do not claim a base product defect",
+  "provider_calls": 0,
+  "database_access": false,
+  "mutants": [
+    {
+      "name": "claim_drop_provenance",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-overlay",
+        "/Volumes/artisan/code/2026/mc-kfix-lane-launch/.omx/private/launch-followup-mutations/claim_drop_provenance.json",
+        "./internal/daemon",
+        "-run",
+        "^TestKnowledge(RebindClaimRequiresOwnReachabilityDecision|RebindPreparationPreservesClaimIdentity|PromptRebindUsesPreparedFreshIdentity)$",
+        "-count=1",
+        "-parallel=2",
+        "-timeout=3m",
+        "-json"
+      ],
+      "started_at": "2026-11-01T16:01:06.729134+00:00",
+      "exit_code": 1,
+      "killed": true,
+      "failed_tests": [
+        "TestKnowledgeRebindClaimRequiresOwnReachabilityDecision/missing_drop_provenance",
+        "TestKnowledgeRebindClaimRequiresOwnReachabilityDecision/another_session_was_dropped",
+        "TestKnowledgeRebindClaimRequiresOwnReachabilityDecision"
+      ],
+      "log_sha256": "00c3b98ba610b36ecd9d4232967ba21f1975c294bd2d9554fc7f512697cb9fdc",
+      "mutated_source_sha256": "d6a82699b4e9660c6d507c03d3fe4bb561d573d5b38177131ef8457a71599f81"
+    },
+    {
+      "name": "claim_task_resume_cleared",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-overlay",
+        "/Volumes/artisan/code/2026/mc-kfix-lane-launch/.omx/private/launch-followup-mutations/claim_task_resume_cleared.json",
+        "./internal/daemon",
+        "-run",
+        "^TestKnowledge(RebindClaimRequiresOwnReachabilityDecision|RebindPreparationPreservesClaimIdentity|PromptRebindUsesPreparedFreshIdentity)$",
+        "-count=1",
+        "-parallel=2",
+        "-timeout=3m",
+        "-json"
+      ],
+      "started_at": "2026-11-01T16:01:16.016686+00:00",
+      "exit_code": 1,
+      "killed": true,
+      "failed_tests": [
+        "TestKnowledgeRebindClaimRequiresOwnReachabilityDecision/task_still_requests_resume",
+        "TestKnowledgeRebindClaimRequiresOwnReachabilityDecision"
+      ],
+      "log_sha256": "fff26d16caee336ddbf21d86a4761b4c984604045087203b9eeb1ba6c02685a5",
+      "mutated_source_sha256": "3aabf6f920869dae8617374fe31cdb5690598cc7263bcf2e11d8c23e011c8a53"
+    },
+    {
+      "name": "claim_options_resume_cleared",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-overlay",
+        "/Volumes/artisan/code/2026/mc-kfix-lane-launch/.omx/private/launch-followup-mutations/claim_options_resume_cleared.json",
+        "./internal/daemon",
+        "-run",
+        "^TestKnowledge(RebindClaimRequiresOwnReachabilityDecision|RebindPreparationPreservesClaimIdentity|PromptRebindUsesPreparedFreshIdentity)$",
+        "-count=1",
+        "-parallel=2",
+        "-timeout=3m",
+        "-json"
+      ],
+      "started_at": "2026-11-01T16:01:23.205782+00:00",
+      "exit_code": 1,
+      "killed": true,
+      "failed_tests": [
+        "TestKnowledgeRebindClaimRequiresOwnReachabilityDecision/options_still_request_resume",
+        "TestKnowledgeRebindClaimRequiresOwnReachabilityDecision"
+      ],
+      "log_sha256": "eaf48387cac39eb46e972d9a31142486de6b76f0997f66494c27326411e43a3a",
+      "mutated_source_sha256": "3a0e061403f71e57bca11267ace3710752373ef1809908b1d5fe076fe7c85d93"
+    },
+    {
+      "name": "preparation_checks_session",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-overlay",
+        "/Volumes/artisan/code/2026/mc-kfix-lane-launch/.omx/private/launch-followup-mutations/preparation_checks_session.json",
+        "./internal/daemon",
+        "-run",
+        "^TestKnowledge(RebindClaimRequiresOwnReachabilityDecision|RebindPreparationPreservesClaimIdentity|PromptRebindUsesPreparedFreshIdentity)$",
+        "-count=1",
+        "-parallel=2",
+        "-timeout=3m",
+        "-json"
+      ],
+      "started_at": "2026-11-01T16:01:28.074684+00:00",
+      "exit_code": 1,
+      "killed": true,
+      "failed_tests": [
+        "TestKnowledgeRebindPreparationPreservesClaimIdentity/reuses_claimed_generation",
+        "TestKnowledgeRebindPreparationPreservesClaimIdentity/invalid_generation",
+        "TestKnowledgeRebindPreparationPreservesClaimIdentity/retains_native_session",
+        "TestKnowledgeRebindPreparationPreservesClaimIdentity/changes_provider",
+        "TestKnowledgeRebindPreparationPreservesClaimIdentity/changes_runtime",
+        "TestKnowledgeRebindPreparationPreservesClaimIdentity/changes_agent",
+        "TestKnowledgeRebindPreparationPreservesClaimIdentity/changes_configuration",
+        "TestKnowledgeRebindPreparationPreservesClaimIdentity/changes_scope_kind",
+        "TestKnowledgeRebindPreparationPreservesClaimIdentity/changes_scope_identity",
+        "TestKnowledgeRebindPreparationPreservesClaimIdentity",
+        "TestKnowledgePromptRebindUsesPreparedFreshIdentity/echoed_claimed_binding",
+        "TestKnowledgePromptRebindUsesPreparedFreshIdentity"
+      ],
+      "log_sha256": "fd449bce0feb6a44da7d848972d4b36d2a8a8dd6d8fa3dc99a33a193658f7446",
+      "mutated_source_sha256": "9eb599574288c98d0c357d4af45e465cb7d9f4e5948c3a61821ee7b69ddfc4d3"
+    },
+    {
+      "name": "rebind_generation_changes",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-overlay",
+        "/Volumes/artisan/code/2026/mc-kfix-lane-launch/.omx/private/launch-followup-mutations/rebind_generation_changes.json",
+        "./internal/daemon",
+        "-run",
+        "^TestKnowledge(RebindClaimRequiresOwnReachabilityDecision|RebindPreparationPreservesClaimIdentity|PromptRebindUsesPreparedFreshIdentity)$",
+        "-count=1",
+        "-parallel=2",
+        "-timeout=3m",
+        "-json"
+      ],
+      "started_at": "2026-11-01T16:01:34.981875+00:00",
+      "exit_code": 1,
+      "killed": true,
+      "failed_tests": [
+        "TestKnowledgeRebindPreparationPreservesClaimIdentity/reuses_claimed_generation",
+        "TestKnowledgeRebindPreparationPreservesClaimIdentity"
+      ],
+      "log_sha256": "480ede4f956b34567fd2a2daa7fb0cf8693b124b7769d73a6bb32255cde423c0",
+      "mutated_source_sha256": "530c045899442fefa916a6277aeab665bcc173009717e29d1bb7c7539cc509b6"
+    },
+    {
+      "name": "prompt_checks_preparation",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-overlay",
+        "/Volumes/artisan/code/2026/mc-kfix-lane-launch/.omx/private/launch-followup-mutations/prompt_checks_preparation.json",
+        "./internal/daemon",
+        "-run",
+        "^TestKnowledge(RebindClaimRequiresOwnReachabilityDecision|RebindPreparationPreservesClaimIdentity|PromptRebindUsesPreparedFreshIdentity)$",
+        "-count=1",
+        "-parallel=2",
+        "-timeout=3m",
+        "-json"
+      ],
+      "started_at": "2026-11-01T16:01:42.686447+00:00",
+      "exit_code": 1,
+      "killed": true,
+      "failed_tests": [
+        "TestKnowledgePromptRebindUsesPreparedFreshIdentity/echoed_claimed_binding",
+        "TestKnowledgePromptRebindUsesPreparedFreshIdentity"
+      ],
+      "log_sha256": "25e4da93fa835efcfbe36238d8eb9b14550cfbf099cf6d2ac90cf261eee3757c",
+      "mutated_source_sha256": "dc7b2677290de13be17d8b6178ccf80acb4990b656f25e4d035db9e8eb2cd030"
+    },
+    {
+      "name": "prompt_uses_prepared_identity",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-overlay",
+        "/Volumes/artisan/code/2026/mc-kfix-lane-launch/.omx/private/launch-followup-mutations/prompt_uses_prepared_identity.json",
+        "./internal/daemon",
+        "-run",
+        "^TestKnowledge(RebindClaimRequiresOwnReachabilityDecision|RebindPreparationPreservesClaimIdentity|PromptRebindUsesPreparedFreshIdentity)$",
+        "-count=1",
+        "-parallel=2",
+        "-timeout=3m",
+        "-json"
+      ],
+      "started_at": "2026-11-01T16:01:52.429784+00:00",
+      "exit_code": 1,
+      "killed": true,
+      "failed_tests": [
+        "TestKnowledgePromptRebindUsesPreparedFreshIdentity/fresh_server_binding",
+        "TestKnowledgePromptRebindUsesPreparedFreshIdentity"
+      ],
+      "log_sha256": "5a421a1ba53a44b009c0d9d5b1a1650088542466dd55b61c9d264359afa1d93d",
+      "mutated_source_sha256": "50512b0d44413c82ef6abe6968cf681d2540e95ac476e68e2ee278b71d9682f0"
+    }
+  ],
+  "killed": 7,
+  "total": 7
+}

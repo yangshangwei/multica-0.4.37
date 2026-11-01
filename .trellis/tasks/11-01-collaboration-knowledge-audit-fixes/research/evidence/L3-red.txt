@@ -1,0 +1,40 @@
+# L3 red: knowledge/access frames lose their write budget to final-send authorization
+#
+# Code under test: 3aee019aa (L1+L2 fixed, no L3 fix) plus, uncommitted:
+#   - the test seam in server/internal/realtime/hub.go: Hub.writeTimeout (zero = writeWait 10s)
+#     and Client.writeDeadline(), used at the two existing SetWriteDeadline call sites. The
+#     deadline is still set BEFORE authorized()/outboundScopeCurrent()/outboundKnowledgeFrame(),
+#     and outboundScopeCurrent's direct access_changed write still has no deadline of its own.
+#   - the two new tests below (collaboration_knowledge_test.go, collaboration_test.go) and the
+#     tryReadAccountFrame/expectLiveSocket/accountTestSocketOnHub helpers in collaboration_test.go.
+# Database: none (internal/realtime is not DB-backed).
+# Command (from server/):
+#   env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 go test ./internal/realtime \
+#     -run 'TestKnowledgeSlowFinalSendAuthorizationDoesNotSpendWriteBudget|TestCollaborationSlowRevocationCheckStillSendsAccessHint' -count=1 -v
+# Exit code: 1
+#
+# BEHAVIORAL, both fail for the defect's reason (write budget 200ms, authorization stub 600ms):
+# - TestKnowledgeSlowFinalSendAuthorizationDoesNotSpendWriteBudget: the workspace authorizer
+#   inside outboundKnowledgeFrame blocks past the write deadline that writePump set before it,
+#   so WriteMessage fails with "i/o timeout" and writePump closes the socket.
+# - TestCollaborationSlowRevocationCheckStillSendsAccessHint: the issue re-authorization inside
+#   outboundScopeCurrent denies after 600ms; its direct collaboration:access_changed write runs
+#   on the expired deadline, fails, and closes the connection.
+# No regression guard in this file; the full realtime package runs in L3-green.txt.
+
+=== RUN   TestKnowledgeSlowFinalSendAuthorizationDoesNotSpendWriteBudget
+2026/11/01 19:07:20 INFO websocket connected user_id=test-user workspace_id=b736820a-476b-4e30-bbbf-e8f046c54562 client_platform="" client_version="" client_os=""
+2026/11/01 19:07:20 INFO ws client connected workspace_id=b736820a-476b-4e30-bbbf-e8f046c54562 user_id=test-user total_clients=1
+2026/11/01 19:07:21 WARN websocket write error error="write tcp 127.0.0.1:60758->127.0.0.1:60759: i/o timeout" user_id=test-user workspace_id=b736820a-476b-4e30-bbbf-e8f046c54562
+2026/11/01 19:07:21 INFO ws client disconnected workspace_id=b736820a-476b-4e30-bbbf-e8f046c54562 user_id=test-user total_clients=0
+    collaboration_knowledge_test.go:178: hint lost behind an authorization slower than the 200ms write budget: websocket: close 1006 (abnormal closure): unexpected EOF
+--- FAIL: TestKnowledgeSlowFinalSendAuthorizationDoesNotSpendWriteBudget (0.61s)
+=== RUN   TestCollaborationSlowRevocationCheckStillSendsAccessHint
+2026/11/01 19:07:21 INFO websocket connected user_id=test-user workspace_id="" client_platform="" client_version="" client_os=""
+2026/11/01 19:07:21 INFO ws client connected workspace_id="" user_id=test-user total_clients=1
+2026/11/01 19:07:21 INFO ws client disconnected workspace_id="" user_id=test-user total_clients=0
+    collaboration_test.go:266: access hint lost behind a revocation check slower than the 200ms write budget: websocket: close 1006 (abnormal closure): unexpected EOF
+--- FAIL: TestCollaborationSlowRevocationCheckStillSendsAccessHint (0.60s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/realtime	1.677s
+FAIL

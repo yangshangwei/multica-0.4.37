@@ -20,7 +20,10 @@ import (
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
-const maxTaskKnowledgeClaims = 32
+const (
+	maxTaskKnowledgeClaims   = 32
+	taskKnowledgeHistoryPage = 128
+)
 
 // This document is private server metadata. It never contains contributions,
 // credentials or a Provider transcript and is never a public task projection.
@@ -354,7 +357,14 @@ func (s *TaskService) BuildTaskKnowledgeClaim(ctx context.Context, task db.Agent
 				return nil, "", knowledgeFailure(409, "knowledge_invocation_unsupported")
 			}
 		}
-		if validateTaskKnowledgeOrdinaryArgs("claude", inv.ExtraArgs) != nil || validateTaskKnowledgeOrdinaryArgs("claude", custom) != nil {
+		// Session selectors are refused whatever the gate: transcripts written
+		// while it was on stay on disk and an explicit selector can reach them.
+		// Subcommand operands and a bare "--" are refused with them, because
+		// they stop the managed argv from governing the process.
+		// Other options outside the negotiation allowlist (and
+		// --no-session-persistence) only make the invocation unsupported below,
+		// where the history guard chooses base execution or refusal.
+		if agent.KnowledgeSessionSelectorPresent("claude", inv.ExtraArgs) || agent.KnowledgeSessionSelectorPresent("claude", custom) {
 			return nil, "", knowledgeFailure(409, "knowledge_invocation_unsupported")
 		}
 	}
@@ -407,27 +417,43 @@ func (s *TaskService) BuildTaskKnowledgeClaim(ctx context.Context, task db.Agent
 }
 
 func (s *TaskService) taskKnowledgeRuntimeExposure(ctx context.Context, r db.AgentRuntime) (bool, error) {
-	rows, err := s.Queries.ListTaskKnowledgeRuntimeHistory(ctx, db.ListTaskKnowledgeRuntimeHistoryParams{RuntimeID: r.ID, DaemonID: r.DaemonID.String, Provider: r.Provider, OwnerID: util.UUIDToString(r.OwnerID)})
+	keys, err := s.Queries.ListTaskKnowledgeRuntimeHistoryKeys(ctx, db.ListTaskKnowledgeRuntimeHistoryKeysParams{RuntimeID: r.ID, DaemonID: r.DaemonID.String, Provider: r.Provider, OwnerID: util.UUIDToString(r.OwnerID)})
 	if err != nil {
 		return false, err
 	}
-	if len(rows) > 128 {
-		return false, knowledgeFailure(409, "knowledge_context_changed")
-	}
-	for _, row := range rows {
-		d, err := decodeTaskKnowledge(row.KnowledgeContextVersion, row.KnowledgeDelivery)
+	for start := 0; start < len(keys); start += taskKnowledgeHistoryPage {
+		page := keys[start:min(start+taskKnowledgeHistoryPage, len(keys))]
+		ids := make([]pgtype.UUID, len(page))
+		for i, key := range page {
+			ids[i] = key.ID
+		}
+		rows, err := s.Queries.GetTaskKnowledgeHistoryRows(ctx, ids)
 		if err != nil {
 			return false, err
 		}
-		if d == nil {
-			continue
+		byID := make(map[pgtype.UUID]db.GetTaskKnowledgeHistoryRowsRow, len(rows))
+		for _, row := range rows {
+			byID[row.ID] = row
 		}
-		for _, c := range d.Claims {
-			if c.Descriptor.TaskID != util.UUIDToString(row.ID) || c.Descriptor.Session.AgentID != util.UUIDToString(row.AgentID) {
+		for _, key := range page {
+			row, ok := byID[key.ID]
+			if !ok || !row.KnowledgeContextVersion.Valid {
 				return false, knowledgeFailure(409, "knowledge_context_changed")
 			}
-			if c.Prepared != nil && len(c.Prepared.Manifest.Entries) > 0 {
-				return true, nil
+			d, err := decodeTaskKnowledge(row.KnowledgeContextVersion, row.KnowledgeDelivery)
+			if err != nil {
+				return false, err
+			}
+			if d == nil {
+				continue
+			}
+			for _, c := range d.Claims {
+				if c.Descriptor.TaskID != util.UUIDToString(row.ID) || c.Descriptor.Session.AgentID != util.UUIDToString(row.AgentID) {
+					return false, knowledgeFailure(409, "knowledge_context_changed")
+				}
+				if c.Prepared != nil && len(c.Prepared.Manifest.Entries) > 0 {
+					return true, nil
+				}
 			}
 		}
 	}
@@ -469,76 +495,85 @@ func (s *TaskService) taskKnowledgeExposure(ctx context.Context, q *db.Queries, 
 	if err != nil {
 		return nil, false, manifest, err
 	}
-	rows, err := q.ListTaskKnowledgeHistory(ctx, db.ListTaskKnowledgeHistoryParams{AgentID: task.AgentID, IssueID: task.IssueID, ChatSessionID: task.ChatSessionID, ScopeID: want.ScopeID, NativeSessionID: want.NativeSessionID})
-	if err != nil {
-		return nil, false, manifest, err
-	}
-	if len(rows) > 128 {
-		return nil, true, manifest, knowledgeFailure(409, "knowledge_context_changed")
+	page := db.ListTaskKnowledgeHistoryPageParams{
+		AgentID: task.AgentID, IssueID: task.IssueID, ChatSessionID: task.ChatSessionID, ScopeID: want.ScopeID,
+		BeforeCreatedAt: pgtype.Timestamptz{InfinityModifier: pgtype.Infinity, Valid: true},
+		BeforeID:        util.MustParseUUID("ffffffff-ffff-ffff-ffff-ffffffffffff"), PageSize: taskKnowledgeHistoryPage,
 	}
 	var binding *protocol.TaskKnowledgeSessionBinding
 	managed := false
-	for _, row := range rows {
-		d, err := decodeTaskKnowledge(row.KnowledgeContextVersion, row.KnowledgeDelivery)
+	for {
+		rows, err := q.ListTaskKnowledgeHistoryPage(ctx, page)
 		if err != nil {
 			return nil, true, manifest, err
 		}
-		if d == nil {
-			continue
-		}
-		for _, c := range d.Claims {
-			b := c.Descriptor.Session
-			matches := b.NativeSessionID == want.NativeSessionID
-			for _, attempt := range c.Attempts {
-				if supported && attempt.Refused && (attempt.BoundSessionID == want.NativeSessionID || b.NativeSessionID == want.NativeSessionID) {
-					return nil, true, manifest, nil
-				}
-				if attempt.BoundSessionID == want.NativeSessionID {
-					matches = true
-					b.NativeSessionID = want.NativeSessionID
-				}
-				for _, observation := range attempt.Observations {
-					if observation.NativeSessionID == want.NativeSessionID && attempt.BoundSessionID != want.NativeSessionID {
-						return nil, true, manifest, knowledgeFailure(409, "knowledge_context_changed")
+		for _, row := range rows {
+			d, err := decodeTaskKnowledge(row.KnowledgeContextVersion, row.KnowledgeDelivery)
+			if err != nil {
+				return nil, true, manifest, err
+			}
+			if d == nil {
+				continue
+			}
+			for _, c := range d.Claims {
+				b := c.Descriptor.Session
+				matches := b.NativeSessionID == want.NativeSessionID
+				for _, attempt := range c.Attempts {
+					if supported && attempt.Refused && (attempt.BoundSessionID == want.NativeSessionID || b.NativeSessionID == want.NativeSessionID) {
+						return nil, true, manifest, nil
+					}
+					if attempt.BoundSessionID == want.NativeSessionID {
+						matches = true
+						b.NativeSessionID = want.NativeSessionID
+					}
+					for _, observation := range attempt.Observations {
+						if observation.NativeSessionID == want.NativeSessionID && attempt.BoundSessionID != want.NativeSessionID {
+							return nil, true, manifest, knowledgeFailure(409, "knowledge_context_changed")
+						}
 					}
 				}
-			}
-			if !matches {
-				if row.SessionID.String == want.NativeSessionID && c.Prepared != nil {
-					return nil, true, manifest, knowledgeFailure(409, "knowledge_context_changed")
+				if !matches {
+					if row.SessionID.String == want.NativeSessionID && c.Prepared != nil {
+						return nil, true, manifest, knowledgeFailure(409, "knowledge_context_changed")
+					}
+					continue
 				}
-				continue
-			}
-			if c.Prepared == nil {
-				continue
-			}
-			if len(c.Prepared.Manifest.Entries) == 0 && !supported {
-				continue
-			}
-			managed = true
-			if !supported {
-				return nil, true, manifest, knowledgeFailure(409, "knowledge_invocation_unsupported")
-			}
-			if c.ConfigurationDigest != configuration {
-				return nil, true, manifest, nil
-			}
-			if b.Provider != want.Provider || b.RuntimeID != want.RuntimeID || b.AgentID != want.AgentID || b.ConfigurationID != want.ConfigurationID || b.ScopeKind != want.ScopeKind || b.ScopeID != want.ScopeID {
-				return nil, true, manifest, nil
-			}
-			if binding != nil && *binding != b {
-				return nil, true, manifest, nil
-			}
-			copy := b
-			binding = &copy
-			for _, entry := range c.Prepared.Manifest.Entries {
-				if !slices.Contains(manifest.Entries, entry) {
-					manifest.Entries = append(manifest.Entries, entry)
+				if c.Prepared == nil {
+					continue
 				}
-			}
-			if len(manifest.Entries) > 32 {
-				return nil, true, manifest, nil
+				if len(c.Prepared.Manifest.Entries) == 0 && !supported {
+					continue
+				}
+				managed = true
+				if !supported {
+					return nil, true, manifest, knowledgeFailure(409, "knowledge_invocation_unsupported")
+				}
+				if c.ConfigurationDigest != configuration {
+					return nil, true, manifest, nil
+				}
+				if b.Provider != want.Provider || b.RuntimeID != want.RuntimeID || b.AgentID != want.AgentID || b.ConfigurationID != want.ConfigurationID || b.ScopeKind != want.ScopeKind || b.ScopeID != want.ScopeID {
+					return nil, true, manifest, nil
+				}
+				if binding != nil && *binding != b {
+					return nil, true, manifest, nil
+				}
+				copy := b
+				binding = &copy
+				for _, entry := range c.Prepared.Manifest.Entries {
+					if !slices.Contains(manifest.Entries, entry) {
+						manifest.Entries = append(manifest.Entries, entry)
+					}
+				}
+				if len(manifest.Entries) > 32 {
+					return nil, true, manifest, nil
+				}
 			}
 		}
+		if len(rows) < taskKnowledgeHistoryPage {
+			break
+		}
+		last := rows[len(rows)-1]
+		page.BeforeCreatedAt, page.BeforeID = last.CreatedAt, last.ID
 	}
 	slices.SortFunc(manifest.Entries, func(a, b KnowledgeManifestEntry) int {
 		if a.CandidateID < b.CandidateID {

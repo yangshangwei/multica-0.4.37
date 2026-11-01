@@ -1,0 +1,177 @@
+H1-followup red run: tests written first, run against the unfixed code
+=====================================================================
+
+Tree: /Volumes/artisan/code/2026/mc-kfix-lane-claim (branch codex/kfix-lane-claim-20261101)
+HEAD at run time: 4cf4d45a249e8b054560195416b112aeb6d88ed6 (H1). The only uncommitted changes were tests:
+  server/pkg/agent/knowledge_launch_test.go
+  server/internal/service/task_knowledge_invocation_test.go
+server/pkg/agent/knowledge_launch.go and server/internal/service/task_knowledge.go had not been changed.
+
+Behavioral tests that MUST fail, and do, for the H1-followup reason (item 1, argv H1 stopped refusing):
+  - TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv (pkg/agent): KnowledgeSessionSelectorPresent
+    returns false for --teleport, --cloud, --remote/--remote-control*, --attach*, --bg/--background,
+    --desktop, --environment, --tmux, subcommand operands (attach, logs, respawn, stop, kill, rm, agents,
+    purge, remote-control, mcp, update) and a bare "--". The extended ordinary list already passes.
+  - TestKnowledgeSessionSelectorsRefusedWhateverTheGate (service, gate on/off x defaults/custom): the new
+    forms (--teleport, --cloud <id>, --remote-control, --attach <id>, --bg, attach <id>, --, and
+    --allowedTools Bash --) return d=nil err=nil, i.e. ordinary base execution, where
+    knowledge_invocation_unsupported is required. The pre-H1 allowlist refused every one of them.
+
+Regression guards that pass before the fix and must keep passing (items 2 and 4):
+  - TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace (item 2a, gate on/off x defaults/custom): a fresh
+    v1 claim with --allowedTools Bash in a runtime namespace that already has recorded private exposure
+    refuses with knowledge_invocation_unsupported.
+  - TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate (item 2b, gate on/off): custom_args JSON that does
+    not decode to []string (object, string, number array, nested array, boolean, object array) refuses.
+  - TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation (item 4, phase x gate): a managed
+    claim bound to native session "legacy-native" that was only claimed, or prepared with an empty
+    manifest, resumes as ordinary work for an unsupported v1 invocation (--allowedTools Bash); the same
+    session after a committed non-empty preparation refuses. This pins the spec reading chosen for item 4.
+
+Every go test ran with env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0, -count=1 -v.
+Database: service uses kfix_claim_svc (127.0.0.1:5432, migration ledger at 760). pkg/agent uses no database.
+
+git status --short at run time:
+ M server/internal/service/task_knowledge_invocation_test.go
+ M server/pkg/agent/knowledge_launch_test.go
+
+### 1. pkg/agent (no database), exit status 1
+$ cd server && env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 go test ./pkg/agent -run 'TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv' -count=1 -v
+=== RUN   TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv
+    knowledge_launch_test.go:454: session selector ["--teleport"] was not detected
+    knowledge_launch_test.go:454: session selector ["--teleport" "abc"] was not detected
+    knowledge_launch_test.go:454: session selector ["--teleport=abc"] was not detected
+    knowledge_launch_test.go:454: session selector ["--cloud"] was not detected
+    knowledge_launch_test.go:454: session selector ["--cloud" "session_abc"] was not detected
+    knowledge_launch_test.go:454: session selector ["--cloud=https://claude.ai/code/session_abc"] was not detected
+    knowledge_launch_test.go:454: session selector ["--remote-control"] was not detected
+    knowledge_launch_test.go:454: session selector ["--remote-control=nightly"] was not detected
+    knowledge_launch_test.go:454: session selector ["--remote" "abc"] was not detected
+    knowledge_launch_test.go:454: session selector ["--remote-control-session-name-prefix" "host"] was not detected
+    knowledge_launch_test.go:454: session selector ["--attach"] was not detected
+    knowledge_launch_test.go:454: session selector ["--attach=abc"] was not detected
+    knowledge_launch_test.go:454: session selector ["--attach-session" "abc"] was not detected
+    knowledge_launch_test.go:454: session selector ["--bg"] was not detected
+    knowledge_launch_test.go:454: session selector ["--background"] was not detected
+    knowledge_launch_test.go:454: session selector ["--desktop"] was not detected
+    knowledge_launch_test.go:454: session selector ["--environment" "ccpool_abc"] was not detected
+    knowledge_launch_test.go:454: session selector ["--tmux"] was not detected
+    knowledge_launch_test.go:454: session selector ["--tmux=classic"] was not detected
+    knowledge_launch_test.go:454: session selector ["'--teleport'"] was not detected
+    knowledge_launch_test.go:454: session selector ["attach" "abc"] was not detected
+    knowledge_launch_test.go:454: session selector ["logs" "abc"] was not detected
+    knowledge_launch_test.go:454: session selector ["respawn"] was not detected
+    knowledge_launch_test.go:454: session selector ["stop" "abc"] was not detected
+    knowledge_launch_test.go:454: session selector ["kill" "abc"] was not detected
+    knowledge_launch_test.go:454: session selector ["rm" "abc"] was not detected
+    knowledge_launch_test.go:454: session selector ["agents"] was not detected
+    knowledge_launch_test.go:454: session selector ["purge"] was not detected
+    knowledge_launch_test.go:454: session selector ["remote-control"] was not detected
+    knowledge_launch_test.go:454: session selector ["mcp" "list"] was not detected
+    knowledge_launch_test.go:454: session selector ["update"] was not detected
+    knowledge_launch_test.go:454: session selector ["'attach'"] was not detected
+    knowledge_launch_test.go:454: session selector ["--debug" "mcp"] was not detected
+    knowledge_launch_test.go:454: session selector ["--"] was not detected
+    knowledge_launch_test.go:454: session selector ["'--'"] was not detected
+    knowledge_launch_test.go:454: session selector ["\"--\""] was not detected
+    knowledge_launch_test.go:454: session selector ["--allowedTools" "Bash" "--"] was not detected
+--- FAIL: TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv (0.00s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/pkg/agent	0.474s
+FAIL
+
+### 2. internal/service (DATABASE_URL=postgres://multica:multica@127.0.0.1:5432/kfix_claim_svc?sslmode=disable), exit status 1
+$ cd server && env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 DATABASE_URL=... go test ./internal/service -run 'TestKnowledgeSessionSelectorsRefusedWhateverTheGate|TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace|TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate|TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation' -count=1 -v
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/defaults
+    task_knowledge_invocation_test.go:120: session selector ["--teleport"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--teleport" "abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--cloud" "session_abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--remote-control"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--attach" "abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--bg"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["attach" "abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--allowedTools" "Bash" "--"] was stripped or allowed: d=false err=<nil>
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/custom
+    task_knowledge_invocation_test.go:120: session selector ["--teleport"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--teleport" "abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--cloud" "session_abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--remote-control"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--attach" "abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--bg"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["attach" "abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--allowedTools" "Bash" "--"] was stripped or allowed: d=false err=<nil>
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/defaults
+    task_knowledge_invocation_test.go:120: session selector ["--teleport"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--teleport" "abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--cloud" "session_abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--remote-control"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--attach" "abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--bg"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["attach" "abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--allowedTools" "Bash" "--"] was stripped or allowed: d=false err=<nil>
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/custom
+    task_knowledge_invocation_test.go:120: session selector ["--teleport"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--teleport" "abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--cloud" "session_abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--remote-control"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--attach" "abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--bg"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["attach" "abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:120: session selector ["--allowedTools" "Bash" "--"] was stripped or allowed: d=false err=<nil>
+--- FAIL: TestKnowledgeSessionSelectorsRefusedWhateverTheGate (0.95s)
+    --- FAIL: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/defaults (0.28s)
+    --- FAIL: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/custom (0.23s)
+    --- FAIL: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/defaults (0.22s)
+    --- FAIL: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/custom (0.22s)
+=== RUN   TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace
+=== RUN   TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=true/defaults
+2026/11/01 16:12:30 INFO task started task_id=21d6a7c2-ad82-4915-9291-4c017a91fc6c issue_id=73bff7f3-cd8a-4361-a5e8-5993154308cd
+2026/11/01 16:12:30 INFO task completed task_id=21d6a7c2-ad82-4915-9291-4c017a91fc6c issue_id=73bff7f3-cd8a-4361-a5e8-5993154308cd
+=== RUN   TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=true/custom
+2026/11/01 16:12:30 INFO task started task_id=6e3a2cd8-b4fd-4f53-b4cf-fd9bcf19f78a issue_id=a480a6b4-a3a5-4706-ac4b-8588fd9ee1aa
+2026/11/01 16:12:30 INFO task completed task_id=6e3a2cd8-b4fd-4f53-b4cf-fd9bcf19f78a issue_id=a480a6b4-a3a5-4706-ac4b-8588fd9ee1aa
+=== RUN   TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=false/defaults
+2026/11/01 16:12:30 INFO task started task_id=fed846d2-bd22-4350-874c-59bee44a1458 issue_id=e0d2dce6-ed16-4c54-9a32-4a9578bb6097
+2026/11/01 16:12:30 INFO task completed task_id=fed846d2-bd22-4350-874c-59bee44a1458 issue_id=e0d2dce6-ed16-4c54-9a32-4a9578bb6097
+=== RUN   TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=false/custom
+2026/11/01 16:12:31 INFO task started task_id=dbb03fe9-5918-4409-86b8-8baaa01f1bb2 issue_id=76e01289-f3bb-4d11-88a3-a2d66cbb450c
+2026/11/01 16:12:31 INFO task completed task_id=dbb03fe9-5918-4409-86b8-8baaa01f1bb2 issue_id=76e01289-f3bb-4d11-88a3-a2d66cbb450c
+--- PASS: TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace (1.09s)
+    --- PASS: TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=true/defaults (0.29s)
+    --- PASS: TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=true/custom (0.27s)
+    --- PASS: TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=false/defaults (0.26s)
+    --- PASS: TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace/gate=false/custom (0.28s)
+=== RUN   TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate
+=== RUN   TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate/gate=true
+=== RUN   TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate/gate=false
+--- PASS: TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate (0.40s)
+    --- PASS: TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate/gate=true (0.20s)
+    --- PASS: TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate/gate=false (0.20s)
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/claimed/gate=true
+2026/11/01 16:12:31 INFO task cancelled task_id=ede5c36d-0eca-4d75-a1f2-fa88a65f79d3 issue_id=c502f51d-d42a-47c0-aed7-ff66cc1c7388
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/claimed/gate=false
+2026/11/01 16:12:32 INFO task cancelled task_id=a1524926-1ba7-4f39-9f0b-c8a28cca2e81 issue_id=f8e7043d-4cb4-4ee8-9868-4e48203baac8
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared_empty/gate=true
+2026/11/01 16:12:32 INFO task cancelled task_id=579818d9-1bde-48d7-86f2-0c7342d0dbbb issue_id=7270d3c6-2717-443f-a9eb-6b843b242ea2
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared_empty/gate=false
+2026/11/01 16:12:32 INFO task cancelled task_id=021b4c49-caa3-4b5c-b1d1-6cf44225da94 issue_id=bcaeda61-f557-41cd-9b01-f8b5040d7454
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared/gate=true
+2026/11/01 16:12:32 INFO task cancelled task_id=8b472fdf-a92a-4be8-ae3e-5e5d604c741d issue_id=9e3136a9-8b33-46c2-b927-d366224baf0d
+=== RUN   TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared/gate=false
+2026/11/01 16:12:33 INFO task cancelled task_id=199cd5bd-1b6a-4c81-9a21-0413a09d7c68 issue_id=1b7471ff-535f-4cb1-b49c-731383ee54e4
+--- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation (1.53s)
+    --- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/claimed/gate=true (0.23s)
+    --- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/claimed/gate=false (0.33s)
+    --- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared_empty/gate=true (0.24s)
+    --- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared_empty/gate=false (0.25s)
+    --- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared/gate=true (0.25s)
+    --- PASS: TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation/prepared/gate=false (0.24s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/service	4.746s
+FAIL
