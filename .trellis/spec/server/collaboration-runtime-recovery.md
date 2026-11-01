@@ -91,6 +91,30 @@ even when the exhausted telemetry budget leaves delivery pending. Never renew
 the telemetry budget for each checkpoint or seal retry. A failed report retains
 its original pending payload and cannot prevent the original proof attempt.
 
+A transient checkpoint failure does not close recording: later timer flushes
+and the final drain stage new batches and retry the oldest pending original
+chunk in order. Locally lost content or a definitive refusal still closes the
+stream. On fresh-session fallback, retry the old chunk identity first. Only
+`business_capability_required` or `stale_execution` on an earlier attempt, with
+a newer authorized launch already in the ledger, permits rebinding that
+uncommitted chunk to the newer attempt/capability; preserve stream, sequence,
+offset and messages. An uncertain upload never gets a new identity.
+
+When every observed message was staged and no chunk was refused, v2 outcome
+carries the still-unacknowledged contiguous suffix, within the existing record
+and ledger bounds. The service joins/deduplicates by stream and offset;
+a transient upload delay alone does not make the outcome permanently partial.
+After a lost outcome ACK, an out-of-order checkpoint covered by that pending
+outcome waits for the original outcome receipt. Once accepted, mark only its
+covered chunks retained. A local loss, stream limit or refusal cannot be hidden
+by this suffix path.
+
+Recording refusal reasons remain distinct: `execution_stopped` seals as
+`stopped`; malformed/conflicting/out-of-order content and 400/413 seal as
+`incomplete`; other definitive authority refusals seal as `authority_lost`.
+Transient transport failure stays pending, rather than being misclassified as
+revocation. Cascaded later refusals retain the first closure reason.
+
 An uncertain seal is replayed with identical identity, attempt, nonce, sequence,
 reason and bounds. After its ACK, a newly learned checkpoint watermark may
 require a same-reason sequence+1. Stage that advance only once every chunk has
@@ -169,6 +193,10 @@ Later facts may increase returned bounds on an identical old-seal ACK.
   release, bounded whole-backlog recovery and pending-proof priority, original
   seal ACK before monotonic advancement, unknown unflushed tails, and malformed
   receipts preserving the pending seal and accepted proof across a new Runner.
+- `host_checkpoint_delivery_test.go`: in-run retry after a transient failure,
+  the outcome's carried tail with replay before and after a committed outcome,
+  rebinding an uncommitted chunk to the fallback attempt, seal reasons per
+  refusal, and the trimmed tail inside the record and ledger bounds.
 - `host_handoff_checkpoint_lifecycle_test.go`: fresh on-disk Runner recovery
   with unchanged checkpoint/attempt identity and no Claim, snapshot or start;
   combined handoff/recording failure cannot block original termination proof.

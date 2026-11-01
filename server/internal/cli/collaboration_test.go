@@ -100,3 +100,29 @@ func TestCollaborationHostContextUsesOnlyItsVersionedIssueIdentity(t *testing.T)
 		}
 	}
 }
+
+// Both runtime reads retain the server's display label without interpreting it
+// as authority. Older servers omit it and remain readable.
+func TestCollaborationRuntimeCommentKeepsOptionalDisplayName(t *testing.T) {
+	for _, name := range []string{"", "Reviewer 中文"} {
+		raw := `{"id":"comment","author_type":"member","author_id":"member","content":"data","parent_id":null,"created_at":"now"}`
+		if name != "" {
+			raw = strings.TrimSuffix(raw, "}") + `,"author_name":"` + name + `"}`
+		}
+		var comment CollaborationRuntimeComment
+		if err := json.Unmarshal([]byte(raw), &comment); err != nil {
+			t.Fatal(err)
+		}
+		encoded, err := json.Marshal(comment)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var fields map[string]any
+		if err := json.Unmarshal(encoded, &fields); err != nil {
+			t.Fatal(err)
+		}
+		if got, _ := fields["author_name"].(string); got != name {
+			t.Fatalf("runtime comment display name %q, want %q", got, name)
+		}
+	}
+}

@@ -63,6 +63,9 @@ func TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries(t *testing
 		{"newer_version", "POST", "claim", "handoff_version=2", "mdt_fixture", false},
 		{"misplaced", "POST", "permit", "handoff_version=1", "mdt_fixture", false},
 		{"wrong_method", "GET", "claim", "handoff_version=1", "mdt_fixture", false},
+		// The knowledge declaration shares the route gate; pin it there too.
+		{"misplaced_knowledge", "POST", "permit", "knowledge_version=1", "mdt_fixture", false},
+		{"knowledge_wrong_method", "GET", "claim", "knowledge_version=1", "mdt_fixture", false},
 		{"wrong_token", "POST", "claim", "handoff_version=1", "mcb_" + strings.Repeat("1", 64), false},
 	} {
 		t.Run(tc.name, func(t *testing.T) {

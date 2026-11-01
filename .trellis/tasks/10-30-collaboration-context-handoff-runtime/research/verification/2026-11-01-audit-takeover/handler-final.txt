@@ -1,0 +1,25 @@
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/11/01 23:14:13 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+=== RUN   TestCollaborationRecordingSealRejectsBodyAndWrongCredential
+--- PASS: TestCollaborationRecordingSealRejectsBodyAndWrongCredential (0.00s)
+=== RUN   TestCollaborationRecallHTTPRejectsAmbientCredentials
+--- PASS: TestCollaborationRecallHTTPRejectsAmbientCredentials (0.00s)
+=== RUN   TestCollaborationRecallHTTPBudgetAndLegacyFullComment
+--- PASS: TestCollaborationRecallHTTPBudgetAndLegacyFullComment (0.15s)
+=== RUN   TestCollaborationHandoffHTTPUsesDeclaredWireBudget
+--- PASS: TestCollaborationHandoffHTTPUsesDeclaredWireBudget (0.01s)
+=== RUN   TestCollaborationRuntimeHandoffSourceWrongReferenceIsNotFound
+2026/11/01 23:14:13 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationRuntimeHandoffSourceWrongReferenceIsNotFound373496389/001 baseURL=""
+=== RUN   TestCollaborationRuntimeHandoffSourceWrongReferenceIsNotFound/unknown_handoff
+=== RUN   TestCollaborationRuntimeHandoffSourceWrongReferenceIsNotFound/run_id_as_result
+=== RUN   TestCollaborationRuntimeHandoffSourceWrongReferenceIsNotFound/run_id_as_delegation
+=== RUN   TestCollaborationRuntimeHandoffSourceWrongReferenceIsNotFound/unknown_squad_activity
+--- PASS: TestCollaborationRuntimeHandoffSourceWrongReferenceIsNotFound (1.41s)
+    --- PASS: TestCollaborationRuntimeHandoffSourceWrongReferenceIsNotFound/unknown_handoff (0.05s)
+    --- PASS: TestCollaborationRuntimeHandoffSourceWrongReferenceIsNotFound/run_id_as_result (0.04s)
+    --- PASS: TestCollaborationRuntimeHandoffSourceWrongReferenceIsNotFound/run_id_as_delegation (0.05s)
+    --- PASS: TestCollaborationRuntimeHandoffSourceWrongReferenceIsNotFound/unknown_squad_activity (0.04s)
+=== RUN   TestCollaborationRuntimeRecordingHTTPRejectsMalformedPrivateTelemetry
+--- PASS: TestCollaborationRuntimeRecordingHTTPRejectsMalformedPrivateTelemetry (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/handler	2.638s

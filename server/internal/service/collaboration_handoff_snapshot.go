@@ -222,6 +222,11 @@ func (s *CollaborationService) RuntimeHandoffSource(ctx context.Context, runID p
 			return out, err
 		}
 		body, err := readHandoffSource(ctx, r.q, r.access, r.run, source)
+		if errors.Is(err, pgx.ErrNoRows) {
+			// A well-formed ID that names nothing this run may read is a wrong
+			// reference; reporting it as an outage would invite retries.
+			return out, collaborationError(http.StatusNotFound, "handoff_source_not_found")
+		}
 		if err != nil {
 			return out, err
 		}

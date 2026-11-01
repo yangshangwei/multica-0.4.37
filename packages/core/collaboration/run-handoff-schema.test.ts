@@ -60,6 +60,23 @@ it("preserves absence and exact handoff identity while refusing malformed declar
   expect(parseCollaborationRunHandoff({ ...handoff, sources: [{ ...source, availability: "purged" }] })).toBeNull();
 });
 
+it("keeps a live read's launch base apart from its latest memory and refuses a malformed base", () => {
+  const memory = { version: "4", sha256: "a".repeat(64), availability: "available", base_version: "3" };
+  expect(parseCollaborationRunHandoff({ ...handoff, memory })?.memory).toEqual(memory);
+  expect(parseCollaborationRunHandoff({ ...handoff, memory: { ...memory, base_version: undefined } })?.memory.base_version).toBeUndefined();
+  for (const base_version of ["03", "-1", 3, "", null]) {
+    expect(parseCollaborationRunHandoff({ ...handoff, memory: { ...memory, base_version } })).toBeNull();
+  }
+});
+
+it("preserves frozen snapshots without a memory base and refuses the live-only field", () => {
+  const snapshot = { ...handoff, mode: "snapshot", snapshot_id: id };
+  expect(parseCollaborationRunHandoff(snapshot)).toEqual(snapshot);
+  for (const base_version of ["0", "3"]) {
+    expect(parseCollaborationRunHandoff({ ...snapshot, memory: { ...snapshot.memory, base_version } })).toBeNull();
+  }
+});
+
 it("uses the human handoff endpoint and rejects a response for a different run", async () => {
   const fetch = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify(handoff)))
     .mockResolvedValueOnce(new Response(JSON.stringify({ ...handoff, run_id: id })))

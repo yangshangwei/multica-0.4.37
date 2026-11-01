@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"strings"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -98,10 +99,20 @@ func projectHandoffCauses(ctx context.Context, q *db.Queries, a CollaborationIss
 		out.WakeupCauses.Items = append(out.WakeupCauses.Items, protocol.CollaborationHandoffCause{ID: handoffID(row.ID), SourceKind: cause.SourceKind, SourceID: cause.SourceID, SourceRunID: cause.SourceRunID, Sequence: handoffDecimal(row.Seq)})
 	}
 	out.WakeupCauses.Returned = len(rows)
-	// Existing continuations may contain only partially captured legacy causes;
-	// listing recorded causes never asserts historical completeness.
-	if run.StepKind.String != "continuation" {
+	if collaborationWakeCausesRecorded(run) {
 		out.WakeupCauses.Completeness = "recorded"
 	}
 	return nil
+}
+
+// collaborationRecordedContinuationPrefix marks continuations queued after
+// every wake cause began to be assigned under the group lock. step_key is
+// immutable, so the marker cannot be added to an older continuation.
+const collaborationRecordedContinuationPrefix = "continuation:recorded:"
+
+// Only continuations carry causes. One queued before cause recording existed
+// may hold just the causes assigned after an upgrade, so its inventory stays
+// unknown rather than claiming a history it never captured.
+func collaborationWakeCausesRecorded(run db.CollaborationRun) bool {
+	return run.StepKind.String != "continuation" || strings.HasPrefix(run.StepKey.String, collaborationRecordedContinuationPrefix)
 }

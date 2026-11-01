@@ -158,6 +158,7 @@ type CollaborationRuntimeComment struct {
 	ID         string  `json:"id"`
 	AuthorType string  `json:"author_type"`
 	AuthorID   string  `json:"author_id"`
+	AuthorName string  `json:"author_name,omitempty"`
 	Content    string  `json:"content"`
 	ParentID   *string `json:"parent_id"`
 	CreatedAt  string  `json:"created_at"`

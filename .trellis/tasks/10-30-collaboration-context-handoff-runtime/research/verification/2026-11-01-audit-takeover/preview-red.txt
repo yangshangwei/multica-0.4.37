@@ -1,0 +1,14 @@
+=== RUN   TestCollaborationRecallPrintingKeepsContinuationBeforeLargeText
+=== RUN   TestCollaborationRecallPrintingKeepsContinuationBeforeLargeText/comments
+    collaboration_recall_preview_test.go:30: continuation control is hidden behind large text
+=== RUN   TestCollaborationRecallPrintingKeepsContinuationBeforeLargeText/comment_content
+    collaboration_recall_preview_test.go:30: continuation control is hidden behind large text
+=== RUN   TestCollaborationRecallPrintingKeepsContinuationBeforeLargeText/handoff_source
+    collaboration_recall_preview_test.go:30: continuation control is hidden behind large text
+--- FAIL: TestCollaborationRecallPrintingKeepsContinuationBeforeLargeText (0.00s)
+    --- FAIL: TestCollaborationRecallPrintingKeepsContinuationBeforeLargeText/comments (0.00s)
+    --- FAIL: TestCollaborationRecallPrintingKeepsContinuationBeforeLargeText/comment_content (0.00s)
+    --- FAIL: TestCollaborationRecallPrintingKeepsContinuationBeforeLargeText/handoff_source (0.00s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/cli	0.443s
+FAIL

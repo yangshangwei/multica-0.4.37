@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -217,5 +218,65 @@ func TestCollaborationRecallRuntimePagesFulltextAndCurrentAuthority(t *testing.T
 	}
 	if _, err := f.svc.RuntimeCommentContent(context.Background(), run, token, util.MustParseUUID(longID), cp); err == nil {
 		t.Fatal("Stop did not revoke content recall")
+	}
+}
+
+// Parent PRD R4 asks runtime comment reads for the author's display name, as
+// the human comment list already has (audit RECALL-1). Agent authors keep the
+// human path's boundary: their type and ID, no name.
+func TestCollaborationRuntimeCommentsCarryMemberDisplayNames(t *testing.T) {
+	f := newManagedCollaborationFixture(t)
+	f.submitManaged(t, f.creator, "admitted input")
+	f.resumeManaged(t)
+	run, _, claim := f.claimManaged(t)
+	token, _ := permitSquadRun(t, f, run, claim)
+	issue := util.UUIDToString(f.issue.Issue.ID)
+	agent := util.UUIDToString(f.grant.AgentID)
+	byCreator := f.fx.Comment(t, issue, "we rejected option B", testutil.Cols{"author_id": f.creator})
+	byHandler := f.fx.Comment(t, issue, "handler note", testutil.Cols{"author_id": f.handler})
+	byAgent := f.fx.Comment(t, issue, "agent note", testutil.Cols{"author_type": "agent", "author_id": agent})
+	want := map[string]string{byCreator: "Collaboration creator", byHandler: "External handler", byAgent: ""}
+
+	page, err := f.svc.RecallRuntimeComments(context.Background(), run, token, CollaborationCommentsRecallQuery{Limit: 50, MaxBytes: 64 << 10})
+	if err != nil {
+		t.Fatal(err)
+	}
+	found := 0
+	for _, item := range page.Items {
+		name, ok := want[item.ID]
+		if !ok {
+			continue
+		}
+		found++
+		if item.AuthorName != name {
+			t.Fatalf("recall comment %s author name %q, want %q", item.ID, item.AuthorName, name)
+		}
+	}
+	raw, err := json.Marshal(page)
+	if err != nil {
+		t.Fatal(err)
+	}
+	decoded, err := protocol.DecodeCollaborationCommentsRecall(raw)
+	if found != len(want) || err != nil || !reflect.DeepEqual(decoded.Items, page.Items) {
+		t.Fatalf("recall page lost names or the strict decoder refused them: found=%d err=%v", found, err)
+	}
+
+	legacy, err := f.svc.RuntimeContext(context.Background(), run, token)
+	if err != nil {
+		t.Fatal(err)
+	}
+	found = 0
+	for _, item := range legacy.Comments {
+		name, ok := want[util.UUIDToString(item.ID)]
+		if !ok {
+			continue
+		}
+		found++
+		if item.AuthorName != name {
+			t.Fatalf("legacy context comment author name %q, want %q", item.AuthorName, name)
+		}
+	}
+	if found != len(want) {
+		t.Fatalf("legacy context returned %d of %d seeded comments", found, len(want))
 	}
 }

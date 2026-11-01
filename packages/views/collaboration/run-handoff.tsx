@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { collaborationRunHandoffOptions, type CollaborationIssue, type CollaborationScope } from "@multica/core/collaboration";
+import { collaborationRunHandoffOptions, type CollaborationIssue, type CollaborationRunHandoff, type CollaborationScope } from "@multica/core/collaboration";
 import { accountPath } from "@multica/core/paths";
 import { AppLink } from "../navigation";
 import { RichContent } from "../rich-content";
@@ -30,7 +30,7 @@ export function CollaborationRunHandoff({ scope, issueId, runId, handler }: {
         <div><dt>{t(($) => $.recall.wakeupCauses)}</dt><dd>{handoff.wakeup_causes.completeness === "unknown" ? t(($) => $.recall.causesUnknown)
           : t(($) => $.recall.loadedResults, { returned: handoff.wakeup_causes.returned, total: handoff.wakeup_causes.total })}</dd></div>
       </dl>
-      {handoff.memory.availability === "available" && <AppLink className="text-caption underline underline-offset-4" href={accountPath({ view: "participating", issueId, memoryVersion: handoff.memory.version })}>{t(($) => $.records.memoryBase, { version: handoff.memory.version })}</AppLink>}
+      <HandoffMemory issueId={issueId} memory={handoff.memory} live={handoff.mode === "live"} />
       {(handoff.missing.length > 0 || handoff.inputs.truncated || handoff.results.truncated || handoff.wakeup_causes.truncated) && <p className="text-caption text-muted-foreground">{t(($) => $.recall.handoffPartial)}</p>}
       {handoff.results.items.map((result) => <p key={result.run_id} className="text-caption [overflow-wrap:anywhere]">
         <AppLink className="underline underline-offset-4" href={accountPath({ view: "participating", issueId, runId: result.run_id })}>{result.run_id}</AppLink>
@@ -44,4 +44,22 @@ export function CollaborationRunHandoff({ scope, issueId, runId, handler }: {
       </li>)}</ol>
     </>}
   </section>;
+}
+
+// A snapshot's version is the run's launch base. A live read's version is the
+// latest; the launch base, when the run has read one, arrives as base_version.
+function HandoffMemory({ issueId, memory, live }: { issueId: string; memory: CollaborationRunHandoff["memory"]; live: boolean }) {
+  const { t } = useT("collaboration");
+  const available = memory.availability === "available";
+  const base = live ? memory.base_version : available ? memory.version : undefined;
+  const latest = live && available && memory.version !== base ? memory.version : undefined;
+  const link = (version: string, label: string) => <AppLink className="text-caption underline underline-offset-4" href={accountPath({ view: "participating", issueId, memoryVersion: version })}>{label}</AppLink>;
+  if (base === undefined && latest === undefined) {
+    return null;
+  }
+  return <p className="flex flex-wrap gap-x-4 gap-y-1 text-caption">
+    {base === "0" ? <span className="text-muted-foreground">{t(($) => $.records.memoryBaseEmpty)}</span>
+      : base !== undefined && link(base, t(($) => $.records.memoryBase, { version: base }))}
+    {latest !== undefined && link(latest, t(($) => $.recall.memoryLatest, { version: latest }))}
+  </p>;
 }

@@ -39,6 +39,7 @@ type CollaborationRuntimeComment struct {
 	ID         pgtype.UUID `json:"id"`
 	AuthorType string      `json:"author_type"`
 	AuthorID   pgtype.UUID `json:"author_id"`
+	AuthorName string      `json:"author_name,omitempty"`
 	Content    string      `json:"content"`
 	ParentID   pgtype.UUID `json:"parent_id"`
 	CreatedAt  time.Time   `json:"created_at"`
@@ -181,8 +182,22 @@ func (s *CollaborationService) RuntimeContext(ctx context.Context, runID pgtype.
 		if err != nil {
 			return out, err
 		}
+		authorIDs := make([]pgtype.UUID, 0, len(comments))
 		for _, c := range comments {
-			out.Comments = append(out.Comments, CollaborationRuntimeComment{ID: c.ID, AuthorType: c.AuthorType, AuthorID: c.AuthorID, Content: c.Content, ParentID: c.ParentID, CreatedAt: c.CreatedAt.Time})
+			if c.AuthorType == "member" {
+				authorIDs = append(authorIDs, c.AuthorID)
+			}
+		}
+		accounts, err := collaborationContentAccounts(ctx, r.q, r.access.Issue.WorkspaceID, authorIDs)
+		if err != nil {
+			return out, err
+		}
+		for _, c := range comments {
+			name := ""
+			if account := accounts[c.AuthorID]; c.AuthorType == "member" && account != nil {
+				name = account.Name
+			}
+			out.Comments = append(out.Comments, CollaborationRuntimeComment{ID: c.ID, AuthorType: c.AuthorType, AuthorID: c.AuthorID, AuthorName: name, Content: c.Content, ParentID: c.ParentID, CreatedAt: c.CreatedAt.Time})
 		}
 		delegations, err := r.q.LockCollaborationGroupDelegations(ctx, r.group.ID)
 		if err != nil {
@@ -361,7 +376,7 @@ func (r *collaborationRuntimeState) queueContinuation(ctx context.Context, paren
 		if resource.Role != "leader" {
 			continue
 		}
-		run, err := r.createDerivedRun(ctx, resource, parent, "continuation", "continuation:"+uuid.NewString())
+		run, err := r.createDerivedRun(ctx, resource, parent, "continuation", collaborationRecordedContinuationPrefix+uuid.NewString())
 		return run.ID, err
 	}
 	return pgtype.UUID{}, invalidCollaborationLedger("squad has no frozen leader")

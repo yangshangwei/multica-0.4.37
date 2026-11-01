@@ -172,6 +172,12 @@ Validate current business authority under the same source locks as Stop/revoke
 before new content. Exact committed original-key replay is content-free; a
 termination capability never becomes a checkpoint/body writer.
 
+Host transient upload recovery may supply the same contiguous unacknowledged
+suffix in a v2 outcome. Join by stream/offset and verify equal overlapping
+messages; do not duplicate content or turn a recoverable upload delay into
+permanent partial coverage. Local loss/refusal retains partial coverage, and
+Stop/revocation still refuses new body writes.
+
 Recording seals use immutable sequence keys 1–32. Exact old-key replay remains
 valid, changed payload under that key conflicts, and a new sequence must pass
 `ValidateCollaborationRecordingSealAdvance`: same run identity/stream/reason,

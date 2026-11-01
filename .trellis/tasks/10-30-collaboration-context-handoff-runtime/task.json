@@ -21,7 +21,7 @@
   "children": [],
   "parent": "10-30-collaboration-context-handoff",
   "relatedFiles": [],
-  "notes": "2026-11-01 续作：审计修复、独立复核、合流及最终联合验证尚未闭合；原系列下一 E3 after trial 2，剩余14次，冻结源码不变；RK1 runtime 已批25次（含H2b、H6每轮两次启动），消耗0，框架与源码绑定未就绪；K1-K3/E0b及安装版/AC43另行分账。知识生产默认false。见父任务 execution-resume-2026-11-01.json。",
+  "notes": "runtime审计修复已独立pass-with-notes，RV1已另修复并统筹复验，分支service1668项通过。当前本地合入主集成；知识/框架尚未合流，最终联合验收未通过。RK1runtime25/消耗0；原E3after trial2/剩14。",
   "meta": {
     "planning_progress": "reviewed_2026-10-31",
     "research_head": "4c833e737efb6c997e5cb56c74c43e9237c91956",
@@ -36,8 +36,8 @@
     "current_acceptance_matrix": "../10-30-collaboration-context-handoff/acceptance-2026-11-01.json",
     "deterministic_addendum": "passed_0bbc6a77a_84c4c2b3d",
     "progress_file": "progress.md",
-    "progress_phase": "audit_repair_and_framework_fake_validation",
-    "next_action": "finish_audit_repairs_and_independent_reviews_then_serial_local_merges_joint_validation_and_source_rebinding",
+    "progress_phase": "runtime_audit_merged; knowledge_and_framework_integration_pending",
+    "next_action": "finish_knowledge_lane_reviews_and_serial_merges_then_joint_candidate_validation",
     "joint_current_addendum": {
       "commit": "65cd0599b",
       "source_head": "93afc3cb0",
@@ -56,6 +56,14 @@
       "consumed": 0,
       "includes_H2b": true,
       "H6_launches_per_trial": 2
-    }
+    },
+    "runtime_audit_fixes": "research/verification/2026-11-01-audit-takeover/repair-ledger.json",
+    "runtime_audit_product_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+    "rk1_approved_launch_cap": 25,
+    "rk1_actual_launches": 0,
+    "original_experiment_remaining_cap": 14,
+    "original_experiment_next": "E3 after trial 2",
+    "runtime_audit_review": "pass-with-notes; RV1 fixed58d486656 and root16/16",
+    "runtime_full_service": "research/verification/2026-11-01-audit-takeover/root-service-final-summary.json"
   }
 }

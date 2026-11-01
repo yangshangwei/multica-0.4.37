@@ -1,0 +1,111 @@
+{
+  "recorded_at": "2026-11-01T15:44:20.421875+00:00",
+  "finding": "RV-1",
+  "state": "implemented_verified_pending_coordinator_recheck",
+  "product_commit": "58d486656e146237d5de08ccac62dc6b1ec5876b",
+  "base_commit": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+  "file_sha256": {
+    "packages/core/collaboration/run-handoff-schema.ts": "509283b3a4734524274962039faecb6b63718254a7290e75739a399d170ec41b",
+    "packages/core/collaboration/run-handoff-schema.test.ts": "b7e165476d8e613cb8edcfb280f404ea72cdc0964e61aae4ef80475c83313a84"
+  },
+  "scope": "Core snapshot memory.base_version validation only",
+  "tests": {
+    "canonical_pass": 16,
+    "canonical_fail": 0,
+    "canonical_skip": 0,
+    "red_failed": 1,
+    "red_filtered_skips": 15
+  },
+  "checks": {
+    "red": {
+      "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/run-handoff-schema.test.ts",
+        "-t",
+        "preserves frozen snapshots"
+      ],
+      "started_at": "2026-11-01T15:40:18.673273+00:00",
+      "finished_at": "2026-11-01T15:40:22.274899+00:00",
+      "exit_code": 1,
+      "log_sha256": "d96276734e86c08f1aabcf4ade827222f3a1a353e9f6e53b2ed4fefecd0d2e19",
+      "tested_file_sha256": {
+        "packages/core/collaboration/run-handoff-schema.ts": "da3daa8f4a011d4f5aab873f64e3de2ef1a312182a72b82efc8353397b64adaf",
+        "packages/core/collaboration/run-handoff-schema.test.ts": "b7e165476d8e613cb8edcfb280f404ea72cdc0964e61aae4ef80475c83313a84"
+      },
+      "database_access": false,
+      "real_provider_calls": 0,
+      "metadata_sha256": "383d7f4728cd2093cad23b93f9783649f5509222359aafbe50e79b6f91ad0aab"
+    },
+    "green": {
+      "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/run-handoff-schema.test.ts"
+      ],
+      "started_at": "2026-11-01T15:41:43.681223+00:00",
+      "finished_at": "2026-11-01T15:41:51.444531+00:00",
+      "exit_code": 0,
+      "log_sha256": "f3c27470d3e143f87396e861cd2464263da19e6c35ec57c5a4a496c37a3599b0",
+      "tested_file_sha256": {
+        "packages/core/collaboration/run-handoff-schema.ts": "509283b3a4734524274962039faecb6b63718254a7290e75739a399d170ec41b",
+        "packages/core/collaboration/run-handoff-schema.test.ts": "b7e165476d8e613cb8edcfb280f404ea72cdc0964e61aae4ef80475c83313a84"
+      },
+      "database_access": false,
+      "real_provider_calls": 0,
+      "metadata_sha256": "90cb4c3131069681d1968ac0ac7a3f38b789216d2c29241ac6a21f43bb61c64a",
+      "product_commit": "58d486656e146237d5de08ccac62dc6b1ec5876b"
+    },
+    "lint": {
+      "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "lint"
+      ],
+      "started_at": "2026-11-01T15:41:43.687583+00:00",
+      "finished_at": "2026-11-01T15:42:18.442547+00:00",
+      "exit_code": 0,
+      "log_sha256": "4776feb0193aa430e4a789eb466bbba591d4da1d019b412f6cb094f1801131fb",
+      "database_access": false,
+      "real_provider_calls": 0,
+      "metadata_sha256": "856886dfa44ec664f22e32f2c285f1309a4c1618651ff15c06a384db7c0de02a",
+      "product_commit": "58d486656e146237d5de08ccac62dc6b1ec5876b"
+    },
+    "typecheck": {
+      "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "typecheck"
+      ],
+      "started_at": "2026-11-01T15:41:43.681575+00:00",
+      "finished_at": "2026-11-01T15:42:24.208303+00:00",
+      "exit_code": 0,
+      "log_sha256": "9634e7074c8f9b2a85e4537643c3ea73a332aadd4d2b36322b3c97c69e068262",
+      "database_access": false,
+      "real_provider_calls": 0,
+      "metadata_sha256": "7a0f53ed9dae5179c33f0d305c5139c7339985594caa5ae876c83acf4c00f8fd",
+      "product_commit": "58d486656e146237d5de08ccac62dc6b1ec5876b"
+    }
+  },
+  "database_access": false,
+  "agent_cli_calls": 0,
+  "real_provider_calls": 0,
+  "remaining_gates": [
+    "independent coordinator recheck",
+    "final merged-candidate acceptance"
+  ]
+}
