@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T04:43:51.848195+00:00",
+  "updated_at": "2026-11-01T05:21:15.690035+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -109,7 +109,7 @@
     {
       "id": "AC8",
       "requirement": "经人确认的知识沉淀",
-      "status": "passed_deterministic; real_model_acceptance_separate",
+      "status": "deterministic_gate_passed_then_audit_reopened; real_model_acceptance_separate",
       "evidence": [
         "../10-30-collaboration-knowledge-promotion/prd.md",
         "../10-30-collaboration-knowledge-promotion/design.md",
@@ -117,7 +117,8 @@
         "../10-30-collaboration-knowledge-promotion/verification-integration-2026-11-01.md"
       ],
       "gaps": [
-        "已合入并通过人工权限、版本/纠错/过期/撤回、失效与真实fake输入的确定性验收；真实Provider/生产启用另验，技能层不在本轮范围"
+        "已合入并通过人工权限、版本/纠错/过期/撤回、失效与真实fake输入的确定性验收；真实Provider/生产启用另验，技能层不在本轮范围",
+        "2026-11-01 会话-14 审计记录21项缺陷（高3：开关关闭时白名单外参数终止任务、工作目录不可达后 PriorSessionID 失配、128行历史上限永久拒绝），修复任务 11-01-collaboration-knowledge-audit-fixes 在分支 codex/collaboration-knowledge-fixes-20261101 进行，未合入；本矩阵未独立核实"
       ]
     },
     {
@@ -205,7 +206,14 @@
     "evidence": "93093d2e9",
     "merge": "8cb04e3295474073b4b991bc4883ef3901c14f01",
     "gate": "passed_deterministic",
-    "enabled": false
+    "enabled": false,
+    "audit_fix": {
+      "branch": "codex/collaboration-knowledge-fixes-20261101",
+      "task": "11-01-collaboration-knowledge-audit-fixes",
+      "defects": 21,
+      "high": 3,
+      "merged": false
+    }
   },
   "release_gates_runbook": {
     "file": "release-gates-runbook-2026-11-01.md",
