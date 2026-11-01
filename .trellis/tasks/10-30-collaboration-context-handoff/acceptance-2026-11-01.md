@@ -30,4 +30,6 @@
 
 知识已完成确定性验收并整合；上游恢复后在独立窗口从原 E2a trial 3/22 次续作。新 runtime 模型记录另行登记。Windows、安装组合、多账号额度和发布验收分别保留。
 
+上表各发布门的可执行步骤、证据要求和待用户决定事项见 [发布门清单](release-gates-runbook-2026-11-01.md)。该清单只做了只读核对，没有推送、触发 CI、构建安装包或调用 Provider。
+
 知识最终证据见 [集成报告](../10-30-collaboration-knowledge-promotion/verification-integration-2026-11-01.md)，包含测试隔离事件的事实与追溯限制。
