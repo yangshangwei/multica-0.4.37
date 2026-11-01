@@ -1,6 +1,6 @@
 # 知识交付审计缺陷修复：进度
 
-核对时间：2026-11-01 19:05 +0800。依据是各分道分支的实际提交、`research/evidence/` 文件和 workflow 日志，不依据会话汇报。
+核对时间：2026-11-01 19:53 +0800。依据是各分道分支的实际提交、`research/evidence/` 文件和 workflow 日志，不依据会话汇报。
 
 ## 负责人变化
 
@@ -19,16 +19,20 @@
 | --- | --- | --- | --- |
 | claim | H1 | `4cf4d45a2` | 3 份，pass_with_notes |
 | claim | H1-followup | `6f7a601ce` | 2 份，pass_with_notes |
-| claim | M1 | 实现中 | — |
+| claim | M1 | `2dd633df4`（瞬时错误重新入队）、`3110295d0`（finalize 拒绝时结算任务） | 复核中 |
 | claim | H3、M3 | 排队 | — |
 | launch | H2 | `680ad868f` | 3 份，pass_with_notes |
-| launch | M2、L6、L7 | 实现中 | — |
+| launch | M2、L6、L7 | 实现中，M2 的改动未提交 | — |
 | write | L1、L2 | `c930ac847`（时钟接缝）、`0cf5f7918`、`3aee019aa` | 1 份，pass_with_notes |
-| write | L3、L4、L5 | 实现中 | — |
+| write | L3 | `931446b23` | 与 L4、L5 一起复核 |
+| write | L4、L5 | 实现中，L4 的改动未提交 | — |
 | web | M4、M5、L8 | `500781f4c`、`2e28c2c98`、`a5e8941b7` | 2 份，pass_with_notes |
-| web | L9、L12；L10、L11、L13 | 排队 | — |
+| web | L9 | `60ca94822` | 与 L12 一起复核 |
+| web | L12 | 实现中，改动未提交 | — |
+| web | L10、L11、L13 | 排队 | — |
 
-- 21 项中 7 项已提交，并且全部复核完毕，没有阻塞项。每项都有 `<ID>-red.txt` 和 `<ID>-green.txt`，放在各自分道的 `research/evidence/` 下。
+- 21 项中已有 10 项提交。其中 7 项已复核完毕，没有阻塞项；M1、L3、L9 的复核还没完成。每项都有 `<ID>-red.txt` 和 `<ID>-green.txt`，放在各自分道的 `research/evidence/` 下。
+- 19:53 时 launch、write、web 三条分道各有一组正在实现，改动还没提交。-54 准备把工作交给新会话。workflow 只在 -54 的会话里运行，`resumeFromRunId` 也只能在同一个会话里用。所以 -54 一关，这三组改动就会停在半成品状态，新会话不能直接续跑这次 run。
 - 各分道的完成门和整条分道的复核都还没有运行。
 
 ## 集成预检（只读）
