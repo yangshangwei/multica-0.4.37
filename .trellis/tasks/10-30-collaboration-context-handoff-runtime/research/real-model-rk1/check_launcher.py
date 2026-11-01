@@ -17,6 +17,7 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from unittest.mock import patch
 
 SRC = str(Path(__file__).resolve().parent)
 WT = str(Path(__file__).resolve().parents[5])
@@ -110,8 +111,9 @@ def case(name, records, args, want, reg_patch=None, private=None, git=False, mut
         invocation = json.load(open(glob.glob(os.path.join(root, ".omx", "private", "rk1", "*", "invocation-*.json"))[0]))
         # The stub records two launches, with the public summary reporting
         # only one. Quota uses the larger actual private count.
-        ok = ok and invocation["launch_budget"]["after"]["consumed"] == 2
-        ok = ok and invocation["launch_budget"]["remaining"] == 23
+        counted = (0 if stub == "none" else 2) + sum(sum(run["physical_launches"] for run in value["runs"] if run["measured"]) for value in records.values())
+        ok = ok and invocation["launch_budget"]["after"]["consumed"] == counted
+        ok = ok and invocation["launch_budget"]["remaining"] == 25 - counted
         ok = ok and invocation["stop_state"]["triggered"] == (stub != "complete")
         if stub == "missing":
             public = json.load(open(os.path.join(here, "results", "RK1-E0a-t1.json")))
@@ -131,6 +133,7 @@ def rec(scenario, trial, status="finished", launches=1, verdict="pass"):
 
 STUB_GO = '''import json, os, pathlib, sys
 mode = STUB_MODE
+if mode == "none": sys.exit(0)
 scenario = os.environ["MULTICA_RK1_SCENARIO"]
 trial = int(os.environ["MULTICA_RK1_START_TRIAL"])
 label = "%s-t%d" % (scenario, trial)
@@ -175,7 +178,32 @@ crowded["RK1-E0a/RK1-E0a-t1/provider/run-3/launch-8/launch.json"] = "not json"
 crowded["RK1-E0a/RK1-E0a-t1/provider/run-4/launch-1/launch.json"] = '{"mode": "fake"}'
 crowded["RK1-E0a/RK1-E0a-t1/provider/run-3/launch-7/launch.json"] = '{"mode": "fake"}'
 
+def configuration_facts_cases():
+    facts = runpy.run_path(os.path.join(SRC, "run_rk1.py"))["operator_facts"]
+    with tempfile.TemporaryDirectory(prefix="rk1-config-facts-") as root:
+        home, selected = Path(root) / "home", Path(root) / "selected"
+        home.mkdir(); selected.mkdir()
+        (selected / "settings.json").write_text('{"setting":"first"}')
+        clean = {key: value for key, value in os.environ.items()
+                 if not key.startswith(("CLAUDE_", "ANTHROPIC_", "AWS_", "GOOGLE_", "CLOUD_"))}
+        with patch.dict(os.environ, {**clean, "HOME": str(home)}, clear=True):
+            absent = facts()
+            os.environ["CLAUDE_CONFIG_DIR"] = str(selected)
+            first = facts()
+            (selected / "settings.json").write_text('{"setting":"second"}')
+            second = facts()
+            os.environ["ANTHROPIC_BASE_URL"] = "https://scratch.invalid/secret-selector"
+            routed = facts()
+        checks = {"config_root_selection_frozen": absent != first,
+                  "selected_config_contents_frozen": first != second,
+                  "provider_route_selection_frozen": second != routed,
+                  "raw_selector_not_recorded": "secret-selector" not in json.dumps(routed)}
+        for name, ok in checks.items(): print(("OK  " if ok else "BAD ") + name)
+        return all(checks.values())
+
+
 results = [
+    configuration_facts_cases(),
     go_table_matches_addendum(),
     case("not_runnable", {}, ["RK1-E0a", "1"], "is not runnable", reg_patch={"runnable": False}),
     case("unbudgeted_K1", {}, ["RK1-K1", "1"], "has no runtime budget"),
@@ -221,5 +249,7 @@ results = [
     case("execution_accounting", {}, ["RK1-E0a", "1"], "exit_code=0 consumed=2 remaining=23 stopped=False", git=True, stub="complete", expected_exit=0),
     case("execution_missing_public_stops", {}, ["RK1-E0a", "1"], "exit_code=7 consumed=2 remaining=23 stopped=True", git=True, stub="missing", expected_exit=7),
     case("execution_canary_stops", {}, ["RK1-E0a", "1"], "exit_code=1 consumed=2 remaining=23 stopped=True", git=True, stub="blocking", expected_exit=1),
+    case("execution_zero_trials_stops", {}, ["RK1-E0a", "1"], "exit_code=1 consumed=0 remaining=25 stopped=True", git=True, stub="none", expected_exit=1),
+    case("execution_partial_success_stops", {"RK1-E0a-t1": rec("RK1-E0a", 1)}, ["RK1-H1", "1"], "exit_code=1 consumed=3 remaining=22 stopped=True", git=True, stub="partial", expected_exit=1),
 ]
 sys.exit(0 if all(results) else 1)

@@ -39,6 +39,17 @@ SESSION_ONLY_ENV = [
 OPERATOR_FILES = ["settings.json", "settings.local.json", "CLAUDE.md"]
 OPERATOR_DIRS = ["hooks", "skills", "plugins", "agents", "commands"]
 MANAGED_ROOTS = {"darwin": "/Library/Application Support/ClaudeCode", "linux": "/etc/claude-code"}
+OPERATOR_ENV = [
+    "CLAUDE_CONFIG_DIR", "ANTHROPIC_BASE_URL", "ANTHROPIC_MODEL",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL", "ANTHROPIC_DEFAULT_SONNET_MODEL", "ANTHROPIC_DEFAULT_OPUS_MODEL",
+    "CLAUDE_CODE_USE_BEDROCK", "CLAUDE_CODE_USE_VERTEX", "CLAUDE_CODE_USE_FOUNDRY",
+    "CLAUDE_CODE_SUBAGENT_MODEL", "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC",
+    "AWS_PROFILE", "AWS_REGION", "AWS_DEFAULT_REGION", "AWS_CONFIG_FILE", "AWS_SHARED_CREDENTIALS_FILE",
+    "GOOGLE_CLOUD_PROJECT", "CLOUD_ML_REGION", "GOOGLE_APPLICATION_CREDENTIALS", "AZURE_CONFIG_DIR",
+    "ANTHROPIC_FOUNDRY_RESOURCE", "ANTHROPIC_FOUNDRY_BASE_URL",
+    "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "NO_PROXY", "http_proxy", "https_proxy", "all_proxy", "no_proxy",
+    "SSL_CERT_FILE", "SSL_CERT_DIR", "NODE_EXTRA_CA_CERTS", "BASH_MAX_OUTPUT_LENGTH",
+]
 MINUTES_PER_LAUNCH = 7  # 5 min Provider timeout + 1 min Runner slack + fixture/seed runs
 
 
@@ -209,6 +220,24 @@ def operator_facts():
     managed = MANAGED_ROOTS.get(sys.platform)
     if managed:
         facts["managed:" + managed + "/"] = tree_sha256(managed) if os.path.isdir(managed) else None
+    # Freeze absence as well as selected values. Even endpoint/profile strings
+    # may embed private material, so only hashes enter registration or evidence.
+    facts["configuration_environment_sha256"] = {
+        key: hashlib.sha256(os.environ[key].encode()).hexdigest() if key in os.environ else None
+        for key in OPERATOR_ENV
+    }
+    selected = os.environ.get("CLAUDE_CONFIG_DIR")
+    if selected:
+        selected = os.path.abspath(os.path.expanduser(selected))
+        facts["selected_configuration_tree_sha256"] = tree_sha256(selected) if os.path.isdir(selected) else "missing"
+    else:
+        facts["selected_configuration_tree_sha256"] = None
+    # These selectors point at configuration/identity files outside the normal
+    # config roots. Store their bytes' fingerprints, never their paths/content.
+    facts["selected_profile_files_sha256"] = {}
+    for key in ["AWS_CONFIG_FILE", "AWS_SHARED_CREDENTIALS_FILE", "GOOGLE_APPLICATION_CREDENTIALS"]:
+        path = os.path.expanduser(os.environ[key]) if os.environ.get(key) else None
+        facts["selected_profile_files_sha256"][key] = sha256_file(path) if path and os.path.isfile(path) else None
     settings = {}
     try:
         with open(os.path.join(claude, "settings.json")) as f:
@@ -335,14 +364,22 @@ def main():
     after_records = trials_on_record(budget)
     after = launch_accounting(after_records)
     stopped = [r["label"] for r in after_records if r.get("status") != "finished" or r.get("verdict") == "blocking_review"]
+    expected = {"%s-t%d" % (scenario, trial) for trial in range(start, trials + 1)}
+    produced = {r["label"] for r in after_records} - recorded
+    # Successful process exit cannot prove TestMain/the requested entry ran.
+    # Keep this an invocation fault, without inventing or replacing a trial.
+    missing = sorted(expected - produced) if not stopped else []
+    unexpected = sorted(produced - expected)
+    evidence_incomplete = bool(missing or unexpected)
     record["finished_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
     record["executor_exit_code"] = code
-    record["exit_code"] = code if code != 0 or not stopped else 1
+    record["exit_code"] = code if code != 0 else int(bool(stopped) or evidence_incomplete)
     record["launch_budget"].update({"after": after, "remaining": max(0, addendum["runtime_call_cap"] - after["consumed"])})
-    record["stop_state"] = {"triggered": bool(stopped) or code != 0, "incomplete_or_blocking_trials": stopped}
+    record["stop_state"] = {"triggered": bool(stopped) or evidence_incomplete or code != 0, "incomplete_or_blocking_trials": stopped,
+                            "missing_requested_trials": missing, "unexpected_trials": unexpected}
     write_json(record_path, record)
     print("FINISHED %s exit_code=%d consumed=%d remaining=%d stopped=%s; public records in %s" % (
-        scenario, record["exit_code"], after["consumed"], record["launch_budget"]["remaining"], bool(stopped), RESULTS))
+        scenario, record["exit_code"], after["consumed"], record["launch_budget"]["remaining"], record["stop_state"]["triggered"], RESULTS))
     sys.exit(record["exit_code"])
 
 
