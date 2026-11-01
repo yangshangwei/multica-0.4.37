@@ -561,8 +561,16 @@ func (s *CollaborationService) changeKnowledgeCandidate(ctx context.Context, w *
 		if version != w.candidate.Version || approval.ExpectedContentSHA256 != w.candidate.ContentSha256 {
 			return refuse("knowledge_content_changed")
 		}
-		if w.candidate.ExpiresAt.Valid && !w.candidate.ExpiresAt.Time.After(s.knowledgeNow()) {
-			return refuse("knowledge_expired")
+		// ApproveKnowledgeCandidate compares expires_at with clock_timestamp().
+		// Decide expiry on that clock before any target or correction write.
+		if w.candidate.ExpiresAt.Valid {
+			checked, err := w.q.GetKnowledgeDatabaseTime(ctx)
+			if err != nil {
+				return protocol.CollaborationKnowledgeReceipt{}, err
+			}
+			if !w.candidate.ExpiresAt.Time.After(checked.Time) {
+				return refuse("knowledge_expired")
+			}
 		}
 		refs, err := knowledgeCandidateSources(w.candidate)
 		if err != nil {
@@ -618,6 +626,12 @@ func (s *CollaborationService) changeKnowledgeCandidate(ctx context.Context, w *
 			}
 		}
 		row, err = w.q.ApproveKnowledgeCandidate(ctx, db.ApproveKnowledgeCandidateParams{ID: w.candidate.ID, ActorID: w.actor, TargetRevision: pgtype.Int8{Int64: w.counter.KnowledgeRevision, Valid: true}, ExpectedStateRevision: revision, ExpectedVersion: w.candidate.Version, ExpectedContentSha256: w.candidate.ContentSha256})
+		if errors.Is(err, pgx.ErrNoRows) {
+			// The locked row already matched state, revision, version and hash,
+			// so expiry passed after the precheck. Roll back the target and
+			// correction writes; the retry's precheck seals knowledge_expired.
+			return protocol.CollaborationKnowledgeReceipt{}, &pgconn.PgError{Code: "40001", Message: "knowledge candidate expired during approval"}
+		}
 		code = "knowledge_approved"
 	case "reject":
 		row, err = w.q.RejectKnowledgeCandidate(ctx, db.RejectKnowledgeCandidateParams{ID: w.candidate.ID, ActorID: w.actor, Reason: pgtype.Text{String: reason, Valid: true}, ExpectedStateRevision: revision})

@@ -51,7 +51,12 @@ primitives live in [`collaboration_knowledge.sql`](../../../server/pkg/db/querie
   current source project are lawful destinations. Arbitrary destinations still
   require normal visibility. This does not grant directory access.
 - Approval needs current source Read, available unexpired material, target
-  membership, and a human project lead or workspace owner/admin. Rejection needs
+  membership, and a human project lead or workspace owner/admin. Expiry is
+  decided on the database clock (`clock_timestamp()`), the clock the approval
+  UPDATE uses, before any target-revision or correction write; an expired
+  candidate seals `409 knowledge_expired`. If expiry passes after that check,
+  the attempt rolls back as a retryable conflict and the retry seals the same
+  409, never a 404 or a partial write. Rejection needs
   source Read and that target role, but may reduce an unavailable/expired pending
   candidate. Source withdrawal needs source Read plus creator/current handler;
   target confirmers can instead withdraw through a restricted control row.

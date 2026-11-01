@@ -378,6 +378,18 @@ func (q *Queries) GetKnowledgeCandidateRouting(ctx context.Context, id pgtype.UU
 	return i, err
 }
 
+const getKnowledgeDatabaseTime = `-- name: GetKnowledgeDatabaseTime :one
+SELECT clock_timestamp()::timestamptz AS checked_at
+`
+
+// Expiry decisions use the same clock as the candidate write predicates.
+func (q *Queries) GetKnowledgeDatabaseTime(ctx context.Context) (pgtype.Timestamptz, error) {
+	row := q.db.QueryRow(ctx, getKnowledgeDatabaseTime)
+	var checked_at pgtype.Timestamptz
+	err := row.Scan(&checked_at)
+	return checked_at, err
+}
+
 const getKnowledgeLineageLatestVersion = `-- name: GetKnowledgeLineageLatestVersion :one
 SELECT version FROM collaboration_knowledge_candidate WHERE lineage_id = $1 ORDER BY version DESC LIMIT 1
 `

@@ -23,6 +23,10 @@ SELECT set_config('lock_timeout', sqlc.arg(timeout)::text, true)::text;
 -- name: GetKnowledgeLockTimeout :one
 SELECT current_setting('lock_timeout')::text;
 
+-- Expiry decisions use the same clock as the candidate write predicates.
+-- name: GetKnowledgeDatabaseTime :one
+SELECT clock_timestamp()::timestamptz AS checked_at;
+
 -- name: InitializeKnowledgeTarget :execrows
 INSERT INTO collaboration_knowledge_target (target_kind, target_id, workspace_id)
 SELECT sqlc.arg(target_kind)::text, sqlc.arg(target_id)::uuid, sqlc.arg(workspace_id)::uuid
