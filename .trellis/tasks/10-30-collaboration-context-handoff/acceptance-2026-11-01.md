@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | AC0 交付提交链与已列全栈门禁 | 已通过（列明范围） | runtime 没有新增迁移，746 演练属于原修复版本；额外遗漏矩阵另列 |
 | AC1 附件预算与小队异构 runtime | 确定性通过 | 四类实际成员 runtime 限额的可选选择/必需超限拒绝均通过；无真实 Provider 调用 |
-| AC2 正式 E0 | 原基线通过／新 runtime 已登记未运行 | 原产品 4c833e737 正式 E0 已过；新 runtime/知识登记为 RK1（`d2fe54ab0`），调用上限 0，待预算分配和真实 Provider 框架，不能继承旧结论 |
+| AC2 正式 E0 | 原基线通过／新 runtime 已登记未运行 | 原产品 4c833e737 正式 E0 已过；新 runtime/知识登记为 RK1（`d2fe54ab0`）；runtime 场景上限 19 次（`28c67c674`），待产品补丁、重新绑定源码和真实 Provider 框架；知识场景无预算；不能继承旧结论 |
 | AC3 原预登记 E1–E6 | 部分完成／停在不完整结果 | E1 1 有效/2 无效；E2a 1 有效/2 无效；E2b 3/3、E3 baseline 3/3 有效；E3 after trial1 CLI 超时；下一 E3 after trial2，剩余14次；E4–E6 未运行 |
 | AC4 中断与撤权后的记录保留 | 确定性通过／真实模型待验收 | Stop/撤权/作者退出两种提交顺序已补齐并通过 race；真实 Provider 中断摄取未由 seeded UI 或服务 fixture 代替 |
 | AC5 成员/队长/并行 memory 交接 | 确定性通过／真实模型待验收 | 双成员与 claim 前后来源、memory 冲突后的 refresh/new-intent merge 及双事实/作者版本保留均通过；模型理解和真实隔离接力仍单列 |

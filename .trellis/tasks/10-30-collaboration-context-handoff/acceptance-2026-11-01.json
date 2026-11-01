@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T04:26:48.874572+00:00",
+  "updated_at": "2026-11-01T04:29:27.592711+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -36,10 +36,11 @@
       "status": "original_passed_new_runtime_registered_unrun",
       "evidence": [
         "../10-30-collaboration-fix-closure/verification-2026-10-31.md",
-        "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/registration.json"
+        "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/registration.json",
+        "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json"
       ],
       "gaps": [
-        "原产品 4c833e737 正式 E0 已过；新 runtime/知识登记为 RK1（d2fe54ab0），调用上限 0，待预算分配和真实 Provider 框架，不能继承旧结论"
+        "原产品 4c833e737 正式 E0 已过；RK1 runtime 场景上限 19 次（28c67c674，会话-87记录的用户决定），待产品补丁、源码重新绑定和真实 Provider 框架；K1–K3/E0b 无预算；不能继承旧结论"
       ]
     },
     {
@@ -192,7 +193,7 @@
     "trial": 2,
     "remaining_provider_call_cap": 14
   },
-  "new_runtime_models": "registered as RK1 (d2fe54ab0); call_cap 0 pending user allocation; real-Provider framework not built; unrun",
+  "new_runtime_models": "RK1 (d2fe54ab0) + runtime addendum (28c67c674): runtime cap 19, knowledge scenarios unbudgeted; product fix pending, binding void, framework not built; unrun",
   "runtime_test_addendum_commits": [
     "0bbc6a77a",
     "84c4c2b3d",
