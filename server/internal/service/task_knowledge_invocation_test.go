@@ -1,6 +1,8 @@
 package service
 
 import (
+	"encoding/json"
+	"fmt"
 	"testing"
 
 	"github.com/google/uuid"
@@ -24,7 +26,49 @@ func TestKnowledgeUnsafeV1SelectorsRefuseBeforeOrdinaryFallback(t *testing.T) {
 	}
 }
 
-func TestKnowledgeOrdinaryNoSessionPersistenceRemainsUnsupported(t *testing.T) {
+// The v1 selector matrix lives in pkg/agent
+// (TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv). These suites pin
+// how BuildTaskKnowledgeClaim uses it with the gate on and off.
+
+func TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim(t *testing.T) {
+	for _, source := range []string{"defaults", "custom", "persistence"} {
+		t.Run(source, func(t *testing.T) {
+			f := newTaskKnowledgeFixture(t)
+			f.tasks.KnowledgeContextEnabled = false
+			switch source {
+			case "defaults":
+				f.inv.ExtraArgs = []string{"--add-dir", "/tmp/x"}
+			case "custom":
+				f.fx.Exec(t, `UPDATE agent SET custom_args='["--allowedTools","Bash"]'::jsonb WHERE id=$1`, f.task.AgentID)
+			case "persistence":
+				f.inv.ExtraArgs = []string{"--no-session-persistence"}
+			}
+			d, prior, err := f.tasks.BuildTaskKnowledgeClaim(f.ctx, f.task, &f.inv, "legacy-native")
+			if err != nil || d != nil || prior != "legacy-native" {
+				t.Fatalf("closed gate refused or rewrote an ordinary claim with safe options: d=%v prior=%q err=%v", d != nil, prior, err)
+			}
+		})
+	}
+}
+
+func TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution(t *testing.T) {
+	for _, source := range []string{"custom", "defaults"} {
+		t.Run(source, func(t *testing.T) {
+			f := newTaskKnowledgeFixture(t)
+			if source == "defaults" {
+				f.inv.ExtraArgs = []string{"--add-dir", "/tmp/x"}
+			} else {
+				f.fx.Exec(t, `UPDATE agent SET custom_args='["--allowedTools","Bash"]'::jsonb WHERE id=$1`, f.task.AgentID)
+			}
+			d, prior, err := f.tasks.BuildTaskKnowledgeClaim(f.ctx, f.task, &f.inv, "")
+			if err != nil || d != nil || prior != "" {
+				t.Fatalf("safe option outside the negotiation allowlist did not take base execution: d=%v prior=%q err=%v", d != nil, prior, err)
+			}
+		})
+	}
+}
+
+func TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates(t *testing.T) {
 	for _, source := range []string{"defaults", "custom"} {
 		t.Run(source, func(t *testing.T) {
 			f := newTaskKnowledgeFixture(t)
@@ -33,8 +77,68 @@ func TestKnowledgeOrdinaryNoSessionPersistenceRemainsUnsupported(t *testing.T) {
 			} else {
 				f.fx.Exec(t, `UPDATE agent SET custom_args='["--no-session-persistence"]'::jsonb WHERE id=$1`, f.task.AgentID)
 			}
-			if _, _, err := f.tasks.BuildTaskKnowledgeClaim(f.ctx, f.task, &f.inv, ""); !collaborationErrorCode(err, "knowledge_invocation_unsupported") {
-				t.Fatalf("ordinary reusable history accepted disabled persistence: %v", err)
+			// finalize builds the claim and passes its descriptor to FinalizeTaskClaim.
+			if d := f.finalize(t, ""); d != nil {
+				t.Fatal("ordinary reusable history negotiated with persistence disabled")
+			}
+			row, err := f.tasks.Queries.GetAgentTask(f.ctx, f.task.ID)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if row.KnowledgeContextVersion.Valid {
+				t.Fatal("base execution recorded knowledge negotiation")
+			}
+		})
+	}
+}
+
+func TestKnowledgeSessionSelectorsRefusedWhateverTheGate(t *testing.T) {
+	forms := [][]string{{"--continue"}, {"-c"}, {"-pc"}, {"--resume", "abc"}, {"--resume=abc"}, {"-rabc"}, {"--session-id=abc"}, {"--fork-session"}, {"--allowedTools", "Bash", "--continue"}, {"'--continue'"}}
+	for _, gate := range []bool{true, false} {
+		for _, source := range []string{"defaults", "custom"} {
+			t.Run(fmt.Sprintf("gate=%t/%s", gate, source), func(t *testing.T) {
+				f := newTaskKnowledgeFixture(t)
+				f.tasks.KnowledgeContextEnabled = gate
+				for _, form := range forms {
+					inv := f.inv
+					custom := []byte("[]")
+					if source == "defaults" {
+						inv.ExtraArgs = form
+					} else {
+						raw, err := json.Marshal(form)
+						if err != nil {
+							t.Fatal(err)
+						}
+						custom = raw
+					}
+					f.fx.Exec(t, `UPDATE agent SET custom_args=$2::jsonb WHERE id=$1`, f.task.AgentID, string(custom))
+					d, _, err := f.tasks.BuildTaskKnowledgeClaim(f.ctx, f.task, &inv, "")
+					if !collaborationErrorCode(err, "knowledge_invocation_unsupported") || d != nil {
+						t.Errorf("session selector %q was stripped or allowed: d=%v err=%v", form, d != nil, err)
+					}
+				}
+			})
+		}
+	}
+}
+
+func TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs(t *testing.T) {
+	for name, custom := range map[string]string{"allowed_tools": `["--allowedTools","Bash"]`, "no_session_persistence": `["--no-session-persistence"]`} {
+		t.Run(name, func(t *testing.T) {
+			f := newTaskKnowledgeFixture(t)
+			if d := f.finalize(t, ""); d == nil {
+				t.Fatal("fixture did not negotiate")
+			}
+			f.fx.Exec(t, `UPDATE agent SET custom_args=$2::jsonb WHERE id=$1`, f.task.AgentID, custom)
+			task, err := f.tasks.Queries.GetAgentTask(f.ctx, f.task.ID)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !task.KnowledgeContextVersion.Valid {
+				t.Fatal("fixture row has no retained negotiation")
+			}
+			if _, _, err = f.tasks.BuildTaskKnowledgeClaim(f.ctx, task, &f.inv, ""); !collaborationErrorCode(err, "knowledge_invocation_unsupported") {
+				t.Fatalf("changed contract inherited an old admission: %v", err)
 			}
 		})
 	}

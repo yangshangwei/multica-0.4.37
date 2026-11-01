@@ -66,7 +66,7 @@ matrix. Windows, installers and multi-account/quota acceptance remain separate.
 | `knowledge_context_changed` | Claim/session/reviewed manifest/invocation changed. Preserve the original result and cleanup; do not auto-replay the business input. |
 | `knowledge_authorization_denied` | Current credential/consumer/source authority no longer permits disclosure/start. Accountable or installer identity is not a substitute. |
 | `knowledge_busy` / `knowledge_unavailable` | Bounded lock/dependency/proof failure. Inspect content-free health/DB diagnostics; never force a base fallback that can restore exposed history. |
-| `knowledge_invocation_unsupported` | Runtime, selector or effective invocation is outside the admitted contract. Check retained current configuration, not only its registered protocol name. |
+| `knowledge_invocation_unsupported` | Runtime, selector or effective invocation is outside the admitted contract. Check retained current configuration, not only its registered protocol name. Options outside the negotiation allowlist, such as `--allowedTools` or `--add-dir`, no longer fail fresh tasks; those tasks run without knowledge. Session selectors such as `--continue` and `--resume` still refuse. |
 | `knowledge invalidation scan deferred` / `delivery deferred` | Pending work is retained for retry. Restore DB/relay availability; do not mark jobs delivered manually. |
 | `knowledge invalidation backlog` | `pending_jobs` and `oldest_seconds` are reported at most once per minute when the oldest job is at least 30 seconds old. No source content is needed for diagnosis. |
 

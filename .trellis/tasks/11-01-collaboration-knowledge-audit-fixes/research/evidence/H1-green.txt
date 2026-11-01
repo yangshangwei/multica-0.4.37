@@ -1,0 +1,175 @@
+H1 green run: the same tests after the fix
+==========================================
+
+Tree: /Volumes/artisan/code/2026/mc-kfix-lane-claim (branch codex/kfix-lane-claim-20261101), base 4e3b61500.
+Fix:
+  - server/pkg/agent/knowledge_launch.go adds KnowledgeSessionSelectorPresent(provider, args).
+  - server/internal/service/task_knowledge.go BuildTaskKnowledgeClaim step 1 refuses a v1 claude invocation
+    only for a session selector (or malformed custom_args JSON), not for every option outside the allowlist.
+    taskKnowledgeInvocationSupported and validateTaskKnowledgeOrdinaryArgs are unchanged and still gate admission.
+
+All seven H1 tests now pass:
+  - TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv (pkg/agent)
+  - TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim (service)
+  - TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution (service)
+  - TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates (service)
+  - TestKnowledgeSessionSelectorsRefusedWhateverTheGate (service, regression guard, also passed in red)
+  - TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs (service, regression guard, also passed in red;
+    now with allowed_tools and no_session_persistence subtests)
+  - TestKnowledgeClaimGateOffSafeArgsDispatchesOrdinaryTask (handler)
+
+Section 4 shows the selector guard is not vacuous: with the step-1 selector refusal disabled through a
+go test -overlay copy of task_knowledge.go (the H1-C overcorrection), the guard fails all 40 form/gate/source
+cases and the pre-existing TestKnowledgeUnsafeV1SelectorsRefuseBeforeOrdinaryFallback fails too.
+
+Section 5 records the broader step-6 suites by count; their full logs were not copied here because of size.
+
+Every go test ran with env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0, -count=1 -v.
+Databases: service uses kfix_claim_svc, handler uses kfix_claim_handler, cmd/server uses kfix_claim_cmd
+(all on 127.0.0.1:5432, migration ledger at 760). pkg/agent uses no database. The packages ran one at a time.
+
+HEAD: 4e3b61500ed0afbc12cf4c79b1c6aea866778d0e plus the uncommitted H1 change:
+ M .trellis/spec/server/collaboration-knowledge-execution.md
+ M docs/collaboration-knowledge-runtime.md
+ M server/internal/handler/daemon_knowledge_test.go
+ M server/internal/service/task_knowledge.go
+ M server/internal/service/task_knowledge_invocation_test.go
+ M server/pkg/agent/knowledge_launch.go
+ M server/pkg/agent/knowledge_launch_test.go
+
+### 1. pkg/agent (no database)
+$ go test ./pkg/agent -run 'TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv' -count=1 -v
+=== RUN   TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv
+--- PASS: TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/pkg/agent	0.465s
+exit status: 0
+
+### 2. internal/service (DATABASE_URL=.../kfix_claim_svc)
+$ go test ./internal/service -run '^(TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim|TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution|TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates|TestKnowledgeSessionSelectorsRefusedWhateverTheGate|TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs)$' -count=1 -v
+=== RUN   TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim
+=== RUN   TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim/defaults
+=== RUN   TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim/custom
+=== RUN   TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim/persistence
+--- PASS: TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim (0.69s)
+    --- PASS: TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim/defaults (0.26s)
+    --- PASS: TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim/custom (0.22s)
+    --- PASS: TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim/persistence (0.21s)
+=== RUN   TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution
+=== RUN   TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution/custom
+=== RUN   TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution/defaults
+--- PASS: TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution (0.40s)
+    --- PASS: TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution/custom (0.20s)
+    --- PASS: TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution/defaults (0.20s)
+=== RUN   TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates
+=== RUN   TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates/defaults
+=== RUN   TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates/custom
+--- PASS: TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates (0.41s)
+    --- PASS: TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates/defaults (0.20s)
+    --- PASS: TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates/custom (0.21s)
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/defaults
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/custom
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/defaults
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/custom
+--- PASS: TestKnowledgeSessionSelectorsRefusedWhateverTheGate (0.84s)
+    --- PASS: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/defaults (0.21s)
+    --- PASS: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/custom (0.22s)
+    --- PASS: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/defaults (0.21s)
+    --- PASS: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/custom (0.21s)
+=== RUN   TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs
+=== RUN   TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs/allowed_tools
+=== RUN   TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs/no_session_persistence
+--- PASS: TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs (0.93s)
+    --- PASS: TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs/allowed_tools (0.47s)
+    --- PASS: TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs/no_session_persistence (0.46s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/service	4.216s
+exit status: 0
+
+### 3. internal/handler (DATABASE_URL=.../kfix_claim_handler)
+$ go test ./internal/handler -run '^TestKnowledgeClaimGateOffSafeArgsDispatchesOrdinaryTask$' -count=1 -v
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/11/01 14:58:48 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+=== RUN   TestKnowledgeClaimGateOffSafeArgsDispatchesOrdinaryTask
+2026/11/01 14:58:48 INFO task claimed task_id=8a6fa956-aff9-4ced-8b81-bc5a7d20cb57 agent_id=d212ae92-0fd6-4399-ad7b-6ff7990b7328
+2026/11/01 14:58:48 INFO task claimed by runtime task_id=8a6fa956-aff9-4ced-8b81-bc5a7d20cb57 runtime_id=82881147-f3d4-41f9-9a71-3de9214ada4a agent_id=d212ae92-0fd6-4399-ad7b-6ff7990b7328 prior_session=""
+--- PASS: TestKnowledgeClaimGateOffSafeArgsDispatchesOrdinaryTask (0.16s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/handler	1.192s
+exit status: 0
+
+### 4. Mutation check: step-1 selector refusal disabled through -overlay (expected to FAIL)
+$ go test -overlay <task_knowledge.go with 'if false && (...selector check...)'> ./internal/service -run '^(TestKnowledgeSessionSelectorsRefusedWhateverTheGate|TestKnowledgeUnsafeV1SelectorsRefuseBeforeOrdinaryFallback)$' -count=1 -v   (DATABASE_URL=.../kfix_claim_svc)
+=== RUN   TestKnowledgeUnsafeV1SelectorsRefuseBeforeOrdinaryFallback
+=== RUN   TestKnowledgeUnsafeV1SelectorsRefuseBeforeOrdinaryFallback/defaults
+    task_knowledge_invocation_test.go:23: unsafe v1 selection silently downgraded: <nil>
+=== RUN   TestKnowledgeUnsafeV1SelectorsRefuseBeforeOrdinaryFallback/custom
+    task_knowledge_invocation_test.go:23: unsafe v1 selection silently downgraded: <nil>
+--- FAIL: TestKnowledgeUnsafeV1SelectorsRefuseBeforeOrdinaryFallback (0.53s)
+    --- FAIL: TestKnowledgeUnsafeV1SelectorsRefuseBeforeOrdinaryFallback/defaults (0.30s)
+    --- FAIL: TestKnowledgeUnsafeV1SelectorsRefuseBeforeOrdinaryFallback/custom (0.24s)
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/defaults
+    task_knowledge_invocation_test.go:117: session selector ["--continue"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["-c"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["-pc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--resume" "abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--resume=abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["-rabc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--session-id=abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--fork-session"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--allowedTools" "Bash" "--continue"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["'--continue'"] was stripped or allowed: d=false err=<nil>
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/custom
+    task_knowledge_invocation_test.go:117: session selector ["--continue"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["-c"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["-pc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--resume" "abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--resume=abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["-rabc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--session-id=abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--fork-session"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--allowedTools" "Bash" "--continue"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["'--continue'"] was stripped or allowed: d=false err=<nil>
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/defaults
+    task_knowledge_invocation_test.go:117: session selector ["--continue"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["-c"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["-pc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--resume" "abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--resume=abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["-rabc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--session-id=abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--fork-session"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--allowedTools" "Bash" "--continue"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["'--continue'"] was stripped or allowed: d=false err=<nil>
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/custom
+    task_knowledge_invocation_test.go:117: session selector ["--continue"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["-c"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["-pc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--resume" "abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--resume=abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["-rabc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--session-id=abc"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--fork-session"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["--allowedTools" "Bash" "--continue"] was stripped or allowed: d=false err=<nil>
+    task_knowledge_invocation_test.go:117: session selector ["'--continue'"] was stripped or allowed: d=false err=<nil>
+--- FAIL: TestKnowledgeSessionSelectorsRefusedWhateverTheGate (0.91s)
+    --- FAIL: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/defaults (0.24s)
+    --- FAIL: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/custom (0.22s)
+    --- FAIL: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/defaults (0.23s)
+    --- FAIL: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/custom (0.23s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/service	2.199s
+FAIL
+exit status: 1 (expected)
+cases reporting 'was stripped or allowed': 40
+
+### 5. Step-6 suites (counts of top-level tests from the full -v logs)
+go build ./...                                          exit 0
+go vet ./pkg/agent ./internal/service ./internal/handler exit 0
+go test ./pkg/agent -count=1 -v                         exit 0; 1219 passed, 0 failed, 3 skipped (TestACPManagedTerminalPreservesWindowsUnicodeShellOutput,TestCodexExecuteRetriesAfterSignaledProcessIsReaped,TestPiExecuteAttachesStdinPipe); ok  	github.com/multica-ai/multica/server/pkg/agent	182.925s
+go test ./internal/service -run 'Knowledge' -count=1 -v  exit 0; 111 passed, 0 failed, 0 skipped; ok  	github.com/multica-ai/multica/server/internal/service	55.559s   (kfix_claim_svc)
+go test ./internal/handler -run 'Knowledge' -count=1 -v  exit 0; 27 passed, 0 failed, 0 skipped; ok  	github.com/multica-ai/multica/server/internal/handler	4.865s   (kfix_claim_handler)
+go test ./cmd/server -run 'Knowledge' -count=1 -v       exit 0; 7 passed, 0 failed, 1 skipped (TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry: requires isolated REDIS_TEST_URL); ok  	github.com/multica-ai/multica/server/cmd/server	2.464s   (kfix_claim_cmd)
+The knowledgeintegration-tagged composites (cmd/server, internal/daemon) are outside these runs.

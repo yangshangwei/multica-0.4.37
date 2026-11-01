@@ -354,7 +354,12 @@ func (s *TaskService) BuildTaskKnowledgeClaim(ctx context.Context, task db.Agent
 				return nil, "", knowledgeFailure(409, "knowledge_invocation_unsupported")
 			}
 		}
-		if validateTaskKnowledgeOrdinaryArgs("claude", inv.ExtraArgs) != nil || validateTaskKnowledgeOrdinaryArgs("claude", custom) != nil {
+		// Session selectors are refused whatever the gate: transcripts written
+		// while it was on stay on disk and an explicit selector can reach them.
+		// Other options outside the negotiation allowlist (and
+		// --no-session-persistence) only make the invocation unsupported below,
+		// where the history guard chooses base execution or refusal.
+		if agent.KnowledgeSessionSelectorPresent("claude", inv.ExtraArgs) || agent.KnowledgeSessionSelectorPresent("claude", custom) {
 			return nil, "", knowledgeFailure(409, "knowledge_invocation_unsupported")
 		}
 	}

@@ -86,8 +86,16 @@ immutable daemon/provider and owner/provider identity. A scope/profile/owner
 rewrite or a NULL current turn cannot erase older exposure. A known managed
 session is not resumable by an unsupported client. A retained negotiated task or
 any private exposure in that provider namespace refuses unsupported delivery,
-even when the selected pointer is empty. Unsafe explicit selectors are refused;
-base execution requires a complete relevant history proving no private exposure.
+even when the selected pointer is empty. Unsafe explicit selectors are refused
+whatever the gate. For a v1 Claude invocation, any daemon-default or agent custom
+argument that, after the same unshell-quoting as launch, is a `--resume*`,
+`--continue*`, `--session*`, `--fork-session*` or `--from-pr*` long option, or a
+single-dash cluster containing `c` or `r`, refuses with
+`knowledge_invocation_unsupported`. Values and tokens after `--` are scanned, and
+the selector is never stripped. Any other option outside the negotiation
+allowlist only makes the invocation unsupported, and the history guard then
+chooses base execution or refusal. Base execution requires a complete relevant
+history proving no private exposure.
 Proven legacy sessions preserve their existing behavior.
 
 Use one `NewOrdinaryLaunchLifecycle(observer)` per logical input. It preserves
@@ -131,7 +139,9 @@ pointers. Every Claude print invocation includes the official
 A unique cwd alone is not
 native-store isolation. Missing, valued, negated or reenable forms refuse; an old
 CLI rejecting the flag has no flag-removal/base-only fallback. Ordinary resumable
-knowledge intentionally refuses this flag; do not merge the two policies.
+knowledge never negotiates with this flag: a fresh unexposed task takes base
+execution, while a retained negotiated task refuses with
+`knowledge_invocation_unsupported`. Do not merge the two policies.
 
 The preparation UUID is `uuid.NewSHA1(runID, []byte("multica:collaboration-knowledge:v1"))`.
 Original replay reauthorizes the same manifest and frozen handoff. Knowledge
@@ -147,7 +157,7 @@ oracle. No body goes into a supervisor ledger or stable base/CLAUDE file.
 
 | Condition | Required result |
 | --- | --- |
-| Switch false / unsupported safe fresh runtime | No positive private negotiation; retain history guard and ordinary eligible base behavior |
+| Switch false / unsupported safe fresh runtime (including safe options outside the negotiation allowlist and ordinary `--no-session-persistence`) | No positive private negotiation; retain history guard and ordinary eligible base behavior |
 | Unsupported/unsafe selector could recover managed history | Refuse before native launch; never silently strip the selector |
 | Stale claim, session, preparation, manifest, prompt or invocation | `knowledge_context_changed`; no replacement snapshot or automatic replay |
 | Current consumer/source/credential denied | `knowledge_authorization_denied` |

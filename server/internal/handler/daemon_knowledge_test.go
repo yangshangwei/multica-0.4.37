@@ -197,6 +197,27 @@ func TestKnowledgeHTTPNegotiationDoesNotEnableClosedGate(t *testing.T) {
 	}
 }
 
+// Named regression for H1: a closed gate must not fail an ordinary claim whose
+// daemon defaults or custom_args sit outside the negotiation allowlist. The
+// rule's matrix lives in the service task_knowledge_invocation suite.
+func TestKnowledgeClaimGateOffSafeArgsDispatchesOrdinaryTask(t *testing.T) {
+	f := newTaskKnowledgeHTTPFixture(t, "issue")
+	testHandler.TaskService.KnowledgeContextEnabled = false
+	dbfx.Exec(t, `UPDATE agent SET custom_args='["--allowedTools","Bash"]'::jsonb WHERE id=$1`, f.agentID)
+	inv := f.inv
+	inv.ExtraArgs = []string{"--add-dir", "/tmp/x"}
+	task := f.claim(t, "single", &inv)
+	if task.KnowledgeContext != nil {
+		t.Fatal("closed gate negotiated knowledge")
+	}
+	var status string
+	var failed bool
+	dbfx.QueryRow(t, `SELECT status, failure_reason IS NOT NULL FROM agent_task_queue WHERE id=$1`, f.taskID).Scan(&status, &failed)
+	if status != "dispatched" || failed {
+		t.Fatalf("ordinary claim was not dispatched cleanly: status=%s failure_reason_set=%t", status, failed)
+	}
+}
+
 func (f *taskKnowledgeHTTPFixture) recordNative(t *testing.T, native string) *protocol.TaskKnowledgeClaimDescriptor {
 	t.Helper()
 	task := f.claim(t, "single", &f.inv)

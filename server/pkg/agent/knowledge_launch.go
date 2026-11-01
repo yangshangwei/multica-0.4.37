@@ -96,11 +96,48 @@ func KnowledgeLifecycleSupported(provider, mode string, builtinRuntime bool) boo
 	return builtinRuntime && provider == "claude" && (mode == "" || mode == "local")
 }
 
+// claudeSessionSelectorPrefixes are the long options that can make Claude
+// resume, continue or fork an existing transcript.
+var claudeSessionSelectorPrefixes = []string{"--resume", "--continue", "--session", "--fork-session", "--from-pr"}
+
+// KnowledgeSessionSelectorPresent reports whether Claude default/custom
+// arguments contain an explicit session selector, which could reach managed
+// history. Each token is unquoted as buildClaudeArgs does before launch, and
+// its name is the part before the first "=". A selector is a long option with
+// one of claudeSessionSelectorPrefixes, or a single-dash short cluster that
+// contains 'c' or 'r' (-c, -r, -rID, -cr, -pc). Every token is scanned,
+// including option values and tokens after "--": there is no arity parsing,
+// so some harmless values also count as selectors.
+//
+// This decides refusal before an ordinary fallback only. It admits nothing:
+// ValidateKnowledgeSessionArgs remains the only admission rule for a
+// knowledge launch. Providers other than Claude always report false.
+func KnowledgeSessionSelectorPresent(provider string, args []string) bool {
+	if provider != "claude" {
+		return false
+	}
+	for _, raw := range args {
+		arg := unshellQuoteArg(raw)
+		name, _, _ := strings.Cut(arg, "=")
+		for _, prefix := range claudeSessionSelectorPrefixes {
+			if strings.HasPrefix(name, prefix) {
+				return true
+			}
+		}
+		if len(arg) > 1 && arg[0] == '-' && arg[1] != '-' && strings.ContainsAny(arg[1:], "cr") {
+			return true
+		}
+	}
+	return false
+}
+
 // ValidateKnowledgeSessionArgs validates extra/default arguments when selection
 // must be provably controlled. Do not silently filter a selector from user input.
 // Unknown flags/subcommands are refused: a denylist alone cannot establish the
 // semantics of a new vendor switch. Ordinary legacy execution does not call it.
 // This argument check alone does not certify a custom/remote executable.
+// Refusing a claim that falls back to ordinary execution is decided by
+// KnowledgeSessionSelectorPresent instead.
 func ValidateKnowledgeSessionArgs(provider string, args []string) error {
 	if provider != "claude" || len(args) > 64 {
 		return knowledgeUnsupported()

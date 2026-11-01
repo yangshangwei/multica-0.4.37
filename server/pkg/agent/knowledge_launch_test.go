@@ -417,6 +417,36 @@ func TestKnowledgeEffectiveArgsCannotOverrideSessionSelection(t *testing.T) {
 	}
 }
 
+// TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv owns the selector
+// matrix that the server uses to refuse a v1 claim before ordinary fallback.
+// Admission stays with ValidateKnowledgeSessionArgs; this only decides refusal.
+func TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv(t *testing.T) {
+	selectors := [][]string{
+		{"--continue"}, {"--continue=true"}, {"-c"}, {"-r"}, {"-rabc"}, {"-cr"}, {"-pc"},
+		{"--resume", "abc"}, {"--resume=abc"}, {"--resume-session-at=x"}, {"--session-id=abc"},
+		{"--fork-session"}, {"--from-pr", "12"}, {"'--continue'"}, {`"--resume=x"`},
+		// Values and tokens after "--" are scanned too: there is no arity parsing.
+		{"--", "--continue"}, {"--model", "--continue"},
+	}
+	for _, args := range selectors {
+		if !KnowledgeSessionSelectorPresent("claude", args) {
+			t.Errorf("session selector %q was not detected", args)
+		}
+	}
+	ordinary := [][]string{
+		{"--allowedTools", "Bash"}, {"--add-dir", "/tmp/x"}, {"--model", "sonnet"}, {"--max-turns", "5"},
+		{"--verbose"}, {"--no-session-persistence"}, {"--disallowedTools", "Write"}, {"--debug"},
+	}
+	for _, args := range ordinary {
+		if KnowledgeSessionSelectorPresent("claude", args) {
+			t.Errorf("ordinary option %q was classified as a session selector", args)
+		}
+	}
+	if KnowledgeSessionSelectorPresent("codex", []string{"--continue"}) {
+		t.Error("the selector rule applies to Claude argv only")
+	}
+}
+
 func TestKnowledgeInvocationFingerprintRejectsDrift(t *testing.T) {
 	for _, change := range []string{"model", "cwd", "safe-args", "executable", "mcp", "thinking", "settings"} {
 		t.Run(change, func(t *testing.T) {
