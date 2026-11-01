@@ -21,7 +21,7 @@
   "children": [],
   "parent": "10-30-collaboration-context-handoff",
   "relatedFiles": [],
-  "notes": "2026-11-01 续作：审计修复、独立复核、合流及最终联合验证尚未闭合；原系列下一 E3 after trial 2，剩余14次，冻结源码不变；RK1 runtime 已批25次（含H2b、H6每轮两次启动），消耗0，框架与源码绑定未就绪；K1-K3/E0b及安装版/AC43另行分账。知识生产默认false。见父任务 execution-resume-2026-11-01.json。",
+  "notes": "原冻结实验仍未完成：下一E3 after trial2，另余14次，之后E4→E5→E6；不得回灌新产品或占用RK1runtime25。产品审计及E2E修复均已合入；最终候选7f8ca8725的完整check exit2（bundle测试目录前提），独立修复/复核正在推进。真实调用0；父矩阵仍开放。",
   "meta": {
     "e0_status": "passed_2026_10_31",
     "experiments_remaining": "E3_after_trials_2_3_then_E4_E5_E6",
@@ -49,8 +49,8 @@
       "includes_H2b": true,
       "H6_launches_per_trial": 2
     },
-    "next_action": "finish_audit_repairs_and_independent_reviews_then_serial_local_merges_joint_validation_and_source_rebinding",
-    "progress_phase": "audit_repair_and_framework_fake_validation",
+    "next_action": "locally_integrate_reviewed_bundle_fixture_then_fresh_complete_check_and_remaining_gates",
+    "progress_phase": "repairs_locally_merged; bundle_fixture_review_passed; new_full_candidate_check_pending",
     "experiment_next_arm": "after",
     "e2b_status": "3_valid_pass",
     "e3_status": "baseline_3_valid_pass_after_trial1_incomplete_EPROTO_timeout"

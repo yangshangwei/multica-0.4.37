@@ -23,7 +23,7 @@
   ],
   "parent": "10-30-collaboration-context-handoff",
   "relatedFiles": [],
-  "notes": "2026-11-01 续作：审计修复、独立复核、合流及最终联合验证尚未闭合；原系列下一 E3 after trial 2，剩余14次，冻结源码不变；RK1 runtime 已批25次（含H2b、H6每轮两次启动），消耗0，框架与源码绑定未就绪；K1-K3/E0b及安装版/AC43另行分账。知识生产默认false。见父任务 execution-resume-2026-11-01.json。",
+  "notes": "知识21项审计修复已整批及后续独立复核，以6cb9fcb36合入主集成；原service exit1及3失败记录保留，窄范围修正证据另列。最终候选完整check、知识开关开/关及人工确认/纠错/撤回注入仍待验；生产开关false，K1-K3/E0b另需预算。默认库事故恢复边界继续开放。",
   "meta": {
     "permission_decision": "approved",
     "approval_session": "01a18a36-e482-7840-9900-3ff8174b4ce7",
@@ -75,9 +75,9 @@
     "main_merge_commit": "8cb04e3295474073b4b991bc4883ef3901c14f01",
     "evidence_commit": "93093d2e95e1affafbb40ddcd944ac5d58fc451c",
     "progress_file": "progress.md",
-    "progress_phase": "audit_repair_and_framework_fake_validation",
+    "progress_phase": "repairs_locally_merged; bundle_fixture_review_passed; new_full_candidate_check_pending",
     "progress_baseline": "ba6f3cd50",
-    "next_action": "finish_audit_repairs_and_independent_reviews_then_serial_local_merges_joint_validation_and_source_rebinding",
+    "next_action": "locally_integrate_reviewed_bundle_fixture_then_fresh_complete_check_and_remaining_gates",
     "post_merge_supplements": {
       "joint_fault_commit": "65cd0599b",
       "joint_report": "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-joint-current/README.md",
@@ -98,6 +98,7 @@
       "consumed": 0,
       "includes_H2b": true,
       "H6_launches_per_trial": 2
-    }
+    },
+    "audit_repair_main_merge": "6cb9fcb36dde68b553365bd96698e0792a466f30"
   }
 }

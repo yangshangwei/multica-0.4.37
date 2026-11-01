@@ -21,7 +21,7 @@
   "children": [],
   "parent": "10-30-collaboration-context-handoff",
   "relatedFiles": [],
-  "notes": "runtime9审计/5召回跟进已独立复核并合入；知识/框架/交付准备均已本地合流。最终完整make check、同候选fake/race、Web/native/知识开关交互和平台验收仍开放。RK1 runtime25/消耗0；原E3after trial2/剩14。",
+  "notes": "runtime9项审计和5项召回跟进已独立复核并合入；知识/框架/交付/E2E也已合流，RKI1-5关闭、RKI6开放。7f8ca8725完整check exit2，bundle测试fixture修复分支91113cbeb正在完整包及独立复核；最终同候选fake/race/平台验收待验。RK1runtime25消耗0，原冻结实验另余14，下一E3 after trial2。",
   "meta": {
     "planning_progress": "reviewed_2026-10-31",
     "research_head": "4c833e737efb6c997e5cb56c74c43e9237c91956",
@@ -36,8 +36,8 @@
     "current_acceptance_matrix": "../10-30-collaboration-context-handoff/acceptance-2026-11-01.json",
     "deterministic_addendum": "passed_0bbc6a77a_84c4c2b3d",
     "progress_file": "progress.md",
-    "progress_phase": "all_repair_lanes_locally_merged; final_joint_candidate_verification_pending",
-    "next_action": "finish_E2E_contract_repairs_and_independent_review_then_full_same_candidate_check_and_RKI6_fake_race",
+    "progress_phase": "repairs_locally_merged; bundle_fixture_review_passed; new_full_candidate_check_pending",
+    "next_action": "locally_integrate_reviewed_bundle_fixture_then_fresh_complete_check_and_remaining_gates",
     "joint_current_addendum": {
       "commit": "65cd0599b",
       "source_head": "93afc3cb0",

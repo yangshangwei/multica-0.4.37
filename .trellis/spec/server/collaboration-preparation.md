@@ -95,6 +95,33 @@ before the provider; provider access needs its own declaration. A read-only
 mount does not make a character-device descriptor read-only: tests prove that
 writes can still open, so never claim stronger protection.
 
+### Bundle file snapshot fixtures
+
+`openBundleSource(source)` supports Linux and Darwin file validation; this does
+not advertise the Linux namespace controller on macOS. Every path component must
+be owned by the current user or root and refuse group/other write access, except
+root-owned sticky ancestors. The final source must be a regular file. Violations
+return `ErrUnsupported`; do not loosen these checks for test workspaces.
+
+Build `TMPDIR` is a lifetime/location setting, not a trusted source ancestry.
+A private child below a group-writable volume still fails source validation.
+`bundleTestFile` therefore creates its Linux/Darwin source beneath standard
+`/tmp`, canonicalizes it, and cleans only that exact test-owned directory:
+
+```go
+temp, err := os.MkdirTemp("/tmp", "multica-bundle-test-")
+// Check err; register exact-directory cleanup, then EvalSymlinks(temp).
+```
+
+Retain the valid-byte, symlink/parent-symlink, changed hash/size, nonregular-file,
+shared-writable-file and shared-writable-parent matrix in `provider_bundle_test.go`.
+Valid sources must snapshot on Linux/Darwin even with an unrelated unsafe build
+`TMPDIR`; a shared-writable source ancestor must still refuse. Other platforms
+assert `ErrUnsupported` and no output artifact, rather than claiming Unix support.
+Do not replace the positive case with a skip, mutate global `TMPDIR`, or chmod a
+shared volume. Recheck normal/race with the original build temp setting and keep
+actual Linux execution distinct from Windows compile-only evidence.
+
 ## Claude configuration remains explicit
 
 `ClaudeFreshStreamArguments` always supplies `--setting-sources=`,

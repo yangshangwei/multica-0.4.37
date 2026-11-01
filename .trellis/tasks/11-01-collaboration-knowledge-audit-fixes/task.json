@@ -21,13 +21,15 @@
   "children": [],
   "parent": "10-30-collaboration-knowledge-promotion",
   "relatedFiles": [],
-  "notes": "四分道和runtime共同产品45efa093c、后续0702d5039/742abb217已独立复核。具备本地合主集成条件，最终完整makecheck/门控验收尚未通过；原service3失败已处置但原exit1保留。真实Provider0，知识默认false，默认库迁移事故保留并已披露。",
+  "notes": "四分道及runtime共同产品与后续0702d5039/742abb217已独立复核，并以6cb9fcb36本地合入。21项已有修复或明确测试处置；最终联合验收仍开放。7f8ca8725完整check被独立的bundle测试目录前提阻断，原失败/21个包库保留。Provider0、知识false；默认库迁移事故仍未恢复。",
   "meta": {
     "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
     "integration_source": "45efa093c",
-    "next_action": "local_main_merge_then_complete_final_makecheck_and_gated_same_candidate_acceptance",
+    "next_action": "locally_integrate_reviewed_bundle_fixture_then_fresh_complete_check_and_remaining_gates",
     "workflow_resume": "not_resumed_cross_session; native_and_root_takeover",
     "parent_complete": false,
-    "integration_readiness": "research/combined-ready-for-main-integration.json"
+    "integration_readiness": "research/combined-ready-for-main-integration.json",
+    "progress_phase": "repairs_locally_merged; bundle_fixture_review_passed; new_full_candidate_check_pending",
+    "audit_repair_main_merge": "6cb9fcb36dde68b553365bd96698e0792a466f30"
   }
 }
