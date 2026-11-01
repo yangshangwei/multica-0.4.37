@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 import { nativeAcceptanceHome, nativeInstalledLayout } from "./collaboration-installed-layout.mjs";
 
 test("Windows uses the installed EXE resources and bundled EXE with an encoded file URL", () => {
@@ -15,6 +16,25 @@ test("macOS preserves the app Contents layout and encodes package names", () => 
   assert.equal(layout.cli, "/task/Multica Candidate.app/Contents/Resources/app.asar.unpacked/resources/bin/multica");
   assert.equal(layout.rendererUrl, "file:///task/Multica%20Candidate.app/Contents/Resources/app.asar/out/renderer/index.html");
   assert.equal(layout.apiOS, "macos");
+});
+
+test("native renderer URLs round-trip literal percent sequences, hashes and spaces as filesystem text", () => {
+  for (const { platform, executable, renderer } of [
+    { platform: "win32", executable: "C:\\Runner%20Temp\\installed\\Multica.exe",
+      renderer: "C:\\Runner%20Temp\\installed\\resources\\app.asar\\out\\renderer\\index.html" },
+    { platform: "darwin", executable: "/task/Multica%20Candidate.app/Contents/MacOS/Multica",
+      renderer: "/task/Multica%20Candidate.app/Contents/Resources/app.asar/out/renderer/index.html" },
+    { platform: "win32", executable: "C:\\Runner%20 % #\\installed\\Multica.exe",
+      renderer: "C:\\Runner%20 % #\\installed\\resources\\app.asar\\out\\renderer\\index.html" },
+    { platform: "darwin", executable: "/task%2F % #/Multica%20Candidate.app/Contents/MacOS/Multica",
+      renderer: "/task%2F % #/Multica%20Candidate.app/Contents/Resources/app.asar/out/renderer/index.html" },
+  ]) {
+    const layout = nativeInstalledLayout(executable, platform);
+    assert.equal(fileURLToPath(layout.rendererUrl, { windows: platform === "win32" }), renderer);
+    assert(layout.rendererUrl.includes("%2520"), "A literal percent-escape-shaped name is escaped only once as filesystem text");
+    if (renderer.includes("% #")) assert(layout.rendererUrl.includes("%25%20%23"), "Literal percent, space and hash stay in the same path component");
+    assert.equal(new URL(layout.rendererUrl).hash, "");
+  }
 });
 
 test("native layouts reject unsupported platforms and paths outside a supported package shape", () => {

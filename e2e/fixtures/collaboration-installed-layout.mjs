@@ -1,4 +1,5 @@
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 /** Paths for an explicitly selected native package, never an ambient install. */
 export function nativeInstalledLayout(executable, platform = process.platform) {
@@ -12,8 +13,7 @@ export function nativeInstalledLayout(executable, platform = process.platform) {
   }
   const resources = platform === "win32" ? paths.join(paths.dirname(executable), "resources") : paths.resolve(executable, "../..", "Resources");
   const asar = paths.join(resources, "app.asar");
-  const rendererUrl = new URL("file:///");
-  rendererUrl.pathname = `${platform === "win32" ? "/" : ""}${paths.join(asar, "out", "renderer", "index.html").replaceAll("\\", "/")}`;
+  const rendererUrl = pathToFileURL(paths.join(asar, "out", "renderer", "index.html"), { windows: platform === "win32" });
   return { resources, asar, cli: paths.join(`${asar}.unpacked`, "resources", "bin", platform === "win32" ? "multica.exe" : "multica"),
     rendererUrl: rendererUrl.href, platform, apiOS: platform === "win32" ? "windows" : "macos" };
 }
