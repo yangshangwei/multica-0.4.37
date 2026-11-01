@@ -309,16 +309,22 @@
   },
   "local_crosschain_followup": {
     "CCG1": {
-      "state": "test_only_composite_in_progress",
+      "state": "normal_and_race_passed_pending_independent_review",
       "owner": "/root/knowledge_correction_composite",
       "branch": "codex/knowledge-crosschain-correction-20261102",
       "scope": "newknowledgeintegrationtaggedtest approveV1->actualstdin->approvedcorrectionV2->newstdinexcludesV1->withdraw->refusal/noextraLaunch",
       "database_policy": "root migrated distinctnormal/race ownedrequiredprefix DBs; exacttestpermit",
-      "product_logic_changes": false
+      "product_logic_changes": false,
+      "code": "057bc9616",
+      "evidence": "9c5e48761"
     },
     "CCG2": {
-      "state": "open_deployed_API_flag_on_off_proof",
-      "programmatic_bool_composites_sufficient": false
+      "state": "test_parser_and_optin_deployed_probe_in_progress",
+      "programmatic_bool_composites_sufficient": false,
+      "owner": "/root/knowledge_deployed_probe",
+      "branch": "codex/knowledge-deployed-probe-20261102",
+      "scope": "strict frozen JSON plus managed knowledge suffix fakeparser, safeinputdigestcallback, externalAPItrue/false opt-in fakeHostspec",
+      "plan": "research/final-candidate-20261102/deployed-knowledge-probe-plan.json"
     },
     "itinerary": "research/final-candidate-20261102/crosschain-itinerary.json"
   }

@@ -1,0 +1,163 @@
+{
+  "scope": "CCG2 deployed knowledge startup flag to real external API and fake Host stdin; read-only research, not execution",
+  "owner": "/root/deployed_knowledge_probe_research",
+  "recorded_at": "2026-11-01T19:35:56.862265+00:00",
+  "candidate_sha": "231a08063162acde63ebcabe2ef6a353f7a62bca",
+  "main_documentation_head": "ec37f43cf8de72a6192ef40f3068b0861f4cf405",
+  "status": "NOT_RUN",
+  "operations": {
+    "tests": 0,
+    "browser": 0,
+    "database": 0,
+    "service": 0,
+    "container": 0,
+    "Agent_CLI": 0,
+    "Provider": 0,
+    "external": 0
+  },
+  "startup_chain": [
+    {
+      "file": "server/cmd/server/router.go",
+      "line": 431,
+      "fact": "literal true sets handler config"
+    },
+    {
+      "file": "server/internal/handler/collaboration_runtime.go",
+      "line": 178,
+      "fact": "query knowledge_version=1 sets request; startup TaskService flag passed to CollaborationService"
+    },
+    {
+      "file": "server/internal/service/collaboration_knowledge_runtime.go",
+      "line": 65,
+      "fact": "fresh disabled knowledge claim returns nil, ordinary Host not globally refused"
+    },
+    {
+      "file": "server/internal/daemon/collaborationrun/host_knowledge.go",
+      "line": 99,
+      "fact": "approved contributions are appended to actual prompt after frozen JSON; independently authorized before physical launch"
+    }
+  ],
+  "confirmed_test_seam": {
+    "file": "e2e/fixtures/collaboration-host-provider.go",
+    "line": 159,
+    "fact": "json.Unmarshal of frozen JSON through end rejects legitimate knowledge append on ON; static inference, no current candidate reproduction",
+    "required_fix": "test-only strict first-value decode and exact optional approved-knowledge suffix with EOF; preserve all existing validation"
+  },
+  "minimal_proposed_write_scope": [
+    "e2e/fixtures/collaboration-host-provider.go",
+    "e2e/fixtures/collaboration-host-runtime.ts",
+    "e2e/collaboration-knowledge-deployed.spec.ts"
+  ],
+  "required_prerequisites": [
+    "same candidate API/Web/renderer/daemon/provider/CLI hash binding",
+    "two separate root-created migrated DBs/API environments with literal false and true",
+    "password managed installation, all three explicit Host binaries, loopback services",
+    "root verifies DB identity and owns creation/migrations",
+    "fixture gate restoration; no concurrent Host gate fixture",
+    "no real Agent CLI/Provider account or extra model launch"
+  ],
+  "reuse": {
+    "seedHostRuntime": "password managed enrollment/capabilities and paused source issue; opens/restores all3 task gates",
+    "apiApprove": "public detail+exact version/revision/content hash human JWT approval",
+    "do_not_reuse_seedKnowledge": "legacy login fixture incompatible with password Host; do not cast Host fixture into its full interface",
+    "target": "Host sourceWorkspace, not independent resourceWorkspace",
+    "source": "same consumer issue memoryv1 with no canary; contribution has distinct canary so input attribution cannot come from base material"
+  },
+  "proposed_commands": {
+    "compile_daemon": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-c",
+      "-o",
+      "<ABS_TASK>/host-daemon.test",
+      "./internal/daemon"
+    ],
+    "build_provider": [
+      "go",
+      "build",
+      "-o",
+      "<ABS_TASK>/host-provider",
+      "e2e/fixtures/collaboration-host-provider.go"
+    ],
+    "probe_each_environment": [
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "e2e/collaboration-knowledge-deployed.spec.ts",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json"
+    ],
+    "selection_env": "COLLABORATION_KNOWLEDGE_EXPECTED=true|false, explicitly matched to each owned API startup env; configured incomplete inputs hard fail",
+    "existing_timeouts": "preserve existing Host bounded waits; no ad-hoc extension"
+  },
+  "read_only_event_probe": {
+    "table": "collaboration_run_event",
+    "SQL": "SELECT kind,count(*) FROM collaboration_run_event WHERE run_id=$1 AND kind IN ('knowledge_claim','knowledge_preparation','knowledge_authorization') GROUP BY kind",
+    "payload_published": false
+  },
+  "expected": {
+    "false": {
+      "physical_launches": 1,
+      "approved_candidate_state": "approved",
+      "knowledge_segment": false,
+      "knowledge_canary_in_stdin": false,
+      "no_session_persistence": false,
+      "resume": false,
+      "logical_knowledge_events": {
+        "knowledge_claim": 0,
+        "knowledge_preparation": 0,
+        "knowledge_authorization": 0
+      }
+    },
+    "true": {
+      "physical_launches": 1,
+      "approved_candidate_state": "approved",
+      "knowledge_segment": true,
+      "knowledge_actual_content_hash_matches_approved": true,
+      "candidate_version_source_identity_matches": true,
+      "no_session_persistence": true,
+      "resume": false,
+      "logical_knowledge_events": {
+        "knowledge_claim": 1,
+        "knowledge_preparation": 1,
+        "knowledge_authorization": 1
+      }
+    }
+  },
+  "does_not_prove": [
+    "browser approval checkbox UI",
+    "correction/new-version/withdraw sequence (CCG1 separate)",
+    "real model interpretation",
+    "installed Electron/full platform packaging",
+    "different Provider accounts/AC43",
+    "general vendor version rollout"
+  ],
+  "actual_results": {
+    "false": "NOT_RUN",
+    "true": "NOT_RUN"
+  },
+  "production_default_changes": false,
+  "source_sha256": {
+    "server/cmd/server/router.go": "6c7cf270ebb23176c6604ed13bc49f17712ad72d1005df6adf77f43b209ecac9",
+    "server/cmd/server/task_knowledge_config_test.go": "c0aa6d20bd6f8e3d797d9bd73559f04f2366086db891b6ed013456f10273bd63",
+    "server/internal/handler/config.go": "5ebd30d1291873ea2d67a89018fc48424e1a8b71330ad76f25082718bd7d9b17",
+    "server/internal/handler/collaboration_runtime.go": "212ea209ecafa89ee317bca92ad6a5e4293d85c13f8fbee622d449d6ab92fffb",
+    "server/internal/service/collaboration_knowledge_runtime.go": "00fb39276f84eb9121fa798c2dfc02b03f05db1b22a90ab7508d7247e093a002",
+    "server/internal/service/collaboration_knowledge_resolve.go": "5d4d7f586e102edfa8970e9c3399b12f073fd01f008e7aa4691c2adf296890d0",
+    "server/internal/daemon/collaborationrun/client.go": "cbebe86553c1434a1a787852212795627a21d18ed620d2be274c19c045765be3",
+    "server/internal/daemon/collaborationrun/host_runner.go": "3c24bbecf6036c354653d35a6872d94fd0cbac1bed3cd317c51178d19786a0d7",
+    "server/internal/daemon/collaborationrun/host_knowledge.go": "1a7345ba6171ee85c738cbd898815d63d2d37e3125931382897c69f1cec61fa2",
+    "server/internal/daemon/collaboration_host_router_test.go": "1939ea098c47210f62512a138b35d944add6f3b4f02b5f2e0fd9a5dabaab130f",
+    "server/pkg/protocol/collaboration_knowledge.go": "1da9b30c27a33fed41a2fc82e6eabe481a2115589bd9f6f1db19d7b55de522e5",
+    "server/pkg/db/queries/collaboration_runtime.sql": "aee098d8467f7883735de014729c1de9d007a6353e7419298f32f887c488b7e6",
+    "e2e/fixtures/collaboration-host-runtime.ts": "41558a125ded2b5303e29c256d9e3bbe0b3ef04b2af69611209a815589ef96d4",
+    "e2e/fixtures/collaboration-host-provider.go": "c61eab40b56796a92c99583820dc6e4a0f881c467d85c26ecd2743f0ad7e42a8",
+    "e2e/fixtures/collaboration-knowledge.ts": "b92926adbca1cabd2fb265ff2f1f80b4b26feda3889502eea9ff3bbb6f7ef5f5",
+    "e2e/collaboration-host-runtime.spec.ts": "89def39e2af39aceb9f03c6d0aa4bc54cc0f29397e08e4ac1cc97286c6ed2c54",
+    "e2e/collaboration-knowledge.spec.ts": "05734ae588cae269dc6131d785f4bbbaaf1a9be834c85ba6e5e278c10b9ae015"
+  }
+}
