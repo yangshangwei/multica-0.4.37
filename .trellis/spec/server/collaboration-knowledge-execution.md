@@ -70,6 +70,20 @@ today's set. Both manifest and contributions sort by candidate ID. Enforce all
 32-item/256KiB decoded-material, 2MiB complete JSON (including newline), and 64KiB
 retained-delivery limits before commit. No prefix truncation or base-body copies.
 
+The late installation-namespace fence and the member and collaboration status
+fences are try-locks. Claim and finalize take the namespace with a blocking lock
+before task, issue and token locks, so a blocking wait here would add the reverse
+edge. A try-lock miss, NOWAIT conflict, serialization failure or a preparation
+committed between the pre-read and the locked read rolls back the whole ordinary
+preparation or authorization, or collaboration preparation or authorization. The
+server then re-runs it, including its pre-transaction reads, with jittered backoff
+for at most 1.5s, and starts no attempt with less than 250ms left on the caller's
+deadline. It then returns 503 `knowledge_busy` (or `collaboration_busy` from
+collaboration NOWAIT exhaustion). Replays are safe because prepare replays by
+request ID and hash, authorize by request ID, and the collaboration preparation ID
+is deterministic. A collaboration commit error is never retried. Never turn these
+fences into blocking waits.
+
 ### Ordinary exact-session history and lifecycle
 
 The selected binding is `(provider,runtime,agent,configuration,scope,generation,
@@ -169,7 +183,7 @@ oracle. No body goes into a supervisor ledger or stable base/CLAUDE file.
 | Daemon reports bound native session unreachable before first preparation (the one stale-session case not refused above) | Fresh generation, current manifest, same-turn continuity notice; flagged replay mismatch → `idempotency_conflict`; flagged fresh claim → `invalid_knowledge_request`; altered binding or echoed stale response → `knowledge_context_changed` with zero processes |
 | Current consumer/source/credential denied | `knowledge_authorization_denied` |
 | Bound exceeded, corrupt proof, missing/ambiguous observation ACK or dependency failure | Fail closed (`knowledge_unavailable` or the precise typed refusal) |
-| Lock contention exhausts bounded retries | `knowledge_busy`; terminal for the logical input |
+| Lock contention exhausts the server's bounded whole-transaction retry (at most 1.5s) and the daemon's three attempts | `knowledge_busy`; terminal for the logical input |
 | Missing lifecycle support/mandatory persistence | `knowledge_invocation_unsupported` or collaboration unsupported refusal |
 | Source/gate loss after launch | Preserve started/terminated facts and original cleanup authority; refuse another launch |
 
@@ -188,7 +202,10 @@ oracle. No body goes into a supervisor ledger or stable base/CLAUDE file.
 `pkg/agent/knowledge_launch_test.go` owns physical process/argv/environment/native
 callback contracts. Service `task_knowledge*` suites own current locks, all-status
 history, fences and cross-runtime downgrade checks, plus the unreachable-resume
-rebind, replay and refusal matrix (`task_knowledge_resume_test.go`); daemon
+rebind, replay and refusal matrix (`task_knowledge_resume_test.go`) and the
+namespace/member-fence holder retry and its bound
+(`task_knowledge_concurrency_test.go`; collaboration in
+`TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder`); daemon
 `knowledge_context*` suites own each claim transport, actual fake stdin, the
 unreachable-workdir drop and the echoed-stale refusal. Collaboration service,
 handler and `host_knowledge*` suites own MDT/status/retained-options/persistence.

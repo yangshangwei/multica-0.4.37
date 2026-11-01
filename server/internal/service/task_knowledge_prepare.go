@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"log/slog"
+	"math/rand/v2"
 	"reflect"
 	"slices"
 	"strconv"
@@ -44,6 +45,63 @@ func taskKnowledgeError(err error) error {
 		return knowledgeFailure(403, "knowledge_authorization_denied")
 	}
 	return knowledgeFailure(503, "knowledge_unavailable")
+}
+
+// taskKnowledgeBusyBudget bounds how long one prepare or authorize call re-runs
+// its whole transaction after a busy result. It stays well inside the daemon's
+// 5s knowledgeRequestTimeout, and the daemon's three attempts extend that.
+const taskKnowledgeBusyBudget = 1500 * time.Millisecond
+
+// taskKnowledgeBusyReserve is the least time a caller's deadline must leave
+// before another attempt starts. An attempt cut off mid-query by the deadline
+// would answer knowledge_unavailable instead of the busy result it met.
+const taskKnowledgeBusyReserve = 250 * time.Millisecond
+
+func knowledgeBusy(err error) bool {
+	return knowledgeErrorCode(err, "knowledge_busy") || knowledgeErrorCode(err, "collaboration_busy")
+}
+
+// retryKnowledgeBusy re-runs attempt while it reports a busy result: a missed
+// try-lock, a NOWAIT conflict, a serialization failure or a preparation that a
+// concurrent writer committed between the pre-read and the locked read. Each
+// attempt owns and rolls back its own transaction before this sleeps, so no
+// lock is held while waiting and the source-first lock order is unchanged.
+// Every other result, including success, returns at once. When the budget or
+// the caller's deadline ends, the last busy result is returned; an attempt that
+// failed only because the deadline cut it off reports that busy result too.
+func retryKnowledgeBusy(ctx context.Context, attempt func() error) error {
+	budget := time.Now().Add(taskKnowledgeBusyBudget)
+	delay := 10 * time.Millisecond
+	var busy error
+	for {
+		err := attempt()
+		if busy != nil && ctx.Err() != nil && (knowledgeErrorCode(err, "knowledge_unavailable") || errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded)) {
+			return busy
+		}
+		if !knowledgeBusy(err) {
+			return err
+		}
+		busy = err
+		wait := delay/2 + rand.N(delay)
+		remaining := time.Until(budget)
+		if remaining <= 0 {
+			return busy
+		}
+		if wait > remaining {
+			wait = remaining
+		}
+		if deadline, ok := ctx.Deadline(); ok && time.Until(deadline) < wait+taskKnowledgeBusyReserve {
+			return busy
+		}
+		timer := time.NewTimer(wait)
+		select {
+		case <-timer.C:
+		case <-ctx.Done():
+			timer.Stop()
+			return busy
+		}
+		delay = min(2*delay, 200*time.Millisecond)
+	}
 }
 
 func lockTaskKnowledgeCredential(ctx context.Context, q *db.Queries, caller TaskKnowledgeCaller, task db.AgentTaskQueue, r db.AgentRuntime) error {
@@ -119,7 +177,11 @@ func taskKnowledgeGateSession(c *taskKnowledgeClaim, rebind bool) protocol.TaskK
 
 // Each invocation owns an independent transaction. All hints are metadata-only;
 // no body escapes until commit. Do not replace this with runInTx: that helper
-// acquires the managed namespace before the source graph used here.
+// acquires the managed namespace before the source graph used here. The late
+// member and installation fences are try-locks because claim and finalize take
+// the namespace before task, issue and token locks. A busy result rolls back and
+// is retried by re-running the whole call (retryKnowledgeBusy); never turn these
+// into blocking waits.
 func (s *TaskService) taskKnowledgeTransaction(ctx context.Context, caller TaskKnowledgeCaller, taskID pgtype.UUID, exact *KnowledgeManifest, rebind bool, fn func(*db.Queries, db.AgentTaskQueue, KnowledgeConsumerFacts, *taskKnowledgeDelivery, *taskKnowledgeClaim, KnowledgeReadLockHints) error) error {
 	if !s.KnowledgeContextEnabled {
 		return knowledgeFailure(409, "knowledge_invocation_unsupported")
@@ -382,6 +444,27 @@ func (s *TaskService) PrepareTaskKnowledge(ctx context.Context, caller TaskKnowl
 	if err != nil {
 		return out, err
 	}
+	// The pre-read runs again on each attempt, so a preparation that a
+	// concurrent request committed after the last pre-read becomes a replay.
+	var staleGeneration string
+	err = retryKnowledgeBusy(ctx, func() error {
+		var e error
+		out, staleGeneration, e = s.prepareTaskKnowledgeOnce(ctx, caller, taskID, req, hash)
+		return e
+	})
+	if err != nil {
+		return protocol.TaskKnowledgePrepareResponse{}, err
+	}
+	if staleGeneration != "" {
+		// Content-free audit trace; a persisted marker would break an older
+		// server's strict delivery decoder after rollback.
+		slog.Info("knowledge unreachable resume rebound to a fresh session", "task_id", util.UUIDToString(taskID), "old_generation", staleGeneration, "new_generation", out.Session.Generation)
+	}
+	return out, nil
+}
+
+func (s *TaskService) prepareTaskKnowledgeOnce(ctx context.Context, caller TaskKnowledgeCaller, taskID pgtype.UUID, req protocol.TaskKnowledgePrepareRequest, hash string) (protocol.TaskKnowledgePrepareResponse, string, error) {
+	var out protocol.TaskKnowledgePrepareResponse
 	var exact *KnowledgeManifest
 	if task, e := s.Queries.GetAgentTask(ctx, taskID); e == nil {
 		if d, e := decodeTaskKnowledge(task.KnowledgeContextVersion, task.KnowledgeDelivery); e == nil {
@@ -392,7 +475,7 @@ func (s *TaskService) PrepareTaskKnowledge(ctx context.Context, caller TaskKnowl
 		}
 	}
 	var staleGeneration string
-	err = s.taskKnowledgeTransaction(ctx, caller, taskID, exact, req.ResumeUnavailable, func(q *db.Queries, task db.AgentTaskQueue, f KnowledgeConsumerFacts, d *taskKnowledgeDelivery, c *taskKnowledgeClaim, hints KnowledgeReadLockHints) error {
+	err := s.taskKnowledgeTransaction(ctx, caller, taskID, exact, req.ResumeUnavailable, func(q *db.Queries, task db.AgentTaskQueue, f KnowledgeConsumerFacts, d *taskKnowledgeDelivery, c *taskKnowledgeClaim, hints KnowledgeReadLockHints) error {
 		if err := checkTaskKnowledgeIdentity(task, req.ClaimGeneration, req.DispatchedAt); err != nil {
 			return err
 		}
@@ -496,14 +579,9 @@ func (s *TaskService) PrepareTaskKnowledge(ctx context.Context, caller TaskKnowl
 		return nil
 	})
 	if err != nil {
-		return protocol.TaskKnowledgePrepareResponse{}, err
+		return protocol.TaskKnowledgePrepareResponse{}, "", err
 	}
-	if staleGeneration != "" {
-		// Content-free audit trace; a persisted marker would break an older
-		// server's strict delivery decoder after rollback.
-		slog.Info("knowledge unreachable resume rebound to a fresh session", "task_id", util.UUIDToString(taskID), "old_generation", staleGeneration, "new_generation", out.Session.Generation)
-	}
-	return out, nil
+	return out, staleGeneration, nil
 }
 
 func (s *TaskService) AuthorizeTaskKnowledgeLaunch(ctx context.Context, caller TaskKnowledgeCaller, taskID pgtype.UUID, req protocol.TaskKnowledgeAuthorizeRequest) (protocol.TaskKnowledgeAuthorization, error) {
@@ -517,6 +595,19 @@ func (s *TaskService) AuthorizeTaskKnowledgeLaunch(ctx context.Context, caller T
 	if !s.KnowledgeContextEnabled {
 		return out, knowledgeFailure(409, "knowledge_invocation_unsupported")
 	}
+	err := retryKnowledgeBusy(ctx, func() error {
+		var e error
+		out, e = s.authorizeTaskKnowledgeLaunchOnce(ctx, caller, taskID, req)
+		return e
+	})
+	if err != nil {
+		return protocol.TaskKnowledgeAuthorization{}, err
+	}
+	return out, nil
+}
+
+func (s *TaskService) authorizeTaskKnowledgeLaunchOnce(ctx context.Context, caller TaskKnowledgeCaller, taskID pgtype.UUID, req protocol.TaskKnowledgeAuthorizeRequest) (protocol.TaskKnowledgeAuthorization, error) {
+	var out protocol.TaskKnowledgeAuthorization
 	task, err := s.Queries.GetAgentTask(ctx, taskID)
 	if err != nil {
 		return out, taskKnowledgeError(err)
