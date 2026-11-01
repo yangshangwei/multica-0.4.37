@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T19:42:18.718515+00:00",
+  "updated_at": "2026-11-01T19:58:35.569508+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -356,9 +356,9 @@
   },
   "parent_status": "in_progress",
   "integration_snapshot": {
-    "head": "231a08063162acde63ebcabe2ef6a353f7a62bca",
+    "head": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
     "branch": "codex/cross-workspace-collaboration",
-    "read_only_tracking_ahead": 200,
+    "read_only_tracking_ahead": 219,
     "origin_fetched": false,
     "merges": {
       "runtime": "9e7f1878544a5ba5f20c2b9aefc67acbb4a532db",
@@ -367,7 +367,9 @@
       "delivery_preparation": "c3db64b24fea7116622d106ce2231853e1be72f9",
       "native_origin_preparation": "7435b04ec482554f3809ee97e89d6a3aab636919",
       "e2e_contract_maintenance": "7f8ca87252b53f16041485ac867e501962377802",
-      "bundle_fixture": "231a08063162acde63ebcabe2ef6a353f7a62bca"
+      "bundle_fixture": "231a08063162acde63ebcabe2ef6a353f7a62bca",
+      "knowledge_correction_actualinput": "e6e7fe07d",
+      "knowledge_deployed_probe": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2"
     },
     "scope": "Reviewed repair and E2E maintenance integration; frozen final candidate verification running, not accepted"
   },
@@ -421,16 +423,17 @@
     "ledger": "research/e2e-contract-maintenance/acceptance-ledger.json"
   },
   "final_candidate": {
-    "sha": "231a08063162acde63ebcabe2ef6a353f7a62bca",
-    "state": "attempt2_failed_execenv_fixture_ancestry; next_candidate_preparing",
-    "registration": "research/final-candidate-20261102/attempt-2-registration.json",
-    "source_id": "da858e4596a4f04a0a69e5cd01f33b8fccf4bab0d3bac0e11dc5c04b899bda14",
+    "sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "state": "full_check_running_not_accepted",
+    "registration": "research/final-candidate-20261102/attempt-3-registration.json",
+    "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
     "clean_at_start": true,
     "paid_runnable": false,
     "real_provider_consumed": 0,
-    "previous_failed_candidate": "7f8ca8725; attempt-1-result.json",
-    "result": "research/final-candidate-20261102/attempt-2-result.json",
-    "actual_make_exit_code": 2
+    "previous_failed_attempts": [
+      "7f8ca8725 attempt-1-result.json",
+      "231a08063 attempt-2-result.json"
+    ]
   },
   "crosschain_correction": {
     "code": "057bc9616",
@@ -441,5 +444,19 @@
     "race_pass": 1,
     "scope": "realhumanHTTPcorrection->newfakeprocessv2onlystdin->withdrawrefusal/noextrastart",
     "deployed_API_ON_OFF": "separatelyopen"
+  },
+  "crosschain_deployed_switch": {
+    "code": "5bd1ecf13",
+    "review": "27d675f0e pass-with-notes",
+    "merge": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "actual_E6_product_scope": {
+      "OFF_pass": 1,
+      "ON_pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "real_Provider": 0
+    },
+    "evidence": "research/knowledge-deployed-probe-20261102/root-deployed-results.json",
+    "final_candidate_gate": "pending_actualboundrequiredchecks"
   }
 }

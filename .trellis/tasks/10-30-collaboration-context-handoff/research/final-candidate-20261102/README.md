@@ -1,5 +1,8 @@
 # 最终联合候选（验证进行中）
 
+当前第三轮入口：`639bf6ef8` 已固定并重新构建/绑定，完整check正在新的隔离环境执行，使用已独立复核的Git树外0700构建临时目录；见 `attempt-3-registration.json`。CCG1/CCG2补充框架与分道真实fake证据已复核合入，最终候选必要门仍待实际执行。前两轮失败保持原判。
+
+
 最新入口：bundle夹具修复经独立pass-with-notes以`231a08063`合入；第二轮全新候选已固定并开始完整make check，状态与指纹见 `attempt-2-registration.json`。第一轮失败保持原判，不覆盖现场。
 
 
