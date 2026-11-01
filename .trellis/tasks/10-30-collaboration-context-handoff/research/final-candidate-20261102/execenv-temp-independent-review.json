@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_web_review",
+  "reviewed_at": "2026-11-01T19:47:28.247529+00:00",
+  "verdict": "pass-with-notes",
+  "scope": "task-private external build TMPDIR correction, not product patch or thirdcheck acceptance",
+  "main_head_at_review": "e6e7fe07da184247c93584bbd07e6b66b38f6fc1",
+  "failed_candidate_sha": "231a08063162acde63ebcabe2ef6a353f7a62bca",
+  "failed_attempt": {
+    "state": "failed_not_accepted",
+    "make_exit_code": 2,
+    "package_exit_code": 1,
+    "execenv_counts": {
+      "run": 1345,
+      "pass": 1340,
+      "fail": 5,
+      "skip": 0
+    },
+    "retained_package_database_records": 22,
+    "raw_check_log_sha256_matches": true,
+    "tracked_source_clean": true,
+    "untracked_Cursor_artifact": {
+      "path": ".cursor/mcp.json",
+      "bytes": 122,
+      "sha256": "fb40aae928dc3a6ec111763e3d52cd76ce83c03dd78c792d7285ccb21eb7a606",
+      "private_copy_identical": true,
+      "not_reset": true
+    }
+  },
+  "rootcause_static": {
+    "resolveGitRoot": "git rev-parse --show-toplevel searchesup nominalnonGit t.TempDir into realcandidate checkout",
+    "cursorProjectRoot": "walks real ancestors until .git then uses thatcandidate projectroot; explains shared.cursor/mcp.json",
+    "production_test_or_helper_change": false,
+    "no_global_Git_flags_added": true
+  },
+  "single_variable_recorded_checks": [
+    {
+      "record": "execenv-temp-diagnosis.json",
+      "record_sha256": "0797a60f208bb6a7840cd09674fed223fa3c39c87c733aefb18dfe01710d8768",
+      "source_sha": "231a08063162acde63ebcabe2ef6a353f7a62bca",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon/execenv",
+        "-run",
+        "^(TestPrepareLocalWorktreeRejectsNonGitDirectory|TestPrepareRollsBackSidecarsWhenPrepareFailsInPlace|TestPrepareCursorMcpConfigManagedEmptySet|TestPrepareCursorMcpConfigSeedsExplicitAuthSource|TestPrepareCursorMcpConfigWritesProjectConfigAndApprovals)$",
+        "-race",
+        "-count=1",
+        "-parallel=2",
+        "-json",
+        "-timeout=40m"
+      ],
+      "TMPDIR": "/private/tmp/multica-execenv-check-rtialr8a",
+      "counts": {
+        "run": 5,
+        "pass": 5,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0,
+      "log_sha256": "f9e8a750b04760989643b7acbac341d10a063356b4f2fff63957085c5586e764"
+    },
+    {
+      "record": "execenv-temp-full-race.json",
+      "record_sha256": "7b75455f53053c259453f6ba6ef46e5752a5f4f355b26b754051b3acbb80ac01",
+      "source_sha": "231a08063162acde63ebcabe2ef6a353f7a62bca",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon/execenv",
+        "-race",
+        "-count=1",
+        "-parallel=2",
+        "-json",
+        "-timeout=40m"
+      ],
+      "TMPDIR": "/private/tmp/multica-execenv-check-rtialr8a",
+      "counts": {
+        "run": 1345,
+        "pass": 1345,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0,
+      "log_sha256": "d7031e4c8613d30538d0e6fe9711babcf180e8bebb0c4ffedf03d17345b9c733"
+    }
+  ],
+  "diagnostic_source_unchanged": true,
+  "future_preparation": {
+    "root": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102",
+    "current_unfrozen_head": "e6e7fe07da184247c93584bbd07e6b66b38f6fc1",
+    "makecheck_not_started": true,
+    "launcher_sha256": "c7dff6238933ca339d4531a32d727d214e2f24fdd3138debbe90ed84fcdc2ac8",
+    "previous_launcher_sha256": "8d2e58b3874930dc9bbe348ec0f72ac64b4e6a1528cbaa1fdfdab3fda8c34880",
+    "launcher_delta_sha256": "51ac3dda8874897bdc5b60589d987bc35e556bb28d326c62678c579e2d1e0d69",
+    "allocation_record_sha256": "334f6a597075552426a18031f6010b018b6b97f5ff4ae459ee894f386c5ae8cf",
+    "external_temp_directory": "/private/tmp/multica-final-check3-7s2xgm08",
+    "live_uid_matches_allocation": true,
+    "live_mode": "0700",
+    "not_symlink_canonical": true,
+    "Git_markers_in_ancestors": [],
+    "owner_record_sha256_matches": true,
+    "owner_record_hash_check_scope": "independentreviewer currentread; launcher reads allocationdirectory and validates liveUID/mode/pathprefix beforecheck",
+    "actual_env_Git_control_key_presence_absent": [
+      "GIT_DIR",
+      "GIT_WORK_TREE",
+      "GIT_CEILING_DIRECTORIES",
+      "GIT_DISCOVERY_ACROSS_FILESYSTEM"
+    ],
+    "source_env_private_sha256": "125d2c2089cbd7b243d1eaa339e6a57f35584a7b54f54e9f36ec8f68cc8d08ec",
+    "source_env_values_not_printed_or_copied": true,
+    "launch_order": "loadtrustedsourceenv -> striptask/Gitconfig/realgate -> settask MULTICA_DEV_TMPDIR -> validateallocation/liveownership/nonGit inloadedenv -> actual complete makecheck",
+    "Go_pnpm_adapter_hashes_unchanged": true,
+    "adapters_sha256": {
+      "go": "2de26dbb490c3a70fee48c62cae358db765f2060e4ac15eb4843849fae0407db",
+      "pnpm": "e74949d2c0ee6c96d219642cc66ac1d931b5e2e48c6bb4a64b45d65e21fc3a27"
+    },
+    "complete_makecheck_command_preserved": true,
+    "timeouts_retries_assertions_unchanged": true,
+    "operator_global_TMPDIR_or_shared_permissions_not_changed": true,
+    "external_temp_preserved_outside_agent_ephemeral_cleanup": true
+  },
+  "blocking_findings": [],
+  "product_tests_run_by_reviewer": false,
+  "database_commands_by_reviewer": false,
+  "browser_commands_by_reviewer": false,
+  "services_or_containers_by_reviewer": false,
+  "provider_calls": 0,
+  "installed_cli_calls": 0,
+  "children_spawned": 0,
+  "reviewer_source_or_git_mutations": false,
+  "notes": [
+    {
+      "id": "ET-1",
+      "kind": "acceptance_scope",
+      "description": "Five-case and complete1345-pass race runs diagnose environment/fixtureisolation only. Failed231a08attempt2 remainsfailed; futurefinal3source isnotfrozenorstarted, and final completecheck must actuallyexecute afterpendingCCG2review/integration."
+    },
+    {
+      "id": "ET-2",
+      "kind": "binding_scope",
+      "description": "This review binds the current private launcher/allocation hashes and live directory state. Any launcher/allocation/sourceenv change beforefinalstart needs renewedhash/provenance binding; no immutablefuturecandidate success isclaimed."
+    }
+  ]
+}

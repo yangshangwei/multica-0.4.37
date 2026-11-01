@@ -2,7 +2,7 @@
   "at": "2026-11-01T19:22:27.630262+00:00",
   "attempt": 2,
   "candidate_sha": "231a08063162acde63ebcabe2ef6a353f7a62bca",
-  "state": "complete_check_running_not_accepted",
+  "state": "attempt2_failed_not_accepted",
   "source_id": "da858e4596a4f04a0a69e5cd01f33b8fccf4bab0d3bac0e11dc5c04b899bda14",
   "source_trees": {
     "server": "c5209e02efb4330292a3121a79c57c9fb923c1ca",
@@ -94,15 +94,17 @@
       "ENV_FILE=<private task source env>"
     ],
     "started_at": "2026-11-01T19:21:21.323525+00:00",
-    "state": "running",
-    "exit_code": null,
+    "state": "complete",
+    "exit_code": 2,
     "private_record": "/Volumes/artisan/code/2026/mc-collaboration-final2-20261102/.omx/private/final-candidate/make-check.json",
     "exec_session": 57227,
     "database_policy": "a separate newly migrated task clone per Go package; never business default; package databases and failures retained",
     "adapters_sha256": {
       "go": "2de26dbb490c3a70fee48c62cae358db765f2060e4ac15eb4843849fae0407db",
       "pnpm": "e74949d2c0ee6c96d219642cc66ac1d931b5e2e48c6bb4a64b45d65e21fc3a27"
-    }
+    },
+    "finished_at": "2026-11-01T19:38:48.552878+00:00",
+    "log_sha256": "9ff7ff9120a8cfc66babe7b5f0599d538716d194bbc169ee3a577daf92644add"
   },
   "previous_attempt": "registration.json/attempt-1-result.json retain7f8 failure; no result overwritten",
   "real_provider_consumed": 0,
@@ -118,6 +120,7 @@
     "15staticpass",
     "13082TypeScriptpass"
   ],
-  "current_stage": "Go race per-package DB clones",
-  "stage_evidence": "attempt-2-static-typescript.json"
+  "current_stage": "execenvTMPDIRancestrydiagnosis",
+  "stage_evidence": "attempt-2-static-typescript.json",
+  "failure_evidence": "attempt-2-result.json"
 }

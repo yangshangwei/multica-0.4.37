@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T19:22:27.630262+00:00",
+  "updated_at": "2026-11-01T19:42:18.718515+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -422,12 +422,24 @@
   },
   "final_candidate": {
     "sha": "231a08063162acde63ebcabe2ef6a353f7a62bca",
-    "state": "complete_check_running_not_accepted",
+    "state": "attempt2_failed_execenv_fixture_ancestry; next_candidate_preparing",
     "registration": "research/final-candidate-20261102/attempt-2-registration.json",
     "source_id": "da858e4596a4f04a0a69e5cd01f33b8fccf4bab0d3bac0e11dc5c04b899bda14",
     "clean_at_start": true,
     "paid_runnable": false,
     "real_provider_consumed": 0,
-    "previous_failed_candidate": "7f8ca8725; attempt-1-result.json"
+    "previous_failed_candidate": "7f8ca8725; attempt-1-result.json",
+    "result": "research/final-candidate-20261102/attempt-2-result.json",
+    "actual_make_exit_code": 2
+  },
+  "crosschain_correction": {
+    "code": "057bc9616",
+    "evidence": "9c5e48761",
+    "independent_review": "1a9c4a46f; pass-with-notes",
+    "merge": "e6e7fe07d",
+    "normal_pass": 1,
+    "race_pass": 1,
+    "scope": "realhumanHTTPcorrection->newfakeprocessv2onlystdin->withdrawrefusal/noextrastart",
+    "deployed_API_ON_OFF": "separatelyopen"
   }
 }

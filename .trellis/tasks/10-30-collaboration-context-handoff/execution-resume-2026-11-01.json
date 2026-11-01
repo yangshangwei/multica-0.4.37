@@ -1,7 +1,7 @@
 {
   "recorded_at": "2026-11-01T18:21:44.168939+00:00",
   "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
-  "integration_head": "231a08063162acde63ebcabe2ef6a353f7a62bca",
+  "integration_head": "e6e7fe07da184247c93584bbd07e6b66b38f6fc1",
   "worktrees": [
     {
       "worktree": "/Volumes/artisan/code/2026/multica-0.4.37",
@@ -159,7 +159,7 @@
     "native_origin": "b8035617d independently reviewed and merged 7435b04ec; complete check must rerun."
   },
   "default_database_incident": "default-db-incident-audit-2026-11-01.json",
-  "last_update": "2026-11-01T19:22:27.630262+00:00",
+  "last_update": "2026-11-01T19:42:18.718515+00:00",
   "current_results": {
     "runtime": "Merged 9e7f18785; independent pass-with-notes; RV-1 58d486656 root recheck 16 pass; final branch service 1668 pass/0 fail/0 skip; final combined candidate pending.",
     "claim": "H3/M3 94e790d2d and managed settings 30edf3e36 independently reviewed and integrated; CT-1 regression 5c3549001 retained.",
@@ -292,7 +292,7 @@
   "parent_status": "in_progress",
   "full_candidate_check_evidence": "research/acceptance-ledger-refresh-20261102/interrupted-check-summary.json",
   "next_entry": [
-    "complete attempt2 fullmakecheck on231a08063, preserveanyfailure; original7f8 remainsfailed",
+    "finishfull_execenv_externalTMPDIRrecheck_and_independent_environment_review; mergeonlyrevieweddeployedprobeharness; freeze newcandidatefullcheck",
     "same-candidate mandatory password/Web/native and knowledge on-off/cross-chain checks",
     "quiet final RK1 all-scenario fake normal/race; RKI6 remains open",
     "final artifacts/local installers/offline upgrade and source-bound fingerprints; native/account gates remain unverified",
@@ -303,20 +303,24 @@
     "candidate_sha": "231a08063162acde63ebcabe2ef6a353f7a62bca",
     "worktree": "/Volumes/artisan/code/2026/mc-collaboration-final2-20261102",
     "attempt": 2,
-    "make_check": "running_new_complete_check_after_reviewedfixturefix",
+    "make_check": "attempt2_complete_exit2_not_accepted",
     "registration": "research/final-candidate-20261102/attempt-2-registration.json",
-    "Provider_calls": 0
+    "Provider_calls": 0,
+    "result": "research/final-candidate-20261102/attempt-2-result.json",
+    "next_environment_correction": "privateDEV_TMPDIRoutsiderepo;5failedcasesracepasswithonlyTMPDIRchanged; fullpackagepending"
   },
   "local_crosschain_followup": {
     "CCG1": {
-      "state": "normal_and_race_passed_pending_independent_review",
+      "state": "independently_reviewed_and_locally_merged",
       "owner": "/root/knowledge_correction_composite",
       "branch": "codex/knowledge-crosschain-correction-20261102",
       "scope": "newknowledgeintegrationtaggedtest approveV1->actualstdin->approvedcorrectionV2->newstdinexcludesV1->withdraw->refusal/noextraLaunch",
       "database_policy": "root migrated distinctnormal/race ownedrequiredprefix DBs; exacttestpermit",
       "product_logic_changes": false,
       "code": "057bc9616",
-      "evidence": "9c5e48761"
+      "evidence": "9c5e48761",
+      "merge": "e6e7fe07d",
+      "review": "1a9c4a46f"
     },
     "CCG2": {
       "state": "test_parser_and_optin_deployed_probe_in_progress",
