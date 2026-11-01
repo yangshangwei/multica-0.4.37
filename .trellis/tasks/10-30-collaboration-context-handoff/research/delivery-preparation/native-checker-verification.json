@@ -1,0 +1,18 @@
+{
+  "source_base": "f2808a26e",
+  "command": "node --test scripts/check-collaboration-native-tests.test.mjs",
+  "red_exit": 1,
+  "red_pass": 7,
+  "red_fail": 1,
+  "green_exit": 0,
+  "green_pass": 8,
+  "green_fail": 0,
+  "green_skip": 0,
+  "required_windows_cases": 20,
+  "real_windows_executed": false,
+  "logs_sha256": {
+    "native-checker-red.txt": "0b5999cd8f3badd455537969ff15c7d11ca8234a7cb7609dfd64c30bb6b21908",
+    "native-checker-green.txt": "602861bd56b00d951cef292588ee3fa3ed88916db03e594c243e2d873c5a4f19"
+  },
+  "native_scope": "Only Node fixture tests; does not establish native Windows execution"
+}

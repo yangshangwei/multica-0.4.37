@@ -1,0 +1,58 @@
+TAP version 13
+# Subtest: accepts required parent and child passes
+ok 1 - accepts required parent and child passes
+  ---
+  duration_ms: 42.793833
+  type: 'test'
+  ...
+# Subtest: rejects a skipped required descendant even when its parent passes
+ok 2 - rejects a skipped required descendant even when its parent passes
+  ---
+  duration_ms: 67.243042
+  type: 'test'
+  ...
+# Subtest: keeps unrelated skipped tests outside required subtrees
+ok 3 - keeps unrelated skipped tests outside required subtrees
+  ---
+  duration_ms: 25.833125
+  type: 'test'
+  ...
+# Subtest: rejects missing and skipped required parents
+ok 4 - rejects missing and skipped required parents
+  ---
+  duration_ms: 64.701792
+  type: 'test'
+  ...
+# Subtest: requires every Windows-specific case
+ok 5 - requires every Windows-specific case
+  ---
+  duration_ms: 106.663042
+  type: 'test'
+  ...
+# Subtest: requires Windows handoff and recording recovery cases without skipped descendants
+ok 6 - requires Windows handoff and recording recovery cases without skipped descendants
+  ---
+  duration_ms: 461.310958
+  type: 'test'
+  ...
+# Subtest: rejects absent or unsupported runner metadata
+ok 7 - rejects absent or unsupported runner metadata
+  ---
+  duration_ms: 219.111542
+  type: 'test'
+  ...
+# Subtest: retains test and package failure checks
+ok 8 - retains test and package failure checks
+  ---
+  duration_ms: 77.157917
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1141.909125
