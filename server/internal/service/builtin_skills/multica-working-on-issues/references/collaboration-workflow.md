@@ -237,7 +237,10 @@ source for its exact kind, run_id, version and sha256; a handoff-kind source has
 no run_id or version. Follow `next_offset` until it is null. Returned text is
 redacted while sha256 identifies the original, so do not compare the two.
 `stale_handoff_source` means the reference no longer matches: discard the
-partial assembly. Checkpoint text is not a runtime source. The host brief names
+partial assembly. `handoff_source_not_found` means the ID names no source of
+that kind this run can read, for example a run ID copied into the source
+position. It is a wrong reference, not an outage: do not retry it; copy the
+fields from a source in the handoff again. Checkpoint text is not a runtime source. The host brief names
 these reads, and the comment paging above, only when the claim negotiated handoff.
 
 Shared context ("collaboration memory") is one versioned document per issue: the

@@ -72,6 +72,17 @@ func TestCollaborationReadHandoffEncodesCursorAndBindsTheLiveRun(t *testing.T) {
 		{name: "cursor_echo", cursor: cursor, query: "cursor=" + cursor, mutate: func(v *protocol.CollaborationHandoffEnvelope, _ protocol.CollaborationRunIdentity) {
 			v.Results.Total, v.Results.Truncated, v.Results.NextCursor = 1, true, cursor
 		}},
+		{name: "inputs_cursor_echo", cursor: cursor, query: "cursor=" + cursor, mutate: func(v *protocol.CollaborationHandoffEnvelope, _ protocol.CollaborationRunIdentity) {
+			v.Inputs.Total, v.Inputs.Truncated, v.Inputs.NextCursor = 1, true, cursor
+		}},
+		{name: "wakeup_causes_cursor_echo", cursor: cursor, query: "cursor=" + cursor, mutate: func(v *protocol.CollaborationHandoffEnvelope, _ protocol.CollaborationRunIdentity) {
+			v.WakeupCauses.Total, v.WakeupCauses.Truncated, v.WakeupCauses.NextCursor = 1, true, cursor
+		}},
+		{name: "readers_cursor_echo", cursor: cursor, query: "cursor=" + cursor, mutate: func(v *protocol.CollaborationHandoffEnvelope, _ protocol.CollaborationRunIdentity) {
+			v.Inputs.Total, v.Inputs.Returned = 1, 1
+			v.Inputs.Items = []protocol.CollaborationHandoffInput{{CommandID: uuid.NewString(), AuthorID: uuid.NewString(), State: "accepted",
+				ReaderRunIDs: []string{uuid.NewString()}, ReadersTruncated: true, ReadersCursor: cursor}}
+		}},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			var run *CollaborationContext
@@ -161,13 +172,19 @@ func TestCollaborationReadHandoffSourceEncodesTheExactReference(t *testing.T) {
 func TestCollaborationReadHandoffSourceRefusesBadReferenceBeforeHTTP(t *testing.T) {
 	valid := CollaborationHandoffReference{SourceID: uuid.NewString(), Kind: "provider_result", SourceRunID: uuid.NewString(), Version: "5", SHA256: protocol.CollaborationHandoffHash("x")}
 	for name, mutate := range map[string]func(*CollaborationHandoffReference){
-		"source_id":            func(r *CollaborationHandoffReference) { r.SourceID = "source" },
-		"uppercase_source_id":  func(r *CollaborationHandoffReference) { r.SourceID = strings.ToUpper(r.SourceID) },
-		"nil_source_id":        func(r *CollaborationHandoffReference) { r.SourceID = uuid.Nil.String() },
-		"kind":                 func(r *CollaborationHandoffReference) { r.Kind = "record_checkpoint" },
-		"empty_kind":           func(r *CollaborationHandoffReference) { r.Kind = "" },
-		"missing_run":          func(r *CollaborationHandoffReference) { r.SourceRunID = "" },
-		"bad_run":              func(r *CollaborationHandoffReference) { r.SourceRunID = "run" },
+		"source_id":           func(r *CollaborationHandoffReference) { r.SourceID = "source" },
+		"uppercase_source_id": func(r *CollaborationHandoffReference) { r.SourceID = strings.ToUpper(r.SourceID) },
+		"nil_source_id":       func(r *CollaborationHandoffReference) { r.SourceID = uuid.Nil.String() },
+		"kind":                func(r *CollaborationHandoffReference) { r.Kind = "record_checkpoint" },
+		"empty_kind":          func(r *CollaborationHandoffReference) { r.Kind = "" },
+		"missing_run":         func(r *CollaborationHandoffReference) { r.SourceRunID = "" },
+		"bad_run":             func(r *CollaborationHandoffReference) { r.SourceRunID = "run" },
+		// uuid.Parse accepts all four; only the canonical lowercase form matches
+		// the run_id the envelope listed.
+		"nil_run":              func(r *CollaborationHandoffReference) { r.SourceRunID = uuid.Nil.String() },
+		"uppercase_run":        func(r *CollaborationHandoffReference) { r.SourceRunID = strings.ToUpper(r.SourceRunID) },
+		"braced_run":           func(r *CollaborationHandoffReference) { r.SourceRunID = "{" + r.SourceRunID + "}" },
+		"urn_run":              func(r *CollaborationHandoffReference) { r.SourceRunID = "urn:uuid:" + r.SourceRunID },
 		"missing_version":      func(r *CollaborationHandoffReference) { r.Version = "" },
 		"zero_version":         func(r *CollaborationHandoffReference) { r.Version = "0" },
 		"noncanonical_version": func(r *CollaborationHandoffReference) { r.Version = "05" },
