@@ -169,6 +169,10 @@ Later facts may increase returned bounds on an identical old-seal ACK.
   release, bounded whole-backlog recovery and pending-proof priority, original
   seal ACK before monotonic advancement, unknown unflushed tails, and malformed
   receipts preserving the pending seal and accepted proof across a new Runner.
+- `host_checkpoint_delivery_test.go`: in-run retry after a transient failure,
+  the outcome's carried tail with replay before and after a committed outcome,
+  rebinding an uncommitted chunk to the fallback attempt, seal reasons per
+  refusal, and the trimmed tail inside the record and ledger bounds.
 - `host_handoff_checkpoint_lifecycle_test.go`: fresh on-disk Runner recovery
   with unchanged checkpoint/attempt identity and no Claim, snapshot or start;
   combined handoff/recording failure cannot block original termination proof.

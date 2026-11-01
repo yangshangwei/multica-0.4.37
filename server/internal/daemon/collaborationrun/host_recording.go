@@ -6,6 +6,7 @@ import (
 	"errors"
 	"math"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -234,17 +235,37 @@ func (r *hostRecording) outcome(identity protocol.CollaborationRunIdentity, seq,
 		r.partial = true
 	}
 	completeness := "complete"
-	if r.partial || r.checkpoints != nil && (r.checkpoints.failed.Load() || r.checkpoints.acknowledged() != len(r.messages)) {
+	healthy := r.checkpoints != nil && r.checkpoints.healthy()
+	if r.partial || r.checkpoints != nil && !healthy {
 		completeness = "partial"
 	}
 	out := protocol.CollaborationRunOutcome{ProtocolVersion: protocol.CollaborationHostRuntimeProtocolVersion, Containment: protocol.CollaborationContainmentHostProcessSupervision,
 		Identity: identity, EventID: uuid.NewString(), AttemptSeq: seq, AttemptNonce: nonce, Outcome: kind, Body: body,
 		Record: &protocol.CollaborationRunRecord{Version: 1, Completeness: completeness, Messages: r.messages, Usage: usage}}
 	if r.checkpoints != nil {
+		acknowledged := r.checkpoints.acknowledged()
 		out.Record.Version = 2
 		out.Record.StreamID = r.streamID
-		out.Record.MessageOffset = r.checkpoints.acknowledged()
+		out.Record.MessageOffset = acknowledged
 		out.Record.Messages = []protocol.CollaborationRecordedMessage{}
+		// While every observed message is staged with its original payload and
+		// none was refused, the unacknowledged suffix is exactly the pending
+		// chunks. The outcome carries it; the service deduplicates it by offset
+		// against checkpoints that commit first. After a loss the suffix stays
+		// out, so the outcome cannot disguise the gap.
+		if healthy && acknowledged < len(r.messages) {
+			tail := r.messages[acknowledged:]
+			fits := func(n int) bool {
+				out.Record.Messages = tail[:n]
+				return protocol.ValidateCollaborationProviderResult(protocol.CollaborationProviderResult{Outcome: kind, Body: body, Record: out.Record}) == nil
+			}
+			if !fits(len(tail)) {
+				out.Record.Completeness = "partial"
+				n := sort.Search(len(tail), func(n int) bool { return !fits(n + 1) })
+				fits(n)
+			}
+			out.Record.Messages = append([]protocol.CollaborationRecordedMessage{}, out.Record.Messages...)
+		}
 	}
 	if protocol.ValidateCollaborationProviderResult(protocol.CollaborationProviderResult{Outcome: kind, Body: body, Record: out.Record}) != nil {
 		return protocol.CollaborationRunOutcome{}, false
