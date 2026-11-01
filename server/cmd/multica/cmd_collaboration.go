@@ -15,7 +15,7 @@ import (
 func collaborationCommandAllowed(operation string) bool {
 	switch operation {
 	case "issue get", "issue comment list", "issue comment content", "issue comment add", "squad activity",
-		"collaboration memory show", "collaboration memory update":
+		"collaboration memory show", "collaboration memory update", "collaboration handoff show", "collaboration handoff source":
 		return true
 	default:
 		return false
@@ -53,6 +53,12 @@ func validateCollaborationCLI(run *cli.CollaborationContext, cmd *cobra.Command,
 	}
 	if operation == "collaboration memory update" {
 		allowed["base-version"], allowed["request-id"], allowed["content-stdin"], allowed["content-file"] = true, true, true, true
+	}
+	if operation == "collaboration handoff show" {
+		allowed["cursor"] = true
+	}
+	if operation == "collaboration handoff source" {
+		allowed["kind"], allowed["source-run-id"], allowed["version"], allowed["sha256"], allowed["offset"] = true, true, true, true, true
 	}
 	var unsupported string
 	cmd.Flags().Visit(func(flag *pflag.Flag) {

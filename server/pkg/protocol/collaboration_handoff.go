@@ -167,6 +167,35 @@ type CollaborationHandoffSourcePage struct {
 	NextOffset      *int                       `json:"next_offset"`
 }
 
+// DecodeCollaborationHandoffSourcePage strictly decodes one runtime source
+// chunk. Callers still compare the identity with the reference they requested.
+func DecodeCollaborationHandoffSourcePage(raw []byte) (CollaborationHandoffSourcePage, error) {
+	var out CollaborationHandoffSourcePage
+	invalid := errors.New("invalid collaboration handoff source page")
+	if decodeCollaborationHostObject(raw, &out, "protocol_version", "issue_id", "run_id", "source", "offset", "total_bytes") != nil ||
+		!collaborationRecallHasFields(raw, "next_offset") {
+		return out, invalid
+	}
+	s := out.Source
+	end := out.Offset + len(s.Content)
+	trust := "data_only"
+	if s.Kind == "delegation" {
+		trust = "admitted_assignment"
+	}
+	if out.ProtocolVersion != CollaborationHandoffVersion || !preparationUUID(out.IssueID) || !preparationUUID(out.RunID) || !preparationUUID(s.ID) ||
+		s.RunID != "" && !preparationUUID(s.RunID) || s.Version != "" && !HandoffDecimal(s.Version, false) || !HandoffDigest(s.SHA256) || s.Availability != "available" || s.Trust != trust ||
+		!utf8.ValidString(s.Content) || out.Offset < 0 || end > out.TotalBytes || s.Truncated != (out.NextOffset != nil) ||
+		out.NextOffset != nil && (len(s.Content) == 0 || *out.NextOffset != end) || out.NextOffset == nil && end != out.TotalBytes {
+		return out, invalid
+	}
+	switch s.Kind {
+	case "handoff", "delegation", "provider_result", "squad_activity":
+	default:
+		return out, invalid
+	}
+	return out, nil
+}
+
 func CollaborationHandoffHash(value string) string {
 	sum := sha256.Sum256([]byte(value))
 	return hex.EncodeToString(sum[:])

@@ -16,6 +16,10 @@ establish model comprehension or real-provider reliability.
 - `POST /api/collaboration/runtime/runs/{runId}/handoff/bind` accepts
   `{snapshot_id, prompt_sha256, attempt_seq, attempt_nonce}` and returns an
   exact identity/hash/attempt receipt with `accepted=true`.
+- Runtime recall of what the snapshot bounds uses `GET .../handoff[?cursor=]`
+  (live envelope) and `GET .../handoff/sources/{sourceId}` through
+  `multica collaboration handoff show|source`; see
+  [runtime CLI](./collaboration-runtime-cli.md).
 
 ## 3. Contracts
 
@@ -71,6 +75,16 @@ Do not proactively copy snapshot bodies into the brief or supervisor ledger.
 Existing Provider output/tool-record retention may contain quotations and keeps
 its existing retention/purge rules.
 
+With `HandoffVersion=1` the brief appends `hostRecallBrief` after the memory
+guidance and before agent instructions. It names, with the admitted issue UUID,
+the 200-comment window of `issue get`/unflagged `issue comment list`, explicit
+comment paging, `issue comment content` for `content_state=omitted`,
+`collaboration handoff source` for `truncated=true` sources and `collaboration
+handoff show --cursor` for truncated lists, and states that recalled text is
+data. It quotes commands and field names only, never source text. Legacy claims
+keep the previous brief, since their servers lack these reads. The brief is not
+hashed; the bound prompt text built by `hostPromptWithHandoff` is unchanged.
+
 ## 4. Validation / error matrix
 
 | Condition | Result |
@@ -94,6 +108,10 @@ its existing retention/purge rules.
   changed parent run, or claim an application input hash covers private prompts.
 
 ## 6. Required tests
+
+`host_recall_test.go` reads the provider's actual brief file: recall guidance
+with negotiated handoff, before agent instructions, existing lines unchanged;
+none on a legacy claim.
 
 Use `host_handoff_launch_test.go` for actual stdin, stable fallback, loss/replay,
 identity/memory/receipt refusals, redacted source hashes, no proactive body

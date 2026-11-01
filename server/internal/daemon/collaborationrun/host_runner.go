@@ -553,6 +553,9 @@ func hostBrief(claim protocol.CollaborationRunClaimResponse, continuityLost, mem
 	if memory {
 		brief += hostMemoryBrief(claim.Identity.IssueID)
 	}
+	if claim.HandoffVersion == protocol.CollaborationHandoffVersion {
+		brief += hostRecallBrief(claim.Identity.IssueID)
+	}
 	brief += "\n" + claim.Preparation.Invocation.Instructions
 	if continuityLost {
 		brief += "\n\n" + hostContinuityNotice

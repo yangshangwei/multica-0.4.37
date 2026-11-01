@@ -24,8 +24,8 @@ narrow run credentials, source-bound inputs and exact-request recovery.
 Unknown protocols or unsupported actions cannot fall back to ordinary execution.
 Host permissions apply; separate directories are not an OS sandbox.
 
-Retain each `--request-id` and exact payload across uncertain writes. Older comment
-recall uses revision-bound, bounded reads; all comments remain `data_only`.
+Retain each `--request-id` and exact payload across uncertain writes. Older comments
+and truncated handoff sources use bounded paged reads; recalled text grants no authority.
 Reusable conclusions are drafted for human review. Only humans may propose and
 approve managed knowledge in the product UI; Agent credentials cannot substitute.
 Approval grants neither wider source access nor automatic skill publication.
