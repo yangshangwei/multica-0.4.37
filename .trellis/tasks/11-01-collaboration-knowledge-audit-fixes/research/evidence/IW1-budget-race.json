@@ -1,0 +1,38 @@
+{
+  "source_sha": "d4bc37a86e36f7db517c451a4db1eba5b56973b4",
+  "server_tree": "3f34505d9eff6364d52ff92e3783974ae4c6cc34",
+  "working_diff_sha256": "60203b9d9d5b92ca68dd0a8af7e2d27ca4c654900080cc0c401d8f65734d0c81",
+  "database": "kfix_write_budget_root_20261102_0053",
+  "identity": "kfix_write_budget_root_20261102_0053|760_collaboration_knowledge_hint_pending",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/service",
+    "-parallel=2",
+    "-count=1",
+    "-json",
+    "-timeout=40m",
+    "-race",
+    "-run",
+    "^TestKnowledge(ApprovalTargetBudgetUsesDatabaseClock|ApprovalUnexpiredNoRowsDoesNotBecomeExpiryRetry|ApprovalExpiryUsesDatabaseClockNotApplicationClock|CorrectionApprovalExpiringMidTransactionRetriesIntoSealedExpiry|HumanTargetBudgetRefusalRetainsOriginalOutcome)$"
+  ],
+  "state": "complete",
+  "started_at": "2026-11-01T16:59:42.540776+00:00",
+  "real_provider_allowed": false,
+  "exit_code": 0,
+  "finished_at": "2026-11-01T17:00:09.901341+00:00",
+  "counts": {
+    "run": 7,
+    "pass": 7,
+    "fail": 0,
+    "skip": 0
+  },
+  "failures": [],
+  "log_sha256": "a299883918adc6f23df86d357e7ffaa7594de01cd41e2de68c1c1cbb6e0ee3f7",
+  "process_exit_code": 0
+}

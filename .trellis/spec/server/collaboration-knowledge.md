@@ -53,7 +53,10 @@ primitives live in [`collaboration_knowledge.sql`](../../../server/pkg/db/querie
 - Approval needs current source Read, available unexpired material, target
   membership, and a human project lead or workspace owner/admin. Expiry is
   decided on the database clock (`clock_timestamp()`), the clock the approval
-  UPDATE uses, before any target-revision or correction write; an expired
+  UPDATE uses, before any target-revision or correction write. The same DB
+  timestamp selects active contributions for the complete target budget,
+  including approval of a candidate without its own expiry; application clock
+  skew must not omit still-active rows or count already-expired ones. An expired
   candidate seals `409 knowledge_expired`. If expiry passes after that check,
   the attempt rolls back as a retryable conflict only after the database clock
   confirms expiry. A subsequent retry with remaining budget seals the same409;

@@ -1,0 +1,40 @@
+{
+  "source_sha": "d4bc37a86e36f7db517c451a4db1eba5b56973b4",
+  "server_tree": "3f34505d9eff6364d52ff92e3783974ae4c6cc34",
+  "working_diff_sha256": "b2b1bfaae8d87d04b7950c260fb92dfcbf93c3d54e0689fa36b808b7230af46f",
+  "database": "kfix_write_budget_root_20261102_0053",
+  "identity": "kfix_write_budget_root_20261102_0053|760_collaboration_knowledge_hint_pending",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/service",
+    "-parallel=2",
+    "-count=1",
+    "-json",
+    "-timeout=40m",
+    "-run",
+    "^TestKnowledgeApprovalTargetBudgetUsesDatabaseClock$"
+  ],
+  "state": "complete",
+  "started_at": "2026-11-01T16:57:38.493082+00:00",
+  "real_provider_allowed": false,
+  "exit_code": 1,
+  "finished_at": "2026-11-01T16:57:49.817223+00:00",
+  "counts": {
+    "run": 1,
+    "pass": 0,
+    "fail": 1,
+    "skip": 0
+  },
+  "failures": [
+    "TestKnowledgeApprovalTargetBudgetUsesDatabaseClock",
+    "github.com/multica-ai/multica/server/internal/service"
+  ],
+  "log_sha256": "8465824225ed1c0b96247d4b812082c39ed01163238024ae823ba7978ee19358",
+  "process_exit_code": 1
+}

@@ -578,15 +578,14 @@ func (s *CollaborationService) changeKnowledgeCandidate(ctx context.Context, w *
 			return refuse("knowledge_content_changed")
 		}
 		// ApproveKnowledgeCandidate compares expires_at with clock_timestamp().
-		// Decide expiry on that clock before any target or correction write.
-		if w.candidate.ExpiresAt.Valid {
-			checked, err := w.q.GetKnowledgeDatabaseTime(ctx)
-			if err != nil {
-				return protocol.CollaborationKnowledgeReceipt{}, err
-			}
-			if !w.candidate.ExpiresAt.Time.After(checked.Time) {
-				return refuse("knowledge_expired")
-			}
+		// Decide expiry and active target budget on that same clock before any
+		// target or correction write, including non-expiring new candidates.
+		checked, err := w.q.GetKnowledgeDatabaseTime(ctx)
+		if err != nil {
+			return protocol.CollaborationKnowledgeReceipt{}, err
+		}
+		if w.candidate.ExpiresAt.Valid && !w.candidate.ExpiresAt.Time.After(checked.Time) {
+			return refuse("knowledge_expired")
 		}
 		refs, err := knowledgeCandidateSources(w.candidate)
 		if err != nil {
@@ -599,7 +598,7 @@ func (s *CollaborationService) changeKnowledgeCandidate(ctx context.Context, w *
 		if !available {
 			return refuse("knowledge_source_unavailable")
 		}
-		rows, err := w.q.ListKnowledgeActiveTargetCandidates(ctx, db.ListKnowledgeActiveTargetCandidatesParams{TargetKind: w.target.Kind, TargetWorkspaceID: w.candidate.TargetWorkspaceID, TargetProjectID: w.candidate.TargetProjectID, CheckedAt: pgtype.Timestamptz{Time: s.knowledgeNow().UTC(), Valid: true}})
+		rows, err := w.q.ListKnowledgeActiveTargetCandidates(ctx, db.ListKnowledgeActiveTargetCandidatesParams{TargetKind: w.target.Kind, TargetWorkspaceID: w.candidate.TargetWorkspaceID, TargetProjectID: w.candidate.TargetProjectID, CheckedAt: checked})
 		if err != nil {
 			return protocol.CollaborationKnowledgeReceipt{}, err
 		}
