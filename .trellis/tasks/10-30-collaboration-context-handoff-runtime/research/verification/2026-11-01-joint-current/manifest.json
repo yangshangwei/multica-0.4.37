@@ -1,0 +1,134 @@
+{
+  "source_head": "93afc3cb0eedb4936e5d62b9f4e4841dc99309d5",
+  "server_source_id": "f8b47ee964aba898123ee2239ac7396f33a0504cdc02e31ab5a8fdfc279fd469",
+  "checks": [
+    {
+      "label": "joint-race",
+      "counts": {
+        "pass": 40,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_passes": 22,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-race",
+        "-json",
+        "./internal/daemon/collaborationrun",
+        "-run",
+        "TestHost(HandoffCheckpoint|Checkpoint|Recording|RunnerPending|Ledger|SupervisorLateCallback)",
+        "-count=1",
+        "-timeout",
+        "3m"
+      ]
+    },
+    {
+      "label": "tagged-launch",
+      "counts": {
+        "pass": 80,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_passes": 23,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-tags=agentintegration",
+        "./internal/daemon/collaborationrun",
+        "-run",
+        "TestHostHandoff|TestHostProviderAccountSmokeAuthorizes",
+        "-count=1",
+        "-timeout",
+        "3m"
+      ]
+    },
+    {
+      "label": "tagged-vet",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_passes": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "-tags=agentintegration",
+        "./internal/daemon/collaborationrun"
+      ]
+    },
+    {
+      "label": "strengthened-race",
+      "counts": {
+        "pass": 6,
+        "fail": 0,
+        "skip": 0
+      },
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-race",
+        "-json",
+        "./internal/daemon/collaborationrun",
+        "-run",
+        "^TestHostHandoffCheckpoint",
+        "-count=1",
+        "-timeout",
+        "3m"
+      ],
+      "assertion_refinement": true
+    },
+    {
+      "label": "strengthened-vet",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "./internal/daemon/collaborationrun"
+      ],
+      "assertion_refinement": true
+    }
+  ],
+  "files": {
+    "README.md": "63bd48ddae8c662fc33a25683125f3a68313a339f0feecfdbff9565bf8b69527",
+    "joint-race.json": "629743640f06c97419ab946565bf0eda4a416466f5f620139a03dbaaae82209b",
+    "joint-race.jsonl": "28b4bcdcd5207dfc10876df6278777d25ea19c87001e66d83134a2e6d175c10b",
+    "source.json": "c6ab3007ea6c4ae7048eceebc29ff75885acadea659225a0ac7d1863b9a3fab9",
+    "strengthened-race.json": "4f8785db07dd07408fd28430499c5c66a4823a95f586d4689e4207e31e74d4aa",
+    "strengthened-race.jsonl": "d9d2fcb341a6eb39929ba1397a218361e09e6b05af435dd300da61e889719395",
+    "strengthened-vet.json": "e5fcd9b0c812b85d0374c477f8bcc4dfbfc3b50d49a00035c2b4e9bf66420c91",
+    "strengthened-vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tagged-launch.json": "ebed58a7e38ffcfdf8d56a522e3608406f35ee196c0b86951ce93c9b84cec3e7",
+    "tagged-launch.jsonl": "9156d0500dbebceda67d635a6e84a266e76e41cdcbbb3d8f23bf8a321ec2e397",
+    "tagged-vet.json": "6479c59c547e7653a2854a346035d60c8acf134df444e8923473278968a571ee",
+    "tagged-vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

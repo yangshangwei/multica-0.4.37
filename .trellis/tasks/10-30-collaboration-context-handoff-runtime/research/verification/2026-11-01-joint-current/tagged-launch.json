@@ -1,0 +1,361 @@
+{
+  "argv": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "-tags=agentintegration",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "TestHostHandoff|TestHostProviderAccountSmokeAuthorizes",
+    "-count=1",
+    "-timeout",
+    "3m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "started_at": "2026-11-01T02:43:36.155857+00:00",
+  "platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+  "head": "93afc3cb0eedb4936e5d62b9f4e4841dc99309d5",
+  "server_source_id": "f8b47ee964aba898123ee2239ac7396f33a0504cdc02e31ab5a8fdfc279fd469",
+  "tracked_dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "real_agent_gate_enabled": false,
+  "scope": "synthetic HTTP, persisted ledger and fake executable only; no DB or authenticated Provider",
+  "exit_code": 0,
+  "elapsed_seconds": 16.776,
+  "finished_at": "2026-11-01T02:43:52.932019+00:00",
+  "head_after": "93afc3cb0eedb4936e5d62b9f4e4841dc99309d5",
+  "tests": [
+    {
+      "test": "TestHostProviderAccountSmokeAuthorizesSharedContextBase",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/legacy",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/both",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/handoff_only",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/unknown",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/duplicate",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/newer_version",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/misplaced",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/wrong_method",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/wrong_token",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/html_less_than",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/html_ampersand",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/control_character",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/multibyte_and_escapes",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffBudgetEnforcesRawHTTPBoundaryBeforeLaunch/exact_wire_cap",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffBudgetEnforcesRawHTTPBoundaryBeforeLaunch/one_byte_over_wire_cap",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffBudgetEnforcesRawHTTPBoundaryBeforeLaunch",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch/decoded_content_plus_metadata",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch/metadata_budget",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch/malformed_source",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffCheckpointBlockedRecordingCannotHoldProof",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffCheckpointRestartRecoversWithoutExecution",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffCheckpointFailureCleanup/snapshot_refused",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffCheckpointFailureCleanup/binding_refused",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffCheckpointFailureCleanup/fallback_snapshot_drift",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffCheckpointFailureCleanup",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback/resume_rejected",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback/catalog_retry",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchInjectsAndBindsTheActualFirstInput",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchKeepsMaximumAdmittedInputsBeyondMetadataPage",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchFreshFallbackKeepsSnapshotAndBindsNewInput",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchRejectsAssignmentThatDiffersFromClaim",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_issue",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_run",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_snapshot",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/unknown_version",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/live_instead_of_snapshot",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_step",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_parent",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/missing_delegation",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/extra_executable_delegation",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/incomplete_delegation",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_memory_hash",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/memory_marked_unsupported",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/refused",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/declared_but_unsupported",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/unavailable",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_issue",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_run",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_snapshot",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_hash",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_nonce",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_sequence",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/not_accepted",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/unknown_version",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/revoked",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/purged",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/unavailable",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchBindingFailuresNeverStartTheProvider",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchLostRepliesReplayExactRequests",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchUnsupportedClaimKeepsLegacyPath",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchAcceptsRedactedSourceWithOriginalHash",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchFreshFallbackRejectsSnapshotDrift",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchKeepsUnsupportedAndEmptyMemoryDistinct/unsupported",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchKeepsUnsupportedAndEmptyMemoryDistinct/absent",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchKeepsUnsupportedAndEmptyMemoryDistinct",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchFreshMemoryReanchorCannotRemintSnapshot",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffLaunchGitHelpersDoNotBindProviderInput",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/missing_delegation_truncated",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/null_delegation_truncated",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/invalid_recording",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/case_alias",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/escaped_case_alias",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/escaped_duplicate",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof",
+      "action": "pass"
+    }
+  ],
+  "counts": {
+    "pass": 80,
+    "fail": 0,
+    "skip": 0
+  },
+  "top_level_passes": 23,
+  "server_source_id_after": "f8b47ee964aba898123ee2239ac7396f33a0504cdc02e31ab5a8fdfc279fd469",
+  "source_changes": []
+}

@@ -128,6 +128,19 @@ func TestHostHandoffCheckpointFailureCleanup(t *testing.T) {
 			if proofs != 1 || terminations != 1 || permits != 1 {
 				t.Fatalf("original cleanup changed: proofs=%d terminations=%d permits=%d", proofs, terminations, permits)
 			}
+			h.hostRunFixture.mu.Lock()
+			permit, termination, proof := h.permits["1"], h.terminations["1"], h.proofs[0]
+			h.hostRunFixture.mu.Unlock()
+			wantTermination, wantProof := "not_started", "never_launched_proven"
+			if name == "fallback_snapshot_drift" {
+				wantTermination, wantProof = "managed_launch_ended", "host_exit_observed"
+			}
+			if termination.Identity != permit.Identity || termination.AttemptSeq != permit.AttemptSeq || termination.AttemptNonce != permit.AttemptNonce || termination.Kind != wantTermination {
+				t.Fatalf("handoff failure changed the original attempt or termination fact: %+v", termination)
+			}
+			if proof.Identity != permit.Identity || proof.State != wantProof || len(proof.Launches) != 1 || !reflect.DeepEqual(proof.Launches[0], termination) {
+				t.Fatal("proof did not preserve the same original termination fact")
+			}
 			local, err := h.runner.Ledger.Lock(h.claim.Identity.DeploymentID, h.claim.Identity.InstallationID, h.claim.Identity.RunID)
 			if err != nil {
 				t.Fatal(err)

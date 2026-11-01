@@ -112,6 +112,10 @@ omitted optional fields, without counting parser-added defaults as wire data.
 recording: snapshot/bind/fallback refusal, lost ACK, proof before release of a
 blocked recording request, and a fresh Runner reopening the original ledger.
 No new claim, snapshot or Provider launch may be introduced by recording repair.
+Pin the original permit identity, attempt and nonce: snapshot/bind refusal must
+retain `not_started` and `never_launched_proven`; fallback refusal after the
+first process ends must retain `managed_launch_ended` and `host_exit_observed`.
+The proof must contain the exact same termination fact, not just one launch.
 
 Tagged smoke-authorizer tests allow only the negotiated query keys/value on
 managed-token claim requests. Unknown, duplicate or misplaced queries remain
