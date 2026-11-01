@@ -1,0 +1,125 @@
+{
+ "series": "RK1",
+ "label": "RK1-H3b-t1",
+ "scenario": "RK1-H3b",
+ "trial": 1,
+ "mode": "fake",
+ "fault": "wrong",
+ "status": "finished",
+ "verdict": "fail",
+ "criteria": {
+  "binding_code": false,
+  "binding_comment_shown_to_model": true,
+  "codes": [
+   "REL-XVDAYK"
+  ],
+  "draft_absent": false,
+  "legacy_context_reads": 0,
+  "measured_business_failure": false,
+  "oldest_page_reached": true,
+  "runtime_comment_pages": 3
+ },
+ "answer": "REL-XVDAYK",
+ "runs": [
+  {
+   "role": "measured",
+   "run_id": "b1150d86-c6dd-426a-9d96-fb1132896316",
+   "measured": true,
+   "physical_launches": 1,
+   "authorized_attempts": 1,
+   "permit_calls": 2,
+   "progress_state": "settled",
+   "proof_state": "host_exit_observed",
+   "business_outcome": "success",
+   "step_kind": "agent",
+   "recording_incomplete": true,
+   "seal_reason": "incomplete",
+   "seal_observed_through": null,
+   "seal_acknowledged_through": 7,
+   "outcome_record_completeness": "partial",
+   "provider_recordable_messages": 7,
+   "provider_messages_over_record_limit": 2,
+   "provider_init_models": [
+    "rk1-fake"
+   ],
+   "claim_query": "handoff_version=1\u0026recording_version=1\u0026knowledge_version=1",
+   "granted": {
+    "handoff_version": 1,
+    "knowledge_context": false,
+    "recording_version": 1
+   },
+   "stdin_prompt_sha256": [
+    "26fa5f407d382e749cff6e1dff5f05c9c1893eed676674bf0e807398d64e3f0e"
+   ],
+   "argv": [
+    [
+     "-p",
+     "--output-format",
+     "stream-json",
+     "--input-format",
+     "stream-json",
+     "--verbose",
+     "--permission-mode",
+     "bypassPermissions",
+     "--disallowedTools",
+     "AskUserQuestion",
+     "--model",
+     "rk1-requested-model"
+    ]
+   ],
+   "removed_child_env": [
+    "DATABASE_URL",
+    "RK1_FAKE_PROOF_OUT",
+    "RK1_PROVIDER_PLAN_DIR"
+   ],
+   "observed_models": [
+    "rk1-fake"
+   ],
+   "cli_reads": 3,
+   "business_writes": 0,
+   "provider_tool_results": 3,
+   "provider_tool_result_max_chars": 74021,
+   "provider_tool_results_with_cursor": 3,
+   "fake_cli_output_sizes": [
+    {
+     "command": "issue comment list",
+     "next_cursor_char_offset": 66632,
+     "next_offset_char_offset": -1,
+     "stdout_bytes": 66914,
+     "stdout_chars": 66914
+    },
+    {
+     "command": "issue comment list",
+     "next_cursor_char_offset": 66557,
+     "next_offset_char_offset": -1,
+     "stdout_bytes": 66839,
+     "stdout_chars": 66839
+    },
+    {
+     "command": "issue comment list",
+     "next_cursor_char_offset": 7369,
+     "next_offset_char_offset": -1,
+     "stdout_bytes": 7514,
+     "stdout_chars": 7514
+    }
+   ],
+   "run_events": {
+    "handoff_binding": 1,
+    "handoff_snapshot": 1,
+    "outcome": 1,
+    "preparation": 1,
+    "record_checkpoint": 5,
+    "recording_seal": 1,
+    "resource_snapshot": 1
+   }
+  }
+ ],
+ "provider": "claude",
+ "provider_version": "2.1.200",
+ "requested_model": "rk1-requested-model",
+ "observed_models": [
+  "rk1-fake"
+ ],
+ "started_at": "2026-11-01T15:16:16.636658Z",
+ "finished_at": "2026-11-01T15:16:19.42491Z"
+}

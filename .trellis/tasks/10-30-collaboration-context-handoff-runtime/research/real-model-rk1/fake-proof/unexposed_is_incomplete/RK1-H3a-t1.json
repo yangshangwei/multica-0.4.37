@@ -1,0 +1,91 @@
+{
+ "series": "RK1",
+ "label": "RK1-H3a-t1",
+ "scenario": "RK1-H3a",
+ "trial": 1,
+ "mode": "fake",
+ "fault": "noread",
+ "status": "incomplete",
+ "verdict": "unexposed:decisive_comment_never_returned_to_cli",
+ "criteria": {},
+ "answer": "",
+ "runs": [
+  {
+   "role": "measured",
+   "run_id": "9f52e157-a5a9-43fb-b6d4-6262556ee650",
+   "measured": true,
+   "physical_launches": 1,
+   "authorized_attempts": 1,
+   "permit_calls": 2,
+   "progress_state": "settled",
+   "proof_state": "host_exit_observed",
+   "business_outcome": "success",
+   "step_kind": "agent",
+   "recording_incomplete": false,
+   "seal_reason": "completed",
+   "seal_observed_through": 1,
+   "seal_acknowledged_through": 1,
+   "outcome_record_completeness": "complete",
+   "provider_recordable_messages": 1,
+   "provider_messages_over_record_limit": 0,
+   "provider_init_models": [
+    "rk1-fake"
+   ],
+   "claim_query": "handoff_version=1\u0026recording_version=1\u0026knowledge_version=1",
+   "granted": {
+    "handoff_version": 1,
+    "knowledge_context": false,
+    "recording_version": 1
+   },
+   "stdin_prompt_sha256": [
+    "638b5b24122aacd96c905c9fb7b03a52f589c71f5ee64d340c02e0605d08ff9b"
+   ],
+   "argv": [
+    [
+     "-p",
+     "--output-format",
+     "stream-json",
+     "--input-format",
+     "stream-json",
+     "--verbose",
+     "--permission-mode",
+     "bypassPermissions",
+     "--disallowedTools",
+     "AskUserQuestion",
+     "--model",
+     "rk1-requested-model"
+    ]
+   ],
+   "removed_child_env": [
+    "DATABASE_URL",
+    "RK1_FAKE_PROOF_OUT",
+    "RK1_PROVIDER_PLAN_DIR"
+   ],
+   "observed_models": [
+    "rk1-fake"
+   ],
+   "cli_reads": 0,
+   "business_writes": 0,
+   "provider_tool_results": 0,
+   "provider_tool_result_max_chars": 0,
+   "provider_tool_results_with_cursor": 0,
+   "run_events": {
+    "handoff_binding": 1,
+    "handoff_snapshot": 1,
+    "outcome": 1,
+    "preparation": 1,
+    "record_checkpoint": 1,
+    "recording_seal": 1,
+    "resource_snapshot": 1
+   }
+  }
+ ],
+ "provider": "claude",
+ "provider_version": "2.1.200",
+ "requested_model": "rk1-requested-model",
+ "observed_models": [
+  "rk1-fake"
+ ],
+ "started_at": "2026-11-01T15:16:35.282885Z",
+ "finished_at": "2026-11-01T15:16:36.939706Z"
+}

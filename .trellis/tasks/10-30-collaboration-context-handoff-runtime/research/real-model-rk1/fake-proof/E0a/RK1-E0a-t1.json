@@ -1,0 +1,106 @@
+{
+ "series": "RK1",
+ "label": "RK1-E0a-t1",
+ "scenario": "RK1-E0a",
+ "trial": 1,
+ "mode": "fake",
+ "status": "finished",
+ "verdict": "pass",
+ "criteria": {
+  "checkpoints": 1,
+  "cli_context_read": true,
+  "exact_body": true,
+  "knowledge_context": false,
+  "measured_business_failure": false,
+  "seal_reason": "completed"
+ },
+ "answer": "HOST_SMOKE_OK",
+ "runs": [
+  {
+   "role": "measured",
+   "run_id": "411ef133-fef5-4ab7-a4eb-0649af1bb422",
+   "measured": true,
+   "physical_launches": 1,
+   "authorized_attempts": 1,
+   "permit_calls": 2,
+   "progress_state": "settled",
+   "proof_state": "host_exit_observed",
+   "business_outcome": "success",
+   "step_kind": "agent",
+   "recording_incomplete": false,
+   "seal_reason": "completed",
+   "seal_observed_through": 3,
+   "seal_acknowledged_through": 3,
+   "outcome_record_completeness": "complete",
+   "provider_recordable_messages": 3,
+   "provider_messages_over_record_limit": 0,
+   "provider_init_models": [
+    "rk1-fake"
+   ],
+   "claim_query": "handoff_version=1\u0026recording_version=1\u0026knowledge_version=1",
+   "granted": {
+    "handoff_version": 1,
+    "knowledge_context": false,
+    "recording_version": 1
+   },
+   "stdin_prompt_sha256": [
+    "bd0fd1bd6c78a902e03771a6cb3a22f44af78217eb463ba8b3540491c9574cd8"
+   ],
+   "argv": [
+    [
+     "-p",
+     "--output-format",
+     "stream-json",
+     "--input-format",
+     "stream-json",
+     "--verbose",
+     "--permission-mode",
+     "bypassPermissions",
+     "--disallowedTools",
+     "AskUserQuestion",
+     "--model",
+     "rk1-requested-model"
+    ]
+   ],
+   "removed_child_env": [
+    "DATABASE_URL",
+    "RK1_FAKE_PROOF_OUT",
+    "RK1_PROVIDER_PLAN_DIR"
+   ],
+   "observed_models": [
+    "rk1-fake"
+   ],
+   "cli_reads": 1,
+   "business_writes": 0,
+   "provider_tool_results": 1,
+   "provider_tool_result_max_chars": 1752,
+   "provider_tool_results_with_cursor": 0,
+   "fake_cli_output_sizes": [
+    {
+     "command": "issue get 01a197ae-326a-7ab2-bb2a-f036558f2f33",
+     "next_cursor_char_offset": -1,
+     "next_offset_char_offset": -1,
+     "stdout_bytes": 1588,
+     "stdout_chars": 1588
+    }
+   ],
+   "run_events": {
+    "handoff_binding": 1,
+    "handoff_snapshot": 1,
+    "outcome": 1,
+    "preparation": 1,
+    "record_checkpoint": 1,
+    "recording_seal": 1,
+    "resource_snapshot": 1
+   }
+  }
+ ],
+ "provider": "claude",
+ "provider_version": "2.1.200",
+ "requested_model": "rk1-requested-model",
+ "observed_models": [
+  "rk1-fake"
+ ],
+ "started_at": "2026-11-01T15:15:37.372374Z",
+ "finished_at": "2026-11-01T15:15:41.556472Z"
+}

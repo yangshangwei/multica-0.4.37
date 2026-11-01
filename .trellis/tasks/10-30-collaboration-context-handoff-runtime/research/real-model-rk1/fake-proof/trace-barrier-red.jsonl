@@ -1,0 +1,9 @@
+{"Time":"2026-11-01T23:55:40.635942+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-01T23:55:41.142622+08:00","Action":"run","Package":"command-line-arguments","Test":"TestRK1TraceSnapshotWaitsForCompletedHandler"}
+{"Time":"2026-11-01T23:55:41.14298+08:00","Action":"output","Package":"command-line-arguments","Test":"TestRK1TraceSnapshotWaitsForCompletedHandler","Output":"=== RUN   TestRK1TraceSnapshotWaitsForCompletedHandler\n","OutputType":"frame"}
+{"Time":"2026-11-01T23:55:41.143132+08:00","Action":"output","Package":"command-line-arguments","Test":"TestRK1TraceSnapshotWaitsForCompletedHandler","Output":"    rk1_trace_barrier_test.go:30: snapshot finished before its response handler: 0 captured calls\n","OutputType":"error"}
+{"Time":"2026-11-01T23:55:41.143163+08:00","Action":"output","Package":"command-line-arguments","Test":"TestRK1TraceSnapshotWaitsForCompletedHandler","Output":"--- FAIL: TestRK1TraceSnapshotWaitsForCompletedHandler (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-01T23:55:41.143167+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestRK1TraceSnapshotWaitsForCompletedHandler","Elapsed":0}
+{"Time":"2026-11-01T23:55:41.143183+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\n","OutputType":"frame"}
+{"Time":"2026-11-01T23:55:41.143254+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments\t0.507s\n","OutputType":"frame"}
+{"Time":"2026-11-01T23:55:41.143274+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0.507}
