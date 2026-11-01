@@ -422,7 +422,7 @@ async function editThroughForm(page: Page, issueId: string, fields: { title?: st
   return response.request().postDataJSON() as Record<string, unknown>;
 }
 
-test("Smaller gaps: title/date edits leave attributed records, recipient lookup is exact-only, a source member resolves and reacts without notifications", async ({ browser }) => {
+test("Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications", async ({ browser }) => {
   test.setTimeout(240_000);
   requireLane();
   const fixture = await seedBoundary();
@@ -466,9 +466,9 @@ test("Smaller gaps: title/date edits leave attributed records, recipient lookup 
     await expect(record).toContainText(fixture.title);
     await expect(record).toContainText(newTitle);
 
-    // Exact recipient lookup (ResolveRecipient, collaboration_recipients.go:45-97):
-    // a name fragment finds nothing, malformed or partial queries are rejected,
-    // and even an exact match changes nothing until a manager confirms.
+    // The searchable directory has an explicit exact-lookup branch. Within
+    // that resolver, a fragment finds nothing, malformed/partial identities
+    // are rejected, and a selected match changes nothing until confirmation.
     const stateBeforeLookup = await businessState(creator, issueId);
     const inviteOps = async () => Number((await sql<{ count: string }>(
       "SELECT count(*)::text FROM collaboration_operation WHERE scope_id = $1 AND kind = 'invite_participant'", [issueId]))[0]!.count);
@@ -477,8 +477,14 @@ test("Smaller gaps: title/date edits leave attributed records, recipient lookup 
       && r.request().method() === "POST" && (r.request().postDataJSON() as { value: string }).value === value);
     await actionsRow(creatorSide.page).getByRole("button", { name: "Add participant", exact: true }).click();
     const invite = creatorSide.page.locator("form").filter({ has: creatorSide.page.getByRole("heading", { name: "Add participant", exact: true }) });
-    const recipient = invite.getByLabel("Exact recipient", { exact: true });
-    const find = invite.getByRole("button", { name: "Find account", exact: true });
+    await invite.getByRole("button", { name: "Recipient", exact: true }).click();
+    const list = creatorSide.page.getByRole("listbox", { name: "Recipient", exact: true });
+    const popup = creatorSide.page.locator('[data-slot="popover-content"]').filter({ has: list });
+    await popup.getByRole("textbox", { name: "Filter options", exact: true }).fill(fixture.key);
+    const lookupLabel = "Find by full username, email, or account ID";
+    await popup.getByRole("button", { name: lookupLabel, exact: true }).click();
+    const recipient = popup.getByLabel(lookupLabel, { exact: true });
+    const find = popup.getByRole("button", { name: "Find account", exact: true });
     await recipient.fill("   ");
     await expect(find).toBeDisabled();
     // The unique fragment shared by the outsider's name and email is a valid
@@ -490,7 +496,7 @@ test("Smaller gaps: title/date edits leave attributed records, recipient lookup 
     expect(notFound.status()).toBe(404);
     expect(notFound.request().postDataJSON()).toEqual({ kind: "username", value: fixture.key, issue_id: issueId });
     expect(await notFound.json()).toEqual({ code: "recipient_not_found", error: "recipient_not_found" });
-    await expect(invite.getByText("No matching account. Check the full username, email or account ID.", { exact: true })).toBeVisible();
+    await expect(popup.getByText("No matching account. Check the full username, email or account ID.", { exact: true })).toBeVisible();
     await expect(invite.getByRole("button", { name: "Confirm", exact: true })).toBeDisabled();
 
     const probe = async (kind: string, value: string) => {
@@ -519,8 +525,10 @@ test("Smaller gaps: title/date edits leave attributed records, recipient lookup 
     await find.click();
     const found = await exact;
     expect(found.status()).toBe(200);
+    expect(found.request().postDataJSON()).toEqual({ kind: "email", value: outsider.email, issue_id: issueId });
     expect(await found.json()).toEqual({ issue_id: issueId, source_workspace_id: fixture.workspace.id,
       recipient: expect.objectContaining({ user_id: outsider.id, name: outsider.name, external: true }) });
+    await popup.getByRole("button", { name: "Use this account", exact: true }).click();
     await expect(invite.getByText(`Selected account: ${outsider.name}`, { exact: true })).toBeVisible();
     await expect(invite.getByRole("button", { name: "Confirm", exact: true })).toBeEnabled();
     await invite.getByRole("button", { name: "Close", exact: true }).click();

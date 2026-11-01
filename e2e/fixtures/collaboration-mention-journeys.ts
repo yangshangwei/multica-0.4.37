@@ -159,6 +159,16 @@ async function readJourneyState(fixture: CollaborationMentionJourney) {
 }
 type JourneyState = Awaited<ReturnType<typeof readJourneyState>>;
 
+function stateWithoutAuthorityEvaluationTime(state: JourneyState) {
+  return { ...state, comments: { ...state.comments, items: state.comments.items.map((comment) => {
+    if (!comment.author_authority) return comment;
+    const { evaluated_at, ...authority } = comment.author_authority;
+    expect(evaluated_at).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/);
+    expect(Number.isFinite(Date.parse(evaluated_at))).toBe(true);
+    return { ...comment, author_authority: authority };
+  }) } };
+}
+
 function assertHeldExecution(issue: CollaborationIssue, commands: number) {
   expect(issue.session.queue_state).toBe("paused");
   if (!issue.execution) throw new Error("The held execution projection is missing");
@@ -413,7 +423,7 @@ export async function exercisePartialMentionRefusal(page: Page, humanPage: Page,
     method: "POST", headers: { "Idempotency-Key": sent.requestId }, body: sent.body,
   });
   expect(replay).toEqual(sent.receipt);
-  expect(await readJourneyState(fixture)).toEqual(after);
+  expect(stateWithoutAuthorityEvaluationTime(await readJourneyState(fixture))).toEqual(stateWithoutAuthorityEvaluationTime(after));
 
   await composerFor(page).getByLabel("Add comment", { exact: true }).fill(content);
   const unavailablePreview = await previewComment(page, fixture);
@@ -432,7 +442,7 @@ export async function exercisePartialMentionRefusal(page: Page, humanPage: Page,
   await expect(unavailableA).not.toBeChecked();
   await expect(unavailableA).toHaveAccessibleName(/Target is unavailable or its configuration changed/);
   await expect(composerFor(page).getByLabel("Add comment", { exact: true })).toHaveValue(content);
-  expect(await readJourneyState(fixture)).toEqual(after);
+  expect(stateWithoutAuthorityEvaluationTime(await readJourneyState(fixture))).toEqual(stateWithoutAuthorityEvaluationTime(after));
   const previewTargets = composerFor(page).getByRole("list").filter({ has: page.getByRole("checkbox") });
   await adapter.capture?.("unavailable-mention-preview", page, previewTargets);
 

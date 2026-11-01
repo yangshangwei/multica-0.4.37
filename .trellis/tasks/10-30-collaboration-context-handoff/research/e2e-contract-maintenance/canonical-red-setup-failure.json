@@ -1,0 +1,70 @@
+{
+  "candidate_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+  "test_branch_head": "c3db64b24fea7116622d106ce2231853e1be72f9",
+  "test_diff_sha256": "1e10e5a7971d8260d7df9a1b86bb69f908cf68e1c7d871f41170099ad00d50ed",
+  "command": [
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-editing-web.spec.ts",
+    "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-mention-journeys-web.spec.ts",
+    "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-records-web.spec.ts",
+    "--config=/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/playwright.config.ts",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=line,json",
+    "--output=/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/.omx/private/e2e-maintenance/canonical-red-3classes/artifacts",
+    "--grep",
+    "Web source creation|Web owner revocation|Web shares ordinary"
+  ],
+  "database": "multica_check_20261101174212_32903_api",
+  "api_url": "http://localhost:18695",
+  "web_url": "http://localhost:13615",
+  "renderer_url": "http://127.0.0.1:19841",
+  "health_commit": "c3db64b24",
+  "started_at": "2026-11-01T18:12:21.494234+00:00",
+  "finished_at": "2026-11-01T18:16:38.060360+00:00",
+  "exit_code": 1,
+  "output_sha256": "45e9d814bf9c0286ffff93207afe26b606a4befab87f0d0fec5495aaf5522e27",
+  "results_sha256": "21a8dd9e7a07c0f21dcee581330caee7d0b924bfa155c6d02b03a7b0f8f7c427",
+  "stats": {
+    "startTime": "2026-11-01T18:12:22.173Z",
+    "duration": 255873.366,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 3,
+    "flaky": 0
+  },
+  "classification": "SETUP_FAILURE_BEFORE_TARGET_CONTRACTS",
+  "provider_calls": 0,
+  "findings": [
+    {
+      "class": "browser_cors_preflight",
+      "request_paths": [
+        "/api/config",
+        "/api/me"
+      ],
+      "browser_origin": "http://localhost:13615",
+      "api_origin": "http://localhost:18695",
+      "evidence": "Trace console reports no Access-Control-Allow-Origin on preflight; blank production Web shell for every case."
+    }
+  ],
+  "cases": [
+    {
+      "title": "Web source creation, field edits and discussion share one authorized issue",
+      "status": "timedOut",
+      "stop": "createCollaborationWithInitialFields:99; New collaboration issue button absent; before legacy recipient locator"
+    },
+    {
+      "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "status": "failed",
+      "stop": "openCreator:197; issue heading absent; before authority equality"
+    },
+    {
+      "title": "Web shares ordinary child references and retained run records through account notification links",
+      "status": "failed",
+      "stop": "spec:20; issue heading absent; before records helper"
+    }
+  ]
+}

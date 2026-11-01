@@ -1,10 +1,52 @@
+import { randomUUID } from "node:crypto";
+import pg from "pg";
 import { expect, test, type Request, type Response } from "@playwright/test";
+import type { CollaborationMemory, CollaborationRunHandoff } from "@multica/core/collaboration";
 import { assertRuntimeHandoff, readCommentPage, recoverLongComment, removeRuntimeRecipient, seedRuntimeHandoff } from "./fixtures/collaboration-runtime-handoff";
 
 test.use({ actionTimeout: 15_000, trace: "off", screenshot: "only-on-failure" });
 
+test("ENV-1 live latest shared context preserves the run's empty startup version", async ({ page }, info) => {
+  test.setTimeout(120_000);
+  test.skip(process.env.E2E_PASSWORD_AUTH !== "1", "Requires task-owned password production services");
+  const fixture = await seedRuntimeHandoff();
+  const database = new pg.Client(process.env.DATABASE_URL);
+  await database.connect();
+  let persisted: { memory_mode: string; memory_base_version: string };
+  let written: CollaborationMemory;
+  let live: CollaborationRunHandoff;
+  try {
+    const seeded = await database.query("UPDATE collaboration_run SET memory_mode='supported',memory_base_version=0 WHERE id=$1", [fixture.runId]);
+    expect(seeded.rowCount).toBe(1);
+    written = await fixture.creator.client.requestJSON<CollaborationMemory>(`${fixture.root}/memory`, {
+      method: "PUT", headers: { "Idempotency-Key": randomUUID() }, body: {
+        expected_version: "0", content: "Latest decision written after the retained run started.",
+      },
+    });
+    live = await fixture.recipient.client.requestJSON<CollaborationRunHandoff>(fixture.handoffPath);
+    const retained = await database.query<{ memory_mode: string; memory_base_version: string }>(
+      "SELECT memory_mode,memory_base_version::text FROM collaboration_run WHERE id=$1", [fixture.runId]);
+    expect(retained.rowCount).toBe(1);
+    persisted = retained.rows[0]!;
+  } finally { await database.end(); }
+  expect(persisted).toEqual({ memory_mode: "supported", memory_base_version: "0" });
+  expect(written.version).toBe("1");
+  expect(live).toMatchObject({ mode: "live", memory: { base_version: "0", version: "1", availability: "available" } });
+  await fixture.recipient.authenticateWeb(page);
+  await page.goto(fixture.path);
+  const { handoff } = await assertRuntimeHandoff(page, fixture);
+  await expect(handoff.getByText("Started from an empty document", { exact: true })).toBeVisible();
+  await expect(handoff.getByRole("link", { name: "Latest is v1", exact: true })).toHaveAttribute("href", `${fixture.accountPath}#memory-v1`);
+  await expect(handoff.getByText("Started from v1", { exact: true })).toHaveCount(0);
+  await info.attach("ENV-1-startup-and-latest-context", { contentType: "application/json", body: JSON.stringify({
+    issue_id: fixture.issueId, run_id: fixture.runId, persisted, latest_memory_written: written.version, live_memory: live.memory,
+    history_origin: "seeded retained run; real memory API and production UI; no provider execution",
+  }, null, 2) });
+});
+
 test("Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal", async ({ page }, info) => {
   test.setTimeout(180_000);
+  test.skip(process.env.E2E_PASSWORD_AUTH !== "1", "Requires task-owned password production services");
   const fixture = await seedRuntimeHandoff({ olderComments: 54 });
   const errors: string[] = [];
   const runtimeRequests: string[] = [];

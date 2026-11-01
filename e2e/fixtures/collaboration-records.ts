@@ -1,7 +1,8 @@
 import { randomUUID } from "node:crypto";
 import pg from "pg";
-import { expect, type Page } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import { TestApiClient } from "../fixtures";
+import { CollaborationRunRecordsSchema } from "../../packages/core/collaboration/run-records-schema";
 
 type IssueReference = { id: string; title: string; identifier: string };
 type Snapshot = { collaboration_revision: string; lifecycle_epoch: string; write_context: { participant_epoch: string; account_epoch: string } };
@@ -152,6 +153,15 @@ export async function exerciseRecordedPages(page: Page, fixture: CollaborationRe
   const run = page.locator(`[id="run-${fixture.runId}"]`);
   await expect(run.getByRole("region", { name: "Run records", exact: true })).toBeVisible();
   const records = run.getByRole("region", { name: "Run records", exact: true });
+  const path = `/api/collaboration/issues/${fixture.issue.id}/runs/${fixture.runId}/records`;
+  const first = CollaborationRunRecordsSchema.parse(await fixture.viewer.requestJSON(`${path}?limit=50&execution_view_version=6`));
+  expect(first).toMatchObject({ issue_id: fixture.issue.id, run: { id: fixture.runId } });
+  expect(first.items).toHaveLength(50);
+  expect(first.items.some((item) => item.kind === "result" || item.kind === "tool_result")).toBe(false);
+  expect(first.next_cursor).toBeTruthy();
+  const entries = records.locator("li[data-record-id]");
+  await expect(entries).toHaveCount(first.items.length);
+  expect(await entries.evaluateAll((elements) => elements.map((element) => element.getAttribute("data-record-id")))).toEqual(first.items.map((item) => item.id));
   await expect(records.getByText(fixture.input, { exact: true })).toBeVisible();
   await expect(records.getByText("Complete recording", { exact: true })).toBeVisible();
   await expect(records.getByText("9007199254740993", { exact: true })).toBeVisible();
@@ -165,11 +175,31 @@ export async function exerciseRecordedPages(page: Page, fixture: CollaborationRe
   const preview = page.getByRole("dialog", { name: "recorded-input.txt", exact: true });
   await expect(preview.getByText("Frozen attachment for the recorded input.", { exact: true })).toBeVisible();
   await preview.getByRole("button", { name: "Close preview", exact: true }).click();
-  await expect(records.getByText(fixture.result, { exact: true })).toHaveCount(0);
+  await expect(entries.getByText(fixture.result, { exact: true })).toHaveCount(0);
+  const nextPending = page.waitForResponse((response) => {
+    const url = new URL(response.url());
+    return response.request().method() === "GET" && url.pathname === path && url.searchParams.get("cursor") === first.next_cursor;
+  });
   await records.getByRole("button", { name: "Load more records", exact: true }).click();
-  await expect(records.getByText(fixture.result, { exact: true })).toBeVisible();
-  await expect(records.getByText("Recorded tool result. This text is displayed without execution.", { exact: true })).toBeVisible();
+  const nextResponse = await nextPending;
+  expect(nextResponse.status()).toBe(200);
+  const next = CollaborationRunRecordsSchema.parse(await nextResponse.json());
+  expect(next).toMatchObject({ issue_id: fixture.issue.id, run: { id: fixture.runId }, next_cursor: null });
+  expect(next.items).toHaveLength(12);
+  expect(next.items.find((item) => item.kind === "result")).toMatchObject({ body: fixture.result });
+  expect(next.items.find((item) => item.kind === "tool_result")).toMatchObject({ body: "Recorded tool result. This text is displayed without execution." });
+  const ids = [...first.items, ...next.items].map((item) => item.id);
+  expect(new Set(ids).size).toBe(ids.length);
+  await expect(entries).toHaveCount(ids.length);
+  expect(await entries.evaluateAll((elements) => elements.map((element) => element.getAttribute("data-record-id")))).toEqual(ids);
+  await expect(entries.getByText(fixture.result, { exact: true })).toBeVisible();
+  await expect(entries.getByText("Recorded tool result. This text is displayed without execution.", { exact: true })).toBeVisible();
   await expect(records.getByRole("button", { name: "Load more records", exact: true })).toHaveCount(0);
+  await test.info().attach("record-pagination-api", { contentType: "application/json", body: JSON.stringify({
+    issue_id: fixture.issue.id, run_id: fixture.runId,
+    first_page: { item_ids: first.items.map((item) => item.id), next_cursor: first.next_cursor },
+    next_page: { requested_cursor: new URL(nextResponse.url()).searchParams.get("cursor"), item_ids: next.items.map((item) => item.id), next_cursor: next.next_cursor },
+  }, null, 2) });
   return records;
 }
 

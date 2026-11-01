@@ -104,7 +104,7 @@ function assertExecutionAndBusiness(before: CollaborationIssue, after: Collabora
   expect(after.execution?.commands ?? []).toEqual([]);
 }
 
-export async function selectHandoffRecipient(page: Page, form: Locator, recipient: { id: string; name: string }) {
+export async function selectCollaborationRecipient(page: Page, form: Locator, recipient: { id: string; name: string }) {
   await form.getByRole("button", { name: "Recipient", exact: true }).click();
   const list = page.getByRole("listbox", { name: "Recipient", exact: true });
   const popup = page.locator('[data-slot="popover-content"]').filter({ has: list });
@@ -115,6 +115,10 @@ export async function selectHandoffRecipient(page: Page, form: Locator, recipien
   await popup.getByRole("button", { name: "Find account", exact: true }).click();
   await expect(popup.getByText(recipient.name, { exact: true })).toBeVisible();
   await popup.getByRole("button", { name: "Use this account", exact: true }).click();
+}
+
+export async function selectHandoffRecipient(page: Page, form: Locator, recipient: { id: string; name: string }) {
+  await selectCollaborationRecipient(page, form, recipient);
   await expect(form.getByText(`Selected account: ${recipient.name}`, { exact: true })).toBeVisible();
 }
 

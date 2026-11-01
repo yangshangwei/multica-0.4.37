@@ -63,7 +63,7 @@ test("Web and Electron source list, board, timeline and comments preserve extern
     const dialog = current.getByRole("dialog", { name: "Issue actions", exact: true });
     await expect(dialog).toBeVisible();
     await expect(dialog.getByRole("heading", { name: "Transfer", exact: true })).toBeVisible();
-    await expect(dialog.getByRole("textbox", { name: "Exact recipient", exact: true })).toBeVisible();
+    await expect(dialog.getByRole("button", { name: "Recipient", exact: true })).toBeVisible();
     expect(noWrite.writes).toEqual([]);
     expect(await cardColumns(current, fixture.shared.title)).toEqual(columns);
     expect(await sourceSnapshot(fixture)).toEqual(before);

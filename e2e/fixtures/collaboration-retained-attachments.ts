@@ -9,6 +9,7 @@ import { CollaborationCommentSchema, CollaborationCommentReceiptSchema, Collabor
 import { CollaborationCommandHistorySchema } from "../../packages/core/collaboration/command-history-schema";
 import { CollaborationParticipantsSchema } from "../../packages/core/collaboration/participant-schema";
 import { seedCollaborationControlJourney } from "./collaboration-control-journey";
+import { selectCollaborationRecipient } from "./collaboration-offline-handoff";
 
 export interface RetainedSession {
   page: Page;
@@ -109,9 +110,8 @@ export async function exerciseTypedCreation(session: RetainedSession, fixture: R
   const dialog = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
   await dialog.getByLabel("Title", { exact: true }).fill(title);
   await dialog.getByLabel("Description", { exact: true }).fill(body);
-  await dialog.getByLabel("Full username, email, or account ID").fill(fixture.creatorId);
-  await dialog.getByRole("button", { name: "Find account", exact: true }).click();
-  await dialog.getByRole("button", { name: "Use this account", exact: true }).click();
+  await selectCollaborationRecipient(page, dialog, { id: fixture.creatorId, name: fixture.human.name });
+  await expect(dialog.getByText(`Assigned to ${fixture.human.name}`, { exact: true })).toBeVisible();
   const uploadPending = page.waitForResponse((response) => new URL(response.url()).pathname === "/api/collaboration/attachments/drafts" && response.request().method() === "POST");
   await dialog.getByLabel("Attach files", { exact: true }).setInputFiles({ name: "typed-creation.txt", mimeType: "text/plain", buffer: bytes });
   const uploadResponse = await uploadPending;
@@ -302,7 +302,13 @@ export async function exerciseRetainedAttachments(author: RetainedSession, reade
   const controls = (await readIssue(fixture.creator, fixture.issueId)).execution!;
   await expect(author.page.locator(`[id="comment-${sibling.comment_id}"]`).getByRole("button", { name: `Preview ${file.name}`, exact: true })).toBeVisible();
   const removal = await removeDisplayReference(author.page, fixture, receipt.comment_id, file);
-  expect(await readComment(fixture.creator, fixture.issueId, sibling.comment_id)).toEqual(siblingBefore);
+  const siblingAfter = await readComment(fixture.creator, fixture.issueId, sibling.comment_id);
+  if (!siblingBefore.author_authority || !siblingAfter.author_authority) throw new Error("The sibling comment must retain its author authority");
+  const { evaluated_at: beforeEvaluatedAt, ...beforeAuthority } = siblingBefore.author_authority;
+  const { evaluated_at: afterEvaluatedAt, ...afterAuthority } = siblingAfter.author_authority;
+  expect(Number.isFinite(Date.parse(beforeEvaluatedAt))).toBe(true);
+  expect(Number.isFinite(Date.parse(afterEvaluatedAt))).toBe(true);
+  expect({ ...siblingAfter, author_authority: afterAuthority }).toEqual({ ...siblingBefore, author_authority: beforeAuthority });
   await expect(author.page.locator(`[id="comment-${sibling.comment_id}"]`).getByRole("button", { name: `Preview ${file.name}`, exact: true })).toBeVisible();
   expect((await readCommands(fixture.creator, fixture.issueId)).items.find((item) => item.id === original.id)).toEqual(original);
   const deletion = await deleteComment(author.page, fixture, sibling.comment_id, file);

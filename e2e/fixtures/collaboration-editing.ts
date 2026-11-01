@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { expect, type Locator, type Page, type Route } from "@playwright/test";
 import { TestApiClient } from "../fixtures";
+import { selectCollaborationRecipient } from "./collaboration-offline-handoff";
 
 type Reference = { id: string; name: string };
 type IterationReference = Reference & { revision: number };
@@ -101,9 +102,8 @@ export async function createCollaborationWithInitialFields(page: Page, fixture: 
   await expect(dialog.getByLabel("Source workspace", { exact: true })).toHaveValue(fixture.workspace.id);
   await dialog.getByLabel("Title", { exact: true }).fill(fixture.title);
   await dialog.getByLabel("Description", { exact: true }).fill("One issue shared with an external handler.");
-  await dialog.getByLabel("Full username, email, or account ID", { exact: true }).fill(fixture.recipientEmail);
-  await dialog.getByRole("button", { name: "Find account", exact: true }).click();
-  await dialog.getByRole("button", { name: "Use this account", exact: true }).click();
+  await selectCollaborationRecipient(page, dialog, { id: fixture.recipientId, name: fixture.recipientName });
+  await expect(dialog.getByText(`Assigned to ${fixture.recipientName}`, { exact: true })).toBeVisible();
   await dialog.getByText("Initial fields", { exact: true }).click();
   await dialog.getByLabel("Status", { exact: true }).selectOption("todo");
   await dialog.getByLabel("Priority", { exact: true }).selectOption("high");

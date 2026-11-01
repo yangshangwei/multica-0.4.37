@@ -6,6 +6,7 @@ import type {
 } from "@multica/core/collaboration";
 import type { TestApiClient } from "../fixtures";
 import { consentControlTarget, type CollaborationControlJourney, type ControlTarget } from "./collaboration-control-journey";
+import { selectHandoffRecipient } from "./collaboration-offline-handoff";
 
 /** Gap journeys reuse the public control seed. Every write below is a real
  * client UI action or a deliberate direct refusal probe; no SQL is written. */
@@ -171,9 +172,7 @@ export async function leaveThroughUI(page: Page, issueId: string) {
 export async function inviteThroughUI(page: Page, issueId: string, target: { id: string; name: string }) {
   await page.getByRole("button", { name: "Add participant", exact: true }).click();
   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Add participant", exact: true }) });
-  await form.getByLabel("Exact recipient", { exact: true }).fill(target.id);
-  await form.getByRole("button", { name: "Find account", exact: true }).click();
-  await expect(form.getByText(`Selected account: ${target.name}`, { exact: true })).toBeVisible();
+  await selectHandoffRecipient(page, form, target);
   const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/participants` && response.request().method() === "POST");
   await form.getByRole("button", { name: "Confirm", exact: true }).click();
   const response = await pending;
