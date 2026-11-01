@@ -1,7 +1,8 @@
 import { randomUUID } from "node:crypto";
+import pg from "pg";
 import { expect, test } from "@playwright/test";
 import type { CollaborationIssue, CollaborationMemory, CollaborationResourceIdentityView, CollaborationResourceOptions, CollaborationResources } from "@multica/core/collaboration";
-import { authorizeHostIssue, hostControl, hostRuntimeConfigured, openHostConsent, seedHostRuntime, sendHostComment, waitHostSettlement,
+import { authorizeHostIssue, hostControl, hostEnvironment, hostRuntimeConfigured, openHostConsent, seedHostRuntime, sendHostComment, waitHostSettlement,
   type HostIssue, type HostVisit } from "./fixtures/collaboration-host-runtime";
 import { memoryAuthority, saveMemoryInUI } from "./fixtures/collaboration-memory";
 
@@ -16,23 +17,48 @@ type MemoryVisit = HostVisit & {
   memory_written: { code: string; issue_id: string; run_id: string; version: string };
   instruction_files_clean: boolean;
 };
+interface GateSnapshot {
+  database_name: string;
+  enabled: boolean;
+  creation_enabled: boolean;
+  host_execution_enabled: boolean;
+  epoch: string;
+}
+
+async function readGateSnapshot(): Promise<GateSnapshot> {
+  hostEnvironment();
+  const databaseUrl = process.env.DATABASE_URL!;
+  const database = new pg.Client(databaseUrl);
+  await database.connect();
+  try {
+    const result = await database.query<GateSnapshot>(
+      "SELECT current_database() AS database_name, enabled, creation_enabled, host_execution_enabled, epoch::text FROM collaboration_execution_gate WHERE id=1",
+    );
+    expect(result.rows).toHaveLength(1);
+    const snapshot = result.rows[0]!;
+    expect(snapshot.database_name).toBe(new URL(databaseUrl).pathname.slice(1));
+    return snapshot;
+  } finally { await database.end(); }
+}
 
 test.use({ actionTimeout: 15_000, screenshot: "only-on-failure", trace: "off" });
 test("two native runtime profiles hand off shared context through the actual run-local CLI", async ({ page, browser }, info) => {
   test.setTimeout(300_000);
   test.skip(!hostRuntimeConfigured(), "Requires explicit task-owned host daemon, memory-provider and Multica CLI executables");
+  const originalGate = await readGateSnapshot();
   const first = await seedHostRuntime();
   let second: Awaited<ReturnType<typeof seedHostRuntime>> | undefined;
+  let restoredGate: GateSnapshot | undefined;
   const successorContext = await browser.newContext();
   const evidence: Record<string, unknown> = {
     scope: "Two separately enrolled native runtime processes, user accounts, private workdirs and empty provider-account profiles on this host; test-owned ordinary Claude protocol only",
     exclusions: ["physical second machine", "commercial provider credentials or quota", "other operating systems"],
+    gate_before: originalGate,
   };
   try {
     second = await seedHostRuntime();
     const successor = second;
     const root = `/api/collaboration/issues/${first.main.id}`;
-    const read = () => first.webActor.client.requestJSON<CollaborationIssue>(versioned(root));
     const memory = () => first.webActor.client.requestJSON<CollaborationMemory>(`${root}/memory`);
     await first.webActor.authenticateWeb(page);
     await page.addInitScript(() => { localStorage.setItem("multica-locale", "en"); localStorage.setItem("multica:chat:isOpen", "false"); });
@@ -138,11 +164,23 @@ test("two native runtime profiles hand off shared context through the actual run
     evidence.final_version = final.version;
     await page.screenshot({ path: info.outputPath("memory-two-runtime-attribution.png"), animations: "disabled" });
   } finally {
-    evidence.first_daemon = await first.daemon.close();
-    if (second) evidence.second_daemon = await second.daemon.close();
-    await successorContext.close();
-    const encoded = JSON.stringify(evidence, null, 2);
-    expect(encoded).not.toMatch(/\b(?:mcb_|mct_|mdt_|mat_)[A-Za-z0-9_.-]+/);
-    await info.attach("memory-runtime-handoff-evidence", { contentType: "application/json", body: encoded });
+    // Each fixture restores its captured gate state, so release nested leases in reverse order.
+    try {
+      if (second) evidence.second_daemon = await second.daemon.close();
+    } finally {
+      try {
+        evidence.first_daemon = await first.daemon.close();
+      } finally {
+        await successorContext.close();
+        restoredGate = await readGateSnapshot();
+        evidence.gate_after = restoredGate;
+        const encoded = JSON.stringify(evidence, null, 2);
+        expect(encoded).not.toMatch(/\b(?:mcb_|mct_|mdt_|mat_)[A-Za-z0-9_.-]+/);
+        await info.attach("memory-runtime-handoff-evidence", { contentType: "application/json", body: encoded });
+      }
+    }
   }
+  expect(restoredGate).toMatchObject({ database_name: originalGate.database_name,
+    enabled: originalGate.enabled, creation_enabled: originalGate.creation_enabled,
+    host_execution_enabled: originalGate.host_execution_enabled });
 });

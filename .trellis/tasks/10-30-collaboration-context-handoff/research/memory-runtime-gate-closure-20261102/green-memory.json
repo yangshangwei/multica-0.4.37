@@ -1,0 +1,105 @@
+{
+  "at": "2026-11-01T21:19:14.949287+00:00",
+  "classification": "green_LIFO_restores_original_flags",
+  "actual_execution": {
+    "selected_provider_binary": "memory-provider",
+    "selected_provider_sha256": "81a758a1062568d5a709156e3344b5df1e5b87e55660c1761c12cf55c94adcf1",
+    "deployed_expectation": null,
+    "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "verification_harness_head": "56ae50d613831a905293fa29834e5a5be4167c03",
+    "verification_harness_diff_sha256": "977d72b56c14c60a481f6fca8435538b0ab8080d15ba42b66ada4f33966fb10c",
+    "lane": "green",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/opt/homebrew/bin/pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "e2e/collaboration-memory-runtime.spec.ts",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json",
+      "--output=/Volumes/artisan/code/2026/mc-memory-runtime-gate-closure-20261102/.omx/private/memory-gate-runs/memory-gate-green-fixed/artifacts"
+    ],
+    "database": "collab_joint_gate_green_20261102_2055",
+    "health": {
+      "status": "ok",
+      "pid": 21550,
+      "commit": "639bf6ef8",
+      "started_at": "2026-11-01T21:13:31Z"
+    },
+    "source_env_sha256": "bfbb87d1c27689da34b5c8308bb79c7e1403f94016899d8283190094a8993f72",
+    "production_Web_build_id": "lKQL5kHzmI0nj19TdJ0lz",
+    "native_renderer_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+    "test_source_sha256": {
+      "e2e/collaboration-memory-runtime.spec.ts": "0a28c4248892aafe8cfca5ad1f99c37c3a8cdef2276c42239d072bcd9169d18c"
+    },
+    "controlled_binary_sha256": {
+      "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+      "host-provider": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+      "memory-provider": "81a758a1062568d5a709156e3344b5df1e5b87e55660c1761c12cf55c94adcf1",
+      "multica": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19"
+    },
+    "package_pin": null,
+    "actual_real_Provider_calls": 0,
+    "state": "complete",
+    "started_at": "2026-11-01T21:18:05.448136+00:00",
+    "exit_code": 0,
+    "finished_at": "2026-11-01T21:18:17.686287+00:00",
+    "log_sha256": "3f265e2f31e4f1ef0389c1341d24f3b8115d1b05cbfc3ff49557d3f15829a73a",
+    "stats": {
+      "startTime": "2026-11-01T21:18:06.241Z",
+      "duration": 11429.671,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "results_sha256": "d201db60da7824cf76194ef9a0f1e330c16f2c44da9b6954afa8ba702f7d4fa3",
+    "gate_exit_code": 0
+  },
+  "gate_before": {
+    "database_name": "collab_joint_gate_green_20261102_2055",
+    "enabled": true,
+    "creation_enabled": true,
+    "host_execution_enabled": false,
+    "epoch": "3"
+  },
+  "gate_after": {
+    "database_name": "collab_joint_gate_green_20261102_2055",
+    "enabled": true,
+    "creation_enabled": true,
+    "host_execution_enabled": false,
+    "epoch": "5"
+  },
+  "business": {
+    "final_memory_version": "3",
+    "runs": [
+      {
+        "id": "2cfa7778-9b64-4a09-b90e-40bcaa88743e",
+        "agent_id": "d725b726-4e47-4b25-ac25-0dd403973446",
+        "memory": {
+          "support": "supported",
+          "base_version": "1",
+          "written_version": "2"
+        }
+      },
+      {
+        "id": "e94ec669-1aa7-403b-a3a2-e90334ba963a",
+        "agent_id": "2ac879c4-fcab-438c-b8e8-956fd29e43f1",
+        "memory": {
+          "support": "supported",
+          "base_version": "2",
+          "written_version": "3"
+        }
+      }
+    ],
+    "runtime_count": 2
+  },
+  "raw_attachment_sha256": "5e414579ae00af0f1457d4b0abbe171081317236247ab95482fbd6d616388355",
+  "raw_attachment_private_path": "/Volumes/artisan/code/2026/mc-memory-runtime-gate-closure-20261102/.omx/private/memory-gate-runs/memory-gate-green-fixed/memory-evidence.json",
+  "intervening_manual_gate_updates": 0,
+  "Provider_calls": 0
+}
