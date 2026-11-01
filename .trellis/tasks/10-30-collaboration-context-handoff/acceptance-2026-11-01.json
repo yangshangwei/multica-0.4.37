@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T11:20:31.171033+00:00",
+  "updated_at": "2026-11-01T11:29:32.298909+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -71,7 +71,7 @@
       "gaps": [
         "Stop/撤权/作者退出两种提交顺序已补齐并通过 race；真实 Provider 中断摄取未由 seeded UI 或服务 fixture 代替",
         "2026-11-01 会话-ef 合入后只读审计（会话-a8 在 b8fd547dc 复核并入账）确认 REC-1/REC-2/REC-3/REC-4 未修复：一次非确定性 checkpoint 失败后本轮停止上传、恢复约 1 秒、outcome 后剩余块被 409 拒收；fallback 后旧 attempt 块使整条流关闭；seal 原因一律 authority_lost；瞬时失败补齐后仍永久 partial。现有确定性通过不覆盖这些路径",
-        "会话-a8 已在 codex/runtime-audit-fixes-20261101 提交 REC-1–REC-4 的修复 4456cc65a（截至 18:35 的 tip 为 5b9f66292，另含 ENV-2），未复核，未合入"
+        "会话-a8 已在 codex/runtime-audit-fixes-20261101 提交 REC-1–REC-4 的修复 4456cc65a（截至 18:35 的 tip 为 5b9f66292，另含 ENV-2），未复核，未合入；19:27 用户在会话-fe 确认剩余修复由会话-27 在 codex/runtime-audit-fixes-27-20261101 上继续，-a8 停止"
       ]
     },
     {
