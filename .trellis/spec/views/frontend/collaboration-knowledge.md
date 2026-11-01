@@ -83,6 +83,15 @@ another POST. Keep these feedback paths distinct from transport uncertainty and
 known server refusal. Authorization expiry, purge and failed refresh remove body
 through Core even while review is open.
 
+The caller passes receipt ownership to the panel; never infer it from a render-time
+intent closure. A receipt is owned when it matches the panel's in-memory intent,
+or when a recovered stored identity names a candidate in the panel's current list
+(decided before the request). Only an owned success changes the selection. An
+unowned success leaves selection alone and tells the human to open the candidate
+from its own knowledge list. Only a proposal receipt for the panel's in-memory
+intent closes the proposal form; a decision receipt or a recovered stored
+identity leaves an open draft unchanged.
+
 ## 4. Validation & error matrix
 
 | Condition | UI behavior |
@@ -95,6 +104,7 @@ through Core even while review is open.
 | Unknown delivery or missing recovery result | Original intent stays unresolved; no replacement request |
 | Known result but local cleanup failed | Show known outcome plus cleanup notice; no repeat POST |
 | Lease/hint/access clears current Query | Remove body immediately, including an open review |
+| Decision or recovered older request settles while a draft is open | Keep the draft; select only an owned candidate, otherwise point to its own list |
 
 ## 5. Good / base / bad cases
 
@@ -108,7 +118,8 @@ through Core even while review is open.
 
 `knowledge-panel.test.tsx` owns source/target wiring, keyboard confirmation,
 original-intent recovery, changed-review reset, unchanged-refresh retention of
-decision input, safe audit facts, independent
+decision input, draft isolation from decision and recovery receipts, recovery
+ownership, safe audit facts, independent
 source choices, external-handler catalog avoidance, correction/derivation and
 restricted withdrawal. Existing page tests assert mount identities; locale
 parity covers both dictionaries. Core owns exhaustive schema/hash/cache matrices.

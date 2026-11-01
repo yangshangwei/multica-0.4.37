@@ -40,6 +40,7 @@ function KnowledgeCollection({ scope, issue, query, page, setPage, sourceView }:
   const [intent, setIntent] = useState<KnowledgeIntent | null>(null), [, setRevision] = useState(0);
   const [feedback, setFeedback] = useState<{ text: string; failed: boolean } | null>(null);
   const [settledRequests, setSettledRequests] = useState<string[]>([]), [cleanupFailed, setCleanupFailed] = useState(false);
+  const [openedElsewhere, setOpenedElsewhere] = useState(false);
   // These are client-generated identities only, never a second server projection.
   let pending: KnowledgeOperationIdentity[] = [], storageError = false;
   try { pending = readPendingKnowledgeOperations(scope); } catch { storageError = true; }
@@ -51,20 +52,28 @@ function KnowledgeCollection({ scope, issue, query, page, setPage, sourceView }:
   });
   const locked = mutation.isPending || intent !== null;
   const current = query.data;
-  function settled(receipt: CollaborationKnowledgeReceipt) {
+  /**
+   * The caller states ownership; a render-time intent closure is null while a submit is starting.
+   * "intent": this panel's in-memory request. "list": a recovered identity whose candidate is in this panel's list.
+   */
+  function settled(receipt: CollaborationKnowledgeReceipt, owner: "intent" | "list" | null) {
     const success = ["knowledge_proposed", "knowledge_approved", "knowledge_rejected", "knowledge_withdrawn"].includes(receipt.code);
     setFeedback({ text: success ? receipt.action === "propose" ? t(($) => $.knowledge.proposalSaved) : t(($) => $.knowledge.decisionSaved) : t(($) => $.knowledge.refused), failed: !success });
     setIntent((currentIntent) => currentIntent?.requestId === receipt.request_id ? null : currentIntent);
     setSettledRequests((currentRequests) => [...new Set([...currentRequests, receipt.request_id])]);
-    if (success && (!intent || intent.requestId === receipt.request_id)) { setProposal(null); setSelectedId(receipt.candidate_id); }
+    // Only the locked form that sent this proposal may close; a recovered or decision receipt never discards a draft.
+    if (success && owner === "intent" && receipt.action === "propose") setProposal(null);
+    if (success && owner !== null) setSelectedId(receipt.candidate_id);
+    setOpenedElsewhere(success && owner === null);
     setPage({}); setRevision((value) => value + 1);
   }
   async function submit(next: KnowledgeIntent) {
     if (busy.current) return;
-    busy.current = true; setIntent(next); setFeedback(null); setCleanupFailed(false);
-    try { settled(await mutation.mutateAsync({ identity: next, intent: next })); }
+    busy.current = true; setIntent(next); setFeedback(null); setCleanupFailed(false); setOpenedElsewhere(false);
+    const own = (receipt: CollaborationKnowledgeReceipt) => receipt.request_id === next.requestId ? "intent" as const : null;
+    try { const receipt = await mutation.mutateAsync({ identity: next, intent: next }); settled(receipt, own(receipt)); }
     catch (error) {
-      if (error instanceof KnowledgeReceiptCleanupError) { settled(error.receipt); setCleanupFailed(true); }
+      if (error instanceof KnowledgeReceiptCleanupError) { settled(error.receipt, own(error.receipt)); setCleanupFailed(true); }
       else if (error instanceof KnowledgeUnusedIntentError) {
         setIntent((currentIntent) => currentIntent?.requestId === next.requestId ? null : currentIntent);
         setSettledRequests((currentRequests) => [...new Set([...currentRequests, next.requestId])]);
@@ -76,10 +85,13 @@ function KnowledgeCollection({ scope, issue, query, page, setPage, sourceView }:
     finally { busy.current = false; setRevision((value) => value + 1); }
   }
   async function recover(identity: KnowledgeOperationIdentity) {
-    if (busy.current) return; busy.current = true;
-    try { settled(await mutation.mutateAsync({ identity })); }
+    if (busy.current) return; busy.current = true; setOpenedElsewhere(false);
+    // Decided before the await: every panel lists every stored request, but only these are this panel's own.
+    const owner = intent?.requestId === identity.requestId ? "intent" as const
+      : current?.value.items.some((item) => item.candidate_id === identity.candidateId) === true ? "list" as const : null;
+    try { settled(await mutation.mutateAsync({ identity }), owner); }
     catch (error) {
-      if (error instanceof KnowledgeReceiptCleanupError) { settled(error.receipt); setCleanupFailed(true); }
+      if (error instanceof KnowledgeReceiptCleanupError) { settled(error.receipt, owner); setCleanupFailed(true); }
       else setFeedback({ text: t(($) => $.knowledge.notFound), failed: true });
     }
     finally { busy.current = false; setRevision((value) => value + 1); }
@@ -90,6 +102,7 @@ function KnowledgeCollection({ scope, issue, query, page, setPage, sourceView }:
       {issue && sourceView?.capabilities.can_propose === true && !proposal && <Button type="button" variant="outline" disabled={locked} onClick={() => { setProposal({}); setFeedback(null); }}>{t(($) => $.knowledge.propose)}</Button>}
     </div>
     {feedback && <p role={feedback.failed ? "alert" : "status"} className={feedback.failed ? "text-body text-destructive" : "text-body"}>{feedback.text}</p>}
+    {openedElsewhere && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.knowledge.openedElsewhere)}</p>}
     {cleanupFailed && <p role="alert" className="text-caption text-muted-foreground">{t(($) => $.knowledge.recoveryCleanupFailed)}</p>}
     {storageError && <p role="alert" className="text-body text-destructive">{t(($) => $.knowledge.recoveryReadError)}</p>}
     {pending.length > 0 && <div className="space-y-3"><h4 className="text-body font-medium">{t(($) => $.knowledge.pendingTitle)}</h4>

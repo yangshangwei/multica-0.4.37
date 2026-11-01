@@ -314,6 +314,63 @@ it("unlocks the human draft after storage fails before POST", async () => {
   } finally { save.mockRestore(); }
 });
 
+// M5: only this panel's own in-memory intent closes its proposal form; ownership never comes from a render-time closure.
+it("a review decision leaves an open proposal draft intact and only the panel's own proposal closes it", async () => {
+  vi.spyOn(api, "approveCollaborationKnowledge").mockImplementation(async (_id, input) => receipt(input.request_id, "approve"));
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockImplementation(async (_issue, input) => ({ ...receipt(input.request_id, "propose"), candidate_id: input.candidate_id }));
+  mount(); await openReview();
+  await userEvent.click(screen.getByRole("button", { name: "Propose knowledge" })); await fillProposal();
+  await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
+  await userEvent.click(screen.getByRole("button", { name: "Approve exact version" }));
+  await screen.findByText("Decision recorded.");
+  expect(screen.getByRole("textbox", { name: "Summary" })).toHaveValue("Human conclusion");
+  expect(screen.getByRole("checkbox", { name: /Comment.*Version 3/ })).toBeChecked();
+  await screen.findByRole("button", { name: /PRIVATE SUMMARY/ });
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+  await waitFor(() => expect(send).toHaveBeenCalledOnce());
+  await waitFor(() => expect(screen.queryByRole("form", { name: "Propose knowledge" })).not.toBeInTheDocument());
+  await waitFor(() => expect(api.getCollaborationKnowledgeCandidate).toHaveBeenCalledWith(send.mock.calls[0]![1].candidate_id, expect.anything()));
+});
+
+it("recovering an older stored proposal keeps a new draft open while it opens the recovered candidate", async () => {
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockRejectedValue(new TypeError("Lost response"));
+  const mounted = mount(); await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" })); await fillProposal();
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+  await screen.findByRole("button", { name: "Retry same request" }); const lost = send.mock.calls[0]![1];
+  mounted.unmount();
+  // The lost proposal was applied, so this panel's list now holds it.
+  vi.mocked(api.getCollaborationKnowledgeCandidates).mockImplementation(async () => parseCollaborationKnowledgeCandidates({ ...lease(), issue_id: issue.id,
+    items: [summary(), { ...summary(), candidate_id: lost.candidate_id, summary: "Recovered proposal" }], next_cursor: null, capabilities: { can_propose: true } }));
+  mount(); await screen.findByRole("button", { name: /Recovered proposal/ });
+  await userEvent.click(screen.getByRole("button", { name: "Propose knowledge" }));
+  fireEvent.change(screen.getByRole("textbox", { name: "Summary" }), { target: { value: "Fresh draft" } });
+  vi.mocked(api.getCollaborationKnowledgeOperation).mockResolvedValue({ ...receipt(lost.request_id, "propose"), candidate_id: lost.candidate_id });
+  await userEvent.click(screen.getByRole("button", { name: "Check original result" }));
+  await screen.findByText("Candidate proposed. It is not active until approved.");
+  expect(screen.getByRole("textbox", { name: "Summary" })).toHaveValue("Fresh draft");
+  await waitFor(() => expect(api.getCollaborationKnowledgeCandidate).toHaveBeenCalledWith(lost.candidate_id, expect.anything()));
+});
+
+it("recovering a request whose candidate is not in this panel does not open it here", async () => {
+  const send = vi.spyOn(api, "approveCollaborationKnowledge").mockRejectedValue(new TypeError("Lost response"));
+  const mounted = mount(); await openReview(); await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
+  await userEvent.click(screen.getByRole("button", { name: "Approve exact version" }));
+  await screen.findByRole("button", { name: "Retry same request" }); const key = send.mock.calls[0]![1].request_id;
+  mounted.unmount();
+  const recovered = receipt(key, "approve"), otherId = "00000000-0000-4000-8000-000000000096";
+  vi.mocked(api.getCollaborationKnowledgeCandidates).mockImplementation(async () => parseCollaborationKnowledgeCandidates({ ...lease(), issue_id: issue.id,
+    items: [{ ...summary(), candidate_id: otherId, lineage_id: otherId, summary: "Unrelated candidate" }], next_cursor: null, capabilities: { can_propose: true } }));
+  mount(); await screen.findByRole("button", { name: /Unrelated candidate/ });
+  const detailReads = vi.mocked(api.getCollaborationKnowledgeCandidate).mock.calls.length;
+  vi.mocked(api.getCollaborationKnowledgeOperation).mockResolvedValue(recovered);
+  await userEvent.click(screen.getByRole("button", { name: "Check original result" }));
+  await screen.findByText("Decision recorded.");
+  expect(screen.queryByRole("region", { name: "Review candidate" })).not.toBeInTheDocument();
+  expect(screen.getByText("Open this candidate from the knowledge list it belongs to.")).toBeInTheDocument();
+  expect(api.getCollaborationKnowledgeCandidate).toHaveBeenCalledTimes(detailReads);
+  expect(api.getCollaborationKnowledgeOperation).toHaveBeenCalledWith(recovered.candidate_id, key);
+});
+
 it("does not repeat approval actor/time as an identical latest decision", async () => {
   if (candidate.availability !== "available") throw new Error("Expected available fixture");
   const approver = "00000000-0000-4000-8000-000000000072", at = "2026-11-01T01:00:00Z";
