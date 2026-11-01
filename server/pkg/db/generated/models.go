@@ -308,6 +308,8 @@ type AgentTaskQueue struct {
 	ClaimGeneration           int64              `json:"claim_generation"`
 	QueuedAt                  pgtype.Timestamptz `json:"queued_at"`
 	QueuedAtSource            pgtype.Text        `json:"queued_at_source"`
+	KnowledgeContextVersion   pgtype.Int4        `json:"-"`
+	KnowledgeDelivery         []byte             `json:"-"`
 }
 
 type AgentToLabel struct {
@@ -910,6 +912,62 @@ type CollaborationGroupInput struct {
 	BatchID        pgtype.UUID `json:"batch_id"`
 	Seq            int64       `json:"seq"`
 	ConsumingRunID pgtype.UUID `json:"consuming_run_id"`
+}
+
+type CollaborationKnowledgeCandidate struct {
+	ID                      pgtype.UUID        `json:"id"`
+	LineageID               pgtype.UUID        `json:"lineage_id"`
+	Version                 int64              `json:"version"`
+	SourceWorkspaceID       pgtype.UUID        `json:"source_workspace_id"`
+	SourceIssueID           pgtype.UUID        `json:"source_issue_id"`
+	TargetKind              string             `json:"target_kind"`
+	TargetWorkspaceID       pgtype.UUID        `json:"target_workspace_id"`
+	TargetProjectID         pgtype.UUID        `json:"target_project_id"`
+	Content                 string             `json:"content"`
+	Summary                 string             `json:"summary"`
+	ContentSha256           string             `json:"content_sha256"`
+	Sources                 []byte             `json:"sources"`
+	Evidence                []byte             `json:"evidence"`
+	Applicability           []byte             `json:"applicability"`
+	ProposedByUserID        pgtype.UUID        `json:"proposed_by_user_id"`
+	ProposedAt              pgtype.Timestamptz `json:"proposed_at"`
+	ExpiresAt               pgtype.Timestamptz `json:"expires_at"`
+	SupersedesCandidateID   pgtype.UUID        `json:"supersedes_candidate_id"`
+	DerivedFromCandidateID  pgtype.UUID        `json:"derived_from_candidate_id"`
+	State                   string             `json:"state"`
+	StateRevision           int64              `json:"state_revision"`
+	ApprovedByUserID        pgtype.UUID        `json:"approved_by_user_id"`
+	ApprovedAt              pgtype.Timestamptz `json:"approved_at"`
+	LastDecidedByUserID     pgtype.UUID        `json:"last_decided_by_user_id"`
+	LastDecidedAt           pgtype.Timestamptz `json:"last_decided_at"`
+	LastDecisionReason      pgtype.Text        `json:"last_decision_reason"`
+	PublishedTargetRevision pgtype.Int8        `json:"published_target_revision"`
+}
+
+type CollaborationKnowledgeInvalidation struct {
+	ID                pgtype.UUID        `json:"id"`
+	Kind              string             `json:"kind"`
+	CauseID           pgtype.UUID        `json:"cause_id"`
+	ScopeKind         pgtype.Text        `json:"scope_kind"`
+	ScopeID           pgtype.UUID        `json:"scope_id"`
+	ScanStartedAt     pgtype.Timestamptz `json:"scan_started_at"`
+	ScanUpperBound    pgtype.UUID        `json:"scan_upper_bound"`
+	ScanCursor        pgtype.UUID        `json:"scan_cursor"`
+	TargetKind        pgtype.Text        `json:"target_kind"`
+	TargetID          pgtype.UUID        `json:"target_id"`
+	TargetWorkspaceID pgtype.UUID        `json:"target_workspace_id"`
+	KnowledgeRevision pgtype.Int8        `json:"knowledge_revision"`
+	State             string             `json:"state"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+	LastAttemptedAt   pgtype.Timestamptz `json:"last_attempted_at"`
+	CompletedAt       pgtype.Timestamptz `json:"completed_at"`
+}
+
+type CollaborationKnowledgeTarget struct {
+	TargetKind        string      `json:"target_kind"`
+	TargetID          pgtype.UUID `json:"target_id"`
+	WorkspaceID       pgtype.UUID `json:"workspace_id"`
+	KnowledgeRevision int64       `json:"knowledge_revision"`
 }
 
 type CollaborationMemoryVersion struct {

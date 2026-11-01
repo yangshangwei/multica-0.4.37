@@ -9,12 +9,13 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/iteration"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 // startTaskAtomically owns the former autocommit start without adding retries.
 // Even an issue with no iteration must take the workspace fence before its row
 // lock, so a join committed while waiting is included in the recorded facts.
-func (s *TaskService) startTaskAtomically(ctx context.Context, current db.AgentTaskQueue) (db.AgentTaskQueue, error) {
+func (s *TaskService) startTaskAtomically(ctx context.Context, current db.AgentTaskQueue, knowledgeFences ...*protocol.TaskKnowledgeFence) (db.AgentTaskQueue, error) {
 	if s.TxStarter == nil {
 		return db.AgentTaskQueue{}, errors.New("task start requires a transaction starter")
 	}
@@ -58,6 +59,9 @@ func (s *TaskService) startTaskAtomically(ctx context.Context, current db.AgentT
 	// task. Refuse changed ownership rather than start outside that issue's fence.
 	lockedTask, err := q.LockAgentTaskForStart(ctx, current.ID)
 	if err != nil {
+		return db.AgentTaskQueue{}, err
+	}
+	if err = validateTaskKnowledgeFences(lockedTask, knowledgeFences); err != nil {
 		return db.AgentTaskQueue{}, err
 	}
 	if lockedTask.IssueID != current.IssueID {

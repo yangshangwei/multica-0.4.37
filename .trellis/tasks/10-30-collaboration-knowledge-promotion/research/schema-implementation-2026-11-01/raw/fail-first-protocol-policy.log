@@ -1,0 +1,27 @@
+# github.com/multica-ai/multica/server/pkg/protocol [github.com/multica-ai/multica/server/pkg/protocol.test]
+pkg/protocol/collaboration_knowledge_test.go:11:38: undefined: CollaborationKnowledgeProposal
+pkg/protocol/collaboration_knowledge_test.go:13:9: undefined: CollaborationKnowledgeProposal
+pkg/protocol/collaboration_knowledge_test.go:15:11: undefined: CollaborationKnowledgeTarget
+pkg/protocol/collaboration_knowledge_test.go:17:14: undefined: CollaborationKnowledgeSource
+pkg/protocol/collaboration_knowledge_test.go:18:15: undefined: CollaborationKnowledgeEvidence
+pkg/protocol/collaboration_knowledge_test.go:19:18: undefined: CollaborationKnowledgeApplicability
+pkg/protocol/collaboration_knowledge_test.go:27:14: undefined: CollaborationKnowledgeProposal
+pkg/protocol/collaboration_knowledge_test.go:40:12: undefined: CollaborationKnowledgeProposal
+pkg/protocol/collaboration_knowledge_test.go:47:45: undefined: CollaborationKnowledgeProposal
+pkg/protocol/collaboration_knowledge_test.go:48:23: undefined: CollaborationKnowledgeProposal
+pkg/protocol/collaboration_knowledge_test.go:48:23: too many errors
+FAIL	github.com/multica-ai/multica/server/pkg/protocol [build failed]
+# github.com/multica-ai/multica/server/internal/collaboration [github.com/multica-ai/multica/server/internal/collaboration.test]
+internal/collaboration/knowledge_test.go:11:10: undefined: KnowledgeTargetAuthority
+internal/collaboration/knowledge_test.go:12:5: undefined: KnowledgeCapabilitiesFor
+internal/collaboration/knowledge_test.go:15:5: undefined: KnowledgeCapabilitiesFor
+internal/collaboration/knowledge_test.go:17:4: undefined: KnowledgeCapabilitiesFor
+internal/collaboration/knowledge_test.go:20:4: undefined: KnowledgeCapabilitiesFor
+internal/collaboration/knowledge_test.go:23:31: undefined: KnowledgeCapabilitiesFor
+internal/collaboration/knowledge_test.go:23:99: undefined: KnowledgeCapabilities
+internal/collaboration/knowledge_test.go:30:10: undefined: KnowledgeTargetAuthority
+internal/collaboration/knowledge_test.go:31:6: undefined: KnowledgeCapabilitiesFor
+internal/collaboration/knowledge_test.go:33:5: undefined: KnowledgeCapabilitiesFor
+internal/collaboration/knowledge_test.go:33:5: too many errors
+FAIL	github.com/multica-ai/multica/server/internal/collaboration [build failed]
+FAIL

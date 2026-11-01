@@ -1,0 +1,277 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation "Application navigation" [ref=e4]:
+        - button "Workspaces" [ref=e5]
+        - button "Collaboration" [ref=e6]
+    - main [ref=e9]:
+      - generic [ref=e13]:
+        - generic [ref=e14]:
+          - button "Toggle left sidebar" [ref=e15]:
+            - img
+            - generic [ref=e16]: Toggle left sidebar
+          - generic [ref=e17]:
+            - link "Projects" [ref=e18] [cursor=pointer]:
+              - /url: /knowledge-84150e8f-2/projects
+            - img [ref=e19]
+            - generic [ref=e21]: Knowledge project 84150e8f-2
+          - generic [ref=e22]:
+            - button "Pin to sidebar" [ref=e23]:
+              - img
+            - button "Project actions" [ref=e24]:
+              - img
+            - button "Toggle right sidebar" [ref=e25]:
+              - img
+        - group [ref=e26]:
+          - generic "Iterations" [ref=e27] [cursor=pointer]
+        - region "Execution squads" [ref=e28]:
+          - generic [ref=e29]:
+            - generic [ref=e30]:
+              - generic [ref=e31]:
+                - img [ref=e32]
+                - heading "AI squads" [level=2] [ref=e37]
+                - generic [ref=e38]: 0 selected
+                - status
+              - paragraph [ref=e39]: No squads linked
+            - button "Manage squads" [ref=e40]
+        - generic [ref=e41]:
+          - button "Overview" [ref=e42]
+          - button "Issues" [ref=e43]
+        - generic [ref=e45]:
+          - generic [ref=e46]:
+            - generic [ref=e47]:
+              - heading "Overview" [level=2] [ref=e48]
+              - button "Refresh" [ref=e49]
+            - generic [ref=e50]:
+              - generic [ref=e51]:
+                - term [ref=e52]: Formal issues
+                - definition [ref=e53]: "1"
+              - generic [ref=e54]:
+                - term [ref=e55]: Completed
+                - definition [ref=e56]: "0"
+              - generic [ref=e57]:
+                - term [ref=e58]: Cancelled
+                - definition [ref=e59]: "0"
+              - generic [ref=e60]:
+                - term [ref=e61]: Open
+                - definition [ref=e62]: "1"
+              - generic [ref=e63]:
+                - term [ref=e64]: Scope closed
+                - definition [ref=e65]: 0%
+            - paragraph [ref=e66]: Calculated 11/1/2026, 7:43:10 AM · Reference date 2026-11-01
+          - generic [ref=e67]:
+            - generic [ref=e68]:
+              - heading "System health" [level=2] [ref=e69]:
+                - img [ref=e70]
+                - text: System health
+              - generic [ref=e72]:
+                - img [ref=e73]
+                - text: Needs attention
+            - generic [ref=e75]:
+              - button "Blocked 0" [ref=e76]:
+                - generic [ref=e77]:
+                  - img
+                  - text: Blocked
+                - generic [ref=e78]: "0"
+              - button "Overdue 0" [ref=e79]:
+                - generic [ref=e80]:
+                  - img
+                  - text: Overdue
+                - generic [ref=e81]: "0"
+              - button "Unassigned 1" [ref=e82]:
+                - generic [ref=e83]:
+                  - img
+                  - text: Unassigned
+                - generic [ref=e84]: "1"
+              - button "Awaiting review 0" [ref=e85]:
+                - generic [ref=e86]:
+                  - img
+                  - text: Awaiting review
+                - generic [ref=e87]: "0"
+            - list [ref=e88]:
+              - listitem [ref=e89]:
+                - img [ref=e90]
+                - generic [ref=e92]: The project lead is missing or unavailable. Choose a current member or agent in Properties.
+            - group [ref=e93]:
+              - generic "View assessment details" [ref=e94] [cursor=pointer]:
+                - text: View assessment details
+                - img [ref=e95]
+          - generic [ref=e97]:
+            - heading "Acceptance" [level=2] [ref=e98]
+            - generic [ref=e99]:
+              - generic [ref=e100]:
+                - generic [ref=e101]: "Current description acceptance:"
+                - text: No acceptance recorded
+              - generic [ref=e102]:
+                - generic [ref=e103]: "Latest acceptance:"
+                - text: No acceptance recorded
+          - generic [ref=e104]:
+            - generic [ref=e105]:
+              - heading "Progress updates" [level=2] [ref=e106]
+              - generic [ref=e107]:
+                - button "Write progress" [ref=e108]
+                - button "Record acceptance" [ref=e109]
+            - paragraph [ref=e110]: No progress updates yet
+      - dialog:
+        - generic:
+          - generic:
+            - heading [level=3]: Chat with your agents
+            - paragraph: Ask for a summary, plan your day, or hand off a quick task.
+        - generic:
+          - generic:
+            - img
+            - generic: You need an agent to start chatting.
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - textbox [disabled]:
+                    - paragraph: Create an agent to start chatting
+      - button "Ask Multica" [ref=e111]:
+        - img [ref=e112]
+  - region "Notifications alt+T"
+  - alert [ref=e114]
+  - dialog "Properties for Knowledge project 84150e8f-2" [ref=e116]:
+    - heading "Properties for Knowledge project 84150e8f-2" [level=2] [ref=e117]
+    - generic [ref=e118]:
+      - generic [ref=e119]:
+        - button "Change icon" [ref=e120] [cursor=pointer]:
+          - img [ref=e122]
+        - textbox "Project title" [ref=e127]:
+          - paragraph [ref=e128]: Knowledge project 84150e8f-2
+      - generic [ref=e129]:
+        - button "Properties" [expanded] [ref=e130]:
+          - text: Properties
+          - img [ref=e131]
+        - generic [ref=e133]:
+          - generic [ref=e134]:
+            - generic [ref=e135]: Status
+            - button "Planned" [ref=e137]:
+              - generic [ref=e139]: Planned
+          - generic [ref=e140]:
+            - generic [ref=e141]: Priority
+            - button "No priority" [ref=e143]:
+              - img [ref=e144]
+              - generic [ref=e145]: No priority
+          - generic [ref=e146]:
+            - generic [ref=e147]: Lead
+            - button "No lead" [ref=e149]:
+              - generic [ref=e150]: No lead
+          - generic [ref=e151]:
+            - generic [ref=e152]: Start date
+            - button "Start date" [ref=e154] [cursor=pointer]:
+              - img [ref=e155]
+              - generic [ref=e159]: Start date
+          - generic [ref=e160]:
+            - generic [ref=e161]: Due date
+            - button "Due date" [ref=e163] [cursor=pointer]:
+              - img [ref=e164]
+              - generic [ref=e166]: Due date
+      - generic [ref=e167]:
+        - button "Scope closure" [expanded] [ref=e168]:
+          - text: Scope closure
+          - img [ref=e169]
+        - generic [ref=e174]: 0/1
+      - generic [ref=e175]:
+        - button "Description" [expanded] [ref=e176]:
+          - text: Description
+          - img [ref=e177]
+        - generic [ref=e179]:
+          - generic [ref=e180]:
+            - textbox [ref=e183]:
+              - paragraph [ref=e184]: Human-maintained base context stays separate.
+            - button "Goal template" [ref=e185]
+          - paragraph [ref=e186]: Shared with agents as context for every task in this project.
+      - region "Managed contributions" [ref=e187]:
+        - generic [ref=e189]:
+          - heading "Managed contributions" [level=3] [ref=e190]
+          - paragraph [ref=e191]: Approved contributions are separate from the context you edit. Access and expiry are checked whenever they are used.
+        - list [ref=e192]:
+          - listitem [ref=e193]:
+            - button "Recover writes with the original request Version 1 Superseded" [ref=e194]:
+              - generic [ref=e195]:
+                - text: Recover writes with the original request
+                - generic [ref=e196]: Version 1
+              - generic [ref=e197]: Superseded
+          - listitem [ref=e198]:
+            - button "Corrected recovery decision Version 2 Approved" [pressed] [ref=e199]:
+              - generic [ref=e200]:
+                - text: Corrected recovery decision
+                - generic [ref=e201]: Version 2
+              - generic [ref=e202]: Approved
+        - region "Review candidate" [active] [ref=e203]:
+          - generic [ref=e204]:
+            - heading "Review candidate" [level=4] [ref=e205]
+            - button "Close review" [ref=e206]
+          - text: Approved
+          - generic [ref=e207]:
+            - generic [ref=e208]:
+              - term [ref=e209]: Version
+              - definition [ref=e210]: "2"
+            - generic [ref=e211]:
+              - term [ref=e212]: Destination
+              - definition [ref=e213]: Project · 06afcd56-0e0c-48aa-885d-c99b514c02e9
+            - generic [ref=e214]:
+              - term [ref=e215]: Proposed by
+              - definition [ref=e216]: 19d7f03d-19ac-451e-858b-7f00ef64401b
+            - generic [ref=e217]:
+              - term [ref=e218]: Proposed at
+              - definition [ref=e219]:
+                - time [ref=e220]: 11/1/2026, 7:43:07 AM
+            - generic [ref=e221]:
+              - term [ref=e222]: Approved by
+              - definition [ref=e223]: 19d7f03d-19ac-451e-858b-7f00ef64401b
+            - generic [ref=e224]:
+              - term [ref=e225]: Approved at
+              - definition [ref=e226]:
+                - time [ref=e227]: 11/1/2026, 7:43:08 AM
+            - generic [ref=e228]:
+              - term [ref=e229]: Expires at (optional)
+              - definition [ref=e230]: No automatic expiry
+          - link "Open source collaboration" [ref=e231] [cursor=pointer]:
+            - /url: /account?view=participating&issue=01a19458-61b5-7714-9557-9acc7e15957a
+          - paragraph [ref=e232]: Corrected recovery decision
+          - paragraph [ref=e234]: A confirmed original receipt closes recovery. A new intent requires a new request identity.
+          - generic [ref=e235]:
+            - heading "Sources" [level=5] [ref=e236]
+            - list [ref=e237]:
+              - listitem [ref=e238]:
+                - link "Shared context · Version 1" [ref=e239] [cursor=pointer]:
+                  - /url: /account?view=participating&issue=01a19458-61b5-7714-9557-9acc7e15957a#memory-v1
+                  - generic [ref=e240]: Shared context · Version 1
+          - generic [ref=e241]:
+            - generic [ref=e242]: Issues
+            - generic [ref=e243]: Collaborations
+          - group [ref=e244]:
+            - generic "Content SHA-256" [ref=e245] [cursor=pointer]
+          - generic [ref=e246]:
+            - generic [ref=e247]: Decision reason
+            - textbox "Decision reason" [ref=e248]
+            - generic [ref=e249]:
+              - button "Withdraw contribution" [disabled]
+          - group [ref=e250]:
+            - generic "Version history" [ref=e251] [cursor=pointer]
+      - generic [ref=e252]:
+        - button "Resources" [ref=e253]:
+          - text: Resources
+          - img [ref=e254]
+        - generic [ref=e256]:
+          - paragraph [ref=e257]: No resources attached.
+          - button "Add resource" [ref=e258]:
+            - img
+            - text: Add resource
+      - generic [ref=e259]:
+        - button "Automations" [expanded] [ref=e260]:
+          - text: Automations
+          - img [ref=e261]
+        - generic [ref=e263]:
+          - paragraph [ref=e264]: No automations for this project yet.
+          - link "Add automation" [ref=e265] [cursor=pointer]:
+            - /url: /knowledge-84150e8f-2/autopilots/new/template?project_id=06afcd56-0e0c-48aa-885d-c99b514c02e9
+            - img [ref=e266]
+            - text: Add automation
+```

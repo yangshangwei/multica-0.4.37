@@ -1,0 +1,31 @@
+{
+  "at": "2026-11-01T00:57:19.263298+00:00",
+  "failure": "rest TestNoDirectGetAgentRuntimeCalls: six direct queries bypassed collector",
+  "correction": "Reuse transaction-bound service RuntimeLookup; preserve row/error/lock/query identity; receiver supplies collector",
+  "files": [
+    {
+      "path": "server/internal/service/collaboration_knowledge_resolve.go",
+      "before": "bab8862cb7cf0f7d0fce0f872c738fb8c58d9d5b103f0bff722d554ba7595709",
+      "after": "5d4d7f586e102edfa8970e9c3399b12f073fd01f008e7aa4691c2adf296890d0"
+    },
+    {
+      "path": "server/internal/service/task_knowledge.go",
+      "before": "fe8297ceb337d64d252fd3e13ae200a4cee0af86c5932882b04528ebe1b81802",
+      "after": "202525796855ce28dd9b0967a0e1d1655b7e53c1d7e1402bc8d3adec767664a1"
+    },
+    {
+      "path": "server/internal/service/task_knowledge_prepare.go",
+      "before": "5604333902b19df2608d1dcfc8f94584ee1295904c1a5dd5b344417f9577e667",
+      "after": "6799bf6cc6c63aa587e1e815da592eaba0c8cd9807229e01de925bd9edfe116b"
+    },
+    {
+      "path": "server/internal/service/task_knowledge_observe.go",
+      "before": "f7668b3c4d2da3671a7160e2517fa84b612c35eb9a41a9427243b2db2c27a8de",
+      "after": "3b7c77ec4823ccd30a73189c0d9fbf1b1c2ba7b2c19b49ed6bc6e5630460ebf4"
+    }
+  ],
+  "green_exit_code": 0,
+  "green": "runtime-lookup-green.jsonl",
+  "affected_packages": "runtime-lookup-affected-packages.json",
+  "independent_review": "../../final-acceptance-review-2026-11-01.md"
+}

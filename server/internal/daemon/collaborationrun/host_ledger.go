@@ -57,6 +57,9 @@ func validateHostLedgerRecord(r ledgerRecord) error {
 			Containment: protocol.CollaborationContainmentHostProcessSupervision, DeploymentID: r.Identity.DeploymentID,
 			InstallationID: r.Identity.InstallationID, RuntimeID: claim.HostContext.RuntimeID,
 			PreparationVersion: protocol.CollaborationHostPreparationVersion, CapabilityDigest: h.CapabilityDigest}
+		if claim.KnowledgeContext != nil {
+			request.KnowledgeVersion = 1
+		}
 		if validateClaimResponse(claim, r.Identity.RunID, request) != nil {
 			return ErrUnconfirmed
 		}

@@ -130,6 +130,40 @@ Configuration writers persist invalidation. Shared skill body, supporting-file
 and release changes invalidate enabled bindings and require fresh owner consent;
 identical bundles and presentation-only changes preserve consent.
 
+## Managed knowledge
+
+Humans can propose a source-bound conclusion from the collaboration detail's
+knowledge panel, selecting exact shared-context versions, comments or run
+records. A current creator or handler with source Read may propose; an external
+handler may use the source workspace or its already-visible current project
+without browsing a new directory. A human target project lead or workspace
+owner/admin must also retain source Read to approve the exact displayed version.
+
+Agents may draft a conclusion, list exact source references and describe what
+was actually verified through their existing authorized work. Leave proposal,
+approval and target publication to the human product controls. There is no
+knowledge CLI command. Agent credentials cannot borrow a human identity for these
+APIs, auto-approve a proposal, or write a skill as a consequence of this workflow.
+
+Managed contributions appear separately from the human project description or
+workspace context. Correction creates a new reviewed version; the old approved
+version remains until replacement is approved. A workspace derivation is a
+separate proposal. Withdrawal and expiry prevent future use; source purge/access
+loss suppresses unavailable text. Target management alone may permit withdrawal
+without exposing the private source.
+
+Approval is not execution authority. Private consumption remains off by default
+and currently supports only the built-in local Claude runtime. The server checks
+current source access, actual input authors/runtime owner and output audience
+again before disclosure and each physical launch. Supplied knowledge is attributed
+source data, not a replacement assignment. A refused launch does not authorize a
+fresh retry, another account or copying the body into base files. Existing
+business-token, Stop and termination/proof recovery rules still apply.
+
+After an uncertain human action, preserve its original request identity and use
+the product's result-recovery controls. A reload checks the original result; it
+does not automatically resubmit or recreate the private payload.
+
 ## Commands inside an admitted run
 
 Both supported execution modes supply five identity variables:

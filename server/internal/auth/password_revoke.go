@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -25,6 +26,16 @@ func RevokePasswordCredentials(ctx context.Context, tx pgx.Tx, userID pgtype.UUI
 	}
 	q := db.New(tx)
 	if _, err := q.InvalidateCollaborationAccount(ctx, db.InvalidateCollaborationAccountParams{UserID: userID, RevocationKey: revocationKey}); err != nil {
+		return result, err
+	}
+	// The existing account invalidation has a composite identity, not a UUID.
+	// Preserve it deterministically without waiting for per-issue reconciliation.
+	// Users without an account fence may still have read through membership.
+	cause := uuid.NewSHA1(uuid.UUID(userID.Bytes), []byte("collaboration-knowledge:password:"+revocationKey))
+	if _, err := q.EnqueueKnowledgeScan(ctx, db.EnqueueKnowledgeScanParams{
+		ID:      pgtype.UUID{Bytes: uuid.NewSHA1(cause, []byte("collaboration-knowledge:scan")), Valid: true},
+		CauseID: pgtype.UUID{Bytes: cause, Valid: true}, ScopeKind: pgtype.Text{String: "all_sources", Valid: true},
+	}); err != nil {
 		return result, err
 	}
 	for _, statement := range []string{

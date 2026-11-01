@@ -20,6 +20,9 @@ type AuthenticatedPrincipal struct {
 	// AgentActor is a deny-only legacy request hint. It is not proof of an
 	// agent identity and must never grant machine or human authority.
 	AgentActor bool
+	// PATTokenHash identifies the original verified credential for consumers
+	// that require an uncached revocation check. It is never a response field.
+	PATTokenHash string `json:"-"`
 }
 
 type authenticatedPrincipalKey struct{}

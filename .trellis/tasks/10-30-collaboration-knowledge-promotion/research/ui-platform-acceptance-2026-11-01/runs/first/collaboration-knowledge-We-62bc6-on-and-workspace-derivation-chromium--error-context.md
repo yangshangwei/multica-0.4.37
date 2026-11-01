@@ -1,0 +1,317 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation "Application navigation" [ref=e4]:
+        - button "Workspaces" [ref=e5]
+        - button "Collaboration" [ref=e6]
+        - button "Create workspace" [ref=e8]
+    - main [ref=e10]:
+      - generic [ref=e11]:
+        - heading "Collaboration" [level=1] [ref=e12]
+        - navigation "Collaboration" [ref=e13]:
+          - link "Current handling" [ref=e14] [cursor=pointer]:
+            - /url: /account?view=current&issue=01a19432-6cda-7ce0-a21d-8d1bb2477b25
+          - link "Participating" [ref=e15] [cursor=pointer]:
+            - /url: /account?view=participating&issue=01a19432-6cda-7ce0-a21d-8d1bb2477b25
+        - button "New collaboration issue" [ref=e16]
+        - button "Notifications 2 unread" [ref=e18]:
+          - text: Notifications
+          - generic [ref=e19]: 2 unread
+      - generic [ref=e20]:
+        - region "Collaboration issues" [ref=e21]:
+          - generic [ref=e22]:
+            - textbox "Search loaded issues" [ref=e23]
+            - generic [ref=e24]:
+              - generic [ref=e25]: 1 issues
+              - combobox "Sort" [ref=e26]:
+                - option "Recently updated" [selected]
+                - option "Title"
+          - list [ref=e28]:
+            - listitem [ref=e29]:
+              - link "Knowledge review 1cc308ee-2 Knowledge source workspace Todo External knowledge handler · External collaborator" [ref=e30] [cursor=pointer]:
+                - /url: /account?view=participating&issue=01a19432-6cda-7ce0-a21d-8d1bb2477b25
+                - generic [ref=e31]: Knowledge review 1cc308ee-2
+                - generic [ref=e32]:
+                  - generic [ref=e33]: Knowledge source workspace
+                  - generic [ref=e34]: Todo
+                - generic [ref=e35]:
+                  - text: External knowledge handler
+                  - generic [ref=e36]: · External collaborator
+        - region "Issue detail" [ref=e37]:
+          - generic [ref=e38]:
+            - generic [ref=e39]:
+              - generic [ref=e40]:
+                - heading "Knowledge review 1cc308ee-2" [level=2] [ref=e41]
+                - button "Copy link" [ref=e42]:
+                  - img
+                  - text: Copy link
+              - generic [ref=e43]:
+                - generic [ref=e44]:
+                  - term [ref=e45]: Status
+                  - definition [ref=e46]: Todo
+                - generic [ref=e47]:
+                  - term [ref=e48]: Handler
+                  - definition [ref=e49]: External knowledge handlerExternal collaborator
+                - generic [ref=e50]:
+                  - term [ref=e51]: Creator
+                  - definition [ref=e52]: Knowledge source owner
+                - generic [ref=e53]:
+                  - term [ref=e54]: Source workspace
+                  - definition [ref=e55]: Knowledge source workspace
+            - region "Issue actions" [ref=e56]:
+              - generic [ref=e57]:
+                - button "Add participant" [ref=e58]
+                - button "Transfer" [ref=e59]
+                - button "Request information" [ref=e60]
+                - button "Submit for acceptance" [ref=e61]
+                - button "Change status" [ref=e62]
+                - button "Edit issue" [ref=e63]
+              - button "Participants" [ref=e65]
+            - generic [ref=e66]:
+              - heading "Description" [level=3] [ref=e67]
+              - paragraph [ref=e69]: Synthetic source for independently approved, traceable knowledge.
+            - region "Issue fields" [ref=e70]:
+              - generic [ref=e71]:
+                - generic [ref=e72]:
+                  - term [ref=e73]: Priority
+                  - definition [ref=e74]: No priority
+                - generic [ref=e75]:
+                  - term [ref=e76]: Start date
+                  - definition [ref=e77]: None
+                - generic [ref=e78]:
+                  - term [ref=e79]: Due date
+                  - definition [ref=e80]: None
+                - generic [ref=e81]:
+                  - term [ref=e82]: Labels
+                  - definition [ref=e83]: None
+                - generic [ref=e84]:
+                  - term [ref=e85]: Project
+                  - definition [ref=e86]: Knowledge project 1cc308ee-2
+                - generic [ref=e87]:
+                  - term [ref=e88]: Parent issue
+                  - definition [ref=e89]: None
+                - generic [ref=e90]:
+                  - term [ref=e91]: Stage under parent
+                  - definition [ref=e92]: None
+                - generic [ref=e93]:
+                  - term [ref=e94]: Iteration
+                  - definition [ref=e95]: None
+            - region "Sub-issues" [ref=e96]:
+              - heading "Sub-issues" [level=3] [ref=e97]
+              - paragraph [ref=e98]: No sub-issues.
+            - region "Issue reactions" [ref=e99]:
+              - group "Thread and reactions" [ref=e101]:
+                - button "Choose a reaction" [ref=e102]:
+                  - img [ref=e103]
+            - region "Attachments" [ref=e106]:
+              - heading "Attachments" [level=3] [ref=e107]
+              - paragraph [ref=e108]: Delivered files remain on this issue when a comment or its file reference is removed.
+              - paragraph [ref=e109]: No files delivered yet.
+              - group [ref=e110]:
+                - generic "Attach files" [ref=e111] [cursor=pointer]
+            - region "AI execution" [ref=e112]:
+              - heading "AI execution" [level=3] [ref=e113]
+              - paragraph [ref=e114]: New AI execution is disabled.
+              - paragraph [ref=e115]: Stopping or resuming a target affects every target in its execution lane.
+              - paragraph [ref=e116]: Paused
+              - generic [ref=e117]:
+                - button "Stop all" [ref=e118]
+                - button "Resume all" [ref=e119]
+              - button "Manage AI resources" [ref=e121]
+              - heading "Command history" [level=4] [ref=e123]:
+                - button "Command history" [ref=e124]
+            - region "Shared context" [ref=e125]:
+              - generic [ref=e126]:
+                - heading "Shared context" [level=3] [ref=e127]
+                - paragraph [ref=e128]: The current state of this issue, kept up to date by agents across machines and accounts. Participants who can control AI may correct it.
+              - generic [ref=e129]:
+                - paragraph [ref=e130]: v1 · 75 of 131072 bytes
+                - button "Edit shared context" [ref=e131]
+              - generic [ref=e132]:
+                - paragraph [ref=e135]: "Shared decision: a repeated request must not publish a second contribution."
+                - button "Show full shared context" [ref=e136]
+              - generic [ref=e137]:
+                - generic [ref=e138]:
+                  - term [ref=e139]: Written by
+                  - definition [ref=e140]: Knowledge source owner
+                - generic [ref=e141]:
+                  - term [ref=e142]: Saved
+                  - definition [ref=e143]:
+                    - time [ref=e144]: 11/1/2026, 7:01:35 AM
+              - button "Version history" [ref=e146]
+            - region "Knowledge candidates" [ref=e147]:
+              - generic [ref=e148]:
+                - generic [ref=e149]:
+                  - heading "Knowledge candidates" [level=3] [ref=e150]
+                  - paragraph [ref=e151]: Propose a reusable conclusion with sources. Human approval controls where it may be used.
+                - button "Propose knowledge" [ref=e152]
+              - status [ref=e153]: Candidate proposed. It is not active until approved.
+              - list [ref=e154]:
+                - listitem [ref=e155]:
+                  - button "Recover writes with the original request Version 1 Superseded" [pressed] [ref=e156]:
+                    - generic [ref=e157]:
+                      - text: Recover writes with the original request
+                      - generic [ref=e158]: Version 1
+                    - generic [ref=e159]: Superseded
+                - listitem [ref=e160]:
+                  - button "Corrected recovery decision Version 2 Approved" [ref=e161]:
+                    - generic [ref=e162]:
+                      - text: Corrected recovery decision
+                      - generic [ref=e163]: Version 2
+                    - generic [ref=e164]: Approved
+                - listitem [ref=e165]:
+                  - button "Workspace recovery guidance Version 1 Pending" [ref=e166]:
+                    - generic [ref=e167]:
+                      - text: Workspace recovery guidance
+                      - generic [ref=e168]: Version 1
+                    - generic [ref=e169]: Pending
+              - region "Review candidate" [active] [ref=e170]:
+                - generic [ref=e171]:
+                  - heading "Review candidate" [level=4] [ref=e172]
+                  - button "Close review" [ref=e173]
+                - text: Superseded
+                - generic [ref=e174]:
+                  - generic [ref=e175]:
+                    - term [ref=e176]: Version
+                    - definition [ref=e177]: "1"
+                  - generic [ref=e178]:
+                    - term [ref=e179]: Destination
+                    - definition [ref=e180]: Project · Knowledge project 1cc308ee-2
+                  - generic [ref=e181]:
+                    - term [ref=e182]: Proposed by
+                    - definition [ref=e183]: External knowledge handler
+                  - generic [ref=e184]:
+                    - term [ref=e185]: Proposed at
+                    - definition [ref=e186]:
+                      - time [ref=e187]: 11/1/2026, 7:01:37 AM
+                  - generic [ref=e188]:
+                    - term [ref=e189]: Approved by
+                    - definition [ref=e190]: Knowledge source owner
+                  - generic [ref=e191]:
+                    - term [ref=e192]: Approved at
+                    - definition [ref=e193]:
+                      - time [ref=e194]: 11/1/2026, 7:01:38 AM
+                  - generic [ref=e195]:
+                    - term [ref=e196]: Latest decision by
+                    - definition [ref=e197]: Knowledge source owner
+                  - generic [ref=e198]:
+                    - term [ref=e199]: Latest decision at
+                    - definition [ref=e200]:
+                      - time [ref=e201]: 11/1/2026, 7:01:39 AM
+                  - generic [ref=e202]:
+                    - term [ref=e203]: Expires at (optional)
+                    - definition [ref=e204]: No automatic expiry
+                - paragraph [ref=e205]: Recover writes with the original request
+                - generic [ref=e206]:
+                  - paragraph [ref=e207]: Use the original request identity when recovering an uncertain write.
+                  - paragraph [ref=e208]: Keep immutable versions and review the exact source before publication. Keep immutable versions and review the exact source before publication. Keep immutable versions and review the exact source before publication. Keep immutable versions and review the exact source before publication. Keep immutable versions and review the exact source before publication. Keep immutable versions and review the exact source before publication. Keep immutable versions and review the exact source before publication. Keep immutable versions and review the exact source before publication. Keep immutable versions and review the exact source before publication. Keep immutable versions and review the exact source before publication. Keep immutable versions and review the exact source before publication. Keep immutable versions and review the exact source before publication. Keep immutable versions and review the exact source before publication. Keep immutable versions and review the exact source before publication. Keep immutable versions and review the exact source before publication. Keep immutable versions and review the exact source before publication. Keep immutable versions and review the exact source before publication. Keep immutable versions and review the exact source before publication.
+                  - paragraph [ref=e209]: "Long identifier: original_request_identity_original_request_identity_original_request_identity_original_request_identity_original_request_identity_original_request_identity_original_request_identity_original_request_identity_original_request_identity_original_request_identity_original_request_identity_original_request_identity_original_request_identity_original_request_identity_original_request_identity_original_request_identity_original_request_identity_original_request_identity_"
+                - generic [ref=e210]:
+                  - heading "Sources" [level=5] [ref=e211]
+                  - list [ref=e212]:
+                    - listitem [ref=e213]:
+                      - link "Comment · f023a3cd · Version 1" [ref=e214] [cursor=pointer]:
+                        - /url: /account?view=participating&issue=01a19432-6cda-7ce0-a21d-8d1bb2477b25#comment-f023a3cd-a5f5-4e8b-85c4-473c393d13e9
+                        - generic [ref=e215]: Comment · f023a3cd · Version 1
+                - generic [ref=e216]:
+                  - generic [ref=e217]: Issues
+                  - generic [ref=e218]: Collaborations
+                - generic [ref=e219]:
+                  - heading "Verification claim" [level=5] [ref=e220]
+                  - list [ref=e221]:
+                    - listitem [ref=e222]:
+                      - generic [ref=e223]: Test result · Observed
+                      - text: · Observed one candidate after replaying the original request in an isolated fixture.
+                - group [ref=e224]:
+                  - generic "Content SHA-256" [ref=e225] [cursor=pointer]
+                - button "Propose correction" [ref=e227]
+                - group [ref=e228]:
+                  - generic "Version history" [ref=e229] [cursor=pointer]
+            - region "Activity" [ref=e230]:
+              - heading "Activity" [level=3] [ref=e231]
+              - list [ref=e232]:
+                - listitem [ref=e233]:
+                  - generic [ref=e234]:
+                    - generic [ref=e235]: Activity recorded
+                    - generic [ref=e236]: Knowledge source owner
+                    - time [ref=e237]: 11/1/2026, 7:01:40 AM
+                  - paragraph [ref=e238]: Detailed records are unavailable for this event.
+                - listitem [ref=e239]:
+                  - generic [ref=e240]:
+                    - generic [ref=e241]: Activity recorded
+                    - generic [ref=e242]: Knowledge source owner
+                    - time [ref=e243]: 11/1/2026, 7:01:39 AM
+                  - paragraph [ref=e244]: Detailed records are unavailable for this event.
+                - listitem [ref=e245]:
+                  - generic [ref=e246]:
+                    - generic [ref=e247]: Activity recorded
+                    - generic [ref=e248]: Knowledge source owner
+                    - time [ref=e249]: 11/1/2026, 7:01:39 AM
+                  - paragraph [ref=e250]: Detailed records are unavailable for this event.
+                - listitem [ref=e251]:
+                  - generic [ref=e252]:
+                    - generic [ref=e253]: Activity recorded
+                    - generic [ref=e254]: Knowledge source owner
+                    - time [ref=e255]: 11/1/2026, 7:01:38 AM
+                  - paragraph [ref=e256]: Detailed records are unavailable for this event.
+                - listitem [ref=e257]:
+                  - generic [ref=e258]:
+                    - generic [ref=e259]: Activity recorded
+                    - generic [ref=e260]: External knowledge handler
+                    - time [ref=e261]: 11/1/2026, 7:01:37 AM
+                  - paragraph [ref=e262]: Detailed records are unavailable for this event.
+                - listitem [ref=e263]:
+                  - generic [ref=e264]:
+                    - generic [ref=e265]: Comment added
+                    - generic [ref=e266]: Knowledge source owner
+                    - time [ref=e267]: 11/1/2026, 7:01:35 AM
+                  - link "Open comment" [ref=e268] [cursor=pointer]:
+                    - /url: /account?view=participating&issue=01a19432-6cda-7ce0-a21d-8d1bb2477b25#comment-f023a3cd-a5f5-4e8b-85c4-473c393d13e9
+                - listitem [ref=e269]:
+                  - generic [ref=e270]:
+                    - generic [ref=e271]: Issue created
+                    - generic [ref=e272]: Knowledge source owner
+                    - time [ref=e273]: 11/1/2026, 7:01:35 AM
+            - generic [ref=e274]:
+              - heading "Comments" [level=3] [ref=e275]
+              - paragraph [ref=e276]: Loaded 1 of 1 comments
+              - list [ref=e277]:
+                - listitem [ref=e278]:
+                  - generic [ref=e279]:
+                    - generic [ref=e281]: K
+                    - generic [ref=e282]: Knowledge source owner
+                    - generic [ref=e283]: Creator
+                    - generic [ref=e284]: Author can submit AI instructions now
+                    - time [ref=e285]: 11/1/2026, 7:01:35 AM
+                  - paragraph [ref=e287]: "Observed result: repeated delivery must preserve the original request identity."
+                  - button "Reply" [ref=e289]
+                  - group "Thread and reactions" [ref=e291]:
+                    - button "Resolve thread" [ref=e292]
+                    - button "Choose a reaction" [ref=e293]:
+                      - img [ref=e294]
+                  - button "Comment history" [ref=e298]
+              - form "Comments" [ref=e299]:
+                - generic [ref=e300]: Add comment
+                - textbox "Add comment" [ref=e301]:
+                  - /placeholder: Write a comment...
+                - group "Issue participants and AI targets" [ref=e302]:
+                  - group "People" [ref=e303]:
+                    - paragraph [ref=e304]: People
+                    - generic [ref=e305]:
+                      - button "@all · All participants" [ref=e306]
+                      - button "Knowledge source owner" [ref=e307]
+                      - button "External knowledge handler" [ref=e308]
+                - group "Attachments" [ref=e309]:
+                  - generic [ref=e310]: Attachments
+                  - paragraph [ref=e311]: Files stay private. Only selected files are shared when you submit.
+                  - generic [ref=e312]: Attach files
+                  - button "Attach files" [ref=e313]
+                - generic [ref=e314]:
+                  - button "Preview delivery" [disabled]
+                  - button "Send comment" [disabled]
+  - region "Notifications alt+T"
+  - alert [ref=e315]
+```

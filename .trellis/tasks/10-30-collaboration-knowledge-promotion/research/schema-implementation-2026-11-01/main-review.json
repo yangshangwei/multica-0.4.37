@@ -1,0 +1,18 @@
+{
+  "reviewed_at": "2026-10-31T20:14:06.174360+00:00",
+  "scope": "A1 schema/protocol/pure policy/query foundation only",
+  "result": "passed",
+  "source_hashes_verified": 47,
+  "independent_review": "../foundation-review-2026-11-01.md",
+  "main_review": [
+    "Candidate immutable source/target/text/approval and guarded transitions; independent counters and content-free jobs",
+    "No new foreign keys/cascades/inline auto-index constraints; concurrent indexes registered in migration cleanup",
+    "Required-field/canonical JSON, decoded material versus wire budgets, new-write expiry after original receipt lookup",
+    "Extra Participant restriction removed under regression; no-read source manager denied; unavailable/expired pending rejection remains content-free",
+    "Generated SQL drift and retained migration/Go evidence inspected"
+  ],
+  "limits": [
+    "No human HTTP or service producer, invalidation worker, ordinary/task injection, UI or Provider acceptance in A1",
+    "Independent review reported B1 findings; those are not included in this A1 commit"
+  ]
+}

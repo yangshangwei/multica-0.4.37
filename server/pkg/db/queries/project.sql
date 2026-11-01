@@ -9,6 +9,13 @@ ORDER BY created_at DESC;
 SELECT * FROM project
 WHERE id = $1 AND workspace_id = $2;
 
+-- name: LockProjectForUpdate :one
+-- Metadata edits serialize revisions and conflict with authority SHARE readers,
+-- while remaining compatible with KEY SHARE readers of parent existence.
+SELECT * FROM project
+WHERE id = $1 AND workspace_id = $2
+FOR NO KEY UPDATE;
+
 -- name: LockProjectForExecutionSquad :one
 -- Shares the exclusive project lock with deletion. The selection revision is
 -- compared under this lock before any template resources are materialized.

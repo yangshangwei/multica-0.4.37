@@ -257,7 +257,7 @@ func TestLegacyExecutionFinalizeCannotMintCollaborationCredentials(t *testing.T)
 			expires := pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}
 			_, err = f.svc.FinalizeTaskClaim(t.Context(), task, db.CreateTaskTokenParams{
 				TokenHash: hash, TaskID: task.ID, AgentID: f.agent, WorkspaceID: util.MustParseUUID(f.fx.WorkspaceID), UserID: util.MustParseUUID(f.fx.UserID), ExpiresAt: expires,
-			}, nil, false, db.CreateDaemonTokenParams{TokenHash: hash + "-daemon", WorkspaceID: util.MustParseUUID(f.fx.WorkspaceID), DaemonID: "boundary-fake-daemon", UserID: util.MustParseUUID(f.fx.UserID), ExpiresAt: expires})
+			}, nil, false, nil, db.CreateDaemonTokenParams{TokenHash: hash + "-daemon", WorkspaceID: util.MustParseUUID(f.fx.WorkspaceID), DaemonID: "boundary-fake-daemon", UserID: util.MustParseUUID(f.fx.UserID), ExpiresAt: expires})
 			allowed := kind == "ordinary" || kind == "ordinary_child" || kind == "late_ordinary_comment"
 			if (err == nil) != allowed {
 				t.Errorf("claim finalization allowed=%v err=%v", allowed, err)
@@ -412,7 +412,7 @@ func TestLegacyExecutionUnrelatedChatAndQuickCreateStillStart(t *testing.T) {
 			_, err = f.svc.FinalizeTaskClaim(t.Context(), *task, db.CreateTaskTokenParams{
 				TokenHash: hash, TaskID: task.ID, AgentID: f.agent, WorkspaceID: util.MustParseUUID(f.fx.WorkspaceID), UserID: actor,
 				ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true},
-			}, nil, false)
+			}, nil, false, nil)
 			if err != nil {
 				t.Fatalf("ordinary %s claim could not finalize: %v", kind, err)
 			}

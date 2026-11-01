@@ -72,9 +72,14 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
 			if auth.PasswordMode() {
 				if s, ok := passwordAuthenticate(w, r, queries); ok {
 					r = r.WithContext(auth.WithPasswordSession(r.Context(), s))
-					r = withAuthenticatedRequestPrincipal(r, auth.AuthenticatedPrincipal{
+					principal := auth.AuthenticatedPrincipal{
 						UserID: s.UserID, Kind: auth.CredentialKind(s.Kind), Restricted: s.Setup || s.Change,
-					})
+					}
+					if s.Kind == "pat" {
+						token, _ := extractToken(r)
+						principal.PATTokenHash = auth.HashToken(token)
+					}
+					r = withAuthenticatedRequestPrincipal(r, principal)
 					next.ServeHTTP(w, r)
 				}
 				return
@@ -209,7 +214,7 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
 						return
 					}
 					r.Header.Set("X-User-ID", userID)
-					r = withAuthenticatedRequestPrincipal(r, auth.AuthenticatedPrincipal{UserID: userID, Kind: auth.CredentialPAT})
+					r = withAuthenticatedRequestPrincipal(r, auth.AuthenticatedPrincipal{UserID: userID, Kind: auth.CredentialPAT, PATTokenHash: hash})
 					next.ServeHTTP(w, r)
 					return
 				}
@@ -245,7 +250,7 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
 				// within the TTL window skip this write entirely.
 				go queries.UpdatePersonalAccessTokenLastUsed(context.Background(), pat.ID)
 
-				r = withAuthenticatedRequestPrincipal(r, auth.AuthenticatedPrincipal{UserID: userID, Kind: auth.CredentialPAT})
+				r = withAuthenticatedRequestPrincipal(r, auth.AuthenticatedPrincipal{UserID: userID, Kind: auth.CredentialPAT, PATTokenHash: hash})
 				next.ServeHTTP(w, r)
 				return
 			}

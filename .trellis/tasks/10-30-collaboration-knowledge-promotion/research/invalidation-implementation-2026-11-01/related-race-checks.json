@@ -1,0 +1,107 @@
+[
+  {
+    "name": "service-related",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/service",
+      "-run",
+      "^(TestCollaboration(Memory|Workflow|Realtime|Comment|AccountInvalidation)|TestAdminCollaborationMemory)",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 34.165152072906494,
+    "database": "multica_knowledge_invalidation_20261101_849a1c21"
+  },
+  {
+    "name": "handler-related",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/handler",
+      "-run",
+      "^(TestDeleteMember_|TestLeaveWorkspace_|TestDeleteWorkspace_|TestDeviceLogin|TestJoinShareLink|TestRenewPAT_|TestProjectDelete)",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 12.182427167892456,
+    "database": "multica_knowledge_invalidation_20261101_849a1c21"
+  },
+  {
+    "name": "server-related",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./cmd/server",
+      "-run",
+      "^(TestCollaborationRealtime|TestCollaborationSourceMembership|TestScopeAuthorizer_)",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 6.0114240646362305,
+    "database": "multica_knowledge_invalidation_20261101_849a1c21"
+  },
+  {
+    "name": "service-race",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "./internal/service",
+      "-run",
+      "^(TestKnowledgePendingChangesDoNotSignalTarget|TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks|TestKnowledgeFanoutNeverWaitsOnSourceWriter|TestKnowledgeSourceDeletionRetainsInvalidationRouting|TestKnowledgeDeletedTargetIsNotRecreatedByPendingFanout|TestKnowledgeFanoutCrashAndReplayPreserveCursorAndRevision|TestKnowledgeTargetHintRelayFailureRetainsStableID|TestKnowledgeTargetHintHasOnlyPublicTargetFields|TestKnowledgeAuthorityChangesFanOutWithoutCurrentMembershipJoin|TestKnowledgeMissingCounterDoesNotReportEmptySuccess|TestKnowledgeWorkspaceAuthorizationRequiresCurrentMembership|TestKnowledgeBusyTargetYieldsToOtherScans|TestKnowledgeScanBoundaryAndConcurrentApprovalHaveIndependentHints|TestKnowledgeSourceMutationRollsBackWhenScanAppendFails|TestKnowledgeCommentEditRetainsSourceUntilDelete|TestKnowledgeInvalidationRunSchedulesScannerAndDrainer|TestKnowledgeAdministrativeDisableAppendsBeforeReconciliation)$",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 25.076699018478394,
+    "database": "multica_knowledge_invalidation_20261101_849a1c21"
+  },
+  {
+    "name": "handler-race",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "./internal/handler",
+      "-run",
+      "^(TestKnowledgeMemberRoleAndRemovalAppendInAuthoritativeTransaction|TestKnowledgePATRevocationRetainsOriginalCauseAndRollsBackOnAppendFailure|TestKnowledgeProjectDeletionRetainsFinalHintAndPendingRouting|TestKnowledgeWorkspaceDeletionRetainsEveryTargetHint|TestKnowledgeMemberRemovalFansOutHistoricalTargetsOutsideSource|TestKnowledgeMembershipGrantsAppendOnlyWithCommittedMembership|TestKnowledgeDeviceJoinInvalidatesExistingWorkspaceOnly)$",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 23.866126775741577,
+    "database": "multica_knowledge_invalidation_20261101_849a1c21"
+  },
+  {
+    "name": "realtime-race",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "./internal/realtime",
+      "-run",
+      "^(TestKnowledgeQueuedTargetHintReauthorizesAtPhysicalSend|TestKnowledgeOutboundPredicateRejectsPrivateFieldsAndWrongRoom)$",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.3381192684173584,
+    "database": "multica_knowledge_invalidation_20261101_849a1c21"
+  }
+]

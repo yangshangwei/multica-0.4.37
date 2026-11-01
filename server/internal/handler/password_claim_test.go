@@ -34,7 +34,7 @@ func TestPasswordBlockedTaskAndDaemonMintRejectsReset(t *testing.T) {
 	daemon := db.CreateDaemonTokenParams{TokenHash: "daemon-before-" + taskID, WorkspaceID: parseUUID(testWorkspaceID), DaemonID: "password-claim-fence", ExpiresAt: token.ExpiresAt}
 	// The same production finalizer first proves the valid source can mint both
 	// credentials and that the daemon issuer is fixed to the runtime owner.
-	if _, err = testHandler.TaskService.FinalizeTaskClaim(source, task, token, nil, false, daemon); err != nil {
+	if _, err = testHandler.TaskService.FinalizeTaskClaim(source, task, token, nil, false, nil, daemon); err != nil {
 		t.Fatal(err)
 	}
 	var versions bool
@@ -59,7 +59,7 @@ func TestPasswordBlockedTaskAndDaemonMintRejectsReset(t *testing.T) {
 	daemon.TokenHash = "daemon-blocked-" + taskID
 	finished := make(chan error, 1)
 	go func() {
-		_, err := testHandler.TaskService.FinalizeTaskClaim(source, task, token, nil, false, daemon)
+		_, err := testHandler.TaskService.FinalizeTaskClaim(source, task, token, nil, false, nil, daemon)
 		finished <- err
 	}()
 	for {

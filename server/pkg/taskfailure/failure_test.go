@@ -118,8 +118,8 @@ func TestAllReasonsContents(t *testing.T) {
 	t.Parallel()
 
 	got := AllReasons()
-	if len(got) != 25 {
-		t.Fatalf("AllReasons() returned %d entries, want 25", len(got))
+	if len(got) != 30 {
+		t.Fatalf("AllReasons() returned %d entries, want 30", len(got))
 	}
 
 	seen := make(map[Reason]bool, len(got))
@@ -136,8 +136,8 @@ func TestAllReasonsContents(t *testing.T) {
 		}
 	}
 
-	if platformCount != 11 {
-		t.Errorf("AllReasons(): platform-side count = %d, want 11", platformCount)
+	if platformCount != 16 {
+		t.Errorf("AllReasons(): platform-side count = %d, want 16", platformCount)
 	}
 	if agentCount != 14 {
 		t.Errorf("AllReasons(): agent-side count = %d, want 14", agentCount)
@@ -148,6 +148,8 @@ func TestAllReasonsContents(t *testing.T) {
 	// someone adds a constant but forgets to register it in the
 	// allReasons slice.
 	required := []Reason{
+		ReasonKnowledgeContextChanged, ReasonKnowledgeAuthorizationDenied,
+		ReasonKnowledgeUnavailable, ReasonKnowledgeBusy, ReasonKnowledgeInvocationUnsupported,
 		ReasonQueuedExpired, ReasonRuntimeOffline, ReasonRuntimeReconnectTimeout,
 		ReasonRuntimeRecovery,
 		ReasonTimeout, ReasonIterationLimit, ReasonAgentBlocked,

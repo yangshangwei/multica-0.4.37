@@ -17,6 +17,21 @@ Both entry points require nonblank `DATABASE_URL` before creating a pool, runnin
 
 An explicit URL is not proof of ownership. The caller must select its recorded test database, keep credentials in the private environment file, and serialize service/handler/router suites that share a database. Browser fixtures use their own database. Different workspace IDs do not isolate singleton gates or package-global fixture cleanup.
 
+Run each complete database suite against a newly created, migrated task database.
+Knowledge candidate and invalidation history is deliberately retained: repeated
+full runs can multiply `all_sources` scan work beyond a test's fixed drain budget.
+Keep a failed database for diagnosis; create another empty owned database without
+cloning its rows. Do not delete protected history or increase product limits to
+make a repeat green. Dedicated Redis must likewise have one test owner at a time.
+
+Fixtures creating a second collaboration source must register exact-source
+transient collaboration cleanup before ordinary issue/workspace teardown. A bare
+workspace DELETE does not clean soft collaboration relationships. Preserve
+knowledge candidate/invalidation history; remove test-owned pending ordinary
+collaboration events with their source rows so a later global dispatcher cannot
+select a missing issue. Cleanup is test infrastructure, not a production delete
+or retention policy.
+
 ## 4. Validation and error matrix
 
 | Input / operation | Required result |
@@ -26,6 +41,8 @@ An explicit URL is not proof of ownership. The caller must select its recorded t
 | `-run '^$'` | Still executes `TestMain`; never use as a compile-only check |
 | `go build` / `go test -c` | Compiles without executing `TestMain` |
 | Explicit but unreachable database | Existing connection handling remains; exit status alone never proves tests ran |
+| Reused whole-suite database with retained history | Inspect queued work and immutable timestamps; preserve it and run final verification on a fresh owned database |
+| Secondary source fixture teardown | No pending ordinary event may reference a removed issue; protected knowledge history remains unchanged |
 
 ## 5. Good / base / bad cases
 
@@ -38,6 +55,13 @@ An explicit URL is not proof of ownership. The caller must select its recorded t
 `TestHandlerTestMainRequiresExplicitDatabase` and `TestRouterTestMainRequiresExplicitDatabase` execute newly guarded test binaries with absent and whitespace-only configuration. They require exit 2 and the expected configuration error, without initialization output.
 
 The child processes have a bounded context, a nonexistent socket, and forced `PGOPTIONS` with `default_transaction_read_only=on` and a statement timeout. Config-only pgx checks prove the read-only option survives an explicit URI; they do not connect. This also protects against a future reintroduced literal fallback. Parent suites still require a dedicated database.
+
+For secondary-source cleanup regressions, run
+`TestKnowledgePreparationSourceRevocationBothCommitOrders` and
+`TestKnowledgeServerFailureLogsUsePersistedState`, audit pending orphan events,
+then run existing collaboration memory/realtime dispatch tests in a second
+process against the same owned database. Retain the ordered red/green evidence
+and prove protected candidate/invalidation hashes were not changed by cleanup.
 
 ## 7. Wrong vs correct
 
@@ -55,3 +79,8 @@ go -C server test -c -o "$TASK_TEST_BINARY" ./internal/handler
 ```
 
 For an accidental execution, preserve command/time/environment evidence and perform only a bounded read-only audit. Current absence of reserved fixture rows cannot prove their previous contents were untouched; do not perform speculative cleanup or restoration.
+
+Wrong: silently reuse a prior full-suite database or let a second source's rows
+escape the fixture's cleanup scope. Correct: register every exact source fixture,
+use a fresh migrated database per complete run, and inspect original failed state
+before classifying a failure as environment-related.

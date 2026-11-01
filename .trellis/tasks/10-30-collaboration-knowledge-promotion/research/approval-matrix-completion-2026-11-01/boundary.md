@@ -1,0 +1,5 @@
+# Approval matrix completion boundary
+
+Acceptance audit A/B/C identified missing direct regression evidence, not product defects. Add only new service/handler final approval-matrix test files and this evidence directory. Cover actual human approval against authority/source/state/project-deletion writers, both reachable commit orderings, original-key recovery negatives, and deleted-source projections. Preserve independent approved history; do not invent cascades or force exact historical refs to latest.
+
+Use production service/handler entry points with commit gates and observed PostgreSQL wait chains; when an actual NOWAIT boundary refuses, observe SQLSTATE 55P03 plus bounded completion and replay the same uncommitted intent after the winner commits. Existing actors/fixtures and lock namespaces stay authoritative. New exclusive DB only. No production, shared old test, query/sqlc, runtime/daemon/logger, task status, commit or Provider work. Main owns separate C2 preparation/ordinary-writer checks and final broad gate. Report a reproduced contract issue before changing production or weakening assertions.

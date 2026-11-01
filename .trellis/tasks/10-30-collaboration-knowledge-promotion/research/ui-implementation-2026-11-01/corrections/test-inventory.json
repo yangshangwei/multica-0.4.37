@@ -1,0 +1,650 @@
+[
+  {
+    "package": "core",
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "routes every human read with the source-independent scope and exact pagination",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "serializes all writes with the preselected candidate/request and exact revision unchanged",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "does not misclassify structured access loss or malformed claimed support as an older route",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "rejects mismatched identities, cyclic pages, over-limit pages and foreign operation results",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "fails malformed write intent before transport and preserves HTTP conflicts for explicit reread",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "rejects in-progress recovery, malformed JSON and an approval of a different observed version",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "does not confirm contradictory HTTP status and sealed receipt outcomes",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "redacts project knowledge request/error logs at HTTP 404 without losing workspace headers",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "redacts project knowledge request/error logs at HTTP 500 without losing workspace headers",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "redacts workspace knowledge request/error logs at HTTP 404 without losing workspace headers",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "redacts workspace knowledge request/error logs at HTTP 500 without losing workspace headers",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "allocates a new request UUID per intent and preselects the recoverable candidate before create",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "can reject an unavailable pending candidate expiring at null using only its exact state revision",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "can reject an unavailable pending candidate expiring at 2020-01-01T00:00:00Z using only its exact state revision",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "does not infer rejection rights from unavailable or restricted rows and keeps expired approval denied",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "pins exact reviewed content/state revisions and refuses inferred or unavailable approval authority",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "retains the same immutable request after uncertain transport and never optimistically approves",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "recovers a content-free original receipt with candidate/request only after losing source access and target role",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "keeps unknown/mismatched receipts uncertain and clears private projections for explicit conflict reread",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "recovers the same original actor/key after a fresh login while fencing the old live request scope",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "saves only recovery identity before a lost create response and refuses transport if preservation fails",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "retires only a first definitively unused proposal identity so a new explicit intent can be created",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "retains an earlier ambiguous request through later unsealed rejection, missing recovery and storage changes",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "does not discard an overlapping attempt when the first call receives an unsealed rejection",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "distinguishes failed preservation before POST from failed cleanup after a known receipt",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "requires keyboard confirmation of the displayed version and awaits the exact approval receipt",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "resets review confirmation for a changed identity and removes body on source unavailability",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "recovers a lost result after remount with the original key and no second POST",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "lets an external handler propose from comments to the lawful current project without a private catalog",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "Propose correction creates a new immutable proposal without copying old body into the form",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "Propose workspace version creates a new immutable proposal without copying old body into the form",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "allows only content-free target withdrawal and shows a known refusal as a refusal",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "keeps unsupported knowledge separate from the surrounding collaboration and reports truncated history",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "picks an actual recorded run as a source without memory or a raw JSON form",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "pages all candidate versions with the original page authorization boundary",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "keeps a selected source project pinned and requires a new selection if the relationship changes",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "unlocks a definitively rejected first proposal for editing and a new explicit request",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "keeps a prior lost proposal locked to its original identity after a later rejection and not-found recovery",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "shows known success when receipt cleanup fails instead of calling the write uncertain",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "unlocks the human draft after storage fails before POST",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "does not repeat approval actor/time as an identical latest decision",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "renders supplied proposer, approval and latest decision facts without a directory lookup",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity registers every JSON file in RESOURCES (EN)",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity declares the same namespaces in EN and zh-Hans",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity registers every JSON file in RESOURCES (zh-Hans)",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity collaboration: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity collaboration: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity common: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity common: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity auth: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity auth: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity admin: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity admin: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity settings: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity settings: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity issues: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity issues: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity agents: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity agents: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity editor: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity editor: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity onboarding: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity onboarding: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity invite: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity invite: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity labels: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity labels: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity members: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity members: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity my-issues: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity my-issues: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity search: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity search: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity inbox: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity inbox: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity triage: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity triage: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity workspace: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity workspace: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity projects: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity projects: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity autopilots: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity autopilots: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity skills: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity skills: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity chat: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity chat: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity modals: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity modals: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity runtimes: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity runtimes: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity layout: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity layout: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity usage: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity usage: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity ui: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity ui: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity squads: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity squads: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity billing: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity billing: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity docs: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity docs: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity changelog: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity changelog: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity desktop: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity desktop: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "dead plural-key guard zh-Hans ships no dead _one keys (plural categories: other)",
+    "status": "passed"
+  }
+]

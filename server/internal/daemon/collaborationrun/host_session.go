@@ -36,6 +36,12 @@ func hostSessionKey(claim protocol.CollaborationRunClaimResponse) (string, error
 	if role == "member" {
 		parts = append(parts, claim.Identity.GroupID, c.StepKey)
 	}
+	if claim.KnowledgeContext != nil {
+		if validateHostKnowledgeClaim(claim, 1) != nil {
+			return "", ErrProtocol
+		}
+		parts = append(parts, "knowledge:v1", claim.KnowledgeContext.Namespace)
+	}
 	raw, err := json.Marshal(parts)
 	if err != nil {
 		return "", err

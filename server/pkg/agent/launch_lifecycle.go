@@ -40,8 +40,10 @@ var (
 
 // LaunchInfo contains only safe adapter identity, never argv or environment.
 type LaunchInfo struct {
-	Provider string
-	Kind     string
+	Provider  string
+	Kind      string
+	Attempt   LaunchAttempt
+	Knowledge KnowledgeLaunchIntent
 }
 
 // ProcessObservation identifies the actual process instance while its native
@@ -74,9 +76,13 @@ type LaunchTermination struct {
 type LaunchCallbacks struct {
 	Started    func(ProcessObservation) error
 	Terminated func(LaunchTermination) error
+	// NativeSessionObserved is required for a knowledge provider launch. It
+	// persists raw native identity synchronously, independently of UI events.
+	NativeSessionObserved func(NativeSessionObservation) error
 	// Environment refreshes attempt-scoped credentials and temporary paths
 	// after permission is granted, including on a provider's internal retry.
-	// Ordinary task/daemon Multica identities are never accepted here.
+	// Ordinary lifecycle observers must leave this empty: the command keeps
+	// exactly the ordinary environment the daemon already assembled.
 	Environment map[string]string
 }
 
@@ -92,25 +98,29 @@ type LaunchObserver interface {
 // a mutex. Network permission work does not hold that mutex, so Stop can win
 // while an authorization request is outstanding.
 type LaunchLifecycle struct {
-	mu       sync.Mutex
-	starting sync.Mutex
-	observer LaunchObserver
-	sealed   bool
-	failure  error
-	commands map[*exec.Cmd]*observedLaunch
+	mu                  sync.Mutex
+	starting            sync.Mutex
+	observer            LaunchObserver
+	sealed              bool
+	failure             error
+	commands            map[*exec.Cmd]*observedLaunch
+	ordinaryEnvironment bool
+	attemptSequence     int64
 }
 
 type observedLaunch struct {
-	lifecycle *LaunchLifecycle
-	ctx       context.Context
-	info      LaunchInfo
-	cmd       *exec.Cmd
-	native    *os.Process
-	needsTree bool
-	callbacks LaunchCallbacks
-	process   ProcessObservation
-	phase     string
-	unwatch   func() bool
+	lifecycle       *LaunchLifecycle
+	ctx             context.Context
+	info            LaunchInfo
+	cmd             *exec.Cmd
+	native          *os.Process
+	needsTree       bool
+	callbacks       LaunchCallbacks
+	process         ProcessObservation
+	phase           string
+	unwatch         func() bool
+	nativeSessionMu sync.Mutex
+	nativeSessionID string
 }
 
 type executionLifecycleKey struct{}
@@ -125,6 +135,16 @@ var observedRuntimeCommands sync.Map // *exec.Cmd -> *observedLaunch
 
 func NewLaunchLifecycle(observer LaunchObserver) *LaunchLifecycle {
 	return &LaunchLifecycle{observer: observer, commands: make(map[*exec.Cmd]*observedLaunch)}
+}
+
+// NewOrdinaryLaunchLifecycle preserves the prebuilt ordinary task environment.
+// The observer can authorize/observe but cannot inject or replace credentials,
+// PATH, homes or any other environment entry. NewLaunchLifecycle retains the
+// separate collaboration filtering and attempt-scoped refresh contract.
+func NewOrdinaryLaunchLifecycle(observer LaunchObserver) *LaunchLifecycle {
+	lifecycle := NewLaunchLifecycle(observer)
+	lifecycle.ordinaryEnvironment = true
+	return lifecycle
 }
 
 // HostLifecycleSupported is an adapter allowlist, not platform/version rollout
@@ -144,15 +164,23 @@ func HostLifecycleSupported(provider, mode string) bool {
 }
 
 func withExecutionLifecycle(ctx context.Context, opts ExecOptions, provider string) (context.Context, error) {
+	if opts.Knowledge != nil && (opts.Lifecycle == nil || !opts.Lifecycle.ordinaryEnvironment || provider != "claude" ||
+		!KnowledgeLifecycleSupported(provider, opts.OpenclawMode, true)) {
+		return nil, knowledgeUnsupported()
+	}
 	if opts.Lifecycle == nil {
 		return ctx, nil
 	}
 	if !HostLifecycleSupported(provider, opts.OpenclawMode) {
 		return nil, ErrLaunchUnsupported
 	}
+	info := LaunchInfo{Provider: provider, Kind: LaunchKindProvider}
+	if opts.Knowledge != nil {
+		info.Knowledge = *opts.Knowledge
+	}
 	return context.WithValue(ctx, executionLifecycleKey{}, executionLifecycleContext{
 		lifecycle: opts.Lifecycle,
-		info:      LaunchInfo{Provider: provider, Kind: LaunchKindProvider},
+		info:      info,
 		mode:      opts.OpenclawMode,
 	}), nil
 }
@@ -285,6 +313,8 @@ func (s *observedLaunch) start(logger *slog.Logger) error {
 		blocked = ErrLaunchUnsupported
 	case s.info.Kind != LaunchKindPreparation && s.info.Kind != LaunchKindProvider:
 		blocked = ErrLaunchUnsupported
+	case s.info.Knowledge.ConfigurationID != "" && (!l.ordinaryEnvironment || s.info.Provider != "claude" || s.info.Kind != LaunchKindProvider):
+		blocked = knowledgeUnsupported()
 	}
 	if blocked == nil {
 		for _, other := range l.commands {
@@ -306,9 +336,14 @@ func (s *observedLaunch) start(logger *slog.Logger) error {
 		return blocked
 	}
 	s.phase = "authorizing"
+	l.attemptSequence++
+	s.info.Attempt = LaunchAttempt{Sequence: l.attemptSequence, Nonce: uuid.NewString()}
 	l.mu.Unlock()
 	callbacks, err := l.observer.BeforeLaunch(s.ctx, s.info)
 	if err != nil {
+		if s.info.Knowledge.ConfigurationID != "" {
+			err = knowledgeFailure(err)
+		}
 		l.fail(err)
 		s.forget()
 		return err
@@ -316,10 +351,18 @@ func (s *observedLaunch) start(logger *slog.Logger) error {
 	s.callbacks = callbacks
 	if callbacks.Started == nil || callbacks.Terminated == nil {
 		err := errors.New("managed launch callbacks are incomplete")
+		if s.info.Knowledge.ConfigurationID != "" {
+			err = knowledgeFailure(err)
+		}
 		l.fail(err)
 		// The registration may have consumed a permit. Keep the state unknown
 		// rather than inventing a terminal receipt without its callback.
 		return err
+	}
+	if s.info.Knowledge.ConfigurationID != "" && callbacks.NativeSessionObserved == nil {
+		err := knowledgeFailure(errors.New("managed native-session callback is required"))
+		l.fail(err)
+		return errors.Join(err, s.finish(LaunchTermination{Kind: LaunchNotStarted, EndedAt: time.Now().UTC(), Cleanup: CleanupUnverified}))
 	}
 	l.mu.Lock()
 	if l.failure != nil {
@@ -334,7 +377,15 @@ func (s *observedLaunch) start(logger *slog.Logger) error {
 		return errors.Join(err, s.finish(LaunchTermination{Kind: LaunchNotStarted, EndedAt: time.Now().UTC(), Cleanup: CleanupUnverified}))
 	}
 	s.phase = "starting"
-	s.cmd.Env = collaborationLaunchEnv(s.cmd.Environ())
+	if l.ordinaryEnvironment && len(callbacks.Environment) != 0 {
+		l.mu.Unlock()
+		err := knowledgeUnsupported()
+		l.fail(err)
+		return errors.Join(err, s.finish(LaunchTermination{Kind: LaunchNotStarted, EndedAt: time.Now().UTC(), Cleanup: CleanupUnverified}))
+	}
+	if !l.ordinaryEnvironment {
+		s.cmd.Env = collaborationLaunchEnv(s.cmd.Environ())
+	}
 	for key, value := range callbacks.Environment {
 		if key == "" || strings.ContainsAny(key, "=\x00") || strings.ContainsRune(value, 0) ||
 			strings.HasPrefix(strings.ToUpper(key), "MULTICA_") && len(collaborationLaunchEnv([]string{key + "=" + value})) == 0 {
@@ -379,6 +430,9 @@ func (s *observedLaunch) start(logger *slog.Logger) error {
 	l.mu.Unlock()
 	if s.cmd.Process != nil {
 		if observedErr := callbacks.Started(s.process); observedErr != nil {
+			if s.info.Knowledge.ConfigurationID != "" {
+				observedErr = knowledgeFailure(observedErr)
+			}
 			l.fail(observedErr)
 			err = errors.Join(err, observedErr)
 		}
@@ -415,6 +469,9 @@ func (s *observedLaunch) finish(end LaunchTermination) error {
 	err := s.callbacks.Terminated(end)
 	if end.Kind == LaunchUnknown {
 		err = errors.Join(err, ErrLaunchUnconfirmed)
+	}
+	if s.info.Knowledge.ConfigurationID != "" {
+		err = knowledgeFailure(err)
 	}
 	if err != nil {
 		l.fail(err)

@@ -20,6 +20,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Collaboration records and children](../../server/collaboration-records.md) | Source/account child and run views, notification links, repeated focus and native evidence | Current R51/R52 increment |
 | [Collaboration trigger previews](../../server/collaboration-preview-wakeup.md) | Shared localized grouping display, suppression and live-draft correlation | Focused preview increment |
 | [Collaboration Workbench](../../core/frontend/collaboration-workbench.md) | Shared account views, scoped creation/files, resource forms and original-intent recovery | Gated workflow; full product pending |
+| [Collaboration knowledge](./collaboration-knowledge.md) | Shared source selection, exact human review/audit, target panels and outcome recovery | Shared Web/Desktop contract; scoped evidence separate |
 | [Add a computer](./connect-remote-computer.md) | Per-system installers, safe commands, inventory baselines and factual connection states | Active |
 | [Workspace Naming](./workspace-naming.md) | Series catalog, personal preference and manual URL/prefix ownership | Active |
 | [Automation Template Discovery](./automation-template-discovery.md) | Empty-state routing, template semantics and two-step gallery restoration | Active |

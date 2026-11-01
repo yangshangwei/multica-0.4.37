@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"log/slog"
 	"net/http"
 	"sort"
@@ -1739,9 +1740,10 @@ const claimBatchMaxTasksCap = 32
 func (h *Handler) ClaimTasksByRuntime(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
 	var req struct {
-		DaemonID   string   `json:"daemon_id"`
-		RuntimeIDs []string `json:"runtime_ids"`
-		MaxTasks   int      `json:"max_tasks"`
+		DaemonID   string                                       `json:"daemon_id"`
+		RuntimeIDs []string                                     `json:"runtime_ids"`
+		MaxTasks   int                                          `json:"max_tasks"`
+		Knowledge  map[string]*protocol.TaskKnowledgeInvocation `json:"knowledge_context,omitempty"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
@@ -1864,7 +1866,7 @@ func (h *Handler) ClaimTasksByRuntime(w http.ResponseWriter, r *http.Request) {
 		if handled, _ := h.repairStaleCommentPlanIfNeeded(r.Context(), &task, rtWorkspaceID); handled {
 			continue
 		}
-		resp, deliveredCommentIDs, _, _, failure := h.buildClaimedTaskResponse(r, &task, rt, uuidToString(task.RuntimeID), rtWorkspaceID)
+		resp, deliveredCommentIDs, _, _, failure := h.buildClaimedTaskResponse(r, &task, rt, uuidToString(task.RuntimeID), rtWorkspaceID, req.Knowledge[uuidToString(task.RuntimeID)])
 		if failure != nil {
 			// Builder rejected this task (workspace isolation / chat-input);
 			// it has already settled the task where the failure requires it.
@@ -1914,7 +1916,7 @@ func (h *Handler) ClaimTasksByRuntime(w http.ResponseWriter, r *http.Request) {
 			WorkspaceID: parseUUID(resp.WorkspaceID),
 			UserID:      rt.OwnerID,
 			ExpiresAt:   pgtype.Timestamptz{Time: time.Now().Add(24 * time.Hour), Valid: true},
-		}, deliveredCommentIDs, commentBackedTask, daemonTokens...)
+		}, deliveredCommentIDs, commentBackedTask, resp.KnowledgeContext, daemonTokens...)
 		if ferr != nil {
 			slog.Error("batch claim: finalize task claim failed; requeueing claim",
 				"task_id", uuidToString(task.ID), "error", ferr)
@@ -2147,7 +2149,12 @@ func claimResponseAgentIdentityMatches(resp AgentTaskResponse) bool {
 // feed the same delivery receipt into FinalizeTaskClaim. A non-nil failure
 // means the task must not be dispatched; the builder has already cancelled it
 // where the failure semantics require it.
-func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQueue, runtime db.AgentRuntime, runtimeID, runtimeWorkspaceID string) (resp AgentTaskResponse, deliveredCommentIDs []pgtype.UUID, agentSkillCount, builtinSkillCount int, failure *claimBuildFailure) {
+func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQueue, runtime db.AgentRuntime, runtimeID, runtimeWorkspaceID string, knowledge *protocol.TaskKnowledgeInvocation) (resp AgentTaskResponse, deliveredCommentIDs []pgtype.UUID, agentSkillCount, builtinSkillCount int, failure *claimBuildFailure) {
+	// Private preparation requires the existing workspace-scoped daemon
+	// credential. PAT/JWT legacy claims retain base execution and history gates.
+	if middleware.DaemonAuthPathFromContext(r.Context()) != middleware.DaemonAuthPathDaemonToken {
+		knowledge = nil
+	}
 	// Build response with fresh agent data (name + skills + custom_env + custom_args).
 	resp = taskToResponse(*task, runtimeWorkspaceID)
 	if task.ExecutionBindingID.Valid && task.DispatchedAt.Valid {
@@ -3224,6 +3231,16 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 	if failure := h.rejectClaimOnWorkspaceMismatch(r.Context(), task, resp.WorkspaceID, runtimeID, runtimeWorkspaceID, hasQuickCreate); failure != nil {
 		return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, failure
 	}
+	claim, prior, knowledgeErr := h.TaskService.BuildTaskKnowledgeClaim(r.Context(), *task, knowledge, resp.PriorSessionID)
+	if knowledgeErr != nil {
+		code := "knowledge_unavailable"
+		var domain *service.CollaborationError
+		if errors.As(knowledgeErr, &domain) {
+			code = domain.Code
+		}
+		return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, h.failClaimedTaskBeforeLaunch(r.Context(), task, code, taskfailure.Reason(code), "error_knowledge_claim", http.StatusConflict, code)
+	}
+	resp.KnowledgeContext, resp.PriorSessionID = claim, prior
 
 	// Surface a bounded snapshot of the same agent's other in-flight issue
 	// tasks. Queued tasks cannot coordinate yet and are intentionally omitted.
@@ -3451,6 +3468,15 @@ func (h *Handler) ClaimTaskByRuntime(w http.ResponseWriter, r *http.Request) {
 	}
 	runtimeWorkspaceID := uuidToString(runtime.WorkspaceID)
 	authMs = time.Since(start).Milliseconds()
+	var knowledgeRequest struct {
+		Knowledge *protocol.TaskKnowledgeInvocation `json:"knowledge_context,omitempty"`
+	}
+	if r.Body != nil && r.ContentLength != 0 {
+		if err := json.NewDecoder(r.Body).Decode(&knowledgeRequest); err != nil && !errors.Is(err, io.EOF) {
+			writeError(w, http.StatusBadRequest, "invalid request body")
+			return
+		}
+	}
 
 	claimStart := time.Now()
 	task, err := h.TaskService.ClaimTaskForRuntime(r.Context(), parseUUID(runtimeID))
@@ -3487,7 +3513,7 @@ func (h *Handler) ClaimTaskByRuntime(w http.ResponseWriter, r *http.Request) {
 	outcome = "claimed"
 	buildStart = time.Now()
 
-	resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, failure := h.buildClaimedTaskResponse(r, task, runtime, runtimeID, runtimeWorkspaceID)
+	resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, failure := h.buildClaimedTaskResponse(r, task, runtime, runtimeID, runtimeWorkspaceID, knowledgeRequest.Knowledge)
 	if failure != nil {
 		outcome = failure.outcome
 		writeError(w, failure.status, failure.message)
@@ -3554,7 +3580,7 @@ func (h *Handler) ClaimTaskByRuntime(w http.ResponseWriter, r *http.Request) {
 		WorkspaceID: parseUUID(resp.WorkspaceID),
 		UserID:      runtime.OwnerID,
 		ExpiresAt:   pgtype.Timestamptz{Time: time.Now().Add(24 * time.Hour), Valid: true},
-	}, deliveredCommentIDs, commentBackedTask, daemonTokens...)
+	}, deliveredCommentIDs, commentBackedTask, resp.KnowledgeContext, daemonTokens...)
 	if ferr != nil {
 		outcome = "error_claim_finalize"
 		slog.Error("task claim: failed to finalize token and comment delivery receipt",
@@ -3775,8 +3801,22 @@ func (h *Handler) StartTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	task, err := h.TaskService.StartTask(r.Context(), parseUUID(taskID))
+	var req struct {
+		KnowledgeFence *protocol.TaskKnowledgeFence `json:"knowledge_fence,omitempty"`
+	}
+	if r.Body != nil && r.ContentLength != 0 {
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil && !errors.Is(err, io.EOF) {
+			writeError(w, http.StatusBadRequest, "invalid request body")
+			return
+		}
+	}
+	task, err := h.TaskService.StartTask(r.Context(), parseUUID(taskID), req.KnowledgeFence)
 	if err != nil {
+		var domain *service.CollaborationError
+		if errors.As(err, &domain) {
+			writeTaskKnowledgeError(w, err)
+			return
+		}
 		if writeIssueAdmissionError(w, err) {
 			return
 		}
@@ -3867,10 +3907,11 @@ func (h *Handler) ReportTaskProgress(w http.ResponseWriter, r *http.Request) {
 
 // CompleteTask marks a running task as completed.
 type TaskCompleteRequest struct {
-	PRURL     string `json:"pr_url"`
-	Output    string `json:"output"`
-	SessionID string `json:"session_id"` // Claude session ID for future resumption
-	WorkDir   string `json:"work_dir"`   // working directory used during execution
+	KnowledgeFence *protocol.TaskKnowledgeFence `json:"knowledge_fence,omitempty"`
+	PRURL          string                       `json:"pr_url"`
+	Output         string                       `json:"output"`
+	SessionID      string                       `json:"session_id"` // Claude session ID for future resumption
+	WorkDir        string                       `json:"work_dir"`   // working directory used during execution
 	// DurableWorkDir is the configured project directory that replaces a
 	// disposable task worktree after the daemon confirms the worktree is gone.
 	DurableWorkDir string `json:"durable_work_dir,omitempty"`
@@ -3957,6 +3998,7 @@ func (h *Handler) CompleteTask(w http.ResponseWriter, r *http.Request) {
 			"failure_reason", taskfailure.ReasonAgentContextOverflow,
 		)
 		h.failTask(w, r, taskID, workspaceID, TaskFailRequest{
+			KnowledgeFence: req.KnowledgeFence,
 			Error:          req.Output,
 			FailureReason:  string(taskfailure.ReasonAgentContextOverflow),
 			SessionID:      req.SessionID,
@@ -3972,13 +4014,20 @@ func (h *Handler) CompleteTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, _ := json.Marshal(req)
+	publicResult := req
+	publicResult.KnowledgeFence = nil
+	result, _ := json.Marshal(publicResult)
 	// MUL-5305: SessionRolloutMissing is applied inside CompleteTask's terminal
 	// transaction (force session_id NULL + flag the row), so an auto-retry the
 	// same commit creates and wakes can never observe the withheld pointer or a
 	// missing continuity-gap flag.
-	task, err := h.TaskService.CompleteTask(r.Context(), parseUUID(taskID), result, req.SessionID, req.WorkDir, req.BranchName, req.SessionRolloutMissing, req.RetiredSessionID, req.DurableWorkDir)
+	task, err := h.TaskService.CompleteTask(r.Context(), parseUUID(taskID), result, req.SessionID, req.WorkDir, req.BranchName, req.SessionRolloutMissing, req.RetiredSessionID, req.DurableWorkDir, req.KnowledgeFence)
 	if err != nil {
+		var domain *service.CollaborationError
+		if errors.As(err, &domain) {
+			writeTaskKnowledgeError(w, err)
+			return
+		}
 		// A CompleteTask error is an infrastructure failure (transaction /
 		// assistant-outcome write), not a bad request: an already-finalized
 		// callback is treated as idempotent success and returns no error. Return
@@ -4622,11 +4671,12 @@ func (h *Handler) GetTaskStatus(w http.ResponseWriter, r *http.Request) {
 
 // FailTask marks a running task as failed.
 type TaskFailRequest struct {
-	Error          string `json:"error"`
-	SessionID      string `json:"session_id,omitempty"`
-	WorkDir        string `json:"work_dir,omitempty"`
-	DurableWorkDir string `json:"durable_work_dir,omitempty"`
-	FailureReason  string `json:"failure_reason,omitempty"`
+	KnowledgeFence *protocol.TaskKnowledgeFence `json:"knowledge_fence,omitempty"`
+	Error          string                       `json:"error"`
+	SessionID      string                       `json:"session_id,omitempty"`
+	WorkDir        string                       `json:"work_dir,omitempty"`
+	DurableWorkDir string                       `json:"durable_work_dir,omitempty"`
+	FailureReason  string                       `json:"failure_reason,omitempty"`
 	// BranchName: a failed run can still have produced a branch — worktree mode
 	// commits whatever the agent left before tearing the worktree down. Report
 	// it so a partially-successful run is still findable.
@@ -4675,8 +4725,13 @@ func (h *Handler) failTask(w http.ResponseWriter, r *http.Request, taskID, works
 	// keep a stale mid-flight pin) and flagging the row in the same commit that
 	// creates and wakes the auto-retry, so the retry can never claim the withheld
 	// pointer or miss the continuity gap.
-	task, err := h.TaskService.FailTask(r.Context(), parseUUID(taskID), req.Error, req.SessionID, req.WorkDir, req.BranchName, req.FailureReason, req.SessionRolloutMissing, req.RetiredSessionID, req.DurableWorkDir)
+	task, err := h.TaskService.FailTask(r.Context(), parseUUID(taskID), req.Error, req.SessionID, req.WorkDir, req.BranchName, req.FailureReason, req.SessionRolloutMissing, req.RetiredSessionID, req.DurableWorkDir, req.KnowledgeFence)
 	if err != nil {
+		var domain *service.CollaborationError
+		if errors.As(err, &domain) {
+			writeTaskKnowledgeError(w, err)
+			return
+		}
 		// A FailTask error is an infrastructure failure (the terminal
 		// transaction that also clears the withheld session, writes the
 		// continuity-gap flag, and creates the auto-retry rolled back), not a bad
@@ -4697,7 +4752,14 @@ func (h *Handler) failTask(w http.ResponseWriter, r *http.Request, taskID, works
 		slog.Warn("fail task: failed to revoke task tokens", "task_id", uuidToString(task.ID), "error", err)
 	}
 
-	slog.Info("task failed", "task_id", taskID, "agent_id", uuidToString(task.AgentID), "task_error", req.Error, "failure_reason", req.FailureReason)
+	logFields := []any{"task_id", taskID, "agent_id", uuidToString(task.AgentID)}
+	// A request fence or failure classification is not evidence that the
+	// returned task's diagnostic is safe for generic server logs.
+	if !task.KnowledgeContextVersion.Valid && len(task.KnowledgeDelivery) == 0 {
+		logFields = append(logFields, "task_error", req.Error)
+	}
+	logFields = append(logFields, "failure_reason", task.FailureReason.String)
+	slog.Info("task failed", logFields...)
 	writeJSON(w, http.StatusOK, taskToResponse(*task, workspaceID))
 }
 

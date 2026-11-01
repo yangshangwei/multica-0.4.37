@@ -1,0 +1,14 @@
+{
+  "container": "multica-knowledge-final-e7059940",
+  "id": "08a7d39c8ddecdf538137a3a3eb5a33316a9d66bd8f11a07101d606648ca5167",
+  "image": "redis:7-alpine",
+  "address": "127.0.0.1:56020",
+  "created_at": "2026-11-01T00:19:33.164645+00:00",
+  "scope": "Dedicated disposable final-test Redis; no shared Redis borrowed/flushed",
+  "private_env": "/tmp/multica_knowledge_final_20261101_e7059940.env",
+  "cleanup": [
+    "docker",
+    "stop",
+    "multica-knowledge-final-e7059940"
+  ]
+}

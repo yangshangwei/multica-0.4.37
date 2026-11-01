@@ -58,6 +58,8 @@ type CollaborationRunClaimRequest struct {
 	// not a registered runtime capability and never enters a capability digest,
 	// so upgrading a daemon cannot advance a configuration epoch or revoke consent.
 	MemoryVersion int `json:"memory_version,omitempty"`
+	// Negotiated on the managed claim URL, never accepted from business JSON.
+	KnowledgeVersion int `json:"-"`
 }
 
 // TerminationToken belongs only to the supervisor and its private ledger.
@@ -74,8 +76,9 @@ type CollaborationRunClaimResponse struct {
 	HostContext          *CollaborationHostContext `json:"host_context,omitempty"`
 	// Optional read/write extensions are negotiated on the claim URL so old
 	// strict request/response decoders and resource consent digests stay stable.
-	HandoffVersion   int `json:"handoff_version,omitempty"`
-	RecordingVersion int `json:"recording_version,omitempty"`
+	HandoffVersion   int                             `json:"handoff_version,omitempty"`
+	RecordingVersion int                             `json:"recording_version,omitempty"`
+	KnowledgeContext *CollaborationRunKnowledgeClaim `json:"knowledge_context,omitempty"`
 }
 
 type CollaborationRunPermitRequest struct {

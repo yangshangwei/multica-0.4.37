@@ -428,6 +428,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	origins := allowedOrigins()
 
 	signupConfig := handler.Config{
+		KnowledgeContextEnabled:       os.Getenv("MULTICA_KNOWLEDGE_CONTEXT_ENABLED") == "true",
 		ManagedInstallationsEnabled:   os.Getenv("MULTICA_MANAGED_INSTALLATIONS_ENABLED") == "true",
 		DeploymentID:                  auth.ManagedDeploymentID(),
 		PlatformAdminEnabled:          os.Getenv("MULTICA_PLATFORM_ADMIN_ENABLED") == "true",
@@ -1426,6 +1427,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	r.Get("/api/collaboration/runtime/runs/{runId}/memory", h.GetCollaborationRuntimeMemory)
 	r.Put("/api/collaboration/runtime/runs/{runId}/memory", h.UpdateCollaborationRuntimeMemory)
 	r.Get("/api/collaboration/runtime/runs/{runId}/stop-intent", h.GetCollaborationRuntimeStopIntent)
+	r.Get("/api/collaboration/runtime/runs/{runId}/knowledge-context/status", h.GetCollaborationRuntimeKnowledgeStatus)
 	r.Post("/api/collaboration/runtime/runs/{runId}/proof", h.AcceptCollaborationRuntimeProof)
 	r.Post("/api/collaboration/runtime/runs/{runId}/launches/{launchId}/termination", h.AcceptCollaborationLaunchTermination)
 	r.Group(func(r chi.Router) {
@@ -1436,6 +1438,8 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Post("/api/collaboration/runtime/capabilities", h.RegisterCollaborationRuntimeCapabilities)
 		r.Post("/api/collaboration/runtime/runs/{runId}/claim", h.ClaimCollaborationRuntimeRun)
 		r.Post("/api/collaboration/runtime/runs/{runId}/permit", h.PermitCollaborationRuntimeRun)
+		r.Post("/api/collaboration/runtime/runs/{runId}/knowledge-context/prepare", h.PrepareCollaborationRuntimeKnowledge)
+		r.Post("/api/collaboration/runtime/runs/{runId}/knowledge-context/authorize", h.AuthorizeCollaborationRuntimeKnowledge)
 	})
 
 	// Avatar serving. Public for the same reason as the capability download
@@ -1574,6 +1578,9 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 
 		r.Get("/tasks/{taskId}/status", h.GetTaskStatus)
 		r.Post("/tasks/{taskId}/start", h.StartTask)
+		r.Post("/tasks/{taskId}/knowledge-context/prepare", h.PrepareTaskKnowledge)
+		r.Post("/tasks/{taskId}/knowledge-context/authorize", h.AuthorizeTaskKnowledgeLaunch)
+		r.Post("/tasks/{taskId}/knowledge-context/observations", h.ObserveTaskKnowledgeLaunch)
 		r.Post("/tasks/{taskId}/wait-local-directory", h.MarkTaskWaitingLocalDirectory)
 		r.Post("/tasks/{taskId}/progress", h.ReportTaskProgress)
 		r.Post("/tasks/{taskId}/complete", h.CompleteTask)
@@ -1741,6 +1748,13 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Post("/api/collaboration/issues/{id}/memory/versions/{version}/restore", h.RestoreCollaborationMemoryVersion)
 		r.Post("/api/collaboration/issues/{id}/memory/versions/{version}/purge", h.PurgeCollaborationMemoryVersion)
 		r.Get("/api/collaboration/issues/{id}/memory/operations/{requestId}", h.GetCollaborationMemoryOperation)
+		r.Get("/api/collaboration/issues/{id}/knowledge-candidates", h.ListCollaborationKnowledgeCandidates)
+		r.Post("/api/collaboration/issues/{id}/knowledge-candidates", h.ProposeCollaborationKnowledge)
+		r.Get("/api/collaboration/knowledge-candidates/{candidateId}", h.GetCollaborationKnowledgeCandidate)
+		r.Post("/api/collaboration/knowledge-candidates/{candidateId}/approve", h.ApproveCollaborationKnowledge)
+		r.Post("/api/collaboration/knowledge-candidates/{candidateId}/reject", h.RejectCollaborationKnowledge)
+		r.Post("/api/collaboration/knowledge-candidates/{candidateId}/withdraw", h.WithdrawCollaborationKnowledge)
+		r.Get("/api/collaboration/knowledge-candidates/{candidateId}/operations/{requestId}", h.GetCollaborationKnowledgeOperation)
 		r.Patch("/api/collaboration/issues/{id}", h.UpdateCollaborationIssue)
 		r.Post("/api/collaboration/issues/{id}/lifecycle", h.ChangeCollaborationLifecycle)
 		r.Post("/api/installations/challenges", h.InstallationChallenge)
@@ -1846,6 +1860,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.RequireWorkspaceMemberFromURL(queries, "id"))
 					r.Get("/", h.GetWorkspace)
+					r.Get("/knowledge", h.GetWorkspaceKnowledge)
 					r.Get("/members", h.ListMembersWithUser)
 					r.Get("/project-capabilities", h.GetProjectCapabilities)
 					r.Get("/iteration-operations/{requestID}", h.GetIterationOperation)
@@ -2301,6 +2316,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 				r.Post("/", h.CreateProject)
 				r.Route("/{id}", func(r chi.Router) {
 					r.Get("/", h.GetProject)
+					r.Get("/knowledge", h.GetProjectKnowledge)
 					r.Get("/delete-impact", h.GetProjectDeleteImpact)
 					r.Get("/overview", h.GetProjectOverview)
 					r.Get("/health/issues", h.GetProjectHealthIssues)

@@ -26,6 +26,7 @@ import { PROJECT_STATUS_ORDER, PROJECT_STATUS_CONFIG, PROJECT_PRIORITY_ORDER } f
 import { projectCapabilitiesOptions, projectOverviewOptions, projectDeleteImpactOptions, useProjectAccessStore } from "@multica/core/projects";
 import { useProjectPropertyEditor } from "./project-property-recovery";
 import { ProjectDescription } from "./project-description";
+import { ManagedKnowledgePanel } from "../../collaboration/knowledge-panel";
 import { ProjectOverviewPanel, ProjectAcceptance } from "./project-overview";
 import { ProjectRiskIssues } from "./project-risk-issues";
 import { useProjectAccessGuard } from "./use-project-access-guard";
@@ -537,6 +538,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
       </div>
 
       {/* Resources */}
+      <ManagedKnowledgePanel workspaceId={wsId} projectId={project.id} />
       <ProjectResourcesSection projectId={projectId} />
       <ProjectAutomationsSection projectId={project.id} defaultSquadId={project.execution_squad?.squad_id ?? null} />
     </div>

@@ -1,0 +1,194 @@
+{
+  "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/server",
+  "database": "multica_knowledge_host_composite_20261101_efb9efe6",
+  "platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+  "go": "go version go1.27.0 darwin/arm64",
+  "head": "53a1662586555d14ea04efb3b951744a4993fa60",
+  "suites": [
+    {
+      "command": [
+        "go",
+        "test",
+        "-tags=knowledgeintegration",
+        "./cmd/server",
+        "-run",
+        "^TestCollaborationKnowledgeHostComposite",
+        "-count=1",
+        "-json"
+      ],
+      "log": "final.jsonl",
+      "exit_code": 0,
+      "passed": [
+        "TestCollaborationKnowledgeHostCompositeLostMarkerCannotEnterTestMain",
+        "TestCollaborationKnowledgeHostCompositeHappyPath",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/withdraw",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/purge",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/expiry",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/source_access",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch",
+        "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity/prepare",
+        "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity/authorize",
+        "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity",
+        "TestCollaborationKnowledgeHostCompositeLostResponseRechecksWithdrawnSource",
+        "TestCollaborationKnowledgeHostCompositeFreshRunsUseDifferentNativeNamespaces",
+        "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose/unnegotiated",
+        "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose/downgrade",
+        "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose",
+        "TestCollaborationKnowledgeHostCompositePrivateStderrKeepsOnlyBoundedRunEvidence"
+      ],
+      "top_level_count": 8,
+      "failed": [],
+      "skipped": []
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-tags=knowledgeintegration",
+        "./cmd/server",
+        "-run",
+        "^TestCollaborationKnowledgeHostComposite",
+        "-count=1",
+        "-json"
+      ],
+      "log": "race.jsonl",
+      "exit_code": 0,
+      "passed": [
+        "TestCollaborationKnowledgeHostCompositeLostMarkerCannotEnterTestMain",
+        "TestCollaborationKnowledgeHostCompositeHappyPath",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/withdraw",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/purge",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/expiry",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/source_access",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch",
+        "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity/prepare",
+        "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity/authorize",
+        "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity",
+        "TestCollaborationKnowledgeHostCompositeLostResponseRechecksWithdrawnSource",
+        "TestCollaborationKnowledgeHostCompositeFreshRunsUseDifferentNativeNamespaces",
+        "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose/unnegotiated",
+        "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose/downgrade",
+        "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose",
+        "TestCollaborationKnowledgeHostCompositePrivateStderrKeepsOnlyBoundedRunEvidence"
+      ],
+      "top_level_count": 8,
+      "failed": [],
+      "skipped": []
+    }
+  ],
+  "vet": {
+    "command": [
+      "go",
+      "vet",
+      "-tags=knowledgeintegration",
+      "./cmd/server"
+    ],
+    "exit_code": 0
+  },
+  "changed_during_final_checks": [
+    "server/cmd/server/task_knowledge_config_test.go",
+    "server/internal/service/task_knowledge_logging_test.go"
+  ],
+  "provider_calls": false,
+  "production_edits": false,
+  "commits": false,
+  "timeline": [
+    {
+      "log": "final.jsonl",
+      "starts": [
+        "2026-11-01T08:09:46.814463+08:00"
+      ],
+      "ends": [
+        "2026-11-01T08:10:21.7032+08:00"
+      ]
+    },
+    {
+      "log": "happy-fifth.jsonl",
+      "starts": [
+        "2026-11-01T07:59:27.094821+08:00"
+      ],
+      "ends": [
+        "2026-11-01T07:59:28.96493+08:00"
+      ]
+    },
+    {
+      "log": "happy-first.jsonl",
+      "starts": [
+        "2026-11-01T07:54:52.400652+08:00"
+      ],
+      "ends": [
+        "2026-11-01T07:54:54.671689+08:00"
+      ]
+    },
+    {
+      "log": "happy-fourth.jsonl",
+      "starts": [
+        "2026-11-01T07:58:05.823033+08:00"
+      ],
+      "ends": [
+        "2026-11-01T07:58:07.702372+08:00"
+      ]
+    },
+    {
+      "log": "happy-second.jsonl",
+      "starts": [
+        "2026-11-01T07:55:35.168021+08:00"
+      ],
+      "ends": [
+        "2026-11-01T07:55:36.722994+08:00"
+      ]
+    },
+    {
+      "log": "happy-seventh.jsonl",
+      "starts": [
+        "2026-11-01T08:02:11.605902+08:00"
+      ],
+      "ends": [
+        "2026-11-01T08:02:15.113026+08:00"
+      ]
+    },
+    {
+      "log": "happy-sixth.jsonl",
+      "starts": [
+        "2026-11-01T08:00:24.122893+08:00"
+      ],
+      "ends": [
+        "2026-11-01T08:00:27.447913+08:00"
+      ]
+    },
+    {
+      "log": "happy-third.jsonl",
+      "starts": [
+        "2026-11-01T07:56:17.269875+08:00"
+      ],
+      "ends": [
+        "2026-11-01T07:56:18.856078+08:00"
+      ]
+    },
+    {
+      "log": "matrix-first.jsonl",
+      "starts": [
+        "2026-11-01T08:07:31.082121+08:00"
+      ],
+      "ends": [
+        "2026-11-01T08:08:06.003785+08:00"
+      ]
+    },
+    {
+      "log": "race.jsonl",
+      "starts": [
+        "2026-11-01T08:11:12.233191+08:00"
+      ],
+      "ends": [
+        "2026-11-01T08:12:17.019817+08:00"
+      ]
+    }
+  ],
+  "owned_test_file": "server/cmd/server/collaboration_knowledge_host_composite_test.go",
+  "owned_test_sha256": "d866d3f888a1ed48b015a04bb844170a1b5cd8c53ee662f104f0508b23fac3f6",
+  "private_stderr_sentinel_in_generic_logs": {
+    "final.jsonl": false,
+    "race.jsonl": false
+  }
+}

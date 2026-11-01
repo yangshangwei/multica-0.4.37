@@ -151,7 +151,7 @@ func (h *HostExecutor) Probe(context.Context) error {
 	opts := h.Options
 	if opts.Cwd != "" || opts.Model != "" || opts.SystemPrompt != "" || opts.ThreadName != "" || opts.MaxTurns != 0 || opts.ResumeSessionID != "" ||
 		opts.ResumeExpected || opts.ResumeContinuityNotice != "" || len(opts.ExtraArgs) != 0 || len(opts.CustomArgs) != 0 || len(opts.McpConfig) != 0 ||
-		opts.ThinkingLevel != "" || opts.ServiceTier != "" || opts.OpenclawMode != "" || opts.ClaudeSettingsPath != "" || opts.QwenpawWorkspace != "" || opts.Lifecycle != nil {
+		opts.ThinkingLevel != "" || opts.ServiceTier != "" || opts.OpenclawMode != "" || opts.ClaudeSettingsPath != "" || opts.QwenpawWorkspace != "" || opts.Lifecycle != nil || opts.Knowledge != nil {
 		return ErrUnsupported
 	}
 	if _, err := h.Config.Capabilities(); err != nil {

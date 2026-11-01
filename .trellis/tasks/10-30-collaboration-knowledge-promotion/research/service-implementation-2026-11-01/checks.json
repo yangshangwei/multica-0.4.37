@@ -1,0 +1,278 @@
+[
+  {
+    "name": "final-a2-service",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/service",
+      "-run",
+      "^(TestKnowledgeExternalHandlerCanProposeToVisibleCurrentSourceProject|TestKnowledgeProposeRejectsInvisibleArbitraryDestination|TestKnowledgeProposeHidesUnreadableSourceBeforeTargetResolution|TestKnowledgeSourceMemberCreatorWithoutParticipantCanProposeAndWithdraw|TestKnowledgeApprovalRequiresCurrentHumanProjectLeadOrAdmin|TestKnowledgeRequestIDConflictsAcrossOperationKinds|TestKnowledgeInvalidNewProposalRemainsUnsealedAndCannotFabricateRecovery|TestKnowledgeCreateLostResponseUsesPreselectedCandidateID|TestKnowledgeTargetWithdrawalRecoveryAfterSourceAndTargetRoleLoss|TestKnowledgeSourceProjectProposalRevalidatesCurrentRelationship|TestKnowledgeSourceProjectEditAfterProposalKeepsOriginalTarget|TestKnowledgeApprovalAndParticipantRemovalBothCommitOrders|TestKnowledgeCorrectionApprovalCannotReplaceNewerApprovedVersion|TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential|TestKnowledgePATWriteHoldsCredentialUntilPublication|TestKnowledgeSourceDependencyFailureIsNotEmptyKnowledge|TestKnowledgeResolverCurrentSourcesConsumersAndExactManifest|TestKnowledgeResolverNoOriginatorOrOwnerAuthorityFallback|TestKnowledgeResolverCrossWorkspaceAudienceAndPrivateChat|TestKnowledgeReadLockHintsContainOnlyBoundedMetadata|TestKnowledgeHumanTargetBudgetRefusalRetainsOriginalOutcome|TestKnowledgeFreshLockHintsOmitMissingSourceButExactManifestRefuses|TestKnowledgeSourceReadersRevalidateCachedPATForMemoryCommentsAndRecords|TestKnowledgeExternalHandlerCanProposeToSourceWorkspaceWithoutMembership|TestKnowledgeHumanApprovalAndWithdrawalUseExactReviewedVersion|TestKnowledgeSourceAvailabilitySuppressesPurgedAndDeletedSources|TestKnowledgeHumanChangesPreserveBaseContextAndExecutionState|TestKnowledgeHumanListDetailHistoryAndTargetSuppressPurgedSourceText|TestKnowledgeWithdrawnOrExpiredHistoryRemainsReadableWhenSourceAvailable|TestKnowledgeBoundedHistoryRemainsReachableThroughSourcePaging|TestKnowledgePagingRejectsExpiredForeignAndMalformedBoundary)$",
+      "-count=1",
+      "-timeout",
+      "120s",
+      "-json"
+    ],
+    "exit_code": 0,
+    "seconds": 15.924
+  },
+  {
+    "name": "final-a2-handler",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/handler",
+      "-run",
+      "^TestKnowledgeHTTP|^TestResolveCollaborationRecipientPrivateProjectionAndContext$",
+      "-count=1",
+      "-timeout",
+      "120s",
+      "-json"
+    ],
+    "exit_code": 0,
+    "seconds": 11.287
+  },
+  {
+    "name": "final-a2-routes",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./cmd/server",
+      "-run",
+      "^TestKnowledgeProductionRoutes",
+      "-count=1",
+      "-timeout",
+      "120s",
+      "-json"
+    ],
+    "exit_code": 0,
+    "seconds": 6.208
+  },
+  {
+    "name": "final-a2-auth",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/middleware",
+      "-run",
+      "KnowledgePAT|TestAuthStampsTrustedPrincipal|TestAuthLegacyAgentHints",
+      "-count=1",
+      "-timeout",
+      "120s",
+      "-json"
+    ],
+    "exit_code": 0,
+    "seconds": 1.4
+  },
+  {
+    "name": "final-a2-generated",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./pkg/db/generated",
+      "-run",
+      "Knowledge",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 0,
+    "seconds": 1.393
+  },
+  {
+    "name": "final-a2-service-race",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "./internal/service",
+      "-run",
+      "^(TestKnowledgeExternalHandlerCanProposeToVisibleCurrentSourceProject|TestKnowledgeProposeRejectsInvisibleArbitraryDestination|TestKnowledgeProposeHidesUnreadableSourceBeforeTargetResolution|TestKnowledgeSourceMemberCreatorWithoutParticipantCanProposeAndWithdraw|TestKnowledgeApprovalRequiresCurrentHumanProjectLeadOrAdmin|TestKnowledgeRequestIDConflictsAcrossOperationKinds|TestKnowledgeInvalidNewProposalRemainsUnsealedAndCannotFabricateRecovery|TestKnowledgeCreateLostResponseUsesPreselectedCandidateID|TestKnowledgeTargetWithdrawalRecoveryAfterSourceAndTargetRoleLoss|TestKnowledgeSourceProjectProposalRevalidatesCurrentRelationship|TestKnowledgeSourceProjectEditAfterProposalKeepsOriginalTarget|TestKnowledgeApprovalAndParticipantRemovalBothCommitOrders|TestKnowledgeCorrectionApprovalCannotReplaceNewerApprovedVersion|TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential|TestKnowledgePATWriteHoldsCredentialUntilPublication|TestKnowledgeSourceDependencyFailureIsNotEmptyKnowledge|TestKnowledgeResolverCurrentSourcesConsumersAndExactManifest|TestKnowledgeResolverNoOriginatorOrOwnerAuthorityFallback|TestKnowledgeResolverCrossWorkspaceAudienceAndPrivateChat|TestKnowledgeReadLockHintsContainOnlyBoundedMetadata|TestKnowledgeHumanTargetBudgetRefusalRetainsOriginalOutcome|TestKnowledgeFreshLockHintsOmitMissingSourceButExactManifestRefuses|TestKnowledgeSourceReadersRevalidateCachedPATForMemoryCommentsAndRecords|TestKnowledgeExternalHandlerCanProposeToSourceWorkspaceWithoutMembership|TestKnowledgeHumanApprovalAndWithdrawalUseExactReviewedVersion|TestKnowledgeSourceAvailabilitySuppressesPurgedAndDeletedSources|TestKnowledgeHumanChangesPreserveBaseContextAndExecutionState|TestKnowledgeHumanListDetailHistoryAndTargetSuppressPurgedSourceText|TestKnowledgeWithdrawnOrExpiredHistoryRemainsReadableWhenSourceAvailable|TestKnowledgeBoundedHistoryRemainsReachableThroughSourcePaging|TestKnowledgePagingRejectsExpiredForeignAndMalformedBoundary)$",
+      "-count=1",
+      "-timeout",
+      "180s",
+      "-json"
+    ],
+    "exit_code": 0,
+    "seconds": 31.051
+  },
+  {
+    "name": "related-source-service",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/service",
+      "-run",
+      "^TestCollaboration(Memory|Comment|RunRecords|Create|Access|SourceStructure)",
+      "-count=1",
+      "-timeout",
+      "180s",
+      "-json"
+    ],
+    "exit_code": 1,
+    "seconds": 0.51
+  },
+  {
+    "name": "final2-service",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/service",
+      "-run",
+      "^(TestKnowledgeExternalHandlerCanProposeToVisibleCurrentSourceProject|TestKnowledgeProposeRejectsInvisibleArbitraryDestination|TestKnowledgeProposeHidesUnreadableSourceBeforeTargetResolution|TestKnowledgeSourceMemberCreatorWithoutParticipantCanProposeAndWithdraw|TestKnowledgeApprovalRequiresCurrentHumanProjectLeadOrAdmin|TestKnowledgeRequestIDConflictsAcrossOperationKinds|TestKnowledgeInvalidNewProposalRemainsUnsealedAndCannotFabricateRecovery|TestKnowledgeCreateLostResponseUsesPreselectedCandidateID|TestKnowledgeTargetWithdrawalRecoveryAfterSourceAndTargetRoleLoss|TestKnowledgeSourceProjectProposalRevalidatesCurrentRelationship|TestKnowledgeSourceProjectEditAfterProposalKeepsOriginalTarget|TestKnowledgeApprovalAndParticipantRemovalBothCommitOrders|TestKnowledgeCorrectionApprovalCannotReplaceNewerApprovedVersion|TestKnowledgeOwnerApprovalDoesNotContendWithProjectDescriptionUpdate|TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential|TestKnowledgePATWriteHoldsCredentialUntilPublication|TestKnowledgeSourceDependencyFailureIsNotEmptyKnowledge|TestKnowledgeResolverCurrentSourcesConsumersAndExactManifest|TestKnowledgeResolverNoOriginatorOrOwnerAuthorityFallback|TestKnowledgeResolverCrossWorkspaceAudienceAndPrivateChat|TestKnowledgeReadLockHintsContainOnlyBoundedMetadata|TestKnowledgeHumanTargetBudgetRefusalRetainsOriginalOutcome|TestKnowledgeFreshLockHintsOmitMissingSourceButExactManifestRefuses|TestKnowledgeSourceReadersRevalidateCachedPATForMemoryCommentsAndRecords|TestKnowledgeExternalHandlerCanProposeToSourceWorkspaceWithoutMembership|TestKnowledgeHumanApprovalAndWithdrawalUseExactReviewedVersion|TestKnowledgeSourceAvailabilitySuppressesPurgedAndDeletedSources|TestKnowledgeHumanChangesPreserveBaseContextAndExecutionState|TestKnowledgeHumanListDetailHistoryAndTargetSuppressPurgedSourceText|TestKnowledgeWithdrawnOrExpiredHistoryRemainsReadableWhenSourceAvailable|TestKnowledgeBoundedHistoryRemainsReachableThroughSourcePaging|TestKnowledgePagingRejectsExpiredForeignAndMalformedBoundary)$",
+      "-count=1",
+      "-timeout",
+      "120s",
+      "-json"
+    ],
+    "exit_code": 0,
+    "seconds": 11.212
+  },
+  {
+    "name": "final2-service-race",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "./internal/service",
+      "-run",
+      "^(TestKnowledgeExternalHandlerCanProposeToVisibleCurrentSourceProject|TestKnowledgeProposeRejectsInvisibleArbitraryDestination|TestKnowledgeProposeHidesUnreadableSourceBeforeTargetResolution|TestKnowledgeSourceMemberCreatorWithoutParticipantCanProposeAndWithdraw|TestKnowledgeApprovalRequiresCurrentHumanProjectLeadOrAdmin|TestKnowledgeRequestIDConflictsAcrossOperationKinds|TestKnowledgeInvalidNewProposalRemainsUnsealedAndCannotFabricateRecovery|TestKnowledgeCreateLostResponseUsesPreselectedCandidateID|TestKnowledgeTargetWithdrawalRecoveryAfterSourceAndTargetRoleLoss|TestKnowledgeSourceProjectProposalRevalidatesCurrentRelationship|TestKnowledgeSourceProjectEditAfterProposalKeepsOriginalTarget|TestKnowledgeApprovalAndParticipantRemovalBothCommitOrders|TestKnowledgeCorrectionApprovalCannotReplaceNewerApprovedVersion|TestKnowledgeOwnerApprovalDoesNotContendWithProjectDescriptionUpdate|TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential|TestKnowledgePATWriteHoldsCredentialUntilPublication|TestKnowledgeSourceDependencyFailureIsNotEmptyKnowledge|TestKnowledgeResolverCurrentSourcesConsumersAndExactManifest|TestKnowledgeResolverNoOriginatorOrOwnerAuthorityFallback|TestKnowledgeResolverCrossWorkspaceAudienceAndPrivateChat|TestKnowledgeReadLockHintsContainOnlyBoundedMetadata|TestKnowledgeHumanTargetBudgetRefusalRetainsOriginalOutcome|TestKnowledgeFreshLockHintsOmitMissingSourceButExactManifestRefuses|TestKnowledgeSourceReadersRevalidateCachedPATForMemoryCommentsAndRecords|TestKnowledgeExternalHandlerCanProposeToSourceWorkspaceWithoutMembership|TestKnowledgeHumanApprovalAndWithdrawalUseExactReviewedVersion|TestKnowledgeSourceAvailabilitySuppressesPurgedAndDeletedSources|TestKnowledgeHumanChangesPreserveBaseContextAndExecutionState|TestKnowledgeHumanListDetailHistoryAndTargetSuppressPurgedSourceText|TestKnowledgeWithdrawnOrExpiredHistoryRemainsReadableWhenSourceAvailable|TestKnowledgeBoundedHistoryRemainsReachableThroughSourcePaging|TestKnowledgePagingRejectsExpiredForeignAndMalformedBoundary)$",
+      "-count=1",
+      "-timeout",
+      "180s",
+      "-json"
+    ],
+    "exit_code": 0,
+    "seconds": 22.479
+  },
+  {
+    "name": "related-source-service-round2",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/service",
+      "-run",
+      "^TestCollaboration(Memory|Comment|RunRecords|Create|Access|SourceStructure)",
+      "-count=1",
+      "-timeout",
+      "180s",
+      "-json"
+    ],
+    "exit_code": 1,
+    "seconds": 21.946
+  },
+  {
+    "name": "cleanup-regression",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/service",
+      "-run",
+      "^TestKnowledgeFreshLockHints|^TestCollaborationMemoryRealtimePublishesOnlyIssueScope$",
+      "-count=1",
+      "-timeout",
+      "60s",
+      "-json"
+    ],
+    "exit_code": 0,
+    "seconds": 5.331
+  },
+  {
+    "name": "related-source-service-round3",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/service",
+      "-run",
+      "^TestCollaboration(Memory|Comment|RunRecords|Create|Access|SourceStructure)",
+      "-count=1",
+      "-timeout",
+      "180s",
+      "-json"
+    ],
+    "exit_code": 0,
+    "seconds": 21.719
+  },
+  {
+    "name": "related-source-handler-round3",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/handler",
+      "-run",
+      "^TestCollaboration(Memory|Comment)|^TestResolveCollaborationRecipient",
+      "-count=1",
+      "-timeout",
+      "180s",
+      "-json"
+    ],
+    "exit_code": 0,
+    "seconds": 8.65
+  },
+  {
+    "name": "related-source-routes-round3",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./cmd/server",
+      "-run",
+      "^TestCollaboration(MemoryRoutes|RoutesUseAuthenticatedAccount|RoutesDenyLegacyAgent|RuntimeRecordedContentHTTP)",
+      "-count=1",
+      "-timeout",
+      "180s",
+      "-json"
+    ],
+    "exit_code": 0,
+    "seconds": 5.167
+  },
+  {
+    "name": "final3-vet",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "./..."
+    ],
+    "exit_code": 0,
+    "seconds": 3.174
+  },
+  {
+    "name": "final3-build",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "build",
+      "./..."
+    ],
+    "exit_code": 0,
+    "seconds": 6.261
+  }
+]

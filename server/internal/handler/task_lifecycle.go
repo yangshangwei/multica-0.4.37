@@ -12,6 +12,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/service"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 // RecoverOrphanedTasks is called by the daemon at startup for each runtime
@@ -63,8 +64,9 @@ func (h *Handler) RecoverOrphanedTasks(w http.ResponseWriter, r *http.Request) {
 // emits its first system message — so a crash mid-run doesn't lose the
 // resume pointer needed to continue the conversation on the next attempt.
 type PinTaskSessionRequest struct {
-	SessionID string `json:"session_id,omitempty"`
-	WorkDir   string `json:"work_dir,omitempty"`
+	SessionID      string                       `json:"session_id,omitempty"`
+	WorkDir        string                       `json:"work_dir,omitempty"`
+	KnowledgeFence *protocol.TaskKnowledgeFence `json:"knowledge_fence,omitempty"`
 }
 
 func (h *Handler) PinTaskSession(w http.ResponseWriter, r *http.Request) {
@@ -117,6 +119,14 @@ func (h *Handler) PinTaskSession(w http.ResponseWriter, r *http.Request) {
 	if _, err := qtx.LockChatSessionForTask(r.Context(), params.ID); err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		slog.Warn("pin-session failed to lock chat session", "task_id", taskID, "error", err)
 		writeError(w, http.StatusInternalServerError, "pin session failed")
+		return
+	}
+	if err := service.ValidateTaskKnowledgeReportFence(r.Context(), qtx, params.ID, req.KnowledgeFence); err != nil {
+		writeTaskKnowledgeError(w, err)
+		return
+	}
+	if err := service.ValidateTaskKnowledgeSessionPointer(r.Context(), qtx, params.ID, req.SessionID); err != nil {
+		writeTaskKnowledgeError(w, err)
 		return
 	}
 	if err := qtx.UpdateAgentTaskSession(r.Context(), params); err != nil {

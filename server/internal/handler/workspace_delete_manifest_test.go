@@ -4,6 +4,13 @@ import (
 	"context"
 	"sort"
 	"testing"
+
+	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/service"
+	"github.com/multica-ai/multica/server/internal/testutil"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 type workspaceDeleteAction string
@@ -60,6 +67,12 @@ var workspaceDeletionManifest = map[string]workspaceDeleteAction{
 	"collaboration_switch_proposal":      workspaceDeleteKeep,
 	"collaboration_target":               workspaceDeleteKeep,
 	"collaboration_termination":          workspaceDeleteKeep,
+	// Candidate versions and invalidation routing/history outlive target
+	// deletion. Only the target-owned counters are removed, after final hints
+	// are retained by DeleteKnowledgeTargetsInTx in the deletion transaction.
+	"collaboration_knowledge_candidate":    workspaceDeleteKeep,
+	"collaboration_knowledge_invalidation": workspaceDeleteKeep,
+	"collaboration_knowledge_target":       workspaceDelete,
 	// Workspace teardown purges I1 history/outbox through
 	// DeleteWorkspaceIterationData in the existing owner transaction.
 	"workspace_iteration_settings": workspaceDelete,
@@ -210,6 +223,68 @@ var workspaceDeletionManifest = map[string]workspaceDeleteAction{
 	"workspace":                          workspaceDelete,
 	"workspace_invitation":               workspaceDelete,
 	"workspace_share_link":               workspaceDelete,
+}
+
+func TestWorkspaceDeletionManifestPreservesKnowledgeHistory(t *testing.T) {
+	t.Setenv("MULTICA_AUTH_MODE", "legacy")
+	source := knowledgeHookWorkspace(t)
+	target := knowledgeHookWorkspace(t)
+	issue := collaborationBoundaryIssue(t, source)
+	dbfx.Cleanup(t, `DELETE FROM collaboration_memory_version WHERE issue_id=$1`, issue)
+	dbfx.Cleanup(t, `DELETE FROM collaboration_event WHERE issue_id=$1`, issue)
+	dbfx.Cleanup(t, `DELETE FROM collaboration_operation WHERE scope_kind='issue' AND scope_id=$1`, issue)
+	ctx := knowledgeHTTPRequest("GET", "/", testUserID, nil).Context()
+	svc := service.NewCollaborationService(testHandler.Queries, testPool, testHandler.IssueService)
+	if _, err := svc.UpdateMemory(ctx, service.CollaborationMemoryUpdateParams{IssueID: parseUUID(issue), RequestID: uuid.NewString(), Content: "retained knowledge source"}); err != nil {
+		t.Fatal(err)
+	}
+	p := protocol.CollaborationKnowledgeProposal{ProtocolVersion: 1, CandidateID: uuid.NewString(), RequestID: uuid.NewString(), Target: protocol.CollaborationKnowledgeTarget{Kind: "workspace", WorkspaceID: target}, Summary: "retained summary", Content: "retained candidate body", Sources: []protocol.CollaborationKnowledgeSource{{Kind: "memory", IssueID: issue, Version: "1", SHA256: protocol.CollaborationKnowledgeHash("retained knowledge source")}}, Evidence: []protocol.CollaborationKnowledgeEvidence{}, Applicability: protocol.CollaborationKnowledgeApplicability{Surfaces: []string{"issue"}}}
+	if _, err := svc.ProposeKnowledge(ctx, parseUUID(issue), p); err != nil {
+		t.Fatal(err)
+	}
+	approval := protocol.CollaborationKnowledgeApproveRequest{ProtocolVersion: 1, RequestID: uuid.NewString(), ExpectedStateRevision: "1", ExpectedVersion: "1", ExpectedContentSHA256: protocol.CollaborationKnowledgeHash(p.Content)}
+	if _, err := svc.ApproveKnowledge(ctx, parseUUID(p.CandidateID), approval); err != nil {
+		t.Fatal(err)
+	}
+	op, err := testHandler.Queries.GetCollaborationOperation(ctx, db.GetCollaborationOperationParams{ScopeKind: "issue", ScopeID: parseUUID(issue), ActorUserID: parseUUID(testUserID), RequestID: approval.RequestID})
+	if err != nil {
+		t.Fatal(err)
+	}
+	hint, err := testHandler.Queries.GetKnowledgeTargetHintForCause(ctx, db.GetKnowledgeTargetHintForCauseParams{CauseID: op.ID, TargetKind: pgtype.Text{String: "workspace", Valid: true}, TargetID: parseUUID(target)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = testHandler.Queries.MarkKnowledgeTargetHintDelivered(ctx, hint.ID); err != nil {
+		t.Fatal(err)
+	}
+	cause := pgtype.UUID{Bytes: uuid.New(), Valid: true}
+	if err = service.EnqueueKnowledgeSourceInvalidation(ctx, testHandler.Queries, cause, "source_issue", parseUUID(issue)); err != nil {
+		t.Fatal(err)
+	}
+	snapshot := func() string {
+		var value string
+		dbfx.QueryRow(t, `SELECT jsonb_build_object('candidate',(SELECT to_jsonb(c) FROM collaboration_knowledge_candidate c WHERE id=$1),'retained_jobs',(SELECT jsonb_agg(to_jsonb(j) ORDER BY j.id) FROM collaboration_knowledge_invalidation j WHERE j.id=$2 OR j.cause_id=$3))::text`, p.CandidateID, hint.ID, cause).Scan(&value)
+		return value
+	}
+	before := snapshot()
+	r := newRequest("DELETE", "/api/workspaces/"+target, nil)
+	r.Header.Set("X-Workspace-ID", target)
+	testutil.Call(t, testHandler.DeleteWorkspace, withURLParam(r, "id", target)).Want(204)
+	if snapshot() != before {
+		t.Fatal("target deletion changed retained candidate or pending/delivered invalidation history")
+	}
+	if dbfx.Count(t, `SELECT count(*) FROM collaboration_knowledge_target WHERE workspace_id=$1`, target) != 0 || dbfx.Count(t, `SELECT count(*) FROM workspace WHERE id=$1`, target) != 0 {
+		t.Fatal("target deletion retained target-owned counters or parent")
+	}
+	if dbfx.Count(t, `SELECT count(*) FROM collaboration_knowledge_invalidation WHERE target_workspace_id=$1 AND kind='target_hint' AND state='pending' AND knowledge_revision=2`, target) != 1 {
+		t.Fatal("target deletion did not preserve its final hint before removing the counter")
+	}
+	r = newRequest("DELETE", "/api/workspaces/"+source, nil)
+	r.Header.Set("X-Workspace-ID", source)
+	response := testutil.Call(t, testHandler.DeleteWorkspace, withURLParam(r, "id", source)).Want(409)
+	if response.Map()["code"] != "workspace_has_collaboration_records" || snapshot() != before {
+		t.Fatal("source history deletion guard or retained knowledge changed")
+	}
 }
 
 func TestWorkspaceDeletionManifestCoversPublicSchema(t *testing.T) {

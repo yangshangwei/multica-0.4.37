@@ -1,0 +1,1048 @@
+{
+  "disposition": "ship",
+  "review_type": "fresh_independent_full_finish_review",
+  "reviewer": "Codex native default subagent",
+  "reviewer_substitution": "Native default reviewer substitutes unavailable skill-specific finish-reviewer role; supplied degraded role and craft floor applied.",
+  "mode": "Operate",
+  "scope": {
+    "task": "10-30-collaboration-knowledge-promotion",
+    "packet_revision": 2,
+    "product_base_commit": "53a1662586555d14ea04efb3b951744a4993fa60",
+    "server_overlay_files": 117,
+    "platforms": [
+      "production Web",
+      "native macOS arm64 Electron"
+    ],
+    "logical_viewports": [
+      {
+        "width": 1380,
+        "height": 960
+      },
+      {
+        "width": 640,
+        "height": 960
+      }
+    ],
+    "locale": "en",
+    "whole_G2_approved": false,
+    "provider_approved": false,
+    "other_OS_approved": false
+  },
+  "persistence": {
+    "result": "pass_within_scoped_extension",
+    "authority": [
+      "prd.md",
+      "design.md",
+      "research/ui-integration-brief-2026-11-01.md"
+    ],
+    "current_core_ui_manifest_count": 22,
+    "current_core_ui_hash_drift": [],
+    "comp_new_world_gates": "not applicable",
+    "original_reports_preserved": true,
+    "original_report_sha256": {
+      "visual-review.md": "fe64839c91994e3ef4d8abb20dda7592dee034d58e80d233f3220ec56793b76e",
+      "visual-review.json": "06b96040599280c096158c8b41f9efaa96d247b8fc26d50a30537d9c4b4cdaff"
+    }
+  },
+  "evidence": {
+    "result": "valid",
+    "images_required": 30,
+    "images_viewed": 30,
+    "views_per_image": 1,
+    "view_detail": "original",
+    "superseded_images_viewed": 0,
+    "required_groups": 18,
+    "valid_groups": 18,
+    "hash_mismatches": [],
+    "dimension_mismatches": [],
+    "new_images": 26,
+    "retained_images": 4,
+    "groups": [
+      {
+        "group": "desktop:full-source-review:1380",
+        "image_indices": [
+          1,
+          2
+        ],
+        "paths": [
+          "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-full-source-review-1380-part-1.png",
+          "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-full-source-review-1380-part-2.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            772
+          ],
+          [
+            692,
+            1353.75
+          ]
+        ],
+        "panel_height": 1353.75,
+        "coverage_gaps": [],
+        "observation": "Pending v1; full long body/identifier, comment source/version, verification claim, exact-version acknowledgement, reason/actions and history visible across both frames."
+      },
+      {
+        "group": "desktop:full-source-review:640",
+        "image_indices": [
+          3,
+          4,
+          5
+        ],
+        "paths": [
+          "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-full-source-review-640-part-1.png",
+          "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-full-source-review-640-part-2.png",
+          "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-full-source-review-640-part-3.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            728
+          ],
+          [
+            648,
+            1392
+          ],
+          [
+            1312,
+            1670.5
+          ]
+        ],
+        "panel_height": 1670.5,
+        "coverage_gaps": [],
+        "observation": "Same pending review reflows; three overlapping frames cover the full review through the history footer."
+      },
+      {
+        "group": "desktop:project-managed:1380",
+        "image_indices": [
+          6,
+          7
+        ],
+        "paths": [
+          "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-project-managed-1380-part-1.png",
+          "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-project-managed-1380-part-2.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            840.25
+          ],
+          [
+            728.75,
+            1296.75
+          ]
+        ],
+        "panel_height": 1296.75,
+        "coverage_gaps": [],
+        "observation": "Superseded v1 and approved corrected v2; right properties panel includes audit metadata, source, body and final controls."
+      },
+      {
+        "group": "desktop:project-managed:640",
+        "image_indices": [
+          8,
+          9
+        ],
+        "paths": [
+          "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-project-managed-640-part-1.png",
+          "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-project-managed-640-part-2.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            944
+          ],
+          [
+            444.5,
+            1135.5
+          ]
+        ],
+        "panel_height": 1135.5,
+        "coverage_gaps": [],
+        "observation": "Opaque, settled responsive sheet; complete review and bottom controls; background blur is confined to the incumbent backdrop."
+      },
+      {
+        "group": "desktop:purged-target:1380",
+        "image_indices": [
+          10
+        ],
+        "paths": [
+          "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-purged-target-1380-part-1.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            710
+          ]
+        ],
+        "panel_height": 710,
+        "coverage_gaps": [],
+        "observation": "Source-unavailable replacement text hides candidate title/body/references; permitted audit metadata remains."
+      },
+      {
+        "group": "desktop:purged-target:640",
+        "image_indices": [
+          11
+        ],
+        "paths": [
+          "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-purged-target-640-part-1.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            758
+          ]
+        ],
+        "panel_height": 758,
+        "coverage_gaps": [],
+        "observation": "Complete purged contribution panel and history footer; no concealed material visible."
+      },
+      {
+        "group": "desktop:workspace-managed:1380",
+        "image_indices": [
+          12,
+          13
+        ],
+        "paths": [
+          "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-workspace-managed-1380-part-1.png",
+          "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-workspace-managed-1380-part-2.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            840
+          ],
+          [
+            255,
+            868.75
+          ]
+        ],
+        "panel_height": 868.75,
+        "coverage_gaps": [],
+        "observation": "Independent approved workspace v1; full panel bottom and history visible in part 2."
+      },
+      {
+        "group": "desktop:workspace-managed:640",
+        "image_indices": [
+          14,
+          15
+        ],
+        "paths": [
+          "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-workspace-managed-640-part-1.png",
+          "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-workspace-managed-640-part-2.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            840
+          ],
+          [
+            295,
+            916.75
+          ]
+        ],
+        "panel_height": 916.75,
+        "coverage_gaps": [],
+        "observation": "Independent approved workspace v1 reflows; part 2 places withdrawal/history and panel bottom fully inside the viewport."
+      },
+      {
+        "group": "web:full-source-review:1380",
+        "image_indices": [
+          16,
+          17
+        ],
+        "paths": [
+          "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-full-source-review-1380-part-1.png",
+          "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-full-source-review-1380-part-2.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            828.5
+          ],
+          [
+            748.5,
+            1353.75
+          ]
+        ],
+        "panel_height": 1353.75,
+        "coverage_gaps": [],
+        "observation": "Pending v1 with long copy/identifier, comment source/version, verification claim and exact-version controls."
+      },
+      {
+        "group": "web:full-source-review:640",
+        "image_indices": [
+          18,
+          19,
+          20
+        ],
+        "paths": [
+          "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-full-source-review-640-part-1.png",
+          "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-full-source-review-640-part-2.png",
+          "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-full-source-review-640-part-3.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            784.5
+          ],
+          [
+            704.5,
+            1504.5
+          ],
+          [
+            1424.5,
+            1625
+          ]
+        ],
+        "panel_height": 1625,
+        "coverage_gaps": [],
+        "observation": "Three overlapping frames cover long content, source and approval statement through the complete decision/history footer."
+      },
+      {
+        "group": "web:project-managed:1380",
+        "image_indices": [
+          21,
+          22
+        ],
+        "paths": [
+          "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-project-managed-1380-part-1.png",
+          "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-project-managed-1380-part-2.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            879.75
+          ],
+          [
+            575.75,
+            1249.25
+          ]
+        ],
+        "panel_height": 1249.25,
+        "coverage_gaps": [],
+        "observation": "Project panel shows superseded v1 and corrected approved v2, audit metadata and complete source/decision/history content."
+      },
+      {
+        "group": "web:project-managed:640",
+        "image_indices": [
+          23,
+          24
+        ],
+        "paths": [
+          "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-project-managed-640-part-1.png",
+          "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-project-managed-640-part-2.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            944
+          ],
+          [
+            394,
+            1135.5
+          ]
+        ],
+        "panel_height": 1135.5,
+        "coverage_gaps": [],
+        "observation": "Responsive sheet is present, opaque and fully expanded; two frames cover the complete selected contribution and footer."
+      },
+      {
+        "group": "web:purged-target:1380",
+        "image_indices": [
+          25
+        ],
+        "paths": [
+          "runs/final3/collaboration-knowledge-We-2eb30-and-managed-target-material-chromium--web-purged-target-1380-part-1.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            710
+          ]
+        ],
+        "panel_height": 710,
+        "coverage_gaps": [],
+        "observation": "Retained valid frame; full source-unavailable contribution with permitted audit metadata and no candidate material."
+      },
+      {
+        "group": "web:purged-target:640",
+        "image_indices": [
+          26
+        ],
+        "paths": [
+          "runs/final3/collaboration-knowledge-We-2eb30-and-managed-target-material-chromium--web-purged-target-640-part-1.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            710
+          ]
+        ],
+        "panel_height": 710,
+        "coverage_gaps": [],
+        "observation": "Retained valid narrow frame; source-unavailable panel and bottom controls are fully visible."
+      },
+      {
+        "group": "web:restricted-target:1380",
+        "image_indices": [
+          27
+        ],
+        "paths": [
+          "runs/final3/collaboration-knowledge-We-9d8a4-e-material-but-can-withdraw-chromium--web-restricted-target-1380-part-1.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            459
+          ]
+        ],
+        "panel_height": 459,
+        "coverage_gaps": [],
+        "observation": "Retained valid frame; generic restricted contribution/status and reason/withdraw controls; no source identity, body, source link or review metadata."
+      },
+      {
+        "group": "web:restricted-target:640",
+        "image_indices": [
+          28
+        ],
+        "paths": [
+          "runs/final3/collaboration-knowledge-We-9d8a4-e-material-but-can-withdraw-chromium--web-restricted-target-640-part-1.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            459
+          ]
+        ],
+        "panel_height": 459,
+        "coverage_gaps": [],
+        "observation": "Retained valid narrow frame; same restricted concealment and complete withdrawal control area."
+      },
+      {
+        "group": "web:workspace-managed:1380",
+        "image_indices": [
+          29
+        ],
+        "paths": [
+          "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-workspace-managed-1380-part-1.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            868.75
+          ]
+        ],
+        "panel_height": 868.75,
+        "coverage_gaps": [],
+        "observation": "Independent approved workspace v1; full audit/content/source/decision/history panel."
+      },
+      {
+        "group": "web:workspace-managed:640",
+        "image_indices": [
+          30
+        ],
+        "paths": [
+          "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-workspace-managed-640-part-1.png"
+        ],
+        "visual_valid": true,
+        "coverage_spans": [
+          [
+            0,
+            868.75
+          ]
+        ],
+        "panel_height": 868.75,
+        "coverage_gaps": [],
+        "observation": "Entire approved workspace panel visible at narrow width; metadata and controls fit without horizontal clipping."
+      }
+    ],
+    "images": [
+      {
+        "index": 1,
+        "path": "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-full-source-review-1380-part-1.png",
+        "sha256": "8681a8bcfff22c3a06a6da3bdd771cb9c5812c5e76f7c07050234c676b23ec4d",
+        "png_width": 2760,
+        "png_height": 1920,
+        "logical_viewport": {
+          "width": 1380,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 2,
+        "path": "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-full-source-review-1380-part-2.png",
+        "sha256": "1a9895a2272ae305fef035ae0cfde2ddbf1921d05983279eb85a58b940ee26ce",
+        "png_width": 2760,
+        "png_height": 1920,
+        "logical_viewport": {
+          "width": 1380,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 3,
+        "path": "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-full-source-review-640-part-1.png",
+        "sha256": "1fb00510ed699d34965a7f4b38d669a7a8df2a2fb5764b64b035d4bd0069539d",
+        "png_width": 1280,
+        "png_height": 1920,
+        "logical_viewport": {
+          "width": 640,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 4,
+        "path": "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-full-source-review-640-part-2.png",
+        "sha256": "0506eee5a756028db14c7be793467345c16ab310d739d025908dade98567fbe2",
+        "png_width": 1280,
+        "png_height": 1920,
+        "logical_viewport": {
+          "width": 640,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 5,
+        "path": "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-full-source-review-640-part-3.png",
+        "sha256": "0b10d1ed4eba89656d66da2e535e37f733c8d0778a1f2bbb51394126793962b7",
+        "png_width": 1280,
+        "png_height": 1920,
+        "logical_viewport": {
+          "width": 640,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 6,
+        "path": "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-project-managed-1380-part-1.png",
+        "sha256": "a50b47d1cc32a6a6404fe34b6db7e06433d69aac5378d25b48bcb648cfbbb70c",
+        "png_width": 2760,
+        "png_height": 1920,
+        "logical_viewport": {
+          "width": 1380,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 7,
+        "path": "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-project-managed-1380-part-2.png",
+        "sha256": "6c2bd2c117745676af24aa0fecbe93974d0b2371c9c91f957661789c8675082a",
+        "png_width": 2760,
+        "png_height": 1920,
+        "logical_viewport": {
+          "width": 1380,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 8,
+        "path": "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-project-managed-640-part-1.png",
+        "sha256": "c6d1150a42c22a9de5615e26c47641bf73eef257cd9e41a1b01aa5dd87912240",
+        "png_width": 1280,
+        "png_height": 1920,
+        "logical_viewport": {
+          "width": 640,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 9,
+        "path": "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-project-managed-640-part-2.png",
+        "sha256": "8477ada3c205e25d5d593e93eb4c86a75da4c303a89b304ae2c197846b19c09d",
+        "png_width": 1280,
+        "png_height": 1920,
+        "logical_viewport": {
+          "width": 640,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 10,
+        "path": "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-purged-target-1380-part-1.png",
+        "sha256": "ad34e962d12d753e842381abb81689feace0532624a82e3fc064eff0828a6d0f",
+        "png_width": 2760,
+        "png_height": 1920,
+        "logical_viewport": {
+          "width": 1380,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 11,
+        "path": "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-purged-target-640-part-1.png",
+        "sha256": "81ac7e57ed1254aed299083cd316450e72aed069e9b6651147a53ca3377a0873",
+        "png_width": 1280,
+        "png_height": 1920,
+        "logical_viewport": {
+          "width": 640,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 12,
+        "path": "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-workspace-managed-1380-part-1.png",
+        "sha256": "41931ae493ef2b12b42548003f4d292603083e76091e76a8ed63dc40fa51831c",
+        "png_width": 2760,
+        "png_height": 1920,
+        "logical_viewport": {
+          "width": 1380,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 13,
+        "path": "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-workspace-managed-1380-part-2.png",
+        "sha256": "9825dc8c9784c86887b7ea3cc42467804e6f3e87c8fa794da4b9e0c51d299ecd",
+        "png_width": 2760,
+        "png_height": 1920,
+        "logical_viewport": {
+          "width": 1380,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 14,
+        "path": "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-workspace-managed-640-part-1.png",
+        "sha256": "f713addbb4d2243fa38483a3003ede268df32194a671b21f94bce485a3ceb281",
+        "png_width": 1280,
+        "png_height": 1920,
+        "logical_viewport": {
+          "width": 640,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 15,
+        "path": "runs/recapture4/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-workspace-managed-640-part-2.png",
+        "sha256": "78b7501d7dbf86796b05e45fc0f98d73bdccede63504871dd42fb2a993f06787",
+        "png_width": 1280,
+        "png_height": 1920,
+        "logical_viewport": {
+          "width": 640,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 16,
+        "path": "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-full-source-review-1380-part-1.png",
+        "sha256": "feb762a39e48a6cc85d89ac8dd832af3a26354dd9e7c2240f9dd0be7524204f0",
+        "png_width": 1380,
+        "png_height": 960,
+        "logical_viewport": {
+          "width": 1380,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 17,
+        "path": "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-full-source-review-1380-part-2.png",
+        "sha256": "b1950be4790c25652ad8861346ca104824b47c204174c8b1948635665437fe2b",
+        "png_width": 1380,
+        "png_height": 960,
+        "logical_viewport": {
+          "width": 1380,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 18,
+        "path": "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-full-source-review-640-part-1.png",
+        "sha256": "425b38c1038246ead16b107a56a6d4f4f9b515663cd984a389930185f3f0d877",
+        "png_width": 640,
+        "png_height": 960,
+        "logical_viewport": {
+          "width": 640,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 19,
+        "path": "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-full-source-review-640-part-2.png",
+        "sha256": "aa17d177eac2961a3e8dd7076eb6e450b58ec5d847d4281401ce3f7a5116a719",
+        "png_width": 640,
+        "png_height": 960,
+        "logical_viewport": {
+          "width": 640,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 20,
+        "path": "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-full-source-review-640-part-3.png",
+        "sha256": "092ec182eb704ec9b1aa04c33608fc557d86574e33863b05ba1bd91d5a1787b3",
+        "png_width": 640,
+        "png_height": 960,
+        "logical_viewport": {
+          "width": 640,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 21,
+        "path": "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-project-managed-1380-part-1.png",
+        "sha256": "a79a54b428e4784c6916c0b7d23a8c8ba5c81046bc8a6b4a1b8cbcbe5c1b3106",
+        "png_width": 1380,
+        "png_height": 960,
+        "logical_viewport": {
+          "width": 1380,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 22,
+        "path": "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-project-managed-1380-part-2.png",
+        "sha256": "056fdd3d238ef8ede42c6d0c6368786025f667225e8f1ef3c54ca855341c3fc1",
+        "png_width": 1380,
+        "png_height": 960,
+        "logical_viewport": {
+          "width": 1380,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 23,
+        "path": "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-project-managed-640-part-1.png",
+        "sha256": "2d212f2e19a1c540918c969ca7ef90717fd3050ab2a828871496bd8f2e7b9ef6",
+        "png_width": 640,
+        "png_height": 960,
+        "logical_viewport": {
+          "width": 640,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 24,
+        "path": "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-project-managed-640-part-2.png",
+        "sha256": "67c70ffc7fdd0b5711c98d9264980effdb6f9cc93c9431dbc88a2a2eb83dbe85",
+        "png_width": 640,
+        "png_height": 960,
+        "logical_viewport": {
+          "width": 640,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 25,
+        "path": "runs/final3/collaboration-knowledge-We-2eb30-and-managed-target-material-chromium--web-purged-target-1380-part-1.png",
+        "sha256": "f1ece0e508a4651da0c7bb9840a4577fe3d7261cdd26d09f120d121c09f4acc3",
+        "png_width": 1380,
+        "png_height": 960,
+        "logical_viewport": {
+          "width": 1380,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 26,
+        "path": "runs/final3/collaboration-knowledge-We-2eb30-and-managed-target-material-chromium--web-purged-target-640-part-1.png",
+        "sha256": "5cdeb3f47c548b54e9bafcd85ee22122c8f7213e6723760082946cc37f4c5e79",
+        "png_width": 640,
+        "png_height": 960,
+        "logical_viewport": {
+          "width": 640,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 27,
+        "path": "runs/final3/collaboration-knowledge-We-9d8a4-e-material-but-can-withdraw-chromium--web-restricted-target-1380-part-1.png",
+        "sha256": "1d5030167013dcd7eec53292449175af593531be700a59a35394def338cfb667",
+        "png_width": 1380,
+        "png_height": 960,
+        "logical_viewport": {
+          "width": 1380,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 28,
+        "path": "runs/final3/collaboration-knowledge-We-9d8a4-e-material-but-can-withdraw-chromium--web-restricted-target-640-part-1.png",
+        "sha256": "77d5f201dc9a266a06e27f96f1e6585a1eb83dc57ad889abbae325b7751b519d",
+        "png_width": 640,
+        "png_height": 960,
+        "logical_viewport": {
+          "width": 640,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 29,
+        "path": "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-workspace-managed-1380-part-1.png",
+        "sha256": "b46c49a8d64d4bf727529025682de24acac8111e4180c77f47014b4045c7f718",
+        "png_width": 1380,
+        "png_height": 960,
+        "logical_viewport": {
+          "width": 1380,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      },
+      {
+        "index": 30,
+        "path": "runs/recapture4/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-workspace-managed-640-part-1.png",
+        "sha256": "15765585d6ba78092ea88cebc2a4d7f7b783f5fbc1b2061d4a8c7ad6f7927b89",
+        "png_width": 640,
+        "png_height": 960,
+        "logical_viewport": {
+          "width": 640,
+          "height": 960
+        },
+        "viewed": true,
+        "view_count": 1,
+        "detail": "original",
+        "visual_valid": true
+      }
+    ]
+  },
+  "fidelity": [
+    {
+      "element": "TYPE",
+      "state": "match",
+      "evidence": "Existing compact sans typography, body/caption role hierarchy and semantic weight are consistent across the shared source, project and workspace surfaces. Long copy and identifiers wrap at both required widths."
+    },
+    {
+      "element": "MATERIAL",
+      "state": "match",
+      "evidence": "Operational UI uses the incumbent flat surfaces, borders and real control/icon system. No imitation physical material or asset promise applies to this extension."
+    },
+    {
+      "element": "GROUND",
+      "state": "match",
+      "evidence": "Neutral light content and muted shell/selected-row surfaces remain consistent with the incumbent visible UI and semantic-token classes. No new OWN-WORLD color or approved comp provides a separate pixel target."
+    },
+    {
+      "element": "Source collection and review topology",
+      "state": "match",
+      "evidence": "Knowledge candidates remain inside collaboration detail, with title/version/state first, then full review and human decisions. Images 1–5 and 16–20."
+    },
+    {
+      "element": "Project/workspace separation",
+      "state": "match",
+      "evidence": "Managed sections are mounted independently in existing project properties and workspace settings. Images 6–15 and 21–30; mount code and reported acceptance independently support base-editor separation."
+    },
+    {
+      "element": "Narrow project properties",
+      "state": "adaptation",
+      "evidence": "Incumbent responsive properties Sheet is used at 640 pixels, as required by the Operate brief's preservation of existing navigation/components. Images 8–9 and 23–24 show settled content and complete controls."
+    },
+    {
+      "element": "Density, overflow and full review access",
+      "state": "match",
+      "evidence": "Metadata wraps, long identifiers break inside the content measure, status text remains separate, and all 18 groups cover their panel from start to bottom. No material overlap or horizontal clipping is visible."
+    },
+    {
+      "element": "State and selection hierarchy",
+      "state": "match",
+      "evidence": "Pending, approved, superseded, source-unavailable and restricted states are labeled in text. Selected candidate weight persists in code alongside hover background; aria-pressed is present. Pixels establish resting-state legibility, not every hover state."
+    },
+    {
+      "element": "Exact review identity and provenance",
+      "state": "match",
+      "evidence": "Source labels show the supplied comment/shared-context version; summaries, candidate version, scope, proposer and original approval dates/actors remain separate. Digest/history are explicit disclosures. Code keys confirmation to candidate/revision/availability/hash/version and uses supplied source identities."
+    },
+    {
+      "element": "Stable audit facts and lawful names",
+      "state": "adaptation",
+      "evidence": "Source review uses already-authorized actor/destination names; managed targets retain supplied stable IDs when no lawful display label is present. The approved brief forbids private-directory lookups; IDs remain readable rather than guessed."
+    },
+    {
+      "element": "Approval, verification and model-use distinction",
+      "state": "match",
+      "evidence": "Pending review explicitly says approval permits eligible use without verifying a claim or proving task injection. Verification remains a labeled claim; locale strings qualify 'Verified by proposer' / '提议者已验证'. Approved target copy says access and expiry are checked when used."
+    },
+    {
+      "element": "Purged material privacy",
+      "state": "match",
+      "evidence": "Images 10–11 and 25–26 hide candidate summary/body/source references while retaining allowed version/status/actor/time metadata. This matches design §6.1; a source-collaboration link remains only for a source-readable unavailable projection."
+    },
+    {
+      "element": "Restricted target privacy and control",
+      "state": "match",
+      "evidence": "Images 27–28 show only generic restricted/status text and reason/withdraw controls. No source title, identity, body, link, hash, version history or reject/approve control is exposed."
+    },
+    {
+      "element": "Review and decision control semantics",
+      "state": "match",
+      "evidence": "Unchecked exact-version acknowledgement precedes disabled approval. Reason fields precede disabled withdrawal/rejection. Current code supplies labels, native/shared controls, focus-visible styles and capability gates; existing keyboard/receipt tests support the interaction contract."
+    },
+    {
+      "element": "Truth and synthetic data",
+      "state": "match",
+      "evidence": "The acceptance packet identifies synthetic actors and test-owned fixtures, including seeded retained-run records. The views show these records without inventing commercial evidence or implying Provider understanding."
+    }
+  ],
+  "ceiling": {
+    "result": "reached_within_operate_scope",
+    "mechanical_detector": {
+      "source": "parent main-recheck.json",
+      "findings": [],
+      "rerun": false
+    },
+    "accessibility": "Visible readability plus supporting code/test semantics only; no blanket WCAG or platform accessibility certification."
+  },
+  "material_fixes": [],
+  "keep": "Exact-version human confirmation, original audit/provenance facts, source-dependent concealment, reason-gated withdrawal, and separation of managed contributions from editable base context and verified/model-use claims.",
+  "functional_evidence": {
+    "attributed_to": "supplied ui-platform-acceptance summary and recapture-summary; not rerun by reviewer",
+    "independent_acceptance_cases": {
+      "passed": 8,
+      "total": 8
+    },
+    "final_affected_recapture_journeys": {
+      "passed": 2,
+      "total": 2
+    },
+    "counts_not_summed": true
+  },
+  "limitations": [
+    "Disposition is limited to the frozen English UI capture packet at 1380×960 and 640×960 logical viewports: production Web and native macOS arm64 Electron.",
+    "Not whole-task G2, runtime/next-input injection, real Provider/model understanding, packaged installation/full Main bootstrap, Windows/Linux or other operating-system approval.",
+    "No browser, server, database, model, agent CLI, tests or detector were run by this reviewer. Functional results are attributed to the supplied acceptance evidence, not inferred from screenshots.",
+    "Accessibility assessment covers visible readability and supporting component/test source. Numeric WCAG contrast, screen-reader output, complete keyboard traversal, focus traps, all hover/loading/error/empty states, motion and other locales were not independently exercised.",
+    "The required static packet does not visually cover proposal-form details, recovery/expiry transitions, expanded digest/history or every language. Existing source and reported tests support those contracts without extending the screenshot verdict to unseen states.",
+    "No standalone PRODUCT.md/DESIGN.md, approved comp, QUALITY BAR card or five-block seed contract was supplied. The approved task PRD/design and Operate integration brief deliberately govern this extension; new-world/comp persistence and seed gates are not applicable.",
+    "Design sections outside the UI/authority/source-availability scope and the full implementation/test tree were not re-reviewed."
+  ],
+  "reviewer_actions": {
+    "browser": false,
+    "server": false,
+    "database": false,
+    "model": false,
+    "tests": false,
+    "second_detector": false,
+    "product_edits": false,
+    "subagents": false
+  }
+}

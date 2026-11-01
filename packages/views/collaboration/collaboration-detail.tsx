@@ -20,6 +20,7 @@ import { CollaborationAttachmentPanel } from "./attachment-panel";
 import { CollaborationFieldSummary } from "./field-summary";
 import { CollaborationChildren } from "./children";
 import { CollaborationMemoryPanel } from "./memory-panel";
+import { CollaborationKnowledgePanel } from "./knowledge-panel";
 import { useRestoredScrollRef } from "../platform";
 import { useNavigation } from "../navigation";
 
@@ -93,6 +94,7 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
     <CollaborationAttachmentPanel scope={scope} issue={issue} />
     <CollaborationExecutionPanel scope={scope} issue={issue} selectedRunId={destination.runId} />
     <CollaborationMemoryPanel scope={scope} issue={issue} destination={destination} isScopeResume={navigation.isScopeResume} navigationKey={navigation.navigationKey} />
+    <CollaborationKnowledgePanel scope={scope} issue={issue} />
     <CollaborationActivity scope={scope} destination={destination} />
     <section className="min-w-0 space-y-4"><h3 className="text-body font-semibold">{t(($) => $.detail.comments)}</h3>
       {comments.isPending && <p role="status" className="text-body text-muted-foreground">{t(($) => $.page.loading)}</p>}

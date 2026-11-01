@@ -50,6 +50,7 @@ export class WSClient {
   private onReconnectCallbacks = new Set<() => void>();
   private authenticated = false;
   private onAuthenticatedCallbacks = new Set<() => void>();
+  private onDisconnectedCallbacks = new Set<() => void>();
   private scopes = new Map<string, { scope: "account" | "issue"; id: string; count: number }>();
   private anyHandlers = new Set<(msg: WSMessage) => void>();
   private logger: Logger;
@@ -162,6 +163,7 @@ export class WSClient {
     socket.onclose = () => {
       if (this.ws !== socket) return;
       this.authenticated = false;
+      this.notifyDisconnected();
       this.scheduleReconnect();
     };
 
@@ -216,6 +218,7 @@ export class WSClient {
   }
 
   disconnect() {
+    this.notifyDisconnected();
     if (this.reconnectTimer) {
       clearTimeout(this.reconnectTimer);
       this.reconnectTimer = null;
@@ -236,7 +239,19 @@ export class WSClient {
     this.anyHandlers.clear();
     this.onReconnectCallbacks.clear();
     this.onAuthenticatedCallbacks.clear();
+    this.onDisconnectedCallbacks.clear();
     this.scopes.clear();
+  }
+
+  onDisconnected(callback: () => void): () => void {
+    this.onDisconnectedCallbacks.add(callback);
+    return () => { this.onDisconnectedCallbacks.delete(callback); };
+  }
+
+  private notifyDisconnected(): void {
+    for (const callback of this.onDisconnectedCallbacks) {
+      try { callback(); } catch { /* One consumer cannot prevent other private caches from expiring. */ }
+    }
   }
 
   private protectedConnection() {

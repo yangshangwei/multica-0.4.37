@@ -1,0 +1,11 @@
+# F3 review correction boundary
+
+Original independent findings F3-R1 (P1 stale legacy PAT) and F3-R2 (P2 permissive outer envelope) remain reviewer-owned. This correction supplies implementation/evidence for independent re-review; it does not mark them closed.
+
+Files: existing realtime/collaboration.go, realtime/hub.go and knowledge realtime tests; new realtime/collaboration_knowledge_envelope.go and tests; new cmd/server/collaboration_knowledge_realtime_test.go. No scanner/query/producer/migration/Core changes. Main approved the scope; A2 owns auth principal/middleware and provides PATTokenHash (json excluded). No router change: SetPasswordQueries already supplies the auth DB handle in every mode.
+
+Credential boundary: capture the actually authenticated token and subject in a private closure at socket establishment. Before each knowledge WriteMessage, directly check current password identity or legacy PAT row/hash/owner/revocation/expiry; JWT retains cryptographic/subject verification and current scope-account gates. No PATCache read or cache-eviction dependency. Missing validation closure/database capability fails closed for knowledge. WebSocket only supports subscribe/unsubscribe/ping after its initial auth; a supported token refresh is a new socket, which creates a new binding. No in-place refresh is invented.
+
+Envelope boundary: inspect decoded outer keys/values without last-key wins; any knowledge interpretation selects strict validation. Require canonical type, exact payload, optional original UUID:target event ID; reject malformed JSON/UTF-8, duplicate/alias/private outer data. Build new canonical bytes per send rather than mutating or forwarding the shared raw frame. Valid unrelated events retain original bytes and behavior.
+
+Evidence: regression fail-first runs, real socket held at target authority gate, actual PATCache kept stale after PostgreSQL revoke/expiry, valid PAT/JWT/password controls, direct validator errors/subject mismatch/missing capability, private/duplicate/malformed outer frame socket denial and valid relay positive. Run focused/race/static and touched integration only, preserve original evidence unchanged, write correction snapshots/commands/test inventory here.

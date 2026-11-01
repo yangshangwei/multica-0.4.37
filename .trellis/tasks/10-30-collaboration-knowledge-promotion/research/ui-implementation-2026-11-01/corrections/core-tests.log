@@ -1,0 +1,36 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/packages/core
+
+ ✓ api/collaboration-knowledge.test.ts > routes every human read with the source-independent scope and exact pagination 39ms
+ ✓ api/collaboration-knowledge.test.ts > serializes all writes with the preselected candidate/request and exact revision unchanged 13ms
+ ✓ api/collaboration-knowledge.test.ts > does not misclassify structured access loss or malformed claimed support as an older route 8ms
+ ✓ api/collaboration-knowledge.test.ts > rejects mismatched identities, cyclic pages, over-limit pages and foreign operation results 12ms
+ ✓ api/collaboration-knowledge.test.ts > fails malformed write intent before transport and preserves HTTP conflicts for explicit reread 2ms
+ ✓ api/collaboration-knowledge.test.ts > rejects in-progress recovery, malformed JSON and an approval of a different observed version 3ms
+ ✓ api/collaboration-knowledge.test.ts > does not confirm contradictory HTTP status and sealed receipt outcomes 3ms
+ ✓ api/collaboration-knowledge.test.ts > redacts project knowledge request/error logs at HTTP 404 without losing workspace headers 3ms
+ ✓ api/collaboration-knowledge.test.ts > redacts project knowledge request/error logs at HTTP 500 without losing workspace headers 5ms
+ ✓ api/collaboration-knowledge.test.ts > redacts workspace knowledge request/error logs at HTTP 404 without losing workspace headers 2ms
+ ✓ api/collaboration-knowledge.test.ts > redacts workspace knowledge request/error logs at HTTP 500 without losing workspace headers 5ms
+ ✓ collaboration/knowledge-actions.test.ts > allocates a new request UUID per intent and preselects the recoverable candidate before create 4ms
+ ✓ collaboration/knowledge-actions.test.ts > can reject an unavailable pending candidate expiring at null using only its exact state revision 2ms
+ ✓ collaboration/knowledge-actions.test.ts > can reject an unavailable pending candidate expiring at 2020-01-01T00:00:00Z using only its exact state revision 1ms
+ ✓ collaboration/knowledge-actions.test.ts > does not infer rejection rights from unavailable or restricted rows and keeps expired approval denied 0ms
+ ✓ collaboration/knowledge-actions.test.ts > pins exact reviewed content/state revisions and refuses inferred or unavailable approval authority 1ms
+ ✓ collaboration/knowledge-actions.test.ts > retains the same immutable request after uncertain transport and never optimistically approves 1ms
+ ✓ collaboration/knowledge-actions.test.ts > recovers a content-free original receipt with candidate/request only after losing source access and target role 1ms
+ ✓ collaboration/knowledge-actions.test.ts > keeps unknown/mismatched receipts uncertain and clears private projections for explicit conflict reread 0ms
+ ✓ collaboration/knowledge-actions.test.ts > recovers the same original actor/key after a fresh login while fencing the old live request scope 1ms
+ ✓ collaboration/knowledge-actions.test.ts > saves only recovery identity before a lost create response and refuses transport if preservation fails 1ms
+ ✓ collaboration/knowledge-actions.test.ts > retires only a first definitively unused proposal identity so a new explicit intent can be created 1ms
+ ✓ collaboration/knowledge-actions.test.ts > retains an earlier ambiguous request through later unsealed rejection, missing recovery and storage changes 1ms
+ ✓ collaboration/knowledge-actions.test.ts > does not discard an overlapping attempt when the first call receives an unsealed rejection 0ms
+ ✓ collaboration/knowledge-actions.test.ts > distinguishes failed preservation before POST from failed cleanup after a known receipt 1ms
+
+ Test Files  2 passed (2)
+      Tests  25 passed (25)
+   Start at  06:36:56
+   Duration  1.48s (transform 1.37s, setup 0ms, import 2.19s, tests 113ms, environment 0ms)
+
+JSON report written to /Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-implementation-2026-11-01/corrections/core-vitest.json

@@ -137,6 +137,9 @@ func (t *collaborationContentTx) recordCommentEvent(ctx context.Context, receipt
 	}
 	_, err = t.q.CreateCollaborationContentEvent(ctx, db.CreateCollaborationContentEventParams{
 		EventID: receipt.EventID, IssueID: t.access.Issue.ID, EventSeq: receipt.EventSeq, ActorID: t.actor, Kind: receipt.Code, Payload: payload})
+	if err == nil && receipt.Code == "comment_deleted" {
+		err = EnqueueKnowledgeSourceInvalidation(ctx, t.q, receipt.EventID, "source_issue", t.access.Issue.ID)
+	}
 	return err
 }
 

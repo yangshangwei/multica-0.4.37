@@ -6,6 +6,7 @@ import type { MemberWithUser, Workspace } from "@multica/core/types";
 import { ApiError } from "@multica/core/api";
 import { workspaceKeys } from "@multica/core/workspace/queries";
 import { renderWithI18n } from "../../test/i18n";
+vi.mock("../../collaboration/knowledge-panel", () => ({ ManagedKnowledgePanel: () => null }));
 
 const requests = vi.hoisted(() => ({
   listMembers: vi.fn(), listWorkspaces: vi.fn(), updateWorkspace: vi.fn(),

@@ -1,0 +1,62 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/packages/core
+
+··········x·x
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  collaboration/knowledge-actions.test.ts > retires only a first definitively unused proposal identity so a new explicit intent can be created
+AssertionError: expected ApiError: invalid_knowledge_request { …(5) } to match object { …(2) }
+(7 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "name": "KnowledgeUnusedIntentError",
+-   "reason": "rejected",
++ ApiError {
++   "name": "ApiError",
+  }
+
+ ❯ collaboration/knowledge-actions.test.ts:139:66
+    137|   const f = setup(); const intent = prepareKnowledgeProposal(f.scope, …
+    138|   vi.spyOn(f.api, "proposeCollaborationKnowledge").mockRejectedValue(u…
+    139|   await expect(executeKnowledgeIntent(f.client, f.scope, intent)).reje…
+       |                                                                  ^
+    140|   expect(readPendingKnowledgeOperations(f.scope)).toEqual([]);
+    141|   const next = prepareKnowledgeProposal(f.scope, knowledgeCandidatesFi…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  collaboration/knowledge-actions.test.ts > distinguishes failed preservation before POST from failed cleanup after a known receipt
+AssertionError: expected KnowledgeRecoveryStorageError: The origin… to match object { …(2) }
+
+- Expected
++ Received
+
+- {
+-   "name": "KnowledgeUnusedIntentError",
+-   "reason": "storage",
++ KnowledgeRecoveryStorageError {
++   "name": "KnowledgeRecoveryStorageError",
+  }
+
+ ❯ collaboration/knowledge-actions.test.ts:162:75
+    160|   const send = vi.spyOn(f.api, "proposeCollaborationKnowledge");
+    161|   const storage = testStorage(); vi.spyOn(storage, "setItem").mockImpl…
+    162|   await expect(executeKnowledgeIntent(f.client, f.scope, intent, stora…
+       |                                                                           ^
+    163|   expect(send).not.toHaveBeenCalled(); expect(readPendingKnowledgeOper…
+    164|   const after = testStorage(); vi.spyOn(after, "removeItem").mockImple…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 11 passed (13)
+   Start at  06:29:04
+   Duration  647ms (transform 383ms, setup 0ms, import 566ms, tests 15ms, environment 0ms)
+
+JSON report written to /Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-implementation-2026-11-01/corrections/red-core.json

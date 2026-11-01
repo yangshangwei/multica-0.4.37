@@ -28,6 +28,7 @@ vi.mock("./execution-panel", () => ({ CollaborationExecutionPanel: ({ selectedRu
 // The detail composition suite isolates its sibling identities; shared-context
 // query/mutation behavior is covered by memory-panel.test.tsx.
 vi.mock("./memory-panel", () => ({ CollaborationMemoryPanel: () => null }));
+vi.mock("./knowledge-panel", () => ({ CollaborationKnowledgePanel: ({ issue: value }: { issue: CollaborationIssue }) => <div data-testid="knowledge-mount">{value.id}</div> }));
 vi.mock("./activity", () => ({ CollaborationActivity: () => null }));
 vi.mock("./discussion-actions", () => ({ CollaborationIssueReactions: () => null }));
 vi.mock("./attachment-panel", () => ({ CollaborationAttachmentPanel: () => null }));
@@ -48,6 +49,7 @@ it("shows the loaded range and keeps an older server's unknown total explicit", 
   state.comments = [{ id: "00000000-0000-4000-8000-000000000009", created_at: "2026-10-31T00:00:00Z" }];
   const view = () => <CollaborationDetail scope={collaborationScope(issue.creator.user_id)} destination={{ view: "participating", issueId: issue.id, commentId: null }} />;
   const mounted = renderWithI18n(view());
+  expect(screen.getByTestId("knowledge-mount")).toHaveTextContent(issue.id);
   expect(screen.getByText("Loaded 1 of 5 comments")).toBeInTheDocument();
   state.total = undefined;
   mounted.rerender(view());

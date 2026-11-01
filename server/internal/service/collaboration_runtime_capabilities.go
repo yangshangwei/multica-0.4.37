@@ -278,6 +278,10 @@ func (s *CollaborationService) ClaimRuntimeRun(ctx context.Context, runID pgtype
 					ParentRunID: util.UUIDToPtr(r.run.ParentRunID), SessionGeneration: strconv.FormatInt(r.run.ConfigVersion.Int64, 10) + ":" + strconv.FormatInt(r.run.ResourceEpoch, 10)}
 			}
 		}
+		out.KnowledgeContext, err = s.claimRuntimeKnowledge(ctx, r, p, out, freezing)
+		if err != nil {
+			return protocol.CollaborationRunClaimResponse{}, err
+		}
 		return out, nil
 	})
 	if err != nil {

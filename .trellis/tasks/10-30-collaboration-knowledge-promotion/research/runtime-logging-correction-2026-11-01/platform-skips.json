@@ -1,0 +1,17 @@
+{
+  "red-stderr": {},
+  "green-regressions": {
+    "github.com/multica-ai/multica/server/pkg/agent": [
+      "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors"
+    ],
+    "github.com/multica-ai/multica/server/internal/daemon": [
+      "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+      "TestIsDriveRoot"
+    ]
+  },
+  "green-race": {
+    "github.com/multica-ai/multica/server/pkg/agent": [
+      "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors"
+    ]
+  }
+}

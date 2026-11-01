@@ -4,14 +4,13 @@ import { z } from "zod";
 import { collaborationAccessEpoch, collaborationKeys, clearCollaborationAccess, clearCollaborationProjection, isCollaborationScopeCurrent, type CollaborationScope } from "../collaboration/access";
 import { collaborationIssueOptions } from "../collaboration/queries";
 import { invalidateCollaborationSourceViews, isCollaborationInvalidation } from "../collaboration/invalidation";
-import { nonnegativeVersion, positiveVersion } from "../collaboration/version";
+import { nonnegativeVersion } from "../collaboration/version";
+import { CollaborationChangeSchema as changeSchema, CollaborationIssueHintSchema as issueHintSchema,
+  CollaborationAccessHintSchema as accessSchema, CollaborationSourceAccessHintSchema } from "../collaboration/realtime-schema";
 import type { WSEventType } from "../types/events";
 import { useOptionalWS } from "./provider";
 
 const issueIdSchema = z.uuid().transform((id) => id.toLowerCase());
-const changeSchema = z.strictObject({ issue_id: issueIdSchema, event_seq: positiveVersion, collaboration_revision: positiveVersion, authority_epoch: positiveVersion });
-const issueHintSchema = z.strictObject({ issue_id: issueIdSchema });
-const accessSchema = z.union([changeSchema, issueHintSchema]);
 const snapshotSchema = z.object({ realtime: z.object({ event_seq: nonnegativeVersion }).optional() });
 const sourceSchema = z.object({ source_workspace: z.object({ id: issueIdSchema }) });
 const subscriptionSchema = z.object({ scope: z.literal("issue"), id: issueIdSchema, error: z.string().optional() });
@@ -89,7 +88,7 @@ export function bindCollaborationRealtime(client: QueryClient, scope: Collaborat
     }),
     transport.subscribe("collaboration:source_access_changed", (payload) => {
       if (!current()) return;
-      const parsed = z.strictObject({ workspace_id: issueIdSchema }).safeParse(payload);
+      const parsed = CollaborationSourceAccessHintSchema.safeParse(payload);
       if (!parsed.success) return;
       const ids = new Set<string>();
       for (const query of client.getQueryCache().findAll({ queryKey: collaborationKeys.scope(scope) })) {

@@ -56,6 +56,10 @@ type TaskService struct {
 	// FeatureFlags is the server-side toggle router. Nil is valid and returns
 	// each call site's default.
 	FeatureFlags *featureflag.Service
+	// KnowledgeContextEnabled remains false until the ordinary execution
+	// disclosure/session/launch contract has passed its complete rollout gate.
+	// Historical-session safety checks remain active even while disabled.
+	KnowledgeContextEnabled bool
 	// SkillTemplateDir is MULTICA_SKILL_TEMPLATE_DIR: a server directory an
 	// operator (typically an intranet deployment) fills with skill templates to
 	// offer in "new skill → start from a template" alongside the embedded role
@@ -3734,6 +3738,7 @@ func (s *TaskService) FinalizeTaskClaim(
 	token db.CreateTaskTokenParams,
 	deliveredCommentIDs []pgtype.UUID,
 	recordCommentReceipt bool,
+	knowledge *protocol.TaskKnowledgeClaimDescriptor,
 	daemonTokens ...db.CreateDaemonTokenParams,
 ) ([]pgtype.UUID, error) {
 	if len(daemonTokens) > 1 {
@@ -3796,6 +3801,9 @@ func (s *TaskService) FinalizeTaskClaim(
 			}
 			if current.Status != "dispatched" || current.RuntimeID != task.RuntimeID || current.IssueID != task.IssueID || !bytes.Equal(current.Context, task.Context) || !current.DispatchedAt.Time.Equal(task.DispatchedAt.Time) || current.ClaimGeneration != task.ClaimGeneration || token.TaskID != current.ID || token.AgentID != current.AgentID || token.WorkspaceID != runtime.WorkspaceID {
 				return ErrManagedRuntimeSource
+			}
+			if err := s.finalizeTaskKnowledgeClaim(ctx, qtx, current, knowledge); err != nil {
+				return err
 			}
 			// Preserve the original claim's trigger/comment provenance. The locked
 			// row validates delivery identity; it must not replace payload snapshots.
@@ -4190,15 +4198,18 @@ func (s *TaskService) maybeLogClaimSlow(agentID pgtype.UUID, outcome string, sta
 
 // StartTask transitions a dispatched task to running.
 // Issue status is NOT changed here — the agent manages it via the CLI.
-func (s *TaskService) StartTask(ctx context.Context, taskID pgtype.UUID) (*db.AgentTaskQueue, error) {
+func (s *TaskService) StartTask(ctx context.Context, taskID pgtype.UUID, knowledgeFences ...*protocol.TaskKnowledgeFence) (*db.AgentTaskQueue, error) {
 	current, err := s.Queries.GetAgentTask(ctx, taskID)
 	if err != nil {
+		return nil, err
+	}
+	if err := validateTaskKnowledgeFences(current, knowledgeFences); err != nil {
 		return nil, err
 	}
 	if err := s.checkIssueExecution(ctx, s.Queries, current.IssueID, current.TriggerCommentID, current.CoalescedCommentIds); err != nil {
 		return nil, err
 	}
-	task, err := s.startTaskAtomically(ctx, current)
+	task, err := s.startTaskAtomically(ctx, current, knowledgeFences...)
 	if err != nil {
 		return nil, fmt.Errorf("start task: %w", err)
 	}
@@ -4394,7 +4405,7 @@ func startsWithAbsolutePath(s string) bool {
 // causing the new task to resume against a stale (or NULL) session.
 // durableWorkDir is terminal delivery metadata, not a resume pointer: it is
 // populated only after the daemon confirms a disposable worktree is gone.
-func (s *TaskService) CompleteTask(ctx context.Context, taskID pgtype.UUID, result []byte, sessionID, workDir, branchName string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string) (*db.AgentTaskQueue, error) {
+func (s *TaskService) CompleteTask(ctx context.Context, taskID pgtype.UUID, result []byte, sessionID, workDir, branchName string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string, knowledgeFences ...*protocol.TaskKnowledgeFence) (*db.AgentTaskQueue, error) {
 	var task db.AgentTaskQueue
 	// chatAssistantMsg is the single assistant outcome row written for a chat
 	// task inside the completion transaction below. It is broadcast (chat:done)
@@ -4402,6 +4413,18 @@ func (s *TaskService) CompleteTask(ctx context.Context, taskID pgtype.UUID, resu
 	var chatAssistantMsg *db.ChatMessage
 	if err := s.runInTx(ctx, func(qtx *db.Queries) error {
 		if err := lockChatSessionForTaskWrite(ctx, qtx, taskID); err != nil {
+			return err
+		}
+		if len(knowledgeFences) > 0 {
+			current, err := qtx.LockTaskForClaimFinalization(ctx, taskID)
+			if err != nil {
+				return err
+			}
+			if err = validateTaskKnowledgeFences(current, knowledgeFences); err != nil {
+				return err
+			}
+		}
+		if err := ValidateTaskKnowledgeSessionPointer(ctx, qtx, taskID, sessionID); err != nil {
 			return err
 		}
 		t, err := qtx.CompleteAgentTask(ctx, db.CompleteAgentTaskParams{
@@ -4803,11 +4826,20 @@ func (s *TaskService) observeChatOutputLocalPath(task db.AgentTaskQueue, body st
 // coarse bucket. Daemon callers that already produced a refined reason
 // (via classifyPoisonedError, the timeout / runtime classifier, etc.)
 // will have their value preserved untouched.
-func (s *TaskService) FailTask(ctx context.Context, taskID pgtype.UUID, errMsg, sessionID, workDir, branchName, failureReason string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string) (*db.AgentTaskQueue, error) {
-	return s.failTask(ctx, taskID, errMsg, sessionID, workDir, branchName, failureReason, sessionRolloutMissing, retiredSessionID, durableWorkDir, nil)
+func (s *TaskService) FailTask(ctx context.Context, taskID pgtype.UUID, errMsg, sessionID, workDir, branchName, failureReason string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string, knowledgeFences ...*protocol.TaskKnowledgeFence) (*db.AgentTaskQueue, error) {
+	return s.failTask(ctx, taskID, errMsg, sessionID, workDir, branchName, failureReason, sessionRolloutMissing, retiredSessionID, durableWorkDir, nil, knowledgeFences...)
 }
 
-func (s *TaskService) failTask(ctx context.Context, taskID pgtype.UUID, errMsg, sessionID, workDir, branchName, failureReason string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string, expectedClaim *db.AgentTaskQueue) (*db.AgentTaskQueue, error) {
+func (s *TaskService) failTask(ctx context.Context, taskID pgtype.UUID, errMsg, sessionID, workDir, branchName, failureReason string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string, expectedClaim *db.AgentTaskQueue, knowledgeFences ...*protocol.TaskKnowledgeFence) (*db.AgentTaskQueue, error) {
+	if len(knowledgeFences) > 0 {
+		current, err := s.Queries.GetAgentTask(ctx, taskID)
+		if err != nil {
+			return nil, err
+		}
+		if err = validateTaskKnowledgeFences(current, knowledgeFences); err != nil {
+			return nil, err
+		}
+	}
 	// Strip bytes PostgreSQL cannot store before anything else reads errMsg, so
 	// the classifier, the transaction and every downstream consumer see the one
 	// text we will actually persist (GH #7098). Kept at the service boundary
@@ -4880,6 +4912,18 @@ func (s *TaskService) failTask(ctx context.Context, taskID pgtype.UUID, errMsg, 
 	var retried *db.AgentTaskQueue
 	if err := s.runInTx(ctx, func(qtx *db.Queries) error {
 		if err := lockChatSessionForTaskWrite(ctx, qtx, taskID); err != nil {
+			return err
+		}
+		if len(knowledgeFences) > 0 {
+			current, err := qtx.LockTaskForClaimFinalization(ctx, taskID)
+			if err != nil {
+				return err
+			}
+			if err = validateTaskKnowledgeFences(current, knowledgeFences); err != nil {
+				return err
+			}
+		}
+		if err := ValidateTaskKnowledgeSessionPointer(ctx, qtx, taskID, sessionID); err != nil {
 			return err
 		}
 		if expectedClaim != nil {
@@ -5110,7 +5154,14 @@ func (s *TaskService) failTask(ctx context.Context, taskID pgtype.UUID, errMsg, 
 		return nil, fmt.Errorf("fail task: %w", err)
 	}
 
-	slog.Warn("task failed", "task_id", util.UUIDToString(task.ID), "issue_id", util.UUIDToString(task.IssueID), "error", errMsg, "failure_reason", failureReason)
+	logFields := []any{"task_id", util.UUIDToString(task.ID), "issue_id", util.UUIDToString(task.IssueID)}
+	// The persisted task, not the reported reason, determines whether a
+	// Provider diagnostic may contain previously disclosed private knowledge.
+	if !task.KnowledgeContextVersion.Valid && len(task.KnowledgeDelivery) == 0 {
+		logFields = append(logFields, "error", errMsg)
+	}
+	logFields = append(logFields, "failure_reason", task.FailureReason.String)
+	slog.Warn("task failed", logFields...)
 	s.captureTaskFailed(ctx, task)
 
 	// The auto-retry child (if any) was created inside the transaction above so

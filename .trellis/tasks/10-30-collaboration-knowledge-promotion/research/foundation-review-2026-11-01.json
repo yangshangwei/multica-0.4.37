@@ -1,0 +1,108 @@
+{
+  "reviewed_at_utc": "2026-10-31T20:10:46.884240+00:00",
+  "worktree": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+  "base_head": "765ab186a222df1e0135f311d081a79779d51726",
+  "scope": "A1 schema/protocol/pure policy/query primitives and B1 core client only; read-only product review",
+  "outcome": "changes_requested",
+  "p1_count": 0,
+  "p2_count": 2,
+  "findings": [
+    {
+      "id": "KF-01",
+      "priority": "P2",
+      "title": "Redact transport logs for target knowledge reads",
+      "file": "packages/core/api/client.ts",
+      "line": 1395,
+      "related_lines": [
+        2242,
+        2244,
+        2303
+      ],
+      "repro_logic": "Call getCollaborationKnowledgeTarget for a project or workspace with an opaque cursor and an HTTP 4xx/5xx JSON response whose error/message contains a private sentinel. The target URL does not match fetchRaw collaborationRequest/sourceIssueRequest, so request/response logs retain the cursor and the error logger emits the raw message before the knowledge wrapper receives the ApiError.",
+      "impact": "Private derived content from an error and opaque knowledge pagination data can enter persistent client/platform logs. The source knowledge routes already receive redacted logging; the target routes carry the same private projection.",
+      "minimal_fix": "Classify /api/projects/{id}/knowledge and /api/workspaces/{id}/knowledge as private for logging and query-string removal. Keep that privacy classification separate from the account-scoped collaboration flag so the captured X-Workspace-ID and cleared slug remain intact.",
+      "verification_needed": "Add target project/workspace logger-sentinel and cursor regressions for failed responses, with assertions that captured workspace headers are preserved.",
+      "confidence": "high",
+      "status": "open"
+    },
+    {
+      "id": "KF-02",
+      "priority": "P2",
+      "title": "Allow the authorized content-free rejection of unavailable pending candidates",
+      "file": "packages/core/collaboration/knowledge-schema.ts",
+      "line": 82,
+      "related_file": "packages/core/collaboration/knowledge-actions.ts",
+      "related_line": 42,
+      "repro_logic": "A human with current source Read and target confirmer authority receives a source_unavailable pending candidate with can_reject=true, as now returned by KnowledgeCapabilitiesFor. The unavailable schema rejects that valid projection; even after parsing is aligned, prepareKnowledgeDecision rejects every candidate whose availability is not available.",
+      "impact": "The intended narrowing action is unavailable, and a valid source/target page containing that row becomes a protocol error. This is the already identified A2/main cross-layer mismatch, independently confirmed rather than a new issue.",
+      "minimal_fix": "Allow can_reject on source_unavailable pending rows and permit the decision preparer to reject those rows when the server grants can_reject. Keep restricted target-only rows unable to reject, keep approval gated on available material, and keep summary/body/hash/refs/quoted decision reason suppressed. Align api-seam.md.",
+      "verification_needed": "Add unavailable and expired pending rejection regressions plus restricted/no-capability denial and private-field suppression cases.",
+      "confidence": "high",
+      "status": "open_known_alignment"
+    }
+  ],
+  "sources": {
+    "A1": {
+      "count": 47,
+      "manifest": ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/schema-implementation-2026-11-01/source-hashes.json",
+      "manifest_sha256": "fd4b39ddc95016f86497a3e344a08b4fff73b08259d77b444260e15af1a7fa7c"
+    },
+    "B1": {
+      "count": 23,
+      "manifest": ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/core-client-implementation-2026-11-01/source-manifest.json",
+      "manifest_sha256": "a9ae7c1ea8bac5cd1815738e2e472177c6455a31b4ae344b8f455e0082c12acb"
+    },
+    "all_current_hashes_match": true,
+    "mismatches": []
+  },
+  "evidence": {
+    "reviewer_executed_tests": false,
+    "reviewer_used_database": false,
+    "reviewer_called_provider": false,
+    "A1": {
+      "retained_top_level_passes": 62,
+      "retained_subtest_passes": 296,
+      "retained_knowledge_top_level_passes": 18,
+      "raw_events_match_inventory": true,
+      "retained_failures": 0,
+      "retained_skips": 0,
+      "fresh_and_upgrade_catalogs_equal": true,
+      "retained_sqlc_generated_files": 124,
+      "retained_sqlc_drift": [],
+      "retained_checks": "Go vet/build and schema/protocol checks report exit 0; inspected command records, did not rerun"
+    },
+    "B1": {
+      "retained_tests": 207,
+      "retained_suites": 13,
+      "retained_failures": 0,
+      "retained_skips": 0,
+      "raw_assertions_match_inventory": true,
+      "retained_checks": "Core typecheck, scoped ESLint and Vitest report exit 0; inspected records, did not rerun"
+    }
+  },
+  "checked_contracts": [
+    "immutable candidate lineage/content/approval facts and CAS",
+    "source Read plus creator/handler without extra participation or open-state requirement",
+    "human target confirmation and target-only withdrawal",
+    "strict request fields, decoded/wire budgets and original-request expiry stability",
+    "concurrent index migrations and retained/uncommitted down protection",
+    "independent target revisions and source-independent scan/hint primitives",
+    "claimed-version failure versus unsupported response",
+    "restricted and source-unavailable private-field suppression",
+    "Go/core write request shapes",
+    "30-second monotonic lease and 15-second refresh",
+    "late-response and default cancellation rollback fencing",
+    "server/viewer/query-group isolation",
+    "real WSClient disconnect through WSProvider and knowledge hook",
+    "content-free UUID recovery identity persisted before POST"
+  ],
+  "limits": [
+    "Findings are static code-path conclusions; no reproduction suite was executed in this review.",
+    "A1 does not prove transactional service/HTTP authorization, cross-kind receipt recovery, or live outbox producer/drainer behavior.",
+    "B1 does not prove real HTTP producer parity, shared views, or Web/Desktop product acceptance.",
+    "Later ordinary/collaboration prepare/authorize/exact-session exposure, provider launch and G2 enablement remain intentionally outside A1/B1.",
+    "Concurrent C1 pkg/agent edits are excluded.",
+    "Generated code reviewed as SQL/model alignment plus retained zero-drift evidence; no regeneration was run."
+  ],
+  "product_files_modified": []
+}

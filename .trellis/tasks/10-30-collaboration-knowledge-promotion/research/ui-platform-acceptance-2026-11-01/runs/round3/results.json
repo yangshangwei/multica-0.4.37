@@ -1,0 +1,302 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/multica-knowledge-ui-results/round3",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-knowledge.spec.ts",
+      "file": "collaboration-knowledge.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8725,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-31T23:05:18.903Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "web-full-source-review-1380-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-full-source-review-1380-part-1-png-dffa4603d4fed1089df5c0bf1fb38090a27f865e.png"
+                    },
+                    {
+                      "name": "web-full-source-review-1380-part-2.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-full-source-review-1380-part-2-png-2fdc9fff71c08faf7f933e4e8ceac891d15a32da.png"
+                    },
+                    {
+                      "name": "web-full-source-review-640-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-full-source-review-640-part-1-png-d1f7ac118e3dfc9f5a4bab86cf1088d6ad5029c3.png"
+                    },
+                    {
+                      "name": "web-full-source-review-640-part-2.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-full-source-review-640-part-2-png-e86a6ba777f9c5b46bdf4df96935220fb0e43f0f.png"
+                    },
+                    {
+                      "name": "web-full-source-review-640-part-3.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-full-source-review-640-part-3-png-d8017f8fa11af82300b521d1b0b100f70f81be08.png"
+                    },
+                    {
+                      "name": "full-source-review-capture-geometry",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJuYW1lIjogIndlYi1mdWxsLXNvdXJjZS1yZXZpZXctMTM4MC1wYXJ0LTEucG5nIiwKICAgICJ2aWV3cG9ydCI6IHsKICAgICAgIndpZHRoIjogMTM4MCwKICAgICAgImhlaWdodCI6IDk2MAogICAgfSwKICAgICJyZWN0IjogewogICAgICAieCI6IDQxOCwKICAgICAgInkiOiAxMjcuNSwKICAgICAgIndpZHRoIjogODk2LAogICAgICAiaGVpZ2h0IjogMTM1My43NSwKICAgICAgInRvcCI6IDEyNy41LAogICAgICAicmlnaHQiOiAxMzE0LAogICAgICAiYm90dG9tIjogMTQ4MS4yNSwKICAgICAgImxlZnQiOiA0MTgKICAgIH0sCiAgICAiY29udGFpbmVyIjogewogICAgICAieCI6IDM1MiwKICAgICAgInkiOiAxMTYsCiAgICAgICJ3aWR0aCI6IDEwMjgsCiAgICAgICJoZWlnaHQiOiA4NDQsCiAgICAgICJ0b3AiOiAxMTYsCiAgICAgICJyaWdodCI6IDEzODAsCiAgICAgICJib3R0b20iOiA5NjAsCiAgICAgICJsZWZ0IjogMzUyCiAgICB9LAogICAgInZpc2libGVTdGFydCI6IDAsCiAgICAidmlzaWJsZUVuZCI6IDgzMi41LAogICAgIm92ZXJmbG93IjogZmFsc2UKICB9LAogIHsKICAgICJuYW1lIjogIndlYi1mdWxsLXNvdXJjZS1yZXZpZXctMTM4MC1wYXJ0LTIucG5nIiwKICAgICJ2aWV3cG9ydCI6IHsKICAgICAgIndpZHRoIjogMTM4MCwKICAgICAgImhlaWdodCI6IDk2MAogICAgfSwKICAgICJyZWN0IjogewogICAgICAieCI6IDQxOCwKICAgICAgInkiOiAtNDA1LjUsCiAgICAgICJ3aWR0aCI6IDg5NiwKICAgICAgImhlaWdodCI6IDEzNTMuNzUsCiAgICAgICJ0b3AiOiAtNDA1LjUsCiAgICAgICJyaWdodCI6IDEzMTQsCiAgICAgICJib3R0b20iOiA5NDguMjUsCiAgICAgICJsZWZ0IjogNDE4CiAgICB9LAogICAgImNvbnRhaW5lciI6IHsKICAgICAgIngiOiAzNTIsCiAgICAgICJ5IjogMTE2LAogICAgICAid2lkdGgiOiAxMDI4LAogICAgICAiaGVpZ2h0IjogODQ0LAogICAgICAidG9wIjogMTE2LAogICAgICAicmlnaHQiOiAxMzgwLAogICAgICAiYm90dG9tIjogOTYwLAogICAgICAibGVmdCI6IDM1MgogICAgfSwKICAgICJ2aXNpYmxlU3RhcnQiOiA1MjEuNSwKICAgICJ2aXNpYmxlRW5kIjogMTM1My43NSwKICAgICJvdmVyZmxvdyI6IGZhbHNlCiAgfSwKICB7CiAgICAibmFtZSI6ICJ3ZWItZnVsbC1zb3VyY2UtcmV2aWV3LTY0MC1wYXJ0LTEucG5nIiwKICAgICJ2aWV3cG9ydCI6IHsKICAgICAgIndpZHRoIjogNjQwLAogICAgICAiaGVpZ2h0IjogOTYwCiAgICB9LAogICAgInJlY3QiOiB7CiAgICAgICJ4IjogMTYsCiAgICAgICJ5IjogMTcxLjUsCiAgICAgICJ3aWR0aCI6IDYwOCwKICAgICAgImhlaWdodCI6IDE2MjUsCiAgICAgICJ0b3AiOiAxNzEuNSwKICAgICAgInJpZ2h0IjogNjI0LAogICAgICAiYm90dG9tIjogMTc5Ni41LAogICAgICAibGVmdCI6IDE2CiAgICB9LAogICAgImNvbnRhaW5lciI6IHsKICAgICAgIngiOiAwLAogICAgICAieSI6IDE2MCwKICAgICAgIndpZHRoIjogNjQwLAogICAgICAiaGVpZ2h0IjogODAwLAogICAgICAidG9wIjogMTYwLAogICAgICAicmlnaHQiOiA2NDAsCiAgICAgICJib3R0b20iOiA5NjAsCiAgICAgICJsZWZ0IjogMAogICAgfSwKICAgICJ2aXNpYmxlU3RhcnQiOiAwLAogICAgInZpc2libGVFbmQiOiA3ODguNSwKICAgICJvdmVyZmxvdyI6IGZhbHNlCiAgfSwKICB7CiAgICAibmFtZSI6ICJ3ZWItZnVsbC1zb3VyY2UtcmV2aWV3LTY0MC1wYXJ0LTIucG5nIiwKICAgICJ2aWV3cG9ydCI6IHsKICAgICAgIndpZHRoIjogNjQwLAogICAgICAiaGVpZ2h0IjogOTYwCiAgICB9LAogICAgInJlY3QiOiB7CiAgICAgICJ4IjogMTYsCiAgICAgICJ5IjogLTYwNC41LAogICAgICAid2lkdGgiOiA2MDgsCiAgICAgICJoZWlnaHQiOiAxNjI1LAogICAgICAidG9wIjogLTYwNC41LAogICAgICAicmlnaHQiOiA2MjQsCiAgICAgICJib3R0b20iOiAxMDIwLjUsCiAgICAgICJsZWZ0IjogMTYKICAgIH0sCiAgICAiY29udGFpbmVyIjogewogICAgICAieCI6IDAsCiAgICAgICJ5IjogMTYwLAogICAgICAid2lkdGgiOiA2NDAsCiAgICAgICJoZWlnaHQiOiA4MDAsCiAgICAgICJ0b3AiOiAxNjAsCiAgICAgICJyaWdodCI6IDY0MCwKICAgICAgImJvdHRvbSI6IDk2MCwKICAgICAgImxlZnQiOiAwCiAgICB9LAogICAgInZpc2libGVTdGFydCI6IDc2NC41LAogICAgInZpc2libGVFbmQiOiAxNTY0LjUsCiAgICAib3ZlcmZsb3ciOiBmYWxzZQogIH0sCiAgewogICAgIm5hbWUiOiAid2ViLWZ1bGwtc291cmNlLXJldmlldy02NDAtcGFydC0zLnBuZyIsCiAgICAidmlld3BvcnQiOiB7CiAgICAgICJ3aWR0aCI6IDY0MCwKICAgICAgImhlaWdodCI6IDk2MAogICAgfSwKICAgICJyZWN0IjogewogICAgICAieCI6IDE2LAogICAgICAieSI6IC02NzcuNSwKICAgICAgIndpZHRoIjogNjA4LAogICAgICAiaGVpZ2h0IjogMTYyNSwKICAgICAgInRvcCI6IC02NzcuNSwKICAgICAgInJpZ2h0IjogNjI0LAogICAgICAiYm90dG9tIjogOTQ3LjUsCiAgICAgICJsZWZ0IjogMTYKICAgIH0sCiAgICAiY29udGFpbmVyIjogewogICAgICAieCI6IDAsCiAgICAgICJ5IjogMTYwLAogICAgICAid2lkdGgiOiA2NDAsCiAgICAgICJoZWlnaHQiOiA4MDAsCiAgICAgICJ0b3AiOiAxNjAsCiAgICAgICJyaWdodCI6IDY0MCwKICAgICAgImJvdHRvbSI6IDk2MCwKICAgICAgImxlZnQiOiAwCiAgICB9LAogICAgInZpc2libGVTdGFydCI6IDgzNy41LAogICAgInZpc2libGVFbmQiOiAxNjI1LAogICAgIm92ZXJmbG93IjogZmFsc2UKICB9Cl0="
+                    },
+                    {
+                      "name": "web-project-managed-1380-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-project-managed-1380-part-1-png-3dbeb3b8e1d2d9b9ddea5dc5ee1c521a25dbb75f.png"
+                    },
+                    {
+                      "name": "web-project-managed-640-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-project-managed-640-part-1-png-8ef9cbc3a2fe725b69115a4064ce27df045ccd14.png"
+                    },
+                    {
+                      "name": "project-managed-capture-geometry",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJuYW1lIjogIndlYi1wcm9qZWN0LW1hbmFnZWQtMTM4MC1wYXJ0LTEucG5nIiwKICAgICJ2aWV3cG9ydCI6IHsKICAgICAgIndpZHRoIjogMTM4MCwKICAgICAgImhlaWdodCI6IDk2MAogICAgfSwKICAgICJyZWN0IjogewogICAgICAieCI6IDk2OSwKICAgICAgInkiOiA0MzIuMTI1LAogICAgICAid2lkdGgiOiAzODcsCiAgICAgICJoZWlnaHQiOiAyOTgsCiAgICAgICJ0b3AiOiA0MzIuMTI1LAogICAgICAicmlnaHQiOiAxMzU2LAogICAgICAiYm90dG9tIjogNzMwLjEyNSwKICAgICAgImxlZnQiOiA5NjkKICAgIH0sCiAgICAiY29udGFpbmVyIjogewogICAgICAieCI6IDk1MiwKICAgICAgInkiOiA1NiwKICAgICAgIndpZHRoIjogNDIwLAogICAgICAiaGVpZ2h0IjogODk2LAogICAgICAidG9wIjogNTYsCiAgICAgICJyaWdodCI6IDEzNzIsCiAgICAgICJib3R0b20iOiA5NTIsCiAgICAgICJsZWZ0IjogOTUyCiAgICB9LAogICAgInZpc2libGVTdGFydCI6IDAsCiAgICAidmlzaWJsZUVuZCI6IDI5OCwKICAgICJvdmVyZmxvdyI6IGZhbHNlCiAgfSwKICB7CiAgICAibmFtZSI6ICJ3ZWItcHJvamVjdC1tYW5hZ2VkLTY0MC1wYXJ0LTEucG5nIiwKICAgICJ2aWV3cG9ydCI6IHsKICAgICAgIndpZHRoIjogNjQwLAogICAgICAiaGVpZ2h0IjogOTYwCiAgICB9LAogICAgInJlY3QiOiB7CiAgICAgICJ4IjogMzEzLAogICAgICAieSI6IDQ0NCwKICAgICAgIndpZHRoIjogMzUxLAogICAgICAiaGVpZ2h0IjogMjk4LAogICAgICAidG9wIjogNDQ0LAogICAgICAicmlnaHQiOiA2NjQsCiAgICAgICJib3R0b20iOiA3NDIsCiAgICAgICJsZWZ0IjogMzEzCiAgICB9LAogICAgImNvbnRhaW5lciI6IHsKICAgICAgIngiOiAyOTYsCiAgICAgICJ5IjogMCwKICAgICAgIndpZHRoIjogMzg0LAogICAgICAiaGVpZ2h0IjogOTYwLAogICAgICAidG9wIjogMCwKICAgICAgInJpZ2h0IjogNjgwLAogICAgICAiYm90dG9tIjogOTYwLAogICAgICAibGVmdCI6IDI5NgogICAgfSwKICAgICJ2aXNpYmxlU3RhcnQiOiAwLAogICAgInZpc2libGVFbmQiOiAyOTgsCiAgICAib3ZlcmZsb3ciOiBmYWxzZQogIH0KXQ=="
+                    },
+                    {
+                      "name": "web-workspace-managed-1380-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-workspace-managed-1380-part-1-png-a93cf42bdb5a029f099ecde5612bf8133c22ab08.png"
+                    },
+                    {
+                      "name": "web-workspace-managed-640-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-workspace-managed-640-part-1-png-926754ddd7370606d397d908efd9c1a17f157f3a.png"
+                    },
+                    {
+                      "name": "workspace-managed-capture-geometry",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJuYW1lIjogIndlYi13b3Jrc3BhY2UtbWFuYWdlZC0xMzgwLXBhcnQtMS5wbmciLAogICAgInZpZXdwb3J0IjogewogICAgICAid2lkdGgiOiAxMzgwLAogICAgICAiaGVpZ2h0IjogOTYwCiAgICB9LAogICAgInJlY3QiOiB7CiAgICAgICJ4IjogNTc0LAogICAgICAieSI6IDY4LAogICAgICAid2lkdGgiOiA3MDQsCiAgICAgICJoZWlnaHQiOiA4NjguNzUsCiAgICAgICJ0b3AiOiA2OCwKICAgICAgInJpZ2h0IjogMTI3OCwKICAgICAgImJvdHRvbSI6IDkzNi43NSwKICAgICAgImxlZnQiOiA1NzQKICAgIH0sCiAgICAiY29udGFpbmVyIjogewogICAgICAieCI6IDQ4MCwKICAgICAgInkiOiA1NiwKICAgICAgIndpZHRoIjogODkyLAogICAgICAiaGVpZ2h0IjogODk2LAogICAgICAidG9wIjogNTYsCiAgICAgICJyaWdodCI6IDEzNzIsCiAgICAgICJib3R0b20iOiA5NTIsCiAgICAgICJsZWZ0IjogNDgwCiAgICB9LAogICAgInZpc2libGVTdGFydCI6IDAsCiAgICAidmlzaWJsZUVuZCI6IDg2OC43NSwKICAgICJvdmVyZmxvdyI6IGZhbHNlCiAgfSwKICB7CiAgICAibmFtZSI6ICJ3ZWItd29ya3NwYWNlLW1hbmFnZWQtNjQwLXBhcnQtMS5wbmciLAogICAgInZpZXdwb3J0IjogewogICAgICAid2lkdGgiOiA2NDAsCiAgICAgICJoZWlnaHQiOiA5NjAKICAgIH0sCiAgICAicmVjdCI6IHsKICAgICAgIngiOiAyNCwKICAgICAgInkiOiA2MCwKICAgICAgIndpZHRoIjogNTkyLAogICAgICAiaGVpZ2h0IjogODY4Ljc1LAogICAgICAidG9wIjogNjAsCiAgICAgICJyaWdodCI6IDYxNiwKICAgICAgImJvdHRvbSI6IDkyOC43NSwKICAgICAgImxlZnQiOiAyNAogICAgfSwKICAgICJjb250YWluZXIiOiB7CiAgICAgICJ4IjogMCwKICAgICAgInkiOiA0OCwKICAgICAgIndpZHRoIjogNjQwLAogICAgICAiaGVpZ2h0IjogOTEyLAogICAgICAidG9wIjogNDgsCiAgICAgICJyaWdodCI6IDY0MCwKICAgICAgImJvdHRvbSI6IDk2MCwKICAgICAgImxlZnQiOiAwCiAgICB9LAogICAgInZpc2libGVTdGFydCI6IDAsCiAgICAidmlzaWJsZUVuZCI6IDg2OC43NSwKICAgICJvdmVyZmxvdyI6IGZhbHNlCiAgfQpd"
+                    },
+                    {
+                      "name": "version-journey",
+                      "contentType": "application/json",
+                      "body": "ewogICJpc3N1ZV9pZCI6ICIwMWExOTQzNS1kYWVmLTcyZGUtODNiNC0zMDJkNDJlZjBjZWYiLAogICJleHRlcm5hbF9oYW5kbGVyIjogIjc2ZDFiMWE2LWI2ZjEtNDNhMC04MDBiLWFmYzU5ZjE3Njk4ZSIsCiAgInNvdXJjZV93b3Jrc3BhY2UiOiAiNmEwZDNhYzAtZmRhNy00MzRmLWFlMGEtOGU2ODlkZTZmNDJkIiwKICAicHJvamVjdCI6ICI3MjYxMDU2Ny1lZDMzLTQwM2MtYjRiMS0zY2FjOGYzYmExNGQiLAogICJmaXJzdCI6IHsKICAgICJwcm90b2NvbF92ZXJzaW9uIjogMSwKICAgICJyZXF1ZXN0X2lkIjogImMyNWJmMWU0LWFlZjMtNDkxYi1hZmZiLWQ0N2JiNmU3MTMwYiIsCiAgICAiYWN0aW9uIjogInByb3Bvc2UiLAogICAgImNvZGUiOiAia25vd2xlZGdlX3Byb3Bvc2VkIiwKICAgICJjYW5kaWRhdGVfaWQiOiAiNGQ1YWQ5YzUtOTY1MC00ZjZmLTk1NmQtNWM2Mzk3MTUwZWNlIiwKICAgICJ2ZXJzaW9uIjogIjEiLAogICAgInN0YXRlX3JldmlzaW9uIjogIjEiLAogICAgInN0YXRlIjogInBlbmRpbmciCiAgfSwKICAiY29ycmVjdGlvbiI6IHsKICAgICJwcm90b2NvbF92ZXJzaW9uIjogMSwKICAgICJyZXF1ZXN0X2lkIjogIjQ5OGE1NWIzLTU1NGQtNDhlNy1iYjBkLTEyYjJmZmIwZTVlNCIsCiAgICAiYWN0aW9uIjogInByb3Bvc2UiLAogICAgImNvZGUiOiAia25vd2xlZGdlX3Byb3Bvc2VkIiwKICAgICJjYW5kaWRhdGVfaWQiOiAiZjhiYmEzOWEtYmFiZS00YjQ5LWFjNTktMTRhODRjNjY5ZGRkIiwKICAgICJ2ZXJzaW9uIjogIjIiLAogICAgInN0YXRlX3JldmlzaW9uIjogIjEiLAogICAgInN0YXRlIjogInBlbmRpbmciCiAgfSwKICAiZGVyaXZlZCI6IHsKICAgICJwcm90b2NvbF92ZXJzaW9uIjogMSwKICAgICJyZXF1ZXN0X2lkIjogIjJjMTBlNjViLWJhMDktNGQ1MC1hMGM0LTUxZTQ3OTU5M2Y5YSIsCiAgICAiYWN0aW9uIjogInByb3Bvc2UiLAogICAgImNvZGUiOiAia25vd2xlZGdlX3Byb3Bvc2VkIiwKICAgICJjYW5kaWRhdGVfaWQiOiAiMjg3MjEzMDAtMTZiMC00NDUxLTk4NWEtYzNjZGM3OWI0MGViIiwKICAgICJ2ZXJzaW9uIjogIjEiLAogICAgInN0YXRlX3JldmlzaW9uIjogIjEiLAogICAgInN0YXRlIjogInBlbmRpbmciCiAgfSwKICAicHJpdmF0ZV9jYXRhbG9nX3JlcXVlc3RzIjogMCwKICAiYmFzZV9jb250ZXh0X3VuY2hhbmdlZCI6IHRydWUsCiAgInByb3ZpZGVyX2FjY291bnRfYWNjZXNzIjogZmFsc2UsCiAgImtub3dsZWRnZV9leGVjdXRpb25fZW5hYmxlZCI6IGZhbHNlCn0="
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/tmp/multica-knowledge-ui-results/round3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "518f6bbc4476ef6f9015-5553c27836ef6710d3b7",
+          "file": "collaboration-knowledge.spec.ts",
+          "line": 88,
+          "column": 1
+        },
+        {
+          "title": "Web target-only administrator loses source material but can withdraw",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2054,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-31T23:05:28.485Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "web-restricted-target-1380-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round3/collaboration-knowledge-We-9d8a4-e-material-but-can-withdraw-chromium/attachments/web-restricted-target-1380-part-1-png-eb3a1b25c291f35aebeaa7b7b472fe8076ecc303.png"
+                    },
+                    {
+                      "name": "web-restricted-target-640-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round3/collaboration-knowledge-We-9d8a4-e-material-but-can-withdraw-chromium/attachments/web-restricted-target-640-part-1-png-184623eead4f0c0507a25ef4f9ae180de7fc81a1.png"
+                    },
+                    {
+                      "name": "restricted-target-capture-geometry",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJuYW1lIjogIndlYi1yZXN0cmljdGVkLXRhcmdldC0xMzgwLXBhcnQtMS5wbmciLAogICAgInZpZXdwb3J0IjogewogICAgICAid2lkdGgiOiAxMzgwLAogICAgICAiaGVpZ2h0IjogOTYwCiAgICB9LAogICAgInJlY3QiOiB7CiAgICAgICJ4IjogNTc0LAogICAgICAieSI6IDI1MSwKICAgICAgIndpZHRoIjogNzA0LAogICAgICAiaGVpZ2h0IjogNDU5LAogICAgICAidG9wIjogMjUxLAogICAgICAicmlnaHQiOiAxMjc4LAogICAgICAiYm90dG9tIjogNzEwLAogICAgICAibGVmdCI6IDU3NAogICAgfSwKICAgICJjb250YWluZXIiOiB7CiAgICAgICJ4IjogNDgwLAogICAgICAieSI6IDU2LAogICAgICAid2lkdGgiOiA4OTIsCiAgICAgICJoZWlnaHQiOiA4OTYsCiAgICAgICJ0b3AiOiA1NiwKICAgICAgInJpZ2h0IjogMTM3MiwKICAgICAgImJvdHRvbSI6IDk1MiwKICAgICAgImxlZnQiOiA0ODAKICAgIH0sCiAgICAidmlzaWJsZVN0YXJ0IjogMCwKICAgICJ2aXNpYmxlRW5kIjogNDU5LAogICAgIm92ZXJmbG93IjogZmFsc2UKICB9LAogIHsKICAgICJuYW1lIjogIndlYi1yZXN0cmljdGVkLXRhcmdldC02NDAtcGFydC0xLnBuZyIsCiAgICAidmlld3BvcnQiOiB7CiAgICAgICJ3aWR0aCI6IDY0MCwKICAgICAgImhlaWdodCI6IDk2MAogICAgfSwKICAgICJyZWN0IjogewogICAgICAieCI6IDI0LAogICAgICAieSI6IDI2NywKICAgICAgIndpZHRoIjogNTkyLAogICAgICAiaGVpZ2h0IjogNDU5LAogICAgICAidG9wIjogMjY3LAogICAgICAicmlnaHQiOiA2MTYsCiAgICAgICJib3R0b20iOiA3MjYsCiAgICAgICJsZWZ0IjogMjQKICAgIH0sCiAgICAiY29udGFpbmVyIjogewogICAgICAieCI6IDAsCiAgICAgICJ5IjogNDgsCiAgICAgICJ3aWR0aCI6IDY0MCwKICAgICAgImhlaWdodCI6IDkxMiwKICAgICAgInRvcCI6IDQ4LAogICAgICAicmlnaHQiOiA2NDAsCiAgICAgICJib3R0b20iOiA5NjAsCiAgICAgICJsZWZ0IjogMAogICAgfSwKICAgICJ2aXNpYmxlU3RhcnQiOiAwLAogICAgInZpc2libGVFbmQiOiA0NTksCiAgICAib3ZlcmZsb3ciOiBmYWxzZQogIH0KXQ=="
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/tmp/multica-knowledge-ui-results/round3/collaboration-knowledge-We-9d8a4-e-material-but-can-withdraw-chromium/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "518f6bbc4476ef6f9015-c80f6ab17c8e6cc70021",
+          "file": "collaboration-knowledge.spec.ts",
+          "line": 220,
+          "column": 1
+        },
+        {
+          "title": "Desktop native source review and independent project/workspace contributions",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 33314,
+                  "error": {
+                    "message": "TimeoutError: page.waitForResponse: Timeout 30000ms exceeded while waiting for event \"response\"",
+                    "stack": "TimeoutError: page.waitForResponse: Timeout 30000ms exceeded while waiting for event \"response\"\n    at submitKnowledge (/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/fixtures/collaboration-knowledge.ts:79:25)\n    at externalProposal (/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/collaboration-knowledge.spec.ts:40:25)\n    at /Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/collaboration-knowledge.spec.ts:285:19",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/fixtures/collaboration-knowledge.ts",
+                      "column": 25,
+                      "line": 79
+                    },
+                    "snippet": "   at fixtures/collaboration-knowledge.ts:79\n\n  77 |\n  78 | export async function submitKnowledge(page: Page) {\n> 79 |   const response = page.waitForResponse((r) => /\\/knowledge-candidates$/.test(new URL(r.url()).pathname) && r.request().method() === \"POST\");\n     |                         ^\n  80 |   await page.getByRole(\"form\", { name: \"Propose knowledge\", exact: true }).getByRole(\"button\", { name: \"Submit candidate\", exact: true }).click();\n  81 |   const received = await response;\n  82 |   expect(received.status()).toBe(201);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/fixtures/collaboration-knowledge.ts",
+                        "column": 25,
+                        "line": 79
+                      },
+                      "message": "TimeoutError: page.waitForResponse: Timeout 30000ms exceeded while waiting for event \"response\"\n\n   at fixtures/collaboration-knowledge.ts:79\n\n  77 |\n  78 | export async function submitKnowledge(page: Page) {\n> 79 |   const response = page.waitForResponse((r) => /\\/knowledge-candidates$/.test(new URL(r.url()).pathname) && r.request().method() === \"POST\");\n     |                         ^\n  80 |   await page.getByRole(\"form\", { name: \"Propose knowledge\", exact: true }).getByRole(\"button\", { name: \"Submit candidate\", exact: true }).click();\n  81 |   const received = await response;\n  82 |   expect(received.status()).toBe(201);\n    at submitKnowledge (/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/fixtures/collaboration-knowledge.ts:79:25)\n    at externalProposal (/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/collaboration-knowledge.spec.ts:40:25)\n    at /Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/collaboration-knowledge.spec.ts:285:19"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-31T23:05:30.609Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "native-page-errors",
+                      "contentType": "application/json",
+                      "body": "W10="
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/tmp/multica-knowledge-ui-results/round3/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/fixtures/collaboration-knowledge.ts",
+                    "column": 25,
+                    "line": 79
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "518f6bbc4476ef6f9015-adbcc89dc58b5184f0b6",
+          "file": "collaboration-knowledge.spec.ts",
+          "line": 270,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-31T23:05:18.387Z",
+    "duration": 45817.169,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

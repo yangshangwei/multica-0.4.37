@@ -12,6 +12,8 @@ import type { ApiClient } from "@multica/core/api/client";
 import { projectKeys } from "@multica/core/projects/queries";
 import { emptyProjectUpdateDraft, projectP1Keys, projectProgressDraftKey, useProjectAccessStore, useProjectProgressDraftStore, writeProjectProgressDraft } from "@multica/core/projects";
 import { p1Overview, p1Preview, p1Project } from "@multica/core/projects/test-fixtures/p1";
+// Knowledge interactions are canonical in collaboration/knowledge-panel.test.tsx.
+vi.mock("../../collaboration/knowledge-panel", () => ({ ManagedKnowledgePanel: ({ workspaceId, projectId }: { workspaceId: string; projectId?: string }) => <div data-testid="knowledge-target-mount" data-workspace={workspaceId} data-project={projectId} /> }));
 
 const mocks = vi.hoisted(() => ({
   role: "admin",
@@ -402,6 +404,7 @@ describe("ProjectDetail task workspace", () => {
     renderProjectDetail();
 
     expect(screen.getByText("Create your first issue")).toBeInTheDocument();
+    expect(screen.getByTestId("knowledge-target-mount")).toHaveAttribute("data-project", PROJECT.id);
     expect(screen.getAllByRole("button", { name: /^new issue$/i })).toHaveLength(1);
     await userEvent.setup().click(screen.getByRole("button", { name: /^new issue$/i }));
     expect(mocks.openCreateIssue).toHaveBeenCalledOnce();

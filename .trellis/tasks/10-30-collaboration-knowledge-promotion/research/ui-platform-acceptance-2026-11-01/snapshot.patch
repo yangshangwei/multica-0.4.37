@@ -1,0 +1,2312 @@
+diff --git a/server/cmd/server/collaboration_scope_authorizer.go b/server/cmd/server/collaboration_scope_authorizer.go
+index 05104fa0d..f31d92e33 100644
+--- a/server/cmd/server/collaboration_scope_authorizer.go
++++ b/server/cmd/server/collaboration_scope_authorizer.go
+@@ -13,6 +13,9 @@ type collaborationScopeAuthorizer struct {
+ }
+ 
+ func (a *collaborationScopeAuthorizer) AuthorizeScope(ctx context.Context, userID, workspaceID, scopeType, scopeID string) (bool, error) {
++	if scopeType == realtime.ScopeWorkspace && workspaceID == scopeID {
++		return a.service.AuthorizeKnowledgeWorkspace(ctx, userID, workspaceID)
++	}
+ 	if scopeType == realtime.ScopeAccount || scopeType == realtime.ScopeIssue {
+ 		return a.service.AuthorizeRealtimeScope(ctx, userID, scopeType, scopeID)
+ 	}
+diff --git a/server/cmd/server/main.go b/server/cmd/server/main.go
+index 42645db6e..90c27aa04 100755
+--- a/server/cmd/server/main.go
++++ b/server/cmd/server/main.go
+@@ -699,6 +699,7 @@ func main() {
+ 	go h.CollaborationAccountReconciler.Run(sweepCtx)
+ 	go h.CollaborationConfigReconciler.Run(sweepCtx)
+ 	go (&service.CollaborationRealtime{Queries: queries, TxStarter: pool, Publisher: broadcaster}).Run(sweepCtx)
++	go (&service.CollaborationKnowledgeInvalidation{Queries: queries, TxStarter: pool, Publisher: broadcaster}).Run(sweepCtx)
+ 	var taskObservation, cancellationObservation adminWorkerObservation
+ 	go service.NewAdminOperationService(queries, pool, taskSvc).Run(sweepCtx, cancellationObservation.record)
+ 	registerAutopilotListeners(bus, autopilotSvc)
+diff --git a/server/cmd/server/router.go b/server/cmd/server/router.go
+index 0fc0700cd..5839224b0 100755
+--- a/server/cmd/server/router.go
++++ b/server/cmd/server/router.go
+@@ -1426,6 +1426,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
+ 	r.Get("/api/collaboration/runtime/runs/{runId}/memory", h.GetCollaborationRuntimeMemory)
+ 	r.Put("/api/collaboration/runtime/runs/{runId}/memory", h.UpdateCollaborationRuntimeMemory)
+ 	r.Get("/api/collaboration/runtime/runs/{runId}/stop-intent", h.GetCollaborationRuntimeStopIntent)
++	r.Get("/api/collaboration/runtime/runs/{runId}/knowledge-context/status", h.GetCollaborationRuntimeKnowledgeStatus)
+ 	r.Post("/api/collaboration/runtime/runs/{runId}/proof", h.AcceptCollaborationRuntimeProof)
+ 	r.Post("/api/collaboration/runtime/runs/{runId}/launches/{launchId}/termination", h.AcceptCollaborationLaunchTermination)
+ 	r.Group(func(r chi.Router) {
+@@ -1436,6 +1437,8 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
+ 		r.Post("/api/collaboration/runtime/capabilities", h.RegisterCollaborationRuntimeCapabilities)
+ 		r.Post("/api/collaboration/runtime/runs/{runId}/claim", h.ClaimCollaborationRuntimeRun)
+ 		r.Post("/api/collaboration/runtime/runs/{runId}/permit", h.PermitCollaborationRuntimeRun)
++		r.Post("/api/collaboration/runtime/runs/{runId}/knowledge-context/prepare", h.PrepareCollaborationRuntimeKnowledge)
++		r.Post("/api/collaboration/runtime/runs/{runId}/knowledge-context/authorize", h.AuthorizeCollaborationRuntimeKnowledge)
+ 	})
+ 
+ 	// Avatar serving. Public for the same reason as the capability download
+@@ -1574,6 +1577,9 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
+ 
+ 		r.Get("/tasks/{taskId}/status", h.GetTaskStatus)
+ 		r.Post("/tasks/{taskId}/start", h.StartTask)
++		r.Post("/tasks/{taskId}/knowledge-context/prepare", h.PrepareTaskKnowledge)
++		r.Post("/tasks/{taskId}/knowledge-context/authorize", h.AuthorizeTaskKnowledgeLaunch)
++		r.Post("/tasks/{taskId}/knowledge-context/observations", h.ObserveTaskKnowledgeLaunch)
+ 		r.Post("/tasks/{taskId}/wait-local-directory", h.MarkTaskWaitingLocalDirectory)
+ 		r.Post("/tasks/{taskId}/progress", h.ReportTaskProgress)
+ 		r.Post("/tasks/{taskId}/complete", h.CompleteTask)
+@@ -1741,6 +1747,13 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
+ 		r.Post("/api/collaboration/issues/{id}/memory/versions/{version}/restore", h.RestoreCollaborationMemoryVersion)
+ 		r.Post("/api/collaboration/issues/{id}/memory/versions/{version}/purge", h.PurgeCollaborationMemoryVersion)
+ 		r.Get("/api/collaboration/issues/{id}/memory/operations/{requestId}", h.GetCollaborationMemoryOperation)
++		r.Get("/api/collaboration/issues/{id}/knowledge-candidates", h.ListCollaborationKnowledgeCandidates)
++		r.Post("/api/collaboration/issues/{id}/knowledge-candidates", h.ProposeCollaborationKnowledge)
++		r.Get("/api/collaboration/knowledge-candidates/{candidateId}", h.GetCollaborationKnowledgeCandidate)
++		r.Post("/api/collaboration/knowledge-candidates/{candidateId}/approve", h.ApproveCollaborationKnowledge)
++		r.Post("/api/collaboration/knowledge-candidates/{candidateId}/reject", h.RejectCollaborationKnowledge)
++		r.Post("/api/collaboration/knowledge-candidates/{candidateId}/withdraw", h.WithdrawCollaborationKnowledge)
++		r.Get("/api/collaboration/knowledge-candidates/{candidateId}/operations/{requestId}", h.GetCollaborationKnowledgeOperation)
+ 		r.Patch("/api/collaboration/issues/{id}", h.UpdateCollaborationIssue)
+ 		r.Post("/api/collaboration/issues/{id}/lifecycle", h.ChangeCollaborationLifecycle)
+ 		r.Post("/api/installations/challenges", h.InstallationChallenge)
+@@ -1846,6 +1859,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
+ 				r.Group(func(r chi.Router) {
+ 					r.Use(middleware.RequireWorkspaceMemberFromURL(queries, "id"))
+ 					r.Get("/", h.GetWorkspace)
++					r.Get("/knowledge", h.GetWorkspaceKnowledge)
+ 					r.Get("/members", h.ListMembersWithUser)
+ 					r.Get("/project-capabilities", h.GetProjectCapabilities)
+ 					r.Get("/iteration-operations/{requestID}", h.GetIterationOperation)
+@@ -2301,6 +2315,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
+ 				r.Post("/", h.CreateProject)
+ 				r.Route("/{id}", func(r chi.Router) {
+ 					r.Get("/", h.GetProject)
++					r.Get("/knowledge", h.GetProjectKnowledge)
+ 					r.Get("/delete-impact", h.GetProjectDeleteImpact)
+ 					r.Get("/overview", h.GetProjectOverview)
+ 					r.Get("/health/issues", h.GetProjectHealthIssues)
+diff --git a/server/internal/auth/password_revoke.go b/server/internal/auth/password_revoke.go
+index 9647e9778..16c0859c5 100644
+--- a/server/internal/auth/password_revoke.go
++++ b/server/internal/auth/password_revoke.go
+@@ -4,6 +4,7 @@ import (
+ 	"context"
+ 	"errors"
+ 
++	"github.com/google/uuid"
+ 	"github.com/jackc/pgx/v5"
+ 	"github.com/jackc/pgx/v5/pgtype"
+ 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+@@ -27,6 +28,16 @@ func RevokePasswordCredentials(ctx context.Context, tx pgx.Tx, userID pgtype.UUI
+ 	if _, err := q.InvalidateCollaborationAccount(ctx, db.InvalidateCollaborationAccountParams{UserID: userID, RevocationKey: revocationKey}); err != nil {
+ 		return result, err
+ 	}
++	// The existing account invalidation has a composite identity, not a UUID.
++	// Preserve it deterministically without waiting for per-issue reconciliation.
++	// Users without an account fence may still have read through membership.
++	cause := uuid.NewSHA1(uuid.UUID(userID.Bytes), []byte("collaboration-knowledge:password:"+revocationKey))
++	if _, err := q.EnqueueKnowledgeScan(ctx, db.EnqueueKnowledgeScanParams{
++		ID:      pgtype.UUID{Bytes: uuid.NewSHA1(cause, []byte("collaboration-knowledge:scan")), Valid: true},
++		CauseID: pgtype.UUID{Bytes: cause, Valid: true}, ScopeKind: pgtype.Text{String: "all_sources", Valid: true},
++	}); err != nil {
++		return result, err
++	}
+ 	for _, statement := range []string{
+ 		`UPDATE personal_access_token SET revoked = true WHERE user_id = $1`,
+ 		`DELETE FROM task_token WHERE user_id = $1`,
+diff --git a/server/internal/auth/principal.go b/server/internal/auth/principal.go
+index 40641ba43..bfc57a026 100644
+--- a/server/internal/auth/principal.go
++++ b/server/internal/auth/principal.go
+@@ -20,6 +20,9 @@ type AuthenticatedPrincipal struct {
+ 	// AgentActor is a deny-only legacy request hint. It is not proof of an
+ 	// agent identity and must never grant machine or human authority.
+ 	AgentActor bool
++	// PATTokenHash identifies the original verified credential for consumers
++	// that require an uncached revocation check. It is never a response field.
++	PATTokenHash string `json:"-"`
+ }
+ 
+ type authenticatedPrincipalKey struct{}
+diff --git a/server/internal/daemon/client.go b/server/internal/daemon/client.go
+index dcbc71176..6c50bcf31 100755
+--- a/server/internal/daemon/client.go
++++ b/server/internal/daemon/client.go
+@@ -92,6 +92,8 @@ func isRuntimeNotFoundError(err error) bool {
+ 
+ // Client handles HTTP communication with the Multica server daemon API.
+ type Client struct {
++	// Installed once by the daemon; scoped transports share this source-free resolver.
++	knowledgeInvocation    func(string) *protocol.TaskKnowledgeInvocation
+ 	baseURL                string
+ 	tokenMu                sync.RWMutex
+ 	managed                *managedClientRegistry
+@@ -232,7 +234,11 @@ func (c *Client) ClaimTask(ctx context.Context, runtimeID string) (*Task, error)
+ 	var resp struct {
+ 		Task *Task `json:"task"`
+ 	}
+-	if err := c.postJSON(ctx, fmt.Sprintf("/api/daemon/runtimes/%s/tasks/claim", runtimeID), map[string]any{}, &resp); err != nil {
++	body := map[string]any{}
++	if invocation := c.taskKnowledgeInvocation(runtimeID); invocation != nil {
++		body["knowledge_context"] = invocation
++	}
++	if err := c.postJSON(ctx, fmt.Sprintf("/api/daemon/runtimes/%s/tasks/claim", runtimeID), body, &resp); err != nil {
+ 		return nil, err
+ 	}
+ 	if c.managed != nil && resp.Task != nil {
+@@ -301,11 +307,7 @@ func (c *Client) ClaimTasks(ctx context.Context, daemonID string, runtimeIDs []s
+ 	var resp struct {
+ 		Tasks []*Task `json:"tasks"`
+ 	}
+-	if err := c.postJSON(reqCtx, "/api/daemon/tasks/claim", map[string]any{
+-		"daemon_id":   daemonID,
+-		"runtime_ids": runtimeIDs,
+-		"max_tasks":   maxTasks,
+-	}, &resp); err != nil {
++	if err := c.postJSON(reqCtx, "/api/daemon/tasks/claim", c.taskClaimBody(daemonID, runtimeIDs, maxTasks), &resp); err != nil {
+ 		return nil, err
+ 	}
+ 	return resp.Tasks, nil
+@@ -435,8 +437,14 @@ func (c *Client) ExtendTaskPrepareLease(ctx context.Context, runtimeID, taskID s
+ 	return c.postJSON(ctx, fmt.Sprintf("/api/daemon/runtimes/%s/tasks/%s/prepare-lease", runtimeID, taskID), map[string]any{}, nil)
+ }
+ 
+-func (c *Client) StartTask(ctx context.Context, taskID string) error {
+-	return c.postJSON(ctx, fmt.Sprintf("/api/daemon/tasks/%s/start", taskID), map[string]any{}, nil)
++func (c *Client) StartTask(ctx context.Context, taskID string, fence ...*protocol.TaskKnowledgeFence) error {
++	body := map[string]any{}
++	addKnowledgeFence(body, fence)
++	err := c.postJSON(ctx, fmt.Sprintf("/api/daemon/tasks/%s/start", taskID), body, nil)
++	if reason := knowledgeErrorReason(err); reason != "" {
++		return knowledgeRefusal(reason)
++	}
++	return err
+ }
+ 
+ // MarkTaskWaitingLocalDirectory parks a freshly-dispatched task in the
+@@ -515,8 +523,9 @@ func (c *Client) ReportTaskMessages(ctx context.Context, taskID string, messages
+ 	}, nil)
+ }
+ 
+-func (c *Client) CompleteTask(ctx context.Context, taskID, output, branchName, sessionID, workDir string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string) error {
++func (c *Client) CompleteTask(ctx context.Context, taskID, output, branchName, sessionID, workDir string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string, fence ...*protocol.TaskKnowledgeFence) error {
+ 	body := map[string]any{"output": output}
++	addKnowledgeFence(body, fence)
+ 	if branchName != "" {
+ 		body["branch_name"] = branchName
+ 	}
+@@ -547,8 +556,9 @@ func (c *Client) ReportTaskUsage(ctx context.Context, taskID string, usage []Tas
+ 	}, nil)
+ }
+ 
+-func (c *Client) FailTask(ctx context.Context, taskID, errMsg, sessionID, workDir, branchName, failureReason string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string) error {
++func (c *Client) FailTask(ctx context.Context, taskID, errMsg, sessionID, workDir, branchName, failureReason string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string, fence ...*protocol.TaskKnowledgeFence) error {
+ 	body := map[string]any{"error": errMsg}
++	addKnowledgeFence(body, fence)
+ 	if sessionID != "" {
+ 		body["session_id"] = sessionID
+ 	}
+@@ -578,11 +588,12 @@ func (c *Client) FailTask(ctx context.Context, taskID, errMsg, sessionID, workDi
+ 
+ // PinTaskSession persists the agent's session_id and work_dir on the task
+ // row mid-flight so a daemon crash doesn't lose the resume pointer.
+-func (c *Client) PinTaskSession(ctx context.Context, taskID, sessionID, workDir string) error {
++func (c *Client) PinTaskSession(ctx context.Context, taskID, sessionID, workDir string, fence ...*protocol.TaskKnowledgeFence) error {
+ 	if sessionID == "" && workDir == "" {
+ 		return nil
+ 	}
+ 	body := map[string]any{}
++	addKnowledgeFence(body, fence)
+ 	if sessionID != "" {
+ 		body["session_id"] = sessionID
+ 	}
+diff --git a/server/internal/daemon/collaborationrun/client.go b/server/internal/daemon/collaborationrun/client.go
+index 61d38bdc6..c8f71949d 100644
+--- a/server/internal/daemon/collaborationrun/client.go
++++ b/server/internal/daemon/collaborationrun/client.go
+@@ -97,6 +97,9 @@ func (c *Client) Claim(ctx context.Context, runID string, in protocol.Collaborat
+ 	path := runPath(runID, "claim")
+ 	if host {
+ 		path += "?handoff_version=1&recording_version=1"
++		if in.KnowledgeVersion == 1 {
++			path += "&knowledge_version=1"
++		}
+ 	}
+ 	if err := c.request(ctx, http.MethodPost, path, c.managedToken, in, &out); err != nil {
+ 		return out, err
+@@ -107,6 +110,9 @@ func (c *Client) Claim(ctx context.Context, runID string, in protocol.Collaborat
+ // Retained claims pass the same validation before they can resume waiting for
+ // their session. A private ledger file is not a substitute for input validation.
+ func validateClaimResponse(out protocol.CollaborationRunClaimResponse, runID string, in protocol.CollaborationRunClaimRequest) error {
++	if err := validateHostKnowledgeClaim(out, in.KnowledgeVersion); err != nil {
++		return err
++	}
+ 	if out.HandoffVersion != 0 && out.HandoffVersion != protocol.CollaborationHandoffVersion ||
+ 		out.RecordingVersion != 0 && out.RecordingVersion != protocol.CollaborationCheckpointVersion {
+ 		return ErrProtocol
+diff --git a/server/internal/daemon/collaborationrun/host_config.go b/server/internal/daemon/collaborationrun/host_config.go
+index e113dc8a1..d1053824d 100644
+--- a/server/internal/daemon/collaborationrun/host_config.go
++++ b/server/internal/daemon/collaborationrun/host_config.go
+@@ -151,7 +151,7 @@ func (h *HostExecutor) Probe(context.Context) error {
+ 	opts := h.Options
+ 	if opts.Cwd != "" || opts.Model != "" || opts.SystemPrompt != "" || opts.ThreadName != "" || opts.MaxTurns != 0 || opts.ResumeSessionID != "" ||
+ 		opts.ResumeExpected || opts.ResumeContinuityNotice != "" || len(opts.ExtraArgs) != 0 || len(opts.CustomArgs) != 0 || len(opts.McpConfig) != 0 ||
+-		opts.ThinkingLevel != "" || opts.ServiceTier != "" || opts.OpenclawMode != "" || opts.ClaudeSettingsPath != "" || opts.QwenpawWorkspace != "" || opts.Lifecycle != nil {
++		opts.ThinkingLevel != "" || opts.ServiceTier != "" || opts.OpenclawMode != "" || opts.ClaudeSettingsPath != "" || opts.QwenpawWorkspace != "" || opts.Lifecycle != nil || opts.Knowledge != nil {
+ 		return ErrUnsupported
+ 	}
+ 	if _, err := h.Config.Capabilities(); err != nil {
+diff --git a/server/internal/daemon/collaborationrun/host_ledger.go b/server/internal/daemon/collaborationrun/host_ledger.go
+index 8ed815293..2fac543df 100644
+--- a/server/internal/daemon/collaborationrun/host_ledger.go
++++ b/server/internal/daemon/collaborationrun/host_ledger.go
+@@ -57,6 +57,9 @@ func validateHostLedgerRecord(r ledgerRecord) error {
+ 			Containment: protocol.CollaborationContainmentHostProcessSupervision, DeploymentID: r.Identity.DeploymentID,
+ 			InstallationID: r.Identity.InstallationID, RuntimeID: claim.HostContext.RuntimeID,
+ 			PreparationVersion: protocol.CollaborationHostPreparationVersion, CapabilityDigest: h.CapabilityDigest}
++		if claim.KnowledgeContext != nil {
++			request.KnowledgeVersion = 1
++		}
+ 		if validateClaimResponse(claim, r.Identity.RunID, request) != nil {
+ 			return ErrUnconfirmed
+ 		}
+diff --git a/server/internal/daemon/collaborationrun/host_runner.go b/server/internal/daemon/collaborationrun/host_runner.go
+index 062486cb5..4ca52842c 100644
+--- a/server/internal/daemon/collaborationrun/host_runner.go
++++ b/server/internal/daemon/collaborationrun/host_runner.go
+@@ -28,6 +28,7 @@ type hostSupervisor struct {
+ 	prepared          *hostPreparedRun
+ 	handoffSnapshot   string
+ 	handoffPromptHash string
++	knowledge         *hostKnowledgeInput
+ }
+ 
+ func (r *Runner) runHost(ctx context.Context, local *RunLedger, runID string, request protocol.CollaborationRunClaimRequest) (runErr error) {
+@@ -47,6 +48,9 @@ func (r *Runner) runHost(ctx context.Context, local *RunLedger, runID string, re
+ 		// Host runs inject shared context; this claim-only declaration is not a
+ 		// registered capability and never changes the capability digest.
+ 		request.MemoryVersion = protocol.CollaborationMemoryVersion
++		if r.Host.supportsKnowledge() {
++			request.KnowledgeVersion = 1
++		}
+ 		claim, err := r.Client.Claim(ctx, runID, request)
+ 		if err != nil {
+ 			return err
+@@ -127,6 +131,14 @@ func (r *Runner) runHost(ctx context.Context, local *RunLedger, runID string, re
+ 	// A retained directory organizes this identity; it is not an OS sandbox.
+ 	// Session pointers come only from this key's local record.
+ 	resume, continuityLost := session.record.SessionID, session.record.ResumeUnavailable
++	if claim.KnowledgeContext != nil {
++		// A knowledge namespace never supplies a reusable provider pointer.
++		if !r.Host.supportsKnowledge() || resume != "" {
++			_ = stop()
++			return errors.Join(ErrUnsupported, r.recoverHost(context.WithoutCancel(ctx), local))
++		}
++		resume, continuityLost = "", false
++	}
+ 	if prepared.CodexHome != "" && resume != "" && !execenv.CodexResumeRolloutPresent(prepared.CodexHome, resume) {
+ 		resume, continuityLost = "", true
+ 	}
+@@ -179,11 +191,19 @@ func (r *Runner) runHost(ctx context.Context, local *RunLedger, runID string, re
+ 		// Codex must not prepend different text after its process is launched.
+ 		opts.ResumeContinuityNotice = ""
+ 	}
++	if claim.KnowledgeContext != nil {
++		opts.ResumeExpected, opts.ResumeContinuityNotice = false, ""
++	}
+ 	prompt, err := hostPromptWithHandoff(claim, continuityLost, memory, handoff)
+ 	if err != nil {
+ 		_ = stop()
+ 		return errors.Join(err, r.recoverHost(context.WithoutCancel(ctx), local))
+ 	}
++	prompt, err = supervisor.prepareKnowledge(executionCtx, prompt, opts, handoff)
++	if err != nil {
++		_ = stop()
++		return errors.Join(err, r.recoverHost(context.WithoutCancel(ctx), local))
++	}
+ 	supervisor.setHandoff(handoff, prompt)
+ 	record := newHostRecording(prepared, r.Host.Config.Executable)
+ 	sender, err := startHostCheckpoints(executionCtx, supervisor, record, claim.RecordingVersion)
+@@ -236,6 +256,9 @@ func (r *Runner) runHost(ctx context.Context, local *RunLedger, runID string, re
+ 		if result.SessionID != "" && (!validProviderSessionID(result.SessionID) || prepared.CodexHome != "" && !execenv.CodexResumeRolloutPresent(prepared.CodexHome, result.SessionID)) {
+ 			result.SessionID = ""
+ 		}
++		if claim.KnowledgeContext != nil {
++			result.SessionID = ""
++		}
+ 		if err := session.save(result.SessionID, result.SessionID == ""); err != nil {
+ 			executeErr = errors.Join(executeErr, err)
+ 		}
+@@ -318,6 +341,9 @@ func (s *hostSupervisor) BeforeLaunch(ctx context.Context, info agent.LaunchInfo
+ 		if err := s.bindHandoff(ctx); err != nil {
+ 			return agent.LaunchCallbacks{}, err
+ 		}
++		if err := s.authorizeKnowledge(ctx); err != nil {
++			return agent.LaunchCallbacks{}, err
++		}
+ 	}
+ 	s.mu.Lock()
+ 	nonce := s.local.record.AttemptNonce
+diff --git a/server/internal/daemon/collaborationrun/host_session.go b/server/internal/daemon/collaborationrun/host_session.go
+index 13f6e1b67..fe453259f 100644
+--- a/server/internal/daemon/collaborationrun/host_session.go
++++ b/server/internal/daemon/collaborationrun/host_session.go
+@@ -36,6 +36,12 @@ func hostSessionKey(claim protocol.CollaborationRunClaimResponse) (string, error
+ 	if role == "member" {
+ 		parts = append(parts, claim.Identity.GroupID, c.StepKey)
+ 	}
++	if claim.KnowledgeContext != nil {
++		if validateHostKnowledgeClaim(claim, 1) != nil {
++			return "", ErrProtocol
++		}
++		parts = append(parts, "knowledge:v1", claim.KnowledgeContext.Namespace)
++	}
+ 	raw, err := json.Marshal(parts)
+ 	if err != nil {
+ 		return "", err
+diff --git a/server/internal/daemon/daemon.go b/server/internal/daemon/daemon.go
+index a4b489c82..4588cf1f7 100755
+--- a/server/internal/daemon/daemon.go
++++ b/server/internal/daemon/daemon.go
+@@ -29,6 +29,7 @@ import (
+ 	"github.com/multica-ai/multica/server/internal/daemon/repocache"
+ 	"github.com/multica-ai/multica/server/internal/selfexec"
+ 	"github.com/multica-ai/multica/server/pkg/agent"
++	"github.com/multica-ai/multica/server/pkg/protocol"
+ 	"github.com/multica-ai/multica/server/pkg/redact"
+ 	"github.com/multica-ai/multica/server/pkg/skillbundle"
+ 	"github.com/multica-ai/multica/server/pkg/taskfailure"
+@@ -212,6 +213,7 @@ const (
+ // reportTerminalTask gives the durable outbox one insertion point without
+ // revisiting every task exit when it is added.
+ type terminalTaskReport struct {
++	knowledgeFence *protocol.TaskKnowledgeFence
+ 	kind           terminalTaskReportKind
+ 	taskID         string
+ 	output         string
+@@ -679,6 +681,7 @@ func New(cfg Config, logger *slog.Logger) *Daemon {
+ 		initialAgents[name] = entry
+ 	}
+ 	d.agentsAvailable.Store(&initialAgents)
++	client.knowledgeInvocation = d.knowledgeInvocation
+ 	d.executionEnvironmentCommand = defaultExecutionEnvironmentCommand
+ 	d.runner = taskRunnerFunc(d.runTask)
+ 	d.runUpdateFn = d.runUpdate
+@@ -5117,6 +5120,7 @@ func (d *Daemon) watchTaskCancellation(ctx context.Context, taskID string, pollI
+ }
+ 
+ func (d *Daemon) handleTask(ctx context.Context, task Task, slot int) {
++	ctx = context.WithValue(ctx, knowledgeFenceContextKey{}, taskKnowledgeFence(task))
+ 	ctx = d.withCancellationExecution(ctx, task)
+ 	d.mu.Lock()
+ 	rt, tracked := d.runtimeIndex[task.RuntimeID]
+@@ -5379,6 +5383,9 @@ func (e *worktreePreservedError) Error() string { return e.err.Error() }
+ func (e *worktreePreservedError) Unwrap() error { return e.err }
+ 
+ func taskRunFailureReason(err error) string {
++	if reason := knowledgeErrorReason(err); reason != "" {
++		return reason
++	}
+ 	if errors.Is(err, errInvalidTaskIdentity) {
+ 		return taskfailure.ReasonInvalidTaskIdentity.String()
+ 	}
+@@ -5615,6 +5622,9 @@ func (d *Daemon) acquireLocalDirectoryLockIfNeeded(ctx context.Context, task Tas
+ // the next chat turn to resume there rather than start over and "forget"
+ // the conversation.
+ func (d *Daemon) reportTaskResult(ctx context.Context, taskID string, result TaskResult, taskLog *slog.Logger) {
++	if result.KnowledgeFence != nil {
++		ctx = context.WithValue(ctx, knowledgeFenceContextKey{}, result.KnowledgeFence)
++	}
+ 	switch result.Status {
+ 	case "completed":
+ 		taskLog.Info("task completed", "status", result.Status)
+@@ -5657,6 +5667,9 @@ func (d *Daemon) reportTaskResult(ctx context.Context, taskID string, result Tas
+ 		// which is the canonical replacement for the legacy
+ 		// "agent_error" coarse bucket.
+ 		fallbackErrMsg := fmt.Sprintf("complete task failed: %s", err.Error())
++		if reason := knowledgeErrorReason(err); reason != "" {
++			fallbackErrMsg = reason
++		}
+ 		if failErr := d.reportTerminalTask(ctx, terminalTaskReport{
+ 			kind:         terminalTaskReportFail,
+ 			taskID:       taskID,
+@@ -5721,14 +5734,17 @@ func (d *Daemon) reportTaskResult(ctx context.Context, taskID string, result Tas
+ // 30-second drain, but terminal callbacks must still use that remaining window.
+ // The explicit timeout keeps this detached work bounded during normal runs.
+ func (d *Daemon) reportTerminalTask(parentCtx context.Context, report terminalTaskReport) error {
++	if report.knowledgeFence == nil {
++		report.knowledgeFence, _ = parentCtx.Value(knowledgeFenceContextKey{}).(*protocol.TaskKnowledgeFence)
++	}
+ 	ctx, cancel := context.WithTimeout(context.WithoutCancel(parentCtx), terminalTaskReportTimeout)
+ 	defer cancel()
+ 
+ 	switch report.kind {
+ 	case terminalTaskReportComplete:
+-		return d.client.CompleteTask(ctx, report.taskID, report.output, report.branchName, report.sessionID, report.workDir, report.sessionRolloutMissing, report.retiredSessionID, report.durableWorkDir)
++		return d.client.CompleteTask(ctx, report.taskID, report.output, report.branchName, report.sessionID, report.workDir, report.sessionRolloutMissing, report.retiredSessionID, report.durableWorkDir, report.knowledgeFence)
+ 	case terminalTaskReportFail:
+-		return d.client.FailTask(ctx, report.taskID, report.errorMessage, report.sessionID, report.workDir, report.branchName, report.failureReason, report.sessionRolloutMissing, report.retiredSessionID, report.durableWorkDir)
++		return d.client.FailTask(ctx, report.taskID, report.errorMessage, report.sessionID, report.workDir, report.branchName, report.failureReason, report.sessionRolloutMissing, report.retiredSessionID, report.durableWorkDir, report.knowledgeFence)
+ 	default:
+ 		return fmt.Errorf("unsupported terminal task report kind %d", report.kind)
+ 	}
+@@ -6836,6 +6852,7 @@ func qualifyTaskModel(
+ }
+ 
+ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot int, taskLog *slog.Logger) (taskResult TaskResult, returnErr error) {
++	defer func() { taskResult.KnowledgeFence = taskKnowledgeFence(task) }()
+ 	markCancellationRunner(ctx)
+ 	// A claim carries the task-row agent id both at the top level and inside
+ 	// the expanded agent configuration. The top-level id is authoritative
+@@ -7566,7 +7583,7 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
+ 	// taskfailure.Classify path records the failure with the same
+ 	// "start task failed: <…>" string and the same failure_reason
+ 	// taxonomy as before — see MUL-2946 for the classifier contract.
+-	if err := d.client.StartTask(prepareCtx, task.ID); err != nil {
++	if err := d.client.StartTask(prepareCtx, task.ID, taskKnowledgeFence(task)); err != nil {
+ 		stopPrepareLease()
+ 		return TaskResult{}, fmt.Errorf("start task failed: %w", err)
+ 	}
+@@ -7605,7 +7622,6 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
+ 	if env.LocalWorktree != nil && len(env.LocalWorktree.ReplayConflicts) > 0 {
+ 		promptOptions = append(promptOptions, WithWorktreeReplayConflicts(env.LocalWorktree.ReplayConflicts))
+ 	}
+-	prompt := BuildPrompt(task, provider, promptOptions...)
+ 
+ 	// Pass task-scoped auth credentials and context so the spawned agent CLI
+ 	// can call the Multica API and the local daemon (e.g. `multica repo checkout`).
+@@ -7736,7 +7752,7 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
+ 	// families go through New. This is the single production boundary — the
+ 	// daemon never calls agent.New or agent.NewRuntime directly, so the two
+ 	// factories stay meaning exactly one thing each.
+-	backend, err := agent.ResolveBackend(provider, agent.Config{
++	backendConfig := agent.Config{
+ 		ExecutablePath: entry.Path,
+ 		LaunchPrefix:   profileFixedArgs,
+ 		CLIVersion:     resolvedVersion,
+@@ -7747,7 +7763,8 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
+ 		DaemonVersion:  d.cfg.CLIVersion,
+ 		CodexVersion:   codexVersion,
+ 		BuiltinRuntime: !usesCustomProfileCommand,
+-	})
++	}
++	backend, err := agent.ResolveBackend(provider, backendConfig)
+ 	if err != nil {
+ 		return TaskResult{}, fmt.Errorf("create agent backend: %w", err)
+ 	}
+@@ -7890,6 +7907,11 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
+ 		)
+ 		return TaskResult{Status: "completed", Comment: "", WorkDir: env.WorkDir, EnvRoot: env.RootDir}, nil
+ 	}
++	prompt, err := d.prepareKnowledgePrompt(ctx, task, provider, backendConfig, &execOpts, promptOptions)
++	if err != nil {
++		return TaskResult{Status: "blocked", Comment: agent.KnowledgeFailureReason(err),
++			FailureReason: agent.KnowledgeFailureReason(err), WorkDir: env.WorkDir, EnvRoot: env.RootDir}, nil
++	}
+ 
+ 	// Authenticate the localhost repo-checkout endpoint with the same
+ 	// task-scoped token the child receives. The endpoint derives identity and
+@@ -7935,7 +7957,7 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
+ 	var retiredSessionID string
+ 	defer func() { taskResult.RetiredSessionID = retiredSessionID }()
+ 
+-	if shouldRetryWithFreshSession(result, task.PriorSessionID, tools, provider) {
++	if execOpts.Knowledge == nil && shouldRetryWithFreshSession(result, task.PriorSessionID, tools, provider) {
+ 		firstResult := result
+ 		firstUsage := result.Usage
+ 		firstTools := tools
+@@ -8001,12 +8023,16 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
+ 		"duration", elapsed.String(),
+ 		"tools", tools,
+ 	)
++	loggedError := result.Error
++	if execOpts.Knowledge != nil {
++		loggedError = result.KnowledgeFailure
++	}
+ 	taskLog.Debug("agent result detail",
+ 		"status", result.Status,
+ 		"output_bytes", len(result.Output),
+ 		"session_id", result.SessionID,
+ 		"models_with_usage", len(result.Usage),
+-		"agent_error", result.Error,
++		"agent_error", loggedError,
+ 	)
+ 
+ 	// Convert agent usage map to task usage entries.
+@@ -8047,6 +8073,10 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
+ 	// returns (SessionID is already blanked above); reportTaskResult forwards it
+ 	// as session_rollout_missing on the terminal callback (MUL-5305).
+ 	defer func() { taskResult.SessionRolloutMissing = sessionRolloutMissing }()
++	if result.KnowledgeFailure != "" {
++		return TaskResult{Status: "blocked", Comment: result.KnowledgeFailure, FailureReason: result.KnowledgeFailure,
++			SessionID: result.SessionID, WorkDir: env.WorkDir, EnvRoot: env.RootDir, Usage: usageEntries}, nil
++	}
+ 
+ 	switch result.Status {
+ 	case "completed":
+@@ -8275,6 +8305,9 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
+ //     attempts, so a retry after real work re-plans on top of its own
+ //     half-finished commits.
+ func shouldRetryWithFreshSession(result agent.Result, priorSessionID string, tools int32, provider string) bool {
++	if result.KnowledgeFailure != "" || knowledgeFailureCode(result.Error) {
++		return false
++	}
+ 	if result.Status != "failed" || priorSessionID == "" || tools > 0 {
+ 		return false
+ 	}
+@@ -8377,6 +8410,19 @@ func shouldRetryWithFreshSession(result agent.Result, priorSessionID string, too
+ //
+ // Usage is merged across both attempts in every branch so billing is complete.
+ func reconcileFreshRetryResult(first agent.Result, firstUsage map[string]agent.TokenUsage, firstTools int32, retry agent.Result, retryTools int32, retryErr error) (agent.Result, int32) {
++	if first.KnowledgeFailure != "" {
++		return first, firstTools
++	}
++	if reason := agent.KnowledgeFailureReason(retryErr); reason != "" {
++		retry.KnowledgeFailure = reason
++	}
++	if retry.KnowledgeFailure != "" {
++		retry.Status, retry.Error = "failed", retry.KnowledgeFailure
++		retry.KnowledgeOutput = first.Output + first.KnowledgeOutput + retry.KnowledgeOutput + retry.Output
++		retry.Output = ""
++		retry.Usage = mergeUsage(firstUsage, retry.Usage)
++		return retry, firstTools + retryTools
++	}
+ 	switch {
+ 	case retryErr != nil:
+ 		first.Usage = firstUsage
+@@ -8406,6 +8452,9 @@ func reconcileFreshRetryResult(first agent.Result, firstUsage map[string]agent.T
+ // parse — since none of them reports one explicitly. Context overflow is also
+ // allowed through, as starting over genuinely can clear it.
+ func freshSessionMayHelp(errText string) bool {
++	if knowledgeFailureCode(errText) {
++		return false
++	}
+ 	switch taskfailure.Classify(errText) {
+ 	case taskfailure.ReasonAgentProviderNetwork,
+ 		taskfailure.ReasonAgentProviderCapacityOrRateLimit,
+@@ -8440,9 +8489,17 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
+ 	agentCtx, agentCancel := context.WithCancel(ctx)
+ 	defer agentCancel()
+ 
+-	finishProcess := beginCancellationProcess(ctx)
++	finishProcess := func(bool) {}
++	if opts.Knowledge == nil {
++		finishProcess = beginCancellationProcess(ctx)
++	}
++	// Negotiated execution records actual processes in its synchronous launch
++	// callbacks. An authorization refusal is not a process with unknown exit.
+ 	session, err := backend.Execute(agentCtx, prompt, opts)
+ 	if err != nil {
++		if reason := agent.KnowledgeFailureReason(err); reason != "" {
++			return agent.Result{Status: "failed", Error: reason, KnowledgeFailure: reason}, 0, nil
++		}
+ 		// One provider-agnostic boundary for launches: every backend's
+ 		// cmd.Start() failure arrives here, so diagnosing ENOEXEC at this point
+ 		// covers claude, opencode and any CLI added later without a wrap in
+@@ -8510,6 +8567,8 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
+ 	// message batch, so the result hand-off below can wait for the transcript
+ 	// tail to be persisted.
+ 	drainFinished := make(chan struct{})
++	var knowledgeTextMu sync.Mutex
++	var recordedKnowledgeText strings.Builder
+ 	go func() {
+ 		defer close(drainFinished)
+ 		var mu sync.Mutex
+@@ -8545,8 +8604,21 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
+ 			if len(toSend) > 0 {
+ 				sendCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+ 				if err := d.client.ReportTaskMessages(sendCtx, taskID, toSend); err != nil {
+-					taskLog.Debug("failed to report task messages", "error", err)
++					if opts.Knowledge == nil {
++						taskLog.Debug("failed to report task messages", "error", err)
++					} else {
++						taskLog.Debug("failed to report knowledge task messages")
++					}
+ 				} else {
++					if opts.Knowledge != nil {
++						knowledgeTextMu.Lock()
++						for _, message := range toSend {
++							if message.Type == "text" {
++								recordedKnowledgeText.WriteString(message.Content)
++							}
++						}
++						knowledgeTextMu.Unlock()
++					}
+ 					taskLog.Debug("reported task messages", "count", len(toSend), "last_seq", toSend[len(toSend)-1].Seq)
+ 				}
+ 				cancel()
+@@ -8601,7 +8673,7 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
+ 					// preserved), while a session whose rollout never lands is never
+ 					// pinned. The terminal report is the authoritative writer.
+ 					// Non-Codex providers (codexHome == "") pin immediately.
+-					if msg.SessionID != "" && !sessionPinned.Swap(true) {
++					if opts.Knowledge == nil && msg.SessionID != "" && !sessionPinned.Swap(true) {
+ 						sid := msg.SessionID
+ 						wd := opts.Cwd
+ 						go func() {
+@@ -8620,7 +8692,11 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
+ 				case agent.MessageToolUse:
+ 					n := toolCount.Add(1)
+ 					inFlightTools.Add(1)
+-					taskLog.Info(fmt.Sprintf("tool #%d: %s", n, msg.Tool))
++					if opts.Knowledge == nil {
++						taskLog.Info(fmt.Sprintf("tool #%d: %s", n, msg.Tool))
++					} else {
++						taskLog.Info("knowledge task tool observed", "number", n)
++					}
+ 					if msg.CallID != "" {
+ 						mu.Lock()
+ 						callIDToTool[msg.CallID] = msg.Tool
+@@ -8667,7 +8743,11 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
+ 						toolName = callIDToTool[msg.CallID]
+ 						mu.Unlock()
+ 					}
+-					taskLog.Info("tool_result observed", "seq", s, "tool", toolName, "call_id", msg.CallID)
++					if opts.Knowledge == nil {
++						taskLog.Info("tool_result observed", "seq", s, "tool", toolName, "call_id", msg.CallID)
++					} else {
++						taskLog.Info("knowledge task tool result observed", "seq", s)
++					}
+ 					mu.Lock()
+ 					batch = append(batch, TaskMessageData{
+ 						Seq:    int(s),
+@@ -8684,13 +8764,17 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
+ 					}
+ 				case agent.MessageText:
+ 					if msg.Content != "" {
+-						taskLog.Debug("agent", "text", truncateLog(msg.Content, 200))
++						if opts.Knowledge == nil {
++							taskLog.Debug("agent", "text", truncateLog(msg.Content, 200))
++						}
+ 						mu.Lock()
+ 						pendingText.WriteString(msg.Content)
+ 						mu.Unlock()
+ 					}
+ 				case agent.MessageError:
+-					taskLog.Error("agent error", "content", msg.Content)
++					if opts.Knowledge == nil {
++						taskLog.Error("agent error", "content", msg.Content)
++					}
+ 					s := msgSeq.Add(1)
+ 					mu.Lock()
+ 					batch = append(batch, TaskMessageData{
+@@ -8735,12 +8819,46 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
+ 			}
+ 		}
+ 	}
++	settleKnowledge := func(result agent.Result) agent.Result {
++		if opts.Knowledge == nil {
++			return result
++		}
++		if err := opts.Lifecycle.Seal(); err != nil {
++			reason := agent.KnowledgeFailureReason(err)
++			if reason == "" {
++				reason = agent.KnowledgeUnavailable
++			}
++			result.KnowledgeFailure = reason
++		}
++		if result.KnowledgeFailure != "" {
++			result.Status, result.Error = "failed", result.KnowledgeFailure
++			if result.KnowledgeOutput == "" {
++				result.KnowledgeOutput = result.Output
++			}
++			result.Output = ""
++			knowledgeTextMu.Lock()
++			recorded := recordedKnowledgeText.String()
++			knowledgeTextMu.Unlock()
++			evidence := result.KnowledgeOutput
++			if evidence != "" && !strings.Contains(recorded, evidence) {
++				// Stream text is often a prefix of the final result. Preserve only
++				// the missing tail; it remains transcript evidence on a failed task.
++				evidence = strings.TrimPrefix(evidence, recorded)
++				evidenceCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), knowledgeRequestTimeout)
++				if err := d.client.ReportTaskMessages(evidenceCtx, taskID, []TaskMessageData{{Seq: int(msgSeq.Add(1)), Type: "text", Content: evidence}}); err != nil {
++					taskLog.Warn("knowledge failure evidence delivery failed")
++				}
++				cancel()
++			}
++		}
++		return result
++	}
+ 
+ 	select {
+ 	case result, ok := <-session.Result:
+ 		finishProcess(ok && result.ProcessExited)
+ 		waitForDrain()
+-		if idleWatchdogFired.Load() {
++		if idleWatchdogFired.Load() && result.KnowledgeFailure == "" {
+ 			// The backend's wait goroutine (e.g. claude.go) translates the
+ 			// SIGKILL we delivered via agentCancel into Status="aborted".
+ 			// Re-tag it as "idle_watchdog" so runTask routes the
+@@ -8751,8 +8869,21 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
+ 				result.Error = idleWatchdogReason(time.Duration(idleWatchdogThreshold.Load()))
+ 			}
+ 		}
+-		return result, toolCount.Load(), nil
++		return settleKnowledge(result), toolCount.Load(), nil
+ 	case <-drainCtx.Done():
++		if opts.Knowledge != nil {
++			opts.Lifecycle.Stop()
++			select {
++			case result, ok := <-session.Result:
++				finishProcess(ok && result.ProcessExited)
++				waitForDrain()
++				return settleKnowledge(result), toolCount.Load(), nil
++			case <-time.After(10 * time.Second):
++				finishProcess(false)
++				waitForDrain()
++				return settleKnowledge(agent.Result{Status: "failed", KnowledgeFailure: agent.KnowledgeUnavailable}), toolCount.Load(), nil
++			}
++		}
+ 		awaitCancellationProcessResult(ctx, session.Result, 10*time.Second, finishProcess)
+ 		// The drain loop is exiting on this same Done signal; wait for its
+ 		// final flush so the timeout/watchdog/cancel terminals below cannot
+diff --git a/server/internal/daemon/managed_transport.go b/server/internal/daemon/managed_transport.go
+index c3c842c88..80dd695f5 100644
+--- a/server/internal/daemon/managed_transport.go
++++ b/server/internal/daemon/managed_transport.go
+@@ -77,6 +77,7 @@ func (c *Client) installManagedCredential(workspaceID string, credential Managed
+ 	current := registry.workspaces[workspaceID]
+ 	if current == nil {
+ 		child := NewClient(c.baseURL)
++		child.knowledgeInvocation = c.knowledgeInvocation
+ 		child.managedWorkspaceID = workspaceID
+ 		child.cancelAckReceiptsReady = c.cancelAckReceiptsReady
+ 		child.platform = c.platform
+diff --git a/server/internal/daemon/prompt.go b/server/internal/daemon/prompt.go
+index 36608235d..b8af3671e 100755
+--- a/server/internal/daemon/prompt.go
++++ b/server/internal/daemon/prompt.go
+@@ -77,6 +77,7 @@ func perTurnContextBlocks(task Task, opts promptOpts) string {
+ // daemon's own execution context can answer. Kept behind PromptOption so the
+ // common BuildPrompt(task, provider) call sites stay unchanged.
+ type promptOpts struct {
++	knowledgeContext        string
+ 	sharedLocalDirectory    bool
+ 	worktreeReplayConflicts []string
+ }
+@@ -230,6 +231,9 @@ func BuildPrompt(task Task, provider string, options ...PromptOption) string {
+ 		}
+ 		body += blocks
+ 	}
++	if opts.knowledgeContext != "" {
++		body += "\n\n" + opts.knowledgeContext
++	}
+ 	return body
+ }
+ 
+diff --git a/server/internal/daemon/types.go b/server/internal/daemon/types.go
+index 0b26abb27..e7238fe90 100755
+--- a/server/internal/daemon/types.go
++++ b/server/internal/daemon/types.go
+@@ -4,6 +4,7 @@ import (
+ 	"encoding/json"
+ 
+ 	"github.com/multica-ai/multica/server/internal/runtimeapps"
++	"github.com/multica-ai/multica/server/pkg/protocol"
+ 	"github.com/multica-ai/multica/server/pkg/remotemcp"
+ )
+ 
+@@ -98,15 +99,16 @@ type TaskStatus struct {
+ }
+ 
+ type Task struct {
+-	ExecutionFence       *ExecutionFence        `json:"execution_fence,omitempty"`
+-	ID                   string                 `json:"id"`
+-	AgentID              string                 `json:"agent_id"`
+-	RuntimeID            string                 `json:"runtime_id"`
+-	IssueID              string                 `json:"issue_id"`
+-	WorkspaceID          string                 `json:"workspace_id"`
+-	WorkspaceSlug        string                 `json:"workspace_slug,omitempty"`
+-	IssueIdentifier      string                 `json:"issue_identifier,omitempty"`
+-	RemoteMCPConnections []remotemcp.Connection `json:"remote_mcp_connections,omitempty"`
++	KnowledgeContext     *protocol.TaskKnowledgeClaimDescriptor `json:"knowledge_context,omitempty"`
++	ExecutionFence       *ExecutionFence                        `json:"execution_fence,omitempty"`
++	ID                   string                                 `json:"id"`
++	AgentID              string                                 `json:"agent_id"`
++	RuntimeID            string                                 `json:"runtime_id"`
++	IssueID              string                                 `json:"issue_id"`
++	WorkspaceID          string                                 `json:"workspace_id"`
++	WorkspaceSlug        string                                 `json:"workspace_slug,omitempty"`
++	IssueIdentifier      string                                 `json:"issue_identifier,omitempty"`
++	RemoteMCPConnections []remotemcp.Connection                 `json:"remote_mcp_connections,omitempty"`
+ 	// RemoteMCPDaemonToken stays inside the daemon and authenticates the local
+ 	// broker's credential-resolution calls. It must never enter agent env/config.
+ 	RemoteMCPDaemonToken string `json:"remote_mcp_daemon_token,omitempty"`
+@@ -317,12 +319,13 @@ type TaskUsageEntry struct {
+ 
+ // TaskResult is the outcome of executing a task.
+ type TaskResult struct {
+-	Status     string `json:"status"`
+-	Comment    string `json:"comment"`
+-	BranchName string `json:"branch_name,omitempty"`
+-	EnvType    string `json:"env_type,omitempty"`
+-	SessionID  string `json:"session_id,omitempty"` // Claude session ID for future resumption
+-	WorkDir    string `json:"work_dir,omitempty"`   // working directory used during execution
++	KnowledgeFence *protocol.TaskKnowledgeFence `json:"-"`
++	Status         string                       `json:"status"`
++	Comment        string                       `json:"comment"`
++	BranchName     string                       `json:"branch_name,omitempty"`
++	EnvType        string                       `json:"env_type,omitempty"`
++	SessionID      string                       `json:"session_id,omitempty"` // Claude session ID for future resumption
++	WorkDir        string                       `json:"work_dir,omitempty"`   // working directory used during execution
+ 	// DurableWorkDir replaces WorkDir only after a disposable local worktree
+ 	// was finalized and its removal was confirmed. Empty keeps WorkDir authoritative.
+ 	DurableWorkDir string `json:"durable_work_dir,omitempty"`
+diff --git a/server/internal/daemon/wsrpc.go b/server/internal/daemon/wsrpc.go
+index 02c4100fb..d1e165f38 100755
+--- a/server/internal/daemon/wsrpc.go
++++ b/server/internal/daemon/wsrpc.go
+@@ -347,11 +347,7 @@ func (d *Daemon) claimTasksUsingTransport(ctx context.Context, client *Client, r
+ 		}
+ 		// batchClaimRequestTimeout is the server-side execution budget; the
+ 		// daemon waits that plus the client's grace margin for the response.
+-		_, err := rpc.CallIfRPCV1Supported(ctx, "tasks.claim", batchClaimRequestTimeout, map[string]any{
+-			"daemon_id":   daemonID,
+-			"runtime_ids": runtimeIDs,
+-			"max_tasks":   maxTasks,
+-		}, &resp)
++		_, err := rpc.CallIfRPCV1Supported(ctx, "tasks.claim", batchClaimRequestTimeout, client.taskClaimBody(daemonID, runtimeIDs, maxTasks), &resp)
+ 		if err == nil {
+ 			return resp.Tasks, nil
+ 		}
+diff --git a/server/internal/handler/agent.go b/server/internal/handler/agent.go
+index 1d36c296a..78c1b15cc 100755
+--- a/server/internal/handler/agent.go
++++ b/server/internal/handler/agent.go
+@@ -412,32 +412,33 @@ type AgentTaskResponse struct {
+ 	// IssueStatusesOmitted is how many active custom statuses were dropped by
+ 	// the cap, so the brief can say the list is incomplete instead of
+ 	// presenting a truncated catalog as the whole one.
+-	IssueStatusesOmitted int                    `json:"issue_statuses_omitted,omitempty"`
+-	ActiveSiblingRuns    []ActiveSiblingRunData `json:"active_sibling_runs,omitempty"`
+-	ThreadName           string                 `json:"thread_name,omitempty"` // semantic title for provider-native session/thread history
+-	Status               string                 `json:"status"`
+-	Priority             int32                  `json:"priority"`
+-	DispatchedAt         *string                `json:"dispatched_at"`
+-	StartedAt            *string                `json:"started_at"`
+-	CompletedAt          *string                `json:"completed_at"`
+-	Result               any                    `json:"result"`
+-	Error                *string                `json:"error"`
+-	FailureReason        string                 `json:"failure_reason,omitempty"` // see TaskService.MaybeRetryFailedTask
+-	Attempt              int32                  `json:"attempt"`
+-	MaxAttempts          int32                  `json:"max_attempts"`
+-	ParentTaskID         *string                `json:"parent_task_id,omitempty"`
+-	IsLeaderTask         bool                   `json:"is_leader_task,omitempty"`
+-	LeaderRoleResolved   bool                   `json:"leader_role_resolved,omitempty"` // claim-only capability, always true here: IsLeaderTask/SquadID authoritatively answer "is this a leader run", so the daemon must not infer the role from briefing text. Servers predating it make no such promise — before #4951 they sent no is_leader_task at all, after it they sent the flag without guaranteeing a briefing — so a daemon seeing no capability keeps the legacy inference. Never rendered into a prompt; see daemon.taskIsSquadLeader (MUL-5811). Mirror field: internal/daemon/types.go, same JSON name
+-	Agent                *TaskAgentData         `json:"agent,omitempty"`
+-	ConnectedApps        []ConnectedAppData     `json:"connected_apps,omitempty"` // daemon-claim only: per-run app capabilities mounted through runtime MCP overlays
+-	Repos                []RepoData             `json:"repos,omitempty"`
+-	ProjectID            string                 `json:"project_id,omitempty"`          // issue's project, when present
+-	ProjectTitle         string                 `json:"project_title,omitempty"`       // for surfacing in agent context
+-	ProjectDescription   string                 `json:"project_description,omitempty"` // durable project-level context injected into the brief
+-	ProjectResources     []ProjectResourceData  `json:"project_resources,omitempty"`   // resources attached to the project
+-	CreatedAt            string                 `json:"created_at"`
+-	PriorSessionID       string                 `json:"prior_session_id,omitempty"` // session ID from a previous task on same issue
+-	PriorWorkDir         string                 `json:"prior_work_dir,omitempty"`   // work_dir from a previous task on same issue
++	IssueStatusesOmitted int                                    `json:"issue_statuses_omitted,omitempty"`
++	ActiveSiblingRuns    []ActiveSiblingRunData                 `json:"active_sibling_runs,omitempty"`
++	ThreadName           string                                 `json:"thread_name,omitempty"` // semantic title for provider-native session/thread history
++	Status               string                                 `json:"status"`
++	Priority             int32                                  `json:"priority"`
++	DispatchedAt         *string                                `json:"dispatched_at"`
++	StartedAt            *string                                `json:"started_at"`
++	CompletedAt          *string                                `json:"completed_at"`
++	Result               any                                    `json:"result"`
++	Error                *string                                `json:"error"`
++	FailureReason        string                                 `json:"failure_reason,omitempty"` // see TaskService.MaybeRetryFailedTask
++	Attempt              int32                                  `json:"attempt"`
++	MaxAttempts          int32                                  `json:"max_attempts"`
++	ParentTaskID         *string                                `json:"parent_task_id,omitempty"`
++	IsLeaderTask         bool                                   `json:"is_leader_task,omitempty"`
++	LeaderRoleResolved   bool                                   `json:"leader_role_resolved,omitempty"` // claim-only capability, always true here: IsLeaderTask/SquadID authoritatively answer "is this a leader run", so the daemon must not infer the role from briefing text. Servers predating it make no such promise — before #4951 they sent no is_leader_task at all, after it they sent the flag without guaranteeing a briefing — so a daemon seeing no capability keeps the legacy inference. Never rendered into a prompt; see daemon.taskIsSquadLeader (MUL-5811). Mirror field: internal/daemon/types.go, same JSON name
++	Agent                *TaskAgentData                         `json:"agent,omitempty"`
++	ConnectedApps        []ConnectedAppData                     `json:"connected_apps,omitempty"` // daemon-claim only: per-run app capabilities mounted through runtime MCP overlays
++	Repos                []RepoData                             `json:"repos,omitempty"`
++	ProjectID            string                                 `json:"project_id,omitempty"`          // issue's project, when present
++	ProjectTitle         string                                 `json:"project_title,omitempty"`       // for surfacing in agent context
++	ProjectDescription   string                                 `json:"project_description,omitempty"` // durable project-level context injected into the brief
++	ProjectResources     []ProjectResourceData                  `json:"project_resources,omitempty"`   // resources attached to the project
++	CreatedAt            string                                 `json:"created_at"`
++	PriorSessionID       string                                 `json:"prior_session_id,omitempty"` // session ID from a previous task on same issue
++	KnowledgeContext     *protocol.TaskKnowledgeClaimDescriptor `json:"knowledge_context,omitempty"`
++	PriorWorkDir         string                                 `json:"prior_work_dir,omitempty"` // work_dir from a previous task on same issue
+ 	// PriorSessionResumeUnavailable is set when a more recent Codex session was
+ 	// withheld because its rollout was missing (MUL-5305); PriorSessionID (if
+ 	// any) is then an older fallback. The daemon surfaces the continuity gap in
+diff --git a/server/internal/handler/auth_device.go b/server/internal/handler/auth_device.go
+index fa4637117..b0f82d68e 100644
+--- a/server/internal/handler/auth_device.go
++++ b/server/internal/handler/auth_device.go
+@@ -13,12 +13,14 @@ import (
+ 	"time"
+ 	"unicode"
+ 
++	"github.com/google/uuid"
+ 	"github.com/jackc/pgx/v5/pgtype"
+ 	"github.com/multica-ai/multica/server/internal/analytics"
+ 	"github.com/multica-ai/multica/server/internal/auth"
+ 	"github.com/multica-ai/multica/server/internal/issuestatus"
+ 	"github.com/multica-ai/multica/server/internal/logger"
+ 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
++	"github.com/multica-ai/multica/server/internal/service"
+ 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+ )
+ 
+@@ -370,13 +372,20 @@ func (h *Handler) provisionDeviceIdentity(ctx context.Context, deviceID, deviceN
+ 		if out.createdWorkspace {
+ 			role = "owner"
+ 		}
+-		if _, err := qtx.CreateMember(ctx, db.CreateMemberParams{
++		member, err := qtx.CreateMember(ctx, db.CreateMemberParams{
+ 			WorkspaceID: ws.ID,
+ 			UserID:      user.ID,
+ 			Role:        role,
+-		}); err != nil {
++		})
++		if err != nil {
+ 			return out, raceOrErr(err)
+ 		}
++		if !out.createdWorkspace {
++			cause := pgtype.UUID{Bytes: uuid.NewSHA1(uuid.UUID(member.ID.Bytes), []byte("collaboration-knowledge:member-added")), Valid: true}
++			if err = service.EnqueueKnowledgeSourceInvalidation(ctx, qtx, cause, "source_workspace", ws.ID); err != nil {
++				return out, err
++			}
++		}
+ 		out.createdMember = true
+ 	default:
+ 		return out, err
+diff --git a/server/internal/handler/claim_project_context_test.go b/server/internal/handler/claim_project_context_test.go
+index bc05a45be..9161c1fb7 100755
+--- a/server/internal/handler/claim_project_context_test.go
++++ b/server/internal/handler/claim_project_context_test.go
+@@ -456,7 +456,7 @@ func TestBuildClaimedTaskResponse_SourceLoadFailure_PreservesTaskAndEmitsNoConte
+ 			req := httptest.NewRequest(http.MethodPost, "/api/daemon/runtimes/"+runtimeID+"/claim", nil)
+ 
+ 			resp, _, _, _, failure := brokenHandler.buildClaimedTaskResponse(
+-				req, &task, runtime, runtimeID, testWorkspaceID)
++				req, &task, runtime, runtimeID, testWorkspaceID, nil)
+ 
+ 			if failure == nil {
+ 				t.Fatal("expected the claim to be rejected when its source row cannot be read")
+diff --git a/server/internal/handler/collaboration_recipients_test.go b/server/internal/handler/collaboration_recipients_test.go
+index 30a619d15..5f794fb24 100644
+--- a/server/internal/handler/collaboration_recipients_test.go
++++ b/server/internal/handler/collaboration_recipients_test.go
+@@ -117,7 +117,13 @@ func TestResolveCollaborationRecipientPrivateProjectionAndContext(t *testing.T)
+ 	privateEmail := "private-recipient-" + uuid.NewString() + "@example.test"
+ 	recipient := dbfx.User(t, "Recipient display name", privateEmail, testutil.Cols{"profile_description": "private profile sentinel"})
+ 	body := fmt.Sprintf(`{"kind":"user_id","value":%q,"issue_id":%q}`, strings.ToUpper(recipient), strings.ToUpper(issue))
+-	r := recipientRequest(body, auth.AuthenticatedPrincipal{UserID: testUserID, Kind: auth.CredentialPAT})
++	pat, err := auth.GeneratePATToken()
++	if err != nil {
++		t.Fatal(err)
++	}
++	hash := auth.HashToken(pat)
++	dbfx.Insert(t, "personal_access_token", testutil.Cols{"user_id": testUserID, "name": "Recipient source reader", "token_hash": hash, "token_prefix": "mul_test"})
++	r := recipientRequest(body, auth.AuthenticatedPrincipal{UserID: testUserID, Kind: auth.CredentialPAT, PATTokenHash: hash})
+ 	r.Header.Set("X-User-ID", recipient)
+ 	r.Header.Set("X-Workspace-ID", "not-the-source")
+ 	r.Header.Set("X-Workspace-Slug", "not-the-source")
+diff --git a/server/internal/handler/collaboration_runtime.go b/server/internal/handler/collaboration_runtime.go
+index 5acee92f9..beac143f1 100644
+--- a/server/internal/handler/collaboration_runtime.go
++++ b/server/internal/handler/collaboration_runtime.go
+@@ -168,18 +168,22 @@ func (h *Handler) ClaimCollaborationRuntimeRun(w http.ResponseWriter, r *http.Re
+ 	if !decodeCollaborationRuntimeBody(w, r, &body) {
+ 		return
+ 	}
+-	for _, key := range []string{"handoff_version", "recording_version"} {
++	for _, key := range []string{"handoff_version", "recording_version", "knowledge_version"} {
+ 		if values, present := r.URL.Query()[key]; present &&
+ 			(body.ProtocolVersion != protocol.CollaborationHostRuntimeProtocolVersion || len(values) != 1 || values[0] != "1") {
+ 			writeJSON(w, http.StatusBadRequest, map[string]string{"code": "unsupported_runtime_read_version", "error": "Unsupported collaboration runtime extension"})
+ 			return
+ 		}
+ 	}
++	if r.URL.Query().Get("knowledge_version") == "1" {
++		body.KnowledgeVersion = protocol.CollaborationRunKnowledgeVersion
++	}
+ 	run, ok := collaborationRuntimeRunID(w, r, nil)
+ 	if !ok {
+ 		return
+ 	}
+ 	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
++	svc.KnowledgeContextEnabled = h.TaskService != nil && h.TaskService.KnowledgeContextEnabled
+ 	result, err := svc.ClaimRuntimeRun(r.Context(), run, body)
+ 	if err != nil {
+ 		writeCollaborationError(w, err)
+diff --git a/server/internal/handler/daemon.go b/server/internal/handler/daemon.go
+index 1440b812b..d9842c62f 100755
+--- a/server/internal/handler/daemon.go
++++ b/server/internal/handler/daemon.go
+@@ -8,6 +8,7 @@ import (
+ 	"encoding/json"
+ 	"errors"
+ 	"fmt"
++	"io"
+ 	"log/slog"
+ 	"net/http"
+ 	"sort"
+@@ -1739,9 +1740,10 @@ const claimBatchMaxTasksCap = 32
+ func (h *Handler) ClaimTasksByRuntime(w http.ResponseWriter, r *http.Request) {
+ 	start := time.Now()
+ 	var req struct {
+-		DaemonID   string   `json:"daemon_id"`
+-		RuntimeIDs []string `json:"runtime_ids"`
+-		MaxTasks   int      `json:"max_tasks"`
++		DaemonID   string                                       `json:"daemon_id"`
++		RuntimeIDs []string                                     `json:"runtime_ids"`
++		MaxTasks   int                                          `json:"max_tasks"`
++		Knowledge  map[string]*protocol.TaskKnowledgeInvocation `json:"knowledge_context,omitempty"`
+ 	}
+ 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+ 		writeError(w, http.StatusBadRequest, "invalid request body")
+@@ -1864,7 +1866,7 @@ func (h *Handler) ClaimTasksByRuntime(w http.ResponseWriter, r *http.Request) {
+ 		if handled, _ := h.repairStaleCommentPlanIfNeeded(r.Context(), &task, rtWorkspaceID); handled {
+ 			continue
+ 		}
+-		resp, deliveredCommentIDs, _, _, failure := h.buildClaimedTaskResponse(r, &task, rt, uuidToString(task.RuntimeID), rtWorkspaceID)
++		resp, deliveredCommentIDs, _, _, failure := h.buildClaimedTaskResponse(r, &task, rt, uuidToString(task.RuntimeID), rtWorkspaceID, req.Knowledge[uuidToString(task.RuntimeID)])
+ 		if failure != nil {
+ 			// Builder rejected this task (workspace isolation / chat-input);
+ 			// it has already settled the task where the failure requires it.
+@@ -1914,7 +1916,7 @@ func (h *Handler) ClaimTasksByRuntime(w http.ResponseWriter, r *http.Request) {
+ 			WorkspaceID: parseUUID(resp.WorkspaceID),
+ 			UserID:      rt.OwnerID,
+ 			ExpiresAt:   pgtype.Timestamptz{Time: time.Now().Add(24 * time.Hour), Valid: true},
+-		}, deliveredCommentIDs, commentBackedTask, daemonTokens...)
++		}, deliveredCommentIDs, commentBackedTask, resp.KnowledgeContext, daemonTokens...)
+ 		if ferr != nil {
+ 			slog.Error("batch claim: finalize task claim failed; requeueing claim",
+ 				"task_id", uuidToString(task.ID), "error", ferr)
+@@ -2147,7 +2149,12 @@ func claimResponseAgentIdentityMatches(resp AgentTaskResponse) bool {
+ // feed the same delivery receipt into FinalizeTaskClaim. A non-nil failure
+ // means the task must not be dispatched; the builder has already cancelled it
+ // where the failure semantics require it.
+-func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQueue, runtime db.AgentRuntime, runtimeID, runtimeWorkspaceID string) (resp AgentTaskResponse, deliveredCommentIDs []pgtype.UUID, agentSkillCount, builtinSkillCount int, failure *claimBuildFailure) {
++func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQueue, runtime db.AgentRuntime, runtimeID, runtimeWorkspaceID string, knowledge *protocol.TaskKnowledgeInvocation) (resp AgentTaskResponse, deliveredCommentIDs []pgtype.UUID, agentSkillCount, builtinSkillCount int, failure *claimBuildFailure) {
++	// Private preparation requires the existing workspace-scoped daemon
++	// credential. PAT/JWT legacy claims retain base execution and history gates.
++	if middleware.DaemonAuthPathFromContext(r.Context()) != middleware.DaemonAuthPathDaemonToken {
++		knowledge = nil
++	}
+ 	// Build response with fresh agent data (name + skills + custom_env + custom_args).
+ 	resp = taskToResponse(*task, runtimeWorkspaceID)
+ 	if task.ExecutionBindingID.Valid && task.DispatchedAt.Valid {
+@@ -3224,6 +3231,16 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
+ 	if failure := h.rejectClaimOnWorkspaceMismatch(r.Context(), task, resp.WorkspaceID, runtimeID, runtimeWorkspaceID, hasQuickCreate); failure != nil {
+ 		return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, failure
+ 	}
++	claim, prior, knowledgeErr := h.TaskService.BuildTaskKnowledgeClaim(r.Context(), *task, knowledge, resp.PriorSessionID)
++	if knowledgeErr != nil {
++		code := "knowledge_unavailable"
++		var domain *service.CollaborationError
++		if errors.As(knowledgeErr, &domain) {
++			code = domain.Code
++		}
++		return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, h.failClaimedTaskBeforeLaunch(r.Context(), task, code, taskfailure.Reason(code), "error_knowledge_claim", http.StatusConflict, code)
++	}
++	resp.KnowledgeContext, resp.PriorSessionID = claim, prior
+ 
+ 	// Surface a bounded snapshot of the same agent's other in-flight issue
+ 	// tasks. Queued tasks cannot coordinate yet and are intentionally omitted.
+@@ -3451,6 +3468,15 @@ func (h *Handler) ClaimTaskByRuntime(w http.ResponseWriter, r *http.Request) {
+ 	}
+ 	runtimeWorkspaceID := uuidToString(runtime.WorkspaceID)
+ 	authMs = time.Since(start).Milliseconds()
++	var knowledgeRequest struct {
++		Knowledge *protocol.TaskKnowledgeInvocation `json:"knowledge_context,omitempty"`
++	}
++	if r.Body != nil && r.ContentLength != 0 {
++		if err := json.NewDecoder(r.Body).Decode(&knowledgeRequest); err != nil && !errors.Is(err, io.EOF) {
++			writeError(w, http.StatusBadRequest, "invalid request body")
++			return
++		}
++	}
+ 
+ 	claimStart := time.Now()
+ 	task, err := h.TaskService.ClaimTaskForRuntime(r.Context(), parseUUID(runtimeID))
+@@ -3487,7 +3513,7 @@ func (h *Handler) ClaimTaskByRuntime(w http.ResponseWriter, r *http.Request) {
+ 	outcome = "claimed"
+ 	buildStart = time.Now()
+ 
+-	resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, failure := h.buildClaimedTaskResponse(r, task, runtime, runtimeID, runtimeWorkspaceID)
++	resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, failure := h.buildClaimedTaskResponse(r, task, runtime, runtimeID, runtimeWorkspaceID, knowledgeRequest.Knowledge)
+ 	if failure != nil {
+ 		outcome = failure.outcome
+ 		writeError(w, failure.status, failure.message)
+@@ -3554,7 +3580,7 @@ func (h *Handler) ClaimTaskByRuntime(w http.ResponseWriter, r *http.Request) {
+ 		WorkspaceID: parseUUID(resp.WorkspaceID),
+ 		UserID:      runtime.OwnerID,
+ 		ExpiresAt:   pgtype.Timestamptz{Time: time.Now().Add(24 * time.Hour), Valid: true},
+-	}, deliveredCommentIDs, commentBackedTask, daemonTokens...)
++	}, deliveredCommentIDs, commentBackedTask, resp.KnowledgeContext, daemonTokens...)
+ 	if ferr != nil {
+ 		outcome = "error_claim_finalize"
+ 		slog.Error("task claim: failed to finalize token and comment delivery receipt",
+@@ -3775,8 +3801,22 @@ func (h *Handler) StartTask(w http.ResponseWriter, r *http.Request) {
+ 		return
+ 	}
+ 
+-	task, err := h.TaskService.StartTask(r.Context(), parseUUID(taskID))
++	var req struct {
++		KnowledgeFence *protocol.TaskKnowledgeFence `json:"knowledge_fence,omitempty"`
++	}
++	if r.Body != nil && r.ContentLength != 0 {
++		if err := json.NewDecoder(r.Body).Decode(&req); err != nil && !errors.Is(err, io.EOF) {
++			writeError(w, http.StatusBadRequest, "invalid request body")
++			return
++		}
++	}
++	task, err := h.TaskService.StartTask(r.Context(), parseUUID(taskID), req.KnowledgeFence)
+ 	if err != nil {
++		var domain *service.CollaborationError
++		if errors.As(err, &domain) {
++			writeTaskKnowledgeError(w, err)
++			return
++		}
+ 		if writeIssueAdmissionError(w, err) {
+ 			return
+ 		}
+@@ -3867,10 +3907,11 @@ func (h *Handler) ReportTaskProgress(w http.ResponseWriter, r *http.Request) {
+ 
+ // CompleteTask marks a running task as completed.
+ type TaskCompleteRequest struct {
+-	PRURL     string `json:"pr_url"`
+-	Output    string `json:"output"`
+-	SessionID string `json:"session_id"` // Claude session ID for future resumption
+-	WorkDir   string `json:"work_dir"`   // working directory used during execution
++	KnowledgeFence *protocol.TaskKnowledgeFence `json:"knowledge_fence,omitempty"`
++	PRURL          string                       `json:"pr_url"`
++	Output         string                       `json:"output"`
++	SessionID      string                       `json:"session_id"` // Claude session ID for future resumption
++	WorkDir        string                       `json:"work_dir"`   // working directory used during execution
+ 	// DurableWorkDir is the configured project directory that replaces a
+ 	// disposable task worktree after the daemon confirms the worktree is gone.
+ 	DurableWorkDir string `json:"durable_work_dir,omitempty"`
+@@ -3957,6 +3998,7 @@ func (h *Handler) CompleteTask(w http.ResponseWriter, r *http.Request) {
+ 			"failure_reason", taskfailure.ReasonAgentContextOverflow,
+ 		)
+ 		h.failTask(w, r, taskID, workspaceID, TaskFailRequest{
++			KnowledgeFence: req.KnowledgeFence,
+ 			Error:          req.Output,
+ 			FailureReason:  string(taskfailure.ReasonAgentContextOverflow),
+ 			SessionID:      req.SessionID,
+@@ -3972,13 +4014,20 @@ func (h *Handler) CompleteTask(w http.ResponseWriter, r *http.Request) {
+ 		return
+ 	}
+ 
+-	result, _ := json.Marshal(req)
++	publicResult := req
++	publicResult.KnowledgeFence = nil
++	result, _ := json.Marshal(publicResult)
+ 	// MUL-5305: SessionRolloutMissing is applied inside CompleteTask's terminal
+ 	// transaction (force session_id NULL + flag the row), so an auto-retry the
+ 	// same commit creates and wakes can never observe the withheld pointer or a
+ 	// missing continuity-gap flag.
+-	task, err := h.TaskService.CompleteTask(r.Context(), parseUUID(taskID), result, req.SessionID, req.WorkDir, req.BranchName, req.SessionRolloutMissing, req.RetiredSessionID, req.DurableWorkDir)
++	task, err := h.TaskService.CompleteTask(r.Context(), parseUUID(taskID), result, req.SessionID, req.WorkDir, req.BranchName, req.SessionRolloutMissing, req.RetiredSessionID, req.DurableWorkDir, req.KnowledgeFence)
+ 	if err != nil {
++		var domain *service.CollaborationError
++		if errors.As(err, &domain) {
++			writeTaskKnowledgeError(w, err)
++			return
++		}
+ 		// A CompleteTask error is an infrastructure failure (transaction /
+ 		// assistant-outcome write), not a bad request: an already-finalized
+ 		// callback is treated as idempotent success and returns no error. Return
+@@ -4622,11 +4671,12 @@ func (h *Handler) GetTaskStatus(w http.ResponseWriter, r *http.Request) {
+ 
+ // FailTask marks a running task as failed.
+ type TaskFailRequest struct {
+-	Error          string `json:"error"`
+-	SessionID      string `json:"session_id,omitempty"`
+-	WorkDir        string `json:"work_dir,omitempty"`
+-	DurableWorkDir string `json:"durable_work_dir,omitempty"`
+-	FailureReason  string `json:"failure_reason,omitempty"`
++	KnowledgeFence *protocol.TaskKnowledgeFence `json:"knowledge_fence,omitempty"`
++	Error          string                       `json:"error"`
++	SessionID      string                       `json:"session_id,omitempty"`
++	WorkDir        string                       `json:"work_dir,omitempty"`
++	DurableWorkDir string                       `json:"durable_work_dir,omitempty"`
++	FailureReason  string                       `json:"failure_reason,omitempty"`
+ 	// BranchName: a failed run can still have produced a branch — worktree mode
+ 	// commits whatever the agent left before tearing the worktree down. Report
+ 	// it so a partially-successful run is still findable.
+@@ -4675,8 +4725,13 @@ func (h *Handler) failTask(w http.ResponseWriter, r *http.Request, taskID, works
+ 	// keep a stale mid-flight pin) and flagging the row in the same commit that
+ 	// creates and wakes the auto-retry, so the retry can never claim the withheld
+ 	// pointer or miss the continuity gap.
+-	task, err := h.TaskService.FailTask(r.Context(), parseUUID(taskID), req.Error, req.SessionID, req.WorkDir, req.BranchName, req.FailureReason, req.SessionRolloutMissing, req.RetiredSessionID, req.DurableWorkDir)
++	task, err := h.TaskService.FailTask(r.Context(), parseUUID(taskID), req.Error, req.SessionID, req.WorkDir, req.BranchName, req.FailureReason, req.SessionRolloutMissing, req.RetiredSessionID, req.DurableWorkDir, req.KnowledgeFence)
+ 	if err != nil {
++		var domain *service.CollaborationError
++		if errors.As(err, &domain) {
++			writeTaskKnowledgeError(w, err)
++			return
++		}
+ 		// A FailTask error is an infrastructure failure (the terminal
+ 		// transaction that also clears the withheld session, writes the
+ 		// continuity-gap flag, and creates the auto-retry rolled back), not a bad
+diff --git a/server/internal/handler/daemon_comment_delivery_test.go b/server/internal/handler/daemon_comment_delivery_test.go
+index 677ff001b..544fd8634 100755
+--- a/server/internal/handler/daemon_comment_delivery_test.go
++++ b/server/internal/handler/daemon_comment_delivery_test.go
+@@ -977,7 +977,7 @@ func TestFinalizeTaskClaim_ReceiptCASFailureRollsBackInsertedToken(t *testing.T)
+ 		WorkspaceID: parseUUID(testWorkspaceID),
+ 		UserID:      parseUUID(testUserID),
+ 		ExpiresAt:   pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true},
+-	}, []pgtype.UUID{parseUUID("00000000-0000-0000-0000-000000000099")}, true, db.CreateDaemonTokenParams{
++	}, []pgtype.UUID{parseUUID("00000000-0000-0000-0000-000000000099")}, true, nil, db.CreateDaemonTokenParams{
+ 		TokenHash:   daemonTokenHash,
+ 		WorkspaceID: parseUUID(testWorkspaceID),
+ 		DaemonID:    "daemon-claim-rollback",
+@@ -1030,7 +1030,7 @@ func TestFinalizeTaskClaim_TriggerDeletedAfterClaimRejectsStaleProvenance(t *tes
+ 		WorkspaceID: parseUUID(testWorkspaceID),
+ 		UserID:      parseUUID(testUserID),
+ 		ExpiresAt:   pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true},
+-	}, []pgtype.UUID{parseUUID(fixture.commentID[0]), parseUUID(fixture.commentID[1])}, true)
++	}, []pgtype.UUID{parseUUID(fixture.commentID[0]), parseUUID(fixture.commentID[1])}, true, nil)
+ 	if err == nil {
+ 		t.Fatalf("FinalizeTaskClaim accepted a receipt after persisted trigger changed")
+ 	}
+diff --git a/server/internal/handler/daemon_runtime_access_test.go b/server/internal/handler/daemon_runtime_access_test.go
+index 125fbd26d..774711477 100755
+--- a/server/internal/handler/daemon_runtime_access_test.go
++++ b/server/internal/handler/daemon_runtime_access_test.go
+@@ -77,7 +77,7 @@ func TestBuildClaimedTaskResponseRejectsAgentOwnerChangedAfterClaim(t *testing.T
+ 	req := newDaemonTokenRequest(http.MethodPost, "/api/daemon/runtimes/"+runtimeID+"/tasks/claim", nil,
+ 		testWorkspaceID, "claim-then-owner-change")
+ 	_, _, _, _, failure := testHandler.buildClaimedTaskResponse(
+-		req, task, runtime, runtimeID, testWorkspaceID,
++		req, task, runtime, runtimeID, testWorkspaceID, nil,
+ 	)
+ 	if failure == nil || failure.status != http.StatusForbidden || failure.outcome != "error_runtime_access_denied" {
+ 		t.Fatalf("failure = %+v, want runtime-access forbidden", failure)
+@@ -132,7 +132,7 @@ func TestBuildClaimedTaskResponseRejectsAgentReboundAfterClaim(t *testing.T) {
+ 	req := newDaemonTokenRequest(http.MethodPost, "/api/daemon/runtimes/"+oldRuntimeID+"/tasks/claim", nil,
+ 		testWorkspaceID, "claim-then-rebind")
+ 	_, _, _, _, failure := testHandler.buildClaimedTaskResponse(
+-		req, task, runtime, oldRuntimeID, testWorkspaceID,
++		req, task, runtime, oldRuntimeID, testWorkspaceID, nil,
+ 	)
+ 	if failure == nil || failure.status != http.StatusConflict || failure.outcome != "error_agent_runtime_changed" {
+ 		t.Fatalf("failure = %+v, want runtime-changed conflict", failure)
+diff --git a/server/internal/handler/invitation.go b/server/internal/handler/invitation.go
+index 6a1f674de..5a199a428 100755
+--- a/server/internal/handler/invitation.go
++++ b/server/internal/handler/invitation.go
+@@ -14,6 +14,7 @@ import (
+ 	"github.com/multica-ai/multica/server/internal/logger"
+ 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
+ 	"github.com/multica-ai/multica/server/internal/seatcapacity"
++	"github.com/multica-ai/multica/server/internal/service"
+ 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+ 	"github.com/multica-ai/multica/server/pkg/protocol"
+ )
+@@ -524,6 +525,12 @@ func (h *Handler) AcceptInvitation(w http.ResponseWriter, r *http.Request) {
+ 		return
+ 	}
+ 
++	cause := pgtype.UUID{Bytes: uuid.NewSHA1(uuid.UUID(member.ID.Bytes), []byte("collaboration-knowledge:member-added")), Valid: true}
++	if err = service.EnqueueKnowledgeSourceInvalidation(r.Context(), qtx, cause, "source_workspace", accepted.WorkspaceID); err != nil {
++		writeError(w, http.StatusInternalServerError, "failed to create membership")
++		return
++	}
++
+ 	// Accepting an invite marks the invitee as onboarded. The web /
+ 	// desktop workspace layout has a hard onboarded_at gate; without
+ 	// this mark, an invitee landing on their first workspace would be
+diff --git a/server/internal/handler/password_claim_test.go b/server/internal/handler/password_claim_test.go
+index 832befa40..a18a4ba8f 100644
+--- a/server/internal/handler/password_claim_test.go
++++ b/server/internal/handler/password_claim_test.go
+@@ -34,7 +34,7 @@ func TestPasswordBlockedTaskAndDaemonMintRejectsReset(t *testing.T) {
+ 	daemon := db.CreateDaemonTokenParams{TokenHash: "daemon-before-" + taskID, WorkspaceID: parseUUID(testWorkspaceID), DaemonID: "password-claim-fence", ExpiresAt: token.ExpiresAt}
+ 	// The same production finalizer first proves the valid source can mint both
+ 	// credentials and that the daemon issuer is fixed to the runtime owner.
+-	if _, err = testHandler.TaskService.FinalizeTaskClaim(source, task, token, nil, false, daemon); err != nil {
++	if _, err = testHandler.TaskService.FinalizeTaskClaim(source, task, token, nil, false, nil, daemon); err != nil {
+ 		t.Fatal(err)
+ 	}
+ 	var versions bool
+@@ -59,7 +59,7 @@ func TestPasswordBlockedTaskAndDaemonMintRejectsReset(t *testing.T) {
+ 	daemon.TokenHash = "daemon-blocked-" + taskID
+ 	finished := make(chan error, 1)
+ 	go func() {
+-		_, err := testHandler.TaskService.FinalizeTaskClaim(source, task, token, nil, false, daemon)
++		_, err := testHandler.TaskService.FinalizeTaskClaim(source, task, token, nil, false, nil, daemon)
+ 		finished <- err
+ 	}()
+ 	for {
+diff --git a/server/internal/handler/personal_access_token.go b/server/internal/handler/personal_access_token.go
+index c99189ccb..af5bc422a 100755
+--- a/server/internal/handler/personal_access_token.go
++++ b/server/internal/handler/personal_access_token.go
+@@ -8,9 +8,11 @@ import (
+ 	"time"
+ 
+ 	"github.com/go-chi/chi/v5"
++	"github.com/google/uuid"
+ 	"github.com/jackc/pgx/v5"
+ 	"github.com/jackc/pgx/v5/pgtype"
+ 	"github.com/multica-ai/multica/server/internal/auth"
++	"github.com/multica-ai/multica/server/internal/service"
+ 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+ )
+ 
+@@ -319,12 +321,28 @@ func (h *Handler) RevokePersonalAccessToken(w http.ResponseWriter, r *http.Reque
+ 	if !ok {
+ 		return
+ 	}
+-	hash, err := h.Queries.RevokePersonalAccessToken(r.Context(), db.RevokePersonalAccessTokenParams{
++	tx, err := h.TxStarter.Begin(r.Context())
++	if err != nil {
++		writeError(w, http.StatusInternalServerError, "failed to revoke token")
++		return
++	}
++	defer tx.Rollback(r.Context())
++	q := h.Queries.WithTx(tx)
++	hash, err := q.RevokePersonalAccessToken(r.Context(), db.RevokePersonalAccessTokenParams{
+ 		ID:     idUUID,
+ 		UserID: parseUUID(userID),
+ 	})
+ 	switch {
+ 	case err == nil:
++		cause := pgtype.UUID{Bytes: uuid.NewSHA1(uuid.UUID(idUUID.Bytes), []byte("collaboration-knowledge:pat-revoked")), Valid: true}
++		if err = service.EnqueueKnowledgeSourceInvalidation(r.Context(), q, cause, "all_sources", pgtype.UUID{}); err != nil {
++			writeError(w, http.StatusInternalServerError, "failed to revoke token")
++			return
++		}
++		if err = tx.Commit(r.Context()); err != nil {
++			writeError(w, http.StatusInternalServerError, "failed to revoke token")
++			return
++		}
+ 		// Drop the cache entry immediately so the revocation takes effect
+ 		// before the TTL would otherwise expire the cached lookup.
+ 		h.PATCache.Invalidate(r.Context(), hash)
+diff --git a/server/internal/handler/project.go b/server/internal/handler/project.go
+index 5a94283cc..3ea47c7e1 100755
+--- a/server/internal/handler/project.go
++++ b/server/internal/handler/project.go
+@@ -20,6 +20,7 @@ import (
+ 	"github.com/multica-ai/multica/server/internal/iteration"
+ 	"github.com/multica-ai/multica/server/internal/logger"
+ 	"github.com/multica-ai/multica/server/internal/projecthealth"
++	"github.com/multica-ai/multica/server/internal/service"
+ 	"github.com/multica-ai/multica/server/internal/util"
+ 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+ 	"github.com/multica-ai/multica/server/pkg/protocol"
+@@ -914,6 +915,9 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
+ 		if foreignReferences {
+ 			return projectErr(409, "project_association_integrity_conflict", "project associations are inconsistent; deletion is blocked")
+ 		}
++		if err = service.DeleteKnowledgeTargetsInTx(r.Context(), q, operationID, ws, id); err != nil {
++			return err
++		}
+ 
+ 		// Lock automation parents before triggers, matching every binding writer.
+ 		if _, err = q.LockProjectAutopilotsForDelete(r.Context(), db.LockProjectAutopilotsForDeleteParams{ProjectID: id, WorkspaceID: ws}); err != nil {
+diff --git a/server/internal/handler/share_link.go b/server/internal/handler/share_link.go
+index 4298a4c99..a49cf41f9 100755
+--- a/server/internal/handler/share_link.go
++++ b/server/internal/handler/share_link.go
+@@ -18,6 +18,7 @@ import (
+ 	"github.com/jackc/pgx/v5/pgtype"
+ 	"github.com/multica-ai/multica/server/internal/logger"
+ 	"github.com/multica-ai/multica/server/internal/seatcapacity"
++	"github.com/multica-ai/multica/server/internal/service"
+ 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+ 	"github.com/multica-ai/multica/server/pkg/protocol"
+ )
+@@ -353,6 +354,12 @@ func (h *Handler) JoinByShareLink(w http.ResponseWriter, r *http.Request) {
+ 		return
+ 	}
+ 
++	cause := pgtype.UUID{Bytes: uuid.NewSHA1(uuid.UUID(member.ID.Bytes), []byte("collaboration-knowledge:member-added")), Valid: true}
++	if err = service.EnqueueKnowledgeSourceInvalidation(r.Context(), qtx, cause, "source_workspace", link.WorkspaceID); err != nil {
++		writeError(w, http.StatusInternalServerError, "failed to create membership")
++		return
++	}
++
+ 	// Mark onboarded. A failure here must roll the whole join back, otherwise a
+ 	// first-time user could become a member while still blocked by onboarding.
+ 	if _, err := qtx.MarkUserOnboarded(r.Context(), user.ID); err != nil {
+diff --git a/server/internal/handler/task_lifecycle.go b/server/internal/handler/task_lifecycle.go
+index a20cd0ca2..012167942 100755
+--- a/server/internal/handler/task_lifecycle.go
++++ b/server/internal/handler/task_lifecycle.go
+@@ -12,6 +12,7 @@ import (
+ 	"github.com/jackc/pgx/v5/pgtype"
+ 	"github.com/multica-ai/multica/server/internal/service"
+ 	db "github.com/multica-ai/multica/server/pkg/db/generated"
++	"github.com/multica-ai/multica/server/pkg/protocol"
+ )
+ 
+ // RecoverOrphanedTasks is called by the daemon at startup for each runtime
+@@ -63,8 +64,9 @@ func (h *Handler) RecoverOrphanedTasks(w http.ResponseWriter, r *http.Request) {
+ // emits its first system message — so a crash mid-run doesn't lose the
+ // resume pointer needed to continue the conversation on the next attempt.
+ type PinTaskSessionRequest struct {
+-	SessionID string `json:"session_id,omitempty"`
+-	WorkDir   string `json:"work_dir,omitempty"`
++	SessionID      string                       `json:"session_id,omitempty"`
++	WorkDir        string                       `json:"work_dir,omitempty"`
++	KnowledgeFence *protocol.TaskKnowledgeFence `json:"knowledge_fence,omitempty"`
+ }
+ 
+ func (h *Handler) PinTaskSession(w http.ResponseWriter, r *http.Request) {
+@@ -119,6 +121,14 @@ func (h *Handler) PinTaskSession(w http.ResponseWriter, r *http.Request) {
+ 		writeError(w, http.StatusInternalServerError, "pin session failed")
+ 		return
+ 	}
++	if err := service.ValidateTaskKnowledgeReportFence(r.Context(), qtx, params.ID, req.KnowledgeFence); err != nil {
++		writeTaskKnowledgeError(w, err)
++		return
++	}
++	if err := service.ValidateTaskKnowledgeSessionPointer(r.Context(), qtx, params.ID, req.SessionID); err != nil {
++		writeTaskKnowledgeError(w, err)
++		return
++	}
+ 	if err := qtx.UpdateAgentTaskSession(r.Context(), params); err != nil {
+ 		slog.Warn("pin-session failed", "task_id", taskID, "error", err)
+ 		writeError(w, http.StatusInternalServerError, "pin session failed")
+diff --git a/server/internal/handler/workspace.go b/server/internal/handler/workspace.go
+index 6e98ab372..5721c929b 100755
+--- a/server/internal/handler/workspace.go
++++ b/server/internal/handler/workspace.go
+@@ -20,6 +20,7 @@ import (
+ 	"github.com/multica-ai/multica/server/internal/issuestatus"
+ 	"github.com/multica-ai/multica/server/internal/logger"
+ 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
++	"github.com/multica-ai/multica/server/internal/service"
+ 	"github.com/multica-ai/multica/server/internal/util"
+ 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+ 	"github.com/multica-ai/multica/server/pkg/protocol"
+@@ -612,10 +613,28 @@ func (h *Handler) UpdateMember(w http.ResponseWriter, r *http.Request) {
+ 		}
+ 	}
+ 
+-	updatedMember, err := h.Queries.UpdateMemberRole(r.Context(), db.UpdateMemberRoleParams{
++	tx, err := h.TxStarter.Begin(r.Context())
++	if err != nil {
++		writeError(w, http.StatusInternalServerError, "failed to update member")
++		return
++	}
++	defer tx.Rollback(r.Context())
++	qtx := h.Queries.WithTx(tx)
++	lockedMember, err := qtx.LockKnowledgeMemberRoleChange(r.Context(), db.LockKnowledgeMemberRoleChangeParams{ID: target.ID, WorkspaceID: target.WorkspaceID})
++	if err != nil {
++		writeError(w, http.StatusInternalServerError, "failed to update member")
++		return
++	}
++	updatedMember, err := qtx.UpdateMemberRole(r.Context(), db.UpdateMemberRoleParams{
+ 		ID:   target.ID,
+ 		Role: role,
+ 	})
++	if err == nil && lockedMember.Role != role {
++		err = service.EnqueueKnowledgeSourceInvalidation(r.Context(), qtx, pgtype.UUID{Bytes: uuid.New(), Valid: true}, "source_workspace", target.WorkspaceID)
++	}
++	if err == nil {
++		err = tx.Commit(r.Context())
++	}
+ 	if err != nil {
+ 		writeError(w, http.StatusInternalServerError, "failed to update member")
+ 		return
+@@ -1137,6 +1156,12 @@ func (h *Handler) DeleteWorkspace(w http.ResponseWriter, r *http.Request) {
+ 		writeJSON(w, http.StatusConflict, map[string]string{"error": "This workspace contains collaboration records.", "code": "workspace_has_collaboration_records"})
+ 		return
+ 	}
++	// Retain target routing/hints before source/task cleanup. The workspace
++	// fence prevents concurrent publication; no source/candidate lock is added.
++	if err := service.DeleteKnowledgeTargetsInTx(r.Context(), qtx, pgtype.UUID{Bytes: uuid.New(), Valid: true}, requester.WorkspaceID, pgtype.UUID{}); err != nil {
++		failWorkspaceDelete(w, r, workspaceID, "delete knowledge targets", err)
++		return
++	}
+ 
+ 	if _, err := qtx.LockChatSessionsByWorkspace(r.Context(), requester.WorkspaceID); err != nil {
+ 		failWorkspaceDelete(w, r, workspaceID, "lock chat sessions", err)
+diff --git a/server/internal/handler/workspace_revoke.go b/server/internal/handler/workspace_revoke.go
+index eda7d56fb..8f5cb487c 100755
+--- a/server/internal/handler/workspace_revoke.go
++++ b/server/internal/handler/workspace_revoke.go
+@@ -6,6 +6,7 @@ import (
+ 
+ 	"github.com/google/uuid"
+ 	"github.com/jackc/pgx/v5/pgtype"
++	"github.com/multica-ai/multica/server/internal/service"
+ 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+ 	"github.com/multica-ai/multica/server/pkg/protocol"
+ )
+@@ -229,6 +230,10 @@ func (h *Handler) revokeAndRemoveMember(ctx context.Context, workspaceID, userID
+ 	if err := qtx.DeleteMember(ctx, memberID); err != nil {
+ 		return empty, err
+ 	}
++	cause := pgtype.UUID{Bytes: uuid.NewSHA1(uuid.UUID(memberID.Bytes), []byte("collaboration-knowledge:member-removed")), Valid: true}
++	if err := service.EnqueueKnowledgeSourceInvalidation(ctx, qtx, cause, "source_workspace", workspaceID); err != nil {
++		return empty, err
++	}
+ 
+ 	if err := tx.Commit(ctx); err != nil {
+ 		return empty, err
+diff --git a/server/internal/middleware/auth.go b/server/internal/middleware/auth.go
+index 1d07ea324..53311bb5b 100755
+--- a/server/internal/middleware/auth.go
++++ b/server/internal/middleware/auth.go
+@@ -72,9 +72,14 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
+ 			if auth.PasswordMode() {
+ 				if s, ok := passwordAuthenticate(w, r, queries); ok {
+ 					r = r.WithContext(auth.WithPasswordSession(r.Context(), s))
+-					r = withAuthenticatedRequestPrincipal(r, auth.AuthenticatedPrincipal{
++					principal := auth.AuthenticatedPrincipal{
+ 						UserID: s.UserID, Kind: auth.CredentialKind(s.Kind), Restricted: s.Setup || s.Change,
+-					})
++					}
++					if s.Kind == "pat" {
++						token, _ := extractToken(r)
++						principal.PATTokenHash = auth.HashToken(token)
++					}
++					r = withAuthenticatedRequestPrincipal(r, principal)
+ 					next.ServeHTTP(w, r)
+ 				}
+ 				return
+@@ -209,7 +214,7 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
+ 						return
+ 					}
+ 					r.Header.Set("X-User-ID", userID)
+-					r = withAuthenticatedRequestPrincipal(r, auth.AuthenticatedPrincipal{UserID: userID, Kind: auth.CredentialPAT})
++					r = withAuthenticatedRequestPrincipal(r, auth.AuthenticatedPrincipal{UserID: userID, Kind: auth.CredentialPAT, PATTokenHash: hash})
+ 					next.ServeHTTP(w, r)
+ 					return
+ 				}
+@@ -245,7 +250,7 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
+ 				// within the TTL window skip this write entirely.
+ 				go queries.UpdatePersonalAccessTokenLastUsed(context.Background(), pat.ID)
+ 
+-				r = withAuthenticatedRequestPrincipal(r, auth.AuthenticatedPrincipal{UserID: userID, Kind: auth.CredentialPAT})
++				r = withAuthenticatedRequestPrincipal(r, auth.AuthenticatedPrincipal{UserID: userID, Kind: auth.CredentialPAT, PATTokenHash: hash})
+ 				next.ServeHTTP(w, r)
+ 				return
+ 			}
+diff --git a/server/internal/realtime/collaboration.go b/server/internal/realtime/collaboration.go
+index 24cf0ddf8..999b54617 100644
+--- a/server/internal/realtime/collaboration.go
++++ b/server/internal/realtime/collaboration.go
+@@ -3,21 +3,27 @@ package realtime
+ import (
+ 	"context"
+ 	"encoding/json"
++	"errors"
+ 	"strings"
+ 	"time"
+ 
+ 	"github.com/gorilla/websocket"
++	"github.com/jackc/pgx/v5"
+ 	"github.com/multica-ai/multica/server/internal/auth"
++	"github.com/multica-ai/multica/server/internal/util"
++	"github.com/multica-ai/multica/server/pkg/protocol"
+ )
+ 
+ // The credential was verified before this adapter runs. Preserve that actual
+ // principal and password version; a user ID alone is not human authority.
+ func (h *Hub) accountConnectionContext(ctx context.Context, token, userID string, agentActor bool) (context.Context, bool, error) {
+ 	kind := auth.CredentialJWT
++	patHash := ""
+ 	if strings.HasPrefix(token, "mul_") {
+ 		kind = auth.CredentialPAT
++		patHash = auth.HashToken(token)
+ 	}
+-	ctx = auth.WithAuthenticatedPrincipal(ctx, auth.AuthenticatedPrincipal{UserID: userID, Kind: kind, AgentActor: agentActor})
++	ctx = auth.WithAuthenticatedPrincipal(ctx, auth.AuthenticatedPrincipal{UserID: userID, Kind: kind, AgentActor: agentActor, PATTokenHash: patHash})
+ 	if auth.PasswordMode() {
+ 		identity, err := auth.CheckPasswordToken(ctx, h.passwordQueries, token, false)
+ 		if err != nil {
+@@ -88,6 +94,82 @@ func (c *Client) outboundScopeCurrent(scope scopeKey) bool {
+ 	return false
+ }
+ 
++// A knowledge hint has no source authority requirement, but even a queued
++// invalidation must not reveal a target identity after workspace access ends.
++// Keep this separate from the legacy workspace frame contract.
++func (c *Client) outboundKnowledgeFrame(message outboundMessage) ([]byte, bool) {
++	canonical, knowledge, err := canonicalKnowledgeFrame(message.data)
++	if err != nil {
++		return nil, false
++	}
++	if !knowledge {
++		return canonical, true
++	}
++	var frame struct {
++		Payload protocol.CollaborationKnowledgeTargetHint `json:"payload"`
++	}
++	if json.Unmarshal(canonical, &frame) != nil || message.scope.Type != ScopeWorkspace || message.scope.ID != c.workspaceID {
++		return nil, false
++	}
++	if frame.Payload.TargetKind == "workspace" && frame.Payload.TargetID != c.workspaceID {
++		return nil, false
++	}
++	allowed, err := c.authorizeScope(ScopeWorkspace, c.workspaceID)
++	if err != nil || !allowed || c.authorizeKnowledge == nil {
++		return nil, false
++	}
++	ctx := c.ctx
++	if ctx == nil {
++		ctx = context.Background()
++	}
++	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
++	defer cancel()
++	if err = c.authorizeKnowledge(ctx); err != nil {
++		return nil, false
++	}
++	return canonical, true
++}
++
++// Knowledge is delivered only after uncached verification of the exact
++// credential authenticated for this connection. General legacy realtime keeps
++// its existing cache path; cache eviction is never proof for a knowledge send.
++func (h *Hub) validateKnowledgeCredential(ctx context.Context, raw, userID string) error {
++	if raw == "" || userID == "" {
++		return auth.ErrPasswordSession
++	}
++	if auth.PasswordMode() {
++		identity, err := auth.CheckPasswordToken(ctx, h.passwordQueries, raw, false)
++		if err != nil {
++			return err
++		}
++		if identity.Session.UserID != userID {
++			return auth.ErrPasswordSession
++		}
++		return nil
++	}
++	if strings.HasPrefix(raw, "mul_") {
++		if h.passwordQueries == nil {
++			return errors.New("knowledge credential database unavailable")
++		}
++		pat, err := h.passwordQueries.GetPersonalAccessTokenByHash(ctx, auth.HashToken(raw))
++		if errors.Is(err, pgx.ErrNoRows) {
++			return auth.ErrPasswordSession
++		}
++		if err != nil {
++			return err
++		}
++		if util.UUIDToString(pat.UserID) != userID || pat.Revoked || pat.ExpiresAt.Valid && !pat.ExpiresAt.Time.After(time.Now()) {
++			return auth.ErrPasswordSession
++		}
++		return nil
++	}
++	verifiedUser, failure := authenticateToken(raw, nil, ctx)
++	if failure != "" || verifiedUser != userID {
++		return auth.ErrPasswordSession
++	}
++	return nil
++}
++
+ // PublishWithID is the single-node outbox publisher. The scope remains attached
+ // to the queued frame, and durable replay uses the same event ID for dedup.
+ func (h *Hub) PublishWithID(scopeType, scopeID, exclude string, frame []byte, id string) error {
+diff --git a/server/internal/realtime/hub.go b/server/internal/realtime/hub.go
+index 92193fb1b..a190cd120 100755
+--- a/server/internal/realtime/hub.go
++++ b/server/internal/realtime/hub.go
+@@ -230,15 +230,16 @@ func sk(t, id string) scopeKey { return scopeKey{Type: t, ID: id} }
+ // Client represents a single WebSocket connection with identity and the set
+ // of scopes it is currently subscribed to.
+ type Client struct {
+-	authorize    func() error
+-	ctx          context.Context
+-	cancel       context.CancelFunc
+-	hub          *Hub
+-	conn         *websocket.Conn
+-	send         chan outboundMessage
+-	userID       string
+-	workspaceID  string
+-	accountScope bool
++	authorize          func() error
++	authorizeKnowledge func(context.Context) error
++	ctx                context.Context
++	cancel             context.CancelFunc
++	hub                *Hub
++	conn               *websocket.Conn
++	send               chan outboundMessage
++	userID             string
++	workspaceID        string
++	accountScope       bool
+ 
+ 	// subscriptions is guarded by hub.mu. Tracks the scopes this client is
+ 	// currently in. Used to clean up rooms on disconnect.
+@@ -993,6 +994,11 @@ func HandleWebSocket(hub *Hub, mc MembershipChecker, pr PATResolver, resolveSlug
+ 		}
+ 		return nil
+ 	}
++	// Authentication is immutable within this socket: handleFrame supports no
++	// token replacement. A reconnect authenticates and binds its new token here.
++	client.authorizeKnowledge = func(ctx context.Context) error {
++		return hub.validateKnowledgeCredential(ctx, authToken, userID)
++	}
+ 	hub.register <- client
+ 
+ 	go client.writePump()
+@@ -1199,7 +1205,11 @@ func (c *Client) writePump() {
+ 			if !c.outboundScopeCurrent(message.scope) {
+ 				continue
+ 			}
+-			if err := c.conn.WriteMessage(websocket.TextMessage, message.data); err != nil {
++			data, allowed := c.outboundKnowledgeFrame(message)
++			if !allowed {
++				continue
++			}
++			if err := c.conn.WriteMessage(websocket.TextMessage, data); err != nil {
+ 				slog.Warn("websocket write error", "error", err, "user_id", c.userID, "workspace_id", c.workspaceID)
+ 				return
+ 			}
+diff --git a/server/internal/service/collaboration.go b/server/internal/service/collaboration.go
+index e3453ac99..a217aea83 100644
+--- a/server/internal/service/collaboration.go
++++ b/server/internal/service/collaboration.go
+@@ -39,6 +39,8 @@ type CollaborationService struct {
+ 	// MemoryMaxBytes is the deployment shared-context limit. Zero (tests and
+ 	// callers that never touch shared context) means the documented default.
+ 	MemoryMaxBytes int
++	// Default closed; handlers copy the ordinary TaskService deployment gate.
++	KnowledgeContextEnabled bool
+ }
+ 
+ func NewCollaborationService(q *db.Queries, tx TxStarter, issues *IssueService) *CollaborationService {
+@@ -78,6 +80,12 @@ func (s *CollaborationService) ResolveIssueAccess(ctx context.Context, q *db.Que
+ 	if q == nil {
+ 		q = s.Queries
+ 	}
++	if err := auth.ValidateAuthenticatedPAT(ctx, q); err != nil {
++		if errors.Is(err, auth.ErrPasswordSession) {
++			return result, collaborationError(http.StatusNotFound, "not_found")
++		}
++		return result, err
++	}
+ 	row, err := q.GetCollaborationAccess(ctx, db.GetCollaborationAccessParams{ViewerID: viewerID, IssueID: issueID})
+ 	if errors.Is(err, pgx.ErrNoRows) {
+ 		return result, collaborationError(http.StatusNotFound, "not_found")
+diff --git a/server/internal/service/collaboration_comments_edit.go b/server/internal/service/collaboration_comments_edit.go
+index e2b5de627..b97fce86a 100644
+--- a/server/internal/service/collaboration_comments_edit.go
++++ b/server/internal/service/collaboration_comments_edit.go
+@@ -137,6 +137,9 @@ func (t *collaborationContentTx) recordCommentEvent(ctx context.Context, receipt
+ 	}
+ 	_, err = t.q.CreateCollaborationContentEvent(ctx, db.CreateCollaborationContentEventParams{
+ 		EventID: receipt.EventID, IssueID: t.access.Issue.ID, EventSeq: receipt.EventSeq, ActorID: t.actor, Kind: receipt.Code, Payload: payload})
++	if err == nil && receipt.Code == "comment_deleted" {
++		err = EnqueueKnowledgeSourceInvalidation(ctx, t.q, receipt.EventID, "source_issue", t.access.Issue.ID)
++	}
+ 	return err
+ }
+ 
+diff --git a/server/internal/service/collaboration_memory.go b/server/internal/service/collaboration_memory.go
+index 62824e749..5119866ab 100644
+--- a/server/internal/service/collaboration_memory.go
++++ b/server/internal/service/collaboration_memory.go
+@@ -194,8 +194,11 @@ func recordCollaborationMemoryChange(ctx context.Context, q *db.Queries, issue,
+ 	if err != nil {
+ 		return 0, err
+ 	}
+-	_, err = q.CreateCollaborationEvent(ctx, db.CreateCollaborationEventParams{IssueID: issue, EventSeq: seq, ActorUserID: actor,
++	event, err := q.CreateCollaborationEvent(ctx, db.CreateCollaborationEventParams{IssueID: issue, EventSeq: seq, ActorUserID: actor,
+ 		Kind: CollaborationMemoryChangedEvent, Payload: payload})
++	if err == nil && action == "purge" {
++		err = EnqueueKnowledgeSourceInvalidation(ctx, q, event.ID, "source_issue", issue)
++	}
+ 	return seq, err
+ }
+ 
+diff --git a/server/internal/service/collaboration_runtime_capabilities.go b/server/internal/service/collaboration_runtime_capabilities.go
+index 064aaf0cc..0fa97b3f8 100644
+--- a/server/internal/service/collaboration_runtime_capabilities.go
++++ b/server/internal/service/collaboration_runtime_capabilities.go
+@@ -278,6 +278,10 @@ func (s *CollaborationService) ClaimRuntimeRun(ctx context.Context, runID pgtype
+ 					ParentRunID: util.UUIDToPtr(r.run.ParentRunID), SessionGeneration: strconv.FormatInt(r.run.ConfigVersion.Int64, 10) + ":" + strconv.FormatInt(r.run.ResourceEpoch, 10)}
+ 			}
+ 		}
++		out.KnowledgeContext, err = s.claimRuntimeKnowledge(ctx, r, p, out, freezing)
++		if err != nil {
++			return protocol.CollaborationRunClaimResponse{}, err
++		}
+ 		return out, nil
+ 	})
+ 	if err != nil {
+diff --git a/server/internal/service/collaboration_workflow.go b/server/internal/service/collaboration_workflow.go
+index e82c8d883..1d9d3bdd4 100644
+--- a/server/internal/service/collaboration_workflow.go
++++ b/server/internal/service/collaboration_workflow.go
+@@ -178,6 +178,9 @@ func (t *collaborationWorkflowTx) enroll(ctx context.Context, target pgtype.UUID
+ 		return false, err
+ 	}
+ 	_, err = t.q.EnrollCollaborationParticipant(ctx, db.EnrollCollaborationParticipantParams{IssueID: t.access.Issue.ID, UserID: target})
++	if err == nil {
++		err = EnqueueKnowledgeSourceInvalidation(ctx, t.q, t.operation.ID, "source_issue", t.access.Issue.ID)
++	}
+ 	return err == nil, err
+ }
+ 
+@@ -265,6 +268,9 @@ func (t *collaborationWorkflowTx) depart(ctx context.Context, target pgtype.UUID
+ 	if _, err = t.q.RevokeCollaborationParticipant(ctx, db.RevokeCollaborationParticipantParams{IssueID: t.access.Issue.ID, UserID: target, Reason: reason}); err != nil {
+ 		return CollaborationWorkflowReceipt{}, err
+ 	}
++	if err = EnqueueKnowledgeSourceInvalidation(ctx, t.q, t.operation.ID, "source_issue", t.access.Issue.ID); err != nil {
++		return CollaborationWorkflowReceipt{}, err
++	}
+ 	if err = t.q.RevokeCollaborationOwnerGrants(ctx, db.RevokeCollaborationOwnerGrantsParams{IssueID: t.access.Issue.ID, OwnerUserID: target, Reason: reason}); err != nil {
+ 		return CollaborationWorkflowReceipt{}, err
+ 	}
+diff --git a/server/internal/service/legacy_execution_boundary_test.go b/server/internal/service/legacy_execution_boundary_test.go
+index 2930e9bbc..9a48d20e0 100644
+--- a/server/internal/service/legacy_execution_boundary_test.go
++++ b/server/internal/service/legacy_execution_boundary_test.go
+@@ -257,7 +257,7 @@ func TestLegacyExecutionFinalizeCannotMintCollaborationCredentials(t *testing.T)
+ 			expires := pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}
+ 			_, err = f.svc.FinalizeTaskClaim(t.Context(), task, db.CreateTaskTokenParams{
+ 				TokenHash: hash, TaskID: task.ID, AgentID: f.agent, WorkspaceID: util.MustParseUUID(f.fx.WorkspaceID), UserID: util.MustParseUUID(f.fx.UserID), ExpiresAt: expires,
+-			}, nil, false, db.CreateDaemonTokenParams{TokenHash: hash + "-daemon", WorkspaceID: util.MustParseUUID(f.fx.WorkspaceID), DaemonID: "boundary-fake-daemon", UserID: util.MustParseUUID(f.fx.UserID), ExpiresAt: expires})
++			}, nil, false, nil, db.CreateDaemonTokenParams{TokenHash: hash + "-daemon", WorkspaceID: util.MustParseUUID(f.fx.WorkspaceID), DaemonID: "boundary-fake-daemon", UserID: util.MustParseUUID(f.fx.UserID), ExpiresAt: expires})
+ 			allowed := kind == "ordinary" || kind == "ordinary_child" || kind == "late_ordinary_comment"
+ 			if (err == nil) != allowed {
+ 				t.Errorf("claim finalization allowed=%v err=%v", allowed, err)
+@@ -412,7 +412,7 @@ func TestLegacyExecutionUnrelatedChatAndQuickCreateStillStart(t *testing.T) {
+ 			_, err = f.svc.FinalizeTaskClaim(t.Context(), *task, db.CreateTaskTokenParams{
+ 				TokenHash: hash, TaskID: task.ID, AgentID: f.agent, WorkspaceID: util.MustParseUUID(f.fx.WorkspaceID), UserID: actor,
+ 				ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true},
+-			}, nil, false)
++			}, nil, false, nil)
+ 			if err != nil {
+ 				t.Fatalf("ordinary %s claim could not finalize: %v", kind, err)
+ 			}
+diff --git a/server/internal/service/managed_admission_test.go b/server/internal/service/managed_admission_test.go
+index 1b29bccc3..fc74106c3 100644
+--- a/server/internal/service/managed_admission_test.go
++++ b/server/internal/service/managed_admission_test.go
+@@ -265,7 +265,7 @@ func TestManagedReclaimRejectsEarlierDeliveryRollback(t *testing.T) {
+ 		t.Fatalf("reclaim B lost stable execution fence: %v", err)
+ 	}
+ 	token := db.CreateTaskTokenParams{TokenHash: auth.HashToken("mat_" + uuid.NewString()), TaskID: first.ID, AgentID: first.AgentID, WorkspaceID: mustManagedUUID(t, source.WorkspaceID), UserID: mustManagedUUID(t, source.UserID), ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}
+-	if _, err = svc.FinalizeTaskClaim(ctx, *first, token, nil, false); err == nil {
++	if _, err = svc.FinalizeTaskClaim(ctx, *first, token, nil, false, nil); err == nil {
+ 		t.Fatal("stale delivery minted a task credential")
+ 	}
+ 	if fx.Count(t, "SELECT count(*) FROM task_token") != 0 {
+@@ -274,7 +274,7 @@ func TestManagedReclaimRejectsEarlierDeliveryRollback(t *testing.T) {
+ 	if _, err = f.svc.Queries.SetTaskDeliveredCommentIDs(ctx, db.SetTaskDeliveredCommentIDsParams{TaskID: first.ID, RuntimeID: first.RuntimeID, DispatchedAt: first.DispatchedAt, ClaimGeneration: first.ClaimGeneration, DeliveredCommentIds: []pgtype.UUID{}}); !errors.Is(err, pgx.ErrNoRows) {
+ 		t.Fatalf("stale delivery changed its comment receipt: %v", err)
+ 	}
+-	if _, err = svc.FinalizeTaskClaim(ctx, second, token, nil, false); err != nil {
++	if _, err = svc.FinalizeTaskClaim(ctx, second, token, nil, false, nil); err != nil {
+ 		t.Fatalf("current delivery could not finalize: %v", err)
+ 	}
+ 	if _, err = svc.RequeueTaskAfterClaimFailure(ctx, *first); err == nil {
+diff --git a/server/internal/service/managed_runtime_test.go b/server/internal/service/managed_runtime_test.go
+index 0a790e601..83cb1b59f 100644
+--- a/server/internal/service/managed_runtime_test.go
++++ b/server/internal/service/managed_runtime_test.go
+@@ -205,7 +205,7 @@ func TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory(t *testin
+ 	}
+ 	tokenHash := auth.HashToken(uuid.NewString())
+ 	derivedHash := auth.HashToken(uuid.NewString())
+-	_, err = svc.FinalizeTaskClaim(ctx, *reclaimed, db.CreateTaskTokenParams{TokenHash: tokenHash, TaskID: reclaimed.ID, AgentID: reclaimed.AgentID, WorkspaceID: mustManagedUUID(t, source.WorkspaceID), UserID: f.user, ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false, db.CreateDaemonTokenParams{TokenHash: derivedHash, WorkspaceID: mustManagedUUID(t, source.WorkspaceID), DaemonID: source.DaemonID, ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}, InstallationBindingID: pgtype.UUID{Bytes: uuid.New(), Valid: true}, InstallationBindingEpoch: pgtype.Int8{Int64: 999, Valid: true}})
++	_, err = svc.FinalizeTaskClaim(ctx, *reclaimed, db.CreateTaskTokenParams{TokenHash: tokenHash, TaskID: reclaimed.ID, AgentID: reclaimed.AgentID, WorkspaceID: mustManagedUUID(t, source.WorkspaceID), UserID: f.user, ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false, nil, db.CreateDaemonTokenParams{TokenHash: derivedHash, WorkspaceID: mustManagedUUID(t, source.WorkspaceID), DaemonID: source.DaemonID, ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}, InstallationBindingID: pgtype.UUID{Bytes: uuid.New(), Valid: true}, InstallationBindingEpoch: pgtype.Int8{Int64: 999, Valid: true}})
+ 	if err != nil {
+ 		t.Fatal(err)
+ 	}
+@@ -224,7 +224,7 @@ func TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory(t *testin
+ 		t.Fatal("derived MCP token accepted caller binding instead of source")
+ 	}
+ 	badHash := auth.HashToken(uuid.NewString())
+-	_, err = svc.FinalizeTaskClaim(ctx, *reclaimed, db.CreateTaskTokenParams{TokenHash: badHash, TaskID: reclaimed.ID, AgentID: reclaimed.AgentID, WorkspaceID: mustManagedUUID(t, source.WorkspaceID), UserID: f.user, ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false, db.CreateDaemonTokenParams{TokenHash: auth.HashToken(uuid.NewString()), WorkspaceID: pgtype.UUID{Bytes: uuid.New(), Valid: true}, DaemonID: source.DaemonID, ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}})
++	_, err = svc.FinalizeTaskClaim(ctx, *reclaimed, db.CreateTaskTokenParams{TokenHash: badHash, TaskID: reclaimed.ID, AgentID: reclaimed.AgentID, WorkspaceID: mustManagedUUID(t, source.WorkspaceID), UserID: f.user, ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false, nil, db.CreateDaemonTokenParams{TokenHash: auth.HashToken(uuid.NewString()), WorkspaceID: pgtype.UUID{Bytes: uuid.New(), Valid: true}, DaemonID: source.DaemonID, ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}})
+ 	if !errors.Is(err, ErrManagedRuntimeSource) {
+ 		t.Fatalf("cross-workspace derived token minted: %v", err)
+ 	}
+diff --git a/server/internal/service/task.go b/server/internal/service/task.go
+index 3e9da7ad3..6a3b8e09a 100755
+--- a/server/internal/service/task.go
++++ b/server/internal/service/task.go
+@@ -56,6 +56,10 @@ type TaskService struct {
+ 	// FeatureFlags is the server-side toggle router. Nil is valid and returns
+ 	// each call site's default.
+ 	FeatureFlags *featureflag.Service
++	// KnowledgeContextEnabled remains false until the ordinary execution
++	// disclosure/session/launch contract has passed its complete rollout gate.
++	// Historical-session safety checks remain active even while disabled.
++	KnowledgeContextEnabled bool
+ 	// SkillTemplateDir is MULTICA_SKILL_TEMPLATE_DIR: a server directory an
+ 	// operator (typically an intranet deployment) fills with skill templates to
+ 	// offer in "new skill → start from a template" alongside the embedded role
+@@ -3734,6 +3738,7 @@ func (s *TaskService) FinalizeTaskClaim(
+ 	token db.CreateTaskTokenParams,
+ 	deliveredCommentIDs []pgtype.UUID,
+ 	recordCommentReceipt bool,
++	knowledge *protocol.TaskKnowledgeClaimDescriptor,
+ 	daemonTokens ...db.CreateDaemonTokenParams,
+ ) ([]pgtype.UUID, error) {
+ 	if len(daemonTokens) > 1 {
+@@ -3797,6 +3802,9 @@ func (s *TaskService) FinalizeTaskClaim(
+ 			if current.Status != "dispatched" || current.RuntimeID != task.RuntimeID || current.IssueID != task.IssueID || !bytes.Equal(current.Context, task.Context) || !current.DispatchedAt.Time.Equal(task.DispatchedAt.Time) || current.ClaimGeneration != task.ClaimGeneration || token.TaskID != current.ID || token.AgentID != current.AgentID || token.WorkspaceID != runtime.WorkspaceID {
+ 				return ErrManagedRuntimeSource
+ 			}
++			if err := s.finalizeTaskKnowledgeClaim(ctx, qtx, current, knowledge); err != nil {
++				return err
++			}
+ 			// Preserve the original claim's trigger/comment provenance. The locked
+ 			// row validates delivery identity; it must not replace payload snapshots.
+ 			// Admission covers both the payload and comments added during preparation.
+@@ -4190,15 +4198,18 @@ func (s *TaskService) maybeLogClaimSlow(agentID pgtype.UUID, outcome string, sta
+ 
+ // StartTask transitions a dispatched task to running.
+ // Issue status is NOT changed here — the agent manages it via the CLI.
+-func (s *TaskService) StartTask(ctx context.Context, taskID pgtype.UUID) (*db.AgentTaskQueue, error) {
++func (s *TaskService) StartTask(ctx context.Context, taskID pgtype.UUID, knowledgeFences ...*protocol.TaskKnowledgeFence) (*db.AgentTaskQueue, error) {
+ 	current, err := s.Queries.GetAgentTask(ctx, taskID)
+ 	if err != nil {
+ 		return nil, err
+ 	}
++	if err := validateTaskKnowledgeFences(current, knowledgeFences); err != nil {
++		return nil, err
++	}
+ 	if err := s.checkIssueExecution(ctx, s.Queries, current.IssueID, current.TriggerCommentID, current.CoalescedCommentIds); err != nil {
+ 		return nil, err
+ 	}
+-	task, err := s.startTaskAtomically(ctx, current)
++	task, err := s.startTaskAtomically(ctx, current, knowledgeFences...)
+ 	if err != nil {
+ 		return nil, fmt.Errorf("start task: %w", err)
+ 	}
+@@ -4394,7 +4405,7 @@ func startsWithAbsolutePath(s string) bool {
+ // causing the new task to resume against a stale (or NULL) session.
+ // durableWorkDir is terminal delivery metadata, not a resume pointer: it is
+ // populated only after the daemon confirms a disposable worktree is gone.
+-func (s *TaskService) CompleteTask(ctx context.Context, taskID pgtype.UUID, result []byte, sessionID, workDir, branchName string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string) (*db.AgentTaskQueue, error) {
++func (s *TaskService) CompleteTask(ctx context.Context, taskID pgtype.UUID, result []byte, sessionID, workDir, branchName string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string, knowledgeFences ...*protocol.TaskKnowledgeFence) (*db.AgentTaskQueue, error) {
+ 	var task db.AgentTaskQueue
+ 	// chatAssistantMsg is the single assistant outcome row written for a chat
+ 	// task inside the completion transaction below. It is broadcast (chat:done)
+@@ -4404,6 +4415,18 @@ func (s *TaskService) CompleteTask(ctx context.Context, taskID pgtype.UUID, resu
+ 		if err := lockChatSessionForTaskWrite(ctx, qtx, taskID); err != nil {
+ 			return err
+ 		}
++		if len(knowledgeFences) > 0 {
++			current, err := qtx.LockTaskForClaimFinalization(ctx, taskID)
++			if err != nil {
++				return err
++			}
++			if err = validateTaskKnowledgeFences(current, knowledgeFences); err != nil {
++				return err
++			}
++		}
++		if err := ValidateTaskKnowledgeSessionPointer(ctx, qtx, taskID, sessionID); err != nil {
++			return err
++		}
+ 		t, err := qtx.CompleteAgentTask(ctx, db.CompleteAgentTaskParams{
+ 			ID:                    taskID,
+ 			Result:                result,
+@@ -4803,11 +4826,20 @@ func (s *TaskService) observeChatOutputLocalPath(task db.AgentTaskQueue, body st
+ // coarse bucket. Daemon callers that already produced a refined reason
+ // (via classifyPoisonedError, the timeout / runtime classifier, etc.)
+ // will have their value preserved untouched.
+-func (s *TaskService) FailTask(ctx context.Context, taskID pgtype.UUID, errMsg, sessionID, workDir, branchName, failureReason string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string) (*db.AgentTaskQueue, error) {
+-	return s.failTask(ctx, taskID, errMsg, sessionID, workDir, branchName, failureReason, sessionRolloutMissing, retiredSessionID, durableWorkDir, nil)
++func (s *TaskService) FailTask(ctx context.Context, taskID pgtype.UUID, errMsg, sessionID, workDir, branchName, failureReason string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string, knowledgeFences ...*protocol.TaskKnowledgeFence) (*db.AgentTaskQueue, error) {
++	return s.failTask(ctx, taskID, errMsg, sessionID, workDir, branchName, failureReason, sessionRolloutMissing, retiredSessionID, durableWorkDir, nil, knowledgeFences...)
+ }
+ 
+-func (s *TaskService) failTask(ctx context.Context, taskID pgtype.UUID, errMsg, sessionID, workDir, branchName, failureReason string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string, expectedClaim *db.AgentTaskQueue) (*db.AgentTaskQueue, error) {
++func (s *TaskService) failTask(ctx context.Context, taskID pgtype.UUID, errMsg, sessionID, workDir, branchName, failureReason string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string, expectedClaim *db.AgentTaskQueue, knowledgeFences ...*protocol.TaskKnowledgeFence) (*db.AgentTaskQueue, error) {
++	if len(knowledgeFences) > 0 {
++		current, err := s.Queries.GetAgentTask(ctx, taskID)
++		if err != nil {
++			return nil, err
++		}
++		if err = validateTaskKnowledgeFences(current, knowledgeFences); err != nil {
++			return nil, err
++		}
++	}
+ 	// Strip bytes PostgreSQL cannot store before anything else reads errMsg, so
+ 	// the classifier, the transaction and every downstream consumer see the one
+ 	// text we will actually persist (GH #7098). Kept at the service boundary
+@@ -4882,6 +4914,18 @@ func (s *TaskService) failTask(ctx context.Context, taskID pgtype.UUID, errMsg,
+ 		if err := lockChatSessionForTaskWrite(ctx, qtx, taskID); err != nil {
+ 			return err
+ 		}
++		if len(knowledgeFences) > 0 {
++			current, err := qtx.LockTaskForClaimFinalization(ctx, taskID)
++			if err != nil {
++				return err
++			}
++			if err = validateTaskKnowledgeFences(current, knowledgeFences); err != nil {
++				return err
++			}
++		}
++		if err := ValidateTaskKnowledgeSessionPointer(ctx, qtx, taskID, sessionID); err != nil {
++			return err
++		}
+ 		if expectedClaim != nil {
+ 			if expectedClaim.ID != taskID {
+ 				return ErrClaimSuperseded
+diff --git a/server/internal/service/task_cancellation.go b/server/internal/service/task_cancellation.go
+index f64c6281c..18601004d 100644
+--- a/server/internal/service/task_cancellation.go
++++ b/server/internal/service/task_cancellation.go
+@@ -122,7 +122,7 @@ func (s *TaskService) CancelTaskInTx(ctx context.Context, q *db.Queries, taskID
+ 		if err != nil {
+ 			return nil, fmt.Errorf("cancel task: %w", err)
+ 		}
+-		if task.ChatSessionID.Valid {
++		if task.ChatSessionID.Valid && taskKnowledgePointerAllowed(task, task.SessionID.String) {
+ 			if err = q.AdvanceCancelledChatSessionPointer(ctx, task.ID); err != nil {
+ 				return nil, err
+ 			}
+diff --git a/server/internal/service/task_finalize_failure_test.go b/server/internal/service/task_finalize_failure_test.go
+index 03514ddf0..36620ad1c 100755
+--- a/server/internal/service/task_finalize_failure_test.go
++++ b/server/internal/service/task_finalize_failure_test.go
+@@ -43,7 +43,7 @@ func TestFinalizeTaskClaimFailureRollsBackTokenThenRequeue(t *testing.T) {
+ 		WorkspaceID: util.MustParseUUID(workspaceID),
+ 		UserID:      util.MustParseUUID(userID),
+ 		ExpiresAt:   pgtype.Timestamptz{Time: time.Now().Add(24 * time.Hour), Valid: true},
+-	}, []pgtype.UUID{bogus}, true)
++	}, []pgtype.UUID{bogus}, true, nil)
+ 	if ferr == nil {
+ 		t.Fatal("expected FinalizeTaskClaim to fail for an out-of-plan delivery receipt")
+ 	}
+diff --git a/server/internal/service/task_start.go b/server/internal/service/task_start.go
+index ce9e32497..ae49096d6 100644
+--- a/server/internal/service/task_start.go
++++ b/server/internal/service/task_start.go
+@@ -9,12 +9,13 @@ import (
+ 	"github.com/jackc/pgx/v5/pgtype"
+ 	"github.com/multica-ai/multica/server/internal/iteration"
+ 	db "github.com/multica-ai/multica/server/pkg/db/generated"
++	"github.com/multica-ai/multica/server/pkg/protocol"
+ )
+ 
+ // startTaskAtomically owns the former autocommit start without adding retries.
+ // Even an issue with no iteration must take the workspace fence before its row
+ // lock, so a join committed while waiting is included in the recorded facts.
+-func (s *TaskService) startTaskAtomically(ctx context.Context, current db.AgentTaskQueue) (db.AgentTaskQueue, error) {
++func (s *TaskService) startTaskAtomically(ctx context.Context, current db.AgentTaskQueue, knowledgeFences ...*protocol.TaskKnowledgeFence) (db.AgentTaskQueue, error) {
+ 	if s.TxStarter == nil {
+ 		return db.AgentTaskQueue{}, errors.New("task start requires a transaction starter")
+ 	}
+@@ -60,6 +61,9 @@ func (s *TaskService) startTaskAtomically(ctx context.Context, current db.AgentT
+ 	if err != nil {
+ 		return db.AgentTaskQueue{}, err
+ 	}
++	if err = validateTaskKnowledgeFences(lockedTask, knowledgeFences); err != nil {
++		return db.AgentTaskQueue{}, err
++	}
+ 	if lockedTask.IssueID != current.IssueID {
+ 		return db.AgentTaskQueue{}, errors.New("task issue changed before start; retry task start")
+ 	}
+diff --git a/server/internal/service/triage_admission_test.go b/server/internal/service/triage_admission_test.go
+index 2abba5d27..b2441f2ab 100644
+--- a/server/internal/service/triage_admission_test.go
++++ b/server/internal/service/triage_admission_test.go
+@@ -140,7 +140,7 @@ func TestTriageClaimFinalizationCannotMintExecutionCredentials(t *testing.T) {
+ 		t.Fatal(err)
+ 	}
+ 	hash := "triage-test-" + uuid.NewString()
+-	_, err = s.FinalizeTaskClaim(t.Context(), task, db.CreateTaskTokenParams{TokenHash: hash, TaskID: task.ID, AgentID: agent, WorkspaceID: util.MustParseUUID(fx.WorkspaceID), UserID: util.MustParseUUID(fx.UserID), ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false)
++	_, err = s.FinalizeTaskClaim(t.Context(), task, db.CreateTaskTokenParams{TokenHash: hash, TaskID: task.ID, AgentID: agent, WorkspaceID: util.MustParseUUID(fx.WorkspaceID), UserID: util.MustParseUUID(fx.UserID), ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false, nil)
+ 	fx.Cleanup(t, "DELETE FROM task_token WHERE token_hash=$1", hash)
+ 	if err == nil {
+ 		t.Fatal("nonformal claim minted execution credentials without a comment receipt")
+diff --git a/server/pkg/db/generated/agent.sql.go b/server/pkg/db/generated/agent.sql.go
+index f67b20d70..9a2f105ce 100755
+--- a/server/pkg/db/generated/agent.sql.go
++++ b/server/pkg/db/generated/agent.sql.go
+@@ -1116,8 +1116,8 @@ type CancelDeferredEscalationsForIssueAgentRow struct {
+ 	ClaimGeneration           int64              `json:"claim_generation"`
+ 	QueuedAt                  pgtype.Timestamptz `json:"queued_at"`
+ 	QueuedAtSource            pgtype.Text        `json:"queued_at_source"`
+-	KnowledgeContextVersion   pgtype.Int4        `json:"knowledge_context_version"`
+-	KnowledgeDelivery         []byte             `json:"knowledge_delivery"`
++	KnowledgeContextVersion   pgtype.Int4        `json:"-"`
++	KnowledgeDelivery         []byte             `json:"-"`
+ }
+ 
+ func (q *Queries) CancelDeferredEscalationsForIssueAgent(ctx context.Context, arg CancelDeferredEscalationsForIssueAgentParams) ([]CancelDeferredEscalationsForIssueAgentRow, error) {
+diff --git a/server/pkg/db/generated/models.go b/server/pkg/db/generated/models.go
+index 3233f0cbc..fbf84ffae 100755
+--- a/server/pkg/db/generated/models.go
++++ b/server/pkg/db/generated/models.go
+@@ -308,8 +308,8 @@ type AgentTaskQueue struct {
+ 	ClaimGeneration           int64              `json:"claim_generation"`
+ 	QueuedAt                  pgtype.Timestamptz `json:"queued_at"`
+ 	QueuedAtSource            pgtype.Text        `json:"queued_at_source"`
+-	KnowledgeContextVersion   pgtype.Int4        `json:"knowledge_context_version"`
+-	KnowledgeDelivery         []byte             `json:"knowledge_delivery"`
++	KnowledgeContextVersion   pgtype.Int4        `json:"-"`
++	KnowledgeDelivery         []byte             `json:"-"`
+ }
+ 
+ type AgentToLabel struct {
+diff --git a/server/pkg/protocol/collaboration.go b/server/pkg/protocol/collaboration.go
+index d75089f82..fc9f821a1 100644
+--- a/server/pkg/protocol/collaboration.go
++++ b/server/pkg/protocol/collaboration.go
+@@ -58,6 +58,8 @@ type CollaborationRunClaimRequest struct {
+ 	// not a registered runtime capability and never enters a capability digest,
+ 	// so upgrading a daemon cannot advance a configuration epoch or revoke consent.
+ 	MemoryVersion int `json:"memory_version,omitempty"`
++	// Negotiated on the managed claim URL, never accepted from business JSON.
++	KnowledgeVersion int `json:"-"`
+ }
+ 
+ // TerminationToken belongs only to the supervisor and its private ledger.
+@@ -74,8 +76,9 @@ type CollaborationRunClaimResponse struct {
+ 	HostContext          *CollaborationHostContext `json:"host_context,omitempty"`
+ 	// Optional read/write extensions are negotiated on the claim URL so old
+ 	// strict request/response decoders and resource consent digests stay stable.
+-	HandoffVersion   int `json:"handoff_version,omitempty"`
+-	RecordingVersion int `json:"recording_version,omitempty"`
++	HandoffVersion   int                             `json:"handoff_version,omitempty"`
++	RecordingVersion int                             `json:"recording_version,omitempty"`
++	KnowledgeContext *CollaborationRunKnowledgeClaim `json:"knowledge_context,omitempty"`
+ }
+ 
+ type CollaborationRunPermitRequest struct {
+diff --git a/server/pkg/protocol/events.go b/server/pkg/protocol/events.go
+index cdabd4936..268f82e00 100755
+--- a/server/pkg/protocol/events.go
++++ b/server/pkg/protocol/events.go
+@@ -2,6 +2,8 @@ package protocol
+ 
+ // Event types for WebSocket communication between server, web clients, and daemon.
+ const (
++	EventCollaborationKnowledgeChanged = "collaboration:knowledge_changed"
++
+ 	// Issue events
+ 	EventIssueCreated            = "issue:created"
+ 	EventIssueUpdated            = "issue:updated"
+diff --git a/server/pkg/taskfailure/classify.go b/server/pkg/taskfailure/classify.go
+index 38f9f7deb..38076daab 100755
+--- a/server/pkg/taskfailure/classify.go
++++ b/server/pkg/taskfailure/classify.go
+@@ -68,6 +68,9 @@ const concurrentRequestLimitWitness = "concurrent request limit"
+ // failure_reason today and lets per-backend structured upgrades land
+ // independently.
+ func Classify(rawError string) Reason {
++	if reason, ok := knowledgeReason(rawError); ok {
++		return reason
++	}
+ 	trimmed := strings.TrimSpace(rawError)
+ 	if trimmed == "" {
+ 		// SQL maps NULL/empty to a separate bucket ("empty_error"),
+@@ -484,6 +487,12 @@ var legacyConcurrentRequestLimitReasons = map[string]bool{
+ // can be deleted once no daemon old enough to produce its wire shape is still
+ // reporting.
+ func NormalizeDaemonReason(reason, rawError string) Reason {
++	if known, ok := knowledgeReason(reason); ok {
++		return known
++	}
++	if known, ok := knowledgeReason(rawError); ok {
++		return known
++	}
+ 	if legacyConcurrentRequestLimitReasons[reason] &&
+ 		strings.Contains(strings.ToLower(rawError), concurrentRequestLimitWitness) {
+ 		return ReasonAgentProviderCapacityOrRateLimit
+diff --git a/server/pkg/taskfailure/failure.go b/server/pkg/taskfailure/failure.go
+index e24acc71c..19c2c0deb 100755
+--- a/server/pkg/taskfailure/failure.go
++++ b/server/pkg/taskfailure/failure.go
+@@ -55,6 +55,11 @@ type Reason string
+ const agentErrorPrefix = "agent_error."
+ 
+ const (
++	ReasonKnowledgeContextChanged        Reason = "knowledge_context_changed"
++	ReasonKnowledgeAuthorizationDenied   Reason = "knowledge_authorization_denied"
++	ReasonKnowledgeUnavailable           Reason = "knowledge_unavailable"
++	ReasonKnowledgeBusy                  Reason = "knowledge_busy"
++	ReasonKnowledgeInvocationUnsupported Reason = "knowledge_invocation_unsupported"
+ 	// Platform / scheduler side: failure attributable to Multica
+ 	// infrastructure rather than anything the agent process did. These
+ 	// are emitted by server-side sweepers (ExpireStaleQueuedTasks,
+@@ -223,6 +228,11 @@ const (
+ //  2. Agent-side reasons grouped by responsibility area (provider /
+ //     agent process / config / runtime), then unknown last.
+ var allReasons = []Reason{
++	ReasonKnowledgeContextChanged,
++	ReasonKnowledgeAuthorizationDenied,
++	ReasonKnowledgeUnavailable,
++	ReasonKnowledgeBusy,
++	ReasonKnowledgeInvocationUnsupported,
+ 	// Platform / scheduler side.
+ 	ReasonQueuedExpired,
+ 	ReasonRuntimeOffline,
+@@ -261,6 +271,20 @@ var allReasons = []Reason{
+ // failure_reason column and exposed as a Prometheus label value.
+ func (r Reason) String() string { return string(r) }
+ 
++// Knowledge refusals settle the current logical input; they never authorize an
++// automatic base-only or fresh-session replay. Match only exact platform codes.
++func knowledgeReason(raw string) (Reason, bool) {
++	switch reason := Reason(strings.TrimSpace(raw)); reason {
++	case ReasonKnowledgeContextChanged, ReasonKnowledgeAuthorizationDenied,
++		ReasonKnowledgeUnavailable, ReasonKnowledgeBusy, ReasonKnowledgeInvocationUnsupported:
++		return reason, true
++	default:
++		return "", false
++	}
++}
++
++func (r Reason) IsKnowledgeRefusal() bool { _, ok := knowledgeReason(string(r)); return ok }
++
+ // IsAgentError reports whether the reason originates inside the agent
+ // process (provider error, runner crash, context overflow, etc.) as
+ // opposed to the platform/scheduler/runtime layer (queue expiry, runtime
+diff --git a/server/pkg/taskfailure/failure_test.go b/server/pkg/taskfailure/failure_test.go
+index 2a5f0eed0..86d4f724d 100755
+--- a/server/pkg/taskfailure/failure_test.go
++++ b/server/pkg/taskfailure/failure_test.go
+@@ -118,8 +118,8 @@ func TestAllReasonsContents(t *testing.T) {
+ 	t.Parallel()
+ 
+ 	got := AllReasons()
+-	if len(got) != 25 {
+-		t.Fatalf("AllReasons() returned %d entries, want 25", len(got))
++	if len(got) != 30 {
++		t.Fatalf("AllReasons() returned %d entries, want 30", len(got))
+ 	}
+ 
+ 	seen := make(map[Reason]bool, len(got))
+@@ -136,8 +136,8 @@ func TestAllReasonsContents(t *testing.T) {
+ 		}
+ 	}
+ 
+-	if platformCount != 11 {
+-		t.Errorf("AllReasons(): platform-side count = %d, want 11", platformCount)
++	if platformCount != 16 {
++		t.Errorf("AllReasons(): platform-side count = %d, want 16", platformCount)
+ 	}
+ 	if agentCount != 14 {
+ 		t.Errorf("AllReasons(): agent-side count = %d, want 14", agentCount)
+@@ -148,6 +148,8 @@ func TestAllReasonsContents(t *testing.T) {
+ 	// someone adds a constant but forgets to register it in the
+ 	// allReasons slice.
+ 	required := []Reason{
++		ReasonKnowledgeContextChanged, ReasonKnowledgeAuthorizationDenied,
++		ReasonKnowledgeUnavailable, ReasonKnowledgeBusy, ReasonKnowledgeInvocationUnsupported,
+ 		ReasonQueuedExpired, ReasonRuntimeOffline, ReasonRuntimeReconnectTimeout,
+ 		ReasonRuntimeRecovery,
+ 		ReasonTimeout, ReasonIterationLimit, ReasonAgentBlocked,
+diff --git a/server/sqlc.yaml b/server/sqlc.yaml
+index f4dedb1b1..197857188 100755
+--- a/server/sqlc.yaml
++++ b/server/sqlc.yaml
+@@ -10,3 +10,10 @@ sql:
+         sql_package: "pgx/v5"
+         emit_json_tags: true
+         emit_empty_slices: true
++        # Reserved server-only columns also pass through CTE result tables;
++        # table-qualified overrides alone miss those derived task rows.
++        overrides:
++          - column: "*.knowledge_delivery"
++            go_struct_tag: 'json:"-"'
++          - column: "*.knowledge_context_version"
++            go_struct_tag: 'json:"-"'

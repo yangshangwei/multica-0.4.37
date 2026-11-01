@@ -140,7 +140,7 @@ func TestTriageClaimFinalizationCannotMintExecutionCredentials(t *testing.T) {
 		t.Fatal(err)
 	}
 	hash := "triage-test-" + uuid.NewString()
-	_, err = s.FinalizeTaskClaim(t.Context(), task, db.CreateTaskTokenParams{TokenHash: hash, TaskID: task.ID, AgentID: agent, WorkspaceID: util.MustParseUUID(fx.WorkspaceID), UserID: util.MustParseUUID(fx.UserID), ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false)
+	_, err = s.FinalizeTaskClaim(t.Context(), task, db.CreateTaskTokenParams{TokenHash: hash, TaskID: task.ID, AgentID: agent, WorkspaceID: util.MustParseUUID(fx.WorkspaceID), UserID: util.MustParseUUID(fx.UserID), ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false, nil)
 	fx.Cleanup(t, "DELETE FROM task_token WHERE token_hash=$1", hash)
 	if err == nil {
 		t.Fatal("nonformal claim minted execution credentials without a comment receipt")

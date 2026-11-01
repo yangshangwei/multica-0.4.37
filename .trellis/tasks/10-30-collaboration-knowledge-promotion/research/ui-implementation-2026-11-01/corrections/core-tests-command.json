@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "pnpm",
+    "--dir",
+    "packages/core",
+    "exec",
+    "vitest",
+    "run",
+    "collaboration/knowledge-actions.test.ts",
+    "api/collaboration-knowledge.test.ts",
+    "--reporter=verbose",
+    "--reporter=json",
+    "--outputFile.json=/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-implementation-2026-11-01/corrections/core-vitest.json"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+  "exit_code": 0,
+  "duration_seconds": 2.295
+}

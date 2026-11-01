@@ -1,0 +1,93 @@
+{
+  "service": {
+    "files": [
+      "server/internal/service/task_knowledge_invocation_test.go",
+      "server/internal/service/task_knowledge_test.go",
+      "server/internal/service/task_knowledge_concurrency_test.go",
+      "server/internal/service/task_knowledge_fence_test.go",
+      "server/internal/service/task_knowledge_managed_test.go",
+      "server/internal/service/task_knowledge_history_test.go"
+    ],
+    "tests": [
+      "TestKnowledgeAuthorityChangeBetweenDisclosureAndLaunch",
+      "TestKnowledgeAuthorizeLostResponseRechecksCurrentEligibility",
+      "TestKnowledgeClaimDoesNotNegotiateAfterProviderChanges",
+      "TestKnowledgeClaimFinalizationDisclosesNoPrivateFields",
+      "TestKnowledgeDisabledGatePreservesOriginalObservationCleanup",
+      "TestKnowledgeFailureNeverCreatesAutomaticRetry",
+      "TestKnowledgeLaunchRequiresPreparedInvocationAndPrompt",
+      "TestKnowledgeLegacyClientCannotResumeManagedSession",
+      "TestKnowledgeLegacyNoneDiffersFromCorruptNegotiatedHistory",
+      "TestKnowledgeManagedClaimKeepsOriginalRuntimeBinding",
+      "TestKnowledgeMetadataDoesNotSerializeThroughOrdinaryTask",
+      "TestKnowledgeMissingOriginatorDoesNotUseAccountableIdentity",
+      "TestKnowledgeNativeObservationReplayKeepsOriginalReceipt",
+      "TestKnowledgeOldClaimZeroSessionReportsCannotMutateReclaimedTask",
+      "TestKnowledgeOrdinaryNoSessionPersistenceRemainsUnsupported",
+      "TestKnowledgePreparationCompleteEnvelopeBudgetRollsBackDisclosure",
+      "TestKnowledgePreparationFinalizerContentionUsesNowait",
+      "TestKnowledgePreparationHoldsConsumerProjectIdentity",
+      "TestKnowledgePreparationLostResponseReauthorizes",
+      "TestKnowledgePreparationMultiTargetReplayKeepsExactOrder",
+      "TestKnowledgePreparationRejectsOldClaimGeneration",
+      "TestKnowledgePreparationVersusWithdrawAndSourceRevoke",
+      "TestKnowledgePreparationWorkspaceDeleteLockOrder",
+      "TestKnowledgePrepareBeforeFinalizedClaimRefused",
+      "TestKnowledgeProvenLegacySessionRemainsResumable",
+      "TestKnowledgeReclaimedTaskRetainsPriorDisclosureBindings",
+      "TestKnowledgeResumeCancelledTaskRetainsExposure",
+      "TestKnowledgeResumeChangedServerConfigurationStartsFresh",
+      "TestKnowledgeResumeSameSessionUnionsAllTurns",
+      "TestKnowledgeRuntimeHistoryRefusesCorruptOrTruncatedProof",
+      "TestKnowledgeRuntimeMergeDoesNotRelabelExposureAsLegacy",
+      "TestKnowledgeSessionPointerAndExposureBindAtomically",
+      "TestKnowledgeTrustedServerFailureCanSettleRetainedTask",
+      "TestKnowledgeUnsafeV1SelectorsRefuseBeforeOrdinaryFallback",
+      "TestKnowledgeUnsupportedBackendCannotResumeManagedSessionAcrossScopes",
+      "TestKnowledgeValidEmptyAndClaimedHistoryPreserveLegacyWork",
+      "TestKnowledgeWithdrawnOnlyInOlderTurnForcesFresh"
+    ]
+  },
+  "handler": {
+    "files": [
+      "server/internal/handler/daemon_knowledge_test.go"
+    ],
+    "tests": [
+      "TestKnowledgeAllFirstPartyClaimSurfaces",
+      "TestKnowledgeExplicitRerunUsesSourceSessionExposure",
+      "TestKnowledgeHTTPNegotiationDoesNotEnableClosedGate",
+      "TestKnowledgeHTTPRejectsHumanCredentialFallback",
+      "TestKnowledgeResumeDirectChatPointerUsesExactExposure",
+      "TestKnowledgeResumeOlderSessionFallbackUsesChosenKey"
+    ]
+  },
+  "protocol": {
+    "files": [
+      "server/pkg/protocol/task_knowledge_test.go"
+    ],
+    "tests": [
+      "TestTaskKnowledgeClaimAndNativeGenerationsRemainDistinct",
+      "TestTaskKnowledgeClaimDescriptorHasNoPrivateMaterial",
+      "TestTaskKnowledgeFenceIsStrictAndSourceFree",
+      "TestTaskKnowledgeObservationAckRejectsMalformedShapes",
+      "TestTaskKnowledgeObservationRejectsMixedFacts",
+      "TestTaskKnowledgeRequestRejectsPrivateOrAmbiguousFields"
+    ]
+  },
+  "taskfailure": {
+    "files": [
+      "server/pkg/taskfailure/knowledge_test.go"
+    ],
+    "tests": [
+      "TestKnowledgeRefusalCodesStayTerminalAcrossNormalization"
+    ]
+  },
+  "router": {
+    "files": [
+      "server/cmd/server/task_knowledge_routes_test.go"
+    ],
+    "tests": [
+      "TestTaskKnowledgeProductionRoutesKeepMachineScopeAndClosedGate"
+    ]
+  }
+}

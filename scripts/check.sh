@@ -79,6 +79,7 @@ prepare_check_environment() {
     write_manifest_value REMOTE_API_URL "http://localhost:$BACKEND_PORT"
     write_manifest_value MULTICA_AUTH_MODE legacy
     write_manifest_value MULTICA_MANAGED_INSTALLATIONS_ENABLED false
+    write_manifest_value MULTICA_KNOWLEDGE_CONTEXT_ENABLED false
     write_manifest_value MULTICA_PLATFORM_ADMIN_ENABLED false
     write_manifest_value MULTICA_DEVICE_AUTH_ENABLED false
     write_manifest_value MULTICA_DEV_VERIFICATION_CODE "$DEV_CODE_DEFAULT"

@@ -77,6 +77,7 @@ func (c *Client) installManagedCredential(workspaceID string, credential Managed
 	current := registry.workspaces[workspaceID]
 	if current == nil {
 		child := NewClient(c.baseURL)
+		child.knowledgeInvocation = c.knowledgeInvocation
 		child.managedWorkspaceID = workspaceID
 		child.cancelAckReceiptsReady = c.cancelAckReceiptsReady
 		child.platform = c.platform

@@ -168,18 +168,22 @@ func (h *Handler) ClaimCollaborationRuntimeRun(w http.ResponseWriter, r *http.Re
 	if !decodeCollaborationRuntimeBody(w, r, &body) {
 		return
 	}
-	for _, key := range []string{"handoff_version", "recording_version"} {
+	for _, key := range []string{"handoff_version", "recording_version", "knowledge_version"} {
 		if values, present := r.URL.Query()[key]; present &&
 			(body.ProtocolVersion != protocol.CollaborationHostRuntimeProtocolVersion || len(values) != 1 || values[0] != "1") {
 			writeJSON(w, http.StatusBadRequest, map[string]string{"code": "unsupported_runtime_read_version", "error": "Unsupported collaboration runtime extension"})
 			return
 		}
 	}
+	if r.URL.Query().Get("knowledge_version") == "1" {
+		body.KnowledgeVersion = protocol.CollaborationRunKnowledgeVersion
+	}
 	run, ok := collaborationRuntimeRunID(w, r, nil)
 	if !ok {
 		return
 	}
 	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+	svc.KnowledgeContextEnabled = h.TaskService != nil && h.TaskService.KnowledgeContextEnabled
 	result, err := svc.ClaimRuntimeRun(r.Context(), run, body)
 	if err != nil {
 		writeCollaborationError(w, err)

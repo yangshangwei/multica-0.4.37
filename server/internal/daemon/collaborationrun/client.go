@@ -97,6 +97,9 @@ func (c *Client) Claim(ctx context.Context, runID string, in protocol.Collaborat
 	path := runPath(runID, "claim")
 	if host {
 		path += "?handoff_version=1&recording_version=1"
+		if in.KnowledgeVersion == 1 {
+			path += "&knowledge_version=1"
+		}
 	}
 	if err := c.request(ctx, http.MethodPost, path, c.managedToken, in, &out); err != nil {
 		return out, err
@@ -107,6 +110,9 @@ func (c *Client) Claim(ctx context.Context, runID string, in protocol.Collaborat
 // Retained claims pass the same validation before they can resume waiting for
 // their session. A private ledger file is not a substitute for input validation.
 func validateClaimResponse(out protocol.CollaborationRunClaimResponse, runID string, in protocol.CollaborationRunClaimRequest) error {
+	if err := validateHostKnowledgeClaim(out, in.KnowledgeVersion); err != nil {
+		return err
+	}
 	if out.HandoffVersion != 0 && out.HandoffVersion != protocol.CollaborationHandoffVersion ||
 		out.RecordingVersion != 0 && out.RecordingVersion != protocol.CollaborationCheckpointVersion {
 		return ErrProtocol

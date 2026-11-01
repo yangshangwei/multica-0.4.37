@@ -1,0 +1,202 @@
+[
+  {
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "routes every human read with the source-independent scope and exact pagination",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "serializes all writes with the preselected candidate/request and exact revision unchanged",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "does not misclassify structured access loss or malformed claimed support as an older route",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "rejects mismatched identities, cyclic pages, over-limit pages and foreign operation results",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "fails malformed write intent before transport and preserves HTTP conflicts for explicit reread",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "rejects in-progress recovery, malformed JSON and an approval of a different observed version",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "does not confirm contradictory HTTP status and sealed receipt outcomes",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "redacts project knowledge request/error logs at HTTP 404 without losing workspace headers",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "redacts project knowledge request/error logs at HTTP 500 without losing workspace headers",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "redacts workspace knowledge request/error logs at HTTP 404 without losing workspace headers",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/api/collaboration-knowledge.test.ts",
+    "name": "redacts workspace knowledge request/error logs at HTTP 500 without losing workspace headers",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "allocates a new request UUID per intent and preselects the recoverable candidate before create",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "can reject an unavailable pending candidate expiring at null using only its exact state revision",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "can reject an unavailable pending candidate expiring at 2020-01-01T00:00:00Z using only its exact state revision",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "does not infer rejection rights from unavailable or restricted rows and keeps expired approval denied",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "pins exact reviewed content/state revisions and refuses inferred or unavailable approval authority",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "retains the same immutable request after uncertain transport and never optimistically approves",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "recovers a content-free original receipt with candidate/request only after losing source access and target role",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "keeps unknown/mismatched receipts uncertain and clears private projections for explicit conflict reread",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "recovers the same original actor/key after a fresh login while fencing the old live request scope",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-actions.test.ts",
+    "name": "saves only recovery identity before a lost create response and refuses transport if preservation fails",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-cache.test.ts",
+    "name": "doesNotRestoreUnavailableKnowledgeFromLateResponse",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-cache.test.ts",
+    "name": "erases all source/target/detail pages before refetch while preserving content-free recovery and other viewers",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-cache.test.ts",
+    "name": "clears prior body at a failed refresh and never restores it on cancellation rollback",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-cache.test.ts",
+    "name": "expires at the earlier candidate expiry even while no hint or successful refresh arrives",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-cache.test.ts",
+    "name": "cannot restore a private pre-refresh snapshot when the caller cancels with Query's default rollback",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-cache.test.ts",
+    "name": "rejects requests older than 30 seconds and fences viewer replacement",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-cache.test.ts",
+    "name": "keeps paged reads on the first authorization deadline and refuses page requests without their boundary",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-cache.test.ts",
+    "name": "uses one focus/offline responder and disposes it only after the last consumer",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-schema.test.ts",
+    "name": "knowledge protocol boundaries accepts a content-free rejection grant for unavailable pending material without granting approval or text",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-schema.test.ts",
+    "name": "knowledge protocol boundaries requires explicit detail history completeness and preserves true/false without inferred defaults",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-schema.test.ts",
+    "name": "knowledge protocol boundaries bounds detail history at 50 while source pages retain multiple versions of the same lineage",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-schema.test.ts",
+    "name": "knowledge protocol boundaries distinguishes an older unsupported response from malformed claimed support without logging private material",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-schema.test.ts",
+    "name": "knowledge protocol boundaries retains exact bigint revisions and human projections for all endpoints",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-schema.test.ts",
+    "name": "knowledge protocol boundaries keeps missing capabilities unknown and rejects truthy non-booleans",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-schema.test.ts",
+    "name": "knowledge protocol boundaries allows only content-free restricted control rows and source-unavailable audit rows",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-schema.test.ts",
+    "name": "knowledge protocol boundaries rejects cross-source, cross-target, duplicate or body-bearing list projections",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-schema.test.ts",
+    "name": "knowledge protocol boundaries requires exact reviewed fields for approval and state revision plus explanation for narrowing decisions",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-schema.test.ts",
+    "name": "knowledge protocol boundaries enforces UTF-8 byte budgets, required evidence anchors and strict proposal fields",
+    "status": "passed"
+  },
+  {
+    "file": "packages/core/collaboration/knowledge-schema.test.ts",
+    "name": "knowledge protocol boundaries permits only three content-free target hint fields and content-free operation receipts",
+    "status": "passed"
+  }
+]

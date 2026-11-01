@@ -1,0 +1,84 @@
+{
+  "review_date": "2026-11-01",
+  "task": "10-30-collaboration-knowledge-promotion",
+  "lane": "F3",
+  "verdict": "changes_required",
+  "head": "bc9c3f10b70119d07e28aa167f38f9d335e39338",
+  "worktree": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+  "manifest": "research/invalidation-implementation-2026-11-01/source-manifest.json",
+  "allowlist": "research/invalidation-implementation-2026-11-01/owned-files.txt",
+  "hash_check": {
+    "owned_count": 22,
+    "manifest_count": 22,
+    "missing_from_manifest": [],
+    "extra_in_manifest": [],
+    "mismatches": []
+  },
+  "findings": [
+    {
+      "id": "F3-R1",
+      "priority": "P1",
+      "title": "Revoked legacy PAT can pass cached knowledge final-send authorization",
+      "primary_reference": "server/internal/realtime/collaboration.go:110",
+      "references": [
+        "server/internal/service/collaboration_knowledge_invalidation.go:301",
+        "server/internal/handler/personal_access_token.go:342",
+        "server/internal/realtime/hub.go:1196",
+        "server/internal/realtime/hub.go:1202",
+        "server/cmd/server/router.go:2778",
+        "server/cmd/server/router.go:2782",
+        "server/cmd/server/router.go:2793",
+        "server/internal/auth/pat_cache.go:19"
+      ],
+      "trigger": "Legacy PAT resolver SELECT completes before revoke commit; its cache Set happens after the post-commit eviction, or eviction/commit acknowledgement fails. The account and membership remain active.",
+      "impact": "Queued or subsequent knowledge hints reveal target identity/revision through a credential already revoked in PostgreSQL for up to the cache TTL.",
+      "minimal_fix": "Give only the knowledge final-send path the original trusted credential identity and perform uncached database PAT revoked/expiry/user validation alongside existing JWT/password and human/member checks. Preserve unrelated realtime behavior.",
+      "regression": "Actual queued knowledge frame; active member; commit PAT revoke; stale cache resolver still returns user; no knowledge frame is sent. Include valid-PAT and password/JWT controls.",
+      "confidence": "high"
+    },
+    {
+      "id": "F3-R2",
+      "priority": "P2",
+      "title": "Knowledge final-send validator forwards unchecked envelope fields",
+      "primary_reference": "server/internal/realtime/collaboration.go:100",
+      "references": [
+        "server/internal/realtime/collaboration.go:104",
+        "server/internal/realtime/hub.go:1202",
+        "server/internal/realtime/redis_relay.go:630"
+      ],
+      "trigger": "A knowledge frame has a valid last payload plus an outer private field, or duplicate payload with existing event_id. The permissive envelope decoder ignores data which the raw-byte send retains.",
+      "impact": "The promised malformed/private-frame denial and content-free final-send boundary are not enforced outside the current safe typed producer.",
+      "minimal_fix": "Strictly allow only type, validated payload and optional valid event_id for knowledge frames, reject duplicate/extra data or construct canonical bytes from validated values, and fail closed for known malformed knowledge frames without changing ordinary events.",
+      "regression": "Reject outer source_id and duplicate private payload plus event_id; preserve valid exact payload and retained deleted-project delivery.",
+      "confidence": "high",
+      "limitation": "The F3 drainer itself currently emits a safe typed envelope; this is a final-boundary correctness finding."
+    }
+  ],
+  "recorded_evidence": {
+    "new_top_level_tests": 26,
+    "focused_test_and_subtest_passes": 32,
+    "race_test_and_subtest_passes": 32,
+    "related_passes": 195,
+    "final_inventory_missing_tests": [],
+    "final_inventory_failures": [],
+    "final_inventory_skips": [],
+    "reported_vet_build_diff_checks": "pass",
+    "independently_rerun": false
+  },
+  "reviewer_actions": {
+    "source_and_artifact_reads": true,
+    "source_hash_comparison": true,
+    "tests_run": false,
+    "database_operations": false,
+    "provider_calls": false,
+    "product_edits": false,
+    "generated_edits": false,
+    "commits": false,
+    "subagents": false
+  },
+  "limitations": [
+    "A2 human API/resolver and C2 execution work are separate unfinished batches and were not judged as F3 failures.",
+    "No live browser/desktop acceptance, provider-session proof or whole-task completion is claimed.",
+    "The Core 30-second lease and 15-second reread are fallback behavior, not server authorization evidence."
+  ]
+}

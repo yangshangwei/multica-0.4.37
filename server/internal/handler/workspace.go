@@ -20,6 +20,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/issuestatus"
 	"github.com/multica-ai/multica/server/internal/logger"
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
+	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
@@ -612,10 +613,28 @@ func (h *Handler) UpdateMember(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	updatedMember, err := h.Queries.UpdateMemberRole(r.Context(), db.UpdateMemberRoleParams{
+	tx, err := h.TxStarter.Begin(r.Context())
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to update member")
+		return
+	}
+	defer tx.Rollback(r.Context())
+	qtx := h.Queries.WithTx(tx)
+	lockedMember, err := qtx.LockKnowledgeMemberRoleChange(r.Context(), db.LockKnowledgeMemberRoleChangeParams{ID: target.ID, WorkspaceID: target.WorkspaceID})
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to update member")
+		return
+	}
+	updatedMember, err := qtx.UpdateMemberRole(r.Context(), db.UpdateMemberRoleParams{
 		ID:   target.ID,
 		Role: role,
 	})
+	if err == nil && lockedMember.Role != role {
+		err = service.EnqueueKnowledgeSourceInvalidation(r.Context(), qtx, pgtype.UUID{Bytes: uuid.New(), Valid: true}, "source_workspace", target.WorkspaceID)
+	}
+	if err == nil {
+		err = tx.Commit(r.Context())
+	}
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to update member")
 		return
@@ -1135,6 +1154,12 @@ func (h *Handler) DeleteWorkspace(w http.ResponseWriter, r *http.Request) {
 	}
 	if shared {
 		writeJSON(w, http.StatusConflict, map[string]string{"error": "This workspace contains collaboration records.", "code": "workspace_has_collaboration_records"})
+		return
+	}
+	// Retain target routing/hints before source/task cleanup. The workspace
+	// fence prevents concurrent publication; no source/candidate lock is added.
+	if err := service.DeleteKnowledgeTargetsInTx(r.Context(), qtx, pgtype.UUID{Bytes: uuid.New(), Valid: true}, requester.WorkspaceID, pgtype.UUID{}); err != nil {
+		failWorkspaceDelete(w, r, workspaceID, "delete knowledge targets", err)
 		return
 	}
 

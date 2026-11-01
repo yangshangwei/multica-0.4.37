@@ -1,0 +1,9 @@
+{
+  "raw_record": "build-command.json",
+  "raw_source_unchanged": false,
+  "changed": [
+    "server/internal/service/collaboration_knowledge_final_matrix_test.go"
+  ],
+  "only_test_files_changed": true,
+  "assessment": "go build excludes test files; production build inputs were unchanged during this run. Later RuntimeLookup correction requires a new build."
+}

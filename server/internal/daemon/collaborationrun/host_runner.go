@@ -28,6 +28,7 @@ type hostSupervisor struct {
 	prepared          *hostPreparedRun
 	handoffSnapshot   string
 	handoffPromptHash string
+	knowledge         *hostKnowledgeInput
 }
 
 func (r *Runner) runHost(ctx context.Context, local *RunLedger, runID string, request protocol.CollaborationRunClaimRequest) (runErr error) {
@@ -47,6 +48,9 @@ func (r *Runner) runHost(ctx context.Context, local *RunLedger, runID string, re
 		// Host runs inject shared context; this claim-only declaration is not a
 		// registered capability and never changes the capability digest.
 		request.MemoryVersion = protocol.CollaborationMemoryVersion
+		if r.Host.supportsKnowledge() {
+			request.KnowledgeVersion = 1
+		}
 		claim, err := r.Client.Claim(ctx, runID, request)
 		if err != nil {
 			return err
@@ -127,6 +131,14 @@ func (r *Runner) runHost(ctx context.Context, local *RunLedger, runID string, re
 	// A retained directory organizes this identity; it is not an OS sandbox.
 	// Session pointers come only from this key's local record.
 	resume, continuityLost := session.record.SessionID, session.record.ResumeUnavailable
+	if claim.KnowledgeContext != nil {
+		// A knowledge namespace never supplies a reusable provider pointer.
+		if !r.Host.supportsKnowledge() || resume != "" {
+			_ = stop()
+			return errors.Join(ErrUnsupported, r.recoverHost(context.WithoutCancel(ctx), local))
+		}
+		resume, continuityLost = "", false
+	}
 	if prepared.CodexHome != "" && resume != "" && !execenv.CodexResumeRolloutPresent(prepared.CodexHome, resume) {
 		resume, continuityLost = "", true
 	}
@@ -156,7 +168,8 @@ func (r *Runner) runHost(ctx context.Context, local *RunLedger, runID string, re
 	}
 	backend, err := agent.ResolveBackend(r.Host.Config.Provider, agent.Config{ExecutablePath: r.Host.Config.Executable,
 		CLIVersion: r.Host.Config.ProviderVersion, CodexVersion: r.Host.Config.ProviderVersion, Env: env, Logger: r.Host.logger(),
-		RuntimeID: claim.HostContext.RuntimeID, BuiltinRuntime: true})
+		PrivateInput: claim.KnowledgeContext != nil,
+		RuntimeID:    claim.HostContext.RuntimeID, BuiltinRuntime: true})
 	if err != nil {
 		_ = stop()
 		return errors.Join(err, r.recoverHost(context.WithoutCancel(ctx), local))
@@ -179,7 +192,20 @@ func (r *Runner) runHost(ctx context.Context, local *RunLedger, runID string, re
 		// Codex must not prepend different text after its process is launched.
 		opts.ResumeContinuityNotice = ""
 	}
+	if claim.KnowledgeContext != nil {
+		opts.ResumeExpected, opts.ResumeContinuityNotice = false, ""
+		// Claude's documented print-mode control prevents this run from
+		// becoming globally resumable history outside our local namespace.
+		if !slices.Contains(opts.ExtraArgs, "--no-session-persistence") {
+			opts.ExtraArgs = append(opts.ExtraArgs, "--no-session-persistence")
+		}
+	}
 	prompt, err := hostPromptWithHandoff(claim, continuityLost, memory, handoff)
+	if err != nil {
+		_ = stop()
+		return errors.Join(err, r.recoverHost(context.WithoutCancel(ctx), local))
+	}
+	prompt, err = supervisor.prepareKnowledge(executionCtx, prompt, opts, handoff)
 	if err != nil {
 		_ = stop()
 		return errors.Join(err, r.recoverHost(context.WithoutCancel(ctx), local))
@@ -234,6 +260,9 @@ func (r *Runner) runHost(ctx context.Context, local *RunLedger, runID string, re
 	}
 	if gotResult {
 		if result.SessionID != "" && (!validProviderSessionID(result.SessionID) || prepared.CodexHome != "" && !execenv.CodexResumeRolloutPresent(prepared.CodexHome, result.SessionID)) {
+			result.SessionID = ""
+		}
+		if claim.KnowledgeContext != nil {
 			result.SessionID = ""
 		}
 		if err := session.save(result.SessionID, result.SessionID == ""); err != nil {
@@ -316,6 +345,9 @@ func (s *hostSupervisor) BeforeLaunch(ctx context.Context, info agent.LaunchInfo
 	}
 	if info.Kind == agent.LaunchKindProvider {
 		if err := s.bindHandoff(ctx); err != nil {
+			return agent.LaunchCallbacks{}, err
+		}
+		if err := s.authorizeKnowledge(ctx); err != nil {
 			return agent.LaunchCallbacks{}, err
 		}
 	}

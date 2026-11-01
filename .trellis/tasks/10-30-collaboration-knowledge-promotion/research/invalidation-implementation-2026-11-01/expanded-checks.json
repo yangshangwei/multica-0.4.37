@@ -1,0 +1,59 @@
+[
+  {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/service",
+      "-run",
+      "^(TestKnowledgePendingChangesDoNotSignalTarget|TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks|TestKnowledgeFanoutNeverWaitsOnSourceWriter|TestKnowledgeSourceDeletionRetainsInvalidationRouting|TestKnowledgeDeletedTargetIsNotRecreatedByPendingFanout|TestKnowledgeFanoutCrashAndReplayPreserveCursorAndRevision|TestKnowledgeTargetHintRelayFailureRetainsStableID|TestKnowledgeTargetHintHasOnlyPublicTargetFields|TestKnowledgeAuthorityChangesFanOutWithoutCurrentMembershipJoin|TestKnowledgeMissingCounterDoesNotReportEmptySuccess|TestKnowledgeWorkspaceAuthorizationRequiresCurrentMembership|TestKnowledgeBusyTargetYieldsToOtherScans|TestKnowledgeScanBoundaryAndConcurrentApprovalHaveIndependentHints|TestKnowledgeSourceMutationRollsBackWhenScanAppendFails|TestKnowledgeCommentEditRetainsSourceUntilDelete|TestKnowledgeInvalidationRunSchedulesScannerAndDrainer)$",
+      "-count=1",
+      "-json"
+    ],
+    "expected_tests": [
+      "TestKnowledgePendingChangesDoNotSignalTarget",
+      "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks",
+      "TestKnowledgeFanoutNeverWaitsOnSourceWriter",
+      "TestKnowledgeSourceDeletionRetainsInvalidationRouting",
+      "TestKnowledgeDeletedTargetIsNotRecreatedByPendingFanout",
+      "TestKnowledgeFanoutCrashAndReplayPreserveCursorAndRevision",
+      "TestKnowledgeTargetHintRelayFailureRetainsStableID",
+      "TestKnowledgeTargetHintHasOnlyPublicTargetFields",
+      "TestKnowledgeAuthorityChangesFanOutWithoutCurrentMembershipJoin",
+      "TestKnowledgeMissingCounterDoesNotReportEmptySuccess",
+      "TestKnowledgeWorkspaceAuthorizationRequiresCurrentMembership",
+      "TestKnowledgeBusyTargetYieldsToOtherScans",
+      "TestKnowledgeScanBoundaryAndConcurrentApprovalHaveIndependentHints",
+      "TestKnowledgeSourceMutationRollsBackWhenScanAppendFails",
+      "TestKnowledgeCommentEditRetainsSourceUntilDelete",
+      "TestKnowledgeInvalidationRunSchedulesScannerAndDrainer"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 8.773390054702759,
+    "database": "multica_knowledge_invalidation_20261101_849a1c21"
+  },
+  {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/handler",
+      "-run",
+      "^(TestKnowledgeMemberRoleAndRemovalAppendInAuthoritativeTransaction|TestKnowledgePATRevocationRetainsOriginalCauseAndRollsBackOnAppendFailure|TestKnowledgeProjectDeletionRetainsFinalHintAndPendingRouting|TestKnowledgeWorkspaceDeletionRetainsEveryTargetHint|TestKnowledgeMemberRemovalFansOutHistoricalTargetsOutsideSource)$",
+      "-count=1",
+      "-json"
+    ],
+    "expected_tests": [
+      "TestKnowledgeMemberRoleAndRemovalAppendInAuthoritativeTransaction",
+      "TestKnowledgePATRevocationRetainsOriginalCauseAndRollsBackOnAppendFailure",
+      "TestKnowledgeProjectDeletionRetainsFinalHintAndPendingRouting",
+      "TestKnowledgeWorkspaceDeletionRetainsEveryTargetHint",
+      "TestKnowledgeMemberRemovalFansOutHistoricalTargetsOutsideSource"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 11.76358699798584,
+    "database": "multica_knowledge_invalidation_20261101_849a1c21"
+  }
+]

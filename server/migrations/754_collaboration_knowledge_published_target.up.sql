@@ -1,0 +1,1 @@
+CREATE INDEX CONCURRENTLY IF NOT EXISTS collaboration_knowledge_published_target_idx ON collaboration_knowledge_candidate (target_kind, target_workspace_id, target_project_id, id) WHERE published_target_revision IS NOT NULL;
