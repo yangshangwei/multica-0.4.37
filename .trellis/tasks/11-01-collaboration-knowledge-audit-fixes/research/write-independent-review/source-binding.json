@@ -1,0 +1,27 @@
+{
+  "head": "d4bc37a86e36f7db517c451a4db1eba5b56973b4",
+  "base_sha": "4e3b61500ed0afbc12cf4c79b1c6aea866778d0e",
+  "server_tree": "3f34505d9eff6364d52ff92e3783974ae4c6cc34",
+  "product_diff_sha256": "5a7ed53928284ddc913875f0423e3e3137194968cc15a6c235fb3e1fb19f6d18",
+  "files_sha256": {
+    ".trellis/spec/server/collaboration-knowledge.md": "6da75edb016d2543334c76d830e7d77bd6ae6af72638be96ba0f791157375dba",
+    ".trellis/spec/server/collaboration-realtime.md": "321cc698a38a5629b9ddd1477fd1caa86288df708e1891201c5c6e5d4417d64b",
+    "server/internal/migrations/collaboration_knowledge_queries_test.go": "8e61030b9a576e563ea2da7f46214ec86481e1943b3e76d620aab07f28924403",
+    "server/internal/realtime/collaboration.go": "01cff978aff5a1cd61bcadc95736ec786038bcebdeb8f6dafbedf6e73a6d8bf5",
+    "server/internal/realtime/collaboration_knowledge_test.go": "77f2b39121630c3bd849bef6fc99f496e6ea938cd3b13245b813841119157a31",
+    "server/internal/realtime/collaboration_test.go": "cd7d5e56037a56328bf3ecd485c82154e4477c6e73690afe30fb327dfff76f8b",
+    "server/internal/realtime/hub.go": "0dc30f465fd4a3a83e8dc230bfd2230c6538a2b96843ea6250a8e06372cb72dc",
+    "server/internal/service/collaboration.go": "98eefd329df5102a13644cf60b58b56ffcd67761d63a1865a85eab1ec453ed89",
+    "server/internal/service/collaboration_knowledge.go": "68ae4e5ccb6cff7f63c659c0dbcad1ddccac7568e5eb00b02c67e4015a86a7b5",
+    "server/internal/service/collaboration_knowledge_authority_test.go": "6e7a671bb4b5024acaeb160043ac37d0b0e4363ad6554c2312b6a55f304b0eb0",
+    "server/internal/service/collaboration_knowledge_concurrency_test.go": "e498a4f8e26faddab1738ba602bf6e38615ae29ff9a419121953c4dc037736e7",
+    "server/internal/service/collaboration_knowledge_credentials.go": "7bd97758175b4e411a156cd7c29591ec9a5f04874c45eb614ea6e6f20aaf273f",
+    "server/internal/service/collaboration_knowledge_credentials_test.go": "da14d70c472f9fbd9840a9573ca03211e2be57e6debeb49459b1144262bd93dd",
+    "server/internal/service/collaboration_knowledge_invalidation.go": "75502bea9e4c30a015930fda350e45f9869719d83cbebe52376209a76c445cd9",
+    "server/internal/service/collaboration_knowledge_invalidation_test.go": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+    "server/pkg/db/generated/collaboration_knowledge.sql.go": "a0ec6157f972acf00ba210cf77495c71202ecdedfd44ab7c16726ba000caa620",
+    "server/pkg/db/generated/collaboration_knowledge_service.sql.go": "91463bca4e146d3e7d6bc0c8b48d15b312eb221a06ecb1bbec6790bb82e42a48",
+    "server/pkg/db/queries/collaboration_knowledge.sql": "f538dfda215ed7fec400ee30638172f29fbb227121e94463c9511ea10f445a3f",
+    "server/pkg/db/queries/collaboration_knowledge_service.sql": "c85605952b6b6202b55aaf04b3c00137dbd25ba4626fd8d072da240eed5c29cb"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "source_sha": "d4bc37a86e36f7db517c451a4db1eba5b56973b4",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/realtime",
+    "-race",
+    "-parallel=2",
+    "-count=2",
+    "-json",
+    "-run",
+    "^Test(Knowledge(SlowFinalSendAuthorizationDoesNotSpendWriteBudget|QueuedTargetHintReauthorizesAtPhysicalSend|OutboundPredicateRejectsPrivateFieldsAndWrongRoom)|CollaborationSlowRevocationCheckStillSendsAccessHint)$"
+  ],
+  "started_at": "2026-11-01T16:51:46.683554+00:00",
+  "database_env_removed": true,
+  "provider_gate_removed": true,
+  "exit_code": 0,
+  "counts": {
+    "run": 8,
+    "pass": 8,
+    "fail": 0,
+    "skip": 0
+  },
+  "log_sha256": "afdf93b70e7e2a965ffe637107dbcef8c647f4dc0f8bcc9a93c77f7286759c1c"
+}
