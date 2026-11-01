@@ -21,6 +21,8 @@
 
 `private/`含测试数据库连接和合成账号秘密，不是可发布证据。raw trace/截图可能含合成会话数据，保持本地；对外传递应使用本报告和已脱敏ENV1摘录。哈希清单不包含private内容。
 
-协作使用仓库 [trellis-channel](../../../../.agents/skills/trellis-channel/SKILL.md) 所述边界和原生代理/线程消息；仅向同仓统筹回报授权的资源状态，无邮件、Slack、外部发布或真实Provider重启。
+协作使用仓库 [trellis-channel](../../../.agents/skills/trellis-channel/SKILL.md) 所述边界和原生代理/线程消息；仅向同仓统筹回报授权的资源状态，无邮件、Slack、外部发布或真实Provider重启。
 
 哈希：原证据目录 `sha256-manifest.txt`；API/构建和结果以原执行目录为准。
+
+独立终审：`research/final-evidence-review.md`；后续文档同步核对：`research/final-review-resolution.md`。另时工具版本和独立静态执行位于原证据 `review/`，不替代初始测量。

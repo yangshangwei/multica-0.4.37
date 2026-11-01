@@ -18,5 +18,9 @@
 - Playwright: pnpm exec playwright test --workers=1 --retries=0 --reporter=json with unique output/result paths and no source-assertion changes.
 - All commands run under the recorded private environment; DB-backed TestMain is never probed without explicit task DATABASE_URL.
 
+## Final assessment
+
+Execution and delivery completed with failures/blockers. Acceptance remains NOT PASSED; no product repair or final candidate approval occurred. Gates and skip limits are disclosed in report.md.
+
 ## Gates and rollback
 Before starting, review this plan. Before any code addition, load trellis-before-dev and applicable layer specs. Stop expensive/provider-dependent tests after a critical smoke failure but continue independent deterministic coverage. Preserve the original failing DB and use a new one for any full rerun. Cleanup uses ownership manifests, never broad process kills.
