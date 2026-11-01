@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T18:50:42.990908+00:00",
+  "updated_at": "2026-11-01T19:09:46.858337+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -18,7 +18,8 @@
       ],
       "gaps": [
         "runtime、知识、RK1框架及交付准备已分别复核并本地合入。C3候选首轮make check在原生origin配置缺口处主动中断，exit -2；此前Core4340、Views7118、Docs62、Web290、Desktop1272共13082项TS测试通过。该结果不是完整验收通过；origin修复7435b04ec合入后须冻结新候选并完整重验。",
-        "2026-11-02 后续：E2E补丁已独立复核并以7f8ca8725合入，新候选起始干净，同源renderer/CLI与本地缓存sqlc无漂移已验，完整make check正在运行；不得改判之前exit-2。"
+        "2026-11-02 后续：E2E补丁已独立复核并以7f8ca8725合入，新候选起始干净，同源renderer/CLI与本地缓存sqlc无漂移已验，完整make check正在运行；不得改判之前exit-2。",
+        "7f8ca8725完整check本轮exit2，collaborationrun345pass/2fail，bundle snapshot valid及父项失败；其余Go后段/vet/API/Web/E2E未到达。原失败与专用库保留，独立修复/复核后必须重新验证。"
       ]
     },
     {
@@ -420,11 +421,13 @@
   },
   "final_candidate": {
     "sha": "7f8ca87252b53f16041485ac867e501962377802",
-    "state": "full_make_check_running_not_accepted",
+    "state": "attempt1_failed_not_accepted",
     "registration": "research/final-candidate-20261102/registration.json",
     "clean_at_start": true,
     "source_id": "6ddb9c301999c6ebb7fb37e962c9f29473809f38a788623838491ba8f552c739",
     "paid_runnable": false,
-    "real_provider_consumed": 0
+    "real_provider_consumed": 0,
+    "result": "research/final-candidate-20261102/attempt-1-result.json",
+    "actual_make_exit_code": 2
   }
 }

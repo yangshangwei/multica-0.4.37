@@ -1,6 +1,6 @@
 # 父任务当前验收矩阵
 
-> 2026-11-02 后续入口：E2E维护补丁经独立pass-with-notes后已以 `7f8ca8725` 本地合入。C3维护14目标及另外3项runtime/ENV1实际通过，仍属其绑定版本。新候选 `7f8ca8725` 起始干净，同源CLI/renderer构建及sqlc无漂移已验，完整 `make check` 正在执行；最终验收继续开放。当前指纹／状态见 [候选登记](research/final-candidate-20261102/registration.json)，以下快照按各自时间保留。
+> 2026-11-02 后续入口：E2E维护补丁经独立pass-with-notes后已以 `7f8ca8725` 本地合入。C3维护14目标及另外3项runtime/ENV1实际通过，仍属其绑定版本。新候选 `7f8ca8725` 起始干净，同源CLI/renderer构建及sqlc无漂移已验，完整 `make check` 已失败（make exit2；bundle快照valid及父项失败），原结果保留，独立修复分道正在复现和修正测试目录前提；最终验收继续开放。当前指纹／状态见 [候选登记](research/final-candidate-20261102/registration.json)，以下快照按各自时间保留。
 
 
 2026-11-02 本地续作快照：集成分支 `codex/cross-workspace-collaboration` 为 `c6289db93`，领先本地 origin 跟踪记录 194 个提交，未 fetch。runtime、知识、RK1 框架、交付准备及原生 renderer origin 准备修复均已独立复核并本地合入。父任务保持 `in_progress`，最终候选尚未验收通过。逐项机器状态见 [验收 JSON](acceptance-2026-11-01.json)，人员与工作树见 [执行台账](execution-resume-2026-11-01.json)。

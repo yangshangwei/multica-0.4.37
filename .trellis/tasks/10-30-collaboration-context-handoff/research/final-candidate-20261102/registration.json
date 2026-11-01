@@ -1,6 +1,6 @@
 {
   "recorded_at": "2026-11-01T18:49:42.541450+00:00",
-  "state": "verification_running_not_accepted",
+  "state": "attempt_1_failed_not_accepted",
   "candidate_sha": "7f8ca87252b53f16041485ac867e501962377802",
   "source_id": "6ddb9c301999c6ebb7fb37e962c9f29473809f38a788623838491ba8f552c739",
   "file_count": 7959,
@@ -67,7 +67,7 @@
     "first_GOPROXY_off_setup_failure_retained": true
   },
   "make_check": {
-    "state": "running",
+    "state": "complete",
     "started_at": "2026-11-01T18:48:35.419210+00:00",
     "command": [
       "make",
@@ -75,8 +75,10 @@
       "ENV_FILE=<private task source env>"
     ],
     "evidence_directory": "/Volumes/artisan/code/2026/mc-collaboration-final-20261102/.omx/private/final-candidate",
-    "exit_code": null,
-    "counts": null
+    "exit_code": 2,
+    "counts": null,
+    "finished_at": "2026-11-01T19:04:42.149298+00:00",
+    "log_sha256": "cb637cab0a95c93b5dd63ed150f05ab90557b703e0701fd30ec10f56e99bdd3f"
   },
   "real_provider_launches": 0,
   "external_operations": false,
@@ -111,5 +113,12 @@
     "actual_API_running_configuration_id": null,
     "state": "allocated_before_static_checks; API not started yet",
     "manifest_retained_privately": true
-  }
+  },
+  "completed_stages": [
+    "static15pass",
+    "TypeScript13082pass"
+  ],
+  "current_stage": "blocked_at_bundle_platform_test; isolated_repair_running",
+  "stage_evidence": "static-typescript-result.json",
+  "failure_evidence": "attempt-1-result.json"
 }
