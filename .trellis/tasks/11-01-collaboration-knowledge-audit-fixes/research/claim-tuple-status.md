@@ -20,4 +20,4 @@ Implemented only the canonical tied-history test. Normal1/1 and race with three 
 
 No product or executable contract changed, so no spec edit was required or permitted in this bounded slice. Full service/handler/migration suites were not repeated; their existing parent evidence is unchanged. Only the allocated task database was used, no migration or cleanup command ran, and no Provider or installed Agent CLI was accessed. Exact commands, source/test/log hashes, exit codes and inventories are in `evidence/CT1-verification.json` and its referenced records. Coordinator independent review and final merged-candidate acceptance remain open.
 
-State: verified and ready for the owned atomic commit; other untracked review/root evidence is untouched.
+State: completed in test/evidence commit `5c3549001277d246e28314e1d449edb2baa5786f`; coordinator independent delta review pending. Other untracked review/root evidence is untouched.
