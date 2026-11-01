@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T09:13:11.446683+00:00",
+  "updated_at": "2026-11-01T09:31:21.532177+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -37,10 +37,11 @@
       "evidence": [
         "../10-30-collaboration-fix-closure/verification-2026-10-31.md",
         "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/registration.json",
-        "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json"
+        "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json",
+        "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/source-manifest-547760ea8.json"
       ],
       "gaps": [
-        "原产品 4c833e737 正式 E0 已过；RK1 runtime 场景上限 19 次（28c67c674，会话-87记录的用户决定），待产品补丁、源码重新绑定和真实 Provider 框架；K1–K3/E0b 无预算；不能继承旧结论"
+        "原产品 4c833e737 正式 E0 已过；RK1 runtime 场景上限 19 次（28c67c674，会话-87记录的用户决定）。召回产品补丁已合入（ac2a24f8f/c54a28ba6），源码重新绑定为 source-manifest-547760ea8.json；还要等审计 9 项修复合入并重新绑定、知识修复合入、真实 Provider 框架（会话-35）通过复核；K1–K3/E0b 无预算；不能继承旧结论"
       ]
     },
     {
@@ -94,11 +95,13 @@
       "evidence": [
         "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/summary-final.json",
-        "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md"
+        "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md",
+        "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-recall-surface-review/README.md"
       ],
       "gaps": [
         "模型读取/理解仍属独立实验；普通评论是 live recall，不是启动预载",
-        "同一审计确认 RECALL-1/RECALL-2 未修复：runtime 评论召回没有作者显示名（父 PRD R4 要求）；collaboration-runtime-cli.md:49-51 仍写过滤等操作不支持、读取只返回最新 200 条，召回契约未成文（c54a28ba6 只补了命令列表）"
+        "同一审计确认 RECALL-1/RECALL-2 未修复：runtime 评论召回没有作者显示名（父 PRD R4 要求）；collaboration-runtime-cli.md:49-51 仍写过滤等操作不支持、读取只返回最新 200 条，召回契约未成文（c54a28ba6 只补了命令列表）",
+        "召回修复 c54a28ba6 独立复核 pass-with-notes（会话[4a018c]）：错误来源 UUID 返回 503 而不是 404；Claude CLI 默认只把 30000 字符输出交给模型，32 KiB 来源块或 64 KiB 评论页的游标会落在预览之外（未实测）；live handoff show 让 ENV-1 变得 Agent 可达；另有 4 个测试缺口"
       ]
     },
     {
@@ -139,11 +142,13 @@
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/remaining-acceptance-addendum/summary.md",
         "../10-30-collaboration-knowledge-promotion/verification-integration-2026-11-01.md",
         "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-joint-review/README.md",
-        "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md"
+        "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md",
+        "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-recall-surface-review/README.md"
       ],
       "gaps": [
         "runtime 与知识最终源码、失败修正、独立审查及执行记录已可追溯；原/新真实模型和关联发布矩阵仍开放",
-        "合入后 runtime 审计 9 项确认（中 5、低 4）、2 项驳回，只读静态审查，未运行测试；用户 2026-11-01 决定在 RK1 前全部修复，由会话-a8 执行，RK1 须在修复合入并重新绑定源码后启动"
+        "合入后 runtime 审计 9 项确认（中 5、低 4）、2 项驳回，只读静态审查，未运行测试；用户 2026-11-01 决定在 RK1 前全部修复，由会话-a8 执行，RK1 须在修复合入并重新绑定源码后启动",
+        "2026-11-01 用户决定把含私有指令的 Provider 会话记录移出本地历史：5 个提交改写为 03469921c…b8fd547dc，产品树不变，只保留 sha256 和来源；独立核查 pass-with-notes"
       ]
     }
   ],
@@ -196,7 +201,7 @@
       "scope": "发布/升级",
       "state": "not_released",
       "evidence": "../10-24-cross-platform-collaboration-runtime/verification.md",
-      "gap": "未推送/部署/发布；creation迁移744已默认开，AI execution/host准入仍默认关；混合writer滚动升级另需核对；offline-upgrade文档仍为V0.6.6/迁移上限570且未列MULTICA_KNOWLEDGE_CONTEXT_ENABLED，HEAD上限760；v0.6.7→候选离线升级演练未运行；v0.6.7 GitHub Release无Windows安装器（v0.6.6有）。“混合writer”按单API实例重启解释为新服务端配旧Desktop/daemon及回退窗口，待确认，见G2/G3",
+      "gap": "未推送/部署/发布；creation迁移744已默认开，AI execution/host准入仍默认关；混合writer滚动升级另需核对；offline-upgrade文档仍为V0.6.6/迁移上限570且未列MULTICA_KNOWLEDGE_CONTEXT_ENABLED，HEAD上限760；v0.6.7→候选离线升级演练未运行；v0.6.7 GitHub Release无Windows安装器（v0.6.6有）。“混合writer”按单API实例重启解释为新服务端配旧Desktop/daemon及回退窗口，待确认，见G2/G3；之前因为一份私有会话记录而禁止推送，这份记录已从所有分支移除；推送本身仍需用户授权（仓库公开）",
       "runbook": "release-gates-runbook-2026-11-01.md"
     }
   ],
@@ -206,7 +211,7 @@
     "trial": 2,
     "remaining_provider_call_cap": 14
   },
-  "new_runtime_models": "RK1 (d2fe54ab0) + runtime addendum (28c67c674): runtime cap 19, knowledge scenarios unbudgeted; product fix pending, binding void, framework not built; unrun",
+  "new_runtime_models": "RK1 (d2fe54ab0) + runtime addendum (28c67c674): runtime cap 19, knowledge scenarios unbudgeted; recall fix merged (ac2a24f8f, c54a28ba6) and rebound to source-manifest-547760ea8.json; held until the 9 audit fixes, the knowledge fixes and the reviewed framework merge; unrun",
   "runtime_test_addendum_commits": [
     "0bbc6a77a",
     "84c4c2b3d",
