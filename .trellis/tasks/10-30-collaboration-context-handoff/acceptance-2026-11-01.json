@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T03:35:00+00:00",
+  "updated_at": "2026-11-01T04:26:48.874572+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -45,13 +45,13 @@
     {
       "id": "AC3",
       "requirement": "原预登记 E1–E6",
-      "status": "environment_blocked",
+      "status": "partial_original_series_stopped_on_incomplete",
       "evidence": [
         "../10-30-collaboration-fix-closure/verification-e2a-trial2-2026-11-01.md",
         "../10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/prerun.json"
       ],
       "gaps": [
-        "E1 1 有效/2 无效，E2a 0 有效/2 无效；下一 E2a trial3，剩余22次，已登记预检（071f763e1），等待独占窗口；后续未运行"
+        "E1 1 有效/2 无效；E2a 1 有效/2 无效；E2b 3/3 有效；E3 baseline 3/3 有效；E3 after trial1 CLI 300.9 秒超时 incomplete（2026-11-01 会话-54 执行，框架判定，语义判定归该会话）；下一 E3 after trial2，剩余14次；E4–E6 未运行"
       ]
     },
     {
@@ -187,9 +187,10 @@
     }
   ],
   "original_experiment_next": {
-    "scenario": "E2a_window_fact_newest",
-    "trial": 3,
-    "remaining_provider_call_cap": 22
+    "scenario": "E3_member_scope",
+    "arm": "after",
+    "trial": 2,
+    "remaining_provider_call_cap": 14
   },
   "new_runtime_models": "registered as RK1 (d2fe54ab0); call_cap 0 pending user allocation; real-Provider framework not built; unrun",
   "runtime_test_addendum_commits": [
