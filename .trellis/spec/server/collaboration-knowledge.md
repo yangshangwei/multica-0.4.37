@@ -55,8 +55,10 @@ primitives live in [`collaboration_knowledge.sql`](../../../server/pkg/db/querie
   decided on the database clock (`clock_timestamp()`), the clock the approval
   UPDATE uses, before any target-revision or correction write; an expired
   candidate seals `409 knowledge_expired`. If expiry passes after that check,
-  the attempt rolls back as a retryable conflict and the retry seals the same
-  409, never a 404 or a partial write. Rejection needs
+  the attempt rolls back as a retryable conflict only after the database clock
+  confirms expiry. A subsequent retry with remaining budget seals the same409;
+  exhaustion remains503 knowledge_busy, with no partial write. A non-expiry
+  missing UPDATE row retains404 rather than becoming an expiry retry. Rejection needs
   source Read and that target role, but may reduce an unavailable/expired pending
   candidate. Source withdrawal needs source Read plus creator/current handler;
   target confirmers can instead withdraw through a restricted control row.

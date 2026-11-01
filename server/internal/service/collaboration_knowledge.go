@@ -642,11 +642,16 @@ func (s *CollaborationService) changeKnowledgeCandidate(ctx context.Context, w *
 			}
 		}
 		row, err = w.q.ApproveKnowledgeCandidate(ctx, db.ApproveKnowledgeCandidateParams{ID: w.candidate.ID, ActorID: w.actor, TargetRevision: pgtype.Int8{Int64: w.counter.KnowledgeRevision, Valid: true}, ExpectedStateRevision: revision, ExpectedVersion: w.candidate.Version, ExpectedContentSha256: w.candidate.ContentSha256})
-		if errors.Is(err, pgx.ErrNoRows) {
-			// The locked row already matched state, revision, version and hash,
-			// so expiry passed after the precheck. Roll back the target and
-			// correction writes; the retry's precheck seals knowledge_expired.
-			return protocol.CollaborationKnowledgeReceipt{}, &pgconn.PgError{Code: "40001", Message: "knowledge candidate expired during approval"}
+		if errors.Is(err, pgx.ErrNoRows) && w.candidate.ExpiresAt.Valid {
+			checked, clockErr := w.q.GetKnowledgeDatabaseTime(ctx)
+			if clockErr != nil {
+				return protocol.CollaborationKnowledgeReceipt{}, clockErr
+			}
+			if !w.candidate.ExpiresAt.Time.After(checked.Time) {
+				// Roll back target/correction writes only when the database
+				// clock proves expiry. Other missing rows retain their404.
+				return protocol.CollaborationKnowledgeReceipt{}, &pgconn.PgError{Code: "40001", Message: "knowledge candidate expired during approval"}
+			}
 		}
 		code = "knowledge_approved"
 	case "reject":

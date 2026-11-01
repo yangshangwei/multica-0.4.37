@@ -1,0 +1,5 @@
+# Write follow-up boundary
+
+Root owns the L1 review follow-up in this worktree after preserved L5 completed. Current approval maps every pgx.ErrNoRows to a synthetic serialization retry, even when the locked candidate has no expiry or remains unexpired; these failures must preserve the existing404 instead of becoming503 after repeated retries. Use the existing GetKnowledgeDatabaseTime query only when an expiry exists, and retry only if that database time proves expiry. Keep correction/target rollback and the existing expiry409 path. Files: collaboration_knowledge.go, canonical concurrency regressions, and knowledge spec wording for exhausted retry budgets. No new query, dependency, schema or authorization change.
+
+Inject a non-expiry NoRows before the approval UPDATE (with no expiry and a future expiry), require404, one UPDATE attempt and no publication. Preserve original expiry-clock tests. New isolated service DBs only, guarded fake tests; full lane and independent review remain separate.

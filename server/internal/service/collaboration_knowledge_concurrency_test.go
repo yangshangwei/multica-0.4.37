@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"strings"
 	"sync"
@@ -423,6 +424,35 @@ func TestKnowledgeApprovalExpiryUsesDatabaseClockNotApplicationClock(t *testing.
 		t.Fatalf("approval after database expiry with a lagging application clock: %+v %v", r, err)
 	}
 	knowledgeAssertSealedExpiry(t, f, p.CandidateID, approve, r, "0", 0, 1)
+}
+
+func TestKnowledgeApprovalUnexpiredNoRowsDoesNotBecomeExpiryRetry(t *testing.T) {
+	for _, hasExpiry := range []bool{false, true} {
+		t.Run(fmt.Sprint(hasExpiry), func(t *testing.T) {
+			f := newCollaborationMemoryFixture(t)
+			p := knowledgeServiceProposal(t, f)
+			if hasExpiry {
+				expires := knowledgeDBNow(t, f).Add(time.Hour).UTC()
+				p.ExpiresAt = &expires
+			}
+			if _, err := f.svc.ProposeKnowledge(f.ctx, f.issue.Issue.ID, p); err != nil {
+				t.Fatal(err)
+			}
+			attempts := 0
+			f.svc.TxStarter = knowledgeStatementHook{TxStarter: f.pool, statement: "ApproveKnowledgeCandidate", before: func(context.Context, pgx.Tx) error {
+				attempts++
+				return pgx.ErrNoRows
+			}}
+			_, err := f.svc.ApproveKnowledge(f.ctx, util.MustParseUUID(p.CandidateID), knowledgeApproveRequest(p))
+			var refusal *CollaborationError
+			if !errors.As(err, &refusal) || refusal.Status != http.StatusNotFound || attempts != 1 {
+				t.Fatalf("unexpired missing row: attempts=%d err=%v; want one attempt and404", attempts, err)
+			}
+			if f.fx.Count(t, `SELECT count(*) FROM collaboration_knowledge_candidate WHERE id=$1 AND state='approved'`, p.CandidateID) != 0 {
+				t.Fatal("missing approval row published knowledge")
+			}
+		})
+	}
 }
 
 // L1: expiry can pass after the precheck while the correction approval has
