@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"net/http"
 	"strings"
 	"sync"
 	"testing"
@@ -11,6 +12,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
@@ -175,6 +177,57 @@ func TestKnowledgeInvalidNewProposalRemainsUnsealedAndCannotFabricateRecovery(t 
 	p.ExpiresAt = &expired
 	if _, err := f.svc.ProposeKnowledge(f.ctx, f.issue.Issue.ID, p); !collaborationErrorCode(err, "invalid_knowledge_request") {
 		t.Fatalf("expired new proposal: %v", err)
+	}
+}
+
+// L2: an expiry that the lagging application clock accepts can already be
+// past when PostgreSQL fills proposed_at. The CHECK violation is a request
+// error, not an outage, and the refused proposal stays unsealed.
+func TestKnowledgeProposalExpiryCheckViolationIsInvalidRequest(t *testing.T) {
+	f := newCollaborationMemoryFixture(t)
+	p := knowledgeServiceProposal(t, f)
+	var definition string
+	f.fx.QueryRow(t, `SELECT pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid='collaboration_knowledge_candidate'::regclass AND conname='collaboration_knowledge_candidate_check5'`).Scan(&definition)
+	if definition != "CHECK (((expires_at IS NULL) OR (expires_at > proposed_at)))" {
+		t.Fatalf("expiry CHECK name no longer identifies expires_at > proposed_at: %q", definition)
+	}
+	f.svc.knowledgeClock = func() time.Time { return time.Now().Add(-time.Hour) }
+	expires := knowledgeDBNow(t, f).Add(-time.Minute).UTC()
+	p.ExpiresAt = &expires
+	r, err := f.svc.ProposeKnowledge(f.ctx, f.issue.Issue.ID, p)
+	var refusal *CollaborationError
+	if !errors.As(err, &refusal) || refusal.Status != http.StatusBadRequest || refusal.Code != "invalid_knowledge_request" || r.Code != "" {
+		t.Fatalf("proposal violating the expiry CHECK: %+v %v", r, err)
+	}
+	if f.fx.Count(t, `SELECT count(*) FROM collaboration_knowledge_candidate WHERE id=$1`, p.CandidateID) != 0 || f.fx.Count(t, `SELECT count(*) FROM collaboration_operation WHERE scope_id=$1 AND request_id=$2`, f.issue.Issue.ID, p.RequestID) != 0 {
+		t.Fatal("refused proposal wrote a candidate or sealed an operation")
+	}
+}
+
+// L2 guard: only the expiry CHECK is a request error. Any other 23514 on the
+// candidate INSERT is a server defect and stays 503 knowledge_unavailable.
+func TestKnowledgeProposalOtherCheckViolationsStayUnavailable(t *testing.T) {
+	f := newCollaborationMemoryFixture(t)
+	p := knowledgeServiceProposal(t, f)
+	for name, injected := range map[string]*pgconn.PgError{
+		"other candidate CHECK": {Code: "23514", TableName: "collaboration_knowledge_candidate", ConstraintName: "collaboration_knowledge_candidate_check1"},
+		"trigger without name":  {Code: "23514", TableName: "collaboration_knowledge_candidate"},
+		"same name other table": {Code: "23514", TableName: "collaboration_knowledge_target", ConstraintName: "collaboration_knowledge_candidate_check5"},
+	} {
+		t.Run(name, func(t *testing.T) {
+			p.CandidateID = uuid.NewString()
+			p.RequestID = uuid.NewString()
+			f.svc.TxStarter = knowledgeStatementHook{TxStarter: f.pool, statement: "CreateKnowledgeCandidate", before: func(context.Context, pgx.Tx) error { return injected }}
+			defer func() { f.svc.TxStarter = f.pool }()
+			_, err := f.svc.ProposeKnowledge(f.ctx, f.issue.Issue.ID, p)
+			var refusal *CollaborationError
+			if !errors.As(err, &refusal) || refusal.Status != http.StatusServiceUnavailable || refusal.Code != "knowledge_unavailable" {
+				t.Fatalf("server-side CHECK violation was reported as a client error: %v", err)
+			}
+			if f.fx.Count(t, `SELECT count(*) FROM collaboration_operation WHERE scope_id=$1 AND request_id=$2`, f.issue.Issue.ID, p.RequestID) != 0 {
+				t.Fatal("failed proposal sealed an operation")
+			}
+		})
 	}
 }
 

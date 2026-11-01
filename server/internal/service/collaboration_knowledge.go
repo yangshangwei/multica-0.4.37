@@ -519,6 +519,9 @@ func (s *CollaborationService) createKnowledgeCandidate(ctx context.Context, w *
 	if errors.Is(err, pgx.ErrNoRows) {
 		return protocol.CollaborationKnowledgeReceipt{}, knowledgeFailure(409, "knowledge_state_conflict")
 	}
+	if knowledgeExpiryCheckViolation(err) {
+		return protocol.CollaborationKnowledgeReceipt{}, knowledgeFailure(400, "invalid_knowledge_request")
+	}
 	if err != nil {
 		return protocol.CollaborationKnowledgeReceipt{}, err
 	}
@@ -527,6 +530,19 @@ func (s *CollaborationService) createKnowledgeCandidate(ctx context.Context, w *
 		return protocol.CollaborationKnowledgeReceipt{}, err
 	}
 	return knowledgeReceipt(row, p.RequestID, "propose", "knowledge_proposed", nil), nil
+}
+
+// Migration 747 declares CHECK (expires_at IS NULL OR expires_at > proposed_at)
+// without a name; PostgreSQL generated this one. The L2 service test pins the
+// name to that definition.
+const knowledgeExpiryCheckConstraint = "collaboration_knowledge_candidate_check5"
+
+// The proposal validates expires_at on the application clock, but PostgreSQL
+// fills proposed_at with clock_timestamp(). Only this CHECK is a request error;
+// any other 23514 is a server defect and stays knowledge_unavailable.
+func knowledgeExpiryCheckViolation(err error) bool {
+	var pg *pgconn.PgError
+	return errors.As(err, &pg) && pg.Code == "23514" && pg.TableName == "collaboration_knowledge_candidate" && pg.ConstraintName == knowledgeExpiryCheckConstraint
 }
 
 func (s *CollaborationService) changeKnowledgeCandidate(ctx context.Context, w *knowledgeWrite, action string, payload any, approval *protocol.CollaborationKnowledgeApproveRequest) (protocol.CollaborationKnowledgeReceipt, error) {

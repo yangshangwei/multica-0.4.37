@@ -160,6 +160,7 @@ credentials, body/summary/refs and cursor/error text stay out of generic logs.
 | Condition | Outcome |
 | --- | --- |
 | Unknown/duplicate/cross-kind fields, malformed UUID/UTF-8/text | `400 invalid_knowledge_request` |
+| New proposal `expires_at` not after `proposed_at`, by the application clock or by the database clock at INSERT (CHECK `collaboration_knowledge_candidate_check5`, matched by table and constraint name) | `400 invalid_knowledge_request`, unsealed; any other `23514` stays `503 knowledge_unavailable` |
 | Body >64KiB, summary >2KiB, metadata >16KiB or request wire limit | `413 knowledge_candidate_too_large` |
 | Missing reviewed revision/version/hash | `428 knowledge_revision_required` |
 | Current role/read/credential denied | `403 knowledge_permission_denied`; no hidden-source projection |
