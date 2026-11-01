@@ -228,3 +228,42 @@ func TestCollaborationHandoffWirePreservesEscapedCanonicalNamesAndLiteralText(t 
 		t.Fatalf("changed a canonical decoded name or literal source text: %v", err)
 	}
 }
+
+// A live read names the run's launch base beside the latest version; a
+// snapshot's version already is the base, so a base field there is malformed.
+func TestCollaborationHandoffWireBoundsMemoryBaseVersion(t *testing.T) {
+	live := populatedHandoffEnvelope()
+	live.Memory = CollaborationHandoffMemory{Version: "4", SHA256: CollaborationHandoffHash("latest"), Availability: "available", BaseVersion: "3"}
+	empty := live
+	empty.Memory.BaseVersion = "0"
+	for name, value := range map[string]CollaborationHandoffEnvelope{"live_base": live, "live_empty_base": empty} {
+		t.Run(name, func(t *testing.T) {
+			raw, _ := json.Marshal(value)
+			var out CollaborationHandoffEnvelope
+			if err := json.Unmarshal(raw, &out); err != nil || out.Memory != value.Memory {
+				t.Fatalf("valid live memory base was refused or changed: %+v %v", out.Memory, err)
+			}
+		})
+	}
+	snapshot := live
+	snapshot.Mode, snapshot.SnapshotID = "snapshot", live.RunID
+	for name, mutate := range map[string]func(map[string]any){
+		"snapshot_with_base": func(o map[string]any) {
+			o["mode"], o["snapshot_id"] = "snapshot", snapshot.SnapshotID
+		},
+		"noncanonical_base": func(o map[string]any) { handoffWireAt(o, "memory")["base_version"] = "03" },
+		"negative_base":     func(o map[string]any) { handoffWireAt(o, "memory")["base_version"] = "-1" },
+		"numeric_base":      func(o map[string]any) { handoffWireAt(o, "memory")["base_version"] = 3 },
+		"case_alias_base":   func(o map[string]any) { handoffWireAt(o, "memory")["BASE_VERSION"] = "2" },
+	} {
+		t.Run(name, func(t *testing.T) {
+			object := handoffWireObject(t, live)
+			mutate(object)
+			raw, _ := json.Marshal(object)
+			var out CollaborationHandoffEnvelope
+			if json.Unmarshal(raw, &out) == nil {
+				t.Fatal("accepted a malformed memory base")
+			}
+		})
+	}
+}

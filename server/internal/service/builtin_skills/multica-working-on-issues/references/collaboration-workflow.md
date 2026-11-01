@@ -225,7 +225,10 @@ profile/server/workspace overrides remain unsupported here.
 
 With negotiated handoff, the prompt's `handoff` field is a startup snapshot
 frozen for the run. `collaboration handoff show` reads the same projection now
-(`mode=live`), so it can differ from that snapshot. Results, inputs and wakeup
+(`mode=live`), so it can differ from that snapshot. In a live read
+`memory.version` is the issue's latest shared context and `memory.base_version`
+is the version this run started from; a newer `version` is not what you merged
+from, so read it with `memory show` before using it as `--base-version`. Results, inputs and wakeup
 causes return at most 32 items per page; follow `next_cursor`, or an input's
 `readers_cursor`, until none remains. A cursor pages only the list it came
 from: the other lists in that response restart at their first page, so read

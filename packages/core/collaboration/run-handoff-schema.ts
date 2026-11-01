@@ -31,7 +31,9 @@ const handoffEnvelope = z.object({
   authority: z.object({ status: z.string().min(1), handler_id: uuid.optional(), creator_id: uuid.optional() }),
   assignment: z.object({ role, step_key: z.string(), parent_run_id: uuid.optional(), delegation_id: uuid.optional(), source_id: uuid.optional() }),
   handoff: transfer.nullable(), information_request: transfer.nullable(),
-  memory: z.object({ version: nonnegativeVersion, sha256: digest.optional(), availability: z.enum(["available", "absent", "unsupported", "purged"]) })
+  // A live read's `version` is the latest; `base_version` is the version this
+  // run actually started from, when it has read one.
+  memory: z.object({ version: nonnegativeVersion, sha256: digest.optional(), availability: z.enum(["available", "absent", "unsupported", "purged"]), base_version: nonnegativeVersion.optional() })
     .refine((value) => value.availability !== "available" || value.sha256 !== undefined),
   inputs: z.object({ ...pageFields, items: z.array(z.object({ command_id: uuid, author_id: uuid, state: z.string(),
     reader_run_ids: z.array(uuid).max(32).refine((ids) => new Set(ids).size === ids.length), readers_truncated: z.boolean(), readers_cursor: cursor.optional(),

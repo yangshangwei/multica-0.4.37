@@ -242,6 +242,11 @@ func buildCollaborationHandoff(ctx context.Context, q *db.Queries, a Collaborati
 			out.Missing = append(out.Missing, "memory_purged")
 		}
 	}
+	// A live read describes the latest memory. Name the base this run actually
+	// received beside it; a snapshot's version already is that base.
+	if memoryVersion == nil && run.MemoryMode.String == "supported" && run.MemoryBaseVersion.Valid {
+		out.Memory.BaseVersion = handoffDecimal(run.MemoryBaseVersion.Int64)
+	}
 	if err = projectHandoffInputs(ctx, q, run, c, &out); err != nil {
 		return out, err
 	}

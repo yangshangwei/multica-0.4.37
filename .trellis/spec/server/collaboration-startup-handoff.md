@@ -63,6 +63,14 @@ redacted. Do not compare that content directly to the original hash. The server
 revalidates source references and purge state at binding. Memory has a separate
 content/version hash check.
 
+`memory.version` is the version the envelope describes. In a snapshot that is
+the run's launch base and `memory.base_version` is absent; the decoder refuses a
+snapshot that carries one. A live read (`handoff show`, the human run panel)
+describes the issue's latest memory and adds `memory.base_version`, the run's
+recorded `memory_base_version`, once the run has read its base. Never label the
+live `version` as what the run started from, and never take it as the version
+the run merged from.
+
 `wakeup_causes.completeness` is `recorded` for every non-continuation run and
 for continuations whose step key starts with `continuation:recorded:`. Those
 are queued only by code that assigns every comment, input and proof cause
