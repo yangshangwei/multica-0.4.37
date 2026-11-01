@@ -42,6 +42,13 @@
   "service_tier": "provider_default",
   "stop_rule": "Stop every later trial/scenario after first incomplete runtime/environment/harness result; no extra replacement/health calls or timeout/model change. E5 canary stops for blocking review.",
   "concurrency": "NOT MET at 11:12 CST: four other Claude sessions were active on this checkout and account (multica-0-4-37-0b, -14, -87, -ef). Two had been handed the same continuation prompt and were inspecting agentintegration tests and the claude CLI. All four were asked by message whether they run Provider calls, make check, DB suites or migrations; no answer was recorded. Prior E2a 429s were gateway_concurrency_limit. Launch held; zero slots consumed.",
-  "launch_status": "held_before_provider_launch",
+  "launch_status": "window_met_2026_11_01_1202: 0b, ef, 14 idle and 87 waiting on its user per ListAgents; every peer transcript and subagent quiet for at least 129 s. Residual risk: a user prompt typed into a peer session during the run would add gateway load.",
+  "user_decision_2026_11_01": "User chose: this session runs the original series; register the new series only after the original series ends.",
+  "peer_answers": {
+    "multica-0-4-37-0b": "11:2x: will not launch original-series Provider calls; reviewer subagent finished; RK1 registered with call cap 0 (d2fe54ab0). Still issuing model requests at 11:58; asked to stop before launch. Turn ended 11:59:27 without replying; listed idle at 12:01.",
+    "multica-0-4-37-ef": "11:3x: no Provider/DB/migration; committed 608dbbd88; idle since.",
+    "multica-0-4-37-14": "No reply; listed idle from 11:36; transcript quiet 15 min at 11:58.",
+    "multica-0-4-37-87": "11:5x: no Provider/agent CLI, DB suites or builds; background research agent finished (7a90f3d78); main loop waiting on its user and sends no model requests until notified."
+  },
   "new_runtime_scope": "This resumes the original frozen product arms only. It does not validate runtime 0e1ee8e1e or knowledge 96cedf485."
 }
