@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "finding": "WD-1",
+  "owner": "/root/windows_delivery",
+  "base_sha": "5ab2db859",
+  "product_sha": "8d976a696560b0d8122f7da8fd65fdf8aaf8e6ff",
+  "recorded_at": "2026-11-01T17:02:36.977866+00:00",
+  "source_files_sha256": {
+    ".github/workflows/desktop-smoke.yml": "1cd3a6580968201102d0e5d9b9bf4091cb059fbedd1a904751ecce78368cf927",
+    ".trellis/spec/desktop/frontend/intranet-updates.md": "a96a0df47a82cec80e76f0ce08ea24832763c5a7e761ff14041c057ffe7c1019",
+    "apps/desktop/scripts/WINDOWS_ACCEPTANCE.md": "2f6b882cd236128baf544d80c1f623411fdb83065933c3457054b1ed9936abdd",
+    "e2e/fixtures/collaboration-host-runtime.node-test.mjs": "6dd3cf1793efb493601f9cf1ec719046ad3353bc18d89dea4baf7984c73b71a4",
+    "e2e/fixtures/collaboration-host-runtime.ts": "41558a125ded2b5303e29c256d9e3bbe0b3ef04b2af69611209a815589ef96d4"
+  },
+  "checks": [
+    {
+      "command": "node --test <private>/wd1-baseline/collaboration-host-runtime.node-test.mjs",
+      "method": "final canonical test copied unchanged beside git baseline actual Host fixture; no live source rewind",
+      "exit_code": 1,
+      "pass": 1,
+      "fail": 3,
+      "skip": 0,
+      "log": "windows-wd1-red-r2.txt"
+    },
+    {
+      "command": "node --test e2e/fixtures/collaboration-host-runtime.node-test.mjs",
+      "exit_code": 0,
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "log": "windows-wd1-green.txt",
+      "note": "initial green before test-only catch for expected baseline rejection; final test bytes also pass in combined suite"
+    },
+    {
+      "command": "node --experimental-strip-types --test <installed-layout,installed-main,host-runtime,Windows-config,Windows-workflow Node contract files>",
+      "exit_code": 0,
+      "pass": 17,
+      "fail": 0,
+      "skip": 0,
+      "log": "windows-wd1-all-contracts.txt"
+    },
+    {
+      "command": "pnpm exec tsc --noEmit --strict --module esnext --moduleResolution bundler --jsx react-jsx --target es2022 --lib esnext,dom,dom.iterable --esModuleInterop --skipLibCheck e2e/collaboration-host-installed.spec.ts",
+      "exit_code": 0,
+      "log": "windows-wd1-typecheck.txt"
+    },
+    {
+      "command": "existing Core YAML parser verifies desktop-smoke.yml and Host shutdown contract step",
+      "exit_code": 0,
+      "log": "windows-wd1-yaml.txt"
+    },
+    {
+      "command": "node --check e2e/fixtures/collaboration-host-runtime.node-test.mjs; git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "log_sha256": {
+    "windows-wd1-red.txt": "ada1903b1603aa653cd95832b9d70d2bc6d0a2a5f9ce85c6683528ffcc48a302",
+    "windows-wd1-red-r2.txt": "06e07699145f26e77b675cd9c460fdb4aa81d02cbf3214792d690d0f76c3186b",
+    "windows-wd1-green.txt": "fcc7c42284a8b61b34b2675b4dfa821b6671504e1b2c2011a2975ca1e51d7359",
+    "windows-wd1-all-contracts.txt": "f01a5fe598c78b7379fba4d445c53d4ef0afdd6356458f50a574d22f0022418a",
+    "windows-wd1-typecheck.txt": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+    "windows-wd1-yaml.txt": "97d2857db83f464bf45f4558a151af13a1c1be85df6e9c5e95f3e86389d4b50e"
+  },
+  "canonical_test_sha256": "6dd3cf1793efb493601f9cf1ec719046ad3353bc18d89dea4baf7984c73b71a4",
+  "preserved_reviewer_probe": "independent-review/host-close-probe.mjs unchanged",
+  "database_operations": 0,
+  "provider_calls": 0,
+  "gui_installer_operations": 0,
+  "native_windows_run": false,
+  "state": "WD1 implemented; independent_recheck_pending; final_native_acceptance_open"
+}
