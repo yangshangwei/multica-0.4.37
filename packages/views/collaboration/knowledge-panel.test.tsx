@@ -122,7 +122,7 @@ it("lets an external handler propose from comments to the lawful current project
   const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockImplementation(async (_issue, input) => ({ ...receipt(input.request_id, "propose"), candidate_id: input.candidate_id }));
   mount(); await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" })); await fillProposal();
   await userEvent.click(screen.getByRole("combobox", { name: "Destination" }));
-  await userEvent.click(screen.getByRole("option", { name: "Source project: Lawful current project" }));
+  await userEvent.click(await screen.findByRole("option", { name: "Source project: Lawful current project" }));
   await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
   await waitFor(() => expect(send).toHaveBeenCalledOnce());
   const input = send.mock.calls[0]![1];
