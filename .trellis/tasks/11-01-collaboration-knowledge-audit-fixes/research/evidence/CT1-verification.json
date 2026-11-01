@@ -1,0 +1,61 @@
+{
+  "scope": "CT-1 equal-timestamp history pagination regression only",
+  "owner": "/root/claim_tuple_regression",
+  "base_sha": "a4e444bdf90c84939189fc2981cdacab50c678de",
+  "verified_at": "2026-11-01T16:45:14.566711+00:00",
+  "test_file": "server/internal/service/task_knowledge_history_growth_test.go",
+  "test_sha256": "7d3929652f255e8cfe4b34e0dce214266142997753ccbe5df9ec90964f60d8f9",
+  "product_changed": false,
+  "generated_sql_unchanged_sha256": "5212789d55f677588306bb5de9d185dc175333e2b8699fbd54896c0047d64f17",
+  "database": "kfix_claim_tuple_root_20261102_0033",
+  "identity_checked_before_every_test": true,
+  "migration_executed_by_child": false,
+  "provider_calls": 0,
+  "tests": {
+    "CT1-normal.json": {
+      "sha256": "59be92cd43ae394063cbd9adf029c153aa428ced82f2bcea25ea99e1186046a4",
+      "exit_code": 0,
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "da013ff96aabd85a2f098964ae6ef973c7b522c06ede08411d9faae674c3a393"
+    },
+    "CT1-timestamp-only-red.json": {
+      "sha256": "146e05a78f793efa53b6de20d37cc1c6e66c1bb47f2ec0f47aa36fc1a65914c7",
+      "exit_code": 1,
+      "counts": {
+        "run": 1,
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "log_sha256": "6c0588ab036d874177b0e3f85171fc10a23d46af5d0bf9b3be8cc6cfbdda6a0a"
+    },
+    "CT1-race-controls.json": {
+      "sha256": "2da1290946a555b8fb447a1f632c15c46e3c459a11a1f64c17146d5f726170cc",
+      "exit_code": 0,
+      "counts": {
+        "run": 4,
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "b3f56aca59bacfe7511a5eb0b1030a70143f4f95f5fff8732ca8f64d209c7544"
+    },
+    "CT1-vet.json": {
+      "sha256": "f45b0a92e15941a87492da4cfe685b7affd0bfc47beb62340f5f774fb7f5a853",
+      "exit_code": 0,
+      "counts": null,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "mutation_result": "Timestamp-only comparison skips tied rows; the retained binding generation control failed before the corruption assertion. Correct implementation separately passes the valid-control and corrupt-row129 assertions. Mutant kept SQL parameter typing/arity, so failure is behavioral rather than SQL setup.",
+  "whole_suite_repeated": false,
+  "remaining": [
+    "Coordinator independent delta review",
+    "Final merged-candidate acceptance"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "method": "Go overlay; production generated source remains unchanged",
+  "original_sha256": "5212789d55f677588306bb5de9d185dc175333e2b8699fbd54896c0047d64f17",
+  "overlay_sha256": "cedadf8337f8e3a58fb2113cd7ae705c7360be70003cfe0a6b1708924566ca3d",
+  "mutant_sha256": "49c118276d8ed9f7daa3293d3e645cede2902dc141bcfe3b74b0d59ba57beeb4",
+  "change": {
+    "from": "(created_at, id) < ($5::timestamptz, $6::uuid)",
+    "to": "(created_at < $5::timestamptz AND $6::uuid IS NOT NULL)"
+  },
+  "reason_for_uuid_term": "Preserves typed parameter6 and bind arity while removing UUID cursor semantics; prevents a SQL preparation error from masquerading as a killed cursor mutant."
+}

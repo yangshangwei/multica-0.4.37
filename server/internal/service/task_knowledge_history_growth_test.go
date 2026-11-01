@@ -101,6 +101,38 @@ func TestKnowledgeResumeCorruptRowAnywhereRefuses(t *testing.T) {
 	}
 }
 
+func TestKnowledgeResumeEqualTimestampHistoryStillChecksLaterIDs(t *testing.T) {
+	f := newTaskKnowledgeFixture(t)
+	first := f.recordSession(t, "equal-timestamp-native")
+	if _, err := f.tasks.CompleteTask(f.ctx, f.task.ID, []byte(`{}`), "equal-timestamp-native", "", "", false, "", ""); err != nil {
+		t.Fatal(err)
+	}
+	f.insertClaimedHistory(t, 260)
+	f.fx.Exec(t, `UPDATE agent_task_queue SET created_at='2026-11-01T00:00:00Z'::timestamptz
+		WHERE agent_id=$1 AND knowledge_context_version IS NOT NULL`, f.task.AgentID)
+	var rows, timestamps int
+	f.fx.QueryRow(t, `SELECT count(*),count(DISTINCT created_at) FROM agent_task_queue
+		WHERE agent_id=$1 AND knowledge_context_version IS NOT NULL`, f.task.AgentID).Scan(&rows, &timestamps)
+	if rows != 261 || timestamps != 1 {
+		t.Fatalf("equal-timestamp history control: rows=%d timestamps=%d, want 261 and 1", rows, timestamps)
+	}
+	var secondPageID pgtype.UUID
+	f.fx.QueryRow(t, `SELECT id FROM agent_task_queue
+		WHERE agent_id=$1 AND knowledge_context_version IS NOT NULL
+		ORDER BY created_at DESC,id DESC OFFSET 128 LIMIT 1`, f.task.AgentID).Scan(&secondPageID)
+	f.nextTurn(t)
+	d, prior, err := f.tasks.BuildTaskKnowledgeClaim(f.ctx, f.task, &f.inv, "equal-timestamp-native")
+	if err != nil || prior != "equal-timestamp-native" || d == nil || d.Session.Generation != first.Session.Generation {
+		t.Fatalf("valid tied history must preserve the original binding: %q %v", prior, err)
+	}
+	// Row 129 shares the first page's timestamp, so a timestamp-only cursor
+	// would skip it together with every remaining row in this group.
+	f.fx.Exec(t, `UPDATE agent_task_queue SET knowledge_delivery='{}'::jsonb WHERE id=$1`, secondPageID)
+	if _, prior, err = f.tasks.BuildTaskKnowledgeClaim(f.ctx, f.task, &f.inv, "equal-timestamp-native"); !collaborationErrorCode(err, "knowledge_context_changed") || prior != "" {
+		t.Fatalf("damaged metadata after 128 tied rows was skipped: %q %v", prior, err)
+	}
+}
+
 func TestKnowledgeRuntimeHistoryReadsCompleteNamespace(t *testing.T) {
 	for _, condition := range []string{"claimed_only_growth", "deep_exposure", "deep_corrupt"} {
 		t.Run(condition, func(t *testing.T) {

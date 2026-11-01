@@ -1,0 +1,40 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-overlay=/Volumes/artisan/code/2026/mc-kfix-lane-claim/.omx/private/claim-tuple-root-20261102/CT1-timestamp-only-overlay.json",
+    "./internal/service",
+    "-run",
+    "^TestKnowledgeResumeEqualTimestampHistoryStillChecksLaterIDs$",
+    "-parallel=2",
+    "-count=1",
+    "-json",
+    "-timeout=5m"
+  ],
+  "database": "kfix_claim_tuple_root_20261102_0033",
+  "identity": "kfix_claim_tuple_root_20261102_0033|763_collaboration_knowledge_delivery_history",
+  "source_sha": "a4e444bdf90c84939189fc2981cdacab50c678de",
+  "test_sha256": "7d3929652f255e8cfe4b34e0dce214266142997753ccbe5df9ec90964f60d8f9",
+  "started_at": "2026-11-01T16:41:09.410997+00:00",
+  "exit_code": 1,
+  "finished_at": "2026-11-01T16:41:25.670702+00:00",
+  "log_sha256": "6c0588ab036d874177b0e3f85171fc10a23d46af5d0bf9b3be8cc6cfbdda6a0a",
+  "counts": {
+    "run": 1,
+    "pass": 0,
+    "fail": 1,
+    "skip": 0
+  },
+  "failures": [
+    "TestKnowledgeResumeEqualTimestampHistoryStillChecksLaterIDs",
+    "github.com/multica-ai/multica/server/internal/service"
+  ],
+  "failure_output": [
+    "    task_knowledge_history_growth_test.go:126: valid tied history must preserve the original binding: \"equal-timestamp-native\" <nil>\n"
+  ]
+}
