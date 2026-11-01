@@ -7,17 +7,19 @@ import path from "node:path";
 import process from "node:process";
 import { createInterface } from "node:readline";
 import { _electron as electron, expect } from "@playwright/test";
+import { nativeAcceptanceHome, nativeInstalledLayout } from "./collaboration-installed-layout.mjs";
 
 // This process controls the packaged executable. It never imports an alternate
 // Main, replaces IPC handlers, injects auth, or changes the OS home directory.
 const debSha256 = process.env.COLLABORATION_INSTALLED_DEB_SHA256;
 const nativeExecutable = process.env.COLLABORATION_INSTALLED_MAIN_EXECUTABLE;
 const nativeMode = Boolean(nativeExecutable);
-const nativeContents = nativeMode ? path.resolve(nativeExecutable, "../..") : null;
-const packageRoot = nativeMode ? path.join(nativeContents, "Resources") : debSha256 === undefined ? "/opt/multica" : "/opt/Multica";
+const nativeLayout = nativeMode ? nativeInstalledLayout(nativeExecutable) : null;
+if (nativeMode) nativeAcceptanceHome(process.env.MULTICA_PACKAGED_ACCEPTANCE_HOME);
+const packageRoot = nativeLayout?.resources ?? (debSha256 === undefined ? "/opt/multica" : "/opt/Multica");
 const executable = nativeMode ? nativeExecutable : `${packageRoot}/multica-desktop`;
-const packagePath = nativeMode ? `${packageRoot}/app.asar` : `${packageRoot}/resources/app.asar`;
-const bundledCliPath = nativeMode ? `${packagePath}.unpacked/resources/bin/multica` : `${packageRoot}/resources/app.asar.unpacked/resources/bin/multica`;
+const packagePath = nativeLayout?.asar ?? `${packageRoot}/resources/app.asar`;
+const bundledCliPath = nativeLayout?.cli ?? `${packageRoot}/resources/app.asar.unpacked/resources/bin/multica`;
 const protocolPrefix = "MULTICA_INSTALLED_REPLY ";
 const secrets = new Set();
 const errors = [];
@@ -96,6 +98,7 @@ function installDeb(expected) {
 function taskEndpoint(value, field) {
   const url = new URL(value);
   if (!nativeMode) assert.equal(url.hostname, "host.docker.internal", `${field} must use the explicit Docker host task endpoint`);
+  else assert(["localhost", "127.0.0.1"].includes(url.hostname), `${field} must use the explicit native loopback task endpoint`);
   assert.equal(url.protocol, "http:");
   assert(!url.username && !url.password && !url.search && !url.hash);
   assert(url.port && Number(url.port) > 1024);
@@ -208,7 +211,7 @@ async function metadata() {
   }));
   native.cliInstalled = await cliAvailable();
   assert.equal(native.appInfo.version, main.version);
-  assert.equal(native.appInfo.os, nativeMode ? "macos" : "linux");
+  assert.equal(native.appInfo.os, nativeLayout?.apiOS ?? "linux");
   assert.equal(native.config.ok, true);
   assert.equal(native.config.source, "configured");
   assert.equal(native.config.config.apiUrl, apiUrl);
@@ -290,7 +293,7 @@ async function dispatch(message) {
       assert(message.executionViewVersion === undefined || message.executionViewVersion === 6);
       executionViewVersion = message.executionViewVersion;
       if (nativeMode) {
-        assert.equal(process.platform, "darwin");
+        assert(["darwin", "win32"].includes(process.platform));
       } else {
         assert.equal(process.platform, "linux");
         assert.equal(homedir(), "/root");

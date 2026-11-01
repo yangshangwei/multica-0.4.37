@@ -1,8 +1,9 @@
-import { spawn, type ChildProcessWithoutNullStreams } from "node:child_process";
+import { execFile, spawn, type ChildProcessWithoutNullStreams } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { realpathSync } from "node:fs";
 import path from "node:path";
 import { createInterface } from "node:readline";
+import { nativeAcceptanceHome, nativeInstalledLayout } from "./collaboration-installed-layout.mjs";
 
 export interface InstalledMainMetadata {
   main: { packaged: boolean; appPath: string; name: string; version: string; executable: string;
@@ -34,17 +35,20 @@ export class InstalledMainClient {
   private ended = false;
   private stderrBytes = 0;
   private ignoredOutputLines = 0;
+  private nativeMode = false;
 
   constructor(options: { image?: string; executablePath?: string; acceptanceHome?: string } = {}) {
     if (options.executablePath) {
-      if (process.platform !== "darwin") throw new Error("Native packaged Main acceptance is macOS-only");
-      if (!options.acceptanceHome || !path.isAbsolute(options.acceptanceHome)) throw new Error("Native packaged Main requires an absolute acceptance home");
-      this.packageRoot = path.join(options.executablePath, "../..", "Resources");
+      const layout = nativeInstalledLayout(options.executablePath);
+      const acceptanceHome = nativeAcceptanceHome(options.acceptanceHome);
+      this.nativeMode = true;
+      this.packageRoot = layout.resources;
       const repo = realpathSync(path.resolve(import.meta.dirname, "../.."));
       this.child = spawn(process.execPath, [path.join(repo, "e2e/fixtures/collaboration-installed-main.mjs")], {
         stdio: "pipe",
+        detached: process.platform !== "win32",
         env: { ...process.env, COLLABORATION_INSTALLED_MAIN_EXECUTABLE: realpathSync(options.executablePath),
-          MULTICA_PACKAGED_ACCEPTANCE: "1", MULTICA_PACKAGED_ACCEPTANCE_HOME: options.acceptanceHome },
+          MULTICA_PACKAGED_ACCEPTANCE: "1", MULTICA_PACKAGED_ACCEPTANCE_HOME: acceptanceHome },
       });
       this.attachProtocolHandlers();
       return;
@@ -110,27 +114,47 @@ export class InstalledMainClient {
   }
 
   get transportEvidence() { return { containerName: this.containerName, ignoredOutputLines: this.ignoredOutputLines,
-    privateStderrBytes: this.stderrBytes, credentialTransport: "stdin only", homeOverride: false, nativeIPCStubs: false }; }
+    privateStderrBytes: this.stderrBytes, credentialTransport: "stdin only", homeOverride: this.nativeMode, nativeIPCStubs: false }; }
 
   async close() {
     if (this.ended) return;
+    const waitForClose = () => new Promise<void>((resolve) => {
+      if (this.ended) { resolve(); return; }
+      const timer = setTimeout(() => { this.child.off("close", closed); resolve(); }, 10_000);
+      const closed = () => { clearTimeout(timer); resolve(); };
+      this.child.once("close", closed);
+    });
     try { await this.command("close", {}, 30_000); }
     finally {
       this.child.stdin.end();
+      await waitForClose();
       if (!this.ended) {
-        await new Promise<void>((resolve) => {
-          const timer = setTimeout(resolve, 10_000);
-          this.child.once("close", () => { clearTimeout(timer); resolve(); });
-        });
-      }
-      if (!this.ended) {
-        // Stop only the UUID-named container this instance started. The Docker
-        // client can outlive the container, so killing its PID is insufficient.
-        await new Promise<void>((resolve) => {
-          const stop = spawn("docker", ["stop", "--time", "5", this.containerName], { stdio: "ignore" });
-          stop.once("error", () => resolve());
-          stop.once("close", () => resolve());
-        });
+        if (this.nativeMode) {
+          const pid = this.child.pid;
+          if (!pid) throw new Error("Installed Main controller has no owned process ID");
+          // Only the controller this instance spawned, including its Electron
+          // children. Never use a process name or touch another installed app.
+          if (process.platform === "win32") {
+            await new Promise<void>((resolve, reject) => {
+              execFile("taskkill", ["/PID", String(pid), "/T", "/F"], { timeout: 10_000 }, (error) => {
+                if (error && !this.ended) reject(new Error("Could not terminate this installed Main controller"));
+                else resolve();
+              });
+            });
+          } else {
+            try { process.kill(-pid, "SIGTERM"); } catch (error) { if ((error as NodeJS.ErrnoException).code !== "ESRCH") throw error; }
+          }
+          await waitForClose();
+          if (!this.ended) throw new Error("Installed Main controller did not exit after termination");
+        } else {
+          // Stop only the UUID-named container this instance started. The Docker
+          // client can outlive the container, so killing its PID is insufficient.
+          await new Promise<void>((resolve) => {
+            const stop = spawn("docker", ["stop", "--time", "5", this.containerName], { stdio: "ignore" });
+            stop.once("error", () => resolve());
+            stop.once("close", () => resolve());
+          });
+        }
       }
     }
   }

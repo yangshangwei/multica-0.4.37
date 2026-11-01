@@ -11,6 +11,10 @@ on:
         description: Include installed business flows, retained-state upgrade and updater acceptance
         type: boolean
         default: false
+      windows_collaboration_acceptance:
+        description: Include source-bound installed candidate collaboration journeys after upgrade and reinstall (selects Windows x64 lifecycle)
+        type: boolean
+        default: false
       candidate_version:
         description: Windows acceptance version (optional SemVer; empty keeps the unique RC default)
         type: string
@@ -30,7 +34,7 @@ permissions:
 
 jobs:
   desktop:
-    if: inputs.windows_acceptance != true
+    if: inputs.windows_acceptance != true && inputs.windows_collaboration_acceptance != true
     strategy:
       fail-fast: false
       matrix:
@@ -114,15 +118,16 @@ jobs:
           if-no-files-found: error
 
   windows-acceptance:
-    if: inputs.windows_acceptance == true
+    if: inputs.windows_acceptance == true || inputs.windows_collaboration_acceptance == true
     runs-on: windows-latest
-    timeout-minutes: 45
+    timeout-minutes: ${{ inputs.windows_collaboration_acceptance && 75 || 45 }}
     env:
       CSC_IDENTITY_AUTO_DISCOVERY: "false"
       MULTICA_DESKTOP_VERSION: ${{ inputs.candidate_version || format('0.5.3-rc.{0}.{1}', github.run_number, github.run_attempt) }}
       PREVIOUS_TAG: ${{ inputs.previous_tag }}
       REQUIRE_SIGNED: ${{ inputs.require_signed }}
       BUSINESS_ACCEPTANCE: ${{ inputs.windows_business_acceptance }}
+      COLLABORATION_ACCEPTANCE: ${{ inputs.windows_collaboration_acceptance }}
     steps:
       - name: Checkout candidate source
         uses: actions/checkout@v4
@@ -158,8 +163,14 @@ jobs:
           ./apps/desktop/scripts/accept-windows-installer.test.ps1
           ./apps/desktop/scripts/windows-update-acceptance.test.ps1
           $tokens = $null; $parseErrors = $null
-          [void][Management.Automation.Language.Parser]::ParseFile((Join-Path $env:GITHUB_WORKSPACE 'apps/desktop/scripts/windows-business-server.ps1'), [ref]$tokens, [ref]$parseErrors)
-          if ($parseErrors.Count -gt 0) { throw ($parseErrors | Out-String) }
+          foreach ($script in @('windows-business-server.ps1', 'windows-collaboration-server.ps1')) {
+            [void][Management.Automation.Language.Parser]::ParseFile((Join-Path $env:GITHUB_WORKSPACE "apps/desktop/scripts/$script"), [ref]$tokens, [ref]$parseErrors)
+            if ($parseErrors.Count -gt 0) { throw ($parseErrors | Out-String) }
+          }
+          node --test e2e/fixtures/collaboration-installed-layout.node-test.mjs apps/desktop/scripts/windows-collaboration-config.node-test.mjs apps/desktop/scripts/windows-collaboration-workflow.node-test.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'Installed collaboration contract tests failed' }
+          node --experimental-strip-types --test e2e/fixtures/collaboration-installed-main.node-test.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'Installed controller shutdown tests failed' }
           node --test apps/desktop/scripts/windows-update-probe.node-test.mjs apps/desktop/scripts/windows-business-provider.node-test.mjs apps/desktop/scripts/windows-business-proxy.node-test.mjs
           if ($LASTEXITCODE -ne 0) { throw 'Update probe tests failed' }
           node --test apps/desktop/scripts/verify-go-test-events.node-test.mjs
@@ -234,10 +245,18 @@ jobs:
           if ($expected -notmatch '^[0-9a-fA-F]{64}$') { throw 'Invalid previous installer checksum' }
           $actual = (Get-FileHash -LiteralPath (Join-Path $directory $name) -Algorithm SHA256).Hash
           if ($actual -ine $expected) { throw 'Previous installer checksum mismatch' }
+      - name: Prepare isolated installed collaboration services
+        if: inputs.windows_collaboration_acceptance == true
+        shell: pwsh
+        timeout-minutes: 15
+        run: |
+          pnpm exec playwright install chromium
+          if ($LASTEXITCODE -ne 0) { throw 'Chromium preparation failed' }
+          ./apps/desktop/scripts/windows-collaboration-server.ps1 -StateDirectory "$env:RUNNER_TEMP/multica-collaboration" -RepoRoot "$env:GITHUB_WORKSPACE"
       - name: Accept Windows installer lifecycle
         shell: pwsh
         working-directory: apps/desktop
-        timeout-minutes: 20
+        timeout-minutes: ${{ inputs.windows_collaboration_acceptance && 40 || 20 }}
         run: |
           if ([bool]::Parse($env:BUSINESS_ACCEPTANCE)) {
             ./scripts/windows-business-server.ps1 -StateDirectory "$env:RUNNER_TEMP/multica-business" -RepoRoot "$env:GITHUB_WORKSPACE"
@@ -248,7 +267,7 @@ jobs:
           if ($candidate.Count -ne 1) { throw 'Expected exactly one candidate installer' }
           $previousVersion = $env:PREVIOUS_VERSION
           $previous = Join-Path $env:RUNNER_TEMP "multica-previous-installer/multica-desktop-$previousVersion-windows-x64.exe"
-          ./scripts/accept-windows-installer.ps1 -InstallerPath $candidate[0].FullName -ExpectedVersion $version -ReportPath "$env:RUNNER_TEMP/multica-windows-lifecycle.json" -PreviousInstallerPath $previous -PreviousVersion $previousVersion -RequireSigned:([bool]::Parse($env:REQUIRE_SIGNED)) -BusinessAcceptance:([bool]::Parse($env:BUSINESS_ACCEPTANCE))
+          ./scripts/accept-windows-installer.ps1 -InstallerPath $candidate[0].FullName -ExpectedVersion $version -ReportPath "$env:RUNNER_TEMP/multica-windows-lifecycle.json" -PreviousInstallerPath $previous -PreviousVersion $previousVersion -RequireSigned:([bool]::Parse($env:REQUIRE_SIGNED)) -BusinessAcceptance:([bool]::Parse($env:BUSINESS_ACCEPTANCE)) -CollaborationAcceptance:([bool]::Parse($env:COLLABORATION_ACCEPTANCE))
       - name: Accept installed Windows automatic update
         if: inputs.windows_business_acceptance == true
         shell: pwsh
@@ -260,6 +279,10 @@ jobs:
         if: always() && inputs.windows_business_acceptance == true
         shell: pwsh
         run: ./apps/desktop/scripts/windows-business-server.ps1 -StateDirectory "$env:RUNNER_TEMP/multica-business" -RepoRoot "$env:GITHUB_WORKSPACE" -Stop
+      - name: Stop isolated installed collaboration services
+        if: always() && inputs.windows_collaboration_acceptance == true
+        shell: pwsh
+        run: ./apps/desktop/scripts/windows-collaboration-server.ps1 -StateDirectory "$env:RUNNER_TEMP/multica-collaboration" -RepoRoot "$env:GITHUB_WORKSPACE" -Stop
       - name: Upload native Windows evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -279,6 +302,8 @@ jobs:
             ${{ runner.temp }}/multica-business-baseline.json
             ${{ runner.temp }}/multica-business-verify.json
             ${{ runner.temp }}/multica-windows-update.json
+            ${{ runner.temp }}/multica-windows-collaboration-*.json
+            ${{ runner.temp }}/multica-windows-collaboration-*.png
           if-no-files-found: warn
       - name: Upload accepted Windows candidate
         uses: actions/upload-artifact@v4

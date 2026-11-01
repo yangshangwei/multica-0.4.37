@@ -1,6 +1,7 @@
 #Requires -Version 7.2
 [CmdletBinding()]
-param([Parameter(Mandatory)][string]$StateDirectory, [Parameter(Mandatory)][string]$RepoRoot, [switch]$Stop)
+param([Parameter(Mandatory)][string]$StateDirectory, [Parameter(Mandatory)][string]$RepoRoot, [switch]$Stop,
+    [ValidateRange(0, 65535)][int]$FrontendPort = 0)
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 if (-not $IsWindows -or $env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_ENVIRONMENT -ne 'github-hosted') { throw 'Disposable GitHub Windows runner required' }
@@ -60,7 +61,11 @@ $env:MULTICA_DEPLOYMENT_ID = [guid]::NewGuid().ToString()
 $env:MULTICA_DEVICE_AUTH_ENABLED = 'false'
 $env:ALLOW_SIGNUP = 'true'
 $env:MULTICA_LLM_API_KEY = ''
-$env:FRONTEND_ORIGIN = "http://127.0.0.1:$proxyPort"
+$env:MULTICA_KNOWLEDGE_CONTEXT_ENABLED = 'false'
+$frontend = if ($FrontendPort -gt 1024) { $FrontendPort } else { $proxyPort }
+$env:FRONTEND_ORIGIN = "http://127.0.0.1:$frontend"
+$env:CORS_ALLOWED_ORIGINS = $env:FRONTEND_ORIGIN
+$env:ALLOWED_ORIGINS = $env:FRONTEND_ORIGIN
 & (Join-Path $pgBin 'initdb.exe') -D (Join-Path $state 'pgdata') -U postgres -A trust --no-locale --encoding=UTF8
 if ($LASTEXITCODE -ne 0) { throw 'initdb failed' }
 @{ version = 1; pid = $null; serverExe = ''; pgBin = $pgBin } | ConvertTo-Json | Set-Content $private
@@ -68,6 +73,10 @@ if ($LASTEXITCODE -ne 0) { throw 'initdb failed' }
 if ($LASTEXITCODE -ne 0) { throw 'PostgreSQL startup failed' }
 & (Join-Path $pgBin 'createdb.exe') -h 127.0.0.1 -p $pgPort -U postgres multica_acceptance
 if ($LASTEXITCODE -ne 0) { throw 'Database creation failed' }
+$databaseName = & (Join-Path $pgBin 'psql.exe') --dbname=$env:DATABASE_URL -X -A -t -v ON_ERROR_STOP=1 -c 'SELECT current_database()'
+if ($LASTEXITCODE -ne 0 -or $databaseName.Trim() -cne 'multica_acceptance') { throw 'Task database identity verification failed' }
+$dataDirectory = & (Join-Path $pgBin 'psql.exe') --dbname=$env:DATABASE_URL -X -A -t -v ON_ERROR_STOP=1 -c "SELECT current_setting('data_directory')"
+if ($LASTEXITCODE -ne 0 -or [IO.Path]::GetFullPath($dataDirectory.Trim()) -ine [IO.Path]::GetFullPath((Join-Path $state 'pgdata'))) { throw 'Task database server ownership verification failed' }
 $serverExe = Join-Path $state 'business-server.exe'
 if ($env:GITHUB_SHA -notmatch '^[a-f0-9]{40}$') { throw 'Exact source commit required' }
 Push-Location (Join-Path $RepoRoot 'server')
@@ -81,9 +90,9 @@ try {
     $process = Start-Process $serverExe -PassThru -RedirectStandardOutput (Join-Path $state 'backend.stdout.log') -RedirectStandardError (Join-Path $state 'backend.stderr.log')
 } finally { Pop-Location }
 $environment = @{}
-foreach ($key in @('DATABASE_URL','PORT','APP_ENV','JWT_SECRET','MULTICA_AUTH_MODE','MULTICA_PASSWORD_LIMITER_MODE','MULTICA_PLATFORM_ADMIN_ENABLED','MULTICA_MANAGED_INSTALLATIONS_ENABLED','MULTICA_DEPLOYMENT_ID','MULTICA_DEVICE_AUTH_ENABLED','ALLOW_SIGNUP','MULTICA_LLM_API_KEY','FRONTEND_ORIGIN')) { $environment[$key] = [Environment]::GetEnvironmentVariable($key) }
+foreach ($key in @('DATABASE_URL','PORT','APP_ENV','JWT_SECRET','MULTICA_AUTH_MODE','MULTICA_PASSWORD_LIMITER_MODE','MULTICA_PLATFORM_ADMIN_ENABLED','MULTICA_MANAGED_INSTALLATIONS_ENABLED','MULTICA_DEPLOYMENT_ID','MULTICA_DEVICE_AUTH_ENABLED','ALLOW_SIGNUP','MULTICA_LLM_API_KEY','MULTICA_KNOWLEDGE_CONTEXT_ENABLED','FRONTEND_ORIGIN','CORS_ALLOWED_ORIGINS','ALLOWED_ORIGINS')) { $environment[$key] = [Environment]::GetEnvironmentVariable($key) }
 $api = "http://127.0.0.1:$apiPort"
-@{ version = 1; pid = $process.Id; serverExe = $serverExe; pgBin = $pgBin; api = $api; proxyPort = $proxyPort; repo = $RepoRoot; environment = $environment } | ConvertTo-Json -Depth 5 | Set-Content $private
+@{ version = 1; sourceCommit = $env:GITHUB_SHA; pid = $process.Id; serverExe = $serverExe; pgBin = $pgBin; api = $api; proxyPort = $proxyPort; repo = $RepoRoot; environment = $environment } | ConvertTo-Json -Depth 5 | Set-Content $private
 $ready = $false
 function Get-BackendFailure {
     $text = (Get-Content (Join-Path $state 'backend.stderr.log') -Tail 12 -ErrorAction SilentlyContinue) -join "`n"
