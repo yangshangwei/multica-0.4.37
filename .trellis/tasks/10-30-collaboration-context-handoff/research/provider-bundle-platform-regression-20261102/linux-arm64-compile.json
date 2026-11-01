@@ -1,0 +1,27 @@
+{
+  "source_sha": "f634cf48016952164732843a66d9f53ba8b506f9",
+  "test_source_sha256": "6eca92b5a7e88aafb0ade56ca88956318b112487c723ce58f2ca24dfe87bb045",
+  "command": [
+    "/opt/homebrew/bin/go",
+    "-C",
+    "server",
+    "test",
+    "-c",
+    "-o",
+    "/Volumes/artisan/code/2026/mc-provider-bundle-check-fix-20261102/.omx/private/provider-bundle-platform-regression/collaborationrun-linux-arm64.test",
+    "./internal/daemon/collaborationrun"
+  ],
+  "environment": {
+    "GOOS": "linux",
+    "GOARCH": "arm64",
+    "CGO_ENABLED": "0"
+  },
+  "exit_code": 0,
+  "compile_only": true,
+  "TestMain_executed": false,
+  "native_proof": false,
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "binary": "/Volumes/artisan/code/2026/mc-provider-bundle-check-fix-20261102/.omx/private/provider-bundle-platform-regression/collaborationrun-linux-arm64.test",
+  "binary_sha256": "7c6f941b3cba73f8e570a76acf9c173f771763093e8ff8a1ffd3239f84094859",
+  "at": "2026-11-01T19:11:10.951652+00:00"
+}

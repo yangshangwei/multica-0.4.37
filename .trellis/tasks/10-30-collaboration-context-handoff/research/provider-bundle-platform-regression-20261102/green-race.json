@@ -1,0 +1,40 @@
+{
+  "source_sha": "f634cf48016952164732843a66d9f53ba8b506f9",
+  "working_diff_sha256": "33c872bea520e48aaafed762ea9a100cd9a01dea61f313c3d7ff33fe0300bb70",
+  "test_source_sha256": "6eca92b5a7e88aafb0ade56ca88956318b112487c723ce58f2ca24dfe87bb045",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "-C",
+    "server",
+    "test",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestProviderBundle",
+    "-count=1",
+    "-json",
+    "-parallel=2",
+    "-race"
+  ],
+  "environment": {
+    "TMPDIR": "/Volumes/artisan/code/2026/mc-provider-bundle-check-fix-20261102/.omx/private/provider-bundle-platform-regression/tmp",
+    "DATABASE_URL": "unset",
+    "MULTICA_RUN_REAL_AGENT_SMOKE": "unset",
+    "GOPROXY": "file:///Users/artisan/go/pkg/mod/cache/download"
+  },
+  "exit_code": 0,
+  "counts": {
+    "run": 29,
+    "pass": 29,
+    "fail": 0,
+    "skip": 0
+  },
+  "failures": [],
+  "log_sha256": "b021c23e881c01b69fc9addeca39ff5c0798f4eded8a1a054107ee51c3460b71",
+  "log_private_path": "/Volumes/artisan/code/2026/mc-provider-bundle-check-fix-20261102/.omx/private/provider-bundle-platform-regression/green-race.jsonl",
+  "at": "2026-11-01T19:11:08.757868+00:00",
+  "Provider_calls": 0,
+  "DB_operations": false
+}

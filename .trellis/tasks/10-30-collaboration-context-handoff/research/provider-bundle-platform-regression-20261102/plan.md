@@ -1,0 +1,7 @@
+# Scope and confirmed cause
+
+The unmodified canonical snapshot matrix fails only its valid case when TMPDIR is below `/Volumes/artisan` (uid501, mode0775); changing only TMPDIR to `/tmp` makes all eight named tests pass. `provider_bundle_unix.go` supports Linux and Darwin and deliberately refuses non-root group-writable ancestors. Full contained execution remains Linux-only; these are different boundaries.
+
+Change only `provider_bundle_test.go`: keep bundle fixtures test-owned/private and canonicalized under the standard Unix temporary base on Linux/Darwin, independent of an arbitrary build TMPDIR. Preserve the original symlink/hash/size/type/file-mode matrix and add explicit shared-writable-parent rejection. Unsupported platforms assert refusal without pretending Unix snapshot support. No production source, shared-volume permission, dependency, deadline or retry changes. Existing `bundleTestFile` is the only affected fixture helper; no reusable safe-root helper exists in this package/testutil search.
+
+Verification: preserve both unmodified diagnostic runs; run all ProviderBundle tests normal/race with the same previously failing task TMPDIR; crosscompile Linux arm64 test binary for root-owned cached-container execution, and Windows amd64 compile-only. Root owns Linux execution, independent review, full package/final check and integration. No DB, service, installed Agent CLI or Provider operations.

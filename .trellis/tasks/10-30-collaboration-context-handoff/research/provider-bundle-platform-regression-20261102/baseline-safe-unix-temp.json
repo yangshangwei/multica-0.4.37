@@ -1,0 +1,37 @@
+{
+  "source_sha": "f634cf48016952164732843a66d9f53ba8b506f9",
+  "working_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "-C",
+    "server",
+    "test",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles$",
+    "-count=1",
+    "-json",
+    "-parallel=2"
+  ],
+  "environment": {
+    "TMPDIR": "/tmp",
+    "DATABASE_URL": "unset",
+    "MULTICA_RUN_REAL_AGENT_SMOKE": "unset",
+    "GOPROXY": "file:///Users/artisan/go/pkg/mod/cache/download"
+  },
+  "exit_code": 0,
+  "counts": {
+    "run": 8,
+    "pass": 8,
+    "fail": 0,
+    "skip": 0
+  },
+  "failures": [],
+  "log_sha256": "fb1fca11b3c499f5ee86f36ec66592acde7adb83760cf143b80bd34aba0b40d3",
+  "at": "2026-11-01T19:08:43.431142+00:00",
+  "Provider_calls": 0,
+  "DB_operations": false
+}
