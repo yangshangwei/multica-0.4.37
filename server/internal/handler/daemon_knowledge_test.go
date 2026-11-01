@@ -381,6 +381,73 @@ func TestKnowledgeClaimTransientHistoryErrorRequeuesTask(t *testing.T) {
 	}
 }
 
+// A task that already holds 32 negotiated claims (maxTaskKnowledgeClaims; in
+// production, stale reclaims of lost claim responses add them) makes every
+// later finalizeTaskKnowledgeClaim refuse with knowledge_context_changed.
+// Claim building never reads the claim count, so a requeue on that refusal
+// rebuilds the same refused claim on every poll. A typed knowledge refusal
+// from finalization must settle the task, as the build-time refusals do.
+func TestKnowledgeClaimFinalizeRefusalAtClaimBoundSettlesTask(t *testing.T) {
+	for _, transport := range []string{"single", "batch"} {
+		t.Run(transport, func(t *testing.T) {
+			f := newTaskKnowledgeHTTPFixture(t, "issue")
+			for i := 0; i < 32; i++ {
+				f.claim(t, "single", &f.inv)
+				row, err := testHandler.Queries.GetAgentTask(t.Context(), parseUUID(f.taskID))
+				if err != nil {
+					t.Fatal(err)
+				}
+				if _, err := testHandler.TaskService.RequeueTaskAfterClaimFailure(t.Context(), row); err != nil {
+					t.Fatal(err)
+				}
+			}
+			claimCount := func() int {
+				var n int
+				dbfx.QueryRow(t, `SELECT jsonb_array_length(knowledge_delivery->'claims') FROM agent_task_queue WHERE id=$1`, f.taskID).Scan(&n)
+				return n
+			}
+			if n := claimCount(); n != 32 {
+				t.Fatalf("fixture recorded %d claims, want the 32-claim bound", n)
+			}
+
+			claimPath := "/api/daemon/runtimes/" + f.runtimeID + "/tasks/claim"
+			if transport == "single" {
+				response := f.call(t, testHandler.ClaimTaskByRuntime, claimPath, map[string]any{"knowledge_context": &f.inv}, "runtimeId", f.runtimeID)
+				if response.Code != http.StatusConflict || !strings.Contains(response.Text(), "knowledge_context_changed") {
+					t.Errorf("claim past the bound answered %d %q, want 409 knowledge_context_changed", response.Code, response.Text())
+				}
+			} else {
+				var out struct {
+					Tasks []AgentTaskResponse `json:"tasks"`
+				}
+				body := map[string]any{"daemon_id": f.daemonID, "runtime_ids": []string{f.runtimeID}, "max_tasks": 1, "knowledge_context": map[string]*protocol.TaskKnowledgeInvocation{f.runtimeID: &f.inv}}
+				f.call(t, testHandler.ClaimTasksByRuntime, "/api/daemon/tasks/claim", body).Want(200).JSON(&out)
+				if len(out.Tasks) != 0 {
+					t.Fatalf("batch claim delivered %d tasks past the claim bound", len(out.Tasks))
+				}
+			}
+			if row := loadTaskClaimRow(t, f.taskID); row.status != "failed" || row.failureReason != "knowledge_context_changed" {
+				t.Errorf("finalize refusal at the claim bound left the task %+v, want failed with knowledge_context_changed", row)
+			}
+			if n := claimCount(); n != 32 {
+				t.Errorf("refused finalization changed the recorded claims to %d", n)
+			}
+
+			probe := f.call(t, testHandler.ClaimTaskByRuntime, claimPath, map[string]any{"knowledge_context": &f.inv}, "runtimeId", f.runtimeID)
+			var next struct {
+				Task *AgentTaskResponse `json:"task"`
+			}
+			if probe.Code != http.StatusOK {
+				t.Fatalf("the refused task was claimed again: %d %q", probe.Code, probe.Text())
+			}
+			probe.JSON(&next)
+			if next.Task != nil {
+				t.Fatalf("the refused task was delivered again: %s", next.Task.ID)
+			}
+		})
+	}
+}
+
 // Canonical classification for M1. The DB-backed requeue wiring is pinned by
 // TestKnowledgeClaimTransientHistoryErrorRequeuesTask.
 func TestKnowledgeClaimErrorDisposition(t *testing.T) {

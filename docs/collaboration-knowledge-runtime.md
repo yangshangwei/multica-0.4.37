@@ -70,6 +70,7 @@ matrix. Windows, installers and multi-account/quota acceptance remain separate.
 | `knowledge invalidation scan deferred` / `delivery deferred` | Pending work is retained for retry. Restore DB/relay availability; do not mark jobs delivered manually. |
 | `knowledge invalidation backlog` | `pending_jobs` and `oldest_seconds` are reported at most once per minute when the oldest job is at least 30 seconds old. No source content is needed for diagnosis. |
 | `task claim: knowledge history load failed; requeueing claim` | A database read failed while the server built a claim's knowledge decision. The task returned to the queue with no failure reason and the next poll retries it; it was not settled as `knowledge_unavailable`. Restore DB availability. The same task logging this on every poll is a persistent fault to investigate. |
+| `task claim: knowledge finalization refused; settling task` | Claim finalization refused the task with the logged code, and the task failed with that reason instead of returning to the queue. With `knowledge_context_changed`, the usual cause is a task re-claimed 32 times after lost claim responses or daemon exits before start. Check daemon connectivity; do not requeue the task by hand. |
 
 The worker wakes every 500ms and handles at most 100 scan and 100 delivery steps
 per pass, preserving original hint IDs and cursors across restart. Target hints
