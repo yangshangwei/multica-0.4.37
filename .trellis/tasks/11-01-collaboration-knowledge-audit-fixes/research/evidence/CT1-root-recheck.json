@@ -1,0 +1,8 @@
+{
+  "command": "go test ./internal/service -run ^TestKnowledgeResumeTiedHistoryKeepsUUIDCursorAcrossPages$ -count=1 -json via agent CLI guard",
+  "process_exit": 0,
+  "named_run_count": 0,
+  "state": "invalid verification; coordinator used the wrong selector; not counted as pass",
+  "log_sha256": "5af49b171a0803e47086bf2c9a362a628be522a22376c1735a9428b39730e1ea",
+  "followup": "CT1-root-recheck-r2.jsonl with canonical TestKnowledgeResumeEqualTimestampHistoryStillChecksLaterIDs"
+}
