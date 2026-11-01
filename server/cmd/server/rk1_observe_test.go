@@ -38,6 +38,7 @@ type rk1Launch struct {
 	CursorInline  int
 	CLICalls      []map[string]any
 	EnvelopeError string
+	EvidenceError string
 	// Recordable counts the messages the Claude backend turns into recorded
 	// messages (non-empty text, tool_use with id and name, tool_result with
 	// tool_use_id); OverLimit counts those whose body exceeds the record text
@@ -56,6 +57,8 @@ func (l *rk1Launch) recordable(bodyBytes int) {
 // launches, DB state and event payloads. Scorers read only this.
 type rk1Obs struct {
 	Run, RunErr          string
+	HostDiagnostics      string
+	HostLogError         string
 	Calls                []rk1Call
 	Launches             []rk1Launch
 	Progress, Proof      string
@@ -87,6 +90,11 @@ func (f *rk1Fixture) observe(run string, runErr error) *rk1Obs {
 	t := f.t
 	t.Helper()
 	o := &rk1Obs{Run: run, Events: map[string]int{}}
+	if raw, err := os.ReadFile(filepath.Join(f.dir, "host-"+run+".log")); err != nil {
+		o.HostLogError = "host_log_unreadable"
+	} else {
+		o.HostDiagnostics = string(raw)
+	}
 	if runErr != nil {
 		o.RunErr = rk1Secret.ReplaceAllString(runErr.Error(), "[credential]")
 	}
@@ -155,8 +163,8 @@ func (f *rk1Fixture) observe(run string, runErr error) *rk1Obs {
 
 func rk1ReadLaunch(dir string) rk1Launch {
 	var l rk1Launch
-	if raw, err := os.ReadFile(filepath.Join(dir, "launch.json")); err == nil {
-		_ = json.Unmarshal(raw, &l.Meta)
+	if raw, err := os.ReadFile(filepath.Join(dir, "launch.json")); err != nil || json.Unmarshal(raw, &l.Meta) != nil {
+		l.EvidenceError = "launch_record_unreadable"
 	}
 	l.Frame, _ = os.ReadFile(filepath.Join(dir, "stdin-first.jsonl"))
 	if _, prompt, err := rk1PromptEnvelope(l.Frame); prompt != "" {
@@ -175,6 +183,7 @@ func rk1ReadLaunch(dir string) rk1Launch {
 	}
 	file, err := os.Open(filepath.Join(dir, "stdout.jsonl"))
 	if err != nil {
+		l.EvidenceError = "stdout_capture_unreadable"
 		return l
 	}
 	defer file.Close()
@@ -240,6 +249,9 @@ func rk1ReadLaunch(dir string) rk1Launch {
 				}
 			}
 		}
+	}
+	if scan.Err() != nil {
+		l.EvidenceError = "stdout_capture_unreadable"
 	}
 	return l
 }

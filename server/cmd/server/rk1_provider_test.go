@@ -4,6 +4,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -38,19 +39,6 @@ type rk1Plan struct {
 	Fault    string            `json:"fault,omitempty"`
 	Real     string            `json:"real_executable,omitempty"`
 	Params   map[string]string `json:"params,omitempty"`
-}
-
-type rk1LaunchMeta struct {
-	Args        []string `json:"args"`
-	Cwd         string   `json:"cwd"`
-	Mode        string   `json:"mode"`
-	Behavior    string   `json:"behavior"`
-	Fault       string   `json:"fault,omitempty"`
-	RemovedEnv  []string `json:"removed_env"`
-	StartedAt   string   `json:"started_at"`
-	FinishedAt  string   `json:"finished_at,omitempty"`
-	ExitCode    *int     `json:"exit_code,omitempty"`
-	PromptBytes int      `json:"prompt_frame_bytes"`
 }
 
 func init() {
@@ -93,7 +81,7 @@ func rk1ProviderMain(dir string) int {
 	rk1LaunchDir = launch
 	cwd, _ := os.Getwd()
 	meta := rk1LaunchMeta{Args: os.Args[1:], Cwd: cwd, Mode: plan.Mode, Behavior: plan.Behavior, Fault: plan.Fault,
-		RemovedEnv: rk1RemovedEnv(), StartedAt: time.Now().UTC().Format(time.RFC3339Nano)}
+		RemovedEnv: rk1RemovedEnv(), StartedAt: time.Now().UTC().Format(time.RFC3339Nano), EvidenceState: "started"}
 	reader := bufio.NewReaderSize(os.Stdin, 1<<20)
 	frame, err := rk1ReadFrame(reader)
 	meta.PromptBytes = len(frame)
@@ -112,10 +100,18 @@ func rk1ProviderMain(dir string) int {
 	case "fake":
 		code = rk1Fake(plan, frame, stdout)
 	}
-	_ = capture.Sync()
-	_ = capture.Close()
-	meta.FinishedAt, meta.ExitCode = time.Now().UTC().Format(time.RFC3339Nano), &code
-	_ = rk1WriteJSON(filepath.Join(launch, "launch.json"), meta)
+	var finalizer rk1CaptureFinalizer = capture
+	fault := ""
+	if plan.Mode == "fake" {
+		fault = plan.Fault
+		finalizer = rk1InjectedEvidenceCapture{rk1CaptureFinalizer: capture, fault: fault}
+	}
+	if err := rk1FinalizeLaunchEvidence(finalizer, &meta, code, func(final rk1LaunchMeta) error {
+		return errors.Join(rk1WriteJSON(filepath.Join(launch, "launch.json"), final), rk1InjectedEvidenceError("launch_record", fault))
+	}); err != nil {
+		_, _ = fmt.Fprintln(os.Stderr, rk1EvidenceFailureMarker)
+		return rk1EvidenceFailureExit(code)
+	}
 	return code
 }
 

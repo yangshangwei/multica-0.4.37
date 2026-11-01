@@ -1,0 +1,36 @@
+{
+  "method": "standalone source mutation preserves baseline ignored-completion or multiline-format behavior; final canonical unit test copied unchanged",
+  "base_head": "62bd98eb97cef314b5d0bd7f7a69d4011c73b807",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server/cmd/server",
+    "test",
+    "-tags=agentintegration",
+    "/Volumes/artisan/code/2026/mc-rk1-framework-20261101/.omx/private/rki3-rki4-contract-mutants/RKI4-format-mutant/publication_test.go",
+    "/Volumes/artisan/code/2026/mc-rk1-framework-20261101/.omx/private/rki3-rki4-contract-mutants/RKI4-format-mutant/format_test.go",
+    "/Volumes/artisan/code/2026/mc-rk1-framework-20261101/.omx/private/rki3-rki4-contract-mutants/RKI4-format-mutant/contract_test.go",
+    "-run",
+    "^TestRK1HandoffAnswersRequireTheirExactLineCounts$",
+    "-count=1",
+    "-json"
+  ],
+  "exit_code": 1,
+  "counts": {
+    "run": 4,
+    "pass": 0,
+    "fail": 4,
+    "skip": 0
+  },
+  "source_sha256": {
+    "publication_test.go": "461ae12b8da9ffc803681608f7d88db0f39342158f3223d71ad167a772e690f1",
+    "format_test.go": "284f42c5060b694ab7d7f6584370a080bc8e4f117bd7da0a367fb2ca0ab0684b",
+    "contract_test.go": "9868bad19675c8ebdaf43bf9d63b59485e12830501379acc769ba8f0c3a603ef"
+  },
+  "log_sha256": "a768a61258585cd3cfffcd030e08281a172f06fd927003e9e1225795a47f80c9",
+  "database_access": false,
+  "provider_calls": 0
+}

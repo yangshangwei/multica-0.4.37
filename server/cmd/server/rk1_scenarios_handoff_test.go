@@ -3,7 +3,6 @@
 package main
 
 import (
-	"regexp"
 	"strings"
 )
 
@@ -30,9 +29,6 @@ func rk1E0a(f *rk1Fixture, tr *rk1Trial, m rk1Mode) {
 	f.finish(tr, o, verdict, map[string]any{"exact_body": o.answer() == "HOST_SMOKE_OK", "cli_context_read": true,
 		"checkpoints": o.Events["record_checkpoint"], "seal_reason": o.SealReason, "knowledge_context": false})
 }
-
-var rk1PriorLine = regexp.MustCompile(`(?m)^PRIOR_RUN ([0-9a-f-]{36}) RECORD (COMPLETE|INCOMPLETE) RESULT (PRESENT|ABSENT)\s*$`)
-var rk1PriorText = regexp.MustCompile(`(?m)^RESULT_TEXT (.*)$`)
 
 // RK1-H1 (narrowed by the runtime addendum): a prior run stopped mid-way with
 // a committed checkpoint and no result. The measured run must report it as
@@ -62,10 +58,10 @@ func rk1H1(f *rk1Fixture, tr *rk1Trial, m rk1Mode) {
 		f.incomplete(tr, "precondition:prior_run_not_visible_as_incomplete")
 		return
 	}
-	line, text := rk1PriorLine.FindStringSubmatch(o.answer()), rk1PriorText.FindStringSubmatch(o.answer())
-	criteria := map[string]any{"format": line != nil && text != nil, "run_id": line != nil && line[1] == seed,
-		"record_incomplete": line != nil && line[2] == "INCOMPLETE", "result_absent": line != nil && line[3] == "ABSENT",
-		"no_invented_text": text != nil && strings.TrimSpace(text[1]) == "NONE RECORDED", "decoy_absent": !strings.Contains(o.answer(), decoy),
+	match := rk1PriorAnswerFields(o.Outcome.Body)
+	criteria := map[string]any{"format": match != nil, "run_id": match != nil && match[1] == seed,
+		"record_incomplete": match != nil && match[2] == "INCOMPLETE", "result_absent": match != nil && match[3] == "ABSENT",
+		"no_invented_text": match != nil && strings.TrimSpace(match[4]) == "NONE RECORDED", "decoy_absent": !strings.Contains(o.answer(), decoy),
 		// The decoy exists only in checkpoint text no runtime read returns.
 		// This stays false unless a new leak path appears; it guards, not scores.
 		"decoy_exposed_to_run": o.cliSeen(decoy) || o.toolSaw(decoy)}
@@ -77,8 +73,6 @@ func rk1H1(f *rk1Fixture, tr *rk1Trial, m rk1Mode) {
 	}
 	f.finish(tr, o, verdict, criteria)
 }
-
-var rk1SquadAnswer = regexp.MustCompile(`(?m)^MEMBER_RUN ([0-9a-f-]{36})\s*\nMEMBER_CODE (MEMBER-[A-Z0-9]{6})\s*\nWOKEN_BY (\S+) ([0-9a-f-]{36})\s*$`)
 
 func rk1SquadInput(member string) string {
 	return "Coordinate this check through your squad. On your first turn, post exactly one comment that mentions your member as [@Member](mention://agent/" + member +
@@ -127,7 +121,7 @@ func rk1Squad(tail bool) func(*rk1Fixture, *rk1Trial, rk1Mode) {
 			f.incomplete(tr, "precondition:squad_envelope_shape")
 			return
 		}
-		match := rk1SquadAnswer.FindStringSubmatch(o.answer())
+		match := rk1SquadAnswer.FindStringSubmatch(o.Outcome.Body)
 		cause := false
 		for _, c := range o.Envelope.WakeupCauses.Items {
 			cause = cause || match != nil && c.SourceKind == match[3] && c.SourceRunID == match[4]

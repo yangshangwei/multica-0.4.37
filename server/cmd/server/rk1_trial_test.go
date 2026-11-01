@@ -56,6 +56,10 @@ type rk1RunSummary struct {
 	Argv                [][]string       `json:"argv"`
 	RemovedEnv          []string         `json:"removed_child_env"`
 	ObservedModels      []string         `json:"observed_models"`
+	ExecutionExitCodes  []*int           `json:"provider_execution_exit_codes"`
+	WrapperExitCode     *int             `json:"wrapper_exit_code"`
+	EvidenceStates      []string         `json:"provider_evidence_states"`
+	EvidenceFailures    []string         `json:"provider_evidence_failures,omitempty"`
 	CLIReads            int              `json:"cli_reads"`
 	CLIWrites           int              `json:"business_writes"`
 	ToolResults         int              `json:"provider_tool_results"`
@@ -117,6 +121,7 @@ func (f *rk1Fixture) run(tr *rk1Trial, role string, measured bool, run string, p
 	s := rk1RunSummary{Role: role, RunID: run, Measured: measured, RunnerError: rk1Public(o.RunErr), Launches: len(o.Launches), Attempts: len(o.attempts()), PermitCalls: o.count("permit", 200), Progress: o.Progress,
 		Proof: o.Proof, Business: o.Business, StepKind: o.StepKind, RecordingIncomplete: o.RecordingIncomplete, SealReason: o.SealReason, SealObserved: o.SealObserved, SealAcked: o.SealAcked, ClaimQuery: o.ClaimQry,
 		Events: o.Events, CLIReads: len(o.cliResponses("")), CLIWrites: len(o.businessWrites())}
+	s.WrapperExitCode = rk1HostWrapperExit(o.HostDiagnostics)
 	if o.Outcome != nil && o.Outcome.Record != nil {
 		s.RecordCompleteness = o.Outcome.Record.Completeness
 	}
@@ -124,6 +129,16 @@ func (f *rk1Fixture) run(tr *rk1Trial, role string, measured bool, run string, p
 		s.Granted = map[string]any{"handoff_version": o.Claim.HandoffVersion, "recording_version": o.Claim.RecordingVersion, "knowledge_context": o.Claim.KnowledgeContext != nil}
 	}
 	for _, l := range o.Launches {
+		s.ExecutionExitCodes = append(s.ExecutionExitCodes, l.Meta.ExitCode)
+		evidenceState := l.Meta.EvidenceState
+		if l.EvidenceError != "" || rk1LaunchEvidenceFault(l.Meta, o.HostDiagnostics, stopped, l.ResultSeen) != "" {
+			evidenceState = "failed"
+		}
+		s.EvidenceStates = append(s.EvidenceStates, evidenceState)
+		s.EvidenceFailures = append(s.EvidenceFailures, l.Meta.EvidenceFailures...)
+		if l.EvidenceError != "" {
+			s.EvidenceFailures = append(s.EvidenceFailures, l.EvidenceError)
+		}
 		s.PromptSHA256 = append(s.PromptSHA256, protocol.CollaborationHandoffHash(l.Prompt))
 		s.Argv, s.RemovedEnv = append(s.Argv, l.Meta.Args), l.Meta.RemovedEnv
 		s.ToolResults, s.ToolMaxChars, s.CursorInline = s.ToolResults+l.ToolResults, max(s.ToolMaxChars, l.ToolMaxChars), s.CursorInline+l.CursorInline
@@ -190,7 +205,7 @@ func (f *rk1Fixture) finish(tr *rk1Trial, o *rk1Obs, verdict string, criteria ma
 
 // rk1Stops reports whether a trial ends the series: any incomplete result, and
 // an H5 canary acted on as an instruction (blocking review).
-func rk1Stops(tr rk1Trial) bool { return tr.Status != "finished" || tr.Verdict == "blocking_review" }
+func rk1Stops(tr rk1Trial) bool { return rk1StopsAfter(tr.Status, tr.Verdict) }
 
 func rk1Public(s string) string {
 	if home, err := os.UserHomeDir(); err == nil && home != "" {

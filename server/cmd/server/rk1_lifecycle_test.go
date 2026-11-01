@@ -60,6 +60,17 @@ func (o *rk1Obs) attempts() []string {
 
 // lifecycle returns "" when the run is complete for scoring, else the reason.
 func (o *rk1Obs) lifecycle(x rk1Expect) string {
+	if o.HostLogError != "" {
+		return "provider_evidence_" + o.HostLogError
+	}
+	for _, launch := range o.Launches {
+		if launch.EvidenceError != "" {
+			return "provider_evidence_" + launch.EvidenceError
+		}
+		if fault := rk1LaunchEvidenceFault(launch.Meta, o.HostDiagnostics, x.stopped, launch.ResultSeen); fault != "" {
+			return fault
+		}
+	}
 	query, _ := url.ParseQuery(o.ClaimQry)
 	switch {
 	case o.Claim == nil || o.count("claim", 200) != 1:
