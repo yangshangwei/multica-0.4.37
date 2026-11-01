@@ -408,6 +408,11 @@ func (r *RunLedger) acknowledgeHostOutcome(rejected bool) error {
 	host := *r.record.Host
 	next.Host = &host
 	next.Host.OutcomeRecorded, next.Host.OutcomeRejected = !rejected, rejected
+	if !rejected {
+		// One write keeps the outcome receipt and the chunks it retained
+		// consistent across a crash.
+		acceptHostChunksCoveredByOutcome(next.Host)
+	}
 	return r.persist(next)
 }
 

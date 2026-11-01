@@ -12,12 +12,22 @@ provider versions and other OS runtimes still require separate acceptance.
 
 ## 2. Signatures
 
-Supported commands are `issue get`, `issue comment list`, `issue comment add`,
-`squad activity`, `collaboration memory show` and `collaboration memory update`,
-using the bound issue UUID. The three writers require `--request-id <uuid>` in
-collaboration mode. `collaboration memory` exists only inside a run; outside one
-it refuses instead of reaching an ordinary profile. Runner configuration accepts optional
+Supported commands are `issue get`, `issue comment list`, `issue comment content`,
+`issue comment add`, `squad activity`, `collaboration memory show`,
+`collaboration memory update`, `collaboration handoff show` and
+`collaboration handoff source`, using the bound issue UUID. The three writers
+require `--request-id <uuid>` in collaboration mode. `collaboration memory` and
+`collaboration handoff` exist only inside a run; outside one they refuse instead
+of reaching an ordinary profile. Runner configuration accepts optional
 absolute `cli_executable`, verified and mounted read-only at `/multica`.
+
+- `collaboration handoff show <issue> [--cursor <c>]` → GET
+  `/api/collaboration/runtime/runs/{runId}/handoff[?cursor=]`; prints the
+  `CollaborationHandoffEnvelope` JSON.
+- `collaboration handoff source <issue> <source-id> --kind <k> [--source-run-id
+  <r> --version <v>] --sha256 <h> [--offset <n>]` → GET
+  `.../handoff/sources/{sourceId}?kind&sha256[&source_run_id&version][&offset]`;
+  prints the `CollaborationHandoffSourcePage` JSON. Both accept only `--output json`.
 
 Five variables identify the provider run: `MULTICA_COLLABORATION_TOKEN`,
 `MULTICA_COLLABORATION_SERVER`, `MULTICA_COLLABORATION_CONTEXT`,
@@ -38,8 +48,45 @@ accepts action/no_action/failed and a reason. Content and reason are limited to
 `<`, `>` and `&` as six bytes, both routes read up to six times that limit plus
 a 64 KiB envelope, like shared-context updates. Filters, attachments, comment
 content-file, profile/server/workspace overrides and other operations are
-unsupported. Reads return the authorized run context and its newest 200
-comments. Every response must match the admitted run/issue.
+unsupported except for the explicit recall operations below. Legacy `issue get`
+and `issue comment list` without paging flags return the authorized run context
+and its newest 200 comments. Every response must match the admitted run/issue.
+
+Explicit `issue comment list --limit --max-bytes --cursor` reads
+`.../runtime/runs/{runId}/comments` and returns a page envelope rather than the
+legacy array. Limit is 1–100 (default 50), max_bytes is 4096–1048576 (default
+65536). `bytes` counts the serialized UTF-8 JSON response, including metadata,
+escaping and its trailing newline. Pages select newest-first and display oldest
+first within that page. A run-bound, opaque next_cursor reaches older comments;
+it is distinct from the content cursor below. Total counts currently visible,
+non-deleted runtime comments, not only the newest 200.
+
+An oversized first comment is an explicit `content_state=omitted` placeholder
+with its exact comment_revision, author, content_bytes and content_ref; the
+list cursor advances past it. `issue comment content <issue> <comment>
+--revision <revision> [--cursor <cursor>] [--max-bytes <bytes>]` reads contiguous
+UTF-8 chunks for that revision until complete=true. An edit returns
+`stale_comment_revision`; discard incomplete assembly rather than joining
+revisions. Deletion or authority loss refuses current content reads. Even an
+empty page must fit its envelope; `budget_too_small` requires a larger budget,
+not a retry of the same query or a non-advancing empty page.
+
+Page/chunk JSON prints next_cursor/next_offset and completeness metadata before
+its potentially long items/content/source text. Those response-only field orders
+do not change startup snapshot encoding or hashes. The negotiated host brief
+uses an explicit 16384-byte budget for comment pages and content chunks (the
+protocol default stays 65536). Provider shells can still preview only a prefix
+of a tool result: read their saved full output before claiming the page/chunk
+text was read; seeing a cursor alone proves no content exposure.
+
+Member comments carry optional current `author_name` labels in both runtime
+reads. Reuse the human content-account lookup, including external members;
+agent authors and unresolved accounts omit the name. CLI decoding preserves
+the label but accepts older responses without it. Names and the current
+author_authority role/can_submit_command are separate from historical command
+admission. Every recalled comment remains trust=data_only, including text by
+an author who can currently submit commands; only frozen inputs/delegations
+carry execution intent.
 
 Shared-context update replaces the whole document from `--base-version` (a
 canonical non-negative decimal) with `--content-stdin` or `--content-file`; the
@@ -53,6 +100,21 @@ no inline `--content`. Runtime-local file links are refused through
 `memory show <issue-uuid>`; `memory_write_conflict` says the request ID was used
 with another base version or content. Capability rejection and unknown results
 keep the shared guidance above.
+
+Handoff reads are the runtime recall path for what the startup snapshot bounds
+(design §3). `handoff show` is the live projection (`mode=live`, no
+`snapshot_id`); help text separates it from the frozen startup snapshot. Its
+cursor is opaque to the CLI: only its length (≤1024) and base64url alphabet are
+checked before HTTP; the server binds it to the run. A page whose next or
+readers cursor echoes the request cursor is refused as non-advancing.
+`handoff source` checks before HTTP that the source ID is a canonical UUID, kind
+is `handoff|delegation|provider_result|squad_activity`, a handoff kind carries
+no run/version while other kinds carry a canonical run UUID and positive
+version, sha256 is lowercase hex and offset is non-negative. The response is
+decoded by `protocol.DecodeCollaborationHandoffSourcePage` (strict fields, data
+trust per kind, contiguous `next_offset`) and must echo the requested issue,
+run, source ID, kind, run, version, sha256 and offset. Text is redacted while
+sha256 names the original, so never compare them.
 
 The caller retains the original request UUID and payload across uncertainty.
 The CLI does not generate a replacement key or add a disk operation journal.
@@ -78,6 +140,9 @@ state or parent proof cannot release a child's slot or barrier.
 | Another issue UUID or Server override | Reject without widening capability |
 | Unsupported file/command/filter | Reject before ordinary side effects |
 | Memory update with bad base/request ID, external file or local link | Reject before HTTP |
+| Handoff cursor outside the opaque alphabet/size, or a bad source reference | Reject before HTTP |
+| Handoff envelope for another issue/run, snapshot mode or a non-advancing cursor | Refuse; print nothing |
+| Source page for another reference/offset, or malformed/non-contiguous chunk | Refuse; print nothing |
 | Stale/too-large/reused-key memory write | Name the next command; no automatic retry |
 | Uncertain write response | Original UUID and payload remain the retry identity |
 | Revoked business capability | Stop; no credential fallback |
@@ -98,6 +163,17 @@ state or parent proof cannot release a child's slot or barrier.
 ordinary behavior, malformed identity, unsupported operations and retry identity.
 `cmd_collaboration_memory_test.go` covers registration/allowlist, run-scoped
 show/update, pre-HTTP refusals, refusal guidance and out-of-run refusal.
+`cmd_collaboration_handoff_test.go` covers handoff registration/allowlist, root
+guard flag refusals, out-of-run refusal and one walk across result pages and
+source chunks. `internal/cli/collaboration_handoff_test.go` owns query encoding,
+pre-HTTP reference checks and identity binding;
+`pkg/protocol/collaboration_handoff_source_page_test.go` owns the decode matrix.
+`TestCollaborationRuntimeCommentsCarryMemberDisplayNames` covers both current
+runtime reads, member/agent attribution and strict recall decoding;
+`TestCollaborationRuntimeCommentKeepsOptionalDisplayName` covers legacy CLI
+retention and old-server omission. Recall service tests own 200+ comments,
+UTF-8/escaping/envelope budgets, placeholder progress, revision-bound chunks
+and current authority; CLI tests own explicit-envelope wiring and pre-HTTP guards.
 Controller/ledger tests retain namespace and nonce/proof coverage.
 `TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux` exercises actual
 registration/router/PostgreSQL, production slot polling, test-built CLI commands,

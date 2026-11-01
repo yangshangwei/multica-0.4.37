@@ -1,0 +1,30 @@
+{
+  "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+  "command": [
+    "env",
+    "-u",
+    "MULTICA_RUN_REAL_AGENT_SMOKE",
+    "-u",
+    "GIT_CONFIG_COUNT",
+    "-u",
+    "GIT_CONFIG_KEY_0",
+    "-u",
+    "GIT_CONFIG_VALUE_0",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-tags=agentintegration",
+    "./internal/daemon/collaborationrun",
+    "-count=1",
+    "-v",
+    "-timeout=15m"
+  ],
+  "exit_code": 0,
+  "seconds": 46.2,
+  "pass": 132,
+  "fail": 0,
+  "skip": 2,
+  "log_sha256": "0122913384f7616d62e3cbdbf1ff6097ea593fa79d5c1188195c99377821df3b"
+}

@@ -7,7 +7,9 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/util"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
@@ -134,6 +136,41 @@ func TestCollaborationHandoffPreservesEveryMergedWakeCause(t *testing.T) {
 	if envelope.Results.Total < 3 {
 		t.Fatalf("member results absent: %+v", envelope.Results)
 	}
+	// Every cause of a continuation queued by this code is assigned under the
+	// group lock, so all three reads must say the inventory is complete.
+	snapshot, err := f.svc.RuntimeHandoffSnapshot(context.Background(), continuation, ct, protocol.CollaborationHandoffSnapshotRequest{RequestID: uuid.NewString()})
+	if err != nil {
+		t.Fatal(err)
+	}
+	human, err := f.svc.RunHandoff(f.ctx, f.issue.Issue.ID, continuation, CollaborationHandoffQuery{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for name, read := range map[string]protocol.CollaborationHandoffEnvelope{"live": envelope, "snapshot": snapshot, "human": human} {
+		if read.WakeupCauses.Completeness != "recorded" {
+			t.Fatalf("%s read called a fully recorded continuation's causes unknown", name)
+		}
+	}
+	// A continuation queued before cause recording existed keeps its old key
+	// format and may hold only part of its causes; it must stay unknown.
+	row, err := f.svc.Queries.GetCollaborationRecordedRun(f.ctx, db.GetCollaborationRecordedRunParams{IssueID: f.issue.Issue.ID, RunID: continuation})
+	if err != nil {
+		t.Fatal(err)
+	}
+	legacy := row
+	legacy.StepKey = pgtype.Text{String: "continuation:" + uuid.NewString(), Valid: true}
+	access, err := f.svc.ResolveIssueAccess(f.ctx, nil, f.issue.Issue.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var old protocol.CollaborationHandoffEnvelope
+	old.WakeupCauses = protocol.CollaborationHandoffCauses{Items: []protocol.CollaborationHandoffCause{}, Completeness: "unknown"}
+	if err = projectHandoffCauses(f.ctx, f.svc.Queries, access, legacy, collaborationHandoffCursor{}, &old); err != nil {
+		t.Fatal(err)
+	}
+	if old.WakeupCauses.Completeness != "unknown" || old.WakeupCauses.Total != envelope.WakeupCauses.Total {
+		t.Fatalf("legacy continuation claimed a complete inventory: %+v", old.WakeupCauses)
+	}
 }
 
 func TestCollaborationHandoffSnapshotCannotResurrectPurgedMemory(t *testing.T) {
@@ -163,5 +200,49 @@ func TestCollaborationHandoffSnapshotCannotResurrectPurgedMemory(t *testing.T) {
 	f.fx.QueryRow(t, `SELECT payload::text FROM collaboration_run_event WHERE run_id=$1 AND kind='handoff_snapshot'`, run).Scan(&stored)
 	if strings.Contains(stored, "private version one") {
 		t.Fatal("purgeable text duplicated into snapshot")
+	}
+}
+
+// A live read reports the issue's latest memory as `version`; the run's own
+// launch base must travel beside it so neither the panel nor the agent takes a
+// later version for input the run received (audit ENV-1).
+func TestCollaborationLiveHandoffNamesTheRunsLaunchBase(t *testing.T) {
+	f, caps := newHostCollaborationFixture(t)
+	f.memoryUpdate(t, f.creator, 0, "initial decision")
+	submitHostCommand(t, f, f.creator, "continue from shared context")
+	runID, claim := claimSupportedMemoryRun(t, f, caps)
+	token := permitMemoryRun(t, f, runID, claim)
+	unread, err := f.svc.RuntimeHandoff(context.Background(), runID, token, CollaborationHandoffQuery{})
+	if err != nil || unread.Memory.Version != "1" || unread.Memory.BaseVersion != "" {
+		t.Fatalf("a run that has not read its base claimed one: %+v %v", unread.Memory, err)
+	}
+	if base, err := f.svc.RuntimeMemoryBase(f.daemonCtx, runID, token); err != nil || base.Version != "1" {
+		t.Fatalf("runtime memory base: %+v %v", base, err)
+	}
+	snapshot, err := f.svc.RuntimeHandoffSnapshot(context.Background(), runID, token, protocol.CollaborationHandoffSnapshotRequest{RequestID: uuid.NewString(), MemoryVersion: "1"})
+	if err != nil || snapshot.Memory.Version != "1" || snapshot.Memory.BaseVersion != "" {
+		t.Fatalf("snapshot memory must stay the frozen base alone: %+v %v", snapshot.Memory, err)
+	}
+	f.memoryUpdate(t, f.handler, 1, "newer human decision")
+	live, err := f.svc.RuntimeHandoff(context.Background(), runID, token, CollaborationHandoffQuery{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	human, err := f.svc.RunHandoff(f.ctx, f.issue.Issue.ID, runID, CollaborationHandoffQuery{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for name, read := range map[string]protocol.CollaborationHandoffEnvelope{"runtime": live, "human": human} {
+		if read.Memory.Version != "2" || read.Memory.BaseVersion != "1" || read.Memory.SHA256 != protocol.CollaborationHandoffHash("newer human decision") {
+			t.Fatalf("%s live read lost the launch base beside the latest version: %+v", name, read.Memory)
+		}
+		raw, err := json.Marshal(read)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var decoded protocol.CollaborationHandoffEnvelope
+		if err := json.Unmarshal(raw, &decoded); err != nil || decoded.Memory != read.Memory {
+			t.Fatalf("%s live envelope does not survive the strict decoder: %v", name, err)
+		}
 	}
 }

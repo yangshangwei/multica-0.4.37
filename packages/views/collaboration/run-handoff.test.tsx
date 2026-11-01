@@ -49,3 +49,39 @@ it("keeps unsupported handoff information unavailable", () => {
   expect(screen.getByText("Handoff context is unavailable on this server.")).toBeInTheDocument();
   client.clear();
 });
+
+it("labels a live read's launch base and its later latest memory separately", () => {
+  // Regression for audit ENV-1: the live read's latest version was shown as
+  // "Started from", contradicting the run row's recorded base.
+  const page = { total: 0, returned: 0, truncated: false, items: [] };
+  const live = { mode: "live", authority: {}, assignment: { role: "agent" }, inputs: page, results: page, wakeup_causes: { ...page, completeness: "recorded" }, missing: [], sources: [] };
+  const render = (memory: Record<string, string>) => {
+    query.data = { ...live, memory: { availability: "available", sha256: "a".repeat(64), ...memory } };
+    const client = new QueryClient();
+    const view = renderWithI18n(<QueryClientProvider client={client}><CollaborationRunHandoff scope={{ server: "https://handoff.example", apiScope: "https://handoff.example", userId: id }} issueId={id} runId={run} /></QueryClientProvider>);
+    return { client, view };
+  };
+  let { client, view } = render({ version: "4", base_version: "3" });
+  expect(screen.getByRole("link", { name: "Started from v3" })).toHaveAttribute("href", expect.stringContaining("3"));
+  expect(screen.getByRole("link", { name: "Latest is v4" })).toBeInTheDocument();
+  expect(screen.queryByText("Started from v4")).not.toBeInTheDocument();
+  client.clear();
+  view.unmount();
+
+  ({ client, view } = render({ version: "4" }));
+  expect(screen.queryByText(/Started from/)).not.toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "Latest is v4" })).toBeInTheDocument();
+  client.clear();
+  view.unmount();
+
+  ({ client, view } = render({ version: "2", base_version: "0" }));
+  expect(screen.getByText("Started from an empty document")).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "Latest is v2" })).toBeInTheDocument();
+  client.clear();
+  view.unmount();
+
+  ({ client } = render({ version: "3", base_version: "3" }));
+  expect(screen.getByRole("link", { name: "Started from v3" })).toBeInTheDocument();
+  expect(screen.queryByText(/Latest is/)).not.toBeInTheDocument();
+  client.clear();
+});

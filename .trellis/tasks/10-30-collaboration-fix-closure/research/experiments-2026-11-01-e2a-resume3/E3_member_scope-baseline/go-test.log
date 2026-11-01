@@ -1,0 +1,9 @@
+=== RUN   TestHostContextExperiment
+=== RUN   TestHostContextExperiment/E3_member_scope
+    host_context_experiment_test.go:180: E3_member_scope trial 1: outcome=success verdict=pass context_reads=6 puts=1 102s
+    host_context_experiment_test.go:180: E3_member_scope trial 2: outcome=success verdict=pass context_reads=3 puts=1 90s
+    host_context_experiment_test.go:180: E3_member_scope trial 3: outcome=success verdict=pass context_reads=4 puts=1 158s
+--- PASS: TestHostContextExperiment (352.75s)
+    --- PASS: TestHostContextExperiment/E3_member_scope (349.84s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	353.468s

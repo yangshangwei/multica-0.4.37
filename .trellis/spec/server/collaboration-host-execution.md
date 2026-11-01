@@ -107,6 +107,28 @@ the Provider message drain on HTTP. Persist the exact original checkpoint and
 seal request before uncertain transport, including its issued identity and
 nonce. Never regenerate a request key or body to repair a lost ACK.
 
+A transient upload failure (timeout, 408, 429, 5xx, transport) is not a loss.
+Every flush, including the 5-second tick and the final drain, retries the
+oldest unacknowledged chunk with its original key before later chunks, at most
+one request in flight. Only a staging failure, a ledger failure or a refused
+chunk closes the stream. While nothing was lost, the outcome's record v2
+carries the unacknowledged suffix from the acknowledged offset; the service
+deduplicates it by offset. If it exceeds the record JSON bound it is trimmed
+from the end and the record becomes partial. After a loss the suffix stays out.
+An accepted outcome resolves every pending chunk inside its tail in the same
+ledger write. A replay refused as `checkpoint_out_of_order` while that pending
+outcome covers the chunk waits for the outcome receipt.
+
+`business_capability_required` and `stale_execution` are raised before the
+service looks up a committed copy under its run lock, so they prove the key was
+never committed. A chunk staged under an older attempt is then rebound once to
+the newest authorized attempt and its capability, with the same stream,
+sequence, offset and messages; a chunk already on that attempt is refused. The
+first refusal names the seal reason: `execution_stopped` → `stopped`; checkpoint
+conflict, order, validation or size refusals → `incomplete`; other refusals →
+`authority_lost`. A local staging failure seals as `incomplete`; queue or budget
+overflow stays `recording_limit`.
+
 `recoverHost` must call the recording replay/seal helpers through normal and
 restart recovery, not only from isolated helper tests. An already sealed
 `phaseProof` receipt has priority. Otherwise retain original Stop/launch facts,

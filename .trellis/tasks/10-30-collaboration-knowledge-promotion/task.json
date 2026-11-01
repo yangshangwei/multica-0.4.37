@@ -23,7 +23,7 @@
   ],
   "parent": "10-30-collaboration-context-handoff",
   "relatedFiles": [],
-  "notes": "2026-11-01：工程已合入，知识确定性验收通过；Go 82包/10284顶层通过/21既有跳过、前端13060测试、Web/macOS8用例及实际fake输入组合已有证据。后续65cd0599b联合故障补验通过，629f0a079知识面板异步等待修正复跑通过；新增联合断言独立复核pass-with-notes；新系列已登记为RK1（d2fe54ab0），调用上限0待用户分配，真实Provider框架待建。当前进度见progress.md。真实模型、新系列预算、Windows/安装组合/多账号额度仍开放；知识开关默认false，未发布。",
+  "notes": "2026-11-01 续作：审计修复、独立复核、合流及最终联合验证尚未闭合；原系列下一 E3 after trial 2，剩余14次，冻结源码不变；RK1 runtime 已批25次（含H2b、H6每轮两次启动），消耗0，框架与源码绑定未就绪；K1-K3/E0b及安装版/AC43另行分账。知识生产默认false。见父任务 execution-resume-2026-11-01.json。",
   "meta": {
     "permission_decision": "approved",
     "approval_session": "01a18a36-e482-7840-9900-3ff8174b4ce7",
@@ -43,7 +43,7 @@
     "product_implementation": "A1_A2_B1_B2_F3_C1_C2_C3_C4_complete",
     "real_model_acceptance": "open_separate_runtime_scope; upstream_502_window_closed_no_provider_calls",
     "main_contract_review": "research/main-contract-review-2026-11-01.json",
-    "execution_stage": "integrated_deterministic_acceptance_passed; external_gates_open",
+    "execution_stage": "post_merge_audit_repair; historical_deterministic_evidence_retained",
     "migration_sqlc_owner": "main_final_generator",
     "implementation_base": "765ab186a",
     "execution_authorization": "existing approved parent scope; user six-step execution; no repeat approval",
@@ -75,9 +75,9 @@
     "main_merge_commit": "8cb04e3295474073b4b991bc4883ef3901c14f01",
     "evidence_commit": "93093d2e95e1affafbb40ddcd944ac5d58fc451c",
     "progress_file": "progress.md",
-    "progress_phase": "engineering_delivered; supplemental_review_and_real_model_release_acceptance_open",
+    "progress_phase": "audit_repair_and_framework_fake_validation",
     "progress_baseline": "ba6f3cd50",
-    "next_action": "allocate_RK1_budget_then_build_and_review_real_provider_framework; original_E2a_trial3_cap22_held_by_session_54_until_exclusive_window",
+    "next_action": "finish_audit_repairs_and_independent_reviews_then_serial_local_merges_joint_validation_and_source_rebinding",
     "post_merge_supplements": {
       "joint_fault_commit": "65cd0599b",
       "joint_report": "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-joint-current/README.md",
@@ -89,6 +89,15 @@
       "real_provider_executed": false,
       "rk1_registration_commit": "d2fe54ab0"
     },
-    "new_series_registration": "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/registration.json; status registered_not_runnable; call_cap 0 pending user allocation; real-Provider framework and second account missing"
+    "new_series_registration": "RK1 runtime cap 25 approved and unconsumed; K1-K3/E0b unbudgeted; framework pending review, merged-source rebinding and exclusive window",
+    "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
+    "resume_ledger": "../10-30-collaboration-context-handoff/execution-resume-2026-11-01.json",
+    "original_series_next": "E3 after trial 2; then E4 -> E5 -> E6; remaining cap 14; frozen source",
+    "rk1_runtime_budget": {
+      "approved_cap": 25,
+      "consumed": 0,
+      "includes_H2b": true,
+      "H6_launches_per_trial": 2
+    }
   }
 }

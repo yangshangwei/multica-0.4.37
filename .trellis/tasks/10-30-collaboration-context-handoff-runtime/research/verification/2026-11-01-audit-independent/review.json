@@ -1,0 +1,371 @@
+{
+  "schema_version": 1,
+  "reviewer": "native Codex /root/runtime_review",
+  "recorded_at": "2026-11-01T15:35:40.459259+00:00",
+  "reviewed_product_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+  "reviewed_server_tree": "9891ce18df23b8461b6baa934eda212c17542f63",
+  "reviewed_packages_tree": "11a28ae8d2a899915c83fc8d169d308474717e25",
+  "verdict": "pass_with_notes",
+  "scope": "All 9 runtime audit repairs and 5 recall follow-ups; branch-local review, not final integrated acceptance",
+  "blocking_product_findings": 0,
+  "product_files_modified": [],
+  "database_operations": [],
+  "real_provider_launches": 0,
+  "notes": [
+    {
+      "id": "RV-1",
+      "severity": "low",
+      "file": "packages/core/collaboration/run-handoff-schema.ts",
+      "line": 50,
+      "issue": "Core accepts memory.base_version in snapshot mode while the Go validator explicitly refuses it as live-only metadata. The targeted negative probe fails on the actual parser.",
+      "impact": "Malformed-response consistency gap; the production human handoff route emits live mode and the shared snapshot display ignores base_version, so no demonstrated authority expansion or incorrect normal response.",
+      "fix_recommendation": "Add the same mode/base_version relationship to the existing handoff envelope refine and one negative case to the canonical schema test.",
+      "fixed": false,
+      "reason_not_fixed": "Parent limited this independent reviewer to the report directory; product writer ownership is separate.",
+      "blocking": false
+    },
+    {
+      "id": "RV-2",
+      "severity": "note",
+      "issue": "The author full collaboration service suite remains running in service-full-final-summary.json at report time; no terminal exit code/hash is yet recorded.",
+      "fix_recommendation": "Wait for the existing task-owned suite, record final exit/pass/fail/skip and log hash; do not infer success from progress lines.",
+      "fixed": false,
+      "reason_not_fixed": "Original live command handle belongs to the parent/author; reviewer did not start or alter database suites.",
+      "blocking": "integration readiness pending, not a confirmed product defect"
+    }
+  ],
+  "audits": [
+    {
+      "id": "REC-1",
+      "commit": "4456cc65a",
+      "canonical_tests": [
+        "TestHostCheckpointTransientFailureRetriesDuringRun",
+        "TestHostOutcomeCarriesUndeliveredTail"
+      ],
+      "review": "implementation_and_canonical_tests_reviewed; branch_local"
+    },
+    {
+      "id": "REC-2",
+      "commit": "4456cc65a",
+      "canonical_tests": [
+        "TestHostCheckpointUncommittedChunkRebindsToFallbackAttempt"
+      ],
+      "review": "implementation_and_canonical_tests_reviewed; branch_local"
+    },
+    {
+      "id": "REC-3",
+      "commit": "4456cc65a",
+      "canonical_tests": [
+        "TestHostCheckpointRefusalNamesSealReason"
+      ],
+      "review": "implementation_and_canonical_tests_reviewed; branch_local"
+    },
+    {
+      "id": "REC-4",
+      "commit": "4456cc65a",
+      "canonical_tests": [
+        "TestHostOutcomeCarriesUndeliveredTail",
+        "TestHostOutcomeTailFitsRecordAndLedgerBounds"
+      ],
+      "review": "implementation_and_canonical_tests_reviewed; branch_local"
+    },
+    {
+      "id": "ENV-1",
+      "commit": "1eb0cb33c",
+      "canonical_tests": [
+        "TestCollaborationLiveHandoffNamesTheRunsLaunchBase",
+        "TestCollaborationHandoffWireBoundsMemoryBaseVersion"
+      ],
+      "review": "implementation_and_canonical_tests_reviewed; branch_local"
+    },
+    {
+      "id": "ENV-2",
+      "commit": "5b9f66292",
+      "canonical_tests": [
+        "TestCollaborationHandoffSnapshotPreservesMaximumAssignment"
+      ],
+      "review": "implementation_and_canonical_tests_reviewed; branch_local"
+    },
+    {
+      "id": "ENV-4",
+      "commit": "e1e6090eb",
+      "canonical_tests": [
+        "TestCollaborationHandoffPreservesEveryMergedWakeCause"
+      ],
+      "review": "implementation_and_canonical_tests_reviewed; branch_local"
+    },
+    {
+      "id": "RECALL-1",
+      "commit": "7627916c8",
+      "canonical_tests": [
+        "TestCollaborationRuntimeCommentsCarryMemberDisplayNames",
+        "TestCollaborationRuntimeCommentKeepsOptionalDisplayName"
+      ],
+      "review": "implementation_and_canonical_tests_reviewed; branch_local"
+    },
+    {
+      "id": "RECALL-2",
+      "commit": "7627916c8",
+      "canonical_tests": [
+        "TestCollaborationRecallRuntimePagesFulltextAndCurrentAuthority",
+        "TestCollaborationRecallChunksReassembleUTF8AndRejectCrossBinding"
+      ],
+      "review": "implementation_and_canonical_tests_reviewed; branch_local"
+    }
+  ],
+  "recall_followups": [
+    {
+      "id": "wrong_source_reference_404",
+      "commit": "c9b285552",
+      "canonical_tests": [
+        "TestCollaborationRuntimeHandoffSourceWrongReferenceIsNotFound"
+      ],
+      "review": "implementation_and_canonical_tests_reviewed; branch_local"
+    },
+    {
+      "id": "source_run_id_canonical_before_http",
+      "commit": "c9b285552",
+      "canonical_tests": [
+        "TestCollaborationReadHandoffSourceRefusesBadReferenceBeforeHTTP"
+      ],
+      "review": "implementation_and_canonical_tests_reviewed; branch_local"
+    },
+    {
+      "id": "all_cursor_kinds_must_advance",
+      "commit": "c9b285552",
+      "canonical_tests": [
+        "TestCollaborationReadHandoffEncodesCursorAndBindsTheLiveRun"
+      ],
+      "review": "implementation_and_canonical_tests_reviewed; branch_local"
+    },
+    {
+      "id": "truncated_final_chunk_refused",
+      "commit": "c9b285552",
+      "canonical_tests": [
+        "TestDecodeCollaborationHandoffSourcePageRejectsMalformedWire"
+      ],
+      "review": "implementation_and_canonical_tests_reviewed; branch_local"
+    },
+    {
+      "id": "knowledge_negotiation_claim_only",
+      "commit": "c9b285552",
+      "canonical_tests": [
+        "TestHostProviderAccountSmokeAuthorizesSharedContextBase",
+        "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries"
+      ],
+      "review": "implementation_and_canonical_tests_reviewed; branch_local"
+    }
+  ],
+  "verification": [
+    {
+      "name": "go_targeted",
+      "command": "env -u MULTICA_RUN_REAL_AGENT_SMOKE -u DATABASE_URL -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test ./pkg/protocol ./internal/cli ./internal/daemon/collaborationrun -run '^(TestHostCheckpoint|TestHostOutcome|TestHostHandoffCheckpoint|TestCollaborationRecallPrinting|TestCollaborationRuntimeCommentKeepsOptionalDisplayName|TestCollaborationReadHandoff|TestDecodeCollaborationHandoffSourcePage|TestCollaborationHandoffWireBoundsMemoryBaseVersion)' -count=1 -json -timeout=10m",
+      "exit_code": 0,
+      "log": "go-targeted.jsonl",
+      "test_events_including_subtests": {
+        "run": 130,
+        "pass": 130,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passes": [
+        "github.com/multica-ai/multica/server/pkg/protocol",
+        "github.com/multica-ai/multica/server/internal/cli",
+        "github.com/multica-ai/multica/server/internal/daemon/collaborationrun"
+      ],
+      "log_sha256": "30f82752d6966646b41de950a69836a036e8aaa099e98f50ca2de38654c26dda"
+    },
+    {
+      "name": "go_race",
+      "command": "env -u MULTICA_RUN_REAL_AGENT_SMOKE -u DATABASE_URL -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test -race ./internal/daemon/collaborationrun -run '^(TestHostCheckpoint|TestHostOutcome|TestHostHandoffCheckpoint)' -count=2 -json -timeout=10m",
+      "exit_code": 0,
+      "log": "go-race.jsonl",
+      "test_events_including_subtests": {
+        "run": 54,
+        "pass": 54,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passes": [
+        "github.com/multica-ai/multica/server/internal/daemon/collaborationrun"
+      ],
+      "log_sha256": "adbf940796d54be58c130cc9e132e25dbf613a2b3c6a6ec4e94f5b7ead21c2ef"
+    },
+    {
+      "name": "vet",
+      "command": "env -u MULTICA_RUN_REAL_AGENT_SMOKE -u DATABASE_URL bash scripts/go-test-with-agent-cli-guard.sh -- go -C server vet ./pkg/protocol ./internal/cli ./internal/daemon/collaborationrun",
+      "exit_code": 0,
+      "log": "vet.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "lint",
+      "command": "pnpm --filter @multica/core --filter @multica/views lint",
+      "exit_code": 0,
+      "log": "lint.txt",
+      "errors": 0,
+      "warnings": 27,
+      "warning_scope": "unrelated existing views files; unchanged by the reviewed product diff",
+      "log_sha256": "568696a2a3230076708991ba671b5adbc40317bcf5329c58b485e89a452116ab"
+    },
+    {
+      "name": "typecheck",
+      "command": "pnpm --filter @multica/core --filter @multica/views typecheck",
+      "exit_code": 0,
+      "log": "typecheck.txt",
+      "log_sha256": "eb8e50a889d2130f903b1412df3b98ad8050613b4953ad2e9955ee58ffb77adb"
+    },
+    {
+      "name": "core_handoff",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/run-handoff-schema.test.ts",
+      "exit_code": 0,
+      "log": "core-handoff.txt",
+      "pass": 15,
+      "fail": 0,
+      "skip": 0,
+      "log_sha256": "ceb609a8579079a3abd2692f1e0078c615b087047e87c297d128424a9c75ef2c"
+    },
+    {
+      "name": "views_handoff",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/run-handoff.test.tsx",
+      "exit_code": 0,
+      "log": "views-handoff.txt",
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "log_sha256": "a5844becf57c3f5848b01638ac6b76ecd5c79abdece15e08791c51542ff6ffea"
+    },
+    {
+      "name": "snapshot_base_negative_probe",
+      "command": "pnpm exec vitest run --root <this-review-directory> --config <worktree>/packages/core/vitest.config.ts snapshot-base-probe.test.ts",
+      "exit_code": 1,
+      "log": "snapshot-base-probe.txt",
+      "classification": "expected red proving low-severity schema parity finding; source retained as snapshot-base-probe.source.txt, not an active test file",
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "log_sha256": "c13c400a96dfc36e3b15494d1f53232d68d9c9b79c9af0ab48cc8f9c57ceee55"
+    },
+    {
+      "name": "snapshot_base_probe_setup_attempt",
+      "command": "same probe with a relative --config path",
+      "exit_code": 1,
+      "log": "snapshot-base-probe-startup-fault.txt",
+      "classification": "review harness setup error, no tests ran; retained separately, corrected to absolute config path",
+      "log_sha256": "3632b16312f74a9a6086ba36f49d6ab0fcda296f0223aacb06f5f3beeb0c210c"
+    }
+  ],
+  "author_evidence_integrity": [
+    {
+      "file": "research/verification/2026-11-01-audit-takeover/build-summary.json",
+      "state": null,
+      "source_sha": null,
+      "exit_code": 0,
+      "log_hash_matches": null
+    },
+    {
+      "file": "research/verification/2026-11-01-audit-takeover/core-handoff-summary.json",
+      "state": null,
+      "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+      "exit_code": 0,
+      "log_hash_matches": true
+    },
+    {
+      "file": "research/verification/2026-11-01-audit-takeover/go-final-summary.json",
+      "state": null,
+      "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+      "exit_code": 0,
+      "log_hash_matches": true
+    },
+    {
+      "file": "research/verification/2026-11-01-audit-takeover/go-local-summary.json",
+      "state": null,
+      "source_sha": null,
+      "exit_code": 0,
+      "log_hash_matches": true
+    },
+    {
+      "file": "research/verification/2026-11-01-audit-takeover/handler-final-summary.json",
+      "state": null,
+      "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+      "exit_code": 0,
+      "log_hash_matches": true
+    },
+    {
+      "file": "research/verification/2026-11-01-audit-takeover/race-host-summary.json",
+      "state": null,
+      "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+      "exit_code": 0,
+      "log_hash_matches": true
+    },
+    {
+      "file": "research/verification/2026-11-01-audit-takeover/service-collaboration-summary.json",
+      "state": null,
+      "source_sha": null,
+      "exit_code": 0,
+      "log_hash_matches": true
+    },
+    {
+      "file": "research/verification/2026-11-01-audit-takeover/service-final-summary.json",
+      "state": null,
+      "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+      "exit_code": 0,
+      "log_hash_matches": true
+    },
+    {
+      "file": "research/verification/2026-11-01-audit-takeover/service-full-final-summary.json",
+      "state": "running",
+      "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+      "exit_code": null,
+      "log_hash_matches": null
+    },
+    {
+      "file": "research/verification/2026-11-01-audit-takeover/service-race-summary.json",
+      "state": null,
+      "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+      "exit_code": 0,
+      "log_hash_matches": true
+    },
+    {
+      "file": "research/verification/2026-11-01-audit-takeover/tagged-host-summary.json",
+      "state": null,
+      "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+      "exit_code": 0,
+      "log_hash_matches": true
+    },
+    {
+      "file": "research/verification/2026-11-01-audit-takeover/ts-lint-summary.json",
+      "state": null,
+      "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+      "exit_code": 0,
+      "log_hash_matches": true
+    },
+    {
+      "file": "research/verification/2026-11-01-audit-takeover/ts-typecheck-summary.json",
+      "state": null,
+      "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+      "exit_code": 0,
+      "log_hash_matches": true
+    },
+    {
+      "file": "research/verification/2026-11-01-audit-takeover/vet-summary.json",
+      "state": null,
+      "source_sha": null,
+      "exit_code": 0,
+      "log_hash_matches": null
+    },
+    {
+      "file": "research/verification/2026-11-01-audit-takeover/views-handoff-summary.json",
+      "state": null,
+      "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+      "exit_code": 0,
+      "log_hash_matches": true
+    }
+  ],
+  "merge_conditions": [
+    "Resolve or explicitly retain RV-1 as a low note",
+    "Existing full service suite must finish and be registered before closing its required gate",
+    "Commit preserved spec/task/evidence files without overwriting the coordinator task.json changes",
+    "No final RK1 source binding or acceptance before all product branches merge and combined candidate checks pass"
+  ]
+}

@@ -1,0 +1,260 @@
+{
+ "task": ".trellis/tasks/10-30-collaboration-context-handoff-runtime",
+ "worktree": "/Volumes/artisan/code/2026/mc-runtime-recall-20261101",
+ "branch": "codex/runtime-recall-surface-20261101",
+ "head": "28c67c67437d989cc7df87ef84077d723fe0eb78",
+ "source_state": "uncommitted; final git diff -- server .trellis/spec sha256 41a836af0fb3ce01eb1f9d3298115bcb60d08439fd1d6a8ed21b26c5d73826bb plus 7 new files. Go code was unchanged after runs 01-08; two skill/reference doc lines changed after them, and 09 was rerun on the final tree.",
+ "deviations": [
+  "-v added to every go test so pass/skip counts are observable",
+  "-timeout 60m added to DB-backed runs (internal/service exceeds the 10m default)",
+  "pkg/protocol run added because DecodeCollaborationHandoffSourcePage was added there"
+ ],
+ "not_run": [
+  "real Provider/agent CLI",
+  "MULTICA_RUN_REAL_AGENT_SMOKE",
+  "scripts/skill-eval real runs"
+ ],
+ "database_residue_left_for_owner_decision": [
+  "collaboration_event pending rows 6dd28c6b-5f4a-40e2-93a6-85008596289b and d3b0f265-de03-4d52-afa9-9a56144a9ecf (issue rows deleted)",
+  "collaboration_knowledge_invalidation: 288 pending rows from test runs"
+ ],
+ "commands": [
+  {
+   "log": "01-default-packages.log",
+   "exit_code": 0,
+   "pass": 3066,
+   "fail": 0,
+   "skip": 1,
+   "id": "01-default-packages",
+   "command": "go test ./cmd/multica/ ./internal/cli/ ./internal/daemon/collaborationrun/ ./internal/daemon/execenv/ -count=1 -v",
+   "cwd": "server/",
+   "database": null,
+   "result": "pass; the one skip is the existing TestCLIConfig_UnknownFieldsArePreserved (documented limitation)"
+  },
+  {
+   "log": "02-race-collaborationrun.log",
+   "exit_code": 0,
+   "pass": 334,
+   "fail": 0,
+   "skip": 0,
+   "id": "02-race-collaborationrun",
+   "command": "go test -race ./internal/daemon/collaborationrun/ -count=1 -v",
+   "cwd": "server/",
+   "database": null,
+   "result": "pass"
+  },
+  {
+   "log": "03-agentintegration-fake-only.log",
+   "exit_code": 1,
+   "pass": 88,
+   "fail": 12,
+   "skip": 1,
+   "id": "03-agentintegration-fake-only",
+   "command": "env -u MULTICA_RUN_REAL_AGENT_SMOKE go test -tags=agentintegration ./internal/daemon/collaborationrun/ -run 'Context|HandoffLaunch|AuthorizesOnly|SharedContextBase' -count=1 -v",
+   "cwd": "server/",
+   "database": null,
+   "result": "fail, pre-existing: 11 TestContextExperiment* fixture failures (HTTP 403, context_reads=0) also fail on clean 28c67c674 (03b base); the 12th, TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe, refuses a dirty source tree and passes on the clean A/B copies. All HandoffLaunch/AuthorizesOnly/SharedContextBase tests pass; no real provider or MULTICA_RUN_REAL_AGENT_SMOKE"
+  },
+  {
+   "log": "03b-agentintegration-ab-base.log",
+   "exit_code": 1,
+   "pass": 96,
+   "fail": 11,
+   "skip": 1,
+   "id": "03b-agentintegration-ab-base",
+   "command": "same as 03, clean throwaway repo of server at 28c67c674",
+   "cwd": "server/",
+   "database": null,
+   "result": "fail, same 11 failures"
+  },
+  {
+   "log": "03b-agentintegration-ab-mine.log",
+   "exit_code": 1,
+   "pass": 96,
+   "fail": 11,
+   "skip": 1,
+   "id": "03b-agentintegration-ab-mine",
+   "command": "same as 03, clean throwaway repo of server at 28c67c674 plus this change",
+   "cwd": "server/",
+   "database": null,
+   "result": "fail, failure list identical to base"
+  },
+  {
+   "log": "04-db-service-handler-server.log",
+   "exit_code": 1,
+   "pass": 9221,
+   "fail": 6,
+   "skip": 78,
+   "id": "04-db-service-handler-server",
+   "command": "go test ./internal/service/ ./internal/handler/ ./cmd/server/ -count=1 -v -timeout 60m",
+   "cwd": "server/",
+   "database": "postgres://multica:multica@127.0.0.1:5432/multica_runtime_recall_20261101_a1?sslmode=disable (migrated to 760)",
+   "result": "fail, environment: handler ok (handoff routes and credential matrix ran against the DB). cmd/server: 2 global-state races across concurrent packages (creation gate 503/201, break-glass 'Another effective administrator remains'); passes alone (04b). service: 4 realtime tests fail on 2 orphan pending collaboration_event rows (issue deleted) created during this run; skips are REDIS_TEST_URL/Linux-namespace gates, not DB skips"
+  },
+  {
+   "log": "04b-db-cmd-server-alone.log",
+   "exit_code": 0,
+   "pass": 731,
+   "fail": 0,
+   "skip": 7,
+   "id": "04b-db-cmd-server-alone",
+   "command": "go test ./cmd/server/ -count=1 -v -timeout 30m",
+   "cwd": "server/",
+   "database": "postgres://multica:multica@127.0.0.1:5432/multica_runtime_recall_20261101_a1?sslmode=disable (migrated to 760)",
+   "result": "pass"
+  },
+  {
+   "log": "04c-db-service-failed-tests-alone.log",
+   "exit_code": 1,
+   "pass": 0,
+   "fail": 4,
+   "skip": 0,
+   "id": "04c-db-service-failed-tests-alone",
+   "command": "go test ./internal/service/ -run '^(4 realtime tests)$' -count=1 -v -timeout 30m",
+   "cwd": "server/",
+   "database": "postgres://multica:multica@127.0.0.1:5432/multica_runtime_recall_20261101_a1?sslmode=disable (migrated to 760)",
+   "result": "fail, orphan pending outbox rows still present"
+  },
+  {
+   "log": "04d-db-service-failed-tests-base-tree.log",
+   "exit_code": 1,
+   "pass": 0,
+   "fail": 4,
+   "skip": 0,
+   "id": "04d-db-service-failed-tests-base-tree",
+   "command": "same as 04c from clean 28c67c674 tree",
+   "cwd": "server/",
+   "database": "postgres://multica:multica@127.0.0.1:5432/multica_runtime_recall_20261101_a1?sslmode=disable (migrated to 760)",
+   "result": "fail, identical errors on base: DB state, not code"
+  },
+  {
+   "log": "04e-db-service-alone.log",
+   "exit_code": 1,
+   "pass": 3235,
+   "fail": 7,
+   "skip": 18,
+   "id": "04e-db-service-alone",
+   "command": "go test ./internal/service/ -count=1 -v -timeout 60m",
+   "cwd": "server/",
+   "database": "postgres://multica:multica@127.0.0.1:5432/multica_runtime_recall_20261101_a1?sslmode=disable (migrated to 760)",
+   "result": "fail, environment: the same 4 realtime tests, plus 2 knowledge invalidation tests ('bounded scans never completed') that passed in 04; collaboration_knowledge_invalidation holds 288 pending rows left by earlier test runs and ScanPending is global"
+  },
+  {
+   "log": "05-go-vet.log",
+   "exit_code": 0,
+   "pass": 0,
+   "fail": 0,
+   "skip": 0,
+   "id": "05-go-vet",
+   "command": "go vet ./...",
+   "cwd": "server/",
+   "database": null,
+   "result": "pass"
+  },
+  {
+   "log": "06-go-build.log",
+   "exit_code": 0,
+   "pass": 0,
+   "fail": 0,
+   "skip": 0,
+   "id": "06-go-build",
+   "command": "go build ./...",
+   "cwd": "server/",
+   "database": null,
+   "result": "pass"
+  },
+  {
+   "log": "07-gofmt-changed-files.log",
+   "exit_code": 0,
+   "pass": 0,
+   "fail": 0,
+   "skip": 0,
+   "id": "07-gofmt-changed-files",
+   "command": "gofmt -l <10 changed Go files>",
+   "cwd": "server/",
+   "database": null,
+   "result": "pass, no output"
+  },
+  {
+   "log": "08-protocol-package.log",
+   "exit_code": 0,
+   "pass": 376,
+   "fail": 0,
+   "skip": 0,
+   "id": "08-protocol-package",
+   "command": "go test ./pkg/protocol/ -count=1 -v",
+   "cwd": "server/",
+   "database": null,
+   "result": "pass (added: package changed)"
+  },
+  {
+   "log": "09-builtin-skill-tests.log",
+   "exit_code": 0,
+   "pass": 39,
+   "fail": 0,
+   "skip": 0,
+   "id": "09-builtin-skill-tests",
+   "command": "go test ./internal/service/ -run 'TestBuiltinSkills|TestWorkingOnIssuesSkill|TestSkill|TestMentioningSkill' -count=1 -v",
+   "cwd": "server/",
+   "database": null,
+   "result": "pass on the final tree; scripts/ has no builtin_skills check (scripts/skill-eval targets builtin_role_skills and needs a real agent, not run)"
+  }
+ ],
+ "main_session_followup": {
+  "by": "claude multica-0-4-37-87",
+  "smoke_authorizer_fix": {
+   "cause": "Since 96cedf485 Runner.Run sets KnowledgeVersion=1 for local Claude hosts (host_runner.go:51-52, host_knowledge.go:14-16), so the claim query carries knowledge_version=1; authorizeHostAccountSmokeRequest (host_agentintegration_test.go:209, from 0e1ee8e1e) rejected that key with 403. This failed all 11 TestContextExperiment* fake tests and TestHostProviderAccountSmoke at HEAD before any Provider launch. Independently confirmed by session multica-0-4-37-0b.",
+   "fix": "test-only: accept exactly knowledge_version=1 once on POST /claim with the managed token; authorizer test now negotiates with KnowledgeVersion 0 and 1 and refuses knowledge_version=2 or duplicates",
+   "log": "10-agentintegration-after-authorizer-fix.log",
+   "result": "102 pass, 1 fail (TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe: 'source must be clean' on the uncommitted tree; expected), 1 skip"
+  },
+  "fresh_database": {
+   "database": "multica_runtime_recall_20261101_b2 (fresh clone of mem_template, migrated to 760)",
+   "reason": "multica_runtime_recall_20261101_a1 held orphaned outbox rows and knowledge invalidation residue from earlier runs; the 4 service realtime failures reproduced on the base tree with that DB",
+   "logs": [
+    "11-fresh-db-create.log",
+    "12-fresh-internal-service.log",
+    "12-fresh-internal-handler.log",
+    "12-fresh-cmd-server.log"
+   ],
+   "results": {
+    "internal/service": "exit 0, 3242 pass / 0 fail / 18 skip",
+    "internal/handler": "exit 0, 5254 / 0 / 53",
+    "cmd/server": "exit 0, 731 / 0 / 7"
+   },
+   "order": "sequential, one package per go test invocation"
+  },
+  "independent_review": {
+   "file": "independent-review.md",
+   "verdict": "pass-with-notes",
+   "defect_1_medium": "cursor guidance could loop because a handoff cursor pages only its own list and the other lists restart at page one; fixed in host_recall.go, cmd_collaboration_handoff.go Long help and collaboration-workflow.md, pinned in host_recall_test.go",
+   "defect_2_low": "not changed: a truncated delegation is refused before launch by validateHostHandoff (host_handoff.go:108-109), so a launched member never receives a truncated admitted assignment; the redaction-expansion edge that could cause that refusal predates this change",
+   "defect_3_low": "not changed: GetJSON decodes the first JSON value only (client.go:276), same as the existing comment recall reads; pre-existing"
+  },
+  "recheck_after_wording_fix": {
+   "summary": "13-recheck-summary.txt",
+   "results": {
+    "13a default packages incl. pkg/protocol": "exit 0, 3442 / 0 / 1",
+    "13b -race collaborationrun": "exit 0, 334 / 0 / 0",
+    "13c agentintegration fake": "exit 1, 102 / 1 / 1; the one failure is the expected dirty-tree guard",
+    "13d built-in skill tests (DB b2)": "exit 0, 39 / 0 / 0",
+    "13e handler (DB b2)": "exit 0, 5254 / 0 / 53",
+    "13f go vet ./...": "exit 0",
+    "13g gofmt": "only cmd/multica/cmd_runtime_test.go, which is already unformatted at 28c67c674 and untouched here",
+    "13h git diff --check": "exit 0"
+   },
+   "not_rerun": "internal/service full suite and cmd/server after the wording fix: the fix changes only string constants in host_recall.go, cobra Long help and one skill markdown paragraph; the skill tests (13d) and handler suite (13e) that read the skill text were rerun"
+  },
+  "committed_tree_tagged_fake": {
+   "head": "316fc484872d691b34ef5ecb210b2c7d78f54a00",
+   "clean_tree": true,
+   "log": "14-agentintegration-committed.log",
+   "command": "env -u MULTICA_RUN_REAL_AGENT_SMOKE bash ../scripts/go-test-with-agent-cli-guard.sh -- go test -tags=agentintegration ./internal/daemon/collaborationrun/ -run 'Context|HandoffLaunch|AuthorizesOnly|SharedContextBase' -count=1 -v",
+   "result": "exit 0, 110 pass / 0 fail / 1 skip (evidence directory moved out of the tree during the run so the dirty-tree guard saw a clean source)"
+  },
+  "commits": {
+   "b2e198848": "smoke authorizer admits knowledge_version=1",
+   "316fc4848": "handoff show/source CLI, recall brief, skill and specs"
+  }
+ }
+}

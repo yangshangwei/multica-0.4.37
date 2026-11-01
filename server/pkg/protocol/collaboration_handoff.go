@@ -64,10 +64,15 @@ type CollaborationHandoffTransfer struct {
 	SourceID      string `json:"source_id"`
 }
 
+// Version is the version this envelope describes: the launch base in a
+// snapshot, the current latest in a live read. A live read also names the
+// run's recorded launch base, so a later version is never mistaken for input
+// the run received. A snapshot has no separate base field.
 type CollaborationHandoffMemory struct {
 	Version      string `json:"version"`
 	SHA256       string `json:"sha256,omitempty"`
 	Availability string `json:"availability"`
+	BaseVersion  string `json:"base_version,omitempty"`
 }
 
 type CollaborationHandoffPage struct {
@@ -158,13 +163,43 @@ type CollaborationHandoffBindingReceipt struct {
 	Accepted        bool   `json:"accepted"`
 }
 type CollaborationHandoffSourcePage struct {
-	ProtocolVersion int                        `json:"protocol_version"`
-	IssueID         string                     `json:"issue_id"`
-	RunID           string                     `json:"run_id"`
-	Source          CollaborationHandoffSource `json:"source"`
-	Offset          int                        `json:"offset"`
-	TotalBytes      int                        `json:"total_bytes"`
-	NextOffset      *int                       `json:"next_offset"`
+	ProtocolVersion int    `json:"protocol_version"`
+	IssueID         string `json:"issue_id"`
+	RunID           string `json:"run_id"`
+	Offset          int    `json:"offset"`
+	TotalBytes      int    `json:"total_bytes"`
+	NextOffset      *int   `json:"next_offset"`
+	// Keep continuation metadata ahead of text when a tool shows a preview.
+	Source CollaborationHandoffSource `json:"source"`
+}
+
+// DecodeCollaborationHandoffSourcePage strictly decodes one runtime source
+// chunk. Callers still compare the identity with the reference they requested.
+func DecodeCollaborationHandoffSourcePage(raw []byte) (CollaborationHandoffSourcePage, error) {
+	var out CollaborationHandoffSourcePage
+	invalid := errors.New("invalid collaboration handoff source page")
+	if decodeCollaborationHostObject(raw, &out, "protocol_version", "issue_id", "run_id", "source", "offset", "total_bytes") != nil ||
+		!collaborationRecallHasFields(raw, "next_offset") {
+		return out, invalid
+	}
+	s := out.Source
+	end := out.Offset + len(s.Content)
+	trust := "data_only"
+	if s.Kind == "delegation" {
+		trust = "admitted_assignment"
+	}
+	if out.ProtocolVersion != CollaborationHandoffVersion || !preparationUUID(out.IssueID) || !preparationUUID(out.RunID) || !preparationUUID(s.ID) ||
+		s.RunID != "" && !preparationUUID(s.RunID) || s.Version != "" && !HandoffDecimal(s.Version, false) || !HandoffDigest(s.SHA256) || s.Availability != "available" || s.Trust != trust ||
+		!utf8.ValidString(s.Content) || out.Offset < 0 || end > out.TotalBytes || s.Truncated != (out.NextOffset != nil) ||
+		out.NextOffset != nil && (len(s.Content) == 0 || *out.NextOffset != end) || out.NextOffset == nil && end != out.TotalBytes {
+		return out, invalid
+	}
+	switch s.Kind {
+	case "handoff", "delegation", "provider_result", "squad_activity":
+	default:
+		return out, invalid
+	}
+	return out, nil
 }
 
 func CollaborationHandoffHash(value string) string {
@@ -332,7 +367,7 @@ func ValidateCollaborationHandoff(v CollaborationHandoffEnvelope) error {
 			return invalid
 		}
 	}
-	if !HandoffDecimal(v.Memory.Version, true) {
+	if !HandoffDecimal(v.Memory.Version, true) || v.Memory.BaseVersion != "" && (v.Mode != "live" || !HandoffDecimal(v.Memory.BaseVersion, true)) {
 		return invalid
 	}
 	switch v.Memory.Availability {

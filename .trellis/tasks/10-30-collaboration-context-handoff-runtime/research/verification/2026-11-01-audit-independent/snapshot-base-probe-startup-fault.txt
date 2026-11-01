@@ -1,0 +1,23 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+failed to load config from /Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-audit-independent/packages/core/vitest.config.ts
+
+⎯⎯⎯⎯⎯⎯⎯ Startup Error ⎯⎯⎯⎯⎯⎯⎯⎯
+Error: Build failed with 1 error:
+
+[31m[UNRESOLVED_ENTRY] Error:[0m Cannot resolve entry module .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-audit-independent/packages/core/vitest.config.ts.
+
+    at aggregateBindingErrorsIntoJsError (file:///Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101/node_modules/.pnpm/rolldown@1.0.0-rc.10_@emnapi+core@1.11.2_@emnapi+runtime@1.11.2/node_modules/rolldown/dist/shared/error-BO4SlZV_.mjs:48:18)
+    at unwrapBindingResult (file:///Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101/node_modules/.pnpm/rolldown@1.0.0-rc.10_@emnapi+core@1.11.2_@emnapi+runtime@1.11.2/node_modules/rolldown/dist/shared/error-BO4SlZV_.mjs:18:128)
+    at #build (file:///Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101/node_modules/.pnpm/rolldown@1.0.0-rc.10_@emnapi+core@1.11.2_@emnapi+runtime@1.11.2/node_modules/rolldown/dist/shared/rolldown-build-yQC7KN8K.mjs:3311:34)
+    at async bundleConfigFile (file:///Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101/node_modules/.pnpm/vite@8.0.1_@emnapi+core@1.11.2_@emnapi+runtime@1.11.2_@types+node@25.5.0_jiti@2.7.0_terser@5.47.1_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:34495:17)
+    at async bundleAndLoadConfigFile (file:///Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101/node_modules/.pnpm/vite@8.0.1_@emnapi+core@1.11.2_@emnapi+runtime@1.11.2_@types+node@25.5.0_jiti@2.7.0_terser@5.47.1_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:34403:18)
+    at async loadConfigFromFile (file:///Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101/node_modules/.pnpm/vite@8.0.1_@emnapi+core@1.11.2_@emnapi+runtime@1.11.2_@types+node@25.5.0_jiti@2.7.0_terser@5.47.1_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:34372:42)
+    at async resolveConfig (file:///Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101/node_modules/.pnpm/vite@8.0.1_@emnapi+core@1.11.2_@emnapi+runtime@1.11.2_@types+node@25.5.0_jiti@2.7.0_terser@5.47.1_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:33996:22)
+    at async _createServer (file:///Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101/node_modules/.pnpm/vite@8.0.1_@emnapi+core@1.11.2_@emnapi+runtime@1.11.2_@types+node@25.5.0_jiti@2.7.0_terser@5.47.1_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:25892:65)
+    at async createViteServer (file:///Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101/node_modules/.pnpm/vitest@4.1.0_@opentelemetry+api@1.9.1_@types+node@25.5.0_jsdom@29.0.1_@noble+hashes@1.8_ff48d36d6bc43d12ce43d4c6cc46616e/node_modules/vitest/dist/chunks/cli-api.DuT9iuvY.js:8825:17)
+    at async createVitest (file:///Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101/node_modules/.pnpm/vitest@4.1.0_@opentelemetry+api@1.9.1_@types+node@25.5.0_jsdom@29.0.1_@noble+hashes@1.8_ff48d36d6bc43d12ce43d4c6cc46616e/node_modules/vitest/dist/chunks/cli-api.DuT9iuvY.js:14047:18) {
+  errors: [Getter/Setter]
+}
+
+
+

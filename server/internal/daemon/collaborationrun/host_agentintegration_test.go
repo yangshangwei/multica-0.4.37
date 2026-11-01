@@ -206,7 +206,8 @@ func authorizeHostAccountSmokeRequest(fixture *hostRunFixture, r *http.Request) 
 			return false
 		}
 		for key, values := range query {
-			if key != "handoff_version" && key != "recording_version" || len(values) != 1 || values[0] != "1" {
+			// Runner.Run also declares knowledge_version for local Claude hosts.
+			if key != "handoff_version" && key != "recording_version" && key != "knowledge_version" || len(values) != 1 || values[0] != "1" {
 				return false
 			}
 		}

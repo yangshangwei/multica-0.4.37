@@ -4,7 +4,7 @@
 
 ## 当前下一步
 
-进度入口：`progress.md`。先按 `real-model-acceptance-plan.md` 完成新系列的实际源码、框架覆盖、场景/轮次、调用上限及停止规则登记，再在满足恢复条件的独立串行窗口运行新版本 E0，之后进入 E5/E6 与相应召回/交接行为验收。新预算尚未分配，不挪用原 E2a trial 3/22 次；本次进度更新没有执行付费实验。
+进度入口：`progress.md`。先按 `real-model-acceptance-plan.md` 完成新系列的实际源码、框架覆盖、场景/轮次、调用上限及停止规则登记，再在满足恢复条件的独立串行窗口运行新版本 E0，之后进入 E5/E6 与相应召回/交接行为验收。RK1 runtime 已授权25次（含H2b），真实消耗0；不挪用原系列剩余14次（下一E3 after trial2）；本次进度更新没有执行付费实验。
 
 既有实现、独立审查和已覆盖 Web/macOS Desktop 门禁已有通过证据，后续只因新增改动或具体失败重跑受影响检查。父任务的 Windows/安装组合/多账号额度等外部门仍独立保留。
 
@@ -14,7 +14,7 @@
 - [x] 协议/兼容读者、checkpoint/seal/recovery、评论 recall/CLI、handoff/source/wakeup/实际启动、共享 Web/Desktop 与指导完成。
 - [x] 全量 Go 协作、TS、lint/typecheck、vet/build/sqlc、独立审查和六项实际 Web/Electron 用例通过；一项已有 CLI skip 单列保留。
 - [x] 原始失败和复验记录、源码/组件/数据环境证据已保存；详见 `verification-integration-2026-11-01.md`。
-- [ ] 真实模型验收仍单列；原系列下一次 E2a trial 3，剩余22次，新的 runtime 证据另记来源。
+- [ ] 真实模型验收仍单列；原系列下一次 E3 after trial 2，剩余14次，新的 runtime 证据另记来源。
 - [ ] 父任务整体验收与知识候选实现尚未完成，不据上述确定性通过归档整个任务。
 
 下方逐项清单已按最终集成证据核对：已交付实现与已运行测试标为完成，未具备对应证据的扩展矩阵继续保留。普通评论的50条是独立 recall 默认页大小，不是启动快照预载保证。
@@ -102,7 +102,7 @@ pnpm test
 - [x] 相关 e2e 使用 production Web（build/start），按 `.trellis/spec/web/frontend/e2e-run-environment.md`；测试用例文件在实施时从现有协作 e2e 中确定并写入证据清单。
 - [x] 每条证据记录 source HEAD/dirty diff、准确命令、DB/平台、测试名、退出码、通过/失败/跳过，日志落本任务 `research/verification/`。确认 DB tests 实际运行，无静默 skip。
 - [x] 独立 trellis-check 审阅完整 diff、权限/去重/读者/分页/兼容；问题修复后仅重跑受影响检查。
-- [ ] 新 runtime 的正式 E0/E5/E6 另行绑定产品版本、框架和预算；旧系列下一入口为 E2a trial 3/22 次，不挪用。环境首个不完整结果停止，不扩大重试。
+- [ ] 新 runtime 的正式 E0/E5/E6 另行绑定产品版本、框架和预算；旧系列下一入口为 E3 after trial 2/14 次，不挪用。环境首个不完整结果停止，不扩大重试。
 - [x] 新私有 handoff/checkpoint/recall/content 等入口的 task/plugin/IM 凭据矩阵通过：40 个拒绝、7 个业务正向对照和撤权后 metadata-only termination；见 `84c4c2b3d`。实际 handlers 使用匹配的本地 Chi 路由，不声称整个 cmd/server router 新跑。
 - [x] 主会话更新受影响 spec、验收映射与任务状态。提交遵守 Conventional intent line + Lore trailers；只提交本任务文件，不携带外部工作。
 

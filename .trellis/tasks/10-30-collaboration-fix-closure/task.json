@@ -21,10 +21,10 @@
   "children": [],
   "parent": "10-30-collaboration-context-handoff",
   "relatedFiles": [],
-  "notes": "",
+  "notes": "2026-11-01 续作：审计修复、独立复核、合流及最终联合验证尚未闭合；原系列下一 E3 after trial 2，剩余14次，冻结源码不变；RK1 runtime 已批25次（含H2b、H6每轮两次启动），消耗0，框架与源码绑定未就绪；K1-K3/E0b及安装版/AC43另行分账。知识生产默认false。见父任务 execution-resume-2026-11-01.json。",
   "meta": {
     "e0_status": "passed_2026_10_31",
-    "experiments_remaining": "E2a_trial3_and_E2b_E6_unrun_after_E2a_trial2_upstream_502",
+    "experiments_remaining": "E3_after_trials_2_3_then_E4_E5_E6",
     "resume_source_commit": "4c833e737efb6c997e5cb56c74c43e9237c91956",
     "e0_source_commit": "4c833e737efb6c997e5cb56c74c43e9237c91956",
     "e0_provider_cli": "claude 2.1.316",
@@ -33,12 +33,26 @@
     "deterministic_verification": "passed_2026_10_31",
     "experiment_framework_commit": "9673ab3bf",
     "experiment_framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
-    "acceptance": "deterministic_and_E0_passed_E1_partial_E2a_environment_blocked_later_unrun",
+    "acceptance": "deterministic_historical_scope_passed_original_series_partial",
     "e1_trial3_status": "environment_provider_429_timeout",
-    "experiment_next_scenario": "E2a_window_fact_newest",
-    "experiment_next_start_trial": 3,
-    "experiment_remaining_provider_call_cap": 22,
-    "latest_verification": "verification-e2a-trial2-2026-11-01.md",
-    "e2a_status": "0_valid_2_invalid_provider_attempts_429_timeout_then_502"
+    "experiment_next_scenario": "E3_member_scope",
+    "experiment_next_start_trial": 2,
+    "experiment_remaining_provider_call_cap": 14,
+    "latest_verification": "verification-e2a-resume3-2026-11-01.md",
+    "e2a_status": "1_valid_pass_2_invalid_slots_exhausted",
+    "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
+    "resume_ledger": "../10-30-collaboration-context-handoff/execution-resume-2026-11-01.json",
+    "original_series_next": "E3 after trial 2; then E4 -> E5 -> E6; remaining cap 14; frozen source",
+    "rk1_runtime_budget": {
+      "approved_cap": 25,
+      "consumed": 0,
+      "includes_H2b": true,
+      "H6_launches_per_trial": 2
+    },
+    "next_action": "finish_audit_repairs_and_independent_reviews_then_serial_local_merges_joint_validation_and_source_rebinding",
+    "progress_phase": "audit_repair_and_framework_fake_validation",
+    "experiment_next_arm": "after",
+    "e2b_status": "3_valid_pass",
+    "e3_status": "baseline_3_valid_pass_after_trial1_incomplete_EPROTO_timeout"
   }
 }

@@ -17,6 +17,31 @@ Both entry points require nonblank `DATABASE_URL` before creating a pool, runnin
 
 An explicit URL is not proof of ownership. The caller must select its recorded test database, keep credentials in the private environment file, and serialize service/handler/router suites that share a database. Browser fixtures use their own database. Different workspace IDs do not isolate singleton gates or package-global fixture cleanup.
 
+Migration commands need the same boundary before execution. The migration CLI
+still has a local `multica` fallback when `DATABASE_URL` is absent; do not mistake
+its successful exit for task isolation. Check both configuration and actual
+database identity in the same shell/process environment before invoking Go:
+
+```sh
+: "${DATABASE_URL:?explicit task database required}"
+: "${TASK_DATABASE_NAME:?recorded task database name required}"
+test "$(psql "$DATABASE_URL" -Atqc 'SELECT current_database()')" = "$TASK_DATABASE_NAME" || exit 2
+go -C server run ./cmd/migrate up
+```
+
+The expected name comes from the allocation record, never from whatever URL was
+inherited. Confirm the client executable exists before running this sequence;
+do not print credentials or source a dotenv file as shell code. Use one fresh
+database per DB-backed package for joint acceptance, even when the old repository
+entry point serializes several packages against one URL. A coordinator may
+allocate/migrate a database and give a child only the exact package/test permit;
+that child must not create, migrate, drop or switch databases.
+
+If a command reaches an unintended database, stop writes to it, preserve the
+command and a bounded read-only ledger/schema snapshot, and disclose the incident.
+Do not infer pre-command contents from the current ledger or attempt speculative
+down migrations/cleanup. An after-incident dump is not a pre-incident backup.
+
 Run each complete database suite against a newly created, migrated task database.
 Knowledge candidate and invalidation history is deliberately retained: repeated
 full runs can multiply `all_sources` scan work beyond a test's fixed drain budget.

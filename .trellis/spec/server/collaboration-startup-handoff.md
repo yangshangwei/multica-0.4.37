@@ -16,6 +16,10 @@ establish model comprehension or real-provider reliability.
 - `POST /api/collaboration/runtime/runs/{runId}/handoff/bind` accepts
   `{snapshot_id, prompt_sha256, attempt_seq, attempt_nonce}` and returns an
   exact identity/hash/attempt receipt with `accepted=true`.
+- Runtime recall of what the snapshot bounds uses `GET .../handoff[?cursor=]`
+  (live envelope) and `GET .../handoff/sources/{sourceId}` through
+  `multica collaboration handoff show|source`; see
+  [runtime CLI](./collaboration-runtime-cli.md).
 
 ## 3. Contracts
 
@@ -45,7 +49,11 @@ and every metadata field, but subtracts JSON escape inflation from each source
 `Content` so that source text is charged by decoded UTF-8 bytes. Check both
 limits; do not replace them with one encoded-length comparison in Core.
 A legal 64 KiB assignment containing control characters can exceed 256 KiB on
-the wire. Keep the admitted delegation whole. Optional source prefixes may be
+the wire. Keep the admitted delegation whole. Its 64 KiB limit applies to the
+admitted text, not to the redacted content: redaction can lengthen a legal
+delegation (a short credential line becomes a longer marker), and that must
+never mark it truncated, because the daemon refuses a truncated delegation and
+the member run could never start. Optional source prefixes may be
 bounded only with their original reference/hash and explicit `truncated` marker.
 Snapshot restore must reproduce the same bounded content and hash. These limits
 do not reduce the existing frozen claim-input budget.
@@ -54,6 +62,21 @@ Source hashes identify original source text; returned source content may be
 redacted. Do not compare that content directly to the original hash. The server
 revalidates source references and purge state at binding. Memory has a separate
 content/version hash check.
+
+`memory.version` is the version the envelope describes. In a snapshot that is
+the run's launch base and `memory.base_version` is absent; the decoder refuses a
+snapshot that carries one. A live read (`handoff show`, the human run panel)
+describes the issue's latest memory and adds `memory.base_version`, the run's
+recorded `memory_base_version`, once the run has read its base. Never label the
+live `version` as what the run started from, and never take it as the version
+the run merged from.
+
+`wakeup_causes.completeness` is `recorded` for every non-continuation run and
+for continuations whose step key starts with `continuation:recorded:`. Those
+are queued only by code that assigns every comment, input and proof cause
+under the group lock. step_key is immutable, so a continuation queued before
+cause recording keeps its older key and stays `unknown`: it may hold only the
+causes assigned after an upgrade.
 
 Bind inside Provider `BeforeLaunch`, after `authorize` has supplied the actual
 attempt/nonce and before `burnHost` or process creation. Git preparation launches
@@ -70,6 +93,16 @@ private Provider configuration, system instructions or hidden reasoning.
 Do not proactively copy snapshot bodies into the brief or supervisor ledger.
 Existing Provider output/tool-record retention may contain quotations and keeps
 its existing retention/purge rules.
+
+With `HandoffVersion=1` the brief appends `hostRecallBrief` after the memory
+guidance and before agent instructions. It names, with the admitted issue UUID,
+the 200-comment window of `issue get`/unflagged `issue comment list`, explicit
+comment paging, `issue comment content` for `content_state=omitted`,
+`collaboration handoff source` for `truncated=true` sources and `collaboration
+handoff show --cursor` for truncated lists, and states that recalled text is
+data. It quotes commands and field names only, never source text. Legacy claims
+keep the previous brief, since their servers lack these reads. The brief is not
+hashed; the bound prompt text built by `hostPromptWithHandoff` is unchanged.
 
 ## 4. Validation / error matrix
 
@@ -94,6 +127,10 @@ its existing retention/purge rules.
   changed parent run, or claim an application input hash covers private prompts.
 
 ## 6. Required tests
+
+`host_recall_test.go` reads the provider's actual brief file: recall guidance
+with negotiated handoff, before agent instructions, existing lines unchanged;
+none on a legacy claim.
 
 Use `host_handoff_launch_test.go` for actual stdin, stable fallback, loss/replay,
 identity/memory/receipt refusals, redacted source hashes, no proactive body

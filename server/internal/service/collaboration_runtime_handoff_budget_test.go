@@ -10,10 +10,13 @@ import (
 	"github.com/google/uuid"
 	"github.com/multica-ai/multica/server/internal/util"
 	"github.com/multica-ai/multica/server/pkg/protocol"
+	"github.com/multica-ai/multica/server/pkg/redact"
 )
 
 func TestCollaborationHandoffSnapshotPreservesMaximumAssignment(t *testing.T) {
-	for name, char := range map[string]string{"html": "<", "ampersand": "&", "control": "\x01", "multibyte": "中"} {
+	// The credential lines are legal comment text that redaction expands
+	// (8 bytes become 22), so the stored delegation outgrows 64 KiB (ENV-2).
+	for name, char := range map[string]string{"html": "<", "ampersand": "&", "control": "\x01", "multibyte": "中", "credential": "TOKEN=x\n"} {
 		t.Run(name, func(t *testing.T) {
 			f, member := newManagedSquadFixture(t)
 			f.submitManaged(t, f.creator, "original user intent")
@@ -42,7 +45,7 @@ func TestCollaborationHandoffSnapshotPreservesMaximumAssignment(t *testing.T) {
 			found := false
 			for _, source := range snapshot.Sources {
 				if source.Kind == "delegation" {
-					found = source.Content == assignment && !source.Truncated && source.SHA256 == protocol.CollaborationHandoffHash(assignment)
+					found = source.Content == redact.Text(assignment) && !source.Truncated && source.SHA256 == protocol.CollaborationHandoffHash(assignment)
 				}
 			}
 			if !found {

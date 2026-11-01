@@ -1,0 +1,33 @@
+{
+  "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+  "server_tree": "9891ce18df23b8461b6baa934eda212c17542f63",
+  "command": [
+    "env",
+    "-u",
+    "MULTICA_RUN_REAL_AGENT_SMOKE",
+    "-u",
+    "GIT_CONFIG_COUNT",
+    "-u",
+    "GIT_CONFIG_KEY_0",
+    "-u",
+    "GIT_CONFIG_VALUE_0",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/service",
+    "-run",
+    "Collaboration",
+    "-count=1",
+    "-v",
+    "-timeout=30m"
+  ],
+  "database": "rfix27_service_full_final_20261101_2323",
+  "state": "incomplete; author process no longer present and no final exit captured",
+  "started_at": "2026-11-01T23:18:55+0800",
+  "exit_code": null,
+  "not_passed": true,
+  "followup": "root-service-final-summary.json on separately created fresh task database",
+  "partial_log_sha256": "ef065c460c56e85d1de74d77d609f4148cd14dafd48095d3595cf636b0d46971"
+}

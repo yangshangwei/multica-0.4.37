@@ -21,7 +21,12 @@ type hostCheckpointSender struct {
 	done       chan struct{}
 	once       sync.Once
 	closed     atomic.Bool
-	failed     atomic.Bool
+	// failed means recorded content was lost: a batch could not be staged, the
+	// ledger failed, or the server refused a chunk. A transient upload error is
+	// not a loss; the staged payload is retried later with its original key.
+	failed atomic.Bool
+	// lost means a local staging failure dropped a batch.
+	lost atomic.Bool
 }
 
 func startHostCheckpoints(ctx context.Context, s *hostSupervisor, record *hostRecording, version int) (*hostCheckpointSender, error) {
@@ -70,7 +75,10 @@ func (s *hostCheckpointSender) finish() {
 	// Only the caller that finished draining Provider output knows the tail.
 	// A restarted daemon cannot infer that fact from the last stored chunk.
 	reason := ""
-	if s.closed.Load() {
+	if s.lost.Load() {
+		// A batch that failed local staging is missing data, not a limit.
+		reason = "incomplete"
+	} else if s.closed.Load() {
 		reason = "recording_limit"
 	} else if s.record.partial {
 		reason = "incomplete"
@@ -92,6 +100,18 @@ func (s *hostCheckpointSender) acknowledged() int {
 	return hostRecordingAcknowledged(s.supervisor.local.record.Host.Recording)
 }
 
+// healthy reports that no recorded content was lost: every observed message
+// was staged and no chunk was refused.
+func (s *hostCheckpointSender) healthy() bool {
+	if s == nil || s.failed.Load() || s.closed.Load() {
+		return false
+	}
+	s.supervisor.mu.Lock()
+	defer s.supervisor.mu.Unlock()
+	rec := s.supervisor.local.record.Host.Recording
+	return rec != nil && !rec.Closed
+}
+
 func (s *hostCheckpointSender) run() {
 	defer close(s.done)
 	timer := time.NewTicker(5 * time.Second)
@@ -101,10 +121,7 @@ func (s *hostCheckpointSender) run() {
 	// A local staging failure loses this batch. Later queued messages cannot
 	// reuse its offsets; HTTP uncertainty still has a durable original payload.
 	stagingFailed := false
-	flush := func() {
-		if stagingFailed || len(batch) == 0 {
-			return
-		}
+	stage := func() {
 		supervisor := s.supervisor
 		supervisor.mu.Lock()
 		local := supervisor.local
@@ -115,43 +132,32 @@ func (s *hostCheckpointSender) run() {
 			offset = last.Offset + last.Count
 		}
 		launch, found := lastAuthorizedRecordingLaunch(local.record.Host)
-		if !found {
-			supervisor.mu.Unlock()
-			stagingFailed = true
-			s.failed.Store(true)
-			s.closed.Store(true)
-			batch = nil
-			bytes = 0
-			return
+		err := ErrUnconfirmed
+		if found {
+			p := protocol.CollaborationRecordingCheckpoint{Version: 1, Identity: local.record.Identity, AttemptSeq: launch.AttemptSeq, AttemptNonce: launch.AttemptNonce, StreamID: rec.StreamID, Sequence: len(rec.Chunks) + 1, MessageOffset: offset, Messages: batch}
+			err = local.stageHostCheckpoint(p, local.record.Host.BusinessToken)
 		}
-		p := protocol.CollaborationRecordingCheckpoint{Version: 1, Identity: local.record.Identity, AttemptSeq: launch.AttemptSeq, AttemptNonce: launch.AttemptNonce, StreamID: rec.StreamID, Sequence: len(rec.Chunks) + 1, MessageOffset: offset, Messages: batch}
-		token := local.record.Host.BusinessToken
-		err := local.stageHostCheckpoint(p, token)
 		supervisor.mu.Unlock()
 		batch = []protocol.CollaborationRecordedMessage{}
 		bytes = 0
 		if err != nil {
 			stagingFailed = true
+			s.lost.Store(true)
 			s.failed.Store(true)
 			s.closed.Store(true)
-			return
 		}
-		if s.failed.Load() {
-			return
+	}
+	// Every flush, including the 5-second tick and the final drain, first
+	// stages the new batch and then retries the oldest unacknowledged chunk
+	// with its original key, so one transient failure cannot end uploads.
+	flush := func() {
+		if !stagingFailed && len(batch) > 0 {
+			stage()
 		}
-		requestCtx, cancel := context.WithTimeout(s.ctx, time.Second)
-		_, err = supervisor.runner.Client.Checkpoint(requestCtx, p, token)
-		cancel()
-		if err == nil || recordingDefinitiveRejection(err) {
-			supervisor.mu.Lock()
-			persistErr := local.acknowledgeHostCheckpoint(p.Sequence, err != nil)
-			supervisor.mu.Unlock()
-			if err != nil || persistErr != nil {
-				s.failed.Store(true)
-				s.closed.Store(true)
-			}
-		} else {
+		state, _ := deliverHostCheckpoints(s.ctx, s.supervisor.runner.Client, s.supervisor.local, &s.supervisor.mu, false, time.Second)
+		if state == hostDeliveryClosed {
 			s.failed.Store(true)
+			s.closed.Store(true)
 		}
 	}
 	for {
@@ -201,37 +207,163 @@ func (r *Runner) recoverHostRecording(ctx context.Context, local *RunLedger) err
 	}
 	ctx, cancel := context.WithTimeout(ctx, time.Second)
 	defer cancel()
-	rejected := false
-	for i := 0; i < len(local.record.Host.Recording.Chunks); i++ {
-		c := local.record.Host.Recording.Chunks[i]
-		if c.Rejected {
-			rejected = true
-			continue
+	_, err := deliverHostCheckpoints(ctx, r.Client, local, nil, true, 0)
+	return err
+}
+
+type hostDelivery int
+
+const (
+	// hostDeliveryDone: no chunk is waiting to be sent.
+	hostDeliveryDone hostDelivery = iota
+	// hostDeliveryPending: a chunk stays unacknowledged with its original
+	// payload, after a transient failure or behind a pending outcome.
+	hostDeliveryPending
+	// hostDeliveryClosed: a chunk was refused or the ledger failed.
+	hostDeliveryClosed
+)
+
+// deliverHostCheckpoints sends unacknowledged chunks oldest first, one request
+// at a time. mu guards the ledger while the sender runs; recovery passes nil.
+// cascade resolves every chunk after a refused one as refused, which recovery
+// needs before sealing; the in-run sender stops at the refused chunk.
+func deliverHostCheckpoints(ctx context.Context, client *Client, local *RunLedger, mu *sync.Mutex, cascade bool, requestTimeout time.Duration) (hostDelivery, error) {
+	lock := func() {
+		if mu != nil {
+			mu.Lock()
 		}
+	}
+	unlock := func() {
+		if mu != nil {
+			mu.Unlock()
+		}
+	}
+	rejected := false
+	for i := 0; ; i++ {
+		lock()
+		if local.failed {
+			unlock()
+			return hostDeliveryClosed, ErrUnconfirmed
+		}
+		chunks := local.record.Host.Recording.Chunks
+		if i >= len(chunks) {
+			unlock()
+			if rejected {
+				return hostDeliveryClosed, nil
+			}
+			return hostDeliveryDone, nil
+		}
+		c := chunks[i]
+		unlock()
 		if c.Accepted {
 			continue
 		}
+		if c.Rejected {
+			if !cascade {
+				return hostDeliveryClosed, nil
+			}
+			rejected = true
+			continue
+		}
 		if err := ctx.Err(); err != nil {
-			return err
+			return hostDeliveryPending, err
 		}
 		if rejected {
-			if err := local.acknowledgeHostCheckpoint(c.Sequence, true); err != nil {
-				return err
+			lock()
+			err := local.acknowledgeHostCheckpoint(c.Sequence, true)
+			unlock()
+			if err != nil {
+				return hostDeliveryClosed, err
 			}
 			continue
 		}
-		_, err := r.Client.Checkpoint(ctx, *c.Payload, c.BusinessToken)
-		if err != nil && !recordingDefinitiveRejection(err) {
-			return err
+		requestCtx, cancel := ctx, context.CancelFunc(func() {})
+		if requestTimeout > 0 {
+			requestCtx, cancel = context.WithTimeout(ctx, requestTimeout)
 		}
-		if persistErr := local.acknowledgeHostCheckpoint(c.Sequence, err != nil); persistErr != nil {
-			return persistErr
+		_, err := client.Checkpoint(requestCtx, *c.Payload, c.BusinessToken)
+		cancel()
+		if err != nil && !recordingDefinitiveRejection(err) {
+			return hostDeliveryPending, err
+		}
+		lock()
+		var persistErr error
+		switch {
+		case err == nil:
+			persistErr = local.acknowledgeHostCheckpoint(c.Sequence, false)
+		case supersededCheckpoint(err):
+			var rebound bool
+			rebound, persistErr = local.rebindSupersededCheckpoint(c.Sequence)
+			if rebound && persistErr == nil {
+				unlock()
+				i--
+				continue
+			}
+			if persistErr == nil {
+				persistErr = local.rejectHostCheckpoint(c.Sequence, err)
+			}
+		case outcomeCoversRefusedCheckpoint(local.record.Host, c, err):
+			unlock()
+			return hostDeliveryPending, nil
+		default:
+			persistErr = local.rejectHostCheckpoint(c.Sequence, err)
+		}
+		unlock()
+		if persistErr != nil {
+			return hostDeliveryClosed, persistErr
 		}
 		if err != nil {
+			if !cascade {
+				return hostDeliveryClosed, nil
+			}
 			rejected = true
 		}
 	}
-	return nil
+}
+
+func refusalCode(err error) string {
+	var refusal *HTTPError
+	if errors.As(err, &refusal) {
+		return refusal.Code
+	}
+	return ""
+}
+
+// The service refuses a key that no longer belongs to the authorized attempt
+// before it looks for an already committed copy under its run lock, so this
+// refusal proves the original key was never committed.
+func supersededCheckpoint(err error) bool {
+	code := refusalCode(err)
+	return code == "business_capability_required" || code == "stale_execution"
+}
+
+// After a lost outcome ACK the service already holds the outcome and refuses
+// later checkpoints as out of order. If the pending outcome's tail covers the
+// chunk, the chunk waits for that outcome receipt instead of being refused.
+func outcomeCoversRefusedCheckpoint(h *hostLedgerRecord, c hostCheckpointRecord, err error) bool {
+	return refusalCode(err) == "checkpoint_out_of_order" && hostOutcomePending(h) && hostOutcomeCovers(h.Outcome, c)
+}
+
+func hostOutcomeCovers(outcome *protocol.CollaborationRunOutcome, c hostCheckpointRecord) bool {
+	record := outcome.Record
+	return record != nil && record.Version == 2 && c.Offset >= record.MessageOffset && c.Offset+c.Count <= record.MessageOffset+len(record.Messages)
+}
+
+// hostSealReason names why the service refused new recorded content.
+func hostSealReason(err error) string {
+	var refusal *HTTPError
+	if errors.As(err, &refusal) {
+		switch refusal.Code {
+		case "execution_stopped":
+			return "stopped"
+		case "checkpoint_conflict", "checkpoint_out_of_order", "invalid_recording_checkpoint":
+			return "incomplete"
+		}
+		if refusal.Status == http.StatusBadRequest || refusal.Status == http.StatusRequestEntityTooLarge {
+			return "incomplete"
+		}
+	}
+	return "authority_lost"
 }
 
 func (r *Runner) sealHostRecording(ctx context.Context, local *RunLedger) error {

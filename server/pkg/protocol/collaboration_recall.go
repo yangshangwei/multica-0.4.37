@@ -48,10 +48,13 @@ type CollaborationCommentContent struct {
 
 type CollaborationRecallComment struct {
 	CollaborationCommentContent
-	ID              string    `json:"id"`
-	IssueID         string    `json:"issue_id"`
-	AuthorType      string    `json:"author_type"`
-	AuthorID        string    `json:"author_id"`
+	ID         string `json:"id"`
+	IssueID    string `json:"issue_id"`
+	AuthorType string `json:"author_type"`
+	AuthorID   string `json:"author_id"`
+	// AuthorName is a member author's current display name; agent authors and
+	// unresolved accounts have none. It is a label, never authority.
+	AuthorName      string    `json:"author_name,omitempty"`
 	Content         string    `json:"content"`
 	ParentID        *string   `json:"parent_id"`
 	CommentRevision string    `json:"comment_revision"`
@@ -88,7 +91,6 @@ type CollaborationCommentsRecallPage[T any] struct {
 	ProtocolVersion   int                       `json:"protocol_version"`
 	Identity          *CollaborationRunIdentity `json:"identity,omitempty"`
 	IssueID           string                    `json:"issue_id"`
-	Items             []T                       `json:"items"`
 	NextCursor        *string                   `json:"next_cursor"`
 	Total             int64                     `json:"total"`
 	Returned          int                       `json:"returned"`
@@ -96,6 +98,8 @@ type CollaborationCommentsRecallPage[T any] struct {
 	MaxBytes          int                       `json:"max_bytes"`
 	Truncated         bool                      `json:"truncated"`
 	TruncationReasons []string                  `json:"truncation_reasons"`
+	// Print paging controls before potentially large text in CLI tool results.
+	Items []T `json:"items"`
 }
 
 type CollaborationCommentContentChunk struct {
@@ -106,11 +110,11 @@ type CollaborationCommentContentChunk struct {
 	Revision        string                   `json:"revision"`
 	Offset          int                      `json:"offset"`
 	TotalBytes      int                      `json:"total_bytes"`
-	Content         string                   `json:"content"`
 	NextCursor      *string                  `json:"next_cursor"`
 	Complete        bool                     `json:"complete"`
 	Bytes           int                      `json:"bytes"`
 	MaxBytes        int                      `json:"max_bytes"`
+	Content         string                   `json:"content"`
 }
 
 // Keep the existing (created_at,id) cursor wire usable by installed clients.
