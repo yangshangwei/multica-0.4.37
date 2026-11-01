@@ -1,0 +1,38 @@
+{
+  "source_base": "20f128dcecbf1c5eda793e8feddef892799abe76",
+  "test_source_sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "-C",
+    "server",
+    "test",
+    "./cmd/server",
+    "-race",
+    "-tags=knowledgeintegration",
+    "-run",
+    "^TestCollaborationKnowledgeHostCompositeCorrection",
+    "-count=1",
+    "-json",
+    "-parallel=2",
+    "-timeout=5m"
+  ],
+  "database": "multica_knowledge_host_composite_20261101_ccg1_1102_race",
+  "verified_identity": "multica_knowledge_host_composite_20261101_ccg1_1102_race|763_collaboration_knowledge_delivery_history",
+  "state": "complete",
+  "started_at": "2026-11-01T19:33:47.719121+00:00",
+  "Provider_calls": 0,
+  "exit_code": 0,
+  "finished_at": "2026-11-01T19:34:17.275221+00:00",
+  "counts": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "failures": [],
+  "log_sha256": "52048a357fb62d33bdb9f66b12149bd7011426ab341a9d6f96651e4424382d9e",
+  "raw_private_log": "/Volumes/artisan/code/2026/mc-knowledge-crosschain-correction-20261102/.omx/private/knowledge-correction-runs/race.jsonl"
+}
