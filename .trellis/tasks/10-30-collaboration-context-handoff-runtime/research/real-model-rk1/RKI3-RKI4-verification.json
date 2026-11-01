@@ -1,0 +1,205 @@
+{
+  "scope": "RKI-3 durable raw evidence and RKI-4 exact H1/H2 format only",
+  "owner": "/root/rk1_evidence_fixes",
+  "base_head": "4b508179f3e6197f170a99acd4df42d567e7ba1b",
+  "head_before_commit": "62bd98eb97cef314b5d0bd7f7a69d4011c73b807",
+  "verified_at": "2026-11-01T17:21:18.336148+00:00",
+  "product_paths_sha256": {
+    "server/cmd/server/rk1_provider_test.go": "02050fc42ba6aeb02f4d7695ce76f4ee7a4402f07048cc2326dcde5d7b3e4f05",
+    "server/cmd/server/rk1_observe_test.go": "5472c35cff8f5f99eb1c84381656e9677985e3743a278ff271531a01740f1b07",
+    "server/cmd/server/rk1_lifecycle_test.go": "b1fe1002b28804b7bfd8593b5df0c20502e246de5b5e7ab8760029a5da3e8c6f",
+    "server/cmd/server/rk1_trial_test.go": "bfdfb910b40dc43c8b8a43d49a617dedc5421d8ed251c30b4488e581f105f5a5",
+    "server/cmd/server/rk1_scenarios_handoff_test.go": "eaba9f65a465f12afb3c5322ffefe6f6ec9d5e94bfa50870bf3027fea992c06a",
+    "server/cmd/server/rk1_evidence_publication_test.go": "461ae12b8da9ffc803681608f7d88db0f39342158f3223d71ad167a772e690f1",
+    "server/cmd/server/rk1_evidence_format_test.go": "648d8edb9640ba4cd09d213c785e232d4904ebff5d1631ec015f4eb6ea1962d4",
+    "server/cmd/server/rk1_evidence_contract_unit_test.go": "9868bad19675c8ebdaf43bf9d63b59485e12830501379acc769ba8f0c3a603ef",
+    "server/cmd/server/rk1_evidence_fault_proof_test.go": "b43d805ecdbaca8d61d1aeb777108f99ab74046f7b84b8d36ffa219f19079090"
+  },
+  "checks": [
+    {
+      "command": "env -u DATABASE_URL -u MULTICA_RUN_REAL_AGENT_SMOKE bash scripts/go-test-with-agent-cli-guard.sh -- go -C server/cmd/server test -tags=agentintegration rk1_evidence_publication_test.go rk1_evidence_format_test.go rk1_evidence_contract_unit_test.go -count=1 -json",
+      "exit_code": 0,
+      "pass": 11,
+      "fail": 0,
+      "skip": 0,
+      "log": "RKI3-RKI4-contract-final-normal.jsonl"
+    },
+    {
+      "command": "same explicit file selection with -race and -count=2",
+      "exit_code": 0,
+      "pass": 22,
+      "fail": 0,
+      "skip": 0,
+      "log": "RKI3-RKI4-contract-final-race-r2.jsonl"
+    },
+    {
+      "command": "go -C server vet -tags=agentintegration ./cmd/server",
+      "exit_code": 0,
+      "log": "RKI3-RKI4-vet-final.txt"
+    },
+    {
+      "command": "go -C server test -c -tags=agentintegration -o <private>/cmd-server.test ./cmd/server",
+      "exit_code": 0,
+      "log": "RKI3-RKI4-compile.txt"
+    },
+    {
+      "selection": "^(TestRK1Evidence.*|TestRK1HandoffAnswersRequireTheirExactLineCounts)$",
+      "normal_record": "RKI3-RKI4-full-fake-normal.json",
+      "race_record": "RKI3-RKI4-full-fake-race.json",
+      "normal_exit": 0,
+      "normal_pass": 18,
+      "race_exit": 0,
+      "race_pass": 18,
+      "fail": 0,
+      "skip": 0,
+      "database": "multica_rk1_evidence_root_20261102_0125"
+    }
+  ],
+  "red_evidence": [
+    {
+      "record": "RKI3-RKI4-contract-red.jsonl",
+      "method": "Extracted I/O seam retained baseline ignored-return strategy and existing multiline matchers;8 named failures,2 positive controls passed"
+    },
+    {
+      "record": "RKI3-completion-mutant.json",
+      "method": "Final canonical test with baseline ignored-completion mutation;4 expected named failures"
+    },
+    {
+      "record": "RKI4-format-mutant.json",
+      "method": "Final canonical test with baseline multiline matcher mutation;4 expected named failures"
+    }
+  ],
+  "logs_sha256": {
+    "RKI3-RKI4-contract-green-r2.jsonl": "1c2cd6fe58ee096ace6bf71bd98f22ee54e4265d1784c0dd47ef2609d5d6362c",
+    "RKI3-completion-mutant.source.txt": "11bfe64ce2f5376e6c968a172748cb93866b80066533170bbf613f850a528fde",
+    "RKI3-RKI4-contract-red.jsonl": "8d2052a559880945265cdaa391af92d3fd7c71e550de4335e38bc3f70f265973",
+    "RKI3-RKI4-contract-final-normal.jsonl": "449569d275fa988367bd2fe9211c0214f07d5deab7cbc66d1d18a2f21d4347e5",
+    "RKI3-completion-mutant.jsonl": "a0d4ee525a541726be183d9f14fecfc9ee0f6c60cdf7855eba0d3ac8d35fba99",
+    "RKI3-RKI4-contract-green.jsonl": "bfae0f241d33ee7e0f30468a03f6b023149cbb6bc8e39c1785dd15f8dc4a7244",
+    "RKI3-RKI4-contract-final-race.jsonl": "7650bcaebd49cefd64fdc1290f4fa253e048e885f0922620cc5138cd90cd5646",
+    "RKI3-RKI4-full-fake-normal.json": "c45b2ec93febf4fbd8489b19c7198db09cd8469b586e1b9d4368efa2d1419a75",
+    "RKI3-RKI4-vet-r2.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "RKI3-RKI4-full-fake-normal.jsonl": "1573843c11af7d66eb31b861389583350f1fbdd1e29abb171a989fb1c2d168ed",
+    "RKI3-RKI4-vet.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "RKI3-RKI4-full-fake-race.jsonl": "b194b74e0217f7a587f635800c20078999398dbc8c10cae57965247b96010bae",
+    "RKI4-format-mutant.jsonl": "a768a61258585cd3cfffcd030e08281a172f06fd927003e9e1225795a47f80c9",
+    "RKI4-format-mutant.source.txt": "284f42c5060b694ab7d7f6584370a080bc8e4f117bd7da0a367fb2ca0ab0684b",
+    "RKI3-RKI4-full-fake-race.json": "95beda051b07bf1252628316f6b816310a585c0ede861f80e3946081de9e3d77",
+    "RKI3-RKI4-compile.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "RKI3-RKI4-contract-final-race-r2.jsonl": "de4decfec03d61132c4807a35d5779f73683378a21000938a76a1a79ff950acb",
+    "RKI3-RKI4-vet-final.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "RKI3-RKI4-contract-race.jsonl": "94ef27b1561560c2958c088589aa72d374cd40259daee2d0eff41c296178d2e7",
+    "RKI3-completion-mutant.json": "aef44b5552ea909c3422d7fd825cc4ea7237d1157e88a976c1a553b64642cb46",
+    "RKI4-format-mutant.json": "35a89e8661f10e3263fd88ac081d99ff2e42a9e3a99a1b66aa2a0d862653ac0d"
+  },
+  "private_fault_proof": [
+    {
+      "case": "launch_record",
+      "mode": "normal",
+      "private_public_file": ".omx/private/rk1-evidence-root-20261102/evidence-proof-normal/launch_record/RK1-E0a-t1/public.json",
+      "sha256": "24e32ccd0328958009aa745e053f57b473e9aab72b5638366a4eed912eff9351",
+      "status": "incomplete",
+      "verdict": "measured:provider_evidence_publication_failed",
+      "physical_launches": 1,
+      "execution_exit_codes": [
+        0
+      ],
+      "wrapper_exit_code": 43,
+      "evidence_states": [
+        "failed"
+      ]
+    },
+    {
+      "case": "stdout_close",
+      "mode": "normal",
+      "private_public_file": ".omx/private/rk1-evidence-root-20261102/evidence-proof-normal/stdout_close/RK1-E0a-t1/public.json",
+      "sha256": "d9cc25a996f455183ec0a7eeca15526d715448064d0b612390ede76edab15638",
+      "status": "incomplete",
+      "verdict": "measured:provider_evidence_publication_failed",
+      "physical_launches": 1,
+      "execution_exit_codes": [
+        0
+      ],
+      "wrapper_exit_code": 43,
+      "evidence_states": [
+        "failed"
+      ]
+    },
+    {
+      "case": "stdout_sync",
+      "mode": "normal",
+      "private_public_file": ".omx/private/rk1-evidence-root-20261102/evidence-proof-normal/stdout_sync/RK1-E0a-t1/public.json",
+      "sha256": "2f2e1916b5244a46a1d77930176bc211f5a03750ebaa93f7d95f693f4f364545",
+      "status": "incomplete",
+      "verdict": "measured:provider_evidence_publication_failed",
+      "physical_launches": 1,
+      "execution_exit_codes": [
+        0
+      ],
+      "wrapper_exit_code": 43,
+      "evidence_states": [
+        "failed"
+      ]
+    },
+    {
+      "case": "launch_record",
+      "mode": "race",
+      "private_public_file": ".omx/private/rk1-evidence-root-20261102/evidence-proof-race/launch_record/RK1-E0a-t1/public.json",
+      "sha256": "3eee6de38a5822527afccbcfb75f73f8e92c13be176b2eeef2f1a346cb91c5e9",
+      "status": "incomplete",
+      "verdict": "measured:provider_evidence_publication_failed",
+      "physical_launches": 1,
+      "execution_exit_codes": [
+        0
+      ],
+      "wrapper_exit_code": 43,
+      "evidence_states": [
+        "failed"
+      ]
+    },
+    {
+      "case": "stdout_close",
+      "mode": "race",
+      "private_public_file": ".omx/private/rk1-evidence-root-20261102/evidence-proof-race/stdout_close/RK1-E0a-t1/public.json",
+      "sha256": "11d4df492f8db2c59e7dd70e0a6778e8254cbaa554c7297fbfeb06730906761e",
+      "status": "incomplete",
+      "verdict": "measured:provider_evidence_publication_failed",
+      "physical_launches": 1,
+      "execution_exit_codes": [
+        0
+      ],
+      "wrapper_exit_code": 43,
+      "evidence_states": [
+        "failed"
+      ]
+    },
+    {
+      "case": "stdout_sync",
+      "mode": "race",
+      "private_public_file": ".omx/private/rk1-evidence-root-20261102/evidence-proof-race/stdout_sync/RK1-E0a-t1/public.json",
+      "sha256": "42abda550d54b030503ff630b46e95aa2744f10a37ad28f89f471cd1a7294de2",
+      "status": "incomplete",
+      "verdict": "measured:provider_evidence_publication_failed",
+      "physical_launches": 1,
+      "execution_exit_codes": [
+        0
+      ],
+      "wrapper_exit_code": 43,
+      "evidence_states": [
+        "failed"
+      ]
+    }
+  ],
+  "credential_scan_matches": 0,
+  "database_mutations": "only test fixtures in exact root-owned permitted package DB; no child migration/create/drop/other DB",
+  "paid_provider_calls": 0,
+  "registration_modified": false,
+  "runnable": false,
+  "remaining": [
+    "independent delta review",
+    "final merged-source fake/full acceptance and fresh framework/source registration",
+    "paid Provider and platform acceptance remain separate and unrun"
+  ],
+  "product_commit": "4229e2d186c49e73656b508cd5c3b29cca0a966e",
+  "state": "implemented_verified_pending_independent_delta_review"
+}

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python3",
+    "-c",
+    "import ast,pathlib; [ast.parse(pathlib.Path(p).read_text()) for p in [\".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py\", \".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/check_launcher.py\"]]; print(\"Python AST parse PASS\")"
+  ],
+  "exit_code": 0,
+  "started_at": "2026-11-01T16:57:58.482036+00:00",
+  "finished_at": "2026-11-01T16:57:58.507802+00:00",
+  "database_commands": false,
+  "provider_calls": 0,
+  "log_sha256": "bdeebe78e0c7c9424498e37d0c7a744b099bde5f42f578fb28df00f9dc5cec0a"
+}

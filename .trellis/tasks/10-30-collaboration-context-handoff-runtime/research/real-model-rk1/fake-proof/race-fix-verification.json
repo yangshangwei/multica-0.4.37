@@ -1,0 +1,83 @@
+{
+  "recorded_at": "2026-11-01T16:02:28.894935+00:00",
+  "source_head": "b8fd547dca9808f309386c31854c45ad71334901",
+  "framework_sha256": "4d261b2bf27785b260f545ee5fa83b51194037c190fda6956c8b0ebd7e830285",
+  "source_binding": "empty, must bind final merged candidate",
+  "runnable": false,
+  "real_provider_calls": 0,
+  "original_race_failure": "fake-proof/summary.json race_attempt; original wrong_continues missing unsent recording seal remains incomplete",
+  "records": [
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/fake-proof/trace-barrier-red.jsonl",
+      "command": "env -u MULTICA_RUN_REAL_AGENT_SMOKE bash scripts/go-test-with-agent-cli-guard.sh -- go -C server/cmd/server test -race rk1_trace_test.go rk1_trace_barrier_test.go -run ^TestRK1TraceSnapshotWaitsForCompletedHandler$ -count=1 -json",
+      "exit_code": 1,
+      "sha256": "40561319077f35b22fe07bf3c89393b4e1544a4b5416f18b31a0afcf19f9451a",
+      "bytes": 1590,
+      "named_counts": {
+        "run": 1,
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      }
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/fake-proof/trace-barrier-green.jsonl",
+      "command": "same file-list command, -count=20",
+      "exit_code": 0,
+      "sha256": "c820675eff40fe63d94bc996a1ffb78f736f8342b8a615cdb99ada64b009ae09",
+      "bytes": 16479,
+      "named_counts": {
+        "run": 20,
+        "pass": 20,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/fake-proof/race-fix-vet.txt",
+      "command": "env -u MULTICA_RUN_REAL_AGENT_SMOKE bash scripts/go-test-with-agent-cli-guard.sh -- go -C server vet -tags=agentintegration ./cmd/server",
+      "exit_code": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/fake-proof/race-fix-launcher.txt",
+      "command": "python3 .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/check_launcher.py",
+      "exit_code": 0,
+      "sha256": "6600d151f45f5117816f660d351745e7e0685e2fc464b48a012ab853c44d5f97",
+      "bytes": 3966
+    },
+    {
+      "path": ".omx/private/rk1-race-fix-root-20261102/race-fix-tests-summary.json",
+      "sha256": "c43e25c237f7524ba54b3a7a2f1a685af10720190c7933e1fac0c0ed482d1063",
+      "database": "multica_rk1_trace_root_20261102_0000",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-race",
+        "-tags=agentintegration",
+        "./cmd/server",
+        "-run",
+        "^(TestRK1FakeProof|TestRK1ProviderWithoutMarkerCannotEnterTestMain|TestRK1RealProvider|TestRK1Trace.*)$",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "exit_code": 1,
+      "named_counts": {
+        "run": 42,
+        "pass": 2,
+        "fail": 39,
+        "skip": 1
+      },
+      "log_sha256": "5455167744d47791b348ae290d325633aabec2dd59d400b862e156af18c5f038",
+      "classification": "fixture setup failed before scenario launches: intermediate ledger parent absent; corrected; failed DB and output retained"
+    }
+  ],
+  "current_gate": "corrected full fake/race rerun requires fresh allocated task DB; final independent review and candidate rerun remain open"
+}

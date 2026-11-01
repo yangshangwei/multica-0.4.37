@@ -1,0 +1,68 @@
+PREFLIGHT OK: RK1-E0a start=1 trials=1 launches=1 consumed=0 cap=25 timeout=12m head=test-head
+FINISHED RK1-E0a exit_code=0 consumed=0 remaining=25 stopped=False; public records in /var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/rk1-independent-no-trial-ke46k1yt/inputs/results
+{
+  "probe": "executor exits0 without running a trial (e.g. skipped TestMain/test)",
+  "launcher_exit_code": 0,
+  "public_records": 0,
+  "invocation": {
+    "scenario": "RK1-E0a",
+    "start_trial": 1,
+    "command": [
+      "go",
+      "test",
+      "-tags=agentintegration",
+      "./cmd/server",
+      "-run",
+      "^TestRK1RealProvider$",
+      "-count=1",
+      "-v",
+      "-timeout=12m"
+    ],
+    "cwd": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/rk1-independent-no-trial-ke46k1yt",
+    "head": "test-head",
+    "source_id": "test-source",
+    "framework_sha256": "test-framework",
+    "launcher_sha256": "cbe94b1f27f6584bdc753d51c191905a53bb7dd8b34c7438e0166862f5bea53f",
+    "explicit_environment": {
+      "MULTICA_RUN_REAL_AGENT_SMOKE": "1",
+      "MULTICA_RK1_SCENARIO": "RK1-E0a",
+      "MULTICA_RK1_START_TRIAL": "1",
+      "MULTICA_RK1_EXECUTABLE": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/rk1-independent-no-trial-ke46k1yt/fake-provider",
+      "MULTICA_RK1_MODEL": "test-model",
+      "MULTICA_RK1_OUT": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/rk1-independent-no-trial-ke46k1yt/private/RK1-E0a",
+      "MULTICA_RK1_FRAMEWORK_SHA256": "test-framework",
+      "MULTICA_RK1_SOURCE_ID": "test-source",
+      "MULTICA_RK1_TRIALS": "1",
+      "MULTICA_RK1_LAUNCHES": "1"
+    },
+    "removed_session_environment": [],
+    "provider_executable_target": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/rk1-independent-no-trial-ke46k1yt/fake-provider",
+    "provider_executable_sha256": "4cb744a08586a376b416d59f87c853398af16764d4966779b513ec4c9fcbf1bb",
+    "operator_claude_files": {},
+    "launch_budget": {
+      "cap": 25,
+      "reserved": 1,
+      "before": {
+        "consumed": 0,
+        "counted_per_trial": {},
+        "public_per_trial": {},
+        "private_per_trial": {}
+      },
+      "after": {
+        "consumed": 0,
+        "counted_per_trial": {},
+        "public_per_trial": {},
+        "private_per_trial": {}
+      },
+      "remaining": 25
+    },
+    "started_at": "2026-11-01T16:56:55.168052+00:00",
+    "finished_at": "2026-11-01T16:56:55.168531+00:00",
+    "executor_exit_code": 0,
+    "exit_code": 0,
+    "stop_state": {
+      "triggered": false,
+      "incomplete_or_blocking_trials": []
+    }
+  }
+}

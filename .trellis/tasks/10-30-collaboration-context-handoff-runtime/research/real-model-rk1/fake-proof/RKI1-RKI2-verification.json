@@ -1,0 +1,35 @@
+{
+  "base_sha": "4b508179f3e6197f170a99acd4df42d567e7ba1b",
+  "scope": "RKI1 invocation execution completeness and RKI2 inherited configuration fingerprint",
+  "checks": {
+    "RKI1-launcher-red.txt": {
+      "sha256": "06941c4cd871272a8faa68f4e05339010c83d989330a423ed4299c9b69938a8e",
+      "OK": 31,
+      "BAD": 2,
+      "exit_code": 1
+    },
+    "RKI1-launcher-green.txt": {
+      "sha256": "88ec482e9dfb7c56d85a96d0cc71d8177123a85c5aa5b0f1b48fc93aca421ac9",
+      "OK": 33,
+      "BAD": 0,
+      "exit_code": 0
+    },
+    "RKI2-launcher-red.txt": {
+      "sha256": "7422c5101657d0fcfc0e58e4920d1d415a52ec40c7e5f402c3fe964befebaece",
+      "OK": 34,
+      "BAD": 3,
+      "exit_code": 1
+    },
+    "RKI2-launcher-green.txt": {
+      "sha256": "a5f19358be7707b14a396ac9a9a7536bd5500e775259ce58e4a7339b0752b728",
+      "OK": 37,
+      "BAD": 0,
+      "exit_code": 0
+    }
+  },
+  "real_provider_calls": 0,
+  "database_access": false,
+  "runnable": false,
+  "independent_recheck": "pending after all RKI fixes",
+  "note": "RKI1 red includes test-accounting expectation corrected before finalgreen; actual no/partialtrial product failures are explicit in rawlog. RKI2 scratch selectedroot/content/route fingerprint regression red3,green0; no real configuration text is printed."
+}
