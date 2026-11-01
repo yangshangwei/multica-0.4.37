@@ -1,0 +1,38 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+Scope: 9 of 11 workspace projects
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+.                                        |    +1450 ++++++++++++++++++++++++++++
+Progress: resolved 1450, reused 1077, downloaded 0, added 0
+Progress: resolved 1450, reused 1446, downloaded 0, added 161
+Progress: resolved 1450, reused 1446, downloaded 0, added 463
+Progress: resolved 1450, reused 1446, downloaded 0, added 797
+Progress: resolved 1450, reused 1446, downloaded 0, added 1071
+Progress: resolved 1450, reused 1446, downloaded 0, added 1149
+Progress: resolved 1450, reused 1446, downloaded 0, added 1169
+Progress: resolved 1450, reused 1446, downloaded 0, added 1353
+Progress: resolved 1450, reused 1446, downloaded 0, added 1448
+Progress: resolved 1450, reused 1446, downloaded 0, added 1449
+Progress: resolved 1450, reused 1446, downloaded 0, added 1450, done
+apps/desktop postinstall$ electron-builder install-app-deps
+apps/web postinstall$ fumadocs-mdx
+apps/desktop postinstall:   • electron-builder  version=26.8.1
+apps/desktop postinstall:   • loaded configuration  file=/Volumes/artisan/code/2026/mc-collaboration-delivery-20261101/apps/desktop/electron-builder.yml
+apps/desktop postinstall:   • packageManager not detected by file, falling back to environment detection  resolvedPackageManager=pnpm detected=/Volumes/artisan/code/2026/mc-collaboration-delivery-20261101/apps/desktop
+apps/desktop postinstall:   • detected workspace root for project using packageManager field  pm=pnpm config=pnpm@10.28.2 resolved=/Volumes/artisan/code/2026/mc-collaboration-delivery-20261101 projectDir=/Volumes/artisan/code/2026/mc-collaboration-delivery-20261101/apps/desktop
+apps/desktop postinstall:   • executing @electron/rebuild  electronVersion=39.8.7 arch=arm64 buildFromSource=false workspaceRoot=/Volumes/artisan/code/2026/mc-collaboration-delivery-20261101 projectDir=./ appDir=./
+apps/desktop postinstall:   • installing native dependencies  arch=arm64
+apps/web postinstall: [MDX] types generated
+apps/web postinstall: Done
+apps/desktop postinstall:   • completed installing native dependencies
+apps/desktop postinstall: Done
+╭ Warning ─────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│   Ignored build scripts: core-js@3.49.0, electron-winstaller@5.4.0,          │
+│   msw@2.12.14, protobufjs@7.5.5, sharp@0.34.5, unicode-animations@1.0.3,     │
+│   unrs-resolver@1.12.0.                                                      │
+│   Run "pnpm approve-builds" to pick which dependencies should be allowed     │
+│   to run scripts.                                                            │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Done in 14s using pnpm v10.28.2
