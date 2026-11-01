@@ -361,7 +361,7 @@ func (r *collaborationRuntimeState) queueContinuation(ctx context.Context, paren
 		if resource.Role != "leader" {
 			continue
 		}
-		run, err := r.createDerivedRun(ctx, resource, parent, "continuation", "continuation:"+uuid.NewString())
+		run, err := r.createDerivedRun(ctx, resource, parent, "continuation", collaborationRecordedContinuationPrefix+uuid.NewString())
 		return run.ID, err
 	}
 	return pgtype.UUID{}, invalidCollaborationLedger("squad has no frozen leader")

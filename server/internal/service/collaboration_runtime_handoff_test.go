@@ -7,7 +7,9 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/util"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
@@ -133,6 +135,41 @@ func TestCollaborationHandoffPreservesEveryMergedWakeCause(t *testing.T) {
 	}
 	if envelope.Results.Total < 3 {
 		t.Fatalf("member results absent: %+v", envelope.Results)
+	}
+	// Every cause of a continuation queued by this code is assigned under the
+	// group lock, so all three reads must say the inventory is complete.
+	snapshot, err := f.svc.RuntimeHandoffSnapshot(context.Background(), continuation, ct, protocol.CollaborationHandoffSnapshotRequest{RequestID: uuid.NewString()})
+	if err != nil {
+		t.Fatal(err)
+	}
+	human, err := f.svc.RunHandoff(f.ctx, f.issue.Issue.ID, continuation, CollaborationHandoffQuery{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for name, read := range map[string]protocol.CollaborationHandoffEnvelope{"live": envelope, "snapshot": snapshot, "human": human} {
+		if read.WakeupCauses.Completeness != "recorded" {
+			t.Fatalf("%s read called a fully recorded continuation's causes unknown", name)
+		}
+	}
+	// A continuation queued before cause recording existed keeps its old key
+	// format and may hold only part of its causes; it must stay unknown.
+	row, err := f.svc.Queries.GetCollaborationRecordedRun(f.ctx, db.GetCollaborationRecordedRunParams{IssueID: f.issue.Issue.ID, RunID: continuation})
+	if err != nil {
+		t.Fatal(err)
+	}
+	legacy := row
+	legacy.StepKey = pgtype.Text{String: "continuation:" + uuid.NewString(), Valid: true}
+	access, err := f.svc.ResolveIssueAccess(f.ctx, nil, f.issue.Issue.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var old protocol.CollaborationHandoffEnvelope
+	old.WakeupCauses = protocol.CollaborationHandoffCauses{Items: []protocol.CollaborationHandoffCause{}, Completeness: "unknown"}
+	if err = projectHandoffCauses(f.ctx, f.svc.Queries, access, legacy, collaborationHandoffCursor{}, &old); err != nil {
+		t.Fatal(err)
+	}
+	if old.WakeupCauses.Completeness != "unknown" || old.WakeupCauses.Total != envelope.WakeupCauses.Total {
+		t.Fatalf("legacy continuation claimed a complete inventory: %+v", old.WakeupCauses)
 	}
 }
 

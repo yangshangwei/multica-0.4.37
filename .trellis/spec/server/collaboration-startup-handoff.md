@@ -63,6 +63,13 @@ redacted. Do not compare that content directly to the original hash. The server
 revalidates source references and purge state at binding. Memory has a separate
 content/version hash check.
 
+`wakeup_causes.completeness` is `recorded` for every non-continuation run and
+for continuations whose step key starts with `continuation:recorded:`. Those
+are queued only by code that assigns every comment, input and proof cause
+under the group lock. step_key is immutable, so a continuation queued before
+cause recording keeps its older key and stays `unknown`: it may hold only the
+causes assigned after an upgrade.
+
 Bind inside Provider `BeforeLaunch`, after `authorize` has supplied the actual
 attempt/nonce and before `burnHost` or process creation. Git preparation launches
 do not bind Provider input. Each Provider retry binds its own attempt, even when
