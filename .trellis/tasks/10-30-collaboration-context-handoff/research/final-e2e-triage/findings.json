@@ -1,0 +1,879 @@
+{
+  "schema_version": 1,
+  "owner": "/root/final_e2e_triage",
+  "recorded_at": "2026-11-01T17:57:46.083601+00:00",
+  "mode": "read-only source/report/trace triage; no tests/services/databases/GUI/Provider calls",
+  "candidate_head": "c3db64b24fea7116622d106ce2231853e1be72f9",
+  "historical_head": "822c15785449b6c1cef699f6fd4d8e1f5483bd5e",
+  "counts": {
+    "inventory_failures_mapped": 14,
+    "recipient_interaction_including_trace_unmasked_timeout": 9,
+    "read_time_timestamp_equality": 3,
+    "record_region_scope": 2,
+    "candidate_tests_executed": 0
+  },
+  "cases": [
+    {
+      "case_key": "3dccc2100422",
+      "spec": "collaboration-account-desktop.spec.ts",
+      "test_line": 399,
+      "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+      "historical_source": "822c15785449b6c1cef699f6fd4d8e1f5483bd5e",
+      "historical_status": "FAIL",
+      "candidate_source": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "candidate_status": "NOT_RUN; no candidate pass/fail inference",
+      "historical_result": "runs/legacy-actual-collaboration-account-desktop/results.json",
+      "historical_error_summary": "Error: expect(locator).toHaveCount(expected) failed",
+      "category": "record_region_scope",
+      "failure_ref": {
+        "file": "e2e/fixtures/collaboration-records.ts",
+        "line": 168
+      },
+      "candidate_refs": [
+        {
+          "file": "packages/views/collaboration/run-records.tsx",
+          "line": 101
+        },
+        {
+          "file": "packages/views/collaboration/run-records.tsx",
+          "line": 104
+        },
+        {
+          "file": "packages/views/collaboration/run-records.tsx",
+          "line": 179
+        },
+        {
+          "file": "packages/views/collaboration/run-handoff.tsx",
+          "line": 39
+        },
+        {
+          "file": "packages/core/collaboration/run-records-queries.ts",
+          "line": 48
+        },
+        {
+          "file": "server/internal/service/collaboration_records.go",
+          "line": 318
+        }
+      ],
+      "source_assessment": "The Run records region contains both the independently loaded Handoff context and the paged RecordedEntry list. The old zero-count search includes both surfaces; one authorized handoff source can match the final result before the records cursor reaches it.",
+      "minimum_action": "Scope the before/after result and tool-result paging assertions to existing li[data-record-id] entries (not the whole region); retain Load more records and first/next HTTP cursor/item checks. Separately permit/assert current authorized handoff content. If the first records API items themselves include the final result unexpectedly, or next_cursor does not advance, classify that actual candidate behavior independently rather than masking it with selector changes.",
+      "requires_candidate_reproduction": true
+    },
+    {
+      "case_key": "c919808d1d26",
+      "spec": "collaboration-account-desktop.spec.ts",
+      "test_line": 535,
+      "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+      "historical_source": "822c15785449b6c1cef699f6fd4d8e1f5483bd5e",
+      "historical_status": "FAIL",
+      "candidate_source": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "candidate_status": "NOT_RUN; no candidate pass/fail inference",
+      "historical_result": "runs/legacy-actual-collaboration-account-desktop/results.json",
+      "historical_error_summary": "TimeoutError: locator.fill: Timeout 30000ms exceeded.",
+      "category": "recipient_picker_interaction",
+      "failure_ref": {
+        "file": "e2e/fixtures/collaboration-editing.ts",
+        "line": 104
+      },
+      "candidate_refs": [
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 148
+        },
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 169
+        },
+        {
+          "file": "packages/views/collaboration/creation-form.tsx",
+          "line": 132
+        },
+        {
+          "file": "packages/views/collaboration/workflow.tsx",
+          "line": 159
+        },
+        {
+          "file": "e2e/fixtures/collaboration-offline-handoff.ts",
+          "line": 107
+        },
+        {
+          "file": ".trellis/spec/core/frontend/collaboration-workbench.md",
+          "line": 140
+        }
+      ],
+      "source_assessment": "The current UI exposes a Recipient button and searchable PropertyPicker; the old direct Full username / Exact recipient textbox is absent until the nested exact-lookup branch is explicitly opened. The affected specs/fixtures are unchanged from the historical source.",
+      "minimum_action": "Open the Recipient button, locate its named listbox/popover, enter Filter options, and explicitly open Find by full username, email, or account ID when testing exact resolution. Reuse the interaction in selectHandoffRecipient, but keep creation versus workflow confirmation assertions separate: creation says Assigned to <name> / Assigned to you, whereas workflow says Selected account: <name>. Preserve resolved user identity, request body, original keys, attachment and revoke assertions.",
+      "requires_candidate_reproduction": true
+    },
+    {
+      "case_key": "5a60ce5f71f0",
+      "spec": "collaboration-boundaries-web.spec.ts",
+      "test_line": 425,
+      "title": "Smaller gaps: title/date edits leave attributed records, recipient lookup is exact-only, a source member resolves and reacts without notifications",
+      "historical_source": "822c15785449b6c1cef699f6fd4d8e1f5483bd5e",
+      "historical_status": "FAIL",
+      "candidate_source": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "candidate_status": "NOT_RUN; no candidate pass/fail inference",
+      "historical_result": "runs/legacy-actual-collaboration-boundaries-web/results.json",
+      "historical_error_summary": "Test timeout of 240000ms exceeded.",
+      "category": "recipient_picker_interaction",
+      "failure_ref": {
+        "file": "e2e/collaboration-boundaries-web.spec.ts",
+        "line": 482
+      },
+      "candidate_refs": [
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 148
+        },
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 169
+        },
+        {
+          "file": "packages/views/collaboration/creation-form.tsx",
+          "line": 132
+        },
+        {
+          "file": "packages/views/collaboration/workflow.tsx",
+          "line": 159
+        },
+        {
+          "file": "e2e/fixtures/collaboration-offline-handoff.ts",
+          "line": 107
+        },
+        {
+          "file": ".trellis/spec/core/frontend/collaboration-workbench.md",
+          "line": 140
+        }
+      ],
+      "source_assessment": "The current UI exposes a Recipient button and searchable PropertyPicker; the old direct Full username / Exact recipient textbox is absent until the nested exact-lookup branch is explicitly opened. The affected specs/fixtures are unchanged from the historical source.",
+      "minimum_action": "Open the Recipient button, locate its named listbox/popover, enter Filter options, and explicitly open Find by full username, email, or account ID when testing exact resolution. Reuse the interaction in selectHandoffRecipient, but keep creation versus workflow confirmation assertions separate: creation says Assigned to <name> / Assigned to you, whereas workflow says Selected account: <name>. Preserve resolved user identity, request body, original keys, attachment and revoke assertions. The exact-resolver branch must still assert POST kind/value and404/400 for partial/malformed exact inputs. The current searchable directory is not an exact-only UI. Update that scenario description/branch scope accordingly; do not remove resolver/no-invite/no-notification assertions. Cleanup should retain the primary timeout instead of replacing it with context-close noise.",
+      "requires_candidate_reproduction": true,
+      "historical_trace_refinement": {
+        "trace_call": "pw:api@79",
+        "before_time_ms": 19867.01,
+        "selector": "form with Add participant heading -> Exact recipient label",
+        "source_location": "e2e/collaboration-boundaries-web.spec.ts:482",
+        "observation": "Last normal awaited action in test.trace; no after event for this call. Earlier title/date/activity actions have completed trace entries. Timeout240140ms later reports cleanup at574. This narrows the original historical timeout to the old recipient interaction; it does not prove the remaining later business steps on the candidate."
+      }
+    },
+    {
+      "case_key": "158a87f90c8f",
+      "spec": "collaboration-delivery-web.spec.ts",
+      "test_line": 21,
+      "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+      "historical_source": "822c15785449b6c1cef699f6fd4d8e1f5483bd5e",
+      "historical_status": "FAIL",
+      "candidate_source": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "candidate_status": "NOT_RUN; no candidate pass/fail inference",
+      "historical_result": "runs/legacy-actual-collaboration-delivery-web/results.json",
+      "historical_error_summary": "Test timeout of 180000ms exceeded.",
+      "category": "recipient_picker_interaction",
+      "failure_ref": {
+        "file": "e2e/collaboration-delivery-web.spec.ts",
+        "line": 52
+      },
+      "candidate_refs": [
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 148
+        },
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 169
+        },
+        {
+          "file": "packages/views/collaboration/creation-form.tsx",
+          "line": 132
+        },
+        {
+          "file": "packages/views/collaboration/workflow.tsx",
+          "line": 159
+        },
+        {
+          "file": "e2e/fixtures/collaboration-offline-handoff.ts",
+          "line": 107
+        },
+        {
+          "file": ".trellis/spec/core/frontend/collaboration-workbench.md",
+          "line": 140
+        }
+      ],
+      "source_assessment": "The current UI exposes a Recipient button and searchable PropertyPicker; the old direct Full username / Exact recipient textbox is absent until the nested exact-lookup branch is explicitly opened. The affected specs/fixtures are unchanged from the historical source.",
+      "minimum_action": "Open the Recipient button, locate its named listbox/popover, enter Filter options, and explicitly open Find by full username, email, or account ID when testing exact resolution. Reuse the interaction in selectHandoffRecipient, but keep creation versus workflow confirmation assertions separate: creation says Assigned to <name> / Assigned to you, whereas workflow says Selected account: <name>. Preserve resolved user identity, request body, original keys, attachment and revoke assertions. Also re-evaluate line53: the current creation form lawfully defaults to self and its submit enablement does not require an external lookup. Preserve no-write-before-submit and outgoing external-recipient identity assertions rather than demanding a valid self-assigned form remain disabled.",
+      "requires_candidate_reproduction": true
+    },
+    {
+      "case_key": "72c1ec89998d",
+      "spec": "collaboration-delivery-web.spec.ts",
+      "test_line": 187,
+      "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+      "historical_source": "822c15785449b6c1cef699f6fd4d8e1f5483bd5e",
+      "historical_status": "FAIL",
+      "candidate_source": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "candidate_status": "NOT_RUN; no candidate pass/fail inference",
+      "historical_result": "runs/legacy-actual-collaboration-delivery-web/results.json",
+      "historical_error_summary": "Test timeout of 120000ms exceeded.",
+      "category": "recipient_picker_interaction",
+      "failure_ref": {
+        "file": "e2e/collaboration-delivery-web.spec.ts",
+        "line": 220
+      },
+      "candidate_refs": [
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 148
+        },
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 169
+        },
+        {
+          "file": "packages/views/collaboration/creation-form.tsx",
+          "line": 132
+        },
+        {
+          "file": "packages/views/collaboration/workflow.tsx",
+          "line": 159
+        },
+        {
+          "file": "e2e/fixtures/collaboration-offline-handoff.ts",
+          "line": 107
+        },
+        {
+          "file": ".trellis/spec/core/frontend/collaboration-workbench.md",
+          "line": 140
+        }
+      ],
+      "source_assessment": "The current UI exposes a Recipient button and searchable PropertyPicker; the old direct Full username / Exact recipient textbox is absent until the nested exact-lookup branch is explicitly opened. The affected specs/fixtures are unchanged from the historical source.",
+      "minimum_action": "Open the Recipient button, locate its named listbox/popover, enter Filter options, and explicitly open Find by full username, email, or account ID when testing exact resolution. Reuse the interaction in selectHandoffRecipient, but keep creation versus workflow confirmation assertions separate: creation says Assigned to <name> / Assigned to you, whereas workflow says Selected account: <name>. Preserve resolved user identity, request body, original keys, attachment and revoke assertions.",
+      "requires_candidate_reproduction": true
+    },
+    {
+      "case_key": "187ee1881c81",
+      "spec": "collaboration-editing-web.spec.ts",
+      "test_line": 9,
+      "title": "Web source creation, field edits and discussion share one authorized issue",
+      "historical_source": "822c15785449b6c1cef699f6fd4d8e1f5483bd5e",
+      "historical_status": "FAIL",
+      "candidate_source": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "candidate_status": "NOT_RUN; no candidate pass/fail inference",
+      "historical_result": "runs/legacy-actual-collaboration-editing-web/results.json",
+      "historical_error_summary": "Test timeout of 240000ms exceeded.",
+      "category": "recipient_picker_interaction",
+      "failure_ref": {
+        "file": "e2e/fixtures/collaboration-editing.ts",
+        "line": 104
+      },
+      "candidate_refs": [
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 148
+        },
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 169
+        },
+        {
+          "file": "packages/views/collaboration/creation-form.tsx",
+          "line": 132
+        },
+        {
+          "file": "packages/views/collaboration/workflow.tsx",
+          "line": 159
+        },
+        {
+          "file": "e2e/fixtures/collaboration-offline-handoff.ts",
+          "line": 107
+        },
+        {
+          "file": ".trellis/spec/core/frontend/collaboration-workbench.md",
+          "line": 140
+        }
+      ],
+      "source_assessment": "The current UI exposes a Recipient button and searchable PropertyPicker; the old direct Full username / Exact recipient textbox is absent until the nested exact-lookup branch is explicitly opened. The affected specs/fixtures are unchanged from the historical source.",
+      "minimum_action": "Open the Recipient button, locate its named listbox/popover, enter Filter options, and explicitly open Find by full username, email, or account ID when testing exact resolution. Reuse the interaction in selectHandoffRecipient, but keep creation versus workflow confirmation assertions separate: creation says Assigned to <name> / Assigned to you, whereas workflow says Selected account: <name>. Preserve resolved user identity, request body, original keys, attachment and revoke assertions.",
+      "requires_candidate_reproduction": true
+    },
+    {
+      "case_key": "535e317ad170",
+      "spec": "collaboration-leave-web.spec.ts",
+      "test_line": 13,
+      "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+      "historical_source": "822c15785449b6c1cef699f6fd4d8e1f5483bd5e",
+      "historical_status": "FAIL",
+      "candidate_source": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "candidate_status": "NOT_RUN; no candidate pass/fail inference",
+      "historical_result": "runs/password-actual-collaboration-leave-web/results.json;runs/namespace-collaboration-leave-web/results.json",
+      "historical_error_summary": "TimeoutError: locator.fill: Timeout 15000ms exceeded.",
+      "category": "recipient_picker_interaction",
+      "failure_ref": {
+        "file": "e2e/fixtures/collaboration-control-gaps.ts",
+        "line": 174
+      },
+      "candidate_refs": [
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 148
+        },
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 169
+        },
+        {
+          "file": "packages/views/collaboration/creation-form.tsx",
+          "line": 132
+        },
+        {
+          "file": "packages/views/collaboration/workflow.tsx",
+          "line": 159
+        },
+        {
+          "file": "e2e/fixtures/collaboration-offline-handoff.ts",
+          "line": 107
+        },
+        {
+          "file": ".trellis/spec/core/frontend/collaboration-workbench.md",
+          "line": 140
+        }
+      ],
+      "source_assessment": "The current UI exposes a Recipient button and searchable PropertyPicker; the old direct Full username / Exact recipient textbox is absent until the nested exact-lookup branch is explicitly opened. The affected specs/fixtures are unchanged from the historical source.",
+      "minimum_action": "Open the Recipient button, locate its named listbox/popover, enter Filter options, and explicitly open Find by full username, email, or account ID when testing exact resolution. Reuse the interaction in selectHandoffRecipient, but keep creation versus workflow confirmation assertions separate: creation says Assigned to <name> / Assigned to you, whereas workflow says Selected account: <name>. Preserve resolved user identity, request body, original keys, attachment and revoke assertions.",
+      "requires_candidate_reproduction": true
+    },
+    {
+      "case_key": "4971c07b93b6",
+      "spec": "collaboration-mention-journeys-desktop.spec.ts",
+      "test_line": 102,
+      "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "historical_source": "822c15785449b6c1cef699f6fd4d8e1f5483bd5e",
+      "historical_status": "FAIL",
+      "candidate_source": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "candidate_status": "NOT_RUN; no candidate pass/fail inference",
+      "historical_result": "runs/legacy-actual-collaboration-mention-journeys-desktop/results.json",
+      "historical_error_summary": "Error: expect(received).toEqual(expected) // deep equality",
+      "category": "read_time_evaluation_timestamp",
+      "failure_ref": {
+        "file": "e2e/fixtures/collaboration-mention-journeys.ts",
+        "line": 416
+      },
+      "candidate_refs": [
+        {
+          "file": "e2e/fixtures/collaboration-mention-journeys.ts",
+          "line": 416
+        },
+        {
+          "file": "server/internal/service/collaboration_comments_recall.go",
+          "line": 60
+        },
+        {
+          "file": "server/internal/service/collaboration_comments_recall.go",
+          "line": 84
+        },
+        {
+          "file": "packages/core/collaboration/content-schema.ts",
+          "line": 41
+        }
+      ],
+      "source_assessment": "The authority projection is evaluated on each authorized read with time.Now().UTC(). Historical diffs show only author_authority.evaluated_at changing. The strict whole-comment/state equality confuses read-time metadata with immutable business facts.",
+      "minimum_action": "Validate each returned evaluated_at as the current valid timestamp field, then compare all stable state exactly while excluding only author_authority.evaluated_at. Keep role, can_submit_command, author IDs, content/revision, targets, command identities/counts, notifications, attachment bytes/references and original receipt equality unchanged. Never strip the complete authority object or use broad partial equality to hide other mutations.",
+      "requires_candidate_reproduction": true
+    },
+    {
+      "case_key": "8e9c882cd544",
+      "spec": "collaboration-mention-journeys-web.spec.ts",
+      "test_line": 46,
+      "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "historical_source": "822c15785449b6c1cef699f6fd4d8e1f5483bd5e",
+      "historical_status": "FAIL",
+      "candidate_source": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "candidate_status": "NOT_RUN; no candidate pass/fail inference",
+      "historical_result": "runs/legacy-actual-collaboration-mention-journeys-web/results.json",
+      "historical_error_summary": "Error: expect(received).toEqual(expected) // deep equality",
+      "category": "read_time_evaluation_timestamp",
+      "failure_ref": {
+        "file": "e2e/fixtures/collaboration-mention-journeys.ts",
+        "line": 416
+      },
+      "candidate_refs": [
+        {
+          "file": "e2e/fixtures/collaboration-mention-journeys.ts",
+          "line": 416
+        },
+        {
+          "file": "server/internal/service/collaboration_comments_recall.go",
+          "line": 60
+        },
+        {
+          "file": "server/internal/service/collaboration_comments_recall.go",
+          "line": 84
+        },
+        {
+          "file": "packages/core/collaboration/content-schema.ts",
+          "line": 41
+        }
+      ],
+      "source_assessment": "The authority projection is evaluated on each authorized read with time.Now().UTC(). Historical diffs show only author_authority.evaluated_at changing. The strict whole-comment/state equality confuses read-time metadata with immutable business facts.",
+      "minimum_action": "Validate each returned evaluated_at as the current valid timestamp field, then compare all stable state exactly while excluding only author_authority.evaluated_at. Keep role, can_submit_command, author IDs, content/revision, targets, command identities/counts, notifications, attachment bytes/references and original receipt equality unchanged. Never strip the complete authority object or use broad partial equality to hide other mutations.",
+      "requires_candidate_reproduction": true
+    },
+    {
+      "case_key": "cd80f1b61840",
+      "spec": "collaboration-records-web.spec.ts",
+      "test_line": 6,
+      "title": "Web shares ordinary child references and retained run records through account notification links",
+      "historical_source": "822c15785449b6c1cef699f6fd4d8e1f5483bd5e",
+      "historical_status": "FAIL",
+      "candidate_source": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "candidate_status": "NOT_RUN; no candidate pass/fail inference",
+      "historical_result": "runs/legacy-actual-collaboration-records-web/results.json",
+      "historical_error_summary": "Error: expect(locator).toHaveCount(expected) failed",
+      "category": "record_region_scope",
+      "failure_ref": {
+        "file": "e2e/fixtures/collaboration-records.ts",
+        "line": 168
+      },
+      "candidate_refs": [
+        {
+          "file": "packages/views/collaboration/run-records.tsx",
+          "line": 101
+        },
+        {
+          "file": "packages/views/collaboration/run-records.tsx",
+          "line": 104
+        },
+        {
+          "file": "packages/views/collaboration/run-records.tsx",
+          "line": 179
+        },
+        {
+          "file": "packages/views/collaboration/run-handoff.tsx",
+          "line": 39
+        },
+        {
+          "file": "packages/core/collaboration/run-records-queries.ts",
+          "line": 48
+        },
+        {
+          "file": "server/internal/service/collaboration_records.go",
+          "line": 318
+        }
+      ],
+      "source_assessment": "The Run records region contains both the independently loaded Handoff context and the paged RecordedEntry list. The old zero-count search includes both surfaces; one authorized handoff source can match the final result before the records cursor reaches it.",
+      "minimum_action": "Scope the before/after result and tool-result paging assertions to existing li[data-record-id] entries (not the whole region); retain Load more records and first/next HTTP cursor/item checks. Separately permit/assert current authorized handoff content. If the first records API items themselves include the final result unexpectedly, or next_cursor does not advance, classify that actual candidate behavior independently rather than masking it with selector changes.",
+      "requires_candidate_reproduction": true
+    },
+    {
+      "case_key": "f390d53c1162",
+      "spec": "collaboration-retained-attachment.spec.ts",
+      "test_line": 141,
+      "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "historical_source": "822c15785449b6c1cef699f6fd4d8e1f5483bd5e",
+      "historical_status": "FAIL",
+      "candidate_source": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "candidate_status": "NOT_RUN; no candidate pass/fail inference",
+      "historical_result": "runs/password-actual-collaboration-retained-attachment/results.json",
+      "historical_error_summary": "TimeoutError: locator.fill: Timeout 15000ms exceeded.",
+      "category": "recipient_picker_interaction",
+      "failure_ref": {
+        "file": "e2e/fixtures/collaboration-retained-attachments.ts",
+        "line": 112
+      },
+      "candidate_refs": [
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 148
+        },
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 169
+        },
+        {
+          "file": "packages/views/collaboration/creation-form.tsx",
+          "line": 132
+        },
+        {
+          "file": "packages/views/collaboration/workflow.tsx",
+          "line": 159
+        },
+        {
+          "file": "e2e/fixtures/collaboration-offline-handoff.ts",
+          "line": 107
+        },
+        {
+          "file": ".trellis/spec/core/frontend/collaboration-workbench.md",
+          "line": 140
+        }
+      ],
+      "source_assessment": "The current UI exposes a Recipient button and searchable PropertyPicker; the old direct Full username / Exact recipient textbox is absent until the nested exact-lookup branch is explicitly opened. The affected specs/fixtures are unchanged from the historical source.",
+      "minimum_action": "Open the Recipient button, locate its named listbox/popover, enter Filter options, and explicitly open Find by full username, email, or account ID when testing exact resolution. Reuse the interaction in selectHandoffRecipient, but keep creation versus workflow confirmation assertions separate: creation says Assigned to <name> / Assigned to you, whereas workflow says Selected account: <name>. Preserve resolved user identity, request body, original keys, attachment and revoke assertions. The creator is already a legal default self-assignee. Confirm/select that exact human identity through the current picker, then retain both typed human/AI references, idle execution, private file bytes and restart assertions; do not bypass the UI by posting directly.",
+      "requires_candidate_reproduction": true
+    },
+    {
+      "case_key": "18e4a6485b4d",
+      "spec": "collaboration-retained-attachment.spec.ts",
+      "test_line": 141,
+      "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "historical_source": "822c15785449b6c1cef699f6fd4d8e1f5483bd5e",
+      "historical_status": "FAIL",
+      "candidate_source": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "candidate_status": "NOT_RUN; no candidate pass/fail inference",
+      "historical_result": "runs/password-actual-collaboration-retained-attachment/results.json",
+      "historical_error_summary": "TimeoutError: locator.fill: Timeout 30000ms exceeded.",
+      "category": "recipient_picker_interaction",
+      "failure_ref": {
+        "file": "e2e/fixtures/collaboration-retained-attachments.ts",
+        "line": 112
+      },
+      "candidate_refs": [
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 148
+        },
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 169
+        },
+        {
+          "file": "packages/views/collaboration/creation-form.tsx",
+          "line": 132
+        },
+        {
+          "file": "packages/views/collaboration/workflow.tsx",
+          "line": 159
+        },
+        {
+          "file": "e2e/fixtures/collaboration-offline-handoff.ts",
+          "line": 107
+        },
+        {
+          "file": ".trellis/spec/core/frontend/collaboration-workbench.md",
+          "line": 140
+        }
+      ],
+      "source_assessment": "The current UI exposes a Recipient button and searchable PropertyPicker; the old direct Full username / Exact recipient textbox is absent until the nested exact-lookup branch is explicitly opened. The affected specs/fixtures are unchanged from the historical source.",
+      "minimum_action": "Open the Recipient button, locate its named listbox/popover, enter Filter options, and explicitly open Find by full username, email, or account ID when testing exact resolution. Reuse the interaction in selectHandoffRecipient, but keep creation versus workflow confirmation assertions separate: creation says Assigned to <name> / Assigned to you, whereas workflow says Selected account: <name>. Preserve resolved user identity, request body, original keys, attachment and revoke assertions. The creator is already a legal default self-assignee. Confirm/select that exact human identity through the current picker, then retain both typed human/AI references, idle execution, private file bytes and restart assertions; do not bypass the UI by posting directly.",
+      "requires_candidate_reproduction": true
+    },
+    {
+      "case_key": "37ff666368df",
+      "spec": "collaboration-retained-attachment.spec.ts",
+      "test_line": 156,
+      "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+      "historical_source": "822c15785449b6c1cef699f6fd4d8e1f5483bd5e",
+      "historical_status": "FAIL",
+      "candidate_source": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "candidate_status": "NOT_RUN; no candidate pass/fail inference",
+      "historical_result": "runs/password-actual-collaboration-retained-attachment/results.json",
+      "historical_error_summary": "Error: expect(received).toEqual(expected) // deep equality",
+      "category": "read_time_evaluation_timestamp",
+      "failure_ref": {
+        "file": "e2e/fixtures/collaboration-retained-attachments.ts",
+        "line": 305
+      },
+      "candidate_refs": [
+        {
+          "file": "e2e/fixtures/collaboration-retained-attachments.ts",
+          "line": 305
+        },
+        {
+          "file": "server/internal/service/collaboration_comments_recall.go",
+          "line": 60
+        },
+        {
+          "file": "server/internal/service/collaboration_comments_recall.go",
+          "line": 84
+        },
+        {
+          "file": "packages/core/collaboration/content-schema.ts",
+          "line": 41
+        }
+      ],
+      "source_assessment": "The authority projection is evaluated on each authorized read with time.Now().UTC(). Historical diffs show only author_authority.evaluated_at changing. The strict whole-comment/state equality confuses read-time metadata with immutable business facts.",
+      "minimum_action": "Validate each returned evaluated_at as the current valid timestamp field, then compare all stable state exactly while excluding only author_authority.evaluated_at. Keep role, can_submit_command, author IDs, content/revision, targets, command identities/counts, notifications, attachment bytes/references and original receipt equality unchanged. Never strip the complete authority object or use broad partial equality to hide other mutations.",
+      "requires_candidate_reproduction": true
+    },
+    {
+      "case_key": "7b935d7ce8d5",
+      "spec": "collaboration-source-surface.spec.ts",
+      "test_line": 11,
+      "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+      "historical_source": "822c15785449b6c1cef699f6fd4d8e1f5483bd5e",
+      "historical_status": "FAIL",
+      "candidate_source": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "candidate_status": "NOT_RUN; no candidate pass/fail inference",
+      "historical_result": "runs/password-actual-collaboration-source-surface/results.json",
+      "historical_error_summary": "Error: expect(locator).toBeVisible() failed",
+      "category": "recipient_picker_interaction",
+      "failure_ref": {
+        "file": "e2e/collaboration-source-surface.spec.ts",
+        "line": 66
+      },
+      "candidate_refs": [
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 148
+        },
+        {
+          "file": "packages/views/collaboration/account-picker.tsx",
+          "line": 169
+        },
+        {
+          "file": "packages/views/collaboration/creation-form.tsx",
+          "line": 132
+        },
+        {
+          "file": "packages/views/collaboration/workflow.tsx",
+          "line": 159
+        },
+        {
+          "file": "e2e/fixtures/collaboration-offline-handoff.ts",
+          "line": 107
+        },
+        {
+          "file": ".trellis/spec/core/frontend/collaboration-workbench.md",
+          "line": 140
+        }
+      ],
+      "source_assessment": "The current UI exposes a Recipient button and searchable PropertyPicker; the old direct Full username / Exact recipient textbox is absent until the nested exact-lookup branch is explicitly opened. The affected specs/fixtures are unchanged from the historical source.",
+      "minimum_action": "This case only verifies that dragging a shared external-assignee card opens Transfer instead of writing an ordinary assignee. Assert the current Recipient button in that dialog (or deliberately open its popup); preserve noWrite, unchanged source snapshot/columns, cancel and subsequent ordering assertions. Do not add an unnecessary account selection to this boundary.",
+      "requires_candidate_reproduction": true
+    }
+  ],
+  "ENV1_replay": {
+    "replay_script": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-branch-e2e-acceptance/replay-env1.py",
+    "script_sha256": "3993ba4adb34b512d6fef7079fce4bbd971272029133323c7c3bc445cbd1efc6",
+    "template": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-branch-e2e-acceptance/research/fixtures/memory-startup.template.ts",
+    "template_sha256": "c0f8c968fb120ffb7dbd50893512ed3b00410a3fe9d804779a81cbc55738e548",
+    "prepared_command": [
+      "python3",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-branch-e2e-acceptance/replay-env1.py",
+      "--source-root",
+      "/Volumes/artisan/code/2026/mc-collaboration-candidate-c3db64b24-20261102",
+      "--env-file",
+      "<root-owned isolated password env file>",
+      "--expected-head",
+      "c3db64b24fea7116622d106ce2231853e1be72f9"
+    ],
+    "required_env_keys": [
+      "E2E_PASSWORD_AUTH=1",
+      "DATABASE_URL=<owned nondefault loopback DB>",
+      "COLLABORATION_E2E_API_URL=<owned loopback API>",
+      "NEXT_PUBLIC_API_URL=<same API>",
+      "PLAYWRIGHT_BASE_URL=<matching production Web>"
+    ],
+    "script_guards": [
+      "source git HEAD must equal --expected-head (default remains old822c, so override is mandatory)",
+      "strips inherited MULTICA_/OPENAI_/ANTHROPIC_/CLAUDE_/E2E_/COLLABORATION_ keys before reading selected env file",
+      "requires password flag, loopback/nondefault DB URL and loopback API URL",
+      "checks /health commit against selected source and production BUILD_ID file exists",
+      "creates an exclusive timestamp output directory and copies the exact template; retries0/workers1",
+      "sets real-agent smoke gate0; template seeds retained history and performs actual memory API/UI operations only"
+    ],
+    "root_preflight_still_required": [
+      "verify actual selected database identity and root allocation; script checks URL name only",
+      "verify live Web listener/build ID/source/configuration matches candidate; file existence alone is insufficient",
+      "record clean product manifest/diff and actual API/renderer/framework/CLI fingerprints; matching git HEAD alone does not prove clean bytes"
+    ],
+    "existing_assertion": "Retained run base remains0; actual memory PUT yields1; forbidden Started from v1 link absent. This is a negative-only UI invariant and can pass if attribution is hidden entirely.",
+    "recommended_strengthening": [
+      "assert live memory.base_version=0 independently from live memory.version=1 and DB base0",
+      "assert Started from an empty document is visible and Latest is v1 links to the current memory version",
+      "keep no Started from v1 and original screenshot/API/DB facts; do not call seeded history real model ingestion"
+    ],
+    "canonical_location": {
+      "spec": "e2e/collaboration-runtime-handoff-web.spec.ts",
+      "placement": "new small case beside existing Web handoff/recall test, reusing seedRuntimeHandoff then actual PUT; use owned DB only to set retained base0 as the current portable fixture does",
+      "existing_helper": "e2e/fixtures/collaboration-runtime-handoff.ts:116",
+      "business_owner": "packages/views/collaboration/run-handoff.tsx:51 and server/internal/service/collaboration_runtime_handoff.go:247"
+    },
+    "candidate_run_executed": false
+  },
+  "source_bindings": [
+    {
+      "file": ".trellis/spec/core/frontend/collaboration-workbench.md",
+      "candidate_sha256": "0f6350d437de4cf5ddc1f52420710c0df473d421d805007bfcfae2d11a3ed753",
+      "historical_blob_sha256": "0f6350d437de4cf5ddc1f52420710c0df473d421d805007bfcfae2d11a3ed753",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/collaboration-account-desktop.spec.ts",
+      "candidate_sha256": "163c92042219b895db49bb1f8c5afb4e0fdc86038c6e2f45c91358f962c3497c",
+      "historical_blob_sha256": "163c92042219b895db49bb1f8c5afb4e0fdc86038c6e2f45c91358f962c3497c",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/collaboration-boundaries-web.spec.ts",
+      "candidate_sha256": "d3580c948fd09ef6ae798892322afd2a1494fe55f3b6b650c968b5138f05d345",
+      "historical_blob_sha256": "d3580c948fd09ef6ae798892322afd2a1494fe55f3b6b650c968b5138f05d345",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/collaboration-delivery-web.spec.ts",
+      "candidate_sha256": "22c6357b5567a6e93c9bd55e5156c89de8834d02bd3cf8a0825b258ab5899f31",
+      "historical_blob_sha256": "22c6357b5567a6e93c9bd55e5156c89de8834d02bd3cf8a0825b258ab5899f31",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/collaboration-editing-web.spec.ts",
+      "candidate_sha256": "3107232598be85c17368e409647d159eabae8976ccc7518267003395445cbd78",
+      "historical_blob_sha256": "3107232598be85c17368e409647d159eabae8976ccc7518267003395445cbd78",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/collaboration-leave-web.spec.ts",
+      "candidate_sha256": "8f31756ec537294c57b777e1258e660440197a63706d735e368b8e5d08bf1623",
+      "historical_blob_sha256": "8f31756ec537294c57b777e1258e660440197a63706d735e368b8e5d08bf1623",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "candidate_sha256": "515eb616f099e313002727a9bbf16d33727b9e83993942c570a1999cba4304e8",
+      "historical_blob_sha256": "515eb616f099e313002727a9bbf16d33727b9e83993942c570a1999cba4304e8",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/collaboration-mention-journeys-web.spec.ts",
+      "candidate_sha256": "67a6cdd7da37d5840dbaca0f0b3396c7f22671e74c4a388554536d40b7d63d47",
+      "historical_blob_sha256": "67a6cdd7da37d5840dbaca0f0b3396c7f22671e74c4a388554536d40b7d63d47",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/collaboration-records-web.spec.ts",
+      "candidate_sha256": "7128e45665c4ef455ecb18d4ef9d71995cee2caec001dadfc6b7fb78584853fb",
+      "historical_blob_sha256": "7128e45665c4ef455ecb18d4ef9d71995cee2caec001dadfc6b7fb78584853fb",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/collaboration-retained-attachment.spec.ts",
+      "candidate_sha256": "ad691690e092dec6ba07a1df38a0cc4106477b0d84ac7f62ef9b70da30766f23",
+      "historical_blob_sha256": "ad691690e092dec6ba07a1df38a0cc4106477b0d84ac7f62ef9b70da30766f23",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/collaboration-runtime-handoff-web.spec.ts",
+      "candidate_sha256": "9d645399fb83d92d926070838c30cb253798e846c9539cc4f80b4c8f52d4f1ef",
+      "historical_blob_sha256": "9d645399fb83d92d926070838c30cb253798e846c9539cc4f80b4c8f52d4f1ef",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/collaboration-source-surface.spec.ts",
+      "candidate_sha256": "a2cbafc2a5e7aa8cdc13cc0844b680e3853b0442c06f9db445e39b1a0bfb8179",
+      "historical_blob_sha256": "a2cbafc2a5e7aa8cdc13cc0844b680e3853b0442c06f9db445e39b1a0bfb8179",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/fixtures/collaboration-control-gaps.ts",
+      "candidate_sha256": "441890f9c625fcd5fead144f40a3b151b5bd21bd7fcdb18c810749fa24118155",
+      "historical_blob_sha256": "441890f9c625fcd5fead144f40a3b151b5bd21bd7fcdb18c810749fa24118155",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/fixtures/collaboration-editing.ts",
+      "candidate_sha256": "e798a47b4dfcdd1647e0046e7ac9848c5dbce745ab1843598a4d132201b4cce4",
+      "historical_blob_sha256": "e798a47b4dfcdd1647e0046e7ac9848c5dbce745ab1843598a4d132201b4cce4",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/fixtures/collaboration-mention-journeys.ts",
+      "candidate_sha256": "aa256fb98809c7fcf55944557bbda44e16b551416db38e32bdf075d6eb76d2c7",
+      "historical_blob_sha256": "aa256fb98809c7fcf55944557bbda44e16b551416db38e32bdf075d6eb76d2c7",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/fixtures/collaboration-offline-handoff.ts",
+      "candidate_sha256": "ebbce5318f0cfbbfaba35a52f554af2637f16870329077b3b1fc36b0bf183897",
+      "historical_blob_sha256": "ebbce5318f0cfbbfaba35a52f554af2637f16870329077b3b1fc36b0bf183897",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/fixtures/collaboration-records.ts",
+      "candidate_sha256": "0168b804af50679dfc0514cd98453e10190796ee0eeccbc7efc8862c177a39e3",
+      "historical_blob_sha256": "0168b804af50679dfc0514cd98453e10190796ee0eeccbc7efc8862c177a39e3",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/fixtures/collaboration-retained-attachments.ts",
+      "candidate_sha256": "48172c02a31223aa504a57443defab1b92f1c4c03e329b47a67fe747dae24938",
+      "historical_blob_sha256": "48172c02a31223aa504a57443defab1b92f1c4c03e329b47a67fe747dae24938",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "e2e/fixtures/collaboration-runtime-handoff.ts",
+      "candidate_sha256": "b2426de829ee36103624437103966ba2664cab7755c89b2fdb895d1c1b9c5574",
+      "historical_blob_sha256": "b2426de829ee36103624437103966ba2664cab7755c89b2fdb895d1c1b9c5574",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "packages/core/collaboration/content-schema.ts",
+      "candidate_sha256": "f5387d901cd9480a3a9696b6409279c0a0cfb98c7caf942deefa6c54bcdebacc",
+      "historical_blob_sha256": "f5387d901cd9480a3a9696b6409279c0a0cfb98c7caf942deefa6c54bcdebacc",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "packages/core/collaboration/run-records-queries.ts",
+      "candidate_sha256": "7ca14c9df7c8cded759017d5e476c2d967c7badcfc7f64fc6e1501656e4efba6",
+      "historical_blob_sha256": "7ca14c9df7c8cded759017d5e476c2d967c7badcfc7f64fc6e1501656e4efba6",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "packages/views/collaboration/account-picker.tsx",
+      "candidate_sha256": "8cd5edb3273c7766b0686173912f6dd8fd2dc0d335589ee74b6d74ea6fc92959",
+      "historical_blob_sha256": "8cd5edb3273c7766b0686173912f6dd8fd2dc0d335589ee74b6d74ea6fc92959",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "packages/views/collaboration/creation-form.tsx",
+      "candidate_sha256": "85cd82ff195e3ad6f9fa24eb81acf27f4e7b3c23cb352abca42dff2e1d963d81",
+      "historical_blob_sha256": "85cd82ff195e3ad6f9fa24eb81acf27f4e7b3c23cb352abca42dff2e1d963d81",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "packages/views/collaboration/run-handoff.tsx",
+      "candidate_sha256": "ce3575aeca8079b51e0a94db49f653750045ffc59fa596f57d67529d91379b25",
+      "historical_blob_sha256": "91e048116b8aa6f8fc35d9748c72665bed12c0e7ab8cc88b8ef060785fa2e0db",
+      "unchanged_since_historical": false
+    },
+    {
+      "file": "packages/views/collaboration/run-records.tsx",
+      "candidate_sha256": "8453df243b24c976b84a075a11c7a0fff08b3f84e0b99d8bf79c8293333d5ce8",
+      "historical_blob_sha256": "8453df243b24c976b84a075a11c7a0fff08b3f84e0b99d8bf79c8293333d5ce8",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "packages/views/collaboration/workflow.tsx",
+      "candidate_sha256": "14d624ae3e5472042566b82d4c1faa93e764fa6090bb20b4b60a02344e0de7ef",
+      "historical_blob_sha256": "14d624ae3e5472042566b82d4c1faa93e764fa6090bb20b4b60a02344e0de7ef",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "server/internal/service/collaboration_comments_recall.go",
+      "candidate_sha256": "5ffa0c1784063a5e07eb8feb5a624b2995a1530e83b653c993011120fbe25ad8",
+      "historical_blob_sha256": "773fd1dc4916b2909434bbc2f1f867ac3aa9f4a79c439a84b2974188a7ac0ba3",
+      "unchanged_since_historical": false
+    },
+    {
+      "file": "server/internal/service/collaboration_records.go",
+      "candidate_sha256": "943c7a80c9cbc66e97da9b42fc6a7ca03590e59bf0dacf476ea64b4cac9c5e10",
+      "historical_blob_sha256": "943c7a80c9cbc66e97da9b42fc6a7ca03590e59bf0dacf476ea64b4cac9c5e10",
+      "unchanged_since_historical": true
+    },
+    {
+      "file": "server/internal/service/collaboration_runtime_handoff.go",
+      "candidate_sha256": "ee5c0569a6a3b531c41086e0ca5b45b8154e8e0623b7872276da50f781c73ef9",
+      "historical_blob_sha256": "92496541c57e8067efe1d26b07e686af58982d8383df2993faee93053171f544",
+      "unchanged_since_historical": false
+    }
+  ],
+  "historical_report_refs": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-branch-e2e-acceptance/defects.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/failures-final.json"
+  ],
+  "limitations": [
+    "No candidate pass/fail result is inferred. Fixing the first test interaction does not prove the later attachment/revoke/queue/notification/business assertions.",
+    "Record-region diagnosis requires candidate first/next records API items/cursors before claiming paging correct.",
+    "Dynamic evaluation timestamps are deliberately refreshed; remove only that timestamp from equality while still validating it and all stable authority/business facts.",
+    "No CORS/default-check environment investigation was duplicated; that belongs to the other assigned agent."
+  ]
+}
