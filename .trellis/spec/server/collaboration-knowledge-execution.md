@@ -84,18 +84,35 @@ Before returning any old `PriorSessionID`, unsupported/legacy clients also check
 retained provider history across original/current runtime, current agent binding,
 immutable daemon/provider and owner/provider identity. A scope/profile/owner
 rewrite or a NULL current turn cannot erase older exposure. A known managed
-session is not resumable by an unsupported client. A retained negotiated task or
-any private exposure in that provider namespace refuses unsupported delivery,
+session, meaning one whose history holds a committed preparation with a
+non-empty manifest, is not resumable by an unsupported client, even when no
+process was ever authorized for it. Claimed-only history and a preparation with
+an empty manifest have disclosed nothing private: the claim descriptor is
+source-free, preparation commits its manifest before any contribution leaves the
+server, and launch authorization requires that preparation. An unsupported
+client (gate off, a legacy daemon, or gate on with an option outside the
+negotiation allowlist) therefore resumes such a session as ordinary work when
+the namespace guard also proves no private exposure. A retained negotiated task
+or any private exposure in that provider namespace refuses unsupported delivery,
 even when the selected pointer is empty. Unsafe explicit selectors are refused
 whatever the gate. For a v1 Claude invocation, any daemon-default or agent custom
-argument that, after the same unshell-quoting as launch, is a `--resume*`,
-`--continue*`, `--session*`, `--fork-session*` or `--from-pr*` long option, or a
-single-dash cluster containing `c` or `r`, refuses with
-`knowledge_invocation_unsupported`. Values and tokens after `--` are scanned, and
-the selector is never stripped. Any other option outside the negotiation
-allowlist only makes the invocation unsupported, and the history guard then
-chooses base execution or refusal. Base execution requires a complete relevant
-history proving no private exposure.
+argument refuses with `knowledge_invocation_unsupported` when, after the same
+unshell-quoting as launch, it is a `--resume*`, `--continue*`, `--session*`,
+`--fork-session*`, `--from-pr*`, `--teleport*`, `--cloud*`, `--remote*`,
+`--attach*`, `--bg*`, `--background*`, `--desktop*`, `--environment*` or
+`--tmux*` long option; a single-dash cluster containing `c` or `r`; exactly a
+Claude subcommand name such as `attach`, `logs`, `respawn`, `stop`, `kill`, `rm`,
+`agents`, `purge` or `remote-control`; or a bare `--`, which would turn the
+daemon-appended `--settings <managed path>` into operands. The lists follow
+`claude --help` for Claude Code 2.1.316 and live in
+[`knowledge_launch.go`](../../../server/pkg/agent/knowledge_launch.go). Agent
+`custom_args` JSON that does not decode to a string array refuses the same way;
+it is never read as no arguments. Option values are scanned too, so a value
+spelled like a subcommand refuses (`--debug mcp`; write `--debug=mcp`), and the
+selector is never stripped. Any other option outside the negotiation allowlist
+only makes the invocation unsupported, and the history guard then chooses base
+execution or refusal. Base execution requires a complete relevant history
+proving no private exposure.
 Proven legacy sessions preserve their existing behavior.
 
 Use one `NewOrdinaryLaunchLifecycle(observer)` per logical input. It preserves
@@ -158,7 +175,8 @@ oracle. No body goes into a supervisor ledger or stable base/CLAUDE file.
 | Condition | Required result |
 | --- | --- |
 | Switch false / unsupported safe fresh runtime (including safe options outside the negotiation allowlist and ordinary `--no-session-persistence`) | No positive private negotiation; retain history guard and ordinary eligible base behavior |
-| Unsupported/unsafe selector could recover managed history | Refuse before native launch; never silently strip the selector |
+| Unsupported/unsafe selector could recover managed history, a subcommand or bare `--` would replace the managed argv, or `custom_args` is not a string array | Refuse before native launch; never silently strip the selector |
+| Unsupported invocation resumes a session whose history is claimed-only or prepared with an empty manifest | Ordinary resume when the namespace guard proves no private exposure; nothing private was disclosed |
 | Stale claim, session, preparation, manifest, prompt or invocation | `knowledge_context_changed`; no replacement snapshot or automatic replay |
 | Current consumer/source/credential denied | `knowledge_authorization_denied` |
 | Bound exceeded, corrupt proof, missing/ambiguous observation ACK or dependency failure | Fail closed (`knowledge_unavailable` or the precise typed refusal) |

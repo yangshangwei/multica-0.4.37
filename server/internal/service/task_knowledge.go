@@ -356,6 +356,8 @@ func (s *TaskService) BuildTaskKnowledgeClaim(ctx context.Context, task db.Agent
 		}
 		// Session selectors are refused whatever the gate: transcripts written
 		// while it was on stay on disk and an explicit selector can reach them.
+		// Subcommand operands and a bare "--" are refused with them, because
+		// they stop the managed argv from governing the process.
 		// Other options outside the negotiation allowlist (and
 		// --no-session-persistence) only make the invocation unsupported below,
 		// where the history guard chooses base execution or refusal.

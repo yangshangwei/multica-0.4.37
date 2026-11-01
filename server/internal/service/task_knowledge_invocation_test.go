@@ -93,7 +93,10 @@ func TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates(t *testing.T) {
 }
 
 func TestKnowledgeSessionSelectorsRefusedWhateverTheGate(t *testing.T) {
-	forms := [][]string{{"--continue"}, {"-c"}, {"-pc"}, {"--resume", "abc"}, {"--resume=abc"}, {"-rabc"}, {"--session-id=abc"}, {"--fork-session"}, {"--allowedTools", "Bash", "--continue"}, {"'--continue'"}}
+	forms := [][]string{{"--continue"}, {"-c"}, {"-pc"}, {"--resume", "abc"}, {"--resume=abc"}, {"-rabc"}, {"--session-id=abc"}, {"--fork-session"}, {"--allowedTools", "Bash", "--continue"}, {"'--continue'"},
+		// Remote, cloud and attached sessions, a subcommand operand, and a bare
+		// "--" that would turn the appended managed --settings into operands.
+		{"--teleport"}, {"--teleport", "abc"}, {"--cloud", "session_abc"}, {"--remote-control"}, {"--attach", "abc"}, {"--bg"}, {"attach", "abc"}, {"--"}, {"--allowedTools", "Bash", "--"}}
 	for _, gate := range []bool{true, false} {
 		for _, source := range []string{"defaults", "custom"} {
 			t.Run(fmt.Sprintf("gate=%t/%s", gate, source), func(t *testing.T) {
@@ -141,6 +144,107 @@ func TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs(t *testing.T) {
 				t.Fatalf("changed contract inherited an old admission: %v", err)
 			}
 		})
+	}
+}
+
+// A safe option outside the negotiation allowlist makes a fresh v1 claim
+// unsupported; it does not exempt the claim from the namespace history guard.
+func TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace(t *testing.T) {
+	for _, gate := range []bool{true, false} {
+		for _, source := range []string{"defaults", "custom"} {
+			t.Run(fmt.Sprintf("gate=%t/%s", gate, source), func(t *testing.T) {
+				f := newTaskKnowledgeFixture(t)
+				f.recordSession(t, "exposed-native")
+				if _, err := f.tasks.CompleteTask(f.ctx, f.task.ID, []byte(`{}`), "exposed-native", "", "", false, "", ""); err != nil {
+					t.Fatal(err)
+				}
+				f.tasks.KnowledgeContextEnabled = gate
+				runtimeID := util.UUIDToString(f.task.RuntimeID)
+				agentID := f.fx.Agent(t, "Unrelated agent on the exposed runtime", runtimeID, testutil.Cols{"runtime_mode": "local"})
+				issue := f.fx.Issue(t, "Unrelated fresh scope", testutil.Cols{"assignee_type": "agent", "assignee_id": agentID})
+				id := f.fx.Task(t, agentID, testutil.Cols{"runtime_id": runtimeID, "issue_id": issue, "status": "dispatched", "dispatched_at": testutil.Raw("now()"), "claim_generation": 1})
+				task, err := f.tasks.Queries.GetAgentTask(f.ctx, util.MustParseUUID(id))
+				if err != nil {
+					t.Fatal(err)
+				}
+				inv := f.inv
+				if source == "defaults" {
+					inv.ExtraArgs = []string{"--allowedTools", "Bash"}
+				} else {
+					f.fx.Exec(t, `UPDATE agent SET custom_args='["--allowedTools","Bash"]'::jsonb WHERE id=$1`, agentID)
+				}
+				if d, _, err := f.tasks.BuildTaskKnowledgeClaim(f.ctx, task, &inv, ""); !collaborationErrorCode(err, "knowledge_invocation_unsupported") || d != nil {
+					t.Fatalf("fresh claim in an exposed namespace ran without the history guard: d=%v err=%v", d != nil, err)
+				}
+			})
+		}
+	}
+}
+
+// custom_args that do not decode to []string refuse a v1 claim whatever the
+// gate; they are never read as "no custom arguments".
+func TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate(t *testing.T) {
+	shapes := []string{`{"--continue":true}`, `"--allowedTools Bash"`, `[1,2]`, `[["--model","sonnet"]]`, `true`, `[{"arg":"--verbose"}]`}
+	for _, gate := range []bool{true, false} {
+		t.Run(fmt.Sprintf("gate=%t", gate), func(t *testing.T) {
+			f := newTaskKnowledgeFixture(t)
+			f.tasks.KnowledgeContextEnabled = gate
+			for _, shape := range shapes {
+				f.fx.Exec(t, `UPDATE agent SET custom_args=$2::jsonb WHERE id=$1`, f.task.AgentID, shape)
+				if d, _, err := f.tasks.BuildTaskKnowledgeClaim(f.ctx, f.task, &f.inv, ""); !collaborationErrorCode(err, "knowledge_invocation_unsupported") || d != nil {
+					t.Errorf("custom_args %s that are not a string array were accepted: d=%v err=%v", shape, d != nil, err)
+				}
+			}
+		})
+	}
+}
+
+// A known managed session whose exact history is claimed-only, or prepared with
+// an empty manifest, has disclosed nothing: preparation commits the manifest
+// before any contribution leaves the server, and launch authorization requires
+// that preparation. An unsupported v1 invocation (here a safe unlisted option)
+// therefore resumes it as ordinary work with the gate on or off. The prepared
+// row is the contrast: a committed non-empty manifest refuses even though no
+// process was ever authorized or started.
+func TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation(t *testing.T) {
+	for _, phase := range []string{"claimed", "prepared_empty", "prepared"} {
+		for _, gate := range []bool{true, false} {
+			t.Run(fmt.Sprintf("%s/gate=%t", phase, gate), func(t *testing.T) {
+				f := newTaskKnowledgeFixture(t)
+				if phase == "prepared_empty" {
+					f.withdraw(t, f.candidate.CandidateID)
+				}
+				d := f.finalize(t, "legacy-native")
+				if d == nil || d.Session.NativeSessionID != "legacy-native" {
+					t.Fatal("fixture did not bind the managed claim to the chosen native session")
+				}
+				if phase != "claimed" {
+					p, err := f.tasks.PrepareTaskKnowledge(f.ctx, f.caller, f.task.ID, f.prepareRequest(d))
+					if err != nil {
+						t.Fatal(err)
+					}
+					if (len(p.Manifest.Entries) == 0) != (phase == "prepared_empty") {
+						t.Fatalf("fixture manifest has %d entries", len(p.Manifest.Entries))
+					}
+				}
+				if _, err := f.tasks.CancelTaskWithResult(f.ctx, f.task.ID, CancelTaskOptions{UserInitiated: true}); err != nil {
+					t.Fatal(err)
+				}
+				f.nextTurn(t)
+				f.tasks.KnowledgeContextEnabled = gate
+				f.fx.Exec(t, `UPDATE agent SET custom_args='["--allowedTools","Bash"]'::jsonb WHERE id=$1`, f.task.AgentID)
+				claim, prior, err := f.tasks.BuildTaskKnowledgeClaim(f.ctx, f.task, &f.inv, "legacy-native")
+				if phase == "prepared" {
+					if !collaborationErrorCode(err, "knowledge_invocation_unsupported") || claim != nil {
+						t.Fatalf("a committed private manifest was resumed by an unsupported invocation: d=%v prior=%q err=%v", claim != nil, prior, err)
+					}
+					return
+				}
+				if err != nil || claim != nil || prior != "legacy-native" {
+					t.Fatalf("history that disclosed nothing did not resume as ordinary work: d=%v prior=%q err=%v", claim != nil, prior, err)
+				}
+			})
+		}
 	}
 }
 
