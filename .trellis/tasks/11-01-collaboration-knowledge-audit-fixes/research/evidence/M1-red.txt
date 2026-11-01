@@ -1,0 +1,56 @@
+M1 red evidence (unfixed code: tip 6f7a601ce plus the new tests only)
+
+Both tests are behavioral tests; neither is a regression guard.
+- TestKnowledgeClaimTransientHistoryErrorRequeuesTask (DB-backed, kfix_claim_handler):
+  fails for the defect's reason. An injected PgError 57P01 on
+  ListTaskKnowledgeRuntimeHistory makes the single claim answer 409
+  knowledge_unavailable, and in all four subtests (single/batch x codex/claude)
+  the row ends status=failed, failure_reason=knowledge_unavailable instead of
+  queued with no dispatch and no failure reason.
+- TestKnowledgeClaimErrorDisposition (pure table test): fails to compile because
+  knowledgeClaimErrorDisposition does not exist yet, which is the failure the
+  design names. Run 1 below was taken before this test was added, so the
+  behavioral failure could be shown on its own.
+
+=== Run 1: behavioral test alone ===
+Command: cd server && DATABASE_URL='postgres://multica:multica@127.0.0.1:5432/kfix_claim_handler?sslmode=disable' env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 go test ./internal/handler -run '^TestKnowledgeClaimTransientHistoryErrorRequeuesTask$' -count=1 -v
+Exit code: 1
+
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/11/01 18:59:27 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+=== RUN   TestKnowledgeClaimTransientHistoryErrorRequeuesTask
+=== RUN   TestKnowledgeClaimTransientHistoryErrorRequeuesTask/single/codex
+2026/11/01 18:59:28 INFO task claimed task_id=ff8f4cfa-452e-45d5-bf48-3b51f14cda9c agent_id=85be4334-0d93-4027-9153-e1e33bd085ff
+2026/11/01 18:59:28 WARN task failed task_id=ff8f4cfa-452e-45d5-bf48-3b51f14cda9c issue_id=096e0743-9ece-4419-b965-05974a57dfa3 error=knowledge_unavailable failure_reason=knowledge_unavailable
+    daemon_knowledge_test.go:354: transient history read answered 409 "{\"error\":\"knowledge_unavailable\"}\n", want a 500 that names no knowledge refusal
+    daemon_knowledge_test.go:367: transient knowledge history read settled the task: {status:failed failureReason:knowledge_unavailable dispatched:true}, want queued with no dispatch and no failure reason
+=== RUN   TestKnowledgeClaimTransientHistoryErrorRequeuesTask/single/claude
+2026/11/01 18:59:28 INFO task claimed task_id=c5b4c3ea-63ba-4092-a5e9-c16665bf2789 agent_id=f551145a-50e2-4d5c-b710-ecc560312c5e
+2026/11/01 18:59:28 WARN task failed task_id=c5b4c3ea-63ba-4092-a5e9-c16665bf2789 issue_id=aaf16bf1-de5f-43df-a2d6-060456c7e7bb error=knowledge_unavailable failure_reason=knowledge_unavailable
+    daemon_knowledge_test.go:354: transient history read answered 409 "{\"error\":\"knowledge_unavailable\"}\n", want a 500 that names no knowledge refusal
+    daemon_knowledge_test.go:367: transient knowledge history read settled the task: {status:failed failureReason:knowledge_unavailable dispatched:true}, want queued with no dispatch and no failure reason
+=== RUN   TestKnowledgeClaimTransientHistoryErrorRequeuesTask/batch/codex
+2026/11/01 18:59:28 INFO task claimed task_id=f855e132-a996-424e-adb5-cb59e532c0e9 agent_id=cb8dad85-d76d-457d-bd70-224d7f9aaa76
+2026/11/01 18:59:28 WARN task failed task_id=f855e132-a996-424e-adb5-cb59e532c0e9 issue_id=9d1f0923-7272-4875-ab39-a9ad45fa381a error=knowledge_unavailable failure_reason=knowledge_unavailable
+    daemon_knowledge_test.go:367: transient knowledge history read settled the task: {status:failed failureReason:knowledge_unavailable dispatched:true}, want queued with no dispatch and no failure reason
+=== RUN   TestKnowledgeClaimTransientHistoryErrorRequeuesTask/batch/claude
+2026/11/01 18:59:28 INFO task claimed task_id=9fe994ed-e3aa-4277-af87-e8885c265aa7 agent_id=5480a062-868b-4f6e-908b-e2704d6309d3
+2026/11/01 18:59:28 WARN task failed task_id=9fe994ed-e3aa-4277-af87-e8885c265aa7 issue_id=bfac6478-2d74-4497-9ad6-45f902b31dd8 error=knowledge_unavailable failure_reason=knowledge_unavailable
+    daemon_knowledge_test.go:367: transient knowledge history read settled the task: {status:failed failureReason:knowledge_unavailable dispatched:true}, want queued with no dispatch and no failure reason
+--- FAIL: TestKnowledgeClaimTransientHistoryErrorRequeuesTask (0.89s)
+    --- FAIL: TestKnowledgeClaimTransientHistoryErrorRequeuesTask/single/codex (0.59s)
+    --- FAIL: TestKnowledgeClaimTransientHistoryErrorRequeuesTask/single/claude (0.14s)
+    --- FAIL: TestKnowledgeClaimTransientHistoryErrorRequeuesTask/batch/codex (0.09s)
+    --- FAIL: TestKnowledgeClaimTransientHistoryErrorRequeuesTask/batch/claude (0.06s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/handler	2.401s
+FAIL
+
+=== Run 2: both tests, after adding TestKnowledgeClaimErrorDisposition ===
+Command: cd server && DATABASE_URL='postgres://multica:multica@127.0.0.1:5432/kfix_claim_handler?sslmode=disable' env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 go test ./internal/handler -run '^(TestKnowledgeClaimErrorDisposition|TestKnowledgeClaimTransientHistoryErrorRequeuesTask)$' -count=1 -v
+Exit code: 1
+
+# github.com/multica-ai/multica/server/internal/handler [github.com/multica-ai/multica/server/internal/handler.test]
+internal/handler/daemon_knowledge_test.go:402:21: undefined: knowledgeClaimErrorDisposition
+FAIL	github.com/multica-ai/multica/server/internal/handler [build failed]
+FAIL

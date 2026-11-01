@@ -2120,6 +2120,23 @@ func (h *Handler) failClaimedTaskBeforeLaunch(
 	return &claimBuildFailure{outcome: outcome, status: status, message: claimMessage}
 }
 
+// knowledgeClaimErrorDisposition classifies a BuildTaskKnowledgeClaim error.
+// A typed knowledge refusal keeps its code and settles the task, as does a row
+// that is truly gone mid-claim. Anything else (a pgconn error, a context
+// deadline or cancellation, a dropped connection) is a transient read before
+// any descriptor was finalized: the caller requeues that exact claim and
+// writes no failure reason, so the next claim reruns the full history guard.
+func knowledgeClaimErrorDisposition(err error) (code string, requeue bool) {
+	var domain *service.CollaborationError
+	if errors.As(err, &domain) {
+		return domain.Code, false
+	}
+	if errors.Is(err, pgx.ErrNoRows) {
+		return "knowledge_unavailable", false
+	}
+	return "", true
+}
+
 func chatSessionResumeFallbackNeeded(priorSessionID, priorWorkDir string) bool {
 	return priorSessionID == "" || priorWorkDir == ""
 }
@@ -3233,10 +3250,19 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 	}
 	claim, prior, knowledgeErr := h.TaskService.BuildTaskKnowledgeClaim(r.Context(), *task, knowledge, resp.PriorSessionID)
 	if knowledgeErr != nil {
-		code := "knowledge_unavailable"
-		var domain *service.CollaborationError
-		if errors.As(knowledgeErr, &domain) {
-			code = domain.Code
+		code, requeue := knowledgeClaimErrorDisposition(knowledgeErr)
+		if requeue {
+			slog.Error("task claim: knowledge history load failed; requeueing claim",
+				"task_id", uuidToString(task.ID), "error", knowledgeErr)
+			if _, requeueErr := h.TaskService.RequeueTaskAfterClaimFailure(r.Context(), *task); requeueErr != nil {
+				slog.Error("task claim: requeue after knowledge history load failure failed; stale reclaim will recover it",
+					"task_id", uuidToString(task.ID), "error", requeueErr)
+			}
+			return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, &claimBuildFailure{
+				outcome: "error_knowledge_claim_load",
+				status:  http.StatusInternalServerError,
+				message: "failed to load task knowledge context",
+			}
 		}
 		return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, h.failClaimedTaskBeforeLaunch(r.Context(), task, code, taskfailure.Reason(code), "error_knowledge_claim", http.StatusConflict, code)
 	}

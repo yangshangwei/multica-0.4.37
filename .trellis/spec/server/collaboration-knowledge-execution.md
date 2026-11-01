@@ -133,6 +133,8 @@ transitions may omit it. Completion's failure reroute preserves it.
 First launch refusal is terminal with zero processes. Later refusal retains prior
 usage, messages and termination, then seals the lifecycle. All knowledge failure
 reasons are excluded from automatic fresh fallback, requeue and input replay.
+A transient dependency read while building a claim, before any descriptor is
+finalized, is not a knowledge failure reason.
 `Result.KnowledgeOutput` retains failure evidence separately from failed final
 `Output`; both it and `KnowledgeFailure` have `json:"-"`. Deduplicate transcript
 evidence and keep private input/Provider stderr out of generic runtime/server logs.
@@ -180,6 +182,7 @@ oracle. No body goes into a supervisor ledger or stable base/CLAUDE file.
 | Stale claim, session, preparation, manifest, prompt or invocation | `knowledge_context_changed`; no replacement snapshot or automatic replay |
 | Current consumer/source/credential denied | `knowledge_authorization_denied` |
 | Bound exceeded, corrupt proof, missing/ambiguous observation ACK or dependency failure | Fail closed (`knowledge_unavailable` or the precise typed refusal) |
+| Transient read failure while building a claim, before descriptor finalization | Requeue that exact claim generation with no failure reason; typed refusals and missing rows stay terminal |
 | Lock contention exhausts bounded retries | `knowledge_busy`; terminal for the logical input |
 | Missing lifecycle support/mandatory persistence | `knowledge_invocation_unsupported` or collaboration unsupported refusal |
 | Source/gate loss after launch | Preserve started/terminated facts and original cleanup authority; refuse another launch |

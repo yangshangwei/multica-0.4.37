@@ -1,13 +1,18 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/daemonws"
 	"github.com/multica-ai/multica/server/internal/middleware"
@@ -313,5 +318,91 @@ func TestKnowledgeExplicitRerunUsesSourceSessionExposure(t *testing.T) {
 	claimed := f.claim(t, "single", &f.inv)
 	if claimed.PriorSessionID != "" || claimed.KnowledgeContext.Session.NativeSessionID != "" {
 		t.Fatal("explicit source-session rerun bypassed knowledge revalidation")
+	}
+}
+
+// taskClaimRow is the queue state the claim error tests settle on.
+type taskClaimRow struct {
+	status, failureReason string
+	dispatched            bool
+}
+
+func loadTaskClaimRow(t *testing.T, taskID string) taskClaimRow {
+	t.Helper()
+	var row taskClaimRow
+	dbfx.QueryRow(t, `SELECT status, COALESCE(failure_reason, ''), dispatched_at IS NOT NULL FROM agent_task_queue WHERE id=$1`, taskID).Scan(&row.status, &row.failureReason, &row.dispatched)
+	return row
+}
+
+// M1: a transient read while building the claim's knowledge decision is an
+// infrastructure failure, not a knowledge refusal. It must return that exact
+// claim to the queue instead of settling the task as knowledge_unavailable.
+// The fault swaps the shared testHandler.TaskService.Queries, so this test
+// must never call t.Parallel.
+func TestKnowledgeClaimTransientHistoryErrorRequeuesTask(t *testing.T) {
+	for _, transport := range []string{"single", "batch"} {
+		for _, provider := range []string{"codex", "claude"} {
+			t.Run(transport+"/"+provider, func(t *testing.T) {
+				f := newTaskKnowledgeHTTPFixture(t, "issue")
+				testHandler.TaskService.KnowledgeContextEnabled = false
+				if provider != "claude" {
+					dbfx.Exec(t, `UPDATE agent_runtime SET provider=$2 WHERE id=$1`, f.runtimeID, provider)
+				}
+				saved := testHandler.TaskService.Queries
+				t.Cleanup(func() { testHandler.TaskService.Queries = saved })
+				testHandler.TaskService.Queries = db.New(failQueryDBTX{DBTX: testPool, failOn: "-- name: ListTaskKnowledgeRuntimeHistory", err: &pgconn.PgError{Code: "57P01", Message: "terminating connection due to administrator command"}})
+
+				if transport == "single" {
+					response := f.call(t, testHandler.ClaimTaskByRuntime, "/api/daemon/runtimes/"+f.runtimeID+"/tasks/claim", map[string]any{"knowledge_context": nil}, "runtimeId", f.runtimeID)
+					if response.Code != http.StatusInternalServerError || strings.Contains(response.Text(), "knowledge_") {
+						t.Errorf("transient history read answered %d %q, want a 500 that names no knowledge refusal", response.Code, response.Text())
+					}
+				} else {
+					var out struct {
+						Tasks []AgentTaskResponse `json:"tasks"`
+					}
+					body := map[string]any{"daemon_id": f.daemonID, "runtime_ids": []string{f.runtimeID}, "max_tasks": 1}
+					f.call(t, testHandler.ClaimTasksByRuntime, "/api/daemon/tasks/claim", body).Want(200).JSON(&out)
+					if len(out.Tasks) != 0 {
+						t.Fatalf("batch claim delivered %d tasks through a failed knowledge read", len(out.Tasks))
+					}
+				}
+				if row := loadTaskClaimRow(t, f.taskID); row != (taskClaimRow{status: "queued"}) {
+					t.Fatalf("transient knowledge history read settled the task: %+v, want queued with no dispatch and no failure reason", row)
+				}
+
+				testHandler.TaskService.Queries = saved
+				task := f.claim(t, "single", nil)
+				if task.KnowledgeContext != nil {
+					t.Fatal("ordinary reclaim negotiated knowledge with the gate off")
+				}
+			})
+		}
+	}
+}
+
+// Canonical classification for M1. The DB-backed requeue wiring is pinned by
+// TestKnowledgeClaimTransientHistoryErrorRequeuesTask.
+func TestKnowledgeClaimErrorDisposition(t *testing.T) {
+	for _, tc := range []struct {
+		name        string
+		err         error
+		wantCode    string
+		wantRequeue bool
+	}{
+		{"typed refusal", &service.CollaborationError{Status: http.StatusConflict, Code: "knowledge_context_changed"}, "knowledge_context_changed", false},
+		{"wrapped typed refusal", fmt.Errorf("claim: %w", &service.CollaborationError{Status: http.StatusConflict, Code: "knowledge_invocation_unsupported"}), "knowledge_invocation_unsupported", false},
+		{"missing row", fmt.Errorf("x: %w", pgx.ErrNoRows), "knowledge_unavailable", false},
+		{"postgres shutdown", &pgconn.PgError{Code: "57P01"}, "", true},
+		{"deadline", context.DeadlineExceeded, "", true},
+		{"cancelled", context.Canceled, "", true},
+		{"connection reset", errors.New("connection reset"), "", true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			code, requeue := knowledgeClaimErrorDisposition(tc.err)
+			if code != tc.wantCode || requeue != tc.wantRequeue {
+				t.Fatalf("knowledgeClaimErrorDisposition(%v) = (%q, %t), want (%q, %t)", tc.err, code, requeue, tc.wantCode, tc.wantRequeue)
+			}
+		})
 	}
 }
