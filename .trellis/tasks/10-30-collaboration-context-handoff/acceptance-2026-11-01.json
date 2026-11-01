@@ -239,10 +239,12 @@
         "M5",
         "L8"
       ],
-      "coordinator_review": "web pass-with-notes; claim in progress; launch/write pending",
+      "coordinator_review": "lane reviews and combined45efa093c pass-with-notes; IW1 clockfollowup independentlypass; migrationfixture followup pending",
       "state_at_resume": "14 of21 committed at resume",
       "ownership_ledger": "execution-resume-2026-11-01.json",
-      "current_state": "all21 have lane fix or test dispositions; full lane reviews and combined validation pending"
+      "current_state": "all_four_lanes_integrated_45efa093c_with_runtime; independent_combined_pass_with_notes; full_service_and_fixture_delta_recheck_pending",
+      "knowledge_integration_head": "45efa093c",
+      "integration": "not_yet_main_merged"
     }
   },
   "release_gates_runbook": {
@@ -283,5 +285,31 @@
   "default_database_incident": {
     "audit": "default-db-incident-audit-2026-11-01.json",
     "state": "open; 272 migration ledger rows timestamped 456-763; preincident state unknown; no rollback attempted"
+  },
+  "rk1_framework_review": {
+    "source": "4b508179f",
+    "verdict": "changes-required",
+    "required": [
+      "RKI1missing_or_partialrequestedtrials",
+      "RKI2effectiveconfigurationselectorfingerprints",
+      "RKI3durableproviderevidencepublicationerrors"
+    ],
+    "RKI1_RKI2_fix": "62bd98eb9; scratchlauncher37OK0BAD, independentrecheckpending",
+    "RKI3_RKI4": "nativeimplementerfakefaultverificationrunning",
+    "same_source_fake": "intermediate runtime-fixed raceexit1 E0amissingseal, preserved; no paidstart",
+    "runnable": false,
+    "paid_consumed": 0
+  },
+  "delivery_preparation": {
+    "branch": "codex/collaboration-delivery-20261101",
+    "tip": "8d2640254",
+    "product": "9de37277d",
+    "fixes": [
+      "8d976a696 WD1",
+      "d0bdd96e5 WD2"
+    ],
+    "independent_review": "pass-with-notes; WD1 andWD2closed",
+    "scope": "localfixturecontracts/TS/lint/YAML/Windowsamd64compileonly; no nativePowerShell/installGUI/Provider/externaCI",
+    "final_candidate_binding": "pending_after_merges"
   }
 }
