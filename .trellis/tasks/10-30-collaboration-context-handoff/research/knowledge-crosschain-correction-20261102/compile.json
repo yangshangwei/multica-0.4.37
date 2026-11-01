@@ -1,0 +1,19 @@
+{
+  "source_base": "20f128dcecbf1c5eda793e8feddef892799abe76",
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-c",
+    "-tags=knowledgeintegration",
+    "-o",
+    "<private>/server.test",
+    "./cmd/server"
+  ],
+  "exit_code": 0,
+  "test_source_sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+  "binary_sha256": "a5a55a9280932f0da668d3d18fd8c21ccfcd9c793fa1a2fb9288aae8115a53c7",
+  "TestMain_executed": false,
+  "Provider_calls": 0
+}

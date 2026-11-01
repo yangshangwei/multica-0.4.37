@@ -1,0 +1,51 @@
+{
+  "recorded_at": "2026-11-01T19:36:04.398931+00:00",
+  "code_commit": "057bc96163c5ef38fe82920784b80d5e0d619c35",
+  "source_sha256": {
+    "server/cmd/server/collaboration_knowledge_correction_composite_test.go": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41"
+  },
+  "shared_host_fixture_sha256": "d866d3f888a1ed48b015a04bb844170a1b5cd8c53ee662f104f0508b23fac3f6",
+  "base_commit": "20f128dcecbf1c5eda793e8feddef892799abe76",
+  "source_mutation": "one new knowledgeintegration test file only",
+  "evidence_sha256": {
+    "normal.json": "31fcf9c7f116a54909c85e65d85096cc2279b0c625021ec1b67fa5eaea6b624d",
+    "race.json": "40c13e6e72de6da4745ab61b969f5e2ae831af8d21e1ec0c6666c764a78edf69",
+    "compile.json": "6ec5c573533025a8a56480cfef45195267a357b4c7372e02d650655caa73c2e2",
+    "plan.md": "2575ebdc4693ae4c40c6f877cfe91a81f663bbc008692d179e30ef2a267c5c22",
+    "db-permission.md": "743e1e00d7c3c8c3303777e8789be15e4ed18255df1dd0cf3567ebc90e6d2038",
+    "deployment-gate-followup.md": "49ac42dfeaf613b611abb5cd6f88dd6b596c4b1389c532a94f78ee4c208f4880",
+    "deployment-gate-source-binding.json": "80b558bf375dd2629a1a6e95961c8097d3ebd7bab389cce4ad1c3745845e140a"
+  },
+  "actual_results": {
+    "normal": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "race": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "normal_race_databases_distinct": true,
+  "vet": {
+    "command": [
+      "env",
+      "-u",
+      "DATABASE_URL",
+      "-u",
+      "MULTICA_RUN_REAL_AGENT_SMOKE",
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "-tags=knowledgeintegration",
+      "./cmd/server"
+    ],
+    "exit_code": 0,
+    "execution": "analysis only; TestMain not executed"
+  },
+  "full_candidate_acceptance": false,
+  "real_provider_calls": 0
+}
