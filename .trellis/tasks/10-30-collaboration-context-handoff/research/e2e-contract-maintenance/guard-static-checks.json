@@ -1,0 +1,27 @@
+{
+  "source_head": "c3db64b24fea7116622d106ce2231853e1be72f9",
+  "files": {
+    "e2e/collaboration-runtime-handoff-web.spec.ts": "f1f294ffd3e2261751ae4a53a894237bd1cafa30d5f1c1d29c094c1d0b853103",
+    "e2e/collaboration-runtime-handoff-desktop.spec.ts": "e03c98ba0a2db74f5f911bfff05990a3685abfbc77235bbe681d89afe227a540"
+  },
+  "checks": [
+    {
+      "command": "pnpm exec playwright test e2e/collaboration-runtime-handoff-web.spec.ts e2e/collaboration-runtime-handoff-desktop.spec.ts --list",
+      "exit_code": 0,
+      "collected": 2,
+      "executed": 0
+    },
+    {
+      "command": "pnpm exec tsc -p .omx/private/e2e-maintenance/tsconfig-guards.json",
+      "exit_code": 0,
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "configuration": "Repo strict React/ESNext base; no emit and no declaration generation for executable E2E fixtures; core workspace path aliases. Earlier library declaration-mode attempt produced TS4058 for existing unexported TestWorkspace; no source workaround applied."
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "provider_calls": 0,
+  "scope": "Historical initial password-guard static snapshot before canonical ENV-1 was added. Final changed-source validation is static-validation.json."
+}

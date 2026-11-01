@@ -1,0 +1,7 @@
+# E2E maintenance independent review — execution recheck
+
+Current committed patch1ecabb964 has the identical tested E2E diff19ec92ade77f... and all11 static-validation file hashes. Independent raw-run/results hashes verify all14 historical targets passed:9legacy +3retainedpassword +2finalpassword; ENV1+runtimeWeb+runtimeElectron3additional cases also pass non-skipped,1worker/0retry. All passes are exactC3API/renderermaintenance evidence; first CORS and passwordsetup failures and legacyLeave skip remain preserved. No code blocker identified.
+
+Remaining handoff correction: current review-ready.md still says12pass/2pending and verification-runs.json lacks repaired-password-final-2, although the trusted raw run is complete2pass0fail0skip and commit1ec says14passed. Root's assignment explicitly requests final recheck after the child refreshes review-ready/summary. Update those sanitized aggregate entries, no new browser test needed. Then this reviewer can bind finalpass-with-notes to1ec (if code unchanged). verified-run-inventory.json already maps every historical target to actual named passing run and separate3runtimepasses.
+
+Full strict expandedE2Ebaseline51errors and directbaseESLint helperdependencycontext7errors are honestly separated from changed11source strictcheck and fixturecontextlintpasses. Final mergedcandidate/fullmakecheck remains open. Reviewer ran no tests/browser/DB/services/Provider and edits no product/source.

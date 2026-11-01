@@ -1,0 +1,58 @@
+[
+  {
+    "lane": "legacy",
+    "command": [
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "e2e/collaboration-account-desktop.spec.ts",
+      "e2e/collaboration-boundaries-web.spec.ts",
+      "e2e/collaboration-delivery-web.spec.ts",
+      "e2e/collaboration-editing-web.spec.ts",
+      "e2e/collaboration-leave-web.spec.ts",
+      "e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "e2e/collaboration-mention-journeys-web.spec.ts",
+      "e2e/collaboration-records-web.spec.ts",
+      "--list",
+      "--grep",
+      "Desktop child links|Desktop authors initial|Smaller gaps:|Web creates one private issue|Web explicitly resubmits|Web source creation,|Web Leave issue|(?:Web|Desktop) owner revocation|Web shares ordinary"
+    ],
+    "exit_code": 0,
+    "log_sha256": "41c9e2c7a9d84e9187ea70c195aad1d41e699195958cee0d8c12e9ead3177766",
+    "summary": "Total: 10 tests in 8 files",
+    "executed": 0
+  },
+  {
+    "lane": "password",
+    "command": [
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "e2e/collaboration-retained-attachment.spec.ts",
+      "e2e/collaboration-source-surface.spec.ts",
+      "--list"
+    ],
+    "exit_code": 0,
+    "log_sha256": "2583339aca7a64fe37e7d7f4110e8e274aa67ef58756b922107d7f2012f202e2",
+    "summary": "Total: 4 tests in 2 files",
+    "executed": 0
+  },
+  {
+    "lane": "runtime-password",
+    "command": [
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "e2e/collaboration-runtime-handoff-web.spec.ts",
+      "e2e/collaboration-runtime-handoff-desktop.spec.ts",
+      "--list"
+    ],
+    "exit_code": 0,
+    "log_sha256": "cb11bf4ea90f9b320243339b92f77e05c3e97103e49b58236671eacf71ba4d0a",
+    "summary": "Total: 3 tests in 2 files",
+    "executed": 0
+  }
+]
