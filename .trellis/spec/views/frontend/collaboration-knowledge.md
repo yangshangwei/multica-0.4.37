@@ -39,7 +39,12 @@ Memory, comment and run record are independent required-source choices. No share
 memory is needed for comment/run proposals. Preserve chosen historical version or
 record ID as lists advance; call `buildKnowledgeSources` to resolve exact refs at
 submit. Component state owns IDs, selections and human-authored fields, never
-copied source bodies. Verification claims and test/commit references stay clearly
+copied source bodies. That state sits above the Query gate: lease erasure or a
+refetch hides server content but never clears the draft. At submit, if a refresh
+erased the list, join that read (`refetch({ cancelRefetch: false })`, bounded by
+one refresh interval) and prepare the intent only from a current
+`can_propose === true` view. Report an unresolvable source, lost proposal
+availability and invalid input as distinct errors, keeping the draft. Verification claims and test/commit references stay clearly
 attributed data. Show expiry and applicability without implying server-tested
 evidence or automatic runtime consumption.
 
@@ -97,6 +102,7 @@ identity leaves an open draft unchanged.
 | Condition | UI behavior |
 | --- | --- |
 | Selected source project changed | Preserve text, clear effective target and request explicit selection |
+| Source list refreshing at proposal submit | Wait for the current read; post only with current `can_propose`; keep the draft on failure |
 | Review candidate/version/revision/hash/availability changed | Reset checkbox and decision controls |
 | Lease erasure or unchanged refetch during review | Hide body and controls; restore the same checkbox/reason when the same tuple returns |
 | Source unavailable but pending rejection granted | Show safe audit/reject controls without material |
@@ -119,7 +125,8 @@ identity leaves an open draft unchanged.
 `knowledge-panel.test.tsx` owns source/target wiring, keyboard confirmation,
 original-intent recovery, changed-review reset, unchanged-refresh retention of
 decision input, draft isolation from decision and recovery receipts, recovery
-ownership, safe audit facts, independent
+ownership, submit during list refresh with staged error attribution, safe audit
+facts, independent
 source choices, external-handler catalog avoidance, correction/derivation and
 restricted withdrawal. Existing page tests assert mount identities; locale
 parity covers both dictionaries. Core owns exhaustive schema/hash/cache matrices.

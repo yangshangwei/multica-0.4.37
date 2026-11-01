@@ -1,7 +1,8 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { buildKnowledgeSources, prepareKnowledgeProposal, type CollaborationIssue, type CollaborationKnowledgeCandidates,
-  type CollaborationKnowledgeProposal, type CollaborationKnowledgeTarget, type CollaborationScope, type KnowledgeIntent, type KnowledgeSourceSelection } from "@multica/core/collaboration";
+import { buildKnowledgeSources, CollaborationUnavailableError, KNOWLEDGE_REFRESH_MS, prepareKnowledgeProposal, type CollaborationIssue, type CollaborationKnowledgeCandidates,
+  type CollaborationKnowledgeProposal, type CollaborationKnowledgeSource, type CollaborationKnowledgeTarget, type CollaborationScope, type KnowledgeIntent,
+  type KnowledgeSourceSelection } from "@multica/core/collaboration";
 import { workspaceListOptions } from "@multica/core/workspace/queries";
 import { projectListOptions } from "@multica/core/projects/queries";
 import { Button } from "@multica/ui/components/ui/button";
@@ -13,6 +14,15 @@ import { KnowledgeSelect } from "./knowledge-controls";
 import { KnowledgeSourcePicker } from "./knowledge-source-picker";
 
 export interface KnowledgeProposalMode { target?: CollaborationKnowledgeTarget; supersedesId?: string; derivedId?: string }
+
+/** Join the panel's in-flight list read, bounded by one refresh interval so a paused offline query cannot hang submit. */
+async function awaitRefreshedView(refreshView: () => Promise<CollaborationKnowledgeCandidates | undefined>) {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([refreshView().catch(() => undefined),
+      new Promise<undefined>((resolve) => { timer = setTimeout(() => resolve(undefined), KNOWLEDGE_REFRESH_MS); })]);
+  } finally { clearTimeout(timer); }
+}
 
 function OtherTarget({ disabled, onChange }: { disabled: boolean; onChange: (target: CollaborationKnowledgeTarget | null) => void }) {
   const { t } = useT("collaboration");
@@ -33,8 +43,9 @@ function OtherTarget({ disabled, onChange }: { disabled: boolean; onChange: (tar
   </div>;
 }
 
-export function KnowledgeProposalForm({ scope, issue, view, mode, locked, onSubmit, onCancel }: {
+export function KnowledgeProposalForm({ scope, issue, view, refreshView, mode, locked, onSubmit, onCancel }: {
   scope: CollaborationScope; issue: CollaborationIssue; view: CollaborationKnowledgeCandidates | undefined;
+  refreshView: () => Promise<CollaborationKnowledgeCandidates | undefined>;
   mode: KnowledgeProposalMode; locked: boolean; onSubmit: (intent: KnowledgeIntent) => Promise<void>; onCancel: () => void;
 }) {
   const { t } = useT("collaboration"); const client = useQueryClient(); const id = useId();
@@ -52,20 +63,28 @@ export function KnowledgeProposalForm({ scope, issue, view, mode, locked, onSubm
     ? { kind: "workspace" as const, workspace_id: issue.source_workspace.id }
     : project && destination === project.id ? { kind: "project" as const, workspace_id: issue.source_workspace.id, project_id: project.id } : null);
   const disabled = locked || building;
+  // A refreshing (erased) list does not block submit; only a current, explicit non-grant does.
+  const blocked = disabled || view !== undefined && view.capabilities.can_propose !== true;
   return <form aria-label={t(($) => $.knowledge.propose)} className="min-w-0 space-y-5" onSubmit={(event) => {
-    event.preventDefault(); if (disabled || submitting.current || !view || view.capabilities.can_propose !== true) return;
+    event.preventDefault(); if (blocked || submitting.current) return;
     if (!target || !summary.trim() || !content.trim() || !surfaces.length || !selected.length || expiry && (!Number.isFinite(Date.parse(expiry)) || Date.parse(expiry) <= Date.now())) { setError(t(($) => $.knowledge.invalid)); return; }
     submitting.current = true; setBuilding(true); setError(null);
     void (async () => {
-      const sources = await buildKnowledgeSources(client, scope, issue.id, selected);
-      const current = alive.current;
-      if (current.scope !== scope || !current.view || current.view.capabilities.can_propose !== true) throw new Error("Source authorization changed");
-      const intent = prepareKnowledgeProposal(scope, current.view, { target, summary, content, sources,
-        evidence: evidence.trim() ? [{ kind: evidenceKind, source: sources[0]!, reference: evidence, verification }] : [],
-        applicability: { surfaces }, expires_at: expiry ? new Date(expiry).toISOString() : null,
-        supersedes_candidate_id: mode.supersedesId ?? null, derived_from_candidate_id: mode.derivedId ?? null });
+      let sources: CollaborationKnowledgeSource[];
+      try { sources = await buildKnowledgeSources(client, scope, issue.id, selected); }
+      catch { setError(t(($) => $.knowledge.sourceChanged)); return; }
+      // Prepare only from a current authorized list; never reuse a grant a refresh erased.
+      const current = alive.current.view ?? await awaitRefreshedView(refreshView);
+      if (alive.current.scope !== scope || current?.capabilities.can_propose !== true) { setError(t(($) => $.knowledge.proposalUnavailable)); return; }
+      let intent: KnowledgeIntent;
+      try {
+        intent = prepareKnowledgeProposal(scope, current, { target, summary, content, sources,
+          evidence: evidence.trim() ? [{ kind: evidenceKind, source: sources[0]!, reference: evidence, verification }] : [],
+          applicability: { surfaces }, expires_at: expiry ? new Date(expiry).toISOString() : null,
+          supersedes_candidate_id: mode.supersedesId ?? null, derived_from_candidate_id: mode.derivedId ?? null });
+      } catch (error) { setError(error instanceof CollaborationUnavailableError ? t(($) => $.knowledge.proposalUnavailable) : t(($) => $.knowledge.invalid)); return; }
       await onSubmit(intent);
-    })().catch(() => setError(t(($) => $.knowledge.sourceChanged))).finally(() => { setBuilding(false); submitting.current = false; });
+    })().catch(() => setError(t(($) => $.knowledge.proposalUnavailable))).finally(() => { setBuilding(false); submitting.current = false; });
   }}>
     {(mode.supersedesId || mode.derivedId) && <p className="text-caption text-muted-foreground">{t(($) => $.knowledge.blankRevision)}</p>}
     <div className="space-y-2"><label htmlFor={`${id}-summary`} className="text-body font-medium">{t(($) => $.knowledge.summary)}</label>
@@ -101,7 +120,7 @@ export function KnowledgeProposalForm({ scope, issue, view, mode, locked, onSubm
     <div className="space-y-2"><label htmlFor={`${id}-expiry`} className="text-body font-medium">{t(($) => $.knowledge.expires)}</label>
       <Input id={`${id}-expiry`} type="datetime-local" value={expiry} onChange={(event) => setExpiry(event.target.value)} disabled={disabled} /></div>
     {error && <p role="alert" className="text-body text-destructive">{error}</p>}
-    <div className="flex flex-wrap gap-2"><Button type="submit" className="pointer-coarse:min-h-11" disabled={disabled || !view || view.capabilities.can_propose !== true}>{disabled ? t(($) => $.knowledge.submitting) : t(($) => $.knowledge.submit)}</Button>
+    <div className="flex flex-wrap gap-2"><Button type="submit" className="pointer-coarse:min-h-11" disabled={blocked}>{disabled ? t(($) => $.knowledge.submitting) : t(($) => $.knowledge.submit)}</Button>
       <Button type="button" variant="outline" disabled={disabled} onClick={onCancel}>{t(($) => $.knowledge.cancel)}</Button></div>
   </form>;
 }

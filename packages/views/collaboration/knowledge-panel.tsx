@@ -18,7 +18,9 @@ export function CollaborationKnowledgePanel({ scope, issue }: { scope: Collabora
 function SourceKnowledge({ scope, issue }: { scope: CollaborationScope; issue: CollaborationIssue }) {
   const [page, setPage] = useState<KnowledgePageOptions>({});
   const query = useCollaborationKnowledgeCandidates(scope, issue.id, page);
-  return <KnowledgeCollection scope={scope} issue={issue} query={query} page={page} setPage={setPage} sourceView={query.data?.value} />;
+  // cancelRefetch:false joins an in-flight refresh instead of restarting it.
+  const refreshView = async () => (await query.refetch({ cancelRefetch: false })).data?.value;
+  return <KnowledgeCollection scope={scope} issue={issue} query={query} page={page} setPage={setPage} sourceView={query.data?.value} refreshView={refreshView} />;
 }
 export function ManagedKnowledgePanel({ workspaceId, projectId }: { workspaceId: string; projectId?: string }) {
   const scope = useCollaborationScope();
@@ -31,9 +33,10 @@ function TargetKnowledge({ scope, workspaceId, projectId }: { scope: Collaborati
 }
 
 type KnowledgePage = CollaborationKnowledgeCandidates | CollaborationKnowledgeTargetList;
-function KnowledgeCollection({ scope, issue, query, page, setPage, sourceView }: {
+function KnowledgeCollection({ scope, issue, query, page, setPage, sourceView, refreshView }: {
   scope: CollaborationScope; issue?: CollaborationIssue; query: UseQueryResult<AuthorizedKnowledgeProjection<KnowledgePage>, Error>;
   page: KnowledgePageOptions; setPage: (value: KnowledgePageOptions) => void; sourceView?: CollaborationKnowledgeCandidates;
+  refreshView?: () => Promise<CollaborationKnowledgeCandidates | undefined>;
 }) {
   const { t } = useT("collaboration"); const client = useQueryClient(); const id = useId(); const busy = useRef(false);
   const [selectedId, setSelectedId] = useState<string | null>(null), [proposal, setProposal] = useState<KnowledgeProposalMode | null>(null);
@@ -126,6 +129,7 @@ function KnowledgeCollection({ scope, issue, query, page, setPage, sourceView }:
     </>}
     {selectedId && <KnowledgeReview scope={scope} candidateId={selectedId} issue={issue} canPropose={sourceView?.capabilities.can_propose === true} locked={locked}
       onSubmit={submit} onProposal={(mode) => { setProposal(mode); setFeedback(null); }} onSelect={setSelectedId} onClose={() => setSelectedId(null)} />}
-    {proposal && issue && <KnowledgeProposalForm key={`${proposal.supersedesId ?? ""}:${proposal.derivedId ?? ""}`} scope={scope} issue={issue} view={sourceView} mode={proposal} locked={locked} onSubmit={submit} onCancel={() => setProposal(null)} />}
+    {proposal && issue && refreshView && <KnowledgeProposalForm key={`${proposal.supersedesId ?? ""}:${proposal.derivedId ?? ""}`} scope={scope} issue={issue} view={sourceView}
+      refreshView={refreshView} mode={proposal} locked={locked} onSubmit={submit} onCancel={() => setProposal(null)} />}
   </section>;
 }

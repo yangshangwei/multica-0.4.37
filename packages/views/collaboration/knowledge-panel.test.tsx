@@ -371,6 +371,52 @@ it("recovering a request whose candidate is not in this panel does not open it h
   expect(api.getCollaborationKnowledgeOperation).toHaveBeenCalledWith(recovered.candidate_id, key);
 });
 
+// L8: submit joins a list refresh instead of blaming the source; each failure stage reports its own cause.
+const sourceChangedText = "A selected source is unavailable. Review the selection and try again.";
+function holdSourceList(page: () => ReturnType<typeof sourcePage>) {
+  let release: (() => void) | undefined;
+  vi.mocked(api.getCollaborationKnowledgeCandidates).mockImplementationOnce(() => new Promise((resolve) => { release = () => resolve(page()); }));
+  act(() => { void client.invalidateQueries({ queryKey: collaborationKnowledgeKeys.source(scope, issue.id) }); });
+  return async () => { await waitFor(() => expect(release).toBeDefined()); await act(async () => { release!(); }); };
+}
+
+it("submit waits for a refreshing source list instead of reporting a changed source", async () => {
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockImplementation(async (_issue, input) => ({ ...receipt(input.request_id, "propose"), candidate_id: input.candidate_id }));
+  mount(); await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" })); await fillProposal();
+  const releaseList = holdSourceList(sourcePage);
+  await waitFor(() => expect(screen.queryByRole("button", { name: /PRIVATE SUMMARY/ })).not.toBeInTheDocument());
+  const digest = vi.spyOn(crypto.subtle, "digest");
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+  await waitFor(() => expect(digest).toHaveBeenCalled());
+  await new Promise((resolve) => setTimeout(resolve, 50));
+  expect(send).not.toHaveBeenCalled(); expect(screen.queryByText(sourceChangedText)).not.toBeInTheDocument();
+  await releaseList();
+  await waitFor(() => expect(send).toHaveBeenCalledOnce());
+  expect(screen.queryByText(sourceChangedText)).not.toBeInTheDocument();
+});
+
+it("reports local validation failure as invalid input, not as an unavailable source", async () => {
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge");
+  mount(); await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" })); await fillProposal();
+  // The click-time precheck accepts NUL; only the schema inside prepareKnowledgeProposal rejects it.
+  fireEvent.change(screen.getByRole("textbox", { name: "Summary" }), { target: { value: `Human${String.fromCharCode(0)}conclusion` } });
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+  await screen.findByText("Check the text, sources, destination and expiry before submitting.");
+  expect(screen.queryByText(sourceChangedText)).not.toBeInTheDocument(); expect(send).not.toHaveBeenCalled();
+});
+
+it("fails closed with a proposal-unavailable notice when the refreshed list withdraws the grant", async () => {
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge");
+  mount(); await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" })); await fillProposal();
+  const releaseList = holdSourceList(() => parseCollaborationKnowledgeCandidates({ ...lease(), issue_id: issue.id, items: [summary()], next_cursor: null, capabilities: { can_propose: false } }));
+  await waitFor(() => expect(screen.queryByRole("button", { name: /PRIVATE SUMMARY/ })).not.toBeInTheDocument());
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+  await releaseList();
+  await screen.findByText("Proposing knowledge is not available right now. Your draft is kept.");
+  expect(send).not.toHaveBeenCalled(); expect(screen.getByRole("textbox", { name: "Summary" })).toHaveValue("Human conclusion");
+  expect(screen.queryByText(sourceChangedText)).not.toBeInTheDocument();
+});
+
 it("does not repeat approval actor/time as an identical latest decision", async () => {
   if (candidate.availability !== "available") throw new Error("Expected available fixture");
   const approver = "00000000-0000-4000-8000-000000000072", at = "2026-11-01T01:00:00Z";
