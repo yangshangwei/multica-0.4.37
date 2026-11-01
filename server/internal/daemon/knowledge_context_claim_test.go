@@ -5,12 +5,15 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/multica-ai/multica/server/internal/daemon/execenv"
 	"github.com/multica-ai/multica/server/pkg/agent"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
@@ -297,6 +300,176 @@ func TestKnowledgeActualResumeKeepsExactScopeGeneration(t *testing.T) {
 	}
 }
 
+// unreachableResumeTurn models a follow-up input whose prior workdir is gone (GC
+// or a non-reusable scope) while the server still bound the claim to that
+// session. The daemon's reachability gate then drops the resume.
+func (f *knowledgeDaemonFixture) unreachableResumeTurn(t *testing.T) (TaskResult, string) {
+	t.Helper()
+	firstGeneration := f.task.KnowledgeContext.Session.Generation
+	first := f.run(t)
+	if first.Status != "completed" || first.SessionID != f.native {
+		t.Fatalf("initial input failed: %s %s", first.Status, first.FailureReason)
+	}
+	f.task.ID = uuid.NewString()
+	f.task.PriorSessionID, f.task.PriorWorkDir = first.SessionID, filepath.Join(t.TempDir(), "collected")
+	f.bindClaim("issue", f.task.IssueID)
+	f.task.KnowledgeContext.Session.Generation = firstGeneration
+	f.task.KnowledgeContext.Session.NativeSessionID = first.SessionID
+	f.task.Agent.CustomEnv["FAKE_NATIVE"] = "fresh-after-drop"
+	return first, firstGeneration
+}
+
+func knowledgeCapturedPrompt(t *testing.T, f *knowledgeDaemonFixture) string {
+	t.Helper()
+	input, err := os.ReadFile(f.capture)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var wire struct {
+		Message struct {
+			Content []struct {
+				Text string `json:"text"`
+			} `json:"content"`
+		} `json:"message"`
+	}
+	if err := json.Unmarshal(input, &wire); err != nil || len(wire.Message.Content) != 1 {
+		t.Fatalf("captured stdin is not one final input: %v", err)
+	}
+	return wire.Message.Content[0].Text
+}
+
+func TestKnowledgeUnreachablePriorWorkdirRebindsFreshGeneration(t *testing.T) {
+	f := newKnowledgeDaemonFixture(t)
+	first, firstGeneration := f.unreachableResumeTurn(t)
+	second := f.run(t)
+	if second.Status != "completed" || second.FailureReason != "" || second.SessionID != "fresh-after-drop" {
+		t.Fatalf("unreachable resume did not start a fresh bound session: status=%s reason=%s session=%s", second.Status, second.FailureReason, second.SessionID)
+	}
+	prepares := f.callsFor("prepare")
+	if len(prepares) != 2 {
+		t.Fatalf("prepare count = %d, want 2", len(prepares))
+	}
+	var unflagged map[string]json.RawMessage
+	if err := json.Unmarshal(prepares[0].body, &unflagged); err != nil {
+		t.Fatal(err)
+	}
+	if _, ok := unflagged["resume_unavailable"]; ok {
+		t.Fatal("a reachable or fresh prepare carried resume_unavailable")
+	}
+	var flagged map[string]json.RawMessage
+	if err := json.Unmarshal(prepares[1].body, &flagged); err != nil {
+		t.Fatal(err)
+	}
+	if string(flagged["resume_unavailable"]) != "true" {
+		t.Fatalf("dropped resume did not report resume_unavailable: %s", prepares[1].body)
+	}
+	var stale protocol.TaskKnowledgeSessionBinding
+	if err := json.Unmarshal(flagged["session"], &stale); err != nil {
+		t.Fatal(err)
+	}
+	if stale.Generation != firstGeneration || stale.NativeSessionID != first.SessionID {
+		t.Fatal("flagged prepare did not carry the original claimed binding")
+	}
+	authorizations := f.callsFor("authorize")
+	if len(authorizations) != 2 {
+		t.Fatalf("authorize count = %d, want 2", len(authorizations))
+	}
+	var auth protocol.TaskKnowledgeAuthorizeRequest
+	if err := json.Unmarshal(authorizations[1].body, &auth); err != nil {
+		t.Fatal(err)
+	}
+	if auth.Session.Generation != f.freshGeneration || auth.Session.NativeSessionID != "" || auth.Session.ScopeID != f.task.IssueID {
+		t.Fatal("fresh launch was not authorized under the server-minted binding")
+	}
+	argv, err := os.ReadFile(f.argv)
+	if err != nil {
+		t.Fatal(err)
+	}
+	segments := strings.Split(string(argv), "PHYSICAL_START\n")
+	if len(segments) != 3 || strings.Contains(segments[1], "--resume") {
+		t.Fatalf("second process was not a fresh launch: %q", argv)
+	}
+	prompt := knowledgeCapturedPrompt(t, f)
+	if !strings.Contains(prompt, privateKnowledgeTestBody) {
+		t.Fatal("fresh session did not receive the current approved knowledge")
+	}
+	if !strings.Contains(prompt, execenv.SessionContinuityNoticeIssue) {
+		t.Fatal("fresh session lost the ordinary continuity notice")
+	}
+	observed := false
+	for _, call := range f.callsFor("observations") {
+		var observation protocol.TaskKnowledgeObservation
+		if err := json.Unmarshal(call.body, &observation); err != nil {
+			t.Fatal(err)
+		}
+		if observation.AttemptNonce == auth.AttemptNonce && observation.Kind == "native_session" && observation.NativeSessionID == "fresh-after-drop" {
+			observed = true
+		}
+	}
+	if !observed {
+		t.Fatal("fresh native identity was not observed under its own attempt")
+	}
+}
+
+// The daemon binds only a response that differs from the claim in generation
+// and native ID alone; anything else is refused with zero processes.
+func TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding(t *testing.T) {
+	for _, tc := range []string{"echoed stale binding", "reused claimed generation"} {
+		t.Run(tc, func(t *testing.T) {
+			f := newKnowledgeDaemonFixture(t)
+			_, firstGeneration := f.unreachableResumeTurn(t)
+			if tc == "echoed stale binding" {
+				f.ignoreResumeUnavailable = true
+			} else {
+				f.freshGeneration = firstGeneration
+			}
+			second := f.run(t)
+			if second.Status != "blocked" || second.FailureReason != agent.KnowledgeContextChanged {
+				t.Fatalf("unsafe rebind was not refused: status=%s reason=%s", second.Status, second.FailureReason)
+			}
+			prepares := f.callsFor("prepare")
+			if len(prepares) != 2 {
+				t.Fatalf("prepare count = %d, want 2", len(prepares))
+			}
+			var flagged map[string]json.RawMessage
+			if err := json.Unmarshal(prepares[1].body, &flagged); err != nil {
+				t.Fatal(err)
+			}
+			if string(flagged["resume_unavailable"]) != "true" {
+				t.Fatal("dropped resume did not report resume_unavailable")
+			}
+			if len(f.callsFor("authorize")) != 1 {
+				t.Fatal("refused rebind requested a launch authorization")
+			}
+			argv, _ := os.ReadFile(f.argv)
+			if strings.Count(string(argv), "PHYSICAL_START") != 1 {
+				t.Fatal("refused rebind started a process")
+			}
+		})
+	}
+}
+
+// An upgraded daemon talking to an API that predates resume_unavailable gets
+// the strict decoder's 400 and fails closed with no process for that input.
+func TestKnowledgeUnreachableResumeOnOlderServerFailsClosed(t *testing.T) {
+	f := newKnowledgeDaemonFixture(t)
+	f.unreachableResumeTurn(t)
+	f.mu.Lock()
+	f.refuseAction, f.refuseCode, f.refuseStatus = "prepare", "invalid_knowledge_request", http.StatusBadRequest
+	f.mu.Unlock()
+	second := f.run(t)
+	if second.Status != "blocked" || second.FailureReason != agent.KnowledgeUnavailable {
+		t.Fatalf("older API rejection did not fail closed: status=%s reason=%s", second.Status, second.FailureReason)
+	}
+	if len(f.callsFor("prepare")) != 2 || len(f.callsFor("authorize")) != 1 {
+		t.Fatal("older API rejection was retried or reached launch authorization")
+	}
+	argv, _ := os.ReadFile(f.argv)
+	if strings.Count(string(argv), "PHYSICAL_START") != 1 {
+		t.Fatal("older API rejection started a process")
+	}
+}
+
 func TestKnowledgeChangedNativeIDIsObservedButNeverRelabeled(t *testing.T) {
 	f := newKnowledgeDaemonFixture(t)
 	f.task.Agent.CustomEnv["FAKE_RESULT_NATIVE"] = "unapproved-new-native"
@@ -488,7 +661,7 @@ func TestKnowledgePreparationBudgetIncludesFullEnvelope(t *testing.T) {
 	if err != nil || material <= protocol.CollaborationKnowledgeMaxRuntimeBytes {
 		t.Fatal("fixture full envelope must exceed budget")
 	}
-	if reason := agent.KnowledgeFailureReason(validateKnowledgePreparation(f.task, fingerprint, p)); reason != agent.KnowledgeUnavailable {
+	if reason := agent.KnowledgeFailureReason(validateKnowledgePreparation(f.task, f.task.KnowledgeContext.Session, false, fingerprint, p)); reason != agent.KnowledgeUnavailable {
 		t.Fatal("full private response was not budgeted")
 	}
 }

@@ -53,6 +53,11 @@ type knowledgeDaemonFixture struct {
 	prepareID                                    string
 	sourceIssueID                                string
 	native                                       string
+	// freshGeneration is the scope generation this fake server mints when a
+	// prepare request reports resume_unavailable; ignoreResumeUnavailable makes
+	// it echo the stale claimed binding instead.
+	freshGeneration         string
+	ignoreResumeUnavailable bool
 }
 
 func newKnowledgeDaemonFixture(t *testing.T) *knowledgeDaemonFixture {
@@ -60,7 +65,7 @@ func newKnowledgeDaemonFixture(t *testing.T) *knowledgeDaemonFixture {
 	if runtime.GOOS == "windows" {
 		t.Skip("POSIX test-created executable; no installed CLI")
 	}
-	f := &knowledgeDaemonFixture{prepareID: uuid.NewString(), sourceIssueID: uuid.NewString(), native: "native-observed-test"}
+	f := &knowledgeDaemonFixture{prepareID: uuid.NewString(), sourceIssueID: uuid.NewString(), native: "native-observed-test", freshGeneration: uuid.NewString()}
 	root := t.TempDir()
 	f.bin, f.capture, f.argv, f.credentials = filepath.Join(root, "fake-claude"), filepath.Join(root, "stdin.json"), filepath.Join(root, "argv"), filepath.Join(root, "credentials")
 	script := `#!/bin/sh
@@ -186,7 +191,14 @@ func (f *knowledgeDaemonFixture) serve(t *testing.T, w http.ResponseWriter, r *h
 		if !protocol.ValidTaskKnowledgeDigest(req.InvocationFingerprint) {
 			t.Error("missing actual invocation fingerprint")
 		}
-		_ = json.NewEncoder(w).Encode(f.prepare(req))
+		p := f.prepare(req)
+		// Model the server's first-preparation rebind from the raw body so the
+		// fixture does not depend on the wire type carrying the flag.
+		var fields map[string]json.RawMessage
+		if json.Unmarshal(raw, &fields) == nil && string(fields["resume_unavailable"]) == "true" && !f.ignoreResumeUnavailable {
+			p.Session.Generation, p.Session.NativeSessionID = f.freshGeneration, ""
+		}
+		_ = json.NewEncoder(w).Encode(p)
 	case "authorize":
 		var req protocol.TaskKnowledgeAuthorizeRequest
 		if err := json.Unmarshal(raw, &req); err != nil {

@@ -207,6 +207,11 @@ type Task struct {
 	// Empty or non-task-scoped values are fatal for writable agent tasks; the
 	// daemon must not fall back to its own token. See MUL-3292.
 	AuthToken string `json:"auth_token,omitempty"`
+
+	// droppedPriorSessionID records that this daemon's own reachability gate
+	// cleared PriorSessionID. Unexported, so no claim response can set it; the
+	// knowledge path reports it to the server as resume_unavailable.
+	droppedPriorSessionID string
 }
 
 // ChatAttachmentMeta is the structured attachment metadata the daemon

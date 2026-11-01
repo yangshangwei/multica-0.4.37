@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"log/slog"
 	"reflect"
 	"slices"
 	"strconv"
@@ -105,10 +106,21 @@ func taskKnowledgeManifestUnion(a, b KnowledgeManifest) (KnowledgeManifest, erro
 	return out, nil
 }
 
+// taskKnowledgeGateSession is the binding whose exposure this transaction locks
+// and revalidates. A daemon-reported unreachable resume before the claim's first
+// preparation will not see the dropped session, so its history is skipped here.
+func taskKnowledgeGateSession(c *taskKnowledgeClaim, rebind bool) protocol.TaskKnowledgeSessionBinding {
+	session := c.Descriptor.Session
+	if rebind && c.Prepared == nil {
+		session.NativeSessionID = ""
+	}
+	return session
+}
+
 // Each invocation owns an independent transaction. All hints are metadata-only;
 // no body escapes until commit. Do not replace this with runInTx: that helper
 // acquires the managed namespace before the source graph used here.
-func (s *TaskService) taskKnowledgeTransaction(ctx context.Context, caller TaskKnowledgeCaller, taskID pgtype.UUID, exact *KnowledgeManifest, fn func(*db.Queries, db.AgentTaskQueue, KnowledgeConsumerFacts, *taskKnowledgeDelivery, *taskKnowledgeClaim, KnowledgeReadLockHints) error) error {
+func (s *TaskService) taskKnowledgeTransaction(ctx context.Context, caller TaskKnowledgeCaller, taskID pgtype.UUID, exact *KnowledgeManifest, rebind bool, fn func(*db.Queries, db.AgentTaskQueue, KnowledgeConsumerFacts, *taskKnowledgeDelivery, *taskKnowledgeClaim, KnowledgeReadLockHints) error) error {
 	if !s.KnowledgeContextEnabled {
 		return knowledgeFailure(409, "knowledge_invocation_unsupported")
 	}
@@ -134,7 +146,7 @@ func (s *TaskService) taskKnowledgeTransaction(ctx context.Context, caller TaskK
 	if !c.Descriptor.PreparationRequired || caller.RuntimeID != task.RuntimeID {
 		return knowledgeFailure(403, "knowledge_authorization_denied")
 	}
-	_, managed, history, err := s.taskKnowledgeExposure(ctx, s.Queries, task, c.Descriptor.Session, true)
+	_, managed, history, err := s.taskKnowledgeExposure(ctx, s.Queries, task, taskKnowledgeGateSession(c, rebind), true)
 	if err != nil {
 		return taskKnowledgeError(err)
 	}
@@ -327,11 +339,12 @@ func (s *TaskService) taskKnowledgeTransaction(ctx context.Context, caller TaskK
 	if digest != c.ConfigurationDigest {
 		return knowledgeFailure(409, "knowledge_context_changed")
 	}
-	actualBinding, actualManaged, actualHistory, err := s.taskKnowledgeExposure(ctx, q, current, c.Descriptor.Session, true)
+	gateSession := taskKnowledgeGateSession(c, rebind)
+	actualBinding, actualManaged, actualHistory, err := s.taskKnowledgeExposure(ctx, q, current, gateSession, true)
 	if err != nil {
 		return taskKnowledgeError(err)
 	}
-	if actualManaged != managed || !reflect.DeepEqual(history, actualHistory) || managed && (actualBinding == nil || *actualBinding != c.Descriptor.Session) {
+	if actualManaged != managed || !reflect.DeepEqual(history, actualHistory) || managed && (actualBinding == nil || *actualBinding != gateSession) {
 		return knowledgeFailure(409, "knowledge_context_changed")
 	}
 	if managed {
@@ -361,6 +374,10 @@ func (s *TaskService) PrepareTaskKnowledge(ctx context.Context, caller TaskKnowl
 	if protocol.ValidateTaskKnowledgeRequest(req.ProtocolVersion, req.RequestID, req.ClaimGeneration, req.DispatchedAt) != nil || protocol.ValidateTaskKnowledgeSession(req.Session) != nil || !protocol.ValidTaskKnowledgeDigest(req.InvocationFingerprint) {
 		return out, knowledgeFailure(400, "invalid_knowledge_request")
 	}
+	// A dropped resume needs a claimed native session to drop.
+	if req.ResumeUnavailable && req.Session.NativeSessionID == "" {
+		return out, knowledgeFailure(400, "invalid_knowledge_request")
+	}
 	hash, err := protocol.TaskKnowledgeRequestHash(req)
 	if err != nil {
 		return out, err
@@ -374,12 +391,38 @@ func (s *TaskService) PrepareTaskKnowledge(ctx context.Context, caller TaskKnowl
 			}
 		}
 	}
-	err = s.taskKnowledgeTransaction(ctx, caller, taskID, exact, func(q *db.Queries, task db.AgentTaskQueue, f KnowledgeConsumerFacts, d *taskKnowledgeDelivery, c *taskKnowledgeClaim, hints KnowledgeReadLockHints) error {
+	var staleGeneration string
+	err = s.taskKnowledgeTransaction(ctx, caller, taskID, exact, req.ResumeUnavailable, func(q *db.Queries, task db.AgentTaskQueue, f KnowledgeConsumerFacts, d *taskKnowledgeDelivery, c *taskKnowledgeClaim, hints KnowledgeReadLockHints) error {
 		if err := checkTaskKnowledgeIdentity(task, req.ClaimGeneration, req.DispatchedAt); err != nil {
 			return err
 		}
-		if req.Session != c.Descriptor.Session {
-			return knowledgeFailure(409, "knowledge_context_changed")
+		switch {
+		case req.ResumeUnavailable && c.Prepared != nil:
+			// Replay of a rebind: check the receipt before the session, or a
+			// lost-response replay would be refused against the new binding.
+			if p := c.Prepared; p.RequestID != req.RequestID || p.RequestHash != hash {
+				return knowledgeFailure(409, "idempotency_conflict")
+			}
+			rebound := req.Session
+			rebound.Generation, rebound.NativeSessionID = c.Descriptor.Session.Generation, ""
+			if c.Descriptor.Session.NativeSessionID != "" || rebound != c.Descriptor.Session {
+				return knowledgeFailure(409, "knowledge_context_changed")
+			}
+		case req.ResumeUnavailable:
+			// The daemon's reachability gate dropped the claimed native session.
+			// This is the only writer that changes a claimed native binding, and
+			// only before first disclosure: no preparation and no attempt exist,
+			// so no recorded exposure can move. The fresh session falls through
+			// to the ordinary resolution below and commits with that disclosure.
+			if req.Session != c.Descriptor.Session || len(c.Attempts) != 0 {
+				return knowledgeFailure(409, "knowledge_context_changed")
+			}
+			staleGeneration = c.Descriptor.Session.Generation
+			c.Descriptor.Session.Generation, c.Descriptor.Session.NativeSessionID = uuid.NewString(), ""
+		default:
+			if req.Session != c.Descriptor.Session {
+				return knowledgeFailure(409, "knowledge_context_changed")
+			}
 		}
 		resolver := &CollaborationService{}
 		var contributions []protocol.CollaborationKnowledgeContribution
@@ -455,6 +498,11 @@ func (s *TaskService) PrepareTaskKnowledge(ctx context.Context, caller TaskKnowl
 	if err != nil {
 		return protocol.TaskKnowledgePrepareResponse{}, err
 	}
+	if staleGeneration != "" {
+		// Content-free audit trace; a persisted marker would break an older
+		// server's strict delivery decoder after rollback.
+		slog.Info("knowledge unreachable resume rebound to a fresh session", "task_id", util.UUIDToString(taskID), "old_generation", staleGeneration, "new_generation", out.Session.Generation)
+	}
 	return out, nil
 }
 
@@ -486,7 +534,7 @@ func (s *TaskService) AuthorizeTaskKnowledgeLaunch(ctx context.Context, caller T
 	if err != nil {
 		return out, err
 	}
-	err = s.taskKnowledgeTransaction(ctx, caller, taskID, &exact, func(q *db.Queries, task db.AgentTaskQueue, f KnowledgeConsumerFacts, d *taskKnowledgeDelivery, c *taskKnowledgeClaim, hints KnowledgeReadLockHints) error {
+	err = s.taskKnowledgeTransaction(ctx, caller, taskID, &exact, false, func(q *db.Queries, task db.AgentTaskQueue, f KnowledgeConsumerFacts, d *taskKnowledgeDelivery, c *taskKnowledgeClaim, hints KnowledgeReadLockHints) error {
 		if err := checkTaskKnowledgeIdentity(task, req.ClaimGeneration, req.DispatchedAt); err != nil {
 			return err
 		}

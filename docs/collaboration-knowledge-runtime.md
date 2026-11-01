@@ -63,7 +63,7 @@ matrix. Windows, installers and multi-account/quota acceptance remain separate.
 | Observation | Meaning and next check |
 | --- | --- |
 | Approved item absent from an input | Check the switch, negotiated built-in runtime, applicability/target, current source availability, actual originator/runtime owner and output audience. Approval is not a source visibility grant. |
-| `knowledge_context_changed` | Claim/session/reviewed manifest/invocation changed. Preserve the original result and cleanup; do not auto-replay the business input. |
+| `knowledge_context_changed` | Claim/session/reviewed manifest/invocation changed. Preserve the original result and cleanup; do not auto-replay the business input. A daemon that cannot reach the selected prior session now starts a fresh bound session with the ordinary continuity notice instead. An upgraded daemon talking to an older API reports `knowledge_unavailable` for that case because the API rejects the field; upgrade the API. |
 | `knowledge_authorization_denied` | Current credential/consumer/source authority no longer permits disclosure/start. Accountable or installer identity is not a substitute. |
 | `knowledge_busy` / `knowledge_unavailable` | Bounded lock/dependency/proof failure. Inspect content-free health/DB diagnostics; never force a base fallback that can restore exposed history. |
 | `knowledge_invocation_unsupported` | Runtime, selector or effective invocation is outside the admitted contract. Check retained current configuration, not only its registered protocol name. |

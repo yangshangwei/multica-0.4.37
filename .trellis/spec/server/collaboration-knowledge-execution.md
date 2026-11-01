@@ -15,7 +15,7 @@ authorization to those boundaries.
 | Surface | Implemented contract |
 | --- | --- |
 | Ordinary claim request | Runtime `TaskKnowledgeInvocation {protocol_version:1,provider,mode,builtin,configuration_id,extra_args}`; response `knowledge_context` is a source-free `TaskKnowledgeClaimDescriptor` |
-| `POST /api/daemon/tasks/{taskId}/knowledge-context/prepare` | `TaskKnowledgePrepareRequest`: original request UUID, finalized claim generation/dispatched time, exact session binding, invocation fingerprint |
+| `POST /api/daemon/tasks/{taskId}/knowledge-context/prepare` | `TaskKnowledgePrepareRequest`: original request UUID, finalized claim generation/dispatched time, exact session binding, invocation fingerprint; optional `resume_unavailable:true` only when the daemon's pre-launch gate dropped the claimed native session, accepted only before the claim's first preparation, after which the response `session` is a server-minted fresh binding |
 | `POST .../knowledge-context/authorize` | Adds preparation ID, manifest/prompt hashes and physical `attempt_seq`/`attempt_nonce` |
 | `POST .../knowledge-context/observations` | Original claim/preparation/attempt plus started, native-session or terminated fact; canonical `{"accepted":true}` required |
 | Start/pin/complete/fail | `knowledge_fence {claim_generation,dispatched_at}` |
@@ -105,9 +105,25 @@ pin, complete and fail validate the original fence even after gate/negotiation
 changes. HTTP supplies a fence argument even for legacy nil; only trusted server
 transitions may omit it. Completion's failure reroute preserves it.
 
+Unreachable resume: when the daemon's reachability gate drops the claimed native
+session (collected or locked workdir, non-reusable scope, missing session store),
+it sends the original binding with `resume_unavailable`. Only while the claim has
+no preparation and no attempts, the server replaces the descriptor session with a
+new scope generation and an empty native ID in the disclosing transaction,
+resolves current knowledge fresh and returns that binding. The dropped session's
+history is neither relabeled nor revalidated for this turn and stays bound to its
+own generation. A replay needs the original request ID and hash. Any other
+flagged request is refused. The daemon launches without `--resume` with the
+ordinary continuity notice, and binds only a response that differs from the
+claim in generation and native ID alone. An older API rejects the field, so an
+upgraded daemon reports `knowledge_unavailable` there; an older daemon never sends
+it and stays refused with `knowledge_context_changed` until upgraded.
+
 First launch refusal is terminal with zero processes. Later refusal retains prior
 usage, messages and termination, then seals the lifecycle. All knowledge failure
 reasons are excluded from automatic fresh fallback, requeue and input replay.
+The unreachable-resume rebind is not a failure fallback: it happens before any
+disclosure or process of the same input.
 `Result.KnowledgeOutput` retains failure evidence separately from failed final
 `Output`; both it and `KnowledgeFailure` have `json:"-"`. Deduplicate transcript
 evidence and keep private input/Provider stderr out of generic runtime/server logs.
@@ -150,6 +166,7 @@ oracle. No body goes into a supervisor ledger or stable base/CLAUDE file.
 | Switch false / unsupported safe fresh runtime | No positive private negotiation; retain history guard and ordinary eligible base behavior |
 | Unsupported/unsafe selector could recover managed history | Refuse before native launch; never silently strip the selector |
 | Stale claim, session, preparation, manifest, prompt or invocation | `knowledge_context_changed`; no replacement snapshot or automatic replay |
+| Daemon reports bound native session unreachable before first preparation (the one stale-session case not refused above) | Fresh generation, current manifest, same-turn continuity notice; flagged replay mismatch → `idempotency_conflict`; flagged fresh claim → `invalid_knowledge_request`; altered binding or echoed stale response → `knowledge_context_changed` with zero processes |
 | Current consumer/source/credential denied | `knowledge_authorization_denied` |
 | Bound exceeded, corrupt proof, missing/ambiguous observation ACK or dependency failure | Fail closed (`knowledge_unavailable` or the precise typed refusal) |
 | Lock contention exhausts bounded retries | `knowledge_busy`; terminal for the logical input |
@@ -160,6 +177,8 @@ oracle. No body goes into a supervisor ledger or stable base/CLAUDE file.
 
 - Good: resolve after claim finalization, disclose exact sources once authorized,
   reauthorize every process, and persist raw native observation before a pointer.
+  An unreachable claimed session is rebound to a fresh generation at first
+  preparation.
 - Base: unexposed legacy work and a safe unsupported backend retain base execution.
 - Bad: fingerprint provisional cwd, check only the latest successful turn, reuse
   an exposed session after toggling the gate, or treat process start as native ID.
@@ -168,8 +187,10 @@ oracle. No body goes into a supervisor ledger or stable base/CLAUDE file.
 
 `pkg/agent/knowledge_launch_test.go` owns physical process/argv/environment/native
 callback contracts. Service `task_knowledge*` suites own current locks, all-status
-history, fences and cross-runtime downgrade checks; daemon `knowledge_context*`
-suites own each claim transport and actual fake stdin. Collaboration service,
+history, fences and cross-runtime downgrade checks, plus the unreachable-resume
+rebind, replay and refusal matrix (`task_knowledge_resume_test.go`); daemon
+`knowledge_context*` suites own each claim transport, actual fake stdin, the
+unreachable-workdir drop and the echoed-stale refusal. Collaboration service,
 handler and `host_knowledge*` suites own MDT/status/retained-options/persistence.
 `task_knowledge_config_test.go` owns exact startup parsing and instance propagation.
 
