@@ -299,6 +299,10 @@ type Hub struct {
 
 	authorizer ScopeAuthorizer
 
+	// writeTimeout bounds each physical WebSocket write. Zero means writeWait;
+	// tests shorten it before Run and before any client connects.
+	writeTimeout time.Duration
+
 	// Subscription lifecycle hooks. Both can be nil.
 	onFirstSubscriber SubscriptionCallback
 	onLastSubscriber  SubscriptionCallback
@@ -335,6 +339,15 @@ func (h *Hub) authenticateToken(raw string, pr PATResolver, ctx context.Context)
 		return "", `{"error":"authentication unavailable"}`
 	}
 	return identity.Session.UserID, ""
+}
+
+// writeDeadline starts the budget for one physical write from now.
+func (c *Client) writeDeadline() time.Time {
+	timeout := writeWait
+	if c.hub != nil && c.hub.writeTimeout > 0 {
+		timeout = c.hub.writeTimeout
+	}
+	return time.Now().Add(timeout)
 }
 
 func (c *Client) authorized() bool {
@@ -1191,11 +1204,14 @@ func (c *Client) writePump() {
 		c.conn.Close()
 	}()
 
+	// Final-send authorization can run uncached database checks with their own
+	// bounds. Every physical write therefore sets its deadline only after those
+	// checks, immediately before WriteMessage.
 	for {
 		select {
 		case message, ok := <-c.send:
-			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if !ok {
+				c.conn.SetWriteDeadline(c.writeDeadline())
 				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
 				return
 			}
@@ -1209,6 +1225,7 @@ func (c *Client) writePump() {
 			if !allowed {
 				continue
 			}
+			c.conn.SetWriteDeadline(c.writeDeadline())
 			if err := c.conn.WriteMessage(websocket.TextMessage, data); err != nil {
 				slog.Warn("websocket write error", "error", err, "user_id", c.userID, "workspace_id", c.workspaceID)
 				return
@@ -1217,7 +1234,7 @@ func (c *Client) writePump() {
 			if !c.authorized() {
 				return
 			}
-			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
+			c.conn.SetWriteDeadline(c.writeDeadline())
 			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
 				return
 			}

@@ -148,7 +148,12 @@ outer or payload fields. It rechecks current target visibility and the socket's
 **original credential**, including a direct current PAT lookup independent of
 PATCache, or current password-token version. Missing freshness capability drops
 knowledge. Reconnect creates a new credential binding. The existing
-`collaboration:workbench_changed` payload remains empty-only.
+`collaboration:workbench_changed` payload remains empty-only. These checks finish
+before the write pump sets the write deadline, so their own 5s bounds never
+spend the 10s write budget. Every physical write sets its deadline immediately
+before `WriteMessage`. One hint triggers these uncached checks on every
+connection in the workspace room, so the database load grows with room size.
+This is accepted as is.
 
 Reserved sqlc overrides are `*.knowledge_delivery` and
 `*.knowledge_context_version` with `json:"-"`, including CTE-derived task rows.
