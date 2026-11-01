@@ -1,0 +1,120 @@
+{
+  "reviewer": "/root/delivery_independent_review",
+  "assignment": "WD-2 independent delta recheck only",
+  "product_commit": "d0bdd96e5674a04f4ba6ae0ba5ee4f884bbc52b1",
+  "tip": "4954a54042b8cc733897b544ff17a4f352c1d909",
+  "base": "69bbc9cf0f74f3b0177d9c8bd4c812acaa9a3187",
+  "started_at": "2026-11-01T17:09:55.502402+00:00",
+  "state": "complete",
+  "checks": [
+    {
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--test",
+        "e2e/fixtures/collaboration-installed-layout.node-test.mjs",
+        "e2e/fixtures/collaboration-installed-main.node-test.mjs",
+        "e2e/fixtures/collaboration-host-runtime.node-test.mjs",
+        "apps/desktop/scripts/windows-collaboration-config.node-test.mjs",
+        "apps/desktop/scripts/windows-collaboration-workflow.node-test.mjs",
+        "scripts/check-collaboration-native-tests.test.mjs"
+      ],
+      "exit_code": 0,
+      "output": "TAP version 13\n# Subtest: builds one isolated candidate journey from pinned source and explicit services\nok 1 - builds one isolated candidate journey from pinned source and explicit services\n  ---\n  duration_ms: 4.096083\n  type: 'test'\n  ...\n# Subtest: refuses a baseline, persistent runner, unsupported host and mismatched source\nok 2 - refuses a baseline, persistent runner, unsupported host and mismatched source\n  ---\n  duration_ms: 1.413125\n  type: 'test'\n  ...\n# Subtest: refuses escaped roots, foreign binaries, business databases and external endpoints\nok 3 - refuses escaped roots, foreign binaries, business databases and external endpoints\n  ---\n  duration_ms: 0.852583\n  type: 'test'\n  ...\n# Subtest: the real driver refuses a non-disposable host before opening its private setup or launching a process\nok 4 - the real driver refuses a non-disposable host before opening its private setup or launching a process\n  ---\n  duration_ms: 40.242208\n  type: 'test'\n  ...\n# Subtest: installed collaboration is a separate opt-in selecting only the Windows acceptance job\nok 5 - installed collaboration is a separate opt-in selecting only the Windows acceptance job\n  ---\n  duration_ms: 0.429667\n  type: 'test'\n  ...\n# Subtest: prepares and always stops the same private collaboration services without uploading state\nok 6 - prepares and always stops the same private collaboration services without uploading state\n  ---\n  duration_ms: 0.153167\n  type: 'test'\n  ...\n# Subtest: runs collaboration only after candidate installs and compiles the Host without TestMain\nok 7 - runs collaboration only after candidate installs and compiles the Host without TestMain\n  ---\n  duration_ms: 1.966417\n  type: 'test'\n  ...\n# Subtest: Windows Host close delivers EOF and retains the graceful final summary without POSIX signals\nok 8 - Windows Host close delivers EOF and retains the graceful final summary without POSIX signals\n  ---\n  duration_ms: 4.519417\n  type: 'test'\n  ...\n# Subtest: POSIX Host close still resumes a suspended daemon before EOF\nok 9 - POSIX Host close still resumes a suspended daemon before EOF\n  ---\n  duration_ms: 0.268542\n  type: 'test'\n  ...\n# Subtest: Windows fallback remains bounded and an abrupt exit cannot become a graceful pass\nok 10 - Windows fallback remains bounded and an abrupt exit cannot become a graceful pass\n  ---\n  duration_ms: 0.325042\n  type: 'test'\n  ...\n# Subtest: Windows suspend and resume helpers refuse before sending unsupported signals\nok 11 - Windows suspend and resume helpers refuse before sending unsupported signals\n  ---\n  duration_ms: 0.509917\n  type: 'test'\n  ...\n# Subtest: Windows uses the installed EXE resources and bundled EXE with an encoded file URL\nok 12 - Windows uses the installed EXE resources and bundled EXE with an encoded file URL\n  ---\n  duration_ms: 0.682708\n  type: 'test'\n  ...\n# Subtest: macOS preserves the app Contents layout and encodes package names\nok 13 - macOS preserves the app Contents layout and encodes package names\n  ---\n  duration_ms: 0.153916\n  type: 'test'\n  ...\n# Subtest: native renderer URLs round-trip literal percent sequences, hashes and spaces as filesystem text\nok 14 - native renderer URLs round-trip literal percent sequences, hashes and spaces as filesystem text\n  ---\n  duration_ms: 3.759917\n  type: 'test'\n  ...\n# Subtest: native layouts reject unsupported platforms and paths outside a supported package shape\nok 15 - native layouts reject unsupported platforms and paths outside a supported package shape\n  ---\n  duration_ms: 0.253834\n  type: 'test'\n  ...\n# Subtest: native homes use platform path rules and reject network or relative roots\nok 16 - native homes use platform path rules and reject network or relative roots\n  ---\n  duration_ms: 0.221375\n  type: 'test'\n  ...\n# Subtest: native controller shutdown preserves a failed close command after its owned child exits\nok 17 - native controller shutdown preserves a failed close command after its owned child exits\n  ---\n  duration_ms: 1.476292\n  type: 'test'\n  ...\n# Subtest: already closed controller does not send another command or touch Docker\nok 18 - already closed controller does not send another command or touch Docker\n  ---\n  duration_ms: 0.176583\n  type: 'test'\n  ...\n# Subtest: accepts required parent and child passes\nok 19 - accepts required parent and child passes\n  ---\n  duration_ms: 45.919625\n  type: 'test'\n  ...\n# Subtest: rejects a skipped required descendant even when its parent passes\nok 20 - rejects a skipped required descendant even when its parent passes\n  ---\n  duration_ms: 53.823708\n  type: 'test'\n  ...\n# Subtest: keeps unrelated skipped tests outside required subtrees\nok 21 - keeps unrelated skipped tests outside required subtrees\n  ---\n  duration_ms: 28.986208\n  type: 'test'\n  ...\n# Subtest: rejects missing and skipped required parents\nok 22 - rejects missing and skipped required parents\n  ---\n  duration_ms: 52.616083\n  type: 'test'\n  ...\n# Subtest: requires every Windows-specific case\nok 23 - requires every Windows-specific case\n  ---\n  duration_ms: 77.167041\n  type: 'test'\n  ...\n# Subtest: requires Windows handoff and recording recovery cases without skipped descendants\nok 24 - requires Windows handoff and recording recovery cases without skipped descendants\n  ---\n  duration_ms: 209.62025\n  type: 'test'\n  ...\n# Subtest: rejects absent or unsupported runner metadata\nok 25 - rejects absent or unsupported runner metadata\n  ---\n  duration_ms: 123.489792\n  type: 'test'\n  ...\n# Subtest: retains test and package failure checks\nok 26 - retains test and package failure checks\n  ---\n  duration_ms: 51.297625\n  type: 'test'\n  ...\n1..26\n# tests 26\n# suites 0\n# pass 26\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 704.494\n",
+      "output_sha256": "dce806585a70c7116d369acef76c2c20356cc7e00ecd4a8647ae910ee288a469"
+    },
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "tsc",
+        "--noEmit",
+        "--strict",
+        "--module",
+        "esnext",
+        "--moduleResolution",
+        "bundler",
+        "--jsx",
+        "react-jsx",
+        "--target",
+        "es2022",
+        "--lib",
+        "esnext,dom,dom.iterable",
+        "--esModuleInterop",
+        "--skipLibCheck",
+        "e2e/collaboration-host-installed.spec.ts"
+      ],
+      "exit_code": 0,
+      "output": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n",
+      "output_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "command": [
+        "node",
+        "--check",
+        "e2e/fixtures/collaboration-installed-layout.mjs"
+      ],
+      "exit_code": 0,
+      "output": "",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "e2e/fixtures/collaboration-installed-layout.mjs",
+        "e2e/fixtures/collaboration-installed-layout.node-test.mjs"
+      ],
+      "exit_code": 0,
+      "output": "",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "database_access": false,
+  "gui_or_installer": false,
+  "provider_calls": 0,
+  "external_ci": false,
+  "product_edits": false,
+  "extra_path_check": {
+    "command": [
+      "node",
+      "--input-type=module",
+      "-e",
+      "<recorded round-trip matrix>"
+    ],
+    "script": "import assert from 'node:assert/strict';\nimport { fileURLToPath } from 'node:url';\nimport path from 'node:path';\nimport { nativeInstalledLayout } from './e2e/fixtures/collaboration-installed-layout.mjs';\nconst names=['literal%20','literal%2F','trailing%','space and #hash?query','中文 %25 #?'];\nconst result=[];\nfor (const platform of ['win32','darwin']) for(const name of names){\n const executable=platform==='win32'?`c:\\\\${name}\\\\installed\\\\Multica.exe`:`/task/${name}/Multica Candidate.app/Contents/MacOS/Multica`;\n const layout=nativeInstalledLayout(executable,platform);\n const expected=(platform==='win32'?path.win32:path.posix).join(layout.asar,'out','renderer','index.html');\n assert.equal(fileURLToPath(layout.rendererUrl,{windows:platform==='win32'}),expected);\n assert.equal(new URL(layout.rendererUrl).hash,'');assert.equal(new URL(layout.rendererUrl).search,'');\n result.push({platform,name,renderer:layout.rendererUrl,round_trip:true});\n}\nconsole.log(JSON.stringify({node:process.version,cases:result}));",
+    "exit_code": 0,
+    "output": "{\"node\":\"v22.23.2\",\"cases\":[{\"platform\":\"win32\",\"name\":\"literal%20\",\"renderer\":\"file:///c:/literal%2520/installed/resources/app.asar/out/renderer/index.html\",\"round_trip\":true},{\"platform\":\"win32\",\"name\":\"literal%2F\",\"renderer\":\"file:///c:/literal%252F/installed/resources/app.asar/out/renderer/index.html\",\"round_trip\":true},{\"platform\":\"win32\",\"name\":\"trailing%\",\"renderer\":\"file:///c:/trailing%25/installed/resources/app.asar/out/renderer/index.html\",\"round_trip\":true},{\"platform\":\"win32\",\"name\":\"space and #hash?query\",\"renderer\":\"file:///c:/space%20and%20%23hash%3Fquery/installed/resources/app.asar/out/renderer/index.html\",\"round_trip\":true},{\"platform\":\"win32\",\"name\":\"中文 %25 #?\",\"renderer\":\"file:///c:/%E4%B8%AD%E6%96%87%20%2525%20%23%3F/installed/resources/app.asar/out/renderer/index.html\",\"round_trip\":true},{\"platform\":\"darwin\",\"name\":\"literal%20\",\"renderer\":\"file:///task/literal%2520/Multica%20Candidate.app/Contents/Resources/app.asar/out/renderer/index.html\",\"round_trip\":true},{\"platform\":\"darwin\",\"name\":\"literal%2F\",\"renderer\":\"file:///task/literal%252F/Multica%20Candidate.app/Contents/Resources/app.asar/out/renderer/index.html\",\"round_trip\":true},{\"platform\":\"darwin\",\"name\":\"trailing%\",\"renderer\":\"file:///task/trailing%25/Multica%20Candidate.app/Contents/Resources/app.asar/out/renderer/index.html\",\"round_trip\":true},{\"platform\":\"darwin\",\"name\":\"space and #hash?query\",\"renderer\":\"file:///task/space%20and%20%23hash%3Fquery/Multica%20Candidate.app/Contents/Resources/app.asar/out/renderer/index.html\",\"round_trip\":true},{\"platform\":\"darwin\",\"name\":\"中文 %25 #?\",\"renderer\":\"file:///task/%E4%B8%AD%E6%96%87%20%2525%20%23%3F/Multica%20Candidate.app/Contents/Resources/app.asar/out/renderer/index.html\",\"round_trip\":true}]}\n",
+    "output_sha256": "7193c2978dc7a1ffd9b7b4b4255e36f5bb2fd4941ef6124c6c3c5a10d8ae3039"
+  },
+  "verdict": "pass",
+  "finding": "WD-2 closed",
+  "finished_at": "2026-11-01T17:10:42.152464+00:00",
+  "canonical_counts": {
+    "tests": 26,
+    "pass": 26,
+    "fail": 0,
+    "skipped": 0
+  },
+  "extra_path_cases": 10,
+  "source_files_sha256": {
+    "e2e/fixtures/collaboration-installed-layout.mjs": "1c93ce8f0bbadad74e6cb23f157dff2df03b6af2bdcb208369f1da09bedacd28",
+    "e2e/fixtures/collaboration-installed-layout.node-test.mjs": "338bb62132e7c3c945be8488ff206ff6f898db910a4cbfde349dce752ab33eae"
+  },
+  "author_manifest_hash_mismatches": [],
+  "author_log_hash_mismatches": [],
+  "source_binding": "Live helper/test bytes equal committed d0bdd96e5 and author verification manifest; no product changes by reviewer",
+  "unchanged_boundaries": [
+    "Only helper and its canonical Node test changed in product commit",
+    "Windows local-drive and macOS app path gates retained",
+    "Existing Linux Docker path and unsupported native Linux rule unchanged",
+    "No dependency or package/lockfile change"
+  ],
+  "remaining": [
+    "Final merged-candidate verification",
+    "Native Windows GUI/installer/PowerShell execution",
+    "Accounts/quota/signed/offline trust and Windows arm64 gates"
+  ]
+}

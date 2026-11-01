@@ -1,0 +1,34 @@
+TAP version 13
+# Subtest: Windows Host close delivers EOF and retains the graceful final summary without POSIX signals
+ok 1 - Windows Host close delivers EOF and retains the graceful final summary without POSIX signals
+  ---
+  duration_ms: 2.956333
+  type: 'test'
+  ...
+# Subtest: POSIX Host close still resumes a suspended daemon before EOF
+ok 2 - POSIX Host close still resumes a suspended daemon before EOF
+  ---
+  duration_ms: 0.17
+  type: 'test'
+  ...
+# Subtest: Windows fallback remains bounded and an abrupt exit cannot become a graceful pass
+ok 3 - Windows fallback remains bounded and an abrupt exit cannot become a graceful pass
+  ---
+  duration_ms: 0.178958
+  type: 'test'
+  ...
+# Subtest: Windows suspend and resume helpers refuse before sending unsupported signals
+ok 4 - Windows suspend and resume helpers refuse before sending unsupported signals
+  ---
+  duration_ms: 0.28775
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 51.105666

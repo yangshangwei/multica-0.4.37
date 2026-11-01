@@ -1,0 +1,16 @@
+{
+  "manifest": "../windows-verification.json",
+  "mismatches": [
+    {
+      "file": ".github/workflows/desktop-smoke.yml",
+      "expected": "35e6fab7ca674ec3a3c68fb1e907ad2beb18b1de374cc58688ee56a9035ccc5a",
+      "actual": "1cd3a6580968201102d0e5d9b9bf4091cb059fbedd1a904751ecce78368cf927"
+    },
+    {
+      "file": "apps/desktop/scripts/WINDOWS_ACCEPTANCE.md",
+      "expected": "0ebedb939a7e063408f1d93ee96a85f336820b57be4e13dcac20e4b76fc4c944",
+      "actual": "2f6b882cd236128baf544d80c1f623411fdb83065933c3457054b1ed9936abdd"
+    }
+  ],
+  "checked_at": "2026-11-01T17:01:19.502450+00:00"
+}
