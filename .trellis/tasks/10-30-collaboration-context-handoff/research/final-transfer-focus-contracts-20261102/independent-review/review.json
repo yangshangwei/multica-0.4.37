@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_web_review",
+  "reviewed_at": "2026-11-01T21:57:28.279378+00:00",
+  "verdict": "pass-with-notes",
+  "blocking_findings_for_transfer_patch": [],
+  "scope": "Transfer test contract only; native focus gate remains open and platform-blocked",
+  "code_commit": "d39d54a0733149ae6fc899d7a81e1cc06580a7c9",
+  "evidence_commit": "8ed2575b33844b5795f3ecaf24fae8955abf14e5",
+  "product_source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "source_hashes": {
+    "e2e/collaboration-workbench-web.spec.ts": "767ae9c4d8331184a41d640fa89ded564a7d37e0023932021e27f288f29f2a73",
+    "e2e/collaboration-account-desktop.spec.ts": "163c92042219b895db49bb1f8c5afb4e0fdc86038c6e2f45c91358f962c3497c"
+  },
+  "only_final_code_file_changed": "e2e/collaboration-workbench-web.spec.ts",
+  "source_product_roots_and_dependencies_unchanged": true,
+  "actual_transfer": {
+    "pass": 2,
+    "fail": 0,
+    "skip": 0,
+    "retry": 0,
+    "execution": {
+      "selected_provider_binary": "host-provider",
+      "selected_provider_sha256": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+      "deployed_expectation": null,
+      "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+      "verification_harness_head": "56ae50d613831a905293fa29834e5a5be4167c03",
+      "verification_harness_diff_sha256": "40281ae9b058efdbb5541b87e8a28ee9877c0f972fee88980073336415cabb3b",
+      "lane": "legacy",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-workbench-web.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json",
+        "--output=/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/contract-focus-runs/transfer-current-picker-2/artifacts",
+        "--grep",
+        "(Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation|Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry)$"
+      ],
+      "database": "collab_joint_legacy_diag_20261102_2120",
+      "health": {
+        "status": "ok",
+        "pid": 26485,
+        "commit": "639bf6ef8",
+        "started_at": "2026-11-01T21:34:56Z"
+      },
+      "source_env_sha256": "1e4338ce392567848096f73b5e320998926fc8f5c664a24dd78725b38cff35ff",
+      "production_Web_build_id": "34DL-1w4TjLPqCrcjSSqj",
+      "native_renderer_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+      "test_source_sha256": {
+        "e2e/collaboration-workbench-web.spec.ts": "767ae9c4d8331184a41d640fa89ded564a7d37e0023932021e27f288f29f2a73"
+      },
+      "controlled_binary_sha256": {
+        "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+        "host-provider": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+        "memory-provider": "81a758a1062568d5a709156e3344b5df1e5b87e55660c1761c12cf55c94adcf1",
+        "multica": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19"
+      },
+      "package_pin": null,
+      "actual_real_Provider_calls": 0,
+      "state": "complete",
+      "started_at": "2026-11-01T21:45:41.308295+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-01T21:45:51.034425+00:00",
+      "log_sha256": "37bccecffa61f4ffd4557d18c24c9cf9321366de9cca0a23a54bfe4a1811ff4a",
+      "stats": {
+        "startTime": "2026-11-01T21:45:42.066Z",
+        "duration": 8946.714,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "results_sha256": "6b6c795217223a4d6e4900cdd340b9e80ec94152f1a42f668f0e1be3662ae6a3",
+      "gate_exit_code": 0
+    },
+    "raw_execution_sha256": "d9f1375516edd9bc669a44f669725887b5199f74ca80624eb40f671e046b06de",
+    "all_named_result_log_and_source_hashes_independently_verified": true,
+    "actual_legacy_env_DB_pool5_1_productionWeb_and_binary_bindings_verified": true
+  },
+  "contract_review": {
+    "actual_account_UUID_from_api_me": true,
+    "existing_selectHandoffRecipient_reused": true,
+    "current_recipient_picker_and_confirmation_retained": true,
+    "form_scoped_note_and_submit": true,
+    "source_activity_current_owner_and_real_handoff_assertions_retained": true,
+    "original_completion_POST_identity_conflict409_and_explicit_retry_assertions_retained": true,
+    "product_behavior_or_timeout_relaxation": false
+  },
+  "native_focus": {
+    "status": "OPEN_PLATFORM_BLOCKED",
+    "original_source_restored": true,
+    "original_source_sha256": "163c92042219b895db49bb1f8c5afb4e0fdc86038c6e2f45c91358f962c3497c",
+    "original_isolated_run_failed": true,
+    "observation_only_diagnostic_failed": true,
+    "original_focus_assertions_unchanged": true,
+    "current_locked_GUI_observed_in_root_and_worker_selected_safe_flags": true,
+    "historical_main_failure_cause": "unresolved; current lock does not retrospectively establish it",
+    "no_focus_activation_policy_or_product_fix_in_patch": true
+  },
+  "static_checks": {
+    "strict_changed_workbench_pass_log_hash_verified": true,
+    "unchanged_base_lint_zero_errors_warnings_result_hash_verified": true,
+    "expanded_account_desktop_diagnostics": {
+      "baseline": 51,
+      "current": 51,
+      "identical": true,
+      "not_a_full_E2E_strict_pass": true
+    },
+    "collection_only_not_execution": true,
+    "initial_zero_selection_error_retained": true
+  },
+  "evidence_index_records_verified": 21,
+  "public_execution_record_sha256": "0e9bdf164d4935f1ede35614892b5bcc0d2cd19a25e9ea5bf24f357fc6e9a4fe",
+  "notes": [
+    {
+      "id": "TF-1",
+      "kind": "scope",
+      "description": "Only the two Transfer journey contracts are accepted here. Native focus, clipboard/popout/restart continuation and final whole-candidate checks remain unaccepted."
+    },
+    {
+      "id": "TF-2",
+      "kind": "source_binding",
+      "description": "Unselected temporary account-desktop observation code was present during Transfer invocation, but its module was not imported by Workbench. Selected Workbench bytes match d39d; final account-desktop bytes match original163c."
+    },
+    {
+      "id": "TF-3",
+      "kind": "prior_triage_correction",
+      "description": "Earlier attempt3 triage was too broad about Selected account text. Only Exact recipient input is obsolete; Workflow still renders Selected account confirmation and the retained helper correctly verifies it. The 42/2/2/1 attribution counts do not change."
+    }
+  ],
+  "reviewer_operations": {
+    "tests": 0,
+    "browser": 0,
+    "DB": 0,
+    "services": 0,
+    "CLI": 0,
+    "containers": 0,
+    "Provider": 0,
+    "children": 0,
+    "source_or_git_mutations": 0
+  }
+}
