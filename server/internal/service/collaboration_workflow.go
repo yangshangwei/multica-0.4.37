@@ -178,6 +178,9 @@ func (t *collaborationWorkflowTx) enroll(ctx context.Context, target pgtype.UUID
 		return false, err
 	}
 	_, err = t.q.EnrollCollaborationParticipant(ctx, db.EnrollCollaborationParticipantParams{IssueID: t.access.Issue.ID, UserID: target})
+	if err == nil {
+		err = EnqueueKnowledgeSourceInvalidation(ctx, t.q, t.operation.ID, "source_issue", t.access.Issue.ID)
+	}
 	return err == nil, err
 }
 
@@ -263,6 +266,9 @@ func (t *collaborationWorkflowTx) depart(ctx context.Context, target pgtype.UUID
 		}
 	}
 	if _, err = t.q.RevokeCollaborationParticipant(ctx, db.RevokeCollaborationParticipantParams{IssueID: t.access.Issue.ID, UserID: target, Reason: reason}); err != nil {
+		return CollaborationWorkflowReceipt{}, err
+	}
+	if err = EnqueueKnowledgeSourceInvalidation(ctx, t.q, t.operation.ID, "source_issue", t.access.Issue.ID); err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}
 	if err = t.q.RevokeCollaborationOwnerGrants(ctx, db.RevokeCollaborationOwnerGrantsParams{IssueID: t.access.Issue.ID, OwnerUserID: target, Reason: reason}); err != nil {

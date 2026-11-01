@@ -55,6 +55,11 @@ type Reason string
 const agentErrorPrefix = "agent_error."
 
 const (
+	ReasonKnowledgeContextChanged        Reason = "knowledge_context_changed"
+	ReasonKnowledgeAuthorizationDenied   Reason = "knowledge_authorization_denied"
+	ReasonKnowledgeUnavailable           Reason = "knowledge_unavailable"
+	ReasonKnowledgeBusy                  Reason = "knowledge_busy"
+	ReasonKnowledgeInvocationUnsupported Reason = "knowledge_invocation_unsupported"
 	// Platform / scheduler side: failure attributable to Multica
 	// infrastructure rather than anything the agent process did. These
 	// are emitted by server-side sweepers (ExpireStaleQueuedTasks,
@@ -223,6 +228,11 @@ const (
 //  2. Agent-side reasons grouped by responsibility area (provider /
 //     agent process / config / runtime), then unknown last.
 var allReasons = []Reason{
+	ReasonKnowledgeContextChanged,
+	ReasonKnowledgeAuthorizationDenied,
+	ReasonKnowledgeUnavailable,
+	ReasonKnowledgeBusy,
+	ReasonKnowledgeInvocationUnsupported,
 	// Platform / scheduler side.
 	ReasonQueuedExpired,
 	ReasonRuntimeOffline,
@@ -260,6 +270,20 @@ var allReasons = []Reason{
 // String returns the wire form of the reason — what gets written to the
 // failure_reason column and exposed as a Prometheus label value.
 func (r Reason) String() string { return string(r) }
+
+// Knowledge refusals settle the current logical input; they never authorize an
+// automatic base-only or fresh-session replay. Match only exact platform codes.
+func knowledgeReason(raw string) (Reason, bool) {
+	switch reason := Reason(strings.TrimSpace(raw)); reason {
+	case ReasonKnowledgeContextChanged, ReasonKnowledgeAuthorizationDenied,
+		ReasonKnowledgeUnavailable, ReasonKnowledgeBusy, ReasonKnowledgeInvocationUnsupported:
+		return reason, true
+	default:
+		return "", false
+	}
+}
+
+func (r Reason) IsKnowledgeRefusal() bool { _, ok := knowledgeReason(string(r)); return ok }
 
 // IsAgentError reports whether the reason originates inside the agent
 // process (provider error, runner crash, context overflow, etc.) as

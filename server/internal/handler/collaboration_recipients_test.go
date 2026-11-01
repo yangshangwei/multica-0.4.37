@@ -117,7 +117,13 @@ func TestResolveCollaborationRecipientPrivateProjectionAndContext(t *testing.T) 
 	privateEmail := "private-recipient-" + uuid.NewString() + "@example.test"
 	recipient := dbfx.User(t, "Recipient display name", privateEmail, testutil.Cols{"profile_description": "private profile sentinel"})
 	body := fmt.Sprintf(`{"kind":"user_id","value":%q,"issue_id":%q}`, strings.ToUpper(recipient), strings.ToUpper(issue))
-	r := recipientRequest(body, auth.AuthenticatedPrincipal{UserID: testUserID, Kind: auth.CredentialPAT})
+	pat, err := auth.GeneratePATToken()
+	if err != nil {
+		t.Fatal(err)
+	}
+	hash := auth.HashToken(pat)
+	dbfx.Insert(t, "personal_access_token", testutil.Cols{"user_id": testUserID, "name": "Recipient source reader", "token_hash": hash, "token_prefix": "mul_test"})
+	r := recipientRequest(body, auth.AuthenticatedPrincipal{UserID: testUserID, Kind: auth.CredentialPAT, PATTokenHash: hash})
 	r.Header.Set("X-User-ID", recipient)
 	r.Header.Set("X-Workspace-ID", "not-the-source")
 	r.Header.Set("X-Workspace-Slug", "not-the-source")

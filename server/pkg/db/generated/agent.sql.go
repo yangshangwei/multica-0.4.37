@@ -1116,8 +1116,8 @@ type CancelDeferredEscalationsForIssueAgentRow struct {
 	ClaimGeneration           int64              `json:"claim_generation"`
 	QueuedAt                  pgtype.Timestamptz `json:"queued_at"`
 	QueuedAtSource            pgtype.Text        `json:"queued_at_source"`
-	KnowledgeContextVersion   pgtype.Int4        `json:"knowledge_context_version"`
-	KnowledgeDelivery         []byte             `json:"knowledge_delivery"`
+	KnowledgeContextVersion   pgtype.Int4        `json:"-"`
+	KnowledgeDelivery         []byte             `json:"-"`
 }
 
 func (q *Queries) CancelDeferredEscalationsForIssueAgent(ctx context.Context, arg CancelDeferredEscalationsForIssueAgentParams) ([]CancelDeferredEscalationsForIssueAgentRow, error) {

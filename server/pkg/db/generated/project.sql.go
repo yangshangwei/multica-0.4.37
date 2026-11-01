@@ -681,6 +681,45 @@ func (q *Queries) LockProjectForExecutionSquad(ctx context.Context, arg LockProj
 	return i, err
 }
 
+const lockProjectForUpdate = `-- name: LockProjectForUpdate :one
+SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad, revision, description_revision, in_progress_since, in_progress_since_source FROM project
+WHERE id = $1 AND workspace_id = $2
+FOR NO KEY UPDATE
+`
+
+type LockProjectForUpdateParams struct {
+	ID          pgtype.UUID `json:"id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+// Metadata edits serialize revisions and conflict with authority SHARE readers,
+// while remaining compatible with KEY SHARE readers of parent existence.
+func (q *Queries) LockProjectForUpdate(ctx context.Context, arg LockProjectForUpdateParams) (Project, error) {
+	row := q.db.QueryRow(ctx, lockProjectForUpdate, arg.ID, arg.WorkspaceID)
+	var i Project
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.Title,
+		&i.Description,
+		&i.Icon,
+		&i.Status,
+		&i.LeadType,
+		&i.LeadID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.Priority,
+		&i.StartDate,
+		&i.DueDate,
+		&i.ExecutionSquad,
+		&i.Revision,
+		&i.DescriptionRevision,
+		&i.InProgressSince,
+		&i.InProgressSinceSource,
+	)
+	return i, err
+}
+
 const lockProjectIssuesForDelete = `-- name: LockProjectIssuesForDelete :many
 SELECT id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at, admission_status, current_iteration_id, iteration_rollover_count FROM issue WHERE project_id=$1 AND workspace_id=$2 ORDER BY id FOR UPDATE
 `

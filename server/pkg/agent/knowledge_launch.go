@@ -112,7 +112,7 @@ func ValidateKnowledgeSessionArgs(provider string, args []string) error {
 		}
 		name, value, equals := strings.Cut(arg, "=")
 		switch name {
-		case "--verbose":
+		case "--verbose", "--no-session-persistence":
 			if equals {
 				return knowledgeUnsupported()
 			}

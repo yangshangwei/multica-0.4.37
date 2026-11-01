@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/multica-ai/multica/server/internal/runtimeapps"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 	"github.com/multica-ai/multica/server/pkg/remotemcp"
 )
 
@@ -98,15 +99,16 @@ type TaskStatus struct {
 }
 
 type Task struct {
-	ExecutionFence       *ExecutionFence        `json:"execution_fence,omitempty"`
-	ID                   string                 `json:"id"`
-	AgentID              string                 `json:"agent_id"`
-	RuntimeID            string                 `json:"runtime_id"`
-	IssueID              string                 `json:"issue_id"`
-	WorkspaceID          string                 `json:"workspace_id"`
-	WorkspaceSlug        string                 `json:"workspace_slug,omitempty"`
-	IssueIdentifier      string                 `json:"issue_identifier,omitempty"`
-	RemoteMCPConnections []remotemcp.Connection `json:"remote_mcp_connections,omitempty"`
+	KnowledgeContext     *protocol.TaskKnowledgeClaimDescriptor `json:"knowledge_context,omitempty"`
+	ExecutionFence       *ExecutionFence                        `json:"execution_fence,omitempty"`
+	ID                   string                                 `json:"id"`
+	AgentID              string                                 `json:"agent_id"`
+	RuntimeID            string                                 `json:"runtime_id"`
+	IssueID              string                                 `json:"issue_id"`
+	WorkspaceID          string                                 `json:"workspace_id"`
+	WorkspaceSlug        string                                 `json:"workspace_slug,omitempty"`
+	IssueIdentifier      string                                 `json:"issue_identifier,omitempty"`
+	RemoteMCPConnections []remotemcp.Connection                 `json:"remote_mcp_connections,omitempty"`
 	// RemoteMCPDaemonToken stays inside the daemon and authenticates the local
 	// broker's credential-resolution calls. It must never enter agent env/config.
 	RemoteMCPDaemonToken string `json:"remote_mcp_daemon_token,omitempty"`
@@ -317,12 +319,13 @@ type TaskUsageEntry struct {
 
 // TaskResult is the outcome of executing a task.
 type TaskResult struct {
-	Status     string `json:"status"`
-	Comment    string `json:"comment"`
-	BranchName string `json:"branch_name,omitempty"`
-	EnvType    string `json:"env_type,omitempty"`
-	SessionID  string `json:"session_id,omitempty"` // Claude session ID for future resumption
-	WorkDir    string `json:"work_dir,omitempty"`   // working directory used during execution
+	KnowledgeFence *protocol.TaskKnowledgeFence `json:"-"`
+	Status         string                       `json:"status"`
+	Comment        string                       `json:"comment"`
+	BranchName     string                       `json:"branch_name,omitempty"`
+	EnvType        string                       `json:"env_type,omitempty"`
+	SessionID      string                       `json:"session_id,omitempty"` // Claude session ID for future resumption
+	WorkDir        string                       `json:"work_dir,omitempty"`   // working directory used during execution
 	// DurableWorkDir replaces WorkDir only after a disposable local worktree
 	// was finalized and its removal was confirmed. Empty keeps WorkDir authoritative.
 	DurableWorkDir string `json:"durable_work_dir,omitempty"`

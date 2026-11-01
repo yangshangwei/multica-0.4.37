@@ -92,6 +92,8 @@ func isRuntimeNotFoundError(err error) bool {
 
 // Client handles HTTP communication with the Multica server daemon API.
 type Client struct {
+	// Installed once by the daemon; scoped transports share this source-free resolver.
+	knowledgeInvocation    func(string) *protocol.TaskKnowledgeInvocation
 	baseURL                string
 	tokenMu                sync.RWMutex
 	managed                *managedClientRegistry
@@ -232,7 +234,11 @@ func (c *Client) ClaimTask(ctx context.Context, runtimeID string) (*Task, error)
 	var resp struct {
 		Task *Task `json:"task"`
 	}
-	if err := c.postJSON(ctx, fmt.Sprintf("/api/daemon/runtimes/%s/tasks/claim", runtimeID), map[string]any{}, &resp); err != nil {
+	body := map[string]any{}
+	if invocation := c.taskKnowledgeInvocation(runtimeID); invocation != nil {
+		body["knowledge_context"] = invocation
+	}
+	if err := c.postJSON(ctx, fmt.Sprintf("/api/daemon/runtimes/%s/tasks/claim", runtimeID), body, &resp); err != nil {
 		return nil, err
 	}
 	if c.managed != nil && resp.Task != nil {
@@ -301,11 +307,7 @@ func (c *Client) ClaimTasks(ctx context.Context, daemonID string, runtimeIDs []s
 	var resp struct {
 		Tasks []*Task `json:"tasks"`
 	}
-	if err := c.postJSON(reqCtx, "/api/daemon/tasks/claim", map[string]any{
-		"daemon_id":   daemonID,
-		"runtime_ids": runtimeIDs,
-		"max_tasks":   maxTasks,
-	}, &resp); err != nil {
+	if err := c.postJSON(reqCtx, "/api/daemon/tasks/claim", c.taskClaimBody(daemonID, runtimeIDs, maxTasks), &resp); err != nil {
 		return nil, err
 	}
 	return resp.Tasks, nil
@@ -435,8 +437,14 @@ func (c *Client) ExtendTaskPrepareLease(ctx context.Context, runtimeID, taskID s
 	return c.postJSON(ctx, fmt.Sprintf("/api/daemon/runtimes/%s/tasks/%s/prepare-lease", runtimeID, taskID), map[string]any{}, nil)
 }
 
-func (c *Client) StartTask(ctx context.Context, taskID string) error {
-	return c.postJSON(ctx, fmt.Sprintf("/api/daemon/tasks/%s/start", taskID), map[string]any{}, nil)
+func (c *Client) StartTask(ctx context.Context, taskID string, fence ...*protocol.TaskKnowledgeFence) error {
+	body := map[string]any{}
+	addKnowledgeFence(body, fence)
+	err := c.postJSON(ctx, fmt.Sprintf("/api/daemon/tasks/%s/start", taskID), body, nil)
+	if reason := knowledgeErrorReason(err); reason != "" {
+		return knowledgeRefusal(reason)
+	}
+	return err
 }
 
 // MarkTaskWaitingLocalDirectory parks a freshly-dispatched task in the
@@ -515,8 +523,9 @@ func (c *Client) ReportTaskMessages(ctx context.Context, taskID string, messages
 	}, nil)
 }
 
-func (c *Client) CompleteTask(ctx context.Context, taskID, output, branchName, sessionID, workDir string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string) error {
+func (c *Client) CompleteTask(ctx context.Context, taskID, output, branchName, sessionID, workDir string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string, fence ...*protocol.TaskKnowledgeFence) error {
 	body := map[string]any{"output": output}
+	addKnowledgeFence(body, fence)
 	if branchName != "" {
 		body["branch_name"] = branchName
 	}
@@ -547,8 +556,9 @@ func (c *Client) ReportTaskUsage(ctx context.Context, taskID string, usage []Tas
 	}, nil)
 }
 
-func (c *Client) FailTask(ctx context.Context, taskID, errMsg, sessionID, workDir, branchName, failureReason string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string) error {
+func (c *Client) FailTask(ctx context.Context, taskID, errMsg, sessionID, workDir, branchName, failureReason string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string, fence ...*protocol.TaskKnowledgeFence) error {
 	body := map[string]any{"error": errMsg}
+	addKnowledgeFence(body, fence)
 	if sessionID != "" {
 		body["session_id"] = sessionID
 	}
@@ -578,11 +588,12 @@ func (c *Client) FailTask(ctx context.Context, taskID, errMsg, sessionID, workDi
 
 // PinTaskSession persists the agent's session_id and work_dir on the task
 // row mid-flight so a daemon crash doesn't lose the resume pointer.
-func (c *Client) PinTaskSession(ctx context.Context, taskID, sessionID, workDir string) error {
+func (c *Client) PinTaskSession(ctx context.Context, taskID, sessionID, workDir string, fence ...*protocol.TaskKnowledgeFence) error {
 	if sessionID == "" && workDir == "" {
 		return nil
 	}
 	body := map[string]any{}
+	addKnowledgeFence(body, fence)
 	if sessionID != "" {
 		body["session_id"] = sessionID
 	}

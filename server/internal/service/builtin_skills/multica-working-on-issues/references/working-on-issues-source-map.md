@@ -76,6 +76,25 @@ below. In particular, a triage batch's `accept` action cannot use a `todo`
 assignee as an implicit execution trigger. The operator contract and rollback
 rules are in `docs/triage.zh-CN.md` and `.trellis/spec/server/triage.md`.
 
+## Managed knowledge
+
+| Contract | Source |
+| --- | --- |
+| Human source Read plus creator/current-handler proposal, including lawful source destinations for nonmembers; target-role confirmation and restricted withdrawal | `server/internal/collaboration/knowledge.go` (`KnowledgeCapabilitiesFor`); `server/internal/service/collaboration_knowledge.go`; `server/internal/service/collaboration_knowledge_authority_test.go` |
+| Exact reviewed version/hash/state CAS, retained corrections/derivation, original request namespace and actor-only receipt recovery | `server/pkg/protocol/collaboration_knowledge.go`; `server/pkg/db/queries/collaboration_knowledge.sql`; `server/internal/service/collaboration_knowledge.go` |
+| Current exact source availability and body-free unavailable/restricted projections; no base-context writes | `server/internal/service/collaboration_knowledge_sources.go`; `server/internal/service/collaboration_knowledge_view.go`; `server/internal/service/collaboration_knowledge_test.go` |
+| Human proposal/review in shared collaboration detail; project/workspace contributions stay outside base editors | `packages/views/collaboration/knowledge-panel.tsx`; `packages/views/collaboration/knowledge-proposal.tsx`; `packages/views/collaboration/knowledge-review.tsx`; `packages/core/collaboration/knowledge-sources.ts` |
+| Original frozen request recovery, definitive-unused versus known-receipt cleanup, monotonic private display lease | `packages/core/collaboration/knowledge-actions.ts`; `packages/core/collaboration/knowledge-recovery.ts`; `packages/core/collaboration/knowledge-lease.ts`; `packages/core/collaboration/knowledge-cache.ts` |
+| Default-false literal startup opt-in, shared ordinary/collaboration instance gate | `server/cmd/server/router.go`; `server/internal/handler/handler.go`; `server/internal/handler/collaboration_knowledge_runtime.go`; `server/cmd/server/task_knowledge_config_test.go` |
+| Actual originator/runtime owner/input audience authorization; Accountable and installer attribution do not substitute | `server/internal/service/collaboration_knowledge_resolve.go` (`KnowledgeConsumerFacts`, `knowledgeEligible`); `server/internal/service/task_knowledge_prepare.go`; `server/internal/service/collaboration_knowledge_runtime.go` |
+| Per-physical launch authorization, retained ordinary native exposure and collaboration run-only persistence policy | `server/internal/daemon/knowledge_context.go`; `server/internal/service/task_knowledge.go`; `server/pkg/agent/knowledge_launch.go`; `server/internal/daemon/collaborationrun/host_knowledge.go`; `server/internal/daemon/collaborationrun/host_runner.go` |
+| No new Agent knowledge CLI/human-API authority; existing admitted-run commands and mcb/mct boundaries remain | `server/internal/handler/collaboration_knowledge.go`; `server/internal/handler/daemon_knowledge.go`; `server/internal/handler/collaboration_knowledge_runtime.go`; `server/internal/cli/collaboration.go`; `server/cmd/multica/cmd_collaboration.go` |
+
+These rows document product usage. They do not authorize automatic promotion of
+user knowledge into built-in or workspace skills. Runtime source/process tests
+and shared UI evidence remain scoped; they do not certify every Provider/version,
+operating system or packaged installation.
+
 ## `multica issue pull-requests` — read PR links from Multica
 
 | Behavior | File:line | Drifted from |

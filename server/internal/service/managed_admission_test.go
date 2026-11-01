@@ -265,7 +265,7 @@ func TestManagedReclaimRejectsEarlierDeliveryRollback(t *testing.T) {
 		t.Fatalf("reclaim B lost stable execution fence: %v", err)
 	}
 	token := db.CreateTaskTokenParams{TokenHash: auth.HashToken("mat_" + uuid.NewString()), TaskID: first.ID, AgentID: first.AgentID, WorkspaceID: mustManagedUUID(t, source.WorkspaceID), UserID: mustManagedUUID(t, source.UserID), ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}
-	if _, err = svc.FinalizeTaskClaim(ctx, *first, token, nil, false); err == nil {
+	if _, err = svc.FinalizeTaskClaim(ctx, *first, token, nil, false, nil); err == nil {
 		t.Fatal("stale delivery minted a task credential")
 	}
 	if fx.Count(t, "SELECT count(*) FROM task_token") != 0 {
@@ -274,7 +274,7 @@ func TestManagedReclaimRejectsEarlierDeliveryRollback(t *testing.T) {
 	if _, err = f.svc.Queries.SetTaskDeliveredCommentIDs(ctx, db.SetTaskDeliveredCommentIDsParams{TaskID: first.ID, RuntimeID: first.RuntimeID, DispatchedAt: first.DispatchedAt, ClaimGeneration: first.ClaimGeneration, DeliveredCommentIds: []pgtype.UUID{}}); !errors.Is(err, pgx.ErrNoRows) {
 		t.Fatalf("stale delivery changed its comment receipt: %v", err)
 	}
-	if _, err = svc.FinalizeTaskClaim(ctx, second, token, nil, false); err != nil {
+	if _, err = svc.FinalizeTaskClaim(ctx, second, token, nil, false, nil); err != nil {
 		t.Fatalf("current delivery could not finalize: %v", err)
 	}
 	if _, err = svc.RequeueTaskAfterClaimFailure(ctx, *first); err == nil {

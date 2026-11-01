@@ -68,6 +68,9 @@ const concurrentRequestLimitWitness = "concurrent request limit"
 // failure_reason today and lets per-backend structured upgrades land
 // independently.
 func Classify(rawError string) Reason {
+	if reason, ok := knowledgeReason(rawError); ok {
+		return reason
+	}
 	trimmed := strings.TrimSpace(rawError)
 	if trimmed == "" {
 		// SQL maps NULL/empty to a separate bucket ("empty_error"),
@@ -484,6 +487,12 @@ var legacyConcurrentRequestLimitReasons = map[string]bool{
 // can be deleted once no daemon old enough to produce its wire shape is still
 // reporting.
 func NormalizeDaemonReason(reason, rawError string) Reason {
+	if known, ok := knowledgeReason(reason); ok {
+		return known
+	}
+	if known, ok := knowledgeReason(rawError); ok {
+		return known
+	}
 	if legacyConcurrentRequestLimitReasons[reason] &&
 		strings.Contains(strings.ToLower(rawError), concurrentRequestLimitWitness) {
 		return ReasonAgentProviderCapacityOrRateLimit

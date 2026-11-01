@@ -690,3 +690,21 @@ func TestKnowledgeInvalidNativeIDCannotBecomeObservation(t *testing.T) {
 		}
 	}
 }
+
+func TestKnowledgeNoSessionPersistenceFlagHasNoReenableForm(t *testing.T) {
+	if err := ValidateKnowledgeSessionArgs("claude", []string{"--no-session-persistence"}); err != nil {
+		t.Fatal(err)
+	}
+	for _, args := range [][]string{
+		{"--no-session-persistence=false"}, {"--no-session-persistence=true"},
+		{"--no-session-persistence", "false"}, {"--session-persistence"},
+		{"--no-no-session-persistence"}, {"--persist-session"},
+	} {
+		if ValidateKnowledgeSessionArgs("claude", args) == nil {
+			t.Fatalf("unproven persistence override accepted: %v", args)
+		}
+	}
+	if ValidateKnowledgeSessionArgs("codex", []string{"--no-session-persistence"}) == nil {
+		t.Fatal("Claude-only persistence control admitted another provider")
+	}
+}

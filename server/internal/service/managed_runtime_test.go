@@ -205,7 +205,7 @@ func TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory(t *testin
 	}
 	tokenHash := auth.HashToken(uuid.NewString())
 	derivedHash := auth.HashToken(uuid.NewString())
-	_, err = svc.FinalizeTaskClaim(ctx, *reclaimed, db.CreateTaskTokenParams{TokenHash: tokenHash, TaskID: reclaimed.ID, AgentID: reclaimed.AgentID, WorkspaceID: mustManagedUUID(t, source.WorkspaceID), UserID: f.user, ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false, db.CreateDaemonTokenParams{TokenHash: derivedHash, WorkspaceID: mustManagedUUID(t, source.WorkspaceID), DaemonID: source.DaemonID, ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}, InstallationBindingID: pgtype.UUID{Bytes: uuid.New(), Valid: true}, InstallationBindingEpoch: pgtype.Int8{Int64: 999, Valid: true}})
+	_, err = svc.FinalizeTaskClaim(ctx, *reclaimed, db.CreateTaskTokenParams{TokenHash: tokenHash, TaskID: reclaimed.ID, AgentID: reclaimed.AgentID, WorkspaceID: mustManagedUUID(t, source.WorkspaceID), UserID: f.user, ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false, nil, db.CreateDaemonTokenParams{TokenHash: derivedHash, WorkspaceID: mustManagedUUID(t, source.WorkspaceID), DaemonID: source.DaemonID, ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}, InstallationBindingID: pgtype.UUID{Bytes: uuid.New(), Valid: true}, InstallationBindingEpoch: pgtype.Int8{Int64: 999, Valid: true}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -224,7 +224,7 @@ func TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory(t *testin
 		t.Fatal("derived MCP token accepted caller binding instead of source")
 	}
 	badHash := auth.HashToken(uuid.NewString())
-	_, err = svc.FinalizeTaskClaim(ctx, *reclaimed, db.CreateTaskTokenParams{TokenHash: badHash, TaskID: reclaimed.ID, AgentID: reclaimed.AgentID, WorkspaceID: mustManagedUUID(t, source.WorkspaceID), UserID: f.user, ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false, db.CreateDaemonTokenParams{TokenHash: auth.HashToken(uuid.NewString()), WorkspaceID: pgtype.UUID{Bytes: uuid.New(), Valid: true}, DaemonID: source.DaemonID, ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}})
+	_, err = svc.FinalizeTaskClaim(ctx, *reclaimed, db.CreateTaskTokenParams{TokenHash: badHash, TaskID: reclaimed.ID, AgentID: reclaimed.AgentID, WorkspaceID: mustManagedUUID(t, source.WorkspaceID), UserID: f.user, ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false, nil, db.CreateDaemonTokenParams{TokenHash: auth.HashToken(uuid.NewString()), WorkspaceID: pgtype.UUID{Bytes: uuid.New(), Valid: true}, DaemonID: source.DaemonID, ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}})
 	if !errors.Is(err, ErrManagedRuntimeSource) {
 		t.Fatalf("cross-workspace derived token minted: %v", err)
 	}

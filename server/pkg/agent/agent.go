@@ -218,8 +218,9 @@ type Result struct {
 	// from provider text. The daemon must serialize this through its ordinary
 	// failure reason and must not automatically replay the logical input.
 	KnowledgeFailure string `json:"-"`
-	// KnowledgeOutput retains already observed provider text when knowledge
-	// refusal interrupts/rejects an execution. It is execution evidence, not
+	// KnowledgeOutput retains already observed provider text and bounded stderr
+	// diagnostics when knowledge refusal interrupts/rejects an execution. It is
+	// execution evidence, not
 	// a successful final answer. Failed Output keeps its existing empty shape.
 	KnowledgeOutput string `json:"-"`
 	DurationMs      int64
@@ -279,10 +280,14 @@ type Config struct {
 	CLIVersion     string            // detected version paired with ExecutablePath; observation only, never used to choose behavior
 	Env            map[string]string // extra environment variables
 	Logger         *slog.Logger
-	TaskID         string
-	RuntimeID      string
-	DaemonVersion  string
-	CodexVersion   string
+	// PrivateInput suppresses raw provider stderr in generic logs for this
+	// backend instance. Claude retains its bounded diagnostic tail for the
+	// authorized result/evidence path. This flag grants no execution authority.
+	PrivateInput  bool
+	TaskID        string
+	RuntimeID     string
+	DaemonVersion string
+	CodexVersion  string
 	// BuiltinRuntime reports that ExecutablePath is the provider's own
 	// discovered binary rather than a custom runtime profile's command. A
 	// custom profile keeps its protocol family as the provider, so the

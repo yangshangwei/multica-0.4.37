@@ -18,6 +18,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/logger"
 	"github.com/multica-ai/multica/server/internal/seatcapacity"
+	"github.com/multica-ai/multica/server/internal/service"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
@@ -349,6 +350,12 @@ func (h *Handler) JoinByShareLink(w http.ResponseWriter, r *http.Request) {
 			writeError(w, http.StatusConflict, "you are already a member of this workspace")
 			return
 		}
+		writeError(w, http.StatusInternalServerError, "failed to create membership")
+		return
+	}
+
+	cause := pgtype.UUID{Bytes: uuid.NewSHA1(uuid.UUID(member.ID.Bytes), []byte("collaboration-knowledge:member-added")), Valid: true}
+	if err = service.EnqueueKnowledgeSourceInvalidation(r.Context(), qtx, cause, "source_workspace", link.WorkspaceID); err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to create membership")
 		return
 	}

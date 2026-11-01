@@ -699,6 +699,7 @@ func main() {
 	go h.CollaborationAccountReconciler.Run(sweepCtx)
 	go h.CollaborationConfigReconciler.Run(sweepCtx)
 	go (&service.CollaborationRealtime{Queries: queries, TxStarter: pool, Publisher: broadcaster}).Run(sweepCtx)
+	go (&service.CollaborationKnowledgeInvalidation{Queries: queries, TxStarter: pool, Publisher: broadcaster}).Run(sweepCtx)
 	var taskObservation, cancellationObservation adminWorkerObservation
 	go service.NewAdminOperationService(queries, pool, taskSvc).Run(sweepCtx, cancellationObservation.record)
 	registerAutopilotListeners(bus, autopilotSvc)

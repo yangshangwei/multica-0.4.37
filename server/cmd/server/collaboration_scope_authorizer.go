@@ -13,6 +13,9 @@ type collaborationScopeAuthorizer struct {
 }
 
 func (a *collaborationScopeAuthorizer) AuthorizeScope(ctx context.Context, userID, workspaceID, scopeType, scopeID string) (bool, error) {
+	if scopeType == realtime.ScopeWorkspace && workspaceID == scopeID {
+		return a.service.AuthorizeKnowledgeWorkspace(ctx, userID, workspaceID)
+	}
 	if scopeType == realtime.ScopeAccount || scopeType == realtime.ScopeIssue {
 		return a.service.AuthorizeRealtimeScope(ctx, userID, scopeType, scopeID)
 	}

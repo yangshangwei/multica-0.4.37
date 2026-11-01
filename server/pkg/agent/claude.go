@@ -120,12 +120,16 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 	}
 	var closeStdinOnce sync.Once
 	closeStdin := func() { closeStdinOnce.Do(func() { _ = stdin.Close() }) }
-	// Capture stderr into both the daemon log (as before) and a bounded tail
-	// buffer so we can include the last few KB in Result.Error when claude
+	// Capture stderr into a bounded tail, also forwarding to the daemon log
+	// for non-private inputs. Include the last few KB in Result.Error when claude
 	// exits unexpectedly. Without the tail, an exit-code-only failure looks
 	// like "claude exited with error: exit status 3" — which is useless for
 	// root-causing V8 aborts, Bun panics, or any other CLI-side crash.
-	stderrBuf := newStderrTail(newLogWriter(b.cfg.Logger, "[claude:stderr] "), agentStderrTailBytes)
+	var stderrLog io.Writer = io.Discard
+	if !b.cfg.PrivateInput {
+		stderrLog = newLogWriter(b.cfg.Logger, "[claude:stderr] ")
+	}
+	stderrBuf := newStderrTail(stderrLog, agentStderrTailBytes)
 	cmd.Stderr = stderrBuf
 
 	if err := startOwnedProcessTree(cmd, b.cfg.Logger); err != nil {
@@ -342,6 +346,9 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 		// non-empty failure message; callers upstream surface this as the
 		// task's error field, which is the only place users see it.
 		stderrTail := stderrBuf.Tail()
+		if b.cfg.PrivateInput {
+			stderrTail = sanitizeAgentDiagnostic(stderrTail)
+		}
 		if finalError != "" {
 			finalError = withAgentStderr(finalError, "claude", stderrTail)
 		}
@@ -389,6 +396,15 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 				knowledgeOutput = lastAssistantText
 				if sawResult {
 					knowledgeOutput = finalResultText
+				}
+				// The terminal Error stays content-free. Preserve the bounded
+				// stderr diagnostic through the existing failed-evidence channel,
+				// including when a termination callback rejects a completed result.
+				if stderrTail != "" {
+					if knowledgeOutput == "" {
+						knowledgeOutput = knowledgeReason
+					}
+					knowledgeOutput = withAgentStderr(knowledgeOutput, "claude", sanitizeAgentDiagnostic(stderrTail))
 				}
 				finalStatus, finalOutput, finalError = "failed", "", knowledgeReason
 				resumeRejected = false

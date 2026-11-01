@@ -10,3 +10,10 @@ sql:
         sql_package: "pgx/v5"
         emit_json_tags: true
         emit_empty_slices: true
+        # Reserved server-only columns also pass through CTE result tables;
+        # table-qualified overrides alone miss those derived task rows.
+        overrides:
+          - column: "*.knowledge_delivery"
+            go_struct_tag: 'json:"-"'
+          - column: "*.knowledge_context_version"
+            go_struct_tag: 'json:"-"'

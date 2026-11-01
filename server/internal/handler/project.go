@@ -20,6 +20,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/iteration"
 	"github.com/multica-ai/multica/server/internal/logger"
 	"github.com/multica-ai/multica/server/internal/projecthealth"
+	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
@@ -644,7 +645,7 @@ func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 	actorType, actorID := h.resolveActor(r, userID, workspaceID)
 	var project db.Project
 	err = h.runProjectTransaction(r.Context(), wsUUID, parseUUID(userID), func(tx pgx.Tx, qtx *db.Queries) error {
-		prevProject, lockErr := qtx.LockProjectForExecutionSquad(r.Context(), db.LockProjectForExecutionSquadParams{ID: idUUID, WorkspaceID: wsUUID})
+		prevProject, lockErr := qtx.LockProjectForUpdate(r.Context(), db.LockProjectForUpdateParams{ID: idUUID, WorkspaceID: wsUUID})
 		if lockErr != nil {
 			if errors.Is(lockErr, pgx.ErrNoRows) {
 				return projectErr(404, "project_not_found", "project not found")
@@ -913,6 +914,9 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 		}
 		if foreignReferences {
 			return projectErr(409, "project_association_integrity_conflict", "project associations are inconsistent; deletion is blocked")
+		}
+		if err = service.DeleteKnowledgeTargetsInTx(r.Context(), q, operationID, ws, id); err != nil {
+			return err
 		}
 
 		// Lock automation parents before triggers, matching every binding writer.

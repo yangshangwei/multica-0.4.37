@@ -39,6 +39,8 @@ type CollaborationService struct {
 	// MemoryMaxBytes is the deployment shared-context limit. Zero (tests and
 	// callers that never touch shared context) means the documented default.
 	MemoryMaxBytes int
+	// Default closed; handlers copy the ordinary TaskService deployment gate.
+	KnowledgeContextEnabled bool
 }
 
 func NewCollaborationService(q *db.Queries, tx TxStarter, issues *IssueService) *CollaborationService {
@@ -77,6 +79,12 @@ func (s *CollaborationService) ResolveIssueAccess(ctx context.Context, q *db.Que
 	}
 	if q == nil {
 		q = s.Queries
+	}
+	if err := auth.ValidateAuthenticatedPAT(ctx, q); err != nil {
+		if errors.Is(err, auth.ErrPasswordSession) {
+			return result, collaborationError(http.StatusNotFound, "not_found")
+		}
+		return result, err
 	}
 	row, err := q.GetCollaborationAccess(ctx, db.GetCollaborationAccessParams{ViewerID: viewerID, IssueID: issueID})
 	if errors.Is(err, pgx.ErrNoRows) {

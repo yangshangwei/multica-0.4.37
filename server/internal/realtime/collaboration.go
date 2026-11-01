@@ -3,21 +3,27 @@ package realtime
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"strings"
 	"time"
 
 	"github.com/gorilla/websocket"
+	"github.com/jackc/pgx/v5"
 	"github.com/multica-ai/multica/server/internal/auth"
+	"github.com/multica-ai/multica/server/internal/util"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 // The credential was verified before this adapter runs. Preserve that actual
 // principal and password version; a user ID alone is not human authority.
 func (h *Hub) accountConnectionContext(ctx context.Context, token, userID string, agentActor bool) (context.Context, bool, error) {
 	kind := auth.CredentialJWT
+	patHash := ""
 	if strings.HasPrefix(token, "mul_") {
 		kind = auth.CredentialPAT
+		patHash = auth.HashToken(token)
 	}
-	ctx = auth.WithAuthenticatedPrincipal(ctx, auth.AuthenticatedPrincipal{UserID: userID, Kind: kind, AgentActor: agentActor})
+	ctx = auth.WithAuthenticatedPrincipal(ctx, auth.AuthenticatedPrincipal{UserID: userID, Kind: kind, AgentActor: agentActor, PATTokenHash: patHash})
 	if auth.PasswordMode() {
 		identity, err := auth.CheckPasswordToken(ctx, h.passwordQueries, token, false)
 		if err != nil {
@@ -86,6 +92,82 @@ func (c *Client) outboundScopeCurrent(scope scopeKey) bool {
 		_ = c.conn.Close()
 	}
 	return false
+}
+
+// A knowledge hint has no source authority requirement, but even a queued
+// invalidation must not reveal a target identity after workspace access ends.
+// Keep this separate from the legacy workspace frame contract.
+func (c *Client) outboundKnowledgeFrame(message outboundMessage) ([]byte, bool) {
+	canonical, knowledge, err := canonicalKnowledgeFrame(message.data)
+	if err != nil {
+		return nil, false
+	}
+	if !knowledge {
+		return canonical, true
+	}
+	var frame struct {
+		Payload protocol.CollaborationKnowledgeTargetHint `json:"payload"`
+	}
+	if json.Unmarshal(canonical, &frame) != nil || message.scope.Type != ScopeWorkspace || message.scope.ID != c.workspaceID {
+		return nil, false
+	}
+	if frame.Payload.TargetKind == "workspace" && frame.Payload.TargetID != c.workspaceID {
+		return nil, false
+	}
+	allowed, err := c.authorizeScope(ScopeWorkspace, c.workspaceID)
+	if err != nil || !allowed || c.authorizeKnowledge == nil {
+		return nil, false
+	}
+	ctx := c.ctx
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+	if err = c.authorizeKnowledge(ctx); err != nil {
+		return nil, false
+	}
+	return canonical, true
+}
+
+// Knowledge is delivered only after uncached verification of the exact
+// credential authenticated for this connection. General legacy realtime keeps
+// its existing cache path; cache eviction is never proof for a knowledge send.
+func (h *Hub) validateKnowledgeCredential(ctx context.Context, raw, userID string) error {
+	if raw == "" || userID == "" {
+		return auth.ErrPasswordSession
+	}
+	if auth.PasswordMode() {
+		identity, err := auth.CheckPasswordToken(ctx, h.passwordQueries, raw, false)
+		if err != nil {
+			return err
+		}
+		if identity.Session.UserID != userID {
+			return auth.ErrPasswordSession
+		}
+		return nil
+	}
+	if strings.HasPrefix(raw, "mul_") {
+		if h.passwordQueries == nil {
+			return errors.New("knowledge credential database unavailable")
+		}
+		pat, err := h.passwordQueries.GetPersonalAccessTokenByHash(ctx, auth.HashToken(raw))
+		if errors.Is(err, pgx.ErrNoRows) {
+			return auth.ErrPasswordSession
+		}
+		if err != nil {
+			return err
+		}
+		if util.UUIDToString(pat.UserID) != userID || pat.Revoked || pat.ExpiresAt.Valid && !pat.ExpiresAt.Time.After(time.Now()) {
+			return auth.ErrPasswordSession
+		}
+		return nil
+	}
+	verifiedUser, failure := authenticateToken(raw, nil, ctx)
+	if failure != "" || verifiedUser != userID {
+		return auth.ErrPasswordSession
+	}
+	return nil
 }
 
 // PublishWithID is the single-node outbox publisher. The scope remains attached

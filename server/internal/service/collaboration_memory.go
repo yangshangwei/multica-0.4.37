@@ -194,8 +194,11 @@ func recordCollaborationMemoryChange(ctx context.Context, q *db.Queries, issue, 
 	if err != nil {
 		return 0, err
 	}
-	_, err = q.CreateCollaborationEvent(ctx, db.CreateCollaborationEventParams{IssueID: issue, EventSeq: seq, ActorUserID: actor,
+	event, err := q.CreateCollaborationEvent(ctx, db.CreateCollaborationEventParams{IssueID: issue, EventSeq: seq, ActorUserID: actor,
 		Kind: CollaborationMemoryChangedEvent, Payload: payload})
+	if err == nil && action == "purge" {
+		err = EnqueueKnowledgeSourceInvalidation(ctx, q, event.ID, "source_issue", issue)
+	}
 	return seq, err
 }
 

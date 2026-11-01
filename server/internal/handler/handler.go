@@ -67,6 +67,9 @@ type dbExecutor interface {
 }
 
 type Config struct {
+	// KnowledgeContextEnabled opts in to guarded private knowledge execution.
+	// Human candidate management remains separate; the zero value is closed.
+	KnowledgeContextEnabled bool
 	// PlatformAdminEnabled controls the password-mode administration surface.
 	PlatformAdminEnabled        bool
 	ResourcePublishDir          string
@@ -551,6 +554,7 @@ func New(queries *db.Queries, txStarter txStarter, hub *realtime.Hub, bus *event
 	)
 
 	taskSvc := service.NewTaskService(queries, txStarter, hub, bus, daemonHub)
+	taskSvc.KnowledgeContextEnabled = cfg.KnowledgeContextEnabled
 	taskSvc.Analytics = analyticsClient
 	taskSvc.SourceContextStorage = store
 	// Chat follow-up suggestions run through the same internal LLM layer that

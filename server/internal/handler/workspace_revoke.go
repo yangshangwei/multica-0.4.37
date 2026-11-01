@@ -6,6 +6,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/service"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
@@ -227,6 +228,10 @@ func (h *Handler) revokeAndRemoveMember(ctx context.Context, workspaceID, userID
 		}
 	}
 	if err := qtx.DeleteMember(ctx, memberID); err != nil {
+		return empty, err
+	}
+	cause := pgtype.UUID{Bytes: uuid.NewSHA1(uuid.UUID(memberID.Bytes), []byte("collaboration-knowledge:member-removed")), Valid: true}
+	if err := service.EnqueueKnowledgeSourceInvalidation(ctx, qtx, cause, "source_workspace", workspaceID); err != nil {
 		return empty, err
 	}
 

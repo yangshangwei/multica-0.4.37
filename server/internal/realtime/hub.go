@@ -230,15 +230,16 @@ func sk(t, id string) scopeKey { return scopeKey{Type: t, ID: id} }
 // Client represents a single WebSocket connection with identity and the set
 // of scopes it is currently subscribed to.
 type Client struct {
-	authorize    func() error
-	ctx          context.Context
-	cancel       context.CancelFunc
-	hub          *Hub
-	conn         *websocket.Conn
-	send         chan outboundMessage
-	userID       string
-	workspaceID  string
-	accountScope bool
+	authorize          func() error
+	authorizeKnowledge func(context.Context) error
+	ctx                context.Context
+	cancel             context.CancelFunc
+	hub                *Hub
+	conn               *websocket.Conn
+	send               chan outboundMessage
+	userID             string
+	workspaceID        string
+	accountScope       bool
 
 	// subscriptions is guarded by hub.mu. Tracks the scopes this client is
 	// currently in. Used to clean up rooms on disconnect.
@@ -993,6 +994,11 @@ func HandleWebSocket(hub *Hub, mc MembershipChecker, pr PATResolver, resolveSlug
 		}
 		return nil
 	}
+	// Authentication is immutable within this socket: handleFrame supports no
+	// token replacement. A reconnect authenticates and binds its new token here.
+	client.authorizeKnowledge = func(ctx context.Context) error {
+		return hub.validateKnowledgeCredential(ctx, authToken, userID)
+	}
 	hub.register <- client
 
 	go client.writePump()
@@ -1199,7 +1205,11 @@ func (c *Client) writePump() {
 			if !c.outboundScopeCurrent(message.scope) {
 				continue
 			}
-			if err := c.conn.WriteMessage(websocket.TextMessage, message.data); err != nil {
+			data, allowed := c.outboundKnowledgeFrame(message)
+			if !allowed {
+				continue
+			}
+			if err := c.conn.WriteMessage(websocket.TextMessage, data); err != nil {
 				slog.Warn("websocket write error", "error", err, "user_id", c.userID, "workspace_id", c.workspaceID)
 				return
 			}
