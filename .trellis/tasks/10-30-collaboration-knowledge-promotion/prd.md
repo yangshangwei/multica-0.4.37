@@ -32,4 +32,4 @@ issue-scoped candidate、提议/确认权限、独立目标集合 revision、版
 | AC10 | 迁移/sqlc/Go/前端/定向平台检查有版本化证据；源码和索引遵守无 FK、CONCURRENTLY 规则；不自动写 skills。 |
 | AC11 | 知识父 workspace/project 存活锁用 KEY SHARE NOWAIT；lead 权限才用 project SHARE，角色仍锁 member。独立 revision 不占 issue_counter/project 普通编辑热点；真实并发回归证明无新增锁反转，初始化竞争与准备失败都有有界处置。 |
 
-正式设计见 `design.md`，分批实施与具名测试见 `implement.md`。K1–K5 与 F1–F4 已完成设计复核；实施阶段的独立审查和修正记录分别保留，不把计划通过当作产品验收。G0/G1 的确定性依赖已满足；G2 是知识实现的启用门，不能循环要求未实现的功能先通过才允许实施。G3 的所有权、迁移、隔离环境已分配，见 `research/execution-ownership-2026-11-01.json`；普通 C2/C3、协作 C4 与最终平台质量门未全部通过前不启用生产知识注入。
+正式设计见 `design.md`，分批实施与具名测试见 `implement.md`。K1–K5 与 F1–F4 已完成设计复核；实施阶段的独立审查和修正记录分别保留，不把计划通过当作产品验收。G0/G1 的确定性依赖已满足；G2 是知识实现的启用门，不能循环要求未实现的功能先通过才允许实施。G3 的所有权、迁移、隔离环境已分配，见 `research/execution-ownership-2026-11-01.json`；普通 C2/C3、协作 C4 与 Web/macOS 确定性门已通过；生产开关仍默认 false，真实 Provider 和发布矩阵另行验收。

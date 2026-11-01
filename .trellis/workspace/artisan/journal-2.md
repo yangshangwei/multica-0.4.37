@@ -1683,3 +1683,44 @@ Archived password registration and the complete platform administration task tre
 ### Next Steps
 
 - 独立终审仍受模型限流/路由不可用影响；继续完整锁序矩阵、启动注入及平台/真实模型验收。
+
+
+## Session 111: 知识沉淀完成确定性集成验收
+<!-- trellis-session: v=2 fp=fdb8d479e07041c1 -->
+
+**Date**: 2026-11-01
+**Task**: 知识沉淀完成确定性集成验收
+**Branch**: `codex/collaboration-knowledge-promotion-20261101`
+
+### Summary
+
+知识全链路、验收证据与台账已合入协作主分支；真实模型和发布矩阵仍开放。
+
+### Main Changes
+
+- 完成人工候选/版本/撤回、持久失效、Core/共享页面与普通/Host启动接线；生产开关默认false。
+- 修正项目元数据锁、runtime查询计数、测试夹具清理和删除清单；同步规范与内置指导。
+- 保留默认数据库测试隔离事件的追溯限制，以及复用验收库的只读诊断。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `96cedf485` | feat(collaboration): keep approved knowledge authorized through every launch |
+| `93093d2e9` | docs(collaboration): bind knowledge acceptance to reproducible source evidence |
+| `8cb04e329` | merge(collaboration): make reviewed knowledge delivery available on the integration branch |
+
+### Testing
+
+- [OK] Go 82包，10284顶层通过，21既有跳过；前端13060测试与lint/typecheck通过。
+- [OK] sqlc零漂移，Go build/vet通过；Web/macOS8用例、实际输入组合及独立终审通过。
+- [OK] 合并后4437个server、3408个frontend和156个审阅路径指纹一致。
+
+### Status
+
+[OK] **本轮确定性集成交付完成；父任务真实模型与发布验收仍开放**
+
+### Next Steps
+
+- 有上游恢复依据后在独立窗口从原E2a trial3/剩余22次续跑；保持场景、模型、编号和停止规则。
+- 新runtime/知识真实验收绑定自身提交；Windows、安装组合、多账号额度及发布门另验，技能层后置。

@@ -1,6 +1,6 @@
 # 知识沉淀与 runtime 集成验收
 
-当前状态：完整确定性验收与独立终审已通过，G2 确定性门关闭；正在合回主工作区。
+当前状态：完整确定性验收与独立终审已通过，G2 确定性门关闭；已合回 `codex/cross-workspace-collaboration`，合并提交 `8cb04e3295474073b4b991bc4883ef3901c14f01`。
 最终产品提交：`96cedf4850319a06c98fdda3d67d82595f01b6b2`。
 知识开关保持默认 `false`，没有推送、部署或发布。
 
@@ -80,3 +80,5 @@ socket 与强制只读配置。原始调查见
 测试服务已关闭的 UI 环境、任务数据库、隔离 checkout 和本地原始 trace 保留用于复核；
 反复截图与大体积 trace 不进入提交，路径/哈希见
 [local-artifact-retention.json](research/ui-platform-acceptance-2026-11-01/local-artifact-retention.json)。
+
+最终合并后的 4,437 个 server 文件、3,408 个 frontend 文件及 156 个审阅路径全部匹配验收指纹，见 [main integration](research/integration-verification-2026-11-01/main-integration.json)。

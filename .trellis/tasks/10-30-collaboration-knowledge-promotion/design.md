@@ -1,10 +1,10 @@
 # 技术设计：知识候选与受控上下文贡献
 
 - Query: 为已批准的知识沉淀范围固定可实施的最小技术合同。
-- Scope: internal；K1–K5 已独立复核，F1–F4 已按代码证据修订并通过主会话独立复核；产品已实施，分层动态验收已有证据；最终整合验收仍按独立门收口。
+- Scope: internal；K1–K5 已独立复核，F1–F4 已按代码证据修订并通过主会话独立复核；产品已实施，分层动态验收已有证据；最终确定性整合验收已通过，真实模型与发布仍按独立门验收。
 - Date: 2026-10-31
 - Revision: 2026-11-01；保留 K1–K5 与外部处理人提案边界，落实 F1–F4 的父行锁、独立修订行、持久失效扇出及跨 kind 请求键。
-- Status: **正式计划已补齐；G0/G1 确定性合同已冻结，本次 F1–F4 修订已通过主会话独立复核**。候选、人工 API、共享页面、失效与执行接线已实施；G2 的最终并发/整合验收在进行，G3 所有权和环境已落实。
+- Status: **正式计划已补齐；G0/G1 确定性合同已冻结，本次 F1–F4 修订已通过主会话独立复核**。候选、人工 API、共享页面、失效与执行接线已实施；G2 的最终并发/整合确定性验收已通过，G3 所有权和环境已落实。
 - Requirement source: `10-30-collaboration-knowledge-promotion/prd.md`、父任务 R5/AC8，以及`../10-30-collaboration-context-handoff-runtime/research/knowledge-promotion-preflight-2026-10-31.md`。
 
 ## 1. 固定范围与依赖门
@@ -19,7 +19,7 @@ K1–K5 与提案目标边界的独立复核见 runtime 的 `research/knowledge-
 | --- | --- |
 | G0 | **已冻结（确定性范围）**：产品提交 `0e1ee8e1e957b46a5bbd5d91a84772d69dd4d64b` 的原输入、memory version、run record、comment revision/hash、missing/purge/availability 合同；证据提交 `2b861347e62573ca765157ebf14629712793e7df` 的 `../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md` 及其命令/源码 hash 清单 |
 | G1 | **已冻结（确定性范围）**：同一提交的 handoff source DTO、真实 launch 的 prompt hash/attempt/nonce 绑定、fake executable 实际输入及错误/缺失标记；Go/TS 和生产 Web/原生 macOS Electron 证据归上述报告。冻结的是已验证的应用输入边界，不是 Provider 理解或全平台证明 |
-| G2 | **已实施，最终启用前验收进行中**：所有 ordinary issue/chat claim 分支、精确 session 累计 exposure、全部 pointer writer、独立披露与每次物理启动授权，须按 `implement.md` 的具名测试通过。允许先实施；未通过不得启用 managed knowledge |
+| G2 | **确定性验收已通过**：所有 ordinary issue/chat claim 分支、精确 session 累计 exposure、全部 pointer writer、独立披露与每次物理启动授权，须按 `implement.md` 的具名测试通过。允许先实施；未通过不得启用 managed knowledge |
 | G3 | **环境与所有权已落实**：独立工作区、专用 DB、migration/sqlc/protocol owner 与 Core owner 已记录于 `research/execution-ownership-2026-11-01.json`；handler/router/daemon 文件已按批次交接并实施 |
 
 真实 runtime 模型行为及更广平台矩阵仍开放。既有实验窗口以 upstream 502 环境结果结束，本文不启动 Provider、不推进或重写 E 系列账本，也不把 fake 输入证据算成模型通过。G0/G1 不因这些独立验收项未完成而循环阻止知识计划或代码实施。

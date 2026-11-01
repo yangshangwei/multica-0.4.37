@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-2.md`
-- **Total Sessions**: 110
+- **Total Sessions**: 111
 - **Last Active**: 2026-11-01
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-2.md` | ~1685 | Active |
+| `journal-2.md` | ~1726 | Active |
 | `journal-1.md` | ~2037 | Archived |
 <!-- @@@/auto:active-documents -->
 
@@ -30,6 +30,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 111 | 2026-11-01 | 知识沉淀完成确定性集成验收 | `96cedf485`, `93093d2e9`, `8cb04e329` | `codex/collaboration-knowledge-promotion-20261101` |
 | 110 | 2026-11-01 | 可靠交接：有界记录恢复与原终止证明 | - | `codex/cross-workspace-collaboration` |
 | 109 | 2026-10-31 | 保留 E2a 限流超时和关键日期暴露证据 | `54d6ecb02` | `codex/cross-workspace-collaboration` |
 | 108 | 2026-10-31 | 保留 E1 部分结果并防止续跑重放旧样本 | `9673ab3bf`, `ac011aff7` | `codex/cross-workspace-collaboration` |

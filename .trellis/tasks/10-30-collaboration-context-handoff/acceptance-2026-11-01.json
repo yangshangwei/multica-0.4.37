@@ -105,14 +105,15 @@
     {
       "id": "AC8",
       "requirement": "经人确认的知识沉淀",
-      "status": "implemented_final_acceptance_in_progress",
+      "status": "passed_deterministic; real_model_acceptance_separate",
       "evidence": [
         "../10-30-collaboration-knowledge-promotion/prd.md",
         "../10-30-collaboration-knowledge-promotion/design.md",
-        "../10-30-collaboration-knowledge-promotion/implement.md"
+        "../10-30-collaboration-knowledge-promotion/implement.md",
+        "../10-30-collaboration-knowledge-promotion/verification-integration-2026-11-01.md"
       ],
       "gaps": [
-        "全部知识批次已实施，前端与当前源码 Web/macOS 定向验收通过；最终审批/准备并发矩阵、全量 Go 与分支整合仍在收口；未生产启用"
+        "已合入并通过人工权限、版本/纠错/过期/撤回、失效与真实fake输入的确定性验收；真实Provider/生产启用另验，技能层不在本轮范围"
       ]
     },
     {
@@ -121,10 +122,11 @@
       "status": "partial",
       "evidence": [
         "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
-        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/remaining-acceptance-addendum/summary.md"
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/remaining-acceptance-addendum/summary.md",
+        "../10-30-collaboration-knowledge-promotion/verification-integration-2026-11-01.md"
       ],
       "gaps": [
-        "当前源码、全套与补充测试追溯已建立；原/新模型、知识产品和关联平台验收仍未完成"
+        "runtime 与知识最终源码、失败修正、独立审查及执行记录已可追溯；原/新真实模型和关联发布矩阵仍开放"
       ]
     }
   ],
@@ -133,7 +135,7 @@
       "scope": "production Web + native macOS Electron",
       "state": "passed_current_fixture_scope",
       "evidence": "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/summary-final.json",
-      "gap": "六项用例通过；不等于安装版或真实模型验收"
+      "gap": "runtime原6用例、知识8用例各自绑定版本证据；不等于安装版或真实模型验收"
     },
     {
       "scope": "macOS arm64 .app/ZIP/DMG",
@@ -187,5 +189,12 @@
   "runtime_test_addendum_commits": [
     "0bbc6a77a",
     "84c4c2b3d"
-  ]
+  ],
+  "knowledge_delivery": {
+    "product": "96cedf485",
+    "evidence": "93093d2e9",
+    "merge": "8cb04e3295474073b4b991bc4883ef3901c14f01",
+    "gate": "passed_deterministic",
+    "enabled": false
+  }
 }

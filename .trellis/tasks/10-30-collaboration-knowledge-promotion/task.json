@@ -21,7 +21,7 @@
   "children": [],
   "parent": "10-30-collaboration-context-handoff",
   "relatedFiles": [],
-  "notes": "2026-11-01：知识全链路已实施，确定性验收通过：Go 82包/10284顶层通过/21既有跳过，前端13060测试，Web/macOS8用例和实际fake输入组合通过。全量发现均已修正并独立复核；正在固定提交/合回主工作区。真实模型、Windows/安装包/多账号额度仍开放。知识开关默认false，未部署。",
+  "notes": "2026-11-01：知识全链路已实施，确定性验收通过：Go 82包/10284顶层通过/21既有跳过，前端13060测试，Web/macOS8用例和实际fake输入组合通过。全量发现均已修正并独立复核；已以 8cb04e329 合回协作主分支。真实模型、Windows/安装包/多账号额度仍开放。知识开关默认false，未部署。",
   "meta": {
     "permission_decision": "approved",
     "approval_session": "01a18a36-e482-7840-9900-3ff8174b4ce7",
@@ -41,11 +41,11 @@
     "product_implementation": "A1_A2_B1_B2_F3_C1_C2_C3_C4_complete",
     "real_model_acceptance": "open_separate_runtime_scope; upstream_502_window_closed_no_provider_calls",
     "main_contract_review": "research/main-contract-review-2026-11-01.json",
-    "execution_stage": "product_committed_evidence_and_main_integration",
+    "execution_stage": "integrated_deterministic_acceptance_passed; external_gates_open",
     "migration_sqlc_owner": "main_final_generator",
     "implementation_base": "765ab186a",
     "execution_authorization": "existing approved parent scope; user six-step execution; no repeat approval",
-    "production_enablement": "default_false_until_combined_G2_and_platform_acceptance",
+    "production_enablement": "default_false; real_model_and_release_acceptance_separate",
     "implementation_database": "multica_knowledge_20261101_b3c35f9c",
     "execution_ownership": "research/execution-ownership-2026-11-01.json",
     "schema_commit": "71379546c",
@@ -57,7 +57,7 @@
     "ui_commit": "53a166258",
     "test_db_guard_commit": "bbbfc731d",
     "test_db_guard_main_commit": "8ea4ef7b2",
-    "a2_review": "passed_scoped; final_concurrency_matrix_in_progress",
+    "a2_review": "passed_including_final_concurrency_matrix",
     "invalidation_review": "P1_P2_fixed_and_independently_rechecked",
     "runtime_review": "RR1_RR2_resolved_independently",
     "frontend_final": "1063_files_13060_tests; lint_typecheck_passed; source_stable",
@@ -69,6 +69,8 @@
     "final_ui": "7_web_1_native_macOS_passed; layered_runtime_proof",
     "real_model_plan": "real-model-acceptance-plan.md",
     "product_commit": "96cedf4850319a06c98fdda3d67d82595f01b6b2",
-    "final_review": "research/final-acceptance-review-2026-11-01.md"
+    "final_review": "research/final-acceptance-review-2026-11-01.md",
+    "main_merge_commit": "8cb04e3295474073b4b991bc4883ef3901c14f01",
+    "evidence_commit": "93093d2e95e1affafbb40ddcd944ac5d58fc451c"
   }
 }
