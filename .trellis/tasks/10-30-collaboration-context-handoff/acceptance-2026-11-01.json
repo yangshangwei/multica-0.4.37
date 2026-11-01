@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T05:21:15.690035+00:00",
+  "updated_at": "2026-11-01T05:24:43.213514+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -100,10 +100,12 @@
       "status": "passed_deterministic_model_unrun",
       "evidence": [
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-backend-round2/handler-summary.json",
-        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/remaining-acceptance-addendum/summary.md"
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/remaining-acceptance-addendum/summary.md",
+        "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json"
       ],
       "gaps": [
-        "八个新私有 handler 的40个凭据拒绝、7个正向对照及撤权后终止元数据通过；真实双账号 E5 未运行"
+        "八个新私有 handler 的40个凭据拒绝、7个正向对照及撤权后终止元数据通过；真实双账号 E5 未运行",
+        "RK1-H5 以 harness 数据库中测试创建的 owner/contributor 两个用户作为两个自控账号，使用一个 Provider 账号（会话-87记录的用户确认，7e14213df）；未运行"
       ]
     },
     {
