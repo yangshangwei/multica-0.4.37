@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T16:25:21.940092+00:00",
+  "updated_at": "2026-11-01T18:21:44.168939+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -9,13 +9,15 @@
     {
       "id": "AC0",
       "requirement": "交付提交链与已列全栈门禁",
-      "status": "passed_scope",
+      "status": "historical_scope_passed_final_candidate_pending",
       "evidence": [
         "../10-30-collaboration-fix-closure/verification-2026-10-31.md",
-        "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md"
+        "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
+        "research/acceptance-ledger-refresh-20261102/interrupted-check-summary.json",
+        "research/final-check-native-origin/independent-review/review.json"
       ],
       "gaps": [
-        "既有质量门仅适用于各自历史源码；本轮审计修复合流后的完整make check、sqlc、迁移、Web/Electron/RK1 fake尚未完成。"
+        "runtime、知识、RK1框架及交付准备已分别复核并本地合入。C3候选首轮make check在原生origin配置缺口处主动中断，exit -2；此前Core4340、Views7118、Docs62、Web290、Desktop1272共13082项TS测试通过。该结果不是完整验收通过；origin修复7435b04ec合入后须冻结新候选并完整重验。"
       ]
     },
     {
@@ -38,10 +40,12 @@
         "../10-30-collaboration-fix-closure/verification-2026-10-31.md",
         "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/registration.json",
         "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json",
-        "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/source-manifest-547760ea8.json"
+        "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/source-manifest-547760ea8.json",
+        "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/independent-review/recheck-review.json",
+        "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/fake-proof/runtime-fixed-race.json"
       ],
       "gaps": [
-        "RK1 runtime上限25已批、消耗0，含H2b及H6双启动；框架产品af04f6429已提交，normal fake/sim历史通过，旧产品race的真实incomplete均已保留；runnable=false，待runtime/知识修复合入、独立复核、同候选fake及最终源码/CLI/配置绑定。K1–K3/E0b未分配预算。"
+        "RK1 runtime上限25已批、消耗0，含H2b及H6每轮两次启动。框架已以30fa31eb7合入；62bd98eb9/4229e2d18修复RKI1–4，RKI5哈希经独立复核匹配，RKI1–5结论pass-with-notes。RKI6同最终候选全场景fake/race仍开放；4b508179f的E0a缺recording seal/超时不完整结果保留。runnable=false、最终source_id空；须完成联合验收、最终源码/CLI/配置/构件绑定及独占窗口后先跑新正式E0。K1–K3/E0b/安装账号旅程/AC43另需预算。"
       ]
     },
     {
@@ -117,15 +121,20 @@
     {
       "id": "AC8",
       "requirement": "经人确认的知识沉淀",
-      "status": "deterministic_gate_passed_then_audit_reopened; real_model_acceptance_separate",
+      "status": "audit_repairs_independently_reviewed_and_merged_final_candidate_pending; real_model_acceptance_separate",
       "evidence": [
         "../10-30-collaboration-knowledge-promotion/prd.md",
         "../10-30-collaboration-knowledge-promotion/design.md",
         "../10-30-collaboration-knowledge-promotion/implement.md",
-        "../10-30-collaboration-knowledge-promotion/verification-integration-2026-11-01.md"
+        "../10-30-collaboration-knowledge-promotion/verification-integration-2026-11-01.md",
+        "../11-01-collaboration-knowledge-audit-fixes/research/combined-ready-for-main-integration.json",
+        "../11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/review.json",
+        "../11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/migration-fixture-recheck.json",
+        "../11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/skill-entry-recheck.json",
+        "../11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/plan-recheck.json"
       ],
       "gaps": [
-        "知识21项各分道已有修复或测试处置，未整体合流。claim H3/M3提交94e790d2d，托管参数30edf3e36，全service3281含子用例通过/18skip；launch H2边界与L7已补、daemon1714通过/2skip；write L5 ac6546772和L1归因d4bc37a86，完整service在跑；web ed0026525独立pass-with-notes，Core4338全套通过，Views7116通过/1既有日期失败，知识集成已有9c056ad68待合流重验。生产知识开关false，K1–K3/E0b预算未定。"
+        "21项知识审计已逐项以修复或测试处置，按claim→launch→write→web合流并吸收runtime，经整批及后续独立复核，以6cb9fcb36合入。45efa093c的Core4340/Views7118、sqlc/build/vet等通过；原完整service仍是3319pass/3fail/18skip、exit1，不能改判。0702d5039修复skill入口与迁移fixture、742abb217修正优化器选路测试，分别窄范围复验及独立复核通过（迁移536/536、skill10/10）。最终候选完整service/make check、知识开关开/关及跨链路Web/Electron仍待验。生产知识开关false，真实K1–K3/E0b未分配预算。"
       ]
     },
     {
@@ -138,10 +147,12 @@
         "../10-30-collaboration-knowledge-promotion/verification-integration-2026-11-01.md",
         "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-joint-review/README.md",
         "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md",
-        "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-recall-surface-review/README.md"
+        "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-recall-surface-review/README.md",
+        "research/final-e2e-triage/findings.json",
+        "research/acceptance-ledger-refresh-20261102/interrupted-check-summary.json"
       ],
       "gaps": [
-        "最终候选源码/框架/CLI/配置/构件尚未绑定；真实模型、原生Windows、安装升级与多账号额度均未验。",
+        "五项本地合流记录已绑定到当前快照；最终候选源码/框架/CLI/配置/构件仍未绑定。旧822c15785 E2E的14项存量失败完成源码归因（9项收件人交互、3项动态时间戳比较、2项记录区域范围），不等于新候选通过。C3三类代表用例首次重放受CORS环境配置阻断，尚未到达目标断言；待环境修正及契约修复独立复核。真实模型、原生Windows、安装升级与多账号额度均未验。",
         "默认库迁移事故已披露：0aedf934e及父default-db-incident-audit-2026-11-01.json；272条账目456–763，迁移前快照缺失，当前schema/账目私有保留。未回退或清理；这不是验收通过证据。"
       ]
     }
@@ -149,9 +160,9 @@
   "related_release_matrix": [
     {
       "scope": "production Web + native macOS Electron",
-      "state": "passed_current_fixture_scope",
+      "state": "passed_historical_fixture_scope_final_candidate_pending",
       "evidence": "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/summary-final.json",
-      "gap": "runtime原6用例、知识8用例各自绑定版本证据；不等于安装版或真实模型验收"
+      "gap": "runtime原6项与知识8项分别绑定其历史源码。C3候选维护重放尚未到达目标契约；最终production Web/native Electron须绑定合流候选运行，不能继承旧结论。"
     },
     {
       "scope": "macOS arm64 .app/ZIP/DMG",
@@ -180,8 +191,12 @@
     {
       "scope": "Windows amd64/arm64",
       "state": "native_unverified",
-      "evidence": "../10-24-cross-platform-collaboration-runtime/verification.md",
-      "gap": "只有交叉编译和本地验证快照；原生ACL/Job/fault/lifecycle、安装、Provider账号、CI仍缺；2026-11-01核对：10-27快照92bb6d86非HEAD祖先且落后192提交，collaborationrun新增53个Host用例（checkpoint/recording落盘经Windows ACL私有文件原语）未在原生Windows运行；当前ci.yml已含collaboration-host-native但只在push/PR到main触发，见G1",
+      "evidence": [
+        "research/delivery-preparation/ready-for-integration.json",
+        "research/delivery-preparation/independent-review/review.json",
+        "research/delivery-preparation/independent-review/wd2-recheck.json"
+      ],
+      "gap": "Windows安装版协作旅程、CI准备和本地契约已以c3db64b24合入；WD1/WD2已修复并独立复核。Node/TS/lint/YAML及Windows amd64交叉编译仅属准备；原生PowerShell、ACL/Job/fault/lifecycle、安装升级、Provider账号与arm64仍未验。外部CI未获授权、未触发。",
       "runbook": "release-gates-runbook-2026-11-01.md"
     },
     {
@@ -195,7 +210,7 @@
       "scope": "发布/升级",
       "state": "not_released",
       "evidence": "../10-24-cross-platform-collaboration-runtime/verification.md",
-      "gap": "未推送/部署/发布；creation迁移744已默认开，AI execution/host准入仍默认关；混合writer滚动升级另需核对；offline-upgrade文档仍为V0.6.6/迁移上限570且未列MULTICA_KNOWLEDGE_CONTEXT_ENABLED，HEAD上限760；v0.6.7→候选离线升级演练未运行；v0.6.7 GitHub Release无Windows安装器（v0.6.6有）。“混合writer”按单API实例重启解释为新服务端配旧Desktop/daemon及回退窗口，待确认，见G2/G3；之前因为一份私有会话记录而禁止推送，这份记录已从所有分支移除；推送本身仍需用户授权（仓库公开）",
+      "gap": "用户决定仅继续本地准备，未授权公开推送/外部CI/部署/发布。交付准备已合入c3db64b24；offline-upgrade指南已更新迁移数字前缀上限763、保留认证方式并列明知识开关默认false。最终同源安装包、服务端离线升级演练、README.md/操作文档.md字节一致及构件哈希仍待验。旧客户端组合及回退窗口仍须核对，不能承诺down migration回退。",
       "runbook": "release-gates-runbook-2026-11-01.md"
     }
   ],
@@ -205,7 +220,7 @@
     "trial": 2,
     "remaining_provider_call_cap": 14
   },
-  "new_runtime_models": "Approved runtime cap 25 incl H2b and H6 two launches/trial; consumed 0; audit repairs, reviewed framework, joint checks and final source binding pending; K1-K3/E0b unbudgeted",
+  "new_runtime_models": "Approved runtime cap25 including H2b and H6 two launches/trial; consumed0. Runtime/knowledge repairs and reviewed RK1 framework locally merged; RKI6, final joint checks and source/CLI/config/artifact binding pending. Original series remaining14 is separate; K1-K3/E0b/installed/AC43 unallocated.",
   "runtime_test_addendum_commits": [
     "0bbc6a77a",
     "84c4c2b3d",
@@ -215,14 +230,14 @@
     "product": "96cedf485",
     "evidence": "93093d2e9",
     "merge": "8cb04e3295474073b4b991bc4883ef3901c14f01",
-    "gate": "historical_deterministic_passed; post_merge_audit_reopened",
+    "gate": "historical_deterministic_passed; post_merge_audit_repairs_reviewed_and_merged; final_candidate_pending",
     "enabled": false,
     "audit_fix": {
       "branch": "codex/collaboration-knowledge-fixes-20261101",
       "task": "11-01-collaboration-knowledge-audit-fixes",
       "defects": 21,
       "high": 3,
-      "merged": false,
+      "merged": true,
       "executor": "root native agents and guarded serial takeover; no old workflow resume",
       "lane_branches": [
         "codex/kfix-lane-claim-20261101",
@@ -239,38 +254,39 @@
         "M5",
         "L8"
       ],
-      "coordinator_review": "lane reviews and combined45efa093c pass-with-notes; IW1 clockfollowup independentlypass; migrationfixture followup pending",
+      "coordinator_review": "combined pass-with-notes; migration fixture and skill entry pass; plan assertion pass-with-notes; IW1 independently pass; all nonblocking notes retained",
       "state_at_resume": "14 of21 committed at resume",
       "ownership_ledger": "execution-resume-2026-11-01.json",
-      "current_state": "all_four_lanes_integrated_45efa093c_with_runtime; independent_combined_pass_with_notes; full_service_and_fixture_delta_recheck_pending",
-      "knowledge_integration_head": "45efa093c",
-      "integration": "not_yet_main_merged"
+      "current_state": "all_four_lanes_and_reviewed_followups_locally_merged; final_candidate_acceptance_open",
+      "knowledge_integration_head": "1278d1266c0768981c04800f00eeb3a17cfae8f9",
+      "integration": "merged_6cb9fcb36",
+      "merge_commit": "6cb9fcb36dde68b553365bd96698e0792a466f30"
     }
   },
   "release_gates_runbook": {
     "file": "release-gates-runbook-2026-11-01.md",
     "baseline_head": "2294654a2",
-    "state": "prepared_not_executed",
+    "state": "local_preparation_integrated; final_platform_execution_pending",
     "external_actions_performed": false,
     "pending_user_decisions": [
-      "push_branch_or_snapshot_for_native_windows_ci",
-      "windows_upgrade_baseline_v0.6.6_or_upload_0.6.7_installer",
-      "windows_arm64_out_of_scope_confirmation",
-      "ac43_environments_accounts_quota_call_cap",
-      "installed_real_account_journey_budget",
-      "rollback_to_v0.6.7_commitment"
+      "native_windows_environment_and_upgrade_baseline_when_local_preparation_complete",
+      "windows_arm64_scope",
+      "ac43_two_environments_different_provider_accounts_and_call_cap",
+      "knowledge_K1_K3_E0b_installed_real_account_journey_separate_budget",
+      "rollback_window_and_compatibility_commitment"
     ],
-    "external_actions_authorized": false
+    "external_actions_authorized": false,
+    "authorization_decision": "User: continue local preparation; no external operations authorized"
   },
   "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
   "execution_resume": "execution-resume-2026-11-01.json",
   "runtime_audit_repair": {
     "branch": "codex/runtime-audit-fixes-27-20261101",
     "head_at_resume": "1eb0cb33c",
-    "owner": "/root/runtime_fixes",
+    "owner": "root; audit lane complete and locally integrated",
     "integration": "merged_9e7f1878544a5ba5f20c2b9aefc67acbb4a532db",
     "gate": "runtime branch gates and independent review passed; final knowledge/RK1/delivery joint validation pending",
-    "current_tip": "342c9198b",
+    "current_tip": "229beb11b6cca26cd4af73fc3de0703d73297fc5",
     "product": "7627916c8",
     "rv1": "58d486656",
     "independent_review": "pass-with-notes; RV1 separately fixed and root-rechecked",
@@ -287,17 +303,39 @@
     "state": "open; 272 migration ledger rows timestamped 456-763; preincident state unknown; no rollback attempted"
   },
   "rk1_framework_review": {
-    "source": "4b508179f",
-    "verdict": "changes-required",
-    "required": [
-      "RKI1missing_or_partialrequestedtrials",
-      "RKI2effectiveconfigurationselectorfingerprints",
-      "RKI3durableproviderevidencepublicationerrors"
+    "historical_required_review": {
+      "source": "4b508179f",
+      "verdict": "changes-required",
+      "required": [
+        "RKI1missing_or_partialrequestedtrials",
+        "RKI2effectiveconfigurationselectorfingerprints",
+        "RKI3durableproviderevidencepublicationerrors"
+      ],
+      "RKI1_RKI2_fix": "62bd98eb9; scratchlauncher37OK0BAD, independentrecheckpending",
+      "RKI3_RKI4": "nativeimplementerfakefaultverificationrunning",
+      "same_source_fake": "intermediate runtime-fixed raceexit1 E0amissingseal, preserved; no paidstart",
+      "runnable": false,
+      "paid_consumed": 0
+    },
+    "current_review_source": "ff3532ee10905701454a16a2653a1a8454a91ba0",
+    "verdict": "pass-with-notes for RKI1-5 code corrections; final acceptance open",
+    "evidence": "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/independent-review/recheck-review.json",
+    "merge_commit": "30fa31eb7034200f74412556d61b3378bd13c1df",
+    "closed": [
+      "RKI-1",
+      "RKI-2",
+      "RKI-3",
+      "RKI-4",
+      "RKI-5 registration hashes"
     ],
-    "RKI1_RKI2_fix": "62bd98eb9; scratchlauncher37OK0BAD, independentrecheckpending",
-    "RKI3_RKI4": "nativeimplementerfakefaultverificationrunning",
-    "same_source_fake": "intermediate runtime-fixed raceexit1 E0amissingseal, preserved; no paidstart",
+    "open": [
+      "RKI-6 final same-candidate all-scenario fake/race",
+      "final source/framework/CLI/configuration/artifact binding",
+      "exclusive serial gateway window"
+    ],
+    "same_source_fake": "4b508179f intermediate race exit1 E0a missing recording seal and deadline; retained, never relabeled",
     "runnable": false,
+    "final_source_id": "",
     "paid_consumed": 0
   },
   "delivery_preparation": {
@@ -310,6 +348,61 @@
     ],
     "independent_review": "pass-with-notes; WD1 andWD2closed",
     "scope": "localfixturecontracts/TS/lint/YAML/Windowsamd64compileonly; no nativePowerShell/installGUI/Provider/externaCI",
-    "final_candidate_binding": "pending_after_merges"
-  }
+    "final_candidate_binding": "pending_final_verification_candidate; integration complete",
+    "merge_commit": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "guide_migration_ceiling": 763
+  },
+  "parent_status": "in_progress",
+  "integration_snapshot": {
+    "head": "c6289db93404a2d882ea3a095abdf9073132bfc6",
+    "branch": "codex/cross-workspace-collaboration",
+    "read_only_tracking_ahead": 194,
+    "origin_fetched": false,
+    "merges": {
+      "runtime": "9e7f1878544a5ba5f20c2b9aefc67acbb4a532db",
+      "knowledge": "6cb9fcb36dde68b553365bd96698e0792a466f30",
+      "rk1_framework": "30fa31eb7034200f74412556d61b3378bd13c1df",
+      "delivery_preparation": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "native_origin_preparation": "7435b04ec482554f3809ee97e89d6a3aab636919"
+    },
+    "scope": "Current integrated source snapshot; final candidate binding and acceptance remain pending"
+  },
+  "full_candidate_check": {
+    "source_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "command": [
+      "make",
+      "check",
+      "ENV_FILE=<private task source env>"
+    ],
+    "state": "interrupted_not_passed",
+    "exit_code": -2,
+    "started_at": "2026-11-01T17:42:11.911662+00:00",
+    "finished_at": "2026-11-01T17:52:35.969581+00:00",
+    "ts_pass": 13082,
+    "ts_packages": {
+      "core": 4340,
+      "views": 7118,
+      "docs": 62,
+      "web": 290,
+      "desktop": 1272
+    },
+    "raw_record_private_path": "/Volumes/artisan/code/2026/mc-collaboration-candidate-c3db64b24-20261102/.omx/private/final-candidate/make-check.json",
+    "raw_record_sha256": "b3541b80f26cbe50d34aebad31e46eedbfe137f6801052f8a8ba1f34a63e03d4",
+    "raw_log_sha256": "5943aabc7085ffc02c72e244c9c132941dab6ab5c7ef26f45597806c08bced41",
+    "summary_private_path": "/Volumes/artisan/code/2026/mc-collaboration-candidate-c3db64b24-20261102/.omx/private/final-candidate/make-check-interrupted-summary.json",
+    "summary_sha256": "c9ca18e3d6afbbf1b07693ad818a5cba718ae4bafc5dec7b6dfed5680b30dcfe",
+    "go_package_records": 6,
+    "reason": "Coordinator interruption for confirmed native renderer origin preparation gap; gap subsequently fixed and independently reviewed, but complete candidate check must rerun",
+    "final_acceptance_pass": false
+  },
+  "historical_ledger_reference": {
+    "commit": "c6289db93404a2d882ea3a095abdf9073132bfc6",
+    "files_before_refresh_sha256": {
+      "acceptance-2026-11-01.md": "6f1a6c73020d4a740da1e8c92339f83bd8db5abf1b064c518464ba963df9a4b9",
+      "acceptance-2026-11-01.json": "3c1f21a0bf52dddeefcd4e7926cc14d09efa03e8dd5434d566330368d19d7f22",
+      "execution-resume-2026-11-01.json": "3977ccf19b1bf8e3a2fed611b5d0f5af0fbdb1343b5b8083ce506f00a212f6ac"
+    },
+    "note": "Previous ledger bytes remain in git history; their then-current statements are historical, not an execution entry."
+  },
+  "legacy_baseline_fields": "product_commit/integration_evidence_commit retain the original runtime delivery identity; integration_snapshot identifies the current locally integrated source, which is not yet a final accepted candidate."
 }

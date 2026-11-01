@@ -1,0 +1,63 @@
+{
+  "source_head": "c6289db93404a2d882ea3a095abdf9073132bfc6",
+  "checks": [
+    {
+      "check": "json_parse",
+      "path": "acceptance-2026-11-01.json",
+      "result": "pass"
+    },
+    {
+      "check": "json_parse",
+      "path": "execution-resume-2026-11-01.json",
+      "result": "pass"
+    },
+    {
+      "check": "json_parse",
+      "path": "research/acceptance-ledger-refresh-20261102/audit.json",
+      "result": "pass"
+    },
+    {
+      "check": "json_parse",
+      "path": "research/acceptance-ledger-refresh-20261102/interrupted-check-summary.json",
+      "result": "pass"
+    },
+    {
+      "check": "status_budget_authorization_and_failure_invariants",
+      "result": "pass"
+    },
+    {
+      "check": "referenced_paths_exist",
+      "references": 44,
+      "result": "pass",
+      "missing": []
+    },
+    {
+      "check": "referenced_evidence_hashes_unchanged",
+      "count": 12,
+      "result": "pass"
+    },
+    {
+      "check": "git diff --check",
+      "exit_code": 0,
+      "result": "pass"
+    }
+  ],
+  "files": [
+    {
+      "path": "acceptance-2026-11-01.md",
+      "sha256": "3480a99b02025c752e2cc0b15a1e98d329f2bfdf4f67c04e8d3c6acec9a51a6c"
+    },
+    {
+      "path": "acceptance-2026-11-01.json",
+      "sha256": "909889e8a76568ba626ff69f93608dc0b49fe8ef01b7aa74134d467886eb632a"
+    },
+    {
+      "path": "execution-resume-2026-11-01.json",
+      "sha256": "e70c9684de7be318f541a128e997ac7546eac2b378f65fd5243afed4cc1fc0ef"
+    }
+  ],
+  "product_tests_run": false,
+  "database_or_service_commands": false,
+  "Provider_calls": 0,
+  "git_mutations": false
+}

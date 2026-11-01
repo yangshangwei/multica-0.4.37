@@ -1,3 +1,18 @@
+# RK1 当前入口（2026-11-02）
+
+当前状态：**预算已批准，框架已独立复核，最终联合验收及源码绑定未完成，不可启动真实模型**。runtime 上限 **25 次、实际消耗 0**，包含 H2b；H6 每轮启动两次。顺序和预算以 `runtime-addendum.json` 为准，启动门由 `framework-registration.json` 控制（`runnable=false`，最终 `source_id` 为空）。
+
+- 已合流：runtime `9e7f18785`、知识 `6cb9fcb36`、框架 `30fa31eb7`、交付准备 `c3db64b24`；独立增量复核 `independent-review/recheck-review.json` 为 pass-with-notes，RKI-1–5 关闭。
+- 待验：最终同候选完整检查、所有场景 fake normal/race（RKI-6）、源码／框架／CLI／配置／构件指纹和独占窗口。历史 E0a 缺 recording seal 的 incomplete 保留，不以业务成功替代。
+- 正式入口：新版本 E0a → H1 → H2 → H2b → H3a → H3b → H5 → H6，逐场景串行。首个环境／runtime／框架不完整结果停止所有后续；不追加健康调用、替换样本、换模型或延长超时。
+- H5 可用两个测试自有 Multica 用户及同一个 Provider 账号；父 AC43 需要两个执行环境及不同 Provider 账号，分别验收。
+- K1–K3、普通任务 E0b、安装版真实账号旅程没有预算，不计入上述 25 次。原实验冻结源码不变，另余 14 次，下一入口 E3 after trial 2，之后 E4 → E5 → E6。
+- 用户目前仅授权本地准备；推送、外部 CI、部署与发布保持暂停。
+
+`registration.json` 和以下正文是初始登记历史，保留其原始 0／22 次及旧源码以便追溯，**不得作为当前启动依据**。旧源码 manifest 也不代表当前候选。实际机器登记尚待最后合流与同候选验证后生成。
+
+## 初始登记历史（2026-11-01 03:30 UTC）
+
 # RK1：新 runtime/知识版本的真实验收登记
 
 状态：**已登记，不可运行**。调用上限为 0，未消耗任何 Provider 调用。机器可读登记见 `registration.json`，源码绑定见 `source-manifest.json`（由 `source_manifest.py` 生成）。

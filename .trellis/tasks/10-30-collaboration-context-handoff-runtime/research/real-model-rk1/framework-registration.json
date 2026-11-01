@@ -4,9 +4,9 @@
   "registered_by_session": "claude multica-0-4-37-35",
   "runnable": false,
   "not_runnable_reasons": [
-    "knowledge repairs and delivery preparation must finish local integration and final combined validation",
+    "local integration completed; final combined candidate validation remains open",
     "final clean candidate source/CLI/configuration/artifact fingerprints remain unregistered",
-    "same-candidate deterministic fake acceptance must pass, including preserved incomplete telemetry cases",
+    "RKI6 same-candidate all-scenario fake normal/race must pass; preserve historical incomplete telemetry cases",
     "exclusive serial window on shared gateway is required before paid execution"
   ],
   "framework_files": "server/cmd/server/rk1_*_test.go (build tag agentintegration, !windows)",
@@ -26,12 +26,12 @@
   "fake_proof": "fake-proof/summary.json",
   "maintained_by": "Codex /root/rk1_race_fix; preserved earlier normal and race evidence; pending final candidate validation",
   "launcher_regression_sha256": "ace9ef93297921fcf0ea49f1e1e7703f298700c58fefe912a3057e3a3e0e3b17",
-  "fake_proof_current_status": "race-fix-status.md; original telemetry failure and first diagnostic-directory setup failure preserved; corrected full rerun pending",
+  "fake_proof_current_status": "RKI1-5 independently rechecked pass-with-notes; RKI6 same final-candidate all-scenario fake normal/race pending; original failures retained",
   "implemented_review_fixes": {
     "RKI1_RKI2": "62bd98eb9",
     "RKI3_RKI4": "4229e2d18",
     "evidence": "ff3532ee1; RKI1-RKI2-verification.json; RKI3-RKI4-verification.json",
-    "RKI5": "current hashes refreshed; scratch launcher37 checks plus current exact-format/evidenceunitcontracts; independentrecheckpending"
+    "RKI5": "current hashes refreshed; launcher37 and exact-format/evidence contracts verified; independent recheck pass-with-notes closes RKI1-5"
   },
   "independent_review": {
     "original": "independent-review/review.json; changes-required preserved",

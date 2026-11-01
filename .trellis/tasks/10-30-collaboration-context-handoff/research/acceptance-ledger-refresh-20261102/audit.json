@@ -1,0 +1,78 @@
+{
+  "recorded_at": "2026-11-01T18:21:44.168939+00:00",
+  "owner": "/root/acceptance_ledger_refresh",
+  "source_head": "c6289db93404a2d882ea3a095abdf9073132bfc6",
+  "scope": "Parent acceptance and execution ledger reconciliation only; no product edits, DB/service/test/Provider/git mutation",
+  "before_sha256": {
+    "acceptance-2026-11-01.md": "6f1a6c73020d4a740da1e8c92339f83bd8db5abf1b064c518464ba963df9a4b9",
+    "acceptance-2026-11-01.json": "3c1f21a0bf52dddeefcd4e7926cc14d09efa03e8dd5434d566330368d19d7f22",
+    "execution-resume-2026-11-01.json": "3977ccf19b1bf8e3a2fed611b5d0f5af0fbdb1343b5b8083ce506f00a212f6ac"
+  },
+  "merges": {
+    "runtime": "9e7f1878544a5ba5f20c2b9aefc67acbb4a532db",
+    "knowledge": "6cb9fcb36dde68b553365bd96698e0792a466f30",
+    "rk1_framework": "30fa31eb7034200f74412556d61b3378bd13c1df",
+    "delivery_preparation": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "native_origin_preparation": "7435b04ec482554f3809ee97e89d6a3aab636919"
+  },
+  "evidence": [
+    {
+      "path": "../11-01-collaboration-knowledge-audit-fixes/research/combined-ready-for-main-integration.json",
+      "sha256": "e0e4636da0af36f53f85cbfae3b36f1e61b8ebd995eb3260dda508217a55a622"
+    },
+    {
+      "path": "../11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/review.json",
+      "sha256": "79de55a3f3725cf1fb15f18dd6822127da16bfd1238613b0f6b7e67b6f768e99"
+    },
+    {
+      "path": "../11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/migration-fixture-recheck.json",
+      "sha256": "806aed5823a40af1a6e5d0c801cced85e685608b9b434b12c7e81723746715e1"
+    },
+    {
+      "path": "../11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/skill-entry-recheck.json",
+      "sha256": "142bf9af42b94ec3fc4648df5be6786e96f4842de472376cf412bd538eae113a"
+    },
+    {
+      "path": "../11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/plan-recheck.json",
+      "sha256": "2a086e9804ffa5702c10c4b0da8d4dd1a6ba5f25b0afe7d11ef103417f1307d5"
+    },
+    {
+      "path": "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/independent-review/recheck-review.json",
+      "sha256": "b7d0f8a5faaf5cf0b75f84ce6efb1ceb4bd8fda5836b964459fcd8a6e433dd40"
+    },
+    {
+      "path": "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/fake-proof/runtime-fixed-race.json",
+      "sha256": "33c3d797a5e0f5a73c7c3f406e65c897b0e8b15b000f15400674a1e153c3de03"
+    },
+    {
+      "path": "research/delivery-preparation/ready-for-integration.json",
+      "sha256": "248c39f74801f30c85c72d313fa15bbcd9d90d5536660875b8c1554a5e47d1e4"
+    },
+    {
+      "path": "research/delivery-preparation/independent-review/wd2-recheck.json",
+      "sha256": "70baf1f0bc5e3169b323c686ef343664048f00e5f9d078f8ae708f6a6f7717a5"
+    },
+    {
+      "path": "research/final-check-native-origin/independent-review/review.json",
+      "sha256": "baad5eaf5d350758d15090237f50ca97e18b123d1e2452cf7a872a637f9f1f4c"
+    },
+    {
+      "path": "research/final-e2e-triage/findings.json",
+      "sha256": "f14f441fdde9d9542f59434bc90fbb87349bc80918ab82b03a1061d5dea13e4b"
+    },
+    {
+      "path": "default-db-incident-audit-2026-11-01.json",
+      "sha256": "abf6eabff7f197cdeaa1eb6843556b6c2d31f61a95ea4140e66ef181d130df3a"
+    }
+  ],
+  "historical_failures_preserved": [
+    "45efa093c service exit1:3319pass/3fail/18skip",
+    "minimal migration fixture original523pass/13fail",
+    "4b508179f RK1 intermediate E0a incomplete",
+    "c3db64b24 makecheck interruption exit-2",
+    "C3 canonical E2E setup CORS failures before target assertions"
+  ],
+  "parent_complete": false,
+  "Provider_calls_performed": 0,
+  "external_operations_performed": false
+}

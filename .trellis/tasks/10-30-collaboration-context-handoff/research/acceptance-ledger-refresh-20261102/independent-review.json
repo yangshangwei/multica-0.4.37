@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_web_review",
+  "reviewed_at": "2026-11-01T18:28:09.634333+00:00",
+  "verdict": "pass-with-notes",
+  "scope": "documentation and current entrypoint reconciliation only; not candidate acceptance",
+  "head": "c6289db93404a2d882ea3a095abdf9073132bfc6",
+  "input_files_sha256": {
+    ".trellis/tasks/10-30-collaboration-context-handoff/acceptance-2026-11-01.md": "3480a99b02025c752e2cc0b15a1e98d329f2bfdf4f67c04e8d3c6acec9a51a6c",
+    ".trellis/tasks/10-30-collaboration-context-handoff/acceptance-2026-11-01.json": "909889e8a76568ba626ff69f93608dc0b49fe8ef01b7aa74134d467886eb632a",
+    ".trellis/tasks/10-30-collaboration-context-handoff/execution-resume-2026-11-01.json": "e70c9684de7be318f541a128e997ac7546eac2b378f65fd5243afed4cc1fc0ef",
+    ".trellis/tasks/10-30-collaboration-context-handoff/release-gates-runbook-2026-11-01.md": "08301322a5064dcb59367a112e2de87be7241c826329459d9a64a9984e53c72d",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/task.json": "b9fad4d6cf91b7a52da836f660cf491eeaa8c2671b208be44bba0670857905df",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/README.md": "d57a94310e8bf24428d6b41d8a39a1ec42e13b13e553d931c8c0e4ce25b4c985",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json": "6c4df9350a72a3043475a49fad7675d1d600d1e5b5587967fb3b97d5c97bffc9",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework-registration.json": "95e66fd9f3b227d212eee26adc786348e2316d623d71508e024152ed50bcb265"
+  },
+  "documentation_diff_sha256": "dae24087ae4c403906142a09078ee81891c1ded4aeb191994f21d646260b6214",
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "LD-1",
+      "severity": "low",
+      "blocking": false,
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/task.json",
+      "line": 31,
+      "field": "meta.deterministic_acceptance",
+      "current": "historical_scope_passed; post_merge_audit_reopened_pending_fixes_and_joint_revalidation",
+      "finding": "The inherited value still says pending_fixes after the refreshed notes/progress_phase correctly say all repairs are locally merged. It is bound to historical0e1ee8e1e/2b861347e and does not grant final acceptance, so this does not invalidate the budget/launch gates, but it remains a stale machine-readable label.",
+      "recommendation": "Clarify it as historical_scope_passed; runtime_audit_repairs_reviewed_and_merged; final_candidate_joint_revalidation_pending. Optionally prefix platform_acceptance with historical while retaining its explicit old source identity."
+    }
+  ],
+  "merge_ancestry": [
+    {
+      "scope": "runtime",
+      "sha": "9e7f1878544a5ba5f20c2b9aefc67acbb4a532db",
+      "ancestor_of_head": true
+    },
+    {
+      "scope": "knowledge",
+      "sha": "6cb9fcb36dde68b553365bd96698e0792a466f30",
+      "ancestor_of_head": true
+    },
+    {
+      "scope": "rk1_framework",
+      "sha": "30fa31eb7034200f74412556d61b3378bd13c1df",
+      "ancestor_of_head": true
+    },
+    {
+      "scope": "delivery_preparation",
+      "sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "ancestor_of_head": true
+    },
+    {
+      "scope": "native_origin_preparation",
+      "sha": "7435b04ec482554f3809ee97e89d6a3aab636919",
+      "ancestor_of_head": true
+    }
+  ],
+  "immutable_historical_files": [
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/registration.json",
+      "unchanged_from_HEAD": true,
+      "sha256": "4c626e50af5aaffb2feb1eb9db0c35f05c0c0dcdd8d7dcfd932c08e22af0e2cf"
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/source-manifest.json",
+      "unchanged_from_HEAD": true,
+      "sha256": "337b3542990ba403785d33df1fc8fd525559f661c457d43f466880dd499e2cd2"
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/source-manifest-547760ea8.json",
+      "unchanged_from_HEAD": true,
+      "sha256": "7345839e81899d6816a45c3fd5368da8b5d6bcbef5920eff00f3dee0988b71ec"
+    }
+  ],
+  "invariants": {
+    "parent_in_progress_not_complete": true,
+    "RK1_runtime_cap25_consumed0": true,
+    "RK1_H2b_and_H6_double_launches_sum25": true,
+    "original_series_remaining14_next_E3_after_trial2": true,
+    "unbudgeted_K1_K3_E0b_installed_AC43_separate": true,
+    "RKI1_4_required_fixes_closed_and_RKI5_hashes_match": true,
+    "RKI6_and_final_binding_open": true,
+    "runnable_false_final_source_id_empty": true,
+    "interrupted_C3_exit_minus2_TS13082_not_finalpass": true,
+    "Windows_native_install_accounts_not_passed": true,
+    "external_operations_not_authorized": true,
+    "default_DB_incident_unresolved_no_restoration_claim": true,
+    "original_registration_and_manifests_unchanged_and_marked_historical": true
+  },
+  "evidence_checks": {
+    "cited_audit_evidence_hashes_match": 12,
+    "raw_interrupted_record_hash_match": true,
+    "raw_interrupted_log_hash_match": true,
+    "private_summary_hash_match": true,
+    "retained_Go_package_DB_records": 6,
+    "historical_failed_service_preserved": {
+      "source": "45efa093c",
+      "pass": 3319,
+      "fail": 3,
+      "skip": 18,
+      "exit_code": 1
+    },
+    "current_framework_launcher_regression_hashes_match": true
+  },
+  "commands_scope": [
+    "git status/log/diff/rev-parse/merge-base/rev-list/show (read-only)",
+    "Python JSON parse and file/hash/static invariant inspection only",
+    "git diff --check exit0"
+  ],
+  "product_tests_run": false,
+  "database_commands": false,
+  "browser_commands": false,
+  "services_started": false,
+  "provider_calls": 0,
+  "installed_cli_calls": false,
+  "external_operations": false,
+  "git_mutations": false,
+  "reviewer_writes": [
+    "research/acceptance-ledger-refresh-20261102/independent-review.md",
+    "research/acceptance-ledger-refresh-20261102/independent-review.json"
+  ],
+  "remaining": "Docs review does not close final candidate, RKI6, paid-model, native/platform/install/account/upgrade or unresolvedDBincident gates."
+}

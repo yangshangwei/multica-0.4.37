@@ -4,12 +4,12 @@
   "decided_at": "2026-11-01T04:26:26Z",
   "decision_source": "User answers in session multica-0-4-37-87 on 2026-11-01: fix product gaps 2 and 3 before testing and narrow H1; allocate the full 19-launch runtime set",
   "research": "../real-model-runtime-framework-research.md (7a90f3d78)",
-  "status": "framework_fake_verified_pending_independent_review_and_product_merge",
+  "status": "runtime_budget_approved_25; reviewed_framework_and_product_locally_merged; final_joint_candidate_not_accepted",
   "not_runnable_reasons": [
-    "runtime_and_knowledge_fixes_unmerged: finish audits and merge their independently reviewed branches before final source binding",
-    "framework_review_pending: real router/DB/Runner/HostExecutor fake proof exists, but coordinator independent review is still required",
-    "source_rebinding_required: retained source_binding is a historical product manifest, not the final candidate binding",
-    "exclusive_window_required: no other session may issue model calls on the shared gateway during RK1 launches"
+    "final_candidate_joint_verification_pending: full make check and gated Web/native/knowledge on-off remain open",
+    "RKI6_open: same final-candidate all-scenario fake normal/race required; preserved intermediate E0a recording-seal incomplete",
+    "final_source_binding_required: historical source_binding below is not the final candidate; framework-registration.source_binding.source_id remains empty",
+    "exclusive_window_required: pause shared-gateway coding/review and local heavy tests/migrations before paid execution"
   ],
   "runtime_call_cap": 25,
   "runtime_consumed": 0,
@@ -101,7 +101,7 @@
       "correction": "From 96cedf485 until ac2a24f8f the smoke authorizer rejected knowledge_version=1 on the claim with HTTP 403, so the smoke could not pass at those HEADs and proved nothing there; the registered claim that the query is accepted holds only from ac2a24f8f. Confirmed independently by session multica-0-4-37-0b."
     }
   ],
-  "updated_at": "2026-11-01T10:51:55Z",
+  "updated_at": "2026-11-01T18:24:02.380825+00:00",
   "decisions": [
     {
       "at": "2026-11-01T10:33:57Z",
@@ -116,5 +116,14 @@
       "source": "user answer in session multica-0-4-37-35 to the cap question: \"25 次，全部场景都跑\""
     }
   ],
-  "launch_accounting": "Only real paid Provider launches count toward 25. Sim/fake proofs consume zero. For actual invocations, run_rk1.py records launch_budget before/after using max(public measured launches, private real launch records) per trial, plus remaining cap and stop_state."
+  "launch_accounting": "Only real paid Provider launches count toward 25. Sim/fake proofs consume zero. For actual invocations, run_rk1.py records launch_budget before/after using max(public measured launches, private real launch records) per trial, plus remaining cap and stop_state.",
+  "current_integration": {
+    "runtime": "9e7f18785",
+    "knowledge": "6cb9fcb36",
+    "framework": "30fa31eb7",
+    "delivery_preparation": "c3db64b24",
+    "independent_recheck": "independent-review/recheck-review.json; pass-with-notes; RKI1-5 closed",
+    "real_provider_consumed": 0,
+    "final_candidate_source_bound": false
+  }
 }

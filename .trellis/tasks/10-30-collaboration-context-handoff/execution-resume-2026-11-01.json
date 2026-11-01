@@ -1,97 +1,125 @@
 {
-  "recorded_at": "2026-11-01T23:06:27.539608+08:00",
+  "recorded_at": "2026-11-01T18:21:44.168939+00:00",
   "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
-  "integration_head": "6e039386760d362453618a4affa8ba43cf72f473",
+  "integration_head": "c6289db93404a2d882ea3a095abdf9073132bfc6",
   "worktrees": [
     {
       "worktree": "/Volumes/artisan/code/2026/multica-0.4.37",
       "branch": "codex/cross-workspace-collaboration",
-      "head": "6e039386760d362453618a4affa8ba43cf72f473",
-      "status": []
+      "head": "c6289db93404a2d882ea3a095abdf9073132bfc6",
+      "status": [
+        " M .trellis/tasks/10-30-collaboration-context-handoff/acceptance-2026-11-01.json",
+        "?? .trellis/tasks/10-30-collaboration-context-handoff/research/acceptance-ledger-refresh-20261102/",
+        "?? .trellis/tasks/11-01-branch-e2e-acceptance/"
+      ],
+      "status_scope": "Read-only snapshot; dirty work retained; snapshots can change during owned concurrent work"
     },
     {
       "worktree": "/Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101",
       "branch": "codex/runtime-audit-fixes-27-20261101",
-      "head": "1eb0cb33cb37dd62d6a394ebcf298ea56b48f223",
-      "status": [
-        "M server/internal/cli/collaboration_test.go",
-        " M server/internal/service/collaboration_comments_recall_test.go",
-        " M server/internal/service/collaboration_squad.go",
-        " M server/pkg/protocol/collaboration_recall.go",
-        "?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-audit-takeover/"
-      ]
+      "head": "229beb11b6cca26cd4af73fc3de0703d73297fc5",
+      "status": [],
+      "status_scope": "Read-only snapshot; dirty work retained; snapshots can change during owned concurrent work"
     },
     {
       "worktree": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101",
       "branch": "codex/collaboration-knowledge-fixes-20261101",
-      "head": "8c0f37672a06ebbb837b9c76bfd25d7437fed667",
-      "status": []
+      "head": "1278d1266c0768981c04800f00eeb3a17cfae8f9",
+      "status": [],
+      "status_scope": "Read-only snapshot; dirty work retained; snapshots can change during owned concurrent work"
     },
     {
       "worktree": "/Volumes/artisan/code/2026/mc-kfix-lane-claim",
       "branch": "codex/kfix-lane-claim-20261101",
-      "head": "3110295d0eca364937f08c97102ca74f08a7e235",
-      "status": []
+      "head": "5033fdd9d398b09e46e60db15ec517640b39a582",
+      "status": [],
+      "status_scope": "Read-only snapshot; dirty work retained; snapshots can change during owned concurrent work"
     },
     {
       "worktree": "/Volumes/artisan/code/2026/mc-kfix-lane-launch",
       "branch": "codex/kfix-lane-launch-20261101",
-      "head": "3351c4c131247393fd319cde1c3dcf69ef0aa48f",
-      "status": [
-        "M server/internal/daemon/knowledge_context_claim_test.go",
-        " M server/pkg/agent/knowledge_launch_test.go"
-      ]
+      "head": "f00c94962dd932039d56e8acca31a67474c92887",
+      "status": [],
+      "status_scope": "Read-only snapshot; dirty work retained; snapshots can change during owned concurrent work"
     },
     {
       "worktree": "/Volumes/artisan/code/2026/mc-kfix-lane-write",
       "branch": "codex/kfix-lane-write-20261101",
-      "head": "fba1fca3fc40bede13e293ee3e568c6907bd192b",
-      "status": [
-        "M .trellis/spec/server/collaboration-knowledge.md",
-        " M server/internal/service/collaboration_knowledge_credentials.go",
-        " M server/internal/service/collaboration_knowledge_credentials_test.go",
-        " M server/pkg/db/generated/collaboration_knowledge_service.sql.go",
-        " M server/pkg/db/queries/collaboration_knowledge_service.sql",
-        "?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L5-red.txt"
-      ]
+      "head": "be7ea867d7a38e0eb221c8214c86fddd97a37810",
+      "status": [],
+      "status_scope": "Read-only snapshot; dirty work retained; snapshots can change during owned concurrent work"
     },
     {
       "worktree": "/Volumes/artisan/code/2026/mc-kfix-lane-web",
       "branch": "codex/kfix-lane-web-20261101",
-      "head": "a9801fb075df79827a3908bd7c2c23b5d8fc1f26",
-      "status": []
+      "head": "6e4d7e177217403da376c25ad03a372367ce3707",
+      "status": [
+        "?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/web-views-full.txt",
+        "?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/next-assignment.md"
+      ],
+      "status_scope": "Read-only snapshot; dirty work retained; snapshots can change during owned concurrent work"
     },
     {
       "worktree": "/Volumes/artisan/code/2026/mc-rk1-framework-20261101",
       "branch": "codex/rk1-framework-20261101",
-      "head": "b8fd547dca9808f309386c31854c45ad71334901",
+      "head": "c2bf376cf894e0869c94eee1c337dbe93b0a6687",
+      "status": [],
+      "status_scope": "Read-only snapshot; dirty work retained; snapshots can change during owned concurrent work"
+    },
+    {
+      "worktree": "/Volumes/artisan/code/2026/mc-collaboration-delivery-20261101",
+      "branch": "codex/collaboration-delivery-20261101",
+      "head": "8d2640254f8f0ffd3341f1817488bfe863c1390d",
+      "status": [],
+      "status_scope": "Read-only snapshot; dirty work retained; snapshots can change during owned concurrent work"
+    },
+    {
+      "worktree": "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102",
+      "branch": "codex/e2e-contract-maintenance-20261102",
+      "head": "c3db64b24fea7116622d106ce2231853e1be72f9",
       "status": [
-        "M .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json",
-        "?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework-registration.json",
-        "?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework-review-2026-11-01.md",
-        "?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework.md",
-        "?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py",
-        "?? server/cmd/server/rk1_entry_test.go",
-        "?? server/cmd/server/rk1_fake_helpers_test.go",
-        "?? server/cmd/server/rk1_fake_test.go",
-        "?? server/cmd/server/rk1_fixture_test.go",
-        "?? server/cmd/server/rk1_lifecycle_test.go",
-        "?? server/cmd/server/rk1_observe_test.go",
-        "?? server/cmd/server/rk1_provider_test.go",
-        "?? server/cmd/server/rk1_run_test.go",
-        "?? server/cmd/server/rk1_scenarios_handoff_test.go",
-        "?? server/cmd/server/rk1_scenarios_recall_test.go",
-        "?? server/cmd/server/rk1_trace_test.go",
-        "?? server/cmd/server/rk1_trial_test.go"
-      ]
+        " M e2e/collaboration-runtime-handoff-desktop.spec.ts",
+        " M e2e/collaboration-runtime-handoff-web.spec.ts",
+        "?? .trellis/tasks/10-30-collaboration-context-handoff/research/e2e-contract-maintenance/"
+      ],
+      "status_scope": "Read-only snapshot; dirty work retained; snapshots can change during owned concurrent work"
+    },
+    {
+      "worktree": "/Volumes/artisan/code/2026/mc-check-fixture-origins-20261102",
+      "branch": "codex/check-fixture-origins-20261102",
+      "head": "25a38745cac19581f4774c3d29843c0230a935e2",
+      "status": [],
+      "status_scope": "Read-only snapshot; dirty work retained; snapshots can change during owned concurrent work"
+    },
+    {
+      "worktree": "/Volumes/artisan/code/2026/mc-collaboration-candidate-c3db64b24-20261102",
+      "branch": "(detached)",
+      "head": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "status": [
+        " M apps/web/next-env.d.ts",
+        "?? .trellis/tasks/10-30-collaboration-context-handoff/research/final-e2e-triage/"
+      ],
+      "status_scope": "Read-only snapshot; dirty work retained; snapshots can change during owned concurrent work"
+    },
+    {
+      "worktree": "/Volumes/artisan/code/2026/mc-collaboration-password-c3db64b24-20261102",
+      "branch": "(detached)",
+      "head": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "status": [
+        " M apps/web/next-env.d.ts"
+      ],
+      "status_scope": "Read-only snapshot; dirty work retained; snapshots can change during owned concurrent work"
     }
   ],
   "owners": {
-    "integration": "root; exclusive writer",
-    "runtime": "/root/runtime_fixes",
-    "knowledge_claim": "/root/knowledge_claim",
-    "rk1_framework": "/root/rk1_framework",
-    "knowledge_launch_write_web": "preserved; queued for takeover"
+    "integration": "root; exclusive git writer and merger",
+    "runtime": "completed/reviewed/merged; no open implementation owner",
+    "knowledge_claim_launch_write_web": "completed/reviewed/merged; original worktrees retained",
+    "rk1_framework": "review corrections completed/merged; root owns final same-candidate fake/binding",
+    "delivery": "local preparation reviewed/merged; native platform execution pending",
+    "e2e_contract_maintenance": "/root/e2e_contract_repairs in codex/e2e-contract-maintenance-20261102",
+    "acceptance_ledger_refresh": "/root/acceptance_ledger_refresh; parent docs only; no git mutation",
+    "test_services_databases_and_final_candidate": "root only"
   },
   "budgets": {
     "rk1_runtime": {
@@ -124,21 +152,143 @@
   "real_provider_executed": false,
   "external_action_decision": "User: continue local preparation; no external operations authorized",
   "native_execution_update": {
-    "runtime_fixes": "gateway_429_exited; product 7627916c8 and evidence retained; independent runtime_review running",
-    "knowledge_claim": "gateway_429_exited; H3/M3 implementation and dedicated DB suites retained; unscoped migration incident recorded",
-    "rk1_framework": "gateway_429_exited; fake/sim19 cases and launcher29 regressions recorded; pending commit and independent review",
-    "knowledge_web": "gateway_429_exited_before_edits; root serial fallback with red/green tests"
+    "runtime_fixes": "Reviewed and merged 9e7f18785; all 9 audit items and 5 recall follow-ups disposed; final candidate pending.",
+    "knowledge_lanes": "All four lanes merged in the required order. Combined and follow-up independent reviews passed; main merge 6cb9fcb36.",
+    "rk1_framework": "Reviewed RKI-1–5 corrections merged 30fa31eb7; RKI-6 open, runnable=false, paid=0.",
+    "delivery": "Reviewed local preparation merged c3db64b24; native Windows/install/account proof remains unrun.",
+    "native_origin": "b8035617d independently reviewed and merged 7435b04ec; complete check must rerun."
   },
   "default_database_incident": "default-db-incident-audit-2026-11-01.json",
-  "last_update": "2026-11-01T16:25:21.940092+00:00",
+  "last_update": "2026-11-01T18:21:44.168939+00:00",
   "current_results": {
-    "runtime": "merged9e7f18785; independentpass-with-notes; RV158d486656 root16pass; final branchservice1668pass0fail/skip; combinedcandidatepending",
-    "claim": "H3/M394e790d2d; managed30edf3e36; fullservice3281pass18skip; independentpass-with-notes; fullhandler/migrate pending",
-    "launch": "f7b610692 L7; ec8109904 H2boundary;77df70afc evidence;daemon1714pass2skip; independent review pending",
-    "write": "L5ac6546772 normal/race11pass each; L1d4bc37a86 targeted5pass; fullservice running",
-    "web": "ed0026525 product;6e4d7e177 evidence; independentpass-with-notes;Core4338pass;Views7116pass1 knownclockfail pending9c056ad68 integration",
-    "rk1": "RKIreviewchangesrequired; RKI1/RKI2fix62bd98eb9 scratch37green; RKI3/RKI4faultproofinprogress; midcandidateE0aincompletepreserved; runnablefalse paid0",
-    "delivery": "8d2640254 reviewedlocalprep, WD1/WD2closed; nativeplatformunrun",
-    "knowledge_integration": "45efa093c all4lanes+runtime, combinedindependentpass-with-notes; Core4340/Views7118pass;handler5279pass53skip;router731pass7skip;servicefullrunning; internalmigrationsfixture13fail followedminimaltestfix/newDBrerun"
-  }
+    "runtime": "Merged 9e7f18785; independent pass-with-notes; RV-1 58d486656 root recheck 16 pass; final branch service 1668 pass/0 fail/0 skip; final combined candidate pending.",
+    "claim": "H3/M3 94e790d2d and managed settings 30edf3e36 independently reviewed and integrated; CT-1 regression 5c3549001 retained.",
+    "launch": "H2 acceptance boundary ec8109904 and L7 regression f7b610692 independently reviewed and integrated. L7 product defect was not reproduced; tests protect the existing behavior.",
+    "write": "L5 ac6546772, L1 d4bc37a86 and IW-1 database-clock follow-up 464540191 independently reviewed and integrated.",
+    "web": "Product ed0026525 independently reviewed and integrated; integrated Core 4340 and Views 7118 passed at 45efa093c.",
+    "rk1": "RKI-1–5 corrections pass-with-notes and merged 30fa31eb7; intermediate E0a missing-seal/deadline incomplete preserved. RKI-6 open, runnable=false, paid=0.",
+    "delivery": "Reviewed local preparation merged c3db64b24; WD-1/WD-2 closed; guide migration ceiling 763. Native platform/install/account proof unrun.",
+    "knowledge_integration": "Merged 6cb9fcb36 after combined 45efa093c and independently rechecked 0702d5039/742abb217 follow-ups. Original service exit1 (3319 pass/3 fail/18 skip) preserved. Migration fixture 536 pass and skill 10 pass are narrow rechecks; final full check pending.",
+    "full_candidate_check": "C3 make check interrupted with exit -2; TS 13082 pass, not an overall pass. Native-origin fix 7435b04ec requires a new complete candidate run.",
+    "e2e_triage": "Fourteen historical 822c15785 failures map to 9 recipient interactions/3 timestamp comparisons/2 record scope assertions. C3 representative first replay failed on CORS setup before target assertions; no business verdict."
+  },
+  "initial_resume_snapshot": {
+    "recorded_at": "2026-11-01T23:06:27.539608+08:00",
+    "integration_head": "6e039386760d362453618a4affa8ba43cf72f473",
+    "worktrees": [
+      {
+        "worktree": "/Volumes/artisan/code/2026/multica-0.4.37",
+        "branch": "codex/cross-workspace-collaboration",
+        "head": "6e039386760d362453618a4affa8ba43cf72f473",
+        "status": []
+      },
+      {
+        "worktree": "/Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101",
+        "branch": "codex/runtime-audit-fixes-27-20261101",
+        "head": "1eb0cb33cb37dd62d6a394ebcf298ea56b48f223",
+        "status": [
+          "M server/internal/cli/collaboration_test.go",
+          " M server/internal/service/collaboration_comments_recall_test.go",
+          " M server/internal/service/collaboration_squad.go",
+          " M server/pkg/protocol/collaboration_recall.go",
+          "?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-audit-takeover/"
+        ]
+      },
+      {
+        "worktree": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101",
+        "branch": "codex/collaboration-knowledge-fixes-20261101",
+        "head": "8c0f37672a06ebbb837b9c76bfd25d7437fed667",
+        "status": []
+      },
+      {
+        "worktree": "/Volumes/artisan/code/2026/mc-kfix-lane-claim",
+        "branch": "codex/kfix-lane-claim-20261101",
+        "head": "3110295d0eca364937f08c97102ca74f08a7e235",
+        "status": []
+      },
+      {
+        "worktree": "/Volumes/artisan/code/2026/mc-kfix-lane-launch",
+        "branch": "codex/kfix-lane-launch-20261101",
+        "head": "3351c4c131247393fd319cde1c3dcf69ef0aa48f",
+        "status": [
+          "M server/internal/daemon/knowledge_context_claim_test.go",
+          " M server/pkg/agent/knowledge_launch_test.go"
+        ]
+      },
+      {
+        "worktree": "/Volumes/artisan/code/2026/mc-kfix-lane-write",
+        "branch": "codex/kfix-lane-write-20261101",
+        "head": "fba1fca3fc40bede13e293ee3e568c6907bd192b",
+        "status": [
+          "M .trellis/spec/server/collaboration-knowledge.md",
+          " M server/internal/service/collaboration_knowledge_credentials.go",
+          " M server/internal/service/collaboration_knowledge_credentials_test.go",
+          " M server/pkg/db/generated/collaboration_knowledge_service.sql.go",
+          " M server/pkg/db/queries/collaboration_knowledge_service.sql",
+          "?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L5-red.txt"
+        ]
+      },
+      {
+        "worktree": "/Volumes/artisan/code/2026/mc-kfix-lane-web",
+        "branch": "codex/kfix-lane-web-20261101",
+        "head": "a9801fb075df79827a3908bd7c2c23b5d8fc1f26",
+        "status": []
+      },
+      {
+        "worktree": "/Volumes/artisan/code/2026/mc-rk1-framework-20261101",
+        "branch": "codex/rk1-framework-20261101",
+        "head": "b8fd547dca9808f309386c31854c45ad71334901",
+        "status": [
+          "M .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json",
+          "?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework-registration.json",
+          "?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework-review-2026-11-01.md",
+          "?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework.md",
+          "?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py",
+          "?? server/cmd/server/rk1_entry_test.go",
+          "?? server/cmd/server/rk1_fake_helpers_test.go",
+          "?? server/cmd/server/rk1_fake_test.go",
+          "?? server/cmd/server/rk1_fixture_test.go",
+          "?? server/cmd/server/rk1_lifecycle_test.go",
+          "?? server/cmd/server/rk1_observe_test.go",
+          "?? server/cmd/server/rk1_provider_test.go",
+          "?? server/cmd/server/rk1_run_test.go",
+          "?? server/cmd/server/rk1_scenarios_handoff_test.go",
+          "?? server/cmd/server/rk1_scenarios_recall_test.go",
+          "?? server/cmd/server/rk1_trace_test.go",
+          "?? server/cmd/server/rk1_trial_test.go"
+        ]
+      }
+    ],
+    "owners": {
+      "integration": "root; exclusive writer",
+      "runtime": "/root/runtime_fixes",
+      "knowledge_claim": "/root/knowledge_claim",
+      "rk1_framework": "/root/rk1_framework",
+      "knowledge_launch_write_web": "preserved; queued for takeover"
+    },
+    "native_execution_update": {
+      "runtime_fixes": "gateway_429_exited; product 7627916c8 and evidence retained; independent runtime_review running",
+      "knowledge_claim": "gateway_429_exited; H3/M3 implementation and dedicated DB suites retained; unscoped migration incident recorded",
+      "rk1_framework": "gateway_429_exited; fake/sim19 cases and launcher29 regressions recorded; pending commit and independent review",
+      "knowledge_web": "gateway_429_exited_before_edits; root serial fallback with red/green tests"
+    }
+  },
+  "snapshot_recorded_at": "2026-11-01T18:21:44.168939+00:00",
+  "local_merge_results": {
+    "runtime": "9e7f1878544a5ba5f20c2b9aefc67acbb4a532db",
+    "knowledge": "6cb9fcb36dde68b553365bd96698e0792a466f30",
+    "rk1_framework": "30fa31eb7034200f74412556d61b3378bd13c1df",
+    "delivery_preparation": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "native_origin_preparation": "7435b04ec482554f3809ee97e89d6a3aab636919"
+  },
+  "parent_complete": false,
+  "parent_status": "in_progress",
+  "full_candidate_check_evidence": "research/acceptance-ledger-refresh-20261102/interrupted-check-summary.json",
+  "next_entry": [
+    "root correct and prove legacy/password maintenance service origin config",
+    "e2e contract owner reproduce/repair then independentlyreview both authlanes",
+    "root merge only reviewed delta, freeze clean candidate and rerun complete makecheck with per-package dedicatedDBs",
+    "same-candidate gatedWeb/nativeElectron/knowledgeon-off/crosschain and quietRK1fake/race",
+    "finalsource/CLI/config/artifact binding and localpackaging; no external operations"
+  ]
 }
