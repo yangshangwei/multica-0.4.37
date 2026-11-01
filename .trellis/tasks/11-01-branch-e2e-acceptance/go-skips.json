@@ -1,0 +1,356 @@
+[
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/migrate",
+    "test": "TestCommentContentBigramRequirementMatchesRealPGBigm",
+    "reason": "migrate_comment_search_index_strategy_test.go:156: Postgres does not provide pg_bigm; install it to run the real-opclass integration test",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+    "reason": "collaboration_daemon_cli_routes_test.go:27: requires explicit Linux namespace integration environment",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationPartialResumeRoutesLinux",
+    "reason": "collaboration_hold_routes_test.go:155: requires explicit Linux namespace integration environment",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationSingleAgentRuntimeRoutesLinux",
+    "reason": "collaboration_single_agent_routes_test.go:418: requires explicit Linux namespace integration environment",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+    "reason": "collaboration_single_agent_routes_test.go:585: requires explicit Linux namespace integration environment",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+    "reason": "collaboration_single_agent_routes_test.go:688: requires explicit Linux namespace integration environment",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationSquadCapacityOneRoutesLinux",
+    "reason": "collaboration_squad_routes_test.go:173: requires explicit Linux namespace integration environment",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestCloudPATVerifier_CacheHitSkipsHTTP",
+    "reason": "cloud_pat_test.go:290: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestCloudPATVerifier_NegativesNotCached",
+    "reason": "cloud_pat_test.go:324: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestCloudPATVerifier_LookupRejectsUnknownOwner",
+    "reason": "cloud_pat_test.go:356: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestCloudPATVerifier_LookupSuccessIsCached",
+    "reason": "cloud_pat_test.go:435: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestDaemonTokenCache_SetGetInvalidate",
+    "reason": "daemon_token_cache_test.go:27: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestDaemonTokenCache_TTL",
+    "reason": "daemon_token_cache_test.go:51: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestDaemonTokenCache_Set_RespectsClampedTTL",
+    "reason": "daemon_token_cache_test.go:69: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestMembershipCache_SetGetInvalidate",
+    "reason": "membership_cache_test.go:27: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestMembershipCache_TTL",
+    "reason": "membership_cache_test.go:50: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestMembershipCache_IsolatesKeysByUser",
+    "reason": "membership_cache_test.go:68: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestPasswordLimiterSharedAtomicAdmission",
+    "reason": "password_limiter_integration_test.go:20: MULTICA_TEST_REDIS_URL not configured",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/cli",
+    "test": "TestCLIConfig_UnknownFieldsArePreserved",
+    "reason": "config_test.go:265: documenting known limitation: encoding/json drops unknown fields on round-trip; future PR can switch to a preserving encoder",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon",
+    "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+    "reason": "collaboration_test.go:189: requires real Linux kernel containment",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon",
+    "test": "TestIsDriveRoot",
+    "reason": "local_directory_test.go:383: windows-only behaviour",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+    "reason": "autopilot_webhook_handler_test.go:971: 500-branch requires injecting a stub Queries; left as a code-review-protected invariant",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestRequireDaemonWorkspaceAccess_CacheHit",
+    "reason": "daemon_test.go:3817: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestRequireDaemonWorkspaceAccess_CacheMissBackfills",
+    "reason": "daemon_test.go:3844: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestMembershipCache_InvalidatedOnDeleteMember",
+    "reason": "daemon_test.go:3874: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestMembershipCache_InvalidatedOnUpdateMember",
+    "reason": "daemon_test.go:3901: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestMembershipCache_InvalidatedOnLeaveWorkspace",
+    "reason": "daemon_test.go:3926: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestMembershipCache_InvalidatedOnDeleteWorkspace",
+    "reason": "daemon_test.go:3949: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestIterationI1P95",
+    "reason": "iteration_i1_p95_test.go:25: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestIterationI1DisableP95",
+    "reason": "iteration_i1_p95_test.go:160: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+    "reason": "skill_test.go:989: set MULTICA_RUN_SKILLS_SH_INTEGRATION=1 to run live GitHub integration test",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestTriageQueueScaleBaseline",
+    "reason": "triage_performance_test.go:20: set MULTICA_TRIAGE_PERF=1 to measure 10k formal/2k pending",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestTriageWireFixtures",
+    "reason": "triage_test.go:566: wire fixture export requested only by cross-package verification",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestMcpMarketPublicHTTPRecipeLifecycle",
+    "reason": "workspace_mcp_template_test.go:228: the catalog ships no HTTP recipes",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/middleware",
+    "test": "TestDaemonAuth_DaemonTokenCacheHit",
+    "reason": "daemon_auth_test.go:17: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/middleware",
+    "test": "TestDaemonAuth_PATCacheHit",
+    "reason": "daemon_auth_test.go:59: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/middleware",
+    "test": "TestDaemonAuth_StripsClientSuppliedActorSource",
+    "reason": "daemon_auth_test.go:121: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/middleware",
+    "test": "TestPluginRateLimitIsPerCredentialAndUsesStableProblem",
+    "reason": "plugin_ratelimit_test.go:16: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/middleware",
+    "test": "TestRateLimit_AllowsUnderLimit",
+    "reason": "ratelimit_test.go:31: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/middleware",
+    "test": "TestRateLimit_BlocksOverLimit",
+    "reason": "ratelimit_test.go:47: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/middleware",
+    "test": "TestRateLimit_RetryAfterHeader",
+    "reason": "ratelimit_test.go:80: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/middleware",
+    "test": "TestRateLimit_DifferentIPs",
+    "reason": "ratelimit_test.go:104: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/middleware",
+    "test": "TestRateLimit_LuaScript_SetsTTL",
+    "reason": "ratelimit_test.go:201: REDIS_TEST_URL not set",
+    "evidence": "runs/go-full-race-migrated/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/service",
+    "test": "TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline",
+    "reason": "reclaim_check_cache_test.go:46: REDIS_TEST_URL not set",
+    "evidence": "runs/go-isolated-internal-service-first/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/service",
+    "test": "TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers",
+    "reason": "reclaim_check_cache_test.go:80: REDIS_TEST_URL not set",
+    "evidence": "runs/go-isolated-internal-service-first/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/service",
+    "test": "TestReclaimCheckCache_TrackLaterAndForget",
+    "reason": "reclaim_check_cache_test.go:133: REDIS_TEST_URL not set",
+    "evidence": "runs/go-isolated-internal-service-first/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/service",
+    "test": "TestReclaimCheckCache_CollectionCheckAlignsBackstops",
+    "reason": "reclaim_check_cache_test.go:169: REDIS_TEST_URL not set",
+    "evidence": "runs/go-isolated-internal-service-first/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/service",
+    "test": "TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder",
+    "reason": "reclaim_check_cache_test.go:203: REDIS_TEST_URL not set",
+    "evidence": "runs/go-isolated-internal-service-first/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/service",
+    "test": "TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen",
+    "reason": "reclaim_check_cache_test.go:224: REDIS_TEST_URL not set",
+    "evidence": "runs/go-isolated-internal-service-first/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/service",
+    "test": "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+    "reason": "task_batch_claim_test.go:175: REDIS_TEST_URL not set",
+    "evidence": "runs/go-isolated-internal-service-first/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/service",
+    "test": "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry",
+    "reason": "task_batch_claim_test.go:234: REDIS_TEST_URL not set",
+    "evidence": "runs/go-isolated-internal-service-first/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/service",
+    "test": "TestNotifyTaskAvailable_BumpsBeforeWakeup",
+    "reason": "task_notify_test.go:32: REDIS_TEST_URL not set",
+    "evidence": "runs/go-isolated-internal-service-first/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/service",
+    "test": "TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp",
+    "reason": "task_notify_test.go:79: REDIS_TEST_URL not set",
+    "evidence": "runs/go-isolated-internal-service-first/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/service",
+    "test": "TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup",
+    "reason": "task_notify_test.go:110: REDIS_TEST_URL not set",
+    "evidence": "runs/go-isolated-internal-service-first/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/service",
+    "test": "TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict",
+    "reason": "task_notify_test.go:183: REDIS_TEST_URL not set",
+    "evidence": "runs/go-isolated-internal-service-first/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/pkg/agent",
+    "test": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+    "reason": "acp_terminal_test.go:89: Windows cmd.exe code-page behavior only applies on Windows",
+    "evidence": "runs/go-isolated-pkg-agent-first/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/pkg/agent",
+    "test": "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+    "reason": "codex_test.go:3198: Linux signal/reap semantics regression",
+    "evidence": "runs/go-isolated-pkg-agent-first/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/pkg/agent",
+    "test": "TestPiExecuteAttachesStdinPipe",
+    "reason": "pi_test.go:226: stdin fd inspection relies on /proc/self/fd/0",
+    "evidence": "runs/go-isolated-pkg-agent-first/output.log"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/pkg/agent",
+    "test": "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+    "reason": "claude_test.go:755: root-only preflight assertion",
+    "evidence": "runs/go-isolated-pkg-agent-first/output.log"
+  }
+]

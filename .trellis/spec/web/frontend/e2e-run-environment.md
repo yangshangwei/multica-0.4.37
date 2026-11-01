@@ -365,3 +365,14 @@ normalized full URL against the expected origin and task path. After a click,
 identifier. Wait for that stable canonical route plus the expected task title,
 including the desktop memory-router path. Accepting the transient UUID can
 make a routing assertion race the normal canonicalization effect.
+
+
+## Protocol-specific acceptance prerequisites
+
+1. **Scope / trigger:** deterministic v2 namespace and v3 host acceptance against an isolated task deployment.
+2. **Signatures:** inspect `GET /api/config`, owned `api.running.json` / `web.running.json`, and `SELECT enabled, creation_enabled, host_execution_enabled, epoch FROM collaboration_execution_gate WHERE id=1`.
+3. **Contracts:** v2 new namespace runs require the host cutover to remain closed. Use `enabled=true, creation_enabled=true, host_execution_enabled=false` for that lane. Host-v3 fixtures open and restore their own gate; retain the original booleans and a monotonic epoch. Create configured `MULTICA_MCP_TEMPLATE_DIR`, `MULTICA_SKILL_TEMPLATE_DIR`, `MULTICA_RESOURCE_PUBLISH_DIR` and matching E2E directories before probing the API.
+4. **Error matrix:** host cutover plus new v2 work -> `409 execution_mode_unsupported`; missing configured managed-store directory -> `503 resource_store_unavailable`; absent Chromium -> prerequisite failure before business execution. These are distinguishable from business assertions.
+5. **Cases:** use separate owned configurations for each supported protocol; retain default-closed denial evidence. A single all-enabled configuration does not represent both modes.
+6. **Required checks:** `TestCollaborationHostCutoverDoesNotPromoteNewNamespaceRoots`, both control-journey specs, host-runtime spec, live catalog HTTP readiness and source-matched native renderer. Record original failures and independent rechecks without automatic retries.
+7. **Wrong / correct:** do not reinterpret a v2 listing refusal under host cutover as proof that host execution is broken. Verify the current gate and protocol, run the matching lane, and preserve both observations. HTTP fixture sentinels may arrive Markdown/JSON-escaped; validate the fixture input rather than changing product assertions.
