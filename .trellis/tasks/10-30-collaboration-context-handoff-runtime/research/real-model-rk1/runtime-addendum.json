@@ -4,14 +4,16 @@
   "decided_at": "2026-11-01T04:26:26Z",
   "decision_source": "User answers in session multica-0-4-37-87 on 2026-11-01: fix product gaps 2 and 3 before testing and narrow H1; allocate the full 19-launch runtime set",
   "research": "../real-model-runtime-framework-research.md (7a90f3d78)",
-  "status": "registered_not_runnable",
+  "status": "framework_fake_verified_pending_independent_review_and_product_merge",
   "not_runnable_reasons": [
-    "framework_missing: real router + DB + Runner/HostExecutor harness with fake-executable proof and independent review is not built yet",
+    "runtime_and_knowledge_fixes_unmerged: finish audits and merge their independently reviewed branches before final source binding",
+    "framework_review_pending: real router/DB/Runner/HostExecutor fake proof exists, but coordinator independent review is still required",
+    "source_rebinding_required: retained source_binding is a historical product manifest, not the final candidate binding",
     "exclusive_window_required: no other session may issue model calls on the shared gateway during RK1 launches"
   ],
-  "runtime_call_cap": 19,
+  "runtime_call_cap": 25,
   "runtime_consumed": 0,
-  "cap_scope": "Real Provider launches for the runtime scenarios below only. Not transferable to or from the original E0-E6 series. Knowledge scenarios K1-K3 and ordinary-task E0b are not covered by this cap.",
+  "cap_scope": "Real Provider launches for the runtime scenarios below only (22 for E0a/H1/H2/H3a/H3b/H5/H6 as listed, plus 3 for H2b). Not transferable to or from the original E0-E6 series. Knowledge scenarios K1-K3 and ordinary-task E0b are not covered by this cap.",
   "runtime_scenarios": [
     {
       "id": "RK1-E0a",
@@ -29,6 +31,13 @@
       "id": "RK1-H2",
       "trials": 3,
       "launches": 3
+    },
+    {
+      "id": "RK1-H2b",
+      "trials": 3,
+      "launches": 3,
+      "scope": "Squad continuation whose member provider_result exceeds the 4096 B source prefix; the decisive code is only in the tail, reachable through `multica collaboration handoff source`. A correct answer without a CLI handoff/sources read of the code is unsupported_correct_answer, not pass.",
+      "added_by": "claude multica-0-4-37-35; budget granted by the user on 2026-11-01T10:33:57Z (\"H2b给预算\")"
     },
     {
       "id": "RK1-H3a",
@@ -57,6 +66,7 @@
     "RK1-E0a",
     "RK1-H1",
     "RK1-H2",
+    "RK1-H2b",
     "RK1-H3a",
     "RK1-H3b",
     "RK1-H5",
@@ -72,7 +82,7 @@
     },
     "evidence": "../verification/2026-11-01-recall-surface/summary.json",
     "review": "../verification/2026-11-01-recall-surface/independent-review.md (pass-with-notes; medium cursor-loop wording defect fixed before commit)",
-    "measured_by": "RK1-H2 (truncated results/causes paging) and RK1-H3b (older comment paging); guidance is in the injected brief, not the bound prompt"
+    "measured_by": "RK1-H2b (truncated provider_result read through `collaboration handoff source`) and RK1-H3b (older comment paging). RK1-H2 measures the member result, readers and wake source only; its fixture cannot reach a second results page. Results/causes paging beyond 32 items is not measured by any RK1 scenario."
   },
   "source_binding": {
     "manifest": "source-manifest-547760ea8.json",
@@ -91,5 +101,20 @@
       "correction": "From 96cedf485 until ac2a24f8f the smoke authorizer rejected knowledge_version=1 on the claim with HTTP 403, so the smoke could not pass at those HEADs and proved nothing there; the registered claim that the query is accepted holds only from ac2a24f8f. Confirmed independently by session multica-0-4-37-0b."
     }
   ],
-  "updated_at": "2026-11-01T07:03:00Z"
+  "updated_at": "2026-11-01T10:51:55Z",
+  "decisions": [
+    {
+      "at": "2026-11-01T10:33:57Z",
+      "session": "claude multica-0-4-37-35",
+      "decision": "User allocated RK1-H2b its registered 3 trials x 1 launch.",
+      "source": "user message in session multica-0-4-37-35: \"H2b给预算\""
+    },
+    {
+      "at": "2026-11-01T10:51:55Z",
+      "session": "claude multica-0-4-37-35",
+      "decision": "Runtime cap set to 25 so every listed scenario can run. The 19 recorded in 28c67c674 was an arithmetic error: its seven scenarios sum to 22 launches (E0a 1, H1 3, H2 3, H3a 3, H3b 3, H5 3, H6 3 pairs x 2), so a 19 cap would have refused H6 (16 used + 6 needed). 22 + 3 for H2b = 25.",
+      "source": "user answer in session multica-0-4-37-35 to the cap question: \"25 次，全部场景都跑\""
+    }
+  ],
+  "launch_accounting": "Only real paid Provider launches count toward 25. Sim/fake proofs consume zero. For actual invocations, run_rk1.py records launch_budget before/after using max(public measured launches, private real launch records) per trial, plus remaining cap and stop_state."
 }

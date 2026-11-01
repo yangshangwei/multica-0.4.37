@@ -1,0 +1,31 @@
+{
+  "series": "RK1",
+  "scope": "runtime scenarios of runtime-addendum.json, including RK1-H2b (budgeted 2026-11-01T10:33:57Z)",
+  "registered_by_session": "claude multica-0-4-37-35",
+  "runnable": false,
+  "not_runnable_reasons": [
+    "runtime audit fixes must finish, pass independent review, and merge into codex/cross-workspace-collaboration first",
+    "knowledge audit fixes must finish, pass independent review, and merge before RK1",
+    "source_binding.source_id stays empty until regenerated on the final merged clean candidate",
+    "coordinator independent review of this framework is pending; author fake verification does not satisfy that gate",
+    "an exclusive serial window on the shared inference gateway is required"
+  ],
+  "framework_files": "server/cmd/server/rk1_*_test.go (build tag agentintegration, !windows)",
+  "framework_sha256": "4d261b2bf27785b260f545ee5fa83b51194037c190fda6956c8b0ebd7e830285",
+  "launcher_sha256": "cbe94b1f27f6584bdc753d51c191905a53bb7dd8b34c7438e0166862f5bea53f",
+  "hash_method": "framework: sha256 over sorted rk1_*_test.go basenames, each as name NUL length NUL content; launcher: sha256 of run_rk1.py",
+  "provider_executable": "/Users/artisan/.local/bin/claude",
+  "requested_model": "claude-opus-5-5",
+  "thinking": "provider_default",
+  "source_binding": {
+    "source_id": "",
+    "method": "source_manifest.py (same roots and digest as rk1SourceID); regenerate on the merged HEAD"
+  },
+  "addendum_corrections_requested": [
+    "applied in runtime-addendum.json on this branch: H2b budget, order and product_fix.measured_by"
+  ],
+  "fake_proof": "fake-proof/summary.json",
+  "maintained_by": "Codex /root/rk1_race_fix; preserved earlier normal and race evidence; pending final candidate validation",
+  "launcher_regression_sha256": "adc770e05ea7e65ceea8046ca54e76051a0a3e5e2c241e8a8d03d4aa21407c31",
+  "fake_proof_current_status": "race-fix-status.md; original telemetry failure and first diagnostic-directory setup failure preserved; corrected full rerun pending"
+}
