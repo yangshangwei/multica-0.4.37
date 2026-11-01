@@ -1,0 +1,96 @@
+{
+  "updated_at": "2026-10-31T21:47:21.279244+00:00",
+  "primary_active_task": "10-30-collaboration-knowledge-promotion",
+  "main": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "branch": "codex/cross-workspace-collaboration",
+    "latest_committed": "8ea4ef7b2",
+    "runtime_product": "0e1ee8e1e",
+    "runtime_original_evidence": "2b861347e",
+    "runtime_extra_tests": [
+      "0bbc6a77a",
+      "84c4c2b3d"
+    ],
+    "original_experiment_latest": "785b331e8",
+    "knowledge_plan": "765ab186a"
+  },
+  "knowledge": {
+    "path": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+    "branch": "codex/collaboration-knowledge-promotion-20261101",
+    "commits": [
+      "71379546c (A1 schema/protocol/SQL/policy)",
+      "b6b761708 (B1 Core + two P2 fixes)",
+      "bc9c3f10b (C1 lifecycle/Claude)",
+      "bbbfc731d (explicit test DB guards; main cherry-pick8ea4ef7b2)"
+    ],
+    "not_merged_to_main": true,
+    "db": "multica_knowledge_20261101_b3c35f9c",
+    "db_env": "/tmp/multica_knowledge_20261101_b3c35f9c.env",
+    "fresh_db": "multica_knowledge_20261101_b3c35f9c_fresh",
+    "gate_G2": "not enabled; C2/C3 and full integration still incomplete"
+  },
+  "active_native_owners": {
+    "knowledge_schema": "A2 human service/API/resolver + current PAT provenance/read freshness; source reader common ResolveIssueAccess fix; sole sqlc owner; final validation",
+    "knowledge_launch_leaf": "C2 server claims/prepare/authorize/history/pointer/failure, dedicated DB7d95f46f; test isolation incident/guards complete; C3 daemon next",
+    "knowledge_core_client": "B2 shared collaboration/project/workspace UI, sources from exact existing readers; interaction tests green; final validation"
+  },
+  "completed_native_owners": [
+    "knowledge_core_client B1 and corrections",
+    "knowledge_launch_seams read-only C2 research",
+    "knowledge_foundation_review_fresh (two P2s, both main-rechecked closed)",
+    "knowledge_invalidation F3 plus P1/P2 corrections independently rechecked closed; source frozen uncommitted"
+  ],
+  "next_work": [
+    "Independently review A2 and B2; commit/integrate coupled A2/F3/C2 server code only with dependencies present",
+    "C3 actual daemon/client/prompt handshake and per-physical-launch observations, all first-party/legacy/downgrade gates",
+    "Set up isolated production Web/native Desktop fixture acceptance; Impeccable context already loaded, UI brief exists",
+    "Full serial DB service/handler/server gates, sqlc/static/TS and independent final review; integration merge",
+    "Original real E2a trial3/cap22 remains stopped; no more Provider calls this window"
+  ],
+  "original_experiments": {
+    "next": "E2a_window_fact_newest trial3 baseline",
+    "remaining_provider_launch_cap": 22,
+    "latest": "trial2 195.744s upstream502, zero context/memory read/write, 1964 HTTP pairs, original proof ACK; invalid behavior sample",
+    "stop_rule": "No replacement/extra health/model switch/timeout extension. First incomplete stopped later trials/scenarios; no new Provider calls without recovery basis and separate serial window."
+  },
+  "review_and_contract_notes": [
+    "Only built-in local Claude will initially support managed knowledge after G2; Codex/OpenCode/custom remain unsupported for private contribution injection",
+    "Ordinary env preserved explicitly; existing collaboration filter unchanged. Native ID callback per-command before lossy status, unknown fresh non-reusable; KnowledgeOutput is failed evidence not success",
+    "sourceRead+creator/current-handler proposal/source-withdraw has no extra participant row prerequisite",
+    "Unavailable/expired pending rejection allowed only sourceRead+target human confirmer; no hidden body. B fixed schema/action mismatch",
+    "Target knowledge routes need private logging while retaining workspace headers; B fixed",
+    "New candidate pre-persistence validation/permission errors unsealed; successful create atomic candidate+operation; no fabricated refusal candidate state",
+    "Required history_truncated bool; max50 detail history, source collection pages all candidate versions",
+    "A2 internal task metadata JSON suppression approved; C2 must still audit SQL JSON/public/WS serializers",
+    "Code-reviewer role route gpt-5.3-codex unavailable503; fresh native default reviewer succeeded, no model override",
+    "Tool output hook sometimes misclassifies saved transport-error prose; harmless pwd/narrow structured reads recover, do not disable hooks/approvals"
+  ],
+  "preserve": [
+    "Main uncommitted Session110 journal/index from prior runtime lane; correct generated Completed before final journal commit, no blind discard",
+    "Main recovered historical combined-runtime-validation review/plan/status and launch-seams research awaiting bookkeeping commit",
+    "Runtime integration worktree fast-forwarded c2b23576e; keep generated apps/web/next-env.d.ts and old combined-review artifacts, do not overwrite",
+    "Original experiment worktrees baseline c58f79874 and after835e7b046 plus exact framework overlay f6f62e... unchanged",
+    "No push/deploy/release; Windows/installers/multi-account quota remain independent gaps"
+  ],
+  "database_incident": {
+    "at": [
+      "2026-10-31T20:52:03.744Z",
+      "2026-10-31T20:55:06.534Z"
+    ],
+    "actor": "C2 compile-only wrappers selected handler with -run^$ without explicit DB",
+    "cmd_server_selected": false,
+    "historical_target": "inferred localhost/multica; no pre-run env/connection snapshot",
+    "historical_writes": "not independently provable from exit0; potential reserved fixture setup/cleanup with existing cascades",
+    "post_readonly_audit": "main research/test-database-incident-2026-11-01/main-readonly-audit.json, counts0 and no knowledge column; no writes/cleanup",
+    "prevention": "Both TestMain require explicit nonblank DATABASE_URL exit2;4 source files reviewed +8 pass outcomes; subprocess read-only PGOPTIONS, config-only proof; bbbfc731d/8ea4ef7b2",
+    "remaining_bookkeeping": "Preserve C2 default-db-incident.json separately; final report must not claim prior contents unaffected"
+  },
+  "new_contracts": [
+    "F3 knowledge final-send directly validates original credential despite stale PATCache; canonical strict outer envelope",
+    "Auth PATTokenHash server-only; current token validation for knowledge API and common memory/comment/run readers; no global Auth cache redesign",
+    "Claim capability/config handshake source-free; per-task InvocationFingerprint only after finalized cwd/settings/options",
+    "TaskService.KnowledgeContextEnabled defaultfalse; old managed-history safety always active; cleanup binding stays available",
+    "SQLc wildcard reserved-column go_struct_tag protects internal knowledge fields including CTEs; AST tag regression",
+    "A2 fresh lock discovery omits missing source; exact history stays strict; resolution must be subset of protected hints"
+  ]
+}

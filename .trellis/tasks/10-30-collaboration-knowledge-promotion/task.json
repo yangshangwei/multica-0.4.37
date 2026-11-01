@@ -41,12 +41,23 @@
     "product_implementation": "not_started",
     "real_model_acceptance": "open_separate_runtime_scope; upstream_502_window_closed_no_provider_calls",
     "main_contract_review": "research/main-contract-review-2026-11-01.json",
-    "execution_stage": "A_schema_protocol_pure_policy",
+    "execution_stage": "C2_server_final_checks; C3_daemon_verified; C4_run_integration; frozen_UI_platform_acceptance",
     "migration_sqlc_owner": "knowledge_schema",
     "implementation_base": "765ab186a",
     "execution_authorization": "existing approved parent scope; user six-step execution; no repeat approval",
-    "production_enablement": "disabled_until_G2_and_full_acceptance",
+    "production_enablement": "default_false_until_combined_G2_and_platform_acceptance",
     "implementation_database": "multica_knowledge_20261101_b3c35f9c",
-    "execution_ownership": "research/execution-ownership-2026-11-01.json"
+    "execution_ownership": "research/execution-ownership-2026-11-01.json",
+    "schema_commit": "71379546c",
+    "foundation_review": "A1_and_corrected_B1_passed; C1_main_review_passed",
+    "core_commit": "b6b761708",
+    "launch_leaf_commit": "bc9c3f10b",
+    "c2_database": "multica_knowledge_c2_20261101_7d95f46f",
+    "invalidation_database": "multica_knowledge_invalidation_20261101_849a1c21",
+    "ui_commit": "53a166258",
+    "test_db_guard_commit": "bbbfc731d",
+    "test_db_guard_main_commit": "8ea4ef7b2",
+    "a2_review": "no_confirmed_P1_P2; service-review-2026-11-01.md",
+    "invalidation_review": "P1_P2_fixed_and_independently_rechecked"
   }
 }

@@ -14,7 +14,7 @@
   "completedAt": null,
   "branch": "codex/cross-workspace-collaboration",
   "base_branch": "codex/cross-workspace-collaboration",
-  "worktree_path": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+  "worktree_path": "/Volumes/artisan/code/2026/multica-0.4.37",
   "commit": null,
   "pr_url": null,
   "subtasks": [],
@@ -25,7 +25,7 @@
   ],
   "parent": null,
   "relatedFiles": [],
-  "notes": "",
+  "notes": "2026-11-01：runtime 集成与确定性补充矩阵已交付；知识各批代码、人工确认/失效/普通与协作启动接线已实施，最终并发与整合质量门收口中。原 E2a trial 2 仍为上游 502 无效样本；下一 trial 3/剩余 22，独立窗口续跑。父任务未完成，未发布。",
   "meta": {
     "delivery": "parent-orchestration",
     "planning_scope": "phase1-closure-handoff-promotion",
@@ -40,9 +40,11 @@
     "latest_model_evidence": "../10-30-collaboration-fix-closure/verification-e2a-trial2-2026-11-01.md",
     "runtime_integration_commit": "0e1ee8e1e",
     "runtime_deterministic_acceptance": "passed",
-    "knowledge_planning": "K1_K5_F1_F4_reviewed; schema_protocol_policy_implementation_started_in_isolated_worktree",
+    "knowledge_planning": "K1_K5_F1_F4_approved_complete",
     "model_acceptance": "original_series_next_E2a_trial3_cap22_after_upstream_502; new_runtime_models_pending",
     "current_acceptance_matrix": "acceptance-2026-11-01.json",
-    "deterministic_addendum": "passed_0bbc6a77a_84c4c2b3d"
+    "deterministic_addendum": "passed_0bbc6a77a_84c4c2b3d",
+    "knowledge_implementation": "all_batches_implemented; final_concurrency_and_combined_source_acceptance_in_progress",
+    "knowledge_worktree": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101"
   }
 }

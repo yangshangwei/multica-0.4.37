@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-31T19:39:32.515595+00:00",
+  "updated_at": "2026-10-31T22:54:20.794754+00:00",
   "main_repository": "/Volumes/artisan/code/2026/multica-0.4.37",
   "implementation_worktree": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
   "branch": "codex/collaboration-knowledge-promotion-20261101",
@@ -9,9 +9,14 @@
   "database": "multica_knowledge_20261101_b3c35f9c",
   "private_env_file": "/tmp/multica_knowledge_20261101_b3c35f9c.env",
   "owners": {
-    "knowledge_schema": "Go protocol/pure policies/migrations 747+/queries/sqlc/concurrent-index cleanup registration; no handler/daemon/router edits",
-    "knowledge_core_client": "Core schemas/API/hooks/cache lease/realtime and tests; no Go or Views",
-    "main": "task metadata, specifications, interface decisions, integration, commits and final verification"
+    "knowledge_schema": "A2 complete and independently reviewed; production frozen",
+    "knowledge_core_client": "B2 UI + corrections committed, code frozen",
+    "main": "task/spec/commit integration and sole sqlc generator",
+    "knowledge_launch_leaf": "C2 ordinary server contracts/fences/runtime history final checks",
+    "knowledge_invalidation": "F3 corrected and independently rechecked, code frozen",
+    "knowledge_daemon_integration": "C3 ordinary daemon verified,9 files frozen pending combined review",
+    "knowledge_collaboration_integration": "C4 run-scoped negotiation/manifest/per-launch/prompt/fresh namespace, own DB fabcbe23",
+    "knowledge_ui_acceptance": "frozen preliminary production Web/native Desktop QA snapshot, no runtime injection claim"
   },
   "next_batches": [
     "A2 human proposal/approval/retraction service, source availability, target revision/outbox/resolver",
@@ -24,5 +29,9 @@
     "G2": "not implemented; managed knowledge injection must not be enabled before acceptance",
     "G3": "worktree, exclusive DB and schema owner assigned; shared later files require explicit handoff"
   },
-  "provider_calls": "none in knowledge task; original series stopped at upstream 502 with E2a trial3/cap22 next"
+  "provider_calls": "none in knowledge task; original series stopped at upstream 502 with E2a trial3/cap22 next",
+  "schema_commit": "71379546c",
+  "core_commit": "b6b761708",
+  "launch_leaf_commit": "bc9c3f10b",
+  "ui_commit": "53a166258"
 }

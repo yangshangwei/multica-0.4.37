@@ -1649,3 +1649,37 @@ Archived password registration and the complete platform administration task tre
 ### Next Steps
 
 - 环境恢复后从 E2a trial 2 接续，剩余最多 23 次 Provider 调用；不重跑已消耗槽位。
+
+
+## Session 110: 可靠交接：有界记录恢复与原终止证明
+<!-- trellis-session: v=2 fp=26d3916c4e39f1f1 -->
+
+**Date**: 2026-11-01
+**Task**: 可靠交接：有界记录恢复与原终止证明
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+补齐上传持续失败和磁盘重启恢复；源码增量已按哈希合回，任务保持进行中。
+
+### Main Changes
+
+- 复用 host lifecycle/proof；有界重放原 checkpoint/seal，严格验证 ACK 和单调水位。
+- 新增 Go 回归，修复执行面板响应队列串用，同步 spec 和任务证据。
+
+### Git Commits
+
+历史增量会话未在此处登记提交；后续 runtime 集成与证据提交为 `0e1ee8e1e` / `2b861347e`。
+
+### Testing
+
+- [OK] TS 12949 通过；Go 1640 通过事件，1 个既有明确跳过；race 38 零跳过。
+- [OK] 专用 DB service/handler 8+11 通过；lint/typecheck/vet/build 通过；主工作区 protocol/daemon 316 零跳过。
+
+### Status
+
+[OK] **本次增量已交付；父任务仍在进行**
+
+### Next Steps
+
+- 独立终审仍受模型限流/路由不可用影响；继续完整锁序矩阵、启动注入及平台/真实模型验收。

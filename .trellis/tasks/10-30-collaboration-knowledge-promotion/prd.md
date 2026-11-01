@@ -9,7 +9,7 @@ issue-scoped candidate、提议/确认权限、独立目标集合 revision、版
 ## Confirmed authority and dependencies
 
 - 用户已确认：发起人或当前处理人提出；目标项目负责人/管理员确认项目知识；目标 workspace owner/admin 确认空间知识；技能层不纳入本轮。依据：会话 `01a18a36-e482-7840-9900-3ff8174b4ce7` 用户轮次 14。确认操作必须由人执行。
-- G0/G1 已冻结在 runtime 产品提交 `0e1ee8e1e`、确定性证据提交 `2b861347e`：来源/版本/purge/availability、handoff 与实际应用输入绑定。依据 `../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md`；真实模型与更广平台矩阵仍单列开放，实验窗口结束于 upstream 502，本次不重开。当前仅完成计划修订，状态仍 planning。
+- G0/G1 已冻结在 runtime 产品提交 `0e1ee8e1e`、确定性证据提交 `2b861347e`：来源/版本/purge/availability、handoff 与实际应用输入绑定。依据 `../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md`；真实模型与更广平台矩阵仍单列开放，实验窗口结束于 upstream 502，本次不重开。任务已进入 in_progress；数据/协议、Core、普通启动基础与共享 UI 已分批实施，人工 API/失效和执行接线按独立证据收口。真实模型、平台与最终启用仍各自验收。
 - 代码核对：Project Context 使用 project description/resources（`runtime_config_sections.go:417`）；workspace 使用 `workspace.context`（`:184`）。项目更新有 expected revision，workspace 当前直接写 context，不能假定两者都有可复用的候选版本/撤回服务。
 - 确认不得把来源协作单的可见范围无条件扩散到目标所有运行；正文注入需同时校验候选状态、有效期、来源可见权与目标适用范围。撤回/过期必须影响下一次注入，不只修改候选 UI 状态。
 
@@ -32,4 +32,4 @@ issue-scoped candidate、提议/确认权限、独立目标集合 revision、版
 | AC10 | 迁移/sqlc/Go/前端/定向平台检查有版本化证据；源码和索引遵守无 FK、CONCURRENTLY 规则；不自动写 skills。 |
 | AC11 | 知识父 workspace/project 存活锁用 KEY SHARE NOWAIT；lead 权限才用 project SHARE，角色仍锁 member。独立 revision 不占 issue_counter/project 普通编辑热点；真实并发回归证明无新增锁反转，初始化竞争与准备失败都有有界处置。 |
 
-正式设计见 `design.md`，分批实施与具名测试见 `implement.md`。K1–K5 已独立复核，本次 F1–F4 修订待主会话复核（`research/contract-revision-2026-11-01.md`）。G0/G1 的确定性依赖已满足；G2 是知识实现的启用门，不能循环要求未实现的功能先通过才允许实施。G3 的 owner/迁移/隔离环境待正式执行时分配，本次没有开始候选产品代码。
+正式设计见 `design.md`，分批实施与具名测试见 `implement.md`。K1–K5 与 F1–F4 已完成设计复核；实施阶段的独立审查和修正记录分别保留，不把计划通过当作产品验收。G0/G1 的确定性依赖已满足；G2 是知识实现的启用门，不能循环要求未实现的功能先通过才允许实施。G3 的所有权、迁移、隔离环境已分配，见 `research/execution-ownership-2026-11-01.json`；普通 C2/C3、协作 C4 与最终平台质量门未全部通过前不启用生产知识注入。

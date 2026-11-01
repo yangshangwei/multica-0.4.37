@@ -80,7 +80,7 @@ approve 前计算批准后的完整目标集合预算；超限返回明确错误
 | 提出/提出纠错 | 新 pending | source Read + 该协作单当前 creator 或 handler；目标按下述可见性规则选择，不无条件要求 target membership，也不要求批准角色 |
 | 查看 source 候选正文/版本链 | 任意 | 当前 source Read 且该版本的 required sources 仍可按原版本还原；purge/delete 时仅保留允许的审计/控制元数据 |
 | 批准 | pending、未过期、来源版本可用 | source Read + target membership；project 为 human member lead 或 workspace owner/admin；workspace 为 owner/admin |
-| 拒绝 | pending | 与批准相同；必须有说明 |
+| 拒绝 | pending | source Read + 当前 target membership/人工确认者权限；必须有说明。来源材料不可还原或候选过期仍可拒绝，属于收缩状态，不授予隐藏正文读取权 |
 | 撤回 pending | pending | 当前 source creator/handler，或能批准该目标的人；仅收缩状态，不产生生效内容 |
 | 撤回 approved | approved | 当前 source creator/handler 且 source Read，或当前 target 确认者；target 确认者即使失去 source Read 仍可执行**内容无关的撤回**，但不能取回正文 |
 | 恢复已撤回/拒绝版本 | 终态 | 不支持原地恢复；提出新版本并重新人工确认 |
@@ -140,6 +140,10 @@ receipt 固定为 `{protocol_version,request_id,action,code,candidate_id,version
 
 recovery endpoint 只要求当前可认证的原 actor；不以当前 source/target 角色为前置。服务器从 candidate ID 查内部 source scope，再按 `(actor,request_id,scope)` 查 operation，并严格核对 kind、receipt.candidate_id/action/key。不存在或不属于该 actor 均返回 `operation_not_found`；不返回 source ID、隐藏目标身份或任何正文。已经撤权的写调用不获得新权限，只能读取本人原内容无关结果。candidate 行和 operation 在历史保留期内不可物理删除，否则恢复合同必须先有等价的内部索引替代。
 
+新候选持久化前的格式、权限或业务校验拒绝是普通 API 错误，不写没有 candidate 行可恢复的伪回执。成功创建在同一事务保存 candidate 与 operation，因此丢响应后仍可用预选 candidate/request ID 恢复。已有候选的已授权状态拒绝可按原键封存；未落库的新提案恢复返回 not-found，不伪造 version/state。网络或 commit 不确定时仍保留原 key/payload 并查询恢复，不能将所有 5xx 当作确定未提交。
+
+详情的 `history_truncated` 由新 producer 必填，最多返回50条同 lineage 元数据；客户端不得把缺失默认成完整。source 集合分页返回所有候选版本而非只返回 lineage head，较旧版本可从该集合进入各自详情。
+
 主要错误码：
 
 | HTTP / code | 条件 |
@@ -158,7 +162,7 @@ recovery endpoint 只要求当前可认证的原 actor；不以当前 source/tar
 | 409 `idempotency_conflict` | 同 scope/actor/key，不同 kind、canonical payload 或 action；包括 memory/command 与 knowledge 的冲突 |
 | 503 `knowledge_busy` / `knowledge_unavailable` | 锁/序列化重试耗尽或依赖读取失败；复用原 key，不装作空集合 |
 
-`expires_at` 可空表示无自动过期；非空必须是未来 UTC 时间。修改有效期也是新内容版本，不能在已批准行上延长 TTL。自动过期无需后台任务才能生效。
+`expires_at` 可空表示无自动过期；新提案非空时必须是当前未来 UTC 时间。解码只验证 UTC 时间形状；新写入在原回执查询及授权锁后用事务当前时间重验，不能让同键丢响应恢复因时间流逝变得不可解码。修改有效期也是新内容版本，不能在已批准行上延长 TTL。自动过期无需后台任务才能生效。
 
 ## 5. 一个写事务及锁序
 
@@ -210,11 +214,11 @@ source 与 target 取自数据库/已验证 proposal，不能信任请求 worksp
 
 新 daemon 按实际 runtime/backend/mode 协商 `knowledge_context_version=1`。普通单次与批量 claim 的 response 只返回 source-free descriptor：支持版本、task/runtime/claim generation、有效 provider/mode、是否需要后续 preparation（由协议/backend 支持决定，不取决于私有候选是否存在）。它不含 candidate/source ID、summary、正文、hash 或私有集合数量。
 
-`FinalizeTaskClaim` 沿用现有 password/runtime→task→execution admission/token/receipt 顺序，仅在原 task 锁内写 source-free negotiation/claimed 阶段。**不在这个事务增加 workspace/source/candidate 锁，不在 claim builder 预取私有正文**。finalization 失败、bundle 还未准备或 claim response 丢失均没有知识正文泄漏。旧/不支持 backend 继续普通任务的原有 base 执行，不调用私有 preparation，不因知识功能全局存在而失败。**所有 claim（包括完全省略 knowledge_context_version 的旧客户端）在返回 PriorSessionID 之前**，必须对实际选中的 direct Chat pointer、fallback 或 rerun session 执行 §7.4 的累计 exposure 检查。不支持 freshness 协议的客户端/backend 对任何 managed exposure 或不可证明的 negotiated history 都选择 fresh ordinary session，即使该贡献目前仍有效；当前 task 的 NULL negotiation 不能证明旧 session 没有 exposure。
+`FinalizeTaskClaim` 沿用现有 password/runtime→task→execution admission/token/receipt 顺序，仅在原 task 锁内写 source-free negotiation/claimed 阶段。**不在这个事务增加 workspace/source/candidate 锁，不在 claim builder 预取私有正文**。finalization 失败、bundle 还未准备或 claim response 丢失均没有知识正文泄漏。旧/不支持 backend 仅在已证明没有保留的协商/私有 exposure 风险时继续普通 base 执行，不调用私有 preparation。**所有 claim（包括完全省略 knowledge_context_version 的旧客户端）在返回 PriorSessionID 之前**，必须对实际选中的 direct Chat pointer、fallback 或 rerun session 执行 §7.4 的累计 exposure 检查。不支持 freshness 协议的客户端/backend 遇到当前 task 保留协商，或 provider 命名空间的 managed exposure/损坏或截断证明时拒绝交付，不能承诺自动 fresh；当前 task 的 NULL negotiation 不能证明历史为空。已协商的支持客户端按准确历史决定可复用或新建会话。
 
 ### 7.2 私有正文通过独立 preparation 事务披露（K2）
 
-新增 `POST /api/daemon/tasks/{taskId}/knowledge-context/prepare`，请求为 `{protocol_version:1,request_id,claim_generation,dispatched_at,resume_intent}`。resume_intent 只能是该 finalized claim 已给出的 exact session descriptor，或 fresh；source/target/consumer 身份不接受客户端自报。server 从实际 task、runtime、agent、Chat/issue scope 解析，并核对 effective provider/mode。new preparation 发生在成功 finalized claim 之后、最终 BuildPrompt 之前；允许当前 task 已为 running，但要求尚无本 logical prompt 的物理 launch。
+新增 `POST /api/daemon/tasks/{taskId}/knowledge-context/prepare`，请求为 `{protocol_version:1,request_id,claim_generation,dispatched_at,session,invocation_fingerprint}`。session 只能是该 finalized claim 已给出的 exact session descriptor，或 fresh；source/target/consumer 身份不接受客户端自报。server 从实际 task、runtime、agent、Chat/issue scope 解析，并核对 effective provider/mode。claim 只协商 source-free 能力和稳定 ConfigurationID，不冒称已知尚未确定的任务 cwd/argv。daemon 在 finalized claim 后组装实际普通执行目录、settings 与 options，计算 C1 invocation fingerprint；preparation 保存并回显此值，authorize 必须匹配，实际物理命令前再次计算核对。server 同时保存并重验当前 agent/runtime 配置摘要。new preparation 发生在成功 finalized claim 之后、最终 BuildPrompt 之前；允许当前 task 已为 running，但要求尚无本 logical prompt 的物理 launch。
 
 事务前的 task/target/candidate **元数据**读取只用于确定有界锁集合，不披露正文。事务采用 READ COMMITTED，下列锁均须 NOWAIT 或同 namespace 的 try-lock；竞争最多复用原 key 做既有有界传输/事务重试，耗尽返回 503 `knowledge_busy`，daemon 复用原 key 做有界传输重试；仍失败则按 §7.3 终态知识不可用收尾，不绕过 preparation、降成旧 session/base-only 或自动重放业务输入。所有后置锁不得等待另一个相反图（首次计数行初始化仅有 §2 的 25ms 限制）：
 
@@ -230,9 +234,9 @@ lost preparation response 重试同 request key：原 manifest 不漂移，**再
 
 ### 7.3 per-launch freshness 与明确终态拒绝（K3）
 
-新增 `POST /api/daemon/tasks/{taskId}/knowledge-context/authorize`：`{protocol_version:1,request_id,prepare_id,manifest_sha256,prompt_sha256,claim_generation,attempt_seq,attempt_nonce,session_binding}`。它用 7.2 的独立顺序和当前 actual task/runtime/consumer/source/audience 重新核对，不返回正文，只写内容无关授权结果。任何重试必须绑定同一 identity/hash；不创建新的业务 input。
+新增 `POST /api/daemon/tasks/{taskId}/knowledge-context/authorize`：`{protocol_version:1,request_id,prepare_id,manifest_sha256,prompt_sha256,invocation_fingerprint,claim_generation,dispatched_at,attempt_seq,attempt_nonce,session}`。它用 7.2 的独立顺序和当前 actual task/runtime/consumer/source/audience 重新核对，不返回正文，只写内容无关授权结果。任何重试必须绑定同一 identity/hash；不创建新的业务 input。
 
-支持该能力的 effective backend 用 `agent.ExecOptions.Lifecycle` / `LaunchObserver`，在每次 provider 物理 start 前检查；preparation/helper launch 不消费知识。Callbacks 记录真实 Started/termination，普通 task token 不由 observer 换成更宽凭据。当前 HostLifecycleSupported 仅覆盖允许的 local provider 组合；不支持的组合从 negotiation 就不披露私有贡献，普通任务继续原路径。unsupported effective backend 不复用任何已知 managed exposure 或损坏 negotiated history 的 exact session，先选 fresh ordinary session；只有已证明无 managed exposure 的 legacy 会话保持旧 resume 行为，不能通过历史上下文重新取得本次未获支持的私有贡献。
+支持该能力的 effective backend 用 `agent.ExecOptions.Lifecycle` / `LaunchObserver`，在每次 provider 物理 start 前检查；preparation/helper launch 不消费知识。Callbacks 记录真实 Started/termination，普通 task token 不由 observer 换成更宽凭据。当前 HostLifecycleSupported 仅覆盖允许的 local provider 组合；不支持的组合从 negotiation 就不披露私有贡献。只有证明无保留协商/managed exposure 风险的 legacy 工作继续原路径；否则拒绝交付，不能用清空一个指针或重新分类为 base 来恢复私有历史。
 
 选定失败策略是**有界终态拒绝**：`knowledge_context_changed` / `knowledge_authorization_denied` 从 Backend.Execute 或 session result 经 `executeAndDrain` 返回普通 task failure 路径，保留当前 task ID/claim generation、记录、usage、取消与会话事实。新增准确、非自动重试的 failure classification，且排除 `shouldRetryWithFreshSession` 和后台 MaybeRetryFailedTask 对该拒绝的自动重放；不能调用 dispatched-only RequeueTaskAfterClaimFailure。
 
@@ -254,6 +258,16 @@ preparation 与 launch authorization 是两个不同的线性化点。撤回在 
 - 累计 metadata 必须有界；超过现有约定的 32 项/64 KiB，不能截断证明链。下一次输入尚未执行时选择新 generation；已运行中的知识拒绝仍终态收尾。
 
 实现仍需证明：各 provider/native-session 分支能提供上述 exact binding，所有会写 session 指针的 pin/complete/fail/chat fallback 路径能原子维护 exposure。当前 LaunchInfo 不能凭其 Provider/Kind 自动推导 native session；若 adapter 的内部 session 切换无法观察，该组合不得宣称支持私有 managed knowledge。此项保留为 G2 contract test 门，不假称仅新增 per-task JSON 就已解决。
+
+### 7.5 首批真实可支持的 adapter 与接线约束
+
+代码接缝研究见 `research/launch-seams-2026-11-01/`。现有 `HostLifecycleSupported` 不是知识能力证明；没有 adapter 在不修改的情况下满足 G2。首批只在实现并验证后支持内置 local Claude stream-json；Codex、OpenCode、custom/remote 等先明确不支持私有知识注入。它们的普通 base 任务仅在证明安全的 legacy 路径继续；保留协商或共享 provider 存储中的私有历史风险会拒绝交付，不能靠旧客户端或隐式会话参数绕过。
+
+- 新 ordinary lifecycle 必须显式保留原 task-scoped 环境/凭据，禁止 observer 替换凭据。现有 collaboration 环境过滤保持原语义。
+- Claude 的 raw system/result native ID 通过直接、不可丢弃的 per-command callback 关联 attempt 与 scope generation；请求 ID 或最终 fallback 值不能冒充实际观察。相同 ID 重复幂等，变化/保存失败终态拒绝后续执行；unknown fresh 在真实观察并原子绑定前不可复用。
+- effective invocation/configuration 指纹与每次实际 argv 一致。`--continue`、resume/session/attach、remote/cwd 等配置不得绕过服务端会话选择；可能涉及 managed history 且无法证明的调用明确拒绝，不静默修改用户意图。
+- 暂不发明未验证的厂商 fresh-session 参数。Codex 的同进程换 thread 和内部 retry、OpenCode 的多 session 观察只有补齐各自启动前绑定证据后才能另行启用；当前测 unsupported 路径。
+- task reclaim、runtime merge 或 row.runtime_id 变成 NULL 不可抹掉 metadata 中的原 immutable identity；不因按新字段查不到旧记录就推断 legacy。当前受支持 scope 的删除路径没有发现需要另建会话表的证据。
 
 ## 8. 目标失效、UI、迁移与回退
 
@@ -303,3 +317,7 @@ scan worker 的事务只锁自己的 scan 行（`FOR UPDATE SKIP LOCKED`），�
 - 状态机/预算常量及接口数量均服务于具名要求：候选不可变、审批、撤回、原键恢复、目标展示和真正启动检查；不引入通用 KB/API 引擎。
 - Related code/spec evidence: `../10-30-collaboration-context-handoff-runtime/research/knowledge-promotion-preflight-2026-10-31.md`；`internal/collaboration/access.go`、`collaboration_memory_operation.go`、`handler/project_write_fence.go`、`queries/subscriber.sql:113`、`handler/daemon.go:1739/1909/2150/3506`、`attribution/attribution.go:147`、`agent/launch_lifecycle.go:83`；相关 `.trellis/spec/server` 文档同 preflight。
 - External references: 本设计不选择外部 SDK/服务；未进行外部检索。
+
+## 实施后的补充边界
+
+`MULTICA_KNOWLEDGE_CONTEXT_ENABLED` 只有 literal `true` 才开启，默认 false；router 配置到共享 TaskService 实例，C4 读取同一实例策略。关闭新注入不关闭历史安全检查或原有观察/清理回执。C4 保持 collaboration 生命周期和业务/终止凭据，独立 per-run 目录，实际 Claude print 参数强制 `--no-session-persistence`，不保存/复用其 native pointer；该厂商合同与失败不降级测试单列，不宣称真实模型/平台准入。普通服务与协作服务均对实际输入绑定知识授权，来源集合按 CandidateID 规范顺序返回，首次与原键重放相同。

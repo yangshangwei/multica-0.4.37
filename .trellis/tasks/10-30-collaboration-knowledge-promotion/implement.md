@@ -20,13 +20,13 @@
 
 ## 1. 先固定数据与纯策略（候选暂不生效）
 
-Owner A；预计文件：新 `server/pkg/protocol/collaboration_knowledge.go`、纯 policy/helper tests、新 migrations、`server/pkg/db/queries/collaboration_knowledge.sql`，必要 project/workspace/agent queries、失效 outbox queries 与 sqlc 输出；沿用 realtime relay，不新增依赖。
+Owner A；已由 `71379546c` 交付，证据见 `research/schema-implementation-2026-11-01/handoff.md`。本批实际文件：新 `server/pkg/protocol/collaboration_knowledge.go`、纯 policy/helper tests、新 migrations、`server/pkg/db/queries/collaboration_knowledge.sql`，必要 project/workspace/agent queries、失效 outbox queries 与 sqlc 输出；沿用 realtime relay，不新增依赖。
 
-- [ ] 写失败测试：新协议 version/UUID/decimal/hash、source/target 不一致、AgentActor/机器主体拒绝、source manager 与 target confirmer 的独立策略。
-- [ ] 落一张 candidate 版本实体，immutable source/target/content/hash/refs、lineage/version/supersedes/derived_from、状态 CAS 与 approval 事实。
-- [ ] 加入独立 `collaboration_knowledge_target` 计数表和专用 `collaboration_knowledge_invalidation` scan/target_hint 表；不在 workspace/project 热点行新增计数。首次计数行初始化的唯一键争用用 25ms lock_timeout 整事务回退，不能伪称 INSERT 自带 NOWAIT；普通 task 加 knowledge_context_version 和 metadata-only knowledge_delivery；区分 never-negotiated、claimed/no-disclosure、disclosed 与损坏 negotiated history，不用 base strings 或 user task.context 储存生效正文。
-- [ ] 落 CONCURRENTLY 索引单文件矩阵；fresh/upgrade/reapply/down 保护和 sqlc 漂移先通过。
-- [ ] 单独验证所有确定预算：64 KiB 正文、2 KiB 摘要、32 refs、16 KiB decoded metadata、HTTP 转义边界、16 项/128 KiB 每目标完整材料、2 MiB runtime wire。
+- [x] 写失败测试：新协议 version/UUID/decimal/hash、source/target 不一致、AgentActor/机器主体拒绝、source manager 与 target confirmer 的独立策略。
+- [x] 落一张 candidate 版本实体，immutable source/target/content/hash/refs、lineage/version/supersedes/derived_from、状态 CAS 与 approval 事实。
+- [x] 加入独立 `collaboration_knowledge_target` 计数表和专用 `collaboration_knowledge_invalidation` scan/target_hint 表；不在 workspace/project 热点行新增计数。首次计数行初始化的唯一键争用用 25ms lock_timeout 整事务回退，不能伪称 INSERT 自带 NOWAIT；普通 task 加 knowledge_context_version 和 metadata-only knowledge_delivery；区分 never-negotiated、claimed/no-disclosure、disclosed 与损坏 negotiated history，不用 base strings 或 user task.context 储存生效正文。
+- [x] 落 CONCURRENTLY 索引单文件矩阵；fresh/upgrade/reapply/down 保护和 sqlc 漂移先通过。
+- [x] 单独验证所有确定预算：64 KiB 正文、2 KiB 摘要、32 refs、16 KiB decoded metadata、HTTP 转义边界、16 项/128 KiB 每目标完整材料、2 MiB runtime wire。
 
 回退点：只有 schema/reader/pure policy，没有批准 producer 或实际注入。
 
@@ -40,6 +40,7 @@ Owner A；预计 `service/collaboration_knowledge.go`、`collaboration_knowledge
 - [ ] 新增 `TestKnowledgeExternalHandlerCanProposeToSourceWorkspaceWithoutMembership`、`TestKnowledgeExternalHandlerCanProposeToVisibleCurrentSourceProject`：真实 external handler 无 member 行仍可建 pending，目标上下文/修订不变，无额外私有 catalog 读取。
 - [ ] 新增 `TestKnowledgeProposeRejectsInvisibleArbitraryDestination`、`TestKnowledgeSourceProjectProposalRevalidatesCurrentRelationship`、`TestKnowledgeApprovalStillRequiresTargetMembershipAndAuthority`：隐藏任意目标与不存在目标同样拒绝；旧 source project 引用不能继续使用；获准提出不授予批准权。
 - [ ] 原事务中执行设计锁序：actor → 有序 workspace KEY SHARE NOWAIT/fence/member → status/project 存活 KEY SHARE NOWAIT（只在读取 lead 授权时 SHARE NOWAIT）→ 独立 target revision UPDATE NOWAIT → source issue/collaboration/session → candidate lineage。按动作区分必须存在的 target member 行和来源目标提案允许的缺失行；只锁读已可见 target 的必要 ID/归属，锁后重验 source 当前 project 关系及其他 target 可见性/角色/ref/version/hash。
+- [ ] pending 候选在 material 不可用/过期时仍可由 sourceRead + target confirmer 内容无关拒绝；不增加 hidden body 权限，Core capability/动作准备保持一致。
 - [ ] pending/rejected/withdrawn 不注入；批准/已批准撤回/纠错 supersede 原子更新状态、独立 target revision、内容无关 source event/receipt 和确定 revision 的 target_hint。proposal/reject/pending-withdraw 不给目标房间发待审活动提示。
 - [ ] 纠错的新 pending 版本不提前替换旧 approved；确认时原子 supersede，lineage 最多一个 approved；跨层 derived candidate 保持原 source 和独立人工确认。
 - [ ] 客户端发送前持久化 candidate_id + request_id；同 key/hash 回放返回同一 receipt；不同 payload/action/kind 拒绝；知识与 memory/command 共用 `(scope_kind,scope_id,actor_user_id,request_id)` 唯一命名空间，每个新意图用新 UUID，不新增 kind 隔离；unknown commit 不创建重复候选/批准；正文不进入 operation result 或 outbox。恢复地址使用 candidate ID + request ID，source 仅在服务器内部解析。
@@ -95,6 +96,10 @@ Owner A+B；预计 `service/collaboration_knowledge_view.go`、`handler/collabor
 
 ## 4. 独立披露、真正启动与 exact-session 安全续作
 
+实施切分遵循 `research/launch-seams-2026-11-01/pointer-retention-and-execution-handoff.md`：C1 先落 explicit ordinary env policy、per-command intent/fingerprint 与 Claude native-session callback；C2 在 A resolver/锁接口稳定后接普通 task 元数据/SQL；C3 接 HTTP/WS/managed claims、daemon 与实际输入。其他 adapter 初期验证安全 unsupported，不声称已有完整支持。
+
+新增必验回归：ordinary 原 task 凭据保留而 collaboration 过滤不变；raw native-ID 与 attempt 绑定；unknown fresh 不可提前 pin；名义成功但 session 改变仍拒绝；configured args 无法覆盖会话选择；claim reclaim/runtime merge 不把旧 exposure 变成 legacy。不得新增未验证的厂商 CLI 参数。
+
 Owner C；共享文件必须由 runtime owner 先交接。预计 `handler/daemon.go`、`handler/agent.go`、`service/task*.go`、相关 session selector SQL、daemon types/client/daemon.go/prompt.go、新 knowledge observer/helper。现有具体 seam 是 `agent.ExecOptions` 与 `Daemon.executeAndDrain`；collaboration handoff 只复用稳定材料 seam，不放宽其 business capability。
 
 - [ ] 新普通单次/批量 claim 按 effective provider/runtime/mode 协商；response 只有 source-free descriptor。FinalizeTaskClaim 仅保存 negotiation/claim identity，不读私有正文，也不把新 workspace/source 锁嵌入其 runtime/task-first 图。
@@ -103,9 +108,9 @@ Owner C；共享文件必须由 runtime owner 先交接。预计 `handler/daemon
 - [ ] 单次/批量 finalized claim、claim response 丢失/重派、authority 在 build/finalize 之间变化、workspace 删除、旧 claim generation，全部证明未授权正文不披露。
 - [ ] 所有 BuildPrompt 分支都有来源块：ordinary issue、comment、Chat、quick-create、autopilot；base context/稳定 brief/project sidecar 不复制受控正文。
 - [ ] launch authorize endpoint 重验 prepare ID、exact manifest/prompt hash、claim generation、task/runtime/session binding、candidate/source/consumer/audience；不成为任意 source 读取 API。
-- [ ] 使用 `agent.ExecOptions.Lifecycle` / LaunchObserver；provider 物理 start 前检查，preparation 不消费；现有内部 retry 的每个实际 start 同样检查。unsupported effective backend 不得到私有 contribution，但继续原普通 task 执行。
+- [ ] 使用 `agent.ExecOptions.Lifecycle` / LaunchObserver；provider 物理 start 前检查，preparation 不消费；现有内部 retry 的每个实际 start 同样检查。unsupported effective backend 不得到私有 contribution；仅已证明安全的 legacy 工作继续，保留协商/私有历史风险拒绝交付。
 - [ ] 选定知识拒绝的精确非自动重试 failure reason，经 `executeAndDrain` / 普通 FailTask 终态收尾；禁止 dispatched-only RequeueTaskAfterClaimFailure，排除 shouldRetryWithFreshSession/MaybeRetryFailedTask 自动重放。第一 launch 的零执行事实和后来拒绝的已有副作用、usage、记录分别保留。
-- [ ] 任何 claim，包括旧客户端省略 knowledge_context_version 的分支，必须在序列化 PriorSessionID 之前检查实际 session。unsupported 客户端/backend 即使面对仍有效 managed exposure 也必须 fresh ordinary；当前 task 的 NULL 不证明历史为空。单独解析 direct Chat pointer、GetLastTaskSession、GetLastChatTaskSession fallback 和显式 rerun 最终实际选择的 `(provider,runtime,session,scope,generation)`；不检查一个 task 后恢复另一个 session。
+- [ ] 任何 claim，包括旧客户端省略 knowledge_context_version 的分支，必须在序列化 PriorSessionID 之前检查实际 session。unsupported 客户端/backend 面对当前 task 保留协商或 provider 共享历史风险时拒绝交付；不能承诺自动 fresh，当前 task 的 NULL 不证明历史为空。单独解析 direct Chat pointer、GetLastTaskSession、GetLastChatTaskSession fallback 和显式 rerun 最终实际选择的 `(provider,runtime,session,scope,generation)`；不检查一个 task 后恢复另一个 session。
 - [ ] 查询/维护该 exact session 的累计 exposure，包含较早 turn、cancelled/failed turn，以及新任务回传 NULL session 但原指针保留的情况。metadata 中的 pending resume binding 也参与证明；AccountableUserID 不作为授权回退。
 - [ ] pin/complete/fail/chat pointer 写入与对应 exposure binding 原子化；unknown fresh native ID 只记录 generation、不可复用。实际 fallback 换 session 的关系需可观察，否则该 adapter 不得宣称支持私有 managed knowledge。
 - [ ] proven legacy/no-managed-exposure 不无故清空旧会话；negotiated disclosed history 缺失/损坏则拒绝该 exact session。历史贡献过期/撤回/失权或累计证明超过预算，当前输入尚未执行时选 fresh generation；launch 才发现变化则终态拒绝，不自动重发输入。
@@ -118,13 +123,13 @@ Owner C；共享文件必须由 runtime owner 先交接。预计 `handler/daemon
 | K1 | `TestKnowledgeResumeDirectChatPointerUsesExactExposure`：更新任务 session=NULL 时仍校验实际旧 Chat 指针；`TestKnowledgeResumeOlderSessionFallbackUsesChosenKey`：校验最终被选中的较旧 session，而非最新 task |
 | K1 | `TestKnowledgeResumeCancelledTaskRetainsExposure`、`TestKnowledgeResumeSameSessionUnionsAllTurns`、`TestKnowledgeExplicitRerunUsesSourceSessionExposure`：取消/多 turn/精确 rerun 不丢累计来源 |
 | K1 | `TestKnowledgeWithdrawnOnlyInOlderTurnForcesFresh`、`TestKnowledgeLegacyNoneDiffersFromCorruptNegotiatedHistory`、`TestKnowledgeSessionPointerAndExposureBindAtomically`：旧 turn 独有的失效贡献不被绕过；legacy 不误重置；新 native pointer 不先于绑定可见 |
-| K1-D | `TestKnowledgeLegacyClientCannotResumeManagedSession`、`TestKnowledgeUnsupportedBackendCannotResumeManagedSession`：省略版本/不支持 backend 的真实 claim，不经过 prepare 即去掉不安全旧指针；既失效与仍有效 managed exposure 都转 fresh base |
+| K1-D | `TestKnowledgeLegacyClientCannotResumeManagedSession`、`TestKnowledgeUnsupportedBackendCannotResumeManagedSession`：省略版本/不支持 backend 的真实 claim，保留协商/私有历史风险均拒绝交付；安全 legacy 另有独立正向证据 |
 | K1-D | `TestKnowledgeDowngradeDoesNotTreatNullCurrentTaskAsEmptyHistory`、`TestKnowledgeProvenLegacySessionRemainsResumable`：旧 task NULL 不覆盖较早 exposure 或损坏 proof；证明无 exposure 的 legacy 仍可恢复 |
 | K2 | `TestKnowledgeClaimFinalizationDisclosesNoPrivateFields`、`TestKnowledgePrepareBeforeFinalizedClaimRefused`：原 claim 只有 descriptor，任何未 finalize 路径没有正文/summary/source ID |
 | K2 | `TestKnowledgeAuthorityChangeBetweenClaimBuildAndFinalize`：早期 hints 后权限变化，finalize 不放正文，后续 preparation 当前拒绝；`TestKnowledgePreparationVersusWithdrawAndSourceRevoke`：两种提交顺序的独立披露线性化 |
 | K2 | `TestKnowledgePreparationWorkspaceDeleteLockOrder`、`TestKnowledgePreparationFinalizerContentionUsesNowait`、`TestKnowledgePreparationLostResponseReauthorizes`、`TestKnowledgePreparationRejectsOldClaimGeneration`：实际 writer 争用无 task→workspace 死等，重发不会按旧授权吐正文 |
 | K3 | `TestOrdinaryKnowledgeFirstLaunchRefusalIsTerminal`：StartTask 后、首进程前授权变化，零物理 launch、当前 task 正常 failed、没有自动 requeue/input replay；`TestOrdinaryKnowledgeLaterLaunchRefusalDoesNotReplay`：第一次已有副作用，第二次拒绝保留 usage/transcript/termination 且只执行一次业务输入 |
-| K3 | `TestOrdinaryUnsupportedKnowledgeBackendRunsBaseTask`：effective backend 不支持时不获取私有贡献，但 issue/chat 等普通入口照常执行 |
+| K3 | `TestOrdinaryUnsupportedKnowledgeBackendRunsBaseTask`：effective backend 不支持且没有保留协商/私有历史风险时，issue/chat 等普通入口执行原 base；风险存在则拒绝 |
 | K4 | `TestKnowledgeHumanListSuppressesPurgedSourceText`、`TestKnowledgeHumanDetailAndHistorySuppressDeletedSourceText`、`TestKnowledgeTargetViewSuppressesUnavailableSourceText`：每个人类投影无正文/summary/派生引文 sentinel |
 | K4 | `TestKnowledgeWithdrawnOrExpiredHistoryRemainsReadableWhenSourceAvailable`：普通失效不等于 purge；core 的 `doesNotRestoreUnavailableKnowledgeFromLateResponse` 覆盖清缓存/取消旧请求后晚到响应 |
 | K5 | `TestKnowledgeTargetWithdrawalRecoveryAfterSourceAndTargetRoleLoss`：响应丢失后凭 candidate ID+原 request ID 恢复自己的内容无关 receipt，不需 source ID；`TestKnowledgeRecoveryRejectsOtherActorAndCandidate`、`TestKnowledgeCreateLostResponseUsesPreselectedCandidateID` 覆盖所有者及创建恢复 |
@@ -184,3 +189,7 @@ pnpm test
 - 候选版本实体、独立 target revision、持久 scan/hint 与有限缓存可见期、exact-session exposure、独立 preparation/disclosure 与 knowledge authorize 都是待实现内容，不是已提交 runtime 自带能力。
 - 主会话应将普通 Provider lifecycle contract、最终 source/target 锁序和撤回双侧角色作为技术复核重点；这些不是要求用户重新确认已经决定的 source 不扩权政策。
 - External references: 无新外部技术选择；实现沿用仓库 Go/SQL/React Query/strict schema 与 fake-executable 测试模式。
+
+## 最终验收补验跟踪
+
+当前证据核对见 `research/acceptance-audit-2026-11-01.md`。服务级审批并发矩阵、准备阶段真实写者/撤权时序、错误候选/操作类型恢复及指定的人类删除投影正在补齐；已有 query 级通过不能代替这些计划行。普通组合为 23 个叶子场景/27 个 pass 事件，协作 Host 组合为 13 个叶子场景/16 个事件，容器不重复计数。生产 Web/原生 macOS 冻结快照 8 个独立用例及 30 张视觉复核通过；最终整体源码复验仍单列。
