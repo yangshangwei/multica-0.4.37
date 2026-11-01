@@ -842,3 +842,52 @@ func TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor(t *testing.T) {
 		})
 	}
 }
+
+// A refused started observation still leaves a real process. The daemon counts
+// it for cancellation, the lifecycle kills and waits it, and the terminated
+// observation reports that waited exit, so a user cancel gets process-exit
+// confirmation. No second process is authorized.
+func TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit(t *testing.T) {
+	f := newKnowledgeDaemonFixture(t)
+	f.observationRefusal = "started"
+	f.task.Agent.CustomEnv["FAKE_NATIVE"] = ""
+	execution := &cancellationExecution{}
+	ctx := context.WithValue(context.Background(), cancelExecutionKey{}, execution)
+	result, err := f.d.runTask(ctx, f.task, "claude", 0, f.d.logger)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.FailureReason != agent.KnowledgeContextChanged {
+		t.Fatalf("refused started observation lost its terminal reason: %s", result.FailureReason)
+	}
+	execution.mu.Lock()
+	confirmed := execution.productionRunner && execution.attempts == 1 && execution.exited == 1
+	execution.mu.Unlock()
+	if !confirmed {
+		t.Fatal("cancellation cannot confirm the exit of the process whose started observation was refused")
+	}
+	var started, terminated []protocol.TaskKnowledgeObservation
+	for _, call := range f.callsFor("observations") {
+		var observation protocol.TaskKnowledgeObservation
+		if err := json.Unmarshal(call.body, &observation); err != nil {
+			t.Fatal(err)
+		}
+		switch observation.Kind {
+		case "started":
+			started = append(started, observation)
+		case "terminated":
+			terminated = append(terminated, observation)
+		}
+	}
+	if len(started) == 0 || len(terminated) != 1 {
+		t.Fatalf("started=%d terminated=%d, want the refused start and exactly one termination", len(started), len(terminated))
+	}
+	end := terminated[0]
+	if end.TerminationKind != agent.LaunchManagedEnded || !end.WaitObserved || end.ProcessID != started[0].ProcessID ||
+		end.ProcessInstanceID != started[0].ProcessInstanceID || end.AttemptNonce != started[0].AttemptNonce {
+		t.Fatalf("termination was not the waited exit of the started process: %+v", end)
+	}
+	if len(f.callsFor("authorize")) != 1 {
+		t.Fatal("refused started observation authorized another process")
+	}
+}
