@@ -1,0 +1,100 @@
+{
+  "head": "e1ea3aeb59ee8a1d8a4b5249fd713f4332115ac9",
+  "command": "source scripts/check.sh; check_allowed_origins with test-owned URL env values only",
+  "fake_pure_helper_cases": [
+    {
+      "case": "default",
+      "expected_exit": 0,
+      "exit_code": 0,
+      "passed": true,
+      "stdout_sha256": "81859d921fd3781977cb1d047aec5b5a7a1d35828cdda45783bb7348dcef3664",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "canonical",
+      "expected_exit": 0,
+      "exit_code": 0,
+      "passed": true,
+      "stdout_sha256": "48f4af78562add32bb47ccaff7e135e7925b8ce3574433456e81c5543211a4c6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "default-port",
+      "expected_exit": 0,
+      "exit_code": 0,
+      "passed": true,
+      "stdout_sha256": "f30ee345fcdd511db551b8661af68b2ae26db745e579b8184541bd5db42045dd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "canonical-dedupe",
+      "expected_exit": 0,
+      "exit_code": 0,
+      "passed": true,
+      "stdout_sha256": "81859d921fd3781977cb1d047aec5b5a7a1d35828cdda45783bb7348dcef3664",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "nonloopback",
+      "expected_exit": 2,
+      "exit_code": 2,
+      "passed": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "7196656aad6c7e11bb59f0840c233789388bbccc212aae73e7766b76416a9154"
+    },
+    {
+      "case": "suffix-host",
+      "expected_exit": 2,
+      "exit_code": 2,
+      "passed": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "7196656aad6c7e11bb59f0840c233789388bbccc212aae73e7766b76416a9154"
+    },
+    {
+      "case": "wildcard",
+      "expected_exit": 2,
+      "exit_code": 2,
+      "passed": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "7196656aad6c7e11bb59f0840c233789388bbccc212aae73e7766b76416a9154"
+    },
+    {
+      "case": "ipv6zero",
+      "expected_exit": 2,
+      "exit_code": 2,
+      "passed": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "7196656aad6c7e11bb59f0840c233789388bbccc212aae73e7766b76416a9154"
+    },
+    {
+      "case": "overflow",
+      "expected_exit": 2,
+      "exit_code": 2,
+      "passed": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "7196656aad6c7e11bb59f0840c233789388bbccc212aae73e7766b76416a9154"
+    },
+    {
+      "case": "userinfo",
+      "expected_exit": 2,
+      "exit_code": 2,
+      "passed": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "7196656aad6c7e11bb59f0840c233789388bbccc212aae73e7766b76416a9154"
+    },
+    {
+      "case": "one-invalid",
+      "expected_exit": 2,
+      "exit_code": 2,
+      "passed": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "7196656aad6c7e11bb59f0840c233789388bbccc212aae73e7766b76416a9154"
+    }
+  ],
+  "pass": 11,
+  "fail": 0,
+  "skip": 0,
+  "real_services_started": false,
+  "database_commands": false,
+  "provider_calls": 0
+}
