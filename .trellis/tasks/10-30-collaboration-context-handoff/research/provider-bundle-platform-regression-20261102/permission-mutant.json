@@ -1,0 +1,38 @@
+{
+  "state": "mutant_killed_by_shared_parent_regression",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "-C",
+    "server",
+    "test",
+    "./internal/daemon/collaborationrun",
+    "-overlay=/Volumes/artisan/code/2026/mc-provider-bundle-check-fix-20261102/.omx/private/provider-bundle-platform-regression/permission-mutant-overlay.json",
+    "-run",
+    "^TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/shared_writable_parent$",
+    "-count=1",
+    "-json"
+  ],
+  "exit_code": 1,
+  "expected_exit_nonzero": true,
+  "failures": [
+    "TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/shared_writable_parent",
+    "TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles"
+  ],
+  "counts": {
+    "run": 2,
+    "pass": 0,
+    "fail": 2,
+    "skip": 0
+  },
+  "mutation": "private Go overlay disables writable-ancestor permission predicate only; production working file untouched",
+  "production_source_sha256": "096e1303ad3addcdc587837b8ce1107d0bcf6c24078d18fd5ea1dfd1f7dfeabe",
+  "mutant_sha256": "2a75626f9fc1b8f17eba42b778c5eaa1a5b09cd8fc9dc2eb27aed21f6a0f5f47",
+  "log_sha256": "4a67ec31656206218210898bf921648b72d8a12142aeb55880131bbfabf99fdd",
+  "test_source_sha256": "6eca92b5a7e88aafb0ade56ca88956318b112487c723ce58f2ca24dfe87bb045",
+  "Provider_calls": 0,
+  "DB_operations": false,
+  "at": "2026-11-01T19:12:07.327418+00:00"
+}

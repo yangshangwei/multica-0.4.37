@@ -1,0 +1,58 @@
+{
+  "state": "test_fix_and_targeted_native_Linux_matrix_ready_for_independent_review",
+  "code_commit": "91113cbebca4e08423172e86f26db5307784e215",
+  "source_binding": "source-binding.json",
+  "cause": "task TMPDIR below non-root group-writable /Volumes/artisan makes source unsafe; production secure-open correctly refuses",
+  "changes": [
+    "test-owned canonical Unix temporary source fixture on Linux/Darwin",
+    "existing symlink/mutation/size/type/file-mode checks retained",
+    "shared-writable-parent rejection added and private overlay mutant killed",
+    "unsupported OS snapshot requires exact refusal and no created destination"
+  ],
+  "results": {
+    "red-explicit-check-temp": {
+      "run": 8,
+      "pass": 6,
+      "fail": 2,
+      "skip": 0
+    },
+    "baseline-safe-unix-temp": {
+      "run": 8,
+      "pass": 8,
+      "fail": 0,
+      "skip": 0
+    },
+    "green-normal": {
+      "run": 29,
+      "pass": 29,
+      "fail": 0,
+      "skip": 0
+    },
+    "green-race": {
+      "run": 29,
+      "pass": 29,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "negative_control": "permission-mutant.json; expected exit1 shared_writable_parent and parent fail, production file unchanged",
+  "Linux_actual": {
+    "evidence": "root-linux-native.json",
+    "owner": "root coordinator",
+    "pass": 29,
+    "fail": 0,
+    "skip": 0,
+    "scope": "native Linux arm64 bundle-file unit matrix only; not full Linux containment/installer acceptance",
+    "effective_user": "65532:65532",
+    "TMPDIR": "/build-temp (owned0770 shared-writable test parent)",
+    "network": "none",
+    "new_image_downloads": false,
+    "evidence_sha256": "fb9f89be6ad4f52b3457b2602f4ab5315541eacf015d723803dcc04fb6ca2f1f"
+  },
+  "Windows_actual": "compile-only, no execution",
+  "DB_service_Provider_operations": false,
+  "full_failed_check": "7f8ca8725 check exit2 / collaborationrun345pass2fail retained by coordinator; this narrow result does not relabel that run",
+  "final_check": "coordinator must independently review/local merge/rebind and execute required final check",
+  "at": "2026-11-01T19:14:43.060073+00:00",
+  "full_package_race": "root-full-race.json; root coordinator running source91113cbeb with exact original full-check TMPDIR; not yet a result"
+}

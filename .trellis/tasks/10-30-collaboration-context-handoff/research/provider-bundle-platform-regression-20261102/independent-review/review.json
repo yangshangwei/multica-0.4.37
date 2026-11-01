@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_web_review",
+  "reviewed_at": "2026-11-01T19:18:12.854694+00:00",
+  "verdict": "pass-with-notes",
+  "scope": "test-only provider bundle source fixture/platform contract repair",
+  "head_with_author_evidence": "a71898d4b45cb746b12c687b5f38b3f943e889b1",
+  "code_commit": "91113cbebca4e08423172e86f26db5307784e215",
+  "base_sha": "f634cf48016952164732843a66d9f53ba8b506f9",
+  "changed_code_files": [
+    "server/internal/daemon/collaborationrun/provider_bundle_test.go"
+  ],
+  "test_source_sha256": "6eca92b5a7e88aafb0ade56ca88956318b112487c723ce58f2ca24dfe87bb045",
+  "test_delta_sha256": "33c872bea520e48aaafed762ea9a100cd9a01dea61f313c3d7ff33fe0300bb70",
+  "production_source_sha256": {
+    "server/internal/daemon/collaborationrun/provider_bundle.go": "6226850f8577faeb3ed35a921671198e75821596e5351e063a4de4cab1ef9c12",
+    "server/internal/daemon/collaborationrun/provider_bundle_unix.go": "096e1303ad3addcdc587837b8ce1107d0bcf6c24078d18fd5ea1dfd1f7dfeabe",
+    "server/internal/daemon/collaborationrun/provider_bundle_unsupported.go": "b300a765bf08ff27d9cadaa48dd9fa27f2e0e87e715290cb0da96961bd047b92"
+  },
+  "production_changes": false,
+  "blocking_findings": [],
+  "nonblocking_product_findings": [],
+  "fixture_assessment": {
+    "source_base": "Explicit /tmp on Linux/Darwin; private os.MkdirTemp directory canonicalized through EvalSymlinks; no global TMPDIR override",
+    "ownership_cleanup": "Cleanup registered before later failure points; RemoveAll exact newly test-owned root; chmod only that fixture file/parent, no shared volume mutation",
+    "security_matrix": "Linux/Darwin positive and all old symlink/mutation/size/type/filemode negatives retained; writable-parent negative added and killed permission overlay",
+    "unsupported": "Non-Linux/non-Darwin assert ErrUnsupported and absent artifact rather than skipping; no native Windows execution claim",
+    "dependencies": "standard-library imports only"
+  },
+  "verified_recorded_checks": [
+    {
+      "record": "red-explicit-check-temp.json",
+      "record_sha256": "92bcbcbb1a5416057c3fef39d99e8dd0395893decd9b22113af7b6ea1cac6204",
+      "source": "f634cf48016952164732843a66d9f53ba8b506f9",
+      "test_source_sha256": null,
+      "state": "complete",
+      "exit_code": 1,
+      "counts": {
+        "run": 8,
+        "pass": 6,
+        "fail": 2,
+        "skip": 0
+      },
+      "log_sha256": "d37324951e64f35d4d44f98cc79e6c4404de41b5a3cd6bccdb10736e8a060fef"
+    },
+    {
+      "record": "baseline-safe-unix-temp.json",
+      "record_sha256": "574b71a144c699a4d88f953cd61d93aac8b0425e69a6a8ad8d0bc5353c631a56",
+      "source": "f634cf48016952164732843a66d9f53ba8b506f9",
+      "test_source_sha256": null,
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 8,
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "fb1fca11b3c499f5ee86f36ec66592acde7adb83760cf143b80bd34aba0b40d3"
+    },
+    {
+      "record": "green-normal.json",
+      "record_sha256": "be2c76cf5607622c1c70c72c6e7377fb92cb5e8e30fd6f1e45920dd31e361851",
+      "source": "f634cf48016952164732843a66d9f53ba8b506f9",
+      "test_source_sha256": "6eca92b5a7e88aafb0ade56ca88956318b112487c723ce58f2ca24dfe87bb045",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 29,
+        "pass": 29,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "46c431c58365c988842ed4560a66738933a354ba00aec26af47637bfcb57b0a4"
+    },
+    {
+      "record": "green-race.json",
+      "record_sha256": "57f4d3efedbcca7a376120a38c37c9f867e6e3abe2af1cf699aebf4a98049029",
+      "source": "f634cf48016952164732843a66d9f53ba8b506f9",
+      "test_source_sha256": "6eca92b5a7e88aafb0ade56ca88956318b112487c723ce58f2ca24dfe87bb045",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 29,
+        "pass": 29,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "b021c23e881c01b69fc9addeca39ff5c0798f4eded8a1a054107ee51c3460b71"
+    },
+    {
+      "record": "permission-mutant.json",
+      "record_sha256": "d7f579e76d61bdf863b1ae78fdc9c78d77c1f01cc8db82145ebde79a3227a8cb",
+      "source": null,
+      "test_source_sha256": "6eca92b5a7e88aafb0ade56ca88956318b112487c723ce58f2ca24dfe87bb045",
+      "state": "mutant_killed_by_shared_parent_regression",
+      "exit_code": 1,
+      "counts": {
+        "run": 2,
+        "pass": 0,
+        "fail": 2,
+        "skip": 0
+      },
+      "log_sha256": "4a67ec31656206218210898bf921648b72d8a12142aeb55880131bbfabf99fdd"
+    },
+    {
+      "record": "root-linux-native.json",
+      "record_sha256": "fb9f89be6ad4f52b3457b2602f4ab5315541eacf015d723803dcc04fb6ca2f1f",
+      "source": "f634cf48016952164732843a66d9f53ba8b506f9",
+      "test_source_sha256": "6eca92b5a7e88aafb0ade56ca88956318b112487c723ce58f2ca24dfe87bb045",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "pass": 29,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "83d9149c45377d1cbda0b0eedd0d4ef3122221796c43990621cef910a20fa4bc"
+    },
+    {
+      "record": "root-full-race.json",
+      "record_sha256": "34774871032146ea54bcf02632f16ae0e1ec68b63c221184668296843e8206ff",
+      "source": "91113cbebca4e08423172e86f26db5307784e215",
+      "test_source_sha256": "6eca92b5a7e88aafb0ade56ca88956318b112487c723ce58f2ca24dfe87bb045",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 348,
+        "pass": 348,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "a14e35ea1b76e8e235dc6f030d1ae038c5bf60e387ade1372efa1cc151dec3a0"
+    }
+  ],
+  "root_full_darwin_race": {
+    "source_base": "91113cbebca4e08423172e86f26db5307784e215",
+    "test_source_sha256": "6eca92b5a7e88aafb0ade56ca88956318b112487c723ce58f2ca24dfe87bb045",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/opt/homebrew/bin/go",
+      "-C",
+      "server",
+      "test",
+      "./internal/daemon/collaborationrun",
+      "-race",
+      "-count=1",
+      "-parallel=2",
+      "-json",
+      "-timeout=40m"
+    ],
+    "TMPDIR": "/Volumes/artisan/code/2026/mc-collaboration-final-20261102/.omx/private/final-candidate/tmp",
+    "database_configured": false,
+    "state": "complete",
+    "started_at": "2026-11-01T19:13:07.538807+00:00",
+    "Provider_calls": 0,
+    "exit_code": 0,
+    "finished_at": "2026-11-01T19:15:13.983523+00:00",
+    "counts": {
+      "run": 348,
+      "pass": 348,
+      "fail": 0,
+      "skip": 0
+    },
+    "failures": [],
+    "log_sha256": "a14e35ea1b76e8e235dc6f030d1ae038c5bf60e387ade1372efa1cc151dec3a0",
+    "raw_private_log": "/Volumes/artisan/code/2026/mc-provider-bundle-check-fix-20261102/.omx/private/provider-bundle-full-race/tests.jsonl",
+    "source_unchanged": true
+  },
+  "root_linux_native_scope": {
+    "pass": 29,
+    "fail": 0,
+    "skip": 0,
+    "uid": "65532:65532",
+    "network": "none",
+    "root_filesystem": "read_only",
+    "TMPDIR": "owned0770 /build-temp",
+    "image_id": "sha256:18cfe3ef5e6815560c98237d6216d1e5119702fb0f3894c8785dd58b8bbe5d73",
+    "binary_sha256": "7c6f941b3cba73f8e570a76acf9c173f771763093e8ff8a1ffd3239f84094859",
+    "scope": "bundle-file unit matrix only"
+  },
+  "original_candidate_failure": {
+    "candidate_sha": "7f8ca87252b53f16041485ac867e501962377802",
+    "state": "failed_not_accepted",
+    "make_exit_code": 2,
+    "package_exit_code": 1,
+    "package_counts": {
+      "pass": 345,
+      "fail": 2
+    },
+    "preserved": true
+  },
+  "independent_commands": [
+    "Read-only git status/log/diff/show/merge-base/rev-parse; static source/evidence/hash inspection",
+    "git diff --check exit0"
+  ],
+  "reviewer_tests_run": false,
+  "reviewer_browser_commands": false,
+  "reviewer_database_commands": false,
+  "reviewer_service_or_container_commands": false,
+  "reviewer_provider_calls": 0,
+  "installed_cli_calls": false,
+  "reviewer_product_edits": false,
+  "notes": [
+    {
+      "id": "PB-1",
+      "description": "Actual native Linux arm64 evidence proves 29 bundle-file unit cases only, not broad Linux containment/collaboration/installer acceptance. Windows amd64 remains compile-only."
+    },
+    {
+      "id": "PB-2",
+      "description": "Darwin full collaborationrun race348pass with original bad TMPDIR closes this package regression only. Candidate7f8 makecheckexit2 remains failed; root must commit full-race/review evidence, locally merge, bind a new candidate and run complete makecheck."
+    },
+    {
+      "id": "PB-3",
+      "description": "Initial Linux-only helper hypothesis was explicitly corrected; source tags support Linux or Darwin. Single-variable originalTMPDIR red6pass2fail vs safe/tmp8pass establishes the fixture ancestry cause, with production security policy unchanged."
+    }
+  ],
+  "remaining": "New frozen candidate full check and all outstanding model/platform/account/release gates remain root work; paid/external status unchanged."
+}

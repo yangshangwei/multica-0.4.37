@@ -3,16 +3,32 @@ package collaborationrun
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"errors"
 	"os"
 	"path/filepath"
 	"reflect"
+	"runtime"
 	"strings"
 	"testing"
 )
 
 func bundleTestFile(t *testing.T, name string, data []byte, mode os.FileMode) ProviderBundleFile {
 	t.Helper()
-	dir, err := filepath.EvalSymlinks(t.TempDir())
+	base := ""
+	if runtime.GOOS == "linux" || runtime.GOOS == "darwin" {
+		// Build TMPDIR may have writable ancestors that bundle sources reject.
+		base = "/tmp"
+	}
+	temp, err := os.MkdirTemp(base, "multica-bundle-test-")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() {
+		if err := os.RemoveAll(temp); err != nil {
+			t.Error(err)
+		}
+	})
+	dir, err := filepath.EvalSymlinks(temp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -110,7 +126,18 @@ func TestProviderBundleDigestUsesFrozenFilesAndConfigurationWithoutSecrets(t *te
 }
 
 func TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles(t *testing.T) {
-	for _, kind := range []string{"valid", "symlink", "parent_symlink", "changed", "oversized", "directory", "shared_writable"} {
+	if runtime.GOOS != "linux" && runtime.GOOS != "darwin" {
+		file := bundleTestFile(t, "explicit", []byte("fixed bytes"), 0600)
+		dest := filepath.Join(t.TempDir(), "snapshot")
+		if err := snapshotBundleFile(t.Context(), file, dest); !errors.Is(err, ErrUnsupported) {
+			t.Fatalf("unsupported platform must refuse the snapshot: %v", err)
+		}
+		if _, err := os.Stat(dest); !errors.Is(err, os.ErrNotExist) {
+			t.Fatalf("unsupported snapshot left an artifact: %v", err)
+		}
+		return
+	}
+	for _, kind := range []string{"valid", "symlink", "parent_symlink", "changed", "oversized", "directory", "shared_writable", "shared_writable_parent"} {
 		t.Run(kind, func(t *testing.T) {
 			file := bundleTestFile(t, "explicit", []byte("fixed bytes"), 0600)
 			switch kind {
@@ -137,6 +164,10 @@ func TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles(t *test
 				file.Source = filepath.Dir(file.Source)
 			case "shared_writable":
 				if err := os.Chmod(file.Source, 0666); err != nil {
+					t.Fatal(err)
+				}
+			case "shared_writable_parent":
+				if err := os.Chmod(filepath.Dir(file.Source), 0770); err != nil {
 					t.Fatal(err)
 				}
 			}

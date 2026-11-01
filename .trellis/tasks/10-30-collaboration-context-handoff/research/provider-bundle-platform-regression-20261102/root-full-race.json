@@ -1,0 +1,36 @@
+{
+  "source_base": "91113cbebca4e08423172e86f26db5307784e215",
+  "test_source_sha256": "6eca92b5a7e88aafb0ade56ca88956318b112487c723ce58f2ca24dfe87bb045",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "-C",
+    "server",
+    "test",
+    "./internal/daemon/collaborationrun",
+    "-race",
+    "-count=1",
+    "-parallel=2",
+    "-json",
+    "-timeout=40m"
+  ],
+  "TMPDIR": "/Volumes/artisan/code/2026/mc-collaboration-final-20261102/.omx/private/final-candidate/tmp",
+  "database_configured": false,
+  "state": "complete",
+  "started_at": "2026-11-01T19:13:07.538807+00:00",
+  "Provider_calls": 0,
+  "exit_code": 0,
+  "finished_at": "2026-11-01T19:15:13.983523+00:00",
+  "counts": {
+    "run": 348,
+    "pass": 348,
+    "fail": 0,
+    "skip": 0
+  },
+  "failures": [],
+  "log_sha256": "a14e35ea1b76e8e235dc6f030d1ae038c5bf60e387ade1372efa1cc151dec3a0",
+  "raw_private_log": "/Volumes/artisan/code/2026/mc-provider-bundle-check-fix-20261102/.omx/private/provider-bundle-full-race/tests.jsonl",
+  "source_unchanged": true
+}
