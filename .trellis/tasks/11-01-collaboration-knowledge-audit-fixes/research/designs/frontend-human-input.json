@@ -1,0 +1,173 @@
+{
+ "findings": [
+  "Worktree HEAD is 4e3b61500, a docs commit on top of 6aed33aad. All files cited below are unchanged from the audited code.",
+  "M4 confirmed. In packages/core/collaboration/knowledge-cache.ts:61-65, every non-paged read calls erase(client, groupKey, queryKey) before the request. erase (26-36) calls setData(undefined) and setState({status:'pending'}) on every query in the group, the current one included; isCurrent only skips cancel/remove. knowledge-cache.test.ts:53 asserts this, and it is the core spec's required behavior (core spec lines 62-70: refresh, deadline, hint and visibility transitions clear private data). Reads run every 15 s (knowledge-queries.ts:20-23) and also on focus, on every realtime hint (realtime/knowledge.ts:28-36) and on lease timers.",
+  "M4 views side. knowledge-review.tsx:34-80 mounts KnowledgeDecision only inside `{candidate && <>...</>}`. The key at :28-29/:75 is the identity tuple, with the sentinel \"unavailable\" when there is no candidate. Every erasure therefore unmounts KnowledgeDecision, and its useState (reviewed, reason, error at :85-86) is lost even when the refetch returns the same tuple. knowledge-panel.test.tsx:83-88 only covers a refetch that also changes state_revision. It cannot tell a correct identity reset apart from the unconditional reset.",
+  "The proposal draft does NOT lose data on erasure. KnowledgeProposalForm state (knowledge-proposal.tsx:41-47) sits under `proposal && issue` (knowledge-panel.tsx:116), which does not depend on Query data. The draft is lost only through M5, or through a panel remount on a scope, user or issue change, which is intended.",
+  "M5 confirmed. knowledge-panel.tsx:59 `if (success && (!intent || intent.requestId === receipt.request_id))` reads the render-time `intent` closure. submit() calls setIntent(next) after that render (:64), so `intent` is null inside settled(). Every successful decision, retry or recovery therefore runs setProposal(null) and unmounts an open KnowledgeProposalForm. A recovered stored identity after reload also has intent === null, so it closes the draft and moves the selection.",
+  "F3 confirmed. knowledge-proposal.tsx:60-62 awaits buildKnowledgeSources, then requires alive.current.view (= query.data?.value, which is undefined during any refresh because of M4) or throws. The single catch at :68 maps every failure (refresh in progress, lost can_propose, zod validation from prepareKnowledgeProposal such as a summary over the 2048-byte limit that passes the trim precheck, CollaborationUnavailableError) to knowledge.sourceChanged. Submit is disabled whenever view is undefined (:56, :104), and the header Propose button is hidden while sourceView is undefined (knowledge-panel.tsx:90).",
+  "Failure classes available from the code: buildKnowledgeSources throws CollaborationUnavailableError, ApiError, abort or timeout (source problem). prepareKnowledgeProposal throws CollaborationUnavailableError for a stale scope or can_propose !== true, and ZodError or TypeError for invalid input (knowledge-actions.ts:69-76). The locales have sourceChanged, invalid, loadError and unavailable (the last means 'unsupported server'). No string exists for 'proposing is not available right now', and there are only two locales (en, zh-Hans; locales/parity.test.ts enforces key parity).",
+  "Server spec .trellis/spec/server/collaboration-knowledge.md:36-39: candidate content is immutable and state_revision changes only through a recorded state-change CAS. A changed state_revision therefore always means someone else's decision landed, and expected_state_revision for any reason typed before it is stale.",
+  "Tooling: @tanstack/react-query 5.96.2 notifies observers with setTimeout(0). An invalidation whose GET resolves in microtasks may never render the erased state, so a regression test must hold the refetch open with a deferred promise. eslint-plugin-react-hooks 5.2.0 recommended-latest has no compiler rules, so the documented React 'adjust state during render' pattern is lint-clean. user-event is 14.6.1 and views vitest defaults to jsdom."
+ ],
+ "root_cause": "The data was handled correctly: Core's erase-at-refresh is required and works as the spec says. The views put human-authored state in the wrong place. (M4) KnowledgeDecision, which owns the reviewed checkbox and reason, is mounted only inside the `candidate &&` branch. Its key falls back to \"unavailable\" when the projection is absent, so every required erasure (15 s refresh, focus, hint, lease deadline) unmounts it and discards the input, even when the same identity comes back. (M5) settled() decides ownership from a render-time `intent` closure that is null when submit() starts, so \"nothing in flight\" is treated as \"this is my request\". Any success then closes the open proposal draft and moves the selection. (F3) The proposal submit requires a synchronously defined list view after a 10 s async build. Undefined is the normal state during the refresh that M4 forces. One catch-all then turns refresh, grant loss and local validation into the same 'source unavailable' message.",
+ "alternatives": [
+  {
+   "name": "A. Core stale-while-revalidate within the lease (M4)",
+   "summary": "Change readKnowledgeProjection so a plain same-group refresh keeps the previous value until the new response or the lease deadline, and erases only on failure, hint, deadline, focus or online transitions.",
+   "pros": "Stops the 15 s flicker and the remount, so focus and caret in the reason textarea also survive. The header Propose button would stop disappearing.",
+   "cons": "Contradicts the core spec ('Current-read failure, refresh, deadline ... clear private data') and knowledge-cache.test.ts:49-57. It keeps private content visible during a read whose result may be a revocation that arrives without a hint, which weakens a required erasure property. It does not help hint, focus or deadline erasures, which also unmount the controls, so a views fix is needed anyway. It needs a security-reviewed core contract change, which is beyond this unit."
+  },
+  {
+   "name": "B. Decision state outside the Query gate, keyed by the last displayed identity (M4, chosen)",
+   "summary": "KnowledgeReview keeps `decisionKey` = the last non-null identity tuple and mounts one KnowledgeDecision at a fixed position with key={decisionKey}. It passes `candidate` only when the current identity equals decisionKey. The component returns null while the projection is erased.",
+   "pros": "Smallest change (two views files). Core erasure is untouched, so the body and every server-derived affordance disappear immediately. Reason and checkbox survive erasure and an unchanged refetch, and reset exactly when any tuple field changes. The checkbox state is structurally bound to one tuple, because an instance only ever receives a candidate whose identity equals its key.",
+   "cons": "The erased subtree still unmounts its DOM, so a user typing during a refresh loses focus and caret but not the text. A setState during render is needed to avoid a one-frame stale-key commit."
+  },
+  {
+   "name": "B'. Keep the decision controls visible but disabled while erased",
+   "summary": "Like B, but render the textarea and buttons disabled during erasure, using the last capabilities.",
+   "pros": "Keeps the DOM node, which reduces focus loss.",
+   "cons": "Renders affordances derived from an erased projection (can_reject, can_withdraw, can_approve). That retains cleared server data in component state, which the views spec 'Bad' case forbids. Rejected."
+  },
+  {
+   "name": "C. Zustand draft store keyed by viewer+identity",
+   "summary": "Move reviewed, reason and the proposal draft into a core store so they survive any remount.",
+   "pros": "Survives review close, reopen and panel remounts.",
+   "cons": "Adds a parallel abstraction with a longer lifetime than the panel. It needs viewer and server scoping and teardown to avoid cross-viewer leakage, and the core spec's 'no durable drafts' line makes persistence off-limits. The defects require none of this (YAGNI)."
+  },
+  {
+   "name": "M5-1. Pass ownership explicitly into settled() (chosen)",
+   "summary": "settled(receipt, own). submit passes own = true (the receipt already matched next). recover computes own = intent?.requestId === identity.requestId before awaiting. Only own successes select, and only own 'propose' successes close the form.",
+   "pros": "Uses no stale closure. A decision or a reloaded stored request can no longer touch the draft. Locking (locked = pending || intent) already guarantees that an own propose receipt belongs to the open form.",
+   "cons": "None of substance."
+  },
+  {
+   "name": "M5-2. Mirror intent in a ref read inside settled()",
+   "summary": "intentRef.current = next before mutateAsync; compare against it in settled.",
+   "pros": "Small change.",
+   "cons": "Adds a second source of truth that must stay in sync with intent state. It still needs action-awareness so that an own decision does not close the draft."
+  },
+  {
+   "name": "F3-1. Use the click-time view snapshot",
+   "summary": "Capture view at submit and use it after the build even if a refresh erased it.",
+   "pros": "Trivial.",
+   "cons": "Prepares an intent from an erased, possibly expired grant. That violates 'show proposal only for current can_propose === true' and retains cleared data. Rejected."
+  },
+  {
+   "name": "F3-2. Effect-driven waiter on the view prop",
+   "summary": "Store a resolver in a ref, resolve it in useEffect when view becomes defined, plus a timeout and a separate viewFailed prop.",
+   "pros": "No extra request.",
+   "cons": "More code (waiter set, effect, error prop). If the list errored, it waits for the next 15 s interval or needs extra wiring."
+  },
+  {
+   "name": "F3-3. Dedupe onto the panel's read with refetch({cancelRefetch:false}), bounded (chosen)",
+   "summary": "Pass refreshView = () => query.refetch({cancelRefetch:false}).then(r => r.data?.value) from SourceKnowledge. It runs only when alive.current.view is undefined after the build, raced against KNOWLEDGE_REFRESH_MS. Then classify the three failure stages separately.",
+   "pros": "Joins the in-flight refresh without cancelling it, or starts one read when the list errored or was erased off-focus. It always gates on a current authorized view, and the wait is bounded even when the query is paused offline. Each failure class gets its own message.",
+   "cons": "On an expired page-2 boundary the refetch fails and the user sees 'not available' and must go back to the latest page, which matches existing paging behavior."
+  }
+ ],
+ "chosen": "B for M4, M5-1 for M5 and F3-3 for F3. All three are views-only, and Core knowledge-cache/lease semantics stay unchanged.\n\nQ1, where the state lives and when it resets. Human input stays in React component state. It never goes in Query, Zustand or StorageAdapter, which matches the existing proposal draft and the core spec's ban on durable copies.\n- The proposal draft already lives above the Query gate in KnowledgeProposalForm. It needs no move; it only needs M5.\n- Decision input moves to a KnowledgeDecision instance mounted outside the `candidate &&` branch:\n```tsx\nconst identity = candidate ? JSON.stringify([candidate.candidate_id, candidate.state_revision, candidate.availability,\n  candidate.availability === \"available\" ? candidate.content_sha256 : null, candidate.availability !== \"restricted\" ? candidate.version : null]) : null;\n// Human input survives lease erasure; a different reviewed tuple starts fresh.\nconst [decisionKey, setDecisionKey] = useState<string | null>(identity);\nif (identity !== null && identity !== decisionKey) setDecisionKey(identity);\n...\n{decisionKey !== null && <KnowledgeDecision key={decisionKey} scope={scope} candidate={identity === decisionKey ? candidate : undefined} locked={locked} onSubmit={onSubmit} />}\n```\n- KnowledgeDecision takes `candidate: CollaborationKnowledgeCandidate | undefined`, keeps its three useState hooks first, then does `if (!candidate) return null;` before computing the can* flags.\n- The JSX splits the current fragment into `{candidate && <>…content…</>}`, then the fixed-position decision element, then `{candidate && candidate.availability !== \"restricted\" && <details>history</details>}`, so the visual order stays the same.\n- Erased or loading: nothing private and no server-derived affordance renders, but the instance and its state stay alive.\n- Same tuple returns: reason and checkbox reappear as typed.\n- Any tuple field differs (candidate_id, state_revision, availability, version, content hash): the instance remounts, and reason, checkbox and error reset. The render-phase setState means React discards the mismatched render before commit. The `identity === decisionKey ? candidate : undefined` guard ensures an instance never sees a candidate other than the one it was keyed for, so a tick cannot carry over to a changed version.\n- Decision on the reason text: it does NOT survive an identity change. state_revision moves only through a recorded state-change CAS (server spec :36-39), so a reason typed before it targets a stale expected_state_revision and decision context. An availability change means different, possibly restricted, material was shown. One reset rule for all controls also matches views spec line 88.\n- Because state_revision is monotonic, an old tuple cannot come back after a different one.\n- A capability-only change on the same tuple hides and re-shows the controls without resetting them. The server still checks the grant and the expected tuple.\n\nQ2, M5:\n```ts\nfunction settled(receipt: CollaborationKnowledgeReceipt, own: boolean) {\n  ...\n  // Only this panel's in-memory intent may move selection or close its own proposal form.\n  if (success && own) { if (receipt.action === \"propose\") setProposal(null); setSelectedId(receipt.candidate_id); }\n  setPage({}); setRevision((value) => value + 1);\n}\n```\n- submit: `settled(receipt, receipt.request_id === next.requestId)`, and the same for the cleanup-error receipt.\n- recover: `const own = intent?.requestId === identity.requestId;` computed before the await, then `settled(receipt, own)`.\n\nQ2, F3:\n- SourceKnowledge passes `refreshView={async () => (await query.refetch({ cancelRefetch: false })).data?.value}` through KnowledgeCollection to KnowledgeProposalForm.\n- The Submit button and the onSubmit guard use `locked || building || (view !== undefined && view.capabilities.can_propose !== true)`, so Submit stays usable while the list is merely refreshing and is blocked only by a current, explicit non-grant.\n- Submit becomes staged:\n  1. `try { sources = await buildKnowledgeSources(...) } catch { setError(sourceChanged); return; }`\n  2. `const current = alive.current.view ?? await Promise.race([refreshView(), timeout(KNOWLEDGE_REFRESH_MS → undefined)])` (clear the timer in finally). If the scope changed or `current?.capabilities.can_propose !== true`, call `setError(proposalUnavailable)` and return.\n  3. `try { intent = prepareKnowledgeProposal(scope, current, ...) } catch (e) { setError(e instanceof CollaborationUnavailableError ? proposalUnavailable : invalid); return; }`\n  4. `await onSubmit(intent)`. The panel's submit already reports its own outcomes.\n- Keep an outer `.catch(() => setError(proposalUnavailable))` only as a fail-closed safety net.\n- New locale key knowledge.proposalUnavailable. en: \"Proposing knowledge is not available right now. Your draft is kept.\" zh-Hans: \"当前无法提出知识候选，草稿已保留。\"\n\nQ3: the six vitest tests listed below, all in packages/views/collaboration/knowledge-panel.test.tsx (jsdom; mocks via ApiClient spies on @multica/core/api, as in the file). The core cache tests stay as they are.",
+ "rationale": "- **Keeps the security properties.** Core erasure is untouched, so private content still disappears immediately on refresh, hint, deadline and visibility changes; knowledge-cache.test.ts keeps asserting that. Approval stays human-only: the checkbox is tied to the exact tuple, the server's expected-tuple check is unchanged, and Approve still needs a click. Recorded exposure and revocation are unaffected because nothing is relabeled or retained from a projection.\n- **M4, smallest change.** Moving the state boundary from \"has data\" to \"has seen this identity\" changes two views files. It also resolves the ambiguity in views spec line 51: \"unavailable data\" means the availability field changed, not a transient erasure.\n- **M5.** Explicit ownership removes the stale-closure class of bug instead of patching one path. Making the close action-aware stops an own decision from closing an unrelated draft.\n- **F3.** Joining the in-flight read gives a current, authorized can_propose without ever reusing an erased one. The timeout keeps the wait bounded offline. Staged handling makes each message reflect its real cause.\n- **Rejected alternatives.**\n  - A changes a security contract and still leaves hint, focus and deadline erasures losing input.\n  - B' renders affordances from erased data.\n  - C adds an unrequested persistent abstraction.\n  - F3-1 uses a stale grant.\n  - F3-2 needs more code for the same result.",
+ "changes": [
+  {
+   "file": "packages/views/collaboration/knowledge-review.tsx",
+   "change": "- Replace the identity sentinel \"unavailable\" with null.\n- Add `const [decisionKey, setDecisionKey] = useState<string | null>(identity); if (identity !== null && identity !== decisionKey) setDecisionKey(identity);`.\n- Move `<KnowledgeDecision>` out of the `{candidate && <>…</>}` fragment to a fixed sibling position (content block, then decision, then history block, which now has its own `candidate && candidate.availability !== 'restricted'` guard). Render it as `{decisionKey !== null && <KnowledgeDecision key={decisionKey} candidate={identity === decisionKey ? candidate : undefined} …/>}`.\n- KnowledgeDecision: `candidate` prop becomes `CollaborationKnowledgeCandidate | undefined`. All hooks stay first, then `if (!candidate) return null;`, then the existing can* logic.\n- Add one English comment explaining that human input survives lease erasure and resets on a different reviewed tuple."
+  },
+  {
+   "file": "packages/views/collaboration/knowledge-panel.tsx",
+   "change": "- settled(receipt, own): replace line 59 with `if (success && own) { if (receipt.action === \"propose\") setProposal(null); setSelectedId(receipt.candidate_id); }`.\n- submit: pass `receipt.request_id === next.requestId` (success and KnowledgeReceiptCleanupError paths).\n- recover: compute `const own = intent?.requestId === identity.requestId;` before the await and pass it in both paths.\n- SourceKnowledge: pass `refreshView={async () => (await query.refetch({ cancelRefetch: false })).data?.value}` to KnowledgeCollection (new optional prop typed `() => Promise<CollaborationKnowledgeCandidates | undefined>`), which forwards it to KnowledgeProposalForm."
+  },
+  {
+   "file": "packages/views/collaboration/knowledge-proposal.tsx",
+   "change": "- New required prop refreshView.\n- Submit button disabled and onSubmit guard become `locked || building || (view !== undefined && view.capabilities.can_propose !== true)`.\n- Replace the single async block and catch-all with the staged flow: build sources, then catch → sourceChanged; then get the current view (alive.current.view, or refreshView() raced against KNOWLEDGE_REFRESH_MS with the timer cleared in finally), where a missing view, lost grant or changed scope → proposalUnavailable; then prepareKnowledgeProposal, where CollaborationUnavailableError → proposalUnavailable and any other error → invalid; then onSubmit.\n- Keep the outer catch as a proposalUnavailable safety net and keep the finally that resets building and submitting.\n- Import CollaborationUnavailableError and KNOWLEDGE_REFRESH_MS from @multica/core/collaboration."
+  },
+  {
+   "file": "packages/views/locales/en/collaboration.json",
+   "change": "Add knowledge.proposalUnavailable: \"Proposing knowledge is not available right now. Your draft is kept.\""
+  },
+  {
+   "file": "packages/views/locales/zh-Hans/collaboration.json",
+   "change": "Add knowledge.proposalUnavailable: \"当前无法提出知识候选，草稿已保留。\" (uses the existing term 知识候选 from knowledge.propose)."
+  },
+  {
+   "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+   "change": "Add the six regression tests listed under tests. Existing tests stay unchanged and continue to pass. The test at :83 remains the changed-identity case, and the new test 1 covers the unchanged-refetch case it could not tell apart."
+  },
+  {
+   "file": "packages/core/collaboration/knowledge-cache.ts",
+   "change": "No change. Erase-at-refresh is the required security behavior, and knowledge-cache.test.ts:52-53 stays as is."
+  }
+ ],
+ "tests": [
+  {
+   "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+   "name": "keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision",
+   "setup_and_assertion": "1. mount(); openReview(); click checkbox /I reviewed/; userEvent.type the 'Decision reason' textbox with 'Needs a source check'.\n2. Hold the next detail GET: `let release!: () => void; vi.mocked(api.getCollaborationKnowledgeCandidate).mockImplementationOnce(() => new Promise((resolve) => { release = () => resolve(detail()); }))`.\n3. `act(() => { void client.invalidateQueries({ queryKey: collaborationKnowledgeKeys.candidate(scope, candidate.candidate_id) }); })`.\n4. waitFor 'PRIVATE BODY' to be absent, and assert no 'Decision reason' textbox and no 'Approve exact version' button (erasure still happens).\n5. `await act(async () => release())`; await findByText('PRIVATE BODY').\n6. Assert checkbox /I reviewed/ toBeChecked, the reason textbox toHaveValue('Needs a source check'), and 'Approve exact version' enabled.\n7. Then set `candidate = { ...candidate, state_revision: '2' }`, invalidate again inside act, and waitFor the checkbox to be unchecked, the reason to be '' and Approve disabled.",
+   "why_it_fails_now": "The deferred GET forces a committed erased render. The current code unmounts KnowledgeDecision (it is inside `candidate &&`, and the key becomes \"unavailable\"), so after release a fresh instance mounts with reviewed=false and reason=''. toBeChecked() fails."
+  },
+  {
+   "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+   "name": "a review decision leaves an open proposal draft intact and only the panel's own proposal closes it",
+   "setup_and_assertion": "1. Spy approveCollaborationKnowledge → receipt(input.request_id,'approve'), and proposeCollaborationKnowledge → {...receipt(input.request_id,'propose'), candidate_id: input.candidate_id}.\n2. mount(); openReview(); click 'Propose knowledge'; fillProposal().\n3. Click checkbox /I reviewed/, then 'Approve exact version'; await findByText('Decision recorded.').\n4. Assert the 'Summary' textbox still has 'Human conclusion' and the comment source is still selected (checkbox /Comment.*Version 3/ checked).\n5. Click 'Submit candidate'; waitFor send once.\n6. waitFor queryByRole('form', {name:'Propose knowledge'}) to be null, and assert getCollaborationKnowledgeCandidate was called with send.mock.calls[0][1].candidate_id (the own proposal is selected).",
+   "why_it_fails_now": "settled() runs with the render-time `intent` === null, so `!intent` is true and setProposal(null) unmounts the form after the approval. getByRole('textbox',{name:'Summary'}) throws."
+  },
+  {
+   "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+   "name": "recovering an older stored request does not close a new draft or change the selection",
+   "setup_and_assertion": "1. Spy approveCollaborationKnowledge.mockRejectedValue(new TypeError('Lost response')).\n2. mount(); openReview(); tick /I reviewed/; click Approve; await 'Retry same request'; keep key = send.mock.calls[0][1].request_id.\n3. unmount(); mount().\n4. Click 'Propose knowledge'; fireEvent.change Summary to 'Fresh draft'.\n5. Set mocked getCollaborationKnowledgeOperation to resolve receipt(key,'approve'); click 'Check original result'; await 'Decision recorded.'.\n6. Assert Summary still has 'Fresh draft' and queryByRole('region',{name:'Review candidate'}) is null.",
+   "why_it_fails_now": "After the remount `intent` is null, so recover → settled() treats the reloaded request as this panel's own. It closes the draft (Summary textbox gone) and selects the candidate (review region appears)."
+  },
+  {
+   "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+   "name": "submit waits for a refreshing source list instead of reporting a changed source",
+   "setup_and_assertion": "1. Spy proposeCollaborationKnowledge (success).\n2. mount(); 'Propose knowledge'; fillProposal().\n3. Hold the list GET: `vi.mocked(api.getCollaborationKnowledgeCandidates).mockImplementationOnce(() => new Promise((r) => { releaseList = () => r(sourcePage()); }))`.\n4. act: `void client.invalidateQueries({ queryKey: collaborationKnowledgeKeys.source(scope, issue.id) })`; waitFor the /PRIVATE SUMMARY/ button to be absent.\n5. `const digest = vi.spyOn(crypto.subtle, 'digest')`; click 'Submit candidate'; waitFor digest toHaveBeenCalled; wait 50 ms.\n6. Assert send not called and no 'A selected source is unavailable…' text.\n7. `await act(async () => releaseList())`; waitFor send toHaveBeenCalledOnce; assert the sourceChanged text is still absent.",
+   "why_it_fails_now": "With view undefined, the current Submit button is disabled (`!view`), so the click does nothing and digest is never called. The waitFor times out. If someone only re-enables the button, the post-build `!current.view` throw shows sourceChanged and send is never called, so the test still fails."
+  },
+  {
+   "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+   "name": "reports local validation failure as invalid input, not as an unavailable source",
+   "setup_and_assertion": "1. Spy proposeCollaborationKnowledge.\n2. mount(); 'Propose knowledge'; fillProposal().\n3. fireEvent.change Summary to '界'.repeat(2000) (2000 chars, under maxLength, about 6000 UTF-8 bytes, over text(2048)).\n4. Click 'Submit candidate'.\n5. await findByText('Check the text, sources, destination and expiry before submitting.'); assert the sourceChanged text is absent and send not called.",
+   "why_it_fails_now": "The summary passes the click-time trim precheck, so the ZodError comes from prepareKnowledgeProposal inside the async block. The single catch at knowledge-proposal.tsx:68 maps it to 'A selected source is unavailable…', and the invalid text never appears."
+  },
+  {
+   "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+   "name": "fails closed with a proposal-unavailable notice when the refreshed list withdraws the grant",
+   "setup_and_assertion": "1. Spy proposeCollaborationKnowledge.\n2. mount(); 'Propose knowledge'; fillProposal().\n3. Hold the next list GET, resolving to parseCollaborationKnowledgeCandidates({...lease(), issue_id: issue.id, items: [summary()], next_cursor: null, capabilities: { can_propose: false }}).\n4. Invalidate the source key inside act; waitFor /PRIVATE SUMMARY/ to be absent.\n5. Click 'Submit candidate'; release the list.\n6. await findByText('Proposing knowledge is not available right now. Your draft is kept.'); assert send not called, Summary still 'Human conclusion', and the sourceChanged text absent.",
+   "why_it_fails_now": "Submit is disabled during the refresh, so nothing happens. The knowledge.proposalUnavailable key and its message do not exist in the current code, so findByText fails."
+  }
+ ],
+ "spec_and_doc_updates": [
+  {
+   "file": ".trellis/spec/views/frontend/collaboration-knowledge.md",
+   "change": "Line 40-41: after \"Component state owns IDs, selections and human-authored fields, never copied source bodies.\" add: \"That state sits above the Query gate: lease erasure or a refetch hides server content but never clears the draft. At submit, if a refresh erased the list, wait for that read (bounded by one refresh interval) and prepare the intent only from a current `can_propose === true` view. Report invalid input, lost proposal availability and unresolvable sources as distinct errors, keeping the draft.\""
+  },
+  {
+   "file": ".trellis/spec/views/frontend/collaboration-knowledge.md",
+   "change": "Lines 50-51: replace \"Key decision controls by candidate ID, state revision, availability, version and hash so replacement/unavailable data resets confirmation.\" with \"Mount one decision instance keyed by the last displayed tuple (candidate ID, state revision, availability, version, hash) and give it only a candidate with that exact tuple. Lease erasure or an unchanged refetch hides the controls without clearing the checkbox or reason. A different tuple, including a changed availability, resets the checkbox, reason and error.\""
+  },
+  {
+   "file": ".trellis/spec/views/frontend/collaboration-knowledge.md",
+   "change": "Action outcomes (after line 79): add \"Only a receipt for this panel's own in-memory intent changes selection, and only its own proposal receipt closes the proposal form. A decision receipt or a GET-recovered stored identity leaves an open draft and the current selection unchanged.\""
+  },
+  {
+   "file": ".trellis/spec/views/frontend/collaboration-knowledge.md",
+   "change": "Matrix line 88: change the condition to \"Review candidate/version/revision/hash/availability changed\" (behavior stays 'Reset checkbox and decision controls'). Add rows:\n- \"Lease erasure or unchanged refetch during review | Hide body and controls; restore the same checkbox/reason when the same tuple returns\"\n- \"Source list refreshing at proposal submit | Wait for the current read; post only with current `can_propose`; keep the draft on failure\"\n- \"Decision or recovered older request settles while a draft is open | Keep draft and selection\""
+  },
+  {
+   "file": ".trellis/spec/views/frontend/collaboration-knowledge.md",
+   "change": "Tests required (line 105-108): add \"unchanged-refresh retention of decision input, draft isolation from decision and recovery receipts, and submit during list refresh\" to the knowledge-panel.test.tsx ownership list."
+  },
+  {
+   "file": ".trellis/spec/core/frontend/collaboration-knowledge.md",
+   "change": "No change. Lines 62-70 (erase on refresh) and the ban on durable drafts or copied bodies remain exactly the required behavior. The fix is views-only and stores no projection data."
+  }
+ ],
+ "migrations": [],
+ "compatibility_and_risks": "- **Scope.** Views-only. There is no API, server, DB or core contract change. Web and Desktop share the code, and no platform wiring changes.\n- **Focus loss stays.** The reason textarea's DOM still unmounts during each erasure, so a user typing exactly at a 15 s refresh, focus change or hint loses focus and caret, but not the text. Keeping the DOM would require rendering affordances from erased data (rejected) or the core change in alternative A.\n- **Header Propose button.** It still disappears while the list is erased. That conforms to the spec (\"show proposal only for current can_propose === true\") and has the same root cause.\n- **Uncertain decisions.** A held uncertain decision intent keeps its frozen payload when an identity change clears the visible reason, as the spec requires (\"locks its original fields\"). Retry same request reuses the original bytes.\n- **Submit wait.** Submit during a refresh now shows \"Submitting…\" for up to one read (10 s deadline), or up to KNOWLEDGE_REFRESH_MS (15 s) when the query is paused offline, before failing closed. On an expired page-2 boundary the refetch fails, the user gets proposalUnavailable, and the existing Back to latest or Refresh controls recover.\n- **React pattern.** The render-phase setState is React's documented 'adjust state on prop change' pattern. eslint-plugin-react-hooks 5.2.0 recommended-latest has no compiler rule that flags it.\n- **New locale key.** Required in both en and zh-Hans; locales/parity.test.ts guards it.\n- **Verification to run** (not run here because this step is read-only): `pnpm --filter @multica/views exec vitest run collaboration/knowledge-panel.test.tsx locales/parity.test.ts`, `pnpm --filter @multica/core exec vitest run collaboration/knowledge-cache.test.ts` (unchanged, must stay green), `pnpm typecheck` and `pnpm lint`.",
+ "open_questions": [
+  "Is focus and caret loss in the reason textarea at each refresh acceptable? Removing it needs either a core stale-while-revalidate within the lease (a core spec change at lines 62-70 and knowledge-cache.test.ts:49-57, needing security review) or rendering controls from erased data (rejected here).",
+  "Should the review checkbox survive erasure at all? The design keeps it for the identical tuple because the hash and version pin the exact bytes and the content is shown again before Approve is enabled; M4 asks for this. A stricter owner rule ('re-confirm after any period the content was hidden') would reintroduce part of M4 for the checkbox only.",
+  "Wording of the new knowledge.proposalUnavailable copy (en/zh-Hans) should be confirmed against apps/docs/content/docs/developers/conventions.zh.mdx product voice."
+ ]
+}

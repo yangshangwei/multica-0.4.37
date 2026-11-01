@@ -1,0 +1,172 @@
+{
+ "findings": [
+  "Worktree HEAD 4e3b61500 differs from the audited 6aed33aad only by task docs (.trellis task prd.md/task.json), so the code is identical.",
+  "F4 confirmed. knowledge-proposal.tsx:72 Summary Input maxLength={2048}, :74 Conclusion Textarea has no limit, :87 Evidence Textarea maxLength={2048}; knowledge-review.tsx:101 reason Textarea maxLength={1000}. maxLength counts UTF-16 code units. The schema text(max) at knowledge-schema.ts:12-13 counts UTF-8 bytes via collaborationTextByteLength, and migration 747 uses octet_length (summary :13, content :12, last_decision_reason :29). UTF-8 bytes are always >= UTF-16 units, so maxLength can never catch a byte overflow, and on paste it truncates silently.",
+  "F4 attribution confirmed. In knowledge-proposal.tsx:59-68 one .catch covers buildKnowledgeSources, the alive re-check and prepareKnowledgeProposal, and maps all of them to knowledge.sourceChanged. The panel's submit() catches its own errors (knowledge-panel.tsx:62-77), so this catch only ever sees source resolution, the authorization re-check, or a prepare ZodError/TypeError/CollaborationUnavailableError. A ZodError can come from a byte limit, a NUL, the 16 KiB metadata refine, or sources+evidence > 32. In knowledge-review.tsx:91-95 every prepareKnowledgeDecision throw becomes knowledge.invalid.",
+  "Repo precedent for byte limits: comment-list.tsx:92-134 computes tooLong, sets aria-invalid and aria-describedby, renders an inline role=alert and disables submit. memory-panel.tsx:94/158 uses collaborationTextByteLength and memory.tooLong with {{max}}. collaborationTextByteLength is already exported from packages/core/collaboration/index.ts:85, and knowledge-schema is re-exported with `export *` (:73).",
+  "F7 confirmed. knowledge-panel.tsx:44-47 renders every identity from readPendingKnowledgeOperations(scope). knowledge-recovery.ts:32-41 filters only by the [server,userId] key prefix. settled() at knowledge-panel.tsx:59 runs setSelectedId(receipt.candidate_id) whenever the receipt is a success and (!intent || intent matches). recover() runs with intent === null after a reload, so it always opens the candidate, foreign ones included. No dismiss exists, and retireKnowledgeOperationIdentity is not exported from the core index (:78 exports only readPendingKnowledgeOperations and the error class).",
+  "The receipt (server/pkg/protocol/collaboration_knowledge.go:105-116) carries protocol_version, request_id, action, code, candidate_id, version, state_revision, state and an optional target_knowledge_revision. Its comment says receipts never contain source IDs. GetKnowledgeOperation (server/internal/service/collaboration_knowledge.go:667-703) resolves the source issue internally through GetKnowledgeCandidateRouting and returns only the stored receipt. It returns 404 operation_not_found when the candidate has no routing row (a proposal POST that never arrived) or no operation row exists. Neither response identifies the source issue or the target, so the UI cannot route a recovered result.",
+  "Client path: api/client.ts:1369 maps operation_not_found (and the 404 for an absent route) to undefined, which parses to null; protectCollaborationRead (access.ts:111) then throws CollaborationUnavailableError. The panel at :83 shows knowledge.notFound for every recovery error.",
+  "Server idempotency (collaboration_knowledge.go:184-197): under the write lock it looks up (issue scope, actor, request_id). The same kind and payload hash replays the stored receipt, a different one returns 409 idempotency_conflict, and a new request creates the operation. Server spec line 168: \"A missing operation is not evidence that an uncertain write never committed.\" So a local dismiss can never prove non-application. It can only drop a local pointer.",
+  "e2e/collaboration-knowledge.spec.ts:164-171 reloads, clicks Check original result and expects the exact text \"Candidate proposed. It is not active until approved.\" The success feedback text must stay byte-identical. Only a secondary caption may be added, because list-membership ownership is unknown if the click lands before the list has loaded.",
+  "The source picker already caps selection at 32 (knowledge-source-picker.tsx:47). With 32 sources, adding an evidence note still breaks the sources+evidence <= 32 refine. That case stays a generic, now correctly attributed, input error."
+ ],
+ "root_cause": "F4: the views enforce limits with DOM maxLength, which counts UTF-16 code units, while the core schema, the server and the DB count UTF-8 bytes. Nothing checks bytes before submit. The proposal form wraps three failure stages (exact-source resolution, the authorization re-check and local schema parsing) in one catch mapped to the source-unavailable message. The decision form maps every failure to the generic invalid message. F7: the recovery store is deliberately content-free and keyed only by (server, userId), and neither the receipt nor GET /operations identifies a source or target. settled() still assumes every recovered success belongs to the panel that ran the check and selects receipt.candidate_id. No human path exists to retire an identity whose operation was never recorded.",
+ "alternatives": [
+  {
+   "name": "F4-A: byte-aware inline field checks in views using core-exported limit constants, plus a catch per stage",
+   "summary": "Core exports KNOWLEDGE_{SUMMARY,CONTENT,REFERENCE,REASON}_MAX_BYTES, which the schema also uses. Views compare collaborationTextByteLength(value) against them, show an inline used/max error only on overflow (the comment-list pattern), block submit, drop maxLength, and give each stage of the proposal submit its own catch.",
+   "pros": "Errors appear before any source read or network call. There is one source of truth for the numbers. It follows the existing comment-list and memory-panel patterns. Small diff, and no change to core error contracts.",
+   "cons": "The metadata-budget and >32 refines still reach users only as the generic input message (now correctly attributed)."
+  },
+  {
+   "name": "F4-B: typed core validation error mapped from ZodError issue paths",
+   "summary": "prepareKnowledgeProposal/prepareKnowledgeDecision throw KnowledgeValidationError {field, reason}, and the views map field to message.",
+   "pros": "A single classifier that also covers the refines.",
+   "cons": "Errors show only after Submit and after exact-source resolution, which means network reads and hashing. The object-level refines have no field path. It changes a core error contract and its tests, and inline UI is still needed for a good experience."
+  },
+  {
+   "name": "F4-C: keep maxLength at a conservative character estimate (for example floor(max/4))",
+   "summary": "Shrink maxLength so no string can exceed the byte limit.",
+   "pros": "Trivial.",
+   "cons": "Rejects valid ASCII and CJK text well under the limit. It is still a character rule and still truncates paste silently. The misattribution remains."
+  },
+  {
+   "name": "F7-A: membership-gated opening plus explicit post-check local removal, storage unchanged",
+   "summary": "Every panel keeps listing all stored identities and says so. A recovered success selects its candidate only if the identity is this panel's in-memory intent or the candidate is in this panel's current list; otherwise the outcome shows with a hint. After a check in this mount returns no confirmed result, a stored identity that is not the panel's in-memory intent offers Remove local entry, which calls a new core dismissKnowledgeOperation.",
+   "pros": "No storage, protocol or server change. Every identity stays recoverable from any panel. A foreign candidate is never opened (fails closed). Respects the content-free storage rule. Dismiss sends nothing and cannot relabel server state.",
+   "cons": "Foreign request IDs still appear in unrelated panels, mitigated by a caption. A recovered own result is not auto-opened when the list has not loaded yet or the candidate is on a later page."
+  },
+  {
+   "name": "F7-B: persist an origin tag (issueId, target ID or a hash) with each identity and filter per panel",
+   "summary": "Store {kind, id} with the identity and render it only in the matching panel.",
+   "pros": "True per-panel scoping.",
+   "cons": "Violates knowledge-recovery.ts:17 and core spec lines 88-90 (no source ID/ref/hash in storage). The strict identitySchema would make every existing entry throw in readPendingKnowledgeOperations and show recoveryReadError in all panels. An identity becomes invisible once its origin panel can no longer be mounted after access loss, which loses recoverability."
+  },
+  {
+   "name": "F7-C: add source_issue_id/target to the receipt or GET operation",
+   "summary": "Let the UI route a recovered result to its origin.",
+   "pros": "Precise routing.",
+   "cons": "Contradicts the protocol comment and server spec line 63 (\"grants no source read authority\"). It leaks a hidden source/target relationship to an actor who lost access, and it needs server, schema and Go test changes."
+  },
+  {
+   "name": "F7-D: one account-level recovery surface; panels show only their own in-memory intent",
+   "summary": "Move stored-identity recovery to a dedicated page.",
+   "pros": "Clean separation.",
+   "cons": "New route and wiring on web and desktop, a much bigger change. It removes the in-place reload recovery that e2e collaboration-knowledge.spec.ts:164-171 asserts."
+  },
+  {
+   "name": "F7-E: defer opening until the refetched list contains the candidate",
+   "summary": "Keep a pending-open candidate ID and select it when it appears in current items.",
+   "pros": "Opens own results even when the click beat the list load.",
+   "cons": "Extra state and an effect, interplay with history selection and paging, and more surface for a low-severity defect. The fail-closed gate in A is simpler and safe."
+  },
+  {
+   "name": "Dismiss gating: always / after any unsettled check in this mount / only after CollaborationUnavailableError",
+   "summary": "When the Remove local entry action becomes available.",
+   "pros": "Gating after any unsettled check forces one recovery attempt first, so a recorded result settles normally instead of being dropped, and a persistent 403 after credential loss still has an exit.",
+   "cons": "Always-available risks dropping recoverable results unseen. Gating only on CollaborationUnavailableError leaves identities stuck behind a permanent 403, and a 404 proves nothing anyway (server spec line 168)."
+  }
+ ],
+ "chosen": "F4-A + F7-A, with dismiss gated on any unsettled check in the current mount and never offered for the panel's own in-memory intent.",
+ "rationale": "F4: byte limits are a property of core's schema, so core owns the numbers. Views already own inline field validation (comment-list, memory-panel), and checking before submit avoids network source resolution for a guaranteed local refusal. Splitting the catch by stage restores correct attribution without a new error type. F7: the receipt and GET operation intentionally carry no source/target, and storage must not either. The only safe scoping signal is what this panel already shows (its in-memory intent or its current list), and not opening is the fail-closed default. A local-only dismiss after a check is the smallest exit for identities that will never resolve. It cannot weaken server properties: it sends nothing, and the server's (scope, actor, request_id) ledger still makes a late original POST idempotent. A late proposal lands as a pending candidate that needs human approval and appears in normal lists, and a late decision is still fenced by expected_state_revision. Recorded exposure, approval and revocation are untouched. Dismiss does not reset the in-memory attempt counter, so a later same-key retry in the same QueryClient stays uncertain and is never misread as unused.",
+ "changes": [
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/core/collaboration/knowledge-schema.ts",
+   "change": "Export KNOWLEDGE_SUMMARY_MAX_BYTES = 2048, KNOWLEDGE_CONTENT_MAX_BYTES = 65_536, KNOWLEDGE_REFERENCE_MAX_BYTES = 2048 and KNOWLEDGE_REASON_MAX_BYTES = 1000, and use them in place of the literals at :28-29 (reference), :36 (summary), :41 and :89 (content), and :57 and :77 (reason). They reach views through the existing `export *` in index.ts:73. No behavior change."
+  },
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/core/collaboration/knowledge-actions.ts",
+   "change": "Add `export function dismissKnowledgeOperation(scope: CollaborationScope, identity: KnowledgeOperationIdentity, storage?: StorageAdapter): void { checkScope(scope, identity); retireKnowledgeOperationIdentity(identity, storage); }` with a comment that it is explicit human removal of a local pointer: it sends no request, keeps the in-memory attempt state, does not expire projections and is not evidence of non-application. It throws CollaborationUnavailableError for a foreign or stale scope and KnowledgeRecoveryStorageError on removal failure. It is exported through the existing `export *` (index.ts:75)."
+  },
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/collaboration/knowledge-controls.tsx",
+   "change": "Add `KnowledgeByteLimit({ id, value, max })`. It returns null when collaborationTextByteLength(value) <= max; otherwise it renders `<p id={id} role=\"alert\" className=\"text-caption text-destructive\">{t(($) => $.knowledge.tooLong, { max, used })}</p>`. The proposal and review forms both use it."
+  },
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/collaboration/knowledge-proposal.tsx",
+   "change": "Compute summaryOver, contentOver and evidenceOver against the core constants, and overLimit = any of them. Remove maxLength at :72 and :87. Give Summary, Conclusion and Evidence aria-invalid plus aria-describedby={over ? `${id}-<field>-limit` : undefined} and a KnowledgeByteLimit under each. Disable Submit when overLimit, and return early in onSubmit when overLimit, before buildKnowledgeSources. Split the async body: `let sources; try { sources = await buildKnowledgeSources(...) } catch { setError(sourceChanged); return; }`; keep the alive re-check mapped to sourceChanged; `let intent; try { intent = prepareKnowledgeProposal(...) } catch (error) { setError(error instanceof CollaborationUnavailableError ? t(sourceChanged) : t(invalid)); return; }`; then `await onSubmit(intent)`. Keep the outer .catch(() => setError(invalid)) as a defensive fallback, and keep .finally unchanged."
+  },
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/collaboration/knowledge-review.tsx",
+   "change": "In KnowledgeDecision: reasonOver = collaborationTextByteLength(reason) > KNOWLEDGE_REASON_MAX_BYTES. Remove maxLength={1000} at :101. Add aria-invalid and aria-describedby={reasonOver ? `${id}-limit` : undefined} and render KnowledgeByteLimit under the Textarea. Disable Reject and Withdraw when reasonOver. In submit(), return early when action !== \"approve\" && reasonOver, since approval sends no reason. The remaining catch keeps knowledge.invalid, which is now correct because only NUL/malformed text or a lost grant can reach it."
+  },
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/collaboration/knowledge-panel.tsx",
+   "change": "(1) settled(receipt, owned: boolean). Leave the success/refused feedback text unchanged. Add state `openedElsewhere` and set it to success && !owned. Only `if (success && owned) { setProposal(null); setSelectedId(receipt.candidate_id); }`. (2) submit() passes owned=true in both the success and KnowledgeReceiptCleanupError branches, and clears openedElsewhere at start. (3) recover(identity) computes, before the await, `const owned = intent?.requestId === identity.requestId || current?.value.items.some((item) => item.candidate_id === identity.candidateId) === true;` and passes it to settled. In the non-cleanup catch it keeps the notFound feedback and adds identity.requestId to new state `unconfirmed: string[]`. (4) dismiss(identity): return if busy.current, mutation.isPending or intent?.requestId === identity.requestId; then `try { dismissKnowledgeOperation(scope, identity); remove the ID from unconfirmed; setFeedback(null); } catch { setFeedback({ text: t(dismissFailed), failed: true }); } finally { setRevision(v => v + 1); }`. (5) Render: a caption t(pendingScope) under pendingTitle. On each row where unconfirmed.includes(requestId) && intent?.requestId !== requestId, an outline sm Button t(dismiss) with aria-describedby pointing at a caption t(dismissHint). After the feedback line, `{openedElsewhere && <p className=\"text-caption text-muted-foreground\">{t(recoveredNotOpened)}</p>}`. Import dismissKnowledgeOperation."
+  },
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/locales/en/collaboration.json",
+   "change": "Add to knowledge: \"tooLong\": \"This is over the {{max}}-byte limit ({{used}} bytes). Shorten it before submitting; your text is kept.\", \"recoveredNotOpened\": \"To review this result, open its candidate from the knowledge list where it appears.\", \"pendingScope\": \"Requests started from other collaborations or destinations are listed here too.\", \"dismiss\": \"Remove local entry\", \"dismissHint\": \"This only deletes the recovery entry on this device. It does not cancel the request; if the server applied it, the result still appears in the knowledge lists.\", \"dismissFailed\": \"The local recovery entry could not be removed.\""
+  },
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/locales/zh-Hans/collaboration.json",
+   "change": "Add to knowledge (Remove→移除 per conventions.zh.mdx:199; 协作单 and 目标范围 match existing keys; spacing matches memory.tooLong): \"tooLong\": \"已超出 {{max}} 字节上限（当前 {{used}} 字节），请精简后再提交。当前内容已保留。\", \"recoveredNotOpened\": \"如需审阅此结果，请在它所在的知识列表中打开对应候选。\", \"pendingScope\": \"从其他协作单或目标范围发起的请求也会列在这里。\", \"dismiss\": \"移除本地记录\", \"dismissHint\": \"只会删除本设备上的恢复记录，不会取消请求。如果服务器已处理该请求，结果仍会出现在知识列表中。\", \"dismissFailed\": \"本地恢复记录未能移除。\" (no plural keys, so locales parity.test.ts only needs both files)."
+  }
+ ],
+ "tests": [
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/collaboration/knowledge-panel.test.tsx",
+   "name": "attributes over-byte summary, conclusion and evidence to the field instead of a source failure",
+   "setup_and_assertion": "mount(); click \"Propose knowledge\"; fillProposal(). fireEvent.change Summary to \"知\".repeat(700) (2100 bytes). Expect findByText(\"This is over the 2048-byte limit (2100 bytes). Shorten it before submitting; your text is kept.\"), Summary toHaveAttribute(\"aria-invalid\",\"true\"), and \"Submit candidate\" toBeDisabled(). Restore Summary, then repeat with Conclusion (Markdown) = \"知\".repeat(21_846) (65_538 bytes, alert names 65536) and Evidence note = \"知\".repeat(683) (2049 bytes). Finally expect proposeCollaborationKnowledge not called and queryByText(/A selected source is unavailable/) null.",
+   "why_it_fails_now": "No byte check exists. Submit stays enabled, aria-invalid is absent and the tooLong text does not exist, so findByText times out. Clicking Submit today would call buildKnowledgeSources and then show \"A selected source is unavailable…\" from the single catch at knowledge-proposal.tsx:68."
+  },
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/collaboration/knowledge-panel.test.tsx",
+   "name": "explains an over-byte decision reason instead of the generic invalid message",
+   "setup_and_assertion": "const reject = vi.spyOn(api, \"rejectCollaborationKnowledge\"); mount(); await openReview(); fireEvent.change(getByRole(\"textbox\", { name: \"Decision reason\" }), { target: { value: \"知\".repeat(400) } }). Expect findByText(\"This is over the 1000-byte limit (1200 bytes). Shorten it before submitting; your text is kept.\"), \"Reject candidate\" and \"Withdraw contribution\" toBeDisabled(), reject not called, and queryByText(\"Check the text, sources, destination and expiry before submitting.\") null.",
+   "why_it_fails_now": "maxLength={1000} admits 400 characters and the reason is non-empty, so both buttons are enabled and no limit alert renders. Clicking Reject today throws a ZodError in prepareKnowledgeDecision, which is caught at knowledge-review.tsx:94 and shows the generic invalid text."
+  },
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/collaboration/knowledge-panel.test.tsx",
+   "name": "attributes a local proposal refusal to the input, not to source availability",
+   "setup_and_assertion": "const send = vi.spyOn(api, \"proposeCollaborationKnowledge\"); mount(); propose; fillProposal(); fireEvent.change(Conclusion (Markdown), { target: { value: `A conclusion${String.fromCharCode(0)}with NUL` } }) (a textarea, so no value sanitization; build the NUL with String.fromCharCode, not a literal escape typed through the Edit tool). Click Submit. Expect findByText(\"Check the text, sources, destination and expiry before submitting.\"), queryByText(/A selected source is unavailable/) null, send not called, Summary enabled.",
+   "why_it_fails_now": "The local trim check passes and the comment source resolves. prepareKnowledgeProposal then throws a ZodError (the text refine rejects \"\\0\" at knowledge-schema.ts:13), and the shared catch at knowledge-proposal.tsx:68 renders knowledge.sourceChanged."
+  },
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/collaboration/knowledge-panel.test.tsx",
+   "name": "recovers a foreign receipt without opening its candidate in an unrelated panel",
+   "setup_and_assertion": "const send = vi.spyOn(api, \"approveCollaborationKnowledge\").mockRejectedValue(new TypeError(\"Lost response\")); const first = mount(); await openReview(); check \"I reviewed\"; click Approve; await findByRole Retry same request; const key = send.mock.calls[0]![1].request_id; first.unmount(). vi.mocked(api.getCollaborationKnowledgeTarget).mockImplementation(async (target) => parseCollaborationKnowledgeTargetList({ ...lease(), target, knowledge_revision: \"1\", items: [], next_cursor: null })); vi.mocked(api.getCollaborationKnowledgeCandidate).mockClear(); vi.mocked(api.getCollaborationKnowledgeOperation).mockResolvedValue(receipt(key, \"approve\")). mount(true); await findByText(\"No managed contributions are visible here.\"); click \"Check original result\"; await findByText(\"Decision recorded.\"). Expect getByText(\"To review this result, open its candidate from the knowledge list where it appears.\"), queryByRole(\"region\", { name: \"Review candidate\" }) null, getCollaborationKnowledgeCandidate not called, readPendingKnowledgeOperations(scope) toEqual([]), and send calledOnce.",
+   "why_it_fails_now": "settled() at knowledge-panel.tsx:59 sees intent === null and calls setSelectedId(receipt.candidate_id). KnowledgeReview mounts in the workspace panel, fetches the foreign candidate detail and renders the \"Review candidate\" region. The recoveredNotOpened text does not exist."
+  },
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views/collaboration/knowledge-panel.test.tsx",
+   "name": "lets a human remove a stored identity only after a check finds no result, without any request",
+   "setup_and_assertion": "const send = approve spy mockRejectedValue(new TypeError(\"Lost response\")); const first = mount(); openReview(); reviewed; Approve; await Retry same request. Click \"Check original result\" (the operation mock defaults to null); await findByText(/No confirmed result yet/); expect queryByRole(\"button\", { name: \"Remove local entry\" }) null (the in-memory intent row is not dismissable). first.unmount(); mount(); expect Remove local entry null (no check yet in this mount). Click Check original result; await notFound text; click await findByRole(\"button\", { name: \"Remove local entry\" }). Expect waitFor(queryByText(\"Unresolved knowledge request\") null), readPendingKnowledgeOperations(scope) toEqual([]), send toHaveBeenCalledOnce(), and getCollaborationKnowledgeOperation toHaveBeenCalledTimes(2).",
+   "why_it_fails_now": "The panel has no dismiss action, so findByRole(\"button\", { name: \"Remove local entry\" }) times out and the stored identity can never be removed."
+  },
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/core/collaboration/knowledge-actions.test.ts",
+   "name": "dismisses only the exact stored identity, sends nothing and keeps the prior attempt uncertain",
+   "setup_and_assertion": "const f = setup(); const intent = prepareKnowledgeDecision(f.scope, knowledgeCandidateFixture, \"withdraw\", \"Remove contribution\"); const other = prepareKnowledgeDecision(f.scope, knowledgeCandidateFixture, \"reject\", \"Not reusable\"); const send = vi.spyOn(f.api, \"withdrawCollaborationKnowledge\").mockRejectedValue(new TypeError(\"Lost response\")); vi.spyOn(f.api, \"rejectCollaborationKnowledge\").mockRejectedValue(new TypeError(\"Lost response\")); const read = vi.spyOn(f.api, \"getCollaborationKnowledgeOperation\"); await both executeKnowledgeIntent calls rejecting with TypeError. expect(() => dismissKnowledgeOperation({ ...f.scope, userId: knowledgeIds.project }, intent)).toThrow(CollaborationUnavailableError). dismissKnowledgeOperation(f.scope, intent). Expect readPendingKnowledgeOperations(f.scope).map(i => i.requestId) toEqual([other.requestId]) and read not called. Then send.mockRejectedValueOnce(new ApiError(\"invalid\", 400, \"Bad Request\", { code: \"invalid_knowledge_request\", error: \"invalid\" })); await expect(executeKnowledgeIntent(f.client, f.scope, intent)).rejects.toBeInstanceOf(ApiError) (not KnowledgeUnusedIntentError); expect readPending to contain intent.requestId again and send toHaveBeenCalledTimes(2).",
+   "why_it_fails_now": "dismissKnowledgeOperation does not exist, so the import is undefined (tsc also errors) and the first call throws \"dismissKnowledgeOperation is not a function\"."
+  },
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/core/collaboration/knowledge-schema.test.ts",
+   "name": "exports the UTF-8 byte limits its schemas enforce",
+   "setup_and_assertion": "For the decision reason: CollaborationKnowledgeDecisionRequestSchema.safeParse({ protocol_version: 1, request_id: knowledgeIds.request, expected_state_revision: \"1\", reason: \"知\".repeat(Math.floor(KNOWLEDGE_REASON_MAX_BYTES / 3)) + \"a\" }).success is true (1000 bytes) and the same with + \"ab\" is false (1001). Do the same at the boundary for summary (KNOWLEDGE_SUMMARY_MAX_BYTES) on CollaborationKnowledgeProposalSchema with knowledgeProposalFixture.",
+   "why_it_fails_now": "The constants are not exported. They are undefined, so \"知\".repeat(NaN) is \"\", the over-limit case parses as valid and the false assertion fails (typecheck fails too)."
+  }
+ ],
+ "spec_and_doc_updates": [
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/.trellis/spec/views/frontend/collaboration-knowledge.md",
+   "change": "§3 Action outcomes (lines 71-74): after \"On reload, recover content-free stored identities by GET only.\" add: \"Stored identities and receipts name no source or target, so every panel lists all unresolved identities of the current server/viewer and says so. A recovered success opens its candidate only when the identity is this panel's in-memory intent or the candidate is in this panel's current list; otherwise show the outcome with a hint to open it where it is listed. After a check in this mount returns no confirmed result, a stored identity that is not the panel's in-memory intent offers Remove local entry: it deletes only that local identity, sends nothing and does not claim the request was never applied.\" Add a §3 paragraph \"Field limits\": \"Summary, conclusion, evidence note and decision reason count UTF-8 bytes against Core's KNOWLEDGE_*_MAX_BYTES, never maxLength. Over a limit, keep the text, mark the field invalid, show used/max bytes inline and block submit before source resolution or any request. A source-resolution or authorization failure shows the source message; a local schema refusal shows the input message.\" §4 matrix: line 91 becomes \"Original intent stays unresolved; no replacement request; a stored identity is removed locally only by explicit human action after a check\". Add rows \"Field over its UTF-8 byte limit | Inline used/max error on that field; submit blocked; no source read or request\", \"Local schema refusal after sources resolve | Input message, not source-unavailable\", \"Recovered result for a candidate outside this panel's list | Show the outcome; do not open the candidate here\". §6 (lines 105-109): add \"byte-limit attribution, foreign-receipt non-opening and post-check local removal\" to the knowledge-panel.test.tsx list."
+  },
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/.trellis/spec/core/frontend/collaboration-knowledge.md",
+   "change": "§2 Signatures: add a bullet \"KNOWLEDGE_SUMMARY_MAX_BYTES, KNOWLEDGE_CONTENT_MAX_BYTES, KNOWLEDGE_REFERENCE_MAX_BYTES and KNOWLEDGE_REASON_MAX_BYTES are the UTF-8 limits the schemas enforce; views compare them with collaborationTextByteLength. dismissKnowledgeOperation(scope, identity) removes one stored identity locally.\" §3 lines 101-102: after \"Prior uncertainty survives later 4xx, storage errors and missing GET results.\" add \"Only an explicit human dismissKnowledgeOperation removes the stored identity; it checks the current scope, sends nothing, keeps in-memory attempt counts and is not evidence of non-application.\" §4 matrix line 121 becomes \"Preserve original intent and recovery identity until explicit human local removal\". Add row \"Human removal of a stored identity | Remove that exact key only; no request; other scopes refused; a later same-key retry stays uncertain\". §6: add \"explicit local removal\" to the knowledge-actions matrix."
+  },
+  {
+   "file": "/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/.trellis/spec/server/collaboration-knowledge.md",
+   "change": "No change. The receipt, GET operation and idempotency contract are unchanged, and line 168 (\"A missing operation is not evidence…\") is what the dismiss copy relies on. No CLI or API change, so the builtin_skills SKILL.md files are unaffected."
+  }
+ ],
+ "migrations": [],
+ "compatibility_and_risks": "No storage-shape, protocol, server or DB change. Existing stored identities stay readable, and installed desktop clients behave the same against any backend. Removing maxLength lets users type past a limit, but they get an inline error instead of silent truncation, and Submit stays blocked. Ownership is computed at click time from the in-memory intent or the current list. If the click lands before the list loads, or the candidate is on a later page, the panel fails closed (no auto-open) but keeps the success text byte-identical, so e2e/collaboration-knowledge.spec.ts:170 still passes. Re-run it if the harness is available. Dismiss residual risk: another mounted panel (a desktop tab) may still hold the same in-memory intent. Its Retry still works, because executeKnowledgeIntent re-saves the identity before dispatch and the shared QueryClient attempt counter keeps a later 4xx uncertain. If that window reloads without retrying, a late original POST still commits idempotently on the server and appears in normal lists, a proposal needs human approval, and a decision is fenced by expected_state_revision. Nothing is relabeled or hidden. The NUL test uses the Conclusion textarea to avoid input value sanitization and must build the NUL with String.fromCharCode(0). Locale parity needs the six keys in both en and zh-Hans; there are no plurals. Verification to run: `pnpm --filter @multica/core exec vitest run collaboration/knowledge-actions collaboration/knowledge-schema`, `pnpm --filter @multica/views exec vitest run collaboration/knowledge-panel locales/parity`, `pnpm typecheck`. No Go code changes, so I did not run go build.",
+ "open_questions": [
+  "Is it acceptable that Remove local entry appears after any unsettled check, including a persistent 403 after credential revocation, rather than only after a definitive no-result response? A 404 proves nothing either way (server spec line 168), and gating on it alone would leave 403 identities stuck.",
+  "Should the sources+evidence > 32 and 16 KiB metadata-budget refusals get their own message, for example by blocking an evidence note when 32 sources are selected? This design leaves them as the generic input message, which is now correctly attributed.",
+  "Is overflow-only inline error (the comment-list pattern) preferred over an always-visible used/max byte counter like memory-panel's?"
+ ]
+}
