@@ -6,7 +6,6 @@
   "research": "../real-model-runtime-framework-research.md (7a90f3d78)",
   "status": "registered_not_runnable",
   "not_runnable_reasons": [
-    "product_fix_pending: CLI read for handoff pages/sources and host-run recall guidance are being added; the source binding is void until source_manifest.py is re-run on the fixed tree",
     "framework_missing: real router + DB + Runner/HostExecutor harness with fake-executable proof and independent review is not built yet",
     "exclusive_window_required: no other session may issue model calls on the shared gateway during RK1 launches"
   ],
@@ -14,15 +13,83 @@
   "runtime_consumed": 0,
   "cap_scope": "Real Provider launches for the runtime scenarios below only. Not transferable to or from the original E0-E6 series. Knowledge scenarios K1-K3 and ordinary-task E0b are not covered by this cap.",
   "runtime_scenarios": [
-    {"id": "RK1-E0a", "trials": 1, "launches": 1, "scope_correction": "With knowledge off, assert that --no-session-persistence is absent rather than present; the knowledge-granted argv clause belongs to a knowledge scenario."},
-    {"id": "RK1-H1", "trials": 3, "launches": 3, "scope_correction": "Narrowed per PRD AC3: the measured run must state that the identified prior run stopped with an incomplete record and no result (results[].recording_incomplete=true, result_state=absent), without inventing its content. Retained checkpoint prefixes stay a human run-records surface and are not scored here."},
-    {"id": "RK1-H2", "trials": 3, "launches": 3},
-    {"id": "RK1-H3a", "trials": 3, "launches": 3},
-    {"id": "RK1-H3b", "trials": 3, "launches": 3},
-    {"id": "RK1-H5", "trials": 3, "launches": 3, "accounts": "The two self-controlled accounts are the test-created owner and contributor users in the harness database; one Provider account is used. Confirmed by the user in session multica-0-4-37-87 at 2026-11-01T05:21:17Z."},
-    {"id": "RK1-H6", "trials": 3, "launches": 6, "note": "Counted as pairs; hop2 runs in a different agent target, working directory and ledger with no --resume."}
+    {
+      "id": "RK1-E0a",
+      "trials": 1,
+      "launches": 1,
+      "scope_correction": "With knowledge off, assert that --no-session-persistence is absent rather than present; the knowledge-granted argv clause belongs to a knowledge scenario."
+    },
+    {
+      "id": "RK1-H1",
+      "trials": 3,
+      "launches": 3,
+      "scope_correction": "Narrowed per PRD AC3: the measured run must state that the identified prior run stopped with an incomplete record and no result (results[].recording_incomplete=true, result_state=absent), without inventing its content. Retained checkpoint prefixes stay a human run-records surface and are not scored here."
+    },
+    {
+      "id": "RK1-H2",
+      "trials": 3,
+      "launches": 3
+    },
+    {
+      "id": "RK1-H3a",
+      "trials": 3,
+      "launches": 3
+    },
+    {
+      "id": "RK1-H3b",
+      "trials": 3,
+      "launches": 3
+    },
+    {
+      "id": "RK1-H5",
+      "trials": 3,
+      "launches": 3,
+      "accounts": "The two self-controlled accounts are the test-created owner and contributor users in the harness database; one Provider account is used. Confirmed by the user in session multica-0-4-37-87 at 2026-11-01T05:21:17Z."
+    },
+    {
+      "id": "RK1-H6",
+      "trials": 3,
+      "launches": 6,
+      "note": "Counted as pairs; hop2 runs in a different agent target, working directory and ledger with no --resume."
+    }
   ],
-  "order": ["RK1-E0a", "RK1-H1", "RK1-H2", "RK1-H3a", "RK1-H3b", "RK1-H5", "RK1-H6"],
+  "order": [
+    "RK1-E0a",
+    "RK1-H1",
+    "RK1-H2",
+    "RK1-H3a",
+    "RK1-H3b",
+    "RK1-H5",
+    "RK1-H6"
+  ],
   "stop_rule": "Unchanged from registration.json.",
-  "environment_controls": "Remove test-process variables such as DATABASE_URL from the real child. The operator HOME/~/.claude settings stay as in production host mode (same exposure as the original series); record hashes of the files that apply."
+  "environment_controls": "Remove test-process variables such as DATABASE_URL from the real child. The operator HOME/~/.claude settings stay as in production host mode (same exposure as the original series); record hashes of the files that apply.",
+  "product_fix": {
+    "commits": {
+      "ac2a24f8f": "test-only smoke authorizer admits knowledge_version=1",
+      "c54a28ba6": "collaboration handoff show/source CLI and negotiated-handoff recall brief",
+      "547760ea8": "verification evidence and independent review"
+    },
+    "evidence": "../verification/2026-11-01-recall-surface/summary.json",
+    "review": "../verification/2026-11-01-recall-surface/independent-review.md (pass-with-notes; medium cursor-loop wording defect fixed before commit)",
+    "measured_by": "RK1-H2 (truncated results/causes paging) and RK1-H3b (older comment paging); guidance is in the injected brief, not the bound prompt"
+  },
+  "source_binding": {
+    "manifest": "source-manifest-547760ea8.json",
+    "head": "547760ea83bacd1f5e18316303f93e45aa0ebc96",
+    "server_tree": "a01e9cb5ac47335f846b70cd5b08e45dd4f09b1b",
+    "source_id": "387eb4558cb7dcf2aa6db314ac0ee798e91c1e49980a806b1c10adcbe0e98ab1",
+    "file_count": 7924,
+    "dirty_product_paths": [],
+    "supersedes": "source-manifest.json (d53f1026f, source_id 15d3275b...) for the runtime scenarios; that file is kept unchanged",
+    "difference_from_previous": "exactly the 15 product files of ac2a24f8f and c54a28ba6; no other product file changed",
+    "rebind_rule": "Unchanged: re-run source_manifest.py before every launch; the framework commit will change this binding again"
+  },
+  "corrections_to_registration": [
+    {
+      "field": "coverage_of_existing_entries.TestHostProviderAccountSmoke.proves",
+      "correction": "From 96cedf485 until ac2a24f8f the smoke authorizer rejected knowledge_version=1 on the claim with HTTP 403, so the smoke could not pass at those HEADs and proved nothing there; the registered claim that the query is accepted holds only from ac2a24f8f. Confirmed independently by session multica-0-4-37-0b."
+    }
+  ],
+  "updated_at": "2026-11-01T07:03:00Z"
 }
