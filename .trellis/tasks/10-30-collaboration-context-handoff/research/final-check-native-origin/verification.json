@@ -1,0 +1,44 @@
+{
+  "source_base": "c3db64b24fea7116622d106ce2231853e1be72f9",
+  "recorded_at": "2026-11-01T17:54:28.995848+00:00",
+  "changed_files_sha256": {
+    "scripts/check.sh": "c6d544402060c0e76fafc73e98fece92e063a971bc3cc4e85b36f8d5b8058ae6",
+    "scripts/check.test.sh": "95eab92acc34081bc40b3696240fb620a256569736f4bd09ec5f2d9cbe2f5377",
+    ".trellis/spec/web/frontend/e2e-run-environment.md": "9d6ecdf449ca6a965abb58891e076e3c584043ac843fc730d55327b49cdc16f9"
+  },
+  "checks": [
+    {
+      "command": "bash scripts/check.test.sh",
+      "exit_code": 0,
+      "log": "green-final.txt",
+      "sha256": "d65dfa4f30d263150e5c6993bf6be21a728c7ba9e72a775c05bf87cd6dd18873",
+      "named_native_cases": 11,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "command": "bash scripts/dev-env.test.sh",
+      "exit_code": 0,
+      "log": "dev-env.txt",
+      "sha256": "4d88b22f5dab8d66d6470d98508fbc9254c4d7792bcf9d9e9875b410ff8c0c5c"
+    },
+    {
+      "command": "bash scripts/test-go.test.sh",
+      "exit_code": 0,
+      "log": "test-go.txt",
+      "sha256": "a01cbecf6343b7c02ca46a5116b40b28bcb6c0d6d53858ae111829b15066a43d"
+    }
+  ],
+  "production_cors_changed": false,
+  "DB_operations": false,
+  "GUI_operations": false,
+  "Provider_calls": 0,
+  "dependencies_changed": false,
+  "scope": "isolated make-check environment construction only",
+  "not_tested": [
+    "actual native browser/WebSocket acceptance",
+    "root complete make-check pipeline",
+    "PowerShell/Windows native execution"
+  ],
+  "static_analysis": "bash -n and git diff --check exit0; shellcheck unavailable and not installed"
+}

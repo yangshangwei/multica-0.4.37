@@ -1,0 +1,14 @@
+{
+  "source_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+  "method": "Final canonical check.test.sh copied unchanged beside baseline check/dev-env/local-env scripts and an empty server directory required by the fake orchestration harness",
+  "command": "bash <scratch>/scripts/check.test.sh",
+  "exit_code": 1,
+  "reason": "Real baseline preparation omits the explicitly configured native HTTP origin",
+  "test_sha256": "95eab92acc34081bc40b3696240fb620a256569736f4bd09ec5f2d9cbe2f5377",
+  "baseline_check_sha256": "932d664240c40a2fa110fe314e836c2666610e8ae23ca3d0880a76ebcd4e5447",
+  "log_sha256": "8cb54c27d475dc04c2032cf1d06c5b493471d316037d3fe507658aa12181fcab",
+  "at": "2026-11-01T17:53:20.750571+00:00",
+  "DB_operations": false,
+  "services_started": false,
+  "prior_replay_setup_fault": "Missing empty server directory; preserved separately and excluded from product-red evidence"
+}

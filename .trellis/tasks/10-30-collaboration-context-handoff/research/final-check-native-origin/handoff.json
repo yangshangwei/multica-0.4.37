@@ -1,0 +1,20 @@
+{
+  "product_commit": "b8035617de06cf164354ff75f122f1e28c990a8b",
+  "branch": "codex/check-fixture-origins-20261102",
+  "worktree": "/Volumes/artisan/code/2026/mc-check-fixture-origins-20261102",
+  "changes": [
+    "scripts/check.sh",
+    "scripts/check.test.sh",
+    ".trellis/spec/web/frontend/e2e-run-environment.md"
+  ],
+  "verification": "verification.json",
+  "baseline_reproduction": "red-final-tests-baseline-r2.json",
+  "remaining": [
+    "independent review/local integration",
+    "actual source-bound native WS/browser and full make-check acceptance"
+  ],
+  "source_env_requirement": "Set COLLABORATION_ELECTRON_RENDERER_URL and optional CHANGELOG_ELECTRON_RENDERER_URL before invoking make check; existing allocated Web origin remains included",
+  "services_started": false,
+  "DB_operations": false,
+  "Provider_calls": 0
+}

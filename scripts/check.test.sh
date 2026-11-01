@@ -4,6 +4,8 @@ set -euo pipefail
 root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 test_dir="$(mktemp -d)"
 trap 'rm -rf "$test_dir"' EXIT
+# Each case supplies its own optional native fixture configuration.
+unset COLLABORATION_ELECTRON_RENDERER_URL CHANGELOG_ELECTRON_RENDERER_URL
 cat > "$test_dir/source.env" <<'ENV'
 DATABASE_URL=postgres://test:test@localhost:5432/original
 CORS_ALLOWED_ORIGINS=http://localhost:13000
@@ -109,6 +111,58 @@ grep -Fxq 'MULTICA_PLATFORM_ADMIN_ENABLED=true' "$fixture_dir/source.env"
 ! grep -q 'MULTICA_DEVICE_AUTH_ENABLED' "$fixture_dir/source.env" || { echo "Unexpected match in rejection assertion" >&2; exit 1; }
 grep -Fq 'WEB_MODE=production' "$STATE_DIR/manifest.env"
 FIXTURE
+
+native_origin_case() {
+  local name=$1 collaboration=$2 changelog=$3 expected=$4 expected_status=${5:-0} status=0
+  local fixture_dir="$test_dir/native-$name"
+  mkdir -p "$fixture_dir"
+  bash -s -- "$root_dir" "$fixture_dir" "$collaboration" "$changelog" "$expected" > "$fixture_dir/output" 2>&1 <<'FIXTURE' || status=$?
+set -euo pipefail
+source "$1/scripts/check.sh"
+fixture_dir=$2
+export COLLABORATION_ELECTRON_RENDERER_URL=$3 CHANGELOG_ELECTRON_RENDERER_URL=$4
+expected=$5
+REPO_ROOT="$fixture_dir"
+DEV_HOME="$fixture_dir/registry"
+ENVS_DIR="$DEV_HOME/envs"
+LOCK_DIR="$DEV_HOME/lock.d"
+load_env_file() { set -a; source "$1"; set +a; }
+allocate_offset() { printf 907; }
+source_env="$fixture_dir/source.env"
+cat > "$source_env" <<'ENV'
+DATABASE_URL=postgres://test:test@localhost:5432/original
+CORS_ALLOWED_ORIGINS=https://production.invalid
+ALLOWED_ORIGINS=https://production.invalid
+ENV
+write_manifest_value COLLABORATION_ELECTRON_RENDERER_URL "$COLLABORATION_ELECTRON_RENDERER_URL" >> "$source_env"
+write_manifest_value CHANGELOG_ELECTRON_RENDERER_URL "$CHANGELOG_ELECTRON_RENDERER_URL" >> "$source_env"
+cp "$source_env" "$fixture_dir/source-before.env"
+load_env_file "$source_env"
+prepare_check_environment "$source_env"
+[ "$CORS_ALLOWED_ORIGINS" = "$expected" ] || { echo 'Native HTTP fixture origin was not preserved'; exit 1; }
+[ "$ALLOWED_ORIGINS" = "$expected" ] || { echo 'Native WebSocket fixture origin was not preserved'; exit 1; }
+cmp "$source_env" "$fixture_dir/source-before.env"
+! grep -Fq 'production.invalid' <(printf '%s\n' "$CORS_ALLOWED_ORIGINS" "$ALLOWED_ORIGINS")
+FIXTURE
+  [ "$status" -eq "$expected_status" ] || { cat "$fixture_dir/output"; echo "native-$name: exit $status, expected $expected_status"; exit 1; }
+  if [ "$expected_status" -ne 0 ]; then
+    grep -Fq 'Native fixture renderer URL' "$fixture_dir/output"
+    ! grep -Fq 'private-fixture-secret' "$fixture_dir/output" || { echo 'Rejected renderer credentials were printed'; exit 1; }
+  fi
+  echo "native-$name: PASS"
+}
+
+native_origin_case collaboration 'http://127.0.0.1:19841/' '' 'http://localhost:13907,http://127.0.0.1:19841'
+native_origin_case changelog '' 'https://localhost:19842/renderer/index.html' 'http://localhost:13907,https://localhost:19842'
+native_origin_case distinct 'http://127.0.0.1:19841/' 'http://localhost:19842/' 'http://localhost:13907,http://127.0.0.1:19841,http://localhost:19842'
+native_origin_case duplicate 'http://localhost:13907/renderer/' 'http://localhost:13907/' 'http://localhost:13907'
+native_origin_case shared-renderer 'http://127.0.0.1:19841/renderer/' 'http://127.0.0.1:19841/index.html' 'http://localhost:13907,http://127.0.0.1:19841'
+native_origin_case ipv6 'http://[::1]:19843/' '' 'http://localhost:13907,http://[::1]:19843'
+native_origin_case remote 'https://renderer.example.invalid/' '' '' 1
+native_origin_case credential 'http://private-fixture-secret@localhost:19841/' '' '' 1
+native_origin_case malformed 'not-a-url' '' '' 1
+native_origin_case protocol 'file:///private-fixture-secret' '' '' 1
+native_origin_case zero-port 'http://localhost:0/' '' '' 1
 
 
 # A real Make parent must not reparse the Bash-escaped task env on API launch.

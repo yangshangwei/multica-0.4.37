@@ -12,6 +12,28 @@ CHECK_STARTED_WEB=false
 CHECK_GO_DB_CREATED=false
 CHECK_COMPLETE=false
 
+check_allowed_origins() {
+  node - "$1" <<'JS'
+const origins = new Set([process.argv[2]]);
+for (const key of ["COLLABORATION_ELECTRON_RENDERER_URL", "CHANGELOG_ELECTRON_RENDERER_URL"]) {
+  const raw = process.env[key];
+  if (!raw) continue;
+  try {
+    const url = new URL(raw);
+    if (!["http:", "https:"].includes(url.protocol) ||
+        !["localhost", "127.0.0.1", "[::1]"].includes(url.hostname) ||
+        url.username || url.password || url.port === "0") throw new Error();
+    origins.add(url.origin);
+  } catch {
+    // Renderer URLs can contain credentials; never echo rejected input.
+    console.error("Native fixture renderer URL requires credential-free loopback HTTP(S)");
+    process.exit(2);
+  }
+}
+process.stdout.write([...origins].join(","));
+JS
+}
+
 check_cleanup() {
   local result=$? cleanup_failed=0
   trap - EXIT INT TERM
@@ -34,7 +56,7 @@ check_cleanup() {
 }
 
 prepare_check_environment() {
-  local source_env=$1 offset task_id
+  local source_env=$1 offset task_id origins
   task_id="$(date -u '+%Y%m%d%H%M%S')-$$"
   acquire_lock
   trap release_lock EXIT
@@ -48,6 +70,7 @@ prepare_check_environment() {
   OFFSET="$offset"
   BACKEND_PORT=$((18080 + offset))
   FRONTEND_PORT=$((13000 + offset))
+  origins="$(check_allowed_origins "http://localhost:$FRONTEND_PORT")" || die "Native fixture renderer URL is invalid."
   DB_NAME="multica_check_${task_id//-/_}_api"
   CHECK_GO_DB_NAME="multica_check_${task_id//-/_}_go"
   PROFILE="dev-$NAME"
@@ -67,8 +90,8 @@ prepare_check_environment() {
     write_manifest_value GO_TEST_DB_NAME "$CHECK_GO_DB_NAME"
     write_manifest_value DATABASE_URL "$DATABASE_URL"
     write_manifest_value FRONTEND_ORIGIN "http://localhost:$FRONTEND_PORT"
-    write_manifest_value CORS_ALLOWED_ORIGINS "http://localhost:$FRONTEND_PORT"
-    write_manifest_value ALLOWED_ORIGINS "http://localhost:$FRONTEND_PORT"
+    write_manifest_value CORS_ALLOWED_ORIGINS "$origins"
+    write_manifest_value ALLOWED_ORIGINS "$origins"
     write_manifest_value PLAYWRIGHT_BASE_URL "http://localhost:$FRONTEND_PORT"
     write_manifest_value MULTICA_PUBLIC_URL "http://localhost:$BACKEND_PORT"
     write_manifest_value MULTICA_APP_URL "http://localhost:$FRONTEND_PORT"

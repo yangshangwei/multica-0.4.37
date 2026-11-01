@@ -40,6 +40,37 @@ Password administration requires its own production-Web run and synthetic actors
 Give independent specs distinct administrator accounts so login/reauth limits
 remain active without one shared fixture exhausting the account budget.
 
+### Optional native renderer origins in `make check`
+
+1. **Scope:** an explicitly selected, separately built Electron renderer used
+   alongside the allocated production Web/API verification environment.
+2. **Signatures:** `prepare_check_environment(source_env)` derives the task-only
+   `CORS_ALLOWED_ORIGINS` and `ALLOWED_ORIGINS` from its allocated Web origin plus
+   the origins of optional `COLLABORATION_ELECTRON_RENDERER_URL` and
+   `CHANGELOG_ELECTRON_RENDERER_URL` values loaded before preparation.
+3. **Contract:** renderer URLs must use HTTP(S) on `localhost`, `127.0.0.1` or
+   `[::1]`, with no userinfo credentials and no port zero. Their paths do not
+   enter the allowlist. Deduplicate origins, keep the source env byte-identical,
+   and never carry arbitrary production CORS values or wildcard origins into
+   the test copy. The default without either renderer remains Web-only. These
+   values must exist before API configuration identity/provenance is computed;
+   adding a renderer only to a later Playwright child cannot configure the API.
+4. **Errors:** invalid, non-loopback, credentialed or unsupported-scheme input
+   stops preparation before services start, without echoing the rejected URL.
+   Server-side WebSocket checks still require exact allowed-origin membership;
+   Electron's disabled browser `webSecurity` is not a server-side exemption.
+5. **Cases:** an explicit second loopback renderer adds one origin; duplicate
+   renderer/Web origins add none; an unconfigured run retains its original
+   Web-only behavior. A remote renderer is refused even if source CORS allowed it.
+6. **Verification:** `scripts/check.test.sh` exercises the real preparation
+   function with fake allocation/services, both independent renderer variables,
+   shared origins, IPv6, source preservation and nonsecret rejection. These are
+   configuration contracts, not a native browser or WebSocket execution pass.
+7. **Wrong / correct:** do not widen production server CORS or secretly mutate
+   only a child server's environment after its identity was recorded. Set the
+   explicit task-owned renderer URLs before invoking `make check`; both task
+   allowlists then match the actual environment used to start its API.
+
 ### Password acceptance startup configuration
 
 1. **Scope:** switching a task-owned API from legacy to password authentication,
