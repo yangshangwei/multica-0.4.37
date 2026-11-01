@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T04:29:27.592711+00:00",
+  "updated_at": "2026-11-01T04:43:51.848195+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -49,10 +49,11 @@
       "status": "partial_original_series_stopped_on_incomplete",
       "evidence": [
         "../10-30-collaboration-fix-closure/verification-e2a-trial2-2026-11-01.md",
-        "../10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/prerun.json"
+        "../10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/prerun.json",
+        "../10-30-collaboration-fix-closure/verification-e2a-resume3-2026-11-01.md"
       ],
       "gaps": [
-        "E1 1 有效/2 无效；E2a 1 有效/2 无效；E2b 3/3 有效；E3 baseline 3/3 有效；E3 after trial1 CLI 300.9 秒超时 incomplete（2026-11-01 会话-54 执行，框架判定，语义判定归该会话）；下一 E3 after trial2，剩余14次；E4–E6 未运行"
+        "E1 1 有效/2 无效；E2a 1 有效/2 无效；E2b 3/3 有效；E3 baseline 3/3 有效；E3 after trial1 CLI 300.9 秒超时、无效；窗口在 E3 after 期间与另一会话请求重叠，是否导致超时无法确定；语义判定为会话-54自评，待独立复核；下一 E3 after trial2，剩余14次；E4–E6 未运行"
       ]
     },
     {

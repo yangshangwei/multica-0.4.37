@@ -20,7 +20,7 @@
 
 1. **RK1 runtime 场景已获 19 次上限，仍不可运行。** [RK1 登记](research/real-model-rk1/README.md)（`d2fe54ab0`）固定场景顺序与停止规则；[runtime 补充](research/real-model-rk1/runtime-addendum.json)（`28c67c674`，会话 -87 记录其会话中的用户决定）为 E0a/H1/H2/H3a/H3b/H5/H6 分配 19 次，将 H1 收窄为可见的前序不完整记录事实（原登记的 checkpoint 正文不是运行时来源），并改正 E0a 在知识关闭时的 argv 断言。K1–K3 与 E0b 不在该上限内，仍无预算。不可运行原因：会话 -87 正在独立 worktree 补 CLI handoff 来源/分页读取和 host run 召回指引，落地前源码绑定作废，需重跑 `source_manifest.py`；真实 Provider 框架未建；运行须独占网关。
 2. **产品补丁合入后先建框架再运行。** 框架须先用 fake executable 证明实际调用 handoff/recording/recall 接口，独立复核后登记 SHA-256，然后在独占串行窗口按补充文件的顺序运行，首个不完整结果停止后续运行，保留原结果。
-3. **原实验系列已续跑一轮，再次停在不完整结果。** 2026-11-01 12:02 起由会话 multica-0-4-37-54 在独占窗口执行（登记 [prerun.json](../10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/prerun.json)，记录在同目录各场景子目录，由该会话提交）。E2a trial 3、E2b 1–3、E3 baseline 1–3 共 7 次框架判定通过，均读取了场景上下文；E3 after trial 1 读取 6 次上下文后在 300.9 秒 CLI 超时，记录为 incomplete，按停止规则后续全部停止。本轮消耗 8 次，**下一入口 E3 after trial 2，剩余上限 14 次**，其后 E4 → E5 → E6。新系列不挪用原槽位，也不把新版本结果填入旧样本。
+3. **原实验系列已续跑一轮，再次停在不完整结果。** 2026-11-01 12:02 起由会话 multica-0-4-37-54 执行，结果见 [第 3 次续作报告](../10-30-collaboration-fix-closure/verification-e2a-resume3-2026-11-01.md)（`c73ef4eb7`）。E2a trial 3、E2b 1–3、E3 baseline 1–3 共 7 个有效样本，均符合预登记判据；E3 after trial 1 读取 6 次上下文后在 300.9 秒 CLI 超时，记录为无效尝试，按停止规则后续全部停止。窗口在 E3 after 期间与另一会话有请求重叠，是否导致超时无法确定。语义判定是会话 -54 的自评，仍待独立复核；E3 baseline trial 1 有同 request id 的第二次 POST，也待复核。E3 after 尚无有效样本，因此 E3 没有对照结论。本轮消耗 8 次，**下一入口 E3 after trial 2，剩余上限 14 次**，其后 E4 → E5 → E6。新系列不挪用原槽位，也不把新版本结果填入旧样本。
 4. **汇总模型结论后关闭本任务必要验收门。** 父任务继续追踪 Windows 原生、安装/升级组合、多账号与实际额度来源等关联门禁；知识交付的确定性结果已有独立证据，生产开关仍关闭。
 
 ## 保留的验收缺口
