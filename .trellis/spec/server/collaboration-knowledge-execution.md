@@ -105,8 +105,8 @@ unshell-quoting as launch, it is a `--resume*`, `--continue*`, `--session*`,
 `--attach*`, `--bg*`, `--background*`, `--desktop*`, `--environment*` or
 `--tmux*` long option; a single-dash cluster containing `c` or `r`; exactly a
 Claude subcommand name such as `attach`, `logs`, `respawn`, `stop`, `kill`, `rm`,
-`agents`, `purge` or `remote-control`; or a bare `--`, which would turn the
-daemon-appended `--settings <managed path>` into operands. The lists follow
+`agents`, `purge` or `remote-control`; or a bare `--`, which stops option parsing
+for later configured arguments. The lists follow
 `claude --help` for Claude Code 2.1.316 and live in
 [`knowledge_launch.go`](../../../server/pkg/agent/knowledge_launch.go). Agent
 `custom_args` JSON that does not decode to a string array refuses the same way;
@@ -122,6 +122,14 @@ metadata refuses. Namespace size alone never refuses, and the first actual
 exposure refuses without reading further. This remains O(negotiated rows) per
 claim; no exposure summary or cross-workspace owner rule changes.
 Proven legacy sessions preserve their existing behavior.
+
+When the daemon owns a Claude settings file, `buildClaudeArgs` emits its
+`--settings <managed path>` pair before filtered default/custom options and
+still removes competing configured settings. A dangling required-value option
+must not consume the managed flag or make parsing stop before the policy.
+Malformed options may fail as ordinary CLI configuration; they do not silently
+disable the managed policy. This ordering adds no option allowlist and does not
+broaden knowledge launch admission.
 
 Use one `NewOrdinaryLaunchLifecycle(observer)` per logical input. It preserves
 the already assembled ordinary environment; any callback `Environment` replacement

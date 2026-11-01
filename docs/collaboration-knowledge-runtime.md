@@ -60,6 +60,12 @@ matrix. Windows, installers and multi-account/quota acceptance remain separate.
 
 ## Expected behavior and diagnosis
 
+The daemon places its managed Claude settings before configured default/custom
+options and removes competing settings options. An incomplete configured option
+may still fail CLI parsing, but cannot consume the managed settings flag and
+silently restore inherited skills. Fix the configuration rather than bypassing
+the managed policy.
+
 | Observation | Meaning and next check |
 | --- | --- |
 | Approved item absent from an input | Check the switch, negotiated built-in runtime, applicability/target, current source availability, actual originator/runtime owner and output audience. Approval is not a source visibility grant. |

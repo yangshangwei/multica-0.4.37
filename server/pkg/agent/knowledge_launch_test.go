@@ -445,8 +445,7 @@ func TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv(t *testing.T) {
 		{"'attach'"},
 		// An option value spelled like a subcommand refuses too (write --debug=mcp).
 		{"--debug", "mcp"},
-		// A bare "--" turns the --settings <managed path> that buildClaudeArgs
-		// appends after these args into positional operands.
+		// A bare "--" stops option parsing for later configured arguments.
 		{"--"}, {"'--'"}, {`"--"`}, {"--allowedTools", "Bash", "--"},
 	}
 	for _, args := range selectors {

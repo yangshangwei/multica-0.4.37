@@ -130,8 +130,7 @@ var claudeSubcommands = map[string]bool{
 //   - a single-dash short cluster that contains 'c' or 'r' (-c, -r, -rID, -cr,
 //     -pc);
 //   - exactly a claudeSubcommands name;
-//   - a bare "--", which would turn the --settings <managed path> that
-//     buildClaudeArgs appends after these args into positional operands.
+//   - a bare "--", which stops option parsing for later configured arguments.
 //
 // Every token is scanned, including option values: there is no arity parsing,
 // so some harmless values also count (write --debug=mcp, not --debug mcp).

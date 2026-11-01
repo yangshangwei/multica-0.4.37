@@ -95,7 +95,7 @@ func TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates(t *testing.T) {
 func TestKnowledgeSessionSelectorsRefusedWhateverTheGate(t *testing.T) {
 	forms := [][]string{{"--continue"}, {"-c"}, {"-pc"}, {"--resume", "abc"}, {"--resume=abc"}, {"-rabc"}, {"--session-id=abc"}, {"--fork-session"}, {"--allowedTools", "Bash", "--continue"}, {"'--continue'"},
 		// Remote, cloud and attached sessions, a subcommand operand, and a bare
-		// "--" that would turn the appended managed --settings into operands.
+		// "--" that would stop option parsing for later configured arguments.
 		{"--teleport"}, {"--teleport", "abc"}, {"--cloud", "session_abc"}, {"--remote-control"}, {"--attach", "abc"}, {"--bg"}, {"attach", "abc"}, {"--"}, {"--allowedTools", "Bash", "--"}}
 	for _, gate := range []bool{true, false} {
 		for _, source := range []string{"defaults", "custom"} {
