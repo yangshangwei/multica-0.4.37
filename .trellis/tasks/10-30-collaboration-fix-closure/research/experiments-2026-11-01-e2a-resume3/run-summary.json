@@ -1,0 +1,191 @@
+{
+  "completed_at": "2026-11-01T04:37:52.858724+00:00",
+  "status": "environment_blocked",
+  "scope": "Original frozen series only; does not validate runtime 0e1ee8e1e or knowledge 96cedf485.",
+  "source_commits": {
+    "baseline": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+    "after": "835e7b046c6841e0945a59326bc4ddcbae4a0df7"
+  },
+  "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+  "provider_version": "2.1.316",
+  "requested_model": "claude-opus-5-5",
+  "observed_model": null,
+  "provider_launches_this_continuation": 8,
+  "valid_samples_this_continuation": 7,
+  "invalid_attempts_this_continuation": 1,
+  "initial_provider_call_cap": 22,
+  "remaining_provider_call_cap": 14,
+  "stop_reason": "E3_member_scope after trial 1 incomplete: claude timed out after 5m0s with no API error text; first-incomplete stop rule applied.",
+  "window_deviation": "Launch check before E3 after printed that peer multica-0-4-37-87's transcript was written 29 s earlier; the launcher did not gate on it. 87 issued model requests from about 12:17 to 12:21 during this trial after its user answered a question. Overlap is recorded; causation is not established.",
+  "next_scenario": "E3_member_scope",
+  "next_arm": "after",
+  "next_start_trial": 2,
+  "next_scenario_call_cap": 2,
+  "series_totals": {
+    "E1": {
+      "consumed_slots": [
+        1,
+        2,
+        3
+      ],
+      "valid_samples": 1,
+      "invalid_attempts": 2
+    },
+    "E2a": {
+      "consumed_slots": [
+        1,
+        2,
+        3
+      ],
+      "valid_samples": 1,
+      "invalid_attempts": 2,
+      "criterion_passed": 1
+    },
+    "E2b": {
+      "consumed_slots": [
+        1,
+        2,
+        3
+      ],
+      "valid_samples": 3,
+      "invalid_attempts": 0,
+      "criterion_passed": 3
+    },
+    "E3_baseline": {
+      "consumed_slots": [
+        1,
+        2,
+        3
+      ],
+      "valid_samples": 3,
+      "invalid_attempts": 0,
+      "criterion_passed": 3
+    },
+    "E3_after": {
+      "consumed_slots": [
+        1
+      ],
+      "valid_samples": 0,
+      "invalid_attempts": 1,
+      "unrun_trials": [
+        2,
+        3
+      ]
+    }
+  },
+  "scenarios": [
+    {
+      "scenario": "E2a_window_fact_newest",
+      "arm": "baseline",
+      "start_trial": 3,
+      "call_cap": 1,
+      "status": "complete",
+      "exit_code": 0,
+      "started_at": "2026-11-01T04:03:07.601904+00:00",
+      "finished_at": "2026-11-01T04:04:34.030585+00:00",
+      "consumed_slots": [
+        3
+      ],
+      "valid_samples": 1,
+      "invalid_attempts": 0,
+      "criterion_passed": 1,
+      "unrun_trials": [],
+      "unrun_provider_calls": 0
+    },
+    {
+      "scenario": "E2b_window_fact_oldest",
+      "arm": "baseline",
+      "start_trial": 1,
+      "call_cap": 3,
+      "status": "complete",
+      "exit_code": 0,
+      "started_at": "2026-11-01T04:06:08.994425+00:00",
+      "finished_at": "2026-11-01T04:09:35.941354+00:00",
+      "consumed_slots": [
+        1,
+        2,
+        3
+      ],
+      "valid_samples": 3,
+      "invalid_attempts": 0,
+      "criterion_passed": 3,
+      "unrun_trials": [],
+      "unrun_provider_calls": 0
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "baseline",
+      "start_trial": 1,
+      "call_cap": 3,
+      "status": "complete",
+      "exit_code": 0,
+      "started_at": "2026-11-01T04:10:38.480903+00:00",
+      "finished_at": "2026-11-01T04:16:33.206231+00:00",
+      "consumed_slots": [
+        1,
+        2,
+        3
+      ],
+      "valid_samples": 3,
+      "invalid_attempts": 0,
+      "criterion_passed": 3,
+      "unrun_trials": [],
+      "unrun_provider_calls": 0
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "after",
+      "start_trial": 1,
+      "call_cap": 3,
+      "status": "environment_blocked",
+      "exit_code": 1,
+      "started_at": "2026-11-01T04:17:29.412301+00:00",
+      "finished_at": "2026-11-01T04:22:35.290982+00:00",
+      "consumed_slots": [
+        1
+      ],
+      "valid_samples": 0,
+      "invalid_attempts": 1,
+      "criterion_passed": 0,
+      "unrun_trials": [
+        2,
+        3
+      ],
+      "unrun_provider_calls": 2
+    },
+    {
+      "scenario": "E4_stale_merge",
+      "arm": "baseline",
+      "start_trial": 1,
+      "call_cap": 3,
+      "status": "unrun",
+      "consumed_slots": [],
+      "valid_samples": 0,
+      "invalid_attempts": 0,
+      "unrun_provider_calls": 3
+    },
+    {
+      "scenario": "E5_injection",
+      "arm": "baseline",
+      "start_trial": 1,
+      "call_cap": 3,
+      "status": "unrun",
+      "consumed_slots": [],
+      "valid_samples": 0,
+      "invalid_attempts": 0,
+      "unrun_provider_calls": 3
+    },
+    {
+      "scenario": "E6_relay",
+      "arm": "baseline",
+      "start_trial": 1,
+      "call_cap": 6,
+      "status": "unrun",
+      "consumed_slots": [],
+      "valid_samples": 0,
+      "invalid_attempts": 0,
+      "unrun_provider_calls": 6
+    }
+  ],
+  "semantic_review": "Self-review by the launching session against the registered criteria; an independent review is still required."
+}

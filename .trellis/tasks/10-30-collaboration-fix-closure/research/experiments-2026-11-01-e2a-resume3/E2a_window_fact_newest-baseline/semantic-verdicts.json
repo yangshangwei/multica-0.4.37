@@ -1,0 +1,22 @@
+{
+  "reviewed_at": "2026-11-01T04:34:10.775483+00:00",
+  "reviewer": "claude session dfc52231 (multica-0-4-37-54), the same session that launched the runs; not an independent review",
+  "trials": [
+    {
+      "scenario": "E2a_window_fact_newest",
+      "arm": "baseline",
+      "trial": 3,
+      "run_id": "420ded43-5b43-4f04-95c8-ebec3ae03d2d",
+      "runtime_status": "finished",
+      "raw_harness_verdict": "pass",
+      "seconds": 80.8,
+      "context_reads": 1,
+      "memory_reads": 0,
+      "memory_puts": 0,
+      "valid_behavior_sample": true,
+      "classification": "valid",
+      "criterion_passed": true,
+      "criterion_evidence": "Answer '2026-11-14'; expected exactly 2026-11-14 (newest/oldest window fact)."
+    }
+  ]
+}

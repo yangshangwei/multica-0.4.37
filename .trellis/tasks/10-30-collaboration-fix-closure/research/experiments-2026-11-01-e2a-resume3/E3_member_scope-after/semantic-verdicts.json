@@ -1,0 +1,22 @@
+{
+  "reviewed_at": "2026-11-01T04:34:10.777991+00:00",
+  "reviewer": "claude session dfc52231 (multica-0-4-37-54), the same session that launched the runs; not an independent review",
+  "trials": [
+    {
+      "scenario": "E3_member_scope",
+      "arm": "after",
+      "trial": 1,
+      "run_id": "3aa8be3c-769e-4c7e-a821-d99e464ebefb",
+      "runtime_status": "incomplete",
+      "raw_harness_verdict": "provider_failure_unclassified",
+      "seconds": 300.9,
+      "context_reads": 6,
+      "memory_reads": 1,
+      "memory_puts": 0,
+      "valid_behavior_sample": false,
+      "classification": "environment_or_provider_timeout_unclassified",
+      "criterion_passed": null,
+      "note": "CLI timed out after 5m0s while the model was about to write collaboration memory; the record has no API error text. BETA was posted under the dispatch comment and retried with the same request id. A peer session (multica-0-4-37-87) resumed model requests at about 12:17–12:21 after the window check; the launcher saw its transcript written 29 s earlier and still launched. That overlap is a fact; whether it caused the timeout is not established."
+    }
+  ]
+}

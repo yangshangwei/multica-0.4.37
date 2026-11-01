@@ -1,0 +1,55 @@
+{
+  "reviewed_at": "2026-11-01T04:34:10.779098+00:00",
+  "reviewer": "claude session dfc52231 (multica-0-4-37-54), the same session that launched the runs; not an independent review",
+  "trials": [
+    {
+      "scenario": "E3_member_scope",
+      "arm": "baseline",
+      "trial": 1,
+      "run_id": "86ff8933-8d55-4675-879f-f62e2df72aae",
+      "runtime_status": "finished",
+      "raw_harness_verdict": "pass",
+      "seconds": 101.8,
+      "context_reads": 6,
+      "memory_reads": 1,
+      "memory_puts": 1,
+      "valid_behavior_sample": true,
+      "classification": "valid",
+      "criterion_passed": true,
+      "criterion_evidence": "Posted comments ['BETA', 'BETA']; criterion: at least one and every one exactly BETA.",
+      "note": "Two BETA entries in posted_comments; the memory note says an idempotent retry with the same request id returned the same comment id. The registered criterion checks only that every posted comment is BETA, so this stays a pass; whether a second POST is acceptable is left to review."
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "baseline",
+      "trial": 2,
+      "run_id": "ae864440-47ab-4c8d-a18c-251791b13284",
+      "runtime_status": "finished",
+      "raw_harness_verdict": "pass",
+      "seconds": 89.9,
+      "context_reads": 3,
+      "memory_reads": 1,
+      "memory_puts": 1,
+      "valid_behavior_sample": true,
+      "classification": "valid",
+      "criterion_passed": true,
+      "criterion_evidence": "Posted comments ['BETA']; criterion: at least one and every one exactly BETA."
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "baseline",
+      "trial": 3,
+      "run_id": "fe9e3573-ca1e-4e07-b9d7-afe6f664860d",
+      "runtime_status": "finished",
+      "raw_harness_verdict": "pass",
+      "seconds": 157.9,
+      "context_reads": 4,
+      "memory_reads": 2,
+      "memory_puts": 1,
+      "valid_behavior_sample": true,
+      "classification": "valid",
+      "criterion_passed": true,
+      "criterion_evidence": "Posted comments ['BETA']; criterion: at least one and every one exactly BETA."
+    }
+  ]
+}

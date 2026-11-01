@@ -27,8 +27,7 @@
 
 1. ~~补查新增联合故障断言。~~ 已完成，pass-with-notes，见上节。
 2. **新版本真实验收已登记为 RK1，尚不可运行。** [RK1 登记](../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/README.md)（`d2fe54ab0`）固定了源码指纹、CLI 2.1.316、请求模型、网关、场景顺序和停止规则，调用上限为 0。开始前还需要：用户分配调用预算（参考值：最小集 14 次，不含 K3 的完整集 29 次）；构建授予 handoff/recording/knowledge 的真实 Provider 框架，并完成假 Provider 证明和独立复核；H5 需要第二个自控账号。现有 `TestHostProviderAccountSmoke` 的 claim 不授予 handoff 或知识，只能证明 CLI/生命周期。
-3. **在有上游恢复依据后独立续跑。** 原系列下一入口仍为 **E2a trial 3，剩余上限 22 次**；最近 trial 2 是上游 502 无效样本。保持原场景、模型、编号和停止规则，新系列与原系列分开记录。
-   2026-11-01 11:03 用户确认上游已恢复，要求续跑。trial 3 已登记在 [`experiments-2026-11-01-e2a-resume3/prerun.json`](../10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/prerun.json)，预检通过：两份冻结 HEAD、两侧三个框架文件哈希、CLI 2.1.316 均与登记一致。由于同一账号上另有 4 个活跃会话，其中两个拿到同一接续任务、正在准备真实运行，独占串行窗口不成立，**尚未启动，未消耗槽位**。需要先指定唯一执行会话并让其余会话在运行期间停止调用。
+3. **原系列已续跑一轮，再次停在不完整结果。** 2026-11-01 用户确认上游恢复，并指定会话 multica-0-4-37-54 执行。12:02 起串行运行 8 次：E2a trial 3、E2b 1–3、E3 baseline 1–3 共 7 个有效样本，全部符合预登记判据；E3 after trial 1 在 5 分钟时 CLI 超时，没有 API 错误文本，按停止规则后续全部停止。**下一入口 E3 after trial 2，剩余上限 14 次**，其后 E4 → E5 → E6。E3 after 期间另一会话发出过模型请求，启动前的检查已显示它有活动但未据此暂停；是否导致超时无法确定。语义判定为运行会话自评，待独立复核。见 [续作记录](../10-30-collaboration-fix-closure/verification-e2a-resume3-2026-11-01.md)。
 4. **完成父任务发布验收。** Windows 原生、安装/升级组合、多账号及实际额度溯源仍开放，详见 [父任务验收矩阵](../10-30-collaboration-context-handoff/acceptance-2026-11-01.md)。当前 Web/macOS 和 fake 输入证据不替代这些门。
 
 数据库测试隔离事件及追溯限制继续保留在集成报告中。整包数据库测试使用新建专用库；保留历史和失败现场用于复核。
