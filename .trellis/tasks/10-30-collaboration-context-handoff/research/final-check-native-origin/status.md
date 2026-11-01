@@ -23,3 +23,7 @@ Final canonical test bytes copied unchanged beside baseline c3db64b24 check/dev-
 Fixed check.test.sh passes all11 named native cases: independent/shared/deduplicated origins, IPv6 and invalid-input refusal without credential output. Existing dev-env and test-go fake script entrypoints pass. Bash syntax and diff whitespace checks pass; shellcheck is unavailable and was not added. No actual API, database, GUI, installed Agent CLI or Provider ran.
 
 Only check.sh, its canonical fake regression, E2E environment code-spec and this evidence changed. Production HTTP/WS origin checks remain untouched. Source env stays byte-identical; unconfigured behavior remains Web-only; renderer origins are computed before API provenance. The coordinator must place explicit renderer URLs in the trusted task source env before the next make check invocation. Independent review, local integration and final same-candidate browser/WS acceptance remain pending. Exact commands and hashes are in verification.json and red-final-tests-baseline-r2.json.
+
+## Handoff
+
+Product/test/spec/evidence commit `b8035617de06cf164354ff75f122f1e28c990a8b`. Worktree was clean immediately after that commit. Independent coordinator review and local merge are pending; parent candidate/processes/databases were not changed. Before the next check run, put the explicit native renderer variables in the trusted source env; late Playwright-only injection is insufficient.
