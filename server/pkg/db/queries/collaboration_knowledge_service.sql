@@ -141,6 +141,10 @@ SELECT id,user_id,expires_at FROM personal_access_token
 WHERE token_hash=$1 AND user_id=$2 AND NOT revoked AND (expires_at IS NULL OR expires_at>clock_timestamp());
 
 -- Human writers hold the actor row first, then this original credential row.
+-- FOR SHARE conflicts with the FOR NO KEY UPDATE that revocation's UPDATE takes;
+-- FOR KEY SHARE would not. The asynchronous last_used_at UPDATE takes the same
+-- lock, so this waits (no NOWAIT): the caller bounds the wait with a saved and
+-- restored lock_timeout, and a commit seen during the wait is rechecked.
 -- name: LockKnowledgePAT :one
 SELECT id,user_id,expires_at FROM personal_access_token
-WHERE token_hash=$1 AND user_id=$2 AND NOT revoked AND (expires_at IS NULL OR expires_at>clock_timestamp()) FOR SHARE NOWAIT;
+WHERE token_hash=$1 AND user_id=$2 AND NOT revoked AND (expires_at IS NULL OR expires_at>clock_timestamp()) FOR SHARE;

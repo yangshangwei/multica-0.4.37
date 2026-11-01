@@ -107,6 +107,17 @@ do not acquire that lead hotspot. Target initialization saves/restores
 transaction on contention. Counters are independent of parent edits; missing
 counters with published history are corruption, never empty knowledge.
 
+The PAT writer lock (`LockKnowledgePAT`) is `FOR SHARE` without NOWAIT.
+Revocation is a plain `UPDATE ... SET revoked` on a non-key column and takes
+`FOR NO KEY UPDATE`. `FOR SHARE` conflicts with that lock; `FOR KEY SHARE` would
+not, so it cannot be used. The asynchronous `last_used_at` refresh takes the
+same lock as revocation, so no lock mode can wait out one and still block the
+other. The writer instead waits under a saved and restored 250ms
+`lock_timeout`, which is below the default 1s `deadlock_timeout`. If a
+revocation commits during the wait, the recheck fails with `403
+knowledge_permission_denied`. A wait past the bound raises a retryable 55P03 and
+ends in `503 knowledge_busy`.
+
 Ordinary `UpdateProject` metadata edits use `LockProjectForUpdate` (`FOR NO KEY
 UPDATE`), not the execution-squad `FOR UPDATE` lock. This preserves revision
 serialization and conflicts with lead/association `SHARE` readers while allowing
