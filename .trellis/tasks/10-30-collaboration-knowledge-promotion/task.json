@@ -21,7 +21,7 @@
   "children": [],
   "parent": "10-30-collaboration-context-handoff",
   "relatedFiles": [],
-  "notes": "2026-11-01：工程已合入，知识确定性验收通过；Go 82包/10284顶层通过/21既有跳过、前端13060测试、Web/macOS8用例及实际fake输入组合已有证据。后续65cd0599b联合故障补验通过，629f0a079知识面板异步等待修正复跑通过；新增联合断言的独立复核仍待补查。当前进度见progress.md。真实模型、新系列预算、Windows/安装组合/多账号额度仍开放；知识开关默认false，未发布。",
+  "notes": "2026-11-01：工程已合入，知识确定性验收通过；Go 82包/10284顶层通过/21既有跳过、前端13060测试、Web/macOS8用例及实际fake输入组合已有证据。后续65cd0599b联合故障补验通过，629f0a079知识面板异步等待修正复跑通过；新增联合断言独立复核pass-with-notes；新系列已登记为RK1（d2fe54ab0），调用上限0待用户分配，真实Provider框架待建。当前进度见progress.md。真实模型、新系列预算、Windows/安装组合/多账号额度仍开放；知识开关默认false，未发布。",
   "meta": {
     "permission_decision": "approved",
     "approval_session": "01a18a36-e482-7840-9900-3ff8174b4ce7",
@@ -75,16 +75,18 @@
     "progress_file": "progress.md",
     "progress_phase": "engineering_delivered; supplemental_review_and_real_model_release_acceptance_open",
     "progress_baseline": "ba6f3cd50",
-    "next_action": "review_joint_assertion_supplement_then_register_source_bound_real_model_acceptance; original_E2a_trial3_cap22_separate",
+    "next_action": "allocate_RK1_budget_then_build_and_review_real_provider_framework; original_E2a_trial3_cap22_held_by_session_54_until_exclusive_window",
     "post_merge_supplements": {
       "joint_fault_commit": "65cd0599b",
       "joint_report": "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-joint-current/README.md",
-      "joint_peer_review": "not_executed_due_agent_gateway_errors",
+      "joint_peer_review": "pass_with_notes_2026_11_01; ../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-joint-review/README.md",
       "ui_test_timing_commit": "629f0a079",
       "ui_repeat_evidence": "17_tests_per_run; 3_serial_and_4_parallel_runs_passed; no_proof_of_permanent_flake_elimination",
       "runtime_ledger_commit": "ba6f3cd50",
       "production_logic_changed": false,
-      "real_provider_executed": false
-    }
+      "real_provider_executed": false,
+      "rk1_registration_commit": "d2fe54ab0"
+    },
+    "new_series_registration": "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/registration.json; status registered_not_runnable; call_cap 0 pending user allocation; real-Provider framework and second account missing"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-31T19:51:13.849529+00:00",
+  "updated_at": "2026-11-01T03:35:00+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -33,12 +33,13 @@
     {
       "id": "AC2",
       "requirement": "正式 E0",
-      "status": "original_passed_new_runtime_unrun",
+      "status": "original_passed_new_runtime_registered_unrun",
       "evidence": [
-        "../10-30-collaboration-fix-closure/verification-2026-10-31.md"
+        "../10-30-collaboration-fix-closure/verification-2026-10-31.md",
+        "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/registration.json"
       ],
       "gaps": [
-        "原产品 4c833e737 正式 E0 已过；新 runtime 尚未运行，不能继承"
+        "原产品 4c833e737 正式 E0 已过；新 runtime/知识登记为 RK1（d2fe54ab0），调用上限 0，待预算分配和真实 Provider 框架，不能继承旧结论"
       ]
     },
     {
@@ -46,10 +47,11 @@
       "requirement": "原预登记 E1–E6",
       "status": "environment_blocked",
       "evidence": [
-        "../10-30-collaboration-fix-closure/verification-e2a-trial2-2026-11-01.md"
+        "../10-30-collaboration-fix-closure/verification-e2a-trial2-2026-11-01.md",
+        "../10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/prerun.json"
       ],
       "gaps": [
-        "E1 1 有效/2 无效，E2a 0 有效/2 无效；下一 E2a trial3，剩余22次；后续未运行"
+        "E1 1 有效/2 无效，E2a 0 有效/2 无效；下一 E2a trial3，剩余22次，已登记预检（071f763e1），等待独占窗口；后续未运行"
       ]
     },
     {
@@ -123,7 +125,8 @@
       "evidence": [
         "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/remaining-acceptance-addendum/summary.md",
-        "../10-30-collaboration-knowledge-promotion/verification-integration-2026-11-01.md"
+        "../10-30-collaboration-knowledge-promotion/verification-integration-2026-11-01.md",
+        "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-joint-review/README.md"
       ],
       "gaps": [
         "runtime 与知识最终源码、失败修正、独立审查及执行记录已可追溯；原/新真实模型和关联发布矩阵仍开放"
@@ -165,19 +168,22 @@
       "scope": "Windows amd64/arm64",
       "state": "native_unverified",
       "evidence": "../10-24-cross-platform-collaboration-runtime/verification.md",
-      "gap": "只有交叉编译和本地验证快照；原生ACL/Job/fault/lifecycle、安装、Provider账号、CI仍缺"
+      "gap": "只有交叉编译和本地验证快照；原生ACL/Job/fault/lifecycle、安装、Provider账号、CI仍缺；2026-11-01核对：10-27快照92bb6d86非HEAD祖先且落后192提交，collaborationrun新增53个Host用例（checkpoint/recording落盘经Windows ACL私有文件原语）未在原生Windows运行；当前ci.yml已含collaboration-host-native但只在push/PR到main触发，见G1",
+      "runbook": "release-gates-runbook-2026-11-01.md"
     },
     {
       "scope": "多账号/额度 AC43",
       "state": "not_verified",
       "evidence": "../10-10-cross-workspace-collaboration/task.json",
-      "gap": "需至少两个执行环境及不同Provider账号，涵盖多目标/小队/普通转交/实际usage与授权来源"
+      "gap": "需至少两个执行环境及不同Provider账号，涵盖多目标/小队/普通转交/实际usage与授权来源；服务端只记account_source=runtime_configuration，账号指纹与额度须在各执行机和供应商侧取证，场景与证据清单见G5",
+      "runbook": "release-gates-runbook-2026-11-01.md"
     },
     {
       "scope": "发布/升级",
       "state": "not_released",
       "evidence": "../10-24-cross-platform-collaboration-runtime/verification.md",
-      "gap": "未推送/部署/发布；creation迁移744已默认开，AI execution/host准入仍默认关；混合writer滚动升级另需核对"
+      "gap": "未推送/部署/发布；creation迁移744已默认开，AI execution/host准入仍默认关；混合writer滚动升级另需核对；offline-upgrade文档仍为V0.6.6/迁移上限570且未列MULTICA_KNOWLEDGE_CONTEXT_ENABLED，HEAD上限760；v0.6.7→候选离线升级演练未运行；v0.6.7 GitHub Release无Windows安装器（v0.6.6有）。“混合writer”按单API实例重启解释为新服务端配旧Desktop/daemon及回退窗口，待确认，见G2/G3",
+      "runbook": "release-gates-runbook-2026-11-01.md"
     }
   ],
   "original_experiment_next": {
@@ -185,10 +191,11 @@
     "trial": 3,
     "remaining_provider_call_cap": 22
   },
-  "new_runtime_models": "unrun; separate source/framework/budget registration required",
+  "new_runtime_models": "registered as RK1 (d2fe54ab0); call_cap 0 pending user allocation; real-Provider framework not built; unrun",
   "runtime_test_addendum_commits": [
     "0bbc6a77a",
-    "84c4c2b3d"
+    "84c4c2b3d",
+    "65cd0599b (independent review pass_with_notes 2026-11-01)"
   ],
   "knowledge_delivery": {
     "product": "96cedf485",
@@ -196,5 +203,19 @@
     "merge": "8cb04e3295474073b4b991bc4883ef3901c14f01",
     "gate": "passed_deterministic",
     "enabled": false
+  },
+  "release_gates_runbook": {
+    "file": "release-gates-runbook-2026-11-01.md",
+    "baseline_head": "2294654a2",
+    "state": "prepared_not_executed",
+    "external_actions_performed": false,
+    "pending_user_decisions": [
+      "push_branch_or_snapshot_for_native_windows_ci",
+      "windows_upgrade_baseline_v0.6.6_or_upload_0.6.7_installer",
+      "windows_arm64_out_of_scope_confirmation",
+      "ac43_environments_accounts_quota_call_cap",
+      "installed_real_account_journey_budget",
+      "rollback_to_v0.6.7_commitment"
+    ]
   }
 }

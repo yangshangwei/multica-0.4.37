@@ -1,6 +1,6 @@
 # 知识 runtime 的真实验收登记
 
-状态：未运行。待验证产品提交 `96cedf485`，协作主分支合入提交 `8cb04e329`。本文登记下一阶段的边界，不分配新的 Provider 槽位，也不启用生产知识开关。
+状态：未运行。待验证产品提交 `96cedf485`，协作主分支合入提交 `8cb04e329`。2026-11-01 登记为与 runtime 共用的 [RK1](../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/README.md)，K1–K3 为知识场景；调用上限 0，尚无真实 Provider 框架。本文登记下一阶段的边界，不分配新的 Provider 槽位，也不启用生产知识开关。
 本轮确定性证据属于知识分支的最终源码清单及合入提交，不能从原 runtime
 `0e1ee8e1e` 或旧 E0/E1 推导真实模型已经通过。
 
