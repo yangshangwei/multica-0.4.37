@@ -1,7 +1,7 @@
 {
   "recorded_at": "2026-11-01T18:21:44.168939+00:00",
   "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
-  "integration_head": "4085e5b38f384feed296be4f1b300400acff8302",
+  "integration_head": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
   "worktrees": [
     {
       "worktree": "/Volumes/artisan/code/2026/multica-0.4.37",
@@ -163,7 +163,7 @@
     "native_origin": "b8035617d independently reviewed and merged 7435b04ec; complete check must rerun."
   },
   "default_database_incident": "default-db-incident-audit-2026-11-01.json",
-  "last_update": "2026-11-01T23:07:16.004743+00:00",
+  "last_update": "2026-11-01T23:12:21.311864+00:00",
   "current_results": {
     "runtime": "Merged 9e7f18785; independent pass-with-notes; RV-1 58d486656 root recheck 16 pass; final branch service 1668 pass/0 fail/0 skip; final combined candidate pending.",
     "claim": "H3/M3 94e790d2d and managed settings 30edf3e36 independently reviewed and integrated; CT-1 regression 5c3549001 retained.",
@@ -306,7 +306,7 @@
     "Mac_Main": "canonical1pass; prior2failures and taskDBs retained",
     "native_focus": "original1pass; priorfailures preserved",
     "Windows": "offline compile preparation12commands passed; nativeunrun",
-    "own_diagnostic_API_Web": "stopping all owned proof APIs; task DBs retained",
+    "own_diagnostic_API_Web": "all owned proof APIs/Web stopped, all DBs/logs retained; staticHTTP19844 idle",
     "Provider_calls": 0,
     "independent_review": "v5 and RKI6 actualresult unavailable429",
     "wholecheck": "latest639failed; next wholecheck not started"
@@ -463,5 +463,13 @@
     "registry_refusal": "source.env alone does not select private registry; unintended new taskDB retained/stopped, no businessDB write",
     "Web_failure": "ENV_FILE must be explicit before dev-env up; rendered HTML had stopped18774; corrected actual API/WS19065 verified before canonical pass",
     "AgentCLI": "DSH cold discovery probe rejected by guard; task-owned nonexistent MULTICA_DSH_PATH now explicit; guard unchanged"
+  },
+  "prepared_next_candidate": {
+    "sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+    "worktree": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102",
+    "state": "prepared_not_run; independent v5/RKI6 result review pending429",
+    "evidence": "research/final-candidate-20261102/next-complete-check-preparation.json",
+    "launcher_clearance": "absent; requires independent pass or pass-with-notes with no blocking findings",
+    "real_calls": 0
   }
 }

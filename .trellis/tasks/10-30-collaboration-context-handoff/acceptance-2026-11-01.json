@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T23:07:16.004743+00:00",
+  "updated_at": "2026-11-01T23:12:21.311864+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -366,9 +366,9 @@
   },
   "parent_status": "in_progress",
   "integration_snapshot": {
-    "head": "4085e5b38f384feed296be4f1b300400acff8302",
+    "head": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
     "branch": "codex/cross-workspace-collaboration",
-    "read_only_tracking_ahead": 231,
+    "read_only_tracking_ahead": 232,
     "origin_fetched": false,
     "merges": {
       "runtime": "9e7f1878544a5ba5f20c2b9aefc67acbb4a532db",
@@ -383,7 +383,7 @@
       "memory_nested_fixture": "020d18e62",
       "Transfer_picker": "4085e5b38f384feed296be4f1b300400acff8302"
     },
-    "scope": "Reviewed product repairs and E2E harness repairs integrated; latest full check failed; no overall acceptance"
+    "scope": "As-of-record snapshot before evidence-only commit; current product/harness equivalence frozen in64a; parent open"
   },
   "full_candidate_check": {
     "source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
@@ -608,5 +608,6 @@
     "native_execution": false,
     "DB_or_TestMain": false
   },
-  "source_harness_binding": "research/final-candidate-20261102/current-reviewed-product-harness-binding.json"
+  "source_harness_binding": "research/final-candidate-20261102/current-reviewed-product-harness-binding.json",
+  "next_complete_check_preparation": "research/final-candidate-20261102/next-complete-check-preparation.json"
 }

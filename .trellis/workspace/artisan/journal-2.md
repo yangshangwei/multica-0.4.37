@@ -1758,3 +1758,39 @@ Archived password registration and the complete platform administration task tre
 ### Next Steps
 
 - 原实验保持停止；下一E2a trial3，余22次。新runtime真实验收须另行绑定版本和预算；父任务保持in_progress。
+
+
+## Session 113: Collaboration quiet fake and current platform proofs
+<!-- trellis-session: v=2 fp=275fe938c239c64d -->
+
+**Date**: 2026-11-02
+**Task**: Collaboration quiet fake and current platform proofs
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+继续既有父任务，只做本地准备：Transfer独立复核合入；RK1同源quiet normal/race各62通过，原生焦点1、Mac.app原旅程1、Linux有界旅程、Windows两架构12编译检查留证。真实Provider0，父任务保持in_progress。
+
+### Main Changes
+
+- 复用现有UUID picker契约；补registry/ENV_FILE/实际HTML API与WS地址及DSH缺失路径的交接规范。原Mac配置失败与DB全部保留。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `4085e5b38` | test(e2e): align Transfer journeys with the reviewed UUID picker contract |
+| `64a9994ec` | docs(acceptance): preserve current framework and platform proofs without closing missing gates |
+
+### Testing
+
+- [OK] RK1 normal62/race62，0fail/skip；原始native focus1；canonical Mac Main1/3fake启动；Windows12禁网编译/vet0。
+
+### Status
+
+[PARTIAL] **Local proofs recorded; parent remains in_progress**
+
+### Next Steps
+
+- 网关429恢复后独立复核v5与RKI6结果，再启动准备好的64a9994ec完整check（API10/1，无其他API并发）；平台/账号/预算门保持未验。
+- 仅本地操作；runtime25消耗0，原冻结另余14/E3aftertrial2；默认业务库旧迁移事故缺前快照，未恢复。

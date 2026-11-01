@@ -186,6 +186,13 @@ that this endpoint has the database.
    setup failure, and keep the gate epoch monotonic. Wait for the enrolled host
    runtime to report `online` before creating Agents or issues; a heartbeat or
    claim race must not be recorded as a packaged-client result.
+   Keep the repository Agent CLI guard active and explicitly pin
+   `MULTICA_DSH_PATH` to a task-owned missing absolute path unless this fixture
+   supplies its own fake DSH executable. Cold runtime discovery calls
+   `dsh --profile multica --probe` even when daemon auto-start is disabled;
+   resolving a guard sentinel on PATH is not an authorized fake provider.
+   Startup registry, `ENV_FILE` and rendered API/WS origin checks follow
+   [database test isolation](../../server/database-test-isolation.md#private-environment-registry-identity).
 4. **Renderer setup:** fresh acceptance homes have no locale preference. Set the
    renderer locale to English before the password form is exercised. After real
    login, allow the short asynchronous daemon `starting` transition to settle

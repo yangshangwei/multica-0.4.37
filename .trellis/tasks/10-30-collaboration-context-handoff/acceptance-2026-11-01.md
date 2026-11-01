@@ -1,6 +1,6 @@
 # 父任务当前验收矩阵
 
-2026-11-02 当前集成快照为 `4085e5b38`（领先本地 origin 跟踪记录 231 个提交，未 fetch）。runtime、知识、RK1 框架、交付准备及后续 memory/Transfer 测试修复均已独立复核并本地合入。父任务保持 **in_progress，整体验收未通过**。[机器验收状态](acceptance-2026-11-01.json)与[执行归属](execution-resume-2026-11-01.json)持续更新。
+2026-11-02 代码合流点为 `4085e5b38`，本轮证据以 `64a9994ec` 本地提交；origin 跟踪记录未 fetch。runtime、知识、RK1 框架、交付准备及后续 memory/Transfer 测试修复均已独立复核并本地合入。父任务保持 **in_progress，整体验收未通过**。[机器验收状态](acceptance-2026-11-01.json)与[执行归属](execution-resume-2026-11-01.json)持续更新。
 
 被测产品固定为 `639bf6ef85ad894553b244873c2ed8d9f9dd29b2`，产品指纹 `9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee`。后续 memory/Transfer 修改只涉及 E2E 与任务证据，产品根目录未改变；最终完整检查仍必须使用合流后的测试框架重新冻结并执行。
 
@@ -50,3 +50,5 @@
 默认库事故仍未解决：[审计](default-db-incident-audit-2026-11-01.json)记录未限定数据库的迁移使本地 `multica` 前向迁移，新增272条账目（456–763）。缺迁移前快照，未回退或恢复；此后仅只读留证，不将其作为验收库。失败现场和其他会话未提交文件继续保留。
 
 [发布门清单](release-gates-runbook-2026-11-01.md)保留历史步骤；以本页及机器台账为当前入口，旧矩阵保留于Git历史。
+
+下一完整检查已在干净 detached 候选 `64a9994ec` 的独立 worktree 中完成[本地准备](research/final-candidate-20261102/next-complete-check-preparation.json)：API池10/1、Git树外临时目录、逐包新库、v5适配器与JSON报告均已固定，未带入临时Mac诊断spec。运行尚未启动；独立v5/RKI6结果复核受429阻断，启动器保留对应的复核放行记录要求。所有自有证明API/Web均已停止、数据库与日志保留。
