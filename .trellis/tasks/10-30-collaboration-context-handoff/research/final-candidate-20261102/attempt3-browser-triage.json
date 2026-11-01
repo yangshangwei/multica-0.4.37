@@ -1,0 +1,2246 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_web_review",
+  "reviewed_at": "2026-11-01T21:19:42.133816+00:00",
+  "state": "read_only_failure_triage_complete_not_acceptance",
+  "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "main_documentation_head_at_review": "56ae50d613831a905293fa29834e5a5be4167c03",
+  "raw_original_console": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/final-candidate/make-check.log",
+    "bytes": 27999211,
+    "line_count": 115723,
+    "sha256": "89c2d13730864522770980ff3fb32f5b7fa246a536bd80dae8718c46a0f78b74",
+    "reporter": "canonical console; JSON reporter was not configured",
+    "scope_note": "This JSON is a derived independent triage matrix, not fabricated original Playwright JSON."
+  },
+  "original_make_record_sha256": "bdbfc535ffe041131232f530d9732cb7eedef6d2ddd8dd179fa3763f2b67453f",
+  "original_last_run_sha256": "2cfb14bf66481ed2adc8aa72ca8b22cc01b3421445d7b5bf3917aa614394112d",
+  "original_last_run_failed_id_count": 47,
+  "actual_counts": {
+    "planned": 439,
+    "passed": 296,
+    "failed": 47,
+    "skipped": 89,
+    "did_not_run": 7,
+    "make_exit_code": 2
+  },
+  "classification_counts": {
+    "direct_pg_capacity": 42,
+    "unresolved_native_focus": 1,
+    "task_go_adapter_environment_contract": 2,
+    "outdated_recipient_picker_test_contract": 2
+  },
+  "PG_capacity_mentions": {
+    "entire_console": 43,
+    "failed_test_blocks": 42,
+    "additional_cleanup_failure_line": 115721,
+    "note": "The43rd mention is isolated Go-template cleanup. It is not a48th browser failure."
+  },
+  "failures": [
+    {
+      "failure_number": 1,
+      "project": "chromium",
+      "planned_ordinal": 391,
+      "runner_result": "failed",
+      "source_file": "e2e/autopilot-template-zh.spec.ts",
+      "source_line": 182,
+      "source_file_sha256": "2ab24e2427633cc6e41279911fff24f0a319b3bbb29e7a6c89efafdb0de88360",
+      "title": "adopts, edits and dispatches Chinese briefs through the real template API",
+      "failure_block_raw_line_start": 114747,
+      "failure_block_raw_line_end": 114762,
+      "failure_block_sha256": "2f6345a8548fb7d74a67bdd29c6d1b3746adcc94ebb6fedf5a1085754e3a520e",
+      "runner_event_raw_line": 114612,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/autopilot-template-zh-adop-937ec-rough-the-real-template-API-chromium/trace.zip",
+          "exists": true,
+          "sha256": "4c76d35bc565fcc349545292496f022ff5aec10c7cc077abf363519010cd1ea4"
+        }
+      ]
+    },
+    {
+      "failure_number": 2,
+      "project": "chromium",
+      "planned_ordinal": 408,
+      "runner_result": "failed",
+      "source_file": "e2e/chat-actor-picker.spec.ts",
+      "source_line": 139,
+      "source_file_sha256": "d718f6776469c591418fd88cb34946370869977794b209d1150f4a6ae3d73374",
+      "title": "new chat reuses responsibility discovery, categories and keyboard selection at wide and narrow widths (en)",
+      "failure_block_raw_line_start": 114763,
+      "failure_block_raw_line_end": 114774,
+      "failure_block_sha256": "53a1868b5177edf72cee2d9df49fcb0674f62e8c6d978c18a5ccf94b417ee765",
+      "runner_event_raw_line": 114677,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/chat-actor-picker-new-chat-f489a--wide-and-narrow-widths-en--chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "27abb4affaed83ae85739b62b71e5e860d2e6ee7b4fa91c915f5a3c26227b944"
+        }
+      ]
+    },
+    {
+      "failure_number": 3,
+      "project": "chromium",
+      "planned_ordinal": 409,
+      "runner_result": "failed",
+      "source_file": "e2e/chat-actor-picker.spec.ts",
+      "source_line": 139,
+      "source_file_sha256": "d718f6776469c591418fd88cb34946370869977794b209d1150f4a6ae3d73374",
+      "title": "new chat reuses responsibility discovery, categories and keyboard selection at wide and narrow widths (zh-Hans)",
+      "failure_block_raw_line_start": 114775,
+      "failure_block_raw_line_end": 114786,
+      "failure_block_sha256": "5e4a12d42d7d37587d37aac4ac9af43e466e0d6003e5398701e918511ff05b28",
+      "runner_event_raw_line": 114682,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/chat-actor-picker-new-chat-493f4--and-narrow-widths-zh-Hans--chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "27abb4affaed83ae85739b62b71e5e860d2e6ee7b4fa91c915f5a3c26227b944"
+        }
+      ]
+    },
+    {
+      "failure_number": 4,
+      "project": "chromium",
+      "planned_ordinal": 410,
+      "runner_result": "failed",
+      "source_file": "e2e/chat-actor-picker.spec.ts",
+      "source_line": 201,
+      "source_file_sha256": "d718f6776469c591418fd88cb34946370869977794b209d1150f4a6ae3d73374",
+      "title": "floating chat avatar uses the same agent discovery and restores focus on Escape",
+      "failure_block_raw_line_start": 114787,
+      "failure_block_raw_line_end": 114798,
+      "failure_block_sha256": "8b68e2ae4ee50d6f38ab4bc94fb4c9454e8f118c9e28ee3b90af085e33483133",
+      "runner_event_raw_line": 114687,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/chat-actor-picker-floating-2acd5-nd-restores-focus-on-Escape-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "27abb4affaed83ae85739b62b71e5e860d2e6ee7b4fa91c915f5a3c26227b944"
+        }
+      ]
+    },
+    {
+      "failure_number": 5,
+      "project": "chromium",
+      "planned_ordinal": 87,
+      "runner_result": "failed",
+      "source_file": "e2e/collaboration-account-desktop.spec.ts",
+      "source_line": 399,
+      "source_file_sha256": "163c92042219b895db49bb1f8c5afb4e0fdc86038c6e2f45c91358f962c3497c",
+      "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+      "failure_block_raw_line_start": 114799,
+      "failure_block_raw_line_end": 114851,
+      "failure_block_sha256": "93ef9f100200d176872967437b58f4dbb1a3aa0715fa139f3c6ff4200d08c5b9",
+      "runner_event_raw_line": 114184,
+      "direct_PG_capacity_error": false,
+      "classification": "unresolved_native_focus",
+      "failure_point": "e2e/collaboration-account-desktop.spec.ts:233 copyNativeAccountLink; invoked at423",
+      "sanitized_error": "5000ms focus poll: expected native=true, contents=true, document=true; observed native=false, contents=false, document=true",
+      "capacity_relation": "none_shown",
+      "confidence": "high_for_observation_root_cause_unresolved",
+      "recommendation": "Investigate the owned Electron foreground/window/webContents focus prerequisite in isolation; retain native assertion and test identity. Do not attribute to PG or claim clipboard/popout/restart assertions passed.",
+      "may_still_fail_after_PG_fix": true,
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/collaboration-account-desk-fcee6-survive-popouts-and-restart-chromium/attachments/desktop-account-failure-bf1b1e118943528dd216e7cdd961f9d02ee593da.png",
+          "exists": true,
+          "sha256": "d2256d936472c1c899f9a8121e75b065a55c102cc83099442570faa23add3e03"
+        }
+      ]
+    },
+    {
+      "failure_number": 6,
+      "project": "chromium",
+      "planned_ordinal": 432,
+      "runner_result": "failed",
+      "source_file": "e2e/collaboration-knowledge.spec.ts",
+      "source_line": 88,
+      "source_file_sha256": "05734ae588cae269dc6131d785f4bbbaaf1a9be834c85ba6e5e278c10b9ae015",
+      "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+      "failure_block_raw_line_start": 114852,
+      "failure_block_raw_line_end": 114867,
+      "failure_block_sha256": "7eee5367344b432bcf61b563efe09f5dd467ade88f1a68963237936f8414b24b",
+      "runner_event_raw_line": 114737,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "source_setup_hook": "e2e/collaboration-knowledge.spec.ts:17 beforeAll -> setCollaborationGate -> lane-guards.ts sql/client.connect; remaining seven suite tests were not run.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/trace.zip",
+          "exists": true,
+          "sha256": "d0c19ecd6cd52c1204ca9191d86dcc449b44b2f1ad964921a6e3e6f485c6d409"
+        }
+      ]
+    },
+    {
+      "failure_number": 7,
+      "project": "chromium",
+      "planned_ordinal": 428,
+      "runner_result": "failed",
+      "source_file": "e2e/collaboration-memory-web.spec.ts",
+      "source_line": 7,
+      "source_file_sha256": "a1955b3d99cdc2a0d53508451e17b65e75cab600ff0d1c90acc59c91304f743a",
+      "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+      "failure_block_raw_line_start": 114868,
+      "failure_block_raw_line_end": 114879,
+      "failure_block_sha256": "6bfb42e1ea081406593fdf8c34e9643040ec93508eafeb746de7bd1be4db7725",
+      "runner_event_raw_line": 114721,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/collaboration-memory-web-s-ef2a1-torical-purge-after-closure-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "27abb4affaed83ae85739b62b71e5e860d2e6ee7b4fa91c915f5a3c26227b944"
+        }
+      ]
+    },
+    {
+      "failure_number": 8,
+      "project": "chromium",
+      "planned_ordinal": 429,
+      "runner_result": "failed",
+      "source_file": "e2e/collaboration-memory-web.spec.ts",
+      "source_line": 108,
+      "source_file_sha256": "a1955b3d99cdc2a0d53508451e17b65e75cab600ff0d1c90acc59c91304f743a",
+      "title": "shared context recovers a lost save response with its original request after reload",
+      "failure_block_raw_line_start": 114880,
+      "failure_block_raw_line_end": 114891,
+      "failure_block_sha256": "b5a483da7f51f927cb56040fa10e974cdf7f48f67802fdf1c1551613ec229466",
+      "runner_event_raw_line": 114726,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/collaboration-memory-web-s-f0e76-iginal-request-after-reload-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "27abb4affaed83ae85739b62b71e5e860d2e6ee7b4fa91c915f5a3c26227b944"
+        }
+      ]
+    },
+    {
+      "failure_number": 9,
+      "project": "chromium",
+      "planned_ordinal": 394,
+      "runner_result": "failed",
+      "source_file": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "source_line": 97,
+      "source_file_sha256": "515eb616f099e313002727a9bbf16d33727b9e83993942c570a1999cba4304e8",
+      "title": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "failure_block_raw_line_start": 114892,
+      "failure_block_raw_line_end": 114907,
+      "failure_block_sha256": "525d6416fa2383d21ffd62f012ecb9f0de7135915ee070989a281c2471d2fb38",
+      "runner_event_raw_line": 114619,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/collaboration-mention-jour-9c5dc--queued-target-associations-chromium/trace.zip",
+          "exists": true,
+          "sha256": "9d1104b55b491cda7fd2d5d05f503250cac665a7dee29051c7b1cb25e50cf182"
+        }
+      ]
+    },
+    {
+      "failure_number": 10,
+      "project": "chromium",
+      "planned_ordinal": 395,
+      "runner_result": "failed",
+      "source_file": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "source_line": 102,
+      "source_file_sha256": "515eb616f099e313002727a9bbf16d33727b9e83993942c570a1999cba4304e8",
+      "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "failure_block_raw_line_start": 114908,
+      "failure_block_raw_line_end": 114923,
+      "failure_block_sha256": "e8e3a7c88c784fc07bad41787e050b9bbac873d9bef7a6fd59925952f79abfa2",
+      "runner_event_raw_line": 114624,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/collaboration-mention-jour-7b292-y-replay-stays-deduplicated-chromium/trace.zip",
+          "exists": true,
+          "sha256": "dfb9f3b0b54454736f4ee647513f79b30293c9e5e52d6c76b84b9a03ab080dd9"
+        }
+      ]
+    },
+    {
+      "failure_number": 11,
+      "project": "chromium",
+      "planned_ordinal": 396,
+      "runner_result": "failed",
+      "source_file": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "source_line": 107,
+      "source_file_sha256": "515eb616f099e313002727a9bbf16d33727b9e83993942c570a1999cba4304e8",
+      "title": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+      "failure_block_raw_line_start": 114924,
+      "failure_block_raw_line_end": 114939,
+      "failure_block_sha256": "5947c0775ca59d8a1d66aff13e774934e0b97f240461497271e7b55da27f319a",
+      "runner_event_raw_line": 114629,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/collaboration-mention-jour-fc623-ify-only-newly-added-people-chromium/trace.zip",
+          "exists": true,
+          "sha256": "16787222b26e9992ff6ac795b0bc11789140245113211112171920ea623ccffa"
+        }
+      ]
+    },
+    {
+      "failure_number": 12,
+      "project": "chromium",
+      "planned_ordinal": 104,
+      "runner_result": "failed",
+      "source_file": "e2e/collaboration-preparation-records-desktop.spec.ts",
+      "source_line": 8,
+      "source_file_sha256": "9aa833ddc18e7c5be8d1703b0911536f335f53b6c839e6fbfc7c446cd62d13b2",
+      "title": "Desktop reads synthetic preparation with native 200 percent captures and unchanged proof",
+      "failure_block_raw_line_start": 114940,
+      "failure_block_raw_line_end": 114963,
+      "failure_block_sha256": "c35025a8a479a395548b534ddeb17399e4d8c08a8b6e2abc1bd4846e32b2d58c",
+      "runner_event_raw_line": 114211,
+      "direct_PG_capacity_error": false,
+      "classification": "task_go_adapter_environment_contract",
+      "failure_point": "e2e/fixtures/collaboration-preparation-records.ts:96-99 -> task-private check-bin/go:14",
+      "sanitized_error": "KeyError: 'MULTICA_TASK_REAL_GO' before real Go executes",
+      "capacity_relation": "independent",
+      "confidence": "high",
+      "recommendation": "Repair the task-private Go launch boundary for the synthetic preparation sealer: PATH currently selects the adapter while the child allowlist removes its required variable. Preserve real package-test DB isolation and the sealer assertions. The pinned go1.26.6 darwin-arm64 cache exists; no download is needed.",
+      "may_still_fail_after_PG_fix": true,
+      "retained_artifacts": []
+    },
+    {
+      "failure_number": 13,
+      "project": "chromium",
+      "planned_ordinal": 341,
+      "runner_result": "failed",
+      "source_file": "e2e/collaboration-preparation-records-web.spec.ts",
+      "source_line": 7,
+      "source_file_sha256": "12d92bc59a2ca10a42441157332aa6c8dd00699af4be0737e2d612e17b652da3",
+      "title": "Web reads synthetic frozen preparation without inferring termination across refresh and viewers",
+      "failure_block_raw_line_start": 114964,
+      "failure_block_raw_line_end": 114999,
+      "failure_block_sha256": "aad0a765ee09265d9049f18f0cdc91369964216774e428316977d421e6da2f01",
+      "runner_event_raw_line": 114462,
+      "direct_PG_capacity_error": false,
+      "classification": "task_go_adapter_environment_contract",
+      "failure_point": "e2e/fixtures/collaboration-preparation-records.ts:96-99 -> task-private check-bin/go:14",
+      "sanitized_error": "KeyError: 'MULTICA_TASK_REAL_GO' before real Go executes",
+      "capacity_relation": "independent",
+      "confidence": "high",
+      "recommendation": "Repair the task-private Go launch boundary for the synthetic preparation sealer: PATH currently selects the adapter while the child allowlist removes its required variable. Preserve real package-test DB isolation and the sealer assertions. The pinned go1.26.6 darwin-arm64 cache exists; no download is needed.",
+      "may_still_fail_after_PG_fix": true,
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/collaboration-preparation--d3e76--across-refresh-and-viewers-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "27abb4affaed83ae85739b62b71e5e860d2e6ee7b4fa91c915f5a3c26227b944"
+        },
+        {
+          "relative_path": "test-results/collaboration-preparation--d3e76--across-refresh-and-viewers-chromium/trace.zip",
+          "exists": true,
+          "sha256": "8e509bd476a5d35ea90ab31af39846307046d44acef20e2c0bec1ad6d7b79b0f"
+        }
+      ]
+    },
+    {
+      "failure_number": 14,
+      "project": "chromium",
+      "planned_ordinal": 346,
+      "runner_result": "failed",
+      "source_file": "e2e/collaboration-workbench-web.spec.ts",
+      "source_line": 23,
+      "source_file_sha256": "6da18fcf83151f5c8fb35a16242df87ced2baa4838f586904025fe34fdd39334",
+      "title": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+      "failure_block_raw_line_start": 115000,
+      "failure_block_raw_line_end": 115029,
+      "failure_block_sha256": "d52a2ad3400c566def02819fea8f44d3b151acb33d10101116d6dce609e6022a",
+      "runner_event_raw_line": 114471,
+      "direct_PG_capacity_error": false,
+      "classification": "outdated_recipient_picker_test_contract",
+      "failure_point": "e2e/collaboration-workbench-web.spec.ts:126",
+      "sanitized_error": "locator.fill timed out waiting for removed label 'Exact recipient'",
+      "capacity_relation": "independent",
+      "confidence": "high",
+      "recommendation": "Update only the browser test interaction to current Recipient picker -> Search recipients -> exact lookup -> Use this account, retaining real transfer and original-key conflict assertions. The legacy Selected account text assertions are also stale.",
+      "may_still_fail_after_PG_fix": true,
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/collaboration-workbench-we-140e7-tion-handoff-and-revocation-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "4ae5efbacabd13c73f2f25564786f40ad1304ef018358e7302b658661df7fb9f"
+        },
+        {
+          "relative_path": "test-results/collaboration-workbench-we-140e7-tion-handoff-and-revocation-chromium/trace.zip",
+          "exists": true,
+          "sha256": "916ed061d916ea4934e5ac7004ada5c6a2bede8fbbb28d0e8c7c46f60f2e20e4"
+        }
+      ]
+    },
+    {
+      "failure_number": 15,
+      "project": "chromium",
+      "planned_ordinal": 347,
+      "runner_result": "failed",
+      "source_file": "e2e/collaboration-workbench-web.spec.ts",
+      "source_line": 164,
+      "source_file_sha256": "6da18fcf83151f5c8fb35a16242df87ced2baa4838f586904025fe34fdd39334",
+      "title": "Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry",
+      "failure_block_raw_line_start": 115030,
+      "failure_block_raw_line_end": 115074,
+      "failure_block_sha256": "cb896c53e1da768758e4a7d686e0c22508f8df4278fe6087bb0d00d356f03cf3",
+      "runner_event_raw_line": 114476,
+      "direct_PG_capacity_error": false,
+      "classification": "outdated_recipient_picker_test_contract",
+      "failure_point": "e2e/collaboration-workbench-web.spec.ts:243",
+      "sanitized_error": "locator.fill timed out waiting for removed label 'Exact recipient'",
+      "capacity_relation": "independent",
+      "confidence": "high",
+      "recommendation": "Update only the browser test interaction to current Recipient picker -> Search recipients -> exact lookup -> Use this account, retaining real transfer and original-key conflict assertions. The legacy Selected account text assertions are also stale.",
+      "may_still_fail_after_PG_fix": true,
+      "secondary_error": "waitForResponse at233 timed out because the test deliberately holds the original completion POST behind continueOriginal while its concurrent transfer cannot pass the old picker locator; not separate evidence of a product/API failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/collaboration-workbench-we-66297-es-input-for-explicit-retry-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "cf97420e4979e0e588d54e6075b9fe858933ba9e4d835d0e8ff1947ee4d194ed"
+        },
+        {
+          "relative_path": "test-results/collaboration-workbench-we-66297-es-input-for-explicit-retry-chromium/test-failed-2.png",
+          "exists": true,
+          "sha256": "956b65b41779dad04712faaca98695ecb6314593b32702fce3b983722e54253a"
+        },
+        {
+          "relative_path": "test-results/collaboration-workbench-we-66297-es-input-for-explicit-retry-chromium/trace.zip",
+          "exists": true,
+          "sha256": "d7c891d9b93f978e194fc6cb585b44b065910bcd84d390b06d727560eb1547fa"
+        }
+      ]
+    },
+    {
+      "failure_number": 16,
+      "project": "chromium",
+      "planned_ordinal": 369,
+      "runner_result": "failed",
+      "source_file": "e2e/issue-mutation-branches.spec.ts",
+      "source_line": 152,
+      "source_file_sha256": "b813e81d015d480407a617e85f6b52ee724e817c7a20a413a87940478ce2b38f",
+      "title": "failed status update rolls back the optimistic value before a successful retry",
+      "failure_block_raw_line_start": 115075,
+      "failure_block_raw_line_end": 115094,
+      "failure_block_sha256": "98ee6e896498f25b70240896e9afa275d3cf75a7e9ea6339b461ce3192304cde",
+      "runner_event_raw_line": 114502,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/issue-mutation-branches-fa-618bd-e-before-a-successful-retry-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+        },
+        {
+          "relative_path": "test-results/issue-mutation-branches-fa-618bd-e-before-a-successful-retry-chromium/trace.zip",
+          "exists": true,
+          "sha256": "e98cda53d1f77e6fa17a9e113edd4d0cfa8542ee83b4d4ee87499875a9b2a159"
+        }
+      ]
+    },
+    {
+      "failure_number": 17,
+      "project": "chromium",
+      "planned_ordinal": 370,
+      "runner_result": "failed",
+      "source_file": "e2e/issue-mutation-branches.spec.ts",
+      "source_line": 177,
+      "source_file_sha256": "b813e81d015d480407a617e85f6b52ee724e817c7a20a413a87940478ce2b38f",
+      "title": "failed priority update restores the existing priority and retry persists",
+      "failure_block_raw_line_start": 115095,
+      "failure_block_raw_line_end": 115114,
+      "failure_block_sha256": "ee4ba9651a57adee9c906da9689376bf6ed9744553cf4a474828ec85d3f5f6b9",
+      "runner_event_raw_line": 114507,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/issue-mutation-branches-fa-97f15-priority-and-retry-persists-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+        },
+        {
+          "relative_path": "test-results/issue-mutation-branches-fa-97f15-priority-and-retry-persists-chromium/trace.zip",
+          "exists": true,
+          "sha256": "bb7afcb56177123bacec96597d499d8ca9638cf495feac48c30e532e2e133a0d"
+        }
+      ]
+    },
+    {
+      "failure_number": 18,
+      "project": "chromium",
+      "planned_ordinal": 371,
+      "runner_result": "failed",
+      "source_file": "e2e/issue-mutation-branches.spec.ts",
+      "source_line": 202,
+      "source_file_sha256": "b813e81d015d480407a617e85f6b52ee724e817c7a20a413a87940478ce2b38f",
+      "title": "failed deletion keeps the confirmation and issue until a successful retry",
+      "failure_block_raw_line_start": 115115,
+      "failure_block_raw_line_end": 115134,
+      "failure_block_sha256": "0aaaaadc72e49ece47b240bf511a6a9df72fb0664681ef808f3fe8b65d7a1384",
+      "runner_event_raw_line": 114512,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/issue-mutation-branches-fa-10d07-ue-until-a-successful-retry-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+        },
+        {
+          "relative_path": "test-results/issue-mutation-branches-fa-10d07-ue-until-a-successful-retry-chromium/trace.zip",
+          "exists": true,
+          "sha256": "8eee916ba3fba6b7e56a17a20ae551c36502066e5ea0f29328cca1f577e47cb1"
+        }
+      ]
+    },
+    {
+      "failure_number": 19,
+      "project": "chromium",
+      "planned_ordinal": 372,
+      "runner_result": "failed",
+      "source_file": "e2e/issue-mutation-branches.spec.ts",
+      "source_line": 224,
+      "source_file_sha256": "b813e81d015d480407a617e85f6b52ee724e817c7a20a413a87940478ce2b38f",
+      "title": "cancelling after a failed deletion leaves the issue readable after reload",
+      "failure_block_raw_line_start": 115135,
+      "failure_block_raw_line_end": 115154,
+      "failure_block_sha256": "5f9785902103401e8316a98e585e05e6aa182fcc8033c7d4e0cb8844ac6e2341",
+      "runner_event_raw_line": 114517,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/issue-mutation-branches-ca-c19c1-issue-readable-after-reload-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+        },
+        {
+          "relative_path": "test-results/issue-mutation-branches-ca-c19c1-issue-readable-after-reload-chromium/trace.zip",
+          "exists": true,
+          "sha256": "f92c371f95e8c2a5aa4619e930c658b8408fcdf7566e0dbe786f77b9874aea4c"
+        }
+      ]
+    },
+    {
+      "failure_number": 20,
+      "project": "chromium",
+      "planned_ordinal": 373,
+      "runner_result": "failed",
+      "source_file": "e2e/issue-mutation-branches.spec.ts",
+      "source_line": 240,
+      "source_file_sha256": "b813e81d015d480407a617e85f6b52ee724e817c7a20a413a87940478ce2b38f",
+      "title": "failed manual creation retains title and description and retry creates exactly one issue",
+      "failure_block_raw_line_start": 115155,
+      "failure_block_raw_line_end": 115174,
+      "failure_block_sha256": "fe93b5aa5d5d00254a40fdc50b398c470d1846c8c7cfde668ed91e3064737408",
+      "runner_event_raw_line": 114522,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/issue-mutation-branches-fa-593a1-y-creates-exactly-one-issue-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+        },
+        {
+          "relative_path": "test-results/issue-mutation-branches-fa-593a1-y-creates-exactly-one-issue-chromium/trace.zip",
+          "exists": true,
+          "sha256": "1a925cf9fd45accebe997931a15d22d0c81531957e3a691a53c4b855163c9054"
+        }
+      ]
+    },
+    {
+      "failure_number": 21,
+      "project": "chromium",
+      "planned_ordinal": 374,
+      "runner_result": "failed",
+      "source_file": "e2e/issue-mutation-branches.spec.ts",
+      "source_line": 275,
+      "source_file_sha256": "b813e81d015d480407a617e85f6b52ee724e817c7a20a413a87940478ce2b38f",
+      "title": "failed comment send preserves the draft across reload and retry posts exactly once",
+      "failure_block_raw_line_start": 115175,
+      "failure_block_raw_line_end": 115194,
+      "failure_block_sha256": "2b7f65b6fce762dfe3beb1b0a1314f02ef646eb2bd976050b9cc90c04d0e58f9",
+      "runner_event_raw_line": 114527,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/issue-mutation-branches-fa-dac88-nd-retry-posts-exactly-once-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+        },
+        {
+          "relative_path": "test-results/issue-mutation-branches-fa-dac88-nd-retry-posts-exactly-once-chromium/trace.zip",
+          "exists": true,
+          "sha256": "21dc10e963933bf976945bfcf15d2fff38a54cbb317bdbfc1acba61d46b04617"
+        }
+      ]
+    },
+    {
+      "failure_number": 22,
+      "project": "chromium",
+      "planned_ordinal": 375,
+      "runner_result": "failed",
+      "source_file": "e2e/issue-mutation-branches.spec.ts",
+      "source_line": 307,
+      "source_file_sha256": "b813e81d015d480407a617e85f6b52ee724e817c7a20a413a87940478ce2b38f",
+      "title": "repeated send shortcuts while a comment is pending create only one comment",
+      "failure_block_raw_line_start": 115195,
+      "failure_block_raw_line_end": 115214,
+      "failure_block_sha256": "cc6c2fd6aa442b39f99cd8bdb7b31726be1db99c7d1c0bc03789afaa3a5e0f46",
+      "runner_event_raw_line": 114532,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/issue-mutation-branches-re-c8411-ing-create-only-one-comment-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+        },
+        {
+          "relative_path": "test-results/issue-mutation-branches-re-c8411-ing-create-only-one-comment-chromium/trace.zip",
+          "exists": true,
+          "sha256": "2a129a985bb59cdacbbd481df8374963ebec7f08ecf0ecfd2a7820de78c4228a"
+        }
+      ]
+    },
+    {
+      "failure_number": 23,
+      "project": "chromium",
+      "planned_ordinal": 376,
+      "runner_result": "failed",
+      "source_file": "e2e/lifecycle-handoff.spec.ts",
+      "source_line": 112,
+      "source_file_sha256": "8233b0033be00f344525a73556d2d4c5588ee9582f76ec1ea88252d7ca197efb",
+      "title": "creates and reuses an RCA repair with a visible issue audit trail",
+      "failure_block_raw_line_start": 115215,
+      "failure_block_raw_line_end": 115234,
+      "failure_block_sha256": "1572542146958f7af4f0000853b045f851c570aabbdf2b19c47409eb1f5c53fc",
+      "runner_event_raw_line": 114537,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/lifecycle-handoff-creates--47d65-a-visible-issue-audit-trail-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "27abb4affaed83ae85739b62b71e5e860d2e6ee7b4fa91c915f5a3c26227b944"
+        },
+        {
+          "relative_path": "test-results/lifecycle-handoff-creates--47d65-a-visible-issue-audit-trail-chromium/trace.zip",
+          "exists": true,
+          "sha256": "5d8d5077f10a5915f28d21bfc9fd6e9ea7542bd91263c20ed83bf99956678bfe"
+        }
+      ]
+    },
+    {
+      "failure_number": 24,
+      "project": "chromium",
+      "planned_ordinal": 377,
+      "runner_result": "failed",
+      "source_file": "e2e/lifecycle-handoff.spec.ts",
+      "source_line": 171,
+      "source_file_sha256": "8233b0033be00f344525a73556d2d4c5588ee9582f76ec1ea88252d7ca197efb",
+      "title": "refuses unauthorized explicit child reuse without metadata, audit, or queue writes",
+      "failure_block_raw_line_start": 115235,
+      "failure_block_raw_line_end": 115254,
+      "failure_block_sha256": "492be73b2b7b92f25abd2b685ed6e97249f290d0f90c6777f8112dd9988cb983",
+      "runner_event_raw_line": 114542,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/lifecycle-handoff-refuses--3f8b5-adata-audit-or-queue-writes-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "27abb4affaed83ae85739b62b71e5e860d2e6ee7b4fa91c915f5a3c26227b944"
+        },
+        {
+          "relative_path": "test-results/lifecycle-handoff-refuses--3f8b5-adata-audit-or-queue-writes-chromium/trace.zip",
+          "exists": true,
+          "sha256": "1e1e825685df662d1dcc975c967c543ac5730876b4416d9a65ef0a0e9ac6d134"
+        }
+      ]
+    },
+    {
+      "failure_number": 25,
+      "project": "chromium",
+      "planned_ordinal": 378,
+      "runner_result": "failed",
+      "source_file": "e2e/lifecycle-handoff.spec.ts",
+      "source_line": 171,
+      "source_file_sha256": "8233b0033be00f344525a73556d2d4c5588ee9582f76ec1ea88252d7ca197efb",
+      "title": "refuses unauthorized duplicate title reuse without metadata, audit, or queue writes",
+      "failure_block_raw_line_start": 115255,
+      "failure_block_raw_line_end": 115274,
+      "failure_block_sha256": "34624842876947fdb0fe42ef6fdb4e0ef4cc4b3a0bc3be032a8034ff08959696",
+      "runner_event_raw_line": 114547,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/lifecycle-handoff-refuses--c71bf-adata-audit-or-queue-writes-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "27abb4affaed83ae85739b62b71e5e860d2e6ee7b4fa91c915f5a3c26227b944"
+        },
+        {
+          "relative_path": "test-results/lifecycle-handoff-refuses--c71bf-adata-audit-or-queue-writes-chromium/trace.zip",
+          "exists": true,
+          "sha256": "8ac5a636acd586b6a02f8f6af72d42580c8c53c32afa4583fc91f88c2a3ad7df"
+        }
+      ]
+    },
+    {
+      "failure_number": 26,
+      "project": "chromium",
+      "planned_ordinal": 397,
+      "runner_result": "failed",
+      "source_file": "e2e/localized-template-defaults.spec.ts",
+      "source_line": 119,
+      "source_file_sha256": "a981c8fa7a4da18c6f81ad63796a57b4e8e57562f153cf88a5228168ae24fee4",
+      "title": "role picker defaults and omitted-name API creation follow Chinese and English locales",
+      "failure_block_raw_line_start": 115275,
+      "failure_block_raw_line_end": 115290,
+      "failure_block_sha256": "569d82136631c2a47e7427c32ede08a08273152e5524156e7691cf991d5deb18",
+      "runner_event_raw_line": 114634,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/localized-template-default-7d598-Chinese-and-English-locales-chromium/trace.zip",
+          "exists": true,
+          "sha256": "cb1f06a1d59000c2845d6ede609e157ae44c969842c0a6847e1031068a12c9ac"
+        }
+      ]
+    },
+    {
+      "failure_number": 27,
+      "project": "chromium",
+      "planned_ordinal": 398,
+      "runner_result": "failed",
+      "source_file": "e2e/localized-template-defaults.spec.ts",
+      "source_line": 144,
+      "source_file_sha256": "a981c8fa7a4da18c6f81ad63796a57b4e8e57562f153cf88a5228168ae24fee4",
+      "title": "diagnostician API creation preserves workspace skill and agent copies",
+      "failure_block_raw_line_start": 115291,
+      "failure_block_raw_line_end": 115306,
+      "failure_block_sha256": "db61b7cd9f4c29b136121e4c468caa64823a739c135fc5e75ce3fc9dc74a7dcd",
+      "runner_event_raw_line": 114639,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/localized-template-default-a84b3-pace-skill-and-agent-copies-chromium/trace.zip",
+          "exists": true,
+          "sha256": "84701a82f380b9aa0d3ef4f2ce92c7bddff24fa8fac4fe841c60903b284052c8"
+        }
+      ]
+    },
+    {
+      "failure_number": 28,
+      "project": "chromium",
+      "planned_ordinal": 399,
+      "runner_result": "failed",
+      "source_file": "e2e/localized-template-defaults.spec.ts",
+      "source_line": 203,
+      "source_file_sha256": "a981c8fa7a4da18c6f81ad63796a57b4e8e57562f153cf88a5228168ae24fee4",
+      "title": "specialist skills localize, search and open their official copies without rewriting stored content",
+      "failure_block_raw_line_start": 115307,
+      "failure_block_raw_line_end": 115322,
+      "failure_block_sha256": "1a35d9698fe2127b6ca9399565c6297190e0a870b4e0686099e62fb62829ca4d",
+      "runner_event_raw_line": 114644,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/localized-template-default-a9f16-ut-rewriting-stored-content-chromium/trace.zip",
+          "exists": true,
+          "sha256": "82b868ffc65b4a33307bd66ad4f4b8c1f5cb0c472509260290cf9f68729daffd"
+        }
+      ]
+    },
+    {
+      "failure_number": 29,
+      "project": "chromium",
+      "planned_ordinal": 400,
+      "runner_result": "failed",
+      "source_file": "e2e/localized-template-defaults.spec.ts",
+      "source_line": 405,
+      "source_file_sha256": "a981c8fa7a4da18c6f81ad63796a57b4e8e57562f153cf88a5228168ae24fee4",
+      "title": "Chinese squad staffing creates localized roles and English restaffing preserves customized agents",
+      "failure_block_raw_line_start": 115323,
+      "failure_block_raw_line_end": 115338,
+      "failure_block_sha256": "ecdcad74adae62a3763545342a1df98ac4f0014423a276b8928f3242b028b517",
+      "runner_event_raw_line": 114649,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/localized-template-default-44812-preserves-customized-agents-chromium/trace.zip",
+          "exists": true,
+          "sha256": "ad235190768c70822ebdbc9d9dfa8cb29503ba9e6981d14124e32bfe181227c1"
+        }
+      ]
+    },
+    {
+      "failure_number": 30,
+      "project": "chromium",
+      "planned_ordinal": 401,
+      "runner_result": "failed",
+      "source_file": "e2e/localized-template-defaults.spec.ts",
+      "source_line": 437,
+      "source_file_sha256": "a981c8fa7a4da18c6f81ad63796a57b4e8e57562f153cf88a5228168ae24fee4",
+      "title": "a localized name collision leaves no partial squad and does not block English role names",
+      "failure_block_raw_line_start": 115339,
+      "failure_block_raw_line_end": 115354,
+      "failure_block_sha256": "84dbe34379ba16193837b33e36f61cb6370ef4d4b1a23a8d00e92f13342b3bea",
+      "runner_event_raw_line": 114654,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/localized-template-default-5202a-ot-block-English-role-names-chromium/trace.zip",
+          "exists": true,
+          "sha256": "afea01252eb64a50146fefcd97997a03ec7bc97556caccfcb0809a3225bcfcda"
+        }
+      ]
+    },
+    {
+      "failure_number": 31,
+      "project": "chromium",
+      "planned_ordinal": 379,
+      "runner_result": "failed",
+      "source_file": "e2e/main-supplemental-qa.spec.ts",
+      "source_line": 69,
+      "source_file_sha256": "828bb291121c73536b6481ebbcbd6cad611f358320dac52515b6e2417e785fa1",
+      "title": "real email code login survives refresh and logout protects the workspace",
+      "failure_block_raw_line_start": 115355,
+      "failure_block_raw_line_end": 115374,
+      "failure_block_sha256": "a9d74b88d11cd933683c80473861e1e56f1698f2c416a59e081975b680b973aa",
+      "runner_event_raw_line": 114552,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/main-supplemental-qa-real--a28d9-gout-protects-the-workspace-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+        },
+        {
+          "relative_path": "test-results/main-supplemental-qa-real--a28d9-gout-protects-the-workspace-chromium/trace.zip",
+          "exists": true,
+          "sha256": "3379ad23c24c76f5fc9232a025a02174acc688d78586e38622119072d3038bc8"
+        }
+      ]
+    },
+    {
+      "failure_number": 32,
+      "project": "chromium",
+      "planned_ordinal": 380,
+      "runner_result": "failed",
+      "source_file": "e2e/main-supplemental-qa.spec.ts",
+      "source_line": 109,
+      "source_file_sha256": "828bb291121c73536b6481ebbcbd6cad611f358320dac52515b6e2417e785fa1",
+      "title": "manual issue status, priority and comment persist through refresh and confirmed deletion",
+      "failure_block_raw_line_start": 115375,
+      "failure_block_raw_line_end": 115394,
+      "failure_block_sha256": "1724770f9e512889992eccfe659520ddb2a2bb69a22af90a080ee22158af65bb",
+      "runner_event_raw_line": 114557,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/main-supplemental-qa-manua-4f864-resh-and-confirmed-deletion-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+        },
+        {
+          "relative_path": "test-results/main-supplemental-qa-manua-4f864-resh-and-confirmed-deletion-chromium/trace.zip",
+          "exists": true,
+          "sha256": "d54cec8f44797c55ea5988802e46dcd5de070c375c1c10097a8f0da4970dae10"
+        }
+      ]
+    },
+    {
+      "failure_number": 33,
+      "project": "chromium",
+      "planned_ordinal": 381,
+      "runner_result": "failed",
+      "source_file": "e2e/main-supplemental-qa.spec.ts",
+      "source_line": 165,
+      "source_file_sha256": "828bb291121c73536b6481ebbcbd6cad611f358320dac52515b6e2417e785fa1",
+      "title": "an onboarded member creates another workspace through Welcome, About you and runtime",
+      "failure_block_raw_line_start": 115395,
+      "failure_block_raw_line_end": 115414,
+      "failure_block_sha256": "691e68b7234b3cbe1a9b6a71cbb1f73d23582e1d99017067d36e19bd0eb60a53",
+      "runner_event_raw_line": 114562,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/main-supplemental-qa-an-on-8daee-lcome-About-you-and-runtime-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+        },
+        {
+          "relative_path": "test-results/main-supplemental-qa-an-on-8daee-lcome-About-you-and-runtime-chromium/trace.zip",
+          "exists": true,
+          "sha256": "25fe2420c55178a04b14ea903622e0a04638d7862137f995f12435ec4b2769c5"
+        }
+      ]
+    },
+    {
+      "failure_number": 34,
+      "project": "chromium",
+      "planned_ordinal": 382,
+      "runner_result": "failed",
+      "source_file": "e2e/progress-reporting.spec.ts",
+      "source_line": 230,
+      "source_file_sha256": "68789e151c6c2bbb1997b5d62285eaeedde297f8be59588519aa5cbfd054361d",
+      "title": "publishes one built-in reporter and adjacent daily and weekly templates",
+      "failure_block_raw_line_start": 115415,
+      "failure_block_raw_line_end": 115434,
+      "failure_block_sha256": "21930579dc1444197758c7786a28796e532d1399e60cd247dbe98235c31bb025",
+      "runner_event_raw_line": 114567,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/progress-reporting-publish-b95d9--daily-and-weekly-templates-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+        },
+        {
+          "relative_path": "test-results/progress-reporting-publish-b95d9--daily-and-weekly-templates-chromium/trace.zip",
+          "exists": true,
+          "sha256": "cdebf390c7b10b19f13d3bed44b14985ef592eef9e57e398ed26a252114db945"
+        }
+      ]
+    },
+    {
+      "failure_number": 35,
+      "project": "chromium",
+      "planned_ordinal": 383,
+      "runner_result": "failed",
+      "source_file": "e2e/progress-reporting.spec.ts",
+      "source_line": 261,
+      "source_file_sha256": "68789e151c6c2bbb1997b5d62285eaeedde297f8be59588519aa5cbfd054361d",
+      "title": "creates the reporter from the Chinese catalog and reopens its ordinary agent",
+      "failure_block_raw_line_start": 115435,
+      "failure_block_raw_line_end": 115454,
+      "failure_block_sha256": "5f7c4f07af0b86fb2ac0cac009eb337dd422e68eab0c1b775d40f8c1589a3d92",
+      "runner_event_raw_line": 114572,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/progress-reporting-creates-d1adb--reopens-its-ordinary-agent-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+        },
+        {
+          "relative_path": "test-results/progress-reporting-creates-d1adb--reopens-its-ordinary-agent-chromium/trace.zip",
+          "exists": true,
+          "sha256": "8ef4dcbd0821dbed02599237955773fc5087626bdddb8821105326c61c07ceba"
+        }
+      ]
+    },
+    {
+      "failure_number": 36,
+      "project": "chromium",
+      "planned_ordinal": 384,
+      "runner_result": "failed",
+      "source_file": "e2e/progress-reporting.spec.ts",
+      "source_line": 353,
+      "source_file_sha256": "68789e151c6c2bbb1997b5d62285eaeedde297f8be59588519aa5cbfd054361d",
+      "title": "adopts daily and weekly reports and completes fixture delivery on only their report issues",
+      "failure_block_raw_line_start": 115455,
+      "failure_block_raw_line_end": 115474,
+      "failure_block_sha256": "53adca45c418f1b8e47c5f7c6bbcb815d2d8fb58e1eeb9be685a96c136dfa011",
+      "runner_event_raw_line": 114577,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/progress-reporting-adopts--adc85-on-only-their-report-issues-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+        },
+        {
+          "relative_path": "test-results/progress-reporting-adopts--adc85-on-only-their-report-issues-chromium/trace.zip",
+          "exists": true,
+          "sha256": "a73f2a71708c13e2f13850352bed5cdb6c3d0c1269454de5605477760d011258"
+        }
+      ]
+    },
+    {
+      "failure_number": 37,
+      "project": "chromium",
+      "planned_ordinal": 402,
+      "runner_result": "failed",
+      "source_file": "e2e/quick-create-actor-picker-phase2.spec.ts",
+      "source_line": 56,
+      "source_file_sha256": "d95d2b030877eeab2309f6dacce4f12600caed15bada6cd39b16b9ace168a12a",
+      "title": "explicit default outranks accepted history and project candidates do not replace it",
+      "failure_block_raw_line_start": 115475,
+      "failure_block_raw_line_end": 115490,
+      "failure_block_sha256": "0273a05379d068c7d1ead6397d9394dcc3206c50f0653d1fce500238b37b0d37",
+      "runner_event_raw_line": 114659,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/quick-create-actor-picker--c45b7-andidates-do-not-replace-it-chromium/trace.zip",
+          "exists": true,
+          "sha256": "db64abdfa70f5b528f4b2c1f82e140e19228c70234700565243ec8ce7b9492de"
+        }
+      ]
+    },
+    {
+      "failure_number": 38,
+      "project": "chromium",
+      "planned_ordinal": 406,
+      "runner_result": "failed",
+      "source_file": "e2e/settings-preferences.spec.ts",
+      "source_line": 58,
+      "source_file_sha256": "b9b6041c93db6e669f23eb22df1cd1fe07a9f0e575c0c256db7b0c2a774391a4",
+      "title": "grouped settings remain reachable from the sidebar and floating chat survives navigation and reload",
+      "failure_block_raw_line_start": 115491,
+      "failure_block_raw_line_end": 115506,
+      "failure_block_sha256": "ab2fb40f65176fafccf109ab0e737107d94bba64fc2a3b2b30ed3b89d338f989",
+      "runner_event_raw_line": 114667,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/settings-preferences-group-067fd-vives-navigation-and-reload-chromium/trace.zip",
+          "exists": true,
+          "sha256": "d091c26f2b392e8194ac9e82302f9ebcd9ddac01c3c02cd50e74d3fb9c4e74c5"
+        }
+      ]
+    },
+    {
+      "failure_number": 39,
+      "project": "chromium",
+      "planned_ordinal": 407,
+      "runner_result": "failed",
+      "source_file": "e2e/settings-preferences.spec.ts",
+      "source_line": 107,
+      "source_file_sha256": "b9b6041c93db6e669f23eb22df1cd1fe07a9f0e575c0c256db7b0c2a774391a4",
+      "title": "hidden manual issue fields persist and remain usable through the overflow menu",
+      "failure_block_raw_line_start": 115507,
+      "failure_block_raw_line_end": 115522,
+      "failure_block_sha256": "6dd89c230169aaa0ca693b8fff7263c09ed12ef4f062bc9ebed5b143d02fd1a0",
+      "runner_event_raw_line": 114672,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/settings-preferences-hidde-af0f8-e-through-the-overflow-menu-chromium/trace.zip",
+          "exists": true,
+          "sha256": "23077be0a3e9eb26cde5254012685411479abb699906e575fd50ad8b9747264b"
+        }
+      ]
+    },
+    {
+      "failure_number": 40,
+      "project": "chromium",
+      "planned_ordinal": 385,
+      "runner_result": "failed",
+      "source_file": "e2e/task-lifecycle-qa.spec.ts",
+      "source_line": 21,
+      "source_file_sha256": "8c8e374ad37a56e7bcb33b196af45e003170346527268f682c09d5f9d7b3952c",
+      "title": "persists a manually created feature request through edits, workflow, comments and confirmed deletion",
+      "failure_block_raw_line_start": 115523,
+      "failure_block_raw_line_end": 115542,
+      "failure_block_sha256": "8aee80ed87e15d6662309ffdc5408c848d759e199aa7c80770d21453f948ab33",
+      "runner_event_raw_line": 114582,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/task-lifecycle-qa-persists-f61b6-ents-and-confirmed-deletion-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "27abb4affaed83ae85739b62b71e5e860d2e6ee7b4fa91c915f5a3c26227b944"
+        },
+        {
+          "relative_path": "test-results/task-lifecycle-qa-persists-f61b6-ents-and-confirmed-deletion-chromium/trace.zip",
+          "exists": true,
+          "sha256": "91ddf0d92155cc899644bf0be109d7d47a1b4d2c027f0cda0fc8f9f720046bb3"
+        }
+      ]
+    },
+    {
+      "failure_number": 41,
+      "project": "chromium",
+      "planned_ordinal": 386,
+      "runner_result": "failed",
+      "source_file": "e2e/upstream-selected-fixes.spec.ts",
+      "source_line": 128,
+      "source_file_sha256": "75ac4bd2f06e7be0a7b66e9b9ce2ace1896364c7c9feeb071b770f031c930b25",
+      "title": "selectively merged upstream regressions › keeps the full Chinese and emoji comment behind active and archived Inbox previews",
+      "failure_block_raw_line_start": 115543,
+      "failure_block_raw_line_end": 115562,
+      "failure_block_sha256": "1d5c11137f9db285f1cbe85ba53218321f052cf00b2d9d49a84447e117ab392d",
+      "runner_event_raw_line": 114587,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/upstream-selected-fixes-se-894f5-and-archived-Inbox-previews-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "27abb4affaed83ae85739b62b71e5e860d2e6ee7b4fa91c915f5a3c26227b944"
+        },
+        {
+          "relative_path": "test-results/upstream-selected-fixes-se-894f5-and-archived-Inbox-previews-chromium/trace.zip",
+          "exists": true,
+          "sha256": "159863fcdff60a260f7809d1f62deb08821f7aae47da4e516aed9d275b8d29cd"
+        }
+      ]
+    },
+    {
+      "failure_number": 42,
+      "project": "chromium",
+      "planned_ordinal": 387,
+      "runner_result": "failed",
+      "source_file": "e2e/upstream-selected-fixes.spec.ts",
+      "source_line": 197,
+      "source_file_sha256": "75ac4bd2f06e7be0a7b66e9b9ce2ace1896364c7c9feeb071b770f031c930b25",
+      "title": "selectively merged upstream regressions › keeps one usable Inbox sidebar toggle in split view and a way back at compact widths",
+      "failure_block_raw_line_start": 115563,
+      "failure_block_raw_line_end": 115582,
+      "failure_block_sha256": "4f63641ad67469612a6daed0120c4ce6dd1145ec2055f500d5ab65ead2399ba7",
+      "runner_event_raw_line": 114592,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/upstream-selected-fixes-se-f3995--way-back-at-compact-widths-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "27abb4affaed83ae85739b62b71e5e860d2e6ee7b4fa91c915f5a3c26227b944"
+        },
+        {
+          "relative_path": "test-results/upstream-selected-fixes-se-f3995--way-back-at-compact-widths-chromium/trace.zip",
+          "exists": true,
+          "sha256": "8cd48c2e8fbeffe6770e02ddee72f703712e7181e9ce41540fa3bc05a02514ff"
+        }
+      ]
+    },
+    {
+      "failure_number": 43,
+      "project": "chromium",
+      "planned_ordinal": 388,
+      "runner_result": "failed",
+      "source_file": "e2e/upstream-selected-fixes.spec.ts",
+      "source_line": 243,
+      "source_file_sha256": "75ac4bd2f06e7be0a7b66e9b9ce2ace1896364c7c9feeb071b770f031c930b25",
+      "title": "selectively merged upstream regressions › edits a bullet inside a checkbox and persists the selected list level after reopening",
+      "failure_block_raw_line_start": 115583,
+      "failure_block_raw_line_end": 115602,
+      "failure_block_sha256": "07b2a608bc54ced419598f6058188b3f24b78e9d905d01af206d4bbd1a218182",
+      "runner_event_raw_line": 114597,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/upstream-selected-fixes-se-c77ee--list-level-after-reopening-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "27abb4affaed83ae85739b62b71e5e860d2e6ee7b4fa91c915f5a3c26227b944"
+        },
+        {
+          "relative_path": "test-results/upstream-selected-fixes-se-c77ee--list-level-after-reopening-chromium/trace.zip",
+          "exists": true,
+          "sha256": "5fcef85e5af443a9550138b1265aed09e8a940488c069fa7798cbccd4e875ad9"
+        }
+      ]
+    },
+    {
+      "failure_number": 44,
+      "project": "chromium",
+      "planned_ordinal": 389,
+      "runner_result": "failed",
+      "source_file": "e2e/upstream-selected-fixes.spec.ts",
+      "source_line": 293,
+      "source_file_sha256": "75ac4bd2f06e7be0a7b66e9b9ce2ace1896364c7c9feeb071b770f031c930b25",
+      "title": "selectively merged upstream regressions › defers hidden private runtime version 0.4.40 to the server's quick-create gate",
+      "failure_block_raw_line_start": 115603,
+      "failure_block_raw_line_end": 115622,
+      "failure_block_sha256": "98809ce638ef4648f46e193998888cd804213f71a6759399127e6b7c46e95ec1",
+      "runner_event_raw_line": 114602,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/upstream-selected-fixes-se-e9b35--server-s-quick-create-gate-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "27abb4affaed83ae85739b62b71e5e860d2e6ee7b4fa91c915f5a3c26227b944"
+        },
+        {
+          "relative_path": "test-results/upstream-selected-fixes-se-e9b35--server-s-quick-create-gate-chromium/trace.zip",
+          "exists": true,
+          "sha256": "7211940535aa799c50859edad821aedb079b592fa7813cc221b1594993100abe"
+        }
+      ]
+    },
+    {
+      "failure_number": 45,
+      "project": "chromium",
+      "planned_ordinal": 390,
+      "runner_result": "failed",
+      "source_file": "e2e/upstream-selected-fixes.spec.ts",
+      "source_line": 293,
+      "source_file_sha256": "75ac4bd2f06e7be0a7b66e9b9ce2ace1896364c7c9feeb071b770f031c930b25",
+      "title": "selectively merged upstream regressions › defers hidden private runtime version 0.0.1 to the server's quick-create gate",
+      "failure_block_raw_line_start": 115623,
+      "failure_block_raw_line_end": 115642,
+      "failure_block_sha256": "f99ca466d4543c20200e66ceafd4638acc2c128687c8caaf01375e8cb0530c9c",
+      "runner_event_raw_line": 114607,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/upstream-selected-fixes-se-29eac--server-s-quick-create-gate-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "27abb4affaed83ae85739b62b71e5e860d2e6ee7b4fa91c915f5a3c26227b944"
+        },
+        {
+          "relative_path": "test-results/upstream-selected-fixes-se-29eac--server-s-quick-create-gate-chromium/trace.zip",
+          "exists": true,
+          "sha256": "e710df476de68285f69b430c0c2b94d075cb5f2c9504a021e7243ff436a5bbcc"
+        }
+      ]
+    },
+    {
+      "failure_number": 46,
+      "project": "chromium",
+      "planned_ordinal": 411,
+      "runner_result": "failed",
+      "source_file": "e2e/workspace-name-series.spec.ts",
+      "source_line": 11,
+      "source_file_sha256": "521166bc8e334cec2c2adc271dfd03142ee81b087af13d29ee821a7876a288b1",
+      "title": "en naming preference survives reload and generated workspace preserves manual URL and prefix",
+      "failure_block_raw_line_start": 115643,
+      "failure_block_raw_line_end": 115654,
+      "failure_block_sha256": "b86ff70fad9a8c263eb253d7fbb57e8b6e72a2fa9a116d62e9183e4ac1e252d6",
+      "runner_event_raw_line": 114692,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/workspace-name-series-en-n-510a2-erves-manual-URL-and-prefix-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+        }
+      ]
+    },
+    {
+      "failure_number": 47,
+      "project": "chromium",
+      "planned_ordinal": 412,
+      "runner_result": "failed",
+      "source_file": "e2e/workspace-name-series.spec.ts",
+      "source_line": 11,
+      "source_file_sha256": "521166bc8e334cec2c2adc271dfd03142ee81b087af13d29ee821a7876a288b1",
+      "title": "zh-Hans naming preference survives reload and generated workspace preserves manual URL and prefix",
+      "failure_block_raw_line_start": 115655,
+      "failure_block_raw_line_end": 115666,
+      "failure_block_sha256": "47d265658e3e36d7db0d835be11b8020a6c2f228280056d78a175520217ac0e8",
+      "runner_event_raw_line": 114697,
+      "direct_PG_capacity_error": true,
+      "classification": "direct_pg_capacity",
+      "failure_point": "PostgreSQL connection handshake; retained stack ends in pg-protocol/src/parser.ts:394,212,105 and index.ts:7",
+      "sanitized_error": "error: sorry, too many clients already",
+      "capacity_relation": "direct",
+      "confidence": "high",
+      "callsite_limit": "The pg event stack does not preserve the exact caller in this test; no claim that its business assertions ran or passed.",
+      "recommendation": "Preserve failure; re-execute on the new isolated candidate after a controlled aggregate connection budget. No product assertion is disproved or proven by this setup failure.",
+      "retained_artifacts": [
+        {
+          "relative_path": "test-results/workspace-name-series-zh-H-f5a02-erves-manual-URL-and-prefix-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+        }
+      ]
+    }
+  ],
+  "did_not_run": [
+    {
+      "raw_log_line": 114738,
+      "status_marker": "-",
+      "planned_ordinal": 433,
+      "project": "chromium",
+      "source_file": "e2e/collaboration-knowledge.spec.ts",
+      "source_line": 105,
+      "title": "Web required memory purge clears open source and managed target material",
+      "runner_result": "did_not_run",
+      "source_file_sha256": "05734ae588cae269dc6131d785f4bbbaaf1a9be834c85ba6e5e278c10b9ae015",
+      "classification": "downstream_of_suite_beforeAll_pg_capacity",
+      "parent_failure_number": 6,
+      "evidence": "Same file beforeAll gate connection failed on planned432 with direct PG capacity error; Playwright1.58.2 worker marks remaining tests skipTestsDueToSetupFailure. No assertion body evidence or successful skip."
+    },
+    {
+      "raw_log_line": 114739,
+      "status_marker": "-",
+      "planned_ordinal": 434,
+      "project": "chromium",
+      "source_file": "e2e/collaboration-knowledge.spec.ts",
+      "source_line": 137,
+      "title": "Web original-key recovery stays locked after ambiguity and recovers by GET after reload",
+      "runner_result": "did_not_run",
+      "source_file_sha256": "05734ae588cae269dc6131d785f4bbbaaf1a9be834c85ba6e5e278c10b9ae015",
+      "classification": "downstream_of_suite_beforeAll_pg_capacity",
+      "parent_failure_number": 6,
+      "evidence": "Same file beforeAll gate connection failed on planned432 with direct PG capacity error; Playwright1.58.2 worker marks remaining tests skipTestsDueToSetupFailure. No assertion body evidence or successful skip."
+    },
+    {
+      "raw_log_line": 114740,
+      "status_marker": "-",
+      "planned_ordinal": 435,
+      "project": "chromium",
+      "source_file": "e2e/collaboration-knowledge.spec.ts",
+      "source_line": 179,
+      "title": "Web definitive unapplied refusal unlocks the draft for a new request",
+      "runner_result": "did_not_run",
+      "source_file_sha256": "05734ae588cae269dc6131d785f4bbbaaf1a9be834c85ba6e5e278c10b9ae015",
+      "classification": "downstream_of_suite_beforeAll_pg_capacity",
+      "parent_failure_number": 6,
+      "evidence": "Same file beforeAll gate connection failed on planned432 with direct PG capacity error; Playwright1.58.2 worker marks remaining tests skipTestsDueToSetupFailure. No assertion body evidence or successful skip."
+    },
+    {
+      "raw_log_line": 114741,
+      "status_marker": "-",
+      "planned_ordinal": 436,
+      "project": "chromium",
+      "source_file": "e2e/collaboration-knowledge.spec.ts",
+      "source_line": 205,
+      "title": "Web recorded-run source is selected through the authorized reader",
+      "runner_result": "did_not_run",
+      "source_file_sha256": "05734ae588cae269dc6131d785f4bbbaaf1a9be834c85ba6e5e278c10b9ae015",
+      "classification": "downstream_of_suite_beforeAll_pg_capacity",
+      "parent_failure_number": 6,
+      "evidence": "Same file beforeAll gate connection failed on planned432 with direct PG capacity error; Playwright1.58.2 worker marks remaining tests skipTestsDueToSetupFailure. No assertion body evidence or successful skip."
+    },
+    {
+      "raw_log_line": 114742,
+      "status_marker": "-",
+      "planned_ordinal": 437,
+      "project": "chromium",
+      "source_file": "e2e/collaboration-knowledge.spec.ts",
+      "source_line": 223,
+      "title": "Web target-only administrator loses source material but can withdraw",
+      "runner_result": "did_not_run",
+      "source_file_sha256": "05734ae588cae269dc6131d785f4bbbaaf1a9be834c85ba6e5e278c10b9ae015",
+      "classification": "downstream_of_suite_beforeAll_pg_capacity",
+      "parent_failure_number": 6,
+      "evidence": "Same file beforeAll gate connection failed on planned432 with direct PG capacity error; Playwright1.58.2 worker marks remaining tests skipTestsDueToSetupFailure. No assertion body evidence or successful skip."
+    },
+    {
+      "raw_log_line": 114743,
+      "status_marker": "-",
+      "planned_ordinal": 438,
+      "project": "chromium",
+      "source_file": "e2e/collaboration-knowledge.spec.ts",
+      "source_line": 256,
+      "title": "Web expiry clears active target material when refresh fails",
+      "runner_result": "did_not_run",
+      "source_file_sha256": "05734ae588cae269dc6131d785f4bbbaaf1a9be834c85ba6e5e278c10b9ae015",
+      "classification": "downstream_of_suite_beforeAll_pg_capacity",
+      "parent_failure_number": 6,
+      "evidence": "Same file beforeAll gate connection failed on planned432 with direct PG capacity error; Playwright1.58.2 worker marks remaining tests skipTestsDueToSetupFailure. No assertion body evidence or successful skip."
+    },
+    {
+      "raw_log_line": 114744,
+      "status_marker": "-",
+      "planned_ordinal": 439,
+      "project": "chromium",
+      "source_file": "e2e/collaboration-knowledge.spec.ts",
+      "source_line": 284,
+      "title": "Desktop native source review and independent project/workspace contributions",
+      "runner_result": "did_not_run",
+      "source_file_sha256": "05734ae588cae269dc6131d785f4bbbaaf1a9be834c85ba6e5e278c10b9ae015",
+      "classification": "downstream_of_suite_beforeAll_pg_capacity",
+      "parent_failure_number": 6,
+      "evidence": "Same file beforeAll gate connection failed on planned432 with direct PG capacity error; Playwright1.58.2 worker marks remaining tests skipTestsDueToSetupFailure. No assertion body evidence or successful skip."
+    }
+  ],
+  "reported_skipped_source_inventory": [
+    {
+      "source_file": "e2e/admin-collaboration-switches.spec.ts",
+      "count": 1,
+      "source_sha256": "a4eac06e94bdfbcfb42c57f0b3b3f1fd18e18e8615e16d69aa53e481c00c89bc",
+      "source_guard_line_numbers": [
+        24
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/admin-resource-publishing.spec.ts",
+      "count": 3,
+      "source_sha256": "7b44f4b2673707f0c2c9c4cc5c5a05c4e9d5537bba23390693453684b4e2d22c",
+      "source_guard_line_numbers": [
+        166
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/auth-device.spec.ts",
+      "count": 1,
+      "source_sha256": "674d1eaf4c509a739ad7d702b733d3c9b84b56e87259469cffc9e0e9a8aa3551",
+      "source_guard_line_numbers": [
+        6
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/changelog.spec.ts",
+      "count": 1,
+      "source_sha256": "36fbbfcf9f97ee3b007ff537a7c8fa0dd6bf009fbf31211677084c7b4557207d",
+      "source_guard_line_numbers": [
+        100
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/cli-forbidden-reason.spec.ts",
+      "count": 3,
+      "source_sha256": "310229b9f0c0c3ef22ef8a4928cb3db1388c23be6f9323842b0ad79c5fc09a31",
+      "source_guard_line_numbers": [
+        80
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-administration-desktop.spec.ts",
+      "count": 1,
+      "source_sha256": "b04bf8e9d3be24695c72feb16ac731dca0e9cc5e5582adfefcd507b497a3b79b",
+      "source_guard_line_numbers": [
+        13
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-administration-web.spec.ts",
+      "count": 1,
+      "source_sha256": "c21ac3ab9b0454577b06138295f30ae739d8f663101917c54cd48d2b0cd85a0c",
+      "source_guard_line_numbers": [
+        63
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-control-journey-desktop.spec.ts",
+      "count": 2,
+      "source_sha256": "705b5648f4a675ab43283688e0145dbf6b7f6544eb38fed64e0f2e7214f62c01",
+      "source_guard_line_numbers": [
+        16
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-control-journey-web.spec.ts",
+      "count": 2,
+      "source_sha256": "4e1e3b5cb93e536feff9973aa49ccba6295f2a6a014d166d355052b9831026c2",
+      "source_guard_line_numbers": [
+        12
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-cross-client-execution.spec.ts",
+      "count": 1,
+      "source_sha256": "3485662826b2afc9ab82dadbbe3e3d71dfad6bcb9c3bee9c4419c63a6d3b5416",
+      "source_guard_line_numbers": [
+        18
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-handoff-chain-desktop.spec.ts",
+      "count": 1,
+      "source_sha256": "9444fa57fef1fa73641dbced0409eb606d22e0ad44992990526684e30cdb1e1d",
+      "source_guard_line_numbers": [
+        18
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-handoff-chain-web.spec.ts",
+      "count": 1,
+      "source_sha256": "c5d29e955de515eb43c09952e6cb594f5ce71e842cc94ba2800a5aebb269b098",
+      "source_guard_line_numbers": [
+        13
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-host-installed.spec.ts",
+      "count": 1,
+      "source_sha256": "2ca4a3b659fd8a6693d19dee23c587a107ddbce1f07f02c7efe5f9653b288fbe",
+      "source_guard_line_numbers": [
+        42
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-host-runtime.spec.ts",
+      "count": 1,
+      "source_sha256": "89def39e2af39aceb9f03c6d0aa4bc54cc0f29397e08e4ac1cc97286c6ed2c54",
+      "source_guard_line_numbers": [
+        17
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-host-squad.spec.ts",
+      "count": 1,
+      "source_sha256": "836d1dd8934d058f27fdfb37207da60c68af7c874e7a555743625aeb91058051",
+      "source_guard_line_numbers": [
+        15
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-host-switch.spec.ts",
+      "count": 1,
+      "source_sha256": "77987dcae044ef2d99ec8ae54082fbdcb4094e6fadbc2fa50e0f53574be87fac",
+      "source_guard_line_numbers": [
+        16
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-installed-clients.spec.ts",
+      "count": 1,
+      "source_sha256": "f556266ea6cf579b05ab3f6d2e21fe8c2f38552a0a6ee0a3e77a194511965f17",
+      "source_guard_line_numbers": [
+        30
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-installed-main.spec.ts",
+      "count": 1,
+      "source_sha256": "f39a78039513ef60efb57b4fdcf3aee4ac0b4de9e854ff17f91ddad2516d0bfa",
+      "source_guard_line_numbers": [
+        142
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-knowledge-deployed.spec.ts",
+      "count": 1,
+      "source_sha256": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+      "source_guard_line_numbers": [
+        18
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-lane-close-controls.spec.ts",
+      "count": 6,
+      "source_sha256": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+      "source_guard_line_numbers": [
+        96,
+        102
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-leave-web.spec.ts",
+      "count": 1,
+      "source_sha256": "8f31756ec537294c57b777e1258e660440197a63706d735e368b8e5d08bf1623",
+      "source_guard_line_numbers": [
+        15
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-lifecycle-controls.spec.ts",
+      "count": 2,
+      "source_sha256": "da1bc19cb1fbd6074b6b9b85df47a89e05730e2608a0997b19724d66915a1fd4",
+      "source_guard_line_numbers": [
+        16
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-live-revoke-web.spec.ts",
+      "count": 1,
+      "source_sha256": "25edb2607a927196ba3d21315261eb3775e7b0446c9fa203d0e86186780d3594",
+      "source_guard_line_numbers": [
+        15
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-memory-runtime.spec.ts",
+      "count": 1,
+      "source_sha256": "e98ce55df69b6f39b3d9bbd7ff2c45fd97e57819443e0a1673679cf4858ef8db",
+      "source_guard_line_numbers": [
+        23
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-offline-handoff.spec.ts",
+      "count": 2,
+      "source_sha256": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e",
+      "source_guard_line_numbers": [
+        14
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-offline-result-notifications.spec.ts",
+      "count": 2,
+      "source_sha256": "86a2efd01f7d4e67bc83fb9452fb7fb1c22d7d8542045920aedc3f9166c8f117",
+      "source_guard_line_numbers": [
+        17
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-retained-attachment.spec.ts",
+      "count": 3,
+      "source_sha256": "ad691690e092dec6ba07a1df38a0cc4106477b0d84ac7f62ef9b70da30766f23",
+      "source_guard_line_numbers": [
+        143,
+        158
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-runtime-handoff-desktop.spec.ts",
+      "count": 1,
+      "source_sha256": "e03c98ba0a2db74f5f911bfff05990a3685abfbc77235bbe681d89afe227a540",
+      "source_guard_line_numbers": [
+        16
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-runtime-handoff-web.spec.ts",
+      "count": 2,
+      "source_sha256": "e3b9858499b2e83cbef1e0010b06e766a7c98f8b45b69620befb22c3de2e35ac",
+      "source_guard_line_numbers": [
+        11,
+        49
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-selection-boundary.spec.ts",
+      "count": 1,
+      "source_sha256": "8d9db48f0e172c5fd57283bcd06a7725d9a3945f8643d339caa8d1bbc55e403f",
+      "source_guard_line_numbers": [
+        14
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-source-surface.spec.ts",
+      "count": 1,
+      "source_sha256": "639214a9ceea2f0371e0a9cccb9863bcfbdf38067537c21c5f9c4a6dc173ea47",
+      "source_guard_line_numbers": [
+        13
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/collaboration-terminal-reopen-web.spec.ts",
+      "count": 1,
+      "source_sha256": "1acacf4e861c2ab7104dcc231f2a39ebdd9b19ee748e0c3dd3fc2175ff3f1788",
+      "source_guard_line_numbers": [
+        14
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/issue-assist-flow.spec.ts",
+      "count": 8,
+      "source_sha256": "8095037ed04d084f43ddc087e34aba61897a10d4c338ea95948e3dedc8613a22",
+      "source_guard_line_numbers": [
+        56
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/mcp-desktop.spec.ts",
+      "count": 1,
+      "source_sha256": "8bd94d34fd158fcb5f559757b2ccb6ff2f144751babb717260c1242a7ea1a56d",
+      "source_guard_line_numbers": [
+        80
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/password-binding-desktop.spec.ts",
+      "count": 1,
+      "source_sha256": "6053bb611430449fc3620c445be2c0262f6982cfcfa929214b2da90259db8270",
+      "source_guard_line_numbers": [
+        11
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/password-branches.spec.ts",
+      "count": 12,
+      "source_sha256": "d4e63b3b892644a71131ffc9637172dbc8aed2ae003c0ea23d879317f02f96e9",
+      "source_guard_line_numbers": [
+        39
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/password-migration.spec.ts",
+      "count": 2,
+      "source_sha256": "8aa10a3cb68ee9c9fedb475d98907c60ff21575f986bb157042790b907a3c377",
+      "source_guard_line_numbers": [
+        10
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/password-registration.spec.ts",
+      "count": 2,
+      "source_sha256": "f9034c42647a0d4cfea3e1fa80f8fe5d1d40928b0293b6b1fe051f63382d40af",
+      "source_guard_line_numbers": [
+        6
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/password-server-switch.spec.ts",
+      "count": 1,
+      "source_sha256": "4f0831ad3c9d0f7f4b6560e36cce8bcb0413ac8aafc067eb72abaebaaacbab47",
+      "source_guard_line_numbers": [
+        17
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/platform-admin-accounts.spec.ts",
+      "count": 1,
+      "source_sha256": "c4c1df0b5a5647864c41e2434bab8e0a677c9d2c675e961b881bf34aea97c720",
+      "source_guard_line_numbers": [
+        22
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/platform-admin-controls.spec.ts",
+      "count": 1,
+      "source_sha256": "4b463a1fc847ded89f72b8486c04c8266b2a1bbbaea3c451a0b6047ce122646f",
+      "source_guard_line_numbers": [
+        9
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/platform-admin-executions.spec.ts",
+      "count": 1,
+      "source_sha256": "a93f0469f40b25b87dfa0b0b76d9bd183c5c43fb9f0746fb13821e4dad8ded60",
+      "source_guard_line_numbers": [
+        9
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/platform-admin-initialization.spec.ts",
+      "count": 1,
+      "source_sha256": "b6c279e6cce39f845670cbbc8919f2a981570a14c9c59c1e2106038d99800868",
+      "source_guard_line_numbers": [
+        12
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/platform-admin-installations-read.spec.ts",
+      "count": 1,
+      "source_sha256": "45c11c37c76921b1a147d2c1b0d55f7efa976d43962a2e3da9ba8b69586e4f6d",
+      "source_guard_line_numbers": [
+        12
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/platform-admin-observability.spec.ts",
+      "count": 1,
+      "source_sha256": "aec5ef9ea4bff7f411677924d9bc64e8fee90178905a849a23ffe9c0abedd612",
+      "source_guard_line_numbers": [
+        14
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/platform-admin.spec.ts",
+      "count": 1,
+      "source_sha256": "f19f31b889fc0db9654d4f69fbcfa136ac53514bc62b0c5bce9554bcfd04a3ac",
+      "source_guard_line_numbers": [
+        34
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/quick-create-actor-picker-phase2.spec.ts",
+      "count": 3,
+      "source_sha256": "d95d2b030877eeab2309f6dacce4f12600caed15bada6cd39b16b9ace168a12a",
+      "source_guard_line_numbers": [
+        79,
+        119,
+        135
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    },
+    {
+      "source_file": "e2e/upstream-backports-cli.spec.ts",
+      "count": 3,
+      "source_sha256": "3a1dcb8ab1f5f317a69243178a73efd892e0bdf3da1534d535d7cec4ff42ca6a",
+      "source_guard_line_numbers": [
+        160
+      ],
+      "status": "reported_skipped_not_passed",
+      "guard_scope_note": "Source guard locations only; no claim that an optional or alternate-lane requirement is closed."
+    }
+  ],
+  "source_sha256": {
+    "e2e/autopilot-template-zh.spec.ts": "2ab24e2427633cc6e41279911fff24f0a319b3bbb29e7a6c89efafdb0de88360",
+    "e2e/chat-actor-picker.spec.ts": "d718f6776469c591418fd88cb34946370869977794b209d1150f4a6ae3d73374",
+    "e2e/collaboration-account-desktop.spec.ts": "163c92042219b895db49bb1f8c5afb4e0fdc86038c6e2f45c91358f962c3497c",
+    "e2e/collaboration-knowledge.spec.ts": "05734ae588cae269dc6131d785f4bbbaaf1a9be834c85ba6e5e278c10b9ae015",
+    "e2e/collaboration-memory-web.spec.ts": "a1955b3d99cdc2a0d53508451e17b65e75cab600ff0d1c90acc59c91304f743a",
+    "e2e/collaboration-mention-journeys-desktop.spec.ts": "515eb616f099e313002727a9bbf16d33727b9e83993942c570a1999cba4304e8",
+    "e2e/collaboration-preparation-records-desktop.spec.ts": "9aa833ddc18e7c5be8d1703b0911536f335f53b6c839e6fbfc7c446cd62d13b2",
+    "e2e/collaboration-preparation-records-web.spec.ts": "12d92bc59a2ca10a42441157332aa6c8dd00699af4be0737e2d612e17b652da3",
+    "e2e/collaboration-workbench-web.spec.ts": "6da18fcf83151f5c8fb35a16242df87ced2baa4838f586904025fe34fdd39334",
+    "e2e/issue-mutation-branches.spec.ts": "b813e81d015d480407a617e85f6b52ee724e817c7a20a413a87940478ce2b38f",
+    "e2e/lifecycle-handoff.spec.ts": "8233b0033be00f344525a73556d2d4c5588ee9582f76ec1ea88252d7ca197efb",
+    "e2e/localized-template-defaults.spec.ts": "a981c8fa7a4da18c6f81ad63796a57b4e8e57562f153cf88a5228168ae24fee4",
+    "e2e/main-supplemental-qa.spec.ts": "828bb291121c73536b6481ebbcbd6cad611f358320dac52515b6e2417e785fa1",
+    "e2e/progress-reporting.spec.ts": "68789e151c6c2bbb1997b5d62285eaeedde297f8be59588519aa5cbfd054361d",
+    "e2e/quick-create-actor-picker-phase2.spec.ts": "d95d2b030877eeab2309f6dacce4f12600caed15bada6cd39b16b9ace168a12a",
+    "e2e/settings-preferences.spec.ts": "b9b6041c93db6e669f23eb22df1cd1fe07a9f0e575c0c256db7b0c2a774391a4",
+    "e2e/task-lifecycle-qa.spec.ts": "8c8e374ad37a56e7bcb33b196af45e003170346527268f682c09d5f9d7b3952c",
+    "e2e/upstream-selected-fixes.spec.ts": "75ac4bd2f06e7be0a7b66e9b9ce2ace1896364c7c9feeb071b770f031c930b25",
+    "e2e/workspace-name-series.spec.ts": "521166bc8e334cec2c2adc271dfd03142ee81b087af13d29ee821a7876a288b1",
+    "e2e/admin-collaboration-switches.spec.ts": "a4eac06e94bdfbcfb42c57f0b3b3f1fd18e18e8615e16d69aa53e481c00c89bc",
+    "e2e/admin-resource-publishing.spec.ts": "7b44f4b2673707f0c2c9c4cc5c5a05c4e9d5537bba23390693453684b4e2d22c",
+    "e2e/auth-device.spec.ts": "674d1eaf4c509a739ad7d702b733d3c9b84b56e87259469cffc9e0e9a8aa3551",
+    "e2e/changelog.spec.ts": "36fbbfcf9f97ee3b007ff537a7c8fa0dd6bf009fbf31211677084c7b4557207d",
+    "e2e/cli-forbidden-reason.spec.ts": "310229b9f0c0c3ef22ef8a4928cb3db1388c23be6f9323842b0ad79c5fc09a31",
+    "e2e/collaboration-administration-desktop.spec.ts": "b04bf8e9d3be24695c72feb16ac731dca0e9cc5e5582adfefcd507b497a3b79b",
+    "e2e/collaboration-administration-web.spec.ts": "c21ac3ab9b0454577b06138295f30ae739d8f663101917c54cd48d2b0cd85a0c",
+    "e2e/collaboration-control-journey-desktop.spec.ts": "705b5648f4a675ab43283688e0145dbf6b7f6544eb38fed64e0f2e7214f62c01",
+    "e2e/collaboration-control-journey-web.spec.ts": "4e1e3b5cb93e536feff9973aa49ccba6295f2a6a014d166d355052b9831026c2",
+    "e2e/collaboration-cross-client-execution.spec.ts": "3485662826b2afc9ab82dadbbe3e3d71dfad6bcb9c3bee9c4419c63a6d3b5416",
+    "e2e/collaboration-handoff-chain-desktop.spec.ts": "9444fa57fef1fa73641dbced0409eb606d22e0ad44992990526684e30cdb1e1d",
+    "e2e/collaboration-handoff-chain-web.spec.ts": "c5d29e955de515eb43c09952e6cb594f5ce71e842cc94ba2800a5aebb269b098",
+    "e2e/collaboration-host-installed.spec.ts": "2ca4a3b659fd8a6693d19dee23c587a107ddbce1f07f02c7efe5f9653b288fbe",
+    "e2e/collaboration-host-runtime.spec.ts": "89def39e2af39aceb9f03c6d0aa4bc54cc0f29397e08e4ac1cc97286c6ed2c54",
+    "e2e/collaboration-host-squad.spec.ts": "836d1dd8934d058f27fdfb37207da60c68af7c874e7a555743625aeb91058051",
+    "e2e/collaboration-host-switch.spec.ts": "77987dcae044ef2d99ec8ae54082fbdcb4094e6fadbc2fa50e0f53574be87fac",
+    "e2e/collaboration-installed-clients.spec.ts": "f556266ea6cf579b05ab3f6d2e21fe8c2f38552a0a6ee0a3e77a194511965f17",
+    "e2e/collaboration-installed-main.spec.ts": "f39a78039513ef60efb57b4fdcf3aee4ac0b4de9e854ff17f91ddad2516d0bfa",
+    "e2e/collaboration-knowledge-deployed.spec.ts": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+    "e2e/collaboration-lane-close-controls.spec.ts": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+    "e2e/collaboration-leave-web.spec.ts": "8f31756ec537294c57b777e1258e660440197a63706d735e368b8e5d08bf1623",
+    "e2e/collaboration-lifecycle-controls.spec.ts": "da1bc19cb1fbd6074b6b9b85df47a89e05730e2608a0997b19724d66915a1fd4",
+    "e2e/collaboration-live-revoke-web.spec.ts": "25edb2607a927196ba3d21315261eb3775e7b0446c9fa203d0e86186780d3594",
+    "e2e/collaboration-memory-runtime.spec.ts": "e98ce55df69b6f39b3d9bbd7ff2c45fd97e57819443e0a1673679cf4858ef8db",
+    "e2e/collaboration-offline-handoff.spec.ts": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e",
+    "e2e/collaboration-offline-result-notifications.spec.ts": "86a2efd01f7d4e67bc83fb9452fb7fb1c22d7d8542045920aedc3f9166c8f117",
+    "e2e/collaboration-retained-attachment.spec.ts": "ad691690e092dec6ba07a1df38a0cc4106477b0d84ac7f62ef9b70da30766f23",
+    "e2e/collaboration-runtime-handoff-desktop.spec.ts": "e03c98ba0a2db74f5f911bfff05990a3685abfbc77235bbe681d89afe227a540",
+    "e2e/collaboration-runtime-handoff-web.spec.ts": "e3b9858499b2e83cbef1e0010b06e766a7c98f8b45b69620befb22c3de2e35ac",
+    "e2e/collaboration-selection-boundary.spec.ts": "8d9db48f0e172c5fd57283bcd06a7725d9a3945f8643d339caa8d1bbc55e403f",
+    "e2e/collaboration-source-surface.spec.ts": "639214a9ceea2f0371e0a9cccb9863bcfbdf38067537c21c5f9c4a6dc173ea47",
+    "e2e/collaboration-terminal-reopen-web.spec.ts": "1acacf4e861c2ab7104dcc231f2a39ebdd9b19ee748e0c3dd3fc2175ff3f1788",
+    "e2e/issue-assist-flow.spec.ts": "8095037ed04d084f43ddc087e34aba61897a10d4c338ea95948e3dedc8613a22",
+    "e2e/mcp-desktop.spec.ts": "8bd94d34fd158fcb5f559757b2ccb6ff2f144751babb717260c1242a7ea1a56d",
+    "e2e/password-binding-desktop.spec.ts": "6053bb611430449fc3620c445be2c0262f6982cfcfa929214b2da90259db8270",
+    "e2e/password-branches.spec.ts": "d4e63b3b892644a71131ffc9637172dbc8aed2ae003c0ea23d879317f02f96e9",
+    "e2e/password-migration.spec.ts": "8aa10a3cb68ee9c9fedb475d98907c60ff21575f986bb157042790b907a3c377",
+    "e2e/password-registration.spec.ts": "f9034c42647a0d4cfea3e1fa80f8fe5d1d40928b0293b6b1fe051f63382d40af",
+    "e2e/password-server-switch.spec.ts": "4f0831ad3c9d0f7f4b6560e36cce8bcb0413ac8aafc067eb72abaebaaacbab47",
+    "e2e/platform-admin-accounts.spec.ts": "c4c1df0b5a5647864c41e2434bab8e0a677c9d2c675e961b881bf34aea97c720",
+    "e2e/platform-admin-controls.spec.ts": "4b463a1fc847ded89f72b8486c04c8266b2a1bbbaea3c451a0b6047ce122646f",
+    "e2e/platform-admin-executions.spec.ts": "a93f0469f40b25b87dfa0b0b76d9bd183c5c43fb9f0746fb13821e4dad8ded60",
+    "e2e/platform-admin-initialization.spec.ts": "b6c279e6cce39f845670cbbc8919f2a981570a14c9c59c1e2106038d99800868",
+    "e2e/platform-admin-installations-read.spec.ts": "45c11c37c76921b1a147d2c1b0d55f7efa976d43962a2e3da9ba8b69586e4f6d",
+    "e2e/platform-admin-observability.spec.ts": "aec5ef9ea4bff7f411677924d9bc64e8fee90178905a849a23ffe9c0abedd612",
+    "e2e/platform-admin.spec.ts": "f19f31b889fc0db9654d4f69fbcfa136ac53514bc62b0c5bce9554bcfd04a3ac",
+    "e2e/upstream-backports-cli.spec.ts": "3a1dcb8ab1f5f317a69243178a73efd892e0bdf3da1534d535d7cec4ff42ca6a",
+    "e2e/fixtures.ts": "ec055f2f87f06bc18dbf0c5234a1ef5d4aefaba19f12395b48c97c19616506f2",
+    "e2e/fixtures/lane-guards.ts": "f83a83d0dcb4106664a52e3f018018a171f6ab00f4ca1624b57f6ebae61c0777",
+    "e2e/fixtures/collaboration-preparation-records.ts": "da962e1bef8d935d2b7c393ba6403324daea2c689729fa14ff28710da6321f8b",
+    "packages/views/collaboration/account-picker.tsx": "8cd5edb3273c7766b0686173912f6dd8fd2dc0d335589ee74b6d74ea6fc92959",
+    "packages/views/collaboration/workflow.tsx": "14d624ae3e5472042566b82d4c1faa93e764fa6090bb20b4b60a02344e0de7ef",
+    "packages/views/collaboration/workflow.test.tsx": "72cd50690f4b8ec1b42f7555b059276f34b6c5e4ca1ff1adcceff96061712846",
+    "packages/views/locales/en/collaboration.json": "e9e10f818e59c3141dd4ef09eb6a035b4c2388fc20ed5d0d36a16c722296626a",
+    "playwright.config.ts": "de9a385def3e04d929d514b3d5eca092a78c6b1ea2895429e863e06f1ad285fd"
+  },
+  "supporting_static_evidence": {
+    "recipient_picker_actual_contract": "AccountPicker exact input exists only inside opened/searching picker; current label Find by full username, email, or account ID; Recipient trigger; exact account requires explicit Use this account. Workflow unit test chooseExactRecipient at23-30 shows same path.",
+    "workbench_error_contexts": [
+      {
+        "relative_path": "test-results/collaboration-workbench-we-140e7-tion-handoff-and-revocation-chromium/error-context.md",
+        "sha256": "4e678955c560b7ded9dc9bda44701e5cf279f8caf22a674bdce2397c72ace1dd"
+      },
+      {
+        "relative_path": "test-results/collaboration-workbench-we-66297-es-input-for-explicit-retry-chromium/error-context.md",
+        "sha256": "34120b8cc258070e7232e5c2bdaa4d1f2479c186d0b9ef1a3684367528da5529"
+      }
+    ],
+    "native_failure_response_evidence": {
+      "relative_path": "test-results/collaboration-account-desk-fcee6-survive-popouts-and-restart-chromium/desktop-account-responses.json",
+      "sha256": "a5b776726ed4bb31cb92c14005ca9bec8b873ae5dc10bb2f697ea483b7cc49c9",
+      "record_count": 88,
+      "status_counts": {
+        "200": 86,
+        "403": 2
+      },
+      "only_403_path": "/api/admin/me",
+      "capacity_or_500_evidence": false
+    },
+    "playwright_worker_version": "1.58.2",
+    "worker_source_sha256": "1cd04668c4bf6bb49e60fe6c28531c5b2cf68a4bf02752a05d21a5d6e6fffd42",
+    "worker_setup_failure_logic_lines": [
+      209,
+      215,
+      455,
+      456
+    ],
+    "go1_26_6_darwin_arm64_cache_exists": true
+  },
+  "separate_environment_warning": "The mandatory password-lane memory fixture LIFO/gate-leak and subsequent Leave namespace409 are a different owned database/environment, outside these47 failures. Its repair is owned by mc-memory-runtime-gate-closure and was not duplicated. Here memory-runtime was one of the optional skips.",
+  "recommendations_before_fresh_full_check": [
+    "Close the two independent old recipient-picker browser test contracts and the two task-private Go adapter environment failures; capacity repair alone will not address them.",
+    "Resolve or independently validate the native foreground focus prerequisite without loosening its assertion or extending timeout. Its ultimate root cause remains unresolved by this read-only evidence.",
+    "Keep an aggregate shared-PG connection budget including every owned API pool and direct browser fixture connection, preserve global limits/unowned sessions, and run the next full check without overlapping new task API startups.",
+    "Use a fresh numbered complete candidate run after source/adapter rebinding. Preserve all first3failed attempts, raw console, last-run IDs, test artifacts and task databases.",
+    "Run required password/Host/installed/knowledge lanes separately with explicit prerequisites; reported89skips and7didnotrun do not close them."
+  ],
+  "reviewer_operations": {
+    "tests": 0,
+    "DB_queries": 0,
+    "browsers": 0,
+    "services": 0,
+    "CLI": 0,
+    "containers": 0,
+    "Provider": 0,
+    "children": 0,
+    "source_or_git_mutations": 0
+  },
+  "all_first_three_complete_attempts_remain_failed": true
+}

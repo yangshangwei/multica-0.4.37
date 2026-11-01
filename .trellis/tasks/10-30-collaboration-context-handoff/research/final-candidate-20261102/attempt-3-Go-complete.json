@@ -1,0 +1,2505 @@
+{
+  "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "at": "2026-11-01T20:50:21.882159+00:00",
+  "packages": [
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache",
+      "database": "ccheck_20261101200718879956_bb940f8eb38e",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 11,
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "c96fcdc12997847767ad941a61abf95c4109c71bf0fede8d671c3ec1d666aeea",
+      "started_at": "2026-11-01T20:07:19.088606+00:00",
+      "finished_at": "2026-11-01T20:07:25.776463+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity",
+      "database": "ccheck_20261101200725776735_07eb79fa72b8",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 2,
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "927d2cd08d1e59046dd89beb77c9d1ae5d1fa32601991a72fb2d6bc2d9c6b1fc",
+      "started_at": "2026-11-01T20:07:25.954185+00:00",
+      "finished_at": "2026-11-01T20:07:27.996109+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+      "database": "ccheck_20261101200727996294_f47ea76e9369",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": false,
+      "compiled_without_tests": true,
+      "log_sha256": "0e054f9af5b5f63a18fb252ad1c263c4e6e0cf2a1e765544eb28774c72e81253",
+      "started_at": "2026-11-01T20:07:28.203664+00:00",
+      "finished_at": "2026-11-01T20:07:28.488864+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "database": "ccheck_20261101200728489022_f9a6f66e94fe",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/cmd/migrate"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 71,
+        "pass": 70,
+        "fail": 0,
+        "skip": 1
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "83426721cd40ee59159dd3bb29a1936816aac51835bedaac6e95b08b774352cb",
+      "started_at": "2026-11-01T20:07:28.645676+00:00",
+      "finished_at": "2026-11-01T20:07:47.811125+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/multica",
+      "database": "ccheck_20261101200747811294_b0ca13f2a1d5",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/cmd/multica"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 1074,
+        "pass": 1074,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "045002167492179d72a283e83968f66d7bfb9c57c61f597ed4c102e6d365610b",
+      "started_at": "2026-11-01T20:07:47.955653+00:00",
+      "finished_at": "2026-11-01T20:07:55.829007+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "database": "ccheck_20261101200755829195_6f87875654d8",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/cmd/server"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 741,
+        "pass": 735,
+        "fail": 0,
+        "skip": 6
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "a42fde4e1a1f7680d5d5ecdb66d8dd925441ef7e03b118df91956c8215c4f3ff",
+      "started_at": "2026-11-01T20:07:56.012703+00:00",
+      "finished_at": "2026-11-01T20:09:24.622739+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/admission",
+      "database": "ccheck_20261101200924622941_7427887f8751",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/admission"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": false,
+      "compiled_without_tests": true,
+      "log_sha256": "902efa3e88082ab8278162450a33303dcc4f4e62b1bcdc7cbf6b90feb611d0cb",
+      "started_at": "2026-11-01T20:09:24.838754+00:00",
+      "finished_at": "2026-11-01T20:09:25.208782+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/agentconfig",
+      "database": "ccheck_20261101200925208928_e243b33d7b90",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/agentconfig"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": false,
+      "compiled_without_tests": true,
+      "log_sha256": "c00c086a4edcbd373ab4d3838c3aac5e62ee9e0b66328f92551855dd10fe3436",
+      "started_at": "2026-11-01T20:09:25.387052+00:00",
+      "finished_at": "2026-11-01T20:09:25.447037+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/analytics",
+      "database": "ccheck_20261101200925447197_a33d11aa74fd",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/analytics"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 8,
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "a27636effad6a656e20f3a28062359355c33ab56023099111597255a80ea25f1",
+      "started_at": "2026-11-01T20:09:25.619658+00:00",
+      "finished_at": "2026-11-01T20:09:42.933127+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/attribution",
+      "database": "ccheck_20261101200942933515_8ec97853df30",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/attribution"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 31,
+        "pass": 31,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "16c6f4c5dae55ea76e2e71f2c21bd721f3c131140b5eebe9361fb4fa2be83390",
+      "started_at": "2026-11-01T20:09:43.147479+00:00",
+      "finished_at": "2026-11-01T20:09:44.944533+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/attributionbackfill",
+      "database": "ccheck_20261101200944944925_d642fc7111ff",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/attributionbackfill"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 4,
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "a31231f270297d83f70a033a801037ea3c99e88a28b3cf4176397bf518ba1267",
+      "started_at": "2026-11-01T20:09:45.156944+00:00",
+      "finished_at": "2026-11-01T20:09:47.676695+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/auth",
+      "database": "ccheck_20261101200947676979_d4b8dc307441",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/auth"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 113,
+        "pass": 112,
+        "fail": 0,
+        "skip": 1
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "8b4ca5bffb334e058939c2c312164d5d7b746c714b4e8922790b150dcf8eece0",
+      "started_at": "2026-11-01T20:09:47.855673+00:00",
+      "finished_at": "2026-11-01T20:09:54.565180+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/changelog",
+      "database": "ccheck_20261101200954565365_cc1252fad4dc",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/changelog"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 56,
+        "pass": 56,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "0737c62774f10df25e63f71e772b114e713cc69f48a0f3e6642cfc2375de1cf5",
+      "started_at": "2026-11-01T20:09:54.793451+00:00",
+      "finished_at": "2026-11-01T20:09:56.720990+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/channelmedia",
+      "database": "ccheck_20261101200956721168_4b76585c3aa4",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/channelmedia"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 3,
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "c0becbbdec6cbecaf46ced0101d37c94abaedc45a2537a9b444592bcc4df0cc4",
+      "started_at": "2026-11-01T20:09:56.928802+00:00",
+      "finished_at": "2026-11-01T20:09:58.583760+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/chatoriginbackfill",
+      "database": "ccheck_20261101200958583926_b8d431c478e1",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/chatoriginbackfill"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": false,
+      "compiled_without_tests": true,
+      "log_sha256": "f70332920b636eef0478840ac548cba8b5135f3a40a07e883e2aa3d59ccfe4a6",
+      "started_at": "2026-11-01T20:09:58.759522+00:00",
+      "finished_at": "2026-11-01T20:09:58.941008+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/chattitle",
+      "database": "ccheck_20261101200958941188_f26ab7ece539",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/chattitle"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": false,
+      "compiled_without_tests": true,
+      "log_sha256": "6df5aaf26d17c6cf19ec36cf0db3fa46c5fbed8f76440acb991601cf89bbe817",
+      "started_at": "2026-11-01T20:09:59.099099+00:00",
+      "finished_at": "2026-11-01T20:09:59.153070+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cli",
+      "database": "ccheck_20261101200959153251_248934fbfb73",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/cli"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 326,
+        "pass": 325,
+        "fail": 0,
+        "skip": 1
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "f52d53b0831628b51fa1ebe862fe1c9aec7c42e89dc1c3e1e2810252d3e63b09",
+      "started_at": "2026-11-01T20:09:59.331016+00:00",
+      "finished_at": "2026-11-01T20:10:04.129946+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cloudruntime",
+      "database": "ccheck_20261101201004130138_cffe407cfbfc",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/cloudruntime"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 3,
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "4904754d48cd25fd43b60850b9ae44e1cff1fbd4e15573e2a0fbb5b915b11a94",
+      "started_at": "2026-11-01T20:10:04.423411+00:00",
+      "finished_at": "2026-11-01T20:10:06.239727+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/collaboration",
+      "database": "ccheck_20261101201006239917_472bb8236d85",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/collaboration"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 11,
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "b455a548a1b189b139c6fa26422b2a47771ee6a627b29846d2411f503a148798",
+      "started_at": "2026-11-01T20:10:06.424589+00:00",
+      "finished_at": "2026-11-01T20:10:08.855451+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "database": "ccheck_20261101201008855599_7a21f045e560",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/daemon"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 1716,
+        "pass": 1714,
+        "fail": 0,
+        "skip": 2
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "5381701b13e640d8aaa4aba06e0feacad9970935f31d6b8c9bfe036e4a90fc67",
+      "started_at": "2026-11-01T20:10:09.056044+00:00",
+      "finished_at": "2026-11-01T20:11:34.769856+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+      "database": "ccheck_20261101201134770001_e304ab6e77ff",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/daemon/collaborationrun"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 348,
+        "pass": 348,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "b72fa33bb572ebcbbe0ef9e3df225153b002622af94928772d6dd879bbb6ffb7",
+      "started_at": "2026-11-01T20:11:34.965388+00:00",
+      "finished_at": "2026-11-01T20:13:18.152021+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "database": "ccheck_20261101201318152202_443be4706fd4",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/daemon/execenv"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 1345,
+        "pass": 1345,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "5073d40aed63cba212b725a638588650164f87c934c4bb8e2abe7dad62e1a2ce",
+      "started_at": "2026-11-01T20:13:18.306644+00:00",
+      "finished_at": "2026-11-01T20:14:23.422360+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/processtree",
+      "database": "ccheck_20261101201423422553_abe022601f40",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/daemon/processtree"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "d7b9e50e4b348a949a6b5a54f2af05b51037da359b398a7bd58a78b89e0dc38e",
+      "started_at": "2026-11-01T20:14:23.623638+00:00",
+      "finished_at": "2026-11-01T20:14:26.440364+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/repocache",
+      "database": "ccheck_20261101201426440525_9ae551c14945",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/daemon/repocache"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 61,
+        "pass": 61,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "dfa97dd7c97a5f27b0e8884fb87cd2ba87889ea1aab88921d59435797eb8e626",
+      "started_at": "2026-11-01T20:14:26.617172+00:00",
+      "finished_at": "2026-11-01T20:14:36.698127+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemonws",
+      "database": "ccheck_20261101201436698274_a2993220b42d",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/daemonws"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 30,
+        "pass": 30,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "7213aee53d32a445e97e00898c7fef02ad9ce139786607beb190162ee5ed8bb7",
+      "started_at": "2026-11-01T20:14:36.842036+00:00",
+      "finished_at": "2026-11-01T20:14:41.355097+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/dbstartup",
+      "database": "ccheck_20261101201441355271_2ec21eaa1b3e",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/dbstartup"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 33,
+        "pass": 33,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "71707b52316b73adf449850f4d90250e2753ffbd745d7287132d6af364d284f9",
+      "started_at": "2026-11-01T20:14:41.494893+00:00",
+      "finished_at": "2026-11-01T20:14:44.414174+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/dispatch",
+      "database": "ccheck_20261101201444414524_2c99ee2c73c6",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/dispatch"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": false,
+      "compiled_without_tests": true,
+      "log_sha256": "2bc6cff926c06d8c81403e83d59b4fcae4a64b3e8971d7ec4c7c254ac1b18f53",
+      "started_at": "2026-11-01T20:14:44.566825+00:00",
+      "finished_at": "2026-11-01T20:14:44.585543+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/docs",
+      "database": "ccheck_20261101201444585841_0fb816f659c3",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/docs"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 16,
+        "pass": 16,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "4ceb6f21fa6a4899ee468815837494f896092b73bfda32a73f5a74a6358fef63",
+      "started_at": "2026-11-01T20:14:44.763507+00:00",
+      "finished_at": "2026-11-01T20:14:47.249226+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/entitlement",
+      "database": "ccheck_20261101201447249615_103bcb57d099",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/entitlement"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 33,
+        "pass": 33,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "025cadc153681478ae41c8114e0ee34dad3d15fc44054001da998b693b0345eb",
+      "started_at": "2026-11-01T20:14:47.542294+00:00",
+      "finished_at": "2026-11-01T20:14:49.844711+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/entitlement/entitlementtest",
+      "database": "ccheck_20261101201449844862_2f5af1a52539",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/entitlement/entitlementtest"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "9d0c5a2da8bbb11b1d476ac6b0a2d20e250b0b7bad407b0153b8cd82b682bd43",
+      "started_at": "2026-11-01T20:14:50.133701+00:00",
+      "finished_at": "2026-11-01T20:14:52.109075+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/events",
+      "database": "ccheck_20261101201452109262_c824a98f5f50",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/events"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 8,
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "1cea02e8a936f91b7859f07bb39031f7d7bcc386c108bdbe5bd806c6909ff71e",
+      "started_at": "2026-11-01T20:14:52.384229+00:00",
+      "finished_at": "2026-11-01T20:14:54.141955+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/featureflags",
+      "database": "ccheck_20261101201454142105_5baa8458c611",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/featureflags"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 7,
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "bc9c38d319185fc9d43be5b0362b5266842c398cb369fb663ccdc87d7b6db7c6",
+      "started_at": "2026-11-01T20:14:54.362244+00:00",
+      "finished_at": "2026-11-01T20:14:56.032275+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "database": "ccheck_20261101201456032457_199d57419d78",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/handler"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 5332,
+        "pass": 5325,
+        "fail": 0,
+        "skip": 7
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "a851f4321d5f16377bf617764eac0e74f0557c4cdabd53e111152ca5374a44f0",
+      "started_at": "2026-11-01T20:14:56.229937+00:00",
+      "finished_at": "2026-11-01T20:19:56.368272+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/installation",
+      "database": "ccheck_20261101201956368755_f98f1babe5ae",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/installation"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 8,
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "d1a4358f4ff700eea04dddcf31650d15e45fc4555433a3501709c0ca850f5da9",
+      "started_at": "2026-11-01T20:19:56.605668+00:00",
+      "finished_at": "2026-11-01T20:19:59.148463+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/channel",
+      "database": "ccheck_20261101201959148608_bbd7303d32a6",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/integrations/channel"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 22,
+        "pass": 22,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "eec1a7bb6543da70963fd1950287b5818847c1f6bdb05bd9a9e821c5acc7d836",
+      "started_at": "2026-11-01T20:19:59.355735+00:00",
+      "finished_at": "2026-11-01T20:20:01.157456+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/channel/engine",
+      "database": "ccheck_20261101202001157863_d01cb786d08e",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/integrations/channel/engine"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 211,
+        "pass": 211,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "526d684f9e031f351962be454a74d4e7ea3b01283bdd74140b08695ed8eb3075",
+      "started_at": "2026-11-01T20:20:01.371816+00:00",
+      "finished_at": "2026-11-01T20:20:11.265905+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/composio",
+      "database": "ccheck_20261101202011266123_e133f82ee548",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/integrations/composio"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 42,
+        "pass": 42,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "ad752de4747c4579d1e7baa59b546383e04725795aec5c52c06795a3488a61e4",
+      "started_at": "2026-11-01T20:20:11.422756+00:00",
+      "finished_at": "2026-11-01T20:20:13.492383+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "database": "ccheck_20261101202013492564_33991a652421",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/integrations/dingtalk"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 212,
+        "pass": 212,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "90eaefecd65197e5681f40fa370be6cf71d88d791facdd50bc24fe77f6ad5e82",
+      "started_at": "2026-11-01T20:20:13.672317+00:00",
+      "finished_at": "2026-11-01T20:20:21.584289+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/ghsnapshot",
+      "database": "ccheck_20261101202021584572_a384d9e70280",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/integrations/ghsnapshot"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 36,
+        "pass": 36,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "b371310606c0815f7510a5ab9ddb0defc565aeab2db5951878f8eb48d6aaa41e",
+      "started_at": "2026-11-01T20:20:21.745236+00:00",
+      "finished_at": "2026-11-01T20:20:25.453085+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "database": "ccheck_20261101202025453417_36f5a604ea4d",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/integrations/lark"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 426,
+        "pass": 426,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "f4854aaef605ed13925e925432e46390ff9cd47c49afb0268b452f9dc0568df0",
+      "started_at": "2026-11-01T20:20:25.675153+00:00",
+      "finished_at": "2026-11-01T20:20:32.953182+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "database": "ccheck_20261101202032953401_a57e8d23d980",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/integrations/slack"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 188,
+        "pass": 188,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "9bfe99f0e493ba02f93d06c83a887cc7a7893a468071476fe3ce17f315d560cf",
+      "started_at": "2026-11-01T20:20:33.123582+00:00",
+      "finished_at": "2026-11-01T20:20:37.860160+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "database": "ccheck_20261101202037860355_72398aa1f6d0",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/integrations/telegram"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 114,
+        "pass": 114,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "e2009ab6e091ad5df176fa32660d267601ced5642715c9ec22d8f0e463608e4e",
+      "started_at": "2026-11-01T20:20:38.041015+00:00",
+      "finished_at": "2026-11-01T20:20:48.521040+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/vcs",
+      "database": "ccheck_20261101202048521233_b565f47a53d0",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/integrations/vcs"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 15,
+        "pass": 15,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "1cb76cc9701f5c9baeb30507b7459040e47478549d46be61b2f4251c589dc284",
+      "started_at": "2026-11-01T20:20:48.678422+00:00",
+      "finished_at": "2026-11-01T20:20:50.564905+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "database": "ccheck_20261101202050565245_549757f027eb",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/integrations/wecom"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 616,
+        "pass": 616,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "613803693919aea93ada4add5141631e39c0517a983f239706317503bb6ab0ab",
+      "started_at": "2026-11-01T20:20:50.891255+00:00",
+      "finished_at": "2026-11-01T20:21:58.852563+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueactivitybackfill",
+      "database": "ccheck_20261101202158852740_6bdd179505c2",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/issueactivitybackfill"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 2,
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "30973af6ac36a037ede978e4027115b18fdafc78880aa2389fe6cd538aeec6fc",
+      "started_at": "2026-11-01T20:21:59.079210+00:00",
+      "finished_at": "2026-11-01T20:22:02.387112+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueguard",
+      "database": "ccheck_20261101202202387473_3202a0f12174",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/issueguard"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 2,
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "0b277c80ea676d204f4821b285c5a9bf8834d7c3f8cf8cc97fcbe1e0db191f29",
+      "started_at": "2026-11-01T20:22:02.567330+00:00",
+      "finished_at": "2026-11-01T20:22:04.483990+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueposition",
+      "database": "ccheck_20261101202204484370_7a51ef9d7409",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/issueposition"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": false,
+      "compiled_without_tests": true,
+      "log_sha256": "7f7f9f8d4b608c191918a4d20a12ab3b0f7f65aab20fd47de61eed369a33e27d",
+      "started_at": "2026-11-01T20:22:04.693936+00:00",
+      "finished_at": "2026-11-01T20:22:04.824042+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "database": "ccheck_20261101202204824189_3df108fbf701",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/issuestatus"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 26,
+        "pass": 26,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "4a65322d97ac0586f97f9c1f8c5fe40e71719e7647efcde14226a14f1fbd64c0",
+      "started_at": "2026-11-01T20:22:04.977959+00:00",
+      "finished_at": "2026-11-01T20:22:06.777345+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/iteration",
+      "database": "ccheck_20261101202206777697_fb52e0df1f83",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/iteration"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 122,
+        "pass": 122,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "d17ee54c498219929df0f05d6f4b4c7d9fb12b4501c98e4c96b40955aeca419e",
+      "started_at": "2026-11-01T20:22:07.016195+00:00",
+      "finished_at": "2026-11-01T20:22:09.478452+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/logger",
+      "database": "ccheck_20261101202209478813_b3616ef0c58b",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/logger"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "3eb83edbcab0660f80be58d5320b4f14373f9a9d5407e4cc188c6f364f028415",
+      "started_at": "2026-11-01T20:22:09.710520+00:00",
+      "finished_at": "2026-11-01T20:22:12.200848+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/metrics",
+      "database": "ccheck_20261101202212201162_734f4abb7b12",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/metrics"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 87,
+        "pass": 87,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "9e053a4d70bd964a5d66c37f1f096047a842756b06003390279fe39bfcf3eb51",
+      "started_at": "2026-11-01T20:22:12.420557+00:00",
+      "finished_at": "2026-11-01T20:22:17.617527+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "database": "ccheck_20261101202217617703_919b30f55bea",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/middleware"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 119,
+        "pass": 119,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "31e612833d45158723a644d62f5e6013ee4970f6a1bce0c819490eba99db58a1",
+      "started_at": "2026-11-01T20:22:17.787846+00:00",
+      "finished_at": "2026-11-01T20:22:21.063020+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "database": "ccheck_20261101202221063345_33c023a139ab",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/migrations"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 536,
+        "pass": 536,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "87712214f968b2c8209941c7dbd1d1c2d3916e6e61a6c763258d951d3451e21f",
+      "started_at": "2026-11-01T20:22:21.274233+00:00",
+      "finished_at": "2026-11-01T20:22:57.327202+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/profiling",
+      "database": "ccheck_20261101202257327360_9f2c7589a33e",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/profiling"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": false,
+      "compiled_without_tests": true,
+      "log_sha256": "4fb07bf6d2403034c8818317be57f7faab2436d3475700ea9003780aa9920a58",
+      "started_at": "2026-11-01T20:22:57.539493+00:00",
+      "finished_at": "2026-11-01T20:22:57.668961+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/projecthealth",
+      "database": "ccheck_20261101202257669105_402988e4441d",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/projecthealth"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 18,
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "8af45649bf669ad1399664cf625ce563018e436d5bec14e51a34e4a02fa921e4",
+      "started_at": "2026-11-01T20:22:57.796116+00:00",
+      "finished_at": "2026-11-01T20:22:59.700006+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/realtime",
+      "database": "ccheck_20261101202259700309_08997a7fa7fe",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/realtime"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 87,
+        "pass": 87,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "bfa5c44d0f5636bd7f0243e8cd4a3010f8875ab3f0c3d3282db682870d0862a0",
+      "started_at": "2026-11-01T20:22:59.917672+00:00",
+      "finished_at": "2026-11-01T20:23:04.032674+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/runtimeapps",
+      "database": "ccheck_20261101202304033006_6d7856d79665",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/runtimeapps"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": false,
+      "compiled_without_tests": true,
+      "log_sha256": "1d8f8897db3c628cf84aaecc65495114cc7b0c5e5a9e34ec1b9729a2cd0fec30",
+      "started_at": "2026-11-01T20:23:04.201010+00:00",
+      "finished_at": "2026-11-01T20:23:04.276507+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/scheduler",
+      "database": "ccheck_20261101202304276652_b41f457af4f5",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/scheduler"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 31,
+        "pass": 31,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "c1d483d7981f65039daa5bd28c704ab7c7e482416e9564a20fb96863c82aae8e",
+      "started_at": "2026-11-01T20:23:04.533388+00:00",
+      "finished_at": "2026-11-01T20:23:09.440772+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/seatcapacity",
+      "database": "ccheck_20261101202309441015_2f225990571e",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/seatcapacity"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 23,
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "8f1f71e8e511198e81dbf1ce61d9919e26688f8bcbe6ea969eeca5f7252f1b06",
+      "started_at": "2026-11-01T20:23:09.649511+00:00",
+      "finished_at": "2026-11-01T20:23:11.699695+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/selfexec",
+      "database": "ccheck_20261101202311700054_0ee13f0d2884",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/selfexec"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 10,
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "1590dfee1b2bdbaa151a6fb2bc6a47dc3a4a9156b0945bba64f71c08881e62ef",
+      "started_at": "2026-11-01T20:23:11.928483+00:00",
+      "finished_at": "2026-11-01T20:23:13.579554+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "database": "ccheck_20261101202313579996_986dfe9cbf73",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/service"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 3340,
+        "pass": 3340,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "2cf18906aba8f72072ab87673da04d6ff237cb6063016f48a32e4167cc39219c",
+      "started_at": "2026-11-01T20:23:13.827617+00:00",
+      "finished_at": "2026-11-01T20:40:59.380979+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/skill",
+      "database": "ccheck_20261101204059381558_c0b56fe05d44",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/skill"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 66,
+        "pass": 66,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "bf5adf7547867dc6960640ba3f2727da94b84dfc6aa04021bafa9abad7da807a",
+      "started_at": "2026-11-01T20:40:59.567437+00:00",
+      "finished_at": "2026-11-01T20:41:02.221401+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/storage",
+      "database": "ccheck_20261101204102221872_85091a8daf2c",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/storage"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 99,
+        "pass": 99,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "63f5c842d83d25d11fa9ff8a28505f5f02491a0e21e15838357cc84ec974f71a",
+      "started_at": "2026-11-01T20:41:02.461039+00:00",
+      "finished_at": "2026-11-01T20:41:05.789458+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/taskusagebackfill",
+      "database": "ccheck_20261101204105789780_0548817c3f9d",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/taskusagebackfill"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 2,
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "b9d9be8af843fa09f66ee8a992146cd3dd2fa53a7bd8a281348c1516521cc127",
+      "started_at": "2026-11-01T20:41:05.961348+00:00",
+      "finished_at": "2026-11-01T20:41:11.486244+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/testutil",
+      "database": "ccheck_20261101204111486401_8c57f41cf87d",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/testutil"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 18,
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "6d637b90cdd5ef05992b9283754b9569a02c9566c76272b0bef3cff2d1c7d647",
+      "started_at": "2026-11-01T20:41:11.630862+00:00",
+      "finished_at": "2026-11-01T20:41:13.791209+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/triagecsv",
+      "database": "ccheck_20261101204113791552_c02d86db4237",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/triagecsv"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 15,
+        "pass": 15,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "0a4af702b9646e6324c0df3ae2a8583e5f97a6cfd84a61e975f621632ea29479",
+      "started_at": "2026-11-01T20:41:13.964982+00:00",
+      "finished_at": "2026-11-01T20:41:15.686547+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/util",
+      "database": "ccheck_20261101204115687016_d763dfcd7176",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/util"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 115,
+        "pass": 115,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "2a3e6ef14d9bf1f8423678df82fa655f584fc5f12fc4f5fa43c1ac7b2f4c262b",
+      "started_at": "2026-11-01T20:41:15.891855+00:00",
+      "finished_at": "2026-11-01T20:41:17.920284+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/util/secretbox",
+      "database": "ccheck_20261101204117920626_f8cc8b7af4e6",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/util/secretbox"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 10,
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "384888faa322da48d50912e30ca0f5f72e75cfce8a8e3f15f465168bc9873da9",
+      "started_at": "2026-11-01T20:41:18.121354+00:00",
+      "finished_at": "2026-11-01T20:41:19.776180+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/composio",
+      "database": "ccheck_20261101204119776634_3b4cd4ae0d09",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/pkg/composio"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 39,
+        "pass": 39,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "b55be86215c12eed0423a19a9d1ab22b6951407c1b8bd7e790d1baa33ff46f93",
+      "started_at": "2026-11-01T20:41:20.014223+00:00",
+      "finished_at": "2026-11-01T20:41:21.966837+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/db/generated",
+      "database": "ccheck_20261101204121967248_fb47920ce532",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/pkg/db/generated"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 6,
+        "pass": 6,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "fcd17a66ccac0adff1bc29049101bb72a90efa48b115cc1b85a84a79045888d1",
+      "started_at": "2026-11-01T20:41:22.184099+00:00",
+      "finished_at": "2026-11-01T20:41:26.515024+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/dbid",
+      "database": "ccheck_20261101204126515377_bd354a329a15",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/pkg/dbid"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 23,
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "177661f7d649a016b23fa7d8a8f412f2c7617741243224b15d7b435fa3f4a37f",
+      "started_at": "2026-11-01T20:41:26.701308+00:00",
+      "finished_at": "2026-11-01T20:41:30.776179+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/featureflag",
+      "database": "ccheck_20261101204130776339_d7ecdfa3f812",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/pkg/featureflag"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 51,
+        "pass": 51,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "13fa355e94e1d2dcf54ff67f9ae7e734be06b39da3eeac1671fe5c6250eda2e4",
+      "started_at": "2026-11-01T20:41:30.943317+00:00",
+      "finished_at": "2026-11-01T20:41:32.709973+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/llm",
+      "database": "ccheck_20261101204132710408_e859efa47f08",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/pkg/llm"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 34,
+        "pass": 34,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "7374e60b50c1897f904faba7b6948ba82ec196fa9d9b210c5f9199a034aa23fe",
+      "started_at": "2026-11-01T20:41:32.911839+00:00",
+      "finished_at": "2026-11-01T20:41:42.016216+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/plugincontract",
+      "database": "ccheck_20261101204142016375_2801bc792e83",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/pkg/plugincontract"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 99,
+        "pass": 99,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "2de68199e8642802908568eae313cb8601bdd790fbc4bfedf7399eb239de3c68",
+      "started_at": "2026-11-01T20:41:42.209283+00:00",
+      "finished_at": "2026-11-01T20:41:46.241583+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/protocol",
+      "database": "ccheck_20261101204146242019_b2f76499e952",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/pkg/protocol"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 390,
+        "pass": 390,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "997ca32eda65e4fdbeb0e3def3e7008d1d2ece1249684b98f61614b33e3e6de7",
+      "started_at": "2026-11-01T20:41:46.458084+00:00",
+      "finished_at": "2026-11-01T20:41:49.690563+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/publicapi/v1",
+      "database": "ccheck_20261101204149690885_4fc98d5f8acf",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/pkg/publicapi/v1"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 5,
+        "pass": 5,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "dd087a8dbba65ebf02c5274c79d81143513a4619900b8a7b16df2fe95d78e959",
+      "started_at": "2026-11-01T20:41:49.951730+00:00",
+      "finished_at": "2026-11-01T20:41:51.811289+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/redact",
+      "database": "ccheck_20261101204151811577_4f0dde5e8035",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/pkg/redact"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 35,
+        "pass": 35,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "3f39d635e491b27bc609218ee9b718c3fb6981b72428b44a1ca1c559e1a18247",
+      "started_at": "2026-11-01T20:41:51.999683+00:00",
+      "finished_at": "2026-11-01T20:41:53.695259+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/remotemcp",
+      "database": "ccheck_20261101204153695729_b541162c7d6d",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/pkg/remotemcp"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 8,
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "fbe264be880a6b79cc5b1b885a9809b1888f88a188d8347d0ab5619e4ed2290b",
+      "started_at": "2026-11-01T20:41:53.945710+00:00",
+      "finished_at": "2026-11-01T20:41:55.776425+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest",
+      "database": "ccheck_20261101204155776823_e6acddbc5503",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "867efc88eaacfd5846b5c98a0fab305c4fe1f35d9c0ea9a47e660095e3353d93",
+      "started_at": "2026-11-01T20:41:56.014946+00:00",
+      "finished_at": "2026-11-01T20:41:57.843845+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/skillbundle",
+      "database": "ccheck_20261101204157844173_2405237448a4",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/pkg/skillbundle"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 2,
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "3e30422864e442624dc1af40ff5ad59f979f845c55709bd221d0787127ce84fe",
+      "started_at": "2026-11-01T20:41:58.046763+00:00",
+      "finished_at": "2026-11-01T20:41:59.728372+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/taskfailure",
+      "database": "ccheck_20261101204159728942_d8de8e43c096",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/pkg/taskfailure"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 222,
+        "pass": 222,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "88e06ca33e8c4dddf03eead65d53d88b9497204ffafb62f62cc0b22efeac1286",
+      "started_at": "2026-11-01T20:41:59.945787+00:00",
+      "finished_at": "2026-11-01T20:42:01.760935+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "database": "ccheck_20261101204201999000_56802910400e",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/pkg/agent"
+      ],
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 1955,
+        "pass": 1951,
+        "fail": 0,
+        "skip": 4
+      },
+      "package_passed": true,
+      "compiled_without_tests": false,
+      "log_sha256": "061b322e613bc04abbdb7d4e197f33156593fdac392ba9d8eec09caf4037e08f",
+      "started_at": "2026-11-01T20:42:02.163316+00:00",
+      "finished_at": "2026-11-01T20:46:15.399888+00:00"
+    }
+  ],
+  "package_count": 82,
+  "named_pass_events": 20852,
+  "named_fail_events": 0,
+  "named_skip_events": 22,
+  "compile_only_package_count": 9,
+  "all_package_databases_unique": true,
+  "Go_vet": {
+    "command": [
+      "go",
+      "vet",
+      "-p",
+      "2",
+      "./..."
+    ],
+    "exit_code": 0,
+    "evidence": "canonicalcheck.shset-e subshell completed before phase4 started; prefixlog retained"
+  },
+  "Go_build_all": {
+    "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "command": [
+      "/opt/homebrew/bin/go",
+      "-C",
+      "server",
+      "build",
+      "-p=2",
+      "./..."
+    ],
+    "state": "complete",
+    "started_at": "2026-11-01T20:19:20.636540+00:00",
+    "TestMain_executed": false,
+    "DB_or_Provider_calls": false,
+    "exit_code": 0,
+    "finished_at": "2026-11-01T20:19:32.068886+00:00",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "prefix_log_sha256": "f97b3d0a62c1d596f4418deee84ab8b60c1adec8a5e14ff8c93087ce260e4da9",
+  "prefix_private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/final-candidate/Go-stages-completed-prefix.log",
+  "overall_makecheck": "phase6Playwrightrunning; notfullpass",
+  "Provider_calls": 0
+}

@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T19:58:35.569508+00:00",
+  "updated_at": "2026-11-01T21:40:41.500925+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -356,7 +356,7 @@
   },
   "parent_status": "in_progress",
   "integration_snapshot": {
-    "head": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "head": "020d18e62d964664595b620e2b8e8d02b71230e4",
     "branch": "codex/cross-workspace-collaboration",
     "read_only_tracking_ahead": 219,
     "origin_fetched": false,
@@ -424,7 +424,7 @@
   },
   "final_candidate": {
     "sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
-    "state": "full_check_running_not_accepted",
+    "state": "attempt3_complete_failed; final_harness_repairs_in_progress",
     "registration": "research/final-candidate-20261102/attempt-3-registration.json",
     "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
     "clean_at_start": true,
@@ -433,7 +433,9 @@
     "previous_failed_attempts": [
       "7f8ca8725 attempt-1-result.json",
       "231a08063 attempt-2-result.json"
-    ]
+    ],
+    "actual_make_exit_code": 2,
+    "result": "research/final-candidate-20261102/attempt-3-result.json"
   },
   "crosschain_correction": {
     "code": "057bc9616",
@@ -458,5 +460,42 @@
     },
     "evidence": "research/knowledge-deployed-probe-20261102/root-deployed-results.json",
     "final_candidate_gate": "pending_actualboundrequiredchecks"
+  },
+  "browser_attempt3_attribution": {
+    "planned": 439,
+    "passed": 296,
+    "failed": 47,
+    "skipped": 89,
+    "not_run": 7,
+    "direct_PG_capacity_failures": 42,
+    "private_Go_adapter_failures": 2,
+    "old_transfer_controls": 2,
+    "native_focus_unresolved": 1,
+    "triage": "research/final-candidate-20261102/attempt3-browser-triage.json",
+    "no_failed_run_relabelled": true
+  },
+  "memory_gate_fixture_fix": {
+    "code": "5dec88f98",
+    "evidence": "a06b6bf84",
+    "review": "ffb391d8d pass-with-notes",
+    "merge": "020d18e62",
+    "canonical_red": 1,
+    "green_memory_pass": 1,
+    "green_Leave_pass": 1,
+    "same_green_DB_API_no_reset": true,
+    "scope": "testfixtureonly; notproductionmodechange"
+  },
+  "local_artifact_preparation": {
+    "candidate": "639bf6ef8",
+    "evidence": "research/local-packaging-639bf6ef8-20261102/summary.json",
+    "independent_review": "pass-with-notes",
+    "Mac": [
+      "app",
+      "ZIP",
+      "DMG",
+      "offlinecollector5files"
+    ],
+    "Linux": "arm64directory/staticELFonly",
+    "installed_upgrade_account_acceptance": false
   }
 }

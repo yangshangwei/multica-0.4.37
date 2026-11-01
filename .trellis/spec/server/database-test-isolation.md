@@ -42,6 +42,22 @@ command and a bounded read-only ledger/schema snapshot, and disclose the inciden
 Do not infer pre-command contents from the current ledger or attempt speculative
 down migrations/cleanup. An after-incident dump is not a pre-incident backup.
 
+### Shared connection budgets
+
+Fresh databases still share the PostgreSQL cluster's `max_connections`.
+Budget every live task API pool, direct fixture connection and external client;
+four default API pools of25 can exhaust a100-connection cluster before other
+clients are counted. Do not start extra environments during a full check merely
+because their databases and ports differ.
+
+Before concurrent startup, record read-only aggregate connection counts without
+SQL text or credentials. Use explicit task-only `DATABASE_MAX_CONNS` and
+`DATABASE_MIN_CONNS` overrides when appropriate, and serialize API/browser stages
+when headroom is uncertain. Never raise shared PostgreSQL limits or terminate
+unowned connections to obtain a pass. Stop owned idle APIs after their proof is
+captured; retain their database and logs. A capacity failure remains failed and
+requires a newly numbered run after the environment correction.
+
 Run each complete database suite against a newly created, migrated task database.
 Knowledge candidate and invalidation history is deliberately retained: repeated
 full runs can multiply `all_sources` scan work beyond a test's fixed drain budget.

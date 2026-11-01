@@ -1,0 +1,66 @@
+{
+  "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "at": "2026-11-01T20:26:39.376638+00:00",
+  "state": "mapped_not_executed",
+  "cached_image": {
+    "id": "sha256:0d433ecf8ede66777494051568fd760468be288fd99d36d80bc68d022769471c",
+    "runtime": "linux/arm64",
+    "actual_local_inspect_exit": 0,
+    "download": false
+  },
+  "canonical_docker_args": [
+    "docker",
+    "run",
+    "--rm",
+    "--init",
+    "-i",
+    "--name",
+    "<fixture generated owned name>",
+    "--add-host",
+    "host.docker.internal:host-gateway",
+    "--volume",
+    "<repo>:/workspace:ro",
+    "--volume",
+    "<Linux directory>:/opt/multica:ro",
+    "--workdir",
+    "/workspace",
+    "<pinned cached image>",
+    "xvfb-run",
+    "-a",
+    "-s",
+    "-screen 0 1600x1400x24",
+    "node",
+    "/workspace/e2e/fixtures/collaboration-installed-main.mjs"
+  ],
+  "execution_ownership": {
+    "Mac_host": "Playwright/API/Web/fakeHostdaemon/provider",
+    "Linux_container": "packagedElectronfullMain/preload/fileRenderer+ownbundledCLIversion"
+  },
+  "URL_mapping": "dockerTaskURL mapsloopbackAPI/Webtohost.docker.internal; nativeMain stripsWSOrigin; profilepointsAPIapp/updateURLtoexplicit taskserver",
+  "required_variables": [
+    "COLLABORATION_HOST_INSTALLED_IMAGE",
+    "COLLABORATION_INSTALLED_APP_DIR",
+    "COLLABORATION_HOST_INSTALLED_ASAR_SHA256",
+    "COLLABORATION_INSTALLED_SOURCE_SHA",
+    "existingpassword+Hostdaemon/provider/CLI+rendererconfig"
+  ],
+  "must_unset_for_directory": [
+    "COLLABORATION_INSTALLED_MAIN_EXECUTABLE",
+    "COLLABORATION_INSTALLED_DEB",
+    "COLLABORATION_INSTALLED_APP_VOLUME"
+  ],
+  "actual_count_expected_static": 1,
+  "do_not_claim": [
+    "Linuxdaemonexecution",
+    "debinstallorupgrade",
+    "realProvider/differentaccount",
+    "oldsourcepassascurrent"
+  ],
+  "pre_execution_retention": "canonicalhelper--rm needs task-privateDockeradapter that ONLYremoves--rm forownedinstalledMainfixture, retainsnamedcontainerandrawlogs; no producthelperchange",
+  "source_sha256": {
+    "e2e/fixtures/collaboration-installed-main.ts": "f63d1e7e098e7634b9e90f75605fd63e22a4866cd6d27c93d564d8c4be9e50fb",
+    "e2e/fixtures/collaboration-installed-main.mjs": "ebe914eaa5d71e8b7d7c8e0d937b99ba67df72b255754a69eef899b5e70fd475",
+    "e2e/collaboration-host-installed.spec.ts": "2ca4a3b659fd8a6693d19dee23c587a107ddbce1f07f02c7efe5f9653b288fbe"
+  },
+  "operations_by_explorer": "read-onlylookup; rootlocalimageinspectonly; noactualLinuxclient/test/DB/Provider"
+}

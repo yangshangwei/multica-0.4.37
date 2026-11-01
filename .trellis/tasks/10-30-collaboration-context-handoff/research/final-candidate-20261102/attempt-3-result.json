@@ -1,0 +1,33 @@
+{
+  "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "attempt": 3,
+  "state": "failed_not_accepted",
+  "make_exit_code": 2,
+  "started_at": "2026-11-01T19:57:45.425160+00:00",
+  "finished_at": "2026-11-01T21:05:01.597445+00:00",
+  "log_sha256": "89c2d13730864522770980ff3fb32f5b7fa246a536bd80dae8718c46a0f78b74",
+  "static_tasks_pass": 15,
+  "TypeScript_pass": 13082,
+  "Go_stage": "82packages0fail,20852namedpass22skip9compileonly; vet0/build0",
+  "Go_evidence": "attempt-3-Go-complete.json",
+  "Playwright": {
+    "planned": 439,
+    "passed": 296,
+    "failed": 47,
+    "skipped": 89,
+    "PG_client_capacity_error_mentions": 43,
+    "attribution": "confirmedsharedPGcapacityincident; per-failureindependenttriagepending; do notlabelallfailuresenvironmentwithoutreview",
+    "did_not_run": 7
+  },
+  "cleanup": "unusedGo-templateDROPalsoreceivedcapacityerror; allactualpackageDBs/API/logs retained",
+  "coordinator_resource_incident": {
+    "global_max_connections": 100,
+    "root_cause": "coordinator startedadditionalownAPIpools duringfullbrowserphase withoutbudgetingtotalsharedPGconnections",
+    "no_global_limit_change": true,
+    "no_unowned_connection_termination": true,
+    "mitigation": "stoppedowncompletedON/newredgreenAPIpools; configureprivateverificationAPImax5/min1, futurefullcheckAPImax10/min1 and nooverlappingtaskAPIstartup"
+  },
+  "separate_Leave409_failure": "ownPWcasebeforecapacityincident; provedmemorynestedfixturegateleak; isolatedrepairinprogress, oldOFFDBfrozen",
+  "real_Provider_calls": 0,
+  "next": "repairfixtureandtriage; freshcompletecheckundercontrolledAPIpool/serialschedule"
+}

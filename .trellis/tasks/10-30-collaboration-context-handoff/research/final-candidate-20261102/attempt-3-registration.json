@@ -2,7 +2,7 @@
   "at": "2026-11-01T19:58:35.569508+00:00",
   "attempt": 3,
   "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
-  "state": "full_check_running_not_accepted",
+  "state": "attempt3_failed_during_browser_not_accepted",
   "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
   "source_file_count": 7960,
   "source_trees": {
@@ -94,15 +94,17 @@
       "ENV_FILE=<private task source env>"
     ],
     "started_at": "2026-11-01T19:57:45.425160+00:00",
-    "state": "running",
-    "exit_code": null,
+    "state": "complete",
+    "exit_code": 2,
     "private_record": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/final-candidate/make-check.json",
     "exec_session": 71100,
     "database_policy": "a separate newly migrated task clone per Go package; never business default; package databases and failures retained",
     "adapters_sha256": {
       "go": "2de26dbb490c3a70fee48c62cae358db765f2060e4ac15eb4843849fae0407db",
       "pnpm": "e74949d2c0ee6c96d219642cc66ac1d931b5e2e48c6bb4a64b45d65e21fc3a27"
-    }
+    },
+    "finished_at": "2026-11-01T21:05:01.597445+00:00",
+    "log_sha256": "89c2d13730864522770980ff3fb32f5b7fa246a536bd80dae8718c46a0f78b74"
   },
   "crosschain_additions": {
     "CCG1": "057bc9616/9c5e48761 independentpassmergede6e7fe07d; actualnewv2inputandwithdraw0newlaunch",
@@ -132,8 +134,15 @@
   },
   "completed_stages": [
     "static15pass",
-    "TypeScript13082pass"
+    "TypeScript13082pass",
+    "82GopackagescompletezeroFail",
+    "GoBuildAllpass",
+    "GoVetpass",
+    "isolatedAPIhealthy",
+    "productionWebready"
   ],
-  "current_stage": "Go race distincttaskDBperpackage",
-  "stage_evidence": "attempt-3-static-typescript.json"
+  "current_stage": "memoryfixture_redgreen_and_connection_budget_repair; nextfullcheckpending",
+  "stage_evidence": "attempt-3-static-typescript.json",
+  "Go_stage_evidence": "attempt-3-Go-complete.json",
+  "failure_evidence": "attempt-3-result.json"
 }
