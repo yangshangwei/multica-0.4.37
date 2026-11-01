@@ -122,14 +122,23 @@
 
 ### M5 + L12：只处理本面板自己的请求
 
-`settled(receipt, owned)` 的规则合并了 M5 和 L12 两份设计：
-- 成功且 `owned`，才执行 `setSelectedId(receipt.candidate_id)`。
-- 成功、`owned`、且 `receipt.action === "propose"`，才执行 `setProposal(null)`。
-- 成功但不是 `owned`：设置 `openedElsewhere`，提示"请到该候选所在的知识列表中打开"，不打开也不关闭任何东西。
+`settled(receipt, owner)` 合并了 M5 和 L12 两份设计。`owner` 由调用方给出，取值 `"intent"`、`"list"` 或 `null`：
+- `"intent"`：回执属于本面板内存中的这次请求。
+- `"list"`：恢复的是本地存储的 identity，它指向的候选在本面板当前列表中。
+- `null`：其他情况。
 
-`owned` 的判定：
-- `submit`：`receipt.request_id === next.requestId`，成功路径和 `KnowledgeReceiptCleanupError` 路径都按这个判定。
-- `recover`：在 await **之前**计算，满足任一条件即为 owned：`intent?.requestId === identity.requestId`；或者当前列表 `current?.value.items` 中包含 `identity.candidateId`。
+规则（`knowledge-panel.tsx:62-70`）：
+- 成功且 `owner !== null`：`setSelectedId(receipt.candidate_id)`。
+- 成功、`owner === "intent"`、且 `receipt.action === "propose"`：`setProposal(null)`。只有这种情况会关闭提议表单。
+- 成功且 `owner === null`：设置 `openedElsewhere`，提示"请到该候选所在的知识列表中打开"，不打开也不关闭任何东西。
+
+`owner` 的判定：
+- `submit`：`receipt.request_id === next.requestId` 时为 `"intent"`，否则为 `null`。成功路径和 `KnowledgeReceiptCleanupError` 路径用同一个判定。
+- `recover`：在 await **之前**计算。`intent?.requestId === identity.requestId` 时为 `"intent"`；否则，当前列表 `current?.value.items` 中包含 `identity.candidateId` 时为 `"list"`；都不满足时为 `null`。
+
+与最初设计的偏离：最初写的是"任何 owned 的 propose 成功都关闭表单"，`"list"` 也算在内。按那种写法，重新加载后恢复一条旧的提议，会关掉用户刚开始写的新草稿，M5 的缺陷就又出现了，违反 PRD AC6（草稿在其他操作成功后仍然保留）。所以 `"list"` 只选中候选，不关闭表单。实现在 `2e28c2c98`，views spec（`.trellis/spec/views/frontend/collaboration-knowledge.md` 第 91–98、113 行）写的也是这个规则。由测试 "recovering an older stored proposal keeps a new draft open while it opens the recovered candidate" 固定。
+
+已知的局限（web 复核，low）：`"list"` 只看当前已加载的这一页，并且在点击时判断。如果点击时列表正因刷新被擦除，或者候选在后面的页上，本面板自己的候选也会被判为 `null`，显示"到别处打开"的提示。见 `progress.md`。
 
 ### L8：刷新期间提交提议
 
