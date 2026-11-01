@@ -67,3 +67,13 @@ approve 很少发生，且现有调用方都有整事务重试：issue 更新经
 ## 交接
 
 F1–F3 应由草案所有者（Codex 协调会话 `01a1920d-…` 的 `knowledge_preflight`）写入设计与实施草案，再由主会话复核后提升。本文件不修改那两份草案，避免与正在进行的修订冲突。
+
+## 合入后抽查 — 2026-11-01 10:40–10:58
+
+由另一会话独立执行，只是抽查，不替代 `verification-integration-2026-11-01.md` 的正式验收。源码为 `629f0a079`（合入提交 `8cb04e329` 之后只有文档改动和下面这条测试修正）；macOS arm64，Go 1.27.0，Node 22.23.2。
+
+- 代码落点：F1/F2 见 `server/pkg/db/queries/collaboration_knowledge.sql:6/9/12`（父行 `FOR KEY SHARE NOWAIT`，lead 读 `FOR SHARE NOWAIT`）和 `:38/41`（独立的 `collaboration_knowledge_target` 计数行）；F3 见 `protocol.EventCollaborationKnowledgeChanged` 与 `packages/core/realtime/knowledge.ts`；F4 见 `TestKnowledgeRequestIDConflictsAcrossOperationKinds`。
+- DB 测试：从 `mem_template` 克隆新库，迁移到 `760_collaboration_knowledge_hint_pending`，`-p 1 -v` 串行运行。handler 的 `TestKnowledgePreparationWhileRealOrdinaryWriterIsUncommitted`（真实 `IssueService.Create` 已分配编号且停在提交前）和 `TestKnowledgeHeldOwnerApprovalAllowsActualUnrelatedWriters`，service 的 `TestKnowledgeRequestIDConflictsAcrossOperationKinds`、`TestKnowledgeFanoutNeverWaitsOnSourceWriter`、`TestKnowledgeSourceDeletionRetainsInvalidationRouting`、`TestKnowledgeTargetHintHasOnlyPublicTargetFields`，realtime 的 `TestKnowledgeQueuedTargetHintReauthorizesAtPhysicalSend`：7 个顶层、10 个子测试通过，0 跳过，exit 0。两条 handler 测试在 `-race` 下复跑也通过。克隆库已删除。
+- 无 DB 测试：`go test ./pkg/protocol -run Knowledge` 15 个通过；core 的 knowledge 套件 8 个文件、60 个测试通过。
+- 偶发失败：`packages/views/collaboration/knowledge-panel.test.tsx:125` 六次运行里失败一次。原因是下拉框点开后同步查询 option，当时弹层还没挂载。`629f0a079` 改为 `findByRole`；改后串行 3 次、并行 4 次都是 17/17 通过。原问题无法按需复现，所以这只说明改后没再出现，不能证明竞争已经消除。
+- 本次没有运行全量 Go/前端、Web/Desktop e2e 或任何真实 Provider。
