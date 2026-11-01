@@ -831,12 +831,14 @@ func (q *Queries) LockNextKnowledgeScan(ctx context.Context, excludedIds []pgtyp
 }
 
 const lockNextKnowledgeTargetHint = `-- name: LockNextKnowledgeTargetHint :one
-SELECT id, kind, cause_id, scope_kind, scope_id, scan_started_at, scan_upper_bound, scan_cursor, target_kind, target_id, target_workspace_id, knowledge_revision, state, created_at, last_attempted_at, completed_at FROM collaboration_knowledge_invalidation WHERE kind = 'target_hint' AND state = 'pending'
+SELECT id, kind, cause_id, scope_kind, scope_id, scan_started_at, scan_upper_bound, scan_cursor, target_kind, target_id, target_workspace_id, knowledge_revision, state, created_at, last_attempted_at, completed_at FROM collaboration_knowledge_invalidation
+WHERE kind = 'target_hint' AND state = 'pending' AND NOT (id = ANY($1::uuid[]))
 ORDER BY COALESCE(last_attempted_at, created_at), id LIMIT 1 FOR UPDATE SKIP LOCKED
 `
 
-func (q *Queries) LockNextKnowledgeTargetHint(ctx context.Context) (CollaborationKnowledgeInvalidation, error) {
-	row := q.db.QueryRow(ctx, lockNextKnowledgeTargetHint)
+// A hint that failed earlier in the same pass is excluded until the next pass.
+func (q *Queries) LockNextKnowledgeTargetHint(ctx context.Context, excludedIds []pgtype.UUID) (CollaborationKnowledgeInvalidation, error) {
+	row := q.db.QueryRow(ctx, lockNextKnowledgeTargetHint, excludedIds)
 	var i CollaborationKnowledgeInvalidation
 	err := row.Scan(
 		&i.ID,

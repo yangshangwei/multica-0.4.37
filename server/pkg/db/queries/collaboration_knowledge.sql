@@ -190,8 +190,10 @@ INSERT INTO collaboration_knowledge_invalidation (id, kind, cause_id, target_kin
 VALUES (sqlc.arg(id), 'target_hint', sqlc.arg(cause_id), sqlc.arg(target_kind), sqlc.arg(target_id), sqlc.arg(target_workspace_id), sqlc.arg(knowledge_revision))
 ON CONFLICT (cause_id, target_kind, target_id) WHERE kind = 'target_hint' DO NOTHING;
 
+-- A hint that failed earlier in the same pass is excluded until the next pass.
 -- name: LockNextKnowledgeTargetHint :one
-SELECT * FROM collaboration_knowledge_invalidation WHERE kind = 'target_hint' AND state = 'pending'
+SELECT * FROM collaboration_knowledge_invalidation
+WHERE kind = 'target_hint' AND state = 'pending' AND NOT (id = ANY(sqlc.arg(excluded_ids)::uuid[]))
 ORDER BY COALESCE(last_attempted_at, created_at), id LIMIT 1 FOR UPDATE SKIP LOCKED;
 
 -- Publish with the stable id:target first; mark only in its successful commit.

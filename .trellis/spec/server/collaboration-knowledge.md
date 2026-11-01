@@ -137,7 +137,13 @@ hint and final-hint retention; schema coverage must classify all three tables.
 
 `CollaborationKnowledgeInvalidation.Run` drains scans/hints every 500ms, at most
 100 each per pass. Relay failure retains the original hint ID; successful sends
-use `<hint-uuid>:target`. The entire public event is:
+use `<hint-uuid>:target`. Each hint has a 5s delivery budget. A failed hint
+records `last_attempted_at`, which moves it behind the other pending hints. When
+only the hint's own budget expired, the record uses a fresh bounded context.
+The failed hint is skipped for the rest of the pass, so it cannot block later
+hints. Three consecutive failures end the pass, and the errors are joined. A
+retry republishes the same event ID, which clients dedupe. The entire public
+event is:
 
 ```json
 {"type":"collaboration:knowledge_changed","payload":{"target_kind":"project","target_id":"11111111-1111-4111-8111-111111111111","knowledge_revision":"2"},"event_id":"22222222-2222-4222-8222-222222222222:target"}
@@ -198,7 +204,9 @@ service `collaboration_knowledge_{authority,concurrency,view,credentials,resolve
 Assert both lock commit orders, exact correction CAS, original-key recovery after
 role loss, base strings unchanged, all projection sentinels removed after purge,
 pending-only silence, crash/replay cursor stability, deleted routing, wildcard
-tags, and final socket denial even when Redis contains stale PAT authority.
+tags, a timed-out hint that does not block later hints
+(`TestKnowledgeTimedOutHintDoesNotBlockLaterHints`), and final socket denial even
+when Redis contains stale PAT authority.
 Execution/static evidence is recorded separately in the
 [task research](../../tasks/10-30-collaboration-knowledge-promotion/research/).
 
