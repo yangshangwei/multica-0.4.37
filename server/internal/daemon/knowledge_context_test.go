@@ -58,6 +58,9 @@ type knowledgeDaemonFixture struct {
 	// it echo the stale claimed binding instead.
 	freshGeneration         string
 	ignoreResumeUnavailable bool
+	// claimTasks, when set, replaces the claim response with these raw task
+	// objects: a batch claim returns all of them, a single claim the last.
+	claimTasks []json.RawMessage
 }
 
 func newKnowledgeDaemonFixture(t *testing.T) *knowledgeDaemonFixture {
@@ -176,9 +179,14 @@ func (f *knowledgeDaemonFixture) serve(t *testing.T, w http.ResponseWriter, r *h
 	}
 	switch action {
 	case "claim":
-		if strings.Contains(r.URL.Path, "/runtimes/") {
+		switch {
+		case strings.Contains(r.URL.Path, "/runtimes/") && len(f.claimTasks) > 0:
+			_ = json.NewEncoder(w).Encode(map[string]any{"task": f.claimTasks[len(f.claimTasks)-1]})
+		case strings.Contains(r.URL.Path, "/runtimes/"):
 			_ = json.NewEncoder(w).Encode(map[string]any{"task": f.task})
-		} else {
+		case len(f.claimTasks) > 0:
+			_ = json.NewEncoder(w).Encode(map[string]any{"tasks": f.claimTasks})
+		default:
 			_ = json.NewEncoder(w).Encode(map[string]any{"tasks": []Task{f.task}})
 		}
 	case "prepare":

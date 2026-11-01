@@ -63,7 +63,7 @@ matrix. Windows, installers and multi-account/quota acceptance remain separate.
 | Observation | Meaning and next check |
 | --- | --- |
 | Approved item absent from an input | Check the switch, negotiated built-in runtime, applicability/target, current source availability, actual originator/runtime owner and output audience. Approval is not a source visibility grant. |
-| `knowledge_context_changed` | Claim/session/reviewed manifest/invocation changed. Preserve the original result and cleanup; do not auto-replay the business input. A daemon that cannot reach the selected prior session now starts a fresh bound session with the ordinary continuity notice instead. An upgraded daemon talking to an older API reports `knowledge_unavailable` for that case because the API rejects the field; upgrade the API. |
+| `knowledge_context_changed` | Claim/session/reviewed manifest/invocation changed. Preserve the original result and cleanup; do not auto-replay the business input. A daemon that cannot reach the selected prior session now starts a fresh bound session with the ordinary continuity notice instead. An upgraded daemon talking to an older API reports `knowledge_unavailable` for that case because the API rejects the field; upgrade the API. A claim descriptor the daemon cannot decode refuses only that task; the other tasks in the claim run. |
 | `knowledge_authorization_denied` | Current credential/consumer/source authority no longer permits disclosure/start. Accountable or installer identity is not a substitute. |
 | `knowledge_busy` / `knowledge_unavailable` | Bounded lock/dependency/proof failure. The server already re-runs a contended preparation or authorization for up to 1.5s and the daemon retries three times, so `knowledge_busy` means sustained contention, not one sibling claim. Inspect content-free health/DB diagnostics; never force a base fallback that can restore exposed history. |
 | `knowledge_invocation_unsupported` | Runtime, selector or effective invocation is outside the admitted contract. Check retained current configuration, not only its registered protocol name. |
@@ -98,7 +98,11 @@ Keep guarded history readers, candidate/version/receipt records, task exposure,
 target routing, invalidation scans/hints and the worker. Never roll back to an old
 claim reader that treats private history as ordinary reusable state. Migration
 downs reject retained candidates, negotiated task data and pending outbox work;
-do not delete those records to force a downgrade. Target deletion must not
+do not delete those records to force a downgrade. The stored per-task knowledge
+record is read strictly, and any change to its shape bumps its version. Install a
+release that reads a new version before any release writes it, and roll back only
+to a release that reads every version written since. An older reader refuses the
+affected tasks with `knowledge_context_changed`; it never rewrites them. Target deletion must not
 resurrect a target from delayed scans. Preserve backups and use forward repairs
 for a nonempty deployment.
 

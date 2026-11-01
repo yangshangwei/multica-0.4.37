@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -20,7 +21,11 @@ import (
 
 func attachKnowledgeClaimWS(t *testing.T, f *knowledgeDaemonFixture, rpc *wsRPCClient) {
 	t.Helper()
-	reply, err := json.Marshal(map[string]any{"tasks": []Task{f.task}})
+	var tasks any = []Task{f.task}
+	if len(f.claimTasks) > 0 {
+		tasks = f.claimTasks
+	}
+	reply, err := json.Marshal(map[string]any{"tasks": tasks})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -663,5 +668,177 @@ func TestKnowledgePreparationBudgetIncludesFullEnvelope(t *testing.T) {
 	}
 	if reason := agent.KnowledgeFailureReason(validateKnowledgePreparation(f.task, f.task.KnowledgeContext.Session, false, fingerprint, p)); reason != agent.KnowledgeUnavailable {
 		t.Fatal("full private response was not budgeted")
+	}
+}
+
+// knowledgeDescriptorMutations are claim descriptors this daemon cannot decode
+// strictly: a session field from a newer server, a case alias of a declared
+// field, a malformed session identity, and a fence it cannot read back.
+var knowledgeDescriptorMutations = []struct {
+	name        string
+	recoverable bool
+	mutate      func(descriptor, session map[string]any)
+}{
+	{"future_session_field", true, func(_, session map[string]any) { session["future_field"] = "x" }},
+	{"session_case_alias", true, func(_, session map[string]any) { session["Native_Session_ID"] = "x" }},
+	{"malformed_session_generation", true, func(_, session map[string]any) { session["generation"] = "not-a-uuid" }},
+	{"unreadable_fence", false, func(descriptor, session map[string]any) {
+		session["future_field"] = "x"
+		descriptor["claim_generation"] = 2
+	}},
+}
+
+// mutatedKnowledgeTask is task with its knowledge_context descriptor changed by
+// mutate, encoded the way a claim response carries it.
+func mutatedKnowledgeTask(t *testing.T, task Task, mutate func(descriptor, session map[string]any)) json.RawMessage {
+	t.Helper()
+	raw, err := json.Marshal(task)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var generic map[string]any
+	if err := json.Unmarshal(raw, &generic); err != nil {
+		t.Fatal(err)
+	}
+	descriptor := generic["knowledge_context"].(map[string]any)
+	mutate(descriptor, descriptor["session"].(map[string]any))
+	raw, err = json.Marshal(generic)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return raw
+}
+
+// plainSiblingTask is a base task in the same claim, with no knowledge context.
+func plainSiblingTask(f *knowledgeDaemonFixture) Task {
+	plain := f.task
+	plain.ID, plain.KnowledgeContext = uuid.NewString(), nil
+	return plain
+}
+
+func TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask(t *testing.T) {
+	for _, tc := range knowledgeDescriptorMutations {
+		t.Run(tc.name, func(t *testing.T) {
+			f := newKnowledgeDaemonFixture(t)
+			fence := protocol.TaskKnowledgeFence{ClaimGeneration: f.task.KnowledgeContext.ClaimGeneration, DispatchedAt: f.task.KnowledgeContext.DispatchedAt}
+			plain := plainSiblingTask(f)
+			sibling := f.task
+			sibling.ID = uuid.NewString()
+			descriptor := *f.task.KnowledgeContext
+			descriptor.TaskID = sibling.ID
+			sibling.KnowledgeContext = &descriptor
+			body, err := json.Marshal(map[string]any{"tasks": []any{plain, sibling, mutatedKnowledgeTask(t, f.task, tc.mutate)}})
+			if err != nil {
+				t.Fatal(err)
+			}
+			var envelope struct {
+				Tasks []*Task `json:"tasks"`
+			}
+			if err := json.Unmarshal(body, &envelope); err != nil {
+				t.Fatalf("one undecodable descriptor discarded the whole claim: %v", err)
+			}
+			if len(envelope.Tasks) != 3 || !reflect.DeepEqual(*envelope.Tasks[0], plain) || !reflect.DeepEqual(*envelope.Tasks[1], sibling) {
+				t.Fatal("well-formed tasks in the same claim changed")
+			}
+			if taskKnowledgeFence(*envelope.Tasks[0]) != nil || *taskKnowledgeFence(*envelope.Tasks[1]) != fence {
+				t.Fatal("well-formed tasks lost their own knowledge fences")
+			}
+			rejected := envelope.Tasks[2]
+			if rejected.KnowledgeContext != nil || rejected.ID != f.task.ID {
+				t.Fatal("an undecodable descriptor survived as a knowledge context")
+			}
+			got := taskKnowledgeFence(*rejected)
+			if tc.recoverable && (got == nil || *got != fence) || !tc.recoverable && got != nil {
+				t.Fatalf("recovered fence = %+v, want original=%v", got, tc.recoverable)
+			}
+			f.task = *rejected
+			result := f.run(t)
+			if result.Status != "blocked" || result.FailureReason != agent.KnowledgeContextChanged {
+				t.Fatalf("rejected descriptor was not refused: status=%s reason=%s", result.Status, result.FailureReason)
+			}
+			if len(f.callsFor("prepare")) != 0 || len(f.callsFor("authorize")) != 0 {
+				t.Fatal("rejected descriptor requested private knowledge")
+			}
+			if _, err := os.Stat(f.argv); !errors.Is(err, os.ErrNotExist) {
+				t.Fatal("rejected descriptor started a provider process")
+			}
+			if tc.recoverable && (result.KnowledgeFence == nil || *result.KnowledgeFence != fence) || !tc.recoverable && result.KnowledgeFence != nil {
+				t.Fatalf("terminal report fence = %+v", result.KnowledgeFence)
+			}
+			starts := f.callsFor("start")
+			var start struct {
+				Fence *protocol.TaskKnowledgeFence `json:"knowledge_fence"`
+			}
+			if len(starts) != 1 || json.Unmarshal(starts[0].body, &start) != nil {
+				t.Fatal("rejected task did not report its start")
+			}
+			if tc.recoverable && (start.Fence == nil || *start.Fence != fence) || !tc.recoverable && start.Fence != nil {
+				t.Fatalf("start fence = %+v", start.Fence)
+			}
+		})
+	}
+}
+
+func TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor(t *testing.T) {
+	for _, transport := range []string{"http_single", "http_batch", "ws_batch", "http_legacy_fallback", "managed_single", "managed_http", "managed_ws"} {
+		t.Run(transport, func(t *testing.T) {
+			f := newKnowledgeDaemonFixture(t)
+			fence := protocol.TaskKnowledgeFence{ClaimGeneration: f.task.KnowledgeContext.ClaimGeneration, DispatchedAt: f.task.KnowledgeContext.DispatchedAt}
+			plain := plainSiblingTask(f)
+			plainRaw, err := json.Marshal(plain)
+			if err != nil {
+				t.Fatal(err)
+			}
+			f.claimTasks = []json.RawMessage{plainRaw, mutatedKnowledgeTask(t, f.task, knowledgeDescriptorMutations[0].mutate)}
+			var scoped *managedWorkspaceTransport
+			if strings.HasPrefix(transport, "managed") {
+				scoped = installKnowledgeManagedFixture(t, f)
+			}
+			if transport == "ws_batch" {
+				attachKnowledgeClaimWS(t, f, f.d.wsRPC)
+			}
+			if transport == "managed_ws" {
+				attachKnowledgeClaimWS(t, f, scoped.rpc)
+			}
+			var tasks []*Task
+			switch transport {
+			case "http_single", "managed_single":
+				var task *Task
+				task, err = f.d.client.ClaimTask(context.Background(), f.task.RuntimeID)
+				tasks = []*Task{task}
+			case "http_batch", "managed_http":
+				tasks, err = f.d.client.ClaimTasks(context.Background(), "daemon", []string{f.task.RuntimeID}, 2)
+			case "http_legacy_fallback":
+				f.d.batchClaimUnsupported.Store(true)
+				tasks, err = f.d.ClaimTasksWSFirst(context.Background(), "daemon", []string{f.task.RuntimeID}, 2)
+			default:
+				tasks, err = f.d.ClaimTasksWSFirst(context.Background(), "daemon", []string{f.task.RuntimeID}, 2)
+			}
+			if err != nil {
+				t.Fatalf("one undecodable descriptor lost the committed claim: %v", err)
+			}
+			batch := !strings.HasSuffix(transport, "_single") && transport != "http_legacy_fallback"
+			if want := map[bool]int{true: 2, false: 1}[batch]; len(tasks) != want {
+				t.Fatalf("claim returned %d tasks, want %d", len(tasks), want)
+			}
+			if batch && (tasks[0] == nil || !reflect.DeepEqual(*tasks[0], plain) || taskKnowledgeFence(*tasks[0]) != nil) {
+				t.Fatal("the well-formed task was changed or marked rejected")
+			}
+			rejected := tasks[len(tasks)-1]
+			if rejected == nil || rejected.ID != f.task.ID || rejected.KnowledgeContext != nil {
+				t.Fatal("the undecodable descriptor survived as a knowledge context")
+			}
+			if got := taskKnowledgeFence(*rejected); got == nil || *got != fence {
+				t.Fatalf("rejected task lost its original fence: %+v", got)
+			}
+			calls := f.callsFor("claim")
+			if strings.HasSuffix(transport, "_ws") || transport == "ws_batch" {
+				if len(calls) != 1 || calls[0].path != "ws/claim" {
+					t.Fatalf("ws claim fell back to http: %d calls", len(calls))
+				}
+			} else if len(calls) != 1 {
+				t.Fatalf("claim count %d", len(calls))
+			}
+		})
 	}
 }

@@ -44,6 +44,15 @@ See the [operator guide](../../../docs/collaboration-knowledge-runtime.md).
 Single/batch HTTP, daemon WebSocket batch, managed claims and legacy fallback
 share the claim builder. It finalizes only source-free configuration/session
 metadata. Never disclose body, summary or source IDs during claim construction.
+The daemon decodes each task's descriptor apart from the rest of the task. A
+descriptor it cannot strictly decode refuses only that task with
+`knowledge_context_changed` and zero processes, reporting its original fence when
+the exact `claim_generation` and `dispatched_at` keys are valid. It never runs
+that task as a base turn. Other tasks in the same single, batch, WebSocket or
+managed response proceed. Descriptor session fields stay strictly decoded: adding
+or changing a descriptor or session field requires a `TaskKnowledgeVersion` bump,
+and the server emits the new shape only to a daemon whose
+`TaskKnowledgeInvocation` negotiated that version.
 The configuration namespace is task-independent and stable across ordinary token
 refresh. It is distinct from the **real invocation fingerprint**, computed only
 after finalized task cwd, executable/version, model, thinking, default/custom
@@ -207,7 +216,9 @@ namespace/member-fence holder retry and its bound
 (`task_knowledge_concurrency_test.go`; collaboration in
 `TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder`); daemon
 `knowledge_context*` suites own each claim transport, actual fake stdin, the
-unreachable-workdir drop and the echoed-stale refusal. Collaboration service,
+unreachable-workdir drop and the echoed-stale refusal, plus per-task descriptor
+isolation (`TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask`,
+`TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor`). Collaboration service,
 handler and `host_knowledge*` suites own MDT/status/retained-options/persistence.
 `task_knowledge_config_test.go` owns exact startup parsing and instance propagation.
 
@@ -229,3 +240,14 @@ manifest as permission to launch again.
 Correct: keep guarded readers/history/outbox on rollback, recheck the exact
 manifest at every disclosure and physical authorization, and preserve cleanup
 facts independently of whether another launch is allowed.
+
+Wrong: let an older reader skip unknown `knowledge_delivery` fields.
+Prepare, authorize and observe decode the stored row, change it and re-encode all
+of it, so a tolerant reader would erase exposure facts a newer release recorded.
+
+Correct: `knowledge_delivery` stays strictly decoded and fails closed: unknown
+fields or an unknown `knowledge_context_version` refuse the task with
+`knowledge_context_changed`. Any change to the stored shape bumps
+`knowledge_context_version`. Ship a reader that accepts the new version before any
+writer emits it, and roll back only to a release whose reader accepts every
+version the newer release may have written.

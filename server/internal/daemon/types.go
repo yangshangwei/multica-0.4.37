@@ -212,6 +212,61 @@ type Task struct {
 	// cleared PriorSessionID. Unexported, so no claim response can set it; the
 	// knowledge path reports it to the server as resume_unavailable.
 	droppedPriorSessionID string
+
+	// knowledgeRejected marks a claim whose knowledge_context descriptor did not
+	// decode strictly. KnowledgeContext stays nil and the task is refused before
+	// any prompt or process; recoveredKnowledgeFence is its original claim fence
+	// when the exact fence keys could be read back. Both are unexported, so no
+	// claim response can set them directly.
+	knowledgeRejected       bool
+	recoveredKnowledgeFence *protocol.TaskKnowledgeFence
+}
+
+// UnmarshalJSON decodes knowledge_context apart from the rest of the task, so
+// one descriptor this daemon cannot decode strictly refuses only its own task
+// instead of failing a claim response the server has already committed. The
+// descriptor and its session stay strictly decoded; errors in any other task
+// field still fail the whole decode.
+func (t *Task) UnmarshalJSON(raw []byte) error {
+	type taskWire Task
+	var wire struct {
+		*taskWire
+		KnowledgeContext json.RawMessage `json:"knowledge_context,omitempty"`
+	}
+	wire.taskWire = (*taskWire)(t)
+	if err := json.Unmarshal(raw, &wire); err != nil {
+		return err
+	}
+	t.KnowledgeContext, t.knowledgeRejected, t.recoveredKnowledgeFence = nil, false, nil
+	if len(wire.KnowledgeContext) == 0 || string(wire.KnowledgeContext) == "null" {
+		return nil
+	}
+	var descriptor protocol.TaskKnowledgeClaimDescriptor
+	if err := json.Unmarshal(wire.KnowledgeContext, &descriptor); err != nil {
+		t.knowledgeRejected = true
+		t.recoveredKnowledgeFence = recoverKnowledgeFence(t.ID, wire.KnowledgeContext)
+		return nil
+	}
+	t.KnowledgeContext = &descriptor
+	return nil
+}
+
+// recoverKnowledgeFence reads the claim fence of a rejected descriptor from its
+// exact claim_generation and dispatched_at keys only, and keeps it only when it
+// is a valid fence for this task. The server checks the fence again regardless.
+func recoverKnowledgeFence(taskID string, raw json.RawMessage) *protocol.TaskKnowledgeFence {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil {
+		return nil
+	}
+	var fence protocol.TaskKnowledgeFence
+	if json.Unmarshal(fields["claim_generation"], &fence.ClaimGeneration) != nil || json.Unmarshal(fields["dispatched_at"], &fence.DispatchedAt) != nil {
+		return nil
+	}
+	if protocol.ValidateTaskKnowledgeRequest(protocol.TaskKnowledgeVersion, taskID, fence.ClaimGeneration, fence.DispatchedAt) != nil {
+		return nil
+	}
+	return &fence
 }
 
 // ChatAttachmentMeta is the structured attachment metadata the daemon

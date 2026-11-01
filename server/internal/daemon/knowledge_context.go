@@ -26,6 +26,13 @@ const knowledgeRequestTimeout = 5 * time.Second
 type knowledgeFenceContextKey struct{}
 
 func taskKnowledgeFence(task Task) *protocol.TaskKnowledgeFence {
+	if task.knowledgeRejected {
+		if task.recoveredKnowledgeFence == nil {
+			return nil
+		}
+		fence := *task.recoveredKnowledgeFence
+		return &fence
+	}
 	if task.KnowledgeContext == nil {
 		return nil
 	}
@@ -318,6 +325,11 @@ func validateKnowledgePreparation(task Task, claimed protocol.TaskKnowledgeSessi
 // prepareKnowledgePrompt runs only after the ordinary cwd, settings and options
 // exist. It never writes private material to the task or execenv/stable files.
 func (d *Daemon) prepareKnowledgePrompt(ctx context.Context, task Task, provider string, cfg agent.Config, opts *agent.ExecOptions, options []PromptOption) (string, error) {
+	// A descriptor that failed strict decoding never falls back to a base
+	// prompt: the claim negotiated knowledge, so the task is refused unlaunched.
+	if task.knowledgeRejected {
+		return "", knowledgeRefusal(agent.KnowledgeContextChanged)
+	}
 	if task.KnowledgeContext == nil {
 		return BuildPrompt(task, provider, options...), nil
 	}
