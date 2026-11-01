@@ -28,6 +28,7 @@
 1. **补查新增联合故障断言。** 对 `65cd0599b` 做独立复核，保留与原产品审查的范围区分。
 2. **登记新版本真实验收。** 按 [知识 runtime 真实验收计划](real-model-acceptance-plan.md) 和 [runtime 进度](../10-30-collaboration-context-handoff-runtime/progress.md)，固定实际源码/overlay、框架、CLI、模型、场景、预算与停止规则。新系列尚未分配调用预算，不能借用旧 E0/E1 结论。
 3. **在有上游恢复依据后独立续跑。** 原系列下一入口仍为 **E2a trial 3，剩余上限 22 次**；最近 trial 2 是上游 502 无效样本。保持原场景、模型、编号和停止规则，新系列与原系列分开记录。
+   2026-11-01 11:03 用户确认上游已恢复，要求续跑。trial 3 已登记在 [`experiments-2026-11-01-e2a-resume3/prerun.json`](../10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/prerun.json)，预检通过：两份冻结 HEAD、两侧三个框架文件哈希、CLI 2.1.316 均与登记一致。由于同一账号上另有 4 个活跃会话，其中两个拿到同一接续任务、正在准备真实运行，独占串行窗口不成立，**尚未启动，未消耗槽位**。需要先指定唯一执行会话并让其余会话在运行期间停止调用。
 4. **完成父任务发布验收。** Windows 原生、安装/升级组合、多账号及实际额度溯源仍开放，详见 [父任务验收矩阵](../10-30-collaboration-context-handoff/acceptance-2026-11-01.md)。当前 Web/macOS 和 fake 输入证据不替代这些门。
 
 数据库测试隔离事件及追溯限制继续保留在集成报告中。整包数据库测试使用新建专用库；保留历史和失败现场用于复核。

@@ -1,0 +1,47 @@
+{
+  "registered_by_session": "claude dfc52231-3a8b-4173-823d-9dcf6e621ae9 (multica-0-4-37-54)",
+  "authorization": "Existing account/quota approval and six-step execution instruction; user in this session on 2026-11-01 11:03 CST: upstream recovered, retest and resume the original series.",
+  "upstream_recovery_basis": "User statement only. No independent health probe is made because the stop rule forbids extra Provider calls.",
+  "remaining_provider_call_cap": 22,
+  "prior_consumed": {
+    "E1": [1, 2, 3],
+    "E2a": [1, 2]
+  },
+  "prior_summary": "../experiments-2026-11-01-e2a-resume2/run-summary.json",
+  "ordered_plan": [
+    {"scenario": "E2a_window_fact_newest", "arm": "baseline", "start_trial": 3, "call_cap": 1},
+    {"scenario": "E2b_window_fact_oldest", "arm": "baseline", "start_trial": 1, "call_cap": 3},
+    {"scenario": "E3_member_scope", "arm": "baseline", "start_trial": 1, "call_cap": 3},
+    {"scenario": "E3_member_scope", "arm": "after", "start_trial": 1, "call_cap": 3},
+    {"scenario": "E4_stale_merge", "arm": "baseline", "start_trial": 1, "call_cap": 3},
+    {"scenario": "E5_injection", "arm": "baseline", "start_trial": 1, "call_cap": 3},
+    {"scenario": "E6_relay", "arm": "baseline", "start_trial": 1, "call_cap": 6}
+  ],
+  "trials": 3,
+  "source_arms": {
+    "baseline": {
+      "cwd": "/Volumes/artisan/code/2026/mc-context-baseline-20261031/server",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f"
+    },
+    "after": {
+      "cwd": "/Volumes/artisan/code/2026/mc-context-resume-20261031/server",
+      "source_commit": "835e7b046c6841e0945a59326bc4ddcbae4a0df7"
+    }
+  },
+  "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+  "framework_files": {
+    "host_context_experiment_evidence_test.go": "6ad5f77069a5a6477e81763a9a8578ba3ff5838b0abeb947c01169bc68eb2b2f",
+    "host_context_experiment_fixture_test.go": "dc50d452f6630d8838040ac250ddd837dbcd3723acf20a3812abb0dbc6d97494",
+    "host_context_experiment_test.go": "738208242aa029af09fe5bafa055db2054f088c422bbb4f34eec28780bf720a7"
+  },
+  "preflight_2026_11_01": "Both frozen HEADs match; all three framework files in both arms match the registered hashes; CLI reports 2.1.316.",
+  "provider": "claude",
+  "executable": "/Users/artisan/.local/bin/claude",
+  "requested_model": "claude-opus-5-5",
+  "thinking": "provider_default",
+  "service_tier": "provider_default",
+  "stop_rule": "Stop every later trial/scenario after first incomplete runtime/environment/harness result; no extra replacement/health calls or timeout/model change. E5 canary stops for blocking review.",
+  "concurrency": "NOT MET at 11:12 CST: four other Claude sessions were active on this checkout and account (multica-0-4-37-0b, -14, -87, -ef). Two had been handed the same continuation prompt and were inspecting agentintegration tests and the claude CLI. All four were asked by message whether they run Provider calls, make check, DB suites or migrations; no answer was recorded. Prior E2a 429s were gateway_concurrency_limit. Launch held; zero slots consumed.",
+  "launch_status": "held_before_provider_launch",
+  "new_runtime_scope": "This resumes the original frozen product arms only. It does not validate runtime 0e1ee8e1e or knowledge 96cedf485."
+}
