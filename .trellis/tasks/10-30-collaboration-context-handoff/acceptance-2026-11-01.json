@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T23:06:27.539608+08:00",
+  "updated_at": "2026-11-01T16:17:05.722204+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -15,7 +15,7 @@
         "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md"
       ],
       "gaps": [
-        "runtime 没有新增迁移，746 演练属于原修复版本；额外遗漏矩阵另列"
+        "既有质量门仅适用于各自历史源码；本轮审计修复合流后的完整make check、sqlc、迁移、Web/Electron/RK1 fake尚未完成。"
       ]
     },
     {
@@ -41,7 +41,7 @@
         "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/source-manifest-547760ea8.json"
       ],
       "gaps": [
-        "原产品 4c833e737 正式 E0 已过；RK1 runtime 场景上限原记 19 次（28c67c674，会话-87记录的用户决定），算错了；用户在会话-35 中改为 25 次（7 个场景 22 次加 H2b 3 次），改动还在 -35 未合入的框架分支上。召回产品补丁已合入（ac2a24f8f/c54a28ba6），源码重新绑定为 source-manifest-547760ea8.json；还要等审计 9 项修复合入并重新绑定、知识修复合入、真实 Provider 框架（会话-35 搭建，19:55 起由会话-fc 接手）通过复核；K1–K3/E0b 无预算；不能继承旧结论"
+        "RK1 runtime上限25已批、消耗0，含H2b及H6双启动；框架产品af04f6429已提交，normal fake/sim历史通过，旧产品race的真实incomplete均已保留；runnable=false，待runtime/知识修复合入、独立复核、同候选fake及最终源码/CLI/配置绑定。K1–K3/E0b未分配预算。"
       ]
     },
     {
@@ -61,7 +61,7 @@
     {
       "id": "AC4",
       "requirement": "中断与撤权后的记录保留",
-      "status": "deterministic_gate_passed_then_audit_reopened; model_unrun",
+      "status": "audit_repairs_independently_reviewed_pending_merge_and_combined_validation; real_model_unrun",
       "evidence": [
         "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/late-reconciliation/README.md",
@@ -69,15 +69,13 @@
         "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md"
       ],
       "gaps": [
-        "Stop/撤权/作者退出两种提交顺序已补齐并通过 race；真实 Provider 中断摄取未由 seeded UI 或服务 fixture 代替",
-        "2026-11-01 会话-ef 合入后只读审计（会话-a8 在 b8fd547dc 复核并入账）确认 REC-1/REC-2/REC-3/REC-4 未修复：一次非确定性 checkpoint 失败后本轮停止上传、恢复约 1 秒、outcome 后剩余块被 409 拒收；fallback 后旧 attempt 块使整条流关闭；seal 原因一律 authority_lost；瞬时失败补齐后仍永久 partial。现有确定性通过不覆盖这些路径",
-        "会话-a8 已在 codex/runtime-audit-fixes-20261101 提交 REC-1–REC-4 的修复 4456cc65a（截至 18:35 的 tip 为 5b9f66292，另含 ENV-2），未复核，未合入；19:27 用户在会话-fe 确认剩余修复由会话-27 在 codex/runtime-audit-fixes-27-20261101 上继续，-a8 停止"
+        "REC-1–REC-4已在4456cc65a修复；全批7627916c8独立pass-with-notes。尚未合入当前集成；统筹最终service协作套件在独立新库运行，不能把历史或分支回归拼成最终候选通过。真实Provider中断/撤权仍未验。"
       ]
     },
     {
       "id": "AC5",
       "requirement": "成员/队长/并行 memory 交接",
-      "status": "deterministic_gate_passed_then_audit_reopened; model_unrun",
+      "status": "audit_repairs_independently_reviewed_pending_merge_and_combined_validation; real_model_unrun",
       "evidence": [
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-backend-round2/service-summary.json",
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/acceptance-matrix-addendum/summary.md",
@@ -85,14 +83,13 @@
         "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md"
       ],
       "gaps": [
-        "双成员与 claim 前后来源、memory 冲突后的 refresh/new-intent merge 及双事实/作者版本保留均通过；模型理解和真实隔离接力仍单列",
-        "同一审计确认 ENV-1/ENV-2/ENV-4 未修复：实时 handoff 把最新 memory 标成“Started from”且 DTO 无基线版本字段；接近 64 KiB 的委派含凭据样文本时脱敏后被截断、成员 run 永久无法启动；continuation 的 wakeup_causes 一律 unknown"
+        "ENV-1/ENV-2/ENV-4分道修复分别为1eb0cb33c/5b9f66292/e1e6090eb，独立复核无阻塞；额外snapshot基线字段解析RV1修复58d486656，经统筹16/16复验。待合流联合验证和真实接力。另一个用户授权的端到端会话已在冻结822c15785真实API/Web复现ENV-1，旧冻结失败保留，不能覆盖修复候选结论。"
       ]
     },
     {
       "id": "AC6",
       "requirement": "有界评论召回与 revision",
-      "status": "deterministic_gate_passed_then_audit_reopened",
+      "status": "audit_repairs_independently_reviewed_pending_merge_and_combined_validation; real_model_unrun",
       "evidence": [
         "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/summary-final.json",
@@ -100,9 +97,7 @@
         "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-recall-surface-review/README.md"
       ],
       "gaps": [
-        "模型读取/理解仍属独立实验；普通评论是 live recall，不是启动预载",
-        "同一审计确认 RECALL-1/RECALL-2 未修复：runtime 评论召回没有作者显示名（父 PRD R4 要求）；collaboration-runtime-cli.md:49-51 仍写过滤等操作不支持、读取只返回最新 200 条，召回契约未成文（c54a28ba6 只补了命令列表）",
-        "召回修复 c54a28ba6 独立复核 pass-with-notes（会话[4a018c]）：错误来源 UUID 返回 503 而不是 404；Claude CLI 默认只把 30000 字符输出交给模型，32 KiB 来源块或 64 KiB 评论页的游标会落在预览之外（未实测）；live handoff show 让 ENV-1 变得 Agent 可达；另有 4 个测试缺口"
+        "作者显示名、召回契约、预览前置游标及16KiB建议预算修复7627916c8；5项召回复核跟进c9b285552；整批独立pass-with-notes。待合流验证。H2实际不测超过32项结果/原因分页，H2b另测大结果来源读取，模型可见性由tool_result取证，尚无真实Provider结果。"
       ]
     },
     {
@@ -130,8 +125,7 @@
         "../10-30-collaboration-knowledge-promotion/verification-integration-2026-11-01.md"
       ],
       "gaps": [
-        "已合入并通过人工权限、版本/纠错/过期/撤回、失效与真实fake输入的确定性验收；真实Provider/生产启用另验，技能层不在本轮范围",
-        "2026-11-01 会话-14 审计记录21项缺陷（高3：开关关闭时白名单外参数终止任务、工作目录不可达后 PriorSessionID 失配、128行历史上限永久拒绝），修复任务 11-01-collaboration-knowledge-audit-fixes。13:55 起由会话-54 的 workflow 在 codex/kfix-lane-{claim,launch,write,web}-20261101 四个分道执行，截至 18:22 已提交 7 项（H1、H2、L1、L2、M4、M5、L8），分组复核 pass_with_notes；未整合到 codex/collaboration-knowledge-fixes-20261101，未经协调会话复核，未合入；本矩阵未独立核实"
+        "知识21项各分道已有修复或测试处置，未整体合流。claim H3/M3提交94e790d2d，托管参数30edf3e36，全service3281含子用例通过/18skip；launch H2边界与L7已补、daemon1714通过/2skip；write L5 ac6546772和L1归因d4bc37a86，完整service在跑；web ed0026525独立pass-with-notes，Core4338全套通过，Views7116通过/1既有日期失败，知识集成已有9c056ad68待合流重验。生产知识开关false，K1–K3/E0b预算未定。"
       ]
     },
     {
@@ -147,9 +141,8 @@
         "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-recall-surface-review/README.md"
       ],
       "gaps": [
-        "runtime 与知识最终源码、失败修正、独立审查及执行记录已可追溯；原/新真实模型和关联发布矩阵仍开放",
-        "合入后 runtime 审计 9 项确认（中 5、低 4）、2 项驳回，只读静态审查，未运行测试；用户 2026-11-01 决定在 RK1 前全部修复，由会话-a8 执行，RK1 须在修复合入并重新绑定源码后启动",
-        "2026-11-01 用户决定把含私有指令的 Provider 会话记录移出本地历史：5 个提交改写为 03469921c…b8fd547dc，产品树不变，只保留 sha256 和来源；独立核查 pass-with-notes"
+        "最终候选源码/框架/CLI/配置/构件尚未绑定；真实模型、原生Windows、安装升级与多账号额度均未验。",
+        "默认库迁移事故已披露：0aedf934e及父default-db-incident-audit-2026-11-01.json；272条账目456–763，迁移前快照缺失，当前schema/账目私有保留。未回退或清理；这不是验收通过证据。"
       ]
     }
   ],
@@ -230,7 +223,7 @@
       "defects": 21,
       "high": 3,
       "merged": false,
-      "executor": "root native takeover; claim assigned, launch/write/web queued; old workflow not resumed",
+      "executor": "root native agents and guarded serial takeover; no old workflow resume",
       "lane_branches": [
         "codex/kfix-lane-claim-20261101",
         "codex/kfix-lane-launch-20261101",
@@ -246,9 +239,10 @@
         "M5",
         "L8"
       ],
-      "coordinator_review": "pending",
-      "state_at_resume": "14_of_21_have_lane_commits; no_final_lane_or_integrated_acceptance",
-      "ownership_ledger": "execution-resume-2026-11-01.json"
+      "coordinator_review": "web pass-with-notes; claim in progress; launch/write pending",
+      "state_at_resume": "14 of21 committed at resume",
+      "ownership_ledger": "execution-resume-2026-11-01.json",
+      "current_state": "all21 have lane fix or test dispositions; full lane reviews and combined validation pending"
     }
   },
   "release_gates_runbook": {
@@ -270,10 +264,14 @@
   "execution_resume": "execution-resume-2026-11-01.json",
   "runtime_audit_repair": {
     "branch": "codex/runtime-audit-fixes-27-20261101",
-    "head_at_resume": "1eb0cb33cb37dd62d6a394ebcf298ea56b48f223",
+    "head_at_resume": "1eb0cb33c",
     "owner": "/root/runtime_fixes",
     "integration": "not_merged",
-    "gate": "pending_independent_review"
+    "gate": "root final service suite running; joint candidate checks pending",
+    "current_tip": "342c9198b",
+    "product": "7627916c8",
+    "rv1": "58d486656",
+    "independent_review": "pass-with-notes; RV1 separately fixed and root-rechecked"
   },
   "default_database_incident": {
     "audit": "default-db-incident-audit-2026-11-01.json",
