@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T16:17:05.722204+00:00",
+  "updated_at": "2026-11-01T16:25:21.940092+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -61,7 +61,7 @@
     {
       "id": "AC4",
       "requirement": "中断与撤权后的记录保留",
-      "status": "audit_repairs_independently_reviewed_pending_merge_and_combined_validation; real_model_unrun",
+      "status": "runtime_audit_repairs_merged_pending_combined_validation; real_model_unrun",
       "evidence": [
         "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/late-reconciliation/README.md",
@@ -69,13 +69,13 @@
         "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md"
       ],
       "gaps": [
-        "REC-1–REC-4已在4456cc65a修复；全批7627916c8独立pass-with-notes。尚未合入当前集成；统筹最终service协作套件在独立新库运行，不能把历史或分支回归拼成最终候选通过。真实Provider中断/撤权仍未验。"
+        "REC-1–REC-4已在4456cc65a修复；全批7627916c8独立pass-with-notes。已合入9e7f18785；统筹最终service协作套件在独立新库1668项通过，不能把历史或分支回归拼成最终候选通过。真实Provider中断/撤权仍未验。"
       ]
     },
     {
       "id": "AC5",
       "requirement": "成员/队长/并行 memory 交接",
-      "status": "audit_repairs_independently_reviewed_pending_merge_and_combined_validation; real_model_unrun",
+      "status": "runtime_audit_repairs_merged_pending_combined_validation; real_model_unrun",
       "evidence": [
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-backend-round2/service-summary.json",
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/acceptance-matrix-addendum/summary.md",
@@ -83,13 +83,13 @@
         "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md"
       ],
       "gaps": [
-        "ENV-1/ENV-2/ENV-4分道修复分别为1eb0cb33c/5b9f66292/e1e6090eb，独立复核无阻塞；额外snapshot基线字段解析RV1修复58d486656，经统筹16/16复验。待合流联合验证和真实接力。另一个用户授权的端到端会话已在冻结822c15785真实API/Web复现ENV-1，旧冻结失败保留，不能覆盖修复候选结论。"
+        "ENV-1/ENV-2/ENV-4分道修复分别为1eb0cb33c/5b9f66292/e1e6090eb，独立复核无阻塞；额外snapshot基线字段解析RV1修复58d486656，经统筹16/16复验。已合入9e7f18785，待最终联合验证和真实接力。另一个用户授权的端到端会话已在冻结822c15785真实API/Web复现ENV-1，旧冻结失败保留，不能覆盖修复候选结论。"
       ]
     },
     {
       "id": "AC6",
       "requirement": "有界评论召回与 revision",
-      "status": "audit_repairs_independently_reviewed_pending_merge_and_combined_validation; real_model_unrun",
+      "status": "runtime_audit_repairs_merged_pending_combined_validation; real_model_unrun",
       "evidence": [
         "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/summary-final.json",
@@ -97,7 +97,7 @@
         "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-recall-surface-review/README.md"
       ],
       "gaps": [
-        "作者显示名、召回契约、预览前置游标及16KiB建议预算修复7627916c8；5项召回复核跟进c9b285552；整批独立pass-with-notes。待合流验证。H2实际不测超过32项结果/原因分页，H2b另测大结果来源读取，模型可见性由tool_result取证，尚无真实Provider结果。"
+        "作者显示名、召回契约、预览前置游标及16KiB建议预算修复7627916c8；5项召回复核跟进c9b285552；整批独立pass-with-notes。已合入9e7f18785，待最终联合验证。H2实际不测超过32项结果/原因分页，H2b另测大结果来源读取，模型可见性由tool_result取证，尚无真实Provider结果。"
       ]
     },
     {
@@ -266,12 +266,19 @@
     "branch": "codex/runtime-audit-fixes-27-20261101",
     "head_at_resume": "1eb0cb33c",
     "owner": "/root/runtime_fixes",
-    "integration": "not_merged",
-    "gate": "root final service suite running; joint candidate checks pending",
+    "integration": "merged_9e7f1878544a5ba5f20c2b9aefc67acbb4a532db",
+    "gate": "runtime branch gates and independent review passed; final knowledge/RK1/delivery joint validation pending",
     "current_tip": "342c9198b",
     "product": "7627916c8",
     "rv1": "58d486656",
-    "independent_review": "pass-with-notes; RV1 separately fixed and root-rechecked"
+    "independent_review": "pass-with-notes; RV1 separately fixed and root-rechecked",
+    "final_branch_service": {
+      "pass": 1668,
+      "fail": 0,
+      "skip": 0,
+      "source": "2ba0d3006",
+      "evidence": "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-audit-takeover/root-service-final-summary.json"
+    }
   },
   "default_database_incident": {
     "audit": "default-db-incident-audit-2026-11-01.json",
