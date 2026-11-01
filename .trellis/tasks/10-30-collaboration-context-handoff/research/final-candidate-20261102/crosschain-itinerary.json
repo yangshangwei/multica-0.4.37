@@ -1,0 +1,360 @@
+{
+  "owner": "/root/final_crosschain_itinerary",
+  "source_candidate": "231a08063162acde63ebcabe2ef6a353f7a62bca",
+  "main_documentation_snapshot": "20f128dcecbf1c5eda793e8feddef892799abe76",
+  "product_test_scope_equal_to_candidate": true,
+  "recorded_at": "2026-11-01T19:26:21.695582+00:00",
+  "state": "static_itinerary_not_executed_not_acceptance",
+  "steps": [
+    {
+      "order": 1,
+      "gate": "password human handoff and concurrent memory",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-runtime-handoff-web.spec.ts",
+        "e2e/collaboration-runtime-handoff-desktop.spec.ts",
+        "e2e/collaboration-handoff-chain-web.spec.ts",
+        "e2e/collaboration-handoff-chain-desktop.spec.ts",
+        "e2e/collaboration-offline-handoff.spec.ts",
+        "e2e/collaboration-memory-web.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json"
+      ],
+      "expected_static_top_tests": 9,
+      "required_lane": "password; production Web and same-source built native renderer",
+      "covers": [
+        "ENV1base0/latest1 persisted/API/UI",
+        "long omitted comment fulltext + older page + removal",
+        "retained partial/unknown recordings and human directed transfer/information/acceptance",
+        "two-browser concurrent memory conflict/merge/restore/purge and original-key recovery"
+      ],
+      "does_not_cover": [
+        "actual record ingestion/physical termination",
+        "long result tail",
+        "real model"
+      ]
+    },
+    {
+      "order": 2,
+      "gate": "protocol controls and grant revocation",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-control-journey-web.spec.ts",
+        "e2e/collaboration-control-journey-desktop.spec.ts",
+        "e2e/collaboration-live-revoke-web.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json"
+      ],
+      "expected_static_top_tests": 5,
+      "required_lane": "password+managed; task protocol execution gate enabled; native renderer",
+      "covers": [
+        "partial Resume/lane isolation/whole Stop",
+        "withheld proof prevents false stopped state",
+        "grant revoke retains waiting input and requires proof+explicit Resume"
+      ],
+      "does_not_cover": [
+        "actual process kill; fixture daemon is explicit protocol simulation"
+      ]
+    },
+    {
+      "order": 3,
+      "gate": "actual native host fake-process Web/Electron/squad/switch",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-host-runtime.spec.ts",
+        "e2e/collaboration-host-switch.spec.ts",
+        "e2e/collaboration-host-squad.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json"
+      ],
+      "expected_static_top_tests": 3,
+      "required_lane": "password+managed; all explicit host daemon/provider/CLI binaries; deployment UUID; built renderer",
+      "covers": [
+        "actual native child host permit/termination/proof and shared UI records",
+        "Stop and explicit Resume without replay",
+        "runtime Switch waits Stop+owner consent and preserves local files",
+        "capacity1 squad leader/member/continuation and queued other squad"
+      ],
+      "does_not_cover": [
+        "commercial accounts/AC43",
+        "installed full Main",
+        "other native OS",
+        "RKI6 single-Runner recording seal completion"
+      ]
+    },
+    {
+      "order": 4,
+      "gate": "two runtime memory handoff through actual CLI",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-memory-runtime.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json"
+      ],
+      "expected_static_top_tests": 1,
+      "required_lane": "same password host lane; swap HOST_PROVIDER to built memory-provider",
+      "covers": [
+        "two enrolled local profiles/agents/private workdirs",
+        "actual CLI memoryv1->v2->v3 and run author/version attribution"
+      ],
+      "does_not_cover": [
+        "physical second machine",
+        "different real Provider accounts",
+        "parallel conflict (step1/service owns)"
+      ]
+    },
+    {
+      "order": 5,
+      "gate": "human knowledge approval/correction/withdraw UI",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-knowledge.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json"
+      ],
+      "expected_static_top_tests": 8,
+      "required_lane": "LEGACY ONLY; same-source API/productionWeb/native; execution knowledgefalse",
+      "covers": [
+        "7Web+1Electron human exact approve/correct/derive",
+        "purge/expiry/target-only withdraw and source invalidation",
+        "uncertain original-key GET recovery and definitive refusal"
+      ],
+      "does_not_cover": [
+        "Provider stdin",
+        "deployed knowledge=true admission",
+        "one single UI-to-Provider journey"
+      ]
+    },
+    {
+      "order": 6,
+      "gate": "ordinary knowledge actual fake-input composite",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-race",
+        "-tags=knowledgeintegration",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "./internal/daemon",
+        "-run",
+        "^TestKnowledgeServerDaemonComposite",
+        "-count=1",
+        "-json",
+        "-timeout=5m"
+      ],
+      "expected_static_top_tests": 14,
+      "expected_static_named_pass_events": 27,
+      "required_database_prefix": "multica_knowledge_composite_20261101_",
+      "required_lane": "fresh per-package migrated DB; internal fixture forces legacy and sets service knowledge=true",
+      "covers": [
+        "real HTTP/WS/daemon/fakeprocess input across issue/comment/chat/quick_create/autopilot",
+        "approved content+authors+exact exposure+physical starts",
+        "withdraw/purge/expiry/gate before authorization=>zero launches",
+        "lost responses/native session cleanup and source participation loss"
+      ],
+      "does_not_cover": [
+        "startup environment flag wiring",
+        "positive corrected version in new fake stdin",
+        "real model"
+      ]
+    },
+    {
+      "order": 7,
+      "gate": "Host knowledge actual fake-input composite",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-race",
+        "-tags=knowledgeintegration",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "./cmd/server",
+        "-run",
+        "^TestCollaborationKnowledgeHostComposite",
+        "-count=1",
+        "-json",
+        "-timeout=5m"
+      ],
+      "expected_static_top_tests": 8,
+      "expected_static_named_pass_events": 16,
+      "required_database_prefix": "multica_knowledge_host_composite_20261101_",
+      "required_lane": "another fresh migrated DB; router TestMain executes; fixture knowledge=true",
+      "covers": [
+        "real router/DB/Runner/HostExecutor/fakeClaude stdin and original accepted inputs",
+        "freshnamespace/argv persistence",
+        "withdraw/purge/expiry/source_access beforelaterlaunch=>refusal",
+        "unnegotiated no-disclose/downgrade/lostreply/private stderr"
+      ],
+      "does_not_cover": [
+        "startup environment flag wiring",
+        "positive correction->new-run stdin as one case",
+        "real model"
+      ]
+    },
+    {
+      "order": 8,
+      "gate": "quiet RK1 all-scenario fake normal/race",
+      "normal_command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-tags=agentintegration",
+        "./cmd/server",
+        "-run",
+        "^(TestRK1FakeProof|TestRK1Evidence.*|TestRK1HandoffAnswersRequireTheirExactLineCounts|TestRK1ProviderWithoutMarkerCannotEnterTestMain|TestRK1TraceSnapshotWaitsForCompletedHandler)$",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-timeout=40m"
+      ],
+      "required_database_prefix": "multica_rk1_",
+      "required_lane": "fresh DB per normal/race run; no REAL_AGENT flag; no concurrent heavy suites",
+      "covers": [
+        "E0a/H1/H2/H2b/H3a/H3b/H5/H6 and failure/preview/unexposed controls",
+        "new handoff/recording/recall and launch accounting",
+        "H2b decisive result tail beyond4096 via actual CLI source chunks",
+        "durable evidence faults/first incomplete stops"
+      ],
+      "does_not_cover": [
+        "paid Provider/model",
+        "H2 results/causes paging beyond32",
+        "automatic H6 semantic approval"
+      ],
+      "race_command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-race",
+        "-tags=agentintegration",
+        "./cmd/server",
+        "-run",
+        "^(TestRK1FakeProof|TestRK1Evidence.*|TestRK1HandoffAnswersRequireTheirExactLineCounts|TestRK1ProviderWithoutMarkerCannotEnterTestMain|TestRK1TraceSnapshotWaitsForCompletedHandler)$",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-timeout=40m"
+      ]
+    }
+  ],
+  "all_required_selected_cases_must_be_non_skipped": true,
+  "critical_prerequisites": [
+    "knowledgeUI beforeAll throws onpassword; do not run its8cases inpasswordlane",
+    "dated composite DBprefix guards are exact; allocate fresh uniquelysuffixed DBunderthoseprefixes,neverdefaultbusinessDB",
+    "every DBbackedGo package and everywhole run getsownnewmigratedDB; no -run compileprobe",
+    "Host configured() usesANYof3binaryvarspresent; partialconfig hardfails",
+    "Host fixture opens/restores all3executiongatebits; protocolcontrol fixture doesnotopen gate",
+    "programmatictrue/false servicefields in taggedcomposites do not proveprocessstartupflagwiring",
+    "ordinary host-provider and memory-provider are different stdlibfixtures; no ambientAgentCLI",
+    "samecandidate renderer+preload,sourceCLI andfakebinaryhashes required before actualruns",
+    "allcommands workers1/retries0/originaltimeouts; recordactualpassfailsskip"
+  ],
+  "gaps": [
+    {
+      "id": "CCG1",
+      "scope": "positive corrected version observed in actual new process stdin",
+      "fact": "HumanUI correction and service approval/concurrency tests exist; the two actual-input composite files have no correction/supersedes path. A combined claim would exceed observed scope.",
+      "next": "If required as onecrosschain, add minimalreviewedfakeinputcase: approve->firstinput->approve correction->secondinput excludes supersededcontent->withdraw->future refusal/noextra launch."
+    },
+    {
+      "id": "CCG2",
+      "scope": "deployed configuration knowledgeON/OFF",
+      "fact": "KnowledgeUI executionoff; taggedcomposites set booldirectly. Neither aloneproves actualAPIstartupenvwiring in bothisolated deployments.",
+      "next": "Keep separatelyrecordedtaskAPIconfig/DB foreach flag; useactualadmission+input/refusalproof. Programmaticmatrixsupplements butcannotreplace."
+    },
+    {
+      "id": "CCG3",
+      "scope": "resulttail versus collectionpaging",
+      "fact": "H2b proves a>4096prefix source read. UIruntimefixture priorresult isshort. H2 hasno>32results/causespage.",
+      "next": "Reporttailcoverage exactly; do not inferlargecollectionpagination."
+    }
+  ],
+  "out_of_scope_open": [
+    "Windows native/PowerShell/install upgrade",
+    "final macOS/Linux installers/offline upgrade",
+    "real Provider budgets/accounts/AC43 and original experiments"
+  ],
+  "operations": {
+    "tests": 0,
+    "browser": 0,
+    "database": 0,
+    "services": 0,
+    "Provider": 0,
+    "external": 0
+  },
+  "source_sha256": {
+    "e2e/collaboration-control-journey-desktop.spec.ts": "705b5648f4a675ab43283688e0145dbf6b7f6544eb38fed64e0f2e7214f62c01",
+    "e2e/collaboration-control-journey-web.spec.ts": "4e1e3b5cb93e536feff9973aa49ccba6295f2a6a014d166d355052b9831026c2",
+    "e2e/collaboration-handoff-chain-desktop.spec.ts": "9444fa57fef1fa73641dbced0409eb606d22e0ad44992990526684e30cdb1e1d",
+    "e2e/collaboration-handoff-chain-web.spec.ts": "c5d29e955de515eb43c09952e6cb594f5ce71e842cc94ba2800a5aebb269b098",
+    "e2e/collaboration-host-runtime.spec.ts": "89def39e2af39aceb9f03c6d0aa4bc54cc0f29397e08e4ac1cc97286c6ed2c54",
+    "e2e/collaboration-host-squad.spec.ts": "836d1dd8934d058f27fdfb37207da60c68af7c874e7a555743625aeb91058051",
+    "e2e/collaboration-host-switch.spec.ts": "77987dcae044ef2d99ec8ae54082fbdcb4094e6fadbc2fa50e0f53574be87fac",
+    "e2e/collaboration-knowledge.spec.ts": "05734ae588cae269dc6131d785f4bbbaaf1a9be834c85ba6e5e278c10b9ae015",
+    "e2e/collaboration-live-revoke-web.spec.ts": "25edb2607a927196ba3d21315261eb3775e7b0446c9fa203d0e86186780d3594",
+    "e2e/collaboration-memory-runtime.spec.ts": "e98ce55df69b6f39b3d9bbd7ff2c45fd97e57819443e0a1673679cf4858ef8db",
+    "e2e/collaboration-memory-web.spec.ts": "a1955b3d99cdc2a0d53508451e17b65e75cab600ff0d1c90acc59c91304f743a",
+    "e2e/collaboration-offline-handoff.spec.ts": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e",
+    "e2e/collaboration-runtime-handoff-desktop.spec.ts": "e03c98ba0a2db74f5f911bfff05990a3685abfbc77235bbe681d89afe227a540",
+    "e2e/collaboration-runtime-handoff-web.spec.ts": "e3b9858499b2e83cbef1e0010b06e766a7c98f8b45b69620befb22c3de2e35ac",
+    "e2e/fixtures/collaboration-control-journey.ts": "cb548cb272dbf66486a57b2b8ed42ebc93963dbe8043aab652dd00d64f7f115b",
+    "e2e/fixtures/collaboration-host-provider.go": "c61eab40b56796a92c99583820dc6e4a0f881c467d85c26ecd2743f0ad7e42a8",
+    "e2e/fixtures/collaboration-host-runtime.ts": "41558a125ded2b5303e29c256d9e3bbe0b3ef04b2af69611209a815589ef96d4",
+    "e2e/fixtures/collaboration-knowledge.ts": "b92926adbca1cabd2fb265ff2f1f80b4b26feda3889502eea9ff3bbb6f7ef5f5",
+    "e2e/fixtures/collaboration-memory-provider.go": "79634071c541bdbeefa9f3e1bc157558d98ce5d7453f50b7b7e5a1a525375b09",
+    "e2e/fixtures/collaboration-memory.ts": "5f15838159b2e046025c6b412791dd2754b488c6e79d56994ac5bb3396b9c139",
+    "e2e/fixtures/collaboration-runtime-handoff.ts": "b2426de829ee36103624437103966ba2664cab7755c89b2fdb895d1c1b9c5574",
+    "e2e/fixtures/lane-guards.ts": "f83a83d0dcb4106664a52e3f018018a171f6ab00f4ca1624b57f6ebae61c0777",
+    "server/cmd/server/collaboration_knowledge_host_composite_test.go": "d866d3f888a1ed48b015a04bb844170a1b5cd8c53ee662f104f0508b23fac3f6",
+    "server/cmd/server/rk1_entry_test.go": "0e7bd9887edc6be00c020fc861aab6c26cfbe494fb1dcd30b1a53f857541d0e3",
+    "server/cmd/server/rk1_fixture_test.go": "c257225e01c00a92dc266226347a3ffa016ac79db18c592dff6d293c6294994b",
+    "server/cmd/server/rk1_scenarios_handoff_test.go": "eaba9f65a465f12afb3c5322ffefe6f6ec9d5e94bfa50870bf3027fea992c06a",
+    "server/internal/daemon/collaboration_host_router_test.go": "1939ea098c47210f62512a138b35d944add6f3b4f02b5f2e0fd9a5dabaab130f",
+    "server/internal/daemon/knowledge_server_integration_test.go": "0e74b9e4fe420c7780ef800d022e66f1c187871f2ac8d25eb8c0261db10656f2",
+    "server/internal/service/collaboration_knowledge_runtime_test.go": "ad76b13b61ec16db660b80bce64990103f96b62a42bcc654f01ca723db32a7a2",
+    "server/internal/service/collaboration_memory_merge_acceptance_test.go": "5cfeff81bb250d8ff90c3c2067573c723cebdd56acdc52e28b283b7d491f92dc",
+    "server/internal/service/collaboration_memory_test.go": "cfe84eb31810fb445e85b1bb1d4ee28d28f15e7d28dca7247ff15d4ad14c4807",
+    "server/internal/service/task_knowledge_invocation_test.go": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745"
+  }
+}

@@ -306,5 +306,20 @@
     "make_check": "running_new_complete_check_after_reviewedfixturefix",
     "registration": "research/final-candidate-20261102/attempt-2-registration.json",
     "Provider_calls": 0
+  },
+  "local_crosschain_followup": {
+    "CCG1": {
+      "state": "test_only_composite_in_progress",
+      "owner": "/root/knowledge_correction_composite",
+      "branch": "codex/knowledge-crosschain-correction-20261102",
+      "scope": "newknowledgeintegrationtaggedtest approveV1->actualstdin->approvedcorrectionV2->newstdinexcludesV1->withdraw->refusal/noextraLaunch",
+      "database_policy": "root migrated distinctnormal/race ownedrequiredprefix DBs; exacttestpermit",
+      "product_logic_changes": false
+    },
+    "CCG2": {
+      "state": "open_deployed_API_flag_on_off_proof",
+      "programmatic_bool_composites_sufficient": false
+    },
+    "itinerary": "research/final-candidate-20261102/crosschain-itinerary.json"
   }
 }
