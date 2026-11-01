@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T18:21:44.168939+00:00",
+  "updated_at": "2026-11-01T18:50:42.990908+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -17,7 +17,8 @@
         "research/final-check-native-origin/independent-review/review.json"
       ],
       "gaps": [
-        "runtime、知识、RK1框架及交付准备已分别复核并本地合入。C3候选首轮make check在原生origin配置缺口处主动中断，exit -2；此前Core4340、Views7118、Docs62、Web290、Desktop1272共13082项TS测试通过。该结果不是完整验收通过；origin修复7435b04ec合入后须冻结新候选并完整重验。"
+        "runtime、知识、RK1框架及交付准备已分别复核并本地合入。C3候选首轮make check在原生origin配置缺口处主动中断，exit -2；此前Core4340、Views7118、Docs62、Web290、Desktop1272共13082项TS测试通过。该结果不是完整验收通过；origin修复7435b04ec合入后须冻结新候选并完整重验。",
+        "2026-11-02 后续：E2E补丁已独立复核并以7f8ca8725合入，新候选起始干净，同源renderer/CLI与本地缓存sqlc无漂移已验，完整make check正在运行；不得改判之前exit-2。"
       ]
     },
     {
@@ -152,7 +153,7 @@
         "research/acceptance-ledger-refresh-20261102/interrupted-check-summary.json"
       ],
       "gaps": [
-        "五项本地合流记录已绑定到当前快照；最终候选源码/框架/CLI/配置/构件仍未绑定。旧822c15785 E2E的14项存量失败完成源码归因（9项收件人交互、3项动态时间戳比较、2项记录区域范围），不等于新候选通过。C3三类代表用例首次重放受CORS环境配置阻断，尚未到达目标断言；待环境修正及契约修复独立复核。真实模型、原生Windows、安装升级与多账号额度均未验。",
+        "E2E维护14目标+ENV1/runtime3项在C3实际通过、独立pass-with-notes后合入7f8ca8725。新候选已固定源码/框架/launcher/CLI/配置/renderer初始指纹并开始完整make check，仍未验收；RKI6、知识开关/跨链路、平台安装升级及账号门继续开放。",
         "默认库迁移事故已披露：0aedf934e及父default-db-incident-audit-2026-11-01.json；272条账目456–763，迁移前快照缺失，当前schema/账目私有保留。未回退或清理；这不是验收通过证据。"
       ]
     }
@@ -354,18 +355,19 @@
   },
   "parent_status": "in_progress",
   "integration_snapshot": {
-    "head": "c6289db93404a2d882ea3a095abdf9073132bfc6",
+    "head": "7f8ca87252b53f16041485ac867e501962377802",
     "branch": "codex/cross-workspace-collaboration",
-    "read_only_tracking_ahead": 194,
+    "read_only_tracking_ahead": 200,
     "origin_fetched": false,
     "merges": {
       "runtime": "9e7f1878544a5ba5f20c2b9aefc67acbb4a532db",
       "knowledge": "6cb9fcb36dde68b553365bd96698e0792a466f30",
       "rk1_framework": "30fa31eb7034200f74412556d61b3378bd13c1df",
       "delivery_preparation": "c3db64b24fea7116622d106ce2231853e1be72f9",
-      "native_origin_preparation": "7435b04ec482554f3809ee97e89d6a3aab636919"
+      "native_origin_preparation": "7435b04ec482554f3809ee97e89d6a3aab636919",
+      "e2e_contract_maintenance": "7f8ca87252b53f16041485ac867e501962377802"
     },
-    "scope": "Current integrated source snapshot; final candidate binding and acceptance remain pending"
+    "scope": "Reviewed repair and E2E maintenance integration; frozen final candidate verification running, not accepted"
   },
   "full_candidate_check": {
     "source_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
@@ -404,5 +406,25 @@
     },
     "note": "Previous ledger bytes remain in git history; their then-current statements are historical, not an execution entry."
   },
-  "legacy_baseline_fields": "product_commit/integration_evidence_commit retain the original runtime delivery identity; integration_snapshot identifies the current locally integrated source, which is not yet a final accepted candidate."
+  "legacy_baseline_fields": "product_commit/integration_evidence_commit retain the original runtime delivery identity; integration_snapshot identifies the current locally integrated source, which is not yet a final accepted candidate.",
+  "e2e_contract_maintenance": {
+    "code": "1ecabb964",
+    "evidence": "f173e76da",
+    "review": "96140af72; pass-with-notes",
+    "merge": "7f8ca87252b53f16041485ac867e501962377802",
+    "product_under_maintenance_test": "c3db64b24",
+    "historical_targets_pass": 14,
+    "additional_runtime_ENV1_pass": 3,
+    "final_candidate_inference": false,
+    "ledger": "research/e2e-contract-maintenance/acceptance-ledger.json"
+  },
+  "final_candidate": {
+    "sha": "7f8ca87252b53f16041485ac867e501962377802",
+    "state": "full_make_check_running_not_accepted",
+    "registration": "research/final-candidate-20261102/registration.json",
+    "clean_at_start": true,
+    "source_id": "6ddb9c301999c6ebb7fb37e962c9f29473809f38a788623838491ba8f552c739",
+    "paid_runnable": false,
+    "real_provider_consumed": 0
+  }
 }

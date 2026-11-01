@@ -1,7 +1,7 @@
 {
   "recorded_at": "2026-11-01T18:21:44.168939+00:00",
   "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
-  "integration_head": "c6289db93404a2d882ea3a095abdf9073132bfc6",
+  "integration_head": "7f8ca87252b53f16041485ac867e501962377802",
   "worktrees": [
     {
       "worktree": "/Volumes/artisan/code/2026/multica-0.4.37",
@@ -159,7 +159,7 @@
     "native_origin": "b8035617d independently reviewed and merged 7435b04ec; complete check must rerun."
   },
   "default_database_incident": "default-db-incident-audit-2026-11-01.json",
-  "last_update": "2026-11-01T18:21:44.168939+00:00",
+  "last_update": "2026-11-01T18:50:42.990908+00:00",
   "current_results": {
     "runtime": "Merged 9e7f18785; independent pass-with-notes; RV-1 58d486656 root recheck 16 pass; final branch service 1668 pass/0 fail/0 skip; final combined candidate pending.",
     "claim": "H3/M3 94e790d2d and managed settings 30edf3e36 independently reviewed and integrated; CT-1 regression 5c3549001 retained.",
@@ -170,7 +170,14 @@
     "delivery": "Reviewed local preparation merged c3db64b24; WD-1/WD-2 closed; guide migration ceiling 763. Native platform/install/account proof unrun.",
     "knowledge_integration": "Merged 6cb9fcb36 after combined 45efa093c and independently rechecked 0702d5039/742abb217 follow-ups. Original service exit1 (3319 pass/3 fail/18 skip) preserved. Migration fixture 536 pass and skill 10 pass are narrow rechecks; final full check pending.",
     "full_candidate_check": "C3 make check interrupted with exit -2; TS 13082 pass, not an overall pass. Native-origin fix 7435b04ec requires a new complete candidate run.",
-    "e2e_triage": "Fourteen historical 822c15785 failures map to 9 recipient interactions/3 timestamp comparisons/2 record scope assertions. C3 representative first replay failed on CORS setup before target assertions; no business verdict."
+    "e2e_triage": "Fourteen historical 822c15785 failures map to 9 recipient interactions/3 timestamp comparisons/2 record scope assertions. C3 representative first replay failed on CORS setup before target assertions; no business verdict.",
+    "e2e_contract_maintenance": {
+      "state": "independently_reviewed_and_locally_merged",
+      "merge": "7f8ca87252b53f16041485ac867e501962377802",
+      "C3_target_pass": 14,
+      "C3_runtime_ENV1_pass": 3,
+      "candidate_acceptance": false
+    }
   },
   "initial_resume_snapshot": {
     "recorded_at": "2026-11-01T23:06:27.539608+08:00",
@@ -285,10 +292,18 @@
   "parent_status": "in_progress",
   "full_candidate_check_evidence": "research/acceptance-ledger-refresh-20261102/interrupted-check-summary.json",
   "next_entry": [
-    "root correct and prove legacy/password maintenance service origin config",
-    "e2e contract owner reproduce/repair then independentlyreview both authlanes",
-    "root merge only reviewed delta, freeze clean candidate and rerun complete makecheck with per-package dedicatedDBs",
-    "same-candidate gatedWeb/nativeElectron/knowledgeon-off/crosschain and quietRK1fake/race",
-    "finalsource/CLI/config/artifact binding and localpackaging; no external operations"
-  ]
+    "root complete actual makecheck on frozen7f8ca8725; preserve/diagnose any failure",
+    "same-candidate mandatory password/Web/native and knowledge on-off/cross-chain checks",
+    "quiet final RK1 all-scenario fake normal/race; RKI6 remains open",
+    "final artifacts/local installers/offline upgrade and source-bound fingerprints; native/account gates remain unverified",
+    "paid window only after all prerequisites; external operations remain unauthorized"
+  ],
+  "active_verification": {
+    "owner": "root",
+    "candidate_sha": "7f8ca87252b53f16041485ac867e501962377802",
+    "worktree": "/Volumes/artisan/code/2026/mc-collaboration-final-20261102",
+    "make_check": "running; explicit fresh task databases and per-package Go clones",
+    "registration": "research/final-candidate-20261102/registration.json",
+    "Provider_calls": 0
+  }
 }

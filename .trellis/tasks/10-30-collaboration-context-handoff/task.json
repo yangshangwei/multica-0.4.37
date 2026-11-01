@@ -25,7 +25,7 @@
   ],
   "parent": null,
   "relatedFiles": [],
-  "notes": "2026-11-01 续作：审计修复、独立复核、合流及最终联合验证尚未闭合；原系列下一 E3 after trial 2，剩余14次，冻结源码不变；RK1 runtime 已批25次（含H2b、H6每轮两次启动），消耗0，框架与源码绑定未就绪；K1-K3/E0b及安装版/AC43另行分账。知识生产默认false。见父任务 execution-resume-2026-11-01.json。",
+  "notes": "2026-11-02：runtime、知识、RK1框架、交付准备和E2E契约补丁均已独立复核并本地合流。最终候选7f8ca8725固定且完整make check运行中，最终联合/平台/账号验收未完成。RK1runtime25/消耗0，原冻结系列另余14，下一E3 after trial2；K1-K3/E0b/安装版/AC43另分账。生产知识false；仅本地授权。",
   "meta": {
     "delivery": "parent-orchestration",
     "planning_scope": "phase1-closure-handoff-promotion",
@@ -39,19 +39,19 @@
     "six_step_execution_approved": true,
     "latest_model_evidence": "../10-30-collaboration-fix-closure/verification-e2a-resume3-2026-11-01.md",
     "runtime_integration_commit": "0e1ee8e1e",
-    "runtime_deterministic_acceptance": "historical_scope_passed_audit_reopened",
+    "runtime_deterministic_acceptance": "audit_repairs_reviewed_and_merged; final_candidate_verification_pending",
     "knowledge_planning": "K1_K5_F1_F4_approved_complete",
     "model_acceptance": "original_E3_after_trial2_cap14; RK1_runtime_cap25_unrun; knowledge_unbudgeted",
     "current_acceptance_matrix": "acceptance-2026-11-01.json",
     "deterministic_addendum": "passed_0bbc6a77a_84c4c2b3d",
-    "knowledge_implementation": "integrated; deterministic_acceptance_passed",
+    "knowledge_implementation": "audit_repairs_reviewed_and_merged; final_candidate_and_model_acceptance_pending",
     "knowledge_worktree": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
     "knowledge_product_commit": "96cedf485",
     "knowledge_evidence_commit": "93093d2e9",
     "knowledge_main_merge": "8cb04e3295474073b4b991bc4883ef3901c14f01",
     "parent_acceptance": "open_real_models_and_release_matrix",
-    "progress_phase": "audit_repair_and_framework_fake_validation",
-    "next_action": "finish_audit_repairs_and_independent_reviews_then_serial_local_merges_joint_validation_and_source_rebinding",
+    "progress_phase": "final_same_candidate_joint_verification_running",
+    "next_action": "complete_7f8ca8725_make_check_then_password_native_knowledge_and_quiet_RKI6_fake_race",
     "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
     "resume_ledger": "../10-30-collaboration-context-handoff/execution-resume-2026-11-01.json",
     "original_series_next": "E3 after trial 2; then E4 -> E5 -> E6; remaining cap 14; frozen source",
@@ -60,6 +60,7 @@
       "consumed": 0,
       "includes_H2b": true,
       "H6_launches_per_trial": 2
-    }
+    },
+    "final_candidate_registration": "research/final-candidate-20261102/registration.json"
   }
 }

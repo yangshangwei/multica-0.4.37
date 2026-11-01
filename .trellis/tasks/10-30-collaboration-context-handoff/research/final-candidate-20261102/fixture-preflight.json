@@ -1,0 +1,221 @@
+{
+  "recorded_at": "2026-11-01T18:53:06.464880+00:00",
+  "owner": "/root/final_fixture_preflight",
+  "scope": "Read-only static prerequisite preflight for the legacy make-check lane, while root owns execution",
+  "candidate_sha": "7f8ca87252b53f16041485ac867e501962377802",
+  "result": "no_blocking_missing_prerequisite_identified_by_static_preflight",
+  "make_check_state_observed": "running",
+  "make_check_acceptance": false,
+  "spec_inventory_files_scanned": 147,
+  "method": "Inventory process.env/test.skip references across147spec files, then inspect focused guards and fixture call sites. No Playwright collection or test/service/DB execution.",
+  "source_env_sha256": "ff0371169a4487e108c7f25fdb2c17d04fa27c34408e570d95b9d866b1cc4703",
+  "source_environment_disclosed": false,
+  "required_config_presence": {
+    "DATABASE_URL": true,
+    "JWT_SECRET": true,
+    "MULTICA_DEPLOYMENT_ID": true,
+    "COLLABORATION_ELECTRON_RENDERER_URL": true,
+    "CHANGELOG_ELECTRON_RENDERER_URL": true,
+    "COLLABORATION_SOURCE_CLI": true,
+    "MULTICA_MCP_TEMPLATE_DIR": true,
+    "E2E_MCP_TEMPLATE_DIR": true,
+    "MULTICA_SKILL_TEMPLATE_DIR": true,
+    "MULTICA_RESOURCE_PUBLISH_DIR": true,
+    "REDIS_URL": true,
+    "REDIS_TEST_URL": true
+  },
+  "safe_controls": {
+    "knowledge_context_enabled": false,
+    "direct_llm_key_blank": true,
+    "direct_llm_base_url_blank": true,
+    "renderer_loopback_19842_before_preparation": true,
+    "MCP_api_and_test_directory_equal": true,
+    "checkout_dotenv_files_absent": true
+  },
+  "paths_presence": {
+    "COLLABORATION_SOURCE_CLI": {
+      "configured": true,
+      "exists": true,
+      "kind": "file"
+    },
+    "MULTICA_MCP_TEMPLATE_DIR": {
+      "configured": true,
+      "exists": true,
+      "kind": "directory"
+    },
+    "E2E_MCP_TEMPLATE_DIR": {
+      "configured": true,
+      "exists": true,
+      "kind": "directory"
+    },
+    "MULTICA_SKILL_TEMPLATE_DIR": {
+      "configured": true,
+      "exists": true,
+      "kind": "directory"
+    },
+    "MULTICA_RESOURCE_PUBLISH_DIR": {
+      "configured": true,
+      "exists": true,
+      "kind": "directory"
+    }
+  },
+  "desktop_artifact_sha256": {
+    "apps/desktop/out/main/index.js": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678",
+    "apps/desktop/out/preload/index.js": "68a9036e201a462ffd10a1a4890e052a0b6b342c0b74d6d8ac489d9f5d8e78e5",
+    "apps/desktop/out/renderer/index.html": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef"
+  },
+  "source_CLI_sha256": "4a10ea89ea13d5354a3f0cca54973b543b12e343284476b1c01673cbc5ba2575",
+  "pnpm_adapter_sha256": "e74949d2c0ee6c96d219642cc66ac1d931b5e2e48c6bb4a64b45d65e21fc3a27",
+  "optional_activation_presence": {
+    "E2E_PASSWORD_AUTH": {
+      "source_configured": false,
+      "child_inherited_environment_configured": false
+    },
+    "E2E_PLATFORM_ADMIN": {
+      "source_configured": false,
+      "child_inherited_environment_configured": false
+    },
+    "E2E_DEVICE_AUTH": {
+      "source_configured": false,
+      "child_inherited_environment_configured": false
+    },
+    "MULTICA_E2E_CLI_BINARY": {
+      "source_configured": false,
+      "child_inherited_environment_configured": false
+    },
+    "COLLABORATION_HOST_DAEMON": {
+      "source_configured": false,
+      "child_inherited_environment_configured": false
+    },
+    "COLLABORATION_HOST_PROVIDER": {
+      "source_configured": false,
+      "child_inherited_environment_configured": false
+    },
+    "COLLABORATION_HOST_CLI": {
+      "source_configured": false,
+      "child_inherited_environment_configured": false
+    },
+    "COLLABORATION_CROSS_CLIENT_DAEMON": {
+      "source_configured": false,
+      "child_inherited_environment_configured": false
+    },
+    "COLLABORATION_CROSS_CLIENT_PROVIDER": {
+      "source_configured": false,
+      "child_inherited_environment_configured": false
+    },
+    "COLLABORATION_INSTALLED_IMAGE": {
+      "source_configured": false,
+      "child_inherited_environment_configured": false
+    },
+    "COLLABORATION_HOST_INSTALLED_IMAGE": {
+      "source_configured": false,
+      "child_inherited_environment_configured": false
+    },
+    "COLLABORATION_INSTALLED_MAIN_EXECUTABLE": {
+      "source_configured": false,
+      "child_inherited_environment_configured": false
+    },
+    "CHANGELOG_E2E_FEED": {
+      "source_configured": false,
+      "child_inherited_environment_configured": false
+    },
+    "ACTOR_RECOMMENDATION_PROVIDER_URL": {
+      "source_configured": false,
+      "child_inherited_environment_configured": false
+    },
+    "E2E_ASSIST_PROVIDER_URL": {
+      "source_configured": false,
+      "child_inherited_environment_configured": false
+    }
+  },
+  "blocking_findings": [],
+  "coverage_notes": [
+    {
+      "id": "FP-N1",
+      "scope": "compiled optional CLI suites",
+      "fact": "MULTICA_E2E_CLI_BINARY is unconfigured; upstream-backports-cli and cli-forbidden-reason skip. COLLABORATION_SOURCE_CLI is a distinct fixture variable and does not activate them. Configured binaries must resolve inside this checkout server/bin.",
+      "refs": [
+        "e2e/upstream-backports-cli.spec.ts:68",
+        "e2e/upstream-backports-cli.spec.ts:160",
+        "e2e/cli-forbidden-reason.spec.ts:25",
+        "e2e/cli-forbidden-reason.spec.ts:80",
+        "e2e/fixtures/collaboration-source-surface.ts:227"
+      ]
+    },
+    {
+      "id": "FP-N2",
+      "scope": "password, managed control, host and installed lanes",
+      "fact": "Current legacy source does not activate password/admin/device, host/cross-client executables or installed-package selectors. Their guards precede fixture setup. Final password/runtime/installation gates require their own configured runs.",
+      "refs": [
+        "e2e/fixtures/collaboration-control-journey.ts:22",
+        "e2e/collaboration-runtime-handoff-web.spec.ts:11",
+        "e2e/collaboration-runtime-handoff-desktop.spec.ts:16",
+        "e2e/fixtures/collaboration-host-runtime.ts:21",
+        "e2e/fixtures/collaboration-cross-client-execution.ts:43",
+        "e2e/collaboration-host-installed.spec.ts:42"
+      ]
+    },
+    {
+      "id": "FP-N3",
+      "scope": "live feed publication and auxiliary fake-provider acceptance",
+      "fact": "Live changelog mutation needs CHANGELOG_E2E_FEED; the current reader/native tests have API/renderer wiring but the publication case skips without the feed. Optional assistant/recommendation-provider cases also remain unconfigured.",
+      "refs": [
+        "e2e/changelog.spec.ts:100",
+        "e2e/changelog-desktop.spec.ts:8",
+        "e2e/issue-assist-flow.spec.ts",
+        "e2e/quick-create-actor-picker-phase2.spec.ts"
+      ]
+    },
+    {
+      "id": "FP-N4",
+      "scope": "knowledge execution",
+      "fact": "The legacy knowledge UI suite deliberately keeps execution/host admission disabled; it can verify human proposal/review/correction flows but cannot close knowledge-on injection acceptance.",
+      "refs": [
+        "e2e/collaboration-knowledge.spec.ts:17",
+        "e2e/collaboration-knowledge.spec.ts:20",
+        "e2e/collaboration-knowledge.spec.ts:22"
+      ]
+    }
+  ],
+  "source_file_sha256": {
+    "scripts/check.sh": "c6d544402060c0e76fafc73e98fece92e063a971bc3cc4e85b36f8d5b8058ae6",
+    "e2e/env.ts": "4ef226a0f4fed5834fc41a7164b7ecf77a8061df4a8f53a810cdfe0ebb518040",
+    "playwright.config.ts": "de9a385def3e04d929d514b3d5eca092a78c6b1ea2895429e863e06f1ad285fd",
+    "e2e/fixtures/lane-guards.ts": "f83a83d0dcb4106664a52e3f018018a171f6ab00f4ca1624b57f6ebae61c0777",
+    "e2e/fixtures/collaboration-control-journey.ts": "cb548cb272dbf66486a57b2b8ed42ebc93963dbe8043aab652dd00d64f7f115b",
+    "e2e/fixtures/collaboration-offline-handoff.ts": "4179e69cdafa8eec8200e8fedcc832fdf43a199665192b9c5fc8c02fe15bc658",
+    "e2e/fixtures/collaboration-host-runtime.ts": "41558a125ded2b5303e29c256d9e3bbe0b3ef04b2af69611209a815589ef96d4",
+    "e2e/fixtures/collaboration-cross-client-execution.ts": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+    "e2e/fixtures/collaboration-source-surface.ts": "73e45318206e17327a3cf53a52249a20e9114157ffd511fd04f14eb4691cc0e3",
+    "e2e/fixtures/collaboration-native.ts": "88b19f3fcc107997d5b4a1ab8364de3ba4a4930bacbda3c25fa97d60463c3095",
+    "e2e/collaboration-runtime-handoff-web.spec.ts": "e3b9858499b2e83cbef1e0010b06e766a7c98f8b45b69620befb22c3de2e35ac",
+    "e2e/collaboration-runtime-handoff-desktop.spec.ts": "e03c98ba0a2db74f5f911bfff05990a3685abfbc77235bbe681d89afe227a540",
+    "e2e/collaboration-source-surface.spec.ts": "639214a9ceea2f0371e0a9cccb9863bcfbdf38067537c21c5f9c4a6dc173ea47",
+    "e2e/collaboration-knowledge.spec.ts": "05734ae588cae269dc6131d785f4bbbaaf1a9be834c85ba6e5e278c10b9ae015",
+    "e2e/collaboration-host-installed.spec.ts": "2ca4a3b659fd8a6693d19dee23c587a107ddbce1f07f02c7efe5f9653b288fbe",
+    "e2e/upstream-backports-cli.spec.ts": "3a1dcb8ab1f5f317a69243178a73efd892e0bdf3da1534d535d7cec4ff42ca6a",
+    "e2e/cli-forbidden-reason.spec.ts": "310229b9f0c0c3ef22ef8a4928cb3db1388c23be6f9323842b0ad79c5fc09a31",
+    "e2e/changelog.spec.ts": "36fbbfcf9f97ee3b007ff537a7c8fa0dd6bf009fbf31211677084c7b4557207d",
+    "e2e/changelog-desktop.spec.ts": "606a293b3d48cbe5ff9c7f543ad8e1832b6f5805ddc84f272ac2e151e77a36b7",
+    "e2e/mcp-desktop.spec.ts": "8bd94d34fd158fcb5f559757b2ccb6ff2f144751babb717260c1242a7ea1a56d",
+    "e2e/mcp-market.spec.ts": "bc4478da11f8ba7f3a6ccd754368440d5e8d6ef724f8106e2d51b8384dc9797e",
+    "server/internal/service/skill_template_dir.go": "dfe9d7cba0da3f9dbfc2fead200da0ff4cccdaa4c713fbf7ea6daba6533e4a4c",
+    "server/migrations/744_collaboration_creation_default.up.sql": "0b6e45126578648f9df7490b6e5d8a1d83ff521ca391fc41535580c2206316d2"
+  },
+  "operations": {
+    "tests": 0,
+    "browser": 0,
+    "database": 0,
+    "services": 0,
+    "installed_Agent_CLI": 0,
+    "Provider": 0,
+    "external": 0,
+    "git_mutations": 0
+  },
+  "not_verified": [
+    "actual final Playwright inventory and pass/fail/skip counts",
+    "live final API configuration/CORS or renderer HTTP responses (root owns these)",
+    "final make-check outcome",
+    "password/knowledge-on/host/install/real-model acceptance"
+  ]
+}
