@@ -19,7 +19,7 @@
 - Go 测试命令统一加 `env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0` 前缀，否则 `TestGitEnv` 会在本机误报失败。
 - DB-backed 包在数据库不可达时会静默 `ok`。必须用 `-v` 确认输出里有真实的测试名。
 - sqlc：`cd server && go run github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1 generate`。基线上执行没有差异。
-- 前端：claim 与 web 两个 worktree 已执行 `pnpm install --filter "@multica/views..." --filter "@multica/core..." --frozen-lockfile`。
+- 前端：web 分道和集成 worktree 已执行 `pnpm install --filter "@multica/views..." --filter "@multica/core..." --frozen-lockfile`；claim 分道没有 node_modules。
 
 ## 每个缺陷的流程（TDD）
 
@@ -33,7 +33,16 @@
 
 ## 分道内顺序
 
-<!-- LANE_ORDER -->
+| 分道 | 起点 | 组的顺序 |
+| --- | --- | --- |
+| claim | `4cf4d45a2`（H1） | H1-followup → M1 → H3+M3 |
+| launch | `4e3b61500` | H2 → M2+L6+L7 |
+| write | `4e3b61500` | L1+L2 → L3+L4+L5 |
+| web | `4e3b61500` | M4+M5+L8 → L9+L12 → L10+L11+L13 |
+
+- 每组先实现，再按严重度复核：高 3 份（正确性、对抗安全、测试有效性），中 2 份（正确性、测试有效性），低 1 份（合并视角）。
+- 有阻塞项就修一轮，再按原视角复核；仍有阻塞，这条分道就停在该组。
+- 分道内各组串行，分道之间并行。整个流程同时最多 3 个代理使用网关，不调用真实 Provider。
 
 ## 分道完成门
 

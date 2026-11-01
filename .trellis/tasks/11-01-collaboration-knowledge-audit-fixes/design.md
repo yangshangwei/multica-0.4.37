@@ -194,4 +194,117 @@
   - 恢复不属于本面板的请求时不打开该候选；
   - 一次未结算的检查之后出现删除按钮，点击后这条请求从列表中消失。
 
-<!-- WORKFLOW_DESIGNS -->
+## 启动链路：claim 分道（H1、M1、H3、M3）
+
+方案比较全文见 `research/designs/claim-gate.json`、`research/designs/history-bound.json`。
+
+### H1：claim 时的拒绝规则
+
+- 根因：`96cedf485` 把用来证明"知识启动完全受控"的白名单 `ValidateKnowledgeSessionArgs` 当成了 claim 时的拒绝规则，而且在开关和支持判断之前执行。"无法证明受控"因此变成了"终止任务"。
+- 结论（H1-A）：claim 时改用会话选择参数的黑名单 `KnowledgeSessionSelectorPresent`，无论开关是否打开。规则只作用于 claude runtime 上的 v1 invocation，`inv.ExtraArgs` 和 agent 的 custom_args 都检查：
+  - 含选择参数，或 custom_args 解不出 `[]string`：启动前以 `knowledge_invocation_unsupported` 拒绝，绝不剥离参数。
+  - 开关关闭、无选择参数：按不支持处理，交给原有的历史守卫。命名空间里有保留的协商行或 exposure 就拒绝；历史损坏返回 `knowledge_context_changed`；否则返回 nil descriptor，按普通任务执行。H1 修的就是这一格。
+  - 开关打开、无选择参数、参数都在白名单内、没有 `--no-session-persistence`：照常协商。
+  - 开关打开、无选择参数，但有白名单外参数或 `--no-session-persistence`：按不支持处理，走同一个历史守卫。新任务按普通任务执行，不协商；保留了协商记录的任务拒绝。
+  - `inv == nil`（旧 daemon）或非 claude runtime：不变。
+- 叶子层 `KnowledgeInvocationFingerprint` 在 `opts.Knowledge` 存在时仍拒绝白名单外的参数，所以获准的知识启动仍然完全受控。
+- 放弃的方案：
+  - 只在开关关闭时跳过白名单：开关一打开，带 `--allowedTools` 之类参数的 claude 任务全部终止。
+  - 删掉这一步、只靠历史守卫：干净命名空间里 `--continue`、`--resume <id>` 会作为普通任务执行，可能接上 exposure 行已被删除的旧会话记录。
+  - 扩充白名单：永远补不全，新的厂商参数照样终止任务。
+- H1-followup（`6f7a601ce`）按三份复核扩大了黑名单。下面这些写法在 H1 之前都被白名单拒绝，现在恢复拒绝：
+  - 远程、附着、后台会话：`--teleport`、`--cloud`、`--remote*`、`--attach*`、`--bg`/`--background`、`--desktop`、`--environment`、`--tmux`；
+  - Claude Code 2.1.316 的子命令名和别名，以及旧版本的 `remote-control`；
+  - 单独的 `--`，它会把 daemon 追加在最后的 `--settings <managed path>` 变成位置参数。
+- 只 claim 过、没有已提交清单的会话没有披露过私有内容。spec 把"已知的托管会话"定义为历史中有一次已提交、清单非空的 preparation。命名空间守卫证明没有 exposure 时，不支持的客户端可以恢复只 claim 过的会话，由 `TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation` 固定。
+
+### M1：claim 时的非业务错误
+
+- 根因：claim handler 把所有非 `CollaborationError` 的错误都当作知识领域的拒绝。数据库瞬时错误、连接错误、ctx 超时都会终止任务，而且不重试。
+- 结论（M1-A）：在 handler 中分流：
+  - `*service.CollaborationError`：按它的 code 终止；
+  - `pgx.ErrNoRows`（runtime、agent、chat、issue、autopilot 的行在 claim 中途消失）：终止，沿用现有 reason；
+  - `failClaimedTaskBeforeLaunch` 内的结算失败：保留现有的重新入队兜底；
+  - 其他错误：立即重新入队，返回 500，不写 failure_reason。
+- 放弃的方案：
+  - 留给过期回收：chat 会一直显示"启动中"，直到超时。
+  - 服务端返回带类型的瞬时错误：要审计四个函数的全部返回路径，改动过大。
+  - 把 `knowledge_unavailable` 加进 `retryableReasons`：违反 spec 第 110 行，会重试真正的 fail-closed 拒绝。
+- 测试：`TestKnowledgeClaimTransientHistoryErrorRequeuesTask`、`TestKnowledgeClaimErrorDisposition`。handler 的故障注入测试会替换共享的 `testHandler` 状态，不能与其他测试并行。
+- 相邻问题，实现时核实：`FinalizeTaskClaim` 的错误分支（`handler/daemon.go` 约 3584–3594 行）总是重新入队，包括 32 次 claim 上限触发的 `knowledge_context_changed` 这类业务拒绝。如果会无限重新入队，就在 M1 中一并修复并加测试。
+
+### H3 + M3：历史读取的上限与索引
+
+- 根因：
+  - H3：两处历史读取对一个只增不减的集合加了固定的 `LIMIT 129`，读满就当作"历史不完整"而拒绝。每次受支持的 claim 都写一行 `claimed`，历史从不清理，读取范围也比单个会话宽：精确会话读取覆盖 agent 在该 issue、chat 或 scope 下的全部协商行；runtime 读取覆盖整个 runtime、agent、daemon/provider，以及跨工作空间的 owner/provider 命名空间。
+  - M3：runtime 读取的谓词用 OR 连接一个相关 IN 子查询和一个没有索引的 jsonb 包含条件，没有可用的索引路径；两处读取也都没有只覆盖协商行的部分索引。
+- 结论（方案 a）：不设行数上限，完整读取：
+  - 精确会话读取用 keyset 分页，每页 128 行，循环体不变，原有按顺序提前返回的逻辑保持不变。
+  - runtime 读取先用一条 UNION 取出全部 key，再按 id 分批取行，每批 128 行，遇到第一个 exposure 就停。key 和行分开读，是因为 GIN 分支不能按游标顺序返回行；按页做 keyset 会让每一页重跑 bitmap 和 jsonb 复查，总成本 O(M²)。
+  - 某个 key 在批量取行时已经消失：按 fail-closed 拒绝。
+- migration：
+  - 761：`CREATE INDEX CONCURRENTLY IF NOT EXISTS collaboration_knowledge_agent_history_idx ON agent_task_queue (agent_id, created_at DESC, id DESC) WHERE knowledge_context_version IS NOT NULL`
+  - 762：`collaboration_knowledge_runtime_history_idx`，列为 `(runtime_id, created_at DESC, id DESC)`，条件相同。
+  - 763：`collaboration_knowledge_delivery_history_idx`，`USING gin (knowledge_delivery jsonb_path_ops)`，条件相同。
+  - down 文件沿用 748–760：先 `SELECT collaboration_assert_knowledge_empty();`，再 `DROP INDEX IF EXISTS`。三个索引名都要在 `cmd/migrate/main.go` 的 `concurrentIndexCleanups` 中登记。
+- 放弃的方案：
+  - 只读可能带 exposure 的行：恢复的 chat 每一轮都引用同一个 native ID，集合仍然每轮多一行；被改坏、恰好丢了标记的行会漏判。
+  - 维护派生标记列：标记可能和文档不一致，而带外写入正是"任何位置的损坏都要拒绝"要防的情况。
+  - 超过 128 行就换新会话：上限是按范围计的，之后每一轮都会被迫换新会话；runtime 路径上也没有可以换的会话。
+  - 一条不分页的语句：sqlc `:many` 会把所有行读进内存，每行最多 64 KiB，而且不能在第一个 exposure 处停下。
+- 测试：`TestKnowledgeResumeReadsCompleteLongSessionHistory`、`TestKnowledgeResumeDeepExposureStillGoverns`、`TestKnowledgeResumeCorruptRowAnywhereRefuses`、`TestKnowledgeRuntimeHistoryReadsCompleteNamespace`（替换只断言缺陷的 truncated 子测试）、`TestKnowledgeRuntimeHistoryIsIndexDriven`。查询计划在迁移后的克隆库上用 EXPLAIN 核对，保存为 `research/evidence/M3-plan.txt`。
+- 留给负责人确认：
+  - 很长的 chat 下，每次 claim 的 O(N) 成本是否可以接受。如果上千轮是常态，再另立"按范围维护 exposure 汇总"的后续任务，并单独做 fail-closed 评审。
+  - owner 命名空间是跨工作空间的。一个 owner 只要在任一处有过私有披露，他在所有工作空间的不支持 claim 都会被永久拒绝。spec 要求如此，本次保持不变。
+
+## 启动链路：launch 分道（H2、M2、L6、L7）
+
+方案比较全文见 `research/designs/resume-unreachable.json`、`research/designs/launch-robustness.json`。
+
+### H2：上一次工作目录不可达
+
+- 根因：服务端在 claim 时就把知识 descriptor 绑定到选中的 native session。daemon 要到 claim 和 StartTask 之后才知道这个会话能不能接上，接不上时可达性检查会把这一轮改成新会话。旧链路接受这种情况，知识链路却无法告知服务端，结果有三处精确相等检查把它当成过期的 claim 拒绝：daemon 的 `validateKnowledgeClaim`、服务端 prepare/authorize 的 `req.Session == descriptor`、pkg/agent 的 Resume 意图检查。被拒的尝试不发布新的 session_id，也不让旧会话退役，所以下一次 claim 还会选中同一个接不上的会话，同一 issue 或 chat 之后的每一轮都以同样的方式失败。
+- 结论（方案 a）：`TaskKnowledgePrepareRequest` 增加可选字段 `resume_unavailable`，由 `PrepareTaskKnowledge` 在负责披露的同一个事务中校验，并改绑到新的 generation：
+  - 只允许在 claim 还没有 preparation、没有 attempt 时改绑，所以不会移动已记录的 exposure。用同一个 request_id 重放原请求仍然接受。
+  - 旧会话的行保持不变。以后如果再次选中它，仍要经过 `BuildTaskKnowledgeClaim` 的重新校验。
+  - 改绑在提交后只记一条不含内容的日志（task_id、旧 generation、新 generation），不加持久字段。持久字段会在回滚到旧服务端后破坏严格解码。
+- 兼容性：
+  - 不带标记的请求，字节和 receipt hash 都不变。
+  - 新 daemon 遇到旧服务端返回的 400：按 `knowledge_unavailable` 阻塞，不重试、不调用 authorize、不启动进程。
+  - 旧 daemon 遇到新服务端：仍在每一轮报 `knowledge_context_changed`，直到升级。spec 已写明，操作文档还缺这一句（见 `progress.md`）。
+- 放弃的方案：
+  - 先失败、再让服务端跳过这个会话：当前输入仍然失败；自动重试又违反"知识失败不自动换新会话、不重新入队、不重放输入"的规定。
+  - claim 时上报可达的会话：daemon 不知道会领到哪个任务，只能列出本机全部会话；而且可达性取决于 claim 之后的决定。
+  - 单独的改绑接口：多一条路由和一个持久的中间状态；可能出现改绑已提交、prepare 却失败的情况。
+- 测试：`TestTaskKnowledgePrepareRequestCarriesResumeUnavailable`、`TestKnowledgeUnreachablePriorWorkdirRebindsFreshGeneration`、`TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding`、`TestKnowledgeUnavailableResumeRebindsFreshGeneration`、`TestKnowledgeUnavailableResumeRefusesUnsafeRebind`、`TestKnowledgeUnreachableResumeHTTPRebindsAndBreaksLoop`（issue、chat 两个子测试）。
+
+### M2：命名空间锁竞争
+
+- 根因：claim 和 finalize 对同一个 key 用阻塞锁，prepare/authorize 却用 try-lock，一次没拿到就当作最终结果。daemon 75ms 的重试很少能等过一个并发的 claim、finalize 或 prepare 事务，而 spec 规定 `knowledge_busy` 是终止性的。
+- 结论（M2-b）：服务端对整个事务做有上限的重试，预算 1.5s，低于 daemon 的 5s `knowledgeRequestTimeout`。适用于普通的 `PrepareTaskKnowledge`、`AuthorizeTaskKnowledgeLaunch`，以及协作运行的 `PrepareRuntimeKnowledge`、`AuthorizeRuntimeKnowledge`。
+  - 等待期间不持有任何锁，锁顺序不变：先 source graph，最后 namespace。
+  - 重试是安全的：prepare 按 request_id/request_hash 重放，authorize 按 request_id 重放，协作 preparation ID 是确定的（`uuid.NewSHA1(runID, ...)`）。
+  - 预算用完仍返回终止性的 `knowledge_busy`，符合 spec 第 155 行。
+- 放弃的方案：
+  - 阻塞锁加短 `lock_timeout`：prepare 会在持有 issue、daemon_token、member、chat 锁的同时等待 namespace，而 finalize 的加锁顺序相反，会形成等待环。
+  - 加长 daemon 的重试：已经安装的 daemon 用不上。
+  - 把 `knowledge_busy` 改为可重试：违反 spec 第 110、155 行，可能在披露之后重放输入。
+
+### L6：线协议严格拒绝未知字段
+
+- 根因：问题在于影响范围，严格解码本身没错。知识 descriptor 的严格解码嵌在整个 claim 信封的解码里，一个解不开的 descriptor 会让服务端已经提交的一整批任务全部作废。存储 ledger 保持严格是对的，但还没有写成版本规则。
+- 结论：
+  - L6(i)-1：每个任务单独解码 descriptor，仍然严格。解码失败的任务 `KnowledgeContext=nil`，在任何 prompt 和启动之前明确拒绝，不会降级成普通执行。同一批的其他任务照常执行。
+  - L6(i)-3：在 spec 中写明版本规则：线协议新增字段必须同时提升 `TaskKnowledgeVersion`。
+  - L6(ii)-1：存储的 ledger 仍然严格解码，并受版本约束。回滚到低于 ledger 版本的服务端时，受影响的任务返回 409 `knowledge_context_changed`，直到重新升级。
+- 放弃的方案：宽松解码。会话绑定类型同时用于入站请求和存储 ledger，宽松的读取方会丢掉自己不认识的 exposure 记录，再在整行重新编码时把它们永久抹掉。
+- 测试：`TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask`、`TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor`。
+
+### L7：Started 回调失败后的 Terminated
+
+- 设计阶段的结论：缺陷无法复现。无论 ProcessState 是否为 nil，Started 失败的两个分支都会经 `waitOwnedProcessTree` 调用 `finish()` 恰好一次，上报 `Terminated(LaunchManagedEnded, WaitObserved=true)`。daemon 的 `finishProcess(true)` 在上报终止观测之前执行。
+- 要求：用测试证明 Started 失败之后 Terminated 恰好上报一次；如果测试推翻了上述推理，就带测试修复。不另加 `finish(LaunchUnknown)`：它会让 Terminated 上报两次，还会用较弱的记录覆盖真实的记录。
+
+### M2、L6 的测试
+
+`TestKnowledgePreparationWaitsOutSiblingNamespaceHolder`、`TestKnowledgeAuthorizationWaitsOutSiblingNamespaceHolder`、`TestKnowledgePreparationNamespaceBusyBudgetIsBounded`、`TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder`，以及上面 L6 的两个测试。
