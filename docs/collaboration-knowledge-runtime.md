@@ -27,7 +27,7 @@ creation, host execution and owner-consent gates still apply independently.
 
 ## Before enabling a deployment
 
-1. Install migrations through 760 and the matching server/daemon/client code.
+1. Install migrations through 763 and the matching server/daemon/client code.
    Use the repository migration runner; index migrations run individually and
    concurrently. Verify retained candidate, target revision, invalidation and
    internal task delivery support are present, not merely a migration ledger row.

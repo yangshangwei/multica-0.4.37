@@ -75,10 +75,13 @@ retained-delivery limits before commit. No prefix truncation or base-body copies
 The selected binding is `(provider,runtime,agent,configuration,scope,generation,
 native_session_id)`. Scope generation is a server UUID; claim generation is a
 separate decimal value. Resume unions **every exposure in that exact session**,
-including older, failed/cancelled/reclaimed turns and NULL-native rows. The 129-row
-sentinel detects history beyond the 128-row bound; incomplete/corrupt history is
-refused, never truncated. Valid claimed-only/empty history differs from actual
-private exposure and from legacy NULL metadata.
+including older, failed/cancelled/reclaimed turns and NULL-native rows. History
+has no row cap: read every negotiated row in scope newest-first in 128-row
+keyset pages (`created_at DESC, id DESC`) and decode each fail-closed. Length
+alone never refuses; a corrupt row at any depth is refused, never truncated.
+Legacy NULL-version rows carry no delivery by the metadata CHECK and are not
+read. Valid claimed-only/empty history differs from actual private exposure
+and from legacy NULL metadata.
 
 Before returning any old `PriorSessionID`, unsupported/legacy clients also check
 retained provider history across original/current runtime, current agent binding,
@@ -112,7 +115,12 @@ spelled like a subcommand refuses (`--debug mcp`; write `--debug=mcp`), and the
 selector is never stripped. Any other option outside the negotiation allowlist
 only makes the invocation unsupported, and the history guard then chooses base
 execution or refusal. Base execution requires a complete relevant history
-proving no private exposure.
+proving no private exposure. The runtime guard collects the complete relevant
+namespace keys in one index-driven UNION pass, then reads delivery rows by ID
+in batches of 128. A selected row that disappears or loses its negotiated
+metadata refuses. Namespace size alone never refuses, and the first actual
+exposure refuses without reading further. This remains O(negotiated rows) per
+claim; no exposure summary or cross-workspace owner rule changes.
 Proven legacy sessions preserve their existing behavior.
 
 Use one `NewOrdinaryLaunchLifecycle(observer)` per logical input. It preserves

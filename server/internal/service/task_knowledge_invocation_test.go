@@ -314,43 +314,19 @@ func TestKnowledgeValidEmptyAndClaimedHistoryPreserveLegacyWork(t *testing.T) {
 	}
 }
 
-func TestKnowledgeRuntimeHistoryRefusesCorruptOrTruncatedProof(t *testing.T) {
-	for _, condition := range []string{"corrupt", "truncated"} {
-		t.Run(condition, func(t *testing.T) {
-			f := newTaskKnowledgeFixture(t)
-			f.finalize(t, "")
-			row, err := f.tasks.Queries.GetAgentTask(f.ctx, f.task.ID)
-			if err != nil {
-				t.Fatal(err)
-			}
-			meta, err := decodeTaskKnowledge(row.KnowledgeContextVersion, row.KnowledgeDelivery)
-			if err != nil {
-				t.Fatal(err)
-			}
-			if condition == "corrupt" {
-				f.fx.Exec(t, `UPDATE agent_task_queue SET knowledge_delivery='{}'::jsonb WHERE id=$1`, row.ID)
-			} else {
-				for range 129 {
-					id := uuid.NewString()
-					meta.Claims[0].Descriptor.TaskID = id
-					raw, err := encodeTaskKnowledge(meta)
-					if err != nil {
-						t.Fatal(err)
-					}
-					f.fx.Task(t, util.UUIDToString(row.AgentID), testutil.Cols{"id": id, "runtime_id": row.RuntimeID, "issue_id": row.IssueID, "status": "completed", "claim_generation": 1, "knowledge_context_version": 1, "knowledge_delivery": raw})
-				}
-			}
-			newAgent := f.fx.Agent(t, "Legacy history guard", util.UUIDToString(row.RuntimeID))
-			issue := f.fx.Issue(t, "Unrelated scope")
-			id := f.fx.Task(t, newAgent, testutil.Cols{"runtime_id": row.RuntimeID, "issue_id": issue, "status": "dispatched", "dispatched_at": testutil.Raw("now()"), "claim_generation": 1})
-			task, err := f.tasks.Queries.GetAgentTask(f.ctx, util.MustParseUUID(id))
-			if err != nil {
-				t.Fatal(err)
-			}
-			if _, _, err = f.tasks.BuildTaskKnowledgeClaim(f.ctx, task, nil, ""); !collaborationErrorCode(err, "knowledge_context_changed") {
-				t.Fatalf("unprovable runtime history became legacy: %v", err)
-			}
-		})
+func TestKnowledgeRuntimeHistoryRefusesCorruptProof(t *testing.T) {
+	f := newTaskKnowledgeFixture(t)
+	f.finalize(t, "")
+	f.fx.Exec(t, `UPDATE agent_task_queue SET knowledge_delivery='{}'::jsonb WHERE id=$1`, f.task.ID)
+	newAgent := f.fx.Agent(t, "Legacy history guard", util.UUIDToString(f.task.RuntimeID))
+	issue := f.fx.Issue(t, "Unrelated scope")
+	id := f.fx.Task(t, newAgent, testutil.Cols{"runtime_id": f.task.RuntimeID, "issue_id": issue, "status": "dispatched", "dispatched_at": testutil.Raw("now()"), "claim_generation": 1})
+	task, err := f.tasks.Queries.GetAgentTask(f.ctx, util.MustParseUUID(id))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err = f.tasks.BuildTaskKnowledgeClaim(f.ctx, task, nil, ""); !collaborationErrorCode(err, "knowledge_context_changed") {
+		t.Fatalf("unprovable runtime history became legacy: %v", err)
 	}
 }
 
