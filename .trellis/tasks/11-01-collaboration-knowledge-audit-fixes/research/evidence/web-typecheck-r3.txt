@@ -1,0 +1,14 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+Scope: 2 of 11 workspace projects
+packages/core typecheck$ tsc --noEmit
+packages/core typecheck: Done
+packages/views typecheck$ tsc --noEmit
+packages/views typecheck: collaboration/knowledge-panel.test.tsx(420,124): error TS2339: Property 'sources' does not exist on type '{ availability: "source_unavailable"; capabilities: { can_approve: boolean; can_reject: boolean; can_withdraw: boolean; }; decision: { actor_user_id: string; at: string; } | null; lineage_id: string; ... 14 more ...; state_revision: string; } | { ...; }'.
+packages/views typecheck:   Property 'sources' does not exist on type '{ availability: "source_unavailable"; capabilities: { can_approve: boolean; can_reject: boolean; can_withdraw: boolean; }; decision: { actor_user_id: string; at: string; } | null; lineage_id: string; ... 14 more ...; state_revision: string; }'.
+packages/views typecheck: collaboration/knowledge-panel.test.tsx(420,137): error TS7006: Parameter 'source' implicitly has an 'any' type.
+packages/views typecheck: collaboration/knowledge-panel.tsx(32,17): error TS2552: Cannot find name 'CollaborationKnowledgeTarget'. Did you mean 'CollaborationKnowledgeTargetList'?
+packages/views typecheck: collaboration/knowledge-panel.tsx(39,67): error TS2552: Cannot find name 'CollaborationKnowledgeTarget'. Did you mean 'CollaborationKnowledgeTargetList'?
+packages/views typecheck: Failed
+/Volumes/artisan/code/2026/mc-kfix-lane-web/packages/views:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @multica/views@0.0.0 typecheck: `tsc --noEmit`
+Exit status 2

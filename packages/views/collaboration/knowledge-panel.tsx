@@ -1,11 +1,11 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useMutation, useQueryClient, type UseQueryResult } from "@tanstack/react-query";
-import { CollaborationUnavailableError, KnowledgeRecoveryStorageError, KnowledgeUnusedIntentError, KnowledgeReceiptCleanupError, dismissKnowledgeOperation, executeKnowledgeIntent,
+import { CollaborationUnavailableError, KnowledgeRecoveryStorageError, KnowledgeUnusedIntentError, KnowledgeReceiptCleanupError, collaborationKnowledgeCandidateOptions, dismissKnowledgeOperation, executeKnowledgeIntent, knowledgeTargetsEqual,
   readPendingKnowledgeOperations, recoverKnowledgeOperation,
   useCollaborationKnowledgeCandidates, useCollaborationKnowledgeTarget, useCollaborationScope,
-  type AuthorizedKnowledgeProjection, type CollaborationIssue, type CollaborationKnowledgeCandidates, type CollaborationKnowledgeTargetList,
+  type AuthorizedKnowledgeProjection, type CollaborationIssue, type CollaborationKnowledgeCandidates, type CollaborationKnowledgeTarget, type CollaborationKnowledgeTargetList,
   type CollaborationKnowledgeReceipt, type CollaborationScope, type KnowledgeIntent, type KnowledgeOperationIdentity, type KnowledgePageOptions } from "@multica/core/collaboration";
 import { Button } from "@multica/ui/components/ui/button";
 import { useT } from "../i18n";
@@ -29,13 +29,14 @@ export function ManagedKnowledgePanel({ workspaceId, projectId }: { workspaceId:
 }
 function TargetKnowledge({ scope, workspaceId, projectId }: { scope: CollaborationScope; workspaceId: string; projectId?: string }) {
   const [page, setPage] = useState<KnowledgePageOptions>({});
-  const query = useCollaborationKnowledgeTarget(scope, projectId ? { kind: "project", workspace_id: workspaceId, project_id: projectId } : { kind: "workspace", workspace_id: workspaceId }, page);
-  return <KnowledgeCollection scope={scope} query={query} page={page} setPage={setPage} />;
+  const target: CollaborationKnowledgeTarget = projectId ? { kind: "project", workspace_id: workspaceId, project_id: projectId } : { kind: "workspace", workspace_id: workspaceId };
+  const query = useCollaborationKnowledgeTarget(scope, target, page);
+  return <KnowledgeCollection scope={scope} target={target} query={query} page={page} setPage={setPage} />;
 }
 
 type KnowledgePage = CollaborationKnowledgeCandidates | CollaborationKnowledgeTargetList;
-function KnowledgeCollection({ scope, issue, query, page, setPage, sourceView, refreshView }: {
-  scope: CollaborationScope; issue?: CollaborationIssue; query: UseQueryResult<AuthorizedKnowledgeProjection<KnowledgePage>, Error>;
+function KnowledgeCollection({ scope, issue, target, query, page, setPage, sourceView, refreshView }: {
+  scope: CollaborationScope; issue?: CollaborationIssue; target?: CollaborationKnowledgeTarget; query: UseQueryResult<AuthorizedKnowledgeProjection<KnowledgePage>, Error>;
   page: KnowledgePageOptions; setPage: (value: KnowledgePageOptions) => void; sourceView?: CollaborationKnowledgeCandidates;
   refreshView?: () => Promise<CollaborationKnowledgeCandidates | undefined>;
 }) {
@@ -58,6 +59,11 @@ function KnowledgeCollection({ scope, issue, query, page, setPage, sourceView, r
   });
   const locked = mutation.isPending || intent !== null;
   const current = query.data;
+  // Later pages cannot renew their first-page lease. Recheck from the root
+  // after Core erases that boundary; human-authored drafts stay mounted.
+  useEffect(() => {
+    if (page.cursor && query.error?.name === "AbortError") setPage({});
+  }, [page.cursor, query.error, setPage]);
   /**
    * The caller states ownership; a render-time intent closure is null while a submit is starting.
    * "intent": this panel's in-memory request. "list": a recovered identity whose candidate is in this panel's list.
@@ -95,9 +101,22 @@ function KnowledgeCollection({ scope, issue, query, page, setPage, sourceView, r
     // Decided before the await: every panel lists every stored request, but only these are this panel's own.
     const owner = intent?.requestId === identity.requestId ? "intent" as const
       : current?.value.items.some((item) => item.candidate_id === identity.candidateId) === true ? "list" as const : null;
-    try { settled(await mutation.mutateAsync({ identity }), owner); }
+    // A refreshed or later list page cannot prove non-membership. Recheck the
+    // authorized detail through Core, without retaining another server cache.
+    const settleRecovered = async (receipt: CollaborationKnowledgeReceipt) => {
+      let resolved = owner;
+      if (resolved === null) {
+        try {
+          const { value } = await client.fetchQuery(collaborationKnowledgeCandidateOptions(client, scope, receipt.candidate_id));
+          const candidate = value.candidate;
+          if (candidate.availability !== "restricted" && (issue ? candidate.source_issue_id === issue.id : target && knowledgeTargetsEqual(candidate.target, target))) resolved = "list";
+        } catch { /* A receipt remains known even if its current detail is unavailable. */ }
+      }
+      settled(receipt, resolved);
+    };
+    try { await settleRecovered(await mutation.mutateAsync({ identity })); }
     catch (error) {
-      if (error instanceof KnowledgeReceiptCleanupError) { settled(error.receipt, owner); setCleanupFailed(true); }
+      if (error instanceof KnowledgeReceiptCleanupError) { await settleRecovered(error.receipt); setCleanupFailed(true); }
       else {
         setFeedback({ text: t(($) => $.knowledge.notFound), failed: true });
         setUnconfirmed((currentRequests) => [...new Set([...currentRequests, identity.requestId])]);

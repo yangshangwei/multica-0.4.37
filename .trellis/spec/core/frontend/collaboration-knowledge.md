@@ -7,6 +7,11 @@ realtime bindings. The [server contract](../../server/collaboration-knowledge.md
 owns authority; [shared UI](../../views/frontend/collaboration-knowledge.md) owns
 review interaction. Private server data belongs only in TanStack Query.
 
+An explicit `CollaborationUnavailableError` stops interval polling for that
+projection. Manual refresh, focus and reconnect may check availability again;
+transport errors keep the normal bounded refresh policy. Never clear an
+unavailable result merely to schedule another polling request.
+
 ## 2. Signatures
 
 - API methods: `getCollaborationKnowledgeCandidates`,

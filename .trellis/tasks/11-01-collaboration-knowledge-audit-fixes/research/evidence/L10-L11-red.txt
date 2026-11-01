@@ -1,0 +1,105 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-kfix-lane-web/packages/views
+
+ ❯ collaboration/knowledge-panel.test.tsx (30 tests | 2 failed | 28 skipped) 1163ms
+   × stops interval polling an unavailable knowledge interface until an explicit refresh 66ms
+   × restarts at the first page when a later page loses its authorization boundary 1095ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  collaboration/knowledge-panel.test.tsx > stops interval polling an unavailable knowledge interface until an explicit refresh
+AssertionError: expected "getCollaborationKnowledgeCandidates" to be called once, but got 5 times
+ ❯ collaboration/knowledge-panel.test.tsx:215:51
+    213|   mount(); await screen.findByText("Knowledge is unavailable on this s…
+    214|   await act(async () => { await vi.advanceTimersByTimeAsync(60_000); }…
+    215|   expect(api.getCollaborationKnowledgeCandidates).toHaveBeenCalledOnce…
+       |                                                   ^
+    216|   fireEvent.click(screen.getByRole("button", { name: "Refresh" }));
+    217|   await waitFor(() => expect(api.getCollaborationKnowledgeCandidates).…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  collaboration/knowledge-panel.test.tsx > restarts at the first page when a later page loses its authorization boundary
+AssertionError: expected [ [ …(3) ] ] to have a length of 2 but got 1
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"_r_1_-title"[39m
+        [33mclass[39m=[32m"min-w-0 space-y-5 rounded-md border border-border p-4 sm:p-5 pointer-coarse:[&_button]:min-h-11"[39m
+        [33mid[39m=[32m"knowledge"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex flex-wrap items-start justify-between gap-3"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"min-w-0 space-y-2"[39m
+          [36m>[39m
+            [36m<h3[39m
+              [33mclass[39m=[32m"text-body font-semibold"[39m
+              [33mid[39m=[32m"_r_1_-title"[39m
+            [36m>[39m
+              [0mKnowledge candidates[0m
+            [36m</h3>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"max-w-prose text-caption text-muted-foreground"[39m
+            [36m>[39m
+              [0mPropose a reusable conclusion with sources. Human approval controls where it may be used.[0m
+            [36m</p>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-3"[39m
+        [36m>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"text-body text-muted-foreground"[39m
+            [33mrole[39m=[32m"alert"[39m
+          [36m>[39m
+            [0mCould not load knowledge. Refresh to try again.[0m
+          [36m</p>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"group/button inline-flex shrink-0 items-center justify-center rounded-lg border bg-clip-padding text-body font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"[39m
+            [33mdata-slot[39m=[32m"button"[39m
+            [33mtabindex[39m=[32m"0"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mRefresh[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ collaboration/knowledge-panel.test.tsx:229:133
+    227|   await waitFor(() => expect(api.getCollaborationKnowledgeCandidates).…
+    228|   await act(async () => { expireKnowledgeProjections(client, scope); }…
+    229|   await waitFor(() => expect(vi.mocked(api.getCollaborationKnowledgeCa…
+       |                                                                                                                                     ^
+    230|   expect(await screen.findByRole("button", { name: "Next page" })).toB…
+    231| });
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 28 skipped (30)
+   Start at  23:29:14
+   Duration  4.76s (transform 1.58s, setup 156ms, import 2.47s, tests 1.16s, environment 848ms)
+
+undefined
+/Volumes/artisan/code/2026/mc-kfix-lane-web/packages/views:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run collaboration/knowledge-panel.test.tsx -t stops interval polling|restarts at the first page

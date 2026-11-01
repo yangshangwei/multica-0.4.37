@@ -1,0 +1,13 @@
+# Web lane takeover
+
+Root resumes this existing lane after the native implementer exhausted gateway 429 retries before editing. Base `a9801fb07`; no other writer owns this tree. Existing M4/M5/L8/L9/L12 commits remain intact.
+
+Approved remaining gaps: L10 later-page authorization expiry keeps refetching the obsolete boundary; L11 unavailable knowledge keeps polling; L13 Chinese entity terminology. The behavior lives in `knowledge-queries.ts` polling policy and `knowledge-panel.tsx` page selection, with canonical lease invalidation already enforced by Core. Reset only a later page after an AbortError; never extend its lease or retain private data. Stop interval polling for explicit `CollaborationUnavailableError`; manual refresh, focus and reconnect can check again. Fix terminology only in the knowledge locale section.
+
+Files: the two behavior owners and shared panel regressions; Core/views knowledge specs for the contract; zh-Hans locale and existing parity test. No new store, dependency, fallback or persistence. Follow-up ownership/error attribution tests follow after these gaps. Original source/target data clearing and human drafts must remain intact. Only fake TS tests; no database or Provider operations.
+
+Validation: reproduce both gaps through mounted Query/UI tests, retain red/green logs, run relevant Core/views tests and locale parity, lint/typecheck. Independent review remains a separate gate; root-authored fixes cannot self-satisfy it.
+
+M5 follow-up: the loaded page and lease erasure cannot establish that a recovered candidate belongs elsewhere. Added a failing same-source/outside-page regression, then resolve unknown membership from a fresh authorized Core detail after receipt recovery. Compare source issue or managed target; restricted/failed detail stays unowned. No private body/identity cache was added. A different-source test now uses an actual different source rather than equating absence from the loaded page with non-membership. Known receipts stay known if this extra read fails, and recovered old requests never close a new human draft.
+
+L10/L11 mounted regressions both failed before the fix and passed after. Canonical panel currently34/34; panel+locale parity before recovery follow-up96/96. M5 own-intent recovery and L8 source/preparation attribution3/3 pass. An initial attribution test used the wrong English expected text; that test-only error and corrected run are preserved. Core/views lint passes with27 existing unrelated warnings. Typecheck found error-generic inference from the interval callback's `unknown` parameter; constrained it to `Error | null` to preserve the existing public hook type, then rerun. Full lane/candidate tests and independent review remain open.

@@ -5,8 +5,9 @@ import { act, cleanup, fireEvent, screen, waitFor, within } from "@testing-libra
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, ApiError, setApiInstance } from "@multica/core/api";
+import * as collaboration from "@multica/core/collaboration";
 import { collaborationKnowledgeKeys, collaborationScope, parseCollaborationComment, parseCollaborationComments, parseCollaborationIssue,
-  parseCollaborationKnowledgeCandidates, parseCollaborationKnowledgeDetail, parseCollaborationKnowledgeTargetList, CollaborationExecutionSchema, parseCollaborationRunRecords, readPendingKnowledgeOperations,
+  parseCollaborationKnowledgeCandidates, parseCollaborationKnowledgeDetail, parseCollaborationKnowledgeTargetList, CollaborationExecutionSchema, parseCollaborationRunRecords, readPendingKnowledgeOperations, expireKnowledgeProjections,
   type CollaborationKnowledgeCandidate, type CollaborationKnowledgeReceipt, type CollaborationScope } from "@multica/core/collaboration";
 import { collaborationIssueFixture, collaborationExecutionFixture, knowledgeCandidateFixture, knowledgeUnavailableCandidateFixture } from "@multica/core/collaboration/test-fixtures";
 import { renderWithI18n } from "../test/i18n";
@@ -49,7 +50,7 @@ beforeEach(() => {
   vi.spyOn(api, "getCollaborationComments").mockResolvedValue(parseCollaborationComments({ issue_id: issue.id, items: [comment], next_cursor: null }));
   vi.spyOn(api, "getCollaborationComment").mockResolvedValue(comment);
 });
-afterEach(() => { cleanup(); client.clear(); localStorage.clear(); vi.restoreAllMocks(); });
+afterEach(() => { cleanup(); client.clear(); localStorage.clear(); vi.useRealTimers(); vi.restoreAllMocks(); });
 function mount(target = false, currentIssue = issue) {
   return renderWithI18n(<QueryClientProvider client={client}>{target
     ? <ManagedKnowledgePanel workspaceId={issue.source_workspace.id} />
@@ -207,6 +208,29 @@ it("keeps unsupported knowledge separate from the surrounding collaboration and 
   expect(screen.getByText(/Only 50 versions are shown/)).toBeInTheDocument();
 });
 
+it("stops interval polling an unavailable knowledge interface until an explicit refresh", async () => {
+  vi.useFakeTimers({ toFake: ["setInterval", "clearInterval"] });
+  vi.mocked(api.getCollaborationKnowledgeCandidates).mockResolvedValue(null);
+  mount(); await screen.findByText("Knowledge is unavailable on this server. Existing context is unchanged.");
+  await act(async () => { await vi.advanceTimersByTimeAsync(60_000); });
+  expect(api.getCollaborationKnowledgeCandidates).toHaveBeenCalledOnce();
+  fireEvent.click(screen.getByRole("button", { name: "Refresh" }));
+  await waitFor(() => expect(api.getCollaborationKnowledgeCandidates).toHaveBeenCalledTimes(2));
+});
+
+it("restarts at the first page when a later page loses its authorization boundary", async () => {
+  const boundary = lease();
+  vi.mocked(api.getCollaborationKnowledgeCandidates).mockImplementation(async (_issueId, params) =>
+    parseCollaborationKnowledgeCandidates({ ...boundary, issue_id: issue.id, items: params?.cursor ? [] : [summary()],
+      next_cursor: params?.cursor ? null : "page2", capabilities: { can_propose: true } }));
+  mount();
+  await userEvent.click(await screen.findByRole("button", { name: "Next page" }));
+  await waitFor(() => expect(api.getCollaborationKnowledgeCandidates).toHaveBeenCalledWith(issue.id, { cursor: "page2", limit: undefined }, expect.anything()));
+  await act(async () => { expireKnowledgeProjections(client, scope); });
+  await waitFor(() => expect(vi.mocked(api.getCollaborationKnowledgeCandidates).mock.calls.filter(([, params]) => !params?.cursor)).toHaveLength(2));
+  expect(await screen.findByRole("button", { name: "Next page" })).toBeInTheDocument();
+});
+
 it("picks an actual recorded run as a source without memory or a raw JSON form", async () => {
   const execution = CollaborationExecutionSchema.parse(collaborationExecutionFixture); const run = execution.runs[1]!;
   const recordId = `event:${commentId}:message-0`;
@@ -315,6 +339,18 @@ it("unlocks the human draft after storage fails before POST", async () => {
 });
 
 // M5: only this panel's own in-memory intent closes its proposal form; ownership never comes from a render-time closure.
+it("checking the panel's own lost proposal closes its locked form without another POST", async () => {
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockRejectedValue(new TypeError("Lost response"));
+  mount(); await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" })); await fillProposal();
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+  await screen.findByRole("button", { name: "Retry same request" });
+  const lost = send.mock.calls[0]![1];
+  vi.mocked(api.getCollaborationKnowledgeOperation).mockResolvedValue({ ...receipt(lost.request_id, "propose"), candidate_id: lost.candidate_id });
+  await userEvent.click(screen.getByRole("button", { name: "Check original result" }));
+  await waitFor(() => expect(screen.queryByRole("form", { name: "Propose knowledge" })).not.toBeInTheDocument());
+  expect(send).toHaveBeenCalledOnce();
+});
+
 it("a review decision leaves an open proposal draft intact and only the panel's own proposal closes it", async () => {
   vi.spyOn(api, "approveCollaborationKnowledge").mockImplementation(async (_id, input) => receipt(input.request_id, "approve"));
   const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockImplementation(async (_issue, input) => ({ ...receipt(input.request_id, "propose"), candidate_id: input.candidate_id }));
@@ -351,7 +387,25 @@ it("recovering an older stored proposal keeps a new draft open while it opens th
   await waitFor(() => expect(api.getCollaborationKnowledgeCandidate).toHaveBeenCalledWith(lost.candidate_id, expect.anything()));
 });
 
-it("recovering a request whose candidate is not in this panel does not open it here", async () => {
+it("recovering a request from the same source opens it even when it is outside the loaded list page", async () => {
+  const send = vi.spyOn(api, "approveCollaborationKnowledge").mockRejectedValue(new TypeError("Lost response"));
+  const mounted = mount(); await openReview(); await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
+  await userEvent.click(screen.getByRole("button", { name: "Approve exact version" }));
+  await screen.findByRole("button", { name: "Retry same request" }); const key = send.mock.calls[0]![1].request_id;
+  mounted.unmount();
+  vi.mocked(api.getCollaborationKnowledgeCandidates).mockImplementation(async () => parseCollaborationKnowledgeCandidates({ ...lease(), issue_id: issue.id,
+    items: [], next_cursor: null, capabilities: { can_propose: true } }));
+  mount(); await screen.findByRole("button", { name: "Propose knowledge" });
+  await userEvent.click(screen.getByRole("button", { name: "Propose knowledge" }));
+  fireEvent.change(screen.getByRole("textbox", { name: "Summary" }), { target: { value: "Fresh draft" } });
+  vi.mocked(api.getCollaborationKnowledgeOperation).mockResolvedValue(receipt(key, "approve"));
+  await userEvent.click(screen.getByRole("button", { name: "Check original result" }));
+  expect(await screen.findByRole("region", { name: "Review candidate" })).toBeInTheDocument();
+  expect(screen.getByRole("textbox", { name: "Summary" })).toHaveValue("Fresh draft");
+  expect(send).toHaveBeenCalledOnce();
+});
+
+it("recovering a request whose candidate belongs to another source does not open it here", async () => {
   const send = vi.spyOn(api, "approveCollaborationKnowledge").mockRejectedValue(new TypeError("Lost response"));
   const mounted = mount(); await openReview(); await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
   await userEvent.click(screen.getByRole("button", { name: "Approve exact version" }));
@@ -362,12 +416,15 @@ it("recovering a request whose candidate is not in this panel does not open it h
     items: [{ ...summary(), candidate_id: otherId, lineage_id: otherId, summary: "Unrelated candidate" }], next_cursor: null, capabilities: { can_propose: true } }));
   mount(); await screen.findByRole("button", { name: /Unrelated candidate/ });
   const detailReads = vi.mocked(api.getCollaborationKnowledgeCandidate).mock.calls.length;
+  vi.mocked(api.getCollaborationKnowledgeCandidate).mockImplementation(async () => parseCollaborationKnowledgeDetail({ ...lease(),
+    candidate: { ...knowledgeCandidateFixture, source_issue_id: otherId, sources: knowledgeCandidateFixture.sources.map((source) => ({ ...source, issue_id: otherId })) },
+    history: [], history_truncated: false }));
   vi.mocked(api.getCollaborationKnowledgeOperation).mockResolvedValue(recovered);
   await userEvent.click(screen.getByRole("button", { name: "Check original result" }));
   await screen.findByText("Decision recorded.");
   expect(screen.queryByRole("region", { name: "Review candidate" })).not.toBeInTheDocument();
   expect(screen.getByText("Open this candidate from the knowledge list it belongs to.")).toBeInTheDocument();
-  expect(api.getCollaborationKnowledgeCandidate).toHaveBeenCalledTimes(detailReads);
+  expect(api.getCollaborationKnowledgeCandidate).toHaveBeenCalledTimes(detailReads + 1);
   expect(api.getCollaborationKnowledgeOperation).toHaveBeenCalledWith(recovered.candidate_id, key);
 });
 
@@ -403,6 +460,27 @@ it("lets a human remove a stored identity only after a check finds no result, wi
 
 // L8: submit joins a list refresh instead of blaming the source; each failure stage reports its own cause.
 const sourceChangedText = "A selected source is unavailable. Review the selection and try again.";
+it("reports a selected source that disappears as source-changed and preserves the draft", async () => {
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge");
+  mount(); await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" })); await fillProposal();
+  vi.mocked(api.getCollaborationComment).mockResolvedValueOnce(null);
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+  await screen.findByText(sourceChangedText);
+  expect(screen.getByRole("textbox", { name: "Summary" })).toHaveValue("Human conclusion");
+  expect(send).not.toHaveBeenCalled();
+});
+
+it("reports lost authority at intent preparation as proposal-unavailable and preserves the draft", async () => {
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge");
+  mount(); await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" })); await fillProposal();
+  vi.spyOn(collaboration, "prepareKnowledgeProposal").mockImplementationOnce(() => { throw new collaboration.CollaborationUnavailableError(); });
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+  await screen.findByText("Proposing knowledge is not available right now. Your draft is kept.");
+  expect(screen.queryByText(sourceChangedText)).not.toBeInTheDocument();
+  expect(screen.getByRole("textbox", { name: "Summary" })).toHaveValue("Human conclusion");
+  expect(send).not.toHaveBeenCalled();
+});
+
 function holdSourceList(page: () => ReturnType<typeof sourcePage>) {
   let release: (() => void) | undefined;
   vi.mocked(api.getCollaborationKnowledgeCandidates).mockImplementationOnce(() => new Promise((resolve) => { release = () => resolve(page()); }));

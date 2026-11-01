@@ -69,6 +69,10 @@ state and granted withdrawal: no source link, proposer/approval facts, rejection
 or approval.
 
 Source lists page every candidate version using the exact first-page boundary.
+When Core invalidates that boundary, a later-page `AbortError` resets the list
+to its first page for a fresh authorization check. It never renews old content
+or unmounts human-authored drafts. Unsupported knowledge stops interval polling;
+the explicit Refresh action remains available.
 Detail history reports `history_truncated` and selects versions by candidate ID.
 Available source links use existing memory-version/comment/run account anchors.
 Malformed or unsupported reads show explicit scoped failure/unavailability rather
@@ -102,7 +106,12 @@ through Core even while review is open.
 The caller passes receipt ownership to the panel; never infer it from a render-time
 intent closure. A receipt is owned when it matches the panel's in-memory intent,
 or when a recovered stored identity names a candidate in the panel's current list
-(decided before the request). Only an owned success changes the selection. An
+(decided before the request). A missing list item does not prove non-membership:
+after recovering the receipt, read its current authorized detail through Core
+and compare the source issue or managed target. A restricted or unavailable
+detail cannot establish ownership. Keep this data in Query; do not retain a
+parallel cache of previously displayed candidate identities or bodies.
+Only an owned success changes the selection. An
 unowned success leaves selection alone and tells the human to open the candidate
 from its own knowledge list. Only a proposal receipt for the panel's in-memory
 intent closes the proposal form; a decision receipt or a recovered stored
