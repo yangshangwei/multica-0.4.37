@@ -69,6 +69,14 @@ it("keeps a live read's launch base apart from its latest memory and refuses a m
   }
 });
 
+it("preserves frozen snapshots without a memory base and refuses the live-only field", () => {
+  const snapshot = { ...handoff, mode: "snapshot", snapshot_id: id };
+  expect(parseCollaborationRunHandoff(snapshot)).toEqual(snapshot);
+  for (const base_version of ["0", "3"]) {
+    expect(parseCollaborationRunHandoff({ ...snapshot, memory: { ...snapshot.memory, base_version } })).toBeNull();
+  }
+});
+
 it("uses the human handoff endpoint and rejects a response for a different run", async () => {
   const fetch = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify(handoff)))
     .mockResolvedValueOnce(new Response(JSON.stringify({ ...handoff, run_id: id })))

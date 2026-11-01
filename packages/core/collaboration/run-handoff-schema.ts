@@ -47,7 +47,7 @@ const handoffEnvelope = z.object({
     items: z.array(z.object({ id: uuid, source_kind: z.enum(["comment", "input", "proof"]), source_id: uuid, source_run_id: uuid, sequence: positiveVersion })).max(32),
   }).refine(pageValid).refine((value) => new Set(value.items.map((item) => item.id)).size === value.items.length),
   sources: z.array(source), missing: z.array(z.string().min(1)),
-}).refine((value) => (value.mode !== "snapshot" || value.snapshot_id !== undefined) &&
+}).refine((value) => (value.mode !== "snapshot" || (value.snapshot_id !== undefined && value.memory.base_version === undefined)) &&
   new Set(value.sources.map((item) => `${item.kind}:${item.id}`)).size === value.sources.length);
 
 export const CollaborationRunHandoffSchema = z.unknown().transform((raw, context) => {
