@@ -33,9 +33,17 @@ export interface HostRuntime {
 interface ResourceReceipt { status: number; code: string; offer_id: string | null; offer_version: string | null; target_id: string | null }
 interface HostInput { command_id: string; author_user_id: string; body: string; attachment_ids: string[] }
 interface HostRuntimeComment { id: string; author_type: string; author_id: string; content: string; parent_id: string | null }
+export interface HostKnowledgeObservation {
+  prompt_sha256: string;
+  section_present: boolean;
+  contributions: { candidate_id: string; version: string; source_issue_id: string; content_sha256: string }[];
+  no_session_persistence: boolean;
+}
 export interface HostVisit {
   identity: Record<string, string>;
   inputs: HostInput[];
+  /** Optional because the separate memory-provider fixture has its own callback. */
+  knowledge_observation?: HostKnowledgeObservation;
   agent_id: string; agent_owner_id: string; resource_owner_id: string;
   protocol_version: number; execution_mode: string;
   workdir_hash: string; temp_hash: string; session_hash: string; brief_hash: string; cli_hash: string; resumed: boolean;
@@ -259,6 +267,19 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
         expect(visit.identity.installation_id).toBe(runtime.installationId);
         expect(visit.identity).not.toHaveProperty("launch_nonce");
         for (const hash of [visit.workdir_hash, visit.temp_hash, visit.session_hash, visit.brief_hash]) expect(hash).toMatch(/^[0-9a-f]{64}$/);
+        if (visit.knowledge_observation !== undefined) {
+          const observed = visit.knowledge_observation;
+          expect(observed.prompt_sha256).toMatch(/^[0-9a-f]{64}$/);
+          expect(typeof observed.section_present).toBe("boolean");
+          expect(typeof observed.no_session_persistence).toBe("boolean");
+          expect(Array.isArray(observed.contributions)).toBe(true);
+          for (const item of observed.contributions) {
+            for (const id of [item.candidate_id, item.source_issue_id]) expect(id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
+            expect(item.version).toMatch(/^[1-9]\d*$/);
+            expect(item.content_sha256).toMatch(/^[0-9a-f]{64}$/);
+          }
+          if (!observed.section_present) expect(observed.contributions).toEqual([]);
+        }
         if (visits.some((item) => item.identity.run_id === visit.identity.run_id)) throw new Error("A run launched more than once");
         visits.push({ ...visit, socket, started_ms: now(), released_ms: null, closed_ms: null, replies: [] });
       } catch { errors.push("Provider callback identity or payload was invalid"); socket.destroy(); }
