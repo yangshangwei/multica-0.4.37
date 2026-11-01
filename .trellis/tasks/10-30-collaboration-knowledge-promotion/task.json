@@ -18,7 +18,9 @@
   "commit": "96cedf4850319a06c98fdda3d67d82595f01b6b2",
   "pr_url": null,
   "subtasks": [],
-  "children": [],
+  "children": [
+    "11-01-collaboration-knowledge-audit-fixes"
+  ],
   "parent": "10-30-collaboration-context-handoff",
   "relatedFiles": [],
   "notes": "2026-11-01：工程已合入，知识确定性验收通过；Go 82包/10284顶层通过/21既有跳过、前端13060测试、Web/macOS8用例及实际fake输入组合已有证据。后续65cd0599b联合故障补验通过，629f0a079知识面板异步等待修正复跑通过；新增联合断言独立复核pass-with-notes；新系列已登记为RK1（d2fe54ab0），调用上限0待用户分配，真实Provider框架待建。当前进度见progress.md。真实模型、新系列预算、Windows/安装组合/多账号额度仍开放；知识开关默认false，未发布。",
