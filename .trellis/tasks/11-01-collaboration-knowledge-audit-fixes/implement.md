@@ -58,7 +58,7 @@
    - TS：core 和 views 的 typecheck、lint、test。
 3. 另一个 agent 独立审查合并后的整体 diff，重点看各分道之间的交互。
 4. 与会话 multica-0-4-37-54 协调时间后，再跑门控的 `e2e/collaboration-knowledge.spec.ts`；必要时再跑 `make check`。
-5. 合入 `codex/cross-workspace-collaboration` 需要用户同意。
+5. 按2026-11-01用户续作授权，独立复核为pass或pass-with-notes且无未处置阻塞后，由统筹独占主集成工作树直接本地合入`codex/cross-workspace-collaboration`。外部推送/CI/发布授权另核对。
 
 ## 回滚点
 
