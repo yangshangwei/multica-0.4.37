@@ -16,3 +16,7 @@ Validation: guarded targeted normal/race tests, independent overlay mutation run
 - Daemon build/vet and `git diff --check` pass.
 - The test's generation setup was simplified after the first run; final normal/race repeats and the bounded full daemon suite are now running against the final test bytes. No full-suite result is claimed yet.
 - Spec and operator guide now explicitly describe exact original-key replay after first preparation and the older-daemon/newer-API refusal loop. Product code has no changes.
+
+## Completed verification
+
+Product/test/docs commit `ec8109904`. Final normal19/19 and adjacent race25/25 pass with no skips. Full guarded daemon package:1714 named passes,0 failures,2 existing platform skips (`TestCollaborationBatchPollerSlotsAndRunnerLinux`, `TestIsDriveRoot`), exit0. Final unchanged-byte overlays kill7/7 mutants. Build/vet and diff checks pass. Exact commands, source binding, counts, skip names and SHA-256 values are in `research/evidence/H2-followup-verification.json`. No database or Provider access occurred. The new tests reuse the existing POSIX fixture; no native Windows coverage is claimed. All assigned launch follow-ups are implemented, awaiting independent review and final integration.

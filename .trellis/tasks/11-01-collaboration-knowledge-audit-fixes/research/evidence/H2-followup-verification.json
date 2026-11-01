@@ -1,0 +1,173 @@
+{
+  "verified_at": "2026-11-01T16:06:07.202908+00:00",
+  "source_commit": "ec81099044e35c9b72044532b37568d03fe1a8dd",
+  "server_tree": "0189e39eff082d6eaefade996ec090e7510298af",
+  "source_binding_note": "Suite started before ec8109904 commit but compiled the same final file bytes; source files remain unchanged since commit. Production Go code unchanged from f7b610692.",
+  "source_file_sha256": {
+    "server/internal/daemon/knowledge_context_rebind_boundary_test.go": "abb0145bf7fe056c10877385b3a192dfada9dd18aa78b4b401f1130f238f3697",
+    ".trellis/spec/server/collaboration-knowledge-execution.md": "65c598cc6ecccbbdead633d941f04ab1ddcf5d19265364e04f4eef40d4727c2d",
+    "docs/collaboration-knowledge-runtime.md": "ac3c2fced16ebd6ef43117c7baf1161fe8db11907b3526fd3b0b6a4aee959714"
+  },
+  "checks": [
+    {
+      "command": [
+        "env",
+        "-u",
+        "DATABASE_URL",
+        "-u",
+        "MULTICA_RUN_REAL_AGENT_SMOKE",
+        "-u",
+        "GIT_CONFIG_COUNT",
+        "-u",
+        "GIT_CONFIG_KEY_0",
+        "-u",
+        "GIT_CONFIG_VALUE_0",
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon",
+        "-run",
+        "^TestKnowledge(RebindClaimRequiresOwnReachabilityDecision|RebindPreparationPreservesClaimIdentity|PromptRebindUsesPreparedFreshIdentity)$",
+        "-count=1",
+        "-parallel=2",
+        "-json"
+      ],
+      "exit_code": 0,
+      "log": "H2-followup-final-normal.jsonl",
+      "log_sha256": "7f5e1be7ced72c7607365549c24bcb226cf4f48322636cf719a493ffdaad7324",
+      "counts_including_subtests": {
+        "run": 19,
+        "pass": 19,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_counts": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "skips": [],
+      "package_elapsed_seconds": 0.795
+    },
+    {
+      "command": [
+        "env",
+        "-u",
+        "DATABASE_URL",
+        "-u",
+        "MULTICA_RUN_REAL_AGENT_SMOKE",
+        "-u",
+        "GIT_CONFIG_COUNT",
+        "-u",
+        "GIT_CONFIG_KEY_0",
+        "-u",
+        "GIT_CONFIG_VALUE_0",
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-race",
+        "./internal/daemon",
+        "-run",
+        "^TestKnowledge(RebindClaimRequiresOwnReachabilityDecision|RebindPreparationPreservesClaimIdentity|PromptRebindUsesPreparedFreshIdentity|UnreachablePriorWorkdirRebindsFreshGeneration|UnreachablePriorWorkdirRefusesEchoedStaleBinding|UnreachableResumeOnOlderServerFailsClosed|StartedObservationRefusalStillConfirmsProcessExit)$",
+        "-count=1",
+        "-parallel=2",
+        "-timeout=5m",
+        "-json"
+      ],
+      "exit_code": 0,
+      "log": "H2-followup-final-race.jsonl",
+      "log_sha256": "06a268fe00ec1f47bbfbe8864c15daaffd1fb1c364e4f12b56d1bd5e6dd212fc",
+      "counts_including_subtests": {
+        "run": 25,
+        "pass": 25,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_counts": {
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "skips": [],
+      "package_elapsed_seconds": 2.872
+    },
+    {
+      "command": [
+        "env",
+        "-u",
+        "DATABASE_URL",
+        "-u",
+        "MULTICA_RUN_REAL_AGENT_SMOKE",
+        "-u",
+        "GIT_CONFIG_COUNT",
+        "-u",
+        "GIT_CONFIG_KEY_0",
+        "-u",
+        "GIT_CONFIG_VALUE_0",
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon",
+        "-count=1",
+        "-parallel=2",
+        "-timeout=20m",
+        "-json"
+      ],
+      "exit_code": 0,
+      "log": "launch-daemon-full.jsonl",
+      "log_sha256": "ea24bf728f937dbb0a934489f0fe4a4b05eece9b3e0a430d8ede1631eb95546f",
+      "counts_including_subtests": {
+        "run": 1716,
+        "pass": 1714,
+        "fail": 0,
+        "skip": 2
+      },
+      "top_level_counts": {
+        "pass": 897,
+        "fail": 0,
+        "skip": 2
+      },
+      "skips": [
+        "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+        "TestIsDriveRoot"
+      ],
+      "package_elapsed_seconds": 121.231
+    }
+  ],
+  "build": {
+    "command": "env -u DATABASE_URL -u MULTICA_RUN_REAL_AGENT_SMOKE -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 bash scripts/go-test-with-agent-cli-guard.sh -- go -C server build ./internal/daemon",
+    "exit_code": 0
+  },
+  "vet": {
+    "command": "same explicit environment and guard; go -C server vet ./internal/daemon",
+    "exit_code": 0,
+    "log": "H2-followup-vet.txt",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mutations": {
+    "summary": "H2-followup-mutations-final.json",
+    "sha256": "fd48a782034e894cf618317c3e6548a3df775652efc90a93fe5aee8a9b754b2b",
+    "killed": 7,
+    "total": 7,
+    "base_product_defect_reproduced": false
+  },
+  "database_access": false,
+  "provider_calls": 0,
+  "production_code_changed": false,
+  "limitations": [
+    "Native Windows was not run; these tests reuse the existing POSIX daemon fixture and skip there.",
+    "Independent lane review and final merged-candidate verification remain open."
+  ]
+}
