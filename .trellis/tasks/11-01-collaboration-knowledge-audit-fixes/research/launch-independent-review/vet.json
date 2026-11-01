@@ -1,0 +1,18 @@
+{
+  "source_sha": "77df70afc053c7772a0e0f81be70158868e9f24b",
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "vet",
+    "-p",
+    "2",
+    "./internal/service",
+    "./internal/handler",
+    "./internal/daemon",
+    "./pkg/agent",
+    "./pkg/protocol"
+  ],
+  "exit_code": 0,
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
