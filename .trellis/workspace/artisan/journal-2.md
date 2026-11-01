@@ -1724,3 +1724,37 @@ Archived password registration and the complete platform administration task tre
 
 - 有上游恢复依据后在独立窗口从原E2a trial3/剩余22次续跑；保持场景、模型、编号和停止规则。
 - 新runtime/知识真实验收绑定自身提交；Windows、安装组合、多账号额度及发布门另验，技能层后置。
+
+
+## Session 112: 联合验收在最终合并版本上补验
+<!-- trellis-session: v=2 fp=c52dd0227785cf3c -->
+
+**Date**: 2026-11-01
+**Task**: 联合验收在最终合并版本上补验
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+恢复父流程最新交付，在93afc3cb0复核启动注入与checkpoint联合故障；补强原termination/proof事实一致性，提交65cd0599b。保留真实模型与跨平台开放门。
+
+### Main Changes
+
+- 复用现有联合fixture，仅补强permit身份、终止kind与proof一致性；同步startup spec和验收指纹。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `65cd0599b` | test(collaboration): preserve original termination facts during combined failures |
+
+### Testing
+
+- [OK] 联合race40项、tagged fake80项、补强race6项、vet、gofmt和证据hash通过；计数不相加。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 原实验保持停止；下一E2a trial3，余22次。新runtime真实验收须另行绑定版本和预算；父任务保持in_progress。
