@@ -47,8 +47,11 @@ evidence or automatic runtime consumption.
 
 Read candidate detail live from Core and render only its current authorized Query
 value. Approval requires full available content, current server grant, and an
-explicit review checkbox. Key decision controls by candidate ID, state revision,
-availability, version and hash so replacement/unavailable data resets confirmation.
+explicit review checkbox. Mount one decision instance keyed by the last displayed
+tuple (candidate ID, state revision, availability, version, hash) and give it only
+a candidate with that exact tuple. Lease erasure or an unchanged refetch hides the
+controls without clearing the checkbox or reason. A different tuple, including a
+changed availability, resets the checkbox, reason and error.
 Await the exact receipt; a refusal cannot display success.
 
 Show proposer identity, version, target, expiry, original approval actor/time and
@@ -85,7 +88,8 @@ through Core even while review is open.
 | Condition | UI behavior |
 | --- | --- |
 | Selected source project changed | Preserve text, clear effective target and request explicit selection |
-| Review version/revision/hash/availability changed | Reset checkbox and decision controls |
+| Review candidate/version/revision/hash/availability changed | Reset checkbox and decision controls |
+| Lease erasure or unchanged refetch during review | Hide body and controls; restore the same checkbox/reason when the same tuple returns |
 | Source unavailable but pending rejection granted | Show safe audit/reject controls without material |
 | Target-only restricted row | Withdrawal only; no hidden-source navigation |
 | Unknown delivery or missing recovery result | Original intent stays unresolved; no replacement request |
@@ -103,7 +107,8 @@ through Core even while review is open.
 ## 6. Tests required
 
 `knowledge-panel.test.tsx` owns source/target wiring, keyboard confirmation,
-original-intent recovery, changed-review reset, safe audit facts, independent
+original-intent recovery, changed-review reset, unchanged-refresh retention of
+decision input, safe audit facts, independent
 source choices, external-handler catalog avoidance, correction/derivation and
 restricted withdrawal. Existing page tests assert mount identities; locale
 parity covers both dictionaries. Core owns exhaustive schema/hash/cache matrices.

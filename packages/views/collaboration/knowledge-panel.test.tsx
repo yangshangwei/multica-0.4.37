@@ -95,6 +95,46 @@ it("resets review confirmation for a changed identity and removes body on source
   expect(screen.getByRole("button", { name: "Reject candidate" })).toBeEnabled();
 });
 
+// M4: Core erases the detail on every refresh (knowledge-cache.test.ts owns that); typed input must outlive the erasure.
+async function refreshDetailHeld() {
+  let release: (() => void) | undefined;
+  vi.mocked(api.getCollaborationKnowledgeCandidate).mockImplementationOnce(() => new Promise((resolve) => { release = () => resolve(detail()); }));
+  act(() => { void client.invalidateQueries({ queryKey: collaborationKnowledgeKeys.candidate(scope, candidate.candidate_id) }); });
+  await waitFor(() => expect(screen.queryByText("PRIVATE BODY")).not.toBeInTheDocument());
+  expect(screen.queryByRole("textbox", { name: "Decision reason" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Approve exact version" })).not.toBeInTheDocument();
+  await waitFor(() => expect(release).toBeDefined());
+  await act(async () => { release!(); });
+  await screen.findByText("PRIVATE BODY");
+}
+
+it("keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision", async () => {
+  mount(); await openReview();
+  await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
+  await userEvent.type(screen.getByRole("textbox", { name: "Decision reason" }), "Needs a source check");
+  await refreshDetailHeld();
+  expect(screen.getByRole("checkbox", { name: /I reviewed/ })).toBeChecked();
+  expect(screen.getByRole("textbox", { name: "Decision reason" })).toHaveValue("Needs a source check");
+  expect(screen.getByRole("button", { name: "Approve exact version" })).toBeEnabled();
+  candidate = { ...candidate, state_revision: "2" };
+  act(() => { void client.invalidateQueries({ queryKey: collaborationKnowledgeKeys.candidate(scope, candidate.candidate_id) }); });
+  await waitFor(() => expect(screen.getByRole("checkbox", { name: /I reviewed/ })).not.toBeChecked());
+  expect(screen.getByRole("textbox", { name: "Decision reason" })).toHaveValue("");
+  expect(screen.getByRole("button", { name: "Approve exact version" })).toBeDisabled();
+});
+
+it("resets typed decision input when a held refresh returns a different version", async () => {
+  mount(); await openReview();
+  await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
+  await userEvent.type(screen.getByRole("textbox", { name: "Decision reason" }), "Typed for the old version");
+  if (candidate.availability !== "available") throw new Error("Expected available fixture");
+  candidate = { ...candidate, version: "9007199254740994", content_sha256: "c".repeat(64) };
+  await refreshDetailHeld();
+  expect(screen.getByRole("checkbox", { name: /I reviewed/ })).not.toBeChecked();
+  expect(screen.getByRole("textbox", { name: "Decision reason" })).toHaveValue("");
+  expect(screen.getByRole("button", { name: "Approve exact version" })).toBeDisabled();
+});
+
 it("recovers a lost result after remount with the original key and no second POST", async () => {
   const send = vi.spyOn(api, "approveCollaborationKnowledge").mockRejectedValue(new TypeError("Lost response"));
   const mounted = mount(); await openReview(); await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
