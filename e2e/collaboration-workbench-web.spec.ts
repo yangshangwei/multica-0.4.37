@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import pg from "pg";
 import { test, expect, type Page, type Request } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
+import { selectHandoffRecipient } from "./fixtures/collaboration-offline-handoff";
 
 // Public creation remains gated. These disposable database records prove the
 // account journey and real API writes, not the new-collaboration creation AC.
@@ -42,6 +43,7 @@ test("Web workbench keeps account scope through comments, uncertain cancellation
   const recipientEmail = `web-recipient-${key}@example.invalid`;
   await recipient.login(recipientEmail, "Browser recipient");
   await recipient.markUserOnboarded();
+  const recipientAccount = await recipient.requestJSON<{ id: string }>("/api/me");
   expect(await recipient.getWorkspaces()).toEqual([]);
   const created: { id: string; title: string } = await source.createIssue(`Browser shared issue ${key}`, { description: "Shared description for the account-only workbench." });
   const commandId = randomUUID(), targetId = randomUUID(), agentId = randomUUID(), channelId = randomUUID(), batchId = randomUUID(), eventId = randomUUID();
@@ -123,11 +125,10 @@ test("Web workbench keeps account scope through comments, uncertain cancellation
   await expect(page.getByText("Comment confirmed.")).toBeVisible();
 
   await page.getByRole("button", { name: "Transfer", exact: true }).click();
-  await page.getByLabel("Exact recipient").fill(recipientEmail);
-  await page.getByRole("button", { name: "Find account" }).click();
-  await expect(page.getByText("Selected account: Browser recipient")).toBeVisible();
-  await page.getByLabel("Note", { exact: true }).fill("Browser handoff note");
-  await page.getByRole("button", { name: "Confirm", exact: true }).click();
+  const transfer = page.locator("form").filter({ has: page.getByRole("heading", { name: "Transfer", exact: true }) });
+  await selectHandoffRecipient(page, transfer, { id: recipientAccount.id, name: "Browser recipient" });
+  await transfer.getByLabel("Note", { exact: true }).fill("Browser handoff note");
+  await transfer.getByRole("button", { name: "Confirm", exact: true }).click();
   await expect(page.getByText("No issues need your handling.")).toBeVisible();
   await expect(page.getByRole("heading", { name: created.title, exact: true })).toBeVisible();
   await expect(page.getByRole("region", { name: "Activity", exact: true }).getByText("Browser handoff note")).toBeVisible();
@@ -240,9 +241,7 @@ test("Web stale lifecycle conflict immediately reports refusal and preserves inp
 
     await handlerPage.getByRole("button", { name: "Transfer", exact: true }).click();
     const transfer = handlerPage.locator("form").filter({ has: handlerPage.getByRole("heading", { name: "Transfer", exact: true }) });
-    await transfer.getByLabel("Exact recipient", { exact: true }).fill(creatorEmail);
-    await transfer.getByRole("button", { name: "Find account", exact: true }).click();
-    await expect(transfer.getByText(`Selected account: ${creatorName}`, { exact: true })).toBeVisible();
+    await selectHandoffRecipient(handlerPage, transfer, { id: creatorAccount.id, name: creatorName });
     await transfer.getByLabel("Note", { exact: true }).fill("Concurrent handoff makes the original completion stale.");
     const transferred = handlerPage.waitForResponse((response) => new URL(response.url()).pathname === `/api/collaboration/issues/${issue.id}/handoffs` && response.request().method() === "POST");
     await transfer.getByRole("button", { name: "Confirm", exact: true }).click();

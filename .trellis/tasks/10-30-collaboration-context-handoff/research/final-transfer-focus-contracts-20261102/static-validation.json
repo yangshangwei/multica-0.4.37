@@ -1,0 +1,91 @@
+{
+  "recorded_at": "2026-11-01T21:32:49.950476+00:00",
+  "records": [
+    {
+      "kind": "strict-workbench",
+      "command": [
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "tsc",
+        "--project",
+        "/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/final-transfer-focus/tsconfig-workbench.json"
+      ],
+      "exit_code": 0,
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "raw_private_log": "/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/final-transfer-focus/strict-workbench.log"
+    },
+    {
+      "kind": "base-lint",
+      "command": [
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "eslint",
+        "--config",
+        "packages/eslint-config/base.js",
+        "--format",
+        "json",
+        "--output-file",
+        "/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/final-transfer-focus/lint.json",
+        "e2e/collaboration-workbench-web.spec.ts",
+        "e2e/collaboration-account-desktop.spec.ts"
+      ],
+      "exit_code": 0,
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "raw_private_log": "/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/final-transfer-focus/base-lint.log",
+      "errors": 0,
+      "warnings": 0,
+      "result_sha256": "e859e5bff356099f01ac92ca7a3f4aa025905cdaa8acba51afc99ffb9c886a18"
+    },
+    {
+      "kind": "canonical-collection",
+      "command": [
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-workbench-web.spec.ts",
+        "e2e/collaboration-account-desktop.spec.ts",
+        "--list",
+        "--grep",
+        "^(Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation|Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry|Desktop child links, recorded pages and result notifications survive popouts and restart)$"
+      ],
+      "exit_code": 1,
+      "log_sha256": "e0dba4f5678ab45fce8e4089cbf964cb88f42fd02c3622b29f327544f3d4c410",
+      "raw_private_log": "/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/final-transfer-focus/canonical-collection.log",
+      "summary": [
+        "Total: 0 tests in 0 files"
+      ],
+      "tests_executed": 0
+    },
+    {
+      "kind": "canonical-collection-r2",
+      "command": [
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-workbench-web.spec.ts",
+        "e2e/collaboration-account-desktop.spec.ts",
+        "--list",
+        "--grep",
+        "(Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation|Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry|Desktop child links, recorded pages and result notifications survive popouts and restart)$"
+      ],
+      "exit_code": 0,
+      "log_sha256": "e2f479b9e848c138aed96328735530efa035dd91d9e108aea05a0a536dd5719d",
+      "raw_private_log": "/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/final-transfer-focus/canonical-collection-r2.log",
+      "summary": [
+        "Total: 3 tests in 2 files"
+      ],
+      "tests_executed": 0,
+      "prior_selection_failure_preserved": "canonical-collection.log; grep includes file/project prefix, so leading title anchor selected no test; no source change"
+    }
+  ],
+  "source_sha256": {
+    "e2e/collaboration-workbench-web.spec.ts": "767ae9c4d8331184a41d640fa89ded564a7d37e0023932021e27f288f29f2a73",
+    "e2e/collaboration-account-desktop.spec.ts": "163c92042219b895db49bb1f8c5afb4e0fdc86038c6e2f45c91358f962c3497c"
+  },
+  "typecheck_scope": "changedWorkbench; unchangedaccountDesktopexpandedbaselinecheckedseparately",
+  "actual_browser_runs": 0,
+  "database_operations": 0,
+  "Provider_calls": 0
+}
