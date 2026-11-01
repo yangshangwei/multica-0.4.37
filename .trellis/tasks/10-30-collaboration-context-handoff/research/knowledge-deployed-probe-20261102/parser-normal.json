@@ -1,0 +1,25 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "test",
+    "e2e/fixtures/collaboration-host-provider.go",
+    "e2e/fixtures/collaboration-host-provider_test.go",
+    "-count=1",
+    "-json"
+  ],
+  "exit_code": 0,
+  "counts": {
+    "run": 24,
+    "pass": 24,
+    "fail": 0,
+    "skip": 0
+  },
+  "log_sha256": "76446761ddd83d5e01fa2de9697c3bc1ee6a59daf7ddfa4f24e41bcbde942f0b",
+  "raw_private_log": "/Volumes/artisan/code/2026/mc-knowledge-deployed-probe-20261102/.omx/private/knowledge-deployed-probe/parser-normal.jsonl",
+  "Provider_calls": 0,
+  "database_configured": false,
+  "at": "2026-11-01T19:41:59.974433+00:00"
+}

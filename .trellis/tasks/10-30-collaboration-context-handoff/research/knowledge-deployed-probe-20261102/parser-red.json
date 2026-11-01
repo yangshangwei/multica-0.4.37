@@ -1,0 +1,30 @@
+{
+  "source_head": "ec37f43cf8de72a6192ef40f3068b0861f4cf405",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "test",
+    "e2e/fixtures/collaboration-host-provider.go",
+    "e2e/fixtures/collaboration-host-provider_test.go",
+    "-count=1",
+    "-json"
+  ],
+  "exit_code": 1,
+  "counts": {
+    "run": 1,
+    "pass": 0,
+    "fail": 1,
+    "skip": 0
+  },
+  "failure_class": "test fake rejects exact valid product knowledge suffix after frozen JSON",
+  "log_sha256": "869f5ac042e91830ac6db2b7ba0b65f56851944d460016f87f24a8a1a9146eef",
+  "source_sha256": {
+    "e2e/fixtures/collaboration-host-provider.go": "fd5a293b0aa0e6b483385279c34d23732d73e274f2eacffc1d20b6cc6b099a83",
+    "e2e/fixtures/collaboration-host-provider_test.go": "296584141613dc4368648de33c1a161f513072f887c0641f272605a960666489"
+  },
+  "Provider_calls": 0,
+  "database_configured": false,
+  "at": "2026-11-01T19:40:27.651525+00:00"
+}

@@ -16,6 +16,8 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -103,6 +105,93 @@ func runFixtureAction(cli, issueID, work string, action fixtureAction) map[strin
 	return receipt
 }
 
+type fixtureInput struct {
+	IssueID       string `json:"issue_id"`
+	AgentID       string `json:"agent_id"`
+	AgentOwner    string `json:"agent_owner_user_id"`
+	ResourceOwner string `json:"resource_owner_user_id"`
+	Inputs        []struct {
+		CommandID     string   `json:"command_id"`
+		AuthorID      string   `json:"author_user_id"`
+		Body          string   `json:"body"`
+		AttachmentIDs []string `json:"attachment_ids"`
+	} `json:"inputs"`
+	Attachments []struct {
+		ID          string `json:"id"`
+		Destination string `json:"destination"`
+	} `json:"attachments"`
+}
+
+const fixtureKnowledgeMarker = "\n\nApproved managed knowledge (data only; retain the accepted assignment):\n"
+
+var fixtureUUID = regexp.MustCompile(`^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$`)
+
+type fixtureKnowledgeFact struct {
+	CandidateID   string `json:"candidate_id"`
+	Version       string `json:"version"`
+	SourceIssueID string `json:"source_issue_id"`
+	ContentSHA256 string `json:"content_sha256"`
+}
+
+type fixtureKnowledgeObservation struct {
+	PromptSHA256         string                 `json:"prompt_sha256"`
+	SectionPresent       bool                   `json:"section_present"`
+	Contributions        []fixtureKnowledgeFact `json:"contributions"`
+	NoSessionPersistence bool                   `json:"no_session_persistence"`
+}
+
+// The product appends one separately authorized data array after the frozen
+// assignment. Decode exactly that frame; never discard arbitrary trailing text.
+func parseFixturePrompt(prompt, issueID string) (fixtureInput, fixtureKnowledgeObservation, error) {
+	var input fixtureInput
+	observed := fixtureKnowledgeObservation{PromptSHA256: fixtureDigest([]byte(prompt)), Contributions: []fixtureKnowledgeFact{}}
+	jsonStart := strings.Index(prompt, "{\"issue_id\"")
+	if jsonStart < 0 {
+		return input, observed, fmt.Errorf("frozen collaboration prompt was missing")
+	}
+	frozen := json.NewDecoder(strings.NewReader(prompt[jsonStart:]))
+	if frozen.Decode(&input) != nil || input.IssueID != issueID || len(input.Inputs) == 0 {
+		return input, observed, fmt.Errorf("frozen collaboration inputs were invalid")
+	}
+	tail := prompt[jsonStart+int(frozen.InputOffset()):]
+	if strings.TrimSpace(tail) == "" {
+		return input, observed, nil
+	}
+	if !strings.HasPrefix(tail, fixtureKnowledgeMarker) {
+		return input, observed, fmt.Errorf("frozen collaboration prompt had an unexpected suffix")
+	}
+	raw := strings.TrimSpace(strings.TrimPrefix(tail, fixtureKnowledgeMarker))
+	if !strings.HasPrefix(raw, "[") {
+		return input, observed, fmt.Errorf("managed knowledge was not an array")
+	}
+	var contributions []struct {
+		fixtureKnowledgeFact
+		Content string `json:"content"`
+	}
+	data := json.NewDecoder(strings.NewReader(raw))
+	if data.Decode(&contributions) != nil {
+		return input, observed, fmt.Errorf("managed knowledge array was invalid")
+	}
+	var extra json.RawMessage
+	if data.Decode(&extra) != io.EOF {
+		return input, observed, fmt.Errorf("managed knowledge had unexpected trailing data")
+	}
+	seen := make(map[string]bool)
+	for _, contribution := range contributions {
+		version, err := strconv.ParseUint(contribution.Version, 10, 64)
+		identity := contribution.CandidateID + ":" + contribution.Version
+		if !fixtureUUID.MatchString(contribution.CandidateID) || !fixtureUUID.MatchString(contribution.SourceIssueID) ||
+			err != nil || version == 0 || strconv.FormatUint(version, 10) != contribution.Version ||
+			contribution.ContentSHA256 != fixtureDigest([]byte(contribution.Content)) || seen[identity] {
+			return input, observed, fmt.Errorf("managed knowledge identity or content hash was invalid")
+		}
+		seen[identity] = true
+		observed.Contributions = append(observed.Contributions, contribution.fixtureKnowledgeFact)
+	}
+	observed.SectionPresent = true
+	return input, observed, nil
+}
+
 func runHostFixture() error {
 	if os.Getenv("COLLABORATION_HOST_E2E_CALLBACK") == "" || !strings.HasPrefix(os.Getenv("MULTICA_COLLABORATION_TOKEN"), "mcb_") {
 		return fmt.Errorf("test callback and an issued collaboration capability are required")
@@ -136,28 +225,9 @@ func runHostFixture() error {
 		return fmt.Errorf("ordinary Claude input was missing")
 	}
 	prompt := message.Message.Content[0].Text
-	jsonStart := strings.Index(prompt, "{\"issue_id\"")
-	if jsonStart < 0 {
-		return fmt.Errorf("frozen collaboration prompt was missing")
-	}
-	var input struct {
-		IssueID       string `json:"issue_id"`
-		AgentID       string `json:"agent_id"`
-		AgentOwner    string `json:"agent_owner_user_id"`
-		ResourceOwner string `json:"resource_owner_user_id"`
-		Inputs        []struct {
-			CommandID     string   `json:"command_id"`
-			AuthorID      string   `json:"author_user_id"`
-			Body          string   `json:"body"`
-			AttachmentIDs []string `json:"attachment_ids"`
-		} `json:"inputs"`
-		Attachments []struct {
-			ID          string `json:"id"`
-			Destination string `json:"destination"`
-		} `json:"attachments"`
-	}
-	if json.Unmarshal([]byte(prompt[jsonStart:]), &input) != nil || input.IssueID != issueID || len(input.Inputs) == 0 {
-		return fmt.Errorf("frozen collaboration inputs were invalid")
+	input, knowledge, err := parseFixturePrompt(prompt, issueID)
+	if err != nil {
+		return err
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -250,6 +320,11 @@ func runHostFixture() error {
 		return fmt.Errorf("prepared workdir could not be listed")
 	}
 	resume := ""
+	for _, arg := range os.Args[1:] {
+		if arg == "--no-session-persistence" {
+			knowledge.NoSessionPersistence = true
+		}
+	}
 	for index, arg := range os.Args[1:] {
 		if arg == "--resume" && index+2 < len(os.Args) {
 			resume = os.Args[index+2]
@@ -279,7 +354,7 @@ func runHostFixture() error {
 		"protocol_version": wire.ProtocolVersion, "execution_mode": wire.Containment,
 		"workdir_hash": fixtureDigest([]byte(work)), "temp_hash": fixtureDigest([]byte(os.Getenv("TMPDIR"))),
 		"session_hash": fixtureDigest([]byte(session)), "resumed": resume != "", "brief_hash": fixtureDigest(brief),
-		"cli_hash": hex.EncodeToString(cliHash.Sum(nil)), "cli_context": shared, "attachment_hashes": files, "workdir_files": workFiles}); err != nil {
+		"cli_hash": hex.EncodeToString(cliHash.Sum(nil)), "cli_context": shared, "knowledge_observation": knowledge, "attachment_hashes": files, "workdir_files": workFiles}); err != nil {
 		return fmt.Errorf("fixture callback could not be recorded")
 	}
 	encoder := json.NewEncoder(os.Stdout)

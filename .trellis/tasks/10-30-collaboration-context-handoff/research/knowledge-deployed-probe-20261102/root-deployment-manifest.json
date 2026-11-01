@@ -1,0 +1,73 @@
+{
+  "at": "2026-11-01T19:54:55.779990+00:00",
+  "scope": "root-owned distinct actual API startup config binding forcompletedE6deployedprobe",
+  "deployments": [
+    {
+      "name": "collab-final-off-e6",
+      "product_source_sha": "e6e7fe07da184247c93584bbd07e6b66b38f6fc1",
+      "knowledge_startup_literal": "false",
+      "database_name": "collab_joint_finalpw_20261102_1923",
+      "api_running_identity": {
+        "component": "api",
+        "mode": "development",
+        "build_id": "",
+        "command": "go run -ldflags '-X main.commit=e6e7fe07d' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-collaboration-final-password-20261102/server)",
+        "source_id": "31b7ffe9731c51681ec56846507e9363bb7d6a62a318159872a1c364747388bd",
+        "configuration_id": "8b9be1d4e3856f7c5a1c2b7fe0e05a3b18dd87a89759bfa2eaeddfee5114394b",
+        "commit": "e6e7fe07d",
+        "launcher_pid": 30413,
+        "started_at": "2026-11-01T19:46:28Z",
+        "listener_pid": 30549
+      },
+      "up_metadata_sha256": "4fa1b1a83e795838c2a155511e9bbbee94bcb69f911ac89e0d0dc78f044b04a4",
+      "up_exit_code": 0,
+      "source_env_sha256": "684c90893e458ec0a74eebdf0efc5fe4a2fa28154e04306fd1eaed401d5b7603",
+      "managed_installations_enabled": "true",
+      "auth_mode": "password",
+      "real_LLM_configured": false,
+      "catalog_root_task_owned": "/Volumes/artisan/code/2026/mc-collaboration-final-password-20261102/.omx/private/password-final/catalog",
+      "isolated_registry": "/Volumes/artisan/code/2026/mc-collaboration-final-password-20261102/.omx/private/password-final/registry",
+      "isolated_profiles": "/Volumes/artisan/code/2026/mc-collaboration-final-password-20261102/.omx/private/password-final/profiles",
+      "isolated_workspaces": "/Volumes/artisan/code/2026/mc-collaboration-final-password-20261102/.omx/private/password-final/workspaces"
+    },
+    {
+      "name": "collab-final-on-e6",
+      "product_source_sha": "e6e7fe07da184247c93584bbd07e6b66b38f6fc1",
+      "knowledge_startup_literal": "true",
+      "database_name": "collab_joint_finalkon_20261102_1947",
+      "api_running_identity": {
+        "component": "api",
+        "mode": "development",
+        "build_id": "",
+        "command": "go run -ldflags '-X main.commit=e6e7fe07d' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-collaboration-final-knowledge-on-20261102/server)",
+        "source_id": "31b7ffe9731c51681ec56846507e9363bb7d6a62a318159872a1c364747388bd",
+        "configuration_id": "0166edbfd07126770199f56fdb88540807d436d2d37ac406e718c258648930ce",
+        "commit": "e6e7fe07d",
+        "launcher_pid": 31544,
+        "started_at": "2026-11-01T19:48:17Z",
+        "listener_pid": 31673
+      },
+      "up_metadata_sha256": "511af7a56d314f1c01a178b19ffb3d2b09ab12a61d728dcba8dab0a1092913b2",
+      "up_exit_code": 0,
+      "source_env_sha256": "1483d3f9bb4c830d5a3ef1f31b5d57b20dfdb5ae55ffaec50a19bf5442471b37",
+      "managed_installations_enabled": "true",
+      "auth_mode": "password",
+      "real_LLM_configured": false,
+      "catalog_root_task_owned": "/Volumes/artisan/code/2026/mc-collaboration-final-knowledge-on-20261102/.omx/private/knowledge-on-final/catalog",
+      "isolated_registry": "/Volumes/artisan/code/2026/mc-collaboration-final-knowledge-on-20261102/.omx/private/knowledge-on-final/registry",
+      "isolated_profiles": "/Volumes/artisan/code/2026/mc-collaboration-final-knowledge-on-20261102/.omx/private/knowledge-on-final/profiles",
+      "isolated_workspaces": "/Volumes/artisan/code/2026/mc-collaboration-final-knowledge-on-20261102/.omx/private/knowledge-on-final/workspaces"
+    }
+  ],
+  "comparison_presence_only": {
+    "different_database": true,
+    "different_JWT_secret": true,
+    "different_deployment_UUID": true,
+    "different_Redis_namespace": true,
+    "different_registry_catalog_profile_workspace_roots": true,
+    "literal_false_vs_true": true
+  },
+  "private_secret_values_not_copied": true,
+  "source_env_read_only": true,
+  "real_Provider_calls": 0
+}

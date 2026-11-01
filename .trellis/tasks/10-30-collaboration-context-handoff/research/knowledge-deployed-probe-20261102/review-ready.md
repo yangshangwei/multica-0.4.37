@@ -1,0 +1,3 @@
+# Independent review entry
+
+Code commit `5bd1ecf13a77bc94334452910b0c1adf08f02f08`, baseec37f43cf, worktree mc-knowledge-deployed-probe-20261102. The four source hashes in source-binding.json match that committed patch. Review the exact parser/negative tests, optional safe Host observation and configured opt-in deployed test. Normal/race24 each and changed-scope static checks pass; deployed OFF/ON has NOT_RUN, no actual Provider callback is yet validated. Production files, dependencies, existing retry/timeouts and installed Agent CLIs were untouched. Root owns independent-review/ and all service/DB/live execution permits, local merges and final binding. Do not count collection as execution.
