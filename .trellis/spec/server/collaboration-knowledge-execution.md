@@ -15,7 +15,7 @@ authorization to those boundaries.
 | Surface | Implemented contract |
 | --- | --- |
 | Ordinary claim request | Runtime `TaskKnowledgeInvocation {protocol_version:1,provider,mode,builtin,configuration_id,extra_args}`; response `knowledge_context` is a source-free `TaskKnowledgeClaimDescriptor` |
-| `POST /api/daemon/tasks/{taskId}/knowledge-context/prepare` | `TaskKnowledgePrepareRequest`: original request UUID, finalized claim generation/dispatched time, exact session binding, invocation fingerprint; optional `resume_unavailable:true` only when the daemon's pre-launch gate dropped the claimed native session, accepted only before the claim's first preparation, after which the response `session` is a server-minted fresh binding |
+| `POST /api/daemon/tasks/{taskId}/knowledge-context/prepare` | `TaskKnowledgePrepareRequest`: original request UUID, finalized claim generation/dispatched time, exact session binding, invocation fingerprint; optional `resume_unavailable:true` only when the daemon's pre-launch gate dropped the claimed native session. First acceptance requires no preparation or launch attempt; replay with the identical original request ID, flag, claimed session and request hash returns the same server-minted fresh response binding after reauthorization. A new request cannot rebind an already prepared claim. |
 | `POST .../knowledge-context/authorize` | Adds preparation ID, manifest/prompt hashes and physical `attempt_seq`/`attempt_nonce` |
 | `POST .../knowledge-context/observations` | Original claim/preparation/attempt plus started, native-session or terminated fact; canonical `{"accepted":true}` required |
 | Start/pin/complete/fail | `knowledge_fence {claim_generation,dispatched_at}` |
@@ -221,6 +221,14 @@ isolation (`TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask`,
 `TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor`). Collaboration service,
 handler and `host_knowledge*` suites own MDT/status/retained-options/persistence.
 `task_knowledge_config_test.go` owns exact startup parsing and instance propagation.
+
+`knowledge_context_rebind_boundary_test.go` owns the daemon's local rebind
+acceptance matrix: only its recorded drop of the claimed native ID permits a
+fresh request; both task and execution resume pointers must be empty. A prepared
+binding may change only generation and native ID, and prompt construction must
+validate and use that returned fresh binding. These tests do not launch a
+Provider. Overlay mutation evidence proves each acceptance check matters; it
+does not imply a product defect in an unmutated implementation.
 
 Tagged `internal/daemon/knowledge_server_integration_test.go` and
 `cmd/server/collaboration_knowledge_host_composite_test.go` combine real server/DB

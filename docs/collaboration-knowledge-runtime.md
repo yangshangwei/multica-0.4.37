@@ -63,7 +63,7 @@ matrix. Windows, installers and multi-account/quota acceptance remain separate.
 | Observation | Meaning and next check |
 | --- | --- |
 | Approved item absent from an input | Check the switch, negotiated built-in runtime, applicability/target, current source availability, actual originator/runtime owner and output audience. Approval is not a source visibility grant. |
-| `knowledge_context_changed` | Claim/session/reviewed manifest/invocation changed. Preserve the original result and cleanup; do not auto-replay the business input. A daemon that cannot reach the selected prior session now starts a fresh bound session with the ordinary continuity notice instead. An upgraded daemon talking to an older API reports `knowledge_unavailable` for that case because the API rejects the field; upgrade the API. A claim descriptor the daemon cannot decode refuses only that task; the other tasks in the claim run. |
+| `knowledge_context_changed` | Claim/session/reviewed manifest/invocation changed. Preserve the original result and cleanup; do not auto-replay the business input. A current daemon that cannot reach the selected prior session starts a fresh bound session with the ordinary continuity notice. An older daemon talking to the updated API cannot report that drop and remains refused with `knowledge_context_changed` on each subsequent turn for the affected session until the daemon is upgraded. An upgraded daemon talking to an older API instead reports `knowledge_unavailable` because that API rejects the new field; upgrade the API first. A claim descriptor the daemon cannot decode refuses only that task; the other tasks in the claim run. |
 | `knowledge_authorization_denied` | Current credential/consumer/source authority no longer permits disclosure/start. Accountable or installer identity is not a substitute. |
 | `knowledge_busy` / `knowledge_unavailable` | Bounded lock/dependency/proof failure. The server already re-runs a contended preparation or authorization for up to 1.5s and the daemon retries three times, so `knowledge_busy` means sustained contention, not one sibling claim. Inspect content-free health/DB diagnostics; never force a base fallback that can restore exposed history. |
 | `knowledge_invocation_unsupported` | Runtime, selector or effective invocation is outside the admitted contract. Check retained current configuration, not only its registered protocol name. |
@@ -82,6 +82,13 @@ actual per-turn prompt. Generic logs, stable files and supervisor ledgers must
 not contain it. Authorized failure evidence can contain Provider quotations;
 retain it in its existing private outcome/transcript path without copying it to
 generic logs or diagnostic reports.
+
+An uncertain unreachable-resume preparation is replayed with its original
+request ID, original claimed session, invocation fingerprint and
+`resume_unavailable:true`. The server returns the same fresh binding after
+reauthorization; the daemon does not manufacture a new generation or repeat the
+business input. A newly keyed request cannot replace an already prepared claim.
+Keep this transport replay distinct from starting another model process.
 
 ## Disable and recover safely
 
