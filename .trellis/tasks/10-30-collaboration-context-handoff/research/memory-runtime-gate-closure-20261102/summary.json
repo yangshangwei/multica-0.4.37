@@ -1,0 +1,72 @@
+{
+  "scope": "test-only nested Host gate cleanup closure; not global candidate/model/platform acceptance",
+  "code_commit": "5dec88f9809b4a703a0e82d65796876dfd31ffaf",
+  "product_source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "test_source_sha256": "0a28c4248892aafe8cfca5ad1f99c37c3a8cdef2276c42239d072bcd9169d18c",
+  "original_bug": "outer fixture closed before inner fixture, restoring capturedhosttrue afterouter restoredhostfalse",
+  "repair": "LIFO second-before-first with nestedfinally and exact before/after taskDB/gateflag assertion",
+  "simplification": "remove one pre-existing never-invoked read closure; executed requests and business assertions retained",
+  "red": {
+    "exit_code": 1,
+    "pass": 0,
+    "fail": 1,
+    "skip": 0,
+    "database": "collab_joint_gate_red_20261102_2055",
+    "before": {
+      "database_name": "collab_joint_gate_red_20261102_2055",
+      "enabled": true,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "3"
+    },
+    "after": {
+      "database_name": "collab_joint_gate_red_20261102_2055",
+      "enabled": true,
+      "creation_enabled": true,
+      "host_execution_enabled": true,
+      "epoch": "6"
+    },
+    "evidence": "canonical-red.json"
+  },
+  "green_memory": {
+    "exit_code": 0,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0,
+    "database": "collab_joint_gate_green_20261102_2055",
+    "before": {
+      "database_name": "collab_joint_gate_green_20261102_2055",
+      "enabled": true,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "3"
+    },
+    "after": {
+      "database_name": "collab_joint_gate_green_20261102_2055",
+      "enabled": true,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "5"
+    },
+    "evidence": "green-memory.json"
+  },
+  "green_then_Leave": {
+    "exit_code": 0,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0,
+    "database": "collab_joint_gate_green_20261102_2055",
+    "same_API_pid_and_config": true,
+    "intervening_gate_reset_or_service_restart": false,
+    "evidence": "green-sequence.json"
+  },
+  "static_checks": "static-green.json strictTS/baseESLint0errors0warnings/2testcollection-only",
+  "initial_static_diagnostic": "pre-existing unused read TS6133 and metadata JSON-prefix failure retained; no browser/DB operation in those checks",
+  "old_failed_final3_Leave_group": "preserved by root; not relabeled as pass",
+  "database_creation_migration_drop_or_manual_gate_write_by_child": 0,
+  "service_or_container_operations_by_child": 0,
+  "real_Provider_calls": 0,
+  "independent_review": "pending parentreviewer; independent-review directory reserved",
+  "remaining": "parent integration/rebinding and full model/platform gates remain open",
+  "recommended_parent_spec_followup": "Document nested Host fixture lease LIFO and exact pre/post flag assertions in the existing E2E environment guide; no spec outside this lane was edited"
+}

@@ -1,0 +1,15 @@
+{
+  "kind": "initial_static_check_and_metadata_reader_failure",
+  "strict_TS_exit": "nonzero; only TS6133 unused read closure",
+  "TS_diagnostic_preexisting_identical_in_base": true,
+  "ESLint_exit": 0,
+  "ESLint_errors": 0,
+  "ESLint_warnings": 0,
+  "metadata_reader_error": "pnpm standard warning precedes ESLint JSON; initial raw JSON parser rejected the prefix",
+  "raw_logs_sha256": {
+    "typecheck-red-phase.log": "c42f1d9cf0673792925ba89ca94ca3b0f9b71d608c259ac17741b978ce036004",
+    "lint-red-phase.json": "cd7cbefbf898764233775bf81a8e6e9ec43e3e1edbf9d487c8e818e7f7f240d6"
+  },
+  "resolution": "remove the unused, never-invoked read closure inside owned spec; keep all executed reads/assertions; parse prefixed JSON without altering lint rules",
+  "DB_browser_operations": 0
+}

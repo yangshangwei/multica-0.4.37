@@ -1,0 +1,9 @@
+# Bounded repair and proof
+
+1. Reuse exported `hostEnvironment()` before every new database access to enforce configured loopback services, non-default explicit database and existing fake binaries. Read the actual database identity and three gate flags plus epoch before seeding either runtime.
+2. Add a read-only post-cleanup assertion to the existing canonical memory test. Compare the three flags with their original values; retain epoch as evidence because opening/restoring legitimately advances it. Keep the original first-then-second close order for one root-permitted red run.
+3. Fix only cleanup order: close the nested second daemon before the first, using try/finally so first cleanup still runs if second fails. Preserve both daemon summaries, browser-context cleanup, evidence attachment and every existing business/authority/memory assertion.
+4. Root allocates separate fresh isolated services/databases for red and green. Do not reset or write the red-failed database. Green runs memory once, then Leave once without a coordinator gate reset between them; both must be non-skipped, and the post-state flags must match the root-recorded initial state.
+5. Run changed-file strict TypeScript/base lint and collection locally with existing offline dependencies; record hashes/commands/exits and independent-review-ready output. No product or shared fixture behavior changes. Local Lore commit is permitted only after concrete validation; root owns independent review and integration.
+
+Static check note: strict TS exposed an identical pre-existing unused `read` closure in this owned spec (one declaration, no references). Delete that dead closure only; it performs no HTTP request because it is never invoked. Keep the original diagnostic and raw logs. Initial metadata parsing also rejected pnpm warning text before the zero-error ESLint JSON; fix the private result reader, not lint rules.
