@@ -32,7 +32,10 @@ The Hub queues scope metadata with each payload. Revalidate at final send, also
 for relayed messages; subscribe-time checks alone cannot protect queued content.
 A rejected issue delivery drops the payload and sends a content-free access hint
 through the viewer's still-authorized account. Unknown/malformed frame text must
-not become a private logging channel.
+not become a private logging channel. Final-send checks run before any write
+deadline is set. Each physical write, including that direct access hint, sets
+its own deadline immediately before writing, so a slow but successful check
+never closes the socket.
 
 The retained event is the outbox. Failed publication leaves it pending; retries
 reuse its ID and do not recreate notifications. Frames contain only scope IDs,
@@ -84,6 +87,9 @@ focus and reconnect recovery for lost transient hints and older servers.
 
 Hub `collaboration_test.go` uses actual WebSockets for workspace-free account
 connections, authorizer requirements and final-send denial.
+`TestCollaborationSlowRevocationCheckStillSendsAccessHint` and
+`TestKnowledgeSlowFinalSendAuthorizationDoesNotSpendWriteBudget` hold
+authorization past a shortened write budget and require delivery on a live socket.
 `TestAccountWebSocketUnknownFrameDoesNotLogPrivateInput` verifies untrusted frame
 types stay out of logs. Server route tests
 cover legacy/password and agent-header boundaries, independent read bases and

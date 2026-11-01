@@ -1,0 +1,57 @@
+# L5 red: the PAT FOR SHARE NOWAIT lock turns a concurrent row update into 503 knowledge_busy
+#
+# Code under test: fba1fca3f (L1-L4 fixed, no L5 fix) plus the two new tests in
+# server/internal/service/collaboration_knowledge_credentials_test.go (uncommitted).
+# Database: postgres://multica:multica@127.0.0.1:5432/kfix_write_svc (migrated to 760).
+# Command (from server/):
+#   env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 DATABASE_URL=...kfix_write_svc go test ./internal/service \
+#     -run 'TestKnowledgePATWriteWaitsOutLastUsedUpdate|TestKnowledgePATWriteWaitsForConcurrentRevocation|TestKnowledgePATWriteHoldsCredentialUntilPublication|TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential' -count=1 -v
+# Exit code: 1
+#
+# How revoke locks the PAT row (checked before the fix):
+# - RevokePersonalAccessToken (handler/personal_access_token.go) and RevokePasswordCredentials
+#   (auth/password_revoke.go) both run a plain UPDATE personal_access_token SET revoked = true.
+#   revoked is not in a unique index (only token_hash is: idx_pat_token_hash), so the UPDATE
+#   takes FOR NO KEY UPDATE. UpdatePersonalAccessTokenLastUsed is the same kind of UPDATE and
+#   takes the same lock. FOR KEY SHARE does not conflict with FOR NO KEY UPDATE, so it would
+#   stop serializing with revoke; no row-lock mode separates revoke from last_used_at.
+#
+# BEHAVIORAL, fail for the defect's reason:
+# - TestKnowledgePATWriteWaitsOutLastUsedUpdate: another transaction holds the row lock of the
+#   real UpdatePersonalAccessTokenLastUsed query. LockKnowledgePAT ... FOR SHARE NOWAIT raises
+#   55P03 at once; collaborationRuntimeMutation retries twice and returns 503 knowledge_busy
+#   before the update commits.
+# - TestKnowledgePATWriteWaitsForConcurrentRevocation: another transaction holds the revoke
+#   UPDATE uncommitted. The write fails the same way (knowledge_busy) instead of waiting for
+#   the commit and failing closed with 403 knowledge_permission_denied. Nothing is persisted
+#   either way; the defect is that the write never waits.
+#
+# REGRESSION GUARDS, pass before and after the fix by design:
+# - TestKnowledgePATWriteHoldsCredentialUntilPublication: a write holding the PAT lock blocks
+#   revoke until it commits; the next write is denied.
+# - TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential: revoked/expired PATs are
+#   denied on every read, recovery and approval path.
+
+=== RUN   TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential
+=== RUN   TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential/source
+=== RUN   TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential/target
+=== RUN   TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential/recovery
+=== RUN   TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential/approval
+=== RUN   TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential/detail
+--- PASS: TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential (1.23s)
+    --- PASS: TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential/source (0.01s)
+    --- PASS: TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential/target (0.01s)
+    --- PASS: TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential/recovery (0.00s)
+    --- PASS: TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential/approval (0.01s)
+    --- PASS: TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential/detail (0.01s)
+=== RUN   TestKnowledgePATWriteHoldsCredentialUntilPublication
+--- PASS: TestKnowledgePATWriteHoldsCredentialUntilPublication (1.08s)
+=== RUN   TestKnowledgePATWriteWaitsOutLastUsedUpdate
+    collaboration_knowledge_credentials_test.go:156: knowledge write finished without waiting for the PAT row lock: knowledge_busy
+--- FAIL: TestKnowledgePATWriteWaitsOutLastUsedUpdate (0.95s)
+=== RUN   TestKnowledgePATWriteWaitsForConcurrentRevocation
+    collaboration_knowledge_credentials_test.go:184: knowledge write finished without waiting for the PAT row lock: knowledge_busy
+--- FAIL: TestKnowledgePATWriteWaitsForConcurrentRevocation (1.07s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/service	6.373s
+FAIL

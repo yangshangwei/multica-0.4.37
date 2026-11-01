@@ -88,6 +88,8 @@ func (c *Client) outboundScopeCurrent(scope scopeKey) bool {
 		return false
 	}
 	frame, _ := json.Marshal(map[string]any{"type": "collaboration:access_changed", "payload": map[string]string{"issue_id": scope.ID}})
+	// The authorization above may have outlasted any earlier deadline.
+	_ = c.conn.SetWriteDeadline(c.writeDeadline())
 	if err := c.conn.WriteMessage(websocket.TextMessage, frame); err != nil {
 		_ = c.conn.Close()
 	}

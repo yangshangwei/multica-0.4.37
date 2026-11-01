@@ -91,6 +91,19 @@ type CollaborationKnowledgeInvalidation struct {
 	Queries   *db.Queries
 	TxStarter TxStarter
 	Publisher realtime.RelayPublisher
+
+	// hintTimeout bounds one hint delivery. Zero means
+	// knowledgeHintDeliveryTimeout; tests shorten it.
+	hintTimeout time.Duration
+}
+
+const knowledgeHintDeliveryTimeout = 5 * time.Second
+
+func (s *CollaborationKnowledgeInvalidation) hintDeliveryTimeout() time.Duration {
+	if s.hintTimeout > 0 {
+		return s.hintTimeout
+	}
+	return knowledgeHintDeliveryTimeout
 }
 
 func (s *CollaborationKnowledgeInvalidation) Run(ctx context.Context) {
@@ -236,41 +249,70 @@ func invalidateKnowledgeScanTarget(ctx context.Context, q *db.Queries, cause pgt
 	return advanceKnowledgeTargetHint(ctx, q, cause, target)
 }
 
+// knowledgeHintFailureLimit ends a pass after this many consecutive failed
+// hints. A dead relay fails every hint; without the limit one pass would wait
+// out the delivery timeout once for each of up to 100 pending hints.
+const knowledgeHintFailureLimit = 3
+
+// DeliverPending publishes at most limit hints. A failed hint records its
+// attempt and is skipped for the rest of the pass, so it cannot hold the head
+// of the queue. Errors are joined; a failure before any hint is locked ends the
+// pass, as in ScanPending.
 func (s *CollaborationKnowledgeInvalidation) DeliverPending(ctx context.Context, limit int) (int, error) {
 	if limit < 1 || limit > 100 || s.Queries == nil || s.TxStarter == nil || s.Publisher == nil {
 		return 0, errors.New("invalid knowledge invalidation configuration")
 	}
-	for delivered := 0; delivered < limit; delivered++ {
-		found, err := s.deliverNext(ctx)
-		if err != nil || !found {
-			return delivered, err
+	excluded := make([]pgtype.UUID, 0)
+	delivered, consecutive := 0, 0
+	var deferred error
+	for range limit {
+		id, found, err := s.deliverNext(ctx, excluded)
+		if err == nil {
+			if !found {
+				break
+			}
+			delivered++
+			consecutive = 0
+			continue
+		}
+		deferred = errors.Join(deferred, err)
+		if !id.Valid || ctx.Err() != nil {
+			break
+		}
+		excluded = append(excluded, id)
+		if consecutive++; consecutive >= knowledgeHintFailureLimit {
+			break
 		}
 	}
-	return limit, nil
+	return delivered, deferred
 }
 
-func (s *CollaborationKnowledgeInvalidation) deliverNext(ctx context.Context) (found bool, err error) {
-	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+func (s *CollaborationKnowledgeInvalidation) deliverNext(parent context.Context, excluded []pgtype.UUID) (hintID pgtype.UUID, found bool, err error) {
+	ctx, cancel := context.WithTimeout(parent, s.hintDeliveryTimeout())
 	defer cancel()
 	tx, err := s.TxStarter.Begin(ctx)
 	if err != nil {
-		return false, err
+		return hintID, false, err
 	}
-	var hintID pgtype.UUID
 	defer func() {
 		rollbackCollaborationQueue(ctx, tx)
-		if err != nil && hintID.Valid && ctx.Err() == nil {
-			_, attemptErr := s.Queries.RecordKnowledgeJobAttempt(ctx, hintID)
+		// The attempt moves this hint behind the rest of the queue. A hint that
+		// outlived its own budget records it on a fresh bound while the worker
+		// is still running; shutdown skips it.
+		if err != nil && hintID.Valid && parent.Err() == nil {
+			record, cancelRecord := context.WithTimeout(parent, knowledgeHintDeliveryTimeout)
+			defer cancelRecord()
+			_, attemptErr := s.Queries.RecordKnowledgeJobAttempt(record, hintID)
 			err = errors.Join(err, attemptErr)
 		}
 	}()
 	q := s.Queries.WithTx(tx)
-	hint, err := q.LockNextKnowledgeTargetHint(ctx)
+	hint, err := q.LockNextKnowledgeTargetHint(ctx, excluded)
 	if errors.Is(err, pgx.ErrNoRows) {
-		return false, nil
+		return hintID, false, nil
 	}
 	if err != nil {
-		return false, err
+		return hintID, false, err
 	}
 	hintID = hint.ID
 	frame, err := json.Marshal(struct {
@@ -280,19 +322,19 @@ func (s *CollaborationKnowledgeInvalidation) deliverNext(ctx context.Context) (f
 		TargetKind: hint.TargetKind.String, TargetID: util.UUIDToString(hint.TargetID), KnowledgeRevision: strconv.FormatInt(hint.KnowledgeRevision.Int64, 10),
 	}})
 	if err != nil {
-		return true, err
+		return hintID, true, err
 	}
 	if err = s.Publisher.PublishWithID(realtime.ScopeWorkspace, util.UUIDToString(hint.TargetWorkspaceID), "", frame, util.UUIDToString(hint.ID)+":target"); err != nil {
-		return true, err
+		return hintID, true, err
 	}
 	n, err := q.MarkKnowledgeTargetHintDelivered(ctx, hint.ID)
 	if err != nil {
-		return true, err
+		return hintID, true, err
 	}
 	if n != 1 {
-		return true, errors.New("knowledge target delivery marker unavailable")
+		return hintID, true, errors.New("knowledge target delivery marker unavailable")
 	}
-	return true, tx.Commit(ctx)
+	return hintID, true, tx.Commit(ctx)
 }
 
 // AuthorizeKnowledgeWorkspace checks the room's current human authority without

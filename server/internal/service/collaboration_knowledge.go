@@ -36,6 +36,13 @@ type knowledgeWrite struct {
 	operation       db.CollaborationOperation
 }
 
+func (s *CollaborationService) knowledgeNow() time.Time {
+	if s.knowledgeClock != nil {
+		return s.knowledgeClock()
+	}
+	return time.Now()
+}
+
 func knowledgeFailure(status int, code string) error { return collaborationError(status, code) }
 func knowledgePublicError(err error) error {
 	if err == nil {
@@ -454,7 +461,7 @@ func lockKnowledgeCounter(ctx context.Context, q *db.Queries, target protocol.Co
 }
 
 func (s *CollaborationService) createKnowledgeCandidate(ctx context.Context, w *knowledgeWrite, p protocol.CollaborationKnowledgeProposal) (protocol.CollaborationKnowledgeReceipt, error) {
-	if err := protocol.ValidateCollaborationKnowledgeProposalAt(p, util.UUIDToString(w.issue.ID), time.Now().UTC()); err != nil {
+	if err := protocol.ValidateCollaborationKnowledgeProposalAt(p, util.UUIDToString(w.issue.ID), s.knowledgeNow().UTC()); err != nil {
 		return protocol.CollaborationKnowledgeReceipt{}, knowledgeProtocolError(err)
 	}
 	available, err := s.KnowledgeSourceAvailability(ctx, w.q, w.issue.ID, p.Sources)
@@ -512,6 +519,9 @@ func (s *CollaborationService) createKnowledgeCandidate(ctx context.Context, w *
 	if errors.Is(err, pgx.ErrNoRows) {
 		return protocol.CollaborationKnowledgeReceipt{}, knowledgeFailure(409, "knowledge_state_conflict")
 	}
+	if knowledgeExpiryCheckViolation(err) {
+		return protocol.CollaborationKnowledgeReceipt{}, knowledgeFailure(400, "invalid_knowledge_request")
+	}
 	if err != nil {
 		return protocol.CollaborationKnowledgeReceipt{}, err
 	}
@@ -520,6 +530,19 @@ func (s *CollaborationService) createKnowledgeCandidate(ctx context.Context, w *
 		return protocol.CollaborationKnowledgeReceipt{}, err
 	}
 	return knowledgeReceipt(row, p.RequestID, "propose", "knowledge_proposed", nil), nil
+}
+
+// Migration 747 declares CHECK (expires_at IS NULL OR expires_at > proposed_at)
+// without a name; PostgreSQL generated this one. The L2 service test pins the
+// name to that definition.
+const knowledgeExpiryCheckConstraint = "collaboration_knowledge_candidate_check5"
+
+// The proposal validates expires_at on the application clock, but PostgreSQL
+// fills proposed_at with clock_timestamp(). Only this CHECK is a request error;
+// any other 23514 is a server defect and stays knowledge_unavailable.
+func knowledgeExpiryCheckViolation(err error) bool {
+	var pg *pgconn.PgError
+	return errors.As(err, &pg) && pg.Code == "23514" && pg.TableName == "collaboration_knowledge_candidate" && pg.ConstraintName == knowledgeExpiryCheckConstraint
 }
 
 func (s *CollaborationService) changeKnowledgeCandidate(ctx context.Context, w *knowledgeWrite, action string, payload any, approval *protocol.CollaborationKnowledgeApproveRequest) (protocol.CollaborationKnowledgeReceipt, error) {
@@ -554,7 +577,14 @@ func (s *CollaborationService) changeKnowledgeCandidate(ctx context.Context, w *
 		if version != w.candidate.Version || approval.ExpectedContentSHA256 != w.candidate.ContentSha256 {
 			return refuse("knowledge_content_changed")
 		}
-		if w.candidate.ExpiresAt.Valid && !w.candidate.ExpiresAt.Time.After(time.Now()) {
+		// ApproveKnowledgeCandidate compares expires_at with clock_timestamp().
+		// Decide expiry and active target budget on that same clock before any
+		// target or correction write, including non-expiring new candidates.
+		checked, err := w.q.GetKnowledgeDatabaseTime(ctx)
+		if err != nil {
+			return protocol.CollaborationKnowledgeReceipt{}, err
+		}
+		if w.candidate.ExpiresAt.Valid && !w.candidate.ExpiresAt.Time.After(checked.Time) {
 			return refuse("knowledge_expired")
 		}
 		refs, err := knowledgeCandidateSources(w.candidate)
@@ -568,7 +598,7 @@ func (s *CollaborationService) changeKnowledgeCandidate(ctx context.Context, w *
 		if !available {
 			return refuse("knowledge_source_unavailable")
 		}
-		rows, err := w.q.ListKnowledgeActiveTargetCandidates(ctx, db.ListKnowledgeActiveTargetCandidatesParams{TargetKind: w.target.Kind, TargetWorkspaceID: w.candidate.TargetWorkspaceID, TargetProjectID: w.candidate.TargetProjectID, CheckedAt: pgtype.Timestamptz{Time: time.Now().UTC(), Valid: true}})
+		rows, err := w.q.ListKnowledgeActiveTargetCandidates(ctx, db.ListKnowledgeActiveTargetCandidatesParams{TargetKind: w.target.Kind, TargetWorkspaceID: w.candidate.TargetWorkspaceID, TargetProjectID: w.candidate.TargetProjectID, CheckedAt: checked})
 		if err != nil {
 			return protocol.CollaborationKnowledgeReceipt{}, err
 		}
@@ -611,6 +641,17 @@ func (s *CollaborationService) changeKnowledgeCandidate(ctx context.Context, w *
 			}
 		}
 		row, err = w.q.ApproveKnowledgeCandidate(ctx, db.ApproveKnowledgeCandidateParams{ID: w.candidate.ID, ActorID: w.actor, TargetRevision: pgtype.Int8{Int64: w.counter.KnowledgeRevision, Valid: true}, ExpectedStateRevision: revision, ExpectedVersion: w.candidate.Version, ExpectedContentSha256: w.candidate.ContentSha256})
+		if errors.Is(err, pgx.ErrNoRows) && w.candidate.ExpiresAt.Valid {
+			checked, clockErr := w.q.GetKnowledgeDatabaseTime(ctx)
+			if clockErr != nil {
+				return protocol.CollaborationKnowledgeReceipt{}, clockErr
+			}
+			if !w.candidate.ExpiresAt.Time.After(checked.Time) {
+				// Roll back target/correction writes only when the database
+				// clock proves expiry. Other missing rows retain their404.
+				return protocol.CollaborationKnowledgeReceipt{}, &pgconn.PgError{Code: "40001", Message: "knowledge candidate expired during approval"}
+			}
+		}
 		code = "knowledge_approved"
 	case "reject":
 		row, err = w.q.RejectKnowledgeCandidate(ctx, db.RejectKnowledgeCandidateParams{ID: w.candidate.ID, ActorID: w.actor, Reason: pgtype.Text{String: reason, Valid: true}, ExpectedStateRevision: revision})

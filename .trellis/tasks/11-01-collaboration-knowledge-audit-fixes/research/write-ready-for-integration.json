@@ -1,0 +1,39 @@
+{
+  "state": "ready_for_serial_integration",
+  "product": "464540191",
+  "previous_product": "d4bc37a86",
+  "independent_review": "write-independent-review/review.json; pass-with-notes; IW1 resolved by464540191 and independently rechecked pass in iw1-recheck.json",
+  "checks": {
+    "previous_full_service": {
+      "pass": 3262,
+      "fail": 0,
+      "skip": 18,
+      "source": "d4bc37a86"
+    },
+    "migrations": {
+      "pass": 536,
+      "fail": 0,
+      "skip": 0,
+      "source": "d4bc37a86"
+    },
+    "realtime_race": {
+      "pass": 87,
+      "fail": 0,
+      "skip": 0
+    },
+    "PAT_expiry_race": {
+      "pass": 16,
+      "fail": 0,
+      "skip": 0
+    },
+    "IW1_delta_normal_and_race": {
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "each": true,
+      "source": "464540191"
+    }
+  },
+  "reuse_boundary": "Unchanged-package evidence keeps original source. Final combined service suite must include the IW1 delta; historical full pass is not renamed.",
+  "remaining": "final combined full candidate verification; no Provider/account/platform claim"
+}

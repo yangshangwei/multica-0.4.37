@@ -1,0 +1,59 @@
+{
+  "base_sha": "ac6546772758055407b6382ecd3e1e5192f5bc05",
+  "recorded_at": "2026-11-01T16:10:41.226635+00:00",
+  "database": "kfix_write_no_rows_20261102_0010",
+  "command": "guarded go -C server test ./internal/service -run '^TestKnowledge(ApprovalUnexpiredNoRowsDoesNotBecomeExpiryRetry|ApprovalExpiryUsesDatabaseClockNotApplicationClock|CorrectionApprovalExpiringMidTransactionRetriesIntoSealedExpiry)$' -count=1 -json",
+  "final_exit": 0,
+  "red_r2_exit": 1,
+  "red_r2_method": "Go overlay restores only baseline product collaboration_knowledge.go, final canonical test remains unchanged",
+  "initial_fixture_fault": "future expiry was not UTC canonical; preserved initial red/green failures; UTC corrected then repeated baseline overlay and final green",
+  "results": [
+    {
+      "file": "L1-nonexpiry-red.jsonl",
+      "sha256": "f1eeb486dc93efdccc291c00d4673f2db86eb26c75ff578a33200cce20138d34",
+      "counts": {
+        "run": 3,
+        "pass": 0,
+        "fail": 3,
+        "skip": 0
+      }
+    },
+    {
+      "file": "L1-nonexpiry-red-r2.jsonl",
+      "sha256": "abe24b37bf061754ef577ea2833d23de771b2f5dffee1ba18abb39b22aa1acbc",
+      "counts": {
+        "run": 3,
+        "pass": 0,
+        "fail": 3,
+        "skip": 0
+      }
+    },
+    {
+      "file": "L1-nonexpiry-green.jsonl",
+      "sha256": "f64495d505443b20123c7c940299830d27a790b913e8171cd266724b6d7314ee",
+      "counts": {
+        "run": 5,
+        "pass": 3,
+        "fail": 2,
+        "skip": 0
+      }
+    },
+    {
+      "file": "L1-nonexpiry-green-r2.jsonl",
+      "sha256": "6b8defe5e6872c2ad3046d0e8ae78099624b7274ae430013f14f2f72ef9b813a",
+      "counts": {
+        "run": 5,
+        "pass": 5,
+        "fail": 0,
+        "skip": 0
+      }
+    }
+  ],
+  "real_provider_calls": 0,
+  "remaining": [
+    "targeted race",
+    "full service lane",
+    "independent review",
+    "final candidate"
+  ]
+}
