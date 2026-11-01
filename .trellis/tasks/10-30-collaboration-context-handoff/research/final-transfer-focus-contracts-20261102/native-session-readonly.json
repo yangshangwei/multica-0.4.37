@@ -1,0 +1,40 @@
+{
+  "at": "2026-11-01T21:44:31.680919+00:00",
+  "command": [
+    "/usr/sbin/ioreg",
+    "-a",
+    "-l",
+    "-n",
+    "Root",
+    "-d",
+    "1"
+  ],
+  "exit_code": 0,
+  "read_only": true,
+  "raw_registry_not_saved_or_printed": true,
+  "stdout_sha256": "ccfb30304bbe65db06f069b97ffe29dfc5fdefcddab83ad2af891a73543e7eca",
+  "prior_reader_setup_error": "ioreg archive is a dictionary on this host; firstreader incorrectlyindexed0, OScommandreadonlyandnotatest; no state conclusion fromthatreader",
+  "archive_type": "dict",
+  "root_safe_flags": {
+    "IOConsoleLocked": true
+  },
+  "console_session_count": 1,
+  "session_safe_flags": [
+    {
+      "CGSSessionScreenIsLocked": true,
+      "kCGSSessionOnConsoleKey": true,
+      "kCGSessionLoginDoneKey": true
+    }
+  ],
+  "available_safe_session_key_names": [
+    "CGSSessionScreenIsLocked",
+    "CGSSessionScreenLockedTime",
+    "kCGSSessionLoginwindowSafeLogin",
+    "kCGSSessionOnConsoleKey",
+    "kCGSessionLoginDoneKey"
+  ],
+  "root_safe_key_names": [
+    "IOConsoleLocked",
+    "IOConsoleUsers"
+  ]
+}

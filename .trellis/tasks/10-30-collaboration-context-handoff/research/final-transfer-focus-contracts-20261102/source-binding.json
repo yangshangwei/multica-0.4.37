@@ -1,0 +1,27 @@
+{
+  "recorded_at": "2026-11-01T21:49:25.636646+00:00",
+  "base_sha": "56ae50d613831a905293fa29834e5a5be4167c03",
+  "code_commit": "d39d54a0733149ae6fc899d7a81e1cc06580a7c9",
+  "product_candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "product_roots_identical": {
+    "server": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+    "apps": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+    "packages": "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292",
+    "scripts": "602113e862a08b682721b2c2d92169b3d6836e5a",
+    "Makefile": "cb9f6e6566b2c56c13234ee827e2162d08585ff2",
+    "package.json": "fcabc756feb1b1ef8566958b502170a66f73b2a7",
+    "pnpm-lock.yaml": "94688b4961376038e23968a952379d4cf96d0929",
+    "pnpm-workspace.yaml": "bd601924f385cfe3309357a57801788a3d8db2a3"
+  },
+  "current_source_sha256": {
+    "e2e/collaboration-workbench-web.spec.ts": "767ae9c4d8331184a41d640fa89ded564a7d37e0023932021e27f288f29f2a73",
+    "e2e/collaboration-account-desktop.spec.ts": "163c92042219b895db49bb1f8c5afb4e0fdc86038c6e2f45c91358f962c3497c"
+  },
+  "only_final_code_diff": [
+    "e2e/collaboration-workbench-web.spec.ts"
+  ],
+  "actual_transfer_run_selected_source_matches_commit": true,
+  "full_harness_diff_note": "Attransferinvocationtheunselectedaccount-desktopdiagnosticfilewasstillpresentanditsownobservationdiffwasincludedbythelauncherfullE2Ediffhash; itsmodulewasnotselected/importedbyWorkbench. TheactualselectedWorkbenchfilehashmatchescommittedcode. Finalaccount-desktopsourceisrestoredoriginal163c. No claimallE2Efileswereexecuted.",
+  "current_native_focus_status": "BLOCKEDlockedGUI; rootrequiresunlockedrerunwithoriginalsourceandconditions",
+  "real_Provider_calls": 0
+}
