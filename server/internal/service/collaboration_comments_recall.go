@@ -264,6 +264,16 @@ func (s *CollaborationService) RecallRuntimeComments(ctx context.Context, runID 
 		if err != nil {
 			return out, err
 		}
+		authorIDs := make([]pgtype.UUID, 0, len(rows))
+		for _, row := range rows {
+			if row.AuthorType == "member" {
+				authorIDs = append(authorIDs, row.AuthorID)
+			}
+		}
+		accounts, err := collaborationContentAccounts(ctx, r.q, r.access.Issue.WorkspaceID, authorIDs)
+		if err != nil {
+			return out, err
+		}
 		items := make([]protocol.CollaborationRecallComment, 0, len(rows))
 		for _, row := range rows {
 			var parent *string
@@ -271,9 +281,13 @@ func (s *CollaborationService) RecallRuntimeComments(ctx context.Context, runID 
 				value := util.UUIDToString(row.ParentID)
 				parent = &value
 			}
+			name := ""
+			if account := accounts[row.AuthorID]; row.AuthorType == "member" && account != nil {
+				name = account.Name
+			}
 			items = append(items, protocol.CollaborationRecallComment{CollaborationCommentContent: collaborationCommentContent(row, authorities),
 				ID: util.UUIDToString(row.ID), IssueID: util.UUIDToString(row.IssueID), AuthorType: row.AuthorType, AuthorID: util.UUIDToString(row.AuthorID),
-				Content: row.Content, ParentID: parent, CreatedAt: row.CreatedAt.Time, CommentRevision: strconv.FormatInt(row.Revision, 10)})
+				AuthorName: name, Content: row.Content, ParentID: parent, CreatedAt: row.CreatedAt.Time, CommentRevision: strconv.FormatInt(row.Revision, 10)})
 		}
 		identity := collaborationRunIdentity(r.run, r.access.Issue.ID)
 		return budgetCollaborationComments(identity.IssueID, &identity, items, total, more, p,

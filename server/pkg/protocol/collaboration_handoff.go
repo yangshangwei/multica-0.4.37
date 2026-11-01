@@ -163,13 +163,14 @@ type CollaborationHandoffBindingReceipt struct {
 	Accepted        bool   `json:"accepted"`
 }
 type CollaborationHandoffSourcePage struct {
-	ProtocolVersion int                        `json:"protocol_version"`
-	IssueID         string                     `json:"issue_id"`
-	RunID           string                     `json:"run_id"`
-	Source          CollaborationHandoffSource `json:"source"`
-	Offset          int                        `json:"offset"`
-	TotalBytes      int                        `json:"total_bytes"`
-	NextOffset      *int                       `json:"next_offset"`
+	ProtocolVersion int    `json:"protocol_version"`
+	IssueID         string `json:"issue_id"`
+	RunID           string `json:"run_id"`
+	Offset          int    `json:"offset"`
+	TotalBytes      int    `json:"total_bytes"`
+	NextOffset      *int   `json:"next_offset"`
+	// Keep continuation metadata ahead of text when a tool shows a preview.
+	Source CollaborationHandoffSource `json:"source"`
 }
 
 // DecodeCollaborationHandoffSourcePage strictly decodes one runtime source

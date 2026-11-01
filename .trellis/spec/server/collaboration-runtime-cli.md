@@ -48,8 +48,45 @@ accepts action/no_action/failed and a reason. Content and reason are limited to
 `<`, `>` and `&` as six bytes, both routes read up to six times that limit plus
 a 64 KiB envelope, like shared-context updates. Filters, attachments, comment
 content-file, profile/server/workspace overrides and other operations are
-unsupported. Reads return the authorized run context and its newest 200
-comments. Every response must match the admitted run/issue.
+unsupported except for the explicit recall operations below. Legacy `issue get`
+and `issue comment list` without paging flags return the authorized run context
+and its newest 200 comments. Every response must match the admitted run/issue.
+
+Explicit `issue comment list --limit --max-bytes --cursor` reads
+`.../runtime/runs/{runId}/comments` and returns a page envelope rather than the
+legacy array. Limit is 1–100 (default 50), max_bytes is 4096–1048576 (default
+65536). `bytes` counts the serialized UTF-8 JSON response, including metadata,
+escaping and its trailing newline. Pages select newest-first and display oldest
+first within that page. A run-bound, opaque next_cursor reaches older comments;
+it is distinct from the content cursor below. Total counts currently visible,
+non-deleted runtime comments, not only the newest 200.
+
+An oversized first comment is an explicit `content_state=omitted` placeholder
+with its exact comment_revision, author, content_bytes and content_ref; the
+list cursor advances past it. `issue comment content <issue> <comment>
+--revision <revision> [--cursor <cursor>] [--max-bytes <bytes>]` reads contiguous
+UTF-8 chunks for that revision until complete=true. An edit returns
+`stale_comment_revision`; discard incomplete assembly rather than joining
+revisions. Deletion or authority loss refuses current content reads. Even an
+empty page must fit its envelope; `budget_too_small` requires a larger budget,
+not a retry of the same query or a non-advancing empty page.
+
+Page/chunk JSON prints next_cursor/next_offset and completeness metadata before
+its potentially long items/content/source text. Those response-only field orders
+do not change startup snapshot encoding or hashes. The negotiated host brief
+uses an explicit 16384-byte budget for comment pages and content chunks (the
+protocol default stays 65536). Provider shells can still preview only a prefix
+of a tool result: read their saved full output before claiming the page/chunk
+text was read; seeing a cursor alone proves no content exposure.
+
+Member comments carry optional current `author_name` labels in both runtime
+reads. Reuse the human content-account lookup, including external members;
+agent authors and unresolved accounts omit the name. CLI decoding preserves
+the label but accepts older responses without it. Names and the current
+author_authority role/can_submit_command are separate from historical command
+admission. Every recalled comment remains trust=data_only, including text by
+an author who can currently submit commands; only frozen inputs/delegations
+carry execution intent.
 
 Shared-context update replaces the whole document from `--base-version` (a
 canonical non-negative decimal) with `--content-stdin` or `--content-file`; the
@@ -131,6 +168,12 @@ guard flag refusals, out-of-run refusal and one walk across result pages and
 source chunks. `internal/cli/collaboration_handoff_test.go` owns query encoding,
 pre-HTTP reference checks and identity binding;
 `pkg/protocol/collaboration_handoff_source_page_test.go` owns the decode matrix.
+`TestCollaborationRuntimeCommentsCarryMemberDisplayNames` covers both current
+runtime reads, member/agent attribution and strict recall decoding;
+`TestCollaborationRuntimeCommentKeepsOptionalDisplayName` covers legacy CLI
+retention and old-server omission. Recall service tests own 200+ comments,
+UTF-8/escaping/envelope budgets, placeholder progress, revision-bound chunks
+and current authority; CLI tests own explicit-envelope wiring and pre-HTTP guards.
 Controller/ledger tests retain namespace and nonce/proof coverage.
 `TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux` exercises actual
 registration/router/PostgreSQL, production slot polling, test-built CLI commands,
