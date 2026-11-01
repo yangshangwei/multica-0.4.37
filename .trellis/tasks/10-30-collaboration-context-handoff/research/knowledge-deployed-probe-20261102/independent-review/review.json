@@ -1,0 +1,275 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_web_review",
+  "reviewed_at": "2026-11-01T19:55:24.334750+00:00",
+  "state": "independent_review_complete",
+  "verdict": "pass-with-notes",
+  "static_verdict": "pass-with-notes",
+  "code_commit": "5bd1ecf13a77bc94334452910b0c1adf08f02f08",
+  "evidence_commit": "f33ffe2adfa8dc6aa055b8c603c3ac26d1954970",
+  "source_sha256": {
+    "e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+    "e2e/fixtures/collaboration-host-provider_test.go": "10af5c9122d610dd966fd78ea8eed48ec6fe93ba263025cb17cbee9c0853a600",
+    "e2e/fixtures/collaboration-host-runtime.ts": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e",
+    "e2e/collaboration-knowledge-deployed.spec.ts": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241"
+  },
+  "source_hashes_independently_match": true,
+  "blocking_findings": [],
+  "parser_evidence": {
+    "red": {
+      "run": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "raw_hash_match": true
+    },
+    "normal": {
+      "run": 24,
+      "pass": 24,
+      "fail": 0,
+      "skip": 0,
+      "raw_hash_match": true
+    },
+    "race": {
+      "run": 24,
+      "pass": 24,
+      "fail": 0,
+      "skip": 0,
+      "raw_hash_match": true
+    }
+  },
+  "static_validation_logs_independently_bound": [
+    {
+      "kind": "Go_file_list_vet",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "record_command": [
+        "/opt/homebrew/bin/go",
+        "vet",
+        "e2e/fixtures/collaboration-host-provider.go",
+        "e2e/fixtures/collaboration-host-provider_test.go"
+      ]
+    },
+    {
+      "kind": "strict_TS",
+      "exit_code": 0,
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "record_command": [
+        "pnpm",
+        "exec",
+        "tsc",
+        "--project",
+        ".omx/private/knowledge-deployed-probe/tsconfig.json"
+      ]
+    },
+    {
+      "kind": "repository_base_ESLint_with_fixture_devDependency_context",
+      "exit_code": 0,
+      "log_sha256": "af4107b312bd6bda5a2a9fbf0b7158aa48d13948bf9640a7dd4aa7cf97d9a94d",
+      "record_command": [
+        "pnpm",
+        "exec",
+        "eslint",
+        "--config",
+        ".omx/private/knowledge-deployed-probe/eslint.config.mjs",
+        "--format",
+        "json",
+        "e2e/fixtures/collaboration-host-runtime.ts",
+        "e2e/collaboration-knowledge-deployed.spec.ts"
+      ]
+    },
+    {
+      "kind": "Playwright_collection_ONLY",
+      "exit_code": 0,
+      "log_sha256": "6762f4792e2045ab47788e92c8957d0a995ba83bdbf800f5a70f1264b5d06a4d",
+      "record_command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-knowledge-deployed.spec.ts",
+        "--list"
+      ]
+    }
+  ],
+  "production_diff_vs_e6e7fe07": "Only pre-existing CCG1 server/cmd/server/collaboration_knowledge_correction_composite_test.go differs; no product implementation change",
+  "scope_verified": [
+    "Exact first frozen JSON value via InputOffset followed by empty whitespace or exact approved managed knowledge marker and one array ending at EOF",
+    "Candidate/source UUID and canonical positive version validation, exact content SHA-256 and duplicate candidate/version rejection",
+    "Existing admitted issue/input and ordinary CLI/credential checks retained",
+    "Optional callback compatibility for separate memory fake",
+    "ON/OFF test accepts only literal expectation, configured missing prerequisite fails, no API knowledge flag mutation",
+    "Public human proposal and exact version/revision/hash approval before actual owner UI comment",
+    "One physical callback/input and successful settled run, sealed authorized/reaped ledger proof, run-bound three knowledge event counts",
+    "Observation publishes prompt/content hashes and safe identity only; no raw knowledge body or credential/argv/path observations"
+  ],
+  "actual_deployed": {
+    "OFF": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "physical_fake_launches": 1
+    },
+    "ON": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "physical_fake_launches": 1
+    }
+  },
+  "remaining_before_final_verdict": [],
+  "reviewer_operations": {
+    "tests": 0,
+    "DB": 0,
+    "browser": 0,
+    "services": 0,
+    "containers": 0,
+    "installed_Agent_CLI": 0,
+    "Provider": 0,
+    "children": 0,
+    "git_mutations": 0
+  },
+  "notes": [
+    {
+      "id": "DP-1",
+      "kind": "candidate_binding",
+      "description": "Both actual runs bind E6 product e6e7fe07 with exact test code5bd and recorded binaries/environments. This is completed CCG2 deployed-probe evidence, not final integrated candidate make-check acceptance. Rebind and run affected final candidate gates after integration."
+    },
+    {
+      "id": "DP-2",
+      "kind": "coverage_scope",
+      "description": "API startup flag to actual test-owned Host stdin only. Human approval UI, CCG1, real model understanding, installers and different Provider accounts remain separate. Provider consumption stays0."
+    }
+  ],
+  "actual_raw_rechecks": [
+    {
+      "label": "deployed-off-e6-1",
+      "exit_code": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "results_sha256": "edceee7b07b3a7fe2d5c730db25f936a7cbe777bde25ac5a14b26026a18cc24f",
+      "output_log_sha256": "ba17ab0796d3fca0e610ca24c4bd4e0ffedf5b8ef05cd80dee6bc9ad1606d4e4",
+      "attachment_sha256": "aae3f8f4c5ef5053c470b53386c6c1f8532e53a32280a3b91b76d7dabdd0b9ed",
+      "ledger_allowlisted_summary_sha256": "f0b11d9d4f88f7d154b2d7f7eb897a65a6f9324283aa40cb5abc7284c6fc3043",
+      "lifecycle_http_summary_sha256": "552500986222356fe54db45eff6f8d304261664b8bd1d46e355de8fcd266b47e",
+      "run_id": "de65c47c-f97c-4221-845d-efa57c2cf5bf",
+      "input_prompt_sha256": "3804100788b85cae781b8ccc11ca3f96bd0f734c0a6d2bbf8c26759a3db91142",
+      "binary_sha256": {
+        "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+        "host-provider": "901fa027b270a04c9885d963faa138b81960033c69ddcb831efb572fcac410d4",
+        "multica": "f5561b63f32b18e8a9c561fff84f3384547f4f6d7275f9a17c6460ed8864afc7"
+      },
+      "event_counts": {
+        "knowledge_claim": 0,
+        "knowledge_preparation": 0,
+        "knowledge_authorization": 0
+      },
+      "knowledge_section": false,
+      "no_session_persistence": false,
+      "source_env_sha256": "684c90893e458ec0a74eebdf0efc5fe4a2fa28154e04306fd1eaed401d5b7603",
+      "web_build_id": "7W2IperrV33oRARDB7QoK",
+      "api_health": {
+        "status": "ok",
+        "pid": 30549,
+        "commit": "e6e7fe07d",
+        "started_at": "2026-11-01T19:46:38Z"
+      },
+      "database": "collab_joint_finalpw_20261102_1923",
+      "deployment_id": "3906a110-c34a-4cab-b774-5bc06816f4bd"
+    },
+    {
+      "label": "deployed-on-e6-1",
+      "exit_code": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "results_sha256": "6176863bf9decd5784b36f1bd1e67e9d19d2fd102c4c8427f66494f3a14ca42f",
+      "output_log_sha256": "677d7be9cd6079921cee96758246ba67bdb1e1c2279182bbe4471a5e09d53dca",
+      "attachment_sha256": "178c38cf9846c788235bb1ecb6797a220df953baae8351d19c46a64fb03b0174",
+      "ledger_allowlisted_summary_sha256": "44a71ea318e1135516a8db0d874ed4049e0aea8e7db0123513ccf0889fdf64cc",
+      "lifecycle_http_summary_sha256": "b0a5f9760f93d8add7c0897c4b42211ecc050e3dfbb02b7beae764d5e121647a",
+      "run_id": "0148c795-1bac-4014-9c2a-8dccb086f7c9",
+      "input_prompt_sha256": "92e0738b62c43faf024a8d617e6229e9b74529b6b34df663660e4b26f88da685",
+      "binary_sha256": {
+        "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+        "host-provider": "901fa027b270a04c9885d963faa138b81960033c69ddcb831efb572fcac410d4",
+        "multica": "f5561b63f32b18e8a9c561fff84f3384547f4f6d7275f9a17c6460ed8864afc7"
+      },
+      "event_counts": {
+        "knowledge_claim": 1,
+        "knowledge_preparation": 1,
+        "knowledge_authorization": 1
+      },
+      "knowledge_section": true,
+      "no_session_persistence": true,
+      "source_env_sha256": "1483d3f9bb4c830d5a3ef1f31b5d57b20dfdb5ae55ffaec50a19bf5442471b37",
+      "web_build_id": "cXt0smxLb6XzHHlvFDmAk",
+      "api_health": {
+        "status": "ok",
+        "pid": 31673,
+        "commit": "e6e7fe07d",
+        "started_at": "2026-11-01T19:48:28Z"
+      },
+      "database": "collab_joint_finalkon_20261102_1947",
+      "deployment_id": "7f522f47-ec1e-41b7-b669-8a0837f9de97"
+    }
+  ],
+  "actual_raw_hashes_and_assertions_verified": true,
+  "actual_serial_nonoverlap": true,
+  "actual_binary_hashes_verified": true,
+  "environment_isolation_verified": {
+    "distinct_database_deployment_JWT_Redis_catalog": true,
+    "same_product_source_fingerprint": true,
+    "different_api_and_web_configuration_fingerprints": true,
+    "only_allowed_generated_next_import_change": true,
+    "no_private_env_values_published": true,
+    "registry_identity": [
+      {
+        "web": {
+          "mode": "production",
+          "build_id": "7W2IperrV33oRARDB7QoK",
+          "source_id": "31b7ffe9731c51681ec56846507e9363bb7d6a62a318159872a1c364747388bd",
+          "configuration_id": "1f9c4eced8df0789bd17767a13348f582ee4581cc5dd1d83ce0c84b4d8ea490d",
+          "commit": "e6e7fe07d",
+          "listener_pid": 31398
+        },
+        "api": {
+          "mode": "development",
+          "build_id": "",
+          "source_id": "31b7ffe9731c51681ec56846507e9363bb7d6a62a318159872a1c364747388bd",
+          "configuration_id": "8b9be1d4e3856f7c5a1c2b7fe0e05a3b18dd87a89759bfa2eaeddfee5114394b",
+          "commit": "e6e7fe07d",
+          "listener_pid": 30549
+        }
+      },
+      {
+        "web": {
+          "mode": "production",
+          "build_id": "cXt0smxLb6XzHHlvFDmAk",
+          "source_id": "31b7ffe9731c51681ec56846507e9363bb7d6a62a318159872a1c364747388bd",
+          "configuration_id": "4b3280f338ead29353db4923baa53b540681855ff5ea6ffafb06bbd09bb04775",
+          "commit": "e6e7fe07d",
+          "listener_pid": 32170
+        },
+        "api": {
+          "mode": "development",
+          "build_id": "",
+          "source_id": "31b7ffe9731c51681ec56846507e9363bb7d6a62a318159872a1c364747388bd",
+          "configuration_id": "0166edbfd07126770199f56fdb88540807d436d2d37ac406e718c258648930ce",
+          "commit": "e6e7fe07d",
+          "listener_pid": 31673
+        }
+      }
+    ]
+  },
+  "public_deployed_summary_sha256": "4b741252a8a98745515d760577626ae6aea9e83715a5e31dc460e3d7c7881f1e",
+  "public_deployed_summary_safe_hash_aggregate_verified": true,
+  "product_source_sha": "e6e7fe07da184247c93584bbd07e6b66b38f6fc1",
+  "final_global_candidate_accepted": false,
+  "evidence_binding_notes": [
+    "Full harness git diff at execution contains ongoing root/reviewer documentation; four tested code files remain byte-identical to5bd1ecf13 and are independently hash-verified.",
+    "Ledger digest here is the canonical JSON SHA-256 of the retained allowlisted ledger summary, not a digest of a deleted credential-bearing ledger file.",
+    "Private source-env values were compared in memory only and were not printed or copied into reviewer artifacts."
+  ]
+}

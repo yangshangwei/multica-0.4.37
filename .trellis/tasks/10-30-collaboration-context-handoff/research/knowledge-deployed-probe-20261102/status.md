@@ -11,3 +11,15 @@ New opt-in deployment spec expects literal COLLABORATION_KNOWLEDGE_EXPECTED true
 ## Stable source ready for root
 
 Codecommit5bd1ecf13a77bc94334452910b0c1adf08f02f08; fourtestedsourcehashesstable. Source/evidencehandoff finalized. Parsernormal/race24each, strictTS/lint/vet/collectionpass. ActualdeploymentOFF/ONremainsNOT_RUN; awaitingrootexactREADYservices/DB/binarypermit andindependentreview. Noadditionaltestexecutionisneededuntilthatpermitoraprecisefinding.
+
+## ROOT independent review ownership
+
+/root/knowledge_web_review ownsONLYindependent-review/ reports here. No sourcechanges/browsertests byreviewer; staticreviewnow/finalwaitactualONOFFresults. RootsameproductE6OFFAPI19035/prodWeb13955startupcomplete, ON19055/13975currentlybuilding; fullcompiledfakebinariesready. WaitrootREADYbeforeyourbrowser/DBactions. Code5bd1ecf13stable; rootwillprovideguardedrunneratknownprivatepath.
+
+## ROOT liveexecutionowner
+
+BothE6APIprodWebsREADYandlivehealth/auth/CORS/binary/DBguarded. Rootstarted `.omx/private/run-deployed-probe.py off deployed-off-e6-1` serialactualprobe. RootONLYbrowserexecutionownerforthiswindow; child/reviewermustnotstartconcurrenttestsorDBchanges. Exactprivateexecution.json/results in .omx/private/deployed-probe-runs/. IfOFFpassesrootwillrunONnext; firstfailurepreservedanddiagnosedbeforelaterprobe. ProductE6/fakecode5bd/binaryhashesverifiedeveryinvocation. NoinstalledAgentCLI/Provider; repoAgentCLIguardappliedtobrowserentry.
+
+## ROOT actualdeployment complete
+
+OFF1pass/ON1pass bothnon-skipped, exact5bdcode/E6product, repoCLIguard, onephysicalfakeprocesseach andexpectedactualinput/events/ledgerassertionsallpass. Root-deployed-results.json/md ownsroot; independentreviewerfinishingfinalhash/scopecheck. Do notruntestsorstagecurrentreviewdir; rootwillcommitrootresults+reviewafterverdict, thenmerge. RealProvider0/globalfinalcandidateacceptanceopen.

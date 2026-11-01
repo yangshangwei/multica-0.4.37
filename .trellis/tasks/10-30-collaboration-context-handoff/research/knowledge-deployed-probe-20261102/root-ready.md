@@ -1,5 +1,8 @@
 # Root coordination: probe ready for static review; live execution NOT_RUN
 
+最新：root-deployed-results.json/md已记录E6实际OFF/ON各1pass/0skip，independent-review/review.json结论pass-with-notes无阻塞。以下原始准备交接保留；实际部署不再是NOT_RUN。最终集成候选仍须绑定并运行必要检查。
+
+
 Parser regression true red preserved, then normal/race24 each pass, no DB/Provider. Existing strict TS scope, base E2E lint context and Playwright collection pass. Source is confined to four E2E/fake fixture files, production untouched. Local commit/evidence binding is being finalized.
 
 Root may inspect the new opt-in spec now; actual execution remains blocked by the absent service/binary permit. Required expectation variable is COLLABORATION_KNOWLEDGE_EXPECTED=true or false. It must be configured before invoking the spec; it is NOT written into the API environment by the test. Configured runs require all existing hostEnvironment keys and explicit newly built daemon/provider/CLI. Build the provider from this branch's modified collaboration-host-provider.go; an older fake lacks the required knowledge_observation callback and must fail. Provider fixture-kind/version remain v1/fixture-1 to retain existing consent/helper contracts.

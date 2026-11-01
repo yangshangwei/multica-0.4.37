@@ -1,0 +1,327 @@
+{
+  "recorded_at": "2026-11-01T19:52:18.663833+00:00",
+  "scope": "CCG2 deployed environment -> real API -> actual test-owned Host input; E6 product/harness5bd",
+  "product_source_sha": "e6e7fe07da184247c93584bbd07e6b66b38f6fc1",
+  "harness_code": "5bd1ecf13a77bc94334452910b0c1adf08f02f08",
+  "pass": 2,
+  "fail": 0,
+  "skip": 0,
+  "physical_fake_launches": 2,
+  "real_provider_launches": 0,
+  "external_operations": false,
+  "runs": [
+    {
+      "label": "deployed-off-e6-1",
+      "execution": {
+        "lane": "off",
+        "expected_knowledge": "false",
+        "product_source_sha": "e6e7fe07da184247c93584bbd07e6b66b38f6fc1",
+        "harness_head": "f33ffe2adfa8dc6aa055b8c603c3ac26d1954970",
+        "harness_diff_sha256": "5222745523f5dd04b06e192f1386fa5c950d6c9074066126d36c141ae8cbea40",
+        "command": [
+          "bash",
+          "scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/bin/pnpm",
+          "exec",
+          "playwright",
+          "test",
+          "e2e/collaboration-knowledge-deployed.spec.ts",
+          "--workers=1",
+          "--retries=0",
+          "--reporter=line,json",
+          "--output=/Volumes/artisan/code/2026/mc-knowledge-deployed-probe-20261102/.omx/private/deployed-probe-runs/deployed-off-e6-1/artifacts"
+        ],
+        "source_env_sha256": "684c90893e458ec0a74eebdf0efc5fe4a2fa28154e04306fd1eaed401d5b7603",
+        "database": "collab_joint_finalpw_20261102_1923",
+        "health": {
+          "status": "ok",
+          "pid": 30549,
+          "commit": "e6e7fe07d",
+          "started_at": "2026-11-01T19:46:38Z"
+        },
+        "web_build_id": "7W2IperrV33oRARDB7QoK",
+        "renderer_index_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+        "binary_sha256": {
+          "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+          "host-provider": "901fa027b270a04c9885d963faa138b81960033c69ddcb831efb572fcac410d4",
+          "multica": "f5561b63f32b18e8a9c561fff84f3384547f4f6d7275f9a17c6460ed8864afc7"
+        },
+        "state": "complete",
+        "started_at": "2026-11-01T19:51:03.786370+00:00",
+        "Provider_calls_allowed": false,
+        "exit_code": 0,
+        "finished_at": "2026-11-01T19:51:12.905877+00:00",
+        "log_sha256": "ba17ab0796d3fca0e610ca24c4bd4e0ffedf5b8ef05cd80dee6bc9ad1606d4e4",
+        "stats": {
+          "startTime": "2026-11-01T19:51:04.893Z",
+          "duration": 7990.316000000001,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "results_sha256": "edceee7b07b3a7fe2d5c730db25f936a7cbe777bde25ac5a14b26026a18cc24f"
+      },
+      "test_code_commit": "5bd1ecf13a77bc94334452910b0c1adf08f02f08",
+      "tested_code_sha256": {
+        "e2e/collaboration-knowledge-deployed.spec.ts": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+        "e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+        "e2e/fixtures/collaboration-host-runtime.ts": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e",
+        "e2e/fixtures/collaboration-host-provider_test.go": "10af5c9122d610dd966fd78ea8eed48ec6fe93ba263025cb17cbee9c0853a600"
+      },
+      "harness_full_diff_note": "nonempty execution harness_diff reflects rootstatus/reviewer evidence docs only; exactfourcodefiles remainbyteidentical5bd1ecf13",
+      "evidence_attachment_sha256": "aae3f8f4c5ef5053c470b53386c6c1f8532e53a32280a3b91b76d7dabdd0b9ed",
+      "evidence_attachment_private_path": null,
+      "facts": {
+        "scope": "deployed environment -> public API -> actual test-owned Host input",
+        "expected_knowledge_enabled": false,
+        "real_provider_calls": 0,
+        "environment": {
+          "api": "http://localhost:19035",
+          "deployment_id": "3906a110-c34a-4cab-b774-5bc06816f4bd",
+          "auth_mode": "password",
+          "api_health": {
+            "status": "ok",
+            "pid": 30549,
+            "commit": "e6e7fe07d",
+            "started_at": "2026-11-01T19:46:38Z"
+          },
+          "database": "collab_joint_finalpw_20261102_1923",
+          "native_os": "darwin",
+          "native_arch": "arm64"
+        },
+        "approved": {
+          "candidate_id": "f9d05d23-3f91-40dc-89cb-88033cbea63a",
+          "version": "1",
+          "content_sha256": "9e5e8124f9270eb4a7fc3cda047be8f49f38a11123aca8dda3c6fa36719dff43",
+          "source_issue_id": "01a198aa-6eac-7829-94b1-5c152fa99299",
+          "target_workspace_id": "b60567f0-cdc0-4c93-9a4c-f3857cdbbd7e",
+          "proposed_by_user_id": "b59c568f-188d-4ab0-8e03-f0999bd2603e"
+        },
+        "accepted_input": {
+          "command_id": "2cab9e56-7adf-4933-9859-334261fff0d8",
+          "batch_id": "0acc9f1b-d748-4154-a5ff-791265a595f4",
+          "author_user_id": "b59c568f-188d-4ab0-8e03-f0999bd2603e",
+          "content_sha256": "7aa828728e90c5f5dc26dca344e8980215c9bd5a2bd07015e4e104b5366d1f66"
+        },
+        "actual_input": {
+          "prompt_sha256": "3804100788b85cae781b8ccc11ca3f96bd0f734c0a6d2bbf8c26759a3db91142",
+          "section_present": false,
+          "contributions": [],
+          "no_session_persistence": false
+        },
+        "run": {
+          "id": "de65c47c-f97c-4221-845d-efa57c2cf5bf",
+          "progress_state": "settled",
+          "proof_state": "host_exit_observed",
+          "business_outcome": "success",
+          "launch_count": "1"
+        },
+        "knowledge_events": {
+          "knowledge_claim": 0,
+          "knowledge_preparation": 0,
+          "knowledge_authorization": 0
+        },
+        "binary_sha256": {
+          "COLLABORATION_HOST_DAEMON": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+          "COLLABORATION_HOST_PROVIDER": "901fa027b270a04c9885d963faa138b81960033c69ddcb831efb572fcac410d4",
+          "COLLABORATION_HOST_CLI": "f5561b63f32b18e8a9c561fff84f3384547f4f6d7275f9a17c6460ed8864afc7"
+        },
+        "source_sha256": {
+          "e2e/collaboration-knowledge-deployed.spec.ts": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+          "e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+          "e2e/fixtures/collaboration-host-runtime.ts": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e"
+        }
+      },
+      "daemon": {
+        "exit_code": 0,
+        "errors_count": 0,
+        "stderr_bytes": 0,
+        "ledger": [
+          {
+            "run_id": "de65c47c-f97c-4221-845d-efa57c2cf5bf",
+            "phase": "proof_acknowledged",
+            "namespace_present": false,
+            "sealed": true,
+            "proof_state": "host_exit_observed",
+            "launches": [
+              {
+                "attempt_seq": "1",
+                "kind": "provider",
+                "phase": "attempt_reaped",
+                "process_observed": true,
+                "terminal_accepted": true,
+                "authorized": true,
+                "terminal_kind": "managed_launch_ended"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "deployed-on-e6-1",
+      "execution": {
+        "lane": "on",
+        "expected_knowledge": "true",
+        "product_source_sha": "e6e7fe07da184247c93584bbd07e6b66b38f6fc1",
+        "harness_head": "f33ffe2adfa8dc6aa055b8c603c3ac26d1954970",
+        "harness_diff_sha256": "11bbf03904f529d062a6d11795949ee0529bd5c156cacb5518bb5c1d541dd6c0",
+        "command": [
+          "bash",
+          "scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/bin/pnpm",
+          "exec",
+          "playwright",
+          "test",
+          "e2e/collaboration-knowledge-deployed.spec.ts",
+          "--workers=1",
+          "--retries=0",
+          "--reporter=line,json",
+          "--output=/Volumes/artisan/code/2026/mc-knowledge-deployed-probe-20261102/.omx/private/deployed-probe-runs/deployed-on-e6-1/artifacts"
+        ],
+        "source_env_sha256": "1483d3f9bb4c830d5a3ef1f31b5d57b20dfdb5ae55ffaec50a19bf5442471b37",
+        "database": "collab_joint_finalkon_20261102_1947",
+        "health": {
+          "status": "ok",
+          "pid": 31673,
+          "commit": "e6e7fe07d",
+          "started_at": "2026-11-01T19:48:28Z"
+        },
+        "web_build_id": "cXt0smxLb6XzHHlvFDmAk",
+        "renderer_index_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+        "binary_sha256": {
+          "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+          "host-provider": "901fa027b270a04c9885d963faa138b81960033c69ddcb831efb572fcac410d4",
+          "multica": "f5561b63f32b18e8a9c561fff84f3384547f4f6d7275f9a17c6460ed8864afc7"
+        },
+        "state": "complete",
+        "started_at": "2026-11-01T19:51:26.366985+00:00",
+        "Provider_calls_allowed": false,
+        "exit_code": 0,
+        "finished_at": "2026-11-01T19:51:33.060532+00:00",
+        "log_sha256": "677d7be9cd6079921cee96758246ba67bdb1e1c2279182bbe4471a5e09d53dca",
+        "stats": {
+          "startTime": "2026-11-01T19:51:27.371Z",
+          "duration": 5672.713,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "results_sha256": "6176863bf9decd5784b36f1bd1e67e9d19d2fd102c4c8427f66494f3a14ca42f"
+      },
+      "test_code_commit": "5bd1ecf13a77bc94334452910b0c1adf08f02f08",
+      "tested_code_sha256": {
+        "e2e/collaboration-knowledge-deployed.spec.ts": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+        "e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+        "e2e/fixtures/collaboration-host-runtime.ts": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e",
+        "e2e/fixtures/collaboration-host-provider_test.go": "10af5c9122d610dd966fd78ea8eed48ec6fe93ba263025cb17cbee9c0853a600"
+      },
+      "harness_full_diff_note": "nonempty execution harness_diff reflects rootstatus/reviewer evidence docs only; exactfourcodefiles remainbyteidentical5bd1ecf13",
+      "evidence_attachment_sha256": "178c38cf9846c788235bb1ecb6797a220df953baae8351d19c46a64fb03b0174",
+      "evidence_attachment_private_path": null,
+      "facts": {
+        "scope": "deployed environment -> public API -> actual test-owned Host input",
+        "expected_knowledge_enabled": true,
+        "real_provider_calls": 0,
+        "environment": {
+          "api": "http://localhost:19055",
+          "deployment_id": "7f522f47-ec1e-41b7-b669-8a0837f9de97",
+          "auth_mode": "password",
+          "api_health": {
+            "status": "ok",
+            "pid": 31673,
+            "commit": "e6e7fe07d",
+            "started_at": "2026-11-01T19:48:28Z"
+          },
+          "database": "collab_joint_finalkon_20261102_1947",
+          "native_os": "darwin",
+          "native_arch": "arm64"
+        },
+        "approved": {
+          "candidate_id": "556a37b2-e538-4baf-b860-80023e26dbdd",
+          "version": "1",
+          "content_sha256": "81157788f2a8f4bf5754ae95dea309cd008779e1062c9d6cf4823c95c4421a1a",
+          "source_issue_id": "01a198aa-bdf7-71ec-bb74-fed4d4933144",
+          "target_workspace_id": "6d5013f3-c40a-4382-aac4-fbd4892040d8",
+          "proposed_by_user_id": "59be7f22-9800-4d50-bd38-0ed0f3294190"
+        },
+        "accepted_input": {
+          "command_id": "af46bfaf-b01c-46dc-a860-53e378e831cf",
+          "batch_id": "12dc6390-77e4-418d-a9bf-810c94005fb1",
+          "author_user_id": "59be7f22-9800-4d50-bd38-0ed0f3294190",
+          "content_sha256": "89d4c27d0738b504947b90ab8be073ceff54c18ea46cf8c5d113b6fe09d13b98"
+        },
+        "actual_input": {
+          "prompt_sha256": "92e0738b62c43faf024a8d617e6229e9b74529b6b34df663660e4b26f88da685",
+          "section_present": true,
+          "contributions": [
+            {
+              "candidate_id": "556a37b2-e538-4baf-b860-80023e26dbdd",
+              "version": "1",
+              "source_issue_id": "01a198aa-bdf7-71ec-bb74-fed4d4933144",
+              "content_sha256": "81157788f2a8f4bf5754ae95dea309cd008779e1062c9d6cf4823c95c4421a1a"
+            }
+          ],
+          "no_session_persistence": true
+        },
+        "run": {
+          "id": "0148c795-1bac-4014-9c2a-8dccb086f7c9",
+          "progress_state": "settled",
+          "proof_state": "host_exit_observed",
+          "business_outcome": "success",
+          "launch_count": "1"
+        },
+        "knowledge_events": {
+          "knowledge_claim": 1,
+          "knowledge_preparation": 1,
+          "knowledge_authorization": 1
+        },
+        "binary_sha256": {
+          "COLLABORATION_HOST_DAEMON": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+          "COLLABORATION_HOST_PROVIDER": "901fa027b270a04c9885d963faa138b81960033c69ddcb831efb572fcac410d4",
+          "COLLABORATION_HOST_CLI": "f5561b63f32b18e8a9c561fff84f3384547f4f6d7275f9a17c6460ed8864afc7"
+        },
+        "source_sha256": {
+          "e2e/collaboration-knowledge-deployed.spec.ts": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+          "e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+          "e2e/fixtures/collaboration-host-runtime.ts": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e"
+        }
+      },
+      "daemon": {
+        "exit_code": 0,
+        "errors_count": 0,
+        "stderr_bytes": 0,
+        "ledger": [
+          {
+            "run_id": "0148c795-1bac-4014-9c2a-8dccb086f7c9",
+            "phase": "proof_acknowledged",
+            "namespace_present": false,
+            "sealed": true,
+            "proof_state": "host_exit_observed",
+            "launches": [
+              {
+                "attempt_seq": "1",
+                "kind": "provider",
+                "phase": "attempt_reaped",
+                "process_observed": true,
+                "terminal_accepted": true,
+                "authorized": true,
+                "terminal_kind": "managed_launch_ended"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "coverage_limits": [
+    "not final candidate complete acceptance",
+    "humanapprovalUI separate",
+    "CCG1correction separate",
+    "realmodel/accounts/installers separate"
+  ]
+}
