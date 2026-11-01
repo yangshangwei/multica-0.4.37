@@ -1,50 +1,52 @@
 # 父任务当前验收矩阵
 
-> 当前入口（2026-11-02）：第三轮候选 `639bf6ef8` 已冻结，源码/框架/CLI/配置/构件重新绑定，完整make check正在Git树外独立临时目录执行。CCG1纠错实际输入与CCG2实际部署ON/OFF各自已独立复核并本地合入；最终候选门仍需实际完成。前两轮完整检查保持失败。见 [第三轮登记](research/final-candidate-20261102/attempt-3-registration.json)。
+2026-11-02 当前集成快照为 `4085e5b38`（领先本地 origin 跟踪记录 231 个提交，未 fetch）。runtime、知识、RK1 框架、交付准备及后续 memory/Transfer 测试修复均已独立复核并本地合入。父任务保持 **in_progress，整体验收未通过**。[机器验收状态](acceptance-2026-11-01.json)与[执行归属](execution-resume-2026-11-01.json)持续更新。
 
+被测产品固定为 `639bf6ef85ad894553b244873c2ed8d9f9dd29b2`，产品指纹 `9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee`。后续 memory/Transfer 修改只涉及 E2E 与任务证据，产品根目录未改变；最终完整检查仍必须使用合流后的测试框架重新冻结并执行。
 
-2026-11-02 本地续作快照：集成分支 `codex/cross-workspace-collaboration` 为 `c6289db93`，领先本地 origin 跟踪记录 194 个提交，未 fetch。runtime、知识、RK1 框架、交付准备及原生 renderer origin 准备修复均已独立复核并本地合入。父任务保持 `in_progress`，最终候选尚未验收通过。逐项机器状态见 [验收 JSON](acceptance-2026-11-01.json)，人员与工作树见 [执行台账](execution-resume-2026-11-01.json)。
+最新完整 `make check` 已结束，**exit 2，失败保留**：静态 15、TS 13,082、Go 20,852 个命名项通过，Go 22 skip、9 包仅编译；build/vet/sqlc 无漂移通过。浏览器 439 项为 **296 pass / 47 fail / 89 skip / 7 未运行**。独立归因为 42 项 PostgreSQL 连接容量、2 项私有 Go 适配器、2 项旧 Transfer 控件及 1 项原生焦点；历史焦点原因未追溯确认。见[实际结果](research/final-candidate-20261102/attempt-3-result.json)、[Go 全部包](research/final-candidate-20261102/attempt-3-Go-complete.json)和[逐项归因](research/final-candidate-20261102/attempt3-browser-triage.json)。此前中断和两轮失败现场、专用库均保留。
 
-| 已合流范围 | 本地合入 | 证据与边界 |
+统筹在浏览器阶段额外启动自有 API，未计算共享 PG 总连接，导致容量不足。现已停止自有诊断 API/Web/renderer；后续全套 API 限制 max10/min1，串行启动，不并行增加 API。不修改共享上限、不终止其他会话连接。
+
+| 合流范围 | 本地合入 | 当前证据与边界 |
 | --- | --- | --- |
-| runtime 9 项审计、5 项召回复核跟进 | `9e7f18785` | 产品 `7627916c8`，RV-1 `58d486656`；独立 pass-with-notes，RV-1 另经统筹复验；分支最终协作 service 1668 通过，0 失败/跳过 |
-| 知识 claim → launch → write → web，吸收 runtime | `6cb9fcb36` | [整批交接](../11-01-collaboration-knowledge-audit-fixes/research/combined-ready-for-main-integration.json)及独立复核；`0702d5039` 修复 skill 入口和迁移 fixture，`742abb217` 修正优化器选路断言，均有独立复验 |
-| RK1 框架及审查修正 | `30fa31eb7` | [独立复核](../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/independent-review/recheck-review.json)对 RKI-1–5 结论 pass-with-notes；RKI-6、最终绑定和真实调用仍开放 |
-| Windows 安装旅程、CI、脚本及交付文档准备 | `c3db64b24` | [本地准备](research/delivery-preparation/ready-for-integration.json)；WD-1/WD-2 修复并复核；未运行原生 Windows/安装升级/真实账号旅程 |
-| 完整检查的原生 renderer origin 配置 | `7435b04ec` | [独立复核](research/final-check-native-origin/independent-review/review.json) pass-with-notes；下一轮须在启动前显式配置 renderer URL，实际 WebSocket/完整检查仍待运行 |
+| runtime 9 项审计、5 项召回复核跟进 | `9e7f18785` | 产品 `7627916c8`、RV-1 `58d486656` 独立 pass-with-notes；最终候选与真实模型仍分开验收 |
+| 知识 claim → launch → write → web | `6cb9fcb36` | 21 项缺陷与后续复核完成，旧 service 3319pass/3fail/18skip 原失败保留；639 完整 Go 无失败 |
+| RK1 框架 | `30fa31eb7` | RKI-1–5 独立 pass-with-notes；RKI-6 静止环境 fake normal/race 各62通过，0fail/skip，结果独立复核待429恢复，付费入口仍关闭 |
+| 交付准备及原生 origin 配置 | `c3db64b24` / `7435b04ec` | Windows 旅程框架、脚本、文档与 CI 准备已合入；外部 CI、原生 Windows 未运行 |
+| E2E、bundle fixture 与知识实际输入/开关补验 | `7f8ca8725` / `231a08063` / `e6e7fe07d` / `639bf6ef8` | 均有独立复核；639 下知识普通27normal+27race、Host17normal+17race、部署ON/OFF各1通过，生产默认false |
+| memory fixture 清理 | `020d18e62` | 原 red 泄漏真实复现；LIFO 修复后 memory→Leave 同库同API各通过，无门重置，失败OFF库冻结 |
+| Transfer UUID picker | `4085e5b38` | 代码 `d39d54a07`，独立 `e98ee9569` pass-with-notes；生产Web2项通过。原焦点源码与断言完全保留 |
 
-C3 候选 `c3db64b24` 的首轮完整 `make check` 在确认原生 origin 准备缺口后由统筹中断，退出码 `-2`。此前 Core 4340、Views 7118、Docs 62、Web 290、Desktop 1272，共 **13,082 项 TS 测试通过**；已分配的 6 个 Go 包数据库和中断现场均保留。这是阶段证据，不能标成完整检查通过。修复已合入，仍须冻结新候选并完整重验。命令、源版本、退出码及日志哈希见 [中断检查登记](research/acceptance-ledger-refresh-20261102/interrupted-check-summary.json)。
+私有适配器 v4 的 AV4-1 changes-required 原报告保留。v5 关闭未标记 `go test` 的转发路径，递归测试需显式专用克隆及分配记录；11 项契约、最新去私有环境且禁网的 Go1.26.6 转发、原 Web/Desktop preparation 两项通过。[本地证据](research/final-candidate-20261102/adapter-v5-local-verification.json)不替代独立复核；代理两次遭遇429，复核仍开放。
 
-| 验收项 | 当前结果 | 下一入口与边界 |
-| --- | --- | --- |
-| AC0 交付提交链与已列全栈门禁 | 历史范围通过；修复已合流；最终候选开放 | 新候选完整 `make check`、sqlc 无漂移、迁移/Go/前端及门控 Web/Electron/RK1 fake 必须实际通过；不能拼接各分支历史结果 |
-| AC1 附件预算与小队异构 runtime | 历史确定性范围通过 | 四类实际成员 runtime 限额的可选选择/必需超限拒绝有证据；真实 Provider 仍未运行，最终候选交互待重验 |
-| AC2 正式 E0 | 原基线通过；新 RK1 未运行 | runtime 上限 **25 次、消耗 0**，含 H2b、H6 每轮两次启动。RKI-1–5 修正已复核合入；RKI-6 同候选全场景 fake/race 仍开放。保留 `runnable=false` 和空最终 `source_id`；完成绑定与独占窗口后先运行新正式 E0 |
-| AC3 原预登记 E1–E6 | 部分完成，停在不完整结果 | E1 1 有效/2 无效；E2a 1 有效/2 无效；E2b 3/3、E3 baseline 3/3 有效。E3 after trial 1 因 EPROTO 后超时无效，因果未定。下一 **E3 after trial 2，剩余 14 次**，之后 E4→E5→E6；保留冻结源码与原编号，新产品不得回填旧槽位 |
-| AC4 中断与撤权后的记录保留 | REC 审计修复已复核合入；最终候选与真实模型待验 | 既有 stop/撤权/作者退出双提交顺序及 race 证据保留；新候选须验证实际记录保留，真实 Provider 摄取不能由 seeded UI/fixture 代替 |
-| AC5 成员/队长/并行 memory 交接 | ENV 修复及 RV-1 已复核合入；最终候选待验 | `822c15785` 历史 ENV-1 失败保留；须在新候选重放基线/实时 handoff 的正向归因、换 Agent、并行 memory 冲突与中断接力 |
-| AC6 有界评论召回与 revision | 作者显示、召回契约与预览游标等修复已合入 | `7627916c8`、5 项跟进 `c9b285552` 有独立复核；最终长评论/大结果/分页及模型可见性待验。H2 不覆盖超过 32 项的结果/原因分页；H2b 单列大结果来源读取，必须以实际 tool_result 证明暴露 |
-| AC7 非指令数据与凭据边界 | 历史确定性范围通过；真实模型待验 | 40 个凭据拒绝、7 个正向对照等已有证据。RK1-H5 可用两个自控 Multica 用户和同一 Provider 账号；原 E5 未运行；该安排不关闭要求不同 Provider 账号的 AC43 |
-| AC8 经人确认的知识沉淀 | 21 项审计已处置、整批及后续复核通过并合入；最终候选待验 | `45efa093c` 的完整 service **3319 pass/3 fail/18 skip、exit 1** 保留；窄范围修正与复验（迁移 536/536、skill 10/10、索引计划契约）不改判原失败。最终完整 service/check、知识开关开/关、人工确认与纠错/撤回后的注入仍待验；生产开关保持 `false` |
-| AC9 可追溯证据与缺失范围 | 合流与历史结果可追溯；最终绑定开放 | 最终源码/框架/CLI/配置/构件指纹待固定；历史 E2E 归因不是候选通过，平台/账号/升级证据仍缺；默认库迁移事故恢复边界仍开放 |
-
-旧 E2E 报告绑定 `822c15785`，438 项计划中 421 pass/15 fail/2 blocked。剔除已另行处置的 ENV-1 等边界后，存量 14 项失败已完成 [源码归因](research/final-e2e-triage/findings.json)：9 项旧收件人交互、3 项包含读时评估时间戳的比较、2 项跨入独立 handoff 区域的记录分页断言。C3 的三类代表重放首次受 CORS 服务配置阻断，尚未到达目标契约；保留失败现场，环境修正后再复现和修复，不推断新候选结论。
-
-RK1 保留 `4b508179f` 的 [中间版本 race 失败](../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/fake-proof/runtime-fixed-race.json)：E0a 缺 recording seal 且超时，虽然业务 outcome/proof 已完成，样本仍不完整。RKI-1–5 的定向通过不能关闭 RKI-6；待重型测试静止后在同一最终候选、新建专用数据库执行全场景 normal/race，不放宽断言、延长超时或静默补跑。
-
-| 关联交付 | 当前边界 |
+| 验收项 | 当前结果与下一入口 |
 | --- | --- |
-| production Web + native macOS Electron | 原 runtime 6 项、知识 8 项分别绑定历史版本；最终合流候选的两条认证通道、原生交互与开关开/关仍须重验 |
-| macOS arm64 .app/ZIP/DMG | 旧源 `61ff581d` 本地 ad-hoc 构建保留；C3 renderer 本地构建不能代替最终安装包、账号或公证证据 |
-| Debian 12 arm64 .deb / Linux runtime | 旧 dpkg/fixture 与 runtime 证据保留；最终同源安装/原地升级/真实 Provider 组合待验 |
-| Linux amd64 / macOS amd64 | 交叉编译与本机可执行范围须分别登记，不能代替缺失的原生/安装/账号证据 |
-| Windows amd64/arm64 | 安装版协作旅程框架已补齐并合入；Node/TS/YAML/交叉编译只是准备。原生 PowerShell、ACL/Job/fault/lifecycle、安装升级、账号与 arm64 未验；未触发外部 CI |
-| 多账号/额度 AC43 | 需两个执行环境和不同 Provider 账号，记录多目标/小队/普通转交及实际 usage/授权来源；账号、环境和额度未分配 |
-| 服务端离线升级/交付 | 指南已更新迁移前缀上限 **763**、认证方式保留与知识开关默认 `false`；最终同源升级构件、演练、`README.md`/`操作文档.md` 字节一致与哈希待验 |
-| 外部发布 | 用户决定仅继续本地准备；未授权公开推送、外部 CI、部署或发布，未执行这些操作 |
+| AC0 交付链与全栈门禁 | 最新完整检查失败。待 v5 独立复核后冻结合流框架完整重验；原生焦点原断言已通过1项；不拼接各分支或定向结果为整套通过 |
+| AC1 附件预算与异构 runtime | 历史及当前确定性有界证据通过；真实 Provider 未验 |
+| AC2 正式 E0 | 原基线通过；新 RK1 真实调用未开始。final639 fake normal/race各62通过，结果独立复核待429恢复；最终付费源码ID为空、runnable=false |
+| AC3 原 E1–E6 | E1及E2a各1有效/2无效，E2b和E3baseline各3/3有效；E3aftertrial1无效（EPROTO后超时，因果未定）。下一E3aftertrial2，再E4→E5→E6，剩余14次；保持原冻结源码与编号 |
+| AC4 中断/撤权保留 | REC审计修复及当前Go有界证据通过；真实Provider中断与摄取仍未验 |
+| AC5 成员/换Agent/并行memory | ENV修复及实际有界旅程通过；memory fixture泄漏已单独修复复验。真实接力及整套候选验收仍开放 |
+| AC6 长评论/大结果/分页 | 作者显示、召回契约、游标及5项跟进已修复。H2不覆盖超过32项结果/原因分页；H2b另测大结果来源，真实模型可见性需实际tool_result |
+| AC7 非指令数据/凭据 | 确定性凭据与canary边界有证据；真实E5/H5未验。H5允许两个自控Multica用户共用Provider账号，不能据此关闭AC43 |
+| AC8 人工知识确认/纠错/撤回 | 整批审计修复、实际输入纠错链、当前开关ON/OFF及四个隔离库normal/race通过；K1–K3真实验收另需预算，生产默认false |
+| AC9 可追溯证据 | 分别记录源码、框架、CLI、配置、构件哈希与命令/退出码。完整候选、缺失平台/账号及默认库事故恢复边界均未关闭 |
 
-预算分账不变：RK1 runtime 25 次已批、0 消耗；原冻结实验剩余 14 次；知识 K1–K3、普通 E0b、安装版真实账号旅程及 AC43 另需预算与账号/环境，不能借用前两账。真实窗口须暂停共享网关其他编码/审查和本机重型测试，正式 E0 起按登记顺序串行；首个环境、框架或 runtime 不完整结果即停止后续场景，保留原失败。
+| 关联交付 | 当前范围与缺口 |
+| --- | --- |
+| production Web + 原生 macOS Electron | 639 定向fixture旅程已实际执行；整套最新检查失败。原生焦点已按原源码/原断言重验1pass，0fail/skip/retry；历史失败保留 |
+| macOS arm64 `.app`/ZIP/DMG | [同源639构件与独立复核](research/local-packaging-639bf6ef8-20261102/summary.json)已完成，ad-hoc签名与离线collector5文件通过，Mac.app原Main旅程1pass/3fake启动；安装升级/真实账号/正式发布未验 |
+| Linux arm64 Host | [实际230命名项与11必需检查](research/final-candidate-20261102/Linux-native-Host-matrix.json)通过，0fail/skip，缓存容器禁网且保留 |
+| Linux arm64 namespace | [6项路由/CLI/daemon与1项batchpoller](research/final-candidate-20261102/Linux-native-namespace-results.json)通过，专用新库，0fail/skip；未改全局sysctl/PG配置 |
+| Linux arm64 目录包完整Main | [实际1项](research/final-candidate-20261102/Linux-directory-installed-Main-result.json)通过，ASAR/exe/CLI启动哈希匹配；Linux客户端控制独立Mac fake Host，不代表Linux daemon/deb/安装升级/真实账号 |
+| Debian/RPM/服务端离线升级 | 最终deb/RPM工具及三个离线镜像基底缺失，未下载/拉取。指南迁移上限763、保持认证模式与知识false；最终包、演练及双份指南一致仍待验 |
+| Windows amd64/arm64 | 现有框架/CI/脚本准备已合流。当前639 amd64/arm64 CLI、四测试包编译及vet共12条命令通过（禁网、无TestMain/DB）；原生PowerShell/ACL/Job/fault/安装升级/账号均未验 |
+| 多账号额度 AC43 | 两个执行环境、不同Provider账号，涵盖多目标/小队/普通转交/usage与授权来源；环境、账号、额度未分配 |
+| 外部操作 | 用户只授权本地准备；没有公开推送、外部CI、部署、发布或真实Provider调用 |
 
-默认库事件继续披露：[事故审计](default-db-incident-audit-2026-11-01.json)记录 2026-11-01 23:14 左右，未限定数据库的迁移使本地 `multica` 前向迁移，新增 272 条账目（456–763）。迁移前快照缺失，之后仅保留只读 schema/账目证据；未回退、清理或恢复到原状态。这是未解决的恢复边界，不是验收证据。后续数据库创建/迁移由统筹限定专用库并核对身份。
+预算分账：RK1 runtime上限25、实际0，含H2b及H6每轮两次；原冻结实验剩余14；知识K1–K3、普通E0b、安装真实账号与AC43另行登记。即使fake通过，也须先完成前置门与最终源码/框架/CLI/配置/构件绑定，具备授权后才可独占共享网关从新正式E0开始；首个不完整即停，保留原样本。
 
-发布门的执行清单仍见 [runbook](release-gates-runbook-2026-11-01.md)；其 2026-11-01 只读快照中的版本、未合流状态与待定授权以本次台账为准。旧验收矩阵和原始执行快照保留在 `c6289db93` 及此前 Git 历史；本次仅校正当前入口，不改变历史失败分类。变更来源与哈希见 [本次核对记录](research/acceptance-ledger-refresh-20261102/audit.json)。
+默认库事故仍未解决：[审计](default-db-incident-audit-2026-11-01.json)记录未限定数据库的迁移使本地 `multica` 前向迁移，新增272条账目（456–763）。缺迁移前快照，未回退或恢复；此后仅只读留证，不将其作为验收库。失败现场和其他会话未提交文件继续保留。
+
+[发布门清单](release-gates-runbook-2026-11-01.md)保留历史步骤；以本页及机器台账为当前入口，旧矩阵保留于Git历史。

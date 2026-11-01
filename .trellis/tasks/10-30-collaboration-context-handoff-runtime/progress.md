@@ -1,6 +1,10 @@
 # 可靠上下文交接与召回：当前进度
 
-状态：**实现已交付；合入后审计确认 9 项缺陷，正在修复；真实模型验收未开始**。任务保持 `in_progress`。
+状态：**9项审计及5项召回复核跟进已全部修复、独立复核并合入 `9e7f18785`；真实模型验收未开始**。任务保持 `in_progress`。
+
+2026-11-02 当前入口：知识、RK1框架、交付准备及后续修复均已合流；产品候选639bf6ef8完整check实际exit2（TS13082/Go20852命名pass，browser296pass47fail89skip7未运行），不能标最终通过。memory LIFO及Transfer测试修复已独立复核合入。静止自有API/Web/renderer后，当前在两个已迁移新库上串行执行最终639 RK1 fake normal/race，现各62pass、0fail/skip、exit0；产品指纹9f72fc21…d80ee重算一致、工作树产品干净。RKI-1–5已复核，RKI-6执行证据已齐、独立结果复核待429恢复，付费runnable=false、最终source_id空、runtime25消耗0。原实验下一E3aftertrial2/余14，K1–K3/E0b/安装账号/AC43另需预算。原生焦点原断言已重验1pass；v5及RKI6结果独立复核仍受429阻断，最新完整候选未验收通过。详见父机器台账。
+
+以下保留初轮交付及2026-11-01交接历史；其中“仍在修复/未提交/19次”均是当时快照，不作为当前启动依据。
 
 当前结论以 [集成验收报告](verification-integration-2026-11-01.md) 和 [父任务验收矩阵](../10-30-collaboration-context-handoff/acceptance-2026-11-01.json) 为准。早期 recording-recovery 汇总属于历史增量，其当时未完成的独立审查、锁序补验和 Web/macOS Desktop 验收已在后续交付中完成。
 

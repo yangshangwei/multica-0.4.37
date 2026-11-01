@@ -1,0 +1,66 @@
+{
+  "recorded_at": "2026-11-01T22:57:57.896134+00:00",
+  "scope": "reviewed integration product equivalence and actual existing artifacts; not final acceptance or paid binding",
+  "integration_head": "4085e5b38f384feed296be4f1b300400acff8302",
+  "frozen_product_head": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "product_source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+  "product_roots": [
+    "server",
+    "apps",
+    "packages",
+    "scripts",
+    "Makefile",
+    "package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml"
+  ],
+  "product_file_count": 7960,
+  "product_trees": {
+    "server": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+    "apps": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+    "packages": "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292"
+  },
+  "current_product_clean": true,
+  "product_diff_from639": [],
+  "source_manifest_private_sha256": "9b4549f77bcd8347ab60ca183e80c9cd13edce3adeddcee4fbb6caa80f74615d",
+  "current_harness": {
+    "tracked_files": 208,
+    "sha256": "9826734479db29e4153878aa464c597c5e10ec01fd28756c45c59b42338889d4",
+    "changed_since639": [
+      "e2e/collaboration-memory-runtime.spec.ts",
+      "e2e/collaboration-workbench-web.spec.ts"
+    ],
+    "known_untracked_diagnostic_only_in_frozen_worktree": "e2e/mac-installed-network-diagnostic.spec.ts; absent from integration and future frozen wholecheck inventory"
+  },
+  "runtime_control_CLI": {
+    "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "command": [
+      "/opt/homebrew/bin/go",
+      "-C",
+      "server",
+      "build",
+      "-ldflags=-X main.version=v0.6.8-rc.20261102 -X main.commit=639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+      "-o",
+      "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/final-candidate/multica",
+      "./cmd/multica"
+    ],
+    "exit_code": 0,
+    "Provider_calls": 0,
+    "binary_sha256": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19"
+  },
+  "packaging_evidence": "../local-packaging-639bf6ef8-20261102/summary.json",
+  "Windows_crosscompile_evidence": "Windows-final639-compile-preparation.json",
+  "native_original_focus_evidence": "native-original-focus-latest-pass.json",
+  "RKI6_fake_evidence": "../../../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/fake-proof/final639-quiet-normal-race-summary.json",
+  "paid_source_id": "",
+  "paid_runnable": false,
+  "whole_candidate_state": "latest whole check exit2; new complete same-harness run required; v5 independent review unavailable429",
+  "external_operations": false,
+  "real_Provider_calls": 0,
+  "verification_adapter_v5": {
+    "go_sha256": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+    "pnpm_sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+    "independent_review": "pending429",
+    "local_contracts": 11
+  }
+}

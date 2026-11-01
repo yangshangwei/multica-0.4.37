@@ -58,6 +58,41 @@ unowned connections to obtain a pass. Stop owned idle APIs after their proof is
 captured; retain their database and logs. A capacity failure remains failed and
 requires a newly numbered run after the environment correction.
 
+### Private environment registry identity
+
+An application environment file and a development registry are separate inputs.
+Loading the former does not select `MULTICA_DEV_HOME`. Without that key,
+`scripts/dev-env.sh up` can allocate another worktree database and different
+ports in the default registry, even when `DATABASE_URL` was explicit.
+Also set `ENV_FILE` explicitly: `up` loads that file before looking up an
+existing manifest. A later manifest lookup does not undo values already loaded
+from a stale default `.env.worktree`.
+
+For an existing task environment, obtain the registry path and name from its
+allocation record. Confirm its manifest already identifies the expected checkout,
+database and API/Web ports before restarting:
+
+```sh
+: "${TASK_REGISTRY:?recorded private registry required}"
+: "${TASK_ENV_NAME:?recorded environment name required}"
+: "${TASK_SOURCE_ENV:?recorded startup environment file required}"
+test -f "$TASK_REGISTRY/envs/$TASK_ENV_NAME/manifest.env" || exit 2
+test -f "$TASK_SOURCE_ENV" || exit 2
+MULTICA_DEV_HOME="$TASK_REGISTRY" ENV_FILE="$TASK_SOURCE_ENV" \
+  bash scripts/dev-env.sh up \
+  --name "$TASK_ENV_NAME" --components api,web --web-mode production
+```
+
+Record the selected registry with configuration fingerprints. Before any browser
+or fixture write, verify the actual database, API commit/deployment identity,
+production Web origin and listener ownership against that allocation. Process
+exit 0 is insufficient. For Web, inspect the rendered browser `apiBaseUrl` and
+`wsUrl` as well as server rewrites: a healthy API and correct proxy can coexist
+with HTML pointing the browser at a stopped API port. If startup used another
+registry or environment file, record the mismatch,
+stop only its owned processes and retain its database/logs; correct the registry
+in a separately recorded startup. Do not silently switch the expected identity.
+
 Run each complete database suite against a newly created, migrated task database.
 Knowledge candidate and invalidation history is deliberately retained: repeated
 full runs can multiply `all_sources` scan work beyond a test's fixed drain budget.
@@ -79,6 +114,8 @@ or retention policy.
 | --- | --- |
 | `DATABASE_URL` absent or whitespace | Exit 2 before pool/setup/router; no database connection |
 | Explicit task database | Normal fixture lifecycle and selected tests; record actual run/pass/skip inventory |
+| Application env loaded but private registry absent or mismatched | Reject fixture/browser entry; retain startup evidence and verify the recorded allocation before retry |
+| Registry matches but rendered API/WS addresses differ | Reject browser entry; explicitly select the startup `ENV_FILE`, retaining the original failed source/configuration evidence |
 | `-run '^$'` | Still executes `TestMain`; never use as a compile-only check |
 | `go build` / `go test -c` | Compiles without executing `TestMain` |
 | Explicit but unreachable database | Existing connection handling remains; exit status alone never proves tests ran |
@@ -103,6 +140,11 @@ For secondary-source cleanup regressions, run
 then run existing collaboration memory/realtime dispatch tests in a second
 process against the same owned database. Retain the ordered red/green evidence
 and prove protected candidate/invalidation hashes were not changed by cleanup.
+
+Task launcher verification must also assert that the recorded registry manifest,
+actual database and API/Web listeners agree before the first fixture write.
+An unrelated newly allocated worktree database is a setup failure, not a valid
+substitute for the permitted database.
 
 ## 7. Wrong vs correct
 

@@ -2,6 +2,9 @@
 
 当前状态：**预算已批准，框架已独立复核，最终联合验收及源码绑定未完成，不可启动真实模型**。runtime 上限 **25 次、实际消耗 0**，包含 H2b；H6 每轮启动两次。顺序和预算以 `runtime-addendum.json` 为准，启动门由 `framework-registration.json` 控制（`runnable=false`，最终 `source_id` 为空）。
 
+2026-11-02 最新 fake：同源639bf6ef8、产品指纹9f72fc21…d80ee，在两个专用新库、静止自有API/Web/原生renderer后串行运行，normal/race各62pass、0fail/skip，均exit0。每轮19类fixture/22条public试验记录/32次测试自有fake或sim启动；实际Provider消耗0。框架17文件哈希5eaea44f…ed94c9与已复核登记一致，未改断言/停止规则/40m上限。见[fake执行汇总](fake-proof/final639-quiet-normal-race-summary.json)。RKI6执行证据已齐，独立结果复核受共享网关429阻断；最新完整makecheck仍exit2，付费门和最终source_id不变。历史不完整及下方原始预算0登记保留，不作为当前预算入口；当前runtime上限25以runtime-addendum为准。
+
+
 - 已合流：runtime `9e7f18785`、知识 `6cb9fcb36`、框架 `30fa31eb7`、交付准备 `c3db64b24`；独立增量复核 `independent-review/recheck-review.json` 为 pass-with-notes，RKI-1–5 关闭。
 - 待验：最终同候选完整检查、所有场景 fake normal/race（RKI-6）、源码／框架／CLI／配置／构件指纹和独占窗口。历史 E0a 缺 recording seal 的 incomplete 保留，不以业务成功替代。
 - 正式入口：新版本 E0a → H1 → H2 → H2b → H3a → H3b → H5 → H6，逐场景串行。首个环境／runtime／框架不完整结果停止所有后续；不追加健康调用、替换样本、换模型或延长超时。

@@ -4,10 +4,10 @@
   "registered_by_session": "claude multica-0-4-37-35",
   "runnable": false,
   "not_runnable_reasons": [
-    "local integration completed; final combined candidate validation remains open",
+    "local integration completed; latest whole make check failed and final combined validation remains open",
     "final clean candidate source/CLI/configuration/artifact fingerprints remain unregistered",
-    "RKI6 same-candidate all-scenario fake normal/race must pass; preserve historical incomplete telemetry cases",
-    "exclusive serial window on shared gateway is required before paid execution"
+    "current final639 fake normal/race passed; independent result review remains unavailable after gateway429",
+    "user currently permits local preparation only; exclusive serial gateway window and applicable execution authority required before paid execution"
   ],
   "framework_files": "server/cmd/server/rk1_*_test.go (build tag agentintegration, !windows)",
   "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
@@ -24,9 +24,9 @@
     "applied in runtime-addendum.json on this branch: H2b budget, order and product_fix.measured_by"
   ],
   "fake_proof": "fake-proof/summary.json",
-  "maintained_by": "Codex /root/rk1_race_fix; preserved earlier normal and race evidence; pending final candidate validation",
+  "maintained_by": "Codex root coordinator; current fake evidence recorded; paid gate remains closed",
   "launcher_regression_sha256": "ace9ef93297921fcf0ea49f1e1e7703f298700c58fefe912a3057e3a3e0e3b17",
-  "fake_proof_current_status": "RKI1-5 independently rechecked pass-with-notes; RKI6 same final-candidate all-scenario fake normal/race pending; original failures retained",
+  "fake_proof_current_status": "Current639 quiet normal62pass/race62pass,0fail/skip, exit0 each; same reviewed framework hash. RKI6 fake execution passed; independent result review pending429. Historical missing-seal incomplete results unchanged.",
   "implemented_review_fixes": {
     "RKI1_RKI2": "62bd98eb9",
     "RKI3_RKI4": "4229e2d18",
@@ -36,6 +36,18 @@
   "independent_review": {
     "original": "independent-review/review.json; changes-required preserved",
     "recheck": "independent-review/recheck-review.json; pass-with-notes; RKI1-5 closed",
-    "remaining": "RKI6 same final-candidate all-scenario fake/race; final source/CLI/config/artifact binding; exclusive window"
+    "remaining": "independent current RKI6 result review (gateway429); complete final candidate check; source/CLI/config/artifact binding; exclusive authorized window"
+  },
+  "fake_proof_current": "fake-proof/final639-quiet-normal-race-summary.json",
+  "current_fake_execution": {
+    "source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+    "normal_pass": 62,
+    "race_pass": 62,
+    "fail": 0,
+    "skip": 0,
+    "real_Provider_calls": 0,
+    "evidence": "fake-proof/final639-quiet-normal-race-summary.json",
+    "framework_changed": false
   }
 }

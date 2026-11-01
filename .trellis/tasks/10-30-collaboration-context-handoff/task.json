@@ -25,7 +25,7 @@
   ],
   "parent": null,
   "relatedFiles": [],
-  "notes": "2026-11-02：审计/E2E修复及CCG1纠错实际输入、CCG2部署开关probe均已独立复核并本地合入。最终第三轮候选639bf6ef8完整check运行中；前两轮失败源/日志/专库保留，外置非Git TMPDIR已独立复核。RK1runtime25消耗0，原冻结系列另余14，下一E3aftertrial2；生产知识false。平台/账号/完整联合验收仍开放；仅本地授权。",
+  "notes": "2026-11-02：runtime/知识/RK1/交付及memory/Transfer测试修复均已独立复核本地合入。最终产品639源指纹9f72…d80ee与集成4085等价；RKIfake normal/race各62pass0fail/skip，原生焦点原断言1pass，Mac.app原旅程1pass/3fake启动，Linux230Host/7namespace/1Main通过有界范围，Windows两架构12编译检查0。原Mac失败归因ENV_FILE默认读取导致页面API18774错配；显式registry+ENV_FILE+实际HTML检查修正，DSH使用测试自有missing路径，原失败DB均保留。最新完整check仍exit2，未拼接改判；v5/RKI6结果独立复核受429阻断，下一新完整check APImax10/min1。真实Provider0，runtime25未耗，原系列余14/E3aftertrial2。仅本地准备；业务默认库事故无前快照、未恢复。",
   "meta": {
     "delivery": "parent-orchestration",
     "planning_scope": "phase1-closure-handoff-promotion",
@@ -49,9 +49,9 @@
     "knowledge_product_commit": "96cedf485",
     "knowledge_evidence_commit": "93093d2e9",
     "knowledge_main_merge": "8cb04e3295474073b4b991bc4883ef3901c14f01",
-    "parent_acceptance": "open_real_models_and_release_matrix",
-    "progress_phase": "third_fullcheck_failed; final_harness_repairs_and_connection_budget_fix",
-    "next_action": "verifyTransfer_focus_preparation_adapters_then_fresh_capped_complete_check",
+    "parent_acceptance": "open_fullcheck_review_real_models_and_release_matrix",
+    "progress_phase": "bounded_final_proofs_recorded; independent_review_gateway429; whole_candidate_open",
+    "next_action": "independent v5/RKI6 result review, then fresh complete same-harness check; missing native/account/tool gates remain open",
     "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
     "resume_ledger": "../10-30-collaboration-context-handoff/execution-resume-2026-11-01.json",
     "original_series_next": "E3 after trial 2; then E4 -> E5 -> E6; remaining cap 14; frozen source",
@@ -61,6 +61,7 @@
       "includes_H2b": true,
       "H6_launches_per_trial": 2
     },
-    "final_candidate_registration": "research/final-candidate-20261102/registration.json"
+    "final_candidate_registration": "research/final-candidate-20261102/registration.json",
+    "integration_head_snapshot": "4085e5b38f384feed296be4f1b300400acff8302"
   }
 }

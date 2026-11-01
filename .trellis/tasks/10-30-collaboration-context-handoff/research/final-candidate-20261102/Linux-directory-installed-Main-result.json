@@ -1,0 +1,94 @@
+{
+  "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "scope": "Linuxarm64packagedfullMainclient->MacnativefakeHostruntime; notLinuxdaemon/deb/account",
+  "actual_run": {
+    "selected_provider_binary": "host-provider",
+    "selected_provider_sha256": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+    "deployed_expectation": null,
+    "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "lane": "green",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/opt/homebrew/bin/pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "e2e/collaboration-host-installed.spec.ts",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json",
+      "--output=/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/final-candidate/browser-gates/installed-linux-directory-main-1/artifacts"
+    ],
+    "database": "collab_joint_gate_green_20261102_2055",
+    "health": {
+      "status": "ok",
+      "pid": 29522,
+      "commit": "639bf6ef8",
+      "started_at": "2026-11-01T21:49:52Z"
+    },
+    "source_env_sha256": "bfbb87d1c27689da34b5c8308bb79c7e1403f94016899d8283190094a8993f72",
+    "production_Web_build_id": "Rl6jmUktltKrytJyKiMN5",
+    "native_renderer_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+    "test_source_sha256": {
+      "e2e/collaboration-host-installed.spec.ts": "2ca4a3b659fd8a6693d19dee23c587a107ddbce1f07f02c7efe5f9653b288fbe"
+    },
+    "controlled_binary_sha256": {
+      "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+      "host-provider": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+      "memory-provider": "81a758a1062568d5a709156e3344b5df1e5b87e55660c1761c12cf55c94adcf1",
+      "multica": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19"
+    },
+    "package_pin": {
+      "platform": "linux",
+      "asar_sha256": "a0d9aede77480b1692b917406c9b23fba1548d34d9e26807ca1e833cf173acc9",
+      "executable_sha256": "379334fb6707615062d32fcc481a8a8d3140938531378ccba14f3fa169665043",
+      "CLI_sha256": "d616e35c73aff287210eb6d33c8be69e4420c8f6362466ed0f1db5bef07085f2",
+      "source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2"
+    },
+    "actual_real_Provider_calls": 0,
+    "state": "complete",
+    "started_at": "2026-11-01T21:54:29.011708+00:00",
+    "exit_code": 0,
+    "finished_at": "2026-11-01T21:55:01.332286+00:00",
+    "log_sha256": "88b064afcd280aca603129064005e09c34b4818dfeae697a948269cffbf31308",
+    "stats": {
+      "startTime": "2026-11-01T21:54:29.949Z",
+      "duration": 31351.612,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "results_sha256": "2801c477d37311477ae0ba241da9af6797b12acec5a737eb439bbcf91d053f91",
+    "actual_installed_boot_pin_match": true,
+    "installed_evidence_sha256": "aa42651973957cbb27ea664cf4209e53d1a904dd3c86330242a0e599bf2e7ef3",
+    "gate_exit_code": 0
+  },
+  "retained_container": {
+    "name": "multica-collaboration-main-e3a80b1b-b9e",
+    "image": "sha256:0d433ecf8ede66777494051568fd760468be288fd99d36d80bc68d022769471c",
+    "state": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-11-01T21:54:31.867689218Z",
+      "FinishedAt": "2026-11-01T21:55:01.137327426Z"
+    },
+    "automatic_remove_disabled": true,
+    "pull": "never"
+  },
+  "wrapper_sha256": "1a984f43b01033a8fbb95b6c81bfb6e127fe7b56b34971b2ad5b5f5b6e1a1c4b",
+  "fixture_helper_source_sha256": "f63d1e7e098e7634b9e90f75605fd63e22a4866cd6d27c93d564d8c4be9e50fb",
+  "raw_evidence_private": true,
+  "all_original_assertions_preserved": true,
+  "real_Provider_calls": 0,
+  "at": "2026-11-01T21:57:16.357679+00:00"
+}

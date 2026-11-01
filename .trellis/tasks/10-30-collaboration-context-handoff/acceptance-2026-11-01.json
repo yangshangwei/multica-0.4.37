@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T21:40:41.500925+00:00",
+  "updated_at": "2026-11-01T23:07:16.004743+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -14,12 +14,13 @@
         "../10-30-collaboration-fix-closure/verification-2026-10-31.md",
         "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
         "research/acceptance-ledger-refresh-20261102/interrupted-check-summary.json",
-        "research/final-check-native-origin/independent-review/review.json"
+        "research/final-check-native-origin/independent-review/review.json",
+        "research/final-candidate-20261102/attempt-3-result.json",
+        "research/final-candidate-20261102/attempt-3-Go-complete.json",
+        "research/final-candidate-20261102/attempt3-browser-triage.json"
       ],
       "gaps": [
-        "runtime、知识、RK1框架及交付准备已分别复核并本地合入。C3候选首轮make check在原生origin配置缺口处主动中断，exit -2；此前Core4340、Views7118、Docs62、Web290、Desktop1272共13082项TS测试通过。该结果不是完整验收通过；origin修复7435b04ec合入后须冻结新候选并完整重验。",
-        "2026-11-02 后续：E2E补丁已独立复核并以7f8ca8725合入，新候选起始干净，同源renderer/CLI与本地缓存sqlc无漂移已验，完整make check正在运行；不得改判之前exit-2。",
-        "7f8ca8725完整check本轮exit2，collaborationrun345pass/2fail，bundle snapshot valid及父项失败；其余Go后段/vet/API/Web/E2E未到达。原失败与专用库保留，独立修复/复核后必须重新验证。"
+        "Latest complete make check on639 exited2: static15/TS13082/Go20852named pass22skip9compile-only; browser296pass47fail89skip7unrun. Original failures preserved. Memory/Transfer repairs reviewed and merged; preparation2, original native focus1, canonical Mac.app Main1 and current RKIfake normal/race62each now pass bounded scopes. Private v5 local11contracts pass; independent v5/RKI6 result review unavailable429. Fresh whole check still required with APImax10/min1 and no concurrent API startups; targeted passes do not relabel its failed predecessor."
       ]
     },
     {
@@ -47,7 +48,7 @@
         "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/fake-proof/runtime-fixed-race.json"
       ],
       "gaps": [
-        "RK1 runtime上限25已批、消耗0，含H2b及H6每轮两次启动。框架已以30fa31eb7合入；62bd98eb9/4229e2d18修复RKI1–4，RKI5哈希经独立复核匹配，RKI1–5结论pass-with-notes。RKI6同最终候选全场景fake/race仍开放；4b508179f的E0a缺recording seal/超时不完整结果保留。runnable=false、最终source_id空；须完成联合验收、最终源码/CLI/配置/构件绑定及独占窗口后先跑新正式E0。K1–K3/E0b/安装账号旅程/AC43另需预算。"
+        "Final639 same-candidate fake normal/race62pass each0fail/skip, reviewed framework hash unchanged; RKI6 execution evidence complete, independent result review pending429. Full candidate check failed; final paid source binding empty and runnable=false. Runtime cap25 consumed0. User local preparation only; no paid entry until prerequisites and exclusive authorized window."
       ]
     },
     {
@@ -89,7 +90,8 @@
         "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md"
       ],
       "gaps": [
-        "ENV-1/ENV-2/ENV-4分道修复分别为1eb0cb33c/5b9f66292/e1e6090eb，独立复核无阻塞；额外snapshot基线字段解析RV1修复58d486656，经统筹16/16复验。已合入9e7f18785，待最终联合验证和真实接力。另一个用户授权的端到端会话已在冻结822c15785真实API/Web复现ENV-1，旧冻结失败保留，不能覆盖修复候选结论。"
+        "ENV-1/ENV-2/ENV-4分道修复分别为1eb0cb33c/5b9f66292/e1e6090eb，独立复核无阻塞；额外snapshot基线字段解析RV1修复58d486656，经统筹16/16复验。已合入9e7f18785，待最终联合验证和真实接力。另一个用户授权的端到端会话已在冻结822c15785真实API/Web复现ENV-1，旧冻结失败保留，不能覆盖修复候选结论。",
+        "Source639 actual parallel-memory fixture and same-process Leave pass after reviewed LIFO cleanup fix020d18e62; original failedOFF DB preserved. Current full candidate remains unaccepted."
       ]
     },
     {
@@ -136,7 +138,8 @@
         "../11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/plan-recheck.json"
       ],
       "gaps": [
-        "21项知识审计已逐项以修复或测试处置，按claim→launch→write→web合流并吸收runtime，经整批及后续独立复核，以6cb9fcb36合入。45efa093c的Core4340/Views7118、sqlc/build/vet等通过；原完整service仍是3319pass/3fail/18skip、exit1，不能改判。0702d5039修复skill入口与迁移fixture、742abb217修正优化器选路测试，分别窄范围复验及独立复核通过（迁移536/536、skill10/10）。最终候选完整service/make check、知识开关开/关及跨链路Web/Electron仍待验。生产知识开关false，真实K1–K3/E0b未分配预算。"
+        "21项知识审计已逐项以修复或测试处置，按claim→launch→write→web合流并吸收runtime，经整批及后续独立复核，以6cb9fcb36合入。45efa093c的Core4340/Views7118、sqlc/build/vet等通过；原完整service仍是3319pass/3fail/18skip、exit1，不能改判。0702d5039修复skill入口与迁移fixture、742abb217修正优化器选路测试，分别窄范围复验及独立复核通过（迁移536/536、skill10/10）。最终候选完整service/make check、知识开关开/关及跨链路Web/Electron仍待验。生产知识开关false，真实K1–K3/E0b未分配预算。",
+        "Source639 tagged integration ordinary27normal+27race and Host17normal+17race pass in four distinct fresh databases. Deployed knowledgeON and OFF probes1each pass; production default remainsfalse. These bounded proofs do not relabel failed whole check."
       ]
     },
     {
@@ -164,13 +167,16 @@
       "scope": "production Web + native macOS Electron",
       "state": "passed_historical_fixture_scope_final_candidate_pending",
       "evidence": "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/summary-final.json",
-      "gap": "runtime原6项与知识8项分别绑定其历史源码。C3候选维护重放尚未到达目标契约；最终production Web/native Electron须绑定合流候选运行，不能继承旧结论。"
+      "gap": "Current639 bounded journeys and original focus1passed after preserved earlier failures. Full check remains failed and must rerun with integrated memory/Transfer harness."
     },
     {
       "scope": "macOS arm64 .app/ZIP/DMG",
-      "state": "passed_old_fixture_scope",
-      "evidence": "../10-24-cross-platform-collaboration-runtime/research/macos-packaged-acceptance-2026-10-27.json",
-      "gap": "旧源 61ff581d 本地 ad-hoc 构建；非0e1ee8e1e，无真实安装账号/公证发布证明"
+      "state": "current639_local_artifacts_and_canonical_Main1_passed_bounded",
+      "evidence": [
+        "research/local-packaging-639bf6ef8-20261102/summary.json",
+        "research/final-candidate-20261102/Mac-installed-Main-corrected-pass.json"
+      ],
+      "gap": "Actual app/ZIP/DMG verified, original same-source MacMain fixture passed1 with3test-ownedfakeHost launches; original setup failures retained. No installer upgrade/notarized release/real account acceptance."
     },
     {
       "scope": "Debian12 arm64 .deb",
@@ -180,9 +186,13 @@
     },
     {
       "scope": "Linux arm64 runtime",
-      "state": "passed_native_fixture_scope",
-      "evidence": "../10-24-cross-platform-collaboration-runtime/verification.md",
-      "gap": "真实Provider账号和完整安装组合未证实"
+      "state": "current639_native_Host230_namespace7_and_directory_Main1_passed_bounded",
+      "evidence": [
+        "research/final-candidate-20261102/Linux-native-Host-matrix.json",
+        "research/final-candidate-20261102/Linux-native-namespace-results.json",
+        "research/final-candidate-20261102/Linux-directory-installed-Main-result.json"
+      ],
+      "gap": "Cached Linuxarm64 Host230 and namespace7 pass; packaged full Main1 pass controlling a separate Mac fake Host runtime. No deb/RPM/native installer upgrade/real Provider account acceptance."
     },
     {
       "scope": "Linux amd64/macOS amd64",
@@ -198,7 +208,7 @@
         "research/delivery-preparation/independent-review/review.json",
         "research/delivery-preparation/independent-review/wd2-recheck.json"
       ],
-      "gap": "Windows安装版协作旅程、CI准备和本地契约已以c3db64b24合入；WD1/WD2已修复并独立复核。Node/TS/lint/YAML及Windows amd64交叉编译仅属准备；原生PowerShell、ACL/Job/fault/lifecycle、安装升级、Provider账号与arm64仍未验。外部CI未获授权、未触发。",
+      "gap": "Current639 offline amd64/arm64 CLIbuild+4testpackagecompile+vet all12commands0, actualPEheaders/hash verified; no TestMain or DB/native execution. Native Windows PowerShell/ACL/Job/fault/installer/upgrade/account gates unverified; no externalCI.",
       "runbook": "release-gates-runbook-2026-11-01.md"
     },
     {
@@ -356,9 +366,9 @@
   },
   "parent_status": "in_progress",
   "integration_snapshot": {
-    "head": "020d18e62d964664595b620e2b8e8d02b71230e4",
+    "head": "4085e5b38f384feed296be4f1b300400acff8302",
     "branch": "codex/cross-workspace-collaboration",
-    "read_only_tracking_ahead": 219,
+    "read_only_tracking_ahead": 231,
     "origin_fetched": false,
     "merges": {
       "runtime": "9e7f1878544a5ba5f20c2b9aefc67acbb4a532db",
@@ -369,37 +379,32 @@
       "e2e_contract_maintenance": "7f8ca87252b53f16041485ac867e501962377802",
       "bundle_fixture": "231a08063162acde63ebcabe2ef6a353f7a62bca",
       "knowledge_correction_actualinput": "e6e7fe07d",
-      "knowledge_deployed_probe": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2"
+      "knowledge_deployed_probe": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+      "memory_nested_fixture": "020d18e62",
+      "Transfer_picker": "4085e5b38f384feed296be4f1b300400acff8302"
     },
-    "scope": "Reviewed repair and E2E maintenance integration; frozen final candidate verification running, not accepted"
+    "scope": "Reviewed product repairs and E2E harness repairs integrated; latest full check failed; no overall acceptance"
   },
   "full_candidate_check": {
-    "source_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
-    "command": [
-      "make",
-      "check",
-      "ENV_FILE=<private task source env>"
-    ],
-    "state": "interrupted_not_passed",
-    "exit_code": -2,
-    "started_at": "2026-11-01T17:42:11.911662+00:00",
-    "finished_at": "2026-11-01T17:52:35.969581+00:00",
-    "ts_pass": 13082,
-    "ts_packages": {
-      "core": 4340,
-      "views": 7118,
-      "docs": 62,
-      "web": 290,
-      "desktop": 1272
+    "source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "result": "research/final-candidate-20261102/attempt-3-result.json",
+    "state": "failed_not_accepted",
+    "exit_code": 2,
+    "static_pass": 15,
+    "TS_pass": 13082,
+    "Go_named_pass": 20852,
+    "Go_named_skip": 22,
+    "Go_compile_only_packages": 9,
+    "Go_fail": 0,
+    "browser": {
+      "planned": 439,
+      "pass": 296,
+      "fail": 47,
+      "skip": 89,
+      "did_not_run": 7
     },
-    "raw_record_private_path": "/Volumes/artisan/code/2026/mc-collaboration-candidate-c3db64b24-20261102/.omx/private/final-candidate/make-check.json",
-    "raw_record_sha256": "b3541b80f26cbe50d34aebad31e46eedbfe137f6801052f8a8ba1f34a63e03d4",
-    "raw_log_sha256": "5943aabc7085ffc02c72e244c9c132941dab6ab5c7ef26f45597806c08bced41",
-    "summary_private_path": "/Volumes/artisan/code/2026/mc-collaboration-candidate-c3db64b24-20261102/.omx/private/final-candidate/make-check-interrupted-summary.json",
-    "summary_sha256": "c9ca18e3d6afbbf1b07693ad818a5cba718ae4bafc5dec7b6dfed5680b30dcfe",
-    "go_package_records": 6,
-    "reason": "Coordinator interruption for confirmed native renderer origin preparation gap; gap subsequently fixed and independently reviewed, but complete candidate check must rerun",
-    "final_acceptance_pass": false
+    "triage": "research/final-candidate-20261102/attempt3-browser-triage.json",
+    "subsequent_targeted_results_are_not_a_full_check_pass": true
   },
   "historical_ledger_reference": {
     "commit": "c6289db93404a2d882ea3a095abdf9073132bfc6",
@@ -424,7 +429,7 @@
   },
   "final_candidate": {
     "sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
-    "state": "attempt3_complete_failed; final_harness_repairs_in_progress",
+    "state": "wholecheck3failed; memory_Transfer_harness_repairs_merged; RKI6_fake_normal_race_passed_pending_independent_result_review",
     "registration": "research/final-candidate-20261102/attempt-3-registration.json",
     "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
     "clean_at_start": true,
@@ -435,7 +440,9 @@
       "231a08063 attempt-2-result.json"
     ],
     "actual_make_exit_code": 2,
-    "result": "research/final-candidate-20261102/attempt-3-result.json"
+    "result": "research/final-candidate-20261102/attempt-3-result.json",
+    "harness_head": "4085e5b38f384feed296be4f1b300400acff8302",
+    "next": "independent v5/RKI6 result review after gateway429; then freeze new wholecheck source/harness and run complete make check with APImax10/min1, no overlapping API startup"
   },
   "crosschain_correction": {
     "code": "057bc9616",
@@ -496,6 +503,110 @@
       "offlinecollector5files"
     ],
     "Linux": "arm64directory/staticELFonly",
-    "installed_upgrade_account_acceptance": false
-  }
+    "installed_upgrade_account_acceptance": false,
+    "Mac_installed_Main_fixture": "current639 canonical1pass after exact config correction; upgrade/account still open"
+  },
+  "latest_full_candidate_check": {
+    "source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "result": "research/final-candidate-20261102/attempt-3-result.json",
+    "state": "failed_not_accepted",
+    "exit_code": 2,
+    "static_pass": 15,
+    "TS_pass": 13082,
+    "Go_named_pass": 20852,
+    "Go_named_skip": 22,
+    "Go_compile_only_packages": 9,
+    "Go_fail": 0,
+    "browser": {
+      "planned": 439,
+      "pass": 296,
+      "fail": 47,
+      "skip": 89,
+      "did_not_run": 7
+    },
+    "triage": "research/final-candidate-20261102/attempt3-browser-triage.json",
+    "subsequent_targeted_results_are_not_a_full_check_pass": true
+  },
+  "verification_adapters": {
+    "v4": "AV4-1 changes-required preserved",
+    "v5": "11 contracts pass; fresh stripped-env Go1.26.6 with network denied; unchanged Web/Desktop preparation2 pass; independent review pending429",
+    "evidence": "research/final-candidate-20261102/adapter-v5-local-verification.json"
+  },
+  "Transfer_fixture_fix": {
+    "code": "d39d54a07",
+    "evidence": "8ed2575b3",
+    "review": "e98ee9569 pass-with-notes",
+    "merge": "4085e5b38f384feed296be4f1b300400acff8302",
+    "actual_Web_pass": 2,
+    "original_native_focus_assertions_unchanged": true,
+    "focus": "open; current GUI locked in last direct observation; historical failure cause not retrospectively proven"
+  },
+  "current_platform_evidence": {
+    "Linux_Host": "research/final-candidate-20261102/Linux-native-Host-matrix.json",
+    "Linux_namespace": "research/final-candidate-20261102/Linux-native-namespace-results.json",
+    "Linux_directory_Main": "research/final-candidate-20261102/Linux-directory-installed-Main-result.json",
+    "native_Host_named_pass": 230,
+    "namespace_pass": 7,
+    "packaged_Main_pass": 1,
+    "scope": "source639 Linuxarm64; Main client controls Mac fake Host; not deb/upgrade/real account"
+  },
+  "rki6_current": {
+    "state": "normal62pass_race62pass_0fail_0skip; independent_result_review_pending429",
+    "source": "639bf6ef8",
+    "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+    "evidence": "../10-30-collaboration-context-handoff-runtime/research/real-model-rk1/fake-proof/final639-quiet-normal-race-summary.json",
+    "fake_physical_launches_each": 32,
+    "Provider_calls": 0,
+    "paid_runnable": false
+  },
+  "historical_full_candidate_check_C3": {
+    "source_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "command": [
+      "make",
+      "check",
+      "ENV_FILE=<private task source env>"
+    ],
+    "state": "interrupted_not_passed",
+    "exit_code": -2,
+    "started_at": "2026-11-01T17:42:11.911662+00:00",
+    "finished_at": "2026-11-01T17:52:35.969581+00:00",
+    "ts_pass": 13082,
+    "ts_packages": {
+      "core": 4340,
+      "views": 7118,
+      "docs": 62,
+      "web": 290,
+      "desktop": 1272
+    },
+    "raw_record_private_path": "/Volumes/artisan/code/2026/mc-collaboration-candidate-c3db64b24-20261102/.omx/private/final-candidate/make-check.json",
+    "raw_record_sha256": "b3541b80f26cbe50d34aebad31e46eedbfe137f6801052f8a8ba1f34a63e03d4",
+    "raw_log_sha256": "5943aabc7085ffc02c72e244c9c132941dab6ab5c7ef26f45597806c08bced41",
+    "summary_private_path": "/Volumes/artisan/code/2026/mc-collaboration-candidate-c3db64b24-20261102/.omx/private/final-candidate/make-check-interrupted-summary.json",
+    "summary_sha256": "c9ca18e3d6afbbf1b07693ad818a5cba718ae4bafc5dec7b6dfed5680b30dcfe",
+    "go_package_records": 6,
+    "reason": "Coordinator interruption for confirmed native renderer origin preparation gap; gap subsequently fixed and independently reviewed, but complete candidate check must rerun",
+    "final_acceptance_pass": false
+  },
+  "native_focus_current": {
+    "status": "passed_original1_zero_skip_retry",
+    "evidence": "research/final-candidate-20261102/native-original-focus-latest-pass.json",
+    "historical_failures": "preserved; old GUI lock and earlier cause boundary retained"
+  },
+  "Mac_installed_current": {
+    "status": "passed_original1_zero_skip_retry",
+    "evidence": "research/final-candidate-20261102/Mac-installed-Main-corrected-pass.json",
+    "original_failures": [
+      "research/final-candidate-20261102/Mac-installed-Main-first-failure.json",
+      "research/final-candidate-20261102/Mac-installed-Main-root-cause.json"
+    ],
+    "scope": "same-source .app Main with fake Host3launches; no installer upgrade/notarization/real account",
+    "configuration_repair": "explicit registry and ENV_FILE; actual rendered API/WS origins checked; missing test-owned DSH path; no product or assertion changes"
+  },
+  "Windows_current": {
+    "status": "amd64_arm64_compile_preparation_passed12commands",
+    "evidence": "research/final-candidate-20261102/Windows-final639-compile-preparation.json",
+    "native_execution": false,
+    "DB_or_TestMain": false
+  },
+  "source_harness_binding": "research/final-candidate-20261102/current-reviewed-product-harness-binding.json"
 }

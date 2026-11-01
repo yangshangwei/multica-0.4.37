@@ -1,0 +1,92 @@
+{
+  "at": "2026-11-01T23:06:06.368214+00:00",
+  "scope": "actual same-source macOSarm64 app full Main/preload/file renderer with fake Host; not installer upgrade or real account",
+  "actual_run": {
+    "selected_provider_binary": "host-provider",
+    "selected_provider_sha256": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+    "deployed_expectation": null,
+    "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "lane": "green",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/opt/homebrew/bin/pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "e2e/collaboration-host-installed.spec.ts",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json",
+      "--output=/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/final-candidate/browser-gates/installed-mac-original-corrected-1/artifacts"
+    ],
+    "database": "collab_joint_macfinal639_20261102_2305",
+    "health": {
+      "status": "ok",
+      "pid": 50005,
+      "commit": "639bf6ef8",
+      "started_at": "2026-11-01T23:02:46Z"
+    },
+    "source_env_sha256": "a320bf5cffd27ef68babe6fa996258064e544727be2a054dc84808e7fecc3e98",
+    "production_Web_build_id": "qeKKB49uyBAmo7s7tjqvu",
+    "native_renderer_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+    "test_source_sha256": {
+      "e2e/collaboration-host-installed.spec.ts": "2ca4a3b659fd8a6693d19dee23c587a107ddbce1f07f02c7efe5f9653b288fbe"
+    },
+    "controlled_binary_sha256": {
+      "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+      "host-provider": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+      "memory-provider": "81a758a1062568d5a709156e3344b5df1e5b87e55660c1761c12cf55c94adcf1",
+      "multica": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19"
+    },
+    "package_pin": {
+      "platform": "mac",
+      "asar_sha256": "128ff6f87dc18b78355ee5161171a86ec7828b18d5b87751d0f8142dd81b8485",
+      "executable_sha256": "a46d907fc69ec527d1653bb0c231f9a569b4e255ae3f94bf0736f5abcbd9ebd0",
+      "CLI_sha256": "706b6ac4fcef6fb41493785c0ac70d4ea3b1886efcd817882305eb5ab272a475",
+      "source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2"
+    },
+    "actual_real_Provider_calls": 0,
+    "state": "complete",
+    "started_at": "2026-11-01T23:04:41.038411+00:00",
+    "exit_code": 0,
+    "finished_at": "2026-11-01T23:05:09.867504+00:00",
+    "log_sha256": "efeb81763bb8bcd27b6023ba861310d317b067d494b67fed5f34cef0cdac2442",
+    "stats": {
+      "startTime": "2026-11-01T23:04:42.140Z",
+      "duration": 27692.871000000003,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "results_sha256": "a822a49642fde1afe92998dd418fa2ab48ece3ca788aed3e2792776fce5efd64",
+    "actual_installed_boot_pin_match": true,
+    "installed_evidence_sha256": "96fca3563f7c320c7c842969d8d2a210254f6662634072b11366f4d4ac03b4c6",
+    "gate_exit_code": 0
+  },
+  "canonical_spec_sha256": "2ca4a3b659fd8a6693d19dee23c587a107ddbce1f07f02c7efe5f9653b288fbe",
+  "assertions_timeouts_retries_changed": false,
+  "rendered_browser_config": {
+    "apiBaseUrl": "http://localhost:19065",
+    "wsUrl": "ws://localhost:19065/ws",
+    "html_sha256": "7e360fdf7fb63924f4c2a885565b2354513d391c9864612e2950d53f4b16d6f4"
+  },
+  "explicit_startup_ENV_FILE": true,
+  "private_registry": true,
+  "test_owned_missing_DSH_path": true,
+  "repo_AgentCLI_guard": "unchanged; zero unexpected invocations",
+  "fake_Host_provider_observations": 3,
+  "packaged_native_password_form": {
+    "status": 200,
+    "userId": "5b2377a2-09a2-43cf-a29a-34ef0f9cac9e",
+    "actualPasswordForm": true
+  },
+  "actual_boot_artifact_CLI_pins_match": true,
+  "Stop_restart_explicit_Resume_retention": "all canonical assertions passed",
+  "raw_installed_evidence_sha256": "96fca3563f7c320c7c842969d8d2a210254f6662634072b11366f4d4ac03b4c6",
+  "original_failures": "retained unchanged in separate Green and diagnostic databases; no reinterpretation as pass",
+  "real_Provider_calls": 0,
+  "whole_make_check_pass": false
+}

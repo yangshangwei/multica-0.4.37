@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_web_review",
+  "reviewed_at": "2026-11-01T22:00:01.805880+00:00",
+  "verdict": "changes-required",
+  "scope": "private adapter-v4 only; no product/whole-candidate acceptance",
+  "blocking_findings": [
+    {
+      "id": "AV4-1",
+      "severity": "high",
+      "status": "open",
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v4/check-bin/go",
+      "source_sha256": "6cf2cd13e9be663eed58fc9627847e61064b0054b4ea5f788d12d8df3d8c09b6",
+      "line": 18,
+      "title": "Missing private environment can newly forward ordinary go test without package database isolation",
+      "static_path": {
+        "arguments": [
+          "test",
+          "<package>"
+        ],
+        "MULTICA_TASK_REAL_GO": "absent",
+        "MULTICA_TASK_PACKAGE_DB_MODE": "absent",
+        "DATABASE_URL": "absent or default business database",
+        "resolved_executable": "/opt/homebrew/bin/go",
+        "selected_branch": "mode !=1 -> os.execv before task database guards"
+      },
+      "why_new": "Original adapter unconditionally indexed REAL_GO and stopped with KeyError for this same stripped environment. v4 creates a reachable real test execution path, whereas the intended stripped sealer uses go run. Mode1 guard code is unchanged but is bypassed by this new mode-absent path.",
+      "impact": "DB-backed TestMain could use its default database; this violates the task requirement that DB packages use explicit newly migrated task databases. No unsafe command was run by reviewer.",
+      "requested_correction": "Limit missing-REAL_GO fallback to non-test/compile-only calls, or otherwise fail closed on ordinary go test without complete package-isolation context. Add a fake negative contract proving refusal occurs before any real Go/SQL call; retain existing isolated package behavior."
+    }
+  ],
+  "wrapper_sha256": {
+    "go": "6cf2cd13e9be663eed58fc9627847e61064b0054b4ea5f788d12d8df3d8c09b6",
+    "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+  },
+  "historical_wrapper_sha256_verified_unchanged": {
+    "go": "2de26dbb490c3a70fee48c62cae358db765f2060e4ac15eb4843849fae0407db",
+    "pnpm": "e74949d2c0ee6c96d219642cc66ac1d931b5e2e48c6bb4a64b45d65e21fc3a27"
+  },
+  "positive_evidence_verified": {
+    "six_existing_contracts": {
+      "pass": 6,
+      "fail": 0,
+      "log_sha256": "87488c484d559d60a4fb4f0ddb2c0001fe84d9484c8f7de36ceb57227ba5e8b4",
+      "contract_source_sha256": "528fc219ec5dbb21b5db1d52e82c930ef4f44c9c765722f1e14f492675438240",
+      "limitation": "Does not exercise ordinary go test with both REAL_GO and DB mode absent."
+    },
+    "initial_contract_failure_retained": {
+      "exit_code": 1,
+      "passed": 5,
+      "failed": 1,
+      "failure": "Playwright fake candidate lacked newly required repository guard file; realwrapper refused beforefakePNPM",
+      "original_console_tool_chunk": "4509cc",
+      "original_test_source_sha256": "996183ddcfd139ad5a6a28dfaf657c6f4e4947aafbb3f68b9139581fed2506c1",
+      "fix": "add fake repository guard and assert invocation; no wrapper guard bypass",
+      "real_DB_or_Provider_called": false
+    },
+    "initial_contract_source_hash_verified": true,
+    "stripped_Go_forwarding": {
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/.omx/private/local-packaging/deny-network.sb",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v4/check-bin/go",
+        "version"
+      ],
+      "stripped_env_keys": [
+        "GOTOOLCHAIN",
+        "HOME",
+        "PATH",
+        "TMPDIR"
+      ],
+      "required_private_REAL_GO_missing": true,
+      "database_env_absent": true,
+      "network_denied": true,
+      "exit_code": 0,
+      "stdout": "go version go1.26.6 darwin/arm64",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "DB_or_Provider": false
+    },
+    "stripped_Go_scope": "Recorded cache-only Go1.26.6 version succeeds under deny-network with no database; does not exercise DB-backed ordinary test refusal.",
+    "unchanged_preparation_actual_tests": {
+      "pass": 2,
+      "fail": 0,
+      "skip": 0,
+      "retry": 0,
+      "actual_named_results_and_raw_hashes_verified": true,
+      "execution": {
+        "selected_provider_binary": "host-provider",
+        "selected_provider_sha256": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+        "deployed_expectation": null,
+        "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+        "verification_harness_head": "8ed2575b33844b5795f3ecaf24fae8955abf14e5",
+        "verification_harness_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "lane": "legacy",
+        "command": [
+          "bash",
+          "scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/bin/pnpm",
+          "exec",
+          "playwright",
+          "test",
+          "e2e/collaboration-preparation-records-web.spec.ts",
+          "e2e/collaboration-preparation-records-desktop.spec.ts",
+          "--workers=1",
+          "--retries=0",
+          "--reporter=line,json",
+          "--output=/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/contract-focus-runs/preparation-records-corrected-go-2/artifacts"
+        ],
+        "database": "collab_joint_legacy_diag_20261102_2120",
+        "health": {
+          "status": "ok",
+          "pid": 26485,
+          "commit": "639bf6ef8",
+          "started_at": "2026-11-01T21:34:56Z"
+        },
+        "source_env_sha256": "1e4338ce392567848096f73b5e320998926fc8f5c664a24dd78725b38cff35ff",
+        "production_Web_build_id": "34DL-1w4TjLPqCrcjSSqj",
+        "native_renderer_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+        "test_source_sha256": {
+          "e2e/collaboration-preparation-records-web.spec.ts": "12d92bc59a2ca10a42441157332aa6c8dd00699af4be0737e2d612e17b652da3",
+          "e2e/collaboration-preparation-records-desktop.spec.ts": "9aa833ddc18e7c5be8d1703b0911536f335f53b6c839e6fbfc7c446cd62d13b2"
+        },
+        "controlled_binary_sha256": {
+          "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+          "host-provider": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+          "memory-provider": "81a758a1062568d5a709156e3344b5df1e5b87e55660c1761c12cf55c94adcf1",
+          "multica": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19"
+        },
+        "package_pin": null,
+        "actual_real_Provider_calls": 0,
+        "state": "complete",
+        "started_at": "2026-11-01T21:52:41.184998+00:00",
+        "exit_code": 0,
+        "finished_at": "2026-11-01T21:52:53.078089+00:00",
+        "log_sha256": "041c8161bb7c6e471ff8d37d2ab06c1129341e4d19b468b9e21a39b9b3e9dda6",
+        "stats": {
+          "startTime": "2026-11-01T21:52:42.137Z",
+          "duration": 10921.828000000001,
+          "expected": 2,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "results_sha256": "5bc856614684762db50bbf77f6c2ca192ece2e3735e488d21c16a6d23cd52924",
+        "gate_exit_code": 0
+      },
+      "helper_source_sha256": "da962e1bef8d935d2b7c393ba6403324daea2c689729fa14ff28710da6321f8b",
+      "sealer_and_two_specs_byte_identical_product639": true
+    },
+    "pnpm_static_review": {
+      "only_reporter_and_JSON_output_added_to_default_full_Playwright": true,
+      "existing_explicit_reporter_preserved": true,
+      "test_selection_workers_retries_timeouts_not_changed": true,
+      "actual_Playwright_wrapped_in_candidate_repository_Agent_CLI_guard": true,
+      "fake_contract_guard_file_required_and_invocation_asserted": true,
+      "no_reporter_or_guard_blocker_found": true
+    }
+  },
+  "acceptance_limits": [
+    "Current positive sealer path is evidenced; unrestricted fallback is not accepted.",
+    "Original failed third complete run remains296pass47fail89skip7didnotrun.",
+    "Native focus remains open and current GUI locked; this adapter proof cannot close it.",
+    "PG capacity resource incident is separate; no global PG or unowned session change is proposed."
+  ],
+  "reviewer_operations": {
+    "tests": 0,
+    "DB": 0,
+    "browser": 0,
+    "services": 0,
+    "CLI": 0,
+    "containers": 0,
+    "Provider": 0,
+    "children": 0,
+    "source_or_git_mutations": 0
+  }
+}

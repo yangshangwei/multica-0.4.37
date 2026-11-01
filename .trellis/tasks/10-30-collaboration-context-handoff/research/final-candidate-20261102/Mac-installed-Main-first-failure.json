@@ -1,0 +1,75 @@
+{
+  "scope": "first actual macOSarm64 app Main fixture; failed, not accepted",
+  "actual_run": {
+    "selected_provider_binary": "host-provider",
+    "selected_provider_sha256": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+    "deployed_expectation": null,
+    "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "lane": "green",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/opt/homebrew/bin/pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "e2e/collaboration-host-installed.spec.ts",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json",
+      "--output=/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/final-candidate/browser-gates/installed-mac-app-Main-after-quiet-1/artifacts"
+    ],
+    "database": "collab_joint_gate_green_20261102_2055",
+    "health": {
+      "status": "ok",
+      "pid": 42149,
+      "commit": "639bf6ef8",
+      "started_at": "2026-11-01T22:46:52Z"
+    },
+    "source_env_sha256": "bfbb87d1c27689da34b5c8308bb79c7e1403f94016899d8283190094a8993f72",
+    "production_Web_build_id": "coaKJjUMO966ap-T-aYAR",
+    "native_renderer_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+    "test_source_sha256": {
+      "e2e/collaboration-host-installed.spec.ts": "2ca4a3b659fd8a6693d19dee23c587a107ddbce1f07f02c7efe5f9653b288fbe"
+    },
+    "controlled_binary_sha256": {
+      "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+      "host-provider": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+      "memory-provider": "81a758a1062568d5a709156e3344b5df1e5b87e55660c1761c12cf55c94adcf1",
+      "multica": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19"
+    },
+    "package_pin": {
+      "platform": "mac",
+      "asar_sha256": "128ff6f87dc18b78355ee5161171a86ec7828b18d5b87751d0f8142dd81b8485",
+      "executable_sha256": "a46d907fc69ec527d1653bb0c231f9a569b4e255ae3f94bf0736f5abcbd9ebd0",
+      "CLI_sha256": "706b6ac4fcef6fb41493785c0ac70d4ea3b1886efcd817882305eb5ab272a475",
+      "source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2"
+    },
+    "actual_real_Provider_calls": 0,
+    "state": "complete",
+    "started_at": "2026-11-01T22:49:11.460246+00:00",
+    "exit_code": 1,
+    "finished_at": "2026-11-01T22:49:28.958876+00:00",
+    "log_sha256": "78dcc00c4a2299103862d786703ea510121ed86b479c8c8f1c541f22bf3f972c",
+    "stats": {
+      "startTime": "2026-11-01T22:49:12.929Z",
+      "duration": 15990.243000000002,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "results_sha256": "7f329ef71f452af15fcda8e943676617903c6d0f12dee4aac4f4c758ad34d222",
+    "gate_exit_code": 1
+  },
+  "first_failure": "Web expected issue heading absent within original5000ms",
+  "guard": "unexpected ambient dsh invocation rejected by repository AgentCLI sentinel; user-installed executable not run",
+  "native_boot_and_password_form": "actual valid; not full journey pass",
+  "fake_Host_claims": 0,
+  "real_Provider_calls": 0,
+  "database_frozen_after_failure": "collab_joint_gate_green_20261102_2055",
+  "raw_log_and_attachments_preserved": true,
+  "cause": "under investigation; no retry or source mutation",
+  "execution_sha256": "30adc99e4c11d5be106b8aa41d7ae80756ded7e456e46f678dc44a24e689ad2e"
+}
