@@ -36,6 +36,13 @@ type knowledgeWrite struct {
 	operation       db.CollaborationOperation
 }
 
+func (s *CollaborationService) knowledgeNow() time.Time {
+	if s.knowledgeClock != nil {
+		return s.knowledgeClock()
+	}
+	return time.Now()
+}
+
 func knowledgeFailure(status int, code string) error { return collaborationError(status, code) }
 func knowledgePublicError(err error) error {
 	if err == nil {
@@ -454,7 +461,7 @@ func lockKnowledgeCounter(ctx context.Context, q *db.Queries, target protocol.Co
 }
 
 func (s *CollaborationService) createKnowledgeCandidate(ctx context.Context, w *knowledgeWrite, p protocol.CollaborationKnowledgeProposal) (protocol.CollaborationKnowledgeReceipt, error) {
-	if err := protocol.ValidateCollaborationKnowledgeProposalAt(p, util.UUIDToString(w.issue.ID), time.Now().UTC()); err != nil {
+	if err := protocol.ValidateCollaborationKnowledgeProposalAt(p, util.UUIDToString(w.issue.ID), s.knowledgeNow().UTC()); err != nil {
 		return protocol.CollaborationKnowledgeReceipt{}, knowledgeProtocolError(err)
 	}
 	available, err := s.KnowledgeSourceAvailability(ctx, w.q, w.issue.ID, p.Sources)
@@ -554,7 +561,7 @@ func (s *CollaborationService) changeKnowledgeCandidate(ctx context.Context, w *
 		if version != w.candidate.Version || approval.ExpectedContentSHA256 != w.candidate.ContentSha256 {
 			return refuse("knowledge_content_changed")
 		}
-		if w.candidate.ExpiresAt.Valid && !w.candidate.ExpiresAt.Time.After(time.Now()) {
+		if w.candidate.ExpiresAt.Valid && !w.candidate.ExpiresAt.Time.After(s.knowledgeNow()) {
 			return refuse("knowledge_expired")
 		}
 		refs, err := knowledgeCandidateSources(w.candidate)
@@ -568,7 +575,7 @@ func (s *CollaborationService) changeKnowledgeCandidate(ctx context.Context, w *
 		if !available {
 			return refuse("knowledge_source_unavailable")
 		}
-		rows, err := w.q.ListKnowledgeActiveTargetCandidates(ctx, db.ListKnowledgeActiveTargetCandidatesParams{TargetKind: w.target.Kind, TargetWorkspaceID: w.candidate.TargetWorkspaceID, TargetProjectID: w.candidate.TargetProjectID, CheckedAt: pgtype.Timestamptz{Time: time.Now().UTC(), Valid: true}})
+		rows, err := w.q.ListKnowledgeActiveTargetCandidates(ctx, db.ListKnowledgeActiveTargetCandidatesParams{TargetKind: w.target.Kind, TargetWorkspaceID: w.candidate.TargetWorkspaceID, TargetProjectID: w.candidate.TargetProjectID, CheckedAt: pgtype.Timestamptz{Time: s.knowledgeNow().UTC(), Valid: true}})
 		if err != nil {
 			return protocol.CollaborationKnowledgeReceipt{}, err
 		}

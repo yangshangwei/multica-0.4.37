@@ -10,6 +10,7 @@ import (
 	"math"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -41,6 +42,9 @@ type CollaborationService struct {
 	MemoryMaxBytes int
 	// Default closed; handlers copy the ordinary TaskService deployment gate.
 	KnowledgeContextEnabled bool
+	// knowledgeClock is the application clock for knowledge writes. Nil means
+	// time.Now; tests skew it to separate application and database time.
+	knowledgeClock func() time.Time
 }
 
 func NewCollaborationService(q *db.Queries, tx TxStarter, issues *IssueService) *CollaborationService {
