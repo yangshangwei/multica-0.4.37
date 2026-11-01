@@ -171,6 +171,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Installed collaboration contract tests failed' }
           node --experimental-strip-types --test e2e/fixtures/collaboration-installed-main.node-test.mjs
           if ($LASTEXITCODE -ne 0) { throw 'Installed controller shutdown tests failed' }
+          node --test e2e/fixtures/collaboration-host-runtime.node-test.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'Native Host shutdown contracts failed' }
           node --test apps/desktop/scripts/windows-update-probe.node-test.mjs apps/desktop/scripts/windows-business-provider.node-test.mjs apps/desktop/scripts/windows-business-proxy.node-test.mjs
           if ($LASTEXITCODE -ne 0) { throw 'Update probe tests failed' }
           node --test apps/desktop/scripts/verify-go-test-events.node-test.mjs

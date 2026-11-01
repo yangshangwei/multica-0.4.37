@@ -94,6 +94,11 @@ explicit Resume and shared Agent input history. The runtime is the separately
 owned native fixture; Provider work uses only the test-created executable, not a
 personal CLI/account. A controlled Node controller is closed normally, with a
 bounded process-tree fallback limited to that spawned PID on Windows.
+The separately owned Host daemon receives stdin EOF without a POSIX resume
+signal on Windows, so it can emit its actual final claims/proof summary. The
+fixture's POSIX-only suspend/resume helpers explicitly refuse Windows; this
+installed journey does not claim suspension coverage there. A forced fallback
+exit remains a failure under the unchanged exit/summary assertions.
 
 Every report includes source SHA, installed EXE/ASAR/bundled CLI hashes and Host
 fixture binary hashes. The packaged journey independently checks those pins and

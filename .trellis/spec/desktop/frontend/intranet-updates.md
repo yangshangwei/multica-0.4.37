@@ -127,6 +127,10 @@ directory before migrating it. Private API/Web state, profiles and raw Playwrigh
 failures stay in the disposable runner state; upload only named sanitized reports
 and the synthetic journey's Stop/final screenshots. Provider account/quota,
 signature/offline trust and Windows arm64 remain separate gates.
+Host fixture shutdown sends stdin EOF on Windows without POSIX `SIGCONT`, so
+actual graceful summary/exit remains required. Its POSIX suspension helpers refuse
+Windows explicitly; bounded forced termination cannot satisfy the unchanged
+zero-exit and final-summary assertions.
 
 ## Windows protocol ownership on uninstall
 

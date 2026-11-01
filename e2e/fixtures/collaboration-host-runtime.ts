@@ -298,8 +298,9 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
   const close = async () => {
     if (closed) throw new Error("Host daemon cleanup was invoked twice");
     closed = true;
-    // A suspended daemon cannot read EOF; resuming an already running one is a no-op.
-    if (child.exitCode === null) child.kill("SIGCONT");
+    // POSIX suspension prevents EOF reads. Windows has no SIGCONT; its normal
+    // close still sends EOF so the daemon can publish its actual final summary.
+    if (process.platform !== "win32" && child.exitCode === null) child.kill("SIGCONT");
     child.stdin.end();
     const killTimer = setTimeout(() => child.kill("SIGKILL"), 20_000);
     const exitCode = await exit;
@@ -336,9 +337,11 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
        * runtime that has not yet confirmed termination, not a forged proof.
        */
       freeze() {
+        if (process.platform === "win32") throw new Error("POSIX daemon suspension is unsupported on Windows");
         if (closed || child.exitCode !== null || !child.kill("SIGSTOP")) throw new Error("Native daemon could not be suspended");
       },
       thaw() {
+        if (process.platform === "win32") throw new Error("POSIX daemon resume is unsupported on Windows");
         if (closed || child.exitCode !== null || !child.kill("SIGCONT")) throw new Error("Native daemon could not be resumed");
       },
       /** Has the running provider perform business writes through its run-local CLI, then keep the turn open. */
