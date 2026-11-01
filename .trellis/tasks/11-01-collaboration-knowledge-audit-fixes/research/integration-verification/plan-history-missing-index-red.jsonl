@@ -1,0 +1,9 @@
+{"Time":"2026-11-02T01:31:27.415525+08:00","Action":"start","Package":"github.com/multica-ai/multica/server/internal/service"}
+{"Time":"2026-11-02T01:31:28.198131+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestKnowledgeRuntimeHistoryIsIndexDriven"}
+{"Time":"2026-11-02T01:31:28.198199+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestKnowledgeRuntimeHistoryIsIndexDriven","Output":"=== RUN   TestKnowledgeRuntimeHistoryIsIndexDriven\n","OutputType":"frame"}
+{"Time":"2026-11-02T01:31:28.443595+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestKnowledgeRuntimeHistoryIsIndexDriven","Output":"    task_knowledge_history_growth_test.go:205: knowledge history index collaboration_knowledge_agent_history_idx is missing or unreadable: no rows in result set\n","OutputType":"error"}
+{"Time":"2026-11-02T01:31:28.477626+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestKnowledgeRuntimeHistoryIsIndexDriven","Output":"--- FAIL: TestKnowledgeRuntimeHistoryIsIndexDriven (0.28s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T01:31:28.477689+08:00","Action":"fail","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestKnowledgeRuntimeHistoryIsIndexDriven","Elapsed":0.28}
+{"Time":"2026-11-02T01:31:28.477753+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Output":"FAIL\n","OutputType":"frame"}
+{"Time":"2026-11-02T01:31:28.479761+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Output":"FAIL\tgithub.com/multica-ai/multica/server/internal/service\t1.064s\n","OutputType":"frame"}
+{"Time":"2026-11-02T01:31:28.479828+08:00","Action":"fail","Package":"github.com/multica-ai/multica/server/internal/service","Elapsed":1.064}
