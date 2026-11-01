@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T06:10:09.134019+00:00",
+  "updated_at": "2026-11-01T08:38:33.850240+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -60,39 +60,45 @@
     {
       "id": "AC4",
       "requirement": "中断与撤权后的记录保留",
-      "status": "passed_deterministic_model_unrun",
+      "status": "deterministic_gate_passed_then_audit_reopened; model_unrun",
       "evidence": [
         "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/late-reconciliation/README.md",
-        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/acceptance-matrix-addendum/summary.md"
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/acceptance-matrix-addendum/summary.md",
+        "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md"
       ],
       "gaps": [
-        "Stop/撤权/作者退出两种提交顺序已补齐并通过 race；真实 Provider 中断摄取未由 seeded UI 或服务 fixture 代替"
+        "Stop/撤权/作者退出两种提交顺序已补齐并通过 race；真实 Provider 中断摄取未由 seeded UI 或服务 fixture 代替",
+        "2026-11-01 会话-ef 合入后只读审计（会话-a8 在 b8fd547dc 复核并入账）确认 REC-1/REC-2/REC-3/REC-4 未修复：一次非确定性 checkpoint 失败后本轮停止上传、恢复约 1 秒、outcome 后剩余块被 409 拒收；fallback 后旧 attempt 块使整条流关闭；seal 原因一律 authority_lost；瞬时失败补齐后仍永久 partial。现有确定性通过不覆盖这些路径"
       ]
     },
     {
       "id": "AC5",
       "requirement": "成员/队长/并行 memory 交接",
-      "status": "passed_deterministic_model_unrun",
+      "status": "deterministic_gate_passed_then_audit_reopened; model_unrun",
       "evidence": [
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-backend-round2/service-summary.json",
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/acceptance-matrix-addendum/summary.md",
-        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/remaining-acceptance-addendum/summary.md"
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/remaining-acceptance-addendum/summary.md",
+        "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md"
       ],
       "gaps": [
-        "双成员与 claim 前后来源、memory 冲突后的 refresh/new-intent merge 及双事实/作者版本保留均通过；模型理解和真实隔离接力仍单列"
+        "双成员与 claim 前后来源、memory 冲突后的 refresh/new-intent merge 及双事实/作者版本保留均通过；模型理解和真实隔离接力仍单列",
+        "同一审计确认 ENV-1/ENV-2/ENV-4 未修复：实时 handoff 把最新 memory 标成“Started from”且 DTO 无基线版本字段；接近 64 KiB 的委派含凭据样文本时脱敏后被截断、成员 run 永久无法启动；continuation 的 wakeup_causes 一律 unknown"
       ]
     },
     {
       "id": "AC6",
       "requirement": "有界评论召回与 revision",
-      "status": "passed_deterministic",
+      "status": "deterministic_gate_passed_then_audit_reopened",
       "evidence": [
         "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
-        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/summary-final.json"
+        "../10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/summary-final.json",
+        "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md"
       ],
       "gaps": [
-        "模型读取/理解仍属独立实验；普通评论是 live recall，不是启动预载"
+        "模型读取/理解仍属独立实验；普通评论是 live recall，不是启动预载",
+        "同一审计确认 RECALL-1/RECALL-2 未修复：runtime 评论召回没有作者显示名（父 PRD R4 要求）；collaboration-runtime-cli.md:49-51 仍写过滤等操作不支持、读取只返回最新 200 条，召回契约未成文（c54a28ba6 只补了命令列表）"
       ]
     },
     {
@@ -132,10 +138,12 @@
         "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
         "../10-30-collaboration-context-handoff-runtime/research/integration-verification/remaining-acceptance-addendum/summary.md",
         "../10-30-collaboration-knowledge-promotion/verification-integration-2026-11-01.md",
-        "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-joint-review/README.md"
+        "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-joint-review/README.md",
+        "../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md"
       ],
       "gaps": [
-        "runtime 与知识最终源码、失败修正、独立审查及执行记录已可追溯；原/新真实模型和关联发布矩阵仍开放"
+        "runtime 与知识最终源码、失败修正、独立审查及执行记录已可追溯；原/新真实模型和关联发布矩阵仍开放",
+        "合入后 runtime 审计 9 项确认（中 5、低 4）、2 项驳回，只读静态审查，未运行测试；是否在 RK1 前修复待用户决定"
       ]
     }
   ],

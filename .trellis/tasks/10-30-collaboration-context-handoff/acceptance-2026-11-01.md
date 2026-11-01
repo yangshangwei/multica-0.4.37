@@ -8,12 +8,12 @@
 | AC1 附件预算与小队异构 runtime | 确定性通过 | 四类实际成员 runtime 限额的可选选择/必需超限拒绝均通过；无真实 Provider 调用 |
 | AC2 正式 E0 | 原基线通过／新 runtime 已登记未运行 | 原产品 4c833e737 正式 E0 已过；新 runtime/知识登记为 RK1（`d2fe54ab0`）；runtime 场景上限 19 次（`28c67c674`），待产品补丁、重新绑定源码和真实 Provider 框架；知识场景无预算；不能继承旧结论 |
 | AC3 原预登记 E1–E6 | 部分完成／停在不完整结果 | E1 1 有效/2 无效；E2a 1 有效/2 无效；E2b 3/3、E3 baseline 3/3 有效；E3 after trial1 无效（模型请求 EPROTO 后超时，至少 4 个会话请求重叠，因果未定）；独立复核同意全部分类；E3 baseline 3/3 与预测相反，只能发现退化；下一 E3 after trial2，剩余14次；E4–E6 未运行 |
-| AC4 中断与撤权后的记录保留 | 确定性通过／真实模型待验收 | Stop/撤权/作者退出两种提交顺序已补齐并通过 race；真实 Provider 中断摄取未由 seeded UI 或服务 fixture 代替 |
-| AC5 成员/队长/并行 memory 交接 | 确定性通过／真实模型待验收 | 双成员与 claim 前后来源、memory 冲突后的 refresh/new-intent merge 及双事实/作者版本保留均通过；模型理解和真实隔离接力仍单列 |
-| AC6 有界评论召回与 revision | 确定性通过 | 模型读取/理解仍属独立实验；普通评论是 live recall，不是启动预载 |
+| AC4 中断与撤权后的记录保留 | 原确定性门通过／审计重开／真实模型待验收 | Stop/撤权/作者退出两种提交顺序已补齐并通过 race；真实 Provider 中断摄取未由 seeded UI 或服务 fixture 代替。合入后 runtime 审计确认 REC-1–REC-4 未修复：一次非确定性 checkpoint 失败后本轮停止上传、恢复约 1 秒、outcome 后剩余块被 409 拒收；fallback 后旧 attempt 的块使整条流关闭；seal 原因一律 `authority_lost`；瞬时失败补齐后仍永久 partial |
+| AC5 成员/队长/并行 memory 交接 | 原确定性门通过／审计重开／真实模型待验收 | 双成员与 claim 前后来源、memory 冲突后的 refresh/new-intent merge 及双事实/作者版本保留均通过；模型理解和真实隔离接力仍单列。审计确认 ENV-1/ENV-2/ENV-4 未修复：实时 handoff 把最新 memory 标成“Started from”；接近 64 KiB 且含凭据样文本的委派脱敏后被截断，成员 run 永久无法启动；continuation 的唤醒原因一律 unknown |
+| AC6 有界评论召回与 revision | 原确定性门通过／审计重开 | 模型读取/理解仍属独立实验；普通评论是 live recall，不是启动预载。审计确认 RECALL-1/RECALL-2 未修复：runtime 评论召回没有作者显示名（父 PRD R4）；CLI spec 仍写读取只返回最新 200 条，召回契约未成文 |
 | AC7 非指令数据与凭据边界 | 确定性通过／真实模型待验收 | 八个新私有 handler 的40个凭据拒绝、7个正向对照及撤权后终止元数据通过；真实双账号 E5 未运行。RK1-H5 以 harness 数据库中测试创建的 owner/contributor 两个用户作为两个自控账号、使用一个 Provider 账号（会话 -87 记录的用户确认，`7e14213df`），未运行 |
 | AC8 经人确认的知识沉淀 | 原确定性门通过／审计缺陷修复中／真实模型另验 | 产品 `96cedf485`、证据 `93093d2e9` 已以 `8cb04e329` 合入，生产开关仍关闭。2026-11-01 会话 -14 审计记录 21 项缺陷（高 3），修复在分支 `codex/collaboration-knowledge-fixes-20261101` 进行、尚未合入；本矩阵未独立核实这些缺陷 |
-| AC9 可追溯证据与缺失范围 | 当前交付证据完成／外部门开放 | runtime 与知识源版本、完整测试、失败修正和独立审查已绑定；真实模型、Windows/安装组合/额度仍待验收 |
+| AC9 可追溯证据与缺失范围 | 当前交付证据完成／外部门开放 | runtime 与知识源版本、完整测试、失败修正和独立审查已绑定；真实模型、Windows/安装组合/额度仍待验收。合入后 runtime 只读审计（会话 -ef 执行，会话 -a8 复核入账）确认 9 项（中 5、低 4）、驳回 2 项，未运行测试，见 [审计记录](../10-30-collaboration-context-handoff-runtime/research/post-merge-audit-2026-11-01/README.md)；是否在 RK1 前修复待用户决定 |
 
 原始证据路径见 [机器可读矩阵](acceptance-2026-11-01.json)。runtime 已列 Go/TS/静态/浏览器门禁及审计补充矩阵全部通过；保留原始失败和复验，不把容器测试重复累计。
 
