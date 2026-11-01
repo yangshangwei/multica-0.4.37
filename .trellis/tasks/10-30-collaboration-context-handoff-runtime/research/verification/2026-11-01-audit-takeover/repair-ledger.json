@@ -9,8 +9,8 @@
     "server": "9891ce18df23b8461b6baa934eda212c17542f63",
     "packages": "11a28ae8d2a899915c83fc8d169d308474717e25"
   },
-  "state": "implemented_verified_pending_independent_review",
-  "independent_review": "owned by coordinator; not self-approved",
+  "state": "branch_quality_and_independent_review_passed_ready_local_merge",
+  "independent_review": "../2026-11-01-audit-independent/review.json; pass-with-notes; RV1 fixed58d486656 root16/16",
   "real_provider_launches": 0,
   "runtime_budget": {
     "approved_max_launches": 25,
@@ -165,5 +165,7 @@
     "startup_snapshot_encoding_changed": false,
     "protocol_default_budget_changed": false
   },
-  "integration_gate": "Do not count branch-local results as final merged-candidate acceptance. Coordinator review and source-bound final checks remain required."
+  "integration_gate": "Do not count branch-local results as final merged-candidate acceptance. Coordinator review and source-bound final checks remain required.",
+  "final_branch_service": "root-service-final-summary.json",
+  "rv1_product_sha": "58d486656e146237d5de08ccac62dc6b1ec5876b"
 }

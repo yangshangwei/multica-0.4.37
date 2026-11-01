@@ -21,14 +21,14 @@
   "children": [],
   "parent": "10-30-collaboration-context-handoff",
   "relatedFiles": [],
-  "notes": "2026-11-01：实现已交付，确定性/生产 Web/原生 macOS Electron/独立审查及精确矩阵补验通过。源码0e1ee8e1e、证据2b861347e、补验0bbc6a77a/84c4c2b3d。下一步完成新 runtime 真实实验的独立源码/框架/场景/预算登记，再按 E0→行为验收/E5/E6 执行；新预算未分配。原系列下一 E2a trial3，上限22次，保持独立。当前进度见 progress.md；完整行为验收未完成，不归档。",
+  "notes": "runtime全9项审计和5项召回复核已修复并独立pass-with-notes，RV1已另修复并统筹复验；最终分支service协作1668个含子用例通过、0失败/跳过。当前ready本地串行合入，最终合流联合验收尚未通过。RK1 runtime25/消耗0，原E3after trial2/剩14，知识默认false。",
   "meta": {
     "planning_progress": "reviewed_2026-10-31",
     "research_head": "4c833e737efb6c997e5cb56c74c43e9237c91956",
     "latest_verification": "verification-integration-2026-11-01.md",
     "integration_commit": "0e1ee8e1e",
     "integration_worktree": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
-    "deterministic_acceptance": "passed_2026_11_01",
+    "deterministic_acceptance": "historical_scope_passed; post_merge_audit_reopened_pending_fixes_and_joint_revalidation",
     "platform_acceptance": "production_web_and_native_macos_electron_6_of_6",
     "verification_report": "verification-integration-2026-11-01.md",
     "real_model_acceptance": "pending_separate_source_bound_runs",
@@ -36,8 +36,8 @@
     "current_acceptance_matrix": "../10-30-collaboration-context-handoff/acceptance-2026-11-01.json",
     "deterministic_addendum": "passed_0bbc6a77a_84c4c2b3d",
     "progress_file": "progress.md",
-    "progress_phase": "real_model_acceptance_preparation",
-    "next_action": "register_separate_source_framework_scenarios_budget_and_stop_rules_before_new_runtime_E0",
+    "progress_phase": "runtime_audit_independent_review_passed_ready_local_merge",
+    "next_action": "coordinator_serial_local_merge_then_final_combined_validation",
     "joint_current_addendum": {
       "commit": "65cd0599b",
       "source_head": "93afc3cb0",
@@ -47,6 +47,23 @@
       "strengthened_joint_items": 6,
       "production_changes": false,
       "real_provider_executed": false
-    }
+    },
+    "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
+    "resume_ledger": "../10-30-collaboration-context-handoff/execution-resume-2026-11-01.json",
+    "original_series_next": "E3 after trial 2; then E4 -> E5 -> E6; remaining cap 14; frozen source",
+    "rk1_runtime_budget": {
+      "approved_cap": 25,
+      "consumed": 0,
+      "includes_H2b": true,
+      "H6_launches_per_trial": 2
+    },
+    "runtime_audit_fixes": "research/verification/2026-11-01-audit-takeover/repair-ledger.json",
+    "runtime_audit_product_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+    "rk1_approved_launch_cap": 25,
+    "rk1_actual_launches": 0,
+    "original_experiment_remaining_cap": 14,
+    "original_experiment_next": "E3 after trial 2",
+    "runtime_audit_review": "pass-with-notes; RV1 fixed58d486656 and root16/16",
+    "runtime_full_service": "research/verification/2026-11-01-audit-takeover/root-service-final-summary.json"
   }
 }
