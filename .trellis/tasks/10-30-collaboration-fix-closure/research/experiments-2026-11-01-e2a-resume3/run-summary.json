@@ -15,8 +15,8 @@
   "invalid_attempts_this_continuation": 1,
   "initial_provider_call_cap": 22,
   "remaining_provider_call_cap": 14,
-  "stop_reason": "E3_member_scope after trial 1 incomplete: claude timed out after 5m0s with no API error text; first-incomplete stop rule applied.",
-  "window_deviation": "Launch check before E3 after printed that peer multica-0-4-37-87's transcript was written 29 s earlier; the launcher did not gate on it. 87 issued model requests from about 12:17 to 12:21 during this trial after its user answered a question. Overlap is recorded; causation is not established.",
+  "stop_reason": "E3_member_scope after trial 1 incomplete: after memory was written, the CLI hit an EPROTO TLS handshake failure (retry 1/10) and was killed at the 5-minute cap; first-incomplete stop rule applied.",
+  "window_deviation": "During this trial at least four other sessions had requests in flight (including multica-0-4-37-87 and multica-0-4-37-0b); during E3 baseline there were none. The launch check had shown 87 active 29 s earlier and the launch went ahead. This supports the environment classification; it does not establish the cause.",
   "next_scenario": "E3_member_scope",
   "next_arm": "after",
   "next_start_trial": 2,
@@ -187,5 +187,9 @@
       "unrun_provider_calls": 6
     }
   ],
-  "semantic_review": "Self-review by the launching session against the registered criteria; an independent review is still required."
+  "semantic_review": "Launching-session verdicts, independently reviewed in ../review-e2a-resume3-2026-11-01.md (2fc5c962c, session multica-0-4-37-0b); all valid/invalid classifications and 7 passes agreed.",
+  "interpretation": [
+    "E3 baseline is 3/3, contrary to the registered prediction of at most 2/3 before the fix. Both arms' fixtures supply dispatch_comment, so completing E3 after can only detect a regression, not an improvement.",
+    "E2a has one valid sample; its at-least-2/3 prediction cannot be tested."
+  ]
 }

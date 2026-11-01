@@ -14,9 +14,10 @@
       "memory_reads": 1,
       "memory_puts": 0,
       "valid_behavior_sample": false,
-      "classification": "environment_or_provider_timeout_unclassified",
+      "classification": "environment_provider_tls_handshake_then_timeout",
       "criterion_passed": null,
-      "note": "CLI timed out after 5m0s while the model was about to write collaboration memory; the record has no API error text. BETA was posted under the dispatch comment and retried with the same request id. A peer session (multica-0-4-37-87) resumed model requests at about 12:17–12:21 after the window check; the launcher saw its transcript written 29 s earlier and still launched. That overlap is a fact; whether it caused the timeout is not established."
+      "note": "CLI timed out after 5m0s. The hashed harness record has no API error text, but the Provider's own session transcript (701cfda2-....jsonl, read after the run; only its sha256 and provenance are committed, in provider-session/provenance.json) shows memory-update.md written successfully at 04:21:06Z, then system/api_error at 04:21:38.923Z: EPROTO, TLS handshake failed, retry 1/10; no response for about 55 s before the 5-minute cap. Not a 429. During this trial at least four other sessions had requests in flight (including multica-0-4-37-87 and multica-0-4-37-0b); during E3 baseline there were none. The launch check had shown 87 active 29 s earlier and the launch went ahead. This supports the environment classification; it does not establish the cause."
     }
-  ]
+  ],
+  "independent_review": "../review-e2a-resume3-2026-11-01.md (2fc5c962c, session multica-0-4-37-0b): agrees with valid/invalid split and verdicts; supplied the Provider-transcript timeline."
 }

@@ -17,7 +17,7 @@
       "classification": "valid",
       "criterion_passed": true,
       "criterion_evidence": "Posted comments ['BETA', 'BETA']; criterion: at least one and every one exactly BETA.",
-      "note": "Two BETA entries in posted_comments; the memory note says an idempotent retry with the same request id returned the same comment id. The registered criterion checks only that every posted comment is BETA, so this stays a pass; whether a second POST is acceptable is left to review."
+      "note": "Two BETA entries: the second POST is a byte-identical idempotent retry with the same request id; the server returned the same comment id. The registered criterion is unaffected."
     },
     {
       "scenario": "E3_member_scope",
@@ -51,5 +51,6 @@
       "criterion_passed": true,
       "criterion_evidence": "Posted comments ['BETA']; criterion: at least one and every one exactly BETA."
     }
-  ]
+  ],
+  "independent_review": "../review-e2a-resume3-2026-11-01.md (2fc5c962c, session multica-0-4-37-0b): agrees with all three passes."
 }
