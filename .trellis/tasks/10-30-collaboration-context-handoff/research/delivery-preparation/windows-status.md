@@ -43,3 +43,11 @@ Root cause: close unconditionally resumed withSIGCONT before stdin EOF. Windows-
 Verification: final canonical test bytes against the baseline fixture1pass/3fail (expected red); corrected4-case suite passes, combined17/17 no fail/skip; strict whole-journey TypeScript and YAML parse pass. Original red's expected rejection briefly produced an unhandled rejection in its fallback control; final canonical bytes attach it and the repeat red has no unhandled activity. Raw attempts are retained. Exact commands/source/log hashes: `windows-wd1-verification.json`.
 
 No DB/GUI/installer/Provider or nativeWindows execution. Independent coordinator recheck of WD-1 remains required before declaring the delivery branch review passed. All platform/account/final-candidate gates stay open.
+
+## WD-2 literal-percent renderer path follow-up
+
+WD-1 and the delivery branch were independently passed-with-notes at69bbc9cf0; `windows-next-fixes.md` assigned the remaining low-risk percent-path issue before final binding. Product `d0bdd96e5674a04f4ba6ae0ba5ee4f884bbc52b1` replaces the hand-built URL pathname with built-in `pathToFileURL(..., {windows})` under the repository Node22.23.2 toolchain. This deletes manual URL path conversion and adds no dependency or native platform support. NativeWindows/macOS use their path dialects; Linux Docker remains unchanged and nativeLinux remains refused.
+
+Canonical roundtrip coverage includes literal`%20` directories on both platforms plus rawpercent,`%2F`,hash andspace text. The final canonical test copied unchanged beside baseline helper fails4pass/1fail becauseRunner%20Temp decodes toRunner Temp. Fixed layout suite5/5, combined18/18 nofail/skip, strict whole-journeyTypeScript andsyntax/diff checks pass. The first red with a rawpercent also reportedURI malformed; both raw attempts remain. Machine record `windows-wd2-verification.json` binds source and log hashes. Independent reviewer files/probes were not modified.
+
+No DB, GUI, installer, PowerShell, Provider or externalCI action. WD-2 requires independent coordinator recheck; nativeWindows and final merged-source gates stay open.

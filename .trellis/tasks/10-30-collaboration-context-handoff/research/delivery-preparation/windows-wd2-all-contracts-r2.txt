@@ -1,0 +1,118 @@
+TAP version 13
+# Subtest: builds one isolated candidate journey from pinned source and explicit services
+ok 1 - builds one isolated candidate journey from pinned source and explicit services
+  ---
+  duration_ms: 2.008375
+  type: 'test'
+  ...
+# Subtest: refuses a baseline, persistent runner, unsupported host and mismatched source
+ok 2 - refuses a baseline, persistent runner, unsupported host and mismatched source
+  ---
+  duration_ms: 1.374625
+  type: 'test'
+  ...
+# Subtest: refuses escaped roots, foreign binaries, business databases and external endpoints
+ok 3 - refuses escaped roots, foreign binaries, business databases and external endpoints
+  ---
+  duration_ms: 0.85975
+  type: 'test'
+  ...
+# Subtest: the real driver refuses a non-disposable host before opening its private setup or launching a process
+ok 4 - the real driver refuses a non-disposable host before opening its private setup or launching a process
+  ---
+  duration_ms: 33.406125
+  type: 'test'
+  ...
+# Subtest: installed collaboration is a separate opt-in selecting only the Windows acceptance job
+ok 5 - installed collaboration is a separate opt-in selecting only the Windows acceptance job
+  ---
+  duration_ms: 0.446917
+  type: 'test'
+  ...
+# Subtest: prepares and always stops the same private collaboration services without uploading state
+ok 6 - prepares and always stops the same private collaboration services without uploading state
+  ---
+  duration_ms: 0.161584
+  type: 'test'
+  ...
+# Subtest: runs collaboration only after candidate installs and compiles the Host without TestMain
+ok 7 - runs collaboration only after candidate installs and compiles the Host without TestMain
+  ---
+  duration_ms: 0.841667
+  type: 'test'
+  ...
+# Subtest: Windows Host close delivers EOF and retains the graceful final summary without POSIX signals
+ok 8 - Windows Host close delivers EOF and retains the graceful final summary without POSIX signals
+  ---
+  duration_ms: 1.760292
+  type: 'test'
+  ...
+# Subtest: POSIX Host close still resumes a suspended daemon before EOF
+ok 9 - POSIX Host close still resumes a suspended daemon before EOF
+  ---
+  duration_ms: 0.116916
+  type: 'test'
+  ...
+# Subtest: Windows fallback remains bounded and an abrupt exit cannot become a graceful pass
+ok 10 - Windows fallback remains bounded and an abrupt exit cannot become a graceful pass
+  ---
+  duration_ms: 0.160958
+  type: 'test'
+  ...
+# Subtest: Windows suspend and resume helpers refuse before sending unsupported signals
+ok 11 - Windows suspend and resume helpers refuse before sending unsupported signals
+  ---
+  duration_ms: 0.178208
+  type: 'test'
+  ...
+# Subtest: Windows uses the installed EXE resources and bundled EXE with an encoded file URL
+ok 12 - Windows uses the installed EXE resources and bundled EXE with an encoded file URL
+  ---
+  duration_ms: 0.693
+  type: 'test'
+  ...
+# Subtest: macOS preserves the app Contents layout and encodes package names
+ok 13 - macOS preserves the app Contents layout and encodes package names
+  ---
+  duration_ms: 0.152209
+  type: 'test'
+  ...
+# Subtest: native renderer URLs round-trip literal percent sequences, hashes and spaces as filesystem text
+ok 14 - native renderer URLs round-trip literal percent sequences, hashes and spaces as filesystem text
+  ---
+  duration_ms: 3.977291
+  type: 'test'
+  ...
+# Subtest: native layouts reject unsupported platforms and paths outside a supported package shape
+ok 15 - native layouts reject unsupported platforms and paths outside a supported package shape
+  ---
+  duration_ms: 0.513958
+  type: 'test'
+  ...
+# Subtest: native homes use platform path rules and reject network or relative roots
+ok 16 - native homes use platform path rules and reject network or relative roots
+  ---
+  duration_ms: 0.406584
+  type: 'test'
+  ...
+# Subtest: native controller shutdown preserves a failed close command after its owned child exits
+ok 17 - native controller shutdown preserves a failed close command after its owned child exits
+  ---
+  duration_ms: 0.612417
+  type: 'test'
+  ...
+# Subtest: already closed controller does not send another command or touch Docker
+ok 18 - already closed controller does not send another command or touch Docker
+  ---
+  duration_ms: 0.059125
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 77.781417
