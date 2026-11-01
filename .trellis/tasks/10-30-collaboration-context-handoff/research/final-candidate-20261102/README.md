@@ -1,5 +1,8 @@
 # 最终联合候选（验证进行中）
 
+最新入口：bundle夹具修复经独立pass-with-notes以`231a08063`合入；第二轮全新候选已固定并开始完整make check，状态与指纹见 `attempt-2-registration.json`。第一轮失败保持原判，不覆盖现场。
+
+
 当前结果：**第1次完整检查失败（make exit2；Go包exit1），不是验收通过**。15项静态检查、13082项TS通过；collaborationrun包345pass/2fail，失败为bundle快照valid及父用例。原始日志、21个包的独立库与结果哈希均保留，后续API/Web/E2E阶段未到达。见 `attempt-1-result.json`。当前在独立分支诊断测试fixture的路径权限前提，生产拒绝策略不应放宽。
 
 

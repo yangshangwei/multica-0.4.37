@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T19:09:46.858337+00:00",
+  "updated_at": "2026-11-01T19:22:27.630262+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -356,7 +356,7 @@
   },
   "parent_status": "in_progress",
   "integration_snapshot": {
-    "head": "7f8ca87252b53f16041485ac867e501962377802",
+    "head": "231a08063162acde63ebcabe2ef6a353f7a62bca",
     "branch": "codex/cross-workspace-collaboration",
     "read_only_tracking_ahead": 200,
     "origin_fetched": false,
@@ -366,7 +366,8 @@
       "rk1_framework": "30fa31eb7034200f74412556d61b3378bd13c1df",
       "delivery_preparation": "c3db64b24fea7116622d106ce2231853e1be72f9",
       "native_origin_preparation": "7435b04ec482554f3809ee97e89d6a3aab636919",
-      "e2e_contract_maintenance": "7f8ca87252b53f16041485ac867e501962377802"
+      "e2e_contract_maintenance": "7f8ca87252b53f16041485ac867e501962377802",
+      "bundle_fixture": "231a08063162acde63ebcabe2ef6a353f7a62bca"
     },
     "scope": "Reviewed repair and E2E maintenance integration; frozen final candidate verification running, not accepted"
   },
@@ -420,14 +421,13 @@
     "ledger": "research/e2e-contract-maintenance/acceptance-ledger.json"
   },
   "final_candidate": {
-    "sha": "7f8ca87252b53f16041485ac867e501962377802",
-    "state": "attempt1_failed_not_accepted",
-    "registration": "research/final-candidate-20261102/registration.json",
+    "sha": "231a08063162acde63ebcabe2ef6a353f7a62bca",
+    "state": "complete_check_running_not_accepted",
+    "registration": "research/final-candidate-20261102/attempt-2-registration.json",
+    "source_id": "da858e4596a4f04a0a69e5cd01f33b8fccf4bab0d3bac0e11dc5c04b899bda14",
     "clean_at_start": true,
-    "source_id": "6ddb9c301999c6ebb7fb37e962c9f29473809f38a788623838491ba8f552c739",
     "paid_runnable": false,
     "real_provider_consumed": 0,
-    "result": "research/final-candidate-20261102/attempt-1-result.json",
-    "actual_make_exit_code": 2
+    "previous_failed_candidate": "7f8ca8725; attempt-1-result.json"
   }
 }
