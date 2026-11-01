@@ -19,7 +19,7 @@
     {"id": "RK1-H2", "trials": 3, "launches": 3},
     {"id": "RK1-H3a", "trials": 3, "launches": 3},
     {"id": "RK1-H3b", "trials": 3, "launches": 3},
-    {"id": "RK1-H5", "trials": 3, "launches": 3, "account_assumption": "The two self-controlled accounts are test-created owner and contributor users in the harness database; one Provider account is used. Pending user confirmation; if two Provider accounts are required, H5 stays unrun."},
+    {"id": "RK1-H5", "trials": 3, "launches": 3, "accounts": "The two self-controlled accounts are the test-created owner and contributor users in the harness database; one Provider account is used. Confirmed by the user in session multica-0-4-37-87 at 2026-11-01T05:21:17Z."},
     {"id": "RK1-H6", "trials": 3, "launches": 6, "note": "Counted as pairs; hop2 runs in a different agent target, working directory and ledger with no --resume."}
   ],
   "order": ["RK1-E0a", "RK1-H1", "RK1-H2", "RK1-H3a", "RK1-H3b", "RK1-H5", "RK1-H6"],
