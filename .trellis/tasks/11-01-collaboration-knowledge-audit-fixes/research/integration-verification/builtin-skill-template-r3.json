@@ -1,0 +1,22 @@
+{
+  "base_sha": "45efa093c",
+  "scope": "Builtin skill entry formatting/reference disclosure only; semantics retained",
+  "command": "guarded go test ./internal/service -run ^TestBuiltinSkillsConformToTemplate$ -parallel=2 -count=1 -json",
+  "exit_code": 0,
+  "counts": {
+    "run": 10,
+    "pass": 10,
+    "fail": 0,
+    "skip": 0
+  },
+  "log_sha256": "e4559834abbb417a97a2efda9f0b1eba7c9ee046ae4d6eeaefa39896f9ba0626",
+  "prior_failures": [
+    "full service original skill502 lines",
+    "r2 reducedto501, stillrealtemplatefailure"
+  ],
+  "final_body_limit": 500,
+  "reference_preserves_preview_rule": "references/collaboration-workflow.md lines211-213",
+  "skill_sha256": "479c5e3eaf3a7e7a5b707061892d8494f3c0646328002fdd8e71c93a984555fa",
+  "database_access": "none in this selected template test; explicit existing task DB env was still set",
+  "independent_delta_review": "pending"
+}

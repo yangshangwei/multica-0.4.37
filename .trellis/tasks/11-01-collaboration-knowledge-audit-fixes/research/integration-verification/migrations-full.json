@@ -1,0 +1,50 @@
+{
+  "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+  "server_tree": "6822fc3013dc4757257a2652af227d78ed4031cd",
+  "working_diff_sha256": "551eba8057f1fadbe5a13977901fded3b980eed0d46e48482598e14373af679c",
+  "database": "kfix_joint_migrations_20261102_0125",
+  "identity": "kfix_joint_migrations_20261102_0125|763_collaboration_knowledge_delivery_history",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/migrations",
+    "-parallel=2",
+    "-count=1",
+    "-json",
+    "-timeout=40m"
+  ],
+  "state": "complete",
+  "started_at": "2026-11-01T17:14:06.919708+00:00",
+  "real_provider_allowed": false,
+  "exit_code": 1,
+  "finished_at": "2026-11-01T17:14:36.054265+00:00",
+  "counts": {
+    "run": 536,
+    "pass": 523,
+    "fail": 13,
+    "skip": 0
+  },
+  "failures": [
+    "TestKnowledgeQueriesCorrectionCASAndAtomicReplacement",
+    "TestKnowledgeQueriesTargetInitializationIsBoundedAndCannotResurrect",
+    "TestKnowledgeQueriesParentLocksKeepOrdinaryEditsIndependent",
+    "TestKnowledgeQueriesScanAndHintsRetainRoutingAcrossRollback",
+    "TestKnowledgeSchemaFreshReapplyAndEmptyDown",
+    "TestKnowledgeSchemaImmutableVersionsAndSingleApproval",
+    "TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation/negotiation",
+    "TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation/delivery",
+    "TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation/scan",
+    "TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation/hint",
+    "TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation/uncommitted",
+    "TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation",
+    "TestKnowledgeSchemaTaskMetadataBoundary",
+    "github.com/multica-ai/multica/server/internal/migrations"
+  ],
+  "log_sha256": "ed5b1b0026537b1ded380360e0b5e92cca8ea29f69c9e491f115cebb3c2e3b17",
+  "process_exit_code": 1
+}
