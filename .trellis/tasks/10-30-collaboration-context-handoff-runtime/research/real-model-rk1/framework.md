@@ -78,3 +78,11 @@ fake 中的 smoke/report 答案是场景指定常量；其他主要行为从实�
 ## 2026-11-02 统筹续作
 
 框架产品已提交`af04f6429`。统筹在第二个新分配cmd/server任务库运行当前框架race，退出1：H2/H2b的seed_member及H3a/H3b测量run出现`handoff_or_recording_event_missing`，原始记录和逐项结果见`fake-proof/root-race-r2-summary.json`。这是当前旧产品分支的真实incomplete，未放宽断言，未追加付费调用。runtime修复现已在主集成`9e7f18785`合入，框架将吸收这个中间版本重验fake；最终源码绑定仍须等知识及交付合流，`runnable=false`。
+
+## 独立复核必修项的处置（2026-11-02）
+
+原changes-required报告完整保留在`independent-review/review.md/json`。RKI-1/2由`62bd98eb9`修复：空/部分trial的exit0不能完成invocation，保存缺失/异常trial身份并触发停止；配置目录、目录内容和路由/账号profile选择器只保存指纹并冻结缺失状态。scratch启动器37项通过。RKI-3/4由`4229e2d18`修复，证据`ff3532ee1`：Provider实际executionexit与证据publication状态分开，sync/close/final-record故障使样本incomplete并保留一启动、不执行trial2；H1/H2严格两/三行，允许一个末尾换行，拒绝额外prose/空行。新fake故障路径normal/race各18项、stdlib合同normal11和race22项通过，来源/命令/原始日志哈希见`RKI3-RKI4-verification.json`。登记hash已刷新，但`runnable=false`、最终sourceid为空。
+
+这些修复尚需独立增量复核，不会把旧fake/race不完整样本改为通过。最终合流源码必须重跑fake并重新绑定；付费Provider调用仍为0。
+
+独立增量复核已完成：`independent-review/recheck-review.md/json`为pass-with-notes，RKI-1–5关闭。RKI-6最终同候选全场景fake/race、最终指纹登记和独占真实窗口仍开放。原changes-required及所有旧失败原字节保留。

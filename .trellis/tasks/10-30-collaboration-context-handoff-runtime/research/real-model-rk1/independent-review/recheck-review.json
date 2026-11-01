@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/rk1_independent_review",
+  "head": "ff3532ee10905701454a16a2653a1a8454a91ba0",
+  "reviewed_at": "2026-11-01T17:26:19.266349+00:00",
+  "verdict": "pass-with-notes",
+  "scope": "RKI1-5 required code fix delta only; not final acceptance",
+  "product_modified": false,
+  "database_operations": false,
+  "provider_calls": 0,
+  "closed": [
+    "RKI-1",
+    "RKI-2",
+    "RKI-3",
+    "RKI-4"
+  ],
+  "registration_hashes_match": true,
+  "runnable": false,
+  "final_source_id": "",
+  "blocking_delta_findings": [],
+  "open_gates": [
+    "RKI-6 final same-candidate all-scenario fake/race",
+    "knowledge/delivery integration",
+    "clean final source/framework/CLI/configuration/artifact fingerprints",
+    "exclusive paid window",
+    "account/platform evidence separate"
+  ],
+  "source_mismatches": [],
+  "source_binding": "recheck-source-binding.json",
+  "checks": [
+    {
+      "command": [
+        "python3",
+        ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/check_launcher.py"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-11-01T17:25:10.608328+00:00",
+      "finished_at": "2026-11-01T17:25:16.387516+00:00",
+      "log_sha256": "d6b75a57a1476cc7ae341b8fec489455afade7f3396fc58f874a4d1a2215f0f3",
+      "OK": 37,
+      "BAD": 0
+    },
+    {
+      "command": [
+        "env",
+        "-u",
+        "DATABASE_URL",
+        "-u",
+        "MULTICA_RUN_REAL_AGENT_SMOKE",
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server/cmd/server",
+        "test",
+        "-tags=agentintegration",
+        "rk1_evidence_publication_test.go",
+        "rk1_evidence_format_test.go",
+        "rk1_evidence_contract_unit_test.go",
+        "-count=1",
+        "-json"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-11-01T17:25:16.388062+00:00",
+      "finished_at": "2026-11-01T17:25:17.618217+00:00",
+      "log_sha256": "b72e139d781902c3728131f28b299a923cd3b5ab6a6e39d5991025ba71ebe8d3",
+      "counts": {
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "env",
+        "-u",
+        "DATABASE_URL",
+        "-u",
+        "MULTICA_RUN_REAL_AGENT_SMOKE",
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server/cmd/server",
+        "test",
+        "-race",
+        "-tags=agentintegration",
+        "rk1_evidence_publication_test.go",
+        "rk1_evidence_format_test.go",
+        "rk1_evidence_contract_unit_test.go",
+        "-count=2",
+        "-json"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-11-01T17:25:17.618928+00:00",
+      "finished_at": "2026-11-01T17:25:19.738293+00:00",
+      "log_sha256": "76573e29fe57abeb6de91ba0dbae262dc6bd8f196094583794a78366ba62f80d",
+      "counts": {
+        "pass": 22,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "-tags=agentintegration",
+        "./cmd/server"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-11-01T17:25:19.742791+00:00",
+      "finished_at": "2026-11-01T17:25:20.236795+00:00",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    }
+  ],
+  "additional_evidence": {
+    "recheck-config-facts.json": "600806c73e52eec18d40bfb9c0686d7576a10a79475ce686952fe6e539a9b787",
+    "recheck-manifest-hashes.json": "eda4b0a2827d2feb478b6fda662c96871b200be2baccb0d02059d46171068e8d"
+  },
+  "report_sha256": "ba277c6fb97ebc85f0b2c0be19e3fcd90a9ad5ab1bea791a7af2f63ca80accb0"
+}

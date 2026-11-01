@@ -1,0 +1,3 @@
+# READY: explicit root-owned database permit
+
+Root created, migrated and verified `multica_rk1_evidence_root_20261102_0125` through760. Private URL/scope .omx/private/rk1-evidence-root-20261102/db-permission.json. Only guarded cmd/server selection`^(TestRK1Evidence.*|TestRK1HandoffAnswersRequireTheirExactLineCounts)$` normal/race isauthorized. All realgatesunset; localfakeonly. `RK1_EVIDENCE_FAULT_PROOF_OUT` may be the newprivateabsolute `.omx/private/rk1-evidence-root-20261102/evidence-proof` (rootcreatedonlyparent, childmustnotreuseexistingfailedout). No migration/create/drop/otherDB commands. Preserve each normal/raceattempt output separately; rawledgers/privateevidence neverGit. Finalcombinedfake isseparate.

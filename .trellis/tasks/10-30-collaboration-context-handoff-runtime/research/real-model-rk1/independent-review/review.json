@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/rk1_independent_review",
+  "head": "4b508179f3e6197f170a99acd4df42d567e7ba1b",
+  "server_tree": "3c4dfefaa430ac3f9b044a0788a7fe052036f418",
+  "verdict": "changes-required",
+  "product_modified": false,
+  "database_operations": false,
+  "provider_calls": 0,
+  "reviewed_at": "2026-11-01T17:00:59.648793+00:00",
+  "source_hashes_unchanged": true,
+  "source_mismatches": [],
+  "blocking_findings": [
+    {
+      "id": "RKI-1",
+      "severity": "high",
+      "file": "run_rk1.py",
+      "line": 317,
+      "finding": "executor exit0 with no executed trial is saved successful and permits a later retry",
+      "evidence": "no-trial-probe.txt"
+    },
+    {
+      "id": "RKI-2",
+      "severity": "medium",
+      "file": "run_rk1.py",
+      "line": 200,
+      "finding": "effective inherited config selectors and selected root are not frozen by operator_facts",
+      "evidence": "config-fingerprint-probe.txt"
+    },
+    {
+      "id": "RKI-3",
+      "severity": "medium",
+      "file": "server/cmd/server/rk1_provider_test.go",
+      "line": 115,
+      "finding": "stdout sync/close and final launch publication errors are ignored",
+      "evidence": "direct control-flow inspection; storage fault not injected"
+    }
+  ],
+  "notes": [
+    {
+      "id": "RKI-4",
+      "finding": "H1/H2 exact format prose differs from actual regex scoring",
+      "evidence": "format-probe-final.txt"
+    },
+    {
+      "id": "RKI-5",
+      "finding": "launcher regression hash stale",
+      "registered": "adc770e05ea7e65ceea8046ca54e76051a0a3e5e2c241e8a8d03d4aa21407c31",
+      "actual": "4ddcab0f6bd5182a48d3bfcd2206746629950acaf238ce73001d3627a2e613a0",
+      "independent_cases": 31
+    },
+    {
+      "id": "RKI-6",
+      "finding": "runtime-fixed parent fake/race still failed",
+      "evidence": "../fake-proof/runtime-fixed-race.json",
+      "exit_code": 1,
+      "pass": 42,
+      "fail": 2,
+      "skip": 1
+    }
+  ],
+  "checks": [
+    {
+      "command": [
+        "python3",
+        ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/check_launcher.py"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-11-01T16:56:53.893658+00:00",
+      "finished_at": "2026-11-01T16:56:59.634008+00:00",
+      "log_sha256": "11285337c8090cb8df19c7bfd4ae523b9a9131dbdf936855e832b6d7e2062a92"
+    },
+    {
+      "command": [
+        "python3",
+        "-c",
+        "import ast,pathlib; [ast.parse(pathlib.Path(p).read_text()) for p in [\".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py\", \".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/check_launcher.py\"]]; print(\"Python AST parse PASS\")"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-11-01T16:57:58.482036+00:00",
+      "finished_at": "2026-11-01T16:57:58.507802+00:00",
+      "database_commands": false,
+      "provider_calls": 0,
+      "log_sha256": "bdeebe78e0c7c9424498e37d0c7a744b099bde5f42f578fb28df00f9dc5cec0a"
+    },
+    {
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "-tags=agentintegration",
+        "./cmd/server"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-11-01T16:57:58.508081+00:00",
+      "finished_at": "2026-11-01T16:58:02.883251+00:00",
+      "database_commands": false,
+      "provider_calls": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "probe_sha256": {
+    "no-trial-probe.py": "cdc75d5b323abdc74ac002684b5ffe8871d8db1f4008666578495fa07287f70a",
+    "no-trial-probe.txt": "80c89832bd3b6980dde13a2513b2704bc9d869c7cbfd80ba2ce8f8f2c036c70b",
+    "config-fingerprint-probe.py": "8e76163143035e1849f5ac36526287fc64c042f2ba9b719fabb3c5a2436b77df",
+    "config-fingerprint-probe.txt": "376782805307e003b19f0648a370cbea3075527927363cbc3cbc521d345eac42",
+    "format-probe.py": "2baba8883e7fa9a1a7fe55c49b27c39a4fd38b4768412fb4072d822388ca5f7c",
+    "format-probe-final.txt": "182126709f741841a944ba3db9cff11e70fc86e81eb060b77cc9dcaec63eec15"
+  },
+  "review_md_sha256": "158a71ad20331f6bd3f718ca88e35434b19430966162d3770022e2d6e5b046d6"
+}

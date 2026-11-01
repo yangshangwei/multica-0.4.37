@@ -1,0 +1,31 @@
+{
+  "command": [
+    "env",
+    "-u",
+    "DATABASE_URL",
+    "-u",
+    "MULTICA_RUN_REAL_AGENT_SMOKE",
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server/cmd/server",
+    "test",
+    "-tags=agentintegration",
+    "rk1_evidence_publication_test.go",
+    "rk1_evidence_format_test.go",
+    "rk1_evidence_contract_unit_test.go",
+    "-count=1",
+    "-json"
+  ],
+  "exit_code": 0,
+  "started_at": "2026-11-01T17:25:16.388062+00:00",
+  "finished_at": "2026-11-01T17:25:17.618217+00:00",
+  "log_sha256": "b72e139d781902c3728131f28b299a923cd3b5ab6a6e39d5991025ba71ebe8d3",
+  "counts": {
+    "pass": 11,
+    "fail": 0,
+    "skip": 0
+  }
+}
