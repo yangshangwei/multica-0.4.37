@@ -29,6 +29,9 @@ review interaction. Private server data belongs only in TanStack Query.
   `KNOWLEDGE_REFERENCE_MAX_BYTES` (2048) and `KNOWLEDGE_REASON_MAX_BYTES` (1000)
   are the UTF-8 limits the schemas enforce, matching the server's `octet_length`
   checks. Views compare them with `collaborationTextByteLength`.
+- `dismissKnowledgeOperation(scope, identity, storage?)` removes one stored
+  recovery identity locally; it throws `CollaborationUnavailableError` for another
+  or obsolete scope and `KnowledgeRecoveryStorageError` when removal fails.
 
 ## 3. Contracts
 
@@ -104,7 +107,11 @@ no prior stored identity, prior dispatch or overlap. Human text may then be edit
 and a new intent explicitly created; `cleanupFailed` separately reports local
 removal failure. Prior uncertainty survives later 4xx, storage errors and missing
 GET results. `idempotency_conflict`, malformed/unknown errors, 5xx and stale-auth
-responses do not prove non-application.
+responses do not prove non-application. Only an explicit human
+`dismissKnowledgeOperation` removes a stored identity without a receipt: it checks
+the current scope, sends nothing, keeps in-memory attempt counts and projections,
+and is not evidence of non-application. A late original write still lands
+idempotently on the server and appears in the normal lists.
 
 `KnowledgeReceiptCleanupError` carries an already validated content-free receipt.
 Apply its known success/refusal, release the completed intent, and report local
@@ -122,7 +129,8 @@ storage. Elapsed proposal expiry never rewrites a preserved request.
 | Restricted row | Only current server-granted withdrawal; no rejection/body/source access |
 | Lease expiry, refresh failure or authority transition | Erase body first; late responses cannot restore it |
 | No prior attempt + proven unsealed refusal | `KnowledgeUnusedIntentError`; permit explicit editing/new intent |
-| Prior uncertain attempt + later refusal/not-found | Preserve original intent and recovery identity |
+| Prior uncertain attempt + later refusal/not-found | Preserve original intent and recovery identity until explicit human local removal |
+| Human removal of a stored identity | Remove that exact key only; no request or projection expiry; other scopes refused; a later same-key retry stays uncertain |
 | Known receipt + local removal failure | `KnowledgeReceiptCleanupError`; retain known result, GET-only recovery |
 
 ## 5. Good / base / bad cases
@@ -142,8 +150,8 @@ private logs and explicit target headers. Realtime knowledge/provider tests own
 socket binding and teardown. Assert monotonic delay/skew, identical boundary
 pagination, late-body denial, exact UTF-8 source hashes, exported byte-limit
 boundaries, overlapping/previous dispatch, no-write versus known-receipt cleanup,
-and absence of private fields in storage. Shared UI tests consume those contracts
-rather than repeat the matrices.
+explicit local removal, and absence of private fields in storage. Shared UI tests
+consume those contracts rather than repeat the matrices.
 
 ## 7. Wrong vs correct
 

@@ -371,6 +371,36 @@ it("recovering a request whose candidate is not in this panel does not open it h
   expect(api.getCollaborationKnowledgeOperation).toHaveBeenCalledWith(recovered.candidate_id, key);
 });
 
+// L12: every panel lists every stored request of this viewer; knowledge-actions.test.ts owns dismissKnowledgeOperation's contract.
+it("lets a human remove a stored identity only after a check finds no result, without any request", async () => {
+  const send = vi.spyOn(api, "approveCollaborationKnowledge").mockRejectedValue(new TypeError("Lost response"));
+  const first = mount(); await openReview(); await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
+  await userEvent.click(screen.getByRole("button", { name: "Approve exact version" }));
+  await screen.findByRole("button", { name: "Retry same request" });
+  await userEvent.click(screen.getByRole("button", { name: "Check original result" }));
+  await screen.findByText(/No confirmed result yet/);
+  // The panel's own in-memory intent is never dismissable.
+  expect(screen.queryByRole("button", { name: "Remove local entry" })).not.toBeInTheDocument();
+  first.unmount(); mount();
+  await screen.findByText("Unresolved knowledge request");
+  expect(screen.getByText("Requests started from other collaborations or destinations are listed here too.")).toBeInTheDocument();
+  // No check has run in this mount yet.
+  expect(screen.queryByRole("button", { name: "Remove local entry" })).not.toBeInTheDocument();
+  await userEvent.click(screen.getByRole("button", { name: "Check original result" }));
+  await screen.findByText(/No confirmed result yet/);
+  const dismiss = await screen.findByRole("button", { name: "Remove local entry" });
+  expect(dismiss).toHaveAccessibleDescription(/only deletes the recovery entry on this device\. It does not cancel the request/);
+  const remove = vi.spyOn(Storage.prototype, "removeItem").mockImplementationOnce(() => { throw new Error("storage locked"); });
+  await userEvent.click(dismiss);
+  await screen.findByText("The local recovery entry could not be removed.");
+  expect(readPendingKnowledgeOperations(scope)).toHaveLength(1); expect(screen.getByText("Unresolved knowledge request")).toBeInTheDocument();
+  await userEvent.click(screen.getByRole("button", { name: "Remove local entry" }));
+  await waitFor(() => expect(screen.queryByText("Unresolved knowledge request")).not.toBeInTheDocument());
+  expect(screen.queryByText("The local recovery entry could not be removed.")).not.toBeInTheDocument();
+  expect(readPendingKnowledgeOperations(scope)).toEqual([]); expect(remove).toHaveBeenCalledTimes(2);
+  expect(send).toHaveBeenCalledOnce(); expect(api.getCollaborationKnowledgeOperation).toHaveBeenCalledTimes(2);
+});
+
 // L8: submit joins a list refresh instead of blaming the source; each failure stage reports its own cause.
 const sourceChangedText = "A selected source is unavailable. Review the selection and try again.";
 function holdSourceList(page: () => ReturnType<typeof sourcePage>) {

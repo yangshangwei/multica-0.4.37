@@ -2,7 +2,8 @@
 
 import { useId, useRef, useState } from "react";
 import { useMutation, useQueryClient, type UseQueryResult } from "@tanstack/react-query";
-import { CollaborationUnavailableError, KnowledgeRecoveryStorageError, KnowledgeUnusedIntentError, KnowledgeReceiptCleanupError, executeKnowledgeIntent, readPendingKnowledgeOperations, recoverKnowledgeOperation,
+import { CollaborationUnavailableError, KnowledgeRecoveryStorageError, KnowledgeUnusedIntentError, KnowledgeReceiptCleanupError, dismissKnowledgeOperation, executeKnowledgeIntent,
+  readPendingKnowledgeOperations, recoverKnowledgeOperation,
   useCollaborationKnowledgeCandidates, useCollaborationKnowledgeTarget, useCollaborationScope,
   type AuthorizedKnowledgeProjection, type CollaborationIssue, type CollaborationKnowledgeCandidates, type CollaborationKnowledgeTargetList,
   type CollaborationKnowledgeReceipt, type CollaborationScope, type KnowledgeIntent, type KnowledgeOperationIdentity, type KnowledgePageOptions } from "@multica/core/collaboration";
@@ -44,6 +45,8 @@ function KnowledgeCollection({ scope, issue, query, page, setPage, sourceView, r
   const [feedback, setFeedback] = useState<{ text: string; failed: boolean } | null>(null);
   const [settledRequests, setSettledRequests] = useState<string[]>([]), [cleanupFailed, setCleanupFailed] = useState(false);
   const [openedElsewhere, setOpenedElsewhere] = useState(false);
+  // Stored requests whose check in this mount settled nothing; only these may be removed locally.
+  const [unconfirmed, setUnconfirmed] = useState<string[]>([]);
   // These are client-generated identities only, never a second server projection.
   let pending: KnowledgeOperationIdentity[] = [], storageError = false;
   try { pending = readPendingKnowledgeOperations(scope); } catch { storageError = true; }
@@ -95,10 +98,25 @@ function KnowledgeCollection({ scope, issue, query, page, setPage, sourceView, r
     try { settled(await mutation.mutateAsync({ identity }), owner); }
     catch (error) {
       if (error instanceof KnowledgeReceiptCleanupError) { settled(error.receipt, owner); setCleanupFailed(true); }
-      else setFeedback({ text: t(($) => $.knowledge.notFound), failed: true });
+      else {
+        setFeedback({ text: t(($) => $.knowledge.notFound), failed: true });
+        setUnconfirmed((currentRequests) => [...new Set([...currentRequests, identity.requestId])]);
+      }
     }
     finally { busy.current = false; setRevision((value) => value + 1); }
   }
+  /** Removes only the local pointer; no request, and never a claim that the server did not apply it. */
+  function dismiss(identity: KnowledgeOperationIdentity) {
+    if (busy.current || mutation.isPending || intent?.requestId === identity.requestId) return;
+    try {
+      dismissKnowledgeOperation(scope, identity);
+      setUnconfirmed((currentRequests) => currentRequests.filter((requestId) => requestId !== identity.requestId));
+      setFeedback(null);
+    } catch { setFeedback({ text: t(($) => $.knowledge.dismissFailed), failed: true }); }
+    finally { setRevision((value) => value + 1); }
+  }
+  // The panel's own in-memory intent is never dismissable; it still has Retry and Check.
+  const dismissable = (identity: KnowledgeOperationIdentity) => unconfirmed.includes(identity.requestId) && intent?.requestId !== identity.requestId;
   return <section id={issue ? "knowledge" : undefined} aria-labelledby={`${id}-title`} className="min-w-0 space-y-5 rounded-md border border-border p-4 sm:p-5 pointer-coarse:[&_button]:min-h-11">
     <div className="flex flex-wrap items-start justify-between gap-3"><div className="min-w-0 space-y-2"><h3 id={`${id}-title`} className="text-body font-semibold">{issue ? t(($) => $.knowledge.title) : t(($) => $.knowledge.managed)}</h3>
       <p className="max-w-prose text-caption text-muted-foreground">{issue ? t(($) => $.knowledge.intro) : t(($) => $.knowledge.managedIntro)}</p></div>
@@ -108,11 +126,14 @@ function KnowledgeCollection({ scope, issue, query, page, setPage, sourceView, r
     {openedElsewhere && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.knowledge.openedElsewhere)}</p>}
     {cleanupFailed && <p role="alert" className="text-caption text-muted-foreground">{t(($) => $.knowledge.recoveryCleanupFailed)}</p>}
     {storageError && <p role="alert" className="text-body text-destructive">{t(($) => $.knowledge.recoveryReadError)}</p>}
-    {pending.length > 0 && <div className="space-y-3"><h4 className="text-body font-medium">{t(($) => $.knowledge.pendingTitle)}</h4>
+    {pending.length > 0 && <div className="space-y-3"><div className="space-y-1"><h4 className="text-body font-medium">{t(($) => $.knowledge.pendingTitle)}</h4>
+      <p className="max-w-prose text-caption text-muted-foreground">{t(($) => $.knowledge.pendingScope)}</p></div>
       {pending.map((identity) => <div key={identity.requestId} className="flex min-w-0 flex-wrap items-center gap-2"><span className="text-caption text-muted-foreground [overflow-wrap:anywhere]">{t(($) => $.knowledge.request, { id: identity.requestId })}</span>
         <Button type="button" variant="outline" size="sm" disabled={mutation.isPending} onClick={() => void recover(identity)}>{t(($) => $.knowledge.recover)}</Button>
         {intent?.requestId === identity.requestId && <Button type="button" variant="outline" size="sm" disabled={mutation.isPending} onClick={() => void submit(intent)}>{t(($) => $.knowledge.retry)}</Button>}
+        {dismissable(identity) && <Button type="button" variant="outline" size="sm" disabled={mutation.isPending} aria-describedby={`${id}-dismiss-hint`} onClick={() => dismiss(identity)}>{t(($) => $.knowledge.dismiss)}</Button>}
       </div>)}
+      {pending.some(dismissable) && <p id={`${id}-dismiss-hint`} className="max-w-prose text-caption text-muted-foreground">{t(($) => $.knowledge.dismissHint)}</p>}
     </div>}
     {!current && <div className="space-y-3"><p role={query.error ? "alert" : "status"} className="text-body text-muted-foreground">{query.error instanceof CollaborationUnavailableError ? t(($) => $.knowledge.unavailable) : query.error ? t(($) => $.knowledge.loadError) : t(($) => $.knowledge.loading)}</p>
       {query.error && <Button type="button" variant="outline" onClick={() => { setPage({}); void query.refetch(); }}>{t(($) => $.knowledge.refresh)}</Button>}</div>}

@@ -108,6 +108,15 @@ from its own knowledge list. Only a proposal receipt for the panel's in-memory
 intent closes the proposal form; a decision receipt or a recovered stored
 identity leaves an open draft unchanged.
 
+Stored identities and receipts name no source or target, so every panel lists all
+unresolved identities of the current server/viewer and says so under the list
+title. After a check in this mount returns no confirmed result (a 404 proves
+nothing, and a 403 after credential loss may never clear), a stored identity that
+is not the panel's in-memory intent offers **Remove local entry** with a caption
+saying it does not cancel the request. It calls Core `dismissKnowledgeOperation`:
+it deletes only that local identity, sends nothing and does not claim the request
+was never applied. A removal failure keeps the row and shows its own error.
+
 ## 4. Validation & error matrix
 
 | Condition | UI behavior |
@@ -120,7 +129,8 @@ identity leaves an open draft unchanged.
 | Lease erasure or unchanged refetch during review | Hide body and controls; restore the same checkbox/reason when the same tuple returns |
 | Source unavailable but pending rejection granted | Show safe audit/reject controls without material |
 | Target-only restricted row | Withdrawal only; no hidden-source navigation |
-| Unknown delivery or missing recovery result | Original intent stays unresolved; no replacement request |
+| Unknown delivery or missing recovery result | Original intent stays unresolved; no replacement request; a stored identity is removed locally only by explicit human action after a check |
+| Stored identity after a check in this mount settled nothing | Offer local removal (never for the panel's own in-memory intent); no request; failure keeps the row |
 | Known result but local cleanup failed | Show known outcome plus cleanup notice; no repeat POST |
 | Lease/hint/access clears current Query | Remove body immediately, including an open review |
 | Decision or recovered older request settles while a draft is open | Keep the draft; select only an owned candidate, otherwise point to its own list |
@@ -139,9 +149,10 @@ identity leaves an open draft unchanged.
 original-intent recovery, changed-review reset, unchanged-refresh retention of
 decision input, draft isolation from decision and recovery receipts, recovery
 ownership, submit during list refresh with staged error attribution, byte-limit
-attribution for proposal fields and decision reason, safe audit facts, independent
-source choices, external-handler catalog avoidance, correction/derivation and
-restricted withdrawal. Existing page tests assert mount identities; locale
+attribution for proposal fields and decision reason, pending-scope caption and
+post-check local removal, safe audit facts, independent source choices,
+external-handler catalog avoidance, correction/derivation and restricted
+withdrawal. Existing page tests assert mount identities; locale
 parity covers both dictionaries. Core owns exhaustive schema/hash/cache matrices.
 
 `e2e/collaboration-knowledge.spec.ts` covers production Web and native Electron

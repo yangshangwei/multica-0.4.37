@@ -120,6 +120,17 @@ export async function recoverKnowledgeOperation(client: QueryClient, scope: Coll
   return finishKnowledgeReceipt(client, scope, identity, result, storage);
 }
 
+/**
+ * Explicit human removal of one stored recovery pointer. It sends no request, keeps the in-memory
+ * attempt state (a later same-key retry stays uncertain) and does not expire projections. It is
+ * never evidence that the server did not apply the request: a late original write still lands
+ * idempotently and appears in the normal lists.
+ */
+export function dismissKnowledgeOperation(scope: CollaborationScope, identity: KnowledgeOperationIdentity, storage?: StorageAdapter): void {
+  checkScope(scope, identity);
+  retireKnowledgeOperationIdentity(identity, storage);
+}
+
 /** Await an exact receipt. An ambiguous response leaves the immutable intent available for the same-key retry/recovery. */
 export async function executeKnowledgeIntent(client: QueryClient, scope: CollaborationScope, intent: KnowledgeIntent, storage?: StorageAdapter): Promise<CollaborationKnowledgeReceipt> {
   checkScope(scope, intent);
