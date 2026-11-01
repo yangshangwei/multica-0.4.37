@@ -117,7 +117,14 @@ func handoffDecimal(n int64) string { return strconv.FormatInt(n, 10) }
 func handoffSource(kind, id, run, version, body string, maxBytes int) protocol.CollaborationHandoffSource {
 	content := redact.Text(body)
 	truncated := len(content) > maxBytes
-	if truncated {
+	if kind == "delegation" {
+		// The admitted delegation stays whole. Its limit applies to the
+		// admitted text; redaction may lengthen it (a short credential line
+		// becomes a longer marker), and the handoff material budget never
+		// trims a delegation.
+		truncated = len(body) > maxBytes
+	}
+	if truncated && len(content) > maxBytes {
 		content = content[:maxBytes]
 		for !utf8.ValidString(content) {
 			content = content[:len(content)-1]

@@ -49,7 +49,11 @@ and every metadata field, but subtracts JSON escape inflation from each source
 `Content` so that source text is charged by decoded UTF-8 bytes. Check both
 limits; do not replace them with one encoded-length comparison in Core.
 A legal 64 KiB assignment containing control characters can exceed 256 KiB on
-the wire. Keep the admitted delegation whole. Optional source prefixes may be
+the wire. Keep the admitted delegation whole. Its 64 KiB limit applies to the
+admitted text, not to the redacted content: redaction can lengthen a legal
+delegation (a short credential line becomes a longer marker), and that must
+never mark it truncated, because the daemon refuses a truncated delegation and
+the member run could never start. Optional source prefixes may be
 bounded only with their original reference/hash and explicit `truncated` marker.
 Snapshot restore must reproduce the same bounded content and hash. These limits
 do not reduce the existing frozen claim-input budget.
