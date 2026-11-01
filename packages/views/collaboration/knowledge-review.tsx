@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { prepareKnowledgeDecision, useCollaborationKnowledgeCandidate, type CollaborationIssue, type CollaborationKnowledgeCandidate,
+import { collaborationTextByteLength, KNOWLEDGE_REASON_MAX_BYTES, prepareKnowledgeDecision, useCollaborationKnowledgeCandidate, type CollaborationIssue, type CollaborationKnowledgeCandidate,
   type CollaborationScope, type KnowledgeIntent } from "@multica/core/collaboration";
 import { accountPath } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
@@ -8,7 +8,7 @@ import { Textarea } from "@multica/ui/components/ui/textarea";
 import { useLocale, useT } from "../i18n";
 import { AppLink } from "../navigation";
 import { RichContent } from "../rich-content";
-import { KnowledgeSourceLabel, KnowledgeState } from "./knowledge-controls";
+import { KnowledgeByteLimit, KnowledgeSourceLabel, KnowledgeState } from "./knowledge-controls";
 import type { KnowledgeProposalMode } from "./knowledge-proposal";
 
 export function KnowledgeReview({ scope, candidateId, issue, canPropose, locked, onSubmit, onProposal, onSelect, onClose }: {
@@ -93,8 +93,10 @@ function KnowledgeDecision({ scope, candidate, locked, onSubmit }: { scope: Coll
   const canReject = candidate.availability !== "restricted" && candidate.state === "pending" && candidate.capabilities.can_reject === true;
   const canWithdraw = ["pending", "approved"].includes(candidate.state) && candidate.capabilities.can_withdraw === true;
   if (!canApprove && !canReject && !canWithdraw) return null;
+  // UTF-8 bytes, as the schema and server count them. Approval sends no reason, so only reject/withdraw are blocked.
+  const reasonOver = collaborationTextByteLength(reason) > KNOWLEDGE_REASON_MAX_BYTES;
   const submit = (action: "approve" | "reject" | "withdraw") => {
-    if (locked) return;
+    if (locked || action !== "approve" && reasonOver) return;
     try { const intent = prepareKnowledgeDecision(scope, candidate, action, reason); setError(false); void onSubmit(intent); }
     catch { setError(true); }
   };
@@ -103,9 +105,11 @@ function KnowledgeDecision({ scope, candidate, locked, onSubmit }: { scope: Coll
       <label className="flex cursor-pointer items-start gap-3 text-body pointer-coarse:min-h-11"><Checkbox checked={reviewed} onCheckedChange={setReviewed} disabled={locked} />{t(($) => $.knowledge.reviewed)}</label>
       <Button type="button" disabled={!reviewed || locked} onClick={() => submit("approve")}>{t(($) => $.knowledge.approve)}</Button></>}
     {(canReject || canWithdraw) && <><label htmlFor={id} className="block text-body font-medium">{t(($) => $.knowledge.reason)}</label>
-      <Textarea id={id} value={reason} onChange={(event) => setReason(event.target.value)} disabled={locked} rows={2} maxLength={1000} />
-      <div className="flex flex-wrap gap-2">{canReject && <Button type="button" variant="outline" disabled={locked || !reason.trim()} onClick={() => submit("reject")}>{t(($) => $.knowledge.reject)}</Button>}
-        {canWithdraw && <Button type="button" variant="outline" disabled={locked || !reason.trim()} onClick={() => submit("withdraw")}>{t(($) => $.knowledge.withdraw)}</Button>}</div></>}
+      <Textarea id={id} value={reason} onChange={(event) => setReason(event.target.value)} disabled={locked} rows={2}
+        aria-invalid={reasonOver || undefined} aria-describedby={reasonOver ? `${id}-limit` : undefined} />
+      <KnowledgeByteLimit id={`${id}-limit`} value={reason} max={KNOWLEDGE_REASON_MAX_BYTES} />
+      <div className="flex flex-wrap gap-2">{canReject && <Button type="button" variant="outline" disabled={locked || reasonOver || !reason.trim()} onClick={() => submit("reject")}>{t(($) => $.knowledge.reject)}</Button>}
+        {canWithdraw && <Button type="button" variant="outline" disabled={locked || reasonOver || !reason.trim()} onClick={() => submit("withdraw")}>{t(($) => $.knowledge.withdraw)}</Button>}</div></>}
     {error && <p role="alert" className="text-body text-destructive">{t(($) => $.knowledge.invalid)}</p>}
   </div>;
 }

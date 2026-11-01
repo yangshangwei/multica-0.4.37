@@ -3,7 +3,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { setSchemaLogger } from "../api/schema";
 import { noopLogger } from "../logger";
 import { CollaborationKnowledgeApproveRequestSchema, CollaborationKnowledgeDecisionRequestSchema, CollaborationKnowledgeHintSchema,
-  CollaborationKnowledgeProposalSchema, CollaborationKnowledgeProtocolError, parseCollaborationKnowledgeCandidates,
+  CollaborationKnowledgeProposalSchema, CollaborationKnowledgeProtocolError, KNOWLEDGE_CONTENT_MAX_BYTES, KNOWLEDGE_REASON_MAX_BYTES,
+  KNOWLEDGE_REFERENCE_MAX_BYTES, KNOWLEDGE_SUMMARY_MAX_BYTES, parseCollaborationKnowledgeCandidates,
   parseCollaborationKnowledgeDetail, parseCollaborationKnowledgeReceipt, parseCollaborationKnowledgeTargetList } from "./knowledge-schema";
 import { knowledgeCandidateFixture, knowledgeCandidatesFixture, knowledgeDetailFixture, knowledgeIds, knowledgeUnavailableCandidateFixture,
   knowledgeProposalFixture, knowledgeReceiptFixture, knowledgeTargetFixture } from "./knowledge-test-fixtures";
@@ -104,6 +105,19 @@ describe("knowledge protocol boundaries", () => {
     // Expiry is rechecked by a new server write after original-key lookup, not by a client retry.
     expect(CollaborationKnowledgeProposalSchema.safeParse({ ...knowledgeProposalFixture, expires_at: "2020-01-01T00:00:00Z" }).success).toBe(true);
     expect(CollaborationKnowledgeProposalSchema.safeParse({ ...knowledgeProposalFixture, expires_at: "2020-01-01T00:00:00+08:00" }).success).toBe(false);
+  });
+  // L9: views compare these exact constants with collaborationTextByteLength before submit.
+  it("exports the UTF-8 byte limits its schemas enforce", () => {
+    // "知" is 3 UTF-8 bytes; the ASCII tail lands exactly on the limit, one more byte exceeds it.
+    const bytes = (count: number) => "知".repeat(Math.floor(count / 3)) + "a".repeat(count % 3);
+    const decision = (reason: string) => CollaborationKnowledgeDecisionRequestSchema.safeParse({ protocol_version: 1, request_id: knowledgeIds.request, expected_state_revision: "1", reason }).success;
+    const proposal = (change: Partial<typeof knowledgeProposalFixture>) => CollaborationKnowledgeProposalSchema.safeParse({ ...knowledgeProposalFixture, ...change }).success;
+    const evidence = (reference: string) => proposal({ evidence: [{ kind: "test", source: knowledgeProposalFixture.sources[0]!, reference, verification: "observed" }] });
+    expect([KNOWLEDGE_SUMMARY_MAX_BYTES, KNOWLEDGE_CONTENT_MAX_BYTES, KNOWLEDGE_REFERENCE_MAX_BYTES, KNOWLEDGE_REASON_MAX_BYTES]).toEqual([2048, 65_536, 2048, 1000]);
+    expect([decision(bytes(KNOWLEDGE_REASON_MAX_BYTES)), decision(bytes(KNOWLEDGE_REASON_MAX_BYTES + 1))]).toEqual([true, false]);
+    expect([proposal({ summary: bytes(KNOWLEDGE_SUMMARY_MAX_BYTES) }), proposal({ summary: bytes(KNOWLEDGE_SUMMARY_MAX_BYTES + 1) })]).toEqual([true, false]);
+    expect([proposal({ content: bytes(KNOWLEDGE_CONTENT_MAX_BYTES) }), proposal({ content: bytes(KNOWLEDGE_CONTENT_MAX_BYTES + 1) })]).toEqual([true, false]);
+    expect([evidence(bytes(KNOWLEDGE_REFERENCE_MAX_BYTES)), evidence(bytes(KNOWLEDGE_REFERENCE_MAX_BYTES + 1))]).toEqual([true, false]);
   });
   it("permits only three content-free target hint fields and content-free operation receipts", () => {
     const hint = { target_kind: "project", target_id: knowledgeIds.project, knowledge_revision: "9223372036854775807" };

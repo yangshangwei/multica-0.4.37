@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { buildKnowledgeSources, CollaborationUnavailableError, KNOWLEDGE_REFRESH_MS, prepareKnowledgeProposal, type CollaborationIssue, type CollaborationKnowledgeCandidates,
+import { buildKnowledgeSources, collaborationTextByteLength, CollaborationUnavailableError, KNOWLEDGE_CONTENT_MAX_BYTES, KNOWLEDGE_REFERENCE_MAX_BYTES, KNOWLEDGE_REFRESH_MS,
+  KNOWLEDGE_SUMMARY_MAX_BYTES, prepareKnowledgeProposal, type CollaborationIssue, type CollaborationKnowledgeCandidates,
   type CollaborationKnowledgeProposal, type CollaborationKnowledgeSource, type CollaborationKnowledgeTarget, type CollaborationScope, type KnowledgeIntent,
   type KnowledgeSourceSelection } from "@multica/core/collaboration";
 import { workspaceListOptions } from "@multica/core/workspace/queries";
@@ -10,7 +11,7 @@ import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import { Input } from "@multica/ui/components/ui/input";
 import { Textarea } from "@multica/ui/components/ui/textarea";
 import { useT } from "../i18n";
-import { KnowledgeSelect } from "./knowledge-controls";
+import { KnowledgeByteLimit, KnowledgeSelect } from "./knowledge-controls";
 import { KnowledgeSourcePicker } from "./knowledge-source-picker";
 
 export interface KnowledgeProposalMode { target?: CollaborationKnowledgeTarget; supersedesId?: string; derivedId?: string }
@@ -63,8 +64,13 @@ export function KnowledgeProposalForm({ scope, issue, view, refreshView, mode, l
     ? { kind: "workspace" as const, workspace_id: issue.source_workspace.id }
     : project && destination === project.id ? { kind: "project" as const, workspace_id: issue.source_workspace.id, project_id: project.id } : null);
   const disabled = locked || building;
-  // A refreshing (erased) list does not block submit; only a current, explicit non-grant does.
-  const blocked = disabled || view !== undefined && view.capabilities.can_propose !== true;
+  // Limits count UTF-8 bytes like the schema and server; DOM maxLength counts UTF-16 units and truncates paste silently.
+  const summaryOver = collaborationTextByteLength(summary) > KNOWLEDGE_SUMMARY_MAX_BYTES;
+  const contentOver = collaborationTextByteLength(content) > KNOWLEDGE_CONTENT_MAX_BYTES;
+  const evidenceOver = collaborationTextByteLength(evidence) > KNOWLEDGE_REFERENCE_MAX_BYTES;
+  const overLimit = summaryOver || contentOver || evidenceOver;
+  // A refreshing (erased) list does not block submit; only a current, explicit non-grant or a field over its limit does.
+  const blocked = disabled || overLimit || view !== undefined && view.capabilities.can_propose !== true;
   return <form aria-label={t(($) => $.knowledge.propose)} className="min-w-0 space-y-5" onSubmit={(event) => {
     event.preventDefault(); if (blocked || submitting.current) return;
     if (!target || !summary.trim() || !content.trim() || !surfaces.length || !selected.length || expiry && (!Number.isFinite(Date.parse(expiry)) || Date.parse(expiry) <= Date.now())) { setError(t(($) => $.knowledge.invalid)); return; }
@@ -88,9 +94,13 @@ export function KnowledgeProposalForm({ scope, issue, view, refreshView, mode, l
   }}>
     {(mode.supersedesId || mode.derivedId) && <p className="text-caption text-muted-foreground">{t(($) => $.knowledge.blankRevision)}</p>}
     <div className="space-y-2"><label htmlFor={`${id}-summary`} className="text-body font-medium">{t(($) => $.knowledge.summary)}</label>
-      <Input id={`${id}-summary`} autoFocus value={summary} onChange={(event) => setSummary(event.target.value)} disabled={disabled} required maxLength={2048} /></div>
+      <Input id={`${id}-summary`} autoFocus value={summary} onChange={(event) => setSummary(event.target.value)} disabled={disabled} required
+        aria-invalid={summaryOver || undefined} aria-describedby={summaryOver ? `${id}-summary-limit` : undefined} />
+      <KnowledgeByteLimit id={`${id}-summary-limit`} value={summary} max={KNOWLEDGE_SUMMARY_MAX_BYTES} /></div>
     <div className="space-y-2"><label htmlFor={`${id}-content`} className="text-body font-medium">{t(($) => $.knowledge.content)}</label>
-      <Textarea id={`${id}-content`} value={content} onChange={(event) => setContent(event.target.value)} disabled={disabled} required rows={7} /></div>
+      <Textarea id={`${id}-content`} value={content} onChange={(event) => setContent(event.target.value)} disabled={disabled} required rows={7}
+        aria-invalid={contentOver || undefined} aria-describedby={contentOver ? `${id}-content-limit` : undefined} />
+      <KnowledgeByteLimit id={`${id}-content-limit`} value={content} max={KNOWLEDGE_CONTENT_MAX_BYTES} /></div>
     <div className="space-y-2"><p className="text-body font-medium">{t(($) => $.knowledge.target)}</p>
       {mode.target ? <p className="text-body">{t(($) => $.knowledge[mode.target!.kind])}</p> : <>
         <KnowledgeSelect label={t(($) => $.knowledge.target)} value={projectChanged ? "" : destination} onChange={(value) => { setDestination(value); setOtherTarget(null); }} disabled={disabled}
@@ -103,7 +113,9 @@ export function KnowledgeProposalForm({ scope, issue, view, refreshView, mode, l
     </div>
     <KnowledgeSourcePicker scope={scope} issue={issue} selected={selected} onChange={setSelected} disabled={disabled} />
     <div className="space-y-2"><label htmlFor={`${id}-evidence`} className="text-body font-medium">{t(($) => $.knowledge.evidence)}</label>
-      <Textarea id={`${id}-evidence`} value={evidence} onChange={(event) => setEvidence(event.target.value)} disabled={disabled} rows={2} maxLength={2048} />
+      <Textarea id={`${id}-evidence`} value={evidence} onChange={(event) => setEvidence(event.target.value)} disabled={disabled} rows={2}
+        aria-invalid={evidenceOver || undefined} aria-describedby={evidenceOver ? `${id}-evidence-limit` : undefined} />
+      <KnowledgeByteLimit id={`${id}-evidence-limit`} value={evidence} max={KNOWLEDGE_REFERENCE_MAX_BYTES} />
       <p className="text-caption text-muted-foreground">{t(($) => $.knowledge.evidenceHint)}</p>
       {evidence.trim() && <><KnowledgeSelect label={t(($) => $.knowledge.evidenceType)} value={evidenceKind} disabled={disabled}
         items={(["test", "commit"] as const).map((value) => ({ value, label: t(($) => $.knowledge.evidenceKinds[value]) }))}

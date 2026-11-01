@@ -417,6 +417,55 @@ it("fails closed with a proposal-unavailable notice when the refreshed list with
   expect(screen.queryByText(sourceChangedText)).not.toBeInTheDocument();
 });
 
+// L9: limits count UTF-8 bytes (knowledge-schema.test.ts owns the boundary matrix); "知" is 3 bytes but 1 maxLength unit.
+const overLimitText = (max: number, used: number) => `This is over the ${max}-byte limit (${used} bytes). Shorten it before submitting; your text is kept.`;
+const utf8 = (count: number) => "知".repeat(Math.floor(count / 3)) + "a".repeat(count % 3);
+
+it("attributes over-byte summary, conclusion and evidence to the field instead of a source failure", async () => {
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockImplementation(async (_issue, input) => ({ ...receipt(input.request_id, "propose"), candidate_id: input.candidate_id }));
+  mount(); await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" })); await fillProposal();
+  const digest = vi.spyOn(crypto.subtle, "digest");
+  const submit = screen.getByRole("button", { name: "Submit candidate" });
+  for (const [name, max, used] of [["Summary", 2048, 2100], ["Conclusion (Markdown)", 65_536, 65_538], ["Evidence note (optional)", 2048, 2049]] as const) {
+    const field = screen.getByRole("textbox", { name });
+    fireEvent.change(field, { target: { value: utf8(used) } });
+    expect(await screen.findByText(overLimitText(max, used))).toHaveAttribute("role", "alert");
+    expect(field).toHaveAttribute("aria-invalid", "true"); expect(field).toHaveAccessibleDescription(new RegExp(`${max}-byte limit`));
+    expect(field).toHaveValue(utf8(used)); expect(submit).toBeDisabled();
+    // An exactly-full field is within the limit.
+    fireEvent.change(field, { target: { value: utf8(max) } });
+    await waitFor(() => expect(screen.queryByText(/-byte limit/)).not.toBeInTheDocument());
+    expect(field).not.toHaveAttribute("aria-invalid", "true");
+  }
+  fireEvent.change(screen.getByRole("textbox", { name: "Summary" }), { target: { value: utf8(2049) } });
+  fireEvent.submit(screen.getByRole("form", { name: "Propose knowledge" }));
+  await new Promise((resolve) => setTimeout(resolve, 50));
+  // Blocked before source resolution: no hash, no request, no source-unavailable blame.
+  expect(digest).not.toHaveBeenCalled(); expect(send).not.toHaveBeenCalled(); expect(screen.queryByText(sourceChangedText)).not.toBeInTheDocument();
+  fireEvent.change(screen.getByRole("textbox", { name: "Summary" }), { target: { value: utf8(2048) } });
+  await userEvent.click(submit);
+  await waitFor(() => expect(send).toHaveBeenCalledOnce());
+  expect(send.mock.calls[0]![1]).toMatchObject({ summary: utf8(2048), content: utf8(65_536), evidence: [expect.objectContaining({ reference: utf8(2048) })] });
+});
+
+it("explains an over-byte decision reason instead of the generic invalid message", async () => {
+  const reject = vi.spyOn(api, "rejectCollaborationKnowledge"), withdraw = vi.spyOn(api, "withdrawCollaborationKnowledge");
+  mount(); await openReview();
+  const reason = screen.getByRole("textbox", { name: "Decision reason" });
+  fireEvent.change(reason, { target: { value: "知".repeat(400) } });
+  expect(await screen.findByText(overLimitText(1000, 1200))).toHaveAttribute("role", "alert");
+  expect(reason).toHaveAttribute("aria-invalid", "true"); expect(reason).toHaveAccessibleDescription(/1000-byte limit/);
+  expect(screen.getByRole("button", { name: "Reject candidate" })).toBeDisabled(); expect(screen.getByRole("button", { name: "Withdraw contribution" })).toBeDisabled();
+  // Approval sends no reason, so an over-limit reason does not block it.
+  await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
+  expect(screen.getByRole("button", { name: "Approve exact version" })).toBeEnabled();
+  expect(reject).not.toHaveBeenCalled(); expect(withdraw).not.toHaveBeenCalled();
+  expect(screen.queryByText("Check the text, sources, destination and expiry before submitting.")).not.toBeInTheDocument();
+  fireEvent.change(reason, { target: { value: utf8(1000) } });
+  await waitFor(() => expect(screen.queryByText(/-byte limit/)).not.toBeInTheDocument());
+  expect(screen.getByRole("button", { name: "Reject candidate" })).toBeEnabled();
+});
+
 it("does not repeat approval actor/time as an identical latest decision", async () => {
   if (candidate.availability !== "available") throw new Error("Expected available fixture");
   const approver = "00000000-0000-4000-8000-000000000072", at = "2026-11-01T01:00:00Z";

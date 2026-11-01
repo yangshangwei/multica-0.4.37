@@ -74,6 +74,17 @@ Available source links use existing memory-version/comment/run account anchors.
 Malformed or unsupported reads show explicit scoped failure/unavailability rather
 than an empty collection. Base editors never receive a merged knowledge string.
 
+### Field limits
+
+Summary, conclusion, evidence note and decision reason count UTF-8 bytes against
+Core's `KNOWLEDGE_*_MAX_BYTES` with `collaborationTextByteLength`, never DOM
+`maxLength` (UTF-16 units, silent paste truncation). Over a limit, keep the text,
+mark the field `aria-invalid`, describe it with an inline used/max byte alert and
+block submit before source resolution or any request. Approval sends no reason,
+so an over-limit reason blocks only rejection and withdrawal. The sources plus
+evidence count and the metadata budget have no field of their own; their schema
+refusal shows the input message.
+
 ### Action outcomes
 
 An uncertain in-memory intent locks its original fields and offers **Check
@@ -103,6 +114,8 @@ identity leaves an open draft unchanged.
 | --- | --- |
 | Selected source project changed | Preserve text, clear effective target and request explicit selection |
 | Source list refreshing at proposal submit | Wait for the current read; post only with current `can_propose`; keep the draft on failure |
+| Field over its UTF-8 byte limit | Inline used/max error on that field; submit blocked; no source read or request |
+| Local schema refusal after sources resolve | Input message, not source-unavailable |
 | Review candidate/version/revision/hash/availability changed | Reset checkbox and decision controls |
 | Lease erasure or unchanged refetch during review | Hide body and controls; restore the same checkbox/reason when the same tuple returns |
 | Source unavailable but pending rejection granted | Show safe audit/reject controls without material |
@@ -125,8 +138,8 @@ identity leaves an open draft unchanged.
 `knowledge-panel.test.tsx` owns source/target wiring, keyboard confirmation,
 original-intent recovery, changed-review reset, unchanged-refresh retention of
 decision input, draft isolation from decision and recovery receipts, recovery
-ownership, submit during list refresh with staged error attribution, safe audit
-facts, independent
+ownership, submit during list refresh with staged error attribution, byte-limit
+attribution for proposal fields and decision reason, safe audit facts, independent
 source choices, external-handler catalog avoidance, correction/derivation and
 restricted withdrawal. Existing page tests assert mount identities; locale
 parity covers both dictionaries. Core owns exhaustive schema/hash/cache matrices.

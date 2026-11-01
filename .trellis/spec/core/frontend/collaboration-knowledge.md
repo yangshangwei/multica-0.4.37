@@ -25,6 +25,10 @@ review interaction. Private server data belongs only in TanStack Query.
   is GET-only. `useCollaborationKnowledgeAction` has `retry:false` and `gcTime:0`.
 - `buildKnowledgeSources(client, scope, issueId, selected)` returns exact typed
   refs with SHA-256, not source bodies. There are no environment keys in Core.
+- `KNOWLEDGE_SUMMARY_MAX_BYTES` (2048), `KNOWLEDGE_CONTENT_MAX_BYTES` (65536),
+  `KNOWLEDGE_REFERENCE_MAX_BYTES` (2048) and `KNOWLEDGE_REASON_MAX_BYTES` (1000)
+  are the UTF-8 limits the schemas enforce, matching the server's `octet_length`
+  checks. Views compare them with `collaborationTextByteLength`.
 
 ## 3. Contracts
 
@@ -136,9 +140,10 @@ Canonical pure matrices live beside `knowledge-schema`, `knowledge-lease`,
 `knowledge-sources`. `api/collaboration-knowledge.test.ts` verifies wire identity,
 private logs and explicit target headers. Realtime knowledge/provider tests own
 socket binding and teardown. Assert monotonic delay/skew, identical boundary
-pagination, late-body denial, exact UTF-8 source hashes, overlapping/previous
-dispatch, no-write versus known-receipt cleanup, and absence of private fields in
-storage. Shared UI tests consume those contracts rather than repeat the matrices.
+pagination, late-body denial, exact UTF-8 source hashes, exported byte-limit
+boundaries, overlapping/previous dispatch, no-write versus known-receipt cleanup,
+and absence of private fields in storage. Shared UI tests consume those contracts
+rather than repeat the matrices.
 
 ## 7. Wrong vs correct
 
