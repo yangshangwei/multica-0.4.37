@@ -1,0 +1,58 @@
+{
+  "reviewer": "/root/knowledge_web_review",
+  "source_sha": "ed00265253a83ba04fcec73a9285275d26708dcd",
+  "base_sha": "4e3b61500ed0afbc12cf4c79b1c6aea866778d0e",
+  "started_at": "2026-11-01T16:00:11.808391+00:00",
+  "product_read_only": true,
+  "database_operations": false,
+  "provider_calls": 0,
+  "checks": [
+    {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "vitest",
+        "run",
+        "--maxWorkers=2",
+        "collaboration/knowledge-panel.test.tsx",
+        "locales/parity.test.ts"
+      ],
+      "exit_code": 0,
+      "log": "views-targeted.txt",
+      "sha256": "423bec3593c242548df3cbae1cd0a92986ed500c58d76ca67d57bae45ee85b6b"
+    },
+    {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "--maxWorkers=2",
+        "collaboration/knowledge-schema.test.ts",
+        "collaboration/knowledge-actions.test.ts",
+        "collaboration/knowledge-cache.test.ts",
+        "collaboration/knowledge-lease.test.ts"
+      ],
+      "exit_code": 0,
+      "log": "core-targeted.txt",
+      "sha256": "d44a62ae056f077566c7bb2b7a6a54c94ff74b17fa46d155c4d189eb14444548"
+    },
+    {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "--filter",
+        "@multica/views",
+        "typecheck"
+      ],
+      "exit_code": 0,
+      "log": "typecheck.txt",
+      "sha256": "eb8e50a889d2130f903b1412df3b98ad8050613b4953ad2e9955ee58ffb77adb"
+    }
+  ]
+}

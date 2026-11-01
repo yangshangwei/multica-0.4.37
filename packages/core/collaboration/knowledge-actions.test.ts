@@ -2,12 +2,13 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { QueryClient } from "@tanstack/react-query";
 import { ApiClient, ApiError, setApiInstance } from "../api";
-import { clearCollaborationAccess, collaborationScope } from "./access";
-import { executeKnowledgeIntent, matchesKnowledgeReceipt, prepareKnowledgeDecision, prepareKnowledgeProposal, recoverKnowledgeOperation } from "./knowledge-actions";
+import { clearCollaborationAccess, collaborationScope, CollaborationUnavailableError } from "./access";
+import { dismissKnowledgeOperation, executeKnowledgeIntent, KnowledgeUnusedIntentError, matchesKnowledgeReceipt, prepareKnowledgeDecision, prepareKnowledgeProposal,
+  recoverKnowledgeOperation } from "./knowledge-actions";
 import { collaborationKnowledgeKeys } from "./knowledge-queries";
 import { knowledgeCandidateFixture, knowledgeCandidatesFixture, knowledgeIds, knowledgeProposalFixture, knowledgeReceiptFixture, knowledgeUnavailableCandidateFixture } from "./knowledge-test-fixtures";
 import { expireKnowledgeProjections } from "./knowledge-cache";
-import { readPendingKnowledgeOperations } from "./knowledge-recovery";
+import { KnowledgeRecoveryStorageError, readPendingKnowledgeOperations } from "./knowledge-recovery";
 import type { StorageAdapter } from "../types/storage";
 
 vi.mock("../auth", () => ({ useAuthStore: { getState: () => ({ user: { id: "00000000-0000-4000-8000-000000000001" } }) } }));
@@ -170,6 +171,35 @@ it("does not discard an overlapping attempt when the first call receives an unse
   expect(await first).toMatchObject({ status: 400 }); expect(readPendingKnowledgeOperations(f.scope)[0]?.requestId).toBe(intent.requestId);
   finishSecond({ ...knowledgeReceiptFixture, candidate_id: intent.candidateId, request_id: intent.requestId, action: "propose", code: "knowledge_proposed", state: "pending" });
   await expect(second).resolves.toMatchObject({ code: "knowledge_proposed" });
+});
+
+// L12: explicit human removal of a local pointer is not evidence that the server never applied the request.
+it("dismisses only the exact stored identity, sends nothing and keeps the prior attempt uncertain", async () => {
+  const f = setup();
+  const intent = prepareKnowledgeDecision(f.scope, knowledgeCandidateFixture, "withdraw", "Remove contribution");
+  const other = prepareKnowledgeDecision(f.scope, knowledgeCandidateFixture, "reject", "Not reusable");
+  const send = vi.spyOn(f.api, "withdrawCollaborationKnowledge").mockRejectedValue(new TypeError("Lost response"));
+  vi.spyOn(f.api, "rejectCollaborationKnowledge").mockRejectedValue(new TypeError("Lost response"));
+  const read = vi.spyOn(f.api, "getCollaborationKnowledgeOperation");
+  await expect(executeKnowledgeIntent(f.client, f.scope, intent)).rejects.toThrow(TypeError);
+  await expect(executeKnowledgeIntent(f.client, f.scope, other)).rejects.toThrow(TypeError);
+  const key = collaborationKnowledgeKeys.candidate(f.scope, intent.candidateId); f.client.setQueryData(key, knowledgeCandidateFixture);
+  // Another viewer or an obsolete live scope cannot remove this viewer's pointer.
+  expect(() => dismissKnowledgeOperation({ ...f.scope, userId: knowledgeIds.project }, intent)).toThrow(CollaborationUnavailableError);
+  expect(() => dismissKnowledgeOperation(f.scope, { ...intent, scope: { ...intent.scope, userId: knowledgeIds.project } })).toThrow(CollaborationUnavailableError);
+  const failing = testStorage(); vi.spyOn(failing, "removeItem").mockImplementation(() => { throw new Error("storage locked"); });
+  expect(() => dismissKnowledgeOperation(f.scope, intent, failing)).toThrow(KnowledgeRecoveryStorageError);
+  expect(readPendingKnowledgeOperations(f.scope).map((identity) => identity.requestId).sort()).toEqual([intent.requestId, other.requestId].sort());
+  dismissKnowledgeOperation(f.scope, intent);
+  expect(readPendingKnowledgeOperations(f.scope).map((identity) => identity.requestId)).toEqual([other.requestId]);
+  // No request, and no projection expiry.
+  expect(read).not.toHaveBeenCalled(); expect(send).toHaveBeenCalledOnce(); expect(f.client.getQueryData(key)).toEqual(knowledgeCandidateFixture);
+  // The in-memory dispatch count survives, so a later refusal of the same key is not misread as unused.
+  send.mockRejectedValueOnce(unsealedRejection());
+  const retry = executeKnowledgeIntent(f.client, f.scope, intent);
+  await expect(retry).rejects.toBeInstanceOf(ApiError); await expect(retry).rejects.not.toBeInstanceOf(KnowledgeUnusedIntentError);
+  expect(readPendingKnowledgeOperations(f.scope).map((identity) => identity.requestId)).toContain(intent.requestId);
+  expect(send).toHaveBeenCalledTimes(2);
 });
 
 it("distinguishes failed preservation before POST from failed cleanup after a known receipt", async () => {

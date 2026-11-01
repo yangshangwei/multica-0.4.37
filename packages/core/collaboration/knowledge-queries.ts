@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { queryOptions, useQuery, useQueryClient, type QueryClient } from "@tanstack/react-query";
 import { getApi } from "../api";
 import { useKnowledgeRealtime } from "../realtime/knowledge";
-import { collaborationKeys, protectCollaborationRead, type CollaborationScope } from "./access";
+import { CollaborationUnavailableError, collaborationKeys, protectCollaborationRead, type CollaborationScope } from "./access";
 import { bindKnowledgeProjectionLifecycle, knowledgeScopeKey, readKnowledgeProjection } from "./knowledge-cache";
 import type { KnowledgeProjectionBoundary } from "./knowledge-lease";
 import { KNOWLEDGE_REFRESH_MS, type CollaborationKnowledgePageParams, type CollaborationKnowledgeTarget } from "./knowledge-schema";
@@ -19,7 +19,9 @@ export const collaborationKnowledgeKeys = {
 export interface KnowledgePageOptions extends CollaborationKnowledgePageParams { boundary?: KnowledgeProjectionBoundary }
 const freshness = {
   staleTime: 0, gcTime: 0, retry: false, refetchOnMount: "always" as const, refetchOnWindowFocus: "always" as const,
-  refetchOnReconnect: "always" as const, refetchInterval: KNOWLEDGE_REFRESH_MS, refetchIntervalInBackground: false,
+  refetchOnReconnect: "always" as const,
+  refetchInterval: (query: { state: { error: Error | null } }) => query.state.error instanceof CollaborationUnavailableError ? false : KNOWLEDGE_REFRESH_MS,
+  refetchIntervalInBackground: false,
 };
 function pageKey(root: readonly string[], page: KnowledgePageOptions) {
   if ((page.cursor === undefined) !== (page.boundary === undefined)) throw new TypeError("A knowledge page requires its first page authorization boundary");

@@ -1,0 +1,16 @@
+{
+  "command": [
+    "pnpm",
+    "--filter",
+    "@multica/views",
+    "typecheck"
+  ],
+  "started_at": "2026-11-01T15:43:34.666598+00:00",
+  "exit_code": 2,
+  "source_files_sha256": {
+    "packages/views/collaboration/knowledge-panel.tsx": "3f738efc0e84cc3e20bd1087e4067cdf9700dda9307a3762644af84bc42a51f9",
+    "packages/views/collaboration/knowledge-panel.test.tsx": "c07823174ea2310960051e196dfc8f175abbd412c4cdb9cde241b734f6a09746",
+    "packages/core/collaboration/knowledge-queries.ts": "fcd5894a81e1bd563e30d2bd1b248436aab46f6e7e33e3f12083e48d28869ce1"
+  },
+  "log_sha256": "a565791fbc1a68246f4e48604b5c22f8a12771a34c4e7201181ee106fa30512a"
+}

@@ -5,6 +5,11 @@ import { nonnegativeVersion, positiveVersion } from "./version";
 
 export const KNOWLEDGE_MAX_VISIBLE_MS = 30_000;
 export const KNOWLEDGE_REFRESH_MS = 15_000;
+/** UTF-8 byte limits (Go len, Postgres octet_length). Views compare collaborationTextByteLength with these, never maxLength. */
+export const KNOWLEDGE_SUMMARY_MAX_BYTES = 2048;
+export const KNOWLEDGE_CONTENT_MAX_BYTES = 65_536;
+export const KNOWLEDGE_REFERENCE_MAX_BYTES = 2048;
+export const KNOWLEDGE_REASON_MAX_BYTES = 1000;
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 const timestamp = z.iso.datetime({ offset: true });
 const utcTimestamp = timestamp.refine((value) => /(?:Z|[+-]00:00)$/.test(value));
@@ -25,20 +30,20 @@ export const CollaborationKnowledgeSourceSchema = z.discriminatedUnion("kind", [
 const verification = z.enum(["unverified", "observed", "verified"]);
 export const CollaborationKnowledgeEvidenceSchema = z.discriminatedUnion("kind", [
   z.strictObject({ kind: z.literal("run_record"), run_id: uuid, record_id: text(256), verification }),
-  z.strictObject({ kind: z.literal("commit"), source: CollaborationKnowledgeSourceSchema, reference: text(2048), verification }),
-  z.strictObject({ kind: z.literal("test"), source: CollaborationKnowledgeSourceSchema, reference: text(2048), verification }),
+  z.strictObject({ kind: z.literal("commit"), source: CollaborationKnowledgeSourceSchema, reference: text(KNOWLEDGE_REFERENCE_MAX_BYTES), verification }),
+  z.strictObject({ kind: z.literal("test"), source: CollaborationKnowledgeSourceSchema, reference: text(KNOWLEDGE_REFERENCE_MAX_BYTES), verification }),
 ]);
 export const CollaborationKnowledgeApplicabilitySchema = z.strictObject({
   surfaces: z.array(z.enum(["issue", "chat", "quick_create", "autopilot", "collaboration"])).min(1).max(5)
     .refine((values) => new Set(values).size === values.length),
 });
 const material = {
-  summary: text(2048), sources: z.array(CollaborationKnowledgeSourceSchema).min(1).max(32),
+  summary: text(KNOWLEDGE_SUMMARY_MAX_BYTES), sources: z.array(CollaborationKnowledgeSourceSchema).min(1).max(32),
   evidence: z.array(CollaborationKnowledgeEvidenceSchema).max(32), applicability: CollaborationKnowledgeApplicabilitySchema,
 };
 export const CollaborationKnowledgeProposalSchema = z.strictObject({
   protocol_version: z.literal(1), candidate_id: uuid, request_id: uuid,
-  target: CollaborationKnowledgeTargetSchema, ...material, content: text(65_536),
+  target: CollaborationKnowledgeTargetSchema, ...material, content: text(KNOWLEDGE_CONTENT_MAX_BYTES),
   expires_at: utcTimestamp.nullable(), supersedes_candidate_id: uuid.nullable(), derived_from_candidate_id: uuid.nullable(),
 }).refine((value) => {
   const metadata = { ...value, content: undefined, summary: undefined };
@@ -54,7 +59,7 @@ export const CollaborationKnowledgeApproveRequestSchema = z.strictObject({
   expected_version: positiveVersion, expected_content_sha256: hash,
 });
 export const CollaborationKnowledgeDecisionRequestSchema = z.strictObject({
-  protocol_version: z.literal(1), request_id: uuid, expected_state_revision: positiveVersion, reason: text(1000),
+  protocol_version: z.literal(1), request_id: uuid, expected_state_revision: positiveVersion, reason: text(KNOWLEDGE_REASON_MAX_BYTES),
 });
 export const CollaborationKnowledgeStateSchema = z.enum(["pending", "approved", "rejected", "withdrawn", "superseded"]);
 const action = z.enum(["propose", "approve", "reject", "withdraw"]);
@@ -74,7 +79,7 @@ const metadata = {
   source_workspace_id: uuid, source_issue_id: uuid, proposed_by_user_id: uuid, proposed_at: timestamp,
   expires_at: timestamp.nullable(), supersedes_candidate_id: uuid.nullable(), derived_from_candidate_id: uuid.nullable(),
   approved_by_user_id: uuid.nullable(), approved_at: timestamp.nullable(), published_target_revision: nonnegativeVersion.nullable(),
-  decision: z.strictObject({ actor_user_id: uuid, at: timestamp, reason: text(1000).nullable() }).nullable(),
+  decision: z.strictObject({ actor_user_id: uuid, at: timestamp, reason: text(KNOWLEDGE_REASON_MAX_BYTES).nullable() }).nullable(),
 };
 const unavailable = z.strictObject({ ...metadata, availability: z.literal("source_unavailable"), capabilities,
   decision: z.strictObject({ actor_user_id: uuid, at: timestamp }).nullable(),
@@ -86,7 +91,7 @@ const restricted = z.strictObject({ ...control, availability: z.literal("restric
 const available = z.strictObject({ ...metadata, availability: z.literal("available"), ...material, content_sha256: hash, capabilities })
   .refine((value) => value.sources.every((source) => source.issue_id === value.source_issue_id));
 export const CollaborationKnowledgeCandidateSummarySchema = z.union([available, unavailable, restricted]);
-export const CollaborationKnowledgeCandidateSchema = z.union([available.safeExtend({ content: text(65_536) }), unavailable, restricted]);
+export const CollaborationKnowledgeCandidateSchema = z.union([available.safeExtend({ content: text(KNOWLEDGE_CONTENT_MAX_BYTES) }), unavailable, restricted]);
 export const CollaborationKnowledgeProjectionSchema = z.object({
   protocol_version: z.literal(1), projection_checked_at: timestamp, valid_until: timestamp, next_expiry_at: timestamp.nullable(),
 }).refine((value) => Date.parse(value.valid_until) > Date.parse(value.projection_checked_at));

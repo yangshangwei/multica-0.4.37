@@ -1,0 +1,73 @@
+# L9 green run after the fix (uncommitted L9 fix on top of a5e8941b7)
+#
+# Behavioral tests, now expected to PASS:
+#   core knowledge-schema.test.ts 'exports the UTF-8 byte limits its schemas enforce'
+#   views knowledge-panel.test.tsx 'attributes over-byte summary, conclusion and evidence to the field instead of a source failure'
+#   views knowledge-panel.test.tsx 'explains an over-byte decision reason instead of the generic invalid message'
+# Regression guard, still expected to PASS:
+#   views knowledge-panel.test.tsx 'reports local validation failure as invalid input, not as an unavailable source'
+#
+$ pnpm --filter @multica/core exec vitest run collaboration/knowledge-schema.test.ts --reporter=verbose
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+[1m[46m RUN [49m[22m [36mv4.1.0 [39m[90m/Volumes/artisan/code/2026/mc-kfix-lane-web/packages/core[39m
+
+ [32m✓[39m collaboration/knowledge-schema.test.ts[2m > [22mknowledge protocol boundaries[2m > [22maccepts a content-free rejection grant for unavailable pending material without granting approval or text[32m 8[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-schema.test.ts[2m > [22mknowledge protocol boundaries[2m > [22mrequires explicit detail history completeness and preserves true/false without inferred defaults[32m 2[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-schema.test.ts[2m > [22mknowledge protocol boundaries[2m > [22mbounds detail history at 50 while source pages retain multiple versions of the same lineage[32m 3[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-schema.test.ts[2m > [22mknowledge protocol boundaries[2m > [22mdistinguishes an older unsupported response from malformed claimed support without logging private material[32m 1[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-schema.test.ts[2m > [22mknowledge protocol boundaries[2m > [22mretains exact bigint revisions and human projections for all endpoints[32m 1[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-schema.test.ts[2m > [22mknowledge protocol boundaries[2m > [22mkeeps missing capabilities unknown and rejects truthy non-booleans[32m 1[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-schema.test.ts[2m > [22mknowledge protocol boundaries[2m > [22mallows only content-free restricted control rows and source-unavailable audit rows[32m 3[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-schema.test.ts[2m > [22mknowledge protocol boundaries[2m > [22mrejects cross-source, cross-target, duplicate or body-bearing list projections[32m 0[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-schema.test.ts[2m > [22mknowledge protocol boundaries[2m > [22mrequires exact reviewed fields for approval and state revision plus explanation for narrowing decisions[32m 1[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-schema.test.ts[2m > [22mknowledge protocol boundaries[2m > [22menforces UTF-8 byte budgets, required evidence anchors and strict proposal fields[32m 2[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-schema.test.ts[2m > [22mknowledge protocol boundaries[2m > [22mexports the UTF-8 byte limits its schemas enforce[32m 1[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-schema.test.ts[2m > [22mknowledge protocol boundaries[2m > [22mpermits only three content-free target hint fields and content-free operation receipts[32m 1[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m12 passed[39m[22m[90m (12)[39m
+[2m   Start at [22m 19:37:19
+[2m   Duration [22m 192ms[2m (transform 47ms, setup 0ms, import 94ms, tests 23ms, environment 0ms)[22m
+
+exit=0
+
+$ pnpm --filter @multica/views exec vitest run collaboration/knowledge-panel.test.tsx -t 'over-byte|local validation failure' --reporter=verbose
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+[1m[46m RUN [49m[22m [36mv4.1.0 [39m[90m/Volumes/artisan/code/2026/mc-kfix-lane-web/packages/views[39m
+
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mrequires keyboard confirmation of the displayed version and awaits the exact approval receipt
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mresets review confirmation for a changed identity and removes body on source unavailability
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mkeeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mresets typed decision input when a held refresh returns a different version
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mrecovers a lost result after remount with the original key and no second POST
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mlets an external handler propose from comments to the lawful current project without a private catalog
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mPropose correction creates a new immutable proposal without copying old body into the form
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mPropose workspace version creates a new immutable proposal without copying old body into the form
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mallows only content-free target withdrawal and shows a known refusal as a refusal
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mkeeps unsupported knowledge separate from the surrounding collaboration and reports truncated history
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mpicks an actual recorded run as a source without memory or a raw JSON form
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mpages all candidate versions with the original page authorization boundary
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mkeeps a selected source project pinned and requires a new selection if the relationship changes
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22munlocks a definitively rejected first proposal for editing and a new explicit request
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mkeeps a prior lost proposal locked to its original identity after a later rejection and not-found recovery
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mshows known success when receipt cleanup fails instead of calling the write uncertain
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22munlocks the human draft after storage fails before POST
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22ma review decision leaves an open proposal draft intact and only the panel's own proposal closes it
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mrecovering an older stored proposal keeps a new draft open while it opens the recovered candidate
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mrecovering a request whose candidate is not in this panel does not open it here
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22msubmit waits for a refreshing source list instead of reporting a changed source
+ [32m✓[39m collaboration/knowledge-panel.test.tsx[2m > [22mreports local validation failure as invalid input, not as an unavailable source[33m 369[2mms[22m[39m
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mfails closed with a proposal-unavailable notice when the refreshed list withdraws the grant
+ [32m✓[39m collaboration/knowledge-panel.test.tsx[2m > [22mattributes over-byte summary, conclusion and evidence to the field instead of a source failure[33m 348[2mms[22m[39m
+ [32m✓[39m collaboration/knowledge-panel.test.tsx[2m > [22mexplains an over-byte decision reason instead of the generic invalid message[32m 61[2mms[22m[39m
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mdoes not repeat approval actor/time as an identical latest decision
+ [2m[90m↓[39m[22m collaboration/knowledge-panel.test.tsx[2m > [22mrenders supplied proposer, approval and latest decision facts without a directory lookup
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[2m | [22m[33m24 skipped[39m[90m (27)[39m
+[2m   Start at [22m 19:37:19
+[2m   Duration [22m 2.94s[2m (transform 927ms, setup 71ms, import 1.46s, tests 781ms, environment 551ms)[22m
+
+exit=0
