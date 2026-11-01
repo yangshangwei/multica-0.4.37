@@ -121,5 +121,13 @@
     "delivery"
   ],
   "external_actions_performed": false,
-  "real_provider_executed": false
+  "real_provider_executed": false,
+  "external_action_decision": "User: continue local preparation; no external operations authorized",
+  "native_execution_update": {
+    "runtime_fixes": "gateway_429_exited; product 7627916c8 and evidence retained; independent runtime_review running",
+    "knowledge_claim": "gateway_429_exited; H3/M3 implementation and dedicated DB suites retained; unscoped migration incident recorded",
+    "rk1_framework": "gateway_429_exited; fake/sim19 cases and launcher29 regressions recorded; pending commit and independent review",
+    "knowledge_web": "gateway_429_exited_before_edits; root serial fallback with red/green tests"
+  },
+  "default_database_incident": "default-db-incident-audit-2026-11-01.json"
 }

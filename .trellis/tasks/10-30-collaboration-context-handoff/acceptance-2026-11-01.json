@@ -263,7 +263,8 @@
       "ac43_environments_accounts_quota_call_cap",
       "installed_real_account_journey_budget",
       "rollback_to_v0.6.7_commitment"
-    ]
+    ],
+    "external_actions_authorized": false
   },
   "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
   "execution_resume": "execution-resume-2026-11-01.json",
@@ -273,5 +274,9 @@
     "owner": "/root/runtime_fixes",
     "integration": "not_merged",
     "gate": "pending_independent_review"
+  },
+  "default_database_incident": {
+    "audit": "default-db-incident-audit-2026-11-01.json",
+    "state": "open; 272 migration ledger rows timestamped 456-763; preincident state unknown; no rollback attempted"
   }
 }
