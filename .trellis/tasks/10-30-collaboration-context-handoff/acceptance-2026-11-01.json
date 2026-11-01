@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T12:04:53.781922+00:00",
+  "updated_at": "2026-11-01T23:06:27.539608+08:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -212,7 +212,7 @@
     "trial": 2,
     "remaining_provider_call_cap": 14
   },
-  "new_runtime_models": "RK1 (d2fe54ab0) + runtime addendum (28c67c674): runtime cap recorded as 19 (arithmetic error; 7 scenarios need 22), raised to 25 incl. H2b by the user in session -35, pending on its unmerged framework branch; knowledge scenarios unbudgeted; recall fix merged (ac2a24f8f, c54a28ba6) and rebound to source-manifest-547760ea8.json; held until the 9 audit fixes, the knowledge fixes and the reviewed framework merge; unrun",
+  "new_runtime_models": "Approved runtime cap 25 incl H2b and H6 two launches/trial; consumed 0; audit repairs, reviewed framework, joint checks and final source binding pending; K1-K3/E0b unbudgeted",
   "runtime_test_addendum_commits": [
     "0bbc6a77a",
     "84c4c2b3d",
@@ -222,7 +222,7 @@
     "product": "96cedf485",
     "evidence": "93093d2e9",
     "merge": "8cb04e3295474073b4b991bc4883ef3901c14f01",
-    "gate": "passed_deterministic",
+    "gate": "historical_deterministic_passed; post_merge_audit_reopened",
     "enabled": false,
     "audit_fix": {
       "branch": "codex/collaboration-knowledge-fixes-20261101",
@@ -230,7 +230,7 @@
       "defects": 21,
       "high": 3,
       "merged": false,
-      "executor": "session -54 workflow (since 2026-11-01 13:55)",
+      "executor": "root native takeover; claim assigned, launch/write/web queued; old workflow not resumed",
       "lane_branches": [
         "codex/kfix-lane-claim-20261101",
         "codex/kfix-lane-launch-20261101",
@@ -246,7 +246,9 @@
         "M5",
         "L8"
       ],
-      "coordinator_review": "not_started"
+      "coordinator_review": "pending",
+      "state_at_resume": "14_of_21_have_lane_commits; no_final_lane_or_integrated_acceptance",
+      "ownership_ledger": "execution-resume-2026-11-01.json"
     }
   },
   "release_gates_runbook": {
@@ -263,5 +265,13 @@
       "rollback_to_v0.6.7_commitment"
     ]
   },
-  "coordinator_session": "multica-0-4-37-fe [ad8790] since 2026-11-01 18:30 +0800 (took over from exited [4a018c])"
+  "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
+  "execution_resume": "execution-resume-2026-11-01.json",
+  "runtime_audit_repair": {
+    "branch": "codex/runtime-audit-fixes-27-20261101",
+    "head_at_resume": "1eb0cb33cb37dd62d6a394ebcf298ea56b48f223",
+    "owner": "/root/runtime_fixes",
+    "integration": "not_merged",
+    "gate": "pending_independent_review"
+  }
 }
