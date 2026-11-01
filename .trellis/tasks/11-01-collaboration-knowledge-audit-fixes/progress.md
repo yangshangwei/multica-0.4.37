@@ -1,5 +1,20 @@
 # 知识交付审计缺陷修复：进度
 
+最新入口：`research/combined-ready-for-main-integration.json`。21项审计、分道复核跟进及集成发现均已处置，无未处置阻塞产品项；最终整体候选验收未完成，任务保持in_progress。全量失败与复验分开记账，原service exit1不冒充passed。按既有用户授权由统筹本地合入主集成，然后在最终候选跑完整makecheck与门控验收。
+
+## 2026-11-02 合流验证入口
+
+知识四分道已按claim→launch→write→web顺序本地合入，并吸收最新主集成runtime，共同产品源码`45efa093c`，后续夹具/skill入口及执行计划测试增量`0702d5039`/`742abb217`。全部21项已有修复或测试处置，L7未复现而以实际进程终止测试处置，不能写成修了不存在的产品缺陷；CT1同时间戳跨页测试及IW1预算DB时钟跟进也已补齐。所有分道最终独立结论均pass/pass-with-notes，IW1增量独立pass。合并后的handler/router、前端全套和跨分道独立复核已完成；完整service原运行的3项失败已分别处置并复核，但原exit1不改为通过。当前具备本地合主集成条件，最终完整makecheck及同候选验收尚未通过。
+
+- claim产品`30edf3e36`、H3/M3`94e790d2d`、CT1`5c3549001`；完整门/三视角证据见research/claim-ready-for-integration.json。
+- launch产品H2/M2/L6及H2接受/L7补验，最终分道`f00c94962`；research/launch-ready-for-integration.json。
+- write L5`ac6546772`、L1归因`d4bc37a86`、IW1`464540191`；research/write-ready-for-integration.json。
+- web产品`ed0026525`，独立复核pass-with-notes，分道缺失的admin时钟修复`9c056ad68`在知识集成保留；共同源码Core全套4340项通过，Views全套运行中。
+- 共同源码sqlc零漂移、Go build/vet全包通过，core/views lint/typecheck通过；DB-backed各包使用单独已迁移新库，完整证据research/integration-verification/。
+- 默认库迁移事故`0aedf934e`已向用户披露并保留，不作为通过证据；当前不得down/清理默认multica，迁移由统筹先验证库身份后执行。
+- 原workflow不跨会话resume。主集成runtime已合入`9e7f18785`；知识尚未合主集成，须待整体复核与同源门结束后由统筹独占合入。
+- RK1 runtime25已批准/消耗0；原系列E3after trial2/剩14；K1–K3/E0b/安装版和AC43独立预算/环境待落实。生产开关false。
+
 ## 2026-11-01 23时续作接管
 
 新统筹 Codex `01a1979f-c71b-7ea2-8734-185ab2bdc8f8` 按最新用户请求接管既有任务；旧workflow不跨会话resume。此前负责人及19:53段落保留为历史。已核实四分道HEAD：claim `3110295d0`、launch `3351c4c13`、write `fba1fca3f`、web `a9801fb07`；知识集成仍`8c0f37672`。21项已有14项分道提交，不能据此视为通过；launch两个dirty测试、write五个dirty文件和L5红测证据保留。

@@ -1,0 +1,47 @@
+[
+  {
+    "lane": "claim",
+    "tip": "5033fdd9d",
+    "changed_product_paths": 18,
+    "paths_different_from_integrated_tip": [
+      "server/pkg/agent/knowledge_launch_test.go"
+    ],
+    "ancestor": true
+  },
+  {
+    "lane": "launch",
+    "tip": "f00c94962",
+    "changed_product_paths": 16,
+    "paths_different_from_integrated_tip": [
+      "server/pkg/agent/knowledge_launch_test.go"
+    ],
+    "ancestor": true
+  },
+  {
+    "lane": "write",
+    "tip": "be7ea867d",
+    "changed_product_paths": 18,
+    "paths_different_from_integrated_tip": [],
+    "ancestor": true
+  },
+  {
+    "lane": "web",
+    "tip": "ed0026525",
+    "changed_product_paths": 12,
+    "paths_different_from_integrated_tip": [
+      "packages/views/locales/en/collaboration.json",
+      "packages/views/locales/zh-Hans/collaboration.json"
+    ],
+    "ancestor": true
+  },
+  {
+    "lane": "runtime",
+    "tip": "bf10f62f3",
+    "changed_product_paths": 42,
+    "paths_different_from_integrated_tip": [
+      "packages/views/locales/en/collaboration.json",
+      "packages/views/locales/zh-Hans/collaboration.json"
+    ],
+    "ancestor": true
+  }
+]

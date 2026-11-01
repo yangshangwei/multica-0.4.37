@@ -1,0 +1,12 @@
+{
+  "source_sha": "45efa093c",
+  "command": "guarded go -C server test ./internal/realtime ./internal/daemon/collaborationrun -race -parallel=2 -p=1 -count=1 -json -timeout=15m",
+  "exit_code": 0,
+  "counts": {
+    "run": 434,
+    "pass": 434,
+    "fail": 0,
+    "skip": 0
+  },
+  "log_sha256": "a05642e6281629361116f8215d12d5d8b189902d030ea90d9159549f22099503"
+}

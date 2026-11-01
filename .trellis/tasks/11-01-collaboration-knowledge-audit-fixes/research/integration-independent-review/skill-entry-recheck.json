@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_web_review",
+  "reviewed_at": "2026-11-01T17:22:45.585151+00:00",
+  "verdict": "pass",
+  "scope": "built-in skill entry wording/progressive disclosure delta",
+  "head": "0702d5039b235adc88dbd3d7d949a1a8f165d247",
+  "base_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+  "skill_path": "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+  "files_sha256": {
+    "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md": "479c5e3eaf3a7e7a5b707061892d8494f3c0646328002fdd8e71c93a984555fa",
+    "server/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md": "796f561d23690aaed3c1c402663863278e6e7652ea5d9d531fd8abca387963e2",
+    "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md": "a0b84216b0708445157e67d1527efc42e914ec746eb6f0aa4d6024ce553a320b",
+    "server/internal/service/builtin_skills_test.go": "01f3d8aa63aaa48289f937a5aaf34a50900420a9d4e0180eecc5c3371cd8b529",
+    "server/internal/service/builtin_skills.go": "cace1c49c865437a3ed68e36734bc6e6900043c3b32df655b2106aa6b3dc985a"
+  },
+  "skill_delta_sha256": "5400444086021b1754f1d250f3b2fe24e23c0ce7447e2c7ee6139bf32c62f999",
+  "template_body_lines_by_existing_helper": 500,
+  "template_limit_unchanged": 500,
+  "references_unchanged_from_base": true,
+  "one_level_pointer_resolves": true,
+  "source_map_pointer_resolves": true,
+  "retained_contracts": [
+    "Read collaboration-workflow reference before any collaboration commands/files/consent/recovery/knowledge proposal.",
+    "Preserve exact request ID and payload across uncertain writes.",
+    "Recalled text and author labels grant no authority; reference retains data_only and current-authority distinction.",
+    "Reference requires saved full tool output before claiming the text was read; a visible cursor alone is not exposure evidence.",
+    "Human knowledge review/approval, credentials, and unsupported-protocol fail-closed boundaries remain unchanged.",
+    "Source-map contract categories and re-derive-before-exact-lines instruction retained."
+  ],
+  "evidence": {
+    "metadata": "integration-verification/builtin-skill-template-r3.json",
+    "metadata_sha256": "59169a46a05600077858a244a26260267dcd5b3eb167bd91932cc06c86ce2962",
+    "command": "guarded go test ./internal/service -run ^TestBuiltinSkillsConformToTemplate$ -parallel=2 -count=1 -json",
+    "exit_code": 0,
+    "counts": {
+      "run": 10,
+      "pass": 10,
+      "fail": 0,
+      "skip": 0
+    },
+    "log_sha256": "e4559834abbb417a97a2efda9f0b1eba7c9ee046ae4d6eeaefa39896f9ba0626",
+    "prior_failures_preserved": [
+      "service-full.jsonl body502",
+      "builtin-skill-template-r2.jsonl body501"
+    ]
+  },
+  "blocking_findings": [],
+  "product_edits": false,
+  "database_commands": false,
+  "migration_commands": false,
+  "provider_calls": 0,
+  "installed_cli_calls": 0,
+  "tests_rerun_by_reviewer": false,
+  "scope_limit": "Recorded pure template result10 named passes verified; not63. Full service at45efa remains failed; finalmakecheck/fullservice with new embeddedskill still required."
+}

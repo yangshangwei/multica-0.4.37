@@ -1,0 +1,58 @@
+{
+  "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./pkg/agent",
+    "./pkg/protocol",
+    "./internal/cli",
+    "./internal/daemon",
+    "./internal/daemon/collaborationrun",
+    "-p",
+    "2",
+    "-parallel=2",
+    "-count=1",
+    "-json",
+    "-timeout=10m",
+    "-run",
+    "^Test(Host(Knowledge|HandoffCheckpoint|BriefInjectsRecall|BriefOmitsRecall|CheckpointTransientFailure|CheckpointUncommitted|OutcomeCarriesUndelivered)|Knowledge(Rebind|PromptRebind|SessionSelector|InvocationFingerprint|ClaudeStartedCallback)|BuildClaudeArgsManaged|TaskKnowledgePrepareRequestCarriesResumeUnavailable|DecodeCollaborationHandoff)"
+  ],
+  "started_at": "2026-11-01T17:10:12.691993+00:00",
+  "database_env_removed": true,
+  "real_gate_removed": true,
+  "exit_code": 0,
+  "counts": {
+    "run": 107,
+    "pass": 107,
+    "fail": 0,
+    "skip": 0
+  },
+  "package_end": [
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/protocol",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cli",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+      "action": "pass"
+    }
+  ],
+  "log_sha256": "3b58c1e44449afbc2359126fbe4495c59c40c02c81c52f0bd244cdba78f94132"
+}

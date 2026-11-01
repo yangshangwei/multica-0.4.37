@@ -1,0 +1,62 @@
+[
+  {
+    "file": "sqlc.json",
+    "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+    "state": null,
+    "exit_code": 0,
+    "counts": null,
+    "metadata_sha256": "56604ff79ad467a08fdf9659a4ef3903c1ae54dc1bd85c906e8297474f3fd4fe"
+  },
+  {
+    "file": "service-full.json",
+    "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+    "state": "running",
+    "exit_code": null,
+    "counts": null,
+    "metadata_sha256": "b3dca500c780bc9ae3452fa3f90012957ae17b665800a8eb694219db9233829c"
+  },
+  {
+    "file": "handler-full.json",
+    "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+    "state": "complete",
+    "exit_code": 0,
+    "counts": {
+      "run": 5332,
+      "pass": 5279,
+      "fail": 0,
+      "skip": 53
+    },
+    "metadata_sha256": "29683e98ac223c8e23e6a17079cae4322dd75f5c4871dc705d5b71e588ae7259",
+    "log_sha256_matches": true
+  },
+  {
+    "file": "router-full.json",
+    "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+    "state": "complete",
+    "exit_code": 0,
+    "counts": {
+      "run": 738,
+      "pass": 731,
+      "fail": 0,
+      "skip": 7
+    },
+    "metadata_sha256": "21298946c093f58cd463ccedc4ec50c4417a526cfb01d8d0ab986e64671beed3",
+    "log_sha256_matches": true
+  },
+  {
+    "file": "vet.json",
+    "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+    "state": null,
+    "exit_code": 0,
+    "counts": null,
+    "metadata_sha256": "952d9779610469bdd5912a2a413d65b693c948aaef8eead3fa14479f2570724a"
+  },
+  {
+    "file": "build.json",
+    "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+    "state": null,
+    "exit_code": 0,
+    "counts": null,
+    "metadata_sha256": "7d13f1bae8d0c4dd830c11dc53b897dc6eefe4e000a5b9297964f8537e6eb69b"
+  }
+]

@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-01T17:12:12.108757+00:00",
+  "reviewer": "/root/knowledge_web_review",
+  "scope": "combined knowledge four-lane and integrated runtime interaction/merge review",
+  "verdict": "pass-with-notes",
+  "head": "45efa093c1866c6ec988966769bd8f761daf7b50",
+  "base_sha": "4e3b61500ed0afbc12cf4c79b1c6aea866778d0e",
+  "trees": {
+    "server": "6822fc3013dc4757257a2652af227d78ed4031cd",
+    "packages/core": "8f809167a8b9f25fe8ce4de4106e13a1e5e53330",
+    "packages/views": "68427df17aa02f68958bb6d4255ffa185f1d856c",
+    ".trellis/spec": "9c8bb7f3e24fc4947980976c58b143e80816e256"
+  },
+  "product_diff_sha256": "9bbaec91895da9fe286f5148b7c106f7dbe44eb05bb5d479df6746e88372da71",
+  "changed_product_files": 104,
+  "blocking_product_findings": [],
+  "nonblocking_product_findings": [],
+  "merge_provenance": "merge-provenance.json",
+  "independent_checks": [
+    {
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./pkg/agent",
+        "./pkg/protocol",
+        "./internal/cli",
+        "./internal/daemon",
+        "./internal/daemon/collaborationrun",
+        "-p",
+        "2",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-timeout=10m",
+        "-run",
+        "^Test(Host(Knowledge|HandoffCheckpoint|BriefInjectsRecall|BriefOmitsRecall|CheckpointTransientFailure|CheckpointUncommitted|OutcomeCarriesUndelivered)|Knowledge(Rebind|PromptRebind|SessionSelector|InvocationFingerprint|ClaudeStartedCallback)|BuildClaudeArgsManaged|TaskKnowledgePrepareRequestCarriesResumeUnavailable|DecodeCollaborationHandoff)"
+      ],
+      "started_at": "2026-11-01T17:10:12.691993+00:00",
+      "database_env_removed": true,
+      "real_gate_removed": true,
+      "exit_code": 0,
+      "counts": {
+        "run": 107,
+        "pass": 107,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_end": [
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/agent",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/protocol",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/cli",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+          "action": "pass"
+        }
+      ],
+      "log_sha256": "3b58c1e44449afbc2359126fbe4495c59c40c02c81c52f0bd244cdba78f94132"
+    },
+    {
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/cli",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-run",
+        "^TestCollaboration(ReadHandoff|ReadHandoffSource|RecallPrinting|RuntimeComment)"
+      ],
+      "started_at": "2026-11-01T17:11:06.416835+00:00",
+      "exit_code": 0,
+      "counts": {
+        "run": 58,
+        "pass": 58,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "3358277a2518a05eff5bae53c0da15fac2d79a35035c87bb9cdbd0eb00826a98"
+    },
+    {
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "--maxWorkers=2",
+        "collaboration/knowledge-actions.test.ts",
+        "collaboration/knowledge-lease.test.ts",
+        "collaboration/knowledge-cache.test.ts",
+        "collaboration/run-handoff-schema.test.ts"
+      ],
+      "started_at": "2026-11-01T17:10:13.925485+00:00",
+      "exit_code": 0,
+      "log_sha256": "8ac97bd34e303e0029a1790dd1111f3400b763710c036fd9bc25313e6f75aa12",
+      "counts": {
+        "pass": 45,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "vitest",
+        "run",
+        "--maxWorkers=2",
+        "collaboration/knowledge-panel.test.tsx",
+        "collaboration/run-handoff.test.tsx",
+        "locales/parity.test.ts"
+      ],
+      "started_at": "2026-11-01T17:10:43.090983+00:00",
+      "exit_code": 0,
+      "log_sha256": "83277477a8ba992c23505ed2fd9176807b90c5552c56e53e9c3d159fc26bf35c",
+      "counts": {
+        "pass": 104,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "default_knowledge_enabled": false,
+  "admin_clock_fix_preserved": true,
+  "coordinator_full_suite_snapshot": [
+    {
+      "file": "sqlc.json",
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+      "state": null,
+      "exit_code": 0,
+      "counts": null,
+      "metadata_sha256": "56604ff79ad467a08fdf9659a4ef3903c1ae54dc1bd85c906e8297474f3fd4fe"
+    },
+    {
+      "file": "service-full.json",
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+      "state": "running",
+      "exit_code": null,
+      "counts": null,
+      "metadata_sha256": "b3dca500c780bc9ae3452fa3f90012957ae17b665800a8eb694219db9233829c"
+    },
+    {
+      "file": "handler-full.json",
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 5332,
+        "pass": 5279,
+        "fail": 0,
+        "skip": 53
+      },
+      "metadata_sha256": "29683e98ac223c8e23e6a17079cae4322dd75f5c4871dc705d5b71e588ae7259",
+      "log_sha256_matches": true
+    },
+    {
+      "file": "router-full.json",
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 738,
+        "pass": 731,
+        "fail": 0,
+        "skip": 7
+      },
+      "metadata_sha256": "21298946c093f58cd463ccedc4ec50c4417a526cfb01d8d0ab986e64671beed3",
+      "log_sha256_matches": true
+    },
+    {
+      "file": "vet.json",
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+      "state": null,
+      "exit_code": 0,
+      "counts": null,
+      "metadata_sha256": "952d9779610469bdd5912a2a413d65b693c948aaef8eead3fa14479f2570724a"
+    },
+    {
+      "file": "build.json",
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+      "state": null,
+      "exit_code": 0,
+      "counts": null,
+      "metadata_sha256": "7d13f1bae8d0c4dd830c11dc53b897dc6eefe4e000a5b9297964f8537e6eb69b"
+    }
+  ],
+  "notes": [
+    {
+      "id": "IV-1",
+      "kind": "completion_gate",
+      "description": "Independent joint checks pass but service full suite remains running at evidence snapshot; final full suites and mandatory browser/Electron/RK1/platform gates remain coordinator work. Running results are not counted as pass."
+    },
+    {
+      "id": "IV-2",
+      "kind": "evidence_scope",
+      "description": "Prior lane reviews and DB results retain their source scopes; this review checks the combined45efa093c tree and exact merge preservation with new focused fake checks, not a synthetic combination of prior full passes."
+    },
+    {
+      "id": "IV-3",
+      "kind": "merge_resolution",
+      "description": "Overlapping locale files preserve both reviewed knowledge strings and runtime memoryLatest. Shared knowledge_launch_test.go contains both claim argument and launch termination regressions. All other reviewed lane product bytes match their tips."
+    }
+  ],
+  "product_edits": false,
+  "database_commands": false,
+  "migration_commands": false,
+  "provider_calls": 0,
+  "installed_agent_cli_calls": 0,
+  "new_dependencies": false
+}
