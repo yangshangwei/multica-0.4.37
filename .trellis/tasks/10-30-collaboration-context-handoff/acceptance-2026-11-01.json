@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T09:31:21.532177+00:00",
+  "updated_at": "2026-11-01T10:40:37.487701+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -70,7 +70,8 @@
       ],
       "gaps": [
         "Stop/撤权/作者退出两种提交顺序已补齐并通过 race；真实 Provider 中断摄取未由 seeded UI 或服务 fixture 代替",
-        "2026-11-01 会话-ef 合入后只读审计（会话-a8 在 b8fd547dc 复核并入账）确认 REC-1/REC-2/REC-3/REC-4 未修复：一次非确定性 checkpoint 失败后本轮停止上传、恢复约 1 秒、outcome 后剩余块被 409 拒收；fallback 后旧 attempt 块使整条流关闭；seal 原因一律 authority_lost；瞬时失败补齐后仍永久 partial。现有确定性通过不覆盖这些路径"
+        "2026-11-01 会话-ef 合入后只读审计（会话-a8 在 b8fd547dc 复核并入账）确认 REC-1/REC-2/REC-3/REC-4 未修复：一次非确定性 checkpoint 失败后本轮停止上传、恢复约 1 秒、outcome 后剩余块被 409 拒收；fallback 后旧 attempt 块使整条流关闭；seal 原因一律 authority_lost；瞬时失败补齐后仍永久 partial。现有确定性通过不覆盖这些路径",
+        "会话-a8 已在 codex/runtime-audit-fixes-20261101 提交 REC-1–REC-4 的修复 4456cc65a（截至 18:35 的 tip 为 5b9f66292，另含 ENV-2），未复核，未合入"
       ]
     },
     {
@@ -130,7 +131,7 @@
       ],
       "gaps": [
         "已合入并通过人工权限、版本/纠错/过期/撤回、失效与真实fake输入的确定性验收；真实Provider/生产启用另验，技能层不在本轮范围",
-        "2026-11-01 会话-14 审计记录21项缺陷（高3：开关关闭时白名单外参数终止任务、工作目录不可达后 PriorSessionID 失配、128行历史上限永久拒绝），修复任务 11-01-collaboration-knowledge-audit-fixes 在分支 codex/collaboration-knowledge-fixes-20261101 进行，未合入；本矩阵未独立核实"
+        "2026-11-01 会话-14 审计记录21项缺陷（高3：开关关闭时白名单外参数终止任务、工作目录不可达后 PriorSessionID 失配、128行历史上限永久拒绝），修复任务 11-01-collaboration-knowledge-audit-fixes。13:55 起由会话-54 的 workflow 在 codex/kfix-lane-{claim,launch,write,web}-20261101 四个分道执行，截至 18:22 已提交 7 项（H1、H2、L1、L2、M4、M5、L8），分组复核 pass_with_notes；未整合到 codex/collaboration-knowledge-fixes-20261101，未经协调会话复核，未合入；本矩阵未独立核实"
       ]
     },
     {
@@ -228,7 +229,24 @@
       "task": "11-01-collaboration-knowledge-audit-fixes",
       "defects": 21,
       "high": 3,
-      "merged": false
+      "merged": false,
+      "executor": "session -54 workflow (since 2026-11-01 13:55)",
+      "lane_branches": [
+        "codex/kfix-lane-claim-20261101",
+        "codex/kfix-lane-launch-20261101",
+        "codex/kfix-lane-write-20261101",
+        "codex/kfix-lane-web-20261101"
+      ],
+      "committed_as_of_2026_11_01_1822": [
+        "H1",
+        "H2",
+        "L1",
+        "L2",
+        "M4",
+        "M5",
+        "L8"
+      ],
+      "coordinator_review": "not_started"
     }
   },
   "release_gates_runbook": {
@@ -244,5 +262,6 @@
       "installed_real_account_journey_budget",
       "rollback_to_v0.6.7_commitment"
     ]
-  }
+  },
+  "coordinator_session": "multica-0-4-37-fe [ad8790] since 2026-11-01 18:30 +0800 (took over from exited [4a018c])"
 }
