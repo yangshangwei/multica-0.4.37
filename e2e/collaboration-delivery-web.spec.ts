@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { test, expect, type Page } from "@playwright/test";
 import pg from "pg";
 import { TestApiClient } from "./fixtures";
+import { selectCollaborationRecipient } from "./fixtures/collaboration-offline-handoff";
 
 const apiUrl = process.env.COLLABORATION_E2E_API_URL;
 type Snapshot = { id: string; collaboration_revision: string; lifecycle_epoch: string; write_context: { participant_epoch: string; account_epoch: string } };
@@ -37,10 +38,12 @@ test("Web creates one private issue after lost upload/create responses and revok
   const viewerId = (await viewer.requestJSON<{ id: string }>("/api/me")).id;
   expect(await viewer.getWorkspaces()).toEqual([]);
   const errors: string[] = [], requestScopes: boolean[] = [];
+  let createPosts = 0;
   page.on("pageerror", (error) => errors.push(error.message));
   page.on("request", (request) => {
     if (!request.url().includes("/api/collaboration/")) return;
     requestScopes.push(!("x-workspace-id" in request.headers()) && !("x-workspace-slug" in request.headers()));
+    if (new URL(request.url()).pathname === "/api/collaboration/issues" && request.method() === "POST") createPosts += 1;
   });
   await authenticate(page, source.getToken()!);
   await page.goto("/account");
@@ -49,10 +52,12 @@ test("Web creates one private issue after lost upload/create responses and revok
   const title = `Created collaboration ${key}`;
   await dialog.getByLabel("Title", { exact: true }).fill(title);
   await dialog.getByLabel("Description", { exact: true }).fill("Creation body stays on the original issue.");
-  await dialog.getByLabel("Full username, email, or account ID").fill(viewerEmail);
-  await expect(dialog.getByRole("button", { name: "Create collaboration issue", exact: true })).toBeDisabled();
-  await dialog.getByRole("button", { name: "Find account", exact: true }).click();
-  await dialog.getByRole("button", { name: "Use this account", exact: true }).click();
+  await expect(dialog.getByText("Assigned to you", { exact: true })).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "Create collaboration issue", exact: true })).toBeEnabled();
+  expect(createPosts).toBe(0);
+  await selectCollaborationRecipient(page, dialog, { id: viewerId, name: "Delivery recipient" });
+  await expect(dialog.getByText("Assigned to Delivery recipient", { exact: true })).toBeVisible();
+  expect(createPosts).toBe(0);
   let uploaded: FileMetadata | undefined, uploadKey = "", uploadPosts = 0;
   page.on("request", (request) => { if (new URL(request.url()).pathname === "/api/collaboration/attachments/drafts" && request.method() === "POST") uploadPosts += 1; });
   await page.route("**/api/collaboration/attachments/drafts", async (route) => {
@@ -76,8 +81,7 @@ test("Web creates one private issue after lost upload/create responses and revok
   expect((await uploadRecovery).status()).toBe(200);
   await expect(dialog.getByRole("checkbox", { name: "Include creation-note.txt", exact: true })).toBeChecked();
 
-  let createdId = "", createKey = "", createPosts = 0;
-  page.on("request", (request) => { if (new URL(request.url()).pathname === "/api/collaboration/issues" && request.method() === "POST") createPosts += 1; });
+  let createdId = "", createKey = "";
   await page.route("**/api/collaboration/issues", async (route) => {
     createKey = route.request().headers()["idempotency-key"] ?? "";
     expect(route.request().postDataJSON()).toMatchObject({ source_workspace_id: workspace.id, handler_user_id: viewerId, attachment_ids: [uploaded!.id] });
@@ -217,9 +221,8 @@ test("Web explicitly resubmits rejected creation input without losing files or r
     const title = `Corrected creation ${suffix}`;
     await dialog.getByLabel("Title", { exact: true }).fill(title);
     await dialog.getByLabel("Description", { exact: true }).fill("Keep this input and its unconsumed private file.");
-    await dialog.getByLabel("Full username, email, or account ID").fill(recipientEmail);
-    await dialog.getByRole("button", { name: "Find account", exact: true }).click();
-    await dialog.getByRole("button", { name: "Use this account", exact: true }).click();
+    await selectCollaborationRecipient(page, dialog, { id: target.id, name: "Unavailable creation recipient" });
+    await expect(dialog.getByText("Assigned to Unavailable creation recipient", { exact: true })).toBeVisible();
     const uploadedResponse = page.waitForResponse((response) => response.url().endsWith("/api/collaboration/attachments/drafts") && response.request().method() === "POST");
     await dialog.getByLabel("Attach files", { exact: true }).setInputFiles({ name: "correction-note.txt", mimeType: "text/plain", buffer: Buffer.from("Preserve this uploaded identity") });
     const uploaded = await (await uploadedResponse).json();

@@ -13,6 +13,7 @@ test.use({ actionTimeout: 15_000, trace: "off", screenshot: "off" });
 // eslint-disable-next-line no-empty-pattern -- Electron owns its browser context.
 test("Electron deep link opens retained handoff context and honestly marks an unknown recording tail", async ({}, info) => {
   test.setTimeout(120_000);
+  test.skip(process.env.E2E_PASSWORD_AUTH !== "1", "Requires task-owned password production services");
   const renderer = process.env.COLLABORATION_ELECTRON_RENDERER_URL;
   if (!renderer || !["localhost", "127.0.0.1"].includes(new URL(renderer).hostname)) throw new Error("Native acceptance requires the built task-owned renderer");
   const fixture = await seedRuntimeHandoff({ observedThrough: null });
