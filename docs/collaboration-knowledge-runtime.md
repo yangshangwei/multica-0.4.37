@@ -69,9 +69,9 @@ the managed policy.
 | Observation | Meaning and next check |
 | --- | --- |
 | Approved item absent from an input | Check the switch, negotiated built-in runtime, applicability/target, current source availability, actual originator/runtime owner and output audience. Approval is not a source visibility grant. |
-| `knowledge_context_changed` | Claim/session/reviewed manifest/invocation changed. Preserve the original result and cleanup; do not auto-replay the business input. |
+| `knowledge_context_changed` | Claim/session/reviewed manifest/invocation changed. Preserve the original result and cleanup; do not auto-replay the business input. A current daemon that cannot reach the selected prior session starts a fresh bound session with the ordinary continuity notice. An older daemon talking to the updated API cannot report that drop and remains refused with `knowledge_context_changed` on each subsequent turn for the affected session until the daemon is upgraded. An upgraded daemon talking to an older API instead reports `knowledge_unavailable` because that API rejects the new field; upgrade the API first. A claim descriptor the daemon cannot decode refuses only that task; the other tasks in the claim run. |
 | `knowledge_authorization_denied` | Current credential/consumer/source authority no longer permits disclosure/start. Accountable or installer identity is not a substitute. |
-| `knowledge_busy` / `knowledge_unavailable` | Bounded lock/dependency/proof failure. Inspect content-free health/DB diagnostics; never force a base fallback that can restore exposed history. |
+| `knowledge_busy` / `knowledge_unavailable` | Bounded lock/dependency/proof failure. The server already re-runs a contended preparation or authorization for up to 1.5s and the daemon retries three times, so `knowledge_busy` means sustained contention, not one sibling claim. Inspect content-free health/DB diagnostics; never force a base fallback that can restore exposed history. |
 | `knowledge_invocation_unsupported` | Runtime, selector or effective invocation is outside the admitted contract. Check retained current configuration, not only its registered protocol name. A fresh task whose options sit outside the negotiation allowlist, such as `--allowedTools` or `--add-dir`, runs without knowledge only when its provider namespace has no recorded private exposure; with recorded exposure or a retained negotiation it still refuses. Whatever the switch, Claude session selectors and hand-offs (`--continue`, `--resume`, `--teleport`, `--cloud`, `--remote-control`, `--bg` and similar), a subcommand operand such as `attach`, a bare `--`, and agent `custom_args` that are not a JSON string array refuse. |
 | `knowledge invalidation scan deferred` / `delivery deferred` | Pending work is retained for retry. Restore DB/relay availability; do not mark jobs delivered manually. |
 | `knowledge invalidation backlog` | `pending_jobs` and `oldest_seconds` are reported at most once per minute when the oldest job is at least 30 seconds old. No source content is needed for diagnosis. |
@@ -91,6 +91,13 @@ not contain it. Authorized failure evidence can contain Provider quotations;
 retain it in its existing private outcome/transcript path without copying it to
 generic logs or diagnostic reports.
 
+An uncertain unreachable-resume preparation is replayed with its original
+request ID, original claimed session, invocation fingerprint and
+`resume_unavailable:true`. The server returns the same fresh binding after
+reauthorization; the daemon does not manufacture a new generation or repeat the
+business input. A newly keyed request cannot replace an already prepared claim.
+Keep this transport replay distinct from starting another model process.
+
 ## Disable and recover safely
 
 Set the switch to false and restart the API instances using the guarded version.
@@ -106,7 +113,11 @@ Keep guarded history readers, candidate/version/receipt records, task exposure,
 target routing, invalidation scans/hints and the worker. Never roll back to an old
 claim reader that treats private history as ordinary reusable state. Migration
 downs reject retained candidates, negotiated task data and pending outbox work;
-do not delete those records to force a downgrade. Target deletion must not
+do not delete those records to force a downgrade. The stored per-task knowledge
+record is read strictly, and any change to its shape bumps its version. Install a
+release that reads a new version before any release writes it, and roll back only
+to a release that reads every version written since. An older reader refuses the
+affected tasks with `knowledge_context_changed`; it never rewrites them. Target deletion must not
 resurrect a target from delayed scans. Preserve backups and use forward repairs
 for a nonempty deployment.
 

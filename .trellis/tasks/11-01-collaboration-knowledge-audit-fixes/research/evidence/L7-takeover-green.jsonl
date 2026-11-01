@@ -1,0 +1,16 @@
+{"Time":"2026-11-01T23:16:56.645558+08:00","Action":"start","Package":"github.com/multica-ai/multica/server/pkg/agent"}
+{"Time":"2026-11-01T23:16:58.656593+08:00","Action":"start","Package":"github.com/multica-ai/multica/server/internal/daemon"}
+{"Time":"2026-11-01T23:16:58.809168+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/agent","Test":"TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated"}
+{"Time":"2026-11-01T23:16:58.809258+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/agent","Test":"TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated","Output":"=== RUN   TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated\n","OutputType":"frame"}
+{"Time":"2026-11-01T23:16:58.811405+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/agent","Test":"TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated","Output":"--- PASS: TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-01T23:16:58.811425+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/agent","Test":"TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated","Elapsed":0}
+{"Time":"2026-11-01T23:16:58.811444+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/agent","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-11-01T23:16:58.811887+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/agent","Output":"ok  \tgithub.com/multica-ai/multica/server/pkg/agent\t2.166s\n"}
+{"Time":"2026-11-01T23:16:58.811923+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/agent","Elapsed":2.166}
+{"Time":"2026-11-01T23:16:59.580705+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/daemon","Test":"TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit"}
+{"Time":"2026-11-01T23:16:59.580757+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/daemon","Test":"TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit","Output":"=== RUN   TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit\n","OutputType":"frame"}
+{"Time":"2026-11-01T23:16:59.62684+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/daemon","Test":"TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit","Output":"--- PASS: TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit (0.05s)\n","OutputType":"frame"}
+{"Time":"2026-11-01T23:16:59.626872+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/daemon","Test":"TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit","Elapsed":0.05}
+{"Time":"2026-11-01T23:16:59.626895+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/daemon","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-11-01T23:16:59.628141+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/daemon","Output":"ok  \tgithub.com/multica-ai/multica/server/internal/daemon\t0.971s\n"}
+{"Time":"2026-11-01T23:16:59.628163+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/daemon","Elapsed":0.972}

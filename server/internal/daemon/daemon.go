@@ -5925,6 +5925,7 @@ func gateResumeToReachableSession(task *Task, taskCtx *execenv.TaskContextForEnv
 			"workdir", envWorkDir,
 			"session_home_reachable", sessionHomeReachable,
 		)
+		task.droppedPriorSessionID = task.PriorSessionID
 		task.PriorSessionID = ""
 		taskCtx.PriorSessionResumed = false
 		// The user expected this run to continue the prior conversation; surface
@@ -6088,6 +6089,7 @@ func gateCodexResumeToRolloutPresence(task *Task, taskCtx *execenv.TaskContextFo
 	}
 	taskLog.Warn("dropping prior codex session: rollout not present in task CODEX_HOME; starting a fresh thread",
 		"session_id", task.PriorSessionID, "codex_home", codexHome)
+	task.droppedPriorSessionID = task.PriorSessionID
 	task.PriorSessionID = ""
 	taskCtx.PriorSessionResumed = false
 	// The user expected this run to continue the prior conversation; surface the

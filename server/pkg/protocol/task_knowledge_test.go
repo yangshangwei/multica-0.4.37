@@ -38,6 +38,53 @@ func TestTaskKnowledgeRequestRejectsPrivateOrAmbiguousFields(t *testing.T) {
 	}
 }
 
+// H2: a daemon whose reachability gate dropped the claimed native session says
+// so on prepare. The field is optional, so an unflagged request keeps its exact
+// bytes (and receipt hash), and strict decoding still rejects malformed forms.
+func TestTaskKnowledgePrepareRequestCarriesResumeUnavailable(t *testing.T) {
+	req := TaskKnowledgePrepareRequest{ProtocolVersion: 1, RequestID: uuid.NewString(), ClaimGeneration: "1", DispatchedAt: time.Now().UTC().Format(time.RFC3339Nano), Session: taskKnowledgeProtocolSession(), InvocationFingerprint: strings.Repeat("a", 64)}
+	req.Session.NativeSessionID = "stale-native"
+	raw, err := json.Marshal(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(raw), "resume_unavailable") {
+		t.Fatalf("unflagged request changed its wire bytes: %s", raw)
+	}
+	flagged := strings.TrimSuffix(string(raw), "}") + `,"resume_unavailable":true}`
+	var decoded TaskKnowledgePrepareRequest
+	if err := json.Unmarshal([]byte(flagged), &decoded); err != nil {
+		t.Fatalf("flagged prepare request was rejected: %v", err)
+	}
+	again, err := json.Marshal(decoded)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(again), `"resume_unavailable":true`) {
+		t.Fatalf("flag did not round-trip: %s", again)
+	}
+	unflaggedHash, err := TaskKnowledgeRequestHash(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if want := CollaborationKnowledgeHash(string(raw)); unflaggedHash != want {
+		t.Fatal("unflagged receipt hash changed")
+	}
+	for name, body := range map[string]string{
+		"case alias": strings.TrimSuffix(string(raw), "}") + `,"Resume_Unavailable":true}`,
+		"duplicate":  strings.TrimSuffix(string(raw), "}") + `,"resume_unavailable":false,"resume_unavailable":true}`,
+		"string":     strings.TrimSuffix(string(raw), "}") + `,"resume_unavailable":"true"}`,
+		"number":     strings.TrimSuffix(string(raw), "}") + `,"resume_unavailable":1}`,
+	} {
+		t.Run(name, func(t *testing.T) {
+			var malformed TaskKnowledgePrepareRequest
+			if json.Unmarshal([]byte(body), &malformed) == nil {
+				t.Fatalf("malformed resume_unavailable was accepted: %s", body)
+			}
+		})
+	}
+}
+
 func TestTaskKnowledgeClaimAndNativeGenerationsRemainDistinct(t *testing.T) {
 	s := taskKnowledgeProtocolSession()
 	if err := ValidateTaskKnowledgeSession(s); err != nil {

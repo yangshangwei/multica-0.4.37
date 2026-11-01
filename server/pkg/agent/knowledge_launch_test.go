@@ -763,3 +763,45 @@ func TestKnowledgeNoSessionPersistenceFlagHasNoReenableForm(t *testing.T) {
 		t.Fatal("Claude-only persistence control admitted another provider")
 	}
 }
+
+// A Started callback failure leaves an actual process that may already run.
+// The lifecycle kills it, waits it and reports Terminated exactly once with
+// the waited exit, so cancellation still gets process-exit confirmation; it
+// never issues another permit. The host-preparation form of this contract is
+// TestHostLifecycleStartedFailureStillWaitsAndBlocksFallback.
+func TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated(t *testing.T) {
+	cfg, opts, spec := knowledgeFixture(t, `{"type":"system","session_id":"native-after-start"}`)
+	spec.Block = true
+	writeKnowledgeSpec(t, cfg, spec)
+	recorder := &lifecycleRecorder{}
+	failure := errors.New("started observation not durable")
+	permits := 0
+	delegate := knowledgeObserver(recorder, func(NativeSessionObservation) error { return nil })
+	opts.Lifecycle = NewOrdinaryLaunchLifecycle(lifecycleObserverFunc(func(ctx context.Context, info LaunchInfo) (LaunchCallbacks, error) {
+		permits++
+		callbacks, err := delegate.BeforeLaunch(ctx, info)
+		started := callbacks.Started
+		callbacks.Started = func(p ProcessObservation) error {
+			_ = started(p)
+			return failure
+		}
+		return callbacks, err
+	}))
+	t.Cleanup(opts.Lifecycle.Stop)
+	if _, err := executeKnowledgeFixture(t, cfg, opts); KnowledgeFailureReason(err) != KnowledgeUnavailable || !errors.Is(err, failure) {
+		t.Fatalf("started callback failure was not a knowledge refusal: %v", err)
+	}
+	recorder.mu.Lock()
+	started, terminated := append([]ProcessObservation{}, recorder.started...), append([]LaunchTermination{}, recorder.terminated...)
+	recorder.mu.Unlock()
+	if len(started) != 1 || len(terminated) != 1 {
+		t.Fatalf("started=%d terminated=%d, want exactly one of each", len(started), len(terminated))
+	}
+	end := terminated[0]
+	if end.Kind != LaunchManagedEnded || !end.WaitObserved || end.Process.PID != started[0].PID || end.Process.InstanceID != started[0].InstanceID {
+		t.Fatalf("termination after a started failure was not the waited exit of that process: %+v", end)
+	}
+	if _, err := executeKnowledgeFixture(t, cfg, opts); KnowledgeFailureReason(err) != KnowledgeUnavailable || permits != 1 || knowledgeStartCount(t, spec) > 1 {
+		t.Fatalf("started callback failure permitted another launch: permits=%d err=%v", permits, err)
+	}
+}

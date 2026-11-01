@@ -1,0 +1,122 @@
+M2 green run (fixed production code)
+Fix: retryKnowledgeBusy re-runs the whole prepare/authorize call (pre-reads plus transaction) while it
+reports knowledge_busy or collaboration_busy, with jittered backoff (10ms doubling to 200ms) for at most
+1.5s (taskKnowledgeBusyBudget), rolling back before each sleep. It never starts an attempt with less than
+250ms (taskKnowledgeBusyReserve) left on the caller's deadline, and returns the last busy result when the
+budget or deadline ends. Collaboration commit errors are never retried. Lock order and the try-locks are unchanged.
+
+Base commit: 680ad868fc9ce5e2b9ba665c20a626d3c6bbb0ab; uncommitted files at the time of this run:
+ M server/internal/service/collaboration_knowledge_runtime.go
+ M server/internal/service/collaboration_knowledge_runtime_test.go
+ M server/internal/service/task_knowledge_concurrency_test.go
+ M server/internal/service/task_knowledge_prepare.go
+?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M2-green.txt
+?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M2-red.txt
+
+Database: postgres://multica:multica@127.0.0.1:5432/kfix_launch_svc
+
+Classification
+BEHAVIORAL (failed in M2-red.txt, pass here):
+  TestKnowledgePreparationWaitsOutSiblingNamespaceHolder/{installation_namespace,member_fence}
+  TestKnowledgeAuthorizationWaitsOutSiblingNamespaceHolder
+  TestKnowledgePreparationNamespaceBusyBudgetIsBounded
+  TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/{prepare,authorize}/{managed_claim,installation_namespace}
+UPDATED EXISTING TEST (encoded the immediate refusal; now asserts a bounded busy refusal, never a blocking wait):
+  TestCollaborationKnowledgeRuntimeLateRunLockIsNowait
+REGRESSION GUARDS (passed before, must still pass: bounded knowledge_busy, no lock retained, no automatic retry):
+  TestKnowledgePreparationHoldsConsumerProjectIdentity, TestKnowledgePreparationWorkspaceDeleteLockOrder,
+  TestKnowledgePreparationFinalizerContentionUsesNowait, TestKnowledgePreparationSourceRevocationBothCommitOrders,
+  TestKnowledgePreparationVersusWithdrawAndSourceRevoke, TestKnowledgeFailureNeverCreatesAutomaticRetry
+
+=== Run 1: go test ./internal/service/ -run '<all of the above>' -count=1 -v   (exit 0)
+=== RUN   TestCollaborationKnowledgeRuntimeLateRunLockIsNowait
+--- PASS: TestCollaborationKnowledgeRuntimeLateRunLockIsNowait (2.17s)
+=== RUN   TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder
+=== RUN   TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/prepare/managed_claim
+=== RUN   TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/prepare/installation_namespace
+=== RUN   TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/authorize/managed_claim
+=== RUN   TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/authorize/installation_namespace
+--- PASS: TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder (4.40s)
+    --- PASS: TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/prepare/managed_claim (1.12s)
+    --- PASS: TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/prepare/installation_namespace (1.13s)
+    --- PASS: TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/authorize/managed_claim (1.06s)
+    --- PASS: TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/authorize/installation_namespace (1.09s)
+=== RUN   TestKnowledgePreparationVersusWithdrawAndSourceRevoke
+=== RUN   TestKnowledgePreparationVersusWithdrawAndSourceRevoke/withdraw
+=== RUN   TestKnowledgePreparationVersusWithdrawAndSourceRevoke/prepare
+--- PASS: TestKnowledgePreparationVersusWithdrawAndSourceRevoke (0.71s)
+    --- PASS: TestKnowledgePreparationVersusWithdrawAndSourceRevoke/withdraw (0.31s)
+    --- PASS: TestKnowledgePreparationVersusWithdrawAndSourceRevoke/prepare (0.41s)
+=== RUN   TestKnowledgePreparationHoldsConsumerProjectIdentity
+--- PASS: TestKnowledgePreparationHoldsConsumerProjectIdentity (0.90s)
+=== RUN   TestKnowledgePreparationWaitsOutSiblingNamespaceHolder
+=== RUN   TestKnowledgePreparationWaitsOutSiblingNamespaceHolder/installation_namespace
+=== RUN   TestKnowledgePreparationWaitsOutSiblingNamespaceHolder/member_fence
+--- PASS: TestKnowledgePreparationWaitsOutSiblingNamespaceHolder (1.29s)
+    --- PASS: TestKnowledgePreparationWaitsOutSiblingNamespaceHolder/installation_namespace (0.63s)
+    --- PASS: TestKnowledgePreparationWaitsOutSiblingNamespaceHolder/member_fence (0.66s)
+=== RUN   TestKnowledgeAuthorizationWaitsOutSiblingNamespaceHolder
+--- PASS: TestKnowledgeAuthorizationWaitsOutSiblingNamespaceHolder (0.61s)
+=== RUN   TestKnowledgePreparationNamespaceBusyBudgetIsBounded
+--- PASS: TestKnowledgePreparationNamespaceBusyBudgetIsBounded (1.77s)
+=== RUN   TestKnowledgePreparationSourceRevocationBothCommitOrders
+=== RUN   TestKnowledgePreparationSourceRevocationBothCommitOrders/source_revocation
+=== RUN   TestKnowledgePreparationSourceRevocationBothCommitOrders/disclosure
+--- PASS: TestKnowledgePreparationSourceRevocationBothCommitOrders (2.33s)
+    --- PASS: TestKnowledgePreparationSourceRevocationBothCommitOrders/source_revocation (1.85s)
+    --- PASS: TestKnowledgePreparationSourceRevocationBothCommitOrders/disclosure (0.47s)
+=== RUN   TestKnowledgePreparationWorkspaceDeleteLockOrder
+--- PASS: TestKnowledgePreparationWorkspaceDeleteLockOrder (0.98s)
+=== RUN   TestKnowledgePreparationFinalizerContentionUsesNowait
+--- PASS: TestKnowledgePreparationFinalizerContentionUsesNowait (0.95s)
+=== RUN   TestKnowledgeFailureNeverCreatesAutomaticRetry
+=== RUN   TestKnowledgeFailureNeverCreatesAutomaticRetry/knowledge_context_changed
+2026/11/01 19:34:12 WARN task failed task_id=953fdb66-463d-41e5-b09f-edd61a8656f5 issue_id=69c37588-35db-4454-ac3a-156cd5c53bbd error=knowledge_context_changed failure_reason=knowledge_context_changed
+=== RUN   TestKnowledgeFailureNeverCreatesAutomaticRetry/knowledge_authorization_denied
+2026/11/01 19:34:13 WARN task failed task_id=f3109866-727c-4c30-b50d-f1b4494949a0 issue_id=745aba74-7ee9-4b05-9879-9d308d358d90 error=knowledge_authorization_denied failure_reason=knowledge_authorization_denied
+=== RUN   TestKnowledgeFailureNeverCreatesAutomaticRetry/knowledge_unavailable
+2026/11/01 19:34:13 WARN task failed task_id=0a31d539-7c09-4fff-b56b-de12e4de2eea issue_id=3e4d6464-e598-4f8b-9832-df6e26e4bd36 error=knowledge_unavailable failure_reason=knowledge_unavailable
+=== RUN   TestKnowledgeFailureNeverCreatesAutomaticRetry/knowledge_busy
+2026/11/01 19:34:13 WARN task failed task_id=e234ccf1-7e6f-4bf8-a64f-c172ba539b09 issue_id=bb139ec7-7884-4184-ba58-3ec519b7febe error=knowledge_busy failure_reason=knowledge_busy
+=== RUN   TestKnowledgeFailureNeverCreatesAutomaticRetry/knowledge_invocation_unsupported
+2026/11/01 19:34:13 WARN task failed task_id=e688dded-90c9-458f-b365-c17f0c65d188 issue_id=d4e8ba58-7a82-4027-a6a0-79173a111699 error=knowledge_invocation_unsupported failure_reason=knowledge_invocation_unsupported
+--- PASS: TestKnowledgeFailureNeverCreatesAutomaticRetry (1.44s)
+    --- PASS: TestKnowledgeFailureNeverCreatesAutomaticRetry/knowledge_context_changed (0.41s)
+    --- PASS: TestKnowledgeFailureNeverCreatesAutomaticRetry/knowledge_authorization_denied (0.24s)
+    --- PASS: TestKnowledgeFailureNeverCreatesAutomaticRetry/knowledge_unavailable (0.28s)
+    --- PASS: TestKnowledgeFailureNeverCreatesAutomaticRetry/knowledge_busy (0.28s)
+    --- PASS: TestKnowledgeFailureNeverCreatesAutomaticRetry/knowledge_invocation_unsupported (0.22s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/service	18.486s
+
+=== Run 2: go test -race ./internal/service/ -run '<behavioral + updated + 1s-context guards>' -count=1 -v   (exit 0)
+=== RUN   TestCollaborationKnowledgeRuntimeLateRunLockIsNowait
+--- PASS: TestCollaborationKnowledgeRuntimeLateRunLockIsNowait (2.29s)
+=== RUN   TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder
+=== RUN   TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/prepare/managed_claim
+=== RUN   TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/prepare/installation_namespace
+=== RUN   TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/authorize/managed_claim
+=== RUN   TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/authorize/installation_namespace
+--- PASS: TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder (5.71s)
+    --- PASS: TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/prepare/managed_claim (1.54s)
+    --- PASS: TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/prepare/installation_namespace (1.44s)
+    --- PASS: TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/authorize/managed_claim (1.34s)
+    --- PASS: TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/authorize/installation_namespace (1.40s)
+=== RUN   TestKnowledgePreparationHoldsConsumerProjectIdentity
+--- PASS: TestKnowledgePreparationHoldsConsumerProjectIdentity (1.01s)
+=== RUN   TestKnowledgePreparationWaitsOutSiblingNamespaceHolder
+=== RUN   TestKnowledgePreparationWaitsOutSiblingNamespaceHolder/installation_namespace
+=== RUN   TestKnowledgePreparationWaitsOutSiblingNamespaceHolder/member_fence
+--- PASS: TestKnowledgePreparationWaitsOutSiblingNamespaceHolder (1.58s)
+    --- PASS: TestKnowledgePreparationWaitsOutSiblingNamespaceHolder/installation_namespace (0.83s)
+    --- PASS: TestKnowledgePreparationWaitsOutSiblingNamespaceHolder/member_fence (0.74s)
+=== RUN   TestKnowledgeAuthorizationWaitsOutSiblingNamespaceHolder
+--- PASS: TestKnowledgeAuthorizationWaitsOutSiblingNamespaceHolder (0.77s)
+=== RUN   TestKnowledgePreparationNamespaceBusyBudgetIsBounded
+--- PASS: TestKnowledgePreparationNamespaceBusyBudgetIsBounded (1.81s)
+=== RUN   TestKnowledgePreparationWorkspaceDeleteLockOrder
+--- PASS: TestKnowledgePreparationWorkspaceDeleteLockOrder (0.96s)
+=== RUN   TestKnowledgePreparationFinalizerContentionUsesNowait
+--- PASS: TestKnowledgePreparationFinalizerContentionUsesNowait (1.01s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/service	17.405s

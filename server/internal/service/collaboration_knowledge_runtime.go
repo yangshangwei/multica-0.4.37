@@ -108,7 +108,9 @@ func (s *CollaborationService) collaborationKnowledgeFacts(ctx context.Context, 
 // This graph deliberately does not call lockCollaborationRuntimeRun. Source
 // writers take issue UPDATE; our SHARE NOWAIT locks freeze their state while
 // currentAdmission runs under prelocked commands/grants/group runs. Its resource
-// helpers are already exclusively NOWAIT/try-lock readers.
+// helpers are already exclusively NOWAIT/try-lock readers. A busy result rolls
+// the whole graph back and runCollaborationKnowledgeMutation re-runs it; never
+// turn the namespace, member or status fence into a blocking wait.
 func (s *CollaborationService) lockCollaborationKnowledge(ctx context.Context, tx pgx.Tx, runID pgtype.UUID, tokenHash string, exact *KnowledgeManifest) (*collaborationRuntimeState, KnowledgeConsumerFacts, KnowledgeReadLockHints, error) {
 	q := s.Queries.WithTx(tx)
 	var f KnowledgeConsumerFacts
@@ -355,6 +357,28 @@ func (s *CollaborationService) lockCollaborationKnowledge(ctx context.Context, t
 	return r, f, hints, nil
 }
 
+// runCollaborationKnowledgeMutation re-runs fn in a fresh transaction while it
+// reports a busy result, either a fence try-lock miss or NOWAIT exhaustion in
+// collaborationRuntimeMutation. A commit error is returned unretried: its
+// outcome is unknown, and only the original request identity may reconcile it.
+func runCollaborationKnowledgeMutation[T any](ctx context.Context, s *CollaborationService, fn func(pgx.Tx) (T, error)) (T, error) {
+	var out T
+	var commit *collaborationRuntimeCommitError
+	err := retryKnowledgeBusy(ctx, func() error {
+		var e error
+		out, e = collaborationRuntimeMutation(ctx, s, fn)
+		if errors.As(e, &commit) {
+			return nil
+		}
+		return taskKnowledgeError(e)
+	})
+	if commit != nil {
+		var empty T
+		return empty, taskKnowledgeError(commit)
+	}
+	return out, err
+}
+
 func (s *CollaborationService) PrepareRuntimeKnowledge(ctx context.Context, runID pgtype.UUID, tokenHash string, p protocol.CollaborationRunKnowledgePrepare) (protocol.CollaborationRunKnowledgeBundle, error) {
 	var empty protocol.CollaborationRunKnowledgeBundle
 	if protocol.ValidateCollaborationRunKnowledgePrepare(p) != nil || p.Identity.RunID != util.UUIDToString(runID) {
@@ -363,7 +387,7 @@ func (s *CollaborationService) PrepareRuntimeKnowledge(ctx context.Context, runI
 	if !s.KnowledgeContextEnabled {
 		return empty, knowledgeFailure(409, "knowledge_invocation_unsupported")
 	}
-	out, err := collaborationRuntimeMutation(ctx, s, func(tx pgx.Tx) (protocol.CollaborationRunKnowledgeBundle, error) {
+	out, err := runCollaborationKnowledgeMutation(ctx, s, func(tx pgx.Tx) (protocol.CollaborationRunKnowledgeBundle, error) {
 		q := s.Queries.WithTx(tx)
 		prior, e := loadCollaborationKnowledge[collaborationKnowledgePreparation](ctx, q, runID, collaborationKnowledgePrepareKey, "knowledge_preparation")
 		var exact *KnowledgeManifest
@@ -455,7 +479,7 @@ func (s *CollaborationService) AuthorizeRuntimeKnowledge(ctx context.Context, ru
 	if !s.KnowledgeContextEnabled {
 		return empty, knowledgeFailure(409, "knowledge_invocation_unsupported")
 	}
-	out, err := collaborationRuntimeMutation(ctx, s, func(tx pgx.Tx) (protocol.CollaborationRunKnowledgeAuthorization, error) {
+	out, err := runCollaborationKnowledgeMutation(ctx, s, func(tx pgx.Tx) (protocol.CollaborationRunKnowledgeAuthorization, error) {
 		q := s.Queries.WithTx(tx)
 		saved, e := loadCollaborationKnowledge[collaborationKnowledgePreparation](ctx, q, runID, collaborationKnowledgePrepareKey, "knowledge_preparation")
 		if e != nil {

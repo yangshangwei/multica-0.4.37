@@ -102,6 +102,11 @@ type TaskKnowledgePrepareRequest struct {
 	ClaimGeneration       string                      `json:"claim_generation"`
 	DispatchedAt          string                      `json:"dispatched_at"`
 	Session               TaskKnowledgeSessionBinding `json:"session"`
+	// ResumeUnavailable reports that the daemon's pre-launch reachability gate
+	// dropped the claimed native session. Session still carries the original
+	// claimed binding. Optional and omitted when false, so an unflagged request
+	// keeps its exact bytes and receipt hash; an older server rejects it.
+	ResumeUnavailable bool `json:"resume_unavailable,omitempty"`
 }
 type TaskKnowledgePrepareResponse struct {
 	InvocationFingerprint string                               `json:"invocation_fingerprint"`

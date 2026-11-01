@@ -3,12 +3,15 @@ package service
 import (
 	"context"
 	"strings"
+	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/multica-ai/multica/server/internal/util"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
@@ -217,5 +220,211 @@ func TestKnowledgePreparationHoldsConsumerProjectIdentity(t *testing.T) {
 	defer cancel()
 	if _, err = f.tasks.PrepareTaskKnowledge(ctx, f.caller, f.task.ID, f.prepareRequest(d)); !collaborationErrorCode(err, "knowledge_busy") {
 		t.Fatalf("consumer scope changed outside the preparation fence: %v", err)
+	}
+}
+
+// holdKnowledgeSiblingLock runs lock in its own transaction, the way claim,
+// finalize or a delegated-subscriber writer holds it, until release is called.
+// It reports the instant just before rollback, so a waiter that acquires the
+// key afterwards always observes a later time.
+func holdKnowledgeSiblingLock(t *testing.T, starter TxStarter, lock func(pgx.Tx) error) (held <-chan struct{}, release func() time.Time) {
+	t.Helper()
+	ready, stop, done := make(chan struct{}), make(chan struct{}), make(chan time.Time, 1)
+	go func() {
+		ctx := context.Background()
+		tx, err := starter.Begin(ctx)
+		if err != nil {
+			t.Error(err)
+			close(ready)
+			done <- time.Now()
+			return
+		}
+		if err = lock(tx); err != nil {
+			t.Error(err)
+		}
+		close(ready)
+		<-stop
+		released := time.Now()
+		_ = tx.Rollback(ctx)
+		done <- released
+	}()
+	var once sync.Once
+	var released time.Time
+	release = func() time.Time {
+		once.Do(func() {
+			close(stop)
+			released = <-done
+		})
+		return released
+	}
+	t.Cleanup(func() { release() })
+	return ready, release
+}
+
+func holdManagedRuntimeNamespace(t *testing.T, f *taskKnowledgeFixture) (<-chan struct{}, func() time.Time) {
+	t.Helper()
+	runtime, err := f.tasks.Queries.GetAgentRuntime(f.ctx, f.task.RuntimeID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return holdKnowledgeSiblingLock(t, f.pool, func(tx pgx.Tx) error {
+		_, err := LockManagedRuntime(f.ctx, f.tasks.runtimeLookup(f.tasks.Queries.WithTx(tx)), runtime)
+		return err
+	})
+}
+
+func storedKnowledgeClaim(t *testing.T, f *taskKnowledgeFixture) *taskKnowledgeClaim {
+	t.Helper()
+	row, err := f.tasks.Queries.GetAgentTask(f.ctx, f.task.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	meta, err := decodeTaskKnowledge(row.KnowledgeContextVersion, row.KnowledgeDelivery)
+	if err != nil {
+		t.Fatal(err)
+	}
+	claim, err := taskKnowledgeClaimAt(meta, row.ClaimGeneration)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return claim
+}
+
+// Claim and finalize hold the installation namespace with a blocking lock, and
+// the delegated-subscriber writer holds the member fence the same way. Prepare
+// takes both late as try-locks; a miss must re-run the whole transaction
+// instead of ending the task with knowledge_busy.
+func TestKnowledgePreparationWaitsOutSiblingNamespaceHolder(t *testing.T) {
+	for _, holder := range []string{"installation_namespace", "member_fence"} {
+		t.Run(holder, func(t *testing.T) {
+			f := newTaskKnowledgeFixture(t)
+			d := f.finalize(t, "")
+			var held <-chan struct{}
+			var release func() time.Time
+			if holder == "installation_namespace" {
+				held, release = holdManagedRuntimeNamespace(t, f)
+			} else {
+				held, release = holdKnowledgeSiblingLock(t, f.pool, func(tx pgx.Tx) error {
+					return f.tasks.Queries.WithTx(tx).LockSubscriberWrites(f.ctx, db.LockSubscriberWritesParams{WorkspaceID: util.MustParseUUID(f.workspace), UserID: util.MustParseUUID(f.creator)})
+				})
+			}
+			<-held
+			type outcome struct {
+				out      protocol.TaskKnowledgePrepareResponse
+				err      error
+				returned time.Time
+			}
+			done := make(chan outcome, 1)
+			ctx, cancel := context.WithTimeout(f.ctx, 5*time.Second)
+			defer cancel()
+			started := time.Now()
+			go func() {
+				out, err := f.tasks.PrepareTaskKnowledge(ctx, f.caller, f.task.ID, f.prepareRequest(d))
+				done <- outcome{out, err, time.Now()}
+			}()
+			var got outcome
+			select {
+			case got = <-done:
+				release()
+				t.Fatalf("preparation returned while the sibling held the key: err=%v after %s", got.err, got.returned.Sub(started))
+			case <-time.After(300 * time.Millisecond):
+			}
+			released := release()
+			select {
+			case got = <-done:
+			case <-time.After(3 * time.Second):
+				t.Fatal("preparation did not finish after the sibling released the key")
+			}
+			if got.err != nil || len(got.out.Contributions) != 1 {
+				t.Fatalf("lock contention ended the preparation: %v", got.err)
+			}
+			if !got.returned.After(released) || got.returned.Sub(started) > 3*time.Second {
+				t.Fatalf("preparation did not wait out the sibling: returned %s after start, released %s after start", got.returned.Sub(started), released.Sub(started))
+			}
+			if claim := storedKnowledgeClaim(t, f); claim.Phase != "disclosed" || claim.Prepared == nil {
+				t.Fatalf("retried preparation did not commit its disclosure: phase=%s", claim.Phase)
+			}
+		})
+	}
+}
+
+func TestKnowledgeAuthorizationWaitsOutSiblingNamespaceHolder(t *testing.T) {
+	f := newTaskKnowledgeFixture(t)
+	d := f.finalize(t, "")
+	p, err := f.tasks.PrepareTaskKnowledge(f.ctx, f.caller, f.task.ID, f.prepareRequest(d))
+	if err != nil {
+		t.Fatal(err)
+	}
+	held, release := holdManagedRuntimeNamespace(t, f)
+	<-held
+	type outcome struct {
+		out      protocol.TaskKnowledgeAuthorization
+		err      error
+		returned time.Time
+	}
+	done := make(chan outcome, 1)
+	ctx, cancel := context.WithTimeout(f.ctx, 5*time.Second)
+	defer cancel()
+	go func() {
+		out, err := f.tasks.AuthorizeTaskKnowledgeLaunch(ctx, f.caller, f.task.ID, f.authorizeRequest(p, d))
+		done <- outcome{out, err, time.Now()}
+	}()
+	select {
+	case got := <-done:
+		release()
+		t.Fatalf("authorization returned while the sibling held the namespace: %v", got.err)
+	case <-time.After(300 * time.Millisecond):
+	}
+	released := release()
+	var got outcome
+	select {
+	case got = <-done:
+	case <-time.After(3 * time.Second):
+		t.Fatal("authorization did not finish after the sibling released the namespace")
+	}
+	if got.err != nil || got.out.PrepareID != p.PrepareID || !got.returned.After(released) {
+		t.Fatalf("lock contention ended the authorization: %v", got.err)
+	}
+	if attempts := len(storedKnowledgeClaim(t, f).Attempts); attempts != 1 {
+		t.Fatalf("retried authorization stored %d attempts, want 1", attempts)
+	}
+}
+
+type knowledgeBeginCounter struct {
+	TxStarter
+	begins atomic.Int32
+}
+
+func (c *knowledgeBeginCounter) Begin(ctx context.Context) (pgx.Tx, error) {
+	c.begins.Add(1)
+	return c.TxStarter.Begin(ctx)
+}
+
+// Sustained contention still ends in a bounded knowledge_busy: the retry has a
+// budget, holds no lock while it waits and commits nothing.
+func TestKnowledgePreparationNamespaceBusyBudgetIsBounded(t *testing.T) {
+	f := newTaskKnowledgeFixture(t)
+	d := f.finalize(t, "")
+	counter := &knowledgeBeginCounter{TxStarter: f.pool}
+	f.tasks.TxStarter = counter
+	held, release := holdManagedRuntimeNamespace(t, f)
+	<-held
+	ctx, cancel := context.WithTimeout(f.ctx, 5*time.Second)
+	defer cancel()
+	started := time.Now()
+	out, err := f.tasks.PrepareTaskKnowledge(ctx, f.caller, f.task.ID, f.prepareRequest(d))
+	elapsed := time.Since(started)
+	release()
+	if !collaborationErrorCode(err, "knowledge_busy") || len(out.Contributions) != 0 {
+		t.Fatalf("exhausted contention was not a bounded knowledge_busy: %v", err)
+	}
+	if begins := counter.begins.Load(); begins < 2 {
+		t.Fatalf("contended preparation ran %d transaction(s), want a retry", begins)
+	}
+	if elapsed < 1200*time.Millisecond || elapsed > 2500*time.Millisecond {
+		t.Fatalf("busy budget took %s, want 1.2s-2.5s", elapsed)
+	}
+	if claim := storedKnowledgeClaim(t, f); claim.Phase != "claimed" || claim.Prepared != nil {
+		t.Fatalf("refused preparation committed disclosure metadata: phase=%s", claim.Phase)
 	}
 }
