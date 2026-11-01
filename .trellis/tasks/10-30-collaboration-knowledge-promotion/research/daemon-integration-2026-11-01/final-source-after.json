@@ -1,0 +1,21 @@
+{
+  "source_sha256": {
+    "server/internal/daemon/client.go": "ba1b521622c9e6ad2461271ac30ea8517da59c871ad78128421fa0ca310e83ec",
+    "server/internal/daemon/types.go": "18070fd79ff047445c4fa84c50cbe28fe264682193e69e83a0f90f33e3ccdbfb",
+    "server/internal/daemon/wsrpc.go": "31ca2ceb3173f1e0278e8ae74b4ac16742af5e3fbfb22e0a0bcb53dbc1f372ab",
+    "server/internal/daemon/managed_transport.go": "0252432eb59fbe39c270b6122e83896ede8e942aca5c1aee2dd3b643755ecf2e",
+    "server/internal/daemon/prompt.go": "8cf088df314eff7aeb181be453fa870ad4eaf4a3750cab3dafe2efaf2566c9b3",
+    "server/internal/daemon/daemon.go": "4d2537587fa89252c756638c7575e8c16394c85246ad94399b1fec652125c5de",
+    "server/internal/daemon/knowledge_context.go": "d202e4b046cfec3f6043622fee43a4ac7ab7c88c4f1a090549aa2927b4582529",
+    "server/internal/daemon/knowledge_context_test.go": "1228e216eac71d21edada9478abe014fa37e84ce0320abc73e64445caf96e92e",
+    "server/internal/daemon/knowledge_context_claim_test.go": "1cc11355edbf90e228d1dad9ae7f484f87a6241ae322dcbeae83b8abcb498aed"
+  },
+  "dependency_sha256": {
+    "server/pkg/protocol/task_knowledge.go": "bd8183cf498eee7e20ebd16ddece4cd7f7103af4402c7b9ac191b944ecd5efe8",
+    "server/pkg/agent/knowledge_launch.go": "aebfd0a5bc382f92c732d0427427746e1fb9aa465975d34c826834a8ffcedb3e",
+    "server/pkg/agent/launch_lifecycle.go": "15431e2e4329ba12a4f3da09114c1d892862fe4e798b124391bf21a25fb326be",
+    "server/pkg/agent/claude.go": "cbe91fb97ef7bc026eef43b074a6cecaab644e6edf2354e007765582c813ee24"
+  },
+  "owned_sources_unchanged_during_final_checks": true,
+  "dependency_changes_during_checks": []
+}

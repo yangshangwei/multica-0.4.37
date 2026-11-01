@@ -1,0 +1,218 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/multica-knowledge-ui-results/round7",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-knowledge.spec.ts",
+      "file": "collaboration-knowledge.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Desktop native source review and independent project/workspace contributions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 13044,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-31T23:13:50.811Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "desktop-full-source-review-1380-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round7/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-full-source-review-1380-part-1-png-194170a1b91dfaf33c1f2d101678ecb7dc0f4531.png"
+                    },
+                    {
+                      "name": "desktop-full-source-review-1380-part-2.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round7/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-full-source-review-1380-part-2-png-5e84fe25ff613d65b32d83e29ed6a9edfbb56df7.png"
+                    },
+                    {
+                      "name": "desktop-full-source-review-640-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round7/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-full-source-review-640-part-1-png-1f75f6fafc39d4e0f61cdfdbff4a11b86a2bdbc2.png"
+                    },
+                    {
+                      "name": "desktop-full-source-review-640-part-2.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round7/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-full-source-review-640-part-2-png-f8628566baa40f875538e4a8136977a81cd79614.png"
+                    },
+                    {
+                      "name": "desktop-full-source-review-640-part-3.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round7/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-full-source-review-640-part-3-png-e38d8ce1d882f61f50e2ee7edb45137d4803c36b.png"
+                    },
+                    {
+                      "name": "full-source-review-capture-geometry",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJuYW1lIjogImRlc2t0b3AtZnVsbC1zb3VyY2UtcmV2aWV3LTEzODAtcGFydC0xLnBuZyIsCiAgICAidmlld3BvcnQiOiB7CiAgICAgICJ3aWR0aCI6IDEzODAsCiAgICAgICJoZWlnaHQiOiA5NjAKICAgIH0sCiAgICAicmVjdCI6IHsKICAgICAgIngiOiA0MTIuNSwKICAgICAgInkiOiAxNzYsCiAgICAgICJ3aWR0aCI6IDg5NiwKICAgICAgImhlaWdodCI6IDEzNTMuNzUsCiAgICAgICJ0b3AiOiAxNzYsCiAgICAgICJyaWdodCI6IDEzMDguNSwKICAgICAgImJvdHRvbSI6IDE1MjkuNzUsCiAgICAgICJsZWZ0IjogNDEyLjUKICAgIH0sCiAgICAiY29udGFpbmVyIjogewogICAgICAieCI6IDM2MCwKICAgICAgInkiOiAxNjQsCiAgICAgICJ3aWR0aCI6IDEwMTIsCiAgICAgICJoZWlnaHQiOiA3ODgsCiAgICAgICJ0b3AiOiAxNjQsCiAgICAgICJyaWdodCI6IDEzNzIsCiAgICAgICJib3R0b20iOiA5NTIsCiAgICAgICJsZWZ0IjogMzYwCiAgICB9LAogICAgInZpc2libGVTdGFydCI6IDAsCiAgICAidmlzaWJsZUVuZCI6IDc3NiwKICAgICJvdmVyZmxvdyI6IGZhbHNlCiAgfSwKICB7CiAgICAibmFtZSI6ICJkZXNrdG9wLWZ1bGwtc291cmNlLXJldmlldy0xMzgwLXBhcnQtMi5wbmciLAogICAgInZpZXdwb3J0IjogewogICAgICAid2lkdGgiOiAxMzgwLAogICAgICAiaGVpZ2h0IjogOTYwCiAgICB9LAogICAgInJlY3QiOiB7CiAgICAgICJ4IjogNDEyLjUsCiAgICAgICJ5IjogLTQxNCwKICAgICAgIndpZHRoIjogODk2LAogICAgICAiaGVpZ2h0IjogMTM1My43NSwKICAgICAgInRvcCI6IC00MTQsCiAgICAgICJyaWdodCI6IDEzMDguNSwKICAgICAgImJvdHRvbSI6IDkzOS43NSwKICAgICAgImxlZnQiOiA0MTIuNQogICAgfSwKICAgICJjb250YWluZXIiOiB7CiAgICAgICJ4IjogMzYwLAogICAgICAieSI6IDE2NCwKICAgICAgIndpZHRoIjogMTAxMiwKICAgICAgImhlaWdodCI6IDc4OCwKICAgICAgInRvcCI6IDE2NCwKICAgICAgInJpZ2h0IjogMTM3MiwKICAgICAgImJvdHRvbSI6IDk1MiwKICAgICAgImxlZnQiOiAzNjAKICAgIH0sCiAgICAidmlzaWJsZVN0YXJ0IjogNTc4LAogICAgInZpc2libGVFbmQiOiAxMzUzLjc1LAogICAgIm92ZXJmbG93IjogZmFsc2UKICB9LAogIHsKICAgICJuYW1lIjogImRlc2t0b3AtZnVsbC1zb3VyY2UtcmV2aWV3LTY0MC1wYXJ0LTEucG5nIiwKICAgICJ2aWV3cG9ydCI6IHsKICAgICAgIndpZHRoIjogNjQwLAogICAgICAiaGVpZ2h0IjogOTYwCiAgICB9LAogICAgInJlY3QiOiB7CiAgICAgICJ4IjogMjQsCiAgICAgICJ5IjogMjIwLAogICAgICAid2lkdGgiOiA1ODEsCiAgICAgICJoZWlnaHQiOiAxNjcwLjUsCiAgICAgICJ0b3AiOiAyMjAsCiAgICAgICJyaWdodCI6IDYwNSwKICAgICAgImJvdHRvbSI6IDE4OTAuNSwKICAgICAgImxlZnQiOiAyNAogICAgfSwKICAgICJjb250YWluZXIiOiB7CiAgICAgICJ4IjogOCwKICAgICAgInkiOiAyMDgsCiAgICAgICJ3aWR0aCI6IDYyNCwKICAgICAgImhlaWdodCI6IDc0NCwKICAgICAgInRvcCI6IDIwOCwKICAgICAgInJpZ2h0IjogNjMyLAogICAgICAiYm90dG9tIjogOTUyLAogICAgICAibGVmdCI6IDgKICAgIH0sCiAgICAidmlzaWJsZVN0YXJ0IjogMCwKICAgICJ2aXNpYmxlRW5kIjogNzMyLAogICAgIm92ZXJmbG93IjogZmFsc2UKICB9LAogIHsKICAgICJuYW1lIjogImRlc2t0b3AtZnVsbC1zb3VyY2UtcmV2aWV3LTY0MC1wYXJ0LTIucG5nIiwKICAgICJ2aWV3cG9ydCI6IHsKICAgICAgIndpZHRoIjogNjQwLAogICAgICAiaGVpZ2h0IjogOTYwCiAgICB9LAogICAgInJlY3QiOiB7CiAgICAgICJ4IjogMjQsCiAgICAgICJ5IjogLTUwMCwKICAgICAgIndpZHRoIjogNTgxLAogICAgICAiaGVpZ2h0IjogMTY3MC41LAogICAgICAidG9wIjogLTUwMCwKICAgICAgInJpZ2h0IjogNjA1LAogICAgICAiYm90dG9tIjogMTE3MC41LAogICAgICAibGVmdCI6IDI0CiAgICB9LAogICAgImNvbnRhaW5lciI6IHsKICAgICAgIngiOiA4LAogICAgICAieSI6IDIwOCwKICAgICAgIndpZHRoIjogNjI0LAogICAgICAiaGVpZ2h0IjogNzQ0LAogICAgICAidG9wIjogMjA4LAogICAgICAicmlnaHQiOiA2MzIsCiAgICAgICJib3R0b20iOiA5NTIsCiAgICAgICJsZWZ0IjogOAogICAgfSwKICAgICJ2aXNpYmxlU3RhcnQiOiA3MDgsCiAgICAidmlzaWJsZUVuZCI6IDE0NTIsCiAgICAib3ZlcmZsb3ciOiBmYWxzZQogIH0sCiAgewogICAgIm5hbWUiOiAiZGVza3RvcC1mdWxsLXNvdXJjZS1yZXZpZXctNjQwLXBhcnQtMy5wbmciLAogICAgInZpZXdwb3J0IjogewogICAgICAid2lkdGgiOiA2NDAsCiAgICAgICJoZWlnaHQiOiA5NjAKICAgIH0sCiAgICAicmVjdCI6IHsKICAgICAgIngiOiAyNCwKICAgICAgInkiOiAtNzMwLjUsCiAgICAgICJ3aWR0aCI6IDU4MSwKICAgICAgImhlaWdodCI6IDE2NzAuNSwKICAgICAgInRvcCI6IC03MzAuNSwKICAgICAgInJpZ2h0IjogNjA1LAogICAgICAiYm90dG9tIjogOTQwLAogICAgICAibGVmdCI6IDI0CiAgICB9LAogICAgImNvbnRhaW5lciI6IHsKICAgICAgIngiOiA4LAogICAgICAieSI6IDIwOCwKICAgICAgIndpZHRoIjogNjI0LAogICAgICAiaGVpZ2h0IjogNzQ0LAogICAgICAidG9wIjogMjA4LAogICAgICAicmlnaHQiOiA2MzIsCiAgICAgICJib3R0b20iOiA5NTIsCiAgICAgICJsZWZ0IjogOAogICAgfSwKICAgICJ2aXNpYmxlU3RhcnQiOiA5MzguNSwKICAgICJ2aXNpYmxlRW5kIjogMTY3MC41LAogICAgIm92ZXJmbG93IjogZmFsc2UKICB9Cl0="
+                    },
+                    {
+                      "name": "desktop-project-managed-1380-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round7/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-project-managed-1380-part-1-png-c670af9677990b0d38c5c9b6c5703290f36e4ade.png"
+                    },
+                    {
+                      "name": "desktop-project-managed-1380-part-2.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round7/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-project-managed-1380-part-2-png-370999d0b9348cf1905f722bd2fb50efcfc2004f.png"
+                    },
+                    {
+                      "name": "desktop-project-managed-640-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round7/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-project-managed-640-part-1-png-a3467a53450c61838dd8f40fafe0ea8eb13ba62b.png"
+                    },
+                    {
+                      "name": "project-managed-capture-geometry",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJuYW1lIjogImRlc2t0b3AtcHJvamVjdC1tYW5hZ2VkLTEzODAtcGFydC0xLnBuZyIsCiAgICAidmlld3BvcnQiOiB7CiAgICAgICJ3aWR0aCI6IDEzODAsCiAgICAgICJoZWlnaHQiOiA5NjAKICAgIH0sCiAgICAicmVjdCI6IHsKICAgICAgIngiOiAxMDY5LAogICAgICAieSI6IDEwNy43NSwKICAgICAgIndpZHRoIjogMjc2LAogICAgICAiaGVpZ2h0IjogMTI5Ni43NSwKICAgICAgInRvcCI6IDEwNy43NSwKICAgICAgInJpZ2h0IjogMTM0NSwKICAgICAgImJvdHRvbSI6IDE0MDQuNSwKICAgICAgImxlZnQiOiAxMDY5CiAgICB9LAogICAgImNvbnRhaW5lciI6IHsKICAgICAgIngiOiAxMDUyLAogICAgICAieSI6IDk2LAogICAgICAid2lkdGgiOiAzMjAsCiAgICAgICJoZWlnaHQiOiA4NTYsCiAgICAgICJ0b3AiOiA5NiwKICAgICAgInJpZ2h0IjogMTM3MiwKICAgICAgImJvdHRvbSI6IDk1MiwKICAgICAgImxlZnQiOiAxMDUyCiAgICB9LAogICAgInZpc2libGVTdGFydCI6IDAsCiAgICAidmlzaWJsZUVuZCI6IDg0NC4yNSwKICAgICJvdmVyZmxvdyI6IGZhbHNlCiAgfSwKICB7CiAgICAibmFtZSI6ICJkZXNrdG9wLXByb2plY3QtbWFuYWdlZC0xMzgwLXBhcnQtMi5wbmciLAogICAgInZpZXdwb3J0IjogewogICAgICAid2lkdGgiOiAxMzgwLAogICAgICAiaGVpZ2h0IjogOTYwCiAgICB9LAogICAgInJlY3QiOiB7CiAgICAgICJ4IjogMTA2OSwKICAgICAgInkiOiAtMzU2Ljc1LAogICAgICAid2lkdGgiOiAyNzYsCiAgICAgICJoZWlnaHQiOiAxMjk2Ljc1LAogICAgICAidG9wIjogLTM1Ni43NSwKICAgICAgInJpZ2h0IjogMTM0NSwKICAgICAgImJvdHRvbSI6IDk0MCwKICAgICAgImxlZnQiOiAxMDY5CiAgICB9LAogICAgImNvbnRhaW5lciI6IHsKICAgICAgIngiOiAxMDUyLAogICAgICAieSI6IDk2LAogICAgICAid2lkdGgiOiAzMjAsCiAgICAgICJoZWlnaHQiOiA4NTYsCiAgICAgICJ0b3AiOiA5NiwKICAgICAgInJpZ2h0IjogMTM3MiwKICAgICAgImJvdHRvbSI6IDk1MiwKICAgICAgImxlZnQiOiAxMDUyCiAgICB9LAogICAgInZpc2libGVTdGFydCI6IDQ1Mi43NSwKICAgICJ2aXNpYmxlRW5kIjogMTI5Ni43NSwKICAgICJvdmVyZmxvdyI6IGZhbHNlCiAgfSwKICB7CiAgICAibmFtZSI6ICJkZXNrdG9wLXByb2plY3QtbWFuYWdlZC02NDAtcGFydC0xLnBuZyIsCiAgICAidmlld3BvcnQiOiB7CiAgICAgICJ3aWR0aCI6IDY0MCwKICAgICAgImhlaWdodCI6IDk2MAogICAgfSwKICAgICJyZWN0IjogewogICAgICAieCI6IDMwOS4xMDExMDQ3MzYzMjgxLAogICAgICAieSI6IDM5MywKICAgICAgIndpZHRoIjogMzM5Ljk5OTk2OTQ4MjQyMTksCiAgICAgICJoZWlnaHQiOiAyOTgsCiAgICAgICJ0b3AiOiAzOTMsCiAgICAgICJyaWdodCI6IDY0OS4xMDEwNzQyMTg3NSwKICAgICAgImJvdHRvbSI6IDY5MSwKICAgICAgImxlZnQiOiAzMDkuMTAxMTA0NzM2MzI4MQogICAgfSwKICAgICJjb250YWluZXIiOiB7CiAgICAgICJ4IjogMjkyLjEwMTEwNDczNjMyODEsCiAgICAgICJ5IjogMCwKICAgICAgIndpZHRoIjogMzgzLjk5OTk2OTQ4MjQyMTksCiAgICAgICJoZWlnaHQiOiA5NjAsCiAgICAgICJ0b3AiOiAwLAogICAgICAicmlnaHQiOiA2NzYuMTAxMDc0MjE4NzUsCiAgICAgICJib3R0b20iOiA5NjAsCiAgICAgICJsZWZ0IjogMjkyLjEwMTEwNDczNjMyODEKICAgIH0sCiAgICAidmlzaWJsZVN0YXJ0IjogMCwKICAgICJ2aXNpYmxlRW5kIjogMjk4LAogICAgIm92ZXJmbG93IjogZmFsc2UKICB9Cl0="
+                    },
+                    {
+                      "name": "desktop-workspace-managed-1380-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round7/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-workspace-managed-1380-part-1-png-b958c2bf5ccda5a81cd02f26f7eb06d5424a9f4a.png"
+                    },
+                    {
+                      "name": "desktop-workspace-managed-1380-part-2.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round7/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-workspace-managed-1380-part-2-png-fcf26719cff0e4f57d82aa02ed8f59f9e6cffbc5.png"
+                    },
+                    {
+                      "name": "desktop-workspace-managed-640-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round7/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-workspace-managed-640-part-1-png-05e9d7b40c7d6cdfd3c379178dc61fce66203b6d.png"
+                    },
+                    {
+                      "name": "desktop-workspace-managed-640-part-2.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round7/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-workspace-managed-640-part-2-png-394808d8df62facbb87875f3e41303dc4c1acd3e.png"
+                    },
+                    {
+                      "name": "workspace-managed-capture-geometry",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJuYW1lIjogImRlc2t0b3Atd29ya3NwYWNlLW1hbmFnZWQtMTM4MC1wYXJ0LTEucG5nIiwKICAgICJ2aWV3cG9ydCI6IHsKICAgICAgIndpZHRoIjogMTM4MCwKICAgICAgImhlaWdodCI6IDk2MAogICAgfSwKICAgICJyZWN0IjogewogICAgICAieCI6IDU2OS41LAogICAgICAieSI6IDEwOCwKICAgICAgIndpZHRoIjogNzA0LAogICAgICAiaGVpZ2h0IjogODY4Ljc1LAogICAgICAidG9wIjogMTA4LAogICAgICAicmlnaHQiOiAxMjczLjUsCiAgICAgICJib3R0b20iOiA5NzYuNzUsCiAgICAgICJsZWZ0IjogNTY5LjUKICAgIH0sCiAgICAiY29udGFpbmVyIjogewogICAgICAieCI6IDQ4MiwKICAgICAgInkiOiA5NiwKICAgICAgIndpZHRoIjogODkwLAogICAgICAiaGVpZ2h0IjogODU2LAogICAgICAidG9wIjogOTYsCiAgICAgICJyaWdodCI6IDEzNzIsCiAgICAgICJib3R0b20iOiA5NTIsCiAgICAgICJsZWZ0IjogNDgyCiAgICB9LAogICAgInZpc2libGVTdGFydCI6IDAsCiAgICAidmlzaWJsZUVuZCI6IDg0NCwKICAgICJvdmVyZmxvdyI6IGZhbHNlCiAgfSwKICB7CiAgICAibmFtZSI6ICJkZXNrdG9wLXdvcmtzcGFjZS1tYW5hZ2VkLTEzODAtcGFydC0yLnBuZyIsCiAgICAidmlld3BvcnQiOiB7CiAgICAgICJ3aWR0aCI6IDEzODAsCiAgICAgICJoZWlnaHQiOiA5NjAKICAgIH0sCiAgICAicmVjdCI6IHsKICAgICAgIngiOiA1NjkuNSwKICAgICAgInkiOiA3MSwKICAgICAgIndpZHRoIjogNzA0LAogICAgICAiaGVpZ2h0IjogODY4Ljc1LAogICAgICAidG9wIjogNzEsCiAgICAgICJyaWdodCI6IDEyNzMuNSwKICAgICAgImJvdHRvbSI6IDkzOS43NSwKICAgICAgImxlZnQiOiA1NjkuNQogICAgfSwKICAgICJjb250YWluZXIiOiB7CiAgICAgICJ4IjogNDgyLAogICAgICAieSI6IDk2LAogICAgICAid2lkdGgiOiA4OTAsCiAgICAgICJoZWlnaHQiOiA4NTYsCiAgICAgICJ0b3AiOiA5NiwKICAgICAgInJpZ2h0IjogMTM3MiwKICAgICAgImJvdHRvbSI6IDk1MiwKICAgICAgImxlZnQiOiA0ODIKICAgIH0sCiAgICAidmlzaWJsZVN0YXJ0IjogMjUsCiAgICAidmlzaWJsZUVuZCI6IDg2OC43NSwKICAgICJvdmVyZmxvdyI6IGZhbHNlCiAgfSwKICB7CiAgICAibmFtZSI6ICJkZXNrdG9wLXdvcmtzcGFjZS1tYW5hZ2VkLTY0MC1wYXJ0LTEucG5nIiwKICAgICJ2aWV3cG9ydCI6IHsKICAgICAgIndpZHRoIjogNjQwLAogICAgICAiaGVpZ2h0IjogOTYwCiAgICB9LAogICAgInJlY3QiOiB7CiAgICAgICJ4IjogMjcuODY3MTg3NSwKICAgICAgInkiOiAxMDgsCiAgICAgICJ3aWR0aCI6IDU2OS4xMzI4MTI1LAogICAgICAiaGVpZ2h0IjogOTE2Ljc1LAogICAgICAidG9wIjogMTA4LAogICAgICAicmlnaHQiOiA1OTcsCiAgICAgICJib3R0b20iOiAxMDI0Ljc1LAogICAgICAibGVmdCI6IDI3Ljg2NzE4NzUKICAgIH0sCiAgICAiY29udGFpbmVyIjogewogICAgICAieCI6IDMuODY3MTg3NSwKICAgICAgInkiOiA5NiwKICAgICAgIndpZHRoIjogNjI4LjEzMjgxMjUsCiAgICAgICJoZWlnaHQiOiA4NTYsCiAgICAgICJ0b3AiOiA5NiwKICAgICAgInJpZ2h0IjogNjMyLAogICAgICAiYm90dG9tIjogOTUyLAogICAgICAibGVmdCI6IDMuODY3MTg3NQogICAgfSwKICAgICJ2aXNpYmxlU3RhcnQiOiAwLAogICAgInZpc2libGVFbmQiOiA4NDQsCiAgICAib3ZlcmZsb3ciOiBmYWxzZQogIH0sCiAgewogICAgIm5hbWUiOiAiZGVza3RvcC13b3Jrc3BhY2UtbWFuYWdlZC02NDAtcGFydC0yLnBuZyIsCiAgICAidmlld3BvcnQiOiB7CiAgICAgICJ3aWR0aCI6IDY0MCwKICAgICAgImhlaWdodCI6IDk2MAogICAgfSwKICAgICJyZWN0IjogewogICAgICAieCI6IDMwLjc1LAogICAgICAieSI6IDIzLAogICAgICAid2lkdGgiOiA1NjYuMjUsCiAgICAgICJoZWlnaHQiOiA5MTYuNzUsCiAgICAgICJ0b3AiOiAyMywKICAgICAgInJpZ2h0IjogNTk3LAogICAgICAiYm90dG9tIjogOTM5Ljc1LAogICAgICAibGVmdCI6IDMwLjc1CiAgICB9LAogICAgImNvbnRhaW5lciI6IHsKICAgICAgIngiOiA2Ljc1LAogICAgICAieSI6IDk2LAogICAgICAid2lkdGgiOiA2MjUuMjUsCiAgICAgICJoZWlnaHQiOiA4NTYsCiAgICAgICJ0b3AiOiA5NiwKICAgICAgInJpZ2h0IjogNjMyLAogICAgICAiYm90dG9tIjogOTUyLAogICAgICAibGVmdCI6IDYuNzUKICAgIH0sCiAgICAidmlzaWJsZVN0YXJ0IjogNzMsCiAgICAidmlzaWJsZUVuZCI6IDkxNi43NSwKICAgICJvdmVyZmxvdyI6IGZhbHNlCiAgfQpd"
+                    },
+                    {
+                      "name": "version-journey",
+                      "contentType": "application/json",
+                      "body": "ewogICJpc3N1ZV9pZCI6ICIwMWExOTQzZC1hODU1LTcxZmItYTJkYS0yNDE1NDZlNDkyMTUiLAogICJleHRlcm5hbF9oYW5kbGVyIjogIjIwYzQ3YWRkLTk0ZDctNGI0MC04Yzg3LTc3ZjI3OTA3NGMzYSIsCiAgInNvdXJjZV93b3Jrc3BhY2UiOiAiYjk1NzlkNzYtZTkxMi00M2U1LWE5Y2MtY2VkYmFlYzc1YjI5IiwKICAicHJvamVjdCI6ICI1MGU1YjVmNi04N2ZmLTRhNDUtYTU0Yi05YTIwNzE3MzliODUiLAogICJmaXJzdCI6IHsKICAgICJwcm90b2NvbF92ZXJzaW9uIjogMSwKICAgICJyZXF1ZXN0X2lkIjogIjE0YmUwMzA5LWIxN2ItNDA1OS05ZGRmLTQxZDBjZTNjYzU2ZiIsCiAgICAiYWN0aW9uIjogInByb3Bvc2UiLAogICAgImNvZGUiOiAia25vd2xlZGdlX3Byb3Bvc2VkIiwKICAgICJjYW5kaWRhdGVfaWQiOiAiNTM3MWQxMjAtMjE4OC00NTc4LWIxMTUtZjJkMTU2MWI0ZTA0IiwKICAgICJ2ZXJzaW9uIjogIjEiLAogICAgInN0YXRlX3JldmlzaW9uIjogIjEiLAogICAgInN0YXRlIjogInBlbmRpbmciCiAgfSwKICAiY29ycmVjdGlvbiI6IHsKICAgICJwcm90b2NvbF92ZXJzaW9uIjogMSwKICAgICJyZXF1ZXN0X2lkIjogIjgzOWNiMWE0LTVjYzktNDBjYS1hZjQwLWI1M2JiNDgzY2RkNCIsCiAgICAiYWN0aW9uIjogInByb3Bvc2UiLAogICAgImNvZGUiOiAia25vd2xlZGdlX3Byb3Bvc2VkIiwKICAgICJjYW5kaWRhdGVfaWQiOiAiZmQ5YTA0ZDctYTY3NS00NjZiLTgwNzgtOWI0NTZiZDAxMjU4IiwKICAgICJ2ZXJzaW9uIjogIjIiLAogICAgInN0YXRlX3JldmlzaW9uIjogIjEiLAogICAgInN0YXRlIjogInBlbmRpbmciCiAgfSwKICAiZGVyaXZlZCI6IHsKICAgICJwcm90b2NvbF92ZXJzaW9uIjogMSwKICAgICJyZXF1ZXN0X2lkIjogImIyMGM5ZmFhLWFhMTktNDM4ZC1hNTEwLWQ2Y2FjM2ZiYmQ3MyIsCiAgICAiYWN0aW9uIjogInByb3Bvc2UiLAogICAgImNvZGUiOiAia25vd2xlZGdlX3Byb3Bvc2VkIiwKICAgICJjYW5kaWRhdGVfaWQiOiAiOGFkOTBjYjUtMmVhYy00OWFlLWJiYjktZGIyZDE3M2M1OGY0IiwKICAgICJ2ZXJzaW9uIjogIjEiLAogICAgInN0YXRlX3JldmlzaW9uIjogIjEiLAogICAgInN0YXRlIjogInBlbmRpbmciCiAgfSwKICAicHJpdmF0ZV9jYXRhbG9nX3JlcXVlc3RzIjogMCwKICAiYmFzZV9jb250ZXh0X3VuY2hhbmdlZCI6IHRydWUsCiAgInByb3ZpZGVyX2FjY291bnRfYWNjZXNzIjogZmFsc2UsCiAgImtub3dsZWRnZV9leGVjdXRpb25fZW5hYmxlZCI6IGZhbHNlCn0="
+                    },
+                    {
+                      "name": "desktop-purged-target-1380-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round7/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-purged-target-1380-part-1-png-c19294c1b5118dee76650f8d7e023a5be6590370.png"
+                    },
+                    {
+                      "name": "desktop-purged-target-640-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/round7/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-purged-target-640-part-1-png-89c4d7ba9da1b56ec82aa44997b94af25734a9ae.png"
+                    },
+                    {
+                      "name": "purged-target-capture-geometry",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJuYW1lIjogImRlc2t0b3AtcHVyZ2VkLXRhcmdldC0xMzgwLXBhcnQtMS5wbmciLAogICAgInZpZXdwb3J0IjogewogICAgICAid2lkdGgiOiAxMzgwLAogICAgICAiaGVpZ2h0IjogOTYwCiAgICB9LAogICAgInJlY3QiOiB7CiAgICAgICJ4IjogNTcwLjg2NzE4NzUsCiAgICAgICJ5IjogMTA4LAogICAgICAid2lkdGgiOiA3MDQsCiAgICAgICJoZWlnaHQiOiA3MTAsCiAgICAgICJ0b3AiOiAxMDgsCiAgICAgICJyaWdodCI6IDEyNzQuODY3MTg3NSwKICAgICAgImJvdHRvbSI6IDgxOCwKICAgICAgImxlZnQiOiA1NzAuODY3MTg3NQogICAgfSwKICAgICJjb250YWluZXIiOiB7CiAgICAgICJ4IjogNDg0Ljc0MjE4NzUsCiAgICAgICJ5IjogOTYsCiAgICAgICJ3aWR0aCI6IDg4Ny4yNTc4MTI1LAogICAgICAiaGVpZ2h0IjogODU2LAogICAgICAidG9wIjogOTYsCiAgICAgICJyaWdodCI6IDEzNzIsCiAgICAgICJib3R0b20iOiA5NTIsCiAgICAgICJsZWZ0IjogNDg0Ljc0MjE4NzUKICAgIH0sCiAgICAidmlzaWJsZVN0YXJ0IjogMCwKICAgICJ2aXNpYmxlRW5kIjogNzEwLAogICAgIm92ZXJmbG93IjogZmFsc2UKICB9LAogIHsKICAgICJuYW1lIjogImRlc2t0b3AtcHVyZ2VkLXRhcmdldC02NDAtcGFydC0xLnBuZyIsCiAgICAidmlld3BvcnQiOiB7CiAgICAgICJ3aWR0aCI6IDY0MCwKICAgICAgImhlaWdodCI6IDk2MAogICAgfSwKICAgICJyZWN0IjogewogICAgICAieCI6IDI4LjgyMDMxMjUsCiAgICAgICJ5IjogMTA4LAogICAgICAid2lkdGgiOiA1NjguMTc5Njg3NSwKICAgICAgImhlaWdodCI6IDc1OCwKICAgICAgInRvcCI6IDEwOCwKICAgICAgInJpZ2h0IjogNTk3LAogICAgICAiYm90dG9tIjogODY2LAogICAgICAibGVmdCI6IDI4LjgyMDMxMjUKICAgIH0sCiAgICAiY29udGFpbmVyIjogewogICAgICAieCI6IDQuODIwMzEyNSwKICAgICAgInkiOiA5NiwKICAgICAgIndpZHRoIjogNjI3LjE3OTY4NzUsCiAgICAgICJoZWlnaHQiOiA4NTYsCiAgICAgICJ0b3AiOiA5NiwKICAgICAgInJpZ2h0IjogNjMyLAogICAgICAiYm90dG9tIjogOTUyLAogICAgICAibGVmdCI6IDQuODIwMzEyNQogICAgfSwKICAgICJ2aXNpYmxlU3RhcnQiOiAwLAogICAgInZpc2libGVFbmQiOiA3NTgsCiAgICAib3ZlcmZsb3ciOiBmYWxzZQogIH0KXQ=="
+                    },
+                    {
+                      "name": "native-execution-boundary",
+                      "contentType": "application/json",
+                      "body": "eyJwbGF0Zm9ybSI6ImRhcndpbiIsInJlbmRlcmVyIjoiaHR0cDovLzEyNy4wLjAuMTo1NDE4Iiwic291cmNlIjoiL1ZvbHVtZXMvYXJ0aXNhbi9jb2RlLzIwMjYvbWMta25vd2xlZGdlLXVpLXFhLTIwMjYxMTAxIiwiZGFlbW9uU3RhcnRzIjowLCJuYXRpdmVJc3N1ZVJlcXVlc3RzIjpbXSwiYXV0aFNlc3Npb25zIjpbImNlNDhhYzU1LThjNjktNDhiNy1hZTAxLTgyZDU4MmVkMmEwMyJdLCJleHRlcm5hbExpbmtzIjpbXX0="
+                    },
+                    {
+                      "name": "native-page-errors",
+                      "contentType": "application/json",
+                      "body": "W10="
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/tmp/multica-knowledge-ui-results/round7/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "518f6bbc4476ef6f9015-adbcc89dc58b5184f0b6",
+          "file": "collaboration-knowledge.spec.ts",
+          "line": 274,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-31T23:13:50.328Z",
+    "duration": 13729.958,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,94 @@
+[
+  {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/service",
+      "-run",
+      "^TestKnowledgeApprovalMatrix",
+      "-count=1",
+      "-timeout",
+      "120s",
+      "-json"
+    ],
+    "env_file": "/tmp/multica_knowledge_matrix_20261101_9eee46c7.env",
+    "exit_code": 0,
+    "seconds": 23.951,
+    "label": "final-service"
+  },
+  {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "./internal/service",
+      "-run",
+      "^TestKnowledgeApprovalMatrix",
+      "-count=1",
+      "-timeout",
+      "180s",
+      "-json"
+    ],
+    "env_file": "/tmp/multica_knowledge_matrix_20261101_9eee46c7.env",
+    "exit_code": 0,
+    "seconds": 31.361,
+    "label": "final-service-race"
+  },
+  {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/handler",
+      "-run",
+      "^TestKnowledgeApprovalHTTPMatrix",
+      "-count=1",
+      "-timeout",
+      "120s",
+      "-json"
+    ],
+    "env_file": "/tmp/multica_knowledge_matrix_20261101_9eee46c7.env",
+    "exit_code": 0,
+    "seconds": 3.57,
+    "label": "final-handler"
+  },
+  {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "./internal/handler",
+      "-run",
+      "^TestKnowledgeApprovalHTTPMatrix",
+      "-count=1",
+      "-timeout",
+      "180s",
+      "-json"
+    ],
+    "env_file": "/tmp/multica_knowledge_matrix_20261101_9eee46c7.env",
+    "exit_code": 0,
+    "seconds": 24.152,
+    "label": "final-handler-race"
+  },
+  {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "./internal/service",
+      "./internal/handler"
+    ],
+    "env_file": "/tmp/multica_knowledge_matrix_20261101_9eee46c7.env",
+    "exit_code": 0,
+    "seconds": 0.411,
+    "label": "targeted-vet"
+  }
+]

@@ -1,0 +1,35 @@
+{
+  "command": [
+    "go",
+    "test",
+    "./internal/service",
+    "-run",
+    "^TestCollaboration(MemoryRealtimePublishesOnlyIssueScope|RealtimeOutboxRetriesWithoutPrivatePayloads|RealtimeRetainsFailedSourceInvalidation|RealtimeRemovalReachesRevokedAccount)$",
+    "-count=1",
+    "-json"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/server",
+  "environment_file": "/tmp/multica_knowledge_c2_20261101_7d95f46f.env",
+  "database": "multica_knowledge_c2_20261101_7d95f46f",
+  "started_at": "2026-11-01T01:39:54.245587+00:00",
+  "finished_at": "2026-11-01T01:39:56.802289+00:00",
+  "exit_code": 0,
+  "log": "dispatcher-green.jsonl",
+  "log_sha256": "11938556a591dfc59bcbdc67561c20dea2eebaf82c4a24967964367c7a18fa48",
+  "run": [
+    "TestCollaborationMemoryRealtimePublishesOnlyIssueScope",
+    "TestCollaborationRealtimeOutboxRetriesWithoutPrivatePayloads",
+    "TestCollaborationRealtimeRetainsFailedSourceInvalidation",
+    "TestCollaborationRealtimeRemovalReachesRevokedAccount"
+  ],
+  "pass": [
+    "TestCollaborationMemoryRealtimePublishesOnlyIssueScope",
+    "TestCollaborationRealtimeOutboxRetriesWithoutPrivatePayloads",
+    "TestCollaborationRealtimeRetainsFailedSourceInvalidation",
+    "TestCollaborationRealtimeRemovalReachesRevokedAccount"
+  ],
+  "fail": [],
+  "skip": [],
+  "top_level_passes": 4,
+  "leaf_passes": 4
+}

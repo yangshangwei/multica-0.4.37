@@ -1,0 +1,51 @@
+{
+  "completed_at": "2026-11-01T01:15:09.252434+00:00",
+  "scope": "Single historical-target fixture isolation correction",
+  "changed_source": "server/internal/handler/collaboration_knowledge_invalidation_test.go",
+  "production_edits": false,
+  "source_frozen": true,
+  "database": "multica_knowledge_c2_20261101_7d95f46f",
+  "runs": [
+    {
+      "record": "ordered-red.command.json",
+      "exit_code": 1,
+      "top_level_passes": 1,
+      "pass_events": 1,
+      "leaf_passes": 1,
+      "failures": 2,
+      "skips": 0
+    },
+    {
+      "record": "ordered-green.command.json",
+      "exit_code": 0,
+      "top_level_passes": 3,
+      "pass_events": 3,
+      "leaf_passes": 3,
+      "failures": 0,
+      "skips": 0
+    },
+    {
+      "record": "handler-full.command.json",
+      "exit_code": 0,
+      "top_level_passes": 2811,
+      "pass_events": 5254,
+      "leaf_passes": 4797,
+      "failures": 0,
+      "skips": 53
+    },
+    {
+      "record": "knowledge-race.command.json",
+      "exit_code": 0,
+      "top_level_passes": 25,
+      "pass_events": 61,
+      "leaf_passes": 54,
+      "failures": 0,
+      "skips": 0
+    }
+  ],
+  "static": "static-checks.json",
+  "source_hashes": "source-hashes.json",
+  "original_matrix_source_and_logs_unchanged": true,
+  "original_commands": "../historical-command-provenance.json",
+  "acceptance_limit": "Redis/opt-in cases and final integrated acceptance remain main-owned"
+}

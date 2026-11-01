@@ -1,0 +1,107 @@
+{
+  "scope": "Preliminary UI acceptance on frozen source; not final G2 or release acceptance",
+  "base_commit": "53a1662586555d14ea04efb3b951744a4993fa60",
+  "snapshot_source_manifest": "snapshot-source.json",
+  "source_drift": "none among all 117 copied server files",
+  "production_web": "next build + next start, build and runtime fingerprints retained",
+  "native": "macOS arm64 Electron with production renderer/preload/routing and isolated services/profile",
+  "final_run": {
+    "startTime": "2026-10-31T23:21:35.192Z",
+    "duration": 49252.878000000004,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "independent_cases": [
+    {
+      "id": "UI1",
+      "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+      "status": "expected",
+      "duration_ms": 8398,
+      "attempts": 1,
+      "retry": 0
+    },
+    {
+      "id": "UI2",
+      "title": "Web required memory purge clears open source and managed target material",
+      "status": "expected",
+      "duration_ms": 3399,
+      "attempts": 1,
+      "retry": 0
+    },
+    {
+      "id": "UI3",
+      "title": "Web original-key recovery stays locked after ambiguity and recovers by GET after reload",
+      "status": "expected",
+      "duration_ms": 2198,
+      "attempts": 1,
+      "retry": 0
+    },
+    {
+      "id": "UI4",
+      "title": "Web definitive unapplied refusal unlocks the draft for a new request",
+      "status": "expected",
+      "duration_ms": 1824,
+      "attempts": 1,
+      "retry": 0
+    },
+    {
+      "id": "UI5",
+      "title": "Web recorded-run source is selected through the authorized reader",
+      "status": "expected",
+      "duration_ms": 2316,
+      "attempts": 1,
+      "retry": 0
+    },
+    {
+      "id": "UI6",
+      "title": "Web target-only administrator loses source material but can withdraw",
+      "status": "expected",
+      "duration_ms": 2814,
+      "attempts": 1,
+      "retry": 0
+    },
+    {
+      "id": "UI7",
+      "title": "Web expiry clears active target material when refresh fails",
+      "status": "expected",
+      "duration_ms": 12835,
+      "attempts": 1,
+      "retry": 0
+    },
+    {
+      "id": "UI8",
+      "title": "Desktop native source review and independent project/workspace contributions",
+      "status": "expected",
+      "duration_ms": 13553,
+      "attempts": 1,
+      "retry": 0
+    }
+  ],
+  "static_checks": {
+    "strict_typescript": "passed",
+    "scoped_eslint": "passed; E2E devDependencies enabled through CLI rule option",
+    "whitespace": "passed",
+    "api_compile": "passed through owned go run startup; no DB-backed Go test invoked"
+  },
+  "versions": {
+    "electron": "39.8.7",
+    "next": "16.2.6"
+  },
+  "provider_calls": false,
+  "ordinary_execution_tasks": 0,
+  "cleanup": "API/Web/static stopped; all native profiles removed; retained DB gates all false",
+  "visual_packet_revision": 2,
+  "visual_packet": "capture-packet.json",
+  "capture_correction": {
+    "affected_journeys": 2,
+    "final_expected": 2,
+    "final_unexpected": 0,
+    "skips": 0,
+    "automatic_retries": 0,
+    "duration_ms": 33532.043,
+    "source_verification": "recapture-source-verification.json",
+    "full_independent_review_pending": true
+  }
+}

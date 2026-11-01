@@ -1,0 +1,219 @@
+{
+  "disposition": "recapture",
+  "review_date": "2026-11-01",
+  "reviewer": "Fresh native Codex reviewer replacing unavailable Impeccable custom reviewer role; applied degraded finish-review contract.",
+  "mode": "Operate",
+  "evidence_scope": "The supplied preliminary frozen-snapshot final3 packet only; not final combined-G2 runtime source.",
+  "check": "0 evidence",
+  "images_viewed": 27,
+  "method": "tools.view_image, original resolution, all 27 required images",
+  "stop_reason": "Required captures are invalid/incomplete. No fidelity matrix or product ship verdict is issued. A complete re-review is required after valid recaptures.",
+  "recapture": [
+    {
+      "suffix": "--web-project-managed-640-part-1.png",
+      "id": "VR-E01",
+      "problem": "The image shows the project Overview only. The Managed contributions surface, its rows, and its review controls are absent from the viewport.",
+      "expected": "At logical 640×960, open the project's responsive properties/managed-contributions surface through the real control, let its transition settle, and capture the visible managed list. If review detail is open, capture it through the final action/history with overlapping scroll views.",
+      "path": "runs/final3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-project-managed-640-part-1.png",
+      "sha256": "8fcd35110f23069bb7d2c96fb2d0df88215fcf2cbebfc9b66f8374dbedda51af",
+      "png_width": 640,
+      "png_height": 960,
+      "logical_viewport": {
+        "width": 640,
+        "height": 960
+      },
+      "coverage": {
+        "visible_start": 0,
+        "visible_end": 298,
+        "panel_height": 298
+      },
+      "priority": "P2",
+      "category": "evidence"
+    },
+    {
+      "suffix": "--desktop-project-managed-640-part-1.png",
+      "id": "VR-E02",
+      "problem": "The narrow native screenshot is visibly mid-transition: the right-hand properties sheet is translucent, offset, and composited over a blurred Overview. Managed contributions text overlaps background content and is not a stable, readable finished state.",
+      "expected": "At logical 640×960 in the real Electron window, open the responsive properties surface, wait for animation/layout stability, then capture an opaque, settled managed-contributions panel and any open detail through its final action/history.",
+      "path": "runs/final3/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-project-managed-640-part-1.png",
+      "sha256": "ab49dec2c81dd8b9a56e1f172d0cd7210cb0a26cb4c8c86db5d4aea1fcb8ef1a",
+      "png_width": 1280,
+      "png_height": 1920,
+      "logical_viewport": {
+        "width": 640,
+        "height": 960
+      },
+      "coverage": {
+        "visible_start": 0,
+        "visible_end": 298,
+        "panel_height": 298
+      },
+      "priority": "P2",
+      "category": "evidence"
+    },
+    {
+      "suffix": "--desktop-workspace-managed-640-part-2.png",
+      "id": "VR-E03",
+      "problem": "The final narrow native workspace capture stops at the Version history row without showing the panel's end; the row is at the clipped viewport edge. Its recorded visible_end is 881 for panel_height 916.75, leaving 35.75 logical pixels uncovered.",
+      "expected": "Scroll the actual workspace settings container to the end and capture a final overlapping 640×960 view where Version history and the contribution panel's bottom are fully visible. Recompute coverage from the settled layout.",
+      "path": "runs/final3/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-workspace-managed-640-part-2.png",
+      "sha256": "ccea16fe46a54abb0ad0abf5280de7d2075f1d42530bb0a9a505446a4fb74cc7",
+      "png_width": 1280,
+      "png_height": 1920,
+      "logical_viewport": {
+        "width": 640,
+        "height": 960
+      },
+      "coverage": {
+        "visible_start": 25,
+        "visible_end": 881,
+        "panel_height": 916.75
+      },
+      "priority": "P2",
+      "category": "evidence"
+    }
+  ],
+  "unread_after_evidence_failure": [
+    "task prd.md/design.md and research/ui-integration-brief-2026-11-01.md",
+    "B2 product source manifest/main-recheck/source files",
+    "final-source-verification.json",
+    "further persistence/behavior/a11y code/test evidence"
+  ],
+  "reviewed_capture_inventory": [
+    {
+      "path": "runs/final3/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-purged-target-1380-part-1.png",
+      "sha256": "4b207b91a77aee48df64f7df570c08b6284b334a0a838117b44a52e2a78db151",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-We-2eb30-and-managed-target-material-chromium--web-purged-target-640-part-1.png",
+      "sha256": "5cdeb3f47c548b54e9bafcd85ee22122c8f7213e6723760082946cc37f4c5e79",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-workspace-managed-640-part-2.png",
+      "sha256": "ccea16fe46a54abb0ad0abf5280de7d2075f1d42530bb0a9a505446a4fb74cc7",
+      "result": "recapture"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-workspace-managed-640-part-1.png",
+      "sha256": "d281d7e14175c1f581328985a7a99d7dcfd54b488607be0b024803e5ad96f1e2",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-full-source-review-640-part-2.png",
+      "sha256": "1f0886735b462b5b7c014ab1399d0939a043a51dcdb27915a70749a408dba44a",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-full-source-review-640-part-3.png",
+      "sha256": "5d07f3c3a10ba8d78a033a8980b0b5f1e1768abb0025a078382a87e9e6afd10b",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-project-managed-640-part-1.png",
+      "sha256": "8fcd35110f23069bb7d2c96fb2d0df88215fcf2cbebfc9b66f8374dbedda51af",
+      "result": "recapture"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-full-source-review-640-part-2.png",
+      "sha256": "761d3df9980661e0b07d65ca0c5308332acd4e6744649ac1c90b3ba8c6f41387",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-full-source-review-640-part-3.png",
+      "sha256": "9592c3583cac0d8163efbb8cef7ce97655fd270a5fd41da8f4afa92cabb9caf0",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-full-source-review-640-part-1.png",
+      "sha256": "008b9e8c9c5df905e7cdf3942d874f58de5a419198b295a7a2972c2ceec7435a",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-We-9d8a4-e-material-but-can-withdraw-chromium--web-restricted-target-1380-part-1.png",
+      "sha256": "1d5030167013dcd7eec53292449175af593531be700a59a35394def338cfb667",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-full-source-review-640-part-1.png",
+      "sha256": "9d21c2387c43b3bc5da95ed58be677d6a11e8706f6d4b94ca920ca5d027b5882",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-project-managed-640-part-1.png",
+      "sha256": "ab49dec2c81dd8b9a56e1f172d0cd7210cb0a26cb4c8c86db5d4aea1fcb8ef1a",
+      "result": "recapture"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-purged-target-640-part-1.png",
+      "sha256": "08ab36843ac5dd7d13c3dd2aa987da01368cf8f200ca8fec4398c2e9fa8a5663",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-workspace-managed-640-part-1.png",
+      "sha256": "ecbe218842e20175751286ef619c91ffe4aaf1d9c73036d72b28b0d5506580e5",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-workspace-managed-1380-part-1.png",
+      "sha256": "f52da9b64c6412e5e18a48f90d4625f6e7f1e30b9ef58aef4cdd6217e73e4c13",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-full-source-review-1380-part-1.png",
+      "sha256": "5d32387d8a28cdb02883f665f550bf6eb36caab04c01be4c2f412cdd40813328",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-workspace-managed-1380-part-1.png",
+      "sha256": "2fea7d22c3644938aa215a99a8f61b218fad632d9b9e4d1bb585503b13d99c8f",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-workspace-managed-1380-part-2.png",
+      "sha256": "fa8d8d9a030428d8dff18e669ecf62e7b030555dd2d5250f5c5f0174e538b3ca",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-full-source-review-1380-part-2.png",
+      "sha256": "490455c9967dd9b8238d51d99cf744686156916f4ce234e4c2690aad88d15acf",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-We-2eb30-and-managed-target-material-chromium--web-purged-target-1380-part-1.png",
+      "sha256": "f1ece0e508a4651da0c7bb9840a4577fe3d7261cdd26d09f120d121c09f4acc3",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-project-managed-1380-part-2.png",
+      "sha256": "6b72c715019c76b35c9065b6b4baa9637aaf326f3f205820e60d73110da1fb08",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-full-source-review-1380-part-1.png",
+      "sha256": "aeef39e620f617c8b7a52baaad19b30cd1b899bb10434f56c93480fec67c482c",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-full-source-review-1380-part-2.png",
+      "sha256": "bc2d82aba33ee00cc9a88e2c4409cc76eb3a1a93c5f3c4c10e644d997c86f6b0",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium--desktop-project-managed-1380-part-1.png",
+      "sha256": "de59c130d57473224ca748edb8b68a9e5e0de782da67d69a72072ffc90e9f8e2",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-We-9d8a4-e-material-but-can-withdraw-chromium--web-restricted-target-640-part-1.png",
+      "sha256": "77d5f201dc9a266a06e27f96f1e6585a1eb83dc57ad889abbae325b7751b519d",
+      "result": "viewed; no evidence defect identified in check 0"
+    },
+    {
+      "path": "runs/final3/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium--web-project-managed-1380-part-1.png",
+      "sha256": "743ec56d6ec3d1483a3645b8941252827f2824c94d8b2bf351ceabc7a0d56f41",
+      "result": "viewed; no evidence defect identified in check 0"
+    }
+  ]
+}

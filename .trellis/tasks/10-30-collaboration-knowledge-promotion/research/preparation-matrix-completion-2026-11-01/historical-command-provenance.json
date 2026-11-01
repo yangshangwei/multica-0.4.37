@@ -1,0 +1,105 @@
+{
+  "scope": "Exact original preparation matrix command/timestamp recovery; existing logs and verification unchanged",
+  "retrieval": "trellis mem project search followed by filtered raw native tool-call records",
+  "timestamp_meanings": {
+    "command_dispatched_at": "native tool call timestamp, not subprocess start",
+    "package_started_at": "first Go JSON package start event",
+    "package_finished_at": "successful package event from original log"
+  },
+  "runs": [
+    {
+      "log": "source-boundaries-first.jsonl",
+      "log_sha256": "8a2ea2205034bb4caac69ce46212e0bff8147fbbda3784a5cecf48fd6c4a94e8",
+      "command": [
+        "go",
+        "test",
+        "./internal/service",
+        "-run",
+        "^TestKnowledge(PreparationSourceRevocationBothCommitOrders|SourceAuthorityChangesBetweenClaimBuildAndFinalize)$",
+        "-count=1",
+        "-json"
+      ],
+      "shell_command": "gofmt -w internal/service/task_knowledge_preparation_boundary_test.go\nsource /tmp/multica_knowledge_c2_20261101_7d95f46f.env\ntest -n \"$DATABASE_URL\"\ngo test ./internal/service -run '^TestKnowledge(PreparationSourceRevocationBothCommitOrders|SourceAuthorityChangesBetweenClaimBuildAndFinalize)$' -count=1 -json > ../.trellis/tasks/10-30-collaboration-knowledge-promotion/research/preparation-matrix-completion-2026-11-01/source-boundaries-first.jsonl 2>&1",
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/server",
+      "environment_file": "/tmp/multica_knowledge_c2_20261101_7d95f46f.env",
+      "command_dispatched_at": "2026-11-01T00:46:39.728Z",
+      "package_started_at": "2026-11-01T08:46:47.712348+08:00",
+      "package_finished_at": "2026-11-01T08:46:49.597478+08:00",
+      "source_session": "rollout-2026-11-01T04-03-20-01a1938f-3efc-7f11-8284-6811aa23c92a",
+      "source_line": 3300,
+      "source_call_id": "call_8E98YavYELUfOnYvUP9lNDkn",
+      "source_record_sha256": "e2629a985d9cc9f2bbe4d8003e8c8681f0a46eaba780a421e002a3f12279ae95"
+    },
+    {
+      "log": "handler-normal.jsonl",
+      "log_sha256": "7252ce62832f97fee85e13437f88a40332bb8478a38f75522035c354a652331c",
+      "command": [
+        "go",
+        "test",
+        "./internal/handler",
+        "-run",
+        "^TestKnowledge(PreparationWhileRealOrdinaryWriterIsUncommitted|HeldOwnerApprovalAllowsActualUnrelatedWriters|OrdinaryCoalescedCommentsCheckEveryCurrentAuthor|PreparationReplayStillFencesActualProjectDeletion)$",
+        "-count=1",
+        "-json"
+      ],
+      "shell_command": "gofmt -w internal/handler/knowledge_preparation_isolation_test.go\nsource /tmp/multica_knowledge_c2_20261101_7d95f46f.env\ntest -n \"$DATABASE_URL\"\ngo test ./internal/handler -run '^TestKnowledge(PreparationWhileRealOrdinaryWriterIsUncommitted|HeldOwnerApprovalAllowsActualUnrelatedWriters|OrdinaryCoalescedCommentsCheckEveryCurrentAuthor|PreparationReplayStillFencesActualProjectDeletion)$' -count=1 -json > ../.trellis/tasks/10-30-collaboration-knowledge-promotion/research/preparation-matrix-completion-2026-11-01/handler-normal.jsonl 2>&1",
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/server",
+      "environment_file": "/tmp/multica_knowledge_c2_20261101_7d95f46f.env",
+      "command_dispatched_at": "2026-11-01T00:57:04.186Z",
+      "package_started_at": "2026-11-01T08:57:23.053848+08:00",
+      "package_finished_at": "2026-11-01T08:57:27.825118+08:00",
+      "source_session": "rollout-2026-11-01T04-03-20-01a1938f-3efc-7f11-8284-6811aa23c92a",
+      "source_line": 3431,
+      "source_call_id": "call_uuZjKwf9EnFRsZ6UdXs9axoR",
+      "source_record_sha256": "f8a1ca250b5f557d9226665bdf11fe7c912b3b3d6aa117d5095af0a0b8a85a50"
+    },
+    {
+      "log": "service-race.jsonl",
+      "log_sha256": "1eb025565999486f3dd1212957ff1b9980adfd1cc322627b7cd11cc79900d12d",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^TestKnowledge(PreparationSourceRevocationBothCommitOrders|SourceAuthorityChangesBetweenClaimBuildAndFinalize)$",
+        "-count=1",
+        "-json"
+      ],
+      "shell_command": "source /tmp/multica_knowledge_c2_20261101_7d95f46f.env\ntest -n \"$DATABASE_URL\"\ngo test -race ./internal/service -run '^TestKnowledge(PreparationSourceRevocationBothCommitOrders|SourceAuthorityChangesBetweenClaimBuildAndFinalize)$' -count=1 -json > ../.trellis/tasks/10-30-collaboration-knowledge-promotion/research/preparation-matrix-completion-2026-11-01/service-race.jsonl 2>&1",
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/server",
+      "environment_file": "/tmp/multica_knowledge_c2_20261101_7d95f46f.env",
+      "command_dispatched_at": "2026-11-01T00:59:32.362Z",
+      "package_started_at": "2026-11-01T08:59:34.306348+08:00",
+      "package_finished_at": "2026-11-01T08:59:37.233389+08:00",
+      "source_session": "rollout-2026-11-01T04-03-20-01a1938f-3efc-7f11-8284-6811aa23c92a",
+      "source_line": 3459,
+      "source_call_id": "call_eKPGDqoNmNBeXlnCkfwlQvuY",
+      "source_record_sha256": "61917247d40b40b0e97b58f7a8d75a9e91e474a373611aba4dccdd2bd0c4b849"
+    },
+    {
+      "log": "handler-race.jsonl",
+      "log_sha256": "831bc884ab7b1c46cca8e9d0de253adc243a640689ace6a1a37b3dca03fa03dd",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "./internal/handler",
+        "-run",
+        "^TestKnowledge(PreparationWhileRealOrdinaryWriterIsUncommitted|HeldOwnerApprovalAllowsActualUnrelatedWriters|OrdinaryCoalescedCommentsCheckEveryCurrentAuthor|PreparationReplayStillFencesActualProjectDeletion)$",
+        "-count=1",
+        "-json"
+      ],
+      "shell_command": "source /tmp/multica_knowledge_c2_20261101_7d95f46f.env\ntest -n \"$DATABASE_URL\"\ngo test -race ./internal/handler -run '^TestKnowledge(PreparationWhileRealOrdinaryWriterIsUncommitted|HeldOwnerApprovalAllowsActualUnrelatedWriters|OrdinaryCoalescedCommentsCheckEveryCurrentAuthor|PreparationReplayStillFencesActualProjectDeletion)$' -count=1 -json > ../.trellis/tasks/10-30-collaboration-knowledge-promotion/research/preparation-matrix-completion-2026-11-01/handler-race.jsonl 2>&1",
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/server",
+      "environment_file": "/tmp/multica_knowledge_c2_20261101_7d95f46f.env",
+      "command_dispatched_at": "2026-11-01T01:01:20.720Z",
+      "package_started_at": "2026-11-01T09:01:23.18963+08:00",
+      "package_finished_at": "2026-11-01T09:01:26.283069+08:00",
+      "source_session": "rollout-2026-11-01T04-03-20-01a1938f-3efc-7f11-8284-6811aa23c92a",
+      "source_line": 3478,
+      "source_call_id": "call_ev5t0pLwEe0EgQzIta1NNww3",
+      "source_record_sha256": "f2fbcfe9f0b4ea70996ee381368af883d9b538ecf7fe5bef2dce352c1ed3e68d"
+    }
+  ]
+}

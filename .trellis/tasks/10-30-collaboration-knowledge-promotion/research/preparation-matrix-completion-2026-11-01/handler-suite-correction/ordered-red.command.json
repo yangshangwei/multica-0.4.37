@@ -1,0 +1,34 @@
+{
+  "command": [
+    "go",
+    "test",
+    "./internal/handler",
+    "-run",
+    "^(TestKnowledgeMemberRemovalFansOutHistoricalTargetsOutsideSource|TestKnowledgeHTTPHumanRoundTripAndPurgedProjection|TestKnowledgeHTTPRejectsHumanCredentialFallback)$",
+    "-count=1",
+    "-json"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/server",
+  "environment_file": "/tmp/multica_knowledge_c2_20261101_7d95f46f.env",
+  "database": "multica_knowledge_c2_20261101_7d95f46f",
+  "started_at": "2026-11-01T01:09:35.769272+00:00",
+  "finished_at": "2026-11-01T01:09:39.622360+00:00",
+  "exit_code": 1,
+  "log": "ordered-red.jsonl",
+  "log_sha256": "b5d00b01b1c17d6ab3db3940df095439ccdece3c004bf97271e707c6113d8ec8",
+  "run": [
+    "TestKnowledgeMemberRemovalFansOutHistoricalTargetsOutsideSource",
+    "TestKnowledgeHTTPHumanRoundTripAndPurgedProjection",
+    "TestKnowledgeHTTPRejectsHumanCredentialFallback"
+  ],
+  "pass": [
+    "TestKnowledgeMemberRemovalFansOutHistoricalTargetsOutsideSource"
+  ],
+  "fail": [
+    "TestKnowledgeHTTPHumanRoundTripAndPurgedProjection",
+    "TestKnowledgeHTTPRejectsHumanCredentialFallback"
+  ],
+  "skip": [],
+  "top_level_passes": 1,
+  "leaf_passes": 1
+}

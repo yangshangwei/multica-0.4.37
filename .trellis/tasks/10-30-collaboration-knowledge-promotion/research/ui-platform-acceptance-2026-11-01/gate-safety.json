@@ -1,0 +1,19 @@
+{
+  "database": "multica_mc_knowledge_ui_qa_20261101_244",
+  "before_cleanup": {
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false,
+    "epoch": "2"
+  },
+  "after_cleanup": {
+    "enabled": false,
+    "creation_enabled": false,
+    "host_execution_enabled": false,
+    "epoch": "2"
+  },
+  "ordinary_task_count": 0,
+  "knowledge_service_gate": "false by frozen TaskService default; no production enablement assignment",
+  "provider_calls": false,
+  "note": "The suite restored its initial creation=true. Cleanup explicitly closes human creation in this owned retained DB; execution and host gates were false throughout."
+}

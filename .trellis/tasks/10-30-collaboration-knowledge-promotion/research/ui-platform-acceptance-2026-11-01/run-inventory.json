@@ -1,0 +1,469 @@
+[
+  {
+    "run": "first",
+    "stats": {
+      "expected": 0,
+      "unexpected": 1,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "cases": [
+      {
+        "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+        "status": "unexpected"
+      }
+    ],
+    "report": "first.log"
+  },
+  {
+    "run": "round2",
+    "stats": {
+      "startTime": "2026-10-31T23:02:54.521Z",
+      "duration": 63265.474,
+      "expected": 5,
+      "skipped": 0,
+      "unexpected": 3,
+      "flaky": 0
+    },
+    "global_errors": 0,
+    "cases": [
+      {
+        "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+        "status": "unexpected",
+        "duration_ms": 11357,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web required memory purge clears open source and managed target material",
+        "status": "expected",
+        "duration_ms": 2943,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web original-key recovery stays locked after ambiguity and recovers by GET after reload",
+        "status": "expected",
+        "duration_ms": 2163,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web definitive unapplied refusal unlocks the draft for a new request",
+        "status": "expected",
+        "duration_ms": 1569,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web recorded-run source is selected through the authorized reader",
+        "status": "expected",
+        "duration_ms": 2679,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web target-only administrator loses source material but can withdraw",
+        "status": "unexpected",
+        "duration_ms": 3119,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web expiry clears active target material while offline without a sweeper",
+        "status": "expected",
+        "duration_ms": 1523,
+        "actual_executions": 1
+      },
+      {
+        "title": "Desktop native source review and independent project/workspace contributions",
+        "status": "unexpected",
+        "duration_ms": 33705,
+        "actual_executions": 1
+      }
+    ]
+  },
+  {
+    "run": "round3",
+    "stats": {
+      "startTime": "2026-10-31T23:05:18.387Z",
+      "duration": 45817.169,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "global_errors": 0,
+    "cases": [
+      {
+        "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+        "status": "expected",
+        "duration_ms": 8725,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web target-only administrator loses source material but can withdraw",
+        "status": "expected",
+        "duration_ms": 2054,
+        "actual_executions": 1
+      },
+      {
+        "title": "Desktop native source review and independent project/workspace contributions",
+        "status": "unexpected",
+        "duration_ms": 33314,
+        "actual_executions": 1
+      }
+    ]
+  },
+  {
+    "run": "round4",
+    "stats": {
+      "startTime": "2026-10-31T23:09:09.423Z",
+      "duration": 37456.369,
+      "expected": 7,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "global_errors": 0,
+    "cases": [
+      {
+        "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+        "status": "expected",
+        "duration_ms": 8107,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web required memory purge clears open source and managed target material",
+        "status": "expected",
+        "duration_ms": 3409,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web original-key recovery stays locked after ambiguity and recovers by GET after reload",
+        "status": "expected",
+        "duration_ms": 2124,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web definitive unapplied refusal unlocks the draft for a new request",
+        "status": "expected",
+        "duration_ms": 1855,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web recorded-run source is selected through the authorized reader",
+        "status": "expected",
+        "duration_ms": 2125,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web target-only administrator loses source material but can withdraw",
+        "status": "expected",
+        "duration_ms": 2349,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web expiry clears active target material while offline without a sweeper",
+        "status": "expected",
+        "duration_ms": 1434,
+        "actual_executions": 1
+      },
+      {
+        "title": "Desktop native source review and independent project/workspace contributions",
+        "status": "unexpected",
+        "duration_ms": 14257,
+        "actual_executions": 1
+      }
+    ]
+  },
+  {
+    "run": "round5",
+    "stats": {
+      "startTime": "2026-10-31T23:10:32.686Z",
+      "duration": 40627.908,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "global_errors": 0,
+    "cases": [
+      {
+        "title": "Desktop native source review and independent project/workspace contributions",
+        "status": "unexpected",
+        "duration_ms": 39989,
+        "actual_executions": 1
+      }
+    ]
+  },
+  {
+    "run": "round6",
+    "stats": {
+      "startTime": "2026-10-31T23:12:11.627Z",
+      "duration": 41896.183000000005,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "global_errors": 0,
+    "cases": [
+      {
+        "title": "Desktop native source review and independent project/workspace contributions",
+        "status": "unexpected",
+        "duration_ms": 41245,
+        "actual_executions": 1
+      }
+    ]
+  },
+  {
+    "run": "round7",
+    "stats": {
+      "startTime": "2026-10-31T23:13:50.328Z",
+      "duration": 13729.958,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "global_errors": 0,
+    "cases": [
+      {
+        "title": "Desktop native source review and independent project/workspace contributions",
+        "status": "expected",
+        "duration_ms": 13044,
+        "actual_executions": 1
+      }
+    ]
+  },
+  {
+    "run": "final",
+    "stats": {
+      "startTime": "2026-10-31T23:15:54.781Z",
+      "duration": 68763.15800000001,
+      "expected": 6,
+      "skipped": 0,
+      "unexpected": 2,
+      "flaky": 0
+    },
+    "global_errors": 0,
+    "cases": [
+      {
+        "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+        "status": "unexpected",
+        "duration_ms": 11221,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web required memory purge clears open source and managed target material",
+        "status": "expected",
+        "duration_ms": 3367,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web original-key recovery stays locked after ambiguity and recovers by GET after reload",
+        "status": "expected",
+        "duration_ms": 2192,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web definitive unapplied refusal unlocks the draft for a new request",
+        "status": "expected",
+        "duration_ms": 1853,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web recorded-run source is selected through the authorized reader",
+        "status": "expected",
+        "duration_ms": 2405,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web target-only administrator loses source material but can withdraw",
+        "status": "expected",
+        "duration_ms": 2321,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web expiry clears active target material while offline without a sweeper",
+        "status": "expected",
+        "duration_ms": 1441,
+        "actual_executions": 1
+      },
+      {
+        "title": "Desktop native source review and independent project/workspace contributions",
+        "status": "unexpected",
+        "duration_ms": 39333,
+        "actual_executions": 1
+      }
+    ]
+  },
+  {
+    "run": "final2",
+    "stats": {
+      "startTime": "2026-10-31T23:20:06.616Z",
+      "duration": 308.58,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "global_errors": 2,
+    "cases": []
+  },
+  {
+    "run": "final3",
+    "stats": {
+      "startTime": "2026-10-31T23:21:35.192Z",
+      "duration": 49252.878000000004,
+      "expected": 8,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "global_errors": 0,
+    "cases": [
+      {
+        "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+        "status": "expected",
+        "duration_ms": 8398,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web required memory purge clears open source and managed target material",
+        "status": "expected",
+        "duration_ms": 3399,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web original-key recovery stays locked after ambiguity and recovers by GET after reload",
+        "status": "expected",
+        "duration_ms": 2198,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web definitive unapplied refusal unlocks the draft for a new request",
+        "status": "expected",
+        "duration_ms": 1824,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web recorded-run source is selected through the authorized reader",
+        "status": "expected",
+        "duration_ms": 2316,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web target-only administrator loses source material but can withdraw",
+        "status": "expected",
+        "duration_ms": 2814,
+        "actual_executions": 1
+      },
+      {
+        "title": "Web expiry clears active target material when refresh fails",
+        "status": "expected",
+        "duration_ms": 12835,
+        "actual_executions": 1
+      },
+      {
+        "title": "Desktop native source review and independent project/workspace contributions",
+        "status": "expected",
+        "duration_ms": 13553,
+        "actual_executions": 1
+      }
+    ]
+  },
+  {
+    "run": "recapture1",
+    "stats": {
+      "startTime": "2026-10-31T23:43:00.824Z",
+      "duration": 37805.493,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "scope": "capture correction; existing journeys only",
+    "cases": [
+      {
+        "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+        "status": "unexpected",
+        "duration_ms": 20037,
+        "actual_executions": 1,
+        "automatic_retry": 0
+      },
+      {
+        "title": "Desktop native source review and independent project/workspace contributions",
+        "status": "expected",
+        "duration_ms": 15493,
+        "actual_executions": 1,
+        "automatic_retry": 0
+      }
+    ]
+  },
+  {
+    "run": "recapture2",
+    "stats": {
+      "startTime": "2026-10-31T23:47:04.347Z",
+      "duration": 25977.246,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "scope": "capture correction; existing journeys only",
+    "cases": [
+      {
+        "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+        "status": "unexpected",
+        "duration_ms": 24595,
+        "actual_executions": 1,
+        "automatic_retry": 0
+      }
+    ]
+  },
+  {
+    "run": "recapture3",
+    "stats": {
+      "startTime": "2026-10-31T23:48:26.094Z",
+      "duration": 12376.369,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "scope": "capture correction; existing journeys only",
+    "cases": [
+      {
+        "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+        "status": "expected",
+        "duration_ms": 10982,
+        "actual_executions": 1,
+        "automatic_retry": 0
+      }
+    ]
+  },
+  {
+    "run": "recapture4",
+    "stats": {
+      "startTime": "2026-10-31T23:52:02.807Z",
+      "duration": 33532.043,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "scope": "final capture correction; 2 existing affected journeys",
+    "cases": [
+      {
+        "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+        "status": "expected",
+        "duration_ms": 12196,
+        "actual_executions": 1,
+        "automatic_retry": 0
+      },
+      {
+        "title": "Desktop native source review and independent project/workspace contributions",
+        "status": "expected",
+        "duration_ms": 19070,
+        "actual_executions": 1,
+        "automatic_retry": 0
+      }
+    ]
+  }
+]

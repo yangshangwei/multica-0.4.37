@@ -1,0 +1,104 @@
+{
+  "review_date": "2026-11-01",
+  "task": "10-30-collaboration-knowledge-promotion",
+  "lane": "F3",
+  "verdict": "reviewed_findings_resolved",
+  "head": "bc9c3f10b70119d07e28aa167f38f9d335e39338",
+  "worktree": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+  "original_review": "research/invalidation-review-2026-11-01.md",
+  "original_review_modified": false,
+  "correction_manifest": "research/invalidation-implementation-2026-11-01/corrections/source-manifest.json",
+  "hash_check": {
+    "correction_allowlist_exact_match": true,
+    "correction_owned_count": 6,
+    "full_f3_count": 25,
+    "dependency_count": 4,
+    "unchanged_original_count": 19,
+    "changed_original_files": [
+      "server/internal/realtime/collaboration.go",
+      "server/internal/realtime/hub.go",
+      "server/internal/realtime/collaboration_knowledge_test.go"
+    ],
+    "mismatches": []
+  },
+  "dispositions": [
+    {
+      "id": "F3-R1",
+      "priority": "P1",
+      "status": "resolved",
+      "reason": "The final knowledge send uses a socket-bound original credential/subject and direct PostgreSQL PAT validity checks after current human/account/workspace authorization. It does not rely on cached PAT authority or eviction. Password/JWT gates, failure denial and reconnect binding remain intact.",
+      "implementation_references": [
+        "server/internal/realtime/hub.go:997",
+        "server/internal/realtime/hub.go:1208",
+        "server/internal/realtime/collaboration.go:117",
+        "server/internal/realtime/collaboration.go:136",
+        "server/internal/realtime/collaboration.go:154",
+        "server/cmd/server/router.go:410"
+      ],
+      "test_references": [
+        "server/cmd/server/collaboration_knowledge_realtime_test.go:119",
+        "server/cmd/server/collaboration_knowledge_realtime_test.go:232",
+        "server/internal/realtime/collaboration_knowledge_envelope_test.go:82",
+        "server/internal/realtime/collaboration_knowledge_envelope_test.go:108"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "F3-R2",
+      "priority": "P2",
+      "status": "resolved",
+      "reason": "Knowledge envelopes reject unknown/duplicate outer keys, malformed input and invalid event IDs, validate the exact three-field hint, and marshal new per-send bytes. The write pump sends only those validated bytes; valid unrelated object frames remain unchanged.",
+      "allowed_envelope_fields": ["type", "payload", "event_id"],
+      "required_payload_fields": ["target_kind", "target_id", "knowledge_revision"],
+      "event_id_contract": "optional canonical nonzero UUID followed by :target",
+      "implementation_references": [
+        "server/internal/realtime/collaboration_knowledge_envelope.go:20",
+        "server/internal/realtime/collaboration_knowledge_envelope.go:61",
+        "server/internal/realtime/collaboration_knowledge_envelope.go:69",
+        "server/internal/realtime/collaboration_knowledge_envelope.go:87",
+        "server/internal/realtime/hub.go:1208"
+      ],
+      "test_references": [
+        "server/internal/realtime/collaboration_knowledge_envelope_test.go:17",
+        "server/internal/realtime/collaboration_knowledge_envelope_test.go:44",
+        "server/cmd/server/collaboration_knowledge_realtime_test.go:290",
+        "server/internal/realtime/collaboration_knowledge_test.go:44"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "residual_findings": [],
+  "retained_evidence": {
+    "affected_top_level_tests": 9,
+    "owned_test_and_subtest_passes": 32,
+    "owned_race_test_and_subtest_passes": 32,
+    "full_realtime_passes": 85,
+    "server_related_passes": 23,
+    "server_race_total_passes": 14,
+    "server_race_f3_owned_passes": 13,
+    "final_failures": [],
+    "final_skips": [],
+    "red_stale_pat_revoke_and_expiry_observed": true,
+    "red_four_outer_envelope_cases_observed": true,
+    "reported_vet_build_format_diff": "pass",
+    "independently_rerun": false
+  },
+  "reviewer_actions": {
+    "source_and_artifact_reads": true,
+    "source_hash_comparison": true,
+    "retained_jsonl_inventory_comparison": true,
+    "tests_run": false,
+    "database_operations": false,
+    "verification_scripts_run": false,
+    "provider_calls": false,
+    "product_edits": false,
+    "commits": false,
+    "subagents": false
+  },
+  "limitations": [
+    "Disposition closes only F3-R1 and F3-R2 at the recorded hashes.",
+    "A2 human API, middleware and service authorization were not audited; the principal hash field was inspected only as an F3 dependency.",
+    "C2 execution correctness, live Web/Desktop consumption, Provider/session acceptance and whole-task completion remain outside this review.",
+    "The Core finite cache lease is fallback behavior, not authorization proof."
+  ]
+}

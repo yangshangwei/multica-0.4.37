@@ -1,0 +1,35 @@
+[
+  {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "build",
+      "./internal/daemon"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.505
+  },
+  {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "./internal/daemon"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 5.505
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check",
+      "--",
+      "server/internal/daemon"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.014
+  }
+]

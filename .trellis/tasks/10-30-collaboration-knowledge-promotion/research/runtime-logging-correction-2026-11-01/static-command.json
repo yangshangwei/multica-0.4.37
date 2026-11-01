@@ -1,0 +1,40 @@
+[
+  {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "build",
+      "./pkg/agent",
+      "./internal/daemon",
+      "./internal/daemon/collaborationrun"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.72
+  },
+  {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "./pkg/agent",
+      "./internal/daemon",
+      "./internal/daemon/collaborationrun"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.78
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check",
+      "--",
+      "server/pkg/agent",
+      "server/internal/daemon"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.018
+  }
+]

@@ -1,0 +1,384 @@
+{
+  "checked_at": "2026-11-01T00:46:54.374324+00:00",
+  "command": "PATH=/opt/homebrew/opt/libpq/bin:$PATH COLLABORATION_E2E_API_URL=http://localhost:18324 COLLABORATION_ELECTRON_RENDERER_URL=http://127.0.0.1:5418 COLLABORATION_ELECTRON_SOURCE_ROOT=/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101 PLAYWRIGHT_BASE_URL=http://localhost:13244 MULTICA_DEV_HOME=/tmp/multica-knowledge-ui-dev-20261101 make env-exec ARGS=-- pnpm exec playwright test e2e/collaboration-knowledge.spec.ts --workers=1 --retries=0 --output=/tmp/multica-knowledge-ui-results/combined-final --reporter=json",
+  "exit_code": 0,
+  "stats": {
+    "startTime": "2026-11-01T00:45:08.740Z",
+    "duration": 55883.346000000005,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "production_server_source_changes": [],
+  "production_server_files": 2961,
+  "frontend": "unchanged against 53a166258; existing production renderer retained; Web rebuilt",
+  "coverage": "7 production Web and 1 native macOS Electron; existing 8 journeys rerun, not 8 additional independent cases",
+  "limits": [
+    "Human UI plus separate deterministic input composites constitute layered evidence, not one UI-to-Provider journey",
+    "Native target-only administrator journey not independently repeated; Web UI6 and shared component tests own that behavior",
+    "No Provider call or production enablement"
+  ],
+  "raw_artifacts": [
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/.last-run.json",
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "bytes": 45
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-f52a5-the-draft-for-a-new-request-chromium/trace.zip",
+      "sha256": "acc77e68330c9890a38ce20a42584541c4ba6524ef5208eccb08205bd0027c86",
+      "bytes": 1421307
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/web-project-managed-1380-part-2.png",
+      "sha256": "96686c473f46446e78518618f58f77b638a2a41912738727691b8cf96205271e",
+      "bytes": 174350
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/web-project-managed-1380-part-1.png",
+      "sha256": "0deceb59d96135a054317fa4a8fe6cf71a47093be653cc2b4cb3d0e1abdacc3a",
+      "bytes": 186044
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/web-full-source-review-640-part-2.png",
+      "sha256": "05d626be30cee2b51ffaa63f26774a5ae2471c25992fb81ed635d5acfe860cc6",
+      "bytes": 111781
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/web-full-source-review-640-part-3.png",
+      "sha256": "fec109c66a81abba82da3cab754f23ddb9afb87bf64cdf74c53900a7e5d1c74a",
+      "bytes": 73365
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/web-full-source-review-640-part-1.png",
+      "sha256": "fac71b6c6050a82e6c3d8d3a6da929ace68fe93d6c4001741feec006aa1eec69",
+      "bytes": 129852
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/trace.zip",
+      "sha256": "2b225c96601702001aabee80783173036d59a0320d246b6bd05cfcbefd54c4da",
+      "bytes": 10495757
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/web-workspace-managed-1380-part-1.png",
+      "sha256": "27dc5f303086ce570ae8f435a5d69092a432c99af04939aca5aff3103fac2c14",
+      "bytes": 156562
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/web-workspace-managed-640-part-1.png",
+      "sha256": "c6575f6e8e458b1ae534c150ac5003e25c78a0c051dddf31fc85181721dc8c29",
+      "bytes": 79276
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/web-full-source-review-1380-part-1.png",
+      "sha256": "7ab9bcb7dd14be5a2345716a578e8f661077050c58ea3f58f56f99e388dcf486",
+      "bytes": 183183
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/web-full-source-review-1380-part-2.png",
+      "sha256": "98f2ffdbca3f1123fc5c963a641c29bdc3eddd26e1eaff7d5f7b3f423daf39eb",
+      "bytes": 104097
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/web-project-managed-640-part-1.png",
+      "sha256": "f8c337904a36dbf432ea31791ede85860d47283e11717982867fe08524a9bf8f",
+      "bytes": 139206
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/web-project-managed-640-part-2.png",
+      "sha256": "f7aa1961c601aef0ced0f57d6c88faa03f48f41a4f350f71622ac7d23acabf34",
+      "bytes": 127219
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-9d8a4-e-material-but-can-withdraw-chromium/web-restricted-target-1380-part-1.png",
+      "sha256": "1d5030167013dcd7eec53292449175af593531be700a59a35394def338cfb667",
+      "bytes": 143217
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-9d8a4-e-material-but-can-withdraw-chromium/trace.zip",
+      "sha256": "46d708c4fffc3fe7d85fe0fca06e9c4bf152b6d9e5dc942df3209625c7805b72",
+      "bytes": 2038654
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-9d8a4-e-material-but-can-withdraw-chromium/web-restricted-target-640-part-1.png",
+      "sha256": "77d5f201dc9a266a06e27f96f1e6585a1eb83dc57ad889abbae325b7751b519d",
+      "bytes": 65853
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-a797e-material-when-refresh-fails-chromium/trace.zip",
+      "sha256": "0346055448c4d2eb696fda5c47ec98488096c6d8c574ba8fb934bd2fe20efbd3",
+      "bytes": 1216400
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-trace.zip",
+      "sha256": "645c5dee8c5526dbc7c2ab26da0a5768eb0264e478dbb120474cfd9ba8c512d1",
+      "bytes": 10275187
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-workspace-managed-1380-part-2.png",
+      "sha256": "da10fc277ce9e1c4c266b68cc17cd6660f2dabcd8578a6686461a7337751bf62",
+      "bytes": 385463
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/trace.zip",
+      "sha256": "3994d5adb979bc0346f4066e92c2672a7f82d9bf42b5adcdb8f75aa8791e71c0",
+      "bytes": 4590633
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-workspace-managed-1380-part-1.png",
+      "sha256": "1742371b84cbdee61a8c394e674b48944eb1c31ccee75ab6c4075ef753c879e0",
+      "bytes": 389165
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-project-managed-640-part-2.png",
+      "sha256": "f8ee66574525bb1eaafd1445d50e51bc1b6db471d2c21f97930faa76328424c4",
+      "bytes": 330147
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-full-source-review-640-part-1.png",
+      "sha256": "bea01aca62044481aa79f09656b33d2978bf5dedf9a57eedca1aa066ceffcbeb",
+      "bytes": 276414
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-full-source-review-1380-part-1.png",
+      "sha256": "8965b624bc44112ea488547d685de11fd7ac973c2f563a405b1f9af1034dd960",
+      "bytes": 456888
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-project-managed-640-part-1.png",
+      "sha256": "66de60ab4ee1a8b5cafa3bf710a466c298475f33caeb6febea61ba769680f915",
+      "bytes": 354272
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-full-source-review-640-part-2.png",
+      "sha256": "52ad988258889d1dcf40651d4940271afc4ef74e6ed8781571e75c625f58a652",
+      "bytes": 309152
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-full-source-review-640-part-3.png",
+      "sha256": "8d22c4feec117dc1a3b074ad8fe90fc5bdd8106495aec7b700a60b717ed75217",
+      "bytes": 177176
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-final-state.png",
+      "sha256": "6764f5303d65f3c20b6b5cdb030754715fa189ce671227283e1ce308f0f863c9",
+      "bytes": 189902
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-full-source-review-1380-part-2.png",
+      "sha256": "0dab09d5d41f0705706d43e68b63bd2a391f70f7b70c870a50974a4c7c09a615",
+      "bytes": 280913
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-project-managed-1380-part-2.png",
+      "sha256": "38de55728037f6d1aaf63c240a3e0d6b24dd81d6f5326901eba1f274c57a59a3",
+      "bytes": 415389
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-project-managed-1380-part-1.png",
+      "sha256": "11288c15ca3e9706901ff66eb67c203bd37751d23ce58e27b682857ecd0ffcc0",
+      "bytes": 447584
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-handler-trace.zip",
+      "sha256": "7ed24f0156976ecd0791e70b050bfb7578801a96f39315c129bb0e3b05ce40fe",
+      "bytes": 2089066
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-workspace-managed-640-part-2.png",
+      "sha256": "a19f61ea0c8a2a4ee92a7eaf6297543344ca59cd8ebadca32296a53e152f5206",
+      "bytes": 196969
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-purged-target-640-part-1.png",
+      "sha256": "6764f5303d65f3c20b6b5cdb030754715fa189ce671227283e1ce308f0f863c9",
+      "bytes": 189902
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-workspace-managed-640-part-1.png",
+      "sha256": "93a7162abe2430af229698735ff1b9cb7ea6fcf4000b0414b8398325ebb27a69",
+      "bytes": 203321
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/desktop-purged-target-1380-part-1.png",
+      "sha256": "9c873d9f04748c8e3f218c032f2901691a2db0ab5f06186bec1a501657161f49",
+      "bytes": 386821
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-814ad-ecovers-by-GET-after-reload-chromium/trace.zip",
+      "sha256": "dd8d43df05acfa7e013db23502ef6ebdb5ff214c3e96b3c0fb9778853ee818ad",
+      "bytes": 1686723
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-31f5a-rough-the-authorized-reader-chromium/trace.zip",
+      "sha256": "241a02f62f96a3cd2a7b66300c274ffb6823df0faec1adb17b13365d39c92f24",
+      "bytes": 1486082
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-2eb30-and-managed-target-material-chromium/trace.zip",
+      "sha256": "f819e3b974a5da25e6bea1c7427b93573fd770b1b2b011c5877643f83583c4ff",
+      "bytes": 2714022
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-2eb30-and-managed-target-material-chromium/web-purged-target-640-part-1.png",
+      "sha256": "3f565665e29d8393cac6fb13a0dafda49de2b720d40cecccb82d6dbc1046a53c",
+      "bytes": 85129
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-2eb30-and-managed-target-material-chromium/web-purged-target-1380-part-1.png",
+      "sha256": "106e629181944443d900dec7a9679b9ddbe224c8e4b6092bbb789395cf8d9a3e",
+      "bytes": 160223
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-2eb30-and-managed-target-material-chromium/attachments/web-purged-target-640-part-1-png-8cab4559081ad27eb37a44c8c81243e202603b4d.png",
+      "sha256": "3f565665e29d8393cac6fb13a0dafda49de2b720d40cecccb82d6dbc1046a53c",
+      "bytes": 85129
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-2eb30-and-managed-target-material-chromium/attachments/web-purged-target-1380-part-1-png-bf4db3aa62bd13db32941be9f4c4c8f721c8e0c1.png",
+      "sha256": "106e629181944443d900dec7a9679b9ddbe224c8e4b6092bbb789395cf8d9a3e",
+      "bytes": 160223
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-full-source-review-1380-part-2-png-31dee65503ca33c7cdd3062505c41df71da3eb40.png",
+      "sha256": "0dab09d5d41f0705706d43e68b63bd2a391f70f7b70c870a50974a4c7c09a615",
+      "bytes": 280913
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-workspace-managed-640-part-2-png-4bebba8295a62953cb42e51664cdba0975a316cd.png",
+      "sha256": "a19f61ea0c8a2a4ee92a7eaf6297543344ca59cd8ebadca32296a53e152f5206",
+      "bytes": 196969
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-project-managed-1380-part-1-png-7070a8961cdb79d313dd71f09bdfe82954a5c113.png",
+      "sha256": "11288c15ca3e9706901ff66eb67c203bd37751d23ce58e27b682857ecd0ffcc0",
+      "bytes": 447584
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-full-source-review-640-part-1-png-657ed591aa2f082751330e5d868624d66ee1e52e.png",
+      "sha256": "bea01aca62044481aa79f09656b33d2978bf5dedf9a57eedca1aa066ceffcbeb",
+      "bytes": 276414
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-workspace-managed-1380-part-2-png-444611fb0e3bc431d314cc06bf96094399067cfc.png",
+      "sha256": "da10fc277ce9e1c4c266b68cc17cd6660f2dabcd8578a6686461a7337751bf62",
+      "bytes": 385463
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-full-source-review-640-part-3-png-dc9493b4e29d68e600da20db4e173e7ed6883b5d.png",
+      "sha256": "8d22c4feec117dc1a3b074ad8fe90fc5bdd8106495aec7b700a60b717ed75217",
+      "bytes": 177176
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-purged-target-1380-part-1-png-1c5f3332b4d859cf4e0e6bcbef2df465433f9e4a.png",
+      "sha256": "9c873d9f04748c8e3f218c032f2901691a2db0ab5f06186bec1a501657161f49",
+      "bytes": 386821
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-project-managed-640-part-1-png-99703508338cee73358a495b4d8255132f29ec53.png",
+      "sha256": "66de60ab4ee1a8b5cafa3bf710a466c298475f33caeb6febea61ba769680f915",
+      "bytes": 354272
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-project-managed-640-part-2-png-42a00d1fcdf3d1e42af5afa6279b7a8378af5499.png",
+      "sha256": "f8ee66574525bb1eaafd1445d50e51bc1b6db471d2c21f97930faa76328424c4",
+      "bytes": 330147
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-workspace-managed-1380-part-1-png-e39f5765762cc110c1bd8b0fa58747c75b0fc1f2.png",
+      "sha256": "1742371b84cbdee61a8c394e674b48944eb1c31ccee75ab6c4075ef753c879e0",
+      "bytes": 389165
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-project-managed-1380-part-2-png-782119a6e726dd5342c2f2347941f8d849e7a99a.png",
+      "sha256": "38de55728037f6d1aaf63c240a3e0d6b24dd81d6f5326901eba1f274c57a59a3",
+      "bytes": 415389
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-full-source-review-1380-part-1-png-5e423fba092d4cb1256d5b9336b7d493291fb277.png",
+      "sha256": "8965b624bc44112ea488547d685de11fd7ac973c2f563a405b1f9af1034dd960",
+      "bytes": 456888
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-purged-target-640-part-1-png-0fc1eba0479ce3dbb7f51570e3b923c99d317aec.png",
+      "sha256": "6764f5303d65f3c20b6b5cdb030754715fa189ce671227283e1ce308f0f863c9",
+      "bytes": 189902
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-workspace-managed-640-part-1-png-1a0ea29ee1ee4d66c3e79a69d30078f602c9809f.png",
+      "sha256": "93a7162abe2430af229698735ff1b9cb7ea6fcf4000b0414b8398325ebb27a69",
+      "bytes": 203321
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-De-1e1c2-ect-workspace-contributions-chromium/attachments/desktop-full-source-review-640-part-2-png-b78f5a6b485358e6fdd9991fe316e5d18b2072ee.png",
+      "sha256": "52ad988258889d1dcf40651d4940271afc4ef74e6ed8781571e75c625f58a652",
+      "bytes": 309152
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-9d8a4-e-material-but-can-withdraw-chromium/attachments/web-restricted-target-1380-part-1-png-c337e3b2fbc3f557256d984437c1bae0e3a27b99.png",
+      "sha256": "1d5030167013dcd7eec53292449175af593531be700a59a35394def338cfb667",
+      "bytes": 143217
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-9d8a4-e-material-but-can-withdraw-chromium/attachments/web-restricted-target-640-part-1-png-af1da208c5552b8f2d217fafaa65eefc68981e07.png",
+      "sha256": "77d5f201dc9a266a06e27f96f1e6585a1eb83dc57ad889abbae325b7751b519d",
+      "bytes": 65853
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-full-source-review-640-part-3-png-09f3913e06a49fea2822d57cc01f084320820d34.png",
+      "sha256": "fec109c66a81abba82da3cab754f23ddb9afb87bf64cdf74c53900a7e5d1c74a",
+      "bytes": 73365
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-full-source-review-1380-part-2-png-2588a2c5905ae48bc6c036419137fa73ce26d128.png",
+      "sha256": "98f2ffdbca3f1123fc5c963a641c29bdc3eddd26e1eaff7d5f7b3f423daf39eb",
+      "bytes": 104097
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-workspace-managed-640-part-1-png-fdb29da4bae626a95285e3e08fbbe280863c693b.png",
+      "sha256": "c6575f6e8e458b1ae534c150ac5003e25c78a0c051dddf31fc85181721dc8c29",
+      "bytes": 79276
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-project-managed-640-part-2-png-9f2b382512668c2795f5a3030eda97fa53dc7343.png",
+      "sha256": "f7aa1961c601aef0ced0f57d6c88faa03f48f41a4f350f71622ac7d23acabf34",
+      "bytes": 127219
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-full-source-review-640-part-1-png-0e073860a6e783b670f434454f581a1dbbf41b69.png",
+      "sha256": "fac71b6c6050a82e6c3d8d3a6da929ace68fe93d6c4001741feec006aa1eec69",
+      "bytes": 129852
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-full-source-review-640-part-2-png-f320699763cfce86776c0e66f4739bfebbfc465a.png",
+      "sha256": "05d626be30cee2b51ffaa63f26774a5ae2471c25992fb81ed635d5acfe860cc6",
+      "bytes": 111781
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-full-source-review-1380-part-1-png-000534180252edb9a5f9d7a5923b9230d2694c8a.png",
+      "sha256": "7ab9bcb7dd14be5a2345716a578e8f661077050c58ea3f58f56f99e388dcf486",
+      "bytes": 183183
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-project-managed-640-part-1-png-e45a622dbec689c5b442e4075c9396befb6303c7.png",
+      "sha256": "f8c337904a36dbf432ea31791ede85860d47283e11717982867fe08524a9bf8f",
+      "bytes": 139206
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-project-managed-1380-part-2-png-f2b823f95191b64532a069f480aa9efccc41e56e.png",
+      "sha256": "96686c473f46446e78518618f58f77b638a2a41912738727691b8cf96205271e",
+      "bytes": 174350
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-project-managed-1380-part-1-png-909c450c14c7fdd37c6fc8eac5ba046485790b03.png",
+      "sha256": "0deceb59d96135a054317fa4a8fe6cf71a47093be653cc2b4cb3d0e1abdacc3a",
+      "bytes": 186044
+    },
+    {
+      "path": "/tmp/multica-knowledge-ui-results/combined-final/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-workspace-managed-1380-part-1-png-1a756743251f588cde4d265fb75c713a7c205307.png",
+      "sha256": "27dc5f303086ce570ae8f435a5d69092a432c99af04939aca5aff3103fac2c14",
+      "bytes": 156562
+    }
+  ]
+}

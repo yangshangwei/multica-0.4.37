@@ -1,0 +1,12 @@
+{
+  "server/internal/handler/knowledge_preparation_isolation_test.go": [
+    "TestKnowledgeOrdinaryCoalescedCommentsCheckEveryCurrentAuthor",
+    "TestKnowledgeHeldOwnerApprovalAllowsActualUnrelatedWriters",
+    "TestKnowledgePreparationWhileRealOrdinaryWriterIsUncommitted",
+    "TestKnowledgePreparationReplayStillFencesActualProjectDeletion"
+  ],
+  "server/internal/service/task_knowledge_preparation_boundary_test.go": [
+    "TestKnowledgePreparationSourceRevocationBothCommitOrders",
+    "TestKnowledgeSourceAuthorityChangesBetweenClaimBuildAndFinalize"
+  ]
+}

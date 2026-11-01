@@ -1,0 +1,29 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "./pkg/protocol",
+    "./internal/daemon",
+    "-run",
+    "^(TestTaskKnowledgeObservationAck|TestKnowledgeObservation|TestKnowledgeCleanupObservation)",
+    "-count=1",
+    "-json",
+    "-timeout=120s"
+  ],
+  "started_at": "2026-10-31T23:06:35.411611+00:00",
+  "finished_at": "2026-10-31T23:06:55.748071+00:00",
+  "exit_code": 0,
+  "scope": "strict protocol ack + actual daemon fake native observation; no DB/installed CLI",
+  "source_hashes": {
+    "server/pkg/protocol/task_knowledge.go": "0911d01d6b9fb623b729af21d727e696ace0f5a03bcc4eec4ae64b35b155c824",
+    "server/internal/daemon/knowledge_context.go": "62d70842f0614262616fcd4e8831a4e69b03f046dd98b5a103cc3ee8010c6666",
+    "server/internal/daemon/knowledge_context_test.go": "23bcbcb29615dc8db649643d0d35e90f2477bb586b917eb639d573d1ae72670c",
+    "server/internal/daemon/knowledge_context_claim_test.go": "5bf80a7501f96179e8afc8796afbb111fcf14c3f6476a9f1dbe2c7532e742db4"
+  }
+}

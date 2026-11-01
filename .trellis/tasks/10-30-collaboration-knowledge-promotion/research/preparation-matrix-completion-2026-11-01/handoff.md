@@ -1,0 +1,18 @@
+# Preparation matrix completion
+
+Two new test files cover the assigned acceptance gaps. Production and original test files were not edited by this lane; the earlier misleadingly named withdraw-only test is preserved.
+
+| Test | Actual production path and observable proof |
+| --- | --- |
+| `TestKnowledgePreparationWhileRealOrdinaryWriterIsUncommitted` | Real `IssueService.Create` has returned an allocated number inside its transaction and is paused at commit; real `UpdateProject` has written description with its required revision and is paused at commit. The uncommitted changes are invisible to another connection; actual knowledge preparation completes while each writer remains held. |
+| `TestKnowledgeHeldOwnerApprovalAllowsActualUnrelatedWriters` | Actual owner approval is held at commit. A different admin and different issue drive public issue creation, issue→project association, triage acceptance and iteration creation. Each operation commits before approval is released. This avoids manufacturing a conflict on the approval author's user row or source issue. |
+| `TestKnowledgePreparationReplayStillFencesActualProjectDeletion` | A real project-only contribution is prepared, then actual `DeleteProject` is held at commit. Original preparation replay is busy while deletion is held and rejects the same manifest after deletion commits, with no private body. |
+| `TestKnowledgePreparationSourceRevocationBothCommitOrders` | A private Chat consumer has an external source participant read basis and independent target workspace authority. Actual `Leave` is held before disclosure; preparation cannot cross it and subsequently omits the unavailable source. In the reverse order, preparation is held before commit, PostgreSQL proves the real revoker is blocked, and later exact-manifest replay refuses after revocation. |
+| `TestKnowledgeSourceAuthorityChangesBetweenClaimBuildAndFinalize` | Source read is genuinely revoked after claim descriptor build and before actual finalization. Finalization remains source-free; a missing claim fence is rejected, the exact positive fence starts the still-target-authorized task, and current preparation omits the revoked source. |
+| `TestKnowledgeOrdinaryCoalescedCommentsCheckEveryCurrentAuthor` | Public `CreateComment` with agent mentions performs real queued-input coalescing. A capable claim delivers the older and latest inputs. Eligible preparation succeeds; disabling an additional older author who is neither current originator nor runtime owner denies private disclosure. This supplements, rather than repeats, the full ordinary surface matrix. |
+
+The first actual description-writer regression returned `knowledge_busy`; the root cause was the metadata handler's use of `LockProjectForExecutionSquad` (`FOR UPDATE`). Main independently changed metadata updates to a new `FOR NO KEY UPDATE` query and kept squad/resource/delete exclusion unchanged. The retained red and subsequent green runs demonstrate that correction. Initial request-fixture setup failures are not counted as product regression evidence.
+
+Normal/race counts are not additive independent cases. Each handler run has four top-level tests, twelve pass events and nine leaf cases; each service run has two top-level tests, four pass events and three leaf cases. There are twelve distinct leaf cases across these files, zero failures/skips in final normal/race runs, and no Provider execution. All DB suites ran sequentially on the exclusive C2 database.
+
+`verification.json`, `test-inventory.json`, `source-hashes.json` and `dependency-hashes.json` record exact evidence. Main owns final broad-source/Go acceptance and task status; this lane does not declare an unconditional G2 completion.

@@ -1,0 +1,120 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation "Application navigation" [ref=e4]:
+        - button "Workspaces" [ref=e5]
+        - button "Collaboration" [ref=e6]
+    - main [ref=e9]:
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - button "Toggle left sidebar" [ref=e12]:
+            - img
+            - generic [ref=e13]: Toggle left sidebar
+          - heading "Settings" [level=1] [ref=e14]
+          - 'button "Settings directory: General" [ref=e15]':
+            - generic [ref=e16]:
+              - generic [ref=e17]: Settings directory
+              - generic [ref=e18]: General
+            - img
+        - tabpanel "General" [ref=e21]:
+          - generic [ref=e22]:
+            - heading "General" [level=2] [ref=e24]
+            - generic [ref=e25]:
+              - heading "Workspace details" [level=3] [ref=e28]
+              - generic [ref=e30]:
+                - generic [ref=e31]:
+                  - generic [ref=e32]:
+                    - generic [ref=e33]: Workspace logo
+                    - generic [ref=e34]: Click the logo to upload a new image
+                  - button "Change workspace logo" [ref=e38]:
+                    - generic [ref=e39]: I
+                    - img [ref=e41]
+                - generic [ref=e44]:
+                  - generic [ref=e46]: Name
+                  - textbox "Name" [ref=e49]: Independent knowledge destination
+                - generic [ref=e50]:
+                  - generic [ref=e52]: Description
+                  - textbox "Description" [ref=e54]:
+                    - /placeholder: What does this workspace focus on?
+                - generic [ref=e55]:
+                  - generic [ref=e57]: Context
+                  - textbox "Context" [ref=e59]:
+                    - /placeholder: Background information and context for AI agents working in this workspace
+                - generic [ref=e60]:
+                  - generic [ref=e62]: Slug
+                  - textbox "Slug" [ref=e64]: knowledge-target-a2d2b6a8
+                - generic [ref=e65]:
+                  - generic [ref=e66]:
+                    - generic [ref=e67]: Issue prefix
+                    - generic [ref=e68]: Used in issue numbers like KNOW-123.
+                  - textbox "Issue prefix" [ref=e70]:
+                    - /placeholder: KNOW
+                    - text: KNOW
+            - generic [ref=e71]:
+              - heading "Planning" [level=3] [ref=e74]
+              - generic [ref=e77]:
+                - generic [ref=e78]:
+                  - generic [ref=e79]: Planning timezone
+                  - generic [ref=e80]: Used for project dates and new iterations. Existing iterations keep their saved timezone.
+                - generic [ref=e82]:
+                  - combobox "Planning timezone" [ref=e83]:
+                    - generic [ref=e84]: Asia/Shanghai
+                    - img: ▼
+                  - textbox [ref=e85]: Asia/Shanghai
+            - region "Managed contributions" [ref=e86]:
+              - generic [ref=e88]:
+                - heading "Managed contributions" [level=3] [ref=e89]
+                - paragraph [ref=e90]: Approved contributions are separate from the context you edit. Access and expiry are checked whenever they are used.
+              - status [ref=e91]: Decision recorded.
+              - list [ref=e92]:
+                - listitem [ref=e93]:
+                  - button "Restricted contribution Withdrawn" [pressed] [ref=e94]:
+                    - generic [ref=e95]: Restricted contribution
+                    - generic [ref=e96]: Withdrawn
+              - region "Review candidate" [ref=e97]:
+                - generic [ref=e98]:
+                  - heading "Review candidate" [level=4] [ref=e99]
+                  - button "Close review" [ref=e100]
+                - text: Withdrawn
+                - paragraph [ref=e101]: Restricted contribution
+            - generic [ref=e102]:
+              - heading "Danger Zone" [level=3] [ref=e105]:
+                - generic [ref=e106]:
+                  - img [ref=e107]
+                  - text: Danger Zone
+              - generic [ref=e111]:
+                - generic [ref=e112]:
+                  - generic [ref=e113]:
+                    - generic [ref=e114]: Leave workspace
+                    - generic [ref=e115]: You're the only member. Delete the workspace to leave.
+                  - generic [ref=e116]:
+                    - button "Leave workspace" [disabled]
+                - generic [ref=e117]:
+                  - generic [ref=e118]:
+                    - generic [ref=e119]: Delete workspace
+                    - generic [ref=e120]: Permanently delete this workspace and its data.
+                  - button "Delete workspace" [ref=e122]
+      - dialog:
+        - generic:
+          - generic:
+            - heading [level=3]: Chat with your agents
+            - paragraph: Ask for a summary, plan your day, or hand off a quick task.
+        - generic:
+          - generic:
+            - img
+            - generic: You need an agent to start chatting.
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - textbox [disabled]:
+                    - paragraph: Create an agent to start chatting
+      - button "Ask Multica" [ref=e123]:
+        - img [ref=e124]
+  - region "Notifications alt+T"
+  - alert [ref=e126]
+```

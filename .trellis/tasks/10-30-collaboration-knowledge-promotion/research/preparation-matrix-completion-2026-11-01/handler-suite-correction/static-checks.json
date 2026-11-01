@@ -1,0 +1,40 @@
+{
+  "gofmt": {
+    "command": [
+      "gofmt",
+      "-l",
+      "server/internal/handler/collaboration_knowledge_invalidation_test.go"
+    ],
+    "started_at": "2026-11-01T01:13:24.854033+00:00",
+    "finished_at": "2026-11-01T01:13:24.869463+00:00",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "diff-check": {
+    "command": [
+      "git",
+      "diff",
+      "--check",
+      "--",
+      "server/internal/handler/collaboration_knowledge_invalidation_test.go"
+    ],
+    "started_at": "2026-11-01T01:13:24.869491+00:00",
+    "finished_at": "2026-11-01T01:13:24.880687+00:00",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "evidence-runner-syntax": "passed",
+  "go-vet": {
+    "command": [
+      "go",
+      "vet",
+      "./internal/handler"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/server",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+}

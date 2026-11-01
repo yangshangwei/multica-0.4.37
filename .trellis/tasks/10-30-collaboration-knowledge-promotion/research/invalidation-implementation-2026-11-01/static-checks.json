@@ -1,0 +1,25 @@
+{
+  "vet": {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "./..."
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 5.940672159194946
+  },
+  "build": {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "build",
+      "./..."
+    ],
+    "exit_code": 0,
+    "evidence": "build.log; exec session 86760 exit 0"
+  },
+  "diff_check": 0
+}
