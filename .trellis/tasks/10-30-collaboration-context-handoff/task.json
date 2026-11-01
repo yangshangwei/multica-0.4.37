@@ -25,7 +25,7 @@
   ],
   "parent": null,
   "relatedFiles": [],
-  "notes": "2026-11-01：runtime 及知识实现已整合，知识产品96cedf485/证据93093d2e9/合入8cb04e329；确定性质量门和独立审查通过。父任务仍等待原/新版本真实模型、Windows/安装包/多账号额度验收，未发布。",
+  "notes": "2026-11-01：runtime 和知识交付均已整合；确定性质量门、独立审查、已覆盖 Web/macOS Electron 与补充矩阵已通过。当前推进新 runtime 真实验收独立登记；原 E2a trial3/22次保留原账本。父任务仍等待原/新真实模型、Windows/安装组合/多账号额度等验收，未发布。runtime当前进度：../10-30-collaboration-context-handoff-runtime/progress.md。",
   "meta": {
     "delivery": "parent-orchestration",
     "planning_scope": "phase1-closure-handoff-promotion",
@@ -34,7 +34,7 @@
     "permission_decision": "approved",
     "approval_session": "01a18a36-e482-7840-9900-3ff8174b4ce7",
     "approval_user_turn": 14,
-    "active_execution_target": "10-30-collaboration-knowledge-promotion",
+    "active_execution_target": "10-30-collaboration-context-handoff-runtime",
     "integration_worktree": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
     "six_step_execution_approved": true,
     "latest_model_evidence": "../10-30-collaboration-fix-closure/verification-e2a-trial2-2026-11-01.md",
@@ -49,6 +49,8 @@
     "knowledge_product_commit": "96cedf485",
     "knowledge_evidence_commit": "93093d2e9",
     "knowledge_main_merge": "8cb04e3295474073b4b991bc4883ef3901c14f01",
-    "parent_acceptance": "open_real_models_and_release_matrix"
+    "parent_acceptance": "open_real_models_and_release_matrix",
+    "progress_phase": "real_model_acceptance_and_parent_closure",
+    "next_action": "register_new_runtime_model_acceptance; original_E2a_trial3_cap22_remains_separate"
   }
 }

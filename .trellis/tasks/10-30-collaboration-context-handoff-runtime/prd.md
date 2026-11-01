@@ -1,6 +1,6 @@
 # 可靠上下文交接与召回
 
-状态：in_progress；用户于本会话明确批准方案并要求核验前置门槛后实施。入口证据见 `research/entry-verification.md`；本文不表示功能已经通过验收。
+状态：in_progress；实现、确定性门禁、生产 Web/原生 macOS Electron 与独立审查已交付，真实模型验收待启动。当前进度与下一步见 `progress.md`，交付及补验依据见 `verification-integration-2026-11-01.md`。入口证据保留于 `research/entry-verification.md`；不据确定性通过宣称全部行为验收完成。
 
 ## Goal
 
@@ -10,7 +10,7 @@
 
 ## Background
 
-研究基线：`4c833e737efb6c997e5cb56c74c43e9237c91956`。研究记录见 `research/handoff.md`、`research/checkpoints.md`、`research/recall.md`。
+研究基线：`4c833e737efb6c997e5cb56c74c43e9237c91956`。下表为实施前的基线观察与缺口，已由后续交付补齐，不作为当前待办。研究记录见 `research/handoff.md`、`research/checkpoints.md`、`research/recall.md`。
 
 | 已确认事实 | 本任务的行为缺口 |
 | --- | --- |
