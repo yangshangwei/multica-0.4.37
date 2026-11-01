@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: builds one isolated candidate journey from pinned source and explicit services
+ok 1 - builds one isolated candidate journey from pinned source and explicit services
+  ---
+  duration_ms: 2.761792
+  type: 'test'
+  ...
+# Subtest: refuses a baseline, persistent runner, unsupported host and mismatched source
+ok 2 - refuses a baseline, persistent runner, unsupported host and mismatched source
+  ---
+  duration_ms: 2.345541
+  type: 'test'
+  ...
+# Subtest: refuses escaped roots, foreign binaries, business databases and external endpoints
+ok 3 - refuses escaped roots, foreign binaries, business databases and external endpoints
+  ---
+  duration_ms: 0.853917
+  type: 'test'
+  ...
+# Subtest: installed collaboration is a separate opt-in selecting only the Windows acceptance job
+ok 4 - installed collaboration is a separate opt-in selecting only the Windows acceptance job
+  ---
+  duration_ms: 0.900334
+  type: 'test'
+  ...
+# Subtest: prepares and always stops the same private collaboration services without uploading state
+ok 5 - prepares and always stops the same private collaboration services without uploading state
+  ---
+  duration_ms: 0.149583
+  type: 'test'
+  ...
+# Subtest: runs collaboration only after candidate installs and compiles the Host without TestMain
+ok 6 - runs collaboration only after candidate installs and compiles the Host without TestMain
+  ---
+  duration_ms: 0.112833
+  type: 'test'
+  ...
+# Subtest: Windows uses the installed EXE resources and bundled EXE with an encoded file URL
+ok 7 - Windows uses the installed EXE resources and bundled EXE with an encoded file URL
+  ---
+  duration_ms: 1.852292
+  type: 'test'
+  ...
+# Subtest: macOS preserves the app Contents layout and encodes package names
+ok 8 - macOS preserves the app Contents layout and encodes package names
+  ---
+  duration_ms: 0.253125
+  type: 'test'
+  ...
+# Subtest: native layouts reject unsupported platforms and paths outside a supported package shape
+ok 9 - native layouts reject unsupported platforms and paths outside a supported package shape
+  ---
+  duration_ms: 1.061792
+  type: 'test'
+  ...
+# Subtest: native homes use platform path rules and reject network or relative roots
+ok 10 - native homes use platform path rules and reject network or relative roots
+  ---
+  duration_ms: 0.221834
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 157.567375

@@ -26,6 +26,10 @@ const windows = [
   "TestHostWindowsLedgerSupportsLongPaths",
   "TestHostLifecycleWindowsWrapperRequiresJobBeforeResume",
   "TestHostLifecycleWindowsWrapperWaitRequiresManagedChildEnd",
+  "TestHostHandoffCheckpointRestartRecoversWithoutExecution",
+  "TestHostRecordingSealReplaysBeforeAdvancingAcknowledgement",
+  "TestHostCheckpointLedgerFitsMaximumEscapedRecordingAndClaim",
+  "TestHostRecordingRecoveredUnflushedTailRemainsUnknown",
 ];
 const passing = (names = required) => names.map((name) => ({ Action: "pass", Test: name }));
 
@@ -68,6 +72,16 @@ test("requires every Windows-specific case", (t) => {
   assert.equal(check(t, passing([...required, ...windows]), ["Windows"]).status, 0);
   const child = `${windows[0]}/peer_lock`;
   assert.equal(check(t, [{ Action: "skip", Test: child }, ...passing([...required, ...windows])], ["Windows"]).status, 1);
+});
+
+test("requires Windows handoff and recording recovery cases without skipped descendants", (t) => {
+  for (const name of windows.slice(-4)) {
+    const result = check(t, passing([...required, ...windows.filter((entry) => entry !== name)]), ["Windows"]);
+    assert.equal(result.status, 1, `Missing required recovery case ${name} was accepted`);
+    assert.ok(result.stderr.includes(name));
+    const child = `${name}/recovered`;
+    assert.equal(check(t, [...passing([...required, ...windows]), { Action: "skip", Test: child }], ["Windows"]).status, 1);
+  }
 });
 
 test("rejects absent or unsupported runner metadata", (t) => {

@@ -107,6 +107,31 @@ same value for installed-version checks. Keep the candidate numeric version abov
 the selected stable upgrade baseline. Do not publish a release tag merely to make
 an acceptance build newer. Preserve prerelease channel metadata with its artifacts.
 
+### Installed collaboration candidate
+
+The separate `windows_collaboration_acceptance` smoke input defaults false and
+selects the Windows x64 lifecycle job. Run the existing packaged Main collaboration
+journey only on candidate upgrade/reinstall, never on the historical baseline.
+The task server, production Web and native Host fixture use the same source SHA;
+record installed EXE/ASAR/bundled CLI and fake Host binary hashes. Require a
+non-skipped, non-retried actual journey, including Stop, app restart, retained
+pause and explicit Resume. Do not infer native success from Node path/configuration
+tests, test enumeration or Windows cross-compilation.
+
+Native installed fixtures use an explicit fresh acceptance home, platform-correct
+package paths and actual OS/architecture metadata. An exceptional shutdown can
+target only the spawned controller PID/tree; native cleanup never falls through
+to a Docker command. Missing final termination is an error, not a successful close.
+The Windows service driver validates the explicit task database name and cluster
+directory before migrating it. Private API/Web state, profiles and raw Playwright
+failures stay in the disposable runner state; upload only named sanitized reports
+and the synthetic journey's Stop/final screenshots. Provider account/quota,
+signature/offline trust and Windows arm64 remain separate gates.
+Host fixture shutdown sends stdin EOF on Windows without POSIX `SIGCONT`, so
+actual graceful summary/exit remains required. Its POSIX suspension helpers refuse
+Windows explicitly; bounded forced termination cannot satisfy the unchanged
+zero-exit and final-summary assertions.
+
 ## Windows protocol ownership on uninstall
 
 Electron registers `multica://` when a packaged app launches. The NSIS target does

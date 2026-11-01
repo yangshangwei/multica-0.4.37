@@ -26,6 +26,10 @@ if (runnerOS === "Windows") {
     "TestHostWindowsLedgerSupportsLongPaths",
     "TestHostLifecycleWindowsWrapperRequiresJobBeforeResume",
     "TestHostLifecycleWindowsWrapperWaitRequiresManagedChildEnd",
+    "TestHostHandoffCheckpointRestartRecoversWithoutExecution",
+    "TestHostRecordingSealReplaysBeforeAdvancingAcknowledgement",
+    "TestHostCheckpointLedgerFitsMaximumEscapedRecordingAndClaim",
+    "TestHostRecordingRecoveredUnflushedTailRemainsUnknown",
   );
 }
 const results = new Map();

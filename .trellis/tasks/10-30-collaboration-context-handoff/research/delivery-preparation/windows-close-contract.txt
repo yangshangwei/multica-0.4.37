@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: native controller shutdown preserves a failed close command after its owned child exits
+ok 1 - native controller shutdown preserves a failed close command after its owned child exits
+  ---
+  duration_ms: 1.238833
+  type: 'test'
+  ...
+# Subtest: already closed controller does not send another command or touch Docker
+ok 2 - already closed controller does not send another command or touch Docker
+  ---
+  duration_ms: 0.150875
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 171.811625

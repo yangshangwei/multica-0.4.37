@@ -1,0 +1,20 @@
+{
+  "reviewer": "/root/delivery_independent_review",
+  "base_tip": "5ab2db859",
+  "state": "dirty author fix reviewed; commit pending",
+  "product_modified_by_reviewer": false,
+  "verdict_for_delta": "pass; no relaxation of EOF/exit/claims assertions",
+  "files_sha256": {
+    "e2e/fixtures/collaboration-host-runtime.ts": "41558a125ded2b5303e29c256d9e3bbe0b3ef04b2af69611209a815589ef96d4",
+    "e2e/fixtures/collaboration-host-runtime.node-test.mjs": "6dd3cf1793efb493601f9cf1ec719046ad3353bc18d89dea4baf7984c73b71a4",
+    ".github/workflows/desktop-smoke.yml": "1cd3a6580968201102d0e5d9b9bf4091cb059fbedd1a904751ecce78368cf927",
+    "apps/desktop/scripts/WINDOWS_ACCEPTANCE.md": "2f6b882cd236128baf544d80c1f623411fdb83065933c3457054b1ed9936abdd"
+  },
+  "command": "node --test e2e/fixtures/collaboration-host-runtime.node-test.mjs",
+  "exit_code": 0,
+  "pass": 4,
+  "fail": 0,
+  "skip": 0,
+  "log_sha256": "3cd135aa6bfae3454f8c9e4d876ef0e72766339641f25191d1ddf6076a60734b",
+  "native_windows_executed": false
+}

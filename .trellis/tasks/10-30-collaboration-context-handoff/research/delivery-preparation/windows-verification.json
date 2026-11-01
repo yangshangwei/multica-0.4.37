@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "owner": "/root/windows_delivery",
+  "source_sha": "9de37277d651b4d2d39ffe0cc1d2171286744550",
+  "base_sha": "7240d8542",
+  "branch": "codex/collaboration-delivery-20261101",
+  "recorded_at": "2026-11-01T16:34:58.660220+00:00",
+  "worktree": "/Volumes/artisan/code/2026/mc-collaboration-delivery-20261101",
+  "state": "local_framework_checks_passed; independent_review_and_final_candidate_native_execution_pending",
+  "source_files_sha256": {
+    ".github/workflows/desktop-smoke.yml": "35e6fab7ca674ec3a3c68fb1e907ad2beb18b1de374cc58688ee56a9035ccc5a",
+    ".trellis/spec/desktop/frontend/intranet-updates.md": "02bf2eaefcbc0ad0b579d728386805e048af03cfb65704b74f715b98ecdfa161",
+    "apps/desktop/scripts/WINDOWS_ACCEPTANCE.md": "0ebedb939a7e063408f1d93ee96a85f336820b57be4e13dcac20e4b76fc4c944",
+    "apps/desktop/scripts/accept-windows-installer.ps1": "c5ebea0d508d9eb646d89e95acd4b7834327f2c6a13f5ccb8aac58e54b57f411",
+    "apps/desktop/scripts/windows-business-server.ps1": "897a03493beb35a4f4d40815c485c8de884cb8bb51805e6548547bf840c0927e",
+    "apps/desktop/scripts/windows-collaboration-config.mjs": "b8300f0bd44994cafed977791b8fd251e9c85b94500f09cf52cde1f96d56a286",
+    "apps/desktop/scripts/windows-collaboration-config.node-test.mjs": "f682b15dcd89ea387a4084c3c88dbc5e7411e5a5a9b68450e44e94015437c728",
+    "apps/desktop/scripts/windows-collaboration-server.ps1": "83ab72169491bf5d9295fc38afe747aa25ec791e5226154dfdcd2d1db9a81111",
+    "apps/desktop/scripts/windows-collaboration-workflow.node-test.mjs": "56ae6407b22a14ff1f0fa3a31e5c0a8a78a93f12d727bfaf2519e1cca69aede3",
+    "apps/desktop/scripts/windows-collaboration.mjs": "88b6de5b28a5c33a3f7ac9196f64b8e60de3e4a04dc171f7d5047739135611c2",
+    "e2e/collaboration-host-installed.spec.ts": "2ca4a3b659fd8a6693d19dee23c587a107ddbce1f07f02c7efe5f9653b288fbe",
+    "e2e/fixtures/collaboration-installed-layout.d.mts": "5cfd090a0d43f38a6562fa96b27787739c1354a6948cb34b2ceb94228097fc44",
+    "e2e/fixtures/collaboration-installed-layout.mjs": "014cfef46f6abe42a93e696bd68d8651f3b44aebbfbc7723816de37d71a78f4d",
+    "e2e/fixtures/collaboration-installed-layout.node-test.mjs": "918148e5d5ebc2cc845e90f46638e4f390d4b1580079ad932d72b8e91bdd6729",
+    "e2e/fixtures/collaboration-installed-main.mjs": "ebe914eaa5d71e8b7d7c8e0d937b99ba67df72b255754a69eef899b5e70fd475",
+    "e2e/fixtures/collaboration-installed-main.node-test.mjs": "49c98c6db0c2876cf2c6db7d9f8d36af039a79629223a0b28a71eede7a1901a1",
+    "e2e/fixtures/collaboration-installed-main.ts": "f63d1e7e098e7634b9e90f75605fd63e22a4866cd6d27c93d564d8c4be9e50fb"
+  },
+  "checks": [
+    {
+      "command": "node --experimental-strip-types --test e2e/fixtures/collaboration-installed-layout.node-test.mjs e2e/fixtures/collaboration-installed-main.node-test.mjs apps/desktop/scripts/windows-collaboration-config.node-test.mjs apps/desktop/scripts/windows-collaboration-workflow.node-test.mjs",
+      "exit_code": 0,
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "log": "windows-contract-final-r4.txt",
+      "log_sha256": "ecdac3ada545ddb354cfd02d5502ddfded5afe83ea6817b43cd3ba374543b997"
+    },
+    {
+      "command": "pnpm exec tsc --noEmit --strict --allowImportingTsExtensions --module nodenext --moduleResolution nodenext --target es2022 --esModuleInterop --skipLibCheck e2e/fixtures/collaboration-installed-main.ts",
+      "exit_code": 0,
+      "log": "windows-transport-typecheck-strict.txt",
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "command": "pnpm exec tsc --noEmit --strict --module esnext --moduleResolution bundler --jsx react-jsx --target es2022 --lib esnext,dom,dom.iterable --esModuleInterop --skipLibCheck e2e/collaboration-host-installed.spec.ts",
+      "exit_code": 0,
+      "log": "windows-journey-typecheck-r2.txt",
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "command": "pnpm --filter @multica/desktop exec eslint scripts/windows-collaboration.mjs scripts/windows-collaboration-config.mjs scripts/windows-collaboration-config.node-test.mjs scripts/windows-collaboration-workflow.node-test.mjs",
+      "exit_code": 0,
+      "log": "windows-scripts-lint-final-r3.txt",
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "command": "pnpm exec playwright test e2e/collaboration-host-installed.spec.ts --list",
+      "exit_code": 0,
+      "enumerated_tests": 1,
+      "executed_tests": 0,
+      "log": "windows-playwright-list-final.txt",
+      "log_sha256": "e531bba7b472da186e12a2e9abd00092cb9ae16c5655a8fc17de1a60f4e9c8a3"
+    },
+    {
+      "command": "pnpm --filter @multica/core exec node --input-type=module <existing Core YAML parser: parse desktop-smoke.yml and assert default-false input/job>",
+      "exit_code": 0,
+      "log": "windows-workflow-yaml.txt",
+      "log_sha256": "bb827e194c6c159e4c98266a2420c637b7a080e6f78607bfd47d027af59a601a"
+    },
+    {
+      "command": "GOOS=windows GOARCH=amd64 go -C server test -c -o <private>/host-daemon.exe ./internal/daemon",
+      "exit_code": 0,
+      "executed_tests": 0,
+      "log": "windows-host-cross-compile.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "node --check e2e/fixtures/collaboration-installed-main.mjs; node --check apps/desktop/scripts/windows-collaboration.mjs",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check; git diff --exit-code -- pnpm-lock.yaml package.json apps/desktop/package.json",
+      "exit_code": 0
+    }
+  ],
+  "environment": {
+    "host": "macOS-26.2-arm64-arm-64bit-Mach-O",
+    "go": "go1.27.0 darwin/arm64",
+    "node": "v22.23.2",
+    "pnpm": "10.28.2",
+    "pwsh_available": false
+  },
+  "compile_artifact": {
+    "private_path": ".omx/private/windows-delivery/host-daemon.exe",
+    "bytes": 43598336,
+    "sha256": "7b439308ab7e7153cc17339cb96476e9245a5326325596f28b92d6d742606182",
+    "pe_machine": "0x8664",
+    "server_tree": "a01e9cb5ac47335f846b70cd5b08e45dd4f09b1b"
+  },
+  "preserved_failures": [
+    "windows-layout-red.txt: missing native Windows framework contract",
+    "windows-scripts-lint.txt: test-only yaml import lacked desktop declaration; no dependency added, static contract changed to Node-only and real YAML parse used existing Core tool",
+    "windows-scripts-lint-r2.txt: regex spacing rule, corrected",
+    "windows-journey-typecheck.txt: initial standalone compiler lib omitted existing String.isWellFormed; repeated with repository ESNext/DOM contract"
+  ],
+  "raw_log_sha256": {
+    "windows-close-contract.txt": "1e23a60deb47f126bc7026a292a523b123b7ddeb765b9f44942fe41d7cbe2850",
+    "windows-contract-final-r2.txt": "e53223b825c9701fced30d7161a3ac00057912b173ec8ccae7c7fb622f6ee2a8",
+    "windows-contract-final-r3.txt": "e828804952b78169a6e852bde3d348b02f4a272b1c88872914a0820d3abf5edd",
+    "windows-contract-final-r4.txt": "ecdac3ada545ddb354cfd02d5502ddfded5afe83ea6817b43cd3ba374543b997",
+    "windows-contract-final.txt": "beeec132da584e6217b29f6c45020719028cc98be08019eaf2472d9c3815830d",
+    "windows-contract-green.txt": "4c847ba9a5a6cf1172662fe8b5d61d6d03e79faefb080a6472ba5ac1516e08ba",
+    "windows-dependencies.txt": "1b2131404e3934542ac60b2992dbdd8052ebf6c7cf417b21d0381bd4990a6e07",
+    "windows-host-cross-compile.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "windows-journey-typecheck-r2.txt": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+    "windows-journey-typecheck.txt": "7b7f663384cf47ef063d298a624a2c0a89df85579c15eebe5550e2bf6647b908",
+    "windows-layout-green.txt": "1b5780d36904d079b82516aec98586584f5ee658eff5da52564ff676d6383f13",
+    "windows-layout-red.txt": "4f43dbdfc7c711121269d62acb195a630d953d34397df908474e455862cfe56c",
+    "windows-playwright-list-final.txt": "e531bba7b472da186e12a2e9abd00092cb9ae16c5655a8fc17de1a60f4e9c8a3",
+    "windows-playwright-list.txt": "e531bba7b472da186e12a2e9abd00092cb9ae16c5655a8fc17de1a60f4e9c8a3",
+    "windows-scripts-lint-final-r2.txt": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+    "windows-scripts-lint-final-r3.txt": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+    "windows-scripts-lint-final.txt": "1b27330e35d869e5955f93e3c963225ffe753df2f041f55c627c0b5dd951f90c",
+    "windows-scripts-lint-r2.txt": "1b27330e35d869e5955f93e3c963225ffe753df2f041f55c627c0b5dd951f90c",
+    "windows-scripts-lint.txt": "264cb84946ce2fa87b693e72ab7f69675c7f18d868f9a7048f5f41c071fc4a56",
+    "windows-transport-typecheck-strict.txt": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+    "windows-transport-typecheck.txt": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+    "windows-workflow-yaml.txt": "bb827e194c6c159e4c98266a2420c637b7a080e6f78607bfd47d027af59a601a"
+  },
+  "real_provider_calls": 0,
+  "database_commands_executed_by_child": 0,
+  "installer_or_gui_executed": false,
+  "external_actions_performed": false,
+  "dependencies_changed": false,
+  "not_verified": [
+    "Native Windows PowerShell parser and script execution",
+    "Native installed Main/Host collaboration run",
+    "Upgrade/reinstall state on Windows",
+    "Windows arm64",
+    "Signed/offline trust, real Provider account and quota/AC43",
+    "Final merged-candidate binding and independent review"
+  ]
+}

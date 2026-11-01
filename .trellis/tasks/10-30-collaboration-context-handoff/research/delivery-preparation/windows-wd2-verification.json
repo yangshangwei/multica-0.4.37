@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "finding": "WD-2",
+  "base_sha": "69bbc9cf0f74f3b0177d9c8bd4c812acaa9a3187",
+  "product_sha": "d0bdd96e5674a04f4ba6ae0ba5ee4f884bbc52b1",
+  "owner": "/root/windows_delivery",
+  "recorded_at": "2026-11-01T17:07:45.983603+00:00",
+  "source_files_sha256": {
+    "e2e/fixtures/collaboration-installed-layout.mjs": "1c93ce8f0bbadad74e6cb23f157dff2df03b6af2bdcb208369f1da09bedacd28",
+    "e2e/fixtures/collaboration-installed-layout.node-test.mjs": "338bb62132e7c3c945be8488ff206ff6f898db910a4cbfde349dce752ab33eae"
+  },
+  "checks": [
+    {
+      "command": "node --test <private>/wd2-baseline/collaboration-installed-layout.node-test.mjs",
+      "method": "final canonical test copied unchanged beside git HEAD baseline helper; live product left intact",
+      "exit_code": 1,
+      "pass": 4,
+      "fail": 1,
+      "skip": 0,
+      "log": "windows-wd2-red-r2.txt",
+      "observation": "Windows literal Runner%20Temp path decoded as Runner Temp; direct expected-vs-actual mismatch"
+    },
+    {
+      "command": "node --test e2e/fixtures/collaboration-installed-layout.node-test.mjs",
+      "exit_code": 0,
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "log": "windows-wd2-green-r2.txt"
+    },
+    {
+      "command": "node --experimental-strip-types --test e2e/fixtures/collaboration-installed-layout.node-test.mjs e2e/fixtures/collaboration-installed-main.node-test.mjs e2e/fixtures/collaboration-host-runtime.node-test.mjs apps/desktop/scripts/windows-collaboration-config.node-test.mjs apps/desktop/scripts/windows-collaboration-workflow.node-test.mjs",
+      "exit_code": 0,
+      "pass": 18,
+      "fail": 0,
+      "skip": 0,
+      "log": "windows-wd2-all-contracts-r2.txt"
+    },
+    {
+      "command": "pnpm exec tsc --noEmit --strict --module esnext --moduleResolution bundler --jsx react-jsx --target es2022 --lib esnext,dom,dom.iterable --esModuleInterop --skipLibCheck e2e/collaboration-host-installed.spec.ts",
+      "exit_code": 0,
+      "log": "windows-wd2-typecheck.txt"
+    },
+    {
+      "command": "node --check e2e/fixtures/collaboration-installed-layout.mjs; git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "log_sha256": {
+    "windows-wd2-red.txt": "651742e489b0e7cbdb0e66ce4acc481fccd86f842f8fc1efad28dbd0e9e2d8ba",
+    "windows-wd2-red-r2.txt": "925d891bbe4c217218401359cefda4690e3a0006bf8052ab98e703cb8c03cbf9",
+    "windows-wd2-green.txt": "a772171e19aceef5d36420e51c9f736faa20c6a6319547b732563c0897a64b7d",
+    "windows-wd2-green-r2.txt": "2555153272cadc55e4fd591633e0ecd780f9c128143e602adab665faf3312899",
+    "windows-wd2-all-contracts.txt": "a644e170f7ce64f8566dccc2fb9698f92d058419090652b049884f33c0a2ae6f",
+    "windows-wd2-all-contracts-r2.txt": "c868fe5456ed92e75e4030d5cd9b5d2c70b074fec5b26d303ad0e5b79a5d939f",
+    "windows-wd2-typecheck.txt": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+  },
+  "environment": {
+    "node": "22.23.2",
+    "platform": "darwin/arm64",
+    "path_dialects_tested": [
+      "win32",
+      "POSIX for macOS native package; works independently of test host"
+    ]
+  },
+  "scope": "native helper only; Linux Docker transport and unsupported-native-Linux rule unchanged",
+  "preserved_probe": "independent-review/layout-percent-probe.mjs unchanged",
+  "database_operations": 0,
+  "gui_installer_operations": 0,
+  "provider_calls": 0,
+  "external_ci_operations": 0,
+  "dependencies_added": 0,
+  "state": "WD2 implemented; independent_recheck_pending; final_native_acceptance_open"
+}
