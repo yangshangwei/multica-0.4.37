@@ -1,0 +1,28 @@
+{
+  "addendum_to": "registration.json (RK1, d2fe54ab0); registration.json itself is not edited",
+  "written_by_session": "claude multica-0-4-37-87",
+  "decided_at": "2026-11-01T04:26:26Z",
+  "decision_source": "User answers in session multica-0-4-37-87 on 2026-11-01: fix product gaps 2 and 3 before testing and narrow H1; allocate the full 19-launch runtime set",
+  "research": "../real-model-runtime-framework-research.md (7a90f3d78)",
+  "status": "registered_not_runnable",
+  "not_runnable_reasons": [
+    "product_fix_pending: CLI read for handoff pages/sources and host-run recall guidance are being added; the source binding is void until source_manifest.py is re-run on the fixed tree",
+    "framework_missing: real router + DB + Runner/HostExecutor harness with fake-executable proof and independent review is not built yet",
+    "exclusive_window_required: no other session may issue model calls on the shared gateway during RK1 launches"
+  ],
+  "runtime_call_cap": 19,
+  "runtime_consumed": 0,
+  "cap_scope": "Real Provider launches for the runtime scenarios below only. Not transferable to or from the original E0-E6 series. Knowledge scenarios K1-K3 and ordinary-task E0b are not covered by this cap.",
+  "runtime_scenarios": [
+    {"id": "RK1-E0a", "trials": 1, "launches": 1, "scope_correction": "With knowledge off, assert that --no-session-persistence is absent rather than present; the knowledge-granted argv clause belongs to a knowledge scenario."},
+    {"id": "RK1-H1", "trials": 3, "launches": 3, "scope_correction": "Narrowed per PRD AC3: the measured run must state that the identified prior run stopped with an incomplete record and no result (results[].recording_incomplete=true, result_state=absent), without inventing its content. Retained checkpoint prefixes stay a human run-records surface and are not scored here."},
+    {"id": "RK1-H2", "trials": 3, "launches": 3},
+    {"id": "RK1-H3a", "trials": 3, "launches": 3},
+    {"id": "RK1-H3b", "trials": 3, "launches": 3},
+    {"id": "RK1-H5", "trials": 3, "launches": 3, "account_assumption": "The two self-controlled accounts are test-created owner and contributor users in the harness database; one Provider account is used. Pending user confirmation; if two Provider accounts are required, H5 stays unrun."},
+    {"id": "RK1-H6", "trials": 3, "launches": 6, "note": "Counted as pairs; hop2 runs in a different agent target, working directory and ledger with no --resume."}
+  ],
+  "order": ["RK1-E0a", "RK1-H1", "RK1-H2", "RK1-H3a", "RK1-H3b", "RK1-H5", "RK1-H6"],
+  "stop_rule": "Unchanged from registration.json.",
+  "environment_controls": "Remove test-process variables such as DATABASE_URL from the real child. The operator HOME/~/.claude settings stay as in production host mode (same exposure as the original series); record hashes of the files that apply."
+}
