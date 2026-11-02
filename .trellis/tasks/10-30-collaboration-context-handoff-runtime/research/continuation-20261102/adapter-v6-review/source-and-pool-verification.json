@@ -1,0 +1,155 @@
+{
+  "versioned_sources": {
+    "check-bin/go": {
+      "sha256": "eabbfdfe047ec686a6e25d413be9dc14dc1ce068ac72317530d6ec049f84aa29",
+      "ast_parse": "pass"
+    },
+    "check-bin/pnpm": {
+      "sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "ast_parse": "pass"
+    },
+    "run-make-check.py": {
+      "sha256": "836f2d066b74edbb14e39fda49ac314e40f11b9618cbd8d07eb44c020747ad1f",
+      "ast_parse": "pass"
+    },
+    "check-go-isolation-test.py": {
+      "sha256": "31bcefb99e7ca5265f31594aa07a56857e8701f84405b4f6cf78b5b55baee5df",
+      "ast_parse": "pass"
+    },
+    "check-launcher-test.py": {
+      "sha256": "ae7de706ba04fd11a125a436d7a2b9e92cbf276e7375fc67bb6661c34884ba0c",
+      "ast_parse": "pass"
+    }
+  },
+  "runtime_copies": {
+    "check-bin/go": {
+      "exists": true,
+      "sha256": "eabbfdfe047ec686a6e25d413be9dc14dc1ce068ac72317530d6ec049f84aa29",
+      "matches_versioned_source": true
+    },
+    "check-bin/pnpm": {
+      "exists": true,
+      "sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "matches_versioned_source": true
+    },
+    "run-make-check.py": {
+      "exists": true,
+      "sha256": "836f2d066b74edbb14e39fda49ac314e40f11b9618cbd8d07eb44c020747ad1f",
+      "matches_versioned_source": true
+    },
+    "check-go-isolation-test.py": {
+      "exists": true,
+      "sha256": "31bcefb99e7ca5265f31594aa07a56857e8701f84405b4f6cf78b5b55baee5df",
+      "matches_versioned_source": true
+    },
+    "check-launcher-test.py": {
+      "exists": true,
+      "sha256": "ae7de706ba04fd11a125a436d7a2b9e92cbf276e7375fc67bb6661c34884ba0c",
+      "matches_versioned_source": true
+    }
+  },
+  "pool_proofs": [
+    {
+      "version": "v5",
+      "actual_counts": {
+        "run": 7,
+        "pass": 3,
+        "fail": 4,
+        "skip": 0
+      },
+      "exit_code": 1,
+      "test_names": [
+        "TestPoolSizing_DefaultsWhenNothingSet",
+        "TestPoolSizing_URLParamsHonoredWhenEnvUnset",
+        "TestPoolSizing_EnvOverridesURL",
+        "TestPoolSizing_PartialURLParam",
+        "TestPoolSizing_InvalidEnvFallsBackToCodeDefault",
+        "TestPoolSizing_InvalidEnvFallsBackToURLParam",
+        "TestPoolSizing_MinClampedToMax"
+      ],
+      "actual_log_sha256": "70de5c4d115ecf831dacfa9f36f5479420ad9943e577e6841297383d6c17bcad",
+      "recorded_log_sha256_matches": true,
+      "source_hashes": {
+        "server/cmd/server/dbstats.go": {
+          "actual_sha256": "588b1a7d781c965b7d3fd525af940549ad9d8653a04b68390ff1338c3dcb7f1b",
+          "expected_sha256": "588b1a7d781c965b7d3fd525af940549ad9d8653a04b68390ff1338c3dcb7f1b",
+          "matches": true
+        },
+        "server/cmd/server/dbstats_test.go": {
+          "actual_sha256": "027dcb6059a6e0f77a09e4277ded200e81e924aae23a6cc67835737719877c71",
+          "expected_sha256": "027dcb6059a6e0f77a09e4277ded200e81e924aae23a6cc67835737719877c71",
+          "matches": true
+        }
+      },
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-p",
+        "(version 1) (allow default) (deny network*)",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+        "-C",
+        "/Volumes/artisan/code/2026/mc-collaboration-final5-20261102/server",
+        "test",
+        "-p",
+        "2",
+        "./cmd/server/dbstats.go",
+        "./cmd/server/dbstats_test.go",
+        "-count=1",
+        "-json"
+      ],
+      "network_denied": true,
+      "exact_file_list_excludes_DB_TestMain": true
+    },
+    {
+      "version": "v6",
+      "actual_counts": {
+        "run": 7,
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0,
+      "test_names": [
+        "TestPoolSizing_DefaultsWhenNothingSet",
+        "TestPoolSizing_URLParamsHonoredWhenEnvUnset",
+        "TestPoolSizing_EnvOverridesURL",
+        "TestPoolSizing_PartialURLParam",
+        "TestPoolSizing_InvalidEnvFallsBackToCodeDefault",
+        "TestPoolSizing_InvalidEnvFallsBackToURLParam",
+        "TestPoolSizing_MinClampedToMax"
+      ],
+      "actual_log_sha256": "0587267ab1cec4fb4eb957da46738a335bce17757ae34dfea2cd64a25ec4bc92",
+      "recorded_log_sha256_matches": true,
+      "source_hashes": {
+        "server/cmd/server/dbstats.go": {
+          "actual_sha256": "588b1a7d781c965b7d3fd525af940549ad9d8653a04b68390ff1338c3dcb7f1b",
+          "expected_sha256": "588b1a7d781c965b7d3fd525af940549ad9d8653a04b68390ff1338c3dcb7f1b",
+          "matches": true
+        },
+        "server/cmd/server/dbstats_test.go": {
+          "actual_sha256": "027dcb6059a6e0f77a09e4277ded200e81e924aae23a6cc67835737719877c71",
+          "expected_sha256": "027dcb6059a6e0f77a09e4277ded200e81e924aae23a6cc67835737719877c71",
+          "matches": true
+        }
+      },
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-p",
+        "(version 1) (allow default) (deny network*)",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6/check-bin/go",
+        "-C",
+        "/Volumes/artisan/code/2026/mc-collaboration-final5-20261102/server",
+        "test",
+        "-p",
+        "2",
+        "./cmd/server/dbstats.go",
+        "./cmd/server/dbstats_test.go",
+        "-count=1",
+        "-json"
+      ],
+      "network_denied": true,
+      "exact_file_list_excludes_DB_TestMain": true
+    }
+  ],
+  "actual_go_tests_rerun_by_reviewer": false,
+  "real_provider_calls": 0
+}

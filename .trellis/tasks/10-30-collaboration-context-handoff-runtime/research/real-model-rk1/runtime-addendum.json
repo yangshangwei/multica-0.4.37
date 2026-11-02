@@ -7,7 +7,6 @@
   "status": "runtime_budget_approved_25; reviewed_framework_and_product_locally_merged; final_joint_candidate_not_accepted",
   "not_runnable_reasons": [
     "final_candidate_joint_verification_pending: full make check and gated Web/native/knowledge on-off remain open",
-    "RKI6_open: same final-candidate all-scenario fake normal/race required; preserved intermediate E0a recording-seal incomplete",
     "final_source_binding_required: historical source_binding below is not the final candidate; framework-registration.source_binding.source_id remains empty",
     "exclusive_window_required: pause shared-gateway coding/review and local heavy tests/migrations before paid execution"
   ],
@@ -101,7 +100,7 @@
       "correction": "From 96cedf485 until ac2a24f8f the smoke authorizer rejected knowledge_version=1 on the claim with HTTP 403, so the smoke could not pass at those HEADs and proved nothing there; the registered claim that the query is accepted holds only from ac2a24f8f. Confirmed independently by session multica-0-4-37-0b."
     }
   ],
-  "updated_at": "2026-11-01T18:24:02.380825+00:00",
+  "updated_at": "2026-11-02T13:37:28.489637+00:00",
   "decisions": [
     {
       "at": "2026-11-01T10:33:57Z",
@@ -125,5 +124,22 @@
     "independent_recheck": "independent-review/recheck-review.json; pass-with-notes; RKI1-5 closed",
     "real_provider_consumed": 0,
     "final_candidate_source_bound": false
-  }
+  },
+  "current_fake_independent_result_review": {
+    "report": "../continuation-20261102/rki6-review/review.json",
+    "report_sha256": "41b99b24d9cecd457b5a2b192af0666e356be509d270c2ccca6f50e5cc8e7672",
+    "verdict": "pass-with-notes",
+    "blocking_findings_open": 0,
+    "checks_passed": 1794,
+    "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+    "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+    "real_provider_calls": 0,
+    "scope": "current final639 same-product normal/race fake evidence only"
+  },
+  "pre_result_review_reasons": [
+    "final_candidate_joint_verification_pending: full make check and gated Web/native/knowledge on-off remain open",
+    "RKI6_open: same final-candidate all-scenario fake normal/race required; preserved intermediate E0a recording-seal incomplete",
+    "final_source_binding_required: historical source_binding below is not the final candidate; framework-registration.source_binding.source_id remains empty",
+    "exclusive_window_required: pause shared-gateway coding/review and local heavy tests/migrations before paid execution"
+  ]
 }

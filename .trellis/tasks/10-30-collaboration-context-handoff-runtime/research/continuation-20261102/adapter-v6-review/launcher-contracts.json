@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-p",
+    "(version 1) (allow default) (deny network*)",
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6/check-launcher-test.py"
+  ],
+  "exit_code": 0,
+  "named_pass": 11,
+  "expected_count": 11,
+  "source_sha256": "ae7de706ba04fd11a125a436d7a2b9e92cbf276e7375fc67bb6661c34884ba0c",
+  "log_sha256": "0ee992dce75d96123ece954bc160e35d8e9cc0de8fd4624d0db1885a34a7a472",
+  "network_denied": true,
+  "all_database_commands_fake": true,
+  "services_started": 0,
+  "real_provider_calls": 0
+}

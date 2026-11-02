@@ -1,0 +1,38 @@
+{
+  "version": "v5",
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-p",
+    "(version 1) (allow default) (deny network*)",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+    "-C",
+    "/Volumes/artisan/code/2026/mc-collaboration-final5-20261102/server",
+    "test",
+    "-p",
+    "2",
+    "./cmd/server/dbstats.go",
+    "./cmd/server/dbstats_test.go",
+    "-count=1",
+    "-json"
+  ],
+  "exit_code": 1,
+  "counts": {
+    "run": 7,
+    "pass": 3,
+    "fail": 4,
+    "skip": 0
+  },
+  "started_at": "2026-11-02T13:08:27.424252+00:00",
+  "finished_at": "2026-11-02T13:08:35.424232+00:00",
+  "log_sha256": "70de5c4d115ecf831dacfa9f36f5479420ad9943e577e6841297383d6c17bcad",
+  "wrapper_sha256": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+  "sources_sha256": {
+    "server/cmd/server/dbstats.go": "588b1a7d781c965b7d3fd525af940549ad9d8653a04b68390ff1338c3dcb7f1b",
+    "server/cmd/server/dbstats_test.go": "027dcb6059a6e0f77a09e4277ded200e81e924aae23a6cc67835737719877c71"
+  },
+  "exact_file_list_excludes_DB_TestMain": true,
+  "network_denied": true,
+  "database_connections": 0,
+  "actual_database_allocated": false,
+  "real_provider_calls": 0
+}

@@ -1,0 +1,22 @@
+{
+  "name": "check-go-isolation-test.py",
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/contracts/deny-network.sb",
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/contracts/check-go-isolation-test.py"
+  ],
+  "exit_code": 0,
+  "log": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/check-go-isolation-test.log",
+  "log_sha256": "7652dd6dd763d888a1b3b3717d985fbec0ef8484d9eb30614cd16776df950aa2",
+  "network_policy": "deny network*",
+  "observed_summary": [
+    "",
+    "----------------------------------------------------------------------",
+    "Ran 17 tests in 5.476s",
+    "",
+    "OK"
+  ]
+}

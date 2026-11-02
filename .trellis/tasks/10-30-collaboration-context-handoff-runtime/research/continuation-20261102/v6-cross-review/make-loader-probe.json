@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-02T13:20:23.747201+00:00",
+  "scope": "selected v6 parser plus canonical serializer, test-owned same include/export Makefile only",
+  "launcher_sha256": "7e2592d1b6e0a795ce9078f4c97d04255f635d392ff7e16a154309aa87695516",
+  "literal_make_brace_shell_accepted": true,
+  "canonical_is_bash_single_quoted": true,
+  "make_exit_code": 0,
+  "owned_marker_created": true,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "actual_source_env_executed": false,
+  "actual_launcher_executed": false,
+  "actual_business_Makefile_executed": false,
+  "database_calls": 0,
+  "network_calls": 0,
+  "command": [
+    "/usr/bin/make",
+    "--no-print-directory",
+    "-f",
+    "<reviewer-owned ProbeMakefile>",
+    "probe"
+  ],
+  "fixture_makefile": "include <canonical.env>\nexport\n.PHONY: probe\nprobe:\n\t@/usr/bin/true\n"
+}

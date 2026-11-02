@@ -1,0 +1,22 @@
+{
+  "name": "check-go-package-binding-test.py",
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/contracts/deny-network.sb",
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/contracts/check-go-package-binding-test.py"
+  ],
+  "exit_code": 0,
+  "log": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/check-go-package-binding-test.log",
+  "log_sha256": "bed468a8d876c12e16c425c1d085bb68dff5f3c2cea49e5c680f2812ac4f2faf",
+  "network_policy": "deny network*",
+  "observed_summary": [
+    "",
+    "----------------------------------------------------------------------",
+    "Ran 38 tests in 1.287s",
+    "",
+    "OK"
+  ]
+}

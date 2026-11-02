@@ -1,0 +1,36 @@
+{
+  "command": "stdlib py_compile.compile for six owned Python sources; temporary bytecode cleaned",
+  "files": [
+    {
+      "file": "check-bin/go",
+      "compile": "passed",
+      "sha256": "eabbfdfe047ec686a6e25d413be9dc14dc1ce068ac72317530d6ec049f84aa29"
+    },
+    {
+      "file": "check-bin/pnpm",
+      "compile": "passed",
+      "sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+    },
+    {
+      "file": "check-go-isolation-test.py",
+      "compile": "passed",
+      "sha256": "31bcefb99e7ca5265f31594aa07a56857e8701f84405b4f6cf78b5b55baee5df"
+    },
+    {
+      "file": "run-make-check.py",
+      "compile": "passed",
+      "sha256": "836f2d066b74edbb14e39fda49ac314e40f11b9618cbd8d07eb44c020747ad1f"
+    },
+    {
+      "file": "check-launcher-test.py",
+      "compile": "passed",
+      "sha256": "ae7de706ba04fd11a125a436d7a2b9e92cbf276e7375fc67bb6661c34884ba0c"
+    },
+    {
+      "file": "check-pool-precedence.py",
+      "compile": "passed",
+      "sha256": "190ebb7ad8426240e50b27eb95634f17d96c230aafc44847e1d9e37a87e61630"
+    }
+  ],
+  "exit_code": 0
+}

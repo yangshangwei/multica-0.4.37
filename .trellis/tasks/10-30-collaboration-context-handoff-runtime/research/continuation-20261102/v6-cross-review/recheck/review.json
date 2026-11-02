@@ -1,0 +1,192 @@
+{
+  "recorded_at": "2026-11-02T14:44:15.311024+00:00",
+  "reviewer": "/root/rki6_result_review (native trellis-check)",
+  "scope": "one final cross recheck of explicitly frozen selected v6 bytes; established AV5/AV6 and necessary containment only",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102",
+  "candidate_clean_at_start_and_finish": true,
+  "adapter_sha256": {
+    "go": "8963ebcc64d89881a6f1966f9ac7a09f1a9121dd32a4f0a9518493ed3b4dd9a9",
+    "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+  },
+  "launcher_sha256": "3938151d67aa91346aa1898a7be7c561a94d16e86fb8c8d79ab9cb75c71f3e34",
+  "source_env_sha256": "99475d2e36917761e88bab9687073ddb182c131241d8d815b7eb18850572dfe2",
+  "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+  "source_id_basis": "unchanged clean final4 HEAD; independent current RKI6 source review separately recorded",
+  "freeze_evidence": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/adapter-fix/final-frozen-hashes.json",
+    "sha256": "fef611086fc00c021ff56ad51450e2f793bdf1f9d9f6f9c401491788c88996ec",
+    "state": "implementation_complete_frozen_pending_final_independent_overall_review"
+  },
+  "before_hashes": {
+    "file": "frozen-before-hashes.json",
+    "sha256": "e5b9d83326f0caab2816a3462fceb861d7d48ba26f9af3ec383c6a0532be85d9"
+  },
+  "after_hashes": {
+    "file": "frozen-after-hashes.json",
+    "sha256": "055e5c24869fa22272cc632b9dfa5a54a4741b29846e53ebda4d5bc14b997ae9",
+    "unchanged": true
+  },
+  "closed_findings": [
+    "AV5-1 API pool default contamination",
+    "AV5-2 raw/canonical environment evaluation",
+    "AV5-N1 actual byte comparison",
+    "AV6-CROSS-1 Make brace/parenthesis expansion",
+    "private per-package HOME and explicit caches",
+    "recursive package permit and explicit REAL_GO",
+    "compile-only flag-value/alias and global separator containment"
+  ],
+  "findings": [],
+  "notes": [
+    "Mode1 adapter argument reconstruction is scoped to existing make-check options, not a general Go CLI ABI.",
+    "Generated private environment contract deliberately rejects dollar/control characters; it is not a generic dotenv parser.",
+    "Actual fullcheck/CLI/renderer/connection headroom/source stability and paid gates remain sole-executor obligations."
+  ],
+  "tests": {
+    "total_methods": 83,
+    "pass": 83,
+    "fail": 0,
+    "error": 0,
+    "executions": [
+      {
+        "name": "check-go-isolation-test.py",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/contracts/deny-network.sb",
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/contracts/check-go-isolation-test.py"
+        ],
+        "exit_code": 0,
+        "log": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/check-go-isolation-test.log",
+        "log_sha256": "7652dd6dd763d888a1b3b3717d985fbec0ef8484d9eb30614cd16776df950aa2",
+        "network_policy": "deny network*",
+        "observed_summary": [
+          "",
+          "----------------------------------------------------------------------",
+          "Ran 17 tests in 5.476s",
+          "",
+          "OK"
+        ],
+        "tests_run": 17,
+        "passed": 17,
+        "failed": 0,
+        "errors": 0
+      },
+      {
+        "name": "check-go-package-binding-test.py",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/contracts/deny-network.sb",
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/contracts/check-go-package-binding-test.py"
+        ],
+        "exit_code": 0,
+        "log": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/check-go-package-binding-test.log",
+        "log_sha256": "bed468a8d876c12e16c425c1d085bb68dff5f3c2cea49e5c680f2812ac4f2faf",
+        "network_policy": "deny network*",
+        "observed_summary": [
+          "",
+          "----------------------------------------------------------------------",
+          "Ran 38 tests in 1.287s",
+          "",
+          "OK"
+        ],
+        "tests_run": 38,
+        "passed": 38,
+        "failed": 0,
+        "errors": 0
+      },
+      {
+        "name": "check-go-global-separator-test.py",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/contracts/deny-network.sb",
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/contracts/check-go-global-separator-test.py"
+        ],
+        "exit_code": 0,
+        "log": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/check-go-global-separator-test.log",
+        "log_sha256": "b5af21110d9431e174ee5cffb2548d4ee5f34002b2955d25c3dbc1220c0bb70a",
+        "network_policy": "deny network*",
+        "observed_summary": [
+          "",
+          "----------------------------------------------------------------------",
+          "Ran 6 tests in 1.088s",
+          "",
+          "OK"
+        ],
+        "tests_run": 6,
+        "passed": 6,
+        "failed": 0,
+        "errors": 0
+      },
+      {
+        "name": "check-launcher-test.py",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/contracts/deny-network.sb",
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/contracts/check-launcher-test.py"
+        ],
+        "exit_code": 0,
+        "log": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/check-launcher-test.log",
+        "log_sha256": "f17435d0308c0595b7aa9e7d93c4e133533f4ddc308741ffdd4286de3465968b",
+        "network_policy": "deny network*",
+        "observed_summary": [
+          "",
+          "----------------------------------------------------------------------",
+          "Ran 22 tests in 0.100s",
+          "",
+          "OK"
+        ],
+        "tests_run": 22,
+        "passed": 22,
+        "failed": 0,
+        "errors": 0
+      }
+    ],
+    "network": "deny network*",
+    "syntax_files": 7
+  },
+  "input_copies": {
+    "file": "contract-inputs.json",
+    "sha256": "eae18378e4d971761ba7c78375b366629e8b5b84cfc0fee86123dc02db601902",
+    "all_byte_identical": true
+  },
+  "Make_original_red_preserved": true,
+  "Make_green": {
+    "file": "make-loader-green.json",
+    "sha256": "8ac300546084fbe79bb9a2f33b768815f738fa847d4cd44f9c2bcfd01ab0aa07",
+    "exit_code": 0,
+    "parser_rejected_brace_expression": true,
+    "marker_created": false
+  },
+  "peer_matrix": {
+    "file": "peer38-matrix.json",
+    "sha256": "0dce88d450d94a1f13139ffb3c07dcbb35000d4feb1e2455b50e08ee3cbc459b",
+    "actual_executable_and_SQL_calls": 0
+  },
+  "selected_sources_modified": false,
+  "raw_source_env_modified_or_executed": false,
+  "shared_task_records_modified": false,
+  "whole_make_check_executed": false,
+  "database_operations": 0,
+  "network_operations": 0,
+  "real_provider_calls": 0,
+  "runtime_budget_consumed": 0,
+  "paid_runnable": false,
+  "lint": "not run: no product/TS changes; full candidate step owns this gate",
+  "typecheck": "not run: no TypeScript changes; full candidate step owns this gate",
+  "report": "review.md",
+  "report_sha256": "4572639f9bbe783e9d8e77746b24568a7cb388bbe720fead0bdf0b4bde623fdc"
+}

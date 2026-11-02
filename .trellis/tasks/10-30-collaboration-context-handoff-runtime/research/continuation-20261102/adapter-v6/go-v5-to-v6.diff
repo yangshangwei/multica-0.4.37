@@ -1,0 +1,14 @@
+--- v5/check-bin/go
++++ v6/check-bin/go
+@@ -55,6 +55,11 @@
+     index += 1
+ if compile_only:
+     os.execv(real_go, [real_go, *args])
++
++# API pool budgeting must not override the defaults exercised by Go tests.
++# Individual tests can still set their own values after the process starts.
++os.environ.pop("DATABASE_MAX_CONNS", None)
++os.environ.pop("DATABASE_MIN_CONNS", None)
+ 
+ mode = os.environ.get("MULTICA_TASK_PACKAGE_DB_MODE")
+ if mode == "0":

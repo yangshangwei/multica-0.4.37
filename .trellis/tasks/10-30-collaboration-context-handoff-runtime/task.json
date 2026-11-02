@@ -21,7 +21,7 @@
   "children": [],
   "parent": "10-30-collaboration-context-handoff",
   "relatedFiles": [],
-  "notes": "runtime9项审计和5项召回跟进已独立复核并合入；知识/框架/交付/E2E也已合流，RKI1-5关闭、RKI6开放。7f8ca8725完整check exit2，bundle测试fixture修复分支91113cbeb正在完整包及独立复核；最终同候选fake/race/平台验收待验。RK1runtime25消耗0，原冻结实验另余14，下一E3 after trial2。",
+  "notes": "runtime9项审计和5项召回跟进已独立复核合入；RKI6独立结果复核1,794项通过、normal/race各62pass。最新实际整轮v9 exit2（浏览器334/16/89），原16项已定向修复复验。v10干净118fc53e、产品9f72fc及runtime17文件hash重算一致；原owner Azure错误后知识协调恢复同一v10，已于19:56:51UTC启动，PID92594、结果待返回。后续密码C3四项+runtime三项、最终绑定与独占模型窗口待执行。runtime25消耗0；原冻结系列独立余14，下一E3 after trial2。",
   "meta": {
     "planning_progress": "reviewed_2026-10-31",
     "research_head": "4c833e737efb6c997e5cb56c74c43e9237c91956",
@@ -36,8 +36,8 @@
     "current_acceptance_matrix": "../10-30-collaboration-context-handoff/acceptance-2026-11-01.json",
     "deterministic_addendum": "passed_0bbc6a77a_84c4c2b3d",
     "progress_file": "progress.md",
-    "progress_phase": "final_candidate_attempt3_complete_check_running",
-    "next_action": "complete639bf6ef8_fullcheck_then_samecandidate_taggedknowledge_password_native_and_quietRKI6",
+    "progress_phase": "v10_single_owner_fullcheck_running_result_pending",
+    "next_action": "collect bound v10 final result; reconcile newer mainline/source and E2E patch before final candidate/password7/paid binding",
     "joint_current_addendum": {
       "commit": "65cd0599b",
       "source_head": "93afc3cb0",
@@ -65,7 +65,196 @@
     "original_experiment_next": "E3 after trial 2",
     "runtime_audit_review": "pass-with-notes; RV1 fixed58d486656 and root16/16",
     "runtime_full_service": "research/verification/2026-11-01-audit-takeover/root-service-final-summary.json",
-    "current_final_candidate": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
-    "current_candidate_record": "../10-30-collaboration-context-handoff/research/final-candidate-20261102/attempt-3-registration.json"
+    "current_final_candidate": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+    "current_candidate_record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+    "continuation_plan": "continuation-plan-2026-11-02.md",
+    "rki6_independent_result_review": {
+      "report": "research/continuation-20261102/rki6-review/review.json",
+      "verdict": "pass-with-notes",
+      "blocking_findings_open": 0,
+      "cross_record_checks": 1794,
+      "real_provider_calls": 0
+    },
+    "prepared_continuation_candidate": {
+      "sha": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "root": "/Volumes/artisan/code/2026/mc-collaboration-final5-20261102",
+      "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+      "report": "research/continuation-20261102/coordinator/candidate5-preparation.json",
+      "accepted": false,
+      "state": "retained_preparation_only_no_duplicate_execution"
+    },
+    "continuation_updated_at": "2026-11-02T20:05:23.053821+00:00",
+    "shared_fullcheck_owner": {
+      "session": "01a19c0e-5cc4-77e0-b2d3-bd2842d39899",
+      "previous_session": "01a19c0d-cce1-73e3-99ee-2c3c9e9239ba",
+      "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+      "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+      "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+      "adapter_variant": "adapter-v9 with exact v10 launcher/source environment",
+      "state": "running; result-pending",
+      "actual_fullcheck_started": true,
+      "run_record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+      "run_log": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.log",
+      "recovery_record": "../11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v10-execution-recovery.json",
+      "successor_password7_original14_runtime25_not_started": true,
+      "runtime_real_provider_calls": 0,
+      "process_id": 92594,
+      "started_at": "2026-11-02T19:56:51.936099+00:00",
+      "independent_review": "../11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v10-executable-review.json",
+      "independent_review_sha256": "72d162db17b143658fa6d213d7022ab8b26f5a42b983bb9539aa1f1c589520e1",
+      "clearance_sha256": "c103127276621b1e85d1489d297a9bb2aeb443c4a6bdf7061591fb372a7ea6ae"
+    },
+    "selected_v6_cross_review": {
+      "report": "research/continuation-20261102/v6-cross-review/review.json",
+      "verdict": "changes-required",
+      "blocking_findings_open": 1,
+      "blocking_id": "AV6-CROSS-1",
+      "go_sha256": "b8c5d5adbece4f781a00a230b4f6ffbbfed195f4e44826d53997d72b3f160079",
+      "launcher_sha256": "7e2592d1b6e0a795ce9078f4c97d04255f635d392ff7e16a154309aa87695516",
+      "Go_fake_pass": 14,
+      "launcher_fake_pass": 15,
+      "AV5_1_closed": true,
+      "AV5_N1_closed": true,
+      "AV5_2_closed": false
+    },
+    "selected_final_adapter_freeze": {
+      "go_sha256": "8963ebcc64d89881a6f1966f9ac7a09f1a9121dd32a4f0a9518493ed3b4dd9a9",
+      "pnpm_sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "launcher_sha256": "3938151d67aa91346aa1898a7be7c561a94d16e86fb8c8d79ab9cb75c71f3e34",
+      "source_env_sha256": "99475d2e36917761e88bab9687073ddb182c131241d8d815b7eb18850572dfe2",
+      "implementer_fake_pass": 83,
+      "source_evidence": "../10-30-collaboration-fix-closure/research/continue-20261102/adapter-fix/summary.json",
+      "cross_recheck": "research/continuation-20261102/v6-cross-review/recheck/review.json",
+      "final_acceptance": false
+    },
+    "selected_v6_final_cross_review": {
+      "report": "research/continuation-20261102/v6-cross-review/recheck/review.json",
+      "verdict": "pass-with-notes",
+      "blocking_findings_open": 0,
+      "review_sha256": "a24b892ba0ba03cefdd15de28350fa5ffe9567f26251961bb1f107066c49bf90",
+      "clearance": "research/continuation-20261102/v6-cross-review/recheck/clearance.json",
+      "clearance_sha256": "aaa5dc7dd60b0adacecdfdd707e4951d6f4cb4b3dd102bbe3358b3d0d3c33e9f",
+      "fake_contract_pass": 83,
+      "adapter_sha256": {
+        "go": "8963ebcc64d89881a6f1966f9ac7a09f1a9121dd32a4f0a9518493ed3b4dd9a9",
+        "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+      },
+      "launcher_sha256": "3938151d67aa91346aa1898a7be7c561a94d16e86fb8c8d79ab9cb75c71f3e34",
+      "source_env_sha256": "99475d2e36917761e88bab9687073ddb182c131241d8d815b7eb18850572dfe2",
+      "full_candidate_accepted": false
+    },
+    "latest_shared_complete_check": {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.json",
+      "exit_code": 2,
+      "static_pass": 15,
+      "TS_pass": 13082,
+      "Go_pass": 20852,
+      "Go_fail": 0,
+      "Go_skip": 22,
+      "Go_packages": 82,
+      "browser": {
+        "planned": 439,
+        "pass": 334,
+        "fail": 16,
+        "skip": 89,
+        "retry": 0
+      },
+      "actual_final_acceptance": false,
+      "runtime_provider_calls": 0
+    },
+    "shared_v9_run": {
+      "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.json",
+      "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.log",
+      "state": "complete",
+      "process_id": 20588,
+      "started_at": "2026-11-02T15:36:09.037397+00:00",
+      "go_sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+      "pnpm_sha256": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2",
+      "launcher_sha256": "68dfc4c48a42e7ea276eee815b7f0985e96cf950ec3e2e623187e8ab583bf475",
+      "actual_full_acceptance": false,
+      "runtime_provider_calls": 0,
+      "exit_code": 2,
+      "finished_at": "2026-11-02T16:59:09.951147+00:00"
+    },
+    "latest_shared_complete_check_v9": {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.json",
+      "exit_code": 2,
+      "static_pass": 15,
+      "TS_pass": 13082,
+      "Go_pass": 20852,
+      "Go_fail": 0,
+      "Go_skip": 22,
+      "Go_packages": 82,
+      "browser": {
+        "planned": 439,
+        "pass": 334,
+        "fail": 16,
+        "skip": 89,
+        "retry": 0
+      },
+      "actual_final_acceptance": false,
+      "runtime_provider_calls": 0
+    },
+    "current_final_candidate_basis": "latest actual fullcheck v10 running; latest completed check remains failed v9",
+    "selected_v10_preparation": {
+      "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+      "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+      "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+      "tracked_product_files": 7960,
+      "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+      "framework_files": 17,
+      "record": "research/continuation-20261102/coordinator/v10/binding-preparation.json",
+      "offline_preflight_pass": 32,
+      "accepted": false,
+      "actual_run_started": true,
+      "paid_binding_active": false
+    },
+    "shared_v10_run": {
+      "observed_at": "2026-11-02T19:58:35.161377+00:00",
+      "state": "running; final-result-pending",
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+      "record_sha256_at_observation": "b8b7ba7e685530d147413eeae163020ceff4f59addf2d0af213c8e1d252d0f93",
+      "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+      "started_at": "2026-11-02T19:56:51.936099+00:00",
+      "process_id": 92594,
+      "adapter_sha256": {
+        "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+        "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+      },
+      "launcher_sha256": "e01f72f3c24a824782d3e9ebfdc2c07108768766c14fb504d3e178f2bbf121a4",
+      "source_env_sha256": "41a20e71e0d9806867e5beba8deaac291d2a5a577255d0689701957a99e64f18",
+      "independent_review": {
+        "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v10-executable-review.json",
+        "sha256": "72d162db17b143658fa6d213d7022ab8b26f5a42b983bb9539aa1f1c589520e1",
+        "verdict": "pass-with-notes",
+        "blocking_findings_open": 0
+      },
+      "clearance_sha256": "c103127276621b1e85d1489d297a9bb2aeb443c4a6bdf7061591fb372a7ea6ae",
+      "actual_final_acceptance": false,
+      "runtime_real_provider_calls": 0,
+      "initial_not_started_snapshots_preserved": true
+    },
+    "v10_status_independent_review": {
+      "report": "research/continuation-20261102/coordinator/v10/status-review/review.json",
+      "report_sha256": "0f886ec391d208e516da72191c3d77930adcbea548c25bb824b0965362514998",
+      "verdict": "pass-with-notes",
+      "scope": "status and offline launch prerequisites only; no paid or wholecheck clearance",
+      "JSON_inputs_validated": 8,
+      "status_comparisons_pass": 15,
+      "Provider_calls": 0,
+      "status_blocking_findings_open": 0
+    },
+    "password7_preparation": "research/continuation-20261102/coordinator/v10/password7-recipe.json",
+    "original14_offline_preparation": "research/continuation-20261102/coordinator/v10/original14-preparation.json",
+    "mainline_delta_after_v10_freeze": {
+      "head": "c6da1538a708d9a87763cdbf862df5326918082c",
+      "review": "research/continuation-20261102/coordinator/v10/mainline-impact-review.json",
+      "production_paths": 12,
+      "runtime_implementation_changed": false,
+      "recipient_UI_overlap": true,
+      "v10_evidence_not_relabelled": true,
+      "final_candidate_scope_pending": true
+    }
   }
 }
