@@ -72,7 +72,7 @@ git diff --check -- packages/views
 - [x] R1–R8 每项附当前行为、测试/浏览器证据和实际范围。
 - [x] 核对 baseline 文件 hash、owned path diff 与所有新文件；他人变化记录为并行外部变化，不能覆盖或纳入本次提交。
 - [x] 读取 trellis-update-spec，捕获必要 source/picker/focus 非显然契约；仅更新本次相关 spec。
-- [ ] 记录 progress/verification，按用户授权与工作区状态进行 scoped commit/任务生命周期，避免脚本自动 stage 他人 journal/task 变化。最终报告提供任务、修改文件、检查结果、实际范围及剩余风险。
+- [x] 记录 progress/verification，按用户授权与工作区状态进行 scoped commit/任务生命周期，避免脚本自动 stage 他人 journal/task 变化。最终报告提供任务、修改文件、检查结果、实际范围及剩余风险。
 
 ## 回退点
 

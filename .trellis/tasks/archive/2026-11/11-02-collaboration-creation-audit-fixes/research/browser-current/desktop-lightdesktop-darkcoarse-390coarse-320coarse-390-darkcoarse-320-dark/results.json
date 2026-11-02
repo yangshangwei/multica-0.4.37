@@ -86,160 +86,752 @@
       }
     ]
   },
-  "driverPid": 67565,
-  "startedAt": "2026-11-02T17:17:12.818Z",
+  "driverPid": 69700,
+  "startedAt": "2026-11-02T17:23:04.780Z",
   "scenarios": {
-    "delayed-create-source-lock": {
-      "sourceLocked": true,
-      "titleRetained": true,
-      "navigationCalls": [
-        "/account?view=participating&issue=00000000-0000-4000-8000-000000000020"
-      ],
-      "records": 0,
-      "dialogRemaining": 0
-    },
-    "quota-en": {
-      "messages": [
-        "Assigned to you",
-        "The issue was not created. Your draft and files are preserved.This workspace has reached its issue limit. Ask an administrator to adjust the limit before submitting again."
-      ],
-      "rejectionGeometry": {
-        "width": 640,
-        "height": 68,
-        "top": 723,
-        "bottom": 791,
-        "left": 320,
-        "right": 960,
-        "visible": true
+    "desktop-light": {
+      "focus": {
+        "source": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60.6% .016 285.938)",
+          "ring": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "compositedRing": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "ratio": 3.855797434374134,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
+          "borderColor": "oklch(0.606 0.016 285.938)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "title": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60.6% .016 285.938)",
+          "ring": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "compositedRing": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "ratio": 3.855797434374134,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
+          "borderColor": "oklch(0.606 0.016 285.938)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "description": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60.6% .016 285.938)",
+          "ring": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "compositedRing": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "ratio": 3.855797434374134,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
+          "borderColor": "oklch(0.606 0.016 285.938)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "submit": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60.6% .016 285.938)",
+          "ring": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "compositedRing": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "ratio": 3.855797434374134,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
+          "borderColor": "oklch(0.606 0.016 285.938)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "close": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60.6% .016 285.938)",
+          "ring": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "compositedRing": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "ratio": 3.855797434374134,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
+          "borderColor": "oklch(0.606 0.016 285.938)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "recipientTrigger": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60.6% .016 285.938)",
+          "ring": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "compositedRing": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "ratio": 3.855797434374134,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
+          "borderColor": "oklch(0.606 0.016 285.938)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "recipientSearch": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60.6% .016 285.938)",
+          "ring": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "compositedRing": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "ratio": 3.855797434374134,
+          "boxShadow": "none",
+          "outline": "oklch(0.606 0.016 285.938) solid 2px",
+          "borderColor": "oklch(0.606 0.016 285.938)",
+          "ringPresent": false,
+          "outlinePresent": true,
+          "indicatorPainted": true
+        },
+        "initialFieldsToggle": {
+          "focusVisible": true,
+          "ringCSS": "",
+          "ring": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "compositedRing": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "ratio": 3.855797434374134,
+          "boxShadow": "none",
+          "outline": "oklch(0.606 0.016 285.938) solid 2px",
+          "borderColor": "oklch(0.945 0.003 286.32)",
+          "ringPresent": false,
+          "outlinePresent": true,
+          "indicatorPainted": true
+        },
+        "labelsTrigger": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60.6% .016 285.938)",
+          "ring": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "compositedRing": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "ratio": 3.855797434374134,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
+          "borderColor": "oklch(0.606 0.016 285.938)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "labelsSearch": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60.6% .016 285.938)",
+          "ring": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "compositedRing": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "ratio": 3.855797434374134,
+          "boxShadow": "none",
+          "outline": "oklch(0.606 0.016 285.938) solid 2px",
+          "borderColor": "oklch(0.606 0.016 285.938)",
+          "ringPresent": false,
+          "outlinePresent": true,
+          "indicatorPainted": true
+        }
       },
-      "preserved": "额度拒绝验证",
-      "posts": 1,
-      "sourceUnlocked": true
-    },
-    "quota-zh-Hans": {
-      "messages": [
-        "已选择自己",
-        "任务未创建，草稿和文件已保留。此工作空间的任务数量已达上限。请联系管理员调整上限后再提交。"
-      ],
-      "rejectionGeometry": {
-        "width": 640,
-        "height": 48,
-        "top": 743,
-        "bottom": 791,
-        "left": 320,
-        "right": 960,
-        "visible": true
+      "semantics": {
+        "role": null,
+        "name": "筛选选项",
+        "controls": "_r_g_-accounts",
+        "activeDescendant": "_r_g_-accounts-00000000-0000-4000-8000-000000000001",
+        "activeExists": true
       },
-      "preserved": "额度拒绝验证",
-      "posts": 1,
-      "sourceUnlocked": true
-    },
-    "quota-en-narrow": {
-      "messages": [
-        "Assigned to you",
-        "The issue was not created. Your draft and files are preserved.This workspace has reached its issue limit. Ask an administrator to adjust the limit before submitting again."
+      "options": [
+        {
+          "id": "_r_g_-accounts-00000000-0000-4000-8000-000000000001",
+          "selected": "true",
+          "disabled": "false",
+          "text": "分分配给自己账号 ID：00000000-0000-4000-8000-000000000001"
+        },
+        {
+          "id": "_r_g_-accounts-00000000-0000-4000-8000-000000000004",
+          "selected": "false",
+          "disabled": "false",
+          "text": "李李明账号 ID：00000000-0000-4000-8000-000000000004"
+        },
+        {
+          "id": "_r_g_-accounts-00000000-0000-4000-8000-000000000005",
+          "selected": "false",
+          "disabled": "false",
+          "text": "李李明账号 ID：00000000-0000-4000-8000-000000000005"
+        },
+        {
+          "id": "_r_g_-accounts-00000000-0000-4000-8000-000000000006",
+          "selected": "false",
+          "disabled": "false",
+          "text": "客客户张经理外部账号 ID：00000000-0000-4000-8000-000000000006"
+        }
       ],
-      "rejectionGeometry": {
-        "width": 256,
-        "height": 108,
-        "top": 275.40625,
-        "bottom": 383.40625,
-        "left": 32,
-        "right": 288,
-        "visible": true
+      "pickerEscape": true,
+      "horizontalOverflow": false
+    },
+    "desktop-dark": {
+      "focus": {
+        "source": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60% .015 286.067)",
+          "ring": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "background": [
+            30,
+            30,
+            33,
+            255
+          ],
+          "compositedRing": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "ratio": 4.196286785666385,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.6 0.015 286.067) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.552 0.00439355 -0.015385 / 0.5) none 0px",
+          "borderColor": "oklch(0.6 0.015 286.067)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "title": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60% .015 286.067)",
+          "ring": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "background": [
+            30,
+            30,
+            33,
+            255
+          ],
+          "compositedRing": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "ratio": 4.196286785666385,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.6 0.015 286.067) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.552 0.00439355 -0.015385 / 0.5) none 0px",
+          "borderColor": "oklch(0.6 0.015 286.067)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "description": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60% .015 286.067)",
+          "ring": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "background": [
+            30,
+            30,
+            33,
+            255
+          ],
+          "compositedRing": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "ratio": 4.196286785666385,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.6 0.015 286.067) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.552 0.00439355 -0.015385 / 0.5) none 0px",
+          "borderColor": "oklch(0.6 0.015 286.067)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "submit": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60% .015 286.067)",
+          "ring": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "background": [
+            30,
+            30,
+            33,
+            255
+          ],
+          "compositedRing": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "ratio": 4.196286785666385,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.6 0.015 286.067) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.552 0.00439355 -0.015385 / 0.5) none 0px",
+          "borderColor": "oklch(0.6 0.015 286.067)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "close": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60% .015 286.067)",
+          "ring": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "background": [
+            30,
+            30,
+            33,
+            255
+          ],
+          "compositedRing": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "ratio": 4.196286785666385,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.6 0.015 286.067) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.552 0.00439355 -0.015385 / 0.5) none 0px",
+          "borderColor": "oklch(0.6 0.015 286.067)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "recipientTrigger": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60% .015 286.067)",
+          "ring": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "background": [
+            30,
+            30,
+            33,
+            255
+          ],
+          "compositedRing": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "ratio": 4.196286785666385,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.6 0.015 286.067) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.552 0.00439355 -0.015385 / 0.5) none 0px",
+          "borderColor": "oklch(0.6 0.015 286.067)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "recipientSearch": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60% .015 286.067)",
+          "ring": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "background": [
+            30,
+            30,
+            33,
+            255
+          ],
+          "compositedRing": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "ratio": 4.196286785666385,
+          "boxShadow": "none",
+          "outline": "oklch(0.6 0.015 286.067) solid 2px",
+          "borderColor": "oklch(0.6 0.015 286.067)",
+          "ringPresent": false,
+          "outlinePresent": true,
+          "indicatorPainted": true
+        },
+        "initialFieldsToggle": {
+          "focusVisible": true,
+          "ringCSS": "",
+          "ring": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "background": [
+            30,
+            30,
+            33,
+            255
+          ],
+          "compositedRing": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "ratio": 4.196286785666385,
+          "boxShadow": "none",
+          "outline": "oklch(0.6 0.015 286.067) solid 2px",
+          "borderColor": "oklch(1 0 0 / 0.06)",
+          "ringPresent": false,
+          "outlinePresent": true,
+          "indicatorPainted": true
+        },
+        "labelsTrigger": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60% .015 286.067)",
+          "ring": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "background": [
+            30,
+            30,
+            33,
+            255
+          ],
+          "compositedRing": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "ratio": 4.196286785666385,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.6 0.015 286.067) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.552 0.00439355 -0.015385 / 0.5) none 0px",
+          "borderColor": "oklch(0.6 0.015 286.067)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "labelsSearch": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60% .015 286.067)",
+          "ring": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "background": [
+            30,
+            30,
+            33,
+            255
+          ],
+          "compositedRing": [
+            127,
+            127,
+            137,
+            255
+          ],
+          "ratio": 4.196286785666385,
+          "boxShadow": "none",
+          "outline": "oklch(0.6 0.015 286.067) solid 2px",
+          "borderColor": "oklch(0.6 0.015 286.067)",
+          "ringPresent": false,
+          "outlinePresent": true,
+          "indicatorPainted": true
+        }
       },
-      "preserved": "额度拒绝验证",
-      "posts": 1,
-      "sourceUnlocked": true
-    },
-    "quota-zh-Hans-narrow": {
-      "messages": [
-        "已选择自己",
-        "任务未创建，草稿和文件已保留。此工作空间的任务数量已达上限。请联系管理员调整上限后再提交。"
-      ],
-      "rejectionGeometry": {
-        "width": 256,
-        "height": 68,
-        "top": 367.40625,
-        "bottom": 435.40625,
-        "left": 32,
-        "right": 288,
-        "visible": true
+      "semantics": {
+        "role": null,
+        "name": "筛选选项",
+        "controls": "_r_g_-accounts",
+        "activeDescendant": "_r_g_-accounts-00000000-0000-4000-8000-000000000001",
+        "activeExists": true
       },
-      "preserved": "额度拒绝验证",
-      "posts": 1,
-      "sourceUnlocked": true
-    },
-    "parent-search-debounce": {
-      "rawImmediate": "协作任务改进",
-      "during": [],
-      "after": [
-        "协作任务改进"
+      "options": [
+        {
+          "id": "_r_g_-accounts-00000000-0000-4000-8000-000000000001",
+          "selected": "true",
+          "disabled": "false",
+          "text": "分分配给自己账号 ID：00000000-0000-4000-8000-000000000001"
+        },
+        {
+          "id": "_r_g_-accounts-00000000-0000-4000-8000-000000000004",
+          "selected": "false",
+          "disabled": "false",
+          "text": "李李明账号 ID：00000000-0000-4000-8000-000000000004"
+        },
+        {
+          "id": "_r_g_-accounts-00000000-0000-4000-8000-000000000005",
+          "selected": "false",
+          "disabled": "false",
+          "text": "李李明账号 ID：00000000-0000-4000-8000-000000000005"
+        },
+        {
+          "id": "_r_g_-accounts-00000000-0000-4000-8000-000000000006",
+          "selected": "false",
+          "disabled": "false",
+          "text": "客客户张经理外部账号 ID：00000000-0000-4000-8000-000000000006"
+        }
       ],
-      "priorCandidateVisible": false,
-      "selectedBeforeDelay": "选择父任务（可选）. 可选。选择后，这项协作任务会成为它的子任务。选择父任务（可选）"
+      "pickerEscape": true,
+      "horizontalOverflow": false
     },
-    "unknown-result-original-recovery": {
-      "unknownLocked": true,
-      "recoveryLocked": true,
-      "recoveryGeometry": {
-        "width": 106,
-        "height": 32,
-        "top": 759,
-        "bottom": 791,
-        "left": 320,
-        "right": 426,
-        "visible": true
+    "coarse-390": {
+      "coarse": true,
+      "initial": {
+        "submit": {
+          "width": 106,
+          "height": 44,
+          "top": 643,
+          "bottom": 687,
+          "left": 252,
+          "right": 358,
+          "visible": true
+        },
+        "close": {
+          "width": 44,
+          "height": 44,
+          "top": 45,
+          "bottom": 89,
+          "left": 322,
+          "right": 366,
+          "visible": true
+        },
+        "cancel": {
+          "width": 50,
+          "height": 44,
+          "top": 643,
+          "bottom": 687,
+          "left": 194,
+          "right": 244,
+          "visible": true
+        }
       },
-      "posts": 1,
-      "originalRequestId": "e7daa145-f194-4f40-ba76-7bf2b0ecc10d",
-      "recoveryPath": "/api/collaboration/creations/e7daa145-f194-4f40-ba76-7bf2b0ecc10d",
-      "navigation": [
-        "/account?view=participating&issue=00000000-0000-4000-8000-000000000020"
+      "bottom": {
+        "submit": {
+          "width": 106,
+          "height": 44,
+          "top": 643,
+          "bottom": 687,
+          "left": 252,
+          "right": 358,
+          "visible": true
+        },
+        "close": {
+          "width": 44,
+          "height": 44,
+          "top": 45,
+          "bottom": 89,
+          "left": 322,
+          "right": 366,
+          "visible": true
+        },
+        "cancel": {
+          "width": 50,
+          "height": 44,
+          "top": 643,
+          "bottom": 687,
+          "left": 194,
+          "right": 244,
+          "visible": true
+        }
+      },
+      "rowHeights": [
+        64,
+        64,
+        64,
+        64
       ],
-      "records": 0,
-      "draftRetainedOnReopen": true
-    },
-    "unknown-result-original-recovery-narrow": {
-      "unknownLocked": true,
-      "recoveryLocked": true,
-      "recoveryGeometry": {
-        "width": 162.6875,
+      "parentSearchGeometry": {
+        "width": 342,
         "height": 44,
-        "top": 287.40625,
-        "bottom": 331.40625,
+        "top": 458,
+        "bottom": 502,
+        "left": 35,
+        "right": 377,
+        "visible": true
+      },
+      "stageGeometry": {
+        "width": 326,
+        "height": 44,
+        "top": 508,
+        "bottom": 552,
         "left": 32,
-        "right": 194.6875,
+        "right": 358,
         "visible": true
       },
-      "posts": 1,
-      "originalRequestId": "af5862f2-e96c-46e8-9b2f-b318f6ea7637",
-      "recoveryPath": "/api/collaboration/creations/af5862f2-e96c-46e8-9b2f-b318f6ea7637",
-      "navigation": [
-        "/account?view=participating&issue=00000000-0000-4000-8000-000000000020"
-      ],
-      "records": 0,
-      "draftRetainedOnReopen": true
-    },
-    "exact-recipient-identity": {
-      "exactIdentityVisible": true,
-      "selectedIdentityVisible": true,
-      "accountId": "00000000-0000-4000-8000-000000000006",
-      "submittedAccountId": "00000000-0000-4000-8000-000000000006"
-    },
-    "generic-picker-dialog-compatibility": {
-      "genericOptionCount": 0,
-      "genericClose": {
-        "width": 28,
-        "height": 28,
-        "top": 336,
-        "bottom": 364,
-        "left": 338,
-        "right": 366,
-        "visible": true
-      },
-      "retainedNativeTextbox": true,
-      "entryFocus": {
+      "parentFocus": {
         "focusVisible": true,
         "ringCSS": "oklch(60.6% .016 285.938)",
         "ring": [
@@ -249,9 +841,9 @@
           255
         ],
         "background": [
-          251,
-          251,
-          251,
+          255,
+          255,
+          255,
           255
         ],
         "compositedRing": [
@@ -260,14 +852,650 @@
           139,
           255
         ],
-        "ratio": 3.7261186965011373,
+        "ratio": 3.855797434374134,
+        "boxShadow": "none",
+        "outline": "oklch(0.606 0.016 285.938) solid 2px",
+        "borderColor": "oklch(0.606 0.016 285.938)",
+        "ringPresent": false,
+        "outlinePresent": true,
+        "indicatorPainted": true
+      },
+      "stageFocus": {
+        "focusVisible": true,
+        "ringCSS": "oklch(60.6% .016 285.938)",
+        "ring": [
+          129,
+          129,
+          139,
+          255
+        ],
+        "background": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "compositedRing": [
+          129,
+          129,
+          139,
+          255
+        ],
+        "ratio": 3.855797434374134,
         "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
         "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
         "borderColor": "oklch(0.606 0.016 285.938)",
         "ringPresent": true,
         "outlinePresent": false,
         "indicatorPainted": true
-      }
+      },
+      "idsVisible": true,
+      "selectedIdentityVisible": true,
+      "candidateIdentity": {
+        "fullText": true,
+        "visible": true,
+        "lines": 2
+      },
+      "selectedIdentity": {
+        "fullText": true,
+        "visible": true,
+        "lines": 2
+      },
+      "tabFocus": [
+        {
+          "tag": "TEXTAREA",
+          "label": "_r_e_-description",
+          "top": 349,
+          "bottom": 461,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "接收人",
+          "top": 541,
+          "bottom": 611,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "",
+          "top": 404,
+          "bottom": 448,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "SELECT",
+          "label": "_r_e_-status",
+          "top": 484,
+          "bottom": 528,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "SELECT",
+          "label": "_r_e_-priority",
+          "top": 564,
+          "bottom": 608,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_e_-start",
+          "top": 404,
+          "bottom": 448,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_e_-start",
+          "top": 404,
+          "bottom": 448,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_e_-start",
+          "top": 404,
+          "bottom": 448,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_e_-start",
+          "top": 404,
+          "bottom": 448,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_e_-due",
+          "top": 484,
+          "bottom": 528,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_e_-due",
+          "top": 484,
+          "bottom": 528,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_e_-due",
+          "top": 484,
+          "bottom": 528,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_e_-due",
+          "top": 484,
+          "bottom": 528,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "标签",
+          "top": 576,
+          "bottom": 620,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "SELECT",
+          "label": "_r_r_-project",
+          "top": 404,
+          "bottom": 448,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "父任务",
+          "top": 492,
+          "bottom": 536,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_r_-stage",
+          "top": 583,
+          "bottom": 627,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "SELECT",
+          "label": "_r_11_",
+          "top": 404,
+          "bottom": 448,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_12_",
+          "top": 576,
+          "bottom": 620,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "",
+          "top": 643,
+          "bottom": 687,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "",
+          "top": 643,
+          "bottom": 687,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "关闭",
+          "top": 45,
+          "bottom": 89,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "SPAN",
+          "label": "",
+          "top": -1,
+          "bottom": 0,
+          "inDialog": false,
+          "inFooter": false,
+          "unoccluded": false
+        },
+        {
+          "tag": "BODY",
+          "label": "",
+          "top": 0,
+          "bottom": 228,
+          "inDialog": false,
+          "inFooter": false,
+          "unoccluded": true
+        }
+      ],
+      "overflow": false,
+      "touch": "Chromium CDP touchscreen.tap at measured target edges/centers"
+    },
+    "coarse-390-dark": {
+      "coarse": true,
+      "initial": {
+        "submit": {
+          "width": 106,
+          "height": 44,
+          "top": 643,
+          "bottom": 687,
+          "left": 252,
+          "right": 358,
+          "visible": true
+        },
+        "close": {
+          "width": 44,
+          "height": 44,
+          "top": 45,
+          "bottom": 89,
+          "left": 322,
+          "right": 366,
+          "visible": true
+        },
+        "cancel": {
+          "width": 50,
+          "height": 44,
+          "top": 643,
+          "bottom": 687,
+          "left": 194,
+          "right": 244,
+          "visible": true
+        }
+      },
+      "bottom": {
+        "submit": {
+          "width": 106,
+          "height": 44,
+          "top": 643,
+          "bottom": 687,
+          "left": 252,
+          "right": 358,
+          "visible": true
+        },
+        "close": {
+          "width": 44,
+          "height": 44,
+          "top": 45,
+          "bottom": 89,
+          "left": 322,
+          "right": 366,
+          "visible": true
+        },
+        "cancel": {
+          "width": 50,
+          "height": 44,
+          "top": 643,
+          "bottom": 687,
+          "left": 194,
+          "right": 244,
+          "visible": true
+        }
+      },
+      "rowHeights": [
+        64,
+        64,
+        64,
+        64
+      ],
+      "parentSearchGeometry": {
+        "width": 342,
+        "height": 44,
+        "top": 458,
+        "bottom": 502,
+        "left": 35,
+        "right": 377,
+        "visible": true
+      },
+      "stageGeometry": {
+        "width": 326,
+        "height": 44,
+        "top": 508,
+        "bottom": 552,
+        "left": 32,
+        "right": 358,
+        "visible": true
+      },
+      "parentFocus": {
+        "focusVisible": true,
+        "ringCSS": "oklch(60% .015 286.067)",
+        "ring": [
+          127,
+          127,
+          137,
+          255
+        ],
+        "background": [
+          30,
+          30,
+          33,
+          255
+        ],
+        "compositedRing": [
+          127,
+          127,
+          137,
+          255
+        ],
+        "ratio": 4.196286785666385,
+        "boxShadow": "none",
+        "outline": "oklch(0.6 0.015 286.067) solid 2px",
+        "borderColor": "oklch(0.6 0.015 286.067)",
+        "ringPresent": false,
+        "outlinePresent": true,
+        "indicatorPainted": true
+      },
+      "stageFocus": {
+        "focusVisible": true,
+        "ringCSS": "oklch(60% .015 286.067)",
+        "ring": [
+          127,
+          127,
+          137,
+          255
+        ],
+        "background": [
+          30,
+          30,
+          33,
+          255
+        ],
+        "compositedRing": [
+          127,
+          127,
+          137,
+          255
+        ],
+        "ratio": 4.196286785666385,
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.6 0.015 286.067) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "outline": "oklab(0.552 0.00439355 -0.015385 / 0.5) none 0px",
+        "borderColor": "oklch(0.6 0.015 286.067)",
+        "ringPresent": true,
+        "outlinePresent": false,
+        "indicatorPainted": true
+      },
+      "idsVisible": true,
+      "selectedIdentityVisible": true,
+      "candidateIdentity": {
+        "fullText": true,
+        "visible": true,
+        "lines": 2
+      },
+      "selectedIdentity": {
+        "fullText": true,
+        "visible": true,
+        "lines": 2
+      },
+      "tabFocus": [
+        {
+          "tag": "TEXTAREA",
+          "label": "_r_e_-description",
+          "top": 349,
+          "bottom": 461,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "接收人",
+          "top": 541,
+          "bottom": 611,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "",
+          "top": 404,
+          "bottom": 448,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "SELECT",
+          "label": "_r_e_-status",
+          "top": 484,
+          "bottom": 528,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "SELECT",
+          "label": "_r_e_-priority",
+          "top": 564,
+          "bottom": 608,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_e_-start",
+          "top": 404,
+          "bottom": 448,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_e_-start",
+          "top": 404,
+          "bottom": 448,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_e_-start",
+          "top": 404,
+          "bottom": 448,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_e_-start",
+          "top": 404,
+          "bottom": 448,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_e_-due",
+          "top": 484,
+          "bottom": 528,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_e_-due",
+          "top": 484,
+          "bottom": 528,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_e_-due",
+          "top": 484,
+          "bottom": 528,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_e_-due",
+          "top": 484,
+          "bottom": 528,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "标签",
+          "top": 576,
+          "bottom": 620,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "SELECT",
+          "label": "_r_r_-project",
+          "top": 404,
+          "bottom": 448,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "父任务",
+          "top": 492,
+          "bottom": 536,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_r_-stage",
+          "top": 583,
+          "bottom": 627,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "SELECT",
+          "label": "_r_11_",
+          "top": 404,
+          "bottom": 448,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "_r_12_",
+          "top": 576,
+          "bottom": 620,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "",
+          "top": 643,
+          "bottom": 687,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "",
+          "top": 643,
+          "bottom": 687,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "关闭",
+          "top": 45,
+          "bottom": 89,
+          "inDialog": true,
+          "inFooter": false,
+          "unoccluded": true
+        },
+        {
+          "tag": "SPAN",
+          "label": "",
+          "top": -1,
+          "bottom": 0,
+          "inDialog": false,
+          "inFooter": false,
+          "unoccluded": false
+        },
+        {
+          "tag": "BODY",
+          "label": "",
+          "top": 0,
+          "bottom": 228,
+          "inDialog": false,
+          "inFooter": false,
+          "unoccluded": true
+        }
+      ],
+      "overflow": false,
+      "touch": "Chromium CDP touchscreen.tap at measured target edges/centers"
     }
   },
   "diagnostics": {
@@ -597,7 +1825,7 @@
           "text": "客客户张经理外部账号 ID：00000000-0000-4000-8000-000000000006"
         }
       ],
-      "pickerEscape": false
+      "pickerEscape": true
     },
     "desktop-dark": {
       "focus": {
@@ -925,7 +2153,7 @@
           "text": "客客户张经理外部账号 ID：00000000-0000-4000-8000-000000000006"
         }
       ],
-      "pickerEscape": false
+      "pickerEscape": true
     },
     "coarse-390-light": {
       "initial": {
@@ -999,7 +2227,7 @@
         "bottom": 502,
         "left": 35,
         "right": 377,
-        "visible": false
+        "visible": true
       },
       "stageGeometry": {
         "width": 326,
@@ -1070,7 +2298,7 @@
       },
       "candidateIdentity": {
         "fullText": true,
-        "visible": false,
+        "visible": true,
         "lines": 2
       },
       "selectedIdentity": {
@@ -1370,7 +2598,7 @@
         "bottom": 402,
         "left": 35,
         "right": 307,
-        "visible": false
+        "visible": true
       },
       "stageGeometry": {
         "width": 256,
@@ -1441,7 +2669,7 @@
       },
       "candidateIdentity": {
         "fullText": true,
-        "visible": false,
+        "visible": true,
         "lines": 2
       },
       "selectedIdentity": {
@@ -1658,11 +2886,11 @@
           "unoccluded": false
         },
         {
-          "tag": "BODY",
-          "label": "",
-          "top": 0,
-          "bottom": 228,
-          "inDialog": false,
+          "tag": "SELECT",
+          "label": "_r_d_",
+          "top": 152.40625,
+          "bottom": 196.40625,
+          "inDialog": true,
           "inFooter": false,
           "unoccluded": true
         }
@@ -1741,7 +2969,7 @@
         "bottom": 502,
         "left": 35,
         "right": 377,
-        "visible": false
+        "visible": true
       },
       "stageGeometry": {
         "width": 326,
@@ -1812,7 +3040,7 @@
       },
       "candidateIdentity": {
         "fullText": true,
-        "visible": false,
+        "visible": true,
         "lines": 2
       },
       "selectedIdentity": {
@@ -2112,7 +3340,7 @@
         "bottom": 402,
         "left": 35,
         "right": 307,
-        "visible": false
+        "visible": true
       },
       "stageGeometry": {
         "width": 256,
@@ -2183,7 +3411,7 @@
       },
       "candidateIdentity": {
         "fullText": true,
-        "visible": false,
+        "visible": true,
         "lines": 2
       },
       "selectedIdentity": {
@@ -2410,129 +3638,41 @@
         }
       ],
       "overflow": false
-    },
-    "quota-en": {
-      "messages": [
-        "Assigned to you",
-        "The issue was not created. Your draft and files are preserved.This workspace has reached its issue limit. Ask an administrator to adjust the limit before submitting again."
-      ],
-      "rejectionGeometry": {
-        "width": 640,
-        "height": 68,
-        "top": 723,
-        "bottom": 791,
-        "left": 320,
-        "right": 960,
-        "visible": true
-      },
-      "preserved": "额度拒绝验证",
-      "posts": 1,
-      "sourceUnlocked": true
-    },
-    "quota-zh-Hans": {
-      "messages": [
-        "已选择自己",
-        "任务未创建，草稿和文件已保留。此工作空间的任务数量已达上限。请联系管理员调整上限后再提交。"
-      ],
-      "rejectionGeometry": {
-        "width": 640,
-        "height": 48,
-        "top": 743,
-        "bottom": 791,
-        "left": 320,
-        "right": 960,
-        "visible": true
-      },
-      "preserved": "额度拒绝验证",
-      "posts": 1,
-      "sourceUnlocked": true
-    },
-    "quota-en-narrow": {
-      "messages": [
-        "Assigned to you",
-        "The issue was not created. Your draft and files are preserved.This workspace has reached its issue limit. Ask an administrator to adjust the limit before submitting again."
-      ],
-      "rejectionGeometry": {
-        "width": 256,
-        "height": 108,
-        "top": 275.40625,
-        "bottom": 383.40625,
-        "left": 32,
-        "right": 288,
-        "visible": true
-      },
-      "preserved": "额度拒绝验证",
-      "posts": 1,
-      "sourceUnlocked": true
-    },
-    "quota-zh-Hans-narrow": {
-      "messages": [
-        "已选择自己",
-        "任务未创建，草稿和文件已保留。此工作空间的任务数量已达上限。请联系管理员调整上限后再提交。"
-      ],
-      "rejectionGeometry": {
-        "width": 256,
-        "height": 68,
-        "top": 367.40625,
-        "bottom": 435.40625,
-        "left": 32,
-        "right": 288,
-        "visible": true
-      },
-      "preserved": "额度拒绝验证",
-      "posts": 1,
-      "sourceUnlocked": true
     }
   },
   "failures": [
     {
-      "scenario": "desktop-light",
-      "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n    at Proxy.<anonymous> (/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/matchers/expect.js:213:24)\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:181:144\n    at runNextTicks (node:internal/process/task_queues:64:5)\n    at process.processImmediate (node:internal/timers:452:9)\n    at process.callbackTrampoline (node:internal/async_hooks:130:17)\n    at async scenario (file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:129:34)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:141:42"
-    },
-    {
-      "scenario": "desktop-dark",
-      "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n    at Proxy.<anonymous> (/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/matchers/expect.js:213:24)\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:181:144\n    at runNextTicks (node:internal/process/task_queues:64:5)\n    at process.processImmediate (node:internal/timers:452:9)\n    at process.callbackTrampoline (node:internal/async_hooks:130:17)\n    at async scenario (file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:129:34)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:141:42"
-    },
-    {
-      "scenario": "coarse-390",
-      "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n    at Proxy.<anonymous> (/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/matchers/expect.js:213:24)\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:252:116\n    at async scenario (file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:129:34)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:187:202"
-    },
-    {
       "scenario": "coarse-320",
-      "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n    at Proxy.<anonymous> (/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/matchers/expect.js:213:24)\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:252:116\n    at async scenario (file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:129:34)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:187:202"
-    },
-    {
-      "scenario": "coarse-390-dark",
-      "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n    at Proxy.<anonymous> (/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/matchers/expect.js:213:24)\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:252:116\n    at async scenario (file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:129:34)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:187:202"
+      "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n    at Proxy.<anonymous> (/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/matchers/expect.js:213:24)\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:259:108\n    at async scenario (file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:134:34)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:193:202"
     },
     {
       "scenario": "coarse-320-dark",
-      "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n    at Proxy.<anonymous> (/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/matchers/expect.js:213:24)\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:252:116\n    at async scenario (file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:129:34)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:187:202"
+      "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n    at Proxy.<anonymous> (/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/matchers/expect.js:213:24)\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:259:108\n    at async scenario (file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:134:34)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:193:202"
     }
   ],
   "pageErrors": [],
   "blockedExternalRequests": [],
   "listener": {
-    "origin": "http://127.0.0.1:50472",
-    "pid": 67565,
+    "origin": "http://127.0.0.1:51772",
+    "pid": 69700,
     "owned": true
   },
   "engine": "Playwright Chromium 145.0.7632.6",
   "ownedBrowserProcesses": [
     {
-      "id": 67568,
+      "id": 69707,
       "type": "browser"
     },
     {
-      "id": 67573,
+      "id": 69714,
       "type": "GPU"
     },
     {
-      "id": 67575,
+      "id": 69715,
       "type": "network.mojom.NetworkService"
     }
   ],
   "listenerClosed": true,
   "browserClosed": true,
-  "finishedAt": "2026-11-02T17:17:41.039Z"
+  "finishedAt": "2026-11-02T17:23:21.780Z"
 }

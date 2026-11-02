@@ -23,3 +23,8 @@
 
 - Final native target7files119tests pass; check thread report handoff hit provider routing, retained logs and main finalized with fresh ownedlint/Views types0 and acceptedsourcehashes.
 - AllauthorizedR1–R8 implementation/check gates complete; scopedcommit/archive next.
+
+- Scoped work commit: 55bb7802f7fb99434f15ad055fc406243e2c9068; only current-task code/spec/evidence staged, unrelated files excluded.
+- Implementation, checks and source hash verification complete. Archiving only this task with --no-commit; journal recording will leave parallel workspace edits unstaged.
+
+- Task archived under archive/2026-11 with --no-commit; completed scope only, original task pointers/refs validated.

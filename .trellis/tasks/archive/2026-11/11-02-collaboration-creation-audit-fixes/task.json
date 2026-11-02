@@ -3,7 +3,7 @@
   "name": "collaboration-creation-audit-fixes",
   "title": "新建协作任务弹窗审计修复",
   "description": "基于 2026-11-02 impeccable 审计修复八项 P1/P2 问题，保留草稿、账号 scope 与原始请求恢复机制，并使用隔离预览验收。",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": "frontend",
   "scope": "collaboration",
   "package": null,
@@ -11,11 +11,11 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-11-02",
-  "completedAt": null,
+  "completedAt": "2026-11-03",
   "branch": "codex/cross-workspace-collaboration",
   "base_branch": "main",
   "worktree_path": null,
-  "commit": null,
+  "commit": "55bb7802f7fb99434f15ad055fc406243e2c9068",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -33,7 +33,7 @@
     "verification_environment": "task-owned isolated production component preview with mocked API; no make environment lifecycle",
     "planning_review": "ready",
     "browser_verification": "pass:16 isolatedChromium scenarios, finalvisual96",
-    "quality_gate": "pass: native119targettests + mainfreshlint/types +16Chromium",
+    "quality_gate": "passed",
     "agent_handoff": "Provider resource-routing error at report handoff; actual native check logs retained and main finalized report."
   }
 }
