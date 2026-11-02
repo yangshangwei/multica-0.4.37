@@ -1,0 +1,69 @@
+{
+  "at": "2026-11-02T12:59:06.081826+00:00",
+  "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "candidate_clean": true,
+  "product_trees": {
+    "server": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+    "apps": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+    "packages": "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292"
+  },
+  "adapter_version": "v5_review_in_progress",
+  "adapter_sha256": {
+    "go": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+    "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+  },
+  "launcher_sha256": "3c50f99cb9b995fa29a0d1ee4e54e98d6aaa28bdf10ebc827c3cb5b302f5f566",
+  "source_env_sha256": "0a9327c99b18a334ce89c1d9616273d2b6b2a5fcfb8b522f5f5827af8ec96e53",
+  "renderer": {
+    "previous_listener_absent": true,
+    "restarted_task_owned_helper": true,
+    "listener_pid": 56334,
+    "url": "http://127.0.0.1:19844",
+    "index_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+    "actual_HTTP_bytes_match_pinned_build": true,
+    "command": [
+      "python3",
+      "-m",
+      "http.server",
+      "19844",
+      "--bind",
+      "127.0.0.1",
+      "--directory",
+      "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/apps/desktop/out/renderer"
+    ],
+    "stopped_after_owned_preflight": true,
+    "stopped_at": "2026-11-02T13:16:38.475652+00:00"
+  },
+  "cli_sha256": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19",
+  "PostgreSQL": {
+    "read_only_maintenance_database": "postgres",
+    "server_version": "17.11",
+    "max_connections": 100,
+    "observed_connections_including_probe": 38,
+    "other_active_queries": 0,
+    "original_source_seed_missing": true,
+    "seed_recreation_needed": false,
+    "reason": "check.sh creates fresh recorded API/Go databases via explicit maintenance connection; source URL supplies server connection settings only"
+  },
+  "wholecheck_started": false,
+  "real_Provider_calls": 0,
+  "default_business_database_writes": 0,
+  "build_temp": {
+    "directory": "/private/tmp/multica-final-check4-yxg6alb4",
+    "exists": true,
+    "mode": "0o700",
+    "owner_uid": 501,
+    "current_uid": 501,
+    "git_root_absent": true
+  },
+  "full_check_owner": {
+    "thread": "01a19c0d-cce1-73e3-99ee-2c3c9e9239ba",
+    "task": ".trellis/tasks/10-30-collaboration-fix-closure",
+    "shared_candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+    "knowledge_session_will_not_duplicate_full_check": true,
+    "owner_resources_not_used": [
+      "Redis16422",
+      "renderer19845"
+    ]
+  }
+}

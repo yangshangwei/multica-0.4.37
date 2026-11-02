@@ -1,5 +1,7 @@
 # 知识交付审计缺陷修复：实施计划
 
+当前续作入口：[2026-11-02 最终验收推进计划](advance-plan-2026-11-02.md)。下面保留原分道实施过程；已完成的分道不重新实施，当前验证以已合入产品和新计划的候选绑定为准。
+
 ## 环境
 
 - 修复基线：`4e3b61500`，位于 `codex/collaboration-knowledge-fixes-20261101`，worktree 为 `/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101`。

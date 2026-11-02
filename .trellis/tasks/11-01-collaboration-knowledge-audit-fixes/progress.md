@@ -1,5 +1,25 @@
 # 知识交付审计缺陷修复：进度
 
+当前新轮：共享 `make-check-v9` 已于 **2026-11-02 15:36:09 UTC** 启动，仍在运行。v6 的原失败和新专用库定向红绿分别留证；新 source/适配器/launcher 独立复核通过，见 [v9 启动绑定](research/continuation-20261102/shared-check-v9-start.json)。定向 7 项通过不等于整套通过；下面 v6 失败为上一轮实际结果。
+
+上一轮实际结果：共享 `make-check-v6` 已于 **2026-11-02 15:02:20 UTC** 失败结束，make exit 2。15 项静态、13,082 项 TS 和脚本回归通过；Go 到第 6 包 `cmd/server`，两个顶级 skill catalog 场景收到 503 `resource_store_unavailable`，含父/子项为 3 个 fail 事件，已执行 Go 共 1,889 pass / 7 skip；剩余 Go、API/Web/PW 未到达。见 [本轮实际结果](research/continuation-20261102/shared-check-v6-result.json)。下面“启动/running”段落是历史入口，不能继续作为当前状态。
+
+唯一执行负责人已将原因定位到 API-only `MULTICA_RESOURCE_PUBLISH_DIR` 启用发布器，但 Go TestMain 直接 SQL fixture 没有内部组织。新 v9 只隔离 outer ordinary-Go 子进程的该变量，保留真实 API 和测试自有递归配置；先在新的专用库做实际红绿及独立复核，再跑新的完整检查。旧 v6 与失败库/日志保留。本知识会话只读核对初始化/目录契约，不启动第二套测试或改产品/断言。
+
+历史启动记录（14:47:28 UTC）：21 条审计处置已独立核对，L7 的未复现/测试覆盖例外已写入 AC1；共享第 4 轮完整检查当时实际启动。唯一执行负责人为首轮闭环会话。选定 Go 适配器 `8963ebcc...` 已包含冻结 v8 和全局 `--` 分派微修、现有 Make/HOME/pool 改动；两份独立 pass-with-notes/0 阻塞和 RKI6 结果哈希已核对，见 [同源运行绑定](research/continuation-20261102/shared-check-binding.json)。原 v5/v7/v8 的失败或开放条件保留在各自版本报告中，不重标为通过。
+
+本任务只有收到共享完整检查的实际成功结果、核对必要具名用例与跳过范围后才可收口。知识 K1–K3 的六个测试/driver 代码文件及 14 次知识/1 次独立 E0b 仅完成设计，尚未实施、分配预算或运行；launcher 是后续协调构件。这些真实模型/发布门归 #6 和父任务，不阻止本审计子任务在本地 AC 完成后独立关闭。
+
+## 2026-11-02 本轮推进
+
+用户要求列出计划并继续，当前入口为 [推进计划](advance-plan-2026-11-02.md)。已补齐并验证 implement/check 各 8 条上下文，恢复本已有任务；没有新建任务。第 4 候选 `64a9994ec` 工作树干净，产品、原 v5 适配器、launcher、私有配置、CLI 和 renderer 指纹均与登记一致。renderer 的旧本地 HTTP 辅助进程已退出，本轮确认端口空闲后恢复，实际页面字节与已固定构件一致。
+
+RKI6 实际证据已独立复核为 pass-with-notes、0 阻塞：normal/race 各 62 条具名通过、无失败/跳过，原始证据与第 4 候选的源码/框架绑定一致；见父任务 `research/final-candidate-20261102/continuation-20261102/rki6-review.json`。v5 私有适配器复核为 changes-required：AV5-1 递归包选择未绑定 allocation.package；AV5-2 缺少显式 Go 路径仍运行测试。本轮隔离的 v7 修复又复现取值 flag / -test.* alias 中的 -c 被误判为 compile-only，正在补充最小修复与红绿证据。原 v5 和首轮 v7 结果保留，不改原失败。
+
+完整第 4 轮由首轮闭环会话 `01a19c0d-cce1-73e3-99ee-2c3c9e9239ba` 单执行，知识侧提供独立修复/复核后复用同源结果，不另开完整检查或使用其 Redis16422/renderer19845。已确认原 v6 属于该会话且未被本会话覆盖；本会话只在 `adapter-v7-knowledge-advance-20261102` 写独立增量。renderer19844 的自有辅助进程在留证后已停止。第三轮已结束且失败（TS 13,082 通过、Go 82 包无失败、浏览器 47 项失败），不能继续使用旧“运行中”字段。原 source URL 的种子库已不存在，但 check.sh 会通过明确的 maintenance 连接新建自己的 API/Go 验收库，因此无需重建旧库。只读容量核对为 38/100 个连接，未改变共享配置或其他会话连接。见父任务 `research/final-candidate-20261102/continuation-20261102/preflight.json`。
+
+下面保留此前分道与合流过程；本轮最新阶段以上述计划、实际复核与新的完整运行结果为准。真实 Provider 调用仍为 0，知识默认 false，真实模型、发布及默认库恢复继续按各自门记录。
+
 最新入口：`research/combined-ready-for-main-integration.json`。21项审计、分道复核跟进及集成发现均已处置，无未处置阻塞产品项；最终整体候选验收未完成，任务保持in_progress。全量失败与复验分开记账，原service exit1不冒充passed。按既有用户授权由统筹本地合入主集成，然后在最终候选跑完整makecheck与门控验收。
 
 ## 2026-11-02 合流验证入口

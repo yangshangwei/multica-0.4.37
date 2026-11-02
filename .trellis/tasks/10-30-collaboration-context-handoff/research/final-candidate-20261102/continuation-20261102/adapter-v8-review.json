@@ -1,0 +1,976 @@
+{
+  "reviewer": "/root/adapter_v8_review",
+  "role": "trellis-check",
+  "created_at": "2026-11-02T14:46:47.156725+00:00",
+  "active_task": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "review_dimensions": [
+    "spec/behavior compliance with supplied38 and inherited14 replay",
+    "code-quality/current-source audit plus independent negative probes"
+  ],
+  "verdict": "changes-required",
+  "blocking_findings_open": 1,
+  "source_frozen": true,
+  "independent_review_clearance_created": false,
+  "subject": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102",
+  "go_sha256": "0d8d62797c887440d23b129f2e0d86eab4bbea88dcffc463de6478ea1bc65330",
+  "pnpm_sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "AV8-1",
+      "severity": "high",
+      "blocking": true,
+      "status": "open-integration-condition-on-frozen-v8",
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go",
+      "line": 25,
+      "related_lines": [
+        35,
+        39,
+        42,
+        89,
+        92,
+        99,
+        123
+      ],
+      "issue": "A global -- prefix causes non-test raw forwarding before ordinary-test, compile, clone-package and pool-environment guards.",
+      "witnesses": [
+        {
+          "argv": [
+            "--",
+            "test",
+            "example/first"
+          ],
+          "context": "No private test context / explicit REAL_GO",
+          "observed": "Fallback Go exec recorded; no refusal"
+        },
+        {
+          "argv": [
+            "--",
+            "test",
+            "-c=false",
+            "example/second"
+          ],
+          "context": "Mode0 clone allocated to example/first",
+          "observed": "Other package exec recorded without listing/binding"
+        }
+      ],
+      "actual_metadata_validity": "Cached Go -- list ./first and Go -C <owned-first> -- version both exit0; Go recognizes the global terminator.",
+      "evidence": [
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/independent-negatives.json",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/independent-negatives.log",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/global-dispatch-witness.json",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata-oracle.json"
+      ],
+      "impact": "Valid ordinary test invocations can bypass required context and canonical clone-package binding. Fake forwarding proves the path; no real tests or unintended database writes were performed.",
+      "recommendation": "Handle the global terminator while identifying the test command, preserve original argv, and apply all existing ordinary/compile guards. Recheck missing-context, mode0 cross-package/final-false and genuine-compile positives on the newly integrated hash.",
+      "not_fixed_reason": "Reviewed v8 is frozen/read-only. The sole shared owner reported a small integrated prefix correction in progress; this review does not certify that new source.",
+      "owner": "Shared execution owner thread01a19c0d-cce1-73e3-99ee-2c3c9e9239ba",
+      "closure_requires": "Actual integrated source hash and independent zero-blocker review; this v8 report grants no launcher clearance"
+    }
+  ],
+  "closed_regression_groups": [
+    {
+      "id": "AV5-1",
+      "status": "Direct guarded-test witnesses close: canonical allocation.package, same cwd/-C/default selector and exact single-package binding"
+    },
+    {
+      "id": "AV5-2",
+      "status": "Direct guarded-test witnesses close: nonblank explicit Go/SQL/evidence context before operations"
+    },
+    {
+      "id": "AV7-1",
+      "status": "Scanner witnesses close: current build/test arities and aliases, double-dash spelling, final real c setting, args/package/binary-tail boundaries, unknown-option refusal"
+    }
+  ],
+  "guarded_path_closure_is_not_global_clearance": true,
+  "results": {
+    "provided_binding_scanner": {
+      "methods_run": 38,
+      "passing_methods": 38,
+      "failures": 0,
+      "errors": 0,
+      "observations": 658,
+      "exit_code": 0,
+      "report": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided-binding.json"
+    },
+    "provided_inherited": {
+      "methods_run": 14,
+      "passing_methods": 14,
+      "failures": 0,
+      "errors": 0,
+      "recorded_wrapper_invocations": 26,
+      "exit_code": 0,
+      "report": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided-inherited.json"
+    },
+    "independent_negatives": {
+      "methods_run": 12,
+      "passing_methods": 10,
+      "failing_methods": 2,
+      "failure_entries": 2,
+      "errors": 0,
+      "observations": 187,
+      "exit_code": 1,
+      "failure_test_ids": [
+        "__main__.IndependentBoundaryTests.test_global_separator_false_compile_cannot_bypass_clone_binding",
+        "__main__.IndependentBoundaryTests.test_global_separator_requires_ordinary_context"
+      ],
+      "report": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/independent-negatives.json"
+    },
+    "global_dispatch_observation": {
+      "observations": 3,
+      "unsafe_forwarded": 3,
+      "actual_command_exit": 0,
+      "safety_gate_pass": false,
+      "report": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/global-dispatch-witness.json"
+    },
+    "pnpm_reused_exact_bytes": {
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/pnpm-v7.json",
+      "methods": 5,
+      "failures": 0,
+      "errors": 0,
+      "wrapper_sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/pnpm-v7.log",
+      "raw_sha256": "294dd2a681fc6f8ec5b73dbb77b2fafe081cb4720604d8e4b4f5cd7fe5d54b55",
+      "reexecuted": false,
+      "exit_code": 0,
+      "scope": "Unchanged pnpm reporter/selection/guard contracts only"
+    },
+    "metadata": {
+      "commands": 12,
+      "version_commands": 3,
+      "list_commands": 7,
+      "help_commands": 2,
+      "passed_expectations": 12,
+      "all_actual_exits": 0,
+      "fixture_source_files_unchanged": 4,
+      "go_binary_sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+      "report": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata-oracle.json"
+    },
+    "static": {
+      "python_sources_compiled_in_memory": 11,
+      "frozen_python_sources": 5,
+      "reviewer_python_sources": 6,
+      "syntax_errors": 0,
+      "whitespace_checks": [
+        {
+          "command": [
+            "git",
+            "diff",
+            "--no-index",
+            "--check",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v8-repair-20261102/incoming/adapter-v7/check-bin/go",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go"
+          ],
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "git",
+            "diff",
+            "--no-index",
+            "--check",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v8-repair-20261102/incoming/adapter-v7/check-go-package-binding-test.py",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-go-package-binding-test.py"
+          ],
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": ""
+        }
+      ],
+      "current_cached_reference_checks": 8,
+      "source_snapshots": 10,
+      "value_flags": 70,
+      "boolean_flags": 26,
+      "actual_test_aliases": 29,
+      "report": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/source-audit.json"
+    },
+    "fresh_named_method_totals": {
+      "run": 64,
+      "pass": 62,
+      "fail": 2,
+      "errors": 0,
+      "reused_pnpm_included": false,
+      "metadata_or_syntax_checks_included": false
+    }
+  },
+  "lint": {
+    "status": "not-run",
+    "reason": "No configured Python lint entry point for these private adapters; in-memory syntax and bounded whitespace checks passed. No repository lint pass claimed."
+  },
+  "typecheck": {
+    "status": "not-applicable",
+    "reason": "Private Python-only review, no product TS/Go changes and no repository typecheck executed."
+  },
+  "tests": {
+    "status": "fail-for-frozen-v8-clearance",
+    "evidence": "Independent negative suite has two named failures for the single AV8-1 condition."
+  },
+  "source_binding": {
+    "initial_record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/initial-binding.json",
+    "final_record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/final-binding.json",
+    "pinned_snapshots_unchanged": 10,
+    "incoming_v7_sources_preserved": 6,
+    "recorded_v7_evidence_preserved": 59,
+    "v8_artifact_hash_manifest_matches": 47,
+    "before_after_preserved_input_files": 163,
+    "all_preserved_inputs_unchanged": true,
+    "loaded_check_artifacts_plus_design_implement": 10,
+    "all_matched_loaded_hook": true,
+    "snapshots": [
+      {
+        "path": "check-bin/go",
+        "sha256": "0d8d62797c887440d23b129f2e0d86eab4bbea88dcffc463de6478ea1bc65330",
+        "bytes": 11215,
+        "mode": "0o700"
+      },
+      {
+        "path": "check-bin/pnpm",
+        "sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+        "bytes": 2228,
+        "mode": "0o700"
+      },
+      {
+        "path": "check-go-isolation-test.py",
+        "sha256": "3248d5b6b30f10012e46355acbb0cd451864beaaf9afe665e6461a96c4fce92d",
+        "bytes": 11915,
+        "mode": "0o644"
+      },
+      {
+        "path": "check-go-package-binding-test.py",
+        "sha256": "ffc111f2fff4ca50254fb3f815fb01a1506e3956f02973d70b1b24c91105222c",
+        "bytes": 29049,
+        "mode": "0o644"
+      },
+      {
+        "path": "check-pnpm-reporting-test.py",
+        "sha256": "369738115a2ff1e7243766d4031b8d68ced15890bcc733905b7557d496d28147",
+        "bytes": 6108,
+        "mode": "0o644"
+      },
+      {
+        "path": "deny-network.sb",
+        "sha256": "5c358b8d847211333e7ba22df82d84f796b5f30a41a2682209a949d783adbd08",
+        "bytes": 44,
+        "mode": "0o600"
+      },
+      {
+        "path": "go-flag-registry.json",
+        "sha256": "55f8ef47eb344b83671254a1143710fed60fd0ad0d27b43910ddb63e20739f87",
+        "bytes": 3496,
+        "mode": "0o644"
+      },
+      {
+        "path": "plain-go-list-oracle/module/go.mod",
+        "sha256": "0c7a339129e40163ad4c1563d59ba5058d3d8cf325db0a9d3dc84de450e022ee",
+        "bytes": 26,
+        "mode": "0o644"
+      },
+      {
+        "path": "plain-go-list-oracle/module/alternate.mod",
+        "sha256": "9336fbbb991e9a26028a2b2c100b63835824494be9ec0b166a0b5092990d3b36",
+        "bytes": 28,
+        "mode": "0o644"
+      },
+      {
+        "path": "plain-go-list-oracle/module/first/fixture.go",
+        "sha256": "513adb14178d483c37630210a6ce886878b6d71ffe71720b3567b7e22784b4ed",
+        "bytes": 45,
+        "mode": "0o644"
+      }
+    ],
+    "patches": [
+      {
+        "path": "adapter-v7-to-v8.diff",
+        "sha256": "679c1f6d9615545b3efb5c10136c92f7960081e597742cef31dd738e6b2df17f"
+      },
+      {
+        "path": "adapter-v6-to-v8.diff",
+        "sha256": "8ce4430ae6aa1788c2ca9f709f1ab52c55edd19b51a33d453b30e010136fc210"
+      },
+      {
+        "path": "v7-to-v8-go.patch",
+        "sha256": "c3d61fa1785a61b4d78daebe336c4f8e99ca4b77f1ff10a5efe3b2c5ffa7baf5",
+        "lines": 89
+      },
+      {
+        "path": "incoming-v6-to-v8-go.patch",
+        "sha256": "a1d3f34093940ba07ac6f4808ca76ac398bff5f48a5bdcf6f8c1b0ccea4210c8",
+        "lines": 118
+      }
+    ]
+  },
+  "historical_red_v7": {
+    "read_not_rerun": true,
+    "methods": 8,
+    "failures": 246,
+    "errors": 0,
+    "exit_code": 1,
+    "wrapper_sha256": "eafed32e38ea69de0f73272df5c9cc817ec0741726b54fc19d27466742f57076",
+    "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v8-repair-20261102/red-v7.log",
+    "raw_sha256": "1aa94b690c01e41994a6e742341e9880e4867990185d154c74f119c6f0643278"
+  },
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-real-go-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided/check-go-package-binding-test.py"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102",
+      "exit_code": 0,
+      "environment": {
+        "PATH": "/opt/homebrew/bin:/usr/bin:/bin",
+        "HOME": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/home",
+        "TMPDIR": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "CHECK_ISOLATION_WRAPPER": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go",
+        "CHECK_BINDING_EVIDENCE": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided-binding.json"
+      },
+      "label": "provided-binding",
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided-binding-command.json",
+      "record_sha256": "b5af6ff61777828d255d0023c0e6a08730194790bd1a6218290a0830aa4a4d95",
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided-binding.log",
+      "raw_sha256": "83468a84bca06183edc8beb05eaade926a50dc2e6b564cd02658fb1477a3eb41"
+    },
+    {
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-real-go-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/run-inherited.py"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102",
+      "exit_code": 0,
+      "environment": {
+        "PATH": "/opt/homebrew/bin:/usr/bin:/bin",
+        "HOME": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/home",
+        "TMPDIR": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "CHECK_ISOLATION_WRAPPER": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go"
+      },
+      "label": "provided-inherited",
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided-inherited-command.json",
+      "record_sha256": "89eca9a011c7c8212028622013a40ee1466044f8c9a7dde57a89090fc91c796d",
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided-inherited.log",
+      "raw_sha256": "4b91ce11db52ae35a9268b08b5e9ac28aaa1d051f40d335b0fc5989df7ab5cc2"
+    },
+    {
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-real-go-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/independent-negatives.py"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102",
+      "exit_code": 1,
+      "environment": {
+        "PATH": "/opt/homebrew/bin:/usr/bin:/bin",
+        "HOME": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/home",
+        "TMPDIR": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "label": "independent-negatives",
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/independent-negatives-command.json",
+      "record_sha256": "96cb6b6dc216f6b28344b0be573ca30e95874cc2eb129e9999b47117bdd31a0c",
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/independent-negatives.log",
+      "raw_sha256": "99151cd64f49c6949bd0e072fa1b3ab6196c8beeb1b98e4275c72f0ab01bed83"
+    },
+    {
+      "command": [
+        "env",
+        "-i",
+        "PATH=/opt/homebrew/bin:/usr/bin:/bin",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-real-go-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/global-dispatch-witness.py"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "exit_code": 0,
+      "label": "global-dispatch-witness",
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/global-dispatch-witness-command.json",
+      "record_sha256": "5fe747c729c0299091a5f9e804a98adcc605bc05f15d969c5e17a4ebd154aa09",
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/global-dispatch-witness.log",
+      "raw_sha256": "1153d9293ff8f3e7b249e497b8d43f2191f9f827042e9c46b175d0bd0715ad75"
+    },
+    {
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata-oracle.py"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102",
+      "exit_code": 0,
+      "environment": {
+        "PATH": "/opt/homebrew/bin:/usr/bin:/bin",
+        "HOME": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/home",
+        "TMPDIR": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "label": "metadata-oracle",
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata-oracle-command.json",
+      "record_sha256": "505e6d86c4270ef766601d9fb760bf07c5c116ce2cdf438ae3881b644c1108ca",
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata-oracle.log",
+      "raw_sha256": "e3383fbef668518d399b342fbca1368c716572a60191102910c975992aada6bd"
+    },
+    {
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-real-go-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/source-audit.py"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102",
+      "exit_code": 0,
+      "environment": {
+        "PATH": "/opt/homebrew/bin:/usr/bin:/bin",
+        "HOME": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/home",
+        "TMPDIR": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "label": "source-audit",
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/source-audit-command.json",
+      "record_sha256": "5f748280e875dfb889a5831f8e46ea18b925dbd8e655f7a0d524d8ba9f54cd0f",
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/source-audit.log",
+      "raw_sha256": "5a4e58fdb703f914e933cf7f15bed6cfa5d9af4d3933323cbb383ad7a6e1d6c3"
+    },
+    {
+      "label": "stripped-wrapper-version",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-network.sb",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go",
+        "version"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module",
+      "exit_code": 0,
+      "expectation_matches": true,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/stripped-wrapper-version.log",
+      "raw_sha256": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3"
+    },
+    {
+      "label": "global-separator-wrapper-version",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-network.sb",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go",
+        "--",
+        "version"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module",
+      "exit_code": 0,
+      "expectation_matches": true,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/global-separator-wrapper-version.log",
+      "raw_sha256": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3"
+    },
+    {
+      "label": "C-before-global-separator-version",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-network.sb",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go",
+        "-C",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module/first",
+        "--",
+        "version"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module",
+      "exit_code": 0,
+      "expectation_matches": true,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/C-before-global-separator-version.log",
+      "raw_sha256": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3"
+    },
+    {
+      "label": "global-separator-Go-list",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-network.sb",
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "--",
+        "list",
+        "./first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module",
+      "exit_code": 0,
+      "expectation_matches": true,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/global-separator-Go-list.log",
+      "raw_sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599"
+    },
+    {
+      "label": "global-C-default-selector",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-network.sb",
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "-C",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module/first",
+        "list",
+        "."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module",
+      "exit_code": 0,
+      "expectation_matches": true,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/global-C-default-selector.log",
+      "raw_sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599"
+    },
+    {
+      "label": "global-C-equals-relative-selector",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-network.sb",
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "--C=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module/second",
+        "list",
+        "../first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module",
+      "exit_code": 0,
+      "expectation_matches": true,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/global-C-equals-relative-selector.log",
+      "raw_sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599"
+    },
+    {
+      "label": "plain-default-module-list",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-network.sb",
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "list",
+        "./first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module",
+      "exit_code": 0,
+      "expectation_matches": true,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/plain-default-module-list.log",
+      "raw_sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599"
+    },
+    {
+      "label": "installsuffix-minus-c-value",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-network.sb",
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "list",
+        "-installsuffix",
+        "-c",
+        "./first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module",
+      "exit_code": 0,
+      "expectation_matches": true,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/installsuffix-minus-c-value.log",
+      "raw_sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599"
+    },
+    {
+      "label": "double-dash-gccgoflags-minus-c-value",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-network.sb",
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "list",
+        "--gccgoflags",
+        "-c",
+        "./first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module",
+      "exit_code": 0,
+      "expectation_matches": true,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/double-dash-gccgoflags-minus-c-value.log",
+      "raw_sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599"
+    },
+    {
+      "label": "alternate-modfile-list",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-network.sb",
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "list",
+        "-modfile",
+        "alternate.mod",
+        "./first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module",
+      "exit_code": 0,
+      "expectation_matches": true,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/alternate-modfile-list.log",
+      "raw_sha256": "597f3b8f7b278914bb72945892f14df7adf46dee8ce6f00e7e39f02233e63991"
+    },
+    {
+      "label": "Go-help-build",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-network.sb",
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "help",
+        "build"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module",
+      "exit_code": 0,
+      "expectation_matches": true,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/Go-help-build.log",
+      "raw_sha256": "0ee58285e7ff14a2cb62c1a0b926caa3af8fa46ff7ac9f3a7898ac8d11e50cb9"
+    },
+    {
+      "label": "Go-help-testflag",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-network.sb",
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "help",
+        "testflag"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module",
+      "exit_code": 0,
+      "expectation_matches": true,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/Go-help-testflag.log",
+      "raw_sha256": "88dd79603f31a6033422757103889ce759736cdc0434f9b38aacdd10a35c2d4f"
+    },
+    {
+      "label": "whitespace-1",
+      "command": [
+        "git",
+        "diff",
+        "--no-index",
+        "--check",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v8-repair-20261102/incoming/adapter-v7/check-bin/go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "label": "whitespace-2",
+      "command": [
+        "git",
+        "diff",
+        "--no-index",
+        "--check",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v8-repair-20261102/incoming/adapter-v7/check-go-package-binding-test.py",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-go-package-binding-test.py"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "label": "pnpm-five-reused-not-rerun",
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/pnpm-v7-command.json",
+      "record_sha256": "9695b6b5c78b4e258024167b94ad3f3d0a02e555dd3d47384a9d5ea2bd7a84cd",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-pnpm-reporting-test.py"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102",
+      "exit_code": 0,
+      "executed_by_this_reviewer": false,
+      "scope": "Only exact-byte pnpm 7a416e\u2026; historical Go pin in that record does not certify v8 Go"
+    }
+  ],
+  "private_output_hashes": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-network.sb",
+      "sha256": "5c358b8d847211333e7ba22df82d84f796b5f30a41a2682209a949d783adbd08",
+      "bytes": 44
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/deny-real-go-network.sb",
+      "sha256": "227ced0d1da3fc01cb812fb38de215e0473109475a25f0e4006e3ca858311b1c",
+      "bytes": 133
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/final-binding.json",
+      "sha256": "7c0701329fdf70ccd44ee878f4e2b78b8ce9b2644e637bfecf95620754b150dd",
+      "bytes": 68143
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/global-dispatch-witness-command.json",
+      "sha256": "5fe747c729c0299091a5f9e804a98adcc605bc05f15d969c5e17a4ebd154aa09",
+      "bytes": 722
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/global-dispatch-witness.json",
+      "sha256": "1153d9293ff8f3e7b249e497b8d43f2191f9f827042e9c46b175d0bd0715ad75",
+      "bytes": 2376
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/global-dispatch-witness.log",
+      "sha256": "1153d9293ff8f3e7b249e497b8d43f2191f9f827042e9c46b175d0bd0715ad75",
+      "bytes": 2376
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/global-dispatch-witness.py",
+      "sha256": "c087cf8953b37572d49bbb26553aa845deb7ac941cd17e23a728c8c96d900094",
+      "bytes": 2676
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/independent-negatives-command.json",
+      "sha256": "96cb6b6dc216f6b28344b0be573ca30e95874cc2eb129e9999b47117bdd31a0c",
+      "bytes": 7081
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/independent-negatives.json",
+      "sha256": "639ea2e37f84dbba1429f21546602bd656b7cde541007bb01c66bd76853b3709",
+      "bytes": 161159
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/independent-negatives.log",
+      "sha256": "99151cd64f49c6949bd0e072fa1b3ab6196c8beeb1b98e4275c72f0ab01bed83",
+      "bytes": 5663
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/independent-negatives.py",
+      "sha256": "e168921347a6005c81dbe4334a59839acf9ca5de7097140baaf18e11a372b98f",
+      "bytes": 14306
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/initial-binding.json",
+      "sha256": "65d41dfb9ff78d77c5ea10bd2c655db30bbd0398331a04c256d8b8e2a3ac90f4",
+      "bytes": 57866
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/C-before-global-separator-version.log",
+      "sha256": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3",
+      "bytes": 33
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/Go-help-build.log",
+      "sha256": "0ee58285e7ff14a2cb62c1a0b926caa3af8fa46ff7ac9f3a7898ac8d11e50cb9",
+      "bytes": 10264
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/Go-help-testflag.log",
+      "sha256": "88dd79603f31a6033422757103889ce759736cdc0434f9b38aacdd10a35c2d4f",
+      "bytes": 12099
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/alternate-modfile-list.log",
+      "sha256": "597f3b8f7b278914bb72945892f14df7adf46dee8ce6f00e7e39f02233e63991",
+      "bytes": 16
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/double-dash-gccgoflags-minus-c-value.log",
+      "sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+      "bytes": 14
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/global-C-default-selector.log",
+      "sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+      "bytes": 14
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/global-C-equals-relative-selector.log",
+      "sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+      "bytes": 14
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/global-separator-Go-list.log",
+      "sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+      "bytes": 14
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/global-separator-wrapper-version.log",
+      "sha256": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3",
+      "bytes": 33
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/installsuffix-minus-c-value.log",
+      "sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+      "bytes": 14
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module/alternate.mod",
+      "sha256": "9336fbbb991e9a26028a2b2c100b63835824494be9ec0b166a0b5092990d3b36",
+      "bytes": 28
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module/first/fixture.go",
+      "sha256": "513adb14178d483c37630210a6ce886878b6d71ffe71720b3567b7e22784b4ed",
+      "bytes": 45
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module/go.mod",
+      "sha256": "0c7a339129e40163ad4c1563d59ba5058d3d8cf325db0a9d3dc84de450e022ee",
+      "bytes": 26
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/module/second/fixture.go",
+      "sha256": "a3c747ed6a76ab94df794754d9ca8990a2da876c6aefb24245827af0b984b055",
+      "bytes": 37
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/plain-default-module-list.log",
+      "sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+      "bytes": 14
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata/stripped-wrapper-version.log",
+      "sha256": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3",
+      "bytes": 33
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata-oracle-command.json",
+      "sha256": "505e6d86c4270ef766601d9fb760bf07c5c116ce2cdf438ae3881b644c1108ca",
+      "bytes": 2914
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata-oracle.json",
+      "sha256": "6b47a9e106f0db370115a872fa9fb731ef2f7dca6de5aff73ece8778152d09ca",
+      "bytes": 38125
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata-oracle.log",
+      "sha256": "e3383fbef668518d399b342fbca1368c716572a60191102910c975992aada6bd",
+      "bytes": 1476
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/metadata-oracle.py",
+      "sha256": "545432a1e88c780a40c8ab335d9fcd6a54cbea8e73f00344b98cf5a0446a2f33",
+      "bytes": 4919
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided/check-go-isolation-test.py",
+      "sha256": "3248d5b6b30f10012e46355acbb0cd451864beaaf9afe665e6461a96c4fce92d",
+      "bytes": 11915
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided/check-go-package-binding-test.py",
+      "sha256": "ffc111f2fff4ca50254fb3f815fb01a1506e3956f02973d70b1b24c91105222c",
+      "bytes": 29049
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided/check-pnpm-reporting-test.py",
+      "sha256": "369738115a2ff1e7243766d4031b8d68ced15890bcc733905b7557d496d28147",
+      "bytes": 6108
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided/go-flag-registry.json",
+      "sha256": "55f8ef47eb344b83671254a1143710fed60fd0ad0d27b43910ddb63e20739f87",
+      "bytes": 3496
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided-binding-command.json",
+      "sha256": "b5af6ff61777828d255d0023c0e6a08730194790bd1a6218290a0830aa4a4d95",
+      "bytes": 7944
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided-binding.json",
+      "sha256": "dfc9694dd87d1a319652016af48feab4abb0ef900c9d7a96f224e55c32c466f8",
+      "bytes": 687782
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided-binding.log",
+      "sha256": "83468a84bca06183edc8beb05eaade926a50dc2e6b564cd02658fb1477a3eb41",
+      "bytes": 6217
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided-inherited-command.json",
+      "sha256": "89eca9a011c7c8212028622013a40ee1466044f8c9a7dde57a89090fc91c796d",
+      "bytes": 3887
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided-inherited.json",
+      "sha256": "bace2dd988e0d1af803ace20c6ae49657d1f74dc71265540495b75e8c217c32e",
+      "bytes": 34750
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/provided-inherited.log",
+      "sha256": "4b91ce11db52ae35a9268b08b5e9ac28aaa1d051f40d335b0fc5989df7ab5cc2",
+      "bytes": 2386
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/run-inherited.py",
+      "sha256": "db679c93fd997cd3a49366ac735aa1b63fa4b521ea2fb7e4028f0df2c59b790e",
+      "bytes": 3385
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/run-provided.py",
+      "sha256": "61df99387b2b2b1782f5f8e3065a01a963e62e09fa63cb12cfd8cc1aea6f138e",
+      "bytes": 2100
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/source-audit-command.json",
+      "sha256": "5f748280e875dfb889a5831f8e46ea18b925dbd8e655f7a0d524d8ba9f54cd0f",
+      "bytes": 1578
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/source-audit.json",
+      "sha256": "eef87accc46131b57d46eb27a829cdb1166fd3677b1fc1a4a53529edebdf7194",
+      "bytes": 10939
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/source-audit.log",
+      "sha256": "5a4e58fdb703f914e933cf7f15bed6cfa5d9af4d3933323cbb383ad7a6e1d6c3",
+      "bytes": 277
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102/source-audit.py",
+      "sha256": "d287609b5b90912406e522530897006571b20f6b6b0e66f323dfb8eb992adb3c",
+      "bytes": 6929
+    }
+  ],
+  "supported_scope": [
+    "Pinned Go1.27.0 build/test definitions on the reviewed direct-test dispatch paths; raw argv retained for recorded genuine compilation and permitted mode0 calls.",
+    "Mode0 ordinary tests reject actual modfile/overlay options in separate/= and double-dash forms; flag values and opaque binary tails stay unchanged. Genuine compile-only helpers remain exempt.",
+    "Recorded mode1 repository-check selection and original splitter; this review adds no general Go parser or new compatibility support.",
+    "Unchanged pnpm exact-byte selection/workers/retries/timeouts/reporter and guard wiring proof; inherited fake guard replay only."
+  ],
+  "limitations": [
+    "Global -- dispatch is an actual open blocker for exact v8, owned by the separate integrator; no integrated source or launcher is cleared by this report.",
+    "Pinned flag definitions require a new review on toolchain/flag changes. Mode0 source overrides are deliberately unsupported; arbitrary mode1 command splitting is not certified.",
+    "No actual Go tests/TestMain, SQL/DB/migrations, full repository lint/typecheck/make check, service/browser/native runtime, installed Agent CLI, Provider/account, download or release acceptance was performed.",
+    "No shared final4/sourceenv/launcher/clearance, Redis16422, renderer19845, product/spec/status files or prior failures were mutated."
+  ],
+  "actual_operations": {
+    "Go_metadata_calls": 12,
+    "Go_tests_or_TestMain": 0,
+    "SQL_database_connections": 0,
+    "database_migrations": 0,
+    "services_or_browsers": 0,
+    "Provider_or_accounts": 0,
+    "installed_agent_CLI": 0,
+    "downloads": 0,
+    "commits": 0,
+    "product_adapter_launcher_spec_status_edits": 0
+  },
+  "changed_files": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff/research/final-candidate-20261102/continuation-20261102/adapter-v8-review.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff/research/final-candidate-20261102/continuation-20261102/adapter-v8-review.json",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-independent-review-20261102 (new ignored private evidence only)"
+  ],
+  "reviewer_simplifications_made": "None; reviewed source remained frozen.",
+  "next_owner_action": "Apply/review the bounded global-prefix correction on the sole integrated candidate, bind its actual source/launcher/env hashes and zero-blocker review before the shared complete check."
+}

@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_notes_review",
+  "role": "trellis-check",
+  "active_task": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "reviewed_at": "2026-11-02T15:40:42Z",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "scope": "Narrow document/evidence recheck of coordinator KN-1/KN-2 corrections, new v6 result/catalog note and added private-Go publication boundary; no suite replay or v9 implementation review.",
+  "worktree": "/Volumes/artisan/code/2026/mc-knowledge-advance-notes-20261102",
+  "findings_fixed": [
+    {
+      "id": "KN-1",
+      "fixed_by": "main coordinator",
+      "verified": true,
+      "fix": "Current #6/#7 task/progress/plan wording and next-action fields record v6 exit2/finished15:02:20 and pending sole-owner PUB_DIR correction/red-green/review/new full check; old start/running text is explicitly historical.",
+      "both_tasks_remain_in_progress": true,
+      "historical_start_binding_unchanged": true,
+      "failed_v6_not_relabelled_as_pass": true
+    },
+    {
+      "id": "KN-2",
+      "fixed_by": "main coordinator",
+      "verified": true,
+      "fix": "Six proposed code files are correctly described as five rk1k tests plus one tagged daemon driver; launcher is a later coordinator artifact.",
+      "proposal_only_and_no_knowledge_allocation_preserved": true
+    }
+  ],
+  "findings_not_fixed": [],
+  "notes": [
+    "Shared v9 outer ordinary-Go PUB_DIR isolation is pending; this recheck does not certify its implementation, red/green or new complete-check result.",
+    "The actual shared v6 run remains failed_not_accepted; complete-check success remains an execution-owner prerequisite.",
+    "Recorded static15/TS13082/script passes were not independently re-extracted from the whole make log in this narrow recheck.",
+    "Earlier artifact/32-Python-AST/33-retained-raw results remain at their original scope; their operations were not rerun.",
+    "No launcher clearance, budget/paid binding, knowledge enablement, task closure or platform/account/release/default-database recovery is created."
+  ],
+  "result_binding": {
+    "file": "shared-check-v6-result.json",
+    "sha256": "ed10ea937cfd16aefe25e5be7d27960a37e13b9139985f7e79162c955007ecf3",
+    "source_record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v6.json",
+    "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+    "actual_state": "failed_not_accepted",
+    "source_record_state": "complete",
+    "make_exit_code": 2,
+    "started_at": "2026-11-02T14:47:28.083133+00:00",
+    "finished_at": "2026-11-02T15:02:20.157158+00:00",
+    "whole_log_sha256_matches_source_record": true,
+    "whole_log_rehashed_or_stage_inventories_reconstructed": false,
+    "Go_reached_packages": 6,
+    "Go_package_metadata_records_checked": 6,
+    "Go_raw_JSONL_files_hashed_and_parsed": 6,
+    "Go_raw_bytes": 2951948,
+    "Go_named_events_reconstructed": {
+      "run": 1899,
+      "pass": 1889,
+      "fail": 3,
+      "skip": 7
+    },
+    "Go_top_level_failed_tests": [
+      "TestSkillTemplateCatalog_RouterAndWorkspaceGates",
+      "TestSkillTemplateCopy_OrdinaryCreatePreservesSourceAndBindings"
+    ],
+    "Go_failed_child": "TestSkillTemplateCatalog_RouterAndWorkspaceGates/member",
+    "Go_raw503_and_resource_store_unavailable_present": true,
+    "reached_packages_without_named_tests": 1,
+    "metadata_hash_or_count_mismatches": 0,
+    "not_reached": ["remaining Go packages", "API startup", "production Web", "Playwright"]
+  },
+  "catalog_source_check": {
+    "file": "resource-catalog-static-contract.md",
+    "sha256": "cfa1c2c76da09eae40d9399cde739caf8199951ad1469b68001ff7e95c362a70",
+    "status": "pass",
+    "checked_contracts": [
+      "handler.go:573 ResourcePublisher uses cfg.ResourcePublishDir; OrganizationID getter requires present active internal organization",
+      "main.go:415 startup preparePlatformOrganization requires password mode and MULTICA_PLATFORM_ADMIN_ENABLED=true",
+      "platform_admin.go:88 ensures the organization",
+      "workspace.go:256 real human workspace creation ensures active internal organization in its transaction",
+      "auth_device.go:350 device onboarding also ensures and assigns organization",
+      "integration_test.go:100 default fixture inserts SQL user/workspace/member rows directly",
+      "skill_template_dir.go:54 enters managed publisher only with nonempty Root",
+      "resource_catalog.go:356/402 skill/MCP managed catalog paths require organization before bundles",
+      "resource_catalog.go:41 missing manual directory returns empty names and alone does not prove503 cause",
+      "skill-template-creation.spec.ts requires15 real templates; skill-market.spec.ts requires nonempty real catalog before bounded interception",
+      "mcp-desktop.spec.ts retains actual recipe-count catalog assertions"
+    ],
+    "added_private_Go_spec_publication_boundary": {
+      "sha256": "a12b9732983ce9fc61bf4dd64270b80de5ade9ea0784ed10c41574f1bd050e1f",
+      "source_consistent": true,
+      "contract": "API-only publication directory is excluded from outer ordinary-Go package children while API/non-test/compile and explicit recursive test-owned settings remain intact.",
+      "normative_contract_only": true,
+      "v9_fix_or_passing_run_claimed": false
+    }
+  },
+  "verification": {
+    "copy_manifest": {
+      "status": "pass",
+      "changed_or_new_rows_hash_size_checked": 10,
+      "total_manifest_owned_paths": 104,
+      "pre_recheck_changed_paths": 107,
+      "allowed_extra_paths": ["retained-raw-evidence-index.json", "notes-review.md", "notes-review.json"],
+      "unexpected_paths": 0,
+      "unrelated_product_or_config_or_launcher_or_budget_changes": 0
+    },
+    "JSON_JSONL": {
+      "status": "pass",
+      "changed_task_result_JSON_files": 3,
+      "other_unique_JSON_records_parsed": {
+        "copy_manifest": 1,
+        "actual_make_record": 1,
+        "Go_package_metadata": 6
+      },
+      "Go_raw_JSONL_streams": 6,
+      "context_JSONL_files": 2,
+      "context_records": 16,
+      "parse_errors": 0,
+      "counts_exclude_new_recheck_report": true
+    },
+    "references": {
+      "status": "pass",
+      "relevant_markdown_files": 7,
+      "local_link_occurrences": 51,
+      "task_metadata_links": 25,
+      "context_paths": 16,
+      "unresolved": 0
+    },
+    "original_reports_and_start_binding_preserved": {
+      "status": "pass",
+      "notes-review.md": "5269025f3aa2d0691268339da0d96de0f446271c4fc0acad552d812125af226f",
+      "notes-review.json": "9ad4bc1a17571da68469176980f3d5c60232631b534e840f9fa214d2a75afa5f",
+      "shared-check-binding.json": "cf22b1e5a9aeeb7d7ff731b2de6bd9ae3375b51107da8465b565a1c7ab9f3fb9",
+      "original_review_verdict_not_rewritten": true
+    },
+    "git_diff_check": {
+      "status": "pass",
+      "command": "git diff --check HEAD",
+      "exit_code": 0,
+      "tracked_changes_only": true
+    },
+    "Lint": { "status": "not-run", "reason": "Docs-only narrow dispatch prohibits project suites." },
+    "TypeCheck": { "status": "not-run", "reason": "Docs-only narrow dispatch prohibits project suites." },
+    "Tests": { "status": "not-run", "reason": "No suite, metadata, database, service, browser, agent or Provider execution authorized." },
+    "actual_lightweight_commands": [
+      "Scoped git diff HEAD and git status/path inventory",
+      "git diff --check HEAD",
+      "Bounded sed/rg source reads for new catalog note and v6 evidence-directory reference",
+      "Python standard-library JSON/JSONL/reference/hash validation of changed files and six new result streams"
+    ]
+  },
+  "changed_files": [
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261102/notes-recheck.md",
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261102/notes-recheck.json"
+  ],
+  "simplifications_made": [],
+  "reviewer_operations": {
+    "review_report_files_written": 2,
+    "original_report_edits": 0,
+    "coordinator_document_or_product_or_config_or_status_fixes": 0,
+    "project_tests_or_Go_metadata_or_DB_or_services_or_Provider_or_CLI_calls": 0,
+    "dependencies_or_downloads": 0,
+    "clearance_commit_or_archive_created": false
+  }
+}

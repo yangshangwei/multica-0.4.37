@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_notes_review",
+  "role": "trellis-check",
+  "active_task": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "reviewed_at": "2026-11-02T15:21:24Z",
+  "verdict": "changes-required",
+  "blocking_findings_open": 1,
+  "scope": {
+    "worktree": "/Volumes/artisan/code/2026/mc-knowledge-advance-notes-20261102",
+    "branch": "codex/knowledge-advance-notes-20261102",
+    "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "copy_timestamp": "2026-11-02T15:02:19.609543+00:00",
+    "reviewer_write_ownership": [
+      ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261102/notes-review.md",
+      ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261102/notes-review.json"
+    ],
+    "coordinator_owns_document_fixes_commit_archive_and_status": true,
+    "product_code_in_review_diff": false,
+    "shared_parent_status_in_review_diff": false,
+    "parent_status": "in_progress",
+    "existing_task7_repair_branch": "codex/collaboration-knowledge-fixes-20261101",
+    "existing_task7_repair_branch_head": "1278d1266c0768981c04800f00eeb3a17cfae8f9"
+  },
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "KN-1",
+      "severity": "medium",
+      "blocking": true,
+      "status": "open",
+      "files": [
+        ".trellis/tasks/10-30-collaboration-knowledge-promotion/progress.md",
+        ".trellis/tasks/10-30-collaboration-knowledge-promotion/task.json",
+        ".trellis/tasks/10-30-collaboration-knowledge-promotion/real-model-acceptance-plan.md",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/progress.md",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/task.json",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/advance-plan-2026-11-02.md"
+      ],
+      "issue": "Current running/prepared wording and next-action fields are stale after the actual shared make-check-v6 terminal failure.",
+      "actual_record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v6.json",
+      "actual_record_observed": {
+        "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+        "state": "complete",
+        "exit_code": 2,
+        "started_at": "2026-11-02T14:47:28.083133+00:00",
+        "finished_at": "2026-11-02T15:02:20.157158+00:00",
+        "adapter_sha256": {
+          "go": "8963ebcc64d89881a6f1966f9ac7a09f1a9121dd32a4f0a9518493ed3b4dd9a9",
+          "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+        },
+        "launcher_sha256": "3938151d67aa91346aa1898a7be7c561a94d16e86fb8c8d79ab9cb75c71f3e34",
+        "source_env_sha256": "99475d2e36917761e88bab9687073ddb182c131241d8d815b7eb18850572dfe2"
+      },
+      "coordinator_reported_stage_results_not_independently_reconstructed_here": {
+        "static_pass": 15,
+        "TS_pass": 13082,
+        "Go_reached_packages": 6,
+        "Go_named_fail": 3,
+        "Go_named_skip": 7,
+        "failure_scope": "cmd/server skill catalog/publisher tests",
+        "source_based_next_owner_action": "Shared owner repairs API-only MULTICA_RESOURCE_PUBLISH_DIR leakage into Go test child environment, preserves red/green evidence, reviews new adapter/launcher bytes and owns the newly numbered complete check."
+      },
+      "required_fix": "Record the actual failed v6 result and source-backed shared-owner next action in current task/progress/plan wording before commit. Keep both tasks and parent in_progress; do not claim a complete suite pass.",
+      "historical_records_to_preserve": [
+        "research/continuation-20261102/shared-check-binding.json is a valid 14:52 start observation, not the later outcome",
+        "Earlier preflight/readiness/versioned failure reports retain their original observation scope"
+      ],
+      "why_not_fixed": "Outside the two reviewer-owned report files; the main coordinator explicitly owns these corrections."
+    },
+    {
+      "id": "KN-2",
+      "severity": "low",
+      "blocking": false,
+      "status": "open",
+      "file": ".trellis/tasks/10-30-collaboration-knowledge-promotion/real-model-acceptance-plan.md",
+      "issue": "The phrase six new test/launcher files misclassifies the six proposed code files.",
+      "evidence": "entry-matrix.json lists five rk1k_*_test.go files plus one tagged daemon driver; the launcher is a later coordinator artifact.",
+      "recommended_fix": "Describe six new test/driver code files, retaining the proposal-only and unallocated state.",
+      "why_not_fixed": "Coordinator-owned document outside reviewer write scope."
+    }
+  ],
+  "verified_claims": {
+    "L7": {
+      "disposition": "not_reproduced_test_covered",
+      "AC1_reconciles_accepted_design_and_launch_review": true,
+      "candidate_test_functions_inspected": [
+        {
+          "path": "server/pkg/agent/knowledge_launch_test.go",
+          "line": 772,
+          "name": "TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated"
+        },
+        {
+          "path": "server/internal/daemon/knowledge_context_claim_test.go",
+          "line": 850,
+          "name": "TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit"
+        },
+        {
+          "path": "server/pkg/agent/launch_lifecycle_test.go",
+          "line": 358,
+          "name": "TestHostLifecycleStartedFailureStillWaitsAndBlocksFallback"
+        }
+      ],
+      "assertions_match_waited_exit_and_blocked_subsequent_launch": true,
+      "retained_pass_terminals_source": "Existing source-bound knowledge-closure-readiness.json and accepted original launch-review disposition",
+      "whole_suite_raw_terminals_reextracted_by_this_reviewer": false,
+      "baseline_red_claimed": false,
+      "fabricated_product_repair_claimed": false
+    },
+    "budget_separation": {
+      "original_remaining": 14,
+      "runtime_cap": 25,
+      "runtime_consumed": 0,
+      "knowledge_allocated": 0,
+      "knowledge_consumed": 0,
+      "transfer_allowed": false
+    },
+    "knowledge_proposal": {
+      "proposal_only": true,
+      "future_code_files": 6,
+      "future_code_files_present": 0,
+      "K1": 4,
+      "K2": 2,
+      "K3": 8,
+      "knowledge_proposed_calls": 14,
+      "E0b_separate_calls": 1,
+      "proposed_including_E0b": 15,
+      "K3_producer_role_rows": 8,
+      "knowledge_framework_wired_entries": 0,
+      "runnable": false,
+      "paid_source_id_empty": true,
+      "no_claim_of_eight_distinct_knowledge_APIs_or_UI_journeys": true,
+      "no_implementation_or_approval_claimed": true
+    },
+    "historical_adapter_reviews": [
+      { "version": "v5", "verdict": "changes-required", "blocking_findings_open": 2 },
+      { "version": "v7", "verdict": "changes-required", "blocking_findings_open": 1 },
+      { "version": "v8", "verdict": "changes-required", "blocking_findings_open": 1 }
+    ],
+    "selected_integrated_binding": {
+      "review_record_hashes_checked": 3,
+      "source_bound_integrated_adapter_records": 2,
+      "integrated_adapter_record_kinds": ["native_review", "cross_clearance"],
+      "integrated_adapter_records_blockers": 0,
+      "candidate_adapter_launcher_source_env_bindings_match": true,
+      "selected_go_differs_from_frozen_v8": true,
+      "third_record_kind": "rki6_result_review",
+      "actual_start_binding_matches_make_record": true,
+      "record_state_complete_is_not_success": true
+    },
+    "private_Go_spec_rules_match_source_snapshots_and_review_evidence": true,
+    "parent_status_preserved": true,
+    "no_link_or_ownership_findings": true
+  },
+  "verification": {
+    "git_diff_check": {
+      "status": "pass",
+      "command": "git diff --check HEAD",
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-advance-notes-20261102",
+      "exit_code": 0,
+      "tracked_changes_only": true,
+      "untracked_evidence_not_covered_by_this_command": true
+    },
+    "copy_manifest": {
+      "status": "pass",
+      "manifest_files": 102,
+      "manifest_bytes": 1189831,
+      "pre_review_changed_paths": 103,
+      "unexpected_changed_paths": 0,
+      "expected_extra": "research/continuation-20261102/retained-raw-evidence-index.json",
+      "hash_or_size_mismatches": 0
+    },
+    "JSON_JSONL": {
+      "status": "pass",
+      "JSON_files": 39,
+      "JSONL_files": 2,
+      "JSONL_records": 16,
+      "parse_errors": 0,
+      "counts_exclude_this_new_report": true
+    },
+    "local_references": {
+      "status": "pass",
+      "markdown_files": 19,
+      "markdown_local_link_occurrences": 54,
+      "file_line_links": 1,
+      "context_paths": 16,
+      "task_metadata_links": 23,
+      "unresolved": 0
+    },
+    "Python_snapshot_syntax": {
+      "status": "pass",
+      "method": "ast.parse of source bytes in memory",
+      "files": 32,
+      "errors": 0,
+      "source_imported_or_executed": false,
+      "bytecode_written": false
+    },
+    "source_command_review_hash_manifests": {
+      "status": "pass",
+      "artifact_rows": 106,
+      "artifact_rows_local": 73,
+      "artifact_rows_retained_raw": 33,
+      "incoming_and_first_green_snapshot_rows": 19,
+      "final_source_manifest_rows": 16,
+      "final_source_inputs_retained_only_in_explicit_private_directory": 4,
+      "diff_rows": 7,
+      "command_records_inspected": 14,
+      "command_records_rerun": 0,
+      "live_old_v6_historical_hash_comparison_skipped": true,
+      "historical_v6_incoming_snapshot_hashes_verified": true,
+      "unresolved_manifest_rows": 0
+    },
+    "retained_raw_evidence": {
+      "status": "pass",
+      "original_files_hashed": 33,
+      "bytes": 3533497,
+      "hash_or_size_mismatches": 0,
+      "raw_files_copied_to_notes_worktree": 0,
+      "operations_rerun": 0
+    },
+    "preregistration_source_files": {
+      "status": "pass",
+      "source_file_hashes_checked": 21,
+      "candidate": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+      "source": "git show candidate:path bytes",
+      "mismatches": 0
+    },
+    "Lint": { "status": "not-run", "reason": "Docs-only dispatch expressly prohibits project suites." },
+    "TypeCheck": { "status": "not-run", "reason": "Docs-only dispatch expressly prohibits project suites." },
+    "Tests": { "status": "not-run", "reason": "No Go/TS/fake/browser/TestMain tests or services permitted in this bounded review." },
+    "actual_lightweight_command_families": [
+      "git status --short --untracked-files=all",
+      "git diff --stat HEAD and scoped git diff HEAD",
+      "git diff --check HEAD",
+      "git show candidate:path and read-only git identity/show-ref queries",
+      "rg --files restricted to the assigned evidence/private manifest directories",
+      "Python standard-library read/hash/JSON/JSONL/reference/AST validators"
+    ]
+  },
+  "reviewer_operations": {
+    "project_tests": 0,
+    "Go_metadata_commands": 0,
+    "database_or_API_or_Redis_operations": 0,
+    "services_or_browser_operations": 0,
+    "installed_agent_or_Provider_calls": 0,
+    "dependencies_or_downloads": 0,
+    "source_snapshot_execution": 0,
+    "status_or_archive_or_clearance_mutations": 0,
+    "coordinator_owned_document_edits": 0,
+    "reviewer_report_files_written": 2
+  },
+  "changed_files": [
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261102/notes-review.md",
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261102/notes-review.json"
+  ],
+  "simplifications_made": [],
+  "remaining_limits": [
+    "Coordinator must correct current running/prepared wording to the actual v6 exit2 result and source-backed next action before commit.",
+    "Raw whole-suite L7 terminals and new v6 stage inventories were not reconstructed here; retained reviews and the coordinator's stage report remain their stated evidence sources.",
+    "The actual shared complete-check success remains open; partial passes and source-bound adapter review cannot close it.",
+    "Knowledge real-model allocation/implementation, platform/account/release and default-database recovery remain separate open gates."
+  ]
+}

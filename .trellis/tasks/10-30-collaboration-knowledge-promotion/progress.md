@@ -1,5 +1,19 @@
 # 知识候选逐层沉淀：当前进度
 
+当前新轮：共享 `make-check-v9` 已于 **2026-11-02 15:36:09 UTC** 启动，仍在运行。v6 的原失败和新专用库定向红绿分别留证；新 source/适配器/launcher 独立复核通过，见 [v9 启动绑定](../11-01-collaboration-knowledge-audit-fixes/research/continuation-20261102/shared-check-v9-start.json)。定向 7 项通过不等于整套通过；下面 v6 失败为上一轮实际结果。
+
+上一轮实际结果：共享 `make-check-v6` 已于 **2026-11-02 15:02:20 UTC** 以 exit 2 结束；static15/TS13,082/脚本回归通过，Go `cmd/server` 两个顶级 skill catalog 场景 503，含子项 3 fail。剩余 Go/API/Web/PW 未执行，见 [实际结果](../11-01-collaboration-knowledge-audit-fixes/research/continuation-20261102/shared-check-v6-result.json)。当前等待唯一负责人完成 v9 的 outer-Go PUB_DIR 隔离、实际红绿与独立复核，再启动新整套；下列启动/running 描述保留为历史，不能计为当前通过。
+
+历史启动记录（14:47:28 UTC）：主链路和 21 条审计处置已本地合入，RKI6 原 fake 证据独立复核通过；唯一负责人执行的第 4 轮完整检查当时启动，见 [同源运行绑定](../11-01-collaboration-knowledge-audit-fixes/research/continuation-20261102/shared-check-binding.json)。选定整合适配器的全局 `--` 问题已在新字节及两份独立复核中关闭，原冻结 v8 报告保留原范围。
+
+真实知识框架的 [下一阶段设计](../11-01-collaboration-knowledge-audit-fixes/research/knowledge-real-model-preregistration-20261102/design.md) 已落盘：四次 K1、两次 K2、八个生产者/角色 K3 样本，共 14 次知识调用提案，普通 E0b 的一次另计。尚未实施或分配，不能从原剩余 14 或 runtime 上限 25 转移额度。确定性检查与真实模型/启用/发布分别核销，任务仍保持 in_progress。
+
+## 2026-11-02 本轮推进
+
+已按用户续作请求进入 [审计修复最终验收计划](../11-01-collaboration-knowledge-audit-fixes/advance-plan-2026-11-02.md)，第 4 候选 `64a9994ec` 的源码与构件绑定已核对。RKI6 原 fake 结果已独立 pass-with-notes、0 阻塞；v5 私有适配器两项隔离/路径问题及 v7 中发现的 compile-only 取值边界正在以红绿证据修复。完整第 4 轮由首轮闭环会话单执行，知识侧提供独立增量并复用同源结果；不重复启动完整检查。第三轮失败保留，不再将旧“检查运行中”作为当前状态。知识实际输入组合、纠错/撤回及部署开关两态的已记录证据保留原覆盖范围；知识 K1–K3 仍无预算，真实模型和发布门继续开放。
+
+以下数字与里程碑是对应历史版本的交付记录，不代表本轮重新运行或最终检查已通过。
+
 状态：**工程已合入，确定性验收通过，真实模型与发布验收仍开放**。任务保持 `in_progress`，知识注入开关默认 `false`，未部署或发布。
 
 本次核对基线为 `ba6f3cd50`。产品提交 `96cedf485`、证据提交 `93093d2e9`，已通过 `8cb04e329` 合入 `codex/cross-workspace-collaboration`。完整范围见 [集成验收报告](verification-integration-2026-11-01.md)。

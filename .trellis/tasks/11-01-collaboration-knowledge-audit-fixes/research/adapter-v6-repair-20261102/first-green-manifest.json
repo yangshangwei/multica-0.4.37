@@ -1,0 +1,41 @@
+{
+  "stage": "AV5-1/AV5-2 first green",
+  "files": [
+    {
+      "path": "check-bin/go",
+      "sha256": "c987ea45cf75e4fa2fe5858a6bc5d82bb1f30ac289162015ebe544dab8b6382f",
+      "bytes": 9420,
+      "mode": "0o700"
+    },
+    {
+      "path": "check-bin/pnpm",
+      "sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "bytes": 2228,
+      "mode": "0o700"
+    },
+    {
+      "path": "check-go-isolation-test.py",
+      "sha256": "3248d5b6b30f10012e46355acbb0cd451864beaaf9afe665e6461a96c4fce92d",
+      "bytes": 11915,
+      "mode": "0o644"
+    },
+    {
+      "path": "check-go-package-binding-test.py",
+      "sha256": "fa6449b9ecb9194b3e3f7a5a4d29af08b8dccfe4a741ba99c4d5d79e489176f8",
+      "bytes": 19283,
+      "mode": "0o644"
+    },
+    {
+      "path": "check-pnpm-reporting-test.py",
+      "sha256": "369738115a2ff1e7243766d4031b8d68ced15890bcc733905b7557d496d28147",
+      "bytes": 6108,
+      "mode": "0o644"
+    },
+    {
+      "path": "deny-network.sb",
+      "sha256": "5c358b8d847211333e7ba22df82d84f796b5f30a41a2682209a949d783adbd08",
+      "bytes": 44,
+      "mode": "0o600"
+    }
+  ]
+}

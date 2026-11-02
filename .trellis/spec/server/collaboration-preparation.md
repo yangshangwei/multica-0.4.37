@@ -151,3 +151,117 @@ An authenticated provider/version smoke, packaged installation and each other
 provider/OS combination need their own evidence. Windows/macOS containment
 continues to refuse; production creation/execution gates remain independently
 controlled.
+
+## Task-private Go verification adapters
+
+### 1. Scope / trigger
+
+Apply when a private `make check` adapter allocates a fresh database per Go
+package or forwards recursive Go commands. A passing wrapper happy path does
+not establish that every compile-only or recursive branch preserves isolation.
+The 2026-11-02 independent reviews reproduced both an unbound recursive package
+and ordinary tests incorrectly forwarded as compilation.
+
+### 2. Signatures
+
+The adapter receives raw Go argv, including leading `-C` / `-C=` forms. Ordinary
+outer tests use `MULTICA_TASK_PACKAGE_DB_MODE=1` with explicit nonblank
+`MULTICA_TASK_REAL_GO`, `MULTICA_TASK_PSQL`, `MULTICA_TASK_PACKAGE_DB_EVIDENCE` and
+a newly migrated check-template `DATABASE_URL`. Recursive mode0 uses its exact
+allocated clone and a matching record containing canonical `package`,
+`database`, `template` and `state`. The actual database name must match its
+allocation; see [database test isolation](database-test-isolation.md).
+
+### 3. Contracts
+
+- Classify Go build/test flags from the selected toolchain's actual definitions,
+  including value flags, Boolean flags and registered `-test.*` aliases. Go's
+  supported `--name` spelling has the same semantics as `-name`; preserve the
+  original argv when forwarding.
+- Only a provably real final true `-c` setting in the Go-option prefix grants a
+  compile-only exemption. A value such as `-bench -c`, `-installsuffix -c` or
+  `-gccgoflags -c` is not the compile flag. Respect `-args`, `--args`, `--` and
+  the package/flag/test-binary-tail boundary; a later binary argument cannot
+  grant the exemption.
+- An unclassified option must not grant a compile-only exemption. Refuse an
+  unprovable compile request before Go discovery/execution or SQL. Legitimate
+  classified `-c`, output, tags, race and working-directory forms remain useful.
+- Ordinary test execution requires complete explicit executable/evidence
+  context before discovery or SQL; a convenient executable fallback for
+  non-test commands is not permission to execute tests.
+- Identify the actual command after Go's valid global prefix, including a
+  global `--` separator, before choosing non-test forwarding. `go -- test`
+  remains a test command and cannot skip context, pool or package checks;
+  `go -- version` remains useful non-test metadata.
+- In recursive mode0, resolve the actual selector (default `.`) with the same
+  cwd and `-C` semantics and require exactly the allocation's canonical package.
+  Reject cross-package/recursive selections instead of running them on its
+  parent's clone. The outer allocator owns new per-package suites.
+- Mode0 refuses actual source-resolution options `-modfile` and `-overlay`,
+  including separate-value and `=` forms, before discovery/test execution.
+  A default-module `go list` cannot authorize a test forwarded with a different
+  module or unbound source overlay. A flag-shaped regex value or argument in
+  the opaque binary tail is not such a Go option.
+- Keep API pool overrides separate from Go tests that intentionally verify
+  unset configuration. Bind the final adapter, launcher and data-only env bytes
+  to their actual hashes after all coordinated changes; preserve previous
+  failed versions and their raw evidence.
+- Keep API-only publication configuration separate from outer ordinary-Go
+  package fixtures. Inherited `MULTICA_RESOURCE_PUBLISH_DIR` enables a managed
+  catalog that requires an active internal organization, which a direct-SQL
+  default TestMain may not create. Preserve it for the actual API/non-test and
+  compile paths, and preserve explicit recursive test-owned settings; an outer
+  package child must not inherit it merely from the verification API profile.
+  Missing mounted directories alone do not prove this failure cause.
+
+### 4. Validation and error matrix
+
+| Input | Required observation |
+| --- | --- |
+| Missing/blank ordinary executable or evidence context | Content-free refusal before any Go/SQL call |
+| Known value flag followed by `-c` | Ordinary-test isolation still required |
+| `-c=true --c=false` | No compile-only exemption |
+| Unclassified option in a proposed compile request | Refusal before discovery/execution/SQL |
+| `-args` / `--args` tail contains `-c` | Tail cannot grant compilation |
+| Global `-- test` prefix | Ordinary context and recursive package checks still apply |
+| Recursive selector/cwd resolves to another canonical package | No test or new execution on the parent clone |
+| Mode0 actual `-modfile` / `-overlay` option | Refusal; no misleading default-module discovery |
+| Fully classified genuine compilation | Forward without TestMain or database allocation |
+| New complete package suite | Fresh migrated allocation and separately recorded result |
+| API-only publication env leaks into default Go fixture | Preserve failed503; correct only the outer package-child environment, not API/catalog assertions |
+
+### 5. Good / base / bad cases
+
+Good: a recursive `.` is resolved in its exact current directory and matches the
+recorded import path; the test uses only that clone. Base: cached non-test
+`go version` forwarding is proved without a database or Provider. Bad: seeing
+the string `-c` is treated as proof of compilation, or a valid clone name is
+treated as permission for another package or alternate module.
+
+### 6. Tests required
+
+Use test-created Go/psql/test executables and recorders for every execution
+boundary. Assert zero Go discovery/test/SQL calls for missing context,
+unclassified compile requests and rejected source overrides. Cover the full
+current flag table and aliases, repeated true/false flags, raw double-dash
+forms, working directories, relative/default selectors, actual package tails
+and mode0 record mismatch. Include global-separator dispatch for ordinary tests,
+final false compile flags and another package; retain a genuine compilation
+and non-test metadata positive with the same global prefix.
+
+An offline Go-list oracle on a minimal owned module may prove selector and
+build-flag semantics without TestMain or database access. For `-modfile`, prove
+that default and alternate module discovery differ, then prove the wrapper
+rejects that override. Fake/metadata proofs do not replace the new complete
+repository check or knowledge/Provider/platform acceptance. Retain the initial
+red and each source-bound green rather than overwriting earlier failures.
+
+### 7. Wrong vs correct
+
+Wrong: `any(arg == "-c" for arg in argv)` authorizes raw forwarding. Correct:
+the classified prefix proves a real final true compilation flag and contains
+no unproved option or test-binary-tail influence.
+
+Wrong: validate only the clone's filename and run `go test ./...`. Correct:
+validate its recorded canonical package and same-context discovery; refuse
+unbound source-resolution options and leave fresh suites to the outer allocator.

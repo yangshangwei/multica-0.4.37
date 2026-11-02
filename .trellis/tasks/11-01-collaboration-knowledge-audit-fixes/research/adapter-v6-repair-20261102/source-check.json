@@ -1,0 +1,86 @@
+{
+  "compiled_python_files": [
+    "check-bin/go",
+    "check-bin/pnpm",
+    "check-go-isolation-test.py",
+    "check-go-package-binding-test.py",
+    "check-pnpm-reporting-test.py"
+  ],
+  "syntax_errors": 0,
+  "snapshot_matches": true,
+  "live_sources": [
+    {
+      "path": ".omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+      "incoming_sha256": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+      "current_sha256": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+      "matches_incoming": true
+    },
+    {
+      "path": ".omx/private/collaboration-resume-20261101/adapter-v5/check-bin/pnpm",
+      "incoming_sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "current_sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "matches_incoming": true
+    },
+    {
+      "path": ".omx/private/collaboration-resume-20261101/adapter-v5/check-go-isolation-test.py",
+      "incoming_sha256": "5c5aad4d0e04427a1c53eadec2067a2ac355701c9d4605e722a87ccf9acad4e7",
+      "current_sha256": "5c5aad4d0e04427a1c53eadec2067a2ac355701c9d4605e722a87ccf9acad4e7",
+      "matches_incoming": true
+    },
+    {
+      "path": ".omx/private/collaboration-resume-20261101/adapter-v6/check-bin/go",
+      "incoming_sha256": "b8c5d5adbece4f781a00a230b4f6ffbbfed195f4e44826d53997d72b3f160079",
+      "current_sha256": "b8c5d5adbece4f781a00a230b4f6ffbbfed195f4e44826d53997d72b3f160079",
+      "matches_incoming": true
+    },
+    {
+      "path": ".omx/private/collaboration-resume-20261101/adapter-v6/check-bin/pnpm",
+      "incoming_sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "current_sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "matches_incoming": true
+    },
+    {
+      "path": ".omx/private/collaboration-resume-20261101/adapter-v6/check-go-isolation-test.py",
+      "incoming_sha256": "ddeb1c96fbefa7aaa4f88b8b0478f313eda4abc4eb26eff369c2b5e284aed66a",
+      "current_sha256": "ddeb1c96fbefa7aaa4f88b8b0478f313eda4abc4eb26eff369c2b5e284aed66a",
+      "matches_incoming": true
+    },
+    {
+      "path": ".omx/private/collaboration-resume-20261101/adapter-v6/check-launcher-test.py",
+      "incoming_sha256": "fae87da21e6807a1aaf07951cef9e9765d6a324175121fd800e7a160d3bdb500",
+      "current_sha256": "eaf307fc1aad63603bdad3e642a935e84a28f73481878ac186e9d8f3588e9f68",
+      "matches_incoming": false
+    }
+  ],
+  "whitespace_checks": [
+    {
+      "command": [
+        "git",
+        "diff",
+        "--no-index",
+        "--check",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/incoming/adapter-v6/check-bin/go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--no-index",
+        "--check",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/incoming/adapter-v6/check-go-isolation-test.py",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-isolation-test.py"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "real_go_tests": 0,
+  "real_sql_connections": 0,
+  "real_pnpm_browser_agent_cli_calls": 0
+}

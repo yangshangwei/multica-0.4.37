@@ -4,6 +4,8 @@
 
 修复 2026-11-01 只读审计对知识交付（`765ab186a..6aed33aad`）确认的全部缺陷，同时不削弱现有的安全性质：fail closed、exposure 不重标、人工审批、撤销即时生效。
 
+当前执行入口为 [最终验收推进计划](advance-plan-2026-11-02.md)。21 条原审计主张保留；经设计和独立复核未复现的 L7 按下面 AC1 的明确测试处置验收，不制造不存在的产品修复。其余产品范围与权限边界不变。
+
 ## Source
 
 - 审计范围：`765ab186a..HEAD`（审计时 HEAD 为 `93afc3cb0`，修复基线为 `6aed33aad`，两者之间只有文档提交）。
@@ -39,14 +41,14 @@
 
 - 真实 Provider 验收、E2a 实验（由会话 multica-0-4-37-54 独占）；
 - 打开 `MULTICA_KNOWLEDGE_CONTEXT_ENABLED`；
-- 未经用户同意合入 `codex/cross-workspace-collaboration`；
-- 完整的 `make check`（需要与独占真实模型窗口的会话协调时间）。
+- 外部推送、CI、部署与发布，仍由父任务按对应授权和验收门管理；
+- 共享完整 `make check` 的执行由首轮闭环任务独占；本任务在本轮已授权续作中核对同一候选的实际结果，不重复启动整套检查。知识真实模型/发布门不作为本审计子任务的产品修复条件。
 
 ## Acceptance criteria
 
 | ID | 可观察验收 |
 | --- | --- |
-| AC1 | 每个缺陷 ID 都有一个具名测试：在 `6aed33aad` 上失败，修复后通过。红绿两次运行的输出都要保留。L13 例外，用 locale parity 测试和术语核对代替。 |
+| AC1 | 每个已复现的产品缺陷 ID 都有具名回归：在 `6aed33aad` 的对应未修复产品代码上失败，修复后通过，保留实际红绿输出。L13 用 locale parity 和术语核对代替。L7 经设计及独立分道复核未复现，以正确进程终止行为的具名测试处置，保留原审计主张；不能计为已复现并修复的产品缺陷。 |
 | AC2 | 开关关闭时，安全参数下的普通 claim 返回 nil descriptor 并正常执行；不安全的会话选择参数按设计结论处理，绝不静默剥离。 |
 | AC3 | 历史只会正常增长时，任何长度都不会造成永久拒绝；损坏的行和真实 exposure，无论处在多深的历史里，仍然拒绝。 |
 | AC4 | 瞬时数据库错误和锁竞争都不会终止任务：任务重新入队或进入有界重试，并留下可观察的原因。 |
@@ -56,7 +58,11 @@
 | AC8 | Go：受影响包的 build、vet 通过；所有 DB-backed 包各用一份独立克隆库，测试全绿；改动过的并发路径加 `-race`。TS：core、views 的 typecheck、lint 和 vitest 全绿。 |
 | AC9 | spec、内置 skill 文档中凡是描述了被改动行为的地方，都在同一批提交里同步更新。 |
 
+L7 的已接受处置依据为 `design.md` §“Started 回调失败后的 Terminated”、`research/launch-independent-review/review.json` 和原 `research/evidence/L7-takeover-green.jsonl`。`TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated`、`TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit` 证明实际进程退出、匹配原进程/attempt 的 Terminated 恰好一次、无再次授权/启动；既有 `TestHostLifecycleStartedFailureStillWaitsAndBlocksFallback` 保留 Host 路径。同一最终源码的三个具名通过记录见 [关闭条件核对](research/continuation-20261102/knowledge-closure-readiness.md)。不要求伪造 L7 的失败基线，也不改写任何历史失败样本。
+
 ## Constraints
+
+下面的 worktree/数据库约束是原产品修复分道的实施环境；已合入后的本轮任务文档、私有验证工具增量与共享验收归属以当前推进计划为准。所有业务/失败数据库的保留边界继续有效。
 
 - 所有改动都在 worktree `/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101` 的分支 `codex/collaboration-knowledge-fixes-20261101` 上进行，不改动共享 checkout。
 - 测试只使用 `multica-postgres-1` 中从 `kfix_template_20261101`（760）克隆的数据库，每个包一份。
