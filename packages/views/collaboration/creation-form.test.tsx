@@ -1,6 +1,6 @@
 import { webcrypto } from "node:crypto";
 import { afterEach, expect, it, vi } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "@multica/core/api";
@@ -22,6 +22,12 @@ const created = { ...collaborationIssueFixture, source_workspace: { ...collabora
 const clients: QueryClient[] = [];
 afterEach(() => { clients.splice(0).forEach((client) => client.clear()); localStorage.clear(); vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 const json = (data: unknown) => new Response(JSON.stringify(data));
+const releaseParent = { id: "00000000-0000-4000-8000-000000000005", identifier: "SRC-12", name: "Prepare the release" };
+const designParent = { id: "00000000-0000-4000-8000-000000000006", identifier: "SRC-11", name: "Review the design" };
+function parentOptions(parents = [releaseParent, designParent]) {
+  return { ...options, source: sourceChoice, fields: { labels: [], properties: [], statuses: [{ key: "todo", name: "Todo", category: "todo" }], default_status: "todo",
+    source_options: { projects: [], parents, parents_truncated: false, iterations: [], iterations_enabled: false } } };
+}
 
 async function chooseExactRecipient(user: ReturnType<typeof userEvent.setup>, value: string) {
   await user.click(screen.getByRole("button", { name: "Recipient" }));
@@ -158,4 +164,96 @@ it("keeps a durably rejected form through reload and sends identical input only 
   await waitFor(() => expect(onCreated).toHaveBeenCalledOnce());
   expect(keys).toHaveLength(2);
   expect(keys[1]).not.toBe(keys[0]);
+});
+
+it("opens real source-option candidates and ignores a late previous search without submitting the creation form", async () => {
+  let finishOldSearch!: (response: Response) => void;
+  const requested: URL[] = [];
+  const fetch = vi.fn(async (input: string) => {
+    const url = new URL(input);
+    requested.push(url);
+    if (!url.pathname.endsWith("creation-options")) throw new Error(`Unexpected test path ${url.pathname}`);
+    if (!url.searchParams.has("source_workspace_id")) return json(options);
+    expect(url.searchParams.get("source_workspace_id")).toBe(source);
+    const search = url.searchParams.get("parent_search");
+    if (search === "release") return new Promise<Response>((resolve) => { finishOldSearch = resolve; });
+    return json(parentOptions(search === "design" ? [designParent] : [releaseParent, designParent]));
+  });
+  vi.stubGlobal("fetch", fetch);
+  const user = userEvent.setup();
+  const { onCreated } = mount();
+  await user.type(await screen.findByLabelText("Title"), "Keep this creation title");
+  await user.type(screen.getByLabelText("Description"), "Keep the description");
+  await user.click(screen.getByText("Initial fields", { exact: true }));
+  const trigger = screen.getByRole("button", { name: "Parent issue" });
+  await user.click(trigger);
+  expect(await screen.findByRole("button", { name: "SRC-12 Prepare the release" })).toBeVisible();
+  const search = screen.getByPlaceholderText("Find source issues by title or number");
+  fireEvent.change(search, { target: { value: "release" } });
+  await screen.findByText("Loading tasks...");
+  expect(screen.queryByRole("button", { name: "SRC-11 Review the design" })).not.toBeInTheDocument();
+  fireEvent.change(search, { target: { value: "design" } });
+  expect(await screen.findByRole("button", { name: "SRC-11 Review the design" })).toBeVisible();
+  await act(async () => { finishOldSearch(json(parentOptions([releaseParent]))); });
+  expect(screen.queryByRole("button", { name: "SRC-12 Prepare the release" })).not.toBeInTheDocument();
+  await user.click(screen.getByRole("button", { name: "SRC-11 Review the design" }));
+  expect(trigger).toHaveTextContent("SRC-11 Review the design");
+  expect(screen.getByLabelText("Title")).toHaveValue("Keep this creation title");
+  expect(screen.getByLabelText("Description")).toHaveValue("Keep the description");
+  expect(requested.some((url) => url.searchParams.get("parent_search") === "release")).toBe(true);
+  expect(requested.some((url) => url.searchParams.get("parent_search") === "design")).toBe(true);
+  expect(onCreated).not.toHaveBeenCalled();
+  expect(requested.every((url) => url.pathname.endsWith("creation-options"))).toBe(true);
+});
+
+it("keeps the parent picker and draft mounted after a failed search and retries that search", async () => {
+  let failSearch = true;
+  const searches: string[] = [];
+  vi.stubGlobal("fetch", vi.fn(async (input: string) => {
+    const url = new URL(input);
+    if (!url.pathname.endsWith("creation-options")) throw new Error(`Unexpected test path ${url.pathname}`);
+    if (!url.searchParams.has("source_workspace_id")) return json(options);
+    const search = url.searchParams.get("parent_search") ?? "";
+    searches.push(search);
+    if (search === "release" && failSearch) return new Response(JSON.stringify({ error: "Temporary failure" }), { status: 500 });
+    return json(parentOptions(search ? [releaseParent] : [releaseParent, designParent]));
+  }));
+  const user = userEvent.setup();
+  mount();
+  await user.type(await screen.findByLabelText("Title"), "Keep this draft through retry");
+  await user.click(screen.getByText("Initial fields", { exact: true }));
+  await user.click(screen.getByRole("button", { name: "Parent issue" }));
+  const search = await screen.findByPlaceholderText("Find source issues by title or number");
+  fireEvent.change(search, { target: { value: "release" } });
+  expect(await screen.findByText("Tasks could not be loaded. Try again.")).toBeVisible();
+  expect(search).toBeInTheDocument();
+  expect(search).toHaveValue("release");
+  expect(screen.queryByRole("button", { name: "SRC-12 Prepare the release" })).not.toBeInTheDocument();
+  expect(screen.getByLabelText("Title")).toHaveValue("Keep this draft through retry");
+  failSearch = false;
+  await user.click(screen.getByRole("button", { name: "Retry loading tasks" }));
+  expect(await screen.findByRole("button", { name: "SRC-12 Prepare the release" })).toBeVisible();
+  expect(searches.filter((value) => value === "release")).toHaveLength(2);
+  await user.click(screen.getByRole("button", { name: "SRC-12 Prepare the release" }));
+  expect(screen.getByRole("button", { name: "Parent issue" })).toHaveTextContent("SRC-12 Prepare the release");
+  expect(screen.getByLabelText("Title")).toHaveValue("Keep this draft through retry");
+});
+
+it("does not reuse retained parent options after authoritative source-access denial", async () => {
+  vi.stubGlobal("fetch", vi.fn(async (input: string) => {
+    const url = new URL(input);
+    if (!url.pathname.endsWith("creation-options")) throw new Error(`Unexpected test path ${url.pathname}`);
+    if (!url.searchParams.has("source_workspace_id")) return json(options);
+    return url.searchParams.has("parent_search") ? new Response(JSON.stringify({ code: "source_access_denied" }), { status: 403 }) : json(parentOptions());
+  }));
+  const user = userEvent.setup();
+  mount();
+  await user.type(await screen.findByLabelText("Title"), "Private source draft");
+  await user.click(screen.getByText("Initial fields", { exact: true }));
+  await user.click(screen.getByRole("button", { name: "Parent issue" }));
+  fireEvent.change(await screen.findByPlaceholderText("Find source issues by title or number"), { target: { value: "release" } });
+  await waitFor(() => expect(screen.queryByLabelText("Title")).not.toBeInTheDocument());
+  expect(screen.queryByRole("button", { name: "SRC-12 Prepare the release" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Parent issue" })).not.toBeInTheDocument();
+  expect(screen.getByRole("alert")).toBeVisible();
 });

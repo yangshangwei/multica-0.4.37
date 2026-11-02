@@ -1,6 +1,6 @@
 import { useId, useRef, useState } from "react";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { collaborationFieldOptions, collaborationPropertyValueMatchesDefinition, collaborationKeys, executeCollaborationAction, parseCollaborationActionDraft, prepareCollaborationAction, useCollaborationPendingDrafts, useCollaborationStatusOptions,
+import { collaborationFieldOptions, collaborationPropertyValueMatchesDefinition, collaborationKeys, executeCollaborationAction, isCollaborationDenied, parseCollaborationActionDraft, prepareCollaborationAction, useCollaborationPendingDrafts, useCollaborationStatusOptions,
   type CollaborationAction, type CollaborationActionIntent, type CollaborationDraft, type CollaborationIssue, type CollaborationRecipientAccount, type CollaborationScope, type CollaborationStatusAction } from "@multica/core/collaboration";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
@@ -111,7 +111,8 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
   const needsSource = action === "edit_source_structure" || action === "change_iteration";
   const needsFields = needsSource || action === "edit" && baseline.labels !== undefined && baseline.properties !== undefined;
   const fields = useQuery({ ...collaborationFieldOptions(client, scope, issue, parentSearch), enabled: needsFields && issue.capabilities.edit === true, placeholderData: keepPreviousData });
-  const sourceOptions = issue.capabilities.edit_source_structure === true ? fields.data?.source_options : undefined;
+  const sourceOptions = issue.capabilities.edit_source_structure === true ? fields.data?.source_options
+    ?? (fields.error && !isCollaborationDenied(fields.error) ? client.getQueryData(collaborationFieldOptions(client, scope, issue).queryKey)?.source_options : undefined) : undefined;
   const propertyDefinitions = [...(fields.data?.properties ?? []), ...(baseline.property_definitions ?? []).filter((item) => !fields.data?.properties.some((option) => option.id === item.id)).map((item) => ({ ...item, archived: true }))];
   const propertyValues: Record<string, IssuePropertyValue> = { ...baseline.properties };
   for (const [id, value] of Object.entries(properties)) { if (value === null) delete propertyValues[id]; else propertyValues[id] = value; }
@@ -126,7 +127,7 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
   const options = useCollaborationStatusOptions(scope, issue.id, (needsStatus ? action : "change_status") as CollaborationStatusAction, needsStatus);
   const chosenStatus = status || options.data?.default_status || "";
   const editReady = action !== "edit" || (title.trim() !== "" && ["none", "low", "medium", "high", "urgent"].includes(priority) && baseline.start_date !== undefined && baseline.due_date !== undefined && !invalidProperties && !invalidLabels);
-  const sourceReady = !needsSource || sourceOptions !== undefined && !fields.isFetching && !fields.isPlaceholderData && (sourceSelection.stage === null || Number.isInteger(sourceSelection.stage) && sourceSelection.stage >= 1 && sourceSelection.stage <= 2147483647);
+  const sourceReady = !needsSource || sourceOptions !== undefined && !fields.error && !fields.isFetching && !fields.isPlaceholderData && (sourceSelection.stage === null || Number.isInteger(sourceSelection.stage) && sourceSelection.stage >= 1 && sourceSelection.stage <= 2147483647);
   // The answer goes to the open request the form observed, so show that one.
   const informationRequest = action === "return_information" ? baseline.current_information_request : null;
   const needsCompletedConfirmation = baseline.status_category === "done" && iterationId !== null && iterationId !== baseline.source_structure?.iteration?.id;
@@ -179,7 +180,8 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
         </>}
         {(invalidProperties || invalidLabels) && <p role="alert" className="text-body">{t(($) => $.fields.invalidSelection)}</p>}
       </>}
-      {action === "edit_source_structure" && sourceOptions && <CollaborationSourceInputs options={sourceOptions} current={baseline.source_structure} value={sourceSelection} onChange={setSourceSelection} parentSearch={parentSearch} onParentSearch={setParentSearch} disabled={locked} />}
+      {action === "edit_source_structure" && sourceOptions && <CollaborationSourceInputs options={sourceOptions} current={baseline.source_structure} value={sourceSelection} onChange={setSourceSelection} parentSearch={parentSearch} onParentSearch={setParentSearch}
+        parentsPending={fields.isFetching || fields.isPlaceholderData} parentsError={fields.error} onRetryParents={() => void fields.refetch()} disabled={locked} />}
       {action === "change_iteration" && sourceOptions && <>
         <CollaborationIterationInput options={sourceOptions} selectedId={iterationId} current={baseline.source_structure?.iteration} disabled={locked || fields.isFetching} statusCategory={baseline.status_category}
           onChange={(id) => { setIterationId(id); setIterationRevision(sourceOptions.iterations.find((item) => item.id === id)?.revision); setAllowCompleted(false); }} />

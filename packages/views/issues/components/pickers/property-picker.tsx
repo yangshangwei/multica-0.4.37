@@ -92,6 +92,7 @@ export function PropertyPicker({
   side = "bottom",
   searchable = false,
   searchPlaceholder,
+  searchMaxLength,
   onSearchChange,
   navigationResetKey,
   searchInputRef,
@@ -111,6 +112,7 @@ export function PropertyPicker({
   side?: React.ComponentProps<typeof PopoverContent>["side"];
   searchable?: boolean;
   searchPlaceholder?: string | undefined;
+  searchMaxLength?: number;
   onSearchChange?: (query: string) => void;
   /** Invalidate navigation after an external result change. Typed search wins
    * over a simultaneous reset; append-only display pages may keep this key. */
@@ -270,6 +272,7 @@ export function PropertyPicker({
               ref={searchInputRef}
               type="text"
               value={query}
+              maxLength={searchMaxLength}
               onChange={(e) => {
                 setQuery(e.target.value);
                 pendingSearchHighlight.current = true;

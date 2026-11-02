@@ -76,7 +76,8 @@ it("submits source structure and iteration through their separate versioned acti
   const user = userEvent.setup();
   await user.click(screen.getByRole("button", { name: "Edit source fields" }));
   await user.selectOptions(await screen.findByLabelText("Project", { exact: true }), projectId);
-  await user.selectOptions(screen.getByLabelText("Parent issue", { exact: true }), parentId);
+  await user.click(screen.getByRole("button", { name: "Parent issue" }));
+  await user.click(await screen.findByRole("button", { name: "SRC-2 Source parent" }));
   fireEvent.change(screen.getByLabelText("Stage under parent"), { target: { value: "2" } });
   await user.click(screen.getByRole("button", { name: "Confirm" }));
   await screen.findByText("Action confirmed.");

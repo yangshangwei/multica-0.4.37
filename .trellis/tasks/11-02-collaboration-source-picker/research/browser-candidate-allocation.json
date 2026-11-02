@@ -1,0 +1,27 @@
+{
+  "base_commit": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "database": "collab_source_browser_65139858fd",
+  "api_origin": "http://localhost:51953",
+  "web_origin": "http://localhost:51954",
+  "api_pid": 28253,
+  "web_pid": 28254,
+  "candidate_api_sha256": "7f30837a74815e9075b3ebfb4fea42e1c947139a59ee445b93b61be63e645cea",
+  "web_build_id": "XEhBjWwU5E7t46A7-oQSM",
+  "candidate_source_sha256": {
+    "packages/views/collaboration/field-inputs.tsx": "6ced2209a5cc1c822b0893cb8b655c4d927941325d181f7c689151c3addeba76",
+    "packages/views/collaboration/creation-form.tsx": "68656b0c6f124e4b6286c83149fecf984534f5420ed61e21c519f77daa179ca6",
+    "packages/views/collaboration/workflow.tsx": "f29d5ad2753213d39145a15d67e21933708c187640478825b80b2151733df5e6",
+    "packages/views/collaboration/field-inputs.test.tsx": "4025b9da76c2428b2965e6631ce4c775589eb61a5319f2f97691faa724817ef3",
+    "packages/views/collaboration/creation-form.test.tsx": "2b9b89bf86799a6dbd6993caa7d50e5abf5087cefd74e65195f13ab0edc5476e",
+    "packages/views/collaboration/field-editing.test.tsx": "8b4ca9f5f716ea5256cf44ef91b12df2bdbf4390ab3245976a5453994cfb89ae",
+    "packages/views/issues/components/pickers/property-picker.tsx": "f3c81149368478f151ce88ea8e41e7b59161f75f3e751535d649fc3cd077ab6d",
+    "packages/views/locales/en/collaboration.json": "bc8fbb2113d0cbd24a3480a412c2846b8ebb2e392d95cec532616af329181529",
+    "packages/views/locales/zh-Hans/collaboration.json": "4a7d26d032bcdebab54b9bb6dcb91cf65445562d263a9b6e07b7587b38faf37a",
+    "server/pkg/db/queries/collaboration_source_fields.sql": "54fa328e25e57a0a5f0ae1f716e2009bb44f55805b3e7b62067f6b6c96671df0",
+    "server/internal/service/collaboration_source_fields.go": "cfd744c16d41b9084c72547a58ad97020a5b9b154f0f15f18dad51cd4d54cade",
+    "server/pkg/db/generated/collaboration_source_fields.sql.go": "25e18cf422ea3ed88b28db89b0080ecfbef79d03198032cc029f734eab6cf780",
+    "server/internal/service/collaboration_source_fields_test.go": "ac335a446057ea2dcc62590a6cefcc22140efa08e773260a5fcceb84d7115825"
+  },
+  "rendered_api_origin_verified": true,
+  "source_proof": "HEAD base plus the listed task-owned source patch; later unowned worktree edits are excluded from this payload"
+}

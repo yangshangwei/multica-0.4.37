@@ -2,6 +2,8 @@ package service
 
 import (
 	"encoding/json"
+	"fmt"
+	"slices"
 	"strings"
 	"testing"
 
@@ -30,6 +32,88 @@ func TestCollaborationParentSearchCharacterLimit(t *testing.T) {
 				t.Fatalf("overlong search accepted: %v", err)
 			}
 		})
+	}
+}
+
+func TestCollaborationSourceParentSearchMatchesDisplayedIdentifiers(t *testing.T) {
+	for _, prefix := range []struct {
+		name, stored, workspaceName, displayed string
+	}{
+		{"stored", "SRC", "Source workspace", "SRC"},
+		{"numeric_first", "3D", "Source workspace", "3D"},
+		{"numeric_only", "123", "Source workspace", "123"},
+		{"legacy_name", "", "Legacy source workspace", "LEG"},
+		{"legacy_default", "", "123项目", "WS"},
+	} {
+		t.Run(prefix.name, func(t *testing.T) {
+			f := newCollaborationFixture(t)
+			f.fx.Exec(t, `UPDATE workspace SET issue_prefix=$2, name=$3 WHERE id=$1`, f.workspace, prefix.stored, prefix.workspaceName)
+			parent := f.fx.Issue(t, "Prepare release", testutil.Cols{"number": 42, "status": "done", "admission_status": "accepted"})
+			numericTitle := f.fx.Issue(t, "Follow item 42", testutil.Cols{"number": 43})
+			f.fx.Issue(t, "Prepare release draft", testutil.Cols{"number": 44, "admission_status": "pending"})
+			otherWorkspace := f.fx.Workspace(t, "Other source", "parent-search-"+uuid.NewString())
+			f.fx.Issue(t, "Prepare release", testutil.Cols{"workspace_id": otherWorkspace, "number": 42})
+			identifier := prefix.displayed + "-42"
+			for _, tc := range []struct {
+				name, query string
+				want        []string
+			}{
+				{"title", "PREPARE", []string{parent}},
+				{"bare_number_retains_title_matches", "42", []string{numericTitle, parent}},
+				{"uuid", parent, []string{parent}},
+				{"displayed_identifier", identifier, []string{parent}},
+				{"case_insensitive_identifier", strings.ToLower(identifier), []string{parent}},
+				{"trimmed_identifier", " \t" + identifier + "\n", []string{parent}},
+				{"wrong_prefix_is_not_stripped", "OTHER-42", []string{}},
+			} {
+				t.Run(tc.name, func(t *testing.T) {
+					options, err := f.svc.CreationOptions(f.ctx, util.MustParseUUID(f.workspace), tc.query)
+					if err != nil || options.Fields == nil || options.Fields.SourceOptions == nil {
+						t.Fatalf("source parent choices unavailable: %+v %v", options.Fields, err)
+					}
+					got := make([]string, 0, len(options.Fields.SourceOptions.Parents))
+					for _, choice := range options.Fields.SourceOptions.Parents {
+						got = append(got, choice.ID)
+						if choice.ID == parent && choice.Identifier != identifier {
+							t.Errorf("parent identifier = %q, want %q", choice.Identifier, identifier)
+						}
+					}
+					if !slices.Equal(got, tc.want) || options.Fields.SourceOptions.ParentsTruncated {
+						t.Fatalf("parent matches = %v (truncated=%t), want %v", got, options.Fields.SourceOptions.ParentsTruncated, tc.want)
+					}
+				})
+			}
+		})
+	}
+}
+
+func TestCollaborationSourceParentSearchFindsIdentifierBeyondRecentWindow(t *testing.T) {
+	f := newCollaborationFixture(t)
+	f.fx.Exec(t, `UPDATE workspace SET issue_prefix='SRC' WHERE id=$1`, f.workspace)
+	parent := f.fx.Issue(t, "Older source task", testutil.Cols{"number": 1})
+	for number := 2; number <= 202; number++ {
+		f.fx.Issue(t, fmt.Sprintf("Recent source task %d", number), testutil.Cols{"number": number})
+	}
+	options, err := f.svc.CreationOptions(f.ctx, util.MustParseUUID(f.workspace))
+	if err != nil || options.Fields == nil || options.Fields.SourceOptions == nil {
+		t.Fatalf("source browsing unavailable: %+v %v", options.Fields, err)
+	}
+	parents := options.Fields.SourceOptions
+	if len(parents.Parents) != 200 || !parents.ParentsTruncated || parents.Parents[0].Identifier != "SRC-202" || parents.Parents[199].Identifier != "SRC-3" {
+		t.Fatalf("recent parent window changed: %+v", parents)
+	}
+	for _, choice := range parents.Parents {
+		if choice.ID == parent {
+			t.Fatal("older parent unexpectedly appeared in the bounded recent window")
+		}
+	}
+	options, err = f.svc.CreationOptions(f.ctx, util.MustParseUUID(f.workspace), "SRC-1")
+	if err != nil || options.Fields == nil || options.Fields.SourceOptions == nil {
+		t.Fatalf("older source search unavailable: %+v %v", options.Fields, err)
+	}
+	parents = options.Fields.SourceOptions
+	if len(parents.Parents) != 1 || parents.Parents[0].ID != parent || parents.ParentsTruncated {
+		t.Fatalf("complete identifier did not find the older parent: %+v", parents)
 	}
 }
 

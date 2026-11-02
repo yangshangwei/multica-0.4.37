@@ -67,6 +67,18 @@ never source catalogs. Label/property values use issue-scoped definitions withou
 definition-management rights. Actor properties remain member-only; exact account
 resolution and explicit selection do not grant workspace access or AI authority.
 
+Source-parent options reuse `ListCollaborationSourceParents`: empty search returns
+the latest eligible rows by number descending, with a 201-row read projected as
+200 rows plus `parents_truncated`. Keep current workspace/self/admission filters
+and existing terminal/collaboration-parent eligibility. Title substrings, exact
+bare numbers and UUIDs remain supported. Complete displayed identifiers match
+case-insensitively using the same `util.ResolveIssuePrefix(ws.IssuePrefix, ws.Name)`
+as display formatting, supplied as `identifier_prefix`. Do not strip an arbitrary
+prefix or turn a full identifier into numeric title matching. Numeric and legacy
+prefixes follow that resolver. The shared
+[source picker](../views/frontend/collaboration-source-picker.md) owns visible
+browsing and pending/error/retry feedback.
+
 Only an authorized ordinary human comment's author can edit/delete it. Replies,
 history, tombstones, delivered files and frozen AI inputs retain their identities.
 The sibling comment list and composer use distinct `comments:`/`composer:` keys
@@ -130,6 +142,12 @@ Core source/redaction, field-action, comment-action, discussion and invalidation
 tests own wire and recovery matrices. Views test shared interactions and paging
 identity. `e2e/collaboration-editing-web.spec.ts` and the dedicated editing scenario
 in `e2e/collaboration-account-desktop.spec.ts` exercise actual client wiring.
+
+`TestCollaborationSourceParentSearchMatchesDisplayedIdentifiers` owns full/case-
+insensitive identifiers, actual numeric/legacy prefixes, wrong-prefix handling,
+title/bare-number/UUID preservation and source/admission isolation.
+`TestCollaborationSourceParentSearchFindsIdentifierBeyondRecentWindow` pins the
+recent-200 boundary and a successful exact lookup of an older task.
 
 ## 7. Wrong vs Correct
 

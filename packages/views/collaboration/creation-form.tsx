@@ -3,7 +3,7 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tansta
 import { collaborationCreationOptions, collaborationDeliveryKey, collaborationDeliveryRevision,
   CollaborationCreationRejectedError,
   CollaborationCreationFieldsSchema, collaborationPropertyValueMatchesDefinition,
-  executeCollaborationCreation, isCollaborationScopeCurrent, prepareCollaborationCreation, readCollaborationDeliveryRecords,
+  executeCollaborationCreation, isCollaborationDenied, isCollaborationScopeCurrent, prepareCollaborationCreation, readCollaborationDeliveryRecords,
   subscribeCollaborationDelivery, useCollaborationDeliveryForm, type CollaborationCreationDraft, type CollaborationCreationOptions,
   type CollaborationCreationFields, type CollaborationIssue, type CollaborationScope } from "@multica/core/collaboration";
 import type { IssuePropertyValue } from "@multica/core/types";
@@ -78,12 +78,20 @@ function SelectedCreationSource({ scope, sourceId, onCreated }: { scope: Collabo
   const client = useQueryClient();
   const [parentSearch, setParentSearch] = useState("");
   const query = useQuery({ ...collaborationCreationOptions(client, scope, sourceId, parentSearch), placeholderData: keepPreviousData });
-  if (query.isPending) return <p role="status">{t(($) => $.page.loading)}</p>;
-  if (query.error || !query.data?.source) return <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />;
-  return <CreationForm scope={scope} options={query.data} onCreated={onCreated} parentSearch={parentSearch} onParentSearch={setParentSearch} optionsPending={query.isFetching} />;
+  // Reuse authorized Query data after a transient search failure, never after
+  // source access loss, so retry keeps this form mounted with its input intact.
+  const options = isCollaborationDenied(query.error) ? undefined : query.data
+    ?? client.getQueryData(collaborationCreationOptions(client, scope, sourceId).queryKey);
+  if (query.isPending && !options) return <p role="status">{t(($) => $.page.loading)}</p>;
+  if (!options?.source) return <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />;
+  return <CreationForm scope={scope} options={options} onCreated={onCreated} parentSearch={parentSearch} onParentSearch={setParentSearch}
+    optionsPending={query.isFetching || query.isPlaceholderData} optionsError={query.error} onRetryOptions={() => void query.refetch()} />;
 }
 
-function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch, optionsPending }: { scope: CollaborationScope; options: CollaborationCreationOptions; onCreated: (issue: CollaborationIssue) => void; parentSearch: string; onParentSearch: (search: string) => void; optionsPending: boolean }) {
+function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch, optionsPending, optionsError, onRetryOptions }: {
+  scope: CollaborationScope; options: CollaborationCreationOptions; onCreated: (issue: CollaborationIssue) => void;
+  parentSearch: string; onParentSearch: (search: string) => void; optionsPending: boolean; optionsError: unknown; onRetryOptions: () => void;
+}) {
   const { t } = useT("collaboration");
   const labels = useCollaborationLabels();
   const client = useQueryClient();
@@ -159,7 +167,8 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
           <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={!editable} onClick={() => updateProperty(propertyId, undefined)}>{t(($) => $.fields.clear)}</Button>
         </div>)}
         <CollaborationSourceInputs options={fields.source_options} value={{ projectId: initial.project_id ?? null, parentIssueId: initial.parent_issue_id ?? null, stage: initial.stage ?? null }}
-          onChange={(value) => updateFields({ project_id: value.projectId, parent_issue_id: value.parentIssueId, stage: value.stage })} parentSearch={parentSearch} onParentSearch={onParentSearch} disabled={!editable} />
+          onChange={(value) => updateFields({ project_id: value.projectId, parent_issue_id: value.parentIssueId, stage: value.stage })} parentSearch={parentSearch} onParentSearch={onParentSearch}
+          parentsPending={optionsPending} parentsError={optionsError} onRetryParents={onRetryOptions} disabled={!editable} />
         {initial.parent_issue_id && !initial.project_id && <p className="text-caption text-muted-foreground">{t(($) => $.fields.parentProjectHint)}</p>}
         <CollaborationIterationInput options={fields.source_options} selectedId={initial.current_iteration_id ?? null} disabled={!editable || optionsPending} allowClearWhenDisabled
           onChange={(iterationId) => updateFields({ current_iteration_id: iterationId, expected_iteration_revision: fields.source_options.iterations.find((period) => period.id === iterationId)?.revision })} />

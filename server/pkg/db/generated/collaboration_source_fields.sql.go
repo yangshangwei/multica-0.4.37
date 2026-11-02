@@ -19,15 +19,17 @@ WHERE workspace_id = $1::uuid
   AND ($3::text = ''
     OR strpos(lower(title), lower($3::text)) > 0
     OR number::text = $3::text
+    OR lower($4::text || '-' || number::text) = lower($3::text)
     OR id::text = lower($3::text))
 ORDER BY number DESC, id
 LIMIT 201
 `
 
 type ListCollaborationSourceParentsParams struct {
-	WorkspaceID     pgtype.UUID `json:"workspace_id"`
-	ExcludedIssueID pgtype.UUID `json:"excluded_issue_id"`
-	Search          string      `json:"search"`
+	WorkspaceID      pgtype.UUID `json:"workspace_id"`
+	ExcludedIssueID  pgtype.UUID `json:"excluded_issue_id"`
+	Search           string      `json:"search"`
+	IdentifierPrefix string      `json:"identifier_prefix"`
 }
 
 type ListCollaborationSourceParentsRow struct {
@@ -40,7 +42,12 @@ type ListCollaborationSourceParentsRow struct {
 // Source catalogs are only read after current source-member/editor authority.
 // Return a bounded, searchable reference list; never project issue content.
 func (q *Queries) ListCollaborationSourceParents(ctx context.Context, arg ListCollaborationSourceParentsParams) ([]ListCollaborationSourceParentsRow, error) {
-	rows, err := q.db.Query(ctx, listCollaborationSourceParents, arg.WorkspaceID, arg.ExcludedIssueID, arg.Search)
+	rows, err := q.db.Query(ctx, listCollaborationSourceParents,
+		arg.WorkspaceID,
+		arg.ExcludedIssueID,
+		arg.Search,
+		arg.IdentifierPrefix,
+	)
 	if err != nil {
 		return nil, err
 	}
