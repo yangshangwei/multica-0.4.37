@@ -546,7 +546,35 @@
     "close": "关闭",
     "saved": "草稿已保存在此设备。",
     "error": "无法创建任务，草稿和已上传的文件仍保留。",
-    "rejected": "任务未创建，草稿和文件已保留。你可以再次提交。"
+    "rejected": "任务未创建，草稿和文件已保留。",
+    "cancel": "取消",
+    "rejectionReasons": {
+      "accountUnavailable": "所选接收人不可用。请选择其他账号。",
+      "collaborationUnavailable": "此来源工作空间无法创建协作任务。请选择其他工作空间，或请管理员开放协作功能。",
+      "attachmentSelection": "部分所选文件不适用于此草稿。请移除这些文件，或重新添加正确的文件。",
+      "attachmentUnavailable": "部分所选文件已不可用。请移除这些文件，或重新添加。",
+      "attachmentConsumed": "这些文件已用于其他提交。请移除后重新添加文件。",
+      "parentUnavailable": "父任务已不可用。请清除选择，或选择其他任务。",
+      "projectUnavailable": "项目已不可用。请清除选择，或选择其他项目。",
+      "reviewRequired": "此工作空间要求先审核任务。请通过待审流程创建，或请管理员调整创建设置。",
+      "issueLimitReached": "此工作空间的任务数量已达上限。请联系管理员调整上限后再提交。",
+      "statusUnavailable": "所选状态已不可用。请选择当前可用的状态。",
+      "invalidPriority": "请先选择有效的优先级，再提交。",
+      "invalidStartDate": "开始日期无效。请选择有效日期，或清除日期。",
+      "invalidDueDate": "截止日期无效。请选择有效日期，或清除日期。",
+      "invalidLabels": "部分所选标签已不可用。请移除这些标签，或选择当前可用的标签。",
+      "propertiesUnavailable": "部分初始字段已不可用或归档。请清除对应值，或请管理员恢复字段。",
+      "invalidPropertyValue": "部分初始字段的值无效。请检查字段值后再提交。",
+      "propertiesTooLarge": "初始字段的内容过大。请缩短文本，或移除部分字段值。",
+      "invalidStage": "阶段需填写正整数，也可以留空。",
+      "parentCycle": "所选父任务会形成循环。请选择其他父任务，或清除选择。",
+      "iterationDisabled": "此工作空间未开放迭代。请清除迭代选择，或请管理员开放迭代功能。",
+      "iterationUnavailable": "所选迭代已不可用。请清除选择，或选择当前可用的迭代。",
+      "iterationChanged": "迭代已发生变化。请检查并采用当前版本后再提交。",
+      "iterationHistory": "所选迭代无法接收此任务的历史记录。请清除选择，或选择其他迭代。",
+      "iterationValidation": "所选迭代不再接受这些初始字段。请检查迭代和字段后再提交。",
+      "unknown": "此次创建被拒绝。请检查填写内容，或联系工作空间管理员后再提交。"
+    }
   },
   "attachments": {
     "title": "附件",
@@ -654,7 +682,8 @@
       "selected": "已选",
       "recent": "最近协作",
       "all": "全部账号"
-    }
+    },
+    "accountId": "账号 ID：{{id}}"
   },
   "memory": {
     "title": "协作上下文",

@@ -1,0 +1,100 @@
+{
+  "mode": "baseline",
+  "fixture": "Production build of original shared components/CSS/locales, synthetic API and memory StorageAdapter",
+  "provenance": {
+    "mode": "baseline",
+    "output": "/tmp/collaboration-creation-fix-baseline-26753",
+    "builtAt": "2026-11-02T15:41:45.268Z",
+    "buildPid": 26753,
+    "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "sources": [
+      {
+        "path": "packages/views/collaboration/creation-form.tsx",
+        "sha256": "68656b0c6f124e4b6286c83149fecf984534f5420ed61e21c519f77daa179ca6"
+      },
+      {
+        "path": "packages/views/collaboration/creation-form.test.tsx",
+        "sha256": "2b9b89bf86799a6dbd6993caa7d50e5abf5087cefd74e65195f13ab0edc5476e"
+      },
+      {
+        "path": "packages/views/collaboration/account-picker.tsx",
+        "sha256": "8cd5edb3273c7766b0686173912f6dd8fd2dc0d335589ee74b6d74ea6fc92959"
+      },
+      {
+        "path": "packages/views/collaboration/account-picker.test.tsx",
+        "sha256": "9b76c1b7ab61c8d34af96c823f0f80f6768bf46838e2af9451f42981cd3e8e85"
+      },
+      {
+        "path": "packages/views/collaboration/field-inputs.tsx",
+        "sha256": "6ced2209a5cc1c822b0893cb8b655c4d927941325d181f7c689151c3addeba76"
+      },
+      {
+        "path": "packages/views/collaboration/field-editing.test.tsx",
+        "sha256": "8b4ca9f5f716ea5256cf44ef91b12df2bdbf4390ab3245976a5453994cfb89ae"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/property-picker.tsx",
+        "sha256": "f3c81149368478f151ce88ea8e41e7b59161f75f3e751535d649fc3cd077ab6d"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/property-picker.test.tsx",
+        "sha256": "67f6d895eafbb7ee568bb21cfcaab8c03f317200bee3c4e1d145131d59cec664"
+      },
+      {
+        "path": "packages/views/collaboration/labels.ts",
+        "sha256": "57d5c6e2144b0ca1d13d91d4bee5d2774925a5645cd4e8119984751daffafc10"
+      },
+      {
+        "path": "packages/views/locales/en/collaboration.json",
+        "sha256": "bc8fbb2113d0cbd24a3480a412c2846b8ebb2e392d95cec532616af329181529"
+      },
+      {
+        "path": "packages/views/locales/zh-Hans/collaboration.json",
+        "sha256": "4a7d26d032bcdebab54b9bb6dcb91cf65445562d263a9b6e07b7587b38faf37a"
+      }
+    ]
+  },
+  "driverPid": 45711,
+  "startedAt": "2026-11-02T15:58:29.193Z",
+  "scenarios": {
+    "generic-picker-dialog-compatibility": {
+      "genericOptionCount": 0,
+      "genericClose": {
+        "width": 28,
+        "height": 28,
+        "top": 336,
+        "bottom": 364,
+        "left": 338,
+        "right": 366,
+        "visible": true
+      },
+      "retainedNativeTextbox": true
+    }
+  },
+  "failures": [],
+  "pageErrors": [],
+  "blockedExternalRequests": [],
+  "listener": {
+    "origin": "http://127.0.0.1:49902",
+    "pid": 45711,
+    "owned": true
+  },
+  "engine": "Playwright Chromium 145.0.7632.6",
+  "ownedBrowserProcesses": [
+    {
+      "id": 45717,
+      "type": "browser"
+    },
+    {
+      "id": 45722,
+      "type": "GPU"
+    },
+    {
+      "id": 45723,
+      "type": "network.mojom.NetworkService"
+    }
+  ],
+  "listenerClosed": true,
+  "browserClosed": true,
+  "finishedAt": "2026-11-02T15:58:31.800Z"
+}

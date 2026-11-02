@@ -1,0 +1,366 @@
+{
+  "mode": "current",
+  "fixture": "Production build of original shared components/CSS/locales, synthetic API and memory StorageAdapter",
+  "provenance": {
+    "mode": "current",
+    "output": "/tmp/collaboration-creation-fix-current-57887",
+    "builtAt": "2026-11-02T16:31:31.767Z",
+    "buildPid": 57887,
+    "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "sources": [
+      {
+        "path": "packages/views/collaboration/creation-form.tsx",
+        "sha256": "13319164ffcc99f515fc3754529c993452c76481ddda5beb22b1cc9c41357534"
+      },
+      {
+        "path": "packages/views/collaboration/creation-form.test.tsx",
+        "sha256": "025d7a5d5674ced9952dc19637094fd01d63384c6ca31b7fd6664679c84bb023"
+      },
+      {
+        "path": "packages/views/collaboration/account-picker.tsx",
+        "sha256": "4fb4811ba29c1e7ceaa778bca1721e608d5ae6174b37efca04b9e1a455508543"
+      },
+      {
+        "path": "packages/views/collaboration/account-picker.test.tsx",
+        "sha256": "27b1886db9c406abe364b997afa2cf6e6574aaf773325dce86c4dd7da65ad71b"
+      },
+      {
+        "path": "packages/views/collaboration/field-inputs.tsx",
+        "sha256": "23aae4e3d643a636c9ea968db48d8de4f21ad6da1e68a0ebf3367219345d0aa2"
+      },
+      {
+        "path": "packages/views/collaboration/field-editing.test.tsx",
+        "sha256": "8b4ca9f5f716ea5256cf44ef91b12df2bdbf4390ab3245976a5453994cfb89ae"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/property-picker.tsx",
+        "sha256": "7ae19a5d2e4ea1d3c94caf29187f0a256dacb5bdfaf46a545acd432db0e8d6a7"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/property-picker.test.tsx",
+        "sha256": "0c81ca05594b947e2595f8c16c1f817b623e759763d4339bb3b435174b9d030d"
+      },
+      {
+        "path": "packages/views/collaboration/labels.ts",
+        "sha256": "f4e5bac3e350187dfe73388579bcda94174c96184433cb136187a92033466261"
+      },
+      {
+        "path": "packages/views/locales/en/collaboration.json",
+        "sha256": "b99d82e25e9c6d5b9c19b4bf9bb5a60abe88a68963516ac59935f50594340655"
+      },
+      {
+        "path": "packages/views/locales/zh-Hans/collaboration.json",
+        "sha256": "9863fe264bd55f7c33cbe176fced8850841c02a3edd3a51ada517c49d143d7be"
+      },
+      {
+        "path": "packages/ui/styles/tokens.css",
+        "sha256": "0ac7c9603d5bd945f26a46ebe6d3ea42594a45acadf8e88a9300898ce968dc3c"
+      },
+      {
+        "path": "packages/ui/styles/base.css",
+        "sha256": "c01e09bc563ff342966c1edfc0de756eff288ba4907680fd1c89e30748a6ab82"
+      },
+      {
+        "path": "packages/ui/components/ui/dialog.tsx",
+        "sha256": "35a8ac18ba129e7d90fe11e74fa2dfb5dc483d28424f39592e660884b99973cf"
+      },
+      {
+        "path": "packages/ui/components/ui/input.tsx",
+        "sha256": "7119bac8d69289dbf6c0fe81df25ff5102a474d98f8a7ebf05ae551f969f9749"
+      },
+      {
+        "path": "packages/ui/components/ui/textarea.tsx",
+        "sha256": "16c7355c309cf87ed3dcbd35d98fda8490cc0525d4e4d05534b01d0e3b3d385c"
+      },
+      {
+        "path": "packages/ui/components/ui/button.tsx",
+        "sha256": "132669be5d65af6b27bb492b5237b90c27c2869227251efc65a1d1f9b174da28"
+      },
+      {
+        "path": "packages/ui/components/ui/popover.tsx",
+        "sha256": "46d8d14a5637d48f6342f011027c2ac6e9e8cc53f6f4bbc41b633a773fd506e8"
+      },
+      {
+        "path": "packages/views/collaboration/form-styles.ts",
+        "sha256": "2d5521898c0de473278ef667c5d68e6c06df02b6e539710c9df47c6eb5f6ffa5"
+      }
+    ]
+  },
+  "driverPid": 59669,
+  "startedAt": "2026-11-02T16:38:24.326Z",
+  "scenarios": {},
+  "diagnostics": {
+    "desktop-light": {
+      "focus": {
+        "source": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60.6% .016 285.938)",
+          "ring": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "compositedRing": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "ratio": 3.855797434374134,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
+          "borderColor": "oklch(0.606 0.016 285.938)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "title": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60.6% .016 285.938)",
+          "ring": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "compositedRing": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "ratio": 3.855797434374134,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
+          "borderColor": "oklch(0.606 0.016 285.938)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "description": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60.6% .016 285.938)",
+          "ring": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "compositedRing": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "ratio": 3.855797434374134,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
+          "borderColor": "oklch(0.606 0.016 285.938)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "submit": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60.6% .016 285.938)",
+          "ring": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "compositedRing": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "ratio": 3.855797434374134,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
+          "borderColor": "oklch(0.606 0.016 285.938)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "close": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60.6% .016 285.938)",
+          "ring": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "compositedRing": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "ratio": 3.855797434374134,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
+          "borderColor": "oklch(0.606 0.016 285.938)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "recipientTrigger": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60.6% .016 285.938)",
+          "ring": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "compositedRing": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "ratio": 3.855797434374134,
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
+          "borderColor": "oklch(0.606 0.016 285.938)",
+          "ringPresent": true,
+          "outlinePresent": false,
+          "indicatorPainted": true
+        },
+        "recipientSearch": {
+          "focusVisible": true,
+          "ringCSS": "oklch(60.6% .016 285.938)",
+          "ring": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "compositedRing": [
+            129,
+            129,
+            139,
+            255
+          ],
+          "ratio": 3.855797434374134,
+          "boxShadow": "none",
+          "outline": "oklch(0.606 0.016 285.938) none 0px",
+          "borderColor": "oklch(0.606 0.016 285.938)",
+          "ringPresent": false,
+          "outlinePresent": false,
+          "indicatorPainted": false
+        }
+      },
+      "semantics": {
+        "role": null,
+        "name": "筛选选项",
+        "controls": "_r_g_-accounts",
+        "activeDescendant": "_r_g_-accounts-00000000-0000-4000-8000-000000000001",
+        "activeExists": true
+      },
+      "options": [
+        {
+          "id": "_r_g_-accounts-00000000-0000-4000-8000-000000000001",
+          "selected": "true",
+          "disabled": "false",
+          "text": "分分配给自己账号 ID：00000000-0000-4000-8000-000000000001"
+        },
+        {
+          "id": "_r_g_-accounts-00000000-0000-4000-8000-000000000004",
+          "selected": "false",
+          "disabled": "false",
+          "text": "李李明账号 ID：00000000-0000-4000-8000-000000000004"
+        },
+        {
+          "id": "_r_g_-accounts-00000000-0000-4000-8000-000000000005",
+          "selected": "false",
+          "disabled": "false",
+          "text": "李李明账号 ID：00000000-0000-4000-8000-000000000005"
+        },
+        {
+          "id": "_r_g_-accounts-00000000-0000-4000-8000-000000000006",
+          "selected": "false",
+          "disabled": "false",
+          "text": "客客户张经理外部账号 ID：00000000-0000-4000-8000-000000000006"
+        }
+      ],
+      "pickerEscape": false
+    }
+  },
+  "failures": [
+    {
+      "scenario": "desktop-light",
+      "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n    at Proxy.<anonymous> (/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/matchers/expect.js:213:24)\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:171:144\n    at async scenario (file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:129:34)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:141:42"
+    }
+  ],
+  "pageErrors": [],
+  "blockedExternalRequests": [],
+  "listener": {
+    "origin": "http://127.0.0.1:51159",
+    "pid": 59669,
+    "owned": true
+  },
+  "engine": "Playwright Chromium 145.0.7632.6",
+  "ownedBrowserProcesses": [
+    {
+      "id": 59675,
+      "type": "browser"
+    },
+    {
+      "id": 59680,
+      "type": "GPU"
+    },
+    {
+      "id": 59681,
+      "type": "network.mojom.NetworkService"
+    }
+  ],
+  "listenerClosed": true,
+  "browserClosed": true,
+  "finishedAt": "2026-11-02T16:38:27.162Z"
+}

@@ -1,0 +1,143 @@
+{
+  "mode": "current",
+  "fixture": "Production build of original shared components/CSS/locales, synthetic API and memory StorageAdapter",
+  "provenance": {
+    "mode": "current",
+    "output": "/tmp/collaboration-creation-fix-current-57887",
+    "builtAt": "2026-11-02T16:31:31.767Z",
+    "buildPid": 57887,
+    "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "sources": [
+      {
+        "path": "packages/views/collaboration/creation-form.tsx",
+        "sha256": "13319164ffcc99f515fc3754529c993452c76481ddda5beb22b1cc9c41357534"
+      },
+      {
+        "path": "packages/views/collaboration/creation-form.test.tsx",
+        "sha256": "025d7a5d5674ced9952dc19637094fd01d63384c6ca31b7fd6664679c84bb023"
+      },
+      {
+        "path": "packages/views/collaboration/account-picker.tsx",
+        "sha256": "4fb4811ba29c1e7ceaa778bca1721e608d5ae6174b37efca04b9e1a455508543"
+      },
+      {
+        "path": "packages/views/collaboration/account-picker.test.tsx",
+        "sha256": "27b1886db9c406abe364b997afa2cf6e6574aaf773325dce86c4dd7da65ad71b"
+      },
+      {
+        "path": "packages/views/collaboration/field-inputs.tsx",
+        "sha256": "23aae4e3d643a636c9ea968db48d8de4f21ad6da1e68a0ebf3367219345d0aa2"
+      },
+      {
+        "path": "packages/views/collaboration/field-editing.test.tsx",
+        "sha256": "8b4ca9f5f716ea5256cf44ef91b12df2bdbf4390ab3245976a5453994cfb89ae"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/property-picker.tsx",
+        "sha256": "7ae19a5d2e4ea1d3c94caf29187f0a256dacb5bdfaf46a545acd432db0e8d6a7"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/property-picker.test.tsx",
+        "sha256": "0c81ca05594b947e2595f8c16c1f817b623e759763d4339bb3b435174b9d030d"
+      },
+      {
+        "path": "packages/views/collaboration/labels.ts",
+        "sha256": "f4e5bac3e350187dfe73388579bcda94174c96184433cb136187a92033466261"
+      },
+      {
+        "path": "packages/views/locales/en/collaboration.json",
+        "sha256": "b99d82e25e9c6d5b9c19b4bf9bb5a60abe88a68963516ac59935f50594340655"
+      },
+      {
+        "path": "packages/views/locales/zh-Hans/collaboration.json",
+        "sha256": "9863fe264bd55f7c33cbe176fced8850841c02a3edd3a51ada517c49d143d7be"
+      },
+      {
+        "path": "packages/ui/styles/tokens.css",
+        "sha256": "0ac7c9603d5bd945f26a46ebe6d3ea42594a45acadf8e88a9300898ce968dc3c"
+      },
+      {
+        "path": "packages/ui/styles/base.css",
+        "sha256": "c01e09bc563ff342966c1edfc0de756eff288ba4907680fd1c89e30748a6ab82"
+      },
+      {
+        "path": "packages/ui/components/ui/dialog.tsx",
+        "sha256": "35a8ac18ba129e7d90fe11e74fa2dfb5dc483d28424f39592e660884b99973cf"
+      },
+      {
+        "path": "packages/ui/components/ui/input.tsx",
+        "sha256": "7119bac8d69289dbf6c0fe81df25ff5102a474d98f8a7ebf05ae551f969f9749"
+      },
+      {
+        "path": "packages/ui/components/ui/textarea.tsx",
+        "sha256": "16c7355c309cf87ed3dcbd35d98fda8490cc0525d4e4d05534b01d0e3b3d385c"
+      },
+      {
+        "path": "packages/ui/components/ui/button.tsx",
+        "sha256": "132669be5d65af6b27bb492b5237b90c27c2869227251efc65a1d1f9b174da28"
+      },
+      {
+        "path": "packages/ui/components/ui/popover.tsx",
+        "sha256": "46d8d14a5637d48f6342f011027c2ac6e9e8cc53f6f4bbc41b633a773fd506e8"
+      },
+      {
+        "path": "packages/views/collaboration/form-styles.ts",
+        "sha256": "2d5521898c0de473278ef667c5d68e6c06df02b6e539710c9df47c6eb5f6ffa5"
+      }
+    ]
+  },
+  "driverPid": 61564,
+  "startedAt": "2026-11-02T16:47:09.898Z",
+  "scenarios": {},
+  "diagnostics": {
+    "quota-zh-Hans": {
+      "messages": [
+        "已选择自己",
+        "任务未创建，草稿和文件已保留。此工作空间的任务数量已达上限。请联系管理员调整上限后再提交。"
+      ],
+      "rejectionGeometry": {
+        "width": 640,
+        "height": 48,
+        "top": 823,
+        "bottom": 871,
+        "left": 320,
+        "right": 960,
+        "visible": false
+      },
+      "preserved": "额度拒绝验证",
+      "posts": 1,
+      "sourceUnlocked": true
+    }
+  },
+  "failures": [
+    {
+      "scenario": "quota-zh-Hans",
+      "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n    at Proxy.<anonymous> (/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/matchers/expect.js:213:24)\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:286:249\n    at async scenario (file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:129:34)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-collaboration-creation-audit-fixes/research/preview/verify.mjs:271:43"
+    }
+  ],
+  "pageErrors": [],
+  "blockedExternalRequests": [],
+  "listener": {
+    "origin": "http://127.0.0.1:53545",
+    "pid": 61564,
+    "owned": true
+  },
+  "engine": "Playwright Chromium 145.0.7632.6",
+  "ownedBrowserProcesses": [
+    {
+      "id": 61572,
+      "type": "browser"
+    },
+    {
+      "id": 61576,
+      "type": "GPU"
+    },
+    {
+      "id": 61577,
+      "type": "network.mojom.NetworkService"
+    }
+  ],
+  "listenerClosed": true,
+  "browserClosed": true,
+  "finishedAt": "2026-11-02T16:47:11.589Z"
+}

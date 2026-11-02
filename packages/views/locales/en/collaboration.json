@@ -546,7 +546,35 @@
     "close": "Close",
     "saved": "Your draft is saved on this device.",
     "error": "Could not create the issue. Your draft and uploaded files are preserved.",
-    "rejected": "The issue was not created. Your draft and files are preserved; you can submit again."
+    "rejected": "The issue was not created. Your draft and files are preserved.",
+    "cancel": "Cancel",
+    "rejectionReasons": {
+      "accountUnavailable": "The selected recipient is unavailable. Choose another account.",
+      "collaborationUnavailable": "This source workspace cannot create collaboration issues. Choose another workspace or ask its administrator to enable collaboration.",
+      "attachmentSelection": "Some selected files are not valid for this draft. Remove them or attach the correct files.",
+      "attachmentUnavailable": "A selected file is no longer available. Remove it or attach it again.",
+      "attachmentConsumed": "These files have already been used. Remove them and attach the files again.",
+      "parentUnavailable": "The parent issue is unavailable. Clear it or choose another issue.",
+      "projectUnavailable": "The project is unavailable. Clear it or choose another project.",
+      "reviewRequired": "This workspace requires issue review. Use its review process or ask an administrator to change the creation settings.",
+      "issueLimitReached": "This workspace has reached its issue limit. Ask an administrator to adjust the limit before submitting again.",
+      "statusUnavailable": "The selected status is unavailable. Choose a current status.",
+      "invalidPriority": "Choose a valid priority before submitting again.",
+      "invalidStartDate": "The start date is invalid. Choose a valid date or clear it.",
+      "invalidDueDate": "The due date is invalid. Choose a valid date or clear it.",
+      "invalidLabels": "Some selected labels are unavailable. Remove them or choose current labels.",
+      "propertiesUnavailable": "Some initial fields are unavailable or archived. Clear their values or ask an administrator to restore the fields.",
+      "invalidPropertyValue": "An initial field value is invalid. Check the field values before submitting again.",
+      "propertiesTooLarge": "The initial field values are too large. Shorten their text or remove values.",
+      "invalidStage": "Use a positive whole number for the stage or clear it.",
+      "parentCycle": "That parent would create a cycle. Choose a different parent or clear it.",
+      "iterationDisabled": "Iterations are disabled in this workspace. Clear the iteration or ask an administrator to enable them.",
+      "iterationUnavailable": "The selected iteration is unavailable. Clear it or choose a current iteration.",
+      "iterationChanged": "The iteration changed. Review and accept its current version before submitting again.",
+      "iterationHistory": "The selected iteration cannot accept this issue history. Clear it or choose another iteration.",
+      "iterationValidation": "The iteration no longer accepts these initial fields. Review the iteration and fields before submitting again.",
+      "unknown": "The creation was rejected. Review the inputs or ask a workspace administrator before submitting again."
+    }
   },
   "attachments": {
     "title": "Attachments",
@@ -655,7 +683,8 @@
       "selected": "Selected",
       "recent": "Recent collaboration",
       "all": "All accounts"
-    }
+    },
+    "accountId": "Account ID: {{id}}"
   },
   "memory": {
     "title": "Shared context",

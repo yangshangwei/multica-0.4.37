@@ -8,6 +8,7 @@ import { CustomPropertyValueDisplay, CustomPropertyValueInput } from "../issues/
 import { PropertyPicker, PickerItem } from "../issues/components/pickers/property-picker";
 import { useT } from "../i18n";
 import { CollaborationAccountPicker } from "./account-picker";
+import { collaborationPickerContentClass } from "./form-styles";
 
 export const collaborationSelectClass = "block min-h-11 w-full min-w-0 rounded-md border border-input bg-background px-3 text-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
@@ -17,7 +18,7 @@ export function CollaborationLabelInput({ labels, selectedIds, onChange, disable
   const [search, setSearch] = useState("");
   const selected = selectedIds.map((id) => labels.find((label) => label.id === id)?.name ?? id);
   return <div className="min-w-0 space-y-2"><p className="text-body font-medium">{t(($) => $.fields.labels)}</p>
-    <PropertyPicker open={!disabled && open} onOpenChange={setOpen} searchable onSearchChange={setSearch} searchPlaceholder={t(($) => $.fields.findLabel)} align="start"
+    <PropertyPicker open={!disabled && open} onOpenChange={setOpen} searchable onSearchChange={setSearch} searchPlaceholder={t(($) => $.fields.findLabel)} contentClassName={collaborationPickerContentClass} align="start"
       triggerAriaLabel={t(($) => $.fields.labels)} triggerRender={<Button type="button" variant="outline" disabled={disabled} className="h-auto min-h-11 max-w-full whitespace-normal text-left [overflow-wrap:anywhere]" />}
       trigger={selected.length ? selected.join(", ") : t(($) => $.fields.none)}>
       <PickerItem selected={selectedIds.length === 0} onClick={() => onChange([])}>{t(($) => $.fields.none)}</PickerItem>
@@ -121,7 +122,7 @@ export function CollaborationSourceInputs({ options, value, onChange, current, p
     </div>
     <div className="min-w-0 space-y-2"><p className="text-body">{t(($) => $.fields.parent)}</p>
       <PropertyPicker open={!disabled && parentOpen} onOpenChange={setParentOpen} searchable onSearchChange={onParentSearch}
-        searchPlaceholder={t(($) => $.fields.findParent)} searchMaxLength={200} searchInputRef={searchInput} align="start" width="w-[min(24rem,calc(100vw-2rem))]"
+        searchPlaceholder={t(($) => $.fields.findParent)} searchMaxLength={200} searchInputRef={searchInput} contentClassName={collaborationPickerContentClass} align="start" width="w-[min(24rem,calc(100vw-2rem))]"
         navigationResetKey={`${parentSearch}:${parentsReady ? options.parents.map((parent) => parent.id).join(",") : "pending"}`}
         triggerAriaLabel={t(($) => $.fields.parent)} triggerAriaDescription={`${parentLabel}. ${t(($) => $.fields.parentHint)}`}
         triggerRender={<Button type="button" variant="outline" disabled={disabled} className="h-auto min-h-11 w-full justify-between whitespace-normal text-left [overflow-wrap:anywhere]" />}
@@ -142,7 +143,7 @@ export function CollaborationSourceInputs({ options, value, onChange, current, p
       <p className="text-caption text-muted-foreground">{t(($) => $.fields.parentHint)}</p>
     </div>
     <div className="space-y-2"><label htmlFor={`${id}-stage`} className="text-body">{t(($) => $.fields.stage)}</label>
-      <Input id={`${id}-stage`} type="number" min={1} max={2147483647} step={1} value={value.stage ?? ""} onChange={(event) => onChange({ ...value, stage: event.target.value === "" ? null : event.target.valueAsNumber })} />
+      <Input id={`${id}-stage`} className="pointer-coarse:min-h-11" type="number" min={1} max={2147483647} step={1} value={value.stage ?? ""} onChange={(event) => onChange({ ...value, stage: event.target.value === "" ? null : event.target.valueAsNumber })} />
     </div>
   </fieldset>;
 }

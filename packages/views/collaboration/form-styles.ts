@@ -1,0 +1,5 @@
+export const collaborationFocusWithinClass =
+  "[&_:is(input,textarea,select,button):focus-visible]:ring-faint-foreground [&_:is(input,textarea,select,button):focus-visible]:border-faint-foreground [&_summary:focus-visible]:outline-solid [&_summary:focus-visible]:outline-2 [&_summary:focus-visible]:outline-faint-foreground [&_summary:focus-visible]:outline-offset-2";
+
+export const collaborationPickerContentClass =
+  `${collaborationFocusWithinClass} max-h-[calc(100dvh-24px)] [&_input:not([data-slot=input])]:pointer-coarse:min-h-11 [&_input:not([data-slot=input]):focus-visible]:outline-solid [&_input:not([data-slot=input]):focus-visible]:outline-2 [&_input:not([data-slot=input]):focus-visible]:outline-faint-foreground [&_input:not([data-slot=input]):focus-visible]:outline-offset-2 [&_[data-picker-item]:focus-visible]:outline-solid [&_[data-picker-item]:focus-visible]:outline-2 [&_[data-picker-item]:focus-visible]:outline-faint-foreground [&_[data-picker-item]:focus-visible]:outline-offset-2`;

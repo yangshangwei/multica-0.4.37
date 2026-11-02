@@ -1,0 +1,14 @@
+{
+  "score": 82,
+  "verdict": "revise",
+  "category_match": true,
+  "differences": [
+    "共享配色、字号与紧凑风格与原参考一致；当前浅色焦点仍为低对比半透明环。",
+    "320px 窄屏默认长表单未露出提交操作，整弹窗滚动仍会移走关闭操作。"
+  ],
+  "suggestions": [
+    "按已评审计划采用局部 opaque faint-foreground 焦点，并覆盖 portaled picker。",
+    "将主体改为滚动区，header 和提交/取消操作保留在正常流固定区域。"
+  ],
+  "reasoning": "基线生产组件截图与原产品风格相符；焦点与窄屏操作可达性需要按审计修复，填写内容与 fixture 背景差异是测试条件。"
+}

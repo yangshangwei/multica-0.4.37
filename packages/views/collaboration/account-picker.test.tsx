@@ -1,9 +1,9 @@
 import { afterEach, expect, it, vi } from "vitest";
-import { act, screen, waitFor, within } from "@testing-library/react";
+import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "@multica/core/api";
-import { collaborationScope } from "@multica/core/collaboration";
+import { collaborationScope, type CollaborationRecipientAccount } from "@multica/core/collaboration";
 import { renderWithI18n } from "../test/i18n";
 import { CollaborationAccountPicker } from "./account-picker";
 
@@ -32,18 +32,133 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-function mount(fetch: typeof globalThis.fetch, options: { allowSelf?: boolean; membersOnly?: boolean; onSelect?: (value: unknown) => void } = {}) {
+function mount(fetch: typeof globalThis.fetch, options: { allowSelf?: boolean; membersOnly?: boolean; onSelect?: (value: unknown) => void;
+  selected?: CollaborationRecipientAccount | readonly CollaborationRecipientAccount[] | null; multiple?: boolean; maxSelected?: number } = {}) {
   setApiInstance(new ApiClient("https://server.example"));
   vi.stubGlobal("fetch", fetch);
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   clients.push(client);
   const ui = (disabled = false) => <QueryClientProvider client={client}>
     <CollaborationAccountPicker scope={collaborationScope(actor)} context={{ kind: "creation", sourceWorkspaceId: source }}
-      selected={null} allowSelf={options.allowSelf} membersOnly={options.membersOnly} label="Recipient" disabled={disabled} onSelect={options.onSelect ?? vi.fn()} />
+      selected={options.selected ?? null} allowSelf={options.allowSelf} membersOnly={options.membersOnly} multiple={options.multiple} maxSelected={options.maxSelected}
+      label="Recipient" disabled={disabled} onSelect={options.onSelect ?? vi.fn()} />
   </QueryClientProvider>;
   const view = renderWithI18n(ui());
-  return { ...view, client, setDisabled: (disabled: boolean) => view.rerender(ui(disabled)) };
+  return { ...view, client, setDisabled: (disabled: boolean) => view.rerender(ui(disabled)),
+    setSelected: (selected: CollaborationRecipientAccount) => { options.selected = selected; view.rerender(ui()); } };
 }
+
+it("distinguishes same-name accounts by full IDs and retains the chosen identity", async () => {
+  const accounts = [recentId, directoryId].map((user_id) => ({ user_id, name: "李明", avatar_url: "", external: false }));
+  const onSelect = vi.fn();
+  const { setSelected } = mount(vi.fn(async () => new Response(JSON.stringify({ ...page(), recent: [], recipients: accounts }))), { onSelect });
+  const user = userEvent.setup();
+  const trigger = screen.getByRole("button", { name: "Recipient" });
+  await user.click(trigger);
+  const list = await screen.findByRole("listbox", { name: "Recipient" });
+  const chosen = await within(list).findByRole("option", { name: new RegExp(directoryId) });
+  expect(within(list).getByRole("option", { name: new RegExp(recentId) })).toHaveTextContent(recentId);
+  expect(chosen).toHaveTextContent(directoryId);
+  await user.click(chosen);
+  expect(onSelect).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ user_id: directoryId }));
+  setSelected(accounts[1]!);
+  expect(trigger).toHaveTextContent(directoryId);
+  expect(trigger).toHaveAccessibleDescription(new RegExp(directoryId));
+});
+
+it("connects the native filter textbox to stable selected and disabled account options", async () => {
+  const onSelect = vi.fn();
+  mount(vi.fn(async () => new Response(JSON.stringify(page()))), { selected: [page().recent[0]!], multiple: true, maxSelected: 1, onSelect });
+  const user = userEvent.setup();
+  const trigger = screen.getByRole("button", { name: "Recipient" });
+  await user.click(trigger);
+  await screen.findByText("Directory account");
+  const input = screen.getByRole("textbox", { name: "Filter options" });
+  const listbox = screen.getByRole("listbox", { name: "Recipient" });
+  expect(input).toHaveAttribute("aria-controls", listbox.id);
+  expect(input).toHaveAttribute("aria-haspopup", "listbox");
+  expect(input).not.toHaveAttribute("aria-expanded");
+  expect(listbox).toHaveAttribute("aria-multiselectable", "true");
+  const selected = within(listbox).getByRole("option", { name: /Recent collaborator/ });
+  const blocked = within(listbox).getByRole("option", { name: /Directory account/ });
+  expect(selected).toHaveAttribute("aria-selected", "true");
+  expect(selected).toHaveAttribute("aria-disabled", "false");
+  expect(blocked).toHaveAttribute("aria-selected", "false");
+  expect(blocked).toHaveAttribute("aria-disabled", "true");
+  expect(blocked).toBeDisabled();
+  expect(selected.id).not.toBe(blocked.id);
+  expect(selected.id).not.toBe("");
+  const selectedId = selected.id;
+  await user.click(input);
+  await user.keyboard("{ArrowDown}");
+  expect(input).toHaveAttribute("aria-activedescendant", selectedId);
+  expect(onSelect).not.toHaveBeenCalled();
+  await user.keyboard("{Escape}");
+  expect(trigger).toHaveFocus();
+  await user.click(trigger);
+  expect(await screen.findByRole("option", { name: /Recent collaborator/ })).toHaveAttribute("id", selectedId);
+  expect(screen.getByRole("textbox", { name: "Filter options" })).not.toHaveAttribute("aria-activedescendant");
+});
+
+it("exposes navigation without selecting during IME and clears removed or empty active options", async () => {
+  let accounts = page().recipients;
+  const fetch = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+    const query = JSON.parse(String(init?.body)).q;
+    return new Response(JSON.stringify({ ...page(), recent: [], recipients: query === "none" ? [] : accounts }));
+  });
+  const onSelect = vi.fn();
+  const { client } = mount(fetch, { onSelect });
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Recipient" }));
+  const option = await screen.findByRole("option", { name: /Directory account/ });
+  const input = screen.getByRole("textbox", { name: "Filter options" });
+  await user.click(input);
+  await user.keyboard("{ArrowDown}");
+  expect(input).toHaveAttribute("aria-activedescendant", option.id);
+  expect(option).toHaveAttribute("aria-selected", "false");
+  fireEvent.keyDown(input, { key: "ArrowUp", isComposing: true });
+  fireEvent.keyDown(input, { key: "Enter", isComposing: true });
+  fireEvent.keyDown(input, { key: "Enter", keyCode: 229 });
+  expect(input).toHaveAttribute("aria-activedescendant", option.id);
+  expect(onSelect).not.toHaveBeenCalled();
+  accounts = [{ user_id: exactId, name: "Replacement account", avatar_url: "", external: false }];
+  await act(() => client.invalidateQueries());
+  await screen.findByRole("option", { name: /Replacement account/ });
+  expect(input).not.toHaveAttribute("aria-activedescendant");
+  await user.type(input, "none");
+  await waitFor(() => expect(screen.queryByRole("option")).toBeNull());
+  expect(input).not.toHaveAttribute("aria-activedescendant");
+  await user.keyboard("{Enter}");
+  expect(onSelect).not.toHaveBeenCalled();
+  await user.clear(input);
+  const replacement = await screen.findByRole("option", { name: /Replacement account/ });
+  await user.keyboard("{ArrowDown}{Enter}");
+  expect(onSelect).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ user_id: exactId }));
+  expect(replacement).not.toBeInTheDocument();
+});
+
+it("keeps the active account through append-only paging while footer actions stay outside navigation", async () => {
+  const fetch = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+    const body = JSON.parse(String(init?.body));
+    return new Response(JSON.stringify(body.cursor ? { ...page(), recent: [], recipients: [{ user_id: exactId, name: "Later account", avatar_url: "", external: false }] }
+      : { ...page(), next_cursor: "next" }));
+  });
+  const onSelect = vi.fn();
+  mount(fetch, { onSelect });
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Recipient" }));
+  const account = await screen.findByRole("option", { name: /Directory account/ });
+  const input = screen.getByRole("textbox", { name: "Filter options" });
+  await user.click(input);
+  await user.keyboard("{ArrowDown}{ArrowDown}");
+  expect(input).toHaveAttribute("aria-activedescendant", account.id);
+  await user.click(screen.getByRole("button", { name: "Load more" }));
+  await screen.findByRole("option", { name: /Later account/ });
+  expect(input).toHaveAttribute("aria-activedescendant", account.id);
+  expect(input).toHaveFocus();
+  await user.keyboard("{Enter}");
+  expect(onSelect).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ user_id: directoryId }));
+});
 
 it("browses sections, uses exact lookup, and closes with Escape without leaving the trigger", async () => {
   const fetch = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -69,6 +184,7 @@ it("browses sections, uses exact lookup, and closes with Escape without leaving 
   const exact = screen.getByPlaceholderText("Username, email, or account ID");
   await user.type(exact, "exact@example.test");
   await user.click(screen.getByRole("button", { name: "Find account" }));
+  expect(await screen.findByText(new RegExp(exactId))).toBeVisible();
   await user.click(await screen.findByRole("button", { name: "Use this account" }));
   expect(onSelect).toHaveBeenCalledWith(expect.objectContaining({ user_id: exactId, name: "Exact account" }));
 
@@ -92,7 +208,7 @@ it("keeps a members-only picker from selecting an undisclosed external account",
   const user = userEvent.setup();
   await user.click(screen.getByRole("button", { name: "Recipient" }));
   await screen.findByText("Only members of the source workspace can be selected here.");
-  expect(screen.queryByRole("button", { name: /Directory account/ })).toBeNull();
+  expect(screen.queryByRole("option", { name: /Directory account/ })).toBeNull();
   expect(onSelect).not.toHaveBeenCalled();
 });
 
