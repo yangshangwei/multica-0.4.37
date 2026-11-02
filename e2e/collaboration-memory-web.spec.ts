@@ -81,6 +81,8 @@ test("shared context keeps concurrent edits, restores versions, and permits hist
     await expect(panel.getByRole("button", { name: "Edit shared context", exact: true })).toHaveCount(0);
     await expect(panel.getByRole("button", { name: /^Restore v/ })).toHaveCount(0);
     await expect(panel).toContainText("This issue is closed, so its shared context is read-only.");
+    await panel.getByRole("button", { name: "Version history", exact: true }).click();
+    await expect(panel.getByRole("button", { name: /^Restore v/ })).toHaveCount(0);
     await panel.getByRole("button", { name: "Purge v2", exact: true }).click();
     const purge = page.getByRole("alertdialog", { name: "Purge the text of v2?", exact: true });
     await expect(purge).toBeVisible();

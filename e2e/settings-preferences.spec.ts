@@ -131,8 +131,11 @@ test("hidden manual issue fields persist and remain usable through the overflow 
   await page.getByRole("button", { name: "Switch to Manual", exact: true }).click();
 
   const dialog = page.getByRole("dialog", { name: "New Issue", exact: true });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole("textbox", { name: "Title (required)", exact: true })).toBeFocused();
   await expect(dialog.getByRole("button", { name: "No priority", exact: true })).toHaveCount(0);
   await dialog.getByRole("button", { name: "More options", exact: true }).click();
+  await expect(page.getByRole("menuitem", { name: "Set priority...", exact: true })).toBeVisible();
   await page.getByRole("menuitem", { name: "Set priority...", exact: true }).click();
   await page.getByRole("button", { name: "High", exact: true }).click();
   await expect(dialog.getByRole("button", { name: "High", exact: true })).toBeVisible();
