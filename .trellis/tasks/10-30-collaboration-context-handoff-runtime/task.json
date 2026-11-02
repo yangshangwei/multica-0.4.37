@@ -21,7 +21,7 @@
   "children": [],
   "parent": "10-30-collaboration-context-handoff",
   "relatedFiles": [],
-  "notes": "runtime9项审计和5项召回跟进已独立复核合入；RKI6独立结果复核1,794项通过、normal/race各62pass。最新实际整轮v9 exit2（浏览器334/16/89），原16项已定向修复复验。v10干净118fc53e、产品9f72fc及runtime17文件hash重算一致；原owner Azure错误后知识协调恢复同一v10，已于19:56:51UTC启动，PID92594、结果待返回。后续密码C3四项+runtime三项、最终绑定与独占模型窗口待执行。runtime25消耗0；原冻结系列独立余14，下一E3 after trial2。",
+  "notes": "runtime审计9项+召回5项修复合入，RKI6独立结果1794检查通过、normal/race各62pass。v10冻结118fc实际make exit2/check-script130，静态15/TS13082/Go82包20852pass/0fail/22skip通过；browser39pass36fail1interrupted22skip341未运行。Web SSR注册/读取不同auth模块已证明，唯一执行者修复借用workspace依赖布局，下一候选需整合主线12生产变化和118fc两E2E补丁后冻结复验。runtime25消耗0、付费绑定关闭；原冻结系列独立余14，下一E3 after trial2。",
   "meta": {
     "planning_progress": "reviewed_2026-10-31",
     "research_head": "4c833e737efb6c997e5cb56c74c43e9237c91956",
@@ -36,8 +36,8 @@
     "current_acceptance_matrix": "../10-30-collaboration-context-handoff/acceptance-2026-11-01.json",
     "deterministic_addendum": "passed_0bbc6a77a_84c4c2b3d",
     "progress_file": "progress.md",
-    "progress_phase": "v10_single_owner_fullcheck_running_result_pending",
-    "next_action": "collect bound v10 final result; reconcile newer mainline/source and E2E patch before final candidate/password7/paid binding",
+    "progress_phase": "v10_interrupted_failed_auth_module_identity_repair_and_integrated_candidate_next",
+    "next_action": "sole owner repair owned workspace dependency layout and freeze integrated candidate; minimal SSR/category proof then independent binding review and complete check before password7/paid",
     "joint_current_addendum": {
       "commit": "65cd0599b",
       "source_head": "93afc3cb0",
@@ -83,7 +83,7 @@
       "accepted": false,
       "state": "retained_preparation_only_no_duplicate_execution"
     },
-    "continuation_updated_at": "2026-11-02T20:05:23.053821+00:00",
+    "continuation_updated_at": "2026-11-02T21:18:14.747624+00:00",
     "shared_fullcheck_owner": {
       "session": "01a19c0e-5cc4-77e0-b2d3-bd2842d39899",
       "previous_session": "01a19c0d-cce1-73e3-99ee-2c3c9e9239ba",
@@ -91,7 +91,7 @@
       "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
       "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
       "adapter_variant": "adapter-v9 with exact v10 launcher/source environment",
-      "state": "running; result-pending",
+      "state": "process-complete-failed; browser-interrupted-scope-incomplete",
       "actual_fullcheck_started": true,
       "run_record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
       "run_log": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.log",
@@ -102,7 +102,10 @@
       "started_at": "2026-11-02T19:56:51.936099+00:00",
       "independent_review": "../11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v10-executable-review.json",
       "independent_review_sha256": "72d162db17b143658fa6d213d7022ab8b26f5a42b983bb9539aa1f1c589520e1",
-      "clearance_sha256": "c103127276621b1e85d1489d297a9bb2aeb443c4a6bdf7061591fb372a7ea6ae"
+      "clearance_sha256": "c103127276621b1e85d1489d297a9bb2aeb443c4a6bdf7061591fb372a7ea6ae",
+      "active_run": false,
+      "finished_at": "2026-11-02T21:12:33.404620+00:00",
+      "exit_code": 2
     },
     "selected_v6_cross_review": {
       "report": "research/continuation-20261102/v6-cross-review/review.json",
@@ -144,23 +147,50 @@
       "full_candidate_accepted": false
     },
     "latest_shared_complete_check": {
-      "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.json",
-      "exit_code": 2,
-      "static_pass": 15,
-      "TS_pass": 13082,
-      "Go_pass": 20852,
-      "Go_fail": 0,
-      "Go_skip": 22,
-      "Go_packages": 82,
+      "observed_at": "2026-11-02T21:18:14.747624+00:00",
+      "state": "process-complete-failed; browser-interrupted-scope-incomplete",
+      "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+      "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+      "record_sha256": "a691caa6d0168db903bff9abf12d3a393f8949725110710302d4ac42d9034019",
+      "log": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.log",
+      "log_sha256": "b513d00d2c14838557e3bebf0190f4cd935240b19983532889736ef435fb2f64",
+      "started_at": "2026-11-02T19:56:51.936099+00:00",
+      "finished_at": "2026-11-02T21:12:33.404620+00:00",
+      "make_exit_code": 2,
+      "check_script_exit_code": 130,
+      "browser_exit_context": "line log says Checks FAILED(exit130), one test interrupted; stop source attribution left to sole-owner action receipt",
       "browser": {
         "planned": 439,
-        "pass": 334,
-        "fail": 16,
-        "skip": 89,
-        "retry": 0
+        "passed": 39,
+        "failed": 36,
+        "failed_status": 24,
+        "timed_out_status": 12,
+        "interrupted": 1,
+        "explicit_skipped": 22,
+        "did_not_run": 341,
+        "retries": 0,
+        "flaky": 0
       },
-      "actual_final_acceptance": false,
-      "runtime_provider_calls": 0
+      "browser_json": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/makecheck-playwright-results-v9.json",
+      "browser_json_sha256": "bb72fb895375db673b301c9dcbeda229405143e2f1af2c12659e4cda7d9ed131",
+      "browser_reporter_skipped_aggregate": 364,
+      "reporter_skip_aggregate_note": "includes 22 explicit skips, 1 interrupted and 341 unrun; do not count these as executed skips or passes",
+      "passed_stages": {
+        "static": 15,
+        "TS": 13082,
+        "Go_packages": 82,
+        "Go_pass": 20852,
+        "Go_fail": 0,
+        "Go_skip": 22
+      },
+      "source_environment_verdict": "compiled Web SSR auth-store module identity split proven; paid/mainline acceptance not granted",
+      "diagnosis": "research/continuation-20261102/coordinator/v10/category-timeouts/20261103-readonly-diagnosis.json",
+      "full_candidate_accepted": false,
+      "runtime_real_provider_calls": 0,
+      "original14_new_launches": 0,
+      "prior_v9_failed_result_preserved": true,
+      "real_entry_runnable": false
     },
     "shared_v9_run": {
       "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
@@ -212,7 +242,7 @@
     },
     "shared_v10_run": {
       "observed_at": "2026-11-02T19:58:35.161377+00:00",
-      "state": "running; final-result-pending",
+      "state": "process-complete-failed; browser-interrupted-scope-incomplete",
       "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
       "record_sha256_at_observation": "b8b7ba7e685530d147413eeae163020ceff4f59addf2d0af213c8e1d252d0f93",
       "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
@@ -233,7 +263,57 @@
       "clearance_sha256": "c103127276621b1e85d1489d297a9bb2aeb443c4a6bdf7061591fb372a7ea6ae",
       "actual_final_acceptance": false,
       "runtime_real_provider_calls": 0,
-      "initial_not_started_snapshots_preserved": true
+      "initial_not_started_snapshots_preserved": true,
+      "current_phase": "Playwright one-worker zero-retry; final result pending",
+      "passed_stages": {
+        "static": 15,
+        "TS": 13082,
+        "Go_packages": 82,
+        "Go_pass": 20852,
+        "Go_fail": 0,
+        "Go_skip": 22
+      },
+      "Go_stage_observation": "research/continuation-20261102/coordinator/v10/go-stage-observation.json",
+      "Go_stage_observation_sha256": "2776b0ce33db886f51a46b4c497cf8d6d72200f916f0d8d4a2d1845d46e9981e",
+      "known_browser_failures": [
+        "agent-categories.spec.ts:10",
+        "agent-category-grouping.spec.ts:23"
+      ],
+      "first_browser_failure_observation": "research/continuation-20261102/coordinator/v10/first-browser-timeout-observation.json",
+      "observed_browser_failure_headers": 32,
+      "environment_diagnosis": {
+        "state": "direct cause proven; mechanism detail under review",
+        "error": "Auth store not initialised — call registerAuthStore() first",
+        "digest": "3602458576",
+        "v10_registered_module": 99423,
+        "v10_failing_accessor_module": 10100,
+        "module_source_mixed_worktrees": true,
+        "runtime_experiment_model_or_budget_changed": false,
+        "diagnostic_agent": "/root/v10_category_timeout_review",
+        "report": "research/continuation-20261102/coordinator/v10/category-timeouts/20261103-readonly-diagnosis.json",
+        "report_sha256": "2b7be3a02c890f6afe6aec419a76b228e9261801b15e32c02bc791c447af89a5",
+        "direct_cause": "SSR auth facade registrations/accessor resolve to different compiled modules",
+        "upstream_mechanism": "chained borrowed workspace resolver layout remains hypothesis",
+        "exact_pending_await": "unrecorded"
+      },
+      "finished_at": "2026-11-02T21:12:33.404620+00:00",
+      "exit_code": 2,
+      "check_script_exit_code": 130,
+      "browser": {
+        "planned": 439,
+        "passed": 39,
+        "failed": 36,
+        "failed_status": 24,
+        "timed_out_status": 12,
+        "interrupted": 1,
+        "explicit_skipped": 22,
+        "did_not_run": 341,
+        "retries": 0,
+        "flaky": 0
+      },
+      "final_observation": "research/continuation-20261102/coordinator/v10/final-interrupted-observation.json",
+      "owner_stop_corroboration": "research/continuation-20261102/coordinator/v10/owner-stop-corroboration.json",
+      "stop_signal": "SIGINT"
     },
     "v10_status_independent_review": {
       "report": "research/continuation-20261102/coordinator/v10/status-review/review.json",
@@ -255,6 +335,52 @@
       "recipient_UI_overlap": true,
       "v10_evidence_not_relabelled": true,
       "final_candidate_scope_pending": true
+    },
+    "latest_shared_complete_check_v10": {
+      "observed_at": "2026-11-02T21:18:14.747624+00:00",
+      "state": "process-complete-failed; browser-interrupted-scope-incomplete",
+      "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+      "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+      "record_sha256": "a691caa6d0168db903bff9abf12d3a393f8949725110710302d4ac42d9034019",
+      "log": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.log",
+      "log_sha256": "b513d00d2c14838557e3bebf0190f4cd935240b19983532889736ef435fb2f64",
+      "started_at": "2026-11-02T19:56:51.936099+00:00",
+      "finished_at": "2026-11-02T21:12:33.404620+00:00",
+      "make_exit_code": 2,
+      "check_script_exit_code": 130,
+      "browser_exit_context": "line log says Checks FAILED(exit130), one test interrupted; stop source attribution left to sole-owner action receipt",
+      "browser": {
+        "planned": 439,
+        "passed": 39,
+        "failed": 36,
+        "failed_status": 24,
+        "timed_out_status": 12,
+        "interrupted": 1,
+        "explicit_skipped": 22,
+        "did_not_run": 341,
+        "retries": 0,
+        "flaky": 0
+      },
+      "browser_json": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/makecheck-playwright-results-v9.json",
+      "browser_json_sha256": "bb72fb895375db673b301c9dcbeda229405143e2f1af2c12659e4cda7d9ed131",
+      "browser_reporter_skipped_aggregate": 364,
+      "reporter_skip_aggregate_note": "includes 22 explicit skips, 1 interrupted and 341 unrun; do not count these as executed skips or passes",
+      "passed_stages": {
+        "static": 15,
+        "TS": 13082,
+        "Go_packages": 82,
+        "Go_pass": 20852,
+        "Go_fail": 0,
+        "Go_skip": 22
+      },
+      "source_environment_verdict": "compiled Web SSR auth-store module identity split proven; paid/mainline acceptance not granted",
+      "diagnosis": "research/continuation-20261102/coordinator/v10/category-timeouts/20261103-readonly-diagnosis.json",
+      "full_candidate_accepted": false,
+      "runtime_real_provider_calls": 0,
+      "original14_new_launches": 0,
+      "prior_v9_failed_result_preserved": true,
+      "real_entry_runnable": false
     }
   }
 }

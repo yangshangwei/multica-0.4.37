@@ -1,0 +1,1952 @@
+{
+  "observed_at": "2026-11-02T20:47:01.084522+00:00",
+  "state": "Go-stage-complete-pass; full-run-pending",
+  "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+  "product_source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+  "static_tasks_pass": 15,
+  "TS_pass": 13082,
+  "Go_packages": 82,
+  "Go_named_counts": {
+    "run": 20874,
+    "pass": 20852,
+    "fail": 0,
+    "skip": 22
+  },
+  "Go_records": [
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200634944465_bb940f8eb38e.json",
+      "sha256": "cda25cbc7e3f0701f3d4dda3354bd0f8e6a35e8da36f07455d185f751b6189ff",
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache",
+      "counts": {
+        "run": 11,
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200643745401_07eb79fa72b8.json",
+      "sha256": "fad4df560d1aa8b0cdad84228d8d4b5ed6ea9235f48bdbd383229b4c48a26762",
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity",
+      "counts": {
+        "run": 2,
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200646574560_f47ea76e9369.json",
+      "sha256": "9f96cbb800ea206b2065d6c3551933929103e2262d9db9f737e157855b201766",
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200647372110_f9a6f66e94fe.json",
+      "sha256": "7629f2f237ca5a6aeebeef7802847d922dcae9e61bfcded22b910e346348fc61",
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "counts": {
+        "run": 71,
+        "pass": 70,
+        "fail": 0,
+        "skip": 1
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200707455411_b0ca13f2a1d5.json",
+      "sha256": "d920756797c7acbb1e4c8b959df12601f6a5b57a15b3c03ab20423b7fcaf2b4a",
+      "package": "github.com/multica-ai/multica/server/cmd/multica",
+      "counts": {
+        "run": 1074,
+        "pass": 1074,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200726099390_6f87875654d8.json",
+      "sha256": "d22b8bae060bd0f8864584b626870c42eb6c4b43be32dbe393edf7c76cfc1b67",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "counts": {
+        "run": 741,
+        "pass": 735,
+        "fail": 0,
+        "skip": 6
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200908695670_7427887f8751.json",
+      "sha256": "12814892c3b8e794742701c3e661b098a3f2c2794238579ce281e2d68ef877cc",
+      "package": "github.com/multica-ai/multica/server/internal/admission",
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200909514555_e243b33d7b90.json",
+      "sha256": "faeb361d0b8b209b9ed9817901f5b74fb49870a3bba51de5f0616eabf69e40f5",
+      "package": "github.com/multica-ai/multica/server/internal/agentconfig",
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200909756137_a33d11aa74fd.json",
+      "sha256": "6a676c302ed8c51c9938b3a1228128f60d5f8dac122ed76c7ac0a1ddaee97506",
+      "package": "github.com/multica-ai/multica/server/internal/analytics",
+      "counts": {
+        "run": 8,
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200927595988_8ec97853df30.json",
+      "sha256": "8798727edf9a8f458a3804ac8ef3a3fd45f98e336b67474a0547a7912f3ea4c2",
+      "package": "github.com/multica-ai/multica/server/internal/attribution",
+      "counts": {
+        "run": 31,
+        "pass": 31,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200929731300_d642fc7111ff.json",
+      "sha256": "dc225b45c0dbdbe27d8fa978a9249dd6cf91544a86a9dad1c0ab6b687325830d",
+      "package": "github.com/multica-ai/multica/server/internal/attributionbackfill",
+      "counts": {
+        "run": 4,
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200932730771_d4b8dc307441.json",
+      "sha256": "5dac5953e778cdd0afe48818aa1a3eb604539ed1d078642bcabfa63b4d3b83a6",
+      "package": "github.com/multica-ai/multica/server/internal/auth",
+      "counts": {
+        "run": 113,
+        "pass": 112,
+        "fail": 0,
+        "skip": 1
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200939632397_cc1252fad4dc.json",
+      "sha256": "b1eeb56ac921b1142fef86de45ec6b2884e750aac46b00dca54dbe5d525f557e",
+      "package": "github.com/multica-ai/multica/server/internal/changelog",
+      "counts": {
+        "run": 56,
+        "pass": 56,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200941787776_4b76585c3aa4.json",
+      "sha256": "3496522f603e810a623aa2dfa671e62c8988421c9d7db1f96ba4ea2679e38063",
+      "package": "github.com/multica-ai/multica/server/internal/channelmedia",
+      "counts": {
+        "run": 3,
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200943740817_b8d431c478e1.json",
+      "sha256": "944f642ba903597c7efc06f3dfcbc3be4d2476838fddd3ec22b8bb1c4f115f1b",
+      "package": "github.com/multica-ai/multica/server/internal/chatoriginbackfill",
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200944053355_f26ab7ece539.json",
+      "sha256": "3383ae4ffb8a61a4ae622badfb080f759b8a631e14308d7c2e8024c313f887f0",
+      "package": "github.com/multica-ai/multica/server/internal/chattitle",
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200944308630_248934fbfb73.json",
+      "sha256": "fbd494237a93aa4b27066c025281c6a6090d035377bba300a4b929a797e34c10",
+      "package": "github.com/multica-ai/multica/server/internal/cli",
+      "counts": {
+        "run": 326,
+        "pass": 325,
+        "fail": 0,
+        "skip": 1
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200949525961_cffe407cfbfc.json",
+      "sha256": "793a262d0b161fa575a728773e6bb625eb1ce159fd2eba8307ef977b84bb266b",
+      "package": "github.com/multica-ai/multica/server/internal/cloudruntime",
+      "counts": {
+        "run": 3,
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200951616047_472bb8236d85.json",
+      "sha256": "69260ce82d222d93a04a36a809377425d0efedaa9fea6399d72a4d4dd69891b1",
+      "package": "github.com/multica-ai/multica/server/internal/collaboration",
+      "counts": {
+        "run": 11,
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102200954370887_7a21f045e560.json",
+      "sha256": "de11f017b00a3805155da0f43e7818dea8e04c710234906df7e7bd0ec63d70b4",
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "counts": {
+        "run": 1716,
+        "pass": 1714,
+        "fail": 0,
+        "skip": 2
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201100861575_e304ab6e77ff.json",
+      "sha256": "0e83ecbbf313847c380ba3405926f40f94290fdadd5d56bee6efead122f957e1",
+      "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+      "counts": {
+        "run": 348,
+        "pass": 348,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201239738928_443be4706fd4.json",
+      "sha256": "ad4730bfb8a9c544d84c1e3913cd8a36d2bd03062f58317f733d811aa8d0f74c",
+      "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "counts": {
+        "run": 1345,
+        "pass": 1345,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201345902301_abe022601f40.json",
+      "sha256": "42860eb6b5d67812b41a5ad7e05089f858e13ecd37d548ad04f73c8a90681911",
+      "package": "github.com/multica-ai/multica/server/internal/daemon/processtree",
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201348957057_9ae551c14945.json",
+      "sha256": "b49267164a9eb498a4123a5cffa398f07d1f71529173e854b4b93544b823ac60",
+      "package": "github.com/multica-ai/multica/server/internal/daemon/repocache",
+      "counts": {
+        "run": 61,
+        "pass": 61,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201356966105_a2993220b42d.json",
+      "sha256": "67b444dc81f1f2c2c968962173835a6ccad45dc631db59dcebf466dcdd5fa276",
+      "package": "github.com/multica-ai/multica/server/internal/daemonws",
+      "counts": {
+        "run": 30,
+        "pass": 30,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201401740999_2ec21eaa1b3e.json",
+      "sha256": "1adc078ea8d1be0d9231b1dd9664280d0ef7eae208b2fce26abc54f403da29e2",
+      "package": "github.com/multica-ai/multica/server/internal/dbstartup",
+      "counts": {
+        "run": 33,
+        "pass": 33,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201404910222_2c99ee2c73c6.json",
+      "sha256": "656a7cecb6de3d252f4cc9c1e7eea963686f345efd189f649523a38d6303841e",
+      "package": "github.com/multica-ai/multica/server/internal/dispatch",
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201405138127_0fb816f659c3.json",
+      "sha256": "90964392b5747aec5950e850fe9ba027a8e890caf3e0250172828e8793194718",
+      "package": "github.com/multica-ai/multica/server/internal/docs",
+      "counts": {
+        "run": 16,
+        "pass": 16,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201407721356_103bcb57d099.json",
+      "sha256": "ceefbbe7bbb00aa50a227cc35e593ec9a2c20edb0023702335128817737c5b5a",
+      "package": "github.com/multica-ai/multica/server/internal/entitlement",
+      "counts": {
+        "run": 33,
+        "pass": 33,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201409953414_2f5af1a52539.json",
+      "sha256": "875a2302cecfa0221f5f0aa021e440d7c94c9118db0b1a5ce7f8fc108fa81ab3",
+      "package": "github.com/multica-ai/multica/server/internal/entitlement/entitlementtest",
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201411924525_c824a98f5f50.json",
+      "sha256": "94ab463c690e7f5d60530aec715ffc5b2eef9bf580c73becfc2b9b73edc30ad5",
+      "package": "github.com/multica-ai/multica/server/internal/events",
+      "counts": {
+        "run": 8,
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201413803790_5baa8458c611.json",
+      "sha256": "a9b0b75d0f39c42edc65e01af925907ece246f1d32d8fddfe98077ad954819fd",
+      "package": "github.com/multica-ai/multica/server/internal/featureflags",
+      "counts": {
+        "run": 7,
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201416183855_199d57419d78.json",
+      "sha256": "2925ab3e1b41b68bda672f8aad116b85c70a1df00ecde68452232b75eaefdb26",
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "counts": {
+        "run": 5332,
+        "pass": 5325,
+        "fail": 0,
+        "skip": 7
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201917367429_f98f1babe5ae.json",
+      "sha256": "933770f7821e9b78b388004f4fa5a04b85adae1a3a012500ed6736155fd8740b",
+      "package": "github.com/multica-ai/multica/server/internal/installation",
+      "counts": {
+        "run": 8,
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201920343454_bbd7303d32a6.json",
+      "sha256": "14dd82bf1b82e1528ffa654fd0771d3e8f719fadd5916bf1f05cb0a3f831bc77",
+      "package": "github.com/multica-ai/multica/server/internal/integrations/channel",
+      "counts": {
+        "run": 22,
+        "pass": 22,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201922406840_d01cb786d08e.json",
+      "sha256": "5e8682791597b12b197d78cb6f406e77a56db10bab7fdc446d259f2fa06bb6ab",
+      "package": "github.com/multica-ai/multica/server/internal/integrations/channel/engine",
+      "counts": {
+        "run": 211,
+        "pass": 211,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201933000101_e133f82ee548.json",
+      "sha256": "7eb89444a9d2f043f18e428866a3eb585fb7a53a21055cb2ca8a45abff4b5d9b",
+      "package": "github.com/multica-ai/multica/server/internal/integrations/composio",
+      "counts": {
+        "run": 42,
+        "pass": 42,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201935453774_33991a652421.json",
+      "sha256": "11a397a4fb013706517d0cbe0911b72a0ba388b6c11b1e6272ccb81ee5645061",
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "counts": {
+        "run": 212,
+        "pass": 212,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201944389280_a384d9e70280.json",
+      "sha256": "a7e7842c4aa7fa24dc0af8e54aaaede99c5c9f95d45be2c7c39e053c9da71027",
+      "package": "github.com/multica-ai/multica/server/internal/integrations/ghsnapshot",
+      "counts": {
+        "run": 36,
+        "pass": 36,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201948275927_36f5a604ea4d.json",
+      "sha256": "7984f3922b12c70067ab539411677e96e24b0da0f094032eebbfbddbd0db4736",
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "counts": {
+        "run": 426,
+        "pass": 426,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102201956650092_a57e8d23d980.json",
+      "sha256": "28ba3d973801709719be40e19d9789f2bf3c963906feb3f6fc62fccc548d0c9b",
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "counts": {
+        "run": 188,
+        "pass": 188,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202002002070_72398aa1f6d0.json",
+      "sha256": "48c3c5fcd3671008395da67b1b47fa98f5a61ec48edfcb6a0cf6210eed9ff4ce",
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "counts": {
+        "run": 114,
+        "pass": 114,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202012753734_b565f47a53d0.json",
+      "sha256": "e24e898a9e8b9464f3b6cd92dcffd1829f92b1c7a64b88c49e29e5f5f5d0da71",
+      "package": "github.com/multica-ai/multica/server/internal/integrations/vcs",
+      "counts": {
+        "run": 15,
+        "pass": 15,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202014869163_549757f027eb.json",
+      "sha256": "d9cf58fd070f91c064ec0be369de3649d0b7046e9abba34f06adfe3be0252986",
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "counts": {
+        "run": 616,
+        "pass": 616,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202122455812_6bdd179505c2.json",
+      "sha256": "caa6078d8940534b095f206ee7f0aac3d29010d29894910e80045fe7bbfcab92",
+      "package": "github.com/multica-ai/multica/server/internal/issueactivitybackfill",
+      "counts": {
+        "run": 2,
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202125966311_3202a0f12174.json",
+      "sha256": "3a322a56ae0f8b95e86dbe04171b35896089ba449ce9942a703728bf05912d42",
+      "package": "github.com/multica-ai/multica/server/internal/issueguard",
+      "counts": {
+        "run": 2,
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202128055433_7a51ef9d7409.json",
+      "sha256": "6f7b91425787358859e09f9afbaf78bdf55ff88fd1b323a506450da93d242453",
+      "package": "github.com/multica-ai/multica/server/internal/issueposition",
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202128354638_3df108fbf701.json",
+      "sha256": "5e837f6d6145f8d4eb7642091c68d73739be48cef2c62cda3af8661cec30158f",
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "counts": {
+        "run": 26,
+        "pass": 26,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202130323547_fb52e0df1f83.json",
+      "sha256": "5ff108e315dff7ad84f1b91dddc9a4545be3eac656629087f291f23ac150a5f6",
+      "package": "github.com/multica-ai/multica/server/internal/iteration",
+      "counts": {
+        "run": 122,
+        "pass": 122,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202132997019_b3616ef0c58b.json",
+      "sha256": "64301bc7a041f535c243588e76f9bdfd6e189f0c7e8c15f1fde134992f1d9442",
+      "package": "github.com/multica-ai/multica/server/internal/logger",
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202136065323_734f4abb7b12.json",
+      "sha256": "91c8d4f184314c491935baecd4d1220326dedf6b8b7c3c763720d888132969b2",
+      "package": "github.com/multica-ai/multica/server/internal/metrics",
+      "counts": {
+        "run": 87,
+        "pass": 87,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202141916772_919b30f55bea.json",
+      "sha256": "033580103b0957def980d682a277c974c96ded29fb4753898bb78ed7667e80ea",
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "counts": {
+        "run": 119,
+        "pass": 119,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202145777460_33c023a139ab.json",
+      "sha256": "4e2d9716c8421c1a4f9356a44601dfc074bb4c28cfd3004648e89909beb3a4df",
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "counts": {
+        "run": 536,
+        "pass": 536,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202221414559_9f2c7589a33e.json",
+      "sha256": "f4b9c32133dcc987963ffc2464977615319a0884dc81921e8beb9170426cf5b4",
+      "package": "github.com/multica-ai/multica/server/internal/profiling",
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202222013154_402988e4441d.json",
+      "sha256": "1030d74ff4d7103348532b8134559a8ae95ad107e0cdbb4f2b154f161c1588b5",
+      "package": "github.com/multica-ai/multica/server/internal/projecthealth",
+      "counts": {
+        "run": 18,
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202224943257_08997a7fa7fe.json",
+      "sha256": "a119e31385548e48c43b2ff0bcd1b60677117224e7975443d8fba597d41e2761",
+      "package": "github.com/multica-ai/multica/server/internal/realtime",
+      "counts": {
+        "run": 87,
+        "pass": 87,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202230096327_6d7856d79665.json",
+      "sha256": "5d1d8b2dbf35850713ac29632f8e7706339f543376a5843fe5be3da846258e59",
+      "package": "github.com/multica-ai/multica/server/internal/runtimeapps",
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202230439483_b41f457af4f5.json",
+      "sha256": "56ade9bf3d29257e404a273e91169db55faae9d0e64dbd70f3aa20b899f382a2",
+      "package": "github.com/multica-ai/multica/server/internal/scheduler",
+      "counts": {
+        "run": 31,
+        "pass": 31,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202235954523_2f225990571e.json",
+      "sha256": "5fceb2ed2bae967eb4044620a520d05df3dbefb807d6dd7db433b6ea0854e2a6",
+      "package": "github.com/multica-ai/multica/server/internal/seatcapacity",
+      "counts": {
+        "run": 23,
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202238229629_0ee13f0d2884.json",
+      "sha256": "b7ee722835303aa431b6f544799aa6eb8e046db4783f5b5b690a5027a0a7c69c",
+      "package": "github.com/multica-ai/multica/server/internal/selfexec",
+      "counts": {
+        "run": 10,
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102202240085216_986dfe9cbf73.json",
+      "sha256": "42e99846ec182251e7c898c8fe4d0fc02c3fe1a3c30d0e585b223db300eda839",
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "counts": {
+        "run": 3340,
+        "pass": 3340,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204001187470_c0b56fe05d44.json",
+      "sha256": "0405b0824625cf2822919f678104484f29948a8fd66d994355ca49e94f319e2f",
+      "package": "github.com/multica-ai/multica/server/internal/skill",
+      "counts": {
+        "run": 66,
+        "pass": 66,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204003912063_85091a8daf2c.json",
+      "sha256": "7e8106d37dfc6176e42993ad5a059daeee5f2707d1838ba6a241125bd2c69bff",
+      "package": "github.com/multica-ai/multica/server/internal/storage",
+      "counts": {
+        "run": 99,
+        "pass": 99,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204007294179_0548817c3f9d.json",
+      "sha256": "8d87fbfcf34a0700e5c31ca8225c4af8bf5e2c3cfeb7d37d3d1b776742525442",
+      "package": "github.com/multica-ai/multica/server/internal/taskusagebackfill",
+      "counts": {
+        "run": 2,
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204011342721_8c57f41cf87d.json",
+      "sha256": "c3b90da147778e9467fa88a2b4b6517140aff47d38fae27b67177a12696590b9",
+      "package": "github.com/multica-ai/multica/server/internal/testutil",
+      "counts": {
+        "run": 18,
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204013725282_c02d86db4237.json",
+      "sha256": "c1ed1c8380cfc25ff31292dd99ffeba90a2e014fe2e969783b198722f7d1ecc8",
+      "package": "github.com/multica-ai/multica/server/internal/triagecsv",
+      "counts": {
+        "run": 15,
+        "pass": 15,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204015607754_d763dfcd7176.json",
+      "sha256": "c487e6c30f1a6aae91b7abb3e11cda43cb5b3d4a9386351441a9b4e792ea19ab",
+      "package": "github.com/multica-ai/multica/server/internal/util",
+      "counts": {
+        "run": 115,
+        "pass": 115,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204017750723_f8cc8b7af4e6.json",
+      "sha256": "1b45a51389bf1958e73f9ea0bdbfcd93d34bdaaa0fdacf8943981cf405e80828",
+      "package": "github.com/multica-ai/multica/server/internal/util/secretbox",
+      "counts": {
+        "run": 10,
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204019784172_3b4cd4ae0d09.json",
+      "sha256": "8ed15e076ceb882e6d6492f6a7dca51a471d8a935e2c5d1b12744c103b356a08",
+      "package": "github.com/multica-ai/multica/server/pkg/composio",
+      "counts": {
+        "run": 39,
+        "pass": 39,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204022006871_fb47920ce532.json",
+      "sha256": "18b1f5b94a01dcd9d7e981fd53b7fd75d6702fe6aeb7ada77c891ea8b08307e9",
+      "package": "github.com/multica-ai/multica/server/pkg/db/generated",
+      "counts": {
+        "run": 6,
+        "pass": 6,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204026730136_bd354a329a15.json",
+      "sha256": "2f8c99a392cd27e9b108a932e26cc706ebe04f8a10c43f6bc9033ce70f45008c",
+      "package": "github.com/multica-ai/multica/server/pkg/dbid",
+      "counts": {
+        "run": 23,
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204031024761_d7ecdfa3f812.json",
+      "sha256": "69c8eddb8ae0348e2835edf0ac1df22e0889ace3a095f4ad711b245d272b6bef",
+      "package": "github.com/multica-ai/multica/server/pkg/featureflag",
+      "counts": {
+        "run": 51,
+        "pass": 51,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204032992845_e859efa47f08.json",
+      "sha256": "8ce471070eebc2ddde910dbd308c803b01f1f36d90fc1b7277c0cf49226d2e89",
+      "package": "github.com/multica-ai/multica/server/pkg/llm",
+      "counts": {
+        "run": 34,
+        "pass": 34,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204042958343_2801bc792e83.json",
+      "sha256": "074468720050fcdfa2200ebbe86dac1ebf8a27b5abef0c858b7788af4363bebc",
+      "package": "github.com/multica-ai/multica/server/pkg/plugincontract",
+      "counts": {
+        "run": 99,
+        "pass": 99,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204047209953_b2f76499e952.json",
+      "sha256": "21806e1506d3d009bc8dff93aa01d50315de89944acc4ec96b2bf9bc993fb47a",
+      "package": "github.com/multica-ai/multica/server/pkg/protocol",
+      "counts": {
+        "run": 390,
+        "pass": 390,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204050759084_4fc98d5f8acf.json",
+      "sha256": "41da4c68f8ce3133f1b2a69446d89478c5404d38a63846e18635bebc3821de83",
+      "package": "github.com/multica-ai/multica/server/pkg/publicapi/v1",
+      "counts": {
+        "run": 5,
+        "pass": 5,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204053193518_4f0dde5e8035.json",
+      "sha256": "2f3d0d4777b47c4f03fdf67cbabfd76bcfc11ded315431b22d2c30d816dd2413",
+      "package": "github.com/multica-ai/multica/server/pkg/redact",
+      "counts": {
+        "run": 35,
+        "pass": 35,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204055056370_b541162c7d6d.json",
+      "sha256": "4481f246325234894f7ca03e48215a7f4a67d814ce5a12cc3a1f3199cd9684cb",
+      "package": "github.com/multica-ai/multica/server/pkg/remotemcp",
+      "counts": {
+        "run": 8,
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204057184834_e6acddbc5503.json",
+      "sha256": "a0c401795194abbedb85d6a2d5aa22cbab49010810ac990fc972396ff120c733",
+      "package": "github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest",
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204059221837_2405237448a4.json",
+      "sha256": "3e283285c719622243ac08fd15d052d57c3b468765e0243cac922a557f94938a",
+      "package": "github.com/multica-ai/multica/server/pkg/skillbundle",
+      "counts": {
+        "run": 2,
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204101095321_d8de8e43c096.json",
+      "sha256": "6dbc56f2fbc5f92b05424552e65cd8ecec4bb24571c6f400c82efb5edd35e36e",
+      "package": "github.com/multica-ai/multica/server/pkg/taskfailure",
+      "counts": {
+        "run": 222,
+        "pass": 222,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10/ccheck_20261102204103247715_56802910400e.json",
+      "sha256": "d68ff8c65d5047131890207c98f0c568940fd3202f3ddae0a2c6e0dabd5f145c",
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "counts": {
+        "run": 1955,
+        "pass": 1951,
+        "fail": 0,
+        "skip": 4
+      },
+      "exit_code": 0
+    }
+  ],
+  "named_migration_and_reconsent_passes": [
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationCommandHistoryMigrationRepairsInterruptedIndex"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsPreserveHistoryAndRefuseDowngrade/populated_false"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsPreserveHistoryAndRefuseDowngrade/populated_true"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsPreserveHistoryAndRefuseDowngrade"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsEnforceVersionConstraints/duplicate_run_request"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsEnforceVersionConstraints/member_with_request_key"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsEnforceVersionConstraints/agent_without_hash"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsEnforceVersionConstraints/malformed_request_hash"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsEnforceVersionConstraints/duplicate_version"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsEnforceVersionConstraints/bytes_mismatch"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsEnforceVersionConstraints/overlong_request_id"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsEnforceVersionConstraints/version_zero"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsEnforceVersionConstraints/hard_ceiling"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsEnforceVersionConstraints/member_with_run"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsEnforceVersionConstraints/agent_restore"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsEnforceVersionConstraints/future_restore_source"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsEnforceVersionConstraints/member_with_hash"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsEnforceVersionConstraints/unknown_author"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsEnforceVersionConstraints/agent_without_run"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationMemoryMigrationsEnforceVersionConstraints"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationResourceOfferMigrationsPreserveHistoryAndRefuseDowngrade/populated_false"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationResourceOfferMigrationsPreserveHistoryAndRefuseDowngrade/populated_true"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationResourceOfferMigrationsPreserveHistoryAndRefuseDowngrade"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationResourceOfferMigrationsEnforceStateConstraints"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationResourceOfferMigrationsRepairInvalidIdentityIndex"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationResourceOfferMigrationsRepairInterruptedHistoryIndex"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationSwitchMigrationsPreserveAndRefuseDowngrade/refuse_716_collaboration_switch_proposal_target"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationSwitchMigrationsPreserveAndRefuseDowngrade/refuse_715_collaboration_switch_consent_resource"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationSwitchMigrationsPreserveAndRefuseDowngrade/refuse_714_collaboration_switch_proposal_id"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationSwitchMigrationsPreserveAndRefuseDowngrade/refuse_713_collaboration_switch_proposals"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationSwitchMigrationsPreserveAndRefuseDowngrade"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationSwitchMigrationsRepairInvalidConsentIndex"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCollaborationNewMigrationFilesKeepConcurrentIndexBoundary"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestRunMigrationsConcurrentPending"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestRunMigrationsConcurrentAlreadyApplied"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestRunMigrationsAdvisoryLockSerializes"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestRunMigrationsConcurrentMixedPoolStress"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestRunMigrationsRejectsInvalidDirection"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestRunMigrationsRepairsInvalidConcurrentIndexBeforeRetry"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestRunMigrationsRepairsDingTalkGroupRouteIndexesBeforeRetry/305_dingtalk_group_route_installation_conversation_unique"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestRunMigrationsRepairsDingTalkGroupRouteIndexesBeforeRetry/306_dingtalk_group_route_workspace_index"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestRunMigrationsRepairsDingTalkGroupRouteIndexesBeforeRetry/307_dingtalk_group_route_id_unique"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestRunMigrationsRepairsDingTalkGroupRouteIndexesBeforeRetry"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestRunMigrationsRepairsInvalidConcurrentIndexDuringRollback"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestRunMigrationsRepairsInvalidTerminalCompletedAtIndex"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestRunMigrationsRepairsShareLinkIndexesBeforeRetry"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestIterationMigrationsRecoverPartialInvalidIndex"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestIterationMigrationsPartialEmptyRollbackPreservesSharedTimezone/after_1_files"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestIterationMigrationsPartialEmptyRollbackPreservesSharedTimezone/after_3_files"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestIterationMigrationsPartialEmptyRollbackPreservesSharedTimezone/after_4_files"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestIterationMigrationsPartialEmptyRollbackPreservesSharedTimezone/after_11_files"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestIterationMigrationsPartialEmptyRollbackPreservesSharedTimezone"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestConcurrentIndexCleanupsMatchTheirMigrations"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestRunMigrationsRepairsInvalidRuntimeIDIndex"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestMigrationPoolReportsSkippedRowNotices"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestRedundantIndexMigrationsPreserveCoveringQueryPlansAndRollback"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestSourceContextMigrationsRollbackFailsClosedWithCapturedData"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestSourceContextRollbackGuardRegisteredForEveryMigrationStep"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestServerHealthReadyHandlerMigrationOutOfDate"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestServerHealthReadyHandlerMigrationPartiallyApplied"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "test": "TestPrepareHermesHomeMigrationIsAtomic"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "test": "TestPrepareHermesHomeMigrationIntoSemanticallyEmptyStore/zero-length_database"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "test": "TestPrepareHermesHomeMigrationIntoSemanticallyEmptyStore/orphan_sidecars,_no_database"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "test": "TestPrepareHermesHomeMigrationIntoSemanticallyEmptyStore/real_database_is_never_overwritten"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "test": "TestPrepareHermesHomeMigrationIntoSemanticallyEmptyStore/unclearable_store_fails_closed"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "test": "TestPrepareHermesHomeMigrationIntoSemanticallyEmptyStore"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "test": "TestPrepareHermesHomeMigrationNeverOverwritesStore"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "test": "TestPrepareHermesHomeMigrationKeepsExistingStore"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestMigrationBackfill_VisibilityToPermission"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestPasswordMigrationClaimBoundaries/eligible"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestPasswordMigrationClaimBoundaries/missing_issued"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestPasswordMigrationClaimBoundaries/missing_expiry"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestPasswordMigrationClaimBoundaries/string_issued"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestPasswordMigrationClaimBoundaries/string_expiry"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestPasswordMigrationClaimBoundaries/future_issued"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestPasswordMigrationClaimBoundaries/cutoff_equality"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestPasswordMigrationClaimBoundaries/after_cutoff"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestPasswordMigrationClaimBoundaries/expiry_equality"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestPasswordMigrationClaimBoundaries/deadline_reached"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestPasswordMigrationClaimBoundaries"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestMcpMarketTemplateSourceMigration"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestAdminQueueObservationMigrationTracksOnlyKnownQueueTime"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestAttributionStrictConstraintMigrations"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentAvatarMigrationPreservesCustomizations/built-in_default"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentAvatarMigrationPreservesCustomizations/custom_image"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentAvatarMigrationPreservesCustomizations/custom_emoji"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentAvatarMigrationPreservesCustomizations/cleared"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentAvatarMigrationPreservesCustomizations/empty"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentAvatarMigrationPreservesCustomizations/ordinary_unicorn"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentAvatarMigrationPreservesCustomizations/ordinary_seal"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentAvatarMigrationPreservesCustomizations/another_system_agent"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentAvatarMigrationPreservesCustomizations/already_current"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentAvatarMigrationPreservesCustomizations"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations/English_default"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations/Chinese_default"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations/custom_description"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations/empty_description"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations/custom_name_and_description"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations/custom_name_with_old_default_description"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations/ordinary_Mika"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations/different_system_identity"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations/already_renamed"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations/already_current"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations/already_renamed_with_custom_description"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations/ordinary_new_name"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations/archived_built-in"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations/active_conflict"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations/active_conflict_target"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations/archived_conflict"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations/archived_conflict_target"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationPreservesCustomizations"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinAgentDisplayNameMigrationContinuesAfterConcurrentNameConflict"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/English_pristine"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/Chinese_pristine"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/workspace_contains_Mika"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/workspace_was_renamed"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/workspace_contains_self_introduction"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/ordinary_new-name_agent"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/ordinary_Mika"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/custom_builtin_name"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/unrenamed_conflicted_builtin"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/custom_opening"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/custom_template_body"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/user_opening"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/assistant_kickoff"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/missing_kickoff"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/mismatched_quote"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/missing_quote_delimiters"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/duplicate_quoted_opening"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/real_user_history"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/real_assistant_history"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/task_owns_opening"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/task_owns_kickoff"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory/task_history_without_messages"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationPreservesHistory"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationRechecksAfterFirstSend"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestBuiltinOnboardingDisplayNameMigrationIsAtomic"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestChannelChatContextGenerationMigrationsUpDownAndLegacyRows"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationAccountInvalidationMigrationsPreserveRevocation"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationAttachmentDeliveryMigrationsPreserveOriginalUploads"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationChannelInputMigrationPreservesConsumedHistory"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationChannelInputMigrationRefusesMissingConsumptionEvidence"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationChannelInputMigrationRefusesAmbiguousCancellation"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationChannelInputMigrationDoesNotWaitThroughWriter"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationCancellationMigrationBackfillsOnlyExactSingletonManualEvents"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationConfigurationMigrationPreservesAndResumesInvalidation"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationConfigurationMigrationChildrenAndDeletion"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationGroupDependencyMigrationPreservesRevokedHistory"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationGroupDependencyMigrationRefusesIncompleteRoster"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationLeaderTurnMigrationUsesCausalityAndPreservesSettledHistory/active_causal_chain"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationLeaderTurnMigrationUsesCausalityAndPreservesSettledHistory/settled_ambiguous_history"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationLeaderTurnMigrationUsesCausalityAndPreservesSettledHistory"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationLeaderTurnMigrationRefusesAmbiguousActiveHistory"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationOwnerReconsentMigrationSeparatesBoundaryEpoch"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationResultNotificationMigrationPreservesHistoryAndFencesRollback"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationRuntimePreparationMigrationPreservesAndFencesEvidence"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationSharedSkillMigrationUpgradeAndSemanticWrites"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationTargetHoldMigrationPreservesIntentAndProof"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationTargetHoldMigrationRepairsOnlyLegacyReconfigure/idle_active"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationTargetHoldMigrationRepairsOnlyLegacyReconfigure/idle_paused"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationTargetHoldMigrationRepairsOnlyLegacyReconfigure/settled_history"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationTargetHoldMigrationRepairsOnlyLegacyReconfigure/repeated_history"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationTargetHoldMigrationRepairsOnlyLegacyReconfigure/active_pointer"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationTargetHoldMigrationRepairsOnlyLegacyReconfigure/generation_mismatch"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationTargetHoldMigrationRepairsOnlyLegacyReconfigure/impossible_control_delta"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationTargetHoldMigrationRepairsOnlyLegacyReconfigure/other_pause"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationTargetHoldMigrationRepairsOnlyLegacyReconfigure/unadvanced_configuration"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationTargetHoldMigrationRepairsOnlyLegacyReconfigure/missing_generation_history"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationTargetHoldMigrationRepairsOnlyLegacyReconfigure/unsettled_group"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationTargetHoldMigrationRepairsOnlyLegacyReconfigure/unsettled_run"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationTargetHoldMigrationRepairsOnlyLegacyReconfigure/mismatched_run"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationTargetHoldMigrationRepairsOnlyLegacyReconfigure/orphan_delegation"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationTargetHoldMigrationRepairsOnlyLegacyReconfigure"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationTargetMigrationPreservesUnresolvedWork"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestDingTalkGroupRouteMigrationsUpDownAndCatalog"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestDingTalkGroupRoutingRemovalMigrations"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestIssueCommentRevisionMigrationUpDownPreservesData"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestMigrationFilesHaveMatchingDirections"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestMigrationNumericPrefixesStayUniqueAfterLegacySet"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestNewMigrationPrefixesStartAfterLegacyRange"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestPlatformAdminInitializationMigrationRetention/568_platform_admin_initialization/created"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestPlatformAdminInitializationMigrationRetention/568_platform_admin_initialization/preserved_existing_admin"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestPlatformAdminInitializationMigrationRetention/569_platform_admin_initialization_org/created"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestPlatformAdminInitializationMigrationRetention/569_platform_admin_initialization_org/preserved_existing_admin"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestPlatformAdminInitializationMigrationRetention/570_platform_admin_initialization_singleton/created"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestPlatformAdminInitializationMigrationRetention/570_platform_admin_initialization_singleton/preserved_existing_admin"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestPlatformAdminInitializationMigrationRetention"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestPlatformAdminInitializationMigrationFencesFirstWriter/568_platform_admin_initialization"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestPlatformAdminInitializationMigrationFencesFirstWriter/569_platform_admin_initialization_org"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestPlatformAdminInitializationMigrationFencesFirstWriter/570_platform_admin_initialization_singleton"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestPlatformAdminInitializationMigrationFencesFirstWriter"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestTelegramOriginMigrationsUpDownAndCatalog"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestVCSReferenceOnlyRepairMigrationRestoresPartialSchema"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestApprovalRiskClasses_MatchMigrationCheck"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestExperienceAndMigration_EvidenceContracts"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationReconsentHoldRequiresFreshResumeBeforeLaunch"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationResumeRejectsHoldObservedBeforeReconsent/target"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationResumeRejectsHoldObservedBeforeReconsent/issue"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationResumeRejectsHoldObservedBeforeReconsent"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationConfigurationReconsentRecoversNonWideningAgentEdits/instructions"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationConfigurationReconsentRecoversNonWideningAgentEdits/model"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationConfigurationReconsentRecoversNonWideningAgentEdits/thinking_level"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationConfigurationReconsentRecoversNonWideningAgentEdits/reverted_instructions"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationConfigurationReconsentRecoversNonWideningAgentEdits"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationConfigurationReconsentRefusesWideningAndIdentityEdits/permission_mode"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationConfigurationReconsentRefusesWideningAndIdentityEdits/custom_args"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationConfigurationReconsentRefusesWideningAndIdentityEdits/skill_binding"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationConfigurationReconsentRefusesWideningAndIdentityEdits/runtime_visibility"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationConfigurationReconsentRefusesWideningAndIdentityEdits"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationConfigurationReconsentRecoversSquadMemberInstructions"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationConfigurationReconsentKeepsSwitchOnlyForTargetsWithoutBoundary"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationConfigurationReconsentBeforeConsumerStopsOldConfigurationGroup"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAccountLegacyDisableRestoreRevokesMigrationSession"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "test": "TestSupportedTypesMatchesMigrationWhitelist"
+    }
+  ],
+  "named_skip_events": [
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCommentContentBigramRequirementMatchesRealPGBigm"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationPartialResumeRoutesLinux"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationSingleAgentRuntimeRoutesLinux"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationSquadCapacityOneRoutesLinux"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/auth",
+      "test": "TestPasswordLimiterSharedAtomicAdmission"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cli",
+      "test": "TestCLIConfig_UnknownFieldsArePreserved"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "test": "TestIsDriveRoot"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestIterationI1P95"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestIterationI1DisableP95"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestTriageQueueScaleBaseline"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestTriageWireFixtures"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestMcpMarketPublicHTTPRecipeLifecycle"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "test": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "test": "TestCodexExecuteRetriesAfterSignaledProcessIsReaped"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "test": "TestPiExecuteAttachesStdinPipe"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "test": "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors"
+    }
+  ],
+  "full_result_accepted": false,
+  "Provider_calls_by_this_thread": 0,
+  "mainline_delta_covered": false
+}

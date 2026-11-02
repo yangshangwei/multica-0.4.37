@@ -4,6 +4,12 @@
 
 ## 最新执行入口（2026-11-03 本地）
 
+v10已于2026-11-02 21:12:33UTC结束：make exit2，check-script exit130。静态15/15、TS13,082、Go82包/20,852pass/0fail/22skip已通过；浏览器39pass、36fail、1interrupted、22显式skip、341未运行，零重试。这是失败且浏览器范围不完整的运行，不能拼接其他局部结果称整轮通过。见 [最终观察](research/continuation-20261102/coordinator/v10/final-interrupted-observation.json)。
+
+直接失败原因已证明：同一Web SSR图中CoreProvider注册auth模块99423，页面边界读取未注册的10100；build trace同时指向final4/final3两套workspace源。API/login/config/me实际200，具体Playwright等待点因未开trace而未记录。详见 [只读诊断](research/continuation-20261102/coordinator/v10/category-timeouts/20261103-readonly-diagnosis.json)。下一候选将合流当前主线12生产变化与118fc两E2E修复，使用自有内部workspace依赖路径和新生产构建；先做最小SSR验证，再独立复核实际绑定、单一完整验收及密码7，最后进入已有预算的独占真实窗口。构建身份约束草案见 [workspace合同](research/continuation-20261102/coordinator/v10/workspace-identity-contract.md)，不修改原app guard/断言/超时。
+
+以下v9与v10准备/启动段落保留为本轮历史；当前以本段最终观察及任务metadata为准。
+
 v9 实际完整检查 exit 2：静态 15/15、TS 13,082、Go 82 包/20,852 pass/0 fail/22 skip；浏览器 334 pass/16 fail/89 skip，零重试。原 16 项已定向修复和复验，尚不能替代下一轮完整检查。
 
 v10 选定干净候选 `118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9`，工作树 `/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103`。本任务重算 7,960 个产品文件，指纹仍为 `9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee`；17 文件 runtime 框架 hash 未变，当前 RKI6 normal/race 各 62 pass 的独立证据可按这个字节范围复用。绑定准备见 [v10 记录](research/continuation-20261102/coordinator/v10/binding-preparation.json)。这不是最终付费登记。
