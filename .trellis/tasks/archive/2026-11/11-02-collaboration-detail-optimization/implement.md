@@ -130,9 +130,9 @@ pnpm --filter @multica/views typecheck
   any unrelated existing failure with exact identity; keep required acceptance open.
 - [x] Inspect final diff against owned-file snapshots; confirm other sessions'
   original hunks and files survive; update executable contracts and progress.
-- [ ] Commit only verified owned changes with Lore trailers when they can be
+- [x] Commit only verified owned changes with Lore trailers when they can be
   isolated safely; never sweep the dirty worktree into a commit.
-- [ ] Requirement-by-requirement completion audit with current evidence, then
+- [x] Requirement-by-requirement completion audit with current evidence, then
   Trellis finish/journal/archive and goal completion only when no required item remains.
 
 ## Live execution notes

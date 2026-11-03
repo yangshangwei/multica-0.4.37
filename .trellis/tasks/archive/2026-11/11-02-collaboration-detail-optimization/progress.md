@@ -1,7 +1,7 @@
 # Execution progress — 2026-11-03
 
-Quality and acceptance gates passed. R01–R17 and A01–A17 are verified; remaining
-work is the owned commit batch, archive/journal and owned-runtime cleanup.
+Task completed and archived. Implementation, acceptance, owned commits and
+runtime cleanup are complete; R01–R17 and A01–A17 are verified.
 `verification.md` is the requirement-by-requirement audit.
 
 The user confirmed retaining the existing R38 management forced-completion
@@ -66,3 +66,19 @@ and preserved in the workspace. Owned-file baselines and commit plan live in
 Feature/code-spec commit: `cfccf883458daef58117ffc82139d13a0b850ff0`. The isolated index contains 124 owned
 paths and excludes parallel stage-hint keys and prior shared index/spec changes.
 Evidence commit, archive/journal and cleanup remain.
+
+## Final work and cleanup
+
+- Code/spec: `cfccf883458daef58117ffc82139d13a0b850ff0`.
+- E2E/durable evidence: `1d70602f0fc9e0d28e651f41da3025203419a9eb`.
+- Dedicated Web/API/renderer listeners stopped; detached verification worktree
+  and temporary copied artifacts removed. Task/failed databases and private logs
+  retained. No other environment stopped. See `owned-cleanup.json`.
+- Only this task is entering archive; other tasks and journal entries remain owned
+  by their parallel sessions.
+
+## Archive
+
+Task archived at `.trellis/tasks/archive/2026-11/11-02-collaboration-detail-optimization`.
+Only this task was archived; the developer journal records the completed work
+commits and their verification scope.

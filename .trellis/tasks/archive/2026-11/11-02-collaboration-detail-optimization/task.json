@@ -3,7 +3,7 @@
   "name": "collaboration-detail-optimization",
   "title": "协作任务详情页业务流程与界面优化",
   "description": "建立清晰的交付、验收和退回修改闭环，优化共享 Web/Desktop 详情页及角色操作",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -11,7 +11,7 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-11-02",
-  "completedAt": null,
+  "completedAt": "2026-11-03",
   "branch": "codex/cross-workspace-collaboration",
   "base_branch": "main",
   "worktree_path": null,
@@ -148,7 +148,7 @@
     "e2e/collaboration-detail-journey.spec.ts",
     "e2e/fixtures/collaboration-detail-journey.ts"
   ],
-  "notes": "R01-R17/A01-A17 verified; feature commit recorded. Preserve R38 administrative completion without invented initiator acceptance. Evidence commit/archive/journal/runtime cleanup pending.",
+  "notes": "R01-R17/A01-A17 verified; owned code/evidence commits completed; dedicated API/Web/renderer and worktree cleaned. R38 administrative exception retained. Ready for task archive/session journal.",
   "meta": {
     "verification": {
       "passed_at": "2026-11-03T06:17:22.101737+00:00",
@@ -167,7 +167,14 @@
       "audit": "verification.md"
     },
     "work_commits": [
-      "cfccf883458daef58117ffc82139d13a0b850ff0"
-    ]
+      "cfccf883458daef58117ffc82139d13a0b850ff0",
+      "1d70602f0fc9e0d28e651f41da3025203419a9eb"
+    ],
+    "cleanup": {
+      "listeners_stopped": true,
+      "worktree_removed": true,
+      "databases_retained": true,
+      "report": "research/continuation-20261103/owned-cleanup.json"
+    }
   }
 }
