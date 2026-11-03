@@ -1,0 +1,55 @@
+{
+  "at": "2026-11-03T05:33:57.193467+00:00",
+  "records": [
+    {
+      "command": [
+        "pnpm",
+        "check:ui-exports"
+      ],
+      "source_root": "/private/tmp/multica-detail-verification-20261103/source",
+      "exit_code": 0,
+      "output": "/tmp/multica-detail-verification-20261103/final-additional-static-1.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/test-go.test.sh"
+      ],
+      "source_root": "/private/tmp/multica-detail-verification-20261103/source",
+      "exit_code": 0,
+      "output": "/tmp/multica-detail-verification-20261103/final-additional-static-2.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/dev-env.test.sh"
+      ],
+      "source_root": "/private/tmp/multica-detail-verification-20261103/source",
+      "exit_code": 0,
+      "output": "/tmp/multica-detail-verification-20261103/final-additional-static-3.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/check.test.sh"
+      ],
+      "source_root": "/private/tmp/multica-detail-verification-20261103/source",
+      "exit_code": 0,
+      "output": "/tmp/multica-detail-verification-20261103/final-additional-static-4.log"
+    },
+    {
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "-p",
+        "2",
+        "./..."
+      ],
+      "source_root": "/private/tmp/multica-detail-verification-20261103/source",
+      "exit_code": 1,
+      "output": "/tmp/multica-detail-verification-20261103/final-additional-static-5.log"
+    }
+  ]
+}

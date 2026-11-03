@@ -1,0 +1,31 @@
+{
+  "started_at": "2026-11-03T02:52:47.612985+00:00",
+  "database": "multica_detail_20261103_080906_handler",
+  "package": "./internal/handler",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "test",
+    "-json",
+    "-p",
+    "2",
+    "-count=1",
+    "-race",
+    "./internal/handler",
+    "-run",
+    "^TestCollaborationDeliveryHTTPAcceptsBothEscapedByteLimitsAndOwnConfirmation$"
+  ],
+  "output": "/tmp/multica-detail-verification-20261103/server-review-http-public-remove-path-green-1-20261103-105247.jsonl",
+  "exit_code": 0,
+  "inventory": {
+    "pass": [
+      "TestCollaborationDeliveryHTTPAcceptsBothEscapedByteLimitsAndOwnConfirmation"
+    ],
+    "fail": [],
+    "skip": []
+  }
+}

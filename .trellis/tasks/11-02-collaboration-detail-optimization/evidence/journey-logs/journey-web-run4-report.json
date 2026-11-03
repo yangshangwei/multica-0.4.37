@@ -1,0 +1,265 @@
+{
+  "config": {
+    "configFile": "/private/tmp/multica-detail-verification-20261103/source/playwright.config.ts",
+    "rootDir": "/private/tmp/multica-detail-verification-20261103/source/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/private/tmp/multica-detail-verification-20261103/source/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-detail-journey.spec.ts",
+      "file": "collaboration-detail-journey.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 480000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 17312,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "A01/A17: manual external handler, compact context and ordered content",
+                      "duration": 382
+                    },
+                    {
+                      "title": "The current handler starts through the offered workflow",
+                      "duration": 503
+                    },
+                    {
+                      "title": "A02: request information records the exact requester and recipient",
+                      "duration": 1745
+                    },
+                    {
+                      "title": "A09: one Publish performs a real preflight without returning information or starting AI",
+                      "duration": 567
+                    },
+                    {
+                      "title": "A02: the receiving form returns the exact saved information request",
+                      "duration": 482
+                    },
+                    {
+                      "title": "A03/A12: a comment prepares a result draft only after an explicit action",
+                      "duration": 1194
+                    },
+                    {
+                      "title": "A07/A12: author discussion remains available and source-comment changes preserve the delivery",
+                      "duration": 708
+                    },
+                    {
+                      "title": "A04: initiator returns the exact submission to its explicitly selected actual author",
+                      "duration": 1135
+                    },
+                    {
+                      "title": "A04: resubmission creates a new exact result and retains the first decision",
+                      "duration": 604
+                    },
+                    {
+                      "title": "A05/A15/A16: accept the exact result from the same source issue without completing the ordinary parent",
+                      "duration": 1480
+                    },
+                    {
+                      "title": "A12/A17: retained results, exact source-comment anchors and restored account scroll",
+                      "duration": 1147
+                    },
+                    {
+                      "title": "A17: both locales and long content at wide, intermediate and narrow sizes",
+                      "duration": 2856
+                    },
+                    {
+                      "title": "A06/A17: the initiator records a text-only result and completes atomically in Chinese",
+                      "duration": 1981
+                    }
+                  ],
+                  "startTime": "2026-11-03T05:30:55.609Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "web-manual-before-wide",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-manual-before-wide-a341999da5be6647bf2dc99ce2b7d5ea94325dca.png"
+                    },
+                    {
+                      "name": "web-accepted-en-wide",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-accepted-en-wide-06db92ae626d441d44c3a396c2c16a2b082e7e3b.png"
+                    },
+                    {
+                      "name": "web-result-en-wide",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-result-en-wide-ba8fe43d912873e3c705afc43e5af1b32aacd987.png"
+                    },
+                    {
+                      "name": "web-accepted-en-intermediate",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-accepted-en-intermediate-0561500502ac75ec2d42ab288b72668adf8b89b4.png"
+                    },
+                    {
+                      "name": "web-result-en-intermediate",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-result-en-intermediate-8b33f4ca5dddfa257ed595edffc043b1f38b65ea.png"
+                    },
+                    {
+                      "name": "web-accepted-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-accepted-en-narrow-b5af25b784fc2093b9121cca355b171d655310ac.png"
+                    },
+                    {
+                      "name": "web-result-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-result-en-narrow-cba1b41d42fb3da34310b177f464fcba3608925d.png"
+                    },
+                    {
+                      "name": "web-long-result-en-narrow-start",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-long-result-en-narrow-start-0fba554c72c53350ee842775dac0ae7d9bb21827.png"
+                    },
+                    {
+                      "name": "web-long-result-en-narrow-end",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-long-result-en-narrow-end-8a4d0ffe37030beb83f13130d22fd9da01b037e3.png"
+                    },
+                    {
+                      "name": "web-accepted-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-accepted-zh-Hans-wide-de2687970c39687b5a63d718b88eeb96389e63cc.png"
+                    },
+                    {
+                      "name": "web-result-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-result-zh-Hans-wide-bf98ea53f5e819fd2b87750c0a19aec72a7b3041.png"
+                    },
+                    {
+                      "name": "web-accepted-zh-Hans-intermediate",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-accepted-zh-Hans-intermediate-f8d9b33d206308b4f6d7046bc716f8531cfbdca9.png"
+                    },
+                    {
+                      "name": "web-result-zh-Hans-intermediate",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-result-zh-Hans-intermediate-fb2d10cdcf6a22a78b3198a8d4bfda8a02c1112d.png"
+                    },
+                    {
+                      "name": "web-accepted-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-accepted-zh-Hans-narrow-4c14abf6fb5964b822758da0d169393d357ef84f.png"
+                    },
+                    {
+                      "name": "web-result-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-result-zh-Hans-narrow-a1afe4379baf28a3e293e4d57aee4b3b2f962089.png"
+                    },
+                    {
+                      "name": "web-long-result-zh-Hans-narrow-start",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-long-result-zh-Hans-narrow-start-eba40428f131a1e4a0160f0a9c83f4c4105c4ddb.png"
+                    },
+                    {
+                      "name": "web-long-result-zh-Hans-narrow-end",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-long-result-zh-Hans-narrow-end-feb178774af15396559184ed408c7d4bc10d4574.png"
+                    },
+                    {
+                      "name": "web-self-completed-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-self-completed-zh-Hans-narrow-1f76a6da8f08c2e3b2a595493a6d933d151273c4.png"
+                    },
+                    {
+                      "name": "web-self-reopened-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-self-reopened-zh-Hans-narrow-cce2d082c4bbd856b8292bb3200f42b8500168b6.png"
+                    },
+                    {
+                      "name": "detail-journey-evidence",
+                      "contentType": "application/json",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run4-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/detail-journey-evidence-36ea74687c0157324274cb0d048dc74ac777c38c.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "900011f45627c15b945e-e3d039a6ffb48d4184b3",
+          "file": "collaboration-detail-journey.spec.ts",
+          "line": 37,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-03T05:30:54.381Z",
+    "duration": 19432.156000000003,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

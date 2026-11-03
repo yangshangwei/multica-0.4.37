@@ -1,0 +1,47 @@
+{
+  "allocated_at": "20261103_080906",
+  "private_dir": "/tmp/multica-detail-verification-20261103",
+  "allocations": [
+    {
+      "lane": "service",
+      "package": "./internal/service",
+      "database": "multica_detail_20261103_080906_service",
+      "actual_database": "multica_detail_20261103_080906_service",
+      "configuration": "/tmp/multica-detail-verification-20261103/service-env.json",
+      "state": "migrated_through_764",
+      "migration_exit": 0,
+      "migration_764_log": "/tmp/multica-detail-verification-20261103/service-migration-764.log"
+    },
+    {
+      "lane": "handler",
+      "package": "./internal/handler",
+      "database": "multica_detail_20261103_080906_handler",
+      "actual_database": "multica_detail_20261103_080906_handler",
+      "configuration": "/tmp/multica-detail-verification-20261103/handler-env.json",
+      "state": "migrated_through_764",
+      "migration_exit": 0,
+      "migration_764_log": "/tmp/multica-detail-verification-20261103/handler-migration-764.log"
+    },
+    {
+      "lane": "router",
+      "package": "./cmd/server",
+      "database": "multica_detail_20261103_080906_router",
+      "actual_database": "multica_detail_20261103_080906_router",
+      "configuration": "/tmp/multica-detail-verification-20261103/router-env.json",
+      "state": "migrated_through_764",
+      "migration_exit": 0,
+      "migration_764_log": "/tmp/multica-detail-verification-20261103/router-migration-764.log"
+    },
+    {
+      "lane": "api",
+      "package": null,
+      "database": "multica_detail_20261103_080906_api",
+      "actual_database": "multica_detail_20261103_080906_api",
+      "configuration": "/tmp/multica-detail-verification-20261103/api-env.json",
+      "state": "migrated_through_764",
+      "migration_exit": 0,
+      "migration_764_log": "/tmp/multica-detail-verification-20261103/api-migration-764.log"
+    }
+  ],
+  "cluster_connections": "55"
+}

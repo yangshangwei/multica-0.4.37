@@ -1,0 +1,221 @@
+{
+  "config": {
+    "configFile": "/private/tmp/multica-detail-verification-20261103/source/playwright.config.ts",
+    "rootDir": "/private/tmp/multica-detail-verification-20261103/source/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/multica-detail-verification-20261103/journey-web-run2-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/private/tmp/multica-detail-verification-20261103/source/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-detail-journey.spec.ts",
+      "file": "collaboration-detail-journey.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 480000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 15874,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Manual delivery journey eacda8172fc7: preserve earlier results through revision and complete the same source task after exact acceptance · 跨空间协作与长标题', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Manual delivery journey eacda8172fc7: preserve earlier results through revision and complete the same source task after exact acceptance · 跨空间协作与长标题', exact: true })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Manual delivery journey eacda8172fc7: preserve earlier results through revision and complete the same source task after exact acceptance · 跨空间协作与长标题', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Manual delivery journey eacda8172fc7: preserve earlier results through revision and complete the same source task after exact acceptance · 跨空间协作与长标题', exact: true })\u001b[22m\n\n    at assertJourneyScopeRestoration (/private/tmp/multica-detail-verification-20261103/source/e2e/fixtures/collaboration-detail-journey.ts:671:81)\n    at /private/tmp/multica-detail-verification-20261103/source/e2e/collaboration-detail-journey.spec.ts:302:36\n    at /private/tmp/multica-detail-verification-20261103/source/e2e/collaboration-detail-journey.spec.ts:273:7",
+                    "location": {
+                      "file": "/private/tmp/multica-detail-verification-20261103/source/e2e/fixtures/collaboration-detail-journey.ts",
+                      "column": 81,
+                      "line": 671
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures/collaboration-detail-journey.ts:671\n\n  669 |   await nav.getByRole(\"button\", { name: copy.workspaces, exact: true }).click();\n  670 |   await expect(nav.getByRole(\"button\", { name: copy.workspaces, exact: true })).toHaveAttribute(\"aria-current\", \"page\");\n> 671 |   await expect(session.page.getByRole(\"heading\", { name: title, exact: true })).toBeVisible();\n      |                                                                                 ^\n  672 |   await nav.getByRole(\"button\", { name: copy.collaboration, exact: true }).click();\n  673 |   await expect(nav.getByRole(\"button\", { name: copy.collaboration, exact: true })).toHaveAttribute(\"aria-current\", \"page\");\n  674 |   await expect(session.page.getByRole(\"heading\", { name: title, exact: true })).toBeVisible();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/private/tmp/multica-detail-verification-20261103/source/e2e/fixtures/collaboration-detail-journey.ts",
+                        "column": 81,
+                        "line": 671
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Manual delivery journey eacda8172fc7: preserve earlier results through revision and complete the same source task after exact acceptance · 跨空间协作与长标题', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Manual delivery journey eacda8172fc7: preserve earlier results through revision and complete the same source task after exact acceptance · 跨空间协作与长标题', exact: true })\u001b[22m\n\n\n   at fixtures/collaboration-detail-journey.ts:671\n\n  669 |   await nav.getByRole(\"button\", { name: copy.workspaces, exact: true }).click();\n  670 |   await expect(nav.getByRole(\"button\", { name: copy.workspaces, exact: true })).toHaveAttribute(\"aria-current\", \"page\");\n> 671 |   await expect(session.page.getByRole(\"heading\", { name: title, exact: true })).toBeVisible();\n      |                                                                                 ^\n  672 |   await nav.getByRole(\"button\", { name: copy.collaboration, exact: true }).click();\n  673 |   await expect(nav.getByRole(\"button\", { name: copy.collaboration, exact: true })).toHaveAttribute(\"aria-current\", \"page\");\n  674 |   await expect(session.page.getByRole(\"heading\", { name: title, exact: true })).toBeVisible();\n    at assertJourneyScopeRestoration (/private/tmp/multica-detail-verification-20261103/source/e2e/fixtures/collaboration-detail-journey.ts:671:81)\n    at /private/tmp/multica-detail-verification-20261103/source/e2e/collaboration-detail-journey.spec.ts:302:36\n    at /private/tmp/multica-detail-verification-20261103/source/e2e/collaboration-detail-journey.spec.ts:273:7"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "A01/A17: manual external handler, compact context and ordered content",
+                      "duration": 328
+                    },
+                    {
+                      "title": "The current handler starts through the offered workflow",
+                      "duration": 424
+                    },
+                    {
+                      "title": "A02: request information records the exact requester and recipient",
+                      "duration": 1233
+                    },
+                    {
+                      "title": "A09: one Publish performs a real preflight without returning information or starting AI",
+                      "duration": 340
+                    },
+                    {
+                      "title": "A02: the receiving form returns the exact saved information request",
+                      "duration": 413
+                    },
+                    {
+                      "title": "A03/A12: a comment prepares a result draft only after an explicit action",
+                      "duration": 1147
+                    },
+                    {
+                      "title": "A07/A12: author discussion remains available and source-comment changes preserve the delivery",
+                      "duration": 469
+                    },
+                    {
+                      "title": "A04: initiator returns the exact submission to its explicitly selected actual author",
+                      "duration": 1177
+                    },
+                    {
+                      "title": "A04: resubmission creates a new exact result and retains the first decision",
+                      "duration": 560
+                    },
+                    {
+                      "title": "A05/A15/A16: accept the exact result from the same source issue without completing the ordinary parent",
+                      "duration": 1905
+                    },
+                    {
+                      "title": "A12/A17: retained results, exact source-comment anchors and restored account scroll",
+                      "duration": 5935,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Manual delivery journey eacda8172fc7: preserve earlier results through revision and complete the same source task after exact acceptance · 跨空间协作与长标题', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Manual delivery journey eacda8172fc7: preserve earlier results through revision and complete the same source task after exact acceptance · 跨空间协作与长标题', exact: true })\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Manual delivery journey eacda8172fc7: preserve earlier results through revision and complete the same source task after exact acceptance · 跨空间协作与长标题', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Manual delivery journey eacda8172fc7: preserve earlier results through revision and complete the same source task after exact acceptance · 跨空间协作与长标题', exact: true })\u001b[22m\n\n    at assertJourneyScopeRestoration (/private/tmp/multica-detail-verification-20261103/source/e2e/fixtures/collaboration-detail-journey.ts:671:81)\n    at /private/tmp/multica-detail-verification-20261103/source/e2e/collaboration-detail-journey.spec.ts:302:36\n    at /private/tmp/multica-detail-verification-20261103/source/e2e/collaboration-detail-journey.spec.ts:273:7",
+                        "location": {
+                          "file": "/private/tmp/multica-detail-verification-20261103/source/e2e/fixtures/collaboration-detail-journey.ts",
+                          "column": 81,
+                          "line": 671
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mfixtures/collaboration-detail-journey.ts:671\n\n  669 |   await nav.getByRole(\"button\", { name: copy.workspaces, exact: true }).click();\n  670 |   await expect(nav.getByRole(\"button\", { name: copy.workspaces, exact: true })).toHaveAttribute(\"aria-current\", \"page\");\n> 671 |   await expect(session.page.getByRole(\"heading\", { name: title, exact: true })).toBeVisible();\n      |                                                                                 ^\n  672 |   await nav.getByRole(\"button\", { name: copy.collaboration, exact: true }).click();\n  673 |   await expect(nav.getByRole(\"button\", { name: copy.collaboration, exact: true })).toHaveAttribute(\"aria-current\", \"page\");\n  674 |   await expect(session.page.getByRole(\"heading\", { name: title, exact: true })).toBeVisible();"
+                      }
+                    }
+                  ],
+                  "startTime": "2026-11-03T03:16:27.987Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "web-manual-before-wide",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run2-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-manual-before-wide-c6dea4467b7da6a6c7ab7c71bf4689fd31d4f64e.png"
+                    },
+                    {
+                      "name": "web-failure-session-1-ui",
+                      "contentType": "text/plain",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run2-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-failure-session-1-ui-e0cf268ae700b668db58cce1e1c667cd03cbe616.txt"
+                    },
+                    {
+                      "name": "web-failure-session-2-ui",
+                      "contentType": "text/plain",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run2-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-failure-session-2-ui-6339b71b00df2d8cd9854247304ddef60b6d77d7.txt"
+                    },
+                    {
+                      "name": "web-failure-session-1",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run2-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-failure-session-1-c70bcbf4b9d74cc4763d2eb9cdfb7c4d7ceac3f0.png"
+                    },
+                    {
+                      "name": "web-failure-session-2",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run2-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/web-failure-session-2-29b923c7e4ffa1537ff9f373a664bd179b99ea87.png"
+                    },
+                    {
+                      "name": "detail-journey-evidence",
+                      "contentType": "application/json",
+                      "path": "/tmp/multica-detail-verification-20261103/journey-web-run2-artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/attachments/detail-journey-evidence-fe8fbdc5f52ac5e224bc1c703365bf7cc939cda4.json"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/private/tmp/multica-detail-verification-20261103/source/e2e/fixtures/collaboration-detail-journey.ts",
+                    "column": 81,
+                    "line": 671
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "900011f45627c15b945e-e3d039a6ffb48d4184b3",
+          "file": "collaboration-detail-journey.spec.ts",
+          "line": 37,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-03T03:16:26.833Z",
+    "duration": 17805.737,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}
