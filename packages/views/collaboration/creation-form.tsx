@@ -213,6 +213,13 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
       <CollaborationAccountPicker scope={scope} context={context} selected={form.recipient} allowSelf selfName={t(($) => $.creation.self)} label={t(($) => $.creation.recipient)} disabled={!editable}
         onSelect={(account) => draft.update({ recipient: account ? { ...account, external: account.external === true } : null, recipientQuery: "" })} />
     </fieldset>
+    <div className="space-y-2"><label htmlFor={`${id}-policy`} className="block text-body font-medium">{t(($) => $.policy.title)}</label>
+      <select id={`${id}-policy`} value={form.aiPolicy ?? "assisted"} disabled={!editable} className={collaborationSelectClass}
+        onChange={(event) => draft.update({ aiPolicy: event.target.value === "manual" ? "manual" : "assisted" })}>
+        <option value="manual">{t(($) => $.policy.manual)}</option><option value="assisted">{t(($) => $.policy.assisted)}</option>
+      </select>
+      <p className="text-caption text-muted-foreground">{t(($) => $.policy.creationHint)}</p>
+    </div>
     {fields && <details ref={initialSection} className="min-w-0 space-y-4"><summary className="cursor-pointer py-2 text-body font-medium pointer-coarse:min-h-11">{t(($) => $.fields.initial)}</summary>
       <fieldset disabled={!editable} className="min-w-0 space-y-5">
         <div className="grid min-w-0 gap-4 sm:grid-cols-2">

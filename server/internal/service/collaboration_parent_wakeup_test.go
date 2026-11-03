@@ -20,7 +20,8 @@ func collaborationLifecycleParent(t *testing.T, f *collaborationQueueFixture) st
 func TestCollaborationLifecycleParentWakeupIsCommittedAndTransient(t *testing.T) {
 	f := newCollaborationLifecycleFixture(t)
 	parent := collaborationLifecycleParent(t, f)
-	p := lifecycleParams(t, f, "complete", "done", 1, 1)
+	p := deliveredCompletionParams(t, f, "done")
+	beforeClose := mustAccess(t, f, f.ctx)
 	// R36 preserves the creator's lifecycle authority after source departure.
 	// The resulting parent effect is internal, never a parent read capability.
 	f.fx.Exec(t, `DELETE FROM member WHERE workspace_id=$1 AND user_id=$2`, f.workspace, f.creator)
@@ -29,7 +30,7 @@ func TestCollaborationLifecycleParentWakeupIsCommittedAndTransient(t *testing.T)
 		t.Fatalf("committed close did not carry parent transition: %+v %v", receipt, err)
 	}
 	wake := receipt.ParentWakeup
-	if wake.Before.ID != f.issue.Issue.ID || wake.After.ID != wake.Before.ID || wake.Before.Status != "todo" || wake.After.Status != "done" ||
+	if wake.Before.ID != f.issue.Issue.ID || wake.After.ID != wake.Before.ID || wake.Before.Status != beforeClose.Issue.Status || wake.After.Status != "done" ||
 		wake.After.ParentIssueID != util.MustParseUUID(parent) || wake.After.Stage.Int32 != 2 || !wake.After.Stage.Valid {
 		t.Fatal("parent transition did not preserve the locked before/after identity and stage")
 	}
@@ -58,11 +59,11 @@ func TestCollaborationLifecycleParentWakeupIsCommittedAndTransient(t *testing.T)
 		t.Fatalf("lifecycle replay repeated its parent effect: %+v %v", replayed, err)
 	}
 	// Reopen is not a terminal transition; a fresh later close is.
-	reopened, err := f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "reopen", "todo", 2, 2))
+	reopened, err := f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "reopen", "todo", receipt.CollaborationRevision, 2))
 	if err != nil || reopened.ParentWakeup != nil {
 		t.Fatalf("reopen generated a parent wake: %+v %v", reopened, err)
 	}
-	closedAgain, err := f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "cancel", "cancelled", 3, 3))
+	closedAgain, err := f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "cancel", "cancelled", reopened.CollaborationRevision, 3))
 	if err != nil || closedAgain.ParentWakeup == nil || closedAgain.ParentWakeup.After.Status != "cancelled" {
 		t.Fatalf("fresh cancellation did not generate its own terminal transition: %+v %v", closedAgain, err)
 	}
@@ -73,13 +74,14 @@ func TestCollaborationLifecycleParentWakeupAbsentOnRefusalAndFailure(t *testing.
 		t.Run(scenario, func(t *testing.T) {
 			f := newCollaborationLifecycleFixture(t)
 			collaborationLifecycleParent(t, f)
-			p := lifecycleParams(t, f, "complete", "done", 1, 1)
+			p := deliveredCompletionParams(t, f, "done")
+			beforeClose := mustAccess(t, f, f.ctx)
 			ctx := f.ctx
 			switch scenario {
 			case "forbidden":
 				ctx = collaborationContext(f.handler)
 			case "stale_revision":
-				p.ExpectedCollaborationRevision = 2
+				p.ExpectedCollaborationRevision++
 			case "event_failure":
 				f.svc.TxStarter = workflowFaultStarter{TxStarter: f.pool, needle: "INSERT INTO collaboration_event"}
 			case "receipt_failure":
@@ -94,7 +96,7 @@ func TestCollaborationLifecycleParentWakeupAbsentOnRefusalAndFailure(t *testing.
 				t.Fatalf("unsuccessful lifecycle exposed parent effect: %+v %v", receipt, err)
 			}
 			f.svc.TxStarter = f.pool
-			status := "todo"
+			status := beforeClose.Issue.Status
 			if scenario == "unknown_commit" {
 				status = "done"
 				replay, err := f.svc.ChangeLifecycle(ctx, p)
@@ -112,7 +114,7 @@ func TestCollaborationLifecycleParentWakeupAbsentOnRefusalAndFailure(t *testing.
 func TestCollaborationLifecycleConcurrentReplayReturnsOneParentWakeup(t *testing.T) {
 	f := newCollaborationLifecycleFixture(t)
 	collaborationLifecycleParent(t, f)
-	p := lifecycleParams(t, f, "complete", "done", 1, 1)
+	p := deliveredCompletionParams(t, f, "done")
 	type result struct {
 		receipt CollaborationWorkflowReceipt
 		err     error

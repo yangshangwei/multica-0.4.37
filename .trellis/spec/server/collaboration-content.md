@@ -7,6 +7,12 @@ references and native preview/download. New issue creation remains behind the
 persisted creation gate. Runtime file preparation and general provider support
 require separate implementation and acceptance.
 
+Formal result snapshots and exact decisions follow
+[collaboration delivery](./collaboration-delivery.md). They reuse the attachment
+authorization/binding below; a source-comment edit/delete cannot mutate a
+submitted result or erase retained evidence. Server upload bytes are encrypted;
+client form/operation JSON uses the existing scoped plaintext StorageAdapter.
+
 ## 2. Signatures
 
 The authenticated `/api/collaboration` group owns these endpoints:

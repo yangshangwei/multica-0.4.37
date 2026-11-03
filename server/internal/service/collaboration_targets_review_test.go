@@ -22,6 +22,11 @@ func TestCollaborationWholeControlRejectsMissingTargetWithRetainedRun(t *testing
 			f := newCollaborationLifecycleFixture(t)
 			run := f.run(t, f.submit(t, f.creator, "retained possibly live execution"), 1)
 			targetStop := f.stopParams(run, 1)
+			var complete CollaborationLifecycleParams
+			if scenario.action == "complete" {
+				complete = deliveredCompletionParams(t, f, "done")
+			}
+			before := mustAccess(t, f, f.ctx)
 			// Deliberate fixture corruption: retained work still belongs to this
 			// issue even when its target row can no longer be enumerated.
 			f.fx.Exec(t, `DELETE FROM collaboration_target WHERE id=$1`, run.TargetID)
@@ -40,7 +45,7 @@ func TestCollaborationWholeControlRejectsMissingTargetWithRetainedRun(t *testing
 					t.Fatalf("missing selected target must retain the normal scope refusal: %v", err)
 				}
 			default:
-				_, err = f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "complete", "done", 1, 1))
+				_, err = f.svc.ChangeLifecycle(f.ctx, complete)
 			}
 			if err == nil {
 				t.Fatal("whole-issue control committed while silently omitting a retained run with a missing target")
@@ -48,8 +53,8 @@ func TestCollaborationWholeControlRejectsMissingTargetWithRetainedRun(t *testing
 			if f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND queue_state='active' AND control_version=1`, f.issue.SessionID) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND forced_disposition IS NULL AND proof_state='unknown' AND settled_at IS NULL`, run.ID) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='in_flight'`, run.CommandID) != 1 ||
-				f.fx.Count(t, `SELECT count(*) FROM issue_collaboration WHERE issue_id=$1 AND revision=1 AND lifecycle_epoch=1`, f.issue.Issue.ID) != 1 ||
-				f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND status=$2`, f.issue.Issue.ID, f.issue.Issue.Status) != 1 ||
+				f.fx.Count(t, `SELECT count(*) FROM issue_collaboration WHERE issue_id=$1 AND revision=$2 AND lifecycle_epoch=1`, f.issue.Issue.ID, before.Revision) != 1 ||
+				f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND status=$2`, f.issue.Issue.ID, before.Issue.Status) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_event WHERE issue_id=$1`, f.issue.Issue.ID) != beforeEvents {
 				t.Fatal("refused whole-issue control partially changed the retained state")
 			}

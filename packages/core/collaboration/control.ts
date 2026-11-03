@@ -18,6 +18,7 @@ export function prepareCollaborationControl(
   action: "stop" | "resume", selection: Selection,
 ): CollaborationDraft {
   if (!issue.execution || !issue.write_context || !isCollaborationScopeCurrent(scope)) throw new CollaborationUnavailableError();
+  if (action === "resume" && issue.ai_policy === "manual") throw new CollaborationUnavailableError();
   const execution = issue.execution;
   const selected = selection.scope === "issue" ? execution.targets : execution.targets.filter((target) => target.id === selection.targetId.toLowerCase());
   const parsed = CollaborationControlInputSchema.safeParse({

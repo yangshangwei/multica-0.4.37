@@ -26,7 +26,7 @@ export function canOrganizeCollaborationResources(scope: CollaborationScope, iss
 }
 
 export function canOfferCollaborationResources(scope: CollaborationScope, issue: CollaborationIssue): boolean {
-  return isCollaborationScopeCurrent(scope) && issue.write_context != null && issue.execution !== null && issue.capabilities.control_ai === true &&
+  return issue.ai_policy !== "manual" && isCollaborationScopeCurrent(scope) && issue.write_context != null && issue.execution !== null && issue.capabilities.control_ai === true &&
     ["backlog", "todo", "in_progress", "in_review", "blocked"].includes(issue.status_category) && issue.session.queue_state !== "closed";
 }
 
@@ -37,6 +37,7 @@ export function collaborationResourceRoster(candidate: { resources: Collaboratio
 export function prepareCollaborationResource(scope: CollaborationScope, issue: CollaborationIssue, resources: CollaborationResources, requestId: string, selection: CollaborationResourceSelection): CollaborationDraft {
   if (!isCollaborationScopeCurrent(scope) || !issue.write_context || issue.capabilities.control_ai !== true || !issue.execution ||
     resources.issue_id !== issue.id.toLowerCase() || resources.lifecycle_epoch !== issue.lifecycle_epoch) throw new CollaborationUnavailableError();
+  if (issue.ai_policy === "manual" && selection.action !== "revoke_grant" && selection.action !== "withdraw_resource_offer") throw new CollaborationUnavailableError();
   if (selection.action !== "offer_resource" && selection.action !== "withdraw_resource_offer" && resources.target_set_version !== issue.execution.target_set_version) throw new CollaborationUnavailableError();
   const base = { ...collaborationExecutionViewInput(issue.execution), expected_lifecycle_epoch: issue.lifecycle_epoch, expected_participant_epoch: issue.write_context.participant_epoch, expected_account_epoch: issue.write_context.account_epoch };
   let input: unknown;

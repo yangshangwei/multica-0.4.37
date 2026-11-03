@@ -45,8 +45,37 @@ const mutations = [
   },
   {
     name: "acceptance submission", route: "acceptance-submissions",
-    invoke: (client: ApiClient, signal?: AbortSignal) => client.submitCollaborationAcceptance(issueId, { ...input, expectedStatus: "in_review", statusOptionsVersion, note: "PRIVATE_RESULT" }, { signal }),
-    body: { ...expectedVersions, expected_status: "in_review", status_options_version: statusOptionsVersion, note: "PRIVATE_RESULT" },
+    invoke: (client: ApiClient, signal?: AbortSignal) => client.submitCollaborationAcceptance(issueId, { ...input, expectedStatus: "in_review", statusOptionsVersion, note: "PRIVATE_RESULT", basis: "PRIVATE_BASIS" }, { signal }),
+    body: { ...expectedVersions, expected_status: "in_review", status_options_version: statusOptionsVersion, note: "PRIVATE_RESULT", basis: "PRIVATE_BASIS" },
+  },
+  {
+    name: "result evidence submission", route: "acceptance-submissions",
+    invoke: (client: ApiClient, signal?: AbortSignal) => client.submitCollaborationAcceptance(issueId, { ...input, expectedStatus: "in_review", statusOptionsVersion,
+      note: "PRIVATE_RESULT", basis: "PRIVATE_BASIS", draftId: issueId, attachmentIds: [targetUserId], sourceCommentId: targetUserId }, { signal }),
+    body: { ...expectedVersions, expected_status: "in_review", status_options_version: statusOptionsVersion, note: "PRIVATE_RESULT", basis: "PRIVATE_BASIS",
+      draft_id: issueId, attachment_ids: [targetUserId], source_comment_id: targetUserId },
+  },
+  {
+    name: "acceptance return", route: "acceptance-returns",
+    invoke: (client: ApiClient, signal?: AbortSignal) => client.returnCollaborationAcceptance(issueId, { ...input, expectedStatus: "in_progress", statusOptionsVersion,
+      submissionId: issueId, targetUserId, note: "PRIVATE_REVISION" }, { signal }),
+    body: { ...expectedVersions, expected_status: "in_progress", status_options_version: statusOptionsVersion, submission_id: issueId, target_user_id: targetUserId, note: "PRIVATE_REVISION" },
+  },
+  {
+    name: "AI policy", route: "ai-policy",
+    invoke: (client: ApiClient, signal?: AbortSignal) => client.changeCollaborationAIPolicy(issueId, { ...input, aiPolicy: "manual" }, { signal }),
+    body: { ...expectedVersions, ai_policy: "manual" },
+  },
+  {
+    name: "exact result acceptance", route: "lifecycle",
+    invoke: (client: ApiClient, signal?: AbortSignal) => client.changeCollaborationLifecycle(issueId, { ...input, action: "complete", status: "done", statusOptionsVersion, submissionId: targetUserId }, { signal }),
+    body: { ...expectedVersions, action: "complete", status: "done", status_options_version: statusOptionsVersion, submission_id: targetUserId },
+  },
+  {
+    name: "self result completion", route: "lifecycle",
+    invoke: (client: ApiClient, signal?: AbortSignal) => client.changeCollaborationLifecycle(issueId, { ...input, action: "complete", status: "done", statusOptionsVersion,
+      note: "PRIVATE_RESULT", basis: "PRIVATE_BASIS", attachmentIds: [targetUserId] }, { signal }),
+    body: { ...expectedVersions, action: "complete", status: "done", status_options_version: statusOptionsVersion, note: "PRIVATE_RESULT", basis: "PRIVATE_BASIS", attachment_ids: [targetUserId] },
   },
   {
     name: "remove participant", route: `participants/${targetUserId}/remove`,
@@ -153,6 +182,34 @@ it("keeps the same key and payload when retrying an unknown then refused operati
     expect(JSON.parse(init.body)).toEqual({ ...expectedVersions, target_user_id: targetUserId, purpose: "transfer", note: "Original note" });
   }
   expect(handoff).toEqual({ ...input, targetUserId, purpose: "transfer", note: "Original note" });
+});
+
+it.each([
+  { code: "forbidden", status: 403 }, { code: "attachment_not_found", status: 404 }, { code: "comment_not_found", status: 404 },
+])("preserves the committed $code POST receipt while stripping private error fields", async ({ code, status }) => {
+  const error = vi.fn();
+  const refusal = { code, status, collaboration_revision: "9007199254740999" };
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(jsonResponse({ ...refusal, error: "PRIVATE_ERROR", note: "PRIVATE_RESULT" }, status)));
+  const client = new ApiClient("https://api.example.test", { logger: { ...noopLogger, error } });
+  await expect(client.submitCollaborationAcceptance(issueId, { ...input, expectedStatus: "in_review", statusOptionsVersion,
+    note: "Result", basis: "Checks" })).resolves.toEqual(refusal);
+  expect(JSON.stringify(error.mock.calls)).not.toContain("PRIVATE_");
+});
+
+it("keeps original-operation GET denials outside the POST refusal boundary", async () => {
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(jsonResponse({ code: "forbidden", status: 403, collaboration_revision: "2" }, 403)));
+  const client = new ApiClient("https://api.example.test");
+  await expect(client.getCollaborationOperation(issueId, input.requestId)).rejects.toMatchObject({ status: 403, body: undefined });
+});
+
+it("returns unavailable for a contradictory declared POST receipt without exposing private fields", async () => {
+  const error = vi.fn();
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(jsonResponse({ code: "attachment_not_found", status: 403,
+    collaboration_revision: "2", note: "PRIVATE_RESULT" }, 404)));
+  const client = new ApiClient("https://api.example.test", { logger: { ...noopLogger, error } });
+  await expect(client.submitCollaborationAcceptance(issueId, { ...input, expectedStatus: "in_review", statusOptionsVersion,
+    note: "Result", basis: "Checks" })).resolves.toBeNull();
+  expect(JSON.stringify(error.mock.calls)).not.toContain("PRIVATE_");
 });
 
 it.each(operations)("returns null for malformed $name JSON or receipts without logging values", async ({ invoke }) => {

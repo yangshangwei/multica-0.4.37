@@ -125,6 +125,7 @@ func TestCollaborationHandoffRoutesReturnInformationAndSubmitAcceptance(t *testi
 	submit := input(returned)
 	confirmStatus(developerToken, "submit_acceptance", submit)
 	submit["note"] = "Ready for review"
+	submit["basis"] = "The requested locale and validation checks are complete."
 	call(testToken, http.MethodPost, path+"/acceptance-submissions", uuid.NewString(), input(detail(testToken))).Want(http.StatusForbidden)
 	if r := call(developerToken, http.MethodPost, path+"/acceptance-submissions", uuid.NewString(), submit).Want(http.StatusOK).Map(); r["code"] != "acceptance_submitted" {
 		t.Fatalf("acceptance submission: %v", r)

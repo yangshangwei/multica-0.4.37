@@ -208,12 +208,28 @@ func (f *collaborationOfferFixture) workflowRequest(t *testing.T, actor string) 
 
 func (f *collaborationOfferFixture) changeLifecycle(t *testing.T, action, status string) {
 	t.Helper()
+	var submission *pgtype.UUID
+	if action == "complete" {
+		f.fx.Cleanup(t, `DELETE FROM issue_handoff WHERE issue_id=$1`, f.issue.Issue.ID)
+		handlerCtx := collaborationContext(f.handler)
+		options, err := f.svc.StatusOptions(handlerCtx, f.issue.Issue.ID, "submit_acceptance")
+		if err != nil {
+			t.Fatal(err)
+		}
+		delivered, err := f.svc.SubmitAcceptance(handlerCtx, CollaborationAcceptanceParams{CollaborationWorkflowRequest: f.workflowRequest(t, f.handler),
+			Note: "The offered-resource task is complete.", Basis: "The requested resource checks are complete.",
+			ExpectedStatus: options.DefaultStatus, StatusOptionsVersion: options.StatusOptionsVersion})
+		if err != nil || delivered.DeliveryConfirmation == nil {
+			t.Fatalf("prepare formal delivery: %+v %v", delivered, err)
+		}
+		submission = &delivered.DeliveryConfirmation.SubmissionID
+	}
 	options, err := f.svc.StatusOptions(f.ctx, f.issue.Issue.ID, action)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if _, err = f.svc.ChangeLifecycle(f.ctx, CollaborationLifecycleParams{CollaborationWorkflowRequest: f.workflowRequest(t, f.creator),
-		Action: action, TargetStatus: status, StatusOptionsVersion: options.StatusOptionsVersion}); err != nil {
+		Action: action, TargetStatus: status, StatusOptionsVersion: options.StatusOptionsVersion, SubmissionID: submission}); err != nil {
 		t.Fatal(err)
 	}
 }
@@ -250,8 +266,19 @@ func TestCollaborationResourceOfferFrozenAuthorityCannotRevive(t *testing.T) {
 				f.changeLifecycle(t, "complete", "done")
 				f.changeLifecycle(t, "reopen", "todo")
 			}
-			p := f.adoptParams(t, offer, f.handler)
-			if _, err := f.svc.AdoptResourceOffer(collaborationContext(f.handler), p); !collaborationErrorCode(err, "stale_offer") {
+			access, err := f.svc.ResolveIssueAccess(f.ctx, nil, f.issue.Issue.ID)
+			if err != nil {
+				t.Fatal(err)
+			}
+			organizer := util.UUIDToString(access.Issue.AssigneeID)
+			if organizer != f.handler {
+				former := f.adoptParams(t, offer, f.handler)
+				if _, err := f.svc.AdoptResourceOffer(collaborationContext(f.handler), former); !collaborationErrorCode(err, "forbidden") {
+					t.Fatalf("former handler regained resource organization after delivery: %v", err)
+				}
+			}
+			p := f.adoptParams(t, offer, organizer)
+			if _, err := f.svc.AdoptResourceOffer(collaborationContext(organizer), p); !collaborationErrorCode(err, "stale_offer") {
 				t.Fatalf("old resource offer revived after %s: %v", scenario, err)
 			}
 			view, err := f.svc.GetResourceOffer(f.ctx, f.issue.Issue.ID, p.OfferID)

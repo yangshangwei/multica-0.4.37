@@ -10,6 +10,7 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/iteration"
 	"github.com/multica-ai/multica/server/internal/service"
 )
@@ -47,15 +48,49 @@ type collaborationInformationReturnBody struct {
 
 type collaborationAcceptanceBody struct {
 	collaborationWorkflowBody
+	collaborationResultBody
+	ExpectedStatus       string `json:"expected_status"`
+	StatusOptionsVersion string `json:"status_options_version"`
+}
+
+type collaborationResultBody struct {
+	Note            string   `json:"note"`
+	Basis           string   `json:"basis"`
+	DraftID         *string  `json:"draft_id"`
+	AttachmentIDs   []string `json:"attachment_ids"`
+	SourceCommentID *string  `json:"source_comment_id"`
+}
+
+type collaborationAcceptanceReturnBody struct {
+	collaborationParticipantBody
+	SubmissionID         string `json:"submission_id"`
 	ExpectedStatus       string `json:"expected_status"`
 	StatusOptionsVersion string `json:"status_options_version"`
 	Note                 string `json:"note"`
 }
 
 type collaborationOperationResponse struct {
-	Code                  string                              `json:"code"`
-	CollaborationRevision string                              `json:"collaboration_revision"`
-	StatusOptions         *service.CollaborationStatusOptions `json:"status_options,omitempty"`
+	Code                  string                                     `json:"code"`
+	CollaborationRevision string                                     `json:"collaboration_revision"`
+	StatusOptions         *service.CollaborationStatusOptions        `json:"status_options,omitempty"`
+	DeliveryConfirmation  *service.CollaborationDeliveryConfirmation `json:"delivery_confirmation,omitempty"`
+	Status                int                                        `json:"status,omitempty"`
+}
+
+func collaborationResultSelection(w http.ResponseWriter, body collaborationResultBody) (*pgtype.UUID, []pgtype.UUID, *pgtype.UUID, bool) {
+	draft, attachments, ok := collaborationAttachmentSelection(w, body.DraftID, body.AttachmentIDs)
+	if !ok {
+		return nil, nil, nil, false
+	}
+	var comment *pgtype.UUID
+	if body.SourceCommentID != nil {
+		id, valid := parseUUIDOrBadRequest(w, *body.SourceCommentID, "source_comment_id")
+		if !valid {
+			return nil, nil, nil, false
+		}
+		comment = &id
+	}
+	return draft, attachments, comment, true
 }
 
 func collaborationPositiveVersion(value string) (int64, bool) {
@@ -249,17 +284,78 @@ func (h *Handler) SubmitCollaborationAcceptance(w http.ResponseWriter, r *http.R
 	r.Header.Del("X-Workspace-ID")
 	r.Header.Del("X-Workspace-Slug")
 	var body collaborationAcceptanceBody
-	if !decodeCollaborationWorkflowBody(w, r, &body) {
+	// Both legal decoded 64KiB prose fields must fit even when JSON-escaped.
+	if !decodeCollaborationWorkflowBodyLimit(w, r, &body, 1<<20) {
 		return
 	}
 	request, ok := collaborationWorkflowRequest(w, r, body.collaborationWorkflowBody)
 	if !ok {
 		return
 	}
+	draft, attachments, comment, ok := collaborationResultSelection(w, body.collaborationResultBody)
+	if !ok {
+		return
+	}
 	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
 	receipt, err := svc.SubmitAcceptance(r.Context(), service.CollaborationAcceptanceParams{CollaborationWorkflowRequest: request,
-		ExpectedStatus: body.ExpectedStatus, StatusOptionsVersion: body.StatusOptionsVersion, Note: body.Note})
+		ExpectedStatus: body.ExpectedStatus, StatusOptionsVersion: body.StatusOptionsVersion, Note: body.Note, Basis: body.Basis,
+		DraftID: draft, AttachmentIDs: attachments, SourceCommentID: comment})
 	writeCollaborationWorkflowResponse(w, receipt, err)
+}
+
+func (h *Handler) ReturnCollaborationAcceptance(w http.ResponseWriter, r *http.Request) {
+	prepareCollaborationContentRequest(w, r)
+	var body collaborationAcceptanceReturnBody
+	if !decodeCollaborationWorkflowBodyLimit(w, r, &body, 512<<10) {
+		return
+	}
+	request, ok := collaborationWorkflowRequest(w, r, body.collaborationWorkflowBody)
+	if !ok {
+		return
+	}
+	submission, ok := parseUUIDOrBadRequest(w, body.SubmissionID, "submission_id")
+	if !ok {
+		return
+	}
+	target, ok := parseUUIDOrBadRequest(w, body.TargetUserID, "target_user_id")
+	if !ok {
+		return
+	}
+	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+	receipt, err := svc.ReturnAcceptance(r.Context(), service.CollaborationAcceptanceReturnParams{CollaborationWorkflowRequest: request,
+		SubmissionID: submission, TargetUserID: target, Note: body.Note, ExpectedStatus: body.ExpectedStatus, StatusOptionsVersion: body.StatusOptionsVersion})
+	writeCollaborationWorkflowResponse(w, receipt, err)
+}
+
+func (h *Handler) ListCollaborationAcceptanceSubmissions(w http.ResponseWriter, r *http.Request) {
+	prepareCollaborationContentRequest(w, r)
+	id, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "id"), "issue_id")
+	if !ok {
+		return
+	}
+	query := service.CollaborationDeliveryHistoryQuery{Limit: 20}
+	for _, key := range []string{"limit", "cursor"} {
+		if values, present := r.URL.Query()[key]; present && len(values) != 1 {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_delivery_query", "error": "Invalid delivery query"})
+			return
+		}
+	}
+	if raw := r.URL.Query().Get("limit"); raw != "" {
+		value, err := strconv.Atoi(raw)
+		if err != nil {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_delivery_query", "error": "Invalid delivery query"})
+			return
+		}
+		query.Limit = value
+	}
+	query.Cursor = r.URL.Query().Get("cursor")
+	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+	page, err := svc.ListAcceptanceSubmissions(r.Context(), id, query)
+	if err != nil {
+		writeCollaborationError(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, page)
 }
 
 // Existing workflow replies stay minimal; status mutations may additionally
@@ -280,7 +376,8 @@ func writeCollaborationWorkflowResponse(w http.ResponseWriter, receipt service.C
 		}
 		return
 	}
-	writeJSON(w, receipt.Status, collaborationOperationResponse{Code: receipt.Code, CollaborationRevision: strconv.FormatInt(receipt.CollaborationRevision, 10), StatusOptions: receipt.StatusOptions})
+	writeJSON(w, receipt.Status, collaborationOperationResponse{Code: receipt.Code, CollaborationRevision: strconv.FormatInt(receipt.CollaborationRevision, 10), StatusOptions: receipt.StatusOptions,
+		DeliveryConfirmation: receipt.DeliveryConfirmation})
 }
 
 func (h *Handler) GetCollaborationOperation(w http.ResponseWriter, r *http.Request) {
@@ -297,5 +394,9 @@ func (h *Handler) GetCollaborationOperation(w http.ResponseWriter, r *http.Reque
 		writeCollaborationError(w, err)
 		return
 	}
-	writeJSON(w, http.StatusOK, collaborationOperationResponse{Code: receipt.Code, CollaborationRevision: strconv.FormatInt(receipt.CollaborationRevision, 10)})
+	out := collaborationOperationResponse{Code: receipt.Code, CollaborationRevision: strconv.FormatInt(receipt.CollaborationRevision, 10), DeliveryConfirmation: receipt.DeliveryConfirmation}
+	if receipt.Status >= 400 {
+		out.Status = receipt.Status
+	}
+	writeJSON(w, http.StatusOK, out)
 }

@@ -32,3 +32,17 @@ it("preserves the reply parent with its draft across remounts and retires both a
   expect(second.result.current.form.content).toBe("");
   expect(second.result.current.form.parentCommentId).toBeUndefined();
 });
+
+it("keeps result basis/source snapshot separate from the concurrently mounted discussion form", () => {
+  const comment = renderHook(() => useCollaborationDeliveryForm(scope, "comment"));
+  const result = renderHook(() => useCollaborationDeliveryForm(scope, "result"));
+  act(() => { comment.result.current.update({ content: "Discussion" }); });
+  act(() => { result.result.current.update({ content: "Formal result", basis: "Validated independently", sourceCommentId: scope.context.sourceWorkspaceId }); });
+  result.unmount();
+  const remounted = renderHook(() => useCollaborationDeliveryForm(scope, "result"));
+  expect(remounted.result.current.form).toMatchObject({ content: "Formal result", basis: "Validated independently", sourceCommentId: scope.context.sourceWorkspaceId });
+  expect(comment.result.current.form.content).toBe("Discussion");
+  act(() => { remounted.result.current.reset(); });
+  expect(comment.result.current.form.content).toBe("Discussion");
+  expect(remounted.result.current.form).toMatchObject({ content: "", basis: "", sourceCommentId: null });
+});

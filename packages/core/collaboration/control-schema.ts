@@ -82,11 +82,12 @@ const receiptBase = {
 };
 const receipt = z.discriminatedUnion("action", [
   z.object({ ...receiptBase, action: z.literal("stop"), code: z.enum(["stop_requested", "already_ended", ...refusalCodes]) }),
-  z.object({ ...receiptBase, action: z.literal("resume"), code: z.enum(["resumed", "already_active", "partially_resumed", ...refusalCodes]) }),
+  z.object({ ...receiptBase, action: z.literal("resume"), code: z.enum(["resumed", "already_active", "partially_resumed", "task_manual", ...refusalCodes]) }),
 ]);
 const holdSucceeded = (code: string) => code === "hold_released" || code === "already_active";
 
 function consistentReceipt(value: z.infer<typeof receipt>): boolean {
+  if (value.code === "task_manual" && value.status !== 409) return false;
   const channels = new Map(value.channels.map((item) => [item.channel_id, item]));
   const targets = new Map(value.targets.map((item) => [item.target_id, item]));
   if (channels.size !== value.channels.length || targets.size !== value.targets.length ||

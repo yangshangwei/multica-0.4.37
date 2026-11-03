@@ -5,9 +5,12 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"net/http"
+	"slices"
 	"sort"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/collaboration"
@@ -20,6 +23,12 @@ type CollaborationLifecycleParams struct {
 	Action               string
 	TargetStatus         string
 	StatusOptionsVersion string
+	SubmissionID         *pgtype.UUID  `json:",omitempty"`
+	Note                 string        `json:",omitempty"`
+	Basis                string        `json:",omitempty"`
+	DraftID              *pgtype.UUID  `json:",omitempty"`
+	AttachmentIDs        []pgtype.UUID `json:",omitempty"`
+	SourceCommentID      *pgtype.UUID  `json:",omitempty"`
 }
 
 type CollaborationStatusParams struct {
@@ -46,7 +55,7 @@ func collaborationStatusAction(action string) bool {
 }
 
 func collaborationDirectedStatusAction(action string) bool {
-	return action == "request_information" || action == "return_information" || action == "submit_acceptance"
+	return action == "request_information" || action == "return_information" || action == "submit_acceptance" || action == "return_acceptance"
 }
 
 func collaborationStatusCategoryAllowed(action, category string) bool {
@@ -55,12 +64,16 @@ func collaborationStatusCategoryAllowed(action, category string) bool {
 		return category == "done"
 	case "cancel":
 		return category == "cancelled"
-	case "reopen", "change_status", "return_information":
+	case "reopen", "change_status":
+		return collaboration.NonterminalCategory(category) && category != "in_review"
+	case "return_information":
 		return collaboration.NonterminalCategory(category)
 	case "request_information":
 		return category == "blocked"
 	case "submit_acceptance":
 		return category == "in_review"
+	case "return_acceptance":
+		return category == "in_progress"
 	default:
 		return false
 	}
@@ -82,6 +95,8 @@ func collaborationStatusActionEligible(c collaboration.Capabilities, action stri
 		return c.ReturnInformation
 	case "submit_acceptance":
 		return c.SubmitAcceptance
+	case "return_acceptance":
+		return c.ReturnAcceptance
 	default:
 		return false
 	}
@@ -110,6 +125,17 @@ func (s *CollaborationService) StatusOptions(ctx context.Context, issueID pgtype
 	access, err := s.ResolveIssueAccess(ctx, q, issueID)
 	if err != nil {
 		return CollaborationStatusOptions{}, err
+	}
+	if action == "submit_acceptance" && access.Capabilities.ChangeAIPolicy && access.Issue.CreatorID == access.Issue.AssigneeID {
+		current, projectionErr := collaborationDeliverySummary(ctx, q, access)
+		if projectionErr != nil && !errors.Is(projectionErr, errCollaborationDeliveryEvidence) {
+			return CollaborationStatusOptions{}, projectionErr
+		}
+		var summary *CollaborationDeliverySummary
+		if projectionErr == nil {
+			summary = &current
+		}
+		access.Capabilities.SubmitAcceptance = CollaborationDeliveryCapabilities(access, summary).SubmitAcceptance
 	}
 	if !collaborationStatusActionEligible(access.Capabilities, action) {
 		return CollaborationStatusOptions{}, collaborationError(http.StatusForbidden, "forbidden")
@@ -141,7 +167,31 @@ func collaborationActionStatusOptions(ctx context.Context, q *db.Queries, access
 			return CollaborationStatusOptions{}, collaborationError(http.StatusConflict, "information_request_not_active")
 		}
 	}
-	return collaborationStatusOptions(access.Issue, action, catalog, request)
+	options, err := collaborationStatusOptions(access.Issue, action, catalog, request)
+	if err != nil || action != "return_acceptance" {
+		return options, err
+	}
+	summary, err := collaborationDeliverySummary(ctx, q, access)
+	if errors.Is(err, errCollaborationDeliveryEvidence) {
+		return CollaborationStatusOptions{}, collaborationError(http.StatusConflict, "delivery_unavailable")
+	}
+	if err != nil {
+		return CollaborationStatusOptions{}, err
+	}
+	if summary.Current == nil {
+		return CollaborationStatusOptions{}, collaborationError(http.StatusConflict, "submission_not_pending")
+	}
+	encoded, err := json.Marshal(struct {
+		CatalogVersion string
+		SubmissionID   pgtype.UUID
+		EventSeq       int64
+	}{options.StatusOptionsVersion, summary.Current.ID, summary.Current.EventSeq})
+	if err != nil {
+		return CollaborationStatusOptions{}, err
+	}
+	digest := sha256.Sum256(encoded)
+	options.StatusOptionsVersion = hex.EncodeToString(digest[:])
+	return options, nil
 }
 
 func collaborationStatusOptions(issue db.Issue, action string, catalog []db.IssueStatus, request db.IssueHandoff) (CollaborationStatusOptions, error) {
@@ -157,6 +207,9 @@ func collaborationStatusOptions(issue db.Issue, action string, catalog []db.Issu
 		options.DefaultStatus, available = collaborationHandoffStatus(catalog, issue.Status, canonical)
 	case "submit_acceptance":
 		canonical = "in_review"
+		options.DefaultStatus, available = collaborationHandoffStatus(catalog, issue.Status, canonical)
+	case "return_acceptance":
+		canonical = "in_progress"
 		options.DefaultStatus, available = collaborationHandoffStatus(catalog, issue.Status, canonical)
 	case "return_information":
 		canonical = "in_progress"
@@ -248,7 +301,7 @@ func (t *collaborationWorkflowTx) projectStatusOptions(ctx context.Context, acti
 	}
 	options, err := collaborationActionStatusOptions(ctx, t.q, t.access, action, t.catalog)
 	if err != nil {
-		if e, ok := err.(*CollaborationError); ok && e.Code == "status_unavailable" {
+		if _, ok := err.(*CollaborationError); ok {
 			return receipt, nil
 		}
 		return CollaborationWorkflowReceipt{}, err
@@ -306,6 +359,25 @@ func (s *CollaborationService) ChangeLifecycle(ctx context.Context, p Collaborat
 			}
 			return CollaborationWorkflowReceipt{}, err
 		}
+		if p.Action == "complete" {
+			if refusal, err := t.prepareCompletion(ctx, p); refusal != nil || err != nil {
+				if refusal != nil {
+					return *refusal, nil
+				}
+				return CollaborationWorkflowReceipt{}, err
+			}
+		} else if p.SubmissionID != nil || p.Basis != "" || p.DraftID != nil || len(p.AttachmentIDs) > 0 || p.SourceCommentID != nil {
+			return t.result("invalid_workflow_request", http.StatusBadRequest), nil
+		} else if p.Action == "cancel" {
+			current, err := t.currentDelivery(ctx)
+			if err != nil && !errors.Is(err, errCollaborationDeliveryEvidence) {
+				return CollaborationWorkflowReceipt{}, err
+			}
+			if current != nil {
+				t.deliveryDecision = &collaborationDeliveryDecisionPayload{Version: 1, SubmissionID: current.ID,
+					LifecycleEpoch: t.access.LifecycleEpoch, Kind: "cancelled"}
+			}
+		}
 		return t.changeLifecycle(ctx, p.Action, p.TargetStatus)
 	})
 }
@@ -321,6 +393,13 @@ func (s *CollaborationService) ChangeStatus(ctx context.Context, p Collaboration
 		if !collaboration.NonterminalCategory(t.access.StatusCategory) {
 			return t.result("status_unavailable", http.StatusConflict), nil
 		}
+		pending, err := t.currentDelivery(ctx)
+		if errors.Is(err, errCollaborationDeliveryEvidence) || pending != nil {
+			return t.result("acceptance_pending", http.StatusConflict), nil
+		}
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
 		if refusal, err := t.validateStatus(ctx, "change_status", p.TargetStatus, p.StatusOptionsVersion); refusal != nil || err != nil {
 			if refusal != nil {
 				return *refusal, nil
@@ -334,13 +413,68 @@ func (s *CollaborationService) ChangeStatus(ctx context.Context, p Collaboration
 		if err := t.recordStatusChange(ctx, p.TargetStatus); err != nil {
 			return CollaborationWorkflowReceipt{}, err
 		}
-		var err error
 		t.access.Revision, err = t.q.AdvanceCollaborationContentRevision(ctx, t.access.Issue.ID)
 		if err != nil {
 			return CollaborationWorkflowReceipt{}, err
 		}
 		return t.finishStatusChange(ctx, "status_changed", previous, nil)
 	})
+}
+
+func (t *collaborationWorkflowTx) prepareCompletion(ctx context.Context, p CollaborationLifecycleParams) (*CollaborationWorkflowReceipt, error) {
+	refuse := func(code string, status int) (*CollaborationWorkflowReceipt, error) {
+		r := t.result(code, status)
+		return &r, nil
+	}
+	current, err := t.currentDelivery(ctx)
+	if errors.Is(err, errCollaborationDeliveryEvidence) {
+		return refuse("delivery_unavailable", http.StatusConflict)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if current != nil {
+		if p.SubmissionID == nil {
+			return refuse("delivery_required", http.StatusConflict)
+		}
+		if *p.SubmissionID != current.ID {
+			return refuse("submission_changed", http.StatusConflict)
+		}
+		if current.EvidenceState != "available" {
+			return refuse("delivery_unavailable", http.StatusConflict)
+		}
+		if t.handler() != t.actor || t.access.StatusCategory != "in_review" || t.access.InformationRequestID.Valid {
+			return refuse("acceptance_pending", http.StatusConflict)
+		}
+		if p.Basis != "" || p.DraftID != nil || len(p.AttachmentIDs) > 0 || p.SourceCommentID != nil {
+			return refuse("invalid_workflow_request", http.StatusBadRequest)
+		}
+		if !utf8.ValidString(p.Note) || len(p.Note) > collaborationDeliveryTextLimit {
+			return refuse("result_too_large", http.StatusBadRequest)
+		}
+		t.deliveryConfirmation = &CollaborationDeliveryConfirmation{SubmissionID: current.ID, AttachmentIDs: slices.Clone(current.AttachmentIDs)}
+		t.deliveryDecision = &collaborationDeliveryDecisionPayload{Version: 1, SubmissionID: current.ID, LifecycleEpoch: t.access.LifecycleEpoch, Kind: "accepted"}
+		if p.Note != "" {
+			t.deliveryDecision.Reason = &p.Note
+		}
+		return nil, nil
+	}
+	if p.SubmissionID != nil {
+		return refuse("submission_not_pending", http.StatusConflict)
+	}
+	if t.handler() != t.actor || t.access.InformationRequestID.Valid {
+		return refuse("delivery_required", http.StatusConflict)
+	}
+	input := collaborationDeliveryInput{note: p.Note, basis: p.Basis, draft: p.DraftID, attachments: p.AttachmentIDs, sourceComment: p.SourceCommentID}
+	if refusal, err := t.prepareDelivery(ctx, input); refusal != nil || err != nil {
+		return refusal, err
+	}
+	handoff, err := t.recordSelfDelivery(ctx, input)
+	if err != nil {
+		return nil, err
+	}
+	t.deliveryDecision = &collaborationDeliveryDecisionPayload{Version: 1, SubmissionID: handoff.ID, LifecycleEpoch: t.access.LifecycleEpoch, Kind: "accepted"}
+	return nil, nil
 }
 
 func (t *collaborationWorkflowTx) changeLifecycle(ctx context.Context, action, target string) (CollaborationWorkflowReceipt, error) {
@@ -439,7 +573,11 @@ func (t *collaborationWorkflowTx) finishStatusChange(ctx context.Context, code, 
 	if err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}
-	payload, err := json.Marshal(map[string]any{"previous_status": previous, "status": t.access.Issue.Status, "receipt": receipt, "request_id": t.operation.RequestID})
+	facts := map[string]any{"previous_status": previous, "status": t.access.Issue.Status, "receipt": receipt, "request_id": t.operation.RequestID}
+	if t.deliveryDecision != nil {
+		facts["delivery_decision"] = t.deliveryDecision
+	}
+	payload, err := json.Marshal(facts)
 	if err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}

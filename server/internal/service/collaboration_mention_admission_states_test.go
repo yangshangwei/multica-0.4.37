@@ -111,7 +111,7 @@ func TestCollaborationMentionCommentAdmissionAcrossExecutionStates(t *testing.T)
 				f.fx.Cleanup(t, `DELETE FROM issue_status WHERE workspace_id=$1`, f.workspace)
 				startOriginal()
 				pending = create(f.creator, mention+"waiting before explicit completion")
-				if _, err := f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f.collaborationQueueFixture, "complete", "done", 1, 1)); err != nil {
+				if _, err := f.svc.ChangeLifecycle(f.ctx, deliveredCompletionParams(t, f.collaborationQueueFixture, "done")); err != nil {
 					t.Fatal(err)
 				}
 			}

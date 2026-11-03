@@ -10,6 +10,14 @@ line movement into a misleading contract.
 
 Collaboration overrides for protected objects:
 
+| Delivery/policy behavior | Source |
+| --- | --- |
+| Immutable result/basis/evidence, exact ordinary initiator acceptance, reasoned revision, explicit legacy replacement and retained history | `server/internal/service/collaboration_delivery.go`; `collaboration_handoff.go`; `collaboration_lifecycle.go`; `server/pkg/db/queries/collaboration_delivery.sql`; `server/internal/handler/collaboration_workflow.go` |
+| Scoped disabled-creator administrative completion remains distinct from a recorded initiator decision | `server/internal/service/admin_collaboration.go`; `packages/views/collaboration/delivery-panel.tsx` |
+| Initiator manual/assisted policy closes new command, Resume, promotion/Claim/Permit and continuation admission while preserving Stop/proof/original recovery | `server/internal/service/collaboration_ai_policy.go`; `collaboration_queue.go`; `collaboration_control.go`; `collaboration_runtime.go`; `collaboration_authority.go`; `server/migrations/764_collaboration_ai_policy.up.sql` |
+| Separate scoped result forms retire only after exact content-free confirmation; known refusals and missing history routes preserve authorized intent | `packages/core/collaboration/delivery-draft.ts`; `operation.ts`; `delivery-schema.ts`; `packages/core/api/client.ts` |
+| One-action ordinary comment preflight, explicit AI confirmation, current participant context and visible nested auxiliary recovery | `packages/views/collaboration/comment-composer.tsx`; `participants.tsx`; `attachment-panel.tsx`; `knowledge-panel.tsx`; `workflow.tsx` |
+
 | Source/editing behavior | Source |
 | --- | --- |
 | Complete ordinary-child references and source-only open authority; ordinary writes publish issue-scoped postcommit hints without collaboration mutation | `server/internal/handler/collaboration.go`; `server/pkg/db/queries/collaboration_source.sql`; `server/internal/service/collaboration_children.go`; `server/internal/handler/collaboration_children_test.go` |

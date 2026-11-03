@@ -2,6 +2,7 @@ import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
 import { CollaborationFieldCatalogSchema, CollaborationPropertyPatchSchema, CollaborationSourceOptionsSchema } from "./schema";
 import { positiveVersion } from "./version";
+import { CollaborationAIPolicySchema } from "./delivery-schema";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 const source = z.object({ id: uuid, name: z.string(), slug: z.string().min(1) });
@@ -28,6 +29,7 @@ export const CollaborationCreationInputSchema = z.strictObject({
   ...CollaborationCreationFieldsSchema.shape,
   source_workspace_id: uuid, title: z.string().trim().min(1).max(1000), description: z.string().max(1_000_000).optional(),
   handler_user_id: uuid.optional(),
+  ai_policy: CollaborationAIPolicySchema.optional(),
   draft_id: uuid.optional(), attachment_ids: z.array(uuid).max(32).optional(),
 }).refine((value) => new Set(value.attachment_ids).size === (value.attachment_ids?.length ?? 0) &&
   (!value.attachment_ids?.length || value.draft_id !== undefined) &&
@@ -43,6 +45,7 @@ export const CollaborationCreationRejectionCodeSchema = z.enum([
   "account_unavailable", "collaboration_unavailable", "invalid_attachment_selection", "attachment_not_found",
   "attachment_scope_mismatch", "attachment_draft_consumed", "parent_issue_not_found", "project_not_found",
   "triage_review_required", "issue_limit_reached",
+  "invalid_ai_policy",
   "status_unavailable", "invalid_priority", "invalid_start_date", "invalid_due_date", "invalid_labels", "invalid_properties",
   "property_archived", "invalid_property_value", "properties_too_large", "invalid_stage", "parent_cycle",
   "iteration_disabled", "iteration_not_found", "iteration_revision_conflict", "iteration_history_move_unsupported", "iteration_validation_failed",

@@ -40,7 +40,7 @@ export function CollaborationAttachmentPicker({ scope, form, update, uploads, di
           originals.current.delete(selection.draft.requestId);
           return;
         }
-        if (selection.files.length + (query.data?.attachments.length ?? 0) + uploads.length > 32) throw new CollaborationAttachmentError("attachment_limit");
+        if (selection.files.length + Math.max(form.selectedAttachmentIds.length, query.data?.attachments.length ?? 0) + uploads.length > 32) throw new CollaborationAttachmentError("attachment_limit");
         const prepared: CollaborationUploadDraft[] = [];
         for (const file of selection.files) {
           const draft = await stageCollaborationUpload(client, scope, form, crypto.randomUUID(), file, undefined, attempt.signal);

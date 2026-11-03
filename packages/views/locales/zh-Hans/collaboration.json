@@ -201,7 +201,7 @@
   },
   "detail": {
     "title": "任务详情",
-    "description": "描述",
+    "description": "任务要求",
     "handler": "处理人",
     "creator": "发起人",
     "source": "来源工作空间",
@@ -213,7 +213,9 @@
     "noComments": "暂无评论。",
     "unknownAuthor": "作者不可用",
     "contentRestricted": "文件及链接的工作空间资源需要通过受控查看器访问。",
-    "commentHistory": "评论历史"
+    "commentHistory": "评论历史",
+    "context": "任务信息",
+    "referenceFiles": "文件与参考材料"
   },
   "workflow": {
     "title": "任务操作",
@@ -261,7 +263,13 @@
     "handlerEffect": "处理责任将同时交回发起人。",
     "empty": "暂无有效参与者。",
     "creator": "发起人",
-    "handler": "当前处理人"
+    "handler": "当前处理人",
+    "permissionContext": "当前权限",
+    "yourRole": "你的角色",
+    "participant": "参与者",
+    "reader": "查看者",
+    "view": "查看",
+    "discuss": "参与讨论"
   },
   "resources": {
     "manage": "管理 AI 资源",
@@ -476,7 +484,9 @@
     },
     "mentionPeople": "人员",
     "mentionAI": "AI 目标",
-    "mentionAll": "@all · 全体参与者"
+    "mentionAll": "@all · 全体参与者",
+    "draftChanged": "预览期间评论已变更。请检查当前内容后重新发送。",
+    "confirmAI": "请核对 AI 对象及影响，再发送评论确认。"
   },
   "activity": {
     "title": "操作记录",
@@ -902,5 +912,61 @@
     "decisionAt": "最近决定时间",
     "recoveryReadError": "无法读取本地恢复记录。",
     "versionLabel": "版本"
+  },
+  "delivery": {
+    "title": "交付结果",
+    "result": "结果",
+    "basis": "依据",
+    "author": "提交人",
+    "submittedAt": "提交时间",
+    "empty": "尚未提交结果。",
+    "unavailable": "此服务端暂不提供结果记录。",
+    "resultUnavailable": "结果不可用。",
+    "basisUnavailable": "依据不可用。",
+    "legacy": "交付证据不可用，请修改或重新提交后再验收。",
+    "noAcceptanceRecorded": "此结果未记录发起人验收。",
+    "history": "历史结果与决定",
+    "emptyHistory": "暂无更早的结果。",
+    "sourceComment": "查看来源评论",
+    "decisions": {
+      "accepted": "已验收",
+      "returned": "已退回修改",
+      "cancelled": "提交已取消"
+    },
+    "decidedBy": "决定人",
+    "decisionAt": "决定时间",
+    "revisionRecipient": "修改接收人",
+    "evidence": "依据文件",
+    "filesUnavailable": "此结果引用的部分文件不可用。",
+    "hint": "说明交付结果及判断依据，文件可选。",
+    "tooLong": "结果与依据的文本大小均不能超过 64 KiB。",
+    "revisionReason": "修改原因",
+    "accept": "验收并完成",
+    "selfComplete": "记录结果并完成",
+    "submit": "提交结果",
+    "return": "退回修改",
+    "start": "开始处理",
+    "more": "更多操作",
+    "stages": {
+      "waiting_information": "等待补充信息",
+      "pending_acceptance": "等待验收",
+      "legacy_review": "审核中 · 交付证据不可用",
+      "completed": "已完成",
+      "cancelled": "已取消"
+    },
+    "preparationBlocked": "请先处理当前结果未完成的操作，再引用另一条评论。",
+    "reuseFiles": "选择已共享文件",
+    "clearFiles": "清除所选文件",
+    "useComment": "引用为结果"
+  },
+  "policy": {
+    "title": "AI 参与方式",
+    "manual": "手动处理",
+    "assisted": "AI 辅助",
+    "unknown": "策略不可用",
+    "change": "修改 AI 策略",
+    "manualHint": "此任务不接受新的 AI 输入或执行，已有执行的停止确认与历史仍会保留。",
+    "assistedHint": "使用 AI 仍需当前授权，修改策略不会恢复已暂停的执行。",
+    "creationHint": "手动任务通过评论和结果交付协作，AI 辅助任务可使用已授权资源。"
   }
 }

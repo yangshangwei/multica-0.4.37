@@ -282,7 +282,11 @@ func TestCollaborationMemoryClosedIssueIsReadOnlyExceptPurge(t *testing.T) {
 	f.memoryUpdate(t, f.creator, 0, "first")
 	f.memoryUpdate(t, f.handler, 1, "second")
 	// Memory writes never advance the issue revision used by lifecycle changes.
-	if _, err := f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "complete", "done", 1, 1)); err != nil {
+	if mustAccess(t, f, f.ctx).Revision != 1 {
+		t.Fatal("memory writes advanced the issue revision")
+	}
+	closed, err := f.svc.ChangeLifecycle(f.ctx, deliveredCompletionParams(t, f, "done"))
+	if err != nil {
 		t.Fatal(err)
 	}
 	view, err := f.svc.GetMemory(f.ctx, f.issue.Issue.ID)
@@ -300,7 +304,7 @@ func TestCollaborationMemoryClosedIssueIsReadOnlyExceptPurge(t *testing.T) {
 	if purged, err := f.svc.PurgeMemoryVersion(f.ctx, CollaborationMemoryPurgeParams{IssueID: f.issue.Issue.ID, RequestID: uuid.NewString(), Version: 1, Reason: "credential"}); err != nil || purged.Code != "memory_purged" {
 		t.Fatalf("credential disposal must survive closure: %+v %v", purged, err)
 	}
-	if _, err = f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "reopen", "todo", 2, 2)); err != nil {
+	if _, err = f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "reopen", "todo", closed.CollaborationRevision, 2)); err != nil {
 		t.Fatal(err)
 	}
 	if reopened := f.memoryUpdate(t, f.handler, 2, "after reopen"); *reopened.Version != 3 {

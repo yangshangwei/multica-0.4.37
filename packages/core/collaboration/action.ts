@@ -5,19 +5,31 @@ import { CollaborationPropertyPatchSchema } from "./schema";
 import { positiveVersion } from "./version";
 import { CollaborationUnavailableError, isCollaborationScopeCurrent, type CollaborationScope } from "./access";
 import type { CollaborationDraft } from "./draft";
+import { CollaborationAIPolicySchema, collaborationBoundedResultText, collaborationResultText } from "./delivery-schema";
+import { collaborationAttachmentIds } from "./attachment-schema";
 
 const base = {
   requestId: z.uuid(), expectedCollaborationRevision: positiveVersion, expectedLifecycleEpoch: positiveVersion,
   expectedParticipantEpoch: positiveVersion, expectedAccountEpoch: positiveVersion,
 };
 const directed = { expectedStatus: z.string().min(1), statusOptionsVersion: z.string().regex(/^[a-f0-9]{64}$/) };
+const evidence = { draftId: z.uuid().optional(), deliveryDraftId: z.uuid().optional(), attachmentIds: collaborationAttachmentIds.optional(), sourceCommentId: z.uuid().optional() };
 export const CollaborationActionSchema = z.discriminatedUnion("action", [
   z.object({ ...base, action: z.literal("invite"), targetUserId: z.uuid() }),
   z.object({ ...base, action: z.literal("transfer"), targetUserId: z.uuid(), note: z.string() }),
   z.object({ ...base, ...directed, action: z.literal("request_information"), targetUserId: z.uuid(), note: z.string() }),
   z.object({ ...base, ...directed, action: z.literal("return_information"), informationRequestId: z.uuid(), note: z.string() }),
-  z.object({ ...base, ...directed, action: z.literal("submit_acceptance"), note: z.string() }),
-  z.object({ ...base, action: z.enum(["change_status", "complete", "cancel", "reopen"]), status: z.string().min(1), statusOptionsVersion: directed.statusOptionsVersion }),
+  z.object({ ...base, ...directed, ...evidence, action: z.literal("submit_acceptance"), note: collaborationResultText, basis: collaborationResultText })
+    .refine((value) => value.draftId === undefined || value.deliveryDraftId === undefined || value.draftId === value.deliveryDraftId),
+  z.object({ ...base, ...directed, action: z.literal("return_acceptance"), submissionId: z.uuid(), targetUserId: z.uuid(), note: collaborationResultText }),
+  z.object({ ...base, action: z.literal("change_ai_policy"), aiPolicy: CollaborationAIPolicySchema }),
+  z.object({ ...base, action: z.enum(["change_status", "cancel", "reopen"]), status: z.string().min(1), statusOptionsVersion: directed.statusOptionsVersion }),
+  z.object({ ...base, ...evidence, action: z.literal("complete"), status: z.string().min(1), statusOptionsVersion: directed.statusOptionsVersion,
+    submissionId: z.uuid().optional(), submissionAttachmentIds: collaborationAttachmentIds.optional(), note: collaborationBoundedResultText.optional(), basis: collaborationResultText.optional() })
+    .refine((value) => value.submissionId !== undefined ? value.basis === undefined && value.draftId === undefined && value.deliveryDraftId === undefined &&
+      value.attachmentIds === undefined && value.sourceCommentId === undefined && value.submissionAttachmentIds !== undefined :
+      collaborationResultText.safeParse(value.note).success && value.basis !== undefined && value.submissionAttachmentIds === undefined)
+    .refine((value) => value.draftId === undefined || value.deliveryDraftId === undefined || value.draftId === value.deliveryDraftId),
   z.object({ ...base, action: z.literal("leave") }),
   z.object({ ...base, action: z.literal("remove"), targetUserId: z.uuid() }),
   z.object({ ...base, action: z.literal("edit"), title: z.string().min(1), description: z.string(), startDate: z.iso.date().nullable(), dueDate: z.iso.date().nullable(), priority: z.enum(["none", "low", "medium", "high", "urgent"]),
@@ -55,6 +67,8 @@ export async function sendCollaborationAction(scope: CollaborationScope, issueId
     case "request_information": result = await api.createCollaborationHandoff(issueId, { ...action, purpose: "information" }); break;
     case "return_information": result = await api.returnCollaborationInformation(issueId, action); break;
     case "submit_acceptance": result = await api.submitCollaborationAcceptance(issueId, action); break;
+    case "return_acceptance": result = await api.returnCollaborationAcceptance(issueId, action); break;
+    case "change_ai_policy": result = await api.changeCollaborationAIPolicy(issueId, action); break;
     case "change_status": result = await api.changeCollaborationStatus(issueId, action); break;
     case "complete": case "cancel": case "reopen": result = await api.changeCollaborationLifecycle(issueId, { ...action, action: action.action }); break;
     case "leave": result = await api.leaveCollaborationIssue(issueId, action); break;

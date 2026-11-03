@@ -27,6 +27,7 @@ func TestCollaborationCommandCancellationExactProvenance(t *testing.T) {
 			next := f.submit(t, f.creator, "independent following input")
 			actor, kind, reason := f.handler, "manual", "cancelled_by_participant"
 			var err error
+			var closed CollaborationWorkflowReceipt
 			switch action {
 			case "manual":
 				_, err = f.svc.CancelWaitingCommand(collaborationContext(actor), CollaborationCancelCommandParams{
@@ -41,10 +42,10 @@ func TestCollaborationCommandCancellationExactProvenance(t *testing.T) {
 				_, err = f.svc.Leave(collaborationContext(actor), workflowRequest(f, 1))
 			case "complete":
 				actor, kind, reason = f.creator, "automatic", "issue_completed"
-				_, err = f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "complete", "done", 1, 1))
+				closed, err = f.svc.ChangeLifecycle(f.ctx, deliveredCompletionParams(t, f, "done"))
 			case "cancel":
 				actor, kind, reason = f.creator, "automatic", "issue_cancelled"
-				_, err = f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "cancel", "cancelled", 1, 1))
+				closed, err = f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "cancel", "cancelled", 1, 1))
 			}
 			if err != nil {
 				t.Fatal(err)
@@ -80,7 +81,7 @@ func TestCollaborationCommandCancellationExactProvenance(t *testing.T) {
 				t.Fatal("single-author cancellation changed the next input or its FIFO position")
 			}
 			if action == "complete" || action == "cancel" {
-				if _, err = f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "reopen", "todo", 2, 2)); err != nil {
+				if _, err = f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "reopen", "todo", closed.CollaborationRevision, 2)); err != nil {
 					t.Fatal(err)
 				}
 				if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='cancelled' AND cancellation_event_id=$2 AND reason=$3`, input.CommandID, *eventID, reason) != 1 {
@@ -381,12 +382,16 @@ func TestCollaborationCommandCancellationRollsBackEventAndState(t *testing.T) {
 			t.Run(action+"/"+query, func(t *testing.T) {
 				f := newCollaborationLifecycleFixture(t)
 				input := f.submit(t, f.handler, "must survive failed cancellation")
+				var complete CollaborationLifecycleParams
+				if action == "complete" {
+					complete = deliveredCompletionParams(t, f, "done")
+				}
 				f.svc.TxStarter = collaborationFailureStarter{TxStarter: f.pool, queryName: query}
 				var err error
 				if action == "manual" {
 					_, err = f.svc.CancelWaitingCommand(f.ctx, CollaborationCancelCommandParams{CollaborationQueueRequest: f.request(), TargetID: f.targetID, CommandID: input.CommandID, ExpectedCollaborationRevision: 1})
 				} else {
-					_, err = f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "complete", "done", 1, 1))
+					_, err = f.svc.ChangeLifecycle(f.ctx, complete)
 				}
 				if err == nil || !strings.Contains(err.Error(), "injected") {
 					t.Fatalf("required cancellation write fault was not returned: %v", err)

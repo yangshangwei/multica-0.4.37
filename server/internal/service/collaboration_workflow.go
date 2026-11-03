@@ -41,15 +41,16 @@ type CollaborationTransferParams struct {
 // Receipts describe this operation only. Clients must reload current authority
 // and state; replaying a receipt never reconstructs an old private projection.
 type CollaborationWorkflowReceipt struct {
-	Status                int                         `json:"status"`
-	Code                  string                      `json:"code"`
-	CollaborationRevision int64                       `json:"collaboration_revision,string"`
-	QueueState            string                      `json:"queue_state"`
-	ControlVersion        int64                       `json:"control_version,string"`
-	RunID                 pgtype.UUID                 `json:"run_id"`
-	RunSettled            bool                        `json:"run_settled"`
-	Execution             *CollaborationQueueReceipt  `json:"execution,omitempty"`
-	StatusOptions         *CollaborationStatusOptions `json:"status_options,omitempty"`
+	Status                int                                `json:"status"`
+	Code                  string                             `json:"code"`
+	CollaborationRevision int64                              `json:"collaboration_revision,string"`
+	QueueState            string                             `json:"queue_state"`
+	ControlVersion        int64                              `json:"control_version,string"`
+	RunID                 pgtype.UUID                        `json:"run_id"`
+	RunSettled            bool                               `json:"run_settled"`
+	Execution             *CollaborationQueueReceipt         `json:"execution,omitempty"`
+	StatusOptions         *CollaborationStatusOptions        `json:"status_options,omitempty"`
+	DeliveryConfirmation  *CollaborationDeliveryConfirmation `json:"delivery_confirmation,omitempty"`
 	// ParentWakeup is a best-effort effect of this committed invocation only.
 	// It never enters operation/history JSON, so replay cannot dispatch it again.
 	ParentWakeup *CollaborationParentWakeup `json:"-"`
@@ -62,27 +63,30 @@ type CollaborationParentWakeup struct {
 
 // This is the only recovery projection allowed after object access is lost.
 type CollaborationWorkflowOperationReceipt struct {
-	Status                int    `json:"status"`
-	Code                  string `json:"code"`
-	CollaborationRevision int64  `json:"collaboration_revision,string"`
+	Status                int                                `json:"status"`
+	Code                  string                             `json:"code"`
+	CollaborationRevision int64                              `json:"collaboration_revision,string"`
+	DeliveryConfirmation  *CollaborationDeliveryConfirmation `json:"delivery_confirmation,omitempty"`
 }
 
 type collaborationWorkflowTx struct {
 	*collaborationQueueTx
-	tx                 pgx.Tx
-	iteration          db.Iteration
-	iterations         map[pgtype.UUID]db.Iteration
-	iterationsEnabled  bool
-	sourceMemberLocked bool
-	catalog            []db.IssueStatus
-	users              map[pgtype.UUID]db.User
-	operation          db.CollaborationOperation
-	handoffID          pgtype.UUID
+	tx                   pgx.Tx
+	iteration            db.Iteration
+	iterations           map[pgtype.UUID]db.Iteration
+	iterationsEnabled    bool
+	sourceMemberLocked   bool
+	catalog              []db.IssueStatus
+	users                map[pgtype.UUID]db.User
+	operation            db.CollaborationOperation
+	handoffID            pgtype.UUID
+	deliveryConfirmation *CollaborationDeliveryConfirmation
+	deliveryDecision     *collaborationDeliveryDecisionPayload
 }
 
 func (t *collaborationWorkflowTx) result(code string, status int) CollaborationWorkflowReceipt {
 	return CollaborationWorkflowReceipt{Status: status, Code: code, CollaborationRevision: t.access.Revision,
-		QueueState: t.session.QueueState, ControlVersion: t.session.ControlVersion}
+		QueueState: t.session.QueueState, ControlVersion: t.session.ControlVersion, DeliveryConfirmation: t.deliveryConfirmation}
 }
 
 func (s *CollaborationService) InviteParticipant(ctx context.Context, p CollaborationParticipantParams) (CollaborationWorkflowReceipt, error) {
@@ -112,6 +116,13 @@ func (s *CollaborationService) Transfer(ctx context.Context, p CollaborationTran
 		}
 		if !collaboration.NonterminalCategory(t.access.StatusCategory) {
 			return t.result("status_unavailable", http.StatusConflict), nil
+		}
+		pending, err := t.currentDelivery(ctx)
+		if errors.Is(err, errCollaborationDeliveryEvidence) || pending != nil {
+			return t.result("acceptance_pending", http.StatusConflict), nil
+		}
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
 		}
 		eligible, err := t.eligibleRecipient(ctx, p.TargetUserID)
 		if err != nil {
@@ -357,7 +368,7 @@ func workflowRoleAllowed(t *collaborationWorkflowTx, kind string) bool {
 	case "leave":
 		// The action produces explicit creator/handler refusals below.
 		return t.access.Capabilities.ControlAI
-	case "complete", "cancel", "reopen":
+	case "complete", "cancel", "reopen", "return_acceptance", "change_ai_policy":
 		// Check identity independently of current business state: a successful
 		// close/reopen key must still replay after its state transition.
 		return t.access.Capabilities.ControlAI && t.access.Issue.CreatorType == "member" && t.access.Issue.CreatorID == t.actor
@@ -383,7 +394,7 @@ func (s *CollaborationService) mutateCollaborationWorkflow(ctx context.Context, 
 	actor, err := util.ParseUUID(principal.UserID)
 	if err != nil || !p.IssueID.Valid || p.RequestID == "" || len(p.RequestID) > 128 || p.ExpectedCollaborationRevision < 1 ||
 		p.ExpectedLifecycleEpoch < 1 || p.ExpectedParticipantEpoch < 1 || p.ExpectedAccountEpoch < 1 ||
-		((kind == "invite_participant" || kind == "transfer" || kind == "remove_participant" || kind == "request_information") && !target.Valid) {
+		((kind == "invite_participant" || kind == "transfer" || kind == "remove_participant" || kind == "request_information" || kind == "return_acceptance") && !target.Valid) {
 		return CollaborationWorkflowReceipt{}, collaborationError(http.StatusBadRequest, "invalid_workflow_request")
 	}
 	encoded, err := json.Marshal(payload)
@@ -604,6 +615,10 @@ func decodeWorkflowReceipt(op db.CollaborationOperation) (CollaborationWorkflowR
 	if receipt.Code == "" || receipt.Code != op.ResultCode.String || receipt.Status < 200 || receipt.Status > 599 || receipt.CollaborationRevision < 1 {
 		return CollaborationWorkflowReceipt{}, errors.New("invalid collaboration workflow receipt")
 	}
+	if confirmation := receipt.DeliveryConfirmation; confirmation != nil && (!confirmation.SubmissionID.Valid || confirmation.AttachmentIDs == nil ||
+		validateCollaborationAttachmentIDs(confirmation.AttachmentIDs) != nil || (op.Kind != "submit_acceptance" && op.Kind != "complete") || receipt.Status >= 400) {
+		return CollaborationWorkflowReceipt{}, errors.New("invalid collaboration delivery confirmation")
+	}
 	return receipt, nil
 }
 
@@ -644,7 +659,7 @@ func (s *CollaborationService) GetWorkflowOperation(ctx context.Context, issueID
 	}
 	switch op.Kind {
 	case "invite_participant", "transfer", "remove_participant", "leave", "complete", "cancel", "reopen", "change_status", "edit_issue", "edit_source_structure", "change_iteration",
-		"request_information", "return_information", "submit_acceptance":
+		"request_information", "return_information", "submit_acceptance", "return_acceptance", "change_ai_policy":
 	default:
 		return CollaborationWorkflowOperationReceipt{}, collaborationError(http.StatusNotFound, "not_found")
 	}
@@ -655,5 +670,6 @@ func (s *CollaborationService) GetWorkflowOperation(ctx context.Context, issueID
 	if err = tx.Commit(ctx); err != nil {
 		return CollaborationWorkflowOperationReceipt{}, err
 	}
-	return CollaborationWorkflowOperationReceipt{Status: r.Status, Code: r.Code, CollaborationRevision: r.CollaborationRevision}, nil
+	return CollaborationWorkflowOperationReceipt{Status: r.Status, Code: r.Code, CollaborationRevision: r.CollaborationRevision,
+		DeliveryConfirmation: r.DeliveryConfirmation}, nil
 }

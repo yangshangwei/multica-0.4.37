@@ -11,6 +11,8 @@ These views introduce no platform route, store or knowledge-generation model.
 ## 2. Signatures
 
 - `CollaborationDetail` mounts `CollaborationKnowledgePanel` after shared context.
+- Shared detail composition and enclosing auxiliary recovery follow
+  [collaboration detail](./collaboration-detail.md).
 - `ProjectDetail` and workspace `WorkspaceTab` mount `ManagedKnowledgePanel`
   outside their human description/context editors.
 - `KnowledgeProposal`, `KnowledgeSourcePicker`, `KnowledgeReview` and controls
@@ -90,6 +92,11 @@ evidence count and the metadata budget have no field of their own; their schema
 refusal shows the input message.
 
 ### Action outcomes
+
+An unresolved stored or in-memory knowledge operation must open every enclosing
+auxiliary details element, including the detail page's outer knowledge disclosure.
+Use the existing local attention effect; opening only the inner panel hides
+original-key recovery. Remount recovery remains GET-only and does not submit.
 
 An uncertain in-memory intent locks its original fields and offers **Check
 original result** / **Retry same request** with the same Core intent. On reload,

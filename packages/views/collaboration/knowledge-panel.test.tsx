@@ -51,10 +51,11 @@ beforeEach(() => {
   vi.spyOn(api, "getCollaborationComment").mockResolvedValue(comment);
 });
 afterEach(() => { cleanup(); client.clear(); localStorage.clear(); vi.useRealTimers(); vi.restoreAllMocks(); });
-function mount(target = false, currentIssue = issue) {
-  return renderWithI18n(<QueryClientProvider client={client}>{target
+function mount(target = false, currentIssue = issue, collapsed = false) {
+  const content = target
     ? <ManagedKnowledgePanel workspaceId={issue.source_workspace.id} />
-    : <CollaborationKnowledgePanel scope={scope} issue={{ ...currentIssue, handler: { ...currentIssue.handler, external: true } }} />}</QueryClientProvider>);
+    : <CollaborationKnowledgePanel scope={scope} issue={{ ...currentIssue, handler: { ...currentIssue.handler, external: true } }} />;
+  return renderWithI18n(<QueryClientProvider client={client}>{collapsed ? <details><summary>Knowledge</summary>{content}</details> : content}</QueryClientProvider>);
 }
 async function openReview() {
   await userEvent.click(await screen.findByRole("button", { name: /PRIVATE SUMMARY/ }));
@@ -136,12 +137,13 @@ it("resets typed decision input when a held refresh returns a different version"
   expect(screen.getByRole("button", { name: "Approve exact version" })).toBeDisabled();
 });
 
-it("recovers a lost result after remount with the original key and no second POST", async () => {
+it("recovers a lost result through the enclosing auxiliary disclosure after remount with the original key and no second POST", async () => {
   const send = vi.spyOn(api, "approveCollaborationKnowledge").mockRejectedValue(new TypeError("Lost response"));
   const mounted = mount(); await openReview(); await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
   await userEvent.click(screen.getByRole("button", { name: "Approve exact version" }));
   await screen.findByRole("button", { name: "Retry same request" }); const key = send.mock.calls[0]![1].request_id;
-  mounted.unmount(); mount();
+  mounted.unmount(); mount(false, issue, true);
+  await waitFor(() => expect(screen.getByText("Knowledge", { selector: "summary" }).closest("details")).toHaveAttribute("open"));
   expect(screen.queryByRole("button", { name: "Retry same request" })).not.toBeInTheDocument();
   vi.mocked(api.getCollaborationKnowledgeOperation).mockResolvedValue(receipt(key, "approve"));
   await userEvent.click(await screen.findByRole("button", { name: "Check original result" }));

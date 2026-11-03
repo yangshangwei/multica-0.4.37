@@ -82,7 +82,8 @@ it("keeps a cancelled original input visible after refresh while its current com
   const mount = () => renderWithI18n(<QueryClientProvider client={f.client}><NavigationProvider value={navigation()}><Detail scope={f.scope} /></NavigationProvider></QueryClientProvider>);
   const view = mount();
   expect(await screen.findByText(comment.content)).toBeInTheDocument();
-  expect(fetch.mock.calls.some(([url]) => new URL(url).pathname.endsWith("/commands"))).toBe(false);
+  expect(screen.queryByText(original.content)).not.toBeInTheDocument();
+  expect(fetch.mock.calls.some(([url]) => new URL(url).pathname.endsWith("/attachments"))).toBe(false);
   const disclosure = screen.getByRole("button", { name: "Command history" });
   expect(disclosure).toHaveAttribute("aria-expanded", "false");
   await userEvent.click(disclosure);

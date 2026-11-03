@@ -78,6 +78,8 @@ func TestCollaborationLifecycleRoutesKeepCreatorAuthorityAfterSourceDeparture(t 
 	seedCollaborationRouteCommand(t, fx, session, handler, "waiting work")
 	fx.Cleanup(t, `DELETE FROM collaboration_operation WHERE scope_kind='issue' AND scope_id=$1`, issue)
 	fx.Cleanup(t, `DELETE FROM collaboration_event WHERE issue_id=$1`, issue)
+	fx.Cleanup(t, `DELETE FROM issue_handoff WHERE issue_id=$1`, issue)
+	fx.Cleanup(t, `DELETE FROM collaboration_notification WHERE issue_id=$1`, issue)
 	path := "/api/collaboration/issues/" + issue
 	call := func(token, method, url, key string, body any) *testutil.Response {
 		t.Helper()
@@ -117,11 +119,19 @@ func TestCollaborationLifecycleRoutesKeepCreatorAuthorityAfterSourceDeparture(t 
 	call(handlerToken, http.MethodGet, path+"/status-options?action=complete", "", nil).Want(http.StatusForbidden)
 	// Source membership and creator collaboration authority are independent.
 	fx.Exec(t, `DELETE FROM member WHERE workspace_id=$1 AND user_id=$2`, source, testUserID)
+	submitOptions := options(handlerToken, "submit_acceptance")
+	submit := input(handlerToken, submitOptions["default_status"].(string), submitOptions)
+	delete(submit, "status")
+	submit["expected_status"], submit["note"], submit["basis"] = submitOptions["default_status"], "The external handler has completed the requested work.", "The requested work and supporting checks are complete."
+	submitted := call(handlerToken, http.MethodPost, path+"/acceptance-submissions", uuid.NewString(), submit).Want(http.StatusOK).Map()
 	complete := input(testToken, "done", options(testToken, "complete"))
-	complete["action"] = "complete"
+	complete["action"], complete["submission_id"] = "complete", submitted["delivery_confirmation"].(map[string]any)["submission_id"]
+	if complete["expected_collaboration_revision"] != submitted["collaboration_revision"] {
+		t.Fatal("completion did not capture the delivered revision")
+	}
 	completeKey := uuid.NewString()
 	completed := call(testToken, http.MethodPost, path+"/lifecycle", completeKey, complete).Want(http.StatusOK).Map()
-	if completed["code"] != "completed" || completed["collaboration_revision"] != "3" {
+	if completed["code"] != "completed" || completed["collaboration_revision"] != "4" {
 		t.Fatalf("departed creator completion: %v", completed)
 	}
 	call(testToken, http.MethodPost, path+"/lifecycle", completeKey, complete).Want(http.StatusOK)
@@ -132,11 +142,15 @@ func TestCollaborationLifecycleRoutesKeepCreatorAuthorityAfterSourceDeparture(t 
 	if fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE session_id=$1 AND state='cancelled'`, session) != 1 {
 		t.Fatal("completion retained waiting command")
 	}
-	replay := call(handlerToken, http.MethodPatch, path, staleKey, staleBody).Want(http.StatusConflict).Map()
-	if replay["code"] != "status_options_changed" || replay["status_options"] != nil {
+	// Delivery moved responsibility to the creator. The former handler keeps
+	// its original content-free receipt without regaining status-write rights.
+	call(handlerToken, http.MethodPatch, path, staleKey, staleBody).Want(http.StatusForbidden)
+	replay := call(handlerToken, http.MethodGet, path+"/operations/"+staleKey, "", nil).Want(http.StatusOK).Map()
+	if replay["code"] != "status_options_changed" || replay["collaboration_revision"] != stale["collaboration_revision"] || replay["status_options"] != nil {
 		t.Fatalf("replay disclosed ineligible status choices: %v", replay)
 	}
-	call(handlerToken, http.MethodPatch, path, uuid.NewString(), input(handlerToken, "todo", oldOptions)).Want(http.StatusConflict)
+	call(handlerToken, http.MethodPatch, path, uuid.NewString(), input(handlerToken, "todo", oldOptions)).Want(http.StatusForbidden)
+	call(testToken, http.MethodPatch, path, uuid.NewString(), input(testToken, "todo", oldOptions)).Want(http.StatusConflict)
 	reopen := input(testToken, "todo", options(testToken, "reopen"))
 	reopen["action"] = "reopen"
 	call(testToken, http.MethodPost, path+"/lifecycle", uuid.NewString(), reopen).Want(http.StatusOK)

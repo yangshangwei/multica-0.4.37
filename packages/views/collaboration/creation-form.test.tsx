@@ -47,6 +47,25 @@ function mount(onCreated = vi.fn(), sourceWorkspaceId?: string, locale: "en" | "
   return { ...renderWithI18n(<QueryClientProvider client={client}><CollaborationCreationPanel scope={scope} sourceWorkspaceId={sourceWorkspaceId} onCreated={onCreated} constrained={constrained} /></QueryClientProvider>, { locale }), onCreated, client };
 }
 
+it("preserves the manual policy choice with the creation draft and sends it explicitly", async () => {
+  const fetch = vi.fn<(url: string, init?: RequestInit) => Promise<Response>>(async (url) => new URL(url).pathname.endsWith("creation-options")
+    ? json({ ...options, source: new URL(url).searchParams.has("source_workspace_id") ? sourceChoice : null })
+    : json({ ...created, ai_policy: "manual" }));
+  vi.stubGlobal("fetch", fetch);
+  const user = userEvent.setup();
+  const initial = mount(vi.fn(), source);
+  expect(await screen.findByLabelText("AI participation")).toHaveValue("assisted");
+  await user.selectOptions(screen.getByLabelText("AI participation"), "manual");
+  await user.type(screen.getByLabelText("Title"), "A manual collaboration");
+  initial.unmount();
+  const current = mount(vi.fn(), source);
+  expect(await screen.findByLabelText("AI participation")).toHaveValue("manual");
+  await user.click(screen.getByRole("button", { name: "Create collaboration issue" }));
+  await waitFor(() => expect(current.onCreated).toHaveBeenCalledWith(expect.objectContaining({ ai_policy: "manual" })));
+  const write = fetch.mock.calls.find(([url]) => new URL(url).pathname === "/api/collaboration/issues");
+  expect(JSON.parse(String(write?.[1]?.body))).toMatchObject({ title: "A manual collaboration", ai_policy: "manual" });
+});
+
 it("locks the source through delayed creation and completes the original form once", async () => {
   let finishCreate!: (response: Response) => void;
   const keys: string[] = [];

@@ -1,5 +1,5 @@
 -- name: GetCollaborationAccess :one
-SELECT sqlc.embed(i), c.revision AS collaboration_revision, c.lifecycle_epoch, c.authority_epoch, s.event_seq,
+SELECT sqlc.embed(i), c.revision AS collaboration_revision, c.lifecycle_epoch, c.authority_epoch, c.ai_policy, s.event_seq,
        s.id AS session_id, s.queue_state, s.control_version,
        participant.epoch AS participant_epoch, account_fence.epoch AS account_epoch,
        (u.disabled_at IS NULL)::boolean AS account_active, u.email AS viewer_email,

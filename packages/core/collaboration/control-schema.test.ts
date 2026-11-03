@@ -41,6 +41,12 @@ describe("captured collaboration control input", () => {
 });
 
 describe("original collaboration control receipt", () => {
+  it("recognizes manual task refusal as an exact409 Resume outcome without termination proof", () => {
+    const manual = { ...receipt, status: 409, code: "task_manual", queue_state: "paused", group_settled: false, targets: [], channels: [], target_holds: [] };
+    expect(parseCollaborationControlReceipt(manual)).toEqual(manual);
+    expect(parseCollaborationControlReceipt({ ...manual, status: 400 })).toBeNull();
+    expect(parseCollaborationControlReceipt({ ...manual, status: 200 })).toBeNull();
+  });
   it("preserves partial Resume All without converting an invalid target into a lane pause", () => {
     expect(parseCollaborationControlReceipt(receipt)).toEqual(receipt);
     const alias = { ...receipt.targets[1]!, ...receipt.channels[0]!, target_id: receipt.targets[1]!.target_id };

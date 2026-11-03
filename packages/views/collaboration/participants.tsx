@@ -1,6 +1,6 @@
 import { useId, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { collaborationKeys, collaborationParticipantsOptions, prepareCollaborationParticipantRemoval,
+import { collaborationKeys, collaborationParticipantsOptions, deriveCollaborationDetailState, prepareCollaborationParticipantRemoval,
   type CollaborationDraft, type CollaborationIssue, type CollaborationScope } from "@multica/core/collaboration";
 import { Button } from "@multica/ui/components/ui/button";
 import { AlertDialog, AlertDialogContent, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction, AlertDialogTrigger } from "@multica/ui/components/ui/alert-dialog";
@@ -16,8 +16,29 @@ export function CollaborationParticipants({ scope, issue, locked, submit }: { sc
   const query = useQuery({ ...collaborationParticipantsOptions(client, scope, issue.id), enabled: open });
   const canRemove = issue.capabilities.remove_participants === true && issue.write_context != null && issue.creator.user_id === scope.userId;
   const current = query.data?.collaboration_revision === issue.collaboration_revision;
-  return <div className="space-y-3">
-    <Button variant="ghost" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]" aria-expanded={open} aria-controls={open ? contentId : undefined} onClick={() => setOpen(!open)}>{t(($) => $.participants.title)}</Button>
+  const state = deriveCollaborationDetailState(issue, scope.userId);
+  const available = new Set([state.primary, ...state.secondary]);
+  const roles = [
+    issue.creator.user_id.toLowerCase() === scope.userId.toLowerCase() && t(($) => $.participants.creator),
+    issue.handler.user_id.toLowerCase() === scope.userId.toLowerCase() && t(($) => $.participants.handler),
+  ].filter(Boolean).join(" · ") || t(($) => $.participants[issue.write_context != null ? "participant" : "reader"]);
+  const permissions = [
+    issue.capabilities.read === true && t(($) => $.participants.view),
+    issue.capabilities.comment === true && t(($) => $.participants.discuss),
+    available.has("edit") && t(($) => $.workflow.edit),
+    available.has("return_information") && t(($) => $.workflow.returnInformation),
+    available.has("submit_acceptance") && t(($) => $.delivery.submit),
+    state.canAccept && t(($) => $.delivery.accept),
+    state.canSelfComplete && t(($) => $.delivery.selfComplete),
+  ].filter(Boolean).join(" · ");
+  return <div className="min-w-0 space-y-3">
+    <div className="flex min-w-0 flex-wrap items-start gap-x-5 gap-y-2">
+      <Button variant="ghost" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]" aria-expanded={open} aria-controls={open ? contentId : undefined} onClick={() => setOpen(!open)}>{t(($) => $.participants.title)}</Button>
+      <dl aria-label={t(($) => $.participants.permissionContext)} className="min-w-0 space-y-1 text-caption [&_dt]:text-muted-foreground [&_dd]:min-w-0 [&_dd]:[overflow-wrap:anywhere]">
+        <div className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-1"><dt>{t(($) => $.participants.yourRole)}</dt><dd>{roles}</dd></div>
+        <div className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-1"><dt>{t(($) => $.participants.permissionContext)}</dt><dd>{permissions}</dd></div>
+      </dl>
+    </div>
     {open && <div id={contentId} className="space-y-3">
       {query.isPending && <p role="status">{t(($) => $.page.loading)}</p>}
       {query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}

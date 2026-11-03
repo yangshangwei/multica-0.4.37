@@ -126,7 +126,9 @@ export function useCollaborationLabels() {
         case "transfer": return t(($) => $.workflow.transfer);
         case "request_information": return t(($) => $.workflow.requestInformation);
         case "return_information": return t(($) => $.workflow.returnInformation);
-        case "submit_acceptance": return t(($) => $.workflow.acceptance);
+        case "submit_acceptance": return t(($) => $.delivery.submit);
+        case "return_acceptance": return t(($) => $.delivery.return);
+        case "change_ai_policy": return t(($) => $.policy.change);
         case "change_status": return t(($) => $.workflow.changeStatus);
         case "complete": return t(($) => $.workflow.complete);
         case "cancel": return t(($) => $.workflow.cancelIssue);

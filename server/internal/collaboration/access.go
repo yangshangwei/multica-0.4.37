@@ -37,6 +37,7 @@ type AccessState struct {
 	InformationRecipient bool
 	StatusCategory       string
 	QueueState           string
+	AIPolicy             string
 }
 
 type Capabilities struct {
@@ -61,6 +62,8 @@ type Capabilities struct {
 	RequestInformation  bool `json:"request_information"`
 	ReturnInformation   bool `json:"return_information"`
 	SubmitAcceptance    bool `json:"submit_acceptance"`
+	ReturnAcceptance    bool `json:"return_acceptance"`
+	ChangeAIPolicy      bool `json:"change_ai_policy"`
 }
 
 func NonterminalCategory(category string) bool {
@@ -92,7 +95,7 @@ func CapabilitiesFor(p Principal, s AccessState) Capabilities {
 	}
 	c.ControlAI = true // Stop remains allowed while a closed issue has an unsettled run.
 	open := NonterminalCategory(s.StatusCategory) && (s.QueueState == "paused" || s.QueueState == "active")
-	c.SubmitCommand = open
+	c.SubmitCommand = open && s.AIPolicy != "manual"
 	manager := s.Creator || s.Handler
 	c.Invite, c.Transfer, c.Edit = manager, manager, manager
 	c.EditSourceStructure = manager && s.SourceMember
@@ -104,6 +107,8 @@ func CapabilitiesFor(p Principal, s AccessState) Capabilities {
 	// that request; acceptance hands a noncreator handler's result to the creator.
 	c.ReturnInformation = s.Handler && s.InformationRecipient && open
 	c.SubmitAcceptance = s.Handler && !s.Creator && open
+	c.ReturnAcceptance = s.Creator && open
+	c.ChangeAIPolicy = s.Creator
 	c.Complete, c.Cancel = s.Creator && open, s.Creator && open
 	c.Reopen = s.Creator && TerminalCategory(s.StatusCategory) && s.QueueState == "closed"
 	return c

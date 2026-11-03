@@ -1,5 +1,5 @@
 import { afterEach, expect, it, vi } from "vitest";
-import { act, screen, within } from "@testing-library/react";
+import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "@multica/core/api";
@@ -18,6 +18,67 @@ afterEach(() => { client.clear(); localStorage.clear(); vi.unstubAllGlobals(); }
 const issue = parseCollaborationIssue({ id, title: "Issue", description: "Body", status: "todo", status_category: "todo", priority: "none", source_workspace: { id, name: "Source", identifier: "SRC" }, creator: account, handler: account,
   collaboration_revision: "1", lifecycle_epoch: "1", write_context: { participant_epoch: "2", account_epoch: "3" }, session: { id, queue_state: "paused", control_version: "1" },
   capabilities: { reference: true, read: true, comment: true, control_ai: false, submit_command: false, invite: false, transfer: false, remove_participants: false, leave: false, edit: false, edit_source_structure: false, reorder: false, change_status: false, complete: false, cancel: false, reopen: false, resolve_thread: false, react: false } })!;
+
+// Pure input and authority matrices belong to Core. These regressions prove
+// the Publish button still uses the validated preflight before any write.
+it("publishes an ordinary comment with one action after the validated preflight", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const scope = collaborationScope(id);
+  const fetch = vi.fn<(url: string, init?: RequestInit) => Promise<Response>>().mockImplementation(async (url: string) => new Response(JSON.stringify(new URL(url).pathname.endsWith("mention-targets")
+    ? { protocol_version: 2, issue_id: id, participants: [], can_submit_commands: false, targets: [] }
+    : url.endsWith("trigger-preview")
+      ? { protocol_version: 2, issue_id: id, lifecycle_epoch: "1", write_context: { participant_epoch: "2", account_epoch: "3" }, recipients: [], targets: [] }
+      : { protocol_version: 2, issue_id: id, status: 201, code: "comment_created", comment_id: eventId, comment_revision: "1", event_id: eventId, event_seq: "1", targets: [] })));
+  vi.stubGlobal("fetch", fetch);
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentComposer scope={scope} issue={issue} /></QueryClientProvider>);
+  await userEvent.type(screen.getByLabelText("Add comment"), "A human progress update");
+  await userEvent.click(screen.getByRole("button", { name: "Send comment" }));
+  expect(await screen.findByText("Comment confirmed.")).toBeInTheDocument();
+  const writes = fetch.mock.calls.filter(([url]) => String(url).endsWith("/comments"));
+  expect(writes).toHaveLength(1);
+  expect(fetch.mock.calls.findIndex(([url]) => String(url).endsWith("trigger-preview"))).toBeLessThan(fetch.mock.calls.findIndex(([url]) => String(url).endsWith("/comments")));
+  expect(JSON.parse(String(writes[0]![1]?.body))).toMatchObject({ content: "A human progress update", parent_id: null, target_versions: [], suppressed_target_ids: [] });
+});
+
+it("shows AI impact and requires a second explicit action before publishing targeted input", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const scope = collaborationScope(id);
+  const candidate = { target_id: target, kind: "agent", resource_id: agent, name: "Authorized agent", target_epoch: "1", config_version: "1", hold_reason: null, hold_version: "1" };
+  const fetch = vi.fn<(url: string, init?: RequestInit) => Promise<Response>>().mockImplementation(async (url: string) => new Response(JSON.stringify(new URL(url).pathname.endsWith("mention-targets")
+    ? { protocol_version: 2, issue_id: id, participants: [], can_submit_commands: true, targets: [{ ...candidate, queue_state: "active", waiting_reason: "waiting", execution_available: false }] }
+    : url.endsWith("trigger-preview")
+      ? { protocol_version: 2, issue_id: id, lifecycle_epoch: "1", write_context: { participant_epoch: "2", account_epoch: "3" }, recipients: [], targets: [{ ...candidate, state: "waiting", code: "command_waiting", command_id: null }] }
+      : { protocol_version: 2, issue_id: id, status: 201, code: "comment_created", comment_id: eventId, comment_revision: "1", event_id: eventId, event_seq: "1", targets: [{ ...candidate, state: "waiting", code: "command_waiting", command_id: eventId, command_sequence: "1" }] })));
+  vi.stubGlobal("fetch", fetch);
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentComposer scope={scope} issue={issue} /></QueryClientProvider>);
+  await userEvent.click(await screen.findByRole("button", { name: "Authorized agent" }));
+  await userEvent.click(screen.getByRole("button", { name: "Send comment" }));
+  expect(await screen.findByRole("checkbox", { name: /Authorized agent/ })).toBeInTheDocument();
+  expect(fetch.mock.calls.filter(([url]) => String(url).endsWith("/comments"))).toHaveLength(0);
+  await userEvent.click(screen.getByRole("button", { name: "Send comment" }));
+  expect(await screen.findByText("Comment confirmed.")).toBeInTheDocument();
+  expect(fetch.mock.calls.filter(([url]) => String(url).endsWith("/comments"))).toHaveLength(1);
+});
+
+it("keeps changed shared input when a one-action preflight resolves after the draft changes", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const scope = collaborationScope(id);
+  let finish!: (response: Response) => void;
+  const fetch = vi.fn<(url: string, init?: RequestInit) => Promise<Response>>().mockImplementation((url: string) => new URL(url).pathname.endsWith("mention-targets")
+    ? Promise.resolve(new Response(JSON.stringify({ protocol_version: 2, issue_id: id, participants: [], can_submit_commands: false, targets: [] })))
+    : new Promise<Response>((resolve) => { finish = resolve; }));
+  vi.stubGlobal("fetch", fetch);
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentComposer scope={scope} issue={issue} /></QueryClientProvider>);
+  await userEvent.type(screen.getByLabelText("Add comment"), "Original progress");
+  await userEvent.click(screen.getByRole("button", { name: "Send comment" }));
+  await waitFor(() => expect(fetch.mock.calls.some(([url]) => String(url).endsWith("trigger-preview"))).toBe(true));
+  const form = readCollaborationDeliveryRecords(scope).find((record) => record.kind === "form" && record.purpose === "comment");
+  if (!form || form.kind !== "form") throw new Error("Missing comment form");
+  act(() => saveCollaborationDeliveryRecord({ ...form, content: "New progress from another form" }));
+  await act(async () => finish(new Response(JSON.stringify({ protocol_version: 2, issue_id: id, lifecycle_epoch: "1", write_context: { participant_epoch: "2", account_epoch: "3" }, recipients: [], targets: [] }))));
+  expect(screen.getByLabelText("Add comment")).toHaveValue("New progress from another form");
+  expect(fetch.mock.calls.filter(([url]) => String(url).endsWith("/comments"))).toHaveLength(0);
+});
 
 it("invalidates grouping when another form updates the shared draft", async () => {
   setApiInstance(new ApiClient("https://server.example"));
@@ -43,7 +104,7 @@ it("invalidates grouping when another form updates the shared draft", async () =
   act(() => saveCollaborationDeliveryRecord({ ...form, content: changed }));
   expect(screen.getByLabelText("Add comment")).toHaveValue(changed);
   expect(screen.queryByRole("region", { name: "AI grouping preview" })).not.toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "Send comment" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Send comment" })).toBeEnabled();
   await user.click(screen.getByRole("button", { name: "Preview delivery" }));
   expect(await screen.findByRole("region", { name: "AI grouping preview" })).toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Send comment" })).toBeEnabled();
@@ -53,7 +114,7 @@ it("invalidates grouping when another form updates the shared draft", async () =
   });
   expect(screen.getByLabelText("Add comment")).toHaveValue(changed);
   expect(screen.queryByRole("region", { name: "AI grouping preview" })).not.toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "Send comment" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Send comment" })).toBeEnabled();
   expect(fetch.mock.calls.filter(([url]) => String(url).endsWith("/comments"))).toHaveLength(0);
 });
 
@@ -96,7 +157,7 @@ it("shows merged and later pending batches, then requires a fresh preview after 
   expect(screen.queryByText("Joined the current squad; waiting to be read.")).not.toBeInTheDocument();
   await user.click(screen.getByRole("checkbox", { name: /Build squad/ }));
   expect(screen.queryByRole("region", { name: "AI grouping preview" })).not.toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "Send comment" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Send comment" })).toBeEnabled();
   expect(screen.getByLabelText("Add comment")).toHaveValue(original);
   await user.click(screen.getByRole("button", { name: "Preview delivery" }));
   const updated = within(await screen.findByRole("region", { name: "AI grouping preview" }));
@@ -106,7 +167,7 @@ it("shows merged and later pending batches, then requires a fresh preview after 
   expect(updated.queryByText("Follows an earlier batch in the same agent's queue.")).not.toBeInTheDocument();
   await user.type(screen.getByLabelText("Add comment"), " More detail");
   expect(screen.queryByRole("region", { name: "AI grouping preview" })).not.toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "Send comment" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Send comment" })).toBeEnabled();
   expect(fetch.mock.calls.filter(([url]) => String(url).endsWith("/comments"))).toHaveLength(0);
 });
 
@@ -166,13 +227,13 @@ it("groups people and AI, inserts @all without losing explicit targets, and send
   await user.click(people.getByRole("button", { name: "@all · All participants" }));
   const content = `${explicit} [@all](mention://all/all)`;
   expect(screen.getByLabelText("Add comment")).toHaveValue(content);
-  expect(screen.getByRole("button", { name: "Send comment" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Send comment" })).toBeEnabled();
   expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
   await user.click(screen.getByRole("button", { name: "Preview delivery" }));
   expect(await screen.findByText("1 notification recipients")).toBeVisible();
   expect(fetch.mock.calls.filter(([url]) => String(url).endsWith("/comments"))).toHaveLength(0);
   await user.click(screen.getByRole("checkbox", { name: /Authorized agent/ }));
-  expect(screen.getByRole("button", { name: "Send comment" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Send comment" })).toBeEnabled();
   expect(screen.getByLabelText("Add comment")).toHaveValue(content);
   await user.click(screen.getByRole("button", { name: "Preview delivery" }));
   await user.click(screen.getByRole("button", { name: "Send comment" }));
