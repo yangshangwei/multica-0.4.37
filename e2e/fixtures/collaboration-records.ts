@@ -135,14 +135,18 @@ export function recordedAccountPath(fixture: CollaborationRecordFixture, withRun
 
 export async function detachRecordedChild(page: Page) {
   await page.getByRole("button", { name: "Issue actions", exact: true }).click();
-  await page.getByRole("menuitem", { name: "Relations", exact: true }).click();
-  await page.getByRole("menuitem", { name: "Remove parent issue", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Relations", exact: true }).hover();
+  const removeParent = page.getByRole("menuitem", { name: "Remove parent issue", exact: true });
+  await expect(removeParent).toBeVisible();
+  await removeParent.click();
 }
 
 export async function attachRecordedChild(page: Page, fixture: CollaborationRecordFixture) {
   await page.getByRole("button", { name: "Issue actions", exact: true }).click();
-  await page.getByRole("menuitem", { name: "Relations", exact: true }).click();
-  await page.getByRole("menuitem", { name: "Set parent issue...", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Relations", exact: true }).hover();
+  const setParent = page.getByRole("menuitem", { name: "Set parent issue...", exact: true });
+  await expect(setParent).toBeVisible();
+  await setParent.click();
   const dialog = page.getByRole("dialog", { name: "Set parent issue", exact: true });
   await dialog.getByPlaceholder("Search issues...").fill(fixture.issue.title);
   await dialog.getByRole("option", { name: new RegExp(fixture.issue.title) }).click();
