@@ -17,7 +17,7 @@ export interface CollaborationEditingFixture {
   labels: [Reference, Reference];
   property: Reference;
   project: { id: string; title: string };
-  parent: { id: string; title: string };
+  parent: { id: string; identifier: string; title: string };
   ordinary: { id: string; title: string };
   iterations: [IterationReference, IterationReference];
 }
@@ -110,8 +110,11 @@ export async function createCollaborationWithInitialFields(page: Page, fixture: 
   await toggleLabel(page, dialog, fixture.labels[0].name);
   await setTextProperty(page, dialog, fixture.property.name, "Initial delivery context");
   await dialog.getByLabel("Project", { exact: true }).selectOption(fixture.project.id);
-  await dialog.getByLabel("Parent issue", { exact: true }).selectOption(fixture.parent.id);
-  await dialog.getByLabel("Stage under parent", { exact: true }).fill("2");
+  await dialog.getByRole("button", { name: "Parent issue", exact: true }).click();
+  const parentOption = page.getByRole("button", { name: `${fixture.parent.identifier} ${fixture.parent.title}`, exact: true });
+  await expect(parentOption).toBeVisible();
+  await parentOption.click();
+  await dialog.getByLabel("Subtask stage number (optional)", { exact: true }).fill("2");
   await dialog.getByLabel("Iteration", { exact: true }).selectOption(fixture.iterations[0].id);
   const created = page.waitForResponse((response) => new URL(response.url()).pathname === "/api/collaboration/issues" && response.request().method() === "POST");
   await dialog.getByRole("button", { name: "Create collaboration issue", exact: true }).click();
@@ -144,7 +147,7 @@ export async function exerciseCollaborationFields(page: Page, fixture: Collabora
 
   await page.getByRole("button", { name: "Edit source fields", exact: true }).click();
   form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Edit source fields", exact: true }) });
-  await form.getByLabel("Stage under parent", { exact: true }).fill("3");
+  await form.getByLabel("Subtask stage number (optional)", { exact: true }).fill("3");
   await form.getByRole("button", { name: "Confirm", exact: true }).click();
   await expect(form).toHaveCount(0);
   expect(await fixture.source.requestJSON(`/api/collaboration/issues/${issueId}`)).toMatchObject({ source_structure: { stage: 3 } });

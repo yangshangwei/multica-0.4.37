@@ -15,12 +15,12 @@ const options: CollaborationSourceOptions = { projects: [], parents: [parent, ot
 // exercises the actual shared picker primitives and their observable behavior.
 function Harness({ pending = false, error, onRetry = vi.fn(), onChange = vi.fn(), onSubmit = vi.fn(), sourceOptions = options }: {
   pending?: boolean; error?: unknown; onRetry?: () => void; onChange?: (value: CollaborationSourceSelection) => void;
-  onSubmit?: () => void; sourceOptions?: CollaborationSourceOptions;
+  onSubmit?: (value: CollaborationSourceSelection) => void; sourceOptions?: CollaborationSourceOptions;
 }) {
   const [search, setSearch] = useState("");
   const [selection, setSelection] = useState<CollaborationSourceSelection>({ projectId: null, parentIssueId: null, stage: null });
   const displayed = { ...sourceOptions, parents: sourceOptions.parents.filter((item) => `${item.identifier} ${item.name}`.toLowerCase().includes(search.toLowerCase())) };
-  return <form onSubmit={(event) => { event.preventDefault(); onSubmit(); }}>
+  return <form onSubmit={(event) => { event.preventDefault(); onSubmit(selection); }}>
     <label>Draft title<input defaultValue="Keep this title" /></label>
     <CollaborationSourceInputs options={displayed} value={selection} onChange={(value) => { setSelection(value); onChange(value); }}
       parentSearch={search} onParentSearch={setSearch} parentsPending={pending} parentsError={error} onRetryParents={onRetry} disabled={false} />
@@ -62,6 +62,28 @@ it("shows search results inline, restores browsing on reopen, and can clear the 
   await user.click(screen.getByRole("button", { name: "No parent issue" }));
   expect(onChange).toHaveBeenLastCalledWith({ projectId: null, parentIssueId: null, stage: null });
   expect(trigger).toHaveTextContent("Choose a parent issue (optional)");
+});
+
+it("shows an optional stage only for a parent and clears it when the parent is removed", async () => {
+  const user = userEvent.setup();
+  const onSubmit = vi.fn();
+  renderWithI18n(<Harness onSubmit={onSubmit} />);
+  expect(screen.queryByRole("spinbutton")).not.toBeInTheDocument();
+  const trigger = screen.getByRole("button", { name: "Parent issue" });
+  await user.click(trigger);
+  await user.click(await screen.findByRole("button", { name: "SRC-12 Prepare the release" }));
+  const stage = screen.getByRole("spinbutton", { name: "Subtask stage number (optional)" });
+  expect(stage).not.toBeRequired();
+  expect(stage).toHaveValue(null);
+  expect(stage).toHaveAccessibleDescription(/Leave blank if no batches are needed/);
+  await user.click(screen.getByRole("button", { name: "Submit" }));
+  expect(onSubmit).toHaveBeenLastCalledWith({ projectId: null, parentIssueId: parent.id, stage: null });
+  await user.type(stage, "2");
+  await user.click(trigger);
+  await user.click(await screen.findByRole("button", { name: "No parent issue" }));
+  expect(screen.queryByRole("spinbutton")).not.toBeInTheDocument();
+  await user.click(screen.getByRole("button", { name: "Submit" }));
+  expect(onSubmit).toHaveBeenLastCalledWith({ projectId: null, parentIssueId: null, stage: null });
 });
 
 it("keeps pending or failed search rows unselectable and retries without losing other input", async () => {
@@ -124,10 +146,15 @@ it("uses arrow/Enter selection, keeps composing Enter untouched, and dismisses o
   expect(onDialogChange).not.toHaveBeenCalledWith(false, expect.anything());
 });
 
-it("explains the optional parent relationship in Chinese", () => {
+it("explains the optional parent relationship and stage in Chinese", async () => {
+  const user = userEvent.setup();
   renderWithI18n(<Harness />, { locale: "zh-Hans" });
-  expect(screen.getByRole("button", { name: "父任务" })).toHaveTextContent("选择父任务（可选）");
+  const trigger = screen.getByRole("button", { name: "父任务" });
+  expect(trigger).toHaveTextContent("选择父任务（可选）");
   expect(screen.getByText("可选。选择后，这项协作任务会成为它的子任务。")).toBeVisible();
+  await user.click(trigger);
+  await user.click(await screen.findByRole("button", { name: "SRC-12 Prepare the release" }));
+  expect(screen.getByRole("spinbutton", { name: "子任务阶段编号（可选）" })).toHaveAccessibleDescription(/没有分批计划可留空/);
 });
 
 it("keeps the restored selected name when filtered out and tolerates an older response without an identifier", () => {

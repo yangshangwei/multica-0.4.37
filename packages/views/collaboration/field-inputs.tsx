@@ -108,7 +108,7 @@ export function CollaborationSourceInputs({ options, value, onChange, current, p
     : t(($) => $.fields.chooseParent);
   const chooseParent = (parent: CollaborationSourceOptions["parents"][number] | null) => {
     setChosenParent(parent);
-    onChange({ ...value, parentIssueId: parent?.id ?? null });
+    onChange({ ...value, parentIssueId: parent?.id ?? null, stage: parent ? value.stage : null });
     setParentOpen(false);
   };
   const parentsReady = !parentsPending && !parentsError;
@@ -142,9 +142,10 @@ export function CollaborationSourceInputs({ options, value, onChange, current, p
       </PropertyPicker>
       <p className="text-caption text-muted-foreground">{t(($) => $.fields.parentHint)}</p>
     </div>
-    <div className="space-y-2"><label htmlFor={`${id}-stage`} className="text-body">{t(($) => $.fields.stage)}</label>
-      <Input id={`${id}-stage`} className="pointer-coarse:min-h-11" type="number" min={1} max={2147483647} step={1} value={value.stage ?? ""} onChange={(event) => onChange({ ...value, stage: event.target.value === "" ? null : event.target.valueAsNumber })} />
-    </div>
+    {value.parentIssueId && <div className="space-y-2"><label htmlFor={`${id}-stage`} className="text-body">{t(($) => $.fields.stageInputLabel)}</label>
+      <Input id={`${id}-stage`} aria-describedby={`${id}-stage-hint`} className="pointer-coarse:min-h-11" type="number" min={1} max={2147483647} step={1} value={value.stage ?? ""} onChange={(event) => onChange({ ...value, stage: event.target.value === "" ? null : event.target.valueAsNumber })} />
+      <p id={`${id}-stage-hint`} className="text-caption text-muted-foreground">{t(($) => $.fields.stageHint)}</p>
+    </div>}
   </fieldset>;
 }
 

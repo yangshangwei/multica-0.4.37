@@ -78,7 +78,7 @@ it("submits source structure and iteration through their separate versioned acti
   await user.selectOptions(await screen.findByLabelText("Project", { exact: true }), projectId);
   await user.click(screen.getByRole("button", { name: "Parent issue" }));
   await user.click(await screen.findByRole("button", { name: "SRC-2 Source parent" }));
-  fireEvent.change(screen.getByLabelText("Stage under parent"), { target: { value: "2" } });
+  fireEvent.change(screen.getByLabelText("Subtask stage number (optional)"), { target: { value: "2" } });
   await user.click(screen.getByRole("button", { name: "Confirm" }));
   await screen.findByText("Action confirmed.");
   expect(JSON.parse(String(fetch.mock.calls.find(([, init]) => init?.method === "PATCH")?.[1]?.body))).toMatchObject({ project_id: projectId, parent_issue_id: parentId, stage: 2 });
