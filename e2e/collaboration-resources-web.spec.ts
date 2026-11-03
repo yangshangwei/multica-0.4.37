@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { authenticateCollaborationResourcesPage, seedCollaborationResourceJourney, type CollaborationResourceSnapshot } from "./fixtures/collaboration-resources";
+import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
 
 test.use({ actionTimeout: 15_000, screenshot: "only-on-failure", trace: "retain-on-failure" });
 
@@ -16,6 +17,7 @@ test("resource owners register, authorize, withdraw and switch while participant
   const path = `/account?view=participating&issue=${fixture.issueId}`;
   await page.goto(path);
   await expect(page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
+  await revealCollaborationDisclosure(page, "AI execution");
   await page.getByRole("button", { name: "Manage AI resources", exact: true }).click();
   await page.getByRole("button", { name: "Add AI target", exact: true }).click();
   await page.getByLabel("Resource workspace", { exact: true }).selectOption(fixture.workspace.id);
@@ -77,6 +79,7 @@ test("resource owners register, authorize, withdraw and switch while participant
     await authenticateCollaborationResourcesPage(peerPage, fixture.peer);
     await peerPage.goto(new URL(path, page.url()).href);
     await expect(peerPage.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
+    await revealCollaborationDisclosure(peerPage, "AI execution");
     await peerPage.getByRole("button", { name: "Manage AI resources", exact: true }).click();
     await expect(peerPage.getByRole("heading", { name: fixture.agentName, exact: true })).toBeVisible();
     await expect(peerPage.getByRole("button", { name: "Add AI target", exact: true })).toHaveCount(0);

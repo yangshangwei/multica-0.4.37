@@ -4,6 +4,7 @@ import { test, expect, type Page } from "@playwright/test";
 import pg from "pg";
 import { TestApiClient } from "./fixtures";
 import { selectCollaborationRecipient } from "./fixtures/collaboration-offline-handoff";
+import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
 
 const apiUrl = process.env.COLLABORATION_E2E_API_URL;
 type Snapshot = { id: string; collaboration_revision: string; lifecycle_epoch: string; write_context: { participant_epoch: string; account_epoch: string } };
@@ -144,6 +145,7 @@ test("Web creates one private issue after lost upload/create responses and revok
     const commentReceipt = await posted.json();
     expect(commentReceipt.attachment_ids).toHaveLength(1);
     const imageId = commentReceipt.attachment_ids[0];
+    await revealCollaborationDisclosure(recipientPage, "Attachments");
     const recipientAttachments = recipientPage.getByRole("region", { name: "Attachments", exact: true });
     await expect(recipientAttachments.getByRole("button", { name: "Preview comment-preview.png", exact: true })).toBeVisible();
 

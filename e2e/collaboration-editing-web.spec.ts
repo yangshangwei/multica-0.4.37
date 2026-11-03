@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { test, expect } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
 import { authenticateCollaborationEditor, createCollaborationWithInitialFields, exerciseCollaborationDiscussion,
-  exerciseCollaborationFields, seedCollaborationEditing } from "./fixtures/collaboration-editing";
+  exerciseCollaborationFields, revealCollaborationEditingAction, seedCollaborationEditing } from "./fixtures/collaboration-editing";
 
 const apiUrl = process.env.COLLABORATION_E2E_API_URL;
 
@@ -25,9 +25,12 @@ test("Web source creation, field edits and discussion share one authorized issue
 
   // A normal source detail URL must resolve the same object using collaboration
   // authority and controls, including a linked child in the source workspace.
+  const sourceIssue = await fixture.source.requestJSON<{ id: string; identifier: string }>(`/api/issues/${issue.id}`);
+  expect(sourceIssue.id).toBe(issue.id);
   await page.goto(`/${fixture.workspace.slug}/issues/${issue.id}`);
+  await expect(page).toHaveURL((url) => url.pathname === `/${fixture.workspace.slug}/issues/${sourceIssue.identifier}`);
   await expect(page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Edit source fields", exact: true })).toBeVisible();
+  await revealCollaborationEditingAction(page, "Edit source fields");
   await page.screenshot({ path: testInfo.outputPath("web-source-collaboration.png"), animations: "disabled" });
   await page.goto(`/${fixture.workspace.slug}/issues`);
   await expect(page.getByText(fixture.ordinary.title, { exact: true }).first()).toBeVisible();
@@ -52,13 +55,14 @@ test("Web source creation, field edits and discussion share one authorized issue
     await authenticateCollaborationEditor(recipientPage, fixture.recipient.getToken()!);
     await recipientPage.goto(`/account?view=current&issue=${issue.id}`);
     await expect(recipientPage.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
-    await expect(recipientPage.getByRole("button", { name: "Edit source fields", exact: true })).toHaveCount(0);
-    await expect(recipientPage.getByRole("button", { name: "Change iteration", exact: true })).toHaveCount(0);
+    const recipientEdit = await revealCollaborationEditingAction(recipientPage, "Edit issue");
+    await expect(recipientPage.getByRole("button", { name: "Edit source fields", exact: true, includeHidden: true })).toHaveCount(0);
+    await expect(recipientPage.getByRole("button", { name: "Change iteration", exact: true, includeHidden: true })).toHaveCount(0);
     await expect(recipientPage.locator(`[id="comment-${discussion.replyId}"]`).getByRole("button", { name: "Edit comment", exact: true })).toHaveCount(0);
     const options = await fixture.recipient.requestJSON<{ source_options?: unknown }>(`/api/collaboration/issues/${issue.id}/field-options`);
     expect(options.source_options).toBeUndefined();
 
-    await recipientPage.getByRole("button", { name: "Edit issue", exact: true }).click();
+    await recipientEdit.click();
     const form = recipientPage.locator("form").filter({ has: recipientPage.getByRole("heading", { name: "Edit issue", exact: true }) });
     await form.getByLabel("Priority", { exact: true }).selectOption("medium");
     await form.getByRole("button", { name: "Confirm", exact: true }).click();
@@ -67,7 +71,7 @@ test("Web source creation, field edits and discussion share one authorized issue
     expect(catalogRequests).toEqual([]);
 
     await recipientPage.setViewportSize({ width: 640, height: 900 });
-    await recipientPage.getByRole("button", { name: "Edit issue", exact: true }).click();
+    await (await revealCollaborationEditingAction(recipientPage, "Edit issue")).click();
     await expect(recipientPage.getByLabel("Description", { exact: true })).toBeVisible();
     expect(await recipientPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
     await recipientPage.screenshot({ path: testInfo.outputPath("web-external-editing-narrow.png"), animations: "disabled", fullPage: false });

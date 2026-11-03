@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { authenticateCollaborationEditor } from "./fixtures/collaboration-editing";
+import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
 import { attachRecordedChild, detachRecordedChild, exerciseRecordedPages, recordedAccountPath,
   removeRecordViewer, seedCollaborationRecordJourney, showRecordedUsage } from "./fixtures/collaboration-records";
 
@@ -18,6 +19,7 @@ test("Web shares ordinary child references and retained run records through acco
   await authenticateCollaborationEditor(page, fixture.member.getToken()!);
   await page.goto(`/${fixture.workspace.slug}/issues/${fixture.issue.id}`);
   await expect(page.getByRole("heading", { name: fixture.issue.title, exact: true })).toBeVisible();
+  await revealCollaborationDisclosure(page, "Sub-issues");
   const children = page.getByRole("region", { name: "Sub-issues", exact: true });
   const childLink = children.getByRole("link", { name: `${fixture.child.identifier} ${fixture.child.title}`, exact: true });
   await expect(childLink).toHaveAttribute("href", `/${fixture.workspace.slug}/issues/${fixture.child.id}`);
@@ -43,6 +45,7 @@ test("Web shares ordinary child references and retained run records through acco
   await expect(page).toHaveURL(new RegExp(`#run-${fixture.runId}$`));
   await expect(sourceRun.getByText(fixture.input, { exact: true })).toBeVisible();
   await page.goto(`/${fixture.workspace.slug}/issues/${fixture.issue.id}`);
+  await revealCollaborationDisclosure(page, "Sub-issues");
   await expect(childLink).toBeVisible();
 
   const outsideContext = await browser.newContext();
@@ -60,6 +63,7 @@ test("Web shares ordinary child references and retained run records through acco
     }));
     await authenticateCollaborationEditor(outside, fixture.viewer.getToken()!);
     await outside.goto(sharedLink);
+    await revealCollaborationDisclosure(outside, "Sub-issues");
     const outsideChildren = outside.getByRole("region", { name: "Sub-issues", exact: true });
     await expect(outsideChildren.getByText(fixture.child.title, { exact: true })).toBeVisible();
     await expect(outsideChildren.getByRole("link")).toHaveCount(0);
@@ -79,6 +83,7 @@ test("Web shares ordinary child references and retained run records through acco
     expect(await fixture.source.requestJSON(`/api/collaboration/issues/${fixture.issue.id}`)).toMatchObject({ collaboration_revision: before.collaboration_revision });
 
     await outside.reload();
+    await revealCollaborationDisclosure(outside, "Sub-issues");
     await expect(outsideChildren.getByText(fixture.child.title, { exact: true })).toBeVisible();
     await outside.getByRole("button", { name: /Notifications/ }).click();
     const notification = outside.getByRole("listitem").filter({ has: outside.getByText("AI execution failed", { exact: true }) });

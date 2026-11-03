@@ -3,6 +3,7 @@ import pg from "pg";
 import { expect, type Locator, type Page } from "@playwright/test";
 import { TestApiClient } from "../fixtures";
 import type { CollaborationResourceSnapshot } from "./collaboration-resources";
+import { revealCollaborationDisclosure } from "./collaboration-disclosures";
 
 interface OfferIssue extends CollaborationResourceSnapshot {
   session: { queue_state: string; control_version: string };
@@ -213,6 +214,7 @@ export async function exerciseCollaborationResourceOffers(ownerPage: Page, organ
     });
     await adapter.navigate(page, resourceOfferAccountPath(fixture));
     await expect(page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
+    await revealCollaborationDisclosure(page, "AI execution");
     await page.getByRole("button", { name: "Manage AI resources", exact: true }).click();
     await expect(page.getByText("No resources have been offered.", { exact: true })).toBeVisible();
   }
