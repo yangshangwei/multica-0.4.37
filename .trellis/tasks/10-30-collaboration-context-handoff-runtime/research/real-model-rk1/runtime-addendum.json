@@ -4,12 +4,11 @@
   "decided_at": "2026-11-01T04:26:26Z",
   "decision_source": "User answers in session multica-0-4-37-87 on 2026-11-01: fix product gaps 2 and 3 before testing and narrow H1; allocate the full 19-launch runtime set",
   "research": "../real-model-runtime-framework-research.md (7a90f3d78)",
-  "status": "runtime_budget_approved_25_consumed_0; shared_v16_accepted; current_runtime_race_incomplete; awaiting_coordinated_window",
+  "status": "runtime_budget_approved25_consumed0; deterministic_current_normal_race_and_password7_passed; final_registration_and_model_window_pending",
   "not_runnable_reasons": [
-    "current-source runtime race failed with a retained incomplete recording; normal passed; cause unresolved and the race overlapped a shared browser run",
-    "shared V16 complete check accepted and runtime password3 passed; full password7 repeat belongs to the existing closure-task owner",
-    "final paid source/CLI/operator/artifact binding remains unregistered; runtime25 approved/consumed0",
-    "exclusive window reserved for closure password7 then original14; wait for explicit release before runtime heavy tests or paid execution"
+    "current-source deterministic normal02/race03 and fullpassword7 accepted; reviewed committed execution binding including regenerated CLI artifact remains pending",
+    "operator configuration plugin-tree fingerprint is changing; prepared binding is not live-stable and exact launcher admission recheck remains required",
+    "exclusive model window is not confirmed and native task-message gateway is returning502; runtime25 approved/unused; original8 stopped independently"
   ],
   "runtime_call_cap": 25,
   "runtime_consumed": 0,
@@ -101,7 +100,7 @@
       "correction": "From 96cedf485 until ac2a24f8f the smoke authorizer rejected knowledge_version=1 on the claim with HTTP 403, so the smoke could not pass at those HEADs and proved nothing there; the registered claim that the query is accepted holds only from ac2a24f8f. Confirmed independently by session multica-0-4-37-0b."
     }
   ],
-  "updated_at": "2026-11-04T15:54:34.567289+00:00",
+  "updated_at": "2026-11-04T16:59:10.758678+00:00",
   "decisions": [
     {
       "at": "2026-11-01T10:33:57Z",
@@ -184,5 +183,24 @@
     "runtime_cap": 25,
     "runtime_consumed": 0,
     "runnable": false
-  }
+  },
+  "current_acceptance_20261105": {
+    "at": "2026-11-04T16:59:10.758678+00:00",
+    "source_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "deterministic_review": "../continuation-20261105/independent-review/current-deterministic-acceptance.json",
+    "normal": {
+      "pass": 62,
+      "independent_checks": 912
+    },
+    "race03": {
+      "pass": 62,
+      "independent_checks": 915
+    },
+    "password7_passed": true,
+    "old_failure_fixed": false,
+    "real_calls": 0,
+    "runtime_cap": 25
+  },
+  "operator_binding_status": "PREPARED_NOT_STABLE"
 }

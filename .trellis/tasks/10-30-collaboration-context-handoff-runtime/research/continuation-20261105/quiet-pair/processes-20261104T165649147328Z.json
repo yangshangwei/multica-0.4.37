@@ -1,0 +1,25 @@
+{
+  "at": "2026-11-04T16:56:49.147328+00:00",
+  "processes": [
+    {
+      "pid": 65373,
+      "ppid": 58364,
+      "elapsed": "02:19",
+      "executable": "node"
+    },
+    {
+      "pid": 64729,
+      "ppid": 58625,
+      "elapsed": "03:15",
+      "executable": "node"
+    },
+    {
+      "pid": 67174,
+      "ppid": 65762,
+      "elapsed": "00:21",
+      "executable": "node"
+    }
+  ],
+  "scope": "Executable names and process ancestry only; no argv or credentials.",
+  "limitation": "A snapshot cannot prove no process appeared between observations; coordinator release remains required."
+}

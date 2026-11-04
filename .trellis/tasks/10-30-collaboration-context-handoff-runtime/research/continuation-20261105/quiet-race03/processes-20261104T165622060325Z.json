@@ -1,0 +1,43 @@
+{
+  "at": "2026-11-04T16:56:22.060325+00:00",
+  "processes": [
+    {
+      "pid": 64921,
+      "ppid": 64863,
+      "elapsed": "02:43",
+      "executable": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go"
+    },
+    {
+      "pid": 64950,
+      "ppid": 64921,
+      "elapsed": "02:35",
+      "executable": "/private/tmp/multica-rk1-race-095xk2gu/go-build3131197998/b001/server.test"
+    },
+    {
+      "pid": 67081,
+      "ppid": 67080,
+      "elapsed": "00:01",
+      "executable": "/private/tmp/multica-rk1-race-095xk2gu/TestRK1EvidenceFaultProofstdout_closeRK1-E0a-t11150141320/001/host-work/545c19022762fb5f3a77479731652b70c79342dae0af6e89d952c9d16a075a41/runs/c8a8dccf-abb0-4952-ab50-f48dd51a5add/bin/multica"
+    },
+    {
+      "pid": 65373,
+      "ppid": 58364,
+      "elapsed": "01:52",
+      "executable": "node"
+    },
+    {
+      "pid": 64729,
+      "ppid": 58625,
+      "elapsed": "02:48",
+      "executable": "node"
+    },
+    {
+      "pid": 66851,
+      "ppid": 65762,
+      "elapsed": "00:36",
+      "executable": "node"
+    }
+  ],
+  "scope": "Executable names and process ancestry only; no argv or credentials.",
+  "limitation": "A snapshot cannot prove no process appeared between observations; coordinator release remains required."
+}

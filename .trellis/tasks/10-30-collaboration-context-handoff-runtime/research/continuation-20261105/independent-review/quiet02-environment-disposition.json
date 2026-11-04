@@ -1,0 +1,59 @@
+{
+  "reviewed_at": "2026-11-04T16:51:04.941775+00:00",
+  "reviewer": "/root/acceptance_review",
+  "verdict": "functional_pass_environment_not_accepted",
+  "normal": {
+    "actual_exit": 0,
+    "pass": 62,
+    "fail_skip": 0,
+    "checks_passed": 912,
+    "environment": "coordinated quiet normal retained as accepted; completed16:43:40 before observed external knowledge starts"
+  },
+  "race": {
+    "actual_exit": 0,
+    "pass": 62,
+    "fail_skip": 0,
+    "checks_passed": 913,
+    "environment": "not accepted as exclusive; external knowledge normal41693 and race48804 observed during16:43:59\u201316:49:23 execution"
+  },
+  "raw_evidence": {
+    "each_top_level_pass": 9,
+    "each_fixtures": 19,
+    "each_public_trials": 22,
+    "each_fakeproof_launches": 32,
+    "source_framework_Go_guard_DB_bindings_valid": true,
+    "exact_negative_and_H6_manual_verdicts_valid": true,
+    "real_provider_calls": 0,
+    "old_failures_preserved": true
+  },
+  "overlap_snapshots_verified": [
+    "processes-20261104T164609292594Z.json",
+    "processes-20261104T164815428818Z.json",
+    "processes-20261104T164924584961Z.json"
+  ],
+  "summary_sha256": "c68c29b75953dae288b64482b1f7fc952250b31e7d6069f61d3146820a8f6ebe",
+  "paid_entry_allowed": false,
+  "bounded_correction": {
+    "recommended": "One newly numbered race-only deterministic run after all currently active owners explicitly confirm their current runs finished and followups held",
+    "normal_reuse": "Reuse quiet02 normal actual evidence on exact same source/framework/tool bytes; do not rerun alreadyvalid normal",
+    "requires": [
+      "new database and output directories",
+      "same source/17files/selector/assertions/timeouts",
+      "root-recorded all-owner READY and before/during/after observations",
+      "independent raw verdict/hash review after actual exit"
+    ],
+    "not_allowed": [
+      "automatic repeat after another breach or incomplete result",
+      "replacement of old samples or deletion of failure evidence",
+      "causal claim that overlap caused old failure",
+      "claim that timing/recording mechanism was fixed"
+    ],
+    "third_full_pair_required": false
+  },
+  "operations": {
+    "tests": 0,
+    "DB": 0,
+    "model": 0,
+    "source_edits": 0
+  }
+}
