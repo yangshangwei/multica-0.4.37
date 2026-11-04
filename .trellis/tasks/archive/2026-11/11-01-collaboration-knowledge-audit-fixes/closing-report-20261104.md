@@ -6,6 +6,6 @@
 
 - [独立终审](research/resume-20261104/task7-final-closure-review/final-acceptance-review.md)
 - [本地源码集成与增量保留](research/resume-20261104/main-source-integration-result.json)
-- [稳定 #6 交接](../10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/task7-closure-handoff.json)
+- [稳定 #6 交接](../../../10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/task7-closure-handoff.json)
 
 原始专库、日志、构件和具名清单均保留。知识预算/真实调用 0/0，生产注入默认 false；#7 的关闭不等待 #6 的真实模型或发布门。

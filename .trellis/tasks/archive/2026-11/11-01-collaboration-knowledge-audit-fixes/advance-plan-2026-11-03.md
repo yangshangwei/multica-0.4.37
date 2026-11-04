@@ -1,3 +1,7 @@
+# 2026-11-04 #7 关闭后的当前入口
+
+#7 已独立完成并归档：AC1–AC9 / 21 项、共享 v16 与四 CCG、源码本地合入及逐文件增量保留均通过。后续 #6 的执行入口为 [知识框架计划](../../../10-30-collaboration-knowledge-promotion/knowledge-framework-plan-2026-11-03.md)；[稳定交接](../../../10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/task7-closure-handoff.json) 保存原六文件/旧17和归档前后证据映射。下方所有旧“当前”段落保留各自时点历史。真实知识 0/0、默认 false，真实和发布门仍开放。
+
 ## 2026-11-04 四项 CCG 实际通过，#7 最终独立收口
 
 当前 `eda0d68fb` 上 CCG1 普通/race、CCG2 OFF02/ON01 均单次 **exit 0 / accepted**。ON01 的唯一批准 v1 贡献与实际输入、source/content hash 精确一致，知识 claim/preparation/authorization 各一次，唯一 fake Host 进程有效终止并封存；OFF02 无知识输入和事件。OFF 原启动前失败保留，0 真实模型调用。ON 原始结果及四门最终独立核对进行中，随后 #7 AC1–AC9/21 项最终收口；Root 只授权释放已拥有的 ON 服务，并准备按已有独立复核保留旧增量后本地合入测试候选。#6 六文件实施仍待 #7 关闭。

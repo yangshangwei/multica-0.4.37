@@ -1,3 +1,7 @@
+## 2026-11-04 #7 已独立关闭并归档
+
+全部 AC1–AC9 / 21 项处置、共享 v16、四项当前 CCG 和本地源码一致性已通过独立终审，任务已标记 completed。归档时 2,427 个原文件的字节/权限均保留（任务状态另行更新），后续这里只完善当前关闭说明；原始 research 失败和验收证据保持不变。稳定 #6 交接已落盘且操作性引用已迁移，#6 继续推进框架普通/race和最终绑定。知识预算/真实调用 0/0，生产注入默认 false。
+
 ## 2026-11-04 #7 独立终审通过并已本地合入
 
 冻结 `eda0d68fb` 的 AC1–AC9 / 21 项处置、19 项红证据与 L7/L13 明确例外、共享 v16 和四 CCG 均获独立 **pass / 0 blockers**。Root 保留 24 项原始 source overlay（其中 19 项与候选相同，五项独立核对断言保留），本地 fast-forward 已成功；29 项入站源码字节全部与验收候选一致，28 项其他 dirty tracked 文件字节/权限不变。旧 raw、专库和失败保留，所有 OFF/ON 所属服务已释放。验收报告：`research/resume-20261104/task7-final-closure-review/final-acceptance-review.json`；集成记录：`research/resume-20261104/main-source-integration-result.json`。正在登记稳定 #6 交接和归档；#6 模型/发布不构成 #7 关闭条件，知识 0/0、默认 false。

@@ -1,0 +1,84 @@
+{
+  "scope": "Bounded read-only five retained main dirty files versus tested eda0; no integration/source write",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "verdict": "pass-with-notes; no lost product behavior/assertion blocking integration",
+  "prior_changes_required_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/closure-review/main-precursor-preservation-review.json",
+    "sha256": "a1f30cd347b983e1a6cd00f6975823765d1cd80165bfed1d7d8011743778b8a7",
+    "original_P1_P5_preserved": true
+  },
+  "comparisons": [
+    {
+      "path": "e2e/collaboration-boundaries-web.spec.ts",
+      "retained_main_sha256": "d81d1fcac8d8eeb542da8af4c8c1a1fb71cea8085e75633b4f1e75c17fd5964d",
+      "tested_candidate_sha256": "8dff851fee66b7b7df826d7ec4c5e3f2c41e4c1fb44b25d9d1d6523ccef5e7c7",
+      "retained_main_matches_prior_preservation": true,
+      "diff": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/e2e__collaboration-boundaries-web.spec.ts.diff",
+      "diff_sha256": "b226ad515dae617e83fdf6184bf8b71e475a9e35f2044bb65d38a39c573ff311"
+    },
+    {
+      "path": "e2e/collaboration-memory-web.spec.ts",
+      "retained_main_sha256": "62c26fe70f60418a836abf3741c0ed8f08e21b163fa61c0a846c0f0964ae5943",
+      "tested_candidate_sha256": "48ad9875f6d849ecfc50d115d9b656c63b03aa4d14f164a4fd215bf83bc00c0e",
+      "retained_main_matches_prior_preservation": true,
+      "diff": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/e2e__collaboration-memory-web.spec.ts.diff",
+      "diff_sha256": "d94826231f441060542df6ebca6b09f243beb0224fe84aee91dcd19632fcc4f3"
+    },
+    {
+      "path": "e2e/collaboration-preview-web.spec.ts",
+      "retained_main_sha256": "ae65f83b009bdbc0684c6ee4795eba59190c1594da7fa663435a79d8dd267995",
+      "tested_candidate_sha256": "f276667c3ee3190fbb2141e3dba08c6439d42604a5aec0253a7075d7aa36f56b",
+      "retained_main_matches_prior_preservation": true,
+      "diff": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/e2e__collaboration-preview-web.spec.ts.diff",
+      "diff_sha256": "1f3660e4dd49e6b2fd473cd7327517ce90efde08c6d705d5b8dd2b7a9de12f4f"
+    },
+    {
+      "path": "e2e/collaboration-workbench-web.spec.ts",
+      "retained_main_sha256": "a8311313c502c74afe4df709d66cf16630bb3ac7396c912c3e4a7501a6fb1377",
+      "tested_candidate_sha256": "c3a902fe29e90df772ff65c66e23aba86c54cb1cb2bcb7b0d0a8acc8e31dd742",
+      "retained_main_matches_prior_preservation": true,
+      "diff": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/e2e__collaboration-workbench-web.spec.ts.diff",
+      "diff_sha256": "34fceba0edc1ea2855a5a47d93bad12ca97eb46299561e7fc3d1056992fd959d"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-mention-journeys.ts",
+      "retained_main_sha256": "44738e30f08d31e691b58dadcac98cbfdd67b5ab8be9c021c7ed9d07ea5973ef",
+      "tested_candidate_sha256": "1fe5fef06293779712f655fd9fb36aaca8027f75d8ed8bff40ee85b556781bdc",
+      "retained_main_matches_prior_preservation": true,
+      "diff": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/e2e__fixtures__collaboration-mention-journeys.ts.diff",
+      "diff_sha256": "b79d485c643ea76d96c5b43e751c1eb03f1ad91d732092fd442ca15b8794d270"
+    }
+  ],
+  "original_P1_P5_controls_restored": {
+    "P1_result_basis_after409_and_use_current": true,
+    "P2_suppressed_send_instruction_draft_manual_zero_write": true,
+    "P3_full_comment_and_manual_preservation": true,
+    "P4_UUID_shape_all_three": true,
+    "P5_memory_completion_form_disappears": true
+  },
+  "candidate_improvements_retained": [
+    "Exact submitted/accepted delivery ID, author/result/basis/decision and write epochs instead of status-only completion",
+    "Collapsed includeHidden action coverage and removal-denial check",
+    "Actual participant leave HTTP/UI identity and pending delivery unchanged across the conflict",
+    "Zero comment POST, immutable full comment fields, draft/suppression and execution graph checks before Send"
+  ],
+  "intentional_differences": [
+    {
+      "file": "e2e/collaboration-boundaries-web.spec.ts",
+      "detail": "Edit source fields/Change iteration expectations follow actual source_structure capability; original always-present list is not an additional unconditional product contract."
+    },
+    {
+      "file": "e2e/collaboration-preview-web.spec.ts",
+      "detail": "Only author_authority.evaluated_at is normalized for full equality because each read re-evaluates it; both timestamps are ISO/finite/monotonic and every other comment field is still equal."
+    },
+    {
+      "file": "e2e/collaboration-memory-web.spec.ts",
+      "detail": "Private evidence attachment now spells accepted_submission_id and records completion_request_id; no runtime consumer of memory-human-evidence was found, and actual submitted ID/receipt/UUID/UI behavior remain checked."
+    }
+  ],
+  "main_original_bytes_preserved": true,
+  "integration_instruction": "Root owns exact scoped handling of 22 overlaps (17 identical plus these five); preserve originals and initial main-dirty.diff, use tested candidate bytes after this review, keep unrelated edits. No blanket stash/reset/stage.",
+  "blocking_findings": [],
+  "source_edits": 0,
+  "tests_run": 0
+}

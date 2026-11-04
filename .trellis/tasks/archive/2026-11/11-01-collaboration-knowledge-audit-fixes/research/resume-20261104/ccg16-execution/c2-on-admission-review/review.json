@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-04T08:10:36.201419+00:00",
+  "reviewer": "/root/knowledge6_source_review",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "scope": "Independent actual isolated ON admission only; reusable source/cache/OFF02 reviews not rerun",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "pre_execution_conditions_verified": true,
+  "ready_to_execute": false,
+  "ON_probe_executed": false,
+  "CCG2_ON_accepted": false,
+  "task7_closed": false,
+  "actual_bound_inputs": {
+    "handoff": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/on-preparation-handoff.json",
+      "sha256": "2413143d645c717436cd655d2ee379b74eca563edf242c67de34cf1b72d7f5c1",
+      "matches": true
+    },
+    "false_permit": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg2-on-v16-01.json",
+      "sha256": "a8e44bbdb300d16cd2a2ef7c6033de33914b119a1a1602bedd3d66aaab66f503",
+      "matches": true
+    },
+    "env": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/on/source-values.env",
+      "sha256": "f69987226394d14629f0ab7e3186b6a6e08b98258fe972ecdb392351c562bd00",
+      "matches": true
+    },
+    "deployment": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/on/deployment-proof.json",
+      "sha256": "4f70b06e906db26168869b3821075000b70caca9830594c2748010316bf4d8ae",
+      "matches": true
+    },
+    "Root_live": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/root-on-live-confirmation.json",
+      "sha256": "f2462e7b6d911e773c10f9c347f986ccef0f59e13739994e0d2977951f38c0a4",
+      "matches": true
+    }
+  },
+  "unchanged_runner_browser_binary": {
+    "runner": "95206bf27c50b16acd2a087fcbbb925671a1b1ee55ad3952a000b4c400789b79",
+    "browser_binding": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/browser-cache-binding-v16.json",
+      "sha256": "d63a5a379f3d2f4ab0687da4d617897f832179af88d9e257a20e1fdcff2aea13"
+    },
+    "binary_binding_sha256": "bc3863a5bfec55b1a2955c65643b03717fb6ec339458c6e90ed90abdd8612f60",
+    "source_inputs_sha256": "97bc4ea95f4b5ab628881268c5d7a5f80c1ae9d0a8bcd4eb8ebc7db3a07f3ecf",
+    "protected_14_current_hashes_match": true,
+    "full_inventory_in_frozen_handoff": true
+  },
+  "Root_live": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/root-on-live-confirmation.json",
+    "sha256": "f2462e7b6d911e773c10f9c347f986ccef0f59e13739994e0d2977951f38c0a4",
+    "scope": "Root actual readonly ON deployment identity before one probe; no acceptance executed",
+    "status": "pass",
+    "read_only_HTTP_PG_repeated": false
+  },
+  "actual_new_ON_configuration": {
+    "env_assignments": 53,
+    "source_data_private_launch_and_manifest_URL_equal": true,
+    "private_URL_same_as_Root_ON_allocation": true,
+    "api_knowledge_enabled": true,
+    "scope_of_true_flag": "Only the isolated fake ON acceptance environment; production defaults false",
+    "password_managed_signup": true,
+    "single_limiter": true,
+    "platform_device_cloud_model_keys_disabled": true,
+    "DSH_missing": true,
+    "API_configuration_id": "366b08f3da22d94cddf5f160ad8ce25cee0940115f5f62d67736b543aa3e8b17",
+    "Web_configuration_id": "1a9c90532fc452e45c17494aed9f6fbb7d64cb77d9ba3710c2a82d84e89278b3",
+    "fingerprints_recomputed": true,
+    "API_pid": 67212,
+    "Web_pid": 67517,
+    "renderer_pid": 67409,
+    "origins": {
+      "api": "http://127.0.0.1:18295",
+      "web": "http://127.0.0.1:13215",
+      "renderer": "http://127.0.0.1:49338"
+    },
+    "BUILD_ID": "1l5va-9f2PMnEkPpah4XJ",
+    "actual_WebProviders": [
+      {
+        "apiBaseUrl": "http://127.0.0.1:18295",
+        "wsUrl": "ws://127.0.0.1:18295/ws"
+      }
+    ],
+    "CORS_origins": [
+      "http://127.0.0.1:13215",
+      "http://127.0.0.1:49338"
+    ],
+    "private_registry": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/on/registry",
+      "environment_name": "knowledge-v16-on-a3c9-01",
+      "manifest": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/on/registry/envs/knowledge-v16-on-a3c9-01/manifest.env",
+      "manifest_sha256": "9e126fa9a2bf4685e944a8f6dff0a747f7d500e46b493ee165b6bd0f865cd273",
+      "TTL_HOURS": 0
+    },
+    "temp": "/private/tmp/multica-ccg-v16-on-6fs2lm6r",
+    "Root_database": "multica_ccg2_v16_on_a3c9",
+    "migration_identity": "multica_ccg2_v16_on_a3c9|764_collaboration_ai_policy",
+    "credentials_exported": false
+  },
+  "serialized_release_and_startup": {
+    "OFF_release_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/on-off-release-result.json",
+    "OFF_release_sha256": "8db43cb9561afdff6d06e38d7d38c9b7cdeb52c85bd54d0a8696bcda3008c491",
+    "three_owned_OFF_listeners_released": true,
+    "OFF_DB_env_results_artifacts_kept": true,
+    "ON_startup_record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/on-startup-01/result.json",
+    "ON_startup_sha256": "605114ec8778783d18e4edd401078a794ee127ec7bd6a75ffc403f15c3741f8a",
+    "start": "2026-11-04T08:00:01.025992+00:00",
+    "finish": "2026-11-04T08:01:03.866233+00:00",
+    "status": 0,
+    "OFF_release_precedes_ON_start": true,
+    "startup_shell_and_original_seam_scope_unchanged": true,
+    "build_lock_released": true,
+    "ON_probe_not_started": true,
+    "OFF_COW_snapshot_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/on-retained-OFF02-web-artifacts.json",
+    "OFF_COW_snapshot_sha256": "746e5e5880a0f66075d1ee3f73954ceb67a21cba78f5c817d26d42b5d6eed987",
+    "retention_not_new_wholecheck_binding": true
+  },
+  "reused_frozen_reviews": {
+    "browser_source_cache": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-browser-bound-admission-review/review.json",
+      "sha256": "ad864ad4569711b1a3982d4447e4b7b7c4ad3e568d6322d2b34ae6a03c131040"
+    },
+    "OFF02_actual_result": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/ccg2-off02-result-review/review.json",
+      "sha256": "2bfc55ec3ca4c11a8f416e3da3bd96fca4fc595144da7958467825bf3124d77e"
+    },
+    "source": {
+      "head": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "status": " M apps/web/next-env.d.ts\n",
+      "registered_Next_only": true
+    },
+    "repeated_full_inventory_or_browser_resource_checks": false
+  },
+  "Root_permission_pending": {
+    "false_permit_sha256": "a8e44bbdb300d16cd2a2ef7c6033de33914b119a1a1602bedd3d66aaab66f503",
+    "root_permission_record": null,
+    "intended_label": "ccg2-on-v16-01",
+    "Root_next": "Preserve false permit; issue one hash-bound isolated ON permission with this immutable review and Root current live witness; sole executor runs unchanged one-worker zero-retry ON once. Actual input/event/native proof and #7 final review remain pending."
+  },
+  "operations": {
+    "acceptance_browser_model_build_auditor_API_DB_execution": 0,
+    "original_source_input_permission_resource_mutations": 0,
+    "written_scope": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-on-admission-review"
+  },
+  "real_gate": {
+    "knowledge_budget": 0,
+    "knowledge_calls": 0,
+    "production_default_enabled": false,
+    "other_paid_ledgers_touched": false
+  },
+  "report_md_sha256": "393e5d0de88415a0bcf1c1f8f478e98d1dd0b224fe4379adc343d919f66c80e1"
+}

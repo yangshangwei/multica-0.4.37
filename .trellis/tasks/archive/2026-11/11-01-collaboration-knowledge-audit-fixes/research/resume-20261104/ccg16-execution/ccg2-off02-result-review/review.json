@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-04T07:58:55.164397+00:00",
+  "reviewer": "/root/knowledge6_source_review",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "scope": "Independent immutable actual OFF02 result reconciliation only; fake deployment gate",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "CCG2_OFF_accepted": true,
+  "CCG2_ON_accepted": false,
+  "task7_closed": false,
+  "actual_result": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-02/result.json",
+    "sha256": "7ce251ea2e611178d356aa54358360b693fa779fcc3317b200f388590e19775a",
+    "exit_code": 0,
+    "accepted": true,
+    "report_sha256": "366d9811c75a86bee31981bdbaed90eec00a24fe1eeeea6ed7d319ad2190339c",
+    "output_sha256": "40bf07f657ba835431190a463a55dfd5798642f403be81efce5d9e351f1820d3",
+    "started_sha256": "ae05447d23df220699f25edd88205cb287ae098136a5d9d5efba480d35cedb4f",
+    "stats": {
+      "startTime": "2026-11-04T07:50:15.576Z",
+      "duration": 7975.906999999999,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "named_terminal": {
+      "title": "deployed knowledge startup flag controls one actual Host input and its authorization events",
+      "file": "collaboration-knowledge-deployed.spec.ts",
+      "project": "chromium",
+      "test_status": "expected",
+      "expected_status": "passed",
+      "result_status": "passed",
+      "retry": 0,
+      "startTime": "2026-11-04T07:50:16.034Z",
+      "duration": 5830,
+      "errors": []
+    },
+    "started_result_identity_equal": true,
+    "observation_attachment_count": 1,
+    "canonical_observation_sha256": "40229282ec1b961bdf5dd4f2f75553ca0c0d34c71f028aac10f4c44b00499de4"
+  },
+  "actual_fake_input": {
+    "prompt_sha256": "a04941df72d43723b3e666d22221de8bc0c16257562f4871b1e565650aee9bd1",
+    "section_present": false,
+    "contributions": [],
+    "no_session_persistence": false
+  },
+  "actual_events": {
+    "knowledge_claim": 0,
+    "knowledge_preparation": 0,
+    "knowledge_authorization": 0
+  },
+  "native_run": {
+    "id": "d8e1b112-2917-4429-acf3-2b03dd283360",
+    "progress_state": "settled",
+    "proof_state": "host_exit_observed",
+    "business_outcome": "success",
+    "launch_count": "1"
+  },
+  "native_daemon": {
+    "exit_code": 0,
+    "errors": [],
+    "stderr": "",
+    "claims": 1,
+    "available_slots_after": 1,
+    "ledger_phase": "proof_acknowledged",
+    "namespace_present": false,
+    "sealed": true,
+    "proof_state": "host_exit_observed",
+    "launches": [
+      {
+        "attempt_seq": "1",
+        "kind": "provider",
+        "phase": "attempt_reaped",
+        "process_observed": true,
+        "scope": "process_group",
+        "terminal_accepted": true,
+        "authorized": true,
+        "terminal_kind": "managed_launch_ended",
+        "cleanup": {
+          "state": "tracked_scope_complete",
+          "scope": "process_group",
+          "attempted": true
+        }
+      }
+    ],
+    "two_permit_ACKs_same_attempt_hash": true,
+    "physical_launches": 1
+  },
+  "Root_signature": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/browser-cache-repair/root-permission-off02.json",
+    "sha256": "9ab16f4cf252afb34e09ad2e961b099109d9d0495bc81a4fd0b5191497568ada",
+    "issued_at": "2026-11-04T07:48:51.145045+00:00",
+    "ready_permit_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg2-off-v16-02.json",
+    "ready_permit_sha256": "53e8154374b24b65048d9caa3fcfb5371e86305028c35c9502a6ccb949aa4b24",
+    "frozen_admission_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-browser-bound-admission-review/review.json",
+    "frozen_admission_sha256": "ad864ad4569711b1a3982d4447e4b7b7c4ad3e568d6322d2b34ae6a03c131040",
+    "executor": "/root/shared_executor",
+    "scope": "Exactly one original fake-only OFF02 browser probe with reviewed cache binding; zero retries",
+    "issued_before_probe": true
+  },
+  "browser": {
+    "binding_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/browser-cache-binding-v16.json",
+    "sha256": "d63a5a379f3d2f4ab0687da4d617897f832179af88d9e257a20e1fdcff2aea13",
+    "PLAYWRIGHT_BROWSERS_PATH": "/Users/artisan/Library/Caches/ms-playwright",
+    "version": "1.58.2",
+    "revision": "1208",
+    "current_identity_only": true,
+    "historical_V16_executable_equality_claimed": false
+  },
+  "current_binding": {
+    "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "status": " M apps/web/next-env.d.ts\n",
+    "only_registered_Next_variant": true,
+    "source_inputs_sha256": "97bc4ea95f4b5ab628881268c5d7a5f80c1ae9d0a8bcd4eb8ebc7db3a07f3ecf",
+    "runner_sha256": "95206bf27c50b16acd2a087fcbbb925671a1b1ee55ad3952a000b4c400789b79",
+    "source_env_sha256": "e0a6a47cc30e26b36c2b3e7dbf2a219481401362c73a1e0323ecbabc17ba15a1",
+    "deployment_proof_sha256": "3fc506a0c4275afe6037626e8da96cec5c33f1547e020115bd692ee0c1ef193a",
+    "binary_binding_sha256": "bc3863a5bfec55b1a2955c65643b03717fb6ec339458c6e90ed90abdd8612f60",
+    "actual_environment": {
+      "api": "http://127.0.0.1:18231",
+      "deployment_id": "efce5c6d-3992-487d-bc6e-4381fbb95424",
+      "auth_mode": "password",
+      "api_health": {
+        "status": "ok",
+        "pid": 51638,
+        "commit": "eda0d68fb",
+        "started_at": "2026-11-04T05:44:19Z"
+      },
+      "database": "multica_ccg2_v16_off_a3c9",
+      "native_os": "darwin",
+      "native_arch": "arm64"
+    },
+    "observed_binary_sha256": {
+      "COLLABORATION_HOST_DAEMON": "2b36f0de335919fbc1d36247d9573b13b776e8a1e85e78c0e7117e8e05ed7847",
+      "COLLABORATION_HOST_PROVIDER": "133c116fddf461e69b6f154c1d83123055d59934981e69deb85a45b9fe942061",
+      "COLLABORATION_HOST_CLI": "f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac"
+    },
+    "observed_source_sha256": {
+      "e2e/collaboration-knowledge-deployed.spec.ts": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+      "e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+      "e2e/fixtures/collaboration-host-runtime.ts": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e"
+    },
+    "all11_sources_and4_tools_current": true,
+    "returned_admission_audit_matches_registered_actual_V16_final": true
+  },
+  "chronology": {
+    "start": "2026-11-04T07:50:14.790812+00:00",
+    "finish": "2026-11-04T07:50:23.570545+00:00",
+    "single_test_attempt_retry0": true,
+    "original_OFF01_failure_retained": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-01/result.json",
+      "sha256": "1e198c8177e4650e620af16a959ba53924b7356dda969ffa318558e950d7a5a2",
+      "grade": "setup failure before browser body; no semantic result"
+    },
+    "source_result_permission_mutations_by_reviewer": false
+  },
+  "limits": [
+    "real model understanding",
+    "human approval UI",
+    "correction/withdrawal composite",
+    "installer and different-account journey"
+  ],
+  "Root_next": "OFF fake-deployment result accepted; release owned OFF and prepare distinct ON under its separate Root authority. ON probe still requires separate admission/permission; #7 closure remains pending.",
+  "operations": {
+    "browser_tests_auditors_API_DB_models_rerun": 0,
+    "original_source_result_permission_mutations": 0,
+    "written_scope": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/ccg2-off02-result-review"
+  },
+  "real_gate": {
+    "knowledge_budget": 0,
+    "knowledge_calls": 0,
+    "production_default_enabled": false,
+    "real_provider_calls": 0,
+    "other_ledgers_touched": false
+  },
+  "report_md_sha256": "b2c3e53fe3cdf661883b7a7eafa4a8a5904aff917d48c42e45c6a78ea4eb74e3"
+}
