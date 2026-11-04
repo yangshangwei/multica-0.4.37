@@ -25,7 +25,7 @@ sha=lambda f:hashlib.sha256(pathlib.Path(f).read_bytes()).hexdigest()
 assert sha(a.cli)==a.cli_sha256,'CLI hash mismatch'
 env.update(RK1K_SOURCE_CLI=str(pathlib.Path(a.cli).resolve()),RK1K_SOURCE_CLI_SHA256=a.cli_sha256,RK1K_FAKE_PROOF_OUT=str(out/'proof'))
 def manifest():
- 
+
  names=subprocess.check_output(['git','ls-files','-co','--exclude-standard','-z','--','server'],cwd=root).split(b'\0')
  return {name.decode():sha(root/name.decode()) for name in sorted(set(names)) if name and (root/name.decode()).is_file()}
 before=manifest()

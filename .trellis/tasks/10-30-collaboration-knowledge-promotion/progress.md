@@ -1,3 +1,7 @@
+## 2026-11-05 代码与证据已提交，真实验收等待core明确移交
+
+产品本地提交429b1b6b4并集成88f1cc8d4，51份任务证据提交c6aabb27a。通信恢复后core负责人明确保留共享重型窗口约30–60分钟，不移交模型执行窗；知识及runtime均保持0真实。已向用户询问资源优先级，默认等自然边界，不能把继续推进理解为中断其他验收。当前执行包已独立通过，未启用的15次许可保留；参见 [Codex验收记录](verification-codex-2026-11-05.md)。
+
 ## 2026-11-05 最终源码 Codex 完整 fake 普通/race均通过
 
 normal03 与 race01 各45具名pass，0fail/skip/非法JSON，完整15 measured+3 fake seed+0 paid；全server4501输入/依赖/嵌入资源绑定及源码前后一致。Adapter最终独立审查0阻塞，B/C独立审查修正均已收口。与runtime quiet02窗口发生重叠，原事实已留证；当前自有重型进程0，暂停后续DB/build/browser/Provider，等待runtime独占race-only结束并明确移交。真实执行包15次/0消耗已准备但授权启动开关仍false，正在最终只读准入复核。

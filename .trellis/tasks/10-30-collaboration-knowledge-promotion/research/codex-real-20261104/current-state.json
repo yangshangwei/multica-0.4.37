@@ -4,7 +4,7 @@
   "task": ".trellis/tasks/10-30-collaboration-knowledge-promotion",
   "real_calls": 0,
   "real_cap": 15,
-  "phase": "real_admission_pass_waiting_shared_window_release",
+  "phase": "explicit_queue_waiting_quote_fake_then_runtime_E0a",
   "normal01": "failed_setup_duplicate_codex_runtime; 29_controls_pass; no_provider_starts",
   "normal2_environment": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/knowledge-codex-20261104/rk1k_normal2-environment.json",
   "race_environment": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/knowledge-codex-20261104/rk1k_race-environment.json",
@@ -20,11 +20,9 @@
   "shared_window": {
     "coordinator": "01a1a729-99ac-7ab2-a312-6478d946d58a",
     "sequence": [
-      "finish_current_knowledge_race",
-      "core_browser3to5min",
-      "three_party_ready",
-      "runtime_quiet_race_only5min",
-      "explicit_release"
+      "original_quote_only_fake",
+      "runtime_E0a_max12min",
+      "knowledge_full15_max90min"
     ],
     "runtime_first_race": "exit0_62pass",
     "no_new_heavy_execution": true
@@ -37,5 +35,7 @@
     "review": "real-admission-final-review.md"
   },
   "real_registration_authorized": false,
-  "cross_thread_transport": "send3/read1 HTTP502; do not infer release"
+  "cross_thread_transport": "restored",
+  "code_commit": "88f1cc8d4d809ed175d29a96ee2c99cd012bc36a",
+  "evidence_commit": "c6aabb27a"
 }
