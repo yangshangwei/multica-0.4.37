@@ -1,0 +1,31 @@
+{
+  "at": "2026-11-04T16:54:30.960004+00:00",
+  "processes": [
+    {
+      "pid": 64921,
+      "ppid": 64863,
+      "elapsed": "00:51",
+      "executable": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go"
+    },
+    {
+      "pid": 64950,
+      "ppid": 64921,
+      "elapsed": "00:43",
+      "executable": "/private/tmp/multica-rk1-race-095xk2gu/go-build3131197998/b001/server.test"
+    },
+    {
+      "pid": 65373,
+      "ppid": 58364,
+      "elapsed": "00:00",
+      "executable": "node"
+    },
+    {
+      "pid": 64729,
+      "ppid": 58625,
+      "elapsed": "00:56",
+      "executable": "node"
+    }
+  ],
+  "scope": "Executable names and process ancestry only; no argv or credentials.",
+  "limitation": "A snapshot cannot prove no process appeared between observations; coordinator release remains required."
+}

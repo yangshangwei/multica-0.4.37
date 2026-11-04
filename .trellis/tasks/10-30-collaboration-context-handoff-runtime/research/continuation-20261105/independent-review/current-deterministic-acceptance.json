@@ -1,0 +1,111 @@
+{
+  "reviewed_at": "2026-11-04T16:58:09.378106+00:00",
+  "reviewer": "/root/acceptance_review",
+  "scope": "Current deterministic RK1 runtime acceptance: quiet02 normal plus separately numbered race03; no model acceptance",
+  "verdict": "pass-with-notes",
+  "blocking_findings_in_this_deterministic_scope": 0,
+  "accepted": true,
+  "candidate_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+  "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+  "normal": {
+    "run": "quiet02/normal",
+    "started_at": "2026-11-04T16:41:00.599086+00:00",
+    "finished_at": "2026-11-04T16:43:40.745474+00:00",
+    "exit": 0,
+    "named_pass": 62,
+    "independent_checks": 912,
+    "result_sha256": "8237fb3a21e5e57d092a4fb006f8adf10dda4e8756717d4aae0a2e01b31dc71c",
+    "review": "quiet02-normal-review.json"
+  },
+  "race": {
+    "run": "race03/race",
+    "started_at": "2026-11-04T16:53:39.407853+00:00",
+    "finished_at": "2026-11-04T16:56:28.862083+00:00",
+    "exit": 0,
+    "named_pass": 62,
+    "independent_checks": 915,
+    "result_sha256": "b08791a475909fb7feaada2d6daa8d6ac1fe80f0963cb626ccbbbe84576bffb3",
+    "review": "race03-evidence-review.json"
+  },
+  "each_run": {
+    "top_level_pass": 9,
+    "fail": 0,
+    "skip": 0,
+    "fixture_cases": 19,
+    "public_trials": 22,
+    "FakeProof_physical_launches": 32,
+    "actual_Provider_calls": 0
+  },
+  "source_evidence": {
+    "normal_immutable_original_hash_verified": true,
+    "source_framework_tools_guard_same_and_stable": true,
+    "fresh_distinct_databases_migration764_verified_from_actual_receipts": true,
+    "exact_expected_negative_verdicts_and_raw_traces_verified": true,
+    "no_race_detector_diagnostic": true,
+    "no_installed_agent_execution": true
+  },
+  "quiet_window": {
+    "accepted": true,
+    "basis": "Root explicit READY from original/core-E2E/knowledge owners plus before/during/after snapshots; samples do not prove continuous absence by themselves",
+    "all_owner_READY_allocation": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-db-20261105-race03/allocation.json",
+    "allocation_sha256": "705c8523b8de7c169d72277fd4b9eff3b160265517e05b07effb8b9140eac7e2",
+    "snapshots": [
+      {
+        "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/quiet-race03/processes-20261104T165337524552Z.json",
+        "sha256": "c986327c52bf3ae604bce491d2be8e1f08be48126b5227bab36fdd8d25289b0b",
+        "at": "2026-11-04T16:53:37.524552+00:00",
+        "active_test_provider_browser_pids": []
+      },
+      {
+        "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/quiet-race03/processes-20261104T165430960004Z.json",
+        "sha256": "cf6e078a18b23a1d6b05e0810eb5f9883e5a2fae4db701e8415001a623106be6",
+        "at": "2026-11-04T16:54:30.960004+00:00",
+        "active_test_provider_browser_pids": [
+          64950
+        ]
+      },
+      {
+        "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/quiet-race03/processes-20261104T165531516906Z.json",
+        "sha256": "7f86b0428e109b86f2a778daec56dd2bc44e52a88f1070d9ab2608b92a3efb55",
+        "at": "2026-11-04T16:55:31.516906+00:00",
+        "active_test_provider_browser_pids": [
+          64950
+        ]
+      },
+      {
+        "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/quiet-race03/processes-20261104T165622060325Z.json",
+        "sha256": "df093652f7ed17eb3c0d263bf20bc60910273a44d5fb5a23d67cd2a93dc64f3c",
+        "at": "2026-11-04T16:56:22.060325+00:00",
+        "active_test_provider_browser_pids": [
+          64950
+        ]
+      },
+      {
+        "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/quiet-race03/processes-20261104T165649147328Z.json",
+        "sha256": "21cbfc8e782d1acffd4e2e997c793614ca808b433a7a1dbc328602edbec729fa",
+        "at": "2026-11-04T16:56:49.147328+00:00",
+        "active_test_provider_browser_pids": []
+      }
+    ],
+    "normal_scope": "Already independently accepted quiet02 normal ended before other knowledge runs started"
+  },
+  "retained_limits": [
+    "Original60pass2fail incomplete remains failed, with cause unresolved; this pass does not prove original deadline mechanism fixed.",
+    "quiet02 race62pass remains environment-not-accepted due observed knowledge overlap.",
+    "H6 fake verdict remains manual_review_required; no real-model understanding claim.",
+    "Original E5 output canary remains valid failed baseline; original8 remaining stay stopped.",
+    "Real runtime entry needs separate final binding and explicitly coordinated model window; this review does not extend current heavy-test reservation."
+  ],
+  "runtime_budget": {
+    "approved": 25,
+    "consumed": 0
+  },
+  "paid_entry_opened": false,
+  "operations": {
+    "tests": 0,
+    "database": 0,
+    "model": 0,
+    "source_edits": 0
+  }
+}

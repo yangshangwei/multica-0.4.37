@@ -1,0 +1,31 @@
+--- quiet02
++++ race03
+@@ -15,8 +15,8 @@
+ MAIN = Path('/Volumes/artisan/code/2026/multica-0.4.37')
+ ROOT = Path('/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104')
+ TASK = MAIN / '.trellis/tasks/10-30-collaboration-context-handoff-runtime'
+-PRIVATE = ROOT / '.omx/private/runtime-fake-20261105-quiet02'
+-PUBLIC = TASK / 'research/continuation-20261105/quiet-pair'
++PRIVATE = ROOT / '.omx/private/runtime-fake-20261105-race03'
++PUBLIC = TASK / 'research/continuation-20261105/quiet-race03'
+ GO = Path('/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go')
+ PSQL = Path('/opt/homebrew/opt/libpq/bin/psql')
+ HEAD = '1a32ca36c'
+@@ -85,7 +85,7 @@
+ 
+ def main():
+     parser = argparse.ArgumentParser()
+-    parser.add_argument('--mode', choices=['normal', 'race'], required=True)
++    parser.add_argument('--mode', choices=['race'], required=True)
+     parser.add_argument('--config', type=Path, required=True)
+     args = parser.parse_args()
+     os.umask(0o077)
+@@ -97,7 +97,7 @@
+     assert database.startswith('multica_rk1_') and urlsplit(url).path == '/' + database
+     assert args.config.stat().st_mode & 0o077 == 0, 'private config permissions'
+     if args.mode == 'race':
+-        normal = json.loads((PRIVATE / 'normal/result.json').read_text())
++        normal = json.loads((ROOT / '.omx/private/runtime-fake-20261105-quiet02/normal/result.json').read_text())
+         assert normal['accepted'] is True, 'normal was not accepted'
+         assert normal['database'] != database, 'databases must differ'
+     PRIVATE.mkdir(mode=0o700, parents=True, exist_ok=True)

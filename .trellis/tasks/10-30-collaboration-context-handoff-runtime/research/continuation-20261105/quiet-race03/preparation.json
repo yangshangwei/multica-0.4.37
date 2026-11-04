@@ -1,0 +1,21 @@
+{
+  "at": "2026-11-04T16:51:05.336361+00:00",
+  "state": "prepared_not_authorized_to_execute",
+  "runner_sha256": "faa7aece1b0301378d865171768fc21999e707c7a797362aec03c64c973e8d15",
+  "prior_runner_sha256": "bd0b4e65fce6a4fd7e4ca42b0a1102773b4585196c00b54c34699748f0e66aee",
+  "normal_reuse": {
+    "file": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/quiet-pair/normal-result.json",
+    "sha256": "8237fb3a21e5e57d092a4fb006f8adf10dda4e8756717d4aae0a2e01b31dc71c",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "basis": "ordinary02 completed before observed external knowledge runs; exact source/tool/framework unchanged; repeat only contaminated race stage"
+  },
+  "changes": [
+    "race03 private output root",
+    "race03 public output root",
+    "admit race mode only",
+    "normal prerequisite points at immutable quiet02 normal result"
+  ],
+  "test_selector_timeout_assertion_changes": false,
+  "real_provider_allowed": false
+}
