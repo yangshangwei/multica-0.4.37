@@ -1,0 +1,150 @@
+{
+  "recorded_at": "2026-11-04T08:32:03.444351+00:00",
+  "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "scope": [
+    "e2e/collaboration-account-desktop.spec.ts",
+    "e2e/collaboration-boundaries-web.spec.ts",
+    "e2e/collaboration-delivery-web.spec.ts",
+    "e2e/collaboration-editing-web.spec.ts",
+    "e2e/collaboration-installed-main.spec.ts",
+    "e2e/collaboration-knowledge.spec.ts",
+    "e2e/collaboration-memory-web.spec.ts",
+    "e2e/collaboration-preview-web.spec.ts",
+    "e2e/collaboration-records-web.spec.ts",
+    "e2e/collaboration-resources-web.spec.ts",
+    "e2e/collaboration-workbench-web.spec.ts",
+    "e2e/fixtures/collaboration-disclosures.ts",
+    "e2e/fixtures/collaboration-editing.ts",
+    "e2e/fixtures/collaboration-installed-main.mjs",
+    "e2e/fixtures/collaboration-knowledge.ts",
+    "e2e/fixtures/collaboration-mention-journeys.ts",
+    "e2e/fixtures/collaboration-recipient-picker.mjs",
+    "e2e/fixtures/collaboration-resource-offers.ts",
+    "packages/views/collaboration/field-editing.test.tsx",
+    "packages/views/collaboration/field-inputs.test.tsx",
+    "packages/views/collaboration/field-inputs.tsx",
+    "packages/views/locales/en/collaboration.json",
+    "packages/views/locales/zh-Hans/collaboration.json",
+    "server/internal/handler/daemon_test.go"
+  ],
+  "main_head": "084ea3c987fa4ab8418a2ae5b3b7a20c096c36d8",
+  "accepted_candidate": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "plan_sha256": "07a6f3f7a4a66c4274c0ce83a6a9c052da94fad8cee8e0327ac4f55a7a8b74c7",
+  "review_sha256": "ce7822106c10b5841fd25ae32d2330b0b618d8c47e9c1e4c19c9d806db9c6da2",
+  "unrelated_dirty_tracked_files": {
+    ".trellis/spec/server/collaboration-preparation.md": {
+      "sha256": "a12b9732983ce9fc61bf4dd64270b80de5ade9ea0784ed10c41574f1bd050e1f",
+      "mode": 420
+    },
+    ".trellis/spec/server/database-test-isolation.md": {
+      "sha256": "5a4a045224976a10eb9644d68faca00fcae6dd1350e46b91e83979065135e996",
+      "mode": 420
+    },
+    ".trellis/spec/server/index.md": {
+      "sha256": "ae78f10d78a49687ebc566905e665713639a52f9a72a01823806ca337ad177ac",
+      "mode": 420
+    },
+    ".trellis/spec/web/frontend/e2e-run-environment.md": {
+      "sha256": "e2db9884f66eea8ad274282b5750693350b9e0fb1c2287de3fe6110357ef0cfa",
+      "mode": 420
+    },
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/continuation-plan-2026-11-02.md": {
+      "sha256": "a881ff8ba7139067d8532fdc8308d3707299707355284588ed74bdd374ed1b38",
+      "mode": 420
+    },
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/progress.md": {
+      "sha256": "ade03aaa6b13df4534f883db0282804c0cb34bb75d1780b41fa1c722887a0c5c",
+      "mode": 420
+    },
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/task.json": {
+      "sha256": "0085bead35a0b3a09bdd82103c95702d49632a3230037b5eba77be319fcd334e",
+      "mode": 420
+    },
+    ".trellis/tasks/10-30-collaboration-context-handoff/execution-resume-2026-11-01.json": {
+      "sha256": "e9496340da58b570e8ae87e0d4bebdf864dae024021e589469686c90a29dc1de",
+      "mode": 420
+    },
+    ".trellis/tasks/10-30-collaboration-fix-closure/check.jsonl": {
+      "sha256": "a606b2f48d3289e697d0ba9b8bdc999856120d2ccabb45887dc0ad76bf2bd7ea",
+      "mode": 420
+    },
+    ".trellis/tasks/10-30-collaboration-fix-closure/implement.jsonl": {
+      "sha256": "009e1eb58b2592de543f409032fe7d5bdd4bc2cc3cc76894195f69a700db1d01",
+      "mode": 420
+    },
+    ".trellis/tasks/10-30-collaboration-fix-closure/implement.md": {
+      "sha256": "6bede1d0fe216b561e5d9c74b90c507814b2463838d8337675ea65123609e0b1",
+      "mode": 420
+    },
+    ".trellis/tasks/10-30-collaboration-fix-closure/task.json": {
+      "sha256": "6e5a712466ea7bef2f46a5392672af1140938e41c16ae29627477d9945ad564b",
+      "mode": 420
+    },
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/check.jsonl": {
+      "sha256": "7e79ae395126fe374203b730b747661ea902caad86337f8cd8c472ec754375c7",
+      "mode": 420
+    },
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/implement.jsonl": {
+      "sha256": "7e79ae395126fe374203b730b747661ea902caad86337f8cd8c472ec754375c7",
+      "mode": 420
+    },
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/implement.md": {
+      "sha256": "05462208b682d1d353f43faf6b526853a456f48860a65fc887651748d5847852",
+      "mode": 420
+    },
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/progress.md": {
+      "sha256": "a19f56559d5dd581d1d91f9a0c08acdfb88bbba7488fb15ed8690e1c627bf833",
+      "mode": 420
+    },
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/real-model-acceptance-plan.md": {
+      "sha256": "eb2ee6f229f2e45194a6de30c71b4d57fab9f935a687d0abe84600a7ef273c6b",
+      "mode": 420
+    },
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/task.json": {
+      "sha256": "34741db53f017cc0b2d6ae8676b229e28559c711456b54b74a57ae19cb570d0d",
+      "mode": 384
+    },
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/check.jsonl": {
+      "sha256": "005894c779953a43e550bdd2a48def291affd504b876415bc61c45bce4884d21",
+      "mode": 420
+    },
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/implement.jsonl": {
+      "sha256": "3c94edf6b4290cfc5d7a692c032387b4481751e6921375ed63f71c4edb3865a9",
+      "mode": 420
+    },
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/implement.md": {
+      "sha256": "45f949c2336e05be8b9247600f8ec36e0ddf06d378fe716ae0a39eb2c5741110",
+      "mode": 420
+    },
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/prd.md": {
+      "sha256": "502e9d5d6ba04398c04980337c252ad62b1c833f8ee833a4f72ecd41dda15d5c",
+      "mode": 420
+    },
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/progress.md": {
+      "sha256": "48f8b59a54318613e749f4af5ef045c3bd77c6c15de43d1bd6a0e1ceb9f4ff0e",
+      "mode": 420
+    },
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/task.json": {
+      "sha256": "3487353c05e947898e4754bbc91b9e8a0389ab640a572b8874be6352c9c22fe8",
+      "mode": 384
+    },
+    ".trellis/workspace/artisan/index.md": {
+      "sha256": "4b73eb229add025e9dd2f9a4a5cae0eee98393a6c3ad69c0c46989db4a3c49ab",
+      "mode": 384
+    },
+    ".trellis/workspace/artisan/journal-2.md": {
+      "sha256": "f7a33704ada36fbd6bac98a57701d2e97e0e65972b2e574e94090dec73dd9ff7",
+      "mode": 384
+    },
+    ".trellis/workspace/artisan/journal-3.md": {
+      "sha256": "e6481239c54f494e61893f9c3dc3492a2d065871a53f8a8a0750402970949a3a",
+      "mode": 384
+    },
+    "apps/web/next-env.d.ts": {
+      "sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+      "mode": 493
+    }
+  },
+  "knowledge_budget": 0,
+  "knowledge_calls": 0
+}

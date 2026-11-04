@@ -99,6 +99,38 @@ remain active without one shared fixture exhausting the account budget.
    settings. Deployment guidance is in
    `docs/offline-upgrade.zh-CN.md`, sections 7.2 and 7.5.1.
 
+### Browser cache with a private acceptance home
+
+1. **Scope:** a Playwright child whose `HOME` is a fresh task-owned directory.
+   Playwright resolves its default browser cache from that home, so a cache
+   present under the operator's home is not available without an explicit bind.
+2. **Signature:** set `PLAYWRIGHT_BROWSERS_PATH=<absolute verified cache>` in
+   the actual child environment passed to `subprocess.run(command, env=env)`.
+   A variable present only in the parent shell or a recorder is insufficient.
+3. **Contract:** retain the resolved Playwright package versions, registry
+   revision, platform/architecture, installation-complete markers, executable
+   and required resource hashes, ownership and modes. Bind this metadata to the
+   selected runner and source before acceptance; preserve the isolated home.
+   Cache reuse must not discover user accounts, install browsers or introduce a
+   download fallback. Newly measured hashes establish current identity only.
+4. **Errors:** missing binding, revision/package mismatch, redirected paths,
+   changed bytes or unowned/writable installation directories reject the entry.
+   A missing executable at browser launch is a prerequisite failure; preserve
+   its raw result and do not count a test body that never ran as passed.
+5. **Cases:** a bound, installed browser launches under a fresh home; the
+   ordinary default-cache path remains available to existing nonisolated runs;
+   a fresh home without a binding cannot borrow an operator cache implicitly.
+6. **Verification:** use a credential-free child recorder to check unchanged
+   argv and the explicit browser path, plus rejection controls for metadata
+   drift. Then run the original browser test separately with one worker and
+   zero retries, retaining its actual input/events and complete named terminal.
+   Recorder success is not browser or deployed-product acceptance.
+7. **Wrong / correct:** do not change the child's `HOME` to the operator home
+   or infer historical executable hashes from a matching browser revision.
+   Keep the private home, verify current cache bytes and set only the explicit
+   `PLAYWRIGHT_BROWSERS_PATH` in the child environment. Preserve failed runs and
+   use a distinct output label for the later original-test execution.
+
 ### Docker packaged Main prerequisites
 
 1. **Scope:** Linux directory-packaged Main acceptance through the cached,
@@ -205,6 +237,34 @@ that this endpoint has the database.
 6. **Cleanup:** close the packaged Main and host daemon even when evidence
    collection rejects; verify all three gate booleans are false, the owned API/
    Web listeners are stopped, and no task-owned packaged process remains.
+
+### macOS installed-upgrade protocol boundary
+
+The packaged acceptance HOME redirects filesystem paths; startup still calls
+app.setAsDefaultProtocolClient before its single-instance lock. When running
+an installed old-to-new upgrade, capture NSWorkspace's exact default application
+URL for the multica scheme and its existing same-bundle application URLs.
+Use only a task-owned stable installation/profile path. After closing both
+versions, unregister only newly added paths under that task prefix with
+lsregister -u, then verify the original exact default URL and registration set.
+Never unregister a preexisting application or launch/replace the user's install.
+If exact restoration is needed, NSWorkspace's URL-based default-handler setter
+can require OS consent; record the actual result instead of assuming recovery.
+Acceptance HOME alone does not prove LaunchServices isolation.
+
+Keep manual file replacement, actual Main/preload configuration reads, retained
+renderer localStorage, real authenticated migration, automatic updater and
+signature/notarization as distinct assertions. A synthetic startup endpoint can
+prove native boot/profile plumbing but does not prove account migration or
+complete network isolation. Attach request observers before launch when claiming
+all startup requests; a listener added after firstWindow covers only later
+renderer requests.
+
+A synthetic password startup server must return auth_mode=password,
+password_auth_available=true and device_auth_available=false. Assert the actual
+password form and both fields are visible; Main/preload/localStorage checks can
+pass while an incomplete synthetic response correctly renders an auth error.
+Retain the original fixture failure and use a new numbered run for correction.
 
 Production Web startup uses `pnpm --filter @multica/web build`, then
 `pnpm --filter @multica/web exec next start --port <allocated-port>`. The build
@@ -396,6 +456,51 @@ capture. Check the PNG dimensions too. A pre-capture no-overflow assertion alone
 does not prove what the saved image shows. The dedicated scope-business fixture
 owns this bounded helper; do not change the shared screenshot helper silently.
 
+When a focused screenshot requires `toBeInViewport({ ratio: 1 })`, scroll the
+target through all native scroll ancestors with
+`scrollIntoView({ block: "center", inline: "nearest", behavior: "instant" })`
+before measuring it. Start alignment can leave a fractional edge clipped even
+after layout settles: the preparation-record fixture measured `y=-0.25` and
+311.75 visible pixels of a 312px region. Preserve the full-ratio and bounding-box
+assertions; changing the ratio or waiting longer does not correct that geometry.
+Keep the failed capture, actual geometry and successful uninstrumented replay
+as separate evidence (`collaboration-preparation-records-web.spec.ts`).
+
+### Frozen native capture geometry
+
+Use `captureNativeSection(app, page, focus, stage, outputPath, rootSelector)`
+for tiled native account-detail evidence. After native size/zoom changes, require
+two samples separated by rendering frames to agree on focus x/width/height,
+root x/y/width/height/clientHeight and viewport width/height. Freeze dimensions
+and tile offsets once. Rectangle comparisons retain the existing one-pixel
+precision; client/viewport sizes must match exactly.
+
+The frozen layout excludes focus y, current scrollTop and total scrollHeight:
+planned tile scrolling and content growth below the target remain legal. Each
+tile separately records all focus/root rectangle fields, requested and actual
+scrollTop, maxScroll, viewport and achieved visible interval before capture.
+After `webContents.capturePage`, require the same part and scroll position, and
+persist both measurements even when an assertion fails. Retain the native
+compositor, root bounds, continuous tile coverage and final
+`coveredThrough >= initialFocusHeight - 1` assertions.
+
+| Observation | Required result |
+| --- | --- |
+| Stable layout and a fully covered target | Save the native image and matching geometry |
+| Planned scrolling between tiles, or content growth below the target | Keep frozen target dimensions; measure the actual legal scroll |
+| Changed target/root layout after offsets freeze | Refuse with durable geometry; do not recalculate offsets to hide drift |
+| Movement or resize during native capture | Refuse that part and retain before/after observations |
+| Only the old initial height and final coverage were recorded | Keep the failure; height drift versus clipping/clamping is unproved |
+
+Verify both legal scrolling and actual target/root/viewport drift against the
+source predicates, then retain an unmodified production-Web/native-Desktop
+journey with complete PNG/geometry hashes. The two Relations submenu gestures
+use the configured Base UI hover trigger, await the exact Remove/Set-parent
+item, then click and keep the existing API and parent-link assertions. Increasing
+timeouts or lowering coverage does not establish those interaction contracts.
+Root E2E fixtures are outside the current workspace ESLint base paths: an
+ignored-file exit0 is a documented coverage gap, not a passing fixture lint.
+
 Task links have two valid representations to test separately. Desktop AppLink
 emits an absolute shareable URL, while Web can use a relative href; compare the
 normalized full URL against the expected origin and task path. After a click,
@@ -403,3 +508,99 @@ normalized full URL against the expected origin and task path. After a click,
 identifier. Wait for that stable canonical route plus the expected task title,
 including the desktop memory-router path. Accepting the transient UUID can
 make a routing assertion race the normal canonicalization effect.
+
+### Packaged-controller dependencies and current account pickers
+
+The plain-Node packaged Main controller and its host Playwright process must
+resolve the same installed Playwright version. An absolute host `node_modules`
+symlink is not available inside a container that mounts only the checkout.
+Verify resolution inside the selected cached image before authentication; a
+task-owned copy of the already installed `@playwright/test`, `playwright` and
+`playwright-core` packages can supply that boundary without downloading or
+changing versions. Keep the outer runner on that same copy to avoid two test
+framework instances, and record this ignored dependency layout separately from
+the product and harness fingerprints.
+
+Invite, Transfer and request-information forms use the Recipient property
+picker. Open its labelled listbox, enter the account UUID, use the exact-lookup
+footer, verify the account name, select Use this account and assert the form's
+selected-account status. `collaboration-offline-handoff.ts` owns the TypeScript
+helper; the packaged controller's small `.mjs` counterpart follows the same
+steps because plain Node cannot assume Playwright's TypeScript loader. Bind new
+untracked harness files by content hash as well as the tracked patch. Keep all
+receipt, revision, authorization and workflow assertions when adapting controls.
+
+For the closed-memory purge journey, explicitly open Version history before
+asserting that Restore actions are absent and choosing a historical Purge action.
+An absent-action assertion against collapsed content does not prove the closed
+state's authority. Preserve the original failed run when adapting that visible
+interaction; the observed collapsed state alone does not identify its cause.
+
+## macOS updater isolation and phase evidence
+
+### 1. Scope / trigger
+
+Apply when preparing a real packaged macOS updater journey. This is a
+source-derived verification contract; the offline feed/parser preparation in
+`11-02-branch-functional-regression/research/mac-updater-readiness-1.md` did not
+execute an updater or establish native signing/restart compatibility.
+
+### 2. Signatures
+
+Use the original preload `window.updater.checkForUpdates()`,
+`onDownloadProgress`, `onUpdateDownloaded` and `installUpdate()` paths.
+`apps/desktop/src/main/updater.ts` enables autoDownload and calls
+`quitAndInstall(false, true)`. Manual check is independent of the
+`automaticUpdates` scheduling preference. Mac ARM64 consumes `latest-mac.yml`;
+`latest-arm64` is the Windows ARM64 channel.
+
+### 3. Contracts
+
+Set the task-owned process `HOME` as well as `MULTICA_PACKAGED_ACCEPTANCE=1` and
+`MULTICA_PACKAGED_ACCEPTANCE_HOME`. The latter redirects Electron home/userData;
+electron-updater 6.8.3 uses Node `os.homedir()` for its base cache path. With the
+current generated updaterCacheDirName, the Mac cache is
+`<task HOME>/Library/Caches/@multicadesktop-updater`. Verify all actual paths
+before checking, and bind the restarted process to the same owned profile.
+Do not infer native relaunch environment propagation from initial launch alone.
+
+Use explicit owned API/app/WS/updateUrl configuration under
+`<task HOME>/.multica/desktop.json`. Preserve authentication mode. Feed SHA-512,
+file sizes, version and ZIP selection must match exact distribution bytes. A
+prepared template or explicit offline prerelease opt-in does not prove runtime
+availability, native signature acceptance or publication.
+
+### 4. Validation / error matrix
+
+| Observation | Required interpretation |
+| --- | --- |
+| Node HOME/cache path outside the task | Reject updater entry; do not read or clean user caches |
+| Only Electron home/userData were redirected | Cache isolation is unproved |
+| Manual check with automaticUpdates=false | May still auto-download; attach observers before calling |
+| Wrapper download event | Native Squirrel preparation/install/restart remain unproved |
+| Native error or absent automatic restart | Preserve failure; no manual copy/relaunch substitute for success |
+| Offline feed/parser validation | Preparation only; actual updater gate stays NOT_RUN |
+
+### 5. Good / base / bad cases
+
+Good: exact unchanged old/new bytes, owned feed/profile, observed Node/Electron
+paths, transport, native preparation, explicit install and actual restarted
+candidate. Base: retain an honest offline preparation result while conditions
+are missing. Bad: use a download callback or manual app replacement as updater
+installation evidence.
+
+### 6. Required assertions
+
+Require real check ok/available/version, ZIP transport/checksum, native
+readiness/errors, same installation path, candidate executable/ASAR/CLI hashes,
+actual restart and retained supported profile state. Capture the dynamic
+Squirrel loopback proxy port and its owner; fixed browser ports alone are not a
+complete updater cleanup. Audit task-added protocol registrations and exact
+original default/set, all owned app/helper/feed/proxy processes and ports.
+
+### 7. Wrong vs correct
+
+Wrong: set only MULTICA_PACKAGED_ACCEPTANCE_HOME and assume updater writes are
+isolated. Correct: also set process HOME, verify actual Node/cache paths and
+restarted-profile identity, then collect each production updater phase without
+changing its retry, download or install behavior.
