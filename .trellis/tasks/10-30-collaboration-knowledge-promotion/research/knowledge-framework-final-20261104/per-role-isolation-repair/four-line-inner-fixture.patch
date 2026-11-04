@@ -1,0 +1,13 @@
+--- scenario-before-v3.go
++++ server/cmd/server/rk1k_scenarios_test.go
+@@ -589,6 +589,10 @@
+ 			samples = append(samples, sample)
+ 		}
+ 		for _, role := range []string{"leader", "member", "continuation"} {
++			f := newRK1KnowledgeFixture(t, filepath.Join(f.dir, "role-"+role), false)
++			f.updateMemory("Shared approved policy source for the producer matrix.")
++			policy, pending := f.propose(rk1kAlpha, nil)
++			f.approve(policy, pending)
+ 			h, target, leader, member := f.newConsumer(role, true)
+ 			targetRow := f.consumerTarget(h, target)
+ 			f.submitConsumer(h, target, "squad", util.UUIDToString(targetRow.ResourceID))

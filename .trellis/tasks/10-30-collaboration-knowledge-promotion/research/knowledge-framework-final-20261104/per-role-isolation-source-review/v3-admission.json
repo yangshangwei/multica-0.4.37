@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-04T11:10:47.507931+00:00",
+  "reviewer": "/root/knowledge6_source_review",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion",
+  "scope": "Independent v3 path-only prepared admission; no body or control execution",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "ready_for_Root_normal3_signature": true,
+  "actual_dynamic_results_complete": false,
+  "refs": {
+    "handoff": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/per-role-isolation-repair/v3-preparation-handoff.json",
+      "sha256": "2519c3a6f5a869070dfdad00130f118f6ab833b9be77ccd399323162323dd513"
+    },
+    "runner": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/run-fake-knowledge-v16.py",
+      "sha256": "30f9a552a7fa5eb28b778f53a38915b2b89356c283f319206cbb90e34099ef36"
+    },
+    "binding": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/input-binding.json",
+      "sha256": "bfd819dd8e7d3c40237680790d5a038efb511df1ef0a3513d6b6ac164d757cb4"
+    },
+    "path_only_patch": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/per-role-isolation-repair/runner-path-only.patch",
+      "sha256": "19f5f4ddfb7a3fd7cfd676f2b456b7c4b40bb7c8d8ab9cdf8ef8babe4e2743ac"
+    },
+    "source_review": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/per-role-isolation-source-review/review.json",
+      "sha256": "c6071dce4cb9794ff9badee66de1aa03b3a27b60ae42a064a7ea51a96d99e160"
+    },
+    "original_command_admission": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/fake-run-admission-review/review.json",
+      "sha256": "ae3e0dd61b6258b556e53f23b8f3d4b6bf230babcd56d56ba891a63825575d93"
+    },
+    "new3_Root_allocation": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/root-database-allocations-private.json",
+      "sha256": "05e503bc1c019bdec29ede9628f3a94f4f9f2c9c2af073ce3d60bf4e62b0a67e"
+    },
+    "new3_resource_record": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/per-role-isolation-repair/v3-prepared-resources.json",
+      "sha256": "6208b10327319cfe1d1046b089a215fabff2c55aead928510b7556c8d461995e"
+    }
+  },
+  "unchanged_logic": {
+    "old_runner_exact_bytes_AST_after_private_v3_label03_db3_normalization": true,
+    "seven_filter_flags_15plus3paid0_failure_journaling_source_guards_lock_and_normal_first_unchanged": true,
+    "binding_manifest_only_delta": [
+      "server/cmd/server/rk1k_scenarios_test.go"
+    ],
+    "fixture_exact_f707_and_scenario10c047_matches_source_review": true,
+    "old17_tools_cli_product_trees_unchanged": true,
+    "duplicate_source_inventory_or_controls": false
+  },
+  "actual_false_permits": [
+    {
+      "lane": "normal",
+      "permit_path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/permissions/rk1k-normal-v16-03.json",
+      "false_permit_sha256": "f4944997acdb9c06b03ad9c14b7859ec4f91b65ea30a1ee47e2495656a2031f5",
+      "label": "rk1k-normal-v16-03",
+      "database": "multica_rk1k_20261104_v16_normal3_a3c9",
+      "identity": "multica_rk1k_20261104_v16_normal3_a3c9|764_collaboration_ai_policy",
+      "Root_empty764_evidence_matches": true,
+      "environment_sha256": "5b232a904f571dcb22e7b0e391ae06be3f92bde554011aa9fa44b3d6c65dcd79",
+      "home": "/private/tmp/multica-rk1k-20261104-v3-normal-mqtwjrrd/home",
+      "temp": "/private/tmp/multica-rk1k-20261104-v3-normal-mqtwjrrd",
+      "canonical_owner0700_Gitfree_resources": true,
+      "models_empty": true,
+      "ready_to_execute": false
+    },
+    {
+      "lane": "race",
+      "permit_path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/permissions/rk1k-race-v16-03.json",
+      "false_permit_sha256": "7ab3d849933e80e793c614195013c179eb0a541b92c0645541b569aa0d0e0e34",
+      "label": "rk1k-race-v16-03",
+      "database": "multica_rk1k_20261104_v16_race3_a3c9",
+      "identity": "multica_rk1k_20261104_v16_race3_a3c9|764_collaboration_ai_policy",
+      "Root_empty764_evidence_matches": true,
+      "environment_sha256": "71dbd8ccaba303dc884fed784a48faecca794a5adac5125023fa19a6438479e4",
+      "home": "/private/tmp/multica-rk1k-20261104-v3-race-ec43lsc5/home",
+      "temp": "/private/tmp/multica-rk1k-20261104-v3-race-ec43lsc5",
+      "canonical_owner0700_Gitfree_resources": true,
+      "models_empty": true,
+      "ready_to_execute": false
+    }
+  ],
+  "contract": {
+    "filter": "^TestRK1Knowledge(EntryGuard|WrapperGuard|PromptData|TraceCredentialLabels|NativeMetadataUsesRawOutput|EvidenceFaults|FakeProof)$",
+    "tests": [
+      "TestRK1KnowledgeEntryGuard",
+      "TestRK1KnowledgeWrapperGuard",
+      "TestRK1KnowledgePromptData",
+      "TestRK1KnowledgeTraceCredentialLabels",
+      "TestRK1KnowledgeNativeMetadataUsesRawOutput",
+      "TestRK1KnowledgeEvidenceFaults",
+      "TestRK1KnowledgeFakeProof"
+    ],
+    "expected_summary": {
+      "measured_fake_starts": 15,
+      "fake_seed_starts": 3,
+      "paid_starts": 0,
+      "knowledge_allocated": 0,
+      "real_runnable": false
+    },
+    "current_CLI": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/binaries/multica",
+      "sha256": "f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac"
+    },
+    "actual_same_binding_normal3_pass_required_before_race3": true,
+    "full_dynamic_six_file_binding_still_required": true
+  },
+  "Root_next": "Preserve false permits; sign fixed normal3 once with this immutable review/source review. Sole executor full7 normal3, then separately authorised race3 only after actual normal3 success.",
+  "operations": {
+    "tests_controls_migrations_auditors_models_agents": 0,
+    "original_data_source_permission_or_frozen_source_review_mutations": 0,
+    "written_scope": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/per-role-isolation-source-review"
+  },
+  "real_gate": {
+    "budget": 0,
+    "calls": 0,
+    "production_default_enabled": false
+  },
+  "report_md_sha256": "7629ba2a03c7b5d8e6f28ced4349b84de7d7c80ce2b960432833fc618e485596"
+}

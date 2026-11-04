@@ -1,0 +1,59 @@
+{
+  "recorded_at": "2026-11-04T11:29:36.045545+00:00",
+  "state": "actual_normal_and_race_full_fake_pass; independent_final_six_review_pending",
+  "records": {
+    "normal": {
+      "result": {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/runs/rk1k-normal-v16-03/result.json",
+        "sha256": "777753dfa37b10f53e7a427225e45342f145b9e71bc25a298e2e83f116dbf681"
+      },
+      "raw": {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/runs/rk1k-normal-v16-03/tests.jsonl",
+        "sha256": "c7b6abe929ab445ab5d6e1a9e4ff6f5790e302f31c286bd6614e5492eddddf9c"
+      },
+      "summary": {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/runs/rk1k-normal-v16-03/proof/summary.json",
+        "sha256": "4e89952941f3e50b1fcddbdb871a5194ba96bacc1009e63d0b24171aa84e2aa8"
+      },
+      "physical_totals": {
+        "measured_fake_starts": 15,
+        "fake_seed_starts": 3,
+        "paid_starts": 0
+      },
+      "named_pass": 49,
+      "fail": 0,
+      "skip": 0,
+      "source_after_pass": true,
+      "database": "multica_rk1k_20261104_v16_normal3_a3c9"
+    },
+    "race": {
+      "result": {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/runs/rk1k-race-v16-03/result.json",
+        "sha256": "65e6df96063fe67e47a44497e16c83404f0f992cc0a41647d0d7083edb242b54"
+      },
+      "raw": {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/runs/rk1k-race-v16-03/tests.jsonl",
+        "sha256": "d6bbf6d50461b018e317129bbf113f00c37c4c6906160cd25496482f09b315ce"
+      },
+      "summary": {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/runs/rk1k-race-v16-03/proof/summary.json",
+        "sha256": "fd8c9c1a2d5015e2cee9ff6e23d5c740a9d21f6a99101206807f6995b8b13d2f"
+      },
+      "physical_totals": {
+        "measured_fake_starts": 15,
+        "fake_seed_starts": 3,
+        "paid_starts": 0
+      },
+      "named_pass": 49,
+      "fail": 0,
+      "skip": 0,
+      "source_after_pass": true,
+      "database": "multica_rk1k_20261104_v16_race3_a3c9"
+    }
+  },
+  "distinct_databases": true,
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0,
+  "production_default_enabled": false,
+  "all_old_failure_evidence_retained": true
+}

@@ -1,0 +1,42 @@
+{
+  "issued_at": "2026-11-04T11:12:20.829579+00:00",
+  "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "executor": "/root/shared_executor",
+  "lane": "normal",
+  "label": "rk1k-normal-v16-03",
+  "scope": "One full original seven-test normal3 suite using genuine complete fixture per K3 Host role; race waits actual pass",
+  "framework_HEAD": "92a4c7adfad20354e79855e4134934e6004774ad",
+  "accepted_product_source": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "runner_sha256": "30f9a552a7fa5eb28b778f53a38915b2b89356c283f319206cbb90e34099ef36",
+  "input_binding_sha256": "bfd819dd8e7d3c40237680790d5a038efb511df1ef0a3513d6b6ac164d757cb4",
+  "environment_sha256": "5b232a904f571dcb22e7b0e391ae06be3f92bde554011aa9fa44b3d6c65dcd79",
+  "source_review_sha256": "c6071dce4cb9794ff9badee66de1aa03b3a27b60ae42a064a7ea51a96d99e160",
+  "admission_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/per-role-isolation-source-review/v3-admission.json",
+    "sha256": "d2ee04e7a3389e8ab1b84666a53f0926fa9ea9f7788c0110a4048b1adadf2698"
+  },
+  "database": "multica_rk1k_20261104_v16_normal3_a3c9",
+  "actual_database_identity": "multica_rk1k_20261104_v16_normal3_a3c9|764_collaboration_ai_policy|0|0",
+  "fixed_filter": "^TestRK1Knowledge(EntryGuard|WrapperGuard|PromptData|TraceCredentialLabels|NativeMetadataUsesRawOutput|EvidenceFaults|FakeProof)$",
+  "expected_top_tests": [
+    "TestRK1KnowledgeEntryGuard",
+    "TestRK1KnowledgeWrapperGuard",
+    "TestRK1KnowledgePromptData",
+    "TestRK1KnowledgeTraceCredentialLabels",
+    "TestRK1KnowledgeNativeMetadataUsesRawOutput",
+    "TestRK1KnowledgeEvidenceFaults",
+    "TestRK1KnowledgeFakeProof"
+  ],
+  "expected_summary": {
+    "measured_fake_starts": 15,
+    "fake_seed_starts": 3,
+    "paid_starts": 0,
+    "knowledge_allocated": 0,
+    "real_runnable": false
+  },
+  "all_prior_failures_preserved": true,
+  "real_provider_allowed": false,
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0,
+  "production_default_enabled": false
+}

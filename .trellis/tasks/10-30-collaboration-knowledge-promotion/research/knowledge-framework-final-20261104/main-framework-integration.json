@@ -1,0 +1,53 @@
+{
+  "recorded_at": "2026-11-04T11:39:27.564110+00:00",
+  "state": "local_framework_main_merge_pass",
+  "main_before_head": "b3acc043327b5a4eaf17cec1efd1d80bede05132",
+  "main_after_head": "da07e2e74bf9ba58ce84522b3dea020bc59bdd9b",
+  "framework_commit": "5e6a4e4962df86ef5033fe5d5fbe96fbdc9ceb12",
+  "source_review_sha256": "0e9f6deb53cb69dbd30db8ca27e67e0db4289d93b1d709bc063a007c4866a482",
+  "six_in_main_sha256": {
+    "server/cmd/server/rk1k_fixture_test.go": "f7072ce7b11dad29ba0b5dd3cf7e84e0eab87f1d8fb8fd0b702075385bb57b6f",
+    "server/cmd/server/rk1k_provider_test.go": "114439c31ac397e3195ae23e806487f3c02df1cae9bd422d90b73db66f879924",
+    "server/cmd/server/rk1k_scenarios_test.go": "10c047180c9c8bc50b7ff7930a23a1ba80a41018b94fb993730c73566fe72803",
+    "server/cmd/server/rk1k_evidence_test.go": "198402547160cfe530faf9175efe802ee19370eed4ab62bdc6dec8290b3b7717",
+    "server/cmd/server/rk1k_entry_test.go": "e58fff97a4654f32363b9cbb5be1e5562100354747a79a091747ec1dbb2e4844",
+    "server/internal/daemon/rk1k_driver_agentintegration.go": "b0ed3e55972f3f8208bfde741d73ae419d83acca316ee0e109eed8e643f002e0"
+  },
+  "old17_in_main_sha256": {
+    "server/cmd/server/rk1_entry_test.go": "0e7bd9887edc6be00c020fc861aab6c26cfbe494fb1dcd30b1a53f857541d0e3",
+    "server/cmd/server/rk1_evidence_contract_unit_test.go": "9868bad19675c8ebdaf43bf9d63b59485e12830501379acc769ba8f0c3a603ef",
+    "server/cmd/server/rk1_evidence_fault_proof_test.go": "b43d805ecdbaca8d61d1aeb777108f99ab74046f7b84b8d36ffa219f19079090",
+    "server/cmd/server/rk1_evidence_format_test.go": "648d8edb9640ba4cd09d213c785e232d4904ebff5d1631ec015f4eb6ea1962d4",
+    "server/cmd/server/rk1_evidence_publication_test.go": "461ae12b8da9ffc803681608f7d88db0f39342158f3223d71ad167a772e690f1",
+    "server/cmd/server/rk1_fake_helpers_test.go": "d863e2b35aab4a127e26f6a923fd4d60438aa610804a96f67aa2be23c0c50ab2",
+    "server/cmd/server/rk1_fake_test.go": "952165b30c01d6486304b81df72e3bcd373ce1e794a716772a344dece137e840",
+    "server/cmd/server/rk1_fixture_test.go": "c257225e01c00a92dc266226347a3ffa016ac79db18c592dff6d293c6294994b",
+    "server/cmd/server/rk1_lifecycle_test.go": "b1fe1002b28804b7bfd8593b5df0c20502e246de5b5e7ab8760029a5da3e8c6f",
+    "server/cmd/server/rk1_observe_test.go": "5472c35cff8f5f99eb1c84381656e9677985e3743a278ff271531a01740f1b07",
+    "server/cmd/server/rk1_provider_test.go": "02050fc42ba6aeb02f4d7695ce76f4ee7a4402f07048cc2326dcde5d7b3e4f05",
+    "server/cmd/server/rk1_run_test.go": "0eb15501131a043c2cbd98c5ac33e515a9b1d6c55d4ba54f0388a13516a85763",
+    "server/cmd/server/rk1_scenarios_handoff_test.go": "eaba9f65a465f12afb3c5322ffefe6f6ec9d5e94bfa50870bf3027fea992c06a",
+    "server/cmd/server/rk1_scenarios_recall_test.go": "644797d7325ab91c9ac6f306a86bf426bbbf6375009673118f1fe3f7706a7cda",
+    "server/cmd/server/rk1_trace_barrier_test.go": "caa003b5b79f0747198d1fbdb268cdb9fdab8b289b691bd0222b2ab5e72a1c94",
+    "server/cmd/server/rk1_trace_test.go": "6f3a767c574d363d3f078bd8b9386c734366186c477493c03067f57f43e7c172",
+    "server/cmd/server/rk1_trial_test.go": "bfdfb910b40dc43c8b8a43d49a617dedc5421d8ed251c30b4488e581f105f5a5"
+  },
+  "production_delta_from_accepted_EDA": [
+    "server/cmd/server/rk1k_entry_test.go",
+    "server/cmd/server/rk1k_evidence_test.go",
+    "server/cmd/server/rk1k_fixture_test.go",
+    "server/cmd/server/rk1k_provider_test.go",
+    "server/cmd/server/rk1k_scenarios_test.go",
+    "server/internal/daemon/rk1k_driver_agentintegration.go"
+  ],
+  "only_new_build_tagged_six_source_files_added": true,
+  "spec_sha256": "398f9544ac376d713ceba9c3037145a6a3a1f13deae62c989dcb03b9467f108d",
+  "retained_scoped_spec_stash": "8de7382085f65f32ad0cc25a0ae85f507385bb15",
+  "unrelated_dirty_tracked_preserved_count": 18,
+  "unrelated_dirty_tracked_bytes_and_modes_unchanged": true,
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0,
+  "production_default_enabled": false,
+  "new_tests_run_during_merge": false,
+  "no_remote_action": true
+}

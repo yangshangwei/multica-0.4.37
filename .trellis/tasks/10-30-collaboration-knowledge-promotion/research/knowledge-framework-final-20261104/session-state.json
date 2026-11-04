@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-11-04T08:42:19.620417+00:00",
+  "updated_at": "2026-11-04T12:03:14.014537+00:00",
   "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
   "active_task": ".trellis/tasks/10-30-collaboration-knowledge-promotion",
   "task7_closed": true,
   "task7_archive": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-01-collaboration-knowledge-audit-fixes",
   "accepted_product_source": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
   "sole_executor": "/root/shared_executor",
-  "current_phase": "preserve_six_and_old17_then_integrate_accepted_source; minimum_HTTP_List_fix_pending",
+  "current_phase": "authorized_deterministic_scope_complete; task7_archived; task6_real_release_open",
   "framework_root": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103",
   "framework_head_before": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
   "next": [
@@ -23,5 +23,67 @@
     "production_injection": false,
     "budget_transfers": false
   },
-  "stable_handoff": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/task7-closure-handoff.json"
+  "stable_handoff": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/task7-closure-handoff.json",
+  "framework_current_head": "92a4c7adfad20354e79855e4134934e6004774ad",
+  "source_sync_record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/source-sync-result.json",
+  "source_sync_sha256": "118496862f719868bfca4885134336a937af10d49b701cf22e33a20de8ba1b73",
+  "database_allocation": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/database-allocation/result.json",
+  "database_allocation_sha256": "0b1e9e6835bf5b10495b9780f5362ed5d6be1fa16621d31ead9ab538976974d2",
+  "new_normal_race_databases": [
+    "multica_rk1k_20261104_v16_normal_a3c9",
+    "multica_rk1k_20261104_v16_race_a3c9"
+  ],
+  "fixture_sha256": "f7072ce7b11dad29ba0b5dd3cf7e84e0eab87f1d8fb8fd0b702075385bb57b6f",
+  "static_handoff": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/fixture-repair/fixture-static-handoff.json",
+  "static_handoff_sha256": "b7cfa0420a9ffe5261fa32fec25c6ff0a8ae4d7380680c5934e373ced38bf547",
+  "pre_run_source_review": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/pre-run-source-review/review.json",
+  "pre_run_source_review_sha256": "53fa774254fdc8ef5a92d4c08e51d1ff14c965bc2e036b409740d83ea8246cc2",
+  "normal_signed_permit_sha256": "30c4451f456f022dafae41f41d1053ad0e6e7b58886c9980a6f1d522d8f7aea0",
+  "normal_root_record_sha256": "1dfe641a140b566cb7cf8596f79affafae932022f8803dbdeb2a26d40297d5a8",
+  "admission_review_sha256": "ae3e0dd61b6258b556e53f23b8f3d4b6bf230babcd56d56ba891a63825575d93",
+  "normal01_result_sha256": "a1c125f17305bd4f7f6786fa54262a022232c742f4e8171dd88c3b7dd227e0b1",
+  "normal01_failure_context": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/normal01-failure-context.json",
+  "normal01_partial_counts": {
+    "measured": 14,
+    "seed": 1,
+    "paid": 0
+  },
+  "diagnostic_plan": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/k3-diagnosis-plan-20261104.md",
+  "diagnostic_database": "multica_rk1k_20261104_k3diag01_a3c9",
+  "diagnostic_confirmed_record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/k3-diagnostic-confirmed-root-cause.json",
+  "diagnostic_confirmed_sha256": "4617d33e22593171279fad3fc89236bbc7aa899ae3a947cced6b6664c0c5d75b",
+  "next_full_labels": [
+    "rk1k-normal-v16-03",
+    "rk1k-race-v16-03"
+  ],
+  "consumer_isolation_source_review_sha256": "3fd21f1e42329f4d66cd157fb9f7f9d8943a4a2bac0d7efa38e61a26557c9aae",
+  "fixture_current_sha256": "9ad91d89d9f43c63759c69274db18c99108b49de7000e6a74a7a08bbb872e0d8",
+  "normal2_signed_permit_sha256": "8b9401a7897732005fc138be029813c16d5549649c7a783f35cbf11bd30ceaae",
+  "normal2_root_record_sha256": "a42939fbd5f5ebbfc91bf886916f92ca2d0a3374d53f1cc887232c387a3a0b72",
+  "v2_admission_review_sha256": "d37c6a79f9a2acd5d0c44ba99f8197919c94429e6fd6d96230e7744c2b4b6adb",
+  "normal2_failure_context": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/normal02-failure-context.json",
+  "normal2_result_sha256": "5f0318d97719bbafb21ffd124e909cf14aee07fc749356edaa1f2e4783717ce1",
+  "normal3_signed_permit_sha256": "89ef8b3e304129c61e575359c72be2e5c011f2fbf36dd219db49d30aa18a5fc9",
+  "normal3_root_record_sha256": "9305151709df79da28da912bd997ff2eebb877c5368118f4cfa79b95e31d2949",
+  "v3_admission_review_sha256": "d2ee04e7a3389e8ab1b84666a53f0926fa9ea9f7788c0110a4048b1adadf2698",
+  "normal3_accepted": true,
+  "normal3_result_sha256": "777753dfa37b10f53e7a427225e45342f145b9e71bc25a298e2e83f116dbf681",
+  "race3_signed_permit_sha256": "0b1df110d242c305161c871f96029ddeffd32f219159fff1898a373c1f9957fd",
+  "race3_root_record_sha256": "20b15a14f53ae43622f939ffd49958561ce1ede28f94c901decbcc878235a207",
+  "race3_accepted": true,
+  "race3_result_sha256": "65e6df96063fe67e47a44497e16c83404f0f992cc0a41647d0d7083edb242b54",
+  "root_actual_recheck": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/root-normal-race-actual-recheck.json",
+  "framework_committed_head": "5e6a4e4962df86ef5033fe5d5fbe96fbdc9ceb12",
+  "main_integrated_head": "da07e2e74bf9ba58ce84522b3dea020bc59bdd9b",
+  "final_source_binding": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/final-current-source-binding.json",
+  "final_source_binding_sha256": "d68bfca4b69f251ccff5afb88500d53b91d7c50c8aed82770a75fea44eea3b2d",
+  "real_gate_package": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/real-model-gate-package.json",
+  "fake_scope_complete": true,
+  "post_commit_review_sha256": "72ad68c547a591c255eb7349f2f31fd79ee3383fdc0162c14e4dd5b5f1810b9b",
+  "remaining_authorized_fake_work": [],
+  "remaining_external_gates": [
+    "Separate knowledge real quota/account/model/executable/exclusive window",
+    "Actual real-model understanding and parent release/platform acceptance"
+  ],
+  "journal_recorded_session": 121
 }

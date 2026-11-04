@@ -1,0 +1,191 @@
+{
+  "state": "normal3_actual_full_fake_pass_verified",
+  "recorded_at": "2026-11-04T11:22:40.949652+00:00",
+  "accepted": true,
+  "exit_status": 0,
+  "named_counts": {
+    "TestRK1KnowledgeEntryGuard": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeWrapperGuard": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgePromptData": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeTraceCredentialLabels": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeNativeMetadataUsesRawOutput": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeEvidenceFaults": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeFakeProof": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "fail_events": 0,
+  "skip_events": 0,
+  "invalid_log_lines": 0,
+  "files": {
+    "started.json": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/runs/rk1k-normal-v16-03/started.json",
+      "sha256": "48d3c0e14592f7db1d878a42b50a8cb38a9940958fd793389b16260d85a86282",
+      "bytes": 1075
+    },
+    "result.json": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/runs/rk1k-normal-v16-03/result.json",
+      "sha256": "777753dfa37b10f53e7a427225e45342f145b9e71bc25a298e2e83f116dbf681",
+      "bytes": 2392
+    },
+    "tests.jsonl": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/runs/rk1k-normal-v16-03/tests.jsonl",
+      "sha256": "c7b6abe929ab445ab5d6e1a9e4ff6f5790e302f31c286bd6614e5492eddddf9c",
+      "bytes": 546491
+    },
+    "proof/summary.json": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/runs/rk1k-normal-v16-03/proof/summary.json",
+      "sha256": "4e89952941f3e50b1fcddbdb871a5194ba96bacc1009e63d0b24171aa84e2aa8",
+      "bytes": 1992211
+    }
+  },
+  "physical_totals": {
+    "measured_fake_starts": 15,
+    "fake_seed_starts": 3,
+    "paid_starts": 0
+  },
+  "K3_fixed_order": [
+    "K3-issue",
+    "K3-comment",
+    "K3-chat",
+    "K3-quick_create",
+    "K3-autopilot",
+    "K3-root",
+    "K3-member",
+    "K3-continuation"
+  ],
+  "K3_actual_independent_host_identities": [
+    {
+      "label": "K3-root",
+      "identity": {
+        "kind": "run",
+        "run_id": "8bb7385b-3dd0-41b5-a233-c6ccff5b27bb",
+        "host_identity": {
+          "deployment_id": "00000000-0000-4000-8000-000000000009",
+          "installation_id": "3447ff25-b912-4f6b-be01-aed4acdfd23f",
+          "issue_id": "01a1a645-ea04-73b9-828b-8041c04227ae",
+          "session_id": "b254daec-a88a-4d7d-9491-45ae00ba030f",
+          "target_id": "f167288d-3436-42e4-9cd4-4ab1419c3abb",
+          "channel_id": "26e132b9-3d67-4af0-b4a5-8acdc9d94b2d",
+          "batch_id": "458794ce-9374-4ba6-a7ad-71ec17457b28",
+          "group_id": "13565f1b-b46a-4ea3-a7ba-902d5fcdad7a",
+          "run_id": "8bb7385b-3dd0-41b5-a233-c6ccff5b27bb",
+          "fence": "1",
+          "claim_generation": "1",
+          "launch_nonce": "0fbf8f77-cd62-453b-84cb-d3a1fde20f67"
+        }
+      }
+    },
+    {
+      "label": "K3-member",
+      "identity": {
+        "kind": "run",
+        "run_id": "783f7a31-8e7c-43a4-b22d-c0c7ef7ccf05",
+        "host_identity": {
+          "deployment_id": "00000000-0000-4000-8000-000000000009",
+          "installation_id": "b0b4232e-1ca1-4d4b-966e-b5fd6e19e489",
+          "issue_id": "01a1a645-f6cb-7df6-aa7d-84a04dd56db5",
+          "session_id": "725a6e39-f888-4c52-a772-b50416d84ef9",
+          "target_id": "d97065e0-42f7-4046-a5eb-b703abf4d05f",
+          "channel_id": "84f87ad0-5d95-49bd-a14d-e316003bc1e4",
+          "batch_id": "6791eb1f-7752-497a-99a5-0f9cc9e58766",
+          "group_id": "156a6147-1aac-46c0-a995-93ef54e7b3c7",
+          "run_id": "783f7a31-8e7c-43a4-b22d-c0c7ef7ccf05",
+          "fence": "1",
+          "claim_generation": "1",
+          "launch_nonce": "165ae694-dcf4-4d65-87fb-6623035f3b03"
+        }
+      }
+    },
+    {
+      "label": "K3-continuation",
+      "identity": {
+        "kind": "run",
+        "run_id": "86628a5b-c90e-4418-b291-f9d0f4a994c0",
+        "host_identity": {
+          "deployment_id": "00000000-0000-4000-8000-000000000009",
+          "installation_id": "b12e6bda-aebe-4572-a395-c11055cc055c",
+          "issue_id": "01a1a646-080b-776a-b5f7-de63ad78ffdb",
+          "session_id": "77a8e484-9dd9-4390-b7f7-2c9929875a97",
+          "target_id": "a934d391-077e-41c2-aa72-149c5ce55f22",
+          "channel_id": "05332ae8-382b-4dd9-ada9-b916f82412c3",
+          "batch_id": "d056a7ca-d73f-4354-a8d5-fcc7f71598c4",
+          "group_id": "c05e7817-a220-4f74-b243-e69fdaf135ae",
+          "run_id": "86628a5b-c90e-4418-b291-f9d0f4a994c0",
+          "fence": "1",
+          "claim_generation": "1",
+          "launch_nonce": "51493a52-9c69-4825-a4b5-f7e7f824e02a"
+        }
+      }
+    }
+  ],
+  "durable_sample_count": 18,
+  "all_sample_criteria_pass": true,
+  "source_after_unchanged": {
+    "server/cmd/server/rk1k_fixture_test.go": "f7072ce7b11dad29ba0b5dd3cf7e84e0eab87f1d8fb8fd0b702075385bb57b6f",
+    "server/cmd/server/rk1k_provider_test.go": "114439c31ac397e3195ae23e806487f3c02df1cae9bd422d90b73db66f879924",
+    "server/cmd/server/rk1k_scenarios_test.go": "10c047180c9c8bc50b7ff7930a23a1ba80a41018b94fb993730c73566fe72803",
+    "server/cmd/server/rk1k_evidence_test.go": "198402547160cfe530faf9175efe802ee19370eed4ab62bdc6dec8290b3b7717",
+    "server/cmd/server/rk1k_entry_test.go": "e58fff97a4654f32363b9cbb5be1e5562100354747a79a091747ec1dbb2e4844",
+    "server/internal/daemon/rk1k_driver_agentintegration.go": "b0ed3e55972f3f8208bfde741d73ae419d83acca316ee0e109eed8e643f002e0"
+  },
+  "old17_unchanged": {
+    "server/cmd/server/rk1_entry_test.go": "0e7bd9887edc6be00c020fc861aab6c26cfbe494fb1dcd30b1a53f857541d0e3",
+    "server/cmd/server/rk1_evidence_contract_unit_test.go": "9868bad19675c8ebdaf43bf9d63b59485e12830501379acc769ba8f0c3a603ef",
+    "server/cmd/server/rk1_evidence_fault_proof_test.go": "b43d805ecdbaca8d61d1aeb777108f99ab74046f7b84b8d36ffa219f19079090",
+    "server/cmd/server/rk1_evidence_format_test.go": "648d8edb9640ba4cd09d213c785e232d4904ebff5d1631ec015f4eb6ea1962d4",
+    "server/cmd/server/rk1_evidence_publication_test.go": "461ae12b8da9ffc803681608f7d88db0f39342158f3223d71ad167a772e690f1",
+    "server/cmd/server/rk1_fake_helpers_test.go": "d863e2b35aab4a127e26f6a923fd4d60438aa610804a96f67aa2be23c0c50ab2",
+    "server/cmd/server/rk1_fake_test.go": "952165b30c01d6486304b81df72e3bcd373ce1e794a716772a344dece137e840",
+    "server/cmd/server/rk1_fixture_test.go": "c257225e01c00a92dc266226347a3ffa016ac79db18c592dff6d293c6294994b",
+    "server/cmd/server/rk1_lifecycle_test.go": "b1fe1002b28804b7bfd8593b5df0c20502e246de5b5e7ab8760029a5da3e8c6f",
+    "server/cmd/server/rk1_observe_test.go": "5472c35cff8f5f99eb1c84381656e9677985e3743a278ff271531a01740f1b07",
+    "server/cmd/server/rk1_provider_test.go": "02050fc42ba6aeb02f4d7695ce76f4ee7a4402f07048cc2326dcde5d7b3e4f05",
+    "server/cmd/server/rk1_run_test.go": "0eb15501131a043c2cbd98c5ac33e515a9b1d6c55d4ba54f0388a13516a85763",
+    "server/cmd/server/rk1_scenarios_handoff_test.go": "eaba9f65a465f12afb3c5322ffefe6f6ec9d5e94bfa50870bf3027fea992c06a",
+    "server/cmd/server/rk1_scenarios_recall_test.go": "644797d7325ab91c9ac6f306a86bf426bbbf6375009673118f1fe3f7706a7cda",
+    "server/cmd/server/rk1_trace_barrier_test.go": "caa003b5b79f0747198d1fbdb268cdb9fdab8b289b691bd0222b2ab5e72a1c94",
+    "server/cmd/server/rk1_trace_test.go": "6f3a767c574d363d3f078bd8b9386c734366186c477493c03067f57f43e7c172",
+    "server/cmd/server/rk1_trial_test.go": "bfdfb910b40dc43c8b8a43d49a617dedc5421d8ed251c30b4488e581f105f5a5"
+  },
+  "input_binding_sha256": "bfd819dd8e7d3c40237680790d5a038efb511df1ef0a3513d6b6ac164d757cb4",
+  "runner_sha256": "30f9a552a7fa5eb28b778f53a38915b2b89356c283f319206cbb90e34099ef36",
+  "model_budget": 0,
+  "real_Provider_calls": 0,
+  "production_default_enabled": false,
+  "no_old_failure_or_database_overwrite": true,
+  "Scope_note": "Actual complete fake schedule; no claim of real model understanding or release acceptance"
+}

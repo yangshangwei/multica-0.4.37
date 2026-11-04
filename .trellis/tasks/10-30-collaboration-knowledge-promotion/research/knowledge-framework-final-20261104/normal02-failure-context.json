@@ -1,0 +1,63 @@
+{
+  "recorded_at": "2026-11-04T10:54:05.330580+00:00",
+  "state": "normal2_original_failed_unique_runtime_tuple; race2_unattempted",
+  "result": {
+    "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/runs/rk1k-normal-v16-02/result.json",
+    "sha256": "5f0318d97719bbafb21ffd124e909cf14aee07fc749356edaa1f2e4783717ce1"
+  },
+  "raw": {
+    "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/runs/rk1k-normal-v16-02/tests.jsonl",
+    "sha256": "b0dc5f46aef5428dd86d210159867abe3d801d77fd23ff9cd489a5e6bb934084"
+  },
+  "actual_error": "SQLSTATE23505 agent_runtime_workspace_id_daemon_id_provider_idx at newConsumer first runtime registration",
+  "source_after_pass": true,
+  "top_named_counts": {
+    "TestRK1KnowledgeEntryGuard": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeWrapperGuard": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgePromptData": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeTraceCredentialLabels": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeNativeMetadataUsesRawOutput": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeEvidenceFaults": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeFakeProof": {
+      "run": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    }
+  },
+  "summary_complete": false,
+  "rejected_correction": "Clone consumer base but reuse same managed daemon/binding and create another Claude runtime; violates unique workspace/daemon/provider tuple",
+  "next_authorized_boundary": "Restore List-corrected working fixture; use existing complete newRK1KnowledgeFixture for each independent K3 host role with genuine new schema/daemon/workspace/binding/capability and real per-sample alpha approval. K1/5ordinary/K2 native scope/seed/15+3 unchanged.",
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0
+}

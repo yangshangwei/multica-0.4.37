@@ -1,3 +1,43 @@
+## 2026-11-04 当前授权阶段已完整收口
+
+#7 已独立 completed/归档，AC1–AC9 / 21项、共享完整v16和四CCG均通过；全部历史失败、专库、构件及其他会话修改保留。#6完整fake普通03/race03各49具名pass、15 measured+3 seed、0 paid，六文件动态终审与提交后79项独立绑定均 **pass-with-notes / 0 blockers**。框架代码已提交 `5e6a4e496` 并本地合入 `da07e2e74`，默认产品源码相对已验收EDA只增加六个guarded文件，旧17不变。
+
+[最终验证](verification-2026-11-04.md) · [提交后独立绑定](research/knowledge-framework-final-20261104/post-commit-binding-review/review.json) · [当前源码绑定](research/knowledge-framework-final-20261104/final-current-source-binding.json)。会话121已记录。剩余为真实知识及父级发布门：分配/调用 **0/0**、真实入口NOT_RUNNABLE、账户/真实执行文件未绑定、生产默认false、不转用原14/runtime25。#6继续in_progress，当前授权的fake阶段无剩余工作。下方各旧时点保留历史。
+
+## 2026-11-04 框架完整 fake 验收及本地集成完成
+
+#7 已独立 completed/归档；共享 v16 与四 CCG 保留通过记录。#6 六文件的普通03/race03 各 **49具名pass、0fail/skip/非法JSON**，完整 E0b/K1/K2/K3 **15 measured+3 seed、0 paid**，54项样本构件及独立动态终审 **pass-with-notes / 0 blockers**。原17文件不变，真实 HTTP List 和每个 K3 Host 角色完整独立fixture保留真实授权/来源/父级/唤醒链路；旧失败与诊断不改写。
+
+六文件及规范已提交 `5e6a4e496`，本地主集成 `da07e2e74`；最终源码相比共享 `eda0d68fb` 只增加六个默认排除的 tagged 文件，主树/框架/已测六文件、旧17、CLI、环境、专库及raw/summary绑定一致。当前提交后独立绑定收尾，记录见 `research/knowledge-framework-final-20261104/final-current-source-binding.json`。真实执行包已整理但不可运行：知识分配/调用 **0/0**，账户/真实执行文件未绑定，生产默认false，原14/runtime25额度不转用。#6继续in_progress，真实模型和父级发布验收独立开放。
+
+## 2026-11-04 普通/race 两套完整 fake 已实际通过
+
+原完整普通03/race03 均 exit0/accepted：每套7个top/49个具名终态全部pass，0fail/skip/非法JSON，源码前后绑定通过。两份独立新专库分别验收完整 E0b/K1/K2/K3，durable summary各15 measured+3 seed、0 paid；race无数据竞争诊断。固定八条K3角色/producer与真实独立fixture/candidate/批准内容均留证，旧normal01/02及K3诊断不改为通过。当前独立六文件动态终审正在完成；后续本地提交/合入后最终源码绑定。知识预算/调用0/0、生产默认false，真实及发布门独立保持开放，#7已归档关闭。
+
+## 2026-11-04 完整普通 normal03 真正通过
+
+原七类完整 fake normal03 exit0/accepted：全部top-level各run1/pass1，0fail/skip/非法JSON，source-before/after绑定通过；durable summary齐全，E0b/K1/K2/K3固定15 measured+3 seed、0 paid已实际重建。K3八项入口/角色及每条真实新fixture/candidate身份保留，原两轮失败/诊断不改为通过。Root已在另一新专库签发单次race03；race实际结果和最终六文件独立绑定仍待完成。知识预算/调用0/0、生产默认false，#7关闭状态不变。
+
+## 2026-11-04 normal02 原始失败保留，调整为现成完整 fixture 隔离
+
+原七类 normal02 exit1：六控制top通过，FakeProof/K1 首个consumer注册因同 workspace/daemon/provider 唯一元组23505失败，summary缺失；source-after通过、0skip/非法JSON，race02未运行。复制base后沿同daemon创建第二个Claude runtime的方案已弃用，原源码/库/raw保留。独立复核确认现成完整 knowledge fixture 每次真实登记新daemon/workspace/binding并拥有独立schema/pool；当前只将K3三个Host角色分别使用该fixture，通过真实API批准相同Alpha内容并分别绑定source身份，保留K1、五普通K3、K2原native链、seed与15+3/0。普通3/race3两份新库764空0/0已分配，尚未新body。#7已关闭；真实预算/调用0/0、默认false。
+
+## 2026-11-04 R23 原因已实证，consumer runtime 隔离静态独立通过
+
+新专库的单次 K3 诊断观察到唯一旧member continuation 与新consumer共用runtime/binding且未预留/未结算，`pending_derived_run=true`；它的issue/session与已通过member样本精确对应。原始 normal01、诊断和normal8均保留。最小修正仅在新fixture复用真实host-runtime注册例程，consumer复制base后实际登记独立runtime/caps/request/client并经旧roster/consent；共享知识来源、八项场景、seed及15+3/0计划不变，诊断代码已留证后移除。gofmt/compile-only/vet及六文件源码独立pass/0阻塞。第二轮只刷新私有路径、标签、新专库和当前字节绑定，普通2/race2尚未启动；真实预算/调用0/0、默认false、#7已关闭。
+
+## 2026-11-04 普通完整 normal01 失败，已到 K3 continuation 准备
+
+原始七类完整套件 exit1：六个控制 top-level 通过，FakeProof 的 E0b/K1/K2 与 K3 root/member 已交付，K3 continuation 的 seed-root 在真实 HTTP List 连续200后仍无当前issue eligible run而10秒超时。0 skip、0非法JSON、source-after绑定通过，durable summary未生成；race仍false。原库/源码/输入/日志全部保留，正在独立诊断同一runtime上较早member continuation与新consumer的隔离/提升条件；不手工造run、结算旧行、加seed或放宽超时。知识预算/调用0/0，#7关闭状态不变。
+
+## 2026-11-04 K3 最小真实 List 修正静态通过
+
+`nextRunForIssue` 现在每轮先用实际 MDT/runtime Client.List 经 HTTP 触发输入提升，再与当前 session 未 settled 的 eligible IDs 取交集；10秒期限、100毫秒轮询、恰好一个及所有 seed/场景断言保持。gofmt、tagged compile-only 和 tagged vet 均 exit0，其他五文件与旧17哈希不变。独立六文件静态复核和新的 fake-only runner/两份 false 许可准备进行中；普通/race场景尚未启动，两份新迁移库764已就绪。知识0/0、默认false，#7已关闭。
+
+## 2026-11-04 当前源码与两份新专库已就绪
+
+既有框架已从 `118fc53ea` 合并到 `92a4c7ad`，五个产品源码树与已验收 `eda0d68fb` 精确一致，六文件、旧17及 normal8 失败 raw 哈希保持不变。Root 已创建两份从未使用的新普通/race专库，分别完成迁移764并核对 issue/task0；唯一执行者正在最小修正 `nextRunForIssue` 的真实 HTTP List/promote seam 和 compile/vet/私有 false 许可准备，尚未开始新完整 fake 套件。下一步是独立准入→普通→race→六文件终审/最终绑定。知识0/0、默认false。
+
 ## 2026-11-04 #7 已独立关闭，转入 #6 框架验证
 
 #7 的 AC1–AC9 / 21 项、共享 v16、四 CCG 及本地 `eda0d68fb` 源码一致性已独立通过并完成归档。24 项旧 source overlay 有逐文件备份和 scoped stash，其他修改保留；历史失败/数据库/原始报告哈希与权限保持原值。稳定交接：`research/knowledge-framework-final-20261104/task7-closure-handoff.json`；归档报告：`../archive/2026-11/11-01-collaboration-knowledge-audit-fixes/closing-report-20261104.md`。当前 #6 仍在进行，下一步保留六文件与旧17、同步验收源码、最小修正真实 HTTP List/promote 轮询，再新专库普通/race及独立源码绑定。知识预算/真实调用 0/0，生产默认 false，真实及发布门单列开放。

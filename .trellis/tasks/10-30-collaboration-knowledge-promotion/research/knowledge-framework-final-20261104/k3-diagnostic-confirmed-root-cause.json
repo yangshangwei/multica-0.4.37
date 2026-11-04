@@ -1,0 +1,55 @@
+{
+  "recorded_at": "2026-11-04T10:14:41.969829+00:00",
+  "state": "exact_R23_blocker_confirmed; source_minimum_consumer_runtime_isolation_authorized",
+  "diagnostic_result": {
+    "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-k3diag-v16-01/result.json",
+    "sha256": "78e6dd6740bc8244a30fe1eb862727373b1fd1e0df248af7e81d5e5b7867ceb5"
+  },
+  "raw_sha256": "f7ce3b68ca1df6ab68e216e46ce407a88e8e94b4a9b8c4b05587295794ea6f9d",
+  "actual_failure_metadata": {
+    "binding_id": "19fb8190-88c0-47f6-9cb9-eb5d5f73bb0b",
+    "issue_id": "01a1a606-b9ac-76d6-a246-96732534f68a",
+    "last_list_run_ids": [
+      "f66e3562-94dd-4186-b35a-6aed93503b1c"
+    ],
+    "listed_runs": [
+      {
+        "binding_id": "19fb8190-88c0-47f6-9cb9-eb5d5f73bb0b",
+        "issue_id": "01a1a606-af6f-7455-ba41-b38af865e233",
+        "progress_state": "prepared",
+        "reserved": false,
+        "run_id": "f66e3562-94dd-4186-b35a-6aed93503b1c",
+        "runtime_id": "cac7b9a8-11d9-4848-91e8-653daf046fcc",
+        "same_issue": false,
+        "session_id": "275adebe-bd4b-4d04-8454-073903214217",
+        "step_kind": "continuation",
+        "unsettled": true
+      }
+    ],
+    "pending_derived_run": true,
+    "runtime_id": "cac7b9a8-11d9-4848-91e8-653daf046fcc",
+    "session_id": "e03f5850-9fb3-4690-bc6e-34dd9edbb2f9",
+    "task_service_knowledge_enabled": false
+  },
+  "earlier_member_identity": {
+    "deployment_id": "00000000-0000-4000-8000-000000000009",
+    "installation_id": "a17b892b-7b3a-4eaa-aa7d-c91dc420b7cb",
+    "issue_id": "01a1a606-af6f-7455-ba41-b38af865e233",
+    "session_id": "275adebe-bd4b-4d04-8454-073903214217",
+    "target_id": "eff15866-6cfc-4868-b612-28ed3e9225ed",
+    "channel_id": "593ef951-41b2-4679-a37b-8ed81abf7595",
+    "batch_id": "6fe2a16b-c6c2-4041-bbba-d136a83d3516",
+    "group_id": "bf380b50-a820-4d13-b85c-ad3e4a84dc89",
+    "run_id": "7805c20e-e6a3-4c8c-8b80-03c37f68fb23",
+    "fence": "1",
+    "claim_generation": "1",
+    "launch_nonce": "411e5885-b704-43c1-b354-6d0869159164"
+  },
+  "actual_other_issue_continuation_matches_member": true,
+  "explanation": "The member-only sample leaves a valid unreserved continuation in its runtime/binding. R23 protects that candidate and refuses promotion of the new consumer root. Independent cases need distinct genuine runtimes; do not settle the retained candidate or add launches.",
+  "diagnostic_not_acceptance": true,
+  "six_before_after_equal": true,
+  "old17_before_after_equal": true,
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0
+}

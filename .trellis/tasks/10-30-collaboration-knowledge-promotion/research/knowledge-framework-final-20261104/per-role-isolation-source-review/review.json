@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-04T11:02:33.864642+00:00",
+  "reviewer": "/root/knowledge6_source_review",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion",
+  "scope": "Targeted existing-fixture architecture and current four-line K3 host isolation source/static review only",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "source_static_ready": true,
+  "full_normal_race_passed": false,
+  "refs": {
+    "handoff": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/per-role-isolation-repair/source-static-handoff.json",
+      "sha256": "304ead6418a97ea67136fbb86f83e85e1873745c8e474054c319a2fa06cdf22e"
+    },
+    "static": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/per-role-isolation-repair/static-result.json",
+      "sha256": "e2087fffb16ce1200c0a33d67670fb6b233f4e406b3721cca4c5e7712c7ccfaa",
+      "gofmt_compile_vet": [
+        0,
+        0,
+        0
+      ]
+    },
+    "scenario_diff": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/per-role-isolation-repair/four-line-inner-fixture.patch",
+      "sha256": "b549fbf1922e534fa6083a3ea3d42359a8388f3ceccb028537ba4338334bf32c"
+    },
+    "fixture_restore": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/per-role-isolation-repair/restore-working-fixture.patch",
+      "sha256": "10d7d8b31ed5aa6ae45c293c01725837017c33e074457b1706c6a00f48b2e75d"
+    }
+  },
+  "current_six": {
+    "server/cmd/server/rk1k_fixture_test.go": "f7072ce7b11dad29ba0b5dd3cf7e84e0eab87f1d8fb8fd0b702075385bb57b6f",
+    "server/cmd/server/rk1k_provider_test.go": "114439c31ac397e3195ae23e806487f3c02df1cae9bd422d90b73db66f879924",
+    "server/cmd/server/rk1k_scenarios_test.go": "10c047180c9c8bc50b7ff7930a23a1ba80a41018b94fb993730c73566fe72803",
+    "server/cmd/server/rk1k_evidence_test.go": "198402547160cfe530faf9175efe802ee19370eed4ab62bdc6dec8290b3b7717",
+    "server/cmd/server/rk1k_entry_test.go": "e58fff97a4654f32363b9cbb5be1e5562100354747a79a091747ec1dbb2e4844",
+    "server/internal/daemon/rk1k_driver_agentintegration.go": "b0ed3e55972f3f8208bfde741d73ae419d83acca316ee0e109eed8e643f002e0"
+  },
+  "scope_proof": {
+    "fixture_exact_working_f707": true,
+    "remove_only_four_role_setup_lines_recovers_original_scenario7cd": true,
+    "other_four_new_files_and_all17_unchanged": true,
+    "K1_K2_five_ordinary_native_chain_and_seed_assertions_order15plus3paid0_unchanged": true,
+    "inner_f_scope_rebinds_host_sample_source_query_client_and_seed_flags": true,
+    "no_inner_ordinaryDriver_or_global_mutex_reacquisition": true,
+    "real_new_fixture_per_host_role": true
+  },
+  "architecture": {
+    "unique_schema_pool_each_constructor": "newPlatformAdminRouterFixture: uuid schema/search_path and isolated cloned migrated tables",
+    "genuine_enrollment_binding": "newCollaborationRouteFixture: actual installation/enroll plus installation-bindings with new daemonID/workspace",
+    "runtime_unique_tuple": "existing built-in uniqueness (workspace_id,daemon_id,provider); restored constructor creates only one Claude instance per fresh fixture",
+    "R23_avoidance": "separate genuine managed runtime/binding/schema per role prevents prior-member continuation from affecting next consumer",
+    "cleanup": "existing per-fixture pool/HTTP/schema cleanup preserved",
+    "policy_scope": "each role has genuine new Alpha proposal/approval; source/candidate IDs bound separately, constant content/producers fixed",
+    "requirement_scope": "entry map fixes producer/role/provenance and source authority per sample; no global source/candidate UUID equality rule",
+    "no_fabricated_grants_run_manual_settlement_or_extra_launch": true
+  },
+  "static_evidence": {
+    "statuses": [
+      0,
+      0,
+      0
+    ],
+    "logs_match": true,
+    "test_bodies": 0,
+    "compile_only_and_vet_only": true,
+    "commands_repeated_here": false
+  },
+  "framework": {
+    "HEAD": "92a4c7adfad20354e79855e4134934e6004774ad",
+    "accepted_product_source": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "five_product_trees_equal": {
+      "server": "f245624a344af700d11ebfa3fa15194e2235f6f6",
+      "apps": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+      "packages": "c34c22d60416b9e0786dc23f14fa3c5a00c38e85",
+      "scripts": "602113e862a08b682721b2c2d92169b3d6836e5a",
+      "e2e": "ca80cc15f8275025534950b7bca54ec8c05681e1"
+    }
+  },
+  "historical_failure": {
+    "normal2_result": "5f0318d97719bbafb21ffd124e909cf14aee07fc749356edaa1f2e4783717ce1",
+    "normal2_cause": "SQLSTATE23505 unique runtime tuple; earlier clone review missed this DB boundary",
+    "rejected9ad_and_all_normal1_diag_normal2_inputs_and_raw_preserved": true
+  },
+  "v3_runner_not_inspected": true,
+  "next": "Root supplies frozen v3 path-only admission; after signature use fresh full normal/race and independent final eight-role/counter/source/CLI/env/DB binding.",
+  "operations": {
+    "source_or_DB_or_test_or_auditor_or_model_or_agent_mutations": 0,
+    "written_scope": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/per-role-isolation-source-review"
+  },
+  "real_gate": {
+    "budget": 0,
+    "calls": 0,
+    "production_default_enabled": false
+  },
+  "report_md_sha256": "b081c7652cd234bb0fd276fb5d840ebc54dc79c4e6d8d0c57107278522e58889"
+}

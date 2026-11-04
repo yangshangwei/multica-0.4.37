@@ -1,0 +1,181 @@
+{
+  "recorded_at": "2026-11-04T11:42:05.764696+00:00",
+  "state": "current_committed_source_binding_root_pass; independent_post_commit_review_next",
+  "main_HEAD": "da07e2e74bf9ba58ce84522b3dea020bc59bdd9b",
+  "framework_HEAD": "5e6a4e4962df86ef5033fe5d5fbe96fbdc9ceb12",
+  "tested_framework_HEAD": "92a4c7adfad20354e79855e4134934e6004774ad",
+  "accepted_shared_product_HEAD": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "six_file_bindings": [
+    {
+      "file": "server/cmd/server/rk1k_fixture_test.go",
+      "sha256": "f7072ce7b11dad29ba0b5dd3cf7e84e0eab87f1d8fb8fd0b702075385bb57b6f",
+      "main_and_framework_and_tested_bytes_equal": true,
+      "default_safe_build_tag": "agentintegration && !windows"
+    },
+    {
+      "file": "server/cmd/server/rk1k_provider_test.go",
+      "sha256": "114439c31ac397e3195ae23e806487f3c02df1cae9bd422d90b73db66f879924",
+      "main_and_framework_and_tested_bytes_equal": true,
+      "default_safe_build_tag": "agentintegration && !windows"
+    },
+    {
+      "file": "server/cmd/server/rk1k_scenarios_test.go",
+      "sha256": "10c047180c9c8bc50b7ff7930a23a1ba80a41018b94fb993730c73566fe72803",
+      "main_and_framework_and_tested_bytes_equal": true,
+      "default_safe_build_tag": "agentintegration && !windows"
+    },
+    {
+      "file": "server/cmd/server/rk1k_evidence_test.go",
+      "sha256": "198402547160cfe530faf9175efe802ee19370eed4ab62bdc6dec8290b3b7717",
+      "main_and_framework_and_tested_bytes_equal": true,
+      "default_safe_build_tag": "agentintegration && !windows"
+    },
+    {
+      "file": "server/cmd/server/rk1k_entry_test.go",
+      "sha256": "e58fff97a4654f32363b9cbb5be1e5562100354747a79a091747ec1dbb2e4844",
+      "main_and_framework_and_tested_bytes_equal": true,
+      "default_safe_build_tag": "agentintegration && !windows"
+    },
+    {
+      "file": "server/internal/daemon/rk1k_driver_agentintegration.go",
+      "sha256": "b0ed3e55972f3f8208bfde741d73ae419d83acca316ee0e109eed8e643f002e0",
+      "main_and_framework_and_tested_bytes_equal": true,
+      "default_safe_build_tag": "agentintegration && !windows"
+    }
+  ],
+  "old17_unchanged_sha256": {
+    "server/cmd/server/rk1_entry_test.go": "0e7bd9887edc6be00c020fc861aab6c26cfbe494fb1dcd30b1a53f857541d0e3",
+    "server/cmd/server/rk1_evidence_contract_unit_test.go": "9868bad19675c8ebdaf43bf9d63b59485e12830501379acc769ba8f0c3a603ef",
+    "server/cmd/server/rk1_evidence_fault_proof_test.go": "b43d805ecdbaca8d61d1aeb777108f99ab74046f7b84b8d36ffa219f19079090",
+    "server/cmd/server/rk1_evidence_format_test.go": "648d8edb9640ba4cd09d213c785e232d4904ebff5d1631ec015f4eb6ea1962d4",
+    "server/cmd/server/rk1_evidence_publication_test.go": "461ae12b8da9ffc803681608f7d88db0f39342158f3223d71ad167a772e690f1",
+    "server/cmd/server/rk1_fake_helpers_test.go": "d863e2b35aab4a127e26f6a923fd4d60438aa610804a96f67aa2be23c0c50ab2",
+    "server/cmd/server/rk1_fake_test.go": "952165b30c01d6486304b81df72e3bcd373ce1e794a716772a344dece137e840",
+    "server/cmd/server/rk1_fixture_test.go": "c257225e01c00a92dc266226347a3ffa016ac79db18c592dff6d293c6294994b",
+    "server/cmd/server/rk1_lifecycle_test.go": "b1fe1002b28804b7bfd8593b5df0c20502e246de5b5e7ab8760029a5da3e8c6f",
+    "server/cmd/server/rk1_observe_test.go": "5472c35cff8f5f99eb1c84381656e9677985e3743a278ff271531a01740f1b07",
+    "server/cmd/server/rk1_provider_test.go": "02050fc42ba6aeb02f4d7695ce76f4ee7a4402f07048cc2326dcde5d7b3e4f05",
+    "server/cmd/server/rk1_run_test.go": "0eb15501131a043c2cbd98c5ac33e515a9b1d6c55d4ba54f0388a13516a85763",
+    "server/cmd/server/rk1_scenarios_handoff_test.go": "eaba9f65a465f12afb3c5322ffefe6f6ec9d5e94bfa50870bf3027fea992c06a",
+    "server/cmd/server/rk1_scenarios_recall_test.go": "644797d7325ab91c9ac6f306a86bf426bbbf6375009673118f1fe3f7706a7cda",
+    "server/cmd/server/rk1_trace_barrier_test.go": "caa003b5b79f0747198d1fbdb268cdb9fdab8b289b691bd0222b2ab5e72a1c94",
+    "server/cmd/server/rk1_trace_test.go": "6f3a767c574d363d3f078bd8b9386c734366186c477493c03067f57f43e7c172",
+    "server/cmd/server/rk1_trial_test.go": "bfdfb910b40dc43c8b8a43d49a617dedc5421d8ed251c30b4488e581f105f5a5"
+  },
+  "production_source_delta_from_shared_candidate": [
+    "server/cmd/server/rk1k_entry_test.go",
+    "server/cmd/server/rk1k_evidence_test.go",
+    "server/cmd/server/rk1k_fixture_test.go",
+    "server/cmd/server/rk1k_provider_test.go",
+    "server/cmd/server/rk1k_scenarios_test.go",
+    "server/internal/daemon/rk1k_driver_agentintegration.go"
+  ],
+  "only_default_excluded_six_added": true,
+  "spec": {
+    "file": ".trellis/spec/server/collaboration-context-experiments.md",
+    "sha256": "398f9544ac376d713ceba9c3037145a6a3a1f13deae62c989dcb03b9467f108d"
+  },
+  "tools_and_actual_CLI": [
+    {
+      "name": "go",
+      "path": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+      "sha256": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412"
+    },
+    {
+      "name": "psql",
+      "path": "/opt/homebrew/opt/libpq/bin/psql",
+      "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07"
+    },
+    {
+      "name": "git",
+      "path": "/opt/homebrew/bin/git",
+      "sha256": "ca78d2c62e0d25037f2aa7353c0e28bebaca2f8b40c20b164c5781b885b2d197"
+    },
+    {
+      "name": "cli",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/binaries/multica",
+      "sha256": "f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac"
+    },
+    {
+      "name": "guard",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/scripts/go-test-with-agent-cli-guard.sh",
+      "sha256": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a"
+    }
+  ],
+  "CLI_note": "Pinned Multica CLI was built from accepted EDA production source; all additional source files are default-excluded test sibling files, so CLI production code is unchanged. No installed model CLI or account discovery.",
+  "actual_runs": {
+    "normal": {
+      "tested_head": "92a4c7adfad20354e79855e4134934e6004774ad",
+      "database": "multica_rk1k_20261104_v16_normal3_a3c9",
+      "actual_final_database_identity": "multica_rk1k_20261104_v16_normal3_a3c9|764_collaboration_ai_policy",
+      "environment_sha256": "5b232a904f571dcb22e7b0e391ae06be3f92bde554011aa9fa44b3d6c65dcd79",
+      "input_binding_sha256": "bfd819dd8e7d3c40237680790d5a038efb511df1ef0a3513d6b6ac164d757cb4",
+      "result": {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/runs/rk1k-normal-v16-03/result.json",
+        "sha256": "777753dfa37b10f53e7a427225e45342f145b9e71bc25a298e2e83f116dbf681"
+      },
+      "raw": {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/runs/rk1k-normal-v16-03/tests.jsonl",
+        "sha256": "c7b6abe929ab445ab5d6e1a9e4ff6f5790e302f31c286bd6614e5492eddddf9c"
+      },
+      "summary": {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/runs/rk1k-normal-v16-03/proof/summary.json",
+        "sha256": "4e89952941f3e50b1fcddbdb871a5194ba96bacc1009e63d0b24171aa84e2aa8"
+      },
+      "actual_named_pass": 49,
+      "actual_top_level_pass": 7,
+      "physical_totals": {
+        "measured_fake_starts": 15,
+        "fake_seed_starts": 3,
+        "paid_starts": 0
+      },
+      "failure_skip_invalid": 0
+    },
+    "race": {
+      "tested_head": "92a4c7adfad20354e79855e4134934e6004774ad",
+      "database": "multica_rk1k_20261104_v16_race3_a3c9",
+      "actual_final_database_identity": "multica_rk1k_20261104_v16_race3_a3c9|764_collaboration_ai_policy",
+      "environment_sha256": "71dbd8ccaba303dc884fed784a48faecca794a5adac5125023fa19a6438479e4",
+      "input_binding_sha256": "bfd819dd8e7d3c40237680790d5a038efb511df1ef0a3513d6b6ac164d757cb4",
+      "result": {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/runs/rk1k-race-v16-03/result.json",
+        "sha256": "65e6df96063fe67e47a44497e16c83404f0f992cc0a41647d0d7083edb242b54"
+      },
+      "raw": {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/runs/rk1k-race-v16-03/tests.jsonl",
+        "sha256": "d6bbf6d50461b018e317129bbf113f00c37c4c6906160cd25496482f09b315ce"
+      },
+      "summary": {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/runs/rk1k-race-v16-03/proof/summary.json",
+        "sha256": "fd8c9c1a2d5015e2cee9ff6e23d5c740a9d21f6a99101206807f6995b8b13d2f"
+      },
+      "actual_named_pass": 49,
+      "actual_top_level_pass": 7,
+      "physical_totals": {
+        "measured_fake_starts": 15,
+        "fake_seed_starts": 3,
+        "paid_starts": 0
+      },
+      "failure_skip_invalid": 0
+    }
+  },
+  "independent_final_six_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/final-six-file-review/review.json",
+    "sha256": "0e9f6deb53cb69dbd30db8ca27e67e0db4289d93b1d709bc063a007c4866a482"
+  },
+  "main_integration": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/main-framework-integration.json",
+    "sha256": "0278337c125672af254c329ed615c4c05a9f9d6b0d8b52bfc47088d7cd12cce7"
+  },
+  "retired_v3_test_entry": "The old runner binds tested HEAD92a and fixed attempted outputs; it is retained as historical execution input, not an unattempted postcommit permit.",
+  "real_gate": {
+    "knowledge_allocated": 0,
+    "knowledge_calls": 0,
+    "real_entry_runnable": false,
+    "account_binding": null,
+    "quota_transfer_allowed": false,
+    "production_default_enabled": false
+  },
+  "old_failure_databases_logs_and_source_backups_retained": true,
+  "new_tests_or_auditor_CLI_run": false
+}
