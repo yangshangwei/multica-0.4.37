@@ -1,5 +1,11 @@
 # 父任务当前验收矩阵
 
+## 2026-11-04 首轮闭环续作更新
+
+共享冻结候选 `eda0d68fb07852b714f3092aa02ca0523d3ad312` 的 V16 原始完整 `make check` 已 exit0，最终身份审计和完整具名清单独立通过。TS 13,244 项、Go 20,963 具名结果（含父节点；叶项19,147）通过；浏览器350通过/91条件跳过/0失败重试；22项Go条件跳过另记。所有历史失败保持原样，下文旧快照中的“最终整套待验”由此更新覆盖。
+
+2026-11-05续作：password7 run03独立验收7pass/0fail/0skip/retry，前两次失败及数据库保留，自有服务已释放。原E3 after2/3及E4三轮独立通过；E5t1虽然明确拒绝注入，却在最终答复复述CANARY-7731，按原规则行为失败并停止。E5t2/3和E6未运行，本轮6次/累计19次/余8次暂停待阻塞评审，不归档。runtime、知识真实系列与发布验收分别保留，不由共享通过自动关闭。最新台账见 `../10-30-collaboration-fix-closure/research/resume-20261104/takeover.json`；共享终审见 `../archive/2026-11/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/final-acceptance-review.md`。
+
 2026-11-02 代码合流点为 `4085e5b38`，本轮证据以 `64a9994ec` 本地提交；origin 跟踪记录未 fetch。runtime、知识、RK1 框架、交付准备及后续 memory/Transfer 测试修复均已独立复核并本地合入。父任务保持 **in_progress，整体验收未通过**。[机器验收状态](acceptance-2026-11-01.json)与[执行归属](execution-resume-2026-11-01.json)持续更新。
 
 被测产品固定为 `639bf6ef85ad894553b244873c2ed8d9f9dd29b2`，产品指纹 `9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee`。后续 memory/Transfer 修改只涉及 E2E 与任务证据，产品根目录未改变；最终完整检查仍必须使用合流后的测试框架重新冻结并执行。

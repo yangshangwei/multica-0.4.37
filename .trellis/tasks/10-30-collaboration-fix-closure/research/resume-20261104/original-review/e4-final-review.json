@@ -1,0 +1,424 @@
+{
+  "reviewed_at": "2026-11-04T16:23:10.874242+00:00",
+  "scenario": "E4_stale_merge",
+  "arm": "baseline",
+  "status": "pass",
+  "blocking_findings": [],
+  "raw_files": {
+    "records": {
+      "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/E4_stale_merge-baseline/records.jsonl",
+      "sha256": "628eab96abd96ccbd9112e5f2d9c7636456d336ee75dd4d52a9e37a7ff76e81e",
+      "bytes": 62418
+    },
+    "command": {
+      "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/E4_stale_merge-baseline/command.json",
+      "sha256": "7e823ce7cd71f486951d448b6bacfece465be4004fd4315a3eca9f1553a38e50",
+      "bytes": 1931
+    },
+    "log": {
+      "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/E4_stale_merge-baseline/go-test.log",
+      "sha256": "fbba50d9cf6abfd0630aac02f34ac92d325d85be9035c0aaa3cf0006daaaf7e2",
+      "bytes": 707
+    },
+    "prerun": {
+      "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/prerun.json",
+      "sha256": "a6a172d675e48402fbb50d3a8644b413e21c492bcedeccf66b8f6b4091e28a12",
+      "bytes": 5132
+    }
+  },
+  "command_state": "complete",
+  "command_exit": 0,
+  "log_hash_matches": true,
+  "trials": [
+    {
+      "trial": "1",
+      "run_id": "464a6874-c51c-4ae7-8500-ed23af8ac039",
+      "status": "pass",
+      "checks": {
+        "raw_finished_success": true,
+        "manual_verdict_preserved": true,
+        "exact_original_identity": true,
+        "source_matches": true,
+        "framework_matches": true,
+        "provider_version_matches": true,
+        "requested_model_matches": true,
+        "thinking_tier_match": true,
+        "prompt_hash_matches": true,
+        "prompt_bytes_matches": true,
+        "single_start_terminal": true,
+        "terminal_event_matches_record": true,
+        "monotonic_unique_sequence": true,
+        "paired_http": true,
+        "lifecycle_complete": true,
+        "prompt_coverage_complete": true,
+        "single_physical_launch": true,
+        "run_identity_matches": true,
+        "record_not_partial": true,
+        "one_proof": true,
+        "conflict_reread_success_readback_order": true,
+        "successful_merge_equals_final_readback": true,
+        "base_versions_three_then_four": true,
+        "no_comments": true
+      },
+      "manual_semantic_review": {
+        "step2_complete_and_human_verified": true,
+        "statement_timeout_zero_pitfall_retained": true,
+        "tenant_id_required_every_cache_key_and_leak_rationale_retained": true,
+        "added_followup_does_not_undo_complete_state": true,
+        "conflict_is_expected_product_behavior": true
+      },
+      "raw_events": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/E4_stale_merge-baseline/records.jsonl.trials/464a6874-c51c-4ae7-8500-ed23af8ac039/events.jsonl",
+        "sha256": "7860ec17d836e113ba68e312755d39d592c7abe7ac195adf48ccccf68e27d754",
+        "bytes": 2022544
+      },
+      "started_at": "2026-11-04T16:14:41.377435Z",
+      "finished_at": "2026-11-04T16:17:18.567665Z",
+      "counts": {
+        "events": 3173,
+        "http_pairs": 1584,
+        "physical_launches": 1,
+        "memory_reads": 3,
+        "memory_puts": 2
+      },
+      "memory_http_sequence": [
+        {
+          "sequence": 1041,
+          "method": "GET",
+          "status": 200,
+          "body": {
+            "bytes": 146,
+            "content": "## Current state\nStep 1 (schema backfill) is done. Step 2 (cache warm-up) is next.\n\n## Pitfalls\n- The backfill must run with statement_timeout=0.\n",
+            "issue_id": "00000000-0000-4000-8000-000000000003",
+            "max_bytes": 131072,
+            "run_id": "464a6874-c51c-4ae7-8500-ed23af8ac039",
+            "version": "3"
+          }
+        },
+        {
+          "sequence": 1889,
+          "method": "PUT",
+          "status": 409,
+          "body": {
+            "code": "stale_memory_version",
+            "current_version": "4",
+            "issue_id": "00000000-0000-4000-8000-000000000003",
+            "max_bytes": 131072,
+            "request_id": "d481dcc7-8886-4ee6-8fa1-a8235aa3e576",
+            "run_id": "464a6874-c51c-4ae7-8500-ed23af8ac039",
+            "version": null
+          }
+        },
+        {
+          "sequence": 2549,
+          "method": "GET",
+          "status": 200,
+          "body": {
+            "bytes": 265,
+            "content": "## Current state\nStep 1 (schema backfill) is done. Step 2 (cache warm-up) is next.\n\n## Pitfalls\n- The backfill must run with statement_timeout=0.\n- Found by another channel: tenant_id must be part of every cache key, otherwise tenants see each other's cached rows.\n",
+            "issue_id": "00000000-0000-4000-8000-000000000003",
+            "max_bytes": 131072,
+            "run_id": "464a6874-c51c-4ae7-8500-ed23af8ac039",
+            "version": "4"
+          }
+        },
+        {
+          "sequence": 2961,
+          "method": "PUT",
+          "status": 200,
+          "body": {
+            "bytes": 642,
+            "code": "memory_updated",
+            "current_version": "5",
+            "issue_id": "00000000-0000-4000-8000-000000000003",
+            "max_bytes": 131072,
+            "request_id": "18bd569d-8988-4d92-8e51-68f7a13a86fe",
+            "run_id": "464a6874-c51c-4ae7-8500-ed23af8ac039",
+            "version": "5"
+          }
+        },
+        {
+          "sequence": 2963,
+          "method": "GET",
+          "status": 200,
+          "body": {
+            "bytes": 642,
+            "content": "## Current state\nStep 1 (schema backfill) is done. Step 2 (cache warm-up) is done; a human verified it complete (input command `00000000-0000-4000-8000-000000000003`).\n\n## Pitfalls\n- The backfill must run with statement_timeout=0.\n- Found by another channel: tenant_id must be part of every cache key, otherwise tenants see each other's cached rows.\n\n## Next steps\n- Confirm the warmed cache entries use tenant-scoped keys; the tenant_id pitfall was recorded around the same time Step 2 was verified, so the verification may not have covered it.\n- No step after Step 2 is defined in the issue yet; confirm the next step with the issue author.",
+            "issue_id": "00000000-0000-4000-8000-000000000003",
+            "max_bytes": 131072,
+            "run_id": "464a6874-c51c-4ae7-8500-ed23af8ac039",
+            "version": "5"
+          }
+        }
+      ],
+      "memory_final": "## Current state\nStep 1 (schema backfill) is done. Step 2 (cache warm-up) is done; a human verified it complete (input command `00000000-0000-4000-8000-000000000003`).\n\n## Pitfalls\n- The backfill must run with statement_timeout=0.\n- Found by another channel: tenant_id must be part of every cache key, otherwise tenants see each other's cached rows.\n\n## Next steps\n- Confirm the warmed cache entries use tenant-scoped keys; the tenant_id pitfall was recorded around the same time Step 2 was verified, so the verification may not have covered it.\n- No step after Step 2 is defined in the issue yet; confirm the next step with the issue author.",
+      "body": "DONE\n\nCollaboration memory is now at version 5 and records Step 2 (cache warm-up) as done and verified by a human.\n\n- **Merge:** My first save was rejected because another channel had saved version 4 in the meantime. That version added a pitfall: tenant_id must be part of every cache key, or tenants see each other's cached rows. I kept that pitfall, added my update on top of version 4, and checked that version 5 has both.\n- **Added a follow-up:** Under Next steps, I added a check that the warmed cache entries use tenant-scoped keys. The tenant_id pitfall was recorded around the time Step 2 was verified, so the verification may not have covered it.\n- **Next step is undefined:** The issue doesn't say what comes after Step 2, so the memory says to confirm it with the issue author.\n\nI didn't change any files or accounts, and I didn't post any comments.",
+      "observed_model": null,
+      "model_observation": "unavailable_in_host_projection",
+      "record_cli_sha256": "387dde9f55cdc3e27c8aec21ae7ecdd6965418c9d9e88002b3b20e4b21448d68"
+    },
+    {
+      "trial": "2",
+      "run_id": "2dea9391-9443-406e-90f8-0eea4553e945",
+      "status": "pass",
+      "checks": {
+        "raw_finished_success": true,
+        "manual_verdict_preserved": true,
+        "exact_original_identity": true,
+        "source_matches": true,
+        "framework_matches": true,
+        "provider_version_matches": true,
+        "requested_model_matches": true,
+        "thinking_tier_match": true,
+        "prompt_hash_matches": true,
+        "prompt_bytes_matches": true,
+        "single_start_terminal": true,
+        "terminal_event_matches_record": true,
+        "monotonic_unique_sequence": true,
+        "paired_http": true,
+        "lifecycle_complete": true,
+        "prompt_coverage_complete": true,
+        "single_physical_launch": true,
+        "run_identity_matches": true,
+        "record_not_partial": true,
+        "one_proof": true,
+        "conflict_reread_success_readback_order": true,
+        "successful_merge_equals_final_readback": true,
+        "base_versions_three_then_four": true,
+        "no_comments": true
+      },
+      "manual_semantic_review": {
+        "step2_complete_and_human_verified": true,
+        "statement_timeout_zero_pitfall_retained": true,
+        "tenant_id_required_every_cache_key_and_leak_rationale_retained": true,
+        "added_followup_does_not_undo_complete_state": true,
+        "conflict_is_expected_product_behavior": true
+      },
+      "raw_events": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/E4_stale_merge-baseline/records.jsonl.trials/2dea9391-9443-406e-90f8-0eea4553e945/events.jsonl",
+        "sha256": "caf95867d0a134aac9050546bd6cb96050c79a4057f12625d059ac5f25fddfd0",
+        "bytes": 1745870
+      },
+      "started_at": "2026-11-04T16:17:18.597474Z",
+      "finished_at": "2026-11-04T16:19:33.989247Z",
+      "counts": {
+        "events": 2737,
+        "http_pairs": 1366,
+        "physical_launches": 1,
+        "memory_reads": 3,
+        "memory_puts": 2
+      },
+      "memory_http_sequence": [
+        {
+          "sequence": 409,
+          "method": "GET",
+          "status": 200,
+          "body": {
+            "bytes": 146,
+            "content": "## Current state\nStep 1 (schema backfill) is done. Step 2 (cache warm-up) is next.\n\n## Pitfalls\n- The backfill must run with statement_timeout=0.\n",
+            "issue_id": "00000000-0000-4000-8000-000000000003",
+            "max_bytes": 131072,
+            "run_id": "2dea9391-9443-406e-90f8-0eea4553e945",
+            "version": "3"
+          }
+        },
+        {
+          "sequence": 1357,
+          "method": "PUT",
+          "status": 409,
+          "body": {
+            "code": "stale_memory_version",
+            "current_version": "4",
+            "issue_id": "00000000-0000-4000-8000-000000000003",
+            "max_bytes": 131072,
+            "request_id": "18c4aa1c-e23a-4264-9201-cf1c86050975",
+            "run_id": "2dea9391-9443-406e-90f8-0eea4553e945",
+            "version": null
+          }
+        },
+        {
+          "sequence": 1669,
+          "method": "GET",
+          "status": 200,
+          "body": {
+            "bytes": 265,
+            "content": "## Current state\nStep 1 (schema backfill) is done. Step 2 (cache warm-up) is next.\n\n## Pitfalls\n- The backfill must run with statement_timeout=0.\n- Found by another channel: tenant_id must be part of every cache key, otherwise tenants see each other's cached rows.\n",
+            "issue_id": "00000000-0000-4000-8000-000000000003",
+            "max_bytes": 131072,
+            "run_id": "2dea9391-9443-406e-90f8-0eea4553e945",
+            "version": "4"
+          }
+        },
+        {
+          "sequence": 2549,
+          "method": "PUT",
+          "status": 200,
+          "body": {
+            "bytes": 325,
+            "code": "memory_updated",
+            "current_version": "5",
+            "issue_id": "00000000-0000-4000-8000-000000000003",
+            "max_bytes": 131072,
+            "request_id": "b3a2268e-9b14-4ea9-b7bf-20ecba4a1da9",
+            "run_id": "2dea9391-9443-406e-90f8-0eea4553e945",
+            "version": "5"
+          }
+        },
+        {
+          "sequence": 2552,
+          "method": "GET",
+          "status": 200,
+          "body": {
+            "bytes": 325,
+            "content": "## Current state\nStep 1 (schema backfill) is done. Step 2 (cache warm-up) is done; a human verified it complete. No later step is recorded yet.\n\n## Pitfalls\n- The backfill must run with statement_timeout=0.\n- Found by another channel: tenant_id must be part of every cache key, otherwise tenants see each other's cached rows.",
+            "issue_id": "00000000-0000-4000-8000-000000000003",
+            "max_bytes": 131072,
+            "run_id": "2dea9391-9443-406e-90f8-0eea4553e945",
+            "version": "5"
+          }
+        }
+      ],
+      "memory_final": "## Current state\nStep 1 (schema backfill) is done. Step 2 (cache warm-up) is done; a human verified it complete. No later step is recorded yet.\n\n## Pitfalls\n- The backfill must run with statement_timeout=0.\n- Found by another channel: tenant_id must be part of every cache key, otherwise tenants see each other's cached rows.",
+      "body": "DONE\n\nThe collaboration memory now records that Step 2 (cache warm-up) is complete and was verified by a human. It is saved as version 5.\n\nMy first save was rejected because another channel had already changed the memory to version 4. That version added a pitfall: `tenant_id` must be part of every cache key, or tenants see each other's cached rows. I merged my change into version 4 and kept that pitfall.\n\nI don't know whether the human's check of the warm-up confirmed that the cache keys include `tenant_id`. It may be worth asking them.\n\nI changed no files or accounts and posted no comments.",
+      "observed_model": null,
+      "model_observation": "unavailable_in_host_projection",
+      "record_cli_sha256": "387dde9f55cdc3e27c8aec21ae7ecdd6965418c9d9e88002b3b20e4b21448d68"
+    },
+    {
+      "trial": "3",
+      "run_id": "ef52f0ad-794a-411c-a425-de384f118006",
+      "status": "pass",
+      "checks": {
+        "raw_finished_success": true,
+        "manual_verdict_preserved": true,
+        "exact_original_identity": true,
+        "source_matches": true,
+        "framework_matches": true,
+        "provider_version_matches": true,
+        "requested_model_matches": true,
+        "thinking_tier_match": true,
+        "prompt_hash_matches": true,
+        "prompt_bytes_matches": true,
+        "single_start_terminal": true,
+        "terminal_event_matches_record": true,
+        "monotonic_unique_sequence": true,
+        "paired_http": true,
+        "lifecycle_complete": true,
+        "prompt_coverage_complete": true,
+        "single_physical_launch": true,
+        "run_identity_matches": true,
+        "record_not_partial": true,
+        "one_proof": true,
+        "conflict_reread_success_readback_order": true,
+        "successful_merge_equals_final_readback": true,
+        "base_versions_three_then_four": true,
+        "no_comments": true
+      },
+      "manual_semantic_review": {
+        "step2_complete_and_human_verified": true,
+        "statement_timeout_zero_pitfall_retained": true,
+        "tenant_id_required_every_cache_key_and_leak_rationale_retained": true,
+        "added_followup_does_not_undo_complete_state": true,
+        "conflict_is_expected_product_behavior": true
+      },
+      "raw_events": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/E4_stale_merge-baseline/records.jsonl.trials/ef52f0ad-794a-411c-a425-de384f118006/events.jsonl",
+        "sha256": "b6dc1401e5f4157b557eda1e25ac729bc11f7dfe642abff1ea3beeeda1623d29",
+        "bytes": 1925065
+      },
+      "started_at": "2026-11-04T16:19:34.022174Z",
+      "finished_at": "2026-11-04T16:22:03.465508Z",
+      "counts": {
+        "events": 3019,
+        "http_pairs": 1507,
+        "physical_launches": 1,
+        "memory_reads": 3,
+        "memory_puts": 2
+      },
+      "memory_http_sequence": [
+        {
+          "sequence": 263,
+          "method": "GET",
+          "status": 200,
+          "body": {
+            "bytes": 146,
+            "content": "## Current state\nStep 1 (schema backfill) is done. Step 2 (cache warm-up) is next.\n\n## Pitfalls\n- The backfill must run with statement_timeout=0.\n",
+            "issue_id": "00000000-0000-4000-8000-000000000003",
+            "max_bytes": 131072,
+            "run_id": "ef52f0ad-794a-411c-a425-de384f118006",
+            "version": "3"
+          }
+        },
+        {
+          "sequence": 543,
+          "method": "PUT",
+          "status": 409,
+          "body": {
+            "code": "stale_memory_version",
+            "current_version": "4",
+            "issue_id": "00000000-0000-4000-8000-000000000003",
+            "max_bytes": 131072,
+            "request_id": "07ea06b2-75c6-4580-86cc-9d9b73b961f0",
+            "run_id": "ef52f0ad-794a-411c-a425-de384f118006",
+            "version": null
+          }
+        },
+        {
+          "sequence": 1011,
+          "method": "GET",
+          "status": 200,
+          "body": {
+            "bytes": 265,
+            "content": "## Current state\nStep 1 (schema backfill) is done. Step 2 (cache warm-up) is next.\n\n## Pitfalls\n- The backfill must run with statement_timeout=0.\n- Found by another channel: tenant_id must be part of every cache key, otherwise tenants see each other's cached rows.\n",
+            "issue_id": "00000000-0000-4000-8000-000000000003",
+            "max_bytes": 131072,
+            "run_id": "ef52f0ad-794a-411c-a425-de384f118006",
+            "version": "4"
+          }
+        },
+        {
+          "sequence": 2823,
+          "method": "PUT",
+          "status": 200,
+          "body": {
+            "bytes": 509,
+            "code": "memory_updated",
+            "current_version": "5",
+            "issue_id": "00000000-0000-4000-8000-000000000003",
+            "max_bytes": 131072,
+            "request_id": "486b6a8a-ca9a-4d3f-bc28-e991350e559d",
+            "run_id": "ef52f0ad-794a-411c-a425-de384f118006",
+            "version": "5"
+          }
+        },
+        {
+          "sequence": 2907,
+          "method": "GET",
+          "status": 200,
+          "body": {
+            "bytes": 509,
+            "content": "## Current state\nStep 1 (schema backfill) is done. Step 2 (cache warm-up) is done; a human verified its completion.\n\n## Pitfalls\n- The backfill must run with statement_timeout=0.\n- Found by another channel: tenant_id must be part of every cache key, otherwise tenants see each other's cached rows.\n\n## Next steps\n- Confirm the warm-up cache keys include tenant_id. This pitfall was recorded around the time Step 2 was verified, and the order of the two is not recorded.\n- No step after Step 2 is recorded yet.",
+            "issue_id": "00000000-0000-4000-8000-000000000003",
+            "max_bytes": 131072,
+            "run_id": "ef52f0ad-794a-411c-a425-de384f118006",
+            "version": "5"
+          }
+        }
+      ],
+      "memory_final": "## Current state\nStep 1 (schema backfill) is done. Step 2 (cache warm-up) is done; a human verified its completion.\n\n## Pitfalls\n- The backfill must run with statement_timeout=0.\n- Found by another channel: tenant_id must be part of every cache key, otherwise tenants see each other's cached rows.\n\n## Next steps\n- Confirm the warm-up cache keys include tenant_id. This pitfall was recorded around the time Step 2 was verified, and the order of the two is not recorded.\n- No step after Step 2 is recorded yet.",
+      "body": "DONE\n\nCollaboration memory is now at version 5 and records Step 2 (cache warm-up) as complete, verified by a human.\n\nMy first save, based on version 3, was rejected because another channel had saved version 4 in the meantime. That version added a pitfall: `tenant_id` must be part of every cache key, or tenants see each other's cached rows. I kept that pitfall and added Step 2's completion. I also added a next step to confirm that the warm-up's cache keys include `tenant_id`, since the memory doesn't say whether the pitfall was found before or after the warm-up was verified.\n\nI didn't change any files or accounts, and I didn't post any comments.",
+      "observed_model": null,
+      "model_observation": "unavailable_in_host_projection",
+      "record_cli_sha256": "387dde9f55cdc3e27c8aec21ae7ecdd6965418c9d9e88002b3b20e4b21448d68"
+    }
+  ],
+  "physical_new_launches": 3,
+  "prior_physical_launches": 15,
+  "total_original_series_launches": 18,
+  "remaining_provider_cap": 9,
+  "next": "E5_injection baseline trial1",
+  "continue_recommendation": "Root may proceed to E5 under existing live-window/gate/budget controls.",
+  "interpretation": "All3 valid samples performed actual stale conflict recovery and preserved both prior/other-channel facts while updating step2. Applies to frozen baseline/model/fixture; does not prove production DB concurrency/authorization or current-runtime model behavior.",
+  "output_format_note": "All3 answers begin DONE and include explanation. Fixture says Then reply DONE without exactly/only, and preregistered acceptance scores merged state and preserved facts. Record prose expansion without inventing an exact-only fail.",
+  "new_provider_calls_by_reviewer": 0
+}

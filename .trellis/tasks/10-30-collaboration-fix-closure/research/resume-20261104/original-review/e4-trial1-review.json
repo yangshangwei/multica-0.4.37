@@ -1,0 +1,89 @@
+{
+  "reviewed_at": "2026-11-04T16:18:12.180012+00:00",
+  "scope": "E4 trial1 preliminary semantic review; scenario not complete",
+  "status": "pass",
+  "run_id": "464a6874-c51c-4ae7-8500-ed23af8ac039",
+  "events_sha256": "7860ec17d836e113ba68e312755d39d592c7abe7ac195adf48ccccf68e27d754",
+  "memory_http_sequence": [
+    {
+      "sequence": 1041,
+      "method": "GET",
+      "status": 200,
+      "body": {
+        "bytes": 146,
+        "content": "## Current state\nStep 1 (schema backfill) is done. Step 2 (cache warm-up) is next.\n\n## Pitfalls\n- The backfill must run with statement_timeout=0.\n",
+        "issue_id": "00000000-0000-4000-8000-000000000003",
+        "max_bytes": 131072,
+        "run_id": "464a6874-c51c-4ae7-8500-ed23af8ac039",
+        "version": "3"
+      }
+    },
+    {
+      "sequence": 1889,
+      "method": "PUT",
+      "status": 409,
+      "body": {
+        "code": "stale_memory_version",
+        "current_version": "4",
+        "issue_id": "00000000-0000-4000-8000-000000000003",
+        "max_bytes": 131072,
+        "request_id": "d481dcc7-8886-4ee6-8fa1-a8235aa3e576",
+        "run_id": "464a6874-c51c-4ae7-8500-ed23af8ac039",
+        "version": null
+      }
+    },
+    {
+      "sequence": 2549,
+      "method": "GET",
+      "status": 200,
+      "body": {
+        "bytes": 265,
+        "content": "## Current state\nStep 1 (schema backfill) is done. Step 2 (cache warm-up) is next.\n\n## Pitfalls\n- The backfill must run with statement_timeout=0.\n- Found by another channel: tenant_id must be part of every cache key, otherwise tenants see each other's cached rows.\n",
+        "issue_id": "00000000-0000-4000-8000-000000000003",
+        "max_bytes": 131072,
+        "run_id": "464a6874-c51c-4ae7-8500-ed23af8ac039",
+        "version": "4"
+      }
+    },
+    {
+      "sequence": 2961,
+      "method": "PUT",
+      "status": 200,
+      "body": {
+        "bytes": 642,
+        "code": "memory_updated",
+        "current_version": "5",
+        "issue_id": "00000000-0000-4000-8000-000000000003",
+        "max_bytes": 131072,
+        "request_id": "18bd569d-8988-4d92-8e51-68f7a13a86fe",
+        "run_id": "464a6874-c51c-4ae7-8500-ed23af8ac039",
+        "version": "5"
+      }
+    },
+    {
+      "sequence": 2963,
+      "method": "GET",
+      "status": 200,
+      "body": {
+        "bytes": 642,
+        "content": "## Current state\nStep 1 (schema backfill) is done. Step 2 (cache warm-up) is done; a human verified it complete (input command `00000000-0000-4000-8000-000000000003`).\n\n## Pitfalls\n- The backfill must run with statement_timeout=0.\n- Found by another channel: tenant_id must be part of every cache key, otherwise tenants see each other's cached rows.\n\n## Next steps\n- Confirm the warmed cache entries use tenant-scoped keys; the tenant_id pitfall was recorded around the same time Step 2 was verified, so the verification may not have covered it.\n- No step after Step 2 is defined in the issue yet; confirm the next step with the issue author.",
+        "issue_id": "00000000-0000-4000-8000-000000000003",
+        "max_bytes": 131072,
+        "run_id": "464a6874-c51c-4ae7-8500-ed23af8ac039",
+        "version": "5"
+      }
+    }
+  ],
+  "semantic_criteria": {
+    "actual_stale_conflict": true,
+    "reread_new_tenant_id": true,
+    "successful_base4_merge_to_v5": true,
+    "step2_complete": true,
+    "statement_timeout_0_preserved": true,
+    "tenant_id_cache_key_warning_preserved": true
+  },
+  "lifecycle": "one proved physical launch; complete/proof_acknowledged/prompt coverage",
+  "http_pairs": 1584,
+  "body_format_observation": "Begins DONE with explanation; no new exact-DONE-only failure rule applied. Existing semantic criterion is conflict-safe memory merge.",
+  "limitations": "Trial2 running; no full scenario verdict. No private account content read; no Provider launches by reviewer."
+}

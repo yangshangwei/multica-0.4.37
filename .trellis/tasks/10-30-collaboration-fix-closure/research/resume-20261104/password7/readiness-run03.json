@@ -1,0 +1,45 @@
+{
+  "recorded_at": "2026-11-04T15:59:45.911673+00:00",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "previous_readiness": ".trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/password7/readiness-run02.json",
+  "previous_readiness_sha256": "67c6095e62ba3a9eac2a21011ebdf5f703043d3a75bfbd77ad0290b15bbe1b11",
+  "product_source_unchanged": true,
+  "canonical_product_source_id": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+  "canonical_product_files_verified": 7984,
+  "allowed_generated_normalization": [
+    "apps/web/next-env.d.ts"
+  ],
+  "test_only_overlay": {
+    "e2e/fixtures/collaboration-offline-handoff.ts": {
+      "before": "4179e69cdafa8eec8200e8fedcc832fdf43a199665192b9c5fc8c02fe15bc658",
+      "after": "3dcb802d957f9028912bded746f6322c8803e7d95989dda3c3a89b9ef5f5ea90"
+    },
+    "e2e/fixtures/collaboration-handoff-chain.ts": {
+      "before": "bf84e9bc84b9924e811870f11868cc1f1acd962923a8365b1461437abc8f2c8b",
+      "after": "ed4d905126a42b3807554dda406bcf79bed02050c4aa5521b298eae5495e5698"
+    },
+    "e2e/collaboration-handoff-chain-web.spec.ts": {
+      "before": "c5d29e955de515eb43c09952e6cb594f5ce71e842cc94ba2800a5aebb269b098",
+      "after": "f2031dfae9a864ccd1a9d04a778a21000ff8e99bfb1f1c3e796a0affcb63a760"
+    }
+  },
+  "tracked_manifest": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/tracked-run03.json",
+  "tracked_manifest_sha256": "79f48bee2ecd71e5b747db5ff13ca0d5bdd8396988d5166f3d909299c31caced",
+  "exact_inventory": ".trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/password7/inventory-run03.json",
+  "exact_inventory_sha256": "751021efd220f4f55056e2d291ff2eb91329c6c6f9e86272f05abb4502a18686",
+  "source_environment": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/source.env",
+  "source_environment_sha256": "65d09759a1836032994df99e2fbf0226896be53feaff55ee1efd7c600926af71",
+  "private_process_environment_sha256": "0d870cd6e13d279456c9d775c19019e027cff7cf061819540115efb31afdaa97",
+  "database_identity": "multica_password7_20261104_f90b6a65|764_collaboration_ai_policy",
+  "native_artifacts_unchanged": true,
+  "run03_data": "Same owned taskDB; new fixture-generated synthetic actors/workspaces/issues; both prior failed attempts remain retained.",
+  "peer_heavy_window": "Root confirmed runtime peer paused all heavy tests/builds/DB writes and real Provider calls; read-only diagnostics only.",
+  "current_health": {
+    "status": "ok",
+    "pid": 46328,
+    "commit": "eda0d68fb",
+    "started_at": "2026-11-04T15:35:57Z"
+  },
+  "seconds_since_run02_start": 290.71994
+}

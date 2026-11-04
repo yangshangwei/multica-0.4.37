@@ -1,0 +1,104 @@
+{
+  "checks": [
+    {
+      "command": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+        "exec",
+        "tsc",
+        "--noEmit",
+        "--strict",
+        "--target",
+        "ESNext",
+        "--module",
+        "ESNext",
+        "--moduleResolution",
+        "Bundler",
+        "--lib",
+        "ESNext,DOM,DOM.Iterable",
+        "--jsx",
+        "react-jsx",
+        "--esModuleInterop",
+        "--skipLibCheck",
+        "--resolveJsonModule",
+        "--types",
+        "node",
+        "e2e/fixtures/collaboration-offline-handoff.ts",
+        "e2e/fixtures/collaboration-handoff-chain.ts",
+        "e2e/collaboration-handoff-chain-web.spec.ts"
+      ],
+      "exit_code": 0,
+      "log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/repair-typecheck.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/node_modules/eslint/bin/eslint.js",
+        "--config",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/eslint.config.mjs",
+        "e2e/fixtures/collaboration-offline-handoff.ts",
+        "e2e/fixtures/collaboration-handoff-chain.ts",
+        "e2e/collaboration-handoff-chain-web.spec.ts"
+      ],
+      "exit_code": 0,
+      "log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/repair-lint.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "config_sha256": "29435f231805d89fced074fa314f444a41a4ad096c78b8417a9df79afd677138",
+      "config_note": "Repository base config; E2E fixtures treated as devDependencies (tests), no other rule changes."
+    },
+    {
+      "command": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-handoff-chain-web.spec.ts",
+        "e2e/collaboration-handoff-chain-desktop.spec.ts",
+        "e2e/collaboration-offline-handoff.spec.ts",
+        "e2e/collaboration-runtime-handoff-web.spec.ts",
+        "e2e/collaboration-runtime-handoff-desktop.spec.ts",
+        "--project=chromium",
+        "--workers=1",
+        "--retries=0",
+        "--list",
+        "--reporter=json"
+      ],
+      "exit_code": 0,
+      "exact_tests": 7,
+      "executed": false,
+      "log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/list-run02.json",
+      "log_sha256": "a1458c2f638c07f1c0403fa08e1b44f44be7e97a718156bbebed9c498d80a089"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "e2e/fixtures/collaboration-offline-handoff.ts",
+        "e2e/fixtures/collaboration-handoff-chain.ts",
+        "e2e/collaboration-handoff-chain-web.spec.ts"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "source_overlay": {
+    "e2e/fixtures/collaboration-offline-handoff.ts": {
+      "before": "4179e69cdafa8eec8200e8fedcc832fdf43a199665192b9c5fc8c02fe15bc658",
+      "after": "ccda161317eca27426f50a83868bde90f594e3fb7590f2a7dd70bae42e122b2f"
+    },
+    "e2e/fixtures/collaboration-handoff-chain.ts": {
+      "before": "bf84e9bc84b9924e811870f11868cc1f1acd962923a8365b1461437abc8f2c8b",
+      "after": "ed4d905126a42b3807554dda406bcf79bed02050c4aa5521b298eae5495e5698"
+    },
+    "e2e/collaboration-handoff-chain-web.spec.ts": {
+      "before": "c5d29e955de515eb43c09952e6cb594f5ce71e842cc94ba2800a5aebb269b098",
+      "after": "f2031dfae9a864ccd1a9d04a778a21000ff8e99bfb1f1c3e796a0affcb63a760"
+    }
+  },
+  "product_source_unchanged": true,
+  "canonical_source_id": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+  "native_artifacts_unchanged": true
+}

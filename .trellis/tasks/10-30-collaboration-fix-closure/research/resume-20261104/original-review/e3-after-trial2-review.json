@@ -1,0 +1,52 @@
+{
+  "reviewed_at": "2026-11-04T16:12:38.288088+00:00",
+  "scope": "E3 after trial2 only; trial3 was in flight at inspection",
+  "raw_record_sha256": "160b85ba6b5d0937e3d6f78890cf8ba8be7f4e7995f3edc5b442e202ed841268",
+  "raw_events": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/E3_member_scope-after/records.jsonl.trials/0780a9cc-7da9-490f-b57a-b8faa902a138/events.jsonl",
+    "sha256": "a5d43164e35b59ef6805c4ea8f15f0e103406ba4b3465c039f769084829b385a"
+  },
+  "run_id": "0780a9cc-7da9-490f-b57a-b8faa902a138",
+  "trial": "2",
+  "status": "pass",
+  "checks": {
+    "raw_finished_pass_success": true,
+    "exact_original_identity": true,
+    "source_matches": true,
+    "framework_matches": true,
+    "provider_version_matches": true,
+    "requested_model_matches": true,
+    "thinking_tier_match": true,
+    "prompt_hash_matches": true,
+    "prompt_bytes_matches": true,
+    "single_terminal": true,
+    "terminal_event_matches_record": true,
+    "monotonic_unique_sequence": true,
+    "paired_http": true,
+    "lifecycle_complete": true,
+    "prompt_coverage_complete": true,
+    "single_physical_launch": true,
+    "run_identity_matches": true,
+    "context_exposure": true,
+    "only_BETA_posted": true,
+    "record_not_partial": true
+  },
+  "counts": {
+    "events": 3155,
+    "http_pairs": 1575,
+    "context_reads": 5,
+    "physical_launches": 1,
+    "tool_calls": 8,
+    "tool_results": 8
+  },
+  "posted_comments": [
+    "BETA"
+  ],
+  "memory_puts": 1,
+  "observed_model": null,
+  "model_observation": "unavailable_in_host_projection",
+  "findings": [],
+  "interpretation": "Only BETA was posted after context exposure. Final prose mentions ALPHA/GAMMA as other members responsibility; original criterion scores posted comments, not whether those words occur in explanatory final prose. No changed rule is introduced.",
+  "scenario_verdict": "pending_trial3_terminal",
+  "new_provider_calls_by_reviewer": 0
+}

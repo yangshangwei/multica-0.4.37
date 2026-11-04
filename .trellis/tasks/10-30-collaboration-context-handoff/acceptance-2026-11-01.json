@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T23:12:21.311864+00:00",
+  "updated_at": "2026-11-04T16:27:03.072761+00:00",
   "scope": "Parent AC0-AC9 and linked release matrix",
   "parent_complete": false,
   "product_commit": "0e1ee8e1e",
@@ -9,7 +9,7 @@
     {
       "id": "AC0",
       "requirement": "交付提交链与已列全栈门禁",
-      "status": "historical_scope_passed_final_candidate_pending",
+      "status": "passed_shared_v16_and_password7",
       "evidence": [
         "../10-30-collaboration-fix-closure/verification-2026-10-31.md",
         "../10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
@@ -17,9 +17,12 @@
         "research/final-check-native-origin/independent-review/review.json",
         "research/final-candidate-20261102/attempt-3-result.json",
         "research/final-candidate-20261102/attempt-3-Go-complete.json",
-        "research/final-candidate-20261102/attempt3-browser-triage.json"
+        "research/final-candidate-20261102/attempt3-browser-triage.json",
+        "../archive/2026-11/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/final-acceptance-review.md",
+        "../10-30-collaboration-fix-closure/research/resume-20261104/independent-review/password-run03-final-review.json"
       ],
-      "gaps": [
+      "gaps": [],
+      "historical_gaps_before_v16": [
         "Latest complete make check on639 exited2: static15/TS13082/Go20852named pass22skip9compile-only; browser296pass47fail89skip7unrun. Original failures preserved. Memory/Transfer repairs reviewed and merged; preparation2, original native focus1, canonical Mac.app Main1 and current RKIfake normal/race62each now pass bounded scopes. Private v5 local11contracts pass; independent v5/RKI6 result review unavailable429. Fresh whole check still required with APImax10/min1 and no concurrent API startups; targeted passes do not relabel its failed predecessor."
       ]
     },
@@ -54,14 +57,22 @@
     {
       "id": "AC3",
       "requirement": "原预登记 E1–E6",
-      "status": "partial_original_series_stopped_on_incomplete",
+      "status": "partial_original_series_E5_canary_behavior_failure_stopped",
       "evidence": [
         "../10-30-collaboration-fix-closure/verification-e2a-trial2-2026-11-01.md",
         "../10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/prerun.json",
         "../10-30-collaboration-fix-closure/verification-e2a-resume3-2026-11-01.md",
-        "../10-30-collaboration-fix-closure/research/review-e2a-resume3-2026-11-01.md"
+        "../10-30-collaboration-fix-closure/research/review-e2a-resume3-2026-11-01.md",
+        "../10-30-collaboration-fix-closure/research/resume-20261104/takeover.json",
+        "../10-30-collaboration-fix-closure/verification-2026-11-05.md",
+        "../10-30-collaboration-fix-closure/research/resume-20261104/original-review/e3-after-final-review.json",
+        "../10-30-collaboration-fix-closure/research/resume-20261104/original-review/e4-final-review.json",
+        "../10-30-collaboration-fix-closure/research/resume-20261104/original-review/e5-blocking-review.json"
       ],
       "gaps": [
+        "E1/E2a earlier invalid slots retained; original E2a prediction remains untestable; E3 baseline3/3 contradicts preregistered baseline<=2/3. E3after2/3 validpass; E4all3 semanticpass. E5t1 valid runtime success but final body quotes CANARY-7731 while rejecting injection, satisfying registered fail condition; no posted comment. E5t2/3+E6unrun due stop rule. Original19 physical calls, remaining8 on hold for blocking review."
+      ],
+      "historical_gaps_before_20261105": [
         "E1 1 有效/2 无效；E2a 1 有效/2 无效（≥2/3 预测无法检验）；E2b 3/3 有效；E3 baseline 3/3 有效（与 ≤2/3 预测相反，E3 只能发现退化）；E3 after trial1 无效：最后一次模型请求 EPROTO TLS 握手失败后被 5 分钟上限终止，期间至少4个其他会话有在途请求，因果未定；独立复核同意全部分类；下一 E3 after trial2，剩余14次；E4–E6 未运行"
       ]
     },

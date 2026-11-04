@@ -1,0 +1,143 @@
+{
+  "registered_at": "2026-11-04T15:34:57.029893+00:00",
+  "registered_by_session": "01a1a728-4261-7db0-a3a8-f90b6a65ed0a",
+  "authorization": "Current user explicitly authorized existing task continuation: password7 then E3 after trial2 through E6, cap14 unchanged; original first-incomplete and E5-canary stop rules retained.",
+  "launch_status": "held_until_current_wholecheck_password_and_exclusive_window",
+  "previous_registration": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/original-series-run/prerun.json",
+  "previous_verification": "../../../verification-e2a-resume3-2026-11-01.md",
+  "remaining_provider_call_cap": 14,
+  "prior_consumed": {
+    "E1": [
+      1,
+      2,
+      3
+    ],
+    "E2a": [
+      1,
+      2,
+      3
+    ],
+    "E2b": [
+      1,
+      2,
+      3
+    ],
+    "E3_baseline": [
+      1,
+      2,
+      3
+    ],
+    "E3_after": [
+      1
+    ]
+  },
+  "prior_slot_rule": "Keep all original valid/invalid slots and trial/hop labels; no replacement or health calls.",
+  "ordered_plan": [
+    {
+      "scenario": "E3_member_scope",
+      "arm": "after",
+      "start_trial": 2,
+      "remaining_trials": [
+        2,
+        3
+      ],
+      "launches_per_trial": 1,
+      "call_cap": 2
+    },
+    {
+      "scenario": "E4_stale_merge",
+      "arm": "baseline",
+      "start_trial": 1,
+      "remaining_trials": [
+        1,
+        2,
+        3
+      ],
+      "launches_per_trial": 1,
+      "call_cap": 3
+    },
+    {
+      "scenario": "E5_injection",
+      "arm": "baseline",
+      "start_trial": 1,
+      "remaining_trials": [
+        1,
+        2,
+        3
+      ],
+      "launches_per_trial": 1,
+      "call_cap": 3
+    },
+    {
+      "scenario": "E6_relay",
+      "arm": "baseline",
+      "start_trial": 1,
+      "remaining_trials": [
+        1,
+        2,
+        3
+      ],
+      "launches_per_trial": 2,
+      "call_cap": 6
+    }
+  ],
+  "trials": 3,
+  "source_arms": {
+    "baseline": {
+      "cwd": "/Volumes/artisan/code/2026/mc-context-guard-baseline-20261102/server",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f"
+    },
+    "after": {
+      "cwd": "/Volumes/artisan/code/2026/mc-context-guard-after-20261102/server",
+      "source_commit": "835e7b046c6841e0945a59326bc4ddcbae4a0df7"
+    }
+  },
+  "framework_sha256": "ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+  "framework_files": {
+    "host_context_experiment_evidence_test.go": "6ad5f77069a5a6477e81763a9a8578ba3ff5838b0abeb947c01169bc68eb2b2f",
+    "host_context_experiment_fixture_test.go": "0245a0719d82c3b9a2d1c754c7df27504b837776a4d04ac2bdb71864afa794d6",
+    "host_context_experiment_stop_test.go": "2ddb69382caac52ef6afbaf3b6e4246a07d52aa3c06f0a6e0b1b5f8453a8908d",
+    "host_context_experiment_test.go": "09e5d6cc4e1abca7cb332e6c2b30b563351021fcaf730d8ee6445b2257fa6893"
+  },
+  "previous_framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+  "framework_change": "Only preregistered E5 canary stop rule and its fake regression; finished/fail is retained rather than reclassified incomplete.",
+  "provider": "claude",
+  "executable": "/Users/artisan/.local/share/claude/versions/2.1.316",
+  "executable_sha256": "64c327e92b2c5e0f78c0a980c5a518121e1f0d140ca771ca5dd4488d1a2dcb3f",
+  "provider_version": "2.1.316",
+  "go_executable": "/opt/homebrew/bin/go",
+  "requested_model": "claude-opus-5-5",
+  "thinking": "provider_default",
+  "service_tier": "provider_default",
+  "formal_E0": {
+    "source_commit": "4c833e737efb6c997e5cb56c74c43e9237c91956",
+    "command": [
+      "go",
+      "test",
+      "-tags=agentintegration",
+      "./internal/daemon/collaborationrun",
+      "-run",
+      "^TestHostProviderAccountSmoke$",
+      "-count=1",
+      "-v",
+      "-timeout=4m"
+    ],
+    "exit_code": 0,
+    "test_sha256": "5545ed436e131e5c09f5cd5e0c69dfdc886936e16eca87cf5ebaa925ab36f473",
+    "after_source_smoke_bytes_match": true,
+    "historical_provider_version": "2.1.316",
+    "historical_observed_model": [
+      "claude-opus-5-5"
+    ],
+    "test_log_sha256": "799889ea40c631c90b18ebd076e3bf7b6dedcb45bc7cc34f559321a100d7d73f",
+    "scope": "Historical formal smoke supports original-series continuation only, not current Provider health or new RK1 candidate; baseline is intentionally the pre-fix arm."
+  },
+  "stop_rule": "Stop every later trial/scenario after first incomplete runtime/environment/harness result; no extra replacement/health calls or timeout/model change. E5 canary stops for blocking review.",
+  "concurrency": "Coordinator must confirm an exclusive window after full candidate verification; child implementation does not grant launch clearance.",
+  "new_rk1_budget_consumed": 0,
+  "previous_registration_sha256": "58a3b385eb559c0fa420e2f06319b0db6b00243dd579794d455025c433949fe4",
+  "previous_owner_session": "01a19ff3-faaf-71c1-b068-8571f0e940f1",
+  "takeover_plan": "research/resume-20261104/takeover.json",
+  "takeover_readiness": "research/resume-20261104/original-inventory/inventory.json",
+  "new_provider_calls_at_registration": 0
+}

@@ -1,0 +1,28 @@
+{
+  "state": "actual_password7_independent_pass_services_released",
+  "candidate": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "accepted_product_source_id": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+  "product_changed": false,
+  "source_overlay": [
+    "e2e/fixtures/collaboration-offline-handoff.ts",
+    "e2e/fixtures/collaboration-handoff-chain.ts",
+    "e2e/collaboration-handoff-chain-web.spec.ts"
+  ],
+  "patch_sha256": "8694c9d8ee29a371d0b4efde946b79219713880f3a8b21ed8803f4f07b64e9ef",
+  "passed": 7,
+  "failed": 0,
+  "skipped": 0,
+  "retry": 0,
+  "exit_code": 0,
+  "raw_report": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/run-03/results.json",
+  "raw_report_sha256": "09e253295c1d44eb6ad022c8e2716ed7d5d588b9435e8f4c71dd29aa022b6ac7",
+  "history": {
+    "run01": "4pass3fail UI contract mismatch",
+    "run02": "5pass2fail remaining handler Transfer disclosure",
+    "run03": "7pass0fail, original timeouts/workers1/retry0"
+  },
+  "remaining": "Independent exact raw review; root integration and own service release; original model series is separate.",
+  "real_provider_calls": 0,
+  "independent_review": "../independent-review/password-run03-final-review.json",
+  "resource_release": "resource-release.json"
+}

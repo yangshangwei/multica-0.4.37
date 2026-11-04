@@ -1,0 +1,181 @@
+{
+  "candidate": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "exit_code": 1,
+  "accepted": false,
+  "stats": {
+    "startTime": "2026-11-04T15:42:54.160Z",
+    "duration": 118234.319,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 3,
+    "flaky": 0
+  },
+  "exact_inventory_matched": true,
+  "cases": [
+    {
+      "file": "collaboration-handoff-chain-desktop.spec.ts",
+      "title": "Electron information return shows the original requester and note before restoring responsibility",
+      "project": "chromium",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 13363,
+          "errors": [],
+          "attachments": [
+            "native-information-return-evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "collaboration-handoff-chain-web.spec.ts",
+      "title": "Web directed handoff chain moves current todos with responsibility and only the creator completes",
+      "project": "chromium",
+      "status": "unexpected",
+      "attempts": [
+        {
+          "status": "failed",
+          "retry": 0,
+          "duration": 28505,
+          "errors": [
+            {
+              "location": {
+                "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-handoff-chain.ts",
+                "column": 31,
+                "line": 45
+              },
+              "message": "TimeoutError: page.waitForResponse: Timeout 15000ms exceeded while waiting for event \"response\"\n\n   at fixtures/collaboration-handoff-chain.ts:45\n\n  43 |   expect(baseline.capabilities[action]).toBe(true);\n  44 |   const label = { request_information: \"Request information\", return_information: \"Return information\", submit_acceptance: \"Submit for acceptance\" }[action];\n> 45 |   const optionsPending = page.waitForResponse((response) => new URL(response.url()).pathname === `/api/collaboration/issues/${issueId}/status-options`\n     |                               ^\n  46 |     && new URL(response.url()).searchParams.get(\"action\") === action && response.request().method() === \"GET\");\n  47 |   await page.getByRole(\"button\", { name: label, exact: true }).click();\n  48 |   const form = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: label, exact: true }) });\n    at directedFormThroughUI (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-handoff-chain.ts:45:31)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-handoff-chain-web.spec.ts:98:22"
+            },
+            {
+              "location": {
+                "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-handoff-chain.ts",
+                "column": 64,
+                "line": 47
+              },
+              "message": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit for acceptance', exact: true })\u001b[22m\n\n\n   at fixtures/collaboration-handoff-chain.ts:47\n\n  45 |   const optionsPending = page.waitForResponse((response) => new URL(response.url()).pathname === `/api/collaboration/issues/${issueId}/status-options`\n  46 |     && new URL(response.url()).searchParams.get(\"action\") === action && response.request().method() === \"GET\");\n> 47 |   await page.getByRole(\"button\", { name: label, exact: true }).click();\n     |                                                                ^\n  48 |   const form = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: label, exact: true }) });\n  49 |   const optionsResponse = await optionsPending;\n  50 |   expect(optionsResponse.status()).toBe(200);\n    at directedFormThroughUI (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-handoff-chain.ts:47:64)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-handoff-chain-web.spec.ts:98:22"
+            }
+          ],
+          "attachments": [
+            "screenshot",
+            "screenshot",
+            "trace"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "collaboration-offline-handoff.spec.ts",
+      "title": "Web offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+      "project": "chromium",
+      "status": "unexpected",
+      "attempts": [
+        {
+          "status": "failed",
+          "retry": 0,
+          "duration": 17783,
+          "errors": [
+            {
+              "location": {
+                "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-offline-handoff.ts",
+                "column": 111,
+                "line": 128
+              },
+              "message": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Add participant', exact: true })\u001b[22m\n\n\n   at fixtures/collaboration-offline-handoff.ts:128\n\n  126 |   action: \"invite\" | \"transfer\", target: HandoffActor, note = \"\") {\n  127 |   const page = session.page;\n> 128 |   await page.getByRole(\"button\", { name: action === \"invite\" ? \"Add participant\" : \"Transfer\", exact: true }).click();\n      |                                                                                                               ^\n  129 |   const form = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: action === \"invite\" ? \"Add participant\" : \"Transfer\", exact: true }) });\n  130 |   await selectHandoffRecipient(page, form, target);\n  131 |   if (action === \"transfer\") await form.getByLabel(\"Note\", { exact: true }).fill(note);\n    at uiWorkflow (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-offline-handoff.ts:128:111)\n    at exerciseOfflineHandoff (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-offline-handoff.ts:215:24)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-offline-handoff.spec.ts:53:24"
+            }
+          ],
+          "attachments": []
+        }
+      ]
+    },
+    {
+      "file": "collaboration-offline-handoff.spec.ts",
+      "title": "Electron offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+      "project": "chromium",
+      "status": "unexpected",
+      "attempts": [
+        {
+          "status": "failed",
+          "retry": 0,
+          "duration": 34426,
+          "errors": [
+            {
+              "location": {
+                "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-offline-handoff.ts",
+                "column": 111,
+                "line": 128
+              },
+              "message": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Add participant', exact: true })\u001b[22m\n\n\n   at fixtures/collaboration-offline-handoff.ts:128\n\n  126 |   action: \"invite\" | \"transfer\", target: HandoffActor, note = \"\") {\n  127 |   const page = session.page;\n> 128 |   await page.getByRole(\"button\", { name: action === \"invite\" ? \"Add participant\" : \"Transfer\", exact: true }).click();\n      |                                                                                                               ^\n  129 |   const form = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: action === \"invite\" ? \"Add participant\" : \"Transfer\", exact: true }) });\n  130 |   await selectHandoffRecipient(page, form, target);\n  131 |   if (action === \"transfer\") await form.getByLabel(\"Note\", { exact: true }).fill(note);\n    at uiWorkflow (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-offline-handoff.ts:128:111)\n    at exerciseOfflineHandoff (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-offline-handoff.ts:215:24)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-offline-handoff.spec.ts:53:24"
+            }
+          ],
+          "attachments": []
+        }
+      ]
+    },
+    {
+      "file": "collaboration-runtime-handoff-desktop.spec.ts",
+      "title": "Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+      "project": "chromium",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 4483,
+          "errors": [],
+          "attachments": [
+            "desktop-runtime-handoff",
+            "runtime-handoff-native-evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "collaboration-runtime-handoff-web.spec.ts",
+      "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+      "project": "chromium",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 3024,
+          "errors": [],
+          "attachments": [
+            "ENV-1-startup-and-latest-context"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "collaboration-runtime-handoff-web.spec.ts",
+      "title": "Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal",
+      "project": "chromium",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 6490,
+          "errors": [],
+          "attachments": [
+            "web-runtime-handoff",
+            "source-run-navigation",
+            "source-run-navigation-screen",
+            "runtime-handoff-web-evidence"
+          ]
+        }
+      ]
+    }
+  ],
+  "top_level_errors": [],
+  "source_changed": [],
+  "native_changed": [],
+  "raw_report": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/run-01/results.json",
+  "raw_report_sha256": "7ee4b1763f4e3ee52f7d7200eb923b15e9fdb1e76a0322d32d4ab4a0a137aef5",
+  "log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/run-01/output.log",
+  "log_sha256": "bdde6b4c549bc65b08b4519ee9979ff6a41de6e7bc90bcbb592fa8fdddd5b879",
+  "finished_at": "2026-11-04T15:45:03.384277+00:00",
+  "provider_calls": 0
+}

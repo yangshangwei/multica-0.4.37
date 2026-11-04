@@ -1,0 +1,9 @@
+=== RUN   TestHostContextExperiment
+=== RUN   TestHostContextExperiment/E4_stale_merge
+    host_context_experiment_test.go:182: E4_stale_merge trial 1: outcome=success verdict=manual_review_required context_reads=1 puts=2 157s
+    host_context_experiment_test.go:182: E4_stale_merge trial 2: outcome=success verdict=manual_review_required context_reads=1 puts=2 135s
+    host_context_experiment_test.go:182: E4_stale_merge trial 3: outcome=success verdict=manual_review_required context_reads=1 puts=2 149s
+--- PASS: TestHostContextExperiment (454.75s)
+    --- PASS: TestHostContextExperiment/E4_stale_merge (442.13s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	455.314s
