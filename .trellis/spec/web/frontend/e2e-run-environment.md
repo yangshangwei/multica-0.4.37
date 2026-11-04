@@ -530,6 +530,25 @@ steps because plain Node cannot assume Playwright's TypeScript loader. Bind new
 untracked harness files by content hash as well as the tracked patch. Keep all
 receipt, revision, authorization and workflow assertions when adapting controls.
 
+Collaboration actions move between the primary controls and More actions as
+responsibility and status change. In `uiWorkflow`, locate the exact requested
+button and, if it is not visible, call the existing
+`revealCollaborationDisclosure(page, "More actions")` before clicking. Apply
+this to both inviting and transferring: Transfer can be primary for the creator
+but collapsed for the recipient after a reload. Expand the section before
+asserting that an unauthorized action is absent; keep capability/API refusals.
+
+The password handoff chain submits through Submit result with explicit Result
+and Basis. Bind its `delivery_confirmation.submission_id` to the immutable
+`delivery.current` snapshot, then use Accept and complete with that same
+`submission_id`, current observations and status-options version. A forged
+non-creator completion must include a valid submission ID so its 403 proves
+authorization rather than an incomplete request. Verify retained result/basis,
+the accepted decision's actor/ID, notifications, current/participating lists and
+idempotency alongside the UI actions. These password-only cases are skipped by
+the default legacy deployment: retain their failed evidence and require a new
+complete seven-case password run, not a sum of passing cases from prior runs.
+
 For the closed-memory purge journey, explicitly open Version history before
 asserting that Restore actions are absent and choosing a historical Purge action.
 An absent-action assertion against collapsed content does not prove the closed

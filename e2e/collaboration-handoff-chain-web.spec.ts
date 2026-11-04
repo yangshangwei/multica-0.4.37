@@ -1,8 +1,9 @@
 import { test, expect, type BrowserContext } from "@playwright/test";
-import type { CollaborationIssue } from "@multica/core/collaboration";
+import type { CollaborationIssue, CollaborationOperation, CollaborationStatusOptions } from "@multica/core/collaboration";
 import { assertLists, checkVisibleLists, handoffNotifications, seedOfflineHandoff, uiWorkflow, type HandoffActor, type HandoffSession } from "./fixtures/collaboration-offline-handoff";
 import { directedFormThroughUI } from "./fixtures/collaboration-handoff-chain";
-import { commentThroughUI, gapWorkflowObservations, lifecycleThroughUI } from "./fixtures/collaboration-control-gaps";
+import { commentThroughUI, gapWorkflowObservations } from "./fixtures/collaboration-control-gaps";
+import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
 
 test.use({ actionTimeout: 15_000, screenshot: "only-on-failure", trace: "retain-on-failure" });
 
@@ -95,13 +96,19 @@ test("Web directed handoff chain moves current todos with responsibility and onl
 
     // 5. H submits for acceptance: responsibility and the todo go to the
     // creator; the issue is in review, not complete (AC29, AC30, AC28).
-    const accepted = await directedFormThroughUI(hSession.page, fixture.issueId, "submit_acceptance", "Implemented; please accept.");
+    const resultText = "Implemented; please accept.";
+    const basisText = "Verified the configured provider after the creator explicitly returned the information request.";
+    const accepted = await directedFormThroughUI(hSession.page, fixture.issueId, "submit_acceptance", resultText, undefined, basisText);
     expect(accepted.receipt.code).toBe("acceptance_submitted");
     const afterAcceptance = await read();
     expect(afterAcceptance.handler.user_id).toBe(P.id);
     expect(afterAcceptance.status).toBe(accepted.selectedStatus);
     expect(afterAcceptance.status_category).toBe("in_review");
     expect(afterAcceptance.current_information_request).toBeNull();
+    const submission = afterAcceptance.delivery!.current!;
+    expect(submission.id).toMatch(/^[0-9a-f-]{36}$/i);
+    expect(submission).toMatchObject({ author_user_id: H.id, result: resultText, basis: basisText, evidence_state: "available", decision: null });
+    expect(accepted.receipt.delivery_confirmation).toEqual({ submission_id: submission.id, attachment_ids: [] });
     sameBusiness(afterAcceptance);
     await assertLists(P, fixture, true, true);
     await assertLists(H, fixture, false, true);
@@ -111,18 +118,19 @@ test("Web directed handoff chain moves current todos with responsibility and onl
     // H, now neither creator nor handler, keeps discussion/AI control but cannot complete (AC27, AC54).
     const hView = await read(H);
     expect(hView.capabilities).toMatchObject({ complete: false, cancel: false, transfer: false, submit_acceptance: false, comment: true, control_ai: true, leave: true });
+    if (!await hSession.page.getByRole("button", { name: "Leave issue", exact: true }).isVisible()) await revealCollaborationDisclosure(hSession.page, "More actions");
     await expect(hSession.page.getByRole("button", { name: "Leave issue", exact: true })).toBeVisible();
-    for (const label of ["Complete issue", "Cancel issue", "Submit for acceptance", "Transfer"]) {
+    for (const label of ["Accept and complete", "Record result and complete", "Cancel issue", "Submit result", "Transfer"]) {
       await expect(hSession.page.getByRole("button", { name: label, exact: true })).toHaveCount(0);
     }
-    await expect(pSession.page.getByRole("button", { name: "Complete issue", exact: true })).toBeVisible();
+    await expect(pSession.page.getByRole("button", { name: "Accept and complete", exact: true })).toBeVisible();
     const hOptions = await fetch(`${fixture.apiUrl}${root}/status-options?action=complete`, { headers: { Authorization: `Bearer ${H.client.getToken()!}` } });
     expect(hOptions.status).toBe(403);
     const pOptions = await P.client.requestJSON<{ status_options_version: string }>(`${root}/status-options?action=complete`);
     const forgedKey = crypto.randomUUID();
     const forged = await fetch(`${fixture.apiUrl}${root}/lifecycle`, { method: "POST", headers: { Authorization: `Bearer ${H.client.getToken()!}`,
       "Content-Type": "application/json", "Idempotency-Key": forgedKey },
-      body: JSON.stringify({ ...gapWorkflowObservations(hView), action: "complete", status: "done", status_options_version: pOptions.status_options_version }) });
+      body: JSON.stringify({ ...gapWorkflowObservations(hView), action: "complete", submission_id: submission.id, status: "done", status_options_version: pOptions.status_options_version }) });
     expect(forged.status).toBe(403);
     expect(await forged.json()).toMatchObject({ code: "forbidden", status: 403 });
     // The refusal was recorded for H's real session, so it is a role decision, not an authentication failure.
@@ -132,11 +140,34 @@ test("Web directed handoff chain moves current todos with responsibility and onl
     // 6. The creator completes: no current todo remains, both keep the history (AC27, AC28, AC02).
     await pSession.page.reload();
     await expect(pSession.page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
-    const completed = await lifecycleThroughUI(pSession.page, fixture.issueId, "complete");
+    const optionsPending = pSession.page.waitForResponse((response) => new URL(response.url()).pathname === `${root}/status-options`
+      && new URL(response.url()).searchParams.get("action") === "complete" && response.request().method() === "GET");
+    await pSession.page.getByRole("button", { name: "Accept and complete", exact: true }).click();
+    const optionsResponse = await optionsPending;
+    expect(optionsResponse.status()).toBe(200);
+    const options: CollaborationStatusOptions = await optionsResponse.json();
+    const completion = pSession.page.getByRole("form", { name: "Accept and complete", exact: true });
+    await expect(completion.locator(`[data-submission-id="${submission.id}"]`)).toHaveCount(1);
+    await completion.getByLabel("Status", { exact: true }).selectOption(options.default_status);
+    const completionPending = pSession.page.waitForResponse((response) => new URL(response.url()).pathname === `${root}/lifecycle` && response.request().method() === "POST");
+    await completion.getByRole("button", { name: "Accept and complete", exact: true }).click();
+    const completionResponse = await completionPending;
+    expect(completionResponse.status()).toBe(200);
+    expect(completionResponse.request().postDataJSON()).toMatchObject({ ...gapWorkflowObservations(afterAcceptance), action: "complete",
+      submission_id: submission.id, status: options.default_status, status_options_version: options.status_options_version });
+    expect(completionResponse.request().headers()["idempotency-key"]).toMatch(/^[0-9a-f-]{36}$/i);
+    const completed: { receipt: CollaborationOperation } = { receipt: await completionResponse.json() };
+    expect(completed.receipt).toMatchObject({ code: "completed", delivery_confirmation: { submission_id: submission.id, attachment_ids: [] } });
+    await expect(completion).toHaveCount(0);
     const done = await read();
     expect(done.status_category).toBe("done");
     expect(done.session.queue_state).toBe("closed");
     expect(done.handler.user_id).toBe(P.id);
+    const { decision: _pendingDecision, ...immutableSubmission } = submission;
+    const { decision, ...retainedSubmission } = done.delivery!.latest!;
+    expect(retainedSubmission).toEqual(immutableSubmission);
+    expect(decision).toMatchObject({ kind: "accepted", submission_id: submission.id, actor_user_id: P.id });
+    expect(done.delivery!.current).toBeNull();
     await assertLists(P, fixture, false, true);
     await assertLists(H, fixture, false, true);
     await checkVisibleLists(pSession, fixture, P, false);

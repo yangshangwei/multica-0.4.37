@@ -38,10 +38,10 @@ export async function refreshDirectedIssue(page: Page, issueId: string) {
 
 /** Copied from collaboration-installed-main.spec.ts:98-137: the Web form for a
  * directed handoff, asserting the single offered status and the exact observations sent. */
-export async function directedFormThroughUI(page: Page, issueId: string, action: DirectedAction, note: string, recipient?: { id: string; name: string }) {
+export async function directedFormThroughUI(page: Page, issueId: string, action: DirectedAction, note: string, recipient?: { id: string; name: string }, basis?: string) {
   const baseline = await refreshDirectedIssue(page, issueId);
   expect(baseline.capabilities[action]).toBe(true);
-  const label = { request_information: "Request information", return_information: "Return information", submit_acceptance: "Submit for acceptance" }[action];
+  const label = { request_information: "Request information", return_information: "Return information", submit_acceptance: "Submit result" }[action];
   const optionsPending = page.waitForResponse((response) => new URL(response.url()).pathname === `/api/collaboration/issues/${issueId}/status-options`
     && new URL(response.url()).searchParams.get("action") === action && response.request().method() === "GET");
   await page.getByRole("button", { name: label, exact: true }).click();
@@ -65,10 +65,16 @@ export async function directedFormThroughUI(page: Page, issueId: string, action:
     await expect(form.getByText(`Requested by ${request.requester.name}`, { exact: true })).toBeVisible();
     if (request.note.trim() !== "") await expect(form.getByText(request.note, { exact: true })).toBeVisible();
   }
-  await form.getByLabel("Note", { exact: true }).fill(note);
+  if (action === "submit_acceptance") {
+    if (!basis?.trim()) throw new Error("Submitting a result requires its explicit basis");
+    await form.getByLabel("Result", { exact: true }).fill(note);
+    await form.getByLabel("Basis", { exact: true }).fill(basis);
+  } else {
+    await form.getByLabel("Note", { exact: true }).fill(note);
+  }
   const endpoint = `/api/collaboration/issues/${issueId}/${action === "request_information" ? "handoffs" : action === "return_information" ? "information-returns" : "acceptance-submissions"}`;
   const pending = page.waitForResponse((response) => new URL(response.url()).pathname === endpoint && response.request().method() === "POST");
-  await form.getByRole("button", { name: "Confirm", exact: true }).click();
+  await form.getByRole("button", { name: action === "submit_acceptance" ? "Submit result" : "Confirm", exact: true }).click();
   const response = await pending;
   expect(response.status()).toBe(200);
   const receipt: CollaborationOperation = await response.json();
@@ -79,6 +85,7 @@ export async function directedFormThroughUI(page: Page, issueId: string, action:
     expected_participant_epoch: baseline.write_context!.participant_epoch, expected_account_epoch: baseline.write_context!.account_epoch,
     expected_status: options.default_status, status_options_version: options.status_options_version, note });
   if (action === "return_information") expect(input.information_request_id).toBe(baseline.current_information_request!.id);
+  if (action === "submit_acceptance") expect(input).toMatchObject({ basis, attachment_ids: [] });
   await expect(form).toHaveCount(0);
   return { receipt, input, requestId, baseline, selectedStatus: options.default_status };
 }

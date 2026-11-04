@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { expect, type Locator, type Page } from "@playwright/test";
 import type { CollaborationIssue, CollaborationWorkbench, CollaborationOperation } from "@multica/core/collaboration";
 import { TestApiClient } from "../fixtures";
+import { revealCollaborationDisclosure } from "./collaboration-disclosures";
 
 interface Notification {
   id: string; issue_id: string; event_seq: string; kind: string; issue_title: string | null;
@@ -125,7 +126,9 @@ export async function selectHandoffRecipient(page: Page, form: Locator, recipien
 export async function uiWorkflow(session: HandoffSession, fixture: OfflineHandoffFixture, actor: HandoffActor,
   action: "invite" | "transfer", target: HandoffActor, note = "") {
   const page = session.page;
-  await page.getByRole("button", { name: action === "invite" ? "Add participant" : "Transfer", exact: true }).click();
+  const actionButton = page.getByRole("button", { name: action === "invite" ? "Add participant" : "Transfer", exact: true });
+  if (!await actionButton.isVisible()) await revealCollaborationDisclosure(page, "More actions");
+  await actionButton.click();
   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: action === "invite" ? "Add participant" : "Transfer", exact: true }) });
   await selectHandoffRecipient(page, form, target);
   if (action === "transfer") await form.getByLabel("Note", { exact: true }).fill(note);
