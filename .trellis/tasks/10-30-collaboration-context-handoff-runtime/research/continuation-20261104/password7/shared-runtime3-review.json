@@ -1,0 +1,261 @@
+{
+  "recorded_at": "2026-11-04T15:51:15.868731+00:00",
+  "verdict": "bounded_runtime3_pass",
+  "scope": "runtime three-case evidence from shared password7 run01 only; whole7 remains failed4pass3fail",
+  "source_head": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "current_production_equivalence": "1a32ca36c differs from EDA only by six default-excluded rk1k files; recorded runtime sources checked against EDA",
+  "raw_report": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/run-01/results.json",
+  "raw_report_sha256": "7ee4b1763f4e3ee52f7d7200eb923b15e9fdb1e76a0322d32d4ab4a0a137aef5",
+  "readiness": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/password7/readiness.json",
+  "readiness_sha256": "562ff7da85b6c151d1ce84fdc0644f133a48011ae8961582c6bd960b750c3796",
+  "database_identity": "multica_password7_20261104_f90b6a65|764_collaboration_ai_policy",
+  "API_provenance": {
+    "component": "api",
+    "mode": "development",
+    "build_id": "",
+    "command": "go run -ldflags '-X main.commit=eda0d68fb' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server)",
+    "source_id": "080e49210a53a763213651be5d76b343186613d1673cafdfc6519645c4690364",
+    "configuration_id": "5779d7dff0bc71c711e65658a1bc0bfaaebda7b63c41ebc2c5bbd11659ec97e5",
+    "commit": "eda0d68fb",
+    "launcher_pid": 46283,
+    "started_at": "2026-11-04T15:35:56Z",
+    "listener_pid": 46328
+  },
+  "Web_provenance": {
+    "component": "web",
+    "mode": "production",
+    "build_id": "LWmfK4rqLpu7Bxe1tpjXC",
+    "command": "pnpm --filter @multica/web exec next start --port 13771",
+    "source_id": "080e49210a53a763213651be5d76b343186613d1673cafdfc6519645c4690364",
+    "configuration_id": "435658e3a5b47a4b66d564318dcebb4c0b43c0a9def92e2ad77a51c1c568612c",
+    "commit": "eda0d68fb",
+    "launcher_pid": 48624,
+    "started_at": "2026-11-04T15:37:50Z",
+    "listener_pid": 48643
+  },
+  "native": {
+    "executable": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+      "sha256": "cf74833a9b0c242e26c177005d7d61819e5bf5ed199acc794fed2eb0cc4f3149"
+    },
+    "framework": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/node_modules/electron/dist/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Electron Framework",
+      "sha256": "0a85572e116a6fd83549c6669d72e4ff65d86bdf6e69952db882b609d92f808f"
+    },
+    "desktop_manifest_sha256": "6722212cb82e537b638bfeb13eb4e3bf7feee959fcbfb330f3faada3fc52209d",
+    "files": 495
+  },
+  "renderer_index_sha256": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847",
+  "actual_runtime_pass": 3,
+  "runtime_fail_skip_retry": 0,
+  "checks": [
+    {
+      "name": "raw_report_matches_owner_summary",
+      "passed": true
+    },
+    {
+      "name": "source_before_manifest_matches_readiness",
+      "passed": true
+    },
+    {
+      "name": "tracked_source_and_native_reported_unchanged",
+      "passed": true
+    },
+    {
+      "name": "all_495_native_artifacts_match_recorded_bytes_now",
+      "passed": true
+    },
+    {
+      "name": "native_executable_historical_hash",
+      "passed": true
+    },
+    {
+      "name": "native_framework_historical_hash",
+      "passed": true
+    },
+    {
+      "name": "recorded_source_matches_EDA:e2e/collaboration-runtime-handoff-web.spec.ts",
+      "passed": true
+    },
+    {
+      "name": "recorded_source_matches_EDA:e2e/collaboration-runtime-handoff-desktop.spec.ts",
+      "passed": true
+    },
+    {
+      "name": "recorded_source_matches_EDA:e2e/fixtures/collaboration-runtime-handoff.ts",
+      "passed": true
+    },
+    {
+      "name": "recorded_source_matches_EDA:e2e/fixtures/collaboration-native.ts",
+      "passed": true
+    },
+    {
+      "name": "recorded_source_matches_EDA:e2e/fixtures/collaboration-account-electron.mjs",
+      "passed": true
+    },
+    {
+      "name": "recorded_source_matches_EDA:e2e/fixtures/collaboration-offline-handoff.ts",
+      "passed": true
+    },
+    {
+      "name": "recorded_API_commit_PID",
+      "passed": true
+    },
+    {
+      "name": "production_Web_source_and_runtime_origins",
+      "passed": true
+    },
+    {
+      "name": "password_database_identity",
+      "passed": true
+    },
+    {
+      "name": "identity:Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+      "passed": true
+    },
+    {
+      "name": "single_pass_no_retry:Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+      "passed": true
+    },
+    {
+      "name": "attachment_present:desktop-runtime-handoff",
+      "passed": true
+    },
+    {
+      "name": "attachment_nonempty:desktop-runtime-handoff",
+      "passed": true
+    },
+    {
+      "name": "attachment_present:runtime-handoff-native-evidence",
+      "passed": true
+    },
+    {
+      "name": "attachment_nonempty:runtime-handoff-native-evidence",
+      "passed": true
+    },
+    {
+      "name": "identity:ENV-1 live latest shared context preserves the run's empty startup version",
+      "passed": true
+    },
+    {
+      "name": "single_pass_no_retry:ENV-1 live latest shared context preserves the run's empty startup version",
+      "passed": true
+    },
+    {
+      "name": "attachment_present:ENV-1-startup-and-latest-context",
+      "passed": true
+    },
+    {
+      "name": "attachment_nonempty:ENV-1-startup-and-latest-context",
+      "passed": true
+    },
+    {
+      "name": "identity:Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal",
+      "passed": true
+    },
+    {
+      "name": "single_pass_no_retry:Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal",
+      "passed": true
+    },
+    {
+      "name": "attachment_present:web-runtime-handoff",
+      "passed": true
+    },
+    {
+      "name": "attachment_nonempty:web-runtime-handoff",
+      "passed": true
+    },
+    {
+      "name": "attachment_present:source-run-navigation",
+      "passed": true
+    },
+    {
+      "name": "attachment_nonempty:source-run-navigation",
+      "passed": true
+    },
+    {
+      "name": "attachment_present:source-run-navigation-screen",
+      "passed": true
+    },
+    {
+      "name": "attachment_nonempty:source-run-navigation-screen",
+      "passed": true
+    },
+    {
+      "name": "attachment_present:runtime-handoff-web-evidence",
+      "passed": true
+    },
+    {
+      "name": "attachment_nonempty:runtime-handoff-web-evidence",
+      "passed": true
+    },
+    {
+      "name": "exact_three_runtime_cases",
+      "passed": true
+    },
+    {
+      "name": "ENV1_empty_startup_live_v1",
+      "passed": true
+    },
+    {
+      "name": "Web_full_recall_and_read_revocation",
+      "passed": true
+    },
+    {
+      "name": "native_unknown_tail_and_no_daemon",
+      "passed": true
+    }
+  ],
+  "checks_passed": 39,
+  "attachments": [
+    {
+      "name": "desktop-runtime-handoff",
+      "content_type": "image/png",
+      "bytes": 260590,
+      "sha256": "e415e952935d51340fbd83f9e54a6ff18ee8c475c6d968d0fbee9b39e84f261b"
+    },
+    {
+      "name": "runtime-handoff-native-evidence",
+      "content_type": "application/json",
+      "bytes": 5063,
+      "sha256": "1e1893964514150af1013c4a22ade8cba780bd08fc46836a9a50ba822d34fffb"
+    },
+    {
+      "name": "ENV-1-startup-and-latest-context",
+      "content_type": "application/json",
+      "bytes": 509,
+      "sha256": "bbf9576afac899a03176e18e1e8ed85199e331540e871285a896f9d799b789f5"
+    },
+    {
+      "name": "web-runtime-handoff",
+      "content_type": "image/png",
+      "bytes": 45715,
+      "sha256": "8873c0cd37d8bac52a4ceb31c9ba7b8254044178484c17015d5337ee4477847c"
+    },
+    {
+      "name": "source-run-navigation",
+      "content_type": "application/json",
+      "bytes": 10477,
+      "sha256": "0d1b6c279e9d22344bc8d510b7f1f9174b542108aef8b00a87607a05913237d8"
+    },
+    {
+      "name": "source-run-navigation-screen",
+      "content_type": "image/png",
+      "bytes": 80650,
+      "sha256": "e270411a2bf39cf688cc549beefe0ed7d28598d8180929be16c08174fd37e187"
+    },
+    {
+      "name": "runtime-handoff-web-evidence",
+      "content_type": "application/json",
+      "bytes": 4636,
+      "sha256": "80412f56fe9b8121f55b01ad16f14cc4f008e7bb1775699b0449c8c926bdd92c"
+    }
+  ],
+  "limitations": [
+    "Seeded retained records; ingestion remains separate Go proof",
+    "No real Provider/model or installed release acceptance",
+    "No historical API binary SHA was recorded; API identity binds actual source/commit/build command/process",
+    "Ongoing sibling C3 fixes and final whole7 acceptance remain owned by sibling; no duplicate execution"
+  ],
+  "reviewer_services_tests_DB_writes_Provider_calls": 0
+}

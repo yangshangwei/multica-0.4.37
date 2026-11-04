@@ -4,9 +4,10 @@
   "registered_by_session": "claude multica-0-4-37-35",
   "runnable": false,
   "not_runnable_reasons": [
-    "latest actual wholecheck v9 failed; selected v10 wholecheck and same-candidate password7 remain unaccepted",
-    "final clean candidate source/CLI/configuration/artifact paid binding remains unregistered",
-    "runtime25 budget is already approved; exclusive serial gateway/service window remains unestablished; external push/CI/deployment/publication remain unauthorized"
+    "current-source runtime race failed with a retained incomplete recording; normal passed; cause unresolved and the race overlapped a shared browser run",
+    "shared V16 complete check accepted and runtime password3 passed; full password7 repeat belongs to the existing closure-task owner",
+    "final paid source/CLI/operator/artifact binding remains unregistered; runtime25 approved/consumed0",
+    "exclusive window reserved for closure password7 then original14; wait for explicit release before runtime heavy tests or paid execution"
   ],
   "framework_files": "server/cmd/server/rk1_*_test.go (build tag agentintegration, !windows)",
   "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
@@ -25,7 +26,7 @@
   "fake_proof": "fake-proof/summary.json",
   "maintained_by": "Codex root coordinator; current fake evidence recorded; paid gate remains closed",
   "launcher_regression_sha256": "ace9ef93297921fcf0ea49f1e1e7703f298700c58fefe912a3057e3a3e0e3b17",
-  "fake_proof_current_status": "Current639 same-product quiet normal62pass/race62pass, 0fail/skip, exit0 each; independent RKI6 result review passed-with-notes (1794 checks, 0 blockers). v10 product/framework bytes match; this does not claim wholecheck or real-model acceptance. Historical incomplete results unchanged.",
+  "fake_proof_current_status": "Current1a32 normal62pass/0fail/skip independently reviewed; race60pass2fail/0skip with retained incomplete recording. Historical639 normal/race passes remain historical; paid gate stays closed.",
   "implemented_review_fixes": {
     "RKI1_RKI2": "62bd98eb9",
     "RKI3_RKI4": "4229e2d18",
@@ -77,7 +78,49 @@
     "current final639 fake normal/race passed; independent result review remains unavailable after gateway429",
     "user currently permits local preparation only; exclusive serial gateway window and applicable execution authority required before paid execution"
   ],
-  "maintained_at": "2026-11-02T19:53:13.799505+00:00",
+  "maintained_at": "2026-11-04T15:54:34.567289+00:00",
   "authorization_reference": "../continuation-20261102/coordinator/authorization-recall.md",
-  "selected_candidate_preparation": "../continuation-20261102/coordinator/v10/binding-preparation.json"
+  "selected_candidate_preparation": "../continuation-20261102/coordinator/v10/binding-preparation.json",
+  "historical_gate_reasons_before_20261104": [
+    "latest actual wholecheck v9 failed; selected v10 wholecheck and same-candidate password7 remain unaccepted",
+    "final clean candidate source/CLI/configuration/artifact paid binding remains unregistered",
+    "runtime25 budget is already approved; exclusive serial gateway/service window remains unestablished; external push/CI/deployment/publication remain unauthorized"
+  ],
+  "current_acceptance_20261104": {
+    "updated_at": "2026-11-04T15:54:34.567289+00:00",
+    "source_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "source_files": 7990,
+    "shared_gate": "../continuation-20261104/shared-gate-reconciliation.json",
+    "normal": {
+      "exit": 0,
+      "pass": 62,
+      "fail": 0,
+      "skip": 0,
+      "review": "../continuation-20261104/independent-review/normal-review.json"
+    },
+    "race": {
+      "exit": 1,
+      "pass": 60,
+      "fail": 2,
+      "skip": 0,
+      "review": "../continuation-20261104/independent-review/race-review.json",
+      "overlap_observed": true,
+      "overlap_causal_attribution": false
+    },
+    "password_runtime3": {
+      "passed": 3,
+      "review": "../continuation-20261104/password7/shared-runtime3-review.json",
+      "full7_passed": false
+    },
+    "window_owner": "01a1a728-4261-7db0-a3a8-f90b6a65ed0a",
+    "window_order": [
+      "shared password7",
+      "original14",
+      "runtime verification after explicit release"
+    ],
+    "runtime_cap": 25,
+    "runtime_consumed": 0,
+    "runnable": false
+  }
 }

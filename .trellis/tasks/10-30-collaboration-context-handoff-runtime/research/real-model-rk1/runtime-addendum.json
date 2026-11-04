@@ -4,11 +4,12 @@
   "decided_at": "2026-11-01T04:26:26Z",
   "decision_source": "User answers in session multica-0-4-37-87 on 2026-11-01: fix product gaps 2 and 3 before testing and narrow H1; allocate the full 19-launch runtime set",
   "research": "../real-model-runtime-framework-research.md (7a90f3d78)",
-  "status": "runtime_budget_approved_25; reviewed_framework_and_product_locally_merged; final_joint_candidate_not_accepted",
+  "status": "runtime_budget_approved_25_consumed_0; shared_v16_accepted; current_runtime_race_incomplete; awaiting_coordinated_window",
   "not_runnable_reasons": [
-    "final_candidate_joint_verification_pending: full make check and gated Web/native/knowledge on-off remain open",
-    "final_source_binding_required: historical source_binding below is not the final candidate; framework-registration.source_binding.source_id remains empty",
-    "exclusive_window_required: pause shared-gateway coding/review and local heavy tests/migrations before paid execution"
+    "current-source runtime race failed with a retained incomplete recording; normal passed; cause unresolved and the race overlapped a shared browser run",
+    "shared V16 complete check accepted and runtime password3 passed; full password7 repeat belongs to the existing closure-task owner",
+    "final paid source/CLI/operator/artifact binding remains unregistered; runtime25 approved/consumed0",
+    "exclusive window reserved for closure password7 then original14; wait for explicit release before runtime heavy tests or paid execution"
   ],
   "runtime_call_cap": 25,
   "runtime_consumed": 0,
@@ -100,7 +101,7 @@
       "correction": "From 96cedf485 until ac2a24f8f the smoke authorizer rejected knowledge_version=1 on the claim with HTTP 403, so the smoke could not pass at those HEADs and proved nothing there; the registered claim that the query is accepted holds only from ac2a24f8f. Confirmed independently by session multica-0-4-37-0b."
     }
   ],
-  "updated_at": "2026-11-02T13:37:28.489637+00:00",
+  "updated_at": "2026-11-04T15:54:34.567289+00:00",
   "decisions": [
     {
       "at": "2026-11-01T10:33:57Z",
@@ -141,5 +142,47 @@
     "RKI6_open: same final-candidate all-scenario fake normal/race required; preserved intermediate E0a recording-seal incomplete",
     "final_source_binding_required: historical source_binding below is not the final candidate; framework-registration.source_binding.source_id remains empty",
     "exclusive_window_required: pause shared-gateway coding/review and local heavy tests/migrations before paid execution"
-  ]
+  ],
+  "historical_gate_reasons_before_20261104": [
+    "final_candidate_joint_verification_pending: full make check and gated Web/native/knowledge on-off remain open",
+    "final_source_binding_required: historical source_binding below is not the final candidate; framework-registration.source_binding.source_id remains empty",
+    "exclusive_window_required: pause shared-gateway coding/review and local heavy tests/migrations before paid execution"
+  ],
+  "current_acceptance_20261104": {
+    "updated_at": "2026-11-04T15:54:34.567289+00:00",
+    "source_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "source_files": 7990,
+    "shared_gate": "../continuation-20261104/shared-gate-reconciliation.json",
+    "normal": {
+      "exit": 0,
+      "pass": 62,
+      "fail": 0,
+      "skip": 0,
+      "review": "../continuation-20261104/independent-review/normal-review.json"
+    },
+    "race": {
+      "exit": 1,
+      "pass": 60,
+      "fail": 2,
+      "skip": 0,
+      "review": "../continuation-20261104/independent-review/race-review.json",
+      "overlap_observed": true,
+      "overlap_causal_attribution": false
+    },
+    "password_runtime3": {
+      "passed": 3,
+      "review": "../continuation-20261104/password7/shared-runtime3-review.json",
+      "full7_passed": false
+    },
+    "window_owner": "01a1a728-4261-7db0-a3a8-f90b6a65ed0a",
+    "window_order": [
+      "shared password7",
+      "original14",
+      "runtime verification after explicit release"
+    ],
+    "runtime_cap": 25,
+    "runtime_consumed": 0,
+    "runnable": false
+  }
 }
