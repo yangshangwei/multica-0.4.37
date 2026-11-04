@@ -196,6 +196,10 @@ func rk1kProviderMain(dir string) int {
 // The borrowed executor returns only an exit code. This sibling also retains
 // whether Start actually succeeded so a refused stand-in is not counted.
 func rk1kExec(path string, args, env []string, stdin io.Reader, stdout io.Writer) (int, bool) {
+	return rk1kExecObserved(path, args, env, stdin, stdout, nil)
+}
+
+func rk1kExecObserved(path string, args, env []string, stdin io.Reader, stdout io.Writer, started func() error) (int, bool) {
 	if !filepath.IsAbs(path) {
 		return 40, false
 	}
@@ -208,6 +212,14 @@ func rk1kExec(path string, args, env []string, stdin io.Reader, stdout io.Writer
 	if err := cmd.Start(); err != nil {
 		_ = pipe.Close()
 		return 41, false
+	}
+	if started != nil {
+		if err := started(); err != nil {
+			_ = pipe.Close()
+			_ = cmd.Process.Kill()
+			_ = cmd.Wait()
+			return 43, true
+		}
 	}
 	go func() { _, _ = io.Copy(pipe, stdin); _ = pipe.Close() }()
 	signals, done := make(chan os.Signal, 2), make(chan struct{})

@@ -33,10 +33,14 @@ var rk1kSchedules = []rk1kSchedule{
 	{"RK1-K3", []string{"issue", "comment", "chat", "quick_create", "autopilot", "root", "member", "continuation"}, 8, 3},
 }
 
-// This sibling has no paid registration. Runtime25 and original14 cannot
-// become a knowledge allocation through environment variables.
+// A separately hash-bound Codex registration is the only real admission.
+// Runtime25 and original14 never become a knowledge allocation.
 func rk1kRealAdmission() error {
-	return errors.New("knowledge allocation is 0; paid source is unbound and registration is not runnable")
+	if os.Getenv("MULTICA_RUN_REAL_AGENT_SMOKE") != "1" {
+		return errors.New("real knowledge authorization required")
+	}
+	_, err := rk1kLoadCodexRegistration(os.Getenv("RK1K_CODEX_REGISTRATION"), os.Getenv("RK1K_CODEX_REGISTRATION_SHA256"))
+	return err
 }
 
 func TestRK1KnowledgeRealModel(t *testing.T) {
@@ -47,6 +51,22 @@ func TestRK1KnowledgeRealModel(t *testing.T) {
 	if err := rk1kRealAdmission(); err != nil {
 		t.Fatal(err)
 	}
+	registration, err := rk1kLoadCodexRegistration(os.Getenv("RK1K_CODEX_REGISTRATION"), os.Getenv("RK1K_CODEX_REGISTRATION_SHA256"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	rk1kActiveReal = registration
+	defer func() {
+		if t.Failed() {
+			if err := rk1kStopCodexLedger(registration); err != nil {
+				t.Errorf("cannot persist Codex series stop: %v", err)
+			}
+		}
+		rk1kActiveReal = nil
+	}()
+	t.Setenv("RK1K_TEST_PROVIDER", "codex")
+	t.Setenv("RK1K_FAKE_PROOF_OUT", registration.Output)
+	rk1kRunProof(t)
 }
 
 func TestRK1KnowledgeEntryGuard(t *testing.T) {

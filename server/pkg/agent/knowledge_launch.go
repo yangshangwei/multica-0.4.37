@@ -93,7 +93,7 @@ func knowledgeUnsupported() error {
 // supervision. A custom executable speaking the Claude protocol is not the
 // built-in runtime. This allowlist is not vendor-version or rollout evidence.
 func KnowledgeLifecycleSupported(provider, mode string, builtinRuntime bool) bool {
-	return builtinRuntime && provider == "claude" && (mode == "" || mode == "local")
+	return builtinRuntime && (provider == "claude" || provider == "codex") && (mode == "" || mode == "local")
 }
 
 // claudeSessionSelectorPrefixes are the long options that can make Claude
@@ -137,8 +137,23 @@ var claudeSubcommands = map[string]bool{
 //
 // This decides refusal before an ordinary fallback only. It admits nothing:
 // ValidateKnowledgeSessionArgs remains the only admission rule for a
-// knowledge launch. Providers other than Claude always report false.
+// knowledge launch. Codex also refuses configuration/profile/cwd selectors and
+// command operands that can reach another native store. Other providers report false.
 func KnowledgeSessionSelectorPresent(provider string, args []string) bool {
+	if provider == "codex" {
+		for _, raw := range args {
+			arg := unshellQuoteArg(raw)
+			name, _, _ := strings.Cut(arg, "=")
+			switch name {
+			case "--", "--config", "--profile", "--cd", "--ignore-user-config", "--worktree", "resume", "fork", "exec", "app-server":
+				return true
+			}
+			if len(arg) > 1 && arg[0] == '-' && arg[1] != '-' && strings.ContainsAny(arg[1:], "cpC") {
+				return true
+			}
+		}
+		return false
+	}
 	if provider != "claude" {
 		return false
 	}
@@ -168,6 +183,12 @@ func KnowledgeSessionSelectorPresent(provider string, args []string) bool {
 // Refusing a claim that falls back to ordinary execution is decided by
 // KnowledgeSessionSelectorPresent instead.
 func ValidateKnowledgeSessionArgs(provider string, args []string) error {
+	if provider == "codex" {
+		if len(args) != 0 {
+			return knowledgeUnsupported()
+		}
+		return nil
+	}
 	if provider != "claude" || len(args) > 64 {
 		return knowledgeUnsupported()
 	}
@@ -216,6 +237,9 @@ func KnowledgeInvocationFingerprint(provider string, cfg Config, opts ExecOption
 	}
 	if err := ValidateKnowledgeSessionArgs(provider, opts.CustomArgs); err != nil {
 		return "", err
+	}
+	if provider == "codex" {
+		return codexKnowledgeFingerprint(cfg, opts)
 	}
 	// Marshal a fixed shape rather than ExecOptions, which also contains the
 	// observer, the expected digest and fields unrelated to this adapter.

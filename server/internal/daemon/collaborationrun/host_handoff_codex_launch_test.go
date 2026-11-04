@@ -60,7 +60,20 @@ func runLaunchHandoffCodexFixture(mode string) int {
 				response["result"] = map[string]any{"thread": map[string]any{"id": hostFixtureSession}}
 			}
 		case "thread/start":
-			response["result"] = map[string]any{"thread": map[string]any{"id": hostFixtureSession}}
+			thread := map[string]any{"id": hostFixtureSession}
+			if strings.HasPrefix(mode, "knowledge_") {
+				var params map[string]any
+				if json.Unmarshal(request.Params, &params) != nil || params["ephemeral"] != true {
+					return 62
+				}
+				if mode != "knowledge_missing" {
+					thread["ephemeral"] = mode != "knowledge_persistent"
+				}
+				if os.WriteFile(os.Getenv("COLLAB_KNOWLEDGE_CODEX_THREAD"), request.Params, 0600) != nil {
+					return 63
+				}
+			}
+			response["result"] = map[string]any{"thread": thread}
 		case "turn/start":
 			var params struct {
 				ThreadID string `json:"threadId"`

@@ -31,8 +31,13 @@ type runtimeKnowledgeFixture struct {
 
 func newRuntimeKnowledgeFixture(t *testing.T, approved, negotiated bool, ttl ...time.Duration) *runtimeKnowledgeFixture {
 	t.Helper()
+	return newProviderRuntimeKnowledgeFixture(t, "claude", approved, negotiated, ttl...)
+}
+
+func newProviderRuntimeKnowledgeFixture(t *testing.T, provider string, approved, negotiated bool, ttl ...time.Duration) *runtimeKnowledgeFixture {
+	t.Helper()
 	f, caps := newHostCollaborationFixture(t)
-	f.fx.Exec(t, `UPDATE agent_runtime SET provider='claude' WHERE id=$1`, f.runtime.ID)
+	f.fx.Exec(t, `UPDATE agent_runtime SET provider=$2 WHERE id=$1`, f.runtime.ID, provider)
 	var err error
 	f.runtime, err = f.svc.Queries.GetAgentRuntime(f.ctx, f.runtime.ID)
 	if err != nil {

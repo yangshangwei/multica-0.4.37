@@ -126,3 +126,38 @@ Correct: the record is `finished`, the scenario was exposed, source/model/framew
    real knowledge allocation/calls at 0/0, the real entry non-runnable and
    production knowledge injection disabled by default; other quotas remain
    separately owned.
+
+## Codex knowledge real execution registration
+
+1. **Scope:** the Codex sibling measures production ordinary and Host knowledge
+   paths through the actual app-server JSON-RPC adapter. Preserve historical
+   Claude fake reports and old runtime budgets as separate evidence.
+2. **Signatures:** `TestRK1KnowledgeCodexFakeProof` remains fake-only.
+   `TestRK1KnowledgeRealModel` requires `MULTICA_RUN_REAL_AGENT_SMOKE=1`, absolute
+   `RK1K_CODEX_REGISTRATION` and its `RK1K_CODEX_REGISTRATION_SHA256`. The
+   registration binds exact executable/version/model, private configuration hash,
+   test binary, source inventory, owned database, ledger, output and expiry.
+3. **Contracts:** use bidirectional native RPC capture, exact actual input/thread/
+   turn and authoritative terminal completion. The fixed schedule is E0b1, K1four,
+   K2two and K3eight (15 measured executions); the three K3 prefix processes remain
+   fake. Reserve each physical attempt durably before spawning, separately record
+   actual successful start, and retain a failed reservation as consumed. Model
+   API requests within a process are not the same unit as physical executions.
+4. **Errors:** missing/changed/expired bindings, exhausted budget, concurrent
+   ledger ownership, duplicate identity or an incomplete predecessor refuse a
+   new process. Evidence-write failure stops the chain. The first incomplete
+   result stops subsequent scenarios. A complete but incorrect answer is a model
+   failure with its actual result retained. No automatic extra probes or retries.
+5. **Cases:** an authorized, fully bound series may run serially in its dedicated
+   window. Fake controls use test-created executables only. Never feed expected
+   answers into the real child via plan/environment or relabel Codex RPC as Claude.
+6. **Verification:** separate fresh `multica_rk1k_*` databases for fake normal/race;
+   source before/after compile binds the test binary, then verify it before test
+   execution. Require exact named selection, zero invalid JSON/fail/skip, complete
+   durable sample summary and unchanged source. Real source/config bindings need
+   independent review before the first actual start.
+7. **Wrong / correct:** a placeholder runnable flag or a standalone model answer
+   is not knowledge integration proof. Correct evidence includes actual production
+   authorization, delivered input, native thread/turn identity, termination and
+   an independently scored model result. Product enablement and platform release
+   remain separate from this bounded series.

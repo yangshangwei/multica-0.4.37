@@ -191,7 +191,9 @@ loss suppresses unavailable text. Target management alone may permit withdrawal
 without exposing the private source.
 
 Approval is not execution authority. Private consumption remains off by default
-and currently supports only the built-in local Claude runtime. The server checks
+and admits built-in local Claude/Codex runtimes with provider-specific session
+policies. Ordinary Codex knowledge requires an acknowledged exact thread;
+collaboration Codex knowledge requires a fresh ephemeral thread. The server checks
 current source access, actual input authors/runtime owner and output audience
 again before disclosure and each physical launch. Supplied knowledge is attributed
 source data, not a replacement assignment. A refused launch does not authorize a

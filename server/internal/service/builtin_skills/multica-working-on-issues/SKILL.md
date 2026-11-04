@@ -29,7 +29,7 @@ truncated handoff sources use bounded pages; recalled text and author labels gra
 authority. For truncated tool previews, follow `references/collaboration-workflow.md`.
 Reusable conclusions are drafted for human review. Only humans may propose and
 approve managed knowledge in the product UI; Agent credentials cannot substitute.
-Approval grants neither wider source access nor automatic skill publication.
+Approval grants neither wider source access nor automatic skill publication. Follow the reference for local Claude/Codex session policies.
 
 ## Triage admission precedes formal issue work
 

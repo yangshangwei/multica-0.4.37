@@ -77,15 +77,30 @@ func knowledgeErrorReason(err error) string {
 // The namespace contains local configuration sources, never task cwd, per-agent
 // arguments, private material or credentials. The server independently fences
 // its agent/runtime configuration. Rotating a transport token leaves it stable.
-func (d *Daemon) knowledgeConfigurationID(runtimeID string, entry AgentEntry, version string) string {
+func (d *Daemon) knowledgeConfigurationID(runtimeID, provider string, entry AgentEntry, version string) string {
 	path := entry.Path
 	if resolved, err := filepath.EvalSymlinks(path); err == nil {
 		path = resolved
 	}
 	home, _ := os.UserHomeDir()
 	sources := map[string]string{}
+	args := d.cfg.ClaudeArgs
+	if provider == "codex" {
+		codexHome := os.Getenv("CODEX_HOME")
+		if codexHome == "" {
+			codexHome = filepath.Join(home, ".codex")
+		}
+		fingerprint, err := agent.KnowledgeCodexConfigFingerprint(map[string]string{"CODEX_HOME": codexHome})
+		if err != nil {
+			return ""
+		}
+		sources["provider"], sources["codex_configuration"] = provider, fingerprint
+		args = d.cfg.CodexArgs
+	}
 	for _, key := range []string{"CLAUDE_CONFIG_DIR", "ANTHROPIC_BASE_URL", "CLAUDE_CODE_USE_BEDROCK", "CLAUDE_CODE_USE_VERTEX", "AWS_PROFILE", "AWS_REGION", "GOOGLE_CLOUD_PROJECT", "CLOUD_ML_REGION"} {
-		sources[key] = os.Getenv(key)
+		if provider == "claude" {
+			sources[key] = os.Getenv(key)
+		}
 	}
 	raw, _ := json.Marshal(struct {
 		Version                                                                    int
@@ -93,7 +108,7 @@ func (d *Daemon) knowledgeConfigurationID(runtimeID string, entry AgentEntry, ve
 		Args                                                                       []string
 		Sources                                                                    map[string]string
 	}{1, d.cfg.ServerBaseURL, d.cfg.ManagementDeploymentID, d.cfg.DaemonID, runtimeID,
-		d.cfg.Profile, path, version, home, entry.Model, d.cfg.ClaudeArgs, sources})
+		d.cfg.Profile, path, version, home, entry.Model, args, sources})
 	return protocol.CollaborationKnowledgeHash(string(raw))
 }
 
@@ -106,9 +121,13 @@ func (d *Daemon) knowledgeInvocation(runtimeID string) *protocol.TaskKnowledgeIn
 		!agent.KnowledgeLifecycleSupported(rt.Provider, "local", true) {
 		return nil
 	}
+	configuration := d.knowledgeConfigurationID(runtimeID, rt.Provider, entry, d.agentVersion(rt.Provider))
+	if configuration == "" {
+		return nil
+	}
 	return &protocol.TaskKnowledgeInvocation{
 		ProtocolVersion: protocol.TaskKnowledgeVersion, Provider: rt.Provider, Mode: "local", Builtin: true,
-		ConfigurationID: d.knowledgeConfigurationID(runtimeID, entry, d.agentVersion(rt.Provider)),
+		ConfigurationID: configuration,
 		ExtraArgs:       append([]string{}, defaultArgsForProvider(d.cfg, rt.Provider)...),
 	}
 }
@@ -339,7 +358,7 @@ func (d *Daemon) prepareKnowledgePrompt(ctx context.Context, task Task, provider
 	}
 	entry := d.agents()[provider]
 	entry.Path = cfg.ExecutablePath
-	configuration := d.knowledgeConfigurationID(task.RuntimeID, entry, cfg.CLIVersion)
+	configuration := d.knowledgeConfigurationID(task.RuntimeID, provider, entry, cfg.CLIVersion)
 	dropped, err := validateKnowledgeClaim(task, provider, configuration, *opts)
 	if err != nil {
 		return "", err

@@ -46,6 +46,8 @@ type rk1kFixture struct {
 	ordinaryRuntime, ordinaryAgent     string
 	ordinaryDaemon, ordinaryToken      string
 	nativeStore                        string
+	provider                           string
+	real                               *rk1kCodexRegistration
 	driver                             *daemon.RK1KnowledgeDriver
 	transport                          *rk1kTransport
 }
@@ -58,10 +60,10 @@ func rk1kRequireDatabase(t *testing.T) {
 	}
 	var actual string
 	if testPool == nil || testPool.QueryRow(t.Context(), "SELECT current_database()").Scan(&actual) != nil ||
-		actual != cfg.ConnConfig.Database {
+		actual != cfg.ConnConfig.Database || rk1kActiveReal != nil && actual != rk1kActiveReal.Database {
 		t.Fatal("knowledge fake database identity mismatch")
 	}
-	if os.Getenv("MULTICA_RUN_REAL_AGENT_SMOKE") != "" {
+	if os.Getenv("MULTICA_RUN_REAL_AGENT_SMOKE") != "" && rk1kActiveReal == nil {
 		t.Fatal("fake proof refuses a real-agent gate")
 	}
 }
@@ -69,6 +71,13 @@ func rk1kRequireDatabase(t *testing.T) {
 func newRK1KnowledgeFixture(t *testing.T, dir string, crossSource bool) *rk1kFixture {
 	t.Helper()
 	rk1kRequireDatabase(t)
+	provider := os.Getenv("RK1K_TEST_PROVIDER")
+	if provider == "" {
+		provider = "claude"
+	}
+	if provider != "claude" && provider != "codex" {
+		t.Fatal("unsupported knowledge test provider")
+	}
 	if err := os.MkdirAll(dir, 0700); err != nil {
 		t.Fatal(err)
 	}
@@ -113,7 +122,11 @@ func newRK1KnowledgeFixture(t *testing.T, dir string, crossSource bool) *rk1kFix
 	if err := os.Mkdir(binDir, 0700); err != nil {
 		t.Fatal(err)
 	}
-	wrapper := rk1kLinkSelf(t, binDir, rk1kProviderName)
+	wrapperName := rk1kProviderName
+	if provider == "codex" {
+		wrapperName = rk1kCodexProviderName
+	}
+	wrapper := rk1kLinkSelf(t, binDir, wrapperName)
 	sourceCLI := os.Getenv("RK1K_SOURCE_CLI")
 	expectedCLI := os.Getenv("RK1K_SOURCE_CLI_SHA256")
 	if !filepath.IsAbs(sourceCLI) || len(expectedCLI) != 64 {
@@ -132,10 +145,30 @@ func newRK1KnowledgeFixture(t *testing.T, dir string, crossSource bool) *rk1kFix
 		t.Fatal(err)
 	}
 	env := &rk1Env{version: rk1kFakeVersion, model: "rk1k-requested-model", wrapper: wrapper, cli: cliPath}
+	if provider == "codex" {
+		env.version = "0.165.0"
+		configHome := filepath.Join(home, ".codex")
+		if err := os.MkdirAll(configHome, 0700); err != nil {
+			t.Fatal(err)
+		}
+		t.Setenv("CODEX_HOME", configHome)
+		if rk1kActiveReal != nil {
+			env.version, env.model, env.real = rk1kActiveReal.Version, rk1kActiveReal.Model, rk1kActiveReal.Executable
+			raw, err := os.ReadFile(rk1kActiveReal.ConfigPath)
+			if err != nil {
+				t.Fatal("registered Codex configuration unavailable")
+			}
+			if err := os.WriteFile(filepath.Join(configHome, "config.toml"), raw, 0600); err != nil {
+				t.Fatal(err)
+			}
+		} else if err := os.WriteFile(filepath.Join(configHome, "config.toml"), []byte("model = \"rk1k-requested-model\"\n"), 0600); err != nil {
+			t.Fatal(err)
+		}
+	}
 	tr := &rk1kTrace{rk1Trace: &rk1Trace{next: router}}
 	f := &rk1kFixture{rk1Fixture: &rk1Fixture{t: t, env: env, base: b, h: h, q: db.New(b.managed.pool),
 		trace: tr.rk1Trace, dir: dir, plans: plans, targetSet: 1, targets: map[string]string{}},
-		allTrace: tr, transport: &rk1kTransport{}, nativeStore: filepath.Join(home, ".claude", "rk1k-fake-native")}
+		provider: provider, real: rk1kActiveReal, allTrace: tr, transport: &rk1kTransport{}, nativeStore: filepath.Join(home, ".claude", "rk1k-fake-native")}
 	b.managed.router, b.server.Config.Handler = tr, tr
 	f.svc = service.NewCollaborationService(f.q, b.managed.pool, h.IssueService)
 	f.svc.KnowledgeContextEnabled = h.TaskService.KnowledgeContextEnabled
@@ -160,9 +193,14 @@ func newRK1KnowledgeFixture(t *testing.T, dir string, crossSource bool) *rk1kFix
 	if err != nil {
 		t.Fatal(err)
 	}
-	b.runtime = b.managed.fx.Runtime(t, "RK1K Claude host", testutil.Cols{"owner_id": b.owner,
-		"provider": "claude", "runtime_mode": "local", "daemon_id": old.DaemonID.String, "status": "online", "metadata": metadata})
-	f.host = &collaborationrun.HostConfig{Provider: "claude", ProviderVersion: env.version, ProviderMode: "local",
+	if old.Provider == provider && (util.UUIDToString(old.WorkspaceID) != b.managed.fx.WorkspaceID || util.UUIDToString(old.OwnerID) != b.owner || old.ProfileID.Valid || old.RuntimeMode != "local" || !old.DaemonID.Valid) {
+		t.Fatal("registered base runtime does not match knowledge fixture authority")
+	}
+	if old.Provider != provider {
+		b.runtime = b.managed.fx.Runtime(t, "RK1K "+provider+" host", testutil.Cols{"owner_id": b.owner,
+			"provider": provider, "runtime_mode": "local", "daemon_id": old.DaemonID.String, "status": "online", "metadata": metadata})
+	}
+	f.host = &collaborationrun.HostConfig{Provider: provider, ProviderVersion: env.version, ProviderMode: "local",
 		AccountSource: "rk1k-test-runtime", Executable: wrapper,
 		Limits: protocol.CollaborationPreparationLimits{FileCount: 32, PerFileBytes: 100 << 20, TotalInputBytes: 256 << 20,
 			WorkspaceBytes: 512 << 20, GitExpandedBytes: 256 << 20, EntryCount: 4096, TimeoutSeconds: 60}}
@@ -366,21 +404,25 @@ func (f *rk1kFixture) ordinaryDriver() *daemon.RK1KnowledgeDriver {
 	f.ordinaryDaemon = "rk1k-" + uuid.NewString()
 	f.ordinaryToken = "mdt_" + uuid.NewString()
 	f.ordinaryRuntime = f.base.managed.fx.Runtime(t, "RK1K ordinary Claude", testutil.Cols{"owner_id": f.base.owner,
-		"provider": "claude", "runtime_mode": "local", "daemon_id": f.ordinaryDaemon, "status": "online",
+		"provider": f.provider, "runtime_mode": "local", "daemon_id": f.ordinaryDaemon, "status": "online",
 		"metadata": `{"cli_version":"0.4.37"}`})
+	timeout := time.Minute
+	if f.real != nil {
+		timeout = 5 * time.Minute
+	}
 	f.ordinaryAgent = f.base.managed.fx.Agent(t, "RK1K ordinary agent", f.ordinaryRuntime, testutil.Cols{
 		"owner_id": f.base.owner, "autonomy_level": "contributor", "permission_mode": "public_to", "visibility": "workspace",
-		"instructions": "Report active approved policy from the delivered knowledge data, or NONE."})
+		"instructions": "Before answering run multica project get " + f.project + " --output json. Then quote the complete active approved policy verbatim, or answer exactly NONE when none is delivered. For quick-create complete the requested issue creation first."})
 	f.base.managed.fx.Insert(t, "agent_invocation_target", testutil.Cols{"agent_id": f.ordinaryAgent,
 		"target_type": "workspace", "target_id": f.base.managed.fx.WorkspaceID})
 	f.base.managed.fx.Insert(t, "daemon_token", testutil.Cols{"token_hash": auth.HashToken(f.ordinaryToken),
 		"workspace_id": f.base.managed.fx.WorkspaceID, "daemon_id": f.ordinaryDaemon, "user_id": f.base.owner,
 		"auth_version": int64(1), "expires_at": time.Now().Add(time.Hour)})
 	var err error
-	f.driver, err = daemon.NewRK1KnowledgeDriver(daemon.RK1KnowledgeDriverOptions{Config: daemon.Config{
+	f.driver, err = daemon.NewRK1KnowledgeDriver(daemon.RK1KnowledgeDriverOptions{Provider: f.provider, Config: daemon.Config{
 		ServerBaseURL: f.base.server.URL, DaemonID: f.ordinaryDaemon, WorkspacesRoot: filepath.Join(f.dir, "workspaces"),
-		Profile: "rk1k", CLIVersion: "0.4.37", AgentTimeout: time.Minute, KeepEnvAfterTask: true,
-		Agents: map[string]daemon.AgentEntry{"claude": {Path: f.env.wrapper}}},
+		Profile: "rk1k", CLIVersion: "0.4.37", AgentTimeout: timeout, KeepEnvAfterTask: true,
+		Agents: map[string]daemon.AgentEntry{f.provider: {Path: f.env.wrapper, Model: f.env.model}}},
 		Token: f.ordinaryToken, RuntimeID: f.ordinaryRuntime, CLIPath: f.env.cli,
 		HTTPClient: &http.Client{Transport: f.transport}}, slog.New(slog.NewTextHandler(io.Discard, nil)))
 	if err != nil {
@@ -490,7 +532,7 @@ func (f *rk1kFixture) newConsumer(label string, squad bool) (*rk1Fixture, string
 	}
 	f.human(f.base.ownerToken, "POST", "/api/collaboration/issues", map[string]any{
 		"source_workspace_id": f.base.managed.fx.WorkspaceID, "handler_user_id": f.base.contributor,
-		"title": "RK1K consumer " + label, "description": "Report the active approved policy.", "project_id": f.project}, nil).Want(201).JSON(&issue)
+		"title": "RK1K consumer " + label, "description": "Read the current collaboration memory and handoff using the scoped multica CLI. Quote the complete active approved policy verbatim from the delivered managed knowledge, or answer exactly NONE when none is delivered.", "project_id": f.project}, nil).Want(201).JSON(&issue)
 	copy := *f.rk1Fixture
 	copy.issue, copy.targets, copy.targetSet = issue.ID, map[string]string{}, 1
 	copy.dir = filepath.Join(f.dir, "consumer-"+label)

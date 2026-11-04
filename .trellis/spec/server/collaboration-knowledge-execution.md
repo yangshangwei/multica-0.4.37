@@ -201,9 +201,10 @@ client flag or only a `knowledge_*` error string.
 
 ### Collaboration host policy
 
-Initial private support is **built-in local Claude only**. A custom profile using
-the Claude protocol, remote runtime, launch prefix or unsupported options cannot
-claim it. Configuration probes revalidate current host options before retained
+Private support admits **built-in local Claude and Codex** through their respective
+knowledge adapters. A custom profile, remote runtime, launch prefix or unsupported
+options cannot claim it. Codex contracts are detailed below; adapter support does
+not imply real model, platform or release acceptance. Configuration probes revalidate current host options before retained
 work runs; a changed safe-selector/persistence contract does not inherit an old
 admission.
 
@@ -309,3 +310,78 @@ fields or an unknown `knowledge_context_version` refuse the task with
 `knowledge_context_version`. Ship a reader that accepts the new version before any
 writer emits it, and roll back only to a release whose reader accepts every
 version the newer release may have written.
+
+## Codex knowledge adapter
+
+### 1. Scope / trigger
+
+Apply to ordinary or collaboration knowledge executed through the built-in local
+Codex app-server. Keep the feature default-off and preserve existing nonknowledge
+Codex recovery and the Claude invocation fingerprint.
+
+### 2. Signatures
+
+`ExecOptions.CodexEphemeral bool` is a host-owned execution option.
+`KnowledgeCodexConfigFingerprint(env map[string]string)` hashes configuration
+sources without exposing credential bytes. Existing knowledge wire shapes and
+provider-namespaced session bindings remain unchanged.
+
+### 3. Contracts
+
+The initial Codex contract accepts no default/custom CLI arguments or launch
+prefix. Model, thinking and service tier use existing typed options. Invocation
+fingerprints bind effective arguments/RPC options, executable/version, cwd, MCP,
+configuration sources and persistence policy. Configuration reads fail closed.
+Trusted operator configuration remains trusted; this does not disable global
+hooks or claim to sandbox arbitrary operator-installed code.
+
+For ordinary managed knowledge, require physical start authorization, then an
+actual thread/start or exact thread/resume result with a canonical native ID.
+The raw native observation must receive the server's positive ACK before any
+knowledge-bearing turn/start or reusable pointer publication. The sent prompt
+must match the prepared bytes; finalize any continuity notice before preparation.
+Missing IDs, changed resume IDs or failed ACKs cannot fall back to a fresh thread.
+Managed execution does not automatically retry a failed app-server process.
+
+Ordinary threads must be persisted for controlled K2 continuation. Collaboration
+sets CodexEphemeral=true before fingerprinting, sends thread/start ephemeral=true,
+requires an affirmative ephemeral response with no persisted path, and saves no
+reusable pointer. It never translates Claude --no-session-persistence into a Codex
+flag or removes an unsupported policy to make a launch succeed.
+
+Private stderr, RPC error bodies and asynchronous error notifications stay out of
+generic logs and public errors. Preserve precise KnowledgeFailure, already
+observed usage/termination and private KnowledgeOutput through existing fields.
+
+### 4. Validation & error matrix
+
+| Condition | Required outcome |
+| --- | --- |
+| Config, arguments, persistence or invocation cannot be proven | knowledge_invocation_unsupported or exact typed refusal; no unprotected fallback |
+| Missing/mismatched native ID or ACK | knowledge_context_changed / knowledge_unavailable; zero knowledge turn/start |
+| Exact resume fails | Terminal failure; no thread/start replacement or business-input replay |
+| Host response omits or rejects ephemeral policy | Refuse before knowledge turn/start |
+| Provider changes across claim/preparation | Reject exact binding; never relabel retained exposure |
+| Private provider error | Generic content-free failure with private evidence retained |
+
+### 5. Good / base / bad cases
+
+Good: exact ordinary thread acknowledged before input, or a verified ephemeral
+Host thread. Base: ordinary nonknowledge recovery retains its existing behavior.
+Bad: broaden the provider allowlist while retaining Claude session assumptions.
+
+### 6. Tests required
+
+Use test-created fake app-server processes for start/ACK/input ordering, exact
+resume, missing/mismatched IDs, failed ACK, no second process, unchanged admitted
+prompt, config drift, stderr/RPC sentinel privacy and ephemeral rejection.
+Service tests must cover fresh/retained history, withdrawal and downgrade guards
+on dedicated databases. Host tests prove the actual RPC policy and provider
+binding. Real-model evidence remains a separate, explicitly budgeted gate.
+
+### 7. Wrong versus correct
+
+Wrong: substitute a Codex executable in the Claude stream-json harness and call
+the existing fake report Codex acceptance. Correct: exercise the production Codex
+RPC adapter, current server authorization and provider-specific session policy,
+then retain independently bound input and model-behavior evidence.

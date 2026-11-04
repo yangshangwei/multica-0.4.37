@@ -164,7 +164,7 @@ func HostLifecycleSupported(provider, mode string) bool {
 }
 
 func withExecutionLifecycle(ctx context.Context, opts ExecOptions, provider string) (context.Context, error) {
-	if opts.Knowledge != nil && (opts.Lifecycle == nil || !opts.Lifecycle.ordinaryEnvironment || provider != "claude" ||
+	if opts.Knowledge != nil && (opts.Lifecycle == nil || !opts.Lifecycle.ordinaryEnvironment ||
 		!KnowledgeLifecycleSupported(provider, opts.OpenclawMode, true)) {
 		return nil, knowledgeUnsupported()
 	}
@@ -313,7 +313,7 @@ func (s *observedLaunch) start(logger *slog.Logger) error {
 		blocked = ErrLaunchUnsupported
 	case s.info.Kind != LaunchKindPreparation && s.info.Kind != LaunchKindProvider:
 		blocked = ErrLaunchUnsupported
-	case s.info.Knowledge.ConfigurationID != "" && (!l.ordinaryEnvironment || s.info.Provider != "claude" || s.info.Kind != LaunchKindProvider):
+	case s.info.Knowledge.ConfigurationID != "" && (!l.ordinaryEnvironment || !KnowledgeLifecycleSupported(s.info.Provider, "local", true) || s.info.Kind != LaunchKindProvider):
 		blocked = knowledgeUnsupported()
 	}
 	if blocked == nil {
