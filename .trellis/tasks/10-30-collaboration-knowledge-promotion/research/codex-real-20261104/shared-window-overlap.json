@@ -1,0 +1,24 @@
+{
+  "observed_at": "2026-11-04T16:49:10.252985+00:00",
+  "source_thread": "01a1a729-99ac-7ab2-a312-6478d946d58a",
+  "coordinator_window": "runtime quiet02normal/race",
+  "knowledge_normal03": "completed; original preserved",
+  "knowledge_race01": "completed_exit0_45pass_source_stable; overlap retained",
+  "race_pid": 48804,
+  "race_parent_pid": 48803,
+  "future_heavy_execution": "paused_until_explicit_coordinator_release",
+  "scope": [
+    "DB",
+    "build",
+    "browser",
+    "Provider"
+  ],
+  "real_calls": 0,
+  "uncontended_claim": false,
+  "race_finished_at": "2026-11-04T16:50:32.551920+00:00",
+  "owned_heavy_processes_at_165057": 0,
+  "current_window": "runtime_race_only_after_core_browser2pass",
+  "knowledge_ready": true,
+  "future_real_window_request_transport": "two HTTP502 replies; not confirmed delivered",
+  "updated_at": "2026-11-04T16:53:37.968486+00:00"
+}

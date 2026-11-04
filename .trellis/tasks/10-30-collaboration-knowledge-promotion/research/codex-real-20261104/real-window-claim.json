@@ -1,0 +1,59 @@
+{
+  "recorded_at": "2026-11-04T17:03:41.495547+00:00",
+  "owner": "01a1a72d-4d12-7b22-9470-cd0d318509c1",
+  "task": "collaboration-knowledge-promotion",
+  "state": "NOT_ACQUIRED_coordination_restored_waiting_order",
+  "user_authorization": "local Codex up to15 starts and full product support accepted in this thread",
+  "runtime_release": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/window-release.json",
+  "runtime_release_sha256": "13ef81eac3e5d2c15f798d4958dfd292ab62a8b1d77013d6b03f0ce299f6fde2",
+  "core_ready_evidence": "runtime coordinator incoming delegation states core2browser2pass exited and READY before its now-released race03",
+  "process_snapshot": [
+    {
+      "pid": "72653",
+      "ppid": "72640",
+      "kind": "possible_heavy_test"
+    }
+  ],
+  "scope": "knowledge Codex real15 serial, max90m, stop first incomplete; runtime25 unchanged",
+  "transport": "native task messages502; shared durable release used as explicit release evidence",
+  "real_calls": 0,
+  "blocking_process": {
+    "pid": 76168,
+    "parent": 76110,
+    "worktree": "mc-core-e2e-1a32ca36c-20261104",
+    "test": "go test -race ./internal/handler"
+  },
+  "latest_process_observation": [
+    {
+      "pid": 9676,
+      "command_shape": [
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "1",
+        "2"
+      ]
+    },
+    {
+      "pid": 9734,
+      "command_shape": [
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "1",
+        "2"
+      ]
+    }
+  ],
+  "updated_at": "2026-11-04T17:16:50.791269+00:00",
+  "requested_sequence": [
+    "original_quote_only_fake",
+    "runtime_E0a_max12min",
+    "knowledge_fixed15_max90min_stop_incomplete"
+  ],
+  "reason": "Reviewed knowledge harness has fixed sequence and no mid-series resume cursor",
+  "communication": "restored",
+  "at": "2026-11-04T17:28:16.448765+00:00"
+}

@@ -1,0 +1,267 @@
+{
+  "cli_version": "0.165.0",
+  "source": "local offline codex app-server generate-json-schema",
+  "model_requests": 0,
+  "schemas": [
+    {
+      "schema": ".omx/private/knowledge-codex-20261104/protocol-schema/v2/ThreadStartParams.json",
+      "sha256": "e9c6d3cc18d049bfbc0249add3808fb8e5a27e1a0b5a423767aafbc3859a9428",
+      "title": "ThreadStartParams",
+      "properties": [
+        "approvalPolicy",
+        "approvalsReviewer",
+        "baseInstructions",
+        "config",
+        "cwd",
+        "developerInstructions",
+        "ephemeral",
+        "model",
+        "modelProvider",
+        "personality",
+        "sandbox",
+        "serviceName",
+        "serviceTier",
+        "sessionStartSource",
+        "threadSource"
+      ],
+      "selected": {
+        "approvalPolicy": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AskForApproval"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "config": {
+          "additionalProperties": true,
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "ephemeral": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "modelProvider": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sandbox": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SandboxMode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schema": ".omx/private/knowledge-codex-20261104/protocol-schema/v2/ThreadResumeParams.json",
+      "sha256": "8dceca415b2c16693b55658ea629cba5ffc82ac300dcd403db0ba7455e491496",
+      "title": "ThreadResumeParams",
+      "properties": [
+        "approvalPolicy",
+        "approvalsReviewer",
+        "baseInstructions",
+        "config",
+        "cwd",
+        "developerInstructions",
+        "excludeTurns",
+        "model",
+        "modelProvider",
+        "personality",
+        "sandbox",
+        "serviceTier",
+        "threadId"
+      ],
+      "selected": {
+        "approvalPolicy": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AskForApproval"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "config": {
+          "additionalProperties": true,
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "model": {
+          "description": "Configuration overrides for the resumed thread, if any.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "modelProvider": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sandbox": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SandboxMode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "threadId": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "schema": ".omx/private/knowledge-codex-20261104/protocol-schema/v2/ThreadStartResponse.json",
+      "sha256": "9cbed08ecdb67764d1e1ca90df5f33754dbeba2d1e21436d77fbc80bb626c844",
+      "title": "ThreadStartResponse",
+      "properties": [
+        "approvalPolicy",
+        "approvalsReviewer",
+        "cwd",
+        "disabledPluginIds",
+        "instructionSources",
+        "model",
+        "modelProvider",
+        "reasoningEffort",
+        "sandbox",
+        "serviceTier",
+        "thread"
+      ],
+      "selected": {
+        "approvalPolicy": {
+          "$ref": "#/definitions/AskForApproval"
+        },
+        "model": {
+          "type": "string"
+        },
+        "modelProvider": {
+          "type": "string"
+        },
+        "sandbox": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/SandboxPolicy"
+            }
+          ],
+          "description": "Legacy sandbox policy retained for compatibility. Experimental clients should prefer `activePermissionProfile` for profile provenance."
+        }
+      }
+    },
+    {
+      "schema": ".omx/private/knowledge-codex-20261104/protocol-schema/v2/ThreadResumeResponse.json",
+      "sha256": "b4af48eb11ee6a60438af563ef8b149f5b06069c0344486a13d08db39ca10c0f",
+      "title": "ThreadResumeResponse",
+      "properties": [
+        "approvalPolicy",
+        "approvalsReviewer",
+        "collaborationMode",
+        "cwd",
+        "disabledPluginIds",
+        "instructionSources",
+        "itemsBackwardsCursor",
+        "model",
+        "modelProvider",
+        "reasoningEffort",
+        "sandbox",
+        "serviceTier",
+        "thread",
+        "turnsBackwardsCursor"
+      ],
+      "selected": {
+        "approvalPolicy": {
+          "$ref": "#/definitions/AskForApproval"
+        },
+        "model": {
+          "type": "string"
+        },
+        "modelProvider": {
+          "type": "string"
+        },
+        "sandbox": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/SandboxPolicy"
+            }
+          ],
+          "description": "Legacy sandbox policy retained for compatibility. Experimental clients should prefer `activePermissionProfile` for profile provenance."
+        }
+      }
+    },
+    {
+      "schema": ".omx/private/knowledge-codex-20261104/protocol-schema/v2/TurnStartParams.json",
+      "sha256": "835e0d4ca1a0ddc4fb6db1e2b3249dd67f07c50ac2506092ba81543efc92829b",
+      "title": "TurnStartParams",
+      "properties": [
+        "approvalPolicy",
+        "approvalsReviewer",
+        "clientUserMessageId",
+        "cwd",
+        "disabledPluginIds",
+        "effort",
+        "input",
+        "model",
+        "outputSchema",
+        "parentTurnId",
+        "personality",
+        "rootTurnId",
+        "sandboxPolicy",
+        "serviceTier",
+        "serviceTierForTurn",
+        "summary",
+        "threadId",
+        "toolOutput",
+        "turnTrigger"
+      ],
+      "selected": {
+        "approvalPolicy": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AskForApproval"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Override the approval policy for this turn and subsequent turns."
+        },
+        "model": {
+          "description": "Override the model for this turn and subsequent turns.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "threadId": {
+          "type": "string"
+        }
+      }
+    }
+  ]
+}

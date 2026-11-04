@@ -1,3 +1,27 @@
+## 2026-11-05 最终源码 Codex 完整 fake 普通/race均通过
+
+normal03 与 race01 各45具名pass，0fail/skip/非法JSON，完整15 measured+3 fake seed+0 paid；全server4501输入/依赖/嵌入资源绑定及源码前后一致。Adapter最终独立审查0阻塞，B/C独立审查修正均已收口。与runtime quiet02窗口发生重叠，原事实已留证；当前自有重型进程0，暂停后续DB/build/browser/Provider，等待runtime独占race-only结束并明确移交。真实执行包15次/0消耗已准备但授权启动开关仍false，正在最终只读准入复核。
+
+## 2026-11-05 完整 Codex fake normal02 通过
+
+原始normal02 runner exit0/accepted，source前后一致，45具名pass、0fail/skip/invalid JSON，8个固定top均完成。durable summary实证15 measured +3 fake seed +0 paid。A1响应轮次绑定与C H1–H4修复已包含；最后两处A2-R通用日志raw turn ID脱敏修正后，将用新normal3与尚未使用的race专库运行最终源码验证。所有历史失败保留。真实调用仍0/15。
+
+## 2026-11-05 完整 Codex fake normal01 失败与独立审查修正
+
+normal01 source稳定，29控制通过，E0b setup 因同daemon/provider重复登记runtime触发23505，Provider启动0；旧数据库和原始日志保留。C 已改为校验并复用基础fixture真实登记的Codex runtime，新normal2专库764/空表已分配。独立A审查发现 turn/start 响应ID未绑定及未知status日志泄漏，正在补回归修复。独立C审查要求严格RPC轮次关联、Host实际CLI读取、全构建输入绑定、样本持久化后方可推进台账，C已修正并进入复核。新完整普通/race等待修正冻结后执行；真实调用仍0/15。
+
+## 2026-11-05 Codex 分层验证通过，完整模拟验收准备
+
+B 集成 normal/race：service 各16具名pass、daemon/Host 各23pass，0fail/skip；独立审查 B 的13文件哈希与原始结果通过。A 适配层补齐原生线程ACK、私有诊断、ephemeral、无隐式重放及配置环境凭据绑定，相关普通测试与竞态检测通过；旧清理时序失败保留，串行复测通过。当前完整 Codex fake 框架准备在新专库执行；独立 A 审查进行中。真实启动0/上限15，尚未运行。
+
+## 2026-11-04 Codex 产品适配实施中
+
+用户已明确选择补齐 Codex 产品支持后完成真实验收。独立工作区 `mc-knowledge-codex-20261104`，三条分工分别负责 agent adapter、server/daemon/host 集成、原生 RPC 验收框架；实现合同与复核 R1–R4 已纳入 [续作方案](codex-continuation-2026-11-04.md)。独立调用上限 15，当前实际 0。专用数据库已分配并迁移到 764；本机模型为 `gpt-6-astra`，独立测试配置保留现有自定义 provider 凭据且排除开发会话 hooks，全局配置未修改。产品适配、模拟验证和独立审查完成前不启动真实场景。
+
+## 2026-11-04 Codex 真实验收续作
+
+用户已允许使用本机 Codex，并按前述 15 次真实执行计划推进；当前实际启动 0 次。源码核对发现 managed knowledge 产品仅支持本地 Claude，Codex 还缺产品层授权/原生线程/续用接线，不能直接替换测试可执行文件。当前范围调查与方案见 [Codex 续作方案](codex-continuation-2026-11-04.md)。下方记录保留历史，已完成 fake 阶段以 [11 月 4 日验收报告](verification-2026-11-04.md) 为准。
+
 ## 2026-11-04 当前授权阶段已完整收口
 
 #7 已独立 completed/归档，AC1–AC9 / 21项、共享完整v16和四CCG均通过；全部历史失败、专库、构件及其他会话修改保留。#6完整fake普通03/race03各49具名pass、15 measured+3 seed、0 paid，六文件动态终审与提交后79项独立绑定均 **pass-with-notes / 0 blockers**。框架代码已提交 `5e6a4e496` 并本地合入 `da07e2e74`，默认产品源码相对已验收EDA只增加六个guarded文件，旧17不变。

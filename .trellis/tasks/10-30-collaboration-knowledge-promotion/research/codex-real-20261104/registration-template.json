@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "authorized": false,
+  "provider": "codex",
+  "executable": "/ABSOLUTE/REGISTERED/codex",
+  "executable_sha256": "REQUIRED",
+  "version": "0.165.0",
+  "model": "gpt-6-astra",
+  "config_path": "/ABSOLUTE/PRIVATE/config.toml",
+  "config_sha256": "REQUIRED",
+  "test_binary_sha256": "REQUIRED",
+  "source_files": {},
+  "physical_start_cap": 15,
+  "ledger": "/ABSOLUTE/PRIVATE/ledger.json",
+  "output": "/ABSOLUTE/PRIVATE/real-output",
+  "database": "multica_rk1k_RECORDED_DATABASE",
+  "expires_at": "2026-11-04T00:00:00Z"
+}

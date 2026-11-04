@@ -23,7 +23,7 @@
   ],
   "parent": "10-30-collaboration-context-handoff",
   "relatedFiles": [],
-  "notes": "V16共享完整门已独立验收：make0/最终auditpass/全具名和113skip核对通过，350browserpass91skip。原失败保留。当前准备CCG16normal/race/OFF/ON，独立终审后关闭#7，再#6框架。知识0/0默认false。",
+  "notes": "Codex产品适配已本地集成88f1cc8d4，最终fake normal/race各45通过及独立准入通过；真实0/15。共享core重型序列继续且跨会话接口502，尚无独占移交，真实入口关闭。",
   "meta": {
     "permission_decision": "approved",
     "approval_session": "01a18a36-e482-7840-9900-3ff8174b4ce7",
@@ -75,9 +75,9 @@
     "main_merge_commit": "8cb04e3295474073b4b991bc4883ef3901c14f01",
     "evidence_commit": "93093d2e95e1affafbb40ddcd944ac5d58fc451c",
     "progress_file": "progress.md",
-    "progress_phase": "authorized_fake_framework_complete; task7_completed_archived; real_model_release_gates_open",
+    "progress_phase": "codex_product_integrated_fake_accepted; real_window_pending",
     "progress_baseline": "084ea3c98",
-    "next_action": "real_model_gate_remains_unfunded_not_runnable; requires separate explicit series_quota_account_model_binding_and_exclusive_window; parent_release_gates_independent",
+    "next_action": "Acquire explicit quiet model/DB handoff, recheck current bindings, execute approved15 real series once",
     "post_merge_supplements": {
       "joint_fault_commit": "65cd0599b",
       "joint_report": "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-joint-current/README.md",
@@ -142,7 +142,7 @@
     "shared_successor_check_state": "v16_complete_verified_pass",
     "knowledge_framework_latest_dynamic": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/runs/rk1k-normal-v16-02/tests.jsonl",
     "knowledge_framework_current_source_record": ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/source-sync-result.json",
-    "knowledge_budget_allocated": 0,
+    "knowledge_budget_allocated": 15,
     "knowledge_real_calls": 0,
     "audit_closure_independent_of_knowledge_real_and_release": true,
     "shared_v13_state": "complete_failed; final_identity_audit_pass",
@@ -372,6 +372,27 @@
     "knowledge_real_entry_runnable": false,
     "knowledge_framework_fake_acceptance_complete": true,
     "knowledge_framework_post_commit_review": ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/post-commit-binding-review/review.json",
-    "knowledge_framework_post_commit_review_sha256": "72ad68c547a591c255eb7349f2f31fd79ee3383fdc0162c14e4dd5b5f1810b9b"
+    "knowledge_framework_post_commit_review_sha256": "72ad68c547a591c255eb7349f2f31fd79ee3383fdc0162c14e4dd5b5f1810b9b",
+    "codex_continuation": {
+      "authorization_record": "research/codex-real-20261104/authorization.json",
+      "plan": "codex-continuation-2026-11-04.md",
+      "provider": "codex",
+      "physical_execution_cap": 15,
+      "physical_executions": 0,
+      "runnable": false,
+      "phase": "implementation",
+      "product_extension_authorized": true,
+      "worktree": "/Volumes/artisan/code/2026/mc-knowledge-codex-20261104"
+    },
+    "knowledge_current_authorization": "research/codex-real-20261104/authorization.json",
+    "knowledge_provider": "codex",
+    "knowledge_prior_zero_budget_package_is_historical": true,
+    "codex_product_commit": "429b1b6b4e8316aa943a0286b6b14c61b063298c",
+    "codex_main_integration_commit": "88f1cc8d4d809ed175d29a96ee2c99cd012bc36a",
+    "codex_final_fake_normal": "45pass0fail0skip15+3/0",
+    "codex_final_fake_race": "45pass0fail0skip15+3/0",
+    "codex_verification": "verification-codex-2026-11-05.md",
+    "codex_real_admission_review": "research/codex-real-20261104/real-admission-final-review.md",
+    "codex_current_blocker": "Shared core heavy sequence, no reliable exclusive handoff while task-message HTTP502"
   }
 }

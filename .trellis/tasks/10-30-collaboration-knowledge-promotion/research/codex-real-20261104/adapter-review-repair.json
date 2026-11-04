@@ -1,0 +1,16 @@
+{
+  "findings": [
+    "A1",
+    "A2"
+  ],
+  "source_manifest": "adapter-source.json",
+  "normal": "ok  \tgithub.com/multica-ai/multica/server/pkg/agent\t5.482s",
+  "race": "ok  \tgithub.com/multica-ai/multica/server/pkg/agent\t47.416s",
+  "vet_exit": 0,
+  "diff_check_exit": 0,
+  "red_evidence": "adapter-review-red.log",
+  "initial_red_failed_controls": 7,
+  "scope": "adapter only; no real Agent/model/database commands",
+  "buffer_max_events": 256,
+  "buffer_max_bytes": 4194304
+}
