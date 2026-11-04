@@ -547,28 +547,8 @@ var codexMcpBlockRe = regexp.MustCompile(
 var userCodexMcpServersTableHeaderRe = regexp.MustCompile(
 	`^\s*\[\s*mcp_servers\s*\.\s*(?:"[^"]*"|[^\]\s]+)\s*\]\s*(?:#.*)?$`)
 
-// ensureCodexMcpConfig writes (or clears) the daemon-managed
-// `[mcp_servers.*]` block in `$CODEX_HOME/config.toml`. The block is the
-// authoritative source of MCP servers for this run: with mcp_config set
-// in the agent UI the daemon also strips any inherited
-// `[mcp_servers.*]` tables from the per-task config so the user's global
-// `~/.codex/config.toml` doesn't shadow or collide with the managed set.
-//
-// The file mode is 0o600 because `mcp_servers.<id>.env` values may carry
-// secrets (API keys, bearer tokens); the per-task home is owned by the
-// daemon's user, so 0o600 keeps secrets out of any world-readable copy
-// while still letting the codex child read them.
-//
-// A malformed mcp_config is returned as an error and the caller decides
-// whether to surface or warn — same fail-soft contract the prior argv
-// path had.
-func ensureCodexMcpConfig(configPath string, mcpConfig json.RawMessage, logger *slog.Logger) error {
-	data, err := os.ReadFile(configPath)
-	if err != nil && !os.IsNotExist(err) {
-		return fmt.Errorf("read config.toml: %w", err)
-	}
-	existing := string(data)
-
+// codexMcpConfigContents is shared by materialization and launch fingerprinting.
+func codexMcpConfigContents(existing string, mcpConfig json.RawMessage) (string, error) {
 	// Always strip a prior managed block so reruns and clear-config flows
 	// converge on a clean state.
 	stripped := codexMcpBlockRe.ReplaceAllString(existing, "")
@@ -576,7 +556,7 @@ func ensureCodexMcpConfig(configPath string, mcpConfig json.RawMessage, logger *
 	managed := hasManagedCodexMcpConfig(mcpConfig)
 	block, _, renderErr := renderCodexMcpServersBlock(mcpConfig)
 	if renderErr != nil {
-		return renderErr
+		return "", renderErr
 	}
 
 	var updated string
@@ -614,6 +594,35 @@ func ensureCodexMcpConfig(configPath string, mcpConfig json.RawMessage, logger *
 		updated = stripped
 	}
 
+	return updated, nil
+}
+
+// ensureCodexMcpConfig writes (or clears) the daemon-managed
+// `[mcp_servers.*]` block in `$CODEX_HOME/config.toml`. The block is the
+// authoritative source of MCP servers for this run: with mcp_config set
+// in the agent UI the daemon also strips any inherited
+// `[mcp_servers.*]` tables from the per-task config so the user's global
+// `~/.codex/config.toml` doesn't shadow or collide with the managed set.
+//
+// The file mode is 0o600 because `mcp_servers.<id>.env` values may carry
+// secrets (API keys, bearer tokens); the per-task home is owned by the
+// daemon's user, so 0o600 keeps secrets out of any world-readable copy
+// while still letting the codex child read them.
+//
+// A malformed mcp_config is returned as an error and the caller decides
+// whether to surface or warn — same fail-soft contract the prior argv
+// path had.
+func ensureCodexMcpConfig(configPath string, mcpConfig json.RawMessage, logger *slog.Logger) error {
+	data, err := os.ReadFile(configPath)
+	if err != nil && !os.IsNotExist(err) {
+		return fmt.Errorf("read config.toml: %w", err)
+	}
+	existing := string(data)
+	updated, err := codexMcpConfigContents(existing, mcpConfig)
+	if err != nil {
+		return err
+	}
+
 	if updated == existing {
 		return nil
 	}
@@ -631,7 +640,7 @@ func ensureCodexMcpConfig(configPath string, mcpConfig json.RawMessage, logger *
 	}
 	if logger != nil {
 		logger.Debug("codex: wrote managed mcp_servers block to config.toml",
-			"config_path", configPath, "managed", managed)
+			"config_path", configPath, "managed", hasManagedCodexMcpConfig(mcpConfig))
 	}
 	return nil
 }
@@ -900,8 +909,20 @@ func isCodexBareTomlKey(s string) bool {
 }
 
 func (b *codexBackend) Execute(ctx context.Context, prompt string, opts ExecOptions) (*Session, error) {
+	if opts.Knowledge != nil || opts.CodexEphemeral {
+		if opts.Knowledge != nil {
+			intent := *opts.Knowledge
+			opts.Knowledge = &intent
+		}
+		opts.ExtraArgs = append([]string(nil), opts.ExtraArgs...)
+		opts.CustomArgs = append([]string(nil), opts.CustomArgs...)
+		opts.McpConfig = append(json.RawMessage(nil), opts.McpConfig...)
+		copyBackend := *b
+		copyBackend.cfg.PrivateInput = true
+		b = &copyBackend
+	}
 	var lifecycleErr error
-	ctx, lifecycleErr = withExecutionLifecycle(ctx, opts, b.cfg.provider)
+	ctx, lifecycleErr = withKnowledgeCodexLifecycle(ctx, b.cfg, opts)
 	if lifecycleErr != nil {
 		return nil, lifecycleErr
 	}
@@ -965,7 +986,7 @@ func (b *codexBackend) Execute(ctx context.Context, prompt string, opts ExecOpti
 			case result.codexStartupRefreshRetrySafe:
 				retryReason = "model_catalog_refresh"
 			}
-			if retryReason == "" || attempt == 2 {
+			if retryReason == "" || attempt == 2 || opts.Knowledge != nil || opts.CodexEphemeral {
 				flushHeldPins()
 				resCh <- result
 				return
@@ -1141,6 +1162,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 		cancel()
 		return nil, fmt.Errorf("start codex: %w", err)
 	}
+	knowledgeLaunch := knowledgeCommandLaunch(cmd)
 	activeLaunches := activeCodexLaunches.Add(1)
 	for {
 		maxSeen := maxActiveCodexLaunchesObserved.Load()
@@ -1178,6 +1200,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 
 	c := &codexClient{
 		cfg:                    b.cfg,
+		strictKnowledge:        opts.Knowledge != nil || opts.CodexEphemeral,
 		stdin:                  stdin,
 		pending:                make(map[int]*pendingRPC),
 		processDone:            make(chan struct{}),
@@ -1195,13 +1218,18 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 			semanticObserved.Store(true)
 		},
 		onMessage: func(msg Message) {
-			logCodexAgentMessage(b.cfg.Logger, msg)
+			if !b.cfg.PrivateInput {
+				logCodexAgentMessage(b.cfg.Logger, msg)
+			}
 			if msg.Type == MessageText {
 				outputMu.Lock()
 				lastAgentMessage = msg.Content
 				outputMu.Unlock()
 			}
 			activity := describeCodexSemanticActivity(msg)
+			if b.cfg.PrivateInput && activity != "status:running" {
+				activity = "provider_message"
+			}
 			if activity == "status:running" {
 				firstItemWait.start(time.Now())
 			}
@@ -1218,7 +1246,12 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 		},
 		onSemanticActivity: func(description string) {
 			semanticObserved.Store(true)
-			b.cfg.Logger.Debug("codex semantic activity observed", "activity", description)
+			if !b.cfg.PrivateInput {
+				b.cfg.Logger.Debug("codex semantic activity observed", "activity", description)
+			}
+			if b.cfg.PrivateInput && description != "error:retry" && description != "error:terminal" {
+				description = "provider_activity"
+			}
 			trySendString(semanticActivityCh, description)
 		},
 		onTurnDone: func(aborted bool) {
@@ -1398,6 +1431,42 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 		})
 	}
 
+	// Every terminal path shares the private-result boundary, including early
+	// handshake failures and observation/termination refusals.
+	publishResult := func(result Result) {
+		if b.cfg.PrivateInput {
+			reason := result.KnowledgeFailure
+			if knowledgeLaunch != nil {
+				if lifecycleReason := KnowledgeFailureReason(knowledgeLaunch.lifecycle.Err()); lifecycleReason != "" {
+					reason = lifecycleReason
+				}
+				result.SessionID = knowledgeLaunch.nativeSessionID
+			}
+			if reason != "" || result.Status != "completed" {
+				result.KnowledgeOutput = result.Output
+				if result.Error != "" {
+					result.KnowledgeOutput += "\n" + sanitizeCodexDiagnostic(result.Error)
+				}
+				if tail := stderrBuf.Tail(); tail != "" {
+					result.KnowledgeOutput += "\n" + sanitizeCodexDiagnostic(tail)
+				}
+				if reason == "" && (opts.Knowledge != nil || opts.CodexEphemeral) {
+					reason = KnowledgeUnavailable
+				}
+				result.Status, result.Output, result.ResumeRejected = "failed", "", false
+				result.KnowledgeFailure = reason
+				result.Error = "codex execution failed"
+				if reason != "" {
+					result.Error = reason
+				}
+			}
+			if opts.Knowledge != nil || opts.CodexEphemeral {
+				result.codexInitializeRetrySafe, result.codexStartupRefreshRetrySafe = false, false
+			}
+		}
+		resCh <- result
+	}
+
 	// Drive the session lifecycle in a goroutine.
 	// Shutdown sequence: lifecycle goroutine closes stdin + cancels context →
 	// codex process exits → reader goroutine's scanner.Scan() returns false →
@@ -1449,14 +1518,14 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 				// still records bounded byte/truncation metadata.
 				finalError = withAgentStderr(finalError, "codex", sanitizeCodexDiagnostic(stderrBuf.Tail()))
 			}
-			retrySafe := timedOut && !semanticObserved.Load() && cleanupConfirmed && codexInitializeRetrySupported()
+			retrySafe := opts.Knowledge == nil && !opts.CodexEphemeral && timedOut && !semanticObserved.Load() && cleanupConfirmed && codexInitializeRetrySupported()
 			if timedOut && !cleanupConfirmed {
 				finalError += "; retry suppressed: process cleanup/reap not confirmed"
 			} else if timedOut && cleanupConfirmed && !codexInitializeRetrySupported() {
 				finalError += "; retry suppressed: process-tree cleanup cannot be confirmed on this platform"
 			}
 			b.cfg.Logger.Warn("codex lifecycle", "phase", "initialize_failure", "task_id", b.cfg.TaskID, "runtime_id", b.cfg.RuntimeID, "pid", cmd.Process.Pid, "attempt", attempt, "latency", initializeLatency.Round(time.Millisecond).String(), "semantic_activity", semanticObserved.Load(), "cleanup_confirmed", cleanupConfirmed, "retry_safe", retrySafe)
-			resCh <- Result{ProcessExited: cleanupConfirmed, Status: finalStatus, Error: finalError, DurationMs: time.Since(startTime).Milliseconds(), codexInitializeRetrySafe: retrySafe}
+			publishResult(Result{ProcessExited: cleanupConfirmed, Status: finalStatus, Error: finalError, DurationMs: time.Since(startTime).Milliseconds(), codexInitializeRetrySafe: retrySafe})
 			return
 		}
 		b.cfg.Logger.Info("codex lifecycle", "phase", "initialize_response", "task_id", b.cfg.TaskID, "runtime_id", b.cfg.RuntimeID, "pid", cmd.Process.Pid, "attempt", attempt, "latency", time.Since(initializeStarted).Round(time.Millisecond).String())
@@ -1479,6 +1548,11 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 			finalStatus = "failed"
 			stderrTail := sanitizeCodexDiagnostic(stderrBuf.Tail())
 			finalError = err.Error()
+			if b.cfg.PrivateInput {
+				for cause := errors.Unwrap(err); cause != nil; cause = errors.Unwrap(cause) {
+					finalError += "\n" + cause.Error()
+				}
+			}
 			if c.threadSetupMethod != "" {
 				classification := classifyCodexStartupStderr(stderrTail, timedOut)
 				b.cfg.Logger.Warn("codex lifecycle",
@@ -1501,13 +1575,21 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 					"stderr_bare_timeout_count", classification.bareTimeout,
 				)
 			}
-			resCh <- Result{ProcessExited: cleanupConfirmed,
-				Status:         finalStatus,
-				Error:          finalError,
-				DurationMs:     time.Since(startTime).Milliseconds(),
-				ResumeRejected: isCodexResumeOverflow(opts, err),
-			}
+			publishResult(Result{ProcessExited: cleanupConfirmed,
+				Status:           finalStatus,
+				Error:            finalError,
+				DurationMs:       time.Since(startTime).Milliseconds(),
+				ResumeRejected:   isCodexResumeOverflow(opts, err),
+				KnowledgeFailure: KnowledgeFailureReason(err),
+			})
 			return
+		}
+		if knowledgeLaunch != nil {
+			if err := knowledgeLaunch.observeNativeSession(threadID, "system"); err != nil {
+				drainAndWait()
+				publishResult(Result{ProcessExited: cleanupConfirmed, Status: "failed", Error: err.Error(), KnowledgeFailure: KnowledgeFailureReason(err), DurationMs: time.Since(startTime).Milliseconds()})
+				return
+			}
 		}
 		c.threadID = threadID
 		if resumed {
@@ -1530,6 +1612,9 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 		turnParams := map[string]any{
 			"threadId": threadID,
 			"input":    codexTurnInput(prompt, opts.ResumeExpected, resumed, opts.ResumeContinuityNotice),
+		}
+		if opts.Knowledge != nil || opts.CodexEphemeral {
+			turnParams["input"] = codexTurnInput(prompt, false, false, "")
 		}
 		// Per-turn reasoning override. Mirrors the per-thread injection in
 		// startOrResumeThread; keeping both in sync is enforced by the
@@ -1570,8 +1655,16 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 			}
 		}
 		turnNotificationGate.arm()
+		if c.strictKnowledge {
+			c.knowledgeTurn.arm(threadID)
+		}
 		_, err = c.request(runCtx, "turn/start", turnParams)
 		if err != nil {
+			if c.strictKnowledge {
+				drainAndWait()
+				publishResult(Result{ProcessExited: cleanupConfirmed, Status: "failed", Error: err.Error(), KnowledgeFailure: KnowledgeFailureReason(err), DurationMs: time.Since(startTime).Milliseconds()})
+				return
+			}
 			select {
 			case aborted := <-turnDone:
 				finishTurn(aborted)
@@ -1579,7 +1672,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 				drainAndWait() // flush os/exec stderr goroutine before sampling Tail
 				finalStatus = "failed"
 				finalError = withAgentStderr(fmt.Sprintf("codex turn/start failed: %v", err), "codex", sanitizeCodexDiagnostic(stderrBuf.Tail()))
-				resCh <- Result{ProcessExited: cleanupConfirmed, Status: finalStatus, Error: finalError, DurationMs: time.Since(startTime).Milliseconds()}
+				publishResult(Result{ProcessExited: cleanupConfirmed, Status: finalStatus, Error: finalError, DurationMs: time.Since(startTime).Milliseconds()})
 				return
 			}
 		}
@@ -1652,7 +1745,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 				b.cfg.Logger.Warn(CodexFirstTurnNoProgressMarker,
 					"pid", cmd.Process.Pid,
 					"thread_id", threadID,
-					"turn_id", c.turnID,
+					"turn_id", codexDiagnosticID(b.cfg.PrivateInput, c.turnID),
 					"timeout", firstTurnNoProgressTimeout.String(),
 					"last_activity", lastSemanticActivityDescription,
 				)
@@ -1671,7 +1764,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 				b.cfg.Logger.Warn(CodexSemanticInactivityMarker,
 					"pid", cmd.Process.Pid,
 					"thread_id", threadID,
-					"turn_id", c.turnID,
+					"turn_id", codexDiagnosticID(b.cfg.PrivateInput, c.turnID),
 					"timeout", semanticInactivityTimeout.String(),
 					"last_activity", lastSemanticActivityDescription,
 					"idle_for", time.Since(lastSemanticActivity).Round(time.Millisecond).String(),
@@ -1731,7 +1824,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 		// require (cleanupConfirmed plus platform support) rather than a bare
 		// ProcessState check: on Windows the daemon cannot prove the whole tree
 		// is gone, and a surviving app-server would race the retry.
-		startupRefreshRetrySafe := timeoutDiagnostic.Kind == codexTimeoutFirstTurnNoProgress &&
+		startupRefreshRetrySafe := opts.Knowledge == nil && !opts.CodexEphemeral && timeoutDiagnostic.Kind == codexTimeoutFirstTurnNoProgress &&
 			!firstTurnProgressObserved &&
 			strings.Contains(stderrTail, codexModelCatalogRefreshFailureSignal) &&
 			cleanupConfirmed && codexInitializeRetrySupported()
@@ -1764,7 +1857,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 				"active_launches", activeLaunches,
 				"method", "turn/start",
 				"thread_id", threadID,
-				"turn_id", c.turnID,
+				"turn_id", codexDiagnosticID(b.cfg.PrivateInput, c.turnID),
 				"outcome", outcome,
 				"latency", waitLatency.Round(time.Millisecond).String(),
 				"latency_ms", waitLatency.Milliseconds(),
@@ -1823,7 +1916,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 			usageMap = map[string]TokenUsage{model: u}
 		}
 
-		resCh <- Result{ProcessExited: cleanupConfirmed,
+		publishResult(Result{ProcessExited: cleanupConfirmed,
 			Status:                       finalStatus,
 			Output:                       finalOutput,
 			Error:                        finalError,
@@ -1831,7 +1924,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 			DurationMs:                   duration.Milliseconds(),
 			Usage:                        usageMap,
 			codexStartupRefreshRetrySafe: startupRefreshRetrySafe,
-		}
+		})
 	}()
 
 	return &Session{Messages: msgCh, Result: resCh}, nil
@@ -1888,6 +1981,10 @@ func codexTurnInput(prompt string, resumeExpected, resumed bool, notice string) 
 // turn/start calls must reference, and resumed indicates whether the prior
 // thread was picked up (only useful for logging).
 func (c *codexClient) startOrResumeThread(ctx context.Context, opts ExecOptions, logger *slog.Logger) (string, bool, error) {
+	privateThread := opts.Knowledge != nil || opts.CodexEphemeral
+	if opts.CodexEphemeral && opts.ResumeSessionID != "" {
+		return "", false, knowledgeUnsupported()
+	}
 	if priorThreadID := opts.ResumeSessionID; priorThreadID != "" {
 		// thread/resume reuses the thread's persisted model and reasoning
 		// effort; only override fields the daemon actually cares about.
@@ -1918,6 +2015,14 @@ func (c *codexClient) startOrResumeThread(ctx context.Context, opts ExecOptions,
 			"method", c.threadSetupMethod,
 		)
 		resumeResult, err := c.request(ctx, "thread/resume", resumeParams)
+		if privateThread {
+			if err != nil {
+				return "", false, &KnowledgeLaunchError{Reason: KnowledgeContextChanged, Err: err}
+			}
+			if err := codexPrivateThreadResult(resumeResult, opts); err != nil {
+				return "", false, err
+			}
+		}
 		if err == nil {
 			if threadID := extractThreadID(resumeResult); threadID != "" {
 				logger.Info("codex lifecycle",
@@ -1964,6 +2069,10 @@ func (c *codexClient) startOrResumeThread(ctx context.Context, opts ExecOptions,
 		"experimentalRawEvents":  false,
 		"persistExtendedHistory": true,
 	}
+	if privateThread {
+		startParams["ephemeral"] = opts.CodexEphemeral
+		startParams["persistExtendedHistory"] = !opts.CodexEphemeral
+	}
 	applyCodexReasoningEffort(startParams, opts.ThinkingLevel)
 	applyCodexServiceTier(startParams, opts.ServiceTier)
 	c.threadSetupMethod = "thread/start"
@@ -1981,6 +2090,9 @@ func (c *codexClient) startOrResumeThread(ctx context.Context, opts ExecOptions,
 	if err != nil {
 		return "", false, fmt.Errorf("codex thread/start failed: %w", err)
 	}
+	if err := codexPrivateThreadResult(startResult, opts); err != nil {
+		return "", false, err
+	}
 	threadID := extractThreadID(startResult)
 	if threadID == "" {
 		return "", false, fmt.Errorf("codex thread/start returned no thread ID")
@@ -1996,7 +2108,9 @@ func (c *codexClient) startOrResumeThread(ctx context.Context, opts ExecOptions,
 		"latency", time.Since(c.threadSetupStarted).Round(time.Millisecond).String(),
 		"latency_ms", time.Since(c.threadSetupStarted).Milliseconds(),
 	)
-	c.trySetThreadName(ctx, threadID, opts.ThreadName, logger)
+	if !privateThread {
+		c.trySetThreadName(ctx, threadID, opts.ThreadName, logger)
+	}
 	return threadID, false, nil
 }
 
@@ -2251,6 +2365,8 @@ func describeCodexSemanticActivity(msg Message) string {
 // ── codexClient: JSON-RPC 2.0 transport ──
 
 type codexClient struct {
+	strictKnowledge        bool
+	knowledgeTurn          codexKnowledgeTurn
 	cfg                    Config
 	stdin                  interface{ Write([]byte) (int, error) }
 	mu                     sync.Mutex
@@ -2675,8 +2791,18 @@ func (c *codexClient) handleResponse(raw map[string]json.RawMessage) {
 			Message string `json:"message"`
 		}
 		_ = json.Unmarshal(errData, &rpcErr)
-		pr.ch <- rpcResult{err: fmt.Errorf("%s: %s (code=%d)", pr.method, rpcErr.Message, rpcErr.Code)}
+		err := fmt.Errorf("%s: %s (code=%d)", pr.method, rpcErr.Message, rpcErr.Code)
+		if c.strictKnowledge && pr.method == "turn/start" {
+			err = c.bindKnowledgeTurn(nil, err)
+		}
+		pr.ch <- rpcResult{err: err}
 	} else {
+		if c.strictKnowledge && pr.method == "turn/start" {
+			if err := c.bindKnowledgeTurn(raw["result"], nil); err != nil {
+				pr.ch <- rpcResult{err: err}
+				return
+			}
+		}
 		pr.ch <- rpcResult{result: raw["result"]}
 	}
 }
@@ -2695,12 +2821,20 @@ func (c *codexClient) handleServerRequest(raw map[string]json.RawMessage) {
 	case "item/fileChange/requestApproval", "applyPatchApproval":
 		c.respond(id, map[string]any{"decision": "accept"})
 	case "item/permissions/requestApproval":
-		c.respond(id, codexPermissionsApprovalResponse(raw["params"], c.cfg.Logger))
+		logger := c.cfg.Logger
+		if c.cfg.PrivateInput {
+			logger = nil
+		}
+		c.respond(id, codexPermissionsApprovalResponse(raw["params"], logger))
 	case "mcpServer/elicitation/request":
 		c.respond(id, map[string]any{"action": "accept", "content": nil, "_meta": nil})
 	default:
 		msg := fmt.Sprintf("unsupported codex app-server request: %s", method)
-		c.cfg.Logger.Warn("codex: unhandled server request", "method", method, "id", id)
+		loggedMethod := method
+		if c.cfg.PrivateInput {
+			loggedMethod = "unsupported"
+		}
+		c.cfg.Logger.Warn("codex: unhandled server request", "method", loggedMethod, "id", id)
 		c.setTurnError(msg)
 		c.respondError(id, -32601, msg)
 	}
@@ -2755,6 +2889,10 @@ func (c *codexClient) handleNotification(raw map[string]json.RawMessage) {
 	if p, ok := raw["params"]; ok {
 		_ = json.Unmarshal(p, &params)
 	}
+	if c.strictKnowledge {
+		c.handleKnowledgeNotification(method, params)
+		return
+	}
 	// Filter multiplexed subagent threads before the current-turn gate. The
 	// gate mutates started/turnID on turn/started; letting another thread reach
 	// it first can replace the main turn ID and make subsequent main-thread
@@ -2766,6 +2904,10 @@ func (c *codexClient) handleNotification(raw map[string]json.RawMessage) {
 		if c.onDiscardedNotification != nil {
 			c.onDiscardedNotification(method, params)
 		}
+		return
+	}
+
+	if c.strictKnowledge && (method == "codex/event" || strings.HasPrefix(method, "codex/event/")) {
 		return
 	}
 
@@ -3226,6 +3368,12 @@ func (c *codexClient) handleEvent(msg map[string]any) {
 }
 
 func (c *codexClient) handleRawNotification(method string, params map[string]any) {
+	if c.strictKnowledge {
+		threadID, _ := params["threadId"].(string)
+		if threadID == "" || threadID != c.threadID {
+			return
+		}
+	}
 	// Ignore notifications from threads other than the one we are tracking.
 	// Codex multiplexes subagent threads (e.g. memory consolidation) on the
 	// same stdio pipe; only our thread should drive turn lifecycle and output.
@@ -3250,9 +3398,23 @@ func (c *codexClient) handleRawNotification(method string, params map[string]any
 
 	case "turn/completed":
 		turnID := extractNestedString(params, "turn", "id")
+		if c.strictKnowledge && (turnID == "" || c.turnID == "" || turnID != c.turnID) {
+			return
+		}
 		status := extractNestedString(params, "turn", "status")
+		loggedStatus := status
+		if c.cfg.PrivateInput {
+			switch status {
+			case "completed", "failed", "cancelled", "canceled", "aborted", "interrupted":
+			default:
+				loggedStatus = "unsupported"
+			}
+		}
+		if c.strictKnowledge && status != "completed" && status != "failed" && status != "interrupted" {
+			c.setTurnError("codex terminal status is unsupported: " + status)
+		}
 		threadID, _ := params["threadId"].(string)
-		c.cfg.Logger.Info("codex turn/completed received", "thread_id", threadID, "turn_id", turnID, "status", status)
+		c.cfg.Logger.Info("codex turn/completed received", "thread_id", threadID, "turn_id", codexDiagnosticID(c.cfg.PrivateInput, turnID), "status", loggedStatus)
 		if c.turnCompleted {
 			return
 		}
@@ -3289,7 +3451,11 @@ func (c *codexClient) handleRawNotification(method string, params map[string]any
 			errMsg = extractNestedString(params, "message")
 		}
 		if errMsg != "" {
-			c.cfg.Logger.Warn("codex error notification", "message", errMsg, "will_retry", willRetry)
+			if c.cfg.PrivateInput {
+				c.cfg.Logger.Warn("codex error notification", "message_bytes", len(errMsg), "will_retry", willRetry)
+			} else {
+				c.cfg.Logger.Warn("codex error notification", "message", errMsg, "will_retry", willRetry)
+			}
 			if c.onSemanticActivity != nil {
 				if willRetry {
 					c.onSemanticActivity("error:retry")

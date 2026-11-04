@@ -196,7 +196,9 @@ func (r *Runner) runHost(ctx context.Context, local *RunLedger, runID string, re
 		opts.ResumeExpected, opts.ResumeContinuityNotice = false, ""
 		// Claude's documented print-mode control prevents this run from
 		// becoming globally resumable history outside our local namespace.
-		if !slices.Contains(opts.ExtraArgs, "--no-session-persistence") {
+		if r.Host.Config.Provider == "codex" {
+			opts.CodexEphemeral = true
+		} else if !slices.Contains(opts.ExtraArgs, "--no-session-persistence") {
 			opts.ExtraArgs = append(opts.ExtraArgs, "--no-session-persistence")
 		}
 	}

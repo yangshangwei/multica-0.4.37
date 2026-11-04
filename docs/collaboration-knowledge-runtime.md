@@ -3,7 +3,9 @@
 Private knowledge execution is **off by default**. Human proposals and approvals
 create retained, source-bound contributions; approval does not itself enable
 execution, grant source access or write project/workspace base text or skills.
-Only the built-in local Claude adapter currently supports private consumption.
+Built-in local Claude and Codex have provider-specific private-consumption
+adapters. Custom profiles and remote runtimes are not admitted. Production
+enablement still requires acceptance for the actual provider/version/platform.
 
 ## Startup setting
 
@@ -40,12 +42,17 @@ creation, host execution and owner-consent gates still apply independently.
    all ordinary prompt branches, real server/DB/daemon composition, collaboration
    HostExecutor composition, role/purge/expiry races, native history, private logs
    and source/target UI invalidation. A test name or compile-only run is not a pass.
-4. Verify the intended built-in local Claude version accepts the admitted safe
-   options. Collaboration private runs require official print-mode
+4. Verify the intended built-in local provider version accepts its admitted
+   invocation and session policy. For Claude, verify the safe print options. Collaboration private runs require official print-mode
    `--no-session-persistence`; an unsupported version is refused without retrying
    after removing the flag. An arbitrary Claude-compatible wrapper/profile is
    not supported. Ordinary resumable knowledge uses a different history policy
-   and refuses that flag.
+   and refuses that flag. Codex accepts no default/custom CLI arguments for
+   managed knowledge; choose model/thinking/service tier through the structured
+   settings. Ordinary Codex knowledge uses an acknowledged persisted thread.
+   Collaboration requires an explicitly ephemeral thread and rejects missing or
+   ignored persistence policy before sending knowledge input. A failed managed
+   resume is terminal and is never automatically replayed in a fresh thread.
 5. Keep the invalidation worker, relay and current credential checks running.
    Ensure operators can observe the content-free backlog diagnostics below.
 

@@ -356,6 +356,7 @@ func TestHostKnowledgeRetainedRunRejectsOptionOverridesBeforeDisclosure(t *testi
 		func(o *agent.ExecOptions) { o.ClaudeSettingsPath = "/private/unapproved/settings.json" },
 		func(o *agent.ExecOptions) { o.CustomArgs = []string{"--continue"} },
 		func(o *agent.ExecOptions) { o.ResumeSessionID = hostFixtureSession },
+		func(o *agent.ExecOptions) { o.CodexEphemeral = true },
 	} {
 		o := f.runner.Host.Options
 		change(&f.runner.Host.Options)
@@ -479,11 +480,11 @@ func TestHostKnowledgePersistenceIsMandatoryInExactInvocationFingerprint(t *test
 	f := newHostKnowledgeFixture(t)
 	opts := f.runner.Host.Options
 	opts.Cwd = t.TempDir()
-	if _, err := f.runner.Host.knowledgeFingerprint(opts); err == nil {
+	if _, err := f.runner.Host.knowledgeFingerprint(opts, nil); err == nil {
 		t.Fatal("private preparation accepted a persistent invocation")
 	}
 	opts.ExtraArgs = []string{"--no-session-persistence"}
-	digest, err := f.runner.Host.knowledgeFingerprint(opts)
+	digest, err := f.runner.Host.knowledgeFingerprint(opts, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

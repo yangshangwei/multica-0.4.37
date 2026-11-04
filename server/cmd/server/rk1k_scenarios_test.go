@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -34,6 +35,16 @@ func rk1kSaveSample(t *testing.T, dir string, sample rk1kSample) {
 	}
 	if err := rk1WriteJSON(filepath.Join(dir, "samples", sample.Label+".json"), sample); err != nil {
 		t.Fatal(err)
+	}
+	if rk1kActiveReal != nil && sample.State != "started" {
+		for _, launch := range sample.Launches {
+			if launch.PaidStarts > 0 {
+				if err := rk1kAcceptCodexSample(rk1kActiveReal, sample); err != nil {
+					t.Fatal(err)
+				}
+				break
+			}
+		}
 	}
 }
 
@@ -87,6 +98,7 @@ func (f *rk1kFixture) executeOrdinary(label, surface string, task daemon.Task, n
 	}
 	plan := rk1Plan{Mode: "fake", Behavior: surface, Fault: fault, Params: map[string]string{
 		"native_id": native, "native_store": f.nativeStore, "cli": f.env.cli, "project": f.project}}
+	plan = f.executionPlan(plan)
 	if err := rk1WriteJSON(filepath.Join(f.plans, sample.Identity.key()+".json"), plan); err != nil {
 		f.t.Fatal(err)
 	}
@@ -118,12 +130,27 @@ func (f *rk1kFixture) executeOrdinary(label, surface string, task daemon.Task, n
 		if launch.EvidenceState != "complete" || !launch.ResultSeen {
 			sample.Reason = "launch_evidence_incomplete"
 		}
-		frame, err := os.ReadFile(filepath.Join(dir, "stdin-first.jsonl"))
+		inputFile := "stdin-first.jsonl"
+		if f.provider == "codex" {
+			inputFile = "stdin.jsonl"
+			native = launch.NativeID
+		}
+		frame, err := os.ReadFile(filepath.Join(dir, inputFile))
 		if err != nil {
 			sample.Reason = "input_evidence_missing"
 			continue
 		}
-		prompt, err = rk1kPrompt(frame)
+		if f.provider == "codex" {
+			out, readErr := os.ReadFile(filepath.Join(dir, "stdout.jsonl"))
+			observation, parseErr := rk1kObserveCodex(frame, out)
+			prompt, answer, resultSeen, err = observation.Prompt, observation.Answer, observation.Complete && !observation.Error, errors.Join(readErr, parseErr)
+			if task.KnowledgeContext != nil {
+				wantNative := task.KnowledgeContext.Session.NativeSessionID
+				sample.Criteria["codex_exact_claimed_session"] = wantNative == "" && !observation.Resumed || wantNative != "" && observation.Resumed && observation.Native == wantNative
+			}
+		} else {
+			prompt, err = rk1kPrompt(frame)
+		}
 		if err != nil {
 			sample.Reason = "invalid_input_frame"
 			continue
@@ -151,7 +178,7 @@ func (f *rk1kFixture) executeOrdinary(label, surface string, task daemon.Task, n
 				resultSeen, answer = true, message.Result
 			}
 		}
-		for _, file := range []string{"launch.json", "stdin-first.jsonl", "stdout.jsonl"} {
+		for _, file := range []string{"launch.json", inputFile, "stdout.jsonl"} {
 			path := filepath.Join(dir, file)
 			body, err := os.ReadFile(path)
 			if err != nil {
@@ -228,7 +255,7 @@ func (f *rk1kFixture) executeOrdinary(label, surface string, task daemon.Task, n
 				continue
 			}
 			if !yes {
-				if key == "actual_input_matches_current_manifest" || key == "semantic_material_present" {
+				if key == "actual_input_matches_current_manifest" || key == "semantic_material_present" || f.real != nil && (key == "actual_task_scoped_project_read" || key == "quick_create_link_after_completion" || key == "quick_create_unique_origin") {
 					sample.Verdict = "fail"
 				} else {
 					sample.State, sample.Verdict, sample.Reason = "incomplete", "unclassified", "ordinary_lifecycle_"+key
@@ -243,8 +270,14 @@ func (f *rk1kFixture) executeOrdinary(label, surface string, task daemon.Task, n
 
 func (f *rk1kFixture) hostSample(h *rk1Fixture, label, role, run string, plan rk1Plan, expected []string) rk1kSample {
 	f.t.Helper()
+	plan = f.executionPlan(plan)
 	runErr, duringErr := h.execute(run, plan, nil)
 	o := h.observe(run, runErr)
+	if f.provider == "codex" {
+		for i := range o.Launches {
+			o.Launches[i] = rk1kReadCodexLaunch(filepath.Join(f.plans, run, "launch-"+strconv.Itoa(i+1)))
+		}
+	}
 	sample := rk1kSample{Label: label, Surface: role, State: "finished", Verdict: "pass",
 		Identity: rk1kIdentity{Kind: "run", RunID: run}, Calls: o.Calls,
 		Criteria: map[string]bool{}, ArtifactHash: map[string]string{}}
@@ -280,7 +313,19 @@ func (f *rk1kFixture) hostSample(h *rk1Fixture, label, role, run string, plan rk
 				}
 			}
 		}
-		for _, file := range []string{"launch.json", "stdin-first.jsonl", "stdout.jsonl"} {
+		inputFile := "stdin-first.jsonl"
+		if f.provider == "codex" {
+			inputFile = "stdin.jsonl"
+			in, readErr := os.ReadFile(filepath.Join(dir, inputFile))
+			observation, parseErr := rk1kObserveCodex(in, stdout)
+			answer = observation.Answer
+			if readErr != nil || parseErr != nil {
+				sample.Reason = "host_codex_rpc_incomplete"
+			}
+			sample.Criteria["codex_ephemeral"] = observation.Ephemeral || plan.Params["seed"] == "true"
+			sample.Criteria["codex_fresh_thread"] = !observation.Resumed
+		}
+		for _, file := range []string{"launch.json", inputFile, "stdout.jsonl"} {
 			path := filepath.Join(dir, file)
 			raw, err := os.ReadFile(path)
 			if err != nil {
@@ -319,6 +364,19 @@ func (f *rk1kFixture) hostSample(h *rk1Fixture, label, role, run string, plan rk
 	}
 	sample.Criteria["fresh_host_namespace"] = len(o.Launches) == 1 && !slices.Contains(o.Launches[0].Meta.Args, "--resume")
 	sample.Criteria["host_persistence_policy"] = seed || len(o.Launches) == 1 && slices.Contains(o.Launches[0].Meta.Args, "--no-session-persistence")
+	if f.provider == "codex" {
+		sample.Criteria["host_persistence_policy"] = sample.Criteria["codex_ephemeral"]
+		sample.Criteria["fresh_host_namespace"] = sample.Criteria["codex_fresh_thread"]
+	}
+	memoryRead, handoffRead := false, false
+	for _, call := range o.Calls {
+		if call.Platform == "cli" && call.Credential == "mcb" && call.Status == 200 && call.Method == "GET" {
+			memoryRead = memoryRead || strings.HasSuffix(call.Path, "/memory")
+			handoffRead = handoffRead || strings.HasSuffix(call.Path, "/handoff")
+		}
+	}
+	sample.Criteria["actual_run_scoped_memory_read"] = memoryRead
+	sample.Criteria["actual_run_scoped_handoff_read"] = handoffRead
 	sample.Criteria["actual_role"] = o.Envelope != nil && o.Envelope.Assignment.Role == role
 	sample.Criteria["actual_authorization_prompt_hash"] = seed || authHash
 	sample.Criteria["actual_host_exit_proof"] = o.Proof == "host_exit_observed" && o.Progress == "settled"
@@ -335,7 +393,7 @@ func (f *rk1kFixture) hostSample(h *rk1Fixture, label, role, run string, plan rk
 	} else {
 		for key, yes := range sample.Criteria {
 			if !yes {
-				if key == "actual_input_matches_current_manifest" || key == "semantic_material_present" {
+				if key == "actual_input_matches_current_manifest" || key == "semantic_material_present" || key == "actual_run_scoped_memory_read" || key == "actual_run_scoped_handoff_read" {
 					sample.Verdict = "fail"
 				} else {
 					sample.State, sample.Verdict, sample.Reason = "incomplete", "unclassified", "host_lifecycle_"+key
@@ -356,6 +414,14 @@ func rk1kRequireSample(t *testing.T, sample rk1kSample) {
 }
 
 func TestRK1KnowledgeFakeProof(t *testing.T) {
+	if os.Getenv("MULTICA_RUN_REAL_AGENT_SMOKE") != "" {
+		t.Fatal("fake proof refuses real gate")
+	}
+	t.Setenv("RK1K_TEST_PROVIDER", "claude")
+	rk1kRunProof(t)
+}
+
+func rk1kRunProof(t *testing.T) {
 	rk1kRequireDatabase(t)
 	out := os.Getenv("RK1K_FAKE_PROOF_OUT")
 	if out == "" {
@@ -464,6 +530,9 @@ func TestRK1KnowledgeFakeProof(t *testing.T) {
 		first := f.executeOrdinary("K2-fresh", "chat", f.claimed(firstID), native, "", []string{rk1kAlpha}, false)
 		rk1kRequireSample(t, first)
 		samples = append(samples, first)
+		if f.provider == "codex" {
+			native = first.Launches[0].NativeID
+		}
 		beta, pending := f.propose(rk1kBeta, nil)
 		f.approve(beta, pending)
 		secondID := f.chatMessage(f.base.ownerToken, chat)
@@ -626,12 +695,16 @@ func TestRK1KnowledgeFakeProof(t *testing.T) {
 		t.FailNow()
 	}
 	measured, seed, paid := rk1kCountStarts(samples)
-	if measured != 15 || seed != 3 || paid != 0 {
+	expectedFake, expectedPaid := 15, 0
+	if rk1kActiveReal != nil {
+		expectedFake, expectedPaid = 0, 15
+	}
+	if measured != expectedFake || seed != 3 || paid != expectedPaid {
 		t.Fatalf("finite E0b/K1/K2/K3 counters: measured=%d seed=%d paid=%d", measured, seed, paid)
 	}
 	if err := rk1WriteJSON(filepath.Join(out, "summary.json"), map[string]any{
-		"schema_version": 1, "kind": "fake_framework_proof", "measured_fake_starts": measured, "fake_seed_starts": seed,
-		"paid_starts": paid, "knowledge_allocated": 0, "real_runnable": false, "samples": samples}); err != nil {
+		"schema_version": 1, "kind": map[bool]string{true: "real_codex_model", false: "fake_framework_proof"}[rk1kActiveReal != nil], "measured_fake_starts": measured, "fake_seed_starts": seed,
+		"paid_starts": paid, "knowledge_allocated": expectedPaid, "real_runnable": rk1kActiveReal != nil, "samples": samples}); err != nil {
 		t.Fatal(err)
 	}
 }

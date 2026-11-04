@@ -92,7 +92,7 @@ func decodeTaskKnowledge(version pgtype.Int4, raw []byte) (*taskKnowledgeDeliver
 			return nil, knowledgeFailure(409, "knowledge_context_changed")
 		}
 		c := claim.Descriptor
-		if protocol.ValidateTaskKnowledgeRequest(c.ProtocolVersion, c.TaskID, c.ClaimGeneration, c.DispatchedAt) != nil || c.Provider != "claude" || c.Mode != "local" || !c.PreparationRequired || c.RuntimeID != c.Session.RuntimeID || c.Provider != c.Session.Provider || c.ConfigurationID != c.Session.ConfigurationID || seen[c.ClaimGeneration] || !protocol.ValidTaskKnowledgeDigest(claim.ConfigurationDigest) ||
+		if protocol.ValidateTaskKnowledgeRequest(c.ProtocolVersion, c.TaskID, c.ClaimGeneration, c.DispatchedAt) != nil || !agent.KnowledgeLifecycleSupported(c.Provider, c.Mode, true) || c.Mode != "local" || !c.PreparationRequired || c.RuntimeID != c.Session.RuntimeID || c.Provider != c.Session.Provider || c.ConfigurationID != c.Session.ConfigurationID || seen[c.ClaimGeneration] || !protocol.ValidTaskKnowledgeDigest(claim.ConfigurationDigest) ||
 			protocol.ValidateTaskKnowledgeSession(c.Session) != nil || c.Session.ScopeID != d.ScopeID || c.Session.ScopeKind != d.ScopeKind || len(claim.Attempts) > 32 || claim.Attempts == nil {
 			return nil, knowledgeFailure(409, "knowledge_context_changed")
 		}
@@ -350,7 +350,7 @@ func (s *TaskService) BuildTaskKnowledgeClaim(ctx context.Context, task db.Agent
 	if err != nil {
 		return nil, "", err
 	}
-	if inv != nil && inv.ProtocolVersion == 1 && r.Provider == "claude" {
+	if inv != nil && inv.ProtocolVersion == 1 && agent.KnowledgeLifecycleSupported(r.Provider, r.RuntimeMode, true) {
 		var custom []string
 		if len(a.CustomArgs) > 0 && !bytes.Equal(a.CustomArgs, []byte("null")) {
 			if json.Unmarshal(a.CustomArgs, &custom) != nil {
@@ -364,7 +364,7 @@ func (s *TaskService) BuildTaskKnowledgeClaim(ctx context.Context, task db.Agent
 		// Other options outside the negotiation allowlist (and
 		// --no-session-persistence) only make the invocation unsupported below,
 		// where the history guard chooses base execution or refusal.
-		if agent.KnowledgeSessionSelectorPresent("claude", inv.ExtraArgs) || agent.KnowledgeSessionSelectorPresent("claude", custom) {
+		if agent.KnowledgeSessionSelectorPresent(r.Provider, inv.ExtraArgs) || agent.KnowledgeSessionSelectorPresent(r.Provider, custom) {
 			return nil, "", knowledgeFailure(409, "knowledge_invocation_unsupported")
 		}
 	}
@@ -623,7 +623,7 @@ func (s *TaskService) finalizeTaskKnowledgeClaim(ctx context.Context, q *db.Quer
 	if err != nil {
 		return err
 	}
-	if r.ProfileID.Valid || r.Provider != "claude" || r.RuntimeMode != "local" || descriptor.Provider != r.Provider || descriptor.Mode != r.RuntimeMode || descriptor.Session.Provider != r.Provider || descriptor.Session.AgentID != util.UUIDToString(task.AgentID) || descriptor.Session.RuntimeID != util.UUIDToString(r.ID) || descriptor.Session.ConfigurationID != descriptor.ConfigurationID || !descriptor.PreparationRequired {
+	if r.ProfileID.Valid || !agent.KnowledgeLifecycleSupported(r.Provider, r.RuntimeMode, true) || r.RuntimeMode != "local" || descriptor.Provider != r.Provider || descriptor.Mode != r.RuntimeMode || descriptor.Session.Provider != r.Provider || descriptor.Session.AgentID != util.UUIDToString(task.AgentID) || descriptor.Session.RuntimeID != util.UUIDToString(r.ID) || descriptor.Session.ConfigurationID != descriptor.ConfigurationID || !descriptor.PreparationRequired {
 		return knowledgeFailure(409, "knowledge_context_changed")
 	}
 	kind, id := taskKnowledgeScope(task, KnowledgeConsumerFacts{Surface: descriptor.Session.ScopeKind})

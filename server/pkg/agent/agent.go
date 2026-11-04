@@ -32,6 +32,8 @@ type ExecOptions struct {
 	// Knowledge is the admitted session/invocation intent for this command.
 	// Only supported built-in adapters with an ordinary lifecycle accept it.
 	Knowledge *KnowledgeLaunchIntent
+	// CodexEphemeral requires a fresh nonpersistent app-server thread for private host runs.
+	CodexEphemeral bool
 	// SystemPrompt carries the Multica runtime brief for the few providers
 	// that cannot pick it up from disk. The daemon leaves it empty for every
 	// other provider (see daemon.providerNeedsInlineSystemPrompt), because the

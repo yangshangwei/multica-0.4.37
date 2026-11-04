@@ -18,6 +18,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/util"
+	"github.com/multica-ai/multica/server/pkg/agent"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
@@ -391,7 +392,7 @@ func (s *TaskService) taskKnowledgeTransaction(ctx context.Context, caller TaskK
 	if err != nil {
 		return err
 	}
-	if currentRuntime.ProfileID.Valid || currentRuntime.Provider != "claude" || currentRuntime.Provider != c.Descriptor.Provider || currentRuntime.RuntimeMode != "local" || currentRuntime.RuntimeMode != c.Descriptor.Mode {
+	if currentRuntime.ProfileID.Valid || !agent.KnowledgeLifecycleSupported(currentRuntime.Provider, currentRuntime.RuntimeMode, true) || currentRuntime.Provider != c.Descriptor.Provider || currentRuntime.RuntimeMode != "local" || currentRuntime.RuntimeMode != c.Descriptor.Mode {
 		return knowledgeFailure(409, "knowledge_context_changed")
 	}
 	digest, err := taskKnowledgeConfigurationDigest(currentRuntime, currentAgent)

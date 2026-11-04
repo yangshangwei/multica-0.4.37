@@ -13,6 +13,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/util"
+	"github.com/multica-ai/multica/server/pkg/agent"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
@@ -62,14 +63,14 @@ func (s *CollaborationService) claimRuntimeKnowledge(ctx context.Context, r *col
 	if p.KnowledgeVersion != 0 && p.KnowledgeVersion != 1 {
 		return nil, knowledgeFailure(400, "invalid_knowledge_request")
 	}
-	if !freezing || !s.KnowledgeContextEnabled || p.KnowledgeVersion == 0 || claim.ProtocolVersion != protocol.CollaborationHostRuntimeProtocolVersion || claim.Preparation == nil || claim.Preparation.Host == nil || claim.Preparation.Provider.Provider != "claude" || claim.Preparation.Host.ProviderMode != "local" {
+	if !freezing || !s.KnowledgeContextEnabled || p.KnowledgeVersion == 0 || claim.ProtocolVersion != protocol.CollaborationHostRuntimeProtocolVersion || claim.Preparation == nil || claim.Preparation.Host == nil || !agent.KnowledgeLifecycleSupported(claim.Preparation.Provider.Provider, claim.Preparation.Host.ProviderMode, true) || claim.Preparation.Host.ProviderMode != "local" {
 		return nil, nil
 	}
 	runtime, _, err := s.authorizeCollaborationDaemon(ctx, r.q, r.run.RuntimeID)
 	if err != nil {
 		return nil, err
 	}
-	if runtime.ProfileID.Valid || runtime.Provider != "claude" || runtime.RuntimeMode != "local" {
+	if runtime.ProfileID.Valid || runtime.Provider != claim.Preparation.Provider.Provider || !agent.KnowledgeLifecycleSupported(runtime.Provider, runtime.RuntimeMode, true) || runtime.RuntimeMode != "local" {
 		return nil, nil
 	}
 	d := protocol.CollaborationRunKnowledgeClaim{ProtocolVersion: 1, Identity: claim.Identity, ConfigurationDigest: claim.Preparation.Host.ConfigurationDigest, Namespace: claim.Identity.RunID}
@@ -351,7 +352,7 @@ func (s *CollaborationService) lockCollaborationKnowledge(ctx context.Context, t
 	if err != nil {
 		return fail(err)
 	}
-	if d.Identity != collaborationRunIdentity(current, issue.ID) || d.Namespace != util.UUIDToString(runID) || d.ProtocolVersion != 1 || preparation.Host == nil || d.ConfigurationDigest != preparation.Host.ConfigurationDigest || runtime.Provider != "claude" || runtime.RuntimeMode != "local" || runtime.ProfileID.Valid {
+	if d.Identity != collaborationRunIdentity(current, issue.ID) || d.Namespace != util.UUIDToString(runID) || d.ProtocolVersion != 1 || preparation.Host == nil || d.ConfigurationDigest != preparation.Host.ConfigurationDigest || runtime.Provider != preparation.Provider.Provider || !agent.KnowledgeLifecycleSupported(runtime.Provider, runtime.RuntimeMode, true) || runtime.RuntimeMode != "local" || runtime.ProfileID.Valid {
 		return fail(knowledgeFailure(409, "knowledge_context_changed"))
 	}
 	return r, f, hints, nil
