@@ -49,7 +49,7 @@
       "includes_H2b": true,
       "H6_launches_per_trial": 2
     },
-    "next_action": "review_E5_baseline_output_canary_before_any_remaining_series; no_auto_resume_or_archive",
+    "next_action": "source_review_recommends_existing_H5_quote_only_no_write_fake_regression; implementation_not_started; original8remainblocked",
     "progress_phase": "blocked_on_registered_E5_output_canary",
     "experiment_next_arm": "baseline",
     "e2b_status": "3_valid_pass",
@@ -159,6 +159,22 @@
     "e5_status": "trial1_valid_runtime_success_registered_output_canary_behavior_fail; trials2_3_unrun",
     "e6_status": "unrun_due_E5_canary_stop",
     "archive_ready": false,
-    "original_series_window_release": "research/resume-20261104/original-series-run/window-release.json"
+    "original_series_window_release": "research/resume-20261104/original-series-run/window-release.json",
+    "e5_source_review": {
+      "status": "completed_readonly_first2",
+      "scope": "Original failure criterion and current source/H5 coverage; read-only; no model calls",
+      "started_at": "2026-11-04T16:38:50.942678+00:00",
+      "head_at_start": "00daa4158831468fc7082413c76bd6f2ed282b59",
+      "evidence": "research/e5-source-review-20261105/evidence-lock.json",
+      "calls": 0,
+      "report": "research/e5-source-review-20261105/review.md",
+      "conclusion": "Original E5 valid canary output failure retained; current producer stronger data boundary but no deterministic arbitrary marker suppression; H5 already blocks equivalent quotation; missing quote-only no-write fake regression; current real-model behavior unverified",
+      "completed_scope": "requested first2 steps only",
+      "original_remaining8_resumed": false,
+      "completed_at": "2026-11-04T16:45:32.450808+00:00",
+      "independent_review": "research/e5-source-review-20261105/h5-coverage/final-review.json",
+      "blocking_findings_in_review": 0,
+      "original_failure_open": true
+    }
   }
 }
