@@ -1,0 +1,25 @@
+{
+  "recorded_at": "2026-11-04T15:49:12.393353+00:00",
+  "state": "preflight_refused_before_execution; concurrent_sole_owner_found; duplicate_run_not_started",
+  "command": [
+    "python3",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/runtime-password7-20261104/run-password7.py"
+  ],
+  "exit_code": 1,
+  "failure": "Production Web build changed",
+  "expected_web_build_id": "1l5va-9f2PMnEkPpah4XJ",
+  "observed_web_build_id": "LWmfK4rqLpu7Bxe1tpjXC",
+  "actual_api_builds": 0,
+  "actual_service_starts": 0,
+  "actual_browser_invocations": 0,
+  "actual_database_writes": 0,
+  "real_provider_calls": 0,
+  "source_changes": 0,
+  "shared_owner": "01a1a728-4261-7db0-a3a8-f90b6a65ed0a",
+  "shared_result": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/password7/result.json",
+  "shared_result_sha256": "8c955b5c9e20f7c1f3572916b19298f3fe4c0e56a1d2da689518c4aad2683ebe",
+  "shared_actual_result": "4pass3fail; runtime3pass; C3desktop1pass; remaining3 C3 E2E fixture interaction repairs assigned to sole owner",
+  "owned_database": "multica_runtime_password7_20261104_99ac",
+  "owned_database_state": "root allocated/migrated; this recorder performed no DB query or write",
+  "next": "Root coordination; do not execute prepared runner against another owners changed build"
+}

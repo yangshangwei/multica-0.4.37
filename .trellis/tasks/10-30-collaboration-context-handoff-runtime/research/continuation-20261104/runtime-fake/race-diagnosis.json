@@ -1,0 +1,280 @@
+{
+  "at": "2026-11-04T15:49:30.187262+00:00",
+  "status": "read_only_failure_triage_not_root_cause_proven",
+  "run": {
+    "run_id": "9141b668-c2d6-47c2-b804-6edde2c8850a",
+    "runner_error": "collaboration runtime transport failed\ncontext deadline exceeded",
+    "physical_launches": 1,
+    "authorized_attempts": 1,
+    "progress_state": "settled",
+    "proof_state": "host_exit_observed",
+    "business_outcome": "success",
+    "recording_incomplete": true,
+    "seal_reason": "",
+    "outcome_record_completeness": "partial",
+    "run_events": {
+      "handoff_binding": 1,
+      "handoff_snapshot": 1,
+      "outcome": 1,
+      "preparation": 1,
+      "record_checkpoint": 2,
+      "resource_snapshot": 1
+    }
+  },
+  "ledger": {
+    "sha256": "51c9f388887c94161af944d85cfe3ecadf7cec0f5ce11e1b00e09e41f5bf3d70",
+    "phase": "proof_acknowledged",
+    "outcome_recorded": true,
+    "recording": {
+      "closed": true,
+      "drained": true,
+      "reason": "incomplete",
+      "seal_accepted": null
+    },
+    "chunks": [
+      {
+        "sequence": 1,
+        "offset": 0,
+        "count": 1,
+        "body_bytes": 121,
+        "accepted": true,
+        "rejected": null
+      },
+      {
+        "sequence": 2,
+        "offset": 1,
+        "count": 1,
+        "body_bytes": 65536,
+        "accepted": null,
+        "rejected": null
+      },
+      {
+        "sequence": 3,
+        "offset": 2,
+        "count": 1,
+        "body_bytes": 246,
+        "accepted": null,
+        "rejected": null
+      },
+      {
+        "sequence": 4,
+        "offset": 3,
+        "count": 1,
+        "body_bytes": 65536,
+        "accepted": null,
+        "rejected": null
+      },
+      {
+        "sequence": 5,
+        "offset": 4,
+        "count": 3,
+        "body_bytes": 9041,
+        "accepted": null,
+        "rejected": null
+      }
+    ],
+    "seal": {
+      "sequence": 1,
+      "attempt_seq": "1",
+      "attempt_nonce": "84e13531-399b-4205-a2c7-1defe9bdc72d",
+      "stream_id": "fd2315a4-8f5e-4190-8385-2465abe5a007",
+      "observed_through": null,
+      "acknowledged_through": 1,
+      "reason": "incomplete"
+    }
+  },
+  "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+  "hashes": {
+    "tests.jsonl": "8c2fab78510d163a38d104fec251697be53cf96cc2373baf728819b214533ec3",
+    "result.json": "4124621223d744fb31d213b28ac8b096617697b651097d28804dc841c8a606b3",
+    "public.json": "aca1007cac5375544fd72f16939c2c33c93d79feb8d102d113e08e07c585993b",
+    "trace.jsonl": "451d346ba31be5a315e7b78868d6fc00f1142105340437fb072e05b399d12415"
+  },
+  "trace_selected": [
+    {
+      "seq": 2,
+      "at": "2026-11-04T15:42:55.626349Z",
+      "method": "POST",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/claim",
+      "status": 200
+    },
+    {
+      "seq": 3,
+      "at": "2026-11-04T15:42:55.853898Z",
+      "method": "POST",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/permit",
+      "status": 200
+    },
+    {
+      "seq": 8,
+      "at": "2026-11-04T15:42:56.190186Z",
+      "method": "POST",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/preparation/observations",
+      "status": 200
+    },
+    {
+      "seq": 10,
+      "at": "2026-11-04T15:42:56.308216Z",
+      "method": "POST",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/memory/base",
+      "status": 200
+    },
+    {
+      "seq": 12,
+      "at": "2026-11-04T15:42:56.413676Z",
+      "method": "POST",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/handoff/snapshots",
+      "status": 200
+    },
+    {
+      "seq": 15,
+      "at": "2026-11-04T15:42:56.624046Z",
+      "method": "POST",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/permit",
+      "status": 200
+    },
+    {
+      "seq": 17,
+      "at": "2026-11-04T15:42:56.740246Z",
+      "method": "POST",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/handoff/bind",
+      "status": 200
+    },
+    {
+      "seq": 35,
+      "at": "2026-11-04T15:42:58.644975Z",
+      "method": "POST",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/checkpoints",
+      "status": 200
+    },
+    {
+      "seq": 38,
+      "at": "2026-11-04T15:42:59.634408Z",
+      "method": "POST",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/launches/84e13531-399b-4205-a2c7-1defe9bdc72d/termination",
+      "status": 200
+    },
+    {
+      "seq": 39,
+      "at": "2026-11-04T15:42:59.684942Z",
+      "method": "POST",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/checkpoints",
+      "status": 503
+    },
+    {
+      "seq": 49,
+      "at": "2026-11-04T15:43:00.704541Z",
+      "method": "POST",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/checkpoints",
+      "status": 503
+    },
+    {
+      "seq": 60,
+      "at": "2026-11-04T15:43:01.731515Z",
+      "method": "POST",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/checkpoints",
+      "status": 503
+    },
+    {
+      "seq": 70,
+      "at": "2026-11-04T15:43:02.752883Z",
+      "method": "POST",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/checkpoints",
+      "status": 503
+    },
+    {
+      "seq": 78,
+      "at": "2026-11-04T15:43:03.80958Z",
+      "method": "GET",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/stop-intent",
+      "status": 503
+    },
+    {
+      "seq": 79,
+      "at": "2026-11-04T15:43:03.748203Z",
+      "method": "POST",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/checkpoints",
+      "status": 200
+    },
+    {
+      "seq": 80,
+      "at": "2026-11-04T15:43:04.943185Z",
+      "method": "POST",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/checkpoints",
+      "status": 503
+    },
+    {
+      "seq": 81,
+      "at": "2026-11-04T15:43:05.448676Z",
+      "method": "POST",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/outcome",
+      "status": 200
+    },
+    {
+      "seq": 82,
+      "at": "2026-11-04T15:43:05.606344Z",
+      "method": "POST",
+      "path": "/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/proof",
+      "status": 200
+    }
+  ],
+  "middleware_timing_logs": [
+    "2026/11/04 23:42:55 INFO http request method=POST path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/claim status=200 duration=122.398ms request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000785 user_id=b1d277c9-e785-4c52-bb69-bfc21cbff9d5",
+    "2026/11/04 23:42:55 INFO http request method=POST path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/permit status=200 duration=164.505ms request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000786 user_id=b1d277c9-e785-4c52-bb69-bfc21cbff9d5",
+    "2026/11/04 23:42:56 INFO http request method=POST path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/preparation/observations status=200 duration=109.849ms request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000791",
+    "2026/11/04 23:42:56 INFO http request method=POST path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/memory/base status=200 duration=115.103ms request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000793",
+    "2026/11/04 23:42:56 INFO http request method=POST path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/handoff/snapshots status=200 duration=101.235ms request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000795",
+    "2026/11/04 23:42:56 INFO http request method=POST path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/permit status=200 duration=188.279ms request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000797 user_id=b1d277c9-e785-4c52-bb69-bfc21cbff9d5",
+    "2026/11/04 23:42:56 INFO http request method=POST path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/handoff/bind status=200 duration=111.85ms request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000800",
+    "2026/11/04 23:42:58 INFO http request method=POST path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/checkpoints status=200 duration=45.677ms request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000818",
+    "2026/11/04 23:42:59 INFO http request method=POST path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/launches/84e13531-399b-4205-a2c7-1defe9bdc72d/termination status=200 duration=171.073ms request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000822",
+    "2026/11/04 23:42:59 ERROR http request method=POST path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/checkpoints status=503 duration=1.001334s request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000820",
+    "2026/11/04 23:43:00 ERROR http request method=POST path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/checkpoints status=503 duration=975.204ms request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000824",
+    "2026/11/04 23:43:01 ERROR http request method=POST path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/checkpoints status=503 duration=988.622ms request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000834",
+    "2026/11/04 23:43:02 ERROR http request method=POST path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/checkpoints status=503 duration=996.938ms request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000845",
+    "2026/11/04 23:43:03 INFO http request method=POST path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/checkpoints status=200 duration=992.799ms request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000855",
+    "2026/11/04 23:43:03 ERROR http request method=GET path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/stop-intent status=503 duration=334.676ms request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000862",
+    "2026/11/04 23:43:04 ERROR http request method=POST path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/checkpoints status=503 duration=1.001735s request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000863",
+    "2026/11/04 23:43:05 INFO http request method=POST path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/outcome status=200 duration=508.922ms request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000864",
+    "2026/11/04 23:43:05 INFO http request method=POST path=/api/collaboration/runtime/runs/9141b668-c2d6-47c2-b804-6edde2c8850a/proof status=200 duration=99.867ms request_id=yangshangweideMac-mini.local/yB5LyqnFFw-000865"
+  ],
+  "timing_limits": "Trace at is handler-completed wall time, not request start; raw middleware duration covers handler invocation. Neither includes staged CPU/DB-wait timings.",
+  "ranked_hypotheses": [
+    {
+      "rank": 1,
+      "hypothesis": "The 64KiB checkpoint path under race instrumentation consumes the fixed1s request budget before DB commit; backlog then exhausts final recording recovery budget.",
+      "prediction": "A fresh owned instrumented diagnostic records pre-transaction validation/redaction or transaction stages approaching1s for sequence2; exact test-owned body CPU benchmark or service-stage timing distinguishes the cost. No timeout increase is needed to test this.",
+      "evidence": "sequence2 body65536; repeated503 durations975–1002ms; one near-deadline992.799ms200 response was not locally ACKed.",
+      "status": "unproven stage attribution"
+    },
+    {
+      "rank": 2,
+      "hypothesis": "Lock contention or pool acquisition during concurrent terminal/stop requests accounts for slow checkpoint handlers, rather than content CPU.",
+      "prediction": "Fresh diagnostic stage timing shows wait concentrated in pool/row/advisory locks while the same validation/redaction input is fast; event order identifies exact contender.",
+      "evidence": "termination interleaves with first slow checkpoint; one stop-intent503; no original lock-wait sample retained.",
+      "status": "unproven; no failed-DB mutations allowed"
+    },
+    {
+      "rank": 3,
+      "hypothesis": "Deferred seal uses already-expired recordingCtx, so no seal HTTP occurs after independent outcome/proof succeeds.",
+      "prediction": "DB-free recoverHost fixture with controlled successful checkpoint and slow independent outcome produces acknowledged proof plus persisted/unaccepted seal and zero seal HTTP; a separate backlog-exhaustion control distinguishes no remaining telemetry budget from lifecycle-time leakage.",
+      "evidence": "source creates1srecordingCtx before recoverHostRecording and defersseal until afteroutcome/proof; current original run has pendingchunks, transport+deadline errors, no seal request.",
+      "status": "mechanism visible in source; not isolated in current run; cannot alone explain earlier checkpoint503s"
+    }
+  ],
+  "next_minimal_loop": {
+    "first": "DB-free collaborationrun regression using retainedHostRecordingFixture/newHostTestLedger and httptest; stage a real pending outcome, explicit controlled handler barriers, assert originalproof ACK, pending seal identity, observed checkpoint/seal attempts. Never call extra Runner on measured sample.",
+    "second": "If needed, new separately allocated diagnosticDB with exact original-style64KiBfixture plus stage timings; preserve original normal/race/results. No changes to fake scoring,40m timeout, Provider launches or framework registration."
+  },
+  "writes_to_failed_database_or_ledger": false,
+  "new_tests_or_provider_runs": false,
+  "environment_observation": {
+    "source": "Root coordination message after original race completion; not independently inspected by executor",
+    "external_session": "01a1a728-f90b6a65",
+    "external_password7_start": "2026-11-04T15:42:54Z",
+    "external_password7_finish": "2026-11-04T15:45:03Z",
+    "race_environment_exclusive": false,
+    "overlap_is_cause_proven": false,
+    "note": "Observed overlap starts just before failed fixture claim/checkpoint activity. No causal inference or raw-result relabeling."
+  }
+}
