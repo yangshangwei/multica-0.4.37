@@ -74,3 +74,55 @@ Cursor regressions must assert default/full-series behavior, rejection before pr
 Wrong: `go test` exited zero, therefore all context handoffs worked.
 
 Correct: the record is `finished`, the scenario was exposed, source/model/framework provenance is known, and the stated criterion passed in that sample; semantic/manual and unobserved fields remain explicitly unresolved.
+
+## Knowledge fake proof and runtime input promotion
+
+1. **Scope:** the `agentintegration && !windows` knowledge sibling in
+   `server/cmd/server/rk1k_*_test.go` reuses the ordinary daemon and actual Host
+   producers. Shared runtimes can expose an earlier issue's prepared continuation.
+2. **Signatures:** `(*rk1Fixture).nextRunForIssue() string` calls
+   `f.client.List(t.Context(), f.base.runtime)` through the fixture's actual MDT
+   client. The HTTP handler's `ListRuntimeRuns` path promotes waiting inputs;
+   `ListCollaborationRuns(ctx, session.ID)` alone only reads stored rows.
+3. **Contract:** on every poll, obtain actual eligible `RunIDs` through HTTP,
+   then intersect them with the current issue's session rows whose `SettledAt`
+   is absent. Return exactly one matching ID. Preserve the 10-second polling
+   deadline, 100-millisecond interval, producer/role order and separate seed
+   starts. Each independent K3 Host role uses the existing complete knowledge
+   fixture, with its own managed daemon/binding/runtime and actual capability
+   registration. Propose and approve the same policy content through that
+   fixture's real APIs; retain each sample's actual source identity/version/hash.
+   K2 keeps its single fixture for the two native turns. Keep the original
+   seventeen `rk1_*_test.go` files unchanged.
+4. **Errors:** a List or database error fails the fixture; no matching run waits
+   until the deadline; multiple matching runs fail rather than selecting one.
+   An eligible run from another issue is excluded. Never insert, promote or
+   select an arbitrary run in SQL to make the schedule pass. Session filtering
+   alone cannot bypass `derived_run_pending`: the runtime promotion path protects
+   an unreserved eligible continuation from an earlier consumer on that same
+   runtime/binding. Retain that continuation and isolate the independent runtime
+   rather than settling it or adding an unmeasured process. Runtime identity has
+   a unique `(workspace_id, daemon_id, provider)` tuple: copying a base and adding
+   another Claude runtime under the same daemon violates
+   `agent_runtime_workspace_id_daemon_id_provider_idx`. Reuse the complete
+   fixture's genuine enrollment instead of changing the index or copying IDs.
+5. **Cases:** a waiting squad root becomes eligible through the real List path;
+   a prior issue's continuation remains outside this consumer's schedule;
+   database-only polling can time out before the first root even when a later
+   continuation seed fix compiles successfully.
+6. **Verification:** select exactly
+   `^TestRK1Knowledge(EntryGuard|WrapperGuard|PromptData|TraceCredentialLabels|NativeMetadataUsesRawOutput|EvidenceFaults|FakeProof)$`
+   with `-tags=agentintegration -p=1 -parallel=1 -count=1 -json -timeout=10m`.
+   Run ordinary and `-race` suites serially on distinct fresh migrated
+   `multica_rk1k_*` databases, with an explicit hash-bound `RK1K_SOURCE_CLI` and
+   a never-reused `RK1K_FAKE_PROOF_OUT`. Require complete named results, all
+   E0b/K1/K2/K3 samples, eight K3 roles and a durable summary with fifteen
+   measured fake starts, three seed starts and zero paid starts. Bind the six
+   files, original seventeen, product source, CLI, tools and environment before
+   and after each run; retain earlier failures.
+7. **Wrong / correct:** compile success or a database row does not establish
+   runtime promotion. Use the authenticated HTTP List and exact session/eligible
+   intersection, then verify the complete finite proof. Fake success leaves
+   real knowledge allocation/calls at 0/0, the real entry non-runnable and
+   production knowledge injection disabled by default; other quotas remain
+   separately owned.
